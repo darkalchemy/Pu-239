@@ -1,0 +1,81 @@
+.widget {
+width: 760px;
+margin: 20px;
+padding: 10px;
+	-webkit-box-shadow: inset 5px 0 10px rgba(0,0,0,.15), inset -5px 0 10px rgba(0,0,0,.15);
+	-moz-box-shadow: inset 5px 0 10px rgba(0,0,0,.15), inset -5px 0 10px rgba(0,0,0,.15);
+	box-shadow: inset 5px 0 10px rgba(0,0,0,.15), inset -5px 0 10px rgba(0,0,0,.15);
+	background-color: rgba(0,0,0,.09);
+margin-bottom: 15px;-moz-border-radius: 10px;
+}
+
+   .widget a {
+   color: #000000;
+   text-decoration: none;
+   }
+
+   .widget a:hover {
+   color: #009;
+   text-decoration: underline;
+   }
+
+   .tabnav li {
+   display: inline;
+   list-style: none;
+   padding-right: 5px;
+   }
+   
+      .tabnav li a {
+      text-decoration: none;
+      text-transform: uppercase;
+      color: #222;
+      font-weight: bold;
+      padding: 4px 6px;
+      outline: none;
+      }
+      
+      .tabnav li a:hover, .tabnav li a:active, .tabnav li.ui-tabs-selected a {
+      	-webkit-box-shadow: inset 5px 0 10px rgba(0,0,0,.15), inset -5px 0 10px rgba(0,0,0,.15);
+	-moz-box-shadow: inset 5px 0 10px rgba(0,0,0,.15), inset -5px 0 10px rgba(0,0,0,.15);
+	box-shadow: inset 5px 0 10px rgba(0,0,0,.15), inset -5px 0 10px rgba(0,0,0,.15);
+	background-color: rgba(0,0,0,.09);;
+      color: #222;
+      text-decoration: none;
+      }
+      
+   .tabdiv {
+   margin-top: 2px;
+   	background: -webkit-gradient(linear, left top, left bottom, from(#b6b7b8), to(#dfdfe0));
+	background: -moz-linear-gradient(top,  #b6b7b8,  #dfdfe0);
+  	background: -o-linear-gradient(rgb(183,184,185),rgb(223,223,224));
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b6b7b8', endColorstr='#dfdfe0');
+   border: 1px solid #333;
+   padding: 5px;-moz-border-radius: 10px;
+   }
+   
+      .tabdiv li {
+      list-style-image: url("pic/star.png");
+      margin-left: 20px;
+      }
+
+.ui-tabs-hide {
+      display: none;
+      }
+
+      #featuredvid {
+      text-align: center;
+      }
+      
+         .fvid {
+         margin-bottom: 5px;
+         }
+      
+         .vidselector li {
+         text-align: left;
+         list-style: none;
+         padding: 5px;
+         background: #ffffff;
+         border: 1px solid #dedbd1;
+         text-transform: uppercase;
+         margin-bottom: 5px;
+         }

@@ -1,0 +1,6 @@
+[type=checkbox] {
+    display: none;
+}
+:checked + div {
+    display: none !important;
+}

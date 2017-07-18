@@ -1,0 +1,30 @@
+#status_box, #status_title_warpper, #status_content {
+	font-family:tahoma;
+	font-size:12px;
+}
+#status_box {
+	width:400px;
+	background: #ffffff;
+	height:auto;
+	border:1px solid #5C8DFF;
+	-moz-border-radius:4px;
+	padding:8px;
+ position:absolute;
+	margin-top:10px;
+	margin-bottom:5px;
+}
+#status_title {
+ background:#99B8FF;
+	height:16px;
+	color:#333;
+	padding-left:5px;
+	font-weight:bold;
+}
+#status_content{
+	padding:1px;
+	background: #ffffff;
+	border: 1px solid #99B8FF;
+	-moz-border-radius-bottomleft:2px;
+	-moz-border-radius-bottomright:2px;
+}
+#status_tool { font-size:10px;font-weight:bold;}

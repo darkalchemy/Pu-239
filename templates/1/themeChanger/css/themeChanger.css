@@ -1,0 +1,185 @@
+/* -- Theme controll panel --> Begin -- */
+
+#control_panel {
+	position:fixed;
+    top:30px;
+    left:-210px;
+    z-index: 999;
+    padding: 16px;
+    width:178px;
+    background-color:#1f1f1f;
+    color:#3d3d3d;
+	-webkit-border-radius: 0 5px 5px 0;
+	-moz-border-radius: 0 5px 5px 0;
+	border-radius: 0 5px 5px 0;
+}
+
+#control_panel > div > span {
+    display: block;
+	margin-left: 2px;
+	color: #fff;
+	font-size: 0.917em;
+	text-transform: uppercase;
+	font-family: Arial;
+}
+
+#control_panel ul {
+    overflow: hidden;
+	padding-bottom: 5px;
+}
+
+#control_panel li {
+    float:left;
+    margin:2px;
+}
+
+#control_panel li.active {
+    border-color:#000;
+}
+
+#control_panel li a {
+    width:31px;
+    height:31px;
+    border-radius:2px;
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    display:block;
+}
+
+#control_panel .restore_button_wrapper {
+	clear: both;
+	text-align:center;
+    padding:10px 0 0 0;
+}
+
+
+#control_label {
+    position:absolute;
+    right:-29px;
+    top:20px;
+    width:29px;
+    height:31px;
+    background:url('../images/theme_control_bg.png') no-repeat center center #1f1f1f;
+    border-radius:0 5px 5px 0;
+    -moz-border-radius:0 5px 5px 0;
+    -webkit-border-radius:0 5px 5px 0;
+	-webkit-transition: all .25s linear;
+	-moz-transition: all .25s linear;
+	-o-transition: all .25s linear;
+	transition: all .25s linear;
+}
+
+#control_label:hover {
+	-webkit-box-shadow: inset 0 0 10px #686868;
+	-moz-box-shadow: inset 0 0 10px #686868;
+	box-shadow: inset 0 0 10px #686868;
+}
+
+#control_panel #backgrounds a {
+  background-image: url('../images/patterns_sprite.png');
+  background-repeat: no-repeat;
+  border: 1px solid #000;
+  width: 29px;
+  height: 29px;
+}
+
+#control_panel #backgrounds .active a {border-color: #434343;}
+
+/* Menu Skin --> Begin */
+
+#nav > span {float: left; line-height: 35px;}
+
+#nav ul {float: right;}
+
+#nav ul li a {
+	background-image: url(../images/nav_sprite.png);
+	background-repeat: no-repeat;
+	height: 32px;
+    width: 32px;
+}
+
+#nav ul li a.skin-1 {background-position: 0 0;}
+#nav ul li a.skin-2 {background-position: right;}
+
+
+/* Menu Skin --> End */
+
+/* Backgrounds --> Begin */
+
+#backgrounds .background-2 {background-position: 0 0;}
+#backgrounds .background-2 {background-position: -30px 0;}
+#backgrounds .background-3 {background-position: -60px 0;}
+#backgrounds .background-4 {background-position: -90px 0;}
+#backgrounds .background-5 {background-position: -120px 0;}
+#backgrounds .background-6 {background-position: 0 -30px;}
+#backgrounds .background-7 {background-position: -30px -30px;}
+#backgrounds .background-8 {background-position: -60px -30px;}
+#backgrounds .background-9 {background-position: -90px -30px;}
+#backgrounds .background-10 {background-position: -120px -30px;}
+#backgrounds .background-11 {background-position: 0 -60px;}
+#backgrounds .background-12 {background-position: -30px -60px;}
+#backgrounds .background-13 {background-position: -60px -60px;}
+#backgrounds .background-14 {background-position: -90px -60px;}
+#backgrounds .background-15 {background-position: -120px -60px;}
+#backgrounds .background-16 {background-position: 0 -90px;}
+#backgrounds .background-17 {background-position: -30px -90px;}
+#backgrounds .background-18 {background-position: -60px -90px;}
+#backgrounds .background-19 {background-position: -90px -90px;}
+#backgrounds .background-20 {background-position: -120px -90px;}
+#backgrounds .background-21 {background-position: 0 -120px;}
+#backgrounds .background-22 {background-position: -30px -120px;}
+#backgrounds .background-23{background-position: -60px -120px;}
+#backgrounds .background-24 {background-position: -90px -120px;}
+#backgrounds .background-25 {background-position: -120px -120px;}
+
+/* Backgrounds --> End */
+
+.style_block {
+	padding: 1em 0;
+	border-bottom: 1px dotted #4c4c4c;
+}
+
+.style_block select {
+	margin: 2px 0;
+	padding: 2px;
+	color: #777;
+	width: 178px;
+	border: 1px solid #000;
+}
+
+.links_color_wrapper {
+	border-bottom: 1px dotted #4C4C4C;
+	padding: 1em 0;	
+}
+
+.links_color_wrapper > span {
+    float:left;
+	line-height: 3em;
+}
+
+.links_color_wrapper .colorPicker {
+    position: relative;
+	float:right;
+    height:31px;
+    width:31px;
+	border: 1px solid #000;
+	cursor: pointer;
+}
+
+#samplespicker {
+	position: relative;
+}
+
+.links_color_wrapper .colorPicker:after,
+#samplespicker:after {
+	position: absolute;
+	right: -4px;
+	bottom: -4px;
+	width: 11px;
+	height: 11px;
+	overflow: hidden;
+	background: url(../images/colorpicker_select.png);
+	content: "";
+}
+
+/* -- Theme controll panel --> End -- */

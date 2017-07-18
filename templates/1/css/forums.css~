@@ -1,0 +1,35 @@
+.balloonstyle{
+position:absolute;
+top: -500px;
+left: 0;
+padding: 5px;
+visibility: hidden;
+border:1px solid #EAFF08;
+font:normal 12px arial;
+color: #FF6600;
+line-height: 18px;
+z-index: 100;
+background-color: #FFFFD4;
+width: 400px;
+}
+#arrowhead{
+z-index: 99;
+position:absolute;
+top: -500px;
+left: 0;
+visibility: hidden;
+}
+a.info{
+    position:relative; /*this is the key*/
+    z-index:24; /*background-color:#ccc;*/
+    color:#000;
+    text-decoration:none}
+a.info:hover{z-index:25; background-color:#ff0}
+a.info span{display: none}
+a.info:hover span{ /*the span will display just on :hover state*/
+    display:block;
+    position:absolute;
+    top:2em; left:2em; width:15em;
+    border:1px solid #0cf;
+    background-color:#cff; color:#000;
+    text-align: center}

@@ -1,0 +1,34 @@
+/** Staff.php Settings --------------------------------------------------------------- */
+td.staff_username {
+    width: 20%; height: 30px;
+    text-align: left; border: none}
+td.staff_online {
+    width: 80px; height: 30px;
+    text-align: center; border: none }
+div.global_icon {
+    width: 63px; height: 29px;
+    text-align: center; padding-top: 6px;
+    background: -webkit-gradient(linear, left top, left bottom, from(#b6b7b8), to(#dfdfe0));
+	background: -moz-linear-gradient(top,  #b6b7b8,  #dfdfe0);
+  	background: -o-linear-gradient(rgb(183,184,185),rgb(223,223,224));
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b6b7b8', endColorstr='#dfdfe0');
+    float: left; display:inline; border-color: #eae9e9;
+	-moz-border-radius-bottomright: 8px; -webkit-border-radius-bottomright: 8px; border-bottom-right-radius: 8px;
+    -moz-border-radius-bottomleft: 8px; -webkit-border-radius-bottomleft: 8px; border-bottom-left-radius: 8px;-moz-border-radius: 10px;}
+div.global_head {
+    height: 35px; margin-right: 2px;
+    text-align: left; color: #fff; font-size: 15px; font-weight: bolder;
+    background: -webkit-gradient(linear, left top, left bottom, from(#b6b7b8), to(#dfdfe0));
+	background: -moz-linear-gradient(top,  #b6b7b8,  #dfdfe0);
+  	background: -o-linear-gradient(rgb(183,184,185),rgb(223,223,224));
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b6b7b8', endColorstr='#dfdfe0');
+    float:  right; display: block; line-height: 34px; border-color: #eae9e9;
+	
+    padding-left: 20px; }
+div.global_text {
+    text-align: center; background: -webkit-gradient(linear, left top, left bottom, from(#b6b7b8), to(#dfdfe0));
+	background: -moz-linear-gradient(top,  #b6b7b8,  #dfdfe0);
+  	background: -o-linear-gradient(rgb(183,184,185),rgb(223,223,224));
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b6b7b8', endColorstr='#dfdfe0'); margin-bottom: 20px; padding:15px;
+    -moz-border-radius-bottomright: 8px; -webkit-border-radius-bottomright: 8px; border-bottom-right-radius: 8px;
+    -moz-border-radius-bottomleft: 8px; -webkit-border-radius-bottomleft: 8px; border-bottom-left-radius: 8px;-moz-border-radius: 10px; }

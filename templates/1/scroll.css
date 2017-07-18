@@ -1,0 +1,99 @@
+﻿
+div.scrollingHotSpotLeftVisible
+{
+	background-image: url(../images/arrow_left.gif);				
+	background-color: #fff;
+	background-repeat: no-repeat;
+	opacity: 0.35; /* Standard CSS3 opacity setting */
+	-moz-opacity: 0.35; /* Opacity for really old versions of Mozilla Firefox (0.9 or older) */
+	filter: alpha(opacity = 35); /* Opacity for Internet Explorer. */
+	zoom: 1; /* Trigger "hasLayout" in Internet Explorer 6 or older versions */
+}
+
+
+div.scrollingHotSpotRight
+{
+	min-width: 75px;
+	width: 10%;
+	height: 100%;
+	background-image: url(../images/big_transparent.gif);
+	background-repeat: repeat;
+	background-position: center center;
+	position: absolute;
+	z-index: 200;
+	right: 0;
+	cursor: url(../images/cursors/cursor_arrow_right.png), url(../images/cursors/cursor_arrow_right.cur),e-resize;
+}
+
+
+div.scrollingHotSpotRightVisible
+{
+	background-image: url(../images/arrow_right.gif);
+	background-color: #fff;
+	background-repeat: no-repeat;
+	opacity: 0.35;
+	filter: alpha(opacity = 35);
+	-moz-opacity: 0.35;
+	zoom: 1;
+}
+
+div.scrollWrapper
+{
+	position: relative;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+}
+
+div.scrollableArea
+{
+	position: relative;
+	width: auto;
+	height: 100%;
+}
+#logoParade{width: 80%;position: relative;height:210px;margin:0 auto;text-align:center;margin: 5px auto 40px auto;
+	border-radius: 6px;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
+  background-color: rgba(0, 0, 0, 0.1);
+  font-family: "Monaco", Courier New, monospace;
+    padding: 20px;
+  color: #fff;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, .25), 0 1px 0 rgba(255, 255, 255, 0.25);
+  
+  }
+  .square
+    {
+        float:left;
+        width:60%;
+		text-align:right;
+		text-shadow: 0px 5px 11px #000;
+        color: #fff;
+        font: 28px 'LeagueGothicRegular';
+		opacity : 0.9;
+	
+	
+    }
+	 .square2
+    {
+        float:right;
+        width:39%;
+		text-align:right;
+			
+    }
+    .scontainer
+    {
+        text-align:center;
+        width:83%;
+		 margin: 60px auto;
+    }
+    .centerwrapper
+    {
+       margin: auto;
+       width: 100%;  
+	   
+    }
+	
+	#logoParade div.scrollableArea *{float: left;padding-left: 1px;width:155px;}
+	.scrollableArea > a > img{width:500px;height:220px;}
+	.scrollableArea > a{margin-left:5px;}
+	
