@@ -87,7 +87,7 @@ if ($row['passhash'] != make_passhash($row['secret'], md5($password))) {
     $to = ((int)$row["id"]);
     $subject = "Failed login";
     $msg = "[color=red]Security alert[/color]\n Account: ID=" . (int)$row['id'] . " Somebody (probably you, " . htmlsafechars($username) . " !) tried to login but failed!" . "\nTheir [b]Ip Address [/b] was : " . htmlsafechars($ip) . "\n If this wasn't you please report this event to a {$INSTALLER09['site_name']} staff member\n - Thank you.\n";
-    $sql = "INSERT INTO messages (sender, receiver, msg, subject, added) VALUES('System', " . sqlesc($to) . ", " . sqlesc($msg) . ", " . sqlesc($subject) . ", $added);";
+    $sql = "INSERT INTO messages (sender, receiver, msg, subject, added) VALUES(0, " . sqlesc($to) . ", " . sqlesc($msg) . ", " . sqlesc($subject) . ", $added);";
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     $mc1->delete_value('inbox_new_' . $row['id']);
     $mc1->delete_value('inbox_new_sb_' . $row['id']);
