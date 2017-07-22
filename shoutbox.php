@@ -544,7 +544,7 @@ if (count($shouts) > 0) {
             $user_stuff = $arr;
             $user_stuff['id'] = ($arr['perms'] & bt_options::PERMS_STEALTH ? "" . $user_stuff['id'] = $INSTALLER09['bot_id'] . "" : "" . $user_stuff['id'] = (int)$arr['userid'] . "");
             $user_stuff['username'] = ($arr['perms'] & bt_options::PERMS_STEALTH ? "" . $user_stuff['username'] = $lang['shoutbox_unknow'] . "" : "" . $user_stuff['username'] = htmlsafechars($arr['username']) . "");
-            $HTMLOUT.= "<tr style='background-color:$bg;'><td><span class='size1' style='color:$fontcolor;'>[$date]</span>\n$del$edit$pm$reply$private " . format_username($user_stuff, true) . "<span class='size2' style='color:$fontcolor;'>" . format_comment($arr["text"]) . "\n</span></td></tr>\n";
+            $HTMLOUT.= "<tr style='background-color:$bg;'><td><span class='size1' style='color:$fontcolor;'>[$date]</span>\n$del$edit$pm$reply$private " . format_username($user_stuff, true) . " <span class='size2' style='color:$fontcolor;'>" . format_comment($arr["text"]) . "\n</span></td></tr>\n";
         }
         $HTMLOUT.= "</table>";
     } else {
