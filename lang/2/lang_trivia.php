@@ -8,6 +8,7 @@ $lang = array(
 	'trivia_game_stopped' => 'The Game is Currently Stopped.',
 	'trivia_no_more' => 'There are no more questions, sorry!',
 	'trivia_wait' => 'Please wait for the next game of trivia to start.',
-	'trivia_correct' => 'You were correct! Please wait for the next question.',
-	'trivia_incorrect' => 'INCORRECT answer! Please wait for the next question.',
+	'trivia_correct' => '<b>You were correct!</b><br>Please wait for the next question.',
+	'trivia_incorrect' => '<b>INCORRECT answer!</b><br>Please wait for the next question.',
 );
+

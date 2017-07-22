@@ -47,11 +47,14 @@ if (!empty($_POST)) {
 }
 
 unset($_POST);
+global $INSTALLER09;
+
 $HTMLOUT = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
 <title>Trivia</title>
-<meta http-equiv='refresh' content='300; url=./trivia.php' />
+<meta http-equiv='refresh' content='30; url=./trivia.php' />
+<link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/{$INSTALLER09['stylesheet']}.css' type='text/css' />
 </head>
 <body>";
 
@@ -160,7 +163,7 @@ if ($gameon === 0 || empty($qid)) {
                         <input id='qid' type='hidden' name='qid' value='" . $qid . "'>
                         <input id='user_id' type='hidden' name='user_id' value='" . $user_id . "'>
                         <input id='user_id' type='hidden' name='ans' value='answer1'>
-                        <input type='submit' value='" . htmlsafechars($row['answer1']) . "'>
+                        <input type='submit' value='" . htmlsafechars($row['answer1']) . "' class='btn'>
                     </form>
                 </li>
                 <li style='margin-bottom: 5px;'>
@@ -168,7 +171,7 @@ if ($gameon === 0 || empty($qid)) {
                         <input id='qid' type='hidden' name='qid' value='" . $qid . "'>
                         <input id='user_id' type='hidden' name='user_id' value='" . $user_id ."'>
                         <input id='user_id' type='hidden' name='ans' value='answer2'>
-                        <input type='submit' value='" . htmlsafechars($row['answer2']) . "'>
+                        <input type='submit' value='" . htmlsafechars($row['answer2']) . "' class='btn'>
                     </form>
                 </li>";
 
@@ -179,7 +182,7 @@ if ($gameon === 0 || empty($qid)) {
                         <input id='qid' type='hidden' name='qid' value='" . $qid . "'>
                         <input id='user_id' type='hidden' name='user_id' value='" . $user_id . "'>
                         <input id='user_id' type='hidden' name='ans' value='answer3'>
-                        <input type='submit' value='" . htmlsafechars($row['answer3']) . "'>
+                        <input type='submit' value='" . htmlsafechars($row['answer3']) . "' class='btn'>
                     </form>
                 </li>";
 			}
@@ -190,7 +193,7 @@ if ($gameon === 0 || empty($qid)) {
                         <input id='qid' type='hidden' name='qid' value='" . $qid . "'>
                         <input id='user_id' type='hidden' name='user_id' value='" . $user_id . "'>
                         <input id='user_id' type='hidden' name='ans' value='answer4'>
-                        <input type='submit' value='" . htmlsafechars($row['answer4']) . "'>
+                        <input type='submit' value='" . htmlsafechars($row['answer4']) . "' class='btn'>
                     </form>
                 </li>";
 			}
@@ -201,7 +204,7 @@ if ($gameon === 0 || empty($qid)) {
                         <input id='qid' type='hidden' name='qid' value='" . $qid . "'>
                         <input id='user_id' type='hidden' name='user_id' value='" . $user_id . "'>
                         <input id='user_id' type='hidden' name='ans' value='answer5'>
-                        <input type='submit' value='" . htmlsafechars($row['answer5']) . "'>
+                        <input type='submit' value='" . htmlsafechars($row['answer5']) . "' class='btn'>
                     </form>
                 </li>";
             }   

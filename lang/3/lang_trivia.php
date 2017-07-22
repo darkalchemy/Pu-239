@@ -1,5 +1,4 @@
 <?php
-
 $lang = array(
 	'trivia_sorry' => 'Sorry...',
 	'trivia_you_must_be_pu' => 'You must be a Power User or above to play Trivia.',
