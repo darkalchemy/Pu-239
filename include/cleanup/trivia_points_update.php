@@ -40,34 +40,34 @@ function docleanup($data)
             extract($winners);
             switch ($i) {
                case 1:
-                     $points = 1000;
+                     $points = 10 * $correct;
                      break;
                case 2:
-                     $points = 900;
+                     $points = 9 * $correct;
                      break;
                case 3:
-                     $points = 800;
+                     $points = 8 * $correct;
                      break;
                case 4:
-                     $points = 700;
+                     $points = 7 * $correct;
                      break;
                case 5:
-                     $points = 600;
+                     $points = 6 * $correct;
                      break;
                case 6:
-                     $points = 500;
+                     $points = 5 * $correct;
                      break;
                case 7:
-                     $points = 400;
+                     $points = 4 * $correct;
                      break;
                case 8:
-                     $points = 300;
+                     $points = 3 * $correct;
                      break;
                case 9:
-                     $points = 200;
+                     $points = 2 * $correct;
                      break;
                case 10:
-                     $points = 100;
+                     $points = 1 * $correct;
                      break;
             }
 
