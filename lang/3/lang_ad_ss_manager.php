@@ -42,4 +42,4 @@ $lang = array(
     'ss_theme_corrupt' => 'Theme is corrupted.',
     'ss_unable_delete_default' => "You can`t delete the default theme.",
 );
-?>
+

@@ -5,4 +5,3 @@ $lang = array(
     'staff_shistory_public1' => "Public shout",
     'staff_shistory_none' => "No staff shouts here"
 );
-?>

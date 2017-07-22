@@ -66,4 +66,4 @@ $lang = array(
     'signup_na' => 'N/A',
     'signup_gender' => 'Gender',
 );
-?>
+

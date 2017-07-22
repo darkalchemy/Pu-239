@@ -34,4 +34,3 @@ $lang = array(
     'takemessage_was' => "was",
     'takemessage_updated' => "updated!"
 );
-?>

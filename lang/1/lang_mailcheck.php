@@ -6,4 +6,4 @@ $lang = array(
     'mailcheck_banned' => "is banned -",
     'mailcheck_valid' => "Email is address valid"
 );
-?>
+

@@ -18,4 +18,4 @@ $lang = array(
     'text_password2' => 'Re-type password',
     'text_email' => 'Email'
 );
-?>
+

@@ -6,5 +6,5 @@ $lang = array(
 	'user_mood_close' => "Close window",
 	'user_mood_back' => "Back to site",
 	'user_mood_s' => "s Mood"
-	);
-?>
+);
+

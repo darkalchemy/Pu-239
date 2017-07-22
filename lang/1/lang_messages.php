@@ -66,4 +66,3 @@ $lang = array(
     'messages_jump' => "Jump to",
     'messages_go' => "Go",
 );
-?>

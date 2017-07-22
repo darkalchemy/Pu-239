@@ -32,4 +32,3 @@ $lang = array(
     'watched_users' => "Watched Users",
     'watched_users_list' => "watched users list"
 );
-?>

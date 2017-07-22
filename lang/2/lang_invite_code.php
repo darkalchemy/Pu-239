@@ -35,4 +35,4 @@ $lang = array(
     'invites_delete1' => "Delete Invite",
     'invites_confirm1' => "Confirmed Account",
 );
-?>
+

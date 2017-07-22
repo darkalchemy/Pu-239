@@ -66,4 +66,4 @@ $lang = array(
     'commenttable_last_edited_by' => 'Last edited by',
     'commenttable_last_edited_at' => 'at'
 );
-?>
+

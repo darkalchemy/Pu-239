@@ -37,4 +37,4 @@ $lang = array(
     'sitesettings_donation' =>  "Monthly donation total required:",
     'sitesettings_apply'    =>  "Apply changes"
 );
-?>
+

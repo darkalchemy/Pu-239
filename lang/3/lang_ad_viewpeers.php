@@ -26,4 +26,4 @@ $lang = array(
 	'wpeers_notfound' => "Nu s-au gasit peeruri",
 	'wpeers_peerover' => "Previzualizare Peer"
 );
-?>
+

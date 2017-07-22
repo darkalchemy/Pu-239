@@ -48,4 +48,4 @@ $lang = array(
     'mega_used_from'    =>  "used the Invite from",
     'mega_stdhead'  =>  "Mega Search"
 );
-?>
+

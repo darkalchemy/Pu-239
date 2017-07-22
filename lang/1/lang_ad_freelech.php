@@ -31,4 +31,3 @@ $lang = array(
 	'freelech_cache'  => "Cache",
 	'freelech_stdhead'  => "Freeleech Status"
 );
-?>

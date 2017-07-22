@@ -41,4 +41,4 @@ $lang = array(
     'invites_email2' => "Email already in use!",
     'invites_gencodes' => "Generate Invite Code",
 );
-?>
+

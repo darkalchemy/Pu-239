@@ -89,4 +89,3 @@ $lang = array(
     //my stdhead
     'my_stdhead' => '\'s private page'
 );
-?>

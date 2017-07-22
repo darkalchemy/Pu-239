@@ -31,4 +31,3 @@ $lang = array(
 	'classpromo_add_new' => "Add new class",
 	'classpromo_stdhead' => "Promotion Settings"
 );
-?>

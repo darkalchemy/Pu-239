@@ -13,4 +13,3 @@ $lang = array(
     'text_enabled' => "Enabled",
     'btn_okay' => "Okay",
 );
-?>

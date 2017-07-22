@@ -23,4 +23,3 @@ $lang = array(
     'takeconfirminvite_failed' => "Signup failed",
     'takeconfirminvite_qualify' => "Sorry, you're not qualified to become a member of this site.",
 );
-?>

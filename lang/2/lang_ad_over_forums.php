@@ -28,4 +28,4 @@ $lang = array(
 	'ad_over_makebutton' => "Make overforum",
 	'ad_over_stdhead' => "Over Forum Manage"
 );
-?>
+

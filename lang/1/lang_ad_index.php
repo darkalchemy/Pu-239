@@ -64,4 +64,3 @@ $lang = array(
 	'index_load_numproc' => 'Number of processes currently running: ',
 	'index_load_pid' => ' PID of last process executed: '
 );
-?>

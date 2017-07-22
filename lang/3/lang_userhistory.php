@@ -27,4 +27,4 @@ $lang = array(
     'posts_del' => "Deleted",
     'posts_comment' => "Comment",
 );
-?>
+

@@ -67,4 +67,4 @@ $lang = array(
 	'stats_ex_menutorr' => "Torrents Stats",
 	'stats_ex_menurep' => "Reputation Stats"
 );
-?>
+

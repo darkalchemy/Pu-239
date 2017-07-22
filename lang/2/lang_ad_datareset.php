@@ -20,4 +20,4 @@ $lang = array(
 	'datareset_repay' => "Re-pay!",
 	'datareset_stdhead' => "Data Reset Manager"	
 );
-?>
+

@@ -50,4 +50,4 @@ $lang = array(
     'spanel_nothing_found' => "Nothing found.",
     'spanel_was_del_sp_by' => "was deleted from the staff panel by"
 );
-?>
+

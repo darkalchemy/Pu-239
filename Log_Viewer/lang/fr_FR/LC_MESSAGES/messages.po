@@ -1,0 +1,1805 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Pimp my Log\n"
+"POT-Creation-Date: 2014-12-03 12:52+0100\n"
+"PO-Revision-Date: 2014-12-03 12:54+0100\n"
+"Last-Translator: Potsky <potsky@me.com>\n"
+"Language-Team: potsky <potsky@me.com>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7\n"
+"X-Poedit-KeywordsList: gettext;gettext_noop;_x;_e;__;esc_attr__;esc_attr_e;"
+"esc_html__;esc_html_e;_ex;esc_attr_x;esc_html_x;_n;_nx;_n_noop;_nx_noop;_h\n"
+"X-Poedit-Basepath: ../../..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: _site\n"
+"X-Poedit-SearchPathExcluded-1: _build\n"
+"X-Poedit-SearchPathExcluded-2: css\n"
+"X-Poedit-SearchPathExcluded-3: js\n"
+"X-Poedit-SearchPathExcluded-4: node_modules\n"
+
+#: cfg/apache.config.php:5
+msgid "Apache"
+msgstr "Apache"
+
+#: cfg/apache.config.php:6
+msgid "Apache Hypertext Transfer Protocol Server"
+msgstr "Apache Hypertext Transfer Protocol Server"
+
+#: cfg/apache.config.php:7
+msgid "http://httpd.apache.org"
+msgstr "http://httpd.apache.org"
+
+#: cfg/apache.config.php:8
+msgid "All versions 2.x are supported."
+msgstr "Versions 2.x supportées"
+
+#: cfg/iis.config.php:4
+msgid "IIS"
+msgstr "IIS"
+
+#: cfg/iis.config.php:5
+msgid "A flexible & easy-to-manage web server..."
+msgstr ""
+"Internet Information Services est le logiciel de serveur services Web de la "
+"plateforme Windows."
+
+#: cfg/iis.config.php:6
+msgid "http://www.iis.net"
+msgstr "http://www.iis.net"
+
+#: cfg/iis.config.php:7
+msgid "NCSA, IIS and W3C log formats are supported"
+msgstr "Les logs au format NCSA, IIS et W3C sont supportés"
+
+#: cfg/nginx.config.php:5
+msgid "NGINX"
+msgstr "NGINX"
+
+#: cfg/nginx.config.php:6
+msgid ""
+"The high performance reverse proxy, load balancer, edge cache, origin server"
+msgstr "Nginx est un serveur asynchrone"
+
+#: cfg/nginx.config.php:7
+msgid "http://nginx.com"
+msgstr "http://nginx.com"
+
+#: cfg/nginx.config.php:8
+msgid "Default log formats are supported"
+msgstr "Le format de log par défaut est supporté"
+
+#: cfg/php.config.php:6 cfg/php.config.php:7 cfg/php.config.php:15
+#: cfg/php.config.php:16
+msgid "PHP"
+msgstr "PHP"
+
+#: cfg/php.config.php:8 cfg/php.config.php:17
+msgid "http://www.php.net/manual/errorfunc.configuration.php#ini.error-log"
+msgstr "http://www.php.net/manual/errorfunc.configuration.php#ini.error-log"
+
+#: cfg/php.config.php:9
+msgid "PHP logs defined via the <code>error_log</code> ini parameter."
+msgstr "Logs PHP définis par le paramètre ini <code>error_log</code>."
+
+#: cfg/php.config.php:10
+#, php-format
+msgid "Pimp My Log has detected <code>%s</code> on your server."
+msgstr "Pimp My Log a détecté <code>%s</code> sur le serveur."
+
+#: cfg/php.config.php:18
+msgid ""
+"Pimp My Log has not detected any path in the ini parameter <code>error_log</"
+"code>."
+msgstr ""
+"Pimp My Log n'a pas détecté de log dans le paramètre ini <code>error_log</"
+"code>."
+
+#: cfg/php.config.php:19
+msgid ""
+"Activate this software only if you use <code>ini_set('error_log')</code> "
+"directly in your scripts for example."
+msgstr ""
+"Activez ce logiciel que si vous utilisez <code>ini_set('error_log')</code> "
+"directement dans le code de vos scripts."
+
+#: inc/configure.php:57 inc/configure.php:97 inc/test.php:676
+msgid "Setup admin account"
+msgstr "Configurer un compte administrateur"
+
+#: inc/configure.php:59
+msgid ""
+"You can use <em>Pimp my Log</em> without authentication. You will be able to "
+"add this feature later from the debugger web interface."
+msgstr ""
+"Vous pouvez utiliser <em>Pimp my Log</em> sans authentification. Vous "
+"pourrez rajouter cette fonctionnalité plus tard depuis le Debuggeur."
+
+#: inc/configure.php:61
+msgid ""
+"Setup an admin account will let you create other users later and give them "
+"access to certain log files only."
+msgstr ""
+"Configurer un compte d'administrateur vous permettra de créer des "
+"utilisateurs et de leur donner accès à certains fichiers de log. Vous "
+"pourrez aussi régler un accès anonyme."
+
+#: inc/configure.php:63
+msgid "Do you want to create an admin account now?"
+msgstr "Voulez-vous créer un compte admin maintenant ?"
+
+#: inc/configure.php:66
+msgid "Create an admin account"
+msgstr "Créer un compte administrateur"
+
+#: inc/configure.php:68 inc/configure.php:522 inc/test.php:527
+#: inc/test.php:534 inc/test.php:580 inc/test.php:589 inc/users.pml.php:449
+#: index.php:819
+msgid "No"
+msgstr "Non"
+
+#: inc/configure.php:84
+#, php-format
+msgid "File <code>%s</code> already exists!"
+msgstr "Le fichier <code>%s</code> existe déjà."
+
+#: inc/configure.php:86
+msgid "Please remove it from the root directory:"
+msgstr "Supprimez le de la racine :"
+
+#: inc/configure.php:89 inc/configure.php:139 inc/configure.php:175
+#: inc/configure.php:197 inc/test.php:175 inc/test.php:221 inc/test.php:303
+#: inc/test.php:668 inc/upgrade.pml.php:283 inc/upgrade.pml.php:300
+#: inc/upgrade.pml.php:380 inc/users.pml.php:512 inc/users.pml.php:526
+#: index.php:581 index.php:603
+msgid "Copy to clipboard"
+msgstr "Copier dans le presse-papier"
+
+#: inc/configure.php:89 inc/configure.php:139 inc/configure.php:175
+#: inc/configure.php:197 inc/upgrade.pml.php:289 inc/upgrade.pml.php:306
+#: inc/upgrade.pml.php:386
+msgid "Command copied!"
+msgstr "Commande copiée !"
+
+#: inc/configure.php:99
+msgid "Please choose a username and a password for the admin account."
+msgstr ""
+"Choisissez un nom d'utilisateur et un mot de passe pour le compte admin."
+
+#: inc/configure.php:104 inc/test.php:681 inc/test.php:746
+#: inc/users.pml.php:257
+msgid "Username is required"
+msgstr "Le nom d'utilisateur est obligatoire"
+
+#: inc/configure.php:106 inc/login.inc.php:76 inc/login.inc.php:78
+#: inc/test.php:684 inc/test.php:749 index.php:742 index.php:746
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: inc/configure.php:111 inc/test.php:647 inc/test.php:690 inc/test.php:733
+#: inc/test.php:755 inc/users.pml.php:109 inc/users.pml.php:265
+msgid "Password must contain at least 6 chars"
+msgstr "Le mot de passe doit contenir au moins 6 caractères"
+
+#: inc/configure.php:113 inc/login.inc.php:89 inc/login.inc.php:91
+#: inc/test.php:693 inc/test.php:758 index.php:751 index.php:755
+msgid "Password"
+msgstr "Mot de passe"
+
+#: inc/configure.php:118 inc/test.php:699 inc/test.php:764
+msgid "Password is not the same"
+msgstr "Les mots de passe ne correspondent pas"
+
+#: inc/configure.php:120 inc/test.php:702 inc/test.php:767 index.php:760
+#: index.php:764
+msgid "Password Confirmation"
+msgstr "Confirmation du mot de passe"
+
+#: inc/configure.php:125 inc/configure.php:592
+msgid "Continue"
+msgstr "Continuer"
+
+#: inc/configure.php:134 inc/configure.php:192
+#, php-format
+msgid "Unable to create file <code>%s</code>"
+msgstr "Impossible de créer le fichier <code>%s</code>"
+
+#: inc/configure.php:136 inc/configure.php:194
+msgid "Please give temporary write access to the root directory:"
+msgstr ""
+"Merci de donner temporairement l'accès en écriture au répertoire racine :"
+
+#: inc/configure.php:171
+msgid "Please remove it manually if you want me to create it:"
+msgstr "Supprimez le manuellement si vous souhaitez que je le crée :"
+
+#: inc/configure.php:177
+#, php-format
+msgid "File <code>%s</code> already exists."
+msgstr "Le fichier <code>%s</code> existe déjà."
+
+#: inc/configure.php:211
+msgid "Choose softwares to search log files for"
+msgstr "Choisir les logiciels pour lesquels chercher des logs"
+
+#: inc/configure.php:233
+#, php-format
+msgid "Software <em>%s</em>"
+msgstr "Logiciel <em>%s</em>"
+
+#: inc/configure.php:243 inc/configure.php:433
+#, php-format
+msgid ""
+"Files <code>%s</code> or <code>%s</code> do not exist. Please review your "
+"software configuration."
+msgstr ""
+"Les fichiers <code>%s</code> ou <code>%s</code> n'existent pas. Revoyez "
+"votre configuration de logiciels."
+
+#: inc/configure.php:302
+msgid "Unable to find any directory."
+msgstr "Impossible de trouver un seul répertoire."
+
+#: inc/configure.php:303
+msgid ""
+"Check in the following list if these directories are readable by the "
+"webserver user and refresh this page"
+msgstr ""
+"Vérifiez dans la liste suivante si les répertoires sont lisibles par "
+"l'utilisateur qui a lancé le serveur web et rafraichissez la page"
+
+#: inc/configure.php:306
+msgid "Directories are available but unable to find files inside."
+msgstr ""
+"Les répertoires sont disponibles mais impossible de trouver des fichiers de "
+"logs dedans."
+
+#: inc/configure.php:307
+msgid ""
+"Check in the following list if these directories contain readable files by "
+"the webserver user and refresh this page."
+msgstr ""
+"Vérifiez dans la liste suivante si les répertoires contiennent des fichiers "
+"de logs lisibles par l'utilisateur qui a lancé le serveur web et "
+"rafraichissez la page."
+
+#: inc/configure.php:308
+msgid ""
+"Don't forget that to read a file, ALL parent directories have to be "
+"accessible too!"
+msgstr ""
+"N'oubliez pas que pour lire un fichier, TOUS les répertoires parents doivent "
+"être traversables !"
+
+#: inc/configure.php:318
+#, php-format
+msgid "These files have been checked in all paths: %s "
+msgstr "Ces fichiers ont été testés dans tous les répertoires : %s"
+
+#: inc/configure.php:321
+msgid "Log files have been found!"
+msgstr "Des fichiers de log ont été trouvés !"
+
+#: inc/configure.php:322
+msgid "Check in the following list which files you want to configure."
+msgstr "Choisissez dans la liste les fichiers que vous souhaitez configurer."
+
+#: inc/configure.php:324
+msgid ""
+"If files or directories are missing, verify that they are readable by the "
+"webserver user"
+msgstr ""
+"Si des fichiers ou répertoires sont manquants, vérifiez qu'ils sont bien "
+"lisibles par l'utilisateur sous lequel tourne le serveur web."
+
+#: inc/configure.php:329 inc/configure.php:380
+msgid "unable to detect web server user"
+msgstr "impossible de trouver l'utilisateur sous lequel tourne le serveur web"
+
+#: inc/configure.php:330 inc/configure.php:381
+#, php-format
+msgid "web server user seems to be <code>%s</code>"
+msgstr ""
+"L'utilisateur sous lequel tourne le serveur web semble être <code>%s</code>"
+
+#: inc/configure.php:334
+msgid ""
+"You can also type log files path in the text area below separated by coma:"
+msgstr ""
+"Vous pouvez aussi renseigner le chemin de fichiers de log dans les zones de "
+"texte si dessous en les séparant par des virgules :"
+
+#: inc/configure.php:336 inc/configure.php:521
+msgid "Type"
+msgstr "Type"
+
+#: inc/configure.php:336
+msgid "Custom paths"
+msgstr "Chemins personnalisés"
+
+#: inc/configure.php:358 inc/configure.php:405 inc/configure.php:409
+msgid "Unknown error"
+msgstr "Erreur inconnue"
+
+#: inc/configure.php:377
+msgid ""
+"Custom files below are not readable, please remove them or verify that they "
+"are readable by the webserver user"
+msgstr ""
+"Les fichiers ci-dessous ne sont pas lisibles. Retirez-les ou vérifiez qu'ils "
+"sont bien lisibles par l'utilisateur sous lequel tourne le serveur web"
+
+#: inc/configure.php:441
+#, php-format
+msgid ""
+"File <code>%s</code> does not define function <code>%s</code>. Please review "
+"your software configuration."
+msgstr ""
+"Le fichier <code>%s</code> ne définit pas la fonction <code>%s</code>. "
+"Revoyez votre configuration de logiciels."
+
+#: inc/configure.php:454
+msgid "No configuration found for softwares!"
+msgstr "Pas de configuration trouvée pour les logiciels !"
+
+#: inc/configure.php:466
+msgid "Unknown action, abort."
+msgstr "Action inconnue, stop."
+
+#: inc/configure.php:473 inc/configure.php:477 inc/configure.php:496
+#: inc/configure.php:529
+#, php-format
+msgid "You should take a look on this %spage%s."
+msgstr "Vous devriez jeter un coup d'oeil à %scette page%s."
+
+#: inc/configure.php:496
+msgid "Your PHP installation is not correctly configured to run Pimp My Log."
+msgstr ""
+"Votre installation PHP n'est pas correctement configurée pour exécuter Pimp "
+"My Log."
+
+#: inc/configure.php:514
+msgid "%s% Complete"
+msgstr "%s% complété"
+
+#: inc/configure.php:515 index.php:129
+msgid "An error occurs!"
+msgstr "Une erreur est survenue !"
+
+#: inc/configure.php:516
+msgid "Please wait..."
+msgstr "Patientez quelques instants..."
+
+#: inc/configure.php:517
+msgid "Software"
+msgstr "Logiciel"
+
+#: inc/configure.php:518 inc/test.php:518
+msgid "Path"
+msgstr "Chemin"
+
+#: inc/configure.php:519
+msgid "File"
+msgstr "Fichier"
+
+#: inc/configure.php:520
+msgid "Readable"
+msgstr "Lisable"
+
+#: inc/configure.php:523 inc/test.php:524 inc/test.php:531 inc/test.php:578
+#: inc/test.php:587 inc/users.pml.php:446 index.php:816
+msgid "Yes"
+msgstr "Oui"
+
+#: inc/configure.php:524
+msgid "Name"
+msgstr "Nom"
+
+#: inc/configure.php:525
+msgid "Description"
+msgstr "Description"
+
+#: inc/configure.php:526
+msgid "Notes"
+msgstr "Remarques"
+
+#: inc/configure.php:527
+msgid "You have to select at least one software to configure!"
+msgstr "Vous devez au moins choisir un logiciel à configurer !"
+
+#: inc/configure.php:528
+msgid ""
+"You have to select at least one log file or type the path of a log file!"
+msgstr ""
+"Vous devez sélectionner au moins un fichier de log ou sinon renseignez le "
+"chemin d'un fichier de log !"
+
+#: inc/configure.php:566
+msgid "Configurator"
+msgstr "Configurateur"
+
+#: inc/configure.php:584 index.php:41
+#, php-format
+msgid ""
+"Suhosin extension is loaded, according to its configuration, Pimp My Log "
+"could not run normally... More information %shere%s."
+msgstr ""
+"L'extension Suhosin est chargée et en fonction de son paramétrage, Pimp My "
+"Log peut ne pas fonctionner normalement. Plus d'info %sici%s."
+
+#: inc/configure.php:594 inc/test.php:178
+msgid "Reload"
+msgstr "Recharger"
+
+#: inc/configure.php:600
+msgid "Congratulations!"
+msgstr "Félicitations !"
+
+#: inc/configure.php:604
+msgid "Your <em>Pimp my Log</em> instance is ready to use."
+msgstr "<em>Pimp my Log</em> est maintenant prêt à être utilisé."
+
+#: inc/configure.php:607
+#, php-format
+msgid "You can manually adjust settings in the <code>%s</code> file."
+msgstr "Vous pouvez ajuster les paramètres dans le fichier <code>%s</code>."
+
+#: inc/configure.php:609
+msgid ""
+"Please visit <a href=\"http://pimpmylog.com\">pimpmylog.com</a> for more "
+"informations."
+msgstr ""
+"Visitez <a href=\"http://pimpmylog.com\">pimpmylog.com</a> pour plus "
+"d'informations."
+
+#: inc/configure.php:612
+msgid "Pimp my Logs now!"
+msgstr "Pimp my Log maintenant !"
+
+#: inc/getlog.pml.php:103 inc/rss.pml.php:65 inc/upgrade.pml.php:17
+#: inc/users.pml.php:74
+msgid "Please refresh the page."
+msgstr "Merci de rafraichir la page."
+
+#: inc/getlog.pml.php:109
+#, php-format
+msgid ""
+"File ID <code>%s</code> does not exist, please review your configuration "
+"file and stop playing!"
+msgstr ""
+"Le fichier d'ID <code>%s</code> n'existe pas. Revoyez votre configuration et "
+"arrêtez de jouer :-) !"
+
+#: inc/getlog.pml.php:116
+#, php-format
+msgid ""
+"File <code>%s</code> for file ID <code>%s</code> does not exist, please "
+"review your configuration file."
+msgstr ""
+"Le fichier <code>%s</code> pour le fichier d'ID <code>%s</code> n'existe "
+"pas. Revoyez votre configuration."
+
+#: inc/getlog.pml.php:123
+msgid ""
+"Configuration file has changed and is buggy now. Please refresh the page."
+msgstr ""
+"Le fichier de configuration a changé et comporte des erreurs maintenant. "
+"Merci de rafraichir la page."
+
+#: inc/getlog.pml.php:183
+#, php-format
+msgid "Log file has been rotated (previous size was %s and new one is %s)"
+msgstr ""
+"Le fichier de log a été remplacé (la taille précédente était %s et la "
+"nouvelle est %s)"
+
+#: inc/getlog.pml.php:207
+#, php-format
+msgid ""
+"File <code>%s</code> for file ID <code>%s</code> does not exist anymore..."
+msgstr ""
+"Le fichier <code>%s</code> pour le fichier d'ID <code>%s</code> n'existe "
+"plus..."
+
+#: inc/getlog.pml.php:211
+#, php-format
+msgid "Unknown error %s"
+msgstr "Erreur inconnue %s"
+
+#: inc/getlog.pml.php:229
+msgid "Log file has been rotated"
+msgstr "Le fichier de log a été remplacé."
+
+#: inc/getlog.pml.php:263
+#, php-format
+msgid ""
+"%s in <code>%sms</code> with <code>%s</code> of logs, <code>%s</code> "
+"skipped line(s), <code>%s</code> unreadable line(s).<br/>File <code>%s</"
+"code> was last modified on <code>%s</code> at <code>%s</code>, size is <code>"
+"%s</code>%s"
+msgstr ""
+"%s en <code>%sms</code> avec <code>%s</code> de logs, <code>%s</code> "
+"ligne(s) ignorée(s), <code>%s</code> ligne(s) illisible(s).<br/>Le fichier "
+"<code>%s</code> a été modifié le <code>%s</code> (<code>%s</code>), sa "
+"taille est <code>%s</code>%s"
+
+#: inc/getlog.pml.php:267
+#, php-format
+msgid "%s new logs found"
+msgstr "%s nouveaux logs trouvés"
+
+#: inc/getlog.pml.php:270
+msgid "no new log found"
+msgstr "aucun nouveau log"
+
+#: inc/getlog.pml.php:271
+msgid "1 new log found"
+msgstr "1 nouveau log trouvé"
+
+#: inc/getlog.pml.php:276
+#, php-format
+msgid "%s old logs found"
+msgstr "%s anciens logs trouvés"
+
+#: inc/getlog.pml.php:279
+msgid "no old log found"
+msgstr "aucun ancien log"
+
+#: inc/getlog.pml.php:280
+msgid "1 olg log found"
+msgstr "1 ancien log trouvé"
+
+#: inc/getlog.pml.php:292
+#, php-format
+msgid "log type is <code>%s</code>"
+msgstr "le type de log est <code>%s</code>"
+
+#: inc/global.inc.php:590 inc/global.inc.php:598
+msgid "No file is defined in <code>files</code> array"
+msgstr "Aucun fichier n'est défini dans le tableau <code>files</code>"
+
+#: inc/global.inc.php:607
+#, php-format
+msgid "<code>%s</code> is mandatory for file ID <code>%s</code>"
+msgstr "<code>%s</code> est obligatoire pour le fichier d'ID <code>%s</code>"
+
+#: inc/global.inc.php:772
+msgid "B KBMBGBTBPB"
+msgstr "o KoMoGoToPo"
+
+#: inc/login.inc.php:42
+msgid "Your username or password is not correct"
+msgstr "Le nom d'utilisateur ou le mot de passe n'est pas correct"
+
+#: inc/login.inc.php:47
+msgid "Please try again..."
+msgstr "Merci de réessayer..."
+
+#: inc/login.inc.php:52
+msgid "You have been logged out"
+msgstr "Vous avez bien été déconnecté"
+
+#: inc/login.inc.php:58
+#, php-format
+msgid ""
+"You can use %s as the username and %s as the password to test the demo "
+"account"
+msgstr ""
+"Vous pouvez utiliser le nom d'utilisateur %s et le mot de passe %s pour "
+"tester le compte de démo"
+
+#: inc/login.inc.php:66
+msgid "Please sign in"
+msgstr "Connexion"
+
+#: inc/login.inc.php:103
+msgid "Forgotten your password?"
+msgstr "Mot de passe oublié ?"
+
+#: inc/rss.php:131
+#, php-format
+msgid "Pimp My Log : %s"
+msgstr "Pimp my Log : %s"
+
+#: inc/rss.php:133
+#, php-format
+msgid "Pimp logs for file %s"
+msgstr "Pimp logs pour le fichier %s"
+
+#: inc/rss.php:134
+#, php-format
+msgid "Pimp logs for file %s with search %s"
+msgstr "Pimp logs pour le fichier %s avec la recherche %s"
+
+#: inc/rss.php:143
+msgid "Feed provided by Pimp My Log"
+msgstr "Flux fourni par Pimp my Log"
+
+#: inc/rss.pml.php:24 inc/users.pml.php:33
+#, php-format
+msgid "<strong>PHP Warning</strong> [%s] %s"
+msgstr "<strong>PHP Attention</strong> [%s] %s"
+
+#: inc/rss.pml.php:28 inc/users.pml.php:37
+#, php-format
+msgid "<strong>PHP Notice</strong> [%s] %s"
+msgstr "<strong>PHP Remarque</strong> [%s] %s"
+
+#: inc/rss.pml.php:32 inc/users.pml.php:41
+#, php-format
+msgid "<strong>PHP Unknown error</strong> [%s] %s"
+msgstr "<strong>PHP Erreur inconnue</strong> [%s] %s"
+
+#: inc/rss.pml.php:47 inc/users.pml.php:56
+#, php-format
+msgid "<strong>PHP Error</strong> line %s: %s"
+msgstr "<strong>PHP Error</strong> ligne %s : %s"
+
+#: inc/rss.pml.php:72
+msgid "This log file does not exist."
+msgstr "Le fichier de log n'existe pas."
+
+#: inc/test.php:93 inc/test.php:100 inc/test.php:107
+msgid "Error"
+msgstr "Erreur"
+
+#: inc/test.php:93
+msgid "Match is not a valid associative array"
+msgstr "Match n'est pas un tableau associatif valide"
+
+#: inc/test.php:100
+msgid "Types is not a valid associative array"
+msgstr "Types n'est pas un tableau associatif valide"
+
+#: inc/test.php:107
+msgid "RegEx is not a valid PHP PCRE regular expression"
+msgstr "L'expression régulière n'est pas valide avec le standard PHP PCRE"
+
+#: inc/test.php:124
+msgid "Configuration array has been copied to your clipboard!"
+msgstr "La configuration a été copiée dans votre presse-papier !"
+
+#: inc/test.php:154 index.php:562
+msgid "Debugger"
+msgstr "Debugger"
+
+#: inc/test.php:166
+msgid "This page is protected for security reasons."
+msgstr "Cette page est protégée pour des raisons de sécurité."
+
+#: inc/test.php:169
+#, php-format
+msgid ""
+"%sSign in%s as an administrator to view this page or follow instructions "
+"below."
+msgstr ""
+"%sConnectez-vous%s en tant qu'administrateur pour accéder au debuggeur ou "
+"suivez les instructions ci-dessous."
+
+#: inc/test.php:171
+msgid "To grant access, please create this temporary file on your server:"
+msgstr ""
+"Pour avoir accès à l'outil de debug, vous devez créer ce fichier temporaire "
+"sur votre serveur :"
+
+#: inc/test.php:177
+msgid "Then reload this page."
+msgstr "Recharger ensuite la page."
+
+#: inc/test.php:191
+msgid "Quit"
+msgstr "Quitter"
+
+#: inc/test.php:192
+msgid "Regex tester"
+msgstr "Testeur d'expression régulière"
+
+#: inc/test.php:193
+msgid "Regex samples"
+msgstr "Exemple d'expression régulière"
+
+#: inc/test.php:194
+msgid "Configuration"
+msgstr "Configuration"
+
+#: inc/test.php:195
+msgid "Password recovery"
+msgstr "Récupération mot de passe"
+
+#: inc/test.php:196
+msgid "Authentication"
+msgstr "Authentification"
+
+#: inc/test.php:217
+msgid ""
+"Please remove this temporary file on your server to disable the debugger!"
+msgstr "Supprimer ce fichier sur votre serveur pour désactiver le debuggeur !"
+
+#: inc/test.php:224
+msgid "You can access the debugger because you are an administrator"
+msgstr "Vous avez accès au debuggeur parce que vous êtes administrateur"
+
+#: inc/test.php:240
+msgid "Log"
+msgstr "Log"
+
+#: inc/test.php:250
+msgid "RegEx"
+msgstr "Expression régulière"
+
+#: inc/test.php:258
+msgid "Match"
+msgstr "Match"
+
+#: inc/test.php:258 inc/test.php:282
+msgid "must be json encoded"
+msgstr "doit être encodé en JSON"
+
+#: inc/test.php:282
+msgid "Types"
+msgstr "Types"
+
+#: inc/test.php:294
+msgid "Multiline"
+msgstr "Lignes multiples"
+
+#: inc/test.php:301
+msgid "Use CTRL-R shortcut instead of clicking on this button"
+msgstr "Utilisez le raccourci CTRL-R au lieu de cliquer sur ce bouton"
+
+#: inc/test.php:301 index.php:528 index.php:548 index.php:604
+msgid "Loading..."
+msgstr "Chargement..."
+
+#: inc/test.php:301
+msgid "Test"
+msgstr "Test"
+
+#: inc/test.php:460
+msgid "Generated files with includes (no user logged in or no auth)"
+msgstr ""
+"Fichier de configuration généré avec les extensions (pas d'utilisateur "
+"connecté ou pas d'authentification)"
+
+#: inc/test.php:462
+#, php-format
+msgid "Generated files with includes for user %s"
+msgstr ""
+"Fichier de configuration généré avec les extensions pour l'utilisateur %s"
+
+#: inc/test.php:487
+msgid "Rights"
+msgstr "Droits"
+
+#: inc/test.php:497
+msgid "No POSIX functions..."
+msgstr "Pas de fonction POSIX..."
+
+#: inc/test.php:518
+msgid "Read"
+msgstr "Lire"
+
+#: inc/test.php:518
+msgid "Write"
+msgstr "Ecrire"
+
+#: inc/test.php:518
+msgid "Real path"
+msgstr "Chemin réel"
+
+#: inc/test.php:543
+msgid "Not allowed by open_basedir restriction"
+msgstr "Interdit par la directive open_basedir"
+
+#: inc/test.php:573
+msgid "To be optimal, Pimp My Log needs all these modules ok:"
+msgstr ""
+"Pour fonctionner de manière optimale, Pimp My Log a besoin que ces modules "
+"soient installés :"
+
+#: inc/test.php:581 inc/test.php:590
+#, php-format
+msgid "Follow instructions %shere%s to enable"
+msgstr "Suivez les instructions d'installation %sici%s"
+
+#: inc/test.php:641
+#, php-format
+msgid "User %s already exists!"
+msgstr "L'utilisateur <code>%s</code> existe déjà."
+
+#: inc/test.php:644 inc/test.php:730 inc/users.pml.php:114
+#: inc/users.pml.php:268
+msgid "Password confirmation is not the same"
+msgstr "La confirmation du mot de passe n'est pas correcte"
+
+#: inc/test.php:652
+msgid "Authentication has been enabled and admin account has been created!"
+msgstr ""
+"L'authentification a bien été activée et le compte admin a bien été crée !"
+
+#: inc/test.php:660
+msgid "Authentication is currently enabled"
+msgstr "L'authentification est activée"
+
+#: inc/test.php:664
+msgid "Please remove this file on your server to disable authentication"
+msgstr ""
+"Supprimer ce fichier sur votre serveur pour désactiver l'authentification"
+
+#: inc/test.php:675
+msgid "Authentication is currently disabled"
+msgstr "L'authentification est desactivée"
+
+#: inc/test.php:708
+msgid "Enable authentication"
+msgstr "Activer authentification"
+
+#: inc/test.php:723
+msgid "Please fill an existing username and a new password"
+msgstr "Renseignez un nom d'utilisateur existant et un nouveau mot de passe"
+
+#: inc/test.php:727
+#, php-format
+msgid "User %s does not exist!"
+msgstr "L'utilisateur %s n'existe pas !"
+
+#: inc/test.php:738
+#, php-format
+msgid "Password has been updated for user %s!"
+msgstr "Le mot de passe de l'utilisateur %s a bien été mis à jour !"
+
+#: inc/test.php:773
+msgid "Reset"
+msgstr "Réinitialiser"
+
+#: inc/test.php:777
+msgid "This feature is only available when authentication is enabled."
+msgstr ""
+"Cette fonctionnalité n'est disponible que quand l'authentification est "
+"activée."
+
+#: inc/upgrade.pml.php:46 inc/upgrade.pml.php:51
+msgid "GIT is no more availble, please refresh the page"
+msgstr "GIT n'est plus disponible, merci de rafraichir la page."
+
+#: inc/upgrade.pml.php:80
+#, php-format
+msgid "Current version %s"
+msgstr "Version actuelle %s"
+
+#: inc/upgrade.pml.php:85
+msgid "Unable to check your current version!"
+msgstr "Impossible de vérifier votre version actuelle !"
+
+#: inc/upgrade.pml.php:165
+msgid "Messages from the development team"
+msgstr "Messages de l'équipe de développement"
+
+#: inc/upgrade.pml.php:179
+msgid "Mark as read"
+msgstr "Marquer comme lu"
+
+#: inc/upgrade.pml.php:204 inc/upgrade.pml.php:210
+#, php-format
+msgid ""
+"Error while fetching URL %s from the server hosting this Pimp my Log "
+"instance."
+msgstr ""
+"Erreur en essayant de récupérer le contenu de l'adresse %s depuis le serveur "
+"qui héberge cette instance de Pimp my Log."
+
+#: inc/upgrade.pml.php:204 inc/upgrade.pml.php:210
+msgid "Remote version broken!"
+msgstr "Version distance cassée !"
+
+#: inc/upgrade.pml.php:231
+#, php-format
+msgid "Version %s released on %s"
+msgstr "Version %s sortie le %s"
+
+#: inc/upgrade.pml.php:232
+#, php-format
+msgid "Version %s"
+msgstr "Version %s"
+
+#: inc/upgrade.pml.php:268
+msgid "An upgrade is available !"
+msgstr "Une mise à jour est disponible !"
+
+#: inc/upgrade.pml.php:269
+#, php-format
+msgid "You have version %s and version %s is available"
+msgstr "Vous avez la version %s et la version %s est disponible"
+
+#: inc/upgrade.pml.php:270
+msgid "release notes"
+msgstr "Remarques de mise à jour"
+
+#: inc/upgrade.pml.php:276
+msgid "Simply <code>composer update</code> in the installation directory"
+msgstr ""
+"Faites un <code>composer update</code> dans le répertoire d'installation."
+
+#: inc/upgrade.pml.php:286 inc/upgrade.pml.php:303 inc/upgrade.pml.php:323
+#: inc/upgrade.pml.php:383 inc/upgrade.pml.php:396
+msgid "Skip this upgrade"
+msgstr "Passer cette mise à jour"
+
+#: inc/upgrade.pml.php:294
+#, php-format
+msgid ""
+"Simply <code>git pull</code> in your directory or follow instructions %shere"
+"%s"
+msgstr ""
+"Faites simplement un <code>git pull</code> dans le répertoire d'installation "
+"ou suivez les instructions %sici%s"
+
+#: inc/upgrade.pml.php:320
+msgid "Upgrading..."
+msgstr "Mise à jour..."
+
+#: inc/upgrade.pml.php:320
+msgid "Upgrade now"
+msgstr "Mettre à jour"
+
+#: inc/upgrade.pml.php:331
+#, php-format
+msgid ""
+"Your GIT installation cannot be upgraded automatically because of %sthese "
+"problems%s."
+msgstr ""
+"Votre installation ne pas être automatiquement mise à jour avec GIT à cause "
+"de %sces problèmes%s."
+
+#: inc/upgrade.pml.php:338
+msgid "These files are not writable by the web server user:"
+msgstr ""
+"Ces fichiers ne sont pas accessible en écriture par l'utilisateur sous "
+"lequel tourne le serveur web :"
+
+#: inc/upgrade.pml.php:348
+msgid "The <code>git</code> command is not in the webserver path"
+msgstr ""
+"La commande <code>git</code> n'est pas disponible pour l'utilisateur sous "
+"lequel tourne le serveur web"
+
+#: inc/upgrade.pml.php:353
+msgid "You have modified these files:"
+msgstr "Les fichiers suivants ont été modifies :"
+
+#: inc/upgrade.pml.php:363
+msgid "Unknown error, here is the problem output:"
+msgstr "Erreur inconnue, voici le retour :"
+
+#: inc/upgrade.pml.php:374
+msgid "Simply <code>git pull</code> in your installation directory."
+msgstr "Faites un <code>git pull</code> dans le répertoire d'installation."
+
+#: inc/upgrade.pml.php:392
+#, php-format
+msgid "Follow instructions %shere%s"
+msgstr "Suivez les instructions %sici%s"
+
+#: inc/upgrade.pml.php:405
+msgid "You should upgrade right now:"
+msgstr "Vous devriez mettre à jour dès maintenant :"
+
+#: inc/upgrade.pml.php:416
+#, php-format
+msgid "Your version %s is out of date"
+msgstr "Votre version %s n'est à jour"
+
+#: inc/upgrade.pml.php:421
+#, php-format
+msgid "Your version %s is up to date"
+msgstr "Votre version %s est à jour"
+
+#: inc/upgrade.pml.php:427
+#, php-format
+msgid ""
+"Unable to fetch URL %s from the server hosting this Pimp my Log instance."
+msgstr ""
+"Impossible de récupérer le contenu de l'adresse %s depuis le serveur qui "
+"héberge cette instance de Pimp my Log."
+
+#: inc/upgrade.pml.php:427
+msgid "Unable to check remote version!"
+msgstr "Vérification de la version impossible !"
+
+#: inc/users.pml.php:104
+msgid "Current password is not valid"
+msgstr "Le mot de passe actuel n'est pas correct"
+
+#: inc/users.pml.php:121
+msgid "Password has been fakely changed on the demo!"
+msgstr "Le mot de passe a bien été changé pour de faux avec le compte demo !"
+
+#: inc/users.pml.php:123
+msgid "Password has been successfully changed!"
+msgstr "Le mot de passe a bien été changé !"
+
+#: inc/users.pml.php:178 inc/users.pml.php:209
+#, php-format
+msgid "User %s does not exist"
+msgstr "L'utilisateur %s n'existe pas"
+
+#: inc/users.pml.php:260
+#, php-format
+msgid "User %s already exists"
+msgstr "L'utilisateur <code>%s</code> existe déjà"
+
+#: inc/users.pml.php:322
+msgid "Please do not shoot yourself in the foot!"
+msgstr "Ne te tire pas une balle dans le pied quand même !"
+
+#: inc/users.pml.php:394
+msgid ""
+"<strong>Anonymous access is enabled</strong>. Genuine users have to click on "
+"the user menu to sign in and access more logs."
+msgstr ""
+"<strong>L'accès anonyme est activé</strong>. Les utilisateurs disposant d'un "
+"compte doivent se connecter pour accéder à davantage de logs."
+
+#: inc/users.pml.php:396
+msgid ""
+"<strong>Anonymous access is disabled</strong>. All users have to sign in "
+"from the sign in screen."
+msgstr ""
+"<strong>L'accès anonyme est desactivé</strong>. Tous les utilisateurs "
+"doivent se connecter."
+
+#: inc/users.pml.php:402
+msgid "Select which log files can be viewed without being logged."
+msgstr ""
+"Sélectionnez les fichiers de logs qui peuvent être visualisés sans être "
+"connecté."
+
+#: inc/users.pml.php:403 index.php:787
+msgid "Toggle all log files"
+msgstr "Inverser tous les fichiers"
+
+#: inc/users.pml.php:420 index.php:802
+msgid "and an other file defined by glob pattern"
+msgstr "an 1 autre fichier possible défini par le glob pattern"
+
+#: inc/users.pml.php:423 index.php:805
+#, php-format
+msgid "and %s other possible files defined by glob pattern"
+msgstr "et %s autres fichiers possibles définis par le glob pattern"
+
+#: inc/users.pml.php:504 index.php:161
+msgid "Access token"
+msgstr "Jeton d'accès"
+
+#: inc/users.pml.php:515
+msgid "Access token copied!"
+msgstr "Jeton d'accès copié !"
+
+#: inc/users.pml.php:518 index.php:165
+msgid "Presalt key"
+msgstr "Clé de salage"
+
+#: inc/users.pml.php:529
+msgid "Presalt key copied!"
+msgstr "Clé de salage copiée !"
+
+#: inc/users.pml.php:534
+msgid "Check to generate both new Access token and new Presalt key"
+msgstr "Cochez pour régénérer des nouveaux jeton d'accès et clé de salage"
+
+#: inc/users.pml.php:541
+msgid "Your credentials have not been used"
+msgstr "Vos identifiants n'ont pas encore été utilisés"
+
+#: inc/users.pml.php:546
+msgid "API has been called 1 time"
+msgstr "L'API a été appelée 1 fois"
+
+#: inc/users.pml.php:548
+#, php-format
+msgid "API has been called %s times"
+msgstr "L'API a été appelée %s fois"
+
+#: inc/users.pml.php:552
+#, php-format
+msgid ""
+"Last API call has been done at %s by IP address %s with user agent %s on URL "
+"%s"
+msgstr ""
+"Le dernier appel à l'API a été fait le %s par l'adresse IP %s avec le user "
+"agent %s à l'adresse %s"
+
+#: index.php:11 index.php:79 index.php:92
+msgid "Oups!"
+msgstr "Oups!"
+
+#: index.php:12
+#, php-format
+msgid "PHP version %s is required but your server run %s."
+msgstr ""
+"La version %s au minimum de PHP est requise mais votre serveur est en %s."
+
+#: index.php:14
+msgid "Learn more"
+msgstr "Plus d'info"
+
+#: index.php:28
+msgid "Welcome!"
+msgstr "Bienvenue !"
+
+#: index.php:31
+msgid "Pimp my Log is not configured."
+msgstr "Pimp my Log n'est pas configuré."
+
+#: index.php:34
+#, php-format
+msgid ""
+"You can manually copy <code>cfg/config.example.php</code> to %s in the root "
+"directory and change parameters. Then refresh this page."
+msgstr ""
+"Vous pouvez copier manuellement le fichier <code>cfg/config.example.php</"
+"code> vers %s à la racine et changer les paramètres. Rafraichissez ensuite "
+"la page."
+
+#: index.php:37
+msgid "Or let me try to configure it for you!"
+msgstr "Ou sinon, laissez-moi le configurer pour vous !"
+
+#: index.php:46 index.php:103
+msgid "Configure now"
+msgstr "Configurer maintenant"
+
+#: index.php:81
+msgid "Your access is disabled, you cannot view any log file."
+msgstr "Votre accès est désactivé, vous n'avez accès à aucun fichier de log"
+
+#: index.php:83
+msgid "Please contact your administrator."
+msgstr "Merci de contacter votre administrateur"
+
+#: index.php:86 index.php:153 index.php:468
+msgid "Sign out"
+msgstr "Déconnexion"
+
+#: index.php:94
+msgid "<code>config.user.json</code> configuration file is buggy:"
+msgstr ""
+"Le fichier de configuration <code>config.user.json</code> comporte des "
+"erreurs :"
+
+#: index.php:100
+msgid ""
+"If you want me to build the configuration for you, please remove file "
+"<code>config.user.json</code> at root and click below."
+msgstr ""
+"Si vous voulez que je fasse la configuration, enlevez le fichier "
+"<code>config.user.json</code> à la racine et cliquez en dessous s'il vous "
+"plait."
+
+#: index.php:116
+msgid "Action"
+msgstr "Action"
+
+#: index.php:117
+msgid "Add admin"
+msgstr "Ajouter un admin"
+
+#: index.php:118
+msgid "Add user"
+msgstr "Ajouter un utilisateur"
+
+#: index.php:119
+msgid "All accesses granted"
+msgstr "Accès total"
+
+#: index.php:120
+msgid "Anonymous access has been successfully saved!"
+msgstr "L'accès anonyme a bien été enregistré !"
+
+#: index.php:121
+msgid ""
+"There is no log to display and your are connected... It seems that global "
+"parameter <code>AUTH_LOG_FILE_COUNT</code> is set to 0. Change this "
+"parameter to a higher value to display logs."
+msgstr ""
+"Il n'y a aucun log à afficher et pourtant vous êtes connecté... Il semble "
+"que le paramètre global <code>AUTH_LOG_FILE_COUNT</code> est réglé à 0. "
+"Réglez ce paramètre à une valeur plus grande pour afficher les lois."
+
+#: index.php:122
+msgid "Password changed"
+msgstr "Mot de passe changé"
+
+#: index.php:123 index.php:162
+msgid "Created by"
+msgstr "Crée par"
+
+#: index.php:124 index.php:163
+msgid "Created at"
+msgstr "Crée le"
+
+#: index.php:125
+msgid "Date"
+msgstr "Date"
+
+#: index.php:126
+msgid "Delete user"
+msgstr "Supprimer"
+
+#: index.php:127
+msgid "1 log displayed,"
+msgstr "1 log affiché"
+
+#: index.php:128
+#, php-format
+msgid "%s logs displayed,"
+msgstr "%s logs affichés,"
+
+#: index.php:130 index.php:642
+msgid "Form is invalid:"
+msgstr "Le formulaire n'est pas valide :"
+
+#: index.php:131
+msgid "IP"
+msgstr "IP"
+
+#: index.php:132 index.php:166
+msgid "Last login"
+msgstr "Dernière connexion"
+
+#: index.php:133
+#, php-format
+msgid "Still %s to load"
+msgstr "Encore %s à charger"
+
+#: index.php:134 index.php:167
+msgid "Logins"
+msgstr "Connexions"
+
+#: index.php:135
+msgid "1 new log is available"
+msgstr "1 nouveau log disponible"
+
+#: index.php:136
+msgid "New logs are available"
+msgstr "Nouveaux logs disponibles"
+
+#: index.php:137
+#, php-format
+msgid "%s new logs are available"
+msgstr "%s nouveaux logs disponibles"
+
+#: index.php:138
+msgid "No log has been found."
+msgstr "Aucun log n'a été trouvé."
+
+#: index.php:139
+msgid ""
+"Notifications are denied for this site. Go to your browser preferences to "
+"enable notifications for this site."
+msgstr ""
+"Les notifications de bureau sont interdites pour cet site. Activez les dans "
+"les préférences de votre navigateur."
+
+#: index.php:140
+msgid "Your profile has been successfully saved!"
+msgstr "Votre profil a bien été enregistré !"
+
+#: index.php:141 index.php:142
+msgid "Confirm"
+msgstr "Confirmer"
+
+#: index.php:143
+msgid "Search was done with regular engine"
+msgstr "Recherche régulière effectuée"
+
+#: index.php:144
+msgid "Search was done with RegEx engine"
+msgstr "Recherche effectuée avec Expression Regulière"
+
+#: index.php:145
+msgid "Result copied!"
+msgstr "Résultat copié !"
+
+#: index.php:146 index.php:169 index.php:770
+msgid "Roles"
+msgstr "Rôles"
+
+#: index.php:147
+#, php-format
+msgid "No log has been found with Reg Ex search %s"
+msgstr ""
+"Aucun log n'a été trouvé avec la recherche de type Expression Regulière %s"
+
+#: index.php:148
+#, php-format
+msgid "No log has been found with regular search %s"
+msgstr "Aucun log n'a été trouvé avec la recherche régulière %s"
+
+#: index.php:149 index.php:349
+msgid "Sign in"
+msgstr "Connexion"
+
+#: index.php:150 index.php:152
+msgid "Sign in as"
+msgstr "Connexion en tant que"
+
+#: index.php:151
+msgid "Sign in error"
+msgstr "Erreur de connexion"
+
+#: index.php:154
+msgid "System"
+msgstr "Système"
+
+#: index.php:155
+#, php-format
+msgid "Toggle column %s"
+msgstr "Montrer/Cacher la colonne %s"
+
+#: index.php:156
+msgid "URL copied!"
+msgstr "Adresse copiée !"
+
+#: index.php:157 index.php:774
+msgid "User"
+msgstr "Utilisateur"
+
+#: index.php:158
+msgid "User has been successfully saved!"
+msgstr "L'utilisateur a bien été enregistré !"
+
+#: index.php:159
+msgid "Last API call"
+msgstr "Dernier appel API"
+
+#: index.php:160
+msgid "API calls"
+msgstr "Appels API"
+
+#: index.php:164
+msgid "User has been successfully deleted!"
+msgstr "L'utilisateur a bien été supprimé !"
+
+#: index.php:168
+msgid "Log access"
+msgstr "Accès aux logs"
+
+#: index.php:170
+msgid "User agent"
+msgstr "User agent"
+
+#: index.php:171
+msgid "User name"
+msgstr "Nom d'utilisateur"
+
+#: index.php:172 index.php:709
+msgid "Users"
+msgstr "Utilisateurs"
+
+#: index.php:173
+msgid "You need to sign in"
+msgstr "Vous devez vous connecter"
+
+#: index.php:240
+msgid "Reload the page with default parameters"
+msgstr "Recharger la page avec les paramètres par défaut"
+
+#: index.php:250
+msgid "Click to refresh or press the R key"
+msgstr "Cliquez pour rafraichir ou appuyez sur la touche R"
+
+#: index.php:263 index.php:314
+msgid "Select a log file to display"
+msgstr "Sélectionnez un fichier de log à afficher"
+
+#: index.php:275 index.php:286
+#, php-format
+msgid "Log file #%s defined in %s"
+msgstr "Fichier de log #%s défini dans %s"
+
+#: index.php:275 index.php:286
+#, php-format
+msgid "Log file #%s defined in main configuration file"
+msgstr "Fichier de log #%s défini dans le fichier de configuration principal"
+
+#: index.php:354
+msgid "Search in logs"
+msgstr "Recherche"
+
+#: index.php:358
+msgid "Select a duration to check for new logs automatically"
+msgstr "Sélectionner une durée pour chercher de nouveaux logs automatiquement"
+
+#: index.php:359
+msgid "No refresh"
+msgstr "Pas de rechargement"
+
+#: index.php:362
+#, php-format
+msgid "Refresh %ss"
+msgstr "Recharge %ss"
+
+#: index.php:369
+msgid "Max count of logs to display"
+msgstr "Nombre maximal de lignes à afficher"
+
+#: index.php:372
+#, php-format
+msgid "%s logs"
+msgstr "%s logs"
+
+#: index.php:372
+#, php-format
+msgid "%s log"
+msgstr "%s log"
+
+#: index.php:379
+msgid "Desktop notifications on supported modern browsers"
+msgstr "Notifications de bureau pour les navigateurs récents"
+
+#: index.php:381
+msgid "Notifications"
+msgstr "Notifications"
+
+#: index.php:392 index.php:396
+msgid "Displayed columns"
+msgstr "Colonnes affichées"
+
+#: index.php:404
+msgid "Settings"
+msgstr "Paramètres"
+
+#: index.php:410
+msgid "Wide view"
+msgstr "Vue élargie"
+
+#: index.php:411
+msgid "on"
+msgstr "oui"
+
+#: index.php:412
+msgid "off"
+msgstr "non"
+
+#: index.php:417
+msgid "Click on a date field to mark a row"
+msgstr "Cliquer sur une date pour marquer une ligne"
+
+#: index.php:418
+msgid "Clear markers"
+msgstr "Effacer les marqueurs"
+
+#: index.php:423
+msgid "Language"
+msgstr "Langue"
+
+#: index.php:425
+msgid "Change language..."
+msgstr "Choisir une langue"
+
+#: index.php:434
+msgid "Language cannot be changed"
+msgstr "La langue ne peut pas être changée"
+
+#: index.php:440
+msgid "Timezone"
+msgstr "Fuseau horaire"
+
+#: index.php:441
+msgid "Change timezone..."
+msgstr "Changer fuseau horaire"
+
+#: index.php:458 index.php:645
+#, php-format
+msgid "You are currently connected as %s"
+msgstr "Vous êtes actuellement connecté en tant que %s"
+
+#: index.php:460
+msgid "User settings"
+msgstr "Paramètres utilisateur"
+
+#: index.php:464
+msgid "Click here to manager users"
+msgstr "Cliquez ici pour gérer les utilisateurs"
+
+#: index.php:464
+msgid "Manage users"
+msgstr "Gérer les utilisateurs"
+
+#: index.php:466
+msgid "Click here to view your profile"
+msgstr "Cliquez ici pour voir votre profil"
+
+#: index.php:466 index.php:685
+msgid "Profile"
+msgstr "Profil"
+
+#: index.php:467
+msgid "Click here to change your password"
+msgstr "Cliquez ici pour changer votre mot de passe"
+
+#: index.php:467 index.php:638
+msgid "Change password"
+msgstr "Mot de passe"
+
+#: index.php:468
+msgid "Click here to sign out"
+msgstr "Cliquez ici pour vous déconnecter"
+
+#: index.php:494
+#, php-format
+msgid "Welcome in version %s"
+msgstr "Bienvenue en version %s"
+
+#: index.php:499
+#, php-format
+msgid ""
+"The changelog and all informations about this version are available on the "
+"%sblog%s."
+msgstr ""
+"Toutes les informations à propos de cette version sont disponibles sur le "
+"%sblog%s."
+
+#: index.php:528 index.php:548
+msgid "No more data"
+msgstr "Pas plus de données"
+
+#: index.php:528 index.php:548
+msgid "Load more"
+msgstr "Plus de logs"
+
+#: index.php:533 index.php:574
+msgid "Export"
+msgstr "Exporter"
+
+#: index.php:535
+msgid "ATOM"
+msgstr "ATOM"
+
+#: index.php:536
+msgid "CSV"
+msgstr "CSV"
+
+#: index.php:537
+msgid "JSON"
+msgstr "JSON"
+
+#: index.php:538
+msgid "JSONP (with callback)"
+msgstr "JSONP (avec callback)"
+
+#: index.php:539
+msgid "JSON Pretty Print"
+msgstr "JSON Affichage humain"
+
+#: index.php:540
+msgid "RSS"
+msgstr "RSS"
+
+#: index.php:541
+msgid "XML"
+msgstr "XML"
+
+#: index.php:563
+msgid "Change log"
+msgstr "Changements"
+
+#: index.php:573 index.php:609 index.php:619 index.php:624 index.php:637
+#: index.php:671 index.php:684 index.php:692 index.php:707 index.php:723
+#: index.php:847 index.php:856
+msgid "Close"
+msgstr "Fermer"
+
+#: index.php:577
+msgid "Webservice URL"
+msgstr "Adresse web service"
+
+#: index.php:578
+msgid ""
+"Your URL seems to be local so it won't be reachable by external browsers and "
+"services"
+msgstr ""
+"L'URL semble être une adresse locale. Elle risque de ne pas être joignable "
+"par des services externes"
+
+#: index.php:582
+msgid "Open"
+msgstr "Ouvrir"
+
+#: index.php:586
+msgid "Feel free to change these parameters in the URL:"
+msgstr "Vous pouvez changer librement les paramètres suivants dans l'adresse :"
+
+#: index.php:588
+msgid "language"
+msgstr "langue"
+
+#: index.php:589
+msgid "timezone to convert dates"
+msgstr "fuseau horaire pour convertir les dates"
+
+#: index.php:590
+msgid "available formats are CSV, JSON, JSONPR and XML"
+msgstr "les formats disponibles sont CSV, JSON, JSONPR et XML"
+
+#: index.php:591
+msgid "the maximum count of returned log lines"
+msgstr "le nombre maximal de logs voulus"
+
+#: index.php:592
+msgid ""
+"the timeout in seconds to return log lines. Increase this value for big "
+"counts or when using search"
+msgstr ""
+"le temps maximal pour retourner les logs. Augmentez cette valeur si vous "
+"affichez beaucoup de lignes en retour ou si vous utilisez la recherche"
+
+#: index.php:593
+msgid ""
+"search this value in log lines. It can be a regular expression or a regex one"
+msgstr ""
+"expression à rechercher dans les loges. L'expression peut aussi être une "
+"expression régulière"
+
+#: index.php:594
+msgid ""
+"this field is optional and is used to specify a callback function when "
+"format is JSONP"
+msgstr ""
+"ce paramètre est optionnel et sert à préciser le nom de la fonction de "
+"callback quand vous utilisez le format JSONP"
+
+#: index.php:600
+msgid "Current result"
+msgstr "Résultat actuel"
+
+#: index.php:604
+msgid "Refresh"
+msgstr "Rafraichir"
+
+#: index.php:620
+msgid "Change Log"
+msgstr "Changements"
+
+#: index.php:651
+msgid "Current password"
+msgstr "Mot de passe actuel"
+
+#: index.php:658
+msgid "New password"
+msgstr "Nouveau mot de passe"
+
+#: index.php:665
+msgid "New password confirmation"
+msgstr "Confirmation du nouveau mot de passe"
+
+#: index.php:672 index.php:693 index.php:833 index.php:848
+msgid "Saving..."
+msgstr "Enregistrement..."
+
+#: index.php:672 index.php:693 index.php:833 index.php:848
+msgid "Save"
+msgstr "Enregistrer"
+
+#: index.php:710
+msgid "Anonymous access"
+msgstr "Accès anonyme"
+
+#: index.php:711
+msgid "History"
+msgstr "Historique"
+
+#: index.php:732 index.php:831
+msgid "« Back"
+msgstr "« Retour"
+
+#: index.php:733
+msgid "Edit"
+msgstr "Modifier"
+
+#: index.php:766
+msgid "Leave password fields blank if you don't want to change it"
+msgstr "Laisser les champs de mot de passe vide pour ne pas les changer"
+
+#: index.php:777
+msgid "Admin"
+msgstr "Admin"
+
+#: index.php:786
+msgid "Select which log files user can view"
+msgstr "Sélectionnez les fichiers de logs que l'utilisateur peut voir"
+
+#: index.php:832
+msgid "Cancel"
+msgstr "Annuler"
+
+#~ msgid ""
+#~ "<a href=\"http://pimpmylog.com/getting-started/#update\" target=\"doc\" "
+#~ "class=\"alert-link\">Follow upgrade instructions here</a>"
+#~ msgstr ""
+#~ "<a href=\"http://pimpmylog.com/getting-started/#update\" target=\"doc\" "
+#~ "class=\"alert-link\">Suivez les instructions ici</a>"
+
+#~ msgid ""
+#~ "Your git installation cannot be upgraded automatically because of %sthese "
+#~ "problems%s."
+#~ msgstr ""
+#~ "Votre installation ne pas être automatiquement mise à jour avec git à "
+#~ "cause de %sces problèmes%s."
+
+#~ msgid "You can call the following URL:"
+#~ msgstr "Vous pouvez appeler cette adresse :"
+
+#~ msgid "Refreshing..."
+#~ msgstr "Chargement..."
+
+#~ msgid "Pimp my Log has been successfully configured with Apache"
+#~ msgstr "Pimp my Log a bien été configuré pour Apache"
+
+#~ msgid "Back"
+#~ msgstr "« Retour"
+
+#~ msgid "Command has been copied to your clipboard!"
+#~ msgstr "La commande a été copiée dans votre presse-papier !"
+
+#~ msgid "Don't forget to remove this temporary file when you have finished..."
+#~ msgstr ""
+#~ "N'oubliez pas de supprimer le fichier temporaire quand vous avez fini..."
+
+#~ msgid ""
+#~ "Please touch file <code>inc/test.REMOVE_UPPERCASE.php</code> and reload "
+#~ "this page"
+#~ msgstr ""
+#~ "Créez le fichier <code>inc/test.REMOVE_UPPERCASE.php</code> et rechargez "
+#~ "cette page"
+
+#~ msgid "Don't bother me again with this upgrade!"
+#~ msgstr "Ne plus me déranger avec cette mise à jour !"
+
+#~ msgid ""
+#~ "%s in <code>%sms</code> with <code>%s</code> of logs, <code>%s</code> "
+#~ "skipped line(s), <code>%s</code> unreadable line(s).<br/>File <code>%s</"
+#~ "code> was last modified on <code>%s</code>, size is <code>%s</code>%s"
+#~ msgstr ""
+#~ "%s en <code>%sms</code> avec <code>%s</code> de logs, <code>%s</code> "
+#~ "ligne(s) ignorée(s), <code>%s</code> ligne(s) illisible(s).<br/>Le "
+#~ "fichier <code>%s</code> a été modifié le <code>%s</code>, sa taille est "
+#~ "<code>%s</code>%s"
+
+#~ msgid ""
+#~ "Please copy <code>inc/test.php</code> to <code>inc/test.REMOVE_UPPERCASE."
+#~ "php</code> and load <code>inc/test.REMOVE_UPPERCASE.php</code> in your "
+#~ "browser"
+#~ msgstr ""
+#~ "Pour des raisons de sécurité, renommez <code>inc/test.php</code> en "
+#~ "<code>inc/test.REMOVE_UPPERCASE.php</code> et chargez <code>inc/test."
+#~ "REMOVE_UPPERCASE.php</code> dans votre navigateur"
+
+#~ msgid "Please give temporary write access to the root directory :"
+#~ msgstr ""
+#~ "Merci de donner temporairement l'accès en écriture au répertoire racine :"
+
+#~ msgid ""
+#~ "You can also type log files path in the text area below separated by "
+#~ "coma :"
+#~ msgstr ""
+#~ "Vous pouvez aussi renseigner le chemin de fichiers de log dans les zones "
+#~ "de texte si dessous en les séparant par des virgules :"
+
+#~ msgid "File <code>"
+#~ msgstr "fichier <code>"
+
+#~ msgid ""
+#~ "This site is not configured. Please create a config.inc.php file at root "
+#~ "directory."
+#~ msgstr ""
+#~ "This site is not configured. Please create a config.inc.php file at root "
+#~ "directory."
+
+#~ msgid "Hello"
+#~ msgstr "Bonjour"

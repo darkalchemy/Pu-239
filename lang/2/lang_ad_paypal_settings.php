@@ -23,7 +23,7 @@ $lang = array(
 	'paypal_freelech' => " - Freeleech status duration in weeks",
 	'paypal_amount_gb' => " - Amount of GB to add Per &#163;:",
 	'paypal_amount_karma' => " - Amount of Karma points to add Per &#163;:",
-        'paypal_amount_invite' => " - Amount of invites to add Per &#163;:",
+    'paypal_amount_invite' => " - Amount of invites to add Per &#163;:",
 	'paypal_donor_until' => " - Donor until duration in weeks",
 	'paypal_immunity' => " - Immunity duration in weeks",
 	'paypal_array_one' => "Array one",
@@ -32,6 +32,6 @@ $lang = array(
 	'paypal_array_four' => "Array four",
 	'paypal_array_five' => "Array five",
 	'paypal_array_six' => "Array six",
-	'paypal_stdhead' => "PayPal Settings"	
+	'paypal_stdhead' => "PayPal Settings"
 );
-?>
+

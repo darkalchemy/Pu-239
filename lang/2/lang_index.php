@@ -29,6 +29,7 @@ $lang = array(
     'index_u-232_git' => "U-232 Repo",
     'index_serverscene' => "Server Scene",
     'index_birthday' => "Members birthdays",
+    'index_trivia' => "Trivia Game",
     //News
     'news_title' => "Recent News",
     'news_link' => "News Page",
@@ -171,4 +172,4 @@ It is your own responsibility to adhere to these terms.",
 	//torrent freak
 	'index_torr_freak' => " Torrent Freak News"
 );
-?>
+

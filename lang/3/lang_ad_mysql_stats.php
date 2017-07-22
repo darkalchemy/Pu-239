@@ -29,4 +29,3 @@ $lang = array(
 	'mysql_stats_value' => "&nbsp;Valoare&nbsp;",
 	'mysql_stats_stdhead' => "Previzualizare Statistici Server Mysql"
 );
-?>

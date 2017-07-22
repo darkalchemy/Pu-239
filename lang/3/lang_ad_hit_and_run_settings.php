@@ -33,4 +33,4 @@
 	'hnr_settings_apply' => "Aplică schimbări",
 	'hnr_settings_stdhead' => "Setări Hit & Run"
 );
-?>
+

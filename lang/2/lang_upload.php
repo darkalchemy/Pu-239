@@ -37,4 +37,4 @@ $lang = array(
     'upload_tag_info' => "Multiple tags must be seperated by a comma like tag1,tag2",
     'upload_bitbucket_1' => '(Note* the upload is handled by the bitbucket and the image will be hosted on the server)'
 );
-?>
+

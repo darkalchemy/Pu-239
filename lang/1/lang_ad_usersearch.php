@@ -90,4 +90,3 @@ $lang = array(
 	    respectively, as well as linking to the history page.\n
 	    </div></td></tr></table><br /><br />\n"
 );
-?>

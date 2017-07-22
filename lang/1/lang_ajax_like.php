@@ -6,4 +6,3 @@ $lang = array(
     'ajlike_you_already_unliked' => "You have already unliked",
     'ajlike_get_lost' => "GET LOST"
 );
-?>

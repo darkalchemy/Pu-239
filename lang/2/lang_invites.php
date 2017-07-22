@@ -91,4 +91,4 @@ $lang = array(
     'invites_confirm_error' => "Error",
     'invites_confirm_invalid' => "Invalid action - contact staff"
 );
-?>
+

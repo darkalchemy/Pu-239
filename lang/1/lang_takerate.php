@@ -10,4 +10,3 @@ $lang = array(
     'rate_not_vote_own_torrent' => "You can't vote on your own torrents.",
     'rate_already_voted' => "You have already rated this torrent.",
 );
-?>

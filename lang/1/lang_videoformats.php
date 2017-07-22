@@ -75,4 +75,3 @@ $lang = array(
 	//
     'videoformats_header' => "Video Formats"
 );
-?>

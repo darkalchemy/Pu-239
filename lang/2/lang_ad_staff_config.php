@@ -6,4 +6,4 @@ $lang = array(
 	'staffcfg_updated' => "Both staff configuration files were updated",
 	'staffcfg_stdhead' => "Staff Config"
 );
-?>
+

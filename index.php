@@ -77,6 +77,13 @@ $HTMLOUT .="<div class='portlet' id='SHOUTBOX'>";
 $HTMLOUT .="</div>";
 	}
 
+    // temporary index name
+    if (curuser::$blocks['index_page'] & block_index::SHOUTBOX && $BLOCKS['shoutbox_on']) {
+$HTMLOUT .="<div class='portlet' id='TRIVIA'>";
+        require_once (BLOCK_DIR . 'index/trivia.php');
+$HTMLOUT .="</div>";
+    }
+
 	if (curuser::$blocks['index_page'] & block_index::NEWS && $BLOCKS['news_on']) {
 $HTMLOUT .="<div class='portlet' id='NEWS'>";
  	require_once (BLOCK_DIR . 'index/news.php');

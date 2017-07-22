@@ -117,4 +117,3 @@ $lang = array(
 	'bonusmanager_doit' => "Do it",
 	'bonusmanager_stdhead' => "Mass Bonus For Members",
 );
-?>

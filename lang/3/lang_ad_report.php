@@ -33,4 +33,4 @@ $lang = array(
 	'reports_confirm' => "Confirma",
 	'reports_stdhead' => "Rapooarte active"
 );
-?>
+

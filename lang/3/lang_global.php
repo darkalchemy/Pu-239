@@ -36,6 +36,8 @@ $lang = array(
     'gl_casino' => "Casino",
     'gl_bjack' => "Blackjack",
     'gl_arcade' => "Arcade",
+    'gl_trivia' => "Trivia",
+    'gl_lottery' => "Lottery",
     'gl_breport' => "Raporteaz&#259; Bug",
     'gl_brespond' => "R&#259;spunde la Bug",
     'gl_cstaff' => "Contacteaz&#259; personal",
@@ -196,6 +198,6 @@ $lang = array(
 	//conectable statusbar
 	'gl_connectable' => "Conectabil",
 	'gl_not_connectable' => "Neconectabil",
-	'gl_na_connectable' => "N/A"	
+	'gl_na_connectable' => "N/A"
 );
-?>
+

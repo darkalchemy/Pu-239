@@ -15,4 +15,4 @@ $lang = array(
     'pr_lys' => 'Description',
     'pr_kaupa' => 'Buy'
 );
-?>
+

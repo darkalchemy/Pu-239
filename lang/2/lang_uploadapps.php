@@ -65,4 +65,4 @@ $lang = array(
 	'uploadapps_deletedsuc' => "The upload applications were succesfully deleted.",
 	'uploadapps_stdhead' => "Uploader application page"
 );
-?>
+

@@ -42,4 +42,3 @@ $lang = array(
     'arcade_games_played' => "games played",
     'arcade_playing' => "playing"
 );
-?>

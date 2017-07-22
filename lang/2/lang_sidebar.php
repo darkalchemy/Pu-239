@@ -85,4 +85,4 @@ $lang = array(
     'sidebar_latest' => "Latest",
     'sidebar_latest1' => "Latest Torrents<br />with Posters",
 );
-?>
+

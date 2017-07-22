@@ -31,4 +31,4 @@ $lang = array(
 	//'iphistory_justwipe' => " tocmai a curatat IP-ul : ",
 	//'iphistory_from' => " de la Istoria IP al utilizatorului (<a href='/userdetails.php?id=$id'><b>$username2</b></a>)"
 );
-?>
+

@@ -117,4 +117,4 @@ $lang = array(
 	'bonusmanager_doit' => "Executa",
 	'bonusmanager_stdhead' => "Bonus in masa pentru membrii",
 );
-?>
+

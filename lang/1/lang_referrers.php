@@ -20,4 +20,4 @@ $lang = array(
 	'ref_unknow' => "Unknow Browser",
 	'ref_stdhead' => "Referrers"
 );
-?>
+

@@ -33,4 +33,4 @@
 	'hnr_settings_apply' => "Apply changes",
 	'hnr_settings_stdhead' => "Hit And Run Settings"
 );
-?>
+

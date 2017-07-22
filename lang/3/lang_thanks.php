@@ -4,4 +4,4 @@ $lang = array(
     'thanks_say' => 'Thanks!',
     'thanks_error' => 'There was an error with the query, contact the staff. Mysql Error: %s',
 );
-?>
+

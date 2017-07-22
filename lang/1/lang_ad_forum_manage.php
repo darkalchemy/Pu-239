@@ -39,4 +39,3 @@
 	'fm_mp_confirm' =>  "Are you sure you want to delete this forum?",
 	'fm_stdhead'    =>  "Forum Management Tools"
 );
-?>

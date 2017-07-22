@@ -8,4 +8,4 @@ $lang = array(
 	'text_font' => " font",
 	'text_stdhead' => "View Nfo"
 );
-?>
+

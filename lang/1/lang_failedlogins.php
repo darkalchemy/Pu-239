@@ -27,4 +27,3 @@ $lang = array(
 	'failed_main_search_btn' => "Search",
 	'failed_main_id' => "ID"
 );
-?>

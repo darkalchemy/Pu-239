@@ -44,4 +44,3 @@ $lang = array (
 	'events_save' => "Save Changes",
 	'events_stdhead' => "Events"
 	);
-?>

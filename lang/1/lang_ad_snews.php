@@ -24,4 +24,3 @@ $lang = array(
     'text_body1' => "There is no Body",
     'text_some' => "Something went wrong!",
 );
-?>

@@ -27,7 +27,7 @@
 // page verify by retro
 class page_verify
 {
-    function page_verify()
+    function __construct()
     {
         if (session_id() == '') {
             session_start();

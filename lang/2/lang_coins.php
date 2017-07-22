@@ -12,4 +12,4 @@ $lang = array(
     'coins_done' => "Done",
     'coins_successfully_gave_points_to_this_torrent' => "Successfully gave points to this torrent."
 );
-?>
+

@@ -6,4 +6,4 @@ $lang = array(
 	'staffcfg_updated' => "Ambele fisiere de configurare al staff-ului pe site au fost actualizate.",
 	'staffcfg_stdhead' => "Configurare Staff"
 );
-?>
+

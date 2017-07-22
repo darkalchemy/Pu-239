@@ -10,4 +10,4 @@ $lang = array(
 	'upinfo_sendpm' => "Trimite PM",
 	'upinfo_pm' => "Mesaj Privat"
 );
-?>
+

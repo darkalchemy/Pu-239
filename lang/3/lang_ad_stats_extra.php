@@ -67,4 +67,4 @@ $lang = array(
 	'stats_ex_menutorr' => "Statistici Torente",
 	'stats_ex_menurep' => "Statistici Reputatii"
 );
-?>
+

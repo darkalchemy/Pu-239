@@ -31,4 +31,4 @@ $lang = array(
     'browse_search_btn' => "Search",
     'clear_new_btn' => "Clear new tag!",
 );
-?>
+

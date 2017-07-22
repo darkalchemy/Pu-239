@@ -172,4 +172,3 @@ Open them with <a href='http://www.pbclements.co.uk/QuickPar/'>QuickPar</a>.
 <br />
 This file was originally written by hussdiesel at filesoup, then edited by Rhomboid and re-edited by us.<br />",
 );
-?>

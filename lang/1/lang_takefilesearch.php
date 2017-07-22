@@ -6,4 +6,3 @@ $lang = array(
     'tfilesearch_error' => "Error",
     'tfilesearch_nothing' => "Nothing Found.",
 );
-?>

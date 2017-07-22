@@ -27,4 +27,4 @@ $lang = array(
 	'non_con_note' => "NOTE: No HTML Code Allowed. (NO HTML)",
 	'non_con_stdhead' => "Find Not Connectable" 
 );
-?>
+

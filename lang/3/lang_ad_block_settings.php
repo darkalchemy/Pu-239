@@ -144,4 +144,3 @@ $lang = array(
 	'block_redir1' => "Redirectionare",
 	'block_click_redir' => "Clic aici dac&#259; nu sunteti redirectionat...",
 );
-?>

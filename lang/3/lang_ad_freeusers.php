@@ -21,4 +21,3 @@ $lang = array(
     'freeusers_togo'    =>  " a mai rămas",
     'freeusers_stdhead' =>  "Utilizatori Freeleech"  
 );
-?>

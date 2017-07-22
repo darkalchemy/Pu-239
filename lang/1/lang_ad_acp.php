@@ -27,4 +27,4 @@ $lang = array(
 	'text_warned' => "Warned",
 	'text_stdhead' => "Account Manage"
 );
-?>
+

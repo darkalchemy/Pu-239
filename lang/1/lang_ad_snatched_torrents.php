@@ -24,4 +24,3 @@ $lang = array(
 	'ad_snatched_torrents_no' => "No",
 	'ad_snatched_torrents_stdhead' => "Snatched Torrents Overview"
 );
-?>

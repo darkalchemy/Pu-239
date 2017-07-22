@@ -37,4 +37,4 @@ you. Treat them accordingly. (Languages listed are those besides English.)",
     'first_lang' => "Language",
     'first_contact' => "Contact"
 );
-?>
+

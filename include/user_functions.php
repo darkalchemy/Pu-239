@@ -324,7 +324,7 @@ function format_username($user, $icons = true)
         $str.= ($user['pirate'] != 0 ? '<img src="' . $INSTALLER09['pic_base_url'] . 'pirate.png" alt="Pirate" title="Pirate" />' : '');
         $str.= ($user['king'] != 0 ? '<img src="' . $INSTALLER09['pic_base_url'] . 'king.png" alt="King" title="King" />' : '');
     }
-    $str.= "</span>\n";
+    $str.= "</span>";
     return $str;
 }
 function is_valid_id($id)

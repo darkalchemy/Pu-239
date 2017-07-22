@@ -22,4 +22,4 @@ $lang = array(
     //stdhead
     'achievement_history_stdhead' => 'Istorie Realiz&#259;ri'
 );
-?>
+

@@ -53,10 +53,10 @@ $lang = array(
 	'usersearch_pUL' => 'pUL (MB)',
 	'usersearch_pDL' => 'pDL(MB)',
 	//select area
-	'usersearch_equal' => 'equal',     
-	'usersearch_above' => 'above',     
-	'usersearch_below' => 'below', 
-	'usersearch_between' => 'between', 
+	'usersearch_equal' => 'equal',
+	'usersearch_above' => 'above',
+	'usersearch_below' => 'below',
+	'usersearch_between' => 'between',
 	'usersearch_any' => "(any)",
 	'usersearch_confirmed' => "confirmed",
 	'usersearch_pending' => "pending",
@@ -90,4 +90,4 @@ $lang = array(
 	    respectively, as well as linking to the history page.\n
 	    </div></td></tr></table><br /><br />\n"
 );
-?>
+

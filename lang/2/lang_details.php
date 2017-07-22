@@ -83,4 +83,4 @@ $lang = array(
     'details_info_pre' => 'Pretime Info',
     'details_thumbs' => "Thumbs Up"
 );
-?>
+

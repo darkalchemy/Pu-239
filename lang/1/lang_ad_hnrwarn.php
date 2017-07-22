@@ -37,4 +37,3 @@ $lang = array(
     'hnrwarn_delete'    =>  "Delete",
     'hnrwarn_apply'     =>  "Apply"
 );
-?>

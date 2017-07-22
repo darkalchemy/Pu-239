@@ -27,4 +27,4 @@ $lang = array(
 	'text_warned' => "Avertizat",
 	'text_stdhead' => "Administrare conturi"
 );
-?>
+

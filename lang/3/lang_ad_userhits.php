@@ -10,4 +10,3 @@ $lang = array(
 	'userhits_username' => "Utilizator",
 	'userhits_viewed' => "Vizualizat la"
 );
-?>

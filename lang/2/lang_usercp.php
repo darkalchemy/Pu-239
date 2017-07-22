@@ -95,4 +95,4 @@ $lang = array(
     //usercp stdhead
     'usercp_stdhead' => '\'s private page'
 );
-?>
+

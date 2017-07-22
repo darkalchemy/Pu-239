@@ -23,4 +23,4 @@ $lang = array(
 'text_submit' => 'Submit!',
 'text_results' => 'Search Results for ',
 );
-?>
+

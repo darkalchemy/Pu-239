@@ -16,4 +16,3 @@ $lang = array(
     'client_clearban_stderr1' => 'Error',
     'client_clearban_msg4' => 'No clients are banned at the moment'
 )
-?>

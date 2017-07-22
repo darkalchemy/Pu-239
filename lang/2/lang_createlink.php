@@ -11,4 +11,4 @@ $lang = array(
     'createlink_your_login_link_was_reset_successfully' => "Your login link was reset successfully.",
     'createlink_you_have_already_created_your_login_link' => "You have already created your login link."
 );
-?>
+

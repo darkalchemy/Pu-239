@@ -24,4 +24,4 @@ $lang = array(
     'email_ip' => " Your IP-address will be logged and visible to the recipient to prevent abuse.",
     'email_valid' => "Make sure to supply a valid e-mail address if you expect a reply.",
 );
-?>
+

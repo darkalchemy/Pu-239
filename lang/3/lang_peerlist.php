@@ -31,4 +31,4 @@ $lang = array(
     //stdhead
     'peerslist_stdhead' => "Details"
 );
-?>
+

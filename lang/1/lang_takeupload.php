@@ -37,4 +37,4 @@ $lang = array(
     'takeupload_no_youtube' => "youtube link is not correct or is not present!",
     'takeupload_bucket_noimg' => "You forgot about the images!"
 );
-?>
+

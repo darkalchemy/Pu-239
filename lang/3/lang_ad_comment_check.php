@@ -12,4 +12,4 @@ $lang = array(
 	'comm_check_read' => "Marcheaza ca verificat",
 	'comm_check_stdhead' => "Verifica comentarii"
 );
-?>
+

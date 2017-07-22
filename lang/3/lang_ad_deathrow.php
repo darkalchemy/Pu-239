@@ -39,6 +39,6 @@ $lang = array(
 	'deathrow_msg8' => " You can go about your business.",
 	'deathrow_msg9' => " Mergi mai departe.",
 	'deathrow_msg0' => " Mergi mai departe... avanseaza.",
-	'deathrow_stdhead0' => "0 Torente on deathrow"	
+	'deathrow_stdhead0' => "0 Torente on deathrow"
 );
-?>
+

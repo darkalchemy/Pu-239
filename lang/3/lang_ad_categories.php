@@ -59,4 +59,4 @@ $lang = array(
 	'categories_show_move2'  =>  "Mut&#259; categoria",
 	'categories_show_stdhead'   =>  "Administrare Categorii"
 );
-?>
+

@@ -19,4 +19,3 @@ $lang = array(
     'snatches_anon' => "Kezer Soze",
     'snatches_unknown' => "Unknown"
 );
-?>

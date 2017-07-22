@@ -24,4 +24,3 @@ $lang = array(
 	'ad_snatched_torrents_no' => "Nu",
 	'ad_snatched_torrents_stdhead' => "Previzualizare torrente luate"
 );
-?>

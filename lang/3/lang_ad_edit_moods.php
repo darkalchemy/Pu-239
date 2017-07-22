@@ -18,4 +18,3 @@ $lang = array(
 	'moods_no' => "Nu",
 	'moods_stdhead' => "Editare Dispozitii"
 );
-?>

@@ -6,4 +6,3 @@ $lang = array(
     'chat_network' => "network.",
     'chat_chat' => "Chat",
 );
-?>

@@ -12,4 +12,4 @@ $lang = array(
     'editlog_no_deleted' => "No files deleted since last check.",
     'editlog_update' => "Update"
 );
-?>
+

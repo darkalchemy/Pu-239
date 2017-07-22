@@ -34,4 +34,4 @@ $lang = array(
 	'paypal_array_six' => "Array six",
 	'paypal_stdhead' => "PayPal Settings"	
 );
-?>
+

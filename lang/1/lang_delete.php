@@ -30,4 +30,3 @@ $lang = array(
     'delete_username' => "User Name",
     'delete_delete' => "Delete",
 );
-?>

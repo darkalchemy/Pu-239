@@ -16,4 +16,3 @@ $lang = array(
 	'users_username' => "Nume de utilizator",
 	'users_donor' => "Donator"
 );
-?>

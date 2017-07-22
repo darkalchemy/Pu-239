@@ -39,4 +39,4 @@ $lang = array(
 	'shitlist_find'     =>  "Find Member / Browse Member List",
 	'shitlist_stdhead' => "Shit list for "
 );
-?>
+

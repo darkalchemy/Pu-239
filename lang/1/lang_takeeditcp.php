@@ -31,6 +31,7 @@ $lang = array(
 	'takeeditcp_birth_day' => "Please set your birth day.",
 	'takeeditcp_birth_not' => "The date entered is not a valid date, please try again",
 );
+
 $lang['takeeditcp_email_body'] = <<<EOD
 You have requested that your user profile (username <#USERNAME#>)
 on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as
@@ -47,4 +48,3 @@ Your new email address will appear in your profile after you do this. Otherwise
 your profile will remain unchanged.
 EOD;
 
-?>

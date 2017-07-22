@@ -42,4 +42,3 @@ $lang = array(
 	'repset_redirecting' => "Redirecting",
 	'repset_clickredirect' => "Click here if not redirected..."
 )
-?>

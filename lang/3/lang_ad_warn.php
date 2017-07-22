@@ -40,4 +40,4 @@ $lang = array(
 	'warn_disable' => "Dezactiveaza",
 	'warn_delete' => "Sterge",
 );
-?>
+

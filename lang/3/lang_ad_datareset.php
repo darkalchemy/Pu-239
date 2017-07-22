@@ -20,4 +20,3 @@ $lang = array(
 	'datareset_repay' => "Executa!",
 	'datareset_stdhead' => "Administrare Resetare Date"	
 );
-?>

@@ -12,4 +12,4 @@ $lang = array(
     'getrss_head' => 'Rss Feed',
     'getrss_head2' => 'Generated Feed',
 );
-?>
+

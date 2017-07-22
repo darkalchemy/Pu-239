@@ -35,4 +35,4 @@ $lang = array(
 	'invite_search_none'    =>  "Sorry, no member was found",
 	'invite_stdhead'    =>  "Invite Tree"
 );
-?>
+

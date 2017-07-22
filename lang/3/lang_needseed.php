@@ -13,4 +13,4 @@ $lang = array(
     'needseed_leech' => "Leechers",
     'needseed_noseed' => "There is no torrents needing seeds right now."
 );
-?>
+

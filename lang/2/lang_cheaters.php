@@ -25,4 +25,4 @@ $lang = array(
 	'cheaters_users' => "Cheating Users:",
 	'cheaters_stdhead' => "Ratio Cheats'"
 );
-?>
+

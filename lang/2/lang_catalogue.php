@@ -24,4 +24,4 @@ $lang = array(
     'catol_nothing_found' => "Nothing found",
     'catol_orig_created_by' => "Original By EnzoF1 recoded by Putyn"
 );
-?>
+

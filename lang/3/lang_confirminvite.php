@@ -23,4 +23,4 @@ $lang = array(
     'confirminvites_verifyage' => "I am at least 13 years old.",
     'confirminvites_signup' => "Sign up! (PRESS ONLY ONCE)",
 );
-?>
+

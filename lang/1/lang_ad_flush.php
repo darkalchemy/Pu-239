@@ -14,4 +14,3 @@ $lang = array(
     'flush_fail2'   =>  "Your not a member of staff."
  
 );
-?>

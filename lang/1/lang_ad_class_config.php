@@ -29,4 +29,3 @@ $lang = array(
 	'classcfg_stdhead' => "User Settings",
 	'classcfg_' => ""
 	);
-?>

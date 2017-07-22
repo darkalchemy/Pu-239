@@ -15,6 +15,7 @@ $lang = array(
     'takeinvites_confirm' => "New membership request",
     'takeinvites_from' => "From:"
 );
+
 $lang['takeinvites_email_body'] = <<<EOD
 
 You have been invited to <#SITENAME#> by <#INVITENICK#>. They have
@@ -39,4 +40,3 @@ do this, your account will be deleted within a few days. We urge you to read
 the RULES and FAQ before you start using <#SITENAME#>.
 EOD;
 
-?>

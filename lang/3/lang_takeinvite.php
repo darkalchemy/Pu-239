@@ -39,4 +39,3 @@ do this, your account will be deleted within a few days. We urge you to read
 the RULES and FAQ before you start using <#SITENAME#>.
 EOD;
 
-?>

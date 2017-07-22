@@ -290,4 +290,4 @@ $lang = array(
 	'pm_viewmsg_from' => "De la",
 	'pm_viewmsg_sys' => "System"
 );
-?>
+

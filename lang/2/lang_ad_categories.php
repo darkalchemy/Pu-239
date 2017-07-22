@@ -57,4 +57,4 @@ $lang = array(
 	'categories_show_move2'  =>  "Move Category",
 	'categories_show_stdhead'   =>  "Admin Categories"
 );
-?>
+

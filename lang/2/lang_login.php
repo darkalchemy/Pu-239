@@ -33,4 +33,4 @@ $lang = array(
     'login_closed' => "Signup is closed",
     'login_closed1' => "Signup is closed, you need an invite",
 );
-?>
+

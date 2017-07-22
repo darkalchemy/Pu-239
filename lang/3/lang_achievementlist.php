@@ -12,4 +12,4 @@ $lang = array(
     'achlst_achievicon' => "AchievIcon",
     'achlst_add_me' => "Add Me"
 );
-?>
+

@@ -17,4 +17,3 @@ $lang = array(
 	'namechanger_change_name' => "Change Name!",
 	'namechanger_stdhead' => "Username Changer"
 );
-?>

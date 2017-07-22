@@ -64,4 +64,4 @@ $lang = array(
 	'index_load_numproc' => 'Numarul de procese care ruleaza in prezent: ',
 	'index_load_pid' => ' PID al ultimului proces executat: '
 );
-?>
+

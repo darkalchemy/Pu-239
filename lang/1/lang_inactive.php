@@ -42,4 +42,3 @@ $lang = array(
     'inactive_sent' => "sent !",
     'inactive_noaccounts' => "No account inactive for longer than"
 );
-?>

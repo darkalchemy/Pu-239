@@ -931,4 +931,4 @@ $lang = array(
     <li>And needless to say: be polite. Demanding help rarely works, asking for it usually does
     the trick.</li>",
 );
-?>
+

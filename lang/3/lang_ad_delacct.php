@@ -19,4 +19,4 @@ $lang = array(
     'table_username' => "Nume Utilizator",
     'table_password' => "Parola"
 );
-?>
+

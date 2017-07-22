@@ -8,4 +8,3 @@ $lang = array(
     'annouce_nothing_here' => "Nothing here",
     'annouce_cur_no_new_ann' => "Currently no new announcements"
 );
-?>

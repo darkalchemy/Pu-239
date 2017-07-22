@@ -35,4 +35,3 @@ $lang = array(
     'log_edited'    =>  "was edited by"
    
 );
-?>

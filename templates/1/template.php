@@ -29,7 +29,7 @@ function stdhead($title = "", $msgalert = true, $stdhead = false)
         $INSTALLER09['language'] = isset($CURUSER['language']) ? "{$CURUSER['language']}" : $INSTALLER09['language'];
     }
     /** ZZZZZZZZZZZZZZZZZZZZZZZZZZip it! */
-    if (!isset($_NO_COMPRESS)) if (!ob_start('ob_gzhandler')) ob_start();
+    //if (!isset($_NO_COMPRESS)) if (!ob_start('ob_gzhandler')) ob_start();
     //== Include js files needed only for the page being used by pdq
     $js_incl = '';
     $js_incl.= '<!-- javascript goes here or in footer -->';
@@ -164,8 +164,8 @@ function stdhead($title = "", $msgalert = true, $stdhead = false)
 		</li>
 		<li><a href='#'>{$lang['gl_games']}</a>
 		<ul class='sub-menu'>
-                    " . (isset($CURUSER) && $CURUSER['class'] >= UC_POWER_USER ? "<li><a href='" . $INSTALLER09['baseurl'] . "/casino.php'>{$lang['gl_casino']}</a></li>" : "") . "
-                    " . (isset($CURUSER) && $CURUSER['class'] >= UC_POWER_USER ? "<li><a href='" . $INSTALLER09['baseurl'] . "/blackjack.php'>{$lang['gl_bjack']}</a></li>" : "") . "
+                    " . (isset($CURUSER) && $CURUSER['class'] >= UC_POWER_USER ? "<li><a href='" . $INSTALLER09['baseurl'] . "/games.php'>{$lang['gl_games']}</a></li>" : "") . "
+                    <li><a href='" . $INSTALLER09['baseurl'] . "/lottery.php'>{$lang['gl_lottery']}</a></li>
                     </ul><!--/ .sub-menu-->
 		</li>
 		    <li><a href='" . $INSTALLER09['baseurl'] . "/donate.php'>{$lang['gl_donate']}</a></li>
@@ -377,7 +377,9 @@ function stdfoot($stdfoot = false)
         preg_match('/load average: (.*)$/i', $uptime, $load);
     }
     $header = '';
-    $header = '<b>' . $lang['gl_stdfoot_querys_mstat'] . '</b> ' . mksize(memory_get_peak_usage()) . ' ' . $lang['gl_stdfoot_querys_mstat1'] . ' ' . round($phptime, 2) . 's | ' . round($percentmc, 2) . '' . $lang['gl_stdfoot_querys_mstat2'] . '' . number_format($cachetime, 5) . 's ' . $lang['gl_stdfoot_querys_mstat3'] . '' . $MemStats['Hits'] . '' . $lang['gl_stdfoot_querys_mstat4'] . '' . (100 - $MemStats['Hits']) . '' . $lang['gl_stdfoot_querys_mstat5'] . '' . number_format($MemStats['curr_items']);
+    if (!empty($MemStats['Hits']) && !empty($MemStats['curr_items']) && !empty($phptime) && !empty($percentmc) && !empty($cachetime)) {
+		$header = '<b>' . $lang['gl_stdfoot_querys_mstat'] . '</b> ' . mksize(memory_get_peak_usage()) . ' ' . $lang['gl_stdfoot_querys_mstat1'] . ' ' . round($phptime, 2) . 's | ' . round($percentmc, 2) . '' . $lang['gl_stdfoot_querys_mstat2'] . '' . number_format($cachetime, 5) . 's ' . $lang['gl_stdfoot_querys_mstat3'] . '' . $MemStats['Hits'] . '' . $lang['gl_stdfoot_querys_mstat4'] . '' . (100 - $MemStats['Hits']) . '' . $lang['gl_stdfoot_querys_mstat5'] . '' . number_format($MemStats['curr_items']);
+    }
     $htmlfoot = '';
     //== query stats
     //== include js files needed only for the page being used by pdq
@@ -639,3 +641,4 @@ function StatusBar()
     return $StatusBar;
 }
 ?>
+

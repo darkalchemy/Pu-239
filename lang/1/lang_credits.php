@@ -38,4 +38,3 @@ $lang = array(
     'credits_headers' => "Installed mods & credits",
     'credits_editmod' => "Edit mod credits",
 );
-?>

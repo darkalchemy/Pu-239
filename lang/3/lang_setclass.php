@@ -5,4 +5,3 @@ $lang = array(
     'set_class_allow' => "Allows you to change your user class on the fly.",
     'set_class_class' => "Class"
 );
-?>

@@ -1,13 +1,4 @@
 <?php
-/*
-+------------------------------------------------
-|   $Date: 22.08.2010
-|   $Revision: 22.08.2010 
-|   $Author: DemonHunter aka DH
-|   $URL: lang/en/lang_referrers.php
-|   $Source: TBDEV 2009
-+------------------------------------------------
-*/
 $lang = array(
     'ref_sorry' => "Sorry",
     'ref_no_auth' => "Only moderators can view this page.",
@@ -27,4 +18,4 @@ $lang = array(
     'ref_nr' => "Nr.",
     'ref_searc' => "Search results for "
 );
-?>
+

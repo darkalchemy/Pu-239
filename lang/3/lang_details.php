@@ -82,4 +82,4 @@ $lang = array(
     'details_youtube_link' => 'Open in a new window',
     'details_thumbs' => "Thumbs Up"
 );
-?>
+

@@ -8,4 +8,4 @@ $lang = array(
     'confirmmail_false_email' => "Not a real email address!",
     'confirmmail_not_complete' => "Cannot complete",
 );
-?>
+

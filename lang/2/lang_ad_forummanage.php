@@ -50,4 +50,4 @@ $lang = array(
     'table_mincreatetrank' => "Minimal Create Topic Rank",
     'table_forumrank' => "Forum Rank"
 );
-?>
+

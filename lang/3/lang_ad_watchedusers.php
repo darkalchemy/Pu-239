@@ -32,4 +32,4 @@ $lang = array(
     'watched_users' => "Utilizatori urmariti",
     'watched_users_list' => "lista cu utilizatori urmariti"
 );
-?>
+

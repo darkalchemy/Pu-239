@@ -16,4 +16,4 @@ $lang = array(
     'gl_happyhour1' => "HappyHour",
     'gl_happyhour2' => "Hey its now happy hour !",
 );
-?>
+

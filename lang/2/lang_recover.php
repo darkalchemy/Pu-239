@@ -54,4 +54,4 @@ You may login at %s/login.php
     'recover_regdemail' => "Registered email",
     'recover_btn' => "Do it!"
 );
-?>
+

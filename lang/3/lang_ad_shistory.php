@@ -8,4 +8,4 @@ $lang = array(
     'shistory_public2'    =>  "Mesaj public!",
     'shistory_stdhead'  =>  "Istorie mesaje chat"
 );
-?>
+

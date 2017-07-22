@@ -48,4 +48,4 @@ $lang = array(
     'main_pin' => "Pin",
     'main_recover' => "Recover"
 );
-?>
+

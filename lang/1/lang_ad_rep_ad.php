@@ -123,5 +123,5 @@
 	//rep_cache
 	'rep_ad_cache_cache' => "CACHE",
 	'rep_ad_cache_none' => "No items to cache"
-	);
-	?>
+);
+

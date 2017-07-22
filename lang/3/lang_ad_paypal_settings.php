@@ -34,4 +34,4 @@ $lang = array(
 	'paypal_array_six' => "Randul sase",
 	'paypal_stdhead' => "Setari PayPal"	
 );
-?>
+

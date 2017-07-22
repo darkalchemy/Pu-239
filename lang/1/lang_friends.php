@@ -31,4 +31,4 @@ $lang = array(
     //friends stdhead
     'friends_stdhead' => "Personal lists for"
 );
-?>
+

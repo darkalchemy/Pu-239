@@ -90,4 +90,4 @@ $lang = array(
 	'shoutbox_reply' => "Reply",
 	'shoutbox_no_shouts' => "No shouts here"
 );
-?>
+

@@ -19,4 +19,3 @@ $lang = array(
     'bonusmanager_sql' => "Something went wrong with the sql query",
 	'bonusmanager_stdhead' => "Bonus Manager"	
 );
-?>

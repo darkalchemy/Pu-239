@@ -24,7 +24,6 @@ $lang = array(
 	'cleanup_run_now2'  =>  "Run it now",
 	'cleanup_add_new'  =>  "Add new",
 	'cleanup_stdhead'   =>  "Cleanup Manager - View",
-       
 	//cleanup_show_edit
 	'cleanup_show_head' =>  "Editing cleanup: ",
 	'cleanup_show_title' =>  "Title",
@@ -38,13 +37,11 @@ $lang = array(
 	'cleanup_show_edit' =>  "Edit",
 	'cleanup_show_cancel'   =>  "Cancel",
 	'cleanup_show_stdhead'  =>  "Cleanup Manager - Edit",
-       
 	//cleanup_take_edit
 	'cleanup_take_error'    =>  "Error",
 	'cleanup_take_error1'   =>  "Don't leave any field blank ",
 	'cleanup_take_error2'   =>  "Don't leave any field blank",
 	'cleanup_take_error3'   =>  "You need to upload the cleanup file first!",
-       
 	//cleanup_show_new
 	'cleanup_new_head'  =>  "Add a new cleanup task",
 	'cleanup_new_add'   =>  "Add",
@@ -54,14 +51,12 @@ $lang = array(
 	'cleanup_new_info'  =>  "Info",
 	'cleanup_new_error' =>  "Error",
 	'cleanup_new_error1' =>  "Something went horridly wrong",
-       
 	//cleanup_take_delete
 	'cleanup_del_error' =>  "Error",
 	'cleanup_del_error1'    =>  "Bad you!",
 	'cleanup_del_info'  =>  "Info",
 	'cleanup_del_success'   =>  "Success, cleanup task deleted!",
 	'cleanup_del_error2'    =>  "Something went horridly wrong",
-       
 	//cleanup_take_unlock
 	'cleanup_unlock_error'    =>  "Error",
 	'cleanup_unlock_error1'   =>  "Don't leave any field blank ",
@@ -115,7 +110,5 @@ $lang = array(
 	'doc_fpost_made7' => "Made at least 750 posts in the forums.",
 	'doc_fpost_clean' => "Achievements Cleanup: Achievements Forum Posts Completed",
 	'doc_fpost_award' => "Forum Posts Achievements awarded to - "
+);
 
-	
-	);
-?>

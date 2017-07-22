@@ -37,4 +37,4 @@ $lang = array(
     'sitesettings_donation' =>  "Total dona&#355;ii lunare necesar:",
     'sitesettings_apply'    =>  "Aplic&#259; schimb&#259;ri"
 );
-?>
+

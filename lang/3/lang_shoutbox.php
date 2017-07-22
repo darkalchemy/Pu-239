@@ -90,4 +90,3 @@ $lang = array(
 	'shoutbox_reply' => "Raspunde",
 	'shoutbox_no_shouts' => "Nu este nici un mesaj pe chat"
 );
-?>

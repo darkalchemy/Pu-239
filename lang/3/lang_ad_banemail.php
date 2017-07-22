@@ -17,4 +17,4 @@ $lang = array(
     'ad_banemail_remove' => "&#350;terge",
     'ad_banemail_remove1' => "&#350;terge-l",
 );
-?>
+

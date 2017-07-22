@@ -74,4 +74,4 @@ $lang = array(
     'poll_pb_info'      =>  "Informa&#355;ie sondaj",
     'poll_pb_post'      =>  "Posteaz&#259; sondaj"
 );
-?>
+

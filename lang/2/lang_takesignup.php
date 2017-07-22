@@ -25,6 +25,7 @@ $lang = array(
     'takesignup_bannedmail' => "This email address is banned!<br /><br /><strong>Reason</strong>:",
     'takesignup_from' => "From:"
 );
+
 $lang['takesignup_email_body'] = <<<EOD
 
 You have requested a new user account on <#SITENAME#> and you have
@@ -42,4 +43,3 @@ do this, your account will be deleted within a few days. We urge you to read
 the RULES and FAQ before you start using <#SITENAME#>.
 EOD;
 
-?>

@@ -31,4 +31,3 @@ $lang = array(
     'staffbox_pm_restart' => 'Reset',
     'staffbox_restart_ids' => 'The messege(s) you selected were Reset for someone else to deal with! Wait while redirecting...',
 );
-?>

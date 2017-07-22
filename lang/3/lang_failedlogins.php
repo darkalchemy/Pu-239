@@ -1,5 +1,5 @@
 <?php
-	$lang = array(
+$lang = array(
 	//failedlogin messages
 	'failed_sorry' => "Ne pare rau",
 	'failed_acc_deny' => "Acces Refuzat",
@@ -26,5 +26,5 @@
 	'failed_main_search' => "Cauta in autentificari esuate",
 	'failed_main_search_btn' => "Cauta",
 	'failed_main_id' => "ID"
-    );
-    ?>
+);
+

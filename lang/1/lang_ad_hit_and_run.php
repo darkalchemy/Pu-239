@@ -28,4 +28,3 @@ $lang = array(
     'hitnrun_pm' => "PM",
     'hitnrun_stdhead' => "Hit and Runs"
 );
-?>

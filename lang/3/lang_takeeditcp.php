@@ -31,6 +31,7 @@ $lang = array(
 	'takeeditcp_birth_day' => "Va rugam sa setati ziua aniversarii.",
 	'takeeditcp_birth_not' => "Data introdusa nu este o data valida, va rugam incercati din nou",
 );
+
 $lang['takeeditcp_email_body'] = <<<EOD
 Ati solicitat ca profilul dvs de utilizator (nume de utilizator <#USERNAME#>)
 pe <#SITENAME#> ar trebui actualizat cu aceasta adresa de email (<#USEREMAIL#>) ca
@@ -47,4 +48,3 @@ Noua adresa de email va aparea in profilul dumneavoastra dupa ce veti face asta.
 
 EOD;
 
-?>

@@ -28,4 +28,3 @@ $lang = array(
 	'ad_over_makebutton' => "Creeaza overforum",
 	'ad_over_stdhead' => "Administrare OverForum"  
 );
-?>

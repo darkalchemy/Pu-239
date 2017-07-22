@@ -17,4 +17,4 @@ $lang = array(
     'ad_banemail_remove' => "Remove ?",
     'ad_banemail_remove1' => "Remove it",
 );
-?>
+

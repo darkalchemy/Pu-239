@@ -13,4 +13,4 @@ $lang = array(
 	'cloudview_del_terms' => "Delete selected terms!",
 	'cloudview_stdhead' => "Cloud View"
 );
-?>
+

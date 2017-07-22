@@ -17,4 +17,4 @@ $lang = array(
 	'namechanger_change_name' => "Schimb&#259; numele!",
 	'namechanger_stdhead' => "Schimbare nume de utilizator"
 );
-?>
+

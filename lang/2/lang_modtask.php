@@ -343,4 +343,4 @@ $lang = array(
 	'modtask_from' => "From",
     'modtask_no_idea' => "No idea what to do"
 );
-?>
+

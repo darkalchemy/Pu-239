@@ -17,4 +17,4 @@ $lang = array(
     'confirm_' => "",
     'confirm_' => "",
 );
-?>
+

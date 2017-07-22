@@ -22,4 +22,4 @@ $lang = array(
     'comment_with_that_id' => "with that ID",
     'comment_tick_this_post_anony' => "Tick this to post anonymously"
 );
-?>
+

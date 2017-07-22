@@ -14,4 +14,3 @@ $lang = array(
     'stats_uploader' => 'Uploader',
     'stats_category' => 'Category'
 );
-?>

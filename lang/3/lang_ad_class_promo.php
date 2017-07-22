@@ -31,4 +31,3 @@ $lang = array(
 	'classpromo_add_new' => "Adaug&#259; o nou&#259; clas&#259;",
 	'classpromo_stdhead' => "Set&#259;ri de promovare"
 );
-?>

@@ -170,4 +170,3 @@ $lang = array(
     'forum_view_unread_not_found' => "<b>Nothing found</b>",
     'forum_view_unread_posts' => "Unread Posts",
 );
-?>

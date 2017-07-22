@@ -24,4 +24,3 @@ $lang = array(
 	'sysoplog_sys' => "Sysop Infolog",
 	'sysoplog_times' => "Times are in GMT."
 );
-?>

@@ -1,4 +1,4 @@
-﻿/*
+/*
 Name:       ImageFlow
 Version:    1.3.0 (March 9 2010)
 Author:     Finn Rudolph

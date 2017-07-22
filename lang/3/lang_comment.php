@@ -18,4 +18,4 @@ $lang = array(
     'comment_original' => "Original comment",
     'comment_unknown' => "Unknown action",
 );
-?>
+

@@ -439,4 +439,4 @@ $lang = array(
 	'userdetails_comm_left' => "Comments left for ",
 	'userdetails_comm_yet' => "No comments yet"	
 );
-?>
+

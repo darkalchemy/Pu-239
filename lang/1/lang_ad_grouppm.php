@@ -30,4 +30,3 @@ $lang = array(
     'grouppm_send'      =>  "Send!",
     'grouppm_stdhead'   =>  "Group PM"
 );
-?>

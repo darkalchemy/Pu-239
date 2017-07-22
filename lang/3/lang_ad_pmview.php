@@ -11,4 +11,3 @@ $lang = array(
     'pmview_message' => 'Message:',
     'pmview_info' => 'Please inform your user, stat you spy on them'
 );
-?>

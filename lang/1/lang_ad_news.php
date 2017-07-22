@@ -55,4 +55,3 @@ $lang = array(
 	'news_delete' => 'Delete',
 	'news_stdhead' => 'News Page'
 );
-?>

@@ -5,4 +5,4 @@ $lang = array(
     'download_no_id' => "No torrent with that ID exists",
     'download_passkey' => 'Your download link doesnt have a passkey',
 );
-?>
+

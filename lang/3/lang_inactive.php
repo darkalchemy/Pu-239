@@ -42,4 +42,3 @@ $lang = array(
     'inactive_sent' => "trimis !",
     'inactive_noaccounts' => "Nici un cont inactiv mai mult de"
 );
-?>

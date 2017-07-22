@@ -8,4 +8,4 @@ $lang = array(
     'shistory_public2'    =>  "Public shout!",
     'shistory_stdhead'  =>  "Shout History"
 );
-?>
+

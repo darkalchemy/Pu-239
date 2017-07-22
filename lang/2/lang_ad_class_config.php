@@ -28,5 +28,5 @@ $lang = array(
 	'classcfg_add_new' => "Add new class",
 	'classcfg_stdhead' => "User Settings",
 	'classcfg_' => ""
-	);
-?>
+);
+

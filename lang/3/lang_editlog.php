@@ -15,4 +15,3 @@ $lang = array(
 	'editlog_denied' => "Acces Refuzat ",
 	'editlog_stdhead' => "Inregistrari - Editare fisiere php"
 );
-?>

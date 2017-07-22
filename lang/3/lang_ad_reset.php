@@ -16,4 +16,3 @@ $lang = array(
 	'reset_username'  => "Nume utilizator",
 	'reset_stdhead' => "Reseteaza Parola"
 );
-?>

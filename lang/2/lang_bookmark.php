@@ -23,7 +23,6 @@ $lang = array(
 	'bookmarks_my' => "My Bookmarks",
 	'bookmarks_my_share' => "My Sharemarks",
 	'bookmarks_stdhead' => "Bookmarks",
-           
 	/******Bookmark*****/
 	'bookmark_err' => "Error",
 	'bookmark_missing' => "missing form data",
@@ -52,4 +51,4 @@ $lang = array(
 	'bookmark_goto_browse' => "Go to Browse",
 	'bookmark_stdhead' => "Bookmark"
 );
-?>
+

@@ -18,4 +18,4 @@ $lang = array(
     'text_password2' => 'Rescrie parola',
     'text_email' => 'Email'
 );
-?>
+

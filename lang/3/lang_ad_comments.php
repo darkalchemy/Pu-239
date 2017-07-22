@@ -23,4 +23,4 @@ $lang = array(
 'text_submit' => 'Executa!',
 'text_results' => 'Cauta rezultate pentru ',
 );
-?>
+

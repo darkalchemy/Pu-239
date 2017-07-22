@@ -80,4 +80,4 @@ $lang = array(
     <img src='./pic/u232.gif' border='0' alt='U-232 - The best!' /></a>
     <br />"
 );
-?>
+

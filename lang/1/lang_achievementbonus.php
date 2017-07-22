@@ -13,4 +13,3 @@ $lang = array(
     'achbon_failed_msg5' => "Hoodini has magically made your achievement bonus point dissapear, better luck next time.",
     'achbon_random_achievement_bonus' => "Random Achievement Bonus"
 );
-?>

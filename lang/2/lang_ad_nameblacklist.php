@@ -14,4 +14,4 @@ $lang = array(
 	'name_update' => "Update",
 	'name_stdhead' => "Username blacklist"
 );
-?>
+

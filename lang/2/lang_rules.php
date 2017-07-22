@@ -86,4 +86,4 @@ $lang = array(
     'rules_mod_options_body8' => "Lastly, check out the <a href='staff.php' class='altlink'>Staff</a> page (top right corner).",
     'rules_rules' => "Rules"
 );
-?>
+

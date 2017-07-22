@@ -55,4 +55,3 @@ $lang = array(
 	'news_delete' => '&#350;terge',
 	'news_stdhead' => 'Pagina cu stiri'
 );
-?>

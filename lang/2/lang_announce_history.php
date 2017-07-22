@@ -8,4 +8,4 @@ $lang = array(
 	'annhistory_back' => "Back",
 	'annhistory_subject1' => "Subject"
 );
-?>
+

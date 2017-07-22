@@ -32,4 +32,4 @@ $lang = array(
     'uploadapp_appsent' => "Application sent",
     'uploadapp_success' => "Your application has succesfully been sent to the staff."
 );
-?>
+

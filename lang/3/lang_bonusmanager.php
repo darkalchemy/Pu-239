@@ -19,4 +19,4 @@ $lang = array(
 	'bonusmanager_sql' => "Ceva s-a &#238;nt&#226;mplat cu interogarea sql",
 	'bonusmanager_stdhead' => "Administrare Bonus"
 );
-?>
+

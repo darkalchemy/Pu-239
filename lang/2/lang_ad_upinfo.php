@@ -10,4 +10,4 @@ $lang = array(
 	'upinfo_sendpm' => "Send PM",
 	'upinfo_pm' => "Pm"
 );
-?>
+

@@ -7,4 +7,4 @@ $lang = array(
 	'ajaxstatus_successfully' => "Status update successful",
 	'ajaxstatus_err4' => "Unknow action"
 );
-?>
+

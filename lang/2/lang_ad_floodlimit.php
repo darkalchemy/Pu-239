@@ -12,4 +12,3 @@ $lang = array(
 	'floodlimit_save' => "Save",
 	'floodlimit_std' => "Flood limit"
 	);
-?>

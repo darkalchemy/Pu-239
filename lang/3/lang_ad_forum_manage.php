@@ -39,4 +39,4 @@
 	'fm_mp_confirm' =>  "Eşti sigur că vrei să ştergi acest forum?",
 	'fm_stdhead'    =>  "Administrare Forumuri"
 );
-?>
+

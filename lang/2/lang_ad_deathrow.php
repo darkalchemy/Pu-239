@@ -41,4 +41,4 @@ $lang = array(
 	'deathrow_msg0' => " Move along... move along.",
 	'deathrow_stdhead0' => "0 Torrents on deathrow"	
 );
-?>
+

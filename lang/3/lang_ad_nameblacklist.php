@@ -14,4 +14,3 @@ $lang = array(
 	'name_update' => "Actualizeaza",
 	'name_stdhead' => "Lista neagra cu nume de utilizatori"
 );
-?>

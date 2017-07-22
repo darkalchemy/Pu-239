@@ -55,4 +55,4 @@ Read the forums for details.",
     'sendmessage_pm_templates' => "PM Templates:",
     'sendmessage_send_msg' => "Send Message"
 );
-?>
+

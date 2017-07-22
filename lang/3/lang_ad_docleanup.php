@@ -9,4 +9,4 @@ $lang = array(
     'text_denied' => "Permission denied !",
     'text_done' => " Successfully done."
 );
-?>
+

@@ -36,6 +36,8 @@ $lang = array(
     'gl_casino' => "Casino",
     'gl_bjack' => "Blackjack",
     'gl_arcade' => "Arcade",
+    'gl_trivia' => "Trivia",
+    'gl_lottery' => "Lottery",
     'gl_breport' => "Bug Report",
     'gl_brespond' => "Bug Respond",
     'gl_cstaff' => "Contact Staff",
@@ -200,4 +202,4 @@ $lang = array(
 	'gl_not_connectable' => "Not Connectable",
 	'gl_na_connectable' => "N/A"	
 );
-?>
+

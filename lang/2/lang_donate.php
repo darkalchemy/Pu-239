@@ -13,4 +13,4 @@ $lang = array(
     'donate_transaction' => "transaction id",
     'donate_credit' => " so we can credit your account!",
 );
-?>
+

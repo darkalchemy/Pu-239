@@ -127,7 +127,7 @@ function getip()
         }
     }
 }
-function dbconn($autoclean = false)
+function dbconn($autoclean = true)
 {
     global $INSTALLER09;
     if (!@($GLOBALS["___mysqli_ston"] = mysqli_connect($INSTALLER09['mysql_host'], $INSTALLER09['mysql_user'], $INSTALLER09['mysql_pass']))) {
@@ -157,6 +157,9 @@ function hashit($var, $addtext = "")
 function check_bans($ip, &$reason = '')
 {
     global $INSTALLER09, $mc1;
+    if (empty($ip)) {
+		return false;
+	}
     $key = 'bans:::' . $ip;
     if (($ban = $mc1->get_value($key)) === false) {
         $nip = ip2long($ip);
@@ -557,11 +560,16 @@ function charset()
 function autoclean()
 {
     global $INSTALLER09;
+    // the clean_ids need to be run at specific interval, regardless of when they run
+    $run_at_specified_times = [82, 83];
     $now = TIME_NOW;
     $sql = sql_query("SELECT * FROM cleanup WHERE clean_on = 1 AND clean_time <= {$now} ORDER BY clean_time ASC LIMIT 0,1");
     $row = mysqli_fetch_assoc($sql);
     if ($row['clean_id']) {
         $next_clean = intval($now + ($row['clean_increment'] ? $row['clean_increment'] : 15 * 60));
+        if (in_array($row['clean_id'], $run_at_specified_times)) {
+            $next_clean = intval($row['clean_time'] + $row['clean_increment']);
+        }
         sql_query("UPDATE cleanup SET clean_time = ".sqlesc($next_clean)." WHERE clean_id = ".sqlesc($row['clean_id']));
         if (file_exists(CLEAN_DIR . '' . $row['clean_file'])) {
             require_once (CLEAN_DIR . '' . $row['clean_file']);
@@ -843,7 +851,7 @@ function get_row_count($table, $suffix = "")
     if ($suffix) $suffix = " $suffix";
     ($r = sql_query("SELECT COUNT(*) FROM $table$suffix")) or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
     ($a = mysqli_fetch_row($r)) or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
-    return $a[0];
+    return (int)$a[0];
 }
 function stderr($heading, $text)
 {
@@ -1115,7 +1123,7 @@ function strip_tags_array($ar)
 function referer()
 {
     $http_referer = getenv("HTTP_REFERER");
-    if ((strstr($http_referer, $_SERVER["HTTP_HOST"]) == false) && ($http_referer != "")) {
+    if (!empty($_SERVER["HTTP_HOST"]) && (strstr($http_referer, $_SERVER["HTTP_HOST"]) == false) && ($http_referer != "")) {
         $ip = $_SERVER['REMOTE_ADDR'];
         $http_agent = $_SERVER["HTTP_USER_AGENT"];
         $http_page = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
@@ -1151,5 +1159,12 @@ function write_bonus_log($userid, $amount, $type){
   $added = TIME_NOW;
   $donation_type = $type;
   sql_query("INSERT INTO bonuslog (id, donation, type, added_at) VALUES(".sqlesc($userid).", ".sqlesc($amount).", ".sqlesc($donation_type).", $added)") or sqlerr(__FILE__, __LINE__);
+}
+function human_filesize($bytes, $dec = 2)
+{
+    $size = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+    $factor = floor((strlen($bytes) - 1) / 3);
+
+    return sprintf("%.{$dec}f", $bytes / pow(1024, $factor)).@$size[$factor];
 }
 ?>

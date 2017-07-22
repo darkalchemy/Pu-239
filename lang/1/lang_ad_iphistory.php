@@ -31,4 +31,3 @@ $lang = array(
 	//'iphistory_justwipe' => " has just wiped IP: ",
 	//'iphistory_from' => " from (<a href='/userdetails.php?id=$id'><b>$username2</b></a>)'s Ip History"
 );
-?>

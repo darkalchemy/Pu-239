@@ -22,4 +22,4 @@ $lang = array(
     'userimages_tag' => "Tag for forums or comments",
     'userimages_noimage' => "No Images Found",
 );
-?>
+

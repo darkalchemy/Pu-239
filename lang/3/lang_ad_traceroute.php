@@ -7,4 +7,4 @@ $lang = array(
 	'trace_submit' => "Traceroute!",
 	'trace_stdhead' => "Traceroute"
 );
-?>
+

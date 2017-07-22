@@ -37,4 +37,4 @@ $lang = array(
     'rep_very_negative' => 'Very Negative',
     'rep_extremely_negative' => 'Extremely Negative',
 );
-?>
+

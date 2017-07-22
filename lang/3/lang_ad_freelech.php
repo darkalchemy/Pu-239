@@ -31,4 +31,4 @@ $lang = array(
 	'freelech_doit'  => "Execută!",
 	'freelech_stdhead'  => "Stare Freeleech"
 );
-?>
+

@@ -25,4 +25,3 @@ $lang = array(
 	'mysql_over_it_needs' => " it probably needs optimising!! ",
 	'mysql_over_stdhead' => "MySQL Overview"
 );
-?>

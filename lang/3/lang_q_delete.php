@@ -14,4 +14,4 @@ $lang = array(
     'fastdelete_deleted' => 'Torrent deleted',
     'fastdelete_head' => 'Delete Torrent (Fast)'
 );
-?>
+

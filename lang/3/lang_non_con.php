@@ -29,4 +29,3 @@ Puteti rezolva asta deschizand porturile folosite pentru conexiunile catre dvs (
 	'non_con_note' => "NOTA: Codul HTML nu este permis. (FARA HTML)",
 	'non_con_stdhead' => "Gaseste-i pe cei neconectabili"	
 );
-?>

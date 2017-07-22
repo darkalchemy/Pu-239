@@ -55,4 +55,4 @@ $lang = array(
     //Credits
     'themes_credits' => 'Credits to AronTh for making this template mananger and the template system',
 );
-?>
+

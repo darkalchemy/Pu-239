@@ -20,4 +20,3 @@ $lang = array(
 	'donate_togo' => "...",
 	'donate_stdhead' => "Donatii"
 	);
-?>

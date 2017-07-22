@@ -12,4 +12,3 @@ $lang = array(
 	'comm_check_read' => "Mark as checked",
 	'comm_check_stdhead' => "Comment checks"
 );
-?>

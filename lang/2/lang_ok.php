@@ -22,4 +22,4 @@ $lang = array(
     'ok_user_error' => "User Error",
     'ok_no_action' => "no action to take",
 );
-?>
+

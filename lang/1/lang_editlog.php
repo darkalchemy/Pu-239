@@ -15,4 +15,3 @@ $lang = array(
 	'editlog_denied' => "Access Denied",
 	'editlog_stdhead' => "Php File Edit Log"
 );
-?>

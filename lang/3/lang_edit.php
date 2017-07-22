@@ -50,4 +50,4 @@ $lang = array(
     //edit stdhead
     'edit_stdhead' => "Edit torrent"
 );
-?>
+

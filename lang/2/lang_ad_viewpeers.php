@@ -26,4 +26,4 @@ $lang = array(
 	'wpeers_notfound' => "No peers found",
 	'wpeers_peerover' => "Peer Overview"
 );
-?>
+

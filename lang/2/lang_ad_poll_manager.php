@@ -74,4 +74,4 @@ $lang = array(
     'poll_pb_info'      =>  "Poll Info",
     'poll_pb_post'      =>  "Post Poll"
 );
-?>
+

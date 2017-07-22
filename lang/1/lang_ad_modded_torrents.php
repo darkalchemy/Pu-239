@@ -33,4 +33,3 @@ $lang = array(
     'mtor_year' => "Year",
     'mtor_search' => "Search"
 );
-?>

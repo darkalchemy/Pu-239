@@ -23,7 +23,6 @@ $lang = array(
 	'bookmarks_my' => "Semnele mele de carte",
 	'bookmarks_my_share' => "Semnele mele de carte distribuite",
 	'bookmarks_stdhead' => "Semne de carte",
-           
 	/******Bookmark*****/
 	'bookmark_err' => "Eroare",
 	'bookmark_missing' => "Lipsesc date din formular",
@@ -52,4 +51,4 @@ $lang = array(
 	'bookmark_goto_browse' => "Dute la pagina de cautare",
 	'bookmark_stdhead' => "Semn de carte"
 );
-?>
+

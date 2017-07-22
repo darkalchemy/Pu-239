@@ -40,4 +40,3 @@ $lang = array(
     'leechwarn_delete'  =>  "Delete",
     'leechwarn_apply'   =>  "Apply"
 );
-?>

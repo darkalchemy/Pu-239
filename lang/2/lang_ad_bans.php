@@ -27,4 +27,4 @@ $lang = array(
     'table_lastip' => "Last IP",
     'table_comment' => "Comment"
 );
-?>
+

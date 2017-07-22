@@ -78,4 +78,4 @@ $lang = array(
     'tags_preformat3' => "[pre]<i>Text</i>[/pre]",
     'tags_preformat4' => "[pre]This is preformatted text.[/pre]",
 );
-?>
+

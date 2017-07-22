@@ -184,4 +184,4 @@ $lang = array(
     'gl_tempdemotion' => "Se pare c&#259; ai o clas&#259; inferioar&#259;. Clic aici pentru a reveni la normal.",
     'gl_time_date' => ""
 );
-?>
+

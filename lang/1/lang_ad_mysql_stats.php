@@ -29,4 +29,3 @@ $lang = array(
 	'mysql_stats_value' => "&nbsp;Value&nbsp;",
 	'mysql_stats_stdhead' => "Stats Overview"
 );
-?>

@@ -14,4 +14,3 @@ $lang = array(
     'flush_fail2'   =>  "Nu faci parte din personal."
  
 );
-?>

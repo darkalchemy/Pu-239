@@ -18,4 +18,4 @@ $lang = array(
     'ipcheck_noaccess' => 'You are not able to view this page.',
 	'ipcheck_stdhead' => 'Ip Check'
 );
-?>
+

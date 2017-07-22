@@ -11,4 +11,4 @@ $lang = array(
     'deletemessage_sentbox' => "The message is not in your Sentbox.",
     'deletemessage_unknown' => "Unknown PM type.",
 );
-?>
+

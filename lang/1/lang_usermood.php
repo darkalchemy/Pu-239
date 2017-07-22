@@ -7,5 +7,5 @@ $lang = array(
 	'user_mood_back' => "Back to site",
 	'user_mood_s' => "s Mood",
 	'user_mood_title'	=>	"moods"
-	);
-?>
+);
+

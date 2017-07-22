@@ -20,4 +20,4 @@ $lang = array(
 	'ref_unknow' => "Browser necunoscut",
 	'ref_stdhead' => "Referinte"
 );
-?>
+

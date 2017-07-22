@@ -85,4 +85,4 @@ You may login at %s/login.php
     'signup_age' => "I am at least 13 years old.",
     'signup_button' => "Sign up! (PRESS ONLY ONCE)",
 );
-?>
+

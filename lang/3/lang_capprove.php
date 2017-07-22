@@ -13,4 +13,3 @@ $lang = array(
     'capp_msg_a' => 'The comment was approved...wait for redirect!',
     'capp_msg_d' => 'The comment was disapproved...wait for redirect!',
 );
-?>

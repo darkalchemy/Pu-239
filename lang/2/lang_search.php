@@ -7,4 +7,4 @@ $lang = array(
     'search_inc_dead' => "including dead torrents\n",
     'search_search_btn' => "Search!"
 );
-?>
+

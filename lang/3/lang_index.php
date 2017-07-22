@@ -29,6 +29,7 @@ $lang = array(
     'index_u-232_git' => "U-232 Repo",
     'index_serverscene' => "Server Scene",
     'index_birthday' => "Anivers&#259;ri membri",
+    'index_trivia' => "Trivia Game",
     //News
     'news_title' => "Ultimele &#351;tiri",
     'news_link' => "Pagin&#259; cu &#351;tiri",
@@ -171,4 +172,4 @@ Este obliga&#355;ia dumneavoastra s&#259; v&#259; conforma&#355;i acestor termen
 	//torrent freak
 	'index_torr_freak' => " &#350;tiri de pe Torrent Freak"
 );
-?>
+

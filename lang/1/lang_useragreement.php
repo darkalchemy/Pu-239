@@ -95,4 +95,4 @@ ORDERS ONLY! - Use the above link to &quot;e-mail for permission&quot; only afte
     <p></p>
     Copyright &copy; 2008, 2009 by {$INSTALLER09['site_name']}.  All rights reserved."
 );
-?>
+

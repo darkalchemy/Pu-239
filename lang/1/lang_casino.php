@@ -76,4 +76,3 @@ $lang = array(
     'casino_uploaded' => "Uploaded",
     'casino_downloaded' => "Downloaded"
 );
-?>

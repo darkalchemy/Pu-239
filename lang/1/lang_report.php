@@ -18,4 +18,3 @@ $lang = array(
     'report_req' => "required",
     'report_confirm' => "Confirm Report",
 );
-?>

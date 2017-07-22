@@ -29,4 +29,4 @@ $lang = array(
 	'classcfg_stdhead' => "Administrare set&#259;ri de utilizator",
 	'classcfg_' => ""
 	);
-?>
+

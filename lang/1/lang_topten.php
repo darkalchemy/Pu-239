@@ -55,4 +55,3 @@ $lang = array(
     'peers_fastestup' => "Top %u Fastest Uploaders",
     'peers_fastestdown' => "Top %u Fastest Downloaders",
 );
-?>

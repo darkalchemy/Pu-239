@@ -14,4 +14,3 @@ $lang = array(
     'contactstaff_success_msg' => 'Message was sent! Wait for staff to respond now! Please wait while redirecting...',
     'contactstaff_mysql_err' => 'There was something wrong, Mysql Err: %s',
 );
-?>

@@ -51,4 +51,4 @@ $lang = array(
 	'bitbucket_err' => "Error:",
 	'bitbucket_viewmonths' => "View this months images"
 );
-?>
+

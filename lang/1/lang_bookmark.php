@@ -52,4 +52,3 @@ $lang = array(
 	'bookmark_goto_browse' => "Go to Browse",
 	'bookmark_stdhead' => "Bookmark"
 );
-?>

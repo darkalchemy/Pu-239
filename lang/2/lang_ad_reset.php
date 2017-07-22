@@ -16,4 +16,4 @@ $lang = array(
 	'reset_username'  => "Username",
 	'reset_stdhead' => "Reset Password"
 );
-?>
+

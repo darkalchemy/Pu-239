@@ -13,4 +13,4 @@ $lang = array(
     'testip_title' => 'Test IP address',
     'testip_windows_title' => 'Test ip',
 );
-?>
+

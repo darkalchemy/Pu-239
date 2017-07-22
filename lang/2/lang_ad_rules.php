@@ -10,4 +10,4 @@ $lang = array(
     'rules_btn_newcat' => "Add New Category",
     'rules_btn_newrule' => "Add New Rule",
 );
-?>
+

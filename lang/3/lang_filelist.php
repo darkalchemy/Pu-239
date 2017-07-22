@@ -8,4 +8,4 @@ $lang = array(
     'filelist_path' => 'Path',
     'filelist_size' => 'Size'
 );
-?>
+

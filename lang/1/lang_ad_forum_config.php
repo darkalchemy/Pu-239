@@ -30,4 +30,3 @@ $lang = array(
 	'forum_config_week' => "week",
 	'forum_config_weeks' => "weeks"
 );
-?>

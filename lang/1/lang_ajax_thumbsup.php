@@ -4,4 +4,3 @@ $lang = array(
 	'ajaxthumbs_' => "",
 
 );
-?>

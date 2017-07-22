@@ -13,4 +13,4 @@ $lang = array(
     'takedit_youtube' => "  Youtube link is not correct or is not present!",
     'takeedit_img_copyerror' => "An error occured copy the image to the image storage repository. Contact Admin for assistance.",
 );
-?>
+

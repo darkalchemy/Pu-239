@@ -39,4 +39,3 @@ $lang['time_12'] = "(GMT + 12:00 hours) Auckland, Fiji, Marshall Islands";
 $lang['time_12.75'] = "(GMT + 12:45 hours) Chatham Islands";
 $lang['time_13'] = "(GMT + 13:00 hours) Kamchatka, Anadyr";
 $lang['time_14'] = "(GMT + 14:00 hours) Kiritimati";
-?>

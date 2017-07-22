@@ -874,3 +874,22 @@ body.background-2 #logo .slogan {color: #454141;}
     | Thanks for using this sourcecode.															|
      \-----------------------------------------------------------------------------------------/
 */
+.padded {
+    margin: 2px;
+}
+
+.text-center {   
+    margin: auto auto;
+    text-align: center !important;
+}
+
+img {
+    border: 0;
+    vertical-align: middle;
+}
+
+.tooltipper {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}

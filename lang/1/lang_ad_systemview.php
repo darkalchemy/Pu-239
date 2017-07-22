@@ -19,4 +19,3 @@ $lang = array(
 	'system_on' => "ON",
 	'system_off' => "OFF"
 );
-?>

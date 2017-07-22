@@ -13,4 +13,4 @@ $lang = array(
 	'cloudview_del_terms' => "Sterge termenii selectati!",
 	'cloudview_stdhead' => "Vizualizare Cloud"
 );
-?>
+

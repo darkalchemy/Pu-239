@@ -19,4 +19,4 @@ $lang = array(
     'ipsearch_invited' => "Invited by",
 	'ipsearch_deleted' => "[Deleted]" 
 );
-?>
+

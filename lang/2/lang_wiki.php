@@ -23,4 +23,4 @@ $lang = array(
     'wiki_write_user' => "Write: User",
 	'wiki_ok' => "OK"
 );
-?>
+

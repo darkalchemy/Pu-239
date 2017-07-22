@@ -24,4 +24,3 @@ $lang = array(
 	'cheaters_users' => "Utilizatorii care tri&#351;eaz&#259;:",
 	'cheaters_stdhead' => "Tri&#351;ori de ratie"
 );
-?>

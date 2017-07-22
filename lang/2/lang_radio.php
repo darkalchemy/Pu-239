@@ -9,4 +9,4 @@ $lang['radio'] = array(
     'BITRATE' => 'Bitrate: <b>%s kb</b>',
     'PEAKLISTENERS' => 'Peak listeners: <b>%d</b>'
 );
-?>
+

@@ -30,4 +30,4 @@ $lang = array(
     'grouppm_send'      =>  "Trimite!",
     'grouppm_stdhead'   =>  "Mesaje Private către Grup"
 );
-?>
+
