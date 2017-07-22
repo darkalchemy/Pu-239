@@ -37,7 +37,7 @@ function docleanup($data)
     $gameon = $result['gameon'];
 
     if ($gameon == 1) {
-        $sql = "SELECT qid FROM triviaq WHERE asked = 0 AND asked = 0 ORDER BY RAND() LIMIT 0, 1";
+        $sql = "SELECT qid FROM triviaq WHERE asked = 0 AND current = 0 ORDER BY RAND() LIMIT 0, 1";
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $qidarray = mysqli_fetch_assoc($res);
         $qid = $qidarray['qid'];

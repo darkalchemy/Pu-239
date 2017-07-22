@@ -153,7 +153,7 @@ if ($gameon === 0 || empty($qid)) {
             }
         } else {
             $HTMLOUT .= "
-            " . htmlsafechars($row['question']) . "<br>
+            " . htmlspecialchars_decode($row['question']) . "<br>
         </div>
         <div style='margin-left: 45%; padding-left: 10px;'>
             <h3>Answers:</h3>
@@ -163,7 +163,7 @@ if ($gameon === 0 || empty($qid)) {
                         <input id='qid' type='hidden' name='qid' value='" . $qid . "'>
                         <input id='user_id' type='hidden' name='user_id' value='" . $user_id . "'>
                         <input id='user_id' type='hidden' name='ans' value='answer1'>
-                        <input type='submit' value='" . htmlsafechars($row['answer1']) . "' class='btn'>
+                        <input type='submit' value='" . htmlspecialchars_decode($row['answer1']) . "' class='btn'>
                     </form>
                 </li>
                 <li style='margin-bottom: 5px;'>
@@ -171,7 +171,7 @@ if ($gameon === 0 || empty($qid)) {
                         <input id='qid' type='hidden' name='qid' value='" . $qid . "'>
                         <input id='user_id' type='hidden' name='user_id' value='" . $user_id ."'>
                         <input id='user_id' type='hidden' name='ans' value='answer2'>
-                        <input type='submit' value='" . htmlsafechars($row['answer2']) . "' class='btn'>
+                        <input type='submit' value='" . htmlspecialchars_decode($row['answer2']) . "' class='btn'>
                     </form>
                 </li>";
 
@@ -182,7 +182,7 @@ if ($gameon === 0 || empty($qid)) {
                         <input id='qid' type='hidden' name='qid' value='" . $qid . "'>
                         <input id='user_id' type='hidden' name='user_id' value='" . $user_id . "'>
                         <input id='user_id' type='hidden' name='ans' value='answer3'>
-                        <input type='submit' value='" . htmlsafechars($row['answer3']) . "' class='btn'>
+                        <input type='submit' value='" . htmlspecialchars_decode($row['answer3']) . "' class='btn'>
                     </form>
                 </li>";
 			}
@@ -193,7 +193,7 @@ if ($gameon === 0 || empty($qid)) {
                         <input id='qid' type='hidden' name='qid' value='" . $qid . "'>
                         <input id='user_id' type='hidden' name='user_id' value='" . $user_id . "'>
                         <input id='user_id' type='hidden' name='ans' value='answer4'>
-                        <input type='submit' value='" . htmlsafechars($row['answer4']) . "' class='btn'>
+                        <input type='submit' value='" . htmlspecialchars_decode($row['answer4']) . "' class='btn'>
                     </form>
                 </li>";
 			}
@@ -204,10 +204,10 @@ if ($gameon === 0 || empty($qid)) {
                         <input id='qid' type='hidden' name='qid' value='" . $qid . "'>
                         <input id='user_id' type='hidden' name='user_id' value='" . $user_id . "'>
                         <input id='user_id' type='hidden' name='ans' value='answer5'>
-                        <input type='submit' value='" . htmlsafechars($row['answer5']) . "' class='btn'>
+                        <input type='submit' value='" . htmlspecialchars_decode($row['answer5']) . "' class='btn'>
                     </form>
                 </li>";
-            }   
+            }
 
 			$HTMLOUT .= "
             </ul>
