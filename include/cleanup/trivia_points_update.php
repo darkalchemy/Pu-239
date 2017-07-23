@@ -86,7 +86,9 @@ function docleanup($data)
         }
     }
 
-    sql_query("INSERT INTO messages (sender,receiver,added,msg,subject) VALUES " . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
+    if (!empty($msgs_buffer)) {
+        sql_query("INSERT INTO messages (sender,receiver,added,msg,subject) VALUES " . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
+    }
     write_log("Cleanup - Trivia Bonus Points awarded to - " . $count . " Member(s)");
     foreach ($users as $user_id) {
         $mc1->delete_value('inbox_new_' . $user_id);
@@ -109,4 +111,4 @@ function docleanup($data)
         cleanup_log($data);
     }
 }
-?>
+
