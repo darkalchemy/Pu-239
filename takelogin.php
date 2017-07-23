@@ -53,7 +53,7 @@ function failedloginscheck()
 if (!mkglobal('username:password' . ($INSTALLER09['captcha_on'] ? (!$gotkey ? ":captchaSelection:" : "") : ":") . 'submitme')) die('Something went wrong');
 if ($submitme != 'X') stderr('Ha Ha', 'You Missed, You plonker !');
 if ($INSTALLER09['captcha_on'] && !$gotkey) {
-    if (empty($captchaSelection) || $_SESSION['simpleCaptchaAnswer'] != $captchaSelection) {
+    if (empty($captchaSelection) || empty($_SESSION['simpleCaptchaAnswer']) || $_SESSION['simpleCaptchaAnswer'] != $captchaSelection) {
         header('Location: login.php');
         exit();
     }
