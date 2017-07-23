@@ -49,21 +49,15 @@ if (!empty($_POST)) {
 unset($_POST);
 global $INSTALLER09;
 
-$HTMLOUT = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
-<html xmlns='http://www.w3.org/1999/xhtml'>
-<head>
-<title>Trivia</title>
-<meta http-equiv='refresh' content='30; url=./trivia.php' />
-<link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/{$INSTALLER09['stylesheet']}.css' type='text/css' />
-</head>
-<body>";
-
 $user_id = $CURUSER['id'];
 
-$sql = "SELECT clean_time, clean_time - unix_timestamp(NOW()) AS remaining FROM cleanup WHERE clean_id = 82";
+$sql = "SELECT clean_time, clean_time - unix_timestamp(NOW()) AS remaining FROM cleanup WHERE clean_file = 'trivia_update.php'";
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $result = mysqli_fetch_assoc($res);
-$remaining = $result['remaining'];
+$remaining = (int)$result['remaining'];
+
+$date = new DateTime("@{$result['clean_time']}");
+$date_string = $date->format('D, d M y H:i:s O');
 
 $sql = "SELECT qid FROM triviaq WHERE current = 1 AND asked = 1";
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -80,18 +74,33 @@ $gameon = (int)$result['gameon'];
 
 if ($remaining >= 0) {
     $sec = ltrim(date('i:s', $remaining), 0);
+    $refresh = $remaining;
 } else {
     $sec = 'working...';
+    $refresh = 10;
 }
+
+$HTMLOUT = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>Trivia</title>
+<meta http-equiv='refresh' content={$refresh}; url=./trivia.php' />
+<link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/{$INSTALLER09['stylesheet']}.css' type='text/css' />
+</head>
+<body>";
 
 $HTMLOUT .= "
     <div style='calc(width: 100% - 20px); margin: 10px;'>
         <div style='width: 45%; float: left;'>
             <h3 style='margin-top:0;'>Trivia</h3>
             <span style='font-size: .85em;'>
-                {$lang['trivia_next_question']} $sec<br>
+                {$lang['trivia_next_question']}
+                <span id='clockdiv'>
+                    <span class='minutes'></span>:<span class='seconds'></span>
+                </span><br>
                 {$lang['trivia_question']} $qid / $num_totalq <br>
-                {$lang['trivia_questions_remaining']}: $num_remainingq
+                {$lang['trivia_questions_remaining']}: $num_remainingq<br>
+                $date_string
             </span><br><br><br>";
 
 if ($gameon === 0 || empty($qid)) {
@@ -218,5 +227,38 @@ if ($gameon === 0 || empty($qid)) {
 $HTMLOUT .= "
     </div>
 </body>
+<script>
+    function getTimeRemaining(endtime){
+        var t = Date.parse(endtime) - Date.parse(new Date());
+        var seconds = Math.floor( (t/1000) % 60 );
+        var minutes = Math.floor( (t/1000/60) % 60 );
+        var hours = Math.floor( (t/(1000*60*60)) % 24 );
+        var days = Math.floor( t/(1000*60*60*24) );
+        return {
+            'total': t,
+            'days': days,
+            'hours': hours,
+            'minutes': minutes,
+            'seconds': seconds
+        };
+    }
+
+    function initializeClock(id, endtime){
+        var clock = document.getElementById(id);
+        function updateClock(){
+            var t = getTimeRemaining(endtime);
+            var minutesSpan = clock.querySelector('.minutes');
+            var secondsSpan = clock.querySelector('.seconds');
+            minutesSpan.innerHTML = t.minutes;
+            secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+            if(t.total<=0){
+                clearInterval(timeinterval);
+            }
+        }
+        updateClock();
+        var timeinterval = setInterval(updateClock,1000);
+    }
+    initializeClock('clockdiv', '$date_string');
+</script>
 </html>";
 echo $HTMLOUT;
