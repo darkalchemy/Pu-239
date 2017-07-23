@@ -58,10 +58,13 @@ $INSTALLER09['mysql_user'] = '#mysql_user';
 $INSTALLER09['mysql_pass'] = '#mysql_pass';
 $INSTALLER09['mysql_db'] = '#mysql_db';
 //== Cookie setup
+$INSTALLER09['sessionName'] = '#cookie_prefix';
 $INSTALLER09['cookie_prefix'] = '#cookie_prefix'; // This allows you to have multiple trackers, eg for demos, testing etc.
 $INSTALLER09['cookie_path'] = '#cookie_path'; // ATTENTION: You should never need this unless the above applies eg: /tbdev
 $INSTALLER09['cookie_domain'] = '#cookie_domain'; // set to eg: .somedomain.com or is subdomain set to: .sub.somedomain.com
+$INSTALLER09['cookie_lifetime'] = 365; // length of time cookies will be valid
 $INSTALLER09['domain'] = '#domain';
+$INSTALLER09['sessionCookieSecure'] = null; // using HTTPS only? then set this
 //== Memcache expires
 $INSTALLER09['expires']['latestuser'] = 0; // 0 = infinite
 $INSTALLER09['expires']['MyPeers_'] = 120; // 60 = 60 seconds

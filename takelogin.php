@@ -26,7 +26,7 @@ global $CURUSER;
 if (!$CURUSER) {
     get_template();
 }
-session_start();
+sessionStart();
 //smth putyn
 $auth_key = array(
     '2d257f64005d740db092a6b91170ab5f'
@@ -140,5 +140,10 @@ $mc1->update_row(false, array(
 $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
 $passh = md5($row["passhash"] . $_SERVER["REMOTE_ADDR"]);
 logincookie($row["id"], $passh);
-header("Location: {$INSTALLER09['baseurl']}/index.php");
-?>
+
+if (isset($_POST['returnto'])) {
+    header("Location: {$INSTALLER09['baseurl']}".urldecode($_POST['returnto']));
+} else {
+    header("Location: {$INSTALLER09['baseurl']}/index.php");
+}
+
