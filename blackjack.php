@@ -568,7 +568,7 @@ if ($game) {
                     //==stats
                     // winner $a
                     $mc1->begin_transaction('userstats_'.$a['userid']);
-                    $mc1->update_row(false, [(
+                    $mc1->update_row(false, [
                         'uploaded' => $update['uploaded'],
                     ]);
                     $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
@@ -801,7 +801,7 @@ if ($game) {
                 $mc1->begin_transaction('userstats_'.$update['winnerid']);
                 $mc1->update_row(false, [
                     'uploaded' => $update['uploaded'],
-                );
+                ]);
                 $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_'.$update['winnerid']);
                 $mc1->update_row(false, [

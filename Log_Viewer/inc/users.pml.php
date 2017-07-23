@@ -1,15 +1,15 @@
 <?php
-/*! pimpmylog - 1.7.7 - 82a1a7504873a6aed42a95a13b42ec8f8d12213f*/
+/*! pimpmylog - 1.7.14 - 025d83c29c6cf8dbb697aa966c9e9f8713ec92f1*/
 /*
  * pimpmylog
  * http://pimpmylog.com
  *
- * Copyright (c) 2014 Potsky, contributors
+ * Copyright (c) 2017 Potsky, contributors
  * Licensed under the GPLv3 license.
  */
 ?><?php
 include_once 'global.inc.php';
-list( $badges , $files ) = config_load();
+list( $badges , $files , $tz ) = config_load();
 
 /*
 |--------------------------------------------------------------------------

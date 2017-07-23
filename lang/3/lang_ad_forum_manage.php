@@ -1,5 +1,5 @@
 <?php
-	$lang = array(
+$lang = array(
 	'fm_overforum'  =>  "Over Forums",
 	'fm_forummanager'   =>  "Administrare forum",
 	'fm_configure'  =>  "Cunfigurări forumuri",

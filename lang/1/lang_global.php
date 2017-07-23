@@ -200,6 +200,6 @@ $lang = array(
 	//conectable statusbar
 	'gl_connectable' => "Connectable",
 	'gl_not_connectable' => "Not Connectable",
-	'gl_na_connectable' => "N/A"	
+	'gl_na_connectable' => "N/A"
 );
 

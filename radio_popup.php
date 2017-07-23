@@ -23,6 +23,7 @@ dbconn(false);
 loggedinorreturn();
 $lang = array_merge(load_language('global'));
 require_once ROOT_DIR . 'radio.php';
+global $CURUSER, $INSTALLER09;
 $HTMLOUT = '';
 $HTMLOUT = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
 		\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">

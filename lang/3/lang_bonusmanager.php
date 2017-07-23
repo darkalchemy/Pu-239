@@ -1,6 +1,6 @@
 <?php
 $lang = array(
-	#bonusmanager 
+	// bonusmanager
 	'bonusmanager_wtf' => "Ceva nu a mers bine'?",
 	'bonusmanager_ysbh' => "Tu nu ar trebui s&#259; fii aici!",
 	'bonusmanager_bm' => "Administrare Bonus",

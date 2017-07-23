@@ -1,5 +1,5 @@
 <?php
-	$lang = array(
+$lang = array(
 	'hnr_settings_err' => "Error",
 	'hnr_settings_denied' => "Acces Denied!",
 	'hnr_settings_this' => "?php\n/**\nThis file created on ",

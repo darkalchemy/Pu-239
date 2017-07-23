@@ -1,10 +1,10 @@
 <?php
-/*! pimpmylog - 1.7.7 - 82a1a7504873a6aed42a95a13b42ec8f8d12213f*/
+/*! pimpmylog - 1.7.14 - 025d83c29c6cf8dbb697aa966c9e9f8713ec92f1*/
 /*
  * pimpmylog
  * http://pimpmylog.com
  *
- * Copyright (c) 2014 Potsky, contributors
+ * Copyright (c) 2017 Potsky, contributors
  * Licensed under the GPLv3 license.
  */
 ?><?php
@@ -64,7 +64,7 @@ if ( is_null( $config_file_name ) ) {
 |--------------------------------------------------------------------------
 |
 */
-list( $badges , $files ) = config_load();
+list( $badges , $files , $tz ) = config_load();
 
 
 /*
@@ -216,6 +216,7 @@ $csrf = csrf_get();
 			badges               = <?php echo json_encode( $badges ); ?>,
 			lemma                = <?php echo json_encode( $lemma ); ?>,
 			geoip_url            = <?php echo json_encode( GEOIP_URL ); ?>,
+			port_url             = <?php echo json_encode( PORT_URL ); ?>,
 			pull_to_refresh      = <?php echo ( PULL_TO_REFRESH === true ) ? 'true' : 'false';?>,
 			file_selector        = <?php echo json_encode( FILE_SELECTOR ); ?>,
 			csrf_token           = <?php echo json_encode( $csrf ); ?>,
@@ -232,6 +233,7 @@ $csrf = csrf_get();
 												$selected  = ( ( isset( $_GET['i'] ) ) && ( $_GET['i'] === $file_id ) ) ? ' active' : '';
 												$notagged .= '<li id="file_' . $file_id . '" data-file="' . $file_id . '" class="file_menup' . $selected . '"><a class="file_menu" href="#" title="';
 												$notagged .= ( isset( $files[ $file_id ][ 'included_from' ] ) ) ? h( sprintf( __('Log file #%s defined in %s' ) , $file_id , $files[ $file_id ]['included_from'] ) ) : h( sprintf( __( 'Log file #%s defined in main configuration file' ) , $file_id ) );
+												$notagged .= " &gt; " . $files[ $file_id ][ 'path' ];
 												$notagged .= '">' . $files[ $file_id ]['display'] . '</a></li>';
 											}
 										} else {
@@ -243,6 +245,7 @@ $csrf = csrf_get();
 												$selected = ( ( isset( $_GET['i'] ) ) && ( $_GET['i'] === $file_id ) ) ? ' active' : '';
 												$tagged  .= '<li id="file_' . $file_id . '" data-file="' . $file_id . '" class="file_menup' . $selected . '"><a class="file_menu" href="#" title="';
 												$tagged  .= ( isset( $files[ $file_id ]['included_from'] ) ) ? h( sprintf( __('Log file #%s defined in %s' ) , $file_id , $files[ $file_id ]['included_from'] ) ) : h( sprintf( __( 'Log file #%s defined in main configuration file' ) , $file_id ) );
+												$tagged  .= " &gt; " . $files[ $file_id ][ 'path' ];
 												$tagged  .= '">' . $files[ $file_id ]['display'] . '</a></li>';
 											}
 											$tagged .= 	'</ul>';
@@ -286,7 +289,7 @@ $csrf = csrf_get();
 												echo '>' . $n . '</option>';
 											}
 										?><?php else : ?><option value=""><?php _e( 'Language cannot be changed' );?></option><?php endif; ?></select></li><li><select id="cog-tz" class="form-control input-sm" title="<?php _h( 'Timezone' );?>"><option value=""><?php _e( 'Change timezone...' );?></option><?php
-										foreach ( $tz_available as $n ) {
+										foreach ( DateTimeZone::listIdentifiers() as $n ) {
 											echo '<option value="' . $n . '"';
 											if ( $n == $tz ) echo ' selected="selected"';
 											echo '>' . $n . '</option>';

@@ -28,5 +28,5 @@ $lang = array(
 	'classcfg_add_new' => "Adaug&#259; o clas&#259; nou&#259;",
 	'classcfg_stdhead' => "Administrare set&#259;ri de utilizator",
 	'classcfg_' => ""
-	);
+);
 

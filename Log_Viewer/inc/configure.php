@@ -1,10 +1,10 @@
 <?php
-/*! pimpmylog - 1.7.7 - 82a1a7504873a6aed42a95a13b42ec8f8d12213f*/
+/*! pimpmylog - 1.7.14 - 025d83c29c6cf8dbb697aa966c9e9f8713ec92f1*/
 /*
  * pimpmylog
  * http://pimpmylog.com
  *
- * Copyright (c) 2014 Potsky, contributors
+ * Copyright (c) 2017 Potsky, contributors
  * Licensed under the GPLv3 license.
  */
 ?><?php
@@ -44,7 +44,8 @@ if ( isset( $_POST['s'] ) ) {
 		|--------------------------------------------------------------------------
 		|
 		*/
-		set_error_handler( function($errno, $errstr, $errfile, $errline, array $errcontext) { throw new ErrorException($errstr, 0, $errno, $errfile, $errline); });
+		function pml_error_handler($errno, $errstr, $errfile, $errline, array $errcontext) { throw new ErrorException($errstr, 0, $errno, $errfile, $errline); };
+		set_error_handler("pml_error_handler");
 		$a = date('U');
 		restore_error_handler();
 

@@ -1,6 +1,6 @@
 <?php
 $lang = array(
-#Texts
+    // Texts
 	'text_puke' => "Puke",
 	'text_nfofor' => "NFO for ",
 	'text_forbest' => "For best visual result, install the ",

@@ -41,4 +41,5 @@ $lang = array(
 	'repset_block' => "Setari Block",
 	'repset_redirecting' => "Redirectare",
 	'repset_clickredirect' => "Clic aici daca nu sunteti redirectat..."
-)
+);
+

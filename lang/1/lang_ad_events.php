@@ -43,4 +43,5 @@ $lang = array (
 	'events_showd' => "Show Dates",
 	'events_save' => "Save Changes",
 	'events_stdhead' => "Events"
-	);
+);
+

@@ -1,5 +1,4 @@
 <?php
-
 $lang = array(
     'bj_title' => 'Blackjack',
     'bj_title1' => 'Blackjack 1GB',

@@ -12,5 +12,5 @@ $lang = array(
     'flush_success3'    =>  " au fost curatate cu succes. Acum poti restarta clientul de torente. Trackerul a fost actualizat si torentele fantoma au fost curatate cu succes. Redirectare la pagina principala in 3...2...1.",
     'flush_fail'    =>  "Oops",
     'flush_fail2'   =>  "Nu faci parte din personal."
- 
 );
+

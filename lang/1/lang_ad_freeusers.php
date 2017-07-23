@@ -20,6 +20,5 @@ $lang = array(
     'freeusers_rem' =>  "Remove",
     'freeusers_togo'    =>  "to go",
     'freeusers_stdhead' =>  "Freeleech Peeps"
- 
-   
 );
+

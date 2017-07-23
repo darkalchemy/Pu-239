@@ -26,13 +26,10 @@ dbconn();
 loggedinorreturn();
 
 $lang = array_merge(load_language('global'), load_language('casino'));
-if ($CURUSER['class'] < UC_POWER_USER) {
-    stderr($lang['gl_sorry'], ''.htmlsafechars($CURUSER['username'])." {$lang['casino_the_moderators_do_not_allow_your_class']} ".get_user_class_name($player)." {$lang['casino_to_play_casino']}");
-}
 //== Config
 $amnt = $nobits = $abcdefgh = 0;
 $dummy = '';
-$player = 'UC_POWER_USER';
+$minclass = 'UC_POWER_USER';
 $maxbetGB = 50;
 $maxbet = $maxbetGB * 1024 * 1024 * 1024;
 $mb_basic = 1024 * 1024;
@@ -56,7 +53,6 @@ $bet_value5 = 1024 * 1024 * 5120;
 $bet_value6 = 1024 * 1024 * 10240;
 $bet_value7 = 1024 * 1024 * 20480;
 $bet_value8 = 1024 * 1024 * 51200;
-$minclass = $player; //== Lowest class allowed to play
 $maxusrbet = 5; //==Amount of bets to allow per person
 $maxtotbet = 30; //== Amount of total open bets allowed
 $alwdebt = 0; //== Allow users to get into debt
@@ -65,6 +61,9 @@ $delold = 1; //== Clear bets once finished
 $sendfrom = 2; //== The id of the user which notification PM's are noted as sent from
 $casino = 'casino.php'; //== Name of file
 //== End of Config
+if ($CURUSER['class'] < UC_POWER_USER) {
+    stderr($lang['gl_sorry'], ''.htmlsafechars($CURUSER['username'])." {$lang['casino_the_moderators_do_not_allow_your_class']} ".get_user_class_name($minclass)." {$lang['casino_to_play_casino']}");
+}
 if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['suspended'] == 'yes') {
     stderr($lang['gl_error'], $lang['casino_your_gaming_rights_have_been_disabled']);
     exit();
@@ -516,20 +515,19 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     $HTMLOUT .= tr($lang['casino_black'], '<input name="color" type="radio" checked="checked" value="black" />', 1);
     $HTMLOUT .= tr($lang['casino_red'], '<input name="color" type="radio" checked="checked" value="red" />', 1);
     $HTMLOUT .= tr($lang['casino_how_much'], "
-            <select name=\"betmb\">
-            <option value=\"{$bet_value1}\">".mksize($bet_value1)."</option>
-            <option value=\"{$bet_value2}\">".mksize($bet_value2)."</option>
-            <option value=\"{$bet_value3}\">".mksize($bet_value3)."</option>
-            <option value=\"{$bet_value4}\">".mksize($bet_value4)."</option>
-            <option value=\"{$bet_value5}\">".mksize($bet_value5)."</option>
-            <option value=\"{$bet_value6}\">".mksize($bet_value6)."</option>
-            <option value=\"{$bet_value7}\">".mksize($bet_value7).'</option>
-            <option value=\"{$bet_value8}\">".mksize($bet_value8).'</option>
-            </select>', 1);
+            <select name='betmb'>
+            <option value='{$bet_value1}'>".mksize($bet_value1)."</option>
+            <option value='{$bet_value2}'>".mksize($bet_value2)."</option>
+            <option value='{$bet_value3}'>".mksize($bet_value3)."</option>
+            <option value='{$bet_value4}'>".mksize($bet_value4)."</option>
+            <option value='{$bet_value5}'>".mksize($bet_value5)."</option>
+            <option value='{$bet_value6}'>".mksize($bet_value6)."</option>
+            <option value='{$bet_value7}'>".mksize($bet_value7)."</option>
+            <option value='{$bet_value8}'>".mksize($bet_value8)."</option>
+            </select>", 1);
+    $real_chance = 2;
     if ($show_real_chance) {
         $real_chance = $cheat_value + 1;
-    } else {
-        $real_chance = 2;
     }
     $HTMLOUT .= tr($lang['casino_your_chance'], '1 : '.$real_chance, 1);
     $HTMLOUT .= tr($lang['casino_you_can_win'], $win_amount.' * stake', 1);
@@ -542,20 +540,19 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     $HTMLOUT .= tr($lang['casino_number'], '<input name="number" type="radio" checked="checked" value="1" />1&#160;&#160;<input name="number" type="radio" value="2" />2&#160;&#160;<input name="number" type="radio" value="3" />3', 1);
     $HTMLOUT .= tr('', '<input name="number" type="radio" value="4" />4&#160;&#160;<input name="number" type="radio" value="5" />5&#160;&#160;<input name="number" type="radio" value="6" />6', 1);
     $HTMLOUT .= tr($lang['casino_how_much'], "
-            <select name=\"betmb\">
-            <option value=\"{$bet_value1}\">".mksize($bet_value1)."</option>
-            <option value=\"{$bet_value2}\">".mksize($bet_value2)."</option>
-            <option value=\"{$bet_value3}\">".mksize($bet_value3)."</option>
-            <option value=\"{$bet_value4}\">".mksize($bet_value4)."</option>
-            <option value=\"{$bet_value5}\">".mksize($bet_value5)."</option>
-            <option value=\"{$bet_value6}\">".mksize($bet_value6)."</option>
-            <option value=\"{$bet_value7}\">".mksize($bet_value7).'</option>
-            <option value=\"{$bet_value8}\">".mksize($bet_value8).'</option>
-            </select>', 1);
+            <select name='betmb'>
+            <option value='{$bet_value1}'>".mksize($bet_value1)."</option>
+            <option value='{$bet_value2}'>".mksize($bet_value2)."</option>
+            <option value='{$bet_value3}'>".mksize($bet_value3)."</option>
+            <option value='{$bet_value4}'>".mksize($bet_value4)."</option>
+            <option value='{$bet_value5}'>".mksize($bet_value5)."</option>
+            <option value='{$bet_value6}'>".mksize($bet_value6)."</option>
+            <option value='{$bet_value7}'>".mksize($bet_value7)."</option>
+            <option value='{$bet_value8}'>".mksize($bet_value8)."</option>
+            </select>", 1);
+    $real_chance = 6;
     if ($show_real_chance) {
         $real_chance = $cheat_value + 5;
-    } else {
-        $real_chance = 6;
     }
     $HTMLOUT .= tr($lang['casino_your_chance'], '1 : '.$real_chance, 1);
     $HTMLOUT .= tr($lang['casino_you_can_win'], $win_amount_on_number.' * stake', 1);

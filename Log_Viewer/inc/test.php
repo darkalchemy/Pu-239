@@ -1,10 +1,10 @@
 <?php
-/*! pimpmylog - 1.7.7 - 82a1a7504873a6aed42a95a13b42ec8f8d12213f*/
+/*! pimpmylog - 1.7.14 - 025d83c29c6cf8dbb697aa966c9e9f8713ec92f1*/
 /*
  * pimpmylog
  * http://pimpmylog.com
  *
- * Copyright (c) 2014 Potsky, contributors
+ * Copyright (c) 2017 Potsky, contributors
  * Licensed under the GPLv3 license.
  */
 ?><?php
@@ -88,7 +88,13 @@ function test( $type , $regex , $match , $types , $logs , $headers = true , $mul
 /**
  * Ajax return for regexp tester
  */
-if ( ( @$_POST['action'] === 'regextest' ) && ( file_exists( $access_file ) ) ) {
+if ( @$_POST['action'] === 'regextest' )
+{
+	if ( ( ! file_exists( $access_file ) ) && ( ! Sentinel::isAdmin() ) )
+	{
+		echo json_encode( array( 'msg' => "Authentication error" ) );
+		die();
+	}
 
 	$return    = array();
 	$match     = @json_decode( $_POST['m'] , true );
@@ -124,6 +130,8 @@ if ( ( @$_POST['action'] === 'regextest' ) && ( file_exists( $access_file ) ) ) 
 	echo json_encode( $return );
 	die();
 }
+
+
 
 
 //////////////////////
@@ -283,7 +291,7 @@ echo test( $type , $regex , $match , $types , $log );
 												echo sprintf( __( 'Generated files with includes for user %s') , '<code>' . $current_user . '</code>' );
 											}
 										?></a></h4></div><div id="collapseFive2" class="panel-collapse collapse"><div class="panel-body"><pre><?php
-										list( $badges , $files ) = config_load();
+										list( $badges , $files , $tz ) = config_load();
 										if ( version_compare( PHP_VERSION , '5.4.0' ) >= 0 ) {
 											echo json_encode( $files , JSON_PRETTY_PRINT );
 										} else {

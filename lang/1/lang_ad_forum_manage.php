@@ -1,5 +1,5 @@
 <?php
-	$lang = array(
+$lang = array(
 	'fm_overforum'  =>  "Over Forums",
 	'fm_forummanager'   =>  "Forum Manager",
 	'fm_configure'  =>  "Configure Forums",
@@ -39,3 +39,4 @@
 	'fm_mp_confirm' =>  "Are you sure you want to delete this forum?",
 	'fm_stdhead'    =>  "Forum Management Tools"
 );
+

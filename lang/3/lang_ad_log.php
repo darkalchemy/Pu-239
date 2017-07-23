@@ -33,5 +33,5 @@ $lang = array(
     'log_user'  =>  "pentru utilizatorul",
     'log_updated'   =>  "a fost actualizat de ",
     'log_edited'    =>  "a fost editat de"
-   
 );
+

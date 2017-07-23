@@ -12,5 +12,5 @@ $lang = array(
     'flush_success3'    =>  "were sucessfully cleaned. You may now restart your torrents, The tracker has been updated, and your ghost torrents where sucessfully flushed. please remember to put the seat down. Redirecting to homepage in 3...2...1.",
     'flush_fail'    =>  "Oops",
     'flush_fail2'   =>  "Your not a member of staff."
- 
 );
+

@@ -1,13 +1,71 @@
 /*PSK*/pml_version_cb(/*PSK*/
 {
-	"version"     : "1.7.7",
-	"versiondevh" : "82a1a7504873a6aed42a95a13b42ec8f8d12213f",
+	"version"     : "1.7.14",
+	"versiondevh" : "025d83c29c6cf8dbb697aa966c9e9f8713ec92f1",
 	"messages"    : {
-		"20141121" : "Thank you to people who have starred the project on GitHub !",
+        "20161214" : "<p>Hi folks!</p><p>Life has been really complicated this last year but I hope things will be fun again and I hope I will have time to update Pimp My Log.</p>",
+        "20141121" : "Thank you to people who have starred the project on GitHub !",
 		"20141012" : "<p>Hi folks!</p><p>This alert box has been added to send important messages to you about <em>Pimp my Log</em>. It is not intended to be a <em>Spam Zone</em>.</p><p>I need to know if I should continue the development of <em>Pimp My Log</em> and how many people are interested in <em>Pimp my Log</em>. Would you just let me know by starring the project in GitHub please?</p><p><iframe src=\"http://pimpmylog.com/github-btn.html?user=potsky&repo=PimpMyLog&type=watch&count=true\" allowtransparency=\"true\" frameborder=\"0\" scrolling=\"0\" width=\"170\" height=\"30\"></iframe></p><p>And don&#8217;t worry, <em>Pimp my Log</em> will be in open-source forever.</p><p><em>potsky</em></p>",
 		"20141011" : "This message will never be shown. Never Gonna Give You Up !"
 	},
 	"changelog"   : {
+        "1.7.14" : {
+            "released" : "2017-04-27",
+            "fixed" : [
+                "unexpected T_FUNCTION, [PHP 5.2] (#118)",
+                "Undefined index: logs (<a href=\"http://support.pimpmylog.com/discussions/problems/162-undefined-index-logs\" target=\"_blank\">more info</a>)"
+            ]
+        },
+        "1.7.13" : {
+            "released" : "2017-02-23",
+            "new" : [
+                "Add configuration examples in the cfg-examples folder (#112)"
+            ],
+            "fixed" : [
+                "globals.USER_TIME_ZONE not working (#114)"
+            ],
+            "changed" : [
+                "Bower dependencies updated (#113)"
+            ]
+        },
+        "1.7.12" : {
+            "released" : "2017-02-16",
+            "new" : [
+                "Add port type for TCP/UDP ports (#111)"
+            ],
+            "fixed" : [
+                "BUG: error with Array Index (contains the log id) (#108)"
+            ]
+        },
+        "1.7.11" : {
+            "released" : "2016-12-14",
+            "new" : [
+                "Search for log paths within sub-directories of specified Apache paths (#103)",
+                "Allow installation to custom installer path (#107)",
+                "Custom configuration file path (#102)"
+            ],
+            "fixed" : [
+                "BUG: fseek() expects parameter 2 to be integer, float given (<a href=\"http://support.pimpmylog.com/discussions/problems/150-bug-fseek-expects-parameter-2-to-be-integer-float-given\" target=\"_blank\">more info</a> and #108)"
+            ]
+        },
+		"1.7.10" : {
+			"released" : "2015-11-24",
+			"fixed" : [
+				"Regex tester error in debugger for authenticated users (<a href=\"http://support.pimpmylog.com/discussions/problems/75-bug-on-debugger\" target=\"_blank\">more info</a>)"
+			]
+		},
+		"1.7.9" : {
+			"released" : "2015-05-27",
+			"new" : [
+				"Support for date formats (parsing): U,c and r"
+			]
+		},
+		"1.7.8" : {
+			"released" : "2015-05-23",
+			"fixed" : [
+				"Restore support for PHP 5.2"
+			]
+		},
 		"1.7.7" : {
 			"released" : "2014-12-23",
 			"fixed" : [

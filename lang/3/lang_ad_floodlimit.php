@@ -11,4 +11,4 @@ $lang = array(
 	'floodlimit_note' => "Nota: Daca nu vreti nici o limita pe clasa de utilizator atunci setati-l pe 0",
 	'floodlimit_save' => "Salveaza",
 	'floodlimit_std' => "Limita Flood"
-	);
+);

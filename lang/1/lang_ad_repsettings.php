@@ -41,4 +41,5 @@ $lang = array(
 	'repset_block' => "Block Settings",
 	'repset_redirecting' => "Redirecting",
 	'repset_clickredirect' => "Click here if not redirected..."
-)
+);
+

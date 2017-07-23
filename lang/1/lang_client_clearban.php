@@ -15,4 +15,5 @@ $lang = array(
     'client_clearban_sure' => 'Are you sure you want to do this? (you will receive no further confirmation).',
     'client_clearban_stderr1' => 'Error',
     'client_clearban_msg4' => 'No clients are banned at the moment'
-)
+);
+

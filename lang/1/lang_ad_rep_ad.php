@@ -1,5 +1,5 @@
 <?php
-	$lang = array(
+$lang = array(
 	//show_level
 	'rep_ad_show_title' => "User Reputation Manager - Overview",
 	'rep_ad_show_html1' => "On this page you can modify the minimum amount required for each reputation level. Make sure you press Update Minimum Levels to save your changes. You cannot set the same minimum amount to more than one level.",

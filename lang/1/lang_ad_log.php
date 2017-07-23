@@ -33,5 +33,5 @@ $lang = array(
     'log_user'  =>  "for User",
     'log_updated'   =>  "was updated by",
     'log_edited'    =>  "was edited by"
-   
 );
+

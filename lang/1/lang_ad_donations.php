@@ -19,4 +19,5 @@ $lang = array(
 	'donate_sendpm' => "PM",
 	'donate_togo' => " To go...",
 	'donate_stdhead' => "Donations"
-	);
+);
+
