@@ -39,10 +39,10 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'PureBasic',
-    'COMMENT_SINGLE' => array( 1 => ";"  ),
-    'COMMENT_MULTI' => array( ),
+    'COMMENT_SINGLE' => array(1 => ';'),
+    'COMMENT_MULTI' => array(),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
     'QUOTEMARKS' => array('"'),
     'ESCAPE_CHAR' => '',
@@ -57,7 +57,7 @@ $language_data = array (
             'ForEver', 'Global', 'Gosub', 'Goto', 'If', 'Import', 'ImportC', 'IncludeBinary', 'IncludeFile', 'IncludePath', 'Interface', 'Macro',
             'NewList', 'Not', 'Or', 'Procedure', 'ProcedureC', 'ProcedureCDLL', 'ProcedureDLL', 'ProcedureReturn', 'Protected', 'Prototype',
             'PrototypeC', 'Read', 'ReDim', 'Repeat', 'Until', 'Restore', 'Return', 'Select', 'Shared', 'Static', 'Step', 'Structure', 'StructureUnion',
-            'Swap', 'To', 'Wend', 'While', 'With', 'XIncludeFile', 'XOr'
+            'Swap', 'To', 'Wend', 'While', 'With', 'XIncludeFile', 'XOr',
             ),
         2 => array(
             // All Functions
@@ -214,7 +214,7 @@ $language_data = array (
             'WritePreferenceQuad', 'WritePreferenceString', 'WriteProgramData', 'WriteProgramString', 'WriteProgramStringN',
             'WriteQuad', 'WriteString', 'WriteStringFormat', 'WriteStringN', 'WriteWord', 'XMLAttributeName', 'XMLAttributeValue',
             'XMLChildCount', 'XMLError', 'XMLErrorLine', 'XMLErrorPosition', 'XMLNodeFromID', 'XMLNodeFromPath', 'XMLNodePath',
-            'XMLNodeType', 'XMLStatus', 'Year', 'ZoomSprite3D'
+            'XMLNodeType', 'XMLStatus', 'Year', 'ZoomSprite3D',
             ),
         3 => array(
             // some ASM instructions
@@ -234,61 +234,61 @@ $language_data = array (
             'SETC', 'SETE', 'SETG', 'SETGE', 'SETL', 'SETLE', 'SETNA', 'SETNAE', 'SETNB', 'SETNC', 'SETNE', 'SETNG',
             'SETNGE', 'SETNL', 'SETNLE', 'SETNO', 'SETNP', 'SETNS', 'SETNZ', 'SETO', 'SETP', 'SETPE', 'SETPO',
             'SETS', 'SETZ', 'SGDT', 'SHL', 'SHLD', 'SHR', 'SHRD', 'SIDT', 'SLDT', 'SMSW', 'STC', 'STD', 'STI',
-            'STOS', 'STR', 'SUB', 'TEST', 'VERR', 'VERW', 'WAIT', 'WBINVD', 'XCHG', 'XLAT', 'XLATB', 'XOR'
-            )
+            'STOS', 'STR', 'SUB', 'TEST', 'VERR', 'VERW', 'WAIT', 'WBINVD', 'XCHG', 'XLAT', 'XLATB', 'XOR',
+            ),
         ),
     'SYMBOLS' => array(
-        '(', ')', '+', '-', '*', '/', '\\', '>', '<', '=', '<=', '>=', '&', '|', '!', '~', '<>', '>>', '<<', '%'
+        '(', ')', '+', '-', '*', '/', '\\', '>', '<', '=', '<=', '>=', '&', '|', '!', '~', '<>', '>>', '<<', '%',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
         1 => false,
         2 => false,
-        3 => false
+        3 => false,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
             1 => 'color: #000066; font-weight: bold;',
             2 => 'color: #0000ff;',
-            3 => 'color: #000fff;'
+            3 => 'color: #000fff;',
             ),
         'COMMENTS' => array(
             1 => 'color: #ff0000; font-style: italic;',
-            'MULTI' => 'color: #ff0000; font-style: italic;'
+            'MULTI' => 'color: #ff0000; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #000066;'
+            0 => 'color: #000066;',
             ),
         'STRINGS' => array(
-            0 => 'color: #009900;'
+            0 => 'color: #009900;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #CC0000;'
+            0 => 'color: #CC0000;',
             ),
         'METHODS' => array(
-            1 => 'color: #006600;'
+            1 => 'color: #006600;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #000066;'
+            0 => 'color: #000066;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
             0 => '',
             1 => '',
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
-        3 => ''
+        3 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
-        1 => '\\'
+        1 => '\\',
         ),
     'REGEXPS' => array(
         ),
@@ -296,8 +296,6 @@ $language_data = array (
     'SCRIPT_DELIMITERS' => array(),
     'HIGHLIGHT_STRICT_BLOCK' => array(
         0 => false,
-        1 => false
-        )
+        1 => false,
+        ),
 );
-
-?>

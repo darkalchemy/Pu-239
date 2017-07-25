@@ -1,6 +1,5 @@
 <?php
 /**
-This file created on Jul 14 2014 00:32:30.
 hit_and_run_settings Config mod by stoner for U-232.
 **/
 $INSTALLER09['firstclass'] = UC_POWER_USER;
@@ -21,4 +20,3 @@ $INSTALLER09['torrentage3'] = 7;
 $INSTALLER09['cainallowed'] = 3;
 $INSTALLER09['caindays'] = 0.5;
 $INSTALLER09['hnr_online'] = 1;
-?>

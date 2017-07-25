@@ -1,22 +1,8 @@
 <?php
 /**
- |--------------------------------------------------------------------------|
- |   https://github.com/Bigjoos/                			    |
- |--------------------------------------------------------------------------|
- |   Licence Info: GPL			                                    |
- |--------------------------------------------------------------------------|
- |   Copyright (C) 2010 U-232 V4					    |
- |--------------------------------------------------------------------------|
- |   A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.   |
- |--------------------------------------------------------------------------|
- |   Project Leaders: Mindless,putyn.					    |
- |--------------------------------------------------------------------------|
-  _   _   _   _   _     _   _   _   _   _   _     _   _   _   _
- / \ / \ / \ / \ / \   / \ / \ / \ / \ / \ / \   / \ / \ / \ / \
-( U | - | 2 | 3 | 2 )-( S | o | u | r | c | e )-( C | o | d | e )
  \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
-require_once (dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php');
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
 $string = $_SERVER['QUERY_STRING'];
 if ($string == '404') {
     $page = 'Page Not Found - 404';
@@ -44,7 +30,7 @@ $htmlout = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
 		\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
 		<html xmlns='http://www.w3.org/1999/xhtml'>
 		<head>
-    <meta http-equiv='refresh' content='5; url=http://" . $domain . "' />
+    <meta http-equiv='refresh' content='5; url=http://".$domain."' />
     <meta name='generator' content='TBDev.net' />
 	  <meta name='MSSmartTagsPreventParsing' content='TRUE' />
 		<title>{$page}</title>

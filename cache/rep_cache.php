@@ -1,4 +1,5 @@
 <?php
+
 $reputations = array(-999999 => 'is infamous around these parts', -50 => 'can only hope to improve', -10 => 'has a little shameless behaviour in the past',
     0 => 'is an unknown quantity at this point',
     15 => 'is on a distinguished road',
@@ -13,4 +14,3 @@ $reputations = array(-999999 => 'is infamous around these parts', -50 => 'can on
     1500 => 'has a brilliant future',
     2000 => 'has a reputation beyond repute',
 );
-?>

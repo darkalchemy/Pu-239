@@ -1,38 +1,24 @@
 <?php
 /**
- |--------------------------------------------------------------------------|
- |   https://github.com/Bigjoos/                			    |
- |--------------------------------------------------------------------------|
- |   Licence Info: GPL			                                    |
- |--------------------------------------------------------------------------|
- |   Copyright (C) 2010 U-232 V4					    |
- |--------------------------------------------------------------------------|
- |   A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.   |
- |--------------------------------------------------------------------------|
- |   Project Leaders: Mindless,putyn.					    |
- |--------------------------------------------------------------------------|
-  _   _   _   _   _     _   _   _   _   _   _     _   _   _   _
- / \ / \ / \ / \ / \   / \ / \ / \ / \ / \ / \   / \ / \ / \ / \
-( U | - | 2 | 3 | 2 )-( S | o | u | r | c | e )-( C | o | d | e )
  \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
-require_once ('emoticons.php');
+require_once 'emoticons.php';
 function source_highlighter($source, $lang2geshi)
 {
-    require_once ('geshi/geshi.php');
+    require_once 'geshi/geshi.php';
     $source = str_replace(array(
-        "&#039;",
-        "&gt;",
-        "&lt;",
-        "&quot;",
-        "&amp;"
-    ) , array(
+        '&#039;',
+        '&gt;',
+        '&lt;',
+        '&quot;',
+        '&amp;',
+    ), array(
         "'",
-        ">",
-        "<",
-        "\"",
-        "&"
-    ) , $source);
+        '>',
+        '<',
+        '"',
+        '&',
+    ), $source);
     $lang2geshi = ($lang2geshi == 'html' ? 'html4strict' : $lang2geshi);
     $geshi = new GeSHi($source, $lang2geshi);
     $geshi->set_header_type(GESHI_HEADER_PRE_VALID);
@@ -43,8 +29,9 @@ function source_highlighter($source, $lang2geshi)
     $geshi->set_link_styles(GESHI_LINK, 'color: #000060;');
     $geshi->set_link_styles(GESHI_HOVER, 'background-color: #f0f000;');
     $return = "<div class=\"codetop\">Code</div><div class=\"codemain\">\n";
-    $return.= $geshi->parse_code();
-    $return.= "\n</div>\n";
+    $return .= $geshi->parse_code();
+    $return .= "\n</div>\n";
+
     return $return;
 }
 //=== Inserts  smilies frame and smilie set: use by $use_this = smilies_frame($smilies,4,':thankyou:');
@@ -57,10 +44,11 @@ function smilies_frame($smilies_set, $number_of_columns, $last_smilie_and_stop)
     $count = 0;
     $emoticons = '';
     while ((list($code, $url) = each($smilies_set)) && $code !== $last_smilie_and_stop) {
-        $emoticons.= (((($count + 1) % $number_of_columns == 0) || $count == 0) ? '<tr>' : '') . '<td class="smilies_frame"><a href="#" title=" ' . $code . ' " class="emoticons"><img src="pic/smilies/' . $url . '" alt="" /></a></td>';
-        $count++;
-        $emoticons.= (($count + 1) % $number_of_columns == 0 ? '</tr>' : '');
+        $emoticons .= (((($count + 1) % $number_of_columns == 0) || $count == 0) ? '<tr>' : '').'<td class="smilies_frame"><a href="#" title=" '.$code.' " class="emoticons"><img src="pic/smilies/'.$url.'" alt="" /></a></td>';
+        ++$count;
+        $emoticons .= (($count + 1) % $number_of_columns == 0 ? '</tr>' : '');
     }
+
     return $emoticons;
 }
 //=== BBcode function will add a BBcode markup text area with smilies frame and tags if Javascript is enabled if not, it will just make a text area
@@ -148,10 +136,10 @@ function BBcode($body)
   <table>
 	<tr>
 		<td class="two;white-space:nowrap;">
-		<textarea id="markItUp" cols="75" rows="18" name="body">' . $body . '</textarea>
+		<textarea id="markItUp" cols="75" rows="18" name="body">'.$body.'</textarea>
 		</td>
 		<td class= "two" valign="top" width="200" align="center"><span class="postbody;white-space:nowrap;">
-    <a href="#BBcode" id="smilies" class="altlink">Smilies</a> ' . ($CURUSER['smile_until'] > 0 ? '<a href="#BBcode" id="custom" class="altlink">Custom</a> ' : '') . ($CURUSER['class'] < UC_STAFF ? '' : '<a href="#BBcode" id="staff" class="altlink">Staff</a> ') . '</span>
+    <a href="#BBcode" id="smilies" class="altlink">Smilies</a> '.($CURUSER['smile_until'] > 0 ? '<a href="#BBcode" id="custom" class="altlink">Custom</a> ' : '').($CURUSER['class'] < UC_STAFF ? '' : '<a href="#BBcode" id="staff" class="altlink">Staff</a> ').'</span>
 		<div class="scroll" id="box_0" style="display:none">
 	<table>
 	<tr>
@@ -160,19 +148,20 @@ function BBcode($body)
 	</table>
 	</div>
   <div class="scroll" id="box_1" style="display:none">
-	<table>' . $emoticons_normal . '</table>
+	<table>'.$emoticons_normal.'</table>
 	</div>
-		' . ($CURUSER['smile_until'] > 0 ? '<div class="scroll" id="box_2" style="display:none">
-	<table>' . $emoticons_custom . '</table>
-	</div>' : '') . ($CURUSER['class'] < UC_STAFF ? '' : '<div class="scroll" id="box_3" style="display:none">
-	<table>' . $emoticons_staff . '</table>
-	</div>') . '
+		'.($CURUSER['smile_until'] > 0 ? '<div class="scroll" id="box_2" style="display:none">
+	<table>'.$emoticons_custom.'</table>
+	</div>' : '').($CURUSER['class'] < UC_STAFF ? '' : '<div class="scroll" id="box_3" style="display:none">
+	<table>'.$emoticons_staff.'</table>
+	</div>').'
 	</td></tr>
 	</table>
-	' . (($CURUSER['class'] < UC_UPLOADER && (isset($_GET['action']) && $_GET['action'] <> 'new_topic')) ? '' : '<span style="text-align: right;">
+	'.(($CURUSER['class'] < UC_UPLOADER && (isset($_GET['action']) && $_GET['action'] != 'new_topic')) ? '' : '<span style="text-align: right;">
 		<a class="altlink"  title="More Options"  id="tool_open" style="font-weight:bold;cursor:pointer;"><img src="pic/forums/more.gif" alt="+" width="18" /> More Options</a>
 		<a class="altlink"  title="Close More Options"  id="tool_close" style="font-weight:bold;cursor:pointer;display:none"><img src="pic/forums/less.gif" alt="-" width="18" /> Close More Options</a>
 	</span>');
+
     return $bbcode;
 }
 //Finds last occurrence of needle in haystack
@@ -182,24 +171,29 @@ function _strlastpos($haystack, $needle, $offset = 0)
     $addLen = strlen($needle);
     $endPos = $offset - $addLen;
     while (true) {
-        if (($newPos = strpos($haystack, $needle, $endPos + $addLen)) === false) break;
+        if (($newPos = strpos($haystack, $needle, $endPos + $addLen)) === false) {
+            break;
+        }
 
         $endPos = $newPos;
     }
+
     return ($endPos >= 0) ? $endPos : false;
 }
-function validate_imgs($s){
-    $start = "(http|https)://";
+function validate_imgs($s)
+{
+    $start = '(http|https)://';
     $end = "+\.(?:jpe?g|png|gif)";
-    preg_match_all("!" . $start . "(.*)" . $end . "!Ui", $s, $result);
+    preg_match_all('!'.$start.'(.*)'.$end.'!Ui', $s, $result);
     $array = $result[0];
-    for ($i = 0; $i < count($array); $i++) {
+    for ($i = 0; $i < count($array); ++$i) {
         $headers = @get_headers($array[$i]);
-        if (strpos($headers[0], "200") === false) {
-            $s = str_replace("[img]" . $array[$i] . "[/img]", "", $s);
-            $s = str_replace("[img=" . $array[$i] . "]", "", $s);
+        if (strpos($headers[0], '200') === false) {
+            $s = str_replace('[img]'.$array[$i].'[/img]', '', $s);
+            $s = str_replace('[img='.$array[$i].']', '', $s);
         }
     }
+
     return $s;
 }
 //=== new test for BBcode errors from http://codesnippets.joyent.com/posts/show/959 by berto
@@ -214,13 +208,14 @@ function check_BBcode($html)
         return $html;
     }
     $openedtags = array_reverse($openedtags);
-    for ($i = 0; $i < $len_opened; $i++) {
+    for ($i = 0; $i < $len_opened; ++$i) {
         if (!in_array($openedtags[$i], $closedtags)) {
-            $html.= '</' . $openedtags[$i] . '>';
+            $html .= '</'.$openedtags[$i].'>';
         } else {
-            unset($closedtags[array_search($openedtags[$i], $closedtags) ]);
+            unset($closedtags[array_search($openedtags[$i], $closedtags)]);
         }
     }
+
     return $html;
 }
 //==format quotes by Retro
@@ -230,19 +225,30 @@ function format_quotes($s)
     $openquotecount = count($openquote = $result[0]);
     preg_match_all('/\\[\/quote\\]/', $s, $result, PREG_PATTERN_ORDER);
     $closequotecount = count($closequote = $result[0]);
-    if ($openquotecount != $closequotecount) return $s; // quote mismatch. Return raw string...
+    if ($openquotecount != $closequotecount) {
+        return $s;
+    } // quote mismatch. Return raw string...
     // Get position of opening quotes
     $openval = array();
-    $pos = - 1;
-    foreach ($openquote as $val) $openval[] = $pos = strpos($s, $val, $pos + 1);
+    $pos = -1;
+    foreach ($openquote as $val) {
+        $openval[] = $pos = strpos($s, $val, $pos + 1);
+    }
     // Get position of closing quotes
     $closeval = array();
-    $pos = - 1;
-    foreach ($closequote as $val) $closeval[] = $pos = strpos($s, $val, $pos + 1);
-    for ($i = 0; $i < count($openval); $i++) if ($openval[$i] > $closeval[$i]) return $s; // Cannot close before opening. Return raw string...
-    $s = str_replace("[quote]", "<b>Quote:</b><br /><table class='main' border='1' cellspacing='0' cellpadding='10'><tr><td style='border: 1px black dotted'>", $s);
-    $s = preg_replace("/\\[quote=(.+?)\\]/", "<b>\\1 wrote:</b><br /><table class='main' border='1' cellspacing='0' cellpadding='10'><tr><td style='border: 1px black dotted'>", $s);
-    $s = str_replace("[/quote]", "</td></tr></table><br />", $s);
+    $pos = -1;
+    foreach ($closequote as $val) {
+        $closeval[] = $pos = strpos($s, $val, $pos + 1);
+    }
+    for ($i = 0; $i < count($openval); ++$i) {
+        if ($openval[$i] > $closeval[$i]) {
+            return $s;
+        }
+    } // Cannot close before opening. Return raw string...
+    $s = str_replace('[quote]', "<b>Quote:</b><br /><table class='main' border='1' cellspacing='0' cellpadding='10'><tr><td style='border: 1px black dotted'>", $s);
+    $s = preg_replace('/\\[quote=(.+?)\\]/', "<b>\\1 wrote:</b><br /><table class='main' border='1' cellspacing='0' cellpadding='10'><tr><td style='border: 1px black dotted'>", $s);
+    $s = str_replace('[/quote]', '</td></tr></table><br />', $s);
+
     return $s;
 }
 function islocal($link)
@@ -255,27 +261,33 @@ function islocal($link)
         'www',
         'http://www',
         'https://',
-        'https://www'
-    ) , '', $INSTALLER09['baseurl']);
+        'https://www',
+    ), '', $INSTALLER09['baseurl']);
     if (false !== stristr($link[0], '[url=')) {
         $url = trim($link[1]);
         $title = trim($link[2]);
         if (false !== stristr($link[2], '[img]')) {
             $flag = true;
-            $title = preg_replace("/\[img](http:\/\/[^\s'\"<>]+(\.(jpg|gif|png)))\[\/img\]/i", "<img src=\"\\1\" alt=\"\" border=\"0\" />", $title);
+            $title = preg_replace("/\[img](http:\/\/[^\s'\"<>]+(\.(jpg|gif|png)))\[\/img\]/i", '<img src="\\1" alt="" border="0" />', $title);
         }
-    } elseif (false !== stristr($link[0], '[url]')) $url = $title = trim($link[1]);
-    else $url = $title = trim($link[2]);
+    } elseif (false !== stristr($link[0], '[url]')) {
+        $url = $title = trim($link[1]);
+    } else {
+        $url = $title = trim($link[2]);
+    }
     if (strlen($title) > $limit && $flag == false) {
         $l[0] = substr($title, 0, ($limit / 2));
         $l[1] = substr($title, strlen($title) - round($limit / 3));
-        $lshort = $l[0] . "..." . $l[1];
-    } else $lshort = $title;
-    return "&nbsp;<a href=\"" . ((stristr($url, $INSTALLER09['url']) !== false) ? "" : "http://nullrefer.com/?") . $url . "\" target=\"_blank\">" . $lshort . "</a>";
+        $lshort = $l[0].'...'.$l[1];
+    } else {
+        $lshort = $title;
+    }
+
+    return '&nbsp;<a href="'.((stristr($url, $INSTALLER09['url']) !== false) ? '' : 'http://nullrefer.com/?').$url.'" target="_blank">'.$lshort.'</a>';
 }
 function format_urls($s)
 {
-    return preg_replace_callback("/(\A|[^=\]'\"a-zA-Z0-9])((http|ftp|https|ftps|irc):\/\/[^<>\s]+)/i", "islocal", $s);
+    return preg_replace_callback("/(\A|[^=\]'\"a-zA-Z0-9])((http|ftp|https|ftps|irc):\/\/[^<>\s]+)/i", 'islocal', $s);
 }
 function format_comment($text, $strip_html = true, $urls = true, $images = true)
 {
@@ -284,10 +296,11 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     unset($text);
     $s = validate_imgs($s);
     $INSTALLER09['url'] = str_replace(array('http://', 'www', 'http://www', 'https://', 'https://www'), '', $INSTALLER09['baseurl']);
-    if(isset($_SERVER['HTTPS']) && (bool)$_SERVER['HTTPS'] == true) 
-    $s = preg_replace('/http:\/\/((?:www\.)?'.$INSTALLER09['url'].')/i', 'https://$1', $s);
-    else 
-    $s = preg_replace('/https:\/\/((?:www\.)?'.$INSTALLER09['url'].')/i', 'http://$1', $s);
+    if (isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] == true) {
+        $s = preg_replace('/http:\/\/((?:www\.)?'.$INSTALLER09['url'].')/i', 'https://$1', $s);
+    } else {
+        $s = preg_replace('/https:\/\/((?:www\.)?'.$INSTALLER09['url'].')/i', 'http://$1', $s);
+    }
     // This fixes the extraneous ;) smilies problem. When there was an html escaped
     // char before a closing bracket - like >), "), ... - this would be encoded
     // to &xxx;), hence all the extra smilies. I created a new :wink: label, removed
@@ -296,16 +309,18 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     $s = str_replace(';)', ':wink:', $s);
     // fix messed up links
     $s = str_replace('&amp;', '&', $s);
-    if ($strip_html) $s = htmlsafechars($s, ENT_QUOTES, charset());
+    if ($strip_html) {
+        $s = htmlsafechars($s, ENT_QUOTES, charset());
+    }
     if (preg_match("#function\s*\((.*?)\|\|#is", $s)) {
-        $s = str_replace(":", "&#58;", $s);
-        $s = str_replace("[", "&#91;", $s);
-        $s = str_replace("]", "&#93;", $s);
-        $s = str_replace(")", "&#41;", $s);
-        $s = str_replace("(", "&#40;", $s);
-        $s = str_replace("{", "&#123;", $s);
-        $s = str_replace("}", "&#125;", $s);
-        $s = str_replace("$", "&#36;", $s);
+        $s = str_replace(':', '&#58;', $s);
+        $s = str_replace('[', '&#91;', $s);
+        $s = str_replace(']', '&#93;', $s);
+        $s = str_replace(')', '&#41;', $s);
+        $s = str_replace('(', '&#40;', $s);
+        $s = str_replace('{', '&#123;', $s);
+        $s = str_replace('}', '&#125;', $s);
+        $s = str_replace('$', '&#36;', $s);
     }
     // BBCode to find...
     $bb_code_in = array(
@@ -332,7 +347,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '/\[list\]((\s|.)+?)\[\/list\]/i',
         '/\[\*\]\s?(.*?)\n/i',
         '/\[li\]\s?(.*?)\n/i',
-        '/\[hr\]/'
+        '/\[hr\]/',
     );
     // And replace them by...
     $bb_code_out = array(
@@ -353,64 +368,79 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<span style="font-family:\'\1\';">\2</span>',
         '<table cellspacing="0" cellpadding="10"><tr><td class="forum_head_dark" style="padding:5px">Spoiler! to view, roll over the spoiler box.</td></tr><tr><td class="spoiler"><a href="#">\\1</a></td></tr></table><br />',
         '<object width="500" height="410"><param name="movie" value="http://www.youtube.com/v/\1"></param><embed src="http://www.youtube.com/v/\\1" type="application/x-shockwave-flash" width="500" height="410"></embed></object>',
-        "<embed style=\"width:500px; height:410px;\" id=\"VideoPlayback\" align=\"middle\" type=\"application/x-shockwave-flash\" src=\"http://video.google.com/googleplayer.swf?docId=\\1\" allowScriptAccess=\"sameDomain\" quality=\"best\" bgcolor=\"#ffffff\" scale=\"noScale\" wmode=\"window\" salign=\"TL\"  FlashVars=\"playerMode=embedded\"> </embed>",
+        '<embed style="width:500px; height:410px;" id="VideoPlayback" align="middle" type="application/x-shockwave-flash" src="http://video.google.com/googleplayer.swf?docId=\\1" allowScriptAccess="sameDomain" quality="best" bgcolor="#ffffff" scale="noScale" wmode="window" salign="TL"  FlashVars="playerMode=embedded"> </embed>',
         '<span style="text-align: center;"><p>Audio From: \1</p><embed type="application/x-shockwave-flash" src="http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=\\1" width="400" height="27" allowscriptaccess="never" quality="best" bgcolor="#ffffff" wmode="window" flashvars="playerMode=embedded" /></span>',
         '<ol class="style" start="\1">\2</ol>',
         '<ul class="style">\1</ul>',
         '<li>\1</li>',
         '<li>\1</li>',
-        '<hr />'
+        '<hr />',
     );
     $s = preg_replace($bb_code_in, $bb_code_out, $s);
-    if ($urls) $s = format_urls($s);
+    if ($urls) {
+        $s = format_urls($s);
+    }
     if (stripos($s, '[url') !== false && $urls) {
-        $s = preg_replace_callback("/\[url=([^()<>\s]+?)\](.+?)\[\/url\]/is", "islocal", $s);
+        $s = preg_replace_callback("/\[url=([^()<>\s]+?)\](.+?)\[\/url\]/is", 'islocal', $s);
         // [url]http://www.example.com[/url]
-        $s = preg_replace_callback("/\[url\]([^()<>\s]+?)\[\/url\]/is", "islocal", $s);
+        $s = preg_replace_callback("/\[url\]([^()<>\s]+?)\[\/url\]/is", 'islocal', $s);
     }
     // Linebreaks
     $s = nl2br($s);
     // Dynamic Vars
     $s = dynamic_user_vars($s);
     // [pre]Preformatted[/pre]
-    if (stripos($s, '[pre]') !== false) $s = preg_replace("/\[pre\]((\s|.)+?)\[\/pre\]/i", "<tt><span style=\"white-space: nowrap;\">\\1</span></tt>", $s);
+    if (stripos($s, '[pre]') !== false) {
+        $s = preg_replace("/\[pre\]((\s|.)+?)\[\/pre\]/i", '<tt><span style="white-space: nowrap;">\\1</span></tt>', $s);
+    }
     // [nfo]NFO-preformatted[/nfo]
-    if (stripos($s, '[nfo]') !== false) $s = preg_replace("/\[nfo\]((\s|.)+?)\[\/nfo\]/i", "<tt><span style=\"white-space: nowrap;\"><font face='MS Linedraw' size='2' style='font-size: 10pt; line-height:" . "10pt'>\\1</font></span></tt>", $s);
+    if (stripos($s, '[nfo]') !== false) {
+        $s = preg_replace("/\[nfo\]((\s|.)+?)\[\/nfo\]/i", "<tt><span style=\"white-space: nowrap;\"><font face='MS Linedraw' size='2' style='font-size: 10pt; line-height:"."10pt'>\\1</font></span></tt>", $s);
+    }
     //==Media tag
     if (stripos($s, '[media=') !== false) {
         $s = preg_replace("#\[media=(youtube|liveleak|GameTrailers|vimeo|imdb)\](.+?)\[/media\]#ies", "_MediaTag('\\2','\\1')", $s);
     }
     if (stripos($s, '[img') !== false && $images) {
         // [img=http://www/image.gif]
-        $s = preg_replace("/\[img\]((http|https):\/\/[^\s'\"<>]+(\.(jpg|gif|png|bmp)))\[\/img\]/i", "<a href=\"\\1\" rel=\"lightbox\"><img src=\"\\1\" border=\"0\" alt=\"\" style=\"max-width: 150px;\" /></a>", $s);
+        $s = preg_replace("/\[img\]((http|https):\/\/[^\s'\"<>]+(\.(jpg|gif|png|bmp)))\[\/img\]/i", '<a href="\\1" rel="lightbox"><img src="\\1" border="0" alt="" style="max-width: 150px;" /></a>', $s);
         // [img=http://www/image.gif]
-        $s = preg_replace("/\[img=((http|https):\/\/[^\s'\"<>]+(\.(gif|jpg|png|bmp)))\]/i", "<a href=\"\\1\" rel=\"lightbox\"><img src=\"\\1\" border=\"0\" alt=\"\" style=\"max-width: 150px;\" /></a>", $s);
+        $s = preg_replace("/\[img=((http|https):\/\/[^\s'\"<>]+(\.(gif|jpg|png|bmp)))\]/i", '<a href="\\1" rel="lightbox"><img src="\\1" border="0" alt="" style="max-width: 150px;" /></a>', $s);
     }
     // [mcom]Text[/mcom]
-    if (stripos($s, '[mcom]') !== false) $s = preg_replace("/\[mcom\](.+?)\[\/mcom\]/is", "<div style=\"font-size: 18pt; line-height: 50%;\">
-   <div style=\"border-color: red; background-color: red; color: white; text-align: center; font-weight: bold; font-size: large;\"><b>\\1</b></div></div>", $s);
+    if (stripos($s, '[mcom]') !== false) {
+        $s = preg_replace("/\[mcom\](.+?)\[\/mcom\]/is", '<div style="font-size: 18pt; line-height: 50%;">
+   <div style="border-color: red; background-color: red; color: white; text-align: center; font-weight: bold; font-size: large;"><b>\\1</b></div></div>', $s);
+    }
     // the [you] tag
     if (stripos($s, '[you]') !== false) {
-    $s = preg_replace("/https?:\/\/[^\s'\"<>]*\[you\][^\s'\"<>]*/i", " ", $s);
-    $s = preg_replace("/\[you\]/i", $CURUSER['username'], $s);
+        $s = preg_replace("/https?:\/\/[^\s'\"<>]*\[you\][^\s'\"<>]*/i", ' ', $s);
+        $s = preg_replace("/\[you\]/i", $CURUSER['username'], $s);
     }
     // [php]code[/php]
-    if (stripos($s, '[php]') !== false) $s = preg_replace("#\[(php|sql|html)\](.+?)\[\/\\1\]#ise", "source_highlighter('\\2','\\1')", $s);
+    if (stripos($s, '[php]') !== false) {
+        $s = preg_replace("#\[(php|sql|html)\](.+?)\[\/\\1\]#ise", "source_highlighter('\\2','\\1')", $s);
+    }
     // Maintain spacing
     $s = str_replace('  ', ' &nbsp;', $s);
-    if (isset($smilies)) foreach ($smilies as $code => $url) {
-        $s = str_replace($code, "<img border='0' src=\"{$INSTALLER09['pic_base_url']}smilies/{$url}\" alt=\"\" />", $s);
+    if (isset($smilies)) {
+        foreach ($smilies as $code => $url) {
+            $s = str_replace($code, "<img border='0' src=\"{$INSTALLER09['pic_base_url']}smilies/{$url}\" alt=\"\" />", $s);
+        }
     }
-    if (isset($staff_smilies)) foreach ($staff_smilies as $code => $url) {
-        $s = str_replace($code, "<img border='0' src=\"{$INSTALLER09['pic_base_url']}smilies/{$url}\" alt=\"\" />", $s);
-        
+    if (isset($staff_smilies)) {
+        foreach ($staff_smilies as $code => $url) {
+            $s = str_replace($code, "<img border='0' src=\"{$INSTALLER09['pic_base_url']}smilies/{$url}\" alt=\"\" />", $s);
+        }
     }
-    if (isset($customsmilies)) foreach ($customsmilies as $code => $url) {
-        $s = str_replace($code, "<img border='0' src=\"{$INSTALLER09['pic_base_url']}smilies/{$url}\" alt=\"\" />", $s);
-        
+    if (isset($customsmilies)) {
+        foreach ($customsmilies as $code => $url) {
+            $s = str_replace($code, "<img border='0' src=\"{$INSTALLER09['pic_base_url']}smilies/{$url}\" alt=\"\" />", $s);
+        }
     }
     $s = format_quotes($s);
     $s = check_BBcode($s);
+
     return $s;
 }
 //=== no bb code in post
@@ -418,9 +448,10 @@ function format_comment_no_bbcode($text, $strip_html = true)
 {
     global $INSTALLER09;
     $s = $text;
-    if ($strip_html)
-    //$s = htmlsafechars($s);
-    $s = htmlsafechars($s, ENT_QUOTES, charset());
+    if ($strip_html) {
+        //$s = htmlsafechars($s);
+        $s = htmlsafechars($s, ENT_QUOTES, charset());
+    }
     // BBCode to find...
     //=== basically will change this into a sort of strip tags but of bbcode shor of the code tag
     $bb_code_in = array(
@@ -450,7 +481,7 @@ function format_comment_no_bbcode($text, $strip_html = true)
         '/\[list=([0-9]+)\]((\s|.)+?)\[\/list\]/i',
         '/\[list\]((\s|.)+?)\[\/list\]/i',
         '/\[\*\]\s?(.*?)\n/i',
-        '/\[hr\]\s?(.*?)\n/i'
+        '/\[hr\]\s?(.*?)\n/i',
     );
     // And replace them by...
     $bb_code_out = array(
@@ -480,19 +511,22 @@ function format_comment_no_bbcode($text, $strip_html = true)
         '\1',
         '\1',
         '\1',
-        '\1'
+        '\1',
     );
     $s = preg_replace($bb_code_in, $bb_code_out, $s);
     // Linebreaks
     $s = nl2br($s);
     // Maintain spacing
     $s = str_replace('  ', '&nbsp;', $s);
+
     return $s;
 }
 function _MediaTag($content, $type)
 {
     global $INSTALLER09;
-    if ($content == '' OR $type == '') return;
+    if ($content == '' or $type == '') {
+        return;
+    }
     $return = '';
     switch ($type) {
     case 'youtube':
@@ -523,13 +557,15 @@ function _MediaTag($content, $type)
     default:
         $return = 'not found';
     }
+
     return $return;
 }
 //=== smilie function
 function get_smile()
 {
     global $CURUSER;
-    return $CURUSER["smile_until"];
+
+    return $CURUSER['smile_until'];
 }
 function user_key_codes($key)
 {
@@ -538,7 +574,9 @@ function user_key_codes($key)
 function dynamic_user_vars($text)
 {
     global $CURUSER, $INSTALLER09;
-    if (!isset($CURUSER)) return;
+    if (!isset($CURUSER)) {
+        return;
+    }
     $zone = 0; // GMT
     //$zone = 3600 * -5; // EST
     $tim = TIME_NOW + $zone;
@@ -552,6 +590,6 @@ function dynamic_user_vars($text)
     $bbvals[] = gmdate('F jS, Y', $tim);
     $bbvals[] = gmdate('g:i A', $tim);
     $bbkeys = array_map('user_key_codes', $bbkeys);
+
     return @preg_replace($bbkeys, $bbvals, $text);
 }
-?>

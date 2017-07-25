@@ -53,10 +53,10 @@ $language_data = array(
             'break', 'case', 'class', 'continue', 'create', 'default', 'do',
             'else', 'end', 'every', 'fail', 'for', 'if', 'import', 'initial', 'initially',
             'invocable', 'link', 'method', 'next', 'not', 'of', 'package', 'procedure', 'record',
-            'repeat', 'return', 'switch', 'suspend', 'then', 'to', 'until', 'while'
+            'repeat', 'return', 'switch', 'suspend', 'then', 'to', 'until', 'while',
             ),
         2 => array(
-            'global', 'local', 'static'
+            'global', 'local', 'static',
             ),
         3 => array(
             'allocated', 'ascii', 'clock', 'collections',
@@ -70,7 +70,7 @@ $language_data = array(
             'trace', 'ucase', 'version', 'col', 'control', 'interval',
             'ldrag', 'lpress', 'lrelease', 'mdrag', 'meta', 'mpress',
             'mrelease', 'rdrag', 'resize', 'row', 'rpress', 'rrelease',
-            'shift', 'window', 'x', 'y'
+            'shift', 'window', 'x', 'y',
             ),
         4 => array(
             'abs', 'acos', 'any', 'args', 'asin', 'atan', 'bal', 'center', 'char',
@@ -86,7 +86,7 @@ $language_data = array(
             'right', 'rmdir', 'rtod', 'runerr', 'seek', 'select', 'send', 'seq', 'serial', 'set',
             'setenv', 'sort', 'sortf', 'sql', 'sqrt', 'stat', 'staticnames', 'stop', 'string', 'system', 'tab',
             'table', 'tan', 'trap', 'trim', 'truncate', 'type', 'upto', 'utime', 'variable', 'where',
-            'write', 'writes'
+            'write', 'writes',
             ),
         5 => array(
             'Active', 'Alert', 'Bg', 'Clip', 'Clone', 'Color', 'ColorValue',
@@ -98,11 +98,11 @@ $language_data = array(
             'PaletteKey', 'Pattern', 'Pending', 'Pixel', 'PopMatrix', 'PushMatrix', 'PushRotate',
             'PushScale', 'PushTranslate', 'QueryPointer', 'Raise', 'ReadImage', 'Refresh', 'Rotate',
             'Scale', 'Texcoord', 'TextWidth', 'Texture', 'Translate', 'Uncouple', 'WAttrib',
-            'WDefault', 'WFlush', 'WindowContents', 'WriteImage', 'WSync'
+            'WDefault', 'WFlush', 'WindowContents', 'WriteImage', 'WSync',
             ),
         6 => array(
             'define', 'include', 'ifdef', 'ifndef', 'else', 'endif', 'error',
-            'line', 'undef'
+            'line', 'undef',
             ),
         7 => array(
             '_V9', '_AMIGA', '_ACORN', '_CMS', '_MACINTOSH', '_MSDOS_386',
@@ -111,19 +111,19 @@ $language_data = array(
             '_EVENT_MONITOR', '_EXTERNAL_FUNCTIONS', '_KEYBOARD_FUNCTIONS', '_LARGE_INTEGERS',
             '_MULTITASKING', '_PIPES', '_RECORD_IO', '_SYSTEM_FUNCTION', '_MESSAGING', '_GRAPHICS',
             '_X_WINDOW_SYSTEM', '_MS_WINDOWS', '_WIN32', '_PRESENTATION_MGR', '_ARM_FUNCTIONS',
-            '_DOS_FUNCTIONS'
+            '_DOS_FUNCTIONS',
             ),
         8 => array(
-            'line')
+            'line', ),
         ),
     'SYMBOLS' => array(
         1 => array(
             '(', ')', '{', '}', '[', ']', '+', '-', '*', '/', '\\', '%', '=', '<', '>', '!', '^',
-            '&', '|', '?', ':', ';', ',', '.', '~', '@'
+            '&', '|', '?', ':', ';', ',', '.', '~', '@',
             ),
         2 => array(
-            '$(', '$)', '$<', '$>'
-            )
+            '$(', '$)', '$<', '$>',
+            ),
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -134,7 +134,7 @@ $language_data = array(
         5 => true,
         6 => true,
         7 => true,
-        8 => true
+        8 => true,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
@@ -145,32 +145,32 @@ $language_data = array(
             5 => 'color: #b1b100;',
             6 => 'color: #b1b100;',
             7 => 'color: #b1b100;',
-            8 => 'color: #b1b100;'
+            8 => 'color: #b1b100;',
             ),
         'COMMENTS' => array(
             1 => 'color: #666666; font-style: italic;',
-            'MULTI' => 'color: #666666; font-style: italic;'
+            'MULTI' => 'color: #666666; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #009900;'
+            0 => 'color: #009900;',
             ),
         'STRINGS' => array(
-            0 => 'color: #0000ff;'
+            0 => 'color: #0000ff;',
             ),
         'NUMBERS' => array(
             0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
-            0 => 'color: #004000;'
+            0 => 'color: #004000;',
             ),
         'SYMBOLS' => array(
-            1 => 'color: #339933;'
+            1 => 'color: #339933;',
             ),
         'REGEXPS' => array(),
-        'SCRIPT' => array()
+        'SCRIPT' => array(),
         ),
     'URLS' => array(
         1 => '',
@@ -180,7 +180,7 @@ $language_data = array(
         5 => '',
         6 => '',
         7 => '',
-        8 => ''
+        8 => '',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(1 => '.'),
@@ -191,20 +191,18 @@ $language_data = array(
     'PARSER_CONTROL' => array(
         'KEYWORDS' => array(
             3 => array(
-                'DISALLOWED_BEFORE' => '(?<=&amp;)'
+                'DISALLOWED_BEFORE' => '(?<=&amp;)',
                 ),
             4 => array(
                 'DISALLOWED_BEFORE' => "(?<![a-zA-Z0-9_\"\'])",
-                'DISALLOWED_AFTER' => "(?![a-zA-Z0-9_\"\'])"
+                'DISALLOWED_AFTER' => "(?![a-zA-Z0-9_\"\'])",
                 ),
             6 => array(
-                'DISALLOWED_BEFORE' => '(?<=\$)'
+                'DISALLOWED_BEFORE' => '(?<=\$)',
                 ),
             8 => array(
-                'DISALLOWED_BEFORE' => '(?<=#)'
-                )
-            )
-        )
+                'DISALLOWED_BEFORE' => '(?<=#)',
+                ),
+            ),
+        ),
 );
-
-?>

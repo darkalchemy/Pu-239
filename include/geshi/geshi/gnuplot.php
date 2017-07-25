@@ -34,15 +34,14 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Gnuplot',
     'COMMENT_SINGLE' => array(1 => '#'),
     'COMMENT_MULTI' => array(),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
     'QUOTEMARKS' => array('`', '"', "'"),
     'ESCAPE_CHAR' => '\\',
-    'NUMBERS' =>
-        GESHI_NUMBER_INT_BASIC |
+    'NUMBERS' => GESHI_NUMBER_INT_BASIC |
         GESHI_NUMBER_FLT_NONSCI |
         GESHI_NUMBER_FLT_SCI_SHORT |
         GESHI_NUMBER_FLT_SCI_ZERO,
@@ -59,7 +58,7 @@ $language_data = array (
             'raise', 'replot', 'reread', 'reset',
             'save', 'set', 'shell', 'show',
             'splot', 'system', 'test', 'unset',
-            'update'
+            'update',
             ),
         2 => array(
             // set commands as returned by `help set`
@@ -132,7 +131,7 @@ $language_data = array (
             'GPVAL_TERM', 'GPVAL_TERMOPTIONS', 'GPVAL_OUTPUT',
             'GPVAL_VERSION', 'GPVAL_PATcHLEVEL', 'GPVAL_COMPILE_OPTIONS',
             'MOUSE_KEY', 'MOUSE_X', 'MOUSE_X2', 'MOUSE_Y', 'MOUSE_Y2',
-            'MOUSE_BUTTON', 'MOUSE_SHIFT', 'MOUSE_ALT', 'MOUSE_CTRL'
+            'MOUSE_BUTTON', 'MOUSE_SHIFT', 'MOUSE_ALT', 'MOUSE_CTRL',
             ),
         4 => array(
             // predefined functions `help functions`
@@ -195,7 +194,6 @@ $language_data = array (
             'vectors', 'xerrorbars', 'xerrorlines', 'xyerrorbars',
             'xyerrorlines', 'yerrorbars', 'yerrorlines',
 
-
             // terminals `help terminals`
             'aed512', 'aed767', 'aifm', 'bitgraph',
             'cgm', 'corel', 'dumb', 'dxf',
@@ -212,18 +210,18 @@ $language_data = array (
             'svg', 'tandy-60dpi', 'tek40xx', 'tek410x',
             'texdraw', 'tgif', 'tkcanvas', 'tpic',
             'vttek', 'x11', 'xlib',
-            )
+            ),
         ),
     'REGEXPS' => array(
         //Variable assignment
         0 => "([a-zA-Z_][a-zA-Z0-9_]*)\s*=",
         //Numbers with unit
-        1 => "(?<=^|\s)([0-9]*\.?[0-9]+\s*cm)"
+        1 => "(?<=^|\s)([0-9]*\.?[0-9]+\s*cm)",
         ),
     'SYMBOLS' => array(
         '-', '+', '~', '!', '$',
         '*', '/', '%', '=', '<', '>', '&',
-        '^', '|', '.', 'eq', 'ne', '?:', ':', '`', ','
+        '^', '|', '.', 'eq', 'ne', '?:', ':', '`', ',',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -231,7 +229,7 @@ $language_data = array (
         2 => true,
         3 => true,
         4 => true,
-        5 => true
+        5 => true,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
@@ -239,41 +237,41 @@ $language_data = array (
             2 => 'color: #990000;',
             3 => 'color: #550000;',
             4 => 'color: #7a0874;',
-            5 => 'color: #448888;'
+            5 => 'color: #448888;',
             ),
         'COMMENTS' => array(
             1 => 'color: #adadad; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight:bold;'
+            0 => 'color: #000099; font-weight:bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #000099; font-weight:bold;'
+            0 => 'color: #000099; font-weight:bold;',
             ),
         'STRINGS' => array(
             0 => 'color: #0000ff;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #000; font-weight: bold;'
+            0 => 'color: #000; font-weight: bold;',
             ),
         'REGEXPS' => array(
             0 => 'color: #007800;',
-            1 => 'color: #cc66cc;'
+            1 => 'color: #cc66cc;',
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => 'http://www.google.com/search?q=%22set+{FNAME}%22+site%3Ahttp%3A%2F%2Fwww.gnuplot.info%2Fdocs%2F&amp;btnI=lucky',
         3 => '',
         4 => '',
-        5 => ''
+        5 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -286,11 +284,9 @@ $language_data = array (
     'PARSER_CONTROL' => array(
         'KEYWORDS' => array(
             4 => array(
-                'DISALLOWED_AFTER' =>  "(?![\.\-a-zA-Z0-9_%])"
-            )
-        )
+                'DISALLOWED_AFTER' => "(?![\.\-a-zA-Z0-9_%])",
+            ),
+        ),
     ),
-    'TAB_WIDTH' => 4
+    'TAB_WIDTH' => 4,
 );
-
-?>

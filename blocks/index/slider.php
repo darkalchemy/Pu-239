@@ -1,5 +1,6 @@
 <?php
-$htmlout.= <<<HTML
+
+$htmlout .= <<<HTML
 <br/><br/>
 <div class = "scontainer">
   <div class="centerwrapper">
@@ -24,6 +25,3 @@ $htmlout.= <<<HTML
 				
 
 HTML;
-
-
-?>

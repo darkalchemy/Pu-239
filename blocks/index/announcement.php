@@ -8,7 +8,7 @@
    $HTMLOUT .= "<div class='headline'>{$lang['index_announce']}</div>
    <div class='headbody'>
    <table width='100%' border='1' cellspacing='0' cellpadding='5'>
-   <tr><td bgcolor='transparent'><b><font color='red'>{$lang['index_ann_title']}&nbsp;: 
+   <tr><td bgcolor='transparent'><b><font color='red'>{$lang['index_ann_title']}&nbsp;:
    ".htmlsafechars($ann_subject)."</font></b></td></tr>
    <tr><td style='padding: 10px; background:lightgrey'>
    ".format_comment($ann_body)."

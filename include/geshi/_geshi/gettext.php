@@ -36,7 +36,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'GNU Gettext',
     'COMMENT_SINGLE' => array('#:', '#.', '#,', '#|', '#'),
     'COMMENT_MULTI' => array(),
@@ -54,7 +54,7 @@ $language_data = array (
     ),
     'STYLES' => array(
         'KEYWORDS' => array(
-            1 => 'color: #000000; font-weight: bold;'
+            1 => 'color: #000000; font-weight: bold;',
         ),
         'COMMENTS' => array(
             0 => 'color: #000099;',
@@ -64,24 +64,24 @@ $language_data = array (
             4 => 'color: #666666; font-style: italic;',
         ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
         ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
         ),
         'REGEXPS' => array(),
         'SYMBOLS' => array(),
         'NUMBERS' => array(
-            0 => 'color: #000099;'
+            0 => 'color: #000099;',
         ),
         'METHODS' => array(),
         'SCRIPT' => array(),
         'BRACKETS' => array(
-            0 => 'color: #000099;'
+            0 => 'color: #000099;',
         ),
     ),
     'URLS' => array(
-        1 => ''
+        1 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(),
@@ -93,5 +93,3 @@ $language_data = array (
         ),
     'TAB_WIDTH' => 4,
 );
-
-?>

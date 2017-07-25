@@ -37,7 +37,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'T-SQL',
     'COMMENT_SINGLE' => array(1 => '--'),
     'COMMENT_MULTI' => array('/*' => '*/'),
@@ -91,59 +91,59 @@ $language_data = array (
             */
 
             //Configuration Functions
-            '@@DATEFIRST','@@OPTIONS','@@DBTS','@@REMSERVER','@@LANGID','@@SERVERNAME',
-            '@@LANGUAGE','@@SERVICENAME','@@LOCK_TIMEOUT','@@SPID','@@MAX_CONNECTIONS','@@TEXTSIZE',
-            '@@MAX_PRECISION','@@VERSION','@@NESTLEVEL',
+            '@@DATEFIRST', '@@OPTIONS', '@@DBTS', '@@REMSERVER', '@@LANGID', '@@SERVERNAME',
+            '@@LANGUAGE', '@@SERVICENAME', '@@LOCK_TIMEOUT', '@@SPID', '@@MAX_CONNECTIONS', '@@TEXTSIZE',
+            '@@MAX_PRECISION', '@@VERSION', '@@NESTLEVEL',
 
             //Cursor Functions
-            '@@CURSOR_ROWS','@@FETCH_STATUS',
+            '@@CURSOR_ROWS', '@@FETCH_STATUS',
 
             //Date and Time Functions
-            'DATEADD','DATEDIFF','DATENAME','DATEPART','DAY','GETDATE','GETUTCDATE','MONTH','YEAR',
+            'DATEADD', 'DATEDIFF', 'DATENAME', 'DATEPART', 'DAY', 'GETDATE', 'GETUTCDATE', 'MONTH', 'YEAR',
 
             //Mathematical Functions
-            'ABS','DEGREES','RAND','ACOS','EXP','ROUND','ASIN','FLOOR','SIGN',
-            'ATAN','LOG','SIN','ATN2','LOG10','SQUARE','CEILING','PI','SQRT','COS',
-            'POWER','TAN','COT','RADIANS',
+            'ABS', 'DEGREES', 'RAND', 'ACOS', 'EXP', 'ROUND', 'ASIN', 'FLOOR', 'SIGN',
+            'ATAN', 'LOG', 'SIN', 'ATN2', 'LOG10', 'SQUARE', 'CEILING', 'PI', 'SQRT', 'COS',
+            'POWER', 'TAN', 'COT', 'RADIANS',
 
             //Meta Data Functions
-            'COL_LENGTH','fn_listextendedproperty','COL_NAME','FULLTEXTCATALOGPROPERTY',
-            'COLUMNPROPERTY','FULLTEXTSERVICEPROPERTY','DATABASEPROPERTY','INDEX_COL',
-            'DATABASEPROPERTYEX','INDEXKEY_PROPERTY','DB_ID','INDEXPROPERTY','DB_NAME',
-            'OBJECT_ID','FILE_ID','OBJECT_NAME','FILE_NAME','OBJECTPROPERTY','FILEGROUP_ID',
-            '@@PROCID','FILEGROUP_NAME','SQL_VARIANT_PROPERTY','FILEGROUPPROPERTY',
-            'TYPEPROPERTY','FILEPROPERTY',
+            'COL_LENGTH', 'fn_listextendedproperty', 'COL_NAME', 'FULLTEXTCATALOGPROPERTY',
+            'COLUMNPROPERTY', 'FULLTEXTSERVICEPROPERTY', 'DATABASEPROPERTY', 'INDEX_COL',
+            'DATABASEPROPERTYEX', 'INDEXKEY_PROPERTY', 'DB_ID', 'INDEXPROPERTY', 'DB_NAME',
+            'OBJECT_ID', 'FILE_ID', 'OBJECT_NAME', 'FILE_NAME', 'OBJECTPROPERTY', 'FILEGROUP_ID',
+            '@@PROCID', 'FILEGROUP_NAME', 'SQL_VARIANT_PROPERTY', 'FILEGROUPPROPERTY',
+            'TYPEPROPERTY', 'FILEPROPERTY',
 
             //Security Functions
-            'fn_trace_geteventinfo','IS_SRVROLEMEMBER','fn_trace_getfilterinfo','SUSER_SID',
-            'fn_trace_getinfo','SUSER_SNAME','fn_trace_gettable','USER_ID','HAS_DBACCESS',
+            'fn_trace_geteventinfo', 'IS_SRVROLEMEMBER', 'fn_trace_getfilterinfo', 'SUSER_SID',
+            'fn_trace_getinfo', 'SUSER_SNAME', 'fn_trace_gettable', 'USER_ID', 'HAS_DBACCESS',
             'IS_MEMBER',
 
             //String Functions
-            'ASCII','NCHAR','SOUNDEX','CHAR','PATINDEX','SPACE','CHARINDEX',
-            'REPLACE','STR','DIFFERENCE','QUOTENAME','STUFF','LEFT','REPLICATE',
-            'SUBSTRING','LEN','REVERSE','UNICODE','LOWER','RIGHT','UPPER','LTRIM',
+            'ASCII', 'NCHAR', 'SOUNDEX', 'CHAR', 'PATINDEX', 'SPACE', 'CHARINDEX',
+            'REPLACE', 'STR', 'DIFFERENCE', 'QUOTENAME', 'STUFF', 'LEFT', 'REPLICATE',
+            'SUBSTRING', 'LEN', 'REVERSE', 'UNICODE', 'LOWER', 'RIGHT', 'UPPER', 'LTRIM',
             'RTRIM',
 
             //System Functions
-            'APP_NAME','COLLATIONPROPERTY','@@ERROR','fn_helpcollations',
-            'fn_servershareddrives','fn_virtualfilestats','FORMATMESSAGE',
-            'GETANSINULL','HOST_ID','HOST_NAME','IDENT_CURRENT','IDENT_INCR',
-            'IDENT_SEED','@@IDENTITY','ISDATE','ISNUMERIC','PARSENAME','PERMISSIONS',
-            '@@ROWCOUNT','ROWCOUNT_BIG','SCOPE_IDENTITY','SERVERPROPERTY','SESSIONPROPERTY',
-            'STATS_DATE','@@TRANCOUNT','USER_NAME',
+            'APP_NAME', 'COLLATIONPROPERTY', '@@ERROR', 'fn_helpcollations',
+            'fn_servershareddrives', 'fn_virtualfilestats', 'FORMATMESSAGE',
+            'GETANSINULL', 'HOST_ID', 'HOST_NAME', 'IDENT_CURRENT', 'IDENT_INCR',
+            'IDENT_SEED', '@@IDENTITY', 'ISDATE', 'ISNUMERIC', 'PARSENAME', 'PERMISSIONS',
+            '@@ROWCOUNT', 'ROWCOUNT_BIG', 'SCOPE_IDENTITY', 'SERVERPROPERTY', 'SESSIONPROPERTY',
+            'STATS_DATE', '@@TRANCOUNT', 'USER_NAME',
 
             //System Statistical Functions
-            '@@CONNECTIONS','@@PACK_RECEIVED','@@CPU_BUSY','@@PACK_SENT',
-            '@@TIMETICKS','@@IDLE','@@TOTAL_ERRORS','@@IO_BUSY',
-            '@@TOTAL_READ','@@PACKET_ERRORS','@@TOTAL_WRITE',
+            '@@CONNECTIONS', '@@PACK_RECEIVED', '@@CPU_BUSY', '@@PACK_SENT',
+            '@@TIMETICKS', '@@IDLE', '@@TOTAL_ERRORS', '@@IO_BUSY',
+            '@@TOTAL_READ', '@@PACKET_ERRORS', '@@TOTAL_WRITE',
 
             //Text and Image Functions
-            'TEXTPTR','TEXTVALID',
+            'TEXTPTR', 'TEXTVALID',
 
             //Aggregate functions
             'AVG', 'MAX', 'BINARY_CHECKSUM', 'MIN', 'CHECKSUM', 'SUM', 'CHECKSUM_AGG',
-            'STDEV', 'COUNT', 'STDEVP', 'COUNT_BIG', 'VAR', 'GROUPING', 'VARP'
+            'STDEV', 'COUNT', 'STDEVP', 'COUNT_BIG', 'VAR', 'GROUPING', 'VARP',
             ),
         3 => array(
             /*
@@ -300,7 +300,7 @@ $language_data = array (
             'sp_cursoroption', 'sp_cursorprepare', 'sp_cursorunprepare', 'sp_execute', 'sp_prepare', 'sp_unprepare',
 
             //Misc
-            'sp_createorphan', 'sp_droporphans', 'sp_reset_connection', 'sp_sdidebug'
+            'sp_createorphan', 'sp_droporphans', 'sp_reset_connection', 'sp_sdidebug',
             ),
         4 => array(
             //Function/sp's higlighted brown.
@@ -312,7 +312,7 @@ $language_data = array (
     'SYMBOLS' => array(
         '!', '!=', '%', '&', '&&', '(', ')', '*', '+', '-', '/', '<', '<<', '<=',
         '<=>', '<>', '=', '>', '>=', '>>', '^', 'ALL', 'AND', 'ANY', 'BETWEEN', 'CROSS',
-        'EXISTS', 'IN', 'JOIN', 'LIKE', 'NOT', 'NULL', 'OR', 'OUTER', 'SOME', '|', '||', '~'
+        'EXISTS', 'IN', 'JOIN', 'LIKE', 'NOT', 'NULL', 'OR', 'OUTER', 'SOME', '|', '||', '~',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -326,45 +326,45 @@ $language_data = array (
             1 => 'color: #0000FF;',
             2 => 'color: #FF00FF;',
             3 => 'color: #AF0000;',
-            4 => 'color: #AF0000;'
+            4 => 'color: #AF0000;',
             ),
         'COMMENTS' => array(
             1 => 'color: #008080;',
-            'MULTI' => 'color: #008080;'
+            'MULTI' => 'color: #008080;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #808080;'
+            0 => 'color: #808080;',
             ),
         'STRINGS' => array(
-            0 => 'color: #FF0000;'
+            0 => 'color: #FF0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #000;'
+            0 => 'color: #000;',
             ),
         'METHODS' => array(
             1 => 'color: #202020;',
-            2 => 'color: #202020;'
+            2 => 'color: #202020;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #808080;'
+            0 => 'color: #808080;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
         3 => '',
-        4 => ''
+        4 => '',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 => '.'
+        1 => '.',
         ),
     'REGEXPS' => array(
         ),
@@ -372,7 +372,5 @@ $language_data = array (
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
-        )
+        ),
 );
-
-?>

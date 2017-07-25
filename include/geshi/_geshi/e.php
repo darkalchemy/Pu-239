@@ -56,27 +56,27 @@ $language_data = array(
     'KEYWORDS' => array(
         // builtin control structures
         1 => array(
-            'accum', 'break', 'try', 'continue', 'if', 'while', 'for', 'switch'
+            'accum', 'break', 'try', 'continue', 'if', 'while', 'for', 'switch',
             ),
 
         // control structures subsidiary keywords
         2 => array(
-            'catch', 'else', 'finally', 'in', 'exit'
+            'catch', 'else', 'finally', 'in', 'exit',
             ),
 
         // named operators
         3 => array(
-            'fn', 'via'
+            'fn', 'via',
             ),
 
         // variable/function/object definers
         4 => array(
-            'def', 'bind', 'var'
+            'def', 'bind', 'var',
             ),
 
         // object definition subsidiary keywords
         5 => array(
-            'extends', 'as', 'implements', 'guards', 'match', 'to', 'method'
+            'extends', 'as', 'implements', 'guards', 'match', 'to', 'method',
             ),
 
         // builtin nouns in safeEnv
@@ -97,7 +97,7 @@ $language_data = array(
             '__comparer', 'Ref', 'E', 'promiseAllFulfilled', 'EIO', 'help',
             'safeScope', '__eval', 'resource__uriGetter', 'type__uriGetter',
             'import__uriGetter', 'elib__uriGetter', 'elang__uriGetter',
-            'opaque__uriGetter'
+            'opaque__uriGetter',
             ),
 
         // builtin nouns in privilegedEnv
@@ -110,7 +110,7 @@ $language_data = array(
             'unsafe__uriGetter', 'currentVat', 'rune', 'awt__uriGetter',
             'swing__uriGetter', 'JPanel__quasiParser', 'swt__uriGetter',
             'currentDisplay', 'swtGrid__quasiParser', 'swtGrid`',
-            'privilegedScope'
+            'privilegedScope',
             ),
 
         // reserved keywords
@@ -128,13 +128,13 @@ $language_data = array(
             'signed', 'static', 'struct', 'suchthat', 'supports', 'suspect',
             'suspects', 'synchronized', 'this', 'transient', 'truncatable',
             'typedef', 'unsigned', 'unum', 'uses', 'using', 'utf8', 'utf16',
-            'virtual', 'volatile', 'wstring'
-            )
+            'virtual', 'volatile', 'wstring',
+            ),
         ),
     'SYMBOLS' => array(
         1 => array(
-            '(', ')', '{', '}', '[', ']', '+', '-', '*', '/', '%', '=', '<', '>', '!', '^', '&', '|', '?', ':', ';', ','
-            )
+            '(', ')', '{', '}', '[', ']', '+', '-', '*', '/', '%', '=', '<', '>', '!', '^', '&', '|', '?', ':', ';', ',',
+            ),
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -145,7 +145,7 @@ $language_data = array(
         5 => true,
         6 => true,
         7 => true,
-        8 => true
+        8 => true,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
@@ -156,32 +156,32 @@ $language_data = array(
             5 => 'color: #b1b100;',
             6 => 'color: #b1b100;',
             7 => 'color: #b1b100;',
-            8 => 'color: #b1b100;'
+            8 => 'color: #b1b100;',
             ),
         'COMMENTS' => array(
             1 => 'color: #666666; font-style: italic;',
-            'MULTI' => 'color: #666666; font-style: italic;'
+            'MULTI' => 'color: #666666; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #009900;'
+            0 => 'color: #009900;',
             ),
         'STRINGS' => array(
-            0 => 'color: #0000ff;'
+            0 => 'color: #0000ff;',
             ),
         'NUMBERS' => array(
             0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
-            0 => 'color: #004000;'
+            0 => 'color: #004000;',
             ),
         'SYMBOLS' => array(
-            1 => 'color: #339933;'
+            1 => 'color: #339933;',
             ),
         'REGEXPS' => array(),
-        'SCRIPT' => array()
+        'SCRIPT' => array(),
         ),
     'URLS' => array(
         1 => 'http://wiki.erights.org/wiki/{FNAME}',
@@ -191,18 +191,16 @@ $language_data = array(
         5 => 'http://wiki.erights.org/wiki/{FNAME}',
         6 => 'http://wiki.erights.org/wiki/{FNAME}',
         7 => 'http://wiki.erights.org/wiki/{FNAME}',
-        8 => 'http://wiki.erights.org/wiki/{FNAME}'
+        8 => 'http://wiki.erights.org/wiki/{FNAME}',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
         1 => '.',
         2 => '<-',
-        3 => '::'
+        3 => '::',
         ),
     'REGEXPS' => array(),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(),
-    'HIGHLIGHT_STRICT_BLOCK' => array()
+    'HIGHLIGHT_STRICT_BLOCK' => array(),
 );
-
-?>

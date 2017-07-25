@@ -37,7 +37,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'MOS 6502 (6510) ACME Cross Assembler format',
     'COMMENT_SINGLE' => array(1 => ';'),
     'COMMENT_MULTI' => array(),
@@ -58,7 +58,7 @@ $language_data = array (
         /* Index Registers, yes the 6502 has other registers by they are only
         * accessable by specific opcodes. The 65816 also has access to the stack pointer S. */
         2 => array(
-            'x', 'y', 's'
+            'x', 'y', 's',
             ),
         /* Directives or "pseudo opcodes" as defined by ACME 0.93 file AllPOs.txt. */
         3 => array(
@@ -105,7 +105,7 @@ $language_data = array (
         /* 65c02 instructions, MOS added a few (much needed) instructions in the CMOS version of the 6502, but stupidly removed the undocumented/illegal opcodes.
         *  ACME 0.93 does not support the rmb0-7 and smb0-7 instructions (they are currently rem'ed out).  */
         5 => array(
-            'bra', 'phx', 'phy', 'plx', 'ply', 'stz', 'trb', 'tsb'
+            'bra', 'phx', 'phy', 'plx', 'ply', 'stz', 'trb', 'tsb',
             ),
         /* 65816 instructions. */
         6 => array(
@@ -124,9 +124,7 @@ $language_data = array (
         8 => array(
             'not', 'div', 'mod', 'xor', 'or', 'sin', 'cos', 'tan',
             'arcsin', 'arccos', 'arctan', 'int', 'float',
-
             ),
-
         ),
     'SYMBOLS' => array(
 //        '[', ']', '(', ')', '{', '}',    // These are already defined by GeSHi as BRACKETS.
@@ -161,32 +159,31 @@ $language_data = array (
             1 => 'color: #999; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #009; font-weight: bold;'
+            0 => 'color: #009; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #000;'
+            0 => 'color: #000;',
             ),
         'STRINGS' => array(
-            0 => 'color: #080;'
+            0 => 'color: #080;',
             ),
         'NUMBERS' => array(
-            GESHI_NUMBER_INT_BASIC          => 'color: #f00;',
-            GESHI_NUMBER_HEX_PREFIX_DOLLAR  => 'color: #f00;',
-            GESHI_NUMBER_HEX_PREFIX         => 'color: #f00;',
+            GESHI_NUMBER_INT_BASIC => 'color: #f00;',
+            GESHI_NUMBER_HEX_PREFIX_DOLLAR => 'color: #f00;',
+            GESHI_NUMBER_HEX_PREFIX => 'color: #f00;',
             GESHI_NUMBER_BIN_PREFIX_PERCENT => 'color: #f00;',
-            GESHI_NUMBER_FLT_NONSCI         => 'color: #f00;',
+            GESHI_NUMBER_FLT_NONSCI => 'color: #f00;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #080;'
+            0 => 'color: #080;',
             ),
         'REGEXPS' => array(
-            0   => 'color: #f00;'
-            , 1 => 'color: #933;'
+            0 => 'color: #f00;', 1 => 'color: #933;',
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
@@ -201,8 +198,7 @@ $language_data = array (
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
         ),
-    'NUMBERS' =>
-        GESHI_NUMBER_INT_BASIC |
+    'NUMBERS' => GESHI_NUMBER_INT_BASIC |
         GESHI_NUMBER_FLT_NONSCI |
         GESHI_NUMBER_HEX_PREFIX_DOLLAR |
         GESHI_NUMBER_HEX_PREFIX |
@@ -222,9 +218,7 @@ $language_data = array (
     'TAB_WIDTH' => 8,
     'PARSER_CONTROL' => array(
         'NUMBERS' => array(
-            'PRECHECK_RX' => '/[\da-fA-F\.\$\%]/'
-            )
-        )
+            'PRECHECK_RX' => '/[\da-fA-F\.\$\%]/',
+            ),
+        ),
 );
-
-?>

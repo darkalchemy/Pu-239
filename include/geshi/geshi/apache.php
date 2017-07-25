@@ -47,7 +47,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Apache configuration',
     'COMMENT_SINGLE' => array(1 => '#'),
     'COMMENT_MULTI' => array(),
@@ -57,66 +57,66 @@ $language_data = array (
     'KEYWORDS' => array(
         /*keywords*/
         1 => array(
-            'accessconfig','accessfilename','action','addalt',
-            'addaltbyencoding','addaltbytype','addcharset',
-            'adddefaultcharset','adddescription',
-            'addencoding','addhandler','addicon','addiconbyencoding',
-            'addiconbytype','addlanguage','addmodule','addmoduleinfo',
-            'addtype','agentlog','alias','aliasmatch',
-            'allow','allowconnect','allowoverride','anonymous',
-            'anonymous_authoritative','anonymous_logemail','anonymous_mustgiveemail',
-            'anonymous_nouserid','anonymous_verifyemail','authauthoritative',
-            'authdbauthoritative','authdbgroupfile','authdbmauthoritative',
-            'authdbmgroupfile','authdbuserfile','authdbmuserfile',
-            'authdigestfile','authgroupfile','authname','authtype',
-            'authuserfile','bindaddress','browsermatch','browsermatchnocase',
-            'bs2000account','cachedefaultexpire','cachedirlength','cachedirlevels',
-            'cacheforcecompletion','cachegcinterval','cachelastmodifiedfactor','cachemaxexpire',
-            'cachenegotiateddocs','cacheroot','cachesize','checkspelling',
-            'clearmodulelist','contentdigest','cookieexpires','cookielog',
-            'cookietracking','coredumpdirectory','customlog',
-            'defaulticon','defaultlanguage','defaulttype','define',
-            'deny','directory','directorymatch','directoryindex',
-            'documentroot','errordocument','errorlog','example',
-            'expiresactive','expiresbytype','expiresdefault','extendedstatus',
-            'fancyindexing','files','filesmatch','forcetype',
-            'group','header','headername','hostnamelookups',
-            'identitycheck','ifdefine','ifmodule','imapbase',
-            'imapdefault','imapmenu','include','indexignore','indexorderdefault',
-            'indexoptions','keepalive','keepalivetimeout','languagepriority',
-            'limit','limitexcept','limitrequestbody','limitrequestfields',
-            'limitrequestfieldsize','limitrequestline','listen','listenbacklog',
-            'loadfile','loadmodule','location','locationmatch',
-            'lockfile','logformat','loglevel','maxclients',
-            'maxkeepaliverequests','maxrequestsperchild','maxspareservers','maxsparethreads','metadir',
-            'metafiles','metasuffix','mimemagicfile','minspareservers','minsparethreads',
-            'mmapfile','namevirtualhost','nocache','options','order',
-            'passenv','php_admin_value','php_admin_flag','php_value','pidfile','port','proxyblock','proxydomain',
-            'proxypass','proxypassreverse','proxyreceivebuffersize','proxyremote',
-            'proxyrequests','proxyvia','qsc','readmename',
-            'redirect','redirectmatch','redirectpermanent','redirecttemp',
-            'refererignore','refererlog','removehandler','require',
-            'resourceconfig','rewritebase','rewritecond','rewriteengine',
-            'rewritelock','rewritelog','rewriteloglevel','rewritemap',
-            'rewriteoptions','rewriterule','rlimitcpu','rlimitmem',
-            'rlimitnproc','satisfy','scoreboardfile','script',
-            'scriptalias','scriptaliasmatch','scriptinterpretersource','scriptlog',
-            'scriptlogbuffer','scriptloglength','sendbuffersize',
-            'serveradmin','serveralias','servername','serverpath',
-            'serverroot','serversignature','servertokens','servertype',
-            'setenv','setenvif','setenvifnocase','sethandler',
-            'singlelisten','startservers','threadsperchild','timeout',
-            'transferlog','typesconfig','unsetenv','usecanonicalname',
-            'user','userdir','virtualhost','virtualdocumentroot',
-            'virtualdocumentrootip','virtualscriptalias','virtualscriptaliasip',
-            'xbithack','from','all'
+            'accessconfig', 'accessfilename', 'action', 'addalt',
+            'addaltbyencoding', 'addaltbytype', 'addcharset',
+            'adddefaultcharset', 'adddescription',
+            'addencoding', 'addhandler', 'addicon', 'addiconbyencoding',
+            'addiconbytype', 'addlanguage', 'addmodule', 'addmoduleinfo',
+            'addtype', 'agentlog', 'alias', 'aliasmatch',
+            'allow', 'allowconnect', 'allowoverride', 'anonymous',
+            'anonymous_authoritative', 'anonymous_logemail', 'anonymous_mustgiveemail',
+            'anonymous_nouserid', 'anonymous_verifyemail', 'authauthoritative',
+            'authdbauthoritative', 'authdbgroupfile', 'authdbmauthoritative',
+            'authdbmgroupfile', 'authdbuserfile', 'authdbmuserfile',
+            'authdigestfile', 'authgroupfile', 'authname', 'authtype',
+            'authuserfile', 'bindaddress', 'browsermatch', 'browsermatchnocase',
+            'bs2000account', 'cachedefaultexpire', 'cachedirlength', 'cachedirlevels',
+            'cacheforcecompletion', 'cachegcinterval', 'cachelastmodifiedfactor', 'cachemaxexpire',
+            'cachenegotiateddocs', 'cacheroot', 'cachesize', 'checkspelling',
+            'clearmodulelist', 'contentdigest', 'cookieexpires', 'cookielog',
+            'cookietracking', 'coredumpdirectory', 'customlog',
+            'defaulticon', 'defaultlanguage', 'defaulttype', 'define',
+            'deny', 'directory', 'directorymatch', 'directoryindex',
+            'documentroot', 'errordocument', 'errorlog', 'example',
+            'expiresactive', 'expiresbytype', 'expiresdefault', 'extendedstatus',
+            'fancyindexing', 'files', 'filesmatch', 'forcetype',
+            'group', 'header', 'headername', 'hostnamelookups',
+            'identitycheck', 'ifdefine', 'ifmodule', 'imapbase',
+            'imapdefault', 'imapmenu', 'include', 'indexignore', 'indexorderdefault',
+            'indexoptions', 'keepalive', 'keepalivetimeout', 'languagepriority',
+            'limit', 'limitexcept', 'limitrequestbody', 'limitrequestfields',
+            'limitrequestfieldsize', 'limitrequestline', 'listen', 'listenbacklog',
+            'loadfile', 'loadmodule', 'location', 'locationmatch',
+            'lockfile', 'logformat', 'loglevel', 'maxclients',
+            'maxkeepaliverequests', 'maxrequestsperchild', 'maxspareservers', 'maxsparethreads', 'metadir',
+            'metafiles', 'metasuffix', 'mimemagicfile', 'minspareservers', 'minsparethreads',
+            'mmapfile', 'namevirtualhost', 'nocache', 'options', 'order',
+            'passenv', 'php_admin_value', 'php_admin_flag', 'php_value', 'pidfile', 'port', 'proxyblock', 'proxydomain',
+            'proxypass', 'proxypassreverse', 'proxyreceivebuffersize', 'proxyremote',
+            'proxyrequests', 'proxyvia', 'qsc', 'readmename',
+            'redirect', 'redirectmatch', 'redirectpermanent', 'redirecttemp',
+            'refererignore', 'refererlog', 'removehandler', 'require',
+            'resourceconfig', 'rewritebase', 'rewritecond', 'rewriteengine',
+            'rewritelock', 'rewritelog', 'rewriteloglevel', 'rewritemap',
+            'rewriteoptions', 'rewriterule', 'rlimitcpu', 'rlimitmem',
+            'rlimitnproc', 'satisfy', 'scoreboardfile', 'script',
+            'scriptalias', 'scriptaliasmatch', 'scriptinterpretersource', 'scriptlog',
+            'scriptlogbuffer', 'scriptloglength', 'sendbuffersize',
+            'serveradmin', 'serveralias', 'servername', 'serverpath',
+            'serverroot', 'serversignature', 'servertokens', 'servertype',
+            'setenv', 'setenvif', 'setenvifnocase', 'sethandler',
+            'singlelisten', 'startservers', 'threadsperchild', 'timeout',
+            'transferlog', 'typesconfig', 'unsetenv', 'usecanonicalname',
+            'user', 'userdir', 'virtualhost', 'virtualdocumentroot',
+            'virtualdocumentrootip', 'virtualscriptalias', 'virtualscriptaliasip',
+            'xbithack', 'from', 'all',
             ),
         /*keywords 2*/
         2 => array(
-            'on','off','standalone','inetd','indexes',
-            'force-response-1.0','downgrade-1.0','nokeepalive',
-            'ndexes','includes','followsymlinks','none',
-            'x-compress','x-gzip'
+            'on', 'off', 'standalone', 'inetd', 'indexes',
+            'force-response-1.0', 'downgrade-1.0', 'nokeepalive',
+            'ndexes', 'includes', 'followsymlinks', 'none',
+            'x-compress', 'x-gzip',
         ),
         /*keywords 3*/
         3 => array(
@@ -131,11 +131,11 @@ $language_data = array (
             'LocationMatch',
             'Proxy',
             'ProxyMatch',
-            'VirtualHost'
-        )
+            'VirtualHost',
+        ),
     ),
     'SYMBOLS' => array(
-        '+', '-'
+        '+', '-',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -153,31 +153,31 @@ $language_data = array (
             1 => 'color: #adadad; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #339933;'
+            0 => 'color: #339933;',
             ),
         'STRINGS' => array(
-            0 => 'color: #7f007f;'
+            0 => 'color: #7f007f;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #008000;'
+            0 => 'color: #008000;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
-        3 => ''
+        3 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -192,15 +192,13 @@ $language_data = array (
     'PARSER_CONTROL' => array(
         'ENABLE_FLAGS' => array(
             'BRACKETS' => GESHI_NEVER,
-            'SYMBOLS' => GESHI_NEVER
+            'SYMBOLS' => GESHI_NEVER,
         ),
         'KEYWORDS' => array(
             3 => array(
                 'DISALLOWED_BEFORE' => '(?<=&lt;|&lt;\/)',
                 'DISALLOWED_AFTER' => '(?=\s|\/|&gt;)',
-            )
-        )
-    )
+            ),
+        ),
+    ),
 );
-
-?>

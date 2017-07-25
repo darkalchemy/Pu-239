@@ -1,25 +1,11 @@
 <?php
 /**
- |--------------------------------------------------------------------------|
- |   https://github.com/Bigjoos/                			    |
- |--------------------------------------------------------------------------|
- |   Licence Info: GPL			                                    |
- |--------------------------------------------------------------------------|
- |   Copyright (C) 2010 U-232 V4					    |
- |--------------------------------------------------------------------------|
- |   A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.   |
- |--------------------------------------------------------------------------|
- |   Project Leaders: Mindless,putyn.					    |
- |--------------------------------------------------------------------------|
-  _   _   _   _   _     _   _   _   _   _   _     _   _   _   _
- / \ / \ / \ / \ / \   / \ / \ / \ / \ / \ / \   / \ / \ / \ / \
-( U | - | 2 | 3 | 2 )-( S | o | u | r | c | e )-( C | o | d | e )
  \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 /**********************************************************
 New 2010 forums that don't suck for TB based sites....
-pretty much coded page by page, but coming from a 
-history ot TBsource and TBDev and the many many 
+pretty much coded page by page, but coming from a
+history ot TBsource and TBDev and the many many
 coders who helped develop them over time.
 proper credits to follow :)
 
@@ -30,7 +16,7 @@ Powered by Bunnies!!!
 **********************************************************/
 if (!defined('BUNNY_FORUMS')) {
     $HTMLOUT = '';
-    $HTMLOUT.= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
         <head>
         <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
@@ -50,7 +36,7 @@ if (!is_valid_id($post_id) || !is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
 //=== make sure it's their post or they are staff... this may change
-$res_post = sql_query('SELECT p.user_id, p.staff_lock, u.id, u.class, u.suspended, t.locked, t.user_id AS owner_id, t.first_post, f.min_class_read, f.min_class_write, f.id AS forum_id FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id LEFT JOIN topics AS t ON t.id = p.topic_id LEFT JOIN forums AS f ON t.forum_id = f.id WHERE p.id=' . sqlesc($post_id));
+$res_post = sql_query('SELECT p.user_id, p.staff_lock, u.id, u.class, u.suspended, t.locked, t.user_id AS owner_id, t.first_post, f.min_class_read, f.min_class_write, f.id AS forum_id FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id LEFT JOIN topics AS t ON t.id = p.topic_id LEFT JOIN forums AS f ON t.forum_id = f.id WHERE p.id='.sqlesc($post_id));
 $arr_post = mysqli_fetch_assoc($res_post);
 //=== if sysop let them lock the post
 $can_lock = ($CURUSER['class'] == UC_MAX);
@@ -73,15 +59,14 @@ if ($arr_post['staff_lock'] == 1 && $CURUSER['class'] < UC_MAX) {
 }
 //=== ok... they made it this far, so let's lock the damned post!
 if ($mode == 'lock') {
-    sql_query('UPDATE posts SET status = \'postlocked\', staff_lock=1 WHERE id = ' . sqlesc($post_id));
+    sql_query('UPDATE posts SET status = \'postlocked\', staff_lock=1 WHERE id = '.sqlesc($post_id));
     //=== ok, all done here, send them back! \o/
-    header('Location: forums.php?action=view_topic&post_id=' . $post_id . '&topic_id=' . $topic_id);
+    header('Location: forums.php?action=view_topic&post_id='.$post_id.'&topic_id='.$topic_id);
     die();
 }
 if ($mode == 'unlock') {
-    sql_query('UPDATE posts SET status = \'ok\', staff_lock=0 WHERE id = ' . sqlesc($post_id));
+    sql_query('UPDATE posts SET status = \'ok\', staff_lock=0 WHERE id = '.sqlesc($post_id));
     //=== ok, all done here, send them back! \o/
-    header('Location: forums.php?action=view_topic&post_id=' . $post_id . '&topic_id=' . $topic_id);
+    header('Location: forums.php?action=view_topic&post_id='.$post_id.'&topic_id='.$topic_id);
     die();
 }
-?>

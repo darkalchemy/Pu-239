@@ -36,7 +36,7 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  ************************************************************************************/
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'HQ9+',
     'COMMENT_SINGLE' => array(),
     'COMMENT_MULTI' => array(),
@@ -47,10 +47,10 @@ $language_data = array (
     'KEYWORDS' => array(
         ),
     'SYMBOLS' => array(
-        'H', 'Q', '9', '+', 'h', 'q'
+        'H', 'Q', '9', '+', 'h', 'q',
         ),
     'CASE_SENSITIVE' => array(
-        GESHI_COMMENTS => false
+        GESHI_COMMENTS => false,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
@@ -58,24 +58,24 @@ $language_data = array (
         'COMMENTS' => array(
             ),
         'BRACKETS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #a16000;'
+            0 => 'color: #a16000;',
             ),
         'ESCAPE_CHAR' => array(
             ),
         'SCRIPT' => array(
             ),
         'REGEXPS' => array(
-            )
+            ),
         ),
     'URLS' => array(
         ),
@@ -96,9 +96,7 @@ $language_data = array (
             'COMMENTS' => GESHI_NEVER,
             'STRINGS' => GESHI_NEVER,
             'REGEXPS' => GESHI_NEVER,
-            'NUMBERS' => GESHI_NEVER
-            )
-        )
+            'NUMBERS' => GESHI_NEVER,
+            ),
+        ),
 );
-
-?>

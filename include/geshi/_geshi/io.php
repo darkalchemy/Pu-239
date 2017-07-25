@@ -38,7 +38,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Io',
     'COMMENT_SINGLE' => array(1 => '//', 2 => '#'),
     'COMMENT_MULTI' => array('/*' => '*/'),
@@ -48,7 +48,7 @@ $language_data = array (
     'KEYWORDS' => array(
         1 => array(
             'and', 'break', 'else', 'elseif', 'exit', 'for', 'foreach', 'if', 'ifFalse', 'ifNil',
-            'ifTrue', 'or', 'pass', 'raise', 'return', 'then', 'try', 'wait', 'while', 'yield'
+            'ifTrue', 'or', 'pass', 'raise', 'return', 'then', 'try', 'wait', 'while', 'yield',
             ),
         2 => array(
             'activate', 'activeCoroCount', 'asString', 'block', 'catch', 'clone', 'collectGarbage',
@@ -58,7 +58,7 @@ $language_data = array (
             'raiseResumable', 'removeSlot', 'resend', 'resume', 'schedulerSleepSeconds', 'self',
             'sender', 'setSchedulerSleepSeconds', 'setSlot', 'shallowCopy', 'slotNames', 'super',
             'system', 'thisBlock', 'thisContext', 'thisMessage', 'type', 'uniqueId', 'updateSlot',
-            'write'
+            'write',
             ),
         3 => array(
             'Array', 'AudioDevice', 'AudioMixer', 'Block', 'Box', 'Buffer', 'CFunction', 'CGI',
@@ -70,11 +70,11 @@ $language_data = array (
             'NULL', 'Nil', 'Nop', 'Notifiction', 'Number', 'Object', 'OpenGL', 'Point', 'Protos',
             'Regex', 'SGMLTag', 'SQLite', 'Server', 'ShowMessage', 'SleepyCat', 'SleepyCatCursor',
             'Socket', 'SocketManager', 'Sound', 'Soup', 'Store', 'String', 'Tree', 'UDPSender',
-            'UDPReceiver', 'URL', 'User', 'Warning', 'WeakLink'
-            )
+            'UDPReceiver', 'URL', 'User', 'Warning', 'WeakLink',
+            ),
         ),
     'SYMBOLS' => array(
-        '(', ')', '[', ']', '{', '}', '!', '@', '%', '&', '*', '|', '/', '<', '>'
+        '(', ')', '[', ']', '{', '}', '!', '@', '%', '&', '*', '|', '/', '<', '>',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -86,42 +86,42 @@ $language_data = array (
         'KEYWORDS' => array(
             1 => 'color: #b1b100;',
             2 => 'color: #000000; font-weight: bold;',
-            3 => 'color: #000066;'
+            3 => 'color: #000066;',
             ),
         'COMMENTS' => array(
             1 => 'color: #808080; font-style: italic;',
             2 => 'color: #808080; font-style: italic;',
-            'MULTI' => 'color: #808080; font-style: italic;'
+            'MULTI' => 'color: #808080; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
             1 => 'color: #006600;',
-            2 => 'color: #006600;'
+            2 => 'color: #006600;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
-            0 => ''
-            )
+            0 => '',
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
-        3 => ''
+        3 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -132,7 +132,5 @@ $language_data = array (
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
-        )
+        ),
 );
-
-?>

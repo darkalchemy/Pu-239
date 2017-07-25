@@ -37,27 +37,27 @@ $language_data = array(
     'COMMENT_SINGLE' => array(1 => '%'),
     'COMMENT_MULTI' => array('/*' => '*/'),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
-    'QUOTEMARKS' => array('"','\''),
+    'QUOTEMARKS' => array('"', '\''),
     'ESCAPE_CHAR' => '\\',
     'NUMBERS' => array(),
     'KEYWORDS' => array(
         1 => array(
-            'declare','local','in','end','proc','fun','functor','require','prepare',
-            'import','export','define','at','case','then','else','of','elseof',
-            'elsecase','if','elseif','class','from','prop','attr','feat','meth',
-            'self','true','false','unit','div','mod','andthen','orelse','cond','or',
-            'dis','choice','not','thread','try','catch','finally','raise','lock',
-            'skip','fail','for','do'
-            )
+            'declare', 'local', 'in', 'end', 'proc', 'fun', 'functor', 'require', 'prepare',
+            'import', 'export', 'define', 'at', 'case', 'then', 'else', 'of', 'elseof',
+            'elsecase', 'if', 'elseif', 'class', 'from', 'prop', 'attr', 'feat', 'meth',
+            'self', 'true', 'false', 'unit', 'div', 'mod', 'andthen', 'orelse', 'cond', 'or',
+            'dis', 'choice', 'not', 'thread', 'try', 'catch', 'finally', 'raise', 'lock',
+            'skip', 'fail', 'for', 'do',
+            ),
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
-        1 => true
+        1 => true,
         ),
     'SYMBOLS' => array(
         '@', '!', '|', '<-', ':=', '<', '>', '=<', '>=', '<=', '#', '~', '.',
         '*', '-', '+', '/', '<:', '>:', '=:', '=<:', '>=:', '\\=', '\\=:', ',',
-        '!!', '...', '==', '::', ':::'
+        '!!', '...', '==', '::', ':::',
         ),
     'STYLES' => array(
         'REGEXPS' => array(
@@ -65,28 +65,28 @@ $language_data = array(
             2 => 'color: #00a030;',
             3 => 'color: #bc8f8f;',
             4 => 'color: #0000ff;',
-            5 => 'color: #a020f0;'
+            5 => 'color: #a020f0;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #bc8f8f;'
+            0 => 'color: #bc8f8f;',
             ),
         'KEYWORDS' => array(
-            1 => 'color: #a020f0;'
+            1 => 'color: #a020f0;',
             ),
         'COMMENTS' => array(
             1 => 'color: #B22222;',
-            'MULTI' => 'color: #B22222;'
+            'MULTI' => 'color: #B22222;',
             ),
         'STRINGS' => array(
-            0 => 'color: #bc8f8f;'
+            0 => 'color: #bc8f8f;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #a020f0;'
+            0 => 'color: #a020f0;',
             ),
         'BRACKETS' => array(),
         'NUMBERS' => array(),
         'METHODS' => array(),
-        'SCRIPT' => array()
+        'SCRIPT' => array(),
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(),
@@ -94,7 +94,7 @@ $language_data = array(
     'SCRIPT_DELIMITERS' => array(),
     'HIGHLIGHT_STRICT_BLOCK' => array(),
     'URLS' => array(
-        1 => ''
+        1 => '',
         ),
     'REGEXPS' => array(
         // function and procedure definition
@@ -103,7 +103,7 @@ $language_data = array(
             GESHI_REPLACE => '\4',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '\1\2\3',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
         // class definition
         2 => array(
@@ -111,15 +111,15 @@ $language_data = array(
             GESHI_REPLACE => '\3\4',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '\1\2',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
         // single character
         3 => array(
-            GESHI_SEARCH => "&amp;.",
+            GESHI_SEARCH => '&amp;.',
             GESHI_REPLACE => '\0',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
         // method definition
         4 => array(
@@ -127,7 +127,7 @@ $language_data = array(
             GESHI_REPLACE => '\3',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '\1\2',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
         // highlight "[]"
         // ([] is actually a keyword, but that causes problems in validation; putting it into symbols doesn't work.)
@@ -136,9 +136,7 @@ $language_data = array(
             GESHI_REPLACE => '\0',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
-            )
-        )
+            GESHI_AFTER => '',
+            ),
+        ),
 );
-
-?>

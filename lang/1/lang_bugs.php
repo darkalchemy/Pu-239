@@ -1,4 +1,5 @@
 <?php
+
 //Language file to bugs.php by Froggaard :]
 $lang = array(
     'header' => 'Bugs',
@@ -39,4 +40,3 @@ $lang = array(
     'delete_when' => 'All solved bugs will be deleted after 2 weeks (from added date).',
     'no_bugs' => 'There is no bugs =]. Good coder we have xD',
 );
-

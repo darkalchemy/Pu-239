@@ -38,7 +38,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'KiXtart',
     'COMMENT_SINGLE' => array(1 => ';'),
     'COMMENT_MULTI' => array('/*' => '*/'),
@@ -257,11 +257,11 @@ $language_data = array (
             'AddProgramGroup',
             'AddPrinterConnection',
             'AddKey',
-            'Abs'
-            )
+            'Abs',
+            ),
         ),
     'SYMBOLS' => array(
-        '(', ')', '[', ']', '?', ':', '+', '-', '*', '/', '&', '|', '^', '~', '<', '>', '='
+        '(', ')', '[', ']', '?', ':', '+', '-', '*', '/', '&', '|', '^', '~', '<', '>', '=',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -273,44 +273,44 @@ $language_data = array (
         'KEYWORDS' => array(
             1 => 'color: #b1b100;',
             2 => 'color: #000000; font-weight: bold;',
-            3 => 'color: #000066;'
+            3 => 'color: #000066;',
             ),
         'COMMENTS' => array(
             1 => 'color: #808080; font-style: italic;',
-            'MULTI' => 'color: #808080; font-style: italic;'
+            'MULTI' => 'color: #808080; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
             1 => 'color: #006600;',
-            2 => 'color: #006600;'
+            2 => 'color: #006600;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => 'http://www.kixtart.org/manual/Commands/{FNAMEL}.htm',
         2 => '',
-        3 => 'http://www.kixtart.org/manual/Functions/{FNAMEL}.htm'
+        3 => 'http://www.kixtart.org/manual/Functions/{FNAMEL}.htm',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 => '.'
+        1 => '.',
         ),
     'REGEXPS' => array(
         ),
@@ -321,9 +321,7 @@ $language_data = array (
         0 => true,
         1 => true,
         2 => true,
-        3 => true
+        3 => true,
         ),
-    'TAB_WIDTH' => 4
+    'TAB_WIDTH' => 4,
 );
-
-?>

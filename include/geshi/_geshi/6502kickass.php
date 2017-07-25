@@ -37,7 +37,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'MOS 6502 (6510) Kick Assembler format',
     'COMMENT_SINGLE' => array(1 => '//'),
     'COMMENT_MULTI' => array('/*' => '*/'),
@@ -60,12 +60,12 @@ $language_data = array (
             ),
         /* DTV additional Opcodes. */
         2 => array(
-            'bra', 'sac', 'sir'
+            'bra', 'sac', 'sir',
             ),
         /* Index Registers, yes the 6502 has other registers by they are only
         * accessable by specific opcodes. */
         3 => array(
-            'x', 'y'
+            'x', 'y',
             ),
         /* Directives. */
         4 => array(
@@ -90,7 +90,6 @@ $language_data = array (
             'cmdLineVars',
             'getX', 'getY', 'getZ',                                             // Vector functions.
             'RotationMatrix', 'ScaleMatrix', 'MoveMatrix', 'PerspectiveMatrix', // Matrix functions.
-
             ),
 
         /* Kick Assembler 3.13 Math Functions. */
@@ -112,15 +111,14 @@ $language_data = array (
         /* Kick Assembler 3.13 Constants. */
         8 => array(
             'PI', 'E',                                                         // Math Constants.
-            'AT_ABSOLUTE' , 'AT_ABSOLUTEX' , 'AT_ABSOLUTEY' , 'AT_IMMEDIATE',  // Pseudo Commands Constants.
-            'AT_INDIRECT' , 'AT_IZEROPAGEX' , 'AT_IZEROPAGEY' , 'AT_NONE',
+            'AT_ABSOLUTE', 'AT_ABSOLUTEX', 'AT_ABSOLUTEY', 'AT_IMMEDIATE',  // Pseudo Commands Constants.
+            'AT_INDIRECT', 'AT_IZEROPAGEX', 'AT_IZEROPAGEY', 'AT_NONE',
             'BLACK', 'WHITE', 'RED', 'CYAN', 'PURPLE', 'GREEN', 'BLUE',        // Colour Constants.
             'YELLOW', 'ORANGE', 'BROWN', 'LIGHT_RED', 'DARK_GRAY', 'GRAY',
             'LIGHT_GREEN', 'LIGHT_BLUE', 'LIGHT_GRAY',
             'C64FILE',                                                         // Template Tag names.
-            'BF_C64FILE', 'BF_BITMAP_SINGLECOLOR', 'BF_KOALA' , 'BF_FLI',      // Binary format constant
+            'BF_C64FILE', 'BF_BITMAP_SINGLECOLOR', 'BF_KOALA', 'BF_FLI',      // Binary format constant
             ),
-
         ),
     'SYMBOLS' => array(
 //        '[', ']', '(', ')', '{', '}',    // These are already defined by GeSHi as BRACKETS.
@@ -153,24 +151,24 @@ $language_data = array (
             1 => 'color: #999; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #009; font-weight: bold;'
+            0 => 'color: #009; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #000;'
+            0 => 'color: #000;',
             ),
         'STRINGS' => array(
-            0 => 'color: #080;'
+            0 => 'color: #080;',
             ),
         'NUMBERS' => array(
-            GESHI_NUMBER_INT_BASIC          => 'color: #f00;',
-            GESHI_NUMBER_HEX_PREFIX_DOLLAR  => 'color: #f00;',
+            GESHI_NUMBER_INT_BASIC => 'color: #f00;',
+            GESHI_NUMBER_HEX_PREFIX_DOLLAR => 'color: #f00;',
             GESHI_NUMBER_BIN_PREFIX_PERCENT => 'color: #f00;',
-            GESHI_NUMBER_FLT_NONSCI         => 'color: #f00;',
+            GESHI_NUMBER_FLT_NONSCI => 'color: #f00;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #080;'
+            0 => 'color: #080;',
             ),
         'REGEXPS' => array(
             0 => 'color: #933;',
@@ -179,7 +177,7 @@ $language_data = array (
             3 => 'color: #00f; font-weight:bold;',
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
@@ -194,8 +192,7 @@ $language_data = array (
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
         ),
-    'NUMBERS' =>
-        GESHI_NUMBER_INT_BASIC |
+    'NUMBERS' => GESHI_NUMBER_INT_BASIC |
         GESHI_NUMBER_FLT_NONSCI |
         GESHI_NUMBER_HEX_PREFIX_DOLLAR |
         GESHI_NUMBER_BIN_PREFIX_PERCENT,
@@ -221,21 +218,19 @@ $language_data = array (
         ),
     'TAB_WIDTH' => 8,
     'PARSER_CONTROL' => array(
-        'NUMBERS'  => array(
-            'PRECHECK_RX' => '/[\da-fA-F\.\$\%]/'
+        'NUMBERS' => array(
+            'PRECHECK_RX' => '/[\da-fA-F\.\$\%]/',
             ),
         'KEYWORDS' => array(
-            5 => array (
-                'DISALLOWED_BEFORE' => "(?<![a-zA-Z0-9\$_\|\;>|^&'\"])"
+            5 => array(
+                'DISALLOWED_BEFORE' => "(?<![a-zA-Z0-9\$_\|\;>|^&'\"])",
                 ),
-            6 => array (
-                'DISALLOWED_BEFORE' => "(?<![a-zA-Z0-9\$_\|\;>|^&'\"])"
+            6 => array(
+                'DISALLOWED_BEFORE' => "(?<![a-zA-Z0-9\$_\|\;>|^&'\"])",
                 ),
-            8 => array (
-                'DISALLOWED_BEFORE' => "(?<![a-zA-Z0-9\$_\|\;>|^&'\"])"
-                )
-            )
+            8 => array(
+                'DISALLOWED_BEFORE' => "(?<![a-zA-Z0-9\$_\|\;>|^&'\"])",
+                ),
+            ),
         ),
 );
-
-?>

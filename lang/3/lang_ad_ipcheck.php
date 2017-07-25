@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     //errors
     'ipcheck_users' => 'Conturi Multiple pe IP:',
@@ -16,5 +17,5 @@ $lang = array(
     'ipcheck_yes' => 'Da',
     'ipcheck_no' => 'Nu',
     'ipcheck_noaccess' => 'Nu e&#351;ti &#238;n m&#259;sur&#259; s&#259; vezi aceast&#259; pagin&#259;.',
-	'ipcheck_stdhead' => 'Verificare IP-uri'
+    'ipcheck_stdhead' => 'Verificare IP-uri',
 );

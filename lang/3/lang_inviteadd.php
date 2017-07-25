@@ -1,4 +1,5 @@
 <?php
+
 $lang['inviteadd_error'] = 'Error';
 $lang['inviteadd_aunknown'] = 'You can\'t do that! you can do this %s with invites';
 $lang['inviteadd_error2'] = 'You can\'t remove/add 0';
@@ -24,4 +25,3 @@ $lang['inviteadd_sendpm'] = 'Send pm';
 $lang['inviteadd_yes'] = 'Yes';
 $lang['inviteadd_no'] = 'No';
 $lang['inviteadd_action'] = 'Do';
-

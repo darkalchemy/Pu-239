@@ -1,8 +1,8 @@
 <?php
+
 $browser = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-if (preg_match("/MSIE/i", $browser)) //browser is IE
-{
-    $HTMLOUT.= "
+if (preg_match('/MSIE/i', $browser)) { //browser is IE
+    $HTMLOUT .= "
    <fieldset class='header'>
 	   <legend>{$lang['index_ie_warn']}</legend>
 		   <div class='container-fluid'>

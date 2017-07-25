@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     //my gets
     'my_updated' => 'Profile updated',
@@ -87,5 +88,5 @@ $lang = array(
     'my_scloud' => 'Search Cloud',
     'my_scloud1' => '(Enable/Disable searchcloud on browse !)',
     //my stdhead
-    'my_stdhead' => '\'s private page'
+    'my_stdhead' => '\'s private page',
 );

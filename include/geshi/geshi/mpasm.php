@@ -43,7 +43,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Microchip Assembler',
     'COMMENT_SINGLE' => array(1 => ';'),
     'COMMENT_MULTI' => array(),
@@ -59,7 +59,7 @@ $language_data = array (
             'WHILE', '__BADRAM', 'CBLOCK', '__CONFIG', 'DA', 'DATA', 'DB', 'DE', 'DT', 'DW',
             'ENDC', 'FILL', '__IDLOCS', '__MAXRAM', 'RES', 'ENDM', 'EXITM', 'EXPAND', 'LOCAL',
             'MACRO', 'NOEXPAND', 'BANKISEL', 'BANKSEL', 'CODE', 'EXTERN', 'GLOBAL', 'IDATA',
-            'PAGESEL', 'UDATA', 'UDATA_ACS', 'UDATA_OVR', 'UDATA_SHR'
+            'PAGESEL', 'UDATA', 'UDATA_ACS', 'UDATA_OVR', 'UDATA_SHR',
             ),
         /* 12&14-bit Specific Instruction Set*/
         1 => array(
@@ -70,14 +70,14 @@ $language_data = array (
             'addlw', 'retfie', 'return', 'sublw', 'addcf', 'adddcf', 'b', 'bc', 'bdc',
             'bnc', 'bndc', 'bnz', 'bz', 'clrc', 'clrdc', 'clrz', 'lcall', 'lgoto', 'movfw',
             'negf', 'setc', 'setdc', 'setz', 'skpc', 'skpdc', 'skpnc', 'skpndc', 'skpnz', 'skpz',
-            'subcf', 'subdcf', 'tstf'
+            'subcf', 'subdcf', 'tstf',
             ),
         /* 16-bit Specific Instructiob Set */
-        2 => array (
+        2 => array(
             'movfp', 'movlb', 'movlp', 'movpf', 'movwf', 'tablrd', 'tablwt', 'tlrd', 'tlwt',
             'addwfc', 'daw', 'mullw', 'negw', 'rlcf', 'rlncf', 'rrcf', 'rrncf', 'setf', 'subwfb',
             'btg', 'cpfseq', 'cpfsgt', 'cpfslt', 'dcfsnz', 'infsnz', 'tstfsz', 'lfsr', 'bnn',
-            'bnov', 'bra', 'pop', 'push', 'rcall', 'reset'
+            'bnov', 'bra', 'pop', 'push', 'rcall', 'reset',
             ),
         /* Registers */
         3 => array(
@@ -85,15 +85,15 @@ $language_data = array (
             'PCLATH', 'INTCON', 'PIR1', 'PIR2', 'TMR1L', 'TMR1H', 'T1CON', 'TMR2', 'T2CON', 'TMR2L',
             'TMR2H', 'TMR0H', 'TMR0L', 'SSPBUF', 'SSPCON', 'CCPR1L', 'CCPR1H', 'CCP1CON', 'RCSTA',
             'TXREG', 'RCREG', 'CCPR2L', 'CCPR2H', 'CCP2CON', 'OPTION', 'TRISA', 'TRISB', 'TRISC',
-            'TRISD', 'TRISE', 'PIE2', 'PIE1', 'PR2', 'SSPADD', 'SSPSTAT', 'TXSTA', 'SPBRG'
+            'TRISD', 'TRISE', 'PIE2', 'PIE1', 'PR2', 'SSPADD', 'SSPSTAT', 'TXSTA', 'SPBRG',
             ),
         /*Operands*/
         5 => array(
-            'high','low'
-            )
+            'high', 'low',
+            ),
         ),
     'SYMBOLS' => array(
-        '[', ']', '(', ')'
+        '[', ']', '(', ')',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -101,7 +101,7 @@ $language_data = array (
         2 => false,
         3 => false,
         4 => false,
-        5 => false
+        5 => false,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
@@ -109,41 +109,41 @@ $language_data = array (
             2 => 'color: #0000ff;',
             3 => 'color: #007f00;',
             4 => 'color: #46aa03; font-weight:bold;',
-            5 => 'color: #7f0000;'
+            5 => 'color: #7f0000;',
             ),
         'COMMENTS' => array(
             1 => 'color: #adadad; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'STRINGS' => array(
-            0 => 'color: #7f007f;'
+            0 => 'color: #7f007f;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'REGEXPS' => array(
             0 => 'color: #ff0000;',
-            1 => 'color: #ff0000;'
+            1 => 'color: #ff0000;',
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
         3 => '',
         4 => '',
-        5 => ''
+        5 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -152,13 +152,11 @@ $language_data = array (
         //Hex numbers
         0 => '[0-9a-fA-F]{1,32}[hH]',
         //Binary numbers
-        1 => '[01]{1,64}[bB]'
+        1 => '[01]{1,64}[bB]',
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
-        )
+        ),
 );
-
-?>

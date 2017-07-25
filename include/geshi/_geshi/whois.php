@@ -37,7 +37,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Whois (RPSL format)',
     'COMMENT_SINGLE' => array(1 => '% ', 2 => '%ERROR:'),
     'COMMENT_MULTI' => array(),
@@ -52,44 +52,44 @@ $language_data = array (
 
         //IP, Networks and AS information\links
         7 => '/\b(?<!\.|\-)(?:[\da-f:]+(?!\.)|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?:\/1?\d\d?)?(?<!\.|\-)\b/',
-        8 => '/\bAS\d+\b/'
+        8 => '/\bAS\d+\b/',
         ),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
     'QUOTEMARKS' => array(),
     'ESCAPE_CHAR' => '',
     'KEYWORDS' => array(
         1 => array( //Object Types
-            'as-block','as-set','aut-num','domain','filter-set','inet-rtr',
-            'inet6num','inetnum','irt','key-cert','limerick','mntner',
-            'organisation','peering-set','person','poem','role','route-set',
-            'route','route6','rtr-set'
+            'as-block', 'as-set', 'aut-num', 'domain', 'filter-set', 'inet-rtr',
+            'inet6num', 'inetnum', 'irt', 'key-cert', 'limerick', 'mntner',
+            'organisation', 'peering-set', 'person', 'poem', 'role', 'route-set',
+            'route', 'route6', 'rtr-set',
             ),
         2 => array( //Field Types
-            'abuse-mailbox','address','admin-c','aggr-bndry','aggr-mtd','alias',
-            'as-block','as-name','as-set','aut-num','auth','author','certif',
-            'changed','components','country','default','descr','dom-net',
-            'domain','ds-rdata','e-mail','encryption','export','export-comps',
-            'fax-no','filter','filter-set','fingerpr','form','holes','ifaddr',
-            'import','inet-rtr','inet6num','inetnum','inject','interface','irt',
-            'irt-nfy','key-cert','limerick','local-as','mbrs-by-ref',
-            'member-of','members','method','mnt-by','mnt-domains','mnt-irt',
-            'mnt-lower','mnt-nfy','mnt-ref','mnt-routes','mntner','mp-default',
-            'mp-export','mp-filter','mp-import','mp-members','mp-peer',
-            'mp-peering','netname','nic-hdl','notify','nserver','org',
-            'org-name','org-type','organisation','origin','owner','peer',
-            'peering','peering-set','person','phone','poem','ref-nfy','refer',
-            'referral-by','remarks','rev-srv','role','route','route-set',
-            'route6','rtr-set','signature','source','status','sub-dom','tech-c',
-            'text','upd-to','zone-c'
+            'abuse-mailbox', 'address', 'admin-c', 'aggr-bndry', 'aggr-mtd', 'alias',
+            'as-block', 'as-name', 'as-set', 'aut-num', 'auth', 'author', 'certif',
+            'changed', 'components', 'country', 'default', 'descr', 'dom-net',
+            'domain', 'ds-rdata', 'e-mail', 'encryption', 'export', 'export-comps',
+            'fax-no', 'filter', 'filter-set', 'fingerpr', 'form', 'holes', 'ifaddr',
+            'import', 'inet-rtr', 'inet6num', 'inetnum', 'inject', 'interface', 'irt',
+            'irt-nfy', 'key-cert', 'limerick', 'local-as', 'mbrs-by-ref',
+            'member-of', 'members', 'method', 'mnt-by', 'mnt-domains', 'mnt-irt',
+            'mnt-lower', 'mnt-nfy', 'mnt-ref', 'mnt-routes', 'mntner', 'mp-default',
+            'mp-export', 'mp-filter', 'mp-import', 'mp-members', 'mp-peer',
+            'mp-peering', 'netname', 'nic-hdl', 'notify', 'nserver', 'org',
+            'org-name', 'org-type', 'organisation', 'origin', 'owner', 'peer',
+            'peering', 'peering-set', 'person', 'phone', 'poem', 'ref-nfy', 'refer',
+            'referral-by', 'remarks', 'rev-srv', 'role', 'route', 'route-set',
+            'route6', 'rtr-set', 'signature', 'source', 'status', 'sub-dom', 'tech-c',
+            'text', 'upd-to', 'zone-c',
             ),
         3 => array( //RPSL reserved
-            'accept','action','and','announce','any','as-any','at','atomic',
-            'except','from','inbound','into','networks','not','or','outbound',
-            'peeras','refine','rs-any','to'
-            )
+            'accept', 'action', 'and', 'announce', 'any', 'as-any', 'at', 'atomic',
+            'except', 'from', 'inbound', 'into', 'networks', 'not', 'or', 'outbound',
+            'peeras', 'refine', 'rs-any', 'to',
+            ),
         ),
     'SYMBOLS' => array(
-        ':'
+        ':',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -101,7 +101,7 @@ $language_data = array (
         'KEYWORDS' => array(
             1 => 'color: #0000FF; font-weight: bold;',
             2 => 'color: #000080; font-weight: bold;',
-            3 => 'color: #990000; font-weight: bold;'
+            3 => 'color: #990000; font-weight: bold;',
             ),
         'COMMENTS' => array(
             1 => 'color: #666666; font-style: italic;',
@@ -112,14 +112,14 @@ $language_data = array (
             6 => 'color: #408040;',
             7 => 'color: #804040;',
             8 => 'color: #804040;',
-            'MULTI' => 'color: #666666; font-style: italic;'
+            'MULTI' => 'color: #666666; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
             0 => 'color: #000099; font-weight: bold;',
-            'HARD' => 'color: #000099; font-weight: bold;'
+            'HARD' => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #009900;'
+            0 => 'color: #009900;',
             ),
         'STRINGS' => array(
             0 => '',
@@ -130,25 +130,25 @@ $language_data = array (
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #0000FF;'
+            0 => 'color: #0000FF;',
             ),
         'REGEXPS' => array(
-            0 => 'color: #000088;'
+            0 => 'color: #000088;',
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
-        3 => 'http://www.irr.net/docs/rpsl.html'
+        3 => 'http://www.irr.net/docs/rpsl.html',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
         ),
     'REGEXPS' => array(
         //Variables
-        0 => "[\\$]{1,2}[a-zA-Z_][a-zA-Z0-9_]*"
+        0 => '[\$]{1,2}[a-zA-Z_][a-zA-Z0-9_]*',
         ),
     'STRICT_MODE_APPLIES' => GESHI_MAYBE,
     'SCRIPT_DELIMITERS' => array(
@@ -159,11 +159,11 @@ $language_data = array (
     'PARSER_CONTROL' => array(
         'KEYWORDS' => array(
             1 => array(
-                'DISALLOWED_BEFORE' => '(?<=\A |\A \n(?m:^)|\n\n(?m:^))'
+                'DISALLOWED_BEFORE' => '(?<=\A |\A \n(?m:^)|\n\n(?m:^))',
                 ),
             2 => array(
-                'DISALLOWED_BEFORE' => '(?m:^)'
-                )
+                'DISALLOWED_BEFORE' => '(?m:^)',
+                ),
             ),
         'ENABLE_FLAGS' => array(
             'BRACKETS' => GESHI_NEVER,
@@ -173,9 +173,7 @@ $language_data = array (
             'ESCAPE_CHAR' => GESHI_NEVER,
             'NUMBERS' => GESHI_NEVER,
             'METHODS' => GESHI_NEVER,
-            'SCRIPT' => GESHI_NEVER
-            )
+            'SCRIPT' => GESHI_NEVER,
+            ),
         ),
 );
-
-?>

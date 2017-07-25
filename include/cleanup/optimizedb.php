@@ -1,19 +1,5 @@
 <?php
 /**
- |--------------------------------------------------------------------------|
- |   https://github.com/Bigjoos/                			    |
- |--------------------------------------------------------------------------|
- |   Licence Info: GPL			                                    |
- |--------------------------------------------------------------------------|
- |   Copyright (C) 2010 U-232 V4					    |
- |--------------------------------------------------------------------------|
- |   A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.   |
- |--------------------------------------------------------------------------|
- |   Project Leaders: Mindless,putyn.					    |
- |--------------------------------------------------------------------------|
-  _   _   _   _   _     _   _   _   _   _   _     _   _   _   _
- / \ / \ / \ / \ / \   / \ / \ / \ / \ / \ / \   / \ / \ / \ / \
-( U | - | 2 | 3 | 2 )-( S | o | u | r | c | e )-( C | o | d | e )
  \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 function cleanup_log($data)
@@ -33,14 +19,16 @@ function docleanup($data)
     $oht = '';
     while ($row = mysqli_fetch_assoc($sql)) {
         if ($row['Data_free'] > 100) {
-            $oht.= $row['Data_free'] . ',';
+            $oht .= $row['Data_free'].',';
         }
     }
     $oht = rtrim($oht, ',');
     if ($oht != '') {
         $sql = sql_query("OPTIMIZE TABLE {$oht}");
     }
-    if ($queries > 0) write_log("Auto-optimizedb--------------------Auto Optimization Complete using $queries queries --------------------");
+    if ($queries > 0) {
+        write_log("Auto-optimizedb--------------------Auto Optimization Complete using $queries queries --------------------");
+    }
     if ($oht != '') {
         $data['clean_desc'] = "MySQLCleanup optimized {$oht} table(s)";
     }
@@ -48,4 +36,3 @@ function docleanup($data)
         cleanup_log($data);
     }
 }
-?>

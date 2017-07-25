@@ -59,7 +59,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'DOS',
     'COMMENT_SINGLE' => array(),
     'COMMENT_MULTI' => array(),
@@ -73,13 +73,13 @@ $language_data = array (
         1 => array(
             'if', 'else', 'goto', 'shift',
             'for', 'in', 'do',
-            'call', 'exit'
+            'call', 'exit',
             ),
         /* IF statement keywords */
         2 => array(
             'not', 'exist', 'errorlevel',
             'defined',
-            'equ', 'neq', 'lss', 'leq', 'gtr', 'geq'
+            'equ', 'neq', 'lss', 'leq', 'gtr', 'geq',
             ),
         /* Internal commands */
         3 => array(
@@ -88,59 +88,59 @@ $language_data = array (
             'echo',
             'setlocal', 'endlocal', 'set',
             'pause',
-            'pushd', 'popd', 'title', 'verify'
+            'pushd', 'popd', 'title', 'verify',
             ),
         /* Special files */
         4 => array(
             'prn', 'nul', 'lpt3', 'lpt2', 'lpt1', 'con',
-            'com4', 'com3', 'com2', 'com1', 'aux'
-            )
+            'com4', 'com3', 'com2', 'com1', 'aux',
+            ),
         ),
     'SYMBOLS' => array(
-        '(', ')', '@', '%'
+        '(', ')', '@', '%',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
         1 => false,
         2 => false,
         3 => false,
-        4 => false
+        4 => false,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
             1 => 'color: #00b100; font-weight: bold;',
             2 => 'color: #000000; font-weight: bold;',
             3 => 'color: #b1b100; font-weight: bold;',
-            4 => 'color: #0000ff; font-weight: bold;'
+            4 => 'color: #0000ff; font-weight: bold;',
             ),
         'COMMENTS' => array(
-            1 => 'color: #808080; font-style: italic;'
+            1 => 'color: #808080; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #ff0000; font-weight: bold;'
+            0 => 'color: #ff0000; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
             0 => 'color: #33cc33;',
-            1 => 'color: #33cc33;'
+            1 => 'color: #33cc33;',
             ),
         'SCRIPT' => array(
             ),
         'REGEXPS' => array(
             0 => 'color: #b100b1; font-weight: bold;',
             1 => 'color: #448844;',
-            2 => 'color: #448888;'
-            )
+            2 => 'color: #448888;',
+            ),
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -149,7 +149,7 @@ $language_data = array (
         1 => 'http://www.ss64.com/nt/{FNAMEL}.html',
         2 => 'http://www.ss64.com/nt/{FNAMEL}.html',
         3 => 'http://www.ss64.com/nt/{FNAMEL}.html',
-        4 => 'http://www.ss64.com/nt/{FNAMEL}.html'
+        4 => 'http://www.ss64.com/nt/{FNAMEL}.html',
         ),
     'REGEXPS' => array(
         /* Label */
@@ -159,7 +159,7 @@ $language_data = array (
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => 'si',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
         ),
         /* Variable assignement */
         1 => array(
@@ -168,7 +168,7 @@ $language_data = array (
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => 'si',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => '\\3'
+            GESHI_AFTER => '\\3',
             ),
         /* Arguments or variable evaluation */
         2 => array(
@@ -177,8 +177,8 @@ $language_data = array (
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => 'si',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => '\\3'
-            )
+            GESHI_AFTER => '\\3',
+            ),
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(
@@ -189,10 +189,8 @@ $language_data = array (
     'PARSER_CONTROL' => array(
         'KEYWORDS' => array(
             4 => array(
-                'DISALLOWED_BEFORE' => '(?<!\w)'
-                )
-            )
-        )
+                'DISALLOWED_BEFORE' => '(?<!\w)',
+                ),
+            ),
+        ),
 );
-
-?>

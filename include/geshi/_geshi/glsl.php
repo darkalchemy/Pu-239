@@ -37,7 +37,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'glSlang',
     'COMMENT_SINGLE' => array(1 => '//', 2 => '#'),
     'COMMENT_MULTI' => array('/*' => '*/'),
@@ -45,7 +45,7 @@ $language_data = array (
         //Multiline-continued single-line comments
         1 => '/\/\/(?:\\\\\\\\|\\\\\\n|.)*$/m',
         //Multiline-continued preprocessor define
-        2 => '/#(?:\\\\\\\\|\\\\\\n|.)*$/m'
+        2 => '/#(?:\\\\\\\\|\\\\\\n|.)*$/m',
         ),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
     'QUOTEMARKS' => array("'", '"'),
@@ -54,13 +54,13 @@ $language_data = array (
         1 => array(
             'if', 'else', 'for', 'while', 'do', 'break', 'continue', 'asm',
             'switch', 'case', 'default', 'return', 'discard',
-            'namespace', 'using', 'sizeof', 'cast'
+            'namespace', 'using', 'sizeof', 'cast',
             ),
         2 => array(
             'const', 'uniform', 'attribute', 'centroid', 'varying', 'invariant',
             'in', 'out', 'inout', 'input', 'output', 'typedef', 'volatile',
             'public', 'static', 'extern', 'external', 'packed',
-            'inline', 'noinline', 'noperspective', 'flat'
+            'inline', 'noinline', 'noperspective', 'flat',
             ),
         3 => array(
             'void', 'bool', 'int', 'long', 'short', 'float', 'half', 'fixed',
@@ -72,10 +72,10 @@ $language_data = array (
             'mat2x3', 'mat3x3', 'mat4x3', 'mat2x4', 'mat3x4', 'mat4x4',
             'sampler1D', 'sampler2D', 'sampler3D', 'samplerCube',
             'sampler1DShadow', 'sampler2DShadow',
-            'struct', 'class', 'union', 'enum', 'interface', 'template'
+            'struct', 'class', 'union', 'enum', 'interface', 'template',
             ),
         4 => array(
-            'this', 'false', 'true'
+            'this', 'false', 'true',
             ),
         5 => array(
             'radians', 'degrees', 'sin', 'cos', 'tan', 'asin', 'acos', 'atan',
@@ -90,7 +90,7 @@ $language_data = array (
             'texture3DLod', 'texture3DProjLod', 'textureCube', 'textureCubeLod',
             'shadow1D', 'shadow1DProj', 'shadow1DLod', 'shadow1DProjLod',
             'shadow2D', 'shadow2DProj', 'shadow2DLod', 'shadow2DProjLod',
-            'noise1', 'noise2', 'noise3', 'noise4'
+            'noise1', 'noise2', 'noise3', 'noise4',
             ),
         6 => array(
             'gl_Position', 'gl_PointSize', 'gl_ClipVertex', 'gl_FragColor',
@@ -120,12 +120,12 @@ $language_data = array (
             'gl_ObjectPlaneT', 'gl_ObjectPlaneR', 'gl_ObjectPlaneQ',
             'gl_EyePlaneS', 'gl_EyePlaneT', 'gl_EyePlaneR', 'gl_EyePlaneQ',
             'gl_FrontColor', 'gl_BackColor', 'gl_FrontSecondaryColor',
-            'gl_BackSecondaryColor', 'gl_FogFragCoord', 'gl_PointCoord'
-            )
+            'gl_BackSecondaryColor', 'gl_FogFragCoord', 'gl_PointCoord',
+            ),
         ),
     'SYMBOLS' => array(
         '(', ')', '{', '}', '[', ']', '=', '+', '-', '*', '/', '!', '%', '^',
-        '&', '?', ':', '.', '|', ';', ',', '<', '>'
+        '&', '?', ':', '.', '|', ';', ',', '<', '>',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -143,35 +143,35 @@ $language_data = array (
             3 => 'color: #000066; font-weight: bold;',
             4 => 'color: #333399; font-weight: bold;',
             5 => 'color: #993333; font-weight: bold;',
-            6 => 'color: #551111;'
+            6 => 'color: #551111;',
             ),
         'COMMENTS' => array(
             1 => 'color: #666666; font-style: italic;',
             2 => 'color: #009900;',
-            'MULTI' => 'color: #666666; font-style: italic;'
+            'MULTI' => 'color: #666666; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #000066;'
+            0 => 'color: #000066;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #0000ff;'
+            0 => 'color: #0000ff;',
             ),
         'METHODS' => array(
-            1 => 'color: #006600;'
+            1 => 'color: #006600;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #000066;'
+            0 => 'color: #000066;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
@@ -179,11 +179,11 @@ $language_data = array (
         3 => '',
         4 => '',
         5 => '',
-        6 => ''
+        6 => '',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 => '.'
+        1 => '.',
         ),
     'REGEXPS' => array(
         ),
@@ -197,9 +197,7 @@ $language_data = array (
         'OOLANG' => array(
             'MATCH_BEFORE' => '',
             'MATCH_AFTER' => '[a-zA-Z_][a-zA-Z0-9_]*',
-            'MATCH_SPACES' => '[\s]*'
-        )
-    )
+            'MATCH_SPACES' => '[\s]*',
+        ),
+    ),
 );
-
-?>

@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     'getrss_title' => 'Generate rss link',
     'getrss_cat' => 'Categories',

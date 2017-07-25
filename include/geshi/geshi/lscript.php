@@ -29,7 +29,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'LScript',
     'COMMENT_SINGLE' => array(1 => '//'),
     'COMMENT_MULTI' => array('/*' => '*/'),
@@ -42,7 +42,7 @@ $language_data = array (
         7 => array(
             '@data', '@define', '@else', '@end', '@fpdepth', '@if', '@include',
             '@insert', '@library', '@localipc', '@name', '@save', '@script',
-            '@sequence', '@version', '@warnings'
+            '@sequence', '@version', '@warnings',
             ),
         1 => array(
             'break', 'case', 'continue', 'else', 'end', 'false', 'for',
@@ -82,7 +82,7 @@ $language_data = array (
             'w', 'width', 'wNorm', 'wPos', 'wXfrm',
             'x', 'xoffset',
             'y', 'yoffset',
-            'z'
+            'z',
             ),
         4 => array(
             'addLayer', 'addParticle', 'alphaspot', 'ambient', 'asAsc', 'asBin',
@@ -124,7 +124,7 @@ $language_data = array (
             'write', 'writeln', 'writeByte', 'writeData', 'writeNumber', 'writeDouble',
             'writeShort', 'writeString', 'writeVector',
             'vertex', 'vertexCount',
-            'zoomFactor'
+            'zoomFactor',
             ),
         2 => array(
             'abs', 'acos', 'angle', 'append', 'ascii', 'asin', 'atan',
@@ -197,7 +197,7 @@ $language_data = array (
             'taper', 'triple', 'toggleCCend', 'toggleCCstart', 'togglepatches', 'twist',
             'undo', 'undogroupend', 'undogroupbegin', 'unifypols', 'unweld',
             'vortex',
-            'weldaverage', 'weldpoints'
+            'weldaverage', 'weldpoints',
             ),
         6 => array(
             'About', 'AboutOpenGL', 'AdaptiveSampling', 'AdaptiveThreshold',
@@ -301,11 +301,11 @@ $language_data = array (
             'XYView', 'XZView',
             'ZenithColor', 'ZoomFactor', 'ZoomIn', 'ZoomInX2', 'ZoomOut', 'ZoomOutX2', 'ZYView',
             'Camera', 'Channel', 'ChannelGroup', 'Envelope', 'File', 'Glyph', 'Icon', 'Image',
-            'Light', 'Mesh', 'Scene', 'Surface', 'VMap'
+            'Light', 'Mesh', 'Scene', 'Surface', 'VMap',
             ),
         ),
     'SYMBOLS' => array(
-        '(', ')', '{', '}', '[', ']', '=', '<', '>', '+', '-', '*', '/', '!', '%', '&', '@'
+        '(', ')', '{', '}', '[', ']', '=', '<', '>', '+', '-', '*', '/', '!', '%', '&', '@',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => true,
@@ -315,7 +315,7 @@ $language_data = array (
         4 => false,
         5 => false,
         6 => false,
-        7 => false
+        7 => false,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
@@ -325,32 +325,32 @@ $language_data = array (
             4 => 'color: #800080; font-weight: bold;', //LS_METHODS
             5 => 'color: #51BD95; font-weight: bold;', //LS_MODELER
             6 => 'color: #416F85; font-weight: bold;', //LS_GENERAL
-            7 => 'color: #C92929; font-weight: bold;'  //LS_COMMANDS (cont)
+            7 => 'color: #C92929; font-weight: bold;',  //LS_COMMANDS (cont)
             ),
         'COMMENTS' => array(
             1 => 'color: #7F7F7F;',
-            'MULTI' => 'color: #7F7F7F;'
+            'MULTI' => 'color: #7F7F7F;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #0040A0;'
+            0 => 'color: #0040A0;',
             ),
         'STRINGS' => array(
-            0 => 'color: #00C800;'
+            0 => 'color: #00C800;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #6953AC;'
+            0 => 'color: #6953AC;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #0040A0;'
+            0 => 'color: #0040A0;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
             ),
         'ESCAPE_CHAR' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
@@ -359,7 +359,7 @@ $language_data = array (
         4 => '',
         5 => '',
         6 => '',
-        7 => ''
+        7 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -375,13 +375,11 @@ $language_data = array (
     'PARSER_CONTROL' => array(
         'KEYWORDS' => array(
             3 => array(
-                'DISALLOWED_BEFORE' => '(?<=\.)'
+                'DISALLOWED_BEFORE' => '(?<=\.)',
                 ),
             4 => array(
-                'DISALLOWED_BEFORE' => '(?<=\.)'
-                )
-            )
-        )
+                'DISALLOWED_BEFORE' => '(?<=\.)',
+                ),
+            ),
+        ),
 );
-
-?>

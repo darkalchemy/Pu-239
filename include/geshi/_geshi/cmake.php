@@ -39,7 +39,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'CMake',
     'COMMENT_SINGLE' => array(1 => '#'),
     'COMMENT_MULTI' => array(),
@@ -48,9 +48,9 @@ $language_data = array (
     'ESCAPE_CHAR' => '\\',
     'ESCAPE_REGEXP' => array(
         // Quoted variables ${...}
-        1 => "/\\$(ENV)?\\{[^\\n\\}]*?\\}/i",
+        1 => '/\$(ENV)?\\{[^\\n\\}]*?\\}/i',
         // Quoted registry keys [...]
-        2 => "/\\[HKEY[^\n\\]]*?]/i"
+        2 => "/\\[HKEY[^\n\\]]*?]/i",
         ),
     'KEYWORDS' => array(
         1 => array(
@@ -76,7 +76,7 @@ $language_data = array (
             'set_source_files_properties', 'set_target_properties',
             'set_tests_properties', 'site_name', 'source_group', 'string',
             'target_link_libraries', 'try_compile', 'try_run', 'unset',
-            'variable_watch', 'while'
+            'variable_watch', 'while',
             ),
         2 => array(
             // Deprecated commands
@@ -84,7 +84,7 @@ $language_data = array (
             'install_files', 'install_programs', 'install_targets',
             'link_libraries', 'make_directory', 'remove', 'subdir_depends',
             'subdirs', 'use_mangled_mesa', 'utility_source',
-            'variable_requires', 'write_file'
+            'variable_requires', 'write_file',
             ),
         3 => array(
             // Special command arguments, this list is not comprehesive.
@@ -103,45 +103,45 @@ $language_data = array (
             'STRLESS', 'SUBSTRING', 'TARGET', 'TEST', 'TOLOWER', 'TOUPPER',
             'TRUE', 'VERBATIM', 'VERSION', 'VERSION_EQUAL', 'VERSION_GREATOR',
             'VERSION_LESS', 'WORKING_DIRECTORY',
-            )
+            ),
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
         1 => false,
         2 => false,
-        3 => true
+        3 => true,
         ),
     'SYMBOLS' => array(
-        0 => array('(', ')')
+        0 => array('(', ')'),
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
             1 => 'color: #1f3f81; font-style: bold;',
             2 => 'color: #1f3f81;',
-            3 => 'color: #077807; font-sytle: italic;'
+            3 => 'color: #077807; font-sytle: italic;',
             ),
         'BRACKETS' => array(),
         'COMMENTS' => array(
-            1 => 'color: #666666; font-style: italic;'
+            1 => 'color: #666666; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
             0 => 'color: #000099; font-weight: bold;',
             1 => 'color: #b08000;',
-            2 => 'color: #0000cd;'
+            2 => 'color: #0000cd;',
             ),
         'STRINGS' => array(
             0 => 'color: #912f11;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #197d8b;'
+            0 => 'color: #197d8b;',
             ),
         'NUMBERS' => array(),
         'METHODS' => array(),
         'REGEXPS' => array(
             0 => 'color: #b08000;',
-            1 => 'color: #0000cd;'
+            1 => 'color: #0000cd;',
             ),
-        'SCRIPT' => array()
+        'SCRIPT' => array(),
         ),
     'URLS' => array(
         1 => 'http://www.cmake.org/cmake/help/cmake2.6docs.html#command:{FNAMEL}',
@@ -152,9 +152,9 @@ $language_data = array (
     'OBJECT_SPLITTERS' => array(),
     'REGEXPS' => array(
         // Unquoted variables
-        0 => "\\$(ENV)?\\{[^\\n}]*?\\}",
+        0 => '\$(ENV)?\\{[^\\n}]*?\\}',
         // Unquoted registry keys
-        1 => "\\[HKEY[^\n\\]]*?]"
+        1 => "\\[HKEY[^\n\\]]*?]",
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(),
@@ -164,18 +164,16 @@ $language_data = array (
         'KEYWORDS' => array(
             // These keywords cannot come after a open paren
             1 => array(
-                'DISALLOWED_AFTER' =>  '(?= *\()'
+                'DISALLOWED_AFTER' => '(?= *\()',
                 ),
             2 => array(
-                'DISALLOWED_AFTER' =>  '(?= *\()'
-                )
+                'DISALLOWED_AFTER' => '(?= *\()',
+                ),
             ),
         'ENABLE_FLAGS' => array(
             'BRACKETS' => GESHI_NEVER,
             'METHODS' => GESHI_NEVER,
-            'NUMBERS' => GESHI_NEVER
-            )
-        )
+            'NUMBERS' => GESHI_NEVER,
+            ),
+        ),
 );
-
-?>

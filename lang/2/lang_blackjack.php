@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     'bj_title' => 'Blackjack',
     'bj_title1' => 'Blackjack 1GB',
@@ -64,4 +65,3 @@ $lang = array(
     'bj_your_opp_was' => 'Your opponent was',
     'bj_your_ratio_is_lower_req' => 'Your ratio is lower than the requirement of',
 );
-

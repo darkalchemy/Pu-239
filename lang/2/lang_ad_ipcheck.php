@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     //errors
     'ipcheck_users' => 'Duplicate IP users:',
@@ -16,6 +17,5 @@ $lang = array(
     'ipcheck_yes' => 'Yes',
     'ipcheck_no' => 'No',
     'ipcheck_noaccess' => 'You are not able to view this page.',
-	'ipcheck_stdhead' => 'Ip Check'
+    'ipcheck_stdhead' => 'Ip Check',
 );
-

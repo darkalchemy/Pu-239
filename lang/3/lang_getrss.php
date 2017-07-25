@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     'getrss_title' => 'Generate rss link',
     'getrss_cat' => 'Categories',
@@ -12,4 +13,3 @@ $lang = array(
     'getrss_head' => 'Rss Feed',
     'getrss_head2' => 'Generated Feed',
 );
-

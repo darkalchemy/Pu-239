@@ -38,7 +38,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'dot',
     'COMMENT_SINGLE' => array(1 => '//', 2 => '#'),
     'COMMENT_MULTI' => array('/*' => '*/'),
@@ -57,10 +57,10 @@ $language_data = array (
             'pagedir', 'peripheries', 'port_label_distance', 'quantum', 'rank', 'rankdir',
             'ranksep', 'ratio', 'regular', 'rotate', 'samehead', 'sametail', 'searchsize',
             'shape', 'shapefile', 'showboxes', 'sides', 'size', 'skew', 'style',
-            'tailclip', 'taillabel', 'tailport', 'toplabel', 'weight', 'width'
+            'tailclip', 'taillabel', 'tailport', 'toplabel', 'weight', 'width',
             ),
         2 => array(
-            'node', 'graph', 'digraph', 'strict', 'edge', 'subgraph'
+            'node', 'graph', 'digraph', 'strict', 'edge', 'subgraph',
             ),
         3 => array(
             'Mcircle', 'Mdiamond', 'Mrecord', 'Msquare', 'TRUE', 'auto', 'back',
@@ -70,7 +70,7 @@ $language_data = array (
             'invhouse', 'invis', 'invodot', 'invtrapezium', 'invtriangle', 'local', 'max',
             'min', 'none', 'normal', 'octagon', 'odot', 'out', 'parallelogram', 'plaintext',
             'polygon', 'record', 'same', 'solid', 'trapezium', 'triangle', 'tripleoctagon',
-            'true'
+            'true',
             ),
         4 => array(
             'aliceblue', 'antiquewhite', 'aquamarine', 'azure', 'beige', 'bisque', 'black',
@@ -95,11 +95,11 @@ $language_data = array (
             'red', 'rosybrown', 'royalblue', 'saddlebrown', 'salmon', 'salmon2', 'sandybrown',
             'seagreen', 'seashell', 'sienna', 'skyblue', 'slateblue', 'slategray', 'snow',
             'springgreen', 'steelblue', 'tan', 'thistle', 'tomato', 'turquoise', 'violet',
-            'violetred', 'wheat', 'white', 'whitesmoke', 'yellow', 'yellowgreen'
-            )
+            'violetred', 'wheat', 'white', 'whitesmoke', 'yellow', 'yellowgreen',
+            ),
         ),
     'SYMBOLS' => array(
-        '[', ']', '{', '}', '-', '+', '*', '/', '<', '>', '!', '~', '%', '&', '|', '='
+        '[', ']', '{', '}', '-', '+', '*', '/', '<', '>', '!', '~', '%', '&', '|', '=',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -113,27 +113,27 @@ $language_data = array (
             1 => 'color: #000066;',
             2 => 'color: #000000; font-weight: bold;',
             3 => 'color: #993333;',
-            4 => 'color: #b1b100;'
+            4 => 'color: #b1b100;',
             ),
         'COMMENTS' => array(
             1 => 'color: #808080; font-style: italic;',
             2 => 'color: #339933;',
-            'MULTI' => 'color: #808080; font-style: italic;'
+            'MULTI' => 'color: #808080; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #af624d; font-weight: bold;'
+            0 => 'color: #af624d; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'METHODS' => array(
             ),
@@ -146,7 +146,7 @@ $language_data = array (
         1 => '',
         2 => '',
         3 => '',
-        4 => ''
+        4 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(),
@@ -157,8 +157,6 @@ $language_data = array (
         0 => true,
         1 => true,
         2 => true,
-        3 => true
-        )
+        3 => true,
+        ),
 );
-
-?>

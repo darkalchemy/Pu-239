@@ -1,4 +1,5 @@
 <?php
+
 //admin index lang file
 $lang = array(
     'index_bans' => 'Restricţii',
@@ -45,23 +46,22 @@ $lang = array(
     'index_stats_extra' => 'Statistici Extra',
     'index_coder_editlog' => 'Registru editare Php',
     'index_serverload' => 'Server Load',
-	////load
-	'index_load_uptime' => 'Could not retrieve uptime',
-	'index_load_s' => '',
-	'index_load_month' => 'luna',
-	'index_load_week' => 'saptamana',
-	'index_load_day' => 'zi',
-	'index_load_hour' => 'ora',
-	'index_load_minute' => 'minute',
-	'index_load_average' => 'Nu s-a putut prelua load average',
-	'index_load_curr' => 'Utilizare CPU in prezent ',
-	'index_load_cpu' => '&#37;',
-	'index_load_uptime1' => 'Uptime: ',
-	'index_load_pastmin' => 'Load average for processes running for the past minute: ',
-	'index_load_pastmin5' => 'Load average for processes running for the past 5 minutes: ',
-	'index_load_pastmin15' => 'Load average for processes running for the past 15 minutes: ',
-	'index_load_numtsk' => 'Numarul de activitati care ruleaza in prezent: ',
-	'index_load_numproc' => 'Numarul de procese care ruleaza in prezent: ',
-	'index_load_pid' => ' PID al ultimului proces executat: '
+    ////load
+    'index_load_uptime' => 'Could not retrieve uptime',
+    'index_load_s' => '',
+    'index_load_month' => 'luna',
+    'index_load_week' => 'saptamana',
+    'index_load_day' => 'zi',
+    'index_load_hour' => 'ora',
+    'index_load_minute' => 'minute',
+    'index_load_average' => 'Nu s-a putut prelua load average',
+    'index_load_curr' => 'Utilizare CPU in prezent ',
+    'index_load_cpu' => '&#37;',
+    'index_load_uptime1' => 'Uptime: ',
+    'index_load_pastmin' => 'Load average for processes running for the past minute: ',
+    'index_load_pastmin5' => 'Load average for processes running for the past 5 minutes: ',
+    'index_load_pastmin15' => 'Load average for processes running for the past 15 minutes: ',
+    'index_load_numtsk' => 'Numarul de activitati care ruleaza in prezent: ',
+    'index_load_numproc' => 'Numarul de procese care ruleaza in prezent: ',
+    'index_load_pid' => ' PID al ultimului proces executat: ',
 );
-

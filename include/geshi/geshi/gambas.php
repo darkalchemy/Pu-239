@@ -42,15 +42,14 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'GAMBAS',
     'COMMENT_SINGLE' => array(1 => "'"),
     'COMMENT_MULTI' => array(),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
     'QUOTEMARKS' => array('"'),
     'ESCAPE_CHAR' => '\\',
-    'NUMBERS' =>
-        GESHI_NUMBER_INT_BASIC | GESHI_NUMBER_OCT_PREFIX | GESHI_NUMBER_HEX_PREFIX |
+    'NUMBERS' => GESHI_NUMBER_INT_BASIC | GESHI_NUMBER_OCT_PREFIX | GESHI_NUMBER_HEX_PREFIX |
         GESHI_NUMBER_FLT_NONSCI_F | GESHI_NUMBER_FLT_SCI_SHORT | GESHI_NUMBER_FLT_SCI_ZERO,
     'KEYWORDS' => array(
         //keywords
@@ -62,7 +61,7 @@ $language_data = array (
             'MKDIR', 'MOVE', 'NEW', 'NEXT', 'NULL', 'OPEN', 'OPTIONAL', 'OUTPUT', 'PIPE', 'PRINT', 'PRIVATE',
             'PROCEDURE', 'PROPERTY', 'PUBLIC', 'QUIT', 'RAISE', 'RANDOMIZE', 'READ', 'REPEAT', 'RETURN', 'RMDIR',
             'SEEK', 'SELECT', 'SHELL', 'SLEEP', 'STATIC', 'STEP', 'STOP', 'SUB', 'SUPER', 'SWAP', 'THEN', 'TO',
-            'TRUE', 'TRY', 'UNLOCK', 'UNTIL', 'WAIT', 'WATCH', 'WEND', 'WHILE', 'WITH', 'WRITE'
+            'TRUE', 'TRY', 'UNLOCK', 'UNTIL', 'WAIT', 'WATCH', 'WEND', 'WHILE', 'WITH', 'WRITE',
             ),
         //functions
         2 => array(
@@ -84,22 +83,22 @@ $language_data = array (
             'Scan', 'SConv', 'Second', 'Seek', 'Sgn', 'Shl', 'Shr', 'Sin', 'Sinh', 'Space', 'Split', 'Sqr',
             'Stat', 'Str', 'StrPtr', 'Subst',
             'Tan', 'Tanh', 'Temp$', 'Time', 'Timer', 'Tr', 'Trim', 'TypeOf',
-            'UCase', 'Unquote', 'Val', 'VarPtr', 'Week', 'WeekDay', 'Year'
+            'UCase', 'Unquote', 'Val', 'VarPtr', 'Week', 'WeekDay', 'Year',
             ),
         //string functions
         3 => array(
             'Bin$', 'Chr$', 'Conv$', 'DConv$', 'Format$', 'Hex$', 'LCase$', 'Left$', 'LTrim$', 'Mid$', 'Quote$',
             'Replace$', 'Right$', 'SConv$', 'Space$', 'Str$', 'String$', 'Subst$', 'Tr$', 'Trim$', 'UCase$',
-            'Unquote$'
+            'Unquote$',
             ),
         //datatypes
         4 => array(
             'Boolean', 'Byte', 'Short', 'Integer', 'Long', 'Single', 'Float', 'Date', 'String', 'Variant', 'Object',
-            'Pointer', 'File'
+            'Pointer', 'File',
             ),
         //operators
         5 => array(
-            'AND', 'DIV', 'MOD', 'NOT', 'OR', 'XOR'
+            'AND', 'DIV', 'MOD', 'NOT', 'OR', 'XOR',
             ),
         //objects/classes
         6 => array(
@@ -121,16 +120,16 @@ $language_data = array (
             'ReportImage', 'ReportLabel', 'ReportSection', 'ReportSpecialField', 'ReportTextLabel', 'ReportVBox',
             'CDRom', 'Channel', 'Music', 'Sound', 'Settings', 'VideoDevice', 'Vb', 'CGI', 'HTML', 'Request', 'Response',
             'Session', 'XmlDocument', 'XmlNode', 'XmlReader', 'XmlReaderNodeType', 'XmlWriter', 'RpcArray', 'RpcClient',
-            'RpcFunction', 'RpcServer', 'RpcStruct', 'RpcType', 'XmlRpc', 'Xslt'
+            'RpcFunction', 'RpcServer', 'RpcStruct', 'RpcType', 'XmlRpc', 'Xslt',
             ),
         //constants
         7 => array(
-            'Pi'
+            'Pi',
             ),
         ),
     'SYMBOLS' => array(
         '&', '&=', '&/', '*', '*=', '+', '+=', '-', '-=', '//', '/', '/=', '=', '==', '\\', '\\=',
-        '^', '^=', '[', ']', '{', '}', '<', '>', '<>', '<=', '>='
+        '^', '^=', '[', ']', '{', '}', '<', '>', '<>', '<=', '>=',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -150,36 +149,36 @@ $language_data = array (
             4 => 'color: #0600FF;',                             // Data Types
             5 => 'color: #1E90FF;',                             // Operators
             6 => 'color: #0600FF;',                             // Objects/Components
-            7 => 'color: #0600FF;'                              // Constants
+            7 => 'color: #0600FF;',                              // Constants
             ),
         'COMMENTS' => array(
             1 => 'color: #1A5B1A; font-style: italic;',
-            'MULTI' => 'color: #1A5B1A; font-style: italic;'
+            'MULTI' => 'color: #1A5B1A; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #008080;'
+            0 => 'color: #008080;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #612188;'
+            0 => 'color: #612188;',
             ),
         'STRINGS' => array(
-            0 => 'color: #7E4B05;'
+            0 => 'color: #7E4B05;',
             ),
         'NUMBERS' => array(
             0 => 'color: #FF0000;',
-            GESHI_NUMBER_INT_BASIC => 'color: #FF0000;'
+            GESHI_NUMBER_INT_BASIC => 'color: #FF0000;',
             ),
         'METHODS' => array(
-            1 => 'color: #0000FF;'
+            1 => 'color: #0000FF;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #6132B2;'
+            0 => 'color: #6132B2;',
             ),
         'REGEXPS' => array(
             //3 => 'color: #8B1433;'  //fakes '$' colour matched by REGEXP
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => 'http://gambasdoc.org/help/lang/{FNAMEL}',
@@ -188,11 +187,11 @@ $language_data = array (
         4 => 'http://gambasdoc.org/help/lang/type/{FNAMEL}',
         5 => 'http://gambasdoc.org/help/lang/{FNAMEL}',
         6 => 'http://www.google.com/search?hl=en&amp;q={FNAMEL}+site:http://gambasdoc.org/&amp;btnI=I%27m%20Feeling%20Lucky',
-        7 => 'http://gambasdoc.org/help/lang/{FNAMEL}'
+        7 => 'http://gambasdoc.org/help/lang/{FNAMEL}',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 =>'.'
+        1 => '.',
         ),
     'REGEXPS' => array(
         //3 => "\\$(?!\\w)"   //matches '$' at the end of Keyword
@@ -205,10 +204,8 @@ $language_data = array (
     'PARSER_CONTROL' => array(
         'KEYWORDS' => array(
             2 => array(
-                'DISALLOWED_AFTER' => "(?![a-zA-Z0-9_\|%\\-&;\$])"
-                )
-            )
-        )
+                'DISALLOWED_AFTER' => "(?![a-zA-Z0-9_\|%\\-&;\$])",
+                ),
+            ),
+        ),
 );
-
-?>

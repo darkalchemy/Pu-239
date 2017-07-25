@@ -1,41 +1,27 @@
 <?php
 /**
-|--------------------------------------------------------------------------|
-|   https://github.com/Bigjoos/                                |
-|--------------------------------------------------------------------------|
-|   Licence Info: GPL                                                |
-|--------------------------------------------------------------------------|
-|   Copyright (C) 2010 U-232 V4                        |
-|--------------------------------------------------------------------------|
-|   A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.   |
-|--------------------------------------------------------------------------|
-|   Project Leaders: Mindless,putyn.                        |
-|--------------------------------------------------------------------------|
-_   _   _   _   _     _   _   _   _   _   _     _   _   _   _
-/ \ / \ / \ / \ / \   / \ / \ / \ / \ / \ / \   / \ / \ / \ / \
-( U | - | 2 | 3 | 2 )-( S | o | u | r | c | e )-( C | o | d | e )
 \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
 */
-require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php');
-require_once(INCL_DIR . 'user_functions.php');
-require_once(INCL_DIR . 'add_functions.php');
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once INCL_DIR.'user_functions.php';
+require_once INCL_DIR.'add_functions.php';
 dbconn(false);
 loggedinorreturn();
 $lang = array_merge(load_language('global'), load_language('ajax_like'));
 
 $banned_users = array(
-    0
+    0,
 ); // Please insert single or nultiple user id's with a comma  EG: 1,50,114,556   etc
 $check = isset($_POST['type']) ? $_POST['type'] : '';
 $disabled_time = (isset($_POST['time']) && isset($check)) ? (int) $_POST['time'] : 0;
 if ($check == 'disabled') {
-    $res = sql_query("INSERT INTO manage_likes (user_id,disabled_time) VALUES (" . $CURUSER['id'] . "," . time() . "+$disabled_time) ON DUPLICATE KEY UPDATE disabled_time=" . time() . "") or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('INSERT INTO manage_likes (user_id,disabled_time) VALUES ('.$CURUSER['id'].','.time()."+$disabled_time) ON DUPLICATE KEY UPDATE disabled_time=".time().'') or sqlerr(__FILE__, __LINE__);
     die();
 }
 $tb_fields = array(
     'comment' => 'comments', // name-supplied by js => user table to alter
     'forum' => 'topics',
-    'user_comm' => 'usercomments'
+    'user_comm' => 'usercomments',
 );
 $agent = isset($_POST['agent']) ? $_POST['agent'] : die('hell no');
 //$ip =                isset($_POST['i']) ? md5(getips()) == $_POST['i'] ? getips() : die('No Proper data') : die('hell no');
@@ -47,7 +33,7 @@ function comment_like_unlike()
 {
     global $CURUSER, $type, $tb_fields, $the_id, $banned_users, $disabled_time;
     $userip = $_SERVER['REMOTE_ADDR'];
-    $res = sql_query("SELECT user_likes,disabled_time FROM " . $tb_fields[$type[0]] . " LEFT OUTER JOIN manage_likes ON manage_likes.user_id = " . sqlesc($CURUSER['id']) . " WHERE " . $tb_fields[$type[0]] . ".id = " . sqlesc($the_id) . "") or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT user_likes,disabled_time FROM '.$tb_fields[$type[0]].' LEFT OUTER JOIN manage_likes ON manage_likes.user_id = '.sqlesc($CURUSER['id']).' WHERE '.$tb_fields[$type[0]].'.id = '.sqlesc($the_id).'') or sqlerr(__FILE__, __LINE__);
     $data = mysqli_fetch_row($res);
     if ($data[1] + $disabled_time > time()) {
         die($lang['ajlike_you_been_disabled']);
@@ -57,7 +43,7 @@ function comment_like_unlike()
     $exp = explode(',', $data[0]);
     if ($res && $type[1] == 'like' && array_key_exists($type[0], $tb_fields)) {
         if (!(in_array($CURUSER['id'], $exp))) {
-            $res2 = sql_query("UPDATE " . $tb_fields[$type[0]] . " SET user_likes = IF(LENGTH(user_likes),CONCAT(user_likes,','," . sqlesc((string) $CURUSER['id']) . ")," . sqlesc((string) $CURUSER['id']) . ") WHERE id = " . sqlesc($the_id) . "") or sqlerr(__FILE__, __LINE__);
+            $res2 = sql_query('UPDATE '.$tb_fields[$type[0]]." SET user_likes = IF(LENGTH(user_likes),CONCAT(user_likes,',',".sqlesc((string) $CURUSER['id']).'),'.sqlesc((string) $CURUSER['id']).') WHERE id = '.sqlesc($the_id).'') or sqlerr(__FILE__, __LINE__);
         } else {
             die($lang['ajlike_you_already_liked']);
         }
@@ -65,8 +51,8 @@ function comment_like_unlike()
         if (in_array($CURUSER['id'], $exp)) {
             $key = array_search($CURUSER['id'], $exp);
             unset($exp[$key]);
-            $exp = implode(",", $exp);
-            $res2 = sql_query("UPDATE " . $tb_fields[$type[0]] . " SET user_likes = " . sqlesc($exp) . "WHERE id = " . sqlesc($the_id) . "") or sqlerr(__FILE__, __LINE__);
+            $exp = implode(',', $exp);
+            $res2 = sql_query('UPDATE '.$tb_fields[$type[0]].' SET user_likes = '.sqlesc($exp).'WHERE id = '.sqlesc($the_id).'') or sqlerr(__FILE__, __LINE__);
         } else {
             die($lang['ajlike_you_already_unliked']);
         }
@@ -74,4 +60,3 @@ function comment_like_unlike()
         die($lang['ajlike_get_lost']);
     }
 }
-?>

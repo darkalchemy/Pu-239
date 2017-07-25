@@ -40,9 +40,9 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'TypoScript',
-    'COMMENT_SINGLE' => array(1  => '//'),
+    'COMMENT_SINGLE' => array(1 => '//'),
     'COMMENT_MULTI' => array('/*' => '*/'),
     'COMMENT_REGEXP' => array(2 => '/(?<!(#|\'|"))(?:#(?!(?:[a-fA-F0-9]{6}|[a-fA-F0-9]{3}))[^\n#]+|#{2}[^\n#]+|#{7,999}[^\n]+)/'),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
@@ -56,7 +56,7 @@ $language_data = array (
             'ip', 'language', 'loginUser', 'loginuser', 'minute',
             'month', 'PIDinRootline', 'PIDupinRootline',
             'system', 'treelevel', 'useragent', 'userFunc',
-            'usergroup', 'version'
+            'usergroup', 'version',
             ),
 
         // Functions: http://documentation.typo3.org/documentation/tsref/functions/
@@ -65,13 +65,13 @@ $language_data = array (
             'HTMLparser_tags', 'if', 'imageLinkWrap',
             'imgResource', 'makelinks', 'numRows', 'parseFunc',
             'select', 'split', 'stdWrap', 'tableStyle', 'tags',
-            'textStyle', 'typolink'
+            'textStyle', 'typolink',
             ),
 
         // Toplevel objects: http://documentation.typo3.org/documentation/tsref/tlo-objects/
         3 => array(
             'CARRAY', 'CONFIG', 'CONSTANTS', 'FE_DATA', 'FE_TABLE', 'FRAME',
-            'FRAMESET', 'META', 'PAGE', 'plugin'
+            'FRAMESET', 'META', 'PAGE', 'plugin',
             ),
 
         // Content Objects (cObject) : http://documentation.typo3.org/documentation/tsref/cobjects/
@@ -83,7 +83,7 @@ $language_data = array (
             'OTABLE', 'PHP_SCRIPT', 'PHP_SCRIPT_EXT',
             'PHP_SCRIPT_INT', 'RECORDS', 'RESTORE_REGISTER',
             'SEARCHRESULT', 'TEMPLATE', 'TEXT', 'USER',
-            'USER_INT'
+            'USER_INT',
             ),
 
         // GIFBUILDER toplevel link: http://documentation.typo3.org/documentation/tsref/gifbuilder/
@@ -98,14 +98,14 @@ $language_data = array (
         6 => array(
             'ADJUST', 'BOX', 'CROP', 'EFFECT', 'EMBOSS',
             'IMGMAP', 'OUTLINE', 'SCALE', 'SHADOW',
-            'WORKAREA'
+            'WORKAREA',
             ),
 
         // MENU Objects: http://documentation.typo3.org/documentation/tsref/menu/
         7 => array(
             'GMENU', 'GMENU_FOLDOUT', 'GMENU_LAYERS', 'IMGMENU',
             'IMGMENUITEM', 'JSMENU', 'JSMENUITEM', 'TMENU',
-            'TMENUITEM', 'TMENU_LAYERS'
+            'TMENUITEM', 'TMENU_LAYERS',
             ),
 
         // MENU common properties: http://documentation.typo3.org/documentation/tsref/menu/common-properties/
@@ -114,7 +114,7 @@ $language_data = array (
             'imgNameNotRandom', 'imgNamePrefix',
             'itemArrayProcFunc', 'JSWindow', 'maxItems',
             'minItems', 'overrideId', 'sectionIndex',
-            'showAccessRestrictedPages', 'submenuObjSuffixes'
+            'showAccessRestrictedPages', 'submenuObjSuffixes',
             ),
 
         // MENU item states: http://documentation.typo3.org/documentation/tsref/menu/item-states/
@@ -122,7 +122,7 @@ $language_data = array (
             'ACT', 'ACTIFSUB', 'ACTIFSUBRO', 'ACTRO', 'CUR', 'CURIFSUB',
             'CURIFSUBRO', 'CURRO', 'IFSUB', 'IFSUBRO', 'NO',
             'SPC', 'USERDEF1', 'USERDEF1RO', 'USERDEF2',
-            'USERDEF2RO', 'USR', 'USRRO'
+            'USERDEF2RO', 'USR', 'USRRO',
             ),
         ),
 
@@ -135,11 +135,11 @@ $language_data = array (
             '!', '&&', '^',
             '<', '>', '=',
             '?', ':',
-            '.'
+            '.',
             ),
         1 => array(
-            '(', ')', '{', '}', '[', ']'
-            )
+            '(', ')', '{', '}', '[', ']',
+            ),
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -151,7 +151,7 @@ $language_data = array (
         6 => true,
         7 => true,
         8 => true,
-        9 => true
+        9 => true,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
@@ -168,25 +168,25 @@ $language_data = array (
         'COMMENTS' => array(
             1 => 'color: #aaa; font-style: italic;',
             2 => 'color: #aaa; font-style: italic;',
-            'MULTI' => 'color: #aaa; font-style: italic;'
+            'MULTI' => 'color: #aaa; font-style: italic;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ac14aa;'
+            0 => 'color: #ac14aa;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc0000;'
+            0 => 'color: #cc0000;',
             ),
         'METHODS' => array(
             1 => 'color: #0000e0; font-weight: bold;',
-            2 => 'color: #0000e0; font-weight: bold;'
+            2 => 'color: #0000e0; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #009900;'
+            0 => 'color: #009900;',
             ),
         'SYMBOLS' => array(
             0 => 'color: #339933; font-weight: bold;',
                 // Set this to the same value as brackets above
-            1 => 'color: #009900; font-weight: bold;'
+            1 => 'color: #009900; font-weight: bold;',
             ),
         'REGEXPS' => array(
             0 => 'color: #009900;',
@@ -196,12 +196,12 @@ $language_data = array (
             4 => 'color: #ed7d14;',
             5 => 'color: #000066; font-weight: bold;',
             6 => 'color: #009900;',
-            7 => 'color: #3366CC;'
+            7 => 'color: #3366CC;',
             ),
         'ESCAPE_CHAR' => array(
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => 'http://documentation.typo3.org/documentation/tsref/conditions/{FNAME}/',
@@ -212,7 +212,7 @@ $language_data = array (
         6 => 'http://documentation.typo3.org/documentation/tsref/gifbuilder/{FNAME}/',
         7 => 'http://documentation.typo3.org/documentation/tsref/menu/{FNAME}/',
         8 => 'http://documentation.typo3.org/documentation/tsref/menu/common-properties/',
-        9 => 'http://documentation.typo3.org/documentation/tsref/menu/item-states/'
+        9 => 'http://documentation.typo3.org/documentation/tsref/menu/item-states/',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -224,7 +224,7 @@ $language_data = array (
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => '\\3'
+            GESHI_AFTER => '\\3',
             ),
 
             // Constant dollar sign
@@ -233,7 +233,7 @@ $language_data = array (
             GESHI_REPLACE => '\\1',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '',
-            GESHI_AFTER => '\\2'
+            GESHI_AFTER => '\\2',
             ),
 
             // xhtml tag
@@ -242,7 +242,7 @@ $language_data = array (
             GESHI_REPLACE => '\\1',
             GESHI_MODIFIERS => 's',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
 
             // extension keys / tables: (static|user|ttx|tx|tt|fe)_something[_something]
@@ -251,7 +251,7 @@ $language_data = array (
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
 
             // conditions and controls
@@ -260,7 +260,7 @@ $language_data = array (
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => 'i',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
 
             // lowlevel setup and constant objects
@@ -269,7 +269,7 @@ $language_data = array (
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
 
             // markers
@@ -278,7 +278,7 @@ $language_data = array (
             GESHI_REPLACE => '\\1',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
 
             // hex color codes
@@ -287,8 +287,8 @@ $language_data = array (
             GESHI_REPLACE => '\\1',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
-            )
+            GESHI_AFTER => '',
+            ),
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(
@@ -296,5 +296,3 @@ $language_data = array (
     'HIGHLIGHT_STRICT_BLOCK' => array(
         ),
 );
-
-?>

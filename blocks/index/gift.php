@@ -1,9 +1,10 @@
 <?php
-$xmasday = mktime(0, 0, 0, 12, 25, date("Y"));
-$today = mktime(date("G") , date("i") , date("s") , date("m") , date("d") , date("Y"));
-if (($CURUSER["opt1"] & user_options::GOTGIFT) && $today <> $xmasday) {
-//if ($CURUSER["gotgift"] == 'no' && $today <> $xmasday) {
-    $HTMLOUT.= "
+
+$xmasday = mktime(0, 0, 0, 12, 25, date('Y'));
+$today = mktime(date('G'), date('i'), date('s'), date('m'), date('d'), date('Y'));
+if (($CURUSER['opt1'] & user_options::GOTGIFT) && $today != $xmasday) {
+    //if ($CURUSER["gotgift"] == 'no' && $today <> $xmasday) {
+    $HTMLOUT .= "
 	<fieldset class='header'>
 		<legend>{$lang['index_xmas_gift']}</legend>
 			<div class='container-fluid  cite text-center'>

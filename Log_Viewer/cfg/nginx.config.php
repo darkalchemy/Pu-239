@@ -10,27 +10,26 @@
 ?>
 <?php
 
-function nginx_load_software() {
-	return array(
-		'name'    => __('NGINX'),
-		'desc'    => __('The high performance reverse proxy, load balancer, edge cache, origin server'),
-		'home'    => __('http://nginx.com'),
-		'notes'   => __('Default log formats are supported'),
-		'load'    => ( stripos( $_SERVER["SERVER_SOFTWARE"] , 'nginx' ) !== false )
-	);
+function nginx_load_software()
+{
+    return array(
+        'name' => __('NGINX'),
+        'desc' => __('The high performance reverse proxy, load balancer, edge cache, origin server'),
+        'home' => __('http://nginx.com'),
+        'notes' => __('Default log formats are supported'),
+        'load' => (stripos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false),
+    );
 }
 
+function nginx_get_config($type, $file, $software, $counter)
+{
+    $file_json_encoded = json_encode($file);
 
-function nginx_get_config( $type , $file , $software , $counter ) {
-
-	$file_json_encoded = json_encode( $file );
-
-	/////////////////////////////////////////////////////////
-	// nginx error files are not the same on 2.2 and 2.4 //
-	/////////////////////////////////////////////////////////
-	if ( $type == 'error' ) {
-
-		return<<<EOF
+    /////////////////////////////////////////////////////////
+    // nginx error files are not the same on 2.2 and 2.4 //
+    /////////////////////////////////////////////////////////
+    if ($type == 'error') {
+        return<<<EOF
 		"$software$counter": {
 			"display" : "NGINX Error #$counter",
 			"path"    : $file_json_encoded,
@@ -66,16 +65,13 @@ function nginx_get_config( $type , $file , $software , $counter ) {
 			}
 		}
 EOF;
+    }
 
-	}
-
-
-	////////////////
-	// Access log //
-	////////////////
-	else if ( $type == 'access' ) {
-
-		return<<<EOF
+    ////////////////
+    // Access log //
+    ////////////////
+    elseif ($type == 'access') {
+        return<<<EOF
 		"$software$counter": {
 			"display" : "NGINX Access #$counter",
 			"path"    : $file_json_encoded,
@@ -113,6 +109,5 @@ EOF;
 			}
 		}
 EOF;
-
-	}
+    }
 }

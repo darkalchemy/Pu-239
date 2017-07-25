@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     'pmview_error' => 'Error',
     'pmview_noacc' => 'You have no rights to be here',
@@ -9,6 +10,5 @@ $lang = array(
     'pmview_from' => 'From:',
     'pmview_to' => 'To:',
     'pmview_message' => 'Message:',
-    'pmview_info' => 'Please inform your user, stat you spy on them'
+    'pmview_info' => 'Please inform your user, stat you spy on them',
 );
-

@@ -34,7 +34,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'XBasic',
     'COMMENT_SINGLE' => array(1 => "'"),
     'COMMENT_MULTI' => array(),
@@ -46,12 +46,12 @@ $language_data = array (
             'WHILE', 'UNTIL', 'TRUE', 'TO', 'THEN', 'SUB', 'STOP', 'STEP',
             'SELECT', 'RETURN', 'PROGRAM', 'NEXT', 'LOOP', 'IFZ',
             'IFT', 'IFF', 'IF', 'GOTO', 'GOSUB', 'FOR', 'FALSE', 'EXIT',
-            'ENDIF', 'END', 'ELSE', 'DO', 'CASE', 'ALL'
+            'ENDIF', 'END', 'ELSE', 'DO', 'CASE', 'ALL',
             ),
         2 => array(
             'XMAKE', 'XLONGAT', 'XLONG', 'WRITE', 'VOID', 'VERSION$', 'VERSION',
             'USHORTAT', 'USHORT', 'UNION', 'ULONGAT', 'ULONG', 'UCASE$',
-            'UBYTEAT', 'UBYTE', 'UBOUND', 'TYPE','TRIM$', 'TAB', 'SWAP',
+            'UBYTEAT', 'UBYTE', 'UBOUND', 'TYPE', 'TRIM$', 'TAB', 'SWAP',
             'SUBADDRESS', 'SUBADDR', 'STUFF$', 'STRING', 'STRING$', 'STR$',
             'STATIC', 'SSHORTAT', 'SSHORT', 'SPACE$', 'SMAKE', 'SLONGAT', 'SLONG',
             'SIZE', 'SINGLEAT', 'SINGLE', 'SIGNED$', 'SIGN', 'SHELL', 'SHARED',
@@ -68,66 +68,66 @@ $language_data = array (
             'EOF', 'DOUBLEAT', 'DOUBLE', 'DMAKE', 'DLOW', 'DIM', 'DHIGH',
             'DECLARE', 'DEC', 'DCOMPLEX', 'CSTRING$', 'CSIZE', 'CSIZE$', 'CLR',
             'CLOSE', 'CLEAR', 'CJUST$', 'CHR$', 'CFUNCTION', 'BITFIELD', 'BINB$',
-            'BIN$', 'AUTOX', 'AUTOS', 'AUTO', 'ATTACH', 'ASC', 'ABS'
+            'BIN$', 'AUTOX', 'AUTOS', 'AUTO', 'ATTACH', 'ASC', 'ABS',
             ),
         3 => array(
-            'XOR', 'OR', 'NOT', 'MOD', 'AND'
+            'XOR', 'OR', 'NOT', 'MOD', 'AND',
             ),
         4 => array(
             'TANH', 'TAN', 'SQRT', 'SINH', 'SIN', 'SECH', 'SEC', 'POWER',
             'LOG10', 'LOG', 'EXP10', 'EXP', 'CSCH', 'CSC', 'COTH', 'COT', 'COSH',
             'COS', 'ATANH', 'ATAN', 'ASINH', 'ASIN', 'ASECH', 'ASEC', 'ACSCH',
-            'ACSC', 'ACOSH', 'ACOS'
-            )
+            'ACSC', 'ACOSH', 'ACOS',
+            ),
         ),
     'SYMBOLS' => array(
         '(', ')', '[', ']', '!', '@', '%', '&', '*', '|', '/', '<', '>',
-        '=','+','-'
+        '=', '+', '-',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
         1 => false,
         2 => false,
         3 => false,
-        4 => false
+        4 => false,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
             1 => 'color: #00a1a1;font-weight: bold',
             2 => 'color: #000066;font-weight: bold',
             3 => 'color: #00a166;font-weight: bold',
-            4 => 'color: #0066a1;font-weight: bold'
+            4 => 'color: #0066a1;font-weight: bold',
             ),
         'COMMENTS' => array(
-            1 => 'color: #808080;'
+            1 => 'color: #808080;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099;'
+            0 => 'color: #000099;',
             ),
         'SCRIPT' => array(
             ),
         'REGEXPS' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
         3 => 'http://www.xbasic.org',
-        4 => 'http://www.xbasic.org'
+        4 => 'http://www.xbasic.org',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -138,7 +138,5 @@ $language_data = array (
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
-        )
+        ),
 );
-
-?>

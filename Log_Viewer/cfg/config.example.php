@@ -8,7 +8,10 @@
  * Licensed under the GPLv3 license.
  */
 ?>
-<?php if(realpath(__FILE__)===realpath($_SERVER["SCRIPT_FILENAME"])){header($_SERVER['SERVER_PROTOCOL'].' 404 Not Found');die();}?>
+<?php if (realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME'])) {
+    header($_SERVER['SERVER_PROTOCOL'].' 404 Not Found');
+    die();
+}?>
 {
 	"globals": {
 		"_remove_me_to_set_AUTH_LOG_FILE_COUNT"         : 100,

@@ -49,12 +49,12 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'CSS',
     'COMMENT_SINGLE' => array(1 => '@'),
     'COMMENT_MULTI' => array('/*' => '*/'),
     'COMMENT_REGEXP' => array(
-        2 => "/(?<=\\()\\s*(?:(?:[a-z0-9]+?:\\/\\/)?[a-z0-9_\\-\\.\\/:]+?)?[a-z]+?\\.[a-z]+?(\\?[^\)]+?)?\\s*?(?=\\))/i"
+        2 => "/(?<=\\()\\s*(?:(?:[a-z0-9]+?:\\/\\/)?[a-z0-9_\\-\\.\\/:]+?)?[a-z]+?\\.[a-z]+?(\\?[^\)]+?)?\\s*?(?=\\))/i",
         ),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
     'QUOTEMARKS' => array('"', "'"),
@@ -68,7 +68,7 @@ $language_data = array (
             'border-left-style', 'border-left-width', 'border-right',
             'border-right-color', 'border-right-style', 'border-right-width',
             'border-top-color', 'border-top-style',
-            'border-top-width','border-bottom', 'border-collapse',
+            'border-top-width', 'border-bottom', 'border-collapse',
             'border-left', 'border-width', 'border-color', 'border-spacing',
             'border-style', 'border-top', 'border', 'caption-side', 'clear',
             'clip', 'color', 'content', 'counter-increment', 'counter-reset',
@@ -91,7 +91,7 @@ $language_data = array (
             'text-shadow', 'text-transform', 'top', 'unicode-bidi',
             'vertical-align', 'visibility', 'voice-family', 'volume',
             'white-space', 'widows', 'width', 'word-spacing', 'z-index',
-            'bottom', 'left', 'height'
+            'bottom', 'left', 'height',
             ),
         2 => array(
             'above', 'absolute', 'always', 'armenian', 'aural', 'auto',
@@ -130,44 +130,44 @@ $language_data = array (
             'upper-roman', 'uppercase', 'url', 'visible', 'w-resize', 'wait',
             'white', 'wider', 'x-fast', 'x-high', 'x-large', 'x-loud',
             'x-low', 'x-small', 'x-soft', 'xx-large', 'xx-small', 'yellow',
-            'yes'
-            )
+            'yes',
+            ),
         ),
     'SYMBOLS' => array(
         '(', ')', '{', '}', ':', ';',
-        '>', '+', '*', ',', '^', '='
+        '>', '+', '*', ',', '^', '=',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
         1 => true,
-        2 => true
+        2 => true,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
             1 => 'color: #000000; font-weight: bold;',
-            2 => 'color: #993333;'
+            2 => 'color: #993333;',
             ),
         'COMMENTS' => array(
             1 => 'color: #a1a100;',
             2 => 'color: #ff0000; font-style: italic;',
-            'MULTI' => 'color: #808080; font-style: italic;'
+            'MULTI' => 'color: #808080; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #00AA00;'
+            0 => 'color: #00AA00;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #00AA00;'
+            0 => 'color: #00AA00;',
             ),
         'SCRIPT' => array(
             ),
@@ -175,12 +175,12 @@ $language_data = array (
             0 => 'color: #cc00cc;',
             1 => 'color: #6666ff;',
             2 => 'color: #3333ff;',
-            3 => 'color: #933;'
-            )
+            3 => 'color: #933;',
+            ),
         ),
     'URLS' => array(
         1 => '',
-        2 => ''
+        2 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -204,9 +204,7 @@ $language_data = array (
     'TAB_WIDTH' => 4,
     'PARSER_CONTROL' => array(
         'KEYWORDS' => array(
-            'DISALLOWED_AFTER' => '(?![a-zA-Z0-9_\|%\\-&\.])'
-        )
-    )
+            'DISALLOWED_AFTER' => '(?![a-zA-Z0-9_\|%\\-&\.])',
+        ),
+    ),
 );
-
-?>

@@ -48,7 +48,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Winbatch',
     'COMMENT_SINGLE' => array(1 => ';', 2 => ':'),
     'COMMENT_MULTI' => array(),
@@ -60,7 +60,7 @@ $language_data = array (
             'While', 'To', 'Then', 'Switch', 'Select', 'Return', 'Next', 'IntControl', 'Include', 'In', 'If',
             'Goto', 'GoSub', 'ForEach', 'For', 'Exit', 'Execute', 'ErrorMode', 'EndWhile', 'EndSwitch', '#EndSubRoutine',
             'EndSelect', 'EndIf', '#EEndFunction', 'EndFor', 'End', 'Else', 'DropWild', 'Drop', '#DefineSubRoutine',
-            '#DefineFunction', 'Debug', 'Continue', 'Case', 'CallExt', 'Call', 'By', 'BreakPoint', 'Break'
+            '#DefineFunction', 'Debug', 'Continue', 'Case', 'CallExt', 'Call', 'By', 'BreakPoint', 'Break',
             ),
         2 => array(
             'ZOOMED', 'YES', 'WORD4', 'WORD2', 'WORD1', 'WHOLESECTION', 'WAIT', 'UNSORTED', 'UNCHECK', 'TRUE', 'TILE',
@@ -81,7 +81,7 @@ $language_data = array (
             'ATTR_T', 'ATTR_SY', 'ATTR_SH', 'ATTR_RO', 'ATTR_RI', 'ATTR_P', 'ATTR_IC', 'ATTR_H', 'ATTR_DM', 'ATTR_DI', 'ATTR_DC',
             'ATTR_CI', 'ATTR_A', 'ASCENDING', 'ARRANGE', 'AMC', 'ACC_WRITE', 'ACC_READ_NT', 'ACC_READ_95', 'ACC_READ', 'ACC_PRINT_NT',
             'ACC_PMANG_NT', 'ACC_PFULL_NT', 'ACC_LIST', 'ACC_FULL_NT', 'ACC_FULL_95', 'ACC_DELETE', 'ACC_CREATE', 'ACC_CONTROL',
-            'ACC_CHNG_NT', 'ACC_ATTRIB', 'ABOVEICONS'
+            'ACC_CHNG_NT', 'ACC_ATTRIB', 'ABOVEICONS',
             ),
         3 => array(
             'Yields', 'Yield', 'WinZoom', 'WinWaitExist', 'WinWaitClose', 'WinWaitChild', 'WinVersion', 'WinTitle', 'WinSysInfo',
@@ -141,7 +141,7 @@ $language_data = array (
             'BinaryAlloc', 'Beep', 'Average', 'Atan', 'AskYesNo', 'AskTextbox', 'AskPassword', 'AskLine', 'AskItemlist', 'AskFont',
             'AskFiletext', 'AskFilename', 'AskDirectory', 'AskColor', 'Asin', 'ArrInitialize', 'ArrInfo', 'ArrDimension',
             'Arrayize', 'ArrayFilePutCSV', 'ArrayFilePut', 'ArrayFileGetCSV', 'ArrayFileGet', 'AppWaitClose', 'AppExist', 'AddExtender',
-            'Acos', 'Abs', 'About'
+            'Acos', 'Abs', 'About',
             ),
         4 => array(
             'zZipFiles', 'zVersionInfo', 'zVersion', 'zUnZipFiles', 'zSetPortBit', 'zRPortShift', 'zPortOut', 'zPortIn', 'zNotPortBit',
@@ -266,7 +266,7 @@ $language_data = array (
             'cGetControlImageCRC', 'cGetCBText', 'cGetCbCount', 'cGetCalDate', 'cFindByName', 'cFindByClass', 'cEnablestate', 'cDblClickItem',
             'cCpuSupt', 'cCpuSpeed', 'cCpuIdExt', 'cCpuId', 'cCpuFeat', 'cCpuBenchmark', 'cCloneCheck', 'cClickToolbar', 'cClickButton',
             'cClearTvItem', 'cClearLvItem', 'cClearLbAll', 'cCheckbox', 'aVersion', 'aStatusbar', 'aShellFolder', 'aMsgTimeout', 'AllSPoll',
-            'aGetLastError', 'aFileRename', 'aFileMove', 'aFileDelete', 'aFileCopy'
+            'aGetLastError', 'aFileRename', 'aFileMove', 'aFileDelete', 'aFileCopy',
             ),
         5 => array(
             'wWordRight', 'wWordLeft', 'wWinTile', 'wWinRestore', 'wWinNext', 'wWinMinimize', 'wWinMaximize', 'wWinCloseAll', 'wWinClose',
@@ -296,11 +296,11 @@ $language_data = array (
             'edEditRedo', 'edEditPaste', 'edEditPageUp', 'edEditPageDown', 'edEditLeft', 'edEditInsertString', 'edEditGoToLine', 'edEditGoToColumn',
             'edEditGoToBookmark', 'edEditGetCurrentWord', 'edEditEndSelection', 'edEditEndOfLine', 'edEditEndOfFile', 'edEditDownline', 'edEditDelete',
             'edEditCutline', 'edEditCut', 'edEditCopyline', 'edEditCopy', 'edEditClearSelection', 'edEditBeginningOfLine', 'edEditBeginningOfFile',
-            'edEditBackTab', 'edEditBackspace', 'edDeleteButton', 'edAddButton'
-            )
+            'edEditBackTab', 'edEditBackspace', 'edDeleteButton', 'edAddButton',
+            ),
         ),
     'SYMBOLS' => array(
-        '(', ')', '[', ']', '{', '}', '!', '+', '-', '~', '$', '^', '?', '@', '%', '#', '&', '*', '|', '/', '<', '>'
+        '(', ')', '[', ']', '{', '}', '!', '+', '-', '~', '$', '^', '?', '@', '%', '#', '&', '*', '|', '/', '<', '>',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -308,7 +308,7 @@ $language_data = array (
         2 => false,
         3 => false,
         4 => false,
-        5 => false
+        5 => false,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
@@ -316,54 +316,52 @@ $language_data = array (
             2 => 'color: #0080FF; font-weight: bold;',
             3 => 'color: #0000FF;',
             4 => 'color: #FF00FF;',
-            5 => 'color: #008000;'
+            5 => 'color: #008000;',
             ),
         'COMMENTS' => array(
             1 => 'color: #008000; font-style: italic;',
             2 => 'color: #FF1010; font-weight: bold;',
-            'MULTI' => 'color: #808080; font-style: italic;'
+            'MULTI' => 'color: #808080; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
-            0 => 'color: #006600;'
+            0 => 'color: #006600;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'REGEXPS' => array(
-            0 => 'color: #0000ff;'
+            0 => 'color: #0000ff;',
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
         3 => '',
         4 => '',
-        5 => ''
+        5 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(),
     'REGEXPS' => array(//Variable names
-        0 => "[\\$]{1,2}[a-zA-Z_][a-zA-Z0-9_]*"
+        0 => '[\$]{1,2}[a-zA-Z_][a-zA-Z0-9_]*',
         ),
     'STRICT_MODE_APPLIES' => GESHI_MAYBE,
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
-        )
+        ),
 );
-
-?>

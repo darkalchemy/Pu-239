@@ -38,13 +38,13 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  *****************************************************************************/
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'ProvideX',
     'COMMENT_SINGLE' => array(1 => '!'),
     'COMMENT_MULTI' => array('/*' => '*/'),
     'COMMENT_REGEXP' => array(
         // Single-Line Comments using REM command
-        2 => "/\bREM\b.*?$/i"
+        2 => "/\bREM\b.*?$/i",
         ),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
     'QUOTEMARKS' => array('"'),
@@ -82,7 +82,7 @@ $language_data = array (
             'then', 'to', 'translate', 'tristate_box', 'unlock', 'until',
             'update', 'user_lex', 'v_scrollbar', 'vardrop_box', 'varlist_box',
             'via', 'video_palette', 'wait', 'wend', 'while', 'winprt_setup',
-            'with', 'write'
+            'with', 'write',
             ),
         2 => array(
             // System Functions
@@ -101,7 +101,7 @@ $language_data = array (
             'sin', 'sqr', 'srt', 'ssz', 'stk', 'stp', 'str', 'sub',
             'swp', 'sys', 'tan', 'tbl', 'tcb', 'tmr', 'trx', 'tsk',
             'txh', 'txw', 'ucp', 'ucs', 'upk', 'vin', 'vis', 'xeq',
-            'xfa', 'xor', '_obj'
+            'xfa', 'xor', '_obj',
             ),
         3 => array(
             // System Variables
@@ -111,8 +111,7 @@ $language_data = array (
             'gfn', 'gid', 'hfn', 'hlp', 'hwd', 'lfa', 'lfo', 'lip',
             'lpg', 'lwd', 'mse', 'msl', 'nar', 'nid', 'pgn', 'psz',
             'quo', 'ret', 'sid', 'ssn', 'tim', 'tme', 'tms', 'tsm',
-            'uid', 'unt', 'who'
-
+            'uid', 'unt', 'who',
             ),
         4 => array(
             // Nomads Variables
@@ -159,7 +158,7 @@ $language_data = array (
             'Next_Folder', 'Next_Id', 'Next_Id$', 'No_Flush', 'Prime_Key$',
             'Prior_Val', 'Prior_Val$', 'Qry_Val$', 'Refresh_Flg',
             'Replacement_Folder$', 'Replacement_Lib$', 'Replacement_Scrn$',
-            'Scrn_Id$', 'Scrn_K$', 'Scrn_Lib$', 'Tab_Table$', '_Eom$'
+            'Scrn_Id$', 'Scrn_K$', 'Scrn_Lib$', 'Tab_Table$', '_Eom$',
             ),
         5 => array(
             // Mnemonics
@@ -195,7 +194,7 @@ $language_data = array (
             "'wc'", "'wd'", "'wg'", "'white'", "'window'", "'wm'",
             "'wp'", "'wr'", "'wrap'", "'ws'", "'wx'", "'xp'", "'yellow'",
             "'zx'", "'_black'", "'_blue'", "'_colour'", "'_green'",
-            "'_magenta'", "'_red'", "'_white'", "'_yellow'"
+            "'_magenta'", "'_red'", "'_white'", "'_yellow'",
             ),
         ),
     'SYMBOLS' => array(
@@ -203,7 +202,7 @@ $language_data = array (
         1 => array('++', '--', '+=', '-=', '*=', '/=', '^=', '|='),
         2 => array('&lt;', '&gt;', '='),
         3 => array('(', ')', '[', ']', '{', '}'),
-        4 => array(',', '@', ';', '\\')
+        4 => array(',', '@', ';', '\\'),
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -224,16 +223,16 @@ $language_data = array (
         'COMMENTS' => array(
             1 => 'color: #008080; font-style: italic;',
             2 => 'color: #008080;',
-            'MULTI' => 'color: #008080; font-style: italic;'
+            'MULTI' => 'color: #008080; font-style: italic;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #000066;'
+            0 => 'color: #000066;',
             ),
         'STRINGS' => array(
-            0 => 'color: green;'
+            0 => 'color: green;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #00008B;'
+            0 => 'color: #00008B;',
             ),
         'METHODS' => array(
             ),
@@ -242,28 +241,28 @@ $language_data = array (
             1 => 'color: #000099;',
             2 => 'color: #000099;',
             3 => 'color: #0000C9;',
-            4 => 'color: #000099;'
+            4 => 'color: #000099;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099;'
+            0 => 'color: #000099;',
             ),
         'SCRIPT' => array(
             ),
         'REGEXPS' => array(
             1 => 'color: #006400; font-weight: bold',
-            2 => 'color: #6A5ACD;'
-            )
+            2 => 'color: #6A5ACD;',
+            ),
         ),
     'URLS' => array(
         1 => 'http://www.allbasic.info./wiki/index.php/PX:Directive_{FNAME}',
         2 => 'http://www.allbasic.info./wiki/index.php/PX:System_function_{FNAME}',
         3 => 'http://www.allbasic.info./wiki/index.php/PX:System_variable_{FNAME}',
         4 => 'http://www.allbasic.info./wiki/index.php/PX:Nomads_{FNAME}',
-        5 => 'http://www.allbasic.info./wiki/index.php/PX:Mnemonic_{FNAMEU}'
+        5 => 'http://www.allbasic.info./wiki/index.php/PX:Mnemonic_{FNAMEU}',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 => "'"
+        1 => "'",
         ),
     'REGEXPS' => array(
         1 => array(
@@ -272,7 +271,7 @@ $language_data = array (
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => '\\3'
+            GESHI_AFTER => '\\3',
             ),
         2 => array(
             // Global String Variables
@@ -280,8 +279,8 @@ $language_data = array (
             GESHI_REPLACE => '\\1\\2\\3',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
-            )
+            GESHI_AFTER => '',
+            ),
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(
@@ -290,10 +289,8 @@ $language_data = array (
         ),
     'PARSER_CONTROL' => array(
         'ENABLE_FLAGS' => array(
-            'NUMBERS' => GESHI_NEVER
-            )
+            'NUMBERS' => GESHI_NEVER,
+            ),
         ),
-    'TAB_WIDTH' => 4
+    'TAB_WIDTH' => 4,
 );
-
-?>

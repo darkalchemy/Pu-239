@@ -44,7 +44,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Visual Basic',
     'COMMENT_SINGLE' => array(),
     'COMMENT_MULTI' => array(),
@@ -73,26 +73,26 @@ $language_data = array (
             'Resume', 'Select', 'Set', 'Single', 'Static', 'Step',
             'Stop', 'String', 'Sub', 'Then', 'To', 'True', 'Type',
             'TypeOf', 'UBound', 'Until', 'Variant', 'While', 'With',
-            'WithEvents', 'Xor'
-            )
+            'WithEvents', 'Xor',
+            ),
         ),
     'SYMBOLS' => array(
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
-        1 => false
+        1 => false,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
-            1 => 'color: #000080;'
+            1 => 'color: #000080;',
             ),
         'COMMENTS' => array(
-            1 => 'color: #008000;'
+            1 => 'color: #008000;',
             ),
         'BRACKETS' => array(
             ),
         'STRINGS' => array(
-            0 => 'color: #800000;'
+            0 => 'color: #800000;',
             ),
         'NUMBERS' => array(
             ),
@@ -101,15 +101,15 @@ $language_data = array (
         'SYMBOLS' => array(
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #800000; font-weight: bold;'
+            0 => 'color: #800000; font-weight: bold;',
             ),
         'SCRIPT' => array(
             ),
         'REGEXPS' => array(
-            )
+            ),
         ),
     'URLS' => array(
-        1 => ''
+        1 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -125,9 +125,7 @@ $language_data = array (
         'ENABLE_FLAGS' => array(
             'BRACKETS' => GESHI_NEVER,
             'SYMBOLS' => GESHI_NEVER,
-            'NUMBERS' => GESHI_NEVER
-            )
-        )
+            'NUMBERS' => GESHI_NEVER,
+            ),
+        ),
 );
-
-?>

@@ -36,12 +36,12 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'GNU make',
     'COMMENT_SINGLE' => array(1 => '#'),
     'COMMENT_REGEXP' => array(
         //Escaped String Starters
-        2 => "/\\\\['\"]/siU"
+        2 => "/\\\\['\"]/siU",
         ),
     'COMMENT_MULTI' => array(),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
@@ -52,12 +52,12 @@ $language_data = array (
             // core
             'ifeq', 'else', 'endif', 'ifneq', 'ifdef', 'ifndef',
             'include', 'vpath', 'export', 'unexport', 'override',
-            'info', 'warning', 'error'
+            'info', 'warning', 'error',
             ),
         2 => array(
             // macros, literals
             '.SUFFIXES', '.PHONY', '.DEFAULT', '.PRECIOUS', '.IGNORE', '.SILENT', '.EXPORT_ALL_VARIABLES', '.KEEP_STATE',
-            '.LIBPATTERNS', '.NOTPARALLEL', '.DELETE_ON_ERROR', '.INTERMEDIATE', '.POSIX', '.SECONDARY'
+            '.LIBPATTERNS', '.NOTPARALLEL', '.DELETE_ON_ERROR', '.INTERMEDIATE', '.POSIX', '.SECONDARY',
             ),
         /*
         3 => array(
@@ -73,7 +73,7 @@ $language_data = array (
         '<', '>',
         '=', '-', '+', '*',
         '.', ':', ',', ';',
-        '$'
+        '$',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -90,30 +90,30 @@ $language_data = array (
         'COMMENTS' => array(
             1 => 'color: #339900; font-style: italic;',
             2 => 'color: #000099; font-weight: bold;',
-            'MULTI' => ''
+            'MULTI' => '',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
-        'BRACKETS' => array(  # keep same as symbols so as to make ${} and $() equiv.
-            0 => 'color: #004400;'
+        'BRACKETS' => array(  // keep same as symbols so as to make ${} and $() equiv.
+            0 => 'color: #004400;',
             ),
         'STRINGS' => array(
-            0 => 'color: #CC2200;'
+            0 => 'color: #CC2200;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #CC2200;'
+            0 => 'color: #CC2200;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #004400;'
+            0 => 'color: #004400;',
             ),
         'REGEXPS' => array(
             0 => 'color: #000088; font-weight: bold;',
             1 => 'color: #0000CC; font-weight: bold;',
-            2 => 'color: #000088;'
+            2 => 'color: #000088;',
             ),
         'SCRIPT' => array(),
-        'METHODS' => array()
+        'METHODS' => array(),
         ),
     'URLS' => array(
         1 => '',
@@ -124,14 +124,14 @@ $language_data = array (
     'OBJECT_SPLITTERS' => array(),
     'REGEXPS' => array(
         //Simple variables
-        0 => "\\$(?:[^{(&]|&(?:amp|lt|gt);)",
+        0 => '\$(?:[^{(&]|&(?:amp|lt|gt);)',
         //Complex variables/functions [built-ins]
         1 => array(
             GESHI_SEARCH => '(\\$[({])(subst|addprefix|addsuffix|basename|call|dir|error|eval|filter-out|filter,|findstring|firstword|foreach|if|join|notdir|origin|patsubst|shell|sort|strip,|suffix|warning|wildcard|word|wordlist|words)([ })])',
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => '\\3'
+            GESHI_AFTER => '\\3',
             ),
             //Complex variables/functions [others]
         2 => array(
@@ -139,13 +139,12 @@ $language_data = array (
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => '\\3'
+            GESHI_AFTER => '\\3',
             ),
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(),
     'HIGHLIGHT_STRICT_BLOCK' => array(),
-    'TAB_WIDTH' => 8
+    'TAB_WIDTH' => 8,
 // vim: set sw=4 sts=4 :
 );
-?>

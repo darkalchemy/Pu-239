@@ -905,3 +905,12 @@ img {
     border-radius: 5px;
 }
 
+.answers-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex {
+    min-width: 20%;
+    padding: 15px 35px;
+}

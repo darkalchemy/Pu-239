@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     //usercp gets
     'usercp_updated' => 'Profile updated',
@@ -93,6 +94,5 @@ $lang = array(
     'usercp_icons' => 'Categories as images',
     'usercp_language' => 'Language',
     //usercp stdhead
-    'usercp_stdhead' => '\'s private page'
+    'usercp_stdhead' => '\'s private page',
 );
-

@@ -43,7 +43,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'bnf',
     'COMMENT_SINGLE' => array(),
     'COMMENT_MULTI' => array(),
@@ -52,7 +52,7 @@ $language_data = array (
     'ESCAPE_CHAR' => '',
     'KEYWORDS' => array(),
     'SYMBOLS' => array(
-        '(', ')', '<', '>', '::=', '|'
+        '(', ')', '<', '>', '::=', '|',
     ),
     'CASE_SENSITIVE' => array(
         //GESHI_COMMENTS => false
@@ -62,20 +62,20 @@ $language_data = array (
         'COMMENTS' => array(
             ),
         'ESCAPE_CHAR' => array(
-            0 => ''
+            0 => '',
             ),
         'BRACKETS' => array(
-            0 => ''
+            0 => '',
             ),
         'STRINGS' => array(
             0 => 'color: #a00;',
-            1 => 'color: #a00;'
+            1 => 'color: #a00;',
             ),
         'NUMBERS' => array(
-            0 => ''
+            0 => '',
             ),
         'METHODS' => array(
-            0 => ''
+            0 => '',
             ),
         'SYMBOLS' => array(
             0 => 'color: #000066; font-weight: bold;', // Unused
@@ -84,8 +84,8 @@ $language_data = array (
             0 => 'color: #007;',
             ),
         'SCRIPT' => array(
-            0 => ''
-            )
+            0 => '',
+            ),
         ),
     'URLS' => array(),
     'OOLANG' => false,
@@ -97,14 +97,12 @@ $language_data = array (
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => '\\3'
+            GESHI_AFTER => '\\3',
             ),
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
-        )
+        ),
 );
-
-?>

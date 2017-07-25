@@ -1,515 +1,515 @@
 <?php
+
 //made by putyn
 $countries = array(
     'se' => array(
         'id' => 1,
         'iso' => 'se',
-        'name' => 'Sweden'
-    ) ,
+        'name' => 'Sweden',
+    ),
     'us' => array(
         'id' => 2,
         'iso' => 'us',
-        'name' => 'Usa'
-    ) ,
+        'name' => 'Usa',
+    ),
     'ru' => array(
         'id' => 3,
         'iso' => 'ru',
-        'name' => 'Russia'
-    ) ,
+        'name' => 'Russia',
+    ),
     'fi' => array(
         'id' => 4,
         'iso' => 'fi',
-        'name' => 'Finland'
-    ) ,
+        'name' => 'Finland',
+    ),
     'ca' => array(
         'id' => 5,
         'iso' => 'ca',
-        'name' => 'Canada'
-    ) ,
+        'name' => 'Canada',
+    ),
     'fr' => array(
         'id' => 6,
         'iso' => 'fr',
-        'name' => 'France'
-    ) ,
+        'name' => 'France',
+    ),
     'de' => array(
         'id' => 7,
         'iso' => 'de',
-        'name' => 'Germany'
-    ) ,
+        'name' => 'Germany',
+    ),
     'cn' => array(
         'id' => 8,
         'iso' => 'cn',
-        'name' => 'China'
-    ) ,
+        'name' => 'China',
+    ),
     'it' => array(
         'id' => 9,
         'iso' => 'it',
-        'name' => 'Italy'
-    ) ,
+        'name' => 'Italy',
+    ),
     'dk' => array(
         'id' => 10,
         'iso' => 'dk',
-        'name' => 'Denmark'
-    ) ,
+        'name' => 'Denmark',
+    ),
     'no' => array(
         'id' => 11,
         'iso' => 'no',
-        'name' => 'Norway'
-    ) ,
+        'name' => 'Norway',
+    ),
     'gb' => array(
         'id' => 12,
         'iso' => 'gb',
-        'name' => 'United kingdom'
-    ) ,
+        'name' => 'United kingdom',
+    ),
     'ie' => array(
         'id' => 13,
         'iso' => 'ie',
-        'name' => 'Ireland'
-    ) ,
+        'name' => 'Ireland',
+    ),
     'pl' => array(
         'id' => 14,
         'iso' => 'pl',
-        'name' => 'Poland'
-    ) ,
+        'name' => 'Poland',
+    ),
     'nl' => array(
         'id' => 15,
         'iso' => 'nl',
-        'name' => 'Netherlands'
-    ) ,
+        'name' => 'Netherlands',
+    ),
     'be' => array(
         'id' => 16,
         'iso' => 'be',
-        'name' => 'Belgium'
-    ) ,
+        'name' => 'Belgium',
+    ),
     'jp' => array(
         'id' => 17,
         'iso' => 'jp',
-        'name' => 'Japan'
-    ) ,
+        'name' => 'Japan',
+    ),
     'br' => array(
         'id' => 18,
         'iso' => 'br',
-        'name' => 'Brazil'
-    ) ,
+        'name' => 'Brazil',
+    ),
     'ar' => array(
         'id' => 19,
         'iso' => 'ar',
-        'name' => 'Argentina'
-    ) ,
+        'name' => 'Argentina',
+    ),
     'au' => array(
         'id' => 20,
         'iso' => 'au',
-        'name' => 'Australia'
-    ) ,
+        'name' => 'Australia',
+    ),
     'nz' => array(
         'id' => 21,
         'iso' => 'nz',
-        'name' => 'New zealand'
-    ) ,
+        'name' => 'New zealand',
+    ),
     'es' => array(
         'id' => 22,
         'iso' => 'es',
-        'name' => 'Spain'
-    ) ,
+        'name' => 'Spain',
+    ),
     'pt' => array(
         'id' => 23,
         'iso' => 'pt',
-        'name' => 'Portugal'
-    ) ,
+        'name' => 'Portugal',
+    ),
     'mx' => array(
         'id' => 24,
         'iso' => 'mx',
-        'name' => 'Mexico'
-    ) ,
+        'name' => 'Mexico',
+    ),
     'sg' => array(
         'id' => 25,
         'iso' => 'sg',
-        'name' => 'Singapore'
-    ) ,
+        'name' => 'Singapore',
+    ),
     'za' => array(
         'id' => 26,
         'iso' => 'za',
-        'name' => 'South africa'
-    ) ,
+        'name' => 'South africa',
+    ),
     'kr' => array(
         'id' => 27,
         'iso' => 'kr',
-        'name' => 'South korea'
-    ) ,
+        'name' => 'South korea',
+    ),
     'jm' => array(
         'id' => 28,
         'iso' => 'jm',
-        'name' => 'Jamaica'
-    ) ,
+        'name' => 'Jamaica',
+    ),
     'lu' => array(
         'id' => 29,
         'iso' => 'lu',
-        'name' => 'Luxembourg'
-    ) ,
+        'name' => 'Luxembourg',
+    ),
     'hk' => array(
         'id' => 30,
         'iso' => 'hk',
-        'name' => 'Hong kong'
-    ) ,
+        'name' => 'Hong kong',
+    ),
     'bz' => array(
         'id' => 31,
         'iso' => 'bz',
-        'name' => 'Belize'
-    ) ,
+        'name' => 'Belize',
+    ),
     'dz' => array(
         'id' => 32,
         'iso' => 'dz',
-        'name' => 'Algeria'
-    ) ,
+        'name' => 'Algeria',
+    ),
     'ao' => array(
         'id' => 33,
         'iso' => 'ao',
-        'name' => 'Angola'
-    ) ,
+        'name' => 'Angola',
+    ),
     'at' => array(
         'id' => 34,
         'iso' => 'at',
-        'name' => 'Austria'
-    ) ,
+        'name' => 'Austria',
+    ),
     'cs' => array(
         'id' => 35,
         'iso' => 'cs',
-        'name' => 'Yugoslavia'
-    ) ,
+        'name' => 'Yugoslavia',
+    ),
     'ws' => array(
         'id' => 36,
         'iso' => 'ws',
-        'name' => 'West Samoa'
-    ) ,
+        'name' => 'West Samoa',
+    ),
     'my' => array(
         'id' => 37,
         'iso' => 'my',
-        'name' => 'Malaysia'
-    ) ,
+        'name' => 'Malaysia',
+    ),
     'do' => array(
         'id' => 38,
         'iso' => 'do',
-        'name' => 'Dominican republic'
-    ) ,
+        'name' => 'Dominican republic',
+    ),
     'gr' => array(
         'id' => 39,
         'iso' => 'gr',
-        'name' => 'Greece'
-    ) ,
+        'name' => 'Greece',
+    ),
     'gt' => array(
         'id' => 40,
         'iso' => 'gt',
-        'name' => 'Guatemala'
-    ) ,
+        'name' => 'Guatemala',
+    ),
     'il' => array(
         'id' => 41,
         'iso' => 'il',
-        'name' => 'Israel'
-    ) ,
+        'name' => 'Israel',
+    ),
     'pk' => array(
         'id' => 42,
         'iso' => 'pk',
-        'name' => 'Pakistan'
-    ) ,
+        'name' => 'Pakistan',
+    ),
     'cz' => array(
         'id' => 43,
         'iso' => 'cz',
-        'name' => 'Czech republic'
-    ) ,
+        'name' => 'Czech republic',
+    ),
     'rs' => array(
         'id' => 44,
         'iso' => 'rs',
-        'name' => 'Serbia'
-    ) ,
+        'name' => 'Serbia',
+    ),
     'sc' => array(
         'id' => 45,
         'iso' => 'sc',
-        'name' => 'Seychelles'
-    ) ,
+        'name' => 'Seychelles',
+    ),
     'tw' => array(
         'id' => 46,
         'iso' => 'tw',
-        'name' => 'Taiwan'
-    ) ,
+        'name' => 'Taiwan',
+    ),
     'pr' => array(
         'id' => 47,
         'iso' => 'pr',
-        'name' => 'Puerto rico'
-    ) ,
+        'name' => 'Puerto rico',
+    ),
     'cl' => array(
         'id' => 48,
         'iso' => 'cl',
-        'name' => 'Chile'
-    ) ,
+        'name' => 'Chile',
+    ),
     'cu' => array(
         'id' => 49,
         'iso' => 'cu',
-        'name' => 'Cuba'
-    ) ,
+        'name' => 'Cuba',
+    ),
     'cg' => array(
         'id' => 50,
         'iso' => 'cg',
-        'name' => 'Congo'
-    ) ,
+        'name' => 'Congo',
+    ),
     'af' => array(
         'id' => 51,
         'iso' => 'af',
-        'name' => 'Afghanistan'
-    ) ,
+        'name' => 'Afghanistan',
+    ),
     'tr' => array(
         'id' => 52,
         'iso' => 'tr',
-        'name' => 'Turkey'
-    ) ,
+        'name' => 'Turkey',
+    ),
     'uz' => array(
         'id' => 53,
         'iso' => 'uz',
-        'name' => 'Uzbekistan'
-    ) ,
+        'name' => 'Uzbekistan',
+    ),
     'ch' => array(
         'id' => 54,
         'iso' => 'ch',
-        'name' => 'Switzerland'
-    ) ,
+        'name' => 'Switzerland',
+    ),
     'ki' => array(
         'id' => 55,
         'iso' => 'ki',
-        'name' => 'Kiribati'
-    ) ,
+        'name' => 'Kiribati',
+    ),
     'ph' => array(
         'id' => 56,
         'iso' => 'ph',
-        'name' => 'Philippines'
-    ) ,
+        'name' => 'Philippines',
+    ),
     'bf' => array(
         'id' => 57,
         'iso' => 'bf',
-        'name' => 'Burkina faso'
-    ) ,
+        'name' => 'Burkina faso',
+    ),
     'ng' => array(
         'id' => 58,
         'iso' => 'ng',
-        'name' => 'Nigeria'
-    ) ,
+        'name' => 'Nigeria',
+    ),
     'is' => array(
         'id' => 59,
         'iso' => 'is',
-        'name' => 'Iceland'
-    ) ,
+        'name' => 'Iceland',
+    ),
     'nr' => array(
         'id' => 60,
         'iso' => 'nr',
-        'name' => 'Nauru'
-    ) ,
+        'name' => 'Nauru',
+    ),
     'si' => array(
         'id' => 61,
         'iso' => 'si',
-        'name' => 'Slovenia'
-    ) ,
+        'name' => 'Slovenia',
+    ),
     'al' => array(
         'id' => 62,
         'iso' => 'al',
-        'name' => 'Albania'
-    ) ,
+        'name' => 'Albania',
+    ),
     'tm' => array(
         'id' => 63,
         'iso' => 'tm',
-        'name' => 'Turkmenistan'
-    ) ,
+        'name' => 'Turkmenistan',
+    ),
     'ba' => array(
         'id' => 64,
         'iso' => 'ba',
-        'name' => 'Bosnia Herzegovina'
-    ) ,
+        'name' => 'Bosnia Herzegovina',
+    ),
     'ad' => array(
         'id' => 65,
         'iso' => 'ad',
-        'name' => 'Andorra'
-    ) ,
+        'name' => 'Andorra',
+    ),
     'lt' => array(
         'id' => 66,
         'iso' => 'lt',
-        'name' => 'Lithuania'
-    ) ,
+        'name' => 'Lithuania',
+    ),
     'in' => array(
         'id' => 67,
         'iso' => 'in',
-        'name' => 'India'
-    ) ,
+        'name' => 'India',
+    ),
     'an' => array(
         'id' => 68,
         'iso' => 'an',
-        'name' => 'Netherlands antilles'
-    ) ,
+        'name' => 'Netherlands antilles',
+    ),
     'ua' => array(
         'id' => 69,
         'iso' => 'ua',
-        'name' => 'Ukraine'
-    ) ,
+        'name' => 'Ukraine',
+    ),
     've' => array(
         'id' => 70,
         'iso' => 've',
-        'name' => 'Venezuela'
-    ) ,
+        'name' => 'Venezuela',
+    ),
     'hu' => array(
         'id' => 71,
         'iso' => 'hu',
-        'name' => 'Hungary'
-    ) ,
+        'name' => 'Hungary',
+    ),
     'ro' => array(
         'id' => 72,
         'iso' => 'ro',
-        'name' => 'Romania'
-    ) ,
+        'name' => 'Romania',
+    ),
     'vu' => array(
         'id' => 73,
         'iso' => 'vu',
-        'name' => 'Vanuatu'
-    ) ,
+        'name' => 'Vanuatu',
+    ),
     'vn' => array(
         'id' => 74,
         'iso' => 'vn',
-        'name' => 'Vietnam'
-    ) ,
+        'name' => 'Vietnam',
+    ),
     'tt' => array(
         'id' => 75,
         'iso' => 'tt',
-        'name' => 'Trinidad&Tobago'
-    ) ,
+        'name' => 'Trinidad&Tobago',
+    ),
     'hn' => array(
         'id' => 76,
         'iso' => 'hn',
-        'name' => 'Honduras'
-    ) ,
+        'name' => 'Honduras',
+    ),
     'kg' => array(
         'id' => 77,
         'iso' => 'kg',
-        'name' => 'Kyrgyzstan'
-    ) ,
+        'name' => 'Kyrgyzstan',
+    ),
     'ec' => array(
         'id' => 78,
         'iso' => 'ec',
-        'name' => 'Ecuador'
-    ) ,
+        'name' => 'Ecuador',
+    ),
     'bs' => array(
         'id' => 79,
         'iso' => 'bs',
-        'name' => 'Bahamas'
-    ) ,
+        'name' => 'Bahamas',
+    ),
     'pe' => array(
         'id' => 80,
         'iso' => 'pe',
-        'name' => 'Peru'
-    ) ,
+        'name' => 'Peru',
+    ),
     'kh' => array(
         'id' => 81,
         'iso' => 'kh',
-        'name' => 'Cambodia'
-    ) ,
+        'name' => 'Cambodia',
+    ),
     'bd' => array(
         'id' => 82,
         'iso' => 'bd',
-        'name' => 'Bangladesh'
-    ) ,
+        'name' => 'Bangladesh',
+    ),
     'bb' => array(
         'id' => 83,
         'iso' => 'bb',
-        'name' => 'Barbados'
-    ) ,
+        'name' => 'Barbados',
+    ),
     'la' => array(
         'id' => 84,
         'iso' => 'la',
-        'name' => 'Laos'
-    ) ,
+        'name' => 'Laos',
+    ),
     'uy' => array(
         'id' => 85,
         'iso' => 'uy',
-        'name' => 'Uruguay'
-    ) ,
+        'name' => 'Uruguay',
+    ),
     'ag' => array(
         'id' => 86,
         'iso' => 'ag',
-        'name' => 'Antigua and Barbuda'
-    ) ,
+        'name' => 'Antigua and Barbuda',
+    ),
     'py' => array(
         'id' => 87,
         'iso' => 'py',
-        'name' => 'Paraguay'
-    ) ,
+        'name' => 'Paraguay',
+    ),
     'ru' => array(
         'id' => 88,
         'iso' => 'ru',
-        'name' => 'Russia'
-    ) ,
+        'name' => 'Russia',
+    ),
     'th' => array(
         'id' => 89,
         'iso' => 'th',
-        'name' => 'Thailand'
-    ) ,
+        'name' => 'Thailand',
+    ),
     'sn' => array(
         'id' => 90,
         'iso' => 'sn',
-        'name' => 'Senegal'
-    ) ,
+        'name' => 'Senegal',
+    ),
     'tg' => array(
         'id' => 91,
         'iso' => 'tg',
-        'name' => 'Togo'
-    ) ,
+        'name' => 'Togo',
+    ),
     'kp' => array(
         'id' => 92,
         'iso' => 'kp',
-        'name' => 'North Korea'
-    ) ,
+        'name' => 'North Korea',
+    ),
     'hr' => array(
         'id' => 93,
         'iso' => 'hr',
-        'name' => 'Croatia'
-    ) ,
+        'name' => 'Croatia',
+    ),
     'ee' => array(
         'id' => 94,
         'iso' => 'ee',
-        'name' => 'Estonia'
-    ) ,
+        'name' => 'Estonia',
+    ),
     'co' => array(
         'id' => 95,
         'iso' => 'co',
-        'name' => 'Colombia'
-    ) ,
+        'name' => 'Colombia',
+    ),
     'lb' => array(
         'id' => 96,
         'iso' => 'lb',
-        'name' => 'Lebanon'
-    ) ,
+        'name' => 'Lebanon',
+    ),
     'lv' => array(
         'id' => 97,
         'iso' => 'lv',
-        'name' => 'Latvia'
-    ) ,
+        'name' => 'Latvia',
+    ),
     'cr' => array(
         'id' => 98,
         'iso' => 'cr',
-        'name' => 'Costa rica'
-    ) ,
+        'name' => 'Costa rica',
+    ),
     'eg' => array(
         'id' => 99,
         'iso' => 'eg',
-        'name' => 'Egypt'
-    ) ,
+        'name' => 'Egypt',
+    ),
     'bg' => array(
         'id' => 100,
         'iso' => 'bg',
-        'name' => 'Bulgaria'
-    ) ,
+        'name' => 'Bulgaria',
+    ),
     'sco' => array(
         'id' => 101,
         'iso' => 'sco',
-        'name' => 'Scotland'
-    ) ,
+        'name' => 'Scotland',
+    ),
     'ae' => array(
         'id' => 102,
         'iso' => 'ae',
-        'name' => 'UAE'
-    )
+        'name' => 'UAE',
+    ),
 );
-?>

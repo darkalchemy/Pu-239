@@ -1,6 +1,5 @@
 <?php
 /**
-This file created on Apr 07 2014 00:29:59.
 Site paypal shits /U-232v4.
 **/
 $INSTALLER09['paypal_config']['email'] = 'Bigjoos1@hotmail.co.uk ';
@@ -71,5 +70,3 @@ $INSTALLER09['paypal_config']['inv_amt_3'] = 3;
 $INSTALLER09['paypal_config']['inv_amt_4'] = 4;
 $INSTALLER09['paypal_config']['inv_amt_5'] = 5;
 $INSTALLER09['paypal_config']['inv_amt_6'] = 6;
-
-?>

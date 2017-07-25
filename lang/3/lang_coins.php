@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     'head_verslun' => 'Store',
     'err' => 'Error!',
@@ -13,6 +14,5 @@ $lang = array(
     'pr_verd' => 'Prize',
     'pr_nafn' => 'Name',
     'pr_lys' => 'Description',
-    'pr_kaupa' => 'Buy'
+    'pr_kaupa' => 'Buy',
 );
-

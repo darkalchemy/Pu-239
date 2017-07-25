@@ -42,7 +42,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'INI',
     'COMMENT_SINGLE' => array(0 => ';'),
     'COMMENT_MULTI' => array(),
@@ -52,43 +52,43 @@ $language_data = array (
     'KEYWORDS' => array(
         ),
     'SYMBOLS' => array(
-        '[', ']', '='
+        '[', ']', '=',
         ),
     'CASE_SENSITIVE' => array(
-        GESHI_COMMENTS => false
+        GESHI_COMMENTS => false,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
             ),
         'COMMENTS' => array(
-            0 => 'color: #666666; font-style: italic;'
+            0 => 'color: #666666; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => ''
+            0 => '',
             ),
         'BRACKETS' => array(
-            0 => ''
+            0 => '',
             ),
         'STRINGS' => array(
-            0 => 'color: #933;'
+            0 => 'color: #933;',
             ),
         'NUMBERS' => array(
-            0 => ''
+            0 => '',
             ),
         'METHODS' => array(
-            0 => ''
+            0 => '',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #000066; font-weight:bold;'
+            0 => 'color: #000066; font-weight:bold;',
             ),
         'REGEXPS' => array(
             0 => 'color: #000066; font-weight:bold;',
             1 => 'color: #000099;',
-            2 => 'color: #660066;'
+            2 => 'color: #660066;',
             ),
         'SCRIPT' => array(
-            0 => ''
-            )
+            0 => '',
+            ),
         ),
     'URLS' => array(
         ),
@@ -104,7 +104,7 @@ $language_data = array (
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => '\\3'
+            GESHI_AFTER => '\\3',
             ),
         //Entry values
         2 => array(
@@ -115,14 +115,12 @@ $language_data = array (
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '\\1=',
-            GESHI_AFTER => ''
-            )
+            GESHI_AFTER => '',
+            ),
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
-        )
+        ),
 );
-
-?>

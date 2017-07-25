@@ -5,7 +5,7 @@
  * Author: Neville Dempsey (NevilleD.sourceforge@sgr-a.net)
  * Copyright: (c) 2010 Neville Dempsey (https://sourceforge.net/projects/algol68/files/)
  * Release Version: v.v.v.v
- * Date Started: 2010/04/24
+ * Date Started: 2010/04/24.
  *
  * ALGOL 68 language file for GeSHi.
  *
@@ -36,7 +36,6 @@
  *    along with GeSHi; if not, write to the Free Software
  *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
 $language_data = array(
     'LANG_NAME' => 'ALGOL 68',
     'COMMENT_SINGLE' => array(),
@@ -48,7 +47,7 @@ $language_data = array(
     'COMMENT_REGEXP' => array(
         1 => '/\bCO((?:MMENT)?)\b.*?\bCO\\1\b/i',
         2 => '/\bPR((?:AGMAT)?)\b.*?\bPR\\1\b/i',
-        3 => '/\bQUOTE\b.*?\bQUOTE\b/i'
+        3 => '/\bQUOTE\b.*?\bQUOTE\b/i',
         ),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
     'QUOTEMARKS' => array('"'),
@@ -82,12 +81,12 @@ $language_data = array(
         26 => array('real', 'bits_pack', 'bitspack', 'long_bits_pack', 'longbitspack', 'long_long_bits_pack', 'longlongbitspack', 'bytes_pack', 'bytespack', 'long_bytes_pack', 'longbytespack', 'char_in_string', 'charinstring', 'last_char_in_string', 'lastcharinstring', 'string_in_string', 'stringinstring'),
         27 => array('utc_time', 'utctime', 'local_time', 'localtime', 'argc', 'argv', 'get_env', 'getenv', 'reset_errno', 'reseterrno', 'errno', 'strerror'),
         28 => array('sinh', 'long_sinh', 'longsinh', 'long_long_sinh', 'longlongsinh', 'arc_sinh', 'arcsinh', 'long_arc_sinh', 'longarcsinh', 'long_long_arc_sinh', 'longlongarcsinh', 'cosh', 'long_cosh', 'longcosh', 'long_long_cosh', 'longlongcosh', 'arc_cosh', 'arccosh', 'long_arc_cosh', 'longarccosh', 'long_long_arc_cosh', 'longlongarccosh', 'tanh', 'long_tanh', 'longtanh', 'long_long_tanh', 'longlongtanh', 'arc_tanh', 'arctanh', 'long_arc_tanh', 'longarctanh', 'long_long_arc_tanh', 'longlongarctanh', 'arc_tan2', 'arctan2', 'long_arc_tan2', 'longarctan2', 'long_long_arc_tan2', 'longlongarctan2'),
-        29 => array('complex_sqrt', 'complexsqrt', 'long_complex_sqrt', 'longcomplexsqrt', 'long_long_complex_sqrt', 'longlongcomplexsqrt', 'complex_exp', 'complexexp', 'long_complex_exp', 'longcomplexexp', 'long_long_complex_exp', 'longlongcomplexexp', 'complex_ln', 'complexln', 'long_complex_ln', 'longcomplexln', 'long_long_complex_ln', 'longlongcomplexln', 'complex_sin', 'complexsin', 'long_complex_sin', 'longcomplexsin', 'long_long_complex_sin', 'longlongcomplexsin', 'complex_arc_sin', 'complexarcsin', 'long_complex_arc_sin', 'longcomplexarcsin', 'long_long_complex_arc_sin', 'longlongcomplexarcsin', 'complex_cos', 'complexcos', 'long_complex_cos', 'longcomplexcos', 'long_long_complex_cos', 'longlongcomplexcos', 'complex_arc_cos', 'complexarccos', 'long_complex_arc_cos', 'longcomplexarccos', 'long_long_complex_arc_cos', 'longlongcomplexarccos', 'complex_tan', 'complextan', 'long_complex_tan', 'longcomplextan', 'long_long_complex_tan', 'longlongcomplextan', 'complex_arc_tan', 'complexarctan', 'long_complex_arc_tan', 'longcomplexarctan', 'long_long_complex_arc_tan', 'longlongcomplexarctan', 'complex_sinh', 'complexsinh', 'complex_arc_sinh', 'complexarcsinh', 'complex_cosh', 'complexcosh', 'complex_arc_cosh', 'complexarccosh', 'complex_tanh', 'complextanh', 'complex_arc_tanh', 'complexarctanh')
+        29 => array('complex_sqrt', 'complexsqrt', 'long_complex_sqrt', 'longcomplexsqrt', 'long_long_complex_sqrt', 'longlongcomplexsqrt', 'complex_exp', 'complexexp', 'long_complex_exp', 'longcomplexexp', 'long_long_complex_exp', 'longlongcomplexexp', 'complex_ln', 'complexln', 'long_complex_ln', 'longcomplexln', 'long_long_complex_ln', 'longlongcomplexln', 'complex_sin', 'complexsin', 'long_complex_sin', 'longcomplexsin', 'long_long_complex_sin', 'longlongcomplexsin', 'complex_arc_sin', 'complexarcsin', 'long_complex_arc_sin', 'longcomplexarcsin', 'long_long_complex_arc_sin', 'longlongcomplexarcsin', 'complex_cos', 'complexcos', 'long_complex_cos', 'longcomplexcos', 'long_long_complex_cos', 'longlongcomplexcos', 'complex_arc_cos', 'complexarccos', 'long_complex_arc_cos', 'longcomplexarccos', 'long_long_complex_arc_cos', 'longlongcomplexarccos', 'complex_tan', 'complextan', 'long_complex_tan', 'longcomplextan', 'long_long_complex_tan', 'longlongcomplextan', 'complex_arc_tan', 'complexarctan', 'long_complex_arc_tan', 'longcomplexarctan', 'long_long_complex_arc_tan', 'longlongcomplexarctan', 'complex_sinh', 'complexsinh', 'complex_arc_sinh', 'complexarcsinh', 'complex_cosh', 'complexcosh', 'complex_arc_cosh', 'complexarccosh', 'complex_tanh', 'complextanh', 'complex_arc_tanh', 'complexarctanh'),
         ),
     'SYMBOLS' => array(
         1 => array(
-            '(', ')', '{', '}', '[', ']', '+', '-', '*', '/', '%', '=', '<', '>', '!', '^', '&', '|', '?', ':', ';', ','
-            )
+            '(', ')', '{', '}', '[', ']', '+', '-', '*', '/', '%', '=', '<', '>', '!', '^', '&', '|', '?', ':', ';', ',',
+            ),
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -119,7 +118,7 @@ $language_data = array(
         26 => true,
         27 => true,
         28 => true,
-        29 => true
+        29 => true,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
@@ -151,7 +150,7 @@ $language_data = array(
             26 => 'color: #b1b100;',
             27 => 'color: #b1b100;',
             28 => 'color: #b1b100;',
-            29 => 'color: #b1b100;'
+            29 => 'color: #b1b100;',
             ),
         'COMMENTS' => array(
             1 => 'color: #666666; font-style: italic;',
@@ -159,28 +158,28 @@ $language_data = array(
             3 => 'color: #666666; font-style: italic;',
             4 => 'color: #666666; font-style: italic;',
             5 => 'color: #666666; font-style: italic;',
-            'MULTI' => 'color: #666666; font-style: italic;'
+            'MULTI' => 'color: #666666; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #009900;'
+            0 => 'color: #009900;',
             ),
         'STRINGS' => array(
-            0 => 'color: #0000ff;'
+            0 => 'color: #0000ff;',
             ),
         'NUMBERS' => array(
             0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
-            0 => 'color: #004000;'
+            0 => 'color: #004000;',
             ),
         'SYMBOLS' => array(
-            1 => 'color: #339933;'
+            1 => 'color: #339933;',
             ),
         'REGEXPS' => array(),
-        'SCRIPT' => array()
+        'SCRIPT' => array(),
         ),
     'URLS' => array(
         1 => '',
@@ -211,16 +210,14 @@ $language_data = array(
         26 => '',
         27 => '',
         28 => '',
-        29 => ''
+        29 => '',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 => 'OF'
+        1 => 'OF',
         ),
     'REGEXPS' => array(),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(),
-    'HIGHLIGHT_STRICT_BLOCK' => array()
+    'HIGHLIGHT_STRICT_BLOCK' => array(),
 );
-
-?>

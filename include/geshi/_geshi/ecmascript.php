@@ -45,7 +45,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'ECMAScript',
     'COMMENT_SINGLE' => array(1 => '//'),
     'COMMENT_MULTI' => array('/*' => '*/'),
@@ -64,57 +64,56 @@ $language_data = array (
         //Hexadecimal Char Specs
         4 => "#\\\\U[\da-fA-F]{8}#",
         //Octal Char Specs
-        5 => "#\\\\[0-7]{1,3}#"
+        5 => '#\\\\[0-7]{1,3}#',
         ),
-    'NUMBERS' =>
-        GESHI_NUMBER_INT_BASIC | GESHI_NUMBER_INT_CSTYLE | GESHI_NUMBER_BIN_PREFIX_0B |
+    'NUMBERS' => GESHI_NUMBER_INT_BASIC | GESHI_NUMBER_INT_CSTYLE | GESHI_NUMBER_BIN_PREFIX_0B |
         GESHI_NUMBER_OCT_PREFIX | GESHI_NUMBER_HEX_PREFIX | GESHI_NUMBER_FLT_NONSCI |
         GESHI_NUMBER_FLT_NONSCI_F | GESHI_NUMBER_FLT_SCI_SHORT | GESHI_NUMBER_FLT_SCI_ZERO,
     'KEYWORDS' => array(
         1 => array( // Reserved literals
             'false', 'true',
-            'null'
+            'null',
             ),
         2 => array( // Main keywords
             'break', 'case', 'catch', 'continue', 'default', 'delete', 'do', 'else',
             'finally', 'for', 'function', 'if', 'in', 'instanceof', 'new', 'return',
             'switch', 'this', 'throw', 'try', 'typeof', 'var', 'void', 'while',
-            'with'
+            'with',
             ),
         3 => array( // Extra keywords or keywords reserved for future use
             'abstract', 'as', 'boolean', 'byte', 'char', 'class', 'const', 'debugger',
             'double', 'enum', 'export', 'extends', 'final', 'float', 'goto', 'implements',
             'import', 'int', 'interface', 'is', 'long', 'native', 'namespace', 'package',
             'private', 'protected', 'public', 'short', 'static', 'super', 'synchronized', 'throws',
-            'transient', 'use', 'volatile'
+            'transient', 'use', 'volatile',
             ),
         4 => array( // Operators
-            'get', 'set'
+            'get', 'set',
             ),
         5 => array( // Built-in object classes
             'Array', 'Boolean', 'Date', 'EvalError', 'Error', 'Function', 'Math', 'Number',
-            'Object', 'RangeError', 'ReferenceError', 'RegExp', 'String', 'SyntaxError', 'TypeError', 'URIError'
+            'Object', 'RangeError', 'ReferenceError', 'RegExp', 'String', 'SyntaxError', 'TypeError', 'URIError',
             ),
         6 => array( // Global properties
-            'Infinity', 'NaN', 'undefined'
+            'Infinity', 'NaN', 'undefined',
             ),
         7 => array( // Global methods
             'decodeURI', 'decodeURIComponent', 'encodeURI', 'encodeURIComponent',
             'eval', 'isFinite', 'isNaN', 'parseFloat', 'parseInt',
             // The escape and unescape functions do not work properly for non-ASCII characters and have been deprecated.
             // In JavaScript 1.5 and later, use encodeURI, decodeURI, encodeURIComponent, and decodeURIComponent.
-            'escape', 'unescape'
+            'escape', 'unescape',
             ),
         8 => array( // Function's arguments
-            'arguments'
-            )
+            'arguments',
+            ),
         ),
     'SYMBOLS' => array(
         '(', ')', '[', ']', '{', '}',
         '+', '-', '*', '/', '%',
         '!', '.', '&', '|', '^',
         '<', '>', '=', '~',
-        ',', ';', '?', ':'
+        ',', ';', '?', ':',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -125,7 +124,7 @@ $language_data = array (
         5 => true,
         6 => true,
         7 => true,
-        8 => true
+        8 => true,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
@@ -136,12 +135,12 @@ $language_data = array (
             5 => 'color: #1500C8;',
             6 => 'color: #1500C8;',
             7 => 'color: #1500C8;',
-            8 => 'color: #1500C8;'
+            8 => 'color: #1500C8;',
             ),
         'COMMENTS' => array(
             1 => 'color: #666666; font-style: italic;',
             2 => 'color: #CC0000;',
-            'MULTI' => 'color: #666666; font-style: italic;'
+            'MULTI' => 'color: #666666; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
             0 => 'color: #3366CC;',
@@ -153,10 +152,10 @@ $language_data = array (
             'HARD' => '',
             ),
         'BRACKETS' => array(
-            0 => 'color: #008800;'
+            0 => 'color: #008800;',
             ),
         'STRINGS' => array(
-            0 => 'color: #9900FF;'
+            0 => 'color: #9900FF;',
             ),
         'NUMBERS' => array(
             0 => 'color: #FF00FF;',
@@ -166,13 +165,13 @@ $language_data = array (
             GESHI_NUMBER_FLT_SCI_SHORT => 'color: #FF00FF;',
             GESHI_NUMBER_FLT_SCI_ZERO => 'color: #FF00FF;',
             GESHI_NUMBER_FLT_NONSCI_F => 'color: #FF00FF;',
-            GESHI_NUMBER_FLT_NONSCI => 'color: #FF00FF;'
+            GESHI_NUMBER_FLT_NONSCI => 'color: #FF00FF;',
             ),
         'METHODS' => array(
-            1 => 'color: #660066;'
+            1 => 'color: #660066;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #339933;'
+            0 => 'color: #339933;',
             ),
         'REGEXPS' => array(
             ),
@@ -180,8 +179,8 @@ $language_data = array (
             0 => '',
             1 => '',
             2 => '',
-            3 => ''
-            )
+            3 => '',
+            ),
         ),
     'URLS' => array(
         1 => '',
@@ -191,11 +190,11 @@ $language_data = array (
         5 => '',
         6 => '',
         7 => '',
-        8 => ''
+        8 => '',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 => '.'
+        1 => '.',
         ),
     'REGEXPS' => array(
         ),
@@ -204,7 +203,5 @@ $language_data = array (
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
         ),
-    'TAB_WIDTH' => 4
+    'TAB_WIDTH' => 4,
 );
-
-?>

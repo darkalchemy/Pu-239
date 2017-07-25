@@ -37,7 +37,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'GDB',
     'COMMENT_SINGLE' => array(),
     'COMMENT_MULTI' => array(),
@@ -54,29 +54,28 @@ $language_data = array (
             '[KCrash Handler]',
             ),
         ),
-    'NUMBERS' =>
-        GESHI_NUMBER_INT_BASIC,
+    'NUMBERS' => GESHI_NUMBER_INT_BASIC,
     'SYMBOLS' => array(
         ),
     'CASE_SENSITIVE' => array(
         0 => true,
-        1 => true
+        1 => true,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
             0 => 'font-weight:bold;',
-            1 => 'font-weight:bold; color: #ff0000;'
+            1 => 'font-weight:bold; color: #ff0000;',
             ),
         'COMMENTS' => array(
             ),
         'ESCAPE_CHAR' => array(
-            0 => ''
+            0 => '',
             ),
         'BRACKETS' => array(
-            0 => 'font-weight:bold;'
+            0 => 'font-weight:bold;',
             ),
         'STRINGS' => array(
-            0 => 'color: #933;'
+            0 => 'color: #933;',
             ),
         'NUMBERS' => array(
             0 => 'color: #cc66cc;',
@@ -93,14 +92,14 @@ $language_data = array (
             4 => 'color: #80B5FF; text-style:italic;',
             5 => 'color: #A3007D;',
             6 => 'color: #FF00BF;',
-            7 => 'font-weight: bold;'
+            7 => 'font-weight: bold;',
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         0 => '',
-        1 => ''
+        1 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -112,7 +111,7 @@ $language_data = array (
             GESHI_REPLACE => '\\0',
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
         //stack number
         1 => array(
@@ -120,7 +119,7 @@ $language_data = array (
             GESHI_REPLACE => '\\0',
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
         //Thread X (Thread...)
         2 => array(
@@ -128,7 +127,7 @@ $language_data = array (
             GESHI_REPLACE => '\\0',
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
         //Files with linenumbers
         3 => array(
@@ -136,7 +135,7 @@ $language_data = array (
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => '\\3'
+            GESHI_AFTER => '\\3',
             ),
         //Libs without linenumbers
         4 => array(
@@ -144,7 +143,7 @@ $language_data = array (
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => '\\3'
+            GESHI_AFTER => '\\3',
             ),
         //Hex mem address
         5 => '0x[a-f0-9]+',
@@ -154,7 +153,7 @@ $language_data = array (
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => '\\3'
+            GESHI_AFTER => '\\3',
             ),
         //Location
         7 => array(
@@ -162,14 +161,12 @@ $language_data = array (
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => '\\3'
+            GESHI_AFTER => '\\3',
             ),
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
-        )
+        ),
 );
-
-?>

@@ -37,7 +37,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'MOS 6502 (6510) TASM/64TASS 1.46 Assembler format',
     'COMMENT_SINGLE' => array(1 => ';'),
     'COMMENT_MULTI' => array(),
@@ -58,7 +58,7 @@ $language_data = array (
         /* Index Registers, yes the 6502 has other registers by they are only
         * accessable by specific opcodes. The 65816 also has access to the stack pointer S. */
         2 => array(
-            'x', 'y', 's'
+            'x', 'y', 's',
             ),
         /* Directives. */
         3 => array(
@@ -98,7 +98,7 @@ $language_data = array (
             ),
         /* Deprecated directives (or yet to be implemented). */
         7 => array(
-            '.global', '.check'
+            '.global', '.check',
             ),
         ),
     'SYMBOLS' => array(
@@ -131,28 +131,28 @@ $language_data = array (
             1 => 'color: #999; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #009; font-weight: bold;'
+            0 => 'color: #009; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #000;'
+            0 => 'color: #000;',
             ),
         'STRINGS' => array(
-            0 => 'color: #080;'
+            0 => 'color: #080;',
             ),
         'NUMBERS' => array(
-            GESHI_NUMBER_INT_BASIC          => 'color: #f00;',
-            GESHI_NUMBER_HEX_PREFIX_DOLLAR  => 'color: #f00;',
+            GESHI_NUMBER_INT_BASIC => 'color: #f00;',
+            GESHI_NUMBER_HEX_PREFIX_DOLLAR => 'color: #f00;',
             GESHI_NUMBER_BIN_PREFIX_PERCENT => 'color: #f00;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #080;'
+            0 => 'color: #080;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
@@ -166,8 +166,7 @@ $language_data = array (
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
         ),
-    'NUMBERS' =>
-        GESHI_NUMBER_INT_BASIC |
+    'NUMBERS' => GESHI_NUMBER_INT_BASIC |
         GESHI_NUMBER_HEX_PREFIX_DOLLAR |
         GESHI_NUMBER_BIN_PREFIX_PERCENT,
         // AMCE Octal format not support and gets picked up as Decimal unfortunately.
@@ -181,9 +180,7 @@ $language_data = array (
     'TAB_WIDTH' => 8,
     'PARSER_CONTROL' => array(
         'NUMBERS' => array(
-            'PRECHECK_RX' => '/[\da-fA-F\.\$\%]/'
-            )
-        )
+            'PRECHECK_RX' => '/[\da-fA-F\.\$\%]/',
+            ),
+        ),
 );
-
-?>

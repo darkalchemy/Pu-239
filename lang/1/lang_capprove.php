@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     'capp_head' => 'Approve|Disapprove comments',
     'capp_appr' => 'Your not authorized to use this page',

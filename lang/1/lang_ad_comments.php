@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     'text_overview' => 'Comment Overview',
     'text_all' => 'View All',
@@ -23,4 +24,3 @@ $lang = array(
     'text_submit' => 'Submit!',
     'text_results' => 'Search Results for ',
 );
-

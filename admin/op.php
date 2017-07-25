@@ -1,15 +1,15 @@
 <?php
 
 /**
- * OPcache GUI
- * 
+ * OPcache GUI.
+ *
  * A simple but effective single-file GUI for the OPcache PHP extension.
- * 
+ *
  * @author Andrew Collington, andy@amnuts.com
  * @license MIT, http://acollington.mit-license.org/
  */
-require_once (INCL_DIR . 'user_functions.php');
-require_once (CLASS_DIR . 'class_check.php');
+require_once INCL_DIR.'user_functions.php';
+require_once CLASS_DIR.'class_check.php';
 class_check(UC_MAX);
 if (!function_exists('opcache_get_status')) {
     die('The Zend OPcache extension does not appear to be installed');
@@ -19,12 +19,12 @@ $settings = array(
     'compress_path_threshold' => 2,
     'used_memory_percentage_high_threshold' => 80,
     'used_memory_percentage_mid_threshold' => 60,
-    'allow_invalidate' => true
+    'allow_invalidate' => true,
 );
 
-
 $validPages = array('overview', 'files', 'reset', 'invalidate');
-$page = (empty($_GET['page']) || !in_array($_GET['page'], $validPages)
+$page = (
+    empty($_GET['page']) || !in_array($_GET['page'], $validPages)
     ? 'overview'
     : strtolower($_GET['page'])
 );
@@ -41,17 +41,17 @@ if ($page == 'invalidate') {
         header('Location: staffpanel.php?tool=op&page=files&error=1');
         exit;
     }
-    $success = (int)opcache_invalidate(urldecode($file), true);
+    $success = (int) opcache_invalidate(urldecode($file), true);
     header("Location: staffpanel.php?tool=op&page=files&success={$success}");
     exit;
 }
 
 $opcache_config = opcache_get_configuration();
 $opcache_status = opcache_get_status();
-$opcache_funcs  = get_extension_funcs('Zend OPcache');
+$opcache_funcs = get_extension_funcs('Zend OPcache');
 
 if (!empty($opcache_status['scripts'])) {
-    uasort($opcache_status['scripts'], function($a, $b) {
+    uasort($opcache_status['scripts'], function ($a, $b) {
         return $a['hits'] < $b['hits'];
     });
 }
@@ -64,8 +64,13 @@ function memsize($size, $precision = 3, $space = false)
         $size /= 1024;
         ++$i;
     }
-    return sprintf("%.{$precision}f%s%s",
-    $size, (($space && $i) ? ' ' : ''), $val[$i]);
+
+    return sprintf(
+        "%.{$precision}f%s%s",
+    $size,
+        (($space && $i) ? ' ' : ''),
+        $val[$i]
+    );
 }
 
 function rc($at = null)
@@ -74,7 +79,7 @@ function rc($at = null)
     if ($at !== null) {
         $i = $at;
     } else {
-        echo (++$i % 2 ? 'even' : 'odd');
+        echo ++$i % 2 ? 'even' : 'odd';
     }
 }
 
@@ -82,21 +87,22 @@ $data = array_merge(
     $opcache_status['memory_usage'],
     $opcache_status['opcache_statistics'],
     array(
-        'total_memory_size'       => memsize($opcache_config['directives']['opcache.memory_consumption']),
-        'used_memory_percentage'  => round(100 * (
-            ($opcache_status['memory_usage']['used_memory'] + $opcache_status['memory_usage']['wasted_memory']) 
-                / $opcache_config['directives']['opcache.memory_consumption'])),
-        'hit_rate_percentage'     => round($opcache_status['opcache_statistics']['opcache_hit_rate']),
-        'wasted_percentage'       => round($opcache_status['memory_usage']['current_wasted_percentage'], 2),
-        'used_memory_size'        => memsize($opcache_status['memory_usage']['used_memory']),
-        'free_memory_size'        => memsize($opcache_status['memory_usage']['free_memory']),
-        'wasted_memory_size'      => memsize($opcache_status['memory_usage']['wasted_memory']),
-        'files_cached'            => number_format($opcache_status['opcache_statistics']['num_cached_scripts']),
-        'hits_size'               => number_format($opcache_status['opcache_statistics']['hits']),
-        'miss_size'               => number_format($opcache_status['opcache_statistics']['misses']),
-        'blacklist_miss_size'     => number_format($opcache_status['opcache_statistics']['blacklist_misses']),
-        'num_cached_keys_size'    => number_format($opcache_status['opcache_statistics']['num_cached_keys']),
-        'max_cached_keys_size'    => number_format($opcache_status['opcache_statistics']['max_cached_keys']),
+        'total_memory_size' => memsize($opcache_config['directives']['opcache.memory_consumption']),
+        'used_memory_percentage' => round(100 * (
+            ($opcache_status['memory_usage']['used_memory'] + $opcache_status['memory_usage']['wasted_memory'])
+                / $opcache_config['directives']['opcache.memory_consumption']
+        )),
+        'hit_rate_percentage' => round($opcache_status['opcache_statistics']['opcache_hit_rate']),
+        'wasted_percentage' => round($opcache_status['memory_usage']['current_wasted_percentage'], 2),
+        'used_memory_size' => memsize($opcache_status['memory_usage']['used_memory']),
+        'free_memory_size' => memsize($opcache_status['memory_usage']['free_memory']),
+        'wasted_memory_size' => memsize($opcache_status['memory_usage']['wasted_memory']),
+        'files_cached' => number_format($opcache_status['opcache_statistics']['num_cached_scripts']),
+        'hits_size' => number_format($opcache_status['opcache_statistics']['hits']),
+        'miss_size' => number_format($opcache_status['opcache_statistics']['misses']),
+        'blacklist_miss_size' => number_format($opcache_status['opcache_statistics']['blacklist_misses']),
+        'num_cached_keys_size' => number_format($opcache_status['opcache_statistics']['num_cached_keys']),
+        'max_cached_keys_size' => number_format($opcache_status['opcache_statistics']['max_cached_keys']),
     )
 );
 
@@ -107,17 +113,20 @@ if ($data['used_memory_percentage'] >= $settings['used_memory_percentage_high_th
     $threshold = ' mid';
 }
 
-if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) 
+if (!empty($_SERVER['HTTP_X_REQUESTED_WITH'])
     && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'
 ) {
     echo json_encode($data);
     exit;
 }
 
-$host = (function_exists('gethostname')
+$host = (
+    function_exists('gethostname')
     ? gethostname()
-    : (php_uname('n')
-        ?: (empty($_SERVER['SERVER_NAME'])
+    : (
+        php_uname('n')
+        ?: (
+            empty($_SERVER['SERVER_NAME'])
             ? $_SERVER['HOST_NAME']
             : $_SERVER['SERVER_NAME']
         )
@@ -271,9 +280,9 @@ $host = (function_exists('gethostname')
                 </tr>
                 <tr class="<?php rc(); ?>">
                     <td>Last reset</td>
-                    <td><?php echo ($data['last_restart_time'] == 0
+                    <td><?php echo $data['last_restart_time'] == 0
                             ? '<em>never</em>'
-                            : date_format(date_create("@{$data['last_restart_time']}"), 'Y-m-d H:i:s')); ?></td>
+                            : date_format(date_create("@{$data['last_restart_time']}"), 'Y-m-d H:i:s'); ?></td>
                 </tr>
             </table>
             
@@ -283,9 +292,9 @@ $host = (function_exists('gethostname')
                 <?php rc(0); foreach ($opcache_config['directives'] as $d => $v): ?>
                 <tr class="<?php rc(); ?>">
                     <td><span title="<?php echo $d; ?>"><?php echo str_replace(array('opcache.', '_'), array('', ' '), $d); ?></span></td>
-                    <td><?php echo (is_bool($v)
+                    <td><?php echo is_bool($v)
                         ? ($v ? '<i>true</i>' : '<i>false</i>')
-                        : (empty($v) ? '<i>no value</i>' : $v)); ?></td>
+                        : (empty($v) ? '<i>no value</i>' : $v); ?></td>
                 </tr>
                 <?php endforeach; ?>
             </table>
@@ -334,7 +343,7 @@ $host = (function_exists('gethostname')
     <h2>File usage</h2>
     <p><label>Start typing to filter on script path<br/><input type="text" style="width:40em;" name="filter" id="frmFilter" /><label></p>
     <div class="container">
-        <h3><?php echo $data['files_cached']; ?> file<?php echo ($data['files_cached'] == 1 ? '' : 's'); ?> cached <span id="filterShowing"></span></h3>
+        <h3><?php echo $data['files_cached']; ?> file<?php echo $data['files_cached'] == 1 ? '' : 's'; ?> cached <span id="filterShowing"></span></h3>
         <table>
         <tr>
             <th>Script</th>
@@ -343,11 +352,11 @@ $host = (function_exists('gethostname')
         <?php rc(0); foreach ($opcache_status['scripts'] as $s): ?>
         <tr class="<?php rc(); ?>">
             <td class="pathname"><p><?php 
-                $base  = basename($s['full_path']);
+                $base = basename($s['full_path']);
                 $parts = array_filter(explode(DIRECTORY_SEPARATOR, dirname($s['full_path'])));
                 if (!empty($settings['compress_path_threshold'])) {
-                    echo '<span class="showmore"><span class="button">…</span><span class="text" style="display:none;">' . DIRECTORY_SEPARATOR;
-                    echo join(DIRECTORY_SEPARATOR, array_slice($parts, 0, $settings['compress_path_threshold'])) . DIRECTORY_SEPARATOR;
+                    echo '<span class="showmore"><span class="button">…</span><span class="text" style="display:none;">'.DIRECTORY_SEPARATOR;
+                    echo join(DIRECTORY_SEPARATOR, array_slice($parts, 0, $settings['compress_path_threshold'])).DIRECTORY_SEPARATOR;
                     echo '</span>';
                     echo join(DIRECTORY_SEPARATOR, array_slice($parts, $settings['compress_path_threshold']));
                     if (count($parts) > $settings['compress_path_threshold']) {

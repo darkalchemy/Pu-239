@@ -1,4 +1,5 @@
 <?php
+
 //admin index lang file
 $lang = array(
     'index_bans' => 'Bans',
@@ -45,23 +46,22 @@ $lang = array(
     'index_stats_extra' => 'Stats Extra',
     'index_coder_editlog' => 'Php Editlog',
     'index_serverload' => 'Server Load',
-	////load
-	'index_load_uptime' => 'Could not retrieve uptime',
-	'index_load_s' => 's',
-	'index_load_month' => 'month',
-	'index_load_week' => 'week',
-	'index_load_day' => 'day',
-	'index_load_hour' => 'hour',
-	'index_load_minute' => 'minute',
-	'index_load_average' => 'Could not retrieve load average',
-	'index_load_curr' => 'Currently ',
-	'index_load_cpu' => '&#37; CPU usage.',
-	'index_load_uptime1' => 'Uptime: ',
-	'index_load_pastmin' => 'Load average for processes running for the past minute: ',
-	'index_load_pastmin5' => 'Load average for processes running for the past 5 minutes: ',
-	'index_load_pastmin15' => 'Load average for processes running for the past 15 minutes: ',
-	'index_load_numtsk' => 'Number of tasks currently running: ',
-	'index_load_numproc' => 'Number of processes currently running: ',
-	'index_load_pid' => ' PID of last process executed: '
+    ////load
+    'index_load_uptime' => 'Could not retrieve uptime',
+    'index_load_s' => 's',
+    'index_load_month' => 'month',
+    'index_load_week' => 'week',
+    'index_load_day' => 'day',
+    'index_load_hour' => 'hour',
+    'index_load_minute' => 'minute',
+    'index_load_average' => 'Could not retrieve load average',
+    'index_load_curr' => 'Currently ',
+    'index_load_cpu' => '&#37; CPU usage.',
+    'index_load_uptime1' => 'Uptime: ',
+    'index_load_pastmin' => 'Load average for processes running for the past minute: ',
+    'index_load_pastmin5' => 'Load average for processes running for the past 5 minutes: ',
+    'index_load_pastmin15' => 'Load average for processes running for the past 15 minutes: ',
+    'index_load_numtsk' => 'Number of tasks currently running: ',
+    'index_load_numproc' => 'Number of processes currently running: ',
+    'index_load_pid' => ' PID of last process executed: ',
 );
-

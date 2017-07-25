@@ -43,7 +43,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Ada',
     'COMMENT_SINGLE' => array(1 => '--'),
     'COMMENT_MULTI' => array('/*' => '*/'),
@@ -54,21 +54,21 @@ $language_data = array (
         1 => array(
             'begin', 'declare', 'do', 'else', 'elsif', 'exception', 'for', 'if',
             'is', 'loop', 'while', 'then', 'end', 'select', 'case', 'until',
-            'goto', 'return'
+            'goto', 'return',
             ),
         2 => array(
-            'abs', 'and', 'mod', 'not', 'or', 'rem', 'xor'
+            'abs', 'and', 'mod', 'not', 'or', 'rem', 'xor',
             ),
         3 => array(
             'abort', 'abstract', 'accept', 'access', 'aliased', 'all', 'array', 'at', 'body',
             'constant', 'delay', 'delta', 'digits', 'entry', 'exit',
             'function', 'generic', 'in', 'limited', 'new', 'null', 'of', 'others', 'out', 'package', 'pragma',
             'private', 'procedure', 'protected', 'raise', 'range', 'record', 'renames', 'requeue', 'reverse',
-            'separate', 'subtype', 'tagged', 'task', 'terminate', 'type', 'use', 'when', 'with'
-            )
+            'separate', 'subtype', 'tagged', 'task', 'terminate', 'type', 'use', 'when', 'with',
+            ),
         ),
     'SYMBOLS' => array(
-        '(', ')'
+        '(', ')',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -83,43 +83,43 @@ $language_data = array (
             3 => 'color: #46aa03; font-weight:bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'COMMENTS' => array(
             1 => 'color: #adadad; font-style: italic;',
-            'MULTI' => 'color: #808080; font-style: italic;'
+            'MULTI' => 'color: #808080; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'STRINGS' => array(
-            0 => 'color: #7f007f;'
+            0 => 'color: #7f007f;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'METHODS' => array(
-            1 => 'color: #202020;'
+            1 => 'color: #202020;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
-        3 => ''
+        3 => '',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 => '.'
+        1 => '.',
         ),
     'REGEXPS' => array(
         ),
@@ -127,7 +127,5 @@ $language_data = array (
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
-        )
+        ),
 );
-
-?>

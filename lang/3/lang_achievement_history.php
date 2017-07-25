@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     //stderr
     'achievement_history_err' => 'Eroare',
@@ -20,6 +21,5 @@ $lang = array(
     'achievement_history_descr' => 'Descriere',
     'achievement_history_date' => 'Data ob&#355;inerii',
     //stdhead
-    'achievement_history_stdhead' => 'Istorie Realiz&#259;ri'
+    'achievement_history_stdhead' => 'Istorie Realiz&#259;ri',
 );
-

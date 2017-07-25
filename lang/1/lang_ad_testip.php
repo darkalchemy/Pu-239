@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     'testip_error' => 'Error',
     'testip_error1' => 'Bad ip',

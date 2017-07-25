@@ -42,7 +42,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'LSL2',
     'COMMENT_SINGLE' => array(1 => '//'),
     'COMMENT_MULTI' => array(),
@@ -854,26 +854,26 @@ $language_data = array (
             1 => 'color: #ff7f50; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099;'
+            0 => 'color: #000099;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #000000;'
+            0 => 'color: #000000;',
             ),
         'STRINGS' => array(
-            0 => 'color: #006400;'
+            0 => 'color: #006400;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #000000;'
+            0 => 'color: #000000;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #000000;'
+            0 => 'color: #000000;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
@@ -893,6 +893,5 @@ $language_data = array (
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
-        )
+        ),
 );
-?>

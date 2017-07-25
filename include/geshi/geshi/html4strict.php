@@ -49,7 +49,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'HTML',
     'COMMENT_SINGLE' => array(),
     'COMMENT_MULTI' => array(),
@@ -115,11 +115,11 @@ $language_data = array (
             'tabindex', 'target', 'text', 'title', 'type',
             'usemap',
             'valign', 'value', 'valuetype', 'version', 'vlink', 'vspace',
-            'width'
-            )
+            'width',
+            ),
         ),
     'SYMBOLS' => array(
-        '/', '='
+        '/', '=',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -129,39 +129,39 @@ $language_data = array (
     'STYLES' => array(
         'KEYWORDS' => array(
             2 => 'color: #000000; font-weight: bold;',
-            3 => 'color: #000066;'
+            3 => 'color: #000066;',
             ),
         'COMMENTS' => array(
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'SCRIPT' => array(
             -1 => 'color: #808080; font-style: italic;', // comments
             0 => 'color: #00bbdd;',
             1 => 'color: #ddbb00;',
-            2 => 'color: #009900;'
+            2 => 'color: #009900;',
             ),
         'REGEXPS' => array(
-            )
+            ),
         ),
     'URLS' => array(
         2 => 'http://december.com/html/4/element/{FNAMEL}.html',
-        3 => ''
+        3 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -171,23 +171,23 @@ $language_data = array (
     'STRICT_MODE_APPLIES' => GESHI_ALWAYS,
     'SCRIPT_DELIMITERS' => array(
         -1 => array(
-            '<!--' => '-->'
+            '<!--' => '-->',
             ),
         0 => array(
-            '<!DOCTYPE' => '>'
+            '<!DOCTYPE' => '>',
             ),
         1 => array(
-            '&' => ';'
+            '&' => ';',
             ),
         2 => array(
-            '<' => '>'
-            )
+            '<' => '>',
+            ),
     ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
         -1 => false,
         0 => false,
         1 => false,
-        2 => true
+        2 => true,
         ),
     'TAB_WIDTH' => 4,
     'PARSER_CONTROL' => array(
@@ -195,9 +195,7 @@ $language_data = array (
             2 => array(
                 'DISALLOWED_BEFORE' => '(?<=&lt;|&lt;\/)',
                 'DISALLOWED_AFTER' => '(?=\s|\/|&gt;)',
-            )
-        )
-    )
+            ),
+        ),
+    ),
 );
-
-?>

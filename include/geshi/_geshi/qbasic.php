@@ -49,13 +49,13 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  ************************************************************************************/
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'QBasic/QuickBASIC',
     'COMMENT_SINGLE' => array(1 => "'"),
     'COMMENT_MULTI' => array(),
     'COMMENT_REGEXP' => array(
         //Single-Line Comments using REM command
-        2 => "/\bREM.*?$/i"
+        2 => "/\bREM.*?$/i",
         ),
     'CASE_KEYWORDS' => GESHI_CAPS_UPPER,
     'QUOTEMARKS' => array('"'),
@@ -64,7 +64,7 @@ $language_data = array (
         1 => array(
             'DO', 'LOOP', 'WHILE', 'WEND', 'THEN', 'ELSE', 'ELSEIF', 'IF',
             'FOR', 'TO', 'NEXT', 'STEP', 'GOTO', 'GOSUB', 'CALL', 'CALLS',
-            'SUB', 'FUNCTION', 'RETURN', 'RESUME', 'SELECT', 'CASE', 'UNTIL'
+            'SUB', 'FUNCTION', 'RETURN', 'RESUME', 'SELECT', 'CASE', 'UNTIL',
             ),
         3 => array(
             'ABS', 'ABSOLUTE', 'ACCESS', 'ALIAS', 'AND', 'ANY', 'APPEND', 'AS', 'ASC', 'ATN',
@@ -89,51 +89,51 @@ $language_data = array (
             'SOUND', 'SPACE$', 'SPC', 'SQR', 'STATIC', 'STICK', 'STOP', 'STR$', 'STRIG',
             'STRING', 'STRING$', 'SWAP', 'SYSTEM', 'TAB', 'TAN', 'TIME$', 'TIMER',
             'TROFF', 'TRON', 'TYPE', 'UBOUND', 'UCASE$', 'UEVENT', 'UNLOCK', 'USING', 'VAL',
-            'VARPTR', 'VARPTR$', 'VARSEG', 'VIEW', 'WAIT', 'WIDTH', 'WINDOW', 'WRITE', 'XOR'
-            )
+            'VARPTR', 'VARPTR$', 'VARSEG', 'VIEW', 'WAIT', 'WIDTH', 'WINDOW', 'WRITE', 'XOR',
+            ),
         ),
     'SYMBOLS' => array(
-        '(', ')', ',', '+', '-', '*', '/', '=', '<', '>'
+        '(', ')', ',', '+', '-', '*', '/', '=', '<', '>',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
         1 => false,
-        3 => false
+        3 => false,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
             1 => 'color: #a1a100;',
-            3 => 'color: #000066;'
+            3 => 'color: #000066;',
             ),
         'COMMENTS' => array(
             1 => 'color: #808080;',
-            2 => 'color: #808080;'
+            2 => 'color: #808080;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099;'
+            0 => 'color: #000099;',
             ),
         'SCRIPT' => array(
             ),
         'REGEXPS' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
-        3 => 'http://www.qbasicnews.com/qboho/qck{FNAMEL}.shtml'
+        3 => 'http://www.qbasicnews.com/qboho/qck{FNAMEL}.shtml',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -145,7 +145,5 @@ $language_data = array (
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
         ),
-    'TAB_WIDTH' => 8
+    'TAB_WIDTH' => 8,
 );
-
-?>

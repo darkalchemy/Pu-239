@@ -47,7 +47,7 @@ $language_data = array(
     'LANG_NAME' => 'Vim Script',
     'COMMENT_SINGLE' => array(),
     'COMMENT_REGEXP' => array(
-        1 => "/^\".*$/m"
+        1 => '/^".*$/m',
         ),
     'COMMENT_MULTI' => array(),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
@@ -69,13 +69,13 @@ $language_data = array(
             'let', 'lockv', 'lockva', 'lockvar', 'retu', 'retur', 'return', 'th',
             'thr', 'thro', 'throw', 'try', 'unl', 'unle', 'unlet', 'unlo', 'unloc',
             'unlock', 'unlockv', 'unlockva', 'unlockvar', 'wh', 'whi', 'whil',
-            'while'
+            'while',
             ),
         2 => array(
             'autocmd', 'com', 'comm', 'comma', 'comman', 'command', 'comc',
             'comcl', 'comcle', 'comclea', 'comclear', 'delc', 'delco',
             'delcom', 'delcomm', 'delcomma', 'delcomman', 'delcommand',
-            '-nargs' # TODO There are zillions of commands to be added here from http://vimdoc.sourceforge.net/htmldoc/usr_toc.html
+            '-nargs', // TODO There are zillions of commands to be added here from http://vimdoc.sourceforge.net/htmldoc/usr_toc.html
             ),
         3 => array(
             'abs', 'add', 'append', 'argc', 'argidx', 'argv', 'atan',
@@ -123,55 +123,55 @@ $language_data = array(
             'taglist', 'tagfiles', 'tempname', 'tolower', 'toupper', 'tr',
             'trunc', 'type', 'values', 'virtcol', 'visualmode', 'winbufnr',
             'wincol', 'winheight', 'winline', 'winnr', 'winrestcmd',
-            'winrestview', 'winsaveview', 'winwidth', 'writefile'
-            )
+            'winrestview', 'winsaveview', 'winwidth', 'writefile',
+            ),
         ),
     'SYMBOLS' => array(
         '(', ')', '[', ']', '{', '}', '!', '%', '&', '*', '|', '/', '<', '>',
-        '^', '-', '+', '~', '?', ':', '$', '@', '.'
+        '^', '-', '+', '~', '?', ':', '$', '@', '.',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
         1 => true,
         2 => true,
-        3 => true
+        3 => true,
         ),
     'STYLES' => array(
         'BRACKETS' => array(
-            0 => 'color: #000000;'
+            0 => 'color: #000000;',
             ),
         'COMMENTS' => array(
-            1 => 'color: #adadad; font-style: italic;'
+            1 => 'color: #adadad; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => ''
+            0 => '',
             ),
         'KEYWORDS' => array(
             1 => 'color: #804040;',
             2 => 'color: #668080;',
-            3 => 'color: #25BB4D;'
+            3 => 'color: #25BB4D;',
             ),
         'METHODS' => array(
             0 => 'color: #000000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #000000; font-weight:bold;'
+            0 => 'color: #000000; font-weight:bold;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
             ),
         'STRINGS' => array(
-            0 => 'color: #C5A22D;'
+            0 => 'color: #C5A22D;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #000000;'
-            )
+            0 => 'color: #000000;',
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
-        3 => ''
+        3 => '',
         ),
     'OOLANG' => false, //Save some time as OO identifiers aren't used
     'OBJECT_SPLITTERS' => array(),
@@ -179,7 +179,5 @@ $language_data = array(
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(),
-    'HIGHLIGHT_STRICT_BLOCK' => array()
+    'HIGHLIGHT_STRICT_BLOCK' => array(),
 );
-
-?>

@@ -48,13 +48,13 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'TCL',
     'COMMENT_SINGLE' => array(1 => '#'),
     'COMMENT_MULTI' => array(),
     'COMMENT_REGEXP' => array(
         1 => '/(?<!\\\\)#(?:\\\\\\\\|\\\\\\n|.)*$/m',
-        2 => '/{[^}\n]+}/'
+        2 => '/{[^}\n]+}/',
         ),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
     'QUOTEMARKS' => array('"', "'"),
@@ -71,7 +71,7 @@ $language_data = array (
             'for_array_keys', 'for_recursive_glob', 'for_file', 'unwind_protect',
             'expr', 'catch', 'namespace', 'rename', 'variable',
             // itcl
-            'method', 'itcl_class', 'public', 'protected'),
+            'method', 'itcl_class', 'public', 'protected', ),
 
         /*
          * Set 2: builtins
@@ -117,10 +117,9 @@ $language_data = array (
          */
 //        4 => array(
 //            )
-
         ),
     'SYMBOLS' => array(
-        '(', ')', '[', ']', '{', '}', '$', '*', '&', '%', '!', ';', '<', '>', '?'
+        '(', ')', '[', ']', '{', '}', '$', '*', '&', '%', '!', ';', '<', '>', '?',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -139,31 +138,31 @@ $language_data = array (
         'COMMENTS' => array(
             1 => 'color: #808080; font-style: italic;',
             2 => 'color: #483d8b;',
-            'MULTI' => 'color: #808080; font-style: italic;'
+            'MULTI' => 'color: #808080; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: black;'
+            0 => 'color: black;',
             ),
         'STRINGS' => array(
-            0 => 'color: #483d8b;'
+            0 => 'color: #483d8b;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #ff4500;'
+            0 => 'color: #ff4500;',
             ),
         'METHODS' => array(
-            1 => 'color: black;'
+            1 => 'color: black;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'REGEXPS' => array(
-            0 => 'color: #ff3333;'
+            0 => 'color: #ff3333;',
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
@@ -173,7 +172,7 @@ $language_data = array (
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 => '::'
+        1 => '::',
         ),
     'REGEXPS' => array(
         //Special variables
@@ -186,9 +185,7 @@ $language_data = array (
         ),
     'PARSER_CONTROL' => array(
         'COMMENTS' => array(
-            'DISALLOWED_BEFORE' => '\\'
-        )
-    )
+            'DISALLOWED_BEFORE' => '\\',
+        ),
+    ),
 );
-
-?>

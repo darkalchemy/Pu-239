@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     'staffbox_head' => 'StaffBox',
     'staffbox_class' => 'You can\'t use this!',
@@ -31,4 +32,3 @@ $lang = array(
     'staffbox_pm_restart' => 'Reset',
     'staffbox_restart_ids' => 'The messege(s) you selected were Reset for someone else to deal with! Wait while redirecting...',
 );
-

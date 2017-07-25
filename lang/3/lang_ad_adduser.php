@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     //Misc
     'std_adduser' => 'Adaug&#259; utilizator',
@@ -16,6 +17,5 @@ $lang = array(
     'text_username' => 'Nume utilizator',
     'text_password' => 'Parol&#259;',
     'text_password2' => 'Rescrie parola',
-    'text_email' => 'Email'
+    'text_email' => 'Email',
 );
-

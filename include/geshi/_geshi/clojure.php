@@ -39,7 +39,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Clojure',
     'COMMENT_SINGLE' => array(1 => ';'),
     'COMMENT_MULTI' => array(';|' => '|;'),
@@ -51,7 +51,7 @@ $language_data = array (
             'defn', 'defn-', 'defmulti', 'defmethod', 'defmacro', 'deftest',
             'defstruct', 'def', 'defonce', 'let', 'letfn', 'do', 'cond', 'condp',
             'for', 'loop', 'recur', 'when', 'when-not', 'when-let', 'when-first',
-            'if', 'if-let', 'if-not', 'doto', 'and', 'or','not','aget','aset',
+            'if', 'if-let', 'if-not', 'doto', 'and', 'or', 'not', 'aget', 'aset',
             'dosync', 'doseq', 'dotimes', 'dorun', 'doall',
             'load', 'import', 'unimport', 'ns', 'in-ns', 'refer', 'print',
             'try', 'catch', 'finally', 'throw', 'fn', 'update-in',
@@ -73,54 +73,54 @@ $language_data = array (
             'iterator-seq', 'enumeration-seq', 'declare',  'xml-seq',
             'symbol?', 'string?', 'vector', 'conj', 'str',
             'pos?', 'neg?', 'zero?', 'nil?', 'inc', 'dec', 'format',
-            'alter', 'commute', 'ref-set', 'floor', 'assoc', 'send', 'send-off'
-            )
+            'alter', 'commute', 'ref-set', 'floor', 'assoc', 'send', 'send-off',
+            ),
         ),
     'SYMBOLS' => array(
-        '(', ')', '{', '}', '[', ']', '!', '%', '^', '&', '/','+','-','*','=','<','>',';','|', '.', '..', '->',
+        '(', ')', '{', '}', '[', ']', '!', '%', '^', '&', '/', '+', '-', '*', '=', '<', '>', ';', '|', '.', '..', '->',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => true,
-        1 => false
+        1 => false,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
-            1 => 'color: #b1b100;'
+            1 => 'color: #b1b100;',
             ),
         'COMMENTS' => array(
             1 => 'color: #808080; font-style: italic;',
-            'MULTI' => 'color: #808080; font-style: italic;'
+            'MULTI' => 'color: #808080; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
             0 => 'color: #555;',
-            1 => 'color: #555;'
+            1 => 'color: #555;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
-        1 => ''
+        1 => '',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-            '::', ':'
+            '::', ':',
         ),
     'REGEXPS' => array(
         ),
@@ -128,7 +128,5 @@ $language_data = array (
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
-        )
+        ),
 );
-
-?>

@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     //errors
     'stats_error' => 'Sorry...',
@@ -12,6 +13,5 @@ $lang = array(
     'stats_peers' => 'Peers',
     'stats_torrent' => 'Torrents',
     'stats_uploader' => 'Uploader',
-    'stats_category' => 'Category'
+    'stats_category' => 'Category',
 );
-

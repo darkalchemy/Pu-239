@@ -29,7 +29,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Autoconf',
     'COMMENT_SINGLE' => array(2 => '#'),
     'COMMENT_MULTI' => array(),
@@ -45,8 +45,7 @@ $language_data = array (
     'QUOTEMARKS' => array("'", '"'),
     'ESCAPE_CHAR' => '',
     'ESCAPE_REGEXP' => array(),
-    'NUMBERS' =>
-        GESHI_NUMBER_INT_BASIC | GESHI_NUMBER_INT_CSTYLE | GESHI_NUMBER_BIN_PREFIX_0B |
+    'NUMBERS' => GESHI_NUMBER_INT_BASIC | GESHI_NUMBER_INT_CSTYLE | GESHI_NUMBER_BIN_PREFIX_0B |
         GESHI_NUMBER_OCT_PREFIX | GESHI_NUMBER_HEX_PREFIX | GESHI_NUMBER_FLT_NONSCI |
         GESHI_NUMBER_FLT_NONSCI_F | GESHI_NUMBER_FLT_SCI_SHORT | GESHI_NUMBER_FLT_SCI_ZERO,
     'KEYWORDS' => array(
@@ -426,7 +425,7 @@ $language_data = array (
             'AH_TOP',
             'AH_VERBATIM',
             'AU_ALIAS',
-            'AU_DEFUN'),
+            'AU_DEFUN', ),
             ),
     'SYMBOLS' => array('(', ')', '[', ']', '!', '@', '%', '&', '*', '|', '/', '<', '>', ';;', '`'),
     'CASE_SENSITIVE' => array(
@@ -441,7 +440,7 @@ $language_data = array (
             1 => 'color: #666666;',
             2 => 'color: #339900;',
             3 => 'color: #666666;',
-            'MULTI' => 'color: #ff0000; font-style: italic;'
+            'MULTI' => 'color: #ff0000; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
             0 => 'color: #000099;',
@@ -453,10 +452,10 @@ $language_data = array (
             'HARD' => '',
             ),
         'BRACKETS' => array(
-            0 => 'color: #008000;'
+            0 => 'color: #008000;',
             ),
         'STRINGS' => array(
-            0 => 'color: #996600;'
+            0 => 'color: #996600;',
             ),
         'NUMBERS' => array(
             0 => 'color: #0000dd;',
@@ -466,23 +465,23 @@ $language_data = array (
             GESHI_NUMBER_FLT_SCI_SHORT => 'color:#800080;',
             GESHI_NUMBER_FLT_SCI_ZERO => 'color:#800080;',
             GESHI_NUMBER_FLT_NONSCI_F => 'color:#800080;',
-            GESHI_NUMBER_FLT_NONSCI => 'color:#800080;'
+            GESHI_NUMBER_FLT_NONSCI => 'color:#800080;',
             ),
         'METHODS' => array(
             1 => 'color: #202020;',
-            2 => 'color: #202020;'
+            2 => 'color: #202020;',
             ),
         'SYMBOLS' => array(
             0 => 'color: #008000;',
             1 => 'color: #000080;',
             2 => 'color: #000040;',
             3 => 'color: #000040;',
-            4 => 'color: #008080;'
+            4 => 'color: #008080;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
@@ -500,13 +499,11 @@ $language_data = array (
     'TAB_WIDTH' => 4,
     'PARSER_CONTROL' => array(
         'COMMENTS' => array(
-            'DISALLOWED_BEFORE' => '$'
+            'DISALLOWED_BEFORE' => '$',
             ),
         'KEYWORDS' => array(
             'DISALLOWED_BEFORE' => "(?<![\.\-a-zA-Z0-9_\$\#])",
-            'DISALLOWED_AFTER' =>  "(?![\.\-a-zA-Z0-9_%\\/])"
-            )
-        )
+            'DISALLOWED_AFTER' => "(?![\.\-a-zA-Z0-9_%\\/])",
+            ),
+        ),
 );
-
-?>

@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     //Headers
     'stdhead_templates' => 'Templates',

@@ -1,4 +1,5 @@
 <?php
+
 $GVARS = array(
     'rep_is_online' => 1,
     'rep_default' => 10,
@@ -12,8 +13,7 @@ $GVARS = array(
     'rep_minrep' => 10,
     'rep_maxperday' => 10,
     'rep_repeat' => 20,
-    'g_rep_negative' => TRUE,
-    'g_rep_seeown' => TRUE,
-    'g_rep_use' => $CURUSER['class'] > UC_USER ? TRUE : FALSE
+    'g_rep_negative' => true,
+    'g_rep_seeown' => true,
+    'g_rep_use' => $CURUSER['class'] > UC_USER ? true : false,
 );
-?>

@@ -1,19 +1,5 @@
 <?php
 /**
-|--------------------------------------------------------------------------|
-|   https://github.com/Bigjoos/                                            |
-|--------------------------------------------------------------------------|
-|   Licence Info: GPL                                                      |
-|--------------------------------------------------------------------------|
-|   Copyright (C) 2010 U-232 V4                                            |
-|--------------------------------------------------------------------------|
-|   A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.   |
-|--------------------------------------------------------------------------|
-|   Project Leaders: Mindless,putyn.                                       |
-|--------------------------------------------------------------------------|
-_   _   _   _   _     _   _   _   _   _   _     _   _   _   _
-/ \ / \ / \ / \ / \   / \ / \ / \ / \ / \ / \   / \ / \ / \ / \
-( U | - | 2 | 3 | 2 )-( S | o | u | r | c | e )-( C | o | d | e )
 \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
 */
 require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
@@ -250,7 +236,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     $openbet = 0;
     while ($tbet2 = mysqli_fetch_assoc($betsp)) {
         if ($tbet2['challenged'] == 'empty') {
-            $openbet++;
+            ++$openbet;
         }
     }
     //== Convert bet amount into bits
@@ -270,16 +256,16 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     //== Take Bet
     if (isset($_GET['takebet'])) {
         $betid = (int) $_GET['takebet'];
-//		if (($casino_times = $mc1->get_value('casinotimes_' . $betid)) === false) {
-//			$mc1->cache_value('casinotimes_' . $betid, 600);
-//		} else {
-//			stderr($lang['gl_sorry'], "{$lang['casino_someone_has_already_taken_that_bet']}!&#160;&#160;&#160;$goback");
-//		}
+        //		if (($casino_times = $mc1->get_value('casinotimes_' . $betid)) === false) {
+        //			$mc1->cache_value('casinotimes_' . $betid, 600);
+        //		} else {
+        //			stderr($lang['gl_sorry'], "{$lang['casino_someone_has_already_taken_that_bet']}!&#160;&#160;&#160;$goback");
+        //		}
         $rand = 0;
         for ($x = 1; $x <= 100000; ++$x) {
             $random = (mt_rand(1, 10000));
             if ($random > 5000) {
-                $rand++;
+                ++$rand;
             }
         }
         $loc = sql_query('SELECT * FROM casino_bets WHERE id = '.sqlesc($betid));
@@ -523,8 +509,8 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
             <option value='{$bet_value5}'>".mksize($bet_value5)."</option>
             <option value='{$bet_value6}'>".mksize($bet_value6)."</option>
             <option value='{$bet_value7}'>".mksize($bet_value7)."</option>
-            <option value='{$bet_value8}'>".mksize($bet_value8)."</option>
-            </select>", 1);
+            <option value='{$bet_value8}'>".mksize($bet_value8).'</option>
+            </select>', 1);
     $real_chance = 2;
     if ($show_real_chance) {
         $real_chance = $cheat_value + 1;
@@ -548,8 +534,8 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
             <option value='{$bet_value5}'>".mksize($bet_value5)."</option>
             <option value='{$bet_value6}'>".mksize($bet_value6)."</option>
             <option value='{$bet_value7}'>".mksize($bet_value7)."</option>
-            <option value='{$bet_value8}'>".mksize($bet_value8)."</option>
-            </select>", 1);
+            <option value='{$bet_value8}'>".mksize($bet_value8).'</option>
+            </select>', 1);
     $real_chance = 6;
     if ($show_real_chance) {
         $real_chance = $cheat_value + 5;
@@ -588,4 +574,3 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     $HTMLOUT .= '</table></td></tr></table>';
 }
 echo stdhead("{$lang['casino_stdhead']}").$HTMLOUT.stdfoot();
-

@@ -1,6 +1,5 @@
 <?php
 /**
-This file created on Aug 03 2014 01:05:35.
 Site Config mod by stoner with a little help from pdq for U-232.
 **/
 $INSTALLER09['site_online'] = 1;
@@ -25,4 +24,3 @@ $INSTALLER09['bonus_per_topic'] = 8;
 $INSTALLER09['bonus_per_post'] = 5;
 $INSTALLER09['bonus_per_delete'] = 15;
 $INSTALLER09['bonus_per_thanks'] = 5;
-?>

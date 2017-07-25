@@ -10,52 +10,50 @@
 ?>
 <?php
 
-function apache_load_software() {
-	return array(
-		'name'    => __('Apache'),
-		'desc'    => __('Apache Hypertext Transfer Protocol Server'),
-		'home'    => __('http://httpd.apache.org'),
-		'notes'   => __('All versions 2.x are supported.'),
-		'load'    => ( stripos( $_SERVER["SERVER_SOFTWARE"] , 'Apache' ) !== false )
-	);
+function apache_load_software()
+{
+    return array(
+        'name' => __('Apache'),
+        'desc' => __('Apache Hypertext Transfer Protocol Server'),
+        'home' => __('http://httpd.apache.org'),
+        'notes' => __('All versions 2.x are supported.'),
+        'load' => (stripos($_SERVER['SERVER_SOFTWARE'], 'Apache') !== false),
+    );
 }
-
 
 /*
 You must escape anti-slash 4 times and escape $ in regex.
 (Two for PHP and finally two for json)
  */
 
+function apache_get_config($type, $file, $software, $counter)
+{
+    $file_json_encoded = json_encode($file);
 
-function apache_get_config( $type , $file , $software , $counter ) {
+    /////////////////////////////////////////////////////////
+    // Apache error files are not the same on 2.2 and 2.4 //
+    /////////////////////////////////////////////////////////
+    if ($type == 'error') {
+        // Write a line of log and try to guess the format
+        $remain = 10;
+        $test = 0;
+        error_log('Pimp my Log has been successfully configured with Apache');
+        foreach (LogParser::getLinesFromBottom($file, 10) as $line) {
+            $test = @preg_match('|^\[(.*) (.*) (.*) (.*):(.*):(.*)\.(.*) (.*)\] \[(.*):(.*)\] \[pid (.*)\] .*\[client (.*):(.*)\] (.*)(, referer: (.*))*$|U', $line);
+            if ($test === 1) {
+                break;
+            }
+            --$remain;
+            if ($remain <= 0) {
+                break;
+            }
+        }
 
-	$file_json_encoded = json_encode( $file );
-
-	/////////////////////////////////////////////////////////
-	// Apache error files are not the same on 2.2 and 2.4 //
-	/////////////////////////////////////////////////////////
-	if ( $type == 'error' ) {
-
-		// Write a line of log and try to guess the format
-		$remain = 10;
-		$test   = 0;
-		error_log( 'Pimp my Log has been successfully configured with Apache' );
-		foreach ( LogParser::getLinesFromBottom( $file , 10 ) as $line ) {
-			$test = @preg_match('|^\[(.*) (.*) (.*) (.*):(.*):(.*)\.(.*) (.*)\] \[(.*):(.*)\] \[pid (.*)\] .*\[client (.*):(.*)\] (.*)(, referer: (.*))*$|U', $line );
-			if ( $test === 1 ) {
-				break;
-			}
-			$remain--;
-			if ($remain<=0) {
-				break;
-			}
-		}
-
-		/////////////////////
-		// Error 2.4 style //
-		/////////////////////
-		if ( $test === 1 ) {
-			return<<<EOF
+        /////////////////////
+        // Error 2.4 style //
+        /////////////////////
+        if ($test === 1) {
+            return<<<EOF
 		"$software$counter": {
 			"display" : "Apache Error #$counter",
 			"path"    : $file_json_encoded,
@@ -93,16 +91,13 @@ function apache_get_config( $type , $file , $software , $counter ) {
 			}
 		}
 EOF;
+        }
 
-		}
-
-
-		/////////////////////
-		// Error 2.2 style //
-		/////////////////////
-		else {
-
-			return<<<EOF
+        /////////////////////
+        // Error 2.2 style //
+        /////////////////////
+        else {
+            return<<<EOF
 		"$software$counter": {
 			"display" : "Apache Error #$counter",
 			"path"    : $file_json_encoded,
@@ -133,16 +128,14 @@ EOF;
 			}
 		}
 EOF;
+        }
+    }
 
-		}
-	}
-
-	////////////////
-	// Access log //
-	////////////////
-	else if ( $type == 'access' ) {
-
-		return<<<EOF
+    ////////////////
+    // Access log //
+    ////////////////
+    elseif ($type == 'access') {
+        return<<<EOF
 		"$software$counter": {
 			"display" : "Apache Access #$counter",
 			"path"    : $file_json_encoded,
@@ -182,6 +175,5 @@ EOF;
 			}
 		}
 EOF;
-
-	}
+    }
 }

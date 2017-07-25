@@ -36,7 +36,7 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  ************************************************************************************/
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Brainfuck',
     'COMMENT_SINGLE' => array(),
     'COMMENT_MULTI' => array(),
@@ -51,7 +51,7 @@ $language_data = array (
         1 => array('[', ']'),
         2 => array('<', '>'),
         3 => array('.', ','),
-        4 => array('Y') //Brainfork Extension ;-)
+        4 => array('Y'), //Brainfork Extension ;-)
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -60,13 +60,13 @@ $language_data = array (
         'KEYWORDS' => array(
             ),
         'COMMENTS' => array(
-            1 => 'color: #666666; font-style: italic;'
+            1 => 'color: #666666; font-style: italic;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
             ),
@@ -77,14 +77,14 @@ $language_data = array (
             1 => 'color: #660000;',
             2 => 'color: #000066;',
             3 => 'color: #660066;',
-            4 => 'color: #666600;'
+            4 => 'color: #666600;',
             ),
         'ESCAPE_CHAR' => array(
             ),
         'SCRIPT' => array(
             ),
         'REGEXPS' => array(
-            )
+            ),
         ),
     'URLS' => array(
         ),
@@ -102,13 +102,11 @@ $language_data = array (
     'PARSER_CONTROL' => array(
         'ENABLE_FLAGS' => array(
             'STRINGS' => GESHI_NEVER,
-            'NUMBERS' => GESHI_NEVER
+            'NUMBERS' => GESHI_NEVER,
             ),
         'KEYWORDS' => array(
             'DISALLOW_BEFORE' => '',
-            'DISALLOW_AFTER' => ''
-            )
-        )
+            'DISALLOW_AFTER' => '',
+            ),
+        ),
 );
-
-?>

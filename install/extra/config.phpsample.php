@@ -1,31 +1,21 @@
 <?php
 /**
- |--------------------------------------------------------------------------|
- |   https://github.com/Bigjoos/                			    |
- |--------------------------------------------------------------------------|
- |   Licence Info: GPL							    |
- |--------------------------------------------------------------------------|
- |   Copyright (C) 2010 U-232 V4					    |
- |--------------------------------------------------------------------------|
- |   A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.   |
- |--------------------------------------------------------------------------|
- |   Project Leaders: Mindless,putyn.					    |
- |--------------------------------------------------------------------------|
-  _   _   _   _   _     _   _   _   _   _   _     _   _   _   _
- / \ / \ / \ / \ / \   / \ / \ / \ / \ / \ / \   / \ / \ / \ / \
-( U | - | 2 | 3 | 2 )-( S | o | u | r | c | e )-( C | o | d | e )
  \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 error_reporting(E_ALL); //== turn off = 0 when live
 const REQUIRED_PHP = 50300, REQUIRED_PHP_VERSION = '5.3.0';
-if (PHP_VERSION_ID < REQUIRED_PHP)
-die('PHP '.REQUIRED_PHP_VERSION.' or higher is required.');
-if (PHP_INT_SIZE < 8)
-die('A 64bit or higher OS + Processor is required.');
-if (get_magic_quotes_gpc() || get_magic_quotes_runtime() || ini_get('magic_quotes_sybase'))
-die('PHP is configured incorrectly. Turn off magic quotes.');
-if (ini_get('register_long_arrays') || ini_get('register_globals') || ini_get('safe_mode'))
-die('PHP is configured incorrectly. Turn off safe_mode, register_globals and register_long_arrays.');
+if (PHP_VERSION_ID < REQUIRED_PHP) {
+    die('PHP '.REQUIRED_PHP_VERSION.' or higher is required.');
+}
+if (PHP_INT_SIZE < 8) {
+    die('A 64bit or higher OS + Processor is required.');
+}
+if (get_magic_quotes_gpc() || get_magic_quotes_runtime() || ini_get('magic_quotes_sybase')) {
+    die('PHP is configured incorrectly. Turn off magic quotes.');
+}
+if (ini_get('register_long_arrays') || ini_get('register_globals') || ini_get('safe_mode')) {
+    die('PHP is configured incorrectly. Turn off safe_mode, register_globals and register_long_arrays.');
+}
 define('EMAIL_CONFIRM', true);
 define('SQL_DEBUG', 1);
 define('XBT_TRACKER', false);
@@ -35,13 +25,16 @@ if (ini_get('default_charset') != $INSTALLER09['char_set']) {
     ini_set('default_charset', $INSTALLER09['char_set']);
 }
 //== Windows fix
-if( !function_exists( 'sys_getloadavg' ) ){
-  function sys_getloadavg(){
-  return array( 0, 0, 0 );
-  }
+if (!function_exists('sys_getloadavg')) {
+    function sys_getloadavg()
+    {
+        return array(0, 0, 0);
+    }
 }
 /* Compare php version for date/time stuff etc! */
-if (version_compare(PHP_VERSION, "5.1.0RC1", ">=")) date_default_timezone_set('Europe/London');
+if (version_compare(PHP_VERSION, '5.1.0RC1', '>=')) {
+    date_default_timezone_set('Europe/London');
+}
 define('TIME_NOW', time());
 $INSTALLER09['time_adjust'] = 0;
 $INSTALLER09['time_offset'] = '0';
@@ -172,49 +165,51 @@ $INSTALLER09['latest_posts_limit'] = 5; //query limit for latest forum posts on 
 $INSTALLER09['latest_torrents_limit'] = 5;
 $INSTALLER09['latest_torrents_limit_2'] = 5;
 $INSTALLER09['latest_torrents_limit_scroll'] = 20;
-/** Settings **/
+/* Settings **/
 $INSTALLER09['reports'] = 1; // 1/0 on/off
 $INSTALLER09['karma'] = 1; // 1/0 on/off
 $INSTALLER09['BBcode'] = 1; // 1/0 on/off
 $INSTALLER09['inviteusers'] = 10000;
 $INSTALLER09['flood_time'] = 900; //comment/forum/pm flood limit
 $INSTALLER09['readpost_expiry'] = 14 * 86400; // 14 days
-/** define dirs **/
-define('INCL_DIR', dirname(__FILE__) . DIRECTORY_SEPARATOR);
-define('ROOT_DIR', realpath(INCL_DIR . '..' . DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR);
-define('ADMIN_DIR', ROOT_DIR . 'admin' . DIRECTORY_SEPARATOR);
-define('FORUM_DIR', ROOT_DIR . 'forums' . DIRECTORY_SEPARATOR);
-define('PM_DIR', ROOT_DIR . 'pm_system' . DIRECTORY_SEPARATOR);
-define('PIMP_DIR', ROOT_DIR . 'PimpMyLog' . DIRECTORY_SEPARATOR);
-define('CACHE_DIR', ROOT_DIR . 'cache' . DIRECTORY_SEPARATOR);
-define('MODS_DIR', ROOT_DIR . 'mods' . DIRECTORY_SEPARATOR);
-define('LANG_DIR', ROOT_DIR . 'lang' . DIRECTORY_SEPARATOR);
-define('TEMPLATE_DIR', ROOT_DIR . 'templates' . DIRECTORY_SEPARATOR);
-define('BLOCK_DIR', ROOT_DIR . 'blocks' . DIRECTORY_SEPARATOR);
-define('IMDB_DIR', ROOT_DIR . 'imdb' . DIRECTORY_SEPARATOR);
-define('CLASS_DIR', INCL_DIR . 'class' . DIRECTORY_SEPARATOR);
-define('CLEAN_DIR', INCL_DIR . 'cleanup' . DIRECTORY_SEPARATOR);
-$INSTALLER09['cache'] = ROOT_DIR . 'cache';
-$INSTALLER09['backup_dir'] = INCL_DIR . 'backup';
-$INSTALLER09['dictbreaker'] = ROOT_DIR . 'dictbreaker';
-$INSTALLER09['torrent_dir'] = ROOT_DIR . 'torrents'; // must be writable for httpd user
-$INSTALLER09['sub_up_dir'] = ROOT_DIR . 'uploadsub'; // must be writable for httpd user 
-$INSTALLER09['flood_file'] = INCL_DIR . 'settings' . DIRECTORY_SEPARATOR . 'limitfile.txt';
-$INSTALLER09['nameblacklist'] = ROOT_DIR . 'cache' . DIRECTORY_SEPARATOR . 'nameblacklist.txt';
-$INSTALLER09['happyhour'] = CACHE_DIR . 'happyhour' . DIRECTORY_SEPARATOR . 'happyhour.txt';
-$INSTALLER09['sql_error_log'] = ROOT_DIR . 'sqlerr_logs' . DIRECTORY_SEPARATOR . 'sql_err_' . date('M_D_Y') . '.log';
+/* define dirs **/
+define('INCL_DIR', dirname(__FILE__).DIRECTORY_SEPARATOR);
+define('ROOT_DIR', realpath(INCL_DIR.'..'.DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR);
+define('ADMIN_DIR', ROOT_DIR.'admin'.DIRECTORY_SEPARATOR);
+define('FORUM_DIR', ROOT_DIR.'forums'.DIRECTORY_SEPARATOR);
+define('PM_DIR', ROOT_DIR.'pm_system'.DIRECTORY_SEPARATOR);
+define('PIMP_DIR', ROOT_DIR.'PimpMyLog'.DIRECTORY_SEPARATOR);
+define('CACHE_DIR', ROOT_DIR.'cache'.DIRECTORY_SEPARATOR);
+define('MODS_DIR', ROOT_DIR.'mods'.DIRECTORY_SEPARATOR);
+define('LANG_DIR', ROOT_DIR.'lang'.DIRECTORY_SEPARATOR);
+define('TEMPLATE_DIR', ROOT_DIR.'templates'.DIRECTORY_SEPARATOR);
+define('BLOCK_DIR', ROOT_DIR.'blocks'.DIRECTORY_SEPARATOR);
+define('IMDB_DIR', ROOT_DIR.'imdb'.DIRECTORY_SEPARATOR);
+define('CLASS_DIR', INCL_DIR.'class'.DIRECTORY_SEPARATOR);
+define('CLEAN_DIR', INCL_DIR.'cleanup'.DIRECTORY_SEPARATOR);
+$INSTALLER09['cache'] = ROOT_DIR.'cache';
+$INSTALLER09['backup_dir'] = INCL_DIR.'backup';
+$INSTALLER09['dictbreaker'] = ROOT_DIR.'dictbreaker';
+$INSTALLER09['torrent_dir'] = ROOT_DIR.'torrents'; // must be writable for httpd user
+$INSTALLER09['sub_up_dir'] = ROOT_DIR.'uploadsub'; // must be writable for httpd user
+$INSTALLER09['flood_file'] = INCL_DIR.'settings'.DIRECTORY_SEPARATOR.'limitfile.txt';
+$INSTALLER09['nameblacklist'] = ROOT_DIR.'cache'.DIRECTORY_SEPARATOR.'nameblacklist.txt';
+$INSTALLER09['happyhour'] = CACHE_DIR.'happyhour'.DIRECTORY_SEPARATOR.'happyhour.txt';
+$INSTALLER09['sql_error_log'] = ROOT_DIR.'sqlerr_logs'.DIRECTORY_SEPARATOR.'sql_err_'.date('M_D_Y').'.log';
 //== XBT or PHP announce
 if (XBT_TRACKER == true) {
-$INSTALLER09['xbt_prefix'] = '#announce_urls:2710/';  
-$INSTALLER09['xbt_suffix'] = '/announce';
-$INSTALLER09['announce_urls'][] = '#announce_urls:2710/announce';
+    $INSTALLER09['xbt_prefix'] = '#announce_urls:2710/';
+    $INSTALLER09['xbt_suffix'] = '/announce';
+    $INSTALLER09['announce_urls'][] = '#announce_urls:2710/announce';
 } else {
-$INSTALLER09['announce_urls'] = array();
-$INSTALLER09['announce_urls'][] = '#announce_urls';
-$INSTALLER09['announce_urls'][] = '#announce_https';
+    $INSTALLER09['announce_urls'] = array();
+    $INSTALLER09['announce_urls'][] = '#announce_urls';
+    $INSTALLER09['announce_urls'][] = '#announce_https';
 }
-if (isset($_SERVER["HTTP_HOST"]) &&  $_SERVER["HTTP_HOST"] == "") $_SERVER["HTTP_HOST"] = $_SERVER["SERVER_NAME"];
-$INSTALLER09['baseurl'] = 'http' . (isset($_SERVER['HTTPS']) && (bool)$_SERVER['HTTPS'] == true ? 's' : '') . '://' . $_SERVER['HTTP_HOST'];
+if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == '') {
+    $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
+}
+$INSTALLER09['baseurl'] = 'http'.(isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] == true ? 's' : '').'://'.$_SERVER['HTTP_HOST'];
 //== Email for sender/return path.
 $INSTALLER09['site_email'] = '#site_email';
 $INSTALLER09['site_name'] = '#site_name';
@@ -225,27 +220,27 @@ $INSTALLER09['report_alert'] = 1; // saves a query when off
 $INSTALLER09['staffmsg_alert'] = 1; // saves a query when off
 $INSTALLER09['uploadapp_alert'] = 1; // saves a query when off
 $INSTALLER09['bug_alert'] = 1; // saves a query when off
-$INSTALLER09['pic_base_url'] = "./pic/";
+$INSTALLER09['pic_base_url'] = './pic/';
 $INSTALLER09['stylesheet'] = 1;
 $INSTALLER09['categorie_icon'] = 1;
 $INSTALLER09['comment_min_class'] = 4; //minim class to be checked when posting comments
-$INSTALLER09['comment_check'] = 1; //set it to 0 if you wanna allow commenting with out staff checking 
+$INSTALLER09['comment_check'] = 1; //set it to 0 if you wanna allow commenting with out staff checking
 //for subs & youtube mode
 $INSTALLER09['movie_cats'] = array(
     3,
     5,
     6,
     10,
-    11
+    11,
 );
 $INSTALLER09['slider_cats'] = array(
     3,
     5,
     6,
     10,
-    11
+    11,
 );
-$INSTALLER09['moviecats'] = "3,5,6,10,11";
+$INSTALLER09['moviecats'] = '3,5,6,10,11';
 $youtube_pattern = "/^http(s)?\:\/\/www\.youtube\.com\/watch\?v\=[\w-]{11}/i";
 //== set this to size of user avatars
 $INSTALLER09['av_img_height'] = 100;
@@ -257,7 +252,7 @@ $INSTALLER09['bucket_allowed'] = 0;
 $INSTALLER09['allowed_ext'] = array(
     'image/gif',
     'image/png',
-    'image/jpeg'
+    'image/jpeg',
 );
 $INSTALLER09['bucket_maxsize'] = 500 * 1024; //max size set to 500kb
 //==Class check by pdq
@@ -272,8 +267,7 @@ $INSTALLER09['staff']['owner_pin'] = 'jjko4kuogqhjj0'; // should be mix of u/l c
 $INSTALLER09['staff']['forumid'] = 2; // this forum ID should exist and be a staff forum
 $INSTALLER09['staff_forums'] = array(
     1,
-    2
+    2,
 ); // these forum ID's' should exist and be a staff forum's to stop autoshouts
 $INSTALLER09['variant'] = 'U-232 V4';
 define('TBVERSION', $INSTALLER09['variant']);
-?>

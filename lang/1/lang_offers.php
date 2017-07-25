@@ -1,5 +1,6 @@
 <?php
+
 $lang = array(
-    'lalala' => "lalala",
-    'weeeee' => "weeeee"
+    'lalala' => 'lalala',
+    'weeeee' => 'weeeee',
 );

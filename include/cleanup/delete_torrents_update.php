@@ -1,19 +1,5 @@
 <?php
 /**
- |--------------------------------------------------------------------------|
- |   https://github.com/Bigjoos/                			    |
- |--------------------------------------------------------------------------|
- |   Licence Info: GPL			                                    |
- |--------------------------------------------------------------------------|
- |   Copyright (C) 2010 U-232 V4					    |
- |--------------------------------------------------------------------------|
- |   A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.   |
- |--------------------------------------------------------------------------|
- |   Project Leaders: Mindless,putyn.					    |
- |--------------------------------------------------------------------------|
-  _   _   _   _   _     _   _   _   _   _   _     _   _   _   _
- / \ / \ / \ / \ / \   / \ / \ / \ / \ / \ / \   / \ / \ / \ / \
-( U | - | 2 | 3 | 2 )-( S | o | u | r | c | e )-( C | o | d | e )
  \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 function cleanup_log($data)
@@ -34,7 +20,7 @@ function docleanup($data)
     $dt = (TIME_NOW - ($days * 86400));
     $res = sql_query("SELECT id, name FROM torrents WHERE last_action < $dt AND seeders='0' AND leechers='0'");
     while ($arr = mysqli_fetch_assoc($res)) {
-        sql_query("DELETE peers.*, files.*, comments.*, snatched.*, thankyou.*, thanks.*,thumbsup.*, bookmarks.*, coins.*, rating.*, torrents.* FROM torrents 
+        sql_query('DELETE peers.*, files.*, comments.*, snatched.*, thankyou.*, thanks.*,thumbsup.*, bookmarks.*, coins.*, rating.*, torrents.* FROM torrents 
 				 LEFT JOIN peers ON peers.torrent = torrents.id
 				 LEFT JOIN files ON files.torrent = torrents.id
 				 LEFT JOIN comments ON comments.torrent = torrents.id
@@ -45,16 +31,17 @@ function docleanup($data)
 				 LEFT JOIN rating ON rating.torrent = torrents.id
                                  LEFT JOIN thumbsup ON thumbsup.torrentid = torrents.id
 				 LEFT JOIN snatched ON snatched.torrentid = torrents.id
-				 WHERE torrents.id = ".sqlesc($arr['id'])) or sqlerr(__FILE__, __LINE__);
+				 WHERE torrents.id = '.sqlesc($arr['id'])) or sqlerr(__FILE__, __LINE__);
         @unlink("{$INSTALLER09['torrent_dir']}/{$arr['id']}.torrent");
-        write_log("Torrent ".(int)$arr['id']." (".htmlsafechars($arr['name']).") was deleted by system (older than $days days and no seeders)");
+        write_log('Torrent '.(int) $arr['id'].' ('.htmlsafechars($arr['name']).") was deleted by system (older than $days days and no seeders)");
     }
-    if ($queries > 0) write_log("Delete Old Torrents Clean -------------------- Delete Old Torrents cleanup Complete using $queries queries --------------------");
-    if (false !== mysqli_affected_rows($GLOBALS["___mysqli_ston"])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS["___mysqli_ston"]) . " items deleted/updated";
+    if ($queries > 0) {
+        write_log("Delete Old Torrents Clean -------------------- Delete Old Torrents cleanup Complete using $queries queries --------------------");
+    }
+    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
+        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']).' items deleted/updated';
     }
     if ($data['clean_log']) {
         cleanup_log($data);
     }
 }
-?>

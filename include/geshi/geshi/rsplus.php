@@ -54,7 +54,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'R / S+',
     'COMMENT_SINGLE' => array(1 => '#'),
     'COMMENT_MULTI' => array(),
@@ -63,7 +63,7 @@ $language_data = array (
     'ESCAPE_CHAR' => '\\',
     'KEYWORDS' => array(
         1 => array(
-            'else','global','in', 'otherwise','persistent',
+            'else', 'global', 'in', 'otherwise', 'persistent',
             ),
         2 => array( // base package
             '$.package_version', '$<-', '$<-.data.frame', 'abbreviate', 'abs', 'acos', 'acosh', 'addNA', 'addTaskCallback',
@@ -389,7 +389,7 @@ $language_data = array (
             ),
         ),
     'SYMBOLS' => array(
-        '(', ')', '{', '}', '[', ']', '!', '%', '^', '&', '/','+','-','*','=','<','>',';','|','<-','->',
+        '(', ')', '{', '}', '[', ']', '!', '%', '^', '&', '/', '+', '-', '*', '=', '<', '>', ';', '|', '<-', '->',
         '^', '-', ':', '::', ':::', '!', '!=', '*', '?',
         ),
     'CASE_SENSITIVE' => array(
@@ -412,7 +412,7 @@ $language_data = array (
             5 => 'color: #0000FF; font-weight: bold;',
             6 => 'color: #0000FF; font-weight: bold;',
             7 => 'color: #0000FF; font-weight: bold;',
-            8 => 'color: #0000FF; font-weight: bold;'
+            8 => 'color: #0000FF; font-weight: bold;',
             ),
         'COMMENTS' => array(
             1 => 'color: #228B22;',
@@ -421,27 +421,27 @@ $language_data = array (
             0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #080;'
+            0 => 'color: #080;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'METHODS' => array(
             1 => '',
-            2 => ''
+            2 => '',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #080;'
+            0 => 'color: #080;',
             ),
         'REGEXPS' => array(
-            0 => 'color:#A020F0;'
+            0 => 'color:#A020F0;',
             ),
         'SCRIPT' => array(
-            0 => ''
-            )
+            0 => '',
+            ),
         ),
     'URLS' => array(
         1 => '',
@@ -451,12 +451,12 @@ $language_data = array (
         5 => 'http://astrostatistics.psu.edu/su07/R/html/stats/html/summary.lm.html', // http://sekhon.berkeley.edu/library/stats/html/summary.lm.html
         6 => 'http://astrostatistics.psu.edu/su07/R/html/base/html/Log.html', // http://sekhon.berkeley.edu/library/base/html/Log.html
         7 => '',
-        8 => ''
+        8 => '',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
         1 => '.',
-        2 => '::'
+        2 => '::',
         ),
     'REGEXPS' => array(
         0 => array(
@@ -464,8 +464,8 @@ $language_data = array (
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => "\\1'",
-            GESHI_AFTER => "'"
-            )
+            GESHI_AFTER => "'",
+            ),
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(
@@ -475,9 +475,7 @@ $language_data = array (
     'PARSER_CONTROL' => array(
         'KEYWORDS' => array(
             'DISALLOWED_BEFORE' => "(?<![a-zA-Z0-9\$_\|\#;>|^&\\.])(?<!\/html\/)",
-            'DISALLOWED_AFTER' => "(?![a-zA-Z0-9_\|%\\-&;\\.])"
-            )
-        )
+            'DISALLOWED_AFTER' => "(?![a-zA-Z0-9_\|%\\-&;\\.])",
+            ),
+        ),
 );
-
-?>

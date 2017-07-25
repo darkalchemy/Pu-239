@@ -93,19 +93,19 @@
 $language_data = array(
     'LANG_NAME' => 'ABAP',
     'COMMENT_SINGLE' => array(
-        1 => '"'
+        1 => '"',
         ),
     'COMMENT_MULTI' => array(),
     'COMMENT_REGEXP' => array(
         // lines beginning with star at 1st position are comments
         // (star anywhere else is not a comment, especially be careful with
         // "assign dref->* to <fs>" statement)
-        2 => '/^\*.*?$/m'
+        2 => '/^\*.*?$/m',
         ),
     'CASE_KEYWORDS' => 0,
     'QUOTEMARKS' => array(
         1 => "'",
-        2 => "`"
+        2 => '`',
         ),
     'ESCAPE_CHAR' => '',
 
@@ -625,7 +625,7 @@ $language_data = array(
             'without spool dynpro',
             'without trmac',
             'word into',
-            'writer for'
+            'writer for',
             ),
 
         //**********************************************************
@@ -770,8 +770,7 @@ $language_data = array(
             'update',
 
             'window',
-            'write'
-
+            'write',
             ),
 
         //**********************************************************
@@ -1217,8 +1216,7 @@ $language_data = array(
             'yymmdd',
 
             'z',
-            'zero'
-
+            'zero',
             ),
 
         //**********************************************************
@@ -1235,7 +1233,7 @@ $language_data = array(
             'on input',
             'on request',
             'on value-request',
-            'process'
+            'process',
             ),
 
         //**********************************************************
@@ -1256,7 +1254,7 @@ $language_data = array(
             'syntax-trace',
             'system-call',
             'system-exit',
-            'verification-message'
+            'verification-message',
             ),
 
         //**********************************************************
@@ -1290,8 +1288,7 @@ $language_data = array(
             'stop',
             'try',
             'when',
-            'while'
-
+            'while',
             ),
 
         //**********************************************************
@@ -1312,16 +1309,16 @@ $language_data = array(
             'statics',
             'tables',
             'type-pools',
-            'types'
-            )
+            'types',
+            ),
         ),
     'SYMBOLS' => array(
         0 => array(
-            '='
+            '=',
             ),
         1 => array(
-            '(', ')', '{', '}', '[', ']', '+', '-', '*', '/', '!', '%', '^', '&', ':'
-            )
+            '(', ')', '{', '}', '[', ']', '+', '-', '*', '/', '!', '%', '^', '&', ':',
+            ),
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -1345,37 +1342,37 @@ $language_data = array(
             6 => 'color: #000066; text-transform: uppercase; font-weight: bold; zzz:control;',
             7 => 'color: #000066; text-transform: uppercase; font-weight: bold; zzz:control;',
             8 => 'color: #005066; text-transform: uppercase; font-weight: bold; zzz:statement;',
-            9 => 'color: #500066; text-transform: uppercase; font-weight: bold; zzz:keyword;'
+            9 => 'color: #500066; text-transform: uppercase; font-weight: bold; zzz:keyword;',
             ),
         'COMMENTS' => array(
             1 => 'color: #808080; font-style: italic;',
             2 => 'color: #339933;',
-            'MULTI' => 'color: #808080; font-style: italic;'
+            'MULTI' => 'color: #808080; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #808080;'
+            0 => 'color: #808080;',
             ),
         'STRINGS' => array(
-            0 => 'color: #4da619;'
+            0 => 'color: #4da619;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #3399ff;'
+            0 => 'color: #3399ff;',
             ),
         'METHODS' => array(
             1 => 'color: #202020;',
-            2 => 'color: #202020;'
+            2 => 'color: #202020;',
             ),
         'SYMBOLS' => array(
             0 => 'color: #800080;',
-            1 => 'color: #808080;'
+            1 => 'color: #808080;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => 'http://help.sap.com/abapdocu/en/ABAP{FNAMEU}.htm',
@@ -1386,12 +1383,12 @@ $language_data = array(
         6 => '',
         7 => '',
         8 => '',
-        9 => ''
+        9 => '',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
         1 => '-&gt;',
-        2 => '=&gt;'
+        2 => '=&gt;',
         ),
     'REGEXPS' => array(
         ),
@@ -1403,17 +1400,15 @@ $language_data = array(
     'PARSER_CONTROL' => array(
         'KEYWORDS' => array(
             7 => array(
-                'SPACE_AS_WHITESPACE' => true
+                'SPACE_AS_WHITESPACE' => true,
                 ),
             8 => array(
-                'SPACE_AS_WHITESPACE' => true
+                'SPACE_AS_WHITESPACE' => true,
                 ),
             9 => array(
-                'SPACE_AS_WHITESPACE' => true
-                )
-            )
+                'SPACE_AS_WHITESPACE' => true,
+                ),
+            ),
         ),
-    'TAB_WIDTH' => 4
+    'TAB_WIDTH' => 4,
 );
-
-?>

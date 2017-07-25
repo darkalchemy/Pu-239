@@ -42,8 +42,7 @@
  *
  ************************************************************************************/
 
-
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Diff',
     'COMMENT_SINGLE' => array(),
     'COMMENT_MULTI' => array(),
@@ -52,7 +51,7 @@ $language_data = array (
     'ESCAPE_CHAR' => ' ',
     'KEYWORDS' => array(
             1 => array(
-                '\ No newline at end of file'
+                '\ No newline at end of file',
             ),
 //            2 => array(
 //                '***************' /* This only seems to works in some cases? */
@@ -72,25 +71,25 @@ $language_data = array (
         'COMMENTS' => array(
             ),
         'ESCAPE_CHAR' => array(
-            0 => ''
+            0 => '',
             ),
         'BRACKETS' => array(
-            0 => ''
+            0 => '',
             ),
         'STRINGS' => array(
-            0 => ''
+            0 => '',
             ),
         'NUMBERS' => array(
-            0 => ''
+            0 => '',
             ),
         'METHODS' => array(
-            0 => ''
+            0 => '',
             ),
         'SYMBOLS' => array(
-            0 => ''
+            0 => '',
             ),
         'SCRIPT' => array(
-            0 => ''
+            0 => '',
             ),
         'REGEXPS' => array(
             0 => 'color: #440088;',
@@ -112,14 +111,14 @@ $language_data = array (
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(),
     'REGEXPS' => array(
-        0 => "[0-9,]+[acd][0-9,]+",
+        0 => '[0-9,]+[acd][0-9,]+',
         //Removed lines
         1 => array(
             GESHI_SEARCH => '^\\&lt;.*$',
             GESHI_REPLACE => '\\0',
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
         //Inserted lines
         2 => array(
@@ -127,7 +126,7 @@ $language_data = array (
             GESHI_REPLACE => '\\0',
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
         //Location line
         3 => array(
@@ -135,7 +134,7 @@ $language_data = array (
             GESHI_REPLACE => '\\0',
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
         //Inserted line
         4 => array(
@@ -143,7 +142,7 @@ $language_data = array (
             GESHI_REPLACE => '\\0',
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
         //Modified line
         5 => array(
@@ -151,7 +150,7 @@ $language_data = array (
             GESHI_REPLACE => '\\0',
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
         //File specification
         6 => array(
@@ -159,7 +158,7 @@ $language_data = array (
             GESHI_REPLACE => '\\0',
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
         //Removed line
         7 => array(
@@ -167,7 +166,7 @@ $language_data = array (
             GESHI_REPLACE => '\\0',
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
         //Inserted line
         8 => array(
@@ -175,7 +174,7 @@ $language_data = array (
             GESHI_REPLACE => '\\0',
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
         //File specification
         9 => array(
@@ -183,14 +182,12 @@ $language_data = array (
             GESHI_REPLACE => '\\0',
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
-        )
+        ),
 );
-
-?>

@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     'staffbox_head' => 'StaffBox',
     'staffbox_class' => 'You can\'t use this!',

@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     //Contact Staff
     'contactstaff_title' => 'Send message to staff',

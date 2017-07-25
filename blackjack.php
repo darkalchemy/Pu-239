@@ -1,19 +1,5 @@
 <?php
 /**
-|--------------------------------------------------------------------------|
-|   https://github.com/Bigjoos/                                |
-|--------------------------------------------------------------------------|
-|   Licence Info: GPL                                                |
-|--------------------------------------------------------------------------|
-|   Copyright (C) 2010 U-232 V4                        |
-|--------------------------------------------------------------------------|
-|   A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.   |
-|--------------------------------------------------------------------------|
-|   Project Leaders: Mindless,putyn.                        |
-|--------------------------------------------------------------------------|
-_   _   _   _   _     _   _   _   _   _   _     _   _   _   _
-/ \ / \ / \ / \ / \   / \ / \ / \ / \ / \ / \   / \ / \ / \ / \
-( U | - | 2 | 3 | 2 )-( S | o | u | r | c | e )-( C | o | d | e )
 \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
 */
 require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
@@ -346,7 +332,7 @@ if ($game) {
             //	$cardid = getCard($cardcount, $blackjack['gameid']);
             //}
             //if (!in_array($cardid, $cards_history)) {
-                $cards_history[] = $cardid;
+            $cards_history[] = $cardid;
             //}
             $cardarr = getCardData($cardid);
             $showcards .= "<img src='{$INSTALLER09['pic_base_url']}cards/".$cardarr['pic']."' width='71' height='96' border='0' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper padded' />";
@@ -638,7 +624,7 @@ if ($game) {
                 }
                 $mc1->delete_value('inbox_new_'.$a['userid']);
                 sql_query("DELETE FROM {$blackjack['version']} WHERE userid IN (".sqlesc($CURUSER['id']).', '.sqlesc($a['userid']).')') or sqlerr(__FILE__, __LINE__);
-//// crap
+                //// crap
                 $HTMLOUT .= "
 						<p>
 							{$lang['bj_your_opp_was']} ".format_username($a).", $gender had $points_text, $winorlose.
@@ -769,7 +755,7 @@ if ($game) {
                     $update['winnerid'] = $playerarr['userid'];
                     $update['loserid'] = $a['userid'];
                     $outcome = "{$dbl_text}and won";
-                // loser $CURUSER
+                    // loser $CURUSER
                 } elseif (($a['points'] > $playerarr['points'] && $a['points'] < 21) || $a['points'] == 21 || ($a['points'] < $playerarr['points'] && $a['points'] > 21)) {
                     $subject = sqlesc($lang['bj_blackjack_results']);
                     $won_str = str_replace('10GB', mksize($blackjack['mb'], 0), $lang['bj_you_beat_10']);
@@ -794,7 +780,7 @@ if ($game) {
                 sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
                 $sql = 'UPDATE users SET uploaded = uploaded '.$nd_query." {$blackjack['modifier']} WHERE id = ".sqlesc($a['userid']);
-                file_put_contents('/var/log/nginx/blackjack.log', $sql . PHP_EOL, FILE_APPEND);
+                file_put_contents('/var/log/nginx/blackjack.log', $sql.PHP_EOL, FILE_APPEND);
                 sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
                 //==stats
@@ -900,7 +886,7 @@ if ($game) {
     $tot_games = $tot_wins + $tot_losses;
     $win_perc = ($tot_losses == 0 ? ($tot_wins == 0 ? '---' : '100%') : ($tot_wins == 0 ? '0' : number_format(($tot_wins / $tot_games) * 100, 1)).'%');
     $plus_minus = $tot_wins - abs($tot_losses);
-//crap
+    //crap
     $sql = sql_query("SELECT * FROM {$blackjack['version']} ORDER BY date ASC LIMIT 1") or sqlerr(__FILE__, __LINE__);
     $res = mysqli_fetch_assoc($sql);
     $doubled = '';
@@ -956,7 +942,7 @@ if ($game) {
         $bjusers[] = $row;
     }
 
-	$HTMLOUT .= "
+    $HTMLOUT .= "
 	<br><br>
 	<table class='table table-bordered text-center'>
 		<tr>
@@ -1047,7 +1033,7 @@ if ($game) {
                 if ($cardarr['points'] > 1) {
                     ${'points_'.$g} += $cardarr['points'];
                 } else {
-                    ${'aces_'.$g}++;
+                    ++${'aces_'.$g};
                 }
 
                 $HTMLOUT .= "<img src='{$INSTALLER09['pic_base_url']}cards/".htmlsafechars($cardarr['pic'])."' width='71' height='96' border='0' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper padded' />";
@@ -1059,13 +1045,13 @@ if ($game) {
                 //sql_query("UPDATE blackjack_history set player2_points = " . sqlesc(${'points_' . $h}) . " WHERE id = " . sqlesc($bjgame['id'])) or sqlerr(__FILE__, __LINE__);
             }
 
-			$query = "SELECT id, username, class, donor, warned, leechwarn, enabled, chatpost, pirate, king FROM users WHERE id = " . sqlesc($bjgame['player1_userid']);
-			$sql = sql_query($query) or sqlerr(__FILE__, __LINE__);
-			$p1 = mysqli_fetch_assoc($sql);
+            $query = 'SELECT id, username, class, donor, warned, leechwarn, enabled, chatpost, pirate, king FROM users WHERE id = '.sqlesc($bjgame['player1_userid']);
+            $sql = sql_query($query) or sqlerr(__FILE__, __LINE__);
+            $p1 = mysqli_fetch_assoc($sql);
 
-			$query = "SELECT id, username, class, donor, warned, leechwarn, enabled, chatpost, pirate, king FROM users WHERE id = " . sqlesc($bjgame['player2_userid']);
-			$sql = sql_query($query) or sqlerr(__FILE__, __LINE__);
-			$p2 = mysqli_fetch_assoc($sql);
+            $query = 'SELECT id, username, class, donor, warned, leechwarn, enabled, chatpost, pirate, king FROM users WHERE id = '.sqlesc($bjgame['player2_userid']);
+            $sql = sql_query($query) or sqlerr(__FILE__, __LINE__);
+            $p2 = mysqli_fetch_assoc($sql);
 
             $HTMLOUT .= "
 											</td>

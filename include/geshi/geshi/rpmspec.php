@@ -34,11 +34,11 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'RPM Specification File',
     'COMMENT_SINGLE' => array(1 => '#'),
     'COMMENT_MULTI' => array(),
-    'QUOTEMARKS' => array('"','`'),
+    'QUOTEMARKS' => array('"', '`'),
     'ESCAPE_CHAR' => '\\',
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
     'CASE_SENSITIVE' => array(
@@ -49,35 +49,35 @@ $language_data = array (
     'SYMBOLS' => array(
         '<', '>', '=',
         '!', '@', '~', '&', '|', '^',
-        '+','-', '*', '/', '%',
-        ',', ';', '?', '.', ':'
+        '+', '-', '*', '/', '%',
+        ',', ';', '?', '.', ':',
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
             ),
         'COMMENTS' => array(
             1 => 'color: #666666; font-style: italic;',
-            'MULTI' => 'color: #666666; font-style: italic;'
+            'MULTI' => 'color: #666666; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
             0 => 'color: #000099; font-weight: bold;',
-            'HARD' => 'color: #000099; font-weight: bold;'
+            'HARD' => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #009900;'
+            0 => 'color: #009900;',
             ),
         'STRINGS' => array(
             0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
             1 => 'color: #006600;',
-            2 => 'color: #006600;'
+            2 => 'color: #006600;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #339933;'
+            0 => 'color: #339933;',
             ),
         'REGEXPS' => array(
             1 => 'color: #0000ff;',
@@ -86,7 +86,7 @@ $language_data = array (
             4 => 'color: #ff6600; font-style: italic;',
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'REGEXPS' => array(
         1 => array(
@@ -105,7 +105,7 @@ $language_data = array (
             GESHI_BEFORE => '',
             GESHI_AFTER => '',
             ),
-        3 => array (
+        3 => array(
             // special definitions
             GESHI_SEARCH => '((?:summary|license|buildroot|buildrequires|provides|version|release|source\d*|group|buildarch|autoreqprov|provides|obsoletes|vendor|distribution|suggests|autoreq|autoprov|conflicts|name|url|requires|patch\d*):)',
             GESHI_REPLACE => '\\1',
@@ -113,7 +113,7 @@ $language_data = array (
             GESHI_BEFORE => '',
             GESHI_AFTER => '',
             ),
-        4 => array (
+        4 => array(
             // section delimiting words
             GESHI_SEARCH => '(%(?:description|package|prep|build|install|clean|postun|preun|post|pre|files|changelog))',
             GESHI_REPLACE => '\\1',
@@ -129,5 +129,3 @@ $language_data = array (
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(),
 );
-
-?>

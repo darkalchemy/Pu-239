@@ -45,70 +45,68 @@ $language_data = array(
         1 => array(
             'virtual', 'if', 'else', 'do', 'while', 'use', 'bundle', 'native',
             'static', 'public', 'private', 'class', 'function', 'method',
-            'select', 'other', 'enum', 'for', 'label', 'return', 'from'
+            'select', 'other', 'enum', 'for', 'label', 'return', 'from',
             ),
         2 => array(
-            'Byte', 'Int', 'Nil', 'Float', 'Char', 'Bool'
+            'Byte', 'Int', 'Nil', 'Float', 'Char', 'Bool',
             ),
         3 => array(
-            'true', 'false'
-            )
+            'true', 'false',
+            ),
         ),
     'SYMBOLS' => array(
         1 => array(
-            '(', ')', '{', '}', '[', ']', '+', '-', '*', '/', '%', '=', '<', '>', '&', '|', ':', ';', ','
-            )
+            '(', ')', '{', '}', '[', ']', '+', '-', '*', '/', '%', '=', '<', '>', '&', '|', ':', ';', ',',
+            ),
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
         1 => true,
         2 => true,
-        3 => true
+        3 => true,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
             1 => 'color: #b1b100;',
             2 => 'color: #b1b100;',
-            3 => 'color: #b1b100;'
+            3 => 'color: #b1b100;',
             ),
         'COMMENTS' => array(
             1 => 'color: #666666; font-style: italic;',
-            'MULTI' => 'color: #666666; font-style: italic;'
+            'MULTI' => 'color: #666666; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #009900;'
+            0 => 'color: #009900;',
             ),
         'STRINGS' => array(
-            0 => 'color: #0000ff;'
+            0 => 'color: #0000ff;',
             ),
         'NUMBERS' => array(
             0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
-            0 => 'color: #004000;'
+            0 => 'color: #004000;',
             ),
         'SYMBOLS' => array(
-            1 => 'color: #339933;'
+            1 => 'color: #339933;',
             ),
         'REGEXPS' => array(),
-        'SCRIPT' => array()
+        'SCRIPT' => array(),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
-        3 => ''
+        3 => '',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 => '-&gt;'
+        1 => '-&gt;',
         ),
     'REGEXPS' => array(),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(),
-    'HIGHLIGHT_STRICT_BLOCK' => array()
+    'HIGHLIGHT_STRICT_BLOCK' => array(),
 );
-
-?>

@@ -35,7 +35,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'COBOL',
     'COMMENT_SINGLE' => array(),
     'COMMENT_MULTI' => array(),
@@ -43,8 +43,7 @@ $language_data = array (
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
     'QUOTEMARKS' => array('"', "'"),
     'ESCAPE_CHAR' => '\\',
-    'NUMBERS' =>
-        GESHI_NUMBER_INT_BASIC |
+    'NUMBERS' => GESHI_NUMBER_INT_BASIC |
         GESHI_NUMBER_FLT_NONSCI |
         GESHI_NUMBER_FLT_SCI_SHORT |
         GESHI_NUMBER_FLT_SCI_ZERO,
@@ -66,7 +65,7 @@ $language_data = array (
             'NOSHOWCOPY', 'SHOWFILE', 'NOSHOWFILE', 'SOURCE', 'SQL', 'NOSQL',
             'SQLMEM', 'SUBSET', 'SUBTYPE', 'SUPPRESS', 'NOSUPPRESS', 'SYMBOLS',
             'NOSYMBOLS', 'SYNTAX', 'TANDEM', 'TRAP2', 'NOTRAP2', 'TRAP2-74',
-            'NOTRAP2-74', 'UL', 'WARN', 'NOWARN'
+            'NOTRAP2-74', 'UL', 'WARN', 'NOWARN',
             ),
         2 => array( //Statement Keywords
             'ACCEPT', 'ADD', 'TO', 'GIVING', 'CORRESPONDING', 'ALTER', 'CALL',
@@ -142,7 +141,7 @@ $language_data = array (
             'TOP', 'TRAILING', 'TRUE', 'TYPE', 'UNIT', 'UNLOCK', 'UNLOCKFILE',
             'UNLOCKRECORD', 'UNSTRING', 'UP', 'UPON', 'USAGE', 'USE',
             'USING', 'VALUE', 'VALUES', 'WHEN', 'WITH', 'WORDS',
-            'WORKING-STORAGE', 'WRITE', 'ZERO', 'ZEROES'
+            'WORKING-STORAGE', 'WRITE', 'ZERO', 'ZEROES',
             ),
         4 => array( //Standard functions
             'ACOS', 'ANNUITY', 'ASIN', 'ATAN', 'CHAR', 'COS', 'CURRENT-DATE',
@@ -152,7 +151,7 @@ $language_data = array (
             'MIN', 'MOD', 'NUMVAL', 'NUMVAL-C', 'ORD', 'ORD-MAX', 'ORD-MIN',
             'PRESENT-VALUE', 'RANDOM', 'RANGE', 'REM', 'REVERSE', 'SIN', 'SQRT',
             'STANDARD-DEVIATION', 'SUM', 'TAN', 'UPPER-CASE', 'VARIANCE',
-            'WHEN-COMPILED'
+            'WHEN-COMPILED',
             ),
         5 => array( //Privileged Built-in Functions
             '#IN', '#OUT', '#TERM', '#TEMP', '#DYNAMIC', 'COBOL85^ARMTRAP',
@@ -168,15 +167,15 @@ $language_data = array (
             'CHECKLOGICALNAME', 'CHECKMESSAGE', 'DELETEASSIGN', 'DELETEPARAM',
             'DELETESTARTUP', 'GETASSIGNTEXT', 'GETASSIGNVALUE', 'GETBACKUPCPU',
             'GETPARAMTEXT', 'GETSTARTUPTEXT', 'PUTASSIGNTEXT', 'PUTASSIGNVALUE',
-            'PUTPARAMTEXT', 'PUTSTARTUPTEXT'
-            )
+            'PUTPARAMTEXT', 'PUTSTARTUPTEXT',
+            ),
         ),
     'SYMBOLS' => array(
         //Avoid having - in identifiers marked as symbols
         ' + ', ' - ', ' * ', ' / ', ' ** ',
         '.', ',',
         '=',
-        '(', ')', '[', ']'
+        '(', ')', '[', ']',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -184,7 +183,7 @@ $language_data = array (
         2 => false,
         3 => false,
         4 => false,
-        5 => false
+        5 => false,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
@@ -196,37 +195,37 @@ $language_data = array (
             ),
         'COMMENTS' => array(
             1 => 'color: #a0a0a0; font-style: italic;',
-            'MULTI' => 'color: #a0a0a0; font-style: italic;'
+            'MULTI' => 'color: #a0a0a0; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #339933;'
+            0 => 'color: #339933;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #993399;'
+            0 => 'color: #993399;',
             ),
         'METHODS' => array(
-            1 => 'color: #202020;'
+            1 => 'color: #202020;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #000066;'
+            0 => 'color: #000066;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
         3 => '',
         4 => '',
-        5 => ''
+        5 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -238,7 +237,5 @@ $language_data = array (
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
         ),
-    'TAB_WIDTH' => 4
+    'TAB_WIDTH' => 4,
     );
-
-?>

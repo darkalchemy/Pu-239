@@ -35,14 +35,14 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Genie',
     'COMMENT_SINGLE' => array(1 => '//'),
     'COMMENT_MULTI' => array('/*' => '*/'),
     'COMMENT_REGEXP' => array(
         //Using and Namespace directives (basic support)
         //Please note that the alias syntax for using is not supported
-        3 => '/(?:(?<=using[\\n\\s])|(?<=namespace[\\n\\s]))[\\n\\s]*([a-zA-Z0-9_]+\\.)*[a-zA-Z0-9_]+[\n\s]*(?=[;=])/i'),
+        3 => '/(?:(?<=using[\\n\\s])|(?<=namespace[\\n\\s]))[\\n\\s]*([a-zA-Z0-9_]+\\.)*[a-zA-Z0-9_]+[\n\s]*(?=[;=])/i', ),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
     'QUOTEMARKS' => array("'", '"'),
     'HARDQUOTE' => array('@"', '"'),
@@ -58,26 +58,26 @@ $language_data = array (
             'of', 'or', 'otherwise', 'out', 'override', 'pass', 'raise',
             'raises', 'readonly', 'ref', 'requires', 'self', 'set', 'static',
             'super', 'switch', 'to', 'true', 'try', 'unless', 'uses', 'var', 'virtual',
-            'volatile', 'void', 'when', 'while'
+            'volatile', 'void', 'when', 'while',
             ),
 //        2 => array(
 //            ),
         3 => array(
             'is', 'isa', 'new', 'owned', 'sizeof', 'typeof', 'unchecked',
-            'unowned', 'weak'
+            'unowned', 'weak',
             ),
         4 => array(
             'bool', 'byte', 'class', 'char', 'date', 'datetime', 'decimal', 'delegate',
             'double', 'enum', 'event', 'exception', 'float', 'int', 'interface',
             'long', 'object', 'prop', 'sbyte', 'short', 'single', 'string',
-            'struct', 'ulong', 'ushort'
+            'struct', 'ulong', 'ushort',
             ),
 //        5 => array(
 //            ),
         ),
     'SYMBOLS' => array(
         '+', '-', '*', '?', '=', '/', '%', '&', '>', '<', '^', '!', ':', ';',
-        '(', ')', '{', '}', '[', ']', '|'
+        '(', ')', '{', '}', '[', ']', '|',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -99,33 +99,33 @@ $language_data = array (
             1 => 'color: #008080; font-style: italic;',
 //            2 => 'color: #008080;',
             3 => 'color: #008080;',
-            'MULTI' => 'color: #008080; font-style: italic;'
+            'MULTI' => 'color: #008080; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
             0 => 'color: #008080; font-weight: bold;',
-            'HARD' => 'color: #008080; font-weight: bold;'
+            'HARD' => 'color: #008080; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #000000;'
+            0 => 'color: #000000;',
             ),
         'STRINGS' => array(
             0 => 'color: #666666;',
-            'HARD' => 'color: #666666;'
+            'HARD' => 'color: #666666;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #FF0000;'
+            0 => 'color: #FF0000;',
             ),
         'METHODS' => array(
             1 => 'color: #0000FF;',
-            2 => 'color: #0000FF;'
+            2 => 'color: #0000FF;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #008000;'
+            0 => 'color: #008000;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
@@ -136,7 +136,7 @@ $language_data = array (
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 => '.'
+        1 => '.',
         ),
     'REGEXPS' => array(
         ),
@@ -149,9 +149,7 @@ $language_data = array (
     'PARSER_CONTROL' => array(
         'KEYWORDS' => array(
             'DISALLOWED_BEFORE' => "(?<![a-zA-Z0-9\$_\|\#>|^])",
-            'DISALLOWED_AFTER' => "(?![a-zA-Z0-9_<\|%\\-])"
-        )
-    )
+            'DISALLOWED_AFTER' => "(?![a-zA-Z0-9_<\|%\\-])",
+        ),
+    ),
 );
-
-?>

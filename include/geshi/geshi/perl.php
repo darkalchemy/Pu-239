@@ -50,7 +50,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Perl',
     'COMMENT_SINGLE' => array(1 => '#'),
     'COMMENT_MULTI' => array(
@@ -62,7 +62,7 @@ $language_data = array (
         '=end' => '=cut',
         '=for' => '=cut',
         '=encoding' => '=cut',
-        '=pod' => '=cut'
+        '=pod' => '=cut',
         ),
     'COMMENT_REGEXP' => array(
         //Regular expressions
@@ -75,9 +75,9 @@ $language_data = array (
         5 => '/\$(\^[a-zA-Z]?|[\*\$`\'&_\.,+\-~:;\\\\\/"\|%=\?!@#<>\(\)\[\]])(?!\w)|@[_+\-]|%[!]|\$(?=\{)/',
         ),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
-    'QUOTEMARKS' => array('"','`'),
+    'QUOTEMARKS' => array('"', '`'),
     'HARDQUOTE' => array("'", "'"),            // An optional 2-element array defining the beginning and end of a hard-quoted string
-    'HARDESCAPE' => array('\\\'',),
+    'HARDESCAPE' => array('\\\''),
         // Things that must still be escaped inside a hard-quoted string
         // If HARDQUOTE is defined, HARDESCAPE must be defined
         // This will not work unless the first character of each element is either in the
@@ -91,7 +91,7 @@ $language_data = array (
             ),
         2 => array(
             'use', 'sub', 'new', '__END__', '__DATA__', '__DIE__', '__WARN__', 'BEGIN',
-            'STDIN', 'STDOUT', 'STDERR', 'ARGV', 'ARGVOUT'
+            'STDIN', 'STDOUT', 'STDERR', 'ARGV', 'ARGVOUT',
             ),
         3 => array(
             'abs', 'accept', 'alarm', 'atan2', 'bind', 'binmode', 'bless',
@@ -125,14 +125,14 @@ $language_data = array (
             'sysseek', 'system', 'syswrite', 'tell', 'telldir', 'tie', 'tied',
             'time', 'times', 'tr', 'truncate', 'uc', 'ucfirst', 'umask', 'undef',
             'unlink', 'unpack', 'unshift', 'untie', 'utime', 'values',
-            'vec', 'wait', 'waitpid', 'wantarray', 'warn', 'write', 'y'
-            )
+            'vec', 'wait', 'waitpid', 'wantarray', 'warn', 'write', 'y',
+            ),
         ),
     'SYMBOLS' => array(
         '<', '>', '=',
         '!', '@', '~', '&', '|', '^',
-        '+','-', '*', '/', '%',
-        ',', ';', '?', '.', ':'
+        '+', '-', '*', '/', '%',
+        ',', ';', '?', '.', ':',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -144,7 +144,7 @@ $language_data = array (
         'KEYWORDS' => array(
             1 => 'color: #b1b100;',
             2 => 'color: #000000; font-weight: bold;',
-            3 => 'color: #000066;'
+            3 => 'color: #000066;',
             ),
         'COMMENTS' => array(
             1 => 'color: #666666; font-style: italic;',
@@ -152,45 +152,45 @@ $language_data = array (
             3 => 'color: #0000ff;',
             4 => 'color: #cc0000; font-style: italic;',
             5 => 'color: #0000ff;',
-            'MULTI' => 'color: #666666; font-style: italic;'
+            'MULTI' => 'color: #666666; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
             0 => 'color: #000099; font-weight: bold;',
-            'HARD' => 'color: #000099; font-weight: bold;'
+            'HARD' => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #009900;'
+            0 => 'color: #009900;',
             ),
         'STRINGS' => array(
             0 => 'color: #ff0000;',
-            'HARD' => 'color: #ff0000;'
+            'HARD' => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
             1 => 'color: #006600;',
-            2 => 'color: #006600;'
+            2 => 'color: #006600;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #339933;'
+            0 => 'color: #339933;',
             ),
         'REGEXPS' => array(
             0 => 'color: #0000ff;',
             4 => 'color: #009999;',
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
-        3 => 'http://perldoc.perl.org/functions/{FNAMEL}.html'
+        3 => 'http://perldoc.perl.org/functions/{FNAMEL}.html',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
         1 => '-&gt;',
-        2 => '::'
+        2 => '::',
         ),
     'REGEXPS' => array(
         //Variable
@@ -205,9 +205,7 @@ $language_data = array (
         ),
     'PARSER_CONTROL' => array(
         'COMMENTS' => array(
-            'DISALLOWED_BEFORE' => '$'
-        )
-    )
+            'DISALLOWED_BEFORE' => '$',
+        ),
+    ),
 );
-
-?>

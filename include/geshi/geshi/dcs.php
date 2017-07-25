@@ -52,10 +52,10 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'DCS',
     'COMMENT_SINGLE' => array(
-        1 => ';'
+        1 => ';',
         ),
     'COMMENT_MULTI' => array(
         ),
@@ -64,16 +64,15 @@ $language_data = array (
     'HARDESCAPE' => '',
     'COMMENT_REGEXP' => array(
         // Highlight embedded C code in a separate color:
-        2 => '/\bINSERT_C_CODE\b.*?\bEND_C_CODE\b/ims'
+        2 => '/\bINSERT_C_CODE\b.*?\bEND_C_CODE\b/ims',
         ),
     'CASE_KEYWORDS' => GESHI_CAPS_UPPER,
     'QUOTEMARKS' => array(
-        '"'
+        '"',
         ),
     'ESCAPE_CHAR' => '',
     'ESCAPE_REGEXP' => '',
-    'NUMBERS' =>
-        GESHI_NUMBER_INT_BASIC | GESHI_NUMBER_FLT_SCI_ZERO,
+    'NUMBERS' => GESHI_NUMBER_INT_BASIC | GESHI_NUMBER_FLT_SCI_ZERO,
     'KEYWORDS' => array(
         1 => array(
             'abs', 'ascii_value', 'bit_value', 'blank_date', 'calc_unit_values', 'cm',
@@ -103,7 +102,7 @@ $language_data = array (
             'summarise', 'summarise_record', 'summarise_units',
             'summarise_units_record', 'suppress_record', 'table_correct',
             'table_validate', 'terminate', 'time', 'today', 'trim', 'ubound', 'year',
-            'years_add', 'years_sub'
+            'years_add', 'years_sub',
             ),
         2 => array(
             'and', 'as', 'begin', 'boolean', 'byref', 'byval', 'call', 'case', 'date',
@@ -112,19 +111,19 @@ $language_data = array (
             'explicit_declarations', 'false', 'for', 'from', 'function', 'ge', 'gt',
             'if', 'insert_c_code', 'integer', 'le', 'loop', 'lt', 'ne', 'not',
             'number', 'or', 'private', 'proc', 'public', 'quitloop', 'return',
-            'short', 'step', 'switch', 'text', 'then', 'to', 'true', 'while'
+            'short', 'step', 'switch', 'text', 'then', 'to', 'true', 'while',
             ),
         3 => array(
             // These keywords are not highlighted by the DCS IDE but we may as well
             // keep track of them anyway:
-            'mp_file', 'odbc_file'
-            )
+            'mp_file', 'odbc_file',
+            ),
         ),
     'SYMBOLS' => array(
         '(', ')', '[', ']',
         '=', '<', '>',
         '+', '-', '*', '/', '^',
-        ':', ','
+        ':', ',',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -136,28 +135,28 @@ $language_data = array (
         'KEYWORDS' => array(
             1 => 'color: red;',
             2 => 'color: blue;',
-            3 => 'color: black;'
+            3 => 'color: black;',
             ),
         'COMMENTS' => array(
             1 => 'color: black; background-color: silver;',
             // Colors for highlighting embedded C code:
-            2 => 'color: maroon; background-color: pink;'
+            2 => 'color: maroon; background-color: pink;',
             ),
         'ESCAPE_CHAR' => array(
             ),
         'BRACKETS' => array(
-            0 => 'color: black;'
+            0 => 'color: black;',
             ),
         'STRINGS' => array(
-            0 => 'color: green;'
+            0 => 'color: green;',
             ),
         'NUMBERS' => array(
-            0 => 'color: green;'
+            0 => 'color: green;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: black;'
+            0 => 'color: black;',
             ),
         'REGEXPS' => array(
             ),
@@ -167,7 +166,7 @@ $language_data = array (
     'URLS' => array(
         1 => '',
         2 => '',
-        3 => ''
+        3 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -179,7 +178,5 @@ $language_data = array (
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
         ),
-    'TAB_WIDTH' => 4
+    'TAB_WIDTH' => 4,
 );
-
-?>

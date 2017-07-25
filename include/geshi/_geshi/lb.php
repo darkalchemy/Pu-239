@@ -68,7 +68,7 @@ $language_data = array(
             'struct', 'stylebits', 'sub', 'text', 'textbox', 'texteditor',
             'then', 'timer', 'titlebar', 'to', 'trace', 'ulong', 'unloadbmp',
             'until', 'ushort', 'void', 'wait', 'window', 'wend', 'while',
-            'word', 'xor'
+            'word', 'xor',
             ),
         2 => array(
             'abs', 'acs', 'asc', 'asn', 'atn', 'chr$', 'cos', 'date$',
@@ -77,7 +77,7 @@ $language_data = array(
             'log', 'lower$', 'max', 'midipos', 'mid$', 'min', 'mkdir', 'not',
             'right$', 'rmdir', 'rnd', 'sin', 'space$', 'sqr', 'str$', 'tab',
             'tan', 'time$', 'trim$', 'txcount', 'upper$', 'using', 'val',
-            'winstring', 'word$'
+            'winstring', 'word$',
             ),
         3 => array(
             'BackgroundColor$', 'ComboboxColor$', 'CommandLine$', 'DefaultDir$',
@@ -87,55 +87,55 @@ $language_data = array(
             'Joy2button1', 'Joy2button2', 'ListboxColor$', 'Platform$',
             'PrintCollate', 'PrintCopies', 'PrinterFont$', 'PrinterName$',
             'TextboxColor$', 'TexteditorColor$', 'Version$', 'WindowHeight',
-            'WindowWidth', 'UpperLeftX', 'UpperLeftY'
-            )
+            'WindowWidth', 'UpperLeftX', 'UpperLeftY',
+            ),
         ),
     'SYMBOLS' => array(
         1 => array(
-            '(', ')', '[', ']', '+', '-', '*', '/', '%', '=', '<', '>', ':', ',', '#'
-            )
+            '(', ')', '[', ']', '+', '-', '*', '/', '%', '=', '<', '>', ':', ',', '#',
+            ),
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
         1 => false,
         2 => false,
-        3 => true
+        3 => true,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
             1 => 'color: #0000FF;',
             2 => 'color: #AD0080;',
-            3 => 'color: #008080;'
+            3 => 'color: #008080;',
             ),
         'COMMENTS' => array(
             1 => 'color: #666666; font-style: italic;',
-            'MULTI' => 'color: #666666; font-style: italic;'
+            'MULTI' => 'color: #666666; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #009900;'
+            0 => 'color: #009900;',
             ),
         'STRINGS' => array(
-            0 => 'color: #008000;'
+            0 => 'color: #008000;',
             ),
         'NUMBERS' => array(
             0 => 'color: #FF0000;',
             ),
         'METHODS' => array(
-            0 => 'color: #004000;'
+            0 => 'color: #004000;',
             ),
         'SYMBOLS' => array(
-            1 => 'color: #339933;'
+            1 => 'color: #339933;',
             ),
         'REGEXPS' => array(),
-        'SCRIPT' => array()
+        'SCRIPT' => array(),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
-        3 => ''
+        3 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(),
@@ -149,10 +149,8 @@ $language_data = array(
                 //In LB, the second keyword list is a list of built-in functions,
                 //and their names should not be highlighted unless being used
                 //as a function name.
-                'DISALLOWED_AFTER' => '(?=\s*\()'
-            )
-        )
-    )
+                'DISALLOWED_AFTER' => '(?=\s*\()',
+            ),
+        ),
+    ),
 );
-
-?>

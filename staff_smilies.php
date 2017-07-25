@@ -1,28 +1,14 @@
 <?php
 /**
- |--------------------------------------------------------------------------|
- |   https://github.com/Bigjoos/                			    |
- |--------------------------------------------------------------------------|
- |   Licence Info: GPL			                                    |
- |--------------------------------------------------------------------------|
- |   Copyright (C) 2010 U-232 V4					    |
- |--------------------------------------------------------------------------|
- |   A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.   |
- |--------------------------------------------------------------------------|
- |   Project Leaders: Mindless,putyn.					    |
- |--------------------------------------------------------------------------|
-  _   _   _   _   _     _   _   _   _   _   _     _   _   _   _
- / \ / \ / \ / \ / \   / \ / \ / \ / \ / \ / \   / \ / \ / \ / \
-( U | - | 2 | 3 | 2 )-( S | o | u | r | c | e )-( C | o | d | e )
  \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
-require_once (dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php');
-require_once INCL_DIR . 'bbcode_functions.php';
-require_once INCL_DIR . 'user_functions.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once INCL_DIR.'bbcode_functions.php';
+require_once INCL_DIR.'user_functions.php';
 dbconn(false);
 loggedinorreturn();
-if ($CURUSER["class"] < UC_STAFF) {
-    stderr("Error", "Yer no tall enough");
+if ($CURUSER['class'] < UC_STAFF) {
+    stderr('Error', 'Yer no tall enough');
     exit();
 }
 $lang = array_merge(load_language('global'));
@@ -34,7 +20,7 @@ $htmlout = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
     <meta name='generator' content='U-232' />
 	  <meta name='MSSmartTagsPreventParsing' content='TRUE' />
 		<title>Staff Smilies</title>
-    <link rel='stylesheet' href='./templates/" . $CURUSER['stylesheet'] . "/" . $CURUSER['stylesheet'] . ".css' type='text/css' />
+    <link rel='stylesheet' href='./templates/".$CURUSER['stylesheet'].'/'.$CURUSER['stylesheet'].".css' type='text/css' />
     </head>
     <body>
     <script type='text/javascript'>
@@ -49,11 +35,14 @@ $count = 0;
 $ctr = 0;
 global $staff_smilies;
 while ((list($code, $url) = each($staff_smilies))) {
-    if ($count % 3 == 0) $htmlout.= "<tr>";
-    $htmlout.= "<td align='center'><a href=\"javascript: SmileIT('" . str_replace("'", "\'", $code) . "','" . htmlsafechars($_GET['form']) . "','" . htmlsafechars($_GET['text']) . "')\"><img border='0' src='./pic/smilies/" . $url . "' alt='' /></a></td>";
-    $count++;
-    if ($count % 3 == 0) $htmlout.= "</tr>";
+    if ($count % 3 == 0) {
+        $htmlout .= '<tr>';
+    }
+    $htmlout .= "<td align='center'><a href=\"javascript: SmileIT('".str_replace("'", "\'", $code)."','".htmlsafechars($_GET['form'])."','".htmlsafechars($_GET['text'])."')\"><img border='0' src='./pic/smilies/".$url."' alt='' /></a></td>";
+    ++$count;
+    if ($count % 3 == 0) {
+        $htmlout .= '</tr>';
+    }
 }
-$htmlout.= "</tr></table><br /><div align='center'><a class='altlink' href='javascript: window.close()'><b>[ Close window ]</b></a></div></body></html>";
+$htmlout .= "</tr></table><br /><div align='center'><a class='altlink' href='javascript: window.close()'><b>[ Close window ]</b></a></div></body></html>";
 echo $htmlout;
-?>

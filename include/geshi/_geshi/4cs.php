@@ -37,9 +37,9 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'GADV 4CS',
-    'COMMENT_SINGLE' => array(1 => "//"),
+    'COMMENT_SINGLE' => array(1 => '//'),
     'COMMENT_MULTI' => array(),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
     'QUOTEMARKS' => array('"'),
@@ -74,58 +74,58 @@ $language_data = array (
             'StartCritical', 'Starts', 'Static', 'Step', 'Stop', 'String', 'Sub',
             'System_Error', 'TerminateAllChilds', 'Terminates', 'Then', 'Throw', 'TimeOut',
             'To', 'TooLate', 'Trunc', 'UBound', 'Unexpected', 'Until', 'User_Error',
-            'View', 'Wait', 'Warning', 'While', 'XOr'
+            'View', 'Wait', 'Warning', 'While', 'XOr',
             ),
         2 => array(
-            'alias', 'winapi', 'long', 'char', 'double', 'float', 'int', 'short', 'lib'
-            )
+            'alias', 'winapi', 'long', 'char', 'double', 'float', 'int', 'short', 'lib',
+            ),
         ),
     'SYMBOLS' => array(
-        '=', ':=', '<', '>', '<>'
+        '=', ':=', '<', '>', '<>',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
         1 => false,
-        2 => false
+        2 => false,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
             1 => 'color: #0000C0; font-weight: bold;',
-            2 => 'color: #808080;'
+            2 => 'color: #808080;',
             ),
         'COMMENTS' => array(
-            1 => 'color: #008000;'
+            1 => 'color: #008000;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #000080;'
+            0 => 'color: #000080;',
             ),
         'STRINGS' => array(
-            0 => 'color: #800080;'
+            0 => 'color: #800080;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
-            1 => 'color: #66cc66;'
+            1 => 'color: #66cc66;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #000080;'
+            0 => 'color: #000080;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099;'
+            0 => 'color: #000099;',
             ),
         'SCRIPT' => array(
             ),
         'REGEXPS' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
-        2 => ''
+        2 => '',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 => '.'
+        1 => '.',
         ),
     'REGEXPS' => array(
         ),
@@ -133,7 +133,5 @@ $language_data = array (
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
-        )
+        ),
 );
-
-?>

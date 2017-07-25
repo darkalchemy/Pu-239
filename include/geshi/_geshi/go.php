@@ -42,43 +42,43 @@ $language_data = array(
     'COMMENT_SINGLE' => array(1 => '//'),
     'COMMENT_MULTI' => array('/*' => '*/'),
     'COMMENT_REGEXP' => array(
-        # Raw strings (escapes and linebreaks ignored)
-        2 => "#`[^`]*`#"
+        // Raw strings (escapes and linebreaks ignored)
+        2 => '#`[^`]*`#',
         ),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
     'QUOTEMARKS' => array('"', "'"),
     'ESCAPE_CHAR' => '',
     'ESCAPE_REGEXP' => array(
         1 => "#\\\\[abfnrtv\\\\\'\"]#",
-        2 => "#\\\\[0-7]{3}#",
-        3 => "#\\\\x[0-9a-fA-F]{2}#",
-        4 => "#\\\\u[0-9a-fA-F]{4}#",
-        5 => "#\\\\U[0-9a-fA-F]{8}#"
+        2 => '#\\\\[0-7]{3}#',
+        3 => '#\\\\x[0-9a-fA-F]{2}#',
+        4 => '#\\\\u[0-9a-fA-F]{4}#',
+        5 => '#\\\\U[0-9a-fA-F]{8}#',
         ),
     'KEYWORDS' => array(
-        # statements
+        // statements
         1 => array(
             'break', 'case', 'const', 'continue', 'default', 'defer', 'else',
             'fallthrough', 'for', 'go', 'goto', 'if', 'import', 'package',
-            'range', 'return', 'select', 'switch', 'type', 'var'
+            'range', 'return', 'select', 'switch', 'type', 'var',
             ),
-        # literals
+        // literals
         2 => array(
-            'nil', 'true', 'false'
+            'nil', 'true', 'false',
             ),
-        # built-in functions
+        // built-in functions
         3 => array(
             'close', 'closed', 'len', 'cap', 'new', 'make', 'copy', 'cmplx',
-            'real', 'imag', 'panic', 'recover', 'print', 'println'
+            'real', 'imag', 'panic', 'recover', 'print', 'println',
             ),
-        # built-in types
+        // built-in types
         4 => array(
             'chan', 'func', 'interface', 'map', 'struct', 'bool', 'uint8',
             'uint16', 'uint32', 'uint64', 'int8', 'int16', 'int32', 'int64',
             'float32', 'float64', 'complex64', 'complex128', 'byte', 'uint',
-            'int', 'float', 'complex', 'uintptr', 'string'
+            'int', 'float', 'complex', 'uintptr', 'string',
             ),
-        # library types
+        // library types
         5 => array(
             'aes.Cipher', 'aes.KeySizeError', 'ascii85.CorruptInputError', 'asn1.BitString',
             'asn1.RawValue', 'asn1.StructuralError', 'asn1.SyntaxError', 'ast.ChanDir',
@@ -246,27 +246,27 @@ $language_data = array(
             'x509.UnhandledCriticalExtension', 'x509.UnsupportedAlgorithmError', 'xml.Attr',
             'xml.EndElement', 'xml.Name', 'xml.Parser', 'xml.ProcInst', 'xml.StartElement',
             'xml.SyntaxError', 'xml.Token', 'xml.UnmarshalError', 'xtea.Cipher',
-            'xtea.KeySizeError'
-            )
+            'xtea.KeySizeError',
+            ),
         ),
     'SYMBOLS' => array(
-        # delimiters
+        // delimiters
         1 => array(
-            '(', ')', '{', '}', '[', ']', ',', ':', ';'
+            '(', ')', '{', '}', '[', ']', ',', ':', ';',
             ),
-        # assignments
+        // assignments
         2 => array(
             '<<=', '!=', '%=', '&=', '&^=', '*=', '+=', '-=', '/=', ':=', '>>=',
-            '^=', '|=', '=', '++', '--'
+            '^=', '|=', '=', '++', '--',
             ),
-        # operators
+        // operators
         3 => array(
             '<=', '<', '==', '>', '>=', '&&', '!', '||', '&', '&^', '|', '^',
-            '>>', '<<', '*', '%', '+', '-', '.', '/', '<-'),
-        # vararg
+            '>>', '<<', '*', '%', '+', '-', '.', '/', '<-', ),
+        // vararg
         4 => array(
-            '...'
-            )
+            '...',
+            ),
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -274,111 +274,111 @@ $language_data = array(
         2 => true,
         3 => true,
         4 => true,
-        5 => true
+        5 => true,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
-            # statements
+            // statements
             1 => 'color: #b1b100; font-weight: bold;',
-            # literals
+            // literals
             2 => 'color: #000000; font-weight: bold;',
-            # built-in functions
+            // built-in functions
             3 => 'color: #000066;',
-            # built-in types
+            // built-in types
             4 => 'color: #993333;',
-            # library types
-            5 => 'color: #003399;'
+            // library types
+            5 => 'color: #003399;',
             ),
         'COMMENTS' => array(
-            # single-line comments
+            // single-line comments
             1 => 'color: #666666; font-style: italic;',
-            # raw strings
+            // raw strings
             2 => 'color: #0000ff;',
-            # multi-line comments
-            'MULTI' => 'color: #666666; font-style: italic;'
+            // multi-line comments
+            'MULTI' => 'color: #666666; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            # simple escape
+            // simple escape
             1 => 'color: #000099; font-weight: bold;',
-            # octal escape
+            // octal escape
             2 => 'color: #000099;',
-            # hex escape
+            // hex escape
             3 => 'color: #000099;',
-            # unicode escape
+            // unicode escape
             4 => 'color: #000099;',
-            # long unicode escape
-            5 => 'color: #000099;'
+            // long unicode escape
+            5 => 'color: #000099;',
             ),
         'BRACKETS' => array(
             ),
         'STRINGS' => array(
             0 => 'color: #0000ff;',
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
-            0 => 'color: #004000;'
+            0 => 'color: #004000;',
             ),
         'SYMBOLS' => array(
-            # delimiters
+            // delimiters
             1 => 'color: #339933;',
-            # assignments
+            // assignments
             2 => 'color: #339933;',
-            # operators
+            // operators
             3 => 'color: #339933;',
-            # vararg (highlighted as a keyword)
-            4 => 'color: #000000; font-weight: bold;'
+            // vararg (highlighted as a keyword)
+            4 => 'color: #000000; font-weight: bold;',
             ),
         'REGEXPS' => array(
-            # If CSS classes are enabled, these would be highlighted as numbers (nu0)
-            # integer literals (possibly imaginary)
+            // If CSS classes are enabled, these would be highlighted as numbers (nu0)
+            // integer literals (possibly imaginary)
             0 => 'color: #cc66cc;',
-            # real floating point literals
+            // real floating point literals
             1 => 'color: #cc66cc;',
-            # imaginary floating point literals
-            2 => 'color: #cc66cc;'
+            // imaginary floating point literals
+            2 => 'color: #cc66cc;',
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
         3 => '',
         4 => '',
-        5 => 'http://golang.org/search?q={FNAME}'
+        5 => 'http://golang.org/search?q={FNAME}',
         ),
     'REGEXPS' => array(
-        # integer literals (possibly imaginary)
+        // integer literals (possibly imaginary)
         0 => array(
             GESHI_SEARCH => '\b([1-9][0-9]+i?|0[0-7]*|0[xX][0-9a-f]+|0[0-9]*i)\b',
             GESHI_REPLACE => '\0',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '',
             GESHI_AFTER => '',
-            GESHI_CLASS => 'nu0'
+            GESHI_CLASS => 'nu0',
             ),
-        # real floating point literals
+        // real floating point literals
         1 => array(
             GESHI_SEARCH => '((?:\b\d+\.\d*(?:[Ee][+-]?\d+\b)?|\.\d+(?:[Ee][+-]?\d+)?\b|\b\d+[Ee][+-]?\d+\b)?)',
             GESHI_REPLACE => '\0',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '',
             GESHI_AFTER => '',
-            GESHI_CLASS => 'nu0'
+            GESHI_CLASS => 'nu0',
             ),
-        # imaginary floating point literals
+        // imaginary floating point literals
         2 => array(
             GESHI_SEARCH => '((?:\b\d+\.\d*(?:[Ee][+-]?\d+)?|\.\d+(?:[Ee][+-]?\d+)?|\b\d+[Ee][+-]?\d+)?i\b)',
             GESHI_REPLACE => '\0',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '',
             GESHI_AFTER => '',
-            GESHI_CLASS => 'nu0'
-            )
-        # NB. "08" is an invalid number (octal), but "08i" is valid (complex).
+            GESHI_CLASS => 'nu0',
+            ),
+        // NB. "08" is an invalid number (octal), but "08i" is valid (complex).
         ),
 'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(1 => '.'),
@@ -387,10 +387,8 @@ $language_data = array(
     'HIGHLIGHT_STRICT_BLOCK' => array(),
     'PARSER_CONTROL' => array(
         'ENABLE_FLAGS' => array(
-            'BRACKETS' => GESHI_NEVER, # handled by symbols
-            'NUMBERS' => GESHI_NEVER,  # handled by regexp
-            )
-        )
+            'BRACKETS' => GESHI_NEVER, // handled by symbols
+            'NUMBERS' => GESHI_NEVER,  // handled by regexp
+            ),
+        ),
 );
-
-?>

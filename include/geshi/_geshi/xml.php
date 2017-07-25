@@ -44,7 +44,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'XML',
     'COMMENT_SINGLE' => array(),
     'COMMENT_MULTI' => array(),
@@ -64,34 +64,34 @@ $language_data = array (
         'COMMENTS' => array(
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'SCRIPT' => array(
             -1 => 'color: #808080; font-style: italic;', // comments
             0 => 'color: #00bbdd;',
             1 => 'color: #ddbb00;',
             2 => 'color: #339933;',
-            3 => 'color: #009900;'
+            3 => 'color: #009900;',
             ),
         'REGEXPS' => array(
             0 => 'color: #000066;',
             1 => 'color: #000000; font-weight: bold;',
-            2 => 'color: #000000; font-weight: bold;'
-            )
+            2 => 'color: #000000; font-weight: bold;',
+            ),
         ),
     'URLS' => array(
         ),
@@ -104,54 +104,52 @@ $language_data = array (
             GESHI_REPLACE => '\\1',
             GESHI_MODIFIERS => 'i',
             GESHI_BEFORE => '',
-            GESHI_AFTER => '\\2'
+            GESHI_AFTER => '\\2',
             ),
         1 => array(//Initial header line
             GESHI_SEARCH => '(&lt;[\/?|(\?xml)]?[a-z_:][\w\-\.:]*(\??&gt;)?)',
             GESHI_REPLACE => '\\1',
             GESHI_MODIFIERS => 'i',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
         2 => array(//Tag end markers
             GESHI_SEARCH => '(([\/|\?])?&gt;)',
             GESHI_REPLACE => '\\1',
             GESHI_MODIFIERS => 'i',
             GESHI_BEFORE => '',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
         ),
     'STRICT_MODE_APPLIES' => GESHI_ALWAYS,
     'SCRIPT_DELIMITERS' => array(
         -1 => array(
-            '<!--' => '-->'
+            '<!--' => '-->',
             ),
         0 => array(
-            '<!DOCTYPE' => '>'
+            '<!DOCTYPE' => '>',
             ),
         1 => array(
-            '&' => ';'
+            '&' => ';',
             ),
         2 => array(
-            '<![CDATA[' => ']]>'
+            '<![CDATA[' => ']]>',
             ),
         3 => array(
-            '<' => '>'
-            )
+            '<' => '>',
+            ),
     ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
         -1 => false,
         0 => false,
         1 => false,
         2 => false,
-        3 => true
+        3 => true,
         ),
     'TAB_WIDTH' => 2,
     'PARSER_CONTROL' => array(
         'ENABLE_FLAGS' => array(
-            'NUMBERS' => GESHI_NEVER
-        )
-    )
+            'NUMBERS' => GESHI_NEVER,
+        ),
+    ),
 );
-
-?>

@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     'text_overview' => 'Previzualizare Comentarii',
     'text_all' => 'Vizualizeaza tot',
@@ -23,4 +24,3 @@ $lang = array(
     'text_submit' => 'Executa!',
     'text_results' => 'Cauta rezultate pentru ',
 );
-

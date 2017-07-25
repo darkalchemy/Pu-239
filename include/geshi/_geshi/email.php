@@ -39,7 +39,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'eMail (mbox)',
     'COMMENT_SINGLE' => array(),
     'COMMENT_MULTI' => array(),
@@ -48,30 +48,30 @@ $language_data = array (
     'ESCAPE_CHAR' => '',
     'KEYWORDS' => array(
         1 => array(
-            'HTTP', 'SMTP', 'ASMTP', 'ESMTP'
+            'HTTP', 'SMTP', 'ASMTP', 'ESMTP',
             ),
         2 => array(
-            'Content-Type','Content-Transfer-Encoding','Content-Disposition',
-            'Delivered-To','Dkim-Signature','Domainkey-Signature','In-Reply-To',
-            'Message-Id','MIME-Version','Received','Received-SPF','References',
-            'Resend-From','Resend-To','Return-Path'
+            'Content-Type', 'Content-Transfer-Encoding', 'Content-Disposition',
+            'Delivered-To', 'Dkim-Signature', 'Domainkey-Signature', 'In-Reply-To',
+            'Message-Id', 'MIME-Version', 'Received', 'Received-SPF', 'References',
+            'Resend-From', 'Resend-To', 'Return-Path',
             ),
         3 => array(
-            'Date','From','Subject','To',
+            'Date', 'From', 'Subject', 'To',
             ),
         4 => array(
-            'by', 'for', 'from', 'id', 'with'
-            )
+            'by', 'for', 'from', 'id', 'with',
+            ),
         ),
     'SYMBOLS' => array(
-        ':', ';', '<', '>', '[', ']'
+        ':', ';', '<', '>', '[', ']',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
         1 => true,
         2 => false,
         3 => false,
-        4 => true
+        4 => true,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
@@ -83,21 +83,21 @@ $language_data = array (
         'COMMENTS' => array(
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'SCRIPT' => array(
             0 => 'color: #000040;',
@@ -108,14 +108,14 @@ $language_data = array (
             3 => 'color: #008000;',
             4 => 'color: #0000FF; font-weight: bold;',
             5 => 'font-weight: bold;',
-            6 => 'color: #400080;'
-            )
+            6 => 'color: #400080;',
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
         3 => '',
-        4 => ''
+        4 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -124,60 +124,60 @@ $language_data = array (
         // Non-Standard-Header
         1 => array(
             GESHI_SEARCH => "(?<=\A\x20|\n)x-[a-z0-9\-]*(?=\s*:|\s*<)",
-            GESHI_REPLACE => "\\0",
-            GESHI_MODIFIERS => "smi",
-            GESHI_BEFORE => "",
-            GESHI_AFTER => ""
+            GESHI_REPLACE => '\\0',
+            GESHI_MODIFIERS => 'smi',
+            GESHI_BEFORE => '',
+            GESHI_AFTER => '',
             ),
         //Email-Adresses or Mail-IDs
         2 => array(
             GESHI_SEARCH => "\b[\w\.]+@\w+(?:(?:\.\w+)*\.\w{2,4})?",
-            GESHI_REPLACE => "\\0",
-            GESHI_MODIFIERS => "mi",
-            GESHI_BEFORE => "",
-            GESHI_AFTER => ""
+            GESHI_REPLACE => '\\0',
+            GESHI_MODIFIERS => 'mi',
+            GESHI_BEFORE => '',
+            GESHI_AFTER => '',
             ),
         //Date values in RFC format
         3 => array(
-            GESHI_SEARCH => "\b(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun),\s+\d\d?\s+" .
-                "(?:Jan|Feb|Mar|apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+" .
+            GESHI_SEARCH => "\b(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun),\s+\d\d?\s+".
+                "(?:Jan|Feb|Mar|apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+".
                 "\d{4}\s+\d\d?:\d\d:\d\d\s+[+\-]\d{4}(?:\s+\(\w+\))?",
-            GESHI_REPLACE => "\\0",
-            GESHI_MODIFIERS => "mi",
-            GESHI_BEFORE => "",
-            GESHI_AFTER => ""
+            GESHI_REPLACE => '\\0',
+            GESHI_MODIFIERS => 'mi',
+            GESHI_BEFORE => '',
+            GESHI_AFTER => '',
             ),
         //IP addresses
         4 => array(
             GESHI_SEARCH => "(?<=\s)\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?=\s)|".
                 "(?<=\[)\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?=\])|".
                 "(?<==)\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?=<)",
-            GESHI_REPLACE => "\\0",
-            GESHI_MODIFIERS => "i",
-            GESHI_BEFORE => "",
-            GESHI_AFTER => ""
+            GESHI_REPLACE => '\\0',
+            GESHI_MODIFIERS => 'i',
+            GESHI_BEFORE => '',
+            GESHI_AFTER => '',
             ),
         //Field-Assignments
         5 => array(
             GESHI_SEARCH => "(?<=\s)[A-Z0-9\-]+(?==(?!\s|$))",
-            GESHI_REPLACE => "\\0",
-            GESHI_MODIFIERS => "mi",
-            GESHI_BEFORE => "",
-            GESHI_AFTER => ""
+            GESHI_REPLACE => '\\0',
+            GESHI_MODIFIERS => 'mi',
+            GESHI_BEFORE => '',
+            GESHI_AFTER => '',
             ),
         //MIME type
         6 => array(
             GESHI_SEARCH => "(?<=\s)(?:audio|application|image|multipart|text|".
                 "video|x-[a-z0-9\-]+)\/[a-z0-9][a-z0-9\-]*(?=\s|<|$)",
-            GESHI_REPLACE => "\\0",
-            GESHI_MODIFIERS => "m",
-            GESHI_BEFORE => "",
-            GESHI_AFTER => ""
-            )
+            GESHI_REPLACE => '\\0',
+            GESHI_MODIFIERS => 'm',
+            GESHI_BEFORE => '',
+            GESHI_AFTER => '',
+            ),
         ),
     'STRICT_MODE_APPLIES' => GESHI_ALWAYS,
     'SCRIPT_DELIMITERS' => array(
-        0 => "/(^)[A-Z][a-zA-Z0-9\-]*\s*:\s*(?:.|(?=\n\s)\n)*($)/m"
+        0 => "/(^)[A-Z][a-zA-Z0-9\-]*\s*:\s*(?:.|(?=\n\s)\n)*($)/m",
     ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
         0 => true,
@@ -196,14 +196,12 @@ $language_data = array (
             4 => array(
                 'DISALLOWED_BEFORE' => '(?<=\s)',
                 'DISALLOWED_AFTER' => '(?=\s|\b)',
-            )
+            ),
         ),
         'ENABLE_FLAGS' => array(
             'BRACKETS' => GESHI_NEVER,
             'COMMENTS' => GESHI_NEVER,
-            'NUMBERS' => GESHI_NEVER
-        )
-    )
+            'NUMBERS' => GESHI_NEVER,
+        ),
+    ),
 );
-
-?>

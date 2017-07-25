@@ -1,6 +1,6 @@
 <?php
-$lang = array(
-    'lalala' => "lalala",
-    'weeeee' => "weeeee"
-);
 
+$lang = array(
+    'lalala' => 'lalala',
+    'weeeee' => 'weeeee',
+);

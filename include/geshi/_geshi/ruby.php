@@ -36,12 +36,12 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Ruby',
-    'COMMENT_SINGLE' => array(1 => "#"),
-    'COMMENT_MULTI' => array("=begin" => "=end"),
+    'COMMENT_SINGLE' => array(1 => '#'),
+    'COMMENT_MULTI' => array('=begin' => '=end'),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
-    'QUOTEMARKS' => array('"', '`','\''),
+    'QUOTEMARKS' => array('"', '`', '\''),
     'ESCAPE_CHAR' => '\\',
     'KEYWORDS' => array(
         1 => array(
@@ -50,11 +50,11 @@ $language_data = array (
                 'ensure', 'for', 'if', 'in', 'module', 'while',
                 'next', 'not', 'or', 'redo', 'rescue', 'yield',
                 'retry', 'super', 'then', 'undef', 'unless',
-                'until', 'when', 'BEGIN', 'END', 'include'
+                'until', 'when', 'BEGIN', 'END', 'include',
             ),
         2 => array(
                 '__FILE__', '__LINE__', 'false', 'nil', 'self', 'true',
-                'return'
+                'return',
             ),
         3 => array(
                 'Array', 'Float', 'Integer', 'String', 'at_exit',
@@ -65,7 +65,7 @@ $language_data = array (
                 'open', 'p', 'print', 'printf', 'proc', 'putc', 'puts',
                 'raise', 'rand', 'readline', 'readlines', 'require', 'select',
                 'sleep', 'split', 'sprintf', 'srand', 'sub', 'sub!', 'syscall',
-                'system', 'trace_var', 'trap', 'untrace_var'
+                'system', 'trace_var', 'trap', 'untrace_var',
             ),
         4 => array(
                 'Abbrev', 'ArgumentError', 'Base64', 'Benchmark',
@@ -122,12 +122,12 @@ $language_data = array (
                 'Zlib::ZStream',
                 'HTML::Selector', 'HashWithIndifferentAccess', 'Inflector',
                 'Inflector::Inflections', 'Mime', 'Mime::Type',
-                'OCI8AutoRecover', 'TimeZone', 'XmlSimple'
+                'OCI8AutoRecover', 'TimeZone', 'XmlSimple',
             ),
         ),
     'SYMBOLS' => array(
         '(', ')', '[', ']', '{', '}', '%', '&', '*', '|', '/', '<', '>',
-        '+', '-', '=>', '<<'
+        '+', '-', '=>', '<<',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -145,82 +145,80 @@ $language_data = array (
             ),
         'COMMENTS' => array(
             1 => 'color:#008000; font-style:italic;',
-            'MULTI' => 'color:#000080; font-style:italic;'
+            'MULTI' => 'color:#000080; font-style:italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color:#000099;'
+            0 => 'color:#000099;',
             ),
         'BRACKETS' => array(
-            0 => 'color:#006600; font-weight:bold;'
+            0 => 'color:#006600; font-weight:bold;',
             ),
         'STRINGS' => array(
-            0 => 'color:#996600;'
+            0 => 'color:#996600;',
             ),
         'NUMBERS' => array(
-            0 => 'color:#006666;'
+            0 => 'color:#006666;',
             ),
         'METHODS' => array(
-            1 => 'color:#9900CC;'
+            1 => 'color:#9900CC;',
             ),
         'SYMBOLS' => array(
-            0 => 'color:#006600; font-weight:bold;'
+            0 => 'color:#006600; font-weight:bold;',
             ),
         'REGEXPS' => array(
             0 => 'color:#ff6633; font-weight:bold;',
             1 => 'color:#0066ff; font-weight:bold;',
             2 => 'color:#6666ff; font-weight:bold;',
-            3 => 'color:#ff3333; font-weight:bold;'
+            3 => 'color:#ff3333; font-weight:bold;',
             ),
         'SCRIPT' => array(
             0 => '',
             1 => '',
             2 => '',
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
         3 => '',
-        4 => ''
+        4 => '',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 => '.'
+        1 => '.',
         ),
     'REGEXPS' => array(
         0 => array(//Variables
-            GESHI_SEARCH => "([[:space:]])(\\$[a-zA-Z_][a-zA-Z0-9_]*)",
+            GESHI_SEARCH => '([[:space:]])(\$[a-zA-Z_][a-zA-Z0-9_]*)',
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
         1 => array(//Arrays
-            GESHI_SEARCH => "([[:space:]])(@[a-zA-Z_][a-zA-Z0-9_]*)",
+            GESHI_SEARCH => '([[:space:]])(@[a-zA-Z_][a-zA-Z0-9_]*)',
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => ''
+            GESHI_AFTER => '',
             ),
-        2 => "([A-Z][a-zA-Z0-9_]*::)+[A-Z][a-zA-Z0-9_]*",//Static OOP symbols
+        2 => '([A-Z][a-zA-Z0-9_]*::)+[A-Z][a-zA-Z0-9_]*', //Static OOP symbols
         3 => array(
             GESHI_SEARCH => "([[:space:]]|\[|\()(:[a-zA-Z_][a-zA-Z0-9_]*)",
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => ''
-            )
+            GESHI_AFTER => '',
+            ),
         ),
     'STRICT_MODE_APPLIES' => GESHI_MAYBE,
     'SCRIPT_DELIMITERS' => array(
         0 => array(
-            '<%' => '%>'
-            )
+            '<%' => '%>',
+            ),
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
         0 => true,
         ),
-    'TAB_WIDTH' => 2
+    'TAB_WIDTH' => 2,
 );
-
-?>

@@ -35,7 +35,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Oxygene (Delphi Prism)',
     'COMMENT_SINGLE' => array(1 => '//'),
     'COMMENT_MULTI' => array('(*' => '*)', '{' => '}'),
@@ -49,27 +49,27 @@ $language_data = array (
             'and',   'begin', 'case', 'const',  'div', 'do', 'downto', 'else',
             'end',  'for',  'function', 'if', 'in', 'mod', 'not', 'of', 'or',
             'procedure', 'repeat', 'record', 'set', 'shl', 'shr', 'then', 'to',
-            'type', 'until', 'uses', 'var','while', 'with', 'xor', 'exit', 'break',
+            'type', 'until', 'uses', 'var', 'while', 'with', 'xor', 'exit', 'break',
             'class', 'constructor', 'inherited', 'private', 'public', 'protected',
             'property', 'As', 'Is', 'Unit', 'Continue', 'Try', 'Except', 'Forward',
-            'Interface','Implementation', 'nil', 'out', 'loop', 'namespace', 'true',
+            'Interface', 'Implementation', 'nil', 'out', 'loop', 'namespace', 'true',
             'false', 'new', 'ensure', 'require', 'on', 'event', 'delegate', 'method',
-            'raise', 'assembly', 'module', 'using','locking', 'old', 'invariants', 'operator',
+            'raise', 'assembly', 'module', 'using', 'locking', 'old', 'invariants', 'operator',
             'self', 'async', 'finalizer', 'where', 'yield', 'nullable', 'Future',
-            'From',  'Finally', 'dynamic'
+            'From',  'Finally', 'dynamic',
             ),
         2 => array(
-            'override', 'virtual', 'External', 'read', 'add', 'remove','final', 'abstract',
+            'override', 'virtual', 'External', 'read', 'add', 'remove', 'final', 'abstract',
             'empty', 'global', 'locked', 'sealed', 'reintroduce', 'implements', 'each',
             'default', 'partial', 'finalize', 'enum', 'flags', 'result', 'readonly', 'unsafe',
             'pinned', 'matching', 'static', 'has', 'step', 'iterator', 'inline', 'nested',
             'Implies', 'Select', 'Order', 'By', 'Desc', 'Asc', 'Group', 'Join', 'Take',
             'Skip', 'Concat', 'Union', 'Reverse', 'Distinct', 'Into', 'Equals', 'params',
             'sequence', 'index', 'notify', 'Parallel', 'create', 'array', 'Queryable', 'Aspect',
-            'volatile'
+            'volatile',
             ),
         3 => array(
-            'chr', 'ord', 'inc', 'dec', 'assert', 'iff', 'assigned','futureAssigned', 'length', 'low', 'high', 'typeOf', 'sizeOf', 'disposeAndNil', 'Coalesce', 'unquote'
+            'chr', 'ord', 'inc', 'dec', 'assert', 'iff', 'assigned', 'futureAssigned', 'length', 'low', 'high', 'typeOf', 'sizeOf', 'disposeAndNil', 'Coalesce', 'unquote',
             ),
         ),
     'CASE_SENSITIVE' => array(
@@ -83,7 +83,7 @@ $language_data = array (
         0 => array('(', ')', '[', ']'),
         1 => array('.', ',', ':', ';'),
         2 => array('@', '^'),
-        3 => array('=', '+', '-', '*', '/')
+        3 => array('=', '+', '-', '*', '/'),
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
@@ -95,35 +95,35 @@ $language_data = array (
         'COMMENTS' => array(
             1 => 'color: #808080; font-style: italic;',
             2 => 'color: #008000; font-style: italic;',
-            'MULTI' => 'color: #808080; font-style: italic;'
+            'MULTI' => 'color: #808080; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #ff0000; font-weight: bold;'
+            0 => 'color: #ff0000; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #000066;'
+            0 => 'color: #000066;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #0000ff;'
+            0 => 'color: #0000ff;',
             ),
         'METHODS' => array(
-            1 => 'color: #000000;'
+            1 => 'color: #000000;',
             ),
         'REGEXPS' => array(
             0 => 'color: #9ac;',
-            1 => 'color: #ff0000;'
+            1 => 'color: #ff0000;',
             ),
         'SYMBOLS' => array(
             0 => 'color: #000066;',
             1 => 'color: #000066;',
             2 => 'color: #000066;',
-            3 => 'color: #000066;'
+            3 => 'color: #000066;',
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
@@ -133,20 +133,18 @@ $language_data = array (
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 => '.'
+        1 => '.',
         ),
     'REGEXPS' => array(
         //Hex numbers
         0 => '\$[0-9a-fA-F]+',
         //Characters
-        1 => '\#\$?[0-9]{1,3}'
+        1 => '\#\$?[0-9]{1,3}',
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
         ),
-    'TAB_WIDTH' => 2
+    'TAB_WIDTH' => 2,
 );
-
-?>

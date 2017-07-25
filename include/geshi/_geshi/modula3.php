@@ -35,7 +35,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Modula-3',
     'COMMENT_SINGLE' => array(),
     'COMMENT_MULTI' => array('(*' => '*)'),
@@ -52,23 +52,23 @@ $language_data = array (
             'INTERFACE', 'LOCK', 'LOOP', 'METHODS', 'MOD', 'MODULE', 'NOT', 'OBJECT', 'OF',
             'OR', 'OVERRIDE', 'PROCEDURE', 'RAISE', 'RAISES', 'READONLY', 'RECORD', 'REF',
             'REPEAT', 'RETURN', 'REVEAL', 'ROOT', 'SET', 'THEN', 'TO', 'TRY', 'TYPE', 'TYPECASE',
-            'UNSAFE', 'UNTIL', 'UNTRACED', 'VALUE', 'VAR', 'WHILE', 'WITH'
+            'UNSAFE', 'UNTIL', 'UNTRACED', 'VALUE', 'VAR', 'WHILE', 'WITH',
             ),
         2 => array(
             'NIL', 'NULL', 'FALSE', 'TRUE',
             ),
         3 => array(
-            'ABS','ADR','ADRSIZE','BITSIZE','BYTESIZE','CEILING','DEC','DISPOSE',
-            'EXTENDED','FIRST','FLOAT','FLOOR','INC','ISTYPE','LAST','LOOPHOLE','MAX','MIN',
-            'NARROW','NEW','NUMBER','ORD','ROUND','SUBARRAY','TRUNC','TYPECODE', 'VAL'
+            'ABS', 'ADR', 'ADRSIZE', 'BITSIZE', 'BYTESIZE', 'CEILING', 'DEC', 'DISPOSE',
+            'EXTENDED', 'FIRST', 'FLOAT', 'FLOOR', 'INC', 'ISTYPE', 'LAST', 'LOOPHOLE', 'MAX', 'MIN',
+            'NARROW', 'NEW', 'NUMBER', 'ORD', 'ROUND', 'SUBARRAY', 'TRUNC', 'TYPECODE', 'VAL',
             ),
         4 => array(
             'ADDRESS', 'BOOLEAN', 'CARDINAL', 'CHAR', 'INTEGER',
-            'LONGREAL', 'MUTEX', 'REAL', 'REFANY', 'TEXT'
+            'LONGREAL', 'MUTEX', 'REAL', 'REFANY', 'TEXT',
             ),
         ),
     'SYMBOLS' => array(
-        ',', ':', '=', '+', '-', '*', '/', '#'
+        ',', ':', '=', '+', '-', '*', '/', '#',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -82,45 +82,45 @@ $language_data = array (
             1 => 'color: #000000; font-weight: bold;',
             2 => 'color: #000000; font-weight: bold;',
             3 => 'color: #000066;',
-            4 => 'color: #000066; font-weight: bold;'
+            4 => 'color: #000066; font-weight: bold;',
             ),
         'COMMENTS' => array(
-            'MULTI' => 'color: #666666; font-style: italic;'
+            'MULTI' => 'color: #666666; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
             0 => 'color: #000099; font-weight: bold;',
-            'HARD' => 'color: #000099; font-weight: bold;'
+            'HARD' => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #009900;'
+            0 => 'color: #009900;',
             ),
         'STRINGS' => array(
             0 => 'color: #ff0000;',
-            'HARD' => 'color: #ff0000;'
+            'HARD' => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
-            1 => 'color: #0066ee;'
+            1 => 'color: #0066ee;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #339933;'
+            0 => 'color: #339933;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
         3 => '',
-        4 => ''
+        4 => '',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 => '.'
+        1 => '.',
         ),
     'REGEXPS' => array(
         ),
@@ -129,7 +129,5 @@ $language_data = array (
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
         ),
-    'TAB_WIDTH' => 4
+    'TAB_WIDTH' => 4,
 );
-
-?>

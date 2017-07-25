@@ -53,14 +53,14 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'J',
     'COMMENT_SINGLE' => array(),
     'COMMENT_MULTI' => array(),
     'COMMENT_REGEXP' => array(
         1 => '/(?<!\w)NB\..*?$/m',                //singleline comments NB.
         2 => '/(?<=\bNote\b).*?$\s+\)(?:(?!\n)\s)*$/sm',   //multiline comments in Note
-        3 => "/'[^']*?$/m"                        //incomplete strings/open quotes
+        3 => "/'[^']*?$/m",                        //incomplete strings/open quotes
         ),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
     'QUOTEMARKS' => array(),
@@ -81,11 +81,11 @@ $language_data = array (
         1 => array(
             'assert.', 'break.', 'case.', 'catch.', 'catcht.', 'continue.', 'do.',
             'else.', 'elseif.', 'end.', 'fcase.', 'for.', 'goto.', 'if.', 'label.',
-            'return.', 'select.', 'throw.', 'trap.', 'try.', 'while.', 'whilst.'
+            'return.', 'select.', 'throw.', 'trap.', 'try.', 'while.', 'whilst.',
             ),
         //Arguments
         2 => array(
-            'm', 'n', 'u', 'v', 'x', 'y'
+            'm', 'n', 'u', 'v', 'x', 'y',
             ),
 /*
 Commented out for now due to conflicts with Lang Check
@@ -125,8 +125,8 @@ Commented out for now due to conflicts with Lang Check
     'SYMBOLS' => array(
         //Punctuation
         0 => array(
-            '(', ')'
-            )
+            '(', ')',
+            ),
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -148,33 +148,33 @@ Commented out for now due to conflicts with Lang Check
             1 => 'color: #666666; font-style: italic;',
             2 => 'color: #666666; font-style: italic; font-weight: bold;',
             3 => 'color: #ff00ff; ',                      //open quote
-            'MULTI' => 'color: #666666; font-style: italic;'
+            'MULTI' => 'color: #666666; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
             'HARD' => 'font-weight: bold;',
             0 => '',
             ),
         'BRACKETS' => array(
-            0 => 'color: #009900;'
+            0 => 'color: #009900;',
             ),
         'STRINGS' => array(
             'HARD' => 'color: #ff0000;',
             0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #009999; font-weight: bold;'
+            0 => 'color: #009999; font-weight: bold;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #009900; font-weight: bold;'
+            0 => 'color: #009900; font-weight: bold;',
             ),
         'REGEXPS' => array(
             0 => 'color: #0000ff; font-weight: bold;',   //for_xyz. - same as kw1
-            1 => 'color: #009999; font-weight: bold;'    //infinity - same as nu0
+            1 => 'color: #009999; font-weight: bold;',    //infinity - same as nu0
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '', //'http://www.jsoftware.com/help/dictionary/ctrl.htm',
@@ -188,7 +188,7 @@ Commented out for now due to conflicts with Lang Check
         ),
     'REGEXPS' => array(
         0 => '\b(for|goto|label)_[a-zA-Z]\w*\.',   //for_xyz. - should be kw1
-        1 => '\b__?(?![\w\.\:])'                   //infinity - should be nu0
+        1 => '\b__?(?![\w\.\:])',                   //infinity - should be nu0
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(
@@ -220,8 +220,6 @@ Commented out for now due to conflicts with Lang Check
                 'DISALLOWED_BEFORE' => '(?<=\s)',
                 'DISALLOWED_AFTER' => '(?=.*)',
                 ),
-            )
-        )
+            ),
+        ),
 );
-
-?>

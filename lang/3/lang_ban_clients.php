@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     //ban clients
     'ban_clients_stderr' => 'Error',
@@ -15,4 +16,4 @@ $lang = array(
     'ban_clients_reason' => 'Reason',
     'ban_clients_banall' => 'Ban all versions?',
     'ban_clients_stdhead2' => 'Ban BitTorrent Clients',
-)
+);

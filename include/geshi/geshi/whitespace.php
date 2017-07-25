@@ -36,12 +36,12 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  ************************************************************************************/
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Whitespace',
     'COMMENT_SINGLE' => array(),
     'COMMENT_MULTI' => array(),
     'COMMENT_REGEXP' => array(
-        3 => "/[^\n\x20\x09]+/s"
+        3 => "/[^\n\x20\x09]+/s",
         ),
     'CASE_KEYWORDS' => GESHI_CAPS_UPPER,
     'QUOTEMARKS' => array(),
@@ -57,13 +57,13 @@ $language_data = array (
         'KEYWORDS' => array(
             ),
         'COMMENTS' => array(
-            3 => 'color: #666666; font-style: italic;'
+            3 => 'color: #666666; font-style: italic;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
             ),
@@ -77,8 +77,8 @@ $language_data = array (
             ),
         'REGEXPS' => array(
             2 => 'background-color: #FF9999;',
-            3 => 'background-color: #9999FF;'
-            )
+            3 => 'background-color: #9999FF;',
+            ),
         ),
     'URLS' => array(
         ),
@@ -88,17 +88,17 @@ $language_data = array (
     'REGEXPS' => array(
         2 => array(
             GESHI_SEARCH => "(?<!\\A)\x20",
-            GESHI_REPLACE => "&#32;",
+            GESHI_REPLACE => '&#32;',
             GESHI_MODIFIERS => 's',
-            GESHI_BEFORE => "",
-            GESHI_AFTER => ""
+            GESHI_BEFORE => '',
+            GESHI_AFTER => '',
             ),
         3 => array(
             GESHI_SEARCH => "\x09",
-            GESHI_REPLACE => "&#9;",
+            GESHI_REPLACE => '&#9;',
             GESHI_MODIFIERS => 's',
-            GESHI_BEFORE => "",
-            GESHI_AFTER => ""
+            GESHI_BEFORE => '',
+            GESHI_AFTER => '',
             ),
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
@@ -113,9 +113,7 @@ $language_data = array (
             'SYMBOLS' => GESHI_NEVER,
             'STRINGS' => GESHI_NEVER,
 //            'REGEXPS' => GESHI_NEVER,
-            'NUMBERS' => GESHI_NEVER
-            )
-        )
+            'NUMBERS' => GESHI_NEVER,
+            ),
+        ),
 );
-
-?>

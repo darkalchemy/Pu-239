@@ -1,25 +1,11 @@
 <?php
 /**
- |--------------------------------------------------------------------------|
- |   https://github.com/Bigjoos/                			    |
- |--------------------------------------------------------------------------|
- |   Licence Info: GPL			                                    |
- |--------------------------------------------------------------------------|
- |   Copyright (C) 2010 U-232 V4					    |
- |--------------------------------------------------------------------------|
- |   A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.   |
- |--------------------------------------------------------------------------|
- |   Project Leaders: Mindless,putyn.					    |
- |--------------------------------------------------------------------------|
-  _   _   _   _   _     _   _   _   _   _   _     _   _   _   _
- / \ / \ / \ / \ / \   / \ / \ / \ / \ / \ / \   / \ / \ / \ / \
-( U | - | 2 | 3 | 2 )-( S | o | u | r | c | e )-( C | o | d | e )
  \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 /*Block settings by elephant*/
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
-    $HTMLOUT.= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
+    $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
 		\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
 		<html xmlns='http://www.w3.org/1999/xhtml'>
 		<head>
@@ -32,22 +18,22 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
     exit();
 }
 $stdfoot = array(
-    /** include js **/
+    /* include js **/
     'js' => array(
-        'custom-form-elements'
-    )
+        'custom-form-elements',
+    ),
 );
 $stdhead = array(
-    /** include css **/
+    /* include css **/
     'css' => array(
-        'global_blocks'
-    )
+        'global_blocks',
+    ),
 );
-require_once (CLASS_DIR . 'class_check.php');
+require_once CLASS_DIR.'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_block_settings'));
-$block_set_cache = CACHE_DIR . 'block_settings_cache.php';
+$block_set_cache = CACHE_DIR.'block_settings_cache.php';
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
     unset($_POST['submit']);
     block_cache();
@@ -59,11 +45,11 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
 function block_cache()
 {
     global $block_set_cache, $lang;
-    $block_out = "<" . "?php\n\n\$BLOCKS = array(\n";
+    $block_out = '<'."?php\n\n\$BLOCKS = array(\n";
     foreach ($_POST as $k => $v) {
-        $block_out.= ($k == 'block_undefined') ? "\t'{$k}' => '" . htmlsafechars($v) . "',\n" : "\t'{$k}' => " . intval($v) . ",\n";
+        $block_out .= ($k == 'block_undefined') ? "\t'{$k}' => '".htmlsafechars($v)."',\n" : "\t'{$k}' => ".intval($v).",\n";
     }
-    $block_out.= "\n);\n\n?" . ">";
+    $block_out .= "\n);\n\n?".'>';
     if (is_file($block_set_cache) && is_writable(pathinfo($block_set_cache, PATHINFO_DIRNAME))) {
         $filenum = fopen($block_set_cache, 'w');
         ftruncate($filenum, 0);
@@ -137,7 +123,7 @@ function get_cache_array()
         'userdetails_showpm_on' => 1,
         'userdetails_report_user_on' => 1,
         'userdetails_user_status_on' => 1,
-        'userdetails_user_comments_on' => 1
+        'userdetails_user_comments_on' => 1,
     );
 }
 if (!is_file($block_set_cache)) {
@@ -149,7 +135,7 @@ if (!is_file($block_set_cache)) {
     }
 }
 $HTMLOUT = '';
-$HTMLOUT.= '
+$HTMLOUT .= '
     <div>'.$lang['block_global'].'</div><br />
     <div><br />
     <form action="staffpanel.php?tool=block.settings&amp;action=block.settings" method="post">
@@ -601,12 +587,13 @@ $HTMLOUT.= '
     <input type="submit" name="submit" value=" '.$lang['block_submit'].' " class="btn" tabindex="2" accesskey="s" />
     </form>
     </div>';
-$HTMLOUT = preg_replace_callback("|<#(.*?)#>|", "template_out", $HTMLOUT);
+$HTMLOUT = preg_replace_callback('|<#(.*?)#>|', 'template_out', $HTMLOUT);
 echo stdhead($lang['block_stdhead'], true, $stdhead) , $HTMLOUT, stdfoot($stdfoot);
 function template_out($matches)
 {
     global $BLOCKS, $lang;
-    return $lang['block_yes']. '<input name="' . $matches[1] . '" value="1" ' . ($BLOCKS[$matches[1]] == 1 ? 'checked="checked"' : "") . ' type="radio" />&nbsp;&nbsp;&nbsp;<input name="' . $matches[1] . '" value="0" ' . ($BLOCKS[$matches[1]] == 1 ? "" : 'checked="checked"') . ' type="radio" /> ' .$lang['block_no'];
+
+    return $lang['block_yes'].'<input name="'.$matches[1].'" value="1" '.($BLOCKS[$matches[1]] == 1 ? 'checked="checked"' : '').' type="radio" />&nbsp;&nbsp;&nbsp;<input name="'.$matches[1].'" value="0" '.($BLOCKS[$matches[1]] == 1 ? '' : 'checked="checked"').' type="radio" /> '.$lang['block_no'];
 }
 function redirect($url, $text, $time = 2)
 {
@@ -636,4 +623,3 @@ function redirect($url, $text, $time = 2)
     echo $html;
     exit;
 }
-?>

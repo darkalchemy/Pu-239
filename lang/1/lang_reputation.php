@@ -1,4 +1,5 @@
 <?php
+
 $this_rep = '';
 $lang = array(
     //info
@@ -25,7 +26,7 @@ $lang = array(
     'rep_comments' => 'Reputation Comments',
     'rep_i_approve' => 'I Approve',
     'rep_i_disapprove' => 'I Disapprove',
-    'rep_your_comm_on_this_post' => 'Your comments on this ' . $this_rep . ':',
+    'rep_your_comm_on_this_post' => 'Your comments on this '.$this_rep.':',
     //reputation levels
     'rep_even' => 'Even',
     'rep_somewhat_positive' => 'Somewhat Positive',
@@ -37,4 +38,3 @@ $lang = array(
     'rep_very_negative' => 'Very Negative',
     'rep_extremely_negative' => 'Extremely Negative',
 );
-

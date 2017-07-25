@@ -42,7 +42,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Groovy',
     'COMMENT_SINGLE' => array(1 => '//', 3 => '#'),
     'COMMENT_MULTI' => array('/*' => '*/'),
@@ -66,7 +66,7 @@ $language_data = array (
             'package', 'private', 'property', 'protected',
             'public', 'return', 'static', 'strictfp', 'super',
             'synchronized', 'this', 'throw', 'throws',
-            'transient', 'true', 'try', 'volatile'
+            'transient', 'true', 'try', 'volatile',
             ),
         3 => array(
             'AbstractAction', 'AbstractBorder', 'AbstractButton',
@@ -888,11 +888,11 @@ $language_data = array (
             'ZipOutputStream', 'ZoneView',
             '_BindingIteratorImplBase', '_BindingIteratorStub',
             '_IDLTypeStub', '_NamingContextImplBase',
-            '_NamingContextStub', '_PolicyStub', '_Remote_Stub'
+            '_NamingContextStub', '_PolicyStub', '_Remote_Stub',
             ),
         4 => array(
             'boolean', 'byte', 'char', 'double', 'float', 'int', 'long',
-            'short', 'void'
+            'short', 'void',
             ),
         5 => array(
             'allProperties', 'asImmutable', 'asSynchronized', 'collect',
@@ -900,11 +900,11 @@ $language_data = array (
             'eachWithIndex', 'find', 'findAll', 'findIndexOf',
             'flatten', 'get', 'grep', 'inject', 'intersect',
             'join', 'max', 'min', 'pop', 'reverse',
-            'reverseEach', 'size', 'sort', 'subMap', 'toList'
+            'reverseEach', 'size', 'sort', 'subMap', 'toList',
             ),
         6 => array(
             'center', 'contains', 'eachMatch', 'padLeft', 'padRight',
-            'toCharacter', 'tokenize', 'toLong', 'toURL'
+            'toCharacter', 'tokenize', 'toLong', 'toURL',
             ),
         7 => array(
             'append', 'eachByte', 'eachFile', 'eachFileRecurse', 'eachLine',
@@ -912,20 +912,20 @@ $language_data = array (
             'splitEachLine', 'transformChar', 'transformLine',
             'withOutputStream', 'withPrintWriter', 'withReader',
             'withStream', 'withStreams', 'withWriter',
-            'withWriterAppend', 'write', 'writeLine'
+            'withWriterAppend', 'write', 'writeLine',
             ),
         8 => array(
             'dump', 'getLastMatcher', 'inspect', 'invokeMethod', 'print',
             'println', 'start', 'startDaemon', 'step', 'times',
-            'upto', 'use'
+            'upto', 'use',
             ),
         9 => array(
-            'call', 'close', 'eachRow', 'execute', 'executeUpdate', 'Sql'
-            )
+            'call', 'close', 'eachRow', 'execute', 'executeUpdate', 'Sql',
+            ),
         ),
     'SYMBOLS' => array(
         '(', ')', '[', ']', '{', '}', '*', '&', '%', '!', ';', '<', '>', '?', '|', '=',
-        '=>', '||', '-', '+', '<<', '<<<', '&&'
+        '=>', '||', '-', '+', '<<', '<<<', '&&',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => true,
@@ -937,7 +937,7 @@ $language_data = array (
         6 => true,
         7 => true,
         8 => true,
-        9 => true
+        9 => true,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
@@ -949,38 +949,38 @@ $language_data = array (
             6 => 'color: #CC0099;',
             7 => 'color: #FFCC33;',
             8 => 'color: #993399;',
-            9 => 'color: #993399; font-weight: bold;'
+            9 => 'color: #993399; font-weight: bold;',
             ),
         'COMMENTS' => array(
-            1=> 'color: #808080; font-style: italic;',
-            2=> 'color: #a1a100;',
-            3=> 'color: #808080; font-style: italic;',
-            'MULTI' => 'color: #808080; font-style: italic;'
+            1 => 'color: #808080; font-style: italic;',
+            2 => 'color: #a1a100;',
+            3 => 'color: #808080; font-style: italic;',
+            'MULTI' => 'color: #808080; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
             1 => 'color: #006600;',
-            2 => 'color: #006600;'
+            2 => 'color: #006600;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'SCRIPT' => array(
             ),
         'REGEXPS' => array(
-            0 => 'color: #0000ff;'
-            )
+            0 => 'color: #0000ff;',
+            ),
         ),
     'URLS' => array(
         1 => 'http://www.google.de/search?q=site%3Adocs.codehaus.org/%20{FNAMEL}',
@@ -991,21 +991,19 @@ $language_data = array (
         6 => 'http://www.google.de/search?q=site%3Adocs.codehaus.org/%20{FNAME}',
         7 => 'http://www.google.de/search?q=site%3Adocs.codehaus.org/%20{FNAME}',
         8 => 'http://www.google.de/search?q=site%3Adocs.codehaus.org/%20{FNAME}',
-        9 => 'http://www.google.de/search?q=site%3Adocs.codehaus.org/%20{FNAME}'
+        9 => 'http://www.google.de/search?q=site%3Adocs.codehaus.org/%20{FNAME}',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 => '.'
+        1 => '.',
         ),
     'REGEXPS' => array(
         //Variables
-        0 => '\\$\\{[a-zA-Z_][a-zA-Z0-9_]*\\}'
+        0 => '\\$\\{[a-zA-Z_][a-zA-Z0-9_]*\\}',
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
-        )
+        ),
 );
-
-?>

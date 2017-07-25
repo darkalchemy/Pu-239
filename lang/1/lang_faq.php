@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     //FAQ
     'faq_welcome' => "<b>Welcome to {$INSTALLER09['site_name']}!</b><br />
@@ -14,15 +15,15 @@ $lang = array(
     <br />
     Before you go any further you should read the {$INSTALLER09['site_name']} <a class='altlink' href='useragreement.php'>user agreement</a>.
     <br />",
-    'faq_contents_header' => "Contents",
-    'faq_siteinfo_header' => "Site information",
+    'faq_contents_header' => 'Contents',
+    'faq_siteinfo_header' => 'Site information',
     'faq_siteinfo' => "<ul>
         <li><a href='#site1' class='altlink'>What is this bittorrent all about anyway? How do I get the files?</a></li>
         <li><a href='#site2' class='altlink'>Where does the donated money go?</a></li>
         <li><a href='#site4' class='altlink'>Where can I get a copy of the source code?</a></li>
       </ul>
     <br />",
-    'faq_userinfo_header' => "User information",
+    'faq_userinfo_header' => 'User information',
     'faq_userinfo' => "<ul>
         <li><a href='#user1' class='altlink'>I registered an account but did not receive the confirmation e-mail!</a></li>
         <li><a href='#user2' class='altlink'>I've lost my user name or password! Can you send it to me?</a></li>
@@ -43,7 +44,7 @@ $lang = array(
         <li><a href='#userd' class='altlink'>How do I add an avatar to my profile?</a></li>
       </ul>
     <br />",
-    'faq_stats_header' => "Stats",
+    'faq_stats_header' => 'Stats',
     'faq_stats' => "<ul>
         <li><a href='#stats1' class='altlink'>Most common reasons for stats not updating</a></li>
         <li><a href='#stats2' class='altlink'>Best practices</a></li>
@@ -58,7 +59,7 @@ $lang = array(
         <li><a href='#stats9' class='altlink'>For those of you who are interested (Anatomy of a torrent session)</a></li>
       </ul>
     <br />",
-    'faq_uploading_header' => "Uploading",
+    'faq_uploading_header' => 'Uploading',
     'faq_uploading' => "<ul>
         <li><a href='#up1' class='altlink'>Why can't I upload torrents?</a> </li>
       <li><a href='#up2' class='altlink'>What criteria must I meet before I can join the Uploader team?</a></li>
@@ -66,7 +67,7 @@ $lang = array(
       <img src='{$INSTALLER09['pic_base_url']}new.png' alt='New' width='27' height='11' /></li>
       </ul>
     <br />",
-    'faq_downloading_header' => "Downloading",
+    'faq_downloading_header' => 'Downloading',
     'faq_downloading' => "<ul>
         <li><a href='#dl1' class='altlink'>How do I use the files I've downloaded?</a></li>
         <li><a href='#dl2' class='altlink'>Downloaded a movie and don't know what CAM/TS/TC/SCR means?</a></li>
@@ -86,7 +87,7 @@ $lang = array(
         <img src='{$INSTALLER09['pic_base_url']}new.png' alt='New' width='27' height='11' /></li>
       </ul>
     <br />",
-    'faq_improve_header' => "How can I improve my download speed?",
+    'faq_improve_header' => 'How can I improve my download speed?',
     'faq_improve' => "<ul>
         <li><a href='#dlsp1' class='altlink'>Do not immediately jump on new torrents</a></li>
         <li><a href='#dlsp2' class='altlink'>Make yourself connectable</a></li>
@@ -97,7 +98,7 @@ $lang = array(
         <li><a href='#dlsp7' class='altlink'>Why is my browsing so slow while leeching?</a></li>
       </ul>
     <br />",
-    'faq_isp_header' => "My ISP uses a transparent proxy. What should I do?",
+    'faq_isp_header' => 'My ISP uses a transparent proxy. What should I do?',
     'faq_isp' => "<ul>
         <li><a href='#prox1' class='altlink'>What is a proxy?</a></li>
         <li><a href='#prox2' class='altlink'>How do I find out if I'm behind a (transparent/anonymous) proxy?</a></li>
@@ -321,8 +322,8 @@ $lang = array(
     <br />
     Please do not make a post just to test your avatar. If everything is allright you'll see it
     in your ",
-    'faq_details_page' => "details page",
-    'faq_stats_title' => "Stats",
+    'faq_details_page' => 'details page',
+    'faq_stats_title' => 'Stats',
     'faq_stats_body' => "<br />
     <b>Most common reason for stats not updating</b><a name='stats1'></a><br />
     <br />
@@ -576,19 +577,19 @@ $lang = array(
     <br />
     '<b>And/or</b>' means any or both. Your delay will be the <b>largest</b> one for which you meet <b>at least</b> one condition.<br />
     <br />",
-    'faq_in' => "In ",
-    'faq_your' => "your",
-    'faq_case' => " particular case, ",
-    'faq_both' => "both ",
-    'faq_ratio' => "your ratio of ",
-    'faq_and' => " and ",
-    'faq_totalup' => "your total uploaded of ",
-    'faq_delay' => " a delay of ",
-    'faq_hours' => " hours",
-    'faq_even' => "Even if your ",
-    'faq_totup' => "total uploaded is ",
-    'faq_ratiois' => "ratio is ",
-    'faq_nodelay' => "you will experience no delay.",
+    'faq_in' => 'In ',
+    'faq_your' => 'your',
+    'faq_case' => ' particular case, ',
+    'faq_both' => 'both ',
+    'faq_ratio' => 'your ratio of ',
+    'faq_and' => ' and ',
+    'faq_totalup' => 'your total uploaded of ',
+    'faq_delay' => ' a delay of ',
+    'faq_hours' => ' hours',
+    'faq_even' => 'Even if your ',
+    'faq_totup' => 'total uploaded is ',
+    'faq_ratiois' => 'ratio is ',
+    'faq_nodelay' => 'you will experience no delay.',
     'faq_downloading_body1' => "This applies to new users as well, so opening a new account will not help. Note also that this
     works at tracker level, you will be able to grab the .torrent file itself at any time.<br />
     <br />
@@ -681,7 +682,7 @@ $lang = array(
     The torrent's Time To Live, in hours. It means the torrent will be deleted
     from the tracker after that many hours have elapsed (yes, even if it is still active).
     Note that this a maximum value, the torrent may be deleted at any time if it's inactive.<br />",
-    'faq_improve_speed_title' => "How can I improve my download speed?",
+    'faq_improve_speed_title' => 'How can I improve my download speed?',
     'faq_improve_speed_body' => "The download speed mostly depends on the seeder-to-leecher ratio (SLR). Poor download speed is
     mainly a problem with new and very popular torrents where the SLR is low.<br />
     <br />
@@ -761,7 +762,7 @@ $lang = array(
     such as <a class='altlink' href='redir.php?url=http://www.netlimiter.com/'>NetLimiter</a>.<br />
     <br />
     Browsing was used just as an example, the same would apply to gaming, IMing, etc...<br />",
-    'faq_proxy_title' => "My ISP uses a transparent proxy. What should I do?",
+    'faq_proxy_title' => 'My ISP uses a transparent proxy. What should I do?',
     'faq_proxy_body' => "<br />
     <i>Caveat: This is a large and complex topic. It is not possible to cover all variations here.</i><br />
     <br />
@@ -896,7 +897,7 @@ $lang = array(
     check that you're capable of accepting incoming connections.<br />
     <br />
     <br />",
-    'faq_alt_port' => "Alternate port (81)",
+    'faq_alt_port' => 'Alternate port (81)',
     'faq_alt_port_body' => "<br />
     Some of our torrents use ports other than the usual HTTP port 80. This may cause problems for some users,
     for instance those behind some firewall or proxy configurations.
@@ -931,4 +932,3 @@ $lang = array(
     <li>And needless to say: be polite. Demanding help rarely works, asking for it usually does
     the trick.</li>",
 );
-

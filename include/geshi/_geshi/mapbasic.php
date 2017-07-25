@@ -40,7 +40,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'MapBasic',
     'COMMENT_SINGLE' => array(1 => "'"),
     'COMMENT_MULTI' => array(),
@@ -95,13 +95,13 @@ $language_data = array (
             'Timeout', 'To', 'Transaction', 'Transform', 'Type', 'UnDim',
             'Units', 'Unlink', 'Update', 'Using', 'VALUES', 'Version',
             'Versioning', 'Wend', 'WFS', 'WHERE', 'While', 'Window', 'Within',
-            'Workspace', 'Write'
+            'Workspace', 'Write',
             ),
         2 => array(
             'EndHandler', 'ForegroundTaskSwitchHandler', 'Main',
             'RemoteMapGenHandler', 'RemoteMsgHandler', 'SelChangedHandler',
             'ToolHandler', 'WinChangedHandler', 'WinClosedHandler',
-            'WinFocusChangedHandler'
+            'WinFocusChangedHandler',
             ),
         3 => array(
             'Abs', 'Acos', 'ApplicationDirectory$', 'AreaOverlap', 'Asc',
@@ -178,7 +178,7 @@ $language_data = array (
             'StyleAttr', 'Sum', 'SystemInfo', 'TableInfo', 'Tan',
             'TempFileName$', 'TextSize', 'Time', 'Timer', 'TriggerControl',
             'TrueFileName$', 'UBound', 'UCase$', 'UnitAbbr$', 'UnitName$',
-            'Val', 'Weekday', 'WindowID', 'WindowInfo', 'WtAvg', 'Year'
+            'Val', 'Weekday', 'WindowID', 'WindowInfo', 'WtAvg', 'Year',
             ),
         4 => array(
             'BLACK', 'BLUE', 'BRUSH_BACKCOLOR', 'BRUSH_FORECOLOR',
@@ -764,7 +764,7 @@ $language_data = array (
             'WIN_STATE_MAXIMIZED', 'WIN_STATE_MINIMIZED', 'WIN_STATE_NORMAL',
             'WIN_STATISTICS', 'WIN_STYLE_CHILD', 'WIN_STYLE_POPUP',
             'WIN_STYLE_POPUP_FULLCAPTION', 'WIN_STYLE_STANDARD',
-            'WIN_SYMBOLPICKER', 'WIN_TOOLBAR', 'WIN_TOOLPICKER', 'YELLOW'
+            'WIN_SYMBOLPICKER', 'WIN_TOOLBAR', 'WIN_TOOLPICKER', 'YELLOW',
             ),
         5 => array(
             'Abbrs', 'Above', 'Access', 'Active', 'Address', 'Advanced',
@@ -831,13 +831,13 @@ $language_data = array (
             'Vary', 'Vector', 'Versioned', 'View', 'ViewDisplayPopup',
             'VisibleOnly', 'VMDefault', 'VMGrid', 'VMRaster', 'Voronoi',
             'Warnings', 'Wedge', 'West', 'Width', 'With', 'XY', 'XYINDEX',
-            'Yaw', 'Zoom'
-            )
+            'Yaw', 'Zoom',
+            ),
         ),
     'SYMBOLS' => array(
             //Numeric/String Operators + Comparison Operators
             '(', ')', '[', ']', '+', '-', '*', '/', '\\', '^', '&',
-            '=', '<', '>'
+            '=', '<', '>',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -845,7 +845,7 @@ $language_data = array (
         2 => false,
         3 => false,
         4 => false,
-        5 => true
+        5 => true,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
@@ -853,25 +853,25 @@ $language_data = array (
             2 => 'color: #2391af;',        //Special Procedures
             3 => 'color: #2391af;',        //Functions
             4 => 'color: #c635cb;',        //Constants
-            5 => 'color: #0000ff;'         //Extended keywords (case sensitive)
+            5 => 'color: #0000ff;',         //Extended keywords (case sensitive)
             ),
         'COMMENTS' => array(
             1 => 'color: #008000;',
-            'MULTI' => 'color: #008000;'
+            'MULTI' => 'color: #008000;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #000000;'
+            0 => 'color: #000000;',
             ),
         'STRINGS' => array(
-            0 => 'color: #a31515;'
+            0 => 'color: #a31515;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #000000;'
+            0 => 'color: #000000;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #000000;'
+            0 => 'color: #000000;',
             ),
         'ESCAPE_CHAR' => array(
             ),
@@ -879,24 +879,24 @@ $language_data = array (
             ),
         'REGEXPS' => array(
             0 => 'color: #12198b;',            //Table Attributes
-            1 => 'color: #2391af;'             //Data Types
-            )
+            1 => 'color: #2391af;',             //Data Types
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
         3 => '',
         4 => '',
-        5 => ''
+        5 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
         ),
     'REGEXPS' => array(
             //Table Attribute
-            0 => "[\\.]{1}[a-zA-Z0-9_]+",
+            0 => '[\\.]{1}[a-zA-Z0-9_]+',
             //Data Type
-            1 => "(?xi) \\s+ as \\s+ (Alias|Brush|Date|Float|Font|Integer|Logical|Object|Pen|SmallInt|String|Symbol)"
+            1 => '(?xi) \\s+ as \\s+ (Alias|Brush|Date|Float|Font|Integer|Logical|Object|Pen|SmallInt|String|Symbol)',
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(
@@ -904,5 +904,3 @@ $language_data = array (
     'HIGHLIGHT_STRICT_BLOCK' => array(
         ),
 );
-
-?>

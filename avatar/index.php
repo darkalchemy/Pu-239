@@ -1,22 +1,8 @@
 <?php
 /**
- |--------------------------------------------------------------------------|
- |   https://github.com/Bigjoos/                			    |
- |--------------------------------------------------------------------------|
- |   Licence Info: GPL			                                    |
- |--------------------------------------------------------------------------|
- |   Copyright (C) 2010 U-232 V4					    |
- |--------------------------------------------------------------------------|
- |   A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.   |
- |--------------------------------------------------------------------------|
- |   Project Leaders: Mindless,putyn.					    |
- |--------------------------------------------------------------------------|
-  _   _   _   _   _     _   _   _   _   _   _     _   _   _   _
- / \ / \ / \ / \ / \   / \ / \ / \ / \ / \ / \   / \ / \ / \ / \
-( U | - | 2 | 3 | 2 )-( S | o | u | r | c | e )-( C | o | d | e )
  \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
-require_once ($_SERVER["DOCUMENT_ROOT"] . "/include/bittorrent.php");
+require_once $_SERVER['DOCUMENT_ROOT'].'/include/bittorrent.php';
 dbconn();
 loggedinorreturn();
 error_reporting(E_ALL);
@@ -74,9 +60,9 @@ error_reporting(E_ALL);
       <legend>Preview</legend>
       <div align="center">
         <input type="hidden" value="<?php
-echo $CURUSER["username"] ?>" id="user"  />
+echo $CURUSER['username'] ?>" id="user"  />
         <img id="preview" src="avatar.php?user=<?php
-echo $CURUSER["username"] ?>" width="150" height="190" alt="Avatar" /></div>
+echo $CURUSER['username'] ?>" width="150" height="190" alt="Avatar" /></div>
       </fieldset></td>
     <td valign="top"><fieldset style="width:400px;">
       <legend>Avatar body</legend>
@@ -149,7 +135,7 @@ echo $CURUSER["username"] ?>" width="150" height="190" alt="Avatar" /></div>
         <tr>
           <td nowrap="nowrap" class="info"><input style="width:150px;" type="text" onclick="select();" value="<?php
 echo $INSTALLER09['baseurl'] ?>/avatar/settings/<?php
-echo strtolower($CURUSER["username"]) ?>.png" readonly="readonly"/>
+echo strtolower($CURUSER['username']) ?>.png" readonly="readonly"/>
           </td>
         </tr>
       </table>

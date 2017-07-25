@@ -1,4 +1,5 @@
 <?php
+
 $lang = array(
     //torrenttable
     'torrenttable_type' => 'Type',
@@ -32,8 +33,8 @@ $lang = array(
     'torrenttable_time_singular' => 'time',
     'torrenttable_time_plural' => 'times',
     'torrenttable_unknown_uploader' => 'Unknown',
-    'torrenttable_anon' => "Anonymous",
-    'torrenttable_progress' => "Progress",
+    'torrenttable_anon' => 'Anonymous',
+    'torrenttable_progress' => 'Progress',
     'torrenttable_upped' => 'Torrents Uploaded on',
     'torrenttable_mon' => 'Monday',
     'torrenttable_tue' => 'Tuesday',
@@ -64,6 +65,5 @@ $lang = array(
     'commenttable_delete' => 'Delete',
     'commenttable_view_original' => 'View Original',
     'commenttable_last_edited_by' => 'Last edited by',
-    'commenttable_last_edited_at' => 'at'
+    'commenttable_last_edited_at' => 'at',
 );
-

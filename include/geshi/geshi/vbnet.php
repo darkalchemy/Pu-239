@@ -37,7 +37,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'vb.net',
     'COMMENT_SINGLE' => array(1 => "'"),
     'COMMENT_MULTI' => array(),
@@ -62,7 +62,7 @@ $language_data = array (
             'RETRYCANCEL', 'SCROLLBARS', 'SYSTEMFOLDER', 'SYSTEMMODAL', 'TEMPORARYFOLDER',
             'TEXTCOMPARE', 'TITLEBARTEXT', 'TRUE', 'UNICODE', 'UNKNOWN', 'UPPERCASE', 'VERTICALTAB',
             'VOLUME', 'WHITE', 'WIDE', 'WIN16', 'WIN32', 'WINDOWBACKGROUND', 'WINDOWFRAME',
-            'WINDOWSFOLDER', 'WINDOWTEXT', 'YELLOW', 'YES', 'YESNO', 'YESNOCANCEL'
+            'WINDOWSFOLDER', 'WINDOWTEXT', 'YELLOW', 'YES', 'YESNO', 'YESNOCANCEL',
             ),
         2 => array(
             'AndAlso', 'As', 'ADDHANDLER', 'ASSEMBLY', 'AUTO', 'Binary', 'ByRef', 'ByVal', 'BEGINEPILOGUE',
@@ -71,19 +71,19 @@ $language_data = array (
             'MYBASE', 'MYCLASS', 'New', 'Next', 'Nothing', 'Null', 'NOTINHERITABLE',
             'NOTOVERRIDABLE', 'OFF', 'On', 'Option', 'Optional', 'Overloads', 'OVERRIDABLE', 'Overrides', 'ParamArray',
             'Print', 'Private', 'Property', 'Public', 'Resume', 'Return', 'Seek', 'Static', 'Step',
-            'String', 'SHELL', 'SENDKEYS', 'SET', 'Shared', 'Then', 'Time', 'To', 'THROW', 'WithEvents'
+            'String', 'SHELL', 'SENDKEYS', 'SET', 'Shared', 'Then', 'Time', 'To', 'THROW', 'WithEvents',
             ),
         3 => array(
             'COLLECTION', 'DEBUG', 'DICTIONARY', 'DRIVE', 'DRIVES', 'ERR', 'FILE', 'FILES',
-            'FILESYSTEMOBJECT', 'FOLDER', 'FOLDERS', 'TEXTSTREAM'
+            'FILESYSTEMOBJECT', 'FOLDER', 'FOLDERS', 'TEXTSTREAM',
             ),
         4 => array(
             'BOOLEAN', 'BYTE', 'DATE', 'DECIMIAL', 'DOUBLE', 'INTEGER', 'LONG', 'OBJECT',
-            'SINGLE STRING'
+            'SINGLE STRING',
             ),
         5 => array(
             'ADDRESSOF', 'AND', 'BITAND', 'BITNOT', 'BITOR', 'BITXOR',
-            'GETTYPE', 'LIKE', 'MOD', 'NOT', 'ORXOR'
+            'GETTYPE', 'LIKE', 'MOD', 'NOT', 'ORXOR',
             ),
         6 => array(
             'APPACTIVATE', 'BEEP', 'CALL', 'CHDIR', 'CHDRIVE', 'CLASS', 'CASE', 'CATCH', 'CONST',
@@ -92,7 +92,7 @@ $language_data = array (
             'INTERFACE', 'IMPLEMENTS', 'KILL', 'LOOP', 'NAMESPACE', 'OPEN', 'PUT',
             'RAISEEVENT', 'RANDOMIZE', 'REDIM', 'REM', 'RESET', 'SAVESETTING', 'SELECT',
             'SETATTR', 'STOP', 'SUB', 'SYNCLOCK', 'STRUCTURE', 'SHADOWS', 'SWITCH',
-            'TRY', 'WIDTH', 'WITH', 'WRITE', 'WHILE'
+            'TRY', 'WIDTH', 'WITH', 'WRITE', 'WHILE',
             ),
         7 => array(
             'ABS', 'ARRAY', 'ASC', 'ASCB', 'ASCW', 'CALLBYNAME', 'CBOOL', 'CBYTE', 'CCHAR',
@@ -113,18 +113,18 @@ $language_data = array (
             'RTRIM$', 'SECOND', 'SIN', 'SLN', 'SPACE', 'SPACE$', 'SPC', 'SPLIT', 'SQRT', 'STR', 'STR$',
             'STRCOMP', 'STRCONV', 'STRING$', 'STRREVERSE', 'SYD', 'TAB', 'TAN', 'TIMEOFDAY',
             'TIMER', 'TIMESERIAL', 'TIMEVALUE', 'TODAY', 'TRIM', 'TRIM$', 'TYPENAME', 'UBOUND',
-            'UCASE', 'UCASE$', 'VAL', 'WEEKDAY', 'WEEKDAYNAME', 'YEAR'
+            'UCASE', 'UCASE$', 'VAL', 'WEEKDAY', 'WEEKDAYNAME', 'YEAR',
             ),
         8 => array(
             'ANY', 'ATN', 'CALENDAR', 'CIRCLE', 'CURRENCY', 'DEFBOOL', 'DEFBYTE', 'DEFCUR',
             'DEFDATE', 'DEFDBL', 'DEFDEC', 'DEFINT', 'DEFLNG', 'DEFOBJ', 'DEFSNG', 'DEFSTR',
             'DEFVAR', 'EQV', 'GOSUB', 'IMP', 'INITIALIZE', 'ISMISSING', 'LET', 'LINE', 'LSET',
-            'RSET', 'SGN', 'SQR', 'TERMINATE', 'VARIANT', 'VARTYPE', 'WEND'
+            'RSET', 'SGN', 'SQR', 'TERMINATE', 'VARIANT', 'VARTYPE', 'WEND',
             ),
         ),
     'SYMBOLS' => array(
         '&', '&=', '*', '*=', '+', '+=', '-', '-=', '//', '/', '/=', '=', '\\', '\\=',
-        '^', '^='
+        '^', '^=',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -146,34 +146,34 @@ $language_data = array (
             5 => 'color: #804040;',        //Operators
             6 => 'color: #0600FF;',        //Statements
             7 => 'color: #0600FF;',        //Functions
-            8 => 'color: #0600FF;'        //Deprecated
+            8 => 'color: #0600FF;',        //Deprecated
             ),
         'COMMENTS' => array(
             1 => 'color: #008080; font-style: italic;',
-            'MULTI' => 'color: #008080; font-style: italic;'
+            'MULTI' => 'color: #008080; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #008080; font-weight: bold;'
+            0 => 'color: #008080; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #000000;'
+            0 => 'color: #000000;',
             ),
         'STRINGS' => array(
-            0 => 'color: #808080;'
+            0 => 'color: #808080;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #FF0000;'
+            0 => 'color: #FF0000;',
             ),
         'METHODS' => array(
-            1 => 'color: #0000FF;'
+            1 => 'color: #0000FF;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #008000;'
+            0 => 'color: #008000;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
@@ -183,11 +183,11 @@ $language_data = array (
         5 => '',
         6 => '',
         7 => '',
-        8 => ''
+        8 => '',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 =>'.'
+        1 => '.',
         ),
     'REGEXPS' => array(
         ),
@@ -195,7 +195,5 @@ $language_data = array (
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
-        )
+        ),
 );
-
-?>

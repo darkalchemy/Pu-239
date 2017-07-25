@@ -54,7 +54,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'ActionScript 3',
     'COMMENT_SINGLE' => array(1 => '//'),
     'COMMENT_MULTI' => array('/*' => '*/'),
@@ -67,23 +67,23 @@ $language_data = array (
             'throw', 'this', 'switch', 'super', 'set', 'return', 'public', 'protected',
             'private', 'null', 'new', 'is', 'internal', 'instanceof', 'in',
             'import', 'if', 'get', 'for', 'false', 'else', 'each', 'do',
-            'delete', 'default', 'continue', 'catch', 'case', 'break', 'as'
+            'delete', 'default', 'continue', 'catch', 'case', 'break', 'as',
             ),
         2 => array(
-            'var'
+            'var',
             ),
         3 => array(
-            'function'
+            'function',
             ),
         4 => array(
-            'class', 'package'
+            'class', 'package',
             ),
         6 => array(
             'flash.xml', 'flash.utils', 'flash.ui', 'flash.text',
             'flash.system', 'flash.profiler', 'flash.printing', 'flash.net',
             'flash.media', 'flash.geom', 'flash.filters', 'flash.external',
             'flash.events', 'flash.errors', 'flash.display',
-            'flash.accessibility'
+            'flash.accessibility',
             ),
         7 => array(
             'zoom', 'year', 'y', 'xmlDecl', 'x', 'writeUnsignedInt',
@@ -285,7 +285,7 @@ $language_data = array (
             'addedToStage', 'added', 'addPage', 'addNamespace', 'addHeader',
             'addEventListener', 'addChildAt', 'addChild', 'addCallback', 'add',
             'activityLevel', 'activity', 'active', 'activating', 'activate',
-            'actionScriptVersion', 'acos', 'accessibilityProperties', 'abs'
+            'actionScriptVersion', 'acos', 'accessibilityProperties', 'abs',
             ),
         8 => array(
             'WRAP', 'VERTICAL', 'VARIABLES',
@@ -335,7 +335,7 @@ $language_data = array (
             'BEST', 'BACKSPACE', 'AUTO', 'AT_TARGET', 'ASYNC_ERROR', 'AMF3',
             'AMF0', 'ALWAYS', 'ALPHANUMERIC_HALF', 'ALPHANUMERIC_FULL', 'ALPHA',
             'ADVANCED', 'ADDED_TO_STAGE', 'ADDED', 'ADD', 'ACTIVITY',
-            'ACTIONSCRIPT3', 'ACTIONSCRIPT2'
+            'ACTIONSCRIPT3', 'ACTIONSCRIPT2',
             ),
         //FIX: Must be last in order to avoid conflicts with keywords present
         //in other keyword groups, that might get highlighted as part of the URL.
@@ -386,11 +386,11 @@ $language_data = array (
             'BitmapData', 'Bitmap', 'BevelFilter', 'AsyncErrorEvent', 'Array',
             'ArgumentError', 'ApplicationDomain', 'AntiAliasType',
             'ActivityEvent', 'ActionScriptVersion', 'AccessibilityProperties',
-            'Accessibility', 'AVM1Movie'
-            )
+            'Accessibility', 'AVM1Movie',
+            ),
         ),
     'SYMBOLS' => array(
-        '(', ')', '[', ']', '{', '}', '!', '%', '&', '*', '|', '/', '<', '>', '^', '-', '+', '~', '?', ':'
+        '(', ')', '[', ']', '{', '}', '!', '%', '&', '*', '|', '/', '<', '>', '^', '-', '+', '~', '?', ':',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -401,7 +401,7 @@ $language_data = array (
         5 => true,
         6 => true,
         7 => true,
-        8 => true
+        8 => true,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
@@ -412,34 +412,34 @@ $language_data = array (
             5 => 'color: #004993;',
             6 => 'color: #004993;',
             7 => 'color: #004993;',
-            8 => 'color: #004993;'
+            8 => 'color: #004993;',
             ),
         'COMMENTS' => array(
             1 => 'color: #009900;',
-            'MULTI' => 'color: #3f5fbf;'
+            'MULTI' => 'color: #3f5fbf;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => ''
+            0 => '',
             ),
         'BRACKETS' => array(
-            0 => 'color: #000000;'
+            0 => 'color: #000000;',
             ),
         'STRINGS' => array(
-            0 => 'color: #990000;'
+            0 => 'color: #990000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #000000; font-weight:bold;'
+            0 => 'color: #000000; font-weight:bold;',
             ),
         'METHODS' => array(
             0 => 'color: #000000;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #000000; font-weight: bold;'
+            0 => 'color: #000000; font-weight: bold;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
@@ -449,9 +449,9 @@ $language_data = array (
         5 => 'http://www.google.com/search?q={FNAMEL}%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:{FNAMEL}.html&amp;filter=0&amp;num=100&amp;btnI=lucky',
         6 => '',
         7 => '',
-        8 => ''
+        8 => '',
         ),
-    'OOLANG' => false,//Save some time as OO identifiers aren't used
+    'OOLANG' => false, //Save some time as OO identifiers aren't used
     'OBJECT_SPLITTERS' => array(
         // commented out because it's not very relevant for AS, as all properties, methods and constants are dot-accessed.
         // I believe it's preferable to have package highlighting for example, which is not possible with this enabled.
@@ -461,7 +461,5 @@ $language_data = array (
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(),
-    'HIGHLIGHT_STRICT_BLOCK' => array()
+    'HIGHLIGHT_STRICT_BLOCK' => array(),
 );
-
-?>

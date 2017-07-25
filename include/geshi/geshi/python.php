@@ -43,7 +43,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Python',
     'COMMENT_SINGLE' => array(1 => '#'),
     'COMMENT_MULTI' => array(),
@@ -52,7 +52,6 @@ $language_data = array (
     'QUOTEMARKS' => array('"""', '"', "'"),
     'ESCAPE_CHAR' => '\\',
     'KEYWORDS' => array(
-
         /*
         ** Set 1: reserved words
         ** http://python.org/doc/current/ref/keywords.html
@@ -60,7 +59,7 @@ $language_data = array (
         1 => array(
             'and', 'del', 'for', 'is', 'raise', 'assert', 'elif', 'from', 'lambda', 'return', 'break',
             'else', 'global', 'not', 'try', 'class', 'except', 'if', 'or', 'while', 'continue', 'exec',
-            'import', 'pass', 'yield', 'def', 'finally', 'in', 'print', 'with', 'as'
+            'import', 'pass', 'yield', 'def', 'finally', 'in', 'print', 'with', 'as',
             ),
 
         /*
@@ -91,7 +90,7 @@ $language_data = array (
             // self: this is a common python convention (but not a reserved word)
             'self',
             // other
-            'any', 'all'
+            'any', 'all',
             ),
 
         /*
@@ -130,7 +129,7 @@ $language_data = array (
             'wave', 'weakref', 'webbrowser', 'whichdb', 'whrandom', 'winsound', 'xdrlib', 'xml',
             'xmllib', 'xmlrpclib', 'zipfile', 'zipimport', 'zlib',
             // Python 3.0
-            'bytes', 'bytearray'
+            'bytes', 'bytearray',
             ),
 
         /*
@@ -161,69 +160,69 @@ $language_data = array (
             '__len__', '__getitem__', '__setitem__', '__delitem__', '__iter__', '__contains__',
             '__getslice__', '__setslice__', '__delslice__',
             // Numeric types: http://python.org/doc/current/ref/numeric-types.html
-            '__abs__','__add__','__and__','__coerce__','__div__','__divmod__','__float__',
-            '__hex__','__iadd__','__isub__','__imod__','__idiv__','__ipow__','__iand__',
-            '__ior__','__ixor__', '__ilshift__','__irshift__','__invert__','__int__',
-            '__long__','__lshift__',
-            '__mod__','__mul__','__neg__','__oct__','__or__','__pos__','__pow__',
-            '__radd__','__rdiv__','__rdivmod__','__rmod__','__rpow__','__rlshift__','__rrshift__',
-            '__rshift__','__rsub__','__rmul__','__rand__','__rxor__','__ror__',
-            '__sub__','__xor__'
-            )
+            '__abs__', '__add__', '__and__', '__coerce__', '__div__', '__divmod__', '__float__',
+            '__hex__', '__iadd__', '__isub__', '__imod__', '__idiv__', '__ipow__', '__iand__',
+            '__ior__', '__ixor__', '__ilshift__', '__irshift__', '__invert__', '__int__',
+            '__long__', '__lshift__',
+            '__mod__', '__mul__', '__neg__', '__oct__', '__or__', '__pos__', '__pow__',
+            '__radd__', '__rdiv__', '__rdivmod__', '__rmod__', '__rpow__', '__rlshift__', '__rrshift__',
+            '__rshift__', '__rsub__', '__rmul__', '__rand__', '__rxor__', '__ror__',
+            '__sub__', '__xor__',
+            ),
         ),
     'SYMBOLS' => array(
-            '(', ')', '[', ']', '{', '}', '*', '&', '%', '!', ';', '<', '>', '?', '`'
+            '(', ')', '[', ']', '{', '}', '*', '&', '%', '!', ';', '<', '>', '?', '`',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
         1 => true,
         2 => true,
         3 => true,
-        4 => true
+        4 => true,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
             1 => 'color: #ff7700;font-weight:bold;',    // Reserved
             2 => 'color: #008000;',                        // Built-ins + self
             3 => 'color: #dc143c;',                        // Standard lib
-            4 => 'color: #0000cd;'                        // Special methods
+            4 => 'color: #0000cd;',                        // Special methods
             ),
         'COMMENTS' => array(
             1 => 'color: #808080; font-style: italic;',
-            'MULTI' => 'color: #808080; font-style: italic;'
+            'MULTI' => 'color: #808080; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: black;'
+            0 => 'color: black;',
             ),
         'STRINGS' => array(
-            0 => 'color: #483d8b;'
+            0 => 'color: #483d8b;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #ff4500;'
+            0 => 'color: #ff4500;',
             ),
         'METHODS' => array(
-            1 => 'color: black;'
+            1 => 'color: black;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #66cc66;'
+            0 => 'color: #66cc66;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
         3 => '',
-        4 => ''
+        4 => '',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 => '.'
+        1 => '.',
         ),
     'REGEXPS' => array(
         ),
@@ -231,7 +230,5 @@ $language_data = array (
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
-        )
+        ),
 );
-
-?>

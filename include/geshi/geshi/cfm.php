@@ -37,7 +37,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'ColdFusion',
     'COMMENT_SINGLE' => array(1 => '//'),
     'COMMENT_MULTI' => array('/*' => '*/'),
@@ -68,7 +68,7 @@ $language_data = array (
             'cfset', 'cfsetting', 'cfsilent', 'cfstoredproc',
             'cfswitch', 'cftable', 'cftextarea', 'cfthrow', 'cftimer',
             'cftrace', 'cftransaction', 'cftree', 'cftreeitem', 'cftry',
-            'cfupdate', 'cfwddx'
+            'cfupdate', 'cfwddx',
             ),
         /* HTML Tags */
         2 => array(
@@ -130,58 +130,58 @@ $language_data = array (
             'tabindex', 'target', 'text', 'title', 'type',
             'usemap',
             'valign', 'value', 'valuetype', 'version', 'vlink', 'vspace',
-            'width'
+            'width',
             ),
         /* CFM Script delimeters */
         4 => array(
-            'var', 'function', 'while', 'if','else'
+            'var', 'function', 'while', 'if', 'else',
             ),
         /* CFM Functions */
         5 => array(
-            'Abs', 'GetFunctionList', 'LSTimeFormat','ACos','GetGatewayHelper','LTrim','AddSOAPRequestHeader','GetHttpRequestData',
-            'Max','AddSOAPResponseHeader','GetHttpTimeString','Mid','ArrayAppend','GetLocale','Min','ArrayAvg','GetLocaleDisplayName',
-            'Minute','ArrayClear','GetMetaData','Month','ArrayDeleteAt','GetMetricData','MonthAsString','ArrayInsertAt','GetPageContext',
-            'Now','ArrayIsEmpty','GetProfileSections','NumberFormat','ArrayLen','GetProfileString','ParagraphFormat','ArrayMax',
-            'GetLocalHostIP','ParseDateTime','ArrayMin','GetSOAPRequest','Pi','ArrayNew','GetSOAPRequestHeader','PreserveSingleQuotes',
-            'ArrayPrepend','GetSOAPResponse','Quarter','ArrayResize','GetSOAPResponseHeader','QueryAddColumn','ArraySet',
-            'GetTempDirectory','QueryAddRow','ArraySort','QueryNew','ArraySum','GetTempFile','QuerySetCell',
-            'ArraySwap','GetTickCount','QuotedValueList','ArrayToList','GetTimeZoneInfo','Rand','Asc','GetToken','Randomize',
-            'ASin','Hash','RandRange','Atn','Hour','REFind','BinaryDecode','HTMLCodeFormat','REFindNoCase','BinaryEncode',
-            'HTMLEditFormat','ReleaseComObject','BitAnd','IIf','RemoveChars','BitMaskClear','IncrementValue','RepeatString',
-            'BitMaskRead','InputBaseN','Replace','BitMaskSet','Insert','ReplaceList','BitNot','Int','ReplaceNoCase','BitOr',
-            'IsArray','REReplace','BitSHLN','IsBinary','REReplaceNoCase','BitSHRN','IsBoolean','Reverse','BitXor','IsCustomFunction',
-            'Right','Ceiling','IsDate','RJustify','CharsetDecode','IsDebugMode','Round','CharsetEncode','IsDefined','RTrim',
-            'Chr','IsLeapYear','Second','CJustify','IsLocalHost','SendGatewayMessage','Compare','IsNumeric','SetEncoding',
-            'CompareNoCase','IsNumericDate','SetLocale','Cos','IsObject','SetProfileString','CreateDate','IsQuery','SetVariable',
-            'CreateDateTime','IsSimpleValue','Sgn','CreateObject','IsSOAPRequest','Sin','CreateODBCDate','IsStruct','SpanExcluding',
-            'CreateODBCDateTime','IsUserInRole','SpanIncluding','CreateODBCTime','IsValid','Sqr','CreateTime','IsWDDX','StripCR',
-            'CreateTimeSpan','IsXML','StructAppend','CreateUUID','IsXmlAttribute','StructClear','DateAdd','IsXmlDoc','StructCopy',
-            'DateCompare','IsXmlElem','StructCount','DateConvert','IsXmlNode','StructDelete','DateDiff','IsXmlRoot','StructFind',
-            'DateFormat','JavaCast','StructFindKey','DatePart','JSStringFormat','StructFindValue','Day','LCase','StructGet',
-            'DayOfWeek','Left','StructInsert','DayOfWeekAsString','Len','StructIsEmpty','DayOfYear','ListAppend','StructKeyArray',
-            'DaysInMonth','ListChangeDelims','StructKeyExists','DaysInYear','ListContains','StructKeyList','DE','ListContainsNoCase',
-            'StructNew','DecimalFormat','ListDeleteAt','StructSort','DecrementValue','ListFind','StructUpdate','Decrypt','ListFindNoCase',
-            'Tan','DecryptBinary','ListFirst','TimeFormat','DeleteClientVariable','ListGetAt','ToBase64','DirectoryExists',
-            'ListInsertAt','ToBinary','DollarFormat','ListLast','ToScript','Duplicate','ListLen','ToString','Encrypt','ListPrepend',
-            'Trim','EncryptBinary','ListQualify','UCase','Evaluate','ListRest','URLDecode','Exp','ListSetAt','URLEncodedFormat',
-            'ExpandPath','ListSort','URLSessionFormat','FileExists','ListToArray','Val','Find','ListValueCount','ValueList',
-            'FindNoCase','ListValueCountNoCase','Week','FindOneOf','LJustify','Wrap','FirstDayOfMonth','Log','WriteOutput',
-            'Fix','Log10','XmlChildPos','FormatBaseN','LSCurrencyFormat','XmlElemNew','GetAuthUser','LSDateFormat','XmlFormat',
-            'GetBaseTagData','LSEuroCurrencyFormat','XmlGetNodeType','GetBaseTagList','LSIsCurrency','XmlNew','GetBaseTemplatePath',
-            'LSIsDate','XmlParse','GetClientVariablesList','LSIsNumeric','XmlSearch','GetCurrentTemplatePath','LSNumberFormat',
-            'XmlTransform','GetDirectoryFromPath','LSParseCurrency','XmlValidate','GetEncoding','LSParseDateTime','Year',
-            'GetException','LSParseEuroCurrency','YesNoFormat','GetFileFromPath','LSParseNumber'
+            'Abs', 'GetFunctionList', 'LSTimeFormat', 'ACos', 'GetGatewayHelper', 'LTrim', 'AddSOAPRequestHeader', 'GetHttpRequestData',
+            'Max', 'AddSOAPResponseHeader', 'GetHttpTimeString', 'Mid', 'ArrayAppend', 'GetLocale', 'Min', 'ArrayAvg', 'GetLocaleDisplayName',
+            'Minute', 'ArrayClear', 'GetMetaData', 'Month', 'ArrayDeleteAt', 'GetMetricData', 'MonthAsString', 'ArrayInsertAt', 'GetPageContext',
+            'Now', 'ArrayIsEmpty', 'GetProfileSections', 'NumberFormat', 'ArrayLen', 'GetProfileString', 'ParagraphFormat', 'ArrayMax',
+            'GetLocalHostIP', 'ParseDateTime', 'ArrayMin', 'GetSOAPRequest', 'Pi', 'ArrayNew', 'GetSOAPRequestHeader', 'PreserveSingleQuotes',
+            'ArrayPrepend', 'GetSOAPResponse', 'Quarter', 'ArrayResize', 'GetSOAPResponseHeader', 'QueryAddColumn', 'ArraySet',
+            'GetTempDirectory', 'QueryAddRow', 'ArraySort', 'QueryNew', 'ArraySum', 'GetTempFile', 'QuerySetCell',
+            'ArraySwap', 'GetTickCount', 'QuotedValueList', 'ArrayToList', 'GetTimeZoneInfo', 'Rand', 'Asc', 'GetToken', 'Randomize',
+            'ASin', 'Hash', 'RandRange', 'Atn', 'Hour', 'REFind', 'BinaryDecode', 'HTMLCodeFormat', 'REFindNoCase', 'BinaryEncode',
+            'HTMLEditFormat', 'ReleaseComObject', 'BitAnd', 'IIf', 'RemoveChars', 'BitMaskClear', 'IncrementValue', 'RepeatString',
+            'BitMaskRead', 'InputBaseN', 'Replace', 'BitMaskSet', 'Insert', 'ReplaceList', 'BitNot', 'Int', 'ReplaceNoCase', 'BitOr',
+            'IsArray', 'REReplace', 'BitSHLN', 'IsBinary', 'REReplaceNoCase', 'BitSHRN', 'IsBoolean', 'Reverse', 'BitXor', 'IsCustomFunction',
+            'Right', 'Ceiling', 'IsDate', 'RJustify', 'CharsetDecode', 'IsDebugMode', 'Round', 'CharsetEncode', 'IsDefined', 'RTrim',
+            'Chr', 'IsLeapYear', 'Second', 'CJustify', 'IsLocalHost', 'SendGatewayMessage', 'Compare', 'IsNumeric', 'SetEncoding',
+            'CompareNoCase', 'IsNumericDate', 'SetLocale', 'Cos', 'IsObject', 'SetProfileString', 'CreateDate', 'IsQuery', 'SetVariable',
+            'CreateDateTime', 'IsSimpleValue', 'Sgn', 'CreateObject', 'IsSOAPRequest', 'Sin', 'CreateODBCDate', 'IsStruct', 'SpanExcluding',
+            'CreateODBCDateTime', 'IsUserInRole', 'SpanIncluding', 'CreateODBCTime', 'IsValid', 'Sqr', 'CreateTime', 'IsWDDX', 'StripCR',
+            'CreateTimeSpan', 'IsXML', 'StructAppend', 'CreateUUID', 'IsXmlAttribute', 'StructClear', 'DateAdd', 'IsXmlDoc', 'StructCopy',
+            'DateCompare', 'IsXmlElem', 'StructCount', 'DateConvert', 'IsXmlNode', 'StructDelete', 'DateDiff', 'IsXmlRoot', 'StructFind',
+            'DateFormat', 'JavaCast', 'StructFindKey', 'DatePart', 'JSStringFormat', 'StructFindValue', 'Day', 'LCase', 'StructGet',
+            'DayOfWeek', 'Left', 'StructInsert', 'DayOfWeekAsString', 'Len', 'StructIsEmpty', 'DayOfYear', 'ListAppend', 'StructKeyArray',
+            'DaysInMonth', 'ListChangeDelims', 'StructKeyExists', 'DaysInYear', 'ListContains', 'StructKeyList', 'DE', 'ListContainsNoCase',
+            'StructNew', 'DecimalFormat', 'ListDeleteAt', 'StructSort', 'DecrementValue', 'ListFind', 'StructUpdate', 'Decrypt', 'ListFindNoCase',
+            'Tan', 'DecryptBinary', 'ListFirst', 'TimeFormat', 'DeleteClientVariable', 'ListGetAt', 'ToBase64', 'DirectoryExists',
+            'ListInsertAt', 'ToBinary', 'DollarFormat', 'ListLast', 'ToScript', 'Duplicate', 'ListLen', 'ToString', 'Encrypt', 'ListPrepend',
+            'Trim', 'EncryptBinary', 'ListQualify', 'UCase', 'Evaluate', 'ListRest', 'URLDecode', 'Exp', 'ListSetAt', 'URLEncodedFormat',
+            'ExpandPath', 'ListSort', 'URLSessionFormat', 'FileExists', 'ListToArray', 'Val', 'Find', 'ListValueCount', 'ValueList',
+            'FindNoCase', 'ListValueCountNoCase', 'Week', 'FindOneOf', 'LJustify', 'Wrap', 'FirstDayOfMonth', 'Log', 'WriteOutput',
+            'Fix', 'Log10', 'XmlChildPos', 'FormatBaseN', 'LSCurrencyFormat', 'XmlElemNew', 'GetAuthUser', 'LSDateFormat', 'XmlFormat',
+            'GetBaseTagData', 'LSEuroCurrencyFormat', 'XmlGetNodeType', 'GetBaseTagList', 'LSIsCurrency', 'XmlNew', 'GetBaseTemplatePath',
+            'LSIsDate', 'XmlParse', 'GetClientVariablesList', 'LSIsNumeric', 'XmlSearch', 'GetCurrentTemplatePath', 'LSNumberFormat',
+            'XmlTransform', 'GetDirectoryFromPath', 'LSParseCurrency', 'XmlValidate', 'GetEncoding', 'LSParseDateTime', 'Year',
+            'GetException', 'LSParseEuroCurrency', 'YesNoFormat', 'GetFileFromPath', 'LSParseNumber',
             ),
         /* CFM Attributes */
         6 => array(
-            'dbtype','connectstring','datasource','username','password','query','delimeter','description','required','hint','default','access','from','to','list','index'
+            'dbtype', 'connectstring', 'datasource', 'username', 'password', 'query', 'delimeter', 'description', 'required', 'hint', 'default', 'access', 'from', 'to', 'list', 'index',
             ),
         7 => array(
-            'EQ', 'GT', 'LT', 'GTE', 'LTE', 'IS', 'LIKE', 'NEQ'
-            )
+            'EQ', 'GT', 'LT', 'GTE', 'LTE', 'IS', 'LIKE', 'NEQ',
+            ),
         ),
     'SYMBOLS' => array(
-        '/', '=', '{', '}', '(', ')', '[', ']', '<', '>', '&'
+        '/', '=', '{', '}', '(', ')', '[', ']', '<', '>', '&',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -191,7 +191,7 @@ $language_data = array (
         4 => false,
         5 => false,
         6 => false,
-        7 => false
+        7 => false,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
@@ -201,28 +201,28 @@ $language_data = array (
             4 => 'color: #000000; font-weight: bold;',
             5 => 'color: #0000FF;',
             6 => 'color: #0000FF;',
-            7 => 'color: #0000FF;'
+            7 => 'color: #0000FF;',
             ),
         'COMMENTS' => array(
             1 => 'color: #808080; font-style: italic;',
-            'MULTI' => 'color: #808080; font-style: italic;'
+            'MULTI' => 'color: #808080; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #0000FF;'
+            0 => 'color: #0000FF;',
             ),
         'STRINGS' => array(
-            0 => 'color: #009900;'
+            0 => 'color: #009900;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #FF0000;'
+            0 => 'color: #FF0000;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #0000FF;'
+            0 => 'color: #0000FF;',
             ),
         'SCRIPT' => array(
             0 => 'color: #808080; font-style: italic;',
@@ -230,10 +230,10 @@ $language_data = array (
             2 => 'color: #0000FF;',
             3 => 'color: #000099;',
             4 => 'color: #333333;',
-            5 => 'color: #333333;'
+            5 => 'color: #333333;',
             ),
         'REGEXPS' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
@@ -242,7 +242,7 @@ $language_data = array (
         4 => '',
         5 => '',
         6 => '',
-        7 => ''
+        7 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -252,19 +252,19 @@ $language_data = array (
     'STRICT_MODE_APPLIES' => GESHI_ALWAYS,
     'SCRIPT_DELIMITERS' => array(
         0 => array(
-            '<!--' => '-->'
+            '<!--' => '-->',
             ),
         1 => array(
-            '<!DOCTYPE' => '>'
+            '<!DOCTYPE' => '>',
             ),
         2 => "/(?!<#)(?:(?:##)*)(#)[a-zA-Z0-9_\.\(\)]+(#)/",
         3 => array(
-            '<cfscript>' => '</cfscript>'
+            '<cfscript>' => '</cfscript>',
             ),
         4 => array(
-            '<' => '>'
+            '<' => '>',
             ),
-        5 => '/((?!<!)<)(?:"[^"]*"|\'[^\']*\'|(?R)|[^">])+?(>)/si'
+        5 => '/((?!<!)<)(?:"[^"]*"|\'[^\']*\'|(?R)|[^">])+?(>)/si',
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
         0 => false,
@@ -272,7 +272,7 @@ $language_data = array (
         2 => true,
         3 => true,
         4 => true,
-        5 => true
+        5 => true,
         ),
     'PARSER_CONTROL' => array(
         'KEYWORDS' => array(
@@ -291,9 +291,7 @@ $language_data = array (
             7 => array(
                 'DISALLOWED_BEFORE' => '(?<![a-zA-Z0-9\$_\|\#>&|^])', // allow ; before keywords
                 'DISALLOWED_AFTER' => '(?![a-zA-Z0-9_\|%\\-])', // allow & after keywords
-                )
-            )
-        )
+                ),
+            ),
+        ),
 );
-
-?>

@@ -59,10 +59,10 @@
  *
 
  ************************************************************************************/
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Microsoft Registry',
-    'COMMENT_SINGLE' => array(1 =>';'),
-    'COMMENT_MULTI' => array( ),
+    'COMMENT_SINGLE' => array(1 => ';'),
+    'COMMENT_MULTI' => array(),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
     'QUOTEMARKS' => array(),
     'ESCAPE_CHAR' => '',
@@ -77,41 +77,41 @@ $language_data = array (
             'HKEY_USERS',
             'HKEY_CURRENT_CONFIG',
             'HKEY_DYN_DATA',
-            'HKLM', 'HKCR', 'HKCU', 'HKU', 'HKCC', 'HKDD'
-            )
+            'HKLM', 'HKCR', 'HKCU', 'HKU', 'HKCC', 'HKDD',
+            ),
         ),
     'SYMBOLS' => array(
-        '='
+        '=',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
 //        1 => false,
 //        2 => false,
-        3 => false
+        3 => false,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
 //            1 => 'color: #00CCFF;',
 //            2 => 'color: #0000FF;',
-            3 => 'color: #800000;'
+            3 => 'color: #800000;',
             ),
         'COMMENTS' => array(
-            1 => 'color: #009900;'
+            1 => 'color: #009900;',
             ),
         'ESCAPE_CHAR' => array(
             ),
         'BRACKETS' => array(
-            0 => 'color: #000000;'
+            0 => 'color: #000000;',
             ),
         'STRINGS' => array(
-            0 => 'color: #009900;'
+            0 => 'color: #009900;',
             ),
         'NUMBERS' => array(
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #000000;'
+            0 => 'color: #000000;',
             ),
         'SCRIPT' => array(
             ),
@@ -125,12 +125,12 @@ $language_data = array (
             6 => '',
             7 => '',
             8 => 'color: #FF6600;',
-            )
+            ),
         ),
     'URLS' => array(
 //        1 => '',
 //        2 => '',
-        3 => ''
+        3 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -142,7 +142,7 @@ $language_data = array (
             GESHI_REPLACE => '\\3',
             GESHI_MODIFIERS => '',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => '\\5'
+            GESHI_AFTER => '\\5',
 //            GESHI_CLASS => 'kw1'
             ),
         // Highlight File Format Header Version 5
@@ -152,7 +152,7 @@ $language_data = array (
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '\\1',
             GESHI_AFTER => '\\3',
-            GESHI_CLASS => 'geshi_registry_header'
+            GESHI_CLASS => 'geshi_registry_header',
             ),
         // Highlight File Format Header Version 4
         2 => array(
@@ -161,7 +161,7 @@ $language_data = array (
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '\\1',
             GESHI_AFTER => '\\3',
-            GESHI_CLASS => 'geshi_registry_header'
+            GESHI_CLASS => 'geshi_registry_header',
             ),
         // Highlight dword: 32 bit integer values
         3 => array(
@@ -169,7 +169,7 @@ $language_data = array (
             GESHI_REPLACE => '\\2',
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '\\1',
-            GESHI_AFTER => '\\3'
+            GESHI_AFTER => '\\3',
 //            GESHI_CLASS => 'kw2'
             ),
         // Highlight variable names
@@ -179,7 +179,7 @@ $language_data = array (
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '\\1',
             GESHI_AFTER => '\\3',
-            GESHI_CLASS => 'geshi_variable'
+            GESHI_CLASS => 'geshi_variable',
             ),
         // Highlight String Values
         5 => array(
@@ -188,7 +188,7 @@ $language_data = array (
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '\\1',
             GESHI_AFTER => '\\3',
-            GESHI_CLASS => 'st0'
+            GESHI_CLASS => 'st0',
             ),
         // Highlight Hexadecimal Values (Single-Line and Multi-Line)
         6 => array(
@@ -197,7 +197,7 @@ $language_data = array (
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '\\1',
             GESHI_AFTER => '',
-            GESHI_CLASS => 'kw2'
+            GESHI_CLASS => 'kw2',
             ),
         // Highlight Default Variable
         7 => array(
@@ -206,7 +206,7 @@ $language_data = array (
             GESHI_MODIFIERS => 'm',
             GESHI_BEFORE => '\\1',
             GESHI_AFTER => '\\3',
-            GESHI_CLASS => 'geshi_variable'
+            GESHI_CLASS => 'geshi_variable',
             ),
         // Highlight GUID's found anywhere.
         8 => array(
@@ -215,8 +215,8 @@ $language_data = array (
             GESHI_MODIFIERS => 'i',
             GESHI_BEFORE => '',
             GESHI_AFTER => '',
-            GESHI_CLASS => 'geshi_guid'
-            )
+            GESHI_CLASS => 'geshi_guid',
+            ),
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(
@@ -226,8 +226,6 @@ $language_data = array (
     'PARSER_CONTROL' => array(
         'ENABLE_FLAGS' => array(
             'NUMBERS' => GESHI_NEVER,
-        )
-    )
+        ),
+    ),
 );
-
-?>

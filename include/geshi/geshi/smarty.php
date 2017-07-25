@@ -37,7 +37,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Smarty',
     'COMMENT_SINGLE' => array(),
     'COMMENT_MULTI' => array('{*' => '*}'),
@@ -58,7 +58,7 @@ $language_data = array (
         3 => array(
             'counter', 'cycle', 'debug', 'eval', 'html_checkboxes', 'html_image', 'html_options',
             'html_radios', 'html_select_date', 'html_select_time', 'html_table', 'math', 'mailto', 'popup_init',
-            'popup', 'textformat'
+            'popup', 'textformat',
             ),
         4 => array(
             '$template_dir', '$compile_dir', '$config_dir', '$plugins_dir', '$debugging', '$debug_tpl',
@@ -67,7 +67,7 @@ $language_data = array (
             '$config_booleanize', '$config_read_hidden', '$config_fix_newlines', '$default_template_handler_func',
             '$php_handling', '$security', '$secure_dir', '$security_settings', '$trusted_dir', '$left_delimiter',
             '$right_delimiter', '$compiler_class', '$request_vars_order', '$request_use_auto_globals',
-            '$error_reporting', '$compile_id', '$use_sub_dirs', '$default_modifiers', '$default_resource_type'
+            '$error_reporting', '$compile_id', '$use_sub_dirs', '$default_modifiers', '$default_resource_type',
             ),
         5 => array(
             'append', 'append_by_ref', 'assign', 'assign_by_ref', 'clear_all_assign', 'clear_all_cache',
@@ -77,22 +77,22 @@ $language_data = array (
             'register_modifier', 'register_object', 'register_outputfilter', 'register_postfilter',
             'register_prefilter', 'register_resource', 'trigger_error', 'template_exists', 'unregister_block',
             'unregister_compiler_function', 'unregister_function', 'unregister_modifier', 'unregister_object',
-            'unregister_outputfilter', 'unregister_postfilter', 'unregister_prefilter', 'unregister_resource'
+            'unregister_outputfilter', 'unregister_postfilter', 'unregister_prefilter', 'unregister_resource',
             ),
         6 => array(
             'name', 'file', 'scope', 'global', 'key', 'once', 'script',
-            'loop', 'start', 'step', 'max', 'show', 'values', 'value', 'from', 'item'
+            'loop', 'start', 'step', 'max', 'show', 'values', 'value', 'from', 'item',
             ),
         7 => array(
-            'eq', 'neq', 'ne', 'lte', 'gte', 'ge', 'le', 'not', 'mod'
+            'eq', 'neq', 'ne', 'lte', 'gte', 'ge', 'le', 'not', 'mod',
             ),
         8 => array(
             // some common php functions
-            'isset', 'is_array', 'empty', 'count', 'sizeof'
-            )
+            'isset', 'is_array', 'empty', 'count', 'sizeof',
+            ),
         ),
     'SYMBOLS' => array(
-        '/', '=', '==', '!=', '>', '<', '>=', '<=', '!', '%'
+        '/', '=', '==', '!=', '>', '<', '>=', '<=', '!', '%',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -103,7 +103,7 @@ $language_data = array (
         5 => false,
         6 => false,
         7 => false,
-        8 => false
+        8 => false,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
@@ -114,37 +114,37 @@ $language_data = array (
             5 => 'color: #008000;',        //Methods
             6 => 'color: #6A0A0A;',        //Attributes
             7 => 'color: #D36900;',        //Text-based symbols
-            8 => 'color: #0600FF;'        //php functions
+            8 => 'color: #0600FF;',        //php functions
             ),
         'COMMENTS' => array(
-            'MULTI' => 'color: #008080; font-style: italic;'
+            'MULTI' => 'color: #008080; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #D36900;'
+            0 => 'color: #D36900;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #cc66cc;'
+            0 => 'color: #cc66cc;',
             ),
         'METHODS' => array(
-            1 => 'color: #006600;'
+            1 => 'color: #006600;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #D36900;'
+            0 => 'color: #D36900;',
             ),
         'SCRIPT' => array(
             0 => '',
             1 => 'color: #808080; font-style: italic;',
-            2 => 'color: #009000;'
+            2 => 'color: #009000;',
             ),
         'REGEXPS' => array(
-            0 => 'color: #00aaff;'
-            )
+            0 => 'color: #00aaff;',
+            ),
         ),
     'URLS' => array(
         1 => 'http://smarty.php.net/{FNAMEL}',
@@ -154,39 +154,37 @@ $language_data = array (
         5 => 'http://smarty.php.net/{FNAMEL}',
         6 => '',
         7 => 'http://smarty.php.net/{FNAMEL}',
-        8 => ''
+        8 => '',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 => '.'
+        1 => '.',
         ),
     'REGEXPS' => array(
         // variables
-        0 => '\$[a-zA-Z][a-zA-Z0-9_]*'
+        0 => '\$[a-zA-Z][a-zA-Z0-9_]*',
         ),
     'STRICT_MODE_APPLIES' => GESHI_ALWAYS,
     'SCRIPT_DELIMITERS' => array(
         0 => array(
-            '{' => '}'
+            '{' => '}',
             ),
         1 => array(
             '<!--' => '-->',
         ),
         2 => array(
-            '<' => '>'
-            )
+            '<' => '>',
+            ),
     ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
         0 => true,
         1 => false,
-        2 => false
+        2 => false,
     ),
     'PARSER_CONTROL' => array(
         'KEYWORDS' => array(
             'DISALLOWED_BEFORE' => "(?<![a-zA-Z0-9\$_\|\#;>|^])",
-            'DISALLOWED_AFTER' => "(?![a-zA-Z0-9_<\|%\\-&])"
-        )
-    )
+            'DISALLOWED_AFTER' => "(?![a-zA-Z0-9_<\|%\\-&])",
+        ),
+    ),
 );
-
-?>

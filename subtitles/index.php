@@ -3,35 +3,39 @@
 //|search for subtiles on http://www.opensubtitles.org/    |\\
 //|made by putyn @tbdev 27/2/2009                          |\\
 //|--------------------------------------------------------|\\
-require_once("function_menu.php");
-require_once("functions.php");
+require_once 'function_menu.php';
+require_once 'functions.php';
 
-  $pager="";
-	$name = (isset($_GET["sub_name"]) ? $_GET["sub_name"] : "");
-		if($name)
-	$pager = "sub_name=".$name."&amp;";
-	$searchby = (isset($_GET["searchby"]) ? $_GET["searchby"] : "");
-		if($searchby)
-	$pager .="searchby=".$searchby."&amp;";
-	$lang = (isset($_GET["lang"]) ? $_GET["lang"] : "all");
-		if($lang)
-	$pager .="lang=".$lang."&amp;";
-	$fps = (isset($_GET["fps"]) ? $_GET["fps"] : "");
-		if($fps)
-	$pager .="fps=".$fls."&amp;";
-	$format = (isset($_GET["format"]) ? $_GET["format"] : "");
-		if($format)
-	$pager .="format=".$format."&amp;";
-	$cds = (isset($_GET["cds"]) ? 0+$_GET["cds"] : "");
-		if($cds)
-	$pager .="cds=".$cds."&amp;";
-	$offset = (isset($_GET["offset"]) ? 0+$_GET["offset"] : "");
-	
-		if($searchby == "name")
-	$name = str_replace(array(".","/","\"","!","-","+","_","@","#","$","%","&","^","(",")","*")," ",$name);
+  $pager = '';
+    $name = (isset($_GET['sub_name']) ? $_GET['sub_name'] : '');
+        if ($name) {
+            $pager = 'sub_name='.$name.'&amp;';
+        }
+    $searchby = (isset($_GET['searchby']) ? $_GET['searchby'] : '');
+        if ($searchby) {
+            $pager .= 'searchby='.$searchby.'&amp;';
+        }
+    $lang = (isset($_GET['lang']) ? $_GET['lang'] : 'all');
+        if ($lang) {
+            $pager .= 'lang='.$lang.'&amp;';
+        }
+    $fps = (isset($_GET['fps']) ? $_GET['fps'] : '');
+        if ($fps) {
+            $pager .= 'fps='.$fls.'&amp;';
+        }
+    $format = (isset($_GET['format']) ? $_GET['format'] : '');
+        if ($format) {
+            $pager .= 'format='.$format.'&amp;';
+        }
+    $cds = (isset($_GET['cds']) ? 0 + $_GET['cds'] : '');
+        if ($cds) {
+            $pager .= 'cds='.$cds.'&amp;';
+        }
+    $offset = (isset($_GET['offset']) ? 0 + $_GET['offset'] : '');
 
-	
-
+        if ($searchby == 'name') {
+            $name = str_replace(array('.', '/', '"', '!', '-', '+', '_', '@', '#', '$', '%', '&', '^', '(', ')', '*'), ' ', $name);
+        }
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -105,22 +109,22 @@ a:link, a:hover , a:visited {
   <table width="40%" cellpadding="10" border="1" cellspacing="0" style="border-collapse:collapse" align="center">
     <tr>
       <td nowrap="nowrap" align="center">Search </td>
-      <td align="left" colspan="7" nowrap="nowrap"><input type="text" name="sub_name" value="<?php echo ($name ? $name : "")?>" size="80" />
+      <td align="left" colspan="7" nowrap="nowrap"><input type="text" name="sub_name" value="<?php echo $name ? $name : ''?>" size="80" />
         &nbsp;by&nbsp;
         <select name="searchby">
-          <option value="name" <?php echo ($searchby == "name" ? "selected=\"selected\"" : "")?>>Name</option>
-          <option value="imdb" <?php echo ($searchby == "imdb" ? "selected=\"selected\"" : "")?>>IMDb id</option>
+          <option value="name" <?php echo $searchby == 'name' ? 'selected="selected"' : ''?>>Name</option>
+          <option value="imdb" <?php echo $searchby == 'imdb' ? 'selected="selected"' : ''?>>IMDb id</option>
         </select></td>
     </tr>
     <tr>
       <td nowrap="nowrap" align="center">Subtitle format</td>
-      <td><?php echo (build_menu("format",$format_menu,$format))?></td>
+      <td><?php echo build_menu('format', $format_menu, $format)?></td>
       <td nowrap="nowrap" align="center">Cds</td>
-      <td><?php echo (build_menu("cds",$cds_menu,$cds))?></td>
+      <td><?php echo build_menu('cds', $cds_menu, $cds)?></td>
       <td nowrap="nowrap" align="center">Language</td>
-      <td><?php echo (build_menu("lang",$lang_menu,$lang))?></td>
+      <td><?php echo build_menu('lang', $lang_menu, $lang)?></td>
       <td nowrap="nowrap" align="center">FPS</td>
-      <td><?php echo (build_menu("fps",$fps_menu,$fps))?></td>
+      <td><?php echo build_menu('fps', $fps_menu, $fps)?></td>
     </tr>
 	<tr><td align="center" colspan="8"><input type="submit" value="Search" /></td></tr>
   </table>
@@ -129,11 +133,10 @@ a:link, a:hover , a:visited {
 <br/>
 
 <?php
-	if(!empty($name))
-	{
-		$search= xmlconvert(requestXML($name,$searchby,$lang,$cds,$format,$fps,$offset));
-		print(build_result($search,"?".$pager));
-	}
+    if (!empty($name)) {
+        $search = xmlconvert(requestXML($name, $searchby, $lang, $cds, $format, $fps, $offset));
+        echo build_result($search, '?'.$pager);
+    }
 
 ?>
 </div>

@@ -38,7 +38,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'X++',
     'COMMENT_SINGLE' => array(1 => '//'),
     'COMMENT_MULTI' => array('/*' => '*/'),
@@ -55,7 +55,7 @@ $language_data = array (
             'date',
             'container',
             'boolean',
-            'anytype'
+            'anytype',
             ),
         2 => array( // Keywords
             'window',
@@ -100,7 +100,7 @@ $language_data = array (
             'breakpoint',
             'break',
             'at',
-            'abstract'
+            'abstract',
             ),
         3 => array( // Functions within the Axapta kernel
             'year',
@@ -304,7 +304,7 @@ $language_data = array (
             'any2date',
             'ansi2ascii',
             'acos',
-            'abs'
+            'abs',
             ),
         4 => array( // X++ SQL stuff
             'where',
@@ -345,8 +345,8 @@ $language_data = array (
             'delete_from',
             'count',
             'avg',
-            'asc'
-            )
+            'asc',
+            ),
         ),
     'SYMBOLS' => array( // X++ symbols
         '!',
@@ -369,60 +369,60 @@ $language_data = array (
         '[',
         ']',
         '{',
-        '}'
+        '}',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
         1 => false,
         2 => false,
         3 => false,
-        4 => false
+        4 => false,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
             1 => 'color: #0000ff;',
             2 => 'color: #0000ff;',
             3 => 'color: #0000ff;',
-            4 => 'color: #0000ff;'
+            4 => 'color: #0000ff;',
             ),
         'COMMENTS' => array(
             1 => 'color: #007f00;',
-            'MULTI' => 'color: #007f00; font-style: italic;'
+            'MULTI' => 'color: #007f00; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000000;'
+            0 => 'color: #000000;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #000000;'
+            0 => 'color: #000000;',
             ),
         'STRINGS' => array(
-            0 => 'color: #ff0000;'
+            0 => 'color: #ff0000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #000000;'
+            0 => 'color: #000000;',
             ),
         'METHODS' => array(
             1 => 'color: #000000;',
-            2 => 'color: #000000;'
+            2 => 'color: #000000;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #00007f;'
+            0 => 'color: #00007f;',
             ),
         'REGEXPS' => array(
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
         3 => '',
-        4 => ''
+        4 => '',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
         1 => '.',
-        2 => '::'
+        2 => '::',
         ),
     'REGEXPS' => array(
         ),
@@ -430,7 +430,5 @@ $language_data = array (
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
-        )
+        ),
 );
-
-?>

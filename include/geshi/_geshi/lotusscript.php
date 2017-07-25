@@ -5,7 +5,7 @@
  * Author: Richard Civil (info@richardcivil.net)
  * Copyright: (c) 2008 Richard Civil (info@richardcivil.net), Nigel McNie (http://qbnz.com/highlighter)
  * Release Version: 1.0.8.3
- * Date Started: 2008/04/12
+ * Date Started: 2008/04/12.
  *
  * LotusScript language file for GeSHi.
  *
@@ -36,18 +36,16 @@
  *   You should have received a copy of the GNU General Public License
  *   along with GeSHi; if not, write to the Free Software
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
  ************************************************************************************/
-
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'LotusScript',
     'COMMENT_SINGLE' => array(1 => "'"),
     'COMMENT_MULTI' => array('%REM' => '%END REM'),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
-    'QUOTEMARKS' => array('"' , "|"),
+    'QUOTEMARKS' => array('"', '|'),
     'ESCAPE_CHAR' => '',
     'KEYWORDS' => array(
-        1 => array (
+        1 => array(
             'Yield', 'Year', 'Xor', 'Write', 'With', 'Width', 'While', 'Wend',
             'Weekday', 'VarType', 'Variant', 'Val', 'UString', 'UString$',
             'UseLSX', 'Use', 'Until', 'Unlock', 'Unicode', 'Uni', 'UChr',
@@ -99,9 +97,9 @@ $language_data = array (
             'Atn', 'ASin', 'Asc', 'As', 'ArrayUnique', 'ArrayReplace',
             'ArrayGetIndex', 'ArrayAppend', 'Append', 'AppActivate', 'Any',
             'And', 'Alias', 'ActivateApp', 'ACos', 'Access', 'Abs', '%Include',
-            '%If', '%END', '%ElseIf', '%Else'
+            '%If', '%END', '%ElseIf', '%Else',
             ),
-        2 => array (
+        2 => array(
             'NotesXSLTransformer', 'NotesXMLProcessor', 'NotesViewNavigator',
             'NotesViewEntryCollection', 'NotesViewEntry', 'NotesViewColumn',
             'NotesView', 'NotesUIWorkspace', 'NotesUIView', 'NotesUIScheduler',
@@ -128,55 +126,55 @@ $language_data = array (
             'NotesDbDirectory', 'NotesDateTime', 'NotesDateRange',
             'NotesDatabase', 'NotesColorObject', 'NotesAgent',
             'NotesAdministrationProcess', 'NotesACLEntry', 'NotesACL',
-            'Navigator', 'Field', 'Button'
-            )
-        ) ,
+            'Navigator', 'Field', 'Button',
+            ),
+        ),
     'SYMBOLS' => array(
-        '(', ')'
+        '(', ')',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
         1 => false,
-        2 => false
+        2 => false,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
             1 => 'color: #0000FF;',
-            2 => 'color: #0000EE;'
+            2 => 'color: #0000EE;',
             ),
         'COMMENTS' => array(
-            1 => 'color: #008000;'
+            1 => 'color: #008000;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #000000;'
+            0 => 'color: #000000;',
             ),
         'STRINGS' => array(
-            0 => 'color: #000000;'
+            0 => 'color: #000000;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #FF00FF;'
+            0 => 'color: #FF00FF;',
             ),
         'METHODS' => array(
-            1 => 'color: #0000AA;'
+            1 => 'color: #0000AA;',
             ),
         'SYMBOLS' => array(
-            0 => 'color: #006600;'
+            0 => 'color: #006600;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099;'
+            0 => 'color: #000099;',
             ),
         'SCRIPT' => array(
             ),
         'REGEXPS' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
-        2 => ''
+        2 => '',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 => '.'
+        1 => '.',
         ),
     'REGEXPS' => array(
         ),
@@ -185,7 +183,5 @@ $language_data = array (
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
         ),
-    'TAB_WIDTH' => 2
+    'TAB_WIDTH' => 2,
 );
-
-?>

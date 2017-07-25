@@ -39,13 +39,13 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'OCaml',
     'COMMENT_SINGLE' => array(),
     'COMMENT_MULTI' => array('(*' => '*)'),
     'CASE_KEYWORDS' => 0,
     'QUOTEMARKS' => array('"'),
-    'ESCAPE_CHAR' => "",
+    'ESCAPE_CHAR' => '',
     'KEYWORDS' => array(
         /* main OCaml keywords */
         1 => array(
@@ -54,7 +54,7 @@ $language_data = array (
             'if', 'in', 'include', 'inherit',  'incr', 'land', 'let', 'load', 'los', 'lsl', 'lsr', 'lxor',
             'match', 'method', 'mod', 'module', 'mutable', 'new', 'not', 'of', 'open', 'option', 'or', 'parser',
             'private', 'ref', 'rec', 'raise', 'regexp', 'sig', 'struct', 'stdout', 'stdin', 'stderr', 'then',
-            'to', 'true', 'try', 'type', 'val', 'virtual', 'when', 'while', 'with'
+            'to', 'true', 'try', 'type', 'val', 'virtual', 'when', 'while', 'with',
             ),
         /* define names of main librarys, so we can link to it */
         2 => array(
@@ -64,7 +64,7 @@ $language_data = array (
             'Lazy', 'Lexing', 'List', 'ListLabels', 'Map', 'Marshal', 'MoreLabels', 'Mutex', 'Nativeint',
             'Num', 'Obj', 'Oo', 'Parsing', 'Pervasives', 'Printexc', 'Printf', 'Queue', 'Random', 'Scanf',
             'Set', 'Sort', 'Stack', 'StdLabels', 'Str', 'Stream', 'String', 'StringLabels', 'Sys', 'Thread',
-            'ThreadUnix', 'Tk'
+            'ThreadUnix', 'Tk',
             ),
         /* just link to the Pervasives functions library, cause it's the default opened library when starting OCaml */
         3 => array(
@@ -89,21 +89,21 @@ $language_data = array (
             'read_line', 'really_input', 'seek_in', 'seek_out',
             'set_binary_mode_in', 'set_binary_mode_out', 'sin', 'sinh', 'snd',
             'sqrt', 'string_of_bool', 'string_of_float', 'string_of_format',
-            'string_of_int', 'succ', 'tan', 'tanh', 'truncate'
+            'string_of_int', 'succ', 'tan', 'tanh', 'truncate',
             ),
         /* here Pervasives Types */
-        4 => array (
-            'fpclass', 'in_channel', 'out_channel', 'open_flag', 'Sys_error', 'format'
+        4 => array(
+            'fpclass', 'in_channel', 'out_channel', 'open_flag', 'Sys_error', 'format',
             ),
         /* finally Pervasives Exceptions */
-        5 => array (
-            'Exit', 'Invalid_Argument', 'Failure', 'Division_by_zero'
-            )
+        5 => array(
+            'Exit', 'Invalid_Argument', 'Failure', 'Division_by_zero',
+            ),
         ),
     /* highlighting symbols is really important in OCaml */
     'SYMBOLS' => array(
         ';', '!', ':', '.', '=', '%', '^', '*', '-', '/', '+',
-        '>', '<', '(', ')', '[', ']', '&', '|', '#', "'"
+        '>', '<', '(', ')', '[', ']', '&', '|', '#', "'",
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -111,7 +111,7 @@ $language_data = array (
         2 => true, /* functions name are case sensitive */
         3 => true, /* types name too */
         4 => true, /* pervasives types */
-        5 => true  /* pervasives exceptions */
+        5 => true,  /* pervasives exceptions */
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
@@ -119,32 +119,32 @@ $language_data = array (
             2 => 'color: #06c; font-weight: bold;', /* nice blue */
             3 => 'color: #06c; font-weight: bold;', /* nice blue */
             4 => 'color: #06c; font-weight: bold;', /* nice blue */
-            5 => 'color: #06c; font-weight: bold;' /* nice blue */
+            5 => 'color: #06c; font-weight: bold;', /* nice blue */
             ),
         'COMMENTS' => array(
-            'MULTI' => 'color: #5d478b; font-style: italic;' /* light purple */
+            'MULTI' => 'color: #5d478b; font-style: italic;', /* light purple */
             ),
         'ESCAPE_CHAR' => array(
             ),
         'BRACKETS' => array(
-            0 => 'color: #6c6;'
+            0 => 'color: #6c6;',
             ),
         'STRINGS' => array(
-            0 => 'color: #3cb371;' /* nice green */
+            0 => 'color: #3cb371;', /* nice green */
             ),
         'NUMBERS' => array(
-            0 => 'color: #c6c;' /* pink */
+            0 => 'color: #c6c;', /* pink */
             ),
         'METHODS' => array(
-            1 => 'color: #060;' /* dark green */
+            1 => 'color: #060;', /* dark green */
             ),
         'REGEXPS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #a52a2a;' /* maroon */
+            0 => 'color: #a52a2a;', /* maroon */
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         /* some of keywords are Pervasives functions (land, lxor, asr, ...) */
@@ -156,11 +156,11 @@ $language_data = array (
         /* link to Pervasives type */
         4 => 'http://caml.inria.fr/pub/docs/manual-ocaml/libref/Pervasives.html#TYPE{FNAME}',
         /* link to Pervasives exceptions */
-        5 => 'http://caml.inria.fr/pub/docs/manual-ocaml/libref/Pervasives.html#EXCEPTION{FNAME}'
+        5 => 'http://caml.inria.fr/pub/docs/manual-ocaml/libref/Pervasives.html#EXCEPTION{FNAME}',
         ),
     'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
-        1 => '.'
+        1 => '.',
         ),
     'REGEXPS' => array(
         ),
@@ -168,7 +168,5 @@ $language_data = array (
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
-        )
+        ),
 );
-
-?>

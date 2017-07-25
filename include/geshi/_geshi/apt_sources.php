@@ -34,7 +34,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'Apt sources',
     'COMMENT_SINGLE' => array(1 => '#'),
     'COMMENT_MULTI' => array(),
@@ -44,7 +44,7 @@ $language_data = array (
     'KEYWORDS' => array(
         /*keywords*/
         1 => array(
-            'deb-src', 'deb'
+            'deb-src', 'deb',
             ),
         2 => array(
             //Generic
@@ -65,12 +65,12 @@ $language_data = array (
             'feisty', 'feisty-updates', 'feisty-security', 'feisty-proposed', 'feisty-backports',
             'gutsy', 'gutsy-updates', 'gutsy-security', 'gutsy-proposed', 'gutsy-backports',
             'hardy', 'hardy-updates', 'hardy-security', 'hardy-proposed', 'hardy-backports',
-            'intrepid', 'intrepid-updates', 'intrepid-security', 'intrepid-proposed', 'intrepid-backports'
+            'intrepid', 'intrepid-updates', 'intrepid-security', 'intrepid-proposed', 'intrepid-backports',
             ),
         3 => array(
             'main', 'restricted', 'preview', 'contrib', 'non-free',
-            'commercial', 'universe', 'multiverse'
-            )
+            'commercial', 'universe', 'multiverse',
+            ),
     ),
     'REGEXPS' => array(
         0 => "(((http|ftp):\/\/|file:\/)[^\s]+)|(cdrom:\[[^\]]*\][^\s]*)",
@@ -81,13 +81,13 @@ $language_data = array (
         GESHI_COMMENTS => false,
         1 => false,
         2 => true,
-        3 => true
+        3 => true,
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
             1 => 'color: #00007f;',
             2 => 'color: #b1b100;',
-            3 => 'color: #b16000;'
+            3 => 'color: #b16000;',
             ),
         'COMMENTS' => array(
             1 => 'color: #adadad; font-style: italic;',
@@ -108,12 +108,12 @@ $language_data = array (
             0 => 'color: #009900;',
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
-        3 => ''
+        3 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -135,10 +135,8 @@ $language_data = array (
         ),
         'KEYWORDS' => array(
             'DISALLOWED_BEFORE' => '(?<![a-zA-Z0-9\$_\|\#;>|^\/])',
-            'DISALLOWED_AFTER' => '(?![a-zA-Z0-9_\|%\\-&\.])'
-        )
+            'DISALLOWED_AFTER' => '(?![a-zA-Z0-9_\|%\\-&\.])',
+        ),
     ),
-    'TAB_WIDTH' => 4
+    'TAB_WIDTH' => 4,
 );
-
-?>

@@ -1,13 +1,14 @@
 <?php
+
 // 09 poster mod
-$HTMLOUT .='
+$HTMLOUT .= '
  
 		<script src="/scripts/raphael-min.js"></script>
 		<script src="/scripts/icarousel.js"></script>
 <script src="/scripts/jquery.mousewheel.js"></script>
 <!--<script src="/scripts/test.js"></script>-->';
 
-$HTMLOUT.= '<script type="text/javascript" language="javascript">
+$HTMLOUT .= '<script type="text/javascript" language="javascript">
 /*<![CDATA[*/
 
 $(document).ready(function(){ $("#icarousel").iCarousel({
@@ -50,41 +51,37 @@ easing: "ease-in-out",
 }); });
 /*]]>*/
 </script>';
-	
 
-
-$HTMLOUT.= "<fieldset class='header'><legend>{$lang['index_latest']}</legend></fieldset>
+$HTMLOUT .= "<fieldset class='header'><legend>{$lang['index_latest']}</legend></fieldset>
     <div class='container-fluid'>";
-$HTMLOUT .='<div id="carousel-container" class="carousel-container">
+$HTMLOUT .= '<div id="carousel-container" class="carousel-container">
 <div id="icarousel" class="icarousel">';
-
 
 if (($scroll_torrents = $mc1->get_value('scroll_tor_')) === false) {
     $scroll = sql_query("SELECT id, seeders, leechers, name, poster FROM torrents WHERE seeders >= '1' ORDER BY added DESC LIMIT {$INSTALLER09['latest_torrents_limit_scroll']}") or sqlerr(__FILE__, __LINE__);
-    while ($scroll_torrent = mysqli_fetch_assoc($scroll)) $scroll_torrents[] = $scroll_torrent;
+    while ($scroll_torrent = mysqli_fetch_assoc($scroll)) {
+        $scroll_torrents[] = $scroll_torrent;
+    }
     $mc1->cache_value('scroll_tor_', $scroll_torrents, $INSTALLER09['expires']['scroll_torrents']);
 }
 
-
 if ($scroll_torrents) {
-        foreach ($scroll_torrents as $s_t) {
-            $i = $INSTALLER09['latest_torrents_limit_scroll'];
-            $id = (int)$s_t['id'];
-            $name = htmlsafechars($s_t['name']);
-			$poster = ($s_t['poster'] == '' ? ''.$INSTALLER09['pic_base_url'].'noposter.png' : htmlsafechars($s_t['poster']));
-            $seeders = number_format((int)$s_t['seeders']);
-            $leechers = number_format((int)$s_t['leechers']);
-            $name = str_replace('_', ' ', $name);
-            $name = str_replace('.', ' ', $name);
-            $name = substr($name, 0, 50);
+    foreach ($scroll_torrents as $s_t) {
+        $i = $INSTALLER09['latest_torrents_limit_scroll'];
+        $id = (int) $s_t['id'];
+        $name = htmlsafechars($s_t['name']);
+        $poster = ($s_t['poster'] == '' ? ''.$INSTALLER09['pic_base_url'].'noposter.png' : htmlsafechars($s_t['poster']));
+        $seeders = number_format((int) $s_t['seeders']);
+        $leechers = number_format((int) $s_t['leechers']);
+        $name = str_replace('_', ' ', $name);
+        $name = str_replace('.', ' ', $name);
+        $name = substr($name, 0, 50);
 
-            $HTMLOUT.= "<div class='slide'><a href='{$INSTALLER09['baseurl']}/details.php?id=$id'><img src='".htmlsafechars($poster)."' alt='{$name}' title='{$name} - {$lang['index_ltst_seeders']} : {$seeders} - {$lang['index_ltst_leechers']} : {$leechers}' width='200' height='350' border='0' /></a></div>";
-
+        $HTMLOUT .= "<div class='slide'><a href='{$INSTALLER09['baseurl']}/details.php?id=$id'><img src='".htmlsafechars($poster)."' alt='{$name}' title='{$name} - {$lang['index_ltst_seeders']} : {$seeders} - {$lang['index_ltst_leechers']} : {$leechers}' width='200' height='350' border='0' /></a></div>";
+    }
 }
 
-}
-
-$HTMLOUT .='
+$HTMLOUT .= '
 		</div>
 	</div></div>';
 

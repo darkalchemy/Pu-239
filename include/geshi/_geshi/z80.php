@@ -43,7 +43,7 @@
  *
  ************************************************************************************/
 
-$language_data = array (
+$language_data = array(
     'LANG_NAME' => 'ZiLOG Z80 Assembler',
     'COMMENT_SINGLE' => array(1 => ';'),
     'COMMENT_MULTI' => array(),
@@ -53,29 +53,29 @@ $language_data = array (
     'KEYWORDS' => array(
         /*CPU*/
         1 => array(
-            'adc','add','and','bit','call','ccf','cp','cpd','cpdr','cpir','cpi',
-            'cpl','daa','dec','di','djnz','ei','ex','exx','halt','im','in',
-            'in0','inc','ind','indr','inir','ini','jp','jr','ld','ldd','lddr',
-            'ldir','ldi','mlt','neg','nop','or','otdm','otdmr','otdr','otim',
-            'otimr','otir','out','out0','outd','outi','pop','push','res','ret',
-            'reti','retn','rl','rla','rlc','rlca','rld','rr','rra','rrc','rrca',
-            'rrd','rst','sbc','scf','set','sla','sl1','sll','slp','sra','srl',
-            'sub','tst','tstio','xor'
+            'adc', 'add', 'and', 'bit', 'call', 'ccf', 'cp', 'cpd', 'cpdr', 'cpir', 'cpi',
+            'cpl', 'daa', 'dec', 'di', 'djnz', 'ei', 'ex', 'exx', 'halt', 'im', 'in',
+            'in0', 'inc', 'ind', 'indr', 'inir', 'ini', 'jp', 'jr', 'ld', 'ldd', 'lddr',
+            'ldir', 'ldi', 'mlt', 'neg', 'nop', 'or', 'otdm', 'otdmr', 'otdr', 'otim',
+            'otimr', 'otir', 'out', 'out0', 'outd', 'outi', 'pop', 'push', 'res', 'ret',
+            'reti', 'retn', 'rl', 'rla', 'rlc', 'rlca', 'rld', 'rr', 'rra', 'rrc', 'rrca',
+            'rrd', 'rst', 'sbc', 'scf', 'set', 'sla', 'sl1', 'sll', 'slp', 'sra', 'srl',
+            'sub', 'tst', 'tstio', 'xor',
             ),
         /*registers*/
         2 => array(
-            'a','b','c','d','e','h','l',
-            'af','bc','de','hl','ix','iy','sp',
-            'af\'','ixh','ixl','iyh','iyl'
+            'a', 'b', 'c', 'd', 'e', 'h', 'l',
+            'af', 'bc', 'de', 'hl', 'ix', 'iy', 'sp',
+            'af\'', 'ixh', 'ixl', 'iyh', 'iyl',
             ),
         /*Directive*/
         3 => array(
-            '#define','#endif','#else','#ifdef','#ifndef','#include','#undef',
-            '.db','.dd','.df','.dq','.dt','.dw','.end','.org','equ'
+            '#define', '#endif', '#else', '#ifdef', '#ifndef', '#include', '#undef',
+            '.db', '.dd', '.df', '.dq', '.dt', '.dw', '.end', '.org', 'equ',
             ),
         ),
     'SYMBOLS' => array(
-        '[', ']', '(', ')', '?', '+', '-', '*', '/', '%', '$'
+        '[', ']', '(', ')', '?', '+', '-', '*', '/', '%', '$',
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
@@ -87,40 +87,40 @@ $language_data = array (
         'KEYWORDS' => array(
             1 => 'color: #0000ff; font-weight:bold;',
             2 => 'color: #0000ff;',
-            3 => 'color: #46aa03; font-weight:bold;'
+            3 => 'color: #46aa03; font-weight:bold;',
             ),
         'COMMENTS' => array(
             1 => 'color: #adadad; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
-            0 => 'color: #000099; font-weight: bold;'
+            0 => 'color: #000099; font-weight: bold;',
             ),
         'BRACKETS' => array(
-            0 => 'color: #0000ff;'
+            0 => 'color: #0000ff;',
             ),
         'STRINGS' => array(
-            0 => 'color: #7f007f;'
+            0 => 'color: #7f007f;',
             ),
         'NUMBERS' => array(
-            0 => 'color: #dd22dd;'
+            0 => 'color: #dd22dd;',
             ),
         'METHODS' => array(
             ),
         'SYMBOLS' => array(
-            0 => 'color: #008000;'
+            0 => 'color: #008000;',
             ),
         'REGEXPS' => array(
             0 => 'color: #22bbff;',
             1 => 'color: #22bbff;',
-            2 => 'color: #993333;'
+            2 => 'color: #993333;',
             ),
         'SCRIPT' => array(
-            )
+            ),
         ),
     'URLS' => array(
         1 => '',
         2 => '',
-        3 => ''
+        3 => '',
         ),
     'OOLANG' => false,
     'OBJECT_SPLITTERS' => array(
@@ -131,14 +131,12 @@ $language_data = array (
         //Binary numbers
         1 => '\%[01]{1,64}|[01]{1,64}[bB]?(?![^<]*>)',
         //Labels
-        2 => '^[_a-zA-Z][_a-zA-Z0-9]?\:'
+        2 => '^[_a-zA-Z][_a-zA-Z0-9]?\:',
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
         ),
-    'TAB_WIDTH' => 8
+    'TAB_WIDTH' => 8,
 );
-
-?>

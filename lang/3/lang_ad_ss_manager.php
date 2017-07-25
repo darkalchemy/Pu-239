@@ -1,4 +1,5 @@
 <?php
+
 //stylesheet manager lang file
 $lang = array(
     'text_incorrect' => 'Incorrect Acccess!',
@@ -40,6 +41,5 @@ $lang = array(
     'ss_see_used_by' => 'Show stylesheets used by users',
     'ss_normal_view' => 'Normal view',
     'ss_theme_corrupt' => 'Theme is corrupted.',
-    'ss_unable_delete_default' => "You can`t delete the default theme.",
+    'ss_unable_delete_default' => 'You can`t delete the default theme.',
 );
-

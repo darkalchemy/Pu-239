@@ -1,4 +1,5 @@
 <?php
+
 $refreshbutton = "<span><a class='btn btn-mini' href='shoutbox.php' target='shoutbox'><i class='icon-refresh'></i>&nbsp;{$lang['index_shoutbox_refresh']}</a></span>\n";
 $HTMLOUT .= "
     <fieldset class='header'><legend>{$lang['index_trivia']}</legend>

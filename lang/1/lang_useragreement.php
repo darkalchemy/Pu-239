@@ -1,8 +1,9 @@
 <?php
+
 $lang = array(
     //Misc
-    'stdhead_usragrmnt' => "User Agreement",
-    'frame_usragrmnt' => "user agreement",
+    'stdhead_usragrmnt' => 'User Agreement',
+    'frame_usragrmnt' => 'user agreement',
     //Texts
     'text_usragrmnt' => "Using this site means you accept its terms. Don't be put off by the legalese, but please read these terms and conditions of use carefully before using this website.  This user agreement is needed mostly to make sure that our good deed of putting all this great stuff on the net goes unpunished, and to emphasize that publication rights are not being given away. &quot;Look but don't touch.&quot;  The goal is for you to enjoy viewing these historic treasures on the {$INSTALLER09['site_name']} website, not to keep them locked away out of sight, but theft of content from this website will seriously anger our generous donors who have allowed their rare and valuable collections to be displayed here and will put our entire project in jeopardy,  so please contact us when we can be of help, or if you have ideas about how to do this better,  but please don't get mad at us for only being able to let you see these wonderful torrents until you obtain permission for other use as we attempt to deal as best we can with technological limitations, legal requirements, and our need to pay the bills to keep this site open, and don't send us a rant without first reading our rants page.  If you do not intend to be legally bound by these terms and conditions, please do not access or use this website.  That said, let the contract begin:
     <p></p>
@@ -93,6 +94,5 @@ ORDERS ONLY! - Use the above link to &quot;e-mail for permission&quot; only afte
     {$INSTALLER09['site_name']}, {$INSTALLER09['site_name']}., {$INSTALLER09['site_name']}.com, and {$INSTALLER09['site_name']}.net are trademarks and service marks of {$INSTALLER09['site_name']}.
     The &quot;{$INSTALLER09['site_name']}&quot; is the title of this publication only. 
     <p></p>
-    Copyright &copy; 2008, 2009 by {$INSTALLER09['site_name']}.  All rights reserved."
+    Copyright &copy; 2008, 2009 by {$INSTALLER09['site_name']}.  All rights reserved.",
 );
-

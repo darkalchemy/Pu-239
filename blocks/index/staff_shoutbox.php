@@ -1,13 +1,16 @@
 <?php
+
 // === Staff shoutbox 09
 if ($CURUSER['opt2'] & user_options_2::SHOW_STAFFSHOUT) {
     $commandbutton = $refreshbutton = $smilebutton = $custombutton = $staffsmiliebutton = '';
     if ($CURUSER['class'] >= UC_STAFF) {
-        $staffsmiliebutton.= "
+        $staffsmiliebutton .= "
 		 <span><a class='btn btn-mini' href=\"javascript:PopStaffSmiles('staff_shbox','staff_shbox_text')\"><i class='icon-wrench'></i>&nbsp;{$lang['index_shoutbox_ssmilies']}</a></span>";
     }
-    if (get_smile() != '0') $custombutton.= "
+    if (get_smile() != '0') {
+        $custombutton .= "
 		<span><a class='btn btn-mini' href=\"javascript:PopCustomSmiles('staff_shbox','staff_shbox_text')\"><i class='icon-barcode'></i>&nbsp;{$lang['index_shoutbox_csmilies']}</a></span>";
+    }
     if ($CURUSER['class'] >= UC_STAFF) {
         $commandbutton = "
 		<span><a class='btn btn-mini' href=\"javascript:popUp('shoutbox_commands.php')\"><i class='icon-cog'></i>&nbsp;{$lang['index_shoutbox_commands']}</a></span>\n";
@@ -16,13 +19,13 @@ if ($CURUSER['opt2'] & user_options_2::SHOW_STAFFSHOUT) {
 	<span><a class='btn btn-mini' href='staff_shoutbox.php' target='staff_shoutbox'><i class='icon-refresh'></i>&nbsp;{$lang['index_shoutbox_refresh']}</a></span>\n";
     $smilebutton = "
 	<span><a class='btn btn-mini' href=\"javascript:PopMoreSmiles('staff_shbox','staff_shbox_text')\"><i class='icon-plus-sign'></i>&nbsp;{$lang['index_shoutbox_smilies']}</a></span>\n";
-    $HTMLOUT.= "<form action='staff_shoutbox.php' method='get' target='staff_shoutbox' name='staff_shbox' onsubmit='staff_mysubmit()'>
+    $HTMLOUT .= "<form action='staff_shoutbox.php' method='get' target='staff_shoutbox' name='staff_shbox' onsubmit='staff_mysubmit()'>
    <fieldset class='header'><legend>{$lang['index_staff_shoutbox']}</legend>
    <span class='shouthis'>";
     if ($CURUSER['class'] >= UC_STAFF) {
-        $HTMLOUT.= "<a class='pull-right' href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=staff_shistory'><b><i class='icon-folder-open'></i>&nbsp;{$lang['index_shoutbox_history']}</b></a>";
+        $HTMLOUT .= "<a class='pull-right' href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=staff_shistory'><b><i class='icon-folder-open'></i>&nbsp;{$lang['index_shoutbox_history']}</b></a>";
     }
-    $HTMLOUT.= "</span>
+    $HTMLOUT .= "</span>
    
    <div class='container-fluid'>
    <iframe src='{$INSTALLER09['baseurl']}/staff_shoutbox.php' width='100%' height='200' name='staff_shoutbox' frameborder='0' marginwidth='0' marginheight='0'></iframe>
@@ -63,7 +66,7 @@ if ($CURUSER['opt2'] & user_options_2::SHOW_STAFFSHOUT) {
    </fieldset></form><hr />\n";
 }
 if (!($CURUSER['opt2'] & user_options_2::SHOW_STAFFSHOUT)) {
-    $HTMLOUT.= "<fieldset class='header'><legend><b>{$lang['index_staff_shoutbox']}&nbsp;</b></legend><div class='container'><a class='btn btn-mini' href='{$INSTALLER09['baseurl']}/staff_shoutbox.php?show_staffshout=1&amp;show_staff=yes'><i class='icon-ok'></i>[&nbsp;{$lang['index_shoutbox_open']}&nbsp;]</a></div></fieldset><hr />";
+    $HTMLOUT .= "<fieldset class='header'><legend><b>{$lang['index_staff_shoutbox']}&nbsp;</b></legend><div class='container'><a class='btn btn-mini' href='{$INSTALLER09['baseurl']}/staff_shoutbox.php?show_staffshout=1&amp;show_staff=yes'><i class='icon-ok'></i>[&nbsp;{$lang['index_shoutbox_open']}&nbsp;]</a></div></fieldset><hr />";
 }
 //==end 09 Staff shoutbox
 // End Class
