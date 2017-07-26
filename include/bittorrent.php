@@ -228,6 +228,7 @@ function userlogin()
             'torrentsperpage',
             'topicsperpage',
             'postsperpage',
+            'ajaxchat_height',
             'reputation',
             'dst_in_use',
             'auto_correct_dst',

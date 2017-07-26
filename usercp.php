@@ -402,6 +402,7 @@ elseif ($action == 'personal') {
     $HTMLOUT .= tr($lang['usercp_post_perpage'], "<input type='text' size='10' name='postsperpage' value='$CURUSER[postsperpage]' /> {$lang['usercp_default']}", 1);
     $HTMLOUT .= tr('Forum Sort Order', "<input type='radio' name='forum_sort' " . ($CURUSER['forum_sort'] == 'ASC' ? " checked='checked'" : '') . " value='ASC' />At Bottom <input type='radio' name='forum_sort' " . ($CURUSER['forum_sort'] != 'ASC' ? " checked='checked'" : '') . " value='DESC' />At Top<br />What order you want the posts to be listed in.", 1);
     $HTMLOUT .= tr($lang['usercp_stylesheet'], "<select name='stylesheet'>\n$stylesheets\n</select>", 1);
+    $HTMLOUT .= tr($lang['usercp_ajaxchat_height'], "<input type='text' size='10' name='ajaxchat_height' value='$CURUSER[ajaxchat_height]' /> {$lang['usercp_default']}", 1);
     $HTMLOUT .= tr($lang['usercp_gender'], "<input type='radio' name='gender'" . ($CURUSER['gender'] == 'Male' ? " checked='checked'" : '') . " value='Male' />{$lang['usercp_male']}
     <input type='radio' name='gender'" . ($CURUSER['gender'] == 'Female' ? " checked='checked'" : '') . " value='Female' />{$lang['usercp_female']}
     <input type='radio' name='gender'" . ($CURUSER['gender'] == 'N/A' ? " checked='checked'" : '') . " value='N/A' />{$lang['usercp_na']}", 1);

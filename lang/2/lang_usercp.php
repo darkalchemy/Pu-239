@@ -47,6 +47,7 @@ $lang = [
     'usercp_default'                     => '(0=use default setting)',
     'usercp_top_perpage'                 => 'Topics per page',
     'usercp_post_perpage'                => 'Posts per page',
+    'usercp_ajaxchat_height'             => 'AJAX Chat height',
     'usercp_view_avatars'                => 'View avatars',
     'usercp_view_signatures'             => 'View signatures',
     'usercp_low_bw'                      => '(Low bandwidth users might want to turn this off)',

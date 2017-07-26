@@ -1,8 +1,8 @@
 <?php
 
 $height = 600;
-if (!empty($CURUSER['shoutheight'])) {
-    $height = $CURUSER['shoutheight'];
+if (!empty($CURUSER['ajaxchat_height'])) {
+    $height = $CURUSER['ajaxchat_height'];
 }
 
 $HTMLOUT .= "

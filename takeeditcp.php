@@ -1,17 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/*
-+------------------------------------------------
-|   $Date$ 010810
-|   $Revision$ 2.0
-|   $Author$ Bigjoos
-|   $URL$
-|   $takeeditcp
-|
-+------------------------------------------------
-*/
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'page_verify.php';
@@ -302,7 +289,7 @@ elseif ($action == 'torrents') {
     $curuser_cache['notifs'] = $notifs;
     $user_cache['notifs'] = $notifs;
     //==
-    if (isset($_POST['torrentsperpage']) && (($torrentspp = min(100, 0 + $_POST['torrentsperpage'])) != $CURUSER['torrentsperpage'])) {
+    if (isset($_POST['torrentsperpage']) && (($torrentspp = min(100, (int) $_POST['torrentsperpage'])) != $CURUSER['torrentsperpage'])) {
         $updateset[] = "torrentsperpage = $torrentspp";
     }
     $curuser_cache['torrentsperpage'] = $torrentspp;
@@ -401,15 +388,20 @@ elseif ($action == 'personal') {
         $curuser_cache['stylesheet'] = $stylesheet;
         $user_cache['stylesheet'] = $stylesheet;
     }
-    if (isset($_POST['topicsperpage']) && (($topicspp = min(100, 0 + $_POST['topicsperpage'])) != $CURUSER['topicsperpage'])) {
+    if (isset($_POST['topicsperpage']) && (($topicspp = min(100, (int) $_POST['topicsperpage'])) != $CURUSER['topicsperpage'])) {
         $updateset[] = "topicsperpage = $topicspp";
         $curuser_cache['topicsperpage'] = $topicspp;
         $user_cache['topicsperpage'] = $topicspp;
     }
-    if (isset($_POST['postsperpage']) && (($postspp = min(100, 0 + $_POST['postsperpage'])) != $CURUSER['postsperpage'])) {
+    if (isset($_POST['postsperpage']) && (($postspp = min(100, (int) $_POST['postsperpage'])) != $CURUSER['postsperpage'])) {
         $updateset[] = "postsperpage = $postspp";
         $curuser_cache['postsperpage'] = $postspp;
         $user_cache['postsperpage'] = $postspp;
+    }
+    if (isset($_POST['ajaxchat_height']) && (($ajaxchat_heightpp = $_POST['ajaxchat_height']) != $CURUSER['ajaxchat_height'])) {
+        $updateset[] = "ajaxchat_height = $ajaxchat_heightpp";
+        $curuser_cache['ajaxchat_height'] = $ajaxchat_heightpp;
+        $user_cache['ajaxchat_height'] = $ajaxchat_heightpp;
     }
     if (isset($_POST['forum_sort']) && ($forum_sort = $_POST['forum_sort']) != $CURUSER['forum_sort']) {
         $updateset[] = 'forum_sort= ' . sqlesc($forum_sort);
@@ -423,9 +415,9 @@ elseif ($action == 'personal') {
     }
 
     if ($CURUSER['birthday'] == '0000-00-00') {
-        $year = isset($_POST['year']) ? 0 + $_POST['year'] : 0;
-        $month = isset($_POST['month']) ? 0 + $_POST['month'] : 0;
-        $day = isset($_POST['day']) ? 0 + $_POST['day'] : 0;
+        $year = isset($_POST['year']) ? (int) $_POST['year'] : 0;
+        $month = isset($_POST['month']) ? (int) $_POST['month'] : 0;
+        $day = isset($_POST['day']) ? (int) $_POST['day'] : 0;
         $birthday = date("$year.$month.$day");
         if ($year == '0000') {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_birth_year']);
