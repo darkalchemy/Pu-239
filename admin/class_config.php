@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
@@ -16,7 +16,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
     echo $HTMLOUT;
     exit();
 }
-require_once CLASS_DIR.'class_check.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_class_config'));
@@ -35,12 +35,12 @@ while ($ac = mysqli_fetch_assoc($pconf)) {
     $class_config[$ac['name']]['classcolor'] = $ac['classcolor'];
     $class_config[$ac['name']]['classpic'] = $ac['classpic'];
 }
-$possible_modes = array(
+$possible_modes = [
     'add',
     'edit',
     'remove',
     '',
-);
+];
 $mode = (isset($_GET['mode']) ? htmlsafechars($_GET['mode']) : '');
 if (!in_array($mode, $possible_modes)) {
     stderr($lang['classcfg_error'], $lang['classcfg_error1']);
@@ -62,16 +62,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $classcolor = str_replace('#', '', "$classcolor");
             $classpic = $post_data[3];
             if (isset($_POST[$c_name][0]) && (($value != $c_value) || ($classname != $c_classname) || ($classcolor != $c_classcolor) || ($classpic != $c_classpic))) {
-                $update[$c_name] = '('.sqlesc($c_name).','.sqlesc(is_array($value) ? join('|', $value) : $value).','.sqlesc(is_array($classname) ? join('|', $classname) : $classname).','.sqlesc(is_array($classcolor) ? join('|', $classcolor) : $classcolor).','.sqlesc(is_array($classpic) ? join('|', $classpic) : $classpic).')';
+                $update[$c_name] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($value) ? join('|', $value) : $value) . ',' . sqlesc(is_array($classname) ? join('|', $classname) : $classname) . ',' . sqlesc(is_array($classcolor) ? join('|', $classcolor) : $classcolor) . ',' . sqlesc(is_array($classpic) ? join('|', $classpic) : $classpic) . ')';
             }
         }
-        if (sql_query('INSERT INTO class_config(name,value,classname,classcolor,classpic) VALUES '.join(',', $update).' ON DUPLICATE KEY update value=values(value),classname=values(classname),classcolor=values(classcolor),classpic=values(classpic)')) { // need to change strut
+        if (sql_query('INSERT INTO class_config(name,value,classname,classcolor,classpic) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY update value=values(value),classname=values(classname),classcolor=values(classcolor),classpic=values(classpic)')) { // need to change strut
             $t = 'define(';
-            $configfile = '<'.$lang['classcfg_file_created'].date('M d Y H:i:s').$lang['classcfg_user_cfg'];
+            $configfile = '<' . $lang['classcfg_file_created'] . date('M d Y H:i:s') . $lang['classcfg_user_cfg'];
             $res = sql_query('SELECT * from class_config ORDER BY value  ASC');
             $the_names = $the_colors = $the_images = '';
             while ($arr = mysqli_fetch_assoc($res)) {
-                $configfile .= ''.$t."'$arr[name]', $arr[value]);\n";
+                $configfile .= '' . $t . "'$arr[name]', $arr[value]);\n";
             }
             unset($arr);
             $res = sql_query("SELECT * from class_config WHERE name NOT IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
@@ -79,10 +79,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             while ($arr = mysqli_fetch_assoc($res)) {
                 $the_names .= "$arr[name] => '$arr[classname]',";
                 $the_colors .= "$arr[name] => '$arr[classcolor]',";
-                $the_images .= "$arr[name] => ".'$INSTALLER09['."'pic_base_url'".']'.".'class/$arr[classpic]',";
+                $the_images .= "$arr[name] => " . '$INSTALLER09[' . "'pic_base_url'" . ']' . ".'class/$arr[classpic]',";
             }
             $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
-            $configfile .= "\n\n\n?".'>';
+            $configfile .= "\n\n\n?" . '>';
             $filenum = fopen('./cache/class_config.php', 'w');
             ftruncate($filenum, 0);
             fwrite($filenum, $configfile);
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($mode == 'add') {
         if (!empty($_POST['name']) && !empty($_POST['value']) && !empty($_POST['cname']) && !empty($_POST['color'])) {
             $name = isset($_POST['name']) ? htmlsafechars($_POST['name']) : stderr($lang['classcfg_error'], $lang['classcfg_error_class_name']);
-            $value = isset($_POST['value']) ? (int) $_POST['value'] : stderr($lang['classcfg_error'], $lang['classcfg_error_class_value']);
+            $value = isset($_POST['value']) ? (int)$_POST['value'] : stderr($lang['classcfg_error'], $lang['classcfg_error_class_value']);
             $r_name = isset($_POST['cname']) ? htmlsafechars($_POST['cname']) : stderr($lang['classcfg_error'], $lang['classcfg_error_class_value']);
             $color = isset($_POST['color']) ? htmlsafechars($_POST['color']) : '';
             $color = str_replace('#', '', "$color");
@@ -133,18 +133,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($value > UC_MAX) {
                 sql_query("UPDATE users SET class = class +1 where class = $old_max");
                 $result = sql_query('SELECT id, class FROM users');
-                $mc1->delete_value('shoutbox_');
-                $mc1->delete_value('staff_shoutbox_');
                 $result = sql_query('SELECT id, class FROM users');
                 while ($row = mysqli_fetch_assoc($result)) {
-                    $row1 = array();
+                    $row1 = [];
                     $row1[] = $row;
                     foreach ($row1 as $row2) {
-                        $mc1->begin_transaction('MyUser_'.$row2['id']);
-                        $mc1->update_row(false, array('class' => $row2['class']));
+                        $mc1->begin_transaction('MyUser_' . $row2['id']);
+                        $mc1->update_row(false, ['class' => $row2['class']]);
                         $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
-                        $mc1->begin_transaction('user'.$row2['id']);
-                        $mc1->update_row(false, array('class' => $row2['class']));
+                        $mc1->begin_transaction('user' . $row2['id']);
+                        $mc1->update_row(false, ['class' => $row2['class']]);
                         $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
                     }
                 }
@@ -159,29 +157,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     --$i;
                 }
 
-                $mc1->delete_value('shoutbox_');
-                $mc1->delete_value('staff_shoutbox_');
                 $result = sql_query('SELECT id, class FROM users');
                 while ($row = mysqli_fetch_assoc($result)) {
-                    $row1 = array();
+                    $row1 = [];
                     $row1[] = $row;
                     foreach ($row1 as $row2) {
-                        $mc1->begin_transaction('MyUser_'.$row2['id']);
-                        $mc1->update_row(false, array('class' => $row2['class']));
+                        $mc1->begin_transaction('MyUser_' . $row2['id']);
+                        $mc1->update_row(false, ['class' => $row2['class']]);
                         $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
-                        $mc1->begin_transaction('user'.$row2['id']);
-                        $mc1->update_row(false, array('class' => $row2['class']));
+                        $mc1->begin_transaction('user' . $row2['id']);
+                        $mc1->update_row(false, ['class' => $row2['class']]);
                         $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
                     }
                 }
             }
-            if (sql_query('INSERT INTO class_config (name, value,classname,classcolor,classpic) VALUES('.sqlesc($name).','.sqlesc($value).','.sqlesc($r_name).','.sqlesc($color).','.sqlesc($pic).')')) {
+            if (sql_query('INSERT INTO class_config (name, value,classname,classcolor,classpic) VALUES(' . sqlesc($name) . ',' . sqlesc($value) . ',' . sqlesc($r_name) . ',' . sqlesc($color) . ',' . sqlesc($pic) . ')')) {
                 $t = 'define(';
-                $configfile = '<'.$lang['classcfg_file_created'].date('M d Y H:i:s').$lang['classcfg_user_cfg'];
+                $configfile = '<' . $lang['classcfg_file_created'] . date('M d Y H:i:s') . $lang['classcfg_user_cfg'];
                 $res = sql_query('SELECT * from class_config ORDER BY value  ASC');
                 $the_names = $the_colors = $the_images = '';
                 while ($arr = mysqli_fetch_assoc($res)) {
-                    $configfile .= ''.$t."'$arr[name]', $arr[value]);\n";
+                    $configfile .= '' . $t . "'$arr[name]', $arr[value]);\n";
                 }
                 unset($arr);
                 $res = sql_query("SELECT * from class_config WHERE name NOT IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
@@ -189,10 +185,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 while ($arr = mysqli_fetch_assoc($res)) {
                     $the_names .= "$arr[name] => '$arr[classname]',";
                     $the_colors .= "$arr[name] => '$arr[classcolor]',";
-                    $the_images .= "$arr[name] => ".'$INSTALLER09['."'pic_base_url'".']'.".'class/$arr[classpic]',";
+                    $the_images .= "$arr[name] => " . '$INSTALLER09[' . "'pic_base_url'" . ']' . ".'class/$arr[classpic]',";
                 }
                 $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
-                $configfile .= "\n\n\n?".'>';
+                $configfile .= "\n\n\n?" . '>';
                 $filenum = fopen('./cache/class_config.php', 'w');
                 ftruncate($filenum, 0);
                 fwrite($filenum, $configfile);
@@ -239,28 +235,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             sql_query("UPDATE staffpanel SET av_class = av_class -1 where av_class = $i");
             ++$i;
         }
-        $mc1->delete_value('shoutbox_');
-        $mc1->delete_value('staff_shoutbox_');
         $result = sql_query('SELECT id, class FROM users');
         while ($row = mysqli_fetch_assoc($result)) {
-            $row1 = array();
+            $row1 = [];
             $row1[] = $row;
             foreach ($row1 as $row2) {
-                $mc1->begin_transaction('MyUser_'.$row2['id']);
-                $mc1->update_row(false, array('class' => $row2['class']));
+                $mc1->begin_transaction('MyUser_' . $row2['id']);
+                $mc1->update_row(false, ['class' => $row2['class']]);
                 $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
-                $mc1->begin_transaction('user'.$row2['id']);
-                $mc1->update_row(false, array('class' => $row2['class']));
+                $mc1->begin_transaction('user' . $row2['id']);
+                $mc1->update_row(false, ['class' => $row2['class']]);
                 $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
             }
         }
-        if (sql_query('DELETE FROM class_config WHERE name = '.sqlesc($name).'')) {
+        if (sql_query('DELETE FROM class_config WHERE name = ' . sqlesc($name) . '')) {
             $t = 'define(';
-            $configfile = '<'.$lang['classcfg_file_created'].date('M d Y H:i:s').$lang['classcfg_user_cfg'];
+            $configfile = '<' . $lang['classcfg_file_created'] . date('M d Y H:i:s') . $lang['classcfg_user_cfg'];
             $res = sql_query('SELECT * from class_config ORDER BY value  ASC');
             $the_names = $the_colors = $the_images = '';
             while ($arr = mysqli_fetch_assoc($res)) {
-                $configfile .= ''.$t."'$arr[name]', $arr[value]);\n";
+                $configfile .= '' . $t . "'$arr[name]', $arr[value]);\n";
             }
             unset($arr);
             $res = sql_query("SELECT * from class_config WHERE name NOT IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
@@ -268,10 +262,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             while ($arr = mysqli_fetch_assoc($res)) {
                 $the_names .= "$arr[name] => '$arr[classname]',";
                 $the_colors .= "$arr[name] => '$arr[classcolor]',";
-                $the_images .= "$arr[name] => ".'$INSTALLER09['."'pic_base_url'".']'.".'class/$arr[classpic]',";
+                $the_images .= "$arr[name] => " . '$INSTALLER09[' . "'pic_base_url'" . ']' . ".'class/$arr[classpic]',";
             }
             $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
-            $configfile .= "\n\n\n?".'>';
+            $configfile .= "\n\n\n?" . '>';
             $filenum = fopen('./cache/class_config.php', 'w');
             ftruncate($filenum, 0);
             fwrite($filenum, $configfile);
@@ -297,12 +291,12 @@ $res = sql_query("SELECT * from class_config WHERE name NOT IN ('UC_MIN','UC_MAX
 while ($arr = mysqli_fetch_assoc($res)) {
     $HTMLOUT .= "
 <tr>
-<td width='50%' class='table' align='left'>".htmlsafechars($arr['name'])."</td>
-<td class='table' align='center'><input type='text' name='".htmlsafechars($arr['name'])."[]' size='2' value='".(int) $arr['value']." 'readonly='readonly' /></td>
-<td class='table' align='center'><input type='text' name='".htmlsafechars($arr['name'])."[]' size='8' value='".htmlsafechars($arr['classname'])."' /></td>
-<td class='table' align='center'><input type='text' name='".htmlsafechars($arr['name'])."[]' size='8' value='#".htmlsafechars($arr['classcolor'])."' /></td>
-<td class='table' align='center'><input type='text' name='".htmlsafechars($arr['name'])."[]' size='8' value='".htmlsafechars($arr['classpic'])."' /></td>
-<td class='table' align='center'><form name='remove' action='staffpanel.php?tool=class_config&amp;mode=remove' method='post'><input type='hidden' name='remove' value='".htmlsafechars($arr['name'])."' /><input type='submit' value='{$lang['classcfg_class_remove']}' /></form></td>
+<td width='50%' class='table' align='left'>" . htmlsafechars($arr['name']) . "</td>
+<td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='2' value='" . (int)$arr['value'] . " 'readonly='readonly' /></td>
+<td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['classname']) . "' /></td>
+<td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='#" . htmlsafechars($arr['classcolor']) . "' /></td>
+<td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['classpic']) . "' /></td>
+<td class='table' align='center'><form name='remove' action='staffpanel.php?tool=class_config&amp;mode=remove' method='post'><input type='hidden' name='remove' value='" . htmlsafechars($arr['name']) . "' /><input type='submit' value='{$lang['classcfg_class_remove']}' /></form></td>
 </tr>";
 }
 $HTMLOUT .= '</table><br /><br /> ';
@@ -319,8 +313,8 @@ $res1 = sql_query("SELECT * from class_config WHERE name IN ('UC_MIN','UC_MAX','
 while ($arr1 = mysqli_fetch_assoc($res1)) {
     $HTMLOUT .= "
 <tr>
-<td width='50%' class='table' align='left'>".htmlsafechars($arr1['name'])."</td>
-<td class='table' align='center'><input type='text' name='".htmlsafechars($arr1['name'])."[]' size='2' value='".(int) $arr1['value']."' /></td>
+<td width='50%' class='table' align='left'>" . htmlsafechars($arr1['name']) . "</td>
+<td class='table' align='center'><input type='text' name='" . htmlsafechars($arr1['name']) . "[]' size='2' value='" . (int)$arr1['value'] . "' /></td>
 <td class='table' align='center'><form name='remove' action='staffpanel.php?tool=class_config&amp;mode=remove' method='post'></form></td>
 </tr>";
 }
@@ -344,4 +338,4 @@ $HTMLOUT .= "<h3>{$lang['classcfg_class_add']}</h3>
 				</tr>
 <tr><td colspan='5' class='table' align='center'><input type='submit' value='{$lang['classcfg_add_new']}' /></td></tr>
 </table></form>";
-echo stdhead($lang['classcfg_stdhead']).$HTMLOUT.stdfoot();
+echo stdhead($lang['classcfg_stdhead']) . $HTMLOUT . stdfoot();

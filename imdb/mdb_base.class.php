@@ -1,22 +1,22 @@
 <?php
- //############################################################################
- // PHP MovieAPI                                          (c) Itzchak Rehberg #
- // written by Itzchak Rehberg <izzysoft AT qumran DOT org>                   #
- // http://www.izzysoft.de/                                                   #
- // ------------------------------------------------------------------------- #
- // This program is free software; you can redistribute and/or modify it      #
- // under the terms of the GNU General Public License (see doc/LICENSE)       #
- //############################################################################
+//############################################################################
+// PHP MovieAPI                                          (c) Itzchak Rehberg #
+// written by Itzchak Rehberg <izzysoft AT qumran DOT org>                   #
+// http://www.izzysoft.de/                                                   #
+// ------------------------------------------------------------------------- #
+// This program is free software; you can redistribute and/or modify it      #
+// under the terms of the GNU General Public License (see doc/LICENSE)       #
+//############################################################################
 
- /* $Id: mdb_base.class.php 637 2013-12-02 07:11:19Z izzy $ */
+/* $Id: mdb_base.class.php 637 2013-12-02 07:11:19Z izzy $ */
 
-require_once dirname(__FILE__).'/browseremulator.class.php';
+require_once dirname(__FILE__) . '/browseremulator.class.php';
 if (defined('IMDBPHP_CONFIG')) {
     require_once IMDBPHP_CONFIG;
 } else {
-    require_once dirname(__FILE__).'/mdb_config.class.php';
+    require_once dirname(__FILE__) . '/mdb_config.class.php';
 }
-require_once dirname(__FILE__).'/mdb_request.class.php';
+require_once dirname(__FILE__) . '/mdb_request.class.php';
 
 //===============================================[ Definition of Constants ]===
 /* No access at all
@@ -41,6 +41,7 @@ define('MEDIUM_ACCESS', 2);
 define('FULL_ACCESS', 9);
 
 //===================================================[ The IMDB Base class ]===
+
 /** Accessing Movie information
  * @class mdb_base
  * @extends mdb_config
@@ -67,6 +68,57 @@ class mdb_base extends mdb_config
      * @class mdb_base
      * @attribute string lastServerResponse
      */
+    protected $months = ['January' => '01', 'February' => '02', 'March' => '03', 'April' => '04',
+                         'May'     => '05', 'June' => '06', 'July' => '07', 'August' => '08', 'September' => '09',
+                         'October' => '10', 'November' => '11', 'December' => '12',];
+
+    /** Initialize class
+     * @constructor mdb_base
+     *
+     * @param string id IMDBID to use for data retrieval
+     */
+    public function __construct($id)
+    {
+        parent::__construct();
+        $this->lastServerResponse = '';
+        if ($this->storecache && ($this->cache_expire > 0)) {
+            $this->purge();
+        }
+    }
+
+    //---------------------------------------------------------[ Debug helpers ]---
+
+    /** Check cache and purge outdated files
+     *  This method looks for files older than the cache_expire set in the
+     *  mdb_config and removes them.
+     *
+     * @method purge
+     */
+    public function purge()
+    {
+        if (is_dir($this->cachedir)) {
+            if (is_writable($this->cachedir)) {
+                $thisdir = dir($this->cachedir);
+                $now = time();
+                while ($file = $thisdir->read()) {
+                    if ($file != '.' && $file != '..') {
+                        $fname = $this->cachedir . $file;
+                        if (is_dir($fname)) {
+                            continue;
+                        }
+                        $mod = filemtime($fname);
+                        if ($mod && ($now - $mod > $this->cache_expire)) {
+                            unlink($fname);
+                        }
+                    }
+                }
+            } elseif (!empty($this->cachedir)) {
+                $this->debug_scalar('Cache directory (' . $this->cachedir . ') lacks write permission - purge aborted.');
+            }
+        } elseif (!empty($this->cachedir)) {
+            $this->debug_scalar("Cache directory ('" . $this->cachedir . "') does not exist - purge aborted.");
+        }
+    }
 
     /** Setting the IMDB fallback mode
      * @method set_pilot_imdbfill
@@ -99,34 +151,14 @@ class mdb_base extends mdb_config
         return $this->pilot_imdbfill;
     }
 
-    //---------------------------------------------------------[ Debug helpers ]---
-    public function debug_scalar($scalar)
-    {
-        if ($this->debug) {
-            echo "<b><font color='#ff0000'>$scalar</font></b><br>";
-        }
-    }
-
-    public function debug_object($object)
-    {
-        if ($this->debug) {
-            echo "<font color='#ff0000'><pre>";
-            print_r($object);
-            echo '</pre></font>';
-        }
-    }
+    //---------------------------------------------------------[ Other Helpers ]---
 
     public function debug_html($html)
     {
         if ($this->debug) {
-            echo "<b><font color='#ff0000'>".htmlentities($html).'</font></b><br>';
+            echo "<b><font color='#ff0000'>" . htmlentities($html) . '</font></b><br>';
         }
     }
-
-    //---------------------------------------------------------[ Other Helpers ]---
-    protected $months = array('January' => '01', 'February' => '02', 'March' => '03', 'April' => '04',
-           'May' => '05', 'June' => '06', 'July' => '07', 'August' => '08', 'September' => '09',
-           'October' => '10', 'November' => '11', 'December' => '12', );
 
     /** Get numerical value for month name
      * @method monthNo
@@ -142,6 +174,99 @@ class mdb_base extends mdb_config
 
     //-------------------------------------------------------------[ Open Page ]---
 
+    /** Retrieve the IMDB ID
+     * @method imdbid
+     *
+     * @return string id IMDBID currently used
+     */
+    public function imdbid()
+    {
+        return $this->imdbID;
+    }
+
+    /** Setup class for a new IMDB id
+     * @method setid
+     *
+     * @param string id IMDBID of the requested movie
+     */
+    public function setid($id)
+    {
+        if (!preg_match("/^\d{7}$/", $id)) {
+            $this->debug_scalar("<BR>setid: Invalid IMDB ID '$id'!<BR>");
+        }
+        $this->imdbID = $id;
+        $this->reset_vars();
+    }
+
+    /** Reset page vars
+     * @method protected reset_vars
+     */
+    protected function reset_vars()
+    {
+        return;
+    }
+
+    /** Load an IMDB page into the corresponding property (variable)
+     * @method protected openpage
+     *
+     * @param string wt internal name of the page
+     * @param optional string type whether its a "movie" (default) or a "person"
+     * @brief for derived projects' (Moviepilot, OFDB, ...) classes, you need to override this
+     */
+    protected function openpage($wt, $type = 'movie')
+    {
+        if (strlen($this->imdbID) != 7) {
+            $this->debug_scalar('not valid imdbID: ' . $this->imdbID . '<BR>' . strlen($this->imdbID));
+            $this->page[$wt] = 'cannot open page';
+
+            return;
+        }
+        $urlname = $this->set_pagename($wt);
+        if ($urlname === false) {
+            return;
+        }
+
+        if ($this->readCachedPage($wt, $this->imdbID)) {
+            return;
+        }
+
+        switch ($type) {
+            case 'person':
+                $url = 'http://' . $this->imdbsite . '/name/nm' . $this->imdbID . $urlname;
+                break;
+            default:
+                $url = 'http://' . $this->imdbsite . '/title/tt' . $this->imdbID . $urlname;
+        }
+        $this->getWebPage($wt, $url);
+
+        // Checking for redirects
+        if (@preg_match('|<TITLE>(.*)</TITLE>.*The document has moved <A HREF="(.*)">|iUms', $this->page[$wt], $match)) {
+            if ($match[1] == '302 Found') {
+                $this->getWebPage($wt, $match[2]);
+            }
+        }
+
+        if ($this->page[$wt] == 'cannot open page') {
+            return;
+        } // this should not go to the cache!
+        if ($this->page[$wt]) { //storecache
+            $this->writeCachedPage($wt, $this->imdbID);
+
+            return;
+        }
+        $this->page[$wt] = 'cannot open page';
+        $this->debug_scalar("cannot open page: $url");
+    }
+
+    public function debug_scalar($scalar)
+    {
+        if ($this->debug) {
+            echo "<b><font color='#ff0000'>$scalar</font></b><br>";
+        }
+    }
+
+    //-------------------------------------------------------[ Get current MID ]---
+
     /** Define page urls
      * @method protected set_pagename
      *
@@ -154,62 +279,7 @@ class mdb_base extends mdb_config
         return false;
     }
 
-    /** Obtain page from web server
-     * @method protected getWebPage
-     *
-     * @param string wt internal name of the page
-     * @param string url URL to open
-     */
-    protected function getWebPage($wt, $url)
-    {
-        $req = new MDB_Request('');
-        $req->setURL($url);
-        if ($req->sendRequest() !== false) {
-            $head = $req->getLastResponseHeaders();
-        } else ($head[0] = 'HTTP/1.1 000');
-        $response = explode(' ', $head[0]);
-        $this->lastServerResponse = $response[1];
-        switch (substr($head[0], 0, 12)) {
-      case 'HTTP/1.1 000':
-        $this->page[$wt] = 'cannot open page';
-        $this->debug_scalar("cannot open page (could not connect to host): $url");
-
-        return false; break;
-      case 'HTTP/1.1 404':
-        $this->page[$wt] = 'cannot open page';
-        $this->debug_scalar("cannot open page (error 404): $url");
-        $this->debug_object($response);
-
-        return false; break;
-      case 'HTTP/1.1 301': // permanent redirect
-      case 'HTTP/1.1 302': // found
-      case 'HTTP/1.1 303': // see other
-      case 'HTTP/1.1 307': // temporary redirect
-        // in all these cases, the correct URL is to be found in the 'Location:' header
-        foreach ($head as $headline) {
-            if (strpos(trim(strtolower($headline)), 'location') !== 0) {
-                continue;
-            }
-            $aline = explode(': ', $headline);
-            $target = trim($aline[1]);
-            $this->getWebPage($wt, $target);
-
-            return;
-        }
-        // echo "<pre>";print_r($head);echo "</pre>\n";
-        // $this->debug_object($response);
-        // no break
-      case 'HTTP/1.1 200': break;
-      default: $this->debug_scalar("HTTP response code not handled explicitly: '".$head[0]."'"); break;
-    }
-        $this->page[$wt] = $req->getResponseBody();
-        if (strpos(get_class($this), 'imdb') !== false && $this->imdb_utf8recode && function_exists('mb_detect_encoding')) {
-            $cur_encoding = mb_detect_encoding($this->page[$wt]);
-            if (!($cur_encoding == 'UTF-8' && mb_check_encoding($this->page[$wt], 'UTF-8'))) {
-                $this->page[$wt] = utf8_encode($this->page[$wt]);
-            }
-        }
-    }
+    //--------------------------------------------------[ Start (over) / Reset ]---
 
     /** Helper: Read a page from cache
      *  and stores it into the $this->page array.
@@ -234,161 +304,6 @@ class mdb_base extends mdb_config
         } // end cache
     }
 
-    /** Helper: Write a page to cache
-     *  after taking it from the $this->page array.
-     *
-     * @method protected writeCachedPage
-     *
-     * @param string wt internal name of the page
-     * @param mixed id ID of the record to be used for the file name (usually imdbID)
-     */
-    protected function writeCachedPage($wt, $id)
-    {
-        if ($this->storecache) {
-            $fname = "$id.$wt";
-            preg_match('!^(.+?)(_|$)!', get_class($this), $engine);
-            if ($engine[1] != 'imdb') {
-                $fname .= ".$engine[1]";
-            }
-            $this->cache_write($fname, $this->page[$wt]);
-        }
-    }
-
-    /** Load an IMDB page into the corresponding property (variable)
-     * @method protected openpage
-     *
-     * @param string wt internal name of the page
-     * @param optional string type whether its a "movie" (default) or a "person"
-     * @brief for derived projects' (Moviepilot, OFDB, ...) classes, you need to override this
-     */
-    protected function openpage($wt, $type = 'movie')
-    {
-        if (strlen($this->imdbID) != 7) {
-            $this->debug_scalar('not valid imdbID: '.$this->imdbID.'<BR>'.strlen($this->imdbID));
-            $this->page[$wt] = 'cannot open page';
-
-            return;
-        }
-        $urlname = $this->set_pagename($wt);
-        if ($urlname === false) {
-            return;
-        }
-
-        if ($this->readCachedPage($wt, $this->imdbID)) {
-            return;
-        }
-
-        switch ($type) {
-     case 'person': $url = 'http://'.$this->imdbsite.'/name/nm'.$this->imdbID.$urlname; break;
-     default: $url = 'http://'.$this->imdbsite.'/title/tt'.$this->imdbID.$urlname;
-   }
-        $this->getWebPage($wt, $url);
-
-        // Checking for redirects
-        if (@preg_match('|<TITLE>(.*)</TITLE>.*The document has moved <A HREF="(.*)">|iUms', $this->page[$wt], $match)) {
-            if ($match[1] == '302 Found') {
-                $this->getWebPage($wt, $match[2]);
-            }
-        }
-
-        if ($this->page[$wt] == 'cannot open page') {
-            return;
-        } // this should not go to the cache!
-   if ($this->page[$wt]) { //storecache
-     $this->writeCachedPage($wt, $this->imdbID);
-
-       return;
-   }
-        $this->page[$wt] = 'cannot open page';
-        $this->debug_scalar("cannot open page: $url");
-    }
-
-    //-------------------------------------------------------[ Get current MID ]---
-
-    /** Retrieve the IMDB ID
-     * @method imdbid
-     *
-     * @return string id IMDBID currently used
-     */
-    public function imdbid()
-    {
-        return $this->imdbID;
-    }
-
-    //--------------------------------------------------[ Start (over) / Reset ]---
-
-    /** Reset page vars
-     * @method protected reset_vars
-     */
-    protected function reset_vars()
-    {
-        return;
-    }
-
-    /** Setup class for a new IMDB id
-     * @method setid
-     *
-     * @param string id IMDBID of the requested movie
-     */
-    public function setid($id)
-    {
-        if (!preg_match("/^\d{7}$/", $id)) {
-            $this->debug_scalar("<BR>setid: Invalid IMDB ID '$id'!<BR>");
-        }
-        $this->imdbID = $id;
-        $this->reset_vars();
-    }
-
-    //-----------------------------------------------------------[ Constructor ]---
-
-    /** Initialize class
-     * @constructor mdb_base
-     *
-     * @param string id IMDBID to use for data retrieval
-     */
-    public function __construct($id)
-    {
-        parent::__construct();
-        $this->lastServerResponse = '';
-        if ($this->storecache && ($this->cache_expire > 0)) {
-            $this->purge();
-        }
-    }
-
-    //---------------------------------------------------------[ Cache Purging ]---
-
-    /** Check cache and purge outdated files
-     *  This method looks for files older than the cache_expire set in the
-     *  mdb_config and removes them.
-     *
-     * @method purge
-     */
-    public function purge()
-    {
-        if (is_dir($this->cachedir)) {
-            if (is_writable($this->cachedir)) {
-                $thisdir = dir($this->cachedir);
-                $now = time();
-                while ($file = $thisdir->read()) {
-                    if ($file != '.' && $file != '..') {
-                        $fname = $this->cachedir.$file;
-                        if (is_dir($fname)) {
-                            continue;
-                        }
-                        $mod = filemtime($fname);
-                        if ($mod && ($now - $mod > $this->cache_expire)) {
-                            unlink($fname);
-                        }
-                    }
-                }
-            } elseif (!empty($this->cachedir)) {
-                $this->debug_scalar('Cache directory ('.$this->cachedir.') lacks write permission - purge aborted.');
-            }
-        } elseif (!empty($this->cachedir)) {
-            $this->debug_scalar("Cache directory ('".$this->cachedir."') does not exist - purge aborted.");
-        }
-    }
-
     /** Read content from cache
      * @method cache_read
      *
@@ -397,9 +312,9 @@ class mdb_base extends mdb_config
      */
     public function cache_read($file, &$content)
     {
-        $fname = $this->cachedir.'/'.$file;
+        $fname = $this->cachedir . '/' . $file;
         if (!file_exists($fname)) {
-            $this->debug_scalar("cache_read: requested file '$file' not found in cache dir '".$this->cachedir."'");
+            $this->debug_scalar("cache_read: requested file '$file' not found in cache dir '" . $this->cachedir . "'");
             $content = '';
 
             return;
@@ -429,6 +344,101 @@ class mdb_base extends mdb_config
         }
     }
 
+    //-----------------------------------------------------------[ Constructor ]---
+
+    /** Obtain page from web server
+     * @method protected getWebPage
+     *
+     * @param string wt internal name of the page
+     * @param string url URL to open
+     */
+    protected function getWebPage($wt, $url)
+    {
+        $req = new MDB_Request('');
+        $req->setURL($url);
+        if ($req->sendRequest() !== false) {
+            $head = $req->getLastResponseHeaders();
+        } else ($head[0] = 'HTTP/1.1 000');
+        $response = explode(' ', $head[0]);
+        $this->lastServerResponse = $response[1];
+        switch (substr($head[0], 0, 12)) {
+            case 'HTTP/1.1 000':
+                $this->page[$wt] = 'cannot open page';
+                $this->debug_scalar("cannot open page (could not connect to host): $url");
+
+                return false;
+                break;
+            case 'HTTP/1.1 404':
+                $this->page[$wt] = 'cannot open page';
+                $this->debug_scalar("cannot open page (error 404): $url");
+                $this->debug_object($response);
+
+                return false;
+                break;
+            case 'HTTP/1.1 301': // permanent redirect
+            case 'HTTP/1.1 302': // found
+            case 'HTTP/1.1 303': // see other
+            case 'HTTP/1.1 307': // temporary redirect
+                // in all these cases, the correct URL is to be found in the 'Location:' header
+                foreach ($head as $headline) {
+                    if (strpos(trim(strtolower($headline)), 'location') !== 0) {
+                        continue;
+                    }
+                    $aline = explode(': ', $headline);
+                    $target = trim($aline[1]);
+                    $this->getWebPage($wt, $target);
+
+                    return;
+                }
+            // echo "<pre>";print_r($head);echo "</pre>\n";
+            // $this->debug_object($response);
+            // no break
+            case 'HTTP/1.1 200':
+                break;
+            default:
+                $this->debug_scalar("HTTP response code not handled explicitly: '" . $head[0] . "'");
+                break;
+        }
+        $this->page[$wt] = $req->getResponseBody();
+        if (strpos(get_class($this), 'imdb') !== false && $this->imdb_utf8recode && function_exists('mb_detect_encoding')) {
+            $cur_encoding = mb_detect_encoding($this->page[$wt]);
+            if (!($cur_encoding == 'UTF-8' && mb_check_encoding($this->page[$wt], 'UTF-8'))) {
+                $this->page[$wt] = utf8_encode($this->page[$wt]);
+            }
+        }
+    }
+
+    //---------------------------------------------------------[ Cache Purging ]---
+
+    public function debug_object($object)
+    {
+        if ($this->debug) {
+            echo "<font color='#ff0000'><pre>";
+            print_r($object);
+            echo '</pre></font>';
+        }
+    }
+
+    /** Helper: Write a page to cache
+     *  after taking it from the $this->page array.
+     *
+     * @method protected writeCachedPage
+     *
+     * @param string wt internal name of the page
+     * @param mixed id ID of the record to be used for the file name (usually imdbID)
+     */
+    protected function writeCachedPage($wt, $id)
+    {
+        if ($this->storecache) {
+            $fname = "$id.$wt";
+            preg_match('!^(.+?)(_|$)!', get_class($this), $engine);
+            if ($engine[1] != 'imdb') {
+                $fname .= ".$engine[1]";
+            }
+            $this->cache_write($fname, $this->page[$wt]);
+        }
+    }
+
     // end cache_read
 
     /** Writing content to cache
@@ -444,7 +454,7 @@ class mdb_base extends mdb_config
         } elseif (!is_writable($this->cachedir)) {
             $this->debug_scalar('<BR>***ERROR*** Configured cache directory lacks write permission!<BR>');
         } else {
-            $fname = $this->cachedir.'/'.$file;
+            $fname = $this->cachedir . '/' . $file;
             if ($this->usezip) {
                 $fp = gzopen($fname, 'w');
                 gzputs($fp, $content);

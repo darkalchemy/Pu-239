@@ -1,22 +1,24 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
+
 /* Chmod class
  * Original idea from here http://gr.php.net/manual/en/function.chmod.php#77163
  *
  * Changed accordingly and improved for a mod on TBDEV.NET by Alex2005
 */
+
 class Chmod
 {
     private $_dir;
-    private $_modes = array(
-        'owner' => 0,
-        'group' => 0,
+    private $_modes = [
+        'owner'  => 0,
+        'group'  => 0,
         'public' => 0,
-    );
+    ];
 
-    public function Chmod($dir, $OwnerModes = array(), $GroupModes = array(), $PublicModes = array())
+    public function Chmod($dir, $OwnerModes = [], $GroupModes = [], $PublicModes = [])
     {
         $this->_dir = $dir;
         $this->setOwnerModes($OwnerModes[0], $OwnerModes[1], $OwnerModes[2]);
@@ -27,21 +29,6 @@ class Chmod
     private function setOwnerModes($read, $write, $execute)
     {
         $this->_modes['owner'] = $this->setMode($read, $write, $execute);
-    }
-
-    private function setGroupModes($read, $write, $execute)
-    {
-        $this->_modes['group'] = $this->setMode($read, $write, $execute);
-    }
-
-    private function setPublicModes($read, $write, $execute)
-    {
-        $this->_modes['public'] = $this->setMode($read, $write, $execute);
-    }
-
-    private function getMode()
-    {
-        return $this->_modes['owner'].$this->_modes['group'].$this->_modes['public'];
     }
 
     private function setMode($read, $write, $execute)
@@ -60,25 +47,20 @@ class Chmod
         return $mode;
     }
 
-    private function returnValue($dir)
+    private function setGroupModes($read, $write, $execute)
     {
-        return is_dir($dir) ? array(
-            'chmod',
-            @chmod($dir, $this->getMode()),
-            $this->getMode(),
-            $dir,
-        ) : array(
-            'mkdir',
-            @mkdir($dir, $this->getMode()),
-            $this->getMode(),
-            $dir,
-        );
+        $this->_modes['group'] = $this->setMode($read, $write, $execute);
+    }
+
+    private function setPublicModes($read, $write, $execute)
+    {
+        $this->_modes['public'] = $this->setMode($read, $write, $execute);
     }
 
     public function setChmod()
     {
         if (is_array($this->_dir)) {
-            $return = array();
+            $return = [];
             foreach ($this->_dir as $dir) {
                 $return[] = $this->returnValue($dir);
             }
@@ -87,5 +69,25 @@ class Chmod
         } else {
             return $this->returnValue($this->_dir);
         }
+    }
+
+    private function returnValue($dir)
+    {
+        return is_dir($dir) ? [
+            'chmod',
+            @chmod($dir, $this->getMode()),
+            $this->getMode(),
+            $dir,
+        ] : [
+            'mkdir',
+            @mkdir($dir, $this->getMode()),
+            $this->getMode(),
+            $dir,
+        ];
+    }
+
+    private function getMode()
+    {
+        return $this->_modes['owner'] . $this->_modes['group'] . $this->_modes['public'];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 function docleanup($data)
 {
@@ -10,18 +10,19 @@ function docleanup($data)
     $dt = TIME_NOW;
     $subject = sqlesc('New Achievement Earned!');
     $points = rand(1, 3);
-    //Reset the daily shoutbox limits
+    //Reset the daily AJAX Chat limits
     sql_query("UPDATE `usersachiev` SET `dailyshouts` = '0'") or sqlerr(__FILE__, __LINE__);
     if ($queries > 0) {
         write_log("Achievements Cleanup:  Achievements dailyshouts reset Completed using $queries queries");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']).' items updated';
+        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items updated';
     }
     if ($data['clean_log']) {
         cleanup_log($data);
     }
 }
+
 function cleanup_log($data)
 {
     $text = sqlesc($data['clean_title']);

@@ -15,9 +15,9 @@
  *
  * @var array
  */
-$paths = array(
+$paths = [
     '/var/log/nginx/',
-);
+];
 
 /**
  * All possibles files for each type of log.
@@ -29,13 +29,13 @@ $paths = array(
  *
  * @var array
  */
-$files = array(
-    'error' => array(
+$files = [
+    'error'  => [
         'error.log',
         'error_log',
-    ),
-    'access' => array(
+    ],
+    'access' => [
         'access.log',
         'access_log',
-    ),
-);
+    ],
+];

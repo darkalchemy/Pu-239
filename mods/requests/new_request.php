@@ -4,13 +4,13 @@ if (!defined('IN_REQUESTS')) {
     exit('No direct script access allowed');
 }
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 $request = (isset($_POST['requesttitle']) ? $_POST['requesttitle'] : '');
 if ($request == '') {
     stderr("{$lang['error_error']}", "{$lang['error_title']}");
 }
-$cat = (isset($_POST['category']) ? (int) $_POST['category'] : 0);
+$cat = (isset($_POST['category']) ? (int)$_POST['category'] : 0);
 if (!is_valid_id($cat)) {
     stderr("{$lang['error_error']}", "{$lang['error_cat']}");
 }
@@ -28,22 +28,22 @@ if (!empty($_POST['picture'])) {
     //    $headers  = get_headers($picture2);
     //    if (strpos($headers[0], '200') === false)
     //        $picture = $INSTALLER09['baseurl'].'/pic/notfound.png';
-    $pic = '[img]'.$picture."[/img]\n";
+    $pic = '[img]' . $picture . "[/img]\n";
 }
 $descr = "$pic";
 $descr .= "$descrmain";
 $request2 = sqlesc($request);
 $descr = sqlesc($descr);
-sql_query("INSERT INTO requests (hits, userid, cat, request, descr, added) VALUES(1,$CURUSER[id], $cat, $request2, $descr, ".TIME_NOW.')') or sqlerr(__FILE__, __LINE__);
+sql_query("INSERT INTO requests (hits, userid, cat, request, descr, added) VALUES(1,$CURUSER[id], $cat, $request2, $descr, " . TIME_NOW . ')') or sqlerr(__FILE__, __LINE__);
 $id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
 sql_query("INSERT INTO voted_requests VALUES(0, $id, $CURUSER[id])") or sqlerr();
 if ($INSTALLER09['karma'] && isset($CURUSER['seedbonus'])) {
-    sql_query('UPDATE users SET seedbonus = seedbonus-'.$INSTALLER09['req_cost_bonus']." WHERE id = $CURUSER[id]") or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE users SET seedbonus = seedbonus-' . $INSTALLER09['req_cost_bonus'] . " WHERE id = $CURUSER[id]") or sqlerr(__FILE__, __LINE__);
 }
-write_log('Request ('.$request.") was added to the Request section by $CURUSER[username]");
+write_log('Request (' . $request . ") was added to the Request section by $CURUSER[username]");
 if ($INSTALLER09['autoshout_on'] == 1) {
     /** Shout announce **/
-    $message = " [b][color=blue]New request[/color][/b]  [url={$INSTALLER09['baseurl']}/viewrequests.php?id=$id&req_details] ".$request.'[/url]  ';
-    autoshout($message);
+    $msg = " [b][color=blue]New request[/color][/b]  [url={$INSTALLER09['baseurl']}/viewrequests.php?id=$id&req_details] " . $request . '[/url]  ';
+    autoshout($msg);
 }
 header("Refresh: 0; url=viewrequests.php?id=$id&req_details");

@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
@@ -16,50 +16,50 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
     echo $HTMLOUT;
     exit();
 }
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
-require_once INCL_DIR.'bbcode_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'bbcode_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $HTMLOUT = '';
-$stdhead = array(
+$stdhead = [
     /* include css **/
-    'css' => array(
+    'css' => [
         'forums',
         'style',
         'style2',
-    ),
-);
-$stdfoot = array(
+    ],
+];
+$stdfoot = [
     /* include js **/
-    'js' => array(
+    'js' => [
         'shout',
         'check_selected',
-    ),
-);
+    ],
+];
 $lang = array_merge($lang, load_language('ad_news'));
-$possible_modes = array(
+$possible_modes = [
     'add',
     'delete',
     'edit',
     'news',
-);
+];
 $mode = (isset($_GET['mode']) ? htmlsafechars($_GET['mode']) : '');
 if (!in_array($mode, $possible_modes)) {
     stderr($lang['news_error'], $lang['news_error_ruffian']);
 }
 //==Delete news
 if ($mode == 'delete') {
-    $newsid = (int) $_GET['newsid'];
+    $newsid = (int)$_GET['newsid'];
     if (!is_valid_id($newsid)) {
         stderr($lang['news_error'], $lang['news_del_invalid']);
     }
-    $hash = md5('the@@saltto66??'.$newsid.'add'.'@##mu55y==');
+    $hash = md5('the@@saltto66??' . $newsid . 'add' . '@##mu55y==');
     $sure = '';
     $sure = (isset($_GET['sure']) ? intval($_GET['sure']) : '');
     if (!$sure) {
-        stderr($lang['news_del_confirm'], $lang['news_del_click']."<a href='staffpanel.php?tool=news&amp;mode=delete&amp;sure=1&amp;h=$hash&amp;newsid=$newsid'>{$lang['news_del_here']}</a> {$lang['news_del_if']}", false);
+        stderr($lang['news_del_confirm'], $lang['news_del_click'] . "<a href='staffpanel.php?tool=news&amp;mode=delete&amp;sure=1&amp;h=$hash&amp;newsid=$newsid'>{$lang['news_del_here']}</a> {$lang['news_del_if']}", false);
     }
     if ($_GET['h'] != $hash) {
         stderr($lang['news_error'], $lang['news_del_what']);
@@ -67,13 +67,14 @@ if ($mode == 'delete') {
     function deletenewsid($newsid)
     {
         global $CURUSER, $mc1;
-        sql_query('DELETE FROM news WHERE id = '.sqlesc($newsid).' AND userid = '.sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+        sql_query('DELETE FROM news WHERE id = ' . sqlesc($newsid) . ' AND userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $mc1->delete_value('latest_news_');
     }
+
     $HTMLOUT .= deletenewsid($newsid);
     header('Refresh: 3; url=staffpanel.php?tool=news&mode=news');
     stderr($lang['news_success'], "<h2>{$lang['news_del_redir']}</h2>");
-    echo stdhead($lang['news_del_stdhead'], true, $stdhead).$HTMLOUT.stdfoot();
+    echo stdhead($lang['news_del_stdhead'], true, $stdhead) . $HTMLOUT . stdfoot();
     die;
 }
 //==Add news
@@ -92,18 +93,18 @@ if ($mode == 'add') {
     if (!$added) {
         $added = TIME_NOW;
     }
-    sql_query('INSERT INTO news (userid, added, body, title, sticky, anonymous) VALUES ('.sqlesc($CURUSER['id']).','.sqlesc($added).', '.sqlesc($body).', '.sqlesc($title).', '.sqlesc($sticky).', '.sqlesc($anonymous).')') or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO news (userid, added, body, title, sticky, anonymous) VALUES (' . sqlesc($CURUSER['id']) . ',' . sqlesc($added) . ', ' . sqlesc($body) . ', ' . sqlesc($title) . ', ' . sqlesc($sticky) . ', ' . sqlesc($anonymous) . ')') or sqlerr(__FILE__, __LINE__);
     $mc1->delete_value('latest_news_');
     header('Refresh: 3; url=staffpanel.php?tool=news&mode=news');
     mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 1 ? stderr($lang['news_success'], $lang['news_add_success']) : stderr($lang['news_add_oopss'], $lang['news_add_something']);
 }
 //==Edit/change news
 if ($mode == 'edit') {
-    $newsid = (int) $_GET['newsid'];
+    $newsid = (int)$_GET['newsid'];
     if (!is_valid_id($newsid)) {
         stderr($lang['news_error'], $lang['news_edit_invalid']);
     }
-    $res = sql_query('SELECT id, body, title, userid, added, anonymous, sticky FROM news WHERE id='.sqlesc($newsid)) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT id, body, title, userid, added, anonymous, sticky FROM news WHERE id=' . sqlesc($newsid)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) != 1) {
         stderr($lang['news_error'], $lang['news_edit_nonews']);
     }
@@ -119,7 +120,7 @@ if ($mode == 'edit') {
         if ($title == '') {
             stderr($lang['news_error'], $lang['news_edit_title']);
         }
-        sql_query('UPDATE news SET body='.sqlesc($body).', sticky='.sqlesc($sticky).', anonymous='.sqlesc($anonymous).', title='.sqlesc($title).' WHERE id='.sqlesc($newsid)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE news SET body=' . sqlesc($body) . ', sticky=' . sqlesc($sticky) . ', anonymous=' . sqlesc($anonymous) . ', title=' . sqlesc($title) . ' WHERE id=' . sqlesc($newsid)) or sqlerr(__FILE__, __LINE__);
         $mc1->delete_value('latest_news_');
         header('Refresh: 3; url=staffpanel.php?tool=news&mode=news');
         stderr($lang['news_success'], $lang['news_edit_success']);
@@ -127,16 +128,16 @@ if ($mode == 'edit') {
         $HTMLOUT .= "<h1>{$lang['news_edit_item']}</h1>
         <form method='post' name='compose' action='staffpanel.php?tool=news&amp;mode=edit&amp;newsid=$newsid'>
         <table border='1' cellspacing='0' cellpadding='5'>
-        <tr><td><input type='text' name='title' value='".htmlsafechars($arr['title'])."' /></td></tr>
+        <tr><td><input type='text' name='title' value='" . htmlsafechars($arr['title']) . "' /></td></tr>
         <tr><td align='left' style='padding: 0px'>
-         ".BBcode(htmlsafechars($arr['body']), false)."
+         " . BBcode(htmlsafechars($arr['body']), false) . "
         </td></tr>
-        <tr><td colspan='2' class='rowhead'>{$lang['news_sticky']}<input type='radio' ".($arr['sticky'] == 'yes' ? " checked='checked'" : '')." name='sticky' value='yes' />{$lang['news_yes']}<input name='sticky' type='radio' value='no' ".($arr['sticky'] == 'no' ? " checked='checked'" : '')." />{$lang['news_no']}</td></tr>
-        <tr><td colspan='2' class='rowhead'>{$lang['news_anonymous']}<input type='radio' ".($arr['anonymous'] == 'yes' ? " checked='checked'" : '')." name='anonymous' value='yes' />{$lang['news_yes']}<input name='anonymous' type='radio' value='no' ".($arr['anonymous'] == 'no' ? " checked='checked'" : '')." />{$lang['news_no']}</td></tr>
+        <tr><td colspan='2' class='rowhead'>{$lang['news_sticky']}<input type='radio' " . ($arr['sticky'] == 'yes' ? " checked='checked'" : '') . " name='sticky' value='yes' />{$lang['news_yes']}<input name='sticky' type='radio' value='no' " . ($arr['sticky'] == 'no' ? " checked='checked'" : '') . " />{$lang['news_no']}</td></tr>
+        <tr><td colspan='2' class='rowhead'>{$lang['news_anonymous']}<input type='radio' " . ($arr['anonymous'] == 'yes' ? " checked='checked'" : '') . " name='anonymous' value='yes' />{$lang['news_yes']}<input name='anonymous' type='radio' value='no' " . ($arr['anonymous'] == 'no' ? " checked='checked'" : '') . " />{$lang['news_no']}</td></tr>
         <tr><td colspan='2' align='center'><input type='submit' value='{$lang['news_okay']}' class='btn' /></td></tr>
         </table>
         </form>\n";
-        echo stdhead($lang['news_stdhead'], true, $stdhead).$HTMLOUT.stdfoot($stdfoot);
+        echo stdhead($lang['news_stdhead'], true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
         die;
     }
 }
@@ -149,29 +150,29 @@ if ($mode == 'news') {
     <h1>{$lang['news_submit_new']}</h1><table border='1' cellspacing='0' cellpadding='5'>
     <tr><td><input type='text' name='title' value='' /></td></tr>\n";
     $HTMLOUT .= "<tr>
-    <td align='left' style='padding: 0px'>".BBcode(false).'</td></tr>';
+    <td align='left' style='padding: 0px'>" . BBcode(false) . '</td></tr>';
     $HTMLOUT .= "<tr><td colspan='2' class='rowhead'>{$lang['news_sticky']}<input type='radio' checked='checked' name='sticky' value='yes' />{$lang['news_yes']}<input name='sticky' type='radio' value='no' />{$lang['news_no']}</td></tr><tr><td colspan='2' class='rowhead'>{$lang['news_anonymous']}<input type='radio' checked='checked' name='anonymous' value='yes' />{$lang['news_yes']}<input name='anonymous' type='radio' value='no' />{$lang['news_no']}</td></tr>\n
     <tr><td colspan='2' class='rowhead'><input type='submit' value='{$lang['news_okay']}' class='btn' /></td></tr>\n
     </table></form><br /><br />\n";
     while ($arr = mysqli_fetch_assoc($res)) {
-        $newsid = (int) $arr['newsid'];
+        $newsid = (int)$arr['newsid'];
         $body = $arr['body'];
         $title = $arr['title'];
         $added = get_date($arr['added'], 'LONG', 0, 1);
-        $by = '<b>'.format_username($arr).'</b>';
-        $hash = md5('the@@saltto66??'.$newsid.'add'.'@##mu55y==');
+        $by = '<b>' . format_username($arr) . '</b>';
+        $hash = md5('the@@saltto66??' . $newsid . 'add' . '@##mu55y==');
         $HTMLOUT .= "<table border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>
         $added{$lang['news_created_by']}
         - [<a href='staffpanel.php?tool=news&amp;mode=edit&amp;newsid=$newsid'><b>{$lang['news_edit']}</b></a>]
         - [<a href='staffpanel.php?tool=news&amp;mode=delete&amp;newsid=$newsid&amp;sure=1&amp;h=$hash'><b>{$lang['news_delete']}</b></a>]
         </td></tr></table>\n";
         $HTMLOUT .= begin_table(true);
-        $HTMLOUT .= "<tr valign='top'><td class='comment'><b>".htmlsafechars($title).'</b><br />'.format_comment($body)."</td></tr>\n";
+        $HTMLOUT .= "<tr valign='top'><td class='comment'><b>" . htmlsafechars($title) . '</b><br />' . format_comment($body) . "</td></tr>\n";
         $HTMLOUT .= end_table();
         $HTMLOUT .= '<br />';
     }
     $HTMLOUT .= end_frame();
     $HTMLOUT .= end_main_frame();
 }
-echo stdhead($lang['news_stdhead'], true, $stdhead).$HTMLOUT.stdfoot($stdfoot);
+echo stdhead($lang['news_stdhead'], true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
 die;

@@ -1,7 +1,4 @@
 <?php
-/**
-hit_and_run_settings Config mod by stoner for U-232.
-**/
 $INSTALLER09['firstclass'] = UC_POWER_USER;
 $INSTALLER09['secondclass'] = UC_VIP;
 $INSTALLER09['thirdclass'] = UC_MODERATOR;

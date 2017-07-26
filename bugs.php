@@ -1,19 +1,19 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'pager_functions.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'pager_functions.php';
 dbconn();
 loggedinorreturn();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('bugs'));
-$possible_actions = array(
+$possible_actions = [
     'viewbug',
     'bugs',
     'add',
-);
+];
 $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : ''));
 if (!in_array($action, $possible_actions)) {
     stderr('Error', 'A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.');
@@ -23,7 +23,7 @@ if ($action == 'viewbug') {
         if ($CURUSER['class'] < UC_MAX) {
             stderr("{$lang['stderr_error']}", "{$lang['stderr_only_coder']}");
         }
-        $id = isset($_POST['id']) ? (int) $_POST['id'] : '';
+        $id = isset($_POST['id']) ? (int)$_POST['id'] : '';
         $status = isset($_POST['status']) ? htmlsafechars($_POST['status']) : '';
         if ($status == 'na') {
             stderr("{$lang['stderr_error']}", "{$lang['stderr_no_na']}");
@@ -31,96 +31,96 @@ if ($action == 'viewbug') {
         if (!$id || !is_valid_id($id)) {
             stderr("{$lang['stderr_error']}", "{$lang['stderr_invalid_id']}");
         }
-        $query1 = sql_query('SELECT b.*, u.username, u.uploaded FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id WHERE b.id = '.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $query1 = sql_query('SELECT b.*, u.username, u.uploaded FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id WHERE b.id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         while ($q1 = mysqli_fetch_assoc($query1)) {
             switch ($status) {
-            case 'fixed':
-                $msg = sqlesc('Hello '.htmlsafechars($q1['username']).".\nYour bug: [b]".htmlsafechars($q1['title'])."[/b] has been treated by one of our coder, and is done.\n\nWe would to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$INSTALLER09['site_name']}'s coders.\n");
-                $uq = 'UPDATE users SET uploaded = uploaded +'. 1024 * 1024 * 1024 * 2 .' WHERE id = '.sqlesc($q1['sender']).'';
-                $update['uploaded'] = ($q1['uploaded'] + 1024 * 1024 * 1024 * 2);
-                $mc1->begin_transaction('userstats_'.$q1['sender']);
-                $mc1->update_row(false, array(
-                    'uploaded' => $update['uploaded'],
-                ));
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
-                $mc1->begin_transaction('user_stats_'.$q1['sender']);
-                $mc1->update_row(false, array(
-                    'uploaded' => $update['uploaded'],
-                ));
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-                break;
+                case 'fixed':
+                    $msg = sqlesc('Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been treated by one of our coder, and is done.\n\nWe would to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$INSTALLER09['site_name']}'s coders.\n");
+                    $uq = 'UPDATE users SET uploaded = uploaded +' . 1024 * 1024 * 1024 * 2 . ' WHERE id = ' . sqlesc($q1['sender']) . '';
+                    $update['uploaded'] = ($q1['uploaded'] + 1024 * 1024 * 1024 * 2);
+                    $mc1->begin_transaction('userstats_' . $q1['sender']);
+                    $mc1->update_row(false, [
+                        'uploaded' => $update['uploaded'],
+                    ]);
+                    $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                    $mc1->begin_transaction('user_stats_' . $q1['sender']);
+                    $mc1->update_row(false, [
+                        'uploaded' => $update['uploaded'],
+                    ]);
+                    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                    break;
 
-            case 'ignored':
-                $msg = sqlesc('Hello '.htmlsafechars($q1['username']).".\nYour bug: [b]".htmlsafechars($q1['title'])."[/b] has been ignored by one of our coder.\n\nPossibly it was not a bug.\n\nBest regards, {$INSTALLER09['site_name']}'s coders.\n");
-                $uq = '';
-                break;
+                case 'ignored':
+                    $msg = sqlesc('Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been ignored by one of our coder.\n\nPossibly it was not a bug.\n\nBest regards, {$INSTALLER09['site_name']}'s coders.\n");
+                    $uq = '';
+                    break;
             }
             sql_query($uq);
-            sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES (0, '.sqlesc($q1['sender']).', '.TIME_NOW.", {$msg})");
-            sql_query('UPDATE bugs SET status='.sqlesc($status).', staff='.sqlesc($CURUSER['id']).' WHERE id = '.sqlesc($id));
-            $mc1->delete_value('inbox_new_'.$q1['sender']);
-            $mc1->delete_value('inbox_new_sb_'.$q1['sender']);
+            sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES (0, ' . sqlesc($q1['sender']) . ', ' . TIME_NOW . ", {$msg})");
+            sql_query('UPDATE bugs SET status=' . sqlesc($status) . ', staff=' . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($id));
+            $mc1->delete_value('inbox_new_' . $q1['sender']);
+            $mc1->delete_value('inbox_new_sb_' . $q1['sender']);
             $mc1->delete_value('bug_mess_');
         }
         header("location: bugs.php?action=viewbug&id={$id}");
     }
-    $id = isset($_GET['id']) ? (int) $_GET['id'] : '';
+    $id = isset($_GET['id']) ? (int)$_GET['id'] : '';
     if (!$id || !is_valid_id($id)) {
         stderr("{$lang['stderr_error']}", "{$lang['stderr_invalid_id']}");
     }
     if ($CURUSER['class'] < UC_STAFF) {
         stderr("{$lang['stderr_error']}", 'Only staff can view bugs.');
     }
-    $as = sql_query('SELECT b.*, u.username, u.class, staff.username AS st, staff.class AS stclass FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id LEFT JOIN users AS staff ON b.staff = staff.id WHERE b.id ='.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    $as = sql_query('SELECT b.*, u.username, u.class, staff.username AS st, staff.class AS stclass FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id LEFT JOIN users AS staff ON b.staff = staff.id WHERE b.id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     while ($a = mysqli_fetch_assoc($as)) {
         $title = htmlsafechars($a['title']);
         $added = get_date($a['added'], '', 0, 1);
-        $addedby = "<a href='userdetails.php?id=".(int) $a['sender']."'>".htmlsafechars($a['username']).'</a> <i>('.get_user_class_name($a['class']).')</i>';
+        $addedby = "<a href='userdetails.php?id=" . (int)$a['sender'] . "'>" . htmlsafechars($a['username']) . '</a> <i>(' . get_user_class_name($a['class']) . ')</i>';
         switch ($a['priority']) {
-        case 'low':
-            $priority = "<font color='green'>{$lang['low']}</font>";
-            break;
+            case 'low':
+                $priority = "<font color='green'>{$lang['low']}</font>";
+                break;
 
-        case 'high':
-            $priority = "<font color='red'>{$lang['high']}</font>";
-            break;
+            case 'high':
+                $priority = "<font color='red'>{$lang['high']}</font>";
+                break;
 
-        case 'veryhigh':
-            $priority = "<font color='red'><b><u>{$lang['veryhigh']}</u></b></font>";
-            break;
+            case 'veryhigh':
+                $priority = "<font color='red'><b><u>{$lang['veryhigh']}</u></b></font>";
+                break;
         }
         $problem = htmlsafechars($a['problem']);
         switch ($a['status']) {
-        case 'fixed':
-            $status = "<font color='green'><b>{$lang['fixed']}</b></font>";
-            break;
+            case 'fixed':
+                $status = "<font color='green'><b>{$lang['fixed']}</b></font>";
+                break;
 
-        case 'ignored':
-            $status = "<font color='#FF8C00'><b>{$lang['ignored']}</b></font>";
-            break;
+            case 'ignored':
+                $status = "<font color='#FF8C00'><b>{$lang['ignored']}</b></font>";
+                break;
 
-        default:
-            $status = "<select name='status'>
+            default:
+                $status = "<select name='status'>
           <option value='na'>{$lang['select_one']}</option>
           <option value='fixed'>{$lang['fix_problem']}</option>
           <option value='ignored'>{$lang['ignore_problem']}</option>
         </select>";
         }
         switch ($a['staff']) {
-        case 0:
-            $by = '';
-            break;
+            case 0:
+                $by = '';
+                break;
 
-        default:
-            $by = "<a href='userdetails.php?id=".(int) $a['staff']."'>".htmlsafechars($a['st']).'</a> <i>('.get_user_class_name($a['stclass']).')</i>';
-            break;
+            default:
+                $by = "<a href='userdetails.php?id=" . (int)$a['staff'] . "'>" . htmlsafechars($a['st']) . '</a> <i>(' . get_user_class_name($a['stclass']) . ')</i>';
+                break;
         }
         $HTMLOUT .= "<form method='post' action='{$_SERVER['PHP_SELF']}?action=viewbug'>
-      <input type='hidden' name='id' value='".(int) $a['id']."'/>
+      <input type='hidden' name='id' value='" . (int)$a['id'] . "'/>
       <table cellpadding='5' cellspacing='0' border='0' align='center'>
       <tr><td class='rowhead'>{$lang['title']}:</td><td>{$title}</td></tr>
       <tr><td class='rowhead'>{$lang['added']} / {$lang['by']}</td><td>{$added} / {$addedby}</td></tr>
-      <tr><td class='rowhead'>{$lang['priority']}</td><td>".$priority."</td></tr>
+      <tr><td class='rowhead'>{$lang['priority']}</td><td>" . $priority . "</td></tr>
       <tr><td class='rowhead'>{$lang['problem_bug']}</td><td><textarea cols='60' rows='10' readonly='readonly'>{$problem}</textarea></td></tr>
       <tr><td class='rowhead'>{$lang['status']} / {$lang['by']}</td><td>{$status} - {$by}</td></tr>";
         if ($a['status'] == 'na') {
@@ -143,8 +143,8 @@ if ($action == 'viewbug') {
         $count = mysqli_num_rows($r);
         $HTMLOUT .= $pager['pagertop'];
         $HTMLOUT .= "
-      <!--<h1 align='center'>There is <font color='#FF0000'>{$count}</font> new bug".($count > 1 ? 's' : '').". Please check them.</h1>-->
-      <h1 align='center'>".sprintf($lang['h1_count_bugs'], $count, ($count > 1 ? 's' : ''))."</h1>
+      <!--<h1 align='center'>There is <font color='#FF0000'>{$count}</font> new bug" . ($count > 1 ? 's' : '') . ". Please check them.</h1>-->
+      <h1 align='center'>" . sprintf($lang['h1_count_bugs'], $count, ($count > 1 ? 's' : '')) . "</h1>
       <font class='small' style='font-weight:bold;'>{$lang['delete_when']}</font><br/>
       <table cellpadding='10' cellspacing='0' border='0' align='center'><tr>
       <td class='colhead' align='center'>{$lang['title']}</td>
@@ -155,37 +155,37 @@ if ($action == 'viewbug') {
       </tr>";
         while ($q1 = mysqli_fetch_assoc($res)) {
             switch ($q1['priority']) {
-            case 'low':
-                $priority = "<font color='green'>{$lang['low']}</font>";
-                break;
+                case 'low':
+                    $priority = "<font color='green'>{$lang['low']}</font>";
+                    break;
 
-            case 'high':
-                $priority = "<font color='red'>{$lang['high']}</font>";
-                break;
+                case 'high':
+                    $priority = "<font color='red'>{$lang['high']}</font>";
+                    break;
 
-            case 'veryhigh':
-                $priority = "<font color='red'><b><u>{$lang['veryhigh']}</u></b></font>";
-                break;
+                case 'veryhigh':
+                    $priority = "<font color='red'><b><u>{$lang['veryhigh']}</u></b></font>";
+                    break;
             }
             switch ($q1['status']) {
-            case 'fixed':
-                $status = "<font color='green'><b>{$lang['fixed']}</b></font>";
-                break;
+                case 'fixed':
+                    $status = "<font color='green'><b>{$lang['fixed']}</b></font>";
+                    break;
 
-            case 'ignored':
-                $status = "<font color='#FF8C00'><b>{$lang['ignored']}</b></font>";
-                break;
+                case 'ignored':
+                    $status = "<font color='#FF8C00'><b>{$lang['ignored']}</b></font>";
+                    break;
 
-            default:
-                $status = "<font color='black'><b>N/A</b></font>";
-                break;
+                default:
+                    $status = "<font color='black'><b>N/A</b></font>";
+                    break;
             }
             $HTMLOUT .= "<tr>
-          <td align='center'><a href='?action=viewbug&amp;id=".(int) $q1['id']."'>".htmlsafechars($q1['title'])."</a></td>
-          <td align='center' nowrap='nowrap'>".get_date($q1['added'], 'TINY')." / <a href='userdetails.php?id=".(int) $q1['sender']."'>".htmlsafechars($q1['username'])."</a></td>
+          <td align='center'><a href='?action=viewbug&amp;id=" . (int)$q1['id'] . "'>" . htmlsafechars($q1['title']) . "</a></td>
+          <td align='center' nowrap='nowrap'>" . get_date($q1['added'], 'TINY') . " / <a href='userdetails.php?id=" . (int)$q1['sender'] . "'>" . htmlsafechars($q1['username']) . "</a></td>
           <td align='center'>{$priority}</td>
           <td align='center'>{$status}</td>
-      <td align='center'>".($q1['status'] != 'na' ? "<a href='userdetails.php?id=".(int) $q1['staff']."'>".htmlsafechars($q1['staffusername']).'</a>' : '---').'</td>
+      <td align='center'>" . ($q1['status'] != 'na' ? "<a href='userdetails.php?id=" . (int)$q1['staff'] . "'>" . htmlsafechars($q1['staffusername']) . '</a>' : '---') . '</td>
       </tr>';
         }
         $HTMLOUT .= '</table>';
@@ -207,7 +207,7 @@ if ($action == 'viewbug') {
         if (strlen($title) < 10) {
             stderr("{$lang['stderr_error']}", "{$lang['stderr_title_10']}");
         }
-        $q1 = sql_query('INSERT INTO bugs (title, priority, problem, sender, added) VALUES ('.sqlesc($title).', '.sqlesc($priority).', '.sqlesc($problem).', '.sqlesc($CURUSER['id']).', '.TIME_NOW.')') or sqlerr(__FILE__, __LINE__);
+        $q1 = sql_query('INSERT INTO bugs (title, priority, problem, sender, added) VALUES (' . sqlesc($title) . ', ' . sqlesc($priority) . ', ' . sqlesc($problem) . ', ' . sqlesc($CURUSER['id']) . ', ' . TIME_NOW . ')') or sqlerr(__FILE__, __LINE__);
         $mc1->delete_value('bug_mess_');
         if ($q1) {
             stderr("{$lang['stderr_sucess']}", sprintf($lang['stderr_sucess_2'], $priority));
@@ -229,4 +229,4 @@ if ($action == 'viewbug') {
                   <tr><td colspan='2' align='center'><input type='submit' value='{$lang['submit_btn_send']}' class='btn'/></td></tr>
                   </table></form>";
 }
-echo stdhead("{$lang['header']}").$HTMLOUT.stdfoot();
+echo stdhead("{$lang['header']}") . $HTMLOUT . stdfoot();

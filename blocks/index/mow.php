@@ -3,11 +3,11 @@
 //== Best film of the week
 $categorie = genrelist();
 foreach ($categorie as $key => $value) {
-    $change[$value['id']] = array(
-    'id' => $value['id'],
-    'name' => $value['name'],
-    'image' => $value['image'],
-);
+    $change[$value['id']] = [
+        'id'    => $value['id'],
+        'name'  => $value['name'],
+        'image' => $value['image'],
+    ];
 }
 if (($motw_cached = $mc1->get_value('top_movie_2')) === false) {
     $motw = sql_query("SELECT torrents.id, torrents.leechers, torrents.seeders, torrents.category, torrents.name, torrents.times_completed FROM torrents INNER JOIN avps ON torrents.id=avps.value_u WHERE avps.arg='bestfilmofweek' LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -39,11 +39,11 @@ if (count($motw_cached) > 0) {
             $HTMLOUT .= "
 					<tbody>
 						<tr>
-							<td class='span1'><img border='0' src='pic/caticons/{$CURUSER['categorie_icon']}/".htmlsafechars($mw['cat_pic'])."' alt='".htmlsafechars($mw['cat_name'])."' title='".htmlsafechars($mw['cat_name'])."' /></td>
-							<td class='span1'><a href='{$INSTALLER09['baseurl']}/details.php?id=".(int) $m_w['id']."'><b>".htmlsafechars($m_w['name'])."</b></a></td>
-							<td class='span1'>".(int) $m_w['times_completed']."</td>
-							<td class='span1'>".(int) $m_w['seeders']."</td>
-							<td class='span1'>".(int) $m_w['leechers'].'</td>
+							<td class='span1'><img border='0' src='pic/caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($mw['cat_pic']) . "' alt='" . htmlsafechars($mw['cat_name']) . "' title='" . htmlsafechars($mw['cat_name']) . "' /></td>
+							<td class='span1'><a href='{$INSTALLER09['baseurl']}/details.php?id=" . (int)$m_w['id'] . "'><b>" . htmlsafechars($m_w['name']) . "</b></a></td>
+							<td class='span1'>" . (int)$m_w['times_completed'] . "</td>
+							<td class='span1'>" . (int)$m_w['seeders'] . "</td>
+							<td class='span1'>" . (int)$m_w['leechers'] . '</td>
 						</tr>
 					</tbody>';
         }

@@ -12,13 +12,13 @@
 
 function nginx_load_software()
 {
-    return array(
-        'name' => __('NGINX'),
-        'desc' => __('The high performance reverse proxy, load balancer, edge cache, origin server'),
-        'home' => __('http://nginx.com'),
+    return [
+        'name'  => __('NGINX'),
+        'desc'  => __('The high performance reverse proxy, load balancer, edge cache, origin server'),
+        'home'  => __('http://nginx.com'),
         'notes' => __('Default log formats are supported'),
-        'load' => (stripos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false),
-    );
+        'load'  => (stripos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false),
+    ];
 }
 
 function nginx_get_config($type, $file, $software, $counter)
@@ -29,7 +29,7 @@ function nginx_get_config($type, $file, $software, $counter)
     // nginx error files are not the same on 2.2 and 2.4 //
     /////////////////////////////////////////////////////////
     if ($type == 'error') {
-        return<<<EOF
+        return <<<EOF
 		"$software$counter": {
 			"display" : "NGINX Error #$counter",
 			"path"    : $file_json_encoded,
@@ -71,7 +71,7 @@ EOF;
     // Access log //
     ////////////////
     elseif ($type == 'access') {
-        return<<<EOF
+        return <<<EOF
 		"$software$counter": {
 			"display" : "NGINX Access #$counter",
 			"path"    : $file_json_encoded,

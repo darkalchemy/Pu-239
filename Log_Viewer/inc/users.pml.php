@@ -35,22 +35,22 @@ function myErrorHandler($errno, $errstr, $errfile, $errline)
         return;
     }
     switch ($errno) {
-    case E_USER_ERROR:
-        echo json_encode(array('error' => $errstr));
-        exit(1);
-        break;
+        case E_USER_ERROR:
+            echo json_encode(['error' => $errstr]);
+            exit(1);
+            break;
 
-    case E_USER_WARNING:
-        $return['singlewarning'] = sprintf(__('<strong>PHP Warning</strong> [%s] %s'), $errno, $errstr);
-        break;
+        case E_USER_WARNING:
+            $return['singlewarning'] = sprintf(__('<strong>PHP Warning</strong> [%s] %s'), $errno, $errstr);
+            break;
 
-    case E_USER_NOTICE:
-        $return['singlenotice'] = sprintf(__('<strong>PHP Notice</strong> [%s] %s'), $errno, $errstr);
-        break;
+        case E_USER_NOTICE:
+            $return['singlenotice'] = sprintf(__('<strong>PHP Notice</strong> [%s] %s'), $errno, $errstr);
+            break;
 
-    default:
-        $return['singlewarning'] = sprintf(__('<strong>PHP Unknown error</strong> [%s] %s'), $errno, $errstr);
-        break;
+        default:
+            $return['singlewarning'] = sprintf(__('<strong>PHP Unknown error</strong> [%s] %s'), $errno, $errstr);
+            break;
     }
 
     return true;
@@ -65,9 +65,9 @@ function shutdown()
     $error = error_get_last();
     if ($error['type'] === E_ERROR) {
         echo json_encode(
-            array(
+            [
                 'error' => sprintf(__('<strong>PHP Error</strong> line %s: %s'), $error['line'], $error['message']),
-            )
+            ]
         );
     }
 }
@@ -80,7 +80,7 @@ function shutdown()
 */
 header('Content-type: application/json');
 
-$return = array();
+$return = [];
 
 if (!csrf_verify()) {
     $return['error'] = __('Please refresh the page.');
@@ -106,8 +106,8 @@ switch (@$_POST['action']) {
         $password2 = $_POST['password2'];
         $password3 = $_POST['password3'];
         $username = Sentinel::getCurrentUsername();
-        $errors = array();
-        $fields = array();
+        $errors = [];
+        $fields = [];
         $doit = true;
 
         if (!Sentinel::isValidPassword($username, $password1)) {
@@ -153,17 +153,17 @@ switch (@$_POST['action']) {
             break;
         }
 
-        $users = array();
+        $users = [];
 
         foreach (Sentinel::getUsers() as $username => $user) {
             unset($user['pwd']);
             if (isset($user['lastlogin']['ts'])) {
-                $user['lastlogin']['ts'] = date('Y/m/d H:i:s', (int) $user['lastlogin']['ts']);
+                $user['lastlogin']['ts'] = date('Y/m/d H:i:s', (int)$user['lastlogin']['ts']);
             }
             if (isset($user['api_lastlogin']['ts'])) {
-                $user['api_lastlogin']['ts'] = date('Y/m/d H:i:s', (int) $user['api_lastlogin']['ts']);
+                $user['api_lastlogin']['ts'] = date('Y/m/d H:i:s', (int)$user['api_lastlogin']['ts']);
             }
-            $user['cd'] = date('Y/m/d H:i:s', (int) $user['cd']);
+            $user['cd'] = date('Y/m/d H:i:s', (int)$user['cd']);
             $user['u'] = $username;
             $users[] = $user;
         }
@@ -187,16 +187,16 @@ switch (@$_POST['action']) {
         $user = Sentinel::getUser($username);
 
         if (is_null($user)) {
-            $return['e'] = sprintf(__('User %s does not exist'), '<code>'.$username.'</code>');
+            $return['e'] = sprintf(__('User %s does not exist'), '<code>' . $username . '</code>');
         } else {
             unset($user['pwd']);
             if (isset($user['lastlogin']['ts'])) {
-                $user['lastlogin']['ts'] = date('Y/m/d H:i:s', (int) $user['lastlogin']['ts']);
+                $user['lastlogin']['ts'] = date('Y/m/d H:i:s', (int)$user['lastlogin']['ts']);
             }
             if (isset($user['api_lastlogin']['ts'])) {
-                $user['api_lastlogin']['ts'] = date('Y/m/d H:i:s', (int) $user['api_lastlogin']['ts']);
+                $user['api_lastlogin']['ts'] = date('Y/m/d H:i:s', (int)$user['api_lastlogin']['ts']);
             }
-            $user['cd'] = date('Y/m/d H:i:s', (int) $user['cd']);
+            $user['cd'] = date('Y/m/d H:i:s', (int)$user['cd']);
             $return['b'] = $user;
             $return['b']['u'] = $username;
         }
@@ -220,7 +220,7 @@ switch (@$_POST['action']) {
         $user = Sentinel::getUser($_POST['u']);
 
         if (is_null($user)) {
-            $return['e'] = sprintf(__('User %s does not exist'), '<code>'.$username.'</code>');
+            $return['e'] = sprintf(__('User %s does not exist'), '<code>' . $username . '</code>');
         } else {
             unset($user['pwd']);
             unset($user['cb']);
@@ -263,12 +263,12 @@ switch (@$_POST['action']) {
 
         $logfiles = $_POST;
 
-        $errors = array();
+        $errors = [];
 
         if (empty($username)) {
             $errors['username'] = __('Username is required');
         } elseif (($type === 'add') && (Sentinel::userExists($username))) {
-            $errors['username'] = sprintf(__('User %s already exists'), '<code>'.$username.'</code>');
+            $errors['username'] = sprintf(__('User %s already exists'), '<code>' . $username . '</code>');
         }
 
         if ((($type === 'edit') && (!empty($password))) || ($type === 'add')) {
@@ -288,24 +288,24 @@ switch (@$_POST['action']) {
             if ($roles === 'admin') {
                 Sentinel::setAdmin($username, $password);
                 if ($type === 'add') {
-                    Sentinel::log('addadmin '.$username, $current_user);
+                    Sentinel::log('addadmin ' . $username, $current_user);
                 }
             } else {
-                $logs = array();
+                $logs = [];
                 foreach ($logfiles as $fileid => $access) {
                     if (substr($fileid, 0, 2) === 'f-') {
-                        if ((int) $access === 1) {
-                            $logs[substr($fileid, 2)] = array('r' => true);
+                        if ((int)$access === 1) {
+                            $logs[substr($fileid, 2)] = ['r' => true];
                         }
                     } elseif (substr($fileid, 0, 2) === 't-') {
-                        if ((int) $access === 1) {
-                            $tags[substr($fileid, 2)] = array('r' => true);
+                        if ((int)$access === 1) {
+                            $tags[substr($fileid, 2)] = ['r' => true];
                         }
                     }
                 }
-                Sentinel::setUser($username, $password, array('user'), $logs);
+                Sentinel::setUser($username, $password, ['user'], $logs);
                 if ($type === 'add') {
-                    Sentinel::log('adduser '.$username, $current_user);
+                    Sentinel::log('adduser ' . $username, $current_user);
                 }
             }
             Sentinel::save();
@@ -335,7 +335,7 @@ switch (@$_POST['action']) {
             $return['error'] = __('Please do not shoot yourself in the foot!');
         } else {
             Sentinel::deleteUser($username);
-            Sentinel::log('deleteuser '.$username, $current_user);
+            Sentinel::log('deleteuser ' . $username, $current_user);
             Sentinel::save();
         }
 
@@ -377,9 +377,9 @@ switch (@$_POST['action']) {
             break;
         }
 
-        $logs = array();
+        $logs = [];
         foreach (Sentinel::getLogs() as $log) {
-            $log[2] = date('Y/m/d H:i:s', (int) $log[2]);
+            $log[2] = date('Y/m/d H:i:s', (int)$log[2]);
             $logs[] = $log;
         }
         $return['b'] = $logs;
@@ -399,16 +399,16 @@ switch (@$_POST['action']) {
         }
 
         if (Sentinel::isAnonymousEnabled($files)) {
-            $r = '<div class="alert alert-info">'.__('<strong>Anonymous access is enabled</strong>. Genuine users have to click on the user menu to sign in and access more logs.').'</div>';
+            $r = '<div class="alert alert-info">' . __('<strong>Anonymous access is enabled</strong>. Genuine users have to click on the user menu to sign in and access more logs.') . '</div>';
         } else {
-            $r = '<div class="alert alert-info">'.__('<strong>Anonymous access is disabled</strong>. All users have to sign in from the sign in screen.').'</div>';
+            $r = '<div class="alert alert-info">' . __('<strong>Anonymous access is disabled</strong>. All users have to sign in from the sign in screen.') . '</div>';
         }
 
         $r .= '<div class="form-group">';
         $r .= '	<label class="col-sm-4 control-label"></label>';
         $r .= '	<div class="col-sm-8">';
         $r .= __('Select which log files can be viewed without being logged.');
-        $r .= '		(<a href="#" class="logs-selector-toggler">'.__('Toggle all log files').'</a>)';
+        $r .= '		(<a href="#" class="logs-selector-toggler">' . __('Toggle all log files') . '</a>)';
         $r .= '	</div>';
         $r .= '</div>';
 
@@ -424,11 +424,11 @@ switch (@$_POST['action']) {
                 }
                 $display = $files[$file_id]['odisplay'];
                 if (isset($files[$file_id]['count'])) {
-                    $remain = (int) $files[$file_id]['count'] - 1;
+                    $remain = (int)$files[$file_id]['count'] - 1;
                     if ($remain === 1) {
-                        $paths .= ' '.__('and an other file defined by glob pattern');
+                        $paths .= ' ' . __('and an other file defined by glob pattern');
                     } elseif ($remain > 1) {
-                        $paths .= ' '.sprintf(__('and %s other possible files defined by glob pattern'), $remain);
+                        $paths .= ' ' . sprintf(__('and %s other possible files defined by glob pattern'), $remain);
                     }
                 }
                 $color = 'warning';
@@ -446,18 +446,18 @@ switch (@$_POST['action']) {
                 $dc = ' checked="checked"';
             }
 
-            $r .= '<div class="form-group" data-fileid="'.$fid.'">';
-            $r .= '	<label for="'.$fid.'" class="col-sm-4 control-label text-'.$color.'">'.$display.'</label>';
+            $r .= '<div class="form-group" data-fileid="' . $fid . '">';
+            $r .= '	<label for="' . $fid . '" class="col-sm-4 control-label text-' . $color . '">' . $display . '</label>';
             $r .= '	<div class="col-sm-8">';
             $r .= '		<div class="btn-group" data-toggle="buttons">';
-            $r .= '			<label class="btn btn-xs logs-selector-yes '.$e.'">';
-            $r .= '				<input type="radio" name="f-'.$fid.'" id="anonymous-f-'.$fid.'-true" value="1"'.$ec.'/> '.__('Yes');
+            $r .= '			<label class="btn btn-xs logs-selector-yes ' . $e . '">';
+            $r .= '				<input type="radio" name="f-' . $fid . '" id="anonymous-f-' . $fid . '-true" value="1"' . $ec . '/> ' . __('Yes');
             $r .= '			</label>';
-            $r .= '			<label class="btn btn-xs logs-selector-no '.$d.'">';
-            $r .= '				<input type="radio" name="f-'.$fid.'" id="anonymous-f-'.$fid.'-false" value="0"'.$dc.'/> '.__('No');
+            $r .= '			<label class="btn btn-xs logs-selector-no ' . $d . '">';
+            $r .= '				<input type="radio" name="f-' . $fid . '" id="anonymous-f-' . $fid . '-false" value="0"' . $dc . '/> ' . __('No');
             $r .= '			</label>';
             $r .= '		</div>';
-            $r .= '	<span class="glyphicon glyphicon-question-sign text-muted" data-toggle="tooltip" data-placement="right" data-html="true" title="<div class=\'hyphen\'>'.h($paths).'</div>"></span>';
+            $r .= '	<span class="glyphicon glyphicon-question-sign text-muted" data-toggle="tooltip" data-placement="right" data-html="true" title="<div class=\'hyphen\'>' . h($paths) . '</div>"></span>';
             $r .= '	</div>';
             $r .= '</div>';
         }
@@ -488,7 +488,7 @@ switch (@$_POST['action']) {
 
         foreach ($logfiles as $fileid => $access) {
             if (substr($fileid, 0, 2) === 'f-') {
-                Sentinel::setLogAnonymous(substr($fileid, 2), ((int) $access === 1));
+                Sentinel::setLogAnonymous(substr($fileid, 2), ((int)$access === 1));
             }
         }
 
@@ -509,59 +509,59 @@ switch (@$_POST['action']) {
         $r = '';
 
         $r .= '<div class="form-group">';
-        $r .= '<label for="" class="col-sm-3 control-label">'.__('Access token').'</label>';
+        $r .= '<label for="" class="col-sm-3 control-label">' . __('Access token') . '</label>';
         $r .= '<div class="col-sm-5">';
         $r .= '<div class="input-group">';
         $r .= '<span class="input-group-addon"><span class="glyphicon glyphicon-certificate"></span></span>';
-        $r .= '<input type="text" id="prat" class="form-control" value="'.h($accesstoken).'" disabled="disabled"/>';
+        $r .= '<input type="text" id="prat" class="form-control" value="' . h($accesstoken) . '" disabled="disabled"/>';
         $r .= '</div>';
         $r .= '</div>';
         $r .= '<div class="col-sm-4">';
-        $r .= '<a class="btn btn-xs btn-primary clipboardat">'.__('Copy to clipboard').'</a>';
+        $r .= '<a class="btn btn-xs btn-primary clipboardat">' . __('Copy to clipboard') . '</a>';
         $r .= '</div>';
         $r .= '</div>';
-        $r .= '<script>clipboard_enable( "a.clipboardat", "#prat" , "top" , "'.h(__('Access token copied!')).'" );</script>';
+        $r .= '<script>clipboard_enable( "a.clipboardat", "#prat" , "top" , "' . h(__('Access token copied!')) . '" );</script>';
 
         $r .= '<div class="form-group">';
-        $r .= '<label for="" class="col-sm-3 control-label">'.__('Presalt key').'</label>';
+        $r .= '<label for="" class="col-sm-3 control-label">' . __('Presalt key') . '</label>';
         $r .= '<div class="col-sm-5">';
         $r .= '<div class="input-group">';
         $r .= '<span class="input-group-addon"><span class="glyphicon glyphicon-flash"></span></span>';
-        $r .= '<input type="text" id="prhp" class="form-control" value="'.h($hashpresalt).'" disabled="disabled"/>';
+        $r .= '<input type="text" id="prhp" class="form-control" value="' . h($hashpresalt) . '" disabled="disabled"/>';
         $r .= '</div>';
         $r .= '</div>';
         $r .= '<div class="col-sm-4">';
-        $r .= '<a class="btn btn-xs btn-primary clipboardhp">'.__('Copy to clipboard').'</a>';
+        $r .= '<a class="btn btn-xs btn-primary clipboardhp">' . __('Copy to clipboard') . '</a>';
         $r .= '</div>';
         $r .= '</div>';
-        $r .= '<script>clipboard_enable( "a.clipboardhp" , "#prhp" , "top" , "'.h(__('Presalt key copied!')).'" );</script>';
+        $r .= '<script>clipboard_enable( "a.clipboardhp" , "#prhp" , "top" , "' . h(__('Presalt key copied!')) . '" );</script>';
 
         $r .= '<div class="form-group">';
         $r .= '<label for="" class="col-sm-3 control-label"></label>';
         $r .= '<div class="col-sm-9">';
-        $r .= '<input type="checkbox" name="regenerate" value="1"/> '.__('Check to generate both new Access token and new Presalt key');
+        $r .= '<input type="checkbox" name="regenerate" value="1"/> ' . __('Check to generate both new Access token and new Presalt key');
         $r .= '</div>';
         $r .= '</div>';
 
         $r .= '<hr/>';
 
-        if ((!isset($user['api_logincount'])) || ((int) $user['api_logincount'] === 0)) {
+        if ((!isset($user['api_logincount'])) || ((int)$user['api_logincount'] === 0)) {
             $r .= __('Your credentials have not been used');
         } else {
             $r .= '<p>';
-            if ((int) $user['api_logincount'] === 1) {
+            if ((int)$user['api_logincount'] === 1) {
                 $r .= __('API has been called 1 time');
             } else {
-                $r .= sprintf(__('API has been called %s times'), (int) $user['api_logincount']);
+                $r .= sprintf(__('API has been called %s times'), (int)$user['api_logincount']);
             }
             $r .= '</p>';
 
             $r .= sprintf(
                 __('Last API call has been done at %s by IP address %s with user agent %s on URL %s'),
-                '<code>'.date('Y/m/d H:i:s', (int) $user['api_lastlogin']['ts']).'</code>',
-                '<code>'.$user['api_lastlogin']['ip'].'</code>',
-                '<code>'.$user['api_lastlogin']['ua'].'</code>',
-                '<a href="'.h($user['api_lastlogin']['ur']).'" class="hyphen" target="_blank">'.$user['api_lastlogin']['ur'].'</a>'
+                '<code>' . date('Y/m/d H:i:s', (int)$user['api_lastlogin']['ts']) . '</code>',
+                '<code>' . $user['api_lastlogin']['ip'] . '</code>',
+                '<code>' . $user['api_lastlogin']['ua'] . '</code>',
+                '<a href="' . h($user['api_lastlogin']['ur']) . '" class="hyphen" target="_blank">' . $user['api_lastlogin']['ur'] . '</a>'
             );
         }
 
@@ -591,7 +591,7 @@ switch (@$_POST['action']) {
     |
     */
     default:
-        error_log('Unknown action '.@$_POST['action']);
+        error_log('Unknown action ' . @$_POST['action']);
         break;
 }
 

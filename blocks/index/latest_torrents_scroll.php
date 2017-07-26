@@ -68,16 +68,16 @@ if (($scroll_torrents = $mc1->get_value('scroll_tor_')) === false) {
 if ($scroll_torrents) {
     foreach ($scroll_torrents as $s_t) {
         $i = $INSTALLER09['latest_torrents_limit_scroll'];
-        $id = (int) $s_t['id'];
+        $id = (int)$s_t['id'];
         $name = htmlsafechars($s_t['name']);
-        $poster = ($s_t['poster'] == '' ? ''.$INSTALLER09['pic_base_url'].'noposter.png' : htmlsafechars($s_t['poster']));
-        $seeders = number_format((int) $s_t['seeders']);
-        $leechers = number_format((int) $s_t['leechers']);
+        $poster = ($s_t['poster'] == '' ? '' . $INSTALLER09['pic_base_url'] . 'noposter.png' : htmlsafechars($s_t['poster']));
+        $seeders = number_format((int)$s_t['seeders']);
+        $leechers = number_format((int)$s_t['leechers']);
         $name = str_replace('_', ' ', $name);
         $name = str_replace('.', ' ', $name);
         $name = substr($name, 0, 50);
 
-        $HTMLOUT .= "<div class='slide'><a href='{$INSTALLER09['baseurl']}/details.php?id=$id'><img src='".htmlsafechars($poster)."' alt='{$name}' title='{$name} - {$lang['index_ltst_seeders']} : {$seeders} - {$lang['index_ltst_leechers']} : {$leechers}' width='200' height='350' border='0' /></a></div>";
+        $HTMLOUT .= "<div class='slide'><a href='{$INSTALLER09['baseurl']}/details.php?id=$id'><img src='" . htmlsafechars($poster) . "' alt='{$name}' title='{$name} - {$lang['index_ltst_seeders']} : {$seeders} - {$lang['index_ltst_leechers']} : {$leechers}' width='200' height='350' border='0' /></a></div>";
     }
 }
 

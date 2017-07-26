@@ -1,9 +1,9 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
 dbconn(false);
 loggedinorreturn();
 $lang = array_merge(load_language('global'), load_language('setclass'));
@@ -13,20 +13,20 @@ if ($CURUSER['class'] < UC_STAFF or $CURUSER['override_class'] != 255) {
 }
 if (isset($_GET['action']) && htmlsafechars($_GET['action']) == 'editclass') { //Process the querystring - No security checks are done as a temporary class higher
     //then the actual class mean absoluetly nothing.
-    $newclass = (int) $_GET['class'];
+    $newclass = (int)$_GET['class'];
     $returnto = htmlsafechars($_GET['returnto']);
-    sql_query('UPDATE users SET override_class = '.sqlesc($newclass).' WHERE id = '.sqlesc($CURUSER['id'])); // Set temporary class
-    $mc1->begin_transaction('MyUser_'.$CURUSER['id']);
-    $mc1->update_row(false, array(
+    sql_query('UPDATE users SET override_class = ' . sqlesc($newclass) . ' WHERE id = ' . sqlesc($CURUSER['id'])); // Set temporary class
+    $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
+    $mc1->update_row(false, [
         'override_class' => $newclass,
-    ));
+    ]);
     $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
-    $mc1->begin_transaction('user'.$CURUSER['id']);
-    $mc1->update_row(false, array(
+    $mc1->begin_transaction('user' . $CURUSER['id']);
+    $mc1->update_row(false, [
         'override_class' => $newclass,
-    ));
+    ]);
     $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
-    header("Location: {$INSTALLER09['baseurl']}/".$returnto);
+    header("Location: {$INSTALLER09['baseurl']}/" . $returnto);
     die();
 }
 // HTML Code to allow changes to current class
@@ -35,7 +35,7 @@ $HTMLOUT .= "<br />
 <br /><br />
 <form method='get' action='{$INSTALLER09['baseurl']}/setclass.php'>
 	<input type='hidden' name='action' value='editclass' />
-	<input type='hidden' name='returnto' value='userdetails.php?id=".(int) $CURUSER['id']."' />
+	<input type='hidden' name='returnto' value='userdetails.php?id=" . (int)$CURUSER['id'] . "' />
 	<table width='150' border='2' cellspacing='5' cellpadding='5'>
 	<tr>
 	<td>Class</td>
@@ -44,7 +44,7 @@ $HTMLOUT .= "<br />
 $maxclass = $CURUSER['class'] - 1;
 for ($i = 0; $i <= $maxclass; ++$i) {
     if (trim(get_user_class_name($i)) != '') {
-        $HTMLOUT .= "<option value='$i"."'>".get_user_class_name($i)."</option>\n";
+        $HTMLOUT .= "<option value='$i" . "'>" . get_user_class_name($i) . "</option>\n";
     }
 }
 $HTMLOUT .= "</select></td></tr>
@@ -52,4 +52,4 @@ $HTMLOUT .= "</select></td></tr>
 	</table>
 </form>
 <br />";
-echo stdhead("{$lang['set_class_temp']}").$HTMLOUT.stdfoot();
+echo stdhead("{$lang['set_class_temp']}") . $HTMLOUT . stdfoot();

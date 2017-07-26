@@ -1,9 +1,9 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
 global $CURUSER;
 if (!$CURUSER) {
     get_template();
@@ -36,7 +36,7 @@ if ($type == 'signup' && isset($_GET['email'])) {
     if (isset($CURUSER)) {
         $HTMLOUT .= stdhead("{$lang['ok_signup_confirm']}");
         $HTMLOUT .= "<h1>{$lang['ok_success_confirmed']}</h1>\n";
-        $HTMLOUT .= '<p>'.sprintf($lang['ok_account_active_login'], "<a href='{$INSTALLER09['baseurl']}/index.php'><b>{$lang['ok_account_active_login_link']}</b></a>")."</p>\n";
+        $HTMLOUT .= '<p>' . sprintf($lang['ok_account_active_login'], "<a href='{$INSTALLER09['baseurl']}/index.php'><b>{$lang['ok_account_active_login_link']}</b></a>") . "</p>\n";
         $HTMLOUT .= sprintf($lang['ok_read_rules'], $INSTALLER09['site_name']);
         $HTMLOUT .= stdfoot();
         echo $HTMLOUT;

@@ -27,6 +27,21 @@ class AJAXChatLanguage
     }
 
     // Method to detect the language code from the HTTP_ACCEPT_LANGUAGE header:
+
+    public function getLangCode()
+    {
+        if (!$this->_langCode) {
+            $this->detectLangCode();
+        }
+
+        return $this->_langCode;
+    }
+
+    public function setLangCode($langCode)
+    {
+        $this->_langCode = $langCode;
+    }
+
     public function detectLangCode()
     {
         // If HTTP_ACCEPT_LANGUAGE is empty use defaultLangCode:
@@ -55,7 +70,7 @@ class AJAXChatLanguage
 
             // Get the language quality given as float value:
             if (isset($matches[2])) {
-                $langQuality = (float) $matches[2];
+                $langQuality = (float)$matches[2];
             } else {
                 // Missing language quality value is maximum quality:
                 $langQuality = 1.0;
@@ -84,20 +99,6 @@ class AJAXChatLanguage
         }
 
         $this->_langCode = $currentLangCode;
-    }
-
-    public function getLangCode()
-    {
-        if (!$this->_langCode) {
-            $this->detectLangCode();
-        }
-
-        return $this->_langCode;
-    }
-
-    public function setLangCode($langCode)
-    {
-        $this->_langCode = $langCode;
     }
 
     public function getLangCodes()

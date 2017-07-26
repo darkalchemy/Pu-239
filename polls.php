@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 function parse_poll()
 {
@@ -8,17 +8,17 @@ function parse_poll()
     $htmlout = '';
     $check = 0;
     $poll_footer = '';
-    $GVARS = array(
+    $GVARS = [
         'allow_creator_vote' => 1,
-        'allow_result_view' => 1,
-        'allow_poll_tags' => 1,
-    ); // move this elsewhere later!
-    if (($poll_data = $mc1->get_value('poll_data_'.$CURUSER['id'])) === false) {
+        'allow_result_view'  => 1,
+        'allow_poll_tags'    => 1,
+    ]; // move this elsewhere later!
+    if (($poll_data = $mc1->get_value('poll_data_' . $CURUSER['id'])) === false) {
         //$poll_data = array();
         //search for a poll with given ID
         $query = sql_query('SELECT * FROM polls
                             LEFT JOIN poll_voters ON polls.pid = poll_voters.poll_id
-                            AND poll_voters.user_id = '.sqlesc($CURUSER['id']).' 
+                            AND poll_voters.user_id = ' . sqlesc($CURUSER['id']) . ' 
                             ORDER BY polls.start_date DESC
                             LIMIT 1');
         //Did we find the poll?
@@ -28,7 +28,7 @@ function parse_poll()
         while ($row = mysqli_fetch_assoc($query)) {
             $poll_data = $row;
         }
-        $mc1->cache_value('poll_data_'.$CURUSER['id'], $poll_data, $INSTALLER09['expires']['poll_data']);
+        $mc1->cache_value('poll_data_' . $CURUSER['id'], $poll_data, $INSTALLER09['expires']['poll_data']);
     }
     //return $poll_data;
     $member_voted = 0;
@@ -159,6 +159,7 @@ function parse_poll()
 
     return $htmlout;
 }
+
 ///////////////////////////////////////////////
 ///////////////////////////////////////////////
 //AUX FUNCTIONS
@@ -185,6 +186,7 @@ function poll_header($pid = '', $poll_q = '')
 
     return $HTMLOUT;
 }
+
 function poll_footer()
 {
     $HTMLOUT = '';
@@ -195,6 +197,7 @@ function poll_footer()
 
     return $HTMLOUT;
 }
+
 function poll_show_rendered_choice($choice_id = '', $votes = '', $id = '', $answer = '', $percentage = '', $width = '')
 {
     global $INSTALLER09;
@@ -210,6 +213,7 @@ function poll_show_rendered_choice($choice_id = '', $votes = '', $id = '', $answ
 
     return $HTMLOUT;
 }
+
 function poll_show_rendered_question($id = '', $question = '', $choice_html = '')
 {
     $HTMLOUT = '';
@@ -223,6 +227,7 @@ function poll_show_rendered_question($id = '', $question = '', $choice_html = ''
 
     return $HTMLOUT;
 }
+
 function show_total_votes($total_votes = '')
 {
     $HTMLOUT = '';
@@ -230,6 +235,7 @@ function show_total_votes($total_votes = '')
 
     return $HTMLOUT;
 }
+
 function poll_show_form_choice_multi($choice_id = '', $votes = '', $id = '', $answer = '')
 {
     $HTMLOUT = '';
@@ -239,6 +245,7 @@ function poll_show_form_choice_multi($choice_id = '', $votes = '', $id = '', $an
 
     return $HTMLOUT;
 }
+
 function poll_show_form_choice($choice_id = '', $votes = '', $id = '', $answer = '')
 {
     $HTMLOUT = '';
@@ -247,6 +254,7 @@ function poll_show_form_choice($choice_id = '', $votes = '', $id = '', $answer =
 
     return $HTMLOUT;
 }
+
 function poll_show_form_question($id = '', $question = '', $choice_html = '')
 {
     $HTMLOUT = '';
@@ -258,6 +266,7 @@ function poll_show_form_question($id = '', $question = '', $choice_html = '')
 
     return $HTMLOUT;
 }
+
 function button_show_voteable()
 {
     $HTMLOUT = '';
@@ -265,6 +274,7 @@ function button_show_voteable()
 
     return $HTMLOUT;
 }
+
 function button_show_results()
 {
     $HTMLOUT = '';
@@ -272,6 +282,7 @@ function button_show_results()
 
     return $HTMLOUT;
 }
+
 function button_vote()
 {
     $HTMLOUT = '';
@@ -279,6 +290,7 @@ function button_vote()
 
     return $HTMLOUT;
 }
+
 function button_null_vote()
 {
     $HTMLOUT = '';

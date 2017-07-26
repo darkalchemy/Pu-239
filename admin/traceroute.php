@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
@@ -16,9 +16,9 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
     echo $HTMLOUT;
     exit();
 }
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_traceroute'));
@@ -30,10 +30,10 @@ if (strtoupper(substr(PHP_OS, 0, 3) == 'WIN')) {
     $windows = 0;
     $unix = 1;
 }
-$register_globals = (bool) ini_get('register_gobals');
+$register_globals = (bool)ini_get('register_gobals');
 $system = ini_get('system');
-$unix = (bool) $unix;
-$win = (bool) $windows;
+$unix = (bool)$unix;
+$win = (bool)$windows;
 if ($register_globals) {
     $ip = getenv(REMOTE_ADDR);
     $self = $PHP_SELF;
@@ -46,23 +46,23 @@ if ($register_globals) {
 if ($action == 'do') {
     $host = preg_replace('/[^A-Za-z0-9.]/', '', $host);
     $HTMLOUT .= '<div class="error">';
-    $HTMLOUT .= ''.$lang['trace_out'].'<br />';
+    $HTMLOUT .= '' . $lang['trace_out'] . '<br />';
     $HTMLOUT .= '<pre>';
     if ($unix) {
-        system(''.'traceroute '.$host);
+        system('' . 'traceroute ' . $host);
         system('killall -q traceroute');
     } else {
-        system(''.'tracert '.$host);
+        system('' . 'tracert ' . $host);
     }
     $HTMLOUT .= '</pre>';
-    $HTMLOUT .= ''.$lang['trace_done'].'</div>';
+    $HTMLOUT .= '' . $lang['trace_done'] . '</div>';
 } else {
     $HTMLOUT .= '<body bgcolor="#FFFFFF" text="#000000"></body>
-    <p><font size="2">'.$lang['trace_ip'].''.$ip.'</font></p>
-    <form method="post" action="'.$_this_script_.'">'.$lang['trace_host'].'<input type="text" id=specialboxn name="host" value="'.$ip.'" />
-    <input type="hidden" name="action" value="do"><input type="submit" value="'.$lang['trace_submit'].'" class="button" />
+    <p><font size="2">' . $lang['trace_ip'] . '' . $ip . '</font></p>
+    <form method="post" action="' . $_this_script_ . '">' . $lang['trace_host'] . '<input type="text" id=specialboxn name="host" value="' . $ip . '" />
+    <input type="hidden" name="action" value="do"><input type="submit" value="' . $lang['trace_submit'] . '" class="button" />
    </form>';
-    $HTMLOUT .= '<br /><b>'.$system.'</b>';
+    $HTMLOUT .= '<br /><b>' . $system . '</b>';
     $HTMLOUT .= '</body></html>';
 }
-echo stdhead($lang['trace_stdhead']).$HTMLOUT.stdfoot();
+echo stdhead($lang['trace_stdhead']) . $HTMLOUT . stdfoot();

@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
@@ -16,35 +16,35 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
     echo $HTMLOUT;
     exit();
 }
-require_once INCL_DIR.'user_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_namechanger'));
 $HTMLOUT = '';
 $mode = (isset($_GET['mode']) && htmlsafechars($_GET['mode']));
 if (isset($mode) && $mode == 'change') {
-    $uid = (int) $_POST['uid'];
+    $uid = (int)$_POST['uid'];
     $uname = htmlsafechars($_POST['uname']);
     if ($_POST['uname'] == '' || $_POST['uid'] == '') {
         stderr($lang['namechanger_err'], $lang['namechanger_missing']);
     }
-    $nc_sql = sql_query('SELECT class FROM users WHERE id = '.sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
+    $nc_sql = sql_query('SELECT class FROM users WHERE id = ' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($nc_sql)) {
         $classuser = mysqli_fetch_assoc($nc_sql);
         if ($classuser['class'] >= UC_STAFF) {
             stderr($lang['namechanger_err'], $lang['namechanger_cannot']);
         }
-        $change = sql_query('UPDATE users SET username='.sqlesc($uname).' WHERE id='.sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
-        $mc1->begin_transaction('MyUser_'.$uid);
-        $mc1->update_row(false, array(
+        $change = sql_query('UPDATE users SET username=' . sqlesc($uname) . ' WHERE id=' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
+        $mc1->begin_transaction('MyUser_' . $uid);
+        $mc1->update_row(false, [
             'username' => $uname,
-        ));
+        ]);
         $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
-        $mc1->begin_transaction('user'.$uid);
-        $mc1->update_row(false, array(
+        $mc1->begin_transaction('user' . $uid);
+        $mc1->update_row(false, [
             'username' => $uname,
-        ));
+        ]);
         $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
         $added = TIME_NOW;
         $changed = sqlesc("{$lang['namechanger_changed_to']} $uname");
@@ -56,7 +56,7 @@ if (isset($mode) && $mode == 'change') {
         }
         sql_query("INSERT INTO messages (sender, receiver, msg, subject, added) VALUES(0, $uid, $changed, $subject, $added)") or sqlerr(__FILE__, __LINE__);
         header('Refresh: 2; url=staffpanel.php?tool=namechanger');
-        stderr($lang['namechanger_success'], $lang['namechanger_u_changed'].htmlsafechars($uname).$lang['namechanger_please']);
+        stderr($lang['namechanger_success'], $lang['namechanger_u_changed'] . htmlsafechars($uname) . $lang['namechanger_please']);
     }
 }
 $HTMLOUT .= "
@@ -68,4 +68,4 @@ $HTMLOUT .= "
     <tr><td colspan='2' align='center'>{$lang['namechanger_if']}<input type='submit' value='{$lang['namechanger_change_name']}' class='btn' /></td></tr>
     </table>
     </form>";
-echo stdhead($lang['namechanger_stdhead']).$HTMLOUT.stdfoot();
+echo stdhead($lang['namechanger_stdhead']) . $HTMLOUT . stdfoot();

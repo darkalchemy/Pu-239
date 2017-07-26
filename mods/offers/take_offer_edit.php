@@ -4,7 +4,7 @@ if (!defined('IN_OFFERS')) {
     exit('No direct script access allowed');
 }
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 $res = sql_query("SELECT userid, cat FROM offers WHERE id = $id") or sqlerr(__FILE__, __LINE__);
 $num = mysqli_fetch_assoc($res);
@@ -22,22 +22,22 @@ if (!empty($_POST['picture'])) {
     //    $headers  = get_headers($picture2);
     //    if (strpos($headers[0], '200') === false)
     //        $picture = $TBDEV['baseurl'].'/pic/notfound.png';
-    $pic = '[img]'.$picture."[/img]\n";
+    $pic = '[img]' . $picture . "[/img]\n";
 }
 $descr = "$pic";
 $descr .= isset($_POST['body']) ? $_POST['body'] : '';
 if (!$descr) {
     stderr('Error', 'You must enter a description!');
 }
-$cat = (isset($_POST['category']) ? (int) $_POST['category'] : ($num['cat'] != '' ? $num['cat'] : 0));
+$cat = (isset($_POST['category']) ? (int)$_POST['category'] : ($num['cat'] != '' ? $num['cat'] : 0));
 if (!is_valid_id($cat)) {
     stderr('Error', 'You must select a category to put the request in!');
 }
 $offer = sqlesc($offer);
 $descr = sqlesc($descr);
-$acceptedby = isset($_POST['acceptedby']) ? (int) $_POST['acceptedby'] : 0;
+$acceptedby = isset($_POST['acceptedby']) ? (int)$_POST['acceptedby'] : 0;
 $filled = isset($_POST['filled']) ? $_POST['filled'] : 0;
-$torrentid = isset($_POST['torrentid']) ? (int) $_POST['torrentid'] : 0;
+$torrentid = isset($_POST['torrentid']) ? (int)$_POST['torrentid'] : 0;
 if ($filled) {
     if (!is_valid_id($torrentid)) {
         stderr('Error', 'Not a valid torrent ID!');
@@ -47,12 +47,12 @@ if ($filled) {
     //stderr('Error', 'ID is your own. Cannot fill your own Requests.');
     //$filledby = 0;
     //else {
-    $res = sql_query('SELECT id FROM users WHERE id = '.$filledby);
+    $res = sql_query('SELECT id FROM users WHERE id = ' . $filledby);
     if (mysqli_num_rows($res) == 0) {
         stderr('Error', 'ID doesn\'t match any users, try again');
     }
     //  }
-    $res = sql_query('SELECT id FROM torrents WHERE id = '.$torrentid);
+    $res = sql_query('SELECT id FROM torrents WHERE id = ' . $torrentid);
     if (mysqli_num_rows($res) == 0) {
         stderr('Error', 'ID doesn\'t match any torrents, try again');
     }

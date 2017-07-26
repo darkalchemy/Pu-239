@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
@@ -16,8 +16,8 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
     echo $HTMLOUT;
     exit();
 }
-require_once INCL_DIR.'user_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_testip'));
@@ -49,7 +49,7 @@ if ($ip) {
             $HTMLOUT .= "<tr><td>$first</td><td>$last</td><td>$comment</td></tr>\n";
         }
         $HTMLOUT .= "</table>\n";
-        stderr($lang['testip_result'], "<table border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded' style='padding-right: 5px'><img src='{$INSTALLER09['pic_base_url']}smilies/excl.gif' alt='' /></td><td class='embedded'>".sprintf($lang['testip_notice2'], $ip)."</td></tr></table><p>$HTMLOUT</p>");
+        stderr($lang['testip_result'], "<table border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded' style='padding-right: 5px'><img src='{$INSTALLER09['pic_base_url']}smilies/excl.gif' alt='' /></td><td class='embedded'>" . sprintf($lang['testip_notice2'], $ip) . "</td></tr></table><p>$HTMLOUT</p>");
     }
 }
 $HTMLOUT .= "
@@ -60,4 +60,4 @@ $HTMLOUT .= "
     <tr><td colspan='2' align='center'><input type='submit' class='btn' value='{$lang['testip_ok']}' /></td></tr>
     </table>
     </form>";
-echo stdhead($lang['testip_windows_title']).$HTMLOUT.stdfoot();
+echo stdhead($lang['testip_windows_title']) . $HTMLOUT . stdfoot();

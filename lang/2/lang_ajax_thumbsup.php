@@ -1,6 +1,6 @@
 <?php
 
-$lang = array(
+$lang = [
     'ajaxthumbs_up' => 'Thumbs Up',
-    'ajaxthumbs_' => '',
-);
+    'ajaxthumbs_'   => '',
+];

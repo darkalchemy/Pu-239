@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
@@ -16,8 +16,8 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
     echo $HTMLOUT;
     exit();
 }
-require_once INCL_DIR.'user_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_index'));
@@ -35,6 +35,7 @@ function is_s($n)
         return $lang['index_load_s'];
     }
 }
+
 function uptime()
 {
     global $lang;
@@ -46,15 +47,15 @@ function uptime()
     } else {
         $uptime = fgets($fd, 64);
         fclose($fd);
-        $mults = array(
-            4 => $lang['index_load_month'],
-            7 => $lang['index_load_week'],
+        $mults = [
+            4  => $lang['index_load_month'],
+            7  => $lang['index_load_week'],
             24 => $lang['index_load_day'],
             60 => $lang['index_load_hour'],
-            1 => $lang['index_load_minute'],
-        );
+            1  => $lang['index_load_minute'],
+        ];
         $n = 2419200;
-        $periods = array();
+        $periods = [];
         $shown = false;
         $uptime = substr($uptime, 0, strpos($uptime, ' '));
         $res = '';
@@ -66,7 +67,7 @@ function uptime()
                 if ($shown) {
                     $res .= ', ';
                 }
-                $res .= "$nmbr $v".is_s($nmbr);
+                $res .= "$nmbr $v" . is_s($nmbr);
                 $shown = true;
             }
         }
@@ -77,6 +78,7 @@ function uptime()
 
     return $res;
 }
+
 function loadavg($return_all = false)
 {
     global $lang;
@@ -104,6 +106,7 @@ function loadavg($return_all = false)
 
     return $res;
 }
+
 /*
     //==Windows Server Load
     $HTMLOUT .="
@@ -143,16 +146,16 @@ if ($percent <= 70) {
 $width = $percent * 4;
 $HTMLOUT .= "<img height='15' width='$width' src=\"{$INSTALLER09['pic_base_url']}{$pic}\" alt='$percent&#37;' /><br />{$lang['index_load_curr']}{$percent}{$lang['index_load_cpu']}<br />";
 //==End graphic
-$HTMLOUT .= "{$lang['index_load_uptime1']}".uptime().'';
+$HTMLOUT .= "{$lang['index_load_uptime1']}" . uptime() . '';
 $loadinfo = loadavg(true);
 $HTMLOUT .= "<br />
-    {$lang['index_load_pastmin']}".$loadinfo['last1']."<br />
-    {$lang['index_load_pastmin5']}".$loadinfo['last5']."<br />
-    {$lang['index_load_pastmin15']}".$loadinfo['last15']."<br />
-    {$lang['index_load_numtsk']}".$loadinfo['tasks']."<br />
-    {$lang['index_load_numproc']}".$loadinfo['processes']."<br />
-   {$lang['index_load_pid']}".$loadinfo['lastpid'].'<br />
+    {$lang['index_load_pastmin']}" . $loadinfo['last1'] . "<br />
+    {$lang['index_load_pastmin5']}" . $loadinfo['last5'] . "<br />
+    {$lang['index_load_pastmin15']}" . $loadinfo['last15'] . "<br />
+    {$lang['index_load_numtsk']}" . $loadinfo['tasks'] . "<br />
+    {$lang['index_load_numproc']}" . $loadinfo['processes'] . "<br />
+   {$lang['index_load_pid']}" . $loadinfo['lastpid'] . '<br />
     </td></tr></table></td></tr></table></div><br />';
 //==End
 
-echo stdhead($lang['index_serverload']).$HTMLOUT.stdfoot();
+echo stdhead($lang['index_serverload']) . $HTMLOUT . stdfoot();

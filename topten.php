@@ -1,11 +1,11 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 //==Topten by thehippy Updated for 09
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 dbconn(true);
 $lang = array_merge(load_language('global'), load_language('topten'));
 $HTMLOUT = '';
@@ -23,6 +23,7 @@ function mysql_fetch_rowsarr($result, $numass = MYSQLI_BOTH)
 
     return $got;
 }
+
 /*
 chs		=	widthxheight (adjust if needed)
 chco	=	chart colours, a,b,a,b,a,b,a,b
@@ -61,7 +62,7 @@ if (isset($_GET['view']) && $_GET['view'] == 't') {
         $tot10 = $arr[9]['leechers'] + $arr[9]['seeders'];
         $HTMLOUT .= "$imgstartpie&amp;chd=t:$tot1,$tot2,$tot3,$tot4,$tot5,$tot6,$tot7,$tot8,$tot9,$tot10&amp;chl=$tor1($tot1)|$tor2($tot2)|$tor3($tot3)|$tor4($tot4)|$tor5($tot5)|$tor6($tot6)|$tor7($tot7)|$tor8($tot8)|$tor9($tot9)|$tor10($tot10)\" alt='' /></div>";
     } else {
-        $HTMLOUT .= '<h4>Insufficient Torrents ('.$counted.')</h4></div>';
+        $HTMLOUT .= '<h4>Insufficient Torrents (' . $counted . ')</h4></div>';
     }
     $HTMLOUT .= "<div class='article' style='text-align:center'><div class='article_header'><h2>Top 10 Most Snatched Torrents</h2></div>";
     $result = sql_query("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id = p.torrent WHERE p.seeder = 'no' GROUP BY t.id ORDER BY times_completed DESC LIMIT 10");
@@ -90,9 +91,9 @@ if (isset($_GET['view']) && $_GET['view'] == 't') {
         $tot10 = $arr[9]['times_completed'];
         $HTMLOUT .= "$imgstartpie&amp;chd=t:$tot1,$tot2,$tot3,$tot4,$tot5,$tot6,$tot7,$tot8,$tot9,$tot10&amp;chl=$tor1($tot1)|$tor2($tot2)|$tor3($tot3)|$tor4($tot4)|$tor5($tot5)|$tor6($tot6)|$tor7($tot7)|$tor8($tot8)|$tor9($tot9)|$tor10($tot10)\" alt='' /></div>";
     } else {
-        $HTMLOUT .= '<h4>Insufficient Torrents ('.$counted.')</h4></div>';
+        $HTMLOUT .= '<h4>Insufficient Torrents (' . $counted . ')</h4></div>';
     }
-    echo stdhead($lang['head_title']).$HTMLOUT.stdfoot();
+    echo stdhead($lang['head_title']) . $HTMLOUT . stdfoot();
     die();
 }
 if (isset($_GET['view']) && $_GET['view'] == 'c') {
@@ -125,7 +126,7 @@ if (isset($_GET['view']) && $_GET['view'] == 'c') {
         $num10 = $arr[9]['num'];
         $HTMLOUT .= "$imgstartbar&amp;chds=0,$num1&amp;chxr=1,0,$num1&amp;chd=t:$num1,$num2,$num3,$num4,$num5,$num6,$num7,$num8,$num9,$num10&amp;chxt=x,y,x&amp;chxl=0:|$name1|$name2|$name3|$name4|$name5|$name6|$name7|$name8|$name9|$name10|2:|($num1)|($num2)|($num3)|($num4)|($num5)|($num6)|($num7)|($num8)|($num9)|($num10)\"  alt='' /></div>";
     } else {
-        $HTMLOUT .= '<h4>Insufficient Countries ('.$counted.')</h4></div>';
+        $HTMLOUT .= '<h4>Insufficient Countries (' . $counted . ')</h4></div>';
     }
     $HTMLOUT .= "<div class='article' style='text-align:center'><div class='article_header'><h2>Top 10 Countries (total uploaded)</h2></div>";
     $result = sql_query("SELECT c.name, c.flagpic, sum(u.uploaded) AS ul FROM users AS u LEFT JOIN countries AS c ON u.country = c.id WHERE u.enabled = 'yes' GROUP BY c.name ORDER BY ul DESC LIMIT 10");
@@ -152,11 +153,11 @@ if (isset($_GET['view']) && $_GET['view'] == 'c') {
         $num9 = $arr[8]['ul'];
         $name10 = $arr[9]['name'];
         $num10 = $arr[9]['ul'];
-        $HTMLOUT .= "$imgstartbar&amp;chds=0,$num1&amp;chxr=1,0,$num1&amp;chd=t:$num1,$num2,$num3,$num4,$num5,$num6,$num7,$num8,$num9,$num10&amp;chxt=x,y,x&amp;chxl=0:|$name1|$name2|$name3|$name4|$name5|$name6|$name7|$name8|$name9|$name10|1:||||||||||".mksize($num1).'|2:|('.mksize($num1).')|('.mksize($num2).')|('.mksize($num3).')|('.mksize($num4).')|('.mksize($num5).')|('.mksize($num6).')|('.mksize($num7).')|('.mksize($num8).')|('.mksize($num9).')|('.mksize($num10).")\" alt='' /></div>";
+        $HTMLOUT .= "$imgstartbar&amp;chds=0,$num1&amp;chxr=1,0,$num1&amp;chd=t:$num1,$num2,$num3,$num4,$num5,$num6,$num7,$num8,$num9,$num10&amp;chxt=x,y,x&amp;chxl=0:|$name1|$name2|$name3|$name4|$name5|$name6|$name7|$name8|$name9|$name10|1:||||||||||" . mksize($num1) . '|2:|(' . mksize($num1) . ')|(' . mksize($num2) . ')|(' . mksize($num3) . ')|(' . mksize($num4) . ')|(' . mksize($num5) . ')|(' . mksize($num6) . ')|(' . mksize($num7) . ')|(' . mksize($num8) . ')|(' . mksize($num9) . ')|(' . mksize($num10) . ")\" alt='' /></div>";
     } else {
-        $HTMLOUT .= '<h4>Insufficient Countries ('.$counted.')</h4></div>';
+        $HTMLOUT .= '<h4>Insufficient Countries (' . $counted . ')</h4></div>';
     }
-    echo stdhead($lang['head_title']).$HTMLOUT.stdfoot();
+    echo stdhead($lang['head_title']) . $HTMLOUT . stdfoot();
     die();
 }
 // Default display / Top Users
@@ -185,9 +186,9 @@ if ($counted == '10') {
     $upped8 = $arr[7]['uploaded'];
     $upped9 = $arr[8]['uploaded'];
     $upped10 = $arr[9]['uploaded'];
-    $HTMLOUT .= "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||".mksize($upped1).'|2:|('.mksize($upped1).')|('.mksize($upped2).')|('.mksize($upped3).')|('.mksize($upped4).')|('.mksize($upped5).')|('.mksize($upped6).')|('.mksize($upped7).')|('.mksize($upped8).')|('.mksize($upped9).')|('.mksize($upped10).")\" alt='' /></div>";
+    $HTMLOUT .= "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||" . mksize($upped1) . '|2:|(' . mksize($upped1) . ')|(' . mksize($upped2) . ')|(' . mksize($upped3) . ')|(' . mksize($upped4) . ')|(' . mksize($upped5) . ')|(' . mksize($upped6) . ')|(' . mksize($upped7) . ')|(' . mksize($upped8) . ')|(' . mksize($upped9) . ')|(' . mksize($upped10) . ")\" alt='' /></div>";
 } else {
-    $HTMLOUT .= '<h4>Insufficient Uploaders ('.$counted.')</h4></div>';
+    $HTMLOUT .= '<h4>Insufficient Uploaders (' . $counted . ')</h4></div>';
 }
 $HTMLOUT .= "<div class='article' style='text-align:center'><div class='article_header'><h2>Top 10 Downloaders</h2></div>";
 $result = sql_query("SELECT username, downloaded FROM users WHERE enabled = 'yes' ORDER BY downloaded DESC LIMIT 10");
@@ -214,12 +215,12 @@ if ($counted == '10') {
     $upped8 = $arr[7]['downloaded'];
     $upped9 = $arr[8]['downloaded'];
     $upped10 = $arr[9]['downloaded'];
-    $HTMLOUT .= "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||".mksize($upped1).'|2:|('.mksize($upped1).')|('.mksize($upped2).')|('.mksize($upped3).')|('.mksize($upped4).')|('.mksize($upped5).')|('.mksize($upped6).')|('.mksize($upped7).')|('.mksize($upped8).')|('.mksize($upped9).')|('.mksize($upped10).")\" alt=''/></div>";
+    $HTMLOUT .= "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||" . mksize($upped1) . '|2:|(' . mksize($upped1) . ')|(' . mksize($upped2) . ')|(' . mksize($upped3) . ')|(' . mksize($upped4) . ')|(' . mksize($upped5) . ')|(' . mksize($upped6) . ')|(' . mksize($upped7) . ')|(' . mksize($upped8) . ')|(' . mksize($upped9) . ')|(' . mksize($upped10) . ")\" alt=''/></div>";
 } else {
-    $HTMLOUT .= '<h4>Insufficient Downloaders ('.$counted.')</h4></div>';
+    $HTMLOUT .= '<h4>Insufficient Downloaders (' . $counted . ')</h4></div>';
 }
 $HTMLOUT .= "<div class='article' style='text-align:center'><div class='article_header'><h2>Top 10 Fastest Uploaders</h2></div>";
-$result = sql_query('SELECT  username, uploaded / ('.TIME_NOW." - added) AS upspeed FROM users WHERE enabled = 'yes' ORDER BY upspeed DESC LIMIT 10");
+$result = sql_query('SELECT  username, uploaded / (' . TIME_NOW . " - added) AS upspeed FROM users WHERE enabled = 'yes' ORDER BY upspeed DESC LIMIT 10");
 $counted = mysqli_num_rows($result);
 if ($counted == '10') {
     $arr = mysql_fetch_rowsarr($result);
@@ -243,12 +244,12 @@ if ($counted == '10') {
     $upped8 = $arr[7]['upspeed'];
     $upped9 = $arr[8]['upspeed'];
     $upped10 = $arr[9]['upspeed'];
-    $HTMLOUT .= "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||".mksize($upped1).'/s|2:|('.mksize($upped1).'/s)|('.mksize($upped2).'/s)|('.mksize($upped3).'/s)|('.mksize($upped4).'/s)|('.mksize($upped5).'/s)|('.mksize($upped6).'/s)|('.mksize($upped7).'/s)|('.mksize($upped8).'/s)|('.mksize($upped9).'/s)|('.mksize($upped10)."/s)\" alt='' /></div>";
+    $HTMLOUT .= "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||" . mksize($upped1) . '/s|2:|(' . mksize($upped1) . '/s)|(' . mksize($upped2) . '/s)|(' . mksize($upped3) . '/s)|(' . mksize($upped4) . '/s)|(' . mksize($upped5) . '/s)|(' . mksize($upped6) . '/s)|(' . mksize($upped7) . '/s)|(' . mksize($upped8) . '/s)|(' . mksize($upped9) . '/s)|(' . mksize($upped10) . "/s)\" alt='' /></div>";
 } else {
-    $HTMLOUT .= '<h4>Insufficient Uploaders ('.$counted.')</h4></div>';
+    $HTMLOUT .= '<h4>Insufficient Uploaders (' . $counted . ')</h4></div>';
 }
 $HTMLOUT .= "<div class='article' style='text-align:center'><div class='article_header'><h2>Top 10 Fastest Downloaders</h2></div>";
-$result = sql_query('SELECT username, downloaded / ('.TIME_NOW." - added) AS downspeed FROM users WHERE enabled = 'yes' ORDER BY downspeed DESC LIMIT 10");
+$result = sql_query('SELECT username, downloaded / (' . TIME_NOW . " - added) AS downspeed FROM users WHERE enabled = 'yes' ORDER BY downspeed DESC LIMIT 10");
 $counted = mysqli_num_rows($result);
 if ($counted == '10') {
     $arr = mysql_fetch_rowsarr($result);
@@ -272,8 +273,8 @@ if ($counted == '10') {
     $upped8 = $arr[7]['downspeed'];
     $upped9 = $arr[8]['downspeed'];
     $upped10 = $arr[9]['downspeed'];
-    $HTMLOUT .= "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||".mksize($upped1).'/s|2:|('.mksize($upped1).'/s)|('.mksize($upped2).'/s)|('.mksize($upped3).'/s)|('.mksize($upped4).'/s)|('.mksize($upped5).'/s)|('.mksize($upped6).'/s)|('.mksize($upped7).'/s)|('.mksize($upped8).'/s)|('.mksize($upped9).'/s)|('.mksize($upped10)."/s)\" alt='' /></div>";
+    $HTMLOUT .= "$imgstartbar&amp;chds=0,$upped1&amp;chxr=1,0,$upped1&amp;chd=t:$upped1,$upped2,$upped3,$upped4,$upped5,$upped6,$upped7,$upped8,$upped9,$upped10&amp;chxt=x,y,x&amp;chxl=0:|$user1|$user2|$user3|$user4|$user5|$user6|$user7|$user8|$user9|$user10|1:||||||||||" . mksize($upped1) . '/s|2:|(' . mksize($upped1) . '/s)|(' . mksize($upped2) . '/s)|(' . mksize($upped3) . '/s)|(' . mksize($upped4) . '/s)|(' . mksize($upped5) . '/s)|(' . mksize($upped6) . '/s)|(' . mksize($upped7) . '/s)|(' . mksize($upped8) . '/s)|(' . mksize($upped9) . '/s)|(' . mksize($upped10) . "/s)\" alt='' /></div>";
 } else {
-    $HTMLOUT .= '<h4>Insufficient Downloaders ('.$counted.')</h4></div>';
+    $HTMLOUT .= '<h4>Insufficient Downloaders (' . $counted . ')</h4></div>';
 }
-echo stdhead($lang['head_title']).$HTMLOUT.stdfoot();
+echo stdhead($lang['head_title']) . $HTMLOUT . stdfoot();

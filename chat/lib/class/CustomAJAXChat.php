@@ -64,7 +64,7 @@ class CustomAJAXChat extends AJAXChat
     public function &getChannels()
     {
         if ($this->_channels === null) {
-            $this->_channels = array();
+            $this->_channels = [];
 
             $customUsers = $this->getCustomUsers();
 
@@ -96,6 +96,16 @@ class CustomAJAXChat extends AJAXChat
 
     // Store all existing channels
     // Make sure channel names don't contain any whitespace
+
+    public function &getCustomUsers()
+    {
+        // List containing the registered chat users:
+        $users = null;
+        require AJAX_CHAT_PATH . 'lib/data/users.php';
+
+        return $users;
+    }
+
     public function &getAllChannels()
     {
         if ($this->_allChannels === null) {
@@ -116,9 +126,9 @@ class CustomAJAXChat extends AJAXChat
                 // First remove it in case it appeard under a different ID
                 unset($this->_allChannels[$this->getConfig('defaultChannelName')]);
                 $this->_allChannels = array_merge(
-                    array(
+                    [
                         $this->trimChannelName($this->getConfig('defaultChannelName')) => $this->getConfig('defaultChannelID'),
-                    ),
+                    ],
                     $this->_allChannels
                 );
             }
@@ -127,20 +137,11 @@ class CustomAJAXChat extends AJAXChat
         return $this->_allChannels;
     }
 
-    public function &getCustomUsers()
-    {
-        // List containing the registered chat users:
-        $users = null;
-        require AJAX_CHAT_PATH.'lib/data/users.php';
-
-        return $users;
-    }
-
     public function getCustomChannels()
     {
         // List containing the custom channels:
         $channels = null;
-        require AJAX_CHAT_PATH.'lib/data/channels.php';
+        require AJAX_CHAT_PATH . 'lib/data/channels.php';
         // Channel array structure should be:
         // ChannelName => ChannelID
         return array_flip($channels);

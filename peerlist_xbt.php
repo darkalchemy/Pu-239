@@ -1,31 +1,31 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'bt_client_functions.php';
-require_once INCL_DIR.'html_functions.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'bt_client_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 dbconn(false);
 loggedinorreturn();
 $lang = array_merge(load_language('global'), load_language('peerlist'));
-$id = (int) $_GET['id'];
+$id = (int)$_GET['id'];
 if (!isset($id) || !is_valid_id($id)) {
     stderr($lang['peerslist_user_error'], $lang['peerslist_invalid_id']);
 }
 $HTMLOUT = '';
 function XBT_IP_CONVERT($a)
 {
-    $b = array(
+    $b = [
         0,
         0,
         0,
         0,
-    );
+    ];
     $c = 16777216.0;
     $a += 0.0;
     for ($i = 0; $i < 4; ++$i) {
-        $k = (int) ($a / $c);
+        $k = (int)($a / $c);
         $a -= $c * $k;
         $b[$i] = $k;
         $c /= 256.0;
@@ -34,6 +34,7 @@ function XBT_IP_CONVERT($a)
 
     return $d;
 }
+
 function dltable($name, $arr, $torrent)
 {
     global $CURUSER, $lang, $INSTALLER09;
@@ -43,7 +44,7 @@ function dltable($name, $arr, $torrent)
     }
     $htmlout = "\n";
     $htmlout .= "<table width='100%' class='main' border='1' cellspacing='0' cellpadding='5'>\n";
-    $htmlout .= "<tr><td colspan='11' class='colhead'>".count($arr)." $name</td></tr>"."<tr><td class='colhead'>{$lang['peerslist_user_ip']}</td>"."<td class='colhead' align='right'>{$lang['peerslist_uploaded']}</td>"."<td class='colhead' align='right'>{$lang['peerslist_rate']}</td>".''.($INSTALLER09['ratio_free'] ? '' : "<td class='colhead' align='right'>{$lang['peerslist_downloaded']}</td>").''.''.($INSTALLER09['ratio_free'] ? '' : "<td class='colhead' align='right'>{$lang['peerslist_rate']}</td>").''."<td class='colhead' align='right'>{$lang['peerslist_ratio']}</td>"."<td class='colhead' align='right'>{$lang['peerslist_complete']}</td>"."<td class='colhead' align='right'>{$lang['peerslist_idle']}</td>"."<td class='colhead' align='left'>{$lang['peerslist_client']}</td></tr>\n";
+    $htmlout .= "<tr><td colspan='11' class='colhead'>" . count($arr) . " $name</td></tr>" . "<tr><td class='colhead'>{$lang['peerslist_user_ip']}</td>" . "<td class='colhead' align='right'>{$lang['peerslist_uploaded']}</td>" . "<td class='colhead' align='right'>{$lang['peerslist_rate']}</td>" . '' . ($INSTALLER09['ratio_free'] ? '' : "<td class='colhead' align='right'>{$lang['peerslist_downloaded']}</td>") . '' . '' . ($INSTALLER09['ratio_free'] ? '' : "<td class='colhead' align='right'>{$lang['peerslist_rate']}</td>") . '' . "<td class='colhead' align='right'>{$lang['peerslist_ratio']}</td>" . "<td class='colhead' align='right'>{$lang['peerslist_complete']}</td>" . "<td class='colhead' align='right'>{$lang['peerslist_idle']}</td>" . "<td class='colhead' align='left'>{$lang['peerslist_client']}</td></tr>\n";
     $now = TIME_NOW;
     $mod = $CURUSER['class'] >= UC_STAFF;
     foreach ($arr as $e) {
@@ -54,37 +55,38 @@ function dltable($name, $arr, $torrent)
             if (($e['tanonymous'] == 'yes' && $e['owner'] == $e['uid'] || $e['anonymous'] == 'yes' or $e['paranoia'] >= 2 && $CURUSER['id'] != $e['uid']) && $CURUSER['class'] < UC_STAFF) {
                 $htmlout .= "<td><b>Kezer Soze</b></td>\n";
             } else {
-                $htmlout .= "<td><a href='userdetails.php?id=".(int) $e['uid']."'><b>".htmlsafechars($e['username'])."</b></a></td>\n";
+                $htmlout .= "<td><a href='userdetails.php?id=" . (int)$e['uid'] . "'><b>" . htmlsafechars($e['username']) . "</b></a></td>\n";
             }
         } else {
-            $htmlout .= '<td>'.($mod ? XBT_IP_CONVERT($e['ipa']) : preg_replace('/\.\d+$/', '.xxx', XBT_IP_CONVERT($e['ipa'])))."</td>\n";
+            $htmlout .= '<td>' . ($mod ? XBT_IP_CONVERT($e['ipa']) : preg_replace('/\.\d+$/', '.xxx', XBT_IP_CONVERT($e['ipa']))) . "</td>\n";
         }
-        $htmlout .= "<td align='right'>".mksize($e['uploaded'])."</td>\n";
-        $htmlout .= "<td align='right'><span style=\"white-space: nowrap;\">".htmlsafechars($upspeed)."/s</span></td>\n";
-        $htmlout .= ''.($INSTALLER09['ratio_free'] ? '' : "<td align='right'>".mksize($e['downloaded']).'</td>')."\n";
-        $htmlout .= ''.($INSTALLER09['ratio_free'] ? '' : "<td align='right'><span style=\"white-space: nowrap;\">".htmlsafechars($downspeed).'/s</span></td>')."\n";
-        $htmlout .= '<td align="right">'.member_ratio($e['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $e['downloaded'])."</td>\n";
-        $htmlout .= "<td align='right'>".sprintf('%.2f%%', 100 * (1 - ($e['left'] / $torrent['size'])))."</td>\n";
-        $htmlout .= "<td align='right'>".mkprettytime($now - $e['la'])."</td>\n";
-        $htmlout .= "<td align='left'>".htmlsafechars(getagent($e['peer_id'], $e['peer_id']))."</td>\n";
+        $htmlout .= "<td align='right'>" . mksize($e['uploaded']) . "</td>\n";
+        $htmlout .= "<td align='right'><span style=\"white-space: nowrap;\">" . htmlsafechars($upspeed) . "/s</span></td>\n";
+        $htmlout .= '' . ($INSTALLER09['ratio_free'] ? '' : "<td align='right'>" . mksize($e['downloaded']) . '</td>') . "\n";
+        $htmlout .= '' . ($INSTALLER09['ratio_free'] ? '' : "<td align='right'><span style=\"white-space: nowrap;\">" . htmlsafechars($downspeed) . '/s</span></td>') . "\n";
+        $htmlout .= '<td align="right">' . member_ratio($e['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $e['downloaded']) . "</td>\n";
+        $htmlout .= "<td align='right'>" . sprintf('%.2f%%', 100 * (1 - ($e['left'] / $torrent['size']))) . "</td>\n";
+        $htmlout .= "<td align='right'>" . mkprettytime($now - $e['la']) . "</td>\n";
+        $htmlout .= "<td align='left'>" . htmlsafechars(getagent($e['peer_id'], $e['peer_id'])) . "</td>\n";
         $htmlout .= "</tr>\n";
     }
     $htmlout .= "</table>\n";
 
     return $htmlout;
 }
-$res = sql_query('SELECT * FROM torrents WHERE id = '.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+
+$res = sql_query('SELECT * FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($res) == 0) {
     stderr("{$lang['peerslist_error']}", "{$lang['peerslist_nothing']}");
 }
 $row = mysqli_fetch_assoc($res);
-$downloaders = array();
-$seeders = array();
+$downloaders = [];
+$seeders = [];
 $subres = sql_query("SELECT u.username, u.anonymous, u.paranoia, t.owner, t.anonymous as tanonymous, t.seeders, t.leechers, x.fid, x.uploaded, x.downloaded, x.left, x.active, x.mtime AS la, x.uid, x.leechtime, x.seedtime, x.peer_id, x.upspeed, x.downspeed, x.ipa
     FROM xbt_files_users x
     LEFT JOIN users u ON x.uid = u.id
 	LEFT JOIN torrents as t on t.id = x.fid
-    WHERE active='1' AND x.fid = ".sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    WHERE active='1' AND x.fid = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($subres) == 0) {
     stderr("{$lang['peerslist_warning']}", "{$lang['peerslist_no_data']}");
 }
@@ -111,6 +113,7 @@ function leech_sort($a, $b)
 
     return 1;
 }
+
 function seed_sort($a, $b)
 {
     $x = $a['uploaded'];
@@ -124,9 +127,10 @@ function seed_sort($a, $b)
 
     return -1;
 }
+
 usort($seeders, 'seed_sort');
 usort($downloaders, 'leech_sort');
-$HTMLOUT .= "<h1>Peerlist for <a href='{$INSTALLER09['baseurl']}/details.php?id=$id'>".htmlsafechars($row['name']).'</a></h1>';
+$HTMLOUT .= "<h1>Peerlist for <a href='{$INSTALLER09['baseurl']}/details.php?id=$id'>" . htmlsafechars($row['name']) . '</a></h1>';
 $HTMLOUT .= dltable("{$lang['peerslist_seeders']}<a name='seeders'></a>", $seeders, $row);
-$HTMLOUT .= '<br />'.dltable("{$lang['peerslist_leechers']}<a name='leechers'></a>", $downloaders, $row);
-echo stdhead("{$lang['peerslist_stdhead']}").$HTMLOUT.stdfoot();
+$HTMLOUT .= '<br />' . dltable("{$lang['peerslist_leechers']}<a name='leechers'></a>", $downloaders, $row);
+echo stdhead("{$lang['peerslist_stdhead']}") . $HTMLOUT . stdfoot();

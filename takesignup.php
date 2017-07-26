@@ -1,13 +1,13 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once CLASS_DIR.'page_verify.php';
-require_once INCL_DIR.'password_functions.php';
-require_once INCL_DIR.'bbcode_functions.php';
-require_once INCL_DIR.'function_bemail.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once CLASS_DIR . 'page_verify.php';
+require_once INCL_DIR . 'password_functions.php';
+require_once INCL_DIR . 'bbcode_functions.php';
+require_once INCL_DIR . 'function_bemail.php';
 dbconn();
 global $CURUSER;
 if (!$CURUSER) {
@@ -15,7 +15,7 @@ if (!$CURUSER) {
 }
 $ip = getip();
 if (!$INSTALLER09['openreg']) {
-    stderr('Sorry', 'Invite only - Signups are closed presently if you have an invite code click <a href="'.$INSTALLER09['baseurl'].'/invite_signup.php"><b> Here</b></a>');
+    stderr('Sorry', 'Invite only - Signups are closed presently if you have an invite code click <a href="' . $INSTALLER09['baseurl'] . '/invite_signup.php"><b> Here</b></a>');
 }
 $res = sql_query('SELECT COUNT(id) FROM users') or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_row($res);
@@ -25,7 +25,7 @@ if ($arr[0] >= $INSTALLER09['maxusers']) {
 $lang = array_merge(load_language('global'), load_language('takesignup'));
 $newpage = new page_verify();
 $newpage->check('tesu');
-if (!mkglobal('wantusername:wantpassword:passagain:email'.($INSTALLER09['captcha_on'] ? ':captchaSelection:' : ':').'submitme:passhint:hintanswer:country')) {
+if (!mkglobal('wantusername:wantpassword:passagain:email' . ($INSTALLER09['captcha_on'] ? ':captchaSelection:' : ':') . 'submitme:passhint:hintanswer:country')) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_form_data']);
 }
 if ($submitme != 'X') {
@@ -57,6 +57,7 @@ function validusername($username)
 
     return true;
 }
+
 if (empty($wantusername) || empty($wantpassword) || empty($email) || empty($passhint) || empty($hintanswer) || empty($country)) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_blank']);
 }
@@ -85,7 +86,7 @@ if (!(isset($_POST['day']) || isset($_POST['month']) || isset($_POST['year']))) 
     stderr('Error', 'You have to fill in your birthday.');
 }
 if (checkdate($_POST['month'], $_POST['day'], $_POST['year'])) {
-    $birthday = $_POST['year'].'-'.$_POST['month'].'-'.$_POST['day'];
+    $birthday = $_POST['year'] . '-' . $_POST['month'] . '-' . $_POST['day'];
 } else {
     stderr('Error', 'You have to fill in your birthday correctly.');
 }
@@ -102,15 +103,15 @@ if ($_POST['rulesverify'] != 'yes' || $_POST['faqverify'] != 'yes' || $_POST['ag
     stderr($lang['takesignup_failed'], $lang['takesignup_qualify']);
 }
 // check if email addy is already in use
-$a = (mysqli_fetch_row(sql_query('SELECT COUNT(id) FROM users WHERE email='.sqlesc($email)))) or sqlerr(__FILE__, __LINE__);
+$a = (mysqli_fetch_row(sql_query('SELECT COUNT(id) FROM users WHERE email=' . sqlesc($email)))) or sqlerr(__FILE__, __LINE__);
 if ($a[0] != 0) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_email_used']);
 }
 //=== check if ip addy is already in use
 if ($INSTALLER09['dupeip_check_on']) {
-    $c = (mysqli_fetch_row(sql_query('SELECT COUNT(id) FROM users WHERE ip='.sqlesc($ip)))) or sqlerr(__FILE__, __LINE__);
+    $c = (mysqli_fetch_row(sql_query('SELECT COUNT(id) FROM users WHERE ip=' . sqlesc($ip)))) or sqlerr(__FILE__, __LINE__);
     if ($c[0] != 0) {
-        stderr('Error', 'The ip '.htmlsafechars($ip).' is already in use. We only allow one account per ip address.');
+        stderr('Error', 'The ip ' . htmlsafechars($ip) . ' is already in use. We only allow one account per ip address.');
     }
 }
 // TIMEZONE STUFF
@@ -128,23 +129,23 @@ $editsecret = (!$arr[0] ? '' : EMAIL_CONFIRM ? make_passhash_login_key() : '');
 $wanthintanswer = md5($hintanswer);
 $user_frees = (XBT_TRACKER == true ? '0' : TIME_NOW + 14 * 86400);
 check_banned_emails($email);
-$ret = sql_query('INSERT INTO users (username, passhash, secret, editsecret, birthday, country, gender, stylesheet, passhint, hintanswer, email, status, ip, '.(!$arr[0] ? 'class, ' : '').'added, last_access, time_offset, dst_in_use, free_switch) VALUES ('.implode(',', array_map('sqlesc', array(
-    $wantusername,
-    $wantpasshash,
-    $secret,
-    $editsecret,
-    $birthday,
-    $country,
-    $gender,
-    $INSTALLER09['stylesheet'],
-    $passhint,
-    $wanthintanswer,
-    $email,
-    (!$arr[0] || !EMAIL_CONFIRM ? 'confirmed' : 'pending'),
-    $ip,
-))).', '.(!$arr[0] ? UC_SYSOP.', ' : '').''.TIME_NOW.','.TIME_NOW." , $time_offset, {$dst_in_use['tm_isdst']}, $user_frees)");
+$ret = sql_query('INSERT INTO users (username, passhash, secret, editsecret, birthday, country, gender, stylesheet, passhint, hintanswer, email, status, ip, ' . (!$arr[0] ? 'class, ' : '') . 'added, last_access, time_offset, dst_in_use, free_switch) VALUES (' . implode(',', array_map('sqlesc', [
+        $wantusername,
+        $wantpasshash,
+        $secret,
+        $editsecret,
+        $birthday,
+        $country,
+        $gender,
+        $INSTALLER09['stylesheet'],
+        $passhint,
+        $wanthintanswer,
+        $email,
+        (!$arr[0] || !EMAIL_CONFIRM ? 'confirmed' : 'pending'),
+        $ip,
+    ])) . ', ' . (!$arr[0] ? UC_SYSOP . ', ' : '') . '' . TIME_NOW . ',' . TIME_NOW . " , $time_offset, {$dst_in_use['tm_isdst']}, $user_frees)");
 $mc1->delete_value('birthdayusers');
-$message = "Welcome New {$INSTALLER09['site_name']} Member : - ".htmlsafechars($wantusername).'';
+$message = "Welcome New {$INSTALLER09['site_name']} Member : - " . htmlsafechars($wantusername) . '';
 if (!$arr[0]) {
     write_staffs();
 }
@@ -154,14 +155,14 @@ if (!$ret) {
     }
 }
 $id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
-sql_query('INSERT INTO usersachiev (id, username) VALUES ('.sqlesc($id).', '.sqlesc($wantusername).')') or sqlerr(__FILE__, __LINE__);
+sql_query('INSERT INTO usersachiev (id, username) VALUES (' . sqlesc($id) . ', ' . sqlesc($wantusername) . ')') or sqlerr(__FILE__, __LINE__);
 //==New member pm
 $added = TIME_NOW;
 $subject = sqlesc('Welcome');
-$msg = sqlesc('Hey there '.htmlsafechars($wantusername)." ! Welcome to {$INSTALLER09['site_name']} ! :clap2: \n\n Please ensure your connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\ncheers {$INSTALLER09['site_name']} staff.\n");
-sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, ".sqlesc($id).", $msg, $added)") or sqlerr(__FILE__, __LINE__);
+$msg = sqlesc('Hey there ' . htmlsafechars($wantusername) . " ! Welcome to {$INSTALLER09['site_name']} ! :clap2: \n\n Please ensure your connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\ncheers {$INSTALLER09['site_name']} staff.\n");
+sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($id) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
 //==End new member pm
-$latestuser_cache['id'] = (int) $id;
+$latestuser_cache['id'] = (int)$id;
 $latestuser_cache['username'] = $wantusername;
 $latestuser_cache['class'] = '0';
 $latestuser_cache['donor'] = 'no';
@@ -173,26 +174,25 @@ $latestuser_cache['pirate'] = '0';
 $latestuser_cache['king'] = '0';
 /* OOP **/
 $mc1->cache_value('latestuser', $latestuser_cache, $INSTALLER09['expires']['latestuser']);
-write_log('User account '.(int) $id.' ('.htmlsafechars($wantusername).') was created');
+write_log('User account ' . (int)$id . ' (' . htmlsafechars($wantusername) . ') was created');
 $psecret = $editsecret;
 if ($INSTALLER09['autoshout_on'] == 1) {
     autoshout($message);
-    $mc1->delete_value('shoutbox_');
 }
-$body = str_replace(array(
+$body = str_replace([
     '<#SITENAME#>',
     '<#USEREMAIL#>',
     '<#IP_ADDRESS#>',
     '<#REG_LINK#>',
-), array(
+], [
     $INSTALLER09['site_name'],
     $email,
     $ip,
     "{$INSTALLER09['baseurl']}/confirm.php?id=$id&secret=$psecret",
-), $lang['takesignup_email_body']);
+], $lang['takesignup_email_body']);
 if ($arr[0] || EMAIL_CONFIRM) {
     mail($email, "{$INSTALLER09['site_name']} {$lang['takesignup_confirm']}", $body, "{$lang['takesignup_from']} {$INSTALLER09['site_email']}");
 } else {
     logincookie($id, $wantpasshash);
 }
-header('Refresh: 0; url=ok.php?type='.(!$arr[0] ? 'sysop' : (EMAIL_CONFIRM ? 'signup&email='.urlencode($email) : 'confirm')));
+header('Refresh: 0; url=ok.php?type=' . (!$arr[0] ? 'sysop' : (EMAIL_CONFIRM ? 'signup&email=' . urlencode($email) : 'confirm')));

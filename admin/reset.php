@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
@@ -16,16 +16,16 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
     echo $HTMLOUT;
     exit();
 }
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'password_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'password_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_reset'));
 //== Reset Lost Password
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = trim(htmlsafechars($_POST['username']));
-    $uid = (int) $_POST['uid'];
+    $uid = (int)$_POST['uid'];
     $secret = mksecret();
     $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     $newpassword = '';
@@ -33,34 +33,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $newpassword .= $chars[mt_rand(0, strlen($chars) - 1)];
     }
     $passhash = make_passhash($secret, md5($newpassword));
-    $postkey = PostKey(array(
+    $postkey = PostKey([
         $uid,
         $CURUSER['id'],
-    ));
-    $res = sql_query('UPDATE users SET secret='.sqlesc($secret).', passhash='.sqlesc($passhash).' WHERE username='.sqlesc($username).' AND id='.sqlesc($uid).' AND class<'.$CURUSER['class']) or sqlerr(__FILE__, __LINE__);
-    $mc1->begin_transaction('MyUser_'.$uid);
-    $mc1->update_row(false, array(
-        'secret' => $secret,
+    ]);
+    $res = sql_query('UPDATE users SET secret=' . sqlesc($secret) . ', passhash=' . sqlesc($passhash) . ' WHERE username=' . sqlesc($username) . ' AND id=' . sqlesc($uid) . ' AND class<' . $CURUSER['class']) or sqlerr(__FILE__, __LINE__);
+    $mc1->begin_transaction('MyUser_' . $uid);
+    $mc1->update_row(false, [
+        'secret'   => $secret,
         'passhash' => $passhash,
-    ));
+    ]);
     $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
-    $mc1->begin_transaction('user'.$uid);
-    $mc1->update_row(false, array(
-        'secret' => $secret,
+    $mc1->begin_transaction('user' . $uid);
+    $mc1->update_row(false, [
+        'secret'   => $secret,
         'passhash' => $passhash,
-    ));
+    ]);
     $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) != 1) {
         stderr($lang['reset_stderr'], $lang['reset_stderr1']);
     }
-    if (CheckPostKey(array(
-        $uid,
-        $CURUSER['id'],
-    ), $postkey) == false) {
+    if (CheckPostKey([
+            $uid,
+            $CURUSER['id'],
+        ], $postkey) == false) {
         stderr($lang['reset_stderr2'], $lang['reset_stderr3']);
     }
-    write_log($lang['reset_pwreset'], $lang['reset_pw_log1'].htmlsafechars($username).$lang['reset_pw_log2'].htmlsafechars($CURUSER['username']));
-    stderr($lang['reset_pw_success'], ''.$lang['reset_pw_success1'].' <b>'.htmlsafechars($username).'</b>'.$lang['reset_pw_success2'].'<b>'.htmlsafechars($newpassword).'</b>.');
+    write_log($lang['reset_pwreset'], $lang['reset_pw_log1'] . htmlsafechars($username) . $lang['reset_pw_log2'] . htmlsafechars($CURUSER['username']));
+    stderr($lang['reset_pw_success'], '' . $lang['reset_pw_success1'] . ' <b>' . htmlsafechars($username) . '</b>' . $lang['reset_pw_success2'] . '<b>' . htmlsafechars($newpassword) . '</b>.');
 }
 $HTMLOUT = '';
 $HTMLOUT .= "<h1>{$lang['reset_title']}</h1>
@@ -78,4 +78,4 @@ $HTMLOUT .= "<h1>{$lang['reset_title']}</h1>
 </td>
 </tr>
 </table></form>";
-echo stdhead($lang['reset_stdhead']).$HTMLOUT.stdfoot();
+echo stdhead($lang['reset_stdhead']) . $HTMLOUT . stdfoot();

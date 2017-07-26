@@ -29,19 +29,13 @@ class AJAXChatMySQLiQuery
     }
 
     // Returns true if an error occured:
-    public function error()
-    {
-        // Returns true if the Result-ID is valid:
-        return !(bool) ($this->_result);
-    }
 
-    // Returns an Error-String:
     public function getError()
     {
         if ($this->error()) {
-            $str = 'Query: '.$this->_sql."\n";
-            $str .= 'Error-Report: '.$this->_error."\n";
-            $str .= 'Error-Code: '.$this->_errno;
+            $str = 'Query: ' . $this->_sql . "\n";
+            $str .= 'Error-Report: ' . $this->_error . "\n";
+            $str .= 'Error-Code: ' . $this->_errno;
         } else {
             $str = 'No errors.';
         }
@@ -49,7 +43,16 @@ class AJAXChatMySQLiQuery
         return $str;
     }
 
+    // Returns an Error-String:
+
+    public function error()
+    {
+        // Returns true if the Result-ID is valid:
+        return !(bool)($this->_result);
+    }
+
     // Returns the content:
+
     public function fetch()
     {
         if ($this->error()) {

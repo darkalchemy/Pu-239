@@ -12,7 +12,8 @@
         c = "hasOwnProperty",
         d = /[\.\/]/,
         e = "*",
-        f = function () {},
+        f = function () {
+        },
         g = function (a, b) {
             return a - b
         },
@@ -107,14 +108,16 @@
                         for (m = 0, n = g.f.length; m < n; m++) if (g.f[m] == b) {
                             g.f.splice(m, 1);
                             break
-                        }!g.f.length && delete g.f
+                        }
+                        !g.f.length && delete g.f
                     }
                     for (h in g.n) if (g.n[c](h) && g.n[h].f) {
                         var p = g.n[h].f;
                         for (m = 0, n = p.length; m < n; m++) if (p[m] == b) {
                             p.splice(m, 1);
                             break
-                        }!p.length && delete g.n[h].f
+                        }
+                        !p.length && delete g.n[h].f
                     }
                 } else {
                     delete g.f;
@@ -125,19 +128,22 @@
         }
     }, k.once = function (a, b) {
         var c = function () {
-                var d = b.apply(this, arguments);
-                k.unbind(a, c);
-                return d
-            };
+            var d = b.apply(this, arguments);
+            k.unbind(a, c);
+            return d
+        };
         return k.on(a, c)
     }, k.version = b, k.toString = function () {
         return "You are running Eve " + b
     }, typeof module != "undefined" && module.exports ? module.exports = k : typeof define != "undefined" ? define("eve", [], function () {
         return k
     }) : a.eve = k
-})(this), function () {function cF(a) {
+})(this), function () {
+    function cF(a) {
         for (var b = 0; b < cy.length; b++) cy[b].el.paper == a && cy.splice(b--, 1)
-    }function cE(b, d, e, f, h, i) {
+    }
+
+    function cE(b, d, e, f, h, i) {
         e = Q(e);
         var j, k, l, m = [],
             o, p, q, t = b.ms,
@@ -158,66 +164,66 @@
             }
             f && d.attr(b.anim[b.percents[y]])
         }
-        if ( !! j) {
+        if (!!j) {
             if (!k) {
                 for (var A in j) if (j[g](A)) if (U[g](A) || d.paper.customAttributes[g](A)) {
                     u[A] = d.attr(A), u[A] == null && (u[A] = T[A]), v[A] = j[A];
                     switch (U[A]) {
-                    case C:
-                        w[A] = (v[A] - u[A]) / t;
-                        break;
-                    case "colour":
-                        u[A] = a.getRGB(u[A]);
-                        var B = a.getRGB(v[A]);
-                        w[A] = {
-                            r: (B.r - u[A].r) / t,
-                            g: (B.g - u[A].g) / t,
-                            b: (B.b - u[A].b) / t
-                        };
-                        break;
-                    case "path":
-                        var D = bR(u[A], v[A]),
-                            E = D[1];
-                        u[A] = D[0], w[A] = [];
-                        for (y = 0, z = u[A].length; y < z; y++) {
-                            w[A][y] = [0];
-                            for (var F = 1, G = u[A][y].length; F < G; F++) w[A][y][F] = (E[y][F] - u[A][y][F]) / t
-                        }
-                        break;
-                    case "transform":
-                        var H = d._,
-                            I = ca(H[A], v[A]);
-                        if (I) {
-                            u[A] = I.from, v[A] = I.to, w[A] = [], w[A].real = !0;
+                        case C:
+                            w[A] = (v[A] - u[A]) / t;
+                            break;
+                        case "colour":
+                            u[A] = a.getRGB(u[A]);
+                            var B = a.getRGB(v[A]);
+                            w[A] = {
+                                r: (B.r - u[A].r) / t,
+                                g: (B.g - u[A].g) / t,
+                                b: (B.b - u[A].b) / t
+                            };
+                            break;
+                        case "path":
+                            var D = bR(u[A], v[A]),
+                                E = D[1];
+                            u[A] = D[0], w[A] = [];
                             for (y = 0, z = u[A].length; y < z; y++) {
-                                w[A][y] = [u[A][y][0]];
-                                for (F = 1, G = u[A][y].length; F < G; F++) w[A][y][F] = (v[A][y][F] - u[A][y][F]) / t
+                                w[A][y] = [0];
+                                for (var F = 1, G = u[A][y].length; F < G; F++) w[A][y][F] = (E[y][F] - u[A][y][F]) / t
                             }
-                        } else {
-                            var J = d.matrix || new cb,
-                                K = {
-                                    _: {
-                                        transform: H.transform
-                                    },
-                                    getBBox: function () {
-                                        return d.getBBox(1)
-                                    }
-                                };
-                            u[A] = [J.a, J.b, J.c, J.d, J.e, J.f], b$(K, v[A]), v[A] = K._.transform, w[A] = [(K.matrix.a - J.a) / t, (K.matrix.b - J.b) / t, (K.matrix.c - J.c) / t, (K.matrix.d - J.d) / t, (K.matrix.e - J.e) / t, (K.matrix.f - J.f) / t]
-                        }
-                        break;
-                    case "csv":
-                        var L = r(j[A])[s](c),
-                            M = r(u[A])[s](c);
-                        if (A == "clip-rect") {
-                            u[A] = M, w[A] = [], y = M.length;
-                            while (y--) w[A][y] = (L[y] - u[A][y]) / t
-                        }
-                        v[A] = L;
-                        break;
-                    default:
-                        L = [][n](j[A]), M = [][n](u[A]), w[A] = [], y = d.paper.customAttributes[A].length;
-                        while (y--) w[A][y] = ((L[y] || 0) - (M[y] || 0)) / t
+                            break;
+                        case "transform":
+                            var H = d._,
+                                I = ca(H[A], v[A]);
+                            if (I) {
+                                u[A] = I.from, v[A] = I.to, w[A] = [], w[A].real = !0;
+                                for (y = 0, z = u[A].length; y < z; y++) {
+                                    w[A][y] = [u[A][y][0]];
+                                    for (F = 1, G = u[A][y].length; F < G; F++) w[A][y][F] = (v[A][y][F] - u[A][y][F]) / t
+                                }
+                            } else {
+                                var J = d.matrix || new cb,
+                                    K = {
+                                        _: {
+                                            transform: H.transform
+                                        },
+                                        getBBox: function () {
+                                            return d.getBBox(1)
+                                        }
+                                    };
+                                u[A] = [J.a, J.b, J.c, J.d, J.e, J.f], b$(K, v[A]), v[A] = K._.transform, w[A] = [(K.matrix.a - J.a) / t, (K.matrix.b - J.b) / t, (K.matrix.c - J.c) / t, (K.matrix.d - J.d) / t, (K.matrix.e - J.e) / t, (K.matrix.f - J.f) / t]
+                            }
+                            break;
+                        case "csv":
+                            var L = r(j[A])[s](c),
+                                M = r(u[A])[s](c);
+                            if (A == "clip-rect") {
+                                u[A] = M, w[A] = [], y = M.length;
+                                while (y--) w[A][y] = (L[y] - u[A][y]) / t
+                            }
+                            v[A] = L;
+                            break;
+                        default:
+                            L = [][n](j[A]), M = [][n](u[A]), w[A] = [], y = d.paper.customAttributes[A].length;
+                            while (y--) w[A][y] = ((L[y] || 0) - (M[y] || 0)) / t
                     }
                 }
                 var O = j.easing,
@@ -260,7 +266,9 @@
             } else k.initstatus = f, k.start = new Date - k.ms * f;
             eve("raphael.anim.start." + d.id, d, b)
         }
-    }function cD(a, b) {
+    }
+
+    function cD(a, b) {
         var c = [],
             d = {};
         this.ms = b, this.times = 1;
@@ -269,7 +277,10 @@
             c.sort(bd)
         }
         this.anim = d, this.top = c[c.length - 1], this.percents = c
-    }function cC(a, b, c, d, e, f) {function o(a, b) {
+    }
+
+    function cC(a, b, c, d, e, f) {
+        function o(a, b) {
             var c, d, e, f, j, k;
             for (e = a, k = 0; k < 8; k++) {
                 f = m(e) - a;
@@ -287,12 +298,17 @@
                 a > f ? c = e : d = e, e = (d - c) / 2 + c
             }
             return e
-        }function n(a, b) {
+        }
+
+        function n(a, b) {
             var c = o(a, b);
             return ((l * c + k) * c + j) * c
-        }function m(a) {
+        }
+
+        function m(a) {
             return ((i * a + h) * a + g) * a
         }
+
         var g = 3 * b,
             h = 3 * (d - b) - g,
             i = 1 - g - h,
@@ -300,13 +316,21 @@
             k = 3 * (e - c) - j,
             l = 1 - j - k;
         return n(a, 1 / (200 * f))
-    }function cq() {
+    }
+
+    function cq() {
         return this.x + q + this.y + q + this.width + " Ã— " + this.height
-    }function cp() {
+    }
+
+    function cp() {
         return this.x + q + this.y
-    }function cb(a, b, c, d, e, f) {
+    }
+
+    function cb(a, b, c, d, e, f) {
         a != null ? (this.a = +a, this.b = +b, this.c = +c, this.d = +d, this.e = +e, this.f = +f) : (this.a = 1, this.b = 0, this.c = 0, this.d = 1, this.e = 0, this.f = 0)
-    }function bH(b, c, d) {
+    }
+
+    function bH(b, c, d) {
         b = a._path2curve(b), c = a._path2curve(c);
         var e, f, g, h, i, j, k, l, m, n, o = d ? 0 : [];
         for (var p = 0, q = b.length; p < q; p++) {
@@ -330,14 +354,16 @@
             }
         }
         return o
-    }function bG(b, c, d) {
+    }
+
+    function bG(b, c, d) {
         var e = a.bezierBBox(b),
             f = a.bezierBBox(c);
         if (!a.isBBoxIntersect(e, f)) return d ? 0 : [];
         var g = bB.apply(0, b),
             h = bB.apply(0, c),
-            i = ~~ (g / 5),
-            j = ~~ (h / 5),
+            i = ~~(g / 5),
+            j = ~~(h / 5),
             k = [],
             l = [],
             m = {},
@@ -377,11 +403,17 @@
             }
         }
         return n
-    }function bF(a, b) {
+    }
+
+    function bF(a, b) {
         return bG(a, b, 1)
-    }function bE(a, b) {
+    }
+
+    function bE(a, b) {
         return bG(a, b)
-    }function bD(a, b, c, d, e, f, g, h) {
+    }
+
+    function bD(a, b, c, d, e, f, g, h) {
         if (!(x(a, c) < y(e, g) || y(a, c) > x(e, g) || x(b, d) < y(f, h) || y(b, d) > x(f, h))) {
             var i = (a * d - b * c) * (e - g) - (a - c) * (e * h - f * g),
                 j = (a * d - b * c) * (f - h) - (b - d) * (e * h - f * g),
@@ -397,7 +429,9 @@
                 y: m
             }
         }
-    }function bC(a, b, c, d, e, f, g, h, i) {
+    }
+
+    function bC(a, b, c, d, e, f, g, h, i) {
         if (!(i < 0 || bB(a, b, c, d, e, f, g, h) < i)) {
             var j = 1,
                 k = j / 2,
@@ -407,7 +441,9 @@
             while (z(m - i) > n) k /= 2, l += (m < i ? 1 : -1) * k, m = bB(a, b, c, d, e, f, g, h, l);
             return l
         }
-    }function bB(a, b, c, d, e, f, g, h, i) {
+    }
+
+    function bB(a, b, c, d, e, f, g, h, i) {
         i == null && (i = 1), i = i > 1 ? 1 : i < 0 ? 0 : i;
         var j = i / 2,
             k = 12,
@@ -422,11 +458,15 @@
             n += m[o] * w.sqrt(s)
         }
         return j * n
-    }function bA(a, b, c, d, e) {
+    }
+
+    function bA(a, b, c, d, e) {
         var f = -3 * b + 9 * c - 9 * d + 3 * e,
             g = a * f + 6 * b - 12 * c + 6 * d;
         return a * g - 3 * b + 3 * c
-    }function by(a, b) {
+    }
+
+    function by(a, b) {
         var c = [];
         for (var d = 0, e = a.length; e - 2 * !b > d; d += 2) {
             var f = [{
@@ -460,9 +500,14 @@
             }), c.push(["C", (-f[0].x + 6 * f[1].x + f[2].x) / 6, (-f[0].y + 6 * f[1].y + f[2].y) / 6, (f[1].x + 6 * f[2].x - f[3].x) / 6, (f[1].y + 6 * f[2].y - f[3].y) / 6, f[2].x, f[2].y])
         }
         return c
-    }function bx() {
+    }
+
+    function bx() {
         return this.hex
-    }function bv(a, b, c) {function d() {
+    }
+
+    function bv(a, b, c) {
+        function d() {
             var e = Array.prototype.slice.call(arguments, 0),
                 f = e.join("â€"),
                 h = d.cache = d.cache || {},
@@ -474,15 +519,22 @@
             i.length >= 1e3 && delete h[i.shift()], i.push(f), h[f] = a[m](b, e);
             return c ? c(h[f]) : h[f]
         }
+
         return d
-    }function bu(a, b) {
+    }
+
+    function bu(a, b) {
         for (var c = 0, d = a.length; c < d; c++) if (a[c] === b) return a.push(a.splice(c, 1)[0])
-    }function bm(a) {
+    }
+
+    function bm(a) {
         if (Object(a) !== a) return a;
         var b = new a.constructor;
         for (var c in a) a[g](c) && (b[c] = bm(a[c]));
         return b
-    }function a(c) {
+    }
+
+    function a(c) {
         if (a.is(c, "function")) return b ? c() : eve.on("raphael.DOMload", c);
         if (a.is(c, E)) return a._engine.create[m](a, c.splice(0, 3 + a.is(c[0], C))).add(c);
         var d = Array.prototype.slice.call(arguments, 0);
@@ -494,6 +546,7 @@
         }
         return a._engine.create[m](a, arguments)
     }
+
     a.version = "2.1.0", a.eve = eve;
     var b, c = /[, ]+/,
         d = {
@@ -640,7 +693,8 @@
         bd = function (a, b) {
             return Q(a) - Q(b)
         },
-        be = function () {},
+        be = function () {
+        },
         bf = function (a) {
             return a
         },
@@ -726,14 +780,14 @@
         return c
     };
     var bn = a.createUUID = function (a, b) {
-            return function () {
-                return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(a, b).toUpperCase()
-            }
-        }(/[xy]/g, function (a) {
-            var b = w.random() * 16 | 0,
-                c = a == "x" ? b : b & 3 | 8;
-            return c.toString(16)
-        });
+        return function () {
+            return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(a, b).toUpperCase()
+        }
+    }(/[xy]/g, function (a) {
+        var b = w.random() * 16 | 0,
+            c = a == "x" ? b : b & 3 | 8;
+        return c.toString(16)
+    });
     a.setWindow = function (b) {
         eve("raphael.setWindow", a, h.win, b), h.win = b, h.doc = h.win.document, a._engine.initWin && a._engine.initWin(h.win)
     };
@@ -839,15 +893,15 @@
         return this.join(",").replace(Y, "$1")
     };
     var bw = a._preload = function (a, b) {
-            var c = h.doc.createElement("img");
-            c.style.cssText = "position:absolute;left:-9999em;top:-9999em", c.onload = function () {
-                b.call(this), this.onload = null, h.doc.body.removeChild(this)
-            }, c.onerror = function () {
-                h.doc.body.removeChild(this)
-            }, h.doc.body.appendChild(c), c.src = a
-        };
+        var c = h.doc.createElement("img");
+        c.style.cssText = "position:absolute;left:-9999em;top:-9999em", c.onload = function () {
+            b.call(this), this.onload = null, h.doc.body.removeChild(this)
+        }, c.onerror = function () {
+            h.doc.body.removeChild(this)
+        }, h.doc.body.appendChild(c), c.src = a
+    };
     a.getRGB = bv(function (b) {
-        if (!b || !! ((b = r(b)).indexOf("-") + 1)) return {
+        if (!b || !!((b = r(b)).indexOf("-") + 1)) return {
             r: -1,
             g: -1,
             b: -1,
@@ -898,10 +952,10 @@
         return "#" + (16777216 | c | b << 8 | a << 16).toString(16).slice(1)
     }), a.getColor = function (a) {
         var b = this.getColor.start = this.getColor.start || {
-            h: 0,
-            s: 1,
-            b: a || .75
-        },
+                h: 0,
+                s: 1,
+                b: a || .75
+            },
             c = this.hsb2rgb(b.h, b.s, b.b);
         b.h += .075, b.h > 1 && (b.h = 0, b.s -= .2, b.s <= 0 && (this.getColor.start = {
             h: 0,
@@ -916,18 +970,18 @@
         var c = bz(b);
         if (c.arr) return bJ(c.arr);
         var d = {
-            a: 7,
-            c: 6,
-            h: 1,
-            l: 2,
-            m: 2,
-            r: 4,
-            q: 4,
-            s: 4,
-            t: 2,
-            v: 1,
-            z: 0
-        },
+                a: 7,
+                c: 6,
+                h: 1,
+                l: 2,
+                m: 2,
+                r: 4,
+                q: 4,
+                s: 4,
+                t: 2,
+                v: 1,
+                z: 0
+            },
             e = [];
         a.is(b, E) && a.is(b[0], E) && (e = bJ(b)), e.length || r(b).replace(Z, function (a, b, c) {
             var f = [],
@@ -945,11 +999,11 @@
     }, a.parseTransformString = bv(function (b) {
         if (!b) return null;
         var c = {
-            r: 3,
-            s: 4,
-            t: 2,
-            m: 6
-        },
+                r: 3,
+                s: 4,
+                t: 2,
+                m: 6
+            },
             d = [];
         a.is(b, E) && a.is(b[0], E) && (d = bJ(b)), d.length || r(b).replace($, function (a, b, c) {
             var e = [],
@@ -961,14 +1015,14 @@
         return d
     });
     var bz = function (a) {
-            var b = bz.ps = bz.ps || {};
-            b[a] ? b[a].sleep = 100 : b[a] = {
-                sleep: 100
-            }, setTimeout(function () {
-                for (var c in b) b[g](c) && c != a && (b[c].sleep--, !b[c].sleep && delete b[c])
-            });
-            return b[a]
-        };
+        var b = bz.ps = bz.ps || {};
+        b[a] ? b[a].sleep = 100 : b[a] = {
+            sleep: 100
+        }, setTimeout(function () {
+            for (var c in b) b[g](c) && c != a && (b[c].sleep--, !b[c].sleep && delete b[c])
+        });
+        return b[a]
+    };
     a.findDotsAtSegment = function (a, b, c, d, e, f, g, h, i) {
         var j = 1 - i,
             k = A(j, 3),
@@ -1101,16 +1155,16 @@
                 if (m[0] != v.call(m[0])) {
                     l[0] = v.call(m[0]);
                     switch (l[0]) {
-                    case "a":
-                        l[1] = m[1], l[2] = m[2], l[3] = m[3], l[4] = m[4], l[5] = m[5], l[6] = +(m[6] - e).toFixed(3), l[7] = +(m[7] - f).toFixed(3);
-                        break;
-                    case "v":
-                        l[1] = +(m[1] - f).toFixed(3);
-                        break;
-                    case "m":
-                        g = m[1], h = m[2];
-                    default:
-                        for (var n = 1, o = m.length; n < o; n++) l[n] = +(m[n] - (n % 2 ? e : f)).toFixed(3)
+                        case "a":
+                            l[1] = m[1], l[2] = m[2], l[3] = m[3], l[4] = m[4], l[5] = m[5], l[6] = +(m[6] - e).toFixed(3), l[7] = +(m[7] - f).toFixed(3);
+                            break;
+                        case "v":
+                            l[1] = +(m[1] - f).toFixed(3);
+                            break;
+                        case "m":
+                            g = m[1], h = m[2];
+                        default:
+                            for (var n = 1, o = m.length; n < o; n++) l[n] = +(m[n] - (n % 2 ? e : f)).toFixed(3)
                     }
                 } else {
                     l = d[j] = [], m[0] == "m" && (g = m[1] + e, h = m[2] + f);
@@ -1118,17 +1172,17 @@
                 }
                 var r = d[j].length;
                 switch (d[j][0]) {
-                case "z":
-                    e = g, f = h;
-                    break;
-                case "h":
-                    e += +d[j][r - 1];
-                    break;
-                case "v":
-                    f += +d[j][r - 1];
-                    break;
-                default:
-                    e += +d[j][r - 2], f += +d[j][r - 1]
+                    case "z":
+                        e = g, f = h;
+                        break;
+                    case "h":
+                        e += +d[j][r - 1];
+                        break;
+                    case "v":
+                        f += +d[j][r - 1];
+                        break;
+                    default:
+                        e += +d[j][r - 2], f += +d[j][r - 1]
                 }
             }
             d.toString = a._path2string, c.rel = bJ(d);
@@ -1152,41 +1206,41 @@
                 if (l[0] != S.call(l[0])) {
                     k[0] = S.call(l[0]);
                     switch (k[0]) {
-                    case "A":
-                        k[1] = l[1], k[2] = l[2], k[3] = l[3], k[4] = l[4], k[5] = l[5], k[6] = +(l[6] + e), k[7] = +(l[7] + f);
-                        break;
-                    case "V":
-                        k[1] = +l[1] + f;
-                        break;
-                    case "H":
-                        k[1] = +l[1] + e;
-                        break;
-                    case "R":
-                        var p = [e, f][n](l.slice(1));
-                        for (var q = 2, r = p.length; q < r; q++) p[q] = +p[q] + e, p[++q] = +p[q] + f;
-                        d.pop(), d = d[n](by(p, j));
-                        break;
-                    case "M":
-                        g = +l[1] + e, h = +l[2] + f;
-                    default:
-                        for (q = 1, r = l.length; q < r; q++) k[q] = +l[q] + (q % 2 ? e : f)
+                        case "A":
+                            k[1] = l[1], k[2] = l[2], k[3] = l[3], k[4] = l[4], k[5] = l[5], k[6] = +(l[6] + e), k[7] = +(l[7] + f);
+                            break;
+                        case "V":
+                            k[1] = +l[1] + f;
+                            break;
+                        case "H":
+                            k[1] = +l[1] + e;
+                            break;
+                        case "R":
+                            var p = [e, f][n](l.slice(1));
+                            for (var q = 2, r = p.length; q < r; q++) p[q] = +p[q] + e, p[++q] = +p[q] + f;
+                            d.pop(), d = d[n](by(p, j));
+                            break;
+                        case "M":
+                            g = +l[1] + e, h = +l[2] + f;
+                        default:
+                            for (q = 1, r = l.length; q < r; q++) k[q] = +l[q] + (q % 2 ? e : f)
                     }
                 } else if (l[0] == "R") p = [e, f][n](l.slice(1)), d.pop(), d = d[n](by(p, j)), k = ["R"][n](l.slice(-2));
                 else for (var s = 0, t = l.length; s < t; s++) k[s] = l[s];
                 switch (k[0]) {
-                case "Z":
-                    e = g, f = h;
-                    break;
-                case "H":
-                    e = k[1];
-                    break;
-                case "V":
-                    f = k[1];
-                    break;
-                case "M":
-                    g = k[k.length - 2], h = k[k.length - 1];
-                default:
-                    e = k[k.length - 2], f = k[k.length - 1]
+                    case "Z":
+                        e = g, f = h;
+                        break;
+                    case "H":
+                        e = k[1];
+                        break;
+                    case "V":
+                        f = k[1];
+                        break;
+                    case "M":
+                        g = k[k.length - 2], h = k[k.length - 1];
+                    default:
+                        e = k[k.length - 2], f = k[k.length - 1]
                 }
             }
             d.toString = a._path2string, c.abs = bJ(d);
@@ -1316,32 +1370,32 @@
                         Q: 1
                     }) && (b.qx = b.qy = null);
                     switch (a[0]) {
-                    case "M":
-                        b.X = a[1], b.Y = a[2];
-                        break;
-                    case "A":
-                        a = ["C"][n](bO[m](0, [b.x, b.y][n](a.slice(1))));
-                        break;
-                    case "S":
-                        c = b.x + (b.x - (b.bx || b.x)), d = b.y + (b.y - (b.by || b.y)), a = ["C", c, d][n](a.slice(1));
-                        break;
-                    case "T":
-                        b.qx = b.x + (b.x - (b.qx || b.x)), b.qy = b.y + (b.y - (b.qy || b.y)), a = ["C"][n](bN(b.x, b.y, b.qx, b.qy, a[1], a[2]));
-                        break;
-                    case "Q":
-                        b.qx = a[1], b.qy = a[2], a = ["C"][n](bN(b.x, b.y, a[1], a[2], a[3], a[4]));
-                        break;
-                    case "L":
-                        a = ["C"][n](bM(b.x, b.y, a[1], a[2]));
-                        break;
-                    case "H":
-                        a = ["C"][n](bM(b.x, b.y, a[1], b.y));
-                        break;
-                    case "V":
-                        a = ["C"][n](bM(b.x, b.y, b.x, a[1]));
-                        break;
-                    case "Z":
-                        a = ["C"][n](bM(b.x, b.y, b.X, b.Y))
+                        case "M":
+                            b.X = a[1], b.Y = a[2];
+                            break;
+                        case "A":
+                            a = ["C"][n](bO[m](0, [b.x, b.y][n](a.slice(1))));
+                            break;
+                        case "S":
+                            c = b.x + (b.x - (b.bx || b.x)), d = b.y + (b.y - (b.by || b.y)), a = ["C", c, d][n](a.slice(1));
+                            break;
+                        case "T":
+                            b.qx = b.x + (b.x - (b.qx || b.x)), b.qy = b.y + (b.y - (b.qy || b.y)), a = ["C"][n](bN(b.x, b.y, b.qx, b.qy, a[1], a[2]));
+                            break;
+                        case "Q":
+                            b.qx = a[1], b.qy = a[2], a = ["C"][n](bN(b.x, b.y, a[1], a[2], a[3], a[4]));
+                            break;
+                        case "L":
+                            a = ["C"][n](bM(b.x, b.y, a[1], a[2]));
+                            break;
+                        case "H":
+                            a = ["C"][n](bM(b.x, b.y, a[1], b.y));
+                            break;
+                        case "V":
+                            a = ["C"][n](bM(b.x, b.y, b.x, a[1]));
+                            break;
+                        case "Z":
+                            a = ["C"][n](bM(b.x, b.y, b.X, b.Y))
                     }
                     return a
                 },
@@ -1446,14 +1500,14 @@
         b_ = function (a) {
             var b = a[0];
             switch (b.toLowerCase()) {
-            case "t":
-                return [b, 0, 0];
-            case "m":
-                return [b, 1, 0, 0, 1, 0, 0];
-            case "r":
-                return a.length == 4 ? [b, 0, a[2], a[3]] : [b, 0];
-            case "s":
-                return a.length == 5 ? [b, 1, 1, a[3], a[4]] : a.length == 3 ? [b, 1, 1] : [b, 1]
+                case "t":
+                    return [b, 0, 0];
+                case "m":
+                    return [b, 1, 0, 0, 1, 0, 0];
+                case "r":
+                    return a.length == 4 ? [b, 0, a[2], a[3]] : [b, 0];
+                case "s":
+                    return a.length == 5 ? [b, 1, 1, a[3], a[4]] : a.length == 3 ? [b, 1, 1] : [b, 1]
             }
         },
         ca = a._equaliseTransform = function (b, c) {
@@ -1497,18 +1551,22 @@
         }
     }, a.pathToRelative = bK, a._engine = {}, a.path2curve = bR, a.matrix = function (a, b, c, d, e, f) {
         return new cb(a, b, c, d, e, f)
-    }, function (b) {function d(a) {
+    }, function (b) {
+        function d(a) {
             var b = w.sqrt(c(a));
             a[0] && (a[0] /= b), a[1] && (a[1] /= b)
-        }function c(a) {
+        }
+
+        function c(a) {
             return a[0] * a[0] + a[1] * a[1]
         }
+
         b.add = function (a, b, c, d, e, f) {
             var g = [
-                [],
-                [],
-                []
-            ],
+                    [],
+                    [],
+                    []
+                ],
                 h = [
                     [this.a, this.c, this.e],
                     [this.b, this.d, this.f],
@@ -1623,19 +1681,19 @@
             };
             if (h.doc.attachEvent) return function (a, b, c, d) {
                 var e = function (a) {
-                        a = a || h.win.event;
-                        var b = h.doc.documentElement.scrollTop || h.doc.body.scrollTop,
-                            e = h.doc.documentElement.scrollLeft || h.doc.body.scrollLeft,
-                            f = a.clientX + e,
-                            g = a.clientY + b;
-                        a.preventDefault = a.preventDefault || cd, a.stopPropagation = a.stopPropagation || cf;
-                        return c.call(d, a, f, g)
-                    };
+                    a = a || h.win.event;
+                    var b = h.doc.documentElement.scrollTop || h.doc.body.scrollTop,
+                        e = h.doc.documentElement.scrollLeft || h.doc.body.scrollLeft,
+                        f = a.clientX + e,
+                        g = a.clientY + b;
+                    a.preventDefault = a.preventDefault || cd, a.stopPropagation = a.stopPropagation || cf;
+                    return c.call(d, a, f, g)
+                };
                 a.attachEvent("on" + b, e);
                 var f = function () {
-                        a.detachEvent("on" + b, e);
-                        return !0
-                    };
+                    a.detachEvent("on" + b, e);
+                    return !0
+                };
                 return f
             }
         }(),
@@ -1674,7 +1732,7 @@
             ci = []
         },
         cl = a.el = {};
-    for (var cm = t.length; cm--;)(function (b) {
+    for (var cm = t.length; cm--;) (function (b) {
         a[b] = cl[b] = function (c, d) {
             a.is(c, "function") && (this.events = this.events || [], this.events.push({
                 name: b,
@@ -1713,7 +1771,8 @@
         return this.unmouseover(a).unmouseout(b)
     };
     var cn = [];
-    cl.drag = function (b, c, d, e, f, g) {function i(i) {
+    cl.drag = function (b, c, d, e, f, g) {
+        function i(i) {
             (i.originalEvent || i).preventDefault();
             var j = h.doc.documentElement.scrollTop || h.doc.body.scrollTop,
                 k = h.doc.documentElement.scrollLeft || h.doc.body.scrollLeft;
@@ -1724,6 +1783,7 @@
                 end_scope: g
             }), c && eve.on("raphael.drag.start." + this.id, c), b && eve.on("raphael.drag.move." + this.id, b), d && eve.on("raphael.drag.end." + this.id, d), eve("raphael.drag.start." + this.id, f || e || this, i.clientX + k, i.clientY + j, i)
         }
+
         this._drag = {}, cn.push({
             el: this,
             start: i
@@ -1777,19 +1837,19 @@
         return a._engine.setViewBox.call(this, b, c, d, e, f)
     }, k.top = k.bottom = null, k.raphael = a;
     var co = function (a) {
-            var b = a.getBoundingClientRect(),
-                c = a.ownerDocument,
-                d = c.body,
-                e = c.documentElement,
-                f = e.clientTop || d.clientTop || 0,
-                g = e.clientLeft || d.clientLeft || 0,
-                i = b.top + (h.win.pageYOffset || e.scrollTop || d.scrollTop) - f,
-                j = b.left + (h.win.pageXOffset || e.scrollLeft || d.scrollLeft) - g;
-            return {
-                y: i,
-                x: j
-            }
-        };
+        var b = a.getBoundingClientRect(),
+            c = a.ownerDocument,
+            d = c.body,
+            e = c.documentElement,
+            f = e.clientTop || d.clientTop || 0,
+            g = e.clientLeft || d.clientLeft || 0,
+            i = b.top + (h.win.pageYOffset || e.scrollTop || d.scrollTop) - f,
+            j = b.left + (h.win.pageXOffset || e.scrollLeft || d.scrollLeft) - g;
+        return {
+            y: i,
+            x: j
+        }
+    };
     k.getElementByPoint = function (a, b) {
         var c = this,
             d = c.canvas,
@@ -1849,13 +1909,13 @@
         if (this.type == "text") return null;
         a = a || {};
         var b = {
-            width: (a.width || 10) + (+this.attr("stroke-width") || 1),
-            fill: a.fill || !1,
-            opacity: a.opacity || .5,
-            offsetx: a.offsetx || 0,
-            offsety: a.offsety || 0,
-            color: a.color || "#000"
-        },
+                width: (a.width || 10) + (+this.attr("stroke-width") || 1),
+                fill: a.fill || !1,
+                opacity: a.opacity || .5,
+                offsetx: a.offsetx || 0,
+                offsety: a.offsety || 0,
+                color: a.color || "#000"
+            },
             c = b.width / 2,
             d = this.paper,
             e = d.set(),
@@ -1961,7 +2021,7 @@
             return a * a * ((b + 1) * a + b) + 1
         },
         elastic: function (a) {
-            if (a == !! a) return a;
+            if (a == !!a) return a;
             return A(2, -10 * a) * w.sin((a - .075) * 2 * B / .3) + 1
         },
         bounce: function (a) {
@@ -2000,47 +2060,47 @@
                     var t = h(e / f);
                     for (var u in i) if (i[g](u)) {
                         switch (U[u]) {
-                        case C:
-                            p = +i[u] + t * f * j[u];
-                            break;
-                        case "colour":
-                            p = "rgb(" + [cB(O(i[u].r + t * f * j[u].r)), cB(O(i[u].g + t * f * j[u].g)), cB(O(i[u].b + t * f * j[u].b))].join(",") + ")";
-                            break;
-                        case "path":
-                            p = [];
-                            for (var v = 0, w = i[u].length; v < w; v++) {
-                                p[v] = [i[u][v][0]];
-                                for (var x = 1, y = i[u][v].length; x < y; x++) p[v][x] = +i[u][v][x] + t * f * j[u][v][x];
-                                p[v] = p[v].join(q)
-                            }
-                            p = p.join(q);
-                            break;
-                        case "transform":
-                            if (j[u].real) {
+                            case C:
+                                p = +i[u] + t * f * j[u];
+                                break;
+                            case "colour":
+                                p = "rgb(" + [cB(O(i[u].r + t * f * j[u].r)), cB(O(i[u].g + t * f * j[u].g)), cB(O(i[u].b + t * f * j[u].b))].join(",") + ")";
+                                break;
+                            case "path":
                                 p = [];
-                                for (v = 0, w = i[u].length; v < w; v++) {
+                                for (var v = 0, w = i[u].length; v < w; v++) {
                                     p[v] = [i[u][v][0]];
-                                    for (x = 1, y = i[u][v].length; x < y; x++) p[v][x] = i[u][v][x] + t * f * j[u][v][x]
+                                    for (var x = 1, y = i[u][v].length; x < y; x++) p[v][x] = +i[u][v][x] + t * f * j[u][v][x];
+                                    p[v] = p[v].join(q)
                                 }
-                            } else {
-                                var z = function (a) {
+                                p = p.join(q);
+                                break;
+                            case "transform":
+                                if (j[u].real) {
+                                    p = [];
+                                    for (v = 0, w = i[u].length; v < w; v++) {
+                                        p[v] = [i[u][v][0]];
+                                        for (x = 1, y = i[u][v].length; x < y; x++) p[v][x] = i[u][v][x] + t * f * j[u][v][x]
+                                    }
+                                } else {
+                                    var z = function (a) {
                                         return +i[u][a] + t * f * j[u][a]
                                     };
-                                p = [
-                                    ["m", z(0), z(1), z(2), z(3), z(4), z(5)]
-                                ]
-                            }
-                            break;
-                        case "csv":
-                            if (u == "clip-rect") {
-                                p = [], v = 4;
-                                while (v--) p[v] = +i[u][v] + t * f * j[u][v]
-                            }
-                            break;
-                        default:
-                            var A = [][n](i[u]);
-                            p = [], v = m.paper.customAttributes[u].length;
-                            while (v--) p[v] = +A[v] + t * f * j[u][v]
+                                    p = [
+                                        ["m", z(0), z(1), z(2), z(3), z(4), z(5)]
+                                    ]
+                                }
+                                break;
+                            case "csv":
+                                if (u == "clip-rect") {
+                                    p = [], v = 4;
+                                    while (v--) p[v] = +i[u][v] + t * f * j[u][v]
+                                }
+                                break;
+                            default:
+                                var A = [][n](i[u]);
+                                p = [], v = m.paper.customAttributes[u].length;
+                                while (v--) p[v] = +A[v] + t * f * j[u][v]
                         }
                         o[u] = p
                     }
@@ -2247,10 +2307,10 @@
         if (!a.face) return a;
         this.fonts = this.fonts || {};
         var b = {
-            w: a.w,
-            face: {},
-            glyphs: {}
-        },
+                w: a.w,
+                face: {},
+                glyphs: {}
+            },
             c = a.face["font-family"];
         for (var d in a.face) a.face[g](d) && (b.face[d] = a.face[d]);
         this.fonts[c] ? this.fonts[c].push(b) : this.fonts[c] = [b];
@@ -2283,7 +2343,7 @@
             lighter: 300,
             bolder: 800
         }[c] || 400;
-        if ( !! a.fonts) {
+        if (!!a.fonts) {
             var f = a.fonts[b];
             if (!f) {
                 var h = new RegExp("(^|\\s)" + b.replace(/[^\w\d\s+!~.:_-]/g, p) + "(\\s|$)", "i");
@@ -2361,9 +2421,11 @@
     }(), a.ninja = function () {
         i.was ? h.win.Raphael = i.is : delete Raphael;
         return a
-    }, a.st = cH, function (b, c, d) {function e() {
+    }, a.st = cH, function (b, c, d) {
+        function e() {
             /in/.test(b.readyState) ? setTimeout(e, 9) : a.eve("raphael.DOMload")
         }
+
         b.readyState == null && b.addEventListener && (b.addEventListener(c, d = function () {
             b.removeEventListener(c, d, !1), b.readyState = "complete"
         }, !1), b.readyState = "loading"), e()
@@ -2478,25 +2540,25 @@
                     y = 3,
                     z = 5;
                 while (n--) switch (g[n]) {
-                case "block":
-                case "classic":
-                case "oval":
-                case "diamond":
-                case "open":
-                case "none":
-                    r = g[n];
-                    break;
-                case "wide":
-                    y = 5;
-                    break;
-                case "narrow":
-                    y = 2;
-                    break;
-                case "long":
-                    x = 5;
-                    break;
-                case "short":
-                    x = 2
+                    case "block":
+                    case "classic":
+                    case "oval":
+                    case "diamond":
+                    case "open":
+                    case "none":
+                        r = g[n];
+                        break;
+                    case "wide":
+                        y = 5;
+                        break;
+                    case "narrow":
+                        y = 2;
+                        break;
+                    case "long":
+                        x = 5;
+                        break;
+                    case "short":
+                        x = 2
                 }
                 r == "open" ? (x += 2, y += 2, z += 2, u = 1, v = f ? 4 : 1, w = {
                     fill: "none",
@@ -2581,185 +2643,186 @@
                 var p = f[o];
                 k[o] = p;
                 switch (o) {
-                case "blur":
-                    d.blur(p);
-                    break;
-                case "href":
-                case "title":
-                case "target":
-                    var u = i.parentNode;
-                    if (u.tagName.toLowerCase() != "a") {
-                        var w = q("a");
-                        u.insertBefore(w, i), w.appendChild(i), u = w
-                    }
-                    o == "target" ? u.setAttributeNS(n, "show", p == "blank" ? "new" : p) : u.setAttributeNS(n, o, p);
-                    break;
-                case "cursor":
-                    i.style.cursor = p;
-                    break;
-                case "transform":
-                    d.transform(p);
-                    break;
-                case "arrow-start":
-                    t(d, p);
-                    break;
-                case "arrow-end":
-                    t(d, p, 1);
-                    break;
-                case "clip-rect":
-                    var x = c(p).split(j);
-                    if (x.length == 4) {
-                        d.clip && d.clip.parentNode.parentNode.removeChild(d.clip.parentNode);
-                        var z = q("clipPath"),
-                            A = q("rect");
-                        z.id = a.createUUID(), q(A, {
-                            x: x[0],
-                            y: x[1],
-                            width: x[2],
-                            height: x[3]
-                        }), z.appendChild(A), d.paper.defs.appendChild(z), q(i, {
-                            "clip-path": "url(#" + z.id + ")"
-                        }), d.clip = A
-                    }
-                    if (!p) {
-                        var B = i.getAttribute("clip-path");
-                        if (B) {
-                            var C = a._g.doc.getElementById(B.replace(/(^url\(#|\)$)/g, l));
-                            C && C.parentNode.removeChild(C), q(i, {
-                                "clip-path": l
-                            }), delete d.clip
+                    case "blur":
+                        d.blur(p);
+                        break;
+                    case "href":
+                    case "title":
+                    case "target":
+                        var u = i.parentNode;
+                        if (u.tagName.toLowerCase() != "a") {
+                            var w = q("a");
+                            u.insertBefore(w, i), w.appendChild(i), u = w
                         }
-                    }
-                    break;
-                case "path":
-                    d.type == "path" && (q(i, {
-                        d: p ? k.path = a._pathToAbsolute(p) : "M0,0"
-                    }), d._.dirty = 1, d._.arrows && ("startString" in d._.arrows && t(d, d._.arrows.startString), "endString" in d._.arrows && t(d, d._.arrows.endString, 1)));
-                    break;
-                case "width":
-                    i.setAttribute(o, p), d._.dirty = 1;
-                    if (k.fx) o = "x", p = k.x;
-                    else break;
-                case "x":
-                    k.fx && (p = -k.x - (k.width || 0));
-                case "rx":
-                    if (o == "rx" && d.type == "rect") break;
-                case "cx":
-                    i.setAttribute(o, p), d.pattern && s(d), d._.dirty = 1;
-                    break;
-                case "height":
-                    i.setAttribute(o, p), d._.dirty = 1;
-                    if (k.fy) o = "y", p = k.y;
-                    else break;
-                case "y":
-                    k.fy && (p = -k.y - (k.height || 0));
-                case "ry":
-                    if (o == "ry" && d.type == "rect") break;
-                case "cy":
-                    i.setAttribute(o, p), d.pattern && s(d), d._.dirty = 1;
-                    break;
-                case "r":
-                    d.type == "rect" ? q(i, {
-                        rx: p,
-                        ry: p
-                    }) : i.setAttribute(o, p), d._.dirty = 1;
-                    break;
-                case "src":
-                    d.type == "image" && i.setAttributeNS(n, "href", p);
-                    break;
-                case "stroke-width":
-                    if (d._.sx != 1 || d._.sy != 1) p /= g(h(d._.sx), h(d._.sy)) || 1;
-                    d.paper._vbSize && (p *= d.paper._vbSize), i.setAttribute(o, p), k["stroke-dasharray"] && v(d, k["stroke-dasharray"], f), d._.arrows && ("startString" in d._.arrows && t(d, d._.arrows.startString), "endString" in d._.arrows && t(d, d._.arrows.endString, 1));
-                    break;
-                case "stroke-dasharray":
-                    v(d, p, f);
-                    break;
-                case "fill":
-                    var D = c(p).match(a._ISURL);
-                    if (D) {
-                        z = q("pattern");
-                        var F = q("image");
-                        z.id = a.createUUID(), q(z, {
-                            x: 0,
-                            y: 0,
-                            patternUnits: "userSpaceOnUse",
-                            height: 1,
-                            width: 1
-                        }), q(F, {
-                            x: 0,
-                            y: 0,
-                            "xlink:href": D[1]
-                        }), z.appendChild(F), function (b) {
-                            a._preload(D[1], function () {
-                                var a = this.offsetWidth,
-                                    c = this.offsetHeight;
-                                q(b, {
-                                    width: a,
-                                    height: c
-                                }), q(F, {
-                                    width: a,
-                                    height: c
-                                }), d.paper.safari()
-                            })
-                        }(z), d.paper.defs.appendChild(z), q(i, {
-                            fill: "url(#" + z.id + ")"
-                        }), d.pattern = z, d.pattern && s(d);
-                        break
-                    }
-                    var G = a.getRGB(p);
-                    if (!G.error) delete f.gradient, delete k.gradient, !a.is(k.opacity, "undefined") && a.is(f.opacity, "undefined") && q(i, {
-                        opacity: k.opacity
-                    }), !a.is(k["fill-opacity"], "undefined") && a.is(f["fill-opacity"], "undefined") && q(i, {
-                        "fill-opacity": k["fill-opacity"]
-                    });
-                    else if ((d.type == "circle" || d.type == "ellipse" || c(p).charAt() != "r") && r(d, p)) {
-                        if ("opacity" in k || "fill-opacity" in k) {
-                            var H = a._g.doc.getElementById(i.getAttribute("fill").replace(/^url\(#|\)$/g, l));
-                            if (H) {
-                                var I = H.getElementsByTagName("stop");
-                                q(I[I.length - 1], {
-                                    "stop-opacity": ("opacity" in k ? k.opacity : 1) * ("fill-opacity" in k ? k["fill-opacity"] : 1)
-                                })
+                        o == "target" ? u.setAttributeNS(n, "show", p == "blank" ? "new" : p) : u.setAttributeNS(n, o, p);
+                        break;
+                    case "cursor":
+                        i.style.cursor = p;
+                        break;
+                    case "transform":
+                        d.transform(p);
+                        break;
+                    case "arrow-start":
+                        t(d, p);
+                        break;
+                    case "arrow-end":
+                        t(d, p, 1);
+                        break;
+                    case "clip-rect":
+                        var x = c(p).split(j);
+                        if (x.length == 4) {
+                            d.clip && d.clip.parentNode.parentNode.removeChild(d.clip.parentNode);
+                            var z = q("clipPath"),
+                                A = q("rect");
+                            z.id = a.createUUID(), q(A, {
+                                x: x[0],
+                                y: x[1],
+                                width: x[2],
+                                height: x[3]
+                            }), z.appendChild(A), d.paper.defs.appendChild(z), q(i, {
+                                "clip-path": "url(#" + z.id + ")"
+                            }), d.clip = A
+                        }
+                        if (!p) {
+                            var B = i.getAttribute("clip-path");
+                            if (B) {
+                                var C = a._g.doc.getElementById(B.replace(/(^url\(#|\)$)/g, l));
+                                C && C.parentNode.removeChild(C), q(i, {
+                                    "clip-path": l
+                                }), delete d.clip
                             }
                         }
-                        k.gradient = p, k.fill = "none";
-                        break
-                    }
-                    G[b]("opacity") && q(i, {
-                        "fill-opacity": G.opacity > 1 ? G.opacity / 100 : G.opacity
-                    });
-                case "stroke":
-                    G = a.getRGB(p), i.setAttribute(o, G.hex), o == "stroke" && G[b]("opacity") && q(i, {
-                        "stroke-opacity": G.opacity > 1 ? G.opacity / 100 : G.opacity
-                    }), o == "stroke" && d._.arrows && ("startString" in d._.arrows && t(d, d._.arrows.startString), "endString" in d._.arrows && t(d, d._.arrows.endString, 1));
-                    break;
-                case "gradient":
-                    (d.type == "circle" || d.type == "ellipse" || c(p).charAt() != "r") && r(d, p);
-                    break;
-                case "opacity":
-                    k.gradient && !k[b]("stroke-opacity") && q(i, {
-                        "stroke-opacity": p > 1 ? p / 100 : p
-                    });
-                case "fill-opacity":
-                    if (k.gradient) {
-                        H = a._g.doc.getElementById(i.getAttribute("fill").replace(/^url\(#|\)$/g, l)), H && (I = H.getElementsByTagName("stop"), q(I[I.length - 1], {
-                            "stop-opacity": p
-                        }));
-                        break
-                    };
-                default:
-                    o == "font-size" && (p = e(p, 10) + "px");
-                    var J = o.replace(/(\-.)/g, function (a) {
-                        return a.substring(1).toUpperCase()
-                    });
-                    i.style[J] = p, d._.dirty = 1, i.setAttribute(o, p)
+                        break;
+                    case "path":
+                        d.type == "path" && (q(i, {
+                            d: p ? k.path = a._pathToAbsolute(p) : "M0,0"
+                        }), d._.dirty = 1, d._.arrows && ("startString" in d._.arrows && t(d, d._.arrows.startString), "endString" in d._.arrows && t(d, d._.arrows.endString, 1)));
+                        break;
+                    case "width":
+                        i.setAttribute(o, p), d._.dirty = 1;
+                        if (k.fx) o = "x", p = k.x;
+                        else break;
+                    case "x":
+                        k.fx && (p = -k.x - (k.width || 0));
+                    case "rx":
+                        if (o == "rx" && d.type == "rect") break;
+                    case "cx":
+                        i.setAttribute(o, p), d.pattern && s(d), d._.dirty = 1;
+                        break;
+                    case "height":
+                        i.setAttribute(o, p), d._.dirty = 1;
+                        if (k.fy) o = "y", p = k.y;
+                        else break;
+                    case "y":
+                        k.fy && (p = -k.y - (k.height || 0));
+                    case "ry":
+                        if (o == "ry" && d.type == "rect") break;
+                    case "cy":
+                        i.setAttribute(o, p), d.pattern && s(d), d._.dirty = 1;
+                        break;
+                    case "r":
+                        d.type == "rect" ? q(i, {
+                            rx: p,
+                            ry: p
+                        }) : i.setAttribute(o, p), d._.dirty = 1;
+                        break;
+                    case "src":
+                        d.type == "image" && i.setAttributeNS(n, "href", p);
+                        break;
+                    case "stroke-width":
+                        if (d._.sx != 1 || d._.sy != 1) p /= g(h(d._.sx), h(d._.sy)) || 1;
+                        d.paper._vbSize && (p *= d.paper._vbSize), i.setAttribute(o, p), k["stroke-dasharray"] && v(d, k["stroke-dasharray"], f), d._.arrows && ("startString" in d._.arrows && t(d, d._.arrows.startString), "endString" in d._.arrows && t(d, d._.arrows.endString, 1));
+                        break;
+                    case "stroke-dasharray":
+                        v(d, p, f);
+                        break;
+                    case "fill":
+                        var D = c(p).match(a._ISURL);
+                        if (D) {
+                            z = q("pattern");
+                            var F = q("image");
+                            z.id = a.createUUID(), q(z, {
+                                x: 0,
+                                y: 0,
+                                patternUnits: "userSpaceOnUse",
+                                height: 1,
+                                width: 1
+                            }), q(F, {
+                                x: 0,
+                                y: 0,
+                                "xlink:href": D[1]
+                            }), z.appendChild(F), function (b) {
+                                a._preload(D[1], function () {
+                                    var a = this.offsetWidth,
+                                        c = this.offsetHeight;
+                                    q(b, {
+                                        width: a,
+                                        height: c
+                                    }), q(F, {
+                                        width: a,
+                                        height: c
+                                    }), d.paper.safari()
+                                })
+                            }(z), d.paper.defs.appendChild(z), q(i, {
+                                fill: "url(#" + z.id + ")"
+                            }), d.pattern = z, d.pattern && s(d);
+                            break
+                        }
+                        var G = a.getRGB(p);
+                        if (!G.error) delete f.gradient, delete k.gradient, !a.is(k.opacity, "undefined") && a.is(f.opacity, "undefined") && q(i, {
+                            opacity: k.opacity
+                        }), !a.is(k["fill-opacity"], "undefined") && a.is(f["fill-opacity"], "undefined") && q(i, {
+                            "fill-opacity": k["fill-opacity"]
+                        });
+                        else if ((d.type == "circle" || d.type == "ellipse" || c(p).charAt() != "r") && r(d, p)) {
+                            if ("opacity" in k || "fill-opacity" in k) {
+                                var H = a._g.doc.getElementById(i.getAttribute("fill").replace(/^url\(#|\)$/g, l));
+                                if (H) {
+                                    var I = H.getElementsByTagName("stop");
+                                    q(I[I.length - 1], {
+                                        "stop-opacity": ("opacity" in k ? k.opacity : 1) * ("fill-opacity" in k ? k["fill-opacity"] : 1)
+                                    })
+                                }
+                            }
+                            k.gradient = p, k.fill = "none";
+                            break
+                        }
+                        G[b]("opacity") && q(i, {
+                            "fill-opacity": G.opacity > 1 ? G.opacity / 100 : G.opacity
+                        });
+                    case "stroke":
+                        G = a.getRGB(p), i.setAttribute(o, G.hex), o == "stroke" && G[b]("opacity") && q(i, {
+                            "stroke-opacity": G.opacity > 1 ? G.opacity / 100 : G.opacity
+                        }), o == "stroke" && d._.arrows && ("startString" in d._.arrows && t(d, d._.arrows.startString), "endString" in d._.arrows && t(d, d._.arrows.endString, 1));
+                        break;
+                    case "gradient":
+                        (d.type == "circle" || d.type == "ellipse" || c(p).charAt() != "r") && r(d, p);
+                        break;
+                    case "opacity":
+                        k.gradient && !k[b]("stroke-opacity") && q(i, {
+                            "stroke-opacity": p > 1 ? p / 100 : p
+                        });
+                    case "fill-opacity":
+                        if (k.gradient) {
+                            H = a._g.doc.getElementById(i.getAttribute("fill").replace(/^url\(#|\)$/g, l)), H && (I = H.getElementsByTagName("stop"), q(I[I.length - 1], {
+                                "stop-opacity": p
+                            }));
+                            break
+                        }
+                        ;
+                    default:
+                        o == "font-size" && (p = e(p, 10) + "px");
+                        var J = o.replace(/(\-.)/g, function (a) {
+                            return a.substring(1).toUpperCase()
+                        });
+                        i.style[J] = p, d._.dirty = 1, i.setAttribute(o, p)
                 }
             }
             y(d, f), i.style.visibility = m
         },
         x = 1.2,
         y = function (d, f) {
-            if (d.type == "text" && !! (f[b]("text") || f[b]("font") || f[b]("font-size") || f[b]("x") || f[b]("y"))) {
+            if (d.type == "text" && !!(f[b]("text") || f[b]("font") || f[b]("font-size") || f[b]("x") || f[b]("y"))) {
                 var g = d.attrs,
                     h = d.node,
                     i = h.firstChild ? e(a._g.doc.defaultView.getComputedStyle(h.firstChild, l).getPropertyValue("font-size"), 10) : 10;
@@ -2864,7 +2927,7 @@
         !this.removed && this.paper.safari(this.node.style.display = "");
         return this
     }, A.remove = function () {
-        if (!this.removed && !! this.node.parentNode) {
+        if (!this.removed && !!this.node.parentNode) {
             var b = this.paper;
             b.__set__ && b.__set__.exclude(this), k.unbind("raphael.*.*." + this.id), this.gradient && b.defs.removeChild(this.gradient), a._tear(this, b), this.node.parentNode.tagName.toLowerCase() == "a" ? this.node.parentNode.parentNode.removeChild(this.node.parentNode) : this.node.parentNode.removeChild(this.node);
             for (var c in this) this[c] = typeof this[c] == "function" ? a._removedFactory(c) : null;
@@ -2878,7 +2941,8 @@
         var b = {};
         try {
             b = this.node.getBBox()
-        } catch (c) {} finally {
+        } catch (c) {
+        } finally {
             b = b || {}
         }
         a && this.hide();
@@ -3042,7 +3106,8 @@
             version: 1.1,
             width: f,
             xmlns: "http://www.w3.org/2000/svg"
-        }), c == 1 ? (h.style.cssText = i + "position:absolute;left:" + d + "px;top:" + e + "px", a._g.doc.body.appendChild(h), j = 1) : (h.style.cssText = i + "position:relative", c.firstChild ? c.insertBefore(h, c.firstChild) : c.appendChild(h)), c = new a._Paper, c.width = f, c.height = g, c.canvas = h, c.clear(), c._left = c._top = 0, j && (c.renderfix = function () {}), c.renderfix();
+        }), c == 1 ? (h.style.cssText = i + "position:absolute;left:" + d + "px;top:" + e + "px", a._g.doc.body.appendChild(h), j = 1) : (h.style.cssText = i + "position:relative", c.firstChild ? c.insertBefore(h, c.firstChild) : c.appendChild(h)), c = new a._Paper, c.width = f, c.height = g, c.canvas = h, c.clear(), c._left = c._top = 0, j && (c.renderfix = function () {
+        }), c.renderfix();
         return c
     }, a._engine.setViewBox = function (a, b, c, d, e) {
         k("raphael.setViewBox", this, this._viewBox, [a, b, c, d, e]);
@@ -3057,7 +3122,7 @@
         while (f && h) l = "stroke-width" in h.attrs ? h.attrs["stroke-width"] : 1, h.attr({
             "stroke-width": l
         }), h._.dirty = 1, h._.dirtyT = 1, h = h.prev;
-        this._viewBox = [a, b, c, d, !! e];
+        this._viewBox = [a, b, c, d, !!e];
         return this
     }, a.prototype.renderfix = function () {
         var a = this.canvas,
@@ -3173,7 +3238,7 @@
                 q, r = u / b,
                 s = u / c;
             m.visibility = "hidden";
-            if ( !! b && !! c) {
+            if (!!b && !!c) {
                 l.coordsize = i(r) + n + i(s), m.rotation = f * (b * c < 0 ? -1 : 1);
                 if (f) {
                     var t = y(f, d, e);
@@ -3198,21 +3263,21 @@
                 i = "medium",
                 j = "medium";
             while (g--) switch (e[g]) {
-            case "block":
-            case "classic":
-            case "oval":
-            case "diamond":
-            case "open":
-            case "none":
-                h = e[g];
-                break;
-            case "wide":
-            case "narrow":
-                j = e[g];
-                break;
-            case "long":
-            case "short":
-                i = e[g]
+                case "block":
+                case "classic":
+                case "oval":
+                case "diamond":
+                case "open":
+                case "none":
+                    h = e[g];
+                    break;
+                case "wide":
+                case "narrow":
+                    j = e[g];
+                    break;
+                case "long":
+                case "short":
+                    i = e[g]
             }
             var k = a.node.getElementsByTagName("stroke")[0];
             k[f + "arrow"] = h, k[f + "arrowlength"] = i, k[f + "arrowwidth"] = j
@@ -3222,7 +3287,8 @@
             var l = e.node,
                 m = e.attrs,
                 p = l.style,
-                q, r = v[e.type] && (i.x != m.x || i.y != m.y || i.width != m.width || i.height != m.height || i.cx != m.cx || i.cy != m.cy || i.rx != m.rx || i.ry != m.ry || i.r != m.r),
+                q,
+                r = v[e.type] && (i.x != m.x || i.y != m.y || i.width != m.width || i.height != m.height || i.cx != m.cx || i.cy != m.cy || i.rx != m.rx || i.ry != m.ry || i.r != m.r),
                 s = w[e.type] && (m.cx != i.cx || m.cy != i.cy || m.r != i.r || m.rx != i.rx || m.ry != i.ry),
                 t = e;
             for (var y in i) i[b](y) && (m[y] = i[y]);
@@ -3314,14 +3380,14 @@
                     break
                 }
                 switch (m["text-anchor"]) {
-                case "start":
-                    t.textpath.style["v-text-align"] = "left", t.bbx = t.W / 2;
-                    break;
-                case "end":
-                    t.textpath.style["v-text-align"] = "right", t.bbx = -t.W / 2;
-                    break;
-                default:
-                    t.textpath.style["v-text-align"] = "center", t.bbx = 0
+                    case "start":
+                        t.textpath.style["v-text-align"] = "left", t.bbx = t.W / 2;
+                        break;
+                    case "end":
+                        t.textpath.style["v-text-align"] = "right", t.bbx = -t.W / 2;
+                        break;
+                    default:
+                        t.textpath.style["v-text-align"] = "center", t.bbx = 0
                 }
                 t.textpath.style["v-text-kern"] = !0
             }
@@ -3432,7 +3498,7 @@
             height: this.H
         }
     }, E.remove = function () {
-        if (!this.removed && !! this.node.parentNode) {
+        if (!this.removed && !!this.node.parentNode) {
             this.paper.__set__ && this.paper.__set__.exclude(this), a.eve.unbind("raphael.*.*." + this.id), a._tear(this, this.paper), this.node.parentNode.removeChild(this.node), this.shape && this.shape.parentNode.removeChild(this.shape);
             for (var b in this) this[b] = typeof this[b] == "function" ? a._removedFactory(b) : null;
             this.removed = !0
@@ -3561,7 +3627,7 @@
             i = this.height,
             j = 1 / g(d / h, e / i),
             k, l;
-        f && (k = i / e, l = h / d, d * k < h && (b -= (h - d * k) / 2 / k), e * l < i && (c -= (i - e * l) / 2 / l)), this._viewBox = [b, c, d, e, !! f], this._viewBoxShift = {
+        f && (k = i / e, l = h / d, d * k < h && (b -= (h - d * k) / 2 / k), e * l < i && (c -= (i - e * l) / 2 / l)), this._viewBox = [b, c, d, e, !!f], this._viewBoxShift = {
             dx: -b,
             dy: -c,
             scale: j
@@ -3594,7 +3660,8 @@
         var i = new a._Paper,
             j = i.canvas = a._g.doc.createElement("div"),
             k = j.style;
-        g = g || 0, h = h || 0, f = f || 512, d = d || 342, i.width = f, i.height = d, f == +f && (f += "px"), d == +d && (d += "px"), i.coordsize = u * 1e3 + n + u * 1e3, i.coordorigin = "0 0", i.span = a._g.doc.createElement("span"), i.span.style.cssText = "position:absolute;left:-9999em;top:-9999em;padding:0;margin:0;line-height:1;", j.appendChild(i.span), k.cssText = a.format("top:0;left:0;width:{0};height:{1};display:inline-block;position:relative;clip:rect(0 {0} {1} 0);overflow:hidden", f, d), c == 1 ? (a._g.doc.body.appendChild(j), k.left = g + "px", k.top = h + "px", k.position = "absolute") : c.firstChild ? c.insertBefore(j, c.firstChild) : c.appendChild(j), i.renderfix = function () {};
+        g = g || 0, h = h || 0, f = f || 512, d = d || 342, i.width = f, i.height = d, f == +f && (f += "px"), d == +d && (d += "px"), i.coordsize = u * 1e3 + n + u * 1e3, i.coordorigin = "0 0", i.span = a._g.doc.createElement("span"), i.span.style.cssText = "position:absolute;left:-9999em;top:-9999em;padding:0;margin:0;line-height:1;", j.appendChild(i.span), k.cssText = a.format("top:0;left:0;width:{0};height:{1};display:inline-block;position:relative;clip:rect(0 {0} {1} 0);overflow:hidden", f, d), c == 1 ? (a._g.doc.body.appendChild(j), k.left = g + "px", k.top = h + "px", k.position = "absolute") : c.firstChild ? c.insertBefore(j, c.firstChild) : c.appendChild(j), i.renderfix = function () {
+        };
         return i
     }, a.prototype.clear = function () {
         a.eve("raphael.clear", this), this.canvas.innerHTML = o, this.span = a._g.doc.createElement("span"), this.span.style.cssText = "position:absolute;left:-9999em;top:-9999em;padding:0;margin:0;line-height:1;display:inline;", this.canvas.appendChild(this.span), this.bottom = this.top = null

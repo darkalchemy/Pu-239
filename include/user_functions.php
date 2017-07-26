@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 //=== Anonymous function
 function get_anonymous()
@@ -9,6 +9,7 @@ function get_anonymous()
 
     return $CURUSER['anonymous_until'];
 }
+
 //== + Parked function
 function get_parked()
 {
@@ -16,12 +17,15 @@ function get_parked()
 
     return $CURUSER['parked_until'];
 }
-function autoshout($msg)
+
+function autoshout($msg, $channel = 0)
 {
     global $INSTALLER09;
-    require_once INCL_DIR.'bbcode_functions.php';
-    sql_query('INSERT INTO shoutbox(userid,date,text,text_parsed)VALUES ('.$INSTALLER09['bot_id'].','.TIME_NOW.','.sqlesc($msg).','.sqlesc(format_comment($msg)).')');
+    require_once INCL_DIR . 'bbcode_functions.php';
+    sql_query('INSERT INTO ajax_chat_messages (userID, userName, userRole, channel, dateTime, ip, text) VALUES (' . sqlesc($INSTALLER09['bot_id']) . ', ' . sqlesc($INSTALLER09['chatBotName']) . ', 4, ' . sqlesc($channel) . ', NOW(), ' . sqlesc(ipToStorageFormat('127.0.0.1')) . ', ' . sqlesc($msg) . ')') or sqlerr(__FILE__, __LINE__);
+
 }
+
 function parked()
 {
     global $CURUSER;
@@ -32,13 +36,14 @@ function parked()
     //global $CURUSER;
     //if ($CURUSER['opt1'] & user_options::PARKED) stderr("Error", "<b>Your account is currently parked.</b>");
 }
+
 //== Get rep by CF
 function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
 {
     global $INSTALLER09, $CURUSER;
     $member_reputation = '';
     if ($rep_is_on) {
-        include CACHE_DIR.'/rep_cache.php';
+        include CACHE_DIR . '/rep_cache.php';
         //require_once (CLASS_DIR . 'class_user_options.php');
         // ok long winded file checking, but it's much better than file_exists
         if (!isset($reputations) || !is_array($reputations) || count($reputations) < 1) {
@@ -82,24 +87,24 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
         // ok, now we can work out the number of bars/pippy things
         $pips = 12;
         switch ($mode) {
-        case 'comments':
-            $pips = 12;
-            break;
+            case 'comments':
+                $pips = 12;
+                break;
 
-        case 'torrents':
-            $pips = 1003;
-            break;
+            case 'torrents':
+                $pips = 1003;
+                break;
 
-        case 'users':
-            $pips = 970;
-            break;
+            case 'users':
+                $pips = 970;
+                break;
 
-        case 'posts':
-            $pips = 12;
-            break;
+            case 'posts':
+                $pips = 12;
+                break;
 
-        default:
-            $pips = 12; // statusbar
+            default:
+                $pips = 12; // statusbar
         }
         $rep_bar = intval($rep_power / 100);
         if ($rep_bar > 10) {
@@ -112,54 +117,56 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
             $rep_level = $user_reputation ? $user_reputation : 'rep_undefined'; // just incase
             for ($i = 0; $i <= $rep_bar; ++$i) {
                 if ($i >= 5) {
-                    $posneg .= "<img src='{$INSTALLER09['pic_base_url']}rep/reputation_$rep_img_2.gif' alt=\"Reputation Power $rep_power\n".htmlsafechars($user['username'])." $rep_level\" title=\"Reputation Power $rep_power ".htmlsafechars($user['username'])." $rep_level\" />";
+                    $posneg .= "<img src='{$INSTALLER09['pic_base_url']}rep/reputation_$rep_img_2.gif' alt=\"Reputation Power $rep_power\n" . htmlsafechars($user['username']) . " $rep_level\" title=\"Reputation Power $rep_power " . htmlsafechars($user['username']) . " $rep_level\" />";
                 } else {
-                    $posneg .= "<img src='{$INSTALLER09['pic_base_url']}rep/reputation_$rep_img.gif' alt=\"Reputation Power $rep_power\n".htmlsafechars($user['username'])." $rep_level\" title=\"Reputation Power $rep_power ".htmlsafechars($user['username'])." $rep_level\" />";
+                    $posneg .= "<img src='{$INSTALLER09['pic_base_url']}rep/reputation_$rep_img.gif' alt=\"Reputation Power $rep_power\n" . htmlsafechars($user['username']) . " $rep_level\" title=\"Reputation Power $rep_power " . htmlsafechars($user['username']) . " $rep_level\" />";
                 }
             }
         }
         // now decide the locale
         if ($mode != '') {
-            return 'Rep: '.$posneg."<br /><br /><a href='javascript:;' onclick=\"PopUp('{$INSTALLER09['baseurl']}/reputation.php?pid=".($post_id != 0 ? (int) $post_id : (int) $user['id']).'&amp;locale='.$mode."','Reputation',400,241,1,1);\"><img src='{$INSTALLER09['pic_base_url']}forumicons/giverep.jpg' border='0' alt='Add reputation:: ".htmlsafechars($user['username'])."' title='Add reputation:: ".htmlsafechars($user['username'])."' /></a>";
+            return 'Rep: ' . $posneg . "<br /><br /><a href='javascript:;' onclick=\"PopUp('{$INSTALLER09['baseurl']}/reputation.php?pid=" . ($post_id != 0 ? (int)$post_id : (int)$user['id']) . '&amp;locale=' . $mode . "','Reputation',400,241,1,1);\"><img src='{$INSTALLER09['pic_base_url']}forumicons/giverep.jpg' border='0' alt='Add reputation:: " . htmlsafechars($user['username']) . "' title='Add reputation:: " . htmlsafechars($user['username']) . "' /></a>";
         } else {
-            return ' '.$posneg;
+            return ' ' . $posneg;
         }
     } // END IF ONLINE
     // default
     return '<span title="Set offline by admin setting">Rep System Offline</span>';
 }
+
 //== End
 function write_staffs()
 {
     global $INSTALLER09;
     //==ids
     $t = '$INSTALLER09';
-    $iconfigfile = '<'."?php\n/**\nThis file created on ".date('M d Y H:i:s').".\nSite Config staff mod.\n**/\n";
-    $ri = sql_query('SELECT id, username, class FROM users WHERE class BETWEEN '.UC_STAFF.' AND '.UC_MAX.' ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
-    $iconfigfile .= ''.$t."['allowed_staff']['id'] = array(";
+    $iconfigfile = '<' . "?php\n/**\nThis file created on " . date('M d Y H:i:s') . ".\nSite Config staff mod.\n**/\n";
+    $ri = sql_query('SELECT id, username, class FROM users WHERE class BETWEEN ' . UC_STAFF . ' AND ' . UC_MAX . ' ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
+    $iconfigfile .= '' . $t . "['allowed_staff']['id'] = array(";
     while ($ai = mysqli_fetch_assoc($ri)) {
         $ids[] = $ai['id'];
-        $usernames[] = "'".$ai['username']."' => 1";
+        $usernames[] = "'" . $ai['username'] . "' => 1";
     }
-    $iconfigfile .= ''.join(',', $ids);
+    $iconfigfile .= '' . join(',', $ids);
     $iconfigfile .= ');';
-    $iconfigfile .= "\n?".'>';
+    $iconfigfile .= "\n?" . '>';
     $filenum = fopen('./cache/staff_settings.php', 'w');
     ftruncate($filenum, 0);
     fwrite($filenum, $iconfigfile);
     fclose($filenum);
     //==names
     $t = '$INSTALLER09';
-    $nconfigfile = '<'."?php\n/**\nThis file created on ".date('M d Y H:i:s').".\nSite Config staff mod.\n**/\n";
-    $nconfigfile .= ''.$t."['staff']['allowed'] = array(";
-    $nconfigfile .= ''.join(',', $usernames);
+    $nconfigfile = '<' . "?php\n/**\nThis file created on " . date('M d Y H:i:s') . ".\nSite Config staff mod.\n**/\n";
+    $nconfigfile .= '' . $t . "['staff']['allowed'] = array(";
+    $nconfigfile .= '' . join(',', $usernames);
     $nconfigfile .= ');';
-    $nconfigfile .= "\n?".'>';
+    $nconfigfile .= "\n?" . '>';
     $filenum1 = fopen('./cache/staff_settings2.php', 'w');
     ftruncate($filenum1, 0);
     fwrite($filenum1, $nconfigfile);
     fclose($filenum1);
 }
+
 function get_ratio_color($ratio)
 {
     if ($ratio < 0.1) {
@@ -225,6 +232,7 @@ function get_ratio_color($ratio)
 
     return '#777777';
 }
+
 function get_slr_color($ratio)
 {
     if ($ratio < 0.025) {
@@ -305,52 +313,54 @@ function get_slr_color($ratio)
 
     return '#777777';
 }
+
 function ratio_image_machine($ratio_to_check)
 {
     global $INSTALLER09;
     switch ($ratio_to_check) {
-    case $ratio_to_check >= 5:
-        return '<img src="'.$INSTALLER09['pic_base_url'].'smilies/yay.gif" alt="Yay" title="Yay" />';
-        break;
+        case $ratio_to_check >= 5:
+            return '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/yay.gif" alt="Yay" title="Yay" />';
+            break;
 
-    case $ratio_to_check >= 4:
-        return '<img src="'.$INSTALLER09['pic_base_url'].'smilies/pimp.gif" alt="Pimp" title="Pimp" />';
-        break;
+        case $ratio_to_check >= 4:
+            return '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/pimp.gif" alt="Pimp" title="Pimp" />';
+            break;
 
-    case $ratio_to_check >= 3:
-        return '<img src="'.$INSTALLER09['pic_base_url'].'smilies/w00t.gif" alt="W00t" title="W00t" />';
-        break;
+        case $ratio_to_check >= 3:
+            return '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/w00t.gif" alt="W00t" title="W00t" />';
+            break;
 
-    case $ratio_to_check >= 2:
-        return '<img src="'.$INSTALLER09['pic_base_url'].'smilies/grin.gif" alt="Grin" title="Grin" />';
-        break;
+        case $ratio_to_check >= 2:
+            return '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/grin.gif" alt="Grin" title="Grin" />';
+            break;
 
-    case $ratio_to_check >= 1.5:
-        return '<img src="'.$INSTALLER09['pic_base_url'].'smilies/evo.gif" alt="Evo" title="Evo" />';
-        break;
+        case $ratio_to_check >= 1.5:
+            return '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/evo.gif" alt="Evo" title="Evo" />';
+            break;
 
-    case $ratio_to_check >= 1:
-        return '<img src="'.$INSTALLER09['pic_base_url'].'smilies/smile1.gif" alt="Smile" title="Smile" />';
-        break;
+        case $ratio_to_check >= 1:
+            return '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/smile1.gif" alt="Smile" title="Smile" />';
+            break;
 
-    case $ratio_to_check >= 0.5:
-        return '<img src="'.$INSTALLER09['pic_base_url'].'smilies/noexpression.gif" alt="Blank" title="Blank" />';
-        break;
+        case $ratio_to_check >= 0.5:
+            return '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/noexpression.gif" alt="Blank" title="Blank" />';
+            break;
 
-    case $ratio_to_check >= 0.25:
-        return '<img src="'.$INSTALLER09['pic_base_url'].'smilies/cry.gif" alt="Cry" title="Cry" />';
-        break;
+        case $ratio_to_check >= 0.25:
+            return '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/cry.gif" alt="Cry" title="Cry" />';
+            break;
 
-    case $ratio_to_check < 0.25:
-        return '<img src="'.$INSTALLER09['pic_base_url'].'smilies/shit.gif" alt="Shit" title="Shit" />';
-        break;
+        case $ratio_to_check < 0.25:
+            return '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/shit.gif" alt="Shit" title="Shit" />';
+            break;
     }
 }
+
 /** class functions - pdq 2010 **/
 function get_user_class_name($class)
 {
     global $class_names;
-    $class = (int) $class;
+    $class = (int)$class;
     if (!valid_class($class)) {
         return '';
     }
@@ -360,10 +370,11 @@ function get_user_class_name($class)
         return '';
     }
 }
+
 function get_user_class_color($class)
 {
     global $class_colors;
-    $class = (int) $class;
+    $class = (int)$class;
     if (!valid_class($class)) {
         return '';
     }
@@ -373,10 +384,11 @@ function get_user_class_color($class)
         return '';
     }
 }
+
 function get_user_class_image($class)
 {
     global $class_images;
-    $class = (int) $class;
+    $class = (int)$class;
     if (!valid_class($class)) {
         return '';
     }
@@ -386,17 +398,19 @@ function get_user_class_image($class)
         return '';
     }
 }
+
 function valid_class($class)
 {
-    $class = (int) $class;
+    $class = (int)$class;
 
-    return (bool) ($class >= UC_MIN && $class <= UC_MAX);
+    return (bool)($class >= UC_MIN && $class <= UC_MAX);
 }
+
 function min_class($min = UC_MIN, $max = UC_MAX)
 {
     global $CURUSER;
-    $minclass = (int) $min;
-    $maxclass = (int) $max;
+    $minclass = (int)$min;
+    $maxclass = (int)$max;
     if (!isset($CURUSER)) {
         return false;
     }
@@ -407,102 +421,107 @@ function min_class($min = UC_MIN, $max = UC_MAX)
         return false;
     }
 
-    return (bool) ($CURUSER['class'] >= $minclass && $CURUSER['class'] <= $maxclass);
+    return (bool)($CURUSER['class'] >= $minclass && $CURUSER['class'] <= $maxclass);
 }
+
 function format_username($user, $icons = true)
 {
     global $INSTALLER09;
-    $user['id'] = (int) $user['id'];
-    $user['class'] = (int) $user['class'];
+    $user['id'] = (int)$user['id'];
+    $user['class'] = (int)$user['class'];
     if ($user['id'] == 0) {
         return 'System';
     } elseif ($user['username'] == '') {
-        return 'unknown['.$user['id'].']';
+        return 'unknown[' . $user['id'] . ']';
     }
-    $username = '<span style="color:#'.get_user_class_color($user['class']).';"><b>'.htmlsafechars($user['username']).'</b></span>';
-    $str = '<span style="white-space: nowrap;"><a class="user_'.$user['id'].'" href="'.$INSTALLER09['baseurl'].'/userdetails.php?id='.$user['id'].'" target="_blank">'.$username.'</a>';
+    $username = '<span style="color:#' . get_user_class_color($user['class']) . ';"><b>' . htmlsafechars($user['username']) . '</b></span>';
+    $str = '<span style="white-space: nowrap;"><a class="user_' . $user['id'] . '" href="' . $INSTALLER09['baseurl'] . '/userdetails.php?id=' . $user['id'] . '" target="_blank">' . $username . '</a>';
     if ($icons != false) {
-        $str .= ($user['donor'] == 'yes' ? '<img src="'.$INSTALLER09['pic_base_url'].'star.png" alt="Donor" title="Donor" />' : '');
-        $str .= ($user['warned'] >= 1 ? '<img src="'.$INSTALLER09['pic_base_url'].'alertred.png" alt="Warned" title="Warned" />' : '');
-        $str .= ($user['leechwarn'] >= 1 ? '<img src="'.$INSTALLER09['pic_base_url'].'alertblue.png" alt="Leech Warned" title="Leech Warned" />' : '');
-        $str .= ($user['enabled'] != 'yes' ? '<img src="'.$INSTALLER09['pic_base_url'].'disabled.gif" alt="Disabled" title="Disabled" />' : '');
-        $str .= ($user['chatpost'] == 0 ? '<img src="'.$INSTALLER09['pic_base_url'].'warned.png" alt="No Chat" title="Shout disabled" />' : '');
-        $str .= ($user['pirate'] != 0 ? '<img src="'.$INSTALLER09['pic_base_url'].'pirate.png" alt="Pirate" title="Pirate" />' : '');
-        $str .= ($user['king'] != 0 ? '<img src="'.$INSTALLER09['pic_base_url'].'king.png" alt="King" title="King" />' : '');
+        $str .= ($user['donor'] == 'yes' ? '<img src="' . $INSTALLER09['pic_base_url'] . 'star.png" alt="Donor" title="Donor" />' : '');
+        $str .= ($user['warned'] >= 1 ? '<img src="' . $INSTALLER09['pic_base_url'] . 'alertred.png" alt="Warned" title="Warned" />' : '');
+        $str .= ($user['leechwarn'] >= 1 ? '<img src="' . $INSTALLER09['pic_base_url'] . 'alertblue.png" alt="Leech Warned" title="Leech Warned" />' : '');
+        $str .= ($user['enabled'] != 'yes' ? '<img src="' . $INSTALLER09['pic_base_url'] . 'disabled.gif" alt="Disabled" title="Disabled" />' : '');
+        $str .= ($user['chatpost'] == 0 ? '<img src="' . $INSTALLER09['pic_base_url'] . 'warned.png" alt="No Chat" title="Shout disabled" />' : '');
+        $str .= ($user['pirate'] != 0 ? '<img src="' . $INSTALLER09['pic_base_url'] . 'pirate.png" alt="Pirate" title="Pirate" />' : '');
+        $str .= ($user['king'] != 0 ? '<img src="' . $INSTALLER09['pic_base_url'] . 'king.png" alt="King" title="King" />' : '');
     }
     $str .= '</span>';
 
     return $str;
 }
+
 function is_valid_id($id)
 {
     return is_numeric($id) && ($id > 0) && (floor($id) == $id);
 }
+
 function member_ratio($up, $down)
 {
     switch (true) {
-    case $down > 0 && $up > 0:
-        $ratio = '<span style="color:'.get_ratio_color($up / $down).';">'.number_format($up / $down, 3).'</span>';
-        break;
+        case $down > 0 && $up > 0:
+            $ratio = '<span style="color:' . get_ratio_color($up / $down) . ';">' . number_format($up / $down, 3) . '</span>';
+            break;
 
-    case $down > 0 && $up == 0:
-        $ratio = '<span style="color:'.get_ratio_color(1 / $down).';">'.number_format(1 / $down, 3).'</span>';
-        break;
+        case $down > 0 && $up == 0:
+            $ratio = '<span style="color:' . get_ratio_color(1 / $down) . ';">' . number_format(1 / $down, 3) . '</span>';
+            break;
 
-    case $down == 0 && $up > 0:
-        $ratio = '<span style="color: '.get_ratio_color($up / 1).';">Inf</span>';
-        break;
+        case $down == 0 && $up > 0:
+            $ratio = '<span style="color: ' . get_ratio_color($up / 1) . ';">Inf</span>';
+            break;
 
-    default:
-        $ratio = '---';
+        default:
+            $ratio = '---';
     }
 
     return $ratio;
 }
+
 //=== get smilie based on ratio
 function get_user_ratio_image($ratio)
 {
     global $INSTALLER09;
     switch ($ratio) {
-    case $ratio == 0:
-        return;
-        break;
+        case $ratio == 0:
+            return;
+            break;
 
-    case $ratio < 0.6:
-        return ' <img src="'.$INSTALLER09['pic_base_url'].'smilies/shit.gif" alt=" Bad ratio :("  title=" Bad ratio :("/>';
-        break;
+        case $ratio < 0.6:
+            return ' <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/shit.gif" alt=" Bad ratio :("  title=" Bad ratio :("/>';
+            break;
 
-    case $ratio <= 0.7:
-        return ' <img src="'.$INSTALLER09['pic_base_url'].'smilies/weep.gif" alt=" Could be better"  title=" Could be better" />';
-        break;
+        case $ratio <= 0.7:
+            return ' <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/weep.gif" alt=" Could be better"  title=" Could be better" />';
+            break;
 
-    case $ratio <= 0.8:
-        return ' <img src="'.$INSTALLER09['pic_base_url'].'smilies/cry.gif" alt=" Getting there!" title=" Getting there!" />';
-        break;
+        case $ratio <= 0.8:
+            return ' <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/cry.gif" alt=" Getting there!" title=" Getting there!" />';
+            break;
 
-    case $ratio <= 1.5:
-        return ' <img src="'.$INSTALLER09['pic_base_url'].'smilies/smile1.gif" alt=" Good Ratio :)" title=" Good Ratio :)" />';
-        break;
+        case $ratio <= 1.5:
+            return ' <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/smile1.gif" alt=" Good Ratio :)" title=" Good Ratio :)" />';
+            break;
 
-    case $ratio <= 2.0:
-        return ' <img src="'.$INSTALLER09['pic_base_url'].'smilies/grin.gif" alt=" Great Ratio :)" title=" Great Ratio :)" />';
-        break;
+        case $ratio <= 2.0:
+            return ' <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/grin.gif" alt=" Great Ratio :)" title=" Great Ratio :)" />';
+            break;
 
-    case $ratio <= 3.0:
-        return ' <img src="'.$INSTALLER09['pic_base_url'].'smilies/w00t.gif" alt=" Wow! :D" title=" Wow! :D" />';
-        break;
+        case $ratio <= 3.0:
+            return ' <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/w00t.gif" alt=" Wow! :D" title=" Wow! :D" />';
+            break;
 
-    case $ratio <= 4.0:
-        return ' <img src="'.$INSTALLER09['pic_base_url'].'smilies/pimp.gif" alt=" Fa-boo Ratio!" title=" Fa-boo Ratio!" />';
-        break;
+        case $ratio <= 4.0:
+            return ' <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/pimp.gif" alt=" Fa-boo Ratio!" title=" Fa-boo Ratio!" />';
+            break;
 
-    case $ratio > 4.0:
-        return ' <img src="'.$INSTALLER09['pic_base_url'].'smilies/yahoo.gif" alt=" Great ratio :-D" title=" Great ratio :-D" />';
-        break;
+        case $ratio > 4.0:
+            return ' <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/yahoo.gif" alt=" Great ratio :-D" title=" Great ratio :-D" />';
+            break;
     }
 
     return '';
 }
+
 //=== avatar stuff... hell it's called all over the place :-o
 /*
 function avatar_stuff($avatar, $width = 80)
@@ -517,29 +536,32 @@ function avatar_stuff($avatar, $width = 80)
 function avatar_stuff($avatar, $width = 80)
 {
     global $CURUSER, $INSTALLER09;
-    $avatar_show = ($CURUSER['avatars'] == 'no' ? '' : (!$avatar['avatar'] ? '<img style="max-width:'.$width.'px;" src="'.$INSTALLER09['pic_base_url'].'default_avatar.gif" alt="avatar" />' : (($avatar['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ? '<img style="max-width:'.$width.'px;" src="'.$INSTALLER09['pic_base_url'].'fuzzybunny.gif" alt="avatar" />' : '<img style="max-width:'.$width.'px;" src="'.htmlsafechars($avatar['avatar']).'" alt="avatar" />')));
+    $avatar_show = ($CURUSER['avatars'] == 'no' ? '' : (!$avatar['avatar'] ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'default_avatar.gif" alt="avatar" />' : (($avatar['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'fuzzybunny.gif" alt="avatar" />' : '<img style="max-width:' . $width . 'px;" src="' . htmlsafechars($avatar['avatar']) . '" alt="avatar" />')));
 
     return $avatar_show;
 }
+
 //=== added a function to get all user info and print them up with link to userdetails page, class color, user icons... pdq's idea \o/
 function print_user_stuff($arr)
 {
     global $CURUSER, $INSTALLER09;
 
-    return '<span style="white-space:nowrap;"><a href="userdetails.php?id='.(int) $arr['id'].'" title="'.get_user_class_name($arr['class']).'">
-  <span style="font-weight: bold;"></span></a>'.format_username($arr).'</span> ';
+    return '<span style="white-space:nowrap;"><a href="userdetails.php?id=' . (int)$arr['id'] . '" title="' . get_user_class_name($arr['class']) . '">
+  <span style="font-weight: bold;"></span></a>' . format_username($arr) . '</span> ';
 }
+
 //made by putyn@tbdev
 function blacklist($fo)
 {
     global $INSTALLER09;
-    $blacklist = file_exists($INSTALLER09['nameblacklist']) && is_array(unserialize(file_get_contents($INSTALLER09['nameblacklist']))) ? unserialize(file_get_contents($INSTALLER09['nameblacklist'])) : array();
+    $blacklist = file_exists($INSTALLER09['nameblacklist']) && is_array(unserialize(file_get_contents($INSTALLER09['nameblacklist']))) ? unserialize(file_get_contents($INSTALLER09['nameblacklist'])) : [];
     if (isset($blacklist[$fo]) && $blacklist[$fo] == 1) {
         return false;
     }
 
     return true;
 }
+
 function get_server_load($windows = 0)
 {
     if (class_exists('COM')) {
@@ -557,26 +579,28 @@ function get_server_load($windows = 0)
         return round($cpu_stats / 2); // remove /2 for single processor systems
     }
 }
+
 function get_cache_config_data($the_names, $the_colors, $the_images)
 {
     $configfile = '';
     $the_names = str_replace(',', ",\n", trim($the_names, ','));
     $the_colors = str_replace(',', ",\n", trim($the_colors, ','));
     $the_images = str_replace(',', ",\n", trim($the_images, ','));
-    $configfile .= "\n\n\n".'$class_names = array(
-  '.$the_names.'								
+    $configfile .= "\n\n\n" . '$class_names = array(
+  ' . $the_names . '								
   );';
     // adding class colors like in user_functions
-    $configfile .= "\n\n\n".'$class_colors = array( 
-  '.$the_colors.'								
+    $configfile .= "\n\n\n" . '$class_colors = array( 
+  ' . $the_colors . '								
   );';
     // adding class pics like in user_functions
-    $configfile .= "\n\n\n".'$class_images = array(
-  '.$the_images.'										
+    $configfile .= "\n\n\n" . '$class_images = array(
+  ' . $the_images . '										
   );';
 
     return $configfile;
 }
+
 /** end functions **/
 
 //Clear forum memecache for all classes
@@ -585,9 +609,9 @@ function clr_forums_cache($post_id)
     global $mc1, $INSTALLER09;
     $uclass = UC_MIN;
     while ($uclass <= UC_MAX) {
-        $mc1->delete_value('last_post_'.$post_id.'_'.$uclass);
-        $mc1->delete_value('sv_last_post_'.$post_id.'_'.$uclass);
-        $mc1->delete_value('last_posts_'.$uclass);
+        $mc1->delete_value('last_post_' . $post_id . '_' . $uclass);
+        $mc1->delete_value('sv_last_post_' . $post_id . '_' . $uclass);
+        $mc1->delete_value('last_posts_' . $uclass);
         ++$uclass;
     }
 }

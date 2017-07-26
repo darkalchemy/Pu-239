@@ -1,12 +1,12 @@
 <?php
 
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'../include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '../include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
 dbconn(false);
 loggedinorreturn();
 
 if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    $modes = array('torrent', 'forum');
+    $modes = ['torrent', 'forum'];
     $htmlout = $att = '';
 
     if (isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['qsearch']) && in_array($_POST['qsearch'], $modes)) {
@@ -21,7 +21,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
             while ($res = mysqli_fetch_assoc($query)) {
                 $att .= "<div class='tr'>
 								<div class='td'>$i</div>
-								<div class='td'><a href='details.php?id=".(int) $res['id']."'>".htmlsafechars($res['name'])."</a></div>
+								<div class='td'><a href='details.php?id=" . (int)$res['id'] . "'>" . htmlsafechars($res['name']) . "</a></div>
 								<div class='tdclear'></div>
 							</div>";
                 ++$i;
@@ -35,7 +35,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
             while ($res = mysqli_fetch_assoc($query)) {
                 $att .= "<div class='tr'>
 								<div class='td'>$i</div>
-								<div class='td'><a href='details.php?id=".(int) $res['id']."' class='colhead'>".htmlsafechars($res['name'])."</a></div>
+								<div class='td'><a href='details.php?id=" . (int)$res['id'] . "' class='colhead'>" . htmlsafechars($res['name']) . "</a></div>
 								<div class='tdclear'></div>
 							</div>";
                 ++$i;

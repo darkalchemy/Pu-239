@@ -1,12 +1,12 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 if (empty($_GET['wantusername'])) {
     die('Silly Rabbit - Twix are for kids - You cant post nothing please enter a username !');
 }
 sleep(1);
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 dbconn();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('takesignup'));
@@ -33,6 +33,7 @@ function validusername($username)
 
     return true;
 }
+
 if (!validusername($_GET['wantusername'])) {
     $HTMLOUT .= "<font color='#cc0000'>{$lang['takesignup_allowed_chars']}</font>";
     echo $HTMLOUT;
@@ -49,7 +50,7 @@ $result = sql_query($sql);
 $numbers = mysqli_num_rows($result);
 if ($numbers > 0) {
     while ($namecheck = mysqli_fetch_assoc($result)) {
-        $HTMLOUT .= "<font color='#cc0000'><img src='{$INSTALLER09['pic_base_url']}cross.png' alt='Cross' title='Username  Not Available' align='absmiddle' /><b>Sorry... Username - ".htmlsafechars($namecheck['username']).' is already in use.</b></font>';
+        $HTMLOUT .= "<font color='#cc0000'><img src='{$INSTALLER09['pic_base_url']}cross.png' alt='Cross' title='Username  Not Available' align='absmiddle' /><b>Sorry... Username - " . htmlsafechars($namecheck['username']) . ' is already in use.</b></font>';
     }
 } else {
     $HTMLOUT .= "<font color='#33cc33'><img src='{$INSTALLER09['pic_base_url']}tick.png' alt='Tick' title='Username Available' align='absmiddle' /><b>Username Available</b></font>";

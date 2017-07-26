@@ -42,7 +42,7 @@ if ((isset($_GET['t'])) && (isset($_GET['h']))) {
         $user = Sentinel::signInWithAccessToken($accesstoken);
 
         // Check the security hash
-        if (!Sentinel::isSignValid($_GET['h'], array('f' => $file_id), $username)) {
+        if (!Sentinel::isSignValid($_GET['h'], ['f' => $file_id], $username)) {
             http403();
         }
     }
@@ -87,7 +87,7 @@ $regex = $files[$file_id]['format']['regex'];
 $match = $files[$file_id]['format']['match'];
 $types = $files[$file_id]['format']['types'];
 $multiline = (isset($files[$file_id]['format']['multiline'])) ? $files[$file_id]['format']['multiline'] : '';
-$exclude = (isset($files[$file_id]['format']['exclude'])) ? $files[$file_id]['format']['exclude'] : array();
+$exclude = (isset($files[$file_id]['format']['exclude'])) ? $files[$file_id]['format']['exclude'] : [];
 $title = (isset($files[$file_id]['format']['export_title'])) ? $files[$file_id]['format']['export_title'] : '';
 $file_path = $files[$file_id]['path'];
 $start_offset = 0;
@@ -125,7 +125,7 @@ switch ($format) {
     case 'RSS':
         require 'classes/Feedcreator.php';
         define('TIME_ZONE', $tz);
-        define('FEEDCREATOR_VERSION', 'Pimp My Log v'.get_current_pml_version());
+        define('FEEDCREATOR_VERSION', 'Pimp My Log v' . get_current_pml_version());
         $rss = new UniversalFeedCreator();
         $rss->title = sprintf(__('Pimp My Log : %s'), $files[$file_id]['display']);
         $rss->description = (empty($search))
@@ -149,7 +149,7 @@ switch ($format) {
                 $description = '';
                 foreach ($log as $key => $value) {
                     if (substr($key, 0, 3) !== 'pml') {
-                        $description .= '<strong>'.h($key).'</strong> : '.h($value).'<br/>';
+                        $description .= '<strong>' . h($key) . '</strong> : ' . h($value) . '<br/>';
                     }
                 }
                 $item->description = $description;
@@ -159,13 +159,13 @@ switch ($format) {
                 if (isset($log[$title])) {
                     $item->title = $log[$title];
                 } else {
-                    $item->title = current($log).' - '.sha1(serialize($log));
+                    $item->title = current($log) . ' - ' . sha1(serialize($log));
                 }
                 if ($format === 'ATOM') {
                     $item->author = 'PmL';
                 }
-                $item->link = $link.'&'.$log['pmlo'];
-                $item->guid = $link.'&'.$log['pmlo'];
+                $item->link = $link . '&' . $log['pmlo'];
+                $item->guid = $link . '&' . $log['pmlo'];
                 $item->descriptionTruncSize = 500;
                 $item->descriptionHtmlSyndicated = true;
                 $rss->addItem($item);
@@ -176,9 +176,9 @@ switch ($format) {
 
     case 'CSV':
         header('Content-Transfer-Encoding: binary');
-        header('Content-Disposition: attachment;filename=PimpMyLog_'.get_slug($file_id).'_'.date('Y-m-d-His').'.csv');
+        header('Content-Disposition: attachment;filename=PimpMyLog_' . get_slug($file_id) . '_' . date('Y-m-d-His') . '.csv');
         header('Content-type: application/vnd.ms-excel; charset=UTF-16LE');
-        echo chr(255).chr(254);
+        echo chr(255) . chr(254);
         if ((isset($logs['logs'])) && (is_array($logs['logs']))) {
             echo mb_convert_encoding(array2csv($logs['logs']), 'UTF-16LE', 'UTF-8');
         }
@@ -186,8 +186,30 @@ switch ($format) {
 
     case 'XML':
         header('Content-type: application/xml', true);
-        $xml = '<?xml version="1.0" encoding="UTF-8" ?>'; $xml .= '<pml>'; $xml .= generate_xml_from_array($logs, 'log'); $xml .= '</pml>'; echo $xml; break; case 'JSONPR': header('Content-type: application/json', true); if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
+        $xml = '<?xml version="1.0" encoding="UTF-8" ?>';
+        $xml .= '<pml>';
+        $xml .= generate_xml_from_array($logs, 'log');
+        $xml .= '</pml>';
+        echo $xml;
+        break;
+    case 'JSONPR':
+        header('Content-type: application/json', true);
+        if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
             echo json_encode($logs, JSON_PRETTY_PRINT);
         } else {
             echo json_indent(json_encode($logs));
-        } break; case 'JSONP': header('Content-type: application/javascript', true); echo (isset($_GET['callback'])) ? $_GET['callback'] : '?'; echo '('; echo json_encode($logs); echo ')'; break; case 'JSON': default: header('Content-type: application/json', true); echo json_encode($logs); break; } ?>
+        }
+        break;
+    case 'JSONP':
+        header('Content-type: application/javascript', true);
+        echo (isset($_GET['callback'])) ? $_GET['callback'] : '?';
+        echo '(';
+        echo json_encode($logs);
+        echo ')';
+        break;
+    case 'JSON':
+    default:
+        header('Content-type: application/json', true);
+        echo json_encode($logs);
+        break;
+} ?>

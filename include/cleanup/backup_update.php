@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 function cleanup_log($data)
 {
@@ -10,6 +10,7 @@ function cleanup_log($data)
     $desc = sqlesc($data['clean_desc']);
     sql_query("INSERT INTO cleanup_log (clog_event, clog_time, clog_ip, clog_desc) VALUES ($text, $added, $ip, {$desc})") or sqlerr(__FILE__, __LINE__);
 }
+
 function docleanup($data)
 {
     global $INSTALLER09, $queries, $mc1;
@@ -17,24 +18,24 @@ function docleanup($data)
     ignore_user_abort(1);
     //== Delete old backup's
     $days = 3;
-    $res = sql_query('SELECT id, name FROM dbbackup WHERE added < '.sqlesc(TIME_NOW - ($days * 86400))) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT id, name FROM dbbackup WHERE added < ' . sqlesc(TIME_NOW - ($days * 86400))) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
-        $ids = array();
+        $ids = [];
         while ($arr = mysqli_fetch_assoc($res)) {
-            $ids[] = (int) $arr['id'];
-            $filename = $INSTALLER09['backup_dir'].'/'.$arr['name'];
+            $ids[] = (int)$arr['id'];
+            $filename = $INSTALLER09['backup_dir'] . '/' . $arr['name'];
             if (is_file($filename)) {
                 unlink($filename);
             }
         }
-        sql_query('DELETE FROM dbbackup WHERE id IN ('.implode(', ', $ids).')') or sqlerr(__FILE__, __LINE__);
+        sql_query('DELETE FROM dbbackup WHERE id IN (' . implode(', ', $ids) . ')') or sqlerr(__FILE__, __LINE__);
     }
     //== end
     if ($queries > 0) {
         write_log("Backup Clean -------------------- Backup Clean Complete using $queries queries--------------------");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']).' items deleted/updated';
+        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';
     }
     if ($data['clean_log']) {
         cleanup_log($data);

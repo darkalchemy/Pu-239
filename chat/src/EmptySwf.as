@@ -16,17 +16,19 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 package {
-	import flash.display.MovieClip;
-	import bridge.FABridge;
-	
-	public class EmptySwf extends MovieClip {
-		
-		private var externalBridge:FABridge;
-		
-		public function EmptySwf() {
-			super();
-			externalBridge = new FABridge();
-			externalBridge.rootObject = this;
-		}
-	}
+
+import flash.display.MovieClip;
+
+import bridge.FABridge;
+
+public class EmptySwf extends MovieClip {
+
+    private var externalBridge: FABridge;
+
+    public function EmptySwf() {
+        super();
+        externalBridge = new FABridge();
+        externalBridge.rootObject = this;
+    }
+}
 }

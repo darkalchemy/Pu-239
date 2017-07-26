@@ -15,9 +15,10 @@
 //############################################################################
 // $Id: imdb_nowplaying.class.php 480 2011-10-12 09:24:03Z izzy $
 
-require_once dirname(__FILE__).'/mdb_base.class.php';
+require_once dirname(__FILE__) . '/mdb_base.class.php';
 
 //=================================================[ The IMDB Person class ]===
+
 /** Obtain the Now Playing Movies in theaters of USA, from IMDB
  * @class imdb_nowplaying
  *
@@ -58,7 +59,7 @@ class imdb_nowplaying
         if (preg_match_all($pattern, substr($this->page, $init_pos, $end_pos - $init_pos), $matches)) {
             $res = array_values(array_unique($matches[1]));
         } else {
-            $res = array();
+            $res = [];
         }
 
         return $res;
@@ -82,7 +83,7 @@ class imdb_nowplaying
         if (preg_match_all($pattern, substr($this->page, $init_pos, $end_pos - $init_pos), $matches)) {
             $res = array_values(array_unique($matches[1]));
         } else {
-            $res = array();
+            $res = [];
         }
 
         return $res;

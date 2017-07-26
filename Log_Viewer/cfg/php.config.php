@@ -13,23 +13,23 @@ function php_load_software()
 {
     $path = (SAFE_MODE === true) ? '' : ini_get('error_log');
     if ($path !== '') {
-        return array(
-            'name' => __('PHP'),
-            'desc' => __('PHP'),
-            'home' => __('http://www.php.net/manual/errorfunc.configuration.php#ini.error-log'),
-            'notes' => __('PHP logs defined via the <code>error_log</code> ini parameter.').' '.
-                         sprintf(__('Pimp My Log has detected <code>%s</code> on your server.'), $path),
-            'load' => true,
-        );
+        return [
+            'name'  => __('PHP'),
+            'desc'  => __('PHP'),
+            'home'  => __('http://www.php.net/manual/errorfunc.configuration.php#ini.error-log'),
+            'notes' => __('PHP logs defined via the <code>error_log</code> ini parameter.') . ' ' .
+                sprintf(__('Pimp My Log has detected <code>%s</code> on your server.'), $path),
+            'load'  => true,
+        ];
     } else {
-        return array(
-            'name' => __('PHP'),
-            'desc' => __('PHP'),
-            'home' => __('http://www.php.net/manual/errorfunc.configuration.php#ini.error-log'),
-            'notes' => __('Pimp My Log has not detected any path in the ini parameter <code>error_log</code>.').' '.
-                         __('Activate this software only if you use <code>ini_set(\'error_log\')</code> directly in your scripts for example.'),
-            'load' => false,
-        );
+        return [
+            'name'  => __('PHP'),
+            'desc'  => __('PHP'),
+            'home'  => __('http://www.php.net/manual/errorfunc.configuration.php#ini.error-log'),
+            'notes' => __('Pimp My Log has not detected any path in the ini parameter <code>error_log</code>.') . ' ' .
+                __('Activate this software only if you use <code>ini_set(\'error_log\')</code> directly in your scripts for example.'),
+            'load'  => false,
+        ];
     }
 }
 
@@ -37,7 +37,7 @@ function php_get_config($type, $file, $software, $counter)
 {
     $file_json_encoded = json_encode($file);
 
-    return<<<EOF
+    return <<<EOF
 	"$software$counter": {
 		"display" : "PHP Error #$counter",
 		"path"    : $file_json_encoded,

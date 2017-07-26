@@ -12,8 +12,8 @@ class Session
      * If you have several instances of PML on the same server with different paths,
      * authentication has to be managed distinctly
      *
-     * @param string $path     the path of the cookie
-     * @param int    $lifetime the lifetime of the cookie
+     * @param string $path the path of the cookie
+     * @param int $lifetime the lifetime of the cookie
      *
      * @return bool
      */
@@ -21,7 +21,7 @@ class Session
     {
         if (self::$sessionState === self::SESSION_NOT_STARTED) {
             if (empty($path)) {
-                $sub = array('inc');
+                $sub = ['inc'];
                 $url = parse_url(get_current_url());
                 // we add a string on bottom to manage urls like these
                 // - http://niania/blahblah/pimpmylog/
@@ -29,7 +29,7 @@ class Session
                 // So they become
                 // - http://niania/blahblah/pimpmylog/fake
                 // - http://niania/blahblah/pimpmylog/index.phpfake
-                $path = dirname($url['path'].'fake');
+                $path = dirname($url['path'] . 'fake');
                 // Now remove all identified subfolders
                 if (in_array(basename($path), $sub)) {
                     $path = dirname($path);

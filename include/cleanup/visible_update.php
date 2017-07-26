@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 function docleanup($data)
 {
@@ -17,12 +17,13 @@ function docleanup($data)
         write_log("Torrent Visible clean-------------------- Torrent Visible cleanup Complete using $queries queries --------------------");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']).' items deleted/updated';
+        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';
     }
     if ($data['clean_log']) {
         cleanup_log($data);
     }
 }
+
 function cleanup_log($data)
 {
     $text = sqlesc($data['clean_title']);

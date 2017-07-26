@@ -5,23 +5,23 @@ class LogParser
     /**
      * Read a log file and return an array of logs with metadata.
      *
-     * @param string $regex               A regex to match each line
-     * @param array  $match               An array of matchers
-     * @param array  $types               An array of matchers types
-     * @param string $tz                  The wanted timezone to translate matchers with a date type
-     * @param int    $wanted_lines        the count of wanted lines to be returned
-     * @param array  $exclude             An array of exclusion matchers tokens
-     * @param string $file_path           the file path
-     * @param int    $start_offset        the offset where to begin to parse file
-     * @param int    $start_from          the position from where the offset is taken
-     * @param bool   $load_more           loadmore mode : if true, we do not try to guess the previous line
-     * @param string $old_lastline        The fingerprint of the last known line (previous call)
-     * @param bool   $multiline           Whether the parser should understand non understandable lines as multi lines of
+     * @param string $regex A regex to match each line
+     * @param array $match An array of matchers
+     * @param array $types An array of matchers types
+     * @param string $tz The wanted timezone to translate matchers with a date type
+     * @param int $wanted_lines the count of wanted lines to be returned
+     * @param array $exclude An array of exclusion matchers tokens
+     * @param string $file_path the file path
+     * @param int $start_offset the offset where to begin to parse file
+     * @param int $start_from the position from where the offset is taken
+     * @param bool $load_more loadmore mode : if true, we do not try to guess the previous line
+     * @param string $old_lastline The fingerprint of the last known line (previous call)
+     * @param bool $multiline Whether the parser should understand non understandable lines as multi lines of
      *                                    a field
-     * @param string $search              A search expression
-     * @param int    $data_to_parse       The maximum count of bytes to read a new line (basically the difference between
+     * @param string $search A search expression
+     * @param int $data_to_parse The maximum count of bytes to read a new line (basically the difference between
      *                                    the previous scanned file size and the current one)
-     * @param bool   $full                Whether the log file should be loaded from scratch
+     * @param bool $full Whether the log file should be loaded from scratch
      * @param [type] $max_search_log_time The maximum duration in s to parse lines
      *
      * @return [type] [description]
@@ -33,7 +33,7 @@ class LogParser
             return '1';
         }
 
-        $logs = array();
+        $logs = [];
         $start = microtime(true);
         $regsearch = false;
         $found = false;
@@ -43,7 +43,7 @@ class LogParser
         $abort = false;
         $file_lastline = '';
         $search_lastline = true;
-        $buffer = array();
+        $buffer = [];
 
         /*
         |--------------------------------------------------------------------------
@@ -55,7 +55,7 @@ class LogParser
             $filem = new DateTime();
             $filem->setTimestamp(filemtime($file_path));
         } else {
-            $filem = new DateTime('@'.filemtime($file_path));
+            $filem = new DateTime('@' . filemtime($file_path));
         }
         if (!is_null($tz)) {
             $filem->setTimezone(new DateTimeZone($tz));
@@ -81,15 +81,13 @@ class LogParser
         |--------------------------------------------------------------------------
         |
         */
-        for ($x_pos = $start_offset , $ln = 0 , $line = '' , $still = true; $still; --$x_pos) {
+        for ($x_pos = $start_offset, $ln = 0, $line = '', $still = true; $still; --$x_pos) {
             // We have reached the beginning of file
             // Validate the previous read chars by simulating a NL
             if (fseek($fl, $x_pos, $start_from) === -1) {
                 $still = false;
                 $char = "\n";
-            }
-
-            // Read a char on a log line
+            } // Read a char on a log line
             else {
                 $char = fgetc($fl);
             }
@@ -121,9 +119,7 @@ class LogParser
                                 // So we have to continue computing to find the user wanted count of lines (and alert user about the file change)
                                 $logs['notice'] = 1;
                                 $full = true;
-                            }
-
-                            // Ok lines are the same so just stop and return new found lines
+                            } // Ok lines are the same so just stop and return new found lines
                             else {
                                 break;
                             }
@@ -139,9 +135,9 @@ class LogParser
                         $return_log = true;
 
                         // If we previously have parsed some multilines, we need now to include them
-                        $last_field_append = (count($buffer) > 0) ? "\n".implode("\n", array_reverse($buffer)) : '';
+                        $last_field_append = (count($buffer) > 0) ? "\n" . implode("\n", array_reverse($buffer)) : '';
 
-                        $buffer = array();
+                        $buffer = [];
 
                         foreach ($log as $key => $value) {
                             // Manage multilines
@@ -168,47 +164,37 @@ class LogParser
                         // This line should be skipped because it has been excluded by user configuration
                         if ($return_log === false) {
                             ++$skip;
-                        }
-
-                        // Filter now this line by search
+                        } // Filter now this line by search
                         else {
                             if (!empty($search)) {
                                 // Regex
                                 if ($regsearch) {
-                                    $return_log = preg_match($search, $deal.$last_field_append);
+                                    $return_log = preg_match($search, $deal . $last_field_append);
                                     if ($return_log === 0) {
                                         $return_log = false;
                                     }
-                                }
-
-                                // Simple search
+                                } // Simple search
                                 else {
-                                    $return_log = strpos($deal.$last_field_append, $search);
+                                    $return_log = strpos($deal . $last_field_append, $search);
                                 }
                             }
 
                             // Search excludes this line
                             if ($return_log === false) {
                                 ++$skip;
-                            }
-
-                            // Search includes this line
+                            } // Search includes this line
                             else {
                                 $found = true;
-                                $log['pml'] = $deal.$last_field_append;
+                                $log['pml'] = $deal . $last_field_append;
                                 $log['pmlo'] = ftell($fl);
                                 $logs['logs'][] = $log;
                                 ++$ln;
                             }
                         }
-                    }
-
-                    // The line has not been successfully parsed by the parser but multiline feature is enabled so we treat this line as a multiline
+                    } // The line has not been successfully parsed by the parser but multiline feature is enabled so we treat this line as a multiline
                     elseif ($multiline !== '') {
                         $buffer[] = $deal;
-                    }
-
-                    // No multiline feature and unknown line : add this line as an error
+                    } // No multiline feature and unknown line : add this line as an error
                     else {
                         ++$error;
                     }
@@ -230,7 +216,7 @@ class LogParser
             }
 
             // Prepend the read char to the previous buffered chars
-            $line = $char.$line;
+            $line = $char . $line;
             ++$bytes;
         }
 
@@ -259,7 +245,7 @@ class LogParser
         $logs['errorlines'] = $error;
         $logs['fingerprint'] = md5(serialize(@$logs['logs'])); // Used to avoid notification on full refresh when nothing has finally changed
         $logs['lastline'] = $file_lastline;
-        $logs['duration'] = (int) ((microtime(true) - $start) * 1000);
+        $logs['duration'] = (int)((microtime(true) - $start) * 1000);
         $logs['filesize'] = $filesize;
         $logs['filemodif'] = $filem;
         $logs['filemodifu'] = $filemu;
@@ -268,65 +254,13 @@ class LogParser
     }
 
     /**
-     * Read lines from the bottom of giver file.
-     *
-     * @param string $file  the file path
-     * @param int    $count the count of wanted lines
-     *
-     * @return array an array of read lines or false of fiel error
-     */
-    public static function getLinesFromBottom($file, $count = 1)
-    {
-        $fl = @fopen($file, 'r');
-        $lines = array();
-        $bytes = 0;
-
-        if ($fl === false) {
-            return false;
-        }
-
-        $count = max(1, (int) $count);
-
-        for ($x_pos = 0 , $ln = 0 , $line = '' , $still = true; $still; --$x_pos) {
-            if (fseek($fl, $x_pos, SEEK_END) === -1) {
-                $still = false;
-                $char = "\n";
-            } else {
-                $char = fgetc($fl);
-            }
-
-            if ($char === "\n") {
-                $deal = utf8_encode($line);
-                $line = '';
-
-                if ($deal !== '') {
-                    $lines[] = $deal;
-                    --$count;
-                    if ($count === 0) {
-                        $still = false;
-                    }
-                }
-
-                // continue directly without keeping the \n
-                continue;
-            }
-            $line = $char.$line;
-            ++$bytes;
-        }
-
-        fclose($fl);
-
-        return $lines;
-    }
-
-    /**
      * A line of log parser.
      *
      * @param string $regex The regex which describes the user log format
-     * @param array  $match An array which links internal tokens to regex matches
-     * @param string $log   The text log
+     * @param array $match An array which links internal tokens to regex matches
+     * @param string $log The text log
      * @param string $types A array of types for fields
-     * @param string $tz    A time zone identifier
+     * @param string $tz A time zone identifier
      *
      * @return mixed An array where keys are internal tokens and values the corresponding values extracted
      *               from the log file. Or false if line is not matchable.
@@ -339,7 +273,7 @@ class LogParser
             return false;
         }
 
-        $result = array();
+        $result = [];
         $timestamp = 0;
 
         foreach ($match as $token => $key) {
@@ -348,7 +282,7 @@ class LogParser
             if (substr($type, 0, 4) === 'date') {
                 // Date is an array description with keys ( 'Y' : 5 , 'M' : 2 , ... )
                 if (is_array($key) && (is_assoc($key))) {
-                    $newdate = array();
+                    $newdate = [];
                     foreach ($key as $k => $v) {
                         $newdate[$k] = @$out[$v][0];
                     }
@@ -360,13 +294,11 @@ class LogParser
                     } elseif (isset($newdate['c'])) {
                         $str = date('Y/m/d H:i:s', $newdate['c']);
                     } elseif (isset($newdate['M'])) {
-                        $str = trim($newdate['M'].' '.$newdate['d'].' '.$newdate['H'].':'.$newdate['i'].':'.$newdate['s'].' '.$newdate['Y'].' '.@$newdate['z']);
+                        $str = trim($newdate['M'] . ' ' . $newdate['d'] . ' ' . $newdate['H'] . ':' . $newdate['i'] . ':' . $newdate['s'] . ' ' . $newdate['Y'] . ' ' . @$newdate['z']);
                     } elseif (isset($newdate['m'])) {
-                        $str = trim($newdate['Y'].'/'.$newdate['m'].'/'.$newdate['d'].' '.$newdate['H'].':'.$newdate['i'].':'.$newdate['s'].' '.@$newdate['z']);
+                        $str = trim($newdate['Y'] . '/' . $newdate['m'] . '/' . $newdate['d'] . ' ' . $newdate['H'] . ':' . $newdate['i'] . ':' . $newdate['s'] . ' ' . @$newdate['z']);
                     }
-                }
-
-                // Date is an array description without keys ( 2 , ':' , 3 , '-' , ... )
+                } // Date is an array description without keys ( 2 , ':' , 3 , '-' , ... )
                 elseif (is_array($key)) {
                     $str = '';
                     foreach ($key as $v) {
@@ -391,7 +323,7 @@ class LogParser
                         $date = new DateTime();
                         $date->setTimestamp($timestamp);
                     } else {
-                        $date = new DateTime('@'.$timestamp);
+                        $date = new DateTime('@' . $timestamp);
                     }
 
                     if (!is_null($tz)) {
@@ -399,12 +331,11 @@ class LogParser
                     }
 
                     $formatted_date = $date->format($dateformat);
-                    $timestamp = (int) $date->format('U');
+                    $timestamp = (int)$date->format('U');
                 }
 
                 $result[$token] = $formatted_date;
-            }
-            // Array description without keys ( 2 , ':' , 3 , '-' , ... )
+            } // Array description without keys ( 2 , ':' , 3 , '-' , ... )
             elseif (is_array($key)) {
                 $r = '';
                 foreach ($key as $v) {
@@ -421,5 +352,57 @@ class LogParser
         }
 
         return $result;
+    }
+
+    /**
+     * Read lines from the bottom of giver file.
+     *
+     * @param string $file the file path
+     * @param int $count the count of wanted lines
+     *
+     * @return array an array of read lines or false of fiel error
+     */
+    public static function getLinesFromBottom($file, $count = 1)
+    {
+        $fl = @fopen($file, 'r');
+        $lines = [];
+        $bytes = 0;
+
+        if ($fl === false) {
+            return false;
+        }
+
+        $count = max(1, (int)$count);
+
+        for ($x_pos = 0, $ln = 0, $line = '', $still = true; $still; --$x_pos) {
+            if (fseek($fl, $x_pos, SEEK_END) === -1) {
+                $still = false;
+                $char = "\n";
+            } else {
+                $char = fgetc($fl);
+            }
+
+            if ($char === "\n") {
+                $deal = utf8_encode($line);
+                $line = '';
+
+                if ($deal !== '') {
+                    $lines[] = $deal;
+                    --$count;
+                    if ($count === 0) {
+                        $still = false;
+                    }
+                }
+
+                // continue directly without keeping the \n
+                continue;
+            }
+            $line = $char . $line;
+            ++$bytes;
+        }
+
+        fclose($fl);
+
+        return $lines;
     }
 }

@@ -1,35 +1,31 @@
 <?php
-/**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-// Achievements mod by MelvinMeow
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'pager_functions.php';
-require_once CLASS_DIR.'page_verify.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'pager_functions.php';
+require_once CLASS_DIR . 'page_verify.php';
 dbconn();
 loggedinorreturn();
 $newpage = new page_verify();
 $newpage->create('takecounts');
 $lang = array_merge(load_language('global'), load_language('achievement_history'));
 $HTMLOUT = '';
-$id = (int) $_GET['id'];
+$id = (int)$_GET['id'];
 if (!is_valid_id($id)) {
     stderr($lang['achievement_history_err'], $lang['achievement_history_err1']);
 }
-$res = sql_query('SELECT users.id, users.username, usersachiev.achpoints, usersachiev.spentpoints FROM users LEFT JOIN usersachiev ON users.id = usersachiev.id WHERE users.id = '.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT users.id, users.username, usersachiev.achpoints, usersachiev.spentpoints FROM users LEFT JOIN usersachiev ON users.id = usersachiev.id WHERE users.id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_assoc($res);
 if (!$arr) {
     stderr($lang['achievement_history_err'], $lang['achievement_history_err1']);
 }
-$achpoints = (int) $arr['achpoints'];
-$spentpoints = (int) $arr['spentpoints'];
-$res = sql_query('SELECT COUNT(*) FROM achievements WHERE userid ='.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$achpoints = (int)$arr['achpoints'];
+$spentpoints = (int)$arr['spentpoints'];
+$res = sql_query('SELECT COUNT(*) FROM achievements WHERE userid =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_row($res);
 $count = $row[0];
 $perpage = 15;
 if (!$count) {
-    stderr($lang['achievement_history_no'], "{$lang['achievement_history_err2']}<a class='altlink' href='userdetails.php?id=".(int) $arr['id']."'>".htmlsafechars($arr['username'])."</a>{$lang['achievement_history_err3']}");
+    stderr($lang['achievement_history_no'], "{$lang['achievement_history_err2']}<a class='altlink' href='userdetails.php?id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['username']) . "</a>{$lang['achievement_history_err3']}");
 }
 $pager = pager($perpage, $count, "?id=$id&amp;");
 if ($id == $CURUSER['id']) {
@@ -51,11 +47,11 @@ $HTMLOUT .= "
 		<fieldset>
 			<legend>
 			{$lang['achievement_history_afu']}
-			<a class='altlink' href='{$INSTALLER09['baseurl']}/userdetails.php?id=".(int) $arr['id']."'>".htmlsafechars($arr['username'])."</a><br />
-			{$lang['achievement_history_c']}".htmlsafechars($row['0'])."{$lang['achievement_history_a']}".($row[0] == 1 ? '' : 's').'.';
+			<a class='altlink' href='{$INSTALLER09['baseurl']}/userdetails.php?id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['username']) . "</a><br />
+			{$lang['achievement_history_c']}" . htmlsafechars($row['0']) . "{$lang['achievement_history_a']}" . ($row[0] == 1 ? '' : 's') . '.';
 if ($id == $CURUSER['id']) {
     $HTMLOUT .= "
-			<a class='altlink' href='achievementbonus.php'>".htmlsafechars($achpoints)."{$lang['achievement_history_pa']}".htmlsafechars($spentpoints)."{$lang['achievement_history_ps']}</a>
+			<a class='altlink' href='achievementbonus.php'>" . htmlsafechars($achpoints) . "{$lang['achievement_history_pa']}" . htmlsafechars($spentpoints) . "{$lang['achievement_history_ps']}</a>
 			</legend>
 		";
 }
@@ -73,13 +69,13 @@ $HTMLOUT .= "
 						</tr>
 					</thead>
 					";
-$res = sql_query('SELECT * FROM achievements WHERE userid='.sqlesc($id)." ORDER BY date DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT * FROM achievements WHERE userid=' . sqlesc($id) . " ORDER BY date DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
 while ($arr = mysqli_fetch_assoc($res)) {
     $HTMLOUT .= "
 						<tr>
-							<td><img src='pic/achievements/".htmlsafechars($arr['icon'])."' alt='".htmlsafechars($arr['achievement'])."' title='".htmlsafechars($arr['achievement'])."' /></td>
-							<td>".htmlsafechars($arr['description']).'</td>
-							<td>'.get_date($arr['date'], '').'</td>
+							<td><img src='pic/achievements/" . htmlsafechars($arr['icon']) . "' alt='" . htmlsafechars($arr['achievement']) . "' title='" . htmlsafechars($arr['achievement']) . "' /></td>
+							<td>" . htmlsafechars($arr['description']) . '</td>
+							<td>' . get_date($arr['date'], '') . '</td>
 						</tr>
 				';
 }
@@ -92,5 +88,5 @@ $HTMLOUT .= '
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($lang['achievement_history_stdhead']).$HTMLOUT.stdfoot();
+echo stdhead($lang['achievement_history_stdhead']) . $HTMLOUT . stdfoot();
 die;

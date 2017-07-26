@@ -7,8 +7,8 @@
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.opensource.org/licenses/GPL-2.0
  */
-(function($) {
-    $.cookie = function(key, value, options) {
+(function ($) {
+    $.cookie = function (key, value, options) {
 
         // key and at least value given, set cookie...
         if (arguments.length > 1 && (!/Object/.test(Object.prototype.toString.call(value)) || value === null || value === undefined)) {
@@ -28,15 +28,17 @@
             return (document.cookie = [
                 encodeURIComponent(key), '=', options.raw ? value : encodeURIComponent(value),
                 options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-                options.path    ? '; path=' + options.path : '',
-                options.domain  ? '; domain=' + options.domain : '',
-                options.secure  ? '; secure' : ''
+                options.path ? '; path=' + options.path : '',
+                options.domain ? '; domain=' + options.domain : '',
+                options.secure ? '; secure' : ''
             ].join(''));
         }
 
         // key and possibly options given, get cookie...
         options = value || {};
-        var decode = options.raw ? function(s) { return s; } : decodeURIComponent;
+        var decode = options.raw ? function (s) {
+            return s;
+        } : decodeURIComponent;
 
         var pairs = document.cookie.split('; ');
         for (var i = 0, pair; pair = pairs[i] && pairs[i].split('='); i++) {

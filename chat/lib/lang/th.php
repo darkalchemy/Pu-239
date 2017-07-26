@@ -8,7 +8,7 @@
  * @Translate by Charge01 @ http://www.thaira2lovers.co.cc
  */
 
-$lang = array();
+$lang = [];
 $lang['title'] = 'AJAX Chat';
 $lang['userName'] = 'ชื่อผู้ใช้';
 $lang['password'] = 'รหัสผ่าน';

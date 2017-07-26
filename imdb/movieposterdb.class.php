@@ -1,20 +1,21 @@
 <?php
- //############################################################################
- // IMDBPHP                                               (c) Itzchak Rehberg #
- // written by Itzchak Rehberg <izzysoft AT qumran DOT org>                   #
- // http://www.izzysoft.de/                                                   #
- // ------------------------------------------------------------------------- #
- // Get images from movieposterdb.com                                         #
- // ------------------------------------------------------------------------- #
- // This program is free software; you can redistribute and/or modify it      #
- // under the terms of the GNU General Public License (see doc/LICENSE)       #
- //############################################################################
+//############################################################################
+// IMDBPHP                                               (c) Itzchak Rehberg #
+// written by Itzchak Rehberg <izzysoft AT qumran DOT org>                   #
+// http://www.izzysoft.de/                                                   #
+// ------------------------------------------------------------------------- #
+// Get images from movieposterdb.com                                         #
+// ------------------------------------------------------------------------- #
+// This program is free software; you can redistribute and/or modify it      #
+// under the terms of the GNU General Public License (see doc/LICENSE)       #
+//############################################################################
 
- /* $Id: movieposterdb.class.php 599 2013-09-22 13:47:40Z izzy $ */
+/* $Id: movieposterdb.class.php 599 2013-09-22 13:47:40Z izzy $ */
 
- require_once dirname(__FILE__).'/mdb_base.class.php';
+require_once dirname(__FILE__) . '/mdb_base.class.php';
 
 //================================================[ The MoviePosterDB class ]===
+
 /** Accessing posters, covers, etc. from movieposterdb.com
  * @class movieposterdb
  * @extends mdb_base
@@ -50,10 +51,30 @@ class movieposterdb extends mdb_base
         } else {
             $this->user_agent = $this->default_agent;
         }
-        $this->image_exts = array('jpg', 'png', 'gif', 'bmp');
+        $this->image_exts = ['jpg', 'png', 'gif', 'bmp'];
     }
 
     //----------------------------------------------------------------[ Helpers ]---
+
+    /** Reset the language filter built by the add_lang method to its default (i.e. empty)
+     * @method public reset_lang
+     */
+    public function reset_lang()
+    {
+        $this->langs = [];
+    }
+
+    //---------------------------------------------------------[ public methods ]---
+
+    /** Get the posters
+     * @method public posters
+     *
+     * @return array array of arrays[lang,url]
+     */
+    public function posters()
+    {
+        return $this->parse_list('poster');
+    }
 
     /** Parse page for images
      * @method protected parse_list
@@ -65,19 +86,19 @@ class movieposterdb extends mdb_base
      */
     protected function parse_list($type = 'poster', $page_url = '')
     {
-        $url = 'http://www.movieposterdb.com/movie/'.$this->imdbid().'/';
+        $url = 'http://www.movieposterdb.com/movie/' . $this->imdbid() . '/';
         $page = file_get_contents($url);
         $doc = new DOMDocument();
         @$doc->loadHTML($page);
         $xp = new DOMXPath($doc);
-        $posters = array();
+        $posters = [];
         $cells = $xp->query('//td[@class="poster"]');
         foreach ($cells as $cell) {
             $imgs = $cell->getElementsByTagName('img');
             foreach ($imgs as $imga) {
                 $tit = $imga->getAttribute('alt');
                 if (!empty($tit)) {
-                    if (!preg_match('!'.$type.'$!i', $tit)) { // skip wrong types
+                    if (!preg_match('!' . $type . '$!i', $tit)) { // skip wrong types
                         continue 2;
                     }
                     $i['title'] = $tit;
@@ -98,18 +119,6 @@ class movieposterdb extends mdb_base
         }
 
         return $elems;
-    }
-
-    //---------------------------------------------------------[ public methods ]---
-
-    /** Get the posters
-     * @method public posters
-     *
-     * @return array array of arrays[lang,url]
-     */
-    public function posters()
-    {
-        return $this->parse_list('poster');
     }
 
     /** Get the cover images
@@ -209,14 +218,6 @@ class movieposterdb extends mdb_base
         $this->langs[] = strtolower($lang);
     }
 
-    /** Reset the language filter built by the add_lang method to its default (i.e. empty)
-     * @method public reset_lang
-     */
-    public function reset_lang()
-    {
-        $this->langs = array();
-    }
-
     /** Save an image to the image dir
      *  The image will be retrieved from the passed URL and stored in the configured
      *  mdb::photodir, using the filename part of the URL specified.
@@ -240,7 +241,7 @@ class movieposterdb extends mdb_base
             return false;
         }
         echo "File: $fname<br>Ext: $fext<br>";
-        if (file_put_contents($this->photodir.$fname, file_get_contents($url))) {
+        if (file_put_contents($this->photodir . $fname, file_get_contents($url))) {
             return true;
         }
 

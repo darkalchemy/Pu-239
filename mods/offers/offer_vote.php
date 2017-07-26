@@ -4,9 +4,9 @@ if (!defined('IN_OFFERS')) {
     exit('No direct script access allowed');
 }
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
-$res = sql_query('SELECT * FROM voted_offers WHERE offerid = '.$id.' and userid = '.$CURUSER['id']) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT * FROM voted_offers WHERE offerid = ' . $id . ' and userid = ' . $CURUSER['id']) or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_assoc($res);
 if ($arr) {
     $HTMLOUT .= "
@@ -16,9 +16,9 @@ if ($arr) {
 <a class='altlink' href='viewoffers.php'><b>all offers</b></a></p>
 <br /><br />";
 } else {
-    sql_query('UPDATE offers SET hits = hits+1 WHERE id='.$id) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE offers SET hits = hits+1 WHERE id=' . $id) or sqlerr(__FILE__, __LINE__);
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        sql_query('INSERT INTO voted_offers VALUES(0, '.$id.', '.$CURUSER['id'].')') or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO voted_offers VALUES(0, ' . $id . ', ' . $CURUSER['id'] . ')') or sqlerr(__FILE__, __LINE__);
         $HTMLOUT .= "
 <h3>Vote accepted</h3>
 <p style='text-decoration:underline;'>Successfully voted for offer $id</p>
@@ -35,4 +35,4 @@ if ($arr) {
     }
 }
 /////////////////////// HTML OUTPUT //////////////////////////////
-echo stdhead('Vote').$HTMLOUT.stdfoot();
+echo stdhead('Vote') . $HTMLOUT . stdfoot();

@@ -30,17 +30,41 @@
  */
 class BrowserEmulator
 {
-    public $headerLines = array();
-    public $postData = array();
+    public $headerLines = [];
+    public $postData = [];
     public $authUser = '';
     public $authPass = '';
     public $port;
-    public $lastResponse = array();
+    public $lastResponse = [];
 
     public function BrowserEmulator()
     {
         $this->resetHeaderLines();
         $this->resetPort();
+    }
+
+    /** Delete all custom header lines. This will not remove the User-Agent
+     *   header field, which is necessary for correct operation.
+     *
+     * @method resetHeaderLines
+     */
+    public function resetHeaderLines()
+    {
+        $this->headerLines = [];
+        if (in_array('HTTP_USER_AGENT', array_keys($_SERVER))) {
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        } else {
+            $user_agent = 'Mozilla/5.0 (X11; U; Linux i686; de; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3';
+        }
+        $this->headerLines['User-Agent'] = $user_agent;
+    }
+
+    /** Reset the port used for request to the HTTP default (80).
+     * @method resetPort
+     */
+    public function resetPort()
+    {
+        $this->port = 80;
     }
 
     /** Add a single header field to the HTTP request header. The resulting
@@ -54,22 +78,6 @@ class BrowserEmulator
     public function addHeaderLine($name, $value)
     {
         $this->headerLines[$name] = $value;
-    }
-
-    /** Delete all custom header lines. This will not remove the User-Agent
-     *   header field, which is necessary for correct operation.
-     *
-     * @method resetHeaderLines
-     */
-    public function resetHeaderLines()
-    {
-        $this->headerLines = array();
-        if (in_array('HTTP_USER_AGENT', array_keys($_SERVER))) {
-            $user_agent = $_SERVER['HTTP_USER_AGENT'];
-        } else {
-            $user_agent = 'Mozilla/5.0 (X11; U; Linux i686; de; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3';
-        }
-        $this->headerLines['User-Agent'] = $user_agent;
     }
 
     /** Add a post parameter. Post parameters are sent in the body of an HTTP POST request.
@@ -88,7 +96,7 @@ class BrowserEmulator
      */
     public function resetPostData()
     {
-        $this->postData = array();
+        $this->postData = [];
     }
 
     /** Set an auth user and password to use for the request.
@@ -105,22 +113,29 @@ class BrowserEmulator
         $this->authPass = $pass;
     }
 
-    /** Select a custom port to use for the request.
-     * @method setPort
+    /** Make an file call to $url with the parameters set by previous member
+     *  method calls. Send all set headers, post data and user authentication data.
      *
-     * @param int portNumber
+     * @method file
+     *
+     * @param string url
+     *
+     * @return mixed array file on success, FALSE otherwise
      */
-    public function setPort($portNumber)
+    public function file($url)
     {
-        $this->port = $portNumber;
-    }
+        $file = [];
+        $socket = $this->fopen($url);
+        if ($socket) {
+            $file = [];
+            while (!feof($socket)) {
+                $file[] = fgets($socket, 10000);
+            }
+        } else {
+            return false;
+        }
 
-    /** Reset the port used for request to the HTTP default (80).
-     * @method resetPort
-     */
-    public function resetPort()
-    {
-        $this->port = 80;
+        return $file;
     }
 
     /** Make an fopen call to $url with the parameters set by previous member
@@ -136,7 +151,7 @@ class BrowserEmulator
     {
         $debug = false;
 
-        $this->lastResponse = array();
+        $this->lastResponse = [];
 
         preg_match('~([a-z]*://)?([^:^/]*)(:([0-9]{1,5}))?(/.*)?~i', $url, $matches);
         if ($debug) {
@@ -158,7 +173,7 @@ class BrowserEmulator
             $this->headerLines['Host'] = $server;
 
             if ($this->authUser != '' and $this->authPass != '') {
-                $headers['Authorization'] = 'Basic '.base64_encode($this->authUser.':'.$this->authPass);
+                $headers['Authorization'] = 'Basic ' . base64_encode($this->authUser . ':' . $this->authPass);
             }
 
             if (count($this->postData) == 0) {
@@ -173,7 +188,7 @@ class BrowserEmulator
             fputs($socket, $request);
 
             if (count($this->postData) > 0) {
-                $PostStringArray = array();
+                $PostStringArray = [];
                 foreach ($this->postData as $key => $value) {
                     $PostStringArray[] = "$key=$value";
                 }
@@ -195,7 +210,7 @@ class BrowserEmulator
                 if ($debug) {
                     echo "$PostString";
                 }
-                fputs($socket, $PostString."\r\n");
+                fputs($socket, $PostString . "\r\n");
             }
         }
         if ($debug) {
@@ -224,29 +239,14 @@ class BrowserEmulator
         return $socket;
     }
 
-    /** Make an file call to $url with the parameters set by previous member
-     *  method calls. Send all set headers, post data and user authentication data.
+    /** Select a custom port to use for the request.
+     * @method setPort
      *
-     * @method file
-     *
-     * @param string url
-     *
-     * @return mixed array file on success, FALSE otherwise
+     * @param int portNumber
      */
-    public function file($url)
+    public function setPort($portNumber)
     {
-        $file = array();
-        $socket = $this->fopen($url);
-        if ($socket) {
-            $file = array();
-            while (!feof($socket)) {
-                $file[] = fgets($socket, 10000);
-            }
-        } else {
-            return false;
-        }
-
-        return $file;
+        $this->port = $portNumber;
     }
 
     /** Get the latest server response

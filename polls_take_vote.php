@@ -1,9 +1,9 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
 dbconn(true);
 loggedinorreturn();
 //print_r($_POST);
@@ -13,8 +13,8 @@ $poll_id = isset($_GET['pollid']) ? intval($_GET['pollid']) : false;
 if (!is_valid_id($poll_id)) {
     stderr('ERROR', 'No poll with that ID');
 }
-$vote_cast = array();
-$_POST['choice'] = isset($_POST['choice']) ? $_POST['choice'] : array();
+$vote_cast = [];
+$_POST['choice'] = isset($_POST['choice']) ? $_POST['choice'] : [];
 //-----------------------------------------
 // Permissions check
 //-----------------------------------------
@@ -27,7 +27,7 @@ $_POST['choice'] = isset($_POST['choice']) ? $_POST['choice'] : array();
 $query = sql_query("SELECT * FROM polls
                             LEFT JOIN poll_voters ON polls.pid = poll_voters.poll_id
                             AND poll_voters.user_id = {$CURUSER['id']} 
-                            WHERE pid = ".sqlesc($poll_id));
+                            WHERE pid = " . sqlesc($poll_id));
 if (!mysqli_num_rows($query) == 1) {
     stderr('ERROR', 'No poll with that ID');
 }
@@ -59,10 +59,10 @@ if (!$_POST['nullvote']) {
     }
     @sql_query("INSERT INTO poll_voters (user_id, ip_address, poll_id, vote_date)
                         VALUES ({$CURUSER['id']},
-															 ".sqlesc($CURUSER['ip']).",
+															 " . sqlesc($CURUSER['ip']) . ",
 															 {$poll_data['pid']},
-															 ".TIME_NOW.')');
-    $mc1->delete_value('poll_data_'.$CURUSER['id']);
+															 " . TIME_NOW . ')');
+    $mc1->delete_value('poll_data_' . $CURUSER['id']);
     /*
                 $update['votes'] = ($poll_data['votes'] + 1);
                 $mc1->begin_transaction('poll_data_'.$CURUSER['id']);
@@ -89,9 +89,9 @@ if (!$_POST['nullvote']) {
 } else {
     @sql_query("INSERT INTO poll_voters (user_id, ip_address, poll_id, vote_date)
                 VALUES
-                ({$CURUSER['id']}, ".sqlesc($CURUSER['ip']).", {$poll_data['pid']},
-								".TIME_NOW.')');
-    $mc1->delete_value('poll_data_'.$CURUSER['id']);
+                ({$CURUSER['id']}, " . sqlesc($CURUSER['ip']) . ", {$poll_data['pid']},
+								" . TIME_NOW . ')');
+    $mc1->delete_value('poll_data_' . $CURUSER['id']);
     /*
                 $update['votes'] = ($poll_data['votes'] + 1);
                 $mc1->begin_transaction('poll_data_'.$CURUSER['id']);

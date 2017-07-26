@@ -1,18 +1,19 @@
 <?php
- //############################################################################
- // IMDBPHP                              (c) Giorgos Giagas & Itzchak Rehberg #
- // written by Giorgos Giagas                                                 #
- // extended & maintained by Itzchak Rehberg <izzysoft AT qumran DOT org>     #
- // http://www.izzysoft.de/                                                   #
- // ------------------------------------------------------------------------- #
- // This program is free software; you can redistribute and/or modify it      #
- // under the terms of the GNU General Public License (see doc/LICENSE)       #
- //############################################################################
+//############################################################################
+// IMDBPHP                              (c) Giorgos Giagas & Itzchak Rehberg #
+// written by Giorgos Giagas                                                 #
+// extended & maintained by Itzchak Rehberg <izzysoft AT qumran DOT org>     #
+// http://www.izzysoft.de/                                                   #
+// ------------------------------------------------------------------------- #
+// This program is free software; you can redistribute and/or modify it      #
+// under the terms of the GNU General Public License (see doc/LICENSE)       #
+//############################################################################
 
- /* $Id: mdb_request.class.php 609 2013-10-06 12:23:54Z izzy $ */
+/* $Id: mdb_request.class.php 609 2013-10-06 12:23:54Z izzy $ */
 
 if (isset($PEAR) && $PEAR) { // Use the HTTP_Request class from the PEAR project.
     require_once 'HTTP/Request.php';
+
     class MDB_Request extends HTTP_Request
     {
         public function __construct($url)
@@ -34,15 +35,15 @@ if (isset($PEAR) && $PEAR) { // Use the HTTP_Request class from the PEAR project
         {
             $head = $this->getResponseHeader($url);
 
-            return array($head['response'], $head['Date'], $head['Server'], '', $head['Connection'], $head['Content-Type']);
+            return [$head['response'], $head['Date'], $head['Server'], '', $head['Connection'], $head['Content-Type']];
         }
     }
 } else { // Use the browseremu class
-    require_once dirname(__FILE__).'/browseremulator.class.php';
+    require_once dirname(__FILE__) . '/browseremulator.class.php';
     if (defined('IMDBPHP_CONFIG')) {
         require_once IMDBPHP_CONFIG;
     } else {
-        require_once dirname(__FILE__).'/mdb_config.class.php';
+        require_once dirname(__FILE__) . '/mdb_config.class.php';
     }
 
     /** The request class
@@ -80,13 +81,17 @@ if (isset($PEAR) && $PEAR) { // Use the HTTP_Request class from the PEAR project
                 $iconf->trigger_referer = $trigger_referer;
             } else {
                 switch (strtolower($trigger_referer)) {
-          case 'true': $iconf->trigger_referer = true; break;
-          case 'false': $iconf->trigger_referer = false; break;
-        }
+                    case 'true':
+                        $iconf->trigger_referer = true;
+                        break;
+                    case 'false':
+                        $iconf->trigger_referer = false;
+                        break;
+                }
             }
             if ($iconf->trigger_referer) {
                 if (substr(get_class($this), 0, 4) == 'imdb') {
-                    $this->addHeaderLine('Referer', 'http://'.$this->imdbsite.'/');
+                    $this->addHeaderLine('Referer', 'http://' . $this->imdbsite . '/');
                 } elseif (in_array('HTTP_REFERER', array_keys($_SERVER))) {
                     $this->addHeaderLine('Referer', $_SERVER['HTTP_REFERER']);
                 }

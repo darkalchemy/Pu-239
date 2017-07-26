@@ -4,8 +4,8 @@ package require http
 set conf(channel) "#09source"
 set conf(chan) "#09source"
 set conf(site) "09source"
-set conf(key)  "VGhlIE1vemlsbGEgZmFtaWx5IGFwcG" 
-set conf(site_url) "http://u-232.com/irc_idle.php"
+set conf(key)  "VGhlIE1vemlsbGEgZmFtaWx5IGFwcG"
+set conf(site_url) "irc_idle.php" ## add site domain
 
 #set the file where greet message is
 set gfile "text/greet.txt"
@@ -86,4 +86,4 @@ proc hello { nick } {
         putquick "NOTICE $nick : $line" 
     }
 }
-putlog "putyn's idle,greet,usercheck scripts loaded!"
+putlog "idle, greet, usercheck scripts loaded!"

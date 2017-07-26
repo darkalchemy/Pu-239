@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 function cleanup_log($data)
 {
@@ -10,6 +10,7 @@ function cleanup_log($data)
     $desc = sqlesc($data['clean_desc']);
     sql_query("INSERT INTO cleanup_log (clog_event, clog_time, clog_ip, clog_desc) VALUES ($text, $added, $ip, {$desc})") or sqlerr(__FILE__, __LINE__);
 }
+
 function docleanup($data)
 {
     global $INSTALLER09, $queries;
@@ -25,7 +26,7 @@ function docleanup($data)
             $tickets[] = $a;
         }
         shuffle($tickets);
-        $lottery['winners'] = array();
+        $lottery['winners'] = [];
         $lottery['total_tickets'] = count($tickets);
         for ($i = 0; $i < $lottery['total_tickets']; ++$i) {
             if (!isset($lottery['winners'][$tickets[$i]['uid']])) {
@@ -42,32 +43,32 @@ function docleanup($data)
         }
         $lottery['user_pot'] = round($lottery['total_pot'] / $lottery_config['total_winners'], 2);
         $msg['subject'] = sqlesc('You have won the lottery');
-        $msg['body'] = sqlesc('Congratulations, You have won : '.($lottery['user_pot']).'. This has been added to your seedbonus total amount. Thanks for playing Lottery.');
+        $msg['body'] = sqlesc('Congratulations, You have won : ' . ($lottery['user_pot']) . '. This has been added to your seedbonus total amount. Thanks for playing Lottery.');
         foreach ($lottery['winners'] as $winner) {
-            $_userq[] = '('.$winner['uid'].','.($winner['seedbonus'] + $lottery['user_pot']).','.sqlesc('User won the lottery: '.($lottery['user_pot']).' at '.get_date(TIME_NOW, 'LONG')."\n".$winner['modcomment']).')';
-            $_pms[] = '(0,'.$winner['uid'].','.$msg['subject'].','.$msg['body'].','.TIME_NOW.')';
+            $_userq[] = '(' . $winner['uid'] . ',' . ($winner['seedbonus'] + $lottery['user_pot']) . ',' . sqlesc('User won the lottery: ' . ($lottery['user_pot']) . ' at ' . get_date(TIME_NOW, 'LONG') . "\n" . $winner['modcomment']) . ')';
+            $_pms[] = '(0,' . $winner['uid'] . ',' . $msg['subject'] . ',' . $msg['body'] . ',' . TIME_NOW . ')';
         }
-        $lconfig_update = array(
+        $lconfig_update = [
             '(\'enable\',0)',
-            '(\'lottery_winners_time\','.TIME_NOW.')',
-            '(\'lottery_winners_amount\','.$lottery['user_pot'].')',
-            '(\'lottery_winners\',\''.join('|', array_keys($lottery['winners'])).'\')',
-        );
+            '(\'lottery_winners_time\',' . TIME_NOW . ')',
+            '(\'lottery_winners_amount\',' . $lottery['user_pot'] . ')',
+            '(\'lottery_winners\',\'' . join('|', array_keys($lottery['winners'])) . '\')',
+        ];
         if (count($_userq)) {
-            sql_query('INSERT INTO users(id,seedbonus,modcomment) VALUES '.join(',', $_userq).' ON DUPLICATE KEY UPDATE seedbonus = values(seedbonus), modcomment = values(modcomment)') or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            sql_query('INSERT INTO users(id,seedbonus,modcomment) VALUES ' . join(',', $_userq) . ' ON DUPLICATE KEY UPDATE seedbonus = values(seedbonus), modcomment = values(modcomment)') or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         }
         if (count($_pms)) {
-            sql_query('INSERT INTO messages(sender, receiver, subject, msg, added) VALUES '.join(',', $_pms)) or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            sql_query('INSERT INTO messages(sender, receiver, subject, msg, added) VALUES ' . join(',', $_pms)) or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         }
         foreach ($_pms['id'] as $user_id) {
-            $mc1->delete_value('inbox_new_'.$user_id);
-            $mc1->delete_value('inbox_new_sb_'.$user_id);
-            $mc1->delete_value('userstats_'.$user_id);
-            $mc1->delete_value('user_stats_'.$user_id);
-            $mc1->delete_value('MyUser_'.$user_id);
-            $mc1->delete_value('user'.$user_id);
+            $mc1->delete_value('inbox_new_' . $user_id);
+            $mc1->delete_value('inbox_new_sb_' . $user_id);
+            $mc1->delete_value('userstats_' . $user_id);
+            $mc1->delete_value('user_stats_' . $user_id);
+            $mc1->delete_value('MyUser_' . $user_id);
+            $mc1->delete_value('user' . $user_id);
         }
-        sql_query('INSERT INTO lottery_config(name,value) VALUES '.join(',', $lconfig_update).' ON DUPLICATE KEY UPDATE value=values(value)') or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+        sql_query('INSERT INTO lottery_config(name,value) VALUES ' . join(',', $lconfig_update) . ' ON DUPLICATE KEY UPDATE value=values(value)') or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         sql_query('DELETE FROM tickets') or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
     }
     //==End 09 seedbonus lottery by putyn
@@ -75,7 +76,7 @@ function docleanup($data)
         write_log("Lottery clean-------------------- lottery Complete using $queries queries --------------------");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']).' items deleted';
+        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted';
     }
     if ($data['clean_log']) {
         cleanup_log($data);

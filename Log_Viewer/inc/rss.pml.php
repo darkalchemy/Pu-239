@@ -24,22 +24,22 @@ function myErrorHandler($errno, $errstr, $errfile, $errline)
         return;
     }
     switch ($errno) {
-    case E_USER_ERROR:
-        echo json_encode(array('error' => $errstr));
-        exit(1);
-        break;
+        case E_USER_ERROR:
+            echo json_encode(['error' => $errstr]);
+            exit(1);
+            break;
 
-    case E_USER_WARNING:
-        $return['singlewarning'] = sprintf(__('<strong>PHP Warning</strong> [%s] %s'), $errno, $errstr);
-        break;
+        case E_USER_WARNING:
+            $return['singlewarning'] = sprintf(__('<strong>PHP Warning</strong> [%s] %s'), $errno, $errstr);
+            break;
 
-    case E_USER_NOTICE:
-        $return['singlenotice'] = sprintf(__('<strong>PHP Notice</strong> [%s] %s'), $errno, $errstr);
-        break;
+        case E_USER_NOTICE:
+            $return['singlenotice'] = sprintf(__('<strong>PHP Notice</strong> [%s] %s'), $errno, $errstr);
+            break;
 
-    default:
-        $return['singlewarning'] = sprintf(__('<strong>PHP Unknown error</strong> [%s] %s'), $errno, $errstr);
-        break;
+        default:
+            $return['singlewarning'] = sprintf(__('<strong>PHP Unknown error</strong> [%s] %s'), $errno, $errstr);
+            break;
     }
 
     return true;
@@ -54,9 +54,9 @@ function shutdown()
     $error = error_get_last();
     if ($error['type'] === E_ERROR) {
         echo json_encode(
-            array(
+            [
                 'error' => sprintf(__('<strong>PHP Error</strong> line %s: %s'), $error['line'], $error['message']),
-            )
+            ]
         );
     }
 }
@@ -69,7 +69,7 @@ function shutdown()
 */
 header('Content-type: application/json');
 
-$return = array();
+$return = [];
 
 if (!csrf_verify()) {
     $return['error'] = __('Please refresh the page.');
@@ -124,18 +124,17 @@ switch (@$_POST['action']) {
         }
 
         $url = str_replace(
-            array('rss.pml.php'),
-            array('rss.php'),
-            $url
-        )
-        .'?f='.urlencode($file_id)
-        .'&l='.urlencode((isset($_GET['l'])) ? $_GET['l'] : $lang)
-        .'&tz='.urlencode($tz)
-        .'&format='.urlencode($format)
-        .'&count='.((isset($files[$file_id]['max'])) ? urlencode($files[$file_id]['max']) : urlencode(LOGS_MAX))
-        .'&timeout='.urlencode(MAX_SEARCH_LOG_TIME)
-        .'&search='.urlencode(@$_POST['search'])
-        ;
+                ['rss.pml.php'],
+                ['rss.php'],
+                $url
+            )
+            . '?f=' . urlencode($file_id)
+            . '&l=' . urlencode((isset($_GET['l'])) ? $_GET['l'] : $lang)
+            . '&tz=' . urlencode($tz)
+            . '&format=' . urlencode($format)
+            . '&count=' . ((isset($files[$file_id]['max'])) ? urlencode($files[$file_id]['max']) : urlencode(LOGS_MAX))
+            . '&timeout=' . urlencode(MAX_SEARCH_LOG_TIME)
+            . '&search=' . urlencode(@$_POST['search']);
 
         $current_user = Sentinel::attempt($files);
 
@@ -147,9 +146,9 @@ switch (@$_POST['action']) {
             $username = Sentinel::getCurrentUsername();
             $user = Sentinel::getUser($username);
             $token = $user['at'];
-            $hash = Sentinel::sign(array('f' => $_POST['file']), $username);
+            $hash = Sentinel::sign(['f' => $_POST['file']], $username);
 
-            $url = $url.'&t='.urlencode($token).'&h='.urlencode($hash);
+            $url = $url . '&t=' . urlencode($token) . '&h=' . urlencode($hash);
         }
 
         $u = parse_url($url);
@@ -175,7 +174,7 @@ switch (@$_POST['action']) {
     |
     */
     default:
-        error_log('Unknown action '.@$_POST['action']);
+        error_log('Unknown action ' . @$_POST['action']);
         break;
 }
 

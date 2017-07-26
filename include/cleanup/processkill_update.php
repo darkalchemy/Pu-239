@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 function docleanup($data)
 {
@@ -25,6 +25,7 @@ function docleanup($data)
         cleanup_log($data);
     }
 }
+
 function cleanup_log($data)
 {
     $text = sqlesc($data['clean_title']);

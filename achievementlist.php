@@ -1,11 +1,7 @@
 <?php
-/**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-// Achievements mod by MelvinMeow
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once CLASS_DIR.'page_verify.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once CLASS_DIR . 'page_verify.php';
 dbconn();
 $newpage = new page_verify();
 $newpage->check('takecounts');
@@ -17,12 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $CURUSER['class'] >= UC_MAX) {
     $notes = htmlsafechars($_POST['notes']);
     $clienticon = htmlsafechars($clienticon);
     $achievname = htmlsafechars($achievname);
-    sql_query('INSERT INTO achievementist (achievname, notes, clienticon) VALUES('.sqlesc($achievname).', '.sqlesc($notes).', '.sqlesc($clienticon).')') or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO achievementist (achievname, notes, clienticon) VALUES(' . sqlesc($achievname) . ', ' . sqlesc($notes) . ', ' . sqlesc($clienticon) . ')') or sqlerr(__FILE__, __LINE__);
     $message = "{$lang['achlst_new_ach_been_added']}. {$lang['achlst_achievement']}: [{$achievname}]";
     //autoshout($message);
     //$doUpdate = true;
 }
-// == Query update by Putyn
 $res = sql_query('SELECT a1.*, (SELECT COUNT(a2.id) FROM achievements AS a2 WHERE a2.achievement = a1.achievname) as count FROM achievementist AS a1 ORDER BY a1.id ') or sqlerr(__FILE__, __LINE__);
 $HTMLOUT = '';
 $HTMLOUT .= "<h1>{$lang['achlst_std_head']}</h1>\n";
@@ -39,12 +34,12 @@ if (mysqli_num_rows($res) == 0) {
         $notes = htmlsafechars($arr['notes']);
         $clienticon = '';
         if ($arr['clienticon'] != '') {
-            $clienticon = "<img src='".$INSTALLER09['pic_base_url'].'achievements/'.htmlsafechars($arr['clienticon'])."' title='".htmlsafechars($arr['achievname'])."' alt='".htmlsafechars($arr['achievname'])."' />";
+            $clienticon = "<img src='" . $INSTALLER09['pic_base_url'] . 'achievements/' . htmlsafechars($arr['clienticon']) . "' title='" . htmlsafechars($arr['achievname']) . "' alt='" . htmlsafechars($arr['achievname']) . "' />";
         }
         $HTMLOUT .= "<tr>
 			<td class='one' align='center'>$clienticon</td>
 			<td class='two' align='center'>$notes</td>
-			<td class='one' align='center'>".htmlsafechars($arr['count'])."<br />times</td>
+			<td class='one' align='center'>" . htmlsafechars($arr['count']) . "<br />times</td>
 			</tr>\n";
     }
     $HTMLOUT .= "</table>\n";
@@ -68,4 +63,4 @@ if ($CURUSER['class'] == UC_MAX) {
 		</table>
 		</form>";
 }
-echo stdhead($lang['achlst_std_head']).$HTMLOUT.stdfoot();
+echo stdhead($lang['achlst_std_head']) . $HTMLOUT . stdfoot();

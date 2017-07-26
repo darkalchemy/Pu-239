@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
@@ -16,9 +16,9 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
     echo $HTMLOUT;
     exit();
 }
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'pager_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'pager_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_log'));
@@ -28,16 +28,16 @@ if (isset($_GET['search'])) {
     $search = strip_tags($_GET['search']);
 }
 if (!empty($search)) {
-    $where = 'WHERE txt LIKE '.sqlesc("%$search%").'';
+    $where = 'WHERE txt LIKE ' . sqlesc("%$search%") . '';
 }
 // delete items older than 1 month
 $secs = 30 * 86400;
-sql_query('DELETE FROM sitelog WHERE '.TIME_NOW.' - added > '.sqlesc($secs)) or sqlerr(__FILE__, __LINE__);
+sql_query('DELETE FROM sitelog WHERE ' . TIME_NOW . ' - added > ' . sqlesc($secs)) or sqlerr(__FILE__, __LINE__);
 $resx = sql_query("SELECT COUNT(*) FROM sitelog $where");
 $rowx = mysqli_fetch_array($resx, MYSQLI_NUM);
 $count = $rowx[0];
 $perpage = 15;
-$pager = pager($perpage, $count, 'staffpanel.php?tool=log&amp;action=log&amp;'.(!empty($search) ? "search=$search&amp;" : '').'');
+$pager = pager($perpage, $count, 'staffpanel.php?tool=log&amp;action=log&amp;' . (!empty($search) ? "search=$search&amp;" : '') . '');
 $HTMLOUT = '';
 $res = sql_query("SELECT added, txt FROM sitelog $where ORDER BY added DESC {$pager['limit']} ") or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= "<h1>{$lang['text_sitelog']}</h1>";
@@ -116,7 +116,7 @@ if (mysqli_num_rows($res) == 0) {
             $color = '#BBaF9B';
         }
         $date = explode(',', get_date($arr['added'], 'LONG'));
-        $HTMLOUT .= "<tr class='table'><td style='background-color:$color'><font color='black'>{$date[0]}{$date[1]}</font></td><td style='background-color:$color' align='left'><font color='black'>".$arr['txt']."</font></td></tr>\n";
+        $HTMLOUT .= "<tr class='table'><td style='background-color:$color'><font color='black'>{$date[0]}{$date[1]}</font></td><td style='background-color:$color' align='left'><font color='black'>" . $arr['txt'] . "</font></td></tr>\n";
     }
     $HTMLOUT .= "</table>\n";
 }
@@ -124,4 +124,4 @@ $HTMLOUT .= "<p>{$lang['text_times']}</p>";
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead("{$lang['stdhead_log']}").$HTMLOUT.stdfoot();
+echo stdhead("{$lang['stdhead_log']}") . $HTMLOUT . stdfoot();

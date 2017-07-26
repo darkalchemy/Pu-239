@@ -15,7 +15,7 @@
  *
  * @var array
  */
-$paths = array(
+$paths = [
     '/var/log/',
     '/var/log/apache/',
     '/var/log/apache2/',
@@ -27,7 +27,7 @@ $paths = array(
     '/opt/local/apache2/logs/',
     '/opt/local/httpd/logs/',
     'C:/wamp/logs/',
-);
+];
 
 /**
  * All possibles files for each type of log.
@@ -39,19 +39,19 @@ $paths = array(
  *
  * @var array
  */
-$files = array(
-    'error' => array(
+$files = [
+    'error'  => [
         'error.log',
         'error_log',
         'apache_error.log',
-    ),
-    'access' => array(
+    ],
+    'access' => [
         'access.log',
         'access_log',
         'apache.log',
         'apache_access.log',
-    ),
-);
+    ],
+];
 
 /*
  * Add sub-directories within specified paths

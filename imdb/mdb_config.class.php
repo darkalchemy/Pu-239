@@ -1,15 +1,15 @@
 <?php
- //############################################################################
- // IMDBPHP                              (c) Giorgos Giagas & Itzchak Rehberg #
- // written by Giorgos Giagas                                                 #
- // extended & maintained by Itzchak Rehberg <izzysoft AT qumran DOT org>     #
- // http://www.izzysoft.de/                                                   #
- // ------------------------------------------------------------------------- #
- // This program is free software; you can redistribute and/or modify it      #
- // under the terms of the GNU General Public License (see doc/LICENSE)       #
- //############################################################################
+//############################################################################
+// IMDBPHP                              (c) Giorgos Giagas & Itzchak Rehberg #
+// written by Giorgos Giagas                                                 #
+// extended & maintained by Itzchak Rehberg <izzysoft AT qumran DOT org>     #
+// http://www.izzysoft.de/                                                   #
+// ------------------------------------------------------------------------- #
+// This program is free software; you can redistribute and/or modify it      #
+// under the terms of the GNU General Public License (see doc/LICENSE)       #
+//############################################################################
 
- /* $Id: mdb_config.class.php 624 2013-11-05 23:43:20Z izzy $ */
+/* $Id: mdb_config.class.php 624 2013-11-05 23:43:20Z izzy $ */
 
 // the proxy to use for connections to imdb (leave it empty for no proxy).
 // this is only supported with PEAR.
@@ -44,7 +44,6 @@ class mdb_config
 {
     public $imdbsite;
     public $language;
-    protected $pilot_imdbfill;
     public $cachedir;
     public $usecache;
     public $storecache;
@@ -58,6 +57,7 @@ class mdb_config
     public $debug;
     public $maxresults;
     public $searchvariant;
+    protected $pilot_imdbfill;
 
     /** Constructor and only method of this base class.
      *  There's no need to call this yourself - you should just place your
@@ -101,7 +101,7 @@ class mdb_config
          *  server. It doesn't need to be under documentroot.
          * @attribute string cachedir
          */
-        $this->cachedir = dirname(__FILE__).'/cache/';
+        $this->cachedir = dirname(__FILE__) . '/cache/';
         /* Use a cached page to retrieve the information if available?
          * @attribute boolean usecache
          */
@@ -183,7 +183,7 @@ class mdb_config
         // error_reporting(E_ALL);
         // error_reporting(E_ALL ^ E_NOTICE);
         //----------------------------------------------=[ User specific values ]=--
-        $ini_files = glob(dirname(__FILE__).'/conf/*.ini');
+        $ini_files = glob(dirname(__FILE__) . '/conf/*.ini');
         if (is_array($ini_files)) {
             foreach ($ini_files as $file) {
                 $ini = parse_ini_file($file);

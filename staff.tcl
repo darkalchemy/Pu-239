@@ -14,7 +14,7 @@ package require http
 ## SETTINGS ##
 
 set sitename "09Source"
-set siteurl "http://u-232.com/ircs.php"
+set siteurl "ircs.php" ## add site url
 set botpass "adlsadladadll"
 set bothash  "adlsadladadll"
 

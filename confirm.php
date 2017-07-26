@@ -1,9 +1,9 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
 global $CURUSER;
 if (!$CURUSER) {
     get_template();
@@ -18,7 +18,7 @@ if (!preg_match("/^(?:[\d\w]){32}$/", $md5)) {
     stderr("{$lang['confirm_user_error']}", "{$lang['confirm_invalid_key']}");
 }
 dbconn();
-$res = sql_query('SELECT passhash, editsecret, status FROM users WHERE id ='.sqlesc($id));
+$res = sql_query('SELECT passhash, editsecret, status FROM users WHERE id =' . sqlesc($id));
 $row = mysqli_fetch_assoc($res);
 if (!$row) {
     stderr("{$lang['confirm_user_error']}", "{$lang['confirm_invalid_id']}");
@@ -31,20 +31,20 @@ $sec = $row['editsecret'];
 if ($md5 != $sec) {
     stderr("{$lang['confirm_user_error']}", "{$lang['confirm_cannot_confirm']}");
 }
-sql_query("UPDATE users SET status='confirmed', editsecret='' WHERE id=".sqlesc($id)." AND status='pending'");
-$mc1->begin_transaction('MyUser_'.$id);
-$mc1->update_row(false, array(
+sql_query("UPDATE users SET status='confirmed', editsecret='' WHERE id=" . sqlesc($id) . " AND status='pending'");
+$mc1->begin_transaction('MyUser_' . $id);
+$mc1->update_row(false, [
     'status' => 'confirmed',
-));
+]);
 $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
-$mc1->begin_transaction('user'.$id);
-$mc1->update_row(false, array(
+$mc1->begin_transaction('user' . $id);
+$mc1->update_row(false, [
     'status' => 'confirmed',
-));
+]);
 $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
 if (!mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
     stderr("{$lang['confirm_user_error']}", "{$lang['confirm_cannot_confirm']}");
 }
-$passh = md5($row['passhash'].$_SERVER['REMOTE_ADDR']);
+$passh = md5($row['passhash'] . $_SERVER['REMOTE_ADDR']);
 logincookie($id, $passh);
 header("Refresh: 0; url={$INSTALLER09['baseurl']}/ok.php?type=confirm");

@@ -1,19 +1,19 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 dbconn();
 loggedinorreturn();
 $lang = array_merge(load_language('global'), load_language('rules'));
-$stdhead = array(
+$stdhead = [
     /* include the css **/
-    'css' => array(
+    'css' => [
         'rules',
-    ),
-);
+    ],
+];
 $HTMLOUT = '';
 $HTMLOUT .= '<script type="text/javascript">
     /*<![CDATA[*/
@@ -177,4 +177,4 @@ if (isset($CURUSER) and $CURUSER['class'] >= UC_STAFF) {
 }
 $HTMLOUT .= '</div>';
 $HTMLOUT .= end_main_frame();
-echo stdhead('Rules', true, $stdhead).$HTMLOUT.stdfoot();
+echo stdhead('Rules', true, $stdhead) . $HTMLOUT . stdfoot();

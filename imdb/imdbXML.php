@@ -1,17 +1,17 @@
 <?php
- //############################################################################
- // IMDBPHP                              (c) Giorgos Giagas & Itzchak Rehberg #
- // written by Giorgos Giagas                                                 #
- // extended & maintained by Itzchak Rehberg <izzysoft AT qumran DOT org>     #
- // http://www.izzysoft.de/                                                   #
- // ------------------------------------------------------------------------- #
- // This program is free software; you can redistribute and/or modify it      #
- // under the terms of the GNU General Public License (see doc/LICENSE)       #
- // ------------------------------------------------------------------------- #
- // Class provided by Pablo Castorino <pablo AT castorinop DOT com DOT ar>    #
- // For details, see http://projects.izzysoft.de/trac/imdbphp/wiki/imdbXML    #
- //############################################################################
- /* $Id: imdbXML.php 488 2011-12-29 16:12:09Z izzy $ */
+//############################################################################
+// IMDBPHP                              (c) Giorgos Giagas & Itzchak Rehberg #
+// written by Giorgos Giagas                                                 #
+// extended & maintained by Itzchak Rehberg <izzysoft AT qumran DOT org>     #
+// http://www.izzysoft.de/                                                   #
+// ------------------------------------------------------------------------- #
+// This program is free software; you can redistribute and/or modify it      #
+// under the terms of the GNU General Public License (see doc/LICENSE)       #
+// ------------------------------------------------------------------------- #
+// Class provided by Pablo Castorino <pablo AT castorinop DOT com DOT ar>    #
+// For details, see http://projects.izzysoft.de/trac/imdbphp/wiki/imdbXML    #
+//############################################################################
+/* $Id: imdbXML.php 488 2011-12-29 16:12:09Z izzy $ */
 
 // include class file
 require_once 'XML/Serializer.php';
@@ -71,7 +71,7 @@ class imdbXML extends XML_Serializer
         // create array to be serialized
         $class_vars = get_object_vars($obj);
         $base_tags = array_keys(get_class_vars(get_parent_class($obj)));
-        $other_tags = array('debug', 'maxresults', 'searchvariant', 'page');
+        $other_tags = ['debug', 'maxresults', 'searchvariant', 'page'];
         $banned_tags = array_merge($base_tags, $other_tags);
 
         foreach ($class_vars as $name => $value) {

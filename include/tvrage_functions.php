@@ -1,27 +1,27 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 //tvrage functions
 $INSTALLER09['tvrage_api'] = 'NxDOrw2uadOgyLuDtmaR';
 function tvrage_format($tvrage_data, $tvrage_type)
 {
-    $tvrage_display['show'] = array(
-        'showname' => '<b>%s</b>',
-        'showlink' => '%s',
-        'startdate' => 'Started: %s',
-        'ended' => 'Ended: %s',
+    $tvrage_display['show'] = [
+        'showname'       => '<b>%s</b>',
+        'showlink'       => '%s',
+        'startdate'      => 'Started: %s',
+        'ended'          => 'Ended: %s',
         'origin_country' => 'Country: %s',
-        'status' => 'Status: %s',
+        'status'         => 'Status: %s',
         'classification' => 'Classification: %s',
-        'summary' => 'Summary:<br/> %s',
-        'runtime' => 'Runtime %s min',
-        'genres' => 'Genres: %s',
-    );
-    $tvrage_display['episode'] = array(
-        'episode' => 'This week episode: %s "%s" on %s<br/>%s<br/>Summary: %s',
+        'summary'        => 'Summary:<br/> %s',
+        'runtime'        => 'Runtime %s min',
+        'genres'         => 'Genres: %s',
+    ];
+    $tvrage_display['episode'] = [
+        'episode'     => 'This week episode: %s "%s" on %s<br/>%s<br/>Summary: %s',
         'nextepisode' => 'Next episode: %s "%s" on %s %s %s',
-    );
+    ];
     foreach ($tvrage_data as $key => $data) {
         if (!isset($tvrage_display[$tvrage_type][$key])) {
             continue;
@@ -34,25 +34,26 @@ function tvrage_format($tvrage_data, $tvrage_type)
 
     return join('<br/><br/>', $tvrage_display[$tvrage_type]);
 }
+
 function tvrage(&$torrents)
 {
     global $mc1, $INSTALLER09;
     $tvrage_data = '';
-    $row_update = array();
+    $row_update = [];
     if (preg_match("/^(.*)S(\d+)(E(\d+))?/", $torrents['name'], $tmp)) {
-        $tvrage = array(
-        'name' => str_replace('.', ' ', $tmp[1]),
-        'season' => (int) $tmp[2],
-        'episode' => (int) (isset($tmp[4]) ? $tmp[4] : 0),
-    );
+        $tvrage = [
+            'name'    => str_replace('.', ' ', $tmp[1]),
+            'season'  => (int)$tmp[2],
+            'episode' => (int)(isset($tmp[4]) ? $tmp[4] : 0),
+        ];
     } else {
-        $tvrage = array(
-        'name' => str_replace('.', ' ', $torrents['name']),
-        'season' => 0,
-        'episode' => 0,
-    );
+        $tvrage = [
+            'name'    => str_replace('.', ' ', $torrents['name']),
+            'season'  => 0,
+            'episode' => 0,
+        ];
     }
-    $memkey = 'tvrage::'.strtolower($tvrage['name']);
+    $memkey = 'tvrage::' . strtolower($tvrage['name']);
     if (($tvrage_id = $mc1->get_value($memkey)) === false) {
         //get tvrage id
         $tvrage_link = sprintf('http://services.tvrage.com/myfeeds/search.php?key=%s&show=%s', $INSTALLER09['tvrage_api'], urlencode($tvrage['name']));
@@ -68,7 +69,7 @@ function tvrage(&$torrents)
     if (empty($torrents['newgenre']) || empty($torrents['poster'])) {
         $force_update = true;
     }
-    $memkey = 'tvrage::'.$tvrage_id;
+    $memkey = 'tvrage::' . $tvrage_id;
     if ($force_update || ($tvrage_showinfo = $mc1->get_value($memkey)) === false) {
         //var_dump('Show from tvrage'); //debug
         //get tvrage show info
@@ -86,27 +87,27 @@ function tvrage(&$torrents)
             $tvrage_showinfo['genres'] = join(', ', array_map('strtolower', $tmp[1]));
         }
         if (empty($torrents['newgenre'])) {
-            $row_update[] = 'newgenre = '.sqlesc(ucwords($tvrage_showinfo['genres']));
+            $row_update[] = 'newgenre = ' . sqlesc(ucwords($tvrage_showinfo['genres']));
         }
         //==The torrent cache
-        $mc1->begin_transaction('torrent_details_'.$torrents['id']);
-        $mc1->update_row(false, array(
+        $mc1->begin_transaction('torrent_details_' . $torrents['id']);
+        $mc1->update_row(false, [
             'newgenre' => ucwords($tvrage_showinfo['genres']),
-        ));
+        ]);
         $mc1->commit_transaction(0);
         if (empty($torrents['poster'])) {
-            $row_update[] = 'poster = '.sqlesc($tvrage_showinfo['image']);
+            $row_update[] = 'poster = ' . sqlesc($tvrage_showinfo['image']);
         }
         //==The torrent cache
-        $mc1->begin_transaction('torrent_details_'.$torrents['id']);
-        $mc1->update_row(false, array(
+        $mc1->begin_transaction('torrent_details_' . $torrents['id']);
+        $mc1->update_row(false, [
             'poster' => $tvrage_showinfo['image'],
-        ));
+        ]);
         $mc1->commit_transaction(0);
         if (count($row_update)) {
-            sql_query('UPDATE torrents set '.join(', ', $row_update).' WHERE id = '.$torrents['id']) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE torrents set ' . join(', ', $row_update) . ' WHERE id = ' . $torrents['id']) or sqlerr(__FILE__, __LINE__);
         }
-        $tvrage_showinfo = tvrage_format($tvrage_showinfo, 'show').'<br/>';
+        $tvrage_showinfo = tvrage_format($tvrage_showinfo, 'show') . '<br/>';
         $mc1->cache_value($memkey, $tvrage_showinfo, 0);
         $tvrage_data .= $tvrage_showinfo;
     } else {
@@ -115,7 +116,7 @@ function tvrage(&$torrents)
     }
     //check to see if its a show its an episode
     if ($tvrage['season'] > 0 && $tvrage['episode'] > 0) {
-        $memkey = 'tvrage::'.$tvrage_id.'::'.$tvrage['season'].'x'.$tvrage['episode'];
+        $memkey = 'tvrage::' . $tvrage_id . '::' . $tvrage['season'] . 'x' . $tvrage['episode'];
         if (($tvrage_epinfo = $mc1->get_value($memkey)) === false) {
             //var_dump('Ep from tvrage'); //debug
             //get episode info
@@ -128,7 +129,7 @@ function tvrage(&$torrents)
                     $tvrage_epinfo[$data[1]][$data_1[1]] = $data_1[2];
                 }
             }
-            $tvrage_epinfo = tvrage_format($tvrage_epinfo, 'episode').'<br/>';
+            $tvrage_epinfo = tvrage_format($tvrage_epinfo, 'episode') . '<br/>';
             $mc1->cache_value($memkey, $tvrage_epinfo, 0);
             $tvrage_data .= $tvrage_epinfo;
         } else {

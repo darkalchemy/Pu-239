@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 //== Get browser by ruudrp
 function getBrowser()
@@ -38,12 +38,12 @@ function getBrowser()
         $ub = 'Netscape';
     }
     // finally get the correct version number
-    $known = array(
+    $known = [
         'Version',
         $ub,
         'other',
-    );
-    $pattern = '#(?<browser>'.join('|', $known).')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
+    ];
+    $pattern = '#(?<browser>' . join('|', $known) . ')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
     if (!preg_match_all($pattern, $u_agent, $matches)) {
         // we have no matching number just continue
     }
@@ -65,11 +65,11 @@ function getBrowser()
         $version = '?';
     }
 
-    return array(
+    return [
         'userAgent' => $u_agent,
-        'name' => $bname,
-        'version' => $version,
-        'platform' => $platform,
-        'pattern' => $pattern,
-    );
+        'name'      => $bname,
+        'version'   => $version,
+        'platform'  => $platform,
+        'pattern'   => $pattern,
+    ];
 }

@@ -8,9 +8,9 @@ if ($INSTALLER09['staffmsg_alert'] && $CURUSER['class'] >= UC_STAFF) {
     }
     if ($answeredby > 0) {
         $htmlout .= "<li>
-    <a class='tooltip' href='staffbox.php'><b class='btn btn-warning btn-small'>".($answeredby > 1 ? $lang['gl_staff_messages'].$lang['gl_staff_message_news'] : $lang['gl_staff_message'].$lang['gl_newmess'])."</b>
-	<span class='custom info alert alert-warning'><em>".($answeredby > 1 ? $lang['gl_staff_messages'].$lang['gl_staff_message_news'] : $lang['gl_staff_message'].$lang['gl_staff_message_news'])."</em>
-   <b>{$lang['gl_hey']} {$CURUSER['username']}!<br /> ".sprintf($lang['gl_staff_message_alert'], $answeredby).($answeredby > 1 ? $lang['gl_staff_message_alerts'] : '')."{$lang['gl_staff_message_for']}</b>
+    <a class='tooltip' href='staffbox.php'><b class='btn btn-warning btn-small'>" . ($answeredby > 1 ? $lang['gl_staff_messages'] . $lang['gl_staff_message_news'] : $lang['gl_staff_message'] . $lang['gl_newmess']) . "</b>
+	<span class='custom info alert alert-warning'><em>" . ($answeredby > 1 ? $lang['gl_staff_messages'] . $lang['gl_staff_message_news'] : $lang['gl_staff_message'] . $lang['gl_staff_message_news']) . "</em>
+   <b>{$lang['gl_hey']} {$CURUSER['username']}!<br /> " . sprintf($lang['gl_staff_message_alert'], $answeredby) . ($answeredby > 1 ? $lang['gl_staff_message_alerts'] : '') . "{$lang['gl_staff_message_for']}</b>
    {$lang['gl_staff_message_click']}
    </span></a></li>";
     }

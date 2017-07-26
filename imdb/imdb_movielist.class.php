@@ -13,7 +13,7 @@
 
 /* $Id: imdb_movielist.class.php 453 2011-07-05 18:09:31Z izzy $ */
 
-require_once dirname(__FILE__).'/movie_base.class.php';
+require_once dirname(__FILE__) . '/movie_base.class.php';
 
 /** Accessing miscellaneous IMDB movie lists
  * @class imdb_movielist
@@ -39,48 +39,6 @@ class imdb_movielist extends movie_base
         $this->reset_vars();
     }
 
-    /** Define page urls
-     * @method protected set_pagename
-     *
-     * @param string wt internal name of the page
-     * @param array replace special URL settings
-     *
-     * @return string urlname page URL
-     */
-    protected function set_pagename($wt, $replace = array())
-    {
-        switch ($wt) {
-     case 'CountryYear':
-       $urlname = '/List?year=%year&&countries=%countries&&tv=%tv';
-       $urlname = '/search/title?year=%year&&countries=%countries&&tv=%tv';
-       foreach ($replace as $var => $val) {
-           $urlname = str_replace("%$var", $val, $urlname);
-       }
-       break;
-     case 'LanguageYear':
-       $urlname = '/search/title?year=%year&&language=%countries&&tv=%tv';
-       foreach ($replace as $var => $val) {
-           $urlname = str_replace("%$var", $val, $urlname);
-       }
-       break;
-     case 'MostpopYear':
-       $urlname = '/year/%year';
-       foreach ($replace as $var => $val) {
-           $urlname = str_replace("%$var", $val, $urlname);
-       }
-       break;
-     default:
-       $this->page[$wt] = 'unknown page identifier';
-       $this->debug_scalar("Unknown page identifier: $wt");
-
-       return false;
-   }
-
-        return $urlname;
-    }
-
-    //=============================================================[ public API ]===
-
     /** Initialize/Reset variables used
      * @method public reset_vars
      */
@@ -90,10 +48,12 @@ class imdb_movielist extends movie_base
         $this->page['LanguageYear'] = '';
         $this->page['MostpopYear'] = '';
         $this->enable_serials();
-        $this->countryYear = array();
-        $this->languageYear = array();
-        $this->mostpopYear = array();
+        $this->countryYear = [];
+        $this->languageYear = [];
+        $this->mostpopYear = [];
     }
+
+    //=============================================================[ public API ]===
 
     /** Define whether lists shall include TV serials. Off by default.
      * @method public enable_serials
@@ -103,10 +63,67 @@ class imdb_movielist extends movie_base
     public function enable_serials($switch = 'off')
     {
         $switch = strtolower($switch);
-        if (!in_array($switch, array('on', 'off'))) {
+        if (!in_array($switch, ['on', 'off'])) {
             $switch = 'off';
         }
         $this->tv = $switch;
+    }
+
+    /** Retrieve a list of movies by year and origin
+     * @method public by_country_year
+     *
+     * @param string country
+     * @param int year
+     *
+     * @return array [0..n] of array[imdbid,title,year]
+     */
+    public function by_country_year($country, $year)
+    {
+        $url = 'http://' . $this->imdbsite . $this->set_pagename('CountryYear', ['year' => $year, 'countries' => $country, 'tv' => $this->tv]);
+        $this->getWebPage('CountryYear', $url);
+        $this->parse_x_year('CountryYear', $this->countryYear);
+
+        return $this->countryYear;
+    }
+
+    /** Define page urls
+     * @method protected set_pagename
+     *
+     * @param string wt internal name of the page
+     * @param array replace special URL settings
+     *
+     * @return string urlname page URL
+     */
+    protected function set_pagename($wt, $replace = [])
+    {
+        switch ($wt) {
+            case 'CountryYear':
+                $urlname = '/List?year=%year&&countries=%countries&&tv=%tv';
+                $urlname = '/search/title?year=%year&&countries=%countries&&tv=%tv';
+                foreach ($replace as $var => $val) {
+                    $urlname = str_replace("%$var", $val, $urlname);
+                }
+                break;
+            case 'LanguageYear':
+                $urlname = '/search/title?year=%year&&language=%countries&&tv=%tv';
+                foreach ($replace as $var => $val) {
+                    $urlname = str_replace("%$var", $val, $urlname);
+                }
+                break;
+            case 'MostpopYear':
+                $urlname = '/year/%year';
+                foreach ($replace as $var => $val) {
+                    $urlname = str_replace("%$var", $val, $urlname);
+                }
+                break;
+            default:
+                $this->page[$wt] = 'unknown page identifier';
+                $this->debug_scalar("Unknown page identifier: $wt");
+
+                return false;
+        }
+
+        return $urlname;
     }
 
     /** Parse movie list. Helper to by_x_year methods.
@@ -151,25 +168,8 @@ class imdb_movielist extends movie_base
                 $ep_id = 0;
                 $ep_name = '';
             }
-            $ret[] = array('imdbid' => $id, 'title' => $title, 'year' => $year, 'type' => $mtype, 'serial' => $is_serial, 'episode_imdbid' => $ep_id, 'episode_title' => $ep_name, 'episode_year' => $ep_year);
+            $ret[] = ['imdbid' => $id, 'title' => $title, 'year' => $year, 'type' => $mtype, 'serial' => $is_serial, 'episode_imdbid' => $ep_id, 'episode_title' => $ep_name, 'episode_year' => $ep_year];
         }
-    }
-
-    /** Retrieve a list of movies by year and origin
-     * @method public by_country_year
-     *
-     * @param string country
-     * @param int year
-     *
-     * @return array [0..n] of array[imdbid,title,year]
-     */
-    public function by_country_year($country, $year)
-    {
-        $url = 'http://'.$this->imdbsite.$this->set_pagename('CountryYear', array('year' => $year, 'countries' => $country, 'tv' => $this->tv));
-        $this->getWebPage('CountryYear', $url);
-        $this->parse_x_year('CountryYear', $this->countryYear);
-
-        return $this->countryYear;
     }
 
     /** Retrieve a list of movies by year and language
@@ -182,7 +182,7 @@ class imdb_movielist extends movie_base
      */
     public function by_language_year($lang, $year)
     {
-        $url = 'http://'.$this->imdbsite.$this->set_pagename('LanguageYear', array('year' => $year, 'language' => $lang, 'tv' => $this->tv));
+        $url = 'http://' . $this->imdbsite . $this->set_pagename('LanguageYear', ['year' => $year, 'language' => $lang, 'tv' => $this->tv]);
         $this->getWebPage('LanguageYear', $url);
         $this->parse_x_year('LanguageYear', $this->languageYear);
 
@@ -198,7 +198,7 @@ class imdb_movielist extends movie_base
      */
     public function mostpop_by_year($year)
     {
-        $url = 'http://'.$this->imdbsite.$this->set_pagename('MostpopYear', array('year' => $year));
+        $url = 'http://' . $this->imdbsite . $this->set_pagename('MostpopYear', ['year' => $year]);
         $this->getWebPage('MostpopYear', $url);
 
         $doc = new DOMDocument();
@@ -220,7 +220,7 @@ class imdb_movielist extends movie_base
             preg_match('!Users rated this\s+(.+)/.+\((.+)\s+vote!', $rating->item($i)->getAttribute('title'), $match);
             $rate = $match[1];
             $vote = $match[2];
-            $this->mostpopYear[] = array('imdbid' => $id, 'title' => $title, 'year' => $year, 'votes' => $vote, 'rating' => $rate);
+            $this->mostpopYear[] = ['imdbid' => $id, 'title' => $title, 'year' => $year, 'votes' => $vote, 'rating' => $rate];
         }
 
         return $this->mostpopYear;

@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 function cleanup_log($data)
 {
@@ -10,6 +10,7 @@ function cleanup_log($data)
     $desc = sqlesc($data['clean_desc']);
     sql_query("INSERT INTO cleanup_log (clog_event, clog_time, clog_ip, clog_desc) VALUES ($text, $added, $ip, {$desc})") or sqlerr(__FILE__, __LINE__);
 }
+
 function docleanup($data)
 {
     global $INSTALLER09, $queries;
@@ -19,7 +20,7 @@ function docleanup($data)
     $oht = '';
     while ($row = mysqli_fetch_assoc($sql)) {
         if ($row['Data_free'] > 100) {
-            $oht .= $row['Data_free'].',';
+            $oht .= $row['Data_free'] . ',';
         }
     }
     $oht = rtrim($oht, ',');

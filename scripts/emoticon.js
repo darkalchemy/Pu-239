@@ -1,73 +1,73 @@
 // set up the emoticon stuff
-		$(document).ready(function()	{
+$(document).ready(function () {
 
-			// hide custom and staff
-			$("#box_1").hide();
-			$("#box_2").hide();
-			$("#box_3").hide();
-			$("#box_4").hide();
-			
-			$("#box_1").fadeIn("slow");
+    // hide custom and staff
+    $("#box_1").hide();
+    $("#box_2").hide();
+    $("#box_3").hide();
+    $("#box_4").hide();
 
-				// show hide for all
-				$("a#smilies").click(function(){
-				$("#box_1").show("slow");
-				$("#box_2").hide();
-				$("#box_3").hide();
-				$("#box_4").hide();
-				});
+    $("#box_1").fadeIn("slow");
 
-				$("a#custom").click(function(){
-				$("#box_1").hide();
-				$("#box_2").show("slow");
-				$("#box_3").hide();
-				$("#box_4").hide();
-				});
+    // show hide for all
+    $("a#smilies").click(function () {
+        $("#box_1").show("slow");
+        $("#box_2").hide();
+        $("#box_3").hide();
+        $("#box_4").hide();
+    });
 
-				$("a#staff").click(function(){
-				$("#box_1").hide();
-				$("#box_2").hide();
-				$("#box_3").show("slow");
-				$("#box_4").hide();
-				});
+    $("a#custom").click(function () {
+        $("#box_1").hide();
+        $("#box_2").show("slow");
+        $("#box_3").hide();
+        $("#box_4").hide();
+    });
 
-				$("a#tags").click(function(){
-				$("#box_1").hide();
-				$("#box_2").hide();
-				$("#box_3").hide();
-				$("#box_4").show("slow");
-				})
+    $("a#staff").click(function () {
+        $("#box_1").hide();
+        $("#box_2").hide();
+        $("#box_3").show("slow");
+        $("#box_4").hide();
+    });
 
-	// Add editor
-	$("#markItUp").markItUp(mySettings);
+    $("a#tags").click(function () {
+        $("#box_1").hide();
+        $("#box_2").hide();
+        $("#box_3").hide();
+        $("#box_4").show("slow");
+    })
 
-	// add smilies	
-	$(".emoticons").click(function() {
- 		$.markItUp( { 	openWith:$(this).attr("title")}
-				);
- 		return false;
-	});
-	
-	// add more options
-	$("#tool_open").click(function(){
-	$("#tools").slideToggle("slow", function() {
-	});
-	$("#tool_open").hide();
-	$("#tool_close").show();
-	});
-	
-	$("#tool_close").click(function(){
-	$("#tools").slideToggle("slow", function() {
-	});
-	
-	$("#tool_close").hide();
-	$("#tool_open").show();
+    // Add editor
+    $("#markItUp").markItUp(mySettings);
 
-	});
+    // add smilies	
+    $(".emoticons").click(function () {
+        $.markItUp({openWith: $(this).attr("title")}
+        );
+        return false;
+    });
 
-	// add attachments
-	$("#more").click(function(){
-	$("#attach_more").slideToggle("slow", function() {
-	});
-	});
-	});
+    // add more options
+    $("#tool_open").click(function () {
+        $("#tools").slideToggle("slow", function () {
+        });
+        $("#tool_open").hide();
+        $("#tool_close").show();
+    });
+
+    $("#tool_close").click(function () {
+        $("#tools").slideToggle("slow", function () {
+        });
+
+        $("#tool_close").hide();
+        $("#tool_open").show();
+
+    });
+
+    // add attachments
+    $("#more").click(function () {
+        $("#attach_more").slideToggle("slow", function () {
+        });
+    });
+});

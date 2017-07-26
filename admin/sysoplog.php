@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
@@ -16,10 +16,10 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
     echo $HTMLOUT;
     exit();
 }
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'bbcode_functions.php';
-require_once INCL_DIR.'pager_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'bbcode_functions.php';
+require_once INCL_DIR . 'pager_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 class_check(UC_MAX);
 $lang = array_merge($lang, load_language('ad_sysoplog'));
 $HTMLOUT = $where = '';
@@ -28,16 +28,16 @@ if (isset($_GET['search'])) {
     $search = strip_tags($_GET['search']);
 }
 if (!empty($search)) {
-    $where = 'WHERE txt LIKE '.sqlesc("%$search%").'';
+    $where = 'WHERE txt LIKE ' . sqlesc("%$search%") . '';
 }
 //== Delete items older than 1 month
 $secs = 30 * 86400;
-sql_query('DELETE FROM infolog WHERE '.TIME_NOW." - added > $secs") or sqlerr(__FILE__, __LINE__);
+sql_query('DELETE FROM infolog WHERE ' . TIME_NOW . " - added > $secs") or sqlerr(__FILE__, __LINE__);
 $res = sql_query("SELECT COUNT(id) FROM infolog $where");
 $row = mysqli_fetch_array($res);
 $count = $row[0];
 $perpage = 15;
-$pager = pager($perpage, $count, 'staffpanel.php?tool=sysoplog&amp;action=sysoplog&amp;'.(!empty($search) ? "search=$search&amp;" : '').'');
+$pager = pager($perpage, $count, 'staffpanel.php?tool=sysoplog&amp;action=sysoplog&amp;' . (!empty($search) ? "search=$search&amp;" : '') . '');
 $HTMLOUT = '';
 $res = sql_query("SELECT added, txt FROM infolog $where ORDER BY added DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= "<h1>{$lang['sysoplog_staff']}</h1>";
@@ -122,4 +122,4 @@ if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
 $HTMLOUT .= "<p>{$lang['sysoplog_times']}</p>\n";
-echo stdhead($lang['sysoplog_sys']).$HTMLOUT.stdfoot();
+echo stdhead($lang['sysoplog_sys']) . $HTMLOUT . stdfoot();

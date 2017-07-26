@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 function mksecret($len = 5)
 {
@@ -15,16 +15,19 @@ function mksecret($len = 5)
 
     return $salt;
 }
+
 function make_passhash_login_key($len = 60)
 {
     $pass = mksecret($len);
 
     return md5($pass);
 }
+
 function make_passhash($salt, $md5_once_password)
 {
-    return md5(md5($salt).$md5_once_password);
+    return md5(md5($salt) . $md5_once_password);
 }
+
 function make_password()
 {
     $pass = '';
@@ -32,9 +35,9 @@ function make_password()
     $prefix = mksecret();
     $unique_id .= md5($prefix);
     usleep(mt_rand(15000, 1000000));
-    mt_srand((float) microtime() * 1000000);
+    mt_srand((float)microtime() * 1000000);
     $new_uniqueid = uniqid(mt_rand(), true);
-    $final_rand = md5($unique_id.$new_uniqueid);
+    $final_rand = md5($unique_id . $new_uniqueid);
     mt_srand();
     for ($i = 0; $i < 15; ++$i) {
         $pass .= $final_rand[mt_rand(0, 31)];

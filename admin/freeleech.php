@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 /** freeleech mod by pdq for TBDev.net 2009**/
 if (!defined('IN_INSTALLER09_ADMIN')) {
@@ -17,16 +17,16 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
     echo $HTMLOUT;
     exit();
 }
-require_once INCL_DIR.'user_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $lang = array_merge($lang, load_language('ad_freelech'));
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $HTMLOUT = '';
 if (isset($_GET['remove'])) {
-    $configfile = '<'.$lang['freelech_thisfile'].date('M d Y H:i:s').$lang['freelech_modby'];
+    $configfile = '<' . $lang['freelech_thisfile'] . date('M d Y H:i:s') . $lang['freelech_modby'];
     $configfile .= $lang['freelech_config_file'];
-    $configfile .= "\n);\n\n?".'>';
+    $configfile .= "\n);\n\n?" . '>';
     $filenum = fopen('cache/free_cache.php', 'w');
     ftruncate($filenum, 0);
     fwrite($filenum, $configfile);
@@ -35,8 +35,8 @@ if (isset($_GET['remove'])) {
     die;
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $configfile = '<'.$lang['freelech_thisfile'].date('M d Y H:i:s').$lang['freelech_modby'];
-    $fl['modifier'] = (isset($_POST['modifier']) ? (int) $_POST['modifier'] : false);
+    $configfile = '<' . $lang['freelech_thisfile'] . date('M d Y H:i:s') . $lang['freelech_modby'];
+    $fl['modifier'] = (isset($_POST['modifier']) ? (int)$_POST['modifier'] : false);
     if (isset($_POST['expires']) && $_POST['expires'] == 255) {
         $fl['expires'] = 1;
     } else {
@@ -47,11 +47,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fl['message'] = (isset($_POST['message']) ? htmlsafechars($_POST['message']) : false);
     //echo_r($fl);
     if ($fl['modifier'] === false || $fl['expires'] === false || $fl['setby'] === false || $fl['title'] === false || $fl['message'] === false) {
-        echo ''.$lang['freelech_error_form'].'';
+        echo '' . $lang['freelech_error_form'] . '';
         die;
     }
     $configfile .= "array('modifier'=> {$fl['modifier']}, 'expires'=> {$fl['expires']}, 'setby'=> '{$fl['setby']}', 'title'=> '{$fl['title']}', 'message'=> '{$fl['message']}')";
-    $configfile .= "\n);\n\n?".'>';
+    $configfile .= "\n);\n\n?" . '>';
     $filenum = fopen('cache/free_cache.php', 'w');
     ftruncate($filenum, 0);
     fwrite($filenum, $configfile);
@@ -59,10 +59,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     header("Location: {$INSTALLER09['baseurl']}/staffpanel.php?tool=freeleech");
     die;
 }
-require_once CACHE_DIR.'free_cache.php';
+require_once CACHE_DIR . 'free_cache.php';
 if (isset($free) && (count($free) < 1)) {
-    $HTMLOUT .= '<h1>'.$lang['freelech_current'].'</h1>
-                 <p align="center"><b>'.$lang['freelech_nofound'].'</b></p>';
+    $HTMLOUT .= '<h1>' . $lang['freelech_current'] . '</h1>
+                 <p align="center"><b>' . $lang['freelech_nofound'] . '</b></p>';
 } else {
     $HTMLOUT .= "<br /><table border='1' cellspacing='0' cellpadding='5'>
         <tr><td class='colhead' align='left'>{$lang['freelech_free_all']}</td>
@@ -74,31 +74,31 @@ if (isset($free) && (count($free) < 1)) {
     $checked1 = $checked2 = $checked3 = $checked4 = '';
     foreach ($free as $fl) {
         switch ($fl['modifier']) {
-        case 1:
-            $checked1 = 'checked=\'checked\'';
-            $mode = $lang['freelech_torr_free'];
-            break;
+            case 1:
+                $checked1 = 'checked=\'checked\'';
+                $mode = $lang['freelech_torr_free'];
+                break;
 
-        case 2:
-            $mode = $lang['freelech_double_up'];
-            $checked2 = 'checked=\'checked\'';
-            break;
+            case 2:
+                $mode = $lang['freelech_double_up'];
+                $checked2 = 'checked=\'checked\'';
+                break;
 
-        case 3:
-            $mode = $lang['freelech_free_double'];
-            $checked3 = 'checked=\'checked\'';
-            break;
+            case 3:
+                $mode = $lang['freelech_free_double'];
+                $checked3 = 'checked=\'checked\'';
+                break;
 
-        case 4:
-            $mode = $lang['freelech_torr_silver'];
-            $checked4 = 'checked=\'checked\'';
-            break;
+            case 4:
+                $mode = $lang['freelech_torr_silver'];
+                $checked4 = 'checked=\'checked\'';
+                break;
 
-        default:
-            $mode = $lang['freelech_not_enable'];
+            default:
+                $mode = $lang['freelech_not_enable'];
         }
         $HTMLOUT .= "<tr><td>$mode
-		     </td><td align='left'>".($fl['expires'] != 'Inf.' && $fl['expires'] != 1 ? "{$lang['freelech_until']}".get_date($fl['expires'], 'DATE').' ('.mkprettytime($fl['expires'] - TIME_NOW)."{$lang['freelech_togo']})" : ''.$lang['freelech_unlimited'].'')." </td>
+		     </td><td align='left'>" . ($fl['expires'] != 'Inf.' && $fl['expires'] != 1 ? "{$lang['freelech_until']}" . get_date($fl['expires'], 'DATE') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . "{$lang['freelech_togo']})" : '' . $lang['freelech_unlimited'] . '') . " </td>
 			 <td align='left'>{$fl['setby']}</td>
 			 <td align='left'>{$fl['title']}</td>
 			 <td align='left'>{$fl['message']}</td>
@@ -145,7 +145,7 @@ $HTMLOUT .= "<h2>{$lang['freelech_set_free']}</h2>
 	<td><input type='text' size='40' name='message' value='{$fl['message']}' />
 	</td></tr>
 			<tr><td class='rowhead'>{$lang['freelech_setby']}</td>
-	<td><input type='text' size='40' value ='".$CURUSER['username']."' name='setby' />
+	<td><input type='text' size='40' value ='" . $CURUSER['username'] . "' name='setby' />
 	</td></tr>
 	<tr><td colspan='2' align='center'>
 	<input type='submit' name='okay' value='{$lang['freelech_doit']}' class='btn' />
@@ -154,5 +154,5 @@ $HTMLOUT .= "<h2>{$lang['freelech_set_free']}</h2>
 	<input type='hidden' name='cacheit' value='{$lang['freelech_cache']}' class='btn' />
 	</td></tr>
 	</table></form>";
-echo stdhead($lang['freelech_stdhead']).$HTMLOUT.stdfoot();
+echo stdhead($lang['freelech_stdhead']) . $HTMLOUT . stdfoot();
 die;

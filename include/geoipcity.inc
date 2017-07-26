@@ -47,6 +47,7 @@ function _get_record_v6($gi, $ipnum)
     if ($seek_country == $gi->databaseSegments) {
         return null;
     }
+
     return _common_get_record($gi, $seek_country);
 }
 
@@ -140,6 +141,7 @@ function _common_get_record($gi, $seek_country)
     if ($mbExists) {
         mb_internal_encoding($enc);
     }
+
     return $record;
 }
 
@@ -149,6 +151,7 @@ function GeoIP_record_by_addr_v6($gi, $addr)
         return 0;
     }
     $ipnum = inet_pton($addr);
+
     return _get_record_v6($gi, $ipnum);
 }
 
@@ -158,6 +161,7 @@ function _get_record($gi, $ipnum)
     if ($seek_country == $gi->databaseSegments) {
         return null;
     }
+
     return _common_get_record($gi, $seek_country);
 }
 
@@ -167,5 +171,6 @@ function GeoIP_record_by_addr($gi, $addr)
         return 0;
     }
     $ipnum = ip2long($addr);
+
     return _get_record($gi, $ipnum);
 }

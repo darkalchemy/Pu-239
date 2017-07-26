@@ -97,12 +97,12 @@ function shutdown()
 |--------------------------------------------------------------------------
 |
 */
-$return = array();
+$return = [];
 $file_id = $_POST['file'];
 $load_default_values = $_POST['ldv'];
-$max = (int) $_POST['max'];
-$reset = (int) @$_POST['reset'];
-$old_file_size = (int) @$_POST['filesize'];
+$max = (int)$_POST['max'];
+$reset = (int)@$_POST['reset'];
+$old_file_size = (int)@$_POST['filesize'];
 $search = @$_POST['search'];
 $old_lastline = @$_POST['lastline'];
 
@@ -138,7 +138,7 @@ $regex = $files[$file_id]['format']['regex'];
 $match = $files[$file_id]['format']['match'];
 $types = $files[$file_id]['format']['types'];
 $multiline = (isset($files[$file_id]['format']['multiline'])) ? $files[$file_id]['format']['multiline'] : '';
-$exclude = (isset($files[$file_id]['format']['exclude'])) ? $files[$file_id]['format']['exclude'] : array();
+$exclude = (isset($files[$file_id]['format']['exclude'])) ? $files[$file_id]['format']['exclude'] : [];
 
 /*
 |--------------------------------------------------------------------------
@@ -162,7 +162,7 @@ $now = $now->format('Y/m/d H:i:s');
 |
 */
 if (isset($_POST['sp'])) {
-    $start_offset = (int) $_POST['sp'] - 1;
+    $start_offset = (int)$_POST['sp'] - 1;
     $start_from = SEEK_SET;
     $load_more = true;
 } else {
@@ -187,7 +187,7 @@ if ($reset === 1) {
     if ($data_to_parse < 0) { // Log file has been rotated, read all. It is not possible on apache because server is restarted gracefully but perhaps user has done something...
         $data_to_parse = $new_file_size;
         $full = true;
-        $return['notice'] = '<strong>'.$now.'</strong> : '.sprintf(__('Log file has been rotated (previous size was %s and new one is %s)'), human_filesize($old_file_size), human_filesize($new_file_size));
+        $return['notice'] = '<strong>' . $now . '</strong> : ' . sprintf(__('Log file has been rotated (previous size was %s and new one is %s)'), human_filesize($old_file_size), human_filesize($new_file_size));
     }
     if ($old_file_size === 0) {
         $full = true;
@@ -218,9 +218,7 @@ if (!is_array($logs)) {
             $return['error'] = sprintf(__('Unknown error %s'), $logs);
             break;
     }
-}
-
-/*
+} /*
 |--------------------------------------------------------------------------
 | Return
 |--------------------------------------------------------------------------
@@ -232,7 +230,7 @@ else {
     $filem = $return['filemodif'];
 
     if (@$logs['notice'] === 1) {
-        $return['notice'] = '<strong>'.$now.'</strong> &gt; '.__('Log file has been rotated');
+        $return['notice'] = '<strong>' . $now . '</strong> &gt; ' . __('Log file has been rotated');
     }
 
     /*
@@ -269,23 +267,23 @@ else {
         __('%s in <code>%sms</code> with <code>%s</code> of logs, <code>%s</code> skipped line(s), <code>%s</code> unreadable line(s).<br/>File <code>%s</code> was last modified on <code>%s</code> at <code>%s</code>, size is <code>%s</code>%s'),
         ($load_more === false)
             ? (
-                ($ln > 1)
-                ? sprintf(__('%s new logs found'), $ln)
-                : (
-                    ($ln === 0)
-                        ? __('no new log found')
-                        : __('1 new log found')
-                )
-            )
+        ($ln > 1)
+            ? sprintf(__('%s new logs found'), $ln)
             : (
-                ($ln > 1)
-                ? sprintf(__('%s old logs found'), $ln)
-                : (
-                    ($ln === 0)
-                        ? __('no old log found')
-                        : __('1 olg log found')
-                )
-            ),
+        ($ln === 0)
+            ? __('no new log found')
+            : __('1 new log found')
+        )
+        )
+            : (
+        ($ln > 1)
+            ? sprintf(__('%s old logs found'), $ln)
+            : (
+        ($ln === 0)
+            ? __('no old log found')
+            : __('1 olg log found')
+        )
+        ),
         $return['duration'],
         human_filesize($return['bytes']),
         $return['skiplines'],
@@ -295,7 +293,7 @@ else {
         $tz,
         human_filesize($new_file_size),
         (isset($files[$file_id]['format']['type']))
-            ? ', '.sprintf(__('log type is <code>%s</code>'), $files[$file_id]['format']['type'])
+            ? ', ' . sprintf(__('log type is <code>%s</code>'), $files[$file_id]['format']['type'])
             : ''
     );
 }

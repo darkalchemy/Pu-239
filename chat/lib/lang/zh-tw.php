@@ -7,7 +7,7 @@
  * @link https://blueimp.net/ajax/
  */
 
-$lang = array();
+$lang = [];
 $lang['title'] = 'AJAX Chat';
 $lang['userName'] = '使用者帳號';
 $lang['password'] = '密碼';

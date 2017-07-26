@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
@@ -16,9 +16,9 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
     echo $HTMLOUT;
     exit();
 }
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_stats_extra'));
@@ -27,7 +27,7 @@ if (!isset($inbound['mode'])) {
     $inbound['mode'] = '';
 }
 $form_code = '';
-$month_names = array(
+$month_names = [
     1 => $lang['stats_ex_jan'],
     $lang['stats_ex_jan'],
     $lang['stats_ex_feb'],
@@ -40,71 +40,71 @@ $month_names = array(
     $lang['stats_ex_oct'],
     $lang['stats_ex_nov'],
     $lang['stats_ex_dec'],
-);
+];
 switch ($inbound['mode']) {
-case 'show_reg':
-    result_screen('reg');
-    break;
+    case 'show_reg':
+        result_screen('reg');
+        break;
 
-case 'show_topic':
-    result_screen('topic');
-    break;
+    case 'show_topic':
+        result_screen('topic');
+        break;
 
-case 'topic':
-    main_screen('topic');
-    break;
+    case 'topic':
+        main_screen('topic');
+        break;
 
-case 'show_comms':
-    result_screen('comms');
-    break;
+    case 'show_comms':
+        result_screen('comms');
+        break;
 
-case 'comms':
-    main_screen('comms');
-    break;
+    case 'comms':
+        main_screen('comms');
+        break;
 
-case 'show_torrents':
-    result_screen('torrents');
-    break;
+    case 'show_torrents':
+        result_screen('torrents');
+        break;
 
-case 'torrents':
-    main_screen('torrents');
-    break;
+    case 'torrents':
+        main_screen('torrents');
+        break;
 
-case 'show_reps':
-    result_screen('reps');
-    break;
+    case 'show_reps':
+        result_screen('reps');
+        break;
 
-case 'reps':
-    main_screen('reps');
-    break;
+    case 'reps':
+        main_screen('reps');
+        break;
 
-case 'show_post':
-    result_screen('post');
-    break;
+    case 'show_post':
+        result_screen('post');
+        break;
 
-case 'post':
-    main_screen('post');
-    break;
+    case 'post':
+        main_screen('post');
+        break;
 
-case 'show_msg':
-    result_screen('msg');
-    break;
+    case 'show_msg':
+        result_screen('msg');
+        break;
 
-case 'msg':
-    main_screen('msg');
-    break;
+    case 'msg':
+        main_screen('msg');
+        break;
 
-case 'show_views':
-    show_views();
-    break;
+    case 'show_views':
+        show_views();
+        break;
 
-case 'views':
-    main_screen('views');
-    break;
+    case 'views':
+        main_screen('views');
+        break;
 
-default:
-    main_screen('reg');
-    break;
+    default:
+        main_screen('reg');
+        break;
 }
 function show_views()
 {
@@ -123,11 +123,11 @@ function show_views()
     $from_time = mktime(12, 0, 0, $inbound['from_month'], $inbound['from_day'], $inbound['from_year']);
     $human_to_date = getdate($to_time);
     $human_from_date = getdate($from_time);
-    $sql = array(
+    $sql = [
         'from_time' => $from_time,
-        'to_time' => $to_time,
-        'sortby' => $inbound['sortby'],
-    );
+        'to_time'   => $to_time,
+        'sortby'    => $inbound['sortby'],
+    ];
     $q = sql_query("SELECT SUM(t.views) as result_count, t.forumid, f.name as result_name
 					FROM topics t
 					LEFT JOIN forums f ON (f.id=t.forumid)
@@ -137,7 +137,7 @@ function show_views()
 					ORDER BY result_count {$sql['sortby']}") or sqlerr(__FILE__, __LINE__);
     $running_total = 0;
     $max_result = 0;
-    $results = array();
+    $results = [];
     $menu = make_side_menu();
     $heading = "{$lang['stats_ex_topicv']} ({$human_from_date['mday']} {$month_names[$human_from_date['mon']]} {$human_from_date['year']} {$lang['stats_ex_topict']} {$human_to_date['mday']} {$month_names[$human_to_date['mon']]} {$human_to_date['year']})";
     $htmlout = "<div>
@@ -161,10 +161,10 @@ function show_views()
                 $max_result = $row['result_count'];
             }
             $running_total += $row['result_count'];
-            $results[] = array(
-                'result_name' => $row['result_name'],
+            $results[] = [
+                'result_name'  => $row['result_name'],
                 'result_count' => $row['result_count'],
-            );
+            ];
         }
         foreach ($results as $data) {
             $img_width = intval(($data['result_count'] / $max_result) * 100 - 8);
@@ -187,8 +187,9 @@ function show_views()
         $htmlout .= "<tr><td colspan='3' align='center'>{$lang['stats_ex_noresult']}</td></tr>";
     }
     $htmlout .= '</table></div></div>';
-    echo stdhead($page_title).$htmlout.stdfoot();
+    echo stdhead($page_title) . $htmlout . stdfoot();
 }
+
 function result_screen($mode = 'reg')
 {
     global $INSTALLER09, $inbound, $month_names, $lang;
@@ -241,31 +242,31 @@ function result_screen($mode = 'reg')
         $page_detail = $lang['stats_ex_repdetails'];
     }
     switch ($inbound['timescale']) {
-    case 'daily':
-        $sql_date = '%w %U %m %Y';
-        $php_date = 'F jS - Y';
-        break;
+        case 'daily':
+            $sql_date = '%w %U %m %Y';
+            $php_date = 'F jS - Y';
+            break;
 
-    case 'monthly':
-        $sql_date = '%m %Y';
-        $php_date = 'F Y';
-        break;
+        case 'monthly':
+            $sql_date = '%m %Y';
+            $php_date = 'F Y';
+            break;
 
-    default:
-        // weekly
-        $sql_date = '%U %Y';
-        $php_date = ' [F Y]';
-        break;
+        default:
+            // weekly
+            $sql_date = '%U %Y';
+            $php_date = ' [F Y]';
+            break;
     }
     $sort_by = ($inbound['sortby'] == 'DESC') ? 'DESC' : 'ASC';
-    $sql = array(
+    $sql = [
         'from_time' => $from_time,
-        'to_time' => $to_time,
-        'sortby' => $sort_by,
+        'to_time'   => $to_time,
+        'sortby'    => $sort_by,
         'sql_field' => $sql_field,
         'sql_table' => $sql_table,
-        'sql_date' => $sql_date,
-    );
+        'sql_date'  => $sql_date,
+    ];
     $q1 = sql_query("SELECT MAX({$sql['sql_field']}) as result_maxdate,
 				 COUNT(*) as result_count,
 				 DATE_FORMAT(from_unixtime({$sql['sql_field']}),'{$sql['sql_date']}') AS result_time
@@ -276,8 +277,8 @@ function result_screen($mode = 'reg')
 				 ORDER BY {$sql['sql_field']} {$sql['sortby']}");
     $running_total = 0;
     $max_result = 0;
-    $results = array();
-    $heading = ucfirst($inbound['timescale'])." $table ({$human_from_date['mday']} {$month_names[$human_from_date['mon']]} {$human_from_date['year']} to {$human_to_date['mday']} {$month_names[$human_to_date['mon']]} {$human_to_date['year']})";
+    $results = [];
+    $heading = ucfirst($inbound['timescale']) . " $table ({$human_from_date['mday']} {$month_names[$human_from_date['mon']]} {$human_from_date['year']} to {$human_to_date['mday']} {$month_names[$human_to_date['mon']]} {$human_to_date['year']})";
     $menu = make_side_menu();
     $htmlout = "<div>
       <div style='background: grey; height: 25px;'>
@@ -300,11 +301,11 @@ function result_screen($mode = 'reg')
                 $max_result = $row['result_count'];
             }
             $running_total += $row['result_count'];
-            $results[] = array(
+            $results[] = [
                 'result_maxdate' => $row['result_maxdate'],
-                'result_count' => $row['result_count'],
-                'result_time' => $row['result_time'],
-            );
+                'result_count'   => $row['result_count'],
+                'result_time'    => $row['result_time'],
+            ];
         }
         foreach ($results as $data) {
             $img_width = intval(($data['result_count'] / $max_result) * 100 - 8);
@@ -313,7 +314,7 @@ function result_screen($mode = 'reg')
             }
             $img_width .= '%';
             if ($inbound['timescale'] == 'weekly') {
-                $date = 'Week #'.strftime('%W', $data['result_maxdate']).date($php_date, $data['result_maxdate']);
+                $date = 'Week #' . strftime('%W', $data['result_maxdate']) . date($php_date, $data['result_maxdate']);
             } else {
                 $date = date($php_date, $data['result_maxdate']);
             }
@@ -332,8 +333,9 @@ function result_screen($mode = 'reg')
         $htmlout .= "<tr><td colspan='3' align='center'>{$lang['stats_ex_noresult']}</td></tr>";
     }
     $htmlout .= '</table></div></div>';
-    echo stdhead($page_title).$htmlout.stdfoot();
+    echo stdhead($page_title) . $htmlout . stdfoot();
 }
+
 function main_screen($mode = 'reg')
 {
     global $INSTALLER09, $lang;
@@ -383,41 +385,41 @@ function main_screen($mode = 'reg')
     <fieldset><legend><strong>{$lang['stats_ex_infor']}</strong></legend>
     {$page_detail}</fieldset>
 		<fieldset><legend><strong>{$lang['stats_ex_datefrom']}</strong></legend>";
-    $htmlout .= make_select('from_month', make_month(), $old_date['mon']).'&nbsp;&nbsp;';
-    $htmlout .= make_select('from_day', make_day(), $old_date['mday']).'&nbsp;&nbsp;';
-    $htmlout .= make_select('from_year', make_year(), $old_date['year']).'</fieldset>';
+    $htmlout .= make_select('from_month', make_month(), $old_date['mon']) . '&nbsp;&nbsp;';
+    $htmlout .= make_select('from_day', make_day(), $old_date['mday']) . '&nbsp;&nbsp;';
+    $htmlout .= make_select('from_year', make_year(), $old_date['year']) . '</fieldset>';
     $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_dateto']}</strong></legend>";
-    $htmlout .= make_select('to_month', make_month(), $new_date['mon']).'&nbsp;&nbsp;';
-    $htmlout .= make_select('to_day', make_day(), $new_date['mday']).'&nbsp;&nbsp;';
-    $htmlout .= make_select('to_year', make_year(), $new_date['year']).'</fieldset>';
+    $htmlout .= make_select('to_month', make_month(), $new_date['mon']) . '&nbsp;&nbsp;';
+    $htmlout .= make_select('to_day', make_day(), $new_date['mday']) . '&nbsp;&nbsp;';
+    $htmlout .= make_select('to_year', make_year(), $new_date['year']) . '</fieldset>';
     if ($mode != 'views') {
         $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_timescale']}</strong></legend>";
-        $htmlout .= make_select('timescale', array(
-            0 => array(
-                'daily',
-                $lang['stats_ex_daily'],
-            ),
-            1 => array(
-                'weekly',
-                $lang['stats_ex_weekly'],
-            ),
-            2 => array(
-                'monthly',
-                $lang['stats_ex_monthly'],
-            ),
-        )).'</fieldset>';
+        $htmlout .= make_select('timescale', [
+                0 => [
+                    'daily',
+                    $lang['stats_ex_daily'],
+                ],
+                1 => [
+                    'weekly',
+                    $lang['stats_ex_weekly'],
+                ],
+                2 => [
+                    'monthly',
+                    $lang['stats_ex_monthly'],
+                ],
+            ]) . '</fieldset>';
     }
     $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_ressort']}</strong></legend>";
-    $htmlout .= make_select('sortby', array(
-        0 => array(
-            'asc',
-            $lang['stats_ex_asc'],
-        ),
-        1 => array(
-            'desc',
-            $lang['stats_ex_desc'],
-        ),
-    ), 'desc').'</fieldset>';
+    $htmlout .= make_select('sortby', [
+            0 => [
+                'asc',
+                $lang['stats_ex_asc'],
+            ],
+            1 => [
+                'desc',
+                $lang['stats_ex_desc'],
+            ],
+        ], 'desc') . '</fieldset>';
     $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_submit']}</strong></legend>
 				<input value='{$lang['stats_ex_show']}' class='btn' accesskey='s' type='submit' />
 			</fieldset>
@@ -425,52 +427,56 @@ function main_screen($mode = 'reg')
 		</div>
 	
     </form></div>";
-    echo stdhead($page_title).$htmlout.stdfoot();
+    echo stdhead($page_title) . $htmlout . stdfoot();
 }
+
 function make_year()
 {
     $time_now = getdate();
-    $return = array();
+    $return = [];
     $start_year = 2005;
     $latest_year = intval($time_now['year']);
     if ($latest_year == $start_year) {
         $start_year -= 1;
     }
     for ($y = $start_year; $y <= $latest_year; ++$y) {
-        $return[] = array(
+        $return[] = [
             $y,
             $y,
-        );
+        ];
     }
 
     return $return;
 }
+
 function make_month()
 {
     global $month_names;
-    $return = array();
+    $return = [];
     for ($m = 1; $m <= 12; ++$m) {
-        $return[] = array(
+        $return[] = [
             $m,
             $month_names[$m],
-        );
+        ];
     }
 
     return $return;
 }
+
 function make_day()
 {
-    $return = array();
+    $return = [];
     for ($d = 1; $d <= 31; ++$d) {
-        $return[] = array(
+        $return[] = [
             $d,
             $d,
-        );
+        ];
     }
 
     return $return;
 }
-function make_select($name, $in = array(), $default = '')
+
+function make_select($name, $in = [], $default = '')
 {
     $html = "<select name='$name' class='dropdown'>\n";
     foreach ($in as $v) {
@@ -484,6 +490,7 @@ function make_select($name, $in = array(), $default = '')
 
     return $html;
 }
+
 function make_side_menu()
 {
     global $INSTALLER09, $lang;

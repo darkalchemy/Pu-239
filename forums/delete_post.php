@@ -1,19 +1,19 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 /**********************************************************
-New 2010 forums that don't suck for TB based sites....
-pretty much coded page by page, but coming from a
-history ot TBsourse and TBDev and the many many
-coders who helped develop them over time.
-proper credits to follow :)
-
-beta fri june 11th 2010 v0.1
-delete post... thinking of changing this...
-
-Powered by Bunnies!!!
-**********************************************************/
+ * New 2010 forums that don't suck for TB based sites....
+ * pretty much coded page by page, but coming from a
+ * history ot TBsourse and TBDev and the many many
+ * coders who helped develop them over time.
+ * proper credits to follow :)
+ *
+ * beta fri june 11th 2010 v0.1
+ * delete post... thinking of changing this...
+ *
+ * Powered by Bunnies!!!
+ **********************************************************/
 if (!defined('BUNNY_FORUMS')) {
     $HTMLOUT = '';
     $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -36,7 +36,7 @@ if (!is_valid_id($post_id) || !is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
 //=== make sure it's their post or they are staff... this may change
-$res_post = sql_query('SELECT p.user_id, p.staff_lock, u.id, u.class, u.suspended, t.locked, t.user_id AS owner_id, t.first_post, f.min_class_read, f.min_class_write, f.id AS forum_id FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id LEFT JOIN topics AS t ON t.id = p.topic_id LEFT JOIN forums AS f ON t.forum_id = f.id WHERE p.id='.sqlesc($post_id));
+$res_post = sql_query('SELECT p.user_id, p.staff_lock, u.id, u.class, u.suspended, t.locked, t.user_id AS owner_id, t.first_post, f.min_class_read, f.min_class_write, f.id AS forum_id FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id LEFT JOIN topics AS t ON t.id = p.topic_id LEFT JOIN forums AS f ON t.forum_id = f.id WHERE p.id=' . sqlesc($post_id));
 $arr_post = mysqli_fetch_assoc($res_post);
 //=== if staff or post owner let them delete post
 $can_delete = ($arr_post['user_id'] === $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF);
@@ -61,28 +61,28 @@ if ($arr_post['first_post'] == $post_id && $CURUSER['class'] < UC_STAFF) {
     stderr($lang['gl_error'], $lang['fe_cant_del_1st_post_staff']);
 }
 if ($arr_post['first_post'] == $post_id && $CURUSER['class'] >= UC_STAFF) {
-    stderr($lang['gl_error'], $lang['fe_this_is_1st_post_topic'].' <a class="altlink" href="'.$INSTALLER09['baseurl'].'/forums.php?action=forums_admin&amp;action_2=delete_topic&amp;topic_id='.$topic_id.'">'.$lang['fe_del_topic'].'</a>.');
+    stderr($lang['gl_error'], $lang['fe_this_is_1st_post_topic'] . ' <a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=forums_admin&amp;action_2=delete_topic&amp;topic_id=' . $topic_id . '">' . $lang['fe_del_topic'] . '</a>.');
 }
 //=== ok... they made it this far, so let's delete the damned post!
 if ($sanity_check > 0) {
     //=== if you want the un-delete option (only admin and up can see "deleted" posts)
     if ($delete_for_real === 1) {
         //=== re-do that last post thing ;)
-        $res = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics as t ON p.topic_id = t.id WHERE p.topic_id = '.sqlesc($topic_id).' ORDER BY id DESC LIMIT 1');
+        $res = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics as t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_id) . ' ORDER BY id DESC LIMIT 1');
         $arr = mysqli_fetch_assoc($res);
-        sql_query('UPDATE topics SET last_post = '.sqlesc($arr['id']).', post_count = post_count - 1 WHERE id = '.sqlesc($topic_id));
-        sql_query('UPDATE forums SET post_count = post_count - 1 WHERE id = '.sqlesc($arr['forum_id']));
-        sql_query('DELETE FROM posts WHERE id = '.sqlesc($post_id));
-        sql_query('UPDATE usersachiev SET forumposts=forumposts-1 WHERE id='.sqlesc($arr_post['user_id'])) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE topics SET last_post = ' . sqlesc($arr['id']) . ', post_count = post_count - 1 WHERE id = ' . sqlesc($topic_id));
+        sql_query('UPDATE forums SET post_count = post_count - 1 WHERE id = ' . sqlesc($arr['forum_id']));
+        sql_query('DELETE FROM posts WHERE id = ' . sqlesc($post_id));
+        sql_query('UPDATE usersachiev SET forumposts=forumposts-1 WHERE id=' . sqlesc($arr_post['user_id'])) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($arr['forum_id']);
         clr_forums_cache($post_id);
     } else {
-        sql_query('UPDATE posts SET status = \'deleted\'  WHERE id = '.sqlesc($post_id).' AND topic_id = '.sqlesc($topic_id));
+        sql_query('UPDATE posts SET status = \'deleted\'  WHERE id = ' . sqlesc($post_id) . ' AND topic_id = ' . sqlesc($topic_id));
     }
     //=== ok, all done here, send them back! \o/
-    header('Location: '.$INSTALLER09['baseurl'].'/forums.php?action=view_topic&topic_id='.$topic_id);
+    header('Location: ' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&topic_id=' . $topic_id);
     die();
 } else {
-    stderr($lang['fe_sanity_check'], ''.$lang['fe_are_you_sure_del_post'].' 
-	<a class="altlink" href="'.$INSTALLER09['baseurl'].'/forums.php?action=delete_post&amp;post_id='.$post_id.'&amp;topic_id='.$topic_id.'&amp;sanity_check=1">Here</a>.');
+    stderr($lang['fe_sanity_check'], '' . $lang['fe_are_you_sure_del_post'] . ' 
+	<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=delete_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '&amp;sanity_check=1">Here</a>.');
 }

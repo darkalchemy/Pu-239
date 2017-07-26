@@ -11,27 +11,54 @@
 class AJAXChatEncoding
 {
     // Helper function to store special chars as we cannot use static class members in PHP4:
+    public static function htmlEncode($str, $contentCharset = 'UTF-8')
+    {
+        switch ($contentCharset) {
+            case 'UTF-8':
+                // Encode only special chars (&, <, >, ', ") as entities:
+                return self::encodeSpecialChars($str);
+                break;
+            case 'ISO-8859-1':
+            case 'ISO-8859-15':
+                // Encode special chars and all extended characters above ISO-8859-1 charset as entities, then convert to content charset:
+                return self::convertEncoding(self::encodeEntities($str, 'UTF-8', [
+                    0x26, 0x26, 0, 0xFFFF,    // &
+                    0x3C, 0x3C, 0, 0xFFFF,    // <
+                    0x3E, 0x3E, 0, 0xFFFF,    // >
+                    0x27, 0x27, 0, 0xFFFF,    // '
+                    0x22, 0x22, 0, 0xFFFF,    // "
+                    0x100, 0x2FFFF, 0, 0xFFFF,    // above ISO-8859-1
+                ]), 'UTF-8', $contentCharset);
+                break;
+            default:
+                // Encode special chars and all characters above ASCII charset as entities, then convert to content charset:
+                return self::convertEncoding(self::encodeEntities($str, 'UTF-8', [
+                    0x26, 0x26, 0, 0xFFFF,    // &
+                    0x3C, 0x3C, 0, 0xFFFF,    // <
+                    0x3E, 0x3E, 0, 0xFFFF,    // >
+                    0x27, 0x27, 0, 0xFFFF,    // '
+                    0x22, 0x22, 0, 0xFFFF,    // "
+                    0x80, 0x2FFFF, 0, 0xFFFF,    // above ASCII
+                ]), 'UTF-8', $contentCharset);
+        }
+    }
+
+    // Helper function to store Regular expression for NO-WS-CTL as we cannot use static class members in PHP4:
+
+    public static function encodeSpecialChars($str)
+    {
+        return strtr($str, self::getSpecialChars());
+    }
+
     public static function getSpecialChars()
     {
         static $specialChars;
         if (!$specialChars) {
             // As &apos; is not supported by IE, we use &#39; as replacement for "'":
-            $specialChars = array('&' => '&amp;', '<' => '&lt;', '>' => '&gt;', "'" => '&#39;', '"' => '&quot;');
+            $specialChars = ['&' => '&amp;', '<' => '&lt;', '>' => '&gt;', "'" => '&#39;', '"' => '&quot;'];
         }
 
         return $specialChars;
-    }
-
-    // Helper function to store Regular expression for NO-WS-CTL as we cannot use static class members in PHP4:
-    public static function getRegExp_NO_WS_CTL()
-    {
-        static $regExp_NO_WS_CTL;
-        if (!$regExp_NO_WS_CTL) {
-            // Regular expression for NO-WS-CTL, non-whitespace control characters (RFC 2822), decimal 1–8, 11–12, 14–31, and 127:
-            $regExp_NO_WS_CTL = '/[\x0\x1\x2\x3\x4\x5\x6\x7\x8\xB\xC\xE\xF\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F\x7F]/';
-        }
-
-        return $regExp_NO_WS_CTL;
     }
 
     public static function convertEncoding($str, $charsetFrom, $charsetTo)
@@ -52,48 +79,6 @@ class AJAXChatEncoding
         return $str;
     }
 
-    public static function htmlEncode($str, $contentCharset = 'UTF-8')
-    {
-        switch ($contentCharset) {
-            case 'UTF-8':
-                // Encode only special chars (&, <, >, ', ") as entities:
-                return self::encodeSpecialChars($str);
-                break;
-            case 'ISO-8859-1':
-            case 'ISO-8859-15':
-                // Encode special chars and all extended characters above ISO-8859-1 charset as entities, then convert to content charset:
-                return self::convertEncoding(self::encodeEntities($str, 'UTF-8', array(
-                    0x26, 0x26, 0, 0xFFFF,    // &
-                    0x3C, 0x3C, 0, 0xFFFF,    // <
-                    0x3E, 0x3E, 0, 0xFFFF,    // >
-                    0x27, 0x27, 0, 0xFFFF,    // '
-                    0x22, 0x22, 0, 0xFFFF,    // "
-                    0x100, 0x2FFFF, 0, 0xFFFF,    // above ISO-8859-1
-                )), 'UTF-8', $contentCharset);
-                break;
-            default:
-                // Encode special chars and all characters above ASCII charset as entities, then convert to content charset:
-                return self::convertEncoding(self::encodeEntities($str, 'UTF-8', array(
-                    0x26, 0x26, 0, 0xFFFF,    // &
-                    0x3C, 0x3C, 0, 0xFFFF,    // <
-                    0x3E, 0x3E, 0, 0xFFFF,    // >
-                    0x27, 0x27, 0, 0xFFFF,    // '
-                    0x22, 0x22, 0, 0xFFFF,    // "
-                    0x80, 0x2FFFF, 0, 0xFFFF,    // above ASCII
-                )), 'UTF-8', $contentCharset);
-        }
-    }
-
-    public static function encodeSpecialChars($str)
-    {
-        return strtr($str, self::getSpecialChars());
-    }
-
-    public static function decodeSpecialChars($str)
-    {
-        return strtr($str, array_flip(self::getSpecialChars()));
-    }
-
     public static function encodeEntities($str, $encoding = 'UTF-8', $convmap = null)
     {
         if ($convmap && function_exists('mb_encode_numericentity')) {
@@ -101,6 +86,11 @@ class AJAXChatEncoding
         }
 
         return htmlentities($str, ENT_QUOTES, $encoding);
+    }
+
+    public static function decodeSpecialChars($str)
+    {
+        return strtr($str, array_flip(self::getSpecialChars()));
     }
 
     public static function decodeEntities($str, $encoding = 'UTF-8', $htmlEntitiesMap = null)
@@ -130,14 +120,14 @@ class AJAXChatEncoding
         if ($c <= 0x7F) {
             return chr($c);
         } elseif ($c <= 0x7FF) {
-            return chr(0xC0 | $c >> 6).chr(0x80 | $c & 0x3F);
+            return chr(0xC0 | $c >> 6) . chr(0x80 | $c & 0x3F);
         } elseif ($c <= 0xFFFF) {
-            return chr(0xE0 | $c >> 12).chr(0x80 | $c >> 6 & 0x3F)
-                                        .chr(0x80 | $c & 0x3F);
+            return chr(0xE0 | $c >> 12) . chr(0x80 | $c >> 6 & 0x3F)
+                . chr(0x80 | $c & 0x3F);
         } elseif ($c <= 0x10FFFF) {
-            return chr(0xF0 | $c >> 18).chr(0x80 | $c >> 12 & 0x3F)
-                                        .chr(0x80 | $c >> 6 & 0x3F)
-                                        .chr(0x80 | $c & 0x3F);
+            return chr(0xF0 | $c >> 18) . chr(0x80 | $c >> 12 & 0x3F)
+                . chr(0x80 | $c >> 6 & 0x3F)
+                . chr(0x80 | $c & 0x3F);
         } else {
             return null;
         }
@@ -147,5 +137,16 @@ class AJAXChatEncoding
     {
         // Remove NO-WS-CTL, non-whitespace control characters (RFC 2822), decimal 1–8, 11–12, 14–31, and 127:
         return preg_replace(self::getRegExp_NO_WS_CTL(), '', $str);
+    }
+
+    public static function getRegExp_NO_WS_CTL()
+    {
+        static $regExp_NO_WS_CTL;
+        if (!$regExp_NO_WS_CTL) {
+            // Regular expression for NO-WS-CTL, non-whitespace control characters (RFC 2822), decimal 1–8, 11–12, 14–31, and 127:
+            $regExp_NO_WS_CTL = '/[\x0\x1\x2\x3\x4\x5\x6\x7\x8\xB\xC\xE\xF\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F\x7F]/';
+        }
+
+        return $regExp_NO_WS_CTL;
     }
 }

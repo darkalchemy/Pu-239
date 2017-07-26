@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 if (!defined('IN_LOTTERY')) {
     die('You can\'t access this file directly!');
@@ -14,8 +14,8 @@ while ($ac = mysqli_fetch_assoc($lconf)) {
 if (!$lottery_config['enable']) {
     stderr('Sorry', 'Lottery is closed');
 }
-$html = begin_main_frame().begin_frame('Lottery stats');
-$html .= '<h2>Lottery started on <b>'.get_date($lottery_config['start_date'], 'LONG').'</b> and ends on <b>'.get_date($lottery_config['end_date'], 'LONG')."</b> remaining <span style='color:#ff0000;'>".mkprettytime($lottery_config['end_date'] - TIME_NOW).'</span></h2>';
+$html = begin_main_frame() . begin_frame('Lottery stats');
+$html .= '<h2>Lottery started on <b>' . get_date($lottery_config['start_date'], 'LONG') . '</b> and ends on <b>' . get_date($lottery_config['end_date'], 'LONG') . "</b> remaining <span style='color:#ff0000;'>" . mkprettytime($lottery_config['end_date'] - TIME_NOW) . '</span></h2>';
 $qs = sql_query('SELECT count(t.id) as tickets , u.username, u.id, u.seedbonus FROM tickets as t LEFT JOIN users as u ON u.id = t.user GROUP BY u.id ORDER BY tickets DESC, username ASC') or sqlerr(__FILE__, __LINE__);
 if (!mysqli_num_rows($qs)) {
     $html .= '<h2>Not tickets were bought</h2>';
@@ -28,12 +28,12 @@ if (!mysqli_num_rows($qs)) {
     </tr>";
     while ($ar = mysqli_fetch_assoc($qs)) {
         $html .= "<tr>
-                  <td align='left'><a href='userdetails.php?id=".(int) $ar['id']."'>".htmlsafechars($ar['username'])."</a></td>
-                  <td align='center'>".(int) $ar['tickets']."</td>
-                  <td align='center'>".(float) $ar['seedbonus'].'</td>
+                  <td align='left'><a href='userdetails.php?id=" . (int)$ar['id'] . "'>" . htmlsafechars($ar['username']) . "</a></td>
+                  <td align='center'>" . (int)$ar['tickets'] . "</td>
+                  <td align='center'>" . (float)$ar['seedbonus'] . '</td>
         </tr>';
     }
     $html .= '</table>';
 }
-$html .= end_frame().end_main_frame();
-echo stdhead('Lottery tickets').$html.stdfoot();
+$html .= end_frame() . end_main_frame();
+echo stdhead('Lottery tickets') . $html . stdfoot();

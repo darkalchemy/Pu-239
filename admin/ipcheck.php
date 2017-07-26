@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
@@ -16,9 +16,9 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
     echo $HTMLOUT;
     exit();
 }
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'html_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_ipcheck'));
@@ -31,7 +31,7 @@ $HTMLOUT .= "<tr align='center'>
  <td class='colhead' width='70'>{$lang['ipcheck_email']}</td>
  <td class='colhead' width='70'>{$lang['ipcheck_regged']}</td>
  <td class='colhead' width='75'>{$lang['ipcheck_lastacc']}</td>
- ".($INSTALLER09['ratio_free'] ? '' : "<td class='colhead' width='70'>{$lang['ipcheck_dload']}</td>")."
+ " . ($INSTALLER09['ratio_free'] ? '' : "<td class='colhead' width='70'>{$lang['ipcheck_dload']}</td>") . "
  <td class='colhead' width='70'>{$lang['ipcheck_upped']}</td>
  <td class='colhead' width='45'>{$lang['ipcheck_ratio']}</td>
  <td class='colhead' width='125'>{$lang['ipcheck_ip']}</td></tr>\n";
@@ -43,7 +43,7 @@ while ($ras = mysqli_fetch_assoc($res)) {
     }
 
     if ($ip != $ras['ip']) {
-        $ros = sql_query('SELECT id, username, class, email, chatpost, pirate, king, leechwarn, added, last_access, downloaded, uploaded, ip, warned, donor, enabled FROM users WHERE ip='.sqlesc($ras['ip']).' ORDER BY id') or sqlerr(__FILE__, __LINE__);
+        $ros = sql_query('SELECT id, username, class, email, chatpost, pirate, king, leechwarn, added, last_access, downloaded, uploaded, ip, warned, donor, enabled FROM users WHERE ip=' . sqlesc($ras['ip']) . ' ORDER BY id') or sqlerr(__FILE__, __LINE__);
         $num2 = mysqli_num_rows($ros);
         if ($num2 > 1) {
             ++$uc;
@@ -63,14 +63,14 @@ while ($ras = mysqli_fetch_assoc($res)) {
                 } else {
                     $utc = ' bgcolor="333333"';
                 }
-                $HTMLOUT .= "<tr$utc><td align='left'><a href='userdetails.php?id=".(int) $arr['id']."'>".format_username($arr, true)."</a></td>
-                                  <td align='center'>".htmlsafechars($arr['email'])."</td>
+                $HTMLOUT .= "<tr$utc><td align='left'><a href='userdetails.php?id=" . (int)$arr['id'] . "'>" . format_username($arr, true) . "</a></td>
+                                  <td align='center'>" . htmlsafechars($arr['email']) . "</td>
                                   <td align='center'>$added</td>
                                   <td align='center'>$last_access</td>
-                                  ".($INSTALLER09['ratio_free'] ? '' : "<td align='center'>$downloaded</td>")."
+                                  " . ($INSTALLER09['ratio_free'] ? '' : "<td align='center'>$downloaded</td>") . "
                                   <td align='center'>$uploaded</td>
-                                  <td align='center'>".member_ratio($arr['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $arr['downloaded'])."</td>
-                                  <td align='center'><span style=\"font-weight: bold;\">".htmlsafechars($arr['ip'])."</span></td>\n</tr>\n";
+                                  <td align='center'>" . member_ratio($arr['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $arr['downloaded']) . "</td>
+                                  <td align='center'><span style=\"font-weight: bold;\">" . htmlsafechars($arr['ip']) . "</span></td>\n</tr>\n";
                 $ip = htmlsafechars($arr['ip']);
             }
         }
@@ -78,4 +78,4 @@ while ($ras = mysqli_fetch_assoc($res)) {
 }
 $HTMLOUT .= end_table();
 $HTMLOUT .= end_frame();
-echo stdhead($lang['ipcheck_stdhead']).$HTMLOUT.stdfoot();
+echo stdhead($lang['ipcheck_stdhead']) . $HTMLOUT . stdfoot();

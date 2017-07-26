@@ -9,13 +9,13 @@
  */
 ?>
 <?php
-$softwares_list = array('apache', 'iis', 'nginx', 'php');
-$softwares_all = array();
+$softwares_list = ['apache', 'iis', 'nginx', 'php'];
+$softwares_all = [];
 
 foreach ($softwares_list as $sfw) {
-    $config_file = '../cfg/'.$sfw.'.config.php';
+    $config_file = '../cfg/' . $sfw . '.config.php';
     include_once $config_file;
-    $loader = $sfw.'_load_software';
+    $loader = $sfw . '_load_software';
     if (function_exists($loader)) {
         $cfg = call_user_func($loader);
         if (is_array($cfg)) {

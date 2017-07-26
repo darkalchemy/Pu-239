@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
@@ -16,17 +16,17 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
     echo $HTMLOUT;
     exit();
 }
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'bbcode_functions.php';
-require_once INCL_DIR.'pager_functions.php';
-require_once INCL_DIR.'html_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'bbcode_functions.php';
+require_once INCL_DIR . 'pager_functions.php';
+require_once INCL_DIR . 'html_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_cloudview'));
 $HTMLOUT = '';
 if (isset($_POST['delcloud'])) {
-    $do = 'DELETE FROM searchcloud WHERE id IN ('.implode(', ', array_map('sqlesc', $_POST['delcloud'])).')';
+    $do = 'DELETE FROM searchcloud WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['delcloud'])) . ')';
     $res = sql_query($do);
     $mc1->delete_value('searchcloud');
     header('Refresh: 3; url=staffpanel.php?tool=cloudview&action=cloudview');
@@ -57,7 +57,7 @@ $pager = pager($perpage, $count, 'staffpanel.php?tool=cloudview&amp;action=cloud
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-$search_q = sql_query('SELECT id, searchedfor, ip, howmuch FROM searchcloud ORDER BY howmuch DESC '.$pager['limit']) or sqlerr(__FILE__, __LINE__);
+$search_q = sql_query('SELECT id, searchedfor, ip, howmuch FROM searchcloud ORDER BY howmuch DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= begin_main_frame($lang['cloudview_overview']);
 $HTMLOUT .= "
 <form method='post' action='staffpanel.php?tool=cloudview&amp;action=cloudview'>
@@ -69,13 +69,13 @@ $HTMLOUT .= "
 <td class='colhead' width='1%'>{$lang['cloudview_del']}</td></tr>\n";
 while ($arr = mysqli_fetch_assoc($search_q)) {
     $search_phrase = htmlsafechars($arr['searchedfor']);
-    $hits = (int) $arr['howmuch'];
+    $hits = (int)$arr['howmuch'];
     $ip = htmlsafechars($arr['ip']);
     $HTMLOUT .= "<tr>
 <td class='one' align='left'>$search_phrase</td>
 <td class='two' align='left'>$hits</td>
 <td class='two' align='left'>$ip</td>
-<td class='one' align='center'><input type='checkbox' name='delcloud[]' title='{$lang['cloudview_mark']}' value='".(int) $arr['id']."' /></td></tr>\n";
+<td class='one' align='center'><input type='checkbox' name='delcloud[]' title='{$lang['cloudview_mark']}' value='" . (int)$arr['id'] . "' /></td></tr>\n";
 }
 $HTMLOUT .= "<tr>
 <td colspan='4' class='colhead' align='right'>{$lang['cloudview_markall_search']}<input type='checkbox' title='{$lang['cloudview_markall']}' value='{$lang['cloudview_markall']}' onclick=\"this.value=check(form.elements);\" /></td></tr>
@@ -85,4 +85,4 @@ $HTMLOUT .= end_main_frame();
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($lang['cloudview_stdhead']).$HTMLOUT.stdfoot();
+echo stdhead($lang['cloudview_stdhead']) . $HTMLOUT . stdfoot();

@@ -1,6 +1,6 @@
 package require http
 
-set url "http://u-232.com/irc_stats.php"
+set url "irc_stats.php" ## add site url
 set hash "YXBwemZhbg"
 set chan "#09source"
 # staff commands (op +o)

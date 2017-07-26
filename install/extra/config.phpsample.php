@@ -1,7 +1,4 @@
 <?php
-/**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 error_reporting(E_ALL); //== turn off = 0 when live
 const REQUIRED_PHP = 50300, REQUIRED_PHP_VERSION = '5.3.0';
 if (PHP_VERSION_ID < REQUIRED_PHP) {
@@ -28,12 +25,12 @@ if (ini_get('default_charset') != $INSTALLER09['char_set']) {
 if (!function_exists('sys_getloadavg')) {
     function sys_getloadavg()
     {
-        return array(0, 0, 0);
+        return [0, 0, 0];
     }
 }
 /* Compare php version for date/time stuff etc! */
 if (version_compare(PHP_VERSION, '5.1.0RC1', '>=')) {
-    date_default_timezone_set('Europe/London');
+    date_default_timezone_set('Etc/UTC');
 }
 define('TIME_NOW', time());
 $INSTALLER09['time_adjust'] = 0;
@@ -58,7 +55,6 @@ $INSTALLER09['cookie_domain'] = '#cookie_domain'; // set to eg: .somedomain.com 
 $INSTALLER09['cookie_lifetime'] = 365; // length of time cookies will be valid
 $INSTALLER09['domain'] = '#domain';
 $INSTALLER09['sessionCookieSecure'] = null; // using HTTPS only? then set this
-
 //== Memcache expires
 $INSTALLER09['expires']['latestuser'] = 0; // 0 = infinite
 $INSTALLER09['expires']['MyPeers_'] = 120; // 60 = 60 seconds
@@ -75,8 +71,6 @@ $INSTALLER09['expires']['user_stats'] = 300; // 300 = 5 min
 $INSTALLER09['expires']['user_stats_xbt'] = 30; // 30 seconds
 $INSTALLER09['expires']['MyPeers_xbt_'] = 30;
 $INSTALLER09['expires']['announcement'] = 600; // 600 = 10 min
-$INSTALLER09['expires']['shoutbox'] = 86400; // 86400 = 1 day
-$INSTALLER09['expires']['staff_shoutbox'] = 86400; // 86400 = 1 day
 $INSTALLER09['expires']['forum_posts'] = 0;
 $INSTALLER09['expires']['torrent_comments'] = 900; // 900 = 15 min
 $INSTALLER09['expires']['latestposts'] = 0; // 900 = 15 min
@@ -151,6 +145,7 @@ $INSTALLER09['minvotes'] = 1;
 $INSTALLER09['max_dead_torrent_time'] = 6 * 3600;
 $INSTALLER09['language'] = 1;
 $INSTALLER09['bot_id'] = 2;
+$INSTALLER09['chatBotName'] = 'SillyBOT'; // Change this to the bot username
 $INSTALLER09['staffpanel_online'] = 1;
 $INSTALLER09['irc_autoshout_on'] = 1;
 $INSTALLER09['crazy_hour'] = false; //== Off for XBT
@@ -202,7 +197,7 @@ if (XBT_TRACKER == true) {
     $INSTALLER09['xbt_suffix'] = '/announce';
     $INSTALLER09['announce_urls'][] = '#announce_urls:2710/announce';
 } else {
-    $INSTALLER09['announce_urls'] = array();
+    $INSTALLER09['announce_urls'] = [];
     $INSTALLER09['announce_urls'][] = '#announce_urls';
     $INSTALLER09['announce_urls'][] = '#announce_https';
 }
@@ -226,20 +221,20 @@ $INSTALLER09['categorie_icon'] = 1;
 $INSTALLER09['comment_min_class'] = 4; //minim class to be checked when posting comments
 $INSTALLER09['comment_check'] = 1; //set it to 0 if you wanna allow commenting with out staff checking
 //for subs & youtube mode
-$INSTALLER09['movie_cats'] = array(
+$INSTALLER09['movie_cats'] = [
     3,
     5,
     6,
     10,
     11,
-);
-$INSTALLER09['slider_cats'] = array(
+];
+$INSTALLER09['slider_cats'] = [
     3,
     5,
     6,
     10,
     11,
-);
+];
 $INSTALLER09['moviecats'] = '3,5,6,10,11';
 $youtube_pattern = "/^http(s)?\:\/\/www\.youtube\.com\/watch\?v\=[\w-]{11}/i";
 //== set this to size of user avatars
@@ -249,11 +244,11 @@ $INSTALLER09['av_img_width'] = 100;
 $INSTALLER09['sig_img_height'] = 100;
 $INSTALLER09['sig_img_width'] = 500;
 $INSTALLER09['bucket_allowed'] = 0;
-$INSTALLER09['allowed_ext'] = array(
+$INSTALLER09['allowed_ext'] = [
     'image/gif',
-    'image/png',
+    'image.jpg',
     'image/jpeg',
-);
+];
 $INSTALLER09['bucket_maxsize'] = 500 * 1024; //max size set to 500kb
 //==Class check by pdq
 $INSTALLER09['site']['owner'] = 1;
@@ -265,9 +260,12 @@ $INSTALLER09['staff']['staff_pin'] = 'uFie0y3Ihjkij8'; // should be mix of u/l c
 $INSTALLER09['staff']['owner_pin'] = 'jjko4kuogqhjj0'; // should be mix of u/l case and min 12 chars length
 //== Staff forum ID for autopost
 $INSTALLER09['staff']['forumid'] = 2; // this forum ID should exist and be a staff forum
-$INSTALLER09['staff_forums'] = array(
+$INSTALLER09['staff_forums'] = [
     1,
     2,
-); // these forum ID's' should exist and be a staff forum's to stop autoshouts
-$INSTALLER09['variant'] = 'U-232 V4';
+]; // these forum ID's' should exist and be a staff forum's to stop autoshouts
+$INSTALLER09['variant'] = 'P-239 V1';
 define('TBVERSION', $INSTALLER09['variant']);
+// for cache busting
+$INSTALLER09['code_version'] = 999;  // increment when updating css or js
+$INSTALLER09['jquery_version'] = '2.2.4'; // jquery version

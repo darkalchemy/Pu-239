@@ -36,14 +36,14 @@ if (!file_exists($datafile)) {
 
 //===[ Load $datafile, extract ImdbIDs. If no valid IDs found exit ]===
 $tids = file($datafile);
-$imdbimds = array();
+$imdbimds = [];
 foreach ($tids as $tid) {
     preg_match('!.*(\d{7}).*!s', $tid, $id); // ImdbId = 7 digits
     if (!empty($id)) {
         $imdbids[] = $id[1];
     }
 }
-unset($tids,$tid,$id);
+unset($tids, $tid, $id);
 if (empty($imdbids)) {
     if (file_exists($resultfile)) {
         unlink($resultfile);
@@ -71,30 +71,30 @@ $xml = "<?xml version='1.0' encoding='iso-8859-15'?>\n<imdbdata>\n"; // start XM
 foreach ($imdbids as $imdbid) { // process each ID
     $movie = new imdb($imdbid);
     $xml .= "  <movie>\n"
-       ."    <imdbid>$imdbid</imdbid>\n"
-       .elem('title', $movie->title())
-       .elem('year', $movie->year())
-       .elem('rating', $movie->rating())
-       .elem('votes', $movie->votes())
-       .elem('tagline', $movie->tagline(), true)
-       .elem('plot', $movie->plotoutline(), true);
+        . "    <imdbid>$imdbid</imdbid>\n"
+        . elem('title', $movie->title())
+        . elem('year', $movie->year())
+        . elem('rating', $movie->rating())
+        . elem('votes', $movie->votes())
+        . elem('tagline', $movie->tagline(), true)
+        . elem('plot', $movie->plotoutline(), true);
     $people = '';
     foreach ($movie->prodCompany() as $person) {
-        $people .= ';'.$person['name'];
+        $people .= ';' . $person['name'];
     }
     if (!empty($people)) {
         $xml .= elem('company', substr($people, 1));
     }
     $people = '';
     foreach ($movie->director() as $person) {
-        $people .= ';'.$person['name'];
+        $people .= ';' . $person['name'];
     }
     if (!empty($people)) {
         $xml .= elem('director', substr($people, 1));
     }
     $people = '';
     foreach ($movie->cast() as $person) {
-        $people .= ';'.$person['name'];
+        $people .= ';' . $person['name'];
     }
     if (!empty($people)) {
         $xml .= elem('actor', substr($people, 1));
@@ -114,7 +114,7 @@ foreach ($imdbids as $imdbid) { // process each ID
     $xml .= "  </movie>\n";
 }
 
-file_put_contents($resultfile, $xml."</imdbdata>\n");
+file_put_contents($resultfile, $xml . "</imdbdata>\n");
 
 //#####################################################################
 // EOF

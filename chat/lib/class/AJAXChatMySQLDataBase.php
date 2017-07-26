@@ -55,25 +55,28 @@ class AJAXChatDataBaseMySQL
     }
 
     // Method to determine if an error has occured:
-    public function error()
-    {
-        return (bool) $this->_error;
-    }
 
-    // Method to return the error report:
     public function getError()
     {
         if ($this->error()) {
-            $str = 'Error-Report: '.$this->_error."\n";
-            $str .= 'Error-Code: '.$this->_errno."\n";
+            $str = 'Error-Report: ' . $this->_error . "\n";
+            $str .= 'Error-Code: ' . $this->_errno . "\n";
         } else {
-            $str = 'No errors.'."\n";
+            $str = 'No errors.' . "\n";
         }
 
         return $str;
     }
 
+    // Method to return the error report:
+
+    public function error()
+    {
+        return (bool)$this->_error;
+    }
+
     // Method to return the connection identifier:
+
     public function &getConnectionID()
     {
         return $this->_connectionID;
@@ -82,7 +85,7 @@ class AJAXChatDataBaseMySQL
     // Method to prevent SQL injections:
     public function makeSafe($value)
     {
-        return "'".mysql_real_escape_string($value, $this->_connectionID)."'";
+        return "'" . mysql_real_escape_string($value, $this->_connectionID) . "'";
     }
 
     // Method to perform SQL queries:

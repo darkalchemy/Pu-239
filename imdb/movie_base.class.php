@@ -1,20 +1,21 @@
 <?php
- //############################################################################
- // IMDBPHP.Movie                                         (c) Itzchak Rehberg #
- // written by Itzchak Rehberg <izzysoft AT qumran DOT org>                   #
- // http://www.izzysoft.de/                                                   #
- // ------------------------------------------------------------------------- #
- // This program is free software; you can redistribute and/or modify it      #
- // under the terms of the GNU General Public License (see doc/LICENSE)       #
- //############################################################################
+//############################################################################
+// IMDBPHP.Movie                                         (c) Itzchak Rehberg #
+// written by Itzchak Rehberg <izzysoft AT qumran DOT org>                   #
+// http://www.izzysoft.de/                                                   #
+// ------------------------------------------------------------------------- #
+// This program is free software; you can redistribute and/or modify it      #
+// under the terms of the GNU General Public License (see doc/LICENSE)       #
+//############################################################################
 
- /* $Id: movie_base.class.php 622 2013-10-23 08:36:34Z izzy $ */
+/* $Id: movie_base.class.php 622 2013-10-23 08:36:34Z izzy $ */
 
- require_once dirname(__FILE__).'/browseremulator.class.php';
- require_once dirname(__FILE__).'/mdb_base.class.php';
- require_once dirname(__FILE__).'/mdb_request.class.php';
+require_once dirname(__FILE__) . '/browseremulator.class.php';
+require_once dirname(__FILE__) . '/mdb_base.class.php';
+require_once dirname(__FILE__) . '/mdb_request.class.php';
 
 //===================================================[ The Movie Base class ]===
+
 /** Accessing Movie information
  * @class movie_base
  * @extends mdb_base
@@ -75,29 +76,29 @@ class movie_base extends mdb_base
         $this->page['Locations'] = '';
         $this->page['VideoSites'] = '';
 
-        $this->akas = array();
-        $this->awards = array();
-        $this->countries = array();
-        $this->castlist = array(); // pilot only
-        $this->crazy_credits = array();
-        $this->credits_cast = array();
-        $this->credits_composer = array();
-        $this->credits_director = array();
-        $this->credits_producer = array();
-        $this->credits_writing = array();
-        $this->extreviews = array();
-        $this->goofs = array();
-        $this->langs = array();
-        $this->langs_full = array();
+        $this->akas = [];
+        $this->awards = [];
+        $this->countries = [];
+        $this->castlist = []; // pilot only
+        $this->crazy_credits = [];
+        $this->credits_cast = [];
+        $this->credits_composer = [];
+        $this->credits_director = [];
+        $this->credits_producer = [];
+        $this->credits_writing = [];
+        $this->extreviews = [];
+        $this->goofs = [];
+        $this->langs = [];
+        $this->langs_full = [];
         $this->aspectratio = '';
         $this->main_comment = '';
         $this->main_genre = '';
-        $this->main_keywords = array();
-        $this->all_keywords = array();
+        $this->main_keywords = [];
+        $this->all_keywords = [];
         $this->main_language = '';
         $this->main_photo = '';
         $this->main_thumb = '';
-        $this->main_pictures = array();
+        $this->main_pictures = [];
         $this->main_plotoutline = '';
         $this->main_rating = -1;
         $this->main_runtime = '';
@@ -107,44 +108,44 @@ class movie_base extends mdb_base
         $this->main_votes = -1;
         $this->main_year = -1;
         $this->main_endyear = -1;
-        $this->main_yearspan = array();
-        $this->main_creator = array();
+        $this->main_yearspan = [];
+        $this->main_creator = [];
         $this->main_tagline = '';
         $this->main_storyline = '';
-        $this->main_prodnotes = array();
-        $this->main_movietypes = array();
+        $this->main_prodnotes = [];
+        $this->main_movietypes = [];
         $this->main_top250 = -1;
-        $this->moviecolors = array();
-        $this->movieconnections = array();
-        $this->moviegenres = array();
-        $this->moviequotes = array();
-        $this->movierecommendations = array();
-        $this->movieruntimes = array();
-        $this->mpaas = array();
-        $this->mpaas_hist = array();
+        $this->moviecolors = [];
+        $this->movieconnections = [];
+        $this->moviegenres = [];
+        $this->moviequotes = [];
+        $this->movierecommendations = [];
+        $this->movieruntimes = [];
+        $this->mpaas = [];
+        $this->mpaas_hist = [];
         $this->mpaa_justification = '';
-        $this->plot_plot = array();
+        $this->plot_plot = [];
         $this->synopsis_wiki = '';
-        $this->release_info = array();
+        $this->release_info = [];
         $this->seasoncount = -1;
-        $this->season_episodes = array();
-        $this->sound = array();
-        $this->soundtracks = array();
-        $this->split_comment = array();
-        $this->split_plot = array();
-        $this->taglines = array();
-        $this->trailers = array();
-        $this->video_sites = array();
-        $this->soundclip_sites = array();
-        $this->photo_sites = array();
-        $this->misc_sites = array();
-        $this->trivia = array();
-        $this->compcred_prod = array();
-        $this->compcred_dist = array();
-        $this->compcred_special = array();
-        $this->compcred_other = array();
-        $this->parental_guide = array();
-        $this->official_sites = array();
-        $this->locations = array();
+        $this->season_episodes = [];
+        $this->sound = [];
+        $this->soundtracks = [];
+        $this->split_comment = [];
+        $this->split_plot = [];
+        $this->taglines = [];
+        $this->trailers = [];
+        $this->video_sites = [];
+        $this->soundclip_sites = [];
+        $this->photo_sites = [];
+        $this->misc_sites = [];
+        $this->trivia = [];
+        $this->compcred_prod = [];
+        $this->compcred_dist = [];
+        $this->compcred_special = [];
+        $this->compcred_other = [];
+        $this->parental_guide = [];
+        $this->official_sites = [];
+        $this->locations = [];
     }
 } // end class movie_base

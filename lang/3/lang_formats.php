@@ -1,16 +1,16 @@
 <?php
 
-$lang = array(
+$lang = [
     //FORMATS
-    'formats_download_title' => 'Downloaded Files',
-    'formats_guide_heading' => "A Handy Guide to Using the Files You've Downloaded",
-    'formats_guide_body' => "Hey guys, here's some info about common files that you can download from the internet,
+    'formats_download_title'    => 'Downloaded Files',
+    'formats_guide_heading'     => "A Handy Guide to Using the Files You've Downloaded",
+    'formats_guide_body'        => "Hey guys, here's some info about common files that you can download from the internet,
 and a little bit about using these files for their intended purposes. If you're stuck
 on what exactly a file is or how to open it maybe your answer lies ahead. If you dont'
 find your answer here, then please post in the 'Forum'. So without further adieu lets
 get the show on the road!<br />",
     'formats_compression_title' => 'Compression Files',
-    'formats_compression_body' => "<b>.rar .zip .ace .r01 .001</b><br />
+    'formats_compression_body'  => "<b>.rar .zip .ace .r01 .001</b><br />
 <br />
 These extensions are quite common and mean that your file(s) are compressed into an 'archive'.<br />
 This is just a way of making the files more compact and easier to download.<br />
@@ -32,8 +32,8 @@ opening them with WinRAR or WinZip it will disorder your pages. To display these
 archives properly it's often best to use <a href='http://www.geocities.com/davidayton/CDisplay'>
 CDisplay</a>.<br />
 <br />",
-    'formats_multimedia_title' => 'Multimedia Files',
-    'formats_multimedia_body' => "<b>.avi .mpg. .mpeg .divx .xvid .wmv</b><br />
+    'formats_multimedia_title'  => 'Multimedia Files',
+    'formats_multimedia_body'   => "<b>.avi .mpg. .mpeg .divx .xvid .wmv</b><br />
 <br />
 These files are usually movies or TVshows, or a host of other types of media. They can
 be viewed using various media players, but I suggest using
@@ -98,8 +98,8 @@ probably want to download the <a href='http://tobias.everwicked.com/oggds.htm'>
 DirectShow Ogg filter</a> to play back OGM files. Any new version of
 <a href='http://www.winamp.com'>WinAmp</a> will also do.<br />
 <br />",
-    'formats_image_title' => 'CD Image Files',
-    'formats_image_body' => "<b>.bin and .cue</b><br />
+    'formats_image_title'       => 'CD Image Files',
+    'formats_image_body'        => "<b>.bin and .cue</b><br />
 <br />
 These are your standard images of a CD, and are used quite alot these days. To open them
 you have a couple options. You can burn them using <a href='http://www.ahead.de'>Nero</a>
@@ -130,8 +130,8 @@ problematic .bin and .cue file to an .iso can help you burn it to a cd.<br />
 All these files go together and are in the <a href='http://www.elby.ch/english/products/clone_cd/index.html'> CloneCD</a> format. CloneCD is like most other CD-Burning programs,
 see the .bin and .cue section if you're having problems with these files.<br />
 <br />",
-    'formats_other_title' => 'Other Files',
-    'formats_other_body' => "<b>.txt .doc</b><br />
+    'formats_other_title'       => 'Other Files',
+    'formats_other_body'        => "<b>.txt .doc</b><br />
 <br />
 These are text files. .txt files can be opened with notepad or watever you default text
 editor happens to be, and .doc are opened with Microsoft Word.<br />
@@ -169,7 +169,7 @@ This is a parity file, and is often used when downloading from newsgroups. These
 fill in gaps when you're downloading a multi-volume archive and get corrupted or missing parts.
 Open them with <a href='http://www.pbclements.co.uk/QuickPar/'>QuickPar</a>.
 <br />",
-    'formats_questions' => "If you have any suggestion/changes <a href='staff.php'><b>PM</b></a> one of the Admins/SysOp!<br />
+    'formats_questions'         => "If you have any suggestion/changes <a href='staff.php'><b>PM</b></a> one of the Admins/SysOp!<br />
 <br />
 This file was originally written by hussdiesel at filesoup, then edited by Rhomboid and re-edited by us.<br />",
-);
+];

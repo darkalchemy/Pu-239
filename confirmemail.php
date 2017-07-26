@@ -1,9 +1,9 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
 $lang = array_merge(load_language('global'), load_language('confirmemail'));
 if (!isset($_GET['uid']) or !isset($_GET['key']) or !isset($_GET['email'])) {
     stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_idiot']}");
@@ -21,7 +21,7 @@ if (!validemail($email)) {
     stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_false_email']}");
 }
 dbconn();
-$res = sql_query('SELECT editsecret FROM users WHERE id ='.sqlesc($id));
+$res = sql_query('SELECT editsecret FROM users WHERE id =' . sqlesc($id));
 $row = mysqli_fetch_assoc($res);
 if (!$row) {
     stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_not_complete']}");
@@ -30,21 +30,21 @@ $sec = $row['editsecret'];
 if (preg_match('/^ *$/s', $sec)) {
     stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_not_complete']}");
 }
-if ($md5 != md5($sec.$email.$sec)) {
+if ($md5 != md5($sec . $email . $sec)) {
     stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_not_complete']}");
 }
-sql_query("UPDATE users SET editsecret='', email=".sqlesc($email).' WHERE id='.sqlesc($id).' AND editsecret='.sqlesc($row['editsecret']));
-$mc1->begin_transaction('MyUser_'.$id);
-$mc1->update_row(false, array(
+sql_query("UPDATE users SET editsecret='', email=" . sqlesc($email) . ' WHERE id=' . sqlesc($id) . ' AND editsecret=' . sqlesc($row['editsecret']));
+$mc1->begin_transaction('MyUser_' . $id);
+$mc1->update_row(false, [
     'editsecret' => '',
-    'email' => $email,
-));
+    'email'      => $email,
+]);
 $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
-$mc1->begin_transaction('user'.$id);
-$mc1->update_row(false, array(
+$mc1->begin_transaction('user' . $id);
+$mc1->update_row(false, [
     'editsecret' => '',
-    'email' => $email,
-));
+    'email'      => $email,
+]);
 $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
 if (!mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
     stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_not_complete']}");

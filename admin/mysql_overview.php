@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
@@ -16,8 +16,8 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
     echo $HTMLOUT;
     exit();
 }
-require_once INCL_DIR.'user_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 class_check(UC_MAX);
 $lang = array_merge($lang, load_language('ad_mysql_overview'));
 //Do we wanna continue here, or skip to just the overview?
@@ -25,13 +25,13 @@ if (isset($_GET['Do']) && isset($_GET['table'])) {
     $Do = ($_GET['Do'] === 'T') ? sqlesc($_GET['Do']) : ''; //for later use!
     //Make sure the GET only has alpha letters and nothing else
     if (!ereg('[^A-Za-z_]+', $_GET['table'])) {
-        $Table = '`'.$_GET['table'].'`'; //add backquotes to GET or we is doomed!
+        $Table = '`' . $_GET['table'] . '`'; //add backquotes to GET or we is doomed!
     } else {
         stderr($lang['mysql_over_error'], $lang['mysql_over_pg']); //Silly boy doh!!
     }
     $sql = "OPTIMIZE TABLE $Table";
     //preg match the sql incase it was hijacked somewhere!(will use CHECK|ANALYZE|REPAIR|later
-    if (preg_match('@^(CHECK|ANALYZE|REPAIR|OPTIMIZE)[[:space:]]TABLE[[:space:]]'.$Table.'$@i', $sql)) {
+    if (preg_match('@^(CHECK|ANALYZE|REPAIR|OPTIMIZE)[[:space:]]TABLE[[:space:]]' . $Table . '$@i', $sql)) {
         //all good? Do it!
         @sql_query($sql) or sqlerr(__FILE__, __LINE__);
         header("Location: {$INSTALLER09['baseurl']}/staffpanel.php?tool=mysql_overview&action=mysql_overview&Do=F");
@@ -39,7 +39,7 @@ if (isset($_GET['Do']) && isset($_GET['table'])) {
     }
 }
 //byteunit array to prime formatByteDown function
-$GLOBALS['byteUnits'] = array(
+$GLOBALS['byteUnits'] = [
     'Bytes',
     'KB',
     'MB',
@@ -47,7 +47,7 @@ $GLOBALS['byteUnits'] = array(
     'TB',
     'PB',
     'EB',
-);
+];
 function byteformat($value, $limes = 2, $comma = 0)
 {
     $dh = pow(10, $comma);
@@ -67,10 +67,10 @@ function byteformat($value, $limes = 2, $comma = 0)
         $return_value = number_format($value, 0, '.', ',');
     }
 
-    return array(
+    return [
         $return_value,
         $unit,
-    );
+    ];
 } // end of the 'formatByteDown' function
 ////////////////// END FUNCTION LIST /////////////////////////
 $HTMLOUT = '';
@@ -115,10 +115,10 @@ while ($row = mysqli_fetch_array($res)) {
     list($formatted_Dfree, $formatted_Fbytes) = byteformat($row['Data_free']);
     $tablesize = ($row['Data_length']) + ($row['Index_length']);
     list($formatted_Tsize, $formatted_Tbytes) = byteformat($tablesize, 3, ($tablesize > 0) ? 1 : 0);
-    $thispage = '&amp;Do=T&amp;table='.urlencode($row['Name']);
+    $thispage = '&amp;Do=T&amp;table=' . urlencode($row['Name']);
     $overhead = ($formatted_Dfree > 0) ? "<a href='staffpanel.php?tool=mysql_overview&amp;action=mysql_overview$thispage'><font color='red'><b>$formatted_Dfree $formatted_Fbytes</b></font></a>" : "$formatted_Dfree $formatted_Fbytes";
     $HTMLOUT .= "<tr align='right'>
-          <td align='left'><span style='font-weight:bold;'>".strtoupper($row['Name'])."</span></td>
+          <td align='left'><span style='font-weight:bold;'>" . strtoupper($row['Name']) . "</span></td>
           <td>{$formatted_Tsize} {$formatted_Tbytes}</td>
           <td>{$row['Rows']}</td>
           <td>{$formatted_Avg} {$formatted_Abytes}</td>
@@ -142,4 +142,4 @@ $HTMLOUT .= "<tr>
 
     <!-- End table -->
     </table>";
-echo stdhead($lang['mysql_over_stdhead']).$HTMLOUT.stdfoot();
+echo stdhead($lang['mysql_over_stdhead']) . $HTMLOUT . stdfoot();

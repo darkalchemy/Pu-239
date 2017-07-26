@@ -1,19 +1,19 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 // topmoods.php for PTF by pdq 2011
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
 dbconn(false);
 loggedinorreturn();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'));
-$stdhead = array(
-    'js' => array(
+$stdhead = [
+    'js' => [
         'popup',
-    ),
-);
+    ],
+];
 $HTMLOUT .= '<table>
       <tr>
       <td class="embedded">
@@ -30,14 +30,14 @@ $abba = '<h2>Top Moods</h2>
 $key = 'topmoods';
 $topmoods = $mc1->get_value($key);
 if ($topmoods === false) {
-    $res = sql_query('SELECT moods.*, users.mood, COUNT(users.mood) as moodcount '.'FROM users LEFT JOIN moods ON (users.mood = moods.id) GROUP BY users.mood '.'ORDER BY moodcount DESC, moods.id ASC') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT moods.*, users.mood, COUNT(users.mood) as moodcount ' . 'FROM users LEFT JOIN moods ON (users.mood = moods.id) GROUP BY users.mood ' . 'ORDER BY moodcount DESC, moods.id ASC') or sqlerr(__FILE__, __LINE__);
     while ($arr = mysqli_fetch_assoc($res)) {
-        $topmoods .= '<tr><td align="center">'.(int) $arr['moodcount'].'</td>
-                 <td align="center">'.htmlsafechars($arr['name']).' '.($arr['bonus'] == 1 ? '<a href="/mybonus.php" style="color:lime">(bonus)</a>' : '').'</td>
-                 <td align="center"><img src="'.$INSTALLER09['pic_base_url'].'smilies/'.htmlsafechars($arr['image']).'" alt="" /></td>
+        $topmoods .= '<tr><td align="center">' . (int)$arr['moodcount'] . '</td>
+                 <td align="center">' . htmlsafechars($arr['name']) . ' ' . ($arr['bonus'] == 1 ? '<a href="/mybonus.php" style="color:lime">(bonus)</a>' : '') . '</td>
+                 <td align="center"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt="" /></td>
                  </tr>';
     }
     $mc1->add_value($key, $topmoods, 0);
 }
-$HTMLOUT .= $abba.$topmoods.'</table>';
-echo stdhead('Top Moods').$HTMLOUT.stdfoot($stdhead);
+$HTMLOUT .= $abba . $topmoods . '</table>';
+echo stdhead('Top Moods') . $HTMLOUT . stdfoot($stdhead);

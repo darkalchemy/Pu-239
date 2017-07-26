@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 require_once 'include/ann_config.php';
 require_once 'include/ann_functions.php';
@@ -10,20 +10,20 @@ function error($err)
 {
     header('Content-Type: text/plain; charset=UTF-8');
     header('Pragma: no-cache');
-    exit('d14:failure reason'.strlen($err).":{$err}ed5:flagsd20:min_request_intervali1800eeee");
+    exit('d14:failure reason' . strlen($err) . ":{$err}ed5:flagsd20:min_request_intervali1800eeee");
 }
 
 function getip()
 {
-    foreach (array(
-        'HTTP_CLIENT_IP',
-        'HTTP_X_FORWARDED_FOR',
-        'HTTP_X_FORWARDED',
-        'HTTP_X_CLUSTER_CLIENT_IP',
-        'HTTP_FORWARDED_FOR',
-        'HTTP_FORWARDED',
-        'REMOTE_ADDR',
-    ) as $key) {
+    foreach ([
+                 'HTTP_CLIENT_IP',
+                 'HTTP_X_FORWARDED_FOR',
+                 'HTTP_X_FORWARDED',
+                 'HTTP_X_CLUSTER_CLIENT_IP',
+                 'HTTP_FORWARDED_FOR',
+                 'HTTP_FORWARDED',
+                 'REMOTE_ADDR',
+             ] as $key) {
         if (array_key_exists($key, $_SERVER) === true) {
             foreach (array_map('trim', explode(',', $_SERVER[$key])) as $ip) {
                 if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false) {
@@ -37,18 +37,20 @@ function getip()
 function check_bans($ip, &$reason = '')
 {
     global $INSTALLER09, $mc1;
-    $key = 'bans:::'.$ip;
+    $key = 'bans:::' . $ip;
     if (($ban = $mc1->get_value($key)) === false) {
         $nip = ip2long($ip);
-        $ban_sql = sql_query('SELECT comment FROM bans WHERE (first <= '.$nip.' AND last >= '.$nip.') LIMIT 1');
+        $ban_sql = sql_query('SELECT comment FROM bans WHERE (first <= ' . $nip . ' AND last >= ' . $nip . ') LIMIT 1');
         if (mysqli_num_rows($ban_sql)) {
             $comment = mysqli_fetch_row($ban_sql);
-            $reason = 'Manual Ban ('.$comment[0].')';
+            $reason = 'Manual Ban (' . $comment[0] . ')';
             $mc1->cache_value($key, $reason, 86400); // 86400 // banned
+
             return true;
         }
         ((mysqli_free_result($ban_sql) || (is_object($ban_sql) && (get_class($ban_sql) == 'mysqli_result'))) ? true : false);
         $mc1->cache_value($key, 0, 86400); // 86400 // not banned
+
         return false;
     } elseif (!$ban) {
         return false;
@@ -60,7 +62,7 @@ function check_bans($ip, &$reason = '')
 }
 
 $q = explode('&', $_SERVER['QUERY_STRING']);
-$_GET = array();
+$_GET = [];
 foreach ($q as $p) {
     $ps = explode('=', $p, 2);
     $p1 = rawurldecode(trim($ps[0]));
@@ -71,7 +73,7 @@ foreach ($q as $p) {
         } elseif (!is_array($_GET[$p1])) {
             $temp = $_GET[$p1];
             unset($_GET[$p1]);
-            $_GET[$p1] = array();
+            $_GET[$p1] = [];
             $_GET[$p1][] = $temp;
             $_GET[$p1][] = $p2;
         } else {
@@ -89,7 +91,7 @@ if (isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) != 32) {
             $_GET[$matches[2]] = $valget;
         } elseif (!is_array($_GET[$matches[2]])) {
             $temp = $_GET[$matches[2]];
-            $_GET[$matches[2]] = array();
+            $_GET[$matches[2]] = [];
             $_GET[$matches[2]][] = $temp;
             $_GET[$matches[2]][] = $valget;
         } else {
@@ -111,9 +113,9 @@ if (!$torrent_pass) {
 if (!@($GLOBALS['___mysqli_ston'] = mysqli_connect($INSTALLER09['mysql_host'], $INSTALLER09['mysql_user'], $INSTALLER09['mysql_pass']))) {
     exit();
 }
-@((bool) mysqli_query($GLOBALS['___mysqli_ston'], "USE {$INSTALLER09['mysql_db']}")) or exit();
+@((bool)mysqli_query($GLOBALS['___mysqli_ston'], "USE {$INSTALLER09['mysql_db']}")) or exit();
 $numhash = count($_GET['info_hash']);
-$torrents = array();
+$torrents = [];
 if ($numhash < 1) {
     die('Scrape Error d5:filesdee');
 } elseif ($numhash == 1) {
@@ -148,7 +150,7 @@ if (!$user['perms'] & bt_options::PERMS_BYPASS_BAN) {
 */
 $r = 'd5:filesd';
 foreach ($torrents as $info_hash => $torrent) {
-    $r .= '20:'.$info_hash.'d8:completei'.$torrent['seeders'].'e10:downloadedi'.$torrent['times_completed'].'e10:incompletei'.$torrent['leechers'].'ee';
+    $r .= '20:' . $info_hash . 'd8:completei' . $torrent['seeders'] . 'e10:downloadedi' . $torrent['times_completed'] . 'e10:incompletei' . $torrent['leechers'] . 'ee';
 }
 $r .= 'ee';
 header('Content-Type: text/plain; charset=UTF-8');

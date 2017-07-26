@@ -1,6 +1,6 @@
 <?php
 
-$lang = array(
+$lang = [
     //invite errors
     'bonus_error' => 'Error',
-);
+];

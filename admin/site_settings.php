@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
@@ -16,7 +16,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
     echo $HTMLOUT;
     exit();
 }
-require_once CLASS_DIR.'class_check.php';
+require_once CLASS_DIR . 'class_check.php';
 class_check(UC_MAX);
 /* add your ids to this check*/
 /*
@@ -32,7 +32,7 @@ while ($ac = mysqli_fetch_assoc($pconf)) {
     $site_settings[$ac['name']] = $ac['value'];
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $update = array();
+    $update = [];
     //can't be 0
     /*
     foreach(array('site_online'>0,'autoshout_on'>0,'seedbonus_on'>0,'forums_online'>0,'maxusers'>0,'invites'>0,'failedlogins'>0, 'totalneeded'>0) as $key=>$type) {
@@ -42,17 +42,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     */
     foreach ($site_settings as $c_name => $c_value) {
         if (isset($_POST[$c_name]) && $_POST[$c_name] != $c_value) {
-            $update[] = '('.sqlesc($c_name).','.sqlesc(is_array($_POST[$c_name]) ? join('|', $_POST[$c_name]) : $_POST[$c_name]).')';
+            $update[] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($_POST[$c_name]) ? join('|', $_POST[$c_name]) : $_POST[$c_name]) . ')';
         }
     }
-    if (sql_query('INSERT INTO site_config(name,value) VALUES '.join(',', $update).' ON DUPLICATE KEY update value=values(value)')) {
+    if (sql_query('INSERT INTO site_config(name,value) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY update value=values(value)')) {
         $t = '$INSTALLER09';
-        $configfile = '<'."?php\n/**\n{$lang['sitesettings_file']}".date('M d Y H:i:s').".\n{$lang['sitesettings_cfg']}\n**/\n";
+        $configfile = '<' . "?php\n/**\n{$lang['sitesettings_file']}" . date('M d Y H:i:s') . ".\n{$lang['sitesettings_cfg']}\n**/\n";
         $res = sql_query('SELECT * from site_config ');
         while ($arr = mysqli_fetch_assoc($res)) {
-            $configfile .= ''.$t."['$arr[name]'] = $arr[value];\n";
+            $configfile .= '' . $t . "['$arr[name]'] = $arr[value];\n";
         }
-        $configfile .= '?'.'>';
+        $configfile .= '?' . '>';
         $filenum = fopen('./cache/site_settings.php', 'w');
         ftruncate($filenum, 0);
         fwrite($filenum, $configfile);
@@ -67,29 +67,29 @@ $HTMLOUT .= "<h3>{$lang['sitesettings_sitehead']}</h3>
 <form action='staffpanel.php?tool=site_settings' method='post'>
 <table width='100%' border='1' cellpadding='5' cellspacing='0' >";
 if ($CURUSER['id'] === 1) {
-    $HTMLOUT .= "<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_online']}</td><td class='table' align='left'>{$lang['sitesettings_yes']}<input class='table' type='radio' name='site_online' value='1' ".($site_settings['site_online'] ? 'checked=\'checked\'' : '')." />{$lang['sitesettings_no']}<input class='table' type='radio' name='site_online' value='0' ".(!$site_settings['site_online'] ? 'checked=\'checked\'' : '').' /></td></tr>';
+    $HTMLOUT .= "<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_online']}</td><td class='table' align='left'>{$lang['sitesettings_yes']}<input class='table' type='radio' name='site_online' value='1' " . ($site_settings['site_online'] ? 'checked=\'checked\'' : '') . " />{$lang['sitesettings_no']}<input class='table' type='radio' name='site_online' value='0' " . (!$site_settings['site_online'] ? 'checked=\'checked\'' : '') . ' /></td></tr>';
 }
-$HTMLOUT .= "<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_autoshout']}</td><td class='table' align='left'>{$lang['sitesettings_yes']}<input class='table' type='radio' name='autoshout_on' value='1' ".($site_settings['autoshout_on'] ? 'checked=\'checked\'' : '')." />{$lang['sitesettings_no']}<input class='table' type='radio' name='autoshout_on' value='0' ".(!$site_settings['autoshout_on'] ? 'checked=\'checked\'' : '')." /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_seedbonus']}</td><td class='table' align='left'>{$lang['sitesettings_yes']}<input class='table' type='radio' name='seedbonus_on' value='1' ".($site_settings['seedbonus_on'] ? 'checked=\'checked\'' : '')." />{$lang['sitesettings_no']}<input class='table' type='radio' name='seedbonus_on' value='0' ".(!$site_settings['seedbonus_on'] ? 'checked=\'checked\'' : '')." /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_bpdur']}</td><td class='table' align='left'><input type='text' name='bonus_per_duration' size='3' value='".htmlsafechars($site_settings['bonus_per_duration'])."' /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_bpdload']}</td><td class='table' align='left'><input type='text' name='bonus_per_download' size='3' value='".htmlsafechars($site_settings['bonus_per_download'])."' /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_bpcomm']}</td><td class='table' align='left'><input type='text' name='bonus_per_comment' size='3' value='".htmlsafechars($site_settings['bonus_per_comment'])."' /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_bpupload']}</td><td class='table' align='left'><input type='text' name='bonus_per_upload' size='3' value='".htmlsafechars($site_settings['bonus_per_upload'])."' /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_bprate']}</td><td class='table' align='left'><input type='text' name='bonus_per_rating' size='3' value='".htmlsafechars($site_settings['bonus_per_rating'])."' /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_bptopic']}</td><td class='table' align='left'><input type='text' name='bonus_per_topic' size='3' value='".htmlsafechars($site_settings['bonus_per_topic'])."' /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_bppost']}</td><td class='table' align='left'><input type='text' name='bonus_per_post' size='3' value='".htmlsafechars($site_settings['bonus_per_post'])."' /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_bpdel']}</td><td class='table' align='left'><input type='text' name='bonus_per_delete' size='3' value='".htmlsafechars($site_settings['bonus_per_delete'])."' /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_bptnk']}</td><td class='table' align='left'><input type='text' name='bonus_per_thanks' size='3' value='".htmlsafechars($site_settings['bonus_per_thanks'])."' /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_forums']}</td><td class='table' align='left'>{$lang['sitesettings_yes']}<input class='table' type='radio' name='forums_online' value='1' ".($site_settings['forums_online'] ? 'checked=\'checked\'' : '')." />{$lang['sitesettings_no']}<input class='table' type='radio' name='forums_online' value='0' ".(!$site_settings['forums_online'] ? 'checked=\'checked\'' : '')." /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_openreg']}</td><td class='table' align='left'><input type='text' name='openreg' size='2' value='".htmlsafechars($site_settings['openreg'])."' /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_openinvite']}</td><td class='table' align='left'><input type='text' name='openreg_invites' size='2' value='".htmlsafechars($site_settings['openreg_invites'])."' /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_maxusers']}</td><td class='table' align='left'><input type='text' name='maxusers' size='2' value='".htmlsafechars($site_settings['maxusers'])."' /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_maxinvite']}</td><td class='table' align='left'><input type='text' name='invites' size='2' value='".htmlsafechars($site_settings['invites'])."' /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_maxlogins']}</td><td class='table' align='left'><input type='text' name='failedlogins' size='2' value='".htmlsafechars($site_settings['failedlogins'])."' /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_ratio']}</td><td class='table' align='left'><input type='text' name='ratio_free' size='2' value='".htmlsafechars($site_settings['ratio_free'])."' /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_captcha']}</td><td class='table' align='left'><input type='text' name='captcha_on' size='2' value='".htmlsafechars($site_settings['captcha_on'])."' /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_dupe']}</td><td class='table' align='left'><input type='text' name='dupeip_check_on' size='2' value='".htmlsafechars($site_settings['dupeip_check_on'])."' /></td></tr>
-<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_donation']}</td><td class='table' align='left'><input type='text' name='totalneeded' size='2' value='".htmlsafechars($site_settings['totalneeded'])."' /></td></tr>
+$HTMLOUT .= "<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_autoshout']}</td><td class='table' align='left'>{$lang['sitesettings_yes']}<input class='table' type='radio' name='autoshout_on' value='1' " . ($site_settings['autoshout_on'] ? 'checked=\'checked\'' : '') . " />{$lang['sitesettings_no']}<input class='table' type='radio' name='autoshout_on' value='0' " . (!$site_settings['autoshout_on'] ? 'checked=\'checked\'' : '') . " /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_seedbonus']}</td><td class='table' align='left'>{$lang['sitesettings_yes']}<input class='table' type='radio' name='seedbonus_on' value='1' " . ($site_settings['seedbonus_on'] ? 'checked=\'checked\'' : '') . " />{$lang['sitesettings_no']}<input class='table' type='radio' name='seedbonus_on' value='0' " . (!$site_settings['seedbonus_on'] ? 'checked=\'checked\'' : '') . " /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_bpdur']}</td><td class='table' align='left'><input type='text' name='bonus_per_duration' size='3' value='" . htmlsafechars($site_settings['bonus_per_duration']) . "' /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_bpdload']}</td><td class='table' align='left'><input type='text' name='bonus_per_download' size='3' value='" . htmlsafechars($site_settings['bonus_per_download']) . "' /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_bpcomm']}</td><td class='table' align='left'><input type='text' name='bonus_per_comment' size='3' value='" . htmlsafechars($site_settings['bonus_per_comment']) . "' /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_bpupload']}</td><td class='table' align='left'><input type='text' name='bonus_per_upload' size='3' value='" . htmlsafechars($site_settings['bonus_per_upload']) . "' /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_bprate']}</td><td class='table' align='left'><input type='text' name='bonus_per_rating' size='3' value='" . htmlsafechars($site_settings['bonus_per_rating']) . "' /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_bptopic']}</td><td class='table' align='left'><input type='text' name='bonus_per_topic' size='3' value='" . htmlsafechars($site_settings['bonus_per_topic']) . "' /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_bppost']}</td><td class='table' align='left'><input type='text' name='bonus_per_post' size='3' value='" . htmlsafechars($site_settings['bonus_per_post']) . "' /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_bpdel']}</td><td class='table' align='left'><input type='text' name='bonus_per_delete' size='3' value='" . htmlsafechars($site_settings['bonus_per_delete']) . "' /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_bptnk']}</td><td class='table' align='left'><input type='text' name='bonus_per_thanks' size='3' value='" . htmlsafechars($site_settings['bonus_per_thanks']) . "' /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_forums']}</td><td class='table' align='left'>{$lang['sitesettings_yes']}<input class='table' type='radio' name='forums_online' value='1' " . ($site_settings['forums_online'] ? 'checked=\'checked\'' : '') . " />{$lang['sitesettings_no']}<input class='table' type='radio' name='forums_online' value='0' " . (!$site_settings['forums_online'] ? 'checked=\'checked\'' : '') . " /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_openreg']}</td><td class='table' align='left'><input type='text' name='openreg' size='2' value='" . htmlsafechars($site_settings['openreg']) . "' /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_openinvite']}</td><td class='table' align='left'><input type='text' name='openreg_invites' size='2' value='" . htmlsafechars($site_settings['openreg_invites']) . "' /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_maxusers']}</td><td class='table' align='left'><input type='text' name='maxusers' size='2' value='" . htmlsafechars($site_settings['maxusers']) . "' /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_maxinvite']}</td><td class='table' align='left'><input type='text' name='invites' size='2' value='" . htmlsafechars($site_settings['invites']) . "' /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_maxlogins']}</td><td class='table' align='left'><input type='text' name='failedlogins' size='2' value='" . htmlsafechars($site_settings['failedlogins']) . "' /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_ratio']}</td><td class='table' align='left'><input type='text' name='ratio_free' size='2' value='" . htmlsafechars($site_settings['ratio_free']) . "' /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_captcha']}</td><td class='table' align='left'><input type='text' name='captcha_on' size='2' value='" . htmlsafechars($site_settings['captcha_on']) . "' /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_dupe']}</td><td class='table' align='left'><input type='text' name='dupeip_check_on' size='2' value='" . htmlsafechars($site_settings['dupeip_check_on']) . "' /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_donation']}</td><td class='table' align='left'><input type='text' name='totalneeded' size='2' value='" . htmlsafechars($site_settings['totalneeded']) . "' /></td></tr>
 <tr><td colspan='2' class='table' align='center'><input type='submit' value='{$lang['sitesettings_apply']}' /></td></tr>
 </table></form>";
-echo stdhead($lang['sitesettings_stdhead']).$HTMLOUT.stdfoot();
+echo stdhead($lang['sitesettings_stdhead']) . $HTMLOUT . stdfoot();

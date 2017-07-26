@@ -1,9 +1,9 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
 dbconn(false);
 loggedinorreturn();
 $lang = array_merge(load_language('global'), load_language('links'));
@@ -16,6 +16,7 @@ function add_link($url, $title, $description = '')
 
     return "<li>$text</li>\n";
 }
+
 $HTMLOUT = '';
 if ($CURUSER) {
     $HTMLOUT .= "{$lang['links_dead']}";
@@ -50,4 +51,4 @@ $HTMLOUT .= "{$lang['links_tbdev_header']}>
     {$lang['links_tbdev_body']}
     </td></tr></table>";
 $HTMLOUT .= '</td></tr></table>';
-echo stdhead('Links').$HTMLOUT.stdfoot();
+echo stdhead('Links') . $HTMLOUT . stdfoot();

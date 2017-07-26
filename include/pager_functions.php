@@ -1,8 +1,8 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
-function pager($rpp, $count, $href, $opts = array()) // thx yuna or whoever wrote it
+function pager($rpp, $count, $href, $opts = []) // thx yuna or whoever wrote it
 {
     $pages = ceil($count / $rpp);
     if (!isset($opts['lastpagedefault'])) {
@@ -26,20 +26,20 @@ function pager($rpp, $count, $href, $opts = array()) // thx yuna or whoever wrot
     $as = '<b>&#171;</b>';
     if ($page >= 1) {
         $pager .= '<td  align="center" class="pager">';
-        $pager .= "<a href=\"{$href}page=".($page - 1)."\" style=\"text-decoration: none;\">$as</a>";
+        $pager .= "<a href=\"{$href}page=" . ($page - 1) . "\" style=\"text-decoration: none;\">$as</a>";
         $pager .= '</td><td  align="center" class="pagebr">&nbsp;</td>';
     }
     $as = '<b>&#187;</b>';
     $pager2 = $bregs = '';
     if ($page < $mp && $mp >= 0) {
         $pager2 .= '<td  align="center" class="pager">';
-        $pager2 .= "<a href=\"{$href}page=".($page + 1)."\" style=\"text-decoration: none;\">$as</a>";
+        $pager2 .= "<a href=\"{$href}page=" . ($page + 1) . "\" style=\"text-decoration: none;\">$as</a>";
         $pager2 .= "</td>$bregs";
     } else {
         $pager2 .= $bregs;
     }
     if ($count) {
-        $pagerarr = array();
+        $pagerarr = [];
         $dotted = 0;
         $dotspace = 3;
         $dotend = $pages - $dotspace;
@@ -68,27 +68,28 @@ function pager($rpp, $count, $href, $opts = array()) // thx yuna or whoever wrot
         }
         $pagerstr = join('', $pagerarr);
         $pagertop = "<table align=\"center\" class=\"main\"><tr>$pager $pagerstr $pager2</tr></table>\n";
-        $pagerbottom = "<div align=\"center\">Overall $count items in ".($i).' page'.($i > 1 ? '\'s' : '').", showing $rpp per page.</div><br /><table align=\"center\" class=\"main\"><tr>$pager $pagerstr $pager2</tr></table>\n";
+        $pagerbottom = "<div align=\"center\">Overall $count items in " . ($i) . ' page' . ($i > 1 ? '\'s' : '') . ", showing $rpp per page.</div><br /><table align=\"center\" class=\"main\"><tr>$pager $pagerstr $pager2</tr></table>\n";
     } else {
         $pagertop = $pager;
         $pagerbottom = $pagertop;
     }
     $start = $page * $rpp;
 
-    return array(
-        'pagertop' => $pagertop,
+    return [
+        'pagertop'    => $pagertop,
         'pagerbottom' => $pagerbottom,
-        'limit' => "LIMIT $start,$rpp",
-    );
+        'limit'       => "LIMIT $start,$rpp",
+    ];
 }
+
 function pager_rep($data)
 {
-    $pager = array(
-        'pages' => 0,
+    $pager = [
+        'pages'     => 0,
         'page_span' => '',
-        'start' => '',
-        'end' => '',
-    );
+        'start'     => '',
+        'end'       => '',
+    ];
     $section = $data['span'] = isset($data['span']) ? $data['span'] : 2;
     $parameter = isset($data['parameter']) ? $data['parameter'] : 'page';
     $mini = isset($data['mini']) ? 'mini' : '';
@@ -125,7 +126,7 @@ function pager_rep($data)
                     continue;
                 }
                 if ($PageNo > ($pager['current_page'] + $section)) {
-                    $pager['end'] = "&nbsp;<a href='{$data['url']}&amp;$parameter=".(($pager['pages'] - 1) * $data['perpage'])."' title='Go To Last'><span class='{$mini}pagelinklast'>&raquo;</span></a>&nbsp;";
+                    $pager['end'] = "&nbsp;<a href='{$data['url']}&amp;$parameter=" . (($pager['pages'] - 1) * $data['perpage']) . "' title='Go To Last'><span class='{$mini}pagelinklast'>&raquo;</span></a>&nbsp;";
                     break;
                 }
                 $pager['page_span'] .= "&nbsp;<a href='{$data['url']}&amp;$parameter={$RealNo}' title='$PageNo'><span  class='{$mini}pagelink'>$PageNo</span></a>";

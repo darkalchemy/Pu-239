@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 function cleanup_log($data)
 {
@@ -10,6 +10,7 @@ function cleanup_log($data)
     $desc = sqlesc($data['clean_desc']);
     sql_query("INSERT INTO cleanup_log (clog_event, clog_time, clog_ip, clog_desc) VALUES ($text, $added, $ip, {$desc})") or sqlerr(__FILE__, __LINE__);
 }
+
 function docleanup($data)
 {
     global $INSTALLER09, $queries, $mc1;
@@ -57,41 +58,41 @@ function docleanup($data)
 
         $res = sql_query("SELECT id, uploaded, downloaded, modcomment FROM users WHERE class = $class_value AND uploaded / downloaded < $minratio") or sqlerr(__FILE__, __LINE__);
         $subject = 'Auto Demotion';
-        $msgs_buffer = $users_buffer = array();
+        $msgs_buffer = $users_buffer = [];
         if (mysqli_num_rows($res) > 0) {
             $msg = "You have been auto-demoted from [b]{$class_name}[/b] to [b]{$prev_class_name}[/b] because your share ratio has dropped below  $minratio.\n";
 
             while ($arr = mysqli_fetch_assoc($res)) {
                 $ratio = number_format($arr['uploaded'] / $arr['downloaded'], 3);
                 $modcomment = $arr['modcomment'];
-                $modcomment = get_date(TIME_NOW, 'DATE', 1).' - Demoted To '.$prev_class_name.' by System (UL='.mksize($arr['uploaded']).', DL='.mksize($arr['downloaded']).', R='.$ratio.").\n".$modcomment;
+                $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - Demoted To ' . $prev_class_name . ' by System (UL=' . mksize($arr['uploaded']) . ', DL=' . mksize($arr['downloaded']) . ', R=' . $ratio . ").\n" . $modcomment;
                 $modcom = sqlesc($modcomment);
-                $msgs_buffer[] = '(0,'.$arr['id'].', '.TIME_NOW.', '.sqlesc($msg).', '.sqlesc($subject).')';
-                $users_buffer[] = '('.$arr['id'].', '.$prev_class.', '.$modcom.')';
+                $msgs_buffer[] = '(0,' . $arr['id'] . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+                $users_buffer[] = '(' . $arr['id'] . ', ' . $prev_class . ', ' . $modcom . ')';
 
-                $mc1->begin_transaction('user'.$arr['id']);
-                $mc1->update_row(false, array(
-                'class' => $prev_class,
-            ));
+                $mc1->begin_transaction('user' . $arr['id']);
+                $mc1->update_row(false, [
+                    'class' => $prev_class,
+                ]);
                 $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
-                $mc1->begin_transaction('user_stats_'.$arr['id']);
-                $mc1->update_row(false, array(
-                'modcomment' => $modcomment,
-            ));
+                $mc1->begin_transaction('user_stats_' . $arr['id']);
+                $mc1->update_row(false, [
+                    'modcomment' => $modcomment,
+                ]);
                 $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-                $mc1->begin_transaction('MYuser_'.$arr['id']);
-                $mc1->update_row(false, array(
-                'class' => $prev_class,
-            ));
+                $mc1->begin_transaction('MYuser_' . $arr['id']);
+                $mc1->update_row(false, [
+                    'class' => $prev_class,
+                ]);
                 $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
-                $mc1->delete_value('inbox_new_'.$arr['id']);
-                $mc1->delete_value('inbox_new_sb_'.$arr['id']);
+                $mc1->delete_value('inbox_new_' . $arr['id']);
+                $mc1->delete_value('inbox_new_sb_' . $arr['id']);
             }
             $count = count($users_buffer);
             if ($count > 0) {
-                sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES '.implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
-                sql_query('INSERT INTO users (id, class, modcomment) VALUES '.implode(', ', $users_buffer).' ON DUPLICATE key UPDATE class=values(class),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
-                write_log('Cleanup: Demoted '.$count." member(s) from {$class_name} to {$prev_class_name}");
+                sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
+                sql_query('INSERT INTO users (id, class, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE class=values(class),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+                write_log('Cleanup: Demoted ' . $count . " member(s) from {$class_name} to {$prev_class_name}");
                 status_change($arr['id']);
             }
             unset($users_buffer, $msgs_buffer, $count);
@@ -102,7 +103,7 @@ function docleanup($data)
             write_log("{$prev_class_name} Updates -------------------- Power User Demote Updates Clean Complete using $queries queries--------------------");
         }
         if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-            $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']).' items deleted/updated';
+            $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';
         }
         if ($data['clean_log']) {
             cleanup_log($data);

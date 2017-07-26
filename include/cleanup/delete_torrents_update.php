@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 function cleanup_log($data)
 {
@@ -10,6 +10,7 @@ function cleanup_log($data)
     $desc = sqlesc($data['clean_desc']);
     sql_query("INSERT INTO cleanup_log (clog_event, clog_time, clog_ip, clog_desc) VALUES ($text, $added, $ip, {$desc})") or sqlerr(__FILE__, __LINE__);
 }
+
 function docleanup($data)
 {
     global $INSTALLER09, $queries, $mc1;
@@ -31,15 +32,15 @@ function docleanup($data)
 				 LEFT JOIN rating ON rating.torrent = torrents.id
                                  LEFT JOIN thumbsup ON thumbsup.torrentid = torrents.id
 				 LEFT JOIN snatched ON snatched.torrentid = torrents.id
-				 WHERE torrents.id = '.sqlesc($arr['id'])) or sqlerr(__FILE__, __LINE__);
+				 WHERE torrents.id = ' . sqlesc($arr['id'])) or sqlerr(__FILE__, __LINE__);
         @unlink("{$INSTALLER09['torrent_dir']}/{$arr['id']}.torrent");
-        write_log('Torrent '.(int) $arr['id'].' ('.htmlsafechars($arr['name']).") was deleted by system (older than $days days and no seeders)");
+        write_log('Torrent ' . (int)$arr['id'] . ' (' . htmlsafechars($arr['name']) . ") was deleted by system (older than $days days and no seeders)");
     }
     if ($queries > 0) {
         write_log("Delete Old Torrents Clean -------------------- Delete Old Torrents cleanup Complete using $queries queries --------------------");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']).' items deleted/updated';
+        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';
     }
     if ($data['clean_log']) {
         cleanup_log($data);

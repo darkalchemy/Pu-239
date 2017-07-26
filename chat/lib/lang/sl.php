@@ -8,7 +8,7 @@
  * @link https://blueimp.net/ajax/
  */
 
-$lang = array();
+$lang = [];
 $lang['title'] = 'Klepetalnica';
 $lang['userName'] = 'Uporabniško ime';
 $lang['password'] = 'Geslo';

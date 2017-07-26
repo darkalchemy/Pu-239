@@ -17,7 +17,7 @@
 |
 */
 if (realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME'])) {
-    header($_SERVER['SERVER_PROTOCOL'].' 404 Not Found');
+    header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
     die();
 }
 
@@ -40,7 +40,7 @@ if (function_exists('xdebug_disable')) {
 |
 */
 if (!defined('PML_BASE')) {
-    define('PML_BASE', realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'));
+    define('PML_BASE', realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..'));
 }
 
 if (isset($_SERVER['PML_CONFIG_BASE'])) {
@@ -49,7 +49,7 @@ if (isset($_SERVER['PML_CONFIG_BASE'])) {
 
 if (!defined('PML_CONFIG_BASE')) {
     if (upgrade_is_composer()) {
-        define('PML_CONFIG_BASE', realpath(PML_BASE.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'.'));
+        define('PML_CONFIG_BASE', realpath(PML_BASE . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '.'));
     } else {
         define('PML_CONFIG_BASE', PML_BASE);
     }
@@ -124,7 +124,7 @@ define('SUHOSIN_URL', 'http://support.pimpmylog.com/kb/configuration/php-install
 | user but there are not mandatory.
 |
 */
-define('SAFE_MODE', file_exists(PML_CONFIG_BASE.DIRECTORY_SEPARATOR.'SAFE_MODE'));
+define('SAFE_MODE', file_exists(PML_CONFIG_BASE . DIRECTORY_SEPARATOR . 'SAFE_MODE'));
 define('TIME_ZONE_SUPPORT_URL', 'http://support.pimpmylog.com/discussions/problems/46-timezone-uncaught-exception');
 
 /*
@@ -137,7 +137,7 @@ define('TIME_ZONE_SUPPORT_URL', 'http://support.pimpmylog.com/discussions/proble
 |
 */
 if (get_magic_quotes_gpc()) {
-    $process = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
+    $process = [&$_GET, &$_POST, &$_COOKIE, &$_REQUEST];
     while (list($key, $val) = each($process)) {
         foreach ($val as $k => $v) {
             unset($process[$key][$k]);
@@ -183,7 +183,7 @@ define('DEFAULT_AUTO_UPGRADE', false);
 define('DEFAULT_CHECK_UPGRADE', true);
 define('DEFAULT_EXPORT', true);
 define('DEFAULT_FILE_SELECTOR', 'bs');
-define('DEFAULT_FOOTER', '&copy; <a href="http://www.potsky.com" target="doc">Potsky</a> 2007-'.YEAR.' - <a href="http://pimpmylog.com" target="doc">Pimp my Log</a>');
+define('DEFAULT_FOOTER', '&copy; <a href="http://www.potsky.com" target="doc">Potsky</a> 2007-' . YEAR . ' - <a href="http://pimpmylog.com" target="doc">Pimp my Log</a>');
 define('DEFAULT_FORGOTTEN_YOUR_PASSWORD_URL', 'http://support.pimpmylog.com/kb/misc/forgotten-your-password');
 define('DEFAULT_GEOIP_URL', 'http://www.geoiptool.com/en/?IP=%p');
 define('DEFAULT_PORT_URL', 'http://www.adminsub.net/tcp-udp-port-finder/%p');
@@ -218,16 +218,16 @@ define('DEFAULT_USER_CONFIGURATION_DIR', 'config.user.d');
 |
 */
 $locale_default = 'en_GB';
-$locale_available = array(
+$locale_available = [
     'en_GB' => 'English',
     'fr_FR' => 'Français',
     'pt_BR' => 'Português do Brasil',
-);
-$locale_numeraljs = array(
+];
+$locale_numeraljs = [
     'en_GB' => 'en-gb',
     'fr_FR' => 'fr',
     'pt_BR' => 'pt-br',
-);
+];
 
 /*
 |--------------------------------------------------------------------------
@@ -237,7 +237,7 @@ $locale_numeraljs = array(
 */
 function my_autoloader($ClassName)
 {
-    @include dirname(__FILE__).DIRECTORY_SEPARATOR.'classes'.DIRECTORY_SEPARATOR.$ClassName.'.php';
+    @include dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . $ClassName . '.php';
 }
 
 spl_autoload_register('my_autoloader');
@@ -309,7 +309,7 @@ function _e($text)
  */
 function load_default_constants()
 {
-    $defaults = array(
+    $defaults = [
         'AUTH_LOG_FILE_COUNT',
         'AUTO_UPGRADE',
         'CHECK_UPGRADE',
@@ -339,11 +339,11 @@ function load_default_constants()
         'TITLE_FILE',
         'UPGRADE_MANUALLY_URL',
         'USER_CONFIGURATION_DIR',
-    );
+    ];
     foreach ($defaults as $d) {
         if (!defined($d)) {
-            if (defined('DEFAULT_'.$d)) {
-                define($d, constant('DEFAULT_'.$d));
+            if (defined('DEFAULT_' . $d)) {
+                define($d, constant('DEFAULT_' . $d));
             } else {
                 die("Constant 'DEFAULT_$d' is not defined!");
             }
@@ -360,13 +360,13 @@ function load_default_constants()
  */
 function get_config_file_path()
 {
-    $files = array(
+    $files = [
         CONFIG_FILE_NAME,
         CONFIG_FILE_NAME_BEFORE_1_5_0,
-    );
+    ];
     foreach ($files as $f) {
-        if (file_exists(PML_CONFIG_BASE.DIRECTORY_SEPARATOR.$f)) {
-            return realpath(PML_CONFIG_BASE.DIRECTORY_SEPARATOR.$f);
+        if (file_exists(PML_CONFIG_BASE . DIRECTORY_SEPARATOR . $f)) {
+            return realpath(PML_CONFIG_BASE . DIRECTORY_SEPARATOR . $f);
         }
     }
 
@@ -410,7 +410,7 @@ function get_config_file($path = false)
 
     if (strtolower(substr($path, -3, 3)) === 'php') {
         ob_start();
-        require$path;
+        require $path;
         $string = ob_get_clean();
     } else {
         $string = @file_get_contents($path);
@@ -422,8 +422,8 @@ function get_config_file($path = false)
 /**
  * Load config file.
  *
- * @param string $path                        the configuration file path
- * @param bool   $load_user_configuration_dir do we have to parse all user configuration files ? No for upgrade for
+ * @param string $path the configuration file path
+ * @param bool $load_user_configuration_dir do we have to parse all user configuration files ? No for upgrade for
  *                                            example...
  *
  * @return array [ badges , files , $tz ]
@@ -438,7 +438,7 @@ function config_load($load_user_configuration_dir = true)
     $config = get_config_file();
 
     if (is_null($config)) {
-        return array($badges, $files, $tz);
+        return [$badges, $files, $tz];
     }
 
     // Get badges
@@ -464,8 +464,8 @@ function config_load($load_user_configuration_dir = true)
 
     // Append files from the USER_CONFIGURATION_DIR
     if ($load_user_configuration_dir === true) {
-        if (is_dir(PML_CONFIG_BASE.DIRECTORY_SEPARATOR.USER_CONFIGURATION_DIR)) {
-            $dir = PML_CONFIG_BASE.DIRECTORY_SEPARATOR.USER_CONFIGURATION_DIR;
+        if (is_dir(PML_CONFIG_BASE . DIRECTORY_SEPARATOR . USER_CONFIGURATION_DIR)) {
+            $dir = PML_CONFIG_BASE . DIRECTORY_SEPARATOR . USER_CONFIGURATION_DIR;
             $userfiles = new RegexIterator(
                 new RecursiveIteratorIterator(
                     new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
@@ -480,7 +480,7 @@ function config_load($load_user_configuration_dir = true)
                 $c = get_config_file($filepath);
                 if (!is_null($c)) {
                     foreach ($c as $k => $v) {
-                        $fileid = get_slug(str_replace(PML_CONFIG_BASE, '', $filepath).'/'.$k);
+                        $fileid = get_slug(str_replace(PML_CONFIG_BASE, '', $filepath) . '/' . $k);
                         $config['files'][$fileid] = $v;
                         $config['files'][$fileid]['included_from'] = $filepath;
                     }
@@ -491,16 +491,16 @@ function config_load($load_user_configuration_dir = true)
 
     // Oups, there is no file... abort
     if (!isset($config['files'])) {
-        return array($badges, $files, $tz);
+        return [$badges, $files, $tz];
     }
 
     // Try to generate the files tree if there are globs...
     $files_tmp = $config['files'];
-    $files = array();
+    $files = [];
 
     foreach ($files_tmp as $fileid => $file) {
         $path = $file['path'];
-        $count = max(1, @(int) $file['count']);
+        $count = max(1, @(int)$file['count']);
         $gpaths = glob($path, GLOB_MARK | GLOB_NOCHECK);
 
         if (count($gpaths) == 0) {
@@ -508,7 +508,7 @@ function config_load($load_user_configuration_dir = true)
             $files[$fileid] = $file;
             $files[$fileid]['path'] = $gpaths[0];
         } else {
-            $new_paths = array();
+            $new_paths = [];
             $i = 1;
 
             foreach ($gpaths as $path) {
@@ -520,13 +520,13 @@ function config_load($load_user_configuration_dir = true)
 
             // The first file id is the ID of the configuration file then others files are suffixed with _2, _3, etc...
             foreach ($new_paths as $path => $lastmodified) {
-                $ext = ($i > 1) ? '_'.$i : '';
+                $ext = ($i > 1) ? '_' . $i : '';
 
-                $files[$fileid.$ext] = $file;
-                $files[$fileid.$ext]['oid'] = $fileid;
-                $files[$fileid.$ext]['odisplay'] = $files[$fileid.$ext]['display'];
-                $files[$fileid.$ext]['path'] = $path;
-                $files[$fileid.$ext]['display'] .= ' > '.basename($path);
+                $files[$fileid . $ext] = $file;
+                $files[$fileid . $ext]['oid'] = $fileid;
+                $files[$fileid . $ext]['odisplay'] = $files[$fileid . $ext]['display'];
+                $files[$fileid . $ext]['path'] = $path;
+                $files[$fileid . $ext]['display'] .= ' > ' . basename($path);
                 if ($i >= $count) {
                     break;
                 }
@@ -538,7 +538,7 @@ function config_load($load_user_configuration_dir = true)
     // Remove forbidden files
     if (Sentinel::isAuthSet()) { // authentication is enabled on this instance
         $username = Sentinel::getCurrentUsername();
-        $final = array();
+        $final = [];
 
         // Anonymous access only
         if (is_null($username)) {
@@ -552,9 +552,7 @@ function config_load($load_user_configuration_dir = true)
                     $final[$fileid] = $file;
                 }
             }
-        }
-
-        // Anonymous access + User access
+        } // Anonymous access + User access
         else {
             foreach ($files as $fileid => $file) {
                 $a = $fileid;
@@ -573,11 +571,11 @@ function config_load($load_user_configuration_dir = true)
 
     // Fix missing values with defaults
     foreach ($files as $fileid => $file) {
-        foreach (array(
-                      'max' => LOGS_MAX,
-                      'refresh' => LOGS_REFRESH,
-                      'notify' => NOTIFICATION,
-                  ) as $fix => $value) {
+        foreach ([
+                     'max'     => LOGS_MAX,
+                     'refresh' => LOGS_REFRESH,
+                     'notify'  => NOTIFICATION,
+                 ] as $fix => $value) {
             if (!isset($file[$fix])) {
                 $files[$fileid][$fix] = $value;
             }
@@ -609,7 +607,7 @@ function config_load($load_user_configuration_dir = true)
             return strcmp($b['display'], $a['display']);
         }
     }
-    switch (trim(str_replace(array('-', '_', ' ', 'nsensitive'), '', SORT_LOG_FILES))) {
+    switch (trim(str_replace(['-', '_', ' ', 'nsensitive'], '', SORT_LOG_FILES))) {
         case 'display':
         case 'displayasc':
             uasort($files, 'display_asc');
@@ -629,7 +627,7 @@ function config_load($load_user_configuration_dir = true)
             break;
     }
 
-    return array($badges, $files, $tz);
+    return [$badges, $files, $tz];
 }
 
 /**
@@ -643,7 +641,7 @@ function config_load($load_user_configuration_dir = true)
  */
 function config_check($files)
 {
-    $errors = array();
+    $errors = [];
 
     if (!is_array($files)) {
         if (Sentinel::isAuthSet()) {
@@ -667,7 +665,7 @@ function config_check($files)
 
     foreach ($files as $file_id => &$file) {
         // error
-        foreach (array('display', 'path', 'format') as $mandatory) {
+        foreach (['display', 'path', 'format'] as $mandatory) {
             if (!isset($file[$mandatory])) {
                 $errors[] = sprintf(__('<code>%s</code> is mandatory for file ID <code>%s</code>'), $mandatory, $file_id);
             }
@@ -690,7 +688,7 @@ function config_check($files)
  */
 function config_extract_tags($files)
 {
-    $tags = array('_' => array());
+    $tags = ['_' => []];
 
     foreach ($files as $fileid => $file) {
         // Tag found
@@ -702,14 +700,13 @@ function config_extract_tags($files)
             } else {
                 $tags[strval($file['tags'])][] = $fileid;
             }
-        }
-        // No tag
+        } // No tag
         else {
             $tags['_'][] = $fileid;
         }
     }
 
-    switch (trim(str_replace(array('-', '_', ' ', 'nsensitive'), '', TAG_SORT_TAG))) {
+    switch (trim(str_replace(['-', '_', ' ', 'nsensitive'], '', TAG_SORT_TAG))) {
         case 'display':
         case 'displayasc':
             if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
@@ -761,21 +758,21 @@ function config_extract_tags($files)
  */
 function get_refresh_options($files)
 {
-    $options = array(
-        1 => 1,
-        2 => 2,
-        3 => 3,
-        4 => 4,
-        5 => 5,
+    $options = [
+        1  => 1,
+        2  => 2,
+        3  => 3,
+        4  => 4,
+        5  => 5,
         10 => 10,
         15 => 15,
         30 => 30,
         45 => 45,
         60 => 60,
-    );
-    $options[(int) LOGS_REFRESH] = (int) LOGS_REFRESH;
+    ];
+    $options[(int)LOGS_REFRESH] = (int)LOGS_REFRESH;
     foreach ($files as $file_id => $file) {
-        $options[(int) @$file['refresh']] = (int) @$file['refresh'];
+        $options[(int)@$file['refresh']] = (int)@$file['refresh'];
     }
     unset($options[0]);
     sort($options);
@@ -796,17 +793,17 @@ function get_refresh_options($files)
  */
 function get_max_options($files)
 {
-    $options = array(
-        5 => 5,
-        10 => 10,
-        20 => 20,
-        50 => 50,
+    $options = [
+        5   => 5,
+        10  => 10,
+        20  => 20,
+        50  => 50,
         100 => 100,
         200 => 200,
-    );
-    $options[(int) LOGS_MAX] = (int) LOGS_MAX;
+    ];
+    $options[(int)LOGS_MAX] = (int)LOGS_MAX;
     foreach ($files as $file_id => $file) {
-        $options[(int) @$file['max']] = (int) @$file['max'];
+        $options[(int)@$file['max']] = (int)@$file['max'];
     }
     unset($options[0]);
     sort($options);
@@ -817,8 +814,8 @@ function get_max_options($files)
 /**
  * Return a human representation of a size.
  *
- * @param string $bytes    the string representation (can be an int)
- * @param int    $decimals the number of digits in the float part
+ * @param string $bytes the string representation (can be an int)
+ * @param int $decimals the number of digits in the float part
  *
  * @return string the human size
  */
@@ -827,7 +824,7 @@ function human_filesize($bytes, $decimals = 0)
     $sz = __('B KBMBGBTBPB');
     $factor = floor((strlen($bytes) - 1) / 3);
 
-    return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)).@$sz[(int) $factor * 2];
+    return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[(int)$factor * 2];
 }
 
 /**
@@ -866,7 +863,7 @@ function csrf_verify()
 /**
  * [get_slug description].
  *
- * @param string $string    the string to slugify
+ * @param string $string the string to slugify
  * @param string $separator the separator
  *
  * @return string th slugified string
@@ -874,7 +871,7 @@ function csrf_verify()
 function get_slug($string, $separator = '-')
 {
     $accents_regex = '~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i';
-    $special_cases = array('&' => 'and');
+    $special_cases = ['&' => 'and'];
     $string = mb_strtolower(trim($string), 'UTF-8');
     $string = str_replace(array_keys($special_cases), array_values($special_cases), $string);
     $string = preg_replace($accents_regex, '$1', htmlentities($string, ENT_QUOTES, 'UTF-8'));
@@ -937,13 +934,13 @@ function json_indent($json)
  */
 function clean_json_version($data)
 {
-    return str_replace(array('/*PSK*/pml_version_cb(/*PSK*/', '/*PSK*/);/*PSK*/', '/*PSK*/)/*PSK*/'), array('', '', ''), $data);
+    return str_replace(['/*PSK*/pml_version_cb(/*PSK*/', '/*PSK*/);/*PSK*/', '/*PSK*/)/*PSK*/'], ['', '', ''], $data);
 }
 
 /**
  * Do nothing for set_error_handler PHP5.2 style.
  *
- * @param int    $errno
+ * @param int $errno
  * @param string $errstr
  */
 function dumb_test($errno, $errstr)
@@ -988,14 +985,14 @@ function is_assoc($arr)
 /**
  * Generate a random string.
  *
- * @param int    $l the string length
+ * @param int $l the string length
  * @param string $c a list of char in a string taken to generate the string
  *
  * @return string a random string of $l chars
  */
 function mt_rand_str($l, $c = 'abcdefghijklmnopqrstuvwxyz1234567890_-ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 {
-    for ($s = '' , $cl = strlen($c) - 1 , $i = 0; $i < $l; $s .= $c[mt_rand(0, $cl)] , ++$i) {
+    for ($s = '', $cl = strlen($c) - 1, $i = 0; $i < $l; $s .= $c[mt_rand(0, $cl)], ++$i) {
     }
 
     return $s;
@@ -1039,17 +1036,17 @@ function get_current_url($q = false)
         $s = &$_SERVER;
         $ssl = (!empty($s['HTTPS']) && $s['HTTPS'] == 'on') ? true : false;
         $sp = strtolower(@$s['SERVER_PROTOCOL']);
-        $protocol = substr($sp, 0, strpos($sp, '/')).(($ssl) ? 's' : '');
+        $protocol = substr($sp, 0, strpos($sp, '/')) . (($ssl) ? 's' : '');
         $port = @$s['SERVER_PORT'];
-        $port = ((!$ssl && $port == '80') || ($ssl && $port == '443')) ? '' : ':'.$port;
+        $port = ((!$ssl && $port == '80') || ($ssl && $port == '443')) ? '' : ':' . $port;
         $host = isset($s['HTTP_X_FORWARDED_HOST']) ? $s['HTTP_X_FORWARDED_HOST'] : (isset($s['HTTP_HOST']) ? $s['HTTP_HOST'] : null);
-        $host = isset($host) ? $host : @$s['SERVER_NAME'].$port;
-        $uri = $protocol.'://'.$host.@$s['REQUEST_URI'];
+        $host = isset($host) ? $host : @$s['SERVER_NAME'] . $port;
+        $uri = $protocol . '://' . $host . @$s['REQUEST_URI'];
         $segments = explode('?', $uri, 2);
         $url = $segments[0];
         if ($q === true) {
             if (isset($_SERVER['QUERY_STRING'])) {
-                $url .= '?'.$_SERVER['QUERY_STRING'];
+                $url .= '?' . $_SERVER['QUERY_STRING'];
             }
         }
 
@@ -1081,7 +1078,7 @@ function is_not_local_ip($ip)
  */
 function http404()
 {
-    header($_SERVER['SERVER_PROTOCOL'].' 404 Not Found');
+    header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
     die();
 }
 
@@ -1090,7 +1087,7 @@ function http404()
  */
 function http403()
 {
-    header($_SERVER['SERVER_PROTOCOL'].' 403 Forbidden');
+    header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
     die();
 }
 
@@ -1099,7 +1096,7 @@ function http403()
  */
 function http500()
 {
-    header($_SERVER['SERVER_PROTOCOL'].' 500 Internal Server Error');
+    header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error');
     die();
 }
 
@@ -1116,7 +1113,7 @@ function array_filter_recursive($input)
         if (is_array($value)) {
             $value = array_filter_recursive($value);
         } elseif (is_object($value)) {
-            $value = array_filter_recursive((array) $value);
+            $value = array_filter_recursive((array)$value);
         }
     }
 
@@ -1131,7 +1128,7 @@ function array_filter_recursive($input)
 function get_current_pml_version()
 {
     $v = '';
-    $file = dirname(__FILE__).'/../version.js';
+    $file = dirname(__FILE__) . '/../version.js';
     if (file_exists($file)) {
         $j = json_decode(clean_json_version(@file_get_contents($file)), true);
         $v = @$j['version'];
@@ -1147,8 +1144,8 @@ function get_current_pml_version()
  */
 function get_current_pml_version_infos()
 {
-    $i = array();
-    $file = dirname(__FILE__).'/../version.js';
+    $i = [];
+    $file = dirname(__FILE__) . '/../version.js';
     if (file_exists($file)) {
         $j = json_decode(clean_json_version(@file_get_contents($file)), true);
         $v = @$j['version'];
@@ -1162,7 +1159,7 @@ function get_current_pml_version_infos()
 /**
  * Generate a xml string of the provided array.
  *
- * @param array  $array     the array to convert in XML
+ * @param array $array the array to convert in XML
  * @param string $node_name the node name for numerical arrays
  *
  * @return string the xml string
@@ -1176,7 +1173,7 @@ function generate_xml_from_array($array, $node_name)
                 $key = $node_name;
             }
 
-            $xml .= '<'.$key.'>'.generate_xml_from_array($value, $node_name).'</'.$key.'>';
+            $xml .= '<' . $key . '>' . generate_xml_from_array($value, $node_name) . '</' . $key . '>';
         }
     } else {
         $xml = htmlspecialchars($array, ENT_QUOTES);
@@ -1211,8 +1208,8 @@ function array2csv($array)
 /**
  * Return a UTC timestamp from a timestamp computed in a specific timezone.
  *
- * @param int    $timestamp the epoch timestamp
- * @param string $tzfrom    the timezone where the timesamp has been computed
+ * @param int $timestamp the epoch timestamp
+ * @param string $tzfrom the timezone where the timesamp has been computed
  *
  * @return int the epoch in UTC
  */
@@ -1225,7 +1222,7 @@ function get_non_UTC_timstamp($timestamp = null, $tzfrom = null)
         $timestamp = time();
     }
 
-    $d = new DateTime('@'.$timestamp);
+    $d = new DateTime('@' . $timestamp);
     $d->setTimezone(new DateTimeZone($tzfrom));
 
     return $timestamp - $d->getOffset();
@@ -1245,11 +1242,11 @@ function upgrade_is_composer()
 
     if (basename(PML_BASE) !== 'pimp-my-log') {
         $a = false;
-    } elseif (!is_dir(PML_BASE.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'potsky')) {
+    } elseif (!is_dir(PML_BASE . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'potsky')) {
         $a = false;
-    } elseif (!is_dir(PML_BASE.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'vendor')) {
+    } elseif (!is_dir(PML_BASE . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendor')) {
         $a = false;
-    } elseif (!file_exists(PML_BASE.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'composer.json')) {
+    } elseif (!file_exists(PML_BASE . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'composer.json')) {
         $a = false;
     } else {
         $a = true;
@@ -1271,7 +1268,7 @@ function upgrade_is_git()
         return false;
     }
 
-    if (!is_dir(PML_BASE.DIRECTORY_SEPARATOR.'.git')) {
+    if (!is_dir(PML_BASE . DIRECTORY_SEPARATOR . '.git')) {
         return false;
     }
 
@@ -1292,21 +1289,21 @@ function upgrade_can_git_pull()
     $base = PML_BASE;
 
     // Check if git is callable and if all files are not changed
-    $a = exec('cd '.escapeshellarg($base).'; git status -s', $lines, $code);
+    $a = exec('cd ' . escapeshellarg($base) . '; git status -s', $lines, $code);
 
     // Error while executing this comand
     if ($code !== 0) {
-        return array($code, $lines);
+        return [$code, $lines];
     }
 
     // Error, files have been modified
     if (count($lines) !== 0) {
-        return array($code, $lines);
+        return [$code, $lines];
     }
 
     // can write all files with this webserver user ?
     $canwrite = true;
-    $lines = array();
+    $lines = [];
     $git = mb_strlen(realpath($base)) + 1;
     $pmlfiles = new RecursiveIteratorIterator(
         new RecursiveDirectoryIterator($base),
@@ -1322,7 +1319,7 @@ function upgrade_can_git_pull()
         // check if this file is writable
         if (!$f->isWritable()) {
             // check if it ignored or not
-            $b = exec('git ls-files '.escapeshellarg($f->getPathname()));
+            $b = exec('git ls-files ' . escapeshellarg($f->getPathname()));
             if (!empty($b)) {
                 $canwrite = false;
                 $lines[] = $f->getPathname();
@@ -1331,7 +1328,7 @@ function upgrade_can_git_pull()
     }
 
     if ($canwrite === false) {
-        return array(2706, $lines);
+        return [2706, $lines];
     }
 
     return true;
@@ -1371,7 +1368,7 @@ function get_user_time_zone()
 */
 if (isset($_SERVER['SERVER_PROTOCOL'])) { // only web, not unittests
     if (!isset($_COOKIE['u'])) {
-        $uuid = sha1(json_encode($_SERVER).uniqid('', true));
+        $uuid = sha1(json_encode($_SERVER) . uniqid('', true));
         setcookie('u', $uuid, time() + 60 * 60 * 24 * 3000, '/');
     } else {
         $uuid = $_COOKIE['u'];
@@ -1401,14 +1398,14 @@ if (function_exists('bindtextdomain')) {
 
     $locale = str_replace('-', '_', $locale);
     @list($lang, $b) = explode('_', $locale);
-    $locale = strtolower($lang).'_'.strtoupper($b);
+    $locale = strtolower($lang) . '_' . strtoupper($b);
 
     if (!array_key_exists($locale, $locale_available)) {
         $locale = $locale_default;
     }
 
-    putenv('LC_ALL='.$locale);
-    putenv('LANGUAGE='.$locale);
+    putenv('LC_ALL=' . $locale);
+    putenv('LANGUAGE=' . $locale);
 
     if ((!isset($_COOKIE['pmllocale'])) || ($_COOKIE['pmllocale'] !== $locale)) {
         if (isset($_SERVER['SERVER_PROTOCOL'])) { // only web, not unittests
@@ -1417,14 +1414,14 @@ if (function_exists('bindtextdomain')) {
     }
 
     if ($lang == 'fr') {
-        setlocale(LC_ALL, $locale, $locale.'.utf8', 'fra');
+        setlocale(LC_ALL, $locale, $locale . '.utf8', 'fra');
     } elseif ($lang == 'de') {
-        setlocale(LC_ALL, $locale, $locale.'.utf8', 'deu_deu', 'de', 'ge');
+        setlocale(LC_ALL, $locale, $locale . '.utf8', 'deu_deu', 'de', 'ge');
     } else {
-        setlocale(LC_ALL, $locale, $locale.'.utf8');
+        setlocale(LC_ALL, $locale, $locale . '.utf8');
     }
 
-    bindtextdomain('messages', dirname(__FILE__).'/../lang');
+    bindtextdomain('messages', dirname(__FILE__) . '/../lang');
     bind_textdomain_codeset('messages', 'UTF-8');
     textdomain('messages');
 

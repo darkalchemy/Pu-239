@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 // Written by RetroKill to allow scripters to see what scripts have changed since
 // they last updated their own list.
@@ -30,8 +30,8 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
     echo $HTMLOUT;
     exit();
 }
-require_once INCL_DIR.'user_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 loggedinorreturn();
@@ -44,7 +44,7 @@ if (!in_array($CURUSER['id'], $INSTALLER09['allowed_staff']['id'] /*$allowed_ids
 }
 $lang = array_merge($lang, load_language('editlog'));
 $HTMLOUT = '';
-$file_data = './dir_list/data_'.$CURUSER['username'].'.txt';
+$file_data = './dir_list/data_' . $CURUSER['username'] . '.txt';
 if (file_exists($file_data)) {
     // Fetch existing data
     $data = unserialize(file_get_contents($file_data));
@@ -53,9 +53,9 @@ if (file_exists($file_data)) {
     // Initialise File
     $exist = false;
 }
-$fetch_set = array();
+$fetch_set = [];
 $i = 0;
-$directories = array();
+$directories = [];
 //== Enter directories to log... if you dont have them - comment them out or edit
 //$directories[] = '/var/bucket/';
 //$directories[] = '/var/bucket/avatars/';
@@ -78,10 +78,10 @@ foreach ($directories as $x) {
     if ($handle = opendir($x)) {
         while (false !== ($file = readdir($handle))) {
             if ($file != '.' && $file != '..') {
-                if (!is_dir($x.'/'.$file)) {
-                    $fetch_set[$i]['modify'] = filemtime($x.$file);
-                    $fetch_set[$i]['size'] = filesize($x.$file);
-                    $fetch_set[$i]['name'] = $x.$file;
+                if (!is_dir($x . '/' . $file)) {
+                    $fetch_set[$i]['modify'] = filemtime($x . $file);
+                    $fetch_set[$i]['size'] = filesize($x . $file);
+                    $fetch_set[$i]['name'] = $x . $file;
                     $fetch_set[$i]['key'] = $i;
                     ++$i;
                 }
@@ -231,4 +231,4 @@ $HTMLOUT .= "
 </tr>
 </table>
 </form>";
-echo stdhead($lang['editlog_stdhead']).$HTMLOUT.stdfoot();
+echo stdhead($lang['editlog_stdhead']) . $HTMLOUT . stdfoot();

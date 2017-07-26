@@ -1,17 +1,19 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 //-------- Begins a main frame
 function begin_main_frame()
 {
-    return "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>"."<tr><td class='embedded'>\n";
+    return "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>" . "<tr><td class='embedded'>\n";
 }
+
 //-------- Ends a main frame
 function end_main_frame()
 {
     return "</td></tr></table>\n";
 }
+
 function begin_frame($caption = '', $center = false, $padding = 10)
 {
     $tdextra = '';
@@ -26,14 +28,17 @@ function begin_frame($caption = '', $center = false, $padding = 10)
 
     return $htmlout;
 }
+
 function attach_frame($padding = 10)
 {
     echo "</td></tr><tr><td style='border-top: 0px'>\n";
 }
+
 function end_frame()
 {
     return "</td></tr></table>\n";
 }
+
 function begin_table($fullwidth = false, $padding = 5)
 {
     $width = '';
@@ -45,10 +50,12 @@ function begin_table($fullwidth = false, $padding = 5)
 
     return $htmlout;
 }
+
 function end_table()
 {
     return "</table>\n";
 }
+
 //  function end_table()
 //  {
 //    print("</td></tr></table>\n");
@@ -64,6 +71,7 @@ function tr($x, $y, $noesc = 0)
 
     return "<tr><td class='heading' valign='top' align='right'>$x</td><td valign='top' align='left'>$a</td></tr>\n";
 }
+
 //-------- Inserts a smilies frame
 function insert_smilies_frame()
 {

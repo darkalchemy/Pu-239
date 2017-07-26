@@ -35,15 +35,6 @@ class AJAXChatTemplate
         return $this->_parsedContent;
     }
 
-    public function getContent()
-    {
-        if (!$this->_content) {
-            $this->_content = AJAXChatFileSystem::getFileContents($this->_templateFile);
-        }
-
-        return $this->_content;
-    }
-
     public function parseContent()
     {
         $this->_parsedContent = $this->getContent();
@@ -58,7 +49,16 @@ class AJAXChatTemplate
         }
 
         // Replace template tags ([TAG/] and [TAG]content[/TAG]) and return parsed template content:
-        $this->_parsedContent = preg_replace_callback($this->_regExpTemplateTags, array($this, 'replaceTemplateTags'), $this->_parsedContent);
+        $this->_parsedContent = preg_replace_callback($this->_regExpTemplateTags, [$this, 'replaceTemplateTags'], $this->_parsedContent);
+    }
+
+    public function getContent()
+    {
+        if (!$this->_content) {
+            $this->_content = AJAXChatFileSystem::getFileContents($this->_templateFile);
+        }
+
+        return $this->_content;
     }
 
     public function replaceTemplateTags($tagData)
@@ -116,7 +116,7 @@ class AJAXChatTemplate
                     return 0;
                 }
 
-                    // no break
+            // no break
             case 'INACTIVE_TIMEOUT':
                 return $this->ajaxChat->getConfig('inactiveTimeout');
 
@@ -132,7 +132,7 @@ class AJAXChatTemplate
                     return 0;
                 }
 
-                    // no break
+            // no break
             case 'SOCKET_SERVER_ENABLED':
                 if ($this->ajaxChat->getConfig('socketServerEnabled')) {
                     return 1;
@@ -140,7 +140,7 @@ class AJAXChatTemplate
                     return 0;
                 }
 
-                    // no break
+            // no break
             case 'SOCKET_SERVER_HOST':
                 if ($this->ajaxChat->getConfig('socketServerHost')) {
                     $socketServerHost = $this->ajaxChat->getConfig('socketServerHost');
@@ -187,9 +187,9 @@ class AJAXChatTemplate
                 } else {
                     return 'write_allowed';
                 }
-                    // no break
-                        case 'TOKEN':
-                                return session_id();
+            // no break
+            case 'TOKEN':
+                return session_id();
 
             default:
                 return $this->ajaxChat->replaceCustomTemplateTags($tagData[1], (isset($tagData[2]) ? $tagData[2] : null));
@@ -197,16 +197,6 @@ class AJAXChatTemplate
     }
 
     // Function to display alternating table row colors:
-    public function alternateRow($rowOdd = 'rowOdd', $rowEven = 'rowEven')
-    {
-        static $i;
-        $i += 1;
-        if ($i % 2 == 0) {
-            return $rowEven;
-        } else {
-            return $rowOdd;
-        }
-    }
 
     public function getBaseDirectionAttribute()
     {
@@ -226,7 +216,7 @@ class AJAXChatTemplate
         $styleSheets = '';
         foreach ($this->ajaxChat->getConfig('styleAvailable') as $style) {
             $alternate = ($style == $this->ajaxChat->getConfig('styleDefault')) ? '' : 'alternate ';
-            $styleSheets .= '<link rel="'.$alternate.'stylesheet" type="text/css" href="css/'.rawurlencode($style).'.css" title="'.$this->ajaxChat->htmlEncode($style).'"/>';
+            $styleSheets .= '<link rel="' . $alternate . 'stylesheet" type="text/css" href="css/' . rawurlencode($style) . '.css" title="' . $this->ajaxChat->htmlEncode($style) . '"/>';
         }
 
         return $styleSheets;
@@ -245,7 +235,7 @@ class AJAXChatTemplate
             if ($selected) {
                 $channelSelected = true;
             }
-            $channelOptions .= '<option value="'.$this->ajaxChat->htmlEncode($name).'"'.$selected.'>'.$this->ajaxChat->htmlEncode($name).'</option>';
+            $channelOptions .= '<option value="' . $this->ajaxChat->htmlEncode($name) . '"' . $selected . '>' . $this->ajaxChat->htmlEncode($name) . '</option>';
         }
         if ($this->ajaxChat->isLoggedIn() && $this->ajaxChat->isAllowedToCreatePrivateChannel()) {
             // Add the private channel of the user to the options list:
@@ -256,13 +246,13 @@ class AJAXChatTemplate
                 $selected = '';
             }
             $privateChannelName = $this->ajaxChat->getPrivateChannelName();
-            $channelOptions .= '<option value="'.$this->ajaxChat->htmlEncode($privateChannelName).'"'.$selected.'>'.$this->ajaxChat->htmlEncode($privateChannelName).'</option>';
+            $channelOptions .= '<option value="' . $this->ajaxChat->htmlEncode($privateChannelName) . '"' . $selected . '>' . $this->ajaxChat->htmlEncode($privateChannelName) . '</option>';
         }
         // If current channel is not in the list, try to retrieve the channelName:
         if (!$channelSelected) {
             $channelName = $this->ajaxChat->getChannelName();
             if ($channelName !== null) {
-                $channelOptions .= '<option value="'.$this->ajaxChat->htmlEncode($channelName).'" selected="selected">'.$this->ajaxChat->htmlEncode($channelName).'</option>';
+                $channelOptions .= '<option value="' . $this->ajaxChat->htmlEncode($channelName) . '" selected="selected">' . $this->ajaxChat->htmlEncode($channelName) . '</option>';
             } else {
                 // Show an empty selection:
                 $channelOptions .= '<option value="" selected="selected">---</option>';
@@ -277,7 +267,7 @@ class AJAXChatTemplate
         $styleOptions = '';
         foreach ($this->ajaxChat->getConfig('styleAvailable') as $style) {
             $selected = ($style == $this->ajaxChat->getConfig('styleDefault')) ? ' selected="selected"' : '';
-            $styleOptions .= '<option value="'.$this->ajaxChat->htmlEncode($style).'"'.$selected.'>'.$this->ajaxChat->htmlEncode($style).'</option>';
+            $styleOptions .= '<option value="' . $this->ajaxChat->htmlEncode($style) . '"' . $selected . '>' . $this->ajaxChat->htmlEncode($style) . '</option>';
         }
 
         return $styleOptions;
@@ -289,7 +279,7 @@ class AJAXChatTemplate
         $languageNames = $this->ajaxChat->getConfig('langNames');
         foreach ($this->ajaxChat->getConfig('langAvailable') as $langCode) {
             $selected = ($langCode == $this->ajaxChat->getLangCode()) ? ' selected="selected"' : '';
-            $languageOptions .= '<option value="'.$this->ajaxChat->htmlEncode($langCode).'"'.$selected.'>'.$languageNames[$langCode].'</option>';
+            $languageOptions .= '<option value="' . $this->ajaxChat->htmlEncode($langCode) . '"' . $selected . '>' . $languageNames[$langCode] . '</option>';
         }
 
         return $languageOptions;
@@ -299,7 +289,7 @@ class AJAXChatTemplate
     {
         $errorMessages = '';
         foreach ($this->ajaxChat->getInfoMessages('error') as $error) {
-            $errorMessages .= '<div>'.$this->ajaxChat->htmlEncode($this->ajaxChat->getLang($error)).'</div>';
+            $errorMessages .= '<div>' . $this->ajaxChat->htmlEncode($this->ajaxChat->getLang($error)) . '</div>';
         }
 
         return $errorMessages;
@@ -313,10 +303,10 @@ class AJAXChatTemplate
             if ($this->ajaxChat->getUserRole() != AJAX_CHAT_ADMIN && $this->ajaxChat->getConfig('logsUserAccessChannelList') && !in_array($value, $this->ajaxChat->getConfig('logsUserAccessChannelList'))) {
                 continue;
             }
-            $channelOptions .= '<option value="'.$value.'">'.$this->ajaxChat->htmlEncode($key).'</option>';
+            $channelOptions .= '<option value="' . $value . '">' . $this->ajaxChat->htmlEncode($key) . '</option>';
         }
-        $channelOptions .= '<option value="-1">'.$this->ajaxChat->htmlEncode($this->ajaxChat->getLang('logsPrivateChannels')).'</option>';
-        $channelOptions .= '<option value="-2">'.$this->ajaxChat->htmlEncode($this->ajaxChat->getLang('logsPrivateMessages')).'</option>';
+        $channelOptions .= '<option value="-1">' . $this->ajaxChat->htmlEncode($this->ajaxChat->getLang('logsPrivateChannels')) . '</option>';
+        $channelOptions .= '<option value="-2">' . $this->ajaxChat->htmlEncode($this->ajaxChat->getLang('logsPrivateMessages')) . '</option>';
 
         return $channelOptions;
     }
@@ -326,7 +316,7 @@ class AJAXChatTemplate
         $yearOptions = '';
         $yearOptions .= '<option value="-1">----</option>';
         for ($year = date('Y'); $year >= $this->ajaxChat->getConfig('logsFirstYear'); --$year) {
-            $yearOptions .= '<option value="'.$year.'">'.$year.'</option>';
+            $yearOptions .= '<option value="' . $year . '">' . $year . '</option>';
         }
 
         return $yearOptions;
@@ -337,7 +327,7 @@ class AJAXChatTemplate
         $monthOptions = '';
         $monthOptions .= '<option value="-1">--</option>';
         for ($month = 1; $month <= 12; ++$month) {
-            $monthOptions .= '<option value="'.$month.'">'.sprintf('%02d', $month).'</option>';
+            $monthOptions .= '<option value="' . $month . '">' . sprintf('%02d', $month) . '</option>';
         }
 
         return $monthOptions;
@@ -348,7 +338,7 @@ class AJAXChatTemplate
         $dayOptions = '';
         $dayOptions .= '<option value="-1">--</option>';
         for ($day = 1; $day <= 31; ++$day) {
-            $dayOptions .= '<option value="'.$day.'">'.sprintf('%02d', $day).'</option>';
+            $dayOptions .= '<option value="' . $day . '">' . sprintf('%02d', $day) . '</option>';
         }
 
         return $dayOptions;
@@ -359,9 +349,20 @@ class AJAXChatTemplate
         $hourOptions = '';
         $hourOptions .= '<option value="-1">-----</option>';
         for ($hour = 0; $hour <= 23; ++$hour) {
-            $hourOptions .= '<option value="'.$hour.'">'.sprintf('%02d', $hour).':00</option>';
+            $hourOptions .= '<option value="' . $hour . '">' . sprintf('%02d', $hour) . ':00</option>';
         }
 
         return $hourOptions;
+    }
+
+    public function alternateRow($rowOdd = 'rowOdd', $rowEven = 'rowEven')
+    {
+        static $i;
+        $i += 1;
+        if ($i % 2 == 0) {
+            return $rowEven;
+        } else {
+            return $rowOdd;
+        }
     }
 }

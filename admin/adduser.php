@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
@@ -16,22 +16,22 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
     echo $HTMLOUT;
     exit();
 }
-require_once INCL_DIR.'user_functions.php';
-require_once INCL_DIR.'password_functions.php';
-require_once CLASS_DIR.'class_check.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'password_functions.php';
+require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_adduser'));
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $insert = array(
-        'username' => '',
-        'email' => '',
-        'secret' => '',
-        'passhash' => '',
-        'status' => 'confirmed',
-        'added' => TIME_NOW,
+    $insert = [
+        'username'    => '',
+        'email'       => '',
+        'secret'      => '',
+        'passhash'    => '',
+        'status'      => 'confirmed',
+        'added'       => TIME_NOW,
         'last_access' => TIME_NOW,
-    );
+    ];
     if (isset($_POST['username']) && strlen($_POST['username']) >= 5) {
         $insert['username'] = $_POST['username'];
     } else {
@@ -65,14 +65,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     die;
 }
 $HTMLOUT = '
-  <h1>'.$lang['std_adduser'].'</h1><br />
+  <h1>' . $lang['std_adduser'] . '</h1><br />
   <form method="post" action="staffpanel.php?tool=adduser&amp;action=adduser">
   <table border="1" cellspacing="0" cellpadding="5">
-  <tr><td class="rowhead">'.$lang['text_username'].'</td><td><input type="text" name="username" size="40" /></td></tr>
-  <tr><td class="rowhead">'.$lang['text_password'].'</td><td><input type="password" name="password" size="40" /></td></tr>
-  <tr><td class="rowhead">'.$lang['text_password2'].'</td><td><input type="password" name="password2" size="40" /></td></tr>
-  <tr><td class="rowhead">'.$lang['text_email'].'</td><td><input type="text" name="email" size="40" /></td></tr>
-  <tr><td colspan="2" align="center"><input type="submit" value="'.$lang['btn_okay'].'" class="btn" /></td></tr>
+  <tr><td class="rowhead">' . $lang['text_username'] . '</td><td><input type="text" name="username" size="40" /></td></tr>
+  <tr><td class="rowhead">' . $lang['text_password'] . '</td><td><input type="password" name="password" size="40" /></td></tr>
+  <tr><td class="rowhead">' . $lang['text_password2'] . '</td><td><input type="password" name="password2" size="40" /></td></tr>
+  <tr><td class="rowhead">' . $lang['text_email'] . '</td><td><input type="text" name="email" size="40" /></td></tr>
+  <tr><td colspan="2" align="center"><input type="submit" value="' . $lang['btn_okay'] . '" class="btn" /></td></tr>
   </table>
   </form>';
-echo stdhead($lang['std_adduser']).$HTMLOUT.stdfoot();
+echo stdhead($lang['std_adduser']) . $HTMLOUT . stdfoot();

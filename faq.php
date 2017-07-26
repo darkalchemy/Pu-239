@@ -1,21 +1,21 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
 dbconn(false);
 loggedinorreturn();
 $lang = array_merge(load_language('global'), load_language('faq'));
-$stdfoot = array(
+$stdfoot = [
     /* include js **/
-    'js' => array(
+    'js' => [
         'jquery',
         'jquery.scrollTo-min',
         'jquery.highlightFade',
         'init',
-    ),
-);
+    ],
+];
 $HTMLOUT = '';
 $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>
     <tr>
@@ -116,7 +116,7 @@ if ($CURUSER) {
         if ($down > 0) {
             $r = number_format($up / $down, 2);
             if ($color) {
-                $r = "<font color='".get_ratio_color($r)."'>$r</font>";
+                $r = "<font color='" . get_ratio_color($r) . "'>$r</font>";
             }
         } elseif ($up > 0) {
             $r = "'Inf.'";
@@ -126,6 +126,7 @@ if ($CURUSER) {
 
         return $r;
     }
+
     if ($CURUSER['class'] < UC_VIP) {
         $gigs = $CURUSER['uploaded'] / (1024 * 1024 * 1024);
         $ratio = (($CURUSER['downloaded'] > 0) ? ($CURUSER['uploaded'] / $CURUSER['downloaded']) : 0);
@@ -168,7 +169,7 @@ if ($CURUSER) {
     $HTMLOUT .= "{$lang['faq_in']}<a class='altlink' href='userdetails.php?id={$CURUSER['id']}'>{$lang['faq_your']}</a>{$lang['faq_case']}";
     if (isset($wait)) {
         $byboth = $byratio && $byul;
-        $HTMLOUT .= ($byboth ? "{$lang['faq_both']}" : '').($byratio ? "{$lang['faq_ratio']}".format_ratio($CURUSER['uploaded'], $CURUSER['downloaded']) : '').($byboth ? "{$lang['faq_and']}" : '').($byul ? "{$lang['faq_totalup']}".round($gigs, 2).' GB' : '').' impl'.($byboth ? 'y' : 'ies')."{$lang['faq_delay']}$wait{$lang['faq_hours']}".($byboth ? '' : " ({$lang['faq_even']}".($byratio ? "{$lang['faq_totup']}".round($gigs, 2).' GB' : "{$lang['faq_ratiois']}".format_ratio($CURUSER['uploaded'], $CURUSER['downloaded'])).'.)');
+        $HTMLOUT .= ($byboth ? "{$lang['faq_both']}" : '') . ($byratio ? "{$lang['faq_ratio']}" . format_ratio($CURUSER['uploaded'], $CURUSER['downloaded']) : '') . ($byboth ? "{$lang['faq_and']}" : '') . ($byul ? "{$lang['faq_totalup']}" . round($gigs, 2) . ' GB' : '') . ' impl' . ($byboth ? 'y' : 'ies') . "{$lang['faq_delay']}$wait{$lang['faq_hours']}" . ($byboth ? '' : " ({$lang['faq_even']}" . ($byratio ? "{$lang['faq_totup']}" . round($gigs, 2) . ' GB' : "{$lang['faq_ratiois']}" . format_ratio($CURUSER['uploaded'], $CURUSER['downloaded'])) . '.)');
     } else {
         $HTMLOUT .= "{$lang['faq_nodelay']}";
     }
@@ -226,4 +227,4 @@ $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadd
     </tr></table>
     </td></tr></table>";
 /////////////////////// HTML OUTPUT ///////////////////////
-echo stdhead('FAQ').$HTMLOUT.stdfoot($stdfoot);
+echo stdhead('FAQ') . $HTMLOUT . stdfoot($stdfoot);

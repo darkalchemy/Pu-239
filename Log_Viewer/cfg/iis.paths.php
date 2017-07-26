@@ -15,11 +15,11 @@
  *
  * @var array
  */
-$paths = array(
+$paths = [
     'C:\\inetpub\\logs\\LogFiles\\W3SVC*\\',
     'C:\\WINDOWS\\system32\\LogFiles\\W3SVC*\\',
     'C:\\WINNT\\system32\\LogFiles\\W3SVC*\\',
-);
+];
 
 /**
  * All possibles files for each type of log.
@@ -31,8 +31,8 @@ $paths = array(
  *
  * @var array
  */
-$files = array(
-    'access' => array(
+$files = [
+    'access' => [
         '*.log',
-    ),
-);
+    ],
+];

@@ -1,6 +1,6 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 /*
  * account_delete function
@@ -32,6 +32,7 @@ function cleanup_log($data)
     $desc = sqlesc($data['clean_desc']);
     sql_query("INSERT INTO cleanup_log (clog_event, clog_time, clog_ip, clog_desc) VALUES ($text, $added, $ip, {$desc})") or sqlerr(__FILE__, __LINE__);
 }
+
 /*function inactive_account_delete($userid)
 {
         $secs = 350 * 86400;
@@ -61,7 +62,7 @@ function cleanup_log($data)
 }*/
 function account_delete($where, $report = false)
 {
-    $fields = 'id:users userid:blackjack,blocks,bookmarks,casino,coins,freeslots,friends,happyhour,happylog,ips,peers,pmboxes,reputation,shoutbox,snatched,thanks,thumbsup,uploadapp,user_blocks,userhits,ustatus friendid:friends offered_by_user_id:offers relation_with:relations sender:messages,invite_codes receiver:messages uid:thankyou whoadded:reputation user:flashscores,rating,relations,tickets user_id:now_viewing,offer_votes,poll_voters,read_posts,subscriptions';
+    $fields = 'id:users userid:blackjack,blocks,bookmarks,casino,coins,freeslots,friends,happyhour,happylog,ips,peers,pmboxes,reputation,snatched,thanks,thumbsup,uploadapp,user_blocks,userhits,ustatus friendid:friends offered_by_user_id:offers relation_with:relations sender:messages,invite_codes receiver:messages uid:thankyou whoadded:reputation user:flashscores,rating,relations,tickets user_id:now_viewing,offer_votes,poll_voters,read_posts,subscriptions';
     $type = (is_string($where) ? 1 : (is_int($where) ? 2 : false));
     if (!$type) {
         return false;
@@ -82,14 +83,16 @@ function account_delete($where, $report = false)
             $joins[] = ($ctr++ == 0) ? "{$table}" : "{$table} ON {$primary}={$table}.{$field[0]}";
         }
     }
-    $tables = ' '.implode(',', $tables);
+    $tables = ' ' . implode(',', $tables);
     $from = implode(' INNER JOIN ', $joins);
     if ($report) {
-        $report = "SELECT count(*) FROM {$from} WHERE {$where};".PHP_EOL; //put mysql routines here, and place array of accounts in report
+        $report = "SELECT count(*) FROM {$from} WHERE {$where};" . PHP_EOL; //put mysql routines here, and place array of accounts in report
     }
-    echo "DELETE {$tables} FROM {$from} WHERE {$where};".PHP_EOL; // put mysql routines here
+    echo "DELETE {$tables} FROM {$from} WHERE {$where};" . PHP_EOL; // put mysql routines here
+
     return $report;
 }
+
 function docleanup($data)
 {
     global $INSTALLER09, $queries, $mc1;
@@ -109,7 +112,7 @@ function docleanup($data)
         write_log("Inactive Clean -------------------- Inactive Clean Complete using $queries queries--------------------");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']).' items deleted/updated';
+        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';
     }
     if ($data['clean_log']) {
         cleanup_log($data);

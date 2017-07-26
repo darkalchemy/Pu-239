@@ -1,8 +1,8 @@
 <?php
 
-$lang = array(
+$lang = [
     //FAQ
-    'faq_welcome' => "<b>Welcome to {$INSTALLER09['site_name']}!</b><br />
+    'faq_welcome'             => "<b>Welcome to {$INSTALLER09['site_name']}!</b><br />
     <br />
     Our goal is not to become another Bytemonsoon or Suprnova (not dizzying either of them though).
     The goal is to provide the absolutely latest stuff. Therefore, only specially authorised users have
@@ -15,16 +15,16 @@ $lang = array(
     <br />
     Before you go any further you should read the {$INSTALLER09['site_name']} <a class='altlink' href='useragreement.php'>user agreement</a>.
     <br />",
-    'faq_contents_header' => 'Contents',
-    'faq_siteinfo_header' => 'Site information',
-    'faq_siteinfo' => "<ul>
+    'faq_contents_header'     => 'Contents',
+    'faq_siteinfo_header'     => 'Site information',
+    'faq_siteinfo'            => "<ul>
         <li><a href='#site1' class='altlink'>What is this bittorrent all about anyway? How do I get the files?</a></li>
         <li><a href='#site2' class='altlink'>Where does the donated money go?</a></li>
         <li><a href='#site4' class='altlink'>Where can I get a copy of the source code?</a></li>
       </ul>
     <br />",
-    'faq_userinfo_header' => 'User information',
-    'faq_userinfo' => "<ul>
+    'faq_userinfo_header'     => 'User information',
+    'faq_userinfo'            => "<ul>
         <li><a href='#user1' class='altlink'>I registered an account but did not receive the confirmation e-mail!</a></li>
         <li><a href='#user2' class='altlink'>I've lost my user name or password! Can you send it to me?</a></li>
         <li><a href='#user3' class='altlink'>Can you rename my account?</a></li>
@@ -44,8 +44,8 @@ $lang = array(
         <li><a href='#userd' class='altlink'>How do I add an avatar to my profile?</a></li>
       </ul>
     <br />",
-    'faq_stats_header' => 'Stats',
-    'faq_stats' => "<ul>
+    'faq_stats_header'        => 'Stats',
+    'faq_stats'               => "<ul>
         <li><a href='#stats1' class='altlink'>Most common reasons for stats not updating</a></li>
         <li><a href='#stats2' class='altlink'>Best practices</a></li>
         <li><a href='#stats3' class='altlink'>May I use any bittorrent client?</a></li>
@@ -59,16 +59,16 @@ $lang = array(
         <li><a href='#stats9' class='altlink'>For those of you who are interested (Anatomy of a torrent session)</a></li>
       </ul>
     <br />",
-    'faq_uploading_header' => 'Uploading',
-    'faq_uploading' => "<ul>
+    'faq_uploading_header'    => 'Uploading',
+    'faq_uploading'           => "<ul>
         <li><a href='#up1' class='altlink'>Why can't I upload torrents?</a> </li>
       <li><a href='#up2' class='altlink'>What criteria must I meet before I can join the Uploader team?</a></li>
       <li><a href='#up3' class='altlink'>Can I upload your torrents to other trackers?</a>
       <img src='{$INSTALLER09['pic_base_url']}new.png' alt='New' width='27' height='11' /></li>
       </ul>
     <br />",
-    'faq_downloading_header' => 'Downloading',
-    'faq_downloading' => "<ul>
+    'faq_downloading_header'  => 'Downloading',
+    'faq_downloading'         => "<ul>
         <li><a href='#dl1' class='altlink'>How do I use the files I've downloaded?</a></li>
         <li><a href='#dl2' class='altlink'>Downloaded a movie and don't know what CAM/TS/TC/SCR means?</a></li>
         <li><a href='#dl3' class='altlink'>Why did an active torrent suddenly disappear?</a>
@@ -87,8 +87,8 @@ $lang = array(
         <img src='{$INSTALLER09['pic_base_url']}new.png' alt='New' width='27' height='11' /></li>
       </ul>
     <br />",
-    'faq_improve_header' => 'How can I improve my download speed?',
-    'faq_improve' => "<ul>
+    'faq_improve_header'      => 'How can I improve my download speed?',
+    'faq_improve'             => "<ul>
         <li><a href='#dlsp1' class='altlink'>Do not immediately jump on new torrents</a></li>
         <li><a href='#dlsp2' class='altlink'>Make yourself connectable</a></li>
         <li><a href='#dlsp3' class='altlink'>Limit your upload speed</a></li>
@@ -98,8 +98,8 @@ $lang = array(
         <li><a href='#dlsp7' class='altlink'>Why is my browsing so slow while leeching?</a></li>
       </ul>
     <br />",
-    'faq_isp_header' => 'My ISP uses a transparent proxy. What should I do?',
-    'faq_isp' => "<ul>
+    'faq_isp_header'          => 'My ISP uses a transparent proxy. What should I do?',
+    'faq_isp'                 => "<ul>
         <li><a href='#prox1' class='altlink'>What is a proxy?</a></li>
         <li><a href='#prox2' class='altlink'>How do I find out if I'm behind a (transparent/anonymous) proxy?</a></li>
         <li><a href='#prox3' class='altlink'>Why am I listed as not connectable even though I'm not NAT/Firewalled?</a></li>
@@ -109,16 +109,16 @@ $lang = array(
         <li><a href='#prox7' class='altlink'>Does this apply to other torrent sites?</a></li>
       </ul>
     <br />",
-    'faq_connect_header' => "Why can't I connect? Is the site blocking me?",
-    'faq_connect' => "<ul>  <li><a href='#conn1' class='altlink'>Name resolution problems</a></li>
+    'faq_connect_header'      => "Why can't I connect? Is the site blocking me?",
+    'faq_connect'             => "<ul>  <li><a href='#conn1' class='altlink'>Name resolution problems</a></li>
         <li><a href='#conn2' class='altlink'>Maybe my address is blacklisted?</a></li>
         <li><a href='#conn3' class='altlink'>Your ISP blocks the site's address</a></li>
       <li><a href='#conn4' class='altlink'>Alternate port (81)</a>
       <img src='{$INSTALLER09['pic_base_url']}updated.png' alt='Updated' width='46' height='11' /></li>
       </ul>
     <br />",
-    'faq_problem' => "<b>What if I can't find the answer to my problem here?</b>",
-    'faq_siteinfo_body' => "<br />
+    'faq_problem'             => "<b>What if I can't find the answer to my problem here?</b>",
+    'faq_siteinfo_body'       => "<br />
     <b>What is this bittorrent all about anyway? How do I get the files?</b><a name='site1' id='site1'></a><br />
     <br />
     Check out <a class='altlink' href='redir.php?url=http://www.btfaq.com/'>Brian's BitTorrent FAQ and Guide</a>.<br />
@@ -132,10 +132,10 @@ $lang = array(
     <br />
     <b>Where can I get a copy of the source code?<a name='site4' id='site4'></a></b><br />
     <br />
-    U-232 is an active open source project available for download via Github <a href='https://github.com/Bigjoos/U-232-V3' class='altlink'>Zip download</a> or directly from the support forum <a href='https://forum.u-232.com/index.php?action=downloads;cat=1' class='altlink'>Zip downloads</a>. Please note: We do not give any kind of support on the source code so please don't bug us about it. If it works, great, if not too bad. Use this software at your own risk!
+    P-239 is an active open source project available for download via Github <a href='https://github.com/darkalchemy/V-239-V1' class='altlink'>Zip download</a>. Please note: We do not give any kind of support on the source code so please don't bug us about it. If it works, great, if not too bad. Use this software at your own risk!
     <p>
-    Here is a nice tutorial on getting it all to work. Note: This tutorial is not supported by U-232. Please direct all comments on the tutorial to the author</p>",
-    'faq_userinfo_body' => "<b>I registered an account but did not receive the confirmation e-mail!</b><a name='user1' id='user1'></a><br />
+    Here is a nice tutorial on getting it all to work. Note: This tutorial is not supported by P-239. Please direct all comments on the tutorial to the author</p>",
+    'faq_userinfo_body'       => "<b>I registered an account but did not receive the confirmation e-mail!</b><a name='user1' id='user1'></a><br />
     <br />
     You can contact site staff with your request on irc<br />
     <br />
@@ -257,9 +257,9 @@ $lang = array(
     </table>
     <br />
     <br />",
-    'faq_promotion_header' => "<b>How does this promotion thing work anyway?</b><a name='usera' id='usera'></a><br />
+    'faq_promotion_header'    => "<b>How does this promotion thing work anyway?</b><a name='usera' id='usera'></a><br />
     <br />",
-    'faq_promotion_body' => "<tr>
+    'faq_promotion_body'      => "<tr>
       <td class='embedded' bgcolor='#F5F4EA' valign='top' width='100'>&nbsp; <b>Power User</b></td>
       <td class='embedded' width='5'>&nbsp;</td>
       <td class='embedded' valign='top'>Must have been be a member for at least 4 weeks, have uploaded at least 25GB and
@@ -322,9 +322,9 @@ $lang = array(
     <br />
     Please do not make a post just to test your avatar. If everything is allright you'll see it
     in your ",
-    'faq_details_page' => 'details page',
-    'faq_stats_title' => 'Stats',
-    'faq_stats_body' => "<br />
+    'faq_details_page'        => 'details page',
+    'faq_stats_title'         => 'Stats',
+    'faq_stats_body'          => "<br />
     <b>Most common reason for stats not updating</b><a name='stats1'></a><br />
     <br />
     <ul>
@@ -440,7 +440,7 @@ $lang = array(
     </td></tr></table>
     <br />
     <br />",
-    'faq_uploading_body' => "<br />
+    'faq_uploading_body'      => "<br />
     <b>Why can't I upload torrents?</b><a name='up1'></a><br />
     <br />
     Only specially authorized users (<font color='#4040C0'><b>Uploaders</b></font>) have permission to upload torrents.<br />
@@ -473,7 +473,7 @@ $lang = array(
     <br />
     (However, the files you download from us are yours to do as you please. You can always create another
     torrent, pointing to some other tracker, and upload it to the site of your choice.)<br />",
-    'faq_downloading_body' => "<br />
+    'faq_downloading_body'    => "<br />
     <b>How do I use the files I've downloaded?</b><a name='dl1'></a><br />
     <br />
     Check out <a class='altlink' href='formats.php'>this guide</a>.<br />
@@ -577,20 +577,20 @@ $lang = array(
     <br />
     '<b>And/or</b>' means any or both. Your delay will be the <b>largest</b> one for which you meet <b>at least</b> one condition.<br />
     <br />",
-    'faq_in' => 'In ',
-    'faq_your' => 'your',
-    'faq_case' => ' particular case, ',
-    'faq_both' => 'both ',
-    'faq_ratio' => 'your ratio of ',
-    'faq_and' => ' and ',
-    'faq_totalup' => 'your total uploaded of ',
-    'faq_delay' => ' a delay of ',
-    'faq_hours' => ' hours',
-    'faq_even' => 'Even if your ',
-    'faq_totup' => 'total uploaded is ',
-    'faq_ratiois' => 'ratio is ',
-    'faq_nodelay' => 'you will experience no delay.',
-    'faq_downloading_body1' => "This applies to new users as well, so opening a new account will not help. Note also that this
+    'faq_in'                  => 'In ',
+    'faq_your'                => 'your',
+    'faq_case'                => ' particular case, ',
+    'faq_both'                => 'both ',
+    'faq_ratio'               => 'your ratio of ',
+    'faq_and'                 => ' and ',
+    'faq_totalup'             => 'your total uploaded of ',
+    'faq_delay'               => ' a delay of ',
+    'faq_hours'               => ' hours',
+    'faq_even'                => 'Even if your ',
+    'faq_totup'               => 'total uploaded is ',
+    'faq_ratiois'             => 'ratio is ',
+    'faq_nodelay'             => 'you will experience no delay.',
+    'faq_downloading_body1'   => "This applies to new users as well, so opening a new account will not help. Note also that this
     works at tracker level, you will be able to grab the .torrent file itself at any time.<br />
     <br />
     <!--The delay applies only to leeching, not to seeding. If you got the files from any other source and
@@ -657,7 +657,7 @@ $lang = array(
     and links therein for more information on this.<br />
     <br />
     <br />",
-    'faq_downloading_body2' => "<b>What's this 'IOError - [Errno13] Permission denied' error?</b><a name='dla'></a><br />
+    'faq_downloading_body2'   => "<b>What's this 'IOError - [Errno13] Permission denied' error?</b><a name='dla'></a><br />
     <br />
     If you just want to fix it reboot your computer, it should solve the problem.
     Otherwise read on.<br />
@@ -683,7 +683,7 @@ $lang = array(
     from the tracker after that many hours have elapsed (yes, even if it is still active).
     Note that this a maximum value, the torrent may be deleted at any time if it's inactive.<br />",
     'faq_improve_speed_title' => 'How can I improve my download speed?',
-    'faq_improve_speed_body' => "The download speed mostly depends on the seeder-to-leecher ratio (SLR). Poor download speed is
+    'faq_improve_speed_body'  => "The download speed mostly depends on the seeder-to-leecher ratio (SLR). Poor download speed is
     mainly a problem with new and very popular torrents where the SLR is low.<br />
     <br />
     (Proselytising sidenote: make sure you remember that you did not enjoy the low speed.
@@ -762,8 +762,8 @@ $lang = array(
     such as <a class='altlink' href='redir.php?url=http://www.netlimiter.com/'>NetLimiter</a>.<br />
     <br />
     Browsing was used just as an example, the same would apply to gaming, IMing, etc...<br />",
-    'faq_proxy_title' => 'My ISP uses a transparent proxy. What should I do?',
-    'faq_proxy_body' => "<br />
+    'faq_proxy_title'         => 'My ISP uses a transparent proxy. What should I do?',
+    'faq_proxy_body'          => "<br />
     <i>Caveat: This is a large and complex topic. It is not possible to cover all variations here.</i><br />
     <br />
     Short reply: change to an ISP that does not force a proxy upon you. If you cannot or do not want to then read on.<br />
@@ -774,7 +774,7 @@ $lang = array(
     forwards them to the site instead of you connecting directly to the site. There are several classifications
     (the terminology is far from standard):<br />
     <br />",
-    'faq_proxy_body2' => "<tr>
+    'faq_proxy_body2'         => "<tr>
       <td class='embedded' valign='top' bgcolor='#F5F4EA' width='100'>&nbsp;Transparent</td>
       <td class='embedded' width='10'>&nbsp;</td>
       <td class='embedded' valign='top'>A transparent proxy is one that needs no configuration on the clients. It works by automatically redirecting all port 80 traffic to the proxy. (Sometimes used as synonymous for non-anonymous.)</td>
@@ -867,8 +867,8 @@ $lang = array(
     <br />
     This section was written for {$INSTALLER09['site_name']}, a closed, port 80-81 tracker. Other trackers may be open or closed, and many listen
     on e.g. ports 6868 or 6969. The above does <b>not</b> necessarily apply to other trackers.<br />",
-    'faq_blocked_title' => "Why can't I connect? Is the site blocking me?",
-    'faq_blocked_body' => "<br />
+    'faq_blocked_title'       => "Why can't I connect? Is the site blocking me?",
+    'faq_blocked_body'        => "<br />
     Your failure to connect may be due to several reasons. <br />
 
     <br />
@@ -897,8 +897,8 @@ $lang = array(
     check that you're capable of accepting incoming connections.<br />
     <br />
     <br />",
-    'faq_alt_port' => 'Alternate port (81)',
-    'faq_alt_port_body' => "<br />
+    'faq_alt_port'            => 'Alternate port (81)',
+    'faq_alt_port_body'       => "<br />
     Some of our torrents use ports other than the usual HTTP port 80. This may cause problems for some users,
     for instance those behind some firewall or proxy configurations.
 
@@ -915,8 +915,8 @@ $lang = array(
     </td></tr></table>
     <br />
     <br />",
-    'faq_problem_title' => "What if I can't find the answer to my problem here?",
-    'faq_problem_body' => "<br />
+    'faq_problem_title'       => "What if I can't find the answer to my problem here?",
+    'faq_problem_body'        => "<br />
     Post in the <a class='altlink' href='forums.php'>Forums</a>, by all means. You'll find they
     are usually a friendly and helpful place,
     provided you follow a few basic guidelines:
@@ -931,4 +931,4 @@ $lang = array(
     you tell the easiest it will be for us, and the more probable your post will get a reply.</li>
     <li>And needless to say: be polite. Demanding help rarely works, asking for it usually does
     the trick.</li>",
-);
+];

@@ -1,101 +1,102 @@
 .widget {
-width: 760px;
-margin: 20px;
-padding: 10px;
-	position: relative;
-	
-	margin-right: 3px;
-	padding: none;
-	border: 1px solid #b7b6b6;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	-webkit-box-shadow: 0 3px 0 #ededed;
-	-moz-box-shadow: 0 3px 0 #ededed;
-	box-shadow: 0 3px 0 #ededed;
-	background: #ddd;
-	background: -webkit-gradient(linear, left top, left bottom, from(#aaa), to(#ddd));
-	background: -moz-linear-gradient(top,  #aaa,  #ddd);
-	background: -o-linear-gradient(rgb(255,255,255),rgb(240,240,240));
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#aaa', endColorstr='#ddd');
+    width: 760px;
+    margin: 20px;
+    padding: 10px;
+    position: relative;
+
+    margin-right: 3px;
+    padding: none;
+    border: 1px solid #b7b6b6;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 3px 0 #ededed;
+    -moz-box-shadow: 0 3px 0 #ededed;
+    box-shadow: 0 3px 0 #ededed;
+    background: #ddd;
+    background: -webkit-gradient(linear, left top, left bottom, from(#aaa), to(#ddd));
+    background: -moz-linear-gradient(top, #aaa, #ddd);
+    background: -o-linear-gradient(rgb(255, 255, 255), rgb(240, 240, 240));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#aaa', endColorstr='#ddd');
 }
 
-   .widget a {
-   color: #000000;
-   text-decoration: none;
-   }
-   
-   .widget a:hover {
-   color: #009;
-   text-decoration: underline;
-   }
+.widget a {
+    color: #000000;
+    text-decoration: none;
+}
 
-   .tabnav li {
-   display: inline;
-   list-style: none;
-   padding-right: 5px;
-   }
-   
-      .tabnav li a {
-      text-decoration: none;
-      text-transform: uppercase;
-      color: #222;
-      font-weight: bold;
-      padding: 4px 6px;
-      outline: none;
-      }
-      
-      .tabnav li a:hover, .tabnav li a:active, .tabnav li.ui-tabs-selected a {
-      background: #dedbd1;
-      color: #222;
-      text-decoration: none;
-      }
-      
-   .tabdiv {
-   	position: relative;
-	overflow:hidden;
-	margin-right: 3px;
-	padding: none;
-	border: 1px solid #b7b6b6;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	-webkit-box-shadow: 0 3px 0 #ededed;
-	-moz-box-shadow: 0 3px 0 #ededed;
-	box-shadow: 0 3px 0 #ededed;
-	background: #ddd;
-	background: -webkit-gradient(linear, left top, left bottom, from(#ccc), to(#ddd));
-	background: -moz-linear-gradient(top,  #ccc,  #ddd);
-	background: -o-linear-gradient(rgb(255,255,255),rgb(240,240,240));
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ccc', endColorstr='#ddd');
-   }
-   
-      .tabdiv li {
-      list-style-image: url("pic/star.png");
-      margin-left: 20px;
-      }
+.widget a:hover {
+    color: #009;
+    text-decoration: underline;
+}
+
+.tabnav li {
+    display: inline;
+    list-style: none;
+    padding-right: 5px;
+}
+
+.tabnav li a {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #222;
+    font-weight: bold;
+    padding: 4px 6px;
+    outline: none;
+}
+
+.tabnav li a:hover, .tabnav li a:active, .tabnav li.ui-tabs-selected a {
+    background: #dedbd1;
+    color: #222;
+    text-decoration: none;
+}
+
+.tabdiv {
+    position: relative;
+    overflow: hidden;
+    margin-right: 3px;
+    padding: none;
+    border: 1px solid #b7b6b6;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 3px 0 #ededed;
+    -moz-box-shadow: 0 3px 0 #ededed;
+    box-shadow: 0 3px 0 #ededed;
+    background: #ddd;
+    background: -webkit-gradient(linear, left top, left bottom, from(#ccc), to(#ddd));
+    background: -moz-linear-gradient(top, #ccc, #ddd);
+    background: -o-linear-gradient(rgb(255, 255, 255), rgb(240, 240, 240));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ccc', endColorstr='#ddd');
+}
+
+.tabdiv li {
+    list-style-image: url("pic/star.png");
+    margin-left: 20px;
+}
 
 .ui-tabs-hide {
-      display: none;
-      }
+    display: none;
+}
 
-      #featuredvid {
-      text-align: center;
-      }
-      
-         .fvid {
-         margin-bottom: 5px;
-         }
-      
-         .vidselector li {
-         text-align: left;
-         list-style: none;
-         padding: 5px;
-         background: #ffffff;
-         border: 1px solid #dedbd1;
-         text-transform: uppercase;
-         margin-bottom: 5px;
-         }
+#featuredvid {
+    text-align: center;
+}
+
+.fvid {
+    margin-bottom: 5px;
+}
+
+.vidselector li {
+    text-align: left;
+    list-style: none;
+    padding: 5px;
+    background: #ffffff;
+    border: 1px solid #dedbd1;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
 /*
 	.widget {
 		position: relative;

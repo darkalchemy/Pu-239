@@ -7,7 +7,7 @@
  * @link https://blueimp.net/ajax/
  */
 
-$lang = array();
+$lang = [];
 $lang['title'] = 'AJAX Brbljanje';
 $lang['userName'] = 'Korisničko ime';
 $lang['password'] = 'Lozinka';

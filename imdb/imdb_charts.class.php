@@ -15,9 +15,10 @@
 //############################################################################
 /* $Id: imdb_charts.class.php 498 2012-01-18 21:05:55Z izzy $ */
 
-include_once dirname(__FILE__).'/mdb_base.class.php';
+include_once dirname(__FILE__) . '/mdb_base.class.php';
 
 //=================================================[ The IMDB Charts class ]===
+
 /** Obtaining the information about Moviemeter Top 10 and Weekend box office of IMDB
  * @class imdb_topcharts
  *

@@ -1,11 +1,11 @@
 <?php
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
-require_once CLASS_DIR.'class_user_options.php';
-require_once CLASS_DIR.'class_user_options_2.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once CLASS_DIR . 'class_user_options.php';
+require_once CLASS_DIR . 'class_user_options_2.php';
 dbconn(false);
 loggedinorreturn();
 $lang = load_language('reputation');
@@ -16,7 +16,7 @@ $is_mod = ($CURUSER['class'] >= UC_STAFF) ? true : false;
 //$rep_maxperday = 10;
 //$rep_repeat = 20;
 $closewindow = true;
-require_once CACHE_DIR.'rep_settings_cache.php';
+require_once CACHE_DIR . 'rep_settings_cache.php';
 //print_r($GVARS);
 if (!$GVARS['rep_is_online']) {
     exit($lang['info_reputation_offline']);
@@ -42,12 +42,12 @@ if (isset($input['done'])) {
 ///////////////////////////////////////////////
 /// weeeeeeeeee =]
 $check = isset($input['pid']) ? is_valid_id($input['pid']) : false;
-$locales = array(
+$locales = [
     'posts',
     'comments',
     'torrents',
     'users',
-);
+];
 $rep_locale = (isset($input['locale']) && (in_array($input['locale'], $locales)) ? $input['locale'] : 'posts');
 if (!$check) {
     rep_output('Incorrect Access');
@@ -90,24 +90,24 @@ WHERE posts.id ={$input['pid']}");
     $forum = sql_query("SELECT id AS userid, username, reputation, opt1, opt2 FROM users WHERE id ={$input['pid']}");
 } // end
 switch ($rep_locale) {
-case 'comments':
-    $this_rep = 'Comment';
-    break;
+    case 'comments':
+        $this_rep = 'Comment';
+        break;
 
-case 'torrents':
-    $this_rep = 'Torrent';
-    break;
+    case 'torrents':
+        $this_rep = 'Torrent';
+        break;
 
-case 'users':
-    $this_rep = 'Profile';
-    break;
+    case 'users':
+        $this_rep = 'Profile';
+        break;
 
-default:
-    $this_rep = 'Post';
+    default:
+        $this_rep = 'Post';
 }
 // does it or don't it?
 if (!mysqli_num_rows($forum)) {
-    rep_output($this_rep.' Does Not Exist - Incorrect Access');
+    rep_output($this_rep . ' Does Not Exist - Incorrect Access');
 }
 ///////////////////////////////////////////////
 // ok, lets proceed
@@ -125,7 +125,7 @@ if (isset($res['minclassread'])) { // 'posts'
 $repeat = sql_query("SELECT postid FROM reputation WHERE postid ={$input['pid']} AND whoadded={$CURUSER['id']}");
 //$repres = mysql_fetch_assoc( $forum ) or sqlerr(__LINE__,__FILE__);
 if (mysqli_num_rows($repeat) > 0 && $rep_locale != 'users') { // blOOdy eedjit check!
-    rep_output('You have already added Rep to this '.$this_rep.'!'); // Is insane!
+    rep_output('You have already added Rep to this ' . $this_rep . '!'); // Is insane!
 }
 ///////////////////////////////////////////////
 // 	Is a mod or gone over the limit?
@@ -190,30 +190,30 @@ if (isset($input['do']) && $input['do'] == 'addrep') {
     }
     $score = fetch_reppower($CURUSER, $input['reputation']);
     $res['reputation'] += $score;
-    sql_query('UPDATE users set reputation='.intval($res['reputation']).' WHERE id='.$res['userid']);
-    $mc1->begin_transaction('MyUser_'.$res['userid']);
-    $mc1->update_row(false, array(
+    sql_query('UPDATE users set reputation=' . intval($res['reputation']) . ' WHERE id=' . $res['userid']);
+    $mc1->begin_transaction('MyUser_' . $res['userid']);
+    $mc1->update_row(false, [
         'reputation' => $res['reputation'],
-    ));
+    ]);
     $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
-    $mc1->begin_transaction('user'.$res['userid']);
-    $mc1->update_row(false, array(
+    $mc1->begin_transaction('user' . $res['userid']);
+    $mc1->update_row(false, [
         'reputation' => $res['reputation'],
-    ));
+    ]);
     $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
-    $mc1->delete_value('user_rep_'.$res['userid']);
-    $save = array(
+    $mc1->delete_value('user_rep_' . $res['userid']);
+    $save = [
         'reputation' => $score,
-        'whoadded' => $CURUSER['id'],
-        'reason' => sqlesc($reason),
-        'dateadd' => TIMENOW,
-        'locale' => sqlesc($rep_locale),
-        'postid' => (int) $input['pid'],
-        'userid' => $res['userid'],
-    );
+        'whoadded'   => $CURUSER['id'],
+        'reason'     => sqlesc($reason),
+        'dateadd'    => TIMENOW,
+        'locale'     => sqlesc($rep_locale),
+        'postid'     => (int)$input['pid'],
+        'userid'     => $res['userid'],
+    ];
     //print( join( ',', $save) );
     //print( join(',', array_keys($save)));
-    sql_query('INSERT INTO reputation ('.join(',', array_keys($save)).') VALUES ('.join(',', $save).')');
+    sql_query('INSERT INTO reputation (' . join(',', array_keys($save)) . ') VALUES (' . join(',', $save) . ')');
     header("Location: {$INSTALLER09['baseurl']}/reputation.php?pid={$input['pid']}&done=1");
 } // Move along, nothing to see here!
 else {
@@ -223,7 +223,7 @@ else {
                                         from reputation r
                                         left join users leftby on leftby.id=r.whoadded
                                         where postid={$input['pid']}
-                                        AND r.locale = ".sqlesc($input['locale']).'
+                                        AND r.locale = " . sqlesc($input['locale']) . '
                                         order by dateadd DESC');
         $reasonbits = '';
         if (false !== mysqli_num_rows($query1)) {
@@ -238,7 +238,7 @@ else {
                     $posneg = 'balance';
                 }
                 if ($GVARS['g_rep_seeown']) {
-                    $postrep['reason'] = $postrep['reason']." <span class='desc'>{$lang['rep_left_by']} <a href=\"{$INSTALLER09['baseurl']}/userdetails.php?id={$postrep['leftby_id']}\" target='_blank'>{$postrep['leftby_name']}</a></span>";
+                    $postrep['reason'] = $postrep['reason'] . " <span class='desc'>{$lang['rep_left_by']} <a href=\"{$INSTALLER09['baseurl']}/userdetails.php?id={$postrep['leftby_id']}\" target='_blank'>{$postrep['leftby_name']}</a></span>";
                 }
                 $reasonbits .= "<tr>
 	<td class='row2' width='1%'><img src='./pic/rep/reputation_$posneg.gif' border='0' alt='' /></td>
@@ -271,27 +271,27 @@ else {
             $rep = $lang['rep_even']; //Ok, dunno what to do, so just make it quits!
         }
         switch ($rep_locale) {
-        case 'comments':
-            $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/details.php?id=%d&amp;viewcomm=%d#comm%d' target='_blank'>this Comment</a> is %s<br />Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
-            break;
+            case 'comments':
+                $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/details.php?id=%d&amp;viewcomm=%d#comm%d' target='_blank'>this Comment</a> is %s<br />Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
+                break;
 
-        case 'torrents':
-            $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/details.php?id=%d' target='_blank'>this Torrent</a> is %s<br />Total: %s points.", $input['pid'], $rep, $total);
-            break;
+            case 'torrents':
+                $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/details.php?id=%d' target='_blank'>this Torrent</a> is %s<br />Total: %s points.", $input['pid'], $rep, $total);
+                break;
 
-        case 'users':
-            $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/userdetails.php?id=%d' target='_blank'>your profile</a> is %s<br />Total: %s points.", $input['pid'], $rep, $total);
-            break;
+            case 'users':
+                $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/userdetails.php?id=%d' target='_blank'>your profile</a> is %s<br />Total: %s points.", $input['pid'], $rep, $total);
+                break;
 
-        default:
-            $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/forums.php?action=viewtopic&amp;topicid=%d&amp;page=p%d#%d' target='_blank'>this Post</a> is %s<br />Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
+            default:
+                $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/forums.php?action=viewtopic&amp;topicid=%d&amp;page=p%d#%d' target='_blank'>this Post</a> is %s<br />Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
         }
         ///////////////////////////////////////////////
         //	Compile some HTML for the 'own post'/ 'user view' reputation
         //	Feel free to do ya own html/css here
         ///////////////////////////////////////////////
         //$rep_info = sprintf("".$lang["info_your_rep_on"]." <a href='{$INSTALLER09['baseurl']}/forums.php?action=viewtopic&amp;topicid=%d&amp;page=p%d#%d' target='_blank'>".$lang["info_this_post"]."</a> ".$lang["info_is"]." %s.", $res['topicid'], $input['pid'], $input['pid'], $rep );
-        $rep_points = sprintf(''.$lang['info_you_have'].' %d '.$lang['info_reputation_points'].'', $CURUSER['reputation']);
+        $rep_points = sprintf('' . $lang['info_you_have'] . ' %d ' . $lang['info_reputation_points'] . '', $CURUSER['reputation']);
         $html = "<tr><td class='darkrow1'>{$rep_info}</td></tr>
 						<tr>
 							<td class='row2'>
@@ -314,10 +314,10 @@ else {
         //	Feel free to alter HTML/CSS here
         ///////////////////////////////////////////////
         $res['anon'] = (isset($res['anon']) ? $res['anon'] : 'no');
-        $rep_text = sprintf("What do you think of %s's ".$this_rep.'?', ($res['anon'] == 'yes' ? 'Anonymous' : htmlsafechars($res['username'])));
+        $rep_text = sprintf("What do you think of %s's " . $this_rep . '?', ($res['anon'] == 'yes' ? 'Anonymous' : htmlsafechars($res['username'])));
         $negativerep = ($is_mod || $GVARS['g_rep_negative']) ? true : false;
         $closewindow = false;
-        $html = "<tr><td class='darkrow1'>{$lang['info_add_rep']} <b>".htmlsafechars($res['username'])."</b></td></tr>
+        $html = "<tr><td class='darkrow1'>{$lang['info_add_rep']} <b>" . htmlsafechars($res['username']) . "</b></td></tr>
 						<tr>
 							<td class='row2'>
 							<form action='reputation.php' method='post'>	
@@ -336,7 +336,7 @@ else {
 							</tr>
 							<tr>
 								<td>
-									{$lang['rep_your_comm_on_this_post']} ".$this_rep."<br />
+									{$lang['rep_your_comm_on_this_post']} " . $this_rep . "<br />
 									<input type='text' size='40' maxlength='250' name='reason' style='margin:0px;' />
 								</td>
 							</tr>
@@ -348,7 +348,7 @@ else {
 						<input type='hidden' name='do' value='addrep' />
 						<input type='hidden' name='pid' value='{$input['pid']}' />
 						<input type='hidden' name='locale' value='{$input['locale']}' />
-						<input type='submit' value='".$lang['info_add_rep']."' class='button' accesskey='s' />
+						<input type='submit' value='" . $lang['info_add_rep'] . "' class='button' accesskey='s' />
 						<input type='button' value='Close Window' class='button' accesskey='c' onclick='self.close()' />
 					</div>	
 					</form>	
@@ -364,41 +364,41 @@ else {
 ///////////////////////////////////////////////
 function rep_output($msg = '', $html = '')
 {
-    global $closewindow, $lang, $CURUSER;
-    if ($msg && empty($html)) {
-        $html = "<tr><td class='row2'>$msg</td></tr>";
-    } ?>
-    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">		
-		<html xmlns="http://www.w3.org/1999/xhtml">
-		<head>
-		<meta name="generator" content="" />
-		<meta name="MSSmartTagsPreventParsing" content="TRUE" />			
-		<title>Reputation System</title>
+global $closewindow, $lang, $CURUSER;
+if ($msg && empty($html)) {
+    $html = "<tr><td class='row2'>$msg</td></tr>";
+} ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="generator" content=""/>
+    <meta name="MSSmartTagsPreventParsing" content="TRUE"/>
+    <title>Reputation System</title>
     <link rel='stylesheet' href='./templates/<?php
     echo $CURUSER['stylesheet']; ?>/<?php
-    echo $CURUSER['stylesheet']; ?>.css' type='text/css' />
-    </head>
-    <body>
-    <?php
-    $html = "<div style='background-color:transparent;'>
+    echo $CURUSER['stylesheet']; ?>.css' type='text/css'/>
+</head>
+<body>
+<?php
+$html = "<div style='background-color:transparent;'>
 		<div class='borderwrap'>
 	  <div class='maintitle'>Reputation System</div>
 	  <table class='main' cellspacing='1'>
 		$html";
-    if ($closewindow) {
-        $html .= "<tr><td class='darkrow1' align='center'><a href='javascript:self.close();'><b>{$lang['info_close_rep']}</b></a></td></tr>";
-    }
-    $html .= '</table></div></div></body></html>';
-    echo $html;
-    exit();
+if ($closewindow) {
+    $html .= "<tr><td class='darkrow1' align='center'><a href='javascript:self.close();'><b>{$lang['info_close_rep']}</b></a></td></tr>";
+}
+$html .= '</table></div></div></body></html>';
+echo $html;
+exit();
 }
 ///////////////////////////////////////////////
 //	Fetch Reputation function
 //	$user -> array all about the user
 //	$rep -> string what kind of rep this user has
 ///////////////////////////////////////////////
-function fetch_reppower($user = array(), $rep = 'pos')
+function fetch_reppower($user = [], $rep = 'pos')
 {
     global $GVARS, $is_mod;
     $reppower = '';
@@ -434,6 +434,7 @@ function fetch_reppower($user = array(), $rep = 'pos')
 
     return $reppower;
 }
+
 // erm, FIN
 
 ?>

@@ -1,6 +1,7 @@
 <?php
+
 /**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
  */
 class block_index
 {
@@ -11,7 +12,7 @@ class block_index
     const BIRTHDAY_ACTIVE_USERS = 0x10; // 16
     const IE_ALERT = 0x20; // 32
     const DISCLAIMER = 0x40; // 64
-    const SHOUTBOX = 0x80; // 128
+    const AJAXCHAT = 0x80; // 128
     const STATS = 0x100; // 256
     const LATEST_USER = 0x200; // 512
     const FORUMPOSTS = 0x400; // 1024
@@ -24,6 +25,6 @@ class block_index
     const TORRENTFREAK = 0x20000; // 131072      //== exclude
     const XMAS_GIFT = 0x40000; // 262144 //== exclude
     const ACTIVE_POLL = 0x80000; // 524288
-    const STAFF_SHOUT = 0x100000; // 1048576  //== exclude
+    const TRIVIA = 0x100000; // 1048576  //== exclude
     const MOVIEOFWEEK = 0x200000; // 2097152 //== exclude
 }

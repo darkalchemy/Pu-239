@@ -1,7 +1,7 @@
 <?php
 
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
 dbconn();
 loggedinorreturn();
 
@@ -74,7 +74,7 @@ if ($row1000[0] > 0) {
 }
 
 // Casino
-$res = sql_query('SELECT COUNT(*) FROM casino WHERE deposit > 0 AND userid != '.sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT COUNT(*) FROM casino WHERE deposit > 0 AND userid != ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 $rowCasino = mysqli_fetch_row($res);
 if ($rowCasino[0] > 0) {
     $color9 = 'green';
@@ -140,4 +140,4 @@ $HTMLOUT .= "
 		</tr>
 	</table>";
 
-echo stdhead('Games').$HTMLOUT.stdfoot();
+echo stdhead('Games') . $HTMLOUT . stdfoot();

@@ -1,7 +1,7 @@
 <?php
 /**
-\_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
-*/
+ * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
+ */
 function docleanup($data)
 {
     global $INSTALLER09, $queries, $mc1;
@@ -12,9 +12,9 @@ function docleanup($data)
     if (mysqli_num_rows($res) != 0) {
         while ($arr = mysqli_fetch_assoc($res)) {
             $userid = $arr['id'];
-            $res_del = sql_query('DELETE FROM users WHERE id='.sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-            $mc1->delete_value('MyUser_'.$userid);
-            $mc1->delete_value('user'.$userid);
+            $res_del = sql_query('DELETE FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+            $mc1->delete_value('MyUser_' . $userid);
+            $mc1->delete_value('user' . $userid);
             write_log("User: {$arr['username']} Was deleted by Expired Signup clean");
         }
     }
@@ -23,12 +23,13 @@ function docleanup($data)
         write_log("Expired Signup clean-------------------- Expired Signup cleanup Complete using $queries queries --------------------");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']).' items deleted/updated';
+        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';
     }
     if ($data['clean_log']) {
         cleanup_log($data);
     }
 }
+
 function cleanup_log($data)
 {
     $text = sqlesc($data['clean_title']);

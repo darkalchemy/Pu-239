@@ -15,99 +15,79 @@
   -------------------------------------------------------------------------  
 */
 
-function Validator(frmname)
+function Validator(frmname) {
 
-{
+    this.formobj = document.forms[frmname];
 
-  this.formobj=document.forms[frmname];
+    if (!this.formobj) {
 
-	if(!this.formobj)
+        alert("Error: couldn't get Form object " + frmname);
 
-	{
+        return;
 
-	  alert("Error: couldn't get Form object "+frmname);
+    }
 
-		return;
+    if (this.formobj.onsubmit) {
 
-	}
+        this.formobj.old_onsubmit = this.formobj.onsubmit;
 
-	if(this.formobj.onsubmit)
+        this.formobj.onsubmit = null;
 
-	{
+    }
 
-	 this.formobj.old_onsubmit = this.formobj.onsubmit;
+    else {
 
-	 this.formobj.onsubmit=null;
+        this.formobj.old_onsubmit = null;
 
-	}
+    }
 
-	else
+    this.formobj._sfm_form_name = frmname;
 
-	{
+    this.formobj.onsubmit = form_submit_handler;
 
-	 this.formobj.old_onsubmit = null;
+    this.addValidation = add_validation;
 
-	}
+    this.setAddnlValidationFunction = set_addnl_vfunction;
 
-	this.formobj._sfm_form_name=frmname;
-
-	this.formobj.onsubmit=form_submit_handler;
-
-	this.addValidation = add_validation;
-
-	this.setAddnlValidationFunction=set_addnl_vfunction;
-
-	this.clearAllValidations = clear_all_validations;
+    this.clearAllValidations = clear_all_validations;
 
     this.disable_validations = false;//new
 
     document.error_disp_handler = new sfm_ErrorDisplayHandler();
 
-    this.EnableOnPageErrorDisplay=validator_enable_OPED;
+    this.EnableOnPageErrorDisplay = validator_enable_OPED;
 
-	this.EnableOnPageErrorDisplaySingleBox=validator_enable_OPED_SB;
+    this.EnableOnPageErrorDisplaySingleBox = validator_enable_OPED_SB;
 
-    this.show_errors_together=true;
+    this.show_errors_together = true;
 
-    this.EnableMsgsTogether=sfm_enable_show_msgs_together;
+    this.EnableMsgsTogether = sfm_enable_show_msgs_together;
 
-    document.set_focus_onerror=true;
+    document.set_focus_onerror = true;
 
-    this.EnableFocusOnError=sfm_validator_enable_focus;
-
+    this.EnableFocusOnError = sfm_validator_enable_focus;
 
 
 }
 
 
-
-function sfm_validator_enable_focus(enable)
-
-{
+function sfm_validator_enable_focus(enable) {
 
     document.set_focus_onerror = enable;
 
 }
 
 
+function set_addnl_vfunction(functionname) {
 
-function set_addnl_vfunction(functionname)
-
-{
-
-  this.formobj.addnlvalidation = functionname;
+    this.formobj.addnlvalidation = functionname;
 
 }
 
 
+function sfm_set_focus(objInput) {
 
-function sfm_set_focus(objInput)
-
-{
-
-    if(document.set_focus_onerror)
-
-    {
+    if (document.set_focus_onerror) {
 
         objInput.focus();
 
@@ -116,208 +96,161 @@ function sfm_set_focus(objInput)
 }
 
 
+function sfm_enable_show_msgs_together() {
 
-function sfm_enable_show_msgs_together()
+    this.show_errors_together = true;
 
-{
-
-    this.show_errors_together=true;
-
-    this.formobj.show_errors_together=true;
+    this.formobj.show_errors_together = true;
 
 }
 
-function clear_all_validations()
+function clear_all_validations() {
 
-{
+    for (var itr = 0; itr < this.formobj.elements.length; itr++) {
 
-	for(var itr=0;itr < this.formobj.elements.length;itr++)
+        this.formobj.elements[itr].validationset = null;
 
-	{
-
-		this.formobj.elements[itr].validationset = null;
-
-	}
+    }
 
 }
 
 
+function form_submit_handler() {
 
-function form_submit_handler()
-
-{
-
-   var bRet = true;
+    var bRet = true;
 
     document.error_disp_handler.clear_msgs();
 
-	for(var itr=0;itr < this.elements.length;itr++)
+    for (var itr = 0; itr < this.elements.length; itr++) {
 
-	{
+        if (this.elements[itr].validationset &&
 
-		if(this.elements[itr].validationset &&
+            !this.elements[itr].validationset.validate()) {
 
-	   !this.elements[itr].validationset.validate())
+            bRet = false;
 
-		{
+        }
 
-		  bRet = false;
+        if (!bRet && !this.show_errors_together) {
 
-		}
-
-        if(!bRet && !this.show_errors_together)
-
-        {
-
-          break;
-
+            break;
 
 
         }
 
-	}
+    }
 
 
+    if (this.addnlvalidation) {
 
-	if(this.addnlvalidation)
+        str = " var ret = " + this.addnlvalidation + "()";
 
-	{
-
-	  str =" var ret = "+this.addnlvalidation+"()";
-
-	  eval(str);
+        eval(str);
 
 
+        if (!ret) {
 
-     if(!ret) 
+            bRet = false;
 
-     {
+        }
 
-       bRet=false; 
-
-     }
-
-
-
-	}
-
-
-
-   if(!bRet)
-
-    {
-
-      document.error_disp_handler.FinalShowMsg();
-
-      return false;
 
     }
 
-	return true;
+
+    if (!bRet) {
+
+        document.error_disp_handler.FinalShowMsg();
+
+        return false;
+
+    }
+
+    return true;
 
 }
 
 
+function add_validation(itemname, descriptor, errstr) {
 
-function add_validation(itemname,descriptor,errstr)
+    var condition = null;
 
-{
+    if (arguments.length > 3) {
 
-	var condition = null;
+        condition = arguments[3];
 
-	if(arguments.length > 3)
+    }
 
-	{
+    if (!this.formobj) {
 
-	 condition = arguments[3]; 
+        alert("Error: The form object is not set properly");
 
-	}
+        return;
 
-  if(!this.formobj)
+    }//if
 
-	{
+    var itemobj = this.formobj[itemname];
 
-		alert("Error: The form object is not set properly");
-
-		return;
-
-	}//if
-
-	var itemobj = this.formobj[itemname];
-
-    if(itemobj.length && isNaN(itemobj.selectedIndex) )
+    if (itemobj.length && isNaN(itemobj.selectedIndex))
 
     //for radio button; don't do for 'select' item
 
-	{
+    {
 
-		itemobj = itemobj[0];
+        itemobj = itemobj[0];
 
-	}	
+    }
 
-  if(!itemobj)
+    if (!itemobj) {
 
-	{
+        alert("Error: Couldn't get the input object named: " + itemname);
 
-		alert("Error: Couldn't get the input object named: "+itemname);
+        return;
 
-		return;
+    }
 
-	}
+    if (!itemobj.validationset) {
 
-	if(!itemobj.validationset)
+        itemobj.validationset = new ValidationSet(itemobj, this.show_errors_together);
 
-	{
+    }
 
-		itemobj.validationset = new ValidationSet(itemobj,this.show_errors_together);
+    itemobj.validationset.add(descriptor, errstr, condition);
 
-	}
-
-	itemobj.validationset.add(descriptor,errstr,condition);
-
-    itemobj.validatorobj=this;
+    itemobj.validatorobj = this;
 
 }
 
-function validator_enable_OPED()
-
-{
+function validator_enable_OPED() {
 
     document.error_disp_handler.EnableOnPageDisplay(false);
 
 }
 
 
+function validator_enable_OPED_SB() {
 
-function validator_enable_OPED_SB()
-
-{
-
-	document.error_disp_handler.EnableOnPageDisplay(true);
+    document.error_disp_handler.EnableOnPageDisplay(true);
 
 }
 
-function sfm_ErrorDisplayHandler()
+function sfm_ErrorDisplayHandler() {
 
-{
+    this.msgdisplay = new AlertMsgDisplayer();
 
-  this.msgdisplay = new AlertMsgDisplayer();
+    this.EnableOnPageDisplay = edh_EnableOnPageDisplay;
 
-  this.EnableOnPageDisplay= edh_EnableOnPageDisplay;
+    this.ShowMsg = edh_ShowMsg;
 
-  this.ShowMsg=edh_ShowMsg;
+    this.FinalShowMsg = edh_FinalShowMsg;
 
-  this.FinalShowMsg=edh_FinalShowMsg;
+    this.all_msgs = new Array();
 
-  this.all_msgs=new Array();
-
-  this.clear_msgs=edh_clear_msgs;
+    this.clear_msgs = edh_clear_msgs;
 
 }
 
-function edh_clear_msgs()
-
-{
+function edh_clear_msgs() {
 
     this.msgdisplay.clearmsg(this.all_msgs);
 
@@ -325,85 +258,63 @@ function edh_clear_msgs()
 
 }
 
-function edh_FinalShowMsg()
-
-{
+function edh_FinalShowMsg() {
 
     this.msgdisplay.showmsg(this.all_msgs);
 
 }
 
-function edh_EnableOnPageDisplay(single_box)
+function edh_EnableOnPageDisplay(single_box) {
 
-{
+    if (true == single_box) {
 
-	if(true == single_box)
+        this.msgdisplay = new SingleBoxErrorDisplay();
 
-	{
+    }
 
-		this.msgdisplay = new SingleBoxErrorDisplay();
+    else {
 
-	}
+        this.msgdisplay = new DivMsgDisplayer();
 
-	else
-
-	{
-
-		this.msgdisplay = new DivMsgDisplayer();		
-
-	}
+    }
 
 }
 
-function edh_ShowMsg(msg,input_element)
+function edh_ShowMsg(msg, input_element) {
 
-{
 
-	
+    var objmsg = new Array();
 
-   var objmsg = new Array();
+    objmsg["input_element"] = input_element;
 
-   objmsg["input_element"] = input_element;
+    objmsg["msg"] = msg;
 
-   objmsg["msg"] =  msg;
-
-   this.all_msgs.push(objmsg);
+    this.all_msgs.push(objmsg);
 
 }
 
-function AlertMsgDisplayer()
+function AlertMsgDisplayer() {
 
-{
+    this.showmsg = alert_showmsg;
 
-  this.showmsg = alert_showmsg;
-
-  this.clearmsg=alert_clearmsg;
+    this.clearmsg = alert_clearmsg;
 
 }
 
-function alert_clearmsg(msgs)
-
-{
-
+function alert_clearmsg(msgs) {
 
 
 }
 
-function alert_showmsg(msgs)
+function alert_showmsg(msgs) {
 
-{
+    var whole_msg = "";
 
-    var whole_msg="";
+    var first_elmnt = null;
 
-    var first_elmnt=null;
+    for (var m = 0; m < msgs.length; m++) {
 
-    for(var m=0;m < msgs.length;m++)
-
-    {
-
-        if(null == first_elmnt)
-
-        {
+        if (null == first_elmnt) {
 
             first_elmnt = msgs[m]["input_element"];
 
@@ -413,15 +324,11 @@ function alert_showmsg(msgs)
 
     }
 
-	
 
     alert(whole_msg);
 
 
-
-    if(null != first_elmnt)
-
-    {
+    if (null != first_elmnt) {
 
         sfm_set_focus(first_elmnt);
 
@@ -429,155 +336,120 @@ function alert_showmsg(msgs)
 
 }
 
-function sfm_show_error_msg(msg,input_elmt)
+function sfm_show_error_msg(msg, input_elmt) {
 
-{
-
-    document.error_disp_handler.ShowMsg(msg,input_elmt);
+    document.error_disp_handler.ShowMsg(msg, input_elmt);
 
 }
 
-function SingleBoxErrorDisplay()
+function SingleBoxErrorDisplay() {
 
-{
+    this.showmsg = sb_div_showmsg;
 
- this.showmsg=sb_div_showmsg;
-
- this.clearmsg=sb_div_clearmsg;
+    this.clearmsg = sb_div_clearmsg;
 
 }
 
 
+function sb_div_clearmsg(msgs) {
 
-function sb_div_clearmsg(msgs)
+    var divname = form_error_div_name(msgs);
 
-{
-
-	var divname = form_error_div_name(msgs);
-
-	show_div_msg(divname,"");
+    show_div_msg(divname, "");
 
 }
 
 
+function sb_div_showmsg(msgs) {
 
-function sb_div_showmsg(msgs)
+    var whole_msg = "<ul>\n";
 
-{
-
-	var whole_msg="<ul>\n";
-
-	for(var m=0;m < msgs.length;m++)
-
-    {
+    for (var m = 0; m < msgs.length; m++) {
 
         whole_msg += "<li>" + msgs[m]["msg"] + "</li>\n";
 
     }
 
-	whole_msg += "</ul>";
+    whole_msg += "</ul>";
 
-	var divname = form_error_div_name(msgs);
+    var divname = form_error_div_name(msgs);
 
-	show_div_msg(divname,whole_msg);
-
-}
-
-function form_error_div_name(msgs)
-
-{
-
-	var input_element= null;
-
-
-
-	for(var m in msgs)
-
-	{
-
-	 input_element = msgs[m]["input_element"];
-
-	 if(input_element){break;}
-
-	}
-
-
-
-	var divname ="";
-
-	if(input_element)
-
-	{
-
-	 divname = input_element.form._sfm_form_name + "_errorloc";
-
-	}
-
-
-
-	return divname;
+    show_div_msg(divname, whole_msg);
 
 }
 
-function DivMsgDisplayer()
+function form_error_div_name(msgs) {
 
-{
+    var input_element = null;
 
- this.showmsg=div_showmsg;
 
- this.clearmsg=div_clearmsg;
+    for (var m in msgs) {
+
+        input_element = msgs[m]["input_element"];
+
+        if (input_element) {
+            break;
+        }
+
+    }
+
+
+    var divname = "";
+
+    if (input_element) {
+
+        divname = input_element.form._sfm_form_name + "_errorloc";
+
+    }
+
+
+    return divname;
 
 }
 
-function div_clearmsg(msgs)
+function DivMsgDisplayer() {
 
-{
+    this.showmsg = div_showmsg;
 
-    for(var m in msgs)
+    this.clearmsg = div_clearmsg;
 
-    {
+}
+
+function div_clearmsg(msgs) {
+
+    for (var m in msgs) {
 
         var divname = element_div_name(msgs[m]["input_element"]);
 
-        show_div_msg(divname,"");
+        show_div_msg(divname, "");
 
     }
 
 }
 
-function element_div_name(input_element)
+function element_div_name(input_element) {
 
-{
+    var divname = input_element.form._sfm_form_name + "_" +
 
-  var divname = input_element.form._sfm_form_name + "_" + 
-
-                   input_element.name + "_errorloc";
+        input_element.name + "_errorloc";
 
 
-
-  divname = divname.replace(/[\[\]]/gi,"");
-
+    divname = divname.replace(/[\[\]]/gi, "");
 
 
-  return divname;
+    return divname;
 
 }
 
-function div_showmsg(msgs)
-
-{
+function div_showmsg(msgs) {
 
     var whole_msg;
 
-    var first_elmnt=null;
+    var first_elmnt = null;
 
-    for(var m in msgs)
+    for (var m in msgs) {
 
-    {
-
-        if(null == first_elmnt)
-
-        {
+        if (null == first_elmnt) {
 
             first_elmnt = msgs[m]["input_element"];
 
@@ -585,13 +457,11 @@ function div_showmsg(msgs)
 
         var divname = element_div_name(msgs[m]["input_element"]);
 
-        show_div_msg(divname,msgs[m]["msg"]);
+        show_div_msg(divname, msgs[m]["msg"]);
 
     }
 
-    if(null != first_elmnt)
-
-    {
+    if (null != first_elmnt) {
 
         sfm_set_focus(first_elmnt);
 
@@ -599,159 +469,129 @@ function div_showmsg(msgs)
 
 }
 
-function show_div_msg(divname,msgstring)
+function show_div_msg(divname, msgstring) {
 
-{
-
-	if(divname.length<=0) return false;
+    if (divname.length <= 0) return false;
 
 
+    if (document.layers) {
 
-	if(document.layers)
+        divlayer = document.layers[divname];
 
-	{
+        if (!divlayer) {
+            return;
+        }
 
-		divlayer = document.layers[divname];
+        divlayer.document.open();
 
-        if(!divlayer){return;}
+        divlayer.document.write(msgstring);
 
-		divlayer.document.open();
+        divlayer.document.close();
 
-		divlayer.document.write(msgstring);
+    }
 
-		divlayer.document.close();
+    else if (document.all) {
 
-	}
+        divlayer = document.all[divname];
 
-	else
+        if (!divlayer) {
+            return;
+        }
 
-	if(document.all)
+        divlayer.innerHTML = msgstring;
 
-	{
+    }
 
-		divlayer = document.all[divname];
+    else if (document.getElementById) {
 
-        if(!divlayer){return;}
+        divlayer = document.getElementById(divname);
 
-		divlayer.innerHTML=msgstring;
+        if (!divlayer) {
+            return;
+        }
 
-	}
+        divlayer.innerHTML = msgstring;
 
-	else
+    }
 
-	if(document.getElementById)
-
-	{
-
-		divlayer = document.getElementById(divname);
-
-        if(!divlayer){return;}
-
-		divlayer.innerHTML =msgstring;
-
-	}
-
-	divlayer.style.visibility="visible";	
+    divlayer.style.visibility = "visible";
 
 }
 
 
+function ValidationDesc(inputitem, desc, error, condition) {
 
-function ValidationDesc(inputitem,desc,error,condition)
+    this.desc = desc;
 
-{
+    this.error = error;
 
-  this.desc=desc;
+    this.itemobj = inputitem;
 
-	this.error=error;
+    this.condition = condition;
 
-	this.itemobj = inputitem;
-
-	this.condition = condition;
-
-	this.validate=vdesc_validate;
+    this.validate = vdesc_validate;
 
 }
 
-function vdesc_validate()
+function vdesc_validate() {
 
-{
+    if (this.condition != null) {
 
-	if(this.condition != null )
+        if (!eval(this.condition)) {
 
-	{
+            return true;
 
-		if(!eval(this.condition))
+        }
 
-		{
+    }
 
-			return true;
+    if (!validateInput(this.desc, this.itemobj, this.error)) {
 
-		}
-
-	}
-
-	if(!validateInput(this.desc,this.itemobj,this.error))
-
-	{
-
-		this.itemobj.validatorobj.disable_validations=true;
+        this.itemobj.validatorobj.disable_validations = true;
 
 
-
-		sfm_set_focus(this.itemobj);
-
+        sfm_set_focus(this.itemobj);
 
 
-		return false;
+        return false;
 
-	}
+    }
 
-	return true;
+    return true;
 
 }
 
-function ValidationSet(inputitem,msgs_together)
+function ValidationSet(inputitem, msgs_together) {
 
-{
+    this.vSet = new Array();
 
-    this.vSet=new Array();
+    this.add = add_validationdesc;
 
-	this.add= add_validationdesc;
+    this.validate = vset_validate;
 
-	this.validate= vset_validate;
-
-	this.itemobj = inputitem;
+    this.itemobj = inputitem;
 
     this.msgs_together = msgs_together;
 
 }
 
-function add_validationdesc(desc,error,condition)
+function add_validationdesc(desc, error, condition) {
 
-{
+    this.vSet[this.vSet.length] =
 
-  this.vSet[this.vSet.length]= 
-
-  new ValidationDesc(this.itemobj,desc,error,condition);
+        new ValidationDesc(this.itemobj, desc, error, condition);
 
 }
 
-function vset_validate()
-
-{
+function vset_validate() {
 
     var bRet = true;
 
-    for(var itr=0;itr<this.vSet.length;itr++)
-
-    {
+    for (var itr = 0; itr < this.vSet.length; itr++) {
 
         bRet = bRet && this.vSet[itr].validate();
 
-        if(!bRet && !this.msgs_together)
-
-        {
+        if (!bRet && !this.msgs_together) {
 
             break;
 
@@ -763,833 +603,654 @@ function vset_validate()
 
 }
 
-function validateEmail(email)
-
-{
+function validateEmail(email) {
 
     var splitted = email.match("^(.+)@(.+)$");
 
-    if(splitted == null) return false;
+    if (splitted == null) return false;
 
-    if(splitted[1] != null )
+    if (splitted[1] != null) {
 
-    {
+        var regexp_user = /^\"?[\w-_\.]*\"?$/;
 
-      var regexp_user=/^\"?[\w-_\.]*\"?$/;
-
-      if(splitted[1].match(regexp_user) == null) return false;
+        if (splitted[1].match(regexp_user) == null) return false;
 
     }
 
-    if(splitted[2] != null)
+    if (splitted[2] != null) {
 
-    {
+        var regexp_domain = /^[\w-\.]*\.[A-Za-z]{2,4}$/;
 
-      var regexp_domain=/^[\w-\.]*\.[A-Za-z]{2,4}$/;
+        if (splitted[2].match(regexp_domain) == null) {
 
-      if(splitted[2].match(regexp_domain) == null) 
+            var regexp_ip = /^\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\]$/;
 
-      {
+            if (splitted[2].match(regexp_ip) == null) return false;
 
-	    var regexp_ip =/^\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\]$/;
+        }// if
 
-	    if(splitted[2].match(regexp_ip) == null) return false;
-
-      }// if
-
-      return true;
+        return true;
 
     }
 
-return false;
+    return false;
 
 }
 
 
+function IsCheckSelected(objValue, chkValue) {
 
-function IsCheckSelected(objValue,chkValue)
+    var selected = false;
 
-{
+    var objcheck = objValue.form.elements[objValue.name];
 
-    var selected=false;
+    if (objcheck.length) {
 
-	var objcheck = objValue.form.elements[objValue.name];
+        var idxchk = -1;
 
-    if(objcheck.length)
+        for (var c = 0; c < objcheck.length; c++) {
 
-	{
+            if (objcheck[c].value == chkValue) {
 
-		var idxchk=-1;
+                idxchk = c;
 
-		for(var c=0;c < objcheck.length;c++)
+                break;
 
-		{
+            }//if
 
-		   if(objcheck[c].value == chkValue)
+        }//for
 
-		   {
+        if (idxchk >= 0) {
 
-		     idxchk=c;
+            if (objcheck[idxchk].checked == "1") {
 
-			 break;
+                selected = true;
 
-		   }//if
+            }
 
-		}//for
+        }//if
 
-		if(idxchk>= 0)
+    }
 
-		{
+    else {
 
-		  if(objcheck[idxchk].checked=="1")
+        if (objValue.checked == "1") {
 
-		  {
+            selected = true;
 
-		    selected=true;
+        }//if
 
-		  }
-
-		}//if
-
-	}
-
-	else
-
-	{
-
-		if(objValue.checked == "1")
-
-		{
-
-			selected=true;
-
-		}//if
-
-	}//else	
+    }//else
 
 
-
-	return selected;
+    return selected;
 
 }
 
-function TestDontSelectChk(objValue,chkValue,strError)
+function TestDontSelectChk(objValue, chkValue, strError) {
 
-{
+    var pass = true;
 
-	var pass = true;
-
-	pass = IsCheckSelected(objValue,chkValue)?false:true;
+    pass = IsCheckSelected(objValue, chkValue) ? false : true;
 
 
+    if (pass == false) {
 
-	if(pass==false)
+        if (!strError || strError.length == 0) {
 
-	{
-
-     if(!strError || strError.length ==0) 
-
-        { 
-
-        	strError = "Can't Proceed as you selected "+objValue.name;  
+            strError = "Can't Proceed as you selected " + objValue.name;
 
         }//if			  
 
-	  sfm_show_error_msg(strError,objValue);
+        sfm_show_error_msg(strError, objValue);
 
-	  
 
-	}
+    }
 
     return pass;
 
 }
 
-function TestShouldSelectChk(objValue,chkValue,strError)
+function TestShouldSelectChk(objValue, chkValue, strError) {
 
-{
-
-	var pass = true;
+    var pass = true;
 
 
-
-	pass = IsCheckSelected(objValue,chkValue)?true:false;
-
+    pass = IsCheckSelected(objValue, chkValue) ? true : false;
 
 
-	if(pass==false)
+    if (pass == false) {
 
-	{
+        if (!strError || strError.length == 0) {
 
-     if(!strError || strError.length ==0) 
-
-        { 
-
-        	strError = "You should select "+objValue.name;  
+            strError = "You should select " + objValue.name;
 
         }//if			  
 
-	  sfm_show_error_msg(strError,objValue);
+        sfm_show_error_msg(strError, objValue);
 
-	  
 
-	}
+    }
 
     return pass;
 
 }
 
-function TestRequiredInput(objValue,strError)
-
-{
-
- var ret = true;
-
- var val = objValue.value;
-
- val = val.replace(/^\s+|\s+$/g,"");//trim
-
-    if(eval(val.length) == 0) 
-
-    { 
-
-       if(!strError || strError.length ==0) 
-
-       { 
-
-         strError = objValue.name + " : Required Field"; 
-
-       }//if 
-
-       sfm_show_error_msg(strError,objValue); 
-
-       ret=false; 
-
-    }//if 
-
-return ret;
-
-}
-
-function TestMaxLen(objValue,strMaxLen,strError)
-
-{
-
- var ret = true;
-
-    if(eval(objValue.value.length) > eval(strMaxLen)) 
-
-    { 
-
-      if(!strError || strError.length ==0) 
-
-      { 
-
-        strError = objValue.name + " : "+ strMaxLen +" characters maximum "; 
-
-      }//if 
-
-      sfm_show_error_msg(strError,objValue); 
-
-      ret = false; 
-
-    }//if 
-
-return ret;
-
-}
-
-function TestMinLen(objValue,strMinLen,strError)
-
-{
-
- var ret = true;
-
-    if(eval(objValue.value.length) <  eval(strMinLen)) 
-
-    { 
-
-      if(!strError || strError.length ==0) 
-
-      { 
-
-        strError = objValue.name + " : " + strMinLen + " characters minimum  "; 
-
-      }//if               
-
-      sfm_show_error_msg(strError,objValue); 
-
-      ret = false;   
-
-    }//if 
-
-return ret;
-
-}
-
-function TestInputType(objValue,strRegExp,strError,strDefaultError)
-
-{
-
-   var ret = true;
-
-
-
-    var charpos = objValue.value.search(strRegExp); 
-
-    if(objValue.value.length > 0 &&  charpos >= 0) 
-
-    { 
-
-     if(!strError || strError.length ==0) 
-
-      { 
-
-        strError = strDefaultError;
-
-      }//if 
-
-      sfm_show_error_msg(strError,objValue); 
-
-      ret = false; 
-
-    }//if 
-
- return ret;
-
-}
-
-function TestEmail(objValue,strError)
-
-{
-
-var ret = true;
-
-     if(objValue.value.length > 0 && !validateEmail(objValue.value)	 ) 
-
-     { 
-
-       if(!strError || strError.length ==0) 
-
-       { 
-
-          strError = objValue.name+": Enter a valid Email address "; 
-
-       }//if                                               
-
-       sfm_show_error_msg(strError,objValue); 
-
-       ret = false; 
-
-     }//if 
-
-return ret;
-
-}
-
-function TestLessThan(objValue,strLessThan,strError)
-
-{
-
-var ret = true;
-
-	  if(isNaN(objValue.value)) 
-
-	  { 
-
-	    sfm_show_error_msg(objValue.name +": Should be a number ",objValue); 
-
-	    ret = false; 
-
-	  }//if 
-
-	  else
-
-	  if(eval(objValue.value) >=  eval(strLessThan)) 
-
-	  { 
-
-	    if(!strError || strError.length ==0) 
-
-	    { 
-
-	      strError = objValue.name + " : value should be less than "+ strLessThan; 
-
-	    }//if               
-
-	    sfm_show_error_msg(strError,objValue); 
-
-	    ret = false;                 
-
-	   }//if   
-
-return ret;          
-
-}
-
-function TestGreaterThan(objValue,strGreaterThan,strError)
-
-{
-
-var ret = true;
-
-     if(isNaN(objValue.value)) 
-
-     { 
-
-       sfm_show_error_msg(objValue.name+": Should be a number ",objValue); 
-
-       ret = false; 
-
-     }//if 
-
-	 else
-
-     if(eval(objValue.value) <=  eval(strGreaterThan)) 
-
-      { 
-
-        if(!strError || strError.length ==0) 
-
-        { 
-
-          strError = objValue.name + " : value should be greater than "+ strGreaterThan; 
-
-        }//if               
-
-        sfm_show_error_msg(strError,objValue);  
-
-        ret = false;
-
-      }//if  
-
-return ret;           
-
-}
-
-function TestRegExp(objValue,strRegExp,strError)
-
-{
-
-var ret = true;
-
-    if( objValue.value.length > 0 && 
-
-        !objValue.value.match(strRegExp) ) 
-
-    { 
-
-      if(!strError || strError.length ==0) 
-
-      { 
-
-        strError = objValue.name+": Invalid characters found "; 
-
-      }//if                                                               
-
-      sfm_show_error_msg(strError,objValue); 
-
-      ret = false;                   
-
-    }//if 
-
-return ret;
-
-}
-
-function TestDontSelect(objValue,dont_sel_index,strError)
-
-{
-
-var ret = true;
-
-    if(objValue.selectedIndex == null) 
-
-    { 
-
-      sfm_show_error_msg("ERROR: dontselect command for non-select Item"); 
-
-      ret =  false; 
-
-    } 
-
-    if(objValue.selectedIndex == eval(dont_sel_index)) 
-
-    { 
-
-     if(!strError || strError.length ==0) 
-
-      { 
-
-      strError = objValue.name+": Please Select one option "; 
-
-      }//if                                                               
-
-      sfm_show_error_msg(strError,objValue); 
-
-      ret =  false;                                   
-
-     } 
-
-return ret;
-
-}
-
-function TestSelectOneRadio(objValue,strError)
-
-{
-
-	var objradio = objValue.form.elements[objValue.name];
-
-	var one_selected=false;
-
-	for(var r=0;r < objradio.length;r++)
-
-	{
-
-	  if(objradio[r].checked)
-
-	  {
-
-	  	one_selected=true;
-
-		break;
-
-	  }
-
-	}
-
-	if(false == one_selected)
-
-	{
-
-      if(!strError || strError.length ==0) 
-
-       {
-
-	    strError = "Please select one option from "+objValue.name;
-
-	   }	
-
-	  sfm_show_error_msg(strError,objValue);
-
-	}
-
-return one_selected;
-
-}
-
-
-
-function validateInput(strValidateStr,objValue,strError) 
-
-{ 
+function TestRequiredInput(objValue, strError) {
 
     var ret = true;
 
-    var epos = strValidateStr.search("="); 
+    var val = objValue.value;
 
-    var  command  = ""; 
+    val = val.replace(/^\s+|\s+$/g, "");//trim
 
-    var  cmdvalue = ""; 
+    if (eval(val.length) == 0) {
 
-    if(epos >= 0) 
+        if (!strError || strError.length == 0) {
 
-    { 
+            strError = objValue.name + " : Required Field";
 
-     command  = strValidateStr.substring(0,epos); 
+        }//if
 
-     cmdvalue = strValidateStr.substr(epos+1); 
+        sfm_show_error_msg(strError, objValue);
 
-    } 
+        ret = false;
 
-    else 
+    }//if 
 
-    { 
+    return ret;
 
-     command = strValidateStr; 
+}
 
-    } 
+function TestMaxLen(objValue, strMaxLen, strError) {
 
-    switch(command) 
+    var ret = true;
 
-    { 
+    if (eval(objValue.value.length) > eval(strMaxLen)) {
 
-        case "req": 
+        if (!strError || strError.length == 0) {
 
-        case "required": 
+            strError = objValue.name + " : " + strMaxLen + " characters maximum ";
 
-         { 
+        }//if
 
-		   ret = TestRequiredInput(objValue,strError)
+        sfm_show_error_msg(strError, objValue);
 
-           break;             
+        ret = false;
 
-         }//case required 
+    }//if 
 
-        case "maxlength": 
+    return ret;
 
-        case "maxlen": 
+}
 
-          { 
+function TestMinLen(objValue, strMinLen, strError) {
 
-			 ret = TestMaxLen(objValue,cmdvalue,strError)
+    var ret = true;
 
-             break; 
+    if (eval(objValue.value.length) < eval(strMinLen)) {
 
-          }//case maxlen 
+        if (!strError || strError.length == 0) {
 
-        case "minlength": 
+            strError = objValue.name + " : " + strMinLen + " characters minimum  ";
 
-        case "minlen": 
+        }//if
 
-           { 
+        sfm_show_error_msg(strError, objValue);
 
-			 ret = TestMinLen(objValue,cmdvalue,strError)
+        ret = false;
 
-             break; 
+    }//if 
 
-            }//case minlen 
+    return ret;
 
-        case "alnum": 
+}
 
-        case "alphanumeric": 
+function TestInputType(objValue, strRegExp, strError, strDefaultError) {
 
-           { 
+    var ret = true;
 
-				ret = TestInputType(objValue,"[^A-Za-z0-9]",strError, 
 
-						objValue.name+": Only alpha-numeric characters allowed ");
+    var charpos = objValue.value.search(strRegExp);
 
-				break; 
+    if (objValue.value.length > 0 && charpos >= 0) {
 
-           }
+        if (!strError || strError.length == 0) {
 
-        case "alnum_s": 
+            strError = strDefaultError;
 
-        case "alphanumeric_space": 
+        }//if
 
-           { 
+        sfm_show_error_msg(strError, objValue);
 
-				ret = TestInputType(objValue,"[^A-Za-z0-9\\s]",strError, 
+        ret = false;
 
-						objValue.name+": Only alpha-numeric characters and space allowed ");
+    }//if 
 
-				break; 
+    return ret;
 
-           }		   
+}
 
-        case "num": 
+function TestEmail(objValue, strError) {
 
-        case "numeric": 
+    var ret = true;
 
-           { 
+    if (objValue.value.length > 0 && !validateEmail(objValue.value)) {
 
-                ret = TestInputType(objValue,"[^0-9]",strError, 
+        if (!strError || strError.length == 0) {
 
-						objValue.name+": Only digits allowed ");
+            strError = objValue.name + ": Enter a valid Email address ";
 
-                break;               
+        }//if
 
-           }
+        sfm_show_error_msg(strError, objValue);
 
-        case "dec": 
+        ret = false;
 
-        case "decimal": 
+    }//if
 
-           { 
+    return ret;
 
-                ret = TestInputType(objValue,"[^0-9\.]",strError, 
+}
 
-						objValue.name+": Only numbers allowed ");
+function TestLessThan(objValue, strLessThan, strError) {
 
-                break;               
+    var ret = true;
 
-           }
+    if (isNaN(objValue.value)) {
 
-        case "alphabetic": 
+        sfm_show_error_msg(objValue.name + ": Should be a number ", objValue);
 
-        case "alpha": 
+        ret = false;
 
-           { 
+    }//if
 
-                ret = TestInputType(objValue,"[^A-Za-z]",strError, 
+    else if (eval(objValue.value) >= eval(strLessThan)) {
 
-						objValue.name+": Only alphabetic characters allowed ");
+        if (!strError || strError.length == 0) {
 
-                break; 
+            strError = objValue.name + " : value should be less than " + strLessThan;
 
-           }
+        }//if
 
-        case "alphabetic_space": 
+        sfm_show_error_msg(strError, objValue);
 
-        case "alpha_s": 
+        ret = false;
 
-           { 
+    }//if
 
-                ret = TestInputType(objValue,"[^A-Za-z\\s]",strError, 
+    return ret;
 
-						objValue.name+": Only alphabetic characters and space allowed ");
+}
 
-                break; 
+function TestGreaterThan(objValue, strGreaterThan, strError) {
 
-           }
+    var ret = true;
 
-        case "email": 
+    if (isNaN(objValue.value)) {
 
-          { 
+        sfm_show_error_msg(objValue.name + ": Should be a number ", objValue);
 
-			   ret = TestEmail(objValue,strError);
+        ret = false;
 
-               break; 
+    }//if
 
-          }
+    else if (eval(objValue.value) <= eval(strGreaterThan)) {
 
-        case "lt": 
+        if (!strError || strError.length == 0) {
 
-        case "lessthan": 
+            strError = objValue.name + " : value should be greater than " + strGreaterThan;
 
-         { 
+        }//if               
 
-    	      ret = TestLessThan(objValue,cmdvalue,strError);
+        sfm_show_error_msg(strError, objValue);
 
-              break; 
+        ret = false;
 
-         }
+    }//if
 
-        case "gt": 
+    return ret;
 
-        case "greaterthan": 
+}
 
-         { 
+function TestRegExp(objValue, strRegExp, strError) {
 
-			ret = TestGreaterThan(objValue,cmdvalue,strError);
+    var ret = true;
 
-            break; 
+    if (objValue.value.length > 0 &&
 
-         }//case greaterthan 
+        !objValue.value.match(strRegExp)) {
 
-        case "regexp": 
+        if (!strError || strError.length == 0) {
 
-         { 
+            strError = objValue.name + ": Invalid characters found ";
 
-			ret = TestRegExp(objValue,cmdvalue,strError);
+        }//if
 
-           break; 
+        sfm_show_error_msg(strError, objValue);
 
-         }
+        ret = false;
 
-        case "dontselect": 
+    }//if 
 
-         { 
+    return ret;
 
-			 ret = TestDontSelect(objValue,cmdvalue,strError)
+}
 
-             break; 
+function TestDontSelect(objValue, dont_sel_index, strError) {
 
-         }
+    var ret = true;
 
-		case "dontselectchk":
+    if (objValue.selectedIndex == null) {
 
-		{
+        sfm_show_error_msg("ERROR: dontselect command for non-select Item");
 
-			ret = TestDontSelectChk(objValue,cmdvalue,strError)
+        ret = false;
 
-			break;
+    }
 
-		}
+    if (objValue.selectedIndex == eval(dont_sel_index)) {
 
-		case "shouldselchk":
+        if (!strError || strError.length == 0) {
 
-		{
+            strError = objValue.name + ": Please Select one option ";
 
-			ret = TestShouldSelectChk(objValue,cmdvalue,strError)
+        }//if
 
-			break;
+        sfm_show_error_msg(strError, objValue);
 
-		}
+        ret = false;
 
-		case "selone_radio":
+    }
 
-		{
+    return ret;
 
-			ret = TestSelectOneRadio(objValue,strError);
+}
 
-		    break;
+function TestSelectOneRadio(objValue, strError) {
 
-		}		 
+    var objradio = objValue.form.elements[objValue.name];
+
+    var one_selected = false;
+
+    for (var r = 0; r < objradio.length; r++) {
+
+        if (objradio[r].checked) {
+
+            one_selected = true;
+
+            break;
+
+        }
+
+    }
+
+    if (false == one_selected) {
+
+        if (!strError || strError.length == 0) {
+
+            strError = "Please select one option from " + objValue.name;
+
+        }
+
+        sfm_show_error_msg(strError, objValue);
+
+    }
+
+    return one_selected;
+
+}
+
+
+function validateInput(strValidateStr, objValue, strError) {
+
+    var ret = true;
+
+    var epos = strValidateStr.search("=");
+
+    var command = "";
+
+    var cmdvalue = "";
+
+    if (epos >= 0) {
+
+        command = strValidateStr.substring(0, epos);
+
+        cmdvalue = strValidateStr.substr(epos + 1);
+
+    }
+
+    else {
+
+        command = strValidateStr;
+
+    }
+
+    switch (command) {
+
+        case "req":
+
+        case "required": {
+
+            ret = TestRequiredInput(objValue, strError)
+
+            break;
+
+        }//case required
+
+        case "maxlength":
+
+        case "maxlen": {
+
+            ret = TestMaxLen(objValue, cmdvalue, strError)
+
+            break;
+
+        }//case maxlen
+
+        case "minlength":
+
+        case "minlen": {
+
+            ret = TestMinLen(objValue, cmdvalue, strError)
+
+            break;
+
+        }//case minlen
+
+        case "alnum":
+
+        case "alphanumeric": {
+
+            ret = TestInputType(objValue, "[^A-Za-z0-9]", strError,
+
+                objValue.name + ": Only alpha-numeric characters allowed ");
+
+            break;
+
+        }
+
+        case "alnum_s":
+
+        case "alphanumeric_space": {
+
+            ret = TestInputType(objValue, "[^A-Za-z0-9\\s]", strError,
+
+                objValue.name + ": Only alpha-numeric characters and space allowed ");
+
+            break;
+
+        }
+
+        case "num":
+
+        case "numeric": {
+
+            ret = TestInputType(objValue, "[^0-9]", strError,
+
+                objValue.name + ": Only digits allowed ");
+
+            break;
+
+        }
+
+        case "dec":
+
+        case "decimal": {
+
+            ret = TestInputType(objValue, "[^0-9\.]", strError,
+
+                objValue.name + ": Only numbers allowed ");
+
+            break;
+
+        }
+
+        case "alphabetic":
+
+        case "alpha": {
+
+            ret = TestInputType(objValue, "[^A-Za-z]", strError,
+
+                objValue.name + ": Only alphabetic characters allowed ");
+
+            break;
+
+        }
+
+        case "alphabetic_space":
+
+        case "alpha_s": {
+
+            ret = TestInputType(objValue, "[^A-Za-z\\s]", strError,
+
+                objValue.name + ": Only alphabetic characters and space allowed ");
+
+            break;
+
+        }
+
+        case "email": {
+
+            ret = TestEmail(objValue, strError);
+
+            break;
+
+        }
+
+        case "lt":
+
+        case "lessthan": {
+
+            ret = TestLessThan(objValue, cmdvalue, strError);
+
+            break;
+
+        }
+
+        case "gt":
+
+        case "greaterthan": {
+
+            ret = TestGreaterThan(objValue, cmdvalue, strError);
+
+            break;
+
+        }//case greaterthan
+
+        case "regexp": {
+
+            ret = TestRegExp(objValue, cmdvalue, strError);
+
+            break;
+
+        }
+
+        case "dontselect": {
+
+            ret = TestDontSelect(objValue, cmdvalue, strError)
+
+            break;
+
+        }
+
+        case "dontselectchk": {
+
+            ret = TestDontSelectChk(objValue, cmdvalue, strError)
+
+            break;
+
+        }
+
+        case "shouldselchk": {
+
+            ret = TestShouldSelectChk(objValue, cmdvalue, strError)
+
+            break;
+
+        }
+
+        case "selone_radio": {
+
+            ret = TestSelectOneRadio(objValue, strError);
+
+            break;
+
+        }
 
     }//switch 
 
-	return ret;
+    return ret;
 
 }
 
-function VWZ_IsListItemSelected(listname,value)
+function VWZ_IsListItemSelected(listname, value) {
 
-{
+    for (var i = 0; i < listname.options.length; i++) {
 
- for(var i=0;i < listname.options.length;i++)
+        if (listname.options[i].selected == true &&
 
- {
+            listname.options[i].value == value) {
 
-  if(listname.options[i].selected == true &&
+            return true;
 
-   listname.options[i].value == value) 
+        }
 
-   {
+    }
 
-     return true;
-
-   }
-
- }
-
- return false;
+    return false;
 
 }
 
-function VWZ_IsChecked(objcheck,value)
+function VWZ_IsChecked(objcheck, value) {
 
-{
+    if (objcheck.length) {
 
- if(objcheck.length)
+        for (var c = 0; c < objcheck.length; c++) {
 
- {
+            if (objcheck[c].checked == "1" &&
 
-     for(var c=0;c < objcheck.length;c++)
+                objcheck[c].value == value) {
 
-     {
+                return true;
 
-       if(objcheck[c].checked == "1" && 
+            }
 
-	     objcheck[c].value == value)
+        }
 
-       {
+    }
 
-        return true; 
+    else {
 
-       }
+        if (objcheck.checked == "1") {
 
-     }
+            return true;
 
- }
+        }
 
- else
+    }
 
- {
-
-  if(objcheck.checked == "1" )
-
-   {
-
-    return true; 
-
-   }    
-
- }
-
- return false;
+    return false;
 
 }
 
