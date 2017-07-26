@@ -11,7 +11,7 @@ global $INSTALLER09, $mc1;
 
 // List containing the custom channels:
 $channels = [];
-$sql = 'SELECT name FROM channels ORDER BY id ASC';
+$sql = 'SELECT name FROM ajax_chat_channels ORDER BY id ASC';
 $hashed = md5($sql);
 if (($channels = $mc1->get_value('channels_'.$hashed)) === false) {
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
