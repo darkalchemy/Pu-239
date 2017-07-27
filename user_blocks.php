@@ -1,16 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/*
-+------------------------------------------------
-|   $Date$ 10022011
-|   $Revision$ 1.0
-|   $Author$ pdq,Bigjoos
-|   $User block system
-|
-+------------------------------------------------
-*/
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'user_functions.php';
@@ -59,6 +47,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $setbits_index_page |= block_index::AJAXCHAT;
     } else {
         $clrbits_index_page |= block_index::AJAXCHAT;
+    }
+    if (isset($_POST['trivia'])) {
+        $setbits_index_page |= block_index::TRIVIA;
+    } else {
+        $clrbits_index_page |= block_index::TRIVIA;
     }
     if (isset($_POST['active_users'])) {
         $setbits_index_page |= block_index::ACTIVE_USERS;
@@ -393,6 +386,7 @@ $checkbox_index_ie_alert = ((curuser::$blocks['index_page'] & block_index::IE_AL
 $checkbox_index_news = ((curuser::$blocks['index_page'] & block_index::NEWS) ? ' checked="checked"' : '');
 $checkbox_index_ajaxchat = ((curuser::$blocks['index_page'] & block_index::AJAXCHAT) ? ' checked="checked"' : '');
 $checkbox_index_active_users = ((curuser::$blocks['index_page'] & block_index::ACTIVE_USERS) ? ' checked="checked"' : '');
+$checkbox_index_trivia = ((curuser::$blocks['index_page'] & block_index::TRIVIA) ? ' checked="checked"' : '');
 $checkbox_index_active_24h_users = ((curuser::$blocks['index_page'] & block_index::LAST_24_ACTIVE_USERS) ? ' checked="checked"' : '');
 $checkbox_index_active_irc_users = ((curuser::$blocks['index_page'] & block_index::IRC_ACTIVE_USERS) ? ' checked="checked"' : '');
 $checkbox_index_active_birthday_users = ((curuser::$blocks['index_page'] & block_index::BIRTHDAY_ACTIVE_USERS) ? ' checked="checked"' : '');
@@ -569,6 +563,7 @@ $HTMLOUT .= '
         </tr>
 		</table>
 		</div>
+        </div>
       
 		<div class="row-fluid">
 		<div class="span3 offset1">
@@ -597,6 +592,19 @@ $HTMLOUT .= '
         </tr>
 		</table>
 		</div>
+
+        <div class="span3 offset0">
+        <table class="table table-bordered">
+        <tr>
+        <td>
+        <b>Enable Trivia?</b>
+        <div class="slideThree"> <input type="checkbox" id="trivia" name="trivia" value="yes"' . $checkbox_index_trivia . ' /><label for="trivia"></label></div>
+        <div><hr style="color:#A83838;" size="1" /></div>
+        <span>Check this option if you want to enable the Trivia Game.</span>
+        </td>
+        </tr>
+        </table>
+        </div>
 		</div>
 
 		<div class="row-fluid">
