@@ -1334,7 +1334,7 @@ function sessionStart()
 
         // Regenerate session ID every five minutes:
         if ($_SESSION['canary'] < time() - 300) {
-            session_regenerate_id(true);
+            regenerateSessionID();
             $_SESSION['canary'] = time();
         }
     }
@@ -1342,39 +1342,23 @@ function sessionStart()
 
 function destroySession()
 {
-    global $INSTALLER09;
-    if (empty($_SESSION)) {
-        // Delete all session variables:
-        $_SESSION = [];
+    sessionStart();
+    $_SESSION = [];
 
-        // Delete the session cookie:
-        if (isset($_COOKIE[session_name()])) {
-            setcookie(
-                session_name(),
-                '',
-                time() - 42000,
-                $INSTALLER09['cookie_path'],
-                $INSTALLER09['cookie_domain'],
-                $INSTALLER09['sessionCookieSecure']
-            );
-        }
-
-        // Destroy the session:
-        session_destroy();
-    } else {
-        // Unset all session variables starting with the sessionKeyPrefix:
-        foreach ($_SESSION as $key => $value) {
-            if (strpos($key, $INSTALLER09['cookie_prefix']) === 0) {
-                unset($_SESSION[$key]);
-            }
-        }
+    if (ini_get('session.use_cookies')) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000,
+            $params['path'], $params['domain'],
+            $params['secure'], $params['httponly']
+        );
     }
+
+    session_destroy();
 }
 
 function regenerateSessionID()
 {
     if (!empty($_SESSION)) {
-        // Regenerate session id:
         @session_regenerate_id(true);
     }
 }
