@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -83,6 +80,8 @@ $HTMLOUT .= "<tr><td width='50%' class='table' align='left'>{$lang['sitesettings
 <tr><td width='50%' class='table' align='left'>{$lang['sitesettings_forums']}</td><td class='table' align='left'>{$lang['sitesettings_yes']}<input class='table' type='radio' name='forums_online' value='1' " . ($site_settings['forums_online'] ? 'checked=\'checked\'' : '') . " />{$lang['sitesettings_no']}<input class='table' type='radio' name='forums_online' value='0' " . (!$site_settings['forums_online'] ? 'checked=\'checked\'' : '') . " /></td></tr>
 <tr><td width='50%' class='table' align='left'>{$lang['sitesettings_openreg']}</td><td class='table' align='left'><input type='text' name='openreg' size='2' value='" . htmlsafechars($site_settings['openreg']) . "' /></td></tr>
 <tr><td width='50%' class='table' align='left'>{$lang['sitesettings_openinvite']}</td><td class='table' align='left'><input type='text' name='openreg_invites' size='2' value='" . htmlsafechars($site_settings['openreg_invites']) . "' /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_auto_confirm']}</td><td class='table' align='left'><input type='text' name='auto_confirm' size='2' value='" . htmlsafechars($site_settings['auto_confirm']) . "' /></td></tr>
+<tr><td width='50%' class='table' align='left'>{$lang['sitesettings_email_confirm']}</td><td class='table' align='left'><input type='text' name='email_confirm' size='2' value='" . htmlsafechars($site_settings['email_confirm']) . "' /></td></tr>
 <tr><td width='50%' class='table' align='left'>{$lang['sitesettings_maxusers']}</td><td class='table' align='left'><input type='text' name='maxusers' size='2' value='" . htmlsafechars($site_settings['maxusers']) . "' /></td></tr>
 <tr><td width='50%' class='table' align='left'>{$lang['sitesettings_maxinvite']}</td><td class='table' align='left'><input type='text' name='invites' size='2' value='" . htmlsafechars($site_settings['invites']) . "' /></td></tr>
 <tr><td width='50%' class='table' align='left'>{$lang['sitesettings_maxlogins']}</td><td class='table' align='left'><input type='text' name='failedlogins' size='2' value='" . htmlsafechars($site_settings['failedlogins']) . "' /></td></tr>

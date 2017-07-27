@@ -474,7 +474,7 @@ class AJAXChat
 					' . $this->db->makeSafe($userRole) . ',
 					' . $this->db->makeSafe($channelID) . ',
 					NOW(),
-					' . $this->db->makeSafe($this->ipToStorageFormat($ip)) . ',
+					' . $this->db->makeSafe(ipToStorageFormat($ip)) . ',
 					' . $this->db->makeSafe($text) . '
 				);';
 
@@ -515,17 +515,6 @@ class AJAXChat
                 )
             );
         }
-    }
-
-    public function ipToStorageFormat($ip)
-    {
-        if (function_exists('inet_pton')) {
-            // ipv4 & ipv6:
-            return @inet_pton($ip);
-        }
-
-        // Only ipv4:
-        return @pack('N', @ip2long($ip));
     }
 
     public function getSocketBroadcastMessage(
@@ -1536,7 +1525,7 @@ class AJAXChat
 					userName 	= ' . $this->db->makeSafe($this->getUserName()) . ',
 					channel 	= ' . $this->db->makeSafe($this->getChannel()) . ',
 					dateTime 	= NOW(),
-					ip			= ' . $this->db->makeSafe($this->ipToStorageFormat($_SERVER['REMOTE_ADDR'])) . '
+					ip			= ' . $this->db->makeSafe(ipToStorageFormat($_SERVER['REMOTE_ADDR'])) . '
 				WHERE
 					userID = ' . $this->db->makeSafe($this->getUserID()) . ';';
 
@@ -1682,7 +1671,7 @@ class AJAXChat
 					' . $this->db->makeSafe($this->getUserRole()) . ',
 					' . $this->db->makeSafe($this->getChannel()) . ',
 					NOW(),
-					' . $this->db->makeSafe($this->ipToStorageFormat($_SERVER['REMOTE_ADDR'])) . '
+					' . $this->db->makeSafe(ipToStorageFormat($_SERVER['REMOTE_ADDR'])) . '
 				);';
 
         // Create a new SQL query:
@@ -2580,7 +2569,7 @@ class AJAXChat
 					' . $this->db->makeSafe($userID) . ',
 					' . $this->db->makeSafe($userName) . ',
 					DATE_ADD(NOW(), interval ' . $this->db->makeSafe($banMinutes) . ' MINUTE),
-					' . $this->db->makeSafe($this->ipToStorageFormat($ip)) . '
+					' . $this->db->makeSafe(ipToStorageFormat($ip)) . '
 				);';
 
         // Create a new SQL query:
@@ -3405,7 +3394,7 @@ class AJAXChat
             if (($this->getUserRole() == AJAX_CHAT_ADMIN || $this->getUserRole() == AJAX_CHAT_MODERATOR) && strpos($this->getRequestVar('search'), 'ip=') === 0) {
                 // Search for messages with the given IP:
                 $ip = substr($this->getRequestVar('search'), 3);
-                $condition .= ' AND (ip = ' . $this->db->makeSafe($this->ipToStorageFormat($ip)) . ')';
+                $condition .= ' AND (ip = ' . $this->db->makeSafe(ipToStorageFormat($ip)) . ')';
             } elseif (strpos($this->getRequestVar('search'), 'userID=') === 0) {
                 // Search for messages with the given userID:
                 $userID = substr($this->getRequestVar('search'), 7);

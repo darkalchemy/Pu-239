@@ -4,7 +4,7 @@
  */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-global $CURUSER;
+global $CURUSER, $INSTALLER09;
 if (!$CURUSER) {
     get_template();
 }
@@ -13,7 +13,7 @@ $lang = array_merge(load_language('global'), load_language('ok'));
 $type = isset($_GET['type']) ? $_GET['type'] : '';
 $HTMLOUT = '';
 if ($type == 'signup' && isset($_GET['email'])) {
-    stderr("{$lang['ok_success']}", sprintf((!EMAIL_CONFIRM ? $lang['ok_email'] : $lang['ok_email_confirm']), htmlsafechars($_GET['email'], ENT_QUOTES)));
+    stderr("{$lang['ok_success']}", sprintf((!$INSTALLER09['email_confirm'] ? $lang['ok_email'] : $lang['ok_email_confirm']), htmlsafechars($_GET['email'], ENT_QUOTES)));
 } elseif ($type == 'invite' && isset($_GET['email'])) {
     stderr("{$lang['ok_invsuccess']}", sprintf($lang['ok_email2'], htmlsafechars($_GET['email'], ENT_QUOTES)));
 } elseif ($type == 'sysop') {

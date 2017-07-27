@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'page_verify.php';
@@ -116,16 +113,18 @@ if ($INSTALLER09['dupeip_check_on']) {
 }
 // TIMEZONE STUFF
 if (isset($_POST['user_timezone']) && preg_match('#^\-?\d{1,2}(?:\.\d{1,2})?$#', $_POST['user_timezone'])) {
-    $time_offset = sqlesc($_POST['user_timezone']);
+    $time_offset = (int)$_POST['user_timezone'];
 } else {
-    $time_offset = isset($INSTALLER09['time_offset']) ? sqlesc($INSTALLER09['time_offset']) : '0';
+    $time_offset = isset($INSTALLER09['time_offset']) ? (int)$INSTALLER09['time_offset'] : 0;
 }
+
 // have a stab at getting dst parameter?
 $dst_in_use = localtime(TIME_NOW + ($time_offset * 3600), true);
+
 // TIMEZONE STUFF END
 $secret = mksecret();
 $wantpasshash = make_passhash($secret, md5($wantpassword));
-$editsecret = (!$arr[0] ? '' : EMAIL_CONFIRM ? make_passhash_login_key() : '');
+$editsecret = (!$arr[0] ? '' : $INSTALLER09['email_confirm'] ? make_passhash_login_key() : '');
 $wanthintanswer = md5($hintanswer);
 $user_frees = (XBT_TRACKER == true ? '0' : TIME_NOW + 14 * 86400);
 check_banned_emails($email);
@@ -141,9 +140,9 @@ $ret = sql_query('INSERT INTO users (username, passhash, secret, editsecret, bir
         $passhint,
         $wanthintanswer,
         $email,
-        (!$arr[0] || !EMAIL_CONFIRM ? 'confirmed' : 'pending'),
+        (!$arr[0] || (!$INSTALLER09['email_confirm'] || $INSTALLER09['auto_confirm']) ? 'confirmed' : 'pending'),
         $ip,
-    ])) . ', ' . (!$arr[0] ? UC_SYSOP . ', ' : '') . '' . TIME_NOW . ',' . TIME_NOW . " , $time_offset, {$dst_in_use['tm_isdst']}, $user_frees)");
+    ])) . ', ' . (!$arr[0] ? UC_SYSOP . ', ' : '') . '' . TIME_NOW . ',' . TIME_NOW . " , " . sqlesc($time_offset) . ", {$dst_in_use['tm_isdst']}, $user_frees)");
 $mc1->delete_value('birthdayusers');
 $message = "Welcome New {$INSTALLER09['site_name']} Member : - " . htmlsafechars($wantusername) . '';
 if (!$arr[0]) {
@@ -190,9 +189,9 @@ $body = str_replace([
     $ip,
     "{$INSTALLER09['baseurl']}/confirm.php?id=$id&secret=$psecret",
 ], $lang['takesignup_email_body']);
-if ($arr[0] || EMAIL_CONFIRM) {
+if ($arr[0] || $INSTALLER09['email_confirm']) {
     mail($email, "{$INSTALLER09['site_name']} {$lang['takesignup_confirm']}", $body, "{$lang['takesignup_from']} {$INSTALLER09['site_email']}");
 } else {
     logincookie($id, $wantpasshash);
 }
-header('Refresh: 0; url=ok.php?type=' . (!$arr[0] ? 'sysop' : (EMAIL_CONFIRM ? 'signup&email=' . urlencode($email) : 'confirm')));
+header('Refresh: 0; url=ok.php?type=' . (!$arr[0] ? 'sysop' : ($INSTALLER09['email_confirm'] ? 'signup&email=' . urlencode($email) : 'confirm')));

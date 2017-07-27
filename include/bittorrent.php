@@ -1343,7 +1343,7 @@ function sessionStart()
 function destroySession()
 {
     global $INSTALLER09;
-    if (!empty($_SESSION)) {
+    if (empty($_SESSION)) {
         // Delete all session variables:
         $_SESSION = [];
 
@@ -1377,6 +1377,17 @@ function regenerateSessionID()
         // Regenerate session id:
         @session_regenerate_id(true);
     }
+}
+
+function ipToStorageFormat($ip)
+{
+    if (function_exists('inet_pton')) {
+        // ipv4 & ipv6:
+        return @inet_pton($ip);
+    }
+
+    // Only ipv4:
+    return @pack('N', @ip2long($ip));
 }
 
 if (file_exists('install/index.php')) {

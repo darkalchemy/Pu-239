@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 //=== Anonymous function
 function get_anonymous()
 {
