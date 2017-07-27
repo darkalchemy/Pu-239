@@ -184,7 +184,7 @@ class AJAXChat
             );
 
             // Start the session:
-            session_start();
+            sessionStart();
 
             // We started a new session:
             $this->_sessionNew = true;
@@ -246,7 +246,7 @@ class AJAXChat
             $this->chatViewLogout($type);
         }
         $this->setLoggedIn(false);
-        $this->destroySession();
+        destroySession();
 
         // Re-initialize the view:
         $this->initView();
@@ -305,16 +305,16 @@ class AJAXChat
             $this->_onlineUsersData = [];
 
             $sql = 'SELECT
-						userID,
-						userName,
-						userRole,
-						channel,
-						UNIX_TIMESTAMP(dateTime) AS timeStamp,
-						ip
-					FROM
-						' . $this->getDataBaseTable('online') . '
-					ORDER BY
-						LOWER(userName);';
+                        userID,
+                        userName,
+                        userRole,
+                        channel,
+                        UNIX_TIMESTAMP(dateTime) AS timeStamp,
+                        ip
+                    FROM
+                        ' . $this->getDataBaseTable('online') . '
+                    ORDER BY
+                        LOWER(userName);';
 
             // Create a new SQL query:
             $result = $this->db->sqlQuery($sql);
@@ -402,9 +402,9 @@ class AJAXChat
     public function removeFromOnlineList()
     {
         $sql = 'DELETE FROM
-					' . $this->getDataBaseTable('online') . '
-				WHERE
-					userID = ' . $this->db->makeSafe($this->getUserID()) . ';';
+                    ' . $this->getDataBaseTable('online') . '
+                WHERE
+                    userID = ' . $this->db->makeSafe($this->getUserID()) . ';';
 
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);
@@ -460,23 +460,23 @@ class AJAXChat
         $ip = $ip ? $ip : $_SERVER['REMOTE_ADDR'];
 
         $sql = 'INSERT INTO ' . $this->getDataBaseTable('messages') . '(
-								userID,
-								userName,
-								userRole,
-								channel,
-								dateTime,
-								ip,
-								text
-							)
-				VALUES (
-					' . $this->db->makeSafe($userID) . ',
-					' . $this->db->makeSafe($userName) . ',
-					' . $this->db->makeSafe($userRole) . ',
-					' . $this->db->makeSafe($channelID) . ',
-					NOW(),
-					' . $this->db->makeSafe(ipToStorageFormat($ip)) . ',
-					' . $this->db->makeSafe($text) . '
-				);';
+                                userID,
+                                userName,
+                                userRole,
+                                channel,
+                                dateTime,
+                                ip,
+                                text
+                            )
+                VALUES (
+                    ' . $this->db->makeSafe($userID) . ',
+                    ' . $this->db->makeSafe($userName) . ',
+                    ' . $this->db->makeSafe($userRole) . ',
+                    ' . $this->db->makeSafe($channelID) . ',
+                    NOW(),
+                    ' . $this->db->makeSafe(ipToStorageFormat($ip)) . ',
+                    ' . $this->db->makeSafe($text) . '
+                );';
 
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);
@@ -623,36 +623,6 @@ class AJAXChat
 
         // Set the session value:
         $_SESSION[$prefix . $key] = $value;
-    }
-
-    public function destroySession()
-    {
-        if ($this->_sessionNew) {
-            // Delete all session variables:
-            $_SESSION = [];
-
-            // Delete the session cookie:
-            if (isset($_COOKIE[session_name()])) {
-                setcookie(
-                    session_name(),
-                    '',
-                    time() - 42000,
-                    $this->getConfig('sessionCookiePath'),
-                    $this->getConfig('sessionCookieDomain'),
-                    $this->getConfig('sessionCookieSecure')
-                );
-            }
-
-            // Destroy the session:
-            session_destroy();
-        } else {
-            // Unset all session variables starting with the sessionKeyPrefix:
-            foreach ($_SESSION as $key => $value) {
-                if (strpos($key, $this->getConfig('sessionKeyPrefix')) === 0) {
-                    unset($_SESSION[$key]);
-                }
-            }
-        }
     }
 
     public function initView()
@@ -991,11 +961,11 @@ class AJAXChat
             $condition .= ' OR userName=' . $this->db->makeSafe($userName);
         }
         $sql = 'UPDATE
-					' . $this->getDataBaseTable('online') . '
-				SET
-					dateTime = DATE_SUB(NOW(), interval ' . (intval($this->getConfig('inactiveTimeout')) + 1) . ' MINUTE)
-				WHERE
-					' . $condition . ';';
+                    ' . $this->getDataBaseTable('online') . '
+                SET
+                    dateTime = DATE_SUB(NOW(), interval ' . (intval($this->getConfig('inactiveTimeout')) + 1) . ' MINUTE)
+                WHERE
+                    ' . $condition . ';';
 
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);
@@ -1017,13 +987,13 @@ class AJAXChat
     public function removeInactive()
     {
         $sql = 'SELECT
-					userID,
-					userName,
-					channel
-				FROM
-					' . $this->getDataBaseTable('online') . '
-				WHERE
-					NOW() > DATE_ADD(dateTime, interval ' . $this->getConfig('inactiveTimeout') . ' MINUTE);';
+                    userID,
+                    userName,
+                    channel
+                FROM
+                    ' . $this->getDataBaseTable('online') . '
+                WHERE
+                    NOW() > DATE_ADD(dateTime, interval ' . $this->getConfig('inactiveTimeout') . ' MINUTE);';
 
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);
@@ -1063,9 +1033,9 @@ class AJAXChat
             $result->free();
 
             $sql = 'DELETE FROM
-						' . $this->getDataBaseTable('online') . '
-					WHERE
-						' . $condition . ';';
+                        ' . $this->getDataBaseTable('online') . '
+                    WHERE
+                        ' . $condition . ';';
 
             // Create a new SQL query:
             $result = $this->db->sqlQuery($sql);
@@ -1106,13 +1076,13 @@ class AJAXChat
             $this->_bannedUsersData = [];
 
             $sql = 'SELECT
-						userID,
-						userName,
-						ip
-					FROM
-						' . $this->getDataBaseTable('bans') . '
-					WHERE
-						NOW() < dateTime;';
+                        userID,
+                        userName,
+                        ip
+                    FROM
+                        ' . $this->getDataBaseTable('bans') . '
+                    WHERE
+                        NOW() < dateTime;';
 
             // Create a new SQL query:
             $result = $this->db->sqlQuery($sql);
@@ -1209,9 +1179,9 @@ class AJAXChat
     public function purgeLogs()
     {
         $sql = 'DELETE FROM
-					' . $this->getDataBaseTable('messages') . '
-				WHERE
-					dateTime < DATE_SUB(NOW(), interval ' . $this->getConfig('logsPurgeTimeDiff') . ' DAY);';
+                    ' . $this->getDataBaseTable('messages') . '
+                WHERE
+                    dateTime < DATE_SUB(NOW(), interval ' . $this->getConfig('logsPurgeTimeDiff') . ' DAY);';
 
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);
@@ -1449,13 +1419,13 @@ class AJAXChat
             $this->_invitations = [];
 
             $sql = 'SELECT
-						channel
-					FROM
-						' . $this->getDataBaseTable('invitations') . '
-					WHERE
-						userID=' . $this->db->makeSafe($this->getUserID()) . '
-						AND
-						DATE_SUB(NOW(), interval 1 DAY) < dateTime;';
+                        channel
+                    FROM
+                        ' . $this->getDataBaseTable('invitations') . '
+                    WHERE
+                        userID=' . $this->db->makeSafe($this->getUserID()) . '
+                        AND
+                        DATE_SUB(NOW(), interval 1 DAY) < dateTime;';
 
             // Create a new SQL query:
             $result = $this->db->sqlQuery($sql);
@@ -1520,14 +1490,14 @@ class AJAXChat
     public function updateOnlineList()
     {
         $sql = 'UPDATE
-					' . $this->getDataBaseTable('online') . '
-				SET
-					userName 	= ' . $this->db->makeSafe($this->getUserName()) . ',
-					channel 	= ' . $this->db->makeSafe($this->getChannel()) . ',
-					dateTime 	= NOW(),
-					ip			= ' . $this->db->makeSafe(ipToStorageFormat($_SERVER['REMOTE_ADDR'])) . '
-				WHERE
-					userID = ' . $this->db->makeSafe($this->getUserID()) . ';';
+                    ' . $this->getDataBaseTable('online') . '
+                SET
+                    userName    = ' . $this->db->makeSafe($this->getUserName()) . ',
+                    channel     = ' . $this->db->makeSafe($this->getChannel()) . ',
+                    dateTime    = NOW(),
+                    ip          = ' . $this->db->makeSafe(ipToStorageFormat($_SERVER['REMOTE_ADDR'])) . '
+                WHERE
+                    userID = ' . $this->db->makeSafe($this->getUserID()) . ';';
 
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);
@@ -1658,21 +1628,21 @@ class AJAXChat
     public function addToOnlineList()
     {
         $sql = 'INSERT INTO ' . $this->getDataBaseTable('online') . '(
-					userID,
-					userName,
-					userRole,
-					channel,
-					dateTime,
-					ip
-				)
-				VALUES (
-					' . $this->db->makeSafe($this->getUserID()) . ',
-					' . $this->db->makeSafe($this->getUserName()) . ',
-					' . $this->db->makeSafe($this->getUserRole()) . ',
-					' . $this->db->makeSafe($this->getChannel()) . ',
-					NOW(),
-					' . $this->db->makeSafe(ipToStorageFormat($_SERVER['REMOTE_ADDR'])) . '
-				);';
+                    userID,
+                    userName,
+                    userRole,
+                    channel,
+                    dateTime,
+                    ip
+                )
+                VALUES (
+                    ' . $this->db->makeSafe($this->getUserID()) . ',
+                    ' . $this->db->makeSafe($this->getUserName()) . ',
+                    ' . $this->db->makeSafe($this->getUserRole()) . ',
+                    ' . $this->db->makeSafe($this->getChannel()) . ',
+                    NOW(),
+                    ' . $this->db->makeSafe(ipToStorageFormat($_SERVER['REMOTE_ADDR'])) . '
+                );';
 
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);
@@ -1831,11 +1801,11 @@ class AJAXChat
     {
         // Retrieve the channel of the given message:
         $sql = 'SELECT
-					channel
-				FROM
-					' . $this->getDataBaseTable('messages') . '
-				WHERE
-					id=' . $this->db->makeSafe($messageID) . ';';
+                    channel
+                FROM
+                    ' . $this->getDataBaseTable('messages') . '
+                WHERE
+                    id=' . $this->db->makeSafe($messageID) . ';';
 
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);
@@ -1854,35 +1824,35 @@ class AJAXChat
             if ($this->getUserRole() == AJAX_CHAT_ADMIN) {
                 $condition = '';
             } elseif ($this->getUserRole() == AJAX_CHAT_MODERATOR) {
-                $condition = '	AND
-									NOT (userRole=' . $this->db->makeSafe(AJAX_CHAT_ADMIN) . ')
-								AND
-									NOT (userRole=' . $this->db->makeSafe(AJAX_CHAT_CHATBOT) . ')';
+                $condition = '  AND
+                                    NOT (userRole=' . $this->db->makeSafe(AJAX_CHAT_ADMIN) . ')
+                                AND
+                                    NOT (userRole=' . $this->db->makeSafe(AJAX_CHAT_CHATBOT) . ')';
             } elseif ($this->getUserRole() == AJAX_CHAT_USER && $this->getConfig('allowUserMessageDelete')) {
                 $condition = 'AND
-								(
-								userID=' . $this->db->makeSafe($this->getUserID()) . '
-								OR
-									(
-									channel = ' . $this->db->makeSafe($this->getPrivateMessageID()) . '
-									OR
-									channel = ' . $this->db->makeSafe($this->getPrivateChannelID()) . '
-									)
-									AND
-										NOT (userRole=' . $this->db->makeSafe(AJAX_CHAT_ADMIN) . ')
-									AND
-										NOT (userRole=' . $this->db->makeSafe(AJAX_CHAT_CHATBOT) . ')
-								)';
+                                (
+                                userID=' . $this->db->makeSafe($this->getUserID()) . '
+                                OR
+                                    (
+                                    channel = ' . $this->db->makeSafe($this->getPrivateMessageID()) . '
+                                    OR
+                                    channel = ' . $this->db->makeSafe($this->getPrivateChannelID()) . '
+                                    )
+                                    AND
+                                        NOT (userRole=' . $this->db->makeSafe(AJAX_CHAT_ADMIN) . ')
+                                    AND
+                                        NOT (userRole=' . $this->db->makeSafe(AJAX_CHAT_CHATBOT) . ')
+                                )';
             } else {
                 return false;
             }
 
             // Remove given message from the database:
             $sql = 'DELETE FROM
-						' . $this->getDataBaseTable('messages') . '
-					WHERE
-						id=' . $this->db->makeSafe($messageID) . '
-						' . $condition . ';';
+                        ' . $this->getDataBaseTable('messages') . '
+                    WHERE
+                        id=' . $this->db->makeSafe($messageID) . '
+                        ' . $condition . ';';
 
             // Create a new SQL query:
             $result = $this->db->sqlQuery($sql);
@@ -2275,15 +2245,15 @@ class AJAXChat
         $channelID = ($channelID === null) ? $this->getChannel() : $channelID;
 
         $sql = 'INSERT INTO ' . $this->getDataBaseTable('invitations') . '(
-					userID,
-					channel,
-					dateTime
-				)
-				VALUES (
-					' . $this->db->makeSafe($userID) . ',
-					' . $this->db->makeSafe($channelID) . ',
-					NOW()
-				);';
+                    userID,
+                    channel,
+                    dateTime
+                )
+                VALUES (
+                    ' . $this->db->makeSafe($userID) . ',
+                    ' . $this->db->makeSafe($channelID) . ',
+                    NOW()
+                );';
 
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);
@@ -2298,9 +2268,9 @@ class AJAXChat
     public function removeExpiredInvitations()
     {
         $sql = 'DELETE FROM
-					' . $this->getDataBaseTable('invitations') . '
-				WHERE
-					DATE_SUB(NOW(), interval 1 DAY) > dateTime;';
+                    ' . $this->getDataBaseTable('invitations') . '
+                WHERE
+                    DATE_SUB(NOW(), interval 1 DAY) > dateTime;';
 
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);
@@ -2356,11 +2326,11 @@ class AJAXChat
         $channelID = ($channelID === null) ? $this->getChannel() : $channelID;
 
         $sql = 'DELETE FROM
-					' . $this->getDataBaseTable('invitations') . '
-				WHERE
-					userID=' . $this->db->makeSafe($userID) . '
-					AND
-					channel=' . $this->db->makeSafe($channelID) . ';';
+                    ' . $this->getDataBaseTable('invitations') . '
+                WHERE
+                    userID=' . $this->db->makeSafe($userID) . '
+                    AND
+                    channel=' . $this->db->makeSafe($channelID) . ';';
 
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);
@@ -2519,9 +2489,9 @@ class AJAXChat
 
         // Remove given User from online list:
         $sql = 'DELETE FROM
-					' . $this->getDataBaseTable('online') . '
-				WHERE
-					userID = ' . $this->db->makeSafe($userID) . ';';
+                    ' . $this->getDataBaseTable('online') . '
+                WHERE
+                    userID = ' . $this->db->makeSafe($userID) . ';';
 
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);
@@ -2560,17 +2530,17 @@ class AJAXChat
         }
 
         $sql = 'INSERT INTO ' . $this->getDataBaseTable('bans') . '(
-					userID,
-					userName,
-					dateTime,
-					ip
-				)
-				VALUES (
-					' . $this->db->makeSafe($userID) . ',
-					' . $this->db->makeSafe($userName) . ',
-					DATE_ADD(NOW(), interval ' . $this->db->makeSafe($banMinutes) . ' MINUTE),
-					' . $this->db->makeSafe(ipToStorageFormat($ip)) . '
-				);';
+                    userID,
+                    userName,
+                    dateTime,
+                    ip
+                )
+                VALUES (
+                    ' . $this->db->makeSafe($userID) . ',
+                    ' . $this->db->makeSafe($userName) . ',
+                    DATE_ADD(NOW(), interval ' . $this->db->makeSafe($banMinutes) . ' MINUTE),
+                    ' . $this->db->makeSafe(ipToStorageFormat($ip)) . '
+                );';
 
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);
@@ -2595,9 +2565,9 @@ class AJAXChat
     public function removeExpiredBans()
     {
         $sql = 'DELETE FROM
-					' . $this->getDataBaseTable('bans') . '
-				WHERE
-					dateTime < NOW();';
+                    ' . $this->getDataBaseTable('bans') . '
+                WHERE
+                    dateTime < NOW();';
 
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);
@@ -2675,9 +2645,9 @@ class AJAXChat
     public function unbanUser($userName)
     {
         $sql = 'DELETE FROM
-					' . $this->getDataBaseTable('bans') . '
-				WHERE
-					userName = ' . $this->db->makeSafe($userName) . ';';
+                    ' . $this->getDataBaseTable('bans') . '
+                WHERE
+                    userName = ' . $this->db->makeSafe($userName) . ';';
 
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);
@@ -3003,6 +2973,7 @@ class AJAXChat
 
     public function getXMLMessages()
     {
+        file_put_contents('/var/log/nginx/ajaxchat.log', json_encode($_SESSION) . PHP_EOL, FILE_APPEND);
         switch ($this->getView()) {
             case 'chat':
                 return $this->getChatViewXMLMessages();
@@ -3063,22 +3034,22 @@ class AJAXChat
     {
         // Get the last messages in descending order (this optimises the LIMIT usage):
         $sql = 'SELECT
-					id,
-					userID,
-					userName,
-					userRole,
-					channel AS channelID,
-					UNIX_TIMESTAMP(dateTime) AS timeStamp,
-					text
-				FROM
-					' . $this->getDataBaseTable('messages') . '
-				WHERE
-					' . $this->getMessageCondition() . '
-					' . $this->getMessageFilter() . '
-				ORDER BY
-					id
-					DESC
-				LIMIT ' . $this->getConfig('requestMessagesLimit') . ';';
+                    id,
+                    userID,
+                    userName,
+                    userRole,
+                    channel AS channelID,
+                    UNIX_TIMESTAMP(dateTime) AS timeStamp,
+                    text
+                FROM
+                    ' . $this->getDataBaseTable('messages') . '
+                WHERE
+                    ' . $this->getMessageCondition() . '
+                    ' . $this->getMessageFilter() . '
+                ORDER BY
+                    id
+                    DESC
+                LIMIT ' . $this->getConfig('requestMessagesLimit') . ';';
 
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);
@@ -3114,13 +3085,13 @@ class AJAXChat
     public function getMessageCondition()
     {
         $condition = 'id > ' . $this->db->makeSafe($this->getRequestVar('lastID')) . '
-						AND (
-							channel = ' . $this->db->makeSafe($this->getChannel()) . '
-							OR
-							channel = ' . $this->db->makeSafe($this->getPrivateMessageID()) . '
-						)
-						AND
-						';
+                        AND (
+                            channel = ' . $this->db->makeSafe($this->getChannel()) . '
+                            OR
+                            channel = ' . $this->db->makeSafe($this->getPrivateMessageID()) . '
+                        )
+                        AND
+                        ';
         if ($this->getConfig('requestMessagesPriorChannelEnter') ||
             ($this->getConfig('requestMessagesPriorChannelEnterList') && in_array($this->getChannel(), $this->getConfig('requestMessagesPriorChannelEnterList')))) {
             $condition .= 'NOW() < DATE_ADD(dateTime, interval ' . $this->getConfig('requestMessagesTimeDiff') . ' HOUR)';
@@ -3140,17 +3111,17 @@ class AJAXChat
     {
         $filterChannelMessages = '';
         if (!$this->getConfig('showChannelMessages')) {
-            $filterChannelMessages = '	AND NOT (
-											text LIKE (\'/login%\')
-											OR
-											text LIKE (\'/logout%\')
-											OR
-											text LIKE (\'/channelEnter%\')
-											OR
-											text LIKE (\'/channelLeave%\')
-											OR
-											text LIKE (\'/kick%\')
-										)';
+            $filterChannelMessages = '  AND NOT (
+                                            text LIKE (\'/login%\')
+                                            OR
+                                            text LIKE (\'/logout%\')
+                                            OR
+                                            text LIKE (\'/channelEnter%\')
+                                            OR
+                                            text LIKE (\'/channelLeave%\')
+                                            OR
+                                            text LIKE (\'/kick%\')
+                                        )';
         }
 
         return $filterChannelMessages;
@@ -3171,22 +3142,22 @@ class AJAXChat
     {
         // Get the last messages in descending order (this optimises the LIMIT usage):
         $sql = 'SELECT
-					id,
-					userID,
-					userName,
-					userRole,
-					channel AS channelID,
-					UNIX_TIMESTAMP(dateTime) AS timeStamp,
-					text
-				FROM
-					' . $this->getDataBaseTable('messages') . '
-				WHERE
-					' . $this->getTeaserMessageCondition() . '
-					' . $this->getMessageFilter() . '
-				ORDER BY
-					id
-					DESC
-				LIMIT ' . $this->getConfig('requestMessagesLimit') . ';';
+                    id,
+                    userID,
+                    userName,
+                    userRole,
+                    channel AS channelID,
+                    UNIX_TIMESTAMP(dateTime) AS timeStamp,
+                    text
+                FROM
+                    ' . $this->getDataBaseTable('messages') . '
+                WHERE
+                    ' . $this->getTeaserMessageCondition() . '
+                    ' . $this->getMessageFilter() . '
+                ORDER BY
+                    id
+                    DESC
+                LIMIT ' . $this->getConfig('requestMessagesLimit') . ';';
 
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);
@@ -3225,8 +3196,8 @@ class AJAXChat
     {
         $channelID = $this->getValidRequestChannelID();
         $condition = 'channel = ' . $this->db->makeSafe($channelID) . '
-						AND
-						';
+                        AND
+                        ';
         if ($this->getConfig('requestMessagesPriorChannelEnter') ||
             ($this->getConfig('requestMessagesPriorChannelEnterList') && in_array($channelID, $this->getConfig('requestMessagesPriorChannelEnterList')))) {
             $condition .= 'NOW() < DATE_ADD(dateTime, interval ' . $this->getConfig('requestMessagesTimeDiff') . ' HOUR)';
@@ -3252,21 +3223,21 @@ class AJAXChat
     public function getLogsViewMessagesXML()
     {
         $sql = 'SELECT
-					id,
-					userID,
-					userName,
-					userRole,
-					channel AS channelID,
-					UNIX_TIMESTAMP(dateTime) AS timeStamp,
-					ip,
-					text
-				FROM
-					' . $this->getDataBaseTable('messages') . '
-				WHERE
-					' . $this->getLogsViewCondition() . '
-				ORDER BY
-					id
-				LIMIT ' . $this->getConfig('logsRequestMessagesLimit') . ';';
+                    id,
+                    userID,
+                    userName,
+                    userRole,
+                    channel AS channelID,
+                    UNIX_TIMESTAMP(dateTime) AS timeStamp,
+                    ip,
+                    text
+                FROM
+                    ' . $this->getDataBaseTable('messages') . '
+                WHERE
+                    ' . $this->getLogsViewCondition() . '
+                ORDER BY
+                    id
+                LIMIT ' . $this->getConfig('logsRequestMessagesLimit') . ';';
 
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);
@@ -3446,7 +3417,7 @@ class AJAXChat
     {
         switch ($this->getView()) {
             case 'chat':
-                return AJAX_CHAT_PATH . 'lib/template/loggedIn.html';
+                return AJAX_CHAT_PATH . 'lib/template/loggedIn.php';
             case 'logs':
                 return AJAX_CHAT_PATH . 'lib/template/logs.html';
             default:

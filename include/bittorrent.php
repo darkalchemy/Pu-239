@@ -989,20 +989,20 @@ function sqlerr($file = '', $line = '')
             @fclose($FH);
         }
         echo '<html><head><title>MySQLI Error</title>
-					<style>P,BODY{ font-family:arial,sans-serif; font-size:11px; }</style></head><body>
-		    		   <blockquote><h1>MySQLI Error</h1><b>There appears to be an error with the database.</b><br>
-		    		   You can try to refresh the page by clicking <a href="javascript:window.location=window.location;">here</a>
-				  </body></html>';
+                    <style>P,BODY{ font-family:arial,sans-serif; font-size:11px; }</style></head><body>
+                       <blockquote><h1>MySQLI Error</h1><b>There appears to be an error with the database.</b><br>
+                       You can try to refresh the page by clicking <a href="javascript:window.location=window.location;">here</a>
+                  </body></html>';
     } else {
         $the_error = "\nSQL error: " . $the_error . "\n";
         $the_error .= 'SQL error code: ' . $the_error_no . "\n";
         $the_error .= 'Date: ' . date("l dS \of F Y h:i:s A");
         $out = "<html>\n<head>\n<title>MySQLI Error</title>\n
-	    		   <style>P,BODY{ font-family:arial,sans-serif; font-size:11px; }</style>\n</head>\n<body>\n
-	    		   <blockquote>\n<h1>MySQLI Error</h1><b>There appears to be an error with the database.</b><br>
-	    		   You can try to refresh the page by clicking <a href=\"javascript:window.location=window.location;\">here</a>.
-	    		   <br><br><b>Error Returned</b><br>
-	    		   <form name='mysql'><textarea rows=\"15\" cols=\"60\">" . htmlsafechars($the_error, ENT_QUOTES) . '</textarea></form><br>We apologise for any inconvenience</blockquote></body></html>';
+                   <style>P,BODY{ font-family:arial,sans-serif; font-size:11px; }</style>\n</head>\n<body>\n
+                   <blockquote>\n<h1>MySQLI Error</h1><b>There appears to be an error with the database.</b><br>
+                   You can try to refresh the page by clicking <a href=\"javascript:window.location=window.location;\">here</a>.
+                   <br><br><b>Error Returned</b><br>
+                   <form name='mysql'><textarea rows=\"15\" cols=\"60\">" . htmlsafechars($the_error, ENT_QUOTES) . '</textarea></form><br>We apologise for any inconvenience</blockquote></body></html>';
         echo $out;
     }
     exit();
@@ -1337,6 +1337,10 @@ function sessionStart()
             regenerateSessionID();
             $_SESSION['canary'] = time();
         }
+
+        // Set session params
+        $_SESSION['LoggedIn'] = true;
+        $_SESSION['channel'] = $INSTALLER09['site_name'];
     }
 }
 

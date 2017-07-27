@@ -208,6 +208,9 @@
             var left = wLeft + (window.innerWidth / 2) - (w / 2);
             return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
         }
+        if (!window.parent.document.getElementById('ajaxchat')) {
+            ajaxChat.setActiveStyleSheet('Uranium');
+        }
         // ]]>
     </script>
 </head>
