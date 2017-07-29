@@ -46,7 +46,7 @@ class CustomAJAXChat extends AJAXChat
             if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
                 $userData['userRole'] = AJAX_CHAT_ADMIN;
                 $userData['channels'] = [0, 1, 2];
-            } elseif ($CURUSER['class'] === UC_MODERATOR) {
+            } elseif ($CURUSER['class'] >= UC_MODERATOR) {
                 $userData['userRole'] = AJAX_CHAT_MODERATOR;
                 $userData['channels'] = [0, 1];
             }
@@ -55,7 +55,8 @@ class CustomAJAXChat extends AJAXChat
             return $userData;
         } else {
             // Guest users:
-            return $this->getGuestUser();
+            userlogin();
+            //return $this->getGuestUser();
         }
     }
 
@@ -72,9 +73,9 @@ class CustomAJAXChat extends AJAXChat
             if ($this->getUserRole() == AJAX_CHAT_GUEST) {
                 $validChannels = $customUsers[0]['channels'];
             } else {
+                file_put_contents('/var/log/nginx/ajaxchat.log', json_encode($_SESSION) . PHP_EOL, FILE_APPEND);
                 $validChannels = $customUsers[$this->getUserID()]['channels'];
             }
-
             // Add the valid channels to the channel list (the defaultChannelID is always valid):
             foreach ($this->getAllChannels() as $key => $value) {
                 if ($value == $this->getConfig('defaultChannelID')) {

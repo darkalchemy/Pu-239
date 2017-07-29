@@ -1340,7 +1340,6 @@ function sessionStart()
 
         // Set session params
         $_SESSION['LoggedIn'] = true;
-        $_SESSION['channel'] = $INSTALLER09['site_name'];
     }
 }
 

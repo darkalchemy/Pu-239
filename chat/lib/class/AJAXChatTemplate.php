@@ -63,6 +63,7 @@ class AJAXChatTemplate
 
     public function replaceTemplateTags($tagData)
     {
+        global $INSTALLER09;
         switch ($tagData[1]) {
             case 'AJAX_CHAT_URL':
                 return $this->ajaxChat->htmlEncode($this->ajaxChat->getChatURL());
@@ -103,6 +104,11 @@ class AJAXChatTemplate
                 return $this->ajaxChat->getConfig('sessionCookieDomain');
             case 'COOKIE_SECURE':
                 return $this->ajaxChat->getConfig('sessionCookieSecure');
+
+            case 'CODE_VERSION':
+                return $INSTALLER09['code_version'];
+            case 'JQUERY_VERSION':
+                return $INSTALLER09['jquery_version'];
 
             case 'CHAT_BOT_NAME':
                 return rawurlencode($this->ajaxChat->getConfig('chatBotName'));
@@ -213,10 +219,12 @@ class AJAXChatTemplate
 
     public function getStyleSheetLinkTags()
     {
+        global $INSTALLER09;
         $styleSheets = '';
         foreach ($this->ajaxChat->getConfig('styleAvailable') as $style) {
             $alternate = ($style == $this->ajaxChat->getConfig('styleDefault')) ? '' : 'alternate ';
-            $styleSheets .= '<link rel="' . $alternate . 'stylesheet" type="text/css" href="css/' . rawurlencode($style) . '.css" title="' . $this->ajaxChat->htmlEncode($style) . '"/>';
+            $styleSheets .= '
+        <link rel="' . $alternate . 'stylesheet" type="text/css" href="css/' . rawurlencode($style) . '.css?' . $INSTALLER09['code_version'].'" title="' . $this->ajaxChat->htmlEncode($style) . '"/>';
         }
 
         return $styleSheets;

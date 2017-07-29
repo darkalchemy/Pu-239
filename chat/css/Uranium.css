@@ -263,3 +263,8 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
     background-image: -o-linear-gradient(top, #3b6c37, #223220, #171717);
     background-image: linear-gradient(to bottom, #3b6c37, #223220, #171717);
 }
+
+#content #chatList span.dateTime {
+    font-family: "Lucida Console", Monaco, monospace;
+}
+

@@ -2973,7 +2973,6 @@ class AJAXChat
 
     public function getXMLMessages()
     {
-        file_put_contents('/var/log/nginx/ajaxchat.log', json_encode($_SESSION) . PHP_EOL, FILE_APPEND);
         switch ($this->getView()) {
             case 'chat':
                 return $this->getChatViewXMLMessages();

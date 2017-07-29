@@ -9,11 +9,11 @@
     [STYLE_SHEETS/]
     <!--[if lt IE 8]>
     <script type="text/javascript">var isIElt8 = true;</script><![endif]-->
-    <script src="js/chat.js" type="text/javascript" charset="UTF-8"></script>
-    <script src="js/custom.js" type="text/javascript" charset="UTF-8"></script>
-    <script src="js/lang/[LANG_CODE/].js" type="text/javascript" charset="UTF-8"></script>
-    <script src="js/config.js" type="text/javascript" charset="UTF-8"></script>
-    <script src="js/FABridge.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="js/chat.js?[CODE_VERSION/]" type="text/javascript" charset="UTF-8"></script>
+    <script src="js/custom.js?[CODE_VERSION/]" type="text/javascript" charset="UTF-8"></script>
+    <script src="js/lang/[LANG_CODE/].js?[CODE_VERSION/]" type="text/javascript" charset="UTF-8"></script>
+    <script src="js/config.js?[CODE_VERSION/]" type="text/javascript" charset="UTF-8"></script>
+    <script src="js/FABridge.js?[CODE_VERSION/]" type="text/javascript" charset="UTF-8"></script>
     <script type="text/javascript">
         // <![CDATA[
         ajaxChat.view = {
@@ -208,6 +208,7 @@
             var left = wLeft + (window.innerWidth / 2) - (w / 2);
             return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
         }
+        ajaxChat.setActiveStyleSheet('transparent');
         if (!window.parent.document.getElementById('ajaxchat')) {
             ajaxChat.setActiveStyleSheet('Uranium');
         }

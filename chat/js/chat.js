@@ -1372,7 +1372,7 @@ var ajaxChat = {
             rowClass += ' private';
         }
 
-        var dateTime = this.settings['dateFormat'] ? '<span class="dateTime">'
+        var dateTime = this.settings['dateFormat'] ? '<span class="dateTime" title="' + this.formatDate(this.settings['dateFormatTooltip'], dateObject) + '">'
             + this.formatDate(this.settings['dateFormat'], dateObject) + '</span> ' : '';
         return '<div id="'
             + this.getMessageDocumentID(messageID)
@@ -1697,10 +1697,13 @@ var ajaxChat = {
 
     formatDate: function (format, date) {
         date = (date === null) ? new date() : date;
-
+        var week = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+        var month = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December');
         return format
             .replace(/%Y/g, date.getFullYear())
             .replace(/%m/g, this.addLeadingZero(date.getMonth() + 1))
+            .replace(/%F/g, month[date.getMonth()])
+            .replace(/%l/g, week[date.getDay()])
             .replace(/%d/g, this.addLeadingZero(date.getDate()))
             .replace(/%H/g, this.addLeadingZero(date.getHours()))
             .replace(/%i/g, this.addLeadingZero(date.getMinutes()))

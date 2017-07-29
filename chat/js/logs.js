@@ -86,7 +86,7 @@ ajaxChat.onNewMessage = function (dateObject, userID, userName, userRoleClass, m
 
 ajaxChat.logout = function () {
     clearTimeout(this.timer);
-    this.makeRequest(this.ajaxURL, 'POST', 'logout=true');
+    //this.makeRequest(this.ajaxURL, 'POST', 'logout=true');
 };
 
 ajaxChat.switchLanguage = function (langCode) {
