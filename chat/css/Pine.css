@@ -6,6 +6,7 @@
 @import url('fonts.css');
 @import url('print.css');
 @import url('custom.css');
+@import url('classcolors.css');
 
 #content input, select, #content textarea, #loginButton {
     border: 0;
@@ -136,30 +137,6 @@ input, select {
 
 #content #chatList .rowEven.private {
     background-color: #007B07;
-}
-
-#content .guest {
-    color: #B8B8B8;
-}
-
-#content .user {
-    color: #C8E4CF;
-}
-
-#content .customUser {
-    color: #4c9c1f;
-}
-
-#content .moderator {
-    color: #71E271;
-}
-
-#content .admin {
-    color: #FF6262;
-}
-
-#content .chatBot {
-    color: #E7B98E;
 }
 
 #content #chatList .chatBotErrorMessage {

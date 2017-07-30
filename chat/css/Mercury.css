@@ -10,6 +10,7 @@
 @import url('fonts.css');
 @import url('print.css');
 @import url('custom.css');
+@import url('classcolors.css');
 
 /* Buttons */
 #content input, #content select, #content textarea {
@@ -140,30 +141,6 @@
 
 #content #chatList .rowEven.private {
     background-color: #1f1f1f;
-}
-
-#content .guest {
-    color: gray;
-}
-
-#content .user {
-    color: #D4D4D4;
-}
-
-#content .customUser {
-    color: #e0ca95;
-}
-
-#content .moderator {
-    color: #00AA00;
-}
-
-#content .admin {
-    color: red;
-}
-
-#content .chatBot {
-    color: #F6B620;
 }
 
 #content #chatList .chatBotErrorMessage {

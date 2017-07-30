@@ -386,17 +386,6 @@ class AJAXChat
     public function chatViewLogout($type)
     {
         $this->removeFromOnlineList();
-        if ($type !== null) {
-            $type = ' ' . $type;
-        }
-        // Logout message
-        $text = '/logout ' . $this->getUserName() . $type;
-        $this->insertChatBotMessage(
-            $this->getChannel(),
-            $text,
-            null,
-            1
-        );
     }
 
     public function removeFromOnlineList()
@@ -656,9 +645,8 @@ class AJAXChat
                 return false;
             case 'logs':
                 if ($this->isLoggedIn() && (
-                        $this->getUserRole() == AJAX_CHAT_ADMIN ||
-                        ($this->getConfig('logsUserAccess') &&
-                            ($this->getUserRole() == AJAX_CHAT_MODERATOR || $this->getUserRole() == AJAX_CHAT_USER))
+                        $this->getUserRole() >= UC_ADMINISTRATOR ||
+                        ($this->getConfig('logsUserAccess') && ($this->getUserRole() >= UC_USER))
                     )) {
                     return true;
                 }
@@ -673,7 +661,7 @@ class AJAXChat
     {
         $userRole = $this->getSessionVar('UserRole');
         if ($userRole === null) {
-            return AJAX_CHAT_GUEST;
+            userlogin();
         }
 
         return $userRole;
@@ -681,7 +669,7 @@ class AJAXChat
 
     public function isChatOpen()
     {
-        if ($this->getUserRole() == AJAX_CHAT_ADMIN) {
+        if ($this->getUserRole() >= UC_ADMINISTRATOR) {
             return true;
         }
         if ($this->getConfig('chatClosed')) {
@@ -728,19 +716,15 @@ class AJAXChat
         }
 
         // If the chat is closed, only the admin may login:
-        if (!$this->isChatOpen() && $userData['userRole'] != AJAX_CHAT_ADMIN) {
+        if (!$this->isChatOpen() && $userData['userRole'] <= UC_ADMINISTRATOR) {
             $this->addInfoMessage('errorChatClosed');
 
             return false;
         }
 
-        if (!$this->getConfig('allowGuestLogins') && $userData['userRole'] == AJAX_CHAT_GUEST) {
-            return false;
-        }
-
         // Check if userID or userName are already listed online:
         if ($this->isUserOnline($userData['userID']) || $this->isUserNameInUse($userData['userName'])) {
-            if ($userData['userRole'] == AJAX_CHAT_USER || $userData['userRole'] == AJAX_CHAT_MODERATOR || $userData['userRole'] == AJAX_CHAT_ADMIN) {
+            if ($userData['userRole'] >= UC_USER) {
                 // Set the registered user inactive and remove the inactive users so the user can be logged in again:
                 $this->setInactive($userData['userID'], $userData['userName']);
                 $this->removeInactive();
@@ -752,14 +736,14 @@ class AJAXChat
         }
 
         // Check if user is banned:
-        if ($userData['userRole'] != AJAX_CHAT_ADMIN && $this->isUserBanned($userData['userName'], $userData['userID'], $_SERVER['REMOTE_ADDR'])) {
+        if ($userData['userRole'] <= UC_STAFF && $this->isUserBanned($userData['userName'], $userData['userID'], $_SERVER['REMOTE_ADDR'])) {
             $this->addInfoMessage('errorBanned');
 
             return false;
         }
 
         // Check if the max number of users is logged in (not affecting moderators or admins):
-        if (!($userData['userRole'] == AJAX_CHAT_MODERATOR || $userData['userRole'] == AJAX_CHAT_ADMIN) && $this->isMaxUsersLoggedIn()) {
+        if (($userData['userRole'] < UC_STAFF) && $this->isMaxUsersLoggedIn()) {
             $this->addInfoMessage('errorMaxUsersLoggedIn');
 
             return false;
@@ -805,42 +789,8 @@ class AJAXChat
         if (false) {
             // Here is the place to check user authentication
         } else {
-            // Guest users:
-            return $this->getGuestUser();
+            userlogin();
         }
-    }
-
-    public function getGuestUser()
-    {
-        if (!$this->getConfig('allowGuestLogins')) {
-            return null;
-        }
-
-        if ($this->getConfig('allowGuestUserName')) {
-            $maxLength = $this->getConfig('userNameMaxLength')
-                - $this->stringLength($this->getConfig('guestUserPrefix'))
-                - $this->stringLength($this->getConfig('guestUserSuffix'));
-
-            // Trim guest userName:
-            $userName = $this->trimString($this->getRequestVar('userName'), null, $maxLength, true, true);
-
-            // If given userName is invalid, create one:
-            if (!$userName) {
-                $userName = $this->createGuestUserName();
-            } else {
-                // Add the guest users prefix and suffix to the given userName:
-                $userName = $this->getConfig('guestUserPrefix') . $userName . $this->getConfig('guestUserSuffix');
-            }
-        } else {
-            $userName = $this->createGuestUserName();
-        }
-
-        $userData = [];
-        $userData['userID'] = $this->createGuestUserID();
-        $userData['userName'] = $userName;
-        $userData['userRole'] = AJAX_CHAT_GUEST;
-
-        return $userData;
     }
 
     public function stringLength($str, $encoding = 'UTF-8')
@@ -905,29 +855,6 @@ class AJAXChat
     public function subString($str, $start = 0, $length = null, $encoding = 'UTF-8')
     {
         return AJAXChatString::subString($str, $start, $length, $encoding);
-    }
-
-    public function createGuestUserName()
-    {
-        $maxLength = $this->getConfig('userNameMaxLength')
-            - $this->stringLength($this->getConfig('guestUserPrefix'))
-            - $this->stringLength($this->getConfig('guestUserSuffix'));
-
-        // seed with microseconds since last "whole" second:
-        mt_srand((float)microtime() * 1000000);
-
-        // Create a random userName using numbers between 100000 and 999999:
-        $userName = substr(mt_rand(100000, 999999), 0, $maxLength);
-
-        return $this->getConfig('guestUserPrefix') . $userName . $this->getConfig('guestUserSuffix');
-    }
-
-    public function createGuestUserID()
-    {
-        // seed with microseconds since last "whole" second:
-        mt_srand((float)microtime() * 1000000);
-
-        return mt_rand($this->getConfig('minGuestUserID'), $this->getConfig('privateChannelDiff') - 1);
     }
 
     public function addInfoMessage($info, $type = 'error')
@@ -1019,15 +946,6 @@ class AJAXChat
                 }
 
                 $this->removeUserFromOnlineUsersData($row['userID']);
-
-                // Insert logout timeout message:
-                $text = '/logout ' . $row['userName'] . ' Timeout';
-                $this->insertChatBotMessage(
-                    $row['channel'],
-                    $text,
-                    null,
-                    1
-                );
             }
 
             $result->free();
@@ -1397,17 +1315,8 @@ class AJAXChat
 
     public function isAllowedToCreatePrivateChannel()
     {
-        if ($this->getConfig('allowPrivateChannels')) {
-            switch ($this->getUserRole()) {
-                case AJAX_CHAT_USER:
-                    return true;
-                case AJAX_CHAT_MODERATOR:
-                    return true;
-                case AJAX_CHAT_ADMIN:
-                    return true;
-                default:
-                    return false;
-            }
+        if ($this->getConfig('allowPrivateChannels') && $this->getUserRole() >= UC_USER) {
+            return true;
         }
 
         return false;
@@ -1586,15 +1495,6 @@ class AJAXChat
         // Add channelID and channelName to info messages:
         $this->addInfoMessage($this->getChannel(), 'channelID');
         $this->addInfoMessage($this->getChannelName(), 'channelName');
-
-        // Login message:
-        $text = '/login ' . $this->getUserName();
-        $this->insertChatBotMessage(
-            $this->getChannel(),
-            $text,
-            null,
-            1
-        );
     }
 
     public function getValidRequestChannelID()
@@ -1673,7 +1573,7 @@ class AJAXChat
 
     public function updateLogsViewSocketAuthentication()
     {
-        if ($this->getUserRole() != AJAX_CHAT_ADMIN) {
+        if ($this->getUserRole() < UC_ADMINISTRATOR) {
             $channels = [];
             foreach ($this->getChannels() as $channel) {
                 if ($this->getConfig('logsUserAccessChannelList') && !in_array($channel, $this->getConfig('logsUserAccessChannelList'))) {
@@ -1821,14 +1721,14 @@ class AJAXChat
         if ($row['channel'] !== null) {
             $channel = $row['channel'];
 
-            if ($this->getUserRole() == AJAX_CHAT_ADMIN) {
+            if ($this->getUserRole() >= UC_ADMINISTRATOR) {
                 $condition = '';
-            } elseif ($this->getUserRole() == AJAX_CHAT_MODERATOR) {
+            } elseif ($this->getUserRole() >= UC_STAFF) {
                 $condition = '  AND
-                                    NOT (userRole=' . $this->db->makeSafe(AJAX_CHAT_ADMIN) . ')
+                                    NOT (userRole>=' . $this->db->makeSafe(UC_STAFF) . ')
                                 AND
                                     NOT (userRole=' . $this->db->makeSafe(AJAX_CHAT_CHATBOT) . ')';
-            } elseif ($this->getUserRole() == AJAX_CHAT_USER && $this->getConfig('allowUserMessageDelete')) {
+            } elseif ($this->getUserRole() < UC_STAFF && $this->getConfig('allowUserMessageDelete')) {
                 $condition = 'AND
                                 (
                                 userID=' . $this->db->makeSafe($this->getUserID()) . '
@@ -1839,7 +1739,7 @@ class AJAXChat
                                     channel = ' . $this->db->makeSafe($this->getPrivateChannelID()) . '
                                     )
                                     AND
-                                        NOT (userRole=' . $this->db->makeSafe(AJAX_CHAT_ADMIN) . ')
+                                        NOT (userRole>=' . $this->db->makeSafe(UC_STAFF) . ')
                                     AND
                                         NOT (userRole=' . $this->db->makeSafe(AJAX_CHAT_CHATBOT) . ')
                                 )';
@@ -1920,10 +1820,7 @@ class AJAXChat
 
     public function isAllowedToWriteMessage()
     {
-        if ($this->getUserRole() != AJAX_CHAT_GUEST) {
-            return true;
-        }
-        if ($this->getConfig('allowGuestWrite')) {
+        if ($this->getUserRole() >= UC_USER) {
             return true;
         }
 
@@ -1933,7 +1830,7 @@ class AJAXChat
     public function floodControl()
     {
         // Moderators and Admins need no flood control:
-        if ($this->getUserRole() == AJAX_CHAT_MODERATOR || $this->getUserRole() == AJAX_CHAT_ADMIN) {
+        if ($this->getUserRole() >= UC_STAFF) {
             return true;
         }
         $time = time();
@@ -2192,7 +2089,7 @@ class AJAXChat
 
     public function isAllowedToSendPrivateMessage()
     {
-        if ($this->getConfig('allowPrivateMessages') || $this->getUserRole() == AJAX_CHAT_ADMIN) {
+        if ($this->getConfig('allowPrivateMessages') || $this->getUserRole() >= UC_STAFF) {
             return true;
         }
 
@@ -2393,8 +2290,8 @@ class AJAXChat
 
     public function insertParsedMessageKick($textParts)
     {
-        // Only moderators/admins may kick users:
-        if ($this->getUserRole() == AJAX_CHAT_ADMIN || $this->getUserRole() == AJAX_CHAT_MODERATOR) {
+        // Only STAFF may kick users:
+        if ($this->getUserRole() >= UC_STAFF) {
             if (count($textParts) == 1) {
                 $this->insertChatBotMessage(
                     $this->getPrivateMessageID(),
@@ -2411,8 +2308,8 @@ class AJAXChat
                 } else {
                     // Check the role of the user to kick:
                     $kickUserRole = $this->getRoleFromID($kickUserID);
-                    if ($kickUserRole == AJAX_CHAT_ADMIN || ($kickUserRole == AJAX_CHAT_MODERATOR && $this->getUserRole() != AJAX_CHAT_ADMIN)) {
-                        // Admins and moderators may not be kicked:
+                    if ($this->getUserRole() >= $kickUserRole) {
+                        // Admins and moderators may not be kicked, except by a higher class:
                         $this->insertChatBotMessage(
                             $this->getPrivateMessageID(),
                             '/error KickNotAllowed ' . $textParts[1]
@@ -2581,8 +2478,8 @@ class AJAXChat
 
     public function insertParsedMessageBans($textParts)
     {
-        // Only moderators/admins may see the list of banned users:
-        if ($this->getUserRole() == AJAX_CHAT_ADMIN || $this->getUserRole() == AJAX_CHAT_MODERATOR) {
+        // Only staff may see the list of banned users:
+        if ($this->getUserRole() >= UC_STAFF) {
             $this->removeExpiredBans();
             $bannedUsers = $this->getBannedUsers();
             if (count($bannedUsers) > 0) {
@@ -2611,8 +2508,8 @@ class AJAXChat
 
     public function insertParsedMessageUnban($textParts)
     {
-        // Only moderators/admins may unban users:
-        if ($this->getUserRole() == AJAX_CHAT_ADMIN || $this->getUserRole() == AJAX_CHAT_MODERATOR) {
+        // Only staff may unban users:
+        if ($this->getUserRole() >= UC_STAFF) {
             $this->removeExpiredBans();
             if (count($textParts) == 1) {
                 $this->insertChatBotMessage(
@@ -2739,14 +2636,10 @@ class AJAXChat
     public function isAllowedToListHiddenUsers()
     {
         // Hidden users are users within private or restricted channels:
-        switch ($this->getUserRole()) {
-            case AJAX_CHAT_MODERATOR:
-                return true;
-            case AJAX_CHAT_ADMIN:
-                return true;
-            default:
-                return false;
+        if ($this->getUserRole() >= UC_STAFF) {
+            return true;
         }
+        return false;
     }
 
     public function getOnlineUsers($channelIDs = null)
@@ -2820,8 +2713,8 @@ class AJAXChat
 
     public function insertParsedMessageWhois($textParts)
     {
-        // Only moderators/admins:
-        if ($this->getUserRole() == AJAX_CHAT_ADMIN || $this->getUserRole() == AJAX_CHAT_MODERATOR) {
+        // Only STAFF:
+        if ($this->getUserRole() >= UC_STAFF) {
             if (count($textParts) == 1) {
                 $this->insertChatBotMessage(
                     $this->getPrivateMessageID(),
@@ -2893,8 +2786,7 @@ class AJAXChat
 
     public function insertParsedMessageNick($textParts)
     {
-        if (!$this->getConfig('allowNickChange') ||
-            (!$this->getConfig('allowGuestUserName') && $this->getUserRole() == AJAX_CHAT_GUEST)) {
+        if (!$this->getConfig('allowNickChange') || $this->getUserRole() <= UC_USER) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
                 '/error CommandNotAllowed ' . $textParts[0]
@@ -2910,9 +2802,6 @@ class AJAXChat
                 // Allow the user to regain the original login userName:
                 $prefix = '';
                 $suffix = '';
-            } elseif ($this->getUserRole() == AJAX_CHAT_GUEST) {
-                $prefix = $this->getConfig('guestUserPrefix');
-                $suffix = $this->getConfig('guestUserSuffix');
             } else {
                 $prefix = $this->getConfig('changedNickPrefix');
                 $suffix = $this->getConfig('changedNickSuffix');
@@ -3255,7 +3144,7 @@ class AJAXChat
             $xml .= ' userID="' . $row['userID'] . '"';
             $xml .= ' userRole="' . $row['userRole'] . '"';
             $xml .= ' channelID="' . $row['channelID'] . '"';
-            if ($this->getUserRole() == AJAX_CHAT_ADMIN || $this->getUserRole() == AJAX_CHAT_MODERATOR) {
+            if ($this->getUserRole() >= UC_STAFF) {
                 $xml .= ' ip="' . $this->ipFromStorageFormat($row['ip']) . '"';
             }
             $xml .= '>';
@@ -3278,7 +3167,7 @@ class AJAXChat
         switch ($this->getRequestVar('channelID')) {
             case '-3':
                 // Just display messages from all accessible channels
-                if ($this->getUserRole() != AJAX_CHAT_ADMIN) {
+                if ($this->getUserRole() <= UC_STAFF) {
                     $condition .= ' AND (channel = ' . $this->db->makeSafe($this->getPrivateMessageID());
                     $condition .= ' OR channel = ' . $this->db->makeSafe($this->getPrivateChannelID());
                     foreach ($this->getChannels() as $channel) {
@@ -3291,21 +3180,21 @@ class AJAXChat
                 }
                 break;
             case '-2':
-                if ($this->getUserRole() != AJAX_CHAT_ADMIN) {
+                if ($this->getUserRole() <= UC_STAFF) {
                     $condition .= ' AND channel = ' . ($this->getPrivateMessageID());
                 } else {
                     $condition .= ' AND channel > ' . ($this->getConfig('privateMessageDiff') - 1);
                 }
                 break;
             case '-1':
-                if ($this->getUserRole() != AJAX_CHAT_ADMIN) {
+                if ($this->getUserRole() <= UC_STAFF) {
                     $condition .= ' AND channel = ' . ($this->getPrivateChannelID());
                 } else {
                     $condition .= ' AND (channel > ' . ($this->getConfig('privateChannelDiff') - 1) . ' AND channel < ' . ($this->getConfig('privateMessageDiff')) . ')';
                 }
                 break;
             default:
-                if (($this->getUserRole() == AJAX_CHAT_ADMIN || !$this->getConfig('logsUserAccessChannelList') || in_array($this->getRequestVar('channelID'), $this->getConfig('logsUserAccessChannelList')))
+                if (($this->getUserRole() >= UC_ADMINISTARTOR || !$this->getConfig('logsUserAccessChannelList') || in_array($this->getRequestVar('channelID'), $this->getConfig('logsUserAccessChannelList')))
                     && $this->validateChannel($this->getRequestVar('channelID'))) {
                     $condition .= ' AND channel = ' . $this->db->makeSafe($this->getRequestVar('channelID'));
                 } else {
@@ -3361,7 +3250,7 @@ class AJAXChat
 
         // Check the search condition:
         if ($this->getRequestVar('search')) {
-            if (($this->getUserRole() == AJAX_CHAT_ADMIN || $this->getUserRole() == AJAX_CHAT_MODERATOR) && strpos($this->getRequestVar('search'), 'ip=') === 0) {
+            if (($this->getUserRole() >= UC_STAFF) && strpos($this->getRequestVar('search'), 'ip=') === 0) {
                 // Search for messages with the given IP:
                 $ip = substr($this->getRequestVar('search'), 3);
                 $condition .= ' AND (ip = ' . $this->db->makeSafe(ipToStorageFormat($ip)) . ')';
@@ -3382,8 +3271,6 @@ class AJAXChat
 
         return $condition;
     }
-
-    // Guest userIDs must not interfere with existing userIDs and must be lower than privateChannelDiff:
 
     public function getLogoutXMLMessage()
     {

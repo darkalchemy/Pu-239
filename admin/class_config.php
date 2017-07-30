@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -20,15 +17,12 @@ require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_class_config'));
-//== ID list - Add individual user IDs to this list for access to this script
-/*$allowed_ids = array(
-    1
-); //== 1 Is Sysop*/
-if (!in_array($CURUSER['id'], $INSTALLER09['allowed_staff']['id'] /*$allowed_ids*/)) {
+
+if (!in_array($CURUSER['id'], $INSTALLER09['allowed_staff']['id'])) {
     stderr($lang['classcfg_error'], $lang['classcfg_denied']);
 }
 //get the config from db - stoner/pdq
-$pconf = sql_query('SELECT * FROM class_config ORDER BY value ASC ') or sqlerr(__FILE__, __LINE__);
+$pconf = sql_query('SELECT * FROM class_config ORDER BY value ASC') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($pconf)) {
     $class_config[$ac['name']]['value'] = $ac['value'];
     $class_config[$ac['name']]['classname'] = $ac['classname'];
@@ -45,26 +39,63 @@ $mode = (isset($_GET['mode']) ? htmlsafechars($_GET['mode']) : '');
 if (!in_array($mode, $possible_modes)) {
     stderr($lang['classcfg_error'], $lang['classcfg_error1']);
 }
+
+function write_css($data) {
+    $classdata = "";
+    foreach ($data as $class) {
+        $cname = str_replace(' ', '_', strtolower($class['className']));
+        $ccolor = strtoupper($class['classColor']);
+        if (!empty($cname)) {
+            $classdata .= "#content .{$cname} {
+    color: $ccolor;
+}
+";
+        }
+    }
+    $classdata .= "#content .chatbot {
+    color: #d35208;
+}
+";
+    foreach ($data as $class) {
+        $cname = str_replace(' ', '_', strtolower($class['className']));
+        if (!empty($cname)) {
+            $classdata .= "#content #chatList span.{$cname} {
+    font-weight:bold;
+}
+";
+        }
+    }
+    $classdata .= "#content #chatList span.chatBot {
+    font-weight:bold;
+    font-style:italic;
+}
+";
+    file_put_contents('./chat/css/classcolors.css', $classdata . PHP_EOL);
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $data = [];
     if ($mode == 'edit') {
         foreach ($class_config as $c_name => $value) {
             // handing from database
             $c_value = $value['value']; // $key is like UC_USER etc....
             $c_classname = strtoupper($value['classname']);
-            $c_classcolor = $value['classcolor'];
+            $c_classcolor = strtoupper($value['classcolor']);
             $c_classcolor = str_replace('#', '', "$c_classcolor");
             $c_classpic = $value['classpic'];
             // handling from posting of contents
             $post_data = $_POST[$c_name]; //    0=> value,1=>classname,2=>classcolor,3=>classpic
             $value = $post_data[0];
-            $classname = strtoupper($post_data[1]);
-            $classcolor = $post_data[2];
+            $classname = !empty($post_data[1]) ? strtoupper($post_data[1]) : '';
+            $classcolor = !empty($post_data[2]) ? $post_data[2] : '';
+            $data[] = ['className' => $classname, 'classColor' => $classcolor];
             $classcolor = str_replace('#', '', "$classcolor");
-            $classpic = $post_data[3];
+            $classpic = !empty($post_data[3]) ? $post_data[3] : '';
             if (isset($_POST[$c_name][0]) && (($value != $c_value) || ($classname != $c_classname) || ($classcolor != $c_classcolor) || ($classpic != $c_classpic))) {
                 $update[$c_name] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($value) ? join('|', $value) : $value) . ',' . sqlesc(is_array($classname) ? join('|', $classname) : $classname) . ',' . sqlesc(is_array($classcolor) ? join('|', $classcolor) : $classcolor) . ',' . sqlesc(is_array($classpic) ? join('|', $classpic) : $classpic) . ')';
             }
         }
+        write_css($data);
         if (sql_query('INSERT INTO class_config(name,value,classname,classcolor,classpic) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY update value=values(value),classname=values(classname),classcolor=values(classcolor),classpic=values(classpic)')) { // need to change strut
             $t = 'define(';
             $configfile = '<' . $lang['classcfg_file_created'] . date('M d Y H:i:s') . $lang['classcfg_user_cfg'];
@@ -330,12 +361,12 @@ $HTMLOUT .= "<h3>{$lang['classcfg_class_add']}</h3>
 <th>{$lang['classcfg_class_pic']}</th>
 </tr>
 <tr>
-				<td align='center'><input type='text' name='name' size='20' value='' /></td>
-				<td align='center'><input type='text' name='value' size='20' value='' /></td>
-				<td align='center'><input type='text' name='cname' size='20' value='' /></td>
-				<td align='center'><input type='text' name='color' size='20' value='#ff0000' /></td>
-				<td align='center'><input type='text' name='pic' size='20' value='' /></td>
-				</tr>
+                <td align='center'><input type='text' name='name' size='20' value='' /></td>
+                <td align='center'><input type='text' name='value' size='20' value='' /></td>
+                <td align='center'><input type='text' name='cname' size='20' value='' /></td>
+                <td align='center'><input type='text' name='color' size='20' value='#ff0000' /></td>
+                <td align='center'><input type='text' name='pic' size='20' value='' /></td>
+                </tr>
 <tr><td colspan='5' class='table' align='center'><input type='submit' value='{$lang['classcfg_add_new']}' /></td></tr>
 </table></form>";
 echo stdhead($lang['classcfg_stdhead']) . $HTMLOUT . stdfoot();

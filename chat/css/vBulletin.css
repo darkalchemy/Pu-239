@@ -10,6 +10,7 @@
 @import url('fonts.css');
 @import url('print.css');
 @import url('custom.css');
+@import url('classcolors.css');
 
 /* Buttons */
 #content #bbCodeContainer input, #content #logoutButton, #content #submitButton, #loginForm #loginButton {
@@ -106,30 +107,6 @@
 
 #content #chatList .rowEven.private {
     background-color: #F8D9D0;
-}
-
-#content .guest {
-    color: gray;
-}
-
-#content .user {
-    color: #000;
-}
-
-#content .customUser {
-    color: #0b198c;
-}
-
-#content .moderator {
-    color: #00AA00;
-}
-
-#content .admin {
-    color: red;
-}
-
-#content .chatBot {
-    color: #3B5485;
 }
 
 #content #chatList .chatBotErrorMessage {

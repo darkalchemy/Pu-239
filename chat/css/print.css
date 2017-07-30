@@ -95,30 +95,6 @@
         color: #000;
     }
 
-    #content .guest {
-        color: gray;
-    }
-
-    #content .user {
-        color: #000;
-    }
-
-    #content .customUser {
-        color: #0044CC;
-    }
-
-    #content .moderator {
-        color: #00AA00;
-    }
-
-    #content .admin {
-        color: red;
-    }
-
-    #content .chatBot {
-        color: #FF6600;
-    }
-
     #content #chatList .chatBotErrorMessage {
         color: red;
     }

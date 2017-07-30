@@ -2,6 +2,17 @@
  * AJAX Chat client-side configuration
  */
 
+// CLass config
+var UC_USER = 0;
+var UC_POWER_USER = 1;
+var UC_VIP = 2;
+var UC_UPLOADER = 3;
+var UC_MODERATOR = 4;
+var UC_STAFF = 4;
+var UC_ADMINISTRATOR = 5;
+var UC_SYSOP = 6;
+var ChatBot = 100;
+
 // Ajax Chat config parameters:
 var ajaxChatConfig = {
 
@@ -1077,7 +1088,7 @@ var ajaxChatConfig = {
     // The name of the chat bot:
     chatBotName: 'ChatBot',
     // The userID of the chat bot:
-    chatBotID: 2147483647,
+    chatBotID: 2,
     // Allow/Disallow registered users to delete their own messages:
     allowUserMessageDelete: true,
     // Minutes until a user is declared inactive (last status update) - the minimum is 2 minutes:

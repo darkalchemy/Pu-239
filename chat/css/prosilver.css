@@ -10,6 +10,7 @@
 @import url('fonts.css');
 @import url('print.css');
 @import url('custom.css');
+@import url('classcolors.css');
 
 /* Firefox button padding fix */
 #content #bbCodeContainer input::-moz-focus-inner, #content #logoutButton::-moz-focus-inner, #content #submitButton::-moz-focus-inner {
@@ -144,30 +145,6 @@
 
 #content #chatList .rowEven.private {
     background-color: #F8D9D0;
-}
-
-#content .guest {
-    color: gray;
-}
-
-#content .user {
-    color: #333333;
-}
-
-#content .customUser {
-    color: #0c95d9;
-}
-
-#content .moderator {
-    color: #00AA00;
-}
-
-#content .admin {
-    color: #AA0000;
-}
-
-#content .chatBot {
-    color: #D31141;
 }
 
 #content #chatList .chatBotErrorMessage {

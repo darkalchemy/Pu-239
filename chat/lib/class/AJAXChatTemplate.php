@@ -186,13 +186,7 @@ class AJAXChatTemplate
             case 'LOGS_HOUR_OPTIONS':
                 return $this->getLogsHourOptionTags();
             case 'CLASS_WRITEABLE':
-                $userdata = $this->ajaxChat->getValidLoginUserData();
-                $guestwrite = $this->ajaxChat->getConfig('allowGuestWrite');
-                if ($userdata['userRole'] === AJAX_CHAT_GUEST && $guestwrite === false) {
-                    return 'write_forbidden';
-                } else {
-                    return 'write_allowed';
-                }
+                return 'write_allowed';
             // no break
             case 'TOKEN':
                 return session_id();
@@ -308,7 +302,7 @@ class AJAXChatTemplate
         $channelOptions = '';
         $channelOptions .= '<option value="-3">------</option>';
         foreach ($this->ajaxChat->getChannels() as $key => $value) {
-            if ($this->ajaxChat->getUserRole() != AJAX_CHAT_ADMIN && $this->ajaxChat->getConfig('logsUserAccessChannelList') && !in_array($value, $this->ajaxChat->getConfig('logsUserAccessChannelList'))) {
+            if ($this->ajaxChat->getUserRole() <= UC_STAFF && $this->ajaxChat->getConfig('logsUserAccessChannelList') && !in_array($value, $this->ajaxChat->getConfig('logsUserAccessChannelList'))) {
                 continue;
             }
             $channelOptions .= '<option value="' . $value . '">' . $this->ajaxChat->htmlEncode($key) . '</option>';

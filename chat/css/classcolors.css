@@ -1,0 +1,50 @@
+#content .user {
+    color: #8E35EF;
+}
+#content .power_user {
+    color: #F9A200;
+}
+#content .vip {
+    color: #009F00;
+}
+#content .uploader {
+    color: #0000FF;
+}
+#content .moderator {
+    color: #FE2E2E;
+}
+#content .administrator {
+    color: #B000B0;
+}
+#content .sysop {
+    color: #61FF00;
+}
+#content .chatbot {
+    color: #d35208;
+}
+#content #chatList span.user {
+    font-weight:bold;
+}
+#content #chatList span.power_user {
+    font-weight:bold;
+}
+#content #chatList span.vip {
+    font-weight:bold;
+}
+#content #chatList span.uploader {
+    font-weight:bold;
+}
+#content #chatList span.moderator {
+    font-weight:bold;
+}
+#content #chatList span.administrator {
+    font-weight:bold;
+}
+#content #chatList span.sysop {
+    font-weight:bold;
+}
+#content #chatList span.chatBot {
+    font-weight:bold;
+    font-style:italic;
+}
+

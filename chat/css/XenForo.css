@@ -6,6 +6,7 @@
 @import url('fonts.css');
 @import url('print.css');
 @import url('custom.css');
+@import url('classcolors.css');
 
 /* Main Buttons */
 #content #logoutButton, #content #submitButton, #loginForm #loginButton {
@@ -220,28 +221,8 @@
     background-color: #F7F7FF;
 }
 
-#content .guest {
-    color: gray;
-}
-
-#content .user {
-    color: #176093;
-}
-
-#content .customUser {
-    color: #e68c17;
-}
-
-#content .moderator {
-    color: #00AA00;
-}
-
-#content .admin, #content .chatBotErrorMessage {
+#content .chatBotErrorMessage {
     color: red;
-}
-
-#content .chatBot {
-    color: #60A0DC;
 }
 
 #content #chatList a {
