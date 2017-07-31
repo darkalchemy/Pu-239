@@ -212,8 +212,6 @@ $INSTALLER09['baseurl'] = 'http'.(isset($_SERVER['HTTPS']) && (bool) $_SERVER['H
 //== Email for sender/return path.
 $INSTALLER09['site_email'] = '#site_email';
 $INSTALLER09['site_name'] = '#site_name';
-$INSTALLER09['xhtml_strict'] = 0; // enable for all users
-$INSTALLER09['xhtml_strict'] = ''; // enable for one user
 $INSTALLER09['msg_alert'] = 1; // saves a query when off
 $INSTALLER09['report_alert'] = 1; // saves a query when off
 $INSTALLER09['staffmsg_alert'] = 1; // saves a query when off

@@ -363,7 +363,7 @@ function userlogin()
         $user_fields = implode(', ', array_merge($user_fields_ar_int, $user_fields_ar_float, $user_fields_ar_str));
         $res = sql_query('SELECT ' . $user_fields . ' ' . 'FROM users ' . 'WHERE id = ' . sqlesc($id) . ' ' . "AND enabled='yes' " . "AND status = 'confirmed'") or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) == 0) {
-            $salty = md5('Th15T3xtis5add3dto66uddy6he@water...' . $row['username'] . '');
+            $salty = salty($CURUSER['username']);
             header("Location: {$INSTALLER09['baseurl']}/logout.php?hash_please={$salty}");
 
             return;
@@ -382,7 +382,7 @@ function userlogin()
         unset($res);
     }
     if (get_mycookie('pass') !== md5($row['passhash'] . $_SERVER['REMOTE_ADDR'])) {
-        $salty = md5('Th15T3xtis5add3dto66uddy6he@water...' . $row['username'] . '');
+        $salty = salty($CURUSER['username']);
         header("Location: {$INSTALLER09['baseurl']}/logout.php?hash_please={$salty}");
 
         return;
@@ -429,7 +429,7 @@ function userlogin()
             ]);
             $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
             write_log($msg);
-            $salty = md5('Th15T3xtis5add3dto66uddy6he@water...' . $row['username'] . '');
+            $salty = salty($CURUSER['username']);
             header("Location: {$INSTALLER09['baseurl']}/logout.php?hash_please={$salty}");
             die;
         }
@@ -1375,6 +1375,12 @@ function ipToStorageFormat($ip)
 
     // Only ipv4:
     return @pack('N', @ip2long($ip));
+}
+
+function salty($username)
+{
+    global $INSTALLER09;
+    return hash('sha256', $INSTALLER09['site']['salt1'] . $username);
 }
 
 if (file_exists('install/index.php')) {

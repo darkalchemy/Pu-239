@@ -11,7 +11,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         $title = $INSTALLER09['site_name'] . (isset($_GET['tbv']) ? ' (' . TBVERSION . ')' : '') . ' :: ' . htmlsafechars($title);
     }
     if ($CURUSER) {
-        $INSTALLER09['stylesheet'] = isset($CURUSER['stylesheet']) ? $CURUSER['stylesheet'] : $INSTALLER09['stylesheet'];
+        $CURUSER['stylesheet'] = isset($CURUSER['stylesheet']) ? $CURUSER['stylesheet'] : $INSTALLER09['stylesheet'];
         $INSTALLER09['categorie_icon'] = isset($CURUSER['categorie_icon']) ? $CURUSER['categorie_icon'] : $INSTALLER09['categorie_icon'];
         $INSTALLER09['language'] = isset($CURUSER['language']) ? $CURUSER['language'] : $INSTALLER09['language'];
     }

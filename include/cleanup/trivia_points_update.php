@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 function cleanup_log($data)
 {
     $text = sqlesc($data['clean_title']);
@@ -20,7 +17,13 @@ function docleanup($data)
 
     $msgs_buffer = $users_buffer = $users = [];
     $i = 1;
-    $sql = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username, u.modcomment FROM triviausers AS t INNER JOIN users AS u ON u.id = t.user_id WHERE t.correct=1 GROUP BY t.user_id ORDER BY COUNT(t.correct) DESC LIMIT 10';
+    $sql = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username, u.modcomment, (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE correct = 0 AND user_id = t.user_id) AS incorrect
+                FROM triviauusers
+                INNER JOIN users AS u ON u.id = t.user_id
+                WHERE t.correct = 1
+                GROUP BY t.user_id
+                ORDER BY correct ASC, incorrect DESC
+                LIMIT 10';
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         $subject = 'Trivia Bonus Points Award.';

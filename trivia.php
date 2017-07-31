@@ -7,8 +7,8 @@ loggedinorreturn();
 $lang = array_merge(load_language('global'), load_language('trivia'));
 parked();
 
-if ($CURUSER['class'] < UC_POWER_USER) {
-    stderr($lang['triviaq_sorry'], $lang['trivia_you_must_be_pu']);
+if ($CURUSER['class'] < UC_USER) {
+    stderr($lang['trivia_sorry'], $lang['trivia_you_must_be_pu']);
 }
 
 $sql = 'SELECT qid FROM triviaq WHERE current = 1 AND asked = 1';
@@ -130,15 +130,17 @@ if (empty($gamenum) || empty($qid)) {
                     <th align='center' width='5%'>Correct</th>
                     <th align='center' width='5%'>Incorrect</th>
                 </tr>";
-            $sql = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username FROM triviausers AS t INNER JOIN users AS u ON u.id = t.user_id WHERE t.correct=1 GROUP BY t.user_id ORDER BY COUNT(t.correct) DESC LIMIT 10';
+            $sql = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username, (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE correct = 0 AND user_id = t.user_id) AS incorrect
+                        FROM triviausers AS t
+                        INNER JOIN users AS u ON u.id = t.user_id
+                        WHERE t.correct=1
+                        GROUP BY t.user_id
+                        ORDER BY correct DESC, incorrect ASC
+                        LIMIT 10';
             $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
             $i = 0;
             while ($result = mysqli_fetch_assoc($res)) {
                 extract($result);
-                $sql = 'SELECT COUNT(correct) AS incorrect FROM triviausers WHERE correct = 0 AND user_id = ' . sqlesc($user_id);
-                $query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-                $inc = mysqli_fetch_assoc($query);
-                $incorrect = $inc['incorrect'];
                 $class = $i++ % 2 == 0 ? 'one' : 'two';
                 $table .= "
                 <tr class='$class'>

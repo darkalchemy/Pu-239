@@ -6,7 +6,7 @@ function mksecret($len = 5)
 {
     $salt = '';
     for ($i = 0; $i < $len; ++$i) {
-        $num = rand(33, 126);
+        $num = mt_rand(33, 126);
         if ($num == '92') {
             $num = 93;
         }

@@ -95,4 +95,3 @@ $('.ajaxform').live('submit', function (e) {
 
 });
 
-	

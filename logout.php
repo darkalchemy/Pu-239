@@ -3,7 +3,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 dbconn();
 global $CURUSER;
 $hash_please = (isset($_GET['hash_please']) && htmlsafechars($_GET['hash_please']));
-$salty = md5('Th15T3xtis5add3dto66uddy6he@water...' . $CURUSER['username'] . '');
+$salty = salty($CURUSER['username']);
 if (empty($hash_please)) {
     die('No Hash your up to no good MOFO');
 }

@@ -15,7 +15,7 @@
 
     var dismiss = '[data-dismiss="alert"]'
     var Alert = function (el) {
-        $(el).on('click', dismiss, this.close)
+        $(el).live('click', dismiss, this.close)
     }
 
     Alert.prototype.close = function (e) {
@@ -83,7 +83,7 @@
     // ALERT DATA-API
     // ==============
 
-    $(document).on('click.bs.alert.data-api', dismiss, Alert.prototype.close)
+    $(document).live('click.bs.alert.data-api', dismiss, Alert.prototype.close)
 
 }(jQuery);
 
@@ -186,7 +186,7 @@
     // BUTTON DATA-API
     // ===============
 
-    $(document).on('click.bs.button.data-api', '[data-toggle^=button]', function (e) {
+    $(document).live('click.bs.button.data-api', '[data-toggle^=button]', function (e) {
         var $btn = $(e.target)
         if (!$btn.hasClass('btn')) $btn = $btn.closest('.btn')
         $btn.button('toggle')
@@ -221,8 +221,8 @@
                         this.$items = null
 
         this.options.pause == 'hover' && this.$element
-            .on('mouseenter', $.proxy(this.pause, this))
-            .on('mouseleave', $.proxy(this.cycle, this))
+            .live('mouseenter', $.proxy(this.pause, this))
+            .live('mouseleave', $.proxy(this.cycle, this))
     }
 
     Carousel.DEFAULTS = {
@@ -380,7 +380,7 @@
     // CAROUSEL DATA-API
     // =================
 
-    $(document).on('click.bs.carousel.data-api', '[data-slide], [data-slide-to]', function (e) {
+    $(document).live('click.bs.carousel.data-api', '[data-slide], [data-slide-to]', function (e) {
         var $this = $(this), href
         var $target = $($this.attr('data-target') || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '')) //strip for ie7
         var options = $.extend({}, $target.data(), $this.data())
@@ -396,7 +396,7 @@
         e.preventDefault()
     })
 
-    $(window).on('load', function () {
+    $(window).live('load', function () {
         $('[data-ride="carousel"]').each(function () {
             var $carousel = $(this)
             $carousel.carousel($carousel.data())
@@ -423,7 +423,7 @@
     var backdrop = '.dropdown-backdrop'
     var toggle = '[data-toggle=dropdown]'
     var Dropdown = function (element) {
-        $(element).on('click.bs.dropdown', this.toggle)
+        $(element).live('click.bs.dropdown', this.toggle)
     }
 
     Dropdown.prototype.toggle = function (e) {
@@ -439,7 +439,7 @@
         if (!isActive) {
             if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
                 // if mobile we use a backdrop because click events don't delegate
-                $('<div class="dropdown-backdrop"/>').insertAfter($(this)).on('click', clearMenus)
+                $('<div class="dropdown-backdrop"/>').insertAfter($(this)).live('click', clearMenus)
             }
 
             var relatedTarget = {relatedTarget: this}
@@ -546,12 +546,12 @@
     // ===================================
 
     $(document)
-        .on('click.bs.dropdown.data-api', clearMenus)
-        .on('click.bs.dropdown.data-api', '.dropdown form', function (e) {
+        .live('click.bs.dropdown.data-api', clearMenus)
+        .live('click.bs.dropdown.data-api', '.dropdown form', function (e) {
             e.stopPropagation()
         })
-        .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
-        .on('keydown.bs.dropdown.data-api', toggle + ', [role=menu], [role=listbox]', Dropdown.prototype.keydown)
+        .live('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
+        .live('keydown.bs.dropdown.data-api', toggle + ', [role=menu], [role=listbox]', Dropdown.prototype.keydown)
 
 }(jQuery);
 
@@ -607,7 +607,7 @@
 
         this.escape()
 
-        this.$element.on('click.dismiss.bs.modal', '[data-dismiss="modal"]', $.proxy(this.hide, this))
+        this.$element.live('click.dismiss.bs.modal', '[data-dismiss="modal"]', $.proxy(this.hide, this))
 
         this.backdrop(function () {
             var transition = $.support.transition && that.$element.hasClass('fade')
@@ -672,7 +672,7 @@
     Modal.prototype.enforceFocus = function () {
         $(document)
             .off('focusin.bs.modal') // guard against infinite focus loop
-            .on('focusin.bs.modal', $.proxy(function (e) {
+            .live('focusin.bs.modal', $.proxy(function (e) {
                 if (this.$element[0] !== e.target && !this.$element.has(e.target).length) {
                     this.$element.focus()
                 }
@@ -681,7 +681,7 @@
 
     Modal.prototype.escape = function () {
         if (this.isShown && this.options.keyboard) {
-            this.$element.on('keyup.dismiss.bs.modal', $.proxy(function (e) {
+            this.$element.live('keyup.dismiss.bs.modal', $.proxy(function (e) {
                 e.which == 27 && this.hide()
             }, this))
         } else if (!this.isShown) {
@@ -712,7 +712,7 @@
             this.$backdrop = $('<div class="modal-backdrop ' + animate + '" />')
                 .appendTo(document.body)
 
-            this.$element.on('click.dismiss.bs.modal', $.proxy(function (e) {
+            this.$element.live('click.dismiss.bs.modal', $.proxy(function (e) {
                 if (e.target !== e.currentTarget) return
                 this.options.backdrop == 'static'
                     ? this.$element[0].focus.call(this.$element[0])
@@ -778,7 +778,7 @@
     // MODAL DATA-API
     // ==============
 
-    $(document).on('click.bs.modal.data-api', '[data-toggle="modal"]', function (e) {
+    $(document).live('click.bs.modal.data-api', '[data-toggle="modal"]', function (e) {
         var $this = $(this)
         var href = $this.attr('href')
         var $target = $($this.attr('data-target') || (href && href.replace(/.*(?=#[^\s]+$)/, ''))) //strip for ie7
@@ -794,10 +794,10 @@
     })
 
     $(document)
-        .on('show.bs.modal', '.modal', function () {
+        .live('show.bs.modal', '.modal', function () {
             $(document.body).addClass('modal-open')
         })
-        .on('hidden.bs.modal', '.modal', function () {
+        .live('hidden.bs.modal', '.modal', function () {
             $(document.body).removeClass('modal-open')
         })
 
@@ -854,13 +854,13 @@
             var trigger = triggers[i]
 
             if (trigger == 'click') {
-                this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
+                this.$element.live('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
             } else if (trigger != 'manual') {
                 var eventIn = trigger == 'hover' ? 'mouseenter' : 'focusin'
                 var eventOut = trigger == 'hover' ? 'mouseleave' : 'focusout'
 
-                this.$element.on(eventIn + '.' + this.type, this.options.selector, $.proxy(this.enter, this))
-                this.$element.on(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this))
+                this.$element.live(eventIn + '.' + this.type, this.options.selector, $.proxy(this.enter, this))
+                this.$element.live(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this))
             }
         }
 
@@ -1436,7 +1436,7 @@
     // TAB DATA-API
     // ============
 
-    $(document).on('click.bs.tab.data-api', '[data-toggle="tab"], [data-toggle="pill"]', function (e) {
+    $(document).live('click.bs.tab.data-api', '[data-toggle="tab"], [data-toggle="pill"]', function (e) {
         e.preventDefault()
         $(this).tab('show')
     })
@@ -1461,8 +1461,8 @@
     var Affix = function (element, options) {
         this.options = $.extend({}, Affix.DEFAULTS, options)
         this.$window = $(window)
-            .on('scroll.bs.affix.data-api', $.proxy(this.checkPosition, this))
-            .on('click.bs.affix.data-api', $.proxy(this.checkPositionWithEventLoop, this))
+            .live('scroll.bs.affix.data-api', $.proxy(this.checkPosition, this))
+            .live('click.bs.affix.data-api', $.proxy(this.checkPositionWithEventLoop, this))
 
         this.$element = $(element)
         this.affixed =
@@ -1565,7 +1565,7 @@
     // AFFIX DATA-API
     // ==============
 
-    $(window).on('load', function () {
+    $(window).live('load', function () {
         $('[data-spy="affix"]').each(function () {
             var $spy = $(this)
             var data = $spy.data()
@@ -1731,7 +1731,7 @@
     // COLLAPSE DATA-API
     // =================
 
-    $(document).on('click.bs.collapse.data-api', '[data-toggle=collapse]', function (e) {
+    $(document).live('click.bs.collapse.data-api', '[data-toggle=collapse]', function (e) {
         var $this = $(this), href
         var target = $this.attr('data-target')
             || e.preventDefault()
@@ -1773,7 +1773,7 @@
 
         this.$element = $(element).is('body') ? $(window) : $(element)
         this.$body = $('body')
-        this.$scrollElement = this.$element.on('scroll.bs.scroll-spy.data-api', process)
+        this.$scrollElement = this.$element.live('scroll.bs.scroll-spy.data-api', process)
         this.options = $.extend({}, ScrollSpy.DEFAULTS, options)
         this.selector = (this.options.target
             || ((href = $(element).attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '')) //strip for ie7
@@ -1899,7 +1899,7 @@
     // SCROLLSPY DATA-API
     // ==================
 
-    $(window).on('load', function () {
+    $(window).live('load', function () {
         $('[data-spy="scroll"]').each(function () {
             var $spy = $(this)
             $spy.scrollspy($spy.data())
