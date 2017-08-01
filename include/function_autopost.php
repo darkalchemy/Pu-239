@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-// === auto post by retro
 function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Body') // Function to use the special system message forum
 {
     global $CURUSER, $INSTALLER09, $mc1;

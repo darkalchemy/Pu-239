@@ -63,6 +63,7 @@ class AJAXChat
 
     public function initCustomConfig()
     {
+        loggedinorreturn();
     }
 
     public function initDataBaseConnection()
@@ -766,7 +767,7 @@ class AJAXChat
         // The client authenticates to the socket server using a socketRegistrationID:
         if ($this->getConfig('socketServerEnabled')) {
             $this->setSocketRegistrationID(
-                md5(uniqid(rand(), true))
+                md5(uniqid(mt_rand(), true))
             );
         }
 
@@ -3307,11 +3308,7 @@ class AJAXChat
             case 'logs':
                 return AJAX_CHAT_PATH . 'lib/template/logs.html';
             default:
-                //return AJAX_CHAT_PATH.'lib/template/loggedOut.html';
-                $this->logout();
-                $this->login();
-
-                return AJAX_CHAT_PATH . 'lib/template/loggedIn.html';
+                return AJAX_CHAT_PATH . 'lib/template/loggedIn.php';
         }
     }
 

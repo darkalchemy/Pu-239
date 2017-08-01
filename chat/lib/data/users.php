@@ -10,13 +10,19 @@
 // List containing the registered chat users:
 $users = [];
 
-global $CURUSER;
-if (!empty($CURUSER['id'])) {
-    $users[$CURUSER['id']]['userRole'] = $CURUSER['class'];
-    $users[$CURUSER['id']]['channels'] = [0];
-    if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
-        $users[$CURUSER['id']]['channels'] = [0, 1, 2];
-    } elseif ($CURUSER['class'] >= UC_MODERATOR) {
-        $users[$CURUSER['id']]['channels'] = [0, 1];
+global $mc1;
+$sql = "SELECT id, class FROM users";
+if (($users = $mc1->get_value('chat_users_list')) === false) {
+    $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+    while ($user = mysqli_fetch_assoc($res)) {
+        extract($user);
+        $users[$id]['userRole'] = $class;
+        $users[$id]['channels'] = [0];
+        if ($class >= UC_ADMINISTRATOR) {
+            $users[$id]['channels'] = [0, 1, 2];
+        } elseif ($class >= UC_MODERATOR) {
+            $users[$id]['channels'] = [0, 1];
+        }
     }
+    $mc1->cache_value('chat_users_list', $users, 60);
 }

@@ -1,10 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//========================================
-//getAgent function by deliopoulos
-//========================================
 function StdDecodePeerId($id_data, $id_name)
 {
     $version_str = '';

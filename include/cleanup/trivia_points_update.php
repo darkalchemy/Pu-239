@@ -18,11 +18,11 @@ function docleanup($data)
     $msgs_buffer = $users_buffer = $users = [];
     $i = 1;
     $sql = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username, u.modcomment, (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE correct = 0 AND user_id = t.user_id) AS incorrect
-                FROM triviauusers
+                FROM triviausers AS t
                 INNER JOIN users AS u ON u.id = t.user_id
                 WHERE t.correct = 1
                 GROUP BY t.user_id
-                ORDER BY correct ASC, incorrect DESC
+                ORDER BY correct DESC, incorrect ASC
                 LIMIT 10';
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {

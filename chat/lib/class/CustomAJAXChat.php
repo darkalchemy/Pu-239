@@ -46,8 +46,6 @@ class CustomAJAXChat extends AJAXChat
                 $userData['channels'] = [0, 1];
             }
             return $userData;
-        } else {
-            logoutcookie();
         }
     }
 
@@ -61,7 +59,6 @@ class CustomAJAXChat extends AJAXChat
             $customUsers = $this->getCustomUsers();
 
             // Get the channels, the user has access to:
-            file_put_contents('/var/log/nginx/ajaxchat.log', json_encode($_SESSION) . PHP_EOL, FILE_APPEND);
             $validChannels = $customUsers[$this->getUserID()]['channels'];
             //file_put_contents('/var/log/nginx/ajaxchat.log', json_encode($validChannels) . PHP_EOL, FILE_APPEND);
 

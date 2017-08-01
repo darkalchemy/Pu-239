@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 function commenttable($rows, $variant = 'torrent')
 {
     require_once INCL_DIR . 'html_functions.php';

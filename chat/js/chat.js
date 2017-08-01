@@ -1387,7 +1387,7 @@ var ajaxChat = {
             + this.getChatListUserNameTitle(userID, userName, userRole, ip)
             + ' dir="'
             + this.baseDirection
-            + '" onclick="ajaxChat.insertText(this.firstChild.nodeValue);">'
+            + '" onclick="ajaxChat.insertText(\'[' + this.getRoleClass(userRole) + ']@\' + this.firstChild.nodeValue + \'[/' + this.getRoleClass(userRole) + '] \');">'
             + userName
             + '</span>'
             + colon
@@ -2212,7 +2212,10 @@ var ajaxChat = {
 
     replaceText: function (text) {
         try {
+            text = text.replace(/&amp;#039;/g, "'");
+            text = text.replace(/&amp;amp;/g, "&amp;");
             text = this.replaceLineBreaks(text);
+            text = this.replaceCustomText(text);
             if (text.charAt(0) === '/') {
                 text = this.replaceCommands(text);
             } else {
@@ -2222,6 +2225,10 @@ var ajaxChat = {
             }
             text = this.breakLongWords(text);
             text = this.replaceCustomText(text);
+            if (text.toLowerCase().indexOf(this.userName.toLowerCase()) !== -1) {
+                this.playSound(this.settings['soundPrivate']);
+                text = '<span class="mentioned">' + text + '</span>';
+            }
         } catch (e) {
             this.debugMessage('replaceText', e);
         }
@@ -3096,6 +3103,9 @@ var ajaxChat = {
     // Return replaced text
     // text contains the whole message
     replaceCustomText: function (text) {
+        userClass = this.getRoleClass(this.userRole);
+        text = text.replace('bitches', 'friends');
+        text = text.replace('[username]', '[' + userClass + ']' + this.userName + '[/' + userClass + ']');
         return text;
     },
 
@@ -3110,8 +3120,8 @@ var ajaxChat = {
     // Return replaced text and call replaceBBCode recursively for the content text
     // tag contains the BBCode tag, attribute the BBCode attribute and content the content text
     // This method is only called for BBCode tags which are in the bbCodeTags list
-    replaceCustomBBCode: function (tag, attribute, content) {
-        return '<' + tag + '>' + this.replaceBBCode(content) + '</' + tag + '>';
+    replaceCustomBBCode: function(tag, attribute, content) {
+        return '<span class="' + tag + '">' + this.replaceBBCode(content) + '</span>';
     },
 
     // Override to perform custom actions on new messages:

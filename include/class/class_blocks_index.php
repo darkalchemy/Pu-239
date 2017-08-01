@@ -1,8 +1,5 @@
 <?php
 
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 class block_index
 {
     const ACTIVE_USERS = 0x1; // 1

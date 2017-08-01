@@ -133,7 +133,7 @@ if (empty($gamenum) || empty($qid)) {
             $sql = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username, (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE correct = 0 AND user_id = t.user_id) AS incorrect
                         FROM triviausers AS t
                         INNER JOIN users AS u ON u.id = t.user_id
-                        WHERE t.correct=1
+                        WHERE t.correct = 1
                         GROUP BY t.user_id
                         ORDER BY correct DESC, incorrect ASC
                         LIMIT 10';

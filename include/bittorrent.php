@@ -169,7 +169,7 @@ function check_bans($ip, &$reason = '')
     }
     $key = 'bans:::' . $ip;
     if (($ban = $mc1->get_value($key)) === false) {
-        $nip = ip2long($ip);
+        $nip = ipToStorageFormat($ip);
         $ban_sql = sql_query('SELECT comment FROM bans WHERE (first <= ' . $nip . ' AND last >= ' . $nip . ') LIMIT 1');
         if (mysqli_num_rows($ban_sql)) {
             $comment = mysqli_fetch_row($ban_sql);
@@ -197,7 +197,7 @@ function userlogin()
     unset($GLOBALS['CURUSER']);
     $dt = TIME_NOW;
     $ip = getip();
-    $nip = ip2long($ip);
+    $nip = ipToStorageFormat($ip);
     $ipf = $_SERVER['REMOTE_ADDR'];
     if (isset($CURUSER)) {
         return;
@@ -1337,9 +1337,6 @@ function sessionStart()
             regenerateSessionID();
             $_SESSION['canary'] = time();
         }
-
-        // Set session params
-        $_SESSION['LoggedIn'] = true;
     }
 }
 
