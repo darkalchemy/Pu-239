@@ -47,7 +47,7 @@ if (curuser::$blocks['index_page'] & block_index::ANNOUNCEMENT && $BLOCKS['annou
     $HTMLOUT .= '</div>';
 }
 
-if (curuser::$blocks['index_page'] & block_index::AJAXCHAT && $BLOCKS['ajaxchat_on']) {
+if (curuser::$blocks['index_page'] & block_index::AJAXCHAT && $BLOCKS['ajaxchat_on'] && $CURUSER['chatpost'] === 1) {
     $HTMLOUT .= "<div class='portlet' id='AJAXCHAT'>";
     require_once BLOCK_DIR . 'index/ajaxchat.php';
     $HTMLOUT .= '</div>';

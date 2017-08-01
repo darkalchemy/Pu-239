@@ -144,6 +144,7 @@ $ret = sql_query('INSERT INTO users (username, passhash, secret, editsecret, bir
         $ip,
     ])) . ', ' . (!$arr[0] ? UC_SYSOP . ', ' : '') . '' . TIME_NOW . ',' . TIME_NOW . " , " . sqlesc($time_offset) . ", {$dst_in_use['tm_isdst']}, $user_frees)");
 $mc1->delete_value('birthdayusers');
+$mc1->delete_value('chat_users_list');
 $message = "Welcome New {$INSTALLER09['site_name']} Member : - " . htmlsafechars($wantusername) . '';
 if (!$arr[0]) {
     write_staffs();

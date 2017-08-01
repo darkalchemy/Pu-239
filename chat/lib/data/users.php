@@ -24,5 +24,5 @@ if (($users = $mc1->get_value('chat_users_list')) === false) {
             $users[$id]['channels'] = [0, 1];
         }
     }
-    $mc1->cache_value('chat_users_list', $users, 60);
+    $mc1->cache_value('chat_users_list', $users, 86400);
 }

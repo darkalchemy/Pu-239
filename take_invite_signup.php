@@ -182,6 +182,7 @@ $latestuser_cache['king'] = '0';
 /* OOPs **/
 $mc1->cache_value('latestuser', $latestuser_cache, 0, $INSTALLER09['expires']['latestuser']);
 $mc1->delete_value('birthdayusers');
+$mc1->delete_value('chat_users_list');
 write_log('User account ' . htmlsafechars($wantusername) . ' was created!');
 if ($INSTALLER09['autoshout_on'] == 1) {
     autoshout($msg);

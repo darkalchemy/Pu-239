@@ -139,7 +139,14 @@ var ajaxChatConfig = {
         'code',
         'color',
         'url',
-        'img'
+        'img',
+        'user',
+        'power_user',
+        'vip',
+        'uploader',
+        'moderator',
+        'administartor',
+        'sysop',
     ],
 
     // Defines the list of allowed color codes:
