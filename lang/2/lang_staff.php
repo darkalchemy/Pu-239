@@ -28,7 +28,7 @@ $lang = [
     //Support
     'header_first'     => 'FirstLine Support',
     'text_first'       => 'General support questions should be directed 
-to these users.<br />
+to these users.<br>
 Note that they are volunteers, giving away their time and effort to help 
 you. Treat them accordingly. (Languages listed are those besides English.)',
     'first_support'    => 'Support',

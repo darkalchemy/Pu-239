@@ -1,19 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/**********************************************************
- * New 2010 forums that don't suck for TB based sites....
- * pretty much coded page by page, but coming from a
- * history ot TBsourse and TBDev and the many many
- * coders who helped develop them over time.
- * proper credits to follow :)
- *
- * beta sun aug 1st 2010 v0.1
- * new topic
- *
- * Powered by Bunnies!!!
- ***************************************************************/
 if (!defined('BUNNY_FORUMS')) {
     $HTMLOUT = '';
     $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -184,12 +169,12 @@ $HTMLOUT .= '<table align="center" class="main" width="750px" border="0" cellspa
    <tr><td class="embedded" align="center">
    <h1 style="text-align: center;">' . $lang['nt_new_topic_in'] . ' "<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . $section_name . '</a>"</h1>
 	<form method="post" action="' . $INSTALLER09['baseurl'] . '/forums.php?action=new_topic&amp;forum_id=' . $forum_id . '" enctype="multipart/form-data">
-	' . (isset($_POST['button']) && $_POST['button'] == '' . $lang['fe_preview'] . '' ? '<br />
+	' . (isset($_POST['button']) && $_POST['button'] == '' . $lang['fe_preview'] . '' ? '<br>
 	<table align="center" width="80%" border="0" cellspacing="5" cellpadding="5">
 	<tr><td class="forum_head" colspan="2"><span style="color: black; font-weight: bold;">' . $lang['fe_preview'] . '</span></td></tr>
 	<tr><td width="80" valign="top" class="one">' . avatar_stuff($CURUSER) . '</td>
 	<td valign="top" align="left" class="two">' . ($bb_code === 'yes' ? format_comment($body) : format_comment_no_bbcode($body)) . '</td>
-	</tr></table><br />' : '') . '
+	</tr></table><br>' : '') . '
 	<table align="center" width="80%" border="0" cellspacing="0" cellpadding="5">
 	<tr><td align="left" class="forum_head_dark" colspan="2">' . $lang['fe_compose'] . '</td></tr>
 	<tr><td align="right" class="two"><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_icon'] . '</span></td>
@@ -260,12 +245,12 @@ $HTMLOUT .= '<table align="center" class="main" width="750px" border="0" cellspa
 	<td align="left" class="two" >' . BBcode($body) . $more_options . '</td></tr>
 	<tr><td align="center" colspan="2" class="two" >
    <!- Anonymous  ->
-   ' . $lang['fe_anonymous_topic'] . ' : <input type="checkbox" name="anonymous" value="yes" /><br />
+   ' . $lang['fe_anonymous_topic'] . ' : <input type="checkbox" name="anonymous" value="yes" /><br>
    <img src="' . $INSTALLER09['pic_base_url'] . 'forums/subscribe.gif" alt="+" title="+" /> ' . $lang['fe_subscrib_to_tread'] . ' 
 	<input type="radio" name="subscribe" value="yes"' . ($subscribe === 'yes' ? ' checked="checked"' : '') . ' />yes 
-	<input type="radio" name="subscribe" value="no"' . ($subscribe === 'no' ? ' checked="checked"' : '') . ' />no <br />
+	<input type="radio" name="subscribe" value="no"' . ($subscribe === 'no' ? ' checked="checked"' : '') . ' />no <br>
 	<input type="submit" name="button" class="button" value="' . $lang['fe_preview'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
 	<input type="submit" name="button" class="button_tiny" value="' . $lang['fe_post'] . '" onmouseover="this.className=\'button_tiny_hover\'" onmouseout="this.className=\'button_tiny\'" />
    </td></tr>
 	</table></form>
-	</td></tr></table><br />';
+	</td></tr></table><br>';

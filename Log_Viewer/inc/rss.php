@@ -149,7 +149,7 @@ switch ($format) {
                 $description = '';
                 foreach ($log as $key => $value) {
                     if (substr($key, 0, 3) !== 'pml') {
-                        $description .= '<strong>' . h($key) . '</strong> : ' . h($value) . '<br/>';
+                        $description .= '<strong>' . h($key) . '</strong> : ' . h($value) . '<br>';
                     }
                 }
                 $item->description = $description;

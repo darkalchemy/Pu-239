@@ -1,9 +1,5 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 $body = '';
-//=== don't allow direct access
 if (!defined('BUNNY_PM_SYSTEM')) {
     $HTMLOUT = '';
     $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -60,7 +56,7 @@ $HTMLOUT .= '<h1>' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subj
     </tr>
     <tr>
         <td align="center" class="one"></td>
-        <td align="left" class="two">' . $lang['pm_forward_org_msg'] . '' . $forwarded_username . '' . $lang['pm_forward_org_msg1'] . '<br />' . format_comment($message['msg']) . '</td>
+        <td align="left" class="two">' . $lang['pm_forward_org_msg'] . '' . $forwarded_username . '' . $lang['pm_forward_org_msg1'] . '<br>' . format_comment($message['msg']) . '</td>
     </tr>
     <tr>
         <td align="right" class="one" valign="top"></td>
@@ -72,7 +68,7 @@ $HTMLOUT .= '<h1>' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subj
     </tr>
     <tr>
         <td colspan="2" align="center" class="one">' . ($CURUSER['class'] >= UC_STAFF ? '<span class="label label-danger">' . $lang['pm_forward_mark'] . '</span>
-        <input type="checkbox" name="urgent" value="yes" />&nbsp' : '') . '' . $lang['pm_forward_save'] . '
+        <input type="checkbox" name="urgent" value="yes" />&#160;' : '') . '' . $lang['pm_forward_save'] . '
         <input type="checkbox" name="save" value="1" />
         <input type="hidden" name="first_from" value="' . $forwarded_username . '" /> 
         <input type="submit" class="btn btn-primary" name="move" value="' . $lang['pm_forward_btn'] . '" /></td>

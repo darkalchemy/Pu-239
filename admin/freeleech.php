@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/** freeleech mod by pdq for TBDev.net 2009**/
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -12,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -64,7 +60,7 @@ if (isset($free) && (count($free) < 1)) {
     $HTMLOUT .= '<h1>' . $lang['freelech_current'] . '</h1>
                  <p align="center"><b>' . $lang['freelech_nofound'] . '</b></p>';
 } else {
-    $HTMLOUT .= "<br /><table border='1' cellspacing='0' cellpadding='5'>
+    $HTMLOUT .= "<br><table border='1' cellspacing='0' cellpadding='5'>
         <tr><td class='colhead' align='left'>{$lang['freelech_free_all']}</td>
 		<td class='colhead' align='left'>{$lang['freelech_expires']}</td>
         <td class='colhead' align='left'>{$lang['freelech_setby']}</td>

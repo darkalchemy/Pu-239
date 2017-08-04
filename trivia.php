@@ -1,5 +1,4 @@
 <?php
-
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 dbconn(true);
@@ -7,45 +6,41 @@ loggedinorreturn();
 $lang = array_merge(load_language('global'), load_language('trivia'));
 parked();
 
-if ($CURUSER['class'] < UC_USER) {
-    stderr($lang['trivia_sorry'], $lang['trivia_you_must_be_pu']);
-}
-
 $sql = 'SELECT qid FROM triviaq WHERE current = 1 AND asked = 1';
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $result = mysqli_fetch_assoc($res);
 $qid = (int)$result['qid'];
+$answered = '';
 
 if (!empty($_POST) && (int)$_POST['qid'] === $qid) {
-    $qid = (int)$_POST['qid'];
-    $user_id = (int)$_POST['user_id'];
-    $answer = $_POST['ans'];
-
-    if (function_exists('write_log')) {
-        write_log("Trivia Q Id: $qid");
-        write_log("Trivia UserId: $user_id");
-    }
-
-    $rowcount = get_row_count('triviausers', 'WHERE user_id = ' . sqlesc($user_id) . ' AND qid = ' . sqlesc($qid));
-
-    if ($rowcount === 0) {
-        $sql = 'SELECT canswer FROM triviaq WHERE qid = ' . sqlesc($qid);
-        $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        $result = mysqli_fetch_assoc($res);
-        $canswer = $result['canswer'];
+    if (!empty($_POST['qid']) && !empty($_POST['user_id']) && !empty($_POST['ans']) && !empty($_POST['gamenum'])) {
+        $qid = (int)$_POST['qid'];
+        $user_id = (int)$_POST['user_id'];
+        $answer = $_POST['ans'];
+        $gamenum = $_POST['gamenum'];
         $date = date('Y-m-d H:i:s');
-        if ($user_id === 0) {
-            if (function_exists('write_log')) {
-                $ip = $_SERVER['REMOTE_ADDR'];
-                write_log("Some asshole is using a user_id of 0!!!!!!!!!!!!!!!! $user_id $qid $date $ip");
-            }
+        $ip = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'No IP';
+
+        if (empty($_POST['token']) || !validateToken($_POST['token'])) {
+            $username = get_one_row('users', 'username', 'WHERE id = ' . sqlesc($user_id));
+            write_log("Trivia Game => using curl post => [$user_id]$username qid:$qid $date $ip");
         } else {
-            if ($answer == $canswer) {
-                $sql = 'INSERT INTO triviausers (user_id, qid, correct, date) VALUES (' . sqlesc($user_id) . ', ' . sqlesc($qid) . ', 1, ' . sqlesc($date) . ')';
-                sql_query($sql) or sqlerr(__FILE__, __LINE__);
-            } else {
-                $sql = 'INSERT INTO triviausers (user_id, qid, correct, date) VALUES (' . sqlesc($user_id) . ', ' . sqlesc($qid) . ', 0, ' . sqlesc($date) . ')';
-                sql_query($sql) or sqlerr(__FILE__, __LINE__);
+            $rowcount = get_row_count('triviausers', 'WHERE user_id = ' . sqlesc($user_id) . ' AND qid = ' . sqlesc($qid));
+
+            if ($rowcount === 0) {
+                $sql = 'SELECT canswer FROM triviaq WHERE qid = ' . sqlesc($qid);
+                $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+                $result = mysqli_fetch_assoc($res);
+                $canswer = $result['canswer'];
+                if ($user_id === 0) {
+                    if (function_exists('write_log')) {
+                        write_log("Some asshole is using a user_id of 0!!!!!!!!!!!!!!!! $user_id $qid $date $ip");
+                    }
+                } else {
+                    $is_correct = $answer == $canswer ? 1 : 0;
+                    $sql = 'INSERT INTO triviausers (user_id, gamenum, qid, correct, date) VALUES (' . sqlesc($user_id) . ', ' . sqlesc($gamenum). ', ' . sqlesc($qid) . ', ' . sqlesc($is_correct) . ', ' . sqlesc($date) . ')';
+                    sql_query($sql) or sqlerr(__FILE__, __LINE__);
+                }
             }
         }
     }
@@ -81,28 +76,23 @@ $HTMLOUT = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http
 <head>
 <title>Trivia</title>
 <meta http-equiv='refresh' content={$refresh}; url=./trivia.php' />
-<link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/default.css' type='text/css' />
+<link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/default.css' />
+<link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/bootstrap.css' />
+<script src='./scripts/jquery-1.5.js'></script>
 </head>
 <body>";
 
 $HTMLOUT .= "
     <div style='calc(width: 100% - 20px); margin: 10px; font-size: 1.25em;'>
-        <div style='width: 30%; float: left;'>
-            <span'>";
+        <div>";
 
 if ($remaining >= 1) {
-    $HTMLOUT .= "
-                {$lang['trivia_next_question']}
-                <span id='clockdiv'>
-                    <span class='minutes'></span>:<span class='seconds'></span>
-                </span><br>
-                {$lang['trivia_question']} $qid / $num_totalq <br>
-                {$lang['trivia_questions_remaining']}: $num_remainingq<br>";
-} else {
-    $HTMLOUT .= '<br><br><br>';
+    $display = "
+            {$lang['trivia_next_question']}
+            <span id='clockdiv'>
+                <span class='minutes'></span>:<span class='seconds'></span>
+            </span>";
 }
-$HTMLOUT .= '
-            </span><br><br><br>';
 
 if (empty($gamenum) || empty($qid)) {
     $HTMLOUT .= "
@@ -116,7 +106,7 @@ if (empty($gamenum) || empty($qid)) {
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_assoc($res);
 
-        $sql = 'SELECT * FROM triviausers WHERE user_id = ' . sqlesc($user_id) . ' AND qid = ' . sqlesc($qid);
+        $sql = 'SELECT * FROM triviausers WHERE user_id = ' . sqlesc($user_id) . ' AND qid = ' . sqlesc($qid) . ' AND gamenum = ' . sqlesc($gamenum);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $row2 = mysqli_fetch_assoc($res);
         $num_rows = count($row2);
@@ -130,10 +120,10 @@ if (empty($gamenum) || empty($qid)) {
                     <th align='center' width='5%'>Correct</th>
                     <th align='center' width='5%'>Incorrect</th>
                 </tr>";
-            $sql = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username, (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE correct = 0 AND user_id = t.user_id) AS incorrect
+            $sql = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username, (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE gamenum = ' . sqlesc($gamenum) . ' AND correct = 0 AND user_id = t.user_id) AS incorrect
                         FROM triviausers AS t
                         INNER JOIN users AS u ON u.id = t.user_id
-                        WHERE t.correct = 1
+                        WHERE t.correct = 1 AND gamenum = ' . sqlesc($gamenum) . '
                         GROUP BY t.user_id
                         ORDER BY correct DESC, incorrect ASC
                         LIMIT 10';
@@ -144,45 +134,50 @@ if (empty($gamenum) || empty($qid)) {
                 $class = $i++ % 2 == 0 ? 'one' : 'two';
                 $table .= "
                 <tr class='$class'>
-                    <td align='left' width='5%'>$username</td>
+                    <td align='left' width='5%'>" . format_username((int)$user_id) . "</td>
                     <td align='center' width='5%'>" . sprintf('%.2f%%', $correct / ($correct + $incorrect) * 100) . "</td>
                     <td align='center' width='5%'>$correct</td>
                     <td align='center' width='5%'>$incorrect</td>
                 </tr>";
             }
-            $table .= '
-            </table>';
+            $table .= "
+            </table>";
             if ($row2['correct'] == 1) {
+                $answered = $lang['trivia_correct'] . '<br>';
                 $HTMLOUT .= "
-            {$lang['trivia_correct']}
         </div>
-        <div style='margin-left: 30%; height: 225px;'>$table";
+        <div>$table";
             } else {
-                $HTMLOUT .= "
-            {$lang['trivia_incorrect']}
+                $answered = $lang['trivia_incorrect'] . '<br>';
+            $HTMLOUT .= "
         </div>
-        <div style='margin-left: 30%; height: 225px;'>$table";
+        <div>$table";
             }
         } else {
             $HTMLOUT .= "
         </div>
-        <div style='margin-left: 30%; padding-left: 10px; padding-right: 10px;'>
-            <h4>" . htmlspecialchars_decode($row['question']) . "</h4>
+        <div>
+            <h4 class='text-center'>" . htmlspecialchars_decode($row['question']) . "</h4>
+            <br>
             <ul class='answers-container' style='list-style: none;>
                 <li style='margin-bottom: 5px;'>
                     <form id='happy' method='post' action='trivia.php'>
-                        <input id='qid' type='hidden' name='qid' value='" . $qid . "'>
-                        <input id='user_id' type='hidden' name='user_id' value='" . $user_id . "'>
-                        <input id='user_id' type='hidden' name='ans' value='answer1'>
-                        <input type='submit' value='" . htmlspecialchars_decode($row['answer1']) . "' class='btn flex'>
+                        <input type='hidden' name='qid' value='{$qid}'>
+                        <input type='hidden' name='user_id' value='{$user_id}'>
+                        <input type='hidden' name='ans' value='answer1'>
+                        <input type='hidden' name='gamenum' value='{$gamenum}'>
+                        <input type='hidden' name='token' value='" . $_SESSION['csrf_token'] . "'>
+                        <input type='submit' value='" . htmlspecialchars_decode($row['answer1']) . "' class='btnflex'>
                     </form>
                 </li>
                 <li style='margin-bottom: 5px;'>
                     <form id='submit1' method='post' action='trivia.php'>
-                        <input id='qid' type='hidden' name='qid' value='" . $qid . "'>
-                        <input id='user_id' type='hidden' name='user_id' value='" . $user_id . "'>
-                        <input id='user_id' type='hidden' name='ans' value='answer2'>
-                        <input type='submit' value='" . htmlspecialchars_decode($row['answer2']) . "' class='btn flex'>
+                        <input type='hidden' name='qid' value='{$qid}'>
+                        <input type='hidden' name='user_id' value='{$user_id}'>
+                        <input type='hidden' name='ans' value='answer2'>
+                        <input type='hidden' name='gamenum' value='{$gamenum}'>
+                        <input type='hidden' name='token' value='" . $_SESSION['csrf_token'] . "'>
+                        <input type='submit' value='" . htmlspecialchars_decode($row['answer2']) . "' class='btnflex'>
                     </form>
                 </li>";
 
@@ -190,10 +185,12 @@ if (empty($gamenum) || empty($qid)) {
                 $HTMLOUT .= "
                 <li style='margin-bottom: 5px;'>
                     <form id='submit2' method='post' action='trivia.php'>
-                        <input id='qid' type='hidden' name='qid' value='" . $qid . "'>
-                        <input id='user_id' type='hidden' name='user_id' value='" . $user_id . "'>
-                        <input id='user_id' type='hidden' name='ans' value='answer3'>
-                        <input type='submit' value='" . htmlspecialchars_decode($row['answer3']) . "' class='btn flex'>
+                        <input type='hidden' name='qid' value='{$qid}'>
+                        <input type='hidden' name='user_id' value='{$user_id}'>
+                        <input type='hidden' name='ans' value='answer3'>
+                        <input type='hidden' name='gamenum' value='{$gamenum}'>
+                        <input type='hidden' name='token' value='" . $_SESSION['csrf_token'] . "'>
+                        <input type='submit' value='" . htmlspecialchars_decode($row['answer3']) . "' class='btnflex'>
                     </form>
                 </li>";
             }
@@ -201,10 +198,12 @@ if (empty($gamenum) || empty($qid)) {
                 $HTMLOUT .= "
                 <li style='margin-bottom: 5px;'>
                     <form id='submit3' method='post' action='trivia.php'>
-                        <input id='qid' type='hidden' name='qid' value='" . $qid . "'>
-                        <input id='user_id' type='hidden' name='user_id' value='" . $user_id . "'>
-                        <input id='user_id' type='hidden' name='ans' value='answer4'>
-                        <input type='submit' value='" . htmlspecialchars_decode($row['answer4']) . "' class='btn flex'>
+                        <input type='hidden' name='qid' value='{$qid}'>
+                        <input type='hidden' name='user_id' value='{$user_id}'>
+                        <input type='hidden' name='ans' value='answer4'>
+                        <input type='hidden' name='gamenum' value='{$gamenum}'>
+                        <input type='hidden' name='token' value='" . $_SESSION['csrf_token'] . "'>
+                        <input type='submit' value='" . htmlspecialchars_decode($row['answer4']) . "' class='btnflex'>
                     </form>
                 </li>";
             }
@@ -212,10 +211,12 @@ if (empty($gamenum) || empty($qid)) {
                 $HTMLOUT .= "
                 <li style='margin-bottom: 5px;'>
                     <form id='submit4' method='post' action='trivia.php'>
-                        <input id='qid' type='hidden' name='qid' value='" . $qid . "'>
-                        <input id='user_id' type='hidden' name='user_id' value='" . $user_id . "'>
-                        <input id='user_id' type='hidden' name='ans' value='answer5'>
-                        <input type='submit' value='" . htmlspecialchars_decode($row['answer5']) . "' class='btn1'>
+                        <input type='hidden' name='qid' value='{$qid}'>
+                        <input type='hidden' name='user_id' value='{$user_id}'>
+                        <input type='hidden' name='ans' value='answer5'>
+                        <input type='hidden' name='gamenum' value='{$gamenum}'>
+                        <input type='hidden' name='token' value='" . $_SESSION['csrf_token'] . "'>
+                        <input type='submit' value='" . htmlspecialchars_decode($row['answer5']) . "' class='btnflex'>
                     </form>
                 </li>";
             }
@@ -227,11 +228,22 @@ if (empty($gamenum) || empty($qid)) {
     }
 }
 
-$HTMLOUT .= '
+$HTMLOUT .= "
     </div>
-</body>';
+    <br>
+    <div class='text-center'>
+        <a href='./trivia_results.php' target='_top' class='btn-clean'>Trivia Results</a>
+    </div>
+    <div class='text-center' style='margin-top: 20px'>
+        $answered
+        $display
+    </div>
+    <br>
+</body>";
+
 if ($remaining >= 1) {
     $HTMLOUT .= "
+<script src='./scripts/iframeResizer.contentWindow.min.js'></script>
 <script>
     function getTimeRemaining(endtime){
         var t = Date.parse(endtime) - Date.parse(new Date());

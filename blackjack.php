@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 dbconn();
@@ -12,9 +9,6 @@ $HTMLOUT = $debugout = '';
 
 if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['suspended'] == 'yes') {
     stderr($lang['bj_error'], $lang['bj_gaming_rights_disabled']);
-}
-if ($CURUSER['class'] < UC_POWER_USER) {
-    stderr($lang['bj_sorry'], $lang['bj_you_must_be_pu']);
 }
 
 $blackjack['debug'] = false; // display debug info
@@ -28,7 +22,7 @@ $blackjack['version'] = "blackjack{$blackjack['gameid']}";
 $blackjack['modifier'] = $blackjack['id'];  //default is 1 for 1 GB
 $blackjack['min_uploaded'] = $blackjack['gameid']; // min to play * $blackjack['modifier']
 $blackjack['title'] = $lang["bj_title{$blackjack['gameid']}"];
-$blackjack['min'] = 100; // min upload credit that will required to play any game
+$blackjack['min'] = 5; // min upload credit that will required to play any game
 $blackjack['max'] = 5120; // max upload credit that will required to play any game
 $blackjack['gm'] = $blackjack['min_uploaded'] * $blackjack['modifier'];
 $blackjack['required_ratio'] = 1; // min ratio that will required to play any game
@@ -67,10 +61,10 @@ if (isset($_POST['ddown']) && $_POST['ddown'] === 'ddown') {
 }
 
 $cards_history = $dealer_cards_history = $deadcards = [];
-$sql = "SELECT b.*, u.username, u.gender, u.id, u.class, u.donor, u.warned, u.leechwarn, u.enabled, u.chatpost, u.pirate, u.king FROM {$blackjack['version']} AS b INNER JOIN users AS u WHERE u.id = b.userid ORDER BY b.date ASC LIMIT 1";
+$sql = "SELECT b.*, u.id, u.gender FROM {$blackjack['version']} AS b INNER JOIN users AS u WHERE u.id = b.userid ORDER BY b.date ASC LIMIT 1";
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $nick = mysqli_fetch_assoc($res);
-$userName = empty($nick['username']) || $nick['username'] === $CURUSER['username'] ? "<span class='text-red'><b>Dealer</b></span>" : format_username($nick);
+$userName = empty($nick['username']) || $nick['username'] === $CURUSER['username'] ? "<span class='text-red'><b>Dealer</b></span>" : format_username($nick['id']);
 if ($nick['gender'] == 'Male') {
     $gender = 'he';
 } elseif ($nick['gender'] == 'Female') {
@@ -84,15 +78,15 @@ $deadcards = explode(' ', $cardsa);
 $doubleddown = $nick['ddown'] === 'yes' ? true : false;
 
 if ($CURUSER['id'] == $nick['userid'] && $nick['status'] == 'waiting') {
-    stderr('Sorry ' . format_username($CURUSER) . ',', "You'll have to wait until another player plays your last game before you can play a new one.<br>
+    stderr('Sorry ' . format_username($CURUSER['id']) . ',', "You'll have to wait until another player plays your last game before you can play a new one.<br>
 	You have {$nick['points']}.<br><br>
 	<a href='games.php' class='btn-clean'>{$lang['bj_back']}</a><br><br>");
 }
 if ($CURUSER['id'] != $nick['userid'] && $nick['gameover'] == 'no') {
-    stderr('Sorry ' . format_username($CURUSER) . ',', "You'll have to wait until " . format_username($nick) . " finishes $gender game before you can play a new one.<br><br>
+    stderr('Sorry ' . format_username($CURUSER['id']) . ',', "You'll have to wait until " . format_username($nick['id']) . " finishes $gender game before you can play a new one.<br><br>
 	<a href='games.php' class='btn-clean'>{$lang['bj_back']}</a><br><br>");
 }
-$opponent = isset($nick['username']) ? '<h3>Your Opponent is: ' . format_username($nick) . '</h3>' : '';
+$opponent = isset($nick['username']) ? '<h3>Your Opponent is: ' . format_username($nick['id']) . '</h3>' : '';
 $required_ratio = 1.0;
 
 $blackjack['mb'] = 1024 * 1024 * 1024 * $blackjack['modifier'];
@@ -281,7 +275,7 @@ if ($game) {
             if ($points < 21) {
                 $HTMLOUT .= "
 				<a id='blackjack-hash'></a>
-				<h1>{$lang['bj_welcome']}, " . format_username($CURUSER) . "</h1>
+				<h1>{$lang['bj_welcome']}, " . format_username($CURUSER['id']) . "</h1>
 				<table class='table table-bordered text-center'>
 					<tr>
 						<td class='text-center' style='width:50%;'>" . trim($player_showcards) . "</td>
@@ -289,7 +283,7 @@ if ($game) {
 					</tr>
 					<tr>
 						<td class='text-center' style='width:50%;'>{$userName}</td>
-						<td class='text-center' style='width:50%;'>" . format_username($CURUSER) . "<br>{$lang['bj_points']} = {$points}<br>{$user_warning}</td>
+						<td class='text-center' style='width:50%;'>" . format_username($CURUSER['id']) . "<br>{$lang['bj_points']} = {$points}<br>{$user_warning}</td>
 					</tr>
 					<tr>
 						<td colspan='2'>";
@@ -361,7 +355,7 @@ if ($game) {
 				</tr>
 				<tr>
 					<td class='text-center' style='width:50%;'>{$userName}</td>
-					<td class='text-center' style='width:50%;'>" . format_username($CURUSER) . "<br>{$lang['bj_points']} = {$points}<br>{$user_warning}</td>
+					<td class='text-center' style='width:50%;'>" . format_username($CURUSER['id']) . "<br>{$lang['bj_points']} = {$points}<br>{$user_warning}</td>
 				</tr>
 				<tr>
 					<td colspan='2'>";
@@ -464,7 +458,7 @@ if ($game) {
                 if ($INSTALLER09['autoshout_on'] == 1 || $INSTALLER09['irc_autoshout_on'] == 1) {
                     $classColor = get_user_class_color($CURUSER['class']);
                     $opponent = get_user_class_color($a['class']);
-                    $msg = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just played [color=#$opponent][b]{$a['username']}[/b][/color] $outcome ($points to {$a['points']}) $link.";
+                    $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played [color=#$opponent]{$a['username']}[/color] $outcome ($points to {$a['points']}) $link.";
                     for ($i = 0; $i < $aces; ++$i) {
                         $points += ($points < 11 && $aces - $i == 1 ? 11 : 1);
                     }
@@ -486,7 +480,7 @@ if ($game) {
                 sql_query("UPDATE {$blackjack['version']} SET $update_ddown, status = 'waiting', date = " . $now . ", gameover = 'yes' WHERE userid = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                 if ($INSTALLER09['autoshout_on'] == 1 || $INSTALLER09['irc_autoshout_on'] == 1) {
                     $classColor = get_user_class_color($CURUSER['class']);
-                    $msg = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just played $link.";
+                    $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played $link.";
                     autoshout($msg);
                 }
                 $HTMLOUT .= "
@@ -598,7 +592,7 @@ if ($game) {
                 if ($INSTALLER09['autoshout_on'] == 1 || $INSTALLER09['irc_autoshout_on'] == 1) {
                     $classColor = get_user_class_color($CURUSER['class']);
                     $opponent = get_user_class_color($a['class']);
-                    $msg = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just played [color=#$opponent][b]{$a['username']}[/b][/color] $outcome ($points to {$a['points']}) $link.";
+                    $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played [color=#$opponent]{$a['username']}[/color] $outcome ($points to {$a['points']}) $link.";
                     for ($i = 0; $i < $aces; ++$i) {
                         $points += ($points < 11 && $aces - $i == 1 ? 11 : 1);
                     }
@@ -620,7 +614,7 @@ if ($game) {
                 sql_query("UPDATE {$blackjack['version']} SET $update_ddown, status = 'waiting', date = " . $now . ", gameover = 'yes' WHERE userid = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                 if ($INSTALLER09['autoshout_on'] == 1 || $INSTALLER09['irc_autoshout_on'] == 1) {
                     $classColor = get_user_class_color($CURUSER['class']);
-                    $msg = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just played $link.";
+                    $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played $link.";
                     autoshout($msg);
                 }
                 $HTMLOUT .= "
@@ -638,7 +632,7 @@ if ($game) {
             cheater_check(empty($playerarr));
             $HTMLOUT .= "
 			<a id='blackjack-hash'></a>
-			<h1>{$lang['bj_welcome']}, " . format_username($CURUSER) . "</h1>
+			<h1>{$lang['bj_welcome']}, " . format_username($CURUSER['id']) . "</h1>
 			<table class='table table-bordered text-center'>
 				<tr>
 					<td class='text-center' style='width:50%;'>{$player_showcards}</td>
@@ -646,7 +640,7 @@ if ($game) {
 				</tr>
 				<tr>
 					<td class='text-center' style='width:50%;'>{$userName}</td>
-					<td class='text-center' style='width:50%;'>" . format_username($CURUSER) . "<br>{$lang['bj_points']} = {$points}<br>{$user_warning}</td>
+					<td class='text-center' style='width:50%;'>" . format_username($CURUSER['id']) . "<br>{$lang['bj_points']} = {$points}<br>{$user_warning}</td>
 				</tr>
 				<tr>
 					<td colspan='2'>";
@@ -694,7 +688,7 @@ if ($game) {
 			</tr>
 			<tr>
 				<td class='text-center' style='width:50%;'>{$userName}</td>
-				<td class='text-center' style='width:50%;'>" . format_username($CURUSER) . "<br>{$lang['bj_points']} = {$playerarr['points']}</td>
+				<td class='text-center' style='width:50%;'>" . format_username($CURUSER['id']) . "<br>{$lang['bj_points']} = {$playerarr['points']}</td>
 			</tr>
 			<tr>
 				<td colspan='2'>";
@@ -811,7 +805,7 @@ if ($game) {
             if ($INSTALLER09['autoshout_on'] == 1 || $INSTALLER09['irc_autoshout_on'] == 1) {
                 $classColor = get_user_class_color($CURUSER['class']);
                 $opponent = get_user_class_color($a['class']);
-                $msg = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just played [color=#$opponent][b]{$a['username']}[/b][/color] $outcome ({$playerarr['points']} to {$a['points']}) $link.";
+                $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played [color=#$opponent]{$a['username']}[/color] $outcome ({$playerarr['points']} to {$a['points']}) $link.";
                 autoshout($msg);
             }
 
@@ -834,7 +828,7 @@ if ($game) {
             sql_query("UPDATE {$blackjack['version']} SET $update_ddown, status = 'waiting', date = " . $now . ", gameover = 'yes' WHERE userid = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
             if ($INSTALLER09['autoshout_on'] == 1 || $INSTALLER09['irc_autoshout_on'] == 1) {
                 $classColor = get_user_class_color($CURUSER['class']);
-                $msg = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just played $link.";
+                $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played $link.";
                 autoshout($msg);
             }
             $HTMLOUT .= "
@@ -864,7 +858,7 @@ if ($game) {
     $doubled = '';
     if ($res['ddown'] === 'yes') {
         $blackjack['mb'] = $blackjack['mb'] * 2;
-        $doubled = "<tr><td class='text-center'>" . format_username($nick) . ' has Doubled Down, thereby doubling the bet to ' . mksize($blackjack['mb'], 0) . '.</td></tr>';
+        $doubled = "<tr><td class='text-center'>" . format_username($nick['id']) . ' has Doubled Down, thereby doubling the bet to ' . mksize($blackjack['mb'], 0) . '.</td></tr>';
     }
     $game_str = str_replace('10GB', mksize($blackjack['mb'], 0), $lang['bj_bj_note_cost_10']);
 

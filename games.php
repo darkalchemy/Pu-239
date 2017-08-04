@@ -1,5 +1,4 @@
 <?php
-
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 dbconn();
@@ -10,73 +9,61 @@ $HTMLOUT = '';
 if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['suspended'] == 'yes') {
     stderr($lang['bj_error'], $lang['bj_gaming_rights_disabled']);
 }
-if ($CURUSER['class'] < UC_POWER_USER) {
-    stderr($lang['bj_sorry'], $lang['bj_you_must_be_pu']);
-}
 
 $width = 100 / 3;
 $color1 = $color2 = $color3 = $color4 = $color5 = $color6 = $color7 = $color8 = $color9 = 'red';
 
 // 1GB
-$res = sql_query("SELECT COUNT(*) AS count FROM blackjack1 WHERE status = 'waiting'") or sqlerr(__FILE__, __LINE__);
-$row1 = mysqli_fetch_row($res);
-if ($row1[0] > 0) {
+$bj1_count = get_row_count('blackjack1', 'WHERE status = "waiting"');
+if ($bj1_count > 0) {
     $color1 = 'green';
 }
 
 // 10GB
-$res = sql_query("SELECT COUNT(*) AS count FROM blackjack2 WHERE status = 'waiting'") or sqlerr(__FILE__, __LINE__);
-$row10 = mysqli_fetch_row($res);
-if ($row10[0] > 0) {
+$bj2_count = get_row_count('blackjack2', 'WHERE status = "waiting"');
+if ($bj2_count > 0) {
     $color2 = 'green';
 }
 
 // 20GB
-$res = sql_query("SELECT COUNT(*) AS count FROM blackjack3 WHERE status = 'waiting'") or sqlerr(__FILE__, __LINE__);
-$row20 = mysqli_fetch_row($res);
-if ($row20[0] > 0) {
+$bj3_count = get_row_count('blackjack3', 'WHERE status = "waiting"');
+if ($bj3_count > 0) {
     $color3 = 'green';
 }
 
 // 50GB
-$res = sql_query("SELECT COUNT(*) AS count FROM blackjack4 WHERE status = 'waiting'") or sqlerr(__FILE__, __LINE__);
-$row50 = mysqli_fetch_row($res);
-if ($row50[0] > 0) {
+$bj4_count = get_row_count('blackjack4', 'WHERE status = "waiting"');
+if ($bj4_count > 0) {
     $color4 = 'green';
 }
 
 // 100 GB
-$res = sql_query("SELECT COUNT(*) AS count FROM blackjack5 WHERE status = 'waiting'") or sqlerr(__FILE__, __LINE__);
-$row100 = mysqli_fetch_row($res);
-if ($row100[0] > 0) {
+$bj5_count = get_row_count('blackjack5', 'WHERE status = "waiting"');
+if ($bj5_count > 0) {
     $color5 = 'green';
 }
 
 // 250 GB
-$res = sql_query("SELECT COUNT(*) AS count FROM blackjack6 WHERE status = 'waiting'") or sqlerr(__FILE__, __LINE__);
-$row250 = mysqli_fetch_row($res);
-if ($row250[0] > 0) {
+$bj6_count = get_row_count('blackjack6', 'WHERE status = "waiting"');
+if ($bj6_count > 0) {
     $color6 = 'green';
 }
 
 // 500 GB
-$res = sql_query("SELECT COUNT(*) AS count FROM blackjack7 WHERE status = 'waiting'") or sqlerr(__FILE__, __LINE__);
-$row500 = mysqli_fetch_row($res);
-if ($row500[0] > 0) {
+$bj7_count = get_row_count('blackjack7', 'WHERE status = "waiting"');
+if ($bj7_count > 0) {
     $color7 = 'green';
 }
 
 // 1TB
-$res = sql_query("SELECT COUNT(*) AS count FROM blackjack8 WHERE status = 'waiting'") or sqlerr(__FILE__, __LINE__);
-$row1000 = mysqli_fetch_row($res);
-if ($row1000[0] > 0) {
+$bj8_count = get_row_count('blackjack8', 'WHERE status = "waiting"');
+if ($bj8_count > 0) {
     $color8 = 'green';
 }
 
 // Casino
-$res = sql_query('SELECT COUNT(*) FROM casino WHERE deposit > 0 AND userid != ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-$rowCasino = mysqli_fetch_row($res);
-if ($rowCasino[0] > 0) {
+$casino_count = get_row_count('casino', 'WHERE deposit > 0 AND userid != ' . sqlesc($CURUSER['id']));
+if ($casino_count > 0) {
     $color9 = 'green';
 }
 

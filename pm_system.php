@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
@@ -112,7 +109,7 @@ $urgent = ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? 'yes' : 'no
 //=== change ASC to DESC and back for sort by
 $desc_asc = (isset($_GET['ASC']) ? '&amp;DESC=1' : (isset($_GET['DESC']) ? '&amp;ASC=1' : ''));
 $desc_asc_2 = (isset($_GET['DESC']) ? 'ascending' : 'descending');
-$spacer = '&nbsp;&nbsp;&nbsp;&nbsp;';
+$spacer = '&#160;&#160;&#160;&#160;';
 //=== get orderby and check to see if it's ok...
 $good_order_by = [
     'username',
@@ -129,7 +126,7 @@ $top_links = '<div style="text-align: center;">
         <a class="altlink"  href="pm_system.php?action=search">' . $lang['pm_search'] . '</a> || 
         <a class="altlink"  href="pm_system.php?action=edit_mailboxes">' . $lang['pm_manager'] . '</a> || 
         <a class="altlink" href="pm_system.php?action=new_draft">' . $lang['pm_write_new'] . '</a> || 
-        <a class="altlink" href="pm_system.php?action=view_mailbox">' . $lang['pm_in_box'] . '</a></div><br />';
+        <a class="altlink" href="pm_system.php?action=view_mailbox">' . $lang['pm_in_box'] . '</a></div><br>';
 //=== change  number of PMs per page on the fly
 if (isset($_GET['change_pm_number'])) {
     $change_pm_number = (isset($_GET['change_pm_number']) ? intval($_GET['change_pm_number']) : 20);

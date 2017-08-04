@@ -1,5 +1,4 @@
 <?php
-
 //== Online time
 if ($user['onlinetime'] > 0) {
     $onlinetime = time_return($user['onlinetime']);

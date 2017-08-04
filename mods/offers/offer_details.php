@@ -1,11 +1,7 @@
 <?php
-
 if (!defined('IN_OFFERS')) {
     exit('No direct script access allowed');
 }
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 $stdfoot = [
     /* include js **/
     'js' => [
@@ -38,7 +34,7 @@ if ($CURUSER['id'] == $num['userid'] || $CURUSER['class'] >= UC_MODERATOR) {
     }
 }
 $HTMLOUT .= "<tr>
-<td align='right'><b>offered&nbsp;By</b></td><td align='left'>
+<td align='right'><b>offered&#160;By</b></td><td align='left'>
 <a class='altlink' href='userdetails.php?id=$num[userid]'>{$num['username']}</a>  $edit  $delete $reset  |
 <a class='altlink' href='viewoffers.php'><b>All offers</b></a> </td></tr><tr><td align='right'>
 <b>Vote for this offer</b></td><td align='left'><a href='viewoffers.php?id=" . $id . "&amp;offer_vote'><b>Vote</b></a>
@@ -51,8 +47,8 @@ if ($num['torrentid'] == 0) {
     $HTMLOUT .= "<tr><td align='right' valign='top'><b>Accept This Offer</b></td>
     <td>
     <form method='post' action='viewoffers.php?id=" . $id . "&amp;offer_filled'>
-    <strong>" . $INSTALLER09['baseurl'] . "/details.php?id=</strong><input type='text' size='10' name='torrentid' value='' /> <input type='submit' value='Fill Offer' class='btn' /><br />
-    Enter the <b>ID</b>  of the torrent. (copy/paste the <strong>ID</strong> from another window/tab the correct ID number)<br /></form></td>
+    <strong>" . $INSTALLER09['baseurl'] . "/details.php?id=</strong><input type='text' size='10' name='torrentid' value='' /> <input type='submit' value='Fill Offer' class='btn' /><br>
+    Enter the <b>ID</b>  of the torrent. (copy/paste the <strong>ID</strong> from another window/tab the correct ID number)<br></form></td>
     </tr>\n";
 } else {
     $HTMLOUT .= "<tr><td align='right' valign='top'><b>This Offer was accepted:</b></td><td><a class='altlink' href='details.php?id=" . $num['torrentid'] . "'><b>" . $INSTALLER09['baseurl'] . '/details.php?id=' . $num['torrentid'] . '</b></a></td></tr>';

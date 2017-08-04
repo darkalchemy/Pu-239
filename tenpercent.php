@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 dbconn();
@@ -85,14 +82,14 @@ $HTMLOUT .= "<h1>10&#37;</h1>
 <td style='padding-bottom: 0px'>
 <p><b>How it works:</b></p>
 <p class='sub'>From this page you can <b>add 10&#37;</b> of your current upload amount to your upload amount bringing it it to <b>110%</b> of its current amount. More details about how this would work out for you can be found in the tables below.</p>
-<br /><p><b>However, there are some things you should know first:</b></p><b>
-&#8226;&nbsp;This can only be done <b>once</b>, so chose your moment wisely.<br />
-&#8226;&nbsp;The staff will <b>not</b> reset your 10&#37; addition for any reason.<br /><br />
+<br><p><b>However, there are some things you should know first:</b></p><b>
+&#8226;&#160;This can only be done <b>once</b>, so chose your moment wisely.<br>
+&#8226;&#160;The staff will <b>not</b> reset your 10&#37; addition for any reason.<br><br>
 </b></td></tr></table>
 <table width='650' class='main' align='center' border='0' cellspacing='0' cellpadding='5'>
-<tr><td class='normalrowhead'>Current&nbsp;upload&nbsp;amount:</td><td class='normal'>" . str_replace(' ', '&nbsp;', mksize($uploaded)) . "</td><td class='embedded' width='5%'></td><td class='normalrowhead'>Increase:</td><td class='normal'>" . str_replace(' ', '&nbsp;', mksize($newuploaded - $uploaded)) . "</td><td class='embedded' width='5%'></td><td class='normalrowhead'>New&nbsp;upload&nbsp;amount:</td><td class='normal'>" . str_replace(' ', '&nbsp;', mksize($newuploaded)) . "</td></tr>
-<tr><td class='normalrowhead'>Current&nbsp;download&nbsp;amount:</td><td class='normal'>" . str_replace(' ', '&nbsp;', mksize($downloaded)) . "</td><td class='embedded' width='5%'></td><td class='normalrowhead'>Increase:</td><td class='normal'>" . str_replace(' ', '&nbsp;', mksize(0)) . "</td><td class='embedded' width='5%'></td><td class='normalrowhead'>New&nbsp;download&nbsp;amount:</td><td class='normal'>" . str_replace(' ', '&nbsp;', mksize($downloaded)) . "</td></tr>
-<tr><td class='normalrowhead'>Current&nbsp;ratio:</td><td class='normal'>$ratio</td><td class='embedded' width='5%'></td><td class='normalrowhead'>Increase:</td><td class='normal'>$ratiochange</td><td class='embedded' width='5%'></td><td class='normalrowhead'>New&nbsp;ratio:</td><td class='normal'>$newratio</td></tr>
+<tr><td class='normalrowhead'>Current&#160;upload&#160;amount:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($uploaded)) . "</td><td class='embedded' width='5%'></td><td class='normalrowhead'>Increase:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($newuploaded - $uploaded)) . "</td><td class='embedded' width='5%'></td><td class='normalrowhead'>New&#160;upload&#160;amount:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($newuploaded)) . "</td></tr>
+<tr><td class='normalrowhead'>Current&#160;download&#160;amount:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($downloaded)) . "</td><td class='embedded' width='5%'></td><td class='normalrowhead'>Increase:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize(0)) . "</td><td class='embedded' width='5%'></td><td class='normalrowhead'>New&#160;download&#160;amount:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($downloaded)) . "</td></tr>
+<tr><td class='normalrowhead'>Current&#160;ratio:</td><td class='normal'>$ratio</td><td class='embedded' width='5%'></td><td class='normalrowhead'>Increase:</td><td class='normal'>$ratiochange</td><td class='embedded' width='5%'></td><td class='normalrowhead'>New&#160;ratio:</td><td class='normal'>$newratio</td></tr>
 </table>
 <form name='tenpercent' method='post' action='tenpercent.php'>
 <table align='center' border='0' cellspacing='0' cellpadding='5'>

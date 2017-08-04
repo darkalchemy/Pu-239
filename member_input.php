@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//== Member staff notes/flush torrents/watched user by snuggles
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 dbconn(false);
@@ -66,7 +62,7 @@ if ($action == '') {
                 ]);
                 $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
                 //=== add it to the log
-                write_log('<b>' . $CURUSER['username'] . '</b> edited member <a href="userdetails.php?id=' . $id . '" title="go to ' . htmlsafechars($staff_notes_arr['username']) . (substr($staff_notes_arr['username'], -1) == 's' ? '\'' : '\'s') . ' staff notes"><b>' . htmlsafechars($staff_notes_arr['username']) . (substr($staff_notes_arr['username'], -1) == 's' ? '\'' : '\'s') . '</b></a> staff notes. Changes made:<br />Was:<br />' . htmlsafechars($staff_notes_arr['staff_notes']) . '<br />is now:<br />' . htmlsafechars($_POST['new_staff_note']) . '');
+                write_log('<b>' . $CURUSER['username'] . '</b> edited member <a href="userdetails.php?id=' . $id . '" title="go to ' . htmlsafechars($staff_notes_arr['username']) . (substr($staff_notes_arr['username'], -1) == 's' ? '\'' : '\'s') . ' staff notes"><b>' . htmlsafechars($staff_notes_arr['username']) . (substr($staff_notes_arr['username'], -1) == 's' ? '\'' : '\'s') . '</b></a> staff notes. Changes made:<br>Was:<br>' . htmlsafechars($staff_notes_arr['staff_notes']) . '<br>is now:<br>' . htmlsafechars($_POST['new_staff_note']) . '');
             }
             header('Location: userdetails.php?id=' . $id . '&sn=1');
             break;
@@ -112,7 +108,7 @@ if ($action == '') {
                     ]);
                     $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
                     //=== add it to the log
-                    write_log('<b>' . $CURUSER['username'] . '</b> removed member <a href="userdetails.php?id=' . $id . '" title="go to ' . htmlsafechars($watched_arr['username']) . (substr($watched_arr['username'], -1) == 's' ? '\'' : '\'s') . ' page">' . htmlsafechars($watched_arr['username']) . '</a> from watched users. <br />' . htmlsafechars($watched_arr['username']) . ' had been on the list since ' . get_date($watched_arr['watched_user'], '') . '.', $CURUSER['id']);
+                    write_log('<b>' . $CURUSER['username'] . '</b> removed member <a href="userdetails.php?id=' . $id . '" title="go to ' . htmlsafechars($watched_arr['username']) . (substr($watched_arr['username'], -1) == 's' ? '\'' : '\'s') . ' page">' . htmlsafechars($watched_arr['username']) . '</a> from watched users. <br>' . htmlsafechars($watched_arr['username']) . ' had been on the list since ' . get_date($watched_arr['watched_user'], '') . '.', $CURUSER['id']);
                 }
                 //=== only change if different
                 if ($_POST['watched_reason'] !== $watched_arr['watched_user_reason']) {
@@ -124,7 +120,7 @@ if ($action == '') {
                     ]);
                     $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
                     //=== add it to the log
-                    write_log('<b>' . $CURUSER['username'] . '</b> changed watched user text for: <a href="userdetails.php?id=' . $id . '" title="go to ' . htmlsafechars($watched_arr['username']) . (substr($watched_arr['username'], -1) == 's' ? '\'' : '\'s') . ' page">' . htmlsafechars($watched_arr['username']) . '</a>  Changes made:<br />Text was:<br />' . htmlsafechars($watched_arr['watched_user_reason']) . '<br />Is now:<br />' . htmlsafechars($_POST['watched_reason']) . '');
+                    write_log('<b>' . $CURUSER['username'] . '</b> changed watched user text for: <a href="userdetails.php?id=' . $id . '" title="go to ' . htmlsafechars($watched_arr['username']) . (substr($watched_arr['username'], -1) == 's' ? '\'' : '\'s') . ' page">' . htmlsafechars($watched_arr['username']) . '</a>  Changes made:<br>Text was:<br>' . htmlsafechars($watched_arr['watched_user_reason']) . '<br>Is now:<br>' . htmlsafechars($_POST['watched_reason']) . '');
                 }
             }
             header('Location: userdetails.php?id=' . $id . '&wu=1');

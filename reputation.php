@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
@@ -272,19 +269,19 @@ else {
         }
         switch ($rep_locale) {
             case 'comments':
-                $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/details.php?id=%d&amp;viewcomm=%d#comm%d' target='_blank'>this Comment</a> is %s<br />Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
+                $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/details.php?id=%d&amp;viewcomm=%d#comm%d' target='_blank'>this Comment</a> is %s<br>Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
                 break;
 
             case 'torrents':
-                $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/details.php?id=%d' target='_blank'>this Torrent</a> is %s<br />Total: %s points.", $input['pid'], $rep, $total);
+                $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/details.php?id=%d' target='_blank'>this Torrent</a> is %s<br>Total: %s points.", $input['pid'], $rep, $total);
                 break;
 
             case 'users':
-                $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/userdetails.php?id=%d' target='_blank'>your profile</a> is %s<br />Total: %s points.", $input['pid'], $rep, $total);
+                $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/userdetails.php?id=%d' target='_blank'>your profile</a> is %s<br>Total: %s points.", $input['pid'], $rep, $total);
                 break;
 
             default:
-                $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/forums.php?action=viewtopic&amp;topicid=%d&amp;page=p%d#%d' target='_blank'>this Post</a> is %s<br />Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
+                $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/forums.php?action=viewtopic&amp;topicid=%d&amp;page=p%d#%d' target='_blank'>this Post</a> is %s<br>Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
         }
         ///////////////////////////////////////////////
         //	Compile some HTML for the 'own post'/ 'user view' reputation
@@ -302,7 +299,7 @@ else {
 								<table class='ipbtable' cellpadding='0'>
 								$reasonbits
 								</table>
-							</fieldset><br />";
+							</fieldset><br>";
         }
         $html .= "<div class='formsubtitle' align='center'><strong>{$rep_points}</strong></div>
 						</div>
@@ -328,15 +325,15 @@ else {
 									<tr>
 										<td>
 											<div><label for='rb_reputation_pos'>
-											<input type='radio' name='reputation' value='pos' id='rb_reputation_pos' checked='checked' class='radiobutton' style='margin:0px;' /> &nbsp;{$lang['rep_i_approve']}</label></div>";
+											<input type='radio' name='reputation' value='pos' id='rb_reputation_pos' checked='checked' class='radiobutton' style='margin:0px;' /> &#160;{$lang['rep_i_approve']}</label></div>";
         if ($negativerep) {
-            $html .= "<div><label for='rb_reputation_neg'><input type='radio' name='reputation' value='neg' id='rb_reputation_neg' class='radiobutton' style='margin:0px;' /> &nbsp;{$lang['rep_i_disapprove']}</label></div>";
+            $html .= "<div><label for='rb_reputation_neg'><input type='radio' name='reputation' value='neg' id='rb_reputation_neg' class='radiobutton' style='margin:0px;' /> &#160;{$lang['rep_i_disapprove']}</label></div>";
         }
         $html .= "</td>
 							</tr>
 							<tr>
 								<td>
-									{$lang['rep_your_comm_on_this_post']} " . $this_rep . "<br />
+									{$lang['rep_your_comm_on_this_post']} " . $this_rep . "<br>
 									<input type='text' size='40' maxlength='250' name='reason' style='margin:0px;' />
 								</td>
 							</tr>

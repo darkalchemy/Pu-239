@@ -48,7 +48,7 @@
             var d = $('<div>')
                 .addClass(setClass)
                 .attr('rel', thisID)
-                .html('&nbsp');
+                .html('&#160;');
             switch (options.style) {
                 case "iphone":
                     d.on('click', function () {

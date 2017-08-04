@@ -1,5 +1,4 @@
 <?php
-
 function snatchtable($res)
 {
     global $INSTALLER09, $lang, $CURUSER;
@@ -63,9 +62,9 @@ function maketable($res)
         $catimage = "{$INSTALLER09['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/{$arr['image']}";
         $catname = htmlsafechars($arr['catname']);
         $catimage = '<img src="' . htmlsafechars($catimage) . "\" title=\"$catname\" alt=\"$catname\" width='42' height='42' />";
-        $size = str_replace(' ', '<br />', mksize($arr['size']));
-        $uploaded = str_replace(' ', '<br />', mksize($arr['uploaded']));
-        $downloaded = str_replace(' ', '<br />', mksize($arr['downloaded']));
+        $size = str_replace(' ', '<br>', mksize($arr['size']));
+        $uploaded = str_replace(' ', '<br>', mksize($arr['uploaded']));
+        $downloaded = str_replace(' ', '<br>', mksize($arr['downloaded']));
         $seeders = number_format($arr['seeders']);
         $leechers = number_format($arr['leechers']);
         $XBT_or_PHP = (XBT_TRACKER == true ? $arr['fid'] : $arr['torrent']);

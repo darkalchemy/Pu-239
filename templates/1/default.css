@@ -1,6 +1,6 @@
 /*td.outer {
-	margin-left: -10px;
-	}
+    margin-left: -10px;
+    }
 */
 /* SLIDE THREE */
 .slideThree {
@@ -413,8 +413,8 @@ ul.gm_taps li {
 }
 
 /*.tooltip:hover img {
-	border: 0; margin: -10px 0 0 -55px; float: left; position: absolute;}*/
-.tooltip:hover em {
+    border: 0; margin: -10px 0 0 -55px; float: left; position: absolute;}*/
+    .tooltip:hover em {
     font-family: Tahoma;
     font-size: 1.2em;
     font-weight: bold;
@@ -552,14 +552,14 @@ div#base_icons {
 }
 
 /*#status_box, #status_title_warpper, #status_content {
-	font-family:tahoma; font-size:12px; }
+    font-family:tahoma; font-size:12px; }
 #status_box {            z-index: 99;
-	width:400px; background: #ffffff; height:auto; border:1px solid #5C8DFF;
-	padding:8px; position:absolute; margin-top:10px; margin-bottom:5px; }
+    width:400px; background: #ffffff; height:auto; border:1px solid #5C8DFF;
+    padding:8px; position:absolute; margin-top:10px; margin-bottom:5px; }
 #status_title {         z-index: 99;
     background:#99B8FF; height:16px; color:#333; padding-left:5px; font-weight:bold; }
 #status_content{        z-index: 99;
-	padding:1px; background: #ffffff; border: 1px solid #99B8FF;  }
+    padding:1px; background: #ffffff; border: 1px solid #99B8FF;  }
 #status_tool {           z-index: 99;
     font-size:10px;font-weight:bold;}*/
 tr.browse {
@@ -910,7 +910,7 @@ body.background-2 #logo .slogan {
 }
 
 /*--------------------------------*/
-/*  CONTENT AREA          		  */
+/*  CONTENT AREA                  */
 /*--------------------------------*/
 
 .statusbar-container {
@@ -926,7 +926,7 @@ body.background-2 #logo .slogan {
 }
 
 /*--------------------------------*/
-/* NAVIGATION					  */
+/* NAVIGATION                     */
 /*--------------------------------*/
 
 /* MAIN NAVIGATION --> Begin */
@@ -1197,16 +1197,6 @@ body.background-2 #logo .slogan {
     line-height: 61px;
 }
 
-/*   /-----------------------------------------------------------------------------------------\
-    | Information About This File 																|
-    |-------------------------------------------------------------------------------------------|
-    | This file is part of installer09 sourcecode. Show us some respect for the free time that	|
-    | went into making this source code, please leave all credit in PLACE.						|
-    | By removing ANY credit from these files you will not get any help from our support forum.	|
-    |-------------------------------------------------------------------------------------------|
-    | Thanks for using this sourcecode.															|
-     \-----------------------------------------------------------------------------------------/
-*/
 .padded {
     margin: 2px;
 }
@@ -1227,14 +1217,16 @@ img {
     border-radius: 5px;
 }
 
-.trivia-container {
+.answers-container {
     max-width: 1000px;
     min-height: 100%;
     margin: auto;
+    display: -webkit-flex;
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
 }
 
 .trivia-container > * {
@@ -1242,27 +1234,62 @@ img {
 
 }
 
-section {
-    background-color: green;
-}
-
-.flex-center {
-    align-items: center;
-}
-
 .container-iframe {
-    margin: -20px;
+    margin: -15px;
 }
 
-.container-flex {
-    margin: 0 auto;
-    padding: 2em;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: center;
+.one {
+    background: rgb(100, 100, 100);
+    background: rgba(100, 100, 100, .5);
 }
 
-.container-flex > * {
-    padding: 2em 1em;
+.two {
+    background: rgb(200, 200, 200);
+    background: rgba(200, 200, 200, .5);
+}
+
+a:link {
+    text-decoration: none;
+}
+
+.btn-clean {
+   border-top: 1px solid #96d1f8;
+   background: #4f5e4f;
+   background: -webkit-gradient(linear, left top, left bottom, from(#a5c3a5), to(#4f5e4f));
+   background: -webkit-linear-gradient(top, #a5c3a5, #4f5e4f);
+   background: -moz-linear-gradient(top, #a5c3a5, #4f5e4f);
+   background: -ms-linear-gradient(top, #a5c3a5, #4f5e4f);
+   background: -o-linear-gradient(top, #a5c3a5, #4f5e4f);
+   padding: 5px 12px;
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+   border-radius: 5px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: white;
+   font-size: 14px;
+   text-decoration: none;
+   vertical-align: middle;
+}
+.btn-clean:hover {
+   border-top-color: #28597a;
+   background: -webkit-gradient(linear, left top, left bottom, from(#4f5e4f), to(#a5c3a5));
+   background: -webkit-linear-gradient(top, #4f5e4f, #a5c3a5);
+   background: -moz-linear-gradient(top, #4f5e4f, #a5c3a5);
+   background: -ms-linear-gradient(top, #4f5e4f, #a5c3a5);
+   background: -o-linear-gradient(top, #4f5e4f, #a5c3a5);
+   color: #000;
+}
+.btn-clean:active {
+   border-top-color: #1b435e;
+   background: #1b435e;
+}
+
+.btnflex {
+   padding: 5px 20px;
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+   border-radius: 5px;
 }

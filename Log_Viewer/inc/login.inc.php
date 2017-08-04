@@ -55,11 +55,11 @@ load_default_constants();
                             echo __('You have been logged out');
                             echo '</div>';
                         } elseif ($_SERVER['SERVER_NAME'] === 'demo.pimpmylog.com') {
-                            echo '<br/>';
+                            echo '<br>';
                             echo '<div class="alert alert-info">';
                             echo sprintf(__('You can use %s as the username and %s as the password to test the demo account'), '<code>demo</code>', '<code>pimpmylog</code>');
                             echo '</div>';
-                            echo '<br/>';
+                            echo '<br>';
                         }
                         ?></div>
                 </div>

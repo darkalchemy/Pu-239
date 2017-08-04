@@ -543,7 +543,7 @@ switch (@$_POST['action']) {
         $r .= '</div>';
         $r .= '</div>';
 
-        $r .= '<hr/>';
+        $r .= '<hr>';
 
         if ((!isset($user['api_logincount'])) || ((int)$user['api_logincount'] === 0)) {
             $r .= __('Your credentials have not been used');

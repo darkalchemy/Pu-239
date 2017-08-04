@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/* Deathrow by pdq */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -12,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -203,7 +199,7 @@ if ($count) {
             $reason = $lang['deathrow_no_seed'] . calctime($z_time) . $lang['deathrow_new_torr'];
         }
         $id = 0 + $queued['tid'];
-        $b .= '<tr>' . ($CURUSER['class'] >= UC_STAFF ? "<td align='center'><a href='userdetails.php?id=" . $queued['uid'] . "&amp;hit=1'><b>" . htmlsafechars($queued['username']) . '</b></a></td>' : "<td align='center'><strong>{$lang['deathrow_hidden']}</strong></td>") . "<td align='center'><a href='details.php?id=" . $id . "&amp;hit=1'>" . htmlsafechars($queued['torrent_name']) . "</a></td><td align='center'>" . $reason . "</td><td align='center'>" . ($queued['username'] == $CURUSER['username'] || $CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" name="remove[]" value="' . $id . '" /><b>' . ($queued['username'] == $CURUSER['username'] ? '&nbsp;&nbsp;<font color="#800000">' . $lang['deathrow_delete'] . '</font>' : '' . $lang['deathrow_delete1'] . '') . '</b>' : "{$lang['deathrow_ownstaff']}") . '</td></tr>';
+        $b .= '<tr>' . ($CURUSER['class'] >= UC_STAFF ? "<td align='center'><a href='userdetails.php?id=" . $queued['uid'] . "&amp;hit=1'><b>" . htmlsafechars($queued['username']) . '</b></a></td>' : "<td align='center'><strong>{$lang['deathrow_hidden']}</strong></td>") . "<td align='center'><a href='details.php?id=" . $id . "&amp;hit=1'>" . htmlsafechars($queued['torrent_name']) . "</a></td><td align='center'>" . $reason . "</td><td align='center'>" . ($queued['username'] == $CURUSER['username'] || $CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" name="remove[]" value="' . $id . '" /><b>' . ($queued['username'] == $CURUSER['username'] ? '&#160;&#160;<font color="#800000">' . $lang['deathrow_delete'] . '</font>' : '' . $lang['deathrow_delete1'] . '') . '</b>' : "{$lang['deathrow_ownstaff']}") . '</td></tr>';
     }
     $b .= '<tr><td class="table" colspan="11" align="right"><input type="button" value="' . $lang['deathrow_checkall'] . '" onclick="this.value=check(this.form.elements[\'remove[]\'])"/>
 <input type="submit" name="submit" value="' . $lang['deathrow_apply'] . '" /></td></tr></table></form>';
@@ -212,14 +208,14 @@ if ($count) {
     $HTMLOUT .= ($pager['pagerbottom']);
     echo stdhead($lang['deathrow_stdhead']) . $HTMLOUT . stdfoot();
 } else {
-    $HTMLOUT .= '<br /><strong>' . $lang['deathrow_msg'] . '</strong>' . $lang['deathrow_msg1'] . '
-    <br /><br /><br /><strong>' . $lang['deathrow_msg2'] . '</strong>' . $lang['deathrow_msg3'] . ' ' . $CURUSER['username'] . '' . $lang['deathrow_msg4'] . '.
-    <br /><br /><br /><strong>' . $lang['deathrow_msg'] . '</strong>' . $lang['deathrow_msg33'] . ' ' . $CURUSER['username'] . '' . $lang['deathrow_msg4'] . '.
-    <br /><br /><br /><strong>' . $lang['deathrow_msg2'] . '</strong>' . $lang['deathrow_msg5'] . '
-    <br /><br /><br /><strong>' . $lang['deathrow_msg'] . '</strong>' . $lang['deathrow_msg6'] . '
-    <br /><br /><br /><strong>' . $lang['deathrow_msg2'] . '</strong> ' . $CURUSER['username'] . '' . $lang['deathrow_msg7'] . '
-    <br /><br /><br /><strong>' . $lang['deathrow_msg'] . '</strong>' . $lang['deathrow_msg8'] . '
-    <br /><br /><br /><strong>' . $lang['deathrow_msg2'] . '</strong>' . $lang['deathrow_msg9'] . '
-    <br /><br /><br /><strong>' . $lang['deathrow_msg'] . '</strong>' . $lang['deathrow_msg0'] . ' ';
+    $HTMLOUT .= '<br><strong>' . $lang['deathrow_msg'] . '</strong>' . $lang['deathrow_msg1'] . '
+    <br><br><br><strong>' . $lang['deathrow_msg2'] . '</strong>' . $lang['deathrow_msg3'] . ' ' . $CURUSER['username'] . '' . $lang['deathrow_msg4'] . '.
+    <br><br><br><strong>' . $lang['deathrow_msg'] . '</strong>' . $lang['deathrow_msg33'] . ' ' . $CURUSER['username'] . '' . $lang['deathrow_msg4'] . '.
+    <br><br><br><strong>' . $lang['deathrow_msg2'] . '</strong>' . $lang['deathrow_msg5'] . '
+    <br><br><br><strong>' . $lang['deathrow_msg'] . '</strong>' . $lang['deathrow_msg6'] . '
+    <br><br><br><strong>' . $lang['deathrow_msg2'] . '</strong> ' . $CURUSER['username'] . '' . $lang['deathrow_msg7'] . '
+    <br><br><br><strong>' . $lang['deathrow_msg'] . '</strong>' . $lang['deathrow_msg8'] . '
+    <br><br><br><strong>' . $lang['deathrow_msg2'] . '</strong>' . $lang['deathrow_msg9'] . '
+    <br><br><br><strong>' . $lang['deathrow_msg'] . '</strong>' . $lang['deathrow_msg0'] . ' ';
     echo stdhead($lang['deathrow_stdhead0']) . $HTMLOUT . stdfoot();
 }

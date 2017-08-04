@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
@@ -54,7 +51,7 @@ switch (true) {
         }
         if ($lottery_config['end_date'] > TIME_NOW) {
             $html .= stdmsg('Lottery in progress', 'Lottery started on <b>' . get_date($lottery_config['start_date'], 'LONG') . '</b> and ends on <b>' . get_date($lottery_config['end_date'], 'LONG') . "</b> remaining <span style='color:#ff0000;'>" . mkprettytime($lottery_config['end_date'] - TIME_NOW) . "</span><br>
-       <p style='text-align:center'>" . ($CURUSER['class'] >= $valid['viewtickets']['minclass'] ? "<a href='lottery.php?do=viewtickets'>[View bought tickets]</a>&nbsp;&nbsp;" : '') . "<a href='lottery.php?do=tickets'>[Buy tickets]</a></p>");
+       <p style='text-align:center'>" . ($CURUSER['class'] >= $valid['viewtickets']['minclass'] ? "<a href='lottery.php?do=viewtickets'>[View bought tickets]</a>&#160;&#160;" : '') . "<a href='lottery.php?do=tickets'>[Buy tickets]</a></p>");
         }
         //get last lottery data
         if (!empty($lottery_config['lottery_winners'])) {
@@ -67,12 +64,12 @@ switch (true) {
             }
             $html .= begin_main_frame();
             $html .= stdmsg('Lottery Winners Info', "<ul style='text-align:left;'><li>Last winners: " . join(', ', $last_winners) . '</li><li>Amount won	(each): ' . $lottery_config['lottery_winners_amount'] . "</li></ul><br>
-        <p style='text-align:center'>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "<a href='lottery.php?do=config'>[Lottery configuration]</a>&nbsp;&nbsp;" : 'Nothing Configured Atm Sorry') . '</p>');
+        <p style='text-align:center'>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "<a href='lottery.php?do=config'>[Lottery configuration]</a>&#160;&#160;" : 'Nothing Configured Atm Sorry') . '</p>');
             $html .= end_main_frame();
         } else {
             $html .= begin_main_frame();
             $html .= '<ul><li> Nobody has won, because nobody has played yet : )</li></ul>';
-            $html .= "<p style='text-align:center'>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "<a href='lottery.php?do=config'>[Lottery configuration]</a>&nbsp;&nbsp;" : 'Nothing Configured Atm Sorry') . '</p>';
+            $html .= "<p style='text-align:center'>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "<a href='lottery.php?do=config'>[Lottery configuration]</a>&#160;&#160;" : 'Nothing Configured Atm Sorry') . '</p>';
             $html .= end_main_frame();
         }
         echo stdhead('Lottery') . $html . stdfoot();

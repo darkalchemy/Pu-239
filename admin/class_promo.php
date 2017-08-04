@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 <title>Error!</title>
 </head>
 <body>
-<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 </body></html>";
     echo $HTMLOUT;
     exit();
@@ -112,7 +109,7 @@ $HTMLOUT .= "<h3>{$lang['classpromo_user_sett']}</h3>
 <form name='edit' action='staffpanel.php?tool=class_promo&amp;mode=edit' method='post'>
 <table width='100%' border='0' cellpadding='5' cellspacing='0' ><tr>
 <td align='center'>{$lang['classpromo_clsname']}</td>
-<td align='center'>&nbsp;</td>
+<td align='center'>&#160;</td>
 <td align='center'>{$lang['classpromo_minratio']}</td>
 <td align='center'>{$lang['classpromo_minupl']}</td>
 <td align='center'>{$lang['classpromo_mintime']}</td>
@@ -125,7 +122,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
 <tr>
 
 <td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='25' value='" . get_user_class_name(htmlsafechars($arr['name'])) . " ' readonly='readonly'/> (" . htmlsafechars($arr['name']) . ")</td>
-<td class='table' align='center'>&nbsp;<input type='hidden' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['id']) . "' /></td>
+<td class='table' align='center'>&#160;<input type='hidden' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['id']) . "' /></td>
 <td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['min_ratio']) . "'  /></td>
 <td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['uploaded']) . "' /></td>
 <td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['time']) . "'  /></td>
@@ -135,17 +132,17 @@ while ($arr = mysqli_fetch_assoc($res)) {
 <form name='remove' action='staffpanel.php?tool=class_promo&amp;mode=remove' method='post'><input type='hidden' name='remove' value='" . htmlsafechars($arr['name']) . "' /><input type='submit' value='{$lang['classpromo_remove']}' /></form></td>
 </tr>";
 }
-//$HTMLOUT.= "<br /><br /> ";
+//$HTMLOUT.= "<br><br> ";
 
 $HTMLOUT .= "<tr><td colspan='7' class='table' align='center'><input type='submit' value='{$lang['classpromo_apply']}' /></td></tr></table></form>";
 
 $HTMLOUT .= "<div class='usage'>
-{$lang['classpromo_info_minratio']}<br />
-{$lang['classpromo_info_minupl']}<br />
+{$lang['classpromo_info_minratio']}<br>
+{$lang['classpromo_info_minupl']}<br>
 
-{$lang['classpromo_info_mintime']}<br />
+{$lang['classpromo_info_mintime']}<br>
 
-{$lang['classpromo_info_lowratio']}<br />
+{$lang['classpromo_info_lowratio']}<br>
 
 </div>";
 

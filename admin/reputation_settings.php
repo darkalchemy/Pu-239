@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -94,7 +91,7 @@ $HTMLOUT = '<div>
 								 </tr>
 								 </table>
 </div>
-<br />
+<br>
 <div style="border: 1px solid rgb(0, 0, 0); padding: 5px;">
 
 	<form action="staffpanel.php?tool=reputation_settings" name="repoptions" method="post">
@@ -144,7 +141,7 @@ $HTMLOUT = '<div>
 							
 							<table width="100%" border="0" cellpadding="5" cellspacing="0">
 							 <tr>
-							 <td width="70%"><b>' . $lang['repset_admin'] . '</b><div><hr style="color:#A83838;" size="1" /></div><div style="color: lightgrey;">' . $lang['repset_adminmsg'] . '<br />' . $lang['repset_adminmsg1'] . '</div></td>
+							 <td width="70%"><b>' . $lang['repset_admin'] . '</b><div><hr style="color:#A83838;" size="1" /></div><div style="color: lightgrey;">' . $lang['repset_adminmsg'] . '<br>' . $lang['repset_adminmsg1'] . '</div></td>
 							 <td class="tablerow2" width="20%"><div style="width: auto;" align="left"><input name="rep_adminpower" value="<#rep_adminpower#>" size="30" type="text"></div></td>
 
 							 </tr>
@@ -224,7 +221,7 @@ function template_out($matches)
 {
     global $GVARS, $INSTALLER09, $lang;
     if ($matches[1] == 'rep_is_online') {
-        return '' . $lang['repset_yes'] . '<input name="rep_is_online" value="1" ' . ($GVARS['rep_is_online'] == 1 ? 'checked="checked"' : '') . ' type="radio">&nbsp;&nbsp;&nbsp;<input name="rep_is_online" value="0" ' . ($GVARS['rep_is_online'] == 1 ? '' : 'checked="checked"') . ' type="radio">' . $lang['repset_no'] . '';
+        return '' . $lang['repset_yes'] . '<input name="rep_is_online" value="1" ' . ($GVARS['rep_is_online'] == 1 ? 'checked="checked"' : '') . ' type="radio">&#160;&#160;&#160;<input name="rep_is_online" value="0" ' . ($GVARS['rep_is_online'] == 1 ? '' : 'checked="checked"') . ' type="radio">' . $lang['repset_no'] . '';
     } else {
         return $GVARS[$matches[1]];
     }
@@ -248,8 +245,8 @@ function redirect($url, $text, $time = 2)
 							<div>{$lang['repset_redirecting']}</div>
 							<div style='padding:8px'>
 							 <div style='font-size:12px'>$text
-							 <br />
-							 <br />
+							 <br>
+							 <br>
 							 <center><a href='{$INSTALLER09['baseurl']}/{$url}'>{$lang['repset_clickredirect']}</a></center>
 							 </div>
 							</div>

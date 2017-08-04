@@ -57,7 +57,7 @@ $htmlout = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
     <table width='300' border='0' cellpadding='0' cellspacing='0'>
     <!--Error pic layout-->
     <tr>
-    <td width='300' height='50' valign='top'><!--Error 404 EmptyCell-->&nbsp;</td>
+    <td width='300' height='50' valign='top'><!--Error 404 EmptyCell-->&#160;</td>
     </tr>
     <tr>
     <td height='520' valign='top'><img src='{$INSTALLER09['pic_base_url']}error404.png' alt='Error Not Found' width='300' height='520' border='0' usemap='#Map' /></td>
@@ -69,7 +69,7 @@ $htmlout = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
     <area shape='rect' coords='99,425,203,481' alt='Error Not Found' />
     </map>
     <p align='center'><b>{$page}</b></p>
-    <p align='center'>{$text}</p><br />
+    <p align='center'>{$text}</p><br>
     <p align='center'>You will be redirected back to {$domain} in 5 seconds</p>
     </body>
     </html>";

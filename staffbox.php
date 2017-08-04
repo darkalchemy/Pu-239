@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
@@ -89,16 +86,16 @@ switch ($do) {
                 $HTMLOUT = begin_main_frame() . begin_frame($lang['staffbox_pm_view']);
                 $HTMLOUT .= "<form action='" . $_SERVER['PHP_SELF'] . "' method='post'>
 					      <div class='global_icon_sb'><img src='images/global.design/helpdesk.png' alt='' title='Helpdesk' class='global_image' width='25'/></div>
-                <div class='global_head_sb'>Helpdesk</div><br />
-                <div class='global_text_sb'><br /><br />
+                <div class='global_head_sb'>Helpdesk</div><br>
+                <div class='global_text_sb'><br><br>
 								<table width='90%' border='1' cellspacing='0' cellpadding='5' align='center'>
-								 <tr><td>{$lang['staffbox_pm_from']}&nbsp;<a href='userdetails.php?id=" . (int)$a['sender'] . "'>" . htmlsafechars($a['username']) . '</a> at ' . get_date($a['added'], 'DATE', 1) . "<br/>
-								 {$lang['staffbox_pm_subject']} : <b>" . htmlsafechars($a['subject']) . "</b><br/>
+								 <tr><td>{$lang['staffbox_pm_from']}&#160;<a href='userdetails.php?id=" . (int)$a['sender'] . "'>" . htmlsafechars($a['username']) . '</a> at ' . get_date($a['added'], 'DATE', 1) . "<br>
+								 {$lang['staffbox_pm_subject']} : <b>" . htmlsafechars($a['subject']) . "</b><br>
 								 {$lang['staffbox_pm_answered']} : <b>" . ($a['answeredby'] > 0 ? "<a href='userdetails.php?id=" . (int)$a['answeredby'] . "'>" . htmlsafechars($a['username2']) . '</a>' : "<span style='color:#ff0000'>No</span>") . '</b>
 								</td></tr>
 								<tr><td>' . format_comment($a['msg']) . "
 								</td></tr>
-								<tr><td>{$lang['staffbox_pm_answer']}<br/>
+								<tr><td>{$lang['staffbox_pm_answer']}<br>
 									" . ($a['answeredby'] == 0 ? "<textarea rows='5' cols='75' name='message' ></textarea>" : ($a['answer'] ? format_comment($a['answer']) : "<b>{$lang['staffbox_pm_noanswer']}</b>")) . "
 								</td></tr>
 								<tr><td align='left'>
@@ -147,7 +144,7 @@ switch ($do) {
             $HTMLOUT .= "<form method='post' name='staffbox' action='" . $_SERVER['PHP_SELF'] . "'>
 	<div class='global_icon_sb'><img src='images/global.design/helpdesk.png' alt='' title='Helpdesk' class='global_image' width='25'/></div>
   <div class='global_head_sb'>Helpdesk</div>
-  <div class='global_text_sb'><br />";
+  <div class='global_text_sb'><br>";
             $HTMLOUT .= $pager['pagertop'];
             $HTMLOUT .= "<table width='80%' border='1' cellspacing='0' cellpadding='5' align='center'>";
             $HTMLOUT .= "<tr>
@@ -162,7 +159,7 @@ switch ($do) {
                 $HTMLOUT .= "<tr>
                    <td align='center'><a href='" . $_SERVER['PHP_SELF'] . '?do=view&amp;id=' . (int)$a['id'] . "'>" . htmlsafechars($a['subject']) . "</a></td>
                    <td align='center'><b>" . ($a['username'] ? "<a href='userdetails.php?id=" . (int)$a['sender'] . "'>" . htmlsafechars($a['username']) . '</a>' : 'Unknown[' . (int)$a['sender'] . ']') . "</b></td>
-                   <td align='center' nowrap='nowrap'>" . get_date($a['added'], 'DATE', 1) . "<br/><span class='small'>" . get_date($a['added'], 0, 1) . "</span></td>
+                   <td align='center' nowrap='nowrap'>" . get_date($a['added'], 'DATE', 1) . "<br><span class='small'>" . get_date($a['added'], 0, 1) . "</span></td>
 				   <td align='center'><b>" . ($a['answeredby'] > 0 ? "by <a href='userdetails.php?id=" . (int)$a['answeredby'] . "'>" . htmlsafechars($a['username2']) . '</a>' : "<span style='color:#ff0000'>No</span>") . "</b></td>
                    <td align='center'><input type='checkbox' name='id[]' value='" . (int)$a['id'] . "' /></td>
                   </tr>\n";

@@ -7,6 +7,10 @@ if (!file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php')) {
 }
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php';
+
+// start session on every page request
+sessionStart();
+
 require_once CACHE_DIR . 'free_cache.php';
 require_once CACHE_DIR . 'site_settings.php';
 require_once CACHE_DIR . 'staff_settings.php';
@@ -170,7 +174,7 @@ function check_bans($ip, &$reason = '')
     $key = 'bans:::' . $ip;
     if (($ban = $mc1->get_value($key)) === false) {
         $nip = ipToStorageFormat($ip);
-        $ban_sql = sql_query('SELECT comment FROM bans WHERE (first <= ' . $nip . ' AND last >= ' . $nip . ') LIMIT 1');
+        $ban_sql = sql_query('SELECT comment FROM bans WHERE (first <= ' . sqlesc($nip) . ' AND last >= ' . sqlesc($nip) . ') LIMIT 1');
         if (mysqli_num_rows($ban_sql)) {
             $comment = mysqli_fetch_row($ban_sql);
             $reason = 'Manual Ban (' . $comment[0] . ')';
@@ -521,6 +525,10 @@ function userlogin()
         'pm_system'    => '%s is viewing the <a href="%s">mailbox page</a>',
         'userdetails'  => '%s is viewing the <a href="%s">personal profile page</a>',
         'details'      => '%s is viewing the <a href="%s">torrents details page</a>',
+        'games'        => '%s is viewing the <a href="%s">games page</a>',
+        'arcade'       => '%s is viewing the <a href="%s">arcade page</a>',
+        'flash'        => '%s is playing a <a href="%s">flash game</a>',
+        'arcade_top_score' => '%s is viewing the <a href="%s">arcade top scores page</a>',
         'unknown'      => '%s location is unknown',
     ];
     if (preg_match('/\/(.*?)\.php/is', $_SERVER['REQUEST_URI'], $whereis_temp)) {
@@ -958,6 +966,17 @@ function get_row_count($table, $suffix = '')
     return (int)$a[0];
 }
 
+function get_one_row($table, $suffix, $where)
+{
+    $r = sql_query("SELECT $suffix FROM $table $where") or sqlerr(__FILE__, __LINE__);
+    $a = mysqli_fetch_row($r);
+    if (isset($a[0])) {
+        return $a[0];
+    } else {
+        return false;
+    }
+}
+
 function stderr($heading, $text)
 {
     $htmlout = stdhead();
@@ -1323,20 +1342,23 @@ function sessionStart()
             $INSTALLER09['sessionCookieSecure']
         );
 
+        // enforce php settings before start session
+        ini_set('session.use_strict_mode', 1);
+        ini_set('session.use_trans_sid', '0');
+
         // Start the session:
         session_start();
+    }
 
-        // Make sure we have a canary set
-        if (!isset($_SESSION['canary'])) {
-            session_regenerate_id(true);
-            $_SESSION['canary'] = time();
-        }
+    // Create a new CSRF token.
+    if (!isset($_SESSION['csrf_token'])) {
+        setSessionVar('csrf_token', bin2hex(random_bytes(64)));
+    }
 
-        // Regenerate session ID every five minutes:
-        if ($_SESSION['canary'] < time() - 300) {
-            regenerateSessionID();
-            $_SESSION['canary'] = time();
-        }
+    // Make sure we have a canary set and Regenerate session ID every five minutes:
+    if (!isset($_SESSION['canary']) || $_SESSION['canary'] < time() - 300) {
+        regenerateSessionID();
+        setSessionVar('canary', time());
     }
 }
 
@@ -1363,6 +1385,17 @@ function regenerateSessionID()
     }
 }
 
+function validateToken($token) {
+    if (empty($token)) {
+        return false;
+    } elseif (hash_equals($_SESSION['csrf_token'], $token)) {
+        unsetSessionVar('csrf_token');
+        setSessionVar('csrf_token', bin2hex(random_bytes(64)));
+        return true;
+    }
+    return false;
+}
+
 function ipToStorageFormat($ip)
 {
     if (function_exists('inet_pton')) {
@@ -1374,10 +1407,62 @@ function ipToStorageFormat($ip)
     return @pack('N', @ip2long($ip));
 }
 
+function ipFromStorageFormat($ip)
+{
+    if (function_exists('inet_ntop')) {
+        // ipv4 & ipv6:
+        return @inet_ntop($ip);
+    }
+    // Only ipv4:
+    $unpacked = @unpack('Nlong', $ip);
+    if (isset($unpacked['long'])) {
+        return @long2ip($unpacked['long']);
+    }
+
+    return null;
+}
+
+function setSessionVar($key, $value, $prefix = null)
+{
+    global $INSTALLER09;
+    if ($prefix === null) {
+        $prefix = $INSTALLER09['sessionKeyPrefix'];
+    }
+
+    // Set the session value:
+    $_SESSION[$prefix . $key] = $value;
+}
+
+function getSessionVar($key, $prefix = null)
+{
+    global $INSTALLER09;
+    if ($prefix === null) {
+        $prefix = $INSTALLER09['sessionKeyPrefix'];
+    }
+
+    // Return the session value if existing:
+    if (isset($_SESSION[$prefix . $key])) {
+        return $_SESSION[$prefix . $key];
+    } else {
+        return null;
+    }
+}
+
+function unsetSessionVar($key, $prefix = null)
+{
+    global $INSTALLER09;
+    if ($prefix === null) {
+        $prefix = $INSTALLER09['sessionKeyPrefix'];
+    }
+
+    // Set the session value:
+    unset($_SESSION[$prefix . $key]);
+}
+
 function salty($username)
 {
     global $INSTALLER09;
-    return hash('sha256', $INSTALLER09['site']['salt1'] . $username);
+    return bin2hex(random_bytes(64));
 }
 
 if (file_exists('install/index.php')) {

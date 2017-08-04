@@ -1,5 +1,4 @@
 <?php
-
 //== Latest forum posts [set limit from config]
 $HTMLOUT .= "
 	<fieldset class='header'>
@@ -62,7 +61,7 @@ if (count($topics) > 0) {
                 if ($CURUSER['class'] < UC_STAFF && $topicarr['user_id'] != $CURUSER['id']) {
                     $username = (!empty($topicarr['username']) ? "<i>{$lang['index_fposts_anonymous']}</i>" : "<i>{$lang['index_fposts_unknow']}</i>");
                 } else {
-                    $username = (!empty($topicarr['username']) ? "<i>{$lang['index_fposts_anonymous']}</i><br /><a href='" . $INSTALLER09['baseurl'] . '/userdetails.php?id=' . (int)$topicarr['puser_id'] . "'><b>[" . htmlsafechars($topicarr['username']) . ']</b></a>' : "<i>{$lang['index_fposts_unknow']}[$topic_userid]</i>");
+                    $username = (!empty($topicarr['username']) ? "<i>{$lang['index_fposts_anonymous']}</i><br><a href='" . $INSTALLER09['baseurl'] . '/userdetails.php?id=' . (int)$topicarr['puser_id'] . "'><b>[" . htmlsafechars($topicarr['username']) . ']</b></a>' : "<i>{$lang['index_fposts_unknow']}[$topic_userid]</i>");
                 }
             } else {
                 $username = (!empty($topicarr['username']) ? "<a href='" . $INSTALLER09['baseurl'] . '/userdetails.php?id=' . (int)$topicarr['puser_id'] . "'><b>" . htmlsafechars($topicarr['username']) . '</b></a>' : "<i>{$lang['index_fposts_unknow']}[$topic_userid]</i>");
@@ -71,15 +70,15 @@ if (count($topics) > 0) {
                 if ($CURUSER['class'] < UC_STAFF && $topicarr['user_id'] != $CURUSER['id']) {
                     $author = (!empty($topicarr['u2_username']) ? "<i>{$lang['index_fposts_anonymous']}</i>" : ($topic_userid == '0' ? '<i>System</i>' : "<i>{$lang['index_fposts_unknow']}</i>"));
                 } else {
-                    $author = (!empty($topicarr['u2_username']) ? "<i>{$lang['index_fposts_anonymous']}</i><br /><a href='" . $INSTALLER09['baseurl'] . '/userdetails.php?id=' . $topic_userid . "'><b>[" . htmlsafechars($topicarr['u2_username']) . ']</b></a>' : ($topic_userid == '0' ? '<i>System</i>' : "<i>{$lang['index_fposts_unknow']}[$topic_userid]</i>"));
+                    $author = (!empty($topicarr['u2_username']) ? "<i>{$lang['index_fposts_anonymous']}</i><br><a href='" . $INSTALLER09['baseurl'] . '/userdetails.php?id=' . $topic_userid . "'><b>[" . htmlsafechars($topicarr['u2_username']) . ']</b></a>' : ($topic_userid == '0' ? '<i>System</i>' : "<i>{$lang['index_fposts_unknow']}[$topic_userid]</i>"));
                 }
             } else {
                 $author = (!empty($topicarr['u2_username']) ? "<a href='" . $INSTALLER09['baseurl'] . '/userdetails.php?id=' . $topic_userid . "'><b>" . htmlsafechars($topicarr['u2_username']) . '</b></a>' : ($topic_userid == '0' ? '<i>System</i>' : "<i>{$lang['index_fposts_unknow']}[$topic_userid]</i>"));
             }
             $staffimg = ($topicarr['min_class_read'] >= UC_STAFF ? "<img src='" . $INSTALLER09['pic_base_url'] . "staff.png' border='0' alt='Staff forum' title='Staff Forum' />" : '');
-            $stickyimg = ($topicarr['sticky'] == 'yes' ? "<img src='" . $INSTALLER09['pic_base_url'] . "sticky.gif' border='0' alt='{$lang['index_fposts_sticky']}' title='{$lang['index_fposts_stickyt']}' />&nbsp;&nbsp;" : '');
-            $lockedimg = ($topicarr['locked'] == 'yes' ? "<img src='" . $INSTALLER09['pic_base_url'] . "forumicons/locked.gif' border='0' alt='{$lang['index_fposts_locked']}' title='{$lang['index_fposts_lockedt']}' />&nbsp;" : '');
-            $topic_name = $lockedimg . $stickyimg . "<a href='/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=last#" . (int)$topicarr['last_post'] . "'><b>" . htmlsafechars($topicarr['topic_name']) . "</b></a>&nbsp;&nbsp;$staffimg&nbsp;&nbsp;$menu<br /><font class='small'>{$lang['index_fposts_in']}<a href='forums.php?action=view_forum&amp;forum_id=" . (int)$topicarr['forum_id'] . "'>" . htmlsafechars($topicarr['name']) . "</a>&nbsp;by&nbsp;$author&nbsp;&nbsp;($added)</font>";
+            $stickyimg = ($topicarr['sticky'] == 'yes' ? "<img src='" . $INSTALLER09['pic_base_url'] . "sticky.gif' border='0' alt='{$lang['index_fposts_sticky']}' title='{$lang['index_fposts_stickyt']}' />&#160;&#160;" : '');
+            $lockedimg = ($topicarr['locked'] == 'yes' ? "<img src='" . $INSTALLER09['pic_base_url'] . "forumicons/locked.gif' border='0' alt='{$lang['index_fposts_locked']}' title='{$lang['index_fposts_lockedt']}' />&#160;" : '');
+            $topic_name = $lockedimg . $stickyimg . "<a href='/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=last#" . (int)$topicarr['last_post'] . "'><b>" . htmlsafechars($topicarr['topic_name']) . "</b></a>&#160;&#160;$staffimg&#160;&#160;$menu<br><font class='small'>{$lang['index_fposts_in']}<a href='forums.php?action=view_forum&amp;forum_id=" . (int)$topicarr['forum_id'] . "'>" . htmlsafechars($topicarr['name']) . "</a>&#160;by&#160;$author&#160;&#160;($added)</font>";
             $HTMLOUT .= "
 					<tr>
 						<td>{$topic_name}</td>
@@ -92,7 +91,7 @@ if (count($topics) > 0) {
 				</table>
 			</div>
 	</fieldset>
-	<hr />\n";
+	<hr>\n";
     } else {
         //if there are no posts...
         if (empty($topics)) {
@@ -100,7 +99,7 @@ if (count($topics) > 0) {
         <tr><td colspan='4'>
          {$lang['latestposts_no_posts']}
         </td></tr></table>
-        </div></fieldset><hr />\n";
+        </div></fieldset><hr>\n";
         }
     }
 }

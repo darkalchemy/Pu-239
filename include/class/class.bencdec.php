@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-
 /*
 Author: djGrrr <djgrrr AT p2p-network DOT net>
 Version: 1.2.5

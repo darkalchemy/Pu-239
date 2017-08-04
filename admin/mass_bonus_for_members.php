@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//=== mass bonus stuff for members coded for TB sites 2011 ~ snuggs
 if (!defined('IN_INSTALLER09_ADMIN')) {
     header('HTTP/1.0 404 Not Found');
     $HTMLOUT = '';
@@ -12,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 </head><body>
 <h1>Not Found</h1>
 <p>The requested URL ' . htmlsafechars($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], '/') + 1) . ' was not found on this server.</p>
-<hr />
+<hr>
 <address>' . $_SERVER['SERVER_SOFTWARE'] . ' Server at ' . $INSTALLER09['baseurl'] . ' Port 80</address>
 </body></html>';
     echo $HTMLOUT;
@@ -584,11 +580,11 @@ $HTMLOUT .= '<form name="inputform" method="post" action="staffpanel.php?tool=ma
     <tr>
         <td align="right" class="one" width="160px" valign="top"><span style="font-weight: bold;">' . $lang['bonusmanager_bonus_type'] . '</span></td>
         <td align="left" class="one">' . $drop_down . '
-        <div id="div_upload_credit" class="select_me"><br />' . $bonus_GB . '<hr /></div>
-        <div id="div_karma" class="select_me"><br />' . $karma_drop_down . '<hr /></div>
-        <div id="div_freeslots" class="select_me"><br />' . $free_leech_slot_drop_down . '<hr /></div>
-        <div id="div_invite" class="select_me"><br />' . $invites_drop_down . '<hr /></div>
-        <div id="div_pm" class="select_me"><br />' . $pm_drop_down . '<hr /></div>
+        <div id="div_upload_credit" class="select_me"><br>' . $bonus_GB . '<hr></div>
+        <div id="div_karma" class="select_me"><br>' . $karma_drop_down . '<hr></div>
+        <div id="div_freeslots" class="select_me"><br>' . $free_leech_slot_drop_down . '<hr></div>
+        <div id="div_invite" class="select_me"><br>' . $invites_drop_down . '<hr></div>
+        <div id="div_pm" class="select_me"><br>' . $pm_drop_down . '<hr></div>
         </td>
     </tr>                
 	<tr>
@@ -596,11 +592,11 @@ $HTMLOUT .= '<form name="inputform" method="post" action="staffpanel.php?tool=ma
         <td valign="top" align="left" class="one">
         <input type="checkbox" id="all_or_selected_classes" name="all_or_selected_classes" value="1"  checked="checked" /> 
         <span style="font-weight: bold;">' . $lang['bonusmanager_all_classes'] . '</span>' . $lang['bonusmanager_uncheck'] . '
-        <div id="classes_open" style="display:none;"><br />' . $all_classes_check_boxes . '</div></td>
+        <div id="classes_open" style="display:none;"><br>' . $all_classes_check_boxes . '</div></td>
 	</tr>            
 	<tr>
 		<td class="one" valign="top" align="right"></td>
-        <td valign="top" align="left" class="one">' . $lang['bonusmanager_note'] . '<br /></td>
+        <td valign="top" align="left" class="one">' . $lang['bonusmanager_note'] . '<br></td>
 	</tr>        
     <tr>
         <td align="center" class="one" colspan="2">

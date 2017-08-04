@@ -1,5 +1,4 @@
 <?php
-
 //==Installer09 MemCached News
 $adminbutton = '';
 if ($CURUSER['class'] >= UC_STAFF) {
@@ -27,7 +26,7 @@ if ($news) {
             $button = "
     <div class='pull-right'>
     <a href='staffpanel.php?tool=news&amp;mode=edit&amp;newsid=" . (int)$array['nid'] . "'>
-    <i class='icon-edit' title='{$lang['index_news_ed']}' ></i></a>&nbsp;
+    <i class='icon-edit' title='{$lang['index_news_ed']}' ></i></a>&#160;
     <a href='staffpanel.php?tool=news&amp;mode=delete&amp;newsid=" . (int)$array['nid'] . "&amp;h={$hash}'>
     <i class='icon-remove' title='{$lang['index_news_del']}' ></i></a>
     </div>";
@@ -38,31 +37,31 @@ if ($news) {
             $HTMLOUT .= "
     <div class='section'>
     <a href=\"javascript: klappe_news('a" . (int)$array['nid'] . "')\">
-    <img border=\"0\" src='pic/plus.png' id=\"pica" . (int)$array['nid'] . "\" alt=\"{$lang['index_hide_show']}\" />&nbsp;" . get_date($array['added'], 'DATE') . "{$lang['index_news_txt']}" . '' . htmlsafechars($array['title']) . "</a>{$lang['index_news_added']}<b>" . (($array['anonymous'] == 'yes' && $CURUSER['class'] < UC_STAFF && $array['userid'] != $CURUSER['id']) ? "<i>{$lang['index_news_anon']}</i>" : format_username($array)) . "</b>
+    <img border=\"0\" src='pic/plus.png' id=\"pica" . (int)$array['nid'] . "\" alt=\"{$lang['index_hide_show']}\" />&#160;" . get_date($array['added'], 'DATE') . "{$lang['index_news_txt']}" . '' . htmlsafechars($array['title']) . "</a>{$lang['index_news_added']}<b>" . (($array['anonymous'] == 'yes' && $CURUSER['class'] < UC_STAFF && $array['userid'] != $CURUSER['id']) ? "<i>{$lang['index_news_anon']}</i>" : format_username($array['userid'])) . "</b>
     {$button}
     </div></div>";
             $HTMLOUT .= '
     <div id="ka' . (int)$array['nid'] . '" style="display:' . ($array['sticky'] == 'yes' ? '' : 'none') . ';margin-left:20px;margin-top:10px;"> ' . format_comment($array['body'], 0) . ' 
-    </div><br /> ';
+    </div><br> ';
             $news_flag = ($news_flag + 1);
         } else {
             $HTMLOUT .= "
     <div class='section'>
     <a href=\"javascript: klappe_news('a" . (int)$array['nid'] . "')\">
-    <img border=\"0\" src='pic/plus.png' id=\"pica" . (int)$array['nid'] . "\" alt=\"{$lang['index_news_title']}\" />&nbsp;" . get_date($array['added'], 'DATE') . "{$lang['index_news_txt']}" . '' . htmlsafechars($array['title']) . "</a>{$lang['index_news_added']}<b>" . (($array['anonymous'] == 'yes' && $CURUSER['class'] < UC_STAFF && $array['userid'] != $CURUSER['id']) ? "<i>{$lang['index_news_anon']}</i>" : format_username($array)) . "</b>
+    <img border=\"0\" src='pic/plus.png' id=\"pica" . (int)$array['nid'] . "\" alt=\"{$lang['index_news_title']}\" />&#160;" . get_date($array['added'], 'DATE') . "{$lang['index_news_txt']}" . '' . htmlsafechars($array['title']) . "</a>{$lang['index_news_added']}<b>" . (($array['anonymous'] == 'yes' && $CURUSER['class'] < UC_STAFF && $array['userid'] != $CURUSER['id']) ? "<i>{$lang['index_news_anon']}</i>" : format_username($array['userid'])) . "</b>
     {$button}
     </div></div>";
             $HTMLOUT .= '
     <div id="ka' . (int)$array['nid'] . '" style="display:' . ($array['sticky'] == 'yes' ? '' : 'none') . ';margin-left:20px;margin-top:10px;"> ' . format_comment($array['body'], 0) . ' 
-    </div><hr /> ';
+    </div><hr> ';
         }
     }
     $HTMLOUT .= "
-    </div></fieldset><hr />\n";
+    </div></fieldset><hr>\n";
 }
 if (empty($news)) {
     $HTMLOUT .= "{$lang['index_news_not']}
-    </div></fieldset><hr />\n";
+    </div></fieldset><hr>\n";
 }
 //==End
 // End Class

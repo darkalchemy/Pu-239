@@ -1,20 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/**********************************************************
- * New 2010 forums that don't suck for TB based sites....
- * search based on nothing lol did this one from a clean page.
- * it's possible some TB code snuck in, who knows lol
- *
- * beta fri june 11th 2010 v0.1
- *
- * thanks to Retro, pdq, google & php.net for suggestions and ideas :D
- * and thanks to fusion at stackoverflow.com  for the
- * great search string highlighting code... well done!
- *
- * Powered by Bunnies!!!
- **********************************************************/
 error_reporting(0);
 if (!defined('BUNNY_FORUMS')) {
     $HTMLOUT = '';
@@ -55,7 +39,7 @@ if ($author) {
     $arr_member = mysqli_fetch_assoc($res_member);
     $author_id = (int)$arr_member['id'];
     //=== if no member found
-    $author_error = ($author_id == 0 ? '<h1>' . $lang['sea_sorry_no_member_found_with_that_username.'] . '</h1>' . $lang['sea_please_check_the_spelling.'] . '<br />' : '');
+    $author_error = ($author_id == 0 ? '<h1>' . $lang['sea_sorry_no_member_found_with_that_username.'] . '</h1>' . $lang['sea_please_check_the_spelling.'] . '<br>' : '');
 }
 //=== if searched
 if ($search) {
@@ -106,17 +90,17 @@ if ($search) {
 	</tr></table>';
     //=== nothing here? kill the page
     if ($count == 0) {
-        $content .= '<br /><a name="results"></a><br /><table border="0" cellspacing="10" cellpadding="10" width="800px">
+        $content .= '<br><a name="results"></a><br><table border="0" cellspacing="10" cellpadding="10" width="800px">
 	<tr><td class="forum_head_dark"align="center">
 	' . $lang['sea_nothing_found'] . ' 
 	</td></tr>
 	<tr><td class="three"align="center">
-	' . $lang['sea_please_try_again_with_a_refined_search_string.'] . '<br /><br />
-	</td></tr></table><br /><br />';
+	' . $lang['sea_please_try_again_with_a_refined_search_string.'] . '<br><br>
+	</td></tr></table><br><br>';
     } else {
         //=== if show as list:
         if ($show_as === 'list') {
-            $content .= ($count > 0 ? '<div style="font-weight: bold;">' . $lang['sea_search_results'] . ' ' . $count . ' </div>' : '') . '<br />' . $the_top_and_bottom . '
+            $content .= ($count > 0 ? '<div style="font-weight: bold;">' . $lang['sea_search_results'] . ' ' . $count . ' </div>' : '') . '<br>' . $the_top_and_bottom . '
 	<a name="results"></a>
 	<table border="0" cellspacing="10" cellpadding="10" width="90%" align="center">	
 	<tr>
@@ -180,14 +164,14 @@ if ($search) {
 		</td>
 		<td align="left" class="' . $class . '">
 		<a class="altlink" href="forums.php?action=view_forum&amp;forum_id=' . (int)$arr['forum_id'] . '" title="' . $lang['sea_go_to_forum'] . '">' . htmlsafechars($arr['forum_name'], ENT_QUOTES) . '</a>
-		' . ($arr['forum_desc'] != '' ? '<br />&#9658; <span style="font-size: x-small;">' . htmlsafechars($arr['forum_desc'], ENT_QUOTES) . '</span>' : '') . '</td>
+		' . ($arr['forum_desc'] != '' ? '<br>&#9658; <span style="font-size: x-small;">' . htmlsafechars($arr['forum_desc'], ENT_QUOTES) . '</span>' : '') . '</td>
 		<td align="center" class="' . $class . '">' . round($arr['relevance'], 3) . '</td>
 		<td align="center" class="' . $class . '">' . number_format($posts - 1) . '</td>
 		<td align="center" class="' . $class . '">' . number_format($arr['views']) . '</td>
-		<td align="center" class="' . $class . '"><span style="white-space:nowrap;">' . get_date($arr['added'], '') . '</span><br /></td>
+		<td align="center" class="' . $class . '"><span style="white-space:nowrap;">' . get_date($arr['added'], '') . '</span><br></td>
 		</tr>';
             }
-            $content .= '</table>' . $the_top_and_bottom . '<br />
+            $content .= '</table>' . $the_top_and_bottom . '<br>
 		<form action="#" method="get">
 		<span style="font-weight: bold;">' . $lang['sea_per_page'] . ':</span> <select name="box" onchange="location = this.options[this.selectedIndex].value;">
 		<option value=""> ' . $lang['sea_select'] . ' </option>
@@ -196,14 +180,14 @@ if ($search) {
 		<option value="forums.php?action=search&amp;page=0&amp;perpage=50' . $pager_links . '"' . ($perpage == 50 ? ' selected="selected"' : '') . '>50</option>
 		<option value="forums.php?action=search&amp;page=0&amp;perpage=100' . $pager_links . '"' . ($perpage == 100 ? ' selected="selected"' : '') . '>100</option>
 		<option value="forums.php?action=search&amp;page=0&amp;perpage=200' . $pager_links . '"' . ($perpage == 200 ? ' selected="selected"' : '') . '>200</option>
-		</select></form><br /><br />';
+		</select></form><br><br>';
         }
     } //=== end if searched
 } //=== end if show as list :D now lets show as posts \\o\o/o//
 //=== if show as posts:
 if ($show_as === 'posts') {
     //=== the top
-    $content .= ($count > 0 ? '<div style="font-weight: bold;">' . $lang['sea_search_results'] . ' ' . $count . ' </div>' : '') . '<br />' . $the_top_and_bottom . '
+    $content .= ($count > 0 ? '<div style="font-weight: bold;">' . $lang['sea_search_results'] . ' ' . $count . ' </div>' : '') . '<br>' . $the_top_and_bottom . '
    <a name="results"></a>
 	<table border="0" cellspacing="10" cellpadding="10" width="90%" align="center">';
     //=== lets do the loop
@@ -228,7 +212,7 @@ if ($show_as === 'posts') {
         if ($arr['edit_date'] > 0) {
             $res_edited = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr['edited_by']));
             $arr_edited = mysqli_fetch_assoc($res_edited);
-            $edited_by = '<br /><br /><br /><span style="font-weight: bold; font-size: x-small;">Last edited by <a class="altlink" href="member_details.php?id=' . (int)$arr['edited_by'] . '">' . htmlsafechars($arr_edited['username']) . '</a> at ' . get_date($arr['edit_date'], '') . ' GMT ' . ($arr['edit_reason'] != '' ? ' </span>[ Reason: ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '');
+            $edited_by = '<br><br><br><span style="font-weight: bold; font-size: x-small;">Last edited by <a class="altlink" href="member_details.php?id=' . (int)$arr['edited_by'] . '">' . htmlsafechars($arr_edited['username']) . '</a> at ' . get_date($arr['edit_date'], '') . ' GMT ' . ($arr['edit_reason'] != '' ? ' </span>[ Reason: ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '');
         }
         $body = ($arr['bbcode'] == 'yes' ? highlightWords(format_comment($arr['body']), $search) : highlightWords(format_comment_no_bbcode($arr['body']), $search));
         $search_post = str_replace(' ', '+', $search);
@@ -240,17 +224,17 @@ if ($show_as === 'posts') {
 	<tr><td class="forum_head" align="left" width="100" valign="middle"><a name="' . $post_id . '"></a>
 	<span style="font-weight: bold;">' . $lang['sea_relevance'] . ': ' . round($arr['relevance'], 3) . '</span></td>
 	<td class="forum_head" align="left" valign="middle">
-	<span style="white-space:nowrap;">' . $post_icon . '<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '&amp;page=' . $page . '#' . (int)$arr['post_id'] . '" title="Link to Post">' . $post_title . '</a>&nbsp;&nbsp;&nbsp;&nbsp; ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span></td>
+	<span style="white-space:nowrap;">' . $post_icon . '<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '&amp;page=' . $page . '#' . (int)$arr['post_id'] . '" title="Link to Post">' . $post_title . '</a>&#160;&#160;&#160;&#160; ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span></td>
 	<td class="forum_head" align="right" valign="middle"><span style="white-space:nowrap;"> 
 	<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#top"><img src="pic/forums/up.gif" alt="' . $lang['fe_top'] . '" title="' . $lang['fe_top'] . '"/></a> 
 	<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#bottom"><img src="pic/forums/down.gif" alt="' . $lang['fe_bottom'] . '" title="' . $lang['fe_bottom'] . '" /></a> 
 	</span></td>
 	</tr>		
-	<tr><td class="' . $class_alt . '" align="center" width="100px" valign="top">' . ($arr['tan'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($arr)) . '<br />' . ($arr['tan'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : print_user_stuff($arr)) . ($arr['anonymous'] == 'yes' || $arr['title'] == '' ? '' : '<br /><span style=" font-size: xx-small;">[' . htmlsafechars($arr['title']) . ']</span>') . '<br /><span style="font-weight: bold;">' . ($arr['tan'] == 'yes' ? '' : get_user_class_name($arr['class'])) . '</span><br />
+	<tr><td class="' . $class_alt . '" align="center" width="100px" valign="top">' . ($arr['tan'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($arr)) . '<br>' . ($arr['tan'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : print_user_stuff($arr)) . ($arr['anonymous'] == 'yes' || $arr['title'] == '' ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($arr['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['tan'] == 'yes' ? '' : get_user_class_name($arr['class'])) . '</span><br>
 	</td><td class="' . $class . '" align="left" valign="top" colspan="2">' . $body . $edited_by . '</td></tr>
 	<tr><td class="' . $class_alt . '" align="right" valign="middle" colspan="3"></td></tr>';
     } //=== end of while loop
-    $content .= '</table>' . $the_top_and_bottom . '<br />
+    $content .= '</table>' . $the_top_and_bottom . '<br>
 	<form action="#" method="get">
 	<span style="font-weight: bold;">' . $lang['sea_per_page'] . ':</span> <select name="box" onchange="location = this.options[this.selectedIndex].value;">
 	<option value=""> ' . $lang['sea_select'] . ' </option>
@@ -259,18 +243,18 @@ if ($show_as === 'posts') {
 	<option value="forums.php?action=search&amp;page=0&amp;perpage=50' . $pager_links . '"' . ($perpage == 50 ? ' selected="selected"' : '') . '>50</option>
 	<option value="forums.php?action=search&amp;page=0&amp;perpage=100' . $pager_links . '"' . ($perpage == 100 ? ' selected="selected"' : '') . '>100</option>
 	<option value="forums.php?action=search&amp;page=0&amp;perpage=200' . $pager_links . '"' . ($perpage == 200 ? ' selected="selected"' : '') . '>200</option>
-	</select></form><br /><br />';
+	</select></form><br><br>';
 }
 //=== start page
-$links = '<span style="text-align: center;"><a class="altlink" href="forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br /><br /></span>';
+$links = '<span style="text-align: center;"><a class="altlink" href="forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';
 $search__help_boolean = '<div id="help"style="display:none"><h1>' . $lang['sea_help_msg1'] . '</h1>
-   <span style="font-weight: bold;">+</span> ' . $lang['sea_help_msg2'] . '<br /><br />
-   <span style="font-weight: bold;">-</span> ' . $lang['sea_help_msg3'] . '<br /><br />
-   ' . $lang['sea_help_msg4'] . ' <br /><br />
-   <span style="font-weight: bold;">*</span> ' . $lang['sea_help_msg5'] . '<br /><br />
-   <span style="font-weight: bold;">> <</span> ' . $lang['sea_help_msg6'] . '<br /><br />
-   <span style="font-weight: bold;">~</span> ' . $lang['sea_help_msg7'] . '<br /><br />
-   <span style="font-weight: bold;">" "</span> ' . $lang['sea_help_msg8'] . ' <br /><br /><span style="font-weight: bold;">( )</span> ' . $lang['sea_help_msg9'] . '<br /><br /></div>';
+   <span style="font-weight: bold;">+</span> ' . $lang['sea_help_msg2'] . '<br><br>
+   <span style="font-weight: bold;">-</span> ' . $lang['sea_help_msg3'] . '<br><br>
+   ' . $lang['sea_help_msg4'] . ' <br><br>
+   <span style="font-weight: bold;">*</span> ' . $lang['sea_help_msg5'] . '<br><br>
+   <span style="font-weight: bold;">> <</span> ' . $lang['sea_help_msg6'] . '<br><br>
+   <span style="font-weight: bold;">~</span> ' . $lang['sea_help_msg7'] . '<br><br>
+   <span style="font-weight: bold;">" "</span> ' . $lang['sea_help_msg8'] . ' <br><br><span style="font-weight: bold;">( )</span> ' . $lang['sea_help_msg9'] . '<br><br></div>';
 $search_in_forums = '<table width="100%" align="center">';
 $row_count = 0;
 $res_forums = sql_query('SELECT o_f.name AS over_forum_name, o_f.id AS over_forum_id, f.id AS real_forum_id, f.name, f.description,  f.forum_id FROM over_forums AS o_f JOIN forums AS f WHERE o_f.min_class_view <= ' . $CURUSER['class'] . ' AND f.min_class_read <=  ' . $CURUSER['class'] . ' ORDER BY o_f.sort, f.sort ASC');
@@ -356,7 +340,7 @@ $sort_by_drop_down = '<select name="sort_by">
 	<option class="body" value="relevance"' . ($sort_by === 'relevance' ? ' selected="selected"' : '') . '>' . $lang['sea_relevance'] . ' [default]</option>
 	<option class="body" value="date"' . ($sort_by === 'date' ? ' selected="selected"' : '') . '>' . $lang['sea_post_date'] . '</option>
 	</select>';
-$HTMLOUT .= '<h1>' . $lang['sea_forums'] . '</h1>' . $links . ($count > 0 ? '<h1>' . $count . ' ' . $lang['sea_search_results'] . ' ' . $lang['sea_below'] . '</h1>' : ($search ? $content : '<br />')) . '
+$HTMLOUT .= '<h1>' . $lang['sea_forums'] . '</h1>' . $links . ($count > 0 ? '<h1>' . $count . ' ' . $lang['sea_search_results'] . ' ' . $lang['sea_below'] . '</h1>' : ($search ? $content : '<br>')) . '
 	<form method="get" action="forums.php?"><input type="hidden" name="action" value="search" /><table border="0" cellspacing="10" cellpadding="10" width="800px" align="center">
 	<tr>
 	<td class="forum_head_dark"align="center" colspan="2"><span style="color: white; font-weight: bold;">' . $INSTALLER09['site_name'] . ' ' . $lang['sea_forums_search'] . '</span></td>
@@ -377,7 +361,7 @@ $HTMLOUT .= '<h1>' . $lang['sea_forums'] . '</h1>' . $links . ($count > 0 ? '<h1
 	<input type="text" class="search" name="search" value="' . htmlsafechars($search) . '" /> 	
 	<span style="text-align: right;">
 	<a class="altlink"  title="' . $lang['sea_open_boolean_search_help'] . '"  id="help_open" style="font-weight:bold;cursor:help;"><img src="pic/forums/more.gif" alt="+" title="+" width="18" /> ' . $lang['sea_open_boolean_search_help'] . '</a> 
-	<a class="altlink"  title="' . $lang['sea_close_boolean_search_help'] . '"  id="help_close" style="font-weight:bold;cursor:pointer;display:none"><img src="pic/forums/less.gif" alt="-" title="-" width="18" /> ' . $lang['sea_close_boolean_search_help'] . '</a> <br />
+	<a class="altlink"  title="' . $lang['sea_close_boolean_search_help'] . '"  id="help_close" style="font-weight:bold;cursor:pointer;display:none"><img src="pic/forums/less.gif" alt="-" title="-" width="18" /> ' . $lang['sea_close_boolean_search_help'] . '</a> <br>
 	</span>' . $search__help_boolean . '</td>
 	</tr>
 	<tr>
@@ -416,7 +400,7 @@ $HTMLOUT .= '<h1>' . $lang['sea_forums'] . '</h1>' . $links . ($count > 0 ? '<h1
 	<input type="submit" name="button" class="button" value="' . $lang['gl_search'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
 	</td>
 	</tr>
-	</table></form><br />' . $content . $links . '<br />';
+	</table></form><br>' . $content . $links . '<br>';
 $HTMLOUT .= '
    <script type="text/javascript">
    /*<![CDATA[*/

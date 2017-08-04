@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -123,7 +120,7 @@ function cleanup_show_main()
         $row['_title'] = $row['clean_on'] != 1 ? " {$lang['cleanup_lock']}" : '';
         $row['_clean_time'] = $row['clean_on'] != 1 ? "<span style='color:red'>{$row['_clean_time']}</span>" : $row['_clean_time'];
         $htmlout .= "<tr>
-          <td{$row['_class']}><strong>{$row['clean_title']}{$row['_title']}</strong><br />{$row['clean_desc']}</td>
+          <td{$row['_class']}><strong>{$row['clean_title']}{$row['_title']}</strong><br>{$row['clean_desc']}</td>
           <td>" . mkprettytime($row['clean_increment']) . "</td>
           <td>{$row['_clean_time']}</td>
           <td align='center'><a href='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=edit&amp;cid={$row['clean_id']}'>
@@ -140,7 +137,7 @@ function cleanup_show_main()
     if ($count1 > $perpage) {
         $htmlout .= $pager['pagerbottom'];
     }
-    $htmlout .= "<br />
+    $htmlout .= "<br>
                 <span class='btn'><a href='./staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=new'>{$lang['cleanup_add_new']}</a></span>";
     echo stdhead($lang['cleanup_stdhead']) . $htmlout . stdfoot();
 }
@@ -194,14 +191,14 @@ function cleanup_show_edit()
     </div>
     
     <div style='margin-bottom:5px;'>
-    <label style='float:left;width:200px;'>{$lang['cleanup_show_log']}</label>{$lang['cleanup_show_yes']}<input name='clean_log' value='1' $logyes type='radio' />&nbsp;&nbsp;&nbsp;<input name='clean_log' value='0' $logno type='radio' />{$lang['cleanup_show_no']}</div>
+    <label style='float:left;width:200px;'>{$lang['cleanup_show_log']}</label>{$lang['cleanup_show_yes']}<input name='clean_log' value='1' $logyes type='radio' />&#160;&#160;&#160;<input name='clean_log' value='0' $logno type='radio' />{$lang['cleanup_show_no']}</div>
     
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_on']}</label>
-    {$lang['cleanup_show_yes']} <input name='clean_on' value='1' $cleanon type='radio' />&nbsp;&nbsp;&nbsp;<input name='clean_on' value='0' $cleanoff type='radio' /> {$lang['cleanup_show_no']}
+    {$lang['cleanup_show_yes']} <input name='clean_on' value='1' $cleanon type='radio' />&#160;&#160;&#160;<input name='clean_on' value='0' $cleanoff type='radio' /> {$lang['cleanup_show_no']}
     </div>
     
-    <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_show_edit']}' class='button' />&nbsp;<input type='button' value='{$lang['cleanup_show_cancel']}' onclick='javascript: history.back()' /></div>
+    <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_show_edit']}' class='button' />&#160;<input type='button' value='{$lang['cleanup_show_cancel']}' onclick='javascript: history.back()' /></div>
     </form>
     </div>";
     echo stdhead($lang['cleanup_show_stdhead']) . $htmlout . stdfoot();
@@ -299,15 +296,15 @@ function cleanup_show_new()
     
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_log']}</label>
-    {$lang['cleanup_show_yes']} <input name='clean_log' value='1' type='radio' />&nbsp;&nbsp;&nbsp;<input name='clean_log' value='0' checked='checked' type='radio' /> {$lang['cleanup_show_no']}
+    {$lang['cleanup_show_yes']} <input name='clean_log' value='1' type='radio' />&#160;&#160;&#160;<input name='clean_log' value='0' checked='checked' type='radio' /> {$lang['cleanup_show_no']}
     </div>
     
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_on']}</label>
-    {$lang['cleanup_show_yes']} <input name='clean_on' value='1' type='radio' />&nbsp;&nbsp;&nbsp;<input name='clean_on' value='0' checked='checked' type='radio' /> {$lang['cleanup_show_no']}
+    {$lang['cleanup_show_yes']} <input name='clean_on' value='1' type='radio' />&#160;&#160;&#160;<input name='clean_on' value='0' checked='checked' type='radio' /> {$lang['cleanup_show_no']}
     </div>
     
-    <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_new_add']}' class='button' />&nbsp;<input type='button' value='{$lang['cleanup_new_cancel']}' onclick='javascript: history.back()' /></div>
+    <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_new_add']}' class='button' />&#160;<input type='button' value='{$lang['cleanup_new_cancel']}' onclick='javascript: history.back()' /></div>
     </form>
     </div>";
     echo stdhead($lang['cleanup_new_stdhead']) . $htmlout . stdfoot();

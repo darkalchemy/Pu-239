@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
@@ -76,17 +73,17 @@ if (isset($_POST['form']) != 1) {
         </tr>
         <tr>
         <td colspan='2'>
-        <br />
-        &nbsp;&nbsp;{$lang['uploadapp_create']}
-        <br />
+        <br>
+        &#160;&#160;{$lang['uploadapp_create']}
+        <br>
         <input type='radio' name='creating' value='yes' />{$lang['uploadapp_yes']}
     	  <input name='creating' type='radio' value='no' checked='checked' />{$lang['uploadapp_no']}
-        <br /><br />
-        &nbsp;&nbsp;{$lang['uploadapp_seeding']}
-        <br />
+        <br><br>
+        &#160;&#160;{$lang['uploadapp_seeding']}
+        <br>
         <input type='radio' name='seeding' value='yes' />{$lang['uploadapp_yes']}
      	  <input name='seeding' type='radio' value='no' checked='checked' />{$lang['uploadapp_no']}
-        <br /><br />
+        <br><br>
         <input name='form' type='hidden' value='1' />
         <div align='center'><input type='submit' name='Submit' value='{$lang['uploadapp_send']}' /></div></td>
         </tr>

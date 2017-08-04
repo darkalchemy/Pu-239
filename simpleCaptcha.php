@@ -1,11 +1,7 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-// This is the handler for captcha image requests
-// The captcha ID is placed in the session, so session vars are required for this plug-in
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-sessionStart();
+dbconn();
+
 $numImages = '';
 // -------------------- EDIT THESE ----------------- //
 $images = [

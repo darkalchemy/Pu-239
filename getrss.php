@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 dbconn();
@@ -19,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     $feed = isset($_POST['feed']) && $_POST['feed'] == 'dl' ? 'dl' : 'web';
     $rsslink = $INSTALLER09['baseurl'] . '/rss.php?cats=' . join(',', $cats) . ($feed == 'dl' ? '&amp;type=dl' : '') . '&amp;torrent_pass=' . $CURUSER['torrent_pass'];
-    $HTMLOUT = "<div align=\"center\"><h2>{$lang['getrss_result']}</h2><br/>
+    $HTMLOUT = "<div align=\"center\"><h2>{$lang['getrss_result']}</h2><br>
 		<input type=\"text\" size=\"120\" readonly=\"readonly\" value=\"{$rsslink}\" onclick=\"select()\" />
 	</div>";
     echo stdhead($lang['getrss_head2']) . $HTMLOUT . stdfoot();
@@ -37,7 +34,7 @@ HTML;
     $i = 0;
     while ($a = mysqli_fetch_assoc($q1)) {
         if ($i % 5 == 0 && $i > 0) {
-            $HTMLOUT .= '<br/>';
+            $HTMLOUT .= '<br>';
         }
         $HTMLOUT .= '<label for="cat_' . (int)$a['id'] . "\">
       <img src=\"{$INSTALLER09['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($a['image']) . '" alt="' . htmlsafechars($a['name']) . '" title="' . htmlsafechars($a['name']) . '" />
@@ -48,7 +45,7 @@ HTML;
 </td>
 </tr>
 <tr>
-	<td align="right">{$lang['getrss_feed']}</td><td align="left"><input type="radio" checked="checked" name="feed" id="std" value="web"/><label for="std">{$lang['getrss_web']}</label><br/><input type="radio" name="feed" id="dl" value="dl"/><label for="dl">{$lang['getrss_dl']}</label></td>
+	<td align="right">{$lang['getrss_feed']}</td><td align="left"><input type="radio" checked="checked" name="feed" id="std" value="web"/><label for="std">{$lang['getrss_web']}</label><br><input type="radio" name="feed" id="dl" value="dl"/><label for="dl">{$lang['getrss_dl']}</label></td>
  </tr>
  <tr><td colspan="2" align="center"><input type="submit" value="{$lang['getrss_btn']}" /></td></tr>
 </table>

@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//tvmaze functions converted from former tvrage functions
 function tvmaze_format($tvmaze_data, $tvmaze_type)
 {
     $tvmaze_display['show'] = [
@@ -12,7 +8,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
         'origin_country' => 'Country: %s',
         'status'         => 'Status: %s',
         'type'           => 'Classification: %s',
-        'summary'        => 'Summary:<br/> %s',
+        'summary'        => 'Summary:<br> %s',
         'runtime'        => 'Runtime %s min',
         'genres2'        => 'Genres: %s',
     ];
@@ -24,7 +20,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
         }
     }
 
-    return join('<br/><br/>', $tvmaze_display[$tvmaze_type]);
+    return join('<br><br>', $tvmaze_display[$tvmaze_type]);
 }
 
 function tvmaze(&$torrents)
@@ -89,7 +85,7 @@ function tvmaze(&$torrents)
         if (count($row_update)) {
             sql_query('UPDATE torrents set ' . join(', ', $row_update) . ' WHERE id = ' . $torrents['id']) or sqlerr(__FILE__, __LINE__);
         }
-        $tvmaze_showinfo = tvmaze_format($tvmaze_array, 'show') . '<br/>';
+        $tvmaze_showinfo = tvmaze_format($tvmaze_array, 'show') . '<br>';
         $mc1->cache_value($memkey, $tvmaze_showinfo, 0);
         $tvmaze_data .= $tvmaze_showinfo;
     } else {

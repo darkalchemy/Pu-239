@@ -1,11 +1,7 @@
 <?php
-
 if (!defined('IN_OFFERS')) {
     exit('No direct script access allowed');
 }
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 $res = sql_query('SELECT * FROM voted_offers WHERE offerid = ' . $id . ' and userid = ' . $CURUSER['id']) or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_assoc($res);
 if ($arr) {
@@ -14,7 +10,7 @@ if ($arr) {
 <p style='text-decoration:underline;'>1 vote per offer is allowed</p>
 <p><a class='altlink' href='viewoffers.php?id=$id&amp;offer_details'><b>offer details</b></a> | 
 <a class='altlink' href='viewoffers.php'><b>all offers</b></a></p>
-<br /><br />";
+<br><br>";
 } else {
     sql_query('UPDATE offers SET hits = hits+1 WHERE id=' . $id) or sqlerr(__FILE__, __LINE__);
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
@@ -24,14 +20,14 @@ if ($arr) {
 <p style='text-decoration:underline;'>Successfully voted for offer $id</p>
 <p><a class='altlink' href='viewoffers.php?id=$id&amp;offer_details'><b>offer details</b></a> |
 <a class='altlink' href='viewoffers.php'><b>all offers</b></a></p>
-<br /><br />";
+<br><br>";
     } else {
         $HTMLOUT .= "
 <h3>Error</h3>
 <p style='text-decoration:underline;'>No such ID $id</p>
 <p><a class='altlink' href='viewoffers.php?id=$id&amp;offer_details'><b>offer details</b></a> |
 <a class='altlink' href='viewoffers.php'><b>all offers</b></a></p>
-<br /><br />";
+<br><br>";
     }
 }
 /////////////////////// HTML OUTPUT //////////////////////////////

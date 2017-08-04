@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//== Made by putyn @tbdev
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
@@ -177,9 +173,9 @@ function checkext(upload_field)
 <form enctype='multipart/form-data' method='post' action='subtitles.php'>
 <table style='width:400px; border:solid 1px #000000;' align='center' cellpadding='5' cellspacing='0'>";
     if ($mode == 'upload') {
-        $HTMLOUT .= "<tr><td colspan='2' align='center' class='colhead'><font color='red'><b>Only .srt, .sub , .txt  file are accepted<br />Max file size " . mksize($INSTALLER09['sub_max_size']) . '</b></font></td></tr>';
+        $HTMLOUT .= "<tr><td colspan='2' align='center' class='colhead'><font color='red'><b>Only .srt, .sub , .txt  file are accepted<br>Max file size " . mksize($INSTALLER09['sub_max_size']) . '</b></font></td></tr>';
     }
-    $HTMLOUT .= "<tr><td class='rowhead' style='border:none'>Language&nbsp;<font color='red'>*</font></td><td style='border:none'><select name='language' title='Select the subtitle language'>
+    $HTMLOUT .= "<tr><td class='rowhead' style='border:none'>Language&#160;<font color='red'>*</font></td><td style='border:none'><select name='language' title='Select the subtitle language'>
 	<option value=''>- Select -</option>
 	<option value='eng' " . ($mode == 'edit' && $arr['lang'] == 'eng' ? 'selected="selected"' : '') . ">English</option>
 	<option value='swe' " . ($mode == 'edit' && $arr['lang'] == 'swe' ? 'selected="selected"' : '') . ">Swedish</option>
@@ -190,10 +186,10 @@ function checkext(upload_field)
 	<option value='fre' " . ($mode == 'edit' && $arr['lang'] == 'fre' ? 'selected="selected"' : '') . ">French</option>
 </select>
 </td></tr>
-<tr><td class='rowhead' style='border:none'>Release Name&nbsp;<font color='red'>*</font></td><td style='border:none'><input type='text' name='releasename' size='50' value='" . ($mode == 'edit' ? $arr['name'] : '') . "'  title='The releasename of the movie (Example:Disturbia.2007.DVDRip.XViD-aAF)'/></td></tr>
-<tr><td class='rowhead' style='border:none'>IMDB link&nbsp;<font color='red'>*</font></td><td style='border:none'><input type='text' name='imdb' size='50' value='" . ($mode == 'edit' ? $arr['imdb'] : '') . "' title='Copy&amp;Paste the link from IMDB for this movie'/></td></tr>";
+<tr><td class='rowhead' style='border:none'>Release Name&#160;<font color='red'>*</font></td><td style='border:none'><input type='text' name='releasename' size='50' value='" . ($mode == 'edit' ? $arr['name'] : '') . "'  title='The releasename of the movie (Example:Disturbia.2007.DVDRip.XViD-aAF)'/></td></tr>
+<tr><td class='rowhead' style='border:none'>IMDB link&#160;<font color='red'>*</font></td><td style='border:none'><input type='text' name='imdb' size='50' value='" . ($mode == 'edit' ? $arr['imdb'] : '') . "' title='Copy&amp;Paste the link from IMDB for this movie'/></td></tr>";
     if ($mode == 'upload') {
-        $HTMLOUT .= "<tr><td class='rowhead' style='border:none'>SubFile&nbsp;<font color='red'>*</font></td><td style='border:none'><input type='file' name='sub' size='36' onchange=\"checkext(this)\" title='Only .rar and .zip file allowed'/></td></tr>";
+        $HTMLOUT .= "<tr><td class='rowhead' style='border:none'>SubFile&#160;<font color='red'>*</font></td><td style='border:none'><input type='file' name='sub' size='36' onchange=\"checkext(this)\" title='Only .rar and .zip file allowed'/></td></tr>";
     }
     $HTMLOUT .= "<tr><td class='rowhead' style='border:none'>Poster</td><td style='border:none'><input type='text' name='poster' size='50' value='" . ($mode == 'edit' ? $arr['poster'] : '') . "' title='Direct link to a picture'/></td></tr>
 <tr><td class='rowhead' style='border:none'>Comments</td><td style='border:none'><textarea rows='5' cols='45' name='comment' title='Any specific details about this subtitle we need to know'>" . ($mode == 'edit' ? htmlsafechars($arr['comment']) : '') . "</textarea></td></tr>
@@ -207,7 +203,7 @@ function checkext(upload_field)
 <option value='30.000' " . ($mode == 'edit' && $arr['fps'] == '30.000' ? 'selected="selected"' : '') . ">30.000</option>
 </select>
 </td></tr>
-<tr><td class='rowhead' style='border:none'>CD<br/>number</td><td style='border:none'><select name='cd'>
+<tr><td class='rowhead' style='border:none'>CD<br>number</td><td style='border:none'><select name='cd'>
 <option value='0'>- Select -</option>
 <option value='1' " . ($mode == 'edit' && $arr['cds'] == '1' ? 'selected="selected"' : '') . ">1CD</option>
 <option value='2' " . ($mode == 'edit' && $arr['cds'] == '2' ? 'selected="selected"' : '') . ">2CD</option>
@@ -285,30 +281,30 @@ elseif ($mode == 'details') {
         $HTMLOUT .= "<table width='600' cellpadding='5' cellspacing='0' border='1' align='center' style='border-collapse:collapse;'>
 <tr><td width='150' rowspan='10' valign='top' align='center'>
 <img src='" . htmlsafechars($arr['poster']) . "' width='150' height='195' alt='" . htmlsafechars($arr['name']) . "' />
-<br /><br />
+<br><br>
 <form action='downloadsub.php' method='post'>
 <input type='hidden' name='sid' value='" . (int)$arr['id'] . "' />
 <input type='submit' value='' style='background:url(pic/down.png) no-repeat; width:124px;height:25px;border:none;' />
 <input type='hidden' name='action' value='download' />
-</form><br />
+</form><br>
 <a href='#' onclick=\"window.open('subtitles.php?mode=preview&amp;id=" . (int)$arr['id'] . "','','height=500,width=400,resizable=yes,scrollbars=yes')\" ><img src='pic/preview.png' width='124' height='25' border='0' alt='Preview' title='Preview'  /></a>
 </td></tr>
-<tr><td align='left'>Name :&nbsp;<b>" . htmlsafechars($arr['name']) . "</b></td></tr>
-<tr><td align='left'>IMDb :&nbsp;<a href='" . htmlsafechars($arr['imdb']) . "' target='_blank'>" . htmlsafechars($arr['imdb']) . "</a></td></tr>
-<tr><td align='left'>Language :&nbsp;{$langs}</td></tr>";
+<tr><td align='left'>Name :&#160;<b>" . htmlsafechars($arr['name']) . "</b></td></tr>
+<tr><td align='left'>IMDb :&#160;<a href='" . htmlsafechars($arr['imdb']) . "' target='_blank'>" . htmlsafechars($arr['imdb']) . "</a></td></tr>
+<tr><td align='left'>Language :&#160;{$langs}</td></tr>";
         if (!empty($arr['comment'])) {
-            $HTMLOUT .= "<tr><td align='left'><fieldset><legend><b>Comment</b></legend>&nbsp;" . htmlsafechars($arr['comment']) . '</fieldset></td></tr>';
+            $HTMLOUT .= "<tr><td align='left'><fieldset><legend><b>Comment</b></legend>&#160;" . htmlsafechars($arr['comment']) . '</fieldset></td></tr>';
         }
-        $HTMLOUT .= "<tr><td align='left'>FPS :&nbsp;<b>" . ($arr['fps'] == 0 ? 'Unknown' : htmlsafechars($arr['fps'])) . "</b></td></tr>
-<tr><td align='left'>Cd# :&nbsp;<b>" . ($arr['cds'] == 0 ? 'Unknown' : ($arr['cds'] == 255 ? 'More than 5 ' : htmlsafechars($arr['cds']))) . "</b></td></tr>
-<tr><td align='left'>Hits :&nbsp;<b>" . (int)$arr['hits'] . "</b></td></tr>
-<tr><td align='left'>Uploader :&nbsp;<b><a href='userdetails.php?id=" . (int)$arr['owner'] . "' target='_blank'>" . htmlsafechars($arr['username']) . '</a></b>&nbsp;&nbsp;';
+        $HTMLOUT .= "<tr><td align='left'>FPS :&#160;<b>" . ($arr['fps'] == 0 ? 'Unknown' : htmlsafechars($arr['fps'])) . "</b></td></tr>
+<tr><td align='left'>Cd# :&#160;<b>" . ($arr['cds'] == 0 ? 'Unknown' : ($arr['cds'] == 255 ? 'More than 5 ' : htmlsafechars($arr['cds']))) . "</b></td></tr>
+<tr><td align='left'>Hits :&#160;<b>" . (int)$arr['hits'] . "</b></td></tr>
+<tr><td align='left'>Uploader :&#160;<b><a href='userdetails.php?id=" . (int)$arr['owner'] . "' target='_blank'>" . htmlsafechars($arr['username']) . '</a></b>&#160;&#160;';
         if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_MODERATOR) {
             $HTMLOUT .= "<a href='subtitles.php?mode=edit&amp;id=" . (int)$arr['id'] . "'><img src='pic/edit.png' alt='Edit Sub' title='Edit Sub' style='border:none;padding:2px;' /></a>
 <a href='subtitles.php?mode=delete&amp;id=" . (int)$arr['id'] . "'><img src='pic/drop.png' alt='Delete Sub' title='Delete Sub' style='border:none;padding:2px;' /></a>";
         }
         $HTMLOUT .= "</td></tr>
-<tr><td align='left'>Added :&nbsp;<b>" . get_date($arr['added'], 'LONG', 0, 1) . '</b></td></tr>
+<tr><td align='left'>Added :&#160;<b>" . get_date($arr['added'], 'LONG', 0, 1) . '</b></td></tr>
 </table>';
         $HTMLOUT .= end_main_frame();
         echo stdhead('Details for ' . htmlsafechars($arr['name']) . '') . $HTMLOUT . stdfoot();
@@ -332,7 +328,7 @@ elseif ($mode == 'details') {
 		<title>Preview for - " . htmlsafechars($arr['name']) . "</title>
 		</head>
 		<body>
-	<div style='font-size:12px;color:black;background-color:#CCCCCC;'>Subtitle preview<br />" . htmlsafechars($fileContent) . '</div>
+	<div style='font-size:12px;color:black;background-color:#CCCCCC;'>Subtitle preview<br>" . htmlsafechars($fileContent) . '</div>
 	</body></html>';
         echo $HTMLOUT;
     }
@@ -368,14 +364,14 @@ elseif ($mode == 'details') {
 <option value='imdb' " . ($w == 'imdb' ? "selected='selected'" : '') . ">IMDb</option>
 <option value='comment' " . ($w == 'comment' ? "selected='selected'" : '') . ">Comments</option>
 </select>
-<input type='submit' value='Search' />&nbsp;<input type='button' onclick=\"window.location.href='subtitles.php?mode=upload'\" value='Upload' />
+<input type='submit' value='Search' />&#160;<input type='button' onclick=\"window.location.href='subtitles.php?mode=upload'\" value='Upload' />
 </form></fieldset></td></tr>";
     if ($s) {
-        $HTMLOUT .= "<tr><td style='border:none;'>Search result for <i>'{$s}'</i><br />" . (mysqli_num_rows($res) == 0 ? 'Nothing found! Try again with a refined search string.' : '') . '</td></tr>';
+        $HTMLOUT .= "<tr><td style='border:none;'>Search result for <i>'{$s}'</i><br>" . (mysqli_num_rows($res) == 0 ? 'Nothing found! Try again with a refined search string.' : '') . '</td></tr>';
     }
     $HTMLOUT .= '
 </table>
-<br />';
+<br>';
     if (mysqli_num_rows($res) > 0) {
         if ($count > $perpage) {
             $HTMLOUT .= "<div align=\"left\" style=\"padding:5px\">{$pager['pagertop']}</div>";

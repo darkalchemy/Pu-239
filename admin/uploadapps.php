@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -156,12 +153,12 @@ if ($action == 'viewapp') {
     if ($arr['sitenames'] != '') {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['uploadapps_sites']} </td><td>" . htmlsafechars($arr['sitenames']) . "</td></tr>
     <tr><td class='rowhead'>{$lang['uploadapps_axx']} </td><td>" . htmlsafechars($arr['scene']) . "</td></tr>
-    <tr><td colspan='2'>{$lang['uploadapps_create']} <b>" . htmlsafechars($arr['creating']) . "</b><br />{$lang['uploadapps_seeding']} <b>" . htmlsafechars($arr['seeding']) . '</b></td></tr>';
+    <tr><td colspan='2'>{$lang['uploadapps_create']} <b>" . htmlsafechars($arr['creating']) . "</b><br>{$lang['uploadapps_seeding']} <b>" . htmlsafechars($arr['seeding']) . '</b></td></tr>';
     }
     if ($arr['status'] == 'pending') {
-        $HTMLOUT .= "<tr><td align='center' colspan='2'><form method='post' action='staffpanel.php?tool=uploadapps&amp;action=acceptapp'><input name='id' type='hidden' value='" . (int)$arr['id'] . "' /><b>{$lang['uploadapps_note']}</b><br /><input type='text' name='note' size='40' /> <input type='submit' value='{$lang['uploadapps_accept']}' style='height: 20px' /></form><br /><form method='post' action='staffpanel.php?tool=uploadapps&amp;action=rejectapp'><input name='id' type='hidden' value='" . (int)$arr['id'] . "' /><b>{$lang['uploadapps_reason']}</b><br /><input type='text' name='reason' size='40' /> <input type='submit' value='{$lang['uploadapps_reject']}' style='height: 20px' /></form></td></tr></table>";
+        $HTMLOUT .= "<tr><td align='center' colspan='2'><form method='post' action='staffpanel.php?tool=uploadapps&amp;action=acceptapp'><input name='id' type='hidden' value='" . (int)$arr['id'] . "' /><b>{$lang['uploadapps_note']}</b><br><input type='text' name='note' size='40' /> <input type='submit' value='{$lang['uploadapps_accept']}' style='height: 20px' /></form><br><form method='post' action='staffpanel.php?tool=uploadapps&amp;action=rejectapp'><input name='id' type='hidden' value='" . (int)$arr['id'] . "' /><b>{$lang['uploadapps_reason']}</b><br><input type='text' name='reason' size='40' /> <input type='submit' value='{$lang['uploadapps_reject']}' style='height: 20px' /></form></td></tr></table>";
     } else {
-        $HTMLOUT .= "<tr><td colspan='2' align='center'>{$lang['uploadapps_application']} " . ($arr['status'] == 'accepted' ? 'accepted' : 'rejected') . ' by <b>' . htmlsafechars($arr['moderator']) . "</b><br />{$lang['uploadapps_comm']}" . htmlsafechars($arr['comment']) . "</td></tr></table>
+        $HTMLOUT .= "<tr><td colspan='2' align='center'>{$lang['uploadapps_application']} " . ($arr['status'] == 'accepted' ? 'accepted' : 'rejected') . ' by <b>' . htmlsafechars($arr['moderator']) . "</b><br>{$lang['uploadapps_comm']}" . htmlsafechars($arr['comment']) . "</td></tr></table>
     <div align='center'><a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'>{$lang['uploadapps_return']}</a></div>";
     }
 }

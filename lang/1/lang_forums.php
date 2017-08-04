@@ -88,7 +88,7 @@ $lang = [
     'forum_search_found'                  => 'Found %d post',
     'forum_search_again'                  => 'Search again',
     'forum_search_words'                  => 'Key words',
-    'forum_search_3chars'                 => 'Enter one or more words to search for.<br />Very common words and words with less than 3 characters are ignored.',
+    'forum_search_3chars'                 => 'Enter one or more words to search for.<br>Very common words and words with less than 3 characters are ignored.',
     'forum_search_search_btn'             => 'Search',
     'forum_search_forum_search'           => 'Forum Search',
     //FORUM TOPIC VIEW
@@ -151,7 +151,7 @@ $lang = [
     'forum_view_replies'                  => 'Replies',
     'forum_view_views'                    => 'Views',
     'forum_view_author'                   => 'Author',
-    'forum_view_lastpost'                 => 'Last&nbsp;post',
+    'forum_view_lastpost'                 => 'Last&#160;post',
     'forum_view_unknown'                  => 'unknown[%d]',
     'forum_view_sticky'                   => 'Sticky: ',
     'forum_view_no_topics'                => 'No topics found',

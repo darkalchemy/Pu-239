@@ -1,12 +1,7 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//== loginlink mod - stonebreath/laffin
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 dbconn();
-//== 09 failed logins thanks to pdq - Retro
 function failedloginscheck()
 {
     global $INSTALLER09;
@@ -72,13 +67,13 @@ $HTMLOUT .= "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN'
 <meta http-equiv='Refresh' content='1; URL=index.php' />
 </head>
 <body>
-<p><br /></p>
-<p><br /></p>
-<p><br /></p>
-<p><br /></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
 <p></p>
-<p align='center'><strong>Welcome Back - " . htmlsafechars($row['username']) . ".</strong></p><br />
-<p align='center'><strong>Click <a href='index.php'>here</a> if you are not redirected automatically.</strong></p><br />
+<p align='center'><strong>Welcome Back - " . htmlsafechars($row['username']) . ".</strong></p><br>
+<p align='center'><strong>Click <a href='index.php'>here</a> if you are not redirected automatically.</strong></p><br>
 </body>
 </html>";
 echo $HTMLOUT;

@@ -122,7 +122,7 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
         }
         // now decide the locale
         if ($mode != '') {
-            return 'Rep: ' . $posneg . "<br /><br /><a href='javascript:;' onclick=\"PopUp('{$INSTALLER09['baseurl']}/reputation.php?pid=" . ($post_id != 0 ? (int)$post_id : (int)$user['id']) . '&amp;locale=' . $mode . "','Reputation',400,241,1,1);\"><img src='{$INSTALLER09['pic_base_url']}forumicons/giverep.jpg' border='0' alt='Add reputation:: " . htmlsafechars($user['username']) . "' title='Add reputation:: " . htmlsafechars($user['username']) . "' /></a>";
+            return 'Rep: ' . $posneg . "<br><br><a href='javascript:;' onclick=\"PopUp('{$INSTALLER09['baseurl']}/reputation.php?pid=" . ($post_id != 0 ? (int)$post_id : (int)$user['id']) . '&amp;locale=' . $mode . "','Reputation',400,241,1,1);\"><img src='{$INSTALLER09['pic_base_url']}forumicons/giverep.jpg' border='0' alt='Add reputation:: " . htmlsafechars($user['username']) . "' title='Add reputation:: " . htmlsafechars($user['username']) . "' /></a>";
         } else {
             return ' ' . $posneg;
         }
@@ -353,15 +353,16 @@ function ratio_image_machine($ratio_to_check)
     }
 }
 
-/** class functions - pdq 2010 **/
-function get_user_class_name($class)
+function get_user_class_name($class, $to_lower = false)
 {
     global $class_names;
     $class = (int)$class;
     if (!valid_class($class)) {
         return '';
     }
-    if (isset($class_names[$class])) {
+    if (isset($class_names[$class]) && $to_lower) {
+        return strtolower(str_replace(' ', '_', $class_names[$class]));
+    } elseif (isset($class_names[$class])) {
         return $class_names[$class];
     } else {
         return '';
@@ -421,7 +422,7 @@ function min_class($min = UC_MIN, $max = UC_MAX)
     return (bool)($CURUSER['class'] >= $minclass && $CURUSER['class'] <= $maxclass);
 }
 
-function format_username($user, $icons = true)
+function format_username_array($user, $icons = true)
 {
     global $INSTALLER09;
     $user['id'] = (int)$user['id'];
@@ -432,7 +433,7 @@ function format_username($user, $icons = true)
         return 'unknown[' . $user['id'] . ']';
     }
     $username = '<span style="color:#' . get_user_class_color($user['class']) . ';"><b>' . htmlsafechars($user['username']) . '</b></span>';
-    $str = '<span style="white-space: nowrap;"><a class="user_' . $user['id'] . '" href="' . $INSTALLER09['baseurl'] . '/userdetails.php?id=' . $user['id'] . '" target="_blank">' . $username . '</a>';
+    $str = '<span style="white-space: nowrap;"><a class="user_' . $user['id'] . '" href="./userdetails.php?id=' . $user['id'] . '" target="_blank">' . $username . '</a>';
     if ($icons != false) {
         $str .= ($user['donor'] == 'yes' ? '<img src="' . $INSTALLER09['pic_base_url'] . 'star.png" alt="Donor" title="Donor" />' : '');
         $str .= ($user['warned'] >= 1 ? '<img src="' . $INSTALLER09['pic_base_url'] . 'alertred.png" alt="Warned" title="Warned" />' : '');
@@ -441,6 +442,49 @@ function format_username($user, $icons = true)
         $str .= ($user['chatpost'] == 0 ? '<img src="' . $INSTALLER09['pic_base_url'] . 'warned.png" alt="No Chat" title="Shout disabled" />' : '');
         $str .= ($user['pirate'] != 0 ? '<img src="' . $INSTALLER09['pic_base_url'] . 'pirate.png" alt="Pirate" title="Pirate" />' : '');
         $str .= ($user['king'] != 0 ? '<img src="' . $INSTALLER09['pic_base_url'] . 'king.png" alt="King" title="King" />' : '');
+    }
+    $str .= '</span>';
+
+    return $str;
+}
+
+function format_username($user_id, $icons = true)
+{
+    global $INSTALLER09, $mc1;
+    if (!is_array($user_id) && is_numeric($user_id)) {
+        if (($user = $mc1->get_value('user_icons_' . $user_id)) === false) {
+            $res = sql_query("SELECT gotgift, gender, id, class, username, donor, title, suspended, warned, leechwarn, downloadpos, chatpost, pirate, king, enabled, perms
+                                FROM users
+                                WHERE id = " . sqlesc($user_id)) or sqlerr(__FILE__, __LINE__);
+            $user = mysqli_fetch_assoc($res);
+            $mc1->cache_value('user_icons_' . $user_id, $user, 60);
+        }
+    } else {
+        file_put_contents('/var/log/nginx/format_username.log', json_encode(debug_backtrace()) . PHP_EOL, FILE_APPEND);
+        return format_username_array($user_id);
+    }
+
+    $user['id'] = (int) $user['id'];
+    $user['class'] = (int) $user['class'];
+    if ($user['id'] == 0) {
+        return 'System';
+    } elseif ($user['username'] == '') {
+        return 'unknown[' . $user['id'] . ']';
+    }
+
+    $username = '<span style="color:#' . get_user_class_color($user['class']) . ';"><b>' . htmlsafechars($user['username']) . '</b></span>';
+    $str = '<span style="white-space: nowrap;"><a class="user_' . $user['id'] . '" href="./userdetails.php?id=' . $user['id'] . '" target="_blank">' . $username . '</a>';
+
+    if ($icons != false) {
+        $str .= (isset($user['king']) && $user['king'] >= TIME_NOW ? '<img class="tooltipper" src="'.$INSTALLER09['pic_base_url'].'king.png" alt="King" title="King" width="14px" height="14px" />' : '');
+        $str .= ($user['donor'] == 'yes' ? '<img class="tooltipper" src="'.$INSTALLER09['pic_base_url'].'star.png" alt="Donor" title="Donor" width="14px" height="14px" />' : '');
+        $str .= ($user['warned'] >= 1 ? '<img class="tooltipper" src="'.$INSTALLER09['pic_base_url'].'alertred.png" alt="Warned" title="Warned" width="14px" height="14px" />' : '');
+        $str .= ($user['leechwarn'] >= 1 ? '<img class="tooltipper" src="'.$INSTALLER09['pic_base_url'].'alertblue.png" alt="Leech Warned" title="Leech Warned" width="14px" height="14px" />' : '');
+        $str .= ($user['enabled'] != 'yes' ? '<img class="tooltipper" src="'.$INSTALLER09['pic_base_url'].'disabled.gif" alt="Disabled" title="Disabled" width="14px" height="14px" />' : '');
+        $str .= (isset($user['downloadpos']) && $user['downloadpos'] != 1 ? '<img class="tooltipper" src="'.$INSTALLER09['pic_base_url'].'downloadpos.gif" alt="Download Disabled" title="Download Disabled" width="14px" height="14px" />' : '');
+        $str .= ($user['chatpost'] == 0 ? '<img class="tooltipper" src="'.$INSTALLER09['pic_base_url'].'warned.png" alt="No Chat" title="Shout disabled" width="14px" height="14px" />' : '');
+        $str .= ($user['pirate'] != 0 ? '<img class="tooltipper" src="'.$INSTALLER09['pic_base_url'].'pirate.png" alt="Pirate" title="Pirate" width="14px" height="14px" />' : '');
+        $str .= (isset($user['gotgift']) && $user['gotgift'] == 'yes' ? '<img class="tooltipper" height="16px" src="'.$INSTALLER09['pic_base_url'].'gift.png" alt="Christmas Gift" title="Has Claimed a Christmas Gift" />' : '');
     }
     $str .= '</span>';
 
@@ -584,15 +628,15 @@ function get_cache_config_data($the_names, $the_colors, $the_images)
     $the_colors = str_replace(',', ",\n", trim($the_colors, ','));
     $the_images = str_replace(',', ",\n", trim($the_images, ','));
     $configfile .= "\n\n\n" . '$class_names = array(
-  ' . $the_names . '								
+  ' . $the_names . '
   );';
     // adding class colors like in user_functions
-    $configfile .= "\n\n\n" . '$class_colors = array( 
-  ' . $the_colors . '								
+    $configfile .= "\n\n\n" . '$class_colors = array(
+  ' . $the_colors . '
   );';
     // adding class pics like in user_functions
     $configfile .= "\n\n\n" . '$class_images = array(
-  ' . $the_images . '										
+  ' . $the_images . '
   );';
 
     return $configfile;

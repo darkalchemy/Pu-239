@@ -1,14 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/**********************************************************
- * New 2010 forums that don't suck for TB based sites....
- *
- * Beta Thurs Sept 9th 2010 v0.5
- *
- * //===  forum manager by Retro, but newer \o/ march 2010
- ***************************************************************/
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -42,7 +32,7 @@ $min_class_write = (isset($_POST['min_class_write']) ? intval($_POST['min_class_
 $min_class_create = (isset($_POST['min_class_create']) ? intval($_POST['min_class_create']) : 0);
 $main_links = '<p><a class="altlink" href="staffpanel.php?tool=over_forums&amp;action=over_forums">' . $lang['fm_overforum'] . '</a> :: 
 						<span style="font-weight: bold;">' . $lang['fm_forummanager'] . '</span> :: 
-						<a class="altlink" href="staffpanel.php?tool=forum_config&amp;action=forum_config">' . $lang['fm_configure'] . '</a><br /></p>';
+						<a class="altlink" href="staffpanel.php?tool=forum_config&amp;action=forum_config">' . $lang['fm_configure'] . '</a><br></p>';
 //=== post / get action posted so we know what to do :P
 $posted_action = (isset($_GET['action2']) ? htmlsafechars($_GET['action2']) : (isset($_POST['action2']) ? htmlsafechars($_POST['action2']) : ''));
 //=== add all possible actions here and check them to be sure they are ok
@@ -170,7 +160,7 @@ switch ($action) {
 			<input type="hidden" name="id" value="' . htmlsafechars($id) . '" />
 			<input type="submit" name="button" class="button" value="' . $lang['fm_efp_btn'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
 			</td>
-			</tr></table></form><br /><br />';
+			</tr></table></form><br><br>';
         }
         break;
 } //=== end switch
@@ -202,7 +192,7 @@ if (mysqli_num_rows($res) > 0) {
         $count = (++$count) % 2;
         $class = ($count == 0 ? 'one' : 'two');
         $HTMLOUT .= '<tr><td class="' . $class . '"><a class="altlink" href="forums.php?action=view_forum&amp;forum_id=' . (int)$row['id'] . '">
-			<span style="font-weight: bold;">' . htmlsafechars($row['name'], ENT_QUOTES) . '</span></a><br />
+			<span style="font-weight: bold;">' . htmlsafechars($row['name'], ENT_QUOTES) . '</span></a><br>
 			' . htmlsafechars($row['description'], ENT_QUOTES) . '</td>
 			<td class="' . $class . '" align="center"><span style="font-weight: bold;">' . $subforum_name . '</span></td>
 			<td class="' . $class . '" align="center">' . $name . '</td>
@@ -210,12 +200,12 @@ if (mysqli_num_rows($res) > 0) {
 			<td class="' . $class . '" align="center">' . get_user_class_name($row['min_class_write']) . '</td>
 			<td class="' . $class . '" align="center">' . get_user_class_name($row['min_class_create']) . '</td>
 			<td align="center" class="' . $class . '"><a href="staffpanel.php?tool=forum_manage&amp;action=forum_manage&amp;action2=edit_forum_page&amp;id=' . (int)$row['id'] . '">
-			<span style="font-weight: bold;">' . $lang['fm_mp_edit'] . '</span></a>&nbsp;
+			<span style="font-weight: bold;">' . $lang['fm_mp_edit'] . '</span></a>&#160;
 			<a href="javascript:confirm_delete(\'' . (int)$row['id'] . '\');"><span style="font-weight: bold;">' . $lang['fm_mp_delete'] . '</span></a>
 			</td></tr>';
     }
 }
-$HTMLOUT .= '</table><br /><br />
+$HTMLOUT .= '</table><br><br>
 			<form method="post" action="staffpanel.php?tool=forum_manage&amp;action=forum_manage">
 			<table width="600"  border="0" cellspacing="0" cellpadding="3" align="center">
 			<tr>

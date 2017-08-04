@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -28,7 +25,7 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) == 'list') {
     $HTMLOUT .= "<h3><a href='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=sendpm'>{$lang['non_con_sendall']}</a></h3>
 	<h3><a href='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable'>{$lang['non_con_view']}</a></h3>
 	<h1>{$lang['non_con_peers']}</h1>
-	{$lang['non_con_this']}<br /><p><font color='red'>*</font> {$lang['non_con_means']}<br />";
+	{$lang['non_con_this']}<br><p><font color='red'>*</font> {$lang['non_con_means']}<br>";
     $result = sql_query("select distinct userid from peers where connectable = 'no'");
     $count = mysqli_num_rows($result);
     $HTMLOUT .= "$count {$lang['non_con_unique']}</p>";
@@ -77,11 +74,11 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) == 'sendpm') {
     $body = "{$lang['non_con_body']}";
     $HTMLOUT .= "<table cellspacing='0' cellpadding='5'>
 <tr>
-<td>{$lang['non_con_sendall']}<br />
+<td>{$lang['non_con_sendall']}<br>
 <table style='border: 0' width='100%' cellpadding='0' cellspacing='0'>
 <tr>
-<td style='border: 0'>&nbsp;</td>
-<td style='border: 0'>&nbsp;</td>
+<td style='border: 0'>&#160;</td>
+<td style='border: 0'>&#160;</td>
 </tr>
 </table>
 </td>
@@ -93,7 +90,7 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) == 'sendpm') {
 <input type='hidden' name='receiver' value='$receiver'/>
 </form>
 </div></td></tr></table>
-<br />
+<br>
 NOTE: No HTML Code Allowed. (NO HTML)
 ";
 }
@@ -102,7 +99,7 @@ if (isset($_GET['action1']) == '') {
     $HTMLOUT .= "<h1>{$lang['non_con_uncon']}</h1>
 	<h3><a href='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=sendpm'>{$lang['non_con_sendall']}</a></h3>
 	<h3><a href='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=list'>{$lang['non_con_list']}</a></h3><p>
-	<br />{$lang['non_con_please1']}<br /></p>
+	<br>{$lang['non_con_please1']}<br></p>
 	<table border='1' cellspacing='0' cellpadding='5'>\n
 	<tr><td class='colhead'>{$lang['non_con_by']}</td>
 	<td class='colhead'>{$lang['non_con_date']}</td><td class='colhead'>{$lang['non_con_elapsed']}</td></tr>";

@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//==Template Manager By Terranova
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -12,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -48,7 +44,7 @@ if (isset($_GET['act'])) {
          <input type='hidden' value='" . (int)$TEM['id'] . "' name='uri' />
          <table width='50%'>
 			<tr><td colspan='2' class='colhead' align='center'>{$lang['themes_edit_tem']} " . htmlsafechars($TEM['name']) . "</td></tr>
-			<tr><td class='rowhead'>{$lang['themes_id']}<br/>{$lang['themes_explain_id']}</td>
+			<tr><td class='rowhead'>{$lang['themes_id']}<br>{$lang['themes_explain_id']}</td>
          <td><input type='text' value='" . (int)$TEM['id'] . "' name='id' /></td></tr>
 			<tr><td class='rowhead'>{$lang['themes_uri']}</td>
          <td><input type='text' value='" . (int)$TEM['uri'] . "' name='uri' /></td></tr>
@@ -84,7 +80,7 @@ if (isset($_GET['act'])) {
 			<form action='staffpanel.php?tool=themes&amp;action=themes&amp;act=6' method='post'>
 			<table width='50%'>
 			<tr><td class='colhead' colspan='2' align='center'>{$lang['themes_addnew']}</td></tr>
-			<tr valign='middle'><td class='rowhead'>{$lang['themes_id']}</td><td><input type='text' value='' name='id' /><br />
+			<tr valign='middle'><td class='rowhead'>{$lang['themes_id']}</td><td><input type='text' value='' name='id' /><br>
 			{$lang['themes_takenids']}<b>" . implode(', ', $TAKEN) . "</b></td></tr>
 			<tr valign='middle'><td class='rowhead'>{$lang['themes_uri']}</td><td><input type='text' value='' name='uri' /></td></tr>
 			<tr valign='middle'><td class='rowhead'>{$lang['themes_name']}</td><td><input type='text' value='' name='name' /></td></tr>

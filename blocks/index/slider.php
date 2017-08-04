@@ -1,14 +1,13 @@
 <?php
-
 $htmlout .= <<<HTML
-<br/><br/>
+<br><br>
 <div class = "scontainer">
   <div class="centerwrapper">
     <div class = "square">Latest Torrents</div>
     <div class = "square2"><span class='btn btn-primary' data-toggle='#logoParade'>Close</span></div>
   </div>
 </div>
-<br/><br/>
+<br><br>
 	<div id="logoParade">
 		<div class="scrollWrapper">
 			<div class="scrollableArea">

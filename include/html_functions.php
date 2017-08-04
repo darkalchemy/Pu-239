@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 //-------- Begins a main frame
 function begin_main_frame()
 {
@@ -66,7 +63,7 @@ function tr($x, $y, $noesc = 0)
         $a = $y;
     } else {
         $a = htmlsafechars($y);
-        $a = str_replace("\n", "<br />\n", $a);
+        $a = str_replace("\n", "<br>\n", $a);
     }
 
     return "<tr><td class='heading' valign='top' align='right'>$x</td><td valign='top' align='left'>$a</td></tr>\n";

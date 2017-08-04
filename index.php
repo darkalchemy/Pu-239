@@ -30,6 +30,10 @@ $stdfoot = [
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('index'));
+if (isset($_GET['act']) && $_GET['act'] == 'Arcade' && isset($_POST['gname'])) {
+    require_once INCL_DIR . 'arcade.php';
+}
+
 $HTMLOUT = '';
 //Start Portals Div
 $HTMLOUT .= '<div class="content" id="col1">';

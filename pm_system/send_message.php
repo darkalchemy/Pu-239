@@ -1,10 +1,6 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 $draft = $subject = $body = '';
 flood_limit('messages');
-//=== don't allow direct access
 if (!defined('BUNNY_PM_SYSTEM')) {
     $HTMLOUT = '';
     $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -176,7 +172,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_preview'
         <td align="center" valign="top" class="one" width="0px" id="photocol">' . $avatar . '</td>
         <td class="two" style="min-width:400px;padding:10px;vertical-align: top;text-align: left;">' . format_comment($body) . '</td>
     </tr>
-    </table><br />';
+    </table><br>';
 }
 $HTMLOUT .= '<form name="compose" method="post" action="pm_system.php">
             <input type="hidden" name="action" value="send_message" />

@@ -1,7 +1,5 @@
 <?php
-
 //== O9 Top 5 and last5 torrents with tooltip
-$HTMLOUT .= "<script type='text/javascript' src='{$INSTALLER09['baseurl']}/scripts/wz_tooltip.js'></script>";
 $HTMLOUT .= "
    <fieldset class='header'><legend>{$lang['index_latest']}</legend></fieldset>
    <div class='container-fluid'>
@@ -15,7 +13,7 @@ if (($top5torrents = $mc1->get_value('top5_tor_')) === false) {
 }
 if (count($top5torrents) > 0) {
     $HTMLOUT .= "<div class='module'><div class='badge badge-top'></div>
-				<table class='table table-bordered'>";
+                <table class='table table-bordered'>";
     $HTMLOUT .= " <thead><tr>
                 <th class='span5'><b>{$lang['top5torrents_title']}</b></th>
                 <th class='span1'>{$lang['top5torrents_seeders']}</th>
@@ -28,12 +26,12 @@ if (count($top5torrents) > 0) {
             }
             $poster = empty($top5torrentarr['poster']) ? "<img src=\'{$INSTALLER09['pic_base_url']}noposter.jpg\' width=\'150\' height=\'220\' />" : "<img src=\'" . htmlsafechars($top5torrentarr['poster']) . "\' width=\'150\' height=\'220\' />";
             $HTMLOUT .= " <tbody><tr>
-                <td class='span5'><a href=\"{$INSTALLER09['baseurl']}/details.php?id=" . (int)$top5torrentarr['id'] . "&amp;hit=1\" onmouseover=\"Tip('<b>{$lang['index_ltst_name']}" . htmlsafechars($top5torrentarr['name']) . "</b><br /><b>{$lang['index_ltst_seeder']}" . (int)$top5torrentarr['seeders'] . "</b><br /><b>{$lang['index_ltst_leecher']}" . (int)$top5torrentarr['leechers'] . "</b><br />$poster');\" onmouseout=\"UnTip();\">{$torrname}</a></td>
+                <td class='span5'><a href=\"{$INSTALLER09['baseurl']}/details.php?id=" . (int)$top5torrentarr['id'] . "&amp;hit=1\" onmouseover=\"Tip('<b>{$lang['index_ltst_name']}" . htmlsafechars($top5torrentarr['name']) . "</b><br><b>{$lang['index_ltst_seeder']}" . (int)$top5torrentarr['seeders'] . "</b><br><b>{$lang['index_ltst_leecher']}" . (int)$top5torrentarr['leechers'] . "</b><br>$poster');\" onmouseout=\"UnTip();\">{$torrname}</a></td>
 <td class='span1'>" . (int)$top5torrentarr['seeders'] . "</td>
 <td class='span1'>" . (int)$top5torrentarr['leechers'] . "</td>
 </tr></tbody>\n";
         }
-        $HTMLOUT .= '</table></div><br />';
+        $HTMLOUT .= '</table></div><br>';
     } else {
         //== If there are no torrents
         if (empty($top5torrents)) {
@@ -64,16 +62,16 @@ if (count($last5torrents) > 0) {
                 $torrname = substr($torrname, 0, 50) . '...';
             }
             $poster = empty($last5torrentarr['poster']) ? "<img src=\'{$INSTALLER09['pic_base_url']}noposter.jpg\' width=\'150\' height=\'220\' />" : "<img src=\'" . htmlsafechars($last5torrentarr['poster']) . "\' width=\'150\' height=\'220\' />";
-            $HTMLOUT .= "<tbody><tr><td class='span5'><a href=\"{$INSTALLER09['baseurl']}/details.php?id=" . (int)$last5torrentarr['id'] . "&amp;hit=1\"></a><a href=\"{$INSTALLER09['baseurl']}/details.php?id=" . (int)$last5torrentarr['id'] . "&amp;hit=1\" onmouseover=\"Tip('<b>{$lang['index_ltst_name']}" . htmlsafechars($last5torrentarr['name']) . "</b><br /><b>{$lang['index_ltst_seeder']}" . (int)$last5torrentarr['seeders'] . "</b><br /><b>{$lang['index_ltst_leecher']}" . (int)$last5torrentarr['leechers'] . "</b><br />$poster');\" onmouseout=\"UnTip();\">{$torrname}</a></td>";
+            $HTMLOUT .= "<tbody><tr><td class='span5'><a href=\"{$INSTALLER09['baseurl']}/details.php?id=" . (int)$last5torrentarr['id'] . "&amp;hit=1\"></a><a href=\"{$INSTALLER09['baseurl']}/details.php?id=" . (int)$last5torrentarr['id'] . "&amp;hit=1\" onmouseover=\"Tip('<b>{$lang['index_ltst_name']}" . htmlsafechars($last5torrentarr['name']) . "</b><br><b>{$lang['index_ltst_seeder']}" . (int)$last5torrentarr['seeders'] . "</b><br><b>{$lang['index_ltst_leecher']}" . (int)$last5torrentarr['leechers'] . "</b><br>$poster');\" onmouseout=\"UnTip();\">{$torrname}</a></td>";
             $HTMLOUT .= "<td class='span1'>" . (int)$last5torrentarr['seeders'] . '</td>';
             $HTMLOUT .= "<td class='span1'>" . (int)$last5torrentarr['leechers'] . '</td>';
             $HTMLOUT .= '</tr></tbody>';
         }
-        $HTMLOUT .= '</table></div><hr />';
+        $HTMLOUT .= '</table></div><hr>';
     } else {
         //== If there are no torrents
         if (empty($last5torrents)) {
-            $HTMLOUT .= "<tbody><tr><td colspan='5'>{$lang['last5torrents_no_torrents']}</td></tr></tbody></table></div><hr />";
+            $HTMLOUT .= "<tbody><tr><td colspan='5'>{$lang['last5torrents_no_torrents']}</td></tr></tbody></table></div><hr>";
         }
     }
 }

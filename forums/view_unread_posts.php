@@ -1,19 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/**********************************************************
- * New 2010 forums that don't suck for TB based sites....
- * pretty much coded page by page, but coming from a
- * history ot TBsourse and TBDev and the many many
- * coders who helped develop them over time.
- * proper credits to follow :)
- *
- * beta mon aug 2 2010 v0.1
- * view unread posts
- *
- * Powered by Bunnies!!!
- **********************************************************/
 if (!defined('BUNNY_FORUMS')) {
     $HTMLOUT = '';
     $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -31,7 +16,7 @@ if (!defined('BUNNY_FORUMS')) {
 global $lang;
 //=== start page
 $colour = $topicpoll = $topic_status_image = '';
-$links = '<span style="text-align: center;"><a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br /><br /></span>';
+$links = '<span style="text-align: center;"><a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';
 $HTMLOUT .= '<h1>' . $lang['vup_unread_post_since_visit'] . '</h1>' . $links;
 $time = $readpost_expiry;
 $res_count = sql_query('SELECT t.id, t.last_post FROM topics AS t LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN forums as f ON f.id = t.forum_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' f.min_class_read <= ' . $CURUSER['class'] . ' AND p.added > ' . $time);
@@ -46,21 +31,21 @@ while ($arr_count = mysqli_fetch_assoc($res_count)) {
 }
 //=== nothing here? kill the page
 if ($count == 0) {
-    $HTMLOUT .= '<br /><br /><table border="0" cellspacing="10" cellpadding="10" width="400px">
+    $HTMLOUT .= '<br><br><table border="0" cellspacing="10" cellpadding="10" width="400px">
     <tr><td class="forum_head_dark"align="center">
     ' . $lang['fe_no_unread_posts'] . '
     </td></tr>
     <tr><td class="three"align="center">
-    ' . $lang['fe_you_are_uptodate_topics'] . '.<br /><br />
-    </td></tr></table><br /><br />';
-    $HTMLOUT .= $links . '<br />';
+    ' . $lang['fe_you_are_uptodate_topics'] . '.<br><br>
+    </td></tr></table><br><br>';
+    $HTMLOUT .= $links . '<br>';
 } else {
     //=== get stuff for the pager
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 0;
     $perpage = isset($_GET['perpage']) ? (int)$_GET['perpage'] : 20;
     list($menu, $LIMIT) = pager_new($count, $perpage, $page, $INSTALLER09['baseurl'] . '/forums.php?action=view_unread_posts' . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
     //=== top and bottom stuff
-    $the_top_and_bottom = '<br /><table border="0" cellspacing="0" cellpadding="0" width="90%">
+    $the_top_and_bottom = '<br><table border="0" cellspacing="0" cellpadding="0" width="90%">
    <tr><td class="three" align="center" valign="middle">' . (($count > $perpage) ? $menu : '') . '</td>
    </tr></table>';
     //=== main huge query:
@@ -106,12 +91,12 @@ if ($count == 0) {
             //==Anonymous
             if ($arr_unread['tan'] == 'yes') {
                 if ($CURUSER['class'] < UC_STAFF && $arr_unread['user_id'] != $CURUSER['id']) {
-                    $thread_starter = ($arr_unread['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . (int)$arr_unread['id'] . ']') . '<br />' . get_date($first_unread_poster_arr[0], '');
+                    $thread_starter = ($arr_unread['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . (int)$arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
                 } else {
-                    $thread_starter = ($arr_unread['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . print_user_stuff($arr_unread) . ']' : '' . $lang['fe_lost'] . ' [' . (int)$arr_unread['id'] . ']') . '<br />' . get_date($first_unread_poster_arr[0], '');
+                    $thread_starter = ($arr_unread['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . print_user_stuff($arr_unread) . ']' : '' . $lang['fe_lost'] . ' [' . (int)$arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
                 }
             } else {
-                $thread_starter = ($arr_unread['username'] !== '' ? print_user_stuff($arr_unread) : '' . $lang['fe_lost'] . ' [' . (int)$arr_unread['id'] . ']') . '<br />' . get_date($first_unread_poster_arr[0], '');
+                $thread_starter = ($arr_unread['username'] !== '' ? print_user_stuff($arr_unread) : '' . $lang['fe_lost'] . ' [' . (int)$arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
             }
             $topicpic = ($arr_unread['post_count'] < 30 ? ($locked ? 'lockednew' : 'topicnew') : ($locked ? 'lockednew' : 'hot_topic_new'));
             $rpic = ($arr_unread['num_ratings'] != 0 ? ratingpic_forums(round($arr_unread['rating_sum'] / $arr_unread['num_ratings'], 1)) : '');
@@ -135,7 +120,7 @@ if ($count == 0) {
         </tr>
         </table>
         ' . ($arr_unread['topic_desc'] !== '' ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($arr_unread['topic_desc'], ENT_QUOTES) . '</span>' : '') . '  
-        <hr />in: <a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int)$arr_unread['forum_id'] . '">' . htmlsafechars($arr_unread['forum_name'], ENT_QUOTES) . '</a>
+        <hr>in: <a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int)$arr_unread['forum_id'] . '">' . htmlsafechars($arr_unread['forum_name'], ENT_QUOTES) . '</a>
         ' . ($arr_unread['topic_desc'] !== '' ? ' [ <span style="font-size: x-small;">' . htmlsafechars($arr_unread['topic_desc'], ENT_QUOTES) . '</span> ]' : '') . '</td>
         <td align="center" class="' . $class . '">' . number_format($arr_unread['post_count'] - 1) . '</td>
         <td align="center" class="' . $class . '">' . number_format($arr_unread['views']) . '</td>
@@ -143,5 +128,5 @@ if ($count == 0) {
         </tr>';
         }
     }
-    $HTMLOUT .= '</table>' . $the_top_and_bottom . '<br /><br />' . $links . '<br />';
+    $HTMLOUT .= '</table>' . $the_top_and_bottom . '<br><br>' . $links . '<br>';
 }

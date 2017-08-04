@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once $_SERVER['DOCUMENT_ROOT'] . '/include/bittorrent.php';
 dbconn();
 loggedinorreturn();
@@ -184,7 +181,7 @@ error_reporting(E_ALL);
                         </td>
                     </tr>
                     <tr>
-                        <td nowrap="nowrap" class="info">Show<br/>
+                        <td nowrap="nowrap" class="info">Show<br>
                             Username
                         </td>
                         <td width="100%"><label for="suser">

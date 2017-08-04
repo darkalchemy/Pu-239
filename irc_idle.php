@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//irc idle thingy using php
 $key = 'VGhlIE1vemlsbGEgZmFtaWx5IGFwcG';
 $vars = [
     'ircidle'  => '',

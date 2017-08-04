@@ -20,8 +20,8 @@ Asta inseamna ca ceilalti utilizatori nu se vor putea conecta la dvs, doar dvs l
 Puteti rezolva asta deschizand porturile folosite pentru conexiunile catre dvs (aceeasi raza definits in clientul dvs) in firewall sau/si configurandu-va NAT-ul pentru raza in locul NAPT (procesul actual diferita mult intre diferitele modele de routere. Verificati-va documentatia router-ului si/sau forumul de suport. Veti gasi deasemenea multe informatii despre subiect la PortForward)...\n\nVa multumim",
     'non_con_uncon'   => 'Registru mesaje in masa al peer-ilor neconectabili',
     'non_con_list'    => 'Lista cu utilizatori neconectabili',
-    'non_con_please1' => 'Va rugam sa nu folositi frecvent Mesajele in masa. Nu vrem sa dam spam catre utilizatori,<br /> doar sa ii anuntam ca sunt neconectabili.
-<br />In fiecare saptamana ar fi ok.',
+    'non_con_please1' => 'Va rugam sa nu folositi frecvent Mesajele in masa. Nu vrem sa dam spam catre utilizatori,<br> doar sa ii anuntam ca sunt neconectabili.
+<br>In fiecare saptamana ar fi ok.',
     'non_con_by'      => 'De utilizatorul',
     'non_con_elapsed' => 'Ramas',
     'non_con_date'    => 'Data',

@@ -1,18 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/**********************************************************
- * New 2010 forums that don't suck for TB based sites....
- * subscriptions mod based on my subscriptions mod  for TBDev
- * with some code from TBsourse & TBdev
- *
- * beta fri june 11th 2010 v0.1
- *
- * thanks to pdq & elephant for suggestions :D
- *
- * Powered by Bunnies!!!
- **********************************************************/
 if (!defined('BUNNY_FORUMS')) {
     $HTMLOUT = '';
     $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -29,7 +15,7 @@ if (!defined('BUNNY_FORUMS')) {
 }
 global $lang;
 $posts = $lppostid = $topicpoll = $colour = $rpic = $content = '';
-$links = '<span style="text-align: center;"><a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br /><br /></span>';
+$links = '<span style="text-align: center;"><a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';
 $HTMLOUT .= '<h1>Subscribed Forums for ' . print_user_stuff($CURUSER) . '</h1>' . $links;
 //=== Get count
 $res = sql_query('SELECT COUNT(id) FROM subscriptions WHERE user_id=' . sqlesc($CURUSER['id']));
@@ -37,14 +23,14 @@ $row = mysqli_fetch_row($res);
 $count = $row[0];
 //=== nothing here? kill the page
 if ($count == 0) {
-    $HTMLOUT .= '<br /><br /><table border="0" cellspacing="10" cellpadding="10" width="400px">
+    $HTMLOUT .= '<br><br><table border="0" cellspacing="10" cellpadding="10" width="400px">
 		<tr><td class="three"align="center">
 		<h1>' . $lang['sub_no_subscript_found'] . '!</h1>' . $lang['sub_you_have_yet_sub_forums'] . ' 
-		<span style="font-weight: bold;font-style: italic;">' . $lang['sub_subscrib_to_forum'] . '</span> ' . $lang['sub_no_subscript_found_msg1'] . '.<br /><br />
+		<span style="font-weight: bold;font-style: italic;">' . $lang['sub_subscrib_to_forum'] . '</span> ' . $lang['sub_no_subscript_found_msg1'] . '.<br><br>
 		' . $lang['sub_to_be_notified_via_pm'] . ' <a class="altlink" href="my.php">' . $lang['sub_profile'] . '</a> 
-		' . $lang['sub_page_and_set'] . ' <span style="font-weight: bold;">' . $lang['sub_pm_on_subcript'] . '</span> ' . $lang['sub_to_yes'] . '.<br /><br />
-		</td></tr></table><br /><br />';
-    $HTMLOUT .= $links . '<br />';
+		' . $lang['sub_page_and_set'] . ' <span style="font-weight: bold;">' . $lang['sub_pm_on_subcript'] . '</span> ' . $lang['sub_to_yes'] . '.<br><br>
+		</td></tr></table><br><br>';
+    $HTMLOUT .= $links . '<br>';
 }
 //=== get stuff for the pager
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 0;
@@ -68,12 +54,12 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
     $first_post_arr = mysqli_fetch_assoc($first_post_res);
     if ($topic_arr['tan'] == 'yes') {
         if ($CURUSER['class'] < UC_STAFF && $first_post_arr['user_id'] != $CURUSER['id']) {
-            $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . (int)$first_post_arr['id'] . ']') . '<br />' . get_date($first_post_arr['added'], '');
+            $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . (int)$first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
         } else {
-            $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . print_user_stuff($first_post_arr) . ']' : '' . $lang['fe_lost'] . ' [' . (int)$first_post_arr['id'] . ']') . '<br />' . get_date($first_post_arr['added'], '');
+            $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . print_user_stuff($first_post_arr) . ']' : '' . $lang['fe_lost'] . ' [' . (int)$first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
         }
     } else {
-        $thread_starter = ($first_post_arr['username'] !== '' ? print_user_stuff($first_post_arr) : '' . $lang['fe_lost'] . ' [' . (int)$first_post_arr['id'] . ']') . '<br />' . get_date($first_post_arr['added'], '');
+        $thread_starter = ($first_post_arr['username'] !== '' ? print_user_stuff($first_post_arr) : '' . $lang['fe_lost'] . ' [' . (int)$first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
     }
     $icon = ($first_post_arr['icon'] == '' ? '<img src="' . $INSTALLER09['pic_base_url'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '" title="' . htmlsafechars($first_post_arr['icon']) . '" />');
     $first_post_text = tool_tip(' <img src="' . $INSTALLER09['pic_base_url'] . 'forums/mg.gif" height="14" alt="' . $lang['fe_preview'] . '" title="' . $lang['fe_preview'] . '" />', format_comment($first_post_arr['body'], true, false, false), '' . $lang['fe_first_post'] . ' ' . $lang['fe_preview'] . '');
@@ -129,7 +115,7 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
 		<td align="center" class="' . $class . '">' . $thread_starter . '</td>
 		<td align="center" class="' . $class . '">' . number_format($topic_arr['post_count'] - 1) . '</td>
 		<td align="center" class="' . $class . '">' . number_format($topic_arr['views']) . '</td>
-		<td align="center" class="' . $class . '"><span style="white-space:nowrap;">' . get_date($topic_arr['added'], '') . '</span><br />by&nbsp;' . $last_post_username . '</td>
+		<td align="center" class="' . $class . '"><span style="white-space:nowrap;">' . get_date($topic_arr['added'], '') . '</span><br>by&#160;' . $last_post_username . '</td>
 		<td align="center" class="' . $class . '"><a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=p' . $last_post_id . '#' . $last_post_id . '" title="last post in this thread">
 		<img src="' . $INSTALLER09['pic_base_url'] . 'forums/last_post.gif" alt="Last post" title="Last post" /></a></td>
 		<td align="center" class="' . $class . '"><input type="checkbox" name="remove[]" value="' . (int)$topic_arr['subscribed_id'] . '" /></td>
@@ -154,4 +140,4 @@ $HTMLOUT .= $the_top_and_bottom . '<form action="' . $INSTALLER09['baseurl'] . '
 		<a class="altlink" href="javascript:SetChecked(0,\'remove[]\')"><span style="color: black;">' . $lang['sub_un_select_all'] . '</span></a>  
 		<input type="submit" name="button" class="button" value="' . $lang['fe_remove'] . ' Selected" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
 		</tr></table></form><script type="text/javascript" src="' . $INSTALLER09['baseurl'] . '/scripts/check_selected.js"></script>
-		' . $the_top_and_bottom . '<br /><br />' . $links . '<br />';
+		' . $the_top_and_bottom . '<br><br>' . $links . '<br>';

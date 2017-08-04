@@ -1,5 +1,4 @@
 <?php
-
 /** freeleech countdown **/
 function freeleech_countdown()
 {
@@ -54,7 +53,7 @@ function freeleech_countdown()
         $htmlout .= '
          <li>
      <a class="tooltip" href="#"><b class="btn btn-success btn-small">' . $lang['gl_freeleech'] . '</b>
-	 <span class="custom info alert alert-success"><em>' . $freetitle . '</em>' . 'ends&nbsp;at ' . date('D F j, g:i a', $freeleech['freeleech_countdown']['var'] + (($CURUSER['time_offset'] + $CURUSER['dst_in_use']) * 60)) . '</span></a></li>';
+	 <span class="custom info alert alert-success"><em>' . $freetitle . '</em>' . 'ends&#160;at ' . date('D F j, g:i a', $freeleech['freeleech_countdown']['var'] + (($CURUSER['time_offset'] + $CURUSER['dst_in_use']) * 60)) . '</span></a></li>';
 
         return $htmlout;
     }
@@ -62,7 +61,7 @@ function freeleech_countdown()
     $htmlout .= '
          <li>
      <a class="tooltip" href="#"><b class="btn btn-info btn-small">Freeleech</b>
-	 <span class="custom info alert alert-info"><em>' . $freetitle . '</em> ' . 'starts&nbsp;at ' . date('D F j, g:i a', $freeleech['freeleech_countdown']['amount'] + (($CURUSER['time_offset'] + $CURUSER['dst_in_use']) * 60)) . '<br /></span></a></li>';
+	 <span class="custom info alert alert-info"><em>' . $freetitle . '</em> ' . 'starts&#160;at ' . date('D F j, g:i a', $freeleech['freeleech_countdown']['amount'] + (($CURUSER['time_offset'] + $CURUSER['dst_in_use']) * 60)) . '<br></span></a></li>';
 
     return $htmlout;
 }
@@ -95,8 +94,8 @@ if ($CURUSER) {
      <li>
      <a class="tooltip" href="#"><b class="btn btn-info btn-small">' . $lang['gl_freeleech'] . '</b>
 	 <span class="custom info alert alert-info"><em>' . $fl['title'] . '</em>
-     ' . $mode . '<br />
-     ' . $fl['message'] . ' ' . $lang['gl_freeleech_sb'] . ' ' . $fl['setby'] . '<br />' . ($fl['expires'] != 1 ? '' . $lang['gl_freeleech_u'] . ' ' . get_date($fl['expires'], 'DATE') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . ' ' . $lang['gl_freeleech_tg'] . ')' : '') . '  
+     ' . $mode . '<br>
+     ' . $fl['message'] . ' ' . $lang['gl_freeleech_sb'] . ' ' . $fl['setby'] . '<br>' . ($fl['expires'] != 1 ? '' . $lang['gl_freeleech_u'] . ' ' . get_date($fl['expires'], 'DATE') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . ' ' . $lang['gl_freeleech_tg'] . ')' : '') . '  
      </span></a></li>' : '');
         }
     }

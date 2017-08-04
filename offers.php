@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/* new offer system based on the new request system I just coded for BTDev 2010ish nov. 24 2010 - snuggs */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 dbconn(false);
@@ -96,7 +92,7 @@ switch ($action) {
         if ($count = 0) {
             stderr('Error!', 'Sorry, there are no current offers!');
         }
-        $HTMLOUT .= (isset($_GET['new']) ? '<h1>Offer Added!</h1>' : '') . (isset($_GET['offer_deleted']) ? '<h1>Offer Deleted!</h1>' : '') . $top_menu . '' . $menu . '<br />';
+        $HTMLOUT .= (isset($_GET['new']) ? '<h1>Offer Added!</h1>' : '') . (isset($_GET['offer_deleted']) ? '<h1>Offer Deleted!</h1>' : '') . $top_menu . '' . $menu . '<br>';
         $HTMLOUT .= '<table border="0" cellspacing="0" cellpadding="5" align="center">
        <tr>
         <td class="colhead" align="center">Type</td>
@@ -118,14 +114,14 @@ switch ($action) {
         <td class="' . $class . '" align="left"><a class="altlink" href="offers.php?action=offer_details&amp;id=' . $main_query_arr['offer_id'] . '">' . htmlsafechars($main_query_arr['offer_name'], ENT_QUOTES) . '</a></td>
         <td class="' . $class . '" align="center">' . get_date($main_query_arr['added'], 'LONG') . '</td>
         <td class="' . $class . '" align="center">' . number_format($main_query_arr['comments']) . '</td>  
-        <td class="' . $class . '" align="center">yes: ' . number_format($main_query_arr['vote_yes_count']) . '<br />
+        <td class="' . $class . '" align="center">yes: ' . number_format($main_query_arr['vote_yes_count']) . '<br>
         no: ' . number_format($main_query_arr['vote_no_count']) . '</td> 
         <td class="' . $class . '" align="center">' . print_user_stuff($main_query_arr) . '</td>
         <td class="' . $class . '" align="center">' . $status . '</td>
     </tr>';
         }
         $HTMLOUT .= '</table>';
-        $HTMLOUT .= '' . $menu . '<br /></div>';
+        $HTMLOUT .= '' . $menu . '<br></div>';
         echo stdhead('Offers', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
         break;
     //===========================================================================================//
@@ -170,7 +166,7 @@ switch ($action) {
             $vote_no = '';
             $your_vote_was = ' your vote: ' . $row_did_they_vote[0] . ' ';
         }
-        $status_drop_down = ($CURUSER['class'] < UC_STAFF ? '' : '<br /><form method="post" action="offers.php">
+        $status_drop_down = ($CURUSER['class'] < UC_STAFF ? '' : '<br><form method="post" action="offers.php">
                     <input type="hidden" name="action" value="alter_status" />
                     <input type="hidden" name="id" value="' . $id . '" />
                     <select name="set_status">
@@ -181,7 +177,7 @@ switch ($action) {
                     <input type="submit" class="button" value="change status!" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
                     </form> ');
         //=== start page
-        $HTMLOUT .= (isset($_GET['status_changed']) ? '<h1>Offer Status Updated!</h1>' : '') . (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . ($arr['status'] == 'approved' ? '<span style="color: limegreen;font-weight: bold;">status: approved!</span>' : ($arr['status'] == 'pending' ? '<span style="color: skyblue;font-weight: bold;">status: pending...</span>' : '<span style="color: red;font-weight: bold;">status: denied</span>')) . $status_drop_down . '<br /><br />
+        $HTMLOUT .= (isset($_GET['status_changed']) ? '<h1>Offer Status Updated!</h1>' : '') . (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . ($arr['status'] == 'approved' ? '<span style="color: limegreen;font-weight: bold;">status: approved!</span>' : ($arr['status'] == 'pending' ? '<span style="color: skyblue;font-weight: bold;">status: pending...</span>' : '<span style="color: red;font-weight: bold;">status: denied</span>')) . $status_drop_down . '<br><br>
     <table border="0" cellspacing="0" cellpadding="5" align="center" width="700px">
     <tr>
     <td class="colhead" align="center" colspan="2"><h1>' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="offers.php?action=edit_offer&amp;id=' . $id . '">edit</a> ] 
@@ -206,8 +202,8 @@ switch ($action) {
     <tr>
     <td class="two" align="right">votes:</td>
     <td align="left" class="two">
-    <span style="font-weight:bold;color: green;">yes: ' . number_format($arr['vote_yes_count']) . '</span> ' . $vote_yes . '<br />
-    <span style="font-weight:bold;color: red;">no: ' . number_format($arr['vote_no_count']) . '</span> ' . $vote_no . '<br /> ' . $your_vote_was . '</td>
+    <span style="font-weight:bold;color: green;">yes: ' . number_format($arr['vote_yes_count']) . '</span> ' . $vote_yes . '<br>
+    <span style="font-weight:bold;color: red;">no: ' . number_format($arr['vote_no_count']) . '</span> ' . $vote_no . '<br> ' . $your_vote_was . '</td>
     </tr>
     <tr>
     <td class="two" align="right">offered by:</td>
@@ -238,9 +234,9 @@ switch ($action) {
                 $allrows[] = $subrow;
             }
             $HTMLOUT .= $commentbar . '<a name="comments"></a>';
-            $HTMLOUT .= ($count > $perpage) ? '<p>' . $menu . '<br /></p>' : '<br />';
+            $HTMLOUT .= ($count > $perpage) ? '<p>' . $menu . '<br></p>' : '<br>';
             $HTMLOUT .= comment_table($allrows);
-            $HTMLOUT .= ($count > $perpage) ? '<p>' . $menu . '<br /></p>' : '<br />';
+            $HTMLOUT .= ($count > $perpage) ? '<p>' . $menu . '<br></p>' : '<br>';
         }
         $HTMLOUT .= $commentbar;
         echo stdhead('Offer details for: ' . htmlsafechars($arr['offer_name'], ENT_QUOTES), true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
@@ -282,7 +278,7 @@ switch ($action) {
     <td class="embedded" align="center">
     <h1 style="text-align: center;">New Offer</h1>' . $top_menu . '
     <form method="post" action="offers.php?action=add_new_offer" name="offer_form" id="offer_form">
-   ' . (isset($_POST['button']) && $_POST['button'] == 'Preview' ? '<br />
+   ' . (isset($_POST['button']) && $_POST['button'] == 'Preview' ? '<br>
 	 <table border="0" cellspacing="0" cellpadding="5" align="center" width="700px">
     <tr>
     <td class="colhead" align="center" colspan="2"><h1>' . htmlsafechars($offer_name, ENT_QUOTES) . '</h1></td>
@@ -309,14 +305,14 @@ switch ($action) {
     ratio: ' . member_ratio($CURUSER['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $CURUSER['downloaded']) . get_user_ratio_image($CURUSER['uploaded'], ($INSTALLER09['ratio_free'] ? '1' : $CURUSER['downloaded'])) . '</td>
     </tr>
     </table>
-    <br />' : '') . '
+    <br>' : '') . '
     <table border="0" cellspacing="0" cellpadding="5" align="center" width="600px">
     <tr>
     <td class="colhead" align="center" colspan="2"><h1>Making a Offer</h1></td>
     </tr>
     <tr>
     <td align="center" colspan="2" class="two">Before you make an offer, <a class="altlink" href="search.php">Search</a> 
-    to be sure it has not yet been requested, offered, or uploaded!<br /><br />
+    to be sure it has not yet been requested, offered, or uploaded!<br><br>
     Be sure to fill in all fields!</td>
     </tr>
     <tr>
@@ -345,7 +341,7 @@ switch ($action) {
     <input type="submit" name="button" class="button" value="Submit" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
     </tr>
     </table></form>
-	 </td></tr></table><br />
+	 </td></tr></table><br>
     <script type="text/javascript">
     /*<![CDATA[*/
     $(document).ready(function()	{
@@ -428,7 +424,7 @@ switch ($action) {
     <h1 style="text-align: center;">Edit Offer</h1>' . $top_menu . '
     <form method="post" action="offers.php?action=edit_offer" name="offer_form" id="offer_form">
     <input type="hidden" name="id" value="' . $id . '" />
-    ' . (isset($_POST['button']) && $_POST['button'] == 'Preview' ? '<br />
+    ' . (isset($_POST['button']) && $_POST['button'] == 'Preview' ? '<br>
 	 <table border="0" cellspacing="0" cellpadding="5" align="center" width="600px">
     <tr>
     <td class="colhead" align="center" colspan="2"><h1>' . htmlsafechars($offer_name, ENT_QUOTES) . '</h1></td>
@@ -450,7 +446,7 @@ switch ($action) {
     <td class="two" align="left"><a class="altlink" href="' . htmlsafechars($link, ENT_QUOTES) . '" target="_blank">' . htmlsafechars($link, ENT_QUOTES) . '</a></td>
     </tr>
     </table>
-    <br />' : '') . '
+    <br>' : '') . '
     <table border="0" cellspacing="0" cellpadding="5" align="center" width="600px">
     <tr>
     <td class="colhead" align="center" colspan="2"><h1>Edit Offer</h1></td>
@@ -484,7 +480,7 @@ switch ($action) {
     <input type="submit" name="button" class="button" value="Edit" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
     </tr>
     </table></form>
-	 </td></tr></table><br />
+	 </td></tr></table><br>
     <script type="text/javascript">
     /*<![CDATA[*/
     $(document).ready(function()	{
@@ -532,7 +528,7 @@ switch ($action) {
 	 <tr>
     <td width="80" valign="top" class="two">' . avatar_stuff($CURUSER) . '</td>
     <td valign="top" align="left" class="two">' . format_comment($body) . '</td>
-    </tr></table><br />' : '') . '
+    </tr></table><br>' : '') . '
 	 <table align="center" width="80%" border="0" cellspacing="0" cellpadding="5">
 	 <tr>
     <td align="center" class="colhead" colspan="2"><h1>Add a comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"</h1></td>
@@ -601,7 +597,7 @@ switch ($action) {
 	 <tr>
     <td width="80" valign="top" class="two">' . $avatar . '</td>
     <td valign="top" align="left" class="two">' . format_comment($body) . '</td>
-    </tr></table><br />' : '') . '
+    </tr></table><br>' : '') . '
     <table align="center" width="80%" border="0" cellspacing="0" cellpadding="5">
 	 <tr>
     <td align="center" class="colhead" colspan="2"><h1>Edit comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"</h1></td>
@@ -718,7 +714,7 @@ function comment_table($rows)
     <td align="center" width="80" class="' . $class . '" style="padding: 0px;">' . avatar_stuff($row) . '</td>
     <td class="' . $class . '">' . $text . '</td>
     </tr>
-    </table><br />';
+    </table><br>';
     }
     $comment_table .= '</td></tr></table>';
 

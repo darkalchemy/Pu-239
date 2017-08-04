@@ -1,5 +1,4 @@
 <?php
-
 require_once ROOT_DIR . 'tfreak.php';
 $HTMLOUT .= "
 	<fieldset class='header'>
@@ -9,7 +8,7 @@ $HTMLOUT .= rsstfreakinfo();
 $HTMLOUT .= '
 			</div>
 	</fieldset>
-	<hr />';
+	<hr>';
 //==
 // End Class
 // End File

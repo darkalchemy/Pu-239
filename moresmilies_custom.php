@@ -39,5 +39,5 @@ while ((list($code, $url) = each($customsmilies))) {
         $htmlout .= '</tr>';
     }
 }
-$htmlout .= "<!--</tr>--></table><br /><div align='center'><a class='altlink' href='javascript: window.close()'><b>[ Close window ]</b></a></div></body></html>";
+$htmlout .= "<!--</tr>--></table><br><div align='center'><a class='altlink' href='javascript: window.close()'><b>[ Close window ]</b></a></div></body></html>";
 echo $htmlout;

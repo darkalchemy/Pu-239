@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -71,15 +68,15 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
         $res = sql_query("SELECT id,name,added FROM torrents WHERE checked_when = ''");
         $data = do_sort($res, true);
         if (!$data) {
-            $HTMLOUT = '<br/><br/><h3 align="center">' . $lang['mtor_no_un-modded_torrents_detected'] . ' :D!</h3><br/><br/>';
+            $HTMLOUT = '<br><br><h3 align="center">' . $lang['mtor_no_un-modded_torrents_detected'] . ' :D!</h3><br><br>';
             $title = $lang['mtor_add_done'];
         } else {
             $put = ($res->num_rows == 1 ? '1 ' . $lang['mtor_unmodded_torrent'] . '' : $res->num_rows . ' ' . $lang['mtor_all_unmodded_torrents'] . '');
             $perpage = 15;
             $pager = pager($perpage, $res->num_rows, "{$_SERVER['PHP_SELF']}?");
-            $HTMLOUT .= $pager['pagertop'] . '<br/>';
+            $HTMLOUT .= $pager['pagertop'] . '<br>';
             $HTMLOUT .= "
-			<br/><div style='text-align:center;border:1px solid black;width:50%;margin:0 auto;'><h4>" . $lang['mtor_summary'] . "</h4>$put<br/><br/></div><br/><br/><table border = '1' align='center' width = '70%'><tr><th>" . $lang['mtor_torrent'] . '</th><th>' . $lang['mtor_added'] . '</th><th>' . $lang['mtor_edit'] . ' ' . $lang['mtor_torrent'] . '</th></tr>' . $data . '</table>' . '<br/>';
+			<br><div style='text-align:center;border:1px solid black;width:50%;margin:0 auto;'><h4>" . $lang['mtor_summary'] . "</h4>$put<br><br></div><br><br><table border = '1' align='center' width = '70%'><tr><th>" . $lang['mtor_torrent'] . '</th><th>' . $lang['mtor_added'] . '</th><th>' . $lang['mtor_edit'] . ' ' . $lang['mtor_torrent'] . '</th></tr>' . $data . '</table>' . '<br>';
             $HTMLOUT .= $pager['pagertop'];
             $title = $put;
         }
@@ -94,7 +91,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
         $res = mysqli_fetch_row(sql_query("SELECT COUNT(*) FROM torrents WHERE checked_when >= $_time AND checked_by <> '' "));
         $count = $res[0];
         if ($count < 1) {
-            $HTMLOUT .= '<br/><br/><h3 align="center">' . $lang['mtor_no_torrents_have_been_modded'] . ' ' . $mode . '.</h3><br/><br/>';
+            $HTMLOUT .= '<br><br><h3 align="center">' . $lang['mtor_no_torrents_have_been_modded'] . ' ' . $mode . '.</h3><br><br>';
             //echo stdhead("".$lang['mtor_no_torrents_modded']."") . $HTMLOUT . stdfoot();
             $title = '' . $lang['mtor_no_torrents_modded'] . " $mode";
             //die();
@@ -105,12 +102,12 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
             $query = "SELECT tor.*,user.id as uid FROM torrents as tor INNER JOIN users as user ON user.username = tor.checked_by AND tor.checked_when >= $_time ORDER BY tor.checked_when DESC {$pager['limit']}";
             $data = do_sort(sql_query($query));
             if (isset($data[1])) {
-                $HTMLOUT .= $pager['pagertop'] . '<br/>';
+                $HTMLOUT .= $pager['pagertop'] . '<br>';
                 foreach ($data[0] as $k => $v) {
                     $trim .= "$k : $v ,";
                 }
                 $trim = trim($trim, ',');
-                $HTMLOUT .= "<br/><div style='text-align:center;border:1px solid black;width:70%;margin:0 auto;'><h4>" . $lang['mtor_summary'] . "</h4>$trim<br/><br/></div><br/><br/><table border = '1' align='center' width = '70%'><tr><th>" . $lang['mtor_torrent'] . '</th><th>' . $lang['mtor_modded_by'] . '</th><th>' . $lang['mtor_time'] . '</th></tr>' . $data[1] . '</table>' . '<br/>';
+                $HTMLOUT .= "<br><div style='text-align:center;border:1px solid black;width:70%;margin:0 auto;'><h4>" . $lang['mtor_summary'] . "</h4>$trim<br><br></div><br><br><table border = '1' align='center' width = '70%'><tr><th>" . $lang['mtor_torrent'] . '</th><th>' . $lang['mtor_modded_by'] . '</th><th>' . $lang['mtor_time'] . '</th></tr>' . $data[1] . '</table>' . '<br>';
                 $HTMLOUT .= $pager['pagertop'];
             }
             $title = "$count " . $lang['mtor_modded_torrents'] . " $mode";
@@ -157,7 +154,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
         $res = sql_query($query);
         $count = $res->num_rows;
         if ($count < 1) {
-            $HTMLOUT .= "<br/><br/><h3 align='center'>" . $lang['mtor_no_torrents_have_been_modded'] . " $text</h3><br/><br/>";
+            $HTMLOUT .= "<br><br><h3 align='center'>" . $lang['mtor_no_torrents_have_been_modded'] . " $text</h3><br><br>";
             $title = "$_POST[username] : " . $lang['mtor_no_modded_torrents'] . '';
         } else {
             $perpage = 15;
@@ -165,9 +162,9 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
             $HTMLOUT = $trim = '';
             $data = do_sort($res);
             if (isset($data[1])) {
-                $HTMLOUT .= $pager['pagertop'] . '<br/>';
+                $HTMLOUT .= $pager['pagertop'] . '<br>';
                 $trim = "$_POST[username] : $count";
-                $HTMLOUT .= "<br/><div style='text-align:center;border:1px solid black;width:70%;margin:0 auto;'><h4>" . $lang['mtor_summary'] . "</h4>$trim<br/><br/></div><br/><br/><table border = '1' align='center' width = '70%'><tr><th>" . $lang['mtor_torrent'] . '</th><th>' . $lang['mtor_modded_by'] . '</th><th>' . $lang['mtor_time'] . '</th></tr>' . $data[1] . '</table>' . '<br/>';
+                $HTMLOUT .= "<br><div style='text-align:center;border:1px solid black;width:70%;margin:0 auto;'><h4>" . $lang['mtor_summary'] . "</h4>$trim<br><br></div><br><br><table border = '1' align='center' width = '70%'><tr><th>" . $lang['mtor_torrent'] . '</th><th>' . $lang['mtor_modded_by'] . '</th><th>' . $lang['mtor_time'] . '</th></tr>' . $data[1] . '</table>' . '<br>';
                 $HTMLOUT .= $pager['pagertop'];
             }
         }
@@ -182,8 +179,8 @@ $HTMLOUT .= "
 <div class='container-fluid'>
  <div class='row-fluid' style='margin:0 auto;border:1px solid black'>
   <div class='span12' style='text-align:center;'><h1>" . $lang['mtor_modded_torrents_complete_panel'] . "</h1></div>
-  <div class='span12' style='text-align:center;'><h4>" . $lang['mtor_quick_links'] . "</h4><a class='btn btn-danger' href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=today' data-toggle='tooltip' data-placement='top' title='Tooltip on top'>" . $lang['mtor_modded_today'] . "</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class='btn btn-danger' href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=yesterday' >" . $lang['mtor_modded_yesterday'] . "</a>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class='btn btn-danger' href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=unmodded' >" . $lang['mtor_all_unmodded_torrents'] . "</a><br/><br/><br/>
+  <div class='span12' style='text-align:center;'><h4>" . $lang['mtor_quick_links'] . "</h4><a class='btn btn-danger' href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=today' data-toggle='tooltip' data-placement='top' title='Tooltip on top'>" . $lang['mtor_modded_today'] . "</a>&#160;&#160;&#160;&#160;&#160;<a class='btn btn-danger' href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=yesterday' >" . $lang['mtor_modded_yesterday'] . "</a>
+  &#160;&#160;&#160;&#160;&#160;<a class='btn btn-danger' href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=unmodded' >" . $lang['mtor_all_unmodded_torrents'] . "</a><br><br><br>
   </div>
   
    <div class='span12' style='text-align:center;'>
@@ -207,7 +204,7 @@ $HTMLOUT .= "
     <div class='controls'>
       <input type='text' placeholder='" . $lang['mtor_day'] . "' class='input-small' name='day' />
 	  <input type='text' class='input-small' placeholder='" . $lang['mtor_month'] . "' name='month' />
-	  <input type='text' class='input-small' placeholder='" . $lang['mtor_year'] . "' name='year' value='" . date('Y', time()) . "'/><br/><br/>
+	  <input type='text' class='input-small' placeholder='" . $lang['mtor_year'] . "' name='year' value='" . date('Y', time()) . "'/><br><br>
 	  <button type='submit' class='btn'>" . $lang['mtor_search'] . '</button>
 
     </div>

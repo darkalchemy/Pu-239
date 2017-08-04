@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 $hash = 'YXBwemZhbg';
 $_hash = isset($_GET['hash']) ? $_GET['hash'] : '';
 $_user = isset($_GET['u']) ? htmlspecialchars($_GET['u']) : '';

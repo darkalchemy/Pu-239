@@ -1,9 +1,5 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 $num_result = $and_member = '';
-//=== don't allow direct access
 if (!defined('BUNNY_PM_SYSTEM')) {
     $HTMLOUT = '';
     $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -196,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <td colspan="5" class="colhead" align="center"><h1>' . $mailbox_name . '</h1></td>
     </tr>
     <tr>
-        <td width= "1%" class="colhead">&nbsp;</td>
+        <td width= "1%" class="colhead">&#160;</td>
         <td class="colhead">' . $lang['pm_search_subject'] . '</td>
         <td width="35%" class="colhead">' . ($mailbox === PM_SENTBOX ? $lang['pm_search_send_to'] : $lang['pm_search_sender']) . '</td>
         <td width="1%" class="colhead">' . $lang['pm_search_date'] . '</td>
@@ -250,8 +246,8 @@ $HTMLOUT .= ($num_result > 0 ? '
     <tr>
         <td colspan="4" align="right" class="colhead">
         <a class="altlink" href="javascript:SetChecked(1,\'pm[]\')">' . $lang['pm_search_selall'] . '</a> - 
-        <a class="altlink" href="javascript:SetChecked(0,\'pm[]\')">' . $lang['pm_search_unselall'] . '</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a class="altlink" href="javascript:SetChecked(0,\'pm[]\')">' . $lang['pm_search_unselall'] . '</a>&#160;&#160;&#160;&#160;&#160;
         <input type="submit" class="button" name="move" value="' . $lang['pm_search_move_to'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /> ' . get_all_boxes() . ' or  
         <input type="submit" class="button" name="delete" value="' . $lang['pm_search_delete'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />' . $lang['pm_search_selected'] . '</td>
     </tr>
-    </table></form>' : '') . '<br />';
+    </table></form>' : '') . '<br>';

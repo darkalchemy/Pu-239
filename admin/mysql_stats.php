@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -135,7 +132,7 @@ $HTMLOUT .= "<table class='torrenttable' border='1'>
 
         </td>
       </tr>
-      </table><br />';
+      </table><br>';
 ((mysqli_free_result($res) || (is_object($res) && (get_class($res) == 'mysqli_result'))) ? true : false);
 unset($res);
 unset($row);
@@ -158,18 +155,18 @@ $TRAFFIC_STATS .= "<table class='torrenttable' width='100%' border='0'>
             </tr>
             <tr>
                 <td>{$lang['mysql_stats_received']}</td>
-                <td  align='right'>&nbsp;" . join(' ', byteformat($serverStatus['Bytes_received'])) . "&nbsp;</td>
-                <td  align='right'>&nbsp;" . join(' ', byteformat($serverStatus['Bytes_received'] * 3600 / $serverStatus['Uptime'])) . "&nbsp;</td>
+                <td  align='right'>&#160;" . join(' ', byteformat($serverStatus['Bytes_received'])) . "&#160;</td>
+                <td  align='right'>&#160;" . join(' ', byteformat($serverStatus['Bytes_received'] * 3600 / $serverStatus['Uptime'])) . "&#160;</td>
             </tr>
             <tr>
                 <td>{$lang['mysql_stats_sent']}</td>
-                <td  align='right'>&nbsp;" . join(' ', byteformat($serverStatus['Bytes_sent'])) . "&nbsp;</td>
-                <td  align='right'>&nbsp;" . join(' ', byteformat($serverStatus['Bytes_sent'] * 3600 / $serverStatus['Uptime'])) . "&nbsp;</td>
+                <td  align='right'>&#160;" . join(' ', byteformat($serverStatus['Bytes_sent'])) . "&#160;</td>
+                <td  align='right'>&#160;" . join(' ', byteformat($serverStatus['Bytes_sent'] * 3600 / $serverStatus['Uptime'])) . "&#160;</td>
             </tr>
             <tr>
                 <td bgcolor='grey'>&{$lang['mysql_stats_total']}</td>
-                <td bgcolor='grey' align='right'>&nbsp;" . join(' ', byteformat($serverStatus['Bytes_received'] + $serverStatus['Bytes_sent'])) . "&nbsp;</td>
-                <td bgcolor='grey' align='right'>&nbsp;" . join(' ', byteformat(($serverStatus['Bytes_received'] + $serverStatus['Bytes_sent']) * 3600 / $serverStatus['Uptime'])) . '&nbsp;</td>
+                <td bgcolor='grey' align='right'>&#160;" . join(' ', byteformat($serverStatus['Bytes_received'] + $serverStatus['Bytes_sent'])) . "&#160;</td>
+                <td bgcolor='grey' align='right'>&#160;" . join(' ', byteformat(($serverStatus['Bytes_received'] + $serverStatus['Bytes_sent']) * 3600 / $serverStatus['Uptime'])) . '&#160;</td>
             </tr>
         </table>';
 $TRAFFIC_STATS2 = "<table class='torrenttable' width='100%' border='0'>
@@ -178,26 +175,26 @@ $TRAFFIC_STATS2 = "<table class='torrenttable' width='100%' border='0'>
         </tr>
         <tr>
             <td>{$lang['mysql_stats_failed']}</td>
-            <td  align='right'>&nbsp;" . number_format($serverStatus['Aborted_connects'], 0, '.', ',') . "&nbsp;</td>
-            <td  align='right'>&nbsp;" . number_format(($serverStatus['Aborted_connects'] * 3600 / $serverStatus['Uptime']), 2, '.', ',') . "&nbsp;</td>
-            <td  align='right'>&nbsp;" . (($serverStatus['Connections'] > 0) ? number_format(($serverStatus['Aborted_connects'] * 100 / $serverStatus['Connections']), 2, '.', ',') . '&nbsp;%' : '---' . '&nbsp;') . "</td>
+            <td  align='right'>&#160;" . number_format($serverStatus['Aborted_connects'], 0, '.', ',') . "&#160;</td>
+            <td  align='right'>&#160;" . number_format(($serverStatus['Aborted_connects'] * 3600 / $serverStatus['Uptime']), 2, '.', ',') . "&#160;</td>
+            <td  align='right'>&#160;" . (($serverStatus['Connections'] > 0) ? number_format(($serverStatus['Aborted_connects'] * 100 / $serverStatus['Connections']), 2, '.', ',') . '&#160;%' : '---' . '&#160;') . "</td>
         </tr>
         <tr>
             <td>{$lang['mysql_stats_aborted']}</td>
-            <td  align='right'>&nbsp;" . number_format($serverStatus['Aborted_clients'], 0, '.', ',') . "&nbsp;</td>
-            <td  align='right'>&nbsp;" . number_format(($serverStatus['Aborted_clients'] * 3600 / $serverStatus['Uptime']), 2, '.', ',') . "&nbsp;</td>
-            <td  align='right'>&nbsp;" . (($serverStatus['Connections'] > 0) ? number_format(($serverStatus['Aborted_clients'] * 100 / $serverStatus['Connections']), 2, '.', ',') . '&nbsp;%' : '---') . "&nbsp;</td>
+            <td  align='right'>&#160;" . number_format($serverStatus['Aborted_clients'], 0, '.', ',') . "&#160;</td>
+            <td  align='right'>&#160;" . number_format(($serverStatus['Aborted_clients'] * 3600 / $serverStatus['Uptime']), 2, '.', ',') . "&#160;</td>
+            <td  align='right'>&#160;" . (($serverStatus['Connections'] > 0) ? number_format(($serverStatus['Aborted_clients'] * 100 / $serverStatus['Connections']), 2, '.', ',') . '&#160;%' : '---') . "&#160;</td>
         </tr>
         <tr>
             <td bgcolor='grey'>{$lang['mysql_stats_total']}</td>
-            <td bgcolor='grey' align='right'>&nbsp;" . number_format($serverStatus['Connections'], 0, '.', ',') . "&nbsp;</td>
-            <td bgcolor='grey' align='right'>&nbsp;" . number_format(($serverStatus['Connections'] * 3600 / $serverStatus['Uptime']), 2, '.', ',') . "&nbsp;</td>
-            <td bgcolor='grey' align='right'>&nbsp;" . number_format(100, 2, '.', ',') . '&nbsp;%&nbsp;</td>
+            <td bgcolor='grey' align='right'>&#160;" . number_format($serverStatus['Connections'], 0, '.', ',') . "&#160;</td>
+            <td bgcolor='grey' align='right'>&#160;" . number_format(($serverStatus['Connections'] * 3600 / $serverStatus['Uptime']), 2, '.', ',') . "&#160;</td>
+            <td bgcolor='grey' align='right'>&#160;" . number_format(100, 2, '.', ',') . '&#160;%&#160;</td>
         </tr>
     </table>';
 $QUERY_STATS = '';
 $QUERY_STATS .= "<!-- Queries -->
-    <b>{$lang['mysql_stats_query']}</b>{$lang['mysql_stats_since']}" . number_format($serverStatus['Questions'], 0, '.', ',') . "{$lang['mysql_stats_querys']}<br />
+    <b>{$lang['mysql_stats_query']}</b>{$lang['mysql_stats_since']}" . number_format($serverStatus['Questions'], 0, '.', ',') . "{$lang['mysql_stats_querys']}<br>
 
     <table class='torrenttable' width='100%' border='0'>
         <tr>
@@ -207,17 +204,17 @@ $QUERY_STATS .= "<!-- Queries -->
             <td bgcolor='grey'>{$lang['mysql_stats_per_seconds']}</td>
         </tr>
         <tr>
-            <td  align='right'>&nbsp;" . number_format($serverStatus['Questions'], 0, '.', ',') . "&nbsp;</td>
-            <td  align='right'>&nbsp;" . number_format(($serverStatus['Questions'] * 3600 / $serverStatus['Uptime']), 2, '.', ',') . "&nbsp;</td>
-            <td  align='right'>&nbsp;" . number_format(($serverStatus['Questions'] * 60 / $serverStatus['Uptime']), 2, '.', ',') . "&nbsp;</td>
-            <td  align='right'>&nbsp;" . number_format(($serverStatus['Questions'] / $serverStatus['Uptime']), 2, '.', ',') . '&nbsp;</td>
+            <td  align='right'>&#160;" . number_format($serverStatus['Questions'], 0, '.', ',') . "&#160;</td>
+            <td  align='right'>&#160;" . number_format(($serverStatus['Questions'] * 3600 / $serverStatus['Uptime']), 2, '.', ',') . "&#160;</td>
+            <td  align='right'>&#160;" . number_format(($serverStatus['Questions'] * 60 / $serverStatus['Uptime']), 2, '.', ',') . "&#160;</td>
+            <td  align='right'>&#160;" . number_format(($serverStatus['Questions'] / $serverStatus['Uptime']), 2, '.', ',') . '&#160;</td>
         </tr>
-    </table><br />';
+    </table><br>';
 $QUERY_STATS .= "<table class='torrenttable' width='100%' border='0'>
         <tr>
             <td colspan='2' bgcolor='grey'>{$lang['mysql_stats_query_type']}</td>
             <td bgcolor='grey'>{$lang['mysql_stats_per_hour']};</td>
-            <td bgcolor='grey'>&nbsp;%&nbsp;</td>
+            <td bgcolor='grey'>&#160;%&#160;</td>
         </tr>";
 $useBgcolorOne = true;
 $countRows = 0;
@@ -226,10 +223,10 @@ foreach ($queryStats as $name => $value) {
     // the number of connections is not an item of the Query types
     // but is included in Questions. Then the total of the percentages is 100.
     $QUERY_STATS .= '<tr>
-          <td>&nbsp;' . htmlsafechars($name) . "&nbsp;</td>
-          <td  align='right'>&nbsp;" . number_format($value, 0, '.', ',') . "&nbsp;</td>
-          <td  align='right'>&nbsp;" . number_format(($value * 3600 / $serverStatus['Uptime']), 2, '.', ',') . "&nbsp;</td>
-          <td  align='right'>&nbsp;" . number_format(($value * 100 / ($serverStatus['Questions'] - $serverStatus['Connections'])), 2, '.', ',') . '&nbsp;%&nbsp;</td>
+          <td>&#160;' . htmlsafechars($name) . "&#160;</td>
+          <td  align='right'>&#160;" . number_format($value, 0, '.', ',') . "&#160;</td>
+          <td  align='right'>&#160;" . number_format(($value * 3600 / $serverStatus['Uptime']), 2, '.', ',') . "&#160;</td>
+          <td  align='right'>&#160;" . number_format(($value * 100 / ($serverStatus['Questions'] - $serverStatus['Connections'])), 2, '.', ',') . '&#160;%&#160;</td>
       </tr>';
 }
 unset($countRows);
@@ -246,7 +243,7 @@ unset($serverStatus['Uptime']);
 $STATUS_TABLE = '';
 if (!empty($serverStatus)) {
     $STATUS_TABLE .= "<!-- Other status variables -->
-          <b>{$lang['mysql_stats_more']}</b><br />
+          <b>{$lang['mysql_stats_more']}</b><br>
           
       <table class='torrenttable' border='0' width='100%'>
           <tr>
@@ -257,8 +254,8 @@ if (!empty($serverStatus)) {
     $countRows = 0;
     foreach ($serverStatus as $name => $value) {
         $STATUS_TABLE .= '<tr>
-            <td>&nbsp;' . htmlsafechars(str_replace('_', ' ', $name)) . "&nbsp;</td>
-            <td  align='right'>&nbsp;" . htmlsafechars($value) . '&nbsp;</td>
+            <td>&#160;' . htmlsafechars(str_replace('_', ' ', $name)) . "&#160;</td>
+            <td  align='right'>&#160;" . htmlsafechars($value) . '&#160;</td>
         </tr>';
     }
     unset($useBgcolorOne);

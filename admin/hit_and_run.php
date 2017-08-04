@@ -1,11 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/*******************************
- * totally automatic hit and run script for TBDev 2011(ish)
- * ~ snuggs
- *********************************/
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -15,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -47,8 +40,8 @@ if (XBT_TRACKER === false) {
     $query_2 = (isset($_GET['really_bad']) ? 'SELECT x.fid, x.uid, x.hit_and_run, x.downloaded AS dload, x.uploaded AS uload, x.seedtime, x.started, x.completedtime, x.active, u.id, u.avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM xbt_files_users AS x LEFT JOIN users AS u ON u.id = x.uid LEFT JOIN torrents AS t ON t.id=x.fid WHERE completed >= \'1\' AND hit_and_run > 0 AND u.hit_and_run_total > 2 ORDER BY uid ' . $LIMIT : 'SELECT x.fid, x.uid, x.hit_and_run, x.downloaded AS dload, x.uploaded AS uload, x.seedtime, x.started, x.completedtime, x.active, u.id, u.avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM xbt_files_users AS x LEFT JOIN users AS u ON u.id = x.uid LEFT JOIN torrents AS t ON t.id=x.fid WHERE `completed` >= \'1\' AND `hit_and_run` > 0 ORDER BY `uid` ' . $LIMIT);
 }
 $hit_and_run_rez = sql_query($query_2) or sqlerr(__FILE__, __LINE__);
-$HTMLOUT .= '<h2>' . (!isset($_GET['really_bad']) ? $lang['hitnrun_chance'] : $lang['hitnrun_nochance']) . '</h2><br /> 
-		<a class="altlink" href="staffpanel.php?tool=hit_and_run">' . $lang['hitnrun_show_current'] . '</a> || <a class="altlink" href="staffpanel.php?tool=hit_and_run&amp;really_bad=show_them">' . $lang['hitnrun_show_disabled'] . '</a><br /><br />
+$HTMLOUT .= '<h2>' . (!isset($_GET['really_bad']) ? $lang['hitnrun_chance'] : $lang['hitnrun_nochance']) . '</h2><br> 
+		<a class="altlink" href="staffpanel.php?tool=hit_and_run">' . $lang['hitnrun_show_current'] . '</a> || <a class="altlink" href="staffpanel.php?tool=hit_and_run&amp;really_bad=show_them">' . $lang['hitnrun_show_disabled'] . '</a><br><br>
 		' . ($arr_count[0] > $perpage ? '<p>' . $menu . '</p>' : '') . '
 		<table>' . (mysqli_num_rows($hit_and_run_rez) > 0 ? '<tr><td  class="colhead">' . $lang['hitnrun_avatar'] . '</td>
 		<td  class="colhead"><b>' . $lang['hitnrun_member'] . '</b></td>
@@ -116,19 +109,19 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
             $HTMLOUT .= '<tr><td align="left">' . $avatar . '</td>
 			<td align="left"><a class="altlink" href="userdetails.php?id=' . (int)$Uid_ID . '&amp;completed=1#completed">' . format_username($users) . '</a>  [ ' . get_user_class_name($hit_and_run_arr['class']) . ' ]
 </td>
-			<td align="left"><a class="altlink" href="details.php?id=' . (int)$T_ID . '&amp;hit=1">' . htmlsafechars($hit_and_run_arr['name']) . '</a><br />
-			' . $lang['hitnrun_leechers'] . '' . (int)$hit_and_run_arr['numleeching'] . '<br />
+			<td align="left"><a class="altlink" href="details.php?id=' . (int)$T_ID . '&amp;hit=1">' . htmlsafechars($hit_and_run_arr['name']) . '</a><br>
+			' . $lang['hitnrun_leechers'] . '' . (int)$hit_and_run_arr['numleeching'] . '<br>
 			' . $lang['hitnrun_seeders'] . ' ' . (int)$hit_and_run_arr['numseeding'] . '
          </td>
-			<td align="left">' . $lang['hitnrun_finished'] . ' ' . get_date($C_Date, '') . '<br />
-			' . $lang['hitnrun_stopped'] . ' ' . get_date($hit_and_run_arr['hit_and_run'], '') . '<br />
-			' . $lang['hitnrun_seeded'] . '' . mkprettytime($hit_and_run_arr['seedtime']) . '<br />
+			<td align="left">' . $lang['hitnrun_finished'] . ' ' . get_date($C_Date, '') . '<br>
+			' . $lang['hitnrun_stopped'] . ' ' . get_date($hit_and_run_arr['hit_and_run'], '') . '<br>
+			' . $lang['hitnrun_seeded'] . '' . mkprettytime($hit_and_run_arr['seedtime']) . '<br>
 			**' . $lang['hitnrun_still'] . ' ' . mkprettytime($minus_ratio) . '</td>
-			<td align="left">' . $lang['hitnrun_uploaded'] . '' . mksize($hit_and_run_arr['uload']) . '<br />
-			' . ($INSTALLER09['ratio_free'] ? '' : '' . $lang['hitnrun_downloaded'] . '' . mksize($hit_and_run_arr['dload']) . '<br />') . '
-			' . $lang['hitnrun_ratio'] . '<font color="' . get_ratio_color($ratio_torrent) . '">' . $ratio_torrent . '</font><br />
+			<td align="left">' . $lang['hitnrun_uploaded'] . '' . mksize($hit_and_run_arr['uload']) . '<br>
+			' . ($INSTALLER09['ratio_free'] ? '' : '' . $lang['hitnrun_downloaded'] . '' . mksize($hit_and_run_arr['dload']) . '<br>') . '
+			' . $lang['hitnrun_ratio'] . '<font color="' . get_ratio_color($ratio_torrent) . '">' . $ratio_torrent . '</font><br>
 			' . $lang['hitnrun_site_ratio'] . '<font color="' . get_ratio_color($ratio_site) . '" title="' . $lang['hitnrun_includes'] . '">' . $ratio_site . '</font></td>
-			<td align="center"><a href="pm_system.php?action=send_message&amp;receiver=' . (int)$Uid_ID . '"><img src="pic/pm.gif" border="0" alt="PM" title="' . $lang['hitnrun_send'] . '" /></a><br />
+			<td align="center"><a href="pm_system.php?action=send_message&amp;receiver=' . (int)$Uid_ID . '"><img src="pic/pm.gif" border="0" alt="PM" title="' . $lang['hitnrun_send'] . '" /></a><br>
 			<a class="altlink" href="staffpanel.php?tool=shit_list&amp;action2=new&amp;shit_list_id=' . (int)$Uid_ID . '&amp;return_to=staffpanel.php?tool=hit_and_run" ><img src="pic/smilies/shit.gif" border="0" alt="Shit" title="' . $lang['hitnrun_shit'] . '" /></a></td></tr>';
         } //=== end if not owner
     } //=== if not seeding list them

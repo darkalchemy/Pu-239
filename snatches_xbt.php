@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
@@ -18,7 +15,7 @@ if (empty($_GET['id'])) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:18px;color:black;background-color:red;text-align:center;'>Incorrect access<br />Silly Rabbit - Trix are for kids.. Snatches must be accessed using a valid id !</div>
+	<div style='font-size:18px;color:black;background-color:red;text-align:center;'>Incorrect access<br>Silly Rabbit - Trix are for kids.. Snatches must be accessed using a valid id !</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();

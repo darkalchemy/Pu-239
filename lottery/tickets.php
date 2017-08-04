@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_LOTTERY')) {
     die('You can\'t access this file directly!');
 }
@@ -102,7 +99,7 @@ if (!$lottery_config['use_prize_fund']) {
 if (count($lottery['current_user']['tickets'])) {
     $html .= '<li>You own ticket numbers : <b>' . join('</b>, <b>', $lottery['current_user']['tickets']) . '</b></li>';
 }
-$html .= "</ul><hr/>
+$html .= "</ul><hr>
    <table width='400' class='main' align='center' border='1' cellspacing='0' cellpadding='5'>
     <tr>
       <td class='table'>Total Pot</td>

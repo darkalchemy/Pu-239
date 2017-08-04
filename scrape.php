@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once 'include/ann_config.php';
 require_once 'include/ann_functions.php';
 require_once 'include/class/class_bt_options.php';

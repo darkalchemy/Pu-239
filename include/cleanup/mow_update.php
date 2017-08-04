@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 function cleanup_log($data)
 {
     $text = sqlesc($data['clean_title']);
@@ -22,7 +19,7 @@ function docleanup($data)
         $arr = mysqli_fetch_assoc($res_tor);
         sql_query('UPDATE avps SET value_u=' . sqlesc($arr['id']) . ', value_i=' . sqlesc(TIME_NOW) . " WHERE avps.arg='bestfilmofweek'") or sqlerr(__FILE__, __LINE__);
         $mc1->delete_value('top_movie_2');
-        write_log('Torrent [' . (int)$arr['id'] . ']&nbsp;[' . htmlentities($arr['name']) . "] was set 'Best Film of the Week' by system");
+        write_log('Torrent [' . (int)$arr['id'] . ']&#160;[' . htmlentities($arr['name']) . "] was set 'Best Film of the Week' by system");
     }
     //==End
     if ($queries > 0) {

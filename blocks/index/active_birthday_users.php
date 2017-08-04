@@ -1,18 +1,17 @@
 <?php
-
 //==Start birthdayusers pdq
 $current_date = getdate();
 $keys['birthdayusers'] = 'birthdayusers';
 if (($birthday_users_cache = $mc1->get_value($keys['birthdayusers'])) === false) {
     $birthdayusers = '';
     $birthday_users_cache = [];
-    $res = sql_query('SELECT id, username, class, donor, title, warned, enabled, chatpost, leechwarn, pirate, king, birthday, perms FROM users WHERE MONTH(birthday) = ' . sqlesc($current_date['mon']) . ' AND DAYOFMONTH(birthday) = ' . sqlesc($current_date['mday']) . ' AND perms < ' . bt_options::PERMS_STEALTH . ' ORDER BY username ASC') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT id, username, perms FROM users WHERE MONTH(birthday) = ' . sqlesc($current_date['mon']) . ' AND DAYOFMONTH(birthday) = ' . sqlesc($current_date['mday']) . ' AND perms < ' . bt_options::PERMS_STEALTH . ' ORDER BY username ASC') or sqlerr(__FILE__, __LINE__);
     $actcount = mysqli_num_rows($res);
     while ($arr = mysqli_fetch_assoc($res)) {
         if ($birthdayusers) {
             $birthdayusers .= ",\n";
         }
-        $birthdayusers .= '<b>' . format_username($arr) . '</b>';
+        $birthdayusers .= format_username($arr['id']);
     }
     $birthday_users_cache['birthdayusers'] = $birthdayusers;
     $birthday_users_cache['actcount'] = $actcount;
@@ -23,12 +22,12 @@ if (!$birthday_users_cache['birthdayusers']) {
 }
 $birthday_users =
     '<fieldset class="header">
-		<legend>' . $lang['index_birthday'] . '&nbsp;(' . $birthday_users_cache['actcount'] . ')</legend>
-		 <div class="container-fluid">  
+		<legend>' . $lang['index_birthday'] . '&#160;(' . $birthday_users_cache['actcount'] . ')</legend>
+		 <div class="container-fluid">
 			 <!--<a href=\'javascript: klappe_news("a1")\'><img border=\'0\' src=\'pic/plus.gif\' id=\'pica1\' alt=\'' . $lang['index_hide_show'] . '\' /></a><div id=\'ka1\' style=\'display: none;\'>-->
 			  ' . $birthday_users_cache['birthdayusers'] . '
 		 </div><!--</div>-->
-	</fieldset><hr />';
+	</fieldset><hr>';
 $HTMLOUT .= $birthday_users;
 //== end birthdayusers
 // End Class

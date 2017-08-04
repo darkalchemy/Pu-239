@@ -159,7 +159,7 @@ $lemma = [
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="logo"></div>
-        <div class="navbar-header"><a class="navbar-brand" href="?<?php echo $_SERVER['QUERY_STRING']; ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php _e('Debugger'); ?></a>
+        <div class="navbar-header"><a class="navbar-brand" href="?<?php echo $_SERVER['QUERY_STRING']; ?>">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<?php _e('Debugger'); ?></a>
         </div>
     </div>
 </div>
@@ -170,15 +170,15 @@ $lemma = [
         echo __('This page is protected for security reasons.');
         echo '</div>';
         if (Sentinel::isAuthSet()) {
-            echo sprintf(__('%sSign in%s as an administrator to view this page or follow instructions below.'), '<a href="../index.php?signin&attempt=' . urlencode('inc/test.php') . '">', '</a>') . '<br/>';
+            echo sprintf(__('%sSign in%s as an administrator to view this page or follow instructions below.'), '<a href="../index.php?signin&attempt=' . urlencode('inc/test.php') . '">', '</a>') . '<br>';
         }
-        echo '<br/>' . __('To grant access, please create this temporary file on your server:');
-        echo '<br/><br/>';
+        echo '<br>' . __('To grant access, please create this temporary file on your server:');
+        echo '<br><br>';
         echo '</div>';
         echo '<div class="col-md-8"><pre class="clipboard2content">touch \'' . dirname(__FILE__) . DIRECTORY_SEPARATOR . $access_file . '\'</pre></div>';
         echo '<div class="col-md-4"><a class="btn btn-primary clipboard" data-source=".clipboard2content" data-placement="right" data-text="' . h('Command has been copied to your clipboard!') . '">' . __('Copy to clipboard') . '</a></div>';
         echo '<div class="col-xs-12">';
-        echo '<br/>' . __('Then reload this page.') . '<br/><br/>';
+        echo '<br>' . __('Then reload this page.') . '<br><br>';
         echo '<button onclick="document.location.reload();" class="btn btn-primary">' . __('Reload') . '</button>';
         echo '</div>';
         echo '</div>';
@@ -269,7 +269,7 @@ on several lines with timezone UTC+3
                             <button type="submit" class="btn btn-success"
                                     title="<?php _h('Use CTRL-R shortcut instead of clicking on this button'); ?>"
                                     data-loading-text="<?php _h('Loading...'); ?>"
-                                    id="regexTestertestBtn"><?php _e('Test'); ?></button> &nbsp; <a
+                                    id="regexTestertestBtn"><?php _e('Test'); ?></button> &#160; <a
                                     class="btn btn-primary clipboard"><?php _e('Copy to clipboard'); ?></a></div>
                     </div>
                     <div id="regexresult"></div>
@@ -544,15 +544,15 @@ on several lines with timezone UTC+3
                 Sentinel::create();
 
                 if (Sentinel::userExists($_POST['username'])) {
-                    $return = '<br/><div class="alert alert-danger" role="alert">' . sprintf(__('User %s already exists!'), '<code>' . $_POST['username'] . '</code>') . '</div>';
+                    $return = '<br><div class="alert alert-danger" role="alert">' . sprintf(__('User %s already exists!'), '<code>' . $_POST['username'] . '</code>') . '</div>';
                 } elseif ($_POST['password'] !== $_POST['password2']) {
-                    $return = '<br/><div class="alert alert-danger" role="alert">' . __('Password confirmation is not the same') . '</div>';
+                    $return = '<br><div class="alert alert-danger" role="alert">' . __('Password confirmation is not the same') . '</div>';
                 } elseif (mb_strlen($_POST['password']) < 6) {
-                    $return = '<br/><div class="alert alert-danger" role="alert">' . __('Password must contain at least 6 chars') . '</div>';
+                    $return = '<br><div class="alert alert-danger" role="alert">' . __('Password must contain at least 6 chars') . '</div>';
                 } else {
                     Sentinel::setAdmin($_POST['username'], $_POST['password']);
                     Sentinel::save();
-                    $return = '<br/><div class="alert alert-success" role="alert">' . __('Authentication has been enabled and admin account has been created!') . '</div>';
+                    $return = '<br><div class="alert alert-success" role="alert">' . __('Authentication has been enabled and admin account has been created!') . '</div>';
                 }
             } ?><?php if (Sentinel::isAuthSet()) {
                 ?><?php echo $return; ?><br>

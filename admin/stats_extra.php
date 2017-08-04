@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -143,7 +140,7 @@ function show_views()
     $htmlout = "<div>
       <div style='background: grey; height: 25px;'>
       <span style='font-weight: bold; font-size: 12pt;'>{$lang['stats_ex_center']}</span>
-      </div><br />
+      </div><br>
     {$menu}
 		
 		<div><table align='center' border='0' cellpadding='5' cellspacing='0' width='70%'>
@@ -179,7 +176,7 @@ function show_views()
 					</tr>";
         }
         $htmlout .= "<tr>
-<td valign='middle' width='20%'>&nbsp;</td>
+<td valign='middle' width='20%'>&#160;</td>
 <td valign='middle' width='70%'><div align='right'><b>{$lang['stats_ex_total']}</b></div></td>
 <td valign='middle' width='10%'><center><b>{$running_total}</b></center></td>
 </tr>";
@@ -194,7 +191,7 @@ function result_screen($mode = 'reg')
 {
     global $INSTALLER09, $inbound, $month_names, $lang;
     $page_title = $lang['stats_ex_center_result'];
-    $page_detail = '&nbsp;';
+    $page_detail = '&#160;';
     if (!checkdate($inbound['to_month'], $inbound['to_day'], $inbound['to_year'])) {
         stderr($lang['stats_ex_ustderr'], $lang['stats_ex_ustderr1']);
     }
@@ -283,12 +280,12 @@ function result_screen($mode = 'reg')
     $htmlout = "<div>
       <div style='background: grey; height: 25px;'>
       <span style='font-weight: bold; font-size: 12pt;'>{$lang['stats_ex_center']}</span>
-      </div><br />
+      </div><br>
     {$menu}
 		
 		<div><table align='center' border='0' cellpadding='5' cellspacing='0' width='70%'>
 		<tr>
-    <td colspan='3' align='left'>{$heading}<br />{$page_detail}</td>
+    <td colspan='3' align='left'>{$heading}<br>{$page_detail}</td>
     </tr>
 		<tr>
     <td align='center' width='20%'>{$lang['stats_ex_date']}</td>
@@ -325,7 +322,7 @@ function result_screen($mode = 'reg')
 					</tr>";
         }
         $htmlout .= "<tr>
-<td valign='middle' width='20%'>&nbsp;</td>
+<td valign='middle' width='20%'>&#160;</td>
 <td valign='middle' width='70%'><div align='right'><b>{$lang['stats_ex_total']}</b></div></td>
 <td valign='middle' width='10%'><center><b>{$running_total}</b></center></td>
 </tr>";
@@ -340,7 +337,7 @@ function main_screen($mode = 'reg')
 {
     global $INSTALLER09, $lang;
     $page_title = $lang['stats_ex_center'];
-    $page_detail = "{$lang['stats_ex_details_main']}<br />{$lang['stats_ex_details_main1']}";
+    $page_detail = "{$lang['stats_ex_details_main']}<br>{$lang['stats_ex_details_main1']}";
     if ($mode == 'reg') {
         $form_code = 'show_reg';
         $table = $lang['stats_ex_registr'];
@@ -372,7 +369,7 @@ function main_screen($mode = 'reg')
     $htmlout = "<div>
       <div style='background: grey; height: 25px;'>
       <span style='font-weight: bold; font-size: 12pt;'>{$lang['stats_ex_center']}</span>
-      </div><br />
+      </div><br>
     {$menu}
     <form action='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra' method='post' name='StatsForm'>
     <input name='mode' value='{$form_code}' type='hidden' />
@@ -385,12 +382,12 @@ function main_screen($mode = 'reg')
     <fieldset><legend><strong>{$lang['stats_ex_infor']}</strong></legend>
     {$page_detail}</fieldset>
 		<fieldset><legend><strong>{$lang['stats_ex_datefrom']}</strong></legend>";
-    $htmlout .= make_select('from_month', make_month(), $old_date['mon']) . '&nbsp;&nbsp;';
-    $htmlout .= make_select('from_day', make_day(), $old_date['mday']) . '&nbsp;&nbsp;';
+    $htmlout .= make_select('from_month', make_month(), $old_date['mon']) . '&#160;&#160;';
+    $htmlout .= make_select('from_day', make_day(), $old_date['mday']) . '&#160;&#160;';
     $htmlout .= make_select('from_year', make_year(), $old_date['year']) . '</fieldset>';
     $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_dateto']}</strong></legend>";
-    $htmlout .= make_select('to_month', make_month(), $new_date['mon']) . '&nbsp;&nbsp;';
-    $htmlout .= make_select('to_day', make_day(), $new_date['mday']) . '&nbsp;&nbsp;';
+    $htmlout .= make_select('to_month', make_month(), $new_date['mon']) . '&#160;&#160;';
+    $htmlout .= make_select('to_day', make_day(), $new_date['mday']) . '&#160;&#160;';
     $htmlout .= make_select('to_year', make_year(), $new_date['year']) . '</fieldset>';
     if ($mode != 'views') {
         $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_timescale']}</strong></legend>";
@@ -496,14 +493,14 @@ function make_side_menu()
     global $INSTALLER09, $lang;
     $htmlout = "<div style='float:left;border: 1px solid black;padding:5px;'>
     <div align='left'><strong>{$lang['stats_ex_menu']}</strong></div>
-    <div align='left'>&nbsp;&nbsp;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=reg' style='text-decoration: none;'>{$lang['stats_ex_menureg']}</a></div>
-    <div align='left'>&nbsp;&nbsp;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=topic' style='text-decoration: none;'>{$lang['stats_ex_menutopnew']}</a></div>
-    <div align='left'>&nbsp;&nbsp;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=post' style='text-decoration: none;'>{$lang['stats_ex_menuposts']}</a></div>
-    <div align='left'>&nbsp;&nbsp;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=msg' style='text-decoration: none;'>{$lang['stats_ex_menupm']}</a></div>
-    <div align='left'>&nbsp;&nbsp;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=views' style='text-decoration: none;'>{$lang['stats_ex_menutopic']}</a></div>
-    <div align='left'>&nbsp;&nbsp;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=comms' style='text-decoration: none;'>{$lang['stats_ex_menucomm']}</a></div>
-    <div align='left'>&nbsp;&nbsp;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=torrents' style='text-decoration: none;'>{$lang['stats_ex_menutorr']}</a></div>
-    <div align='left'>&nbsp;&nbsp;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=reps' style='text-decoration: none;'>{$lang['stats_ex_menurep']}</a></div>
+    <div align='left'>&#160;&#160;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=reg' style='text-decoration: none;'>{$lang['stats_ex_menureg']}</a></div>
+    <div align='left'>&#160;&#160;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=topic' style='text-decoration: none;'>{$lang['stats_ex_menutopnew']}</a></div>
+    <div align='left'>&#160;&#160;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=post' style='text-decoration: none;'>{$lang['stats_ex_menuposts']}</a></div>
+    <div align='left'>&#160;&#160;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=msg' style='text-decoration: none;'>{$lang['stats_ex_menupm']}</a></div>
+    <div align='left'>&#160;&#160;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=views' style='text-decoration: none;'>{$lang['stats_ex_menutopic']}</a></div>
+    <div align='left'>&#160;&#160;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=comms' style='text-decoration: none;'>{$lang['stats_ex_menucomm']}</a></div>
+    <div align='left'>&#160;&#160;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=torrents' style='text-decoration: none;'>{$lang['stats_ex_menutorr']}</a></div>
+    <div align='left'>&#160;&#160;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=reps' style='text-decoration: none;'>{$lang['stats_ex_menurep']}</a></div>
 </div>";
 
     return $htmlout;

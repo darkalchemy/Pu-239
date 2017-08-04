@@ -27,7 +27,7 @@ $lang = [
     'grouppm_sub'       => 'Subiect',
     'grouppm_body'      => 'Mesaj',
     'grouppm_groups'    => 'Grupuri',
-    'grouppm_sendas'    => 'Trimite ca <b>System</b>&nbsp',
+    'grouppm_sendas'    => 'Trimite ca <b>System</b>&#160;',
     'grouppm_send'      => 'Trimite!',
     'grouppm_stdhead'   => 'Mesaje Private către Grup',
 ];

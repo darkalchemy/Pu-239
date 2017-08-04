@@ -1,14 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-
-/* Chmod class
- * Original idea from here http://gr.php.net/manual/en/function.chmod.php#77163
- *
- * Changed accordingly and improved for a mod on TBDEV.NET by Alex2005
-*/
-
 class Chmod
 {
     private $_dir;

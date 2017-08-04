@@ -22,7 +22,7 @@ $res = sql_query('SELECT a1.*, (SELECT COUNT(a2.id) FROM achievements AS a2 WHER
 $HTMLOUT = '';
 $HTMLOUT .= "<h1>{$lang['achlst_std_head']}</h1>\n";
 if (mysqli_num_rows($res) == 0) {
-    $HTMLOUT .= "<p align='center'><b>{$lang['achlst_there_no_ach_msg']}!<br />{$lang['achlst_staff_been_lazy']}!</b></p>\n";
+    $HTMLOUT .= "<p align='center'><b>{$lang['achlst_there_no_ach_msg']}!<br>{$lang['achlst_staff_been_lazy']}!</b></p>\n";
 } else {
     $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5'>
 		<tr>
@@ -39,7 +39,7 @@ if (mysqli_num_rows($res) == 0) {
         $HTMLOUT .= "<tr>
 			<td class='one' align='center'>$clienticon</td>
 			<td class='two' align='center'>$notes</td>
-			<td class='one' align='center'>" . htmlsafechars($arr['count']) . "<br />times</td>
+			<td class='one' align='center'>" . htmlsafechars($arr['count']) . "<br>times</td>
 			</tr>\n";
     }
     $HTMLOUT .= "</table>\n";

@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 // session so that repeated access of this page cannot happen without the calling script.
 //
 // You use the create function with the sending script, and the check function with the

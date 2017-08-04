@@ -1,5 +1,4 @@
 <?php
-
 //== 09 Donation progress
 $progress = '';
 if (($totalfunds_cache = $mc1->get_value('totalfunds_')) === false) {
@@ -16,9 +15,9 @@ if ($Progress_so_far >= 100) {
 /*
 $HTMLOUT.= "<fieldset class='header'><legend>{$lang['index_donations']}</legend>
             <div class='container-fluid cite text-center'>
-            <a href='{$INSTALLER09['baseurl']}/donate.php'><img border='0' src='{$INSTALLER09['pic_base_url']}makedonation.gif' alt='{$lang['index_donations']}' title='{$lang['index_donations']}'  /></a><br />
-            <br />
-<br />
+            <a href='./donate.php'><img border='0' src='{$INSTALLER09['pic_base_url']}makedonation.gif' alt='{$lang['index_donations']}' title='{$lang['index_donations']}'  /></a><br>
+            <br>
+<br>
 
                 <div class='progress' style ='width: 50%; margin-left: 25%;color: black;'>
   <div class='progress-bar' role='progressbar' aria-valuenow='$Progress_so_far' aria-valuemin='0' aria-valuemax='100' style='width: $Progress_so_far;'>
@@ -28,11 +27,11 @@ $HTMLOUT.= "<fieldset class='header'><legend>{$lang['index_donations']}</legend>
 
 
                     </div>
-            </fieldset><hr />";
+            </fieldset><hr>";
 */
 $HTMLOUT .= "<fieldset><legend>{$lang['index_donations']}</legend>
 			<div class='container-fluid' align='center'>
-			<a href='{$INSTALLER09['baseurl']}/donate.php'><img border='0' src='{$INSTALLER09['pic_base_url']}makedonation.gif' alt='{$lang['index_donations']}' title='{$lang['index_donations']}'  /></a><br />
+			<a href='./donate.php'><img border='0' src='{$INSTALLER09['pic_base_url']}makedonation.gif' alt='{$lang['index_donations']}' title='{$lang['index_donations']}'  /></a><br>
 				<table width='140' style='height: 20%;' border='2'>
 					<tr>
 						<td bgcolor='transparent' align='center' valign='middle' width='$Progress_so_far%'>$Progress_so_far%</td>
@@ -40,7 +39,7 @@ $HTMLOUT .= "<fieldset><legend>{$lang['index_donations']}</legend>
 					</tr>
 				</table>
 			</div>
-			</fieldset><hr />";
+			</fieldset><hr>";
 //==end
 // End Class
 // End File

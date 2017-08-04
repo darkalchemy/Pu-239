@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
@@ -52,7 +49,7 @@ function DoStaff($staff, $staffclass, $cols = 2)
             <td class='staff_online'><img style='vertical-align: middle;' height='16' src='{$INSTALLER09['pic_base_url']}flag/" . htmlsafechars($staff[$r]['flagpic']) . "' border='0' alt='" . htmlsafechars($staff[$r]['name']) . "' /></td>";
                 ++$r;
             } else {
-                $htmlout .= '<td>&nbsp;</td>';
+                $htmlout .= '<td>&#160;</td>';
             }
         }
         $htmlout .= '</tr>';
@@ -74,12 +71,12 @@ if (!empty($support)) {
     $htmlout .= "
         <div class='global_text'><div class='headline'>{$lang['header_fls']}</div><table width='97%' border='0' cellpadding='3'>
         <tr>
-        <td class='staff_username' colspan='2'>{$lang['text_first']}<br /><br /></td>
+        <td class='staff_username' colspan='2'>{$lang['text_first']}<br><br></td>
         </tr>
         <tr>
-        <td class='staff_username' align='left'><b>{$lang['first_name']}&nbsp;</b></td>
-        <td class='staff_online'><b>{$lang['first_active']}&nbsp;&nbsp;&nbsp;</b></td>
-        <td class='staff_online'><b>{$lang['first_contact']}&nbsp;&nbsp;&nbsp;&nbsp;</b></td>
+        <td class='staff_username' align='left'><b>{$lang['first_name']}&#160;</b></td>
+        <td class='staff_online'><b>{$lang['first_active']}&#160;&#160;&#160;</b></td>
+        <td class='staff_online'><b>{$lang['first_contact']}&#160;&#160;&#160;&#160;</b></td>
         <td class='staff_online'><b>{$lang['first_lang']}</b></td>
         <td class='staff_online'><b>{$lang['first_supportfor']}</b></td>
         </tr>" . $firstline . '';

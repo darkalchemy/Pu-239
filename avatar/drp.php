@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 $_settings = $_SERVER['DOCUMENT_ROOT'] . '/avatar/settings/';
 $op[1] = 'Posts';
 $op[2] = 'Stats';

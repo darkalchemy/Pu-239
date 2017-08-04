@@ -1,11 +1,7 @@
 <?php
-
 if (!defined('IN_REQUESTS')) {
     exit('No direct script access allowed');
 }
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 $rs = sql_query("SELECT r.*, c.id AS catid, c.name AS catname FROM requests AS r LEFT JOIN categories AS c ON (c.id=r.cat) WHERE r.id = $id") or sqlerr(__FILE__, __LINE__);
 $numz = mysqli_fetch_assoc($rs);
 if ($CURUSER['id'] != $numz['userid'] && $CURUSER['class'] < UC_MODERATOR) {
@@ -20,7 +16,7 @@ foreach ($cats as $row) {
     $s2 .= "<option value='" . $row['id'] . "'>" . htmlspecialchars($row['name']) . "</option>\n";
 }
 $s2 .= "</select>\n";
-$HTMLOUT .= "<br />
+$HTMLOUT .= "<br>
 <form method='post' name='compose' action='viewrequests.php?id=$id&amp;take_req_edit'><a name='add' id='add'></a>
 <table border='1' cellspacing='0' cellpadding='5'><tr><td align='left' colspan='2'>
 <h1 align='center'>{$lang['details_edit']} $s</h1>
@@ -29,7 +25,7 @@ $HTMLOUT .= "<br />
 <td align='left'><input type='text' size='40' name='requesttitle' value='{$s}' /><b> {$lang['req_type']}</b> $s2</td></tr>
 <tr><td align='right' valign='top'><b>{$lang['add_image']}</b></td><td align='left'>
 <input type='text' name='picture' size='80' value='' />
-<br />{$lang['add_direct_link']}</td></tr>
+<br>{$lang['add_direct_link']}</td></tr>
 <tr><td align='right'><b>{$lang['add_description']}</b></td>
 
 <td align='left'>";
@@ -49,6 +45,6 @@ if ($CURUSER['class'] >= UC_MODERATOR) {
     <tr><td align='right'>
     <b>{$lang['edit_torrent_id']}</b></td><td><input type='text' size='10' name='torrentid' value='$numz[torrentid]' /></td></tr>";
 }
-$HTMLOUT .= "<tr><td align='center' colspan='2'><input type='submit' value='{$lang['details_edit']}' class='btn' /></td></tr></table></form><br />\n";
+$HTMLOUT .= "<tr><td align='center' colspan='2'><input type='submit' value='{$lang['details_edit']}' class='btn' /></td></tr></table></form><br>\n";
 /////////////////////// HTML OUTPUT //////////////////////////////
 echo stdhead('Edit Request') . $HTMLOUT . stdfoot();

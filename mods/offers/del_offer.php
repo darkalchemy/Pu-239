@@ -1,11 +1,7 @@
 <?php
-
 if (!defined('IN_OFFERS')) {
     exit('No direct script access allowed');
 }
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 $res = sql_query('SELECT userid, offer FROM offers WHERE id = ' . $id) or sqlerr(__FILE__, __LINE__);
 $num = mysqli_fetch_assoc($res);
 if ($CURUSER['id'] != $num['userid'] && $CURUSER['class'] < UC_MODERATOR) {

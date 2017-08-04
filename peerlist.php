@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bt_client_functions.php';
@@ -116,5 +113,5 @@ usort($seeders, 'seed_sort');
 usort($downloaders, 'leech_sort');
 $HTMLOUT .= "<h1>Peerlist for <a href='{$INSTALLER09['baseurl']}/details.php?id=$id'>" . htmlsafechars($row['name']) . '</a></h1>';
 $HTMLOUT .= dltable("{$lang['peerslist_seeders']}<a name='seeders'></a>", $seeders, $row);
-$HTMLOUT .= '<br />' . dltable("{$lang['peerslist_leechers']}<a name='leechers'></a>", $downloaders, $row);
+$HTMLOUT .= '<br>' . dltable("{$lang['peerslist_leechers']}<a name='leechers'></a>", $downloaders, $row);
 echo stdhead("{$lang['peerslist_stdhead']}") . $HTMLOUT . stdfoot();

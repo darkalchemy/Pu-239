@@ -1,10 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/**
- * Updated Database Backup Manager.
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -14,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
                 <title>Error!</title>
                 </head>
                 <body>
-        <div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+        <div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
         </body></html>";
     echo $HTMLOUT;
     exit();
@@ -121,7 +115,7 @@ if (empty($mode)) {
         </script>";
     $HTMLOUT .= begin_main_frame();
     $HTMLOUT .= $lang['backup_welcome'];
-    $HTMLOUT .= "<br /><h1 align='center'></h1>";
+    $HTMLOUT .= "<br><h1 align='center'></h1>";
     $res = sql_query('SELECT db.id, db.name, db.added, u.id AS uid, u.username ' . 'FROM dbbackup AS db ' . 'LEFT JOIN users AS u ON u.id = db.userid ' . 'ORDER BY db.added DESC') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         $HTMLOUT .= "<form method='post' action='staffpanel.php?tool=backup&amp;mode=delete'>
@@ -157,10 +151,10 @@ if (empty($mode)) {
         $HTMLOUT .= "<h2 align='center'>'{$lang['backup_nofound']}'</h2>";
         $HTMLOUT .= end_frame();
     }
-    $HTMLOUT .= '<br />';
-    $HTMLOUT .= stdmsg($lang['backup_options'], "<div align='center'><a href='staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>&nbsp;&nbsp;-&nbsp;&nbsp;<a href='staffpanel.php?tool=backup&amp;mode=check'>{$lang['backup_settingschk']}</a></div>");
+    $HTMLOUT .= '<br>';
+    $HTMLOUT .= stdmsg($lang['backup_options'], "<div align='center'><a href='staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>&#160;&#160;-&#160;&#160;<a href='staffpanel.php?tool=backup&amp;mode=check'>{$lang['backup_settingschk']}</a></div>");
     if (!empty($_GET)) {
-        $HTMLOUT .= '<br />';
+        $HTMLOUT .= '<br>';
     }
     if (isset($_GET['backedup'])) {
         $HTMLOUT .= stdmsg($lang['backup_success'], $lang['backup_backedup']);
@@ -271,15 +265,15 @@ if (empty($mode)) {
   <td class='colhead' colspan='2'>{$lang['backup_settingschk']}(<a href='staffpanel.php?tool=backup'>{$lang['backup_goback']}</a>)</td>
          </tr>
          <tr>
-  <td>{$lang['backup_qzip']}<br /><font class='small'>{$lang['backup_optional']}</font></td>
+  <td>{$lang['backup_qzip']}<br><font class='small'>{$lang['backup_optional']}</font></td>
   <td width='1%' align='center'><b>" . ($use_gzip ? "<font color='green'>{$lang['backup_yes']}</font>" : "<font color='red'>{$lang['backup_no']}</font>") . "</b></td>
          </tr>
   <tr>
-  <td>{$lang['backup_qzippath']}<br /><font class='small'>" . $gzip_path . "</font></td>
+  <td>{$lang['backup_qzippath']}<br><font class='small'>" . $gzip_path . "</font></td>
   <td width='1%' align='center'><b>" . (is_file($gzip_path) ? "<font color='green'>{$lang['backup_yes']}</font>" : "<font color='red'>{$lang['backup_no']}</font>") . "</b></td>
   </tr>
   <tr>
-  <td>{$lang['backup_pathfolder']}<br /><font class='small'>" . $backupdir . "</font></td>
+  <td>{$lang['backup_pathfolder']}<br><font class='small'>" . $backupdir . "</font></td>
   <td width='1%' align='center'><b>" . (is_dir($backupdir) ? "<font color='green'>{$lang['backup_yes']}</font>" : "<font color='red'>{$lang['backup_no']}</font>") . "</b></td>
          </tr>
   <tr>
@@ -291,7 +285,7 @@ if (empty($mode)) {
   <td width='1%' align='center'><b>" . (is_writable($backupdir) ? "<font color='green'>{$lang['backup_yes']}</font>" : "<font color='red'>{$lang['backup_no']}</font>") . "</b></td>
          </tr>
   <tr>
-  <td>{$lang['backup_mysqldump']}<br /><font class='small'>" . $mysqldump_path . "</font></td>
+  <td>{$lang['backup_mysqldump']}<br><font class='small'>" . $mysqldump_path . "</font></td>
   <td width='1%' align='center'><b>" . (preg_match('/mysqldump/i', exec($mysqldump_path)) ? "<font color='green'>{$lang['backup_yes']}</font>" : "<font color='red'>{$lang['backup_no']}</font>") . "</b></td>
          </tr>
   <tr>

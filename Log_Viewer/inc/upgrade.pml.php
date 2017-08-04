@@ -264,38 +264,38 @@ try {
         $upgrade['alert'] .= '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
         $upgrade['alert'] .= '<strong>' . __('An upgrade is available !') . '</strong> ';
         $upgrade['alert'] .= sprintf(__('You have version %s and version %s is available'), '<em>' . $upgrade['current'] . '</em>', '<em>' . $upgrade['to'] . '</em>');
-        $upgrade['alert'] .= '&nbsp;(<a href="#" class="alert-link" data-toggle="collapse" data-target="#changelog">' . __('release notes') . '</a>)';
+        $upgrade['alert'] .= '&#160;(<a href="#" class="alert-link" data-toggle="collapse" data-target="#changelog">' . __('release notes') . '</a>)';
 
-        $upgrade['alert'] .= '<br/>';
+        $upgrade['alert'] .= '<br>';
 
         // Installation has been done via composer
         if (upgrade_is_composer()) {
             $upgrade['alert'] .= __('Simply <code>composer update</code> in the installation directory');
-            $upgrade['alert'] .= '<br/>';
-            $upgrade['alert'] .= '<br/><pre id="composercontent">cd ' . escapeshellarg(realpath(PML_BASE . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR)) . '; composer update</pre>';
-            $upgrade['alert'] .= '<div id="changelog" class="panel-collapse collapse"><br/><div class="panel-body panel panel-default">' . $html . '</div></div>';
+            $upgrade['alert'] .= '<br>';
+            $upgrade['alert'] .= '<br><pre id="composercontent">cd ' . escapeshellarg(realpath(PML_BASE . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR)) . '; composer update</pre>';
+            $upgrade['alert'] .= '<div id="changelog" class="panel-collapse collapse"><br><div class="panel-body panel panel-default">' . $html . '</div></div>';
 
             $upgrade['alert'] .= '<div class="row">';
             $upgrade['alert'] .= '<div class="col-xs-6 text-left">';
-            $upgrade['alert'] .= '<button id="composercopy" class="btn btn-xs btn-primary clipboard"><span class="glyphicon glyphicon-cloud-download"></span>&nbsp;' . __('Copy to clipboard') . '</button>';
+            $upgrade['alert'] .= '<button id="composercopy" class="btn btn-xs btn-primary clipboard"><span class="glyphicon glyphicon-cloud-download"></span>&#160;' . __('Copy to clipboard') . '</button>';
             $upgrade['alert'] .= '</div>';
             $upgrade['alert'] .= '<div class="col-xs-6 text-right">';
-            $upgrade['alert'] .= '<button id="upgradestop" data-version="' . $upgrade['to'] . '" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ok"></span>&nbsp;' . __('Skip this upgrade') . '</button>';
+            $upgrade['alert'] .= '<button id="upgradestop" data-version="' . $upgrade['to'] . '" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ok"></span>&#160;' . __('Skip this upgrade') . '</button>';
             $upgrade['alert'] .= '</div>';
             $upgrade['alert'] .= '</div>';
             $upgrade['alert'] .= '<script>clipboard_enable("#composercopy","#composercontent" , "right" , "' . __('Command copied!') . '");</script>';
         } // Auto Update is forbidden when AUTO_UPDATE is false or when auth is enabled but user is not an admin
         elseif ((AUTO_UPGRADE === false) || ((Sentinel::isAuthSet()) && (!Sentinel::isAdmin(Sentinel::getCurrentUsername())))) {
             $upgrade['alert'] .= sprintf(__('Simply <code>git pull</code> in your directory or follow instructions %shere%s'), '<a href="' . UPGRADE_MANUALLY_URL . '" target="doc" class="alert-link">', '</a>');
-            $upgrade['alert'] .= '<br/>';
-            $upgrade['alert'] .= '<br/><pre id="gitcontent">cd ' . PML_BASE . '; git pull</pre>';
-            $upgrade['alert'] .= '<div id="changelog" class="panel-collapse collapse"><br/><div class="panel-body panel panel-default">' . $html . '</div></div>';
+            $upgrade['alert'] .= '<br>';
+            $upgrade['alert'] .= '<br><pre id="gitcontent">cd ' . PML_BASE . '; git pull</pre>';
+            $upgrade['alert'] .= '<div id="changelog" class="panel-collapse collapse"><br><div class="panel-body panel panel-default">' . $html . '</div></div>';
             $upgrade['alert'] .= '<div class="row">';
             $upgrade['alert'] .= '<div class="col-xs-6 text-left">';
-            $upgrade['alert'] .= '<button id="gitcopy" class="btn btn-xs btn-primary clipboard"><span class="glyphicon glyphicon-cloud-download"></span>&nbsp;' . __('Copy to clipboard') . '</button>';
+            $upgrade['alert'] .= '<button id="gitcopy" class="btn btn-xs btn-primary clipboard"><span class="glyphicon glyphicon-cloud-download"></span>&#160;' . __('Copy to clipboard') . '</button>';
             $upgrade['alert'] .= '</div>';
             $upgrade['alert'] .= '<div class="col-xs-6 text-right">';
-            $upgrade['alert'] .= '<button id="upgradestop" data-version="' . $upgrade['to'] . '" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ok"></span>&nbsp;' . __('Skip this upgrade') . '</button>';
+            $upgrade['alert'] .= '<button id="upgradestop" data-version="' . $upgrade['to'] . '" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ok"></span>&#160;' . __('Skip this upgrade') . '</button>';
             $upgrade['alert'] .= '</div>';
             $upgrade['alert'] .= '</div>';
             $upgrade['alert'] .= '<script>clipboard_enable("#gitcopy","#gitcontent" , "right" , "' . __('Command copied!') . '");</script>';
@@ -305,20 +305,20 @@ try {
 
             // .git exists and all tests have passed, so we can upgrade
             if (!is_array($can_pull)) {
-                $upgrade['alert'] .= '<div id="changelog" class="panel-collapse collapse"><br/><div class="panel-body panel panel-default">' . $html . '</div></div>';
-                $upgrade['alert'] .= '<br/>';
+                $upgrade['alert'] .= '<div id="changelog" class="panel-collapse collapse"><br><div class="panel-body panel panel-default">' . $html . '</div></div>';
+                $upgrade['alert'] .= '<br>';
                 $upgrade['alert'] .= '<div class="row">';
                 $upgrade['alert'] .= '<div class="col-xs-6 text-left">';
-                $upgrade['alert'] .= '<button id="upgradegitpull" data-loading-text="' . h(__('Upgrading...')) . '" data-version="' . $upgrade['to'] . '" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-cloud-download"></span>&nbsp;' . __('Upgrade now') . '</button>';
+                $upgrade['alert'] .= '<button id="upgradegitpull" data-loading-text="' . h(__('Upgrading...')) . '" data-version="' . $upgrade['to'] . '" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-cloud-download"></span>&#160;' . __('Upgrade now') . '</button>';
                 $upgrade['alert'] .= '</div>';
                 $upgrade['alert'] .= '<div class="col-xs-6 text-right">';
-                $upgrade['alert'] .= '<button id="upgradestop" data-version="' . $upgrade['to'] . '" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ok"></span>&nbsp;' . __('Skip this upgrade') . '</button>';
+                $upgrade['alert'] .= '<button id="upgradestop" data-version="' . $upgrade['to'] . '" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ok"></span>&#160;' . __('Skip this upgrade') . '</button>';
                 $upgrade['alert'] .= '</div>';
                 $upgrade['alert'] .= '</div>';
             } // .git exists but there is a problem
             else {
                 $upgrade['alert'] .= sprintf(__('Your GIT installation cannot be upgraded automatically because of %sthese problems%s.'), '<a href="#" class="alert-link" data-toggle="collapse" data-target="#gitpb">', '</a>');
-                $upgrade['alert'] .= '<div id="gitpb" class="panel-collapse collapse"><br/><div class="panel-body panel panel-default">';
+                $upgrade['alert'] .= '<div id="gitpb" class="panel-collapse collapse"><br><div class="panel-body panel panel-default">';
 
                 switch (strval($can_pull[0])) {
                     case '2706':
@@ -358,17 +358,17 @@ try {
                 }
 
                 $upgrade['alert'] .= '</div></div>';
-                $upgrade['alert'] .= '<br/>';
+                $upgrade['alert'] .= '<br>';
                 $upgrade['alert'] .= __('Simply <code>git pull</code> in your installation directory.');
-                $upgrade['alert'] .= '<br/>';
-                $upgrade['alert'] .= '<br/><pre id="gitcontent">cd ' . PML_BASE . '; git pull</pre>';
-                $upgrade['alert'] .= '<div id="changelog" class="panel-collapse collapse"><br/><div class="panel-body panel panel-default">' . $html . '</div></div>';
+                $upgrade['alert'] .= '<br>';
+                $upgrade['alert'] .= '<br><pre id="gitcontent">cd ' . PML_BASE . '; git pull</pre>';
+                $upgrade['alert'] .= '<div id="changelog" class="panel-collapse collapse"><br><div class="panel-body panel panel-default">' . $html . '</div></div>';
                 $upgrade['alert'] .= '<div class="row">';
                 $upgrade['alert'] .= '<div class="col-xs-6 text-left">';
-                $upgrade['alert'] .= '<button id="gitcopy" class="btn btn-xs btn-primary clipboard"><span class="glyphicon glyphicon-cloud-download"></span>&nbsp;' . __('Copy to clipboard') . '</button>';
+                $upgrade['alert'] .= '<button id="gitcopy" class="btn btn-xs btn-primary clipboard"><span class="glyphicon glyphicon-cloud-download"></span>&#160;' . __('Copy to clipboard') . '</button>';
                 $upgrade['alert'] .= '</div>';
                 $upgrade['alert'] .= '<div class="col-xs-6 text-right">';
-                $upgrade['alert'] .= '<button id="upgradestop" data-version="' . $upgrade['to'] . '" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ok"></span>&nbsp;' . __('Skip this upgrade') . '</button>';
+                $upgrade['alert'] .= '<button id="upgradestop" data-version="' . $upgrade['to'] . '" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ok"></span>&#160;' . __('Skip this upgrade') . '</button>';
                 $upgrade['alert'] .= '</div>';
                 $upgrade['alert'] .= '</div>';
                 $upgrade['alert'] .= '<script>clipboard_enable("#gitcopy","#gitcontent" , "right" , "' . __('Command copied!') . '");</script>';
@@ -376,16 +376,16 @@ try {
         } // Standalone version from a tarball file, cannot upgrade now
         else {
             $upgrade['alert'] .= sprintf(__('Follow instructions %shere%s'), '<a href="' . UPGRADE_MANUALLY_URL . '" target="doc" class="alert-link">', '</a>');
-            $upgrade['alert'] .= '<div id="changelog" class="panel-collapse collapse"><br/><div class="panel-body panel panel-default">' . $html . '</div></div>';
+            $upgrade['alert'] .= '<div id="changelog" class="panel-collapse collapse"><br><div class="panel-body panel panel-default">' . $html . '</div></div>';
             $upgrade['alert'] .= '<div class="row">';
             $upgrade['alert'] .= '<div class="col-xs-12 text-right">';
-            $upgrade['alert'] .= '<button id="upgradestop" data-version="' . $upgrade['to'] . '" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ok"></span>&nbsp;' . __('Skip this upgrade') . '</button>';
+            $upgrade['alert'] .= '<button id="upgradestop" data-version="' . $upgrade['to'] . '" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-ok"></span>&#160;' . __('Skip this upgrade') . '</button>';
             $upgrade['alert'] .= '</div>';
             $upgrade['alert'] .= '</div>';
         }
 
         if (count($notices) > 0) {
-            $upgrade['alert'] .= '<hr/>';
+            $upgrade['alert'] .= '<hr>';
             $upgrade['alert'] .= '<strong>' . __('You should upgrade right now:') . '</strong><ul>';
 
             foreach ($notices as $version => $notice) {

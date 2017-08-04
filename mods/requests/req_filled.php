@@ -1,11 +1,7 @@
 <?php
-
 if (!defined('IN_REQUESTS')) {
     exit('No direct script access allowed');
 }
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 $torrentid = (isset($_POST['torrentid']) ? (int)$_POST['torrentid'] : 0);
 if ($torrentid < 1) {
     stderr("{$lang['error_error']}", "{$lang['error_funky']}");
@@ -49,9 +45,9 @@ $HTMLOUT .= "<table class='main' width='750px' border='0' cellspacing='0' cellpa
 $HTMLOUT .= "<h1 align='center'>{$lang['reset_success']}</h1>
 <table cellspacing='10' cellpadding='10'>
 <tr><td align='left'>{$lang['filled_your']}$id (" . htmlspecialchars($arr['request']) . "){$lang['filled_success']}<a class='altlink' href='details.php?id=" . $torrentid . "'>" . $INSTALLER09['baseurl'] . '/details.php?id=' . $torrentid . "</a>.  
-<br /><br />{$lang['filled_user']}<a class='altlink' href='userdetails.php?id=$arr[userid]'><b>$arr[username]</b></a>{$lang['filled_pm']}<br /><br />
-{$lang['filled_mistake']}<br />{$lang['filled_reset']}<a class='altlink' href='viewrequests.php?id=$id&amp;req_reset'>{$lang['filled_here']}</a> 
-<br /><br />{$lang['filled_unless']}<br /><br />
+<br><br>{$lang['filled_user']}<a class='altlink' href='userdetails.php?id=$arr[userid]'><b>$arr[username]</b></a>{$lang['filled_pm']}<br><br>
+{$lang['filled_mistake']}<br>{$lang['filled_reset']}<a class='altlink' href='viewrequests.php?id=$id&amp;req_reset'>{$lang['filled_here']}</a> 
+<br><br>{$lang['filled_unless']}<br><br>
 <a class='altlink' href='viewrequests.php'>{$lang['req_view_all']}</a>
 </td></tr></table>";
 $HTMLOUT .= "</td></tr></table>\n";

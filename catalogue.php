@@ -10,7 +10,7 @@ $lang = array_merge(load_language('global'), load_language('catalogue'));
 $htmlout = '';
 function readMore($text, $char, $link)
 {
-    return strlen($text) > $char ? substr(htmlsafechars($text), 0, $char - 1) . "...<br /><a href='$link'>{$lang['catol_read_more']}</a>" : htmlsafechars($text);
+    return strlen($text) > $char ? substr(htmlsafechars($text), 0, $char - 1) . "...<br><a href='$link'>{$lang['catol_read_more']}</a>" : htmlsafechars($text);
 }
 
 function peer_list($array)
@@ -81,7 +81,7 @@ $htmlout .= "<div align='center' style='width:90%'>
         <fieldset style='border:2px solid #333333;'>
             <legend style='padding:5xp 0px 0px 5px;'>{$lang['catol_search']}</legend>
                 <form  action='" . $_SERVER['PHP_SELF'] . "' method='get' style='margin:10px;'>
-                    <input type='text' size='50' name='search' value='" . ($search ? $search : "{$lang['catol_search_for_tor']}") . "' onblur=\"if (this.value == '') this.value='{$lang['catol_search_for_tor']}';\" onfocus=\"if (this.value == '{$lang['catol_search_for_tor']}') this.value='';\" />&nbsp;<input type='submit' value='search!' />
+                    <input type='text' size='50' name='search' value='" . ($search ? $search : "{$lang['catol_search_for_tor']}") . "' onblur=\"if (this.value == '') this.value='{$lang['catol_search_for_tor']}';\" onfocus=\"if (this.value == '{$lang['catol_search_for_tor']}') this.value='';\" />&#160;<input type='submit' value='search!' />
                 </form>";
 for ($i = 97; $i < 123; ++$i) {
     $l = chr($i);
@@ -92,7 +92,7 @@ for ($i = 97; $i < 123; ++$i) {
         $htmlout .= '<a class="sublink" href="' . $_SERVER['PHP_SELF'] . '?letter=' . $l . '">' . $L . "</a>\n";
     }
 }
-$htmlout .= '</fieldset></div><br />';
+$htmlout .= '</fieldset></div><br>';
 $htmlout .= begin_frame();
 if (count($rows) > 0) {
     $htmlout .= "<table width='95%' border='1' cellpadding='5' style='border-collapse:collapse'>

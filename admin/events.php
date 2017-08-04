@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -79,7 +76,7 @@ if (is_array($scheduled_events)) {
                     $hdownEnabled = true;
                 }
                 if ($displayDates) {
-                    $overlay_text = "<span style=\"font-size: 90%\">$overlayText</span><br/><span style=\"font-size: 60%\">" . get_date($startTime, 'DATE') . ' - ' . get_date($endTime, 'DATE') . "</span>\n";
+                    $overlay_text = "<span style=\"font-size: 90%\">$overlayText</span><br><span style=\"font-size: 60%\">" . get_date($startTime, 'DATE') . ' - ' . get_date($endTime, 'DATE') . "</span>\n";
                 } else {
                     $overlay_text = "<span style=\"font-size: 90%\">$overlayText</span>\n";
                 }
@@ -110,10 +107,10 @@ if (!is_array($scheduled_events)) {
                 $sql = "DELETE FROM `events` WHERE `id` = $id LIMIT 1;";
                 $res = sql_query($sql);
                 if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) != 0) {
-                    $HTMLOUT .= "<p>{$lang['events_err_del']}" . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . "<br />{$lang['events_click']} <a class='altlink' href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a>{$lang['events_goback']}<br /></p>\n";
+                    $HTMLOUT .= "<p>{$lang['events_err_del']}" . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . "<br>{$lang['events_click']} <a class='altlink' href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a>{$lang['events_goback']}<br></p>\n";
                 } else {
                     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 0) {
-                        $HTMLOUT .= "<p>{$lang['events_err_del']}" . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . "<br />{$lang['events_click']}<a class='altlink' href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a> {$lang['events_goback']}<br /></p>\n";
+                        $HTMLOUT .= "<p>{$lang['events_err_del']}" . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . "<br>{$lang['events_click']}<a class='altlink' href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a> {$lang['events_goback']}<br></p>\n";
                     } else {
                         $HTMLOUT .= "<p>{$lang['events_deleted']}</p>\n";
                         header('Refresh: 2; url=staffpanel.php?tool=events');
@@ -164,10 +161,10 @@ if (!is_array($scheduled_events)) {
                 }
                 $res = sql_query($sql);
                 if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) != 0) {
-                    $HTMLOUT .= "<p>{$lang['events_err_save']}" . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . "<br />{$lang['events_click']}<a class='altlink' href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a>{$lang['events_goback']}<br /></p>\n";
+                    $HTMLOUT .= "<p>{$lang['events_err_save']}" . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . "<br>{$lang['events_click']}<a class='altlink' href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a>{$lang['events_goback']}<br></p>\n";
                 } else {
                     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 0) {
-                        $HTMLOUT .= "<p>{$lang['events_err_nochange']}<br />{$lang['events_click']}<a class='altlink' href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a>{$lang['events_goback']}<br /></p>\n";
+                        $HTMLOUT .= "<p>{$lang['events_err_nochange']}<br>{$lang['events_click']}<a class='altlink' href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=events'>{$lang['events_here']}</a>{$lang['events_goback']}<br></p>\n";
                     } else {
                         $HTMLOUT .= "<p>{$lang['events_saved']}</p>\n";
                         header('Refresh: 2; url=staffpanel.php?tool=events');
@@ -182,7 +179,7 @@ if (!is_array($scheduled_events)) {
     $HTMLOUT .= "<p><strong>{$lang['events_schedular']}</strong>{$lang['events_zero']}<strong> <font color='red'>{$lang['events_beta']}</font> </strong> </p>
 <form action='' method='post'>
 <table width='80%' cellpadding='6'>
-<tr><th>{$lang['events_user']}</th><th>{$lang['events_text']}</th><th>{$lang['events_start']}</th><th>{$lang['events_end']}</th><th>{$lang['events_freelech']}</th><th>{$lang['events_dupload']}</th><th>{$lang['events_hdown']}</th><th>{$lang['events_sdate']}</th><th>&nbsp;</th></tr>";
+<tr><th>{$lang['events_user']}</th><th>{$lang['events_text']}</th><th>{$lang['events_start']}</th><th>{$lang['events_end']}</th><th>{$lang['events_freelech']}</th><th>{$lang['events_dupload']}</th><th>{$lang['events_hdown']}</th><th>{$lang['events_sdate']}</th><th>&#160;</th></tr>";
     foreach ($scheduled_events as $scheduled_event) {
         $id = (int)$scheduled_event['id'];
         $users = $scheduled_event;

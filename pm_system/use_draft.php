@@ -1,9 +1,5 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 $preview = '';
-//=== don't allow direct access
 if (!defined('BUNNY_PM_SYSTEM')) {
     $HTMLOUT = '';
     $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -136,7 +132,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == 'preview') {
         <td align="center" valign="top" class="one" width="80px" id="photocol">' . avatar_stuff($CURUSER) . '</td>
         <td class="two" style="min-width:400px;padding:10px;vertical-align: top;text-align: left;">' . format_comment($draft) . '</td>
     </tr>
-    </table><br />';
+    </table><br>';
 } else {
     //=== Get the info
     $res = sql_query('SELECT * FROM messages WHERE id=' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);

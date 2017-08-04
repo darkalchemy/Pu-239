@@ -85,7 +85,7 @@ class imdb_budget extends movie_base
             if ($this->page['BoxOffice'] == 'cannot open page') {
                 return $this->budget;
             } // no such page
-            if (@preg_match("!<h5>Budget</h5>\s*\n*(.*?)(<br/>\n*)*<h5!ims", $this->page['BoxOffice'], $bud)) { // Opening Weekend
+            if (@preg_match("!<h5>Budget</h5>\s*\n*(.*?)(<br>\n*)*<h5!ims", $this->page['BoxOffice'], $bud)) { // Opening Weekend
                 $budget = $bud[1];
             }
             $this->budget = $this->get_budget($budget);
@@ -141,7 +141,7 @@ class imdb_budget extends movie_base
             if ($this->page['BoxOffice'] == 'cannot open page') {
                 return $this->openingWeekend;
             } // no such page
-            if (@preg_match("!<h5>Opening Weekend</h5>\n*(.*?)<br/>\n*<h5!ims", $this->page['BoxOffice'], $opWe)) { // Opening Weekend
+            if (@preg_match("!<h5>Opening Weekend</h5>\n*(.*?)<br>\n*<h5!ims", $this->page['BoxOffice'], $opWe)) { // Opening Weekend
                 $openingWeekend = $opWe[1];
             }
             $this->openingWeekend = $this->get_openingWeekend($openingWeekend);
@@ -169,7 +169,7 @@ class imdb_budget extends movie_base
         $i = 0;
         while ($temp != null) {
             // Tries to get a single entry
-            if (@preg_match('!(.*?)<br/>!ims', $temp, $opWe)) {
+            if (@preg_match('!(.*?)<br>!ims', $temp, $opWe)) {
                 $entry = $opWe[1];
             }
 
@@ -207,7 +207,7 @@ class imdb_budget extends movie_base
             ];
 
             // Remove the entry from the list of entries
-            if (@preg_match('!<br/>(.*?)$!ims', $temp, $temp)) {
+            if (@preg_match('!<br>(.*?)$!ims', $temp, $temp)) {
                 $temp = $temp[1];
             }
 
@@ -235,7 +235,7 @@ class imdb_budget extends movie_base
             if ($this->page['BoxOffice'] == 'cannot open page') {
                 return $this->gross;
             } // no such page
-            if (@preg_match("!<h5>Gross</h5>\n*(.*?)<br/>\n*<h5!ims", $this->page['BoxOffice'], $gr)) { // Gross
+            if (@preg_match("!<h5>Gross</h5>\n*(.*?)<br>\n*<h5!ims", $this->page['BoxOffice'], $gr)) { // Gross
                 $gross = $gr[1];
             }
             $this->gross = $this->get_gross($gross);
@@ -262,7 +262,7 @@ class imdb_budget extends movie_base
         $i = 0;
         while ($temp != null) {
             // Tries to get a single entry
-            if (@preg_match('!(.*?)<br/>!ims', $temp, $gr)) {
+            if (@preg_match('!(.*?)<br>!ims', $temp, $gr)) {
                 $entry = $gr[1];
             }
             //echo 'ici'.$entry.'ici';
@@ -295,7 +295,7 @@ class imdb_budget extends movie_base
             ];
 
             // Remove the entry from the list of entries
-            if (@preg_match('!<br/>(.*?)$!ims', $temp, $temp)) {
+            if (@preg_match('!<br>(.*?)$!ims', $temp, $temp)) {
                 $temp = $temp[1];
             }
 
@@ -323,7 +323,7 @@ class imdb_budget extends movie_base
             if ($this->page['BoxOffice'] == 'cannot open page') {
                 return $this->weekendGross;
             } // no such page
-            if (@preg_match("!<h5>Weekend Gross</h5>\n*(.*?)<br/>\n*<h5!ims", $this->page['BoxOffice'], $weGr)) { // Weekend Gross
+            if (@preg_match("!<h5>Weekend Gross</h5>\n*(.*?)<br>\n*<h5!ims", $this->page['BoxOffice'], $weGr)) { // Weekend Gross
                 $weekendGross = $weGr[1];
             }
             $this->weekendGross = $this->get_weekendGross($weekendGross);
@@ -351,7 +351,7 @@ class imdb_budget extends movie_base
 
         while ($temp != null) {
             // Tries to get a single entry
-            if (@preg_match('!(.*?)<br/>!ims', $temp, $weGr)) {
+            if (@preg_match('!(.*?)<br>!ims', $temp, $weGr)) {
                 $entry = $weGr[1];
             }
 
@@ -389,7 +389,7 @@ class imdb_budget extends movie_base
             ];
 
             // Remove the entry from the list of entries
-            if (@preg_match('!<br/>(.*?)$!ims', $temp, $temp)) {
+            if (@preg_match('!<br>(.*?)$!ims', $temp, $temp)) {
                 $temp = $temp[1];
             }
 
@@ -417,7 +417,7 @@ class imdb_budget extends movie_base
             if ($this->page['BoxOffice'] == 'cannot open page') {
                 return $this->admissions;
             } // no such page
-            if (@preg_match("!<h5>Admissions</h5>\n*(.*?)<br/>\n*<h5!ims", $this->page['BoxOffice'], $weGr)) { // Admissions
+            if (@preg_match("!<h5>Admissions</h5>\n*(.*?)<br>\n*<h5!ims", $this->page['BoxOffice'], $weGr)) { // Admissions
                 $admissions = $weGr[1];
             }
             $this->admissions = $this->get_admissions($admissions);
@@ -447,7 +447,7 @@ class imdb_budget extends movie_base
 
         while ($temp != null) {
             // Tries to get a single entry
-            if (@preg_match('!(.*?)<br/>!ims', $temp, $adm)) {
+            if (@preg_match('!(.*?)<br>!ims', $temp, $adm)) {
                 $entry = $adm[1];
             }
 
@@ -479,7 +479,7 @@ class imdb_budget extends movie_base
             ];
 
             // Remove the entry from the list of entries
-            if (@preg_match('!<br/>(.*?)$!ims', $temp, $temp)) {
+            if (@preg_match('!<br>(.*?)$!ims', $temp, $temp)) {
                 $temp = $temp[1];
             }
 
@@ -508,7 +508,7 @@ class imdb_budget extends movie_base
             if ($this->page['BoxOffice'] == 'cannot open page') {
                 return $this->filmingDates;
             } // no such page
-            if (@preg_match("!<h5>Filming Dates</h5>\s*\n*(.*?)(<br/>\n*)*<h5!ims", $this->page['BoxOffice'], $filDates)) { // Filming Dates
+            if (@preg_match("!<h5>Filming Dates</h5>\s*\n*(.*?)(<br>\n*)*<h5!ims", $this->page['BoxOffice'], $filDates)) { // Filming Dates
                 $filmingDates = $filDates[1];
             }
             $this->filmingDates = $this->get_filmingDates($filmingDates);
@@ -537,30 +537,30 @@ class imdb_budget extends movie_base
         $temp = $listFilmingDates;
 
         // Tries to get the beginning
-        if (@preg_match('!(.*?)&nbsp;-!ims', $temp, $beginning)) {
+        if (@preg_match('!(.*?)&#160;-!ims', $temp, $beginning)) {
             if (@preg_match('#[A-Z0-9]#', $beginning[1])) { // Check if there is a date
-                if (@preg_match('!<a(.*?)&nbsp;-!ims', $temp)) { // Check if there  is a linked date
+                if (@preg_match('!<a(.*?)&#160;-!ims', $temp)) { // Check if there  is a linked date
                     if (@preg_match('!<a href="/date/(.*?)/">!ims', $beginning[1], $dayMonthB)) {
                         if (@preg_match('!<a href="/year/(.*?)/">!ims', $beginning[1], $yearB)) {
                             $beginningDate = $yearB[1] . '-' . $dayMonthB[1];
                         }
                     }
-                } elseif (@preg_match('!(.*?)&nbsp;-!ims', $temp, $beginning)) {
+                } elseif (@preg_match('!(.*?)&#160;-!ims', $temp, $beginning)) {
                     $beginningDate = date('Y-m-d', strtotime($beginning[1]));
                 }
             }
         }
 
         // Tries to get the end
-        if (@preg_match('!-&nbsp;(.*?)$!ims', $temp, $end)) {
+        if (@preg_match('!-&#160;(.*?)$!ims', $temp, $end)) {
             if (@preg_match('#[A-Z0-9]#', $end[1])) { // Check if there is a date
-                if (@preg_match('!-&nbsp;<a(.*?)!ims', $temp)) { // Check if there  is a linked date
+                if (@preg_match('!-&#160;<a(.*?)!ims', $temp)) { // Check if there  is a linked date
                     if (@preg_match('!<a href="/date/(.*?)/">!ims', $end[1], $dayMonthE)) {
                         if (@preg_match('!<a href="/year/(.*?)/">!ims', $end[1], $yearE)) {
                             $endDate = $yearE[1] . '-' . $dayMonthE[1];
                         }
                     }
-                } elseif (@preg_match('!-&nbsp;(.*?)$!ims', $temp, $end)) {
+                } elseif (@preg_match('!-&#160;(.*?)$!ims', $temp, $end)) {
                     $endDate = date('Y-m-d', strtotime($end[1]));
                 }
             }

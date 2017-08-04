@@ -636,7 +636,7 @@ class GeSHi
             );
             $msg = str_replace(array_keys($debug_tpl_vars), array_values($debug_tpl_vars), $this->error_messages[$this->error]);
 
-            return "<br /><strong>GeSHi Error:</strong> $msg (code {$this->error})<br />";
+            return "<br><strong>GeSHi Error:</strong> $msg (code {$this->error})<br>";
         }
 
         return false;
@@ -2877,7 +2877,7 @@ class GeSHi
                                 // Short-cut through all the multiline code
                                 if ($check_linenumbers) {
                                     // strreplace to put close span and open span around multiline newlines
-                                    $test_str = str_replace("\n", "</span>\n<span$attributes>", str_replace("\n ", "\n&nbsp;", $test_str));
+                                    $test_str = str_replace("\n", "</span>\n<span$attributes>", str_replace("\n ", "\n&#160;", $test_str));
                                 }
                             }
                             $i += $comment['length'] - 1;
@@ -2951,7 +2951,7 @@ class GeSHi
                                 $rest_of_comment = $this->hsc(substr($part, $i + $open_strlen, $close_pos - $i - $open_strlen + $close_strlen));
                                 if (($this->lexic_permissions['COMMENTS']['MULTI'] || $test_str_match == GESHI_START_IMPORTANT) && $check_linenumbers) {
                                     // strreplace to put close span and open span around multiline newlines
-                                    $test_str .= str_replace("\n", "</span>\n<span$attributes>", str_replace("\n ", "\n&nbsp;", $rest_of_comment));
+                                    $test_str .= str_replace("\n", "</span>\n<span$attributes>", str_replace("\n ", "\n&#160;", $rest_of_comment));
                                 } else {
                                     $test_str .= $rest_of_comment;
                                 }
@@ -3099,7 +3099,7 @@ class GeSHi
             $lines = explode("\n", $result);
             $result = null; //Save memory while we process the lines individually
             $tab_width = $this->get_real_tab_width();
-            $tab_string = '&nbsp;'.str_repeat(' ', $tab_width);
+            $tab_string = '&#160;'.str_repeat(' ', $tab_width);
             for ($key = 0, $n = count($lines); $key < $n; ++$key) {
                 $line = $lines[$key];
                 if (false === strpos($line, "\t")) {
@@ -3139,9 +3139,9 @@ class GeSHi
                         $str = '';
                         // OPTIMISE - move $strs out. Make an array:
                         // $tabs = array(
-                        //  1 => '&nbsp;',
-                        //  2 => '&nbsp; ',
-                        //  3 => '&nbsp; &nbsp;' etc etc
+                        //  1 => '&#160;',
+                        //  2 => '&#160; ',
+                        //  3 => '&#160; &#160;' etc etc
                         // to use instead of building a string every time
                         $tab_end_width = $tab_width - ($pos % $tab_width); //Moved out of the look as it doesn't change within the loop
                         if (($pos & 1) || 1 == $tab_end_width) {
@@ -3156,7 +3156,7 @@ class GeSHi
                             break;
                         }
                     } elseif (0 == $pos && ' ' == $char) {
-                        $lines[$key] .= '&nbsp;';
+                        $lines[$key] .= '&#160;';
                         ++$pos;
                     } else {
                         $lines[$key] .= $char;
@@ -3169,8 +3169,8 @@ class GeSHi
         }
         // Other whitespace
         // BenBE: Fix to reduce the number of replacements to be done
-        $result = preg_replace('/^ /m', '&nbsp;', $result);
-        $result = str_replace('  ', ' &nbsp;', $result);
+        $result = preg_replace('/^ /m', '&#160;', $result);
+        $result = str_replace('  ', ' &#160;', $result);
         if ($this->line_numbers == GESHI_NO_LINE_NUMBERS) {
             if ($this->line_ending === null) {
                 $result = nl2br($result);
@@ -3794,7 +3794,7 @@ class GeSHi
                 // Make lines have at least one space in them if they're empty
                 // BenBE: Checking emptiness using trim instead of relying on blanks
                 if ('' == trim($code[$i])) {
-                    $code[$i] = '&nbsp;';
+                    $code[$i] = '&#160;';
                 }
                 // If this is a "special line"...
                 if ($this->line_numbers == GESHI_FANCY_LINE_NUMBERS && $i % $this->line_nth_row == ($this->line_nth_row - 1)) {
@@ -3924,7 +3924,7 @@ class GeSHi
                 // Make lines have at least one space in them if they're empty
                 // BenBE: Checking emptiness using trim instead of relying on blanks
                 if ('' == trim($code[$i])) {
-                    $code[$i] = '&nbsp;';
+                    $code[$i] = '&#160;';
                 }
                 // fancy lines
                 if ($this->line_numbers == GESHI_FANCY_LINE_NUMBERS && $i % $this->line_nth_row == ($this->line_nth_row - 1)) {

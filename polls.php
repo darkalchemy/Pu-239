@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 function parse_poll()
 {
     global $CURUSER, $INSTALLER09, $mc1;
@@ -190,10 +187,10 @@ function poll_header($pid = '', $poll_q = '')
 function poll_footer()
 {
     $HTMLOUT = '';
-    $HTMLOUT .= '<span><!--VOTE-->&nbsp;<!--SHOW--></span>
+    $HTMLOUT .= '<span><!--VOTE-->&#160;<!--SHOW--></span>
           <span><!-- no content --></span>
         </div></fieldset>
-    </form><hr />';
+    </form><hr>';
 
     return $HTMLOUT;
 }
@@ -207,7 +204,7 @@ function poll_show_rendered_choice($choice_id = '', $votes = '', $id = '', $answ
       <td width='10%' nowrap='nowrap'> [ <b>$votes</b> ] </td>
       <td width='70%' nowrap='nowrap'>
       <img src='{$INSTALLER09['pic_base_url']}polls/bar.gif' width='$width' height='11' align='middle' alt='' />
-      &nbsp;[$percentage%]
+      &#160;[$percentage%]
       </td>
       </tr>";
 
@@ -223,7 +220,7 @@ function poll_show_rendered_question($id = '', $question = '', $choice_html = ''
  	<table cellpadding='4' cellspacing='0'>
  	$choice_html
  	</table>
- 	</div><br />";
+ 	</div><br>";
 
     return $HTMLOUT;
 }
@@ -240,7 +237,7 @@ function poll_show_form_choice_multi($choice_id = '', $votes = '', $id = '', $an
 {
     $HTMLOUT = '';
     $HTMLOUT .= "<tr>
-        <td colspan='3'><input type='checkbox' name='choice_{$id}_{$choice_id}' value='1'  />&nbsp;<b>$answer</b></td>
+        <td colspan='3'><input type='checkbox' name='choice_{$id}_{$choice_id}' value='1'  />&#160;<b>$answer</b></td>
     </tr>";
 
     return $HTMLOUT;
@@ -250,7 +247,7 @@ function poll_show_form_choice($choice_id = '', $votes = '', $id = '', $answer =
 {
     $HTMLOUT = '';
     $HTMLOUT .= "
-    <tr><td nowrap='nowrap'><input type='radio' name='choice[{$id}]' value='$choice_id'  />&nbsp;<strong>$answer</strong></td></tr>";
+    <tr><td nowrap='nowrap'><input type='radio' name='choice[{$id}]' value='$choice_id'  />&#160;<strong>$answer</strong></td></tr>";
 
     return $HTMLOUT;
 }

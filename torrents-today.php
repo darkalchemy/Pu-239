@@ -1,10 +1,4 @@
 <?php
-
-//$_NO_COMPRESS = true;
-
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'torrenttable_functions.php';
@@ -275,7 +269,7 @@ if ($CURUSER['opt1'] & user_options::VIEWSCLOUD) {
     $HTMLOUT .= cloud() . '
     </div>';
 }
-$HTMLOUT .= "<br /><br />
+$HTMLOUT .= "<br><br>
     <form method='get' action='torrents-today.php'>
     <table class='bottom'>
     <tr>
@@ -289,13 +283,13 @@ foreach ($cats as $cat) {
       <input name='c" . (int)$cat['id'] . "' class=\"styled\" type=\"checkbox\" " . (in_array($cat['id'], $wherecatina) ? "checked='checked' " : '') . "value='1' /><a class='catlink' href='torrents-today.php?cat=" . (int)$cat['id'] . "'> " . (($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) ? "<img src='{$INSTALLER09['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "' alt='" . htmlsafechars($cat['name']) . "' title='" . htmlsafechars($cat['name']) . "' />" : '' . htmlsafechars($cat['name']) . '') . "</a></td>\n";
     ++$i;
 }
-$alllink = "<div align='left'>&nbsp;</div>";
+$alllink = "<div align='left'>&#160;</div>";
 $ncats = count($cats);
 $nrows = ceil($ncats / $INSTALLER09['catsperrow']);
 $lastrowcols = $ncats % $INSTALLER09['catsperrow'];
 if ($lastrowcols != 0) {
     if ($INSTALLER09['catsperrow'] - $lastrowcols != 1) {
-        $HTMLOUT .= "<td class='bottom' rowspan='" . ($INSTALLER09['catsperrow'] - $lastrowcols - 1) . "'>&nbsp;</td>";
+        $HTMLOUT .= "<td class='bottom' rowspan='" . ($INSTALLER09['catsperrow'] - $lastrowcols - 1) . "'>&#160;</td>";
     }
     $HTMLOUT .= "<td class='bottom' style=\"padding-left: 5px\">$alllink</td>\n";
 }
@@ -304,7 +298,7 @@ $HTMLOUT .= "</tr>
     </td>
     <td class='bottom'>
     <table class='main'>
-    <tr><td>&nbsp;</td>";
+    <tr><td>&#160;</td>";
 if ($ncats % $INSTALLER09['catsperrow'] == 0) {
     $HTMLOUT .= "<td class='bottom' style='padding-left: 15px' rowspan='$nrows' valign='middle' align='right'>$alllink</td>\n";
 }
@@ -312,11 +306,11 @@ $HTMLOUT .= '</tr>
     </table>
     </td>
     </tr>
-    </table><br />';
+    </table><br>';
 
 //== clear new tag manually
 if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
-    $HTMLOUT .= "<a href='?clear_new=1'><input type='submit' value='clear new tag' class='button' /></a><br />";
+    $HTMLOUT .= "<a href='?clear_new=1'><input type='submit' value='clear new tag' class='button' /></a><br>";
 } else {
     //== clear new tag automatically
     sql_query('UPDATE users SET last_browse=' . TIME_NOW . ' where id=' . $CURUSER['id']);
@@ -327,7 +321,7 @@ if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     $mc1->update_row(false, ['last_browse' => TIME_NOW]);
     $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
 }
-$HTMLOUT .= "<br />
+$HTMLOUT .= "<br>
     <table width='1000' class='main' border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>
     <input type='text' name='search' size='40' value='' />";
 
@@ -348,16 +342,16 @@ foreach (['title' => 'Name', 'descr' => 'Description', 'genre' => 'Genre', 'all'
     $searchin .= '<option value="' . $k . '" ' . ($select_searchin == $k ? 'selected=\'selected\'' : '') . '>' . $v . '</option>';
 }
 $searchin .= '</select>';
-$HTMLOUT .= $searchin . '&nbsp;' . $deadcheck . '&nbsp;' . $only_free_box;
+$HTMLOUT .= $searchin . '&#160;' . $deadcheck . '&#160;' . $only_free_box;
 $HTMLOUT .= "<input type='submit' value='{$lang['search_search_btn']}' class='btn' />
-            </td></tr></table></form><br />";
+            </td></tr></table></form><br>";
 $HTMLOUT .= "{$new_button}";
 if (isset($cleansearchstr)) {
     $HTMLOUT .= "<h2>{$lang['browse_search']} " . htmlsafechars($searchstr, ENT_QUOTES) . "</h2>\n";
 }
 if ($count) {
     $HTMLOUT .= $pager['pagertop'];
-    $HTMLOUT .= '<br />';
+    $HTMLOUT .= '<br>';
     $HTMLOUT .= torrenttable($res);
     $HTMLOUT .= $pager['pagerbottom'];
 } else {

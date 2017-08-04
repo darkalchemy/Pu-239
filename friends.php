@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//== Manage friends by pdq
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 dbconn(false);
@@ -48,7 +44,7 @@ if ($action == 'add') {
             stderr('Error', 'User ID is already in your ' . htmlsafechars($table_is) . ' list.');
         }
         sql_query("INSERT INTO $table_is VALUES (0, " . sqlesc($userid) . ', ' . sqlesc($targetid) . ", 'no')") or sqlerr(__FILE__, __LINE__);
-        stderr('Request Added!', "The user will be informed of your Friend Request, you will be informed via PM upon confirmation.<br /><br /><a href='friends.php?id=$userid#$frag'><b>Go to your Friends List</b></a>", false);
+        stderr('Request Added!', "The user will be informed of your Friend Request, you will be informed via PM upon confirmation.<br><br><a href='friends.php?id=$userid#$frag'><b>Go to your Friends List</b></a>", false);
         die;
     }
     if ($type == 'block') {
@@ -176,20 +172,20 @@ if (mysqli_num_rows($res) == 0) {
 } else {
     while ($friendp = mysqli_fetch_assoc($res)) {
         $dt = TIME_NOW - 180;
-        $online = ($friendp['last_access'] >= $dt && $friendp['perms'] < bt_options::PERMS_STEALTH ? '&nbsp;<img src="' . $INSTALLER09['baseurl'] . '/images/staff/online.png" border="0" alt="Online" title="Online" />' : '<img src="' . $INSTALLER09['baseurl'] . '/images/staff/offline.png" border="0" alt="Offline" title="Offline" />');
+        $online = ($friendp['last_access'] >= $dt && $friendp['perms'] < bt_options::PERMS_STEALTH ? '&#160;<img src="' . $INSTALLER09['baseurl'] . '/images/staff/online.png" border="0" alt="Online" title="Online" />' : '<img src="' . $INSTALLER09['baseurl'] . '/images/staff/offline.png" border="0" alt="Offline" title="Offline" />');
         $title = htmlsafechars($friendp['title']);
         if (!$title) {
             $title = get_user_class_name($friendp['class']);
         }
-        $linktouser = "<a href='userdetails.php?id=" . (int)$friendp['id'] . "'><b>" . format_username($friendp) . "</b></a>[$title]<br />{$lang['friends_last_seen']} " . ($friendp['perms'] < bt_options::PERMS_STEALTH ? get_date($friendp['last_access'], '') : 'Never');
-        $confirm = "<br /><span class='btn'><a href='{$INSTALLER09['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=friend&amp;targetid=" . (int)$friendp['id'] . "'>Confirm</a></span>";
-        $block = "&nbsp;<span class='btn'><a href='{$INSTALLER09['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=" . (int)$friendp['id'] . "'>Block</a></span>";
+        $linktouser = "<a href='userdetails.php?id=" . (int)$friendp['id'] . "'><b>" . format_username($friendp) . "</b></a>[$title]<br>{$lang['friends_last_seen']} " . ($friendp['perms'] < bt_options::PERMS_STEALTH ? get_date($friendp['last_access'], '') : 'Never');
+        $confirm = "<br><span class='btn'><a href='{$INSTALLER09['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=friend&amp;targetid=" . (int)$friendp['id'] . "'>Confirm</a></span>";
+        $block = "&#160;<span class='btn'><a href='{$INSTALLER09['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=" . (int)$friendp['id'] . "'>Block</a></span>";
         $avatar = ($CURUSER['avatars'] == 'yes' ? htmlsafechars($friendp['avatar']) : '');
         if (!$avatar) {
             $avatar = "{$INSTALLER09['pic_base_url']}default_avatar.gif";
         }
-        $reject = "&nbsp;<span class='btn'><a href='{$INSTALLER09['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=friend&amp;targetid=" . (int)$friendp['id'] . "'>{$lang['friends_reject']}</a></span>";
-        $friendsp .= "<div style='border: 1px solid black;padding:5px;'>" . ($avatar ? "<img width='50px' src='$avatar' style='float:right;' alt='Avatar' />" : '') . "<p >{$linktouser}<br /><br />{$confirm}{$block}{$reject}</p></div><br />";
+        $reject = "&#160;<span class='btn'><a href='{$INSTALLER09['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=friend&amp;targetid=" . (int)$friendp['id'] . "'>{$lang['friends_reject']}</a></span>";
+        $friendsp .= "<div style='border: 1px solid black;padding:5px;'>" . ($avatar ? "<img width='50px' src='$avatar' style='float:right;' alt='Avatar' />" : '') . "<p >{$linktouser}<br><br>{$confirm}{$block}{$reject}</p></div><br>";
     }
 }
 //== Pending ends
@@ -223,20 +219,20 @@ if (mysqli_num_rows($res) == 0) {
 } else {
     while ($friend = mysqli_fetch_assoc($res)) {
         $dt = TIME_NOW - 180;
-        $online = ($friend['last_access'] >= $dt && $friend['perms'] < bt_options::PERMS_STEALTH ? '&nbsp;<img src="' . $INSTALLER09['baseurl'] . '/images/staff/online.png" border="0" alt="Online" title="Online" />' : '<img src="' . $INSTALLER09['baseurl'] . '/images/staff/offline.png" border="0" alt="Offline" title="Offline" />');
+        $online = ($friend['last_access'] >= $dt && $friend['perms'] < bt_options::PERMS_STEALTH ? '&#160;<img src="' . $INSTALLER09['baseurl'] . '/images/staff/online.png" border="0" alt="Online" title="Online" />' : '<img src="' . $INSTALLER09['baseurl'] . '/images/staff/offline.png" border="0" alt="Offline" title="Offline" />');
         $title = htmlsafechars($friend['title']);
         if (!$title) {
             $title = get_user_class_name($friend['class']);
         }
         $ratio = member_ratio($friend['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $friend['downloaded']);
-        $linktouser = "<a href='userdetails.php?id=" . (int)$friend['id'] . "'><b>" . format_username($friend) . "</b></a>[$title]&nbsp;[$ratio]<br />{$lang['friends_last_seen']} " . ($friend['perms'] < bt_options::PERMS_STEALTH ? get_date($friend['last_access'], '') : 'Never');
+        $linktouser = "<a href='userdetails.php?id=" . (int)$friend['id'] . "'><b>" . format_username($friend) . "</b></a>[$title]&#160;[$ratio]<br>{$lang['friends_last_seen']} " . ($friend['perms'] < bt_options::PERMS_STEALTH ? get_date($friend['last_access'], '') : 'Never');
         $delete = "<span class='btn'><a href='{$INSTALLER09['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . (int)$friend['id'] . "'>{$lang['friends_remove']}</a></span>";
-        $pm_link = "&nbsp;<span class='btn'><a href='{$INSTALLER09['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . (int)$friend['id'] . "'>{$lang['friends_pm']}</a></span>";
+        $pm_link = "&#160;<span class='btn'><a href='{$INSTALLER09['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . (int)$friend['id'] . "'>{$lang['friends_pm']}</a></span>";
         $avatar = ($CURUSER['avatars'] == 'yes' ? htmlsafechars($friend['avatar']) : '');
         if (!$avatar) {
             $avatar = "{$INSTALLER09['pic_base_url']}default_avatar.gif";
         }
-        $friends .= "<div style='border: 1px solid black;padding:5px;'>" . ($avatar ? "<img width='50px' src='$avatar' style='float:right;' alt='' />" : '') . "<p >{$linktouser}&nbsp;{$online}<br /><br />{$delete}{$pm_link}</p></div><br />";
+        $friends .= "<div style='border: 1px solid black;padding:5px;'>" . ($avatar ? "<img width='50px' src='$avatar' style='float:right;' alt='' />" : '') . "<p >{$linktouser}&#160;{$online}<br><br>{$delete}{$pm_link}</p></div><br>";
     }
 }
 //== Friends block end
@@ -248,8 +244,8 @@ if (mysqli_num_rows($res) == 0) {
 } else {
     while ($block = mysqli_fetch_assoc($res)) {
         $blocks .= "<div style='border: 1px solid black;padding:5px;'>";
-        $blocks .= "<span class='btn' style='float:right;'><a href='{$INSTALLER09['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=block&amp;targetid=" . (int)$block['id'] . "'>{$lang['friends_delete']}</a></span><br />";
-        $blocks .= "<p><a href='userdetails.php?id=" . (int)$block['id'] . "'><b>" . format_username($block) . '</b></a></p></div><br />';
+        $blocks .= "<span class='btn' style='float:right;'><a href='{$INSTALLER09['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=block&amp;targetid=" . (int)$block['id'] . "'>{$lang['friends_delete']}</a></span><br>";
+        $blocks .= "<p><a href='userdetails.php?id=" . (int)$block['id'] . "'><b>" . format_username($block) . '</b></a></p></div><br>';
     }
 }
 // Enemies block end
@@ -277,24 +273,24 @@ foreach ($countries as $cntry) {
         break;
     }
 }
-$HTMLOUT .= "<br />
+$HTMLOUT .= "<br>
   <table class='main' border='0' cellspacing='0' cellpadding='0'>
-  <tr><td class='embedded'><h1 style='margin:0px'>&nbsp;{$lang['friends_personal']}&nbsp;" . htmlsafechars($user['username'], ENT_QUOTES) . "&nbsp;$country</h1></td></tr></table>
-  <br /><table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>
+  <tr><td class='embedded'><h1 style='margin:0px'>&#160;{$lang['friends_personal']}&#160;" . htmlsafechars($user['username'], ENT_QUOTES) . "&#160;$country</h1></td></tr></table>
+  <br><table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>
   <tr>
-  <td class='colhead'><h2 align='left' style='width:50%;'><a name='friends'>&nbsp;{$lang['friends_friends_list']}</a></h2></td>
-  <td class='colhead'><h2 align='left' style='width:50%;vertical-align:top;'><a name='blocks'>&nbsp;{$lang['friends_blocks_list']}</a></h2></td>
+  <td class='colhead'><h2 align='left' style='width:50%;'><a name='friends'>&#160;{$lang['friends_friends_list']}</a></h2></td>
+  <td class='colhead'><h2 align='left' style='width:50%;vertical-align:top;'><a name='blocks'>&#160;{$lang['friends_blocks_list']}</a></h2></td>
   </tr>
   <tr>
   <td style='padding:10px;background-color:#777777;width:50%;'>$friends</td>
   <td style='padding:10px;background-color:#777777;' valign='top'>$blocks</td>
   </tr>
   </table>
-  <br /><br />
+  <br><br>
   <table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>
   <tr>
-  <td class='colhead'><h2 align='left' style='width:50%;'><a name='friendsp'>&nbsp;{$lang['friends_pending_list']}</a></h2></td>
-  <td class='colhead'><h2 align='left' style='width:50%;vertical-align:top;'><a name='friendreqs'>&nbsp;{$lang['friends_await_list']}</a></h2></td>
+  <td class='colhead'><h2 align='left' style='width:50%;'><a name='friendsp'>&#160;{$lang['friends_pending_list']}</a></h2></td>
+  <td class='colhead'><h2 align='left' style='width:50%;vertical-align:top;'><a name='friendreqs'>&#160;{$lang['friends_await_list']}</a></h2></td>
   </tr>
   <tr>
   <td style='padding:10px;background-color:#777777;width:50%;'>$friendsp</td>

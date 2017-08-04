@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -93,7 +90,7 @@ function show_level()
 {
     global $lang;
     $title = $lang['rep_ad_show_title'];
-    $html = "<p>{$lang['rep_ad_show_html1']}<br />{$lang['rep_ad_show_html2']}</p><br />";
+    $html = "<p>{$lang['rep_ad_show_html1']}<br>{$lang['rep_ad_show_html2']}</p><br>";
     $query = sql_query('SELECT * FROM reputationlevel ORDER BY minimumreputation ASC');
     if (!mysqli_num_rows($query)) {
         do_update('new');
@@ -102,7 +99,7 @@ function show_level()
     }
     $css = "style='font-weight: bold;color: #ffffff;background-color: #1E1E1E; padding: 5px;'";
     $html .= "<h2>{$lang['rep_ad_show_head']}</h2>";
-    $html .= "<p><span class='btn'><a href='staffpanel.php?tool=reputation_ad&amp;mode=list'>{$lang['rep_ad_show_comments']}</a></span></p><br />";
+    $html .= "<p><span class='btn'><a href='staffpanel.php?tool=reputation_ad&amp;mode=list'>{$lang['rep_ad_show_comments']}</a></span></p><br>";
     $html .= "<form action='staffpanel.php?tool=reputation_ad' name='show_rep_form' method='post'>
 				<input name='mode' value='doupdate' type='hidden' />";
     $html .= "<table cellpadding='3px'><tr>
@@ -111,7 +108,7 @@ function show_level()
 		<td width='20%' $css>{$lang['rep_ad_show_min']}</td>
 		<td width='15%' $css>{$lang['rep_ad_show_controls']}</td></tr>";
     while ($res = mysqli_fetch_assoc($query)) {
-        $html .= "<tr>\n" . '	<td>#' . $res['reputationlevelid'] . "</td>\n" . "	<td>{$lang['rep_ad_show_user']} <b>" . htmlsafechars($res['level']) . "</b></td>\n" . "	<td align='center'><input type='text' name='reputation[" . $res['reputationlevelid'] . "]' value='" . $res['minimumreputation'] . "' size='12' /></td>\n" . "	<td align='center'><span class='btn'><a href='staffpanel.php?tool=reputation_ad&amp;mode=edit&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>{$lang['rep_ad_show_edit']}</a></span>&nbsp;<span class='btn'><a href='staffpanel.php?tool=reputation_ad&amp;mode=dodelete&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>{$lang['rep_ad_show_del']}</a></span></td>\n" . "</tr>\n";
+        $html .= "<tr>\n" . '	<td>#' . $res['reputationlevelid'] . "</td>\n" . "	<td>{$lang['rep_ad_show_user']} <b>" . htmlsafechars($res['level']) . "</b></td>\n" . "	<td align='center'><input type='text' name='reputation[" . $res['reputationlevelid'] . "]' value='" . $res['minimumreputation'] . "' size='12' /></td>\n" . "	<td align='center'><span class='btn'><a href='staffpanel.php?tool=reputation_ad&amp;mode=edit&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>{$lang['rep_ad_show_edit']}</a></span>&#160;<span class='btn'><a href='staffpanel.php?tool=reputation_ad&amp;mode=dodelete&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>{$lang['rep_ad_show_del']}</a></span></td>\n" . "</tr>\n";
     }
     $html .= "<tr><td colspan='3' align='center'>
 					<input type='submit' value='{$lang['rep_ad_show_update']}' accesskey='s' class='btn' /> 
@@ -133,7 +130,7 @@ function show_form($type = 'edit')
             stderr($lang['rep_ad_form_error'], $lang['rep_ad_form_error_msg']);
         }
         $title = $lang['rep_ad_form_title'];
-        $html .= "<br /><span style='font-weight:normal;'>" . htmlsafechars($res['level']) . " ({$lang['rep_ad_form_id']}{$res['reputationlevelid']})</span><br />";
+        $html .= "<br><span style='font-weight:normal;'>" . htmlsafechars($res['level']) . " ({$lang['rep_ad_form_id']}{$res['reputationlevelid']})</span><br>";
         $button = $lang['rep_ad_form_btn'];
         $extra = "<input type='button' class='button' value='{$lang['rep_ad_form_back']}' accesskey='b' class='btn' onclick='javascript:history.back(1)' />";
         $mode = 'doedit';
@@ -151,8 +148,8 @@ function show_form($type = 'edit')
 				<input name='reputationlevelid' value='{$replevid}' type='hidden' />
 				<input name='mode' value='{$mode}' type='hidden' />";
     $html .= "<h2>$title</h2><table width='500px' cellpadding='5px'><tr>
-		<td width='67%' $css>&nbsp;</td>
-		<td width='33%' $css>&nbsp;</td></tr>";
+		<td width='67%' $css>&#160;</td>
+		<td width='33%' $css>&#160;</td></tr>";
     $html .= "<tr><td>{$lang['rep_ad_form_desc']}<div class='desctext'>{$lang['rep_ad_form_descr']}</div></td>";
     $html .= "<td><input type='text' name='level' value=\"{$replevel}\" size='35' maxlength='250' /></td></tr>";
     $html .= "<tr><td>{$lang['rep_ad_form_min']}<div>{$lang['rep_ad_form_option']}</div></td>";
@@ -291,16 +288,16 @@ function view_list()
     $html .= "<tr><td colspan='2'><div>{$lang['rep_ad_view_by_txt']}</div></td></tr>";
     $html .= "<tr><td>{$lang['rep_ad_view_start']}</td><td>
 		<div>
-				<span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_month']}<br /><select name='start[month]' tabindex='3'>" . get_month_dropdown(1) . "</select></span>
-				<span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_day']}<br /><input type='text' name='start[day]' value='" . ($now_date['mday'] + 1) . "' size='4' maxlength='2' tabindex='3' /></span>
-				<span>{{$lang['rep_ad_view_year']}}<br /><input type='text' name='start[year]' value='" . $now_date['year'] . "' size='4' maxlength='4' tabindex='3' /></span>
+				<span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_month']}<br><select name='start[month]' tabindex='3'>" . get_month_dropdown(1) . "</select></span>
+				<span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_day']}<br><input type='text' name='start[day]' value='" . ($now_date['mday'] + 1) . "' size='4' maxlength='2' tabindex='3' /></span>
+				<span>{{$lang['rep_ad_view_year']}}<br><input type='text' name='start[year]' value='" . $now_date['year'] . "' size='4' maxlength='4' tabindex='3' /></span>
 			</div></td></tr>";
     $html .= "<tr><td class='tdrow2' colspan='2'><div class='desctext'>{{$lang['rep_ad_view_start_select']}}</div></td></tr>";
     $html .= "<tr><td>{$lang['rep_ad_view_end']}</td><td>
 			<div>
-				<span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_month']}<br /><select name='end[month]' class='textinput' tabindex='4'>" . get_month_dropdown() . "</select></span>
-				<span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_day']}<br /><input type='text' class='textinput' name='end[day]' value='" . $now_date['mday'] . "' size='4' maxlength='2' tabindex='4' /></span>
-				<span>{$lang['rep_ad_view_year']}<br /><input type='text' class='textinput' name='end[year]' value='" . $now_date['year'] . "' size='4' maxlength='4' tabindex='4' /></span>
+				<span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_month']}<br><select name='end[month]' class='textinput' tabindex='4'>" . get_month_dropdown() . "</select></span>
+				<span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_day']}<br><input type='text' class='textinput' name='end[day]' value='" . $now_date['mday'] . "' size='4' maxlength='2' tabindex='4' /></span>
+				<span>{$lang['rep_ad_view_year']}<br><input type='text' class='textinput' name='end[year]' value='" . $now_date['year'] . "' size='4' maxlength='4' tabindex='4' /></span>
 			</div></td></tr>";
     $html .= "<tr><td class='tdrow2' colspan='2'><div class='desctext'>{$lang['rep_ad_view_end_select']}</div></td></tr>";
     $html .= "<tr><td colspan='2' align='center'><input type='submit' value='{$lang['rep_ad_view_search']}' accesskey='s' class='btn' tabindex='5' /> <input type='reset' value='{$lang['rep_ad_view_reset']}' accesskey='r' class='btn' tabindex='6' /></td></tr>";
@@ -385,7 +382,7 @@ function view_list()
         }
         // do the pager thang!
         $deflimit = 10;
-        $links = "<span style=\"background: #F0F5FA; border: 1px solid #072A66;padding: 1px 3px 1px 3px;\">{$total['cnt']}&nbsp;{$lang['rep_ad_view_records']}</span>";
+        $links = "<span style=\"background: #F0F5FA; border: 1px solid #072A66;padding: 1px 3px 1px 3px;\">{$total['cnt']}&#160;{$lang['rep_ad_view_records']}</span>";
         if ($total['cnt'] > $deflimit) {
             require_once INCL_DIR . 'pager_functions.php';
             $links = pager_rep([
@@ -415,10 +412,10 @@ function view_list()
             $html .= "<td>{$r['dateadd']}</td>";
             $html .= "<td align='right'>{$r['reputation']}</td>";
             $html .= "<td><a href='forums.php?action=viewtopic&amp;topicid={$r['topic_id']}&amp;page=p{$r['postid']}#{$r['postid']}' target='_blank'>" . htmlsafechars($r['reason']) . '</a></td>';
-            $html .= "<td><a href='staffpanel.php?tool=reputation_ad&amp;mode=editrep&amp;reputationid={$r['reputationid']}'><span class='btn'>{$lang['rep_ad_view_edit']}</span></a>&nbsp;<a href='reputation_ad.php?mode=dodelrep&amp;reputationid={$r['reputationid']}'><span class='btn'>{$lang['rep_ad_view_delete']}</span></a></td></tr>";
+            $html .= "<td><a href='staffpanel.php?tool=reputation_ad&amp;mode=editrep&amp;reputationid={$r['reputationid']}'><span class='btn'>{$lang['rep_ad_view_edit']}</span></a>&#160;<a href='reputation_ad.php?mode=dodelrep&amp;reputationid={$r['reputationid']}'><span class='btn'>{$lang['rep_ad_view_delete']}</span></a></td></tr>";
         }
         $html .= '</table>';
-        $html .= "<br /><div>$links</div>";
+        $html .= "<br><div>$links</div>";
     }
     html_out($html, $title);
 }
@@ -463,7 +460,7 @@ function do_edit_rep()
 {
     global $input, $lang;
     if (isset($input['reason']) && !empty($input['reason'])) {
-        $reason = str_replace('<br />', '', $input['reason']);
+        $reason = str_replace('<br>', '', $input['reason']);
         $reason = trim($reason);
         if ((strlen(trim($reason)) < 2) || ($reason == '')) {
             stderr($lang['rep_ad_edit_txt'], $lang['rep_ad_edit_short']);
@@ -537,8 +534,8 @@ function redirect($url, $text, $time = 2)
 							<div>{$lang['rep_ad_redirect_redirect']}</div>
 							<div style='padding:8px'>
 							 <div style='font-size:12px'>$text
-							 <br />
-							 <br />
+							 <br>
+							 <br>
 							 <center><a href='{$INSTALLER09['baseurl']}/{$url}'>{$lang['rep_ad_redirect_not']}</a></center>
 							 </div>
 							</div>

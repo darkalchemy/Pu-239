@@ -3,26 +3,26 @@
  * Copyright notice and license must remain intact for legal use
  * Requires: jQuery 1.2+
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS 
- * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN 
- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- * 
+ *
  * Fore usage documentation and examples, visit:
  *         http://jkdesign.org/captcha/
- * 
+ *
  * TODO:
  *   Full testing suite
- * 
+ *
  * REVISIONS:
  *   0.1 Initial release
  *   0.2 Changed to use title attribute of image for hash (versus alt)
  *       (We don't want the hash showing as images load)
  *       Fixed simpleCaptcha.php to return properly formatted JSON (fixes bug in jQuery 1.4)
- * 
+ *
  */
 ;(function ($) {
 
@@ -138,3 +138,7 @@
     };
 
 })(jQuery);
+
+$(document).ready(function () {
+    $('#captchalogin').simpleCaptcha();
+});

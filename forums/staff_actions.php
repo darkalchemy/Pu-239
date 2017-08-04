@@ -1,18 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/**********************************************************
- * New 2010 forums that don't suck for TB based sites....
- * pretty much coded page by page, but coming from a
- * history ot TBsource and TBDev and the many many
- * coders who helped develope them over time.
- * proper credits to follow :)
- * beta sun aug 1st 2010 v0.1
- * Staff actions
- * should I add this to the admin folder?
- * Powered by Bunnies!!!
- ***************************************************************/
 if (!defined('BUNNY_FORUMS')) {
     $HTMLOUT = '';
     $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -425,7 +411,7 @@ switch ($staff_action) {
         //=== depending on settings, the topic can be set to  not really be deleted, OR they can just be deleted...
         //=== sanity check
         if (!isset($_POST['sanity_check'])) {
-            stderr($lang['fe_sanity_check'], '' . $lang['fe_are_you_sure_you_want_to_delete_this_topic_msg'] . '<br />
+            stderr($lang['fe_sanity_check'], '' . $lang['fe_are_you_sure_you_want_to_delete_this_topic_msg'] . '<br>
 	<form action="forums.php?action=staff_actions" method="post">
 	<input type="hidden" name="action_2" value="delete_topic" />
 	<input type="hidden" name="sanity_check" value="1" />

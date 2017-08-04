@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -112,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header('Refresh: 2; url=' . $r);
                 stderr($lang['leechwarn_success'], count($pms) . $lang['leechwarn_user'] . (count($pms) > 1 ? $lang['leechwarn_s'] : '') . $lang['leechwarn_removed_success']);
             } else {
-                stderr($lang['leechwarn_stderror'], $lang['leechwarn_q1'] . $q_err . "<br />{$lang['leechwarn_q2']}" . $q2_err);
+                stderr($lang['leechwarn_stderror'], $lang['leechwarn_q1'] . $q_err . "<br>{$lang['leechwarn_q2']}" . $q2_err);
             }
         }
     }
@@ -134,7 +131,7 @@ switch ($do) {
 $g = sql_query($query) or print (is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false);
 $count = mysqli_num_rows($g);
 $HTMLOUT .= begin_main_frame();
-$HTMLOUT .= begin_frame($title . "&nbsp;[<font class=\"small\">{$lang['leechwarn_total']}" . $count . $lang['leechwarn_user'] . ($count > 1 ? $lang['leechwarn_s'] : '') . '</font>] - ' . $link);
+$HTMLOUT .= begin_frame($title . "&#160;[<font class=\"small\">{$lang['leechwarn_total']}" . $count . $lang['leechwarn_user'] . ($count > 1 ? $lang['leechwarn_s'] : '') . '</font>] - ' . $link);
 if ($count == 0) {
     $HTMLOUT .= stdmsg($lang['leechwarn_hey'], $lang['leechwarn_none'] . strtolower($title));
 } else {
@@ -149,10 +146,10 @@ if ($count == 0) {
 			<td class='colhead' align='center' nowrap='nowrap'><input type='checkbox' name='checkall' /></td>
 		</tr>";
     while ($a = mysqli_fetch_assoc($g)) {
-        $tip = ($do == 'leechwarn' ? $lang['leechwarn_warned_for'] . htmlsafechars($a['warn_reason']) . '<br />' . $lang['leechwarn_warned_till'] . get_date($a['leechwarn'], 'DATE', 1) . ' - ' . mkprettytime($a['leechwarn'] - TIME_NOW) : $lang['leechwarn_disabled_for'] . htmlsafechars($a['disable_reason']));
+        $tip = ($do == 'leechwarn' ? $lang['leechwarn_warned_for'] . htmlsafechars($a['warn_reason']) . '<br>' . $lang['leechwarn_warned_till'] . get_date($a['leechwarn'], 'DATE', 1) . ' - ' . mkprettytime($a['leechwarn'] - TIME_NOW) : $lang['leechwarn_disabled_for'] . htmlsafechars($a['disable_reason']));
         $HTMLOUT .= "<tr>
 				  <td align='left' width='100%'><a href='userdetails.php?id=" . (int)$a['id'] . "' onmouseover=\"Tip('($tip)')\" onmouseout=\"UnTip()\">" . htmlsafechars($a['username']) . "</a></td>
-				  <td align='left' nowrap='nowrap'>" . (float)$a['ratio'] . "<br /><font class='small'><b>{$lang['leechwarn_d']}</b>" . mksize($a['downloaded']) . "&nbsp;<b>{$lang['leechwarn_u']}</b> " . mksize($a['uploaded']) . "</font></td>
+				  <td align='left' nowrap='nowrap'>" . (float)$a['ratio'] . "<br><font class='small'><b>{$lang['leechwarn_d']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['leechwarn_u']}</b> " . mksize($a['uploaded']) . "</font></td>
 				  <td align='center' nowrap='nowrap'>" . get_user_class_name($a['class']) . "</td>
 				  <td align='center' nowrap='nowrap'>" . get_date($a['last_access'], 'LONG', 0, 1) . "</td>
 				  <td align='center' nowrap='nowrap'>" . get_date($a['added'], 'DATE', 1) . "</td>

@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-// usermood.php for PTF by pdq 2011
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 dbconn(false);
 $HTMLOUT = '';
@@ -75,7 +71,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
     }
 }
 $HTMLOUT .= '</table>
-      <p><br /></p>
+      <p><br></p>
       <a href="javascript:self.close();"><font color="#FF0000">' . $lang['user_mood_close'] . '</font></a>
       <noscript><a href="/index.php">' . $lang['user_mood_back'] . '</a></noscript>
       </body>

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * OPcache GUI.
  *
@@ -344,12 +343,12 @@ empty($_SERVER['SERVER_NAME'])
         <div id="counts">
             <div>
                 <p><span class="large <?php echo $threshold; ?>"><span class="realtime"
-                                                                       data-value="used_memory_percentage"><?php echo $data['used_memory_percentage']; ?></span>%</span><br/>memory
+                                                                       data-value="used_memory_percentage"><?php echo $data['used_memory_percentage']; ?></span>%</span><br>memory
                     usage</p>
             </div>
             <div>
                 <p><span class="large"><span class="realtime"
-                                             data-value="hit_rate"><?php echo $data['hit_rate_percentage']; ?></span>%</span><br/>hit
+                                             data-value="hit_rate"><?php echo $data['hit_rate_percentage']; ?></span>%</span><br>hit
                     rate</p>
             </div>
             <div class="values">
@@ -382,7 +381,7 @@ empty($_SERVER['SERVER_NAME'])
                                                  data-value="max_cached_keys_size"><?php echo $data['max_cached_keys_size']; ?></span>
                 </p>
             </div>
-            <br/>
+            <br>
             <p><a href="#" id="toggleRealtime">Enable real-time update of stats</a></p>
         </div>
         <div id="info">
@@ -489,7 +488,7 @@ empty($_SERVER['SERVER_NAME'])
 
 <?php if ($page == 'files'): ?>
     <h2>File usage</h2>
-    <p><label>Start typing to filter on script path<br/><input type="text" style="width:40em;" name="filter"
+    <p><label>Start typing to filter on script path<br><input type="text" style="width:40em;" name="filter"
                                                                id="frmFilter"/><label></p>
     <div class="container">
         <h3><?php echo $data['files_cached']; ?> file<?php echo $data['files_cached'] == 1 ? '' : 's'; ?> cached <span
@@ -526,10 +525,10 @@ empty($_SERVER['SERVER_NAME'])
                     <td>
                         <p>
                             hits: <?php echo $s['hits']; ?>,
-                            memory: <?php echo memsize($s['memory_consumption']); ?><br/>
+                            memory: <?php echo memsize($s['memory_consumption']); ?><br>
                             last used: <?php echo date_format(date_create($s['last_used']), 'Y-m-d H:i:s'); ?>
                             <?php if ($s['timestamp'] === 0): ?>
-                                <br/><i class="invalid">has been invalidated</i>
+                                <br><i class="invalid">has been invalidated</i>
                             <?php endif; ?>
                         </p>
                     </td>

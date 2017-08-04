@@ -1,13 +1,9 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 dbconn();
-ini_set('session.use_trans_sid', '0');
-sessionStart();
+
 global $CURUSER;
 if (!$CURUSER) {
     get_template();
@@ -172,7 +168,7 @@ if ($step == '1') {
     /*]]>*/
     </script>
 <p>{$lang['main_body']}</p>
-<br />
+<br>
 <form method='post' action='" . $_SERVER['PHP_SELF'] . "?step=1'>
 <table border='1' cellspacing='0' cellpadding='10'>
 <tr>

@@ -75,7 +75,7 @@ var ajaxChatConfig = {
         emoticons: true,
 
         // Defines if the focus is automatically set to the input field on chat load or channel switch:
-        autoFocus: true,
+        autoFocus: false,
         // Defines if the chat list scrolls automatically to display the latest messages:
         autoScroll: true,
         // The maximum count of messages displayed in the chat list (will be ignored if set to 0):
@@ -102,7 +102,7 @@ var ajaxChatConfig = {
         // Defines the audio backend:
         audioBackend: -1,
         // Defines the sound volume (0.0 = mute, 1.0 = max):
-        audioVolume: 1.0,
+        audioVolume: 0.0,
 
         // Defines the sound that is played when normal messages are reveived:
         soundReceive: 'sound_1',

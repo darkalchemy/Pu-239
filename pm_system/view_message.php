@@ -1,9 +1,5 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 $subject = $friends = '';
-//=== don't allow direct access
 if (!defined('BUNNY_PM_SYSTEM')) {
     $HTMLOUT = '';
     $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -90,4 +86,4 @@ $HTMLOUT .= $h1_thingie . ($message['draft'] === 'yes' ? '<h1>' . $lang['pm_view
         <form action="pm_system.php" method="post">
         <input type="hidden" name="id" value="' . $pm_id . '" />
         <input type="hidden" name="action" value="' . $lang['pm_viewmsg_to'] . '" /><span style="font-weight: bold;">' . $lang['pm_search_move_to'] . '</span> ' . get_all_boxes() . $the_buttons . '</td>
-    </tr></table><br />' . insertJumpTo(0);
+    </tr></table><br>' . insertJumpTo(0);

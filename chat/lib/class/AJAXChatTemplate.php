@@ -105,11 +105,6 @@ class AJAXChatTemplate
             case 'COOKIE_SECURE':
                 return $this->ajaxChat->getConfig('sessionCookieSecure');
 
-            case 'CODE_VERSION':
-                return $INSTALLER09['code_version'];
-            case 'JQUERY_VERSION':
-                return $INSTALLER09['jquery_version'];
-
             case 'CHAT_BOT_NAME':
                 return rawurlencode($this->ajaxChat->getConfig('chatBotName'));
             case 'CHAT_BOT_ID':
@@ -218,7 +213,7 @@ class AJAXChatTemplate
         foreach ($this->ajaxChat->getConfig('styleAvailable') as $style) {
             $alternate = ($style == $this->ajaxChat->getConfig('styleDefault')) ? '' : 'alternate ';
             $styleSheets .= '
-        <link rel="' . $alternate . 'stylesheet" type="text/css" href="css/' . rawurlencode($style) . '.css?' . $INSTALLER09['code_version'].'" title="' . $this->ajaxChat->htmlEncode($style) . '"/>';
+        <link rel="' . $alternate . 'stylesheet" href="./css/' . rawurlencode($style) . '.css" title="' . $this->ajaxChat->htmlEncode($style) . '" />';
         }
 
         return $styleSheets;

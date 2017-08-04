@@ -1,5 +1,4 @@
 <?php
-
 //=== share ratio
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     if ($user_stats['downloaded'] > 0) {
@@ -9,7 +8,7 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_ST
 	<table border="0"cellspacing="0" cellpadding="0">
 		<tr>
          <td class="embedded">' . member_ratio($user_stats['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $user_stats['downloaded']) . '</td>
-         <td class="embedded">&nbsp;&nbsp;' . get_user_ratio_image($user_stats['uploaded'] / ($INSTALLER09['ratio_free'] ? '1' : $user_stats['downloaded'])) . '</td>
+         <td class="embedded">&#160;&#160;' . get_user_ratio_image($user_stats['uploaded'] / ($INSTALLER09['ratio_free'] ? '1' : $user_stats['downloaded'])) . '</td>
 		</tr>
 	</table>
 			</td>

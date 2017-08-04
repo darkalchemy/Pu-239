@@ -64,16 +64,16 @@ if (isset($_POST['s'])) {
 
                 $return['notice'] =
                     '<h2>' . __('Setup admin account') . '</h2>'
-                    . '<br/>'
-                    . __('You can use <em>Pimp my Log</em> without authentication. You will be able to add this feature later from the debugger web interface.') . '<br/>'
-                    . '<br/>'
-                    . __('Setup an admin account will let you create other users later and give them access to certain log files only.') . '<br/>'
-                    . '<br/>'
-                    . __('Do you want to create an admin account now?') . '<br/>'
-                    . '<br/>'
-                    . '<br/>'
+                    . '<br>'
+                    . __('You can use <em>Pimp my Log</em> without authentication. You will be able to add this feature later from the debugger web interface.') . '<br>'
+                    . '<br>'
+                    . __('Setup an admin account will let you create other users later and give them access to certain log files only.') . '<br>'
+                    . '<br>'
+                    . __('Do you want to create an admin account now?') . '<br>'
+                    . '<br>'
+                    . '<br>'
                     . '<a href="javascript:process_authentication_yes()" class="btn btn-primary">' . __('Create an admin account') . '</a>'
-                    . '&nbsp;&nbsp;'
+                    . '&#160;&#160;'
                     . '<a href="javascript:process_authentication_no()" class="btn btn-default">' . __('No') . '</a>';
 
                 break;
@@ -90,7 +90,7 @@ if (isset($_POST['s'])) {
                     $path = Sentinel::getAuthFilePath();
                     $return['notice'] =
                         sprintf(__('File <code>%s</code> already exists!'), AUTH_CONFIGURATION_FILE)
-                        . '<br/><br/>'
+                        . '<br><br>'
                         . __('Please remove it from the root directory:')
                         . '<div class="row">'
                         . '  <div class="col-md-10"><pre class="clipboardcontent">' . 'mv \'' . $path . '\' \'' . $path . '.bck\'</pre></div>'
@@ -101,9 +101,9 @@ if (isset($_POST['s'])) {
                 elseif (Sentinel::create() === true) {
                     $return['authform'] =
                         '<h2>' . __('Setup admin account') . '</h2>'
-                        . '<br/>'
+                        . '<br>'
                         . __('Please choose a username and a password for the admin account.')
-                        . '<br/><br/>'
+                        . '<br><br>'
                         . '<form id="authsave" autocomplete="off">'
                         . '<div class="container">'
                         . '<div class="row">'
@@ -111,14 +111,14 @@ if (isset($_POST['s'])) {
 								<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
 								<input type="text" id="username" class="form-control" placeholder="' . __('Username') . '" autofocus="autofocus">
 							</div>'
-                        . '<br/>'
+                        . '<br>'
                         . '</div>'
                         . '<div class="row">'
                         . '<div class="input-group col-sm-6 col-md-4" id="passwordgroup" data-toggle="tooltip" data-placement="bottom" title="' . htmlentities(__('Password must contain at least 6 chars')) . '">
 								<span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
 								<input type="password" id="password" class="form-control" placeholder="' . __('Password') . '">
 							</div>'
-                        . '<br/>'
+                        . '<br>'
                         . '</div>'
                         . '<div class="row">'
                         . '<div class="input-group col-sm-6 col-md-4" id="password2group" data-toggle="tooltip" data-placement="bottom" title="' . htmlentities(__('Password is not the same')) . '">
@@ -127,7 +127,7 @@ if (isset($_POST['s'])) {
 							</div>'
                         . '</div>'
                         . '</div>'
-                        . '<br/><br/>'
+                        . '<br><br>'
                         . '<input type="submit" class="btn btn-primary" value="' . __('Continue') . '"/>'
                         . '</form>';
                 } // Unable to touch, return an error
@@ -170,7 +170,7 @@ if (isset($_POST['s'])) {
                 if (!is_null($config_file_name)) {
                     $return['notice'] =
                         __('Please remove it manually if you want me to create it:')
-                        . '<br/><br/>'
+                        . '<br><br>'
                         . '<div class="row">'
                         . '  <div class="col-md-9"><pre class="clipboardcontent">' . 'rm \'' . get_config_file_path() . '\'</pre></div>'
                         . '  <div class="col-md-3"><a class="btn btn-primary clipboard">' . __('Copy to clipboard') . '</a><script>clipboard_enable("a.clipboard","pre.clipboardcontent" , "top" , "' . __('Command copied!') . '");</script></div>'
@@ -208,7 +208,7 @@ if (isset($_POST['s'])) {
             */
             case 'soft':
                 $return['notice'] = '<h2>' . __('Choose softwares to search log files for') . '</h2>';
-                $return['notice'] .= '<br/>';
+                $return['notice'] .= '<br>';
                 $return['notice'] .= '<div class="table-responsive"><table id="soft"></table></div>';
                 $return['next'] = true;
                 $return['sofn'] = count($softwares_all);
@@ -304,7 +304,7 @@ if (isset($_POST['s'])) {
                 } else {
                     $return['notice'] .= '<div class="alert alert-info">' . __('Log files have been found!') . '</div>';
                     $return['notice'] .= __('Check in the following list which files you want to configure.');
-                    $return['notice'] .= '<br/>';
+                    $return['notice'] .= '<br>';
                     $return['notice'] .= __('If files or directories are missing, verify that they are readable by the webserver user');
                 }
 
@@ -313,10 +313,10 @@ if (isset($_POST['s'])) {
                     ? ' (<em>' . __('unable to detect web server user') . '</em>):'
                     : ' (<em>' . sprintf(__('web server user seems to be <code>%s</code>'), $user) . '</em>):';
 
-                $return['notice'] .= '<br/><br/>';
+                $return['notice'] .= '<br><br>';
                 $return['notice'] .= '<div class="table-responsive"><table id="find"></table></div>';
                 $return['notice'] .= __('You can also type log files path in the text area below separated by coma:');
-                $return['notice'] .= '<br/><br/>';
+                $return['notice'] .= '<br><br>';
                 $return['notice'] .= '<div class="table-responsive"><table class="table table-striped table-bordered table-hover"><thead><tr><th>' . __('Type') . '</th><th>' . __('Custom paths') . '</th></tr></thead><tbody>';
                 foreach ($softuser as $software => $types) {
                     foreach ($types as $type => $dumb) {
@@ -443,10 +443,10 @@ if (isset($_POST['s'])) {
     } catch (Exception $e) {
         // Error message for timezone not configured
         if (strpos($e->getMessage(), 'date.timezone')) {
-            $return['error'] = $e->getMessage() . '<hr/><span class="glyphicon glyphicon-info-sign"></span> ' . sprintf(__('You should take a look on this %spage%s.'), '<a href="' . TIME_ZONE_SUPPORT_URL . '">', '</a>');
+            $return['error'] = $e->getMessage() . '<hr><span class="glyphicon glyphicon-info-sign"></span> ' . sprintf(__('You should take a look on this %spage%s.'), '<a href="' . TIME_ZONE_SUPPORT_URL . '">', '</a>');
         } // Other error messages
         else {
-            $return['error'] = $e->getMessage() . '<hr/><span class="glyphicon glyphicon-info-sign"></span> ' . sprintf(__('You should take a look on this %spage%s.'), '<a href="' . SUHOSIN_URL . '">', '</a>');
+            $return['error'] = $e->getMessage() . '<hr><span class="glyphicon glyphicon-info-sign"></span> ' . sprintf(__('You should take a look on this %spage%s.'), '<a href="' . SUHOSIN_URL . '">', '</a>');
         }
     }
 
@@ -468,7 +468,7 @@ if (isset($_POST['s'])) {
     }
 
     if (count($return) === $check) {
-        $return['error'] = __('Your PHP installation is not correctly configured to run Pimp My Log.') . '<hr/><span class="glyphicon glyphicon-info-sign"></span> ' . sprintf(__('You should take a look on this %spage%s.'), '<a href="' . SUHOSIN_URL . '">', '</a>');
+        $return['error'] = __('Your PHP installation is not correctly configured to run Pimp My Log.') . '<hr><span class="glyphicon glyphicon-info-sign"></span> ' . sprintf(__('You should take a look on this %spage%s.'), '<a href="' . SUHOSIN_URL . '">', '</a>');
     }
 
     header('Content-type: application/json');
@@ -531,7 +531,7 @@ $lemma = [
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="logo"></div>
-        <div class="navbar-header"><a class="navbar-brand" href="?<?php echo $_SERVER['QUERY_STRING']; ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo __('Configurator'); ?></a>
+        <div class="navbar-header"><a class="navbar-brand" href="?<?php echo $_SERVER['QUERY_STRING']; ?>">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<?php echo __('Configurator'); ?></a>
         </div>
     </div>
 </div>
@@ -552,20 +552,20 @@ $lemma = [
     <div id="user"></div>
     <br>
     <p id="buttons"><a id="next" class="btn btn-primary" href="#" style="display:none"><?php _e('Continue'); ?></a>
-        &nbsp; <a id="reload" class="btn btn-default" href="javascript:location.reload();"
-                  style="display:none"><?php _e('Reload'); ?></a>&nbsp;</p></div>
+        &#160; <a id="reload" class="btn btn-default" href="javascript:location.reload();"
+                  style="display:none"><?php _e('Reload'); ?></a>&#160;</p></div>
 <div class="jumbotron" id="congratulations" style="display:none">
     <div class="container"><h1><?php _e('Congratulations!'); ?></h1>
         <p><?php
-            echo '<br/>';
+            echo '<br>';
             _e('Your <em>Pimp my Log</em> instance is ready to use.');
-            echo '<br/>';
-            echo '<br/>';
+            echo '<br>';
+            echo '<br>';
             echo sprintf(__('You can manually adjust settings in the <code>%s</code> file.'), CONFIG_FILE_NAME);
-            echo '<br/>';
+            echo '<br>';
             _e('Please visit <a href="http://pimpmylog.com">pimpmylog.com</a> for more informations.');
-            echo '<br/>';
-            echo '<br/>';
+            echo '<br>';
+            echo '<br>';
             echo '<a class="btn btn-primary" href="../?' . $_SERVER['QUERY_STRING'] . '">' . __('Pimp my Logs now!') . '</a>';
             ?></p></div>
 </div>

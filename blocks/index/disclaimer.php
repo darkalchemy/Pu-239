@@ -1,5 +1,4 @@
 <?php
-
 //==Disclaimer
 $HTMLOUT .= "
 	<fieldset class='header'>
@@ -9,7 +8,7 @@ $HTMLOUT .= sprintf("<p><font class='small'>{$lang['foot_disclaimer']}</font></p
 $HTMLOUT .= '
 			</div>
 	</fieldset>
-	<hr />';
+	<hr>';
 //==
 // End Class
 // End File

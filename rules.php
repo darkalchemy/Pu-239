@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
@@ -36,8 +33,8 @@ $HTMLOUT .= '<script type="text/javascript">
     </script>';
 $HTMLOUT .= begin_main_frame();
 $HTMLOUT .= '<div class="global_icon_r"><img src="images/global.design/info.png" alt="" title="Guidelines" class="global_image" width="25"/></div>
-    <div class="global_head_r">Guidelines</div><br />
-    <div class="global_text_r"><br />';
+    <div class="global_head_r">Guidelines</div><br>
+    <div class="global_text_r"><br>';
 $HTMLOUT .= "
     <div id='firstpanel' class='menu_list'><!-- accordian starts here secondpanel as id is mouseover -->
 	  <p class='menu_head'>
@@ -100,8 +97,8 @@ if (isset($CURUSER) and $CURUSER['class'] >= UC_UPLOADER) {
       <li>{$lang['rules_uploading_body7']}</li>
       <li>{$lang['rules_uploading_body8']}</li>
       </ul>
-      <br />
-      <br />
+      <br>
+      <br>
       {$lang['rules_uploading_body9']}</div>";
 }
 if (isset($CURUSER) and $CURUSER['class'] >= UC_STAFF) {
@@ -111,33 +108,33 @@ if (isset($CURUSER) and $CURUSER['class'] >= UC_STAFF) {
      <div class='menu_body'>
      <table border='0' cellspacing='3' cellpadding='0'>
       <tr>
-        <td class='embedded' bgcolor='#ffffff' valign='top' width='80'>&nbsp; <b><font color='f9a200'>{$lang['rules_moderating_pu']}</font></b></td>
-        <td class='embedded' width='5'>&nbsp;</td>
+        <td class='embedded' bgcolor='#ffffff' valign='top' width='80'>&#160; <b><font color='f9a200'>{$lang['rules_moderating_pu']}</font></b></td>
+        <td class='embedded' width='5'>&#160;</td>
         <td class='embedded'>{$lang['rules_moderating_body']}</td>
       </tr>
       <tr>
-        <td class='embedded' bgcolor='#ffffff' valign='top'>&nbsp; <b><img src='pic/star.gif' alt='Donor' title='Donor' /></b></td>
-        <td class='embedded' width='5'>&nbsp;</td>
+        <td class='embedded' bgcolor='#ffffff' valign='top'>&#160; <b><img src='pic/star.gif' alt='Donor' title='Donor' /></b></td>
+        <td class='embedded' width='5'>&#160;</td>
         <td class='embedded'>{$lang['rules_moderating_body1']}</td>
       </tr>
       <tr>
-        <td class='embedded' bgcolor='#ffffff' valign='top'>&nbsp; <b><font color='009F00'>{$lang['rules_moderating_vip']}</font></b></td>
-        <td class='embedded' width='5'>&nbsp;</td>
+        <td class='embedded' bgcolor='#ffffff' valign='top'>&#160; <b><font color='009F00'>{$lang['rules_moderating_vip']}</font></b></td>
+        <td class='embedded' width='5'>&#160;</td>
         <td class='embedded'>{$lang['rules_moderating_body2']}</td>
       </tr>
       <tr>
-        <td class='embedded' bgcolor='#ffffff' valign='top'>&nbsp; <b>{$lang['rules_moderating_other']}</b></td>
-        <td class='embedded' width='5'>&nbsp;</td>
+        <td class='embedded' bgcolor='#ffffff' valign='top'>&#160; <b>{$lang['rules_moderating_other']}</b></td>
+        <td class='embedded' width='5'>&#160;</td>
         <td class='embedded'>{$lang['rules_moderating_body3']}</td>
       </tr>
       <tr>
-        <td class='embedded' bgcolor='#ffffff' valign='top'>&nbsp; <b><font color='0000FF'>{$lang['rules_moderating_uploader']}</font></b></td>
-        <td class='embedded' width='5'>&nbsp;</td>
+        <td class='embedded' bgcolor='#ffffff' valign='top'>&#160; <b><font color='0000FF'>{$lang['rules_moderating_uploader']}</font></b></td>
+        <td class='embedded' width='5'>&#160;</td>
         <td class='embedded'>{$lang['rules_moderating_body4']}</td>
       </tr>
       <tr>
-        <td class='embedded' bgcolor='#ffffff' valign='top'>&nbsp; <b><font color='#FE2E2E'>{$lang['rules_moderating_mod']}</font></b></td>
-        <td class='embedded' width='5'>&nbsp;</td>
+        <td class='embedded' bgcolor='#ffffff' valign='top'>&#160; <b><font color='#FE2E2E'>{$lang['rules_moderating_mod']}</font></b></td>
+        <td class='embedded' width='5'>&#160;</td>
         <td class='embedded'>{$lang['rules_moderating_body5']}</td>
       </tr>
       </table></div>";

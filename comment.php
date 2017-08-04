@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
@@ -141,7 +138,7 @@ if ($action == 'add') {
     $HTMLOUT = '';
     $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
     $HTMLOUT .= "<h1>{$lang['comment_add']}'" . htmlsafechars($arr[$name]) . "'</h1>
-      <br /><form name='compose' method='post' action='comment.php?action=add'>
+      <br><form name='compose' method='post' action='comment.php?action=add'>
       <input type='hidden' name='tid' value='{$id}'/>
       <input type='hidden' name='locale' value='$name' />";
     if ($INSTALLER09['BBcode'] && function_exists('BBcode')) {
@@ -149,10 +146,10 @@ if ($action == 'add') {
     } else {
         $HTMLOUT .= "<textarea name='text' rows='10' cols='60'></textarea>";
     }
-    $HTMLOUT .= "<br />
+    $HTMLOUT .= "<br>
       <label for='anonymous'>Tick this to post anonymously</label>
       <input id='anonymous' type='checkbox' name='anonymous' value='yes' />
-      <br /><input type='submit' class='btn' value='{$lang['comment_doit']}' /></form>";
+      <br><input type='submit' class='btn' value='{$lang['comment_doit']}' /></form>";
     $res = sql_query("SELECT comments.id, text, comments.added, comments.$locale, comments.anonymous, comments.editedby, comments.editedat, comments.edit_name, username, users.id as user, users.title, users.avatar, users.offavatar, users.av_w, users.av_h, users.class, users.reputation, users.mood, users.donor, users.warned FROM comments LEFT JOIN users ON comments.user = users.id WHERE $locale = " . sqlesc($id) . ' ORDER BY comments.id DESC LIMIT 5');
     $allrows = [];
     while ($row = mysqli_fetch_assoc($res)) {
@@ -208,7 +205,7 @@ if ($action == 'add') {
         $HTMLOUT .= "<textarea name='text' rows='10' cols='60'>" . htmlsafechars($arr['text']) . '</textarea>';
     }
     $HTMLOUT .= '
-      <br />' . ($CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" value="lasteditedby" checked="checked" name="lasteditedby" id="lasteditedby" /> Show Last Edited By<br /><br />' : '') . ' <input type="submit" class="btn" value="' . $lang['comment_doit'] . '" /></form>';
+      <br>' . ($CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" value="lasteditedby" checked="checked" name="lasteditedby" id="lasteditedby" /> Show Last Edited By<br><br>' : '') . ' <input type="submit" class="btn" value="' . $lang['comment_doit'] . '" /></form>';
     echo stdhead("{$lang['comment_edit']}'" . $arr[$name] . "'", true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
     die;
 } elseif ($action == 'delete') {

@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//==online by superman ?
 function time_return($stamp)
 {
     $ysecs = 365 * 24 * 60 * 60;

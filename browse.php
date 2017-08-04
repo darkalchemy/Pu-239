@@ -53,14 +53,14 @@ $(document).ready(function(){
 $search_help_boolean = '<table border="0" cellspacing="0" cellpadding="0" style="max-width:600px;" align="center">
     <tr>
     <td class="two"><div id="help" style="display:none"><h1>The boolean search supports the following operators:</h1>
-    <span style="font-weight: bold;">+</span> A leading plus sign indicates that this word must be present.<br /><br />
-    <span style="font-weight: bold;">-</span> A leading minus sign indicates that this word must not be present.<br /><br />
-        By default (when neither + nor - is specified) the word is optional, but results that contain it are rated higher. <br /><br />
-    <span style="font-weight: bold;">*</span> The asterisk serves as the wildcard operator. Unlike the other operators, it should be appended to the word to be affected. Words match if they begin with the word preceding the * operator.<br /><br />
-    <span style="font-weight: bold;">> <</span> These two operators are used to change a word\'s contribution to the relevance value that is assigned to a word. The > operator increases the contribution and the < operator decreases it.<br /><br />
-    <span style="font-weight: bold;">~</span> A leading tilde acts as a negation operator, causing the word\'s contribution to the words\'s relevance to be negative. A row containing such a word is rated lower than others, but is not excluded altogether, as it would be with the - operator.<br /><br />
-    <span style="font-weight: bold;">" "</span> A phrase that is enclosed within double quotes return only results that contain the phrase literally, as it was typed. <br /><br />
-    <span style="font-weight: bold;">( )</span> Parentheses group words into subexpressions. Parenthesized groups can be nested.<br /><br /></div></td>
+    <span style="font-weight: bold;">+</span> A leading plus sign indicates that this word must be present.<br><br>
+    <span style="font-weight: bold;">-</span> A leading minus sign indicates that this word must not be present.<br><br>
+        By default (when neither + nor - is specified) the word is optional, but results that contain it are rated higher. <br><br>
+    <span style="font-weight: bold;">*</span> The asterisk serves as the wildcard operator. Unlike the other operators, it should be appended to the word to be affected. Words match if they begin with the word preceding the * operator.<br><br>
+    <span style="font-weight: bold;">> <</span> These two operators are used to change a word\'s contribution to the relevance value that is assigned to a word. The > operator increases the contribution and the < operator decreases it.<br><br>
+    <span style="font-weight: bold;">~</span> A leading tilde acts as a negation operator, causing the word\'s contribution to the words\'s relevance to be negative. A row containing such a word is rated lower than others, but is not excluded altogether, as it would be with the - operator.<br><br>
+    <span style="font-weight: bold;">" "</span> A phrase that is enclosed within double quotes return only results that contain the phrase literally, as it was typed. <br><br>
+    <span style="font-weight: bold;">( )</span> Parentheses group words into subexpressions. Parenthesized groups can be nested.<br><br></div></td>
      </tr></table>';
 $cats = genrelist();
 if (isset($_GET['search'])) {
@@ -277,7 +277,7 @@ if ($CURUSER['opt1'] & user_options::VIEWSCLOUD) {
     $HTMLOUT .= cloud() . '
     </div>';
 }
-$HTMLOUT .= "<br /><br />
+$HTMLOUT .= "<br><br>
     <form method='get' action='browse.php'>
     <table class='bottom'>
     <tr>
@@ -291,13 +291,13 @@ foreach ($cats as $cat) {
       <input name='c" . (int)$cat['id'] . "' class=\"styled\" type=\"checkbox\" " . (in_array($cat['id'], $wherecatina) ? "checked='checked' " : '') . "value='1' /><a class='catlink' href='browse.php?cat=" . (int)$cat['id'] . "'> " . (($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) ? "<img src='{$INSTALLER09['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "' alt='" . htmlsafechars($cat['name']) . "' title='" . htmlsafechars($cat['name']) . "' />" : '' . htmlsafechars($cat['name']) . '') . "</a></td>\n";
     ++$i;
 }
-$alllink = "<div align='left'>&nbsp;</div>";
+$alllink = "<div align='left'>&#160;</div>";
 $ncats = count($cats);
 $nrows = ceil($ncats / $INSTALLER09['catsperrow']);
 $lastrowcols = $ncats % $INSTALLER09['catsperrow'];
 if ($lastrowcols != 0) {
     if ($INSTALLER09['catsperrow'] - $lastrowcols != 1) {
-        $HTMLOUT .= "<td class='bottom' rowspan='" . ($INSTALLER09['catsperrow'] - $lastrowcols - 1) . "'>&nbsp;</td>";
+        $HTMLOUT .= "<td class='bottom' rowspan='" . ($INSTALLER09['catsperrow'] - $lastrowcols - 1) . "'>&#160;</td>";
     }
     $HTMLOUT .= "<td class='bottom' style=\"padding-left: 5px\">$alllink</td>\n";
 }
@@ -306,7 +306,7 @@ $HTMLOUT .= "</tr>
     </td>
     <td class='bottom'>
     <table class='main'>
-    <tr><td>&nbsp;</td>";
+    <tr><td>&#160;</td>";
 if ($ncats % $INSTALLER09['catsperrow'] == 0) {
     $HTMLOUT .= "<td class='bottom' style='padding-left: 15px' rowspan='$nrows' valign='middle' align='right'>$alllink</td>\n";
 }
@@ -314,10 +314,10 @@ $HTMLOUT .= '</tr>
     </table>
     </td>
     </tr>
-    </table><br />';
+    </table><br>';
 //== clear new tag manually
 if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
-    $new_button = "<a href='?clear_new=1'><input type='submit' value='clear new tag' class='button' /></a><br />";
+    $new_button = "<a href='?clear_new=1'><input type='submit' value='clear new tag' class='button' /></a><br>";
 } else {
     //== clear new tag automatically
     sql_query('UPDATE users SET last_browse=' . TIME_NOW . ' where id=' . $CURUSER['id']);
@@ -332,18 +332,18 @@ if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     ]);
     $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
 }
-$HTMLOUT .= "<br />
+$HTMLOUT .= "<br>
     <table width='1000' class='main' border='0' cellspacing='0' cellpadding='0'>
     <tr>
     <td class='colhead' colspan='2' align='center'>Torrent search
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+    &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
     <a class='altlink' title='Open/Close Boolean Search Help' id='help_open' style='font-weight:bold;cursor:help;'>Search help</a></td>
     </tr>
     <tr>
     <td class='two' colspan='2'>" . $search_help_boolean . "</td>
     </tr>
-    <tr><td class='embedded'><br />
+    <tr><td class='embedded'><br>
     <input type='text' name='search' size='40' value='' />";
 //=== only free option :o)
 $only_free = ((isset($_GET['only_free'])) ? intval($_GET['only_free']) : '');
@@ -370,16 +370,16 @@ foreach ([
     $searchin .= '<option value="' . $k . '" ' . ($select_searchin == $k ? 'selected=\'selected\'' : '') . '>' . $v . '</option>';
 }
 $searchin .= '</select>';
-$HTMLOUT .= $searchin . '&nbsp;' . $deadcheck . '&nbsp;' . $only_free_box . '' . $vip_box;
+$HTMLOUT .= $searchin . '&#160;' . $deadcheck . '&#160;' . $only_free_box . '' . $vip_box;
 $HTMLOUT .= "<p align='center'><input type='submit' value='{$lang['search_search_btn']}' class='btn' /></p>
-            </td></tr></table></form><br />";
+            </td></tr></table></form><br>";
 $HTMLOUT .= "{$new_button}";
 if (isset($cleansearchstr)) {
     $HTMLOUT .= "<h2>{$lang['browse_search']} " . htmlsafechars($searchstr, ENT_QUOTES) . "</h2>\n";
 }
 if ($count) {
     $HTMLOUT .= $pager['pagertop'];
-    $HTMLOUT .= '<br />';
+    $HTMLOUT .= '<br>';
     $HTMLOUT .= torrenttable($res);
     $HTMLOUT .= $pager['pagerbottom'];
 } else {

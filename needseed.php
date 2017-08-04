@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
@@ -28,7 +25,7 @@ foreach ($categorie as $key => $value) {
 }
 if ($needed == 'leechers') {
     $HTMLOUT .= begin_main_frame();
-    $HTMLOUT .= begin_frame("{$lang['needseed_sin']}&nbsp;&nbsp;-&nbsp;&nbsp;[<a href='?needed=seeders' class='altlink'>{$lang['needseed_tns']}</a>]");
+    $HTMLOUT .= begin_frame("{$lang['needseed_sin']}&#160;&#160;-&#160;&#160;[<a href='?needed=seeders' class='altlink'>{$lang['needseed_tns']}</a>]");
     $Dur = TIME_NOW - 86400 * 7; //== 7 days
     if (XBT_TRACKER === true) {
         $res = sql_query('SELECT x.fid, x.uid, u.username, u.uploaded, u.downloaded, t.name, t.seeders, t.leechers, t.category ' . 'FROM xbt_files_users AS x ' . 'LEFT JOIN users AS u ON u.id=x.uid ' . "LEFT JOIN torrents AS t ON t.id=x.fid WHERE x.left = '0' AND active='1'" . "AND u.downloaded > '1024' AND u.added < $Dur ORDER BY u.uploaded / u.downloaded ASC LIMIT 20") or sqlerr(__FILE__, __LINE__);
@@ -46,7 +43,7 @@ if ($needed == 'leechers') {
             $cat = "<img src=\"pic/caticons/{$CURUSER['categorie_icon']}/{$needseed['cat_pic']}\" alt=\"{$needseed['cat_name']}\" title=\"{$needseed['cat_name']}\" />";
             $torrname = htmlsafechars(CutName($arr['name'], 80));
             $peers = (int)$arr['seeders'] . ' seeder' . ((int)$arr['seeders'] > 1 ? 's' : '') . ', ' . (int)$arr['leechers'] . ' leecher' . ((int)$arr['leechers'] > 1 ? 's' : '');
-            $HTMLOUT .= "<tr><td><a href='{$INSTALLER09['baseurl']}/userdetails.php?id=" . (int)$What_User_ID . "'>" . htmlsafechars($arr['username']) . '</a>&nbsp;(' . member_ratio($arr['uploaded'], $arr['downloaded']) . ")</td><td><a href='{$INSTALLER09['baseurl']}/details.php?id=" . (int)$What_ID . "' title='{$torrname}'>{$torrname}</a></td><td>{$cat}</td><td>{$peers}</td></tr>\n";
+            $HTMLOUT .= "<tr><td><a href='{$INSTALLER09['baseurl']}/userdetails.php?id=" . (int)$What_User_ID . "'>" . htmlsafechars($arr['username']) . '</a>&#160;(' . member_ratio($arr['uploaded'], $arr['downloaded']) . ")</td><td><a href='{$INSTALLER09['baseurl']}/details.php?id=" . (int)$What_ID . "' title='{$torrname}'>{$torrname}</a></td><td>{$cat}</td><td>{$peers}</td></tr>\n";
         }
         $HTMLOUT .= "</table>\n";
     } else {
@@ -57,7 +54,7 @@ if ($needed == 'leechers') {
     echo stdhead("{$lang['needseed_lin']}") . $HTMLOUT . stdfoot();
 } else {
     $HTMLOUT .= begin_main_frame();
-    $HTMLOUT .= begin_frame("[<a href='?needed=leechers' class='altlink'>{$lang['needseed_sin']}</a>]&nbsp;&nbsp;-&nbsp;&nbsp;{$lang['needseed_tns']}");
+    $HTMLOUT .= begin_frame("[<a href='?needed=leechers' class='altlink'>{$lang['needseed_sin']}</a>]&#160;&#160;-&#160;&#160;{$lang['needseed_tns']}");
     $res = sql_query('SELECT id, name, seeders, leechers, added, category FROM torrents WHERE leechers >= 0 AND seeders = 0 ORDER BY leechers DESC LIMIT 20') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         $HTMLOUT .= "<table align='center' class='main' border='1' cellspacing='0' cellpadding='5'>

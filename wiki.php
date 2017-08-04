@@ -23,7 +23,7 @@ function newmsg($heading = '', $text = '', $div = 'success', $htmlstrip = false)
     }
     $htmlout = '';
     $htmlout .= "<table class=\"main\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"embedded\">\n";
-    $htmlout .= "<div class=\"$div\">" . ($heading ? "<b>$heading</b><br />" : '') . "$text</div></td></tr></table>\n";
+    $htmlout .= "<div class=\"$div\">" . ($heading ? "<b>$heading</b><br>" : '') . "$text</div></td></tr></table>\n";
 
     return $htmlout;
 }
@@ -121,8 +121,8 @@ function wikimenu()
 					<div id=\"details\">
 						<ul>
 							<li><b>{$lang['wiki_permissions']}</b></li></ul>
-							{$lang['wiki_read_user']}<br />
-							{$lang['wiki_write_user']}<br />
+							{$lang['wiki_read_user']}<br>
+							{$lang['wiki_write_user']}<br>
 							{$lang['wiki_edit_staff']}
 							<ul><li><b>{$lang['wiki_latest_article']}</b></li></ul>
 							<a href=\"wiki.php?action=article&amp;name=$latestarticle\">" . htmlsafechars($latest['name']) . '</a>
@@ -156,8 +156,8 @@ VALUES (' . sqlesc($name) . ', ' . sqlesc($body) . ', ' . sqlesc($CURUSER['id'])
 $HTMLOUT .= begin_main_frame();
 $HTMLOUT .= "
         <div class='global_icon'><img src='images/global.design/wiki.png' alt='' title='{$lang['wiki_title']}' class='global_image' width='25'/></div>
-        <div class='global_head_wiki'>{$lang['wiki_title']}</div><br />
-        <div class='global_text'><br />";
+        <div class='global_head_wiki'>{$lang['wiki_title']}</div><br>
+        <div class='global_text'><br>";
 if (isset($_GET['action'])) {
     $action = htmlsafechars($_GET['action']);
     if (isset($_GET['name'])) {
@@ -198,7 +198,7 @@ if ($action == 'article') {
             $HTMLOUT .= '
 				<div id="wiki-content-left" align="right">
 					<div id="name"><b><a href="wiki.php?action=article&amp;name=' . htmlsafechars($wiki['name']) . '">' . htmlsafechars($wiki['name']) . '</a></b></div>
-					<div id="content">' . ($wiki['userid'] > 0 ? "<i>{$lang['wiki_added_by_art']}<a href=\"userdetails.php?id=" . (int)$wiki['userid'] . '"><b>' . htmlsafechars($author['username']) . '</b></a></i><br /><br />' : '') . wikireplace(format_comment($wiki['body'])) . '';
+					<div id="content">' . ($wiki['userid'] > 0 ? "<i>{$lang['wiki_added_by_art']}<a href=\"userdetails.php?id=" . (int)$wiki['userid'] . '"><b>' . htmlsafechars($author['username']) . '</b></a></i><br><br>' : '') . wikireplace(format_comment($wiki['body'])) . '';
             $HTMLOUT .= '<div align="right">' . ($edit ? "$edit" : '') . ($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $wiki['userid'] ? ' - <a href="wiki.php?action=edit&amp;id=' . (int)$wiki['id'] . "\">{$lang['wiki_edit']}</a>" : '') . '</div>';
             $HTMLOUT .= '</div></div>';
         }

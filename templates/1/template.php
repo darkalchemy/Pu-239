@@ -3,7 +3,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
 {
     global $CURUSER, $INSTALLER09, $lang, $free, $_NO_COMPRESS, $query_stat, $querytime, $mc1, $BLOCKS, $CURBLOCK, $mood;
     if (!$INSTALLER09['site_online']) {
-        die('Site is down for maintenance, please check back again later... thanks<br />');
+        die('Site is down for maintenance, please check back again later... thanks<br>');
     }
     if ($title == '') {
         $title = $INSTALLER09['site_name'] . (isset($_GET['tbv']) ? ' (' . TBVERSION . ')' : '');
@@ -11,7 +11,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         $title = $INSTALLER09['site_name'] . (isset($_GET['tbv']) ? ' (' . TBVERSION . ')' : '') . ' :: ' . htmlsafechars($title);
     }
     if ($CURUSER) {
-        $CURUSER['stylesheet'] = isset($CURUSER['stylesheet']) ? $CURUSER['stylesheet'] : $INSTALLER09['stylesheet'];
+        $INSTALLER09['stylesheet'] = isset($CURUSER['stylesheet']) ? $CURUSER['stylesheet'] : $INSTALLER09['stylesheet'];
         $INSTALLER09['categorie_icon'] = isset($CURUSER['categorie_icon']) ? $CURUSER['categorie_icon'] : $INSTALLER09['categorie_icon'];
         $INSTALLER09['language'] = isset($CURUSER['language']) ? $CURUSER['language'] : $INSTALLER09['language'];
     }
@@ -22,7 +22,8 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     $js_incl .= '<!-- javascript goes here or in footer -->';
     if (!empty($stdhead['js'])) {
         foreach ($stdhead['js'] as $JS) {
-            $js_incl .= "<script type='text/javascript' src='{$INSTALLER09['baseurl']}/scripts/" . $JS . ".js'></script>";
+            $js_incl .= "
+        <script src='./scripts/" . $JS . ".js'></script>";
         }
     }
     //== Include css files needed only for the page being used by pdq
@@ -30,7 +31,8 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     $css_incl .= '<!-- css goes here -->';
     if (!empty($stdhead['css'])) {
         foreach ($stdhead['css'] as $CSS) {
-            $css_incl .= "<link rel='stylesheet' href='templates/{$INSTALLER09['stylesheet']}/css/" . $CSS . ".css?{$INSTALLER09['code_version']}' />";
+            $css_incl .= "
+        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/css/" . $CSS . ".css' />";
         }
     }
     if (isset($INSTALLER09['xhtml_strict'])) { //== Use strict mime type/doctype
@@ -50,70 +52,71 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         <meta http-equiv='Content-Language' content='en-us' />
         <title>{$title}</title>
         <link rel='alternate' type='application/rss+xml' title='Latest Torrents' href='./rss.php?torrent_pass={$CURUSER['torrent_pass']}' />
-     	<!-- favicon 
-      	=================================================== -->
+        <!-- favicon
+        =================================================== -->
         <link rel='shortcut icon' href='favicon.ico' />
-      	<!-- css 
-      	=================================================== -->
-        <link rel='stylesheet' href='./templates/1/default.css' type='text/css' />
-	<link rel='stylesheet' href='./templates/1/bootstrap.css' type='text/css' />
-	<link rel='stylesheet' href='./templates/1/bootstrap-responsive.css' type='text/css' />
-        <link rel='stylesheet' href='./templates/1/themeChanger/css/colorpicker.css' type='text/css' />
-        <link rel='stylesheet' href='./templates/1/themeChanger/css/themeChanger.css' type='text/css' />
-        <style type='text/css'>#mlike{cursor:pointer;}</style>
-      	<!-- global javascript
-      	================================================== -->
-        <script type='text/javascript' src='./scripts/jquery-1.5.js'></script>
-        <script type='text/javascript' src='./scripts/jquery.status.js'></script>
-        <script type='text/javascript' src='./scripts/jquery.cookie.js'></script>
-	<script type='text/javascript' src='./scripts/help.js'></script>
-	<!-- template javascript
-	================================================== -->
-        <script type='text/javascript' src='./templates/1/themeChanger/js/colorpicker.js'></script>
-        <script type='text/javascript' src='./templates/1/themeChanger/js/themeChanger.js'></script>
-        <script type='text/javascript' src='./templates/1/js/jquery.smoothmenu.js'></script>
-        <script type='text/javascript' src='./templates/1/js/core.js'></script>
-        <script type='text/javascript'>
+        <!-- css
+        =================================================== -->
+        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/default.css' />
+        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/bootstrap.css' />
+        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/bootstrap-responsive.css' />
+        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/themeChanger/css/colorpicker.css' />
+        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/themeChanger/css/themeChanger.css' />
+        <style>#mlike{cursor:pointer;}</style>
+        <!-- global javascript
+        ================================================== -->
+        <script src='./scripts/jquery-1.5.js'></script>
+        <script src='./scripts/jquery.status.js'></script>
+        <script src='./scripts/jquery.cookie.js'></script>
+        <script src='./scripts/help.js'></script>
+        <script src='./scripts/iframeResizer.min.js'></script>
+        <!-- template javascript
+    ================================================== -->
+        <script src='./templates/{$INSTALLER09['stylesheet']}/themeChanger/js/colorpicker.js'></script>
+        <script src='./templates/{$INSTALLER09['stylesheet']}/themeChanger/js/themeChanger.js'></script>
+        <script src='./templates/{$INSTALLER09['stylesheet']}/js/jquery.smoothmenu.js'></script>
+        <script src='./templates/{$INSTALLER09['stylesheet']}/js/core.js'></script>
+        <script>
         /*<![CDATA[*/
-		// Like Dislike function
-		//================================================== -->
-		$(function() {							// the like js
-		$('span[id*=mlike]').like232({
-		times : 5,            	// times checked 
-		disabled : 5,         	// disabled from liking for how many seconds
-		time  : 5,             	// period within check is performed
-		url : '/ajax.like.php'
-		});
-		});
-	// template changer function
-	//================================================== -->
+        // Like Dislike function
+        //================================================== -->
+        $(function() {                          // the like js
+        $('span[id*=mlike]').like232({
+        times : 5,              // times checked
+        disabled : 5,           // disabled from liking for how many seconds
+        time  : 5,              // period within check is performed
+        url : '/ajax.like.php'
+        });
+        });
+    // template changer function
+    //================================================== -->
         function themes() {
           window.open('take_theme.php','My themes','height=150,width=200,resizable=no,scrollbars=no,toolbar=no,menubar=no');
         }
-	// language changer function
-	//================================================== -->
+    // language changer function
+    //================================================== -->
         function language_select() {
           window.open('take_lang.php','My language','height=150,width=200,resizable=no,scrollbars=no,toolbar=no,menubar=no');
         }
-	// radio function
-	//================================================== -->
+    // radio function
+    //================================================== -->
         function radio() {
           window.open('radio_popup.php','My Radio','height=700,width=800,resizable=no,scrollbars=no,toolbar=no,menubar=no');
         }
-         /*]]>*/
+        /*]]>*/
         </script>
-        <script type='text/javascript' src='./ajax/helpers.js'></script>
+        <script src='./ajax/helpers.js'></script>
         {$js_incl}{$css_incl}
         <!--[if lt IE 9]>
-        <script type='text/javascript' src='./templates/1/js/modernizr.custom.js'></script>
-	<script type='text/javascript' src='http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE8.js'></script>
-	<script type='text/javascript' src='./templates/1/js/ie.js'></script>
+        <script src='./templates/{$INSTALLER09['stylesheet']}/js/modernizr.custom.js'></script>
+    <script src='http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE8.js'></script>
+    <script src='./templates/{$INSTALLER09['stylesheet']}/js/ie.js'></script>
         <![endif]-->
         </head>
         <body class='{$body_class}'>
         <!-- Main Outer Container
         =================================================== -->
-	<div class='container'>
+    <div class='container'>
         <!--<header class='clearfix'>-->";
     if ($CURUSER) {
         $active_users_cache = $last24_cache = 0;
@@ -122,49 +125,50 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         $keys['activeusers'] = 'activeusers';
         $active_users_cache = $mc1->get_value($keys['activeusers']);
         $htmlout .= "
-		<!-- Main Navigation
-		=================================================== -->
-		<div id='navigation' class='navigation'>
-     		<ul>
-		<li><a href='#'>{$lang['gl_torrent']}</a>
-		<ul class='sub-menu'>
-	        <li><a href='" . $INSTALLER09['baseurl'] . "/browse.php'>{$lang['gl_torrents']}</a></li>
-		<li><a href='" . $INSTALLER09['baseurl'] . "/requests.php'>{$lang['gl_requests']}</a></li>
-	        <li><a href='" . $INSTALLER09['baseurl'] . "/offers.php'>{$lang['gl_offers']}</a></li>
-	        <li><a href='" . $INSTALLER09['baseurl'] . "/needseed.php?needed=seeders'>{$lang['gl_nseeds']}</a></li>
-		" . (isset($CURUSER) && $CURUSER['class'] <= UC_VIP ? "<li><a href='" . $INSTALLER09['baseurl'] . "/uploadapp.php'>{$lang['gl_uapp']}</a> </li>" : "<li><a href='" . $INSTALLER09['baseurl'] . "/upload.php'>{$lang['gl_upload']}</a></li>") . "
-                <li><a href='" . $INSTALLER09['baseurl'] . "/bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
-		</ul><!--/ .sub-menu-->
-		</li>
-		<li><a href='#'>{$lang['gl_general']}</a>
-		<ul class='sub-menu'>
-                        <li><a href='" . $INSTALLER09['baseurl'] . "/announcement.php'>{$lang['gl_announcements']}</a></li>
-                        <li><a href='" . $INSTALLER09['baseurl'] . "/topten.php'>{$lang['gl_stats']}</a></li>
-                        <li><a href='" . $INSTALLER09['baseurl'] . "/faq.php'>{$lang['gl_faq']}</a></li>
-        		<li><a href='" . $INSTALLER09['baseurl'] . "/chat.php'>{$lang['gl_irc']}</a></li>
-                        <li><a href='" . $INSTALLER09['baseurl'] . "/staff.php'>{$lang['gl_staff']}</a></li>
-                        <li><a href='" . $INSTALLER09['baseurl'] . "/wiki.php'>{$lang['gl_wiki']}</a></li>
-			<li><a href='#' onclick='radio();'>{$lang['gl_radio']}</a></li>
-			<li><a href='./rsstfreak.php'>{$lang['gl_tfreak']}</a></li>
-			</ul><!--/ .sub-menu-->
-		</li>
-		<li><a href='#'>{$lang['gl_games']}</a>
-		<ul class='sub-menu'>
-                    " . (isset($CURUSER) && $CURUSER['class'] >= UC_POWER_USER ? "<li><a href='" . $INSTALLER09['baseurl'] . "/games.php'>{$lang['gl_games']}</a></li>" : '') . "
-                    <li><a href='" . $INSTALLER09['baseurl'] . "/lottery.php'>{$lang['gl_lottery']}</a></li>
+        <!-- Main Navigation
+        =================================================== -->
+        <div id='navigation' class='navigation'>
+            <ul>
+        <li><a href='#'>{$lang['gl_torrent']}</a>
+        <ul class='sub-menu'>
+            <li><a href='./browse.php'>{$lang['gl_torrents']}</a></li>
+        <li><a href='./requests.php'>{$lang['gl_requests']}</a></li>
+            <li><a href='./offers.php'>{$lang['gl_offers']}</a></li>
+            <li><a href='./needseed.php?needed=seeders'>{$lang['gl_nseeds']}</a></li>
+        " . (isset($CURUSER) && $CURUSER['class'] <= UC_VIP ? "<li><a href='./uploadapp.php'>{$lang['gl_uapp']}</a> </li>" : "<li><a href='./upload.php'>{$lang['gl_upload']}</a></li>") . "
+                <li><a href='./bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
+        </ul><!--/ .sub-menu-->
+        </li>
+        <li><a href='#'>{$lang['gl_general']}</a>
+        <ul class='sub-menu'>
+                        <li><a href='./announcement.php'>{$lang['gl_announcements']}</a></li>
+                        <li><a href='./topten.php'>{$lang['gl_stats']}</a></li>
+                        <li><a href='./faq.php'>{$lang['gl_faq']}</a></li>
+                <li><a href='./chat.php'>{$lang['gl_irc']}</a></li>
+                        <li><a href='./staff.php'>{$lang['gl_staff']}</a></li>
+                        <li><a href='./wiki.php'>{$lang['gl_wiki']}</a></li>
+            <li><a href='#' onclick='radio();'>{$lang['gl_radio']}</a></li>
+            <li><a href='./rsstfreak.php'>{$lang['gl_tfreak']}</a></li>
+            </ul><!--/ .sub-menu-->
+        </li>
+        <li><a href='#'>{$lang['gl_games']}</a>
+        <ul class='sub-menu'>
+                    <li><a href='./games.php'>{$lang['gl_games']}</a></li>
+                    <li><a href='./arcade.php'>{$lang['gl_arcade']}</a></li>
+                    <li><a href='./lottery.php'>{$lang['gl_lottery']}</a></li>
                     </ul><!--/ .sub-menu-->
-		</li>
-		    <li><a href='" . $INSTALLER09['baseurl'] . "/donate.php'>{$lang['gl_donate']}</a></li>
-		    <li><a href='#'>{$lang['gl_forums']}</a>
-		<ul class='sub-menu'>
-                    <li><a href='" . $INSTALLER09['baseurl'] . "/forums.php'>{$lang['gl_tforums']}</a></li>
-		</ul>
-		</li>
-                <li> " . (isset($CURUSER) && $CURUSER['class'] < UC_STAFF ? "<a class='brand' href='" . $INSTALLER09['baseurl'] . "/bugs.php?action=add'>{$lang['gl_breport']}</a>" : "<a class='brand' href='" . $INSTALLER09['baseurl'] . "/bugs.php?action=bugs'>{$lang['gl_brespond']}</a>") . '</li>
-                <li>' . (isset($CURUSER) && $CURUSER['class'] < UC_STAFF ? "<a class='brand' href='" . $INSTALLER09['baseurl'] . "/contactstaff.php'>{$lang['gl_cstaff']}</a>" : "<a class='brand' href='" . $INSTALLER09['baseurl'] . "/staffbox.php'>{$lang['gl_smessages']}</a>") . '</li>
-		</ul>
-		<small>
-		<strong>';
+        </li>
+            <li><a href='./donate.php'>{$lang['gl_donate']}</a></li>
+            <li><a href='#'>{$lang['gl_forums']}</a>
+        <ul class='sub-menu'>
+                    <li><a href='./forums.php'>{$lang['gl_forums']}</a></li>
+        </ul>
+        </li>
+                <li> " . (isset($CURUSER) && $CURUSER['class'] < UC_STAFF ? "<a class='brand' href='./bugs.php?action=add'>{$lang['gl_breport']}</a>" : "<a class='brand' href='./bugs.php?action=bugs'>{$lang['gl_brespond']}</a>") . '</li>
+                <li>' . (isset($CURUSER) && $CURUSER['class'] < UC_STAFF ? "<a class='brand' href='./contactstaff.php'>{$lang['gl_cstaff']}</a>" : "<a class='brand' href='./staffbox.php'>{$lang['gl_smessages']}</a>") . '</li>
+        </ul>
+        <small>
+        <strong>';
         if (!empty($last24_cache)) {
             if ($last24_cache['totalonline24'] != 1) {
                 $last24_cache['ss24'] = $lang['gl_members'];
@@ -173,55 +177,55 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
             }
         }
         $htmlout .= '
-                &nbsp;&nbsp;' . $last24_cache['totalonline24'] . $last24_cache['ss24'] . " {$lang['gl_last24']}<br />";
+                &#160;&#160;' . $last24_cache['totalonline24'] . $last24_cache['ss24'] . " {$lang['gl_last24']}<br>";
         if (!empty($active_users_cache)) {
-            $htmlout .= "&nbsp;&nbsp;{$lang['gl_ausers']}&nbsp;[" . $active_users_cache['au'] . ']';
+            $htmlout .= "&#160;&#160;{$lang['gl_ausers']}&#160;[" . $active_users_cache['au'] . ']';
         }
         $htmlout .= "</strong></small></div><div class='clear'></div>";
     }
     $htmlout .= "
-		<!-- END Main Navigation
-		=================================================== -->
-		<!-- Logo
-		=================================================== -->
-			<div class='cl'>&nbsp;</div>
-			<!-- Logo -->
-			<div id='logo'>
-			<h1>" . TBVERSION . "<span>&nbsp;&nbsp;Code</span></h1>
-            <p class='description'>&nbsp;&nbsp;&nbsp;<i>Making progress, 1 day at a time...</i></p>
-			</div>
-		<!-- End Logo
-		=================================================== -->";
+        <!-- END Main Navigation
+        =================================================== -->
+        <!-- Logo
+        =================================================== -->
+            <div class='cl'>&#160;</div>
+            <!-- Logo -->
+            <div id='logo'>
+            <h1>" . TBVERSION . "<span>&#160;&#160;Code</span></h1>
+            <p class='description'>&#160;&#160;&#160;<i>Making progress, 1 day at a time...</i></p>
+            </div>
+        <!-- End Logo
+        =================================================== -->";
     if ($CURUSER) {
-        $salty = md5('Th15T3xtis5add3dto66uddy6he@water...' . $CURUSER['username'] . '');
+        $salty = salty($CURUSER['username']);
         $htmlout .= "
-		<!-- Platform Navigation
-		=================================================== -->
-		<div id='platform-menu' class='platform-menu'>
-			<a href='" . $INSTALLER09['baseurl'] . "/index.php' class='home'>{$lang['gl_home']}</a>
-				<ul>
-					<li><a href='" . $INSTALLER09['baseurl'] . "/pm_system.php'>{$lang['gl_pms']}</a></li>
-					<li><a href='" . $INSTALLER09['baseurl'] . "/usercp.php?action=default'>{$lang['gl_usercp']}</a></li>
-					" . (isset($CURUSER) && $CURUSER['class'] >= UC_STAFF ? "<li><a href='" . $INSTALLER09['baseurl'] . "/staffpanel.php'>{$lang['gl_admin']}</a></li>" : '') . "
-					<li><a href='#' onclick='themes();'>{$lang['gl_theme']}</a></li>
-					<li><a href='#' onclick='language_select();'>{$lang['gl_language_select']}</a></li>
-					<!--<li><a href='javascript:void(0)' onclick='status_showbox()'>{$lang['gl_status']}</a></li>-->
-					<li><a href='" . $INSTALLER09['baseurl'] . "/friends.php'>{$lang['gl_friends']}</a></li>
-					<li><a href='" . $INSTALLER09['baseurl'] . "/logout.php?hash_please={$salty}'>{$lang['gl_logout']}</a></li>
-				</ul>
-			<div class='container-fluid'>
-			<!--/ statusbar start-->
-			<div class='statusbar-container'>";
+        <!-- Platform Navigation
+        =================================================== -->
+        <div id='platform-menu' class='platform-menu'>
+            <a href='./index.php' class='home'>{$lang['gl_home']}</a>
+                <ul>
+                    <li><a href='./pm_system.php'>{$lang['gl_pms']}</a></li>
+                    <li><a href='./usercp.php?action=default'>{$lang['gl_usercp']}</a></li>
+                    " . (isset($CURUSER) && $CURUSER['class'] >= UC_STAFF ? "<li><a href='./staffpanel.php'>{$lang['gl_admin']}</a></li>" : '') . "
+                    <li><a href='#' onclick='themes();'>{$lang['gl_theme']}</a></li>
+                    <li><a href='#' onclick='language_select();'>{$lang['gl_language_select']}</a></li>
+                    <!--<li><a href='javascript:void(0)' onclick='status_showbox()'>{$lang['gl_status']}</a></li>-->
+                    <li><a href='./friends.php'>{$lang['gl_friends']}</a></li>
+                    <li><a href='./logout.php?hash_please={$salty}'>{$lang['gl_logout']}</a></li>
+                </ul>
+            <div class='container-fluid'>
+            <!--/ statusbar start-->
+            <div class='statusbar-container'>";
         if ($CURUSER) {
             $htmlout .= StatusBar() . "
-			</div>
-			<!--/ statusbar end-->
-			<!-- Print Global Messages Start -->
-			</div>
-			<div id='base_globelmessage'>
-			<div id='gm_taps'>
-			<ul class='gm_taps'>
-		        <li><b>{$lang['gl_alerts']}</b></li>";
+            </div>
+            <!--/ statusbar end-->
+            <!-- Print Global Messages Start -->
+            </div>
+            <div id='base_globelmessage'>
+            <div id='gm_taps'>
+            <ul class='gm_taps'>
+                <li><b>{$lang['gl_alerts']}</b></li>";
 
             if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_REPORTS && $BLOCKS['global_staff_report_on']) {
                 require_once BLOCK_DIR . 'global/report.php';
@@ -330,10 +334,10 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         $htmlout .= "
     </div>
     <div class='clearfix'></div>
-    <!-- End Platform Navigation and Global Messages 
+    <!-- End Platform Navigation and Global Messages
     ======================================================= -->";
     }
-    $htmlout .= "<br />
+    $htmlout .= "<br>
     <div id='base_content'>
     <!--<table class='mainouter' cellspacing='0' cellpadding='10'>
     <tr>
@@ -377,77 +381,78 @@ function stdfoot($stdfoot = false)
     $htmlfoot .= '<!-- javascript goes here -->';
     if (!empty($stdfoot['js'])) {
         foreach ($stdfoot['js'] as $JS) {
-            $htmlfoot .= '<script type="text/javascript" src="' . $INSTALLER09['baseurl'] . '/scripts/' . $JS . '.js"></script>';
+            $htmlfoot .= '
+        <script src="./scripts/' . $JS . '.js"></script>';
         }
     }
     $querytime = 0;
     if ($CURUSER && $query_stat && $debug) {
         $htmlfoot .= "
-		<div class='row-fluid'>
-			<fieldset><legend>{$lang['gl_stdfoot_querys']}</legend>
-				<div class='box-content'>
-					<table class='table  table-bordered'>
-						<thead>
-							<tr>
-								<th align='center'>{$lang['gl_stdfoot_id']}</th>
-								<th align='center'>{$lang['gl_stdfoot_qt']}</th>
-								<th align='left'>{$lang['gl_stdfoot_qs']}</th>
-							</tr>
-						</thead>";
+        <div class='row-fluid'>
+            <fieldset><legend>{$lang['gl_stdfoot_querys']}</legend>
+                <div class='box-content'>
+                    <table class='table  table-bordered'>
+                        <thead>
+                            <tr>
+                                <th align='center'>{$lang['gl_stdfoot_id']}</th>
+                                <th align='center'>{$lang['gl_stdfoot_qt']}</th>
+                                <th align='left'>{$lang['gl_stdfoot_qs']}</th>
+                            </tr>
+                        </thead>";
         foreach ($query_stat as $key => $value) {
             $querytime += $value['seconds']; // query execution time
             $htmlfoot .= '
-						<tbody>
-							<tr>
-								<td>' . ($key + 1) . "</td>
-								<td align='center'><b>" . ($value['seconds'] > 0.01 ? "<font color='red' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</font>' : "<font color='green' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</font>') . "</b></td>
-								<td align='left'>" . htmlsafechars($value['query']) . '<br /></td>
-							</tr>
-						</tbody>';
+                        <tbody>
+                            <tr>
+                                <td>' . ($key + 1) . "</td>
+                                <td align='center'><b>" . ($value['seconds'] > 0.01 ? "<font color='red' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</font>' : "<font color='green' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</font>') . "</b></td>
+                                <td align='left'>" . htmlsafechars($value['query']) . '<br></td>
+                            </tr>
+                        </tbody>';
         }
         $htmlfoot .= '
-					</table>
-				</div>
-			</fieldset>
-		</div>';
+                    </table>
+                </div>
+            </fieldset>
+        </div>';
     }
-    $htmlfoot .= "    	<!-- external javascript 
-		================================================== -->
-		<!-- Placed at the end of the document so the pages load faster -->
+    $htmlfoot .= "      <!-- external javascript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
 
-		<!-- accordion library (optional, not used in demo)
-		<script type='text/javascript' src='templates/framework/js/bootstrap-collapse.js'></script> -->
-	</div>
+        <!-- accordion library (optional, not used in demo)
+        <script src='templates/framework/js/bootstrap-collapse.js'></script> -->
+    </div>
 <!--</td></tr></table>-->";
     if ($CURUSER) {
         /* just in case **/
         $htmlfoot .= "
-		<div class='nav-collapse collapse'>
-			<div class='container' >
-				<div class='pull-left'>
-				" . $INSTALLER09['site_name'] . " {$lang['gl_stdfoot_querys_page']}" . $r_seconds . " {$lang['gl_stdfoot_querys_seconds']}<br />" . "
-				{$lang['gl_stdfoot_querys_server']}" . $queries . " {$lang['gl_stdfoot_querys_time']} " . ($queries != 1 ? "{$lang['gl_stdfoot_querys_times']}" : '') . '
-				' . ($debug ? '<br /><b>' . $header . "</b><br /><b>{$lang['gl_stdfoot_uptime']}</b> " . $uptime . '' : ' ') . "
-				</div>
-				<div class='pull-right' align='right'>
-				{$lang['gl_stdfoot_powered']}" . TBVERSION . "<br />
-				{$lang['gl_stdfoot_using']}<b>{$lang['gl_stdfoot_using1']}</b><br />
-				" . ($debug ? "<a title='{$lang['gl_stdfoot_sview']}' rel='external' href='/staffpanel.php?tool=system_view'>{$lang['gl_stdfoot_sview']}</a> | " . "<a rel='external' title='OPCache' href='/staffpanel.php?tool=op'>{$lang['gl_stdfoot_opc']}</a> | " . "<a rel='external' title='Memcache' href='/staffpanel.php?tool=memcache'>{$lang['gl_stdfoot_memcache']}</a>" : '') . '';
+        <div class='nav-collapse collapse'>
+            <div class='container' >
+                <div class='pull-left'>
+                " . $INSTALLER09['site_name'] . " {$lang['gl_stdfoot_querys_page']}" . $r_seconds . " {$lang['gl_stdfoot_querys_seconds']}<br>" . "
+                {$lang['gl_stdfoot_querys_server']}" . $queries . " {$lang['gl_stdfoot_querys_time']} " . ($queries != 1 ? "{$lang['gl_stdfoot_querys_times']}" : '') . '
+                ' . ($debug ? '<br><b>' . $header . "</b><br><b>{$lang['gl_stdfoot_uptime']}</b> " . $uptime . '' : ' ') . "
+                </div>
+                <div class='pull-right' align='right'>
+                {$lang['gl_stdfoot_powered']}" . TBVERSION . "<br>
+                {$lang['gl_stdfoot_using']}<b>{$lang['gl_stdfoot_using1']}</b><br>
+                " . ($debug ? "<a title='{$lang['gl_stdfoot_sview']}' rel='external' href='/staffpanel.php?tool=system_view'>{$lang['gl_stdfoot_sview']}</a> | " . "<a rel='external' title='OPCache' href='/staffpanel.php?tool=op'>{$lang['gl_stdfoot_opc']}</a> | " . "<a rel='external' title='Memcache' href='/staffpanel.php?tool=memcache'>{$lang['gl_stdfoot_memcache']}</a>" : '') . '';
         $htmlfoot .= '
-				</div>
-			</div>
-		</div>';
+                </div>
+            </div>
+        </div>';
     }
     $htmlfoot .= "
-	</div>
-	<!--  End main outer container
-	======================================================= -->
-	 <div id='control_panel'>
-	 <a href='#' id='control_label'></a>
-	 </div><!-- #control_panel -->
+    </div>
+    <!--  End main outer container
+    ======================================================= -->
+     <div id='control_panel'>
+     <a href='#' id='control_label'></a>
+     </div><!-- #control_panel -->
     <!-- Ends Footer -->
-    <script type='text/javascript' src='templates/1/js/general.js'></script>
-    <script type='text/javascript' src='scripts/bootstrap.js'></script>
+    <script src='templates/{$INSTALLER09['stylesheet']}/js/general.js'></script>
+    <script src='scripts/bootstrap.js'></script>
 
     </body></html>\n";
 
@@ -457,12 +462,12 @@ function stdfoot($stdfoot = false)
 function stdmsg($heading, $text)
 {
     $htmlout = "<table class='main' width='750' border='0' cellpadding='0' cellspacing='0'>
-		<tr><td class='embedded'>\n";
+        <tr><td class='embedded'>\n";
     if ($heading) {
         $htmlout .= "<h2>$heading</h2>\n";
     }
     $htmlout .= "<table width='100%' border='1' cellspacing='0' cellpadding='10'>
-		<tr><td class='text'>\n";
+        <tr><td class='text'>\n";
     $htmlout .= "{$text}</td></tr></table>
     </td></tr></table>\n";
 
@@ -509,7 +514,7 @@ function StatusBar()
         $PMCount = (int)$PMCount;
         $unread1 = $mc1->cache_value('inbox_new_sb_' . $CURUSER['id'], $PMCount, $INSTALLER09['expires']['unread']);
     }
-    $inbox = ($unread1 == 1 ? "$unread1&nbsp;{$lang['gl_msg_singular']}" : "$unread1&nbsp;{$lang['gl_msg_plural']}");
+    $inbox = ($unread1 == 1 ? "$unread1&#160;{$lang['gl_msg_singular']}" : "$unread1&#160;{$lang['gl_msg_plural']}");
     //==Memcache peers
     if (XBT_TRACKER == true) {
         if (($MyPeersXbtCache = $mc1->get_value('MyPeers_XBT_' . $CURUSER['id'])) === false) {
@@ -587,21 +592,21 @@ function StatusBar()
     $member_reputation = get_reputation($CURUSER);
     $usrclass = '';
     if ($CURUSER['override_class'] != 255) {
-        $usrclass = '&nbsp;<b>(' . get_user_class_name($CURUSER['class']) . ')</b>&nbsp;';
+        $usrclass = '&#160;<b>(' . get_user_class_name($CURUSER['class']) . ')</b>&#160;';
     } elseif ($CURUSER['class'] >= UC_STAFF) {
-        $usrclass = "&nbsp;<a href='./setclass.php'><b>(" . get_user_class_name($CURUSER['class']) . ')</b></a>&nbsp;';
+        $usrclass = "&#160;<a href='./setclass.php'><b>(" . get_user_class_name($CURUSER['class']) . ')</b></a>&#160;';
     }
     $StatusBar = $clock = '';
     $StatusBar .= "
        <!-- Print Statusbar/User Menu -->
-       <script type='text/javascript'>
+       <script>
        //<![CDATA[
        function showSlidingDiv(){
        $('#slidingDiv').animate({'height': 'toggle'}, { duration: 1000 });
        }
        //]]>
        </script>
-       <div id='base_usermenu'>" . format_username($CURUSER) . " &nbsp;&nbsp;&nbsp;<span id='clock'>{$clock}</span>&nbsp;<span class='base_usermenu_arrow'><a href='#' onclick='showSlidingDiv(); return false;'><i class='icon-chevron-down'></i></a></span></div>
+       <div id='base_usermenu'>" . format_username($CURUSER) . " &#160;&#160;&#160;<span id='clock'>{$clock}</span>&#160;<span class='base_usermenu_arrow'><a href='#' onclick='showSlidingDiv(); return false;'><i class='icon-chevron-down'></i></a></span></div>
        <div id='slidingDiv'>
        <div class='slide_head'>{$lang['gl_pstats']}</div>
        " . (isset($CURUSER) && $CURUSER['class'] < UC_STAFF ? "<div class='slide_a'>{$lang['gl_uclass']}</div><div class='slide_b'><b>(" . get_user_class_name($CURUSER['class']) . ')</b></div>' : "<div class='slide_a'>{$lang['gl_uclass']}</div><div class='slide_b'>{$usrclass}</div>") . "
@@ -623,7 +628,8 @@ function StatusBar()
         " . ($CURUSER['class'] >= UC_STAFF || isset($CURUSER) && $CURUSER['got_blocks'] == 'yes' ? "<div class='slide_head'>{$lang['gl_userblocks']}</div><div class='slide_a'>{$lang['gl_myblocks']}</div><div class='slide_b'><a href='./user_blocks.php'>{$lang['gl_click']}</a></div>" : '') . '
          ' . ($CURUSER['class'] >= UC_STAFF || isset($CURUSER) && $CURUSER['got_moods'] == 'yes' ? "<div class='slide_c'>{$lang['gl_myunlocks']}</div><div class='slide_d'><a href='./user_unlocks.php'>{$lang['gl_click']}</a></div>" : '') . '
        </div>';
-    $StatusBar .= '<script type="text/javascript">
+    $StatusBar .= '
+    <script>
       //<![CDATA[
       function refrClock(){
       var d=new Date();
@@ -644,7 +650,11 @@ function StatusBar()
       setTimeout("refrClock()",1000);
       }
       refrClock();
-      //]]>
+        $(document).ready(function () {
+            $("#triviabox").iFrameResize({
+                enablePublicMethods: true,
+            });
+        });
       </script>';
 
     return $StatusBar;

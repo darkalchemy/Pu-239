@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -40,7 +37,7 @@ function get_snatched_color($st)
         $mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
         $secs_elapsed = floor($st - $mins * 60);
 
-        return "<font color='lime'><b>$month months.<br />$week_elapsed W. $days_elapsed D.</b></font>";
+        return "<font color='lime'><b>$month months.<br>$week_elapsed W. $days_elapsed D.</b></font>";
     }
     if ($week > 0) {
         $days_elapsed = floor(($st - ($week * 7 * 24 * 60 * 60)) / (24 * 60 * 60));
@@ -48,28 +45,28 @@ function get_snatched_color($st)
         $mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
         $secs_elapsed = floor($st - $mins * 60);
 
-        return "<font color='lime'><b>$week W. $days_elapsed D.<br />$hours_elapsed:$mins_elapsed:$secs_elapsed</b></font>";
+        return "<font color='lime'><b>$week W. $days_elapsed D.<br>$hours_elapsed:$mins_elapsed:$secs_elapsed</b></font>";
     }
     if ($days > 2) {
         $hours_elapsed = floor(($st - ($days * 24 * 60 * 60)) / (60 * 60));
         $mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
         $secs_elapsed = floor($st - $mins * 60);
 
-        return "<font color='lime'><b>$days D.<br />$hours_elapsed:$mins_elapsed:$secs_elapsed</b></font>";
+        return "<font color='lime'><b>$days D.<br>$hours_elapsed:$mins_elapsed:$secs_elapsed</b></font>";
     }
     if ($days > 1) {
         $hours_elapsed = floor(($st - ($days * 24 * 60 * 60)) / (60 * 60));
         $mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
         $secs_elapsed = floor($st - $mins * 60);
 
-        return "<font color='green'><b>$days D.<br />$hours_elapsed:$mins_elapsed:$secs_elapsed</b></font>";
+        return "<font color='green'><b>$days D.<br>$hours_elapsed:$mins_elapsed:$secs_elapsed</b></font>";
     }
     if ($days > 0) {
         $hours_elapsed = floor(($st - ($days * 24 * 60 * 60)) / (60 * 60));
         $mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
         $secs_elapsed = floor($st - $mins * 60);
 
-        return "<font color='#CCFFCC'><b>$days D.<br />$hours_elapsed:$mins_elapsed:$secs_elapsed</b></font>";
+        return "<font color='#CCFFCC'><b>$days D.<br>$hours_elapsed:$mins_elapsed:$secs_elapsed</b></font>";
     }
     if ($hours > 12) {
         $mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
@@ -92,14 +89,14 @@ function get_snatched_color($st)
         return "<font color='red'><b>0:0:$secs</b></font>";
     }
 
-    return "<font color='red'><b>{$lang['ad_snatched_torrents_none']}<br />{$lang['ad_snatched_torrents_reported']}</b></font>";
+    return "<font color='red'><b>{$lang['ad_snatched_torrents_none']}<br>{$lang['ad_snatched_torrents_reported']}</b></font>";
 }
 
 $What_Table = (XBT_TRACKER == true ? 'xbt_files_users' : 'snatched');
 $What_Value = (XBT_TRACKER == true ? 'WHERE completedtime != "0"' : 'WHERE complete_date != "0"');
 $count = number_format(get_row_count($What_Table, $What_Value));
 $HTMLOUT .= "<h2 align='center'>{$lang['ad_snatched_torrents_allsnatched']}</h2>
-<font class='small'>{$lang['ad_snatched_torrents_currently']}&nbsp;" . htmlsafechars($count) . "&nbsp;{$lang['ad_snatched_torrents_snatchedtor']}</font>";
+<font class='small'>{$lang['ad_snatched_torrents_currently']}&#160;" . htmlsafechars($count) . "&#160;{$lang['ad_snatched_torrents_snatchedtor']}</font>";
 $HTMLOUT .= begin_main_frame();
 $Which_ID = (XBT_TRACKER == true ? 'fid' : 'id');
 $Which_Table = (XBT_TRACKER == true ? 'xbt_files_users' : 'snatched');

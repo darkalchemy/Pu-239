@@ -1,5 +1,4 @@
 <?php
-
 //==Uploaded/downloaded
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     $days = round((TIME_NOW - $user['added']) / 86400);

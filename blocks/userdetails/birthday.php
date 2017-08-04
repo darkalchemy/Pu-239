@@ -1,5 +1,4 @@
 <?php
-
 //==09 Birthday mod
 $age = $birthday = '';
 if ($user['birthday'] != '0') {

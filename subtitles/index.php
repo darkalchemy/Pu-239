@@ -127,7 +127,7 @@ if ($searchby == 'name') {
                     <td align="left" colspan="7" nowrap="nowrap"><input type="text" name="sub_name"
                                                                         value="<?php echo $name ? $name : '' ?>"
                                                                         size="80"/>
-                        &nbsp;by&nbsp;
+                        &#160;by&#160;
                         <select name="searchby">
                             <option value="name" <?php echo $searchby == 'name' ? 'selected="selected"' : '' ?>>Name
                             </option>
@@ -152,7 +152,7 @@ if ($searchby == 'name') {
             </table>
         </form>
     </fieldset>
-    <br/>
+    <br>
 
     <?php
     if (!empty($name)) {

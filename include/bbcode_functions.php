@@ -248,9 +248,9 @@ function format_quotes($s)
             return $s;
         }
     } // Cannot close before opening. Return raw string...
-    $s = str_replace('[quote]', "<b>Quote:</b><br /><table class='main' border='1' cellspacing='0' cellpadding='10'><tr><td style='border: 1px black dotted'>", $s);
-    $s = preg_replace('/\\[quote=(.+?)\\]/', "<b>\\1 wrote:</b><br /><table class='main' border='1' cellspacing='0' cellpadding='10'><tr><td style='border: 1px black dotted'>", $s);
-    $s = str_replace('[/quote]', '</td></tr></table><br />', $s);
+    $s = str_replace('[quote]', "<b>Quote:</b><br><table class='main' border='1' cellspacing='0' cellpadding='10'><tr><td style='border: 1px black dotted'>", $s);
+    $s = preg_replace('/\\[quote=(.+?)\\]/', "<b>\\1 wrote:</b><br><table class='main' border='1' cellspacing='0' cellpadding='10'><tr><td style='border: 1px black dotted'>", $s);
+    $s = str_replace('[/quote]', '</td></tr></table><br>', $s);
 
     return $s;
 }
@@ -287,7 +287,7 @@ function islocal($link)
         $lshort = $title;
     }
 
-    return '&nbsp;<a href="' . ((stristr($url, $INSTALLER09['url']) !== false) ? '' : 'http://nullrefer.com/?') . $url . '" target="_blank">' . $lshort . '</a>';
+    return '&#160;<a href="' . ((stristr($url, $INSTALLER09['url']) !== false) ? '' : 'http://nullrefer.com/?') . $url . '" target="_blank">' . $lshort . '</a>';
 }
 
 function format_urls($s)
@@ -372,7 +372,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<span style="color:\1;">\2</span>',
         '<span style="color:\1;">\2</span>',
         '<span style="font-family:\'\1\';">\2</span>',
-        '<table cellspacing="0" cellpadding="10"><tr><td class="forum_head_dark" style="padding:5px">Spoiler! to view, roll over the spoiler box.</td></tr><tr><td class="spoiler"><a href="#">\\1</a></td></tr></table><br />',
+        '<table cellspacing="0" cellpadding="10"><tr><td class="forum_head_dark" style="padding:5px">Spoiler! to view, roll over the spoiler box.</td></tr><tr><td class="spoiler"><a href="#">\\1</a></td></tr></table><br>',
         '<object width="500" height="410"><param name="movie" value="http://www.youtube.com/v/\1"></param><embed src="http://www.youtube.com/v/\\1" type="application/x-shockwave-flash" width="500" height="410"></embed></object>',
         '<embed style="width:500px; height:410px;" id="VideoPlayback" align="middle" type="application/x-shockwave-flash" src="http://video.google.com/googleplayer.swf?docId=\\1" allowScriptAccess="sameDomain" quality="best" bgcolor="#ffffff" scale="noScale" wmode="window" salign="TL"  FlashVars="playerMode=embedded"> </embed>',
         '<span style="text-align: center;"><p>Audio From: \1</p><embed type="application/x-shockwave-flash" src="http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=\\1" width="400" height="27" allowscriptaccess="never" quality="best" bgcolor="#ffffff" wmode="window" flashvars="playerMode=embedded" /></span>',
@@ -380,7 +380,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<ul class="style">\1</ul>',
         '<li>\1</li>',
         '<li>\1</li>',
-        '<hr />',
+        '<hr>',
     ];
     $s = preg_replace($bb_code_in, $bb_code_out, $s);
     if ($urls) {
@@ -428,7 +428,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         $s = preg_replace("#\[(php|sql|html)\](.+?)\[\/\\1\]#ise", "source_highlighter('\\2','\\1')", $s);
     }
     // Maintain spacing
-    $s = str_replace('  ', ' &nbsp;', $s);
+    $s = str_replace('  ', ' &#160;', $s);
     if (isset($smilies)) {
         foreach ($smilies as $code => $url) {
             $s = str_replace($code, "<img border='0' src=\"{$INSTALLER09['pic_base_url']}smilies/{$url}\" alt=\"\" />", $s);
@@ -524,7 +524,7 @@ function format_comment_no_bbcode($text, $strip_html = true)
     // Linebreaks
     $s = nl2br($s);
     // Maintain spacing
-    $s = str_replace('  ', '&nbsp;', $s);
+    $s = str_replace('  ', '&#160;', $s);
 
     return $s;
 }

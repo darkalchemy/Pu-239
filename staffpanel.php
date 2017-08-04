@@ -1,22 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/****************************************************************\
- * Staff panel for the TBDEV source code                          *
- * -------------------------------------------------------------- *
- * An easy to config staff panel for different staff classes,     *
- * with different options for each class, like add, edit, delete  *
- * the pages and to log the actions.                              *
- * -------------------------------------------------------------- *
- *                                                                *
- * @Conversion: Bigjoos for TBDEV.NET 09                          *
- * @copyright: Alex2005                                           *
- * @package: Staff Panel                                          *
- * @category: Staff Tools                                         *
- * @version: v2 30/06/2010                                        *
- * @license: GNU General Public License                           *
- * \****************************************************************/
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
@@ -267,8 +249,8 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
         }
         $HTMLOUT .= begin_main_frame();
         if (!empty($errors)) {
-            $HTMLOUT .= stdmsg($lang['spanel_there'] . ' ' . (count($errors) > 1 ? 'are' : 'is') . ' ' . count($errors) . ' error' . (count($errors) > 1 ? 's' : '') . ' ' . $lang['spanel_in_the_form'] . '.', '<b>' . implode('<br />', $errors) . '</b>');
-            $HTMLOUT .= '<br />';
+            $HTMLOUT .= stdmsg($lang['spanel_there'] . ' ' . (count($errors) > 1 ? 'are' : 'is') . ' ' . count($errors) . ' error' . (count($errors) > 1 ? 's' : '') . ' ' . $lang['spanel_in_the_form'] . '.', '<b>' . implode('<br>', $errors) . '</b>');
+            $HTMLOUT .= '<br>';
         }
         $HTMLOUT .= "<form method='post' action='{$_SERVER['PHP_SELF']}'>
     <input type='hidden' name='action' value='{$action}' />";
@@ -354,10 +336,10 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
         echo stdhead($lang['spanel_header'] . ' :: ' . ($action == 'edit' ? '' . $lang['spanel_edit'] . ' "' . $page_name . '"' : $lang['spanel_add_a_new']) . ' page') . $HTMLOUT . stdfoot();
     } else {
         $HTMLOUT .= begin_main_frame();
-        $HTMLOUT .= "<h1 align='center'>{$lang['spanel_welcome']} {$CURUSER['username']} {$lang['spanel_to_the']} {$lang['spanel_header']}!</h1><br />";
+        $HTMLOUT .= "<h1 align='center'>{$lang['spanel_welcome']} {$CURUSER['username']} {$lang['spanel_to_the']} {$lang['spanel_header']}!</h1><br>";
         if ($CURUSER['class'] == UC_MAX) {
             $HTMLOUT .= stdmsg($lang['spanel_options'], '<a href="staffpanel.php?action=add" title="' . $lang['spanel_add_a_new_pg'] . '">' . $lang['spanel_add_a_new_pg'] . '</a>');
-            $HTMLOUT .= '<br />';
+            $HTMLOUT .= '<br>';
         }
         $res = sql_query('SELECT staffpanel.*, users.username ' . 'FROM staffpanel ' . 'LEFT JOIN users ON users.id = staffpanel.added_by ' . 'WHERE av_class <= ' . sqlesc($CURUSER['class']) . ' ' . 'ORDER BY av_class DESC, page_name ASC') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) > 0) {
@@ -391,13 +373,13 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
                 $HTMLOUT .= "<tr align='center'>
             <td align='left'>
       <a href='" . htmlsafechars($arr['file_name']) . "' title='" . htmlsafechars($arr['page_name']) . "'>
-      " . htmlsafechars($arr['page_name']) . "</a><br /><font class='small'>" . htmlsafechars($arr['description']) . "</font>
+      " . htmlsafechars($arr['page_name']) . "</a><br><font class='small'>" . htmlsafechars($arr['description']) . "</font>
             </td>
       <td>
           <a href='userdetails.php?id=" . (int)$arr['added_by'] . "'>" . htmlsafechars($arr['username']) . "</a>
       </td>
       <td>
-      <span style='white-space: nowrap;'>" . get_date($arr['added'], 'LONG', 0, 1) . '<br /></span>
+      <span style='white-space: nowrap;'>" . get_date($arr['added'], 'LONG', 0, 1) . '<br></span>
       </td>';
                 if ($CURUSER['class'] == UC_MAX) {
                     $HTMLOUT .= "<td><span style='white-space: nowrap;'>";
@@ -414,7 +396,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
                 ++$i;
                 if ($end_table) {
                     $i = 1;
-                    $HTMLOUT .= '</table><br />';
+                    $HTMLOUT .= '</table><br>';
                 }
             }
         } else {

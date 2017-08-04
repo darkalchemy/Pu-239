@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//=== don't allow direct access
 if (!defined('BUNNY_PM_SYSTEM')) {
     $HTMLOUT = '';
     $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -60,7 +56,7 @@ $HTMLOUT .= $h1_thingie . $top_links . '
     <tr>
         <td class="colhead" align="center" colspan="5"><span class="font_size_1">' . $messages . ' / ' . $maxbox . '</span>
         ' . $spacer . '<span class="font_size_5">' . $mailbox_name . '</span>' . $spacer . '
-        <span class="font_size_1">' . $lang['pm_mailbox_full'] . '' . $num_messages . '' . $lang['pm_mailbox_full1'] . '</span><br />
+        <span class="font_size_1">' . $lang['pm_mailbox_full'] . '' . $num_messages . '' . $lang['pm_mailbox_full1'] . '</span><br>
         ' . $mailbox_pic . '</td>
     </tr>
     <tr>
@@ -69,7 +65,7 @@ $HTMLOUT .= $h1_thingie . $top_links . '
     </td>
     </tr>
     <tr>
-        <td class="colhead" width="1%">&nbsp;&nbsp;
+        <td class="colhead" width="1%">&#160;&#160;
         
         <input type="hidden" name="action" value="move_or_delete_multi" /></td>
         <td class="colhead" align="left"><a class="altlink" href="pm_system.php?action=view_mailbox&amp;box=' . $mailbox . ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . '&amp;order_by=subject' . $desc_asc . '#pm" title="' . $lang['pm_mailbox_sorder'] . '' . $desc_asc_2 . '">' . $lang['pm_mailbox_subject'] . '</a></td>
@@ -155,17 +151,17 @@ $show_pm_avatar_drop_down = '
 $HTMLOUT .= (mysqli_num_rows($res) > 0 ? '
    <tr>
    <td colspan="5" align="right" class="' . $class2 . '">
- ' . $lang['pm_mailbox_char1'] . '<a class="altlink" href="javascript:SetChecked(1,\'pm[]\')">' . $lang['pm_search_selall'] . '</a>' . $lang['pm_mailbox_char2'] . '' . $lang['pm_mailbox_char1'] . '<a class="altlink" href="javascript:SetChecked(0,\'pm[]\')">' . $lang['pm_search_unsellall'] . '</a>   ' . $lang['pm_mailbox_char2'] . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $spacer . '
+ ' . $lang['pm_mailbox_char1'] . '<a class="altlink" href="javascript:SetChecked(1,\'pm[]\')">' . $lang['pm_search_selall'] . '</a>' . $lang['pm_mailbox_char2'] . '' . $lang['pm_mailbox_char1'] . '<a class="altlink" href="javascript:SetChecked(0,\'pm[]\')">' . $lang['pm_search_unsellall'] . '</a>   ' . $lang['pm_mailbox_char2'] . '&#160;&#160;&#160;&#160;&#160;' . $spacer . '
    <input type="submit" class="button" name="move" value="' . $lang['pm_search_move_to'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /> ' . get_all_boxes() . ' or
    <input type="submit" class="button" name="delete" value="' . $lang['pm_search_delete'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />' . $lang['pm_search_selected'] . '</td>
    </tr>
     <tr>
         <td colspan="5" align="left">
-        <img src="pic/pn_inboxnew.gif" title="' . $lang['pm_mailbox_unreadmsg'] . '" alt="' . $lang['pm_mailbox_unread'] . '" />' . $lang['pm_mailbox_unreadmsgs'] . '<br />
+        <img src="pic/pn_inboxnew.gif" title="' . $lang['pm_mailbox_unreadmsg'] . '" alt="' . $lang['pm_mailbox_unread'] . '" />' . $lang['pm_mailbox_unreadmsgs'] . '<br>
         <img src="pic/pn_inbox.gif" title="' . $lang['pm_mailbox_readmsg'] . '" alt="' . $lang['pm_mailbox_read'] . '" />' . $lang['pm_mailbox_readmsgs'] . '</td>
     </tr>' : '') . '
     </table>
-        ' . ($perpage < $messages ? '' . $menu . '<br />' : '') . '
+        ' . ($perpage < $messages ? '' . $menu . '<br>' : '') . '
     <div align="center">
     <table class="table table-bordered">
     <tr>
@@ -173,4 +169,4 @@ $HTMLOUT .= (mysqli_num_rows($res) > 0 ? '
         <td align="center">' . $per_page_drop_down . '</td>
         <td align="center">' . $show_pm_avatar_drop_down . '</td>
     </tr>
-    </table><br /></div></form>';
+    </table><br></div></form>';

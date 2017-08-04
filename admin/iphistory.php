@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -72,7 +69,7 @@ $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5'>
                 <tr>
                 <td class='heading2' align='center'><b><font color='blue'>{$lang['iphistory_single']}</font> - <font color='red'>{$lang['iphistory_banned']}</font> - <font color='black'>{$lang['iphistory_dupe']}</font></b></td>
                 </tr>
-                </table><br />
+                </table><br>
 
                 <table border='1' cellspacing='0' cellpadding='5'>
                 <tr>
@@ -155,10 +152,10 @@ while ($iphistory = mysqli_fetch_array($resip)) {
     if ($seedbox == '0') {
         $seedbox = "<a href='staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=$id&amp;setseedbox=" . (int)$iphistory['id'] . "'><font color='red'><b>{$lang['iphistory_no']}</b></font></a>";
         $HTMLOUT .= "<tr>
-                <td class='heading2' align='center'>{$lang['iphistory_browse']}" . get_date($lastbrowse, '') . "<br />{$lang['iphistory_login']}" . get_date($lastlogin, '') . "<br />{$lang['iphistory_ann']}" . get_date($lastannounce, '') . "</td>
+                <td class='heading2' align='center'>{$lang['iphistory_browse']}" . get_date($lastbrowse, '') . "<br>{$lang['iphistory_login']}" . get_date($lastlogin, '') . "<br>{$lang['iphistory_ann']}" . get_date($lastannounce, '') . "</td>
                 <td class='heading2' align='center'>$ipshow</td>
                 <td class='heading2' align='center'>$host</td>
-                <td class='heading2' align='center'>$listcity, $listregion<br />$listcountry</td>
+                <td class='heading2' align='center'>$listcity, $listregion<br>$listcountry</td>
                 <td class='heading2' align='center'>$iptype</td>
                 <td class='heading2' align='center'>$seedbox</td>
                 <td class='heading2' align='center'><a href='staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=$id&amp;remove=$ipid&amp;deleteip=$userip&amp;username2=$username'><b>{$lang['iphistory_delete']}</b></a></td>
@@ -168,10 +165,10 @@ while ($iphistory = mysqli_fetch_array($resip)) {
         $seedbox = "<a class='altlink' href='staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=$id&amp;setseedbox2=" . (int)$iphistory['id'] . "'><font color='Green'><b>{$lang['iphistory_yes']}</b></font></a>";
         $color = '#CCFFFF';
         $HTMLOUT .= "<tr>
-                <td class='heading2' align='center' style='background-color:$color'>{$lang['iphistory_browse']}" . get_date($lastbrowse, '') . "<br />{$lang['iphistory_login']}" . get_date($lastlogin, '') . "<br />{$lang['iphistory_announce']}" . get_date($lastannounce, '') . "</td>
+                <td class='heading2' align='center' style='background-color:$color'>{$lang['iphistory_browse']}" . get_date($lastbrowse, '') . "<br>{$lang['iphistory_login']}" . get_date($lastlogin, '') . "<br>{$lang['iphistory_announce']}" . get_date($lastannounce, '') . "</td>
                 <td class='heading2' align='center' style='background-color:$color'>$ipshow</td>
                 <td class='heading2' align='center' style='background-color:$color'>$host</td>
-                <td class='heading2' align='center' style='background-color:$color'>$listcity, $listregion<br />$listcountry</td>
+                <td class='heading2' align='center' style='background-color:$color'>$listcity, $listregion<br>$listcountry</td>
                 <td class='heading2' align='center' style='background-color:$color'>$iptype</td>
                 <td class='heading2' align='center' style='background-color:$color'>$seedbox</td>
                 <td class='heading2' align='center' style='background-color:$color'><a href='staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=$id&amp;remove=$ipid&amp;deleteip=$userip&amp;username2=$username'><b>{$lang['iphistory_delete']}</b></a></td>

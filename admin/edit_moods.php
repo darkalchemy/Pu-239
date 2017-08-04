@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-// edit_moods.php for PTF by pdq 2011
 if (!defined('IN_INSTALLER09_ADMIN')) {
     require_once ROOT_DIR . '404.html';
 }

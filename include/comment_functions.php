@@ -63,7 +63,7 @@ function commenttable($rows, $variant = 'torrent')
                 if (!$avatar1) {
                     $avatar1 = "{$INSTALLER09['pic_base_url']}default_avatar.gif";
                 }
-                $htmlout .= "<a name='comm" . (int)$row['id'] . "' onmouseover=\"Tip('<b>$username</b><br />$avatar1');\" onmouseout=\"UnTip();\" href='userdetails.php?id=" . (int)$row['user'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>' . ($row['donor'] == 'yes' ? "<img src='{$INSTALLER09['pic_base_url']}star.gif' alt='" . $lang['commenttable_donor_alt'] . "' />" : '') . ($row['warned'] == 'yes' ? "<img src='{$INSTALLER09['pic_base_url']}warned.gif' alt='" . $lang['commenttable_warned_alt'] . "' />" : '') . " ($title)\n";
+                $htmlout .= "<a name='comm" . (int)$row['id'] . "' onmouseover=\"Tip('<b>$username</b><br>$avatar1');\" onmouseout=\"UnTip();\" href='userdetails.php?id=" . (int)$row['user'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>' . ($row['donor'] == 'yes' ? "<img src='{$INSTALLER09['pic_base_url']}star.gif' alt='" . $lang['commenttable_donor_alt'] . "' />" : '') . ($row['warned'] == 'yes' ? "<img src='{$INSTALLER09['pic_base_url']}warned.gif' alt='" . $lang['commenttable_warned_alt'] . "' />" : '') . " ($title)\n";
                 $htmlout .= '<a href="javascript:;" onclick="PopUp(\'usermood.php\',\'Mood\',530,500,1,1);">
     <span class="tool"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" border="0" />
     <span class="tip">' . ($row['anonymous'] == 'yes' ? '<i>Anonymous</i>' : htmlsafechars($row['username'])) . ' ' . $moodname . ' !</span></span></a>';
@@ -74,7 +74,7 @@ function commenttable($rows, $variant = 'torrent')
         $htmlout .= get_date($row['added'], '');
         $htmlout .= ($row['user'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? "- [<a href='comment.php?action=edit&amp;cid=" . (int)$row['id'] . $extra_link . '&amp;tid=' . $row[$variant] . "'>" . $lang['commenttable_edit'] . '</a>]' : '') . ($CURUSER['class'] >= UC_VIP ? " - [<a href='report.php?type=Comment&amp;id=" . (int)$row['id'] . "'>Report this Comment</a>]" : '') . ($CURUSER['class'] >= UC_STAFF ? " - [<a href='comment.php?action=delete&amp;cid=" . (int)$row['id'] . $extra_link . '&amp;tid=' . $row[$variant] . "'>" . $lang['commenttable_delete'] . '</a>]' : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? "- [<a href='comment.php?action=vieworiginal&amp;cid=" . (int)$row['id'] . $extra_link . '&amp;tid=' . $row[$variant] . "'>" . $lang['commenttable_view_original'] . '</a>]' : '') . "
 		
-		  <span id='mlike' data-com='" . (int)$row['id'] . "' class='comment {$wht}'>[" . ucfirst($wht) . "]</span><span class='tot-" . (int)$row['id'] . "' data-tot='" . (!empty($likes) && count(array_unique($likes)) > 0 ? count(array_unique($likes)) : '') . "'>&nbsp;{$att_str}</span></p>\n";
+		  <span id='mlike' data-com='" . (int)$row['id'] . "' class='comment {$wht}'>[" . ucfirst($wht) . "]</span><span class='tot-" . (int)$row['id'] . "' data-tot='" . (!empty($likes) && count(array_unique($likes)) > 0 ? count(array_unique($likes)) : '') . "'>&#160;{$att_str}</span></p>\n";
         $avatar = ($row['anonymous'] == 'yes' ? "{$INSTALLER09['pic_base_url']}anonymous_1.jpg" : htmlsafechars($row['avatar']));
         if (!$avatar) {
             $avatar = "{$INSTALLER09['pic_base_url']}default_avatar.gif";
@@ -86,7 +86,7 @@ function commenttable($rows, $variant = 'torrent')
         $htmlout .= begin_table(true);
 
         $htmlout .= "<tr valign='top'>\n";
-        $htmlout .= "<td align='center' width='150' style='padding: 0px'><img width='150' height='150' src='{$avatar}' alt='' /><br />" . get_reputation($row, 'comments') . "</td>\n";
+        $htmlout .= "<td align='center' width='150' style='padding: 0px'><img width='150' height='150' src='{$avatar}' alt='' /><br>" . get_reputation($row, 'comments') . "</td>\n";
         $htmlout .= "<td class='text'>$text</td>\n";
         $htmlout .= "</tr>\n";
         $htmlout .= end_table();

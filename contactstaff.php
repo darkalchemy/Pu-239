@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
@@ -35,8 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 } else {
     $HTMLOUT = "
     <!--<div ><img src='images/global.design/support.png' alt='' title='Support' class='global_image' width='25'/></div>
-        <div >Contact Staff</div><br />-->
-        <div ><br />
+        <div >Contact Staff</div><br>-->
+        <div ><br>
     <form method='post' name='message' action='" . $_SERVER['PHP_SELF'] . "'>
 				 <table class='main' width='450' border='0' cellspacing='0' cellpadding='2'>
 				  <tr><td align='center' colspan='2'>

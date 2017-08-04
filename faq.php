@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 dbconn(false);
@@ -26,8 +23,8 @@ $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadd
           {$lang['faq_welcome']}
     </td></tr></table>
     </td></tr></table>
-    <br />
-    <br />";
+    <br>
+    <br>";
 $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>
     <h2>{$lang['faq_contents_header']}</h2>
     <table width='100%' border='1' cellspacing='0' cellpadding='10'><tr><td class='text'>
@@ -51,8 +48,8 @@ $HTMLOUT .= "<a id='question_8' onclick=\"return false;\" href='#'><b>{$lang['fa
 $HTMLOUT .= "<a id='question_9' onclick=\"return false;\" href='#'>{$lang['faq_problem']}</a>
     </td></tr></table>
     </td></tr></table>
-    <br />
-    <br />";
+    <br>
+    <br>";
 $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>
     <h3 id='answer_1'>{$lang['faq_siteinfo_header']}</h3>
     <table width='100%' border='1' cellspacing='0' cellpadding='10'>
@@ -62,8 +59,8 @@ $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadd
     <div id='answer_1_text'>{$lang['faq_siteinfo_body']}</div>
     </td></tr></table>
     </td></tr></table>
-    <br />
-    <br />";
+    <br>
+    <br>";
 $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>
     <h3 id='answer_2'>{$lang['faq_userinfo_header']}</h3>
     <table width='100%' border='1' cellspacing='0' cellpadding='10'>
@@ -74,12 +71,12 @@ $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadd
 $HTMLOUT .= "{$lang['faq_promotion_header']}
     <table cellspacing='3' cellpadding='0'>
     {$lang['faq_promotion_body']}<a class='altlink' href='userdetails.php?id={$CURUSER['id']}'>{$lang['faq_details_page']}</a>.
-    <br />
+    <br>
     </td>
     </tr></table>
     </td></tr></table>
-    <br />
-    <br />";
+    <br>
+    <br>";
 $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>
     <tr>
     <td class='embedded'>
@@ -98,8 +95,8 @@ $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadd
     <div id='answer_4_text'>{$lang['faq_uploading_body']}</div>
     </td></tr></table>
     </td></tr></table>
-    <br />
-    <br />";
+    <br>
+    <br>";
 $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>
     <h3 id='answer_5'>{$lang['faq_downloading_header']}</h3>
     <table width='100%' border='1' cellspacing='0' cellpadding='10'>
@@ -173,26 +170,26 @@ if ($CURUSER) {
     } else {
         $HTMLOUT .= "{$lang['faq_nodelay']}";
     }
-    $HTMLOUT .= '<br /><br />';
+    $HTMLOUT .= '<br><br>';
 }
 $HTMLOUT .= "{$lang['faq_downloading_body1']}";
 $HTMLOUT .= "{$lang['faq_downloading_body2']}
     </div></td></tr></table>
     </td></tr></table>
-    <br />
-    <br />";
+    <br>
+    <br>";
 $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>
     <h3 id='answer_6'>{$lang['faq_improve_speed_title']}</h3>
     <table width='100%' border='1' cellspacing='0' cellpadding='10'>
     <tr>
     <td class='text'>
     <a class='go_to_top' href='#' onclick=\"return false;\"><img src='{$INSTALLER09['pic_base_url']}arrow_up_medium.png' border='0' alt='Arrow' title='Top' /></a>
-    <br />
+    <br>
     <div id='answer_6_text'>{$lang['faq_improve_speed_body']}</div>
     </td></tr></table>
     </td></tr></table>
-    <br />
-    <br />";
+    <br>
+    <br>";
 $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>
     <h3 id='answer_7'>{$lang['faq_proxy_title']}</h3>
     <table width='100%' border='1' cellspacing='0' cellpadding='10'>
@@ -205,8 +202,8 @@ $HTMLOUT .= "<table cellspacing='3' cellpadding='0'>
     </div>
     </td></tr></table>
     </td></tr></table>
-    <br />
-    <br />";
+    <br>
+    <br>";
 $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>
     <h3 id='answer_8'>{$lang['faq_blocked_title']}</h3>
     <table width='100%' border='1' cellspacing='0' cellpadding='10'>
@@ -214,7 +211,7 @@ $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadd
     <td class='text'>
     <a class='go_to_top' href='#' onclick=\"return false;\"><img src='{$INSTALLER09['pic_base_url']}arrow_up_medium.png' border='0' alt='Arrow' title='Top' /></a>
     <div id='answer_8_text'>{$lang['faq_blocked_body']}";
-$HTMLOUT .= "<b>{$lang['faq_alt_port']}</b><a name='conn4'></a><br />
+$HTMLOUT .= "<b>{$lang['faq_alt_port']}</b><a name='conn4'></a><br>
     {$lang['faq_alt_port_body']}";
 $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>
     <h3 id='answer_9'>{$lang['faq_problem_title']}</h3>

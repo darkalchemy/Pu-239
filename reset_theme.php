@@ -1,8 +1,4 @@
 <?php
-/**
- * |------------------------------------------------------------------------------------------------------|
- */
-//Theme Reset
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 dbconn();
 loggedinorreturn();

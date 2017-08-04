@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
@@ -109,11 +106,11 @@ if ((!empty($ann_subject)) and (!empty($ann_body))) {
     
     <div class='tabular'>
         <div class='tabular-row'>
-        <div class='tabular-cell'><b><font color='red'>{$lang['annouce_announcement']}&nbsp;: 
+        <div class='tabular-cell'><b><font color='red'>{$lang['annouce_announcement']}&#160;: 
     " . htmlsafechars($ann_subject) . "</font></b></div></div>
    <font color='blue'>
     " . format_comment($ann_body) . "
-    </font><br /><br />
+    </font><br><br>
     {$lang['annouce_click']} <a href='{$INSTALLER09['baseurl']}/clear_announcement.php'>
     <i><b>{$lang['annouce_here']}</b></i></a> {$lang['annouce_to_clr_annouce']}.</div></div>\n";
 }
@@ -123,7 +120,7 @@ if ((empty($ann_subject)) and (empty($ann_body))) {
     <div class='headbody'>
     <div class='tabular'>
         <div class='tabular-row'>
-        <div class='tabular-cell'><b><font color='red'>{$lang['annouce_announcement']}&nbsp;: 
+        <div class='tabular-cell'><b><font color='red'>{$lang['annouce_announcement']}&#160;: 
     {$lang['annouce_nothing_here']}</font></b></div></div>
     <font color='blue'>{$lang['annouce_cur_no_new_ann']}</font>
     </div></div></div>\n";

@@ -15,7 +15,7 @@ if (empty($_GET['id'])) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:18px;color:black;background-color:red;text-align:center;'>Incorrect access<br />Silly Rabbit - Trix are for kids.. Snatches must be accessed using a valid id !</div>
+	<div style='font-size:18px;color:black;background-color:red;text-align:center;'>Incorrect access<br>Silly Rabbit - Trix are for kids.. Snatches must be accessed using a valid id !</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();

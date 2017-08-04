@@ -43,13 +43,13 @@
     <form id="loginForm" action="[LOGIN_URL/]" method="post" enctype="application/x-www-form-urlencoded">
         <input type="hidden" name="login" id="loginField" value="login"/>
         <input type="hidden" name="redirect" id="redirectField" value="[REDIRECT_URL/]"/>
-        <div><label for="userNameField">[LANG]userName[/LANG]:</label><br/>
+        <div><label for="userNameField">[LANG]userName[/LANG]:</label><br>
             <input type="text" name="userName" id="userNameField" maxlength="[USER_NAME_MAX_LENGTH/]"/></div>
-        <div><label for="passwordField">[LANG]password[/LANG]*:</label><br/>
+        <div><label for="passwordField">[LANG]password[/LANG]*:</label><br>
             <input type="password" name="password" id="passwordField"/></div>
-        <div><label for="channelField">[LANG]channel[/LANG]:</label><br/>
+        <div><label for="channelField">[LANG]channel[/LANG]:</label><br>
             <select name="channelName" id="channelField">[CHANNEL_OPTIONS/]</select></div>
-        <div><label for="languageSelection">[LANG]language[/LANG]:</label><br/>
+        <div><label for="languageSelection">[LANG]language[/LANG]:</label><br>
             <select id="languageSelection" name="lang" onchange="ajaxChat.switchLanguage(this.value);">[LANGUAGE_OPTIONS/]</select>
         </div>
         <div><input type="submit" name="submit" id="loginButton" value="[LANG]login[/LANG]"/></div>

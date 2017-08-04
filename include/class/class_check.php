@@ -1,17 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//==include/class_check.php
-/*
-class_check by pdq,
-autopost and 404 idea by Retro,
-staff array & auth by system,
-PIN idea by SirSnuggleBunny.
-*/
-/**
- *
- */
 if (!defined('TBVERSION')) { //cannot access this file directly
     $HTMLOUT = '';
     $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -142,7 +129,7 @@ function class_check($class = 0, $staff = true, $pin = false)
 		            <title>Error!</title>
 		            </head>
 		            <body>
-	              <div style='font-size:18px;color:black;background-color:red;text-align:center;'>Incorrect access<br />Silly Rabbit - Trix are for kids.. You dont have the correct credentials to be here !</div>
+	              <div style='font-size:18px;color:black;background-color:red;text-align:center;'>Incorrect access<br>Silly Rabbit - Trix are for kids.. You dont have the correct credentials to be here !</div>
 	              </body></html>";
                 echo $HTMLOUT;
                 exit();

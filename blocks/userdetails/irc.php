@@ -1,5 +1,4 @@
 <?php
-
 function calctime($val)
 {
     global $lang;
@@ -10,7 +9,7 @@ function calctime($val)
     $mins = intval($val / 60);
     $secs = $val - ($mins * 60);
 
-    return "&nbsp;$days {$lang['userdetails_irc_days']}, $hours {$lang['userdetails_irc_hrs']}, $mins {$lang['userdetails_irc_min']}";
+    return "&#160;$days {$lang['userdetails_irc_days']}, $hours {$lang['userdetails_irc_hrs']}, $mins {$lang['userdetails_irc_min']}";
 }
 
 //==Irc

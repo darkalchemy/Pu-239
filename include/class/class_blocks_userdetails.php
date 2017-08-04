@@ -1,8 +1,4 @@
 <?php
-
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 class block_userdetails
 {
     const LOGIN_LINK = 0x1; // 1

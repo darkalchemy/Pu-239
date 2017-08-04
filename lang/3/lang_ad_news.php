@@ -5,7 +5,7 @@ $lang = [
     //errs
     'news_gen_error' => 'Invalid news item ID - Code %d .',
     'news_delete_notice' => 'Delete news item',
-    'news_delete_text' => "Do you really want to delete a news item?<br/>Click <a href='staffpanel.php?tool=news&amp;action=news&amp;mode=delete&amp;newsid=%d&amp;returnto=news&amp;sure=1'>here</a> if you are sure.",
+    'news_delete_text' => "Do you really want to delete a news item?<br>Click <a href='staffpanel.php?tool=news&amp;action=news&amp;mode=delete&amp;newsid=%d&amp;returnto=news&amp;sure=1'>here</a> if you are sure.",
     //delete
     'news_delete_ok' => 'News item was deleted successfully.',
     'news_act_delete' => 'Delete',
@@ -51,7 +51,7 @@ $lang = [
     'news_no'            => 'Nu',
     'news_anonymous'     => 'Anonim',
     'news_okay'          => 'Execut&#259;',
-    'news_created_by'    => '.&nbsp;&#350;tire&nbsp;creat&#259;&nbsp;de&nbsp',
+    'news_created_by'    => '.&#160;&#350;tire&#160;creat&#259;&#160;de&#160;',
     'news_edit'          => 'Editeaz&#259;',
     'news_delete'        => '&#350;terge',
     'news_stdhead'       => 'Pagina cu stiri',

@@ -8,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 <title>Error!</title>
 </head>
 <body>
-<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 </body></html>";
     echo $HTMLOUT;
     exit();
@@ -330,7 +330,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
 <td class='table' align='center'><form name='remove' action='staffpanel.php?tool=class_config&amp;mode=remove' method='post'><input type='hidden' name='remove' value='" . htmlsafechars($arr['name']) . "' /><input type='submit' value='{$lang['classcfg_class_remove']}' /></form></td>
 </tr>";
 }
-$HTMLOUT .= '</table><br /><br /> ';
+$HTMLOUT .= '</table><br><br> ';
 
 $HTMLOUT .= "<h3>{$lang['classcfg_class_security']}</h3>
 

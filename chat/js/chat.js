@@ -777,12 +777,6 @@ var ajaxChat = {
             switch (userID) {
                 case this.chatBotID:
                     switch (messageParts[0]) {
-                        case '/login':
-                        case '/channelEnter':
-                            this.playSound(this.settings['soundEnter']);
-                            break;
-                        case '/logout':
-                        case '/channelLeave':
                         case '/kick':
                             this.playSound(this.settings['soundLeave']);
                             break;
@@ -2215,10 +2209,11 @@ var ajaxChat = {
             text = text.replace(/&amp;#039;/g, "'");
             text = text.replace(/&amp;amp;/g, "&amp;");
             text = this.replaceLineBreaks(text);
-            text = this.replaceCustomText(text);
+            //text = this.replaceCustomText(text);
             if (text.charAt(0) === '/') {
                 text = this.replaceCommands(text);
             } else {
+                text = this.replaceBBCode(text);
                 text = this.replaceBBCode(text);
                 text = this.replaceHyperLinks(text);
                 text = this.replaceEmoticons(text);
@@ -2242,14 +2237,6 @@ var ajaxChat = {
             }
             var textParts = text.split(' ');
             switch (textParts[0]) {
-                case '/login':
-                    return this.replaceCommandLogin(textParts);
-                case '/logout':
-                    return this.replaceCommandLogout(textParts);
-                case '/channelEnter':
-                    return this.replaceCommandChannelEnter(textParts);
-                case '/channelLeave':
-                    return this.replaceCommandChannelLeave(textParts);
                 case '/privmsg':
                     return this.replaceCommandPrivMsg(textParts);
                 case '/privmsgto':
@@ -2314,33 +2301,6 @@ var ajaxChat = {
             this.debugMessage('replaceCommands', e);
         }
         return text;
-    },
-
-    replaceCommandLogin: function (textParts) {
-        return '<span class="chatBotMessage">'
-            + this.lang['login'].replace(/%s/, textParts[1])
-            + '</span>';
-    },
-
-    replaceCommandLogout: function (textParts) {
-        var type = '';
-        if (textParts.length === 3)
-            type = textParts[2];
-        return '<span class="chatBotMessage">'
-            + this.lang['logout' + type].replace(/%s/, textParts[1])
-            + '</span>';
-    },
-
-    replaceCommandChannelEnter: function (textParts) {
-        return '<span class="chatBotMessage">'
-            + this.lang['channelEnter'].replace(/%s/, textParts[1])
-            + '</span>';
-    },
-
-    replaceCommandChannelLeave: function (textParts) {
-        return '<span class="chatBotMessage">'
-            + this.lang['channelLeave'].replace(/%s/, textParts[1])
-            + '</span>';
     },
 
     replaceCommandPrivMsg: function (textParts) {
@@ -2667,12 +2627,12 @@ var ajaxChat = {
             // Check if we are within a tag or entity:
             if (currentChar === '<') {
                 withinTag = true;
-                // Reset the charCounter after newline tags (<br/>):
+                // Reset the charCounter after newline tags (<br>):
                 if (i > 5 && text.substr(i - 5, 4) === '<br/')
                     charCounter = 0;
             } else if (withinTag && i > 0 && text.charAt(i - 1) === '>') {
                 withinTag = false;
-                // Reset the charCounter after newline tags (<br/>):
+                // Reset the charCounter after newline tags (<br>):
                 if (i > 4 && text.substr(i - 5, 4) === '<br/')
                     charCounter = 0;
             }
@@ -2740,6 +2700,10 @@ var ajaxChat = {
                 return ajaxChat.replaceBBCodeCode(p3);
             case 'u':
                 return ajaxChat.replaceBBCodeUnderline(p3);
+            case 'b':
+                return ajaxChat.replaceBBCodeBold(p3);
+            case 'i':
+                return ajaxChat.replaceBBCodeItalic(p3);
             default:
                 return ajaxChat.replaceCustomBBCode(p1, p2, p3);
         }
@@ -2748,8 +2712,8 @@ var ajaxChat = {
     replaceBBCodeColor: function (content, attribute) {
         if (this.settings['bbCodeColors']) {
             // Only allow predefined color codes:
-            if (!attribute || !this.inArray(ajaxChat.colorCodes, attribute))
-                return content;
+            //if (!attribute || !this.inArray(ajaxChat.colorCodes, attribute))
+            //    return content;
             return '<span style="color:'
                 + attribute + ';">'
                 + this.replaceBBCode(content)
@@ -2758,25 +2722,33 @@ var ajaxChat = {
         return content;
     },
 
-    replaceBBCodeUrl: function (content, attribute) {
+    replaceBBCodeUrl: function(content, attribute) {
         var url, regExpUrl, link;
-        if (attribute)
+        if (attribute) {
             url = attribute.replace(/\s/gm, this.encodeText(' '));
-        else
+        } else {
             url = this.stripBBCodeTags(content.replace(/\s/gm, this.encodeText(' ')));
+        }
         regExpUrl = new RegExp(
             '^(?:(?:http)|(?:https)|(?:ftp)|(?:irc)):\\/\\/',
             ''
         );
-        if (!url || !url.match(regExpUrl))
+        if (!url || !url.match(regExpUrl)) {
             return content;
+        }
 
         this.inUrlBBCode = true;
+        var hostname = new RegExp(window.location.hostname, 'g');
+        var res = url.match(hostname);
+        if (!res) {
+            url = 'https://privatelink.de/en/?' + url;
+        }
+
         link = '<a href="'
-            + url
-            + '" onclick="window.open(this.href); return false;">'
-            + this.replaceBBCode(content)
-            + '</a>';
+                + url
+                + '" onclick="window.open(this.href); return false;">'
+                + this.replaceBBCode(content)
+                + '</a>';
         this.inUrlBBCode = false;
         return link;
     },
@@ -2788,8 +2760,9 @@ var ajaxChat = {
                 this.regExpMediaUrl,
                 ''
             );
-            if (!url || !url.match(regExpUrl))
+            if (!url || !url.match(regExpUrl)) {
                 return url;
+            }
             url = this.stripTags(url.replace(/\s/gm, this.encodeText(' ')));
             maxWidth = this.dom['chatList'].offsetWidth - 50;
             maxHeight = this.dom['chatList'].offsetHeight - 50;
@@ -2837,9 +2810,21 @@ var ajaxChat = {
             + '</span>';
     },
 
-    replaceHyperLinks: function (text) {
+    replaceBBCodeBold: function(content) {
+        return  '<span style="font-weight:bold;">'
+                + this.replaceBBCode(content)
+                + '</span>';
+    },
+
+    replaceBBCodeItalic: function(content) {
+        return  '<span style="font-style: italic;">'
+                + this.replaceBBCode(content)
+                + '</span>';
+    },
+
+    replaceHyperLinks: function(text) {
         var regExp;
-        if (!this.settings['hyperLinks']) {
+        if(!this.settings['hyperLinks']) {
             return text;
         }
         regExp = new RegExp(
@@ -2849,17 +2834,24 @@ var ajaxChat = {
         return text.replace(
             regExp,
             // Specifying an anonymous function as second parameter:
-            function (str, p1, p2, p3) {
+            function(str, p1, p2, p3) {
                 // Do not replace URL's inside URL's:
-                if (p3) {
+                if(p3) {
                     return str;
                 }
-                return p1
-                    + '<a href="'
-                    + p2
-                    + '" onclick="window.open(this.href); return false;">'
-                    + p2
-                    + '</a>';
+                var hostname = new RegExp(window.location.hostname, 'g');
+                var res = text.match(hostname);
+                if (res) {
+                    url = p2;
+                } else {
+                    url = 'https://privatelink.de/en/?' + p2;
+                }
+                return  p1
+                        + '<a href="'
+                        + url
+                        + '" onclick="window.open(this.href); return false;">'
+                        + p2
+                        + '</a>';
             }
         );
     },
@@ -2870,7 +2862,7 @@ var ajaxChat = {
         if (!this.settings['lineBreaks']) {
             return text.replace(regExp, ' ');
         } else {
-            return text.replace(regExp, '<br/>');
+            return text.replace(regExp, '<br>');
         }
     },
 

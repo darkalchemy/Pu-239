@@ -35,20 +35,20 @@ $config_file_name = get_config_file_name();
 if (is_null($config_file_name)) {
     $title = __('Welcome!');
     $message = '';
-    $message .= '<br/>';
+    $message .= '<br>';
     $message .= __('Pimp my Log is not configured.');
-    $message .= '<br/><br/>';
+    $message .= '<br><br>';
     $message .= '<span class="glyphicon glyphicon-cog"></span> ';
     $message .= sprintf(__('You can manually copy <code>cfg/config.example.php</code> to %s in the root directory and change parameters. Then refresh this page.'), '<code>' . CONFIG_FILE_NAME . '</code>');
-    $message .= '<br/><br/>';
+    $message .= '<br><br>';
     $message .= '<span class="glyphicon glyphicon-heart-empty"></span> ';
     $message .= __('Or let me try to configure it for you!');
-    $message .= '<br/><br/>';
+    $message .= '<br><br>';
     if (SUHOSIN_LOADED === true) {
         $message .= '<div class="alert alert-danger"><strong>';
         $message .= sprintf(__('Suhosin extension is loaded, according to its configuration, Pimp My Log could not run normally... More information %shere%s.'), '<a href="' . SUHOSIN_URL . '">', '</a>');
         $message .= '</strong></div>';
-        $message .= '<br/><br/>';
+        $message .= '<br><br>';
     }
     $link_url = 'inc/configure.php?' . $_SERVER['QUERY_STRING'];
     $link_msg = __('Configure now');
@@ -82,11 +82,11 @@ $errors = config_check($files);
 
 if ($errors === false) {
     $title = __('Oups!');
-    $message = '<br/>';
+    $message = '<br>';
     $message .= __('Your access is disabled, you cannot view any log file.');
-    $message .= '<br/>';
+    $message .= '<br>';
     $message .= __('Please contact your administrator.');
-    $message .= '<br/><br/>';
+    $message .= '<br><br>';
     $link_url = '?signout&l=' . $locale;
     $link_msg = __('Sign out');
     include_once 'inc/error.inc.php';
@@ -95,15 +95,15 @@ if ($errors === false) {
 
 if (is_array($errors)) {
     $title = __('Oups!');
-    $message = '<br/>';
+    $message = '<br>';
     $message .= __('<code>config.user.json</code> configuration file is buggy:') . '<ul>';
     foreach ($errors as $error) {
         $message .= '<li>' . $error . '</li>';
     }
     $message .= '</ul>';
-    $message .= '<br/>';
+    $message .= '<br>';
     $message .= __('If you want me to build the configuration for you, please remove file <code>config.user.json</code> at root and click below.');
-    $message .= '<br/><br/>';
+    $message .= '<br><br>';
     $link_url = 'inc/configure.php?' . $_SERVER['QUERY_STRING'];
     $link_msg = __('Configure now');
     include_once 'inc/error.inc.php';
@@ -308,7 +308,7 @@ $csrf = csrf_get();
                             $selected = ((isset($_GET['i'])) && ($_GET['i'] == $file_id)) ? ' selected="selected"' : '';
                             echo '<option value="' . $file_id . '"' . $selected . '>' . $file['display'] . '</option>';
                         }
-                        ?></select></div>&nbsp;</form><?php endif; ?><?php else : ?><?php
+                        ?></select></div>&#160;</form><?php endif; ?><?php else : ?><?php
                 foreach ($files as $file_id => $file) {
                     $d = $file['display'];
                     $i = h($file_id);
@@ -322,23 +322,23 @@ $csrf = csrf_get();
                     ?>
                     <div class="form-group"><a href="?signin" class="btn-menu btn-primary btn-sm"
                                                title="<?php _h('Sign in'); ?>"><?php _e('Sign in'); ?></a>
-                    </div>&nbsp; <?php
+                    </div>&#160; <?php
                 } ?>
                 <div class="form-group" id="searchctn"><input type="text" class="form-control input-sm clearable"
                                                               id="search" value="<?php echo h(@$_GET['s']); ?>"
-                                                              placeholder="<?php _h('Search in logs'); ?>"></div>&nbsp;<div
+                                                              placeholder="<?php _h('Search in logs'); ?>"></div>&#160;<div
                         class="form-group"><select id="autorefresh" class="form-control input-sm"
                                                    title="<?php _h('Select a duration to check for new logs automatically'); ?>">
                         <option value="0"><?php _e('No refresh'); ?></option><?php
                         foreach (get_refresh_options($files) as $r) {
                             echo '<option value="' . $r . '">' . sprintf(__('Refresh %ss'), $r) . '</option>';
                         }
-                        ?></select></div>&nbsp;<div class="form-group"><select id="max" class="form-control input-sm"
+                        ?></select></div>&#160;<div class="form-group"><select id="max" class="form-control input-sm"
                                                                                title="<?php _h('Max count of logs to display'); ?>"><?php
                         foreach (get_max_options($files) as $r) {
                             echo '<option value="' . $r . '">' . sprintf(((int)$r > 1) ? __('%s logs') : __('%s log'), $r) . '</option>';
                         }
-                        ?></select></div>&nbsp;<div class="form-group">
+                        ?></select></div>&#160;<div class="form-group">
                     <button style="display:none" type="button" id="notification" class="btn-menu btn-sm"
                             title="<?php _h('Desktop notifications on supported modern browsers'); ?>"><span
                                 class="glyphicon glyphicon-bell"></span> <span
@@ -361,15 +361,15 @@ $csrf = csrf_get();
                     <ul class="dropdown-menu cogmenu" style="padding: 15px">
                         <li><a href="#" id="cog-wide" class="cog btn btn-default" data-cog="wideview"
                                data-value="<?php echo (in_array(@$_GET['w'], ['true', 'on', '1', ''])) ? 'on' : 'off'; ?>"><span
-                                        class="glyphicon glyphicon-fullscreen"></span>&nbsp;&nbsp;<?php _e('Wide view'); ?>
-                                &nbsp; <span class="cogon"
+                                        class="glyphicon glyphicon-fullscreen"></span>&#160;&#160;<?php _e('Wide view'); ?>
+                                &#160; <span class="cogon"
                                              style="<?php echo (in_array(@$_GET['w'], ['true', 'on', '1', ''])) ? '' : 'display:none'; ?>"><?php _e('on') ?></span>
                                 <span class="cogoff"
                                       style="<?php echo (in_array(@$_GET['w'], ['false', 'off', '0'])) ? '' : 'display:none'; ?>"><?php _e('off') ?></span></a>
                         </li>
                         <li><a href="#" id="clear-markers" class="btn btn-default"
                                title="<?php _h('Click on a date field to mark a row'); ?>"><span
-                                        class="glyphicon glyphicon-bookmark"></span>&nbsp;&nbsp;<?php _e('Clear markers'); ?>
+                                        class="glyphicon glyphicon-bookmark"></span>&#160;&#160;<?php _e('Clear markers'); ?>
                             </a></li>
                         <li><select id="cog-lang" class="form-control input-sm"
                                     title="<?php _h('Language'); ?>"><?php if (GETTEXT_SUPPORT === true): ?>
@@ -405,20 +405,20 @@ $csrf = csrf_get();
                             ?>
                             <li><a href="#" title="<?php _h('Click here to manager users'); ?>" data-toggle="modal"
                                    data-target="#umModal"><span
-                                        class="glyphicon glyphicon-flash"></span>&nbsp;&nbsp;<?php _e('Manage users'); ?>
+                                        class="glyphicon glyphicon-flash"></span>&#160;&#160;<?php _e('Manage users'); ?>
                             </a></li><?php
                         } ?>
                         <li><a href="#" title="<?php _h('Click here to view your profile'); ?>" data-toggle="modal"
                                data-target="#prModal"><span
-                                        class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;<?php _e('Profile'); ?></a>
+                                        class="glyphicon glyphicon-user"></span>&#160;&#160;<?php _e('Profile'); ?></a>
                         </li>
                         <li><a href="#" title="<?php _h('Click here to change your password'); ?>" data-toggle="modal"
                                data-target="#cpModal"><span
-                                        class="glyphicon glyphicon-lock"></span>&nbsp;&nbsp;<?php _e('Change password'); ?>
+                                        class="glyphicon glyphicon-lock"></span>&#160;&#160;<?php _e('Change password'); ?>
                             </a></li>
                         <li><a href="?signout&l=<?php echo $locale; ?>"
                                title="<?php _h('Click here to sign out'); ?>"><span
-                                        class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;<?php _e('Sign out'); ?>
+                                        class="glyphicon glyphicon-log-out"></span>&#160;&#160;<?php _e('Sign out'); ?>
                             </a></li>
                     </ul></li><?php
                 } ?></ul>
@@ -437,9 +437,9 @@ $csrf = csrf_get();
         $infos = get_current_pml_version_infos();
         $print = '<strong>' . sprintf(__('Welcome in version %s'), $infos['v']) . '</strong>';
         if (isset($infos['welcome'])) {
-            $print .= '<br/>' . $infos['welcome'] . '<br/>';
+            $print .= '<br>' . $infos['welcome'] . '<br>';
         }
-        $print .= '<br/>';
+        $print .= '<br>';
         $print .= sprintf(__('The changelog and all informations about this version are available on the %sblog%s.'), '<a href="http://pimpmylog.com/blog/" target="_blank">', '</a>');
         ?>
         <div><br>
@@ -477,7 +477,7 @@ $csrf = csrf_get();
         <div class="col-xs-8 col-xs-offset-2 col-sm-5 col-sm-offset-0 col-md-4 col-md-offset-0 col-lg-2 col-lg-offset-0">
             <div class="btn-group" style="width:100%">
                 <button style="width:100%" type="button" class="btn btn-xs btn-warning dropdown-toggle"
-                        data-toggle="dropdown"><?php _e('Export'); ?>&nbsp;<span class="caret"></span></button>
+                        data-toggle="dropdown"><?php _e('Export'); ?>&#160;<span class="caret"></span></button>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="#" onclick="get_rss('ATOM')"><?php _e('ATOM'); ?></a></li>
                     <li><a href="#" onclick="get_rss('CSV')"><?php _e('CSV'); ?></a></li>
@@ -504,7 +504,7 @@ $csrf = csrf_get();
     </div>
     <hr>
     <footer class="text-muted">
-        <small><?php echo FOOTER; ?>&nbsp;-&nbsp;<a href="inc/test.php"><?php _e('Debugger'); ?></a> &nbsp;-&nbsp;<a
+        <small><?php echo FOOTER; ?>&#160;-&#160;<a href="inc/test.php"><?php _e('Debugger'); ?></a> &#160;-&#160;<a
                     href="#" data-toggle="modal" data-target="#changeLogModal"><?php _e('Change log'); ?></a> <span
                     id="upgradefooter"></span></small>
     </footer>
@@ -515,10 +515,10 @@ $csrf = csrf_get();
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                             class="sr-only"><?php _e('Close'); ?></span></button>
-                <h4 class="modal-title" id="exModalLabel"><?php _e('Export'); ?>&nbsp;<code id="exModalFormat"></code>
+                <h4 class="modal-title" id="exModalLabel"><?php _e('Export'); ?>&#160;<code id="exModalFormat"></code>
                 </h4></div>
             <div class="modal-body"><h3><?php _e('Webservice URL'); ?></h3>
-                <div class="alert alert-info" id="exModalWar"><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;<?php _e('Your URL seems to be local so it won\'t be reachable by external browsers and services'); ?>
+                <div class="alert alert-info" id="exModalWar"><span class="glyphicon glyphicon-warning-sign"></span>&#160;<?php _e('Your URL seems to be local so it won\'t be reachable by external browsers and services'); ?>
                 </div>
                 <pre><code id="exModalUrl"></code></pre>
                 <div class="row">

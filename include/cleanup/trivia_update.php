@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 function cleanup_log($data)
 {
     $text = sqlesc($data['clean_title']);
@@ -24,10 +21,18 @@ function docleanup($data)
     $gamenum = $result['gamenum'];
 
     if (!empty($gamenum)) {
-        $sql = 'SELECT qid FROM triviaq WHERE asked = 0 AND current = 0 ORDER BY RAND() LIMIT 0, 1';
+        $sql = 'SELECT qid FROM triviaq WHERE asked = 0 AND current = 0';
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        $qidarray = mysqli_fetch_assoc($res);
-        $qid = $qidarray['qid'];
+        while ($qidarray = mysqli_fetch_assoc($res)) {
+            $qids[] = $qidarray['qid'];
+        }
+        shuffle($qids);
+        shuffle($qids);
+        shuffle($qids);
+        shuffle($qids);
+        shuffle($qids);
+        $rand = array_rand($qids);
+        $qid = $qids[$rand];
         // clear previous question
         $sql = 'UPDATE triviaq SET current = 0 WHERE current = 1';
         sql_query($sql) or sqlerr(__FILE__, __LINE__);

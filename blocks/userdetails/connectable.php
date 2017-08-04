@@ -1,5 +1,4 @@
 <?php
-
 //==Connectable and port shit
 if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     $What_Cache = (XBT_TRACKER == true ? 'port_data_xbt_' : 'port_data_');

@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
@@ -83,21 +80,21 @@ $HTMLOUT .= "
 $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='10'>
     <tr>
     <td class='heading' valign='top' align='right'>{$lang['upload_imdb_url']}</td>
-    <td valign='top' align='left'><input type='text' name='url' size='80' /><br />{$lang['upload_imdb_tfi']}{$lang['upload_imdb_rfmo']}</td>
+    <td valign='top' align='left'><input type='text' name='url' size='80' /><br>{$lang['upload_imdb_tfi']}{$lang['upload_imdb_rfmo']}</td>
     </tr>
     <tr>
     <td class='heading' valign='top' align='right'>{$lang['upload_poster']}</td>
-    <td valign='top' align='left'><input type='text' name='poster' size='80' /><br />{$lang['upload_poster1']}</td>
+    <td valign='top' align='left'><input type='text' name='poster' size='80' /><br>{$lang['upload_poster1']}</td>
     </tr>
     <tr>
     <td class='heading' valign='top' align='right'>{$lang['upload_youtube']}</td>
-    <td valign='top' align='left'><input type='text' name='youtube' size='80' /><br />({$lang['upload_youtube_info']})</td>
+    <td valign='top' align='left'><input type='text' name='youtube' size='80' /><br>({$lang['upload_youtube_info']})</td>
     </tr>
     <tr>
     <td class='heading' valign='top' align='right'><b>{$lang['upload_bitbucket']}</b></td>
     <td valign='top' align='left'>
     <iframe src='imgup.html' style='width:600px; height:48px; border:none' frameborder='0'></iframe>
-    <br />{$lang['upload_bitbucket_1']}
+    <br>{$lang['upload_bitbucket_1']}
     </td>
     </tr>
     <tr>
@@ -106,24 +103,24 @@ $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='10'>
     </tr>
     <tr>
     <td class='heading' valign='top' align='right'>{$lang['upload_name']}</td>
-    <td valign='top' align='left'><input type='text' id='name' name='name' size='80' /><br />({$lang['upload_filename']})</td>
+    <td valign='top' align='left'><input type='text' id='name' name='name' size='80' /><br>({$lang['upload_filename']})</td>
     </tr>
     <tr>
     <td class='heading' valign='top' align='right'>{$lang['upload_tags']}</td> 
-    <td valign='top' align='left'><input type='text' name='tags' size='80' /><br />({$lang['upload_tag_info']})</td>
+    <td valign='top' align='left'><input type='text' name='tags' size='80' /><br>({$lang['upload_tag_info']})</td>
     </tr>
     <tr>
     <td class='heading' valign='top' align='right'>{$lang['upload_small_description']}</td>
-    <td valign='top' align='left'><input type='text' name='description' size='80' /><br />({$lang['upload_small_descr']})</td>
+    <td valign='top' align='left'><input type='text' name='description' size='80' /><br>({$lang['upload_small_descr']})</td>
     </tr>
     <tr>
     <td class='heading' valign='top' align='right'>{$lang['upload_nfo']}</td>
-    <td valign='top' align='left'><input type='file' name='nfo' size='80' /><br />({$lang['upload_nfo_info']})</td>
+    <td valign='top' align='left'><input type='file' name='nfo' size='80' /><br>({$lang['upload_nfo_info']})</td>
     </tr>
     <tr>
     <td class='heading' valign='top' align='right'>{$lang['upload_description']}</td>
     <td valign='top' align='left' style='white-space: nowrap;'>" . BBcode(false) . "
-    <br />({$lang['upload_html_bbcode']})</td>
+    <br>({$lang['upload_html_bbcode']})</td>
     </tr>";
 $s = "<select name='type'>\n<option value='0'>({$lang['upload_choose_one']})</option>\n";
 $cats = genrelist();

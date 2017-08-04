@@ -784,7 +784,7 @@ $HTMLOUT .= '
 		
  		 
 	<div class="span7 offset1">
-	<input class="btn btn-primary" type="submit" name="submit" value="Submit" tabindex="2" accesskey="s" /></div><br /><br />
+	<input class="btn btn-primary" type="submit" name="submit" value="Submit" tabindex="2" accesskey="s" /></div><br><br>
     <div class="container">
     <fieldset><legend>Site Alert Settings</legend></fieldset>
 		<div class="row-fluid">   
@@ -935,7 +935,7 @@ $HTMLOUT .= '
 
 $HTMLOUT .= '  
         <div class="span7 offset1">
-        <input class="btn btn-primary" type="submit" name="submit" value="Submit" tabindex="2" accesskey="s" /></div><br /><br />     
+        <input class="btn btn-primary" type="submit" name="submit" value="Submit" tabindex="2" accesskey="s" /></div><br><br>     
 		<div class="container">
         <fieldset><legend>Userdetails Settings</legend></fieldset>
 

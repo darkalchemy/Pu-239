@@ -84,12 +84,12 @@ function pager($itemsfound, $href)
         $pager = '';
         for ($i = 0; $i < $links; ++$i) {
             if ($i % 15 == 0) {
-                $pager .= '<br/><br/>';
+                $pager .= '<br><br>';
             }
             if (($i * 40) == 1000) {
                 break;
             }
-            $pager .= '<a ' . ($_GET['offset'] == ($i * 40) ? 'class="sublink-active"' : 'class="sublink"') . ' href="' . $href . 'offset=' . ($i * 40) . '">' . ($i + 1) . '</a>&nbsp;';
+            $pager .= '<a ' . ($_GET['offset'] == ($i * 40) ? 'class="sublink-active"' : 'class="sublink"') . ' href="' . $href . 'offset=' . ($i * 40) . '">' . ($i + 1) . '</a>&#160;';
         }
     }
 
@@ -109,7 +109,7 @@ function build_result($array, $pager)
         ?>
         <table width="55%" style="border-collapse:collapse;" border="1" cellspacing="0" cellpadding="5">
             <tr>
-                <td colspan="9" align="right">Search took&nbsp;<font class="releasename">
+                <td colspan="9" align="right">Search took&#160;<font class="releasename">
                         <?php echo $time['searchtime'] ?>
                         s</font>, Items found <font class="releasename">
                         <?php echo $time['itemsfound'] ?>
@@ -138,14 +138,14 @@ function build_result($array, $pager)
                                                                  target="_blank">
                             <?php echo $movie['movie'] ?>
                         </a>
-                        <?php echo $movie['releasename'] ? '<br/><font class="releasename">' . $movie['releasename'] . '</font>' : '' ?>
+                        <?php echo $movie['releasename'] ? '<br><font class="releasename">' . $movie['releasename'] . '</font>' : '' ?>
                     </td>
                     <td nowrap="nowrap" align="center"><a href="<?php echo $base . $movie['download'] ?>"
                                                           target="blank"><img src="imgs/icon-download.gif" width="12"
                                                                               height="12" border="0" alt=" "
                                                                               title="download"/></a></td>
                     <td nowrap="nowrap"
-                        align="center"><?php echo str_replace(' ', '<br/>', $movie['subadddate']) ?></td>
+                        align="center"><?php echo str_replace(' ', '<br>', $movie['subadddate']) ?></td>
                     <td nowrap="nowrap" align="center"><?php echo $movie['files'] ?></td>
                     <td nowrap="nowrap" align="center"><?php echo $movie['format'] ?></td>
                     <td nowrap="nowrap"
@@ -154,7 +154,7 @@ function build_result($array, $pager)
                 <?php
             } ?>
         </table>
-        <?php echo $time['itemsfound'] > 40 ? '<br/><div align="center">' . pager($time['itemsfound'], $pager) . '</div>' : '' ?>
+        <?php echo $time['itemsfound'] > 40 ? '<br><div align="center">' . pager($time['itemsfound'], $pager) . '</div>' : '' ?>
         <?php
     }
 }

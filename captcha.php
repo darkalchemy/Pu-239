@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 /*
   captcha.php
   jQuery Fancy Captcha
@@ -11,7 +8,8 @@
   Copyright 2009 Web Design Beach. All rights reserved.
 */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-sessionStart(); /* starts session to save generated random number */
+dbconn();
+
 /* this compare captcha's number from POST and SESSION */
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['captcha']) && $_POST['captcha'] == $_SESSION['captcha']) {
     echo 'Passed!'; /* YOUR CODE GOES HERE */

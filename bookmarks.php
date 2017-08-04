@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//==bookmarks.php - by pdq
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'torrenttable_functions.php';
@@ -76,7 +72,7 @@ function bookmarktable($res, $variant = 'index')
         if ($variant == 'index') {
             $htmlout .= '&amp;hit=1';
         }
-        $htmlout .= "'><b>$dispname</b></a>&nbsp;</td>\n";
+        $htmlout .= "'><b>$dispname</b></a>&#160;</td>\n";
         $htmlout .= ($variant == 'index' ? "<td align='center'><a href='bookmark.php?torrent={$id}&amp;action=delete'><img src='{$INSTALLER09['pic_base_url']}aff_cross.gif' border='0' alt='{$lang['bookmarks_del3']}' title='{$lang['bookmarks_del3']}' /></a></td>" : '');
         $htmlout .= ($variant == 'index' ? "<td align='center'><a href='download.php?torrent={$id}'><img src='{$INSTALLER09['pic_base_url']}zip.gif' border='0' alt='{$lang['bookmarks_down3']}' title='{$lang['bookmarks_down3']}' /></a></td>" : '');
         $bm = sql_query('SELECT * FROM bookmarks WHERE torrentid=' . sqlesc($id) . ' && userid=' . sqlesc($CURUSER['id']));
@@ -118,14 +114,14 @@ function bookmarktable($res, $variant = 'index')
                 $htmlout .= "<td align='right'><b><a href='details.php?id=$id&amp;page=0#startcomments'>" . (int)$row['comments'] . "</a></b></td>\n";
             }
         }
-        $htmlout .= "<td align='center'><span style='white-space: nowrap;'>" . str_replace(',', '<br />', get_date($row['added'], '')) . "</span></td>\n";
-        $htmlout .= "<td align='center'>" . str_replace(' ', '<br />', mksize($row['size'])) . "</td>\n";
+        $htmlout .= "<td align='center'><span style='white-space: nowrap;'>" . str_replace(',', '<br>', get_date($row['added'], '')) . "</span></td>\n";
+        $htmlout .= "<td align='center'>" . str_replace(' ', '<br>', mksize($row['size'])) . "</td>\n";
         if ($row['times_completed'] != 1) {
             $_s = '' . $lang['torrenttable_time_plural'] . '';
         } else {
             $_s = '' . $lang['torrenttable_time_singular'] . '';
         }
-        $htmlout .= "<td align='center'><a href='snatches.php?id=$id'>" . number_format($row['times_completed']) . "<br />$_s</a></td>\n";
+        $htmlout .= "<td align='center'><a href='snatches.php?id=$id'>" . number_format($row['times_completed']) . "<br>$_s</a></td>\n";
         if ((int)$row['seeders']) {
             if ($variant == 'index') {
                 if ($row['leechers']) {

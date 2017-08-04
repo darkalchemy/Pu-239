@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//tvrage functions
 $INSTALLER09['tvrage_api'] = 'NxDOrw2uadOgyLuDtmaR';
 function tvrage_format($tvrage_data, $tvrage_type)
 {
@@ -14,12 +10,12 @@ function tvrage_format($tvrage_data, $tvrage_type)
         'origin_country' => 'Country: %s',
         'status'         => 'Status: %s',
         'classification' => 'Classification: %s',
-        'summary'        => 'Summary:<br/> %s',
+        'summary'        => 'Summary:<br> %s',
         'runtime'        => 'Runtime %s min',
         'genres'         => 'Genres: %s',
     ];
     $tvrage_display['episode'] = [
-        'episode'     => 'This week episode: %s "%s" on %s<br/>%s<br/>Summary: %s',
+        'episode'     => 'This week episode: %s "%s" on %s<br>%s<br>Summary: %s',
         'nextepisode' => 'Next episode: %s "%s" on %s %s %s',
     ];
     foreach ($tvrage_data as $key => $data) {
@@ -32,7 +28,7 @@ function tvrage_format($tvrage_data, $tvrage_type)
         unset($tvrage_display[$tvrage_type]['ended']);
     }
 
-    return join('<br/><br/>', $tvrage_display[$tvrage_type]);
+    return join('<br><br>', $tvrage_display[$tvrage_type]);
 }
 
 function tvrage(&$torrents)
@@ -107,7 +103,7 @@ function tvrage(&$torrents)
         if (count($row_update)) {
             sql_query('UPDATE torrents set ' . join(', ', $row_update) . ' WHERE id = ' . $torrents['id']) or sqlerr(__FILE__, __LINE__);
         }
-        $tvrage_showinfo = tvrage_format($tvrage_showinfo, 'show') . '<br/>';
+        $tvrage_showinfo = tvrage_format($tvrage_showinfo, 'show') . '<br>';
         $mc1->cache_value($memkey, $tvrage_showinfo, 0);
         $tvrage_data .= $tvrage_showinfo;
     } else {
@@ -129,7 +125,7 @@ function tvrage(&$torrents)
                     $tvrage_epinfo[$data[1]][$data_1[1]] = $data_1[2];
                 }
             }
-            $tvrage_epinfo = tvrage_format($tvrage_epinfo, 'episode') . '<br/>';
+            $tvrage_epinfo = tvrage_format($tvrage_epinfo, 'episode') . '<br>';
             $mc1->cache_value($memkey, $tvrage_epinfo, 0);
             $tvrage_data .= $tvrage_epinfo;
         } else {

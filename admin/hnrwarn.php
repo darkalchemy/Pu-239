@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -110,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header('Refresh: 2; url=' . $r);
                 stderr($lang['hnrwarn_success'], count($pms) . $lang['hnrwarn_user'] . (count($pms) > 1 ? 's' : '') . $lang['hnrwarn_rem_suc']);
             } else {
-                stderr($lang['hnrwarn_stderror'], $lang['hnrwarn_q1'] . $q_err . "<br />{$lang['hnrwarn_q2']}" . $q1_err);
+                stderr($lang['hnrwarn_stderror'], $lang['hnrwarn_q1'] . $q_err . "<br>{$lang['hnrwarn_q2']}" . $q1_err);
             }
         }
     }
@@ -132,7 +129,7 @@ switch ($do) {
 $g = sql_query($query) or sqlerr(__FILE__, __LINE__);
 $count = mysqli_num_rows($g);
 $HTMLOUT .= begin_main_frame();
-$HTMLOUT .= begin_frame($title . '&nbsp;[<font class="small">total - ' . $count . ' user' . ($count > 1 ? 's' : '') . '</font>] - ' . $link);
+$HTMLOUT .= begin_frame($title . '&#160;[<font class="small">total - ' . $count . ' user' . ($count > 1 ? 's' : '') . '</font>] - ' . $link);
 if ($count == 0) {
     $HTMLOUT .= stdmsg($lang['hnrwarn_hey'], $lang['hnrwarn_none'] . strtolower($title));
 } else {
@@ -147,10 +144,10 @@ if ($count == 0) {
 			<td class='colhead' align='center' nowrap='nowrap'><input type='checkbox' name='checkall' /></td>
 		</tr>";
     while ($a = mysqli_fetch_assoc($g)) {
-        $tip = ($do == 'hnrwarn' ? $lang['hnrwarn_tip1'] . htmlsafechars($a['warn_reason']) . '<br />' : $lang['hnrwarn_tip2'] . htmlsafechars($a['disable_reason']));
+        $tip = ($do == 'hnrwarn' ? $lang['hnrwarn_tip1'] . htmlsafechars($a['warn_reason']) . '<br>' : $lang['hnrwarn_tip2'] . htmlsafechars($a['disable_reason']));
         $HTMLOUT .= "<tr>
 				  <td align='left' width='100%'><a href='userdetails.php?id=" . (int)$a['id'] . "' onmouseover=\"Tip('($tip)')\" onmouseout=\"UnTip()\">" . htmlsafechars($a['username']) . "</a></td>
-				  <td align='left' nowrap='nowrap'>" . (float)$a['ratio'] . "<br /><font class='small'><b>{$lang['hnrwarn_d']}</b>" . mksize($a['downloaded']) . "&nbsp;<b>{$lang['hnrwarn_u']}</b> " . mksize($a['uploaded']) . "</font></td>
+				  <td align='left' nowrap='nowrap'>" . (float)$a['ratio'] . "<br><font class='small'><b>{$lang['hnrwarn_d']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['hnrwarn_u']}</b> " . mksize($a['uploaded']) . "</font></td>
 				  <td align='center' nowrap='nowrap'>" . get_user_class_name($a['class']) . "</td>
 				  <td align='center' nowrap='nowrap'>" . get_date($a['last_access'], 'LONG', 0, 1) . "</td>
 				  <td align='center' nowrap='nowrap'>" . get_date($a['added'], 'DATE', 1) . "</td>

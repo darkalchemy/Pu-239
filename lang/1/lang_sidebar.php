@@ -84,5 +84,5 @@ $lang = [
     'sidebar_forum'          => 'Forum',
     //latest with poster block
     'sidebar_latest'         => 'Latest',
-    'sidebar_latest1'        => 'Latest Torrents<br />with Posters',
+    'sidebar_latest1'        => 'Latest Torrents<br>with Posters',
 ];

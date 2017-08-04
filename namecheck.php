@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (empty($_GET['wantusername'])) {
     die('Silly Rabbit - Twix are for kids - You cant post nothing please enter a username !');
 }

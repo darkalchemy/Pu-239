@@ -1,16 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/*
-+------------------------------------------------
-|   $Date$
-|   $Revision$ 09 Final
-|   $Invite
-|   $Author$ Neptune,Bigjoos
-|   $URL$
-+------------------------------------------------
-*/
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
@@ -73,7 +61,7 @@ if ($do == 'view_page') {
             }
         }
     }
-    $HTMLOUT .= '</table><br />';
+    $HTMLOUT .= '</table><br>';
     $select = sql_query('SELECT * FROM invite_codes WHERE sender = ' . sqlesc($CURUSER['id']) . " AND status = 'Pending'") or sqlerr(__FILE__, __LINE__);
     $num_row = mysqli_num_rows($select);
     $HTMLOUT .= "<table border='1' width='750' cellspacing='0' cellpadding='5'>" . "<tr class='tabletitle'><td colspan='6' class='colhead'><b>{$lang['invites_codes']}</b></td></tr>";

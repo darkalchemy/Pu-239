@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -126,7 +123,7 @@ if ($count == '0') {
             $solved_color = 'pink';
         } else {
             $solved_in_wtf = $arr_info['when_delt_with'] - $arr_info['added'];
-            $solved_in = '&nbsp;[' . round_time($solved_in_wtf) . ']';
+            $solved_in = '&#160;[' . round_time($solved_in_wtf) . ']';
             if ($solved_in_wtf > 4 * 3600) {
                 $solved_color = 'red';
             } elseif ($solved_in_wtf > 2 * 3600) {
@@ -139,7 +136,7 @@ if ($count == '0') {
         if ($arr_info['delt_with']) {
             $res_who = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr_info['who_delt_with_it']));
             $arr_who = mysqli_fetch_assoc($res_who);
-            $dealtwith = "<font color='{$solved_color}'><b>{$lang['reports_yes']}</b> </font> {$lang['reports_by']} <a class='altlink' href='userdetails.php?id=" . (int)$arr_info['who_delt_with_it'] . "'><b>" . htmlsafechars($arr_who['username']) . "</b></a><br /> {$lang['reports_in']} <font color='{$solved_color}'>{$solved_in}</font>";
+            $dealtwith = "<font color='{$solved_color}'><b>{$lang['reports_yes']}</b> </font> {$lang['reports_by']} <a class='altlink' href='userdetails.php?id=" . (int)$arr_info['who_delt_with_it'] . "'><b>" . htmlsafechars($arr_who['username']) . "</b></a><br> {$lang['reports_in']} <font color='{$solved_color}'>{$solved_in}</font>";
             $checkbox = "<input type='radio' name='id' value='" . (int)$arr_info['id'] . "' disabled='disabled' />";
         } else {
             $dealtwith = "<font color='red'><b>{$lang['reports_no']}</b></font>";
@@ -193,7 +190,7 @@ if ($count == '0') {
                 case 'Hit_And_Run':
                     $res_who2 = sql_query('SELECT users.username, torrents.name, r.2nd_value FROM users, torrents LEFT JOIN reports AS r ON r.2nd_value = torrents.id WHERE users.id=' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
-                    $link_to_thing = "<b>{$lang['reports_user']}</b> <a class='altlink' href='userdetails.php?id=" . (int)$arr_info['reporting_what'] . "&amp;completed=1'><b>{$arr_who2['username']}</b></a><br />{$lang['reports_hit']}<br /> <a class='altlink' href='details.php?id=" . (int)$arr_info['2nd_value'] . "&amp;page=0#snatched'><b>" . htmlsafechars($arr_who2['name']) . '</b></a>';
+                    $link_to_thing = "<b>{$lang['reports_user']}</b> <a class='altlink' href='userdetails.php?id=" . (int)$arr_info['reporting_what'] . "&amp;completed=1'><b>{$arr_who2['username']}</b></a><br>{$lang['reports_hit']}<br> <a class='altlink' href='details.php?id=" . (int)$arr_info['2nd_value'] . "&amp;page=0#snatched'><b>" . htmlsafechars($arr_who2['name']) . '</b></a>';
                     break;
 
                 case 'Post':
@@ -214,15 +211,15 @@ if ($count == '0') {
         if ($arr_info['how_delt_with']) {
             $HTMLOUT .= "<tr>
         <td colspan='" . ($CURUSER['class'] == UC_MAX ? '8' : '7') . "' class='$class' align='left'><b>{$lang['reports_with']} " . htmlsafechars($arr_who['username']) . ':</b> ' . get_date($arr_info['when_delt_with'], 'LONG', 0, 1) . "</td></tr>
-        <tr><td colspan='" . ($CURUSER['class'] == UC_MAX ? '8' : '7') . "' class='$class' align='left'>" . htmlsafechars($arr_info['how_delt_with']) . '<br /><br /></td></tr>';
+        <tr><td colspan='" . ($CURUSER['class'] == UC_MAX ? '8' : '7') . "' class='$class' align='left'>" . htmlsafechars($arr_info['how_delt_with']) . '<br><br></td></tr>';
         }
     }
 }
 $HTMLOUT .= '</table>';
 if ($count > '0') {
     // === deal with it
-    $HTMLOUT .= "<br /><br /><p align='center'><b>{$lang['reports_how']} {$CURUSER['username']} {$lang['reports_dealt1']}</br></b>{$lang['reports_please']} [ {$lang['reports_req']} ] </p><br />
-<textarea name='how_delt_with' cols='70' rows='5'></textarea><br /><br />" . "<input type='submit' class='button' value='{$lang['reports_confirm']}' /><br /><br /></form></td></tr></table>";
+    $HTMLOUT .= "<br><br><p align='center'><b>{$lang['reports_how']} {$CURUSER['username']} {$lang['reports_dealt1']}</br></b>{$lang['reports_please']} [ {$lang['reports_req']} ] </p><br>
+<textarea name='how_delt_with' cols='70' rows='5'></textarea><br><br>" . "<input type='submit' class='button' value='{$lang['reports_confirm']}' /><br><br></form></td></tr></table>";
 } //=== end if count
 echo stdhead($lang['reports_stdhead']) . $HTMLOUT . stdfoot();
 die;

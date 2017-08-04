@@ -1,5 +1,4 @@
 <?php
-
 if (!defined('IN_OFFERS')) {
     exit('No direct script access allowed');
 }

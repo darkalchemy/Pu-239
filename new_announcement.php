@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
@@ -90,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>
  	<tr>
  	<td class='embedded'><div align='center'>
- 	<h1>Create Announcement for " . ($n_pms) . ' user' . ($n_pms > 1 ? 's' : '') . '&nbsp;!</h1>';
+ 	<h1>Create Announcement for " . ($n_pms) . ' user' . ($n_pms > 1 ? 's' : '') . '&#160;!</h1>';
     $HTMLOUT .= "<form name='compose' method='post' action='{$INSTALLER09['baseurl']}/new_announcement.php'>
  	<table border='1' cellspacing='0' cellpadding='5'>
  	<tr>
@@ -114,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
  	<input type='hidden' name='n_pms' value='" . $n_pms . "' />
     <input type='hidden' name='ann_query' value='" . rawurlencode($ann_query) . "' />
  	<input type='hidden' name='ann_hash' value='" . $ann_hash . "' />
- 	</form><br /><br />
+ 	</form><br><br>
  	</div></td></tr></table>";
     if ($body) {
         $newtime = TIME_NOW + (86400 * $expiry);
@@ -122,14 +119,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
  	<tr><td bgcolor='#663366' align='center' valign='baseline'><h2><font color='white'>Announcement: 
  	" . htmlsafechars($subject) . "</font></h2></td></tr>
  	<tr><td class='text'>
- 	" . format_comment($body) . '<br /><hr />Expires: ' . get_date($newtime, 'DATE') . '';
+ 	" . format_comment($body) . '<br><hr>Expires: ' . get_date($newtime, 'DATE') . '';
         $HTMLOUT .= '</td></tr></table>';
     }
 } else { // Shouldn't be here
     header('HTTP/1.0 404 Not Found');
     $HTMLOUT = '';
     $HTMLOUT .= '<html><h1>Not Found</h1><p>The requested URL ' . htmlsafechars($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], '/') + 1) . " was not found on this server.</p>
-<hr />
+<hr>
 <address>{$_SERVER['SERVER_SOFTWARE']} Server at {$INSTALLER09['baseurl']} Port 80</address></body></html>\n";
     echo $HTMLOUT;
     die();

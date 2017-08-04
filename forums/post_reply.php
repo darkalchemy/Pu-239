@@ -1,19 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/**********************************************************
- * New 2010 forums that don't suck for TB based sites....
- * pretty much coded page by page, but coming from a
- * history ot TBsourse and TBDev and the many many
- * coders who helped develop them over time.
- * proper credits to follow :)
- *
- * beta monday aug 2nd 2010 v0.1
- * post reply
- *
- * Powered by Bunnies!!!
- **********************************************************/
 if (!defined('BUNNY_FORUMS')) {
     $HTMLOUT = '';
     $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -187,7 +172,7 @@ $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpa
 	<tr><td class="forum_head" colspan="2"><span style="font-weight: bold;">' . $lang['fe_preview'] . '</span></td></tr>
 	<tr><td width="80" valign="top" class="one">' . avatar_stuff($CURUSER) . '</td>
 	<td valign="top" align="left" class="two">' . ($bb_code == 'yes' ? format_comment($body) : format_comment_no_bbcode($body)) . '</td>
-	</tr></table><br /><br />' : '') . '
+	</tr></table><br><br>' : '') . '
 	<form method="post" action="' . $INSTALLER09['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '" enctype="multipart/form-data">
 	<table align="center" width="80%" border="0" cellspacing="0" cellpadding="5">
 	<tr><td align="left" class="forum_head_dark" colspan="2">' . $lang['fe_compose'] . '</td></tr>
@@ -256,10 +241,10 @@ $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpa
 	<td align="left" class="two">' . BBcode($body) . $more_options . '
 	</td></tr>
 	<tr><td align="center" colspan="2" class="two">
-   Anonymous post : <input type="checkbox" name="anonymous" value="yes" /><br />
+   Anonymous post : <input type="checkbox" name="anonymous" value="yes" /><br>
    <img src="' . $INSTALLER09['pic_base_url'] . 'forums/subscribe.gif" alt="+" title="+" /> ' . $lang['fe_subscrib_to_tread'] . ' 
 	<input type="radio" name="subscribe" value="yes"' . ($subscribe == 'yes' ? ' checked="checked"' : '') . ' />yes 
-	<input type="radio" name="subscribe" value="no"' . ($subscribe == 'no' ? ' checked="checked"' : '') . ' />no<br />
+	<input type="radio" name="subscribe" value="no"' . ($subscribe == 'no' ? ' checked="checked"' : '') . ' />no<br>
 	<input type="submit" name="button" class="button" value="' . $lang['fe_preview'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
 	<input type="submit" name="button" class="button_tiny" value="' . $lang['fe_post'] . '" onmouseover="this.className=\'button_tiny_hover\'" onmouseout="this.className=\'button_tiny\'" />
 	</td></tr>
@@ -269,7 +254,7 @@ $res_posts = sql_query('SELECT p.id AS post_id, p.user_id, p.added, p.body, p.ic
 				u.id, u.username, u.class, u.donor, u.suspended, u.chatpost, u.leechwarn, u.pirate, u.king, u.warned, u.enabled, u.avatar, u.offensive_avatar 
 				FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id 
 				WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND' : '')) . ' topic_id=' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 0, 10');
-$HTMLOUT .= '<br /><span style="text-align: center;">' . $lang['fe_last_ten_posts_in_reverse_order'] . '</span>
+$HTMLOUT .= '<br><span style="text-align: center;">' . $lang['fe_last_ten_posts_in_reverse_order'] . '</span>
 	<table border="0" cellspacing="5" cellpadding="10" width="90%" align="center">';
 //=== lets start the loop \o/
 while ($arr = mysqli_fetch_assoc($res_posts)) {
@@ -283,14 +268,14 @@ while ($arr = mysqli_fetch_assoc($res_posts)) {
     $width = 100;
     if ($arr['anonymous'] == 'yes') {
         if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
-            $HTMLOUT .= '<tr><td class="' . $class_alt . '" align="center" width="100" valign="top"><img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" /><br /><i>' . $lang['fe_anonymous'] . '</i></td>';
+            $HTMLOUT .= '<tr><td class="' . $class_alt . '" align="center" width="100" valign="top"><img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" /><br><i>' . $lang['fe_anonymous'] . '</i></td>';
         } else {
-            $HTMLOUT .= '<tr><td class="' . $class_alt . '" align="center" width="100" valign="top">' . avatar_stuff($arr) . '<br /><i>' . $lang['fe_anonymous'] . '</i>[' . print_user_stuff($arr) . ']</td>';
+            $HTMLOUT .= '<tr><td class="' . $class_alt . '" align="center" width="100" valign="top">' . avatar_stuff($arr) . '<br><i>' . $lang['fe_anonymous'] . '</i>[' . print_user_stuff($arr) . ']</td>';
         }
     } else {
-        $HTMLOUT .= '<tr><td class="' . $class_alt . '" align="center" width="100" valign="top">' . avatar_stuff($arr) . '<br />' . print_user_stuff($arr) . '</td>';
+        $HTMLOUT .= '<tr><td class="' . $class_alt . '" align="center" width="100" valign="top">' . avatar_stuff($arr) . '<br>' . print_user_stuff($arr) . '</td>';
     }
     $HTMLOUT .= '<td class="' . $class . '" align="left" valign="top" colspan="2">' . ($arr['bbcode'] == 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body'])) . '</td></tr>';
 } //=== end while loop
 $HTMLOUT .= '</table>
-			</td></tr></table><br /><br />';
+			</td></tr></table><br><br>';

@@ -17,10 +17,11 @@ function docleanup($data)
 
     $msgs_buffer = $users_buffer = $users = [];
     $i = 1;
-    $sql = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username, u.modcomment, (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE correct = 0 AND user_id = t.user_id) AS incorrect
+    $gamenum = get_one_row('triviasettings', 'gamenum', 'WHERE gameon = 1');
+    $sql = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username, u.modcomment, (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE gamenum = ' . sqlesc($gamenum) . ' AND correct = 0 AND user_id = t.user_id) AS incorrect
                 FROM triviausers AS t
                 INNER JOIN users AS u ON u.id = t.user_id
-                WHERE t.correct = 1
+                WHERE t.correct = 1 AND gamenum = ' . sqlesc($gamenum) . '
                 GROUP BY t.user_id
                 ORDER BY correct DESC, incorrect ASC
                 LIMIT 10';
@@ -91,11 +92,10 @@ function docleanup($data)
     }
 
     sql_query('UPDATE triviaq SET asked = 0, current = 0') or sqlerr(__FILE__, __LINE__);
-    $correct = get_row_count('triviausers', 'WHERE correct = 1');
-    $incorrect = get_row_count('triviausers', 'WHERE correct = 0');
+    $correct = get_row_count('triviausers', 'WHERE gamenum = ' . sqlesc($gamenum) . ' AND correct = 1');
+    $incorrect = get_row_count('triviausers', 'WHERE gamenum = ' . sqlesc($gamenum) . ' AND correct = 0');
     sql_query('UPDATE triviasettings SET gameon = 0, finished = NOW(), correct = ' . sqlesc($correct) . ', incorrect = ' . sqlesc($incorrect) . ' WHERE gameon = 1') or sqlerr(__FILE__, __LINE__);
     sql_query('INSERT INTO triviasettings (gameon, started) VALUES (1, NOW())') or sqlerr(__FILE__, __LINE__);
-    sql_query('TRUNCATE TABLE triviausers') or sqlerr(__FILE__, __LINE__);
 
     if ($queries > 0) {
         write_log("Updated Trivia Questions Clean -------------------- Trivia Questions cleanup Complete using $queries queries --------------------");

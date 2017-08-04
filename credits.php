@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
@@ -184,10 +181,10 @@ if ($row = mysqli_fetch_array($res)) {
 
         $HTMLOUT .= "<tr><td><a target='_blank' class='altlink' href='" . $link . "'>" . htmlsafechars(CutName($name, 60)) . '</a>';
         if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
-            $HTMLOUT .= "&nbsp<a class='altlink_blue' href='?action=edit&amp;id=" . $id . "'>{$lang['credits_edit']}</a>&nbsp<a class='altlink_blue' href=\"javascript:confirm_delete(" . $id . ");\">{$lang['credits_delete']}</a>";
+            $HTMLOUT .= "&#160;<a class='altlink_blue' href='?action=edit&amp;id=" . $id . "'>{$lang['credits_edit']}</a>&#160;<a class='altlink_blue' href=\"javascript:confirm_delete(" . $id . ");\">{$lang['credits_delete']}</a>";
         }
 
-        $HTMLOUT .= "<br /><font class='small'>" . htmlsafechars($descr) . '</font></td>';
+        $HTMLOUT .= "<br><font class='small'>" . htmlsafechars($descr) . '</font></td>';
         $HTMLOUT .= '<td><b>' . htmlsafechars($category) . '</b></td>';
         $HTMLOUT .= '<td><b>' . format_comment($status) . '</b></td>';
         $HTMLOUT .= '<td>' . htmlsafechars($credit) . '</td></tr>';
@@ -199,7 +196,7 @@ if ($row = mysqli_fetch_array($res)) {
 $HTMLOUT .= '</table>';
 
 if ($CURUSER['class'] >= UC_SYSOP) { //I recommend a higher class like UC_CODER
-    $HTMLOUT .= "<br/>
+    $HTMLOUT .= "<br>
 	  <form method='post' action='" . $_SERVER['PHP_SELF'] . "'>
 	  <table width='80%' cellpadding='8' border='1' cellspacing='0'>
     <tr>

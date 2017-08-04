@@ -69,7 +69,7 @@ if ($lottery_config['enable']) {
   </tr>
 	<tr><td width='50%' class='table' align='left' valign='top'>Classes Allowed</td><td class='table' align='left'>";
     for ($i = UC_USER; $i <= UC_SYSOP; ++$i) {
-        $html .= "<label for='c{$i}'><input type='checkbox' value='{$i}' id='c{$i}' name='class_allowed[]'/> ".get_user_class_name($i).'</label><br/>';
+        $html .= "<label for='c{$i}'><input type='checkbox' value='{$i}' id='c{$i}' name='class_allowed[]'/> ".get_user_class_name($i).'</label><br>';
     }
     $html .= '</td></tr>';
     $html .= "

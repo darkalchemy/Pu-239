@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -46,7 +43,7 @@ if ($register_globals) {
 if ($action == 'do') {
     $host = preg_replace('/[^A-Za-z0-9.]/', '', $host);
     $HTMLOUT .= '<div class="error">';
-    $HTMLOUT .= '' . $lang['trace_out'] . '<br />';
+    $HTMLOUT .= '' . $lang['trace_out'] . '<br>';
     $HTMLOUT .= '<pre>';
     if ($unix) {
         system('' . 'traceroute ' . $host);
@@ -62,7 +59,7 @@ if ($action == 'do') {
     <form method="post" action="' . $_this_script_ . '">' . $lang['trace_host'] . '<input type="text" id=specialboxn name="host" value="' . $ip . '" />
     <input type="hidden" name="action" value="do"><input type="submit" value="' . $lang['trace_submit'] . '" class="button" />
    </form>';
-    $HTMLOUT .= '<br /><b>' . $system . '</b>';
+    $HTMLOUT .= '<br><b>' . $system . '</b>';
     $HTMLOUT .= '</body></html>';
 }
 echo stdhead($lang['trace_stdhead']) . $HTMLOUT . stdfoot();

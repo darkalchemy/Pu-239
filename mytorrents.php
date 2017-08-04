@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
@@ -67,7 +64,7 @@ if (!$count) {
     $pager = pager(20, $count, "mytorrents.php?{$pagerlink}");
     $res = sql_query("SELECT type, sticky, vip, descr, nuked, bump, nukereason, release_group, free, silver, comments, leechers, seeders, owner, IF(num_ratings < {$INSTALLER09['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating, id, name, save_as, numfiles, added, size, views, visible, hits, times_completed, category, description, username FROM torrents $where $orderby " . $pager['limit']);
     $HTMLOUT .= $pager['pagertop'];
-    $HTMLOUT .= '<br />';
+    $HTMLOUT .= '<br>';
     $HTMLOUT .= torrenttable($res, 'mytorrents');
     $HTMLOUT .= $pager['pagerbottom'];
 }

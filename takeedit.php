@@ -1,13 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/**
- * @Credits Retro-Neptune-Bigjoos
- * @Project TBDev.net 09 takeedit.php
- * @Category Addon Mods
- * @Date Monday, Aug 2, 2010
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'page_verify.php';

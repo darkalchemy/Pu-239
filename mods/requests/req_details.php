@@ -1,5 +1,4 @@
 <?php
-
 if (!defined('IN_REQUESTS')) {
     exit('No direct script access allowed');
 }
@@ -9,9 +8,6 @@ $stdfoot = [
         'popup',
     ],
 ];
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 $res = sql_query('SELECT r.*, r.added as utadded, u.username 
                   FROM requests AS r LEFT JOIN users AS u ON (u.id=r.userid) 
                   WHERE r.id = ' . $id) or sqlerr(__FILE__, __LINE__);
@@ -51,8 +47,8 @@ if ($num['torrentid'] == 0) {
     $HTMLOUT .= "<tr><td align='right' valign='top'><b>{$lang['details_fill_this']}</b></td>
 <td>" . ($CURUSER['id'] != $num['userid'] ? "
 <form method='post' action='viewrequests.php?id=" . $id . "&amp;req_filled'>
-    <strong>" . $INSTALLER09['baseurl'] . "/details.php?id=</strong><input type='text' size='10' name='torrentid' value='' /> <input type='submit' value='{$lang['details_fill']}' class='btn' /><br />
-{$lang['details_enter_id']}<br /></form>" : "{$lang['details_yours']}") . "</td>
+    <strong>" . $INSTALLER09['baseurl'] . "/details.php?id=</strong><input type='text' size='10' name='torrentid' value='' /> <input type='submit' value='{$lang['details_fill']}' class='btn' /><br>
+{$lang['details_enter_id']}<br></form>" : "{$lang['details_yours']}") . "</td>
 </tr>\n";
 } else {
     $HTMLOUT .= "<tr><td align='right' valign='top'><b>{$lang['details_filled']}</b></td><td><a class='altlink' href='details.php?id=" . $num['torrentid'] . "'><b>" . $INSTALLER09['baseurl'] . '/details.php?id=' . $num['torrentid'] . '</b></a></td></tr>';

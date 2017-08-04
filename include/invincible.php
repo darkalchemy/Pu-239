@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-// pdq 2010
 function invincible($id, $invincible = true, $bypass_bans = true)
 {
     global $CURUSER, $mc1, $INSTALLER09;

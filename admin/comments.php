@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -43,7 +40,7 @@ switch ($view) {
             " - <a href='staffpanel.php?tool=comments&amp;view=search'>{$lang['text_search']}</a>" .
             '</h3>' .
             "<hr class='separator' />" .
-            '<br />' .
+            '<br>' .
             "<table cellpadding='5' cellspacing='0' width='950px'>" .
             "<tr><td align='center' colspan='9'><strong><em>{$lang['text_all_comm']}</em></strong></td></tr>" .
             '<tr>' .
@@ -206,7 +203,7 @@ $HTMLOUT = "<h3><a href='staffpanel.php?tool=comments'>{$lang['text_overview']}<
     " - <a href='staffpanel.php?tool=comments&amp;view=search'>{$lang['text_search']}</a>" .
     '</h3>' .
     "<hr class='separator' />" .
-    '<br />' .
+    '<br>' .
     "<table cellpadding='5' cellspacing='0' width='950px'>" .
     "<tr><td align='center' colspan='9'><strong><em>{$lang['text_recent']}</em></strong></td></tr>" .
     '<tr>' .

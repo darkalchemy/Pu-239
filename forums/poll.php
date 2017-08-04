@@ -1,19 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/**********************************************************
- * New 2010 forums that don't suck for TB based sites....
- * this one is from scratch lol
- *
- * Forum Polls: beta tues july 20 2010 v0.1
- *
- * STILL TO DO:
- * - perhaps change all options to switch statement with vote on the top :)
- * - add some sort of admin page / option to list voters with IP and member names (to find cheaters / multi votes from same IP etc
- *
- * Powered by Bunnies!!!
- **********************************************************/
 if (!defined('BUNNY_FORUMS')) {
     $HTMLOUT = '';
     $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -258,7 +243,7 @@ switch ($action) {
 		<td class="three" align="center" valign="top"><img src="pic/forums/options.gif" alt="' . $lang['poll_options'] . '" title="' . $lang['poll_options'] . '" width="24" style="vertical-align: middle;" /></td>
 		<td class="three" align="right" valign="top"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_answers'] . ':</span></td>
 		<td class="three" align="left" valign="top"><textarea cols="30" rows="4" name="poll_answers" class="text_area_small"></textarea>
-		<br /> ' . $lang['poll_one_option_per_line_min_2_op_max_20_options_bbcode_is_enabled.'] . '</td>
+		<br> ' . $lang['poll_one_option_per_line_min_2_op_max_20_options_bbcode_is_enabled.'] . '</td>
 	</tr>
 	<tr>		
 		<td class="three" align="center" valign="middle"><img src="pic/forums/clock.png" alt="' . $lang['poll_clock'] . '" title="' . $lang['poll_clock'] . '" width="30" style="vertical-align: middle;" /></td>
@@ -305,14 +290,14 @@ switch ($action) {
 		<td class="three" align="center" valign="middle"></td>
 		<td class="three" align="right"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_change_vote'] . ':</span></td>
 		<td class="three" align="left"><input name="change_vote" value="yes" type="radio"' . ($change_vote === 'yes' ? ' checked="checked"' : '') . ' />Yes 
-													<input name="change_vote" value="no" type="radio"' . ($change_vote === 'no' ? ' checked="checked"' : '') . ' />No   <br /> ' . $lang['poll_allow_members_to_change_their_vote'] . '? ' . $lang['poll_default_is'] . ' "no"
+													<input name="change_vote" value="no" type="radio"' . ($change_vote === 'no' ? ' checked="checked"' : '') . ' />No   <br> ' . $lang['poll_allow_members_to_change_their_vote'] . '? ' . $lang['poll_default_is'] . ' "no"
 	</td>
 	</tr>
 	<tr>
 		<td class="forum_head_dark" colspan="3" align="center">
 		<input type="submit" name="button" class="button" value="' . $lang['fe_add_poll'] . '!" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
 	</tr>
-	</table></form><br /></td>
+	</table></form><br></td>
 	</tr>
 	</table>';
         $HTMLOUT .= $the_bottom_of_the_page;
@@ -507,7 +492,7 @@ switch ($action) {
 	<tr>
 		<td class="three" align="center" valign="top"><img src="pic/forums/options.gif" alt="' . $lang['poll_options'] . '" title="' . $lang['poll_options'] . '" width="24" style="vertical-align: middle;" /></td>
 		<td class="three" align="right" valign="top"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_answers'] . ':</span></td>
-		<td class="three" align="left" valign="top"><textarea cols="30" rows="4" name="poll_answers" class="text_area_small">' . strip_tags($poll_answers) . '</textarea><br /> 
+		<td class="three" align="left" valign="top"><textarea cols="30" rows="4" name="poll_answers" class="text_area_small">' . strip_tags($poll_answers) . '</textarea><br> 
 		' . $lang['poll_one_option_per_line_min_2_op_max_20_options_bbcode_is_enabled.'] . '</td>
 	</tr>
 	<tr>		
@@ -522,7 +507,7 @@ switch ($action) {
 											<option class="body" value="5">' . sprintf($lang['poll_in_x_days'], 5) . '</option>
 											<option class="body" value="6">' . sprintf($lang['poll_in_x_days'], 6) . '</option>
 											<option class="body" value="7">' . sprintf($lang['poll_in_x_week'], 1) . '</option>
-											</select> ' . $lang['poll_when_to_start_the_poll_default_is_start_now'] . '!"<br />
+											</select> ' . $lang['poll_when_to_start_the_poll_default_is_start_now'] . '!"<br>
 											Poll set to start: ' . get_date($poll_starts, '') . '</td>
 	</tr>
 	<tr>		
@@ -543,7 +528,7 @@ switch ($action) {
 											<option class="body" value="56">' . sprintf($lang['poll_in_x_months'], 2) . '</option>
 											<option class="body" value="84">' . sprintf($lang['poll_in_x_months'], 3) . '</option>
 											<option class="body" value="168">in 6 months</option>
-											</select> ' . $lang['poll_how_long_should_this_poll_run'] . '? ' . $lang['poll_default_is'] . ' "' . $lang['poll_run_forever'] . '"<br />
+											</select> ' . $lang['poll_how_long_should_this_poll_run'] . '? ' . $lang['poll_default_is'] . ' "' . $lang['poll_run_forever'] . '"<br>
 											Poll set to end: ' . ($poll_ends === 1356048000 ? '' . $lang['poll_run_forever'] . '' : get_date($poll_ends, '')) . '</td>
 	</tr>
 	<tr>		
@@ -558,13 +543,13 @@ switch ($action) {
 		<td class="three" align="center" valign="middle"></td>
 		<td class="three" align="right"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_change_vote'] . ':</span></td>
 		<td class="three" align="left"><input name="change_vote" value="yes" type="radio"' . ($change_vote === 'yes' ? ' checked="checked"' : '') . ' />Yes 
-													<input name="change_vote" value="no" type="radio"' . ($change_vote == 'no' ? ' checked="checked"' : '') . ' />No   <br /> ' . $lang['poll_allow_members_to_change_their_vote'] . '? ' . $lang['poll_default_is'] . ' "no"</td>
+													<input name="change_vote" value="no" type="radio"' . ($change_vote == 'no' ? ' checked="checked"' : '') . ' />No   <br> ' . $lang['poll_allow_members_to_change_their_vote'] . '? ' . $lang['poll_default_is'] . ' "no"</td>
 	</tr>
 	<tr>
 	<td class="forum_head_dark" colspan="3" align="center">
 	<input type="submit" name="button" class="button" value="' . $lang['poll_edit_poll'] . '!" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
 	</tr>
-	</table><br /></td>
+	</table><br></td>
 	</tr>
 	</table></form>';
         $HTMLOUT .= $the_bottom_of_the_page;

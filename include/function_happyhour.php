@@ -1,9 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//made by putyn @tbdev 06.11.2008
-//==09 Edits
 function happyHour($action)
 {
     global $INSTALLER09;

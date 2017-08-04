@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -47,15 +44,15 @@ if ($count > 0) {
             ++$i;
             $http_agent = htmlsafechars($data['browser']);
             if (strstr($http_agent, 'Opera')) {
-                $browser = "<img src='pic/referrers/opera.png' alt='Opera' title='Opera' width='25' height='25' border='0' />&nbsp;&nbsp;Opera";
+                $browser = "<img src='pic/referrers/opera.png' alt='Opera' title='Opera' width='25' height='25' border='0' />&#160;&#160;Opera";
             } elseif (strstr($http_agent, 'Konqueror')) {
-                $browser = "<img src='pic/referrers/konqueror.png' alt='konqueror' title='konqueror' width='25' height='25' border='0' />&nbsp;&nbsp;konqueror";
+                $browser = "<img src='pic/referrers/konqueror.png' alt='konqueror' title='konqueror' width='25' height='25' border='0' />&#160;&#160;konqueror";
             } elseif (strstr($http_agent, 'MSIE')) {
-                $browser = "<img src='pic/referrers/ie.png' alt='IE' title='IE' width='25' height='25' border='0' />&nbsp;&nbsp;IE";
+                $browser = "<img src='pic/referrers/ie.png' alt='IE' title='IE' width='25' height='25' border='0' />&#160;&#160;IE";
             } elseif (strstr($http_agent, 'Chrome')) {
-                $browser = "<img src='pic/referrers/chrome.png' alt='Chrome' title='Chrome' width='25' height='25' border='0' />&nbsp;&nbsp;Chrome";
+                $browser = "<img src='pic/referrers/chrome.png' alt='Chrome' title='Chrome' width='25' height='25' border='0' />&#160;&#160;Chrome";
             } elseif ((strstr($http_agent, 'Nav')) || (strstr($http_agent, 'Gold')) || (strstr($http_agent, 'X11')) || (strstr($http_agent, 'Mozilla')) || (strstr($http_agent, 'Netscape'))) {
-                $browser = "<img src='pic/referrers/firefox.png' alt='FireFox' title='FireFox' width='25' height='25' border='0' />&nbsp;&nbsp;Mozilla";
+                $browser = "<img src='pic/referrers/firefox.png' alt='FireFox' title='FireFox' width='25' height='25' border='0' />&#160;&#160;Mozilla";
             } else {
                 $browser = $lang['ref_unknow'];
             }
@@ -65,7 +62,7 @@ if ($count > 0) {
 			<td>' . get_date($data['date'], '') . '</td>
 			<td>' . $browser . '</td>
 			<td>' . htmlsafechars($data['ip']) . '</td>
-			<td>' . htmlsafechars($data['ip']) . ' ' . ((int)$data['uid'] ? "<a href='{$INSTALLER09['baseurl']}/userdetails.php?id=" . (int)$data['uid'] . "'>" : '') . '' . (htmlsafechars($data['username']) ? '&nbsp;[' . htmlsafechars($data['username']) . ']</a>' : "{$lang['ref_guest']}") . "
+			<td>' . htmlsafechars($data['ip']) . ' ' . ((int)$data['uid'] ? "<a href='{$INSTALLER09['baseurl']}/userdetails.php?id=" . (int)$data['uid'] . "'>" : '') . '' . (htmlsafechars($data['username']) ? '&#160;[' . htmlsafechars($data['username']) . ']</a>' : "{$lang['ref_guest']}") . "
 </td><td><a href='" . htmlsafechars($data['referer']) . "'>" . htmlsafechars(CutName($data['referer'], '50')) . "</a></td><!--<td><a href='" . htmlsafechars($data['page']) . "'>{$lang['ref_view']}</a></td>--></tr>";
             $browser = '';
         }

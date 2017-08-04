@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
@@ -145,7 +142,7 @@ if ($action == 'viewbug') {
         $HTMLOUT .= "
       <!--<h1 align='center'>There is <font color='#FF0000'>{$count}</font> new bug" . ($count > 1 ? 's' : '') . ". Please check them.</h1>-->
       <h1 align='center'>" . sprintf($lang['h1_count_bugs'], $count, ($count > 1 ? 's' : '')) . "</h1>
-      <font class='small' style='font-weight:bold;'>{$lang['delete_when']}</font><br/>
+      <font class='small' style='font-weight:bold;'>{$lang['delete_when']}</font><br>
       <table cellpadding='10' cellspacing='0' border='0' align='center'><tr>
       <td class='colhead' align='center'>{$lang['title']}</td>
       <td class='colhead' align='center'>{$lang['added']} / {$lang['by']}</td>
@@ -217,15 +214,15 @@ if ($action == 'viewbug') {
     }
     $HTMLOUT .= "<form method='post' action='bugs.php?action=add'>
                   <table cellpadding='5' cellspacing='0' border='0' align='center'>
-                  <tr><td class='rowhead'>{$lang['title']}:</td><td><input type='text' name='title' size='60'/><br/>{$lang['proper_title']}</td></tr>
-                  <tr><td class='rowhead'>{$lang['problem_bug']}:</td><td><textarea cols='60' rows='10' name='problem'></textarea><br/>{$lang['describe_problem']}</td></tr>
+                  <tr><td class='rowhead'>{$lang['title']}:</td><td><input type='text' name='title' size='60'/><br>{$lang['proper_title']}</td></tr>
+                  <tr><td class='rowhead'>{$lang['problem_bug']}:</td><td><textarea cols='60' rows='10' name='problem'></textarea><br>{$lang['describe_problem']}</td></tr>
                   <tr><td class='rowhead'>{$lang['priority']}:</td><td><select name='priority'>
                   <option value='0'>{$lang['select_one']}</option>
                   <option value='low'>{$lang['low']}</option>
                   <option value='high'>{$lang['high']}</option>
                   <option value='veryhigh'>{$lang['veryhigh']}</option>
                   </select>
-                  <br/>{$lang['only_veryhigh_when']}</td></tr>
+                  <br>{$lang['only_veryhigh_when']}</td></tr>
                   <tr><td colspan='2' align='center'><input type='submit' value='{$lang['submit_btn_send']}' class='btn'/></td></tr>
                   </table></form>";
 }

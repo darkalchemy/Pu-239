@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/*Block settings by elephant*/
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -12,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -138,8 +134,8 @@ if (!is_file($block_set_cache)) {
 }
 $HTMLOUT = '';
 $HTMLOUT .= '
-    <div>' . $lang['block_global'] . '</div><br />
-    <div><br />
+    <div>' . $lang['block_global'] . '</div><br>
+    <div><br>
     <form action="staffpanel.php?tool=block.settings&amp;action=block.settings" method="post">
     <div><h1>' . $lang['block_index'] . '</h1></div>
     <table width="10%" border="0" cellpadding="5" cellspacing="0"><tr>
@@ -595,7 +591,7 @@ function template_out($matches)
 {
     global $BLOCKS, $lang;
 
-    return $lang['block_yes'] . '<input name="' . $matches[1] . '" value="1" ' . ($BLOCKS[$matches[1]] == 1 ? 'checked="checked"' : '') . ' type="radio" />&nbsp;&nbsp;&nbsp;<input name="' . $matches[1] . '" value="0" ' . ($BLOCKS[$matches[1]] == 1 ? '' : 'checked="checked"') . ' type="radio" /> ' . $lang['block_no'];
+    return $lang['block_yes'] . '<input name="' . $matches[1] . '" value="1" ' . ($BLOCKS[$matches[1]] == 1 ? 'checked="checked"' : '') . ' type="radio" />&#160;&#160;&#160;<input name="' . $matches[1] . '" value="0" ' . ($BLOCKS[$matches[1]] == 1 ? '' : 'checked="checked"') . ' type="radio" /> ' . $lang['block_no'];
 }
 
 function redirect($url, $text, $time = 2)
@@ -617,8 +613,8 @@ function redirect($url, $text, $time = 2)
 	  <div>{$lang['block_redir1']}</div>
 		<div style='padding:8px'>
 		<div style='font-size:12px'>$text
-		<br />
-		<br />
+		<br>
+		<br>
 		<a href='{$INSTALLER09['baseurl']}/{$url}'>Click here if not redirected...</a>
 		</div>
 		</div>

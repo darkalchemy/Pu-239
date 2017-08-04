@@ -1,5 +1,4 @@
 <?php
-
 //==posts
 if (($forumposts = $mc1->get_value('forum_posts_' . $id)) === false) {
     $res = sql_query('SELECT COUNT(id) FROM posts WHERE user_id=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);

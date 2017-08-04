@@ -2,10 +2,10 @@
 
 $lang = [
     'wpeers_h2'       => 'Site peers',
-    'wpeers_there'    => 'There is approx&nbsp;',
-    'wpeers_peer'     => '&nbsp;peer',
+    'wpeers_there'    => 'There is approx&#160;',
+    'wpeers_peer'     => '&#160;peer',
     'wpeers_ps'       => "'s",
-    'wpeers_curr'     => '&nbsp;currently on the tracker',
+    'wpeers_curr'     => '&#160;currently on the tracker',
     'wpeers_user'     => 'User',
     'wpeers_torrent'  => 'Torrent',
     'wpeers_ip'       => 'IP',

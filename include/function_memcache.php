@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-// removetorrentfromhash djGrrr <3
 function remove_torrent_peers($id)
 {
     global $mc1;

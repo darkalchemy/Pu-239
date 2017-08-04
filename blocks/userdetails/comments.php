@@ -1,5 +1,4 @@
 <?php
-
 //==comments
 if (($torrentcomments = $mc1->get_value('torrent_comments_' . $id)) === false) {
     $res = sql_query('SELECT COUNT(id) FROM comments WHERE user=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);

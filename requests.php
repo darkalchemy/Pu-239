@@ -1,16 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/*****************************************************
- * a nice shiney new request system for TB based sited
- * based on a date I had back in highschool... don't ask!
- * this file is copyright my 1864 by the incredible hulk!
- * xox,
- * snuggs
- * PS. this file will self destruct in
- * 10, 9, 8, 7, 6, 5, 4, 3, 2, BOUM!!!
- ****************************************************/
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 dbconn(false);
@@ -98,7 +86,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
         if ($count = 0) {
             stderr('Error!', 'Sorry, there are no current requests!');
         }
-        $HTMLOUT .= (isset($_GET['new']) ? '<h1>Request Added!</h1>' : '') . (isset($_GET['request_deleted']) ? '<h1>Request Deleted!</h1>' : '') . $top_menu . '' . $menu . '<br />';
+        $HTMLOUT .= (isset($_GET['new']) ? '<h1>Request Added!</h1>' : '') . (isset($_GET['request_deleted']) ? '<h1>Request Deleted!</h1>' : '') . $top_menu . '' . $menu . '<br>';
         $HTMLOUT .= '<table border="0" cellspacing="0" cellpadding="5" align="center">
     <tr>
         <td class="colhead" align="center">Type</td>
@@ -119,14 +107,14 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
         <td class="' . $class . '" align="left"><a class="altlink" href="requests.php?action=request_details&amp;id=' . (int)$main_query_arr['request_id'] . '">' . htmlsafechars($main_query_arr['request_name'], ENT_QUOTES) . '</a></td>
         <td class="' . $class . '" align="center">' . get_date($main_query_arr['added'], 'LONG') . '</td>
         <td class="' . $class . '" align="center">' . number_format($main_query_arr['comments']) . '</td>  
-        <td class="' . $class . '" align="center">yes: ' . number_format($main_query_arr['vote_yes_count']) . '<br />
+        <td class="' . $class . '" align="center">yes: ' . number_format($main_query_arr['vote_yes_count']) . '<br>
         no: ' . number_format($main_query_arr['vote_no_count']) . '</td> 
         <td class="' . $class . '" align="center">' . print_user_stuff($main_query_arr) . '</td>
         <td class="' . $class . '" align="center">' . ($main_query_arr['filled_by_user_id'] > 0 ? '<a href="details.php?id=' . (int)$main_query_arr['filled_torrent_id'] . '" title="go to torrent page!!!"><span style="color: limegreen;font-weight: bold;">yes!</span></a>' : '<span style="color: red;font-weight: bold;">no</span>') . '</td>
     </tr>';
         }
         $HTMLOUT .= '</table>';
-        $HTMLOUT .= '' . $menu . '<br />';
+        $HTMLOUT .= '' . $menu . '<br>';
         echo stdhead('Requests', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
         break;
     //===========================================================================================//
@@ -197,8 +185,8 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
   <tr>
   <td class="two" align="right">votes:</td>
   <td class="two" align="left">
-  <span style="font-weight:bold;color: green;">yes: ' . number_format($arr['vote_yes_count']) . '</span> ' . $vote_yes . '<br />
-  <span style="font-weight:bold;color: red;">no: ' . number_format($arr['vote_no_count']) . '</span> ' . $vote_no . '<br /> ' . $your_vote_was . '</td>
+  <span style="font-weight:bold;color: green;">yes: ' . number_format($arr['vote_yes_count']) . '</span> ' . $vote_yes . '<br>
+  <span style="font-weight:bold;color: red;">no: ' . number_format($arr['vote_no_count']) . '</span> ' . $vote_no . '<br> ' . $your_vote_was . '</td>
   </tr>
   <tr>
   <td class="two" align="right">requested by:</td>
@@ -231,9 +219,9 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
                 $allrows[] = $subrow;
             }
             $HTMLOUT .= $commentbar . '<a name="comments"></a>';
-            $HTMLOUT .= ($count > $perpage) ? '' . $menu . '<br />' : '<br />';
+            $HTMLOUT .= ($count > $perpage) ? '' . $menu . '<br>' : '<br>';
             $HTMLOUT .= comment_table($allrows);
-            $HTMLOUT .= ($count > $perpage) ? '' . $menu . '<br />' : '<br />';
+            $HTMLOUT .= ($count > $perpage) ? '' . $menu . '<br>' : '<br>';
         }
         $HTMLOUT .= $commentbar;
         echo stdhead('Request details for: ' . htmlsafechars($arr['request_name'], ENT_QUOTES), true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
@@ -274,7 +262,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
    <tr>
    <td class="embedded" align="center"><h1 style="text-align: center;">New Request</h1>' . $top_menu . '
    <form method="post" action="requests.php?action=add_new_request" name="request_form" id="request_form">
-   ' . (isset($_POST['button']) && $_POST['button'] == 'Preview' ? '<br />
+   ' . (isset($_POST['button']) && $_POST['button'] == 'Preview' ? '<br>
 	<table border="0" cellspacing="0" cellpadding="5" align="center" width="700px">
    <tr>
    <td class="colhead" align="center" colspan="2"><h1>' . htmlsafechars($request_name, ENT_QUOTES) . '</h1></td>
@@ -301,14 +289,14 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
     ratio: ' . member_ratio($CURUSER['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $CURUSER['downloaded']) . get_user_ratio_image($CURUSER['uploaded'], ($INSTALLER09['ratio_free'] ? '1' : $CURUSER['downloaded'])) . '</td>
     </tr>
     </table>
-    <br />' : '') . '
+    <br>' : '') . '
     <table border="0" cellspacing="0" cellpadding="5" align="center" width="700px">
     <tr>
     <td class="colhead" align="center" colspan="2"><h1>Making a Request</h1></td>
     </tr>
     <tr>
     <td align="center" colspan="2" class="two">Before you make an request, <a class="altlink" href="search.php">Search</a> 
-    to be sure it has not yet been requested, offered, or uploaded!<br /><br />Be sure to fill in all fields!</td>
+    to be sure it has not yet been requested, offered, or uploaded!<br><br>Be sure to fill in all fields!</td>
     </tr>
     <tr>
     <td class="two" align="right">name:</td>
@@ -336,7 +324,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
     <input type="submit" name="button" class="button" value="Submit" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
     </tr>
     </table></form>
-	 </td></tr></table><br />
+	 </td></tr></table><br>
     <script type="text/javascript">
     /*<![CDATA[*/
     $(document).ready(function()	{
@@ -426,7 +414,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
    <h1 style="text-align: center;">Edit Request</h1>' . $top_menu . '
    <form method="post" action="requests.php?action=edit_request" name="request_form" id="request_form">
    <input type="hidden" name="id" value="' . $id . '" />
-   ' . (isset($_POST['button']) && $_POST['button'] == 'Preview' ? '<br />
+   ' . (isset($_POST['button']) && $_POST['button'] == 'Preview' ? '<br>
 	<table border="0" cellspacing="0" cellpadding="5" align="center" width="700px">
    <tr>
    <td class="colhead" align="center" colspan="2"><h1>' . htmlsafechars($request_name, ENT_QUOTES) . '</h1></td>
@@ -448,7 +436,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
    <td class="two" align="left"><a class="altlink" href="' . htmlsafechars($link, ENT_QUOTES) . '" target="_blank">' . htmlsafechars($link, ENT_QUOTES) . '</a></td>
    </tr>
    </table>
-   <br />' : '') . '
+   <br>' : '') . '
    <table border="0" cellspacing="0" cellpadding="5" align="center" width="700px">
    <tr>
    <td class="colhead" align="center" colspan="2"><h1>Edit Request</h1></td>
@@ -486,7 +474,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
    <input type="submit" name="button" class="button" value="Edit" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
    </tr>
    </table></form>
-	</td></tr></table><br />
+	</td></tr></table><br>
    <script type="text/javascript">
    /*<![CDATA[*/
    $(document).ready(function()	{
@@ -535,7 +523,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
 	 <tr>
     <td width="80" valign="top" class="two">' . avatar_stuff($CURUSER) . '</td>
     <td valign="top" align="left" class="two">' . format_comment($body) . '</td>
-    </tr></table><br />' : '') . '
+    </tr></table><br>' : '') . '
 	 <table align="center" width="80%" border="0" cellspacing="0" cellpadding="5">
 	 <tr>
     <td align="center" class="colhead" colspan="2"><h1>Add a comment to "' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '"</h1></td>
@@ -605,7 +593,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
 	 <tr>
     <td width="80" valign="top" class="two">' . $avatar . '</td>
     <td valign="top" align="left" class="two">' . format_comment($body) . '</td>
-    </tr></table><br />' : '') . '
+    </tr></table><br>' : '') . '
     <table align="center" width="80%" border="0" cellspacing="0" cellpadding="5">
 	 <tr>
     <td align="center" class="colhead" colspan="2"><h1>Edit comment to "' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '"</h1></td>
@@ -679,7 +667,7 @@ function comment_table($rows)
     <td align="center" width="80" class="' . $class . '" style="padding: 0px;">' . avatar_stuff($row) . '</td>
     <td class="' . $class . '">' . $text . '</td>
     </tr>
-    </table><br />';
+    </table><br>';
     }
     $comment_table .= '</td></tr></table>';
 

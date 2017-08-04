@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 //require_once (INCL_DIR . 'html_functions.php');
@@ -40,7 +37,7 @@ function radioinfo($radio)
         $history = [];
         foreach ($temph[0] as $temph2) {
             preg_match_all('/\<(TITLE|PLAYEDAT)>(.*?)<\/\\1\>/i', $temph2, $temph3, PREG_PATTERN_ORDER);
-            $history[] = '<b>&nbsp;' . $temph3[2][1] . '</b> <sub>(' . get_date($temph3[2][0], 'DATE') . ')</sub>';
+            $history[] = '<b>&#160;' . $temph3[2][1] . '</b> <sub>(' . get_date($temph3[2][0], 'DATE') . ')</sub>';
         }
         preg_match_all('/\<HOSTNAME>(.*?)<\/HOSTNAME>/', $xml, $temph);
         if (count($temph[1])) {
@@ -80,8 +77,8 @@ function radioinfo($radio)
         }
     } else {
         $html .= '<fieldset><legend>' . $INSTALLER09['site_name'] . ' radio</legend>
-    <font size="3" color="red"><img src="' . $INSTALLER09['pic_base_url'] . 'off1.gif" alt="Off" title="Off" border="0" /><br />
-    <b>Sorry ' . $CURUSER['username'] . ' Radio is currently Offline</b></font></fieldset><br />';
+    <font size="3" color="red"><img src="' . $INSTALLER09['pic_base_url'] . 'off1.gif" alt="Off" title="Off" border="0" /><br>
+    <b>Sorry ' . $CURUSER['username'] . ' Radio is currently Offline</b></font></fieldset><br>';
     }
 
     return $html;

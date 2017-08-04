@@ -237,7 +237,7 @@ class imdb_person extends person_base
                 if (!preg_match('!href="/title/tt(\d{7})/[^"]*"\s*>(.*?)</a>\s*</b>(.*?)!ims', $matches[1][$i], $mov)) {
                     continue;
                 }
-                if (preg_match('!<br/>\s*([^>]+)\s*</div!', $matches[0][$i], $char)) {
+                if (preg_match('!<br>\s*([^>]+)\s*</div!', $matches[0][$i], $char)) {
                     $chname = trim($char[1]);
                 }
                 $char = [];
@@ -249,7 +249,7 @@ class imdb_person extends person_base
                     $chname = $char[2];
                 } else {
                     $chid = '';
-                    if (preg_match('!<br/>\s*([^>]+)\s*<div!', $matches[0][$i], $char)) {
+                    if (preg_match('!<br>\s*([^>]+)\s*<div!', $matches[0][$i], $char)) {
                         $chname = trim($char[1]);
                     } else {
                         $chname = '';
@@ -456,7 +456,7 @@ class imdb_person extends person_base
                 $this->openpage("Bio", "person");
             }
             if (preg_match("!Nicknames</td>\s*<td>\s*(.*?)</td>\s*</tr>!ms", $this->page["Bio"], $match)) {
-                $nicks = explode("<br/>", $match[1]);
+                $nicks = explode("<br>", $match[1]);
                 foreach ($nicks as $nick) {
                     $nick = trim($nick);
                     if (!empty($nick)) {
@@ -511,10 +511,10 @@ class imdb_person extends person_base
                 $this->openpage("Bio", "person");
             }
             if (preg_match('|Date of Death</td>(.*?)</tr|ims', $this->page["Bio"], $match)) {
-                preg_match('|/search/name\?death_monthday=(\d+)-(\d+).*?>\d+\s*(&nbsp;)?(.*?)<|', $match[1], $daymon);
+                preg_match('|/search/name\?death_monthday=(\d+)-(\d+).*?>\d+\s*(&#160;)?(.*?)<|', $match[1], $daymon);
                 preg_match('|/search/name\?death_date=(\d{4})|ims', $match[1], $dyear);
-                if (!preg_match('/(\,\s*(&nbsp;)?([^\(]+))(&nbsp;)/ims', $match[1], $dloc)) {
-                    preg_match('!(\,\s*(&nbsp;)?([^\(]+?))\s*</td>!ims', $match[1], $dloc);
+                if (!preg_match('/(\,\s*(&#160;)?([^\(]+))(&#160;)/ims', $match[1], $dloc)) {
+                    preg_match('!(\,\s*(&#160;)?([^\(]+?))\s*</td>!ims', $match[1], $dloc);
                 }
                 preg_match('/\(([^\)]+)\)/ims', $match[1], $dcause);
                 $this->deathday = ["day" => @$daymon[2], "month" => @$daymon[4], "mon" => @$daymon[1], "year" => @$dyear[1], "place" => @trim(strip_tags($dloc[3])), "cause" => @$dcause[1]];
@@ -537,9 +537,9 @@ class imdb_person extends person_base
             if ($this->page["Bio"] == "") {
                 $this->openpage("Bio", "person");
             }
-            if (preg_match("!Height</td>\s*<td>\s*(?<imperial>.*?)\s*(&nbsp;)?\((?<metric>.*?)\)!m", $this->page["Bio"], $match)) {
-                $this->bodyheight["imperial"] = str_replace('&nbsp;', ' ', trim($match['imperial']));
-                $this->bodyheight["metric"] = str_replace('&nbsp;', ' ', trim($match['metric']));
+            if (preg_match("!Height</td>\s*<td>\s*(?<imperial>.*?)\s*(&#160;)?\((?<metric>.*?)\)!m", $this->page["Bio"], $match)) {
+                $this->bodyheight["imperial"] = str_replace('&#160;', ' ', trim($match['imperial']));
+                $this->bodyheight["metric"] = str_replace('&#160;', ' ', trim($match['metric']));
             }
         }
 
@@ -586,12 +586,12 @@ class imdb_person extends person_base
                     $children = '';
                     for ($i = 0; $i < count($matches[0]); ++$i) {
                         if ($i == 0) { // usually the "lifespan" of the relation
-                            if (preg_match('!(\(<a href="/date/(?<month>\d+)-(?<day>\d+).*>\s*\d+\s*(?<monthname>.*)<.*)?\s*(&nbsp;)?\s*(?<year>\d{4})\s+-!ms', $matches[0][0], $match)) { // from date
+                            if (preg_match('!(\(<a href="/date/(?<month>\d+)-(?<day>\d+).*>\s*\d+\s*(?<monthname>.*)<.*)?\s*(&#160;)?\s*(?<year>\d{4})\s+-!ms', $matches[0][0], $match)) { // from date
                                 $from = ["day" => $match['day'], "month" => $match['month'], "mon" => $match['monthname'], "year" => $match['year']];
                             } else {
                                 $from = ["day" => '', "month" => '', "mon" => '', "year" => ''];
                             }
-                            if (preg_match('!(.+?)\s+-\s+(<a href="/date/(?<month>\d+)-(?<day>\d+).*>\s*\d+\s*(?<monthname>.*)<.*)?\s*(&nbsp;)?\s*(?<year>\d{4})!ms', $matches[0][0], $match)) { // to date
+                            if (preg_match('!(.+?)\s+-\s+(<a href="/date/(?<month>\d+)-(?<day>\d+).*>\s*\d+\s*(?<monthname>.*)<.*)?\s*(&#160;)?\s*(?<year>\d{4})!ms', $matches[0][0], $match)) { // to date
                                 $to = ["day" => $match['day'], "month" => $match['month'], "mon" => $match['monthname'], "year" => $match['year']];
                             } else {
                                 $to = ["day" => '', "month" => '', "mon" => '', "year" => ''];
@@ -836,7 +836,7 @@ class imdb_person extends person_base
         $pos_e = strpos($this->page[$page], "<h5", $pos_s + 5);
         $skip = strlen($header) + 9;
         $block = substr($this->page[$page], $pos_s + $skip, $pos_e - $pos_s - $skip);
-        $arr = explode("<br/><br/>", $block);
+        $arr = explode("<br><br>", $block);
         $pc = count($arr);
         for ($i = 0; $i < $pc; ++$i) {
             if (preg_match('/href="\/title\/tt(\d+)\/">(.*)<\/a>\s*(\((\d+)\)|)/', $arr[$i], $match)) {

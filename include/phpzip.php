@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 //
 // PHPZip v1.2 by Sext (sext@neud.net) 2002-11-18
 // 	(Changed: 2003-03-01)
@@ -200,10 +197,10 @@ class PHPZip
         }
         // Security checks
         if ($archiveName == '') {
-            echo '<html><title>Public Photo Directory - Download </title><body><br /><b>ERROR:</b> The download file was NOT SPECIFIED.</body></html>';
+            echo '<html><title>Public Photo Directory - Download </title><body><br><b>ERROR:</b> The download file was NOT SPECIFIED.</body></html>';
             exit;
         } elseif (!file_exists($archiveName)) {
-            echo '<html><title>Public Photo Directory - Download </title><body><br /><b>ERROR:</b> File not found.</body></html>';
+            echo '<html><title>Public Photo Directory - Download </title><body><br><b>ERROR:</b> File not found.</body></html>';
             exit;
         }
         header('Pragma: public');

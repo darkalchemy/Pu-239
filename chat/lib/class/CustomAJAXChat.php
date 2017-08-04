@@ -31,13 +31,13 @@ class CustomAJAXChat extends AJAXChat
     // Returns null if login is invalid
     public function getValidLoginUserData()
     {
-        global $CURUSER, $class_names;
+        global $CURUSER;
         //var_dump($CURUSER);
         //die();
         if (!empty($CURUSER) && $CURUSER['enabled'] !== 'no' && $CURUSER['chatpost'] != 0) {
             $userData['userID'] = $CURUSER['id'];
             $userData['userName'] = $this->trimUserName($CURUSER['username']);
-            $userData['userClass'] = $class_names[$CURUSER['class']];
+            $userData['userClass'] = get_user_class_name($CURUSER['class']);
             $userData['userRole'] = $CURUSER['class'];
             $userData['channels'] = [0];
             if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
@@ -53,14 +53,16 @@ class CustomAJAXChat extends AJAXChat
     // Make sure channel names don't contain any whitespace
     public function &getChannels()
     {
+        $validChannels = [];
         if ($this->_channels === null) {
             $this->_channels = [];
 
             $customUsers = $this->getCustomUsers();
 
-            // Get the channels, the user has access to:
-            $validChannels = $customUsers[$this->getUserID()]['channels'];
-            //file_put_contents('/var/log/nginx/ajaxchat.log', json_encode($validChannels) . PHP_EOL, FILE_APPEND);
+            if (!empty($this->getUserID())) {
+                // Get the channels, the user has access to:
+                $validChannels = $customUsers[$this->getUserID()]['channels'];
+            }
 
             // Add the valid channels to the channel list (the defaultChannelID is always valid):
             foreach ($this->getAllChannels() as $key => $value) {

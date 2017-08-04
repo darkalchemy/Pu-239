@@ -1,20 +1,19 @@
-<?xml version="1.0" encoding="[CONTENT_ENCODING/]"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="[LANG_CODE/]" lang="[LANG_CODE/]" dir="[BASE_DIRECTION/]">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta http-equiv="Content-Type" content="[CONTENT_TYPE/]"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="[CONTENT_TYPE/]" />
     <title>[LANG]title[/LANG]</title>
     [STYLE_SHEETS/]
     <!--[if lt IE 8]>
-    <script type="text/javascript">var isIElt8 = true;</script><![endif]-->
-    <script src="js/chat.js?[CODE_VERSION/]" type="text/javascript" charset="UTF-8"></script>
-    <script src="js/custom.js?[CODE_VERSION/]" type="text/javascript" charset="UTF-8"></script>
-    <script src="js/lang/[LANG_CODE/].js?[CODE_VERSION/]" type="text/javascript" charset="UTF-8"></script>
-    <script src="js/config.js?[CODE_VERSION/]" type="text/javascript" charset="UTF-8"></script>
-    <script src="js/FABridge.js?[CODE_VERSION/]" type="text/javascript" charset="UTF-8"></script>
-    <script type="text/javascript">
+    <script>var isIElt8 = true;</script><![endif]-->
+    <script src="js/chat.js" charset="UTF-8"></script>
+    <script src="js/custom.js" charset="UTF-8"></script>
+    <script src="js/lang/[LANG_CODE/].js" charset="UTF-8"></script>
+    <script src="js/config.js" charset="UTF-8"></script>
+    <script src="js/FABridge.js" charset="UTF-8"></script>
+    <script>
         // <![CDATA[
         ajaxChat.view = {
             debounce: false,
@@ -563,7 +562,7 @@
         Thanks,
         Sebastian Tschan
     //-->
-    <div id="copyright"><a href="https://blueimp.net/ajax/">AJAX Chat</a> &copy; <a href="https://blueimp.net">blueimp.net</a>
+    <div id="copyright"><a href="https://blueimp.net/ajax/">AJAX Chat</a> &#169; <a href="https://blueimp.net">blueimp.net</a>
     </div>
 </div>
 <div id="flashInterfaceContainer"></div>

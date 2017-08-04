@@ -51,11 +51,11 @@ $lang = [
     'clog_delete'                => '&#350;terge',
     //latest forum posts
     'latestposts_title'          => $INSTALLER09['latest_posts_limit'] . ' Latest Forum Posts',
-    'latestposts_topic_title'    => 'Titlu&nbsp;subiect',
+    'latestposts_topic_title'    => 'Titlu&#160;subiect',
     'latestposts_replies'        => 'R&#259;spunsuri',
     'latestposts_views'          => 'Vizualiz&#259;ri',
-    'latestposts_last_post'      => 'Ultima &nbsp;Postare',
-    'latestposts_posted_at'      => 'Postat&nbsp;la',
+    'latestposts_last_post'      => 'Ultima &#160;Postare',
+    'latestposts_posted_at'      => 'Postat&#160;la',
     'latestposts_no_posts'       => 'Nu s-au g&#259;sit post&#259;ri',
     //Stats
     'index_stats_title'          => 'Statistici',
@@ -89,10 +89,10 @@ Administratorul site-ului (%s)  nu poate fi tras la r&#259;spundere pentru ceea 
 V&#259; este interzis s&#259; folosi&#355;i acest site pentru a distribui orice fel de material (date) dac&#259; nu ave&#355;i drepturi legale asupra de&#355;inerii &#351;i transmiterii lui.
 Este obliga&#355;ia dumneavoastra s&#259; v&#259; conforma&#355;i acestor termeni de utilizare. ',
     //last24
-    'index_last24_nousers'       => 'Nici&nbsp;un&nbsp;utilizator&nbsp;activ&nbsp;&#238;n&nbsp;ultimele&nbsp;15&nbsp;minute.',
-    'index_last24_list'          => '&nbsp;-&nbsp;Lista&nbsp;este&nbsp;actualizat&#259;&nbsp;la fiecare or&#259;',
+    'index_last24_nousers'       => 'Nici&#160;un&#160;utilizator&#160;activ&#160;&#238;n&#160;ultimele&#160;15&#160;minute.',
+    'index_last24_list'          => '&#160;-&#160;Lista&#160;este&#160;actualizat&#259;&#160;la fiecare or&#259;',
     'index_last24_during'        => ' - &#238;n ultimele 24 de ore',
-    'index_last24_most'          => 'Cele mai multe vizite &#238;n 24 de ore au fost de la&nbsp;',
+    'index_last24_most'          => 'Cele mai multe vizite &#238;n 24 de ore au fost de la&#160;',
     'index_last24_on'            => ' la data de ',
     //global show hide
     'index_hide_show'            => '[Ascunde/Arat&#259;]',
@@ -151,10 +151,10 @@ Este obliga&#355;ia dumneavoastra s&#259; v&#259; conforma&#355;i acestor termen
     'index_news_title'           => 'Adaug&#259; / Editeaz&#259;',
     'index_news_ed'              => 'Editeaz&#259; &#351;tiri',
     'index_news_del'             => 'Sterge &#351;tiri',
-    'index_news_added'           => '&nbsp;-&nbsp;Ad&#259;ugat de ',
+    'index_news_added'           => '&#160;-&#160;Ad&#259;ugat de ',
     'index_news_anon'            => 'Anonim',
     'index_news_not'             => 'Nu avem nici o &#351;tire &#238;n prezent :-P',
-    'index_news_txt'             => '&nbsp;-&nbsp;',
+    'index_news_txt'             => '&#160;-&#160;',
     //torrent freak
     'index_torr_freak'           => ' &#350;tiri de pe Torrent Freak',
 ];

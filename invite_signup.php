@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once CACHE_DIR . 'timezones.php';
@@ -147,10 +144,10 @@ foreach ($questions as $sph) {
     $passhint .= "<option value='" . $sph['id'] . "'>" . $sph['question'] . "</option>\n";
 }
 $HTMLOUT .= "<tr><td align='right' class='heading'>{$lang['signup_select']}</td><td align='left'><select name='passhint'>\n$passhint\n</select></td></tr>
-		<tr><td align='right' class='heading'>{$lang['signup_enter']}</td><td align='left'><input type='text' size='40'  name='hintanswer' /><br /><span style='font-size: 1em;'>{$lang['signup_this_answer']}<br />{$lang['signup_this_answer1']}</span></td></tr>	
+		<tr><td align='right' class='heading'>{$lang['signup_enter']}</td><td align='left'><input type='text' size='40'  name='hintanswer' /><br><span style='font-size: 1em;'>{$lang['signup_this_answer']}<br>{$lang['signup_this_answer1']}</span></td></tr>	
       <tr><td align='right' class='heading'></td><td align='left'>
-      <input type='checkbox' name='rulesverify' value='yes' /> {$lang['signup_rules']}<br />
-      <input type='checkbox' name='faqverify' value='yes' /> {$lang['signup_faq']}<br />
+      <input type='checkbox' name='rulesverify' value='yes' /> {$lang['signup_rules']}<br>
+      <input type='checkbox' name='faqverify' value='yes' /> {$lang['signup_faq']}<br>
       <input type='checkbox' name='ageverify' value='yes' /> {$lang['signup_age']}</td></tr>
       " . ($INSTALLER09['captcha_on'] ? "<tr><td align='center' class='rowhead' colspan='2' id='captchainvite'></td></tr>" : '') . "
       <tr><td align='center' colspan='2'>{$lang['signup_click']} <strong>{$lang['signup_x']}</strong> {$lang['signup_click1']}</td></tr><tr>

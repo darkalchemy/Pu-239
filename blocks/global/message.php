@@ -1,5 +1,4 @@
 <?php
-
 //==Memcached message query
 if ($INSTALLER09['msg_alert'] && $CURUSER) {
     if (($unread = $mc1->get_value('inbox_new_' . $CURUSER['id'])) === false) {

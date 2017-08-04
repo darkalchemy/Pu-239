@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -153,7 +150,7 @@ if ($mode == 'news') {
     <td align='left' style='padding: 0px'>" . BBcode(false) . '</td></tr>';
     $HTMLOUT .= "<tr><td colspan='2' class='rowhead'>{$lang['news_sticky']}<input type='radio' checked='checked' name='sticky' value='yes' />{$lang['news_yes']}<input name='sticky' type='radio' value='no' />{$lang['news_no']}</td></tr><tr><td colspan='2' class='rowhead'>{$lang['news_anonymous']}<input type='radio' checked='checked' name='anonymous' value='yes' />{$lang['news_yes']}<input name='anonymous' type='radio' value='no' />{$lang['news_no']}</td></tr>\n
     <tr><td colspan='2' class='rowhead'><input type='submit' value='{$lang['news_okay']}' class='btn' /></td></tr>\n
-    </table></form><br /><br />\n";
+    </table></form><br><br>\n";
     while ($arr = mysqli_fetch_assoc($res)) {
         $newsid = (int)$arr['newsid'];
         $body = $arr['body'];
@@ -167,9 +164,9 @@ if ($mode == 'news') {
         - [<a href='staffpanel.php?tool=news&amp;mode=delete&amp;newsid=$newsid&amp;sure=1&amp;h=$hash'><b>{$lang['news_delete']}</b></a>]
         </td></tr></table>\n";
         $HTMLOUT .= begin_table(true);
-        $HTMLOUT .= "<tr valign='top'><td class='comment'><b>" . htmlsafechars($title) . '</b><br />' . format_comment($body) . "</td></tr>\n";
+        $HTMLOUT .= "<tr valign='top'><td class='comment'><b>" . htmlsafechars($title) . '</b><br>' . format_comment($body) . "</td></tr>\n";
         $HTMLOUT .= end_table();
-        $HTMLOUT .= '<br />';
+        $HTMLOUT .= '<br>';
     }
     $HTMLOUT .= end_frame();
     $HTMLOUT .= end_main_frame();

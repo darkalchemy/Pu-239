@@ -1,11 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/*******************************************************
- * //=== shit list for staff to keep track of bad or suspected members personally
- * for BTDev 2010ish
- *******************************************************/
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -15,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -156,11 +149,11 @@ if (mysqli_num_rows($res) == 0) {
             $shit .= ' <img src="pic/smilies/shit.gif" title="' . (int)$shit_list['shittyness'] . '' . $lang['shitlist_scale'] . '" alt="*" />';
         }
         $HTMLOUT .= (($i % 2 == 1) ? '<tr>' : '') . '
-      <td class="' . (($i % 2 == 0) ? 'one' : 'two') . '" align="center" valign="top" width="80">' . avatar_stuff($shit_list) . '<br />
+      <td class="' . (($i % 2 == 0) ? 'one' : 'two') . '" align="center" valign="top" width="80">' . avatar_stuff($shit_list) . '<br>
 
-      ' . print_user_stuff($shit_list) . '<br />
+      ' . print_user_stuff($shit_list) . '<br>
 
-      <b> [ ' . get_user_class_name($shit_list['class']) . ' ]</b><br />
+      <b> [ ' . get_user_class_name($shit_list['class']) . ' ]</b><br>
 
       <a class="altlink" href="staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=delete&amp;shit_list_id=' . (int)$shit_list['suspect_id'] . '" title="' . $lang['shitlist_remove1'] . '"><span class="btn" style="padding:1px;"><img style="vertical-align:middle;" src="' . $INSTALLER09['pic_base_url'] . '/polls/p_delete.gif">' . $lang['shitlist_remove2'] . '</span></a>
       <a class="altlink" href="pm_system.php?action=send_message&receiver=' . (int)$shit_list['suspect_id'] . '" title="' . $lang['shitlist_send1'] . '"><span class="btn" style="padding:1px;"><img style="vertical-align:middle;" src="' . $INSTALLER09['pic_base_url'] . '/message.gif">' . $lang['shitlist_send2'] . '</span></a></td>
@@ -170,7 +163,7 @@ if (mysqli_num_rows($res) == 0) {
       <b>' . $lang['shitlist_added'] . '</b> ' . get_date($shit_list['shit_list_added'], '') . '
       [ ' . get_date($shit_list['shit_list_added'], '', 0, 1) . ' ]
       <b>last seen:</b> ' . get_date($shit_list['last_access'], '') . ' 
-      [ ' . get_date($shit_list['last_access'], '', 0, 1) . ' ]<hr />
+      [ ' . get_date($shit_list['last_access'], '', 0, 1) . ' ]<hr>
       ' . format_comment($shit_list['text']) . '</td>' . (($i % 2 == 0) ? '</tr><tr><td class="colhead" align="center" colspan="4"></td></tr>' : '');
         ++$i;
     }

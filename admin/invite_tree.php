@@ -1,13 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/*******************************************
- * //=== new invite tree system for TBDev 2010ish  (c) my great schlong 2010 \\o\o/o//
- * I think this was based on a code that was in broken stones, but I have no idea
- * if anyone knows, please post and I'll give proper credit. - snuggs
- * UPDATED may 25 2010 fixed some html and added more security thanks pdq ;)
- *********************************************/
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -17,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -61,7 +52,7 @@ if ($id !== 0) {
             if (isset($_GET['deeper']) || isset($_GET['really_deep'])) {
                 $rez_invited_deeper = sql_query('SELECT id, username, email, uploaded, downloaded, status, warned, suspended, enabled, donor, email, ip, class, chatpost, leechwarn, pirate, king FROM users WHERE invitedby = ' . sqlesc($arr_invited['id']) . ' ORDER BY added');
                 if (mysqli_num_rows($rez_invited_deeper) > 0) {
-                    $deeper .= '<tr><td  class="two" colspan="6"><span style="font-weight: bold;">' . htmlsafechars($arr_invited['username']) . (substr($arr_invited['username'], -1) == 's' ? '\'' : '\'s') . '' . $lang['invite_invites'] . '</span><br />
+                    $deeper .= '<tr><td  class="two" colspan="6"><span style="font-weight: bold;">' . htmlsafechars($arr_invited['username']) . (substr($arr_invited['username'], -1) == 's' ? '\'' : '\'s') . '' . $lang['invite_invites'] . '</span><br>
 						<div align="center"><table width="95%" border="1" cellspacing="0" cellpadding="5">
 						<tr><td class="colhead"><span style="font-weight: bold;">' . $lang['invite_username'] . '</span></td>
 						<td class="colhead"><span style="font-weight: bold;">' . $lang['invite_email'] . '</span></td>
@@ -75,7 +66,7 @@ if ($id !== 0) {
                         if (isset($_GET['really_deep'])) {
                             $rez_invited_really_deep = sql_query('SELECT id, username, email, uploaded, downloaded, status, warned, suspended, enabled, donor, email, ip, class, chatpost, leechwarn, pirate, king FROM users WHERE invitedby = ' . sqlesc($arr_invited_deeper['id']) . ' ORDER BY added');
                             if (mysqli_num_rows($rez_invited_really_deep) > 0) {
-                                $really_deep .= '<tr><td  class="one" colspan="6"><span style="font-weight: bold;">' . htmlsafechars($arr_invited_deeper['username']) . (substr($arr_invited_deeper['username'], -1) == 's' ? '\'' : '\'s') . ' Invites:</span><br />
+                                $really_deep .= '<tr><td  class="one" colspan="6"><span style="font-weight: bold;">' . htmlsafechars($arr_invited_deeper['username']) . (substr($arr_invited_deeper['username'], -1) == 's' ? '\'' : '\'s') . ' Invites:</span><br>
 										<div align="center"><table width="95%" border="1" cellspacing="0" cellpadding="5">
 										<tr><td class="colhead"><span style="font-weight: bold;">' . $lang['invite_username'] . '</span></td>
 										<td class="colhead"><span style="font-weight: bold;">' . $lang['invite_email'] . '</span></td>
@@ -84,7 +75,7 @@ if ($id !== 0) {
 										<td class="colhead"><span style="font-weight: bold;">' . $lang['invite_ratio'] . '</span></td>
 										<td class="colhead"><span style="font-weight: bold;">' . $lang['invite_status'] . '</span></td></tr>';
                                 while ($arr_invited_really_deep = mysqli_fetch_assoc($rez_invited_really_deep)) {
-                                    $really_deep .= '<tr><td class="one">' . ($arr_invited_really_deep['status'] == 'pending' ? htmlsafechars($arr_invited_really_deep['username']) : format_username($arr_invited_really_deep) . '<br />' . $arr_invited_really_deep['ip']) . '
+                                    $really_deep .= '<tr><td class="one">' . ($arr_invited_really_deep['status'] == 'pending' ? htmlsafechars($arr_invited_really_deep['username']) : format_username($arr_invited_really_deep) . '<br>' . $arr_invited_really_deep['ip']) . '
 											</td><td class="one">' . htmlsafechars($arr_invited_really_deep['email']) . '</td>
 											<td class="one">' . mksize($arr_invited_really_deep['uploaded']) . '</td>
 											<td class="one">' . mksize($arr_invited_really_deep['downloaded']) . '</td>
@@ -94,7 +85,7 @@ if ($id !== 0) {
                                 $really_deep .= '</td></tr></table></div>';
                             }
                         }
-                        $deeper .= '<tr><td class="two">' . ($arr_invited_deeper['status'] == 'pending' ? htmlsafechars($arr_invited_deeper['username']) : format_username($arr_invited_deeper) . '<br />' . $arr_invited_deeper['ip']) . '</td>
+                        $deeper .= '<tr><td class="two">' . ($arr_invited_deeper['status'] == 'pending' ? htmlsafechars($arr_invited_deeper['username']) : format_username($arr_invited_deeper) . '<br>' . $arr_invited_deeper['ip']) . '</td>
 	`						<td class="two">' . htmlsafechars($arr_invited_deeper['email']) . '</td>
 							<td class="two">' . mksize($arr_invited_deeper['uploaded']) . '</td>
 							<td class="two">' . mksize($arr_invited_deeper['downloaded']) . '</td>
@@ -104,7 +95,7 @@ if ($id !== 0) {
                     $deeper .= (isset($_GET['really_deep']) ? $really_deep . '</table></div>' : '</td></tr></table></div>');
                 }
             }
-            $HTMLOUT .= '<tr><td>' . ($arr_invited['status'] == 'pending' ? htmlsafechars($arr_invited['username']) : format_username($arr_invited) . '<br />' . $arr_invited['ip']) . '</td>
+            $HTMLOUT .= '<tr><td>' . ($arr_invited['status'] == 'pending' ? htmlsafechars($arr_invited['username']) : format_username($arr_invited) . '<br>' . $arr_invited['ip']) . '</td>
 			<td>' . htmlsafechars($arr_invited['email']) . '</td>
 			<td>' . mksize($arr_invited['uploaded']) . '</td>
 			<td>' . mksize($arr_invited['downloaded']) . '</td>
@@ -163,7 +154,7 @@ if ($id !== 0) {
     $HTMLOUT .= '</select>
 			<input type="submit" value="' . $lang['invite_btn'] . '" class="btn" />
 			</form>
-			<br /><br />';
+			<br><br>';
     $aa = range('0', '9');
     $bb = range('a', 'z');
     $cc = array_merge($aa, $bb);
@@ -171,7 +162,7 @@ if ($id !== 0) {
     $HTMLOUT .= '<div align="center">';
     $count = 0;
     foreach ($cc as $L) {
-        $HTMLOUT .= ($count == 10) ? '<br /><br />' : '';
+        $HTMLOUT .= ($count == 10) ? '<br><br>' : '';
         if (!strcmp($L, $letter)) {
             $HTMLOUT .= ' <span class="btn" style="background:orange;">' . strtoupper($L) . '</span>';
         } else {
@@ -179,7 +170,7 @@ if ($id !== 0) {
         }
         ++$count;
     }
-    $HTMLOUT .= '</div><br />';
+    $HTMLOUT .= '</div><br>';
     //=== get stuff for the pager
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 0;
     $perpage = isset($_GET['perpage']) ? (int)$_GET['perpage'] : 20;
@@ -187,7 +178,7 @@ if ($id !== 0) {
     $arr_count = mysqli_fetch_row($res_count);
     $count = ($arr_count[0] > 0 ? $arr_count[0] : 0);
     list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'staffpanel.php?tool=invite_tree&amp;action=invite_tree');
-    $HTMLOUT .= ($arr_count[0] > $perpage) ? '' . $menu . '<br /><br />' : '<br /><br />';
+    $HTMLOUT .= ($arr_count[0] > $perpage) ? '' . $menu . '<br><br>' : '<br><br>';
     if ($arr_count[0] > 0) {
         $res = sql_query('SELECT users.*, countries.name, countries.flagpic FROM users FORCE INDEX ( username ) LEFT JOIN countries ON country = countries.id WHERE ' . $query . ' ORDER BY username ' . $LIMIT);
         $HTMLOUT .= '<table border="1" cellspacing="0" cellpadding="5">
@@ -211,6 +202,6 @@ if ($id !== 0) {
     } else {
         $HTMLOUT .= $lang['invite_search_none'];
     }
-    $HTMLOUT .= ($arr_count[0] > $perpage) ? '<br />' . $menu . '' : '<br /><br />';
+    $HTMLOUT .= ($arr_count[0] > $perpage) ? '<br>' . $menu . '' : '<br><br>';
 }
 echo stdhead($lang['invite_stdhead']) . $HTMLOUT . stdfoot();

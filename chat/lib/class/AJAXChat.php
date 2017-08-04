@@ -173,6 +173,7 @@ class AJAXChat
     public function startSession()
     {
         if (!session_id()) {
+/*
             // Set the session name:
             session_name($this->getConfig('sessionName'));
 
@@ -183,7 +184,7 @@ class AJAXChat
                 $this->getConfig('sessionCookieDomain'),
                 $this->getConfig('sessionCookieSecure')
             );
-
+*/
             // Start the session:
             sessionStart();
 
@@ -215,26 +216,12 @@ class AJAXChat
 
     public function isLoggedIn()
     {
-        return (bool)$this->getSessionVar('LoggedIn');
-    }
-
-    public function getSessionVar($key, $prefix = null)
-    {
-        if ($prefix === null) {
-            $prefix = $this->getConfig('sessionKeyPrefix');
-        }
-
-        // Return the session value if existing:
-        if (isset($_SESSION[$prefix . $key])) {
-            return $_SESSION[$prefix . $key];
-        } else {
-            return null;
-        }
+        return (bool)getSessionVar('LoggedIn');
     }
 
     public function getSessionIP()
     {
-        return $this->getSessionVar('IP');
+        return getSessionVar('IP');
     }
 
     public function logout($type = null)
@@ -286,7 +273,7 @@ class AJAXChat
 
     public function getUserID()
     {
-        return $this->getSessionVar('UserID');
+        return getSessionVar('UserID');
     }
 
     public function isUserOnline($userID = null)
@@ -327,7 +314,7 @@ class AJAXChat
             }
 
             while ($row = $result->fetch()) {
-                $row['ip'] = $this->ipFromStorageFormat($row['ip']);
+                $row['ip'] = ipFromStorageFormat($row['ip']);
                 array_push($this->_onlineUsersData, $row);
             }
 
@@ -367,21 +354,6 @@ class AJAXChat
     public function getDataBaseTable($table)
     {
         return $this->db->getName() ? '`' . $this->db->getName() . '`.' . $this->getConfig('dbTableNames', $table) : $this->getConfig('dbTableNames', $table);
-    }
-
-    public function ipFromStorageFormat($ip)
-    {
-        if (function_exists('inet_ntop')) {
-            // ipv4 & ipv6:
-            return @inet_ntop($ip);
-        }
-        // Only ipv4:
-        $unpacked = @unpack('Nlong', $ip);
-        if (isset($unpacked['long'])) {
-            return @long2ip($unpacked['long']);
-        }
-
-        return null;
     }
 
     public function chatViewLogout($type)
@@ -424,7 +396,7 @@ class AJAXChat
 
     public function getUserName()
     {
-        return $this->getSessionVar('UserName');
+        return getSessionVar('UserName');
     }
 
     public function insertChatBotMessage($channelID, $messageText, $ip = null, $mode = 0)
@@ -597,22 +569,12 @@ class AJAXChat
 
     public function getChannel()
     {
-        return $this->getSessionVar('Channel');
+        return getSessionVar('Channel');
     }
 
     public function setLoggedIn($bool)
     {
-        $this->setSessionVar('LoggedIn', $bool);
-    }
-
-    public function setSessionVar($key, $value, $prefix = null)
-    {
-        if ($prefix === null) {
-            $prefix = $this->getConfig('sessionKeyPrefix');
-        }
-
-        // Set the session value:
-        $_SESSION[$prefix . $key] = $value;
+        setSessionVar('LoggedIn', $bool);
     }
 
     public function initView()
@@ -660,7 +622,7 @@ class AJAXChat
 
     public function getUserRole()
     {
-        $userRole = $this->getSessionVar('UserRole');
+        $userRole = getSessionVar('UserRole');
         if ($userRole === null) {
             userlogin();
         }
@@ -1013,7 +975,7 @@ class AJAXChat
             }
 
             while ($row = $result->fetch()) {
-                $row['ip'] = $this->ipFromStorageFormat($row['ip']);
+                $row['ip'] = ipFromStorageFormat($row['ip']);
                 array_push($this->_bannedUsersData, $row);
             }
 
@@ -1062,37 +1024,37 @@ class AJAXChat
 
     public function setUserID($id)
     {
-        $this->setSessionVar('UserID', $id);
+        setSessionVar('UserID', $id);
     }
 
     public function setUserName($name)
     {
-        $this->setSessionVar('UserName', $name);
+        setSessionVar('UserName', $name);
     }
 
     public function setLoginUserName($name)
     {
-        $this->setSessionVar('LoginUserName', $name);
+        setSessionVar('LoginUserName', $name);
     }
 
     public function setUserRole($role)
     {
-        $this->setSessionVar('UserRole', $role);
+        setSessionVar('UserRole', $role);
     }
 
     public function setLoginTimeStamp($time)
     {
-        $this->setSessionVar('LoginTimeStamp', $time);
+        setSessionVar('LoginTimeStamp', $time);
     }
 
     public function setSessionIP($ip)
     {
-        $this->setSessionVar('IP', $ip);
+        setSessionVar('IP', $ip);
     }
 
     public function setSocketRegistrationID($value)
     {
-        $this->setSessionVar('SocketRegistrationID', $value);
+        setSessionVar('SocketRegistrationID', $value);
     }
 
     public function purgeLogs()
@@ -1180,24 +1142,6 @@ class AJAXChat
 
         $this->setChannel($channelID);
         $this->updateOnlineList();
-
-        // Channel leave message
-        $text = '/channelLeave ' . $this->getUserName();
-        $this->insertChatBotMessage(
-            $oldChannel,
-            $text,
-            null,
-            1
-        );
-
-        // Channel enter message
-        $text = '/channelEnter ' . $this->getUserName();
-        $this->insertChatBotMessage(
-            $this->getChannel(),
-            $text,
-            null,
-            1
-        );
 
         $this->addInfoMessage($channelName, 'channelSwitch');
         $this->addInfoMessage($channelID, 'channelID');
@@ -1367,7 +1311,7 @@ class AJAXChat
 
     public function setChannel($channel)
     {
-        $this->setSessionVar('Channel', $channel);
+        setSessionVar('Channel', $channel);
 
         // Save the channel enter timestamp:
         $this->setChannelEnterTimeStamp(time());
@@ -1382,19 +1326,19 @@ class AJAXChat
         }
 
         // Reset the logs view socket authentication session var:
-        if ($this->getSessionVar('logsViewSocketAuthenticated')) {
-            $this->setSessionVar('logsViewSocketAuthenticated', false);
+        if (getSessionVar('logsViewSocketAuthenticated')) {
+            setSessionVar('logsViewSocketAuthenticated', false);
         }
     }
 
     public function setChannelEnterTimeStamp($time)
     {
-        $this->setSessionVar('ChannelEnterTimeStamp', $time);
+        setSessionVar('ChannelEnterTimeStamp', $time);
     }
 
     public function getSocketRegistrationID()
     {
-        return $this->getSessionVar('SocketRegistrationID');
+        return getSessionVar('SocketRegistrationID');
     }
 
     public function updateOnlineList()
@@ -1461,12 +1405,12 @@ class AJAXChat
 
     public function getStatusUpdateTimeStamp()
     {
-        return $this->getSessionVar('StatusUpdateTimeStamp');
+        return getSessionVar('StatusUpdateTimeStamp');
     }
 
     public function setStatusUpdateTimeStamp($time)
     {
-        $this->setSessionVar('StatusUpdateTimeStamp', $time);
+        setSessionVar('StatusUpdateTimeStamp', $time);
     }
 
     public function checkAndRemoveInactive()
@@ -1480,12 +1424,12 @@ class AJAXChat
 
     public function getInactiveCheckTimeStamp()
     {
-        return $this->getSessionVar('InactiveCheckTimeStamp');
+        return getSessionVar('InactiveCheckTimeStamp');
     }
 
     public function setInactiveCheckTimeStamp($time)
     {
-        $this->setSessionVar('InactiveCheckTimeStamp', $time);
+        setSessionVar('InactiveCheckTimeStamp', $time);
     }
 
     public function chatViewLogin()
@@ -1565,9 +1509,9 @@ class AJAXChat
     public function initLogsViewSession()
     {
         if ($this->getConfig('socketServerEnabled')) {
-            if (!$this->getSessionVar('logsViewSocketAuthenticated')) {
+            if (!getSessionVar('logsViewSocketAuthenticated')) {
                 $this->updateLogsViewSocketAuthentication();
-                $this->setSessionVar('logsViewSocketAuthenticated', true);
+                setSessionVar('logsViewSocketAuthenticated', true);
             }
         }
     }
@@ -1860,22 +1804,22 @@ class AJAXChat
 
     public function getInsertedMessagesRateTimeStamp()
     {
-        return $this->getSessionVar('InsertedMessagesRateTimeStamp');
+        return getSessionVar('InsertedMessagesRateTimeStamp');
     }
 
     public function setInsertedMessagesRateTimeStamp($time)
     {
-        $this->setSessionVar('InsertedMessagesRateTimeStamp', $time);
+        setSessionVar('InsertedMessagesRateTimeStamp', $time);
     }
 
     public function setInsertedMessagesRate($rate)
     {
-        $this->setSessionVar('InsertedMessagesRate', $rate);
+        setSessionVar('InsertedMessagesRate', $rate);
     }
 
     public function getInsertedMessagesRate()
     {
-        return $this->getSessionVar('InsertedMessagesRate');
+        return getSessionVar('InsertedMessagesRate');
     }
 
     public function trimMessageText($text)
@@ -2010,7 +1954,7 @@ class AJAXChat
 
     public function getQueryUserName()
     {
-        return $this->getSessionVar('QueryUserName');
+        return getSessionVar('QueryUserName');
     }
 
     public function insertParsedMessageJoin($textParts)
@@ -2286,7 +2230,7 @@ class AJAXChat
 
     public function setQueryUserName($userName)
     {
-        $this->setSessionVar('QueryUserName', $userName);
+        setSessionVar('QueryUserName', $userName);
     }
 
     public function insertParsedMessageKick($textParts)
@@ -2842,7 +2786,7 @@ class AJAXChat
 
     public function getLoginUserName()
     {
-        return $this->getSessionVar('LoginUserName');
+        return getSessionVar('LoginUserName');
     }
 
     public function parseCustomCommands($text, $textParts)
@@ -2993,7 +2937,7 @@ class AJAXChat
 
     public function getChannelEnterTimeStamp()
     {
-        return $this->getSessionVar('ChannelEnterTimeStamp');
+        return getSessionVar('ChannelEnterTimeStamp');
     }
 
     public function getMessageFilter()
@@ -3001,14 +2945,6 @@ class AJAXChat
         $filterChannelMessages = '';
         if (!$this->getConfig('showChannelMessages')) {
             $filterChannelMessages = '  AND NOT (
-                                            text LIKE (\'/login%\')
-                                            OR
-                                            text LIKE (\'/logout%\')
-                                            OR
-                                            text LIKE (\'/channelEnter%\')
-                                            OR
-                                            text LIKE (\'/channelLeave%\')
-                                            OR
                                             text LIKE (\'/kick%\')
                                         )';
         }
@@ -3146,7 +3082,7 @@ class AJAXChat
             $xml .= ' userRole="' . $row['userRole'] . '"';
             $xml .= ' channelID="' . $row['channelID'] . '"';
             if ($this->getUserRole() >= UC_STAFF) {
-                $xml .= ' ip="' . $this->ipFromStorageFormat($row['ip']) . '"';
+                $xml .= ' ip="' . ipFromStorageFormat($row['ip']) . '"';
             }
             $xml .= '>';
             $xml .= '<username><![CDATA[' . $this->encodeSpecialChars($row['userName']) . ']]></username>';
@@ -3340,7 +3276,7 @@ class AJAXChat
 
     public function getLoginTimeStamp()
     {
-        return $this->getSessionVar('LoginTimeStamp');
+        return getSessionVar('LoginTimeStamp');
     }
 
     // Override to add custom session code right after the session has been started:

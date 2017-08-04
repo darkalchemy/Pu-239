@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -23,19 +20,29 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('bonusmanager'));
 $HTMLOUT = $count = '';
-$res = sql_query('SELECT * FROM bonus') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT * FROM bonus ORDER BY orderid, bonusname') or sqlerr(__FILE__, __LINE__);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['id']) || isset($_POST['points']) || isset($_POST['pointspool']) || isset($_POST['minpoints']) || isset($_POST['description']) || isset($_POST['enabled'])) {
+    if (isset($_POST['id']) || isset($_POST['orderid']) || isset($_POST['points']) || isset($_POST['pointspool']) || isset($_POST['minpoints']) || isset($_POST['description']) || isset($_POST['enabled']) || isset($_POST['minclass'])) {
         $id = 0 + $_POST['id'];
         $points = 0 + $_POST['bonuspoints'];
         $pointspool = 0 + $_POST['pointspool'];
         $minpoints = 0 + $_POST['minpoints'];
+        $minclass = 0 + $_POST['minclass'];
         $descr = htmlsafechars($_POST['description']);
         $enabled = 'yes';
         if (isset($_POST['enabled']) == '') {
             $enabled = 'no';
         }
-        $sql = sql_query('UPDATE bonus SET points = ' . sqlesc($points) . ', pointspool=' . sqlesc($pointspool) . ', minpoints=' . sqlesc($minpoints) . ', enabled = ' . sqlesc($enabled) . ', description = ' . sqlesc($descr) . ' WHERE id = ' . sqlesc($id));
+        $orderid = (int) $_POST['orderid'];
+        $sql = sql_query('UPDATE bonus SET orderid = '.sqlesc($orderid).', points = '.sqlesc($points).', pointspool='.sqlesc($pointspool).', minpoints='.sqlesc($minpoints).', minclass='.sqlesc($minclass).', enabled = '.sqlesc($enabled).', description = '.sqlesc($descr).' WHERE id = '.sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE bonus SET orderid = orderid + 1 WHERE orderid >= $orderid AND id != $id") or sqlerr(__FILE__, __LINE__);
+
+        $query = sql_query('SELECT id FROM bonus ORDER BY orderid, id');
+        $iter = 0;
+        while ($arr = mysqli_fetch_assoc($query)) {
+            sql_query('UPDATE bonus SET orderid = '.++$iter.' WHERE id = '.$arr['id']) or sqlerr(__FILE__, __LINE__);
+        }
+
         if ($sql) {
             header("Location: {$INSTALLER09['baseurl']}/staffpanel.php?tool=bonusmanage");
         } else {
@@ -52,22 +59,26 @@ while ($arr = mysqli_fetch_assoc($res)) {
 	  <table width='100%' border='2' cellpadding='8'>
 	  <tr>
 		<td class='colhead'>{$lang['bonusmanager_id']}</td>
+		<td class='colhead'>{$lang['bonusmanager_order_id']}</td>
 		<td class='colhead'>{$lang['bonusmanager_enabled']}</td>
 		<td class='colhead'>{$lang['bonusmanager_bonus']}</td>
 		<td class='colhead'>{$lang['bonusmanager_points']}</td>
 		<td class='colhead'>{$lang['bonusmanager_pointspool']}</td>
 		<td class='colhead'>{$lang['bonusmanager_minpoints']}</td>
+		<td class='colhead'>{$lang['bonusmanager_minclass']}</td>
 		<td class='colhead'>{$lang['bonusmanager_description']}</td>
-	  <td class='colhead'>{$lang['bonusmanager_type']}</td>
+		<td class='colhead'>{$lang['bonusmanager_type']}</td>
 		<td class='colhead'>{$lang['bonusmanager_quantity']}</td>
 		<td class='colhead'>{$lang['bonusmanager_action']}</td></tr> 
 	  <tr><td class='$class'>
 		<input name='id' type='hidden' value='" . (int)$arr['id'] . "' />" . (int)$arr['id'] . "</td>
+		<td class='$class'><input type='text' name='orderid' value='".(int) $arr['orderid']."' size='4' /></td>
 		<td class='$class'><input name='enabled' type='checkbox'" . ($arr['enabled'] == 'yes' ? " checked='checked'" : '') . " /></td>
 		<td class='$class'>" . htmlsafechars($arr['bonusname']) . "</td>
 		<td class='$class'><input type='text' name='bonuspoints' value='" . (int)$arr['points'] . "' size='4' /></td>
 		<td class='$class'><input type='text' name='pointspool' value='" . (int)$arr['pointspool'] . "' size='4' /></td>
 		<td class='$class'><input type='text' name='minpoints' value='" . (int)$arr['minpoints'] . "' size='4' /></td>
+		<td class='$class'><input type='text' name='minclass' value='".(int) $arr['minclass']."' size='4' /></td>
 		<td class='$class'><textarea name='description' rows='4' cols='10'>" . htmlsafechars($arr['description']) . "</textarea></td>
 		<td class='$class'>" . htmlsafechars($arr['art']) . "</td>
 		<td class='$class'>" . (($arr['art'] == 'traffic' || $arr['art'] == 'traffic2' || $arr['art'] == 'gift_1' || $arr['art'] == 'gift_2') ? (htmlsafechars($arr['menge']) / 1024 / 1024 / 1024) . ' GB' : htmlsafechars($arr['menge'])) . "</td>

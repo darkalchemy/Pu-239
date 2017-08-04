@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'user_functions.php';
@@ -43,5 +40,5 @@ while ((list($code, $url) = each($staff_smilies))) {
         $htmlout .= '</tr>';
     }
 }
-$htmlout .= "</tr></table><br /><div align='center'><a class='altlink' href='javascript: window.close()'><b>[ Close window ]</b></a></div></body></html>";
+$htmlout .= "</tr></table><br><div align='center'><a class='altlink' href='javascript: window.close()'><b>[ Close window ]</b></a></div></body></html>";
 echo $htmlout;

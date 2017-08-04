@@ -38,7 +38,7 @@ load_default_constants();
 <div class="jumbotron">
     <div class="container"><h1><?php echo $title; ?></h1>
         <p><?php echo $message; ?></p><?php if ('' != @$link_url) {
-            ?><p><a class="btn btn-primary" href="<?php echo $link_url; ?>"><?php echo $link_msg; ?>&nbsp;&raquo;</a>
+            ?><p><a class="btn btn-primary" href="<?php echo $link_url; ?>"><?php echo $link_msg; ?>&#160;&raquo;</a>
             </p><?php
         } ?></div>
 </div>

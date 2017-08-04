@@ -1,5 +1,4 @@
 <?php
-
 if (!defined('IN_OFFERS')) {
     exit('No direct script access allowed');
 }
@@ -12,10 +11,10 @@ if (($CURUSER['id'] == $arr['userid']) || ($CURUSER['class'] >= UC_MODERATOR) ||
     }
     sql_query("UPDATE OFFERSs SET torrentid = 0, acceptedby = 0 WHERE id = $id") or sqlerr(__FILE__, __LINE__);
     $HTMLOUT .= "<h1 align='center'>Success!</h1>" . "<p align='center'>Offer $id (" . htmlspecialchars($arr['offer']) . ") successfully reset.</p>
-<p align='center'><a class='altlink' href='viewoffers.php'><b>View all offers</b></a></p><br /><br />";
+<p align='center'><a class='altlink' href='viewoffers.php'><b>View all offers</b></a></p><br><br>";
 } else {
     $HTMLOUT .= "<table>
-<tr><td class='colhead' align='left'><h1>Error!</h1></td></tr><tr><td align='left'>" . 'Sorry, cannot reset a offer when you are not the owner, staff or person filling it.<br /><br /></td></tr>
+<tr><td class='colhead' align='left'><h1>Error!</h1></td></tr><tr><td align='left'>" . 'Sorry, cannot reset a offer when you are not the owner, staff or person filling it.<br><br></td></tr>
 </table>';
 }
 $HTMLOUT .= "</td></tr></table>\n";

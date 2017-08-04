@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 function pager($rpp, $count, $href, $opts = []) // thx yuna or whoever wrote it
 {
     $pages = ceil($count / $rpp);
@@ -21,13 +18,13 @@ function pager($rpp, $count, $href, $opts = []) // thx yuna or whoever wrote it
     } else {
         $page = $pagedefault;
     }
-    $pager = '<td align="center" class="pager">Page:</td><td class="pagebr">&nbsp;</td>';
+    $pager = '<td align="center" class="pager">Page:</td><td class="pagebr">&#160;</td>';
     $mp = $pages - 1;
     $as = '<b>&#171;</b>';
     if ($page >= 1) {
         $pager .= '<td  align="center" class="pager">';
         $pager .= "<a href=\"{$href}page=" . ($page - 1) . "\" style=\"text-decoration: none;\">$as</a>";
-        $pager .= '</td><td  align="center" class="pagebr">&nbsp;</td>';
+        $pager .= '</td><td  align="center" class="pagebr">&#160;</td>';
     }
     $as = '<b>&#187;</b>';
     $pager2 = $bregs = '';
@@ -48,7 +45,7 @@ function pager($rpp, $count, $href, $opts = []) // thx yuna or whoever wrote it
         for ($i = 0; $i < $pages; ++$i) {
             if (($i >= $dotspace && $i <= $curdotend) || ($i >= $curdotstart && $i < $dotend)) {
                 if (!$dotted) {
-                    $pagerarr[] = '<td  align="center" class="pager">...</td><td  align="center" class="pagebr">&nbsp;</td>';
+                    $pagerarr[] = '<td  align="center" class="pager">...</td><td  align="center" class="pagebr">&#160;</td>';
                 }
                 $dotted = 1;
                 continue;
@@ -61,14 +58,14 @@ function pager($rpp, $count, $href, $opts = []) // thx yuna or whoever wrote it
             }
             $text = $i + 1;
             if ($i != $page) {
-                $pagerarr[] = "<td  align=\"center\" class=\"pager\"><a title=\"$start&nbsp;-&nbsp;$end\" href=\"{$href}page=$i\" style=\"text-decoration: none;\"><b>$text</b></a></td><td  align=\"center\" class=\"pagebr\">&nbsp;</td>";
+                $pagerarr[] = "<td  align=\"center\" class=\"pager\"><a title=\"$start&#160;-&#160;$end\" href=\"{$href}page=$i\" style=\"text-decoration: none;\"><b>$text</b></a></td><td  align=\"center\" class=\"pagebr\">&#160;</td>";
             } else {
-                $pagerarr[] = "<td  align=\"center\" class=\"highlight\"><b>$text</b></td><td align=\"center\" class=\"pagebr\">&nbsp;</td>";
+                $pagerarr[] = "<td  align=\"center\" class=\"highlight\"><b>$text</b></td><td align=\"center\" class=\"pagebr\">&#160;</td>";
             }
         }
         $pagerstr = join('', $pagerarr);
         $pagertop = "<table align=\"center\" class=\"main\"><tr>$pager $pagerstr $pager2</tr></table>\n";
-        $pagerbottom = "<div align=\"center\">Overall $count items in " . ($i) . ' page' . ($i > 1 ? '\'s' : '') . ", showing $rpp per page.</div><br /><table align=\"center\" class=\"main\"><tr>$pager $pagerstr $pager2</tr></table>\n";
+        $pagerbottom = "<div align=\"center\">Overall $count items in " . ($i) . ' page' . ($i > 1 ? '\'s' : '') . ", showing $rpp per page.</div><br><table align=\"center\" class=\"main\"><tr>$pager $pagerstr $pager2</tr></table>\n";
     } else {
         $pagertop = $pager;
         $pagerbottom = $pagertop;
@@ -107,29 +104,29 @@ function pager_rep($data)
     }
     if ($pager['current_page'] < $pager['pages']) {
         $start = $data['start_value'] + $data['perpage'];
-        $next_link = "&nbsp;<a href='{$data['url']}&amp;$parameter=$start' title='Next'><span class='{$mini}pagelink'>&gt;</span></a>";
+        $next_link = "&#160;<a href='{$data['url']}&amp;$parameter=$start' title='Next'><span class='{$mini}pagelink'>&gt;</span></a>";
     }
     if ($pager['pages'] > 1) {
         if (isset($data['mini'])) {
             $pager['first_page'] = "<img src='pic/multipage.gif' alt='' title='' />";
         } else {
-            $pager['first_page'] = "<span style='background: #F0F5FA; border: 1px solid #072A66;padding: 1px 3px 1px 3px;'>{$pager['pages']} Pages</span>&nbsp;";
+            $pager['first_page'] = "<span style='background: #F0F5FA; border: 1px solid #072A66;padding: 1px 3px 1px 3px;'>{$pager['pages']} Pages</span>&#160;";
         }
         for ($i = 0; $i <= $pager['pages'] - 1; ++$i) {
             $RealNo = $i * $data['perpage'];
             $PageNo = $i + 1;
             if ($RealNo == $data['start_value']) {
-                $pager['page_span'] .= $mini ? "&nbsp;<a href='{$data['url']}&amp;$parameter={$RealNo}' title='$PageNo'><span  class='{$mini}pagelink'>$PageNo</span></a>" : "&nbsp;<span class='pagecurrent'>{$PageNo}</span>";
+                $pager['page_span'] .= $mini ? "&#160;<a href='{$data['url']}&amp;$parameter={$RealNo}' title='$PageNo'><span  class='{$mini}pagelink'>$PageNo</span></a>" : "&#160;<span class='pagecurrent'>{$PageNo}</span>";
             } else {
                 if ($PageNo < ($pager['current_page'] - $section)) {
-                    $pager['start'] = "<a href='{$data['url']}' title='Goto First'><span class='{$mini}pagelinklast'>&laquo;</span></a>&nbsp;";
+                    $pager['start'] = "<a href='{$data['url']}' title='Goto First'><span class='{$mini}pagelinklast'>&laquo;</span></a>&#160;";
                     continue;
                 }
                 if ($PageNo > ($pager['current_page'] + $section)) {
-                    $pager['end'] = "&nbsp;<a href='{$data['url']}&amp;$parameter=" . (($pager['pages'] - 1) * $data['perpage']) . "' title='Go To Last'><span class='{$mini}pagelinklast'>&raquo;</span></a>&nbsp;";
+                    $pager['end'] = "&#160;<a href='{$data['url']}&amp;$parameter=" . (($pager['pages'] - 1) * $data['perpage']) . "' title='Go To Last'><span class='{$mini}pagelinklast'>&raquo;</span></a>&#160;";
                     break;
                 }
-                $pager['page_span'] .= "&nbsp;<a href='{$data['url']}&amp;$parameter={$RealNo}' title='$PageNo'><span  class='{$mini}pagelink'>$PageNo</span></a>";
+                $pager['page_span'] .= "&#160;<a href='{$data['url']}&amp;$parameter={$RealNo}' title='$PageNo'><span  class='{$mini}pagelink'>$PageNo</span></a>";
             }
         }
         $float = $mini ? '' : ' fleft';

@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-// pdq 2010
 function stealth($id, $stealth = true)
 {
     global $CURUSER, $mc1, $INSTALLER09;

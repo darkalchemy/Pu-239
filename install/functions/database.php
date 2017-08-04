@@ -12,10 +12,10 @@ function db_test()
             $out .= '<div class="readable">Data base exists, data can be imported</div>';
             $out .= '<form action="index.php" method="post"><div class="info" style="text-align:center;"><input type="hidden" name="do" value="db_insert" /><input type="hidden" name="xbt" value="'.$_GET['xbt'].'" /><input type="submit" value="Import database" /></div></form>';
         } else {
-            $out .= '<div class="notreadable">There was an error while selecting the database<br/>'.$mysqli_test->error.'</div><div class="info" style="text-align:center"><input type="button" value="Reload" onclick="window.location.reload()"/></div>';
+            $out .= '<div class="notreadable">There was an error while selecting the database<br>'.$mysqli_test->error.'</div><div class="info" style="text-align:center"><input type="button" value="Reload" onclick="window.location.reload()"/></div>';
         }
     } else {
-        $out .= '<div class="notreadable">There was an error while connection to the database<br/>'.$mysqli_test->connect_error.'</div><div class="info" style="text-align:center"><input type="button" value="Reload" onclick="window.location.reload()"/></div>';
+        $out .= '<div class="notreadable">There was an error while connection to the database<br>'.$mysqli_test->connect_error.'</div><div class="info" style="text-align:center"><input type="button" value="Reload" onclick="window.location.reload()"/></div>';
     }
     $out .= '</fieldset>';
     echo $out;
@@ -38,7 +38,7 @@ function db_insert()
         $out .= '<div class="readable">Database was imported</div><div class="info" style="text-align:center"><input type="button" value="Finish" onclick="window.location.href=\'?step=3\'"/></div>';
         file_put_contents('step2.lock', 1);
     } else {
-        $out .= '<div class="notreadable">There was an error while importing the database<br/>'.$o.'</div>';
+        $out .= '<div class="notreadable">There was an error while importing the database<br>'.$o.'</div>';
     }
     $out .= '</fieldset>';
     echo $out;

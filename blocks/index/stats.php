@@ -1,5 +1,4 @@
 <?php
-
 //==Stats Begin
 if (($stats_cache = $mc1->get_value('site_stats_')) === false) {
     $stats_cache = mysqli_fetch_assoc(sql_query("SELECT *, seeders + leechers AS peers, seeders / leechers AS ratio, unconnectables / (seeders + leechers) AS ratiounconn FROM stats WHERE id = '1' LIMIT 1"));
@@ -88,7 +87,7 @@ $HTMLOUT .= "
 				</tbody>
 			</table>
 		</div>
-	</fieldset><hr />';
+	</fieldset><hr>';
 //==End 09 stats
 // End Class
 // End File

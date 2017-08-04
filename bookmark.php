@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//==bookmark.php - by pdq
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 dbconn();
@@ -139,7 +135,7 @@ if ($action == 'delete') {
 if (isset($_POST['returnto'])) {
     $ret = '<a href="' . htmlsafechars($_POST['returnto']) . "\">{$lang['bookmark_goback']}</a>";
 } else {
-    $ret = "<a href=\"bookmarks.php\">{$lang['bookmark_goto']}</a><br /><br />
+    $ret = "<a href=\"bookmarks.php\">{$lang['bookmark_goto']}</a><br><br>
 <a href=\"browse.php\">{$lang['bookmark_goto_browse']}</a>";
 }
 $HTMLOUT .= $ret;

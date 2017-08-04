@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 dbconn(false);
@@ -30,9 +27,9 @@ if (isset($_GET['action']) && htmlsafechars($_GET['action']) == 'editclass') { /
     die();
 }
 // HTML Code to allow changes to current class
-$HTMLOUT .= "<br />
+$HTMLOUT .= "<br>
 <font size='4'><b>{$lang['set_class_allow']}</b></font>
-<br /><br />
+<br><br>
 <form method='get' action='{$INSTALLER09['baseurl']}/setclass.php'>
 	<input type='hidden' name='action' value='editclass' />
 	<input type='hidden' name='returnto' value='userdetails.php?id=" . (int)$CURUSER['id'] . "' />
@@ -51,5 +48,5 @@ $HTMLOUT .= "</select></td></tr>
 		<tr><td colspan='3' align='center'><input type='submit' class='btn' value='{$lang['set_class_ok']}' /></td></tr>
 	</table>
 </form>
-<br />";
+<br>";
 echo stdhead("{$lang['set_class_temp']}") . $HTMLOUT . stdfoot();

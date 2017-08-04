@@ -78,7 +78,7 @@ if (isset($_GET['mid']) && preg_match('/^[0-9]+$/', $_GET['mid'])) {
     // Birthname
     $bn = $person->birthname();
     if (empty($bn)) {
-        echo "</TD><TD COLSPAN='2'>&nbsp;</TD></TR>\n";
+        echo "</TD><TD COLSPAN='2'>&#160;</TD></TR>\n";
     } else {
         echo "</TD><TD><B>Birth Name:</B></TD><TD>$bn</TD></TR>\n";
     }
@@ -108,7 +108,7 @@ if (isset($_GET['mid']) && preg_match('/^[0-9]+$/', $_GET['mid'])) {
         foreach ($sp as $spouse) {
             echo "<tr><td><a href='?mid=" . $spouse['imdb'] . '&engine=' . $engine . "'>" . $spouse['name'] . '</a></td>';
             if (empty($spouse['from'])) {
-                echo '<td>&nbsp;</td>';
+                echo '<td>&#160;</td>';
             } else {
                 echo '<td>' . $spouse['from']['day'] . '.' . $spouse['from']['month'] . ' ' . $spouse['from']['year'];
                 if (!empty($spouse['to'])) {
@@ -117,7 +117,7 @@ if (isset($_GET['mid']) && preg_match('/^[0-9]+$/', $_GET['mid'])) {
                 echo '</td>';
             }
             if (empty($spouse['comment']) && empty($spouse['children'])) {
-                echo '<td>&nbsp;</td></tr>';
+                echo '<td>&#160;</td></tr>';
             } else {
                 echo '<td>';
                 if (empty($spouse['comment']) && !empty($spouse['children'])) {
@@ -204,7 +204,7 @@ if (isset($_GET['mid']) && preg_match('/^[0-9]+$/', $_GET['mid'])) {
                 }
                 echo '</td><td>';
                 if (empty($film['chname'])) {
-                    echo '&nbsp;';
+                    echo '&#160;';
                 } else {
                     if (empty($film['chid'])) {
                         echo $film['chname'];
@@ -231,7 +231,7 @@ if (isset($_GET['mid']) && preg_match('/^[0-9]+$/', $_GET['mid'])) {
             } elseif (!empty($books[$i]['isbn'])) {
                 echo $books[$i]['isbn'] . '</td></tr>';
             } else {
-                echo '&nbsp;</td></tr>';
+                echo '&#160;</td></tr>';
             }
         }
         echo "</table></TD></TR>\n";
@@ -246,7 +246,7 @@ if (isset($_GET['mid']) && preg_match('/^[0-9]+$/', $_GET['mid'])) {
         for ($i = 0; $i < $tc; ++$i) {
             echo "<tr><td><a href='movie.php?mid=" . $pm[$i]['imdb'] . '&engine=' . $engine . "'>" . $pm[$i]['name'] . '</a></td><td>';
             if (empty($pm[$i]['year'])) {
-                echo '&nbsp;</td></tr>';
+                echo '&#160;</td></tr>';
             } else {
                 echo $pm[$i]['year'] . '</td></tr>';
             }
@@ -269,7 +269,7 @@ if (isset($_GET['mid']) && preg_match('/^[0-9]+$/', $_GET['mid'])) {
             }
             echo '</td><td>' . $iv[$i]['details'] . '</td><td>' . $iv[$i]['date']['full'] . '</td><td>';
             if (empty($iv[$i]['author'])) {
-                echo '&nbsp;</td></tr>';
+                echo '&#160;</td></tr>';
             } else {
                 if (empty($iv[$i]['auturl'])) {
                     echo $iv[$i]['author'];

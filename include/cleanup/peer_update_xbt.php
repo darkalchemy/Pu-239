@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/** sync torrent counts - pdq **/
 function docleanup($data)
 {
     global $INSTALLER09, $queries, $mc1;

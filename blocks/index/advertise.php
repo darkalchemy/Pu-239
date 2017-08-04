@@ -1,5 +1,4 @@
 <?php
-
 //==SVN
 $HTMLOUT .= "
     <fieldset class='header'>
@@ -9,7 +8,7 @@ $HTMLOUT .= "
                     <a href='https://github.com/darkalchemy/P-239-V1'>P-239 V1</a>
                 </div>
             </div>
-    </fieldset><hr />";
+    </fieldset><hr>";
 
 //==
 // End Class

@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 dbconn(false);
@@ -25,7 +22,7 @@ echo stdhead("{$lang['formats_download_title']}");
         </td>
     </tr>
 </table>
-<br/>
+<br>
 <table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>
     <tr>
         <td class='embedded'>
@@ -42,7 +39,7 @@ echo stdhead("{$lang['formats_download_title']}");
         </td>
     </tr>
 </table>
-<br/>
+<br>
 <table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>
     <tr>
         <td class='embedded'>
@@ -59,7 +56,7 @@ echo stdhead("{$lang['formats_download_title']}");
         </td>
     </tr>
 </table>
-<br/>
+<br>
 <table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>
     <tr>
         <td class='embedded'>
@@ -76,7 +73,7 @@ echo stdhead("{$lang['formats_download_title']}");
         </td>
     </tr>
 </table>
-<br/>
+<br>
 <table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>
     <tr>
         <td class='embedded'>
@@ -93,7 +90,7 @@ echo stdhead("{$lang['formats_download_title']}");
         </td>
     </tr>
 </table>
-<br/>
+<br>
 <table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>
     <tr>
         <td class='embedded'>
@@ -108,7 +105,7 @@ echo stdhead("{$lang['formats_download_title']}");
         </td>
     </tr>
 </table>
-<br/>
+<br>
 <?php
 echo stdfoot();
 ?>

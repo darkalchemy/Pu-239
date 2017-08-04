@@ -1,15 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/**********************************************************
- * New 2010 forums that don't suck for TB based sites....
- * pretty much coded page by page, but coming from a
- * history ot TBsourse and TBDev and the many many
- * coders who helped develop them over time.
- * proper credits to follow :)
- * Powered by Bunnies!!!
- **********************************************************/
 if (!defined('BUNNY_FORUMS')) {
     $HTMLOUT = '';
     $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -96,13 +85,13 @@ if (isset($_POST['button']) && $_POST['button'] == 'Edit') {
     $post_history = '<table border="0" cellspacing="5" cellpadding="10" width="90%">
 	<tr>
 	<td class="forum_head" align="left" valign="middle" width="120px">#' . $post_id . '  ' . print_user_stuff($arr_post) . '</td>
-	<td class="forum_head" align="left" valign="middle">' . (empty($arr_post['post_history']) ? '' . $lang['fe_first_post'] . '' : '' . $lang['fe_post_edited'] . '') . ' By: ' . print_user_stuff($CURUSER) . ' On: ' . date('l jS \of F Y h:i:s A', TIME_NOW) . ' GMT ' . ($post_title !== '' ? '&nbsp;&nbsp;&nbsp;&nbsp; ' . $lang['fe_title'] . ': <span style="font-weight: bold;">' . $post_title . '</span>' : '') . ($icon !== '' ? ' <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/' . $icon . '.gif" alt="' . $icon . '" title="' . $icon . '" />' : '') . '</td>
+	<td class="forum_head" align="left" valign="middle">' . (empty($arr_post['post_history']) ? '' . $lang['fe_first_post'] . '' : '' . $lang['fe_post_edited'] . '') . ' By: ' . print_user_stuff($CURUSER) . ' On: ' . date('l jS \of F Y h:i:s A', TIME_NOW) . ' GMT ' . ($post_title !== '' ? '&#160;&#160;&#160;&#160; ' . $lang['fe_title'] . ': <span style="font-weight: bold;">' . $post_title . '</span>' : '') . ($icon !== '' ? ' <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/' . $icon . '.gif" alt="' . $icon . '" title="' . $icon . '" />' : '') . '</td>
 	<tr>
-	<td class="two" align="left" valign="top" width="120px">' . (empty($arr_post['post_history']) ? ($can_edit ? '<span style="white-space:nowrap;">Desc: ' . ($arr_post['topic_desc'] !== '' ? 'yes' : 'none') . '</span><br />' : '') . '<span style="white-space:nowrap;">' . $lang['fe_title'] . ': ' . ($arr_post['post_title'] !== '' ? 'yes' : 'none') . '</span><br /><span style="white-space:nowrap;">' . $lang['fe_icon'] . ': ' . ($arr_post['icon'] !== '' ? 'yes' : 'none') . '</span><br /><span style="white-space:nowrap;">' . $lang['ep_bb_code'] . ': ' . ($arr_post['bbcode'] !== 'yes' ? 'off' : 'on') . '</span><br />' : ($can_edit ? '<span style="white-space:nowrap;">Topic Name: ' . ((isset($_POST['topic_name']) && $_POST['topic_name'] !== $arr_post['topic_name']) ? $changed : $not_changed) . '</span><br /><span style="white-space:nowrap;">Desc: ' . ((isset($_POST['topic_desc']) && $_POST['topic_desc'] !== $arr_post['topic_desc']) ? $changed : $not_changed) . '</span><br />' : '') . '<span style="white-space:nowrap;">' . $lang['fe_title'] . ': ' . ((isset($_POST['post_title']) && $_POST['post_title'] !== $arr_post['post_title']) ? $changed : $not_changed) . '</span><br /><span style="white-space:nowrap;">' . $lang['fe_icon'] . ': ' . ((isset($_POST['icon']) && $_POST['icon'] !== $arr_post['icon']) ? $changed : $not_changed) . '</span><br /><span style="white-space:nowrap;">' . $lang['ep_bb_code'] . ': ' . ((isset($_POST['show_bbcode']) && $_POST['show_bbcode'] !== $arr_post['bbcode']) ? $changed : $not_changed) . '</span><br /><span style="white-space:nowrap;">' . $lang['fe_body'] . ': ' . ((isset($_POST['body']) && $_POST['body'] !== $arr_post['body']) ? $changed : $not_changed) . '</span><br />') . '
+	<td class="two" align="left" valign="top" width="120px">' . (empty($arr_post['post_history']) ? ($can_edit ? '<span style="white-space:nowrap;">Desc: ' . ($arr_post['topic_desc'] !== '' ? 'yes' : 'none') . '</span><br>' : '') . '<span style="white-space:nowrap;">' . $lang['fe_title'] . ': ' . ($arr_post['post_title'] !== '' ? 'yes' : 'none') . '</span><br><span style="white-space:nowrap;">' . $lang['fe_icon'] . ': ' . ($arr_post['icon'] !== '' ? 'yes' : 'none') . '</span><br><span style="white-space:nowrap;">' . $lang['ep_bb_code'] . ': ' . ($arr_post['bbcode'] !== 'yes' ? 'off' : 'on') . '</span><br>' : ($can_edit ? '<span style="white-space:nowrap;">Topic Name: ' . ((isset($_POST['topic_name']) && $_POST['topic_name'] !== $arr_post['topic_name']) ? $changed : $not_changed) . '</span><br><span style="white-space:nowrap;">Desc: ' . ((isset($_POST['topic_desc']) && $_POST['topic_desc'] !== $arr_post['topic_desc']) ? $changed : $not_changed) . '</span><br>' : '') . '<span style="white-space:nowrap;">' . $lang['fe_title'] . ': ' . ((isset($_POST['post_title']) && $_POST['post_title'] !== $arr_post['post_title']) ? $changed : $not_changed) . '</span><br><span style="white-space:nowrap;">' . $lang['fe_icon'] . ': ' . ((isset($_POST['icon']) && $_POST['icon'] !== $arr_post['icon']) ? $changed : $not_changed) . '</span><br><span style="white-space:nowrap;">' . $lang['ep_bb_code'] . ': ' . ((isset($_POST['show_bbcode']) && $_POST['show_bbcode'] !== $arr_post['bbcode']) ? $changed : $not_changed) . '</span><br><span style="white-space:nowrap;">' . $lang['fe_body'] . ': ' . ((isset($_POST['body']) && $_POST['body'] !== $arr_post['body']) ? $changed : $not_changed) . '</span><br>') . '
 	</td>
 	<td class="one" align="left" valign="top">' . ($arr_post['bbcode'] == 'yes' ? format_comment($arr_post['body']) : format_comment_no_bbcode($arr_post['body'])) . '</td>
 	</tr>
-	</table><br />' . $arr_post['post_history'];
+	</table><br>' . $arr_post['post_history'];
     //=== let the sysop have the power to not show they edited their own post if they wish...
     if ($show_edited_by == 'no' && $CURUSER['class'] == UC_MAX) {
         $edit_reason = htmlsafechars($arr_post['edit_reason']);
@@ -195,12 +184,12 @@ $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpa
 	"<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr_post['topic_name'], ENT_QUOTES) . '</a>"</h1>
 	<form method="post" action="' . $INSTALLER09['baseurl'] . '/forums.php?action=edit_post&amp;topic_id=' . $topic_id . '&amp;post_id=' . $post_id . '&amp;page=' . $page . '" enctype="multipart/form-data">
 	
-	' . (isset($_POST['button']) && $_POST['button'] == '' . $lang['fe_preview'] . '' ? '<br />
+	' . (isset($_POST['button']) && $_POST['button'] == '' . $lang['fe_preview'] . '' ? '<br>
 	<table align="center" width="80%" border="0" cellspacing="5" cellpadding="5">
 	<tr><td class="forum_head" colspan="2"><span style="color: black; font-weight: bold;">' . $lang['fe_preview'] . '</span></td></tr>
 	<tr><td width="80" valign="top" class="one">' . avatar_stuff($CURUSER) . '</td>
 	<td valign="top" align="left" class="two">' . ($show_bbcode === 'yes' ? format_comment($body) : format_comment_no_bbcode($body)) . '</td>
-	</tr></table><br />' : '') . '
+	</tr></table><br>' : '') . '
 	<table align="center" width="80%" border="0" cellspacing="0" cellpadding="5">
 	<tr><td align="left" class="forum_head_dark" colspan="2">' . $lang['fe_compose'] . '</td></tr>
 	<tr><td align="right" class="two"><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_icon'] . '</span></td>
@@ -269,7 +258,7 @@ $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpa
 	</td></tr>
 	<tr><td align="right" class="two"><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_reason'] . '</span></td>
 	<td align="left" class="two"><input type="text" maxlength="20" name="edit_reason" value="' . trim(strip_tags($edit_reason)) . '" class="text_default" /> [ optional ] 
-	&nbsp;&nbsp;&nbsp;&nbsp;
+	&#160;&#160;&#160;&#160;
 	</td></tr>
 	' . (($CURUSER['class'] == UC_MAX or $CURUSER['id'] == $arr_post['id']) ? '<tr><td align="right" class="two"><span style="white-space:nowrap; font-weight: bold;">Edit By</span></td>
 	<td align="left" class="two">
@@ -286,7 +275,7 @@ $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpa
 	</table></form>';
 //=== get last ten posts
 $res_posts = sql_query('SELECT p.id AS post_id, p.user_id, p.added, p.body, p.icon, p.post_title, p.bbcode, p.anonymous, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.avatar, u.chatpost, u.leechwarn, u.pirate, u.king, u.offensive_avatar FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND' : '')) . '  topic_id=' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 1, 10');
-$HTMLOUT .= '<br /><span style="text-align: center;">' . $lang['fe_last_ten_posts_in_reverse_order'] . '</span>
+$HTMLOUT .= '<br><span style="text-align: center;">' . $lang['fe_last_ten_posts_in_reverse_order'] . '</span>
 	<table border="0" cellspacing="5" cellpadding="10" width="90%" align="center">';
 //=== lets start the loop \o/
 while ($arr = mysqli_fetch_assoc($res_posts)) {
@@ -301,14 +290,14 @@ while ($arr = mysqli_fetch_assoc($res_posts)) {
     $width = 100;
     if ($arr['anonymous'] == 'yes') {
         if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
-            $HTMLOUT .= '<tr><td class="' . $class_alt . '" align="center" width="100" valign="top"><img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" /><br /><i>' . $lang['fe_anonymous'] . '</i></td>';
+            $HTMLOUT .= '<tr><td class="' . $class_alt . '" align="center" width="100" valign="top"><img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" /><br><i>' . $lang['fe_anonymous'] . '</i></td>';
         } else {
-            $HTMLOUT .= '<tr><td class="' . $class_alt . '" align="center" width="100" valign="top">' . avatar_stuff($arr) . '<br /><i>Anonymous </i>[' . print_user_stuff($arr) . ']</td>';
+            $HTMLOUT .= '<tr><td class="' . $class_alt . '" align="center" width="100" valign="top">' . avatar_stuff($arr) . '<br><i>Anonymous </i>[' . print_user_stuff($arr) . ']</td>';
         }
     } else {
-        $HTMLOUT .= '<tr><td class="' . $class_alt . '" align="center" width="100" valign="top">' . avatar_stuff($arr) . '<br />' . print_user_stuff($arr) . '</td>';
+        $HTMLOUT .= '<tr><td class="' . $class_alt . '" align="center" width="100" valign="top">' . avatar_stuff($arr) . '<br>' . print_user_stuff($arr) . '</td>';
     }
     $HTMLOUT .= '<td class="' . $class . '" align="left" valign="top" colspan="2">' . ($arr['bbcode'] == 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body'])) . '</td></tr>';
 }
 //=== end while loop
-$HTMLOUT .= '</table><br /></td></tr></table><br />';
+$HTMLOUT .= '</table><br></td></tr></table><br>';

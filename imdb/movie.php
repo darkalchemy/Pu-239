@@ -328,7 +328,7 @@ if (isset($_GET['mid']) && preg_match('/^[0-9]+$/', $_GET['mid'])) {
         echo '<tr><td valign=top><b>Episodes:</b></td><td>';
         foreach ($episodes as $season => $ep) {
             foreach ($ep as $episodedata) {
-                echo '<b>Season ' . $episodedata['season'] . ', Episode ' . $episodedata['episode'] . ': <a href="' . $_SERVER['PHP_SELF'] . '?mid=' . $episodedata['imdbid'] . '">' . $episodedata['title'] . '</a></b> (<b>Original Air Date: ' . $episodedata['airdate'] . '</b>)<br>' . $episodedata['plot'] . '<br/><br/>';
+                echo '<b>Season ' . $episodedata['season'] . ', Episode ' . $episodedata['episode'] . ': <a href="' . $_SERVER['PHP_SELF'] . '?mid=' . $episodedata['imdbid'] . '">' . $episodedata['title'] . '</a></b> (<b>Original Air Date: ' . $episodedata['airdate'] . '</b>)<br>' . $episodedata['plot'] . '<br><br>';
             }
         }
         echo "</td></tr>\n";

@@ -1,5 +1,4 @@
 <?php
-
 //==Temp demotion
 if ($CURUSER['override_class'] != 255 && $CURUSER) { // Second condition needed so that this box isn't displayed for non members/logged out members.
     $htmlout .= "<li>

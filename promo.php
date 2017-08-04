@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
     if (!$q) {
         stderr('Error', 'Something wrong happned, please retry');
     } else {
-        stderr('Success', 'The promo link <b>' . htmlsafechars($promoname) . '</b> was added! here is the link <br /><input type="text" name="promo-link" value="' . $INSTALLER09['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $link . '" size="80" onclick="select();"  /><br/><a href="' . $_SERVER['PHP_SELF'] . '"><input type="button" value="Back to Promos" /></a>');
+        stderr('Success', 'The promo link <b>' . htmlsafechars($promoname) . '</b> was added! here is the link <br><input type="text" name="promo-link" value="' . $INSTALLER09['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $link . '" size="80" onclick="select();"  /><br><a href="' . $_SERVER['PHP_SELF'] . '"><input type="button" value="Back to Promos" /></a>');
     }
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'signup') {
     //==err("w00t");
@@ -260,9 +260,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
 						  <tr><td class='colhead' align='center' colspan='2'>Promo : " . htmlsafechars($ar['name']) . " </td></tr>
 						  <tr><td nowrap='nowrap' align='right'>Bonuses</td>
 							  <td align='left' width='100%'>
-								" . ($ar['bonus_upload'] > 0 ? '<b>upload</b>:&nbsp;' . mksize($ar['bonus_upload'] * 1073741824) . '<br />' : '') . '
-								' . ($ar['bonus_invites'] > 0 ? '<b>invites</b>:&nbsp;' . (0 + $ar['bonus_invites']) . '<br />' : '') . '
-								' . ($ar['bonus_karma'] > 0 ? '<b>karma</b>:&nbsp;' . (0 + $ar['bonus_karma']) . '<br />' : '') . "
+								" . ($ar['bonus_upload'] > 0 ? '<b>upload</b>:&#160;' . mksize($ar['bonus_upload'] * 1073741824) . '<br>' : '') . '
+								' . ($ar['bonus_invites'] > 0 ? '<b>invites</b>:&#160;' . (0 + $ar['bonus_invites']) . '<br>' : '') . '
+								' . ($ar['bonus_karma'] > 0 ? '<b>karma</b>:&#160;' . (0 + $ar['bonus_karma']) . '<br>' : '') . "
 								</td></tr>
 								<tr>
 							  <td nowrap='nowrap' align='right'>Username</td>
@@ -272,7 +272,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
 							<tr><td nowrap='nowrap' align='right'>Password again</td><td align='left' width='100%'><input type='password' name='passwordagain' size='40' /></td></tr>
 							<tr><td nowrap='nowrap' align='right'>Email</td><td align='left' width='100%'><input type='text' name='mail' size='40'/></td></tr>
                             <tr><td align='right' class='heading'>{$lang['signup_select']}</td><td align='left'><select name='passhint'>\n$passhint\n</select></td></tr>
-                            <tr><td align='right' class='heading'>{$lang['signup_enter']}</td><td align='left'><input type='text' size='40'  name='hintanswer' /><br /><span style='font-size: 1em;'>{$lang['signup_this_answer']}<br />{$lang['signup_this_answer1']}</span></td></tr>
+                            <tr><td align='right' class='heading'>{$lang['signup_enter']}</td><td align='left'><input type='text' size='40'  name='hintanswer' /><br><span style='font-size: 1em;'>{$lang['signup_this_answer']}<br>{$lang['signup_this_answer1']}</span></td></tr>
 							<tr><td colspan='2' class='colhead' align='center'><input type='hidden' name='link' value='" . ($link) . "'/><input type='hidden' name='do' value='signup'/><input type='submit' value='SignUp!' /></td></tr>
 						  </table> 
 						</form>";
@@ -318,7 +318,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
                     $HTMLOUT .= "<tr><td align='left' width='100'><a href='userdetails.php?id=" . (int)$ap['id'] . "'>" . htmlsafechars($ap['username']) . "</a></td><td  align='left' nowrap='nowrap' >" . get_date($ap['added'], 'LONG', 0, 1) . '</td></tr>';
                 }
                 $HTMLOUT .= "</table>
-						<br/>
+						<br>
 					<div align='center'><a href='javascript:close()'><input type='button' value='Close' /></a></div>
 					</body>
 					</html>";
@@ -339,7 +339,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
     if (mysqli_num_rows($r) == 0) {
         stderr('Error', 'There is no promo if you want to make one click <a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo">here</a>');
     } else {
-        $HTMLOUT .= begin_frame('Current Promos&nbsp;<font class="small"><a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo">- Add promo</a></font>');
+        $HTMLOUT .= begin_frame('Current Promos&#160;<font class="small"><a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo">- Add promo</a></font>');
         $HTMLOUT .= "<script type='text/javascript'>
 		/*<![CDATA[*/
 		function link(id)
@@ -369,7 +369,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
         while ($ar = mysqli_fetch_assoc($r)) {
             $active = (($ar['max_users'] == $ar['accounts_made']) || (($ar['added'] + (86400 * $ar['days_valid'])) < TIME_NOW)) ? false : true;
             $HTMLOUT .= '<tr ' . (!$active ? 'title="This promo has ended"' : '') . ">
-				<td nowrap='nowrap' align='center'>" . (htmlsafechars($ar['name'])) . "<br /><input type='text' " . (!$active ? 'disabled="disabled"' : '') . " value='" . ($INSTALLER09['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $ar['link']) . "' size='60' name='" . (htmlsafechars($ar['name'])) . "' onclick='select();' /></td>
+				<td nowrap='nowrap' align='center'>" . (htmlsafechars($ar['name'])) . "<br><input type='text' " . (!$active ? 'disabled="disabled"' : '') . " value='" . ($INSTALLER09['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $ar['link']) . "' size='60' name='" . (htmlsafechars($ar['name'])) . "' onclick='select();' /></td>
 				<td nowrap='nowrap' align='center'>" . (date('d/M-Y', $ar['added'])) . "</td>
 				<td nowrap='nowrap' align='center'>" . (date('d/M-Y', ($ar['added'] + (86400 * $ar['days_valid'])))) . "</td>
 				<td nowrap='nowrap' align='center'>" . (0 + $ar['max_users']) . "</td>

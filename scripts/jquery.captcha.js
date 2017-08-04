@@ -7,7 +7,7 @@
             captchaDir: "captcha",
             url: "./captcha.php",
             formId: "myForm",
-            text: "Verify that you are a human,<br />drag <span>scissors</span> into the circle.",
+            text: "Verify that you are a human,<br>drag <span>scissors</span> into the circle.",
             items: Array("pencil", "scissors", "clock", "heart", "note")
         };
 

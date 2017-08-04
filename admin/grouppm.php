@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//== Group pm - putyn
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -12,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -183,7 +179,7 @@ $HTMLOUT .= "<fieldset style='border:1px solid #333333; padding:5px;'>
 	<form action='staffpanel.php?tool=grouppm&amp;action=grouppm' method='post'>
 	  <table width='500' border='1' style='border-collapse:collapse' cellpadding='5' cellspacing='0' align='center'>
 		<tr>
-		  <td nowrap='nowrap' align='left' colspan='2'><b>{$lang['grouppm_sub']}</b> &nbsp;&nbsp;
+		  <td nowrap='nowrap' align='left' colspan='2'><b>{$lang['grouppm_sub']}</b> &#160;&#160;
 			<input type='text' name='subject' size='30' style='width:300px;'/></td>
 		</tr>
 		<tr>

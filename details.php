@@ -223,7 +223,7 @@ if ($CURUSER['id'] == $torrents['owner'] || $CURUSER['class'] >= UC_STAFF) {
 } else {
     $owned = 0;
 }
-$spacer = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+$spacer = '&#160;&#160;&#160;&#160;&#160;&#160;&#160;';
 if (empty($torrents['tags'])) {
     $keywords = 'No Keywords Specified.';
 } else {
@@ -307,7 +307,7 @@ $HTMLOUT .= "</div>
 		{$lang['details_thumbs']}
 			<div id='thumbsup'>
 			<a href=\"javascript:ThumbsUp('" . (int)$torrents['id'] . "')\">
-			<img src='{$INSTALLER09['pic_base_url']}thumb_up.png' alt='Thumbs Up' title='Thumbs Up' width='12' height='12' /></a>&nbsp;&nbsp;&nbsp;(" . $thumbs . ")
+			<img src='{$INSTALLER09['pic_base_url']}thumb_up.png' alt='Thumbs Up' title='Thumbs Up' width='12' height='12' /></a>&#160;&#160;&#160;(" . $thumbs . ")
 			</div>
 	   </div>
 		</div>\n";
@@ -327,7 +327,7 @@ $HTMLOUT .= '
 			Remember to show your gratitude and Thank the Uploader. <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/smile1.gif" alt="" />
 		</div>';
 /* end **/
-$HTMLOUT .= '<hr /><div>';
+$HTMLOUT .= '<hr><div>';
 $HTMLOUT .= "<!-- <ul class='nav nav-pills'>
     <li><a href='#Download'>Download</a></li>
     <li><a href='#Poster'>Poster</a></li>
@@ -353,18 +353,18 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
 				<td align="left">' . $torrent['freeimg'] . ' <b><font color="' . $torrent['free_color'] . '">Freeleech Slot In Use!</font></b> (only upload stats are recorded) - Expires: 12:01AM ' . $torrent['addfree'] . '
 				</td>
 			</tr>';
-        $freeslot = ($CURUSER['freeslots'] >= 1 ? "&nbsp;&nbsp;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=double\" rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><font color='" . $torrent['free_color'] . "'><b>Doubleseed Slot</b></font></a>&nbsp;- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
-        $freeslot_zip = ($CURUSER['freeslots'] >= 1 ? "&nbsp;&nbsp;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;zip=1\" rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><font color='" . $torrent['free_color'] . "'><b>Doubleseed Slot</b></font></a>&nbsp;- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
-        $freeslot_text = ($CURUSER['freeslots'] >= 1 ? "&nbsp;&nbsp;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;text=1\" rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><font color='" . $torrent['free_color'] . "'><b>Doubleseed Slot</b></font></a>&nbsp;- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
+        $freeslot = ($CURUSER['freeslots'] >= 1 ? "&#160;&#160;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=double\" rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><font color='" . $torrent['free_color'] . "'><b>Doubleseed Slot</b></font></a>&#160;- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
+        $freeslot_zip = ($CURUSER['freeslots'] >= 1 ? "&#160;&#160;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;zip=1\" rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><font color='" . $torrent['free_color'] . "'><b>Doubleseed Slot</b></font></a>&#160;- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
+        $freeslot_text = ($CURUSER['freeslots'] >= 1 ? "&#160;&#160;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;text=1\" rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><font color='" . $torrent['free_color'] . "'><b>Doubleseed Slot</b></font></a>&#160;- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
     } elseif (!$free_slot && $double_slot) {
         $HTMLOUT .= '<tr>
 				<td align="right" class="heading">Slots</td>
 				<td align="left">' . $torrent['doubleimg'] . ' <b><font color="' . $torrent['free_color'] . '">Doubleseed Slot In Use!</font></b> (upload stats x2) - Expires: 12:01AM ' . $torrent['addup'] . '
 				</td>
 			</tr>';
-        $freeslot = ($CURUSER['freeslots'] >= 1 ? "&nbsp;&nbsp;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=free\" rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><font color='" . $torrent['free_color'] . "'><b>Freeleech Slot</b></font></a>&nbsp;- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
-        $freeslot_zip = ($CURUSER['freeslots'] >= 1 ? "&nbsp;&nbsp;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;zip=1\" rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><font color='" . $torrent['free_color'] . "'><b>Freeleech Slot</b></font></a>&nbsp;- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
-        $freeslot_text = ($CURUSER['freeslots'] >= 1 ? "&nbsp;&nbsp;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;text=1\" rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><font color='" . $torrent['free_color'] . "'><b>Freeleech Slot</b></font></a>&nbsp;- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
+        $freeslot = ($CURUSER['freeslots'] >= 1 ? "&#160;&#160;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=free\" rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><font color='" . $torrent['free_color'] . "'><b>Freeleech Slot</b></font></a>&#160;- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
+        $freeslot_zip = ($CURUSER['freeslots'] >= 1 ? "&#160;&#160;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;zip=1\" rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><font color='" . $torrent['free_color'] . "'><b>Freeleech Slot</b></font></a>&#160;- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
+        $freeslot_text = ($CURUSER['freeslots'] >= 1 ? "&#160;&#160;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;text=1\" rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><font color='" . $torrent['free_color'] . "'><b>Freeleech Slot</b></font></a>&#160;- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
     } elseif ($free_slot && $double_slot) {
         $HTMLOUT .= '<tr>
 				<td align="right" class="heading">Slots</td>
@@ -373,10 +373,10 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
 			</tr>';
         $freeslot = $freeslot_zip = $freeslot_text = '';
     } else {
-        $freeslot = ($CURUSER['freeslots'] >= 1 ? "&nbsp;&nbsp;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=free\" rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><font color='" . $torrent['free_color'] . "'><b>Freeleech Slot</b></font></a> &nbsp;&nbsp;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=double\" rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><font color='" . $torrent['free_color'] . "'><b>Doubleseed Slot</b></font></a>&nbsp;- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
+        $freeslot = ($CURUSER['freeslots'] >= 1 ? "&#160;&#160;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=free\" rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><font color='" . $torrent['free_color'] . "'><b>Freeleech Slot</b></font></a> &#160;&#160;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=double\" rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><font color='" . $torrent['free_color'] . "'><b>Doubleseed Slot</b></font></a>&#160;- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
     }
-    $freeslot_zip = ($CURUSER['freeslots'] >= 1 ? "&nbsp;&nbsp;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;zip=1\" rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><font color='" . $torrent['free_color'] . "'><b>Freeleech Slot</b></font></a> &nbsp;&nbsp;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;zip=1\" rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><font color='" . $torrent['free_color'] . "'><b>Doubleseed Slot</b></font></a>&nbsp;- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
-    $freeslot_text = ($CURUSER['freeslots'] >= 1 ? "&nbsp;&nbsp;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;text=1\" rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><font color='" . $torrent['free_color'] . "'><b>Freeleech Slot</b></font></a> &nbsp;&nbsp;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;text=1\" rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><font color='" . $torrent['free_color'] . "'><b>Doubleseed Slot</b></font></a>&nbsp;- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
+    $freeslot_zip = ($CURUSER['freeslots'] >= 1 ? "&#160;&#160;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;zip=1\" rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><font color='" . $torrent['free_color'] . "'><b>Freeleech Slot</b></font></a> &#160;&#160;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;zip=1\" rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><font color='" . $torrent['free_color'] . "'><b>Doubleseed Slot</b></font></a>&#160;- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
+    $freeslot_text = ($CURUSER['freeslots'] >= 1 ? "&#160;&#160;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;text=1\" rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><font color='" . $torrent['free_color'] . "'><b>Freeleech Slot</b></font></a> &#160;&#160;<b>Use: </b><a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;text=1\" rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><font color='" . $torrent['free_color'] . "'><b>Doubleseed Slot</b></font></a>&#160;- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
     //==
     require_once MODS_DIR . 'free_details.php';
     $HTMLOUT .= "
@@ -398,7 +398,7 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
 			<tr>
 				<td align=\"right\" class=\"heading\" width=\"3%\">{$lang['details_download']}</td>
 				<td align=\"left\">
-				<a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . '">&nbsp;<u>' . htmlsafechars($torrents['filename']) . "</u></a>{$Free_Slot}
+				<a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . '">&#160;<u>' . htmlsafechars($torrents['filename']) . "</u></a>{$Free_Slot}
 				</td>
 			</tr>";
     /* end **/
@@ -406,14 +406,14 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
     $HTMLOUT .= "<tr>
 				<td>{$lang['details_zip']}</td>
 				<td align=\"left\">
-				<a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . '&amp;zip=1">&nbsp;<u>' . htmlsafechars($torrents['filename']) . "</u></a>{$Free_Slot_Zip}
+				<a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . '&amp;zip=1">&#160;<u>' . htmlsafechars($torrents['filename']) . "</u></a>{$Free_Slot_Zip}
 				</td>
 			</tr>";
 
     $HTMLOUT .= "<tr>
 				<td>{$lang['details_text']}</td>
 				<td align=\"left\">
-				<a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . '&amp;text=1">&nbsp;<u>' . htmlsafechars($torrents['filename']) . "</u></a>{$Free_Slot_Text}
+				<a class=\"index\" href=\"download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . '&amp;text=1">&#160;<u>' . htmlsafechars($torrents['filename']) . "</u></a>{$Free_Slot_Text}
 				</td>
 			</tr>
 	           </table>";
@@ -438,15 +438,15 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
     $my_points = (isset($torrent['torrent_points_'][$CURUSER['id']]) ? (int)$torrent['torrent_points_'][$CURUSER['id']] : 0);
     $HTMLOUT .= '<tr>
 		<td class="heading" valign="top" align="right">Karma Points</td>
-		<td valign="top" align="left"><b>In total ' . (int)$torrents['points'] . ' Karma Points given to this torrent of which ' . $my_points . ' from you.<br /><br />
-		<a href="coins.php?id=' . $id . '&amp;points=10"><img src="' . $INSTALLER09['pic_base_url'] . '10coin.png" alt="10" title="10 Points" /></a>&nbsp;&nbsp;
-		<a href="coins.php?id=' . $id . '&amp;points=20"><img src="' . $INSTALLER09['pic_base_url'] . '20coin.png" alt="20" title="20 Points" /></a>&nbsp;&nbsp;
-		<a href="coins.php?id=' . $id . '&amp;points=50"><img src="' . $INSTALLER09['pic_base_url'] . '50coin.png" alt="50" title="50 Points" /></a>&nbsp;&nbsp;
-		<a href="coins.php?id=' . $id . '&amp;points=100"><img src="' . $INSTALLER09['pic_base_url'] . '100coin.png" alt="100" title="100 Points" /></a>&nbsp;&nbsp;
-		<a href="coins.php?id=' . $id . '&amp;points=200"><img src="' . $INSTALLER09['pic_base_url'] . '200coin.png" alt="200" title="200 Points" /></a>&nbsp;&nbsp;
-		<a href="coins.php?id=' . $id . '&amp;points=500"><img src="' . $INSTALLER09['pic_base_url'] . '500coin.png" alt="500" title="500 Points" /></a>&nbsp;&nbsp;
-		<a href="coins.php?id=' . $id . '&amp;points=1000"><img src="' . $INSTALLER09['pic_base_url'] . '1000coin.png" alt="1000" title="1000 Points" /></a></b>&nbsp;&nbsp;
-		<br />By clicking on the coins you can give Karma Points to the uploader of this torrent.</td></tr>';
+		<td valign="top" align="left"><b>In total ' . (int)$torrents['points'] . ' Karma Points given to this torrent of which ' . $my_points . ' from you.<br><br>
+		<a href="coins.php?id=' . $id . '&amp;points=10"><img src="' . $INSTALLER09['pic_base_url'] . '10coin.png" alt="10" title="10 Points" /></a>&#160;&#160;
+		<a href="coins.php?id=' . $id . '&amp;points=20"><img src="' . $INSTALLER09['pic_base_url'] . '20coin.png" alt="20" title="20 Points" /></a>&#160;&#160;
+		<a href="coins.php?id=' . $id . '&amp;points=50"><img src="' . $INSTALLER09['pic_base_url'] . '50coin.png" alt="50" title="50 Points" /></a>&#160;&#160;
+		<a href="coins.php?id=' . $id . '&amp;points=100"><img src="' . $INSTALLER09['pic_base_url'] . '100coin.png" alt="100" title="100 Points" /></a>&#160;&#160;
+		<a href="coins.php?id=' . $id . '&amp;points=200"><img src="' . $INSTALLER09['pic_base_url'] . '200coin.png" alt="200" title="200 Points" /></a>&#160;&#160;
+		<a href="coins.php?id=' . $id . '&amp;points=500"><img src="' . $INSTALLER09['pic_base_url'] . '500coin.png" alt="500" title="500 Points" /></a>&#160;&#160;
+		<a href="coins.php?id=' . $id . '&amp;points=1000"><img src="' . $INSTALLER09['pic_base_url'] . '1000coin.png" alt="1000" title="1000 Points" /></a></b>&#160;&#160;
+		<br>By clicking on the coins you can give Karma Points to the uploader of this torrent.</td></tr>';
     /** END **/
     /** pdq's ratio afer d/load **/
     $downl = ($CURUSER['downloaded'] + $torrents['size']);
@@ -481,17 +481,17 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
             break;
     }
     $sr = floor($sr * 1000) / 1000;
-    $sr = "<font color='" . get_ratio_color($sr) . "'>" . number_format($sr, 3) . "</font>&nbsp;&nbsp;<img src=\"pic/smilies/{$s}.gif\" alt=\"\" />";
+    $sr = "<font color='" . get_ratio_color($sr) . "'>" . number_format($sr, 3) . "</font>&#160;&#160;<img src=\"pic/smilies/{$s}.gif\" alt=\"\" />";
     if ($torrents['free'] >= 1 || $torrents['freetorrent'] >= 1 || $isfree['yep'] || $free_slot or $double_slot != 0 || $CURUSER['free_switch'] != 0) {
         $HTMLOUT .= "<tr>
 				<td align='right' class='heading'>Ratio After Download</td>
-				<td><del>{$sr}&nbsp;&nbsp;Your new ratio if you download this torrent.</del> <b><font size='' color='#FF0000'>[FREE]</font></b>&nbsp;(Only upload stats are recorded)
+				<td><del>{$sr}&#160;&#160;Your new ratio if you download this torrent.</del> <b><font size='' color='#FF0000'>[FREE]</font></b>&#160;(Only upload stats are recorded)
 				</td>
 			</tr>";
     } else {
         $HTMLOUT .= "<tr>
 				<td align='right' class='heading'>Ratio After Download</td>
-				<td>{$sr}&nbsp;&nbsp;Your new ratio if you download this torrent.</td>
+				<td>{$sr}&#160;&#160;Your new ratio if you download this torrent.</td>
 			</tr>";
     }
     //==End
@@ -555,7 +555,7 @@ if (count($sim_torrents) > 0) {
         }
         $sim_torrent .= '
 	</table>';
-        $HTMLOUT .= "<table class='table  table-bordered'><tr><td align='right' class='heading'>{$lang['details_similiar']}<a href=\"javascript: klappe_news('a5')\"><img border=\"0\" src=\"pic/plus.png\" id=\"pica5" . (int)$a['id'] . "\" alt=\"[Hide/Show]\" title=\"[Hide/Show]\" /></a><div id=\"ka5\" style=\"display: none;\"><br />$sim_torrent</div></td></tr></table></div></div>";
+        $HTMLOUT .= "<table class='table  table-bordered'><tr><td align='right' class='heading'>{$lang['details_similiar']}<a href=\"javascript: klappe_news('a5')\"><img border=\"0\" src=\"pic/plus.png\" id=\"pica5" . (int)$a['id'] . "\" alt=\"[Hide/Show]\" title=\"[Hide/Show]\" /></a><div id=\"ka5\" style=\"display: none;\"><br>$sim_torrent</div></td></tr></table></div></div>";
     } else {
         if (empty($sim_torrents)) {
             $HTMLOUT .= "
@@ -622,14 +622,14 @@ $HTMLOUT .= "<tr><td class='rowhead'>Status update</td><td><input type='button' 
 $HTMLOUT .= "</table>
 <table align='center' class='table table-bordered span9'>";
 //==Report Torrent Link
-$HTMLOUT .= tr('Report Torrent', "<form action='report.php?type=Torrent&amp;id=$id' method='post'><input class='btn btn-primary' type='submit' name='submit' value='Report This Torrent' />&nbsp;&nbsp;<strong><em class='label label-primary'>For breaking the&nbsp;<a href='rules.php'>rules</a></em></strong></form>", 1);
+$HTMLOUT .= tr('Report Torrent', "<form action='report.php?type=Torrent&amp;id=$id' method='post'><input class='btn btn-primary' type='submit' name='submit' value='Report This Torrent' />&#160;&#160;<strong><em class='label label-primary'>For breaking the&#160;<a href='rules.php'>rules</a></em></strong></form>", 1);
 //== Tor Reputation by pdq
 if ($torrent_cache['rep']) {
     $torrents = array_merge($torrents, $torrent_cache['rep']);
     $member_reputation = get_reputation($torrents, 'torrents', $torrents['anonymous'], $id);
     $HTMLOUT .= '<tr>
 		        <td class="heading" valign="top" align="right" width="1%">Reputation</td>
-			<td align="left" width="99%">' . $member_reputation . ' (counts towards uploaders Reputation)<br /></td>
+			<td align="left" width="99%">' . $member_reputation . ' (counts towards uploaders Reputation)<br></td>
 		</tr>';
 }
 //==Anonymous
@@ -654,30 +654,30 @@ if ($CURUSER['class'] >= UC_STAFF) {
 				<small><em class='label label-primary'><strong>[Re-Check this torrent]</strong></em></small></a> 
 				<a href='{$INSTALLER09['baseurl']}/details.php?id=" . (int)$torrents['id'] . "&amp;clearchecked=1'>
 				<small><em class='label label-primary'><strong>[Un-Check this torrent]</strong></em></small></a>
-				&nbsp;<em class='alert alert-info'>* STAFF Eyes Only *</em>
+				&#160;<em class='alert alert-info'>* STAFF Eyes Only *</em>
 				" . (isset($torrents['checked_when']) && $torrents['checked_when'] > 0 ? '<strong>Checked When : ' . get_date($torrents['checked_when'], 'DATE', 0, 1) . '</strong>' : '') . '
 				</td>
 			</tr>';
     } else {
         $HTMLOUT .= "<tr><td class='rowhead'>Checked by</td><td align='left'><em class='alert alert-error'><strong>NOT CHECKED!</strong></em> 
        <a href='{$INSTALLER09['baseurl']}/details.php?id=" . (int)$torrents['id'] . "&amp;checked=1'>
-       <em class='alert alert-warning'><small><strong>[Check this torrent]</strong></small></em></a>&nbsp;<em class='alert alert-info'><strong>* STAFF Eyes Only *</strong></em></td></tr>";
+       <em class='alert alert-warning'><small><strong>[Check this torrent]</strong></small></em></a>&#160;<em class='alert alert-info'><strong>* STAFF Eyes Only *</strong></em></td></tr>";
     }
 }
 // end
 //==
 if ($torrents['type'] == 'multi') {
     if (!isset($_GET['filelist'])) {
-        $HTMLOUT .= tr("{$lang['details_num_files']}<br /><a href=\"./filelist.php?id=$id\" class=\"sublink\">{$lang['details_list']}</a>", (int)$torrents['numfiles'] . ' files', 1);
+        $HTMLOUT .= tr("{$lang['details_num_files']}<br><a href=\"./filelist.php?id=$id\" class=\"sublink\">{$lang['details_list']}</a>", (int)$torrents['numfiles'] . ' files', 1);
     } else {
         $HTMLOUT .= tr("{$lang['details_num-files']}", (int)$torrents['numfiles'] . "{$lang['details_files']}", 1);
     }
 }
 
 if (XBT_TRACKER == true) {
-    $HTMLOUT .= tr("{$lang['details_peers']}<br /><a href=\"./peerlist_xbt.php?id=$id#seeders\" class=\"sublink\">{$lang['details_list']}</a>", (int)$torrents_xbt['seeders'] . ' seeder(s), ' . (int)$torrents_xbt['leechers'] . ' leecher(s) = ' . ((int)$torrents_xbt['seeders'] + (int)$torrents_xbt['leechers']) . "{$lang['details_peer_total']}", 1);
+    $HTMLOUT .= tr("{$lang['details_peers']}<br><a href=\"./peerlist_xbt.php?id=$id#seeders\" class=\"sublink\">{$lang['details_list']}</a>", (int)$torrents_xbt['seeders'] . ' seeder(s), ' . (int)$torrents_xbt['leechers'] . ' leecher(s) = ' . ((int)$torrents_xbt['seeders'] + (int)$torrents_xbt['leechers']) . "{$lang['details_peer_total']}", 1);
 } else {
-    $HTMLOUT .= tr("{$lang['details_peers']}<br /><a href=\"./peerlist.php?id=$id#seeders\" class=\"sublink\">{$lang['details_list']}</a>", (int)$torrents['seeders'] . ' seeder(s), ' . (int)$torrents['leechers'] . ' leecher(s) = ' . ((int)$torrents['seeders'] + (int)$torrents['leechers']) . "{$lang['details_peer_total']}", 1);
+    $HTMLOUT .= tr("{$lang['details_peers']}<br><a href=\"./peerlist.php?id=$id#seeders\" class=\"sublink\">{$lang['details_list']}</a>", (int)$torrents['seeders'] . ' seeder(s), ' . (int)$torrents['leechers'] . ' leecher(s) = ' . ((int)$torrents['seeders'] + (int)$torrents['leechers']) . "{$lang['details_peer_total']}", 1);
 }
 
 $HTMLOUT .= tr($lang['details_thanks'], '
@@ -725,9 +725,9 @@ if (!empty($torrents_txt['descr'])) {
             "\r",
             '  ',
         ], [
-            '<br />',
-            '<br />',
-            '&nbsp; ',
+            '<br>',
+            '<br>',
+            '&#160; ',
         ], format_comment($torrents_txt['descr'])) . '
 					</div>
 				</td>
@@ -737,7 +737,7 @@ if (!empty($torrents_txt['descr'])) {
 }
 $HTMLOUT .= "<table class='table  table-bordered'>\n";
 if (!empty($torrents['youtube'])) {
-    $HTMLOUT .= tr($lang['details_youtube'], '<object type="application/x-shockwave-flash" style="width:560px; height:340px;" data="' . str_replace('watch?v=', 'v/', $torrents['youtube']) . '"><param name="movie" value="' . str_replace('watch?v=', 'v/', $torrents['youtube']) . '" /></object><br /><a 
+    $HTMLOUT .= tr($lang['details_youtube'], '<object type="application/x-shockwave-flash" style="width:560px; height:340px;" data="' . str_replace('watch?v=', 'v/', $torrents['youtube']) . '"><param name="movie" value="' . str_replace('watch?v=', 'v/', $torrents['youtube']) . '" /></object><br><a 
 href=\'' . htmlsafechars($torrents['youtube']) . '\' target=\'_blank\'>' . $lang['details_youtube_link'] . '</a>', 1);
 } else {
     $HTMLOUT .= '<tr><td>No youtube data found</td></tr>';
@@ -801,7 +801,7 @@ if (preg_match('/^http\:\/\/(.*?)imdb\.com\/title\/tt([\d]{7})/i', $torrents['ur
         foreach ($imdb as $foo => $boo) {
             if (isset($imdb_data[$foo]) && !empty($imdb_data[$foo])) {
                 if (!is_array($imdb_data[$foo])) {
-                    $imdb_html .= "<span style='font-weight:bold;color:#800517'>" . $boo . ':</span>&nbsp;' . $imdb_data[$foo] . "<br />\n";
+                    $imdb_html .= "<span style='font-weight:bold;color:#800517'>" . $boo . ':</span>&#160;' . $imdb_data[$foo] . "<br>\n";
                 } elseif (is_array($imdb_data[$foo]) && in_array($foo, [
                         'director',
                         'writing',
@@ -819,10 +819,10 @@ if (preg_match('/^http\:\/\/(.*?)imdb\.com\/title\/tt([\d]{7})/i', $torrents['ur
                             $imdb_tmp[] = "<a href='http://www.imdb.com/name/nm" . $pp['imdb'] . "' target='_blank' title='" . (!empty($pp['role']) ? $pp['role'] : 'unknown') . "'>" . $pp['name'] . "</a>\n";
                         }
                     }
-                    $imdb_html .= "<span style='font-weight:bold;color:#800517'>" . $boo . ':</span>&nbsp;' . join(', ', $imdb_tmp) . "<br />\n";
+                    $imdb_html .= "<span style='font-weight:bold;color:#800517'>" . $boo . ':</span>&#160;' . join(', ', $imdb_tmp) . "<br>\n";
                     unset($imdb_tmp);
                 } else {
-                    $imdb_html .= "<span style='font-weight:bold;color:#800517'>" . $boo . ':</span>&nbsp;' . join(', ', $imdb_data[$foo]) . "<br />\n";
+                    $imdb_html .= "<span style='font-weight:bold;color:#800517'>" . $boo . ':</span>&#160;' . join(', ', $imdb_data[$foo]) . "<br>\n";
                 }
             }
         }
@@ -848,7 +848,7 @@ $HTMLOUT .= "<p>
 					<td align='center'>
 					<textarea name='body' cols='280' rows='4'></textarea>
 					<input type='hidden' name='tid' value='" . htmlsafechars($id) . "' />
-					<br />
+					<br>
 					<a href=\"javascript:SmileIT(':-)','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/smile1.gif' alt='Smile' title='Smile' /></a> 
 					<a href=\"javascript:SmileIT(':smile:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/smile2.gif' alt='Smiling' title='Smiling' /></a> 
 					<a href=\"javascript:SmileIT(':-D','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/grin.gif' alt='Grin' title='Grin' /></a> 
@@ -872,7 +872,7 @@ $HTMLOUT .= "<p>
 					<a href=\"javascript:SmileIT(':kiss:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/kiss.gif' alt='Kiss' title='Kiss' /></a> 
 					<a href=\"javascript:SmileIT(':blink:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/blink.gif' alt='Blink' title='Blink' /></a> 
 					<a href=\"javascript:SmileIT(':baby:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/baby.gif' alt='Baby' title='Baby' /></a>
-					<br />
+					<br>
 					<input class='btn btn-primary' type='submit' value='Submit' />
 					</td>
 				</tr>
@@ -883,7 +883,7 @@ if ($torrents['allow_comments'] == 'yes' || $CURUSER['class'] >= UC_STAFF && $CU
 } else {
     $HTMLOUT .= "<table align='center' class='table table-bordered'>
 			<tr>
-				<td><a name='startcomments'>&nbsp;</a><b>{$lang['details_com_disabled']}</b></td>
+				<td><a name='startcomments'>&#160;</a><b>{$lang['details_com_disabled']}</b></td>
 			</tr>
     </table>\n";
     echo stdhead("{$lang['details_details']}\"" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
@@ -903,7 +903,7 @@ jQuery(document).ready(function() {
 /*]]>*/
 </script>";
 $commentbar = "<p class='h1 btn btn-primary'>Comments Open/Close</p><div class='content'><p align='center' ><a class='index' href='comment.php?action=add&amp;tid=$id'>{$lang['details_add_comment']}</a>
-    <br /><a class='index' href='{$INSTALLER09['baseurl']}/takethankyou.php?id=" . $id . "'>
+    <br><a class='index' href='{$INSTALLER09['baseurl']}/takethankyou.php?id=" . $id . "'>
     <img src='{$INSTALLER09['pic_base_url']}smilies/thankyou.gif' alt='Thanks' title='Thank You' border='0' /></a></p>\n";
 $count = (int)$torrents['comments'];
 if (!$count) {

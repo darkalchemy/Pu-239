@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//== Sharemarks.php - by pdq
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'torrenttable_functions.php';
@@ -82,7 +78,7 @@ function sharetable($res, $variant = 'index')
         if ($variant == 'index') {
             $htmlout .= '&amp;hit=1';
         }
-        $htmlout .= "'><b>$dispname</b></a>&nbsp;</td>";
+        $htmlout .= "'><b>$dispname</b></a>&#160;</td>";
         $htmlout .= ($variant == 'index' ? "<td align='center'><a href=\"download.php?torrent={$id}\"><img src='{$INSTALLER09['pic_base_url']}zip.gif' border='0' alt='Download Bookmark!' title='Download Bookmark!' /></a></td>" : '');
         $bm = sql_query('SELECT * FROM bookmarks WHERE torrentid=' . sqlesc($id) . ' AND userid=' . sqlesc($CURUSER['id']));
         $bms = mysqli_fetch_assoc($bm);
@@ -118,15 +114,15 @@ function sharetable($res, $variant = 'index')
                 $htmlout .= "<td align='right'><b><a href='details.php?id=$id&amp;page=0#startcomments'>" . (int)$row['comments'] . "</a></b></td>\n";
             }
         }
-        $htmlout .= "<td align='center'><span style='white-space: nowrap;'>" . str_replace(',', '<br />', get_date($row['added'], '')) . "</span></td>\n";
+        $htmlout .= "<td align='center'><span style='white-space: nowrap;'>" . str_replace(',', '<br>', get_date($row['added'], '')) . "</span></td>\n";
         $htmlout .= "
-    <td align='center'>" . str_replace(' ', '<br />', mksize($row['size'])) . "</td>\n";
+    <td align='center'>" . str_replace(' ', '<br>', mksize($row['size'])) . "</td>\n";
         if ($row['times_completed'] != 1) {
             $_s = '' . $lang['torrenttable_time_plural'] . '';
         } else {
             $_s = '' . $lang['torrenttable_time_singular'] . '';
         }
-        $htmlout .= "<td align='center'><a href='snatches.php?id=$id'>" . number_format($row['times_completed']) . "<br />$_s</a></td>\n";
+        $htmlout .= "<td align='center'><a href='snatches.php?id=$id'>" . number_format($row['times_completed']) . "<br>$_s</a></td>\n";
         if ($row['seeders']) {
             if ($variant == 'index') {
                 if ($row['leechers']) {

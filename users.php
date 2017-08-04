@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 dbconn();
@@ -50,7 +47,7 @@ for ($i = 0; ; ++$i) {
 $HTMLOUT .= "</select>\n";
 $HTMLOUT .= "<input type='submit' value='{$lang['form_btn']}' class='btn' />\n";
 $HTMLOUT .= "</form>\n";
-$HTMLOUT .= "<br />\n";
+$HTMLOUT .= "<br>\n";
 $aa = range('0', '9');
 $bb = range('a', 'z');
 $cc = array_merge($aa, $bb);
@@ -58,7 +55,7 @@ unset($aa, $bb);
 $HTMLOUT .= "<div align='center'>";
 $count = 0;
 foreach ($cc as $L) {
-    $HTMLOUT .= ($count == 10) ? '<br /><br />' : '';
+    $HTMLOUT .= ($count == 10) ? '<br><br>' : '';
     if (!strcmp($L, $letter)) {
         $HTMLOUT .= "<span class='btn' style='background:orange;'>" . strtoupper($L) . "</span>\n";
     } else {
@@ -67,7 +64,7 @@ foreach ($cc as $L) {
     ++$count;
 }
 $HTMLOUT .= '</div>';
-$HTMLOUT .= "<br />\n";
+$HTMLOUT .= "<br>\n";
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $perpage = 25;
 $browsemenu = '';
@@ -90,9 +87,9 @@ if ($arr[0] > $perpage) {
             continue;
         }
         if ($i == $page) {
-            $pagemenu .= "&nbsp;<span class='btn' style='background:orange;'>$i</span>\n";
+            $pagemenu .= "&#160;<span class='btn' style='background:orange;'>$i</span>\n";
         } else {
-            $pagemenu .= "&nbsp;<a href='users.php?$q1&amp;page=$i'><span class='btn'>$i</span></a>\n";
+            $pagemenu .= "&#160;<a href='users.php?$q1&amp;page=$i'><span class='btn'>$i</span></a>\n";
         }
         if ($PageNo > ($page + 3)) {
             break;
@@ -101,12 +98,12 @@ if ($arr[0] > $perpage) {
     if ($page == 1) {
         $browsemenu .= "<span class='btn' style='background:orange;'>&lsaquo;</span>$pagemenu";
     } else {
-        $browsemenu .= "<a href='users.php?$q1&amp;page=1' title='{$lang['pager_first']}(1)'><span class='btn'>&laquo;</span></a>&nbsp;<a href='users.php?$q1&amp;page=" . ($page - 1) . "'><span class='btn'>&lsaquo;</span></a>$pagemenu";
+        $browsemenu .= "<a href='users.php?$q1&amp;page=1' title='{$lang['pager_first']}(1)'><span class='btn'>&laquo;</span></a>&#160;<a href='users.php?$q1&amp;page=" . ($page - 1) . "'><span class='btn'>&lsaquo;</span></a>$pagemenu";
     }
     if ($page == $pages) {
         $browsemenu .= "<span class='btn' style='background:orange;'>&rsaquo;</span>";
     } else {
-        $browsemenu .= "<a href='users.php?$q1&amp;page=" . ($page + 1) . "'><span class='btn'>&rsaquo;</span></a>&nbsp;<a href='users.php?$q1&amp;page=" . $pages . "' title='{$lang['pager_last']}($pages)'><span class='btn'>&raquo;</span></a>";
+        $browsemenu .= "<a href='users.php?$q1&amp;page=" . ($page + 1) . "'><span class='btn'>&rsaquo;</span></a>&#160;<a href='users.php?$q1&amp;page=" . $pages . "' title='{$lang['pager_last']}($pages)'><span class='btn'>&raquo;</span></a>";
     }
 }
 $offset = ($page * $perpage) - $perpage;
@@ -121,7 +118,7 @@ if ($arr[0] > 0) {
     }
     $HTMLOUT .= "</table></div>\n";
 }
-$HTMLOUT .= ($arr[0] > $perpage) ? "<div align='center'><p>$browsemenu</p></div>" : '<br />';
+$HTMLOUT .= ($arr[0] > $perpage) ? "<div align='center'><p>$browsemenu</p></div>" : '<br>';
 $HTMLOUT .= '</fieldset>';
 echo stdhead($lang['head_users']) . $HTMLOUT . stdfoot();
 die;

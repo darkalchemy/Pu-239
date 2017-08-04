@@ -1,5 +1,4 @@
 <?php
-
 //=== member contact stuff
 $HTMLOUT .= (($CURUSER['class'] >= UC_STAFF || $user['show_email'] === 'yes') ? '
 		<tr>

@@ -1,5 +1,4 @@
 <?php
-
 //==Browser/Os
 if ($user['browser'] != '') {
     $browser = htmlsafechars($user['browser']);

@@ -27,7 +27,7 @@ $lang = [
     'grouppm_sub'       => 'Subject',
     'grouppm_body'      => 'Body',
     'grouppm_groups'    => 'Groups',
-    'grouppm_sendas'    => 'Send as <b>System</b>&nbsp',
+    'grouppm_sendas'    => 'Send as <b>System</b>&#160;',
     'grouppm_send'      => 'Send!',
     'grouppm_stdhead'   => 'Group PM',
 ];

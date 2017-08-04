@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -222,7 +219,7 @@ function delete_cat_form()
         }
         $select .= "</select>\n";
         $check .= "<tr>
-        <td align='right' width='50%'>{$lang['categories_select_new']}<br /><span style='color:red;font-weight:bold;'>{$lang['categories_del_warning']}</span></td>
+        <td align='right' width='50%'>{$lang['categories_select_new']}<br><span style='color:red;font-weight:bold;'>{$lang['categories_del_warning']}</span></td>
         <td>$select</td>
       </tr>";
     }
@@ -319,7 +316,7 @@ function edit_cat_form()
         }
         $select .= "</select>\n";
         $check = "<tr>
-        <td align='right' width='50%'>{$lang['categories_edit_select_new']}<br /><span style='color:limegreen;font-weight:bold;'>{$lang['categories_edit_info']}</span></td>
+        <td align='right' width='50%'>{$lang['categories_edit_select_new']}<br><span style='color:limegreen;font-weight:bold;'>{$lang['categories_edit_info']}</span></td>
         <td>$select</td>
       </tr>";
     } else {
@@ -374,7 +371,7 @@ function show_categories()
         }
         $select .= "</select>\n";
         $check = "<tr>
-        <td align='right' width='50%'>{$lang['categories_edit_select_new']}<br /><span style='color:limegreen;font-weight:bold;'>{$lang['categories_edit_warning1']}</span></td>
+        <td align='right' width='50%'>{$lang['categories_edit_select_new']}<br><span style='color:limegreen;font-weight:bold;'>{$lang['categories_edit_warning1']}</span></td>
         <td>$select</td>
       </tr>";
     } else {

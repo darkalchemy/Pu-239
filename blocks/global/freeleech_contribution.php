@@ -1,11 +1,10 @@
 <?php
-
 if (XBT_TRACKER == true) {
     $htmlout .= "
         <li>
         <a class='tooltip' href='index.php#'><b class='btn btn-success btn-small'>XBT TRACKER</b>
         <span class='custom info alert alert-success'><em>XBT TRACKER</em>
-      <br />XBT TRACKER running - No crazyhours, happyhours, freeslots active :-(<br /><br /></span></a></li>";
+      <br>XBT TRACKER running - No crazyhours, happyhours, freeslots active :-(<br><br></span></a></li>";
 } else {
     /** karma contribution alert hack **/
     $fpoints = $dpoints = $hpoints = $freeleech_enabled = $double_upload_enabled = $half_down_enabled = '';
@@ -138,69 +137,69 @@ if (XBT_TRACKER == true) {
 
     switch ($percent_hd) {
         case $percent_hd >= 90:
-            $font_color_hd = '<strong><font color="green">' . number_format($percent_hd) . '&nbsp;%</font></strong>';
+            $font_color_hd = '<strong><font color="green">' . number_format($percent_hd) . '&#160;%</font></strong>';
             break;
         case $percent_hd >= 80:
-            $font_color_hd = '<strong><font color="lightgreen">' . number_format($percent_hd) . '&nbsp;%</font></strong>';
+            $font_color_hd = '<strong><font color="lightgreen">' . number_format($percent_hd) . '&#160;%</font></strong>';
             break;
         case $percent_hd >= 70:
-            $font_color_hd = '<strong><font color="jade">' . number_format($percent_hd) . '&nbsp;%</font></strong>';
+            $font_color_hd = '<strong><font color="jade">' . number_format($percent_hd) . '&#160;%</font></strong>';
             break;
         case $percent_hd >= 50:
-            $font_color_hd = '<strong><font color="turquoise">' . number_format($percent_hd) . '&nbsp;%</font></strong>';
+            $font_color_hd = '<strong><font color="turquoise">' . number_format($percent_hd) . '&#160;%</font></strong>';
             break;
         case $percent_hd >= 40:
-            $font_color_hd = '<strong><font color="lightblue">' . number_format($percent_hd) . '&nbsp;%</font></strong>';
+            $font_color_hd = '<strong><font color="lightblue">' . number_format($percent_hd) . '&#160;%</font></strong>';
             break;
         case $percent_hd >= 30:
-            $font_color_hd = '<strong><font color="gold">' . number_format($percent_hd) . '&nbsp;%</font></strong>';
+            $font_color_hd = '<strong><font color="gold">' . number_format($percent_hd) . '&#160;%</font></strong>';
             break;
         case $percent_hd >= 20:
-            $font_color_hd = '<strong><font color="orange">' . number_format($percent_hd) . '&nbsp;%</font></strong>';
+            $font_color_hd = '<strong><font color="orange">' . number_format($percent_hd) . '&#160;%</font></strong>';
             break;
         case $percent_hd < 20:
-            $font_color_hd = '<strong><font color="red">' . number_format($percent_hd) . '&nbsp;%</font></strong>';
+            $font_color_hd = '<strong><font color="red">' . number_format($percent_hd) . '&#160;%</font></strong>';
             break;
     }
 
     if ($freeleech_enabled) {
-        $fstatus = "<strong><font color='green'>&nbsp;ON&nbsp;</font></strong>";
+        $fstatus = "<strong><font color='green'>&#160;ON&#160;</font></strong>";
     } else {
         $fstatus = $font_color_fl . '';
     }
     if ($double_upload_enabled) {
-        $dstatus = "<strong><font color='green'>&nbsp;ON&nbsp;</font></strong>";
+        $dstatus = "<strong><font color='green'>&#160;ON&#160;</font></strong>";
     } else {
         $dstatus = $font_color_du . '';
     }
     if ($half_down_enabled) {
-        $hstatus = "<strong><font color='green'>&nbsp;ON&nbsp;</font></strong>";
+        $hstatus = "<strong><font color='green'>&#160;ON&#160;</font></strong>";
     } else {
         $hstatus = $font_color_hd . '';
     }
-    $htmlout .= "<li><a class='tooltip' href='./mybonus.php'><b class='btn btn-success btn-small'>Karma Contribution's</b><span class='custom info alert alert-success'><em>Karma Contribution's</em>Freeleech&nbsp;[&nbsp;";
+    $htmlout .= "<li><a class='tooltip' href='./mybonus.php'><b class='btn btn-success btn-small'>Karma Contribution's</b><span class='custom info alert alert-success'><em>Karma Contribution's</em>Freeleech&#160;[&#160;";
     if ($freeleech_enabled) {
-        $htmlout .= '<font color="green"><strong>&nbsp;ON</strong></font>&nbsp;' . get_date($freeleech_start_time, 'DATE') . '&nbsp;-&nbsp;' . get_date($freeleech_end_time, 'DATE');
+        $htmlout .= '<font color="green"><strong>&#160;ON</strong></font>&#160;' . get_date($freeleech_start_time, 'DATE') . '&#160;-&#160;' . get_date($freeleech_end_time, 'DATE');
     } else {
         $htmlout .= "<strong>{$fstatus}</strong>";
     }
-    $htmlout .= '&nbsp;]<br />';
+    $htmlout .= '&#160;]<br>';
 
-    $htmlout .= 'DoubleUpload&nbsp;[&nbsp;';
+    $htmlout .= 'DoubleUpload&#160;[&#160;';
     if ($double_upload_enabled) {
-        $htmlout .= '<font color="green"><strong>&nbsp;ON</strong></font>&nbsp;' . get_date($double_upload_start_time, 'DATE') . '&nbsp;-&nbsp;' . get_date($double_upload_end_time, 'DATE');
+        $htmlout .= '<font color="green"><strong>&#160;ON</strong></font>&#160;' . get_date($double_upload_start_time, 'DATE') . '&#160;-&#160;' . get_date($double_upload_end_time, 'DATE');
     } else {
         $htmlout .= "<strong>{$dstatus}</strong>";
     }
-    $htmlout .= '&nbsp;]<br />';
+    $htmlout .= '&#160;]<br>';
 
-    $htmlout .= 'Half Download&nbsp;[&nbsp;';
+    $htmlout .= 'Half Download&#160;[&#160;';
     if ($half_down_enabled) {
-        $htmlout .= '<font color="green"><strong>&nbsp;ON</strong></font>&nbsp;' . get_date($half_down_start_time, 'DATE') . '&nbsp;-&nbsp;' . get_date($half_down_end_time, 'DATE');
+        $htmlout .= '<font color="green"><strong>&#160;ON</strong></font>&#160;' . get_date($half_down_start_time, 'DATE') . '&#160;-&#160;' . get_date($half_down_end_time, 'DATE');
     } else {
         $htmlout .= "<strong>{$hstatus}</strong>";
     }
-    $htmlout .= '&nbsp;]</span></a></li>';
+    $htmlout .= '&#160;]</span></a></li>';
 }
 //=== karma contribution alert end
 // End Class

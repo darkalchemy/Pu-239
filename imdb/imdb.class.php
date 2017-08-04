@@ -104,7 +104,7 @@ class imdb extends movie_base
         }
         if (@preg_match('!<title>(IMDb\s*-\s*)?(?<ititle>.*)(\s*-\s*IMDb)?</title>!', $this->page['Title'], $imatch)) {
             $ititle = $imatch['ititle'];
-            if (preg_match('!(?<title>.*) \((?<movietype>.*)(?<year>\d{4}|\?{4})((&nbsp;|–)(?<endyear>\d{4})).*\)(.*)!', $ititle, $match)) { // serial
+            if (preg_match('!(?<title>.*) \((?<movietype>.*)(?<year>\d{4}|\?{4})((&#160;|–)(?<endyear>\d{4})).*\)(.*)!', $ititle, $match)) { // serial
                 $this->main_movietype = $match['movietype'];
                 $this->main_year = $match['year'];
                 $this->main_endyear = $match['endyear'];
@@ -1391,7 +1391,7 @@ class imdb extends movie_base
         if ($table_start == 'Writing Credits') {
             $row_s = strpos($html, '>' . $table_start);
         } else {
-            $row_s = strpos($html, '>' . $table_start . '&nbsp;<');
+            $row_s = strpos($html, '>' . $table_start . '&#160;<');
         }
         $row_e = $row_s;
         if ($row_s == 0) {
@@ -1872,7 +1872,7 @@ class imdb extends movie_base
             if ($this->page['Goofs'] == 'cannot open page') {
                 return [];
             } // no such page
-            if (@preg_match_all('@<h4 class="li_group">(.+?)(!?&nbsp;)</h4>\s*(.+?)\s*(<h4 class="li_group">|<div id="top_rhs_wrapper")@ims', $this->page['Goofs'], $matches)) {
+            if (@preg_match_all('@<h4 class="li_group">(.+?)(!?&#160;)</h4>\s*(.+?)\s*(<h4 class="li_group">|<div id="top_rhs_wrapper")@ims', $this->page['Goofs'], $matches)) {
                 $gc = count($matches[1]);
                 for ($i = 0; $i < $gc; ++$i) {
                     if ($matches[1][$i] == 'Spoilers') {
@@ -2335,7 +2335,7 @@ class imdb extends movie_base
             $tag_e = strpos($this->page['MovieConnections'], '<script', $tag_s);
         }
         $block = substr($this->page['MovieConnections'], $tag_s, $tag_e - $tag_s);
-        if (preg_match_all('!<a href="(.*?)">(.*?)</a>&nbsp;\((\d{4})\)(.*<br\s*/>(.*?)\s*</div>)?!ims', $block, $matches)) {
+        if (preg_match_all('!<a href="(.*?)">(.*?)</a>&#160;\((\d{4})\)(.*<br\s*/>(.*?)\s*</div>)?!ims', $block, $matches)) {
             $this->debug_object($matches);
             $mc = count($matches[0]);
             for ($i = 0; $i < $mc; ++$i) {

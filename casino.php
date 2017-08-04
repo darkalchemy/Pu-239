@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
@@ -15,7 +12,6 @@ $lang = array_merge(load_language('global'), load_language('casino'));
 //== Config
 $amnt = $nobits = $abcdefgh = 0;
 $dummy = '';
-$minclass = 'UC_POWER_USER';
 $maxbetGB = 50;
 $maxbet = $maxbetGB * 1024 * 1024 * 1024;
 $mb_basic = 1024 * 1024;
@@ -47,9 +43,6 @@ $delold = 1; //== Clear bets once finished
 $sendfrom = 2; //== The id of the user which notification PM's are noted as sent from
 $casino = 'casino.php'; //== Name of file
 //== End of Config
-if ($CURUSER['class'] < UC_POWER_USER) {
-    stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " {$lang['casino_the_moderators_do_not_allow_your_class']} " . get_user_class_name($minclass) . " {$lang['casino_to_play_casino']}");
-}
 if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['suspended'] == 'yes') {
     stderr($lang['gl_error'], $lang['casino_your_gaming_rights_have_been_disabled']);
     exit();

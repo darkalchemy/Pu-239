@@ -37,7 +37,7 @@ $lang = [
     'messages_no_action'      => 'No Action',
     'messages_access_forward' => 'You do not have permission to forward this message.',
     'messages_fwd'            => 'Fwd: ',
-    'messages_original'       => '-------- Original Message from %s: --------<br />',
+    'messages_original'       => '-------- Original Message from %s: --------<br>',
     'messages_to'             => 'To:',
     'messages_username'       => 'Enter Username',
     'messages_subject'        => 'Subject',
@@ -57,7 +57,7 @@ $lang = [
     'messages_extra'          => 'You may add extra mailboxes. You do not have to use all the input boxes.e',
     'messages_add'            => 'Add',
     'messages_mb_edit'        => 'Edit Mailboxes',
-    'messages_vir_dir'        => 'You may edit the names, or delete the name to delete this virtual directory.<br />Please note, that all messages
+    'messages_vir_dir'        => 'You may edit the names, or delete the name to delete this virtual directory.<br>Please note, that all messages
       in this directory will be lost if you delete this directory.',
     'messages_no_edit'        => 'There are no mailboxes to edit.',
     'messages_edit'           => 'Edit',

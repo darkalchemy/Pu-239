@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once 'getstats.php';
 $_settings = $_SERVER['DOCUMENT_ROOT'] . '/avatar/settings/';
 $flag_xy = [

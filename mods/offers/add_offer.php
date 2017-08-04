@@ -1,13 +1,12 @@
 <?php
-
 if (!defined('IN_OFFERS')) {
     exit('No direct script access allowed');
 }
 if ($CURUSER['class'] < $INSTALLER09['offer_min_class']) {
     $HTMLOUT .= "<h1>Oops!</h1>
     <div class='some class'>You must be " . get_user_class_name($INSTALLER09['offer_min_class']) . ' or above <b>AND</b> have a ratio above <b>' . $INSTALLER09['offer_min_ratio'] . "</b> to make an offer.
-    <br /><br /> Please see the <a href='faq.php'><b>FAQ</b></a> 
-    for more information on different user classes and what they can do.<br /><br />
+    <br><br> Please see the <a href='faq.php'><b>FAQ</b></a> 
+    for more information on different user classes and what they can do.<br><br>
     <b>" . $INSTALLER09['site_name'] . ' staff</b></div>';
     /////////////////////// HTML OUTPUT //////////////////////////////
     echo stdhead('Offers Page') . $HTMLOUT . stdfoot();
@@ -23,20 +22,20 @@ if ($CURUSER['class'] < UC_VIP) {
     }
 }
 $HTMLOUT .= '<h3>Offer Rules</h3>';
-$HTMLOUT .= 'To make an offer you must have a ratio of at least<b> ' . $INSTALLER09['offer_min_ratio'] . '</b> AND have uploaded at least <b>' . $INSTALLER09['offer_gigs_upped'] . ' GB</b>.<br />' . ($INSTALLER09['karma'] ? " A offer will also cost you <b><a class='altlink' href='mybonus.php'>" . $INSTALLER09['offer_cost_bonus'] . ' Karma Points</a></b>....<br /><br />' : '') . " 
+$HTMLOUT .= 'To make an offer you must have a ratio of at least<b> ' . $INSTALLER09['offer_min_ratio'] . '</b> AND have uploaded at least <b>' . $INSTALLER09['offer_gigs_upped'] . ' GB</b>.<br>' . ($INSTALLER09['karma'] ? " A offer will also cost you <b><a class='altlink' href='mybonus.php'>" . $INSTALLER09['offer_cost_bonus'] . ' Karma Points</a></b>....<br><br>' : '') . " 
 In your particular case <a class='altlink' href='userdetails.php?id=" . $CURUSER['id'] . "'>" . $CURUSER['username'] . '</a>, ';
 if ($INSTALLER09['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus'] < $INSTALLER09['offer_cost_bonus']) {
     $HTMLOUT .= "you do not have enough <a class='altlink' href='mybonus.php'>Karma Points</a> ...
         you can not make offers.<p>To view all offers, click 
-        <a class='altlink' href='viewoffers.php'><b>here</b></a></p>\n<br /><br />";
+        <a class='altlink' href='viewoffers.php'><b>here</b></a></p>\n<br><br>";
 } elseif ($gigsupped < $gigsneeded && $CURUSER['class'] < UC_VIP) {
     $HTMLOUT .= 'you have <b>not</b> yet uploaded <b>' . $INSTALLER09['offer_gigs_upped'] . " GB</b>... you can not make offers.<p>
     To view all offers, click <a class='altlink' href='viewoffers.php'><b>here</b></a></p>\n
-    <br /><br />";
+    <br><br>";
 } elseif ($ratio < $INSTALLER09['offer_min_ratio'] && $CURUSER['class'] < UC_VIP) {
     $sss = ($gigsupped < $gigsneeded ? 's' : '');
-    $HTMLOUT .= 'your ratio of <b>' . member_ratio($CURUSER['uploaded'], $CURUSER['downloaded']) . '</b>' . ($gigsupped < $gigsneeded ? ' and your total uploaded of<b> ' . round($gigs, 2) . ' GB</b>' : '') . " fail$sss to meet the minimum requirements. to Make a Offer.<br /><br />
-         <p>To view all offers, click <a href='viewoffers.php'><b>here</b></a></p>\n<br /><br />";
+    $HTMLOUT .= 'your ratio of <b>' . member_ratio($CURUSER['uploaded'], $CURUSER['downloaded']) . '</b>' . ($gigsupped < $gigsneeded ? ' and your total uploaded of<b> ' . round($gigs, 2) . ' GB</b>' : '') . " fail$sss to meet the minimum requirements. to Make a Offer.<br><br>
+         <p>To view all offers, click <a href='viewoffers.php'><b>here</b></a></p>\n<br><br>";
 } else {
     $HTMLOUT .= "you <b>can</b> make offers.<p>To view all offers, click 
     <a class='altlink' href='viewoffers.php'>here</a></p>\n";
@@ -60,7 +59,7 @@ Please search torrents before adding an offer!</td></tr><tr><td align='left'>
     $deadchkbox .= " /> including dead torrents\n";
     $HTMLOUT .= ' ' . $catdropdown . ' </select> ' . $deadchkbox . " 
 <input type='submit' value='Search!' class='btn' /></td></tr></table></form>
-<br />\n";
+<br>\n";
     $HTMLOUT .= "<form method='post' name='compose' action='viewoffers.php?new_offer'><a name='add' id='add'></a>
 <table border='1' cellspacing='0' width='750px' cellpadding='5'><tr><td class='colhead' align='left' colspan='2'>
 Offers are for Users with a good ratio who have uploaded at least " . $INSTALLER09['offer_gigs_upped'] . " gigs Only... Share and you shall recieve!</td></tr>
@@ -77,8 +76,8 @@ Offers are for Users with a good ratio who have uploaded at least " . $INSTALLER
     $HTMLOUT .= $catdropdown2 . " </select></td></tr>
 <tr><td align='right' valign='top'><b>Image</b></td>
 <td align='left'>
-<input type='text' name='picture' size='80' /><br />
-(Direct link to image, NO TAGS NEEDED! Will be shown in description)<br />
+<input type='text' name='picture' size='80' /><br>
+(Direct link to image, NO TAGS NEEDED! Will be shown in description)<br>
 <!--
 <a href='panel.php?tool=bitbucket' rel='external'><strong>Upload Image</strong></a>
 -->
@@ -95,7 +94,7 @@ Offers are for Users with a good ratio who have uploaded at least " . $INSTALLER
 <tr><td align='center' colspan='2'>
 <input type='submit' value='Okay' class='btn' /></td></tr></table>
 </form>
-<br /><br />\n";
+<br><br>\n";
 }
 $rescount = sql_query('SELECT id FROM offers LIMIT 1') or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($rescount) > 0) {

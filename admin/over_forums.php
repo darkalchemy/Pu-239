@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//=== over forum manager by Retro, but newer \o/ march 2010
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -24,7 +20,7 @@ $lang = array_merge($lang, load_language('ad_over_forums'));
 $HTMLOUT = $over_forums = $count = $min_class_viewer = $sorted = '';
 $main_links = '<p><span style="font-weight: bold;">' . $lang['ad_over_forum'] . '</span> :: 
 						<a class="altlink" href="staffpanel.php?tool=forum_manage&amp;action=forum_manage">' . $lang['ad_over_manager'] . '</a> :: 
-						<a class="altlink" href="staffpanel.php?tool=forum_config&amp;action=forum_config">' . $lang['ad_over_configure'] . '</a><br /></p>';
+						<a class="altlink" href="staffpanel.php?tool=forum_config&amp;action=forum_config">' . $lang['ad_over_configure'] . '</a><br></p>';
 $id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
 $maxclass = $CURUSER['class'];
 $name = strip_tags(isset($_POST['name']) ? htmlsafechars($_POST['name']) : '');
@@ -145,16 +141,16 @@ switch ($action) {
                 $over_forums .= '<tr>
 			<td class="' . $class . '" align="center">' . (int)$row['sort'] . '</td>
 			<td class="' . $class . '">
-			<a class="altlink" href="forums.php?action=forum_view&amp;fourm_id=' . (int)$row['id'] . '">' . htmlsafechars($row['name'], ENT_QUOTES) . '</a><br />
+			<a class="altlink" href="forums.php?action=forum_view&amp;fourm_id=' . (int)$row['id'] . '">' . htmlsafechars($row['name'], ENT_QUOTES) . '</a><br>
 			' . htmlsafechars($row['description'], ENT_QUOTES) . '</td>
 			<td class="' . $class . '" align="center">' . get_user_class_name($row['min_class_view']) . '</td>
 			<td align="center" class="' . $class . '">
-			<a class="altlink" href="staffpanel.php?tool=over_forums&amp;action=over_forums&amp;action2=edit_forum_page&amp;id=' . (int)$row['id'] . '">' . $lang['ad_over_edit'] . '</a>&nbsp;|&nbsp;
+			<a class="altlink" href="staffpanel.php?tool=over_forums&amp;action=over_forums&amp;action2=edit_forum_page&amp;id=' . (int)$row['id'] . '">' . $lang['ad_over_edit'] . '</a>&#160;|&#160;
 			<a href="javascript:confirm_delete(\'' . (int)$row['id'] . '\');"><span style="font-weight: bold;">' . $lang['ad_over_delete'] . '</span></a></td>
 			</tr>';
             } //=== end while
         } //=== end if
-        $HTMLOUT .= $over_forums . '</table><br /><br />
+        $HTMLOUT .= $over_forums . '</table><br><br>
 			<form method="post" action="staffpanel.php?tool=over_forums&amp;action=over_forums">
 			<input type="hidden" name="action2" value="add_forum" />
 			<table width="600"  border="0" cellspacing="0" cellpadding="3" align="center">

@@ -1,5 +1,4 @@
 <?php
-
 //=== testing concept of "share ratio"
 $What_Cache = (XBT_TRACKER == true ? 'share_ratio_xbt_' : 'share_ratio_');
 $What_Table = (XBT_TRACKER == true ? 'xbt_files_users' : 'snatched');

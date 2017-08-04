@@ -44,7 +44,7 @@ function usercommenttable($rows)
         }
         $text = format_comment($row['text']);
         if ($row['editedby']) {
-            $text .= "<font size='1' class='small'><br /><br />Last edited by <a href='userdetails.php?id=" . (int)$row['editedby'] . "'><b>" . htmlsafechars($row['edit_name']) . '</b></a> ' . get_date($row['editedat'], 'DATE', 0, 1) . "</font>\n";
+            $text .= "<font size='1' class='small'><br><br>Last edited by <a href='userdetails.php?id=" . (int)$row['editedby'] . "'><b>" . htmlsafechars($row['edit_name']) . '</b></a> ' . get_date($row['editedat'], 'DATE', 0, 1) . "</font>\n";
         }
         $htmlout .= begin_table(true);
         $htmlout .= "<tr valign='top'>\n";
@@ -93,7 +93,7 @@ if ($action == 'add') {
     <form method='post' action='usercomment.php?action=add'>
     <input type='hidden' name='userid' value='$userid' />
     <div>" . BBcode(false) . "</div>
-    <br /><br />
+    <br><br>
     <input type='submit' class='btn' value='Do it!' /></form>\n";
     $res = sql_query('SELECT usercomments.id, usercomments.text, usercomments.editedby, usercomments.editedat, usercomments.added, usercomments.edit_name, username, users.id as user, users.avatar, users.title, users.anonymous, users.class, users.donor, users.warned, users.leechwarn, users.chatpost FROM usercomments LEFT JOIN users ON usercomments.user = users.id WHERE user = ' . sqlesc($userid) . ' ORDER BY usercomments.id DESC LIMIT 5');
     $allrows = [];

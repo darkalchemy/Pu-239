@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-/** sitepot.php by pdq for tbdev.net **/
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 dbconn();
@@ -110,7 +106,7 @@ $HTMLOUT .= "<table cellpadding='10' width='70%'>
       Freeleech will be turned on for everybody for 24 hours. 
       <p align='center'><font size='+1'>
       <b>Site Pot: " . $SitePot['value_i'] . '/' . $potsize . '</b>
-      </font></p>You have <b>' . round($CURUSER['seedbonus'], 1) . '</b> karma points.<br />
+      </font></p>You have <b>' . round($CURUSER['seedbonus'], 1) . '</b> karma points.<br>
       </td></tr>';
 $HTMLOUT .= '<tr><td><b>Description</b></td><td><b>Amount</b></td><td><b>Exchange</b></td></tr>';
 foreach ($pot_options as $Pot_option) {
@@ -119,7 +115,7 @@ foreach ($pot_options as $Pot_option) {
     } else {
         $disabled = 'false';
     }
-    $HTMLOUT .= '<tr><td><b>Contribute ' . $Pot_option . ' Karma Points</b><br /></td>
+    $HTMLOUT .= '<tr><td><b>Contribute ' . $Pot_option . ' Karma Points</b><br></td>
           <td><strong>' . $Pot_option . "</strong></td>
           <td>
           <form action='' method='post'>

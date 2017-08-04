@@ -1,8 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//=== watched users list for staff to keep track of bad or suspected members personally...
 if (!defined('IN_INSTALLER09_ADMIN')) {
     header('HTTP/1.0 404 Not Found');
     $HTMLOUT = '';
@@ -94,7 +90,7 @@ if (isset($_GET['remove'])) {
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 0) {
         stderr($lang['watched_stderr'], '' . $lang['watched_stderr2'] . '!');
     } else {
-        write_log('[b]' . $CURUSER['username'] . '[/b] ' . $lang['watched_removed1'] . '<br />' . $removed_log . ' <br />' . $lang['watched_removedfrom'] . '');
+        write_log('[b]' . $CURUSER['username'] . '[/b] ' . $lang['watched_removed1'] . '<br>' . $removed_log . ' <br>' . $lang['watched_removedfrom'] . '');
     }
     $H1_thingie = '<h1>' . $count . ' ' . $lang['watched_member'] . '' . ($count == 1 ? '' : 's') . ' ' . $lang['watched_removelist'] . '</h1>';
 }
@@ -117,8 +113,8 @@ if (isset($_GET['add'])) {
  <td class="colhead">' . $lang['watched_add'] . ' ' . $user['username'] . '' . $lang['watched_towu'] . '</td>
  </tr>
  <tr>
- <td align="center"><b>' . $lang['watched_pleasefil'] . '' . htmlsafechars($user['username']) . ' ' . $lang['watched_userlist'] . '</b><br />
- <textarea cols="60" rows="6" name="reason">' . htmlsafechars($user['watched_user_reason']) . '</textarea><br /></td>
+ <td align="center"><b>' . $lang['watched_pleasefil'] . '' . htmlsafechars($user['username']) . ' ' . $lang['watched_userlist'] . '</b><br>
+ <textarea cols="60" rows="6" name="reason">' . htmlsafechars($user['watched_user_reason']) . '</textarea><br></td>
  </tr>
  <tr>
  <td class="colhead">
@@ -165,7 +161,7 @@ $good_stuff = [
 $ORDER_BY = ((isset($_GET['sort']) && in_array($_GET['sort'], $good_stuff, true)) ? $_GET['sort'] . ' ' : 'watched_user ');
 $ASC = (isset($_GET['ASC']) ? ($_GET['ASC'] == 'ASC' ? 'DESC' : 'ASC') : 'DESC');
 $i = 1;
-$HTMLOUT .= $H1_thingie . '<br />
+$HTMLOUT .= $H1_thingie . '<br>
         <form action="staffpanel.php?tool=watched_users&amp;action=watched_users&amp;remove=1" method="post"  name="checkme" onsubmit="return ValidateForm(this,\'wu\')">
         <h1>' . $lang['watched_users'] . '[ ' . $watched_users . ' ]</h1>
     <table border="0" cellspacing="5" cellpadding="5" align="center" style="max-width:800px">';
@@ -181,7 +177,7 @@ if ($how_many > 0) {
         <td class="colhead" align="left" width="400">' . $lang['watched_suspicion'] . '</td>
         <td class="colhead" align="center">' . $lang['watched_stats'] . '</td>
         <td class="colhead" align="center"><a href="staffpanel.php?tool=watched_users&amp;action=watched_users&amp;sort=invited_by&amp;ASC=' . $ASC . '">' . $lang['watched_invitedby'] . '</a></td>
-        ' . ($CURUSER['class'] >= UC_STAFF ? '<td class="colhead" align="center">&nbsp;</td>' : '') . '
+        ' . ($CURUSER['class'] >= UC_STAFF ? '<td class="colhead" align="center">&#160;</td>' : '') . '
     </tr>';
     while ($arr = @mysqli_fetch_assoc($res)) {
         //=== change colors

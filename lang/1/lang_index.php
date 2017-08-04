@@ -52,11 +52,11 @@ $lang = [
     'clog_delete'                => 'Delete',
     //latest forum posts
     'latestposts_title'          => $INSTALLER09['latest_posts_limit'] . ' Latest Forum Posts',
-    'latestposts_topic_title'    => 'Topic&nbsp;Title',
+    'latestposts_topic_title'    => 'Topic&#160;Title',
     'latestposts_replies'        => 'Replies',
     'latestposts_views'          => 'Views',
-    'latestposts_last_post'      => 'Last&nbsp;Post',
-    'latestposts_posted_at'      => 'Posted&nbsp;At',
+    'latestposts_last_post'      => 'Last&#160;Post',
+    'latestposts_posted_at'      => 'Posted&#160;At',
     'latestposts_no_posts'       => 'No Posts Found',
     //Stats
     'index_stats_title'          => 'Stats',
@@ -90,8 +90,8 @@ The administrator of this site (%s) cannot be held responsible for what its user
 You may not use this site to distribute or download any material when you do not have the legal rights to do so.
 It is your own responsibility to adhere to these terms.",
     //last24
-    'index_last24_nousers'       => 'There&nbsp;have&nbsp;been&nbsp;no&nbsp;active&nbsp;users&nbsp;in&nbsp;the&nbsp;last&nbsp;15&nbsp;minutes.',
-    'index_last24_list'          => '&nbsp;-&nbsp;List&nbsp;updated&nbsp;hourly',
+    'index_last24_nousers'       => 'There&#160;have&#160;been&#160;no&#160;active&#160;users&#160;in&#160;the&#160;last&#160;15&#160;minutes.',
+    'index_last24_list'          => '&#160;-&#160;List&#160;updated&#160;hourly',
     'index_last24_during'        => ' visited during the last 24 hours',
     'index_last24_most'          => 'Most ever visited in 24 hours was ',
     'index_last24_on'            => ' on ',
@@ -152,10 +152,10 @@ It is your own responsibility to adhere to these terms.",
     'index_news_title'           => 'Add / Edit',
     'index_news_ed'              => 'Edit news',
     'index_news_del'             => 'Delete news',
-    'index_news_added'           => '&nbsp;-&nbsp;Added by ',
+    'index_news_added'           => '&#160;-&#160;Added by ',
     'index_news_anon'            => 'Anonymous',
     'index_news_not'             => 'We currently have fuck all to say :-P',
-    'index_news_txt'             => '&nbsp;-&nbsp;',
+    'index_news_txt'             => '&#160;-&#160;',
     //torrent freak
     'index_torr_freak'           => ' Torrent Freak News',
 ];

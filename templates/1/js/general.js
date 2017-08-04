@@ -106,7 +106,6 @@ WebFontConfig = {
     var wf = document.createElement('script');
     wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
         '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-    wf.type = 'text/javascript';
     wf.async = 'true';
     var s = document.getElementsByTagName('body')[0];
     s.appendChild(wf, s);
@@ -359,7 +358,7 @@ jQuery(document).ready(function () {
 
 
     /* Scroll to Top --> Begin */
-    $('a[href=#top]').click(function () {
+    $("a[href='#top']").click(function () {
         $('html, body').animate({scrollTop: 0}, 'slow');
         return false;
     });
@@ -409,7 +408,7 @@ jQuery(document).ready(function () {
 
     /* Image wrapper --> Begin */
     function handle_image(img) {
-        var $curtain = $('<span class="curtain">&nbsp</span>');
+        var $curtain = $('<span class="curtain">&#160;</span>');
         img.after($curtain);
     }
 

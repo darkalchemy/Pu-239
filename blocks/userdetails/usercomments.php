@@ -1,5 +1,4 @@
 <?php
-
 function usercommenttable($rows)
 {
     $htmlout = '';
@@ -27,7 +26,7 @@ function usercommenttable($rows)
         }
         $text = format_comment($row['text']);
         if ($row['editedby']) {
-            $text .= "<font size='1' class='small'><br /><br />{$lang['userdetails_comm_ledited']}<a href='userdetails.php?id=" . (int)$row['editedby'] . "'><b>" . htmlsafechars($row['username']) . '</b></a> ' . get_date($row['editedat'], 'DATE', 0, 1) . "</font>\n";
+            $text .= "<font size='1' class='small'><br><br>{$lang['userdetails_comm_ledited']}<a href='userdetails.php?id=" . (int)$row['editedby'] . "'><b>" . htmlsafechars($row['username']) . '</b></a> ' . get_date($row['editedat'], 'DATE', 0, 1) . "</font>\n";
         }
         $htmlout .= "<table width='100%' border='1' cellspacing='0' cellpadding='5'>";
         $htmlout .= "<tr valign='top'>\n";

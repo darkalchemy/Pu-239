@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
@@ -72,12 +69,12 @@ if ($action == 'viewposts') {
         $added = get_date($arr['added'], '');
         $HTMLOUT .= "<div class='sub'><table border='0' cellspacing='0' cellpadding='0'>
           <tr><td class='embedded'>
-          $added&nbsp;--&nbsp;<b>{$lang['posts_forum']}:&nbsp;</b>
+          $added&#160;--&#160;<b>{$lang['posts_forum']}:&#160;</b>
           <a href='forums.php?action=view_forum&amp;forum_id=$forumid'>$forumname</a>
-          &nbsp;--&nbsp;<b>{$lang['posts_topic']}:&nbsp;</b>
+          &#160;--&#160;<b>{$lang['posts_topic']}:&#160;</b>
           <a href='forums.php?action=view_topic&amp;topic_id=$topicid'>$topicname</a>
-          &nbsp;--&nbsp;<b>{$lang['posts_post']}:&nbsp;</b>
-          #<a href='forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=p$postid#$postid'>$postid</a>" . ($newposts ? " &nbsp;<b>(<font color='red'>{$lang['posts_new']}</font>)</b>" : '') . "</td></tr></table></div>\n";
+          &#160;--&#160;<b>{$lang['posts_post']}:&#160;</b>
+          #<a href='forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=p$postid#$postid'>$postid</a>" . ($newposts ? " &#160;<b>(<font color='red'>{$lang['posts_new']}</font>)</b>" : '') . "</td></tr></table></div>\n";
         $HTMLOUT .= begin_table(true);
         $body = format_comment($arr['body']);
         if (is_valid_id($arr['edited_by'])) {
@@ -149,7 +146,7 @@ if ($action == 'viewcomments') {
         $comm_page = floor($count / 20);
         $page_url = $comm_page ? "&amp;page=$comm_page" : '';
         $added = get_date($arr['added'], '') . ' (' . get_date($arr['added'], '', 0, 1) . ')';
-        $HTMLOUT .= "<div class='sub'><table border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>" . "$added&nbsp;---&nbsp;<b>{$lang['posts_torrent']}:&nbsp;</b>" . ($torrent ? ("<a href='details.php?id=$torrentid&amp;tocomm=1'>$torrent</a>") : " [{$lang['posts_del']}] ") . "&nbsp;---&nbsp;<b>{$lang['posts_comment']}:&nbsp;</b>#<a href='details.php?id=$torrentid&amp;tocomm=1$page_url'>$commentid</a>
+        $HTMLOUT .= "<div class='sub'><table border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>" . "$added&#160;---&#160;<b>{$lang['posts_torrent']}:&#160;</b>" . ($torrent ? ("<a href='details.php?id=$torrentid&amp;tocomm=1'>$torrent</a>") : " [{$lang['posts_del']}] ") . "&#160;---&#160;<b>{$lang['posts_comment']}:&#160;</b>#<a href='details.php?id=$torrentid&amp;tocomm=1$page_url'>$commentid</a>
         </td></tr></table></div>\n";
         $HTMLOUT .= begin_table(true);
         $body = format_comment($arr['text']);

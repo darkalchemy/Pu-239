@@ -115,20 +115,20 @@ document.getElementById(id).select();
         $year = (!isset($_GET['year']) ? '&amp;year=' . date('Y') : '&amp;year=' . (int)$_GET['year']);
         $HTMLOUT .= '<p align="center"><a href="bitbucket.php?images=2">' . $lang['bitbucket_viewmya'] . '</a></p>
 <p align="center"><a href="bitbucket.php">' . $lang['bitbucket_hideimgs'] . '</a></p>
-<p align="center"><b>' . $lang['bitbucket_previosimg'] . '</b><br />
-<a href="bitbucket.php?images=1&amp;month=' . $folder_month . '&amp;year=' . (isset($_GET['year']) && $_GET['year'] != date('Y') ? date('Y') . '">This' : (date('Y') - 1) . '">' . $lang['bitbucket_last'] . '') . '' . $lang['bitbucket_year'] . '</a> &nbsp;
-<a href="bitbucket.php?images=1&amp;month=01' . $year . '">' . $lang['bitbucket_jan'] . '</a> &nbsp;
-<a href="bitbucket.php?images=1&amp;month=02' . $year . '">' . $lang['bitbucket_feb'] . '</a> &nbsp;
-<a href="bitbucket.php?images=1&amp;month=03' . $year . '">' . $lang['bitbucket_mar'] . '</a> &nbsp;
-<a href="bitbucket.php?images=1&amp;month=04' . $year . '">' . $lang['bitbucket_apr'] . '</a> &nbsp;
-<a href="bitbucket.php?images=1&amp;month=05' . $year . '">' . $lang['bitbucket_may'] . '</a> &nbsp;
-<a href="bitbucket.php?images=1&amp;month=06' . $year . '">' . $lang['bitbucket_jun'] . '</a> &nbsp;
-<a href="bitbucket.php?images=1&amp;month=07' . $year . '">' . $lang['bitbucket_jul'] . '</a> &nbsp;
-<a href="bitbucket.php?images=1&amp;month=08' . $year . '">' . $lang['bitbucket_aug'] . '</a> &nbsp;
-<a href="bitbucket.php?images=1&amp;month=09' . $year . '">' . $lang['bitbucket_sep'] . '</a> &nbsp;
-<a href="bitbucket.php?images=1&amp;month=10' . $year . '">' . $lang['bitbucket_oct'] . '</a> &nbsp;
-<a href="bitbucket.php?images=1&amp;month=11' . $year . '">' . $lang['bitbucket_nov'] . '</a> &nbsp;
-<a href="bitbucket.php?images=1&amp;month=12' . $year . '">' . $lang['bitbucket_dec'] . '</a> &nbsp;
+<p align="center"><b>' . $lang['bitbucket_previosimg'] . '</b><br>
+<a href="bitbucket.php?images=1&amp;month=' . $folder_month . '&amp;year=' . (isset($_GET['year']) && $_GET['year'] != date('Y') ? date('Y') . '">This' : (date('Y') - 1) . '">' . $lang['bitbucket_last'] . '') . '' . $lang['bitbucket_year'] . '</a> &#160;
+<a href="bitbucket.php?images=1&amp;month=01' . $year . '">' . $lang['bitbucket_jan'] . '</a> &#160;
+<a href="bitbucket.php?images=1&amp;month=02' . $year . '">' . $lang['bitbucket_feb'] . '</a> &#160;
+<a href="bitbucket.php?images=1&amp;month=03' . $year . '">' . $lang['bitbucket_mar'] . '</a> &#160;
+<a href="bitbucket.php?images=1&amp;month=04' . $year . '">' . $lang['bitbucket_apr'] . '</a> &#160;
+<a href="bitbucket.php?images=1&amp;month=05' . $year . '">' . $lang['bitbucket_may'] . '</a> &#160;
+<a href="bitbucket.php?images=1&amp;month=06' . $year . '">' . $lang['bitbucket_jun'] . '</a> &#160;
+<a href="bitbucket.php?images=1&amp;month=07' . $year . '">' . $lang['bitbucket_jul'] . '</a> &#160;
+<a href="bitbucket.php?images=1&amp;month=08' . $year . '">' . $lang['bitbucket_aug'] . '</a> &#160;
+<a href="bitbucket.php?images=1&amp;month=09' . $year . '">' . $lang['bitbucket_sep'] . '</a> &#160;
+<a href="bitbucket.php?images=1&amp;month=10' . $year . '">' . $lang['bitbucket_oct'] . '</a> &#160;
+<a href="bitbucket.php?images=1&amp;month=11' . $year . '">' . $lang['bitbucket_nov'] . '</a> &#160;
+<a href="bitbucket.php?images=1&amp;month=12' . $year . '">' . $lang['bitbucket_dec'] . '</a> &#160;
 </p>';
     } elseif (isset($_GET['images']) && $_GET['images'] == 2) {
         $HTMLOUT .= "<p align=\"center\"><a href=\"{$INSTALLER09['baseurl']}/bitbucket.php?images=1\">{$lang['bitbucket_viewmonths']}</a></p>
@@ -147,11 +147,11 @@ document.getElementById(id).select();
                 $filename = $bucketlink2 . $filename;
                 $encryptedfilename = urlencode(encrypt($filename));
                 $eid = md5($filename);
-                $HTMLOUT .= "<a href=\"{$address}img.php/{$filename}\"><img src=\"{$address}img.php/{$filename}\" width=\"200\" alt=\"\" /><br />{$address}img.php/{$filename}</a><br />";
-                $HTMLOUT .= "<p>{$lang['bitbucket_directlink']}<br /><input style=\"font-size: 9pt;text-align: center;\" id=\"d" . $eid . "d\" onclick=\"SelectAll('d" . $eid . "d');\" type=\"text\" size=\"70\" value=\"{$address}img.php/{$filename}\" readonly=\"readonly\" /></p>";
-                $HTMLOUT .= "<p align=\"center\">{$lang['bitbucket_tags']}<br /><input style=\"font-size: 9pt;text-align: center;\" id=\"t" . $eid . "t\" onclick=\"SelectAll('t" . $eid . "t');\" type=\"text\" size=\"70\" value=\"[img]{$address}img.php/{$filename}[/img]\" readonly=\"readonly\" /></p>";
+                $HTMLOUT .= "<a href=\"{$address}img.php/{$filename}\"><img src=\"{$address}img.php/{$filename}\" width=\"200\" alt=\"\" /><br>{$address}img.php/{$filename}</a><br>";
+                $HTMLOUT .= "<p>{$lang['bitbucket_directlink']}<br><input style=\"font-size: 9pt;text-align: center;\" id=\"d" . $eid . "d\" onclick=\"SelectAll('d" . $eid . "d');\" type=\"text\" size=\"70\" value=\"{$address}img.php/{$filename}\" readonly=\"readonly\" /></p>";
+                $HTMLOUT .= "<p align=\"center\">{$lang['bitbucket_tags']}<br><input style=\"font-size: 9pt;text-align: center;\" id=\"t" . $eid . "t\" onclick=\"SelectAll('t" . $eid . "t');\" type=\"text\" size=\"70\" value=\"[img]{$address}img.php/{$filename}[/img]\" readonly=\"readonly\" /></p>";
                 $HTMLOUT .= "<p align=\"center\"><a href=\"{$INSTALLER09['baseurl']}/bitbucket.php?type=" . ((isset($_GET['images']) && $_GET['images'] == 2) ? '2' : '1') . "&amp;avatar={$address}img.php/{$filename}\">{$lang['bitbucket_maketma']}</a></p>";
-                $HTMLOUT .= "<p align=\"center\"><a href=\"{$INSTALLER09['baseurl']}/bitbucket.php?type=" . ((isset($_GET['images']) && $_GET['images'] == 2) ? '2' : '1') . '&amp;delete=' . $encryptedfilename . '&amp;delhash=' . md5($filename . $USERSALT . $SaLt) . '&amp;month=' . (!isset($_GET['month']) ? date('m') : ($_GET['month'] < 10 ? '0' : '') . (int)$_GET['month']) . '&amp;year=' . (!isset($_GET['year']) ? date('Y') : (int)$_GET['year']) . "\">{$lang['bitbucket_delete']}</a></p><br />";
+                $HTMLOUT .= "<p align=\"center\"><a href=\"{$INSTALLER09['baseurl']}/bitbucket.php?type=" . ((isset($_GET['images']) && $_GET['images'] == 2) ? '2' : '1') . '&amp;delete=' . $encryptedfilename . '&amp;delhash=' . md5($filename . $USERSALT . $SaLt) . '&amp;month=' . (!isset($_GET['month']) ? date('m') : ($_GET['month'] < 10 ? '0' : '') . (int)$_GET['month']) . '&amp;year=' . (!isset($_GET['year']) ? date('Y') : (int)$_GET['year']) . "\">{$lang['bitbucket_delete']}</a></p><br>";
             } else {
                 $HTMLOUT .= "{$lang['bitbucket_noimages']}";
             }
@@ -183,7 +183,7 @@ if (!function_exists('exif_imagetype')) {
 }
 $it1 = exif_imagetype($_FILES['file']['tmp_name']);
 if ($it1 != IMAGETYPE_GIF && $it1 != IMAGETYPE_JPEG && $it1 != IMAGETYPE_PNG) {
-    $HTMLOUT .= "<h1>{$lang['bitbucket_upfail']}<br />{$lang['bitbucket_sorry']}";
+    $HTMLOUT .= "<h1>{$lang['bitbucket_upfail']}<br>{$lang['bitbucket_sorry']}";
     exit;
 }
 $file = strtolower($file);
@@ -225,7 +225,7 @@ document.getElementById(id).select();
 }
 /*]]>*/
 </script>';
-$HTMLOUT .= "<p>{$lang['bitbucket_directlink']}<br />
+$HTMLOUT .= "<p>{$lang['bitbucket_directlink']}<br>
 <input style=\"font-size: 9pt;text-align: center;\" id=\"direct\" onclick=\"SelectAll('direct');\" type=\"text\" size=\"70\" value=\"" . $address . 'img.php/' . $pathlink . "\" readonly=\"readonly\" /></p>
 <p align=\"center\">{$lang['bitbucket_tags']}
 <input style=\"font-size: 9pt;text-align: center;\" id=\"tag\" onclick=\"SelectAll('tag');\" type=\"text\" size=\"70\" value=\"[img]" . $address . 'img.php/' . $pathlink . "[/img]\" readonly=\"readonly\" /></p>

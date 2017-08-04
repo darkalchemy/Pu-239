@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 require_once $_SERVER['DOCUMENT_ROOT'] . '/include/bittorrent.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/cache/country.php';
 dbconn();

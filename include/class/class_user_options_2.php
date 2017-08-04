@@ -1,8 +1,4 @@
 <?php
-
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 class user_options_2
 {
     const PM_ON_DELETE = 0x1; // 1 exclude

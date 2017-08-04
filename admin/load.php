@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 if (!defined('IN_INSTALLER09_ADMIN')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
@@ -11,7 +8,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -112,7 +109,7 @@ function loadavg($return_all = false)
     $HTMLOUT .="
     <div class='roundedCorners' style='text-align:left;width:80%;border:1px solid black;padding:5px;'>
     <div style='background:transparent;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['index_serverload']}</span></div>
-    <br />
+    <br>
     <table width='100%' border='1' cellspacing='0' cellpadding='1'>
         <tr><td align='center'>
         <table class='main' border='0' width='402'>
@@ -123,14 +120,14 @@ function loadavg($return_all = false)
     elseif ($percent <= 90) $pic = "loadbaryellow.gif";
     else $pic = "loadbarred.gif";
     $width = $percent * 4;
-    $HTMLOUT .="<img height='15' width='$width' src=\"{$INSTALLER09['pic_base_url']}{$pic}\" alt='$percent&#37;' /><br />{$lang['index_load_curr']}{$percent}{$lang['index_load_cpu']}<br /></td></tr></table></td></tr></table></div><br />";
+    $HTMLOUT .="<img height='15' width='$width' src=\"{$INSTALLER09['pic_base_url']}{$pic}\" alt='$percent&#37;' /><br>{$lang['index_load_curr']}{$percent}{$lang['index_load_cpu']}<br></td></tr></table></td></tr></table></div><br>";
     //==End
 */
 //==Server Load linux
 $HTMLOUT .= "
     <div class='roundedCorners' style='text-align:left;width:80%;border:1px solid black;padding:5px;'>
     <div style='background:transparent;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['index_serverload']}</span></div>
-    <br />
+    <br>
     <table width='100%' border='1' cellspacing='0' cellpadding='1'>
 			<tr><td align='center'>
 		    <table class='main' border='0' width='402'>
@@ -144,18 +141,18 @@ if ($percent <= 70) {
     $pic = 'loadbarred.gif';
 }
 $width = $percent * 4;
-$HTMLOUT .= "<img height='15' width='$width' src=\"{$INSTALLER09['pic_base_url']}{$pic}\" alt='$percent&#37;' /><br />{$lang['index_load_curr']}{$percent}{$lang['index_load_cpu']}<br />";
+$HTMLOUT .= "<img height='15' width='$width' src=\"{$INSTALLER09['pic_base_url']}{$pic}\" alt='$percent&#37;' /><br>{$lang['index_load_curr']}{$percent}{$lang['index_load_cpu']}<br>";
 //==End graphic
 $HTMLOUT .= "{$lang['index_load_uptime1']}" . uptime() . '';
 $loadinfo = loadavg(true);
-$HTMLOUT .= "<br />
-    {$lang['index_load_pastmin']}" . $loadinfo['last1'] . "<br />
-    {$lang['index_load_pastmin5']}" . $loadinfo['last5'] . "<br />
-    {$lang['index_load_pastmin15']}" . $loadinfo['last15'] . "<br />
-    {$lang['index_load_numtsk']}" . $loadinfo['tasks'] . "<br />
-    {$lang['index_load_numproc']}" . $loadinfo['processes'] . "<br />
-   {$lang['index_load_pid']}" . $loadinfo['lastpid'] . '<br />
-    </td></tr></table></td></tr></table></div><br />';
+$HTMLOUT .= "<br>
+    {$lang['index_load_pastmin']}" . $loadinfo['last1'] . "<br>
+    {$lang['index_load_pastmin5']}" . $loadinfo['last5'] . "<br>
+    {$lang['index_load_pastmin15']}" . $loadinfo['last15'] . "<br>
+    {$lang['index_load_numtsk']}" . $loadinfo['tasks'] . "<br>
+    {$lang['index_load_numproc']}" . $loadinfo['processes'] . "<br>
+   {$lang['index_load_pid']}" . $loadinfo['lastpid'] . '<br>
+    </td></tr></table></td></tr></table></div><br>';
 //==End
 
 echo stdhead($lang['index_serverload']) . $HTMLOUT . stdfoot();

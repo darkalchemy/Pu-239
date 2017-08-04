@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 // Written by RetroKill to allow scripters to see what scripts have changed since
 // they last updated their own list.
 //
@@ -25,7 +22,7 @@ if (!defined('IN_INSTALLER09_ADMIN')) {
 		<title>Error!</title>
 		</head>
 		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br />You cannot access this file directly.</div>
+	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
 	</body></html>";
     echo $HTMLOUT;
     exit();
@@ -161,7 +158,7 @@ if (!$count) {
 }
 $HTMLOUT .= "
 </table>
-<br /><br /><br />
+<br><br><br>
 <table width='750' border='1' cellspacing='2' cellpadding='5' align='center'>
 <tr>
 <td align='center' width='70%' bgcolor='orange'><strong>{$lang['editlog_modified']}</strong></td>
@@ -191,7 +188,7 @@ if (!$count) {
 }
 $HTMLOUT .= "
 </table>
-<br /><br /><br />
+<br><br><br>
 <table width='750' border='1' cellspacing='2' cellpadding='5' align='center'>
 <tr>
 <td align='center' width='70%' bgcolor='orange'><strong>{$lang['editlog_deleted']}</strong></td>
@@ -221,7 +218,7 @@ if (!$count) {
 }
 $HTMLOUT .= "
 </table>
-<br /><br /><br />
+<br><br><br>
 <form method='post' action='staffpanel.php?tool=editlog&amp;action=editlog'>
 <table width='750' border='1' cellspacing='2' cellpadding='5' align='center'>
 <tr>

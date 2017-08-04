@@ -1,10 +1,5 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
-//== Php poop
 $all_my_boxes = $curuser_cache = $user_cache = $categories = '';
-//=== don't allow direct access
 if (!defined('BUNNY_PM_SYSTEM')) {
     $HTMLOUT = '';
     $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -191,7 +186,7 @@ if (mysqli_num_rows($res) > 0) {
     $all_my_boxes .= '
                     <tr>
                         <td class="one"></td>
-                        <td class="one" colspan="2" align="left">' . $lang['pm_edmail_names'] . '<br />
+                        <td class="one" colspan="2" align="left">' . $lang['pm_edmail_names'] . '<br>
                         ' . $lang['pm_edmail_if'] . '</td>
                     </tr>
                     <tr>
@@ -210,7 +205,7 @@ if (mysqli_num_rows($res) > 0) {
     $all_my_boxes .= '
                     <tr>
                         <td class="one"></td>
-                        <td class="one" colspan="2" align="center"><span style="font-weight: bold;">' . $lang['pm_edmail_nobox'] . '</span><br /></td>
+                        <td class="one" colspan="2" align="center"><span style="font-weight: bold;">' . $lang['pm_edmail_nobox'] . '</span><br></td>
                     </tr>';
 }
 //=== per page drop down
@@ -228,7 +223,7 @@ if (mysqli_num_rows($r) > 0) {
     $i = 0;
     while ($a = mysqli_fetch_assoc($r)) {
         $categories .= ($i && $i % 2 == 0) ? '</tr><tr>' : '';
-        $categories .= "<td class='bottom' style='padding-right: 5px'><input name='cat" . (int)$a['id'] . "' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? " checked='checked'" : '') . " value='yes' />&nbsp;<a class='catlink' href='browse.php?cat=" . (int)$a['id'] . "'><img src='{$INSTALLER09['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($a['image']) . "' alt='" . htmlsafechars($a['name']) . "' title='" . htmlsafechars($a['name']) . "' /></a>&nbsp;" . htmlspecialchars($a['name']) . "</td>\n";
+        $categories .= "<td class='bottom' style='padding-right: 5px'><input name='cat" . (int)$a['id'] . "' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? " checked='checked'" : '') . " value='yes' />&#160;<a class='catlink' href='browse.php?cat=" . (int)$a['id'] . "'><img src='{$INSTALLER09['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($a['image']) . "' alt='" . htmlsafechars($a['name']) . "' title='" . htmlsafechars($a['name']) . "' /></a>&#160;" . htmlspecialchars($a['name']) . "</td>\n";
         ++$i;
     }
     $categories .= "</tr></table>\n";
@@ -257,8 +252,8 @@ $HTMLOUT .= '<h1>' . $lang['pm_edmail_title'] . '</h1>' . $h1_thingie . $top_lin
     </tr>
     <tr>
         <td class="one" align="left"></td>
-        <td class="one" align="left" colspan="2">' . $lang['pm_edmail_as_a'] . '' . get_user_class_name($CURUSER['class']) . $lang['pm_edmail_you_may'] . $maxboxes . $lang['pm_edmail_pm_box'] . ($maxboxes !== 1 ? $lang['pm_edmail_pm_boxes'] : '') . '' . $lang['pm_edmail_other'] . '<br />' . $lang['pm_edmail_currently'] . '' . mysqli_num_rows($res) . $lang['pm_edmail_custom'] . (mysqli_num_rows($res) !== 1 ? $lang['pm_edmail_custom_es'] : '') . $lang['pm_edmail_may_add'] . ($maxboxes - mysqli_num_rows($res)) . '' . $lang['pm_edmail_more_extra'] . '<br /><br />
-        <span style="font-weight: bold;">' . $lang['pm_edmail_following'] . '</span>' . $lang['pm_edmail_chars'] . '<br /></td>
+        <td class="one" align="left" colspan="2">' . $lang['pm_edmail_as_a'] . '' . get_user_class_name($CURUSER['class']) . $lang['pm_edmail_you_may'] . $maxboxes . $lang['pm_edmail_pm_box'] . ($maxboxes !== 1 ? $lang['pm_edmail_pm_boxes'] : '') . '' . $lang['pm_edmail_other'] . '<br>' . $lang['pm_edmail_currently'] . '' . mysqli_num_rows($res) . $lang['pm_edmail_custom'] . (mysqli_num_rows($res) !== 1 ? $lang['pm_edmail_custom_es'] : '') . $lang['pm_edmail_may_add'] . ($maxboxes - mysqli_num_rows($res)) . '' . $lang['pm_edmail_more_extra'] . '<br><br>
+        <span style="font-weight: bold;">' . $lang['pm_edmail_following'] . '</span>' . $lang['pm_edmail_chars'] . '<br></td>
     </tr>';
 //=== make loop for oh let's say 5 boxes...
 for ($i = 1; $i < 6; ++$i) {
@@ -272,7 +267,7 @@ for ($i = 1; $i < 6; ++$i) {
 $HTMLOUT .= '
     <tr>
         <td class="one" align="left"></td>
-        <td class="one" align="left">' . $lang['pm_edmail_only_fill'] . '<br />
+        <td class="one" align="left">' . $lang['pm_edmail_only_fill'] . '<br>
 		' . $lang['pm_edmail_blank'] . '</td>
         <td class="one" align="left"><input type="submit" class="button_tiny" name="move" value="' . $lang['pm_edmail_add'] . '" onmouseover="this.className=\'button_tiny_hover\'" onmouseout="this.className=\'button_tiny\'" /></form></td>
     </tr>
@@ -332,7 +327,7 @@ $HTMLOUT .= '
     <tr>
         <td class="one" align="right" valign="top"><span style="font-weight: bold;">' . $lang['pm_edmail_cats'] . '</span></td>
         <td class="one" align="left"><a class="altlink"  title="' . $lang['pm_edmail_clickmore'] . '" id="cat_open" style="font-weight:bold;cursor:pointer;">' . $lang['pm_edmail_show_hide'] . '</a>' . $lang['pm_edmail_torr'] . '
-        <div id="cat" style="display:none;">' . $lang['pm_edmail_def_cats'] . '<br />' . $categories . '</div></td>
+        <div id="cat" style="display:none;">' . $lang['pm_edmail_def_cats'] . '<br>' . $categories . '</div></td>
         <td class="one" align="left"></td>
     </tr>
     <tr>
