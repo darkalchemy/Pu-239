@@ -1,7 +1,4 @@
 <?php
-/**
- * \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 function cleanup_log($data)
 {
     $text = sqlesc($data['clean_title']);
@@ -16,8 +13,7 @@ function docleanup($data)
     global $INSTALLER09, $queries, $mc1;
     set_time_limit(1200);
     ignore_user_abort(1);
-    //=== Updated remove karma vip by Bigjoos/pdq - change class number '1' in the users_buffer and $update[class'] to whatever is under your vip class number
-    $res = sql_query("SELECT id, modcomment FROM users WHERE vip_added='yes' AND vip_until < " . TIME_NOW . '') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query("SELECT id, modcomment FROM users WHERE vip_added='yes' AND donoruntil < " . TIME_NOW . " AND vip_until < " . TIME_NOW . '') or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $users_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $subject = 'VIP status expired.';

@@ -264,6 +264,11 @@ $INSTALLER09['staff_forums'] = [
 ]; // these forum ID's' should exist and be a staff forum's to stop autoshouts
 $INSTALLER09['variant'] = 'P-239 V1';
 define('TBVERSION', $INSTALLER09['variant']);
+
+// Arcade Games
+$INSTALLER09['arcade_games'] = array('asteroids', 'breakout', 'frogger', 'galaga', 'hexxagon', 'invaders', 'moonlander', 'pacman', 'psol', 'simon', 'snake', 'tetris', 'autobahn', 'ghosts-and-goblins', 'joust', 'ms-pac-man');
+$INSTALLER09['arcade_games_names'] = array('Asteroids', 'Breakout', 'Frogger', 'Galaga', 'Hexxagon', 'Space Invaders', 'Moonlander', 'Pacman', 'Pyramid Solitaire', 'Simon', 'Snake', 'Tetris', 'Autobahn', 'Ghosts\'n Goblins', 'Joust', 'Ms. Pac-Man');
+
 // for cache busting
 $INSTALLER09['code_version'] = 999;  // increment when updating css or js
 $INSTALLER09['jquery_version'] = '2.2.4'; // jquery version

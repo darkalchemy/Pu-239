@@ -31,7 +31,7 @@ foreach ([
              'uploaded',
              'left',
          ] as $x) {
-    $GLOBALS[$x] = 0 + $_GET[$x];
+    $GLOBALS[$x] = (int) $_GET[$x];
 }
 foreach ([
              'torrent_pass',
@@ -57,10 +57,10 @@ foreach ([
 unset($x);
 $info_hash = $info_hash;
 $ip = $_SERVER['REMOTE_ADDR'];
-$port = 0 + $port;
-$downloaded = 0 + $downloaded;
-$uploaded = 0 + $uploaded;
-$left = 0 + $left;
+$port = (int) $port;
+$downloaded = (int) $downloaded;
+$uploaded = (int) $uploaded;
+$left = (int) $left;
 $rsize = 30;
 foreach ([
              'num want',
@@ -236,7 +236,7 @@ $announce_wait = 30;
 if (isset($self) && ($self['prevts'] > ($self['nowts'] - $announce_wait))) {
     err('There is a minimum announce time of ' . $announce_wait . ' seconds');
 }
-if ($torrent['vip'] == 1 && $user['class'] < UC_VIP) {
+if ($left > 0 & $torrent['vip'] == 1 && $user['class'] < UC_VIP) {
     err('VIP Access Required, You must be a VIP In order to view details or download this torrent! You may become a Vip By Donating to our site. Donating ensures we stay online to provide you with more Vip-Only Torrents!');
 }
 $user_updateset = [];
