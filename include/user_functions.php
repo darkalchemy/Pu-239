@@ -20,7 +20,6 @@ function autoshout($msg, $channel = 0)
     global $INSTALLER09;
     require_once INCL_DIR . 'bbcode_functions.php';
     sql_query('INSERT INTO ajax_chat_messages (userID, userName, userRole, channel, dateTime, ip, text) VALUES (' . sqlesc($INSTALLER09['bot_id']) . ', ' . sqlesc($INSTALLER09['chatBotName']) . ', 4, ' . sqlesc($channel) . ', NOW(), ' . sqlesc(ipToStorageFormat('127.0.0.1')) . ', ' . sqlesc($msg) . ')') or sqlerr(__FILE__, __LINE__);
-
 }
 
 function parked()

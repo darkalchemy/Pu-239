@@ -595,7 +595,7 @@ function charset()
 
 function autoclean()
 {
-    global $INSTALLER09;
+    global $INSTALLER09, $mc1;
     // these clean_ids need to be run at specific interval, regardless of when they run
     $run_at_specified_times = [82, 83];
     $now = TIME_NOW;
@@ -613,6 +613,14 @@ function autoclean()
                 register_shutdown_function('docleanup', $row);
             }
         }
+    }
+
+    if (($tfreak_cron = $mc1->get_value('tfreak_cron_')) === false) {
+        $mc1->cache_value('tfreak_cron_', TIME_NOW, 300);
+        require_once INCL_DIR . 'newsrss.php';
+        foxnews_shout();
+        tfreak_shout();
+        github_shout();
     }
 }
 

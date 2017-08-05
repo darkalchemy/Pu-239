@@ -10,7 +10,7 @@ $sql = 'SELECT qid FROM triviaq WHERE current = 1 AND asked = 1';
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $result = mysqli_fetch_assoc($res);
 $qid = (int)$result['qid'];
-$answered = '';
+$display = $answered = '';
 
 if (!empty($_POST) && (int)$_POST['qid'] === $qid) {
     if (!empty($_POST['qid']) && !empty($_POST['user_id']) && !empty($_POST['ans']) && !empty($_POST['gamenum'])) {
@@ -56,7 +56,13 @@ $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $result = mysqli_fetch_assoc($res);
 $remaining = (int)$result['remaining'];
 $date = new DateTime("@{$result['clean_time']}");
-$date_string = $date->format('D, d M y H:i:s O');
+$date_round = $date->format('D, d M y H:i:s O');
+
+$sql = "SELECT clean_time, clean_time - unix_timestamp(NOW()) AS remaining FROM cleanup WHERE clean_file = 'trivia_points_update.php'";
+$res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+$result = mysqli_fetch_assoc($res);
+$date = new DateTime("@{$result['clean_time']}");
+$date_game = $date->format('D, d M y H:i:s O');
 
 $num_totalq = get_row_count('triviaq');
 $num_remainingq = get_row_count('triviaq', 'WHERE asked = 0');
@@ -89,8 +95,12 @@ $HTMLOUT .= "
 if ($remaining >= 1) {
     $display = "
             {$lang['trivia_next_question']}
-            <span id='clockdiv'>
-                <span class='minutes'></span>:<span class='seconds'></span>
+            <span id='clock_round'>
+                <span style='display: none;' class='days'></span><span style='display: none;' class='hours'></span><span class='minutes'></span>:<span class='seconds'></span>
+            </span><br>
+            Game Ends in:
+            <span id='clock_game'>
+                <span class='days'></span> Days, <span class='hours'></span> Hours, <span class='minutes'></span> Minutes, <span class='seconds'></span> Seconds
             </span>";
 }
 
@@ -264,8 +274,12 @@ if ($remaining >= 1) {
         var clock = document.getElementById(id);
         function updateClock(){
             var t = getTimeRemaining(endtime);
+            var daysSpan = clock.querySelector('.days');
+            var hoursSpan = clock.querySelector('.hours');
             var minutesSpan = clock.querySelector('.minutes');
             var secondsSpan = clock.querySelector('.seconds');
+            daysSpan.innerHTML = t.days;
+            hoursSpan.innerHTML = t.hours;
             minutesSpan.innerHTML = t.minutes;
             secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
             if(t.total<=0){
@@ -275,7 +289,9 @@ if ($remaining >= 1) {
         updateClock();
         var timeinterval = setInterval(updateClock,1000);
     }
-    initializeClock('clockdiv', '$date_string');
+
+    initializeClock('clock_round', '$date_round');
+    initializeClock('clock_game', '$date_game');
 </script>";
 }
 $HTMLOUT .= '

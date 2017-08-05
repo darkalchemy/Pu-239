@@ -33,6 +33,7 @@ $lang = [
     'gl_wiki'                   => 'Wiki',
     'gl_radio'                  => 'Radio',
     'gl_tfreak'                 => 'Torrent Freak',
+    'gl_foxnews'                => 'Fox News',
     'gl_games'                  => 'Jocuri',
     'gl_arcage'                 => 'Arcade',
     'gl_casino'                 => 'Casino',
