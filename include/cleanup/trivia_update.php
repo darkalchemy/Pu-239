@@ -21,18 +21,21 @@ function docleanup($data)
     $gamenum = $result['gamenum'];
 
     if (!empty($gamenum)) {
-        $sql = 'SELECT qid FROM triviaq WHERE asked = 0 AND current = 0';
-        $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        while ($qidarray = mysqli_fetch_assoc($res)) {
-            $qids[] = $qidarray['qid'];
+        if (($qids = $mc1->get_value('triviaquestions_')) === false) {
+            $sql = 'SELECT qid FROM triviaq WHERE asked = 0 AND current = 0';
+            $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+            while ($qidarray = mysqli_fetch_assoc($res)) {
+                $qids[] = $qidarray['qid'];
+            }
+            $mc1->cache_value('triviaquestions_', $qids, 0);
         }
         shuffle($qids);
-        shuffle($qids);
-        shuffle($qids);
-        shuffle($qids);
-        shuffle($qids);
-        $rand = array_rand($qids);
-        $qid = $qids[$rand];
+        $qid = array_pop($qids);
+        $mc1->replace_value('triviaquestions_', $qids, 0);
+        if (count($qids) <= 1) {
+            $mc1->delete_value('triviaquestions_');
+        }
+
         // clear previous question
         $sql = 'UPDATE triviaq SET current = 0 WHERE current = 1';
         sql_query($sql) or sqlerr(__FILE__, __LINE__);
