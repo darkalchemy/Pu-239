@@ -95,7 +95,8 @@ class AJAXChatTemplate
 
             case 'SESSION_NAME':
                 return $this->ajaxChat->getConfig('sessionName');
-
+            case 'SESSION_KEY_PREFIX':
+                return $this->ajaxChat->getConfig('sessionKeyPrefix');
             case 'COOKIE_EXPIRATION':
                 return $this->ajaxChat->getConfig('sessionCookieLifeTime');
             case 'COOKIE_PATH':
@@ -192,7 +193,6 @@ class AJAXChatTemplate
     }
 
     // Function to display alternating table row colors:
-
     public function getBaseDirectionAttribute()
     {
         $langCodeParts = explode('-', $this->ajaxChat->getLangCode());

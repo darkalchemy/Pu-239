@@ -145,7 +145,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
 } else {
     if ($action == 'delete' && is_valid_id($id) && $CURUSER['class'] == UC_MAX) {
         $sure = ((isset($_GET['sure']) ? $_GET['sure'] : '') == 'yes');
-        $res = sql_query('SELECT av_class' . (!$sure || $CURUSER['class'] <= UC_MAX ? ', page_name' : '') . ' FROM staffpanel WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT added_by, av_class' . (!$sure || $CURUSER['class'] <= UC_MAX ? ', page_name' : '') . ' FROM staffpanel WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $arr = mysqli_fetch_assoc($res);
         if ($CURUSER['class'] < $arr['av_class']) {
             stderr($lang['spanel_error'], $lang['spanel_you_not_allow_del_page']);
@@ -281,8 +281,6 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
         ];
 
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['spanel_type_of_tool']}</td><td align='left'>
-    
-    
      <select name='type'>";
         foreach ($types as $types) {
             $HTMLOUT .= '<option value="' . $types . '"' . ($types == $type ? ' selected="selected"' : '') . '>' . ucfirst($types) . '
@@ -320,10 +318,10 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
         }
         $HTMLOUT .= '</select></td>';
 
-        $HTMLOUT .= " 
+        $HTMLOUT .= "
      </tr>
      </table>
-    
+
      <table class='main'>
      <tr>
      <td style='border:none;' align='center'><input type='submit' value='{$lang['spanel_submit']}' /></td>
@@ -376,7 +374,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
       " . htmlsafechars($arr['page_name']) . "</a><br><font class='small'>" . htmlsafechars($arr['description']) . "</font>
             </td>
       <td>
-          <a href='userdetails.php?id=" . (int)$arr['added_by'] . "'>" . htmlsafechars($arr['username']) . "</a>
+          " . format_username($arr['added_by']) . "
       </td>
       <td>
       <span style='white-space: nowrap;'>" . get_date($arr['added'], 'LONG', 0, 1) . '<br></span>

@@ -32,6 +32,9 @@ class AJAXChat
 
     public function initialize()
     {
+        // Initialize the messages direction
+        $this->postDirection = false;
+
         // Initialize configuration settings:
         $this->initConfig();
 
@@ -115,6 +118,16 @@ class AJAXChat
         $this->_requestVars['delete'] = isset($_REQUEST['delete']) ? (int)$_REQUEST['delete'] : null;
         $this->_requestVars['token'] = isset($_REQUEST['token']) ? $_REQUEST['token'] : null;
 
+        if (isset($_COOKIE[$this->getConfig('sessionKeyPrefix') . 'settings'])) {
+            $cookies = explode('&', $_COOKIE[$this->getConfig('sessionKeyPrefix') . 'settings']);
+            foreach ($cookies as $cookie) {
+                $split = explode('=', $cookie);
+                if ($split[0] == 'postDirection') {
+                    $this->postDirection = $split[1] == 'true' ? true : false;
+                }
+            }
+        }
+
         // Initialize custom request variables:
         $this->initCustomRequestVars();
     }
@@ -173,18 +186,6 @@ class AJAXChat
     public function startSession()
     {
         if (!session_id()) {
-/*
-            // Set the session name:
-            session_name($this->getConfig('sessionName'));
-
-            // Set session cookie parameters:
-            session_set_cookie_params(
-                0, // The session is destroyed on logout anyway, so no use to set this
-                $this->getConfig('sessionCookiePath'),
-                $this->getConfig('sessionCookieDomain'),
-                $this->getConfig('sessionCookieSecure')
-            );
-*/
             // Start the session:
             sessionStart();
 
@@ -1546,7 +1547,7 @@ class AJAXChat
     public function setLangCodeCookie()
     {
         setcookie(
-            $this->getConfig('sessionName') . '_lang',
+            $this->getConfig('sessionKeyPrefix') . 'lang',
             $this->getLangCode(),
             time() + 60 * 60 * 24 * $this->getConfig('sessionCookieLifeTime'),
             $this->getConfig('sessionCookiePath'),
@@ -1558,7 +1559,7 @@ class AJAXChat
     public function getLangCode()
     {
         // Get the langCode from request or cookie:
-        $langCodeCookie = isset($_COOKIE[$this->getConfig('sessionName') . '_lang']) ? $_COOKIE[$this->getConfig('sessionName') . '_lang'] : null;
+        $langCodeCookie = isset($_COOKIE[$this->getConfig('sessionKeyPrefix') . 'lang']) ? $_COOKIE[$this->getConfig('sessionKeyPrefix') . 'lang'] : null;
         $langCode = $this->getRequestVar('lang') ? $this->getRequestVar('lang') : $langCodeCookie;
         // Check if the langCode is valid:
         if (!in_array($langCode, $this->getConfig('langAvailable'))) {
@@ -1955,24 +1956,6 @@ class AJAXChat
     public function getQueryUserName()
     {
         return getSessionVar('QueryUserName');
-    }
-
-    public function insertParsedMessageJoin($textParts)
-    {
-        if (count($textParts) == 1) {
-            // join with no arguments is the own private channel, if allowed:
-            if ($this->isAllowedToCreatePrivateChannel()) {
-                // Private channels are identified by square brackets:
-                $this->switchChannel($this->getChannelNameFromChannelID($this->getPrivateChannelID()));
-            } else {
-                $this->insertChatBotMessage(
-                    $this->getPrivateMessageID(),
-                    '/error MissingChannelName'
-                );
-            }
-        } else {
-            $this->switchChannel($textParts[1]);
-        }
     }
 
     public function insertParsedMessagePrivMsg($textParts)
@@ -2906,7 +2889,11 @@ class AJAXChat
                 $row['channelID'],
                 $row['text']
             );
-            $messages = $message . $messages;
+            if ($this->postDirection) {
+                $messages = $messages . $message;
+            } else {
+                $messages = $message . $messages;
+            }
         }
         $result->free();
 
@@ -3008,7 +2995,11 @@ class AJAXChat
             $message .= '<username><![CDATA[' . $this->encodeSpecialChars($row['userName']) . ']]></username>';
             $message .= '<text><![CDATA[' . $this->encodeSpecialChars($row['text']) . ']]></text>';
             $message .= '</message>';
-            $messages = $message . $messages;
+            if ($this->postDirection) {
+                $messages = $messages . $message;
+            } else {
+                $messages = $message . $messages;
+            }
         }
         $result->free();
 

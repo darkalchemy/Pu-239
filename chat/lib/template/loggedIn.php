@@ -139,6 +139,7 @@
 
             ajaxChat.updateButton('audio', 'audioButton');
             ajaxChat.updateButton('autoScroll', 'autoScrollButton');
+            document.getElementById('postDirectionSetting').checked = ajaxChat.getSetting('postDirection');
             document.getElementById('bbCodeSetting').checked = ajaxChat.getSetting('bbCode');
             document.getElementById('bbCodeImagesSetting').checked = ajaxChat.getSetting('bbCodeImages');
             document.getElementById('bbCodeColorsSetting').checked = ajaxChat.getSetting('bbCodeColors');
@@ -178,6 +179,7 @@
         ajaxChatConfig.token = '[TOKEN/]';
         ajaxChatConfig.loginChannelID = parseInt('[LOGIN_CHANNEL_ID/]');
         ajaxChatConfig.sessionName = '[SESSION_NAME/]';
+        ajaxChatConfig.sessionKeyPrefix = '[SESSION_KEY_PREFIX/]';
         ajaxChatConfig.cookieExpiration = parseInt('[COOKIE_EXPIRATION/]');
         ajaxChatConfig.cookiePath = '[COOKIE_PATH/]';
         ajaxChatConfig.cookieDomain = '[COOKIE_DOMAIN/]';
@@ -231,7 +233,7 @@
     <div id="mainPanelContainer">
 
         <div id="onlineListContainer">
-            <h3>[LANG]onlineUsers[/LANG]</h3>
+            <h3>[LANG]onlineUsers[/LANG] <span id="olcount"></span></h3>
             <div id="onlineList"></div>
         </div>
         <div id="helpContainer" style="display:none;">
@@ -326,6 +328,10 @@
         <div id="settingsContainer" style="display:none;">
             <h3>[LANG]settings[/LANG]</h3>
             <div id="settingsList">
+                <dl>
+                    <dt><label title="Change the direction of messages, Select for new messages on top. You will need to refresh after changing this." for="postDirectionSetting">Enable Top Down</label></dt>
+                    <dd><input type="checkbox" id="postDirectionSetting" onclick="ajaxChat.setSetting('postDirection', this.checked);"/></dd>
+                </dl>
                 <dl>
                     <dt><label for="bbCodeSetting">[LANG]settingsBBCode[/LANG]</label></dt>
                     <dd><input type="checkbox" id="bbCodeSetting"

@@ -1358,19 +1358,17 @@ function sessionStart()
 
         // enforce php settings before start session
         ini_set('session.use_strict_mode', 1);
-        ini_set('session.use_trans_sid', '0');
+        ini_set('session.use_trans_sid', 0);
 
         // Start the session:
         session_start();
     }
 
     // Create a new CSRF token.
-    if (!isset($_SESSION['csrf_token'])) {
-        setSessionVar('csrf_token', bin2hex(random_bytes(64)));
-    }
+    setSessionVar('csrf_token', bin2hex(random_bytes(64)));
 
     // Make sure we have a canary set and Regenerate session ID every five minutes:
-    if (!isset($_SESSION['canary']) || $_SESSION['canary'] < time() - 300) {
+    if (empty($_SESSION['canary']) || $_SESSION['canary'] < time() - 300) {
         regenerateSessionID();
         setSessionVar('canary', time());
     }
@@ -1399,12 +1397,20 @@ function regenerateSessionID()
     }
 }
 
-function validateToken($token) {
+function validateToken($token, $key = null, $prefix = null) {
+    global $INSTALLER09;
+    if ($prefix === null) {
+        $prefix = $INSTALLER09['sessionKeyPrefix'];
+    }
+    if ($key === null) {
+        $key = $INSTALLER09['session_csrf'];
+    }
+
     if (empty($token)) {
         return false;
-    } elseif (hash_equals($_SESSION['csrf_token'], $token)) {
-        unsetSessionVar('csrf_token');
-        setSessionVar('csrf_token', bin2hex(random_bytes(64)));
+    } elseif (hash_equals($_SESSION[$prefix . $key], $token)) {
+        unsetSessionVar($key, $prefix);
+        setSessionVar($key, $prefix, bin2hex(random_bytes(64)));
         return true;
     }
     return false;
@@ -1444,6 +1450,9 @@ function setSessionVar($key, $value, $prefix = null)
     }
 
     // Set the session value:
+    if (!empty($_SESSION[$prefix . $key])) {
+        unsetSessionVar($_SESSION[$prefix . $key]);
+    }
     $_SESSION[$prefix . $key] = $value;
 }
 
@@ -1477,6 +1486,17 @@ function salty($username)
 {
     global $INSTALLER09;
     return bin2hex(random_bytes(64));
+}
+
+function replace_unicode_strings($text)
+{
+    $text = str_replace(['“', '”'], '"', $text);
+    $text = str_replace(['&rsquo;', '’'], "'", $text);
+    $text = str_replace(['&lsquo;', '‘'], "'", $text);
+    $text = str_replace(['&rdquo;', '”'], '"', $text);
+    $text = str_replace(['&ldquo;', '”'], '"', $text);
+    $text = str_replace(['&#8212;', '–'], '-', $text);
+    return html_entity_decode(htmlentities($text));
 }
 
 if (file_exists('install/index.php')) {

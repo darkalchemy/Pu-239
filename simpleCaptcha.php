@@ -17,9 +17,9 @@ $images = [
     'world'        => 'captchaImages/99.png',
 ];
 // ------------------- STOP EDITING ---------------- //
-$_SESSION['simpleCaptchaAnswer'] = null;
-$_SESSION['simpleCaptchaTimestamp'] = time();
-$SALT = 'o^Gj' . $_SESSION['simpleCaptchaTimestamp'] . '7%8W';
+setSessionVar('simpleCaptchaAnswer', null);
+setSessionVar('simpleCaptchaTimestamp', TIME_NOW);
+$salty = salty($_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'simpleCaptchaTimestamp']);
 $resp = [];
 header('Content-Type: application/json');
 if (!isset($images) || !is_array($images) || sizeof($images) < 3) {
@@ -49,13 +49,13 @@ for ($i = 0; $i < $num; ++$i) {
     array_push($used, $keys[$r]);
 }
 $selectText = $used[rand(0, $num - 1)];
-$_SESSION['simpleCaptchaAnswer'] = sha1($selectText . $SALT);
+setSessionVar('simpleCaptchaAnswer', hash('sha512', $selectText . $salty));
 $resp['text'] = '' . $selectText;
 $resp['images'] = [];
 shuffle($used);
 for ($i = 0; $i < sizeof($used); ++$i) {
     array_push($resp['images'], [
-        'hash' => sha1($used[$i] . $SALT),
+        'hash' => hash('sha512', $used[$i] . $salty),
         'file' => $images[$used[$i]],
     ]);
 }

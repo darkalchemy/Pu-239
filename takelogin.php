@@ -5,7 +5,7 @@ require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'page_verify.php';
 require_once CLASS_DIR . 'class_browser.php';
 dbconn();
-global $CURUSER;
+global $CURUSER, $INSTALLER09;
 if (!$CURUSER) {
     get_template();
 }
@@ -39,7 +39,7 @@ if ($submitme != 'X') {
     stderr('Ha Ha', 'You Missed, You plonker !');
 }
 if ($INSTALLER09['captcha_on'] && !$gotkey) {
-    if (empty($captchaSelection) || empty($_SESSION['simpleCaptchaAnswer']) || $_SESSION['simpleCaptchaAnswer'] != $captchaSelection) {
+    if (empty($captchaSelection) || empty($_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'simpleCaptchaAnswer']) || $_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'simpleCaptchaAnswer'] != $captchaSelection) {
         header('Location: login.php');
         exit();
     }
@@ -137,6 +137,9 @@ $mc1->update_row(false, [
     'last_access' => TIME_NOW,
     'last_login'  => TIME_NOW,
 ]);
+unsetSessionVar('simpleCaptchaAnswer');
+unsetSessionVar('simpleCaptchaTimestamp');
+
 $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
 $passh = md5($row['passhash'] . $_SERVER['REMOTE_ADDR']);
 logincookie($row['id'], $passh);

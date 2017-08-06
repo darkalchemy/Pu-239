@@ -3,7 +3,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 dbconn();
-global $CURUSER;
+global $CURUSER, $INSTALLER09;
 if (!$CURUSER) {
     get_template();
 }
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         stderr('Oops', 'Missing form data - You must fill all fields');
     }
     if ($INSTALLER09['captcha_on']) {
-        if (empty($captchaSelection) || $_SESSION['simpleCaptchaAnswer'] != $captchaSelection) {
+        if (empty($captchaSelection) || $_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'simpleCaptchaAnswer'] != $captchaSelection) {
             header('Location: recover.php');
             exit();
         }

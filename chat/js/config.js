@@ -61,6 +61,8 @@ var ajaxChatConfig = {
 
     // Defines the settings which can be modified by users:
     settings: {
+        // Defines the order of the messages
+        postDirection: false,
         // Defines if BBCode tags are replaced with the associated HTML code tags:
         bbCode: true,
         // Defines if image BBCode is replaced with the associated image HTML code:
@@ -140,6 +142,7 @@ var ajaxChatConfig = {
         'color',
         'url',
         'img',
+        'chatbot',
         'user',
         'power_user',
         'vip',
@@ -1078,45 +1081,7 @@ var ajaxChatConfig = {
         sound_7: 'sound_7.mp3'
     },
 
-
-    // Once users have been logged in, the following values are overridden by those in config.php.
-    // You should set these to be the same as the ones in config.php to avoid confusion.
-
-    // Session identification, used for style and setting cookies:
-    sessionName: 'ajax_chat',
-    // The time in days until the style and setting cookies expire:
-    cookieExpiration: 365,
-    // The path of the cookies, '/' allows to read the cookies from all directories:
-    cookiePath: '/',
-    // The domain of the cookies, defaults to the hostname of the server if set to null:
-    cookieDomain: null,
-    // If enabled, cookies must be sent over secure (SSL/TLS encrypted) connections:
-    cookieSecure: null,
-    // The name of the chat bot:
-    chatBotName: 'ChatBot',
-    // The userID of the chat bot:
-    chatBotID: 2,
-    // Allow/Disallow registered users to delete their own messages:
-    allowUserMessageDelete: true,
-    // Minutes until a user is declared inactive (last status update) - the minimum is 2 minutes:
-    inactiveTimeout: 2,
-    // UserID plus this value are private channels (this is also the max userID and max channelID):
-    privateChannelDiff: 500000000,
-    // UserID plus this value are used for private messages:
-    privateMessageDiff: 1000000000,
-    // Defines if login/logout and channel enter/leave are displayed:
-    showChannelMessages: true,
-    // Max messageText length:
-    messageTextMaxLength: 1040,
-    // Defines if the socket server is enabled:
-    socketServerEnabled: false,
-    // Defines the hostname of the socket server used to connect from client side:
-    socketServerHost: 'localhost',
-    // Defines the port of the socket server:
-    socketServerPort: 1935,
-    // This ID can be used to distinguish between different chat installations using the same socket server:
-    socketServerChatID: 0,
-
     // Debug allows console logging or alerts on caught errors - false/0 = no debug, true/1/2 = console log, 2 = alerts
     debug: false
 };
+

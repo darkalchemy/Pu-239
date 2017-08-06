@@ -53,7 +53,7 @@ function write_css($data) {
         }
     }
     $classdata .= "#content .chatbot {
-    color: #d35208;
+    color: #ff8b49;
 }
 ";
     foreach ($data as $class) {
@@ -308,29 +308,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 }
-$HTMLOUT .= "<h3>{$lang['classcfg_class_settings']}</h3>
-<form name='edit' action='staffpanel.php?tool=class_config&amp;mode=edit' method='post'>
-<table width='100%' border='0' cellpadding='5' cellspacing='0' ><tr>
-<td align='center'>{$lang['classcfg_class_name']}</td>
-<td align='center'>{$lang['classcfg_class_value']}</td>
-<td align='center'>{$lang['classcfg_class_refname']}</td>
-<td align='center'>{$lang['classcfg_class_color']}</td>
-<td align='center'>{$lang['classcfg_class_pic']}</td>
-<td align='center'>{$lang['classcfg_class_del']}</td>
-</tr>";
+$HTMLOUT .= "
+    <h3>{$lang['classcfg_class_settings']}</h3>
+        <form name='edit' action='staffpanel.php?tool=class_config&amp;mode=edit' method='post'>
+            <table width='100%' border='0' cellpadding='5' cellspacing='0' >
+                <tr>
+                    <td align='center'>{$lang['classcfg_class_name']}</td>
+                    <td align='center'>{$lang['classcfg_class_value']}</td>
+                    <td align='center'>{$lang['classcfg_class_refname']}</td>
+                    <td align='center'>{$lang['classcfg_class_color']}</td>
+                    <td align='center'>{$lang['classcfg_class_pic']}</td>
+                    <td align='center'>{$lang['classcfg_class_del']}</td>
+                </tr>";
 $res = sql_query("SELECT * from class_config WHERE name NOT IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
 while ($arr = mysqli_fetch_assoc($res)) {
     $HTMLOUT .= "
-<tr>
-<td width='50%' class='table' align='left'>" . htmlsafechars($arr['name']) . "</td>
-<td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='2' value='" . (int)$arr['value'] . " 'readonly='readonly' /></td>
-<td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['classname']) . "' /></td>
-<td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='#" . htmlsafechars($arr['classcolor']) . "' /></td>
-<td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['classpic']) . "' /></td>
-<td class='table' align='center'><form name='remove' action='staffpanel.php?tool=class_config&amp;mode=remove' method='post'><input type='hidden' name='remove' value='" . htmlsafechars($arr['name']) . "' /><input type='submit' value='{$lang['classcfg_class_remove']}' /></form></td>
-</tr>";
+                <tr style='background-color: #{$arr['classcolor']}'>
+                    <td width='50%' class='table' align='left'>" . htmlsafechars($arr['name']) . "</td>
+                    <td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='2' value='" . (int)$arr['value'] . " 'readonly='readonly' /></td>
+                    <td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['classname']) . "' /></td>
+                    <td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='#" . htmlsafechars($arr['classcolor']) . "' /></td>
+                    <td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['classpic']) . "' /></td>
+                    <td class='table' align='center'><form name='remove' action='staffpanel.php?tool=class_config&amp;mode=remove' method='post'><input type='hidden' name='remove' value='" . htmlsafechars($arr['name']) . "' /><input type='submit' value='{$lang['classcfg_class_remove']}' /></form></td>
+                </tr>";
 }
-$HTMLOUT .= '</table><br><br> ';
+$HTMLOUT .= '
+            </table><br><br> ';
 
 $HTMLOUT .= "<h3>{$lang['classcfg_class_security']}</h3>
 

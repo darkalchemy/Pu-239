@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 dbconn();
 
-global $CURUSER;
+global $CURUSER, $INSTALLER09;
 if (!$CURUSER) {
     get_template();
 }
@@ -28,7 +28,7 @@ if ($step == '1') {
             stderr('Oops', 'Missing form data - You must fill all fields');
         }
         if ($INSTALLER09['captcha_on']) {
-            if (empty($captchaSelection) || $_SESSION['simpleCaptchaAnswer'] != $captchaSelection) {
+            if (empty($captchaSelection) || $_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'simpleCaptchaAnswer'] != $captchaSelection) {
                 stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error2']}");
                 exit();
             }

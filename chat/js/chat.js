@@ -22,6 +22,7 @@ var ajaxChat = {
     loginChannelID: null,
     loginChannelName: null,
     timerRate: null,
+    timerRateReset: null,
     timer: null,
     ajaxURL: null,
     baseURL: null,
@@ -42,6 +43,7 @@ var ajaxChat = {
     sounds: null,
     soundTransform: null,
     sessionName: null,
+    sessionKeyPrefix: null,
     cookieExpiration: null,
     cookiePath: null,
     cookieDomain: null,
@@ -104,6 +106,7 @@ var ajaxChat = {
         this.requestStatus = 'ok';
         this.DOMbufferRowClass = 'rowOdd';
         this.inUrlBBCode = false;
+        this.timeStamp = new Date();
         this.initConfig(config);
         this.initDirectories();
         if (initSettings) {
@@ -124,6 +127,7 @@ var ajaxChat = {
         this.loginChannelID = config['loginChannelID'];
         this.loginChannelName = config['loginChannelName'];
         this.timerRate = config['timerRate'];
+        this.timerRateReset = this.timerRate;
         this.ajaxURL = config['ajaxURL'];
         this.baseURL = config['baseURL'];
         this.regExpMediaUrl = config['regExpMediaUrl'];
@@ -138,6 +142,7 @@ var ajaxChat = {
         this.emoticonDisplay = config['emoticonDisplay'];
         this.soundFiles = config['soundFiles'];
         this.sessionName = config['sessionName'];
+        this.sessionKeyPrefix = config['sessionKeyPrefix'];
         this.cookieExpiration = config['cookieExpiration'];
         this.cookiePath = config['cookiePath'];
         this.cookieDomain = config['cookieDomain'];
@@ -168,7 +173,7 @@ var ajaxChat = {
     },
 
     initSettings: function () {
-        var cookie = this.readCookie(this.sessionName + '_settings'),
+        var cookie = this.readCookie(this.sessionKeyPrefix + 'settings'),
             i, settingsArray, setting, key, value, number;
         this.settingsInitiated = true;
         this.unusedSettings = {};
@@ -204,7 +209,6 @@ var ajaxChat = {
                         this.unusedSettings[key] = value;
                     } else {
                         this.settings[key] = value;
-
                     }
                 }
             }
@@ -226,7 +230,7 @@ var ajaxChat = {
                 }
                 settingsArray.push(property + '=' + this.encodeText(this.settings[property]));
             }
-            this.createCookie(this.sessionName + '_settings', settingsArray.join('&'), this.cookieExpiration);
+            this.createCookie(this.sessionKeyPrefix + 'settings', settingsArray.join('&'), this.cookieExpiration);
         }
     },
 
@@ -423,7 +427,7 @@ var ajaxChat = {
                     + this.colorCodes[i]
                     + ';" title="'
                     + this.colorCodes[i]
-                    + '"></a>'
+                    + '" onclick="this.parentNode.style.display = \'none\';"></a>'
                     + "\n";
             }
             this.updateDOM('colorCodesContainer', this.DOMbuffer);
@@ -448,8 +452,9 @@ var ajaxChat = {
 
     updateChat: function (paramString) {
         var requestUrl = this.ajaxURL
-            + '&lastID='
-            + this.lastID;
+                        + '&lastID='
+                        + this.lastID;
+
         if (paramString) {
             requestUrl += paramString;
         }
@@ -678,7 +683,7 @@ var ajaxChat = {
     },
 
     initializeHTML5Sounds: function () {
-        var audio, mo3, ogg;
+        var audio, mp3, ogg;
         try {
             audio = document.createElement('audio');
             mp3 = !!(audio.canPlayType && audio.canPlayType('audio/mpeg;').replace(/no/, ''));
@@ -948,6 +953,15 @@ var ajaxChat = {
         if (!xmlDoc) {
             return false;
         }
+        var timediff = new Date() - this.timeStamp;
+        // change polling timer to maximum of 30 sec
+        // if quiet for more than 5 minutes
+        if (timediff > 300000) {
+            if (this.timerRate < 30000) {
+                this.timerRate = this.timerRate + 500;
+            }
+        }
+
         this.handleXML(xmlDoc);
         return true;
     },
@@ -1061,6 +1075,7 @@ var ajaxChat = {
                 }
             }
             this.setOnlineListRowClasses();
+            document.getElementById("olcount").innerHTML = "(" + this.usersList.length + ")";
         }
     },
 
@@ -1086,10 +1101,18 @@ var ajaxChat = {
                     messageNodes[i].getAttribute('channelID'),
                     messageNodes[i].getAttribute('ip')
                 );
+                if (messageNodes[i].getAttribute('userID') != this.chatBotID) {
+                    this.timerRate = this.timerRateReset;
+                    this.timeStamp = new Date();
+                }
             }
             this.DOMbuffering = false;
             this.updateChatlistView();
-            this.lastID = messageNodes[messageNodes.length - 1].getAttribute('id');
+            if (this.settings['postDirection']) {
+                this.lastID = messageNodes[0].getAttribute('id');
+            } else {
+                this.lastID = messageNodes[messageNodes.length - 1].getAttribute('id');
+            }
         }
     },
 
@@ -1201,13 +1224,13 @@ var ajaxChat = {
         if (encodedUserName !== this.encodedUserName) {
             menu = '<li><a href="javascript:ajaxChat.insertMessageWrapper(\'/msg '
                 + encodedUserName
-                + ' \');">'
+                    + ' \');" title="Private Message in chat.">'
                 + this.lang['userMenuSendPrivateMessage']
                 + '</a></li>'
-                + '<li><a href="javascript:ajaxChat.insertMessageWrapper(\'/describe '
-                + encodedUserName
-                + ' \');">'
-                + this.lang['userMenuDescribe']
+                    + '<li><a target="_blank" href="../pm_system.php?action=send_message&amp;receiver='
+                    + userID
+                    + '" title="Private Message using site messages.">'
+                    + 'PM User '
                 + '</a></li>'
                 + '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/query '
                 + encodedUserName
@@ -1341,6 +1364,10 @@ var ajaxChat = {
             return;
         }
         if (!this.onNewMessage(dateObject, userID, userName, userRole, messageID, messageText, channelID, ip)) {
+            if(!this.DOMbuffering) {
+                this.updateDOM('chatList', this.DOMbuffer, this.settings['postDirection']);
+                this.DOMbuffer = "";
+            }
             return;
         }
         this.DOMbufferRowClass = this.DOMbufferRowClass === 'rowEven' ? 'rowOdd' : 'rowEven';
@@ -1349,7 +1376,7 @@ var ajaxChat = {
                 dateObject, userID, userName, userRole, messageID, messageText, channelID, ip
             );
         if (!this.DOMbuffering) {
-            this.updateDOM('chatList', this.DOMbuffer);
+            this.updateDOM('chatList', this.DOMbuffer, this.settings['postDirection']);
             this.DOMbuffer = "";
         }
     },
@@ -1426,7 +1453,7 @@ var ajaxChat = {
                 + arguments.callee.deleteMessage
                 + '" href="javascript:ajaxChat.deleteMessage('
                 + messageID
-                + ');"> </a>'; // Adding a space - without any content Opera messes up the chatlist display
+                    + ', false);"> </a>'; // Adding a space - without any content Opera messes up the chatlist display
         }
         return '';
     },
@@ -1517,12 +1544,16 @@ var ajaxChat = {
             var self = this;
             setTimeout(function () {
                 self.scrollChatList();
-            }, 50);
+            }, 250);
         }
     },
 
     scrollChatList: function () {
-        this.dom['chatList'].scrollTop = this.dom['chatList'].scrollHeight;
+        if (this.settings['postDirection']) {
+            this.dom['chatList'].scrollTop = 0;
+        } else {
+            this.dom['chatList'].scrollTop = this.dom['chatList'].scrollHeight;
+        }
     },
 
     encodeText: function (text) {
@@ -1948,12 +1979,15 @@ var ajaxChat = {
         return false;
     },
 
-    deleteMessage: function (messageID) {
+    deleteMessage: function (messageID, askUser) {
         var messageNode = this.getMessageNode(messageID), originalClass, nextSibling;
         if (messageNode) {
             originalClass = messageNode.className;
             this.addClass(messageNode, 'deleteSelected');
-            if (confirm(this.lang['deleteMessageConfirm'])) {
+            if (askUser === false) {
+                var askUser = confirm(this.lang['deleteMessageConfirm']);
+            }
+            if (askUser === true) {
                 nextSibling = messageNode.nextSibling;
                 try {
                     this.dom['chatList'].removeChild(messageNode);
@@ -2147,7 +2181,7 @@ var ajaxChat = {
             case 'url':
                 var url = prompt(this.lang['urlDialog'], 'http://');
                 if (url)
-                    this.insert('[url=' + url + ']', '[/url]');
+                    this.insert('[url=' + url + '] ', '[/url]');
                 else
                     this.dom['inputField'].focus();
                 break;
@@ -2524,7 +2558,9 @@ var ajaxChat = {
     replaceCommandWhois: function (textParts) {
         return '<span class="chatBotMessage">'
             + this.lang['whois'].replace(/%s/, textParts[1]) + ' '
+            + '<a title="Geolocation" target="_blank" href="http://www.infosniper.net/index.php?ip_address=' + textParts[2] + '">'
             + textParts[2]
+            + '</a>'
             + '</span>';
     },
 
@@ -2548,8 +2584,11 @@ var ajaxChat = {
         rollText = rollText.replace(/%s/, textParts[2]);
         rollText = rollText.replace(/%s/, textParts[3]);
         return '<span class="chatBotMessage">'
-            + rollText
-            + '</span>';
+                + '<img src="'
+                + ajaxChat.dirs['emoticons']
+                + 'dice.gif" alt="dice" />'
+                + rollText
+                + '</span>';
     },
 
     replaceCommandNick: function (textParts) {
@@ -2909,7 +2948,7 @@ var ajaxChat = {
     },
 
     getActiveStyle: function () {
-        var cookie = this.readCookie(this.sessionName + '_style');
+        var cookie = this.readCookie(this.sessionKeyPrefix + 'style');
         var style = cookie ? cookie : this.getPreferredStyleSheet();
         return style;
     },
@@ -2921,7 +2960,7 @@ var ajaxChat = {
 
     persistStyle: function () {
         if (this.styleInitiated) {
-            this.createCookie(this.sessionName + '_style', this.getActiveStyleSheet(), this.cookieExpiration);
+            this.createCookie(this.sessionKeyPrefix + 'style', this.getActiveStyleSheet(), this.cookieExpiration);
         }
     },
 
@@ -3021,11 +3060,11 @@ var ajaxChat = {
     },
 
     isCookieEnabled: function () {
-        this.createCookie(this.sessionName + '_cookie_test', true, 1);
-        var cookie = this.readCookie(this.sessionName + '_cookie_test');
+        this.createCookie(this.sessionKeyPrefix + 'cookie_test', true, 1);
+        var cookie = this.readCookie(this.sessionKeyPrefix + 'cookie_test');
         if (cookie) {
             // Unset the test cookie:
-            this.createCookie(this.sessionName + '_cookie_test', true, -1);
+            this.createCookie(this.sessionKeyPrefix + 'cookie_test', true, -1);
             // Cookie test successfull, return true:
             return true;
         }
@@ -3137,5 +3176,5 @@ var ajaxChat = {
             }
         }
     }
-
 };
+

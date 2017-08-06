@@ -2,7 +2,7 @@
 error_reporting(E_ALL); //== turn off = 0 when live
 const REQUIRED_PHP = 50300, REQUIRED_PHP_VERSION = '5.3.0';
 if (PHP_VERSION_ID < REQUIRED_PHP) {
-    die('PHP '.REQUIRED_PHP_VERSION.' or higher is required.');
+    die('PHP ' . REQUIRED_PHP_VERSION . ' or higher is required.');
 }
 if (PHP_INT_SIZE < 8) {
     die('A 64bit or higher OS + Processor is required.');
@@ -13,7 +13,6 @@ if (get_magic_quotes_gpc() || get_magic_quotes_runtime() || ini_get('magic_quote
 if (ini_get('register_long_arrays') || ini_get('register_globals') || ini_get('safe_mode')) {
     die('PHP is configured incorrectly. Turn off safe_mode, register_globals and register_long_arrays.');
 }
-define('EMAIL_CONFIRM', true);
 define('SQL_DEBUG', 1);
 define('XBT_TRACKER', false);
 //==charset
@@ -21,6 +20,7 @@ $INSTALLER09['char_set'] = 'UTF-8'; //also to be used site wide in meta tags
 if (ini_get('default_charset') != $INSTALLER09['char_set']) {
     ini_set('default_charset', $INSTALLER09['char_set']);
 }
+
 //== Windows fix
 if (!function_exists('sys_getloadavg')) {
     function sys_getloadavg()
@@ -55,6 +55,8 @@ $INSTALLER09['cookie_domain'] = '#cookie_domain'; // set to eg: .somedomain.com 
 $INSTALLER09['cookie_lifetime'] = 365; // length of time cookies will be valid
 $INSTALLER09['domain'] = '#domain';
 $INSTALLER09['sessionCookieSecure'] = null; // using HTTPS only? then set this
+$INSTALLER09['sessionKeyPrefix'] = '#cookie_prefix' . '_'; // usefull if serving multiple sites
+$INSTALLER09['session_csrf'] = 'csrf_token'; // usefull if serving multiple sites
 //== Memcache expires
 $INSTALLER09['expires']['latestuser'] = 0; // 0 = infinite
 $INSTALLER09['expires']['MyPeers_'] = 120; // 60 = 60 seconds
@@ -144,8 +146,10 @@ $INSTALLER09['sub_max_size'] = 500 * 1024;
 $INSTALLER09['minvotes'] = 1;
 $INSTALLER09['max_dead_torrent_time'] = 6 * 3600;
 $INSTALLER09['language'] = 1;
+// Site Bot
 $INSTALLER09['bot_id'] = 2;
-$INSTALLER09['chatBotName'] = 'SillyBOT'; // Change this to the bot username
+$INSTALLER09['chatBotName'] = 'CraftyBOT'; // Change to your Bot's Name
+$INSTALLER09['chatBotRole'] = 100;
 $INSTALLER09['staffpanel_online'] = 1;
 $INSTALLER09['irc_autoshout_on'] = 1;
 $INSTALLER09['crazy_hour'] = false; //== Off for XBT
@@ -168,29 +172,29 @@ $INSTALLER09['inviteusers'] = 10000;
 $INSTALLER09['flood_time'] = 900; //comment/forum/pm flood limit
 $INSTALLER09['readpost_expiry'] = 14 * 86400; // 14 days
 /* define dirs **/
-define('INCL_DIR', dirname(__FILE__).DIRECTORY_SEPARATOR);
-define('ROOT_DIR', realpath(INCL_DIR.'..'.DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR);
-define('ADMIN_DIR', ROOT_DIR.'admin'.DIRECTORY_SEPARATOR);
-define('FORUM_DIR', ROOT_DIR.'forums'.DIRECTORY_SEPARATOR);
-define('PM_DIR', ROOT_DIR.'pm_system'.DIRECTORY_SEPARATOR);
-define('PIMP_DIR', ROOT_DIR.'PimpMyLog'.DIRECTORY_SEPARATOR);
-define('CACHE_DIR', ROOT_DIR.'cache'.DIRECTORY_SEPARATOR);
-define('MODS_DIR', ROOT_DIR.'mods'.DIRECTORY_SEPARATOR);
-define('LANG_DIR', ROOT_DIR.'lang'.DIRECTORY_SEPARATOR);
-define('TEMPLATE_DIR', ROOT_DIR.'templates'.DIRECTORY_SEPARATOR);
-define('BLOCK_DIR', ROOT_DIR.'blocks'.DIRECTORY_SEPARATOR);
-define('IMDB_DIR', ROOT_DIR.'imdb'.DIRECTORY_SEPARATOR);
-define('CLASS_DIR', INCL_DIR.'class'.DIRECTORY_SEPARATOR);
-define('CLEAN_DIR', INCL_DIR.'cleanup'.DIRECTORY_SEPARATOR);
-$INSTALLER09['cache'] = ROOT_DIR.'cache';
-$INSTALLER09['backup_dir'] = INCL_DIR.'backup';
-$INSTALLER09['dictbreaker'] = ROOT_DIR.'dictbreaker';
-$INSTALLER09['torrent_dir'] = ROOT_DIR.'torrents'; // must be writable for httpd user
-$INSTALLER09['sub_up_dir'] = ROOT_DIR.'uploadsub'; // must be writable for httpd user
-$INSTALLER09['flood_file'] = INCL_DIR.'settings'.DIRECTORY_SEPARATOR.'limitfile.txt';
-$INSTALLER09['nameblacklist'] = ROOT_DIR.'cache'.DIRECTORY_SEPARATOR.'nameblacklist.txt';
-$INSTALLER09['happyhour'] = CACHE_DIR.'happyhour'.DIRECTORY_SEPARATOR.'happyhour.txt';
-$INSTALLER09['sql_error_log'] = ROOT_DIR.'sqlerr_logs'.DIRECTORY_SEPARATOR.'sql_err_'.date('M_D_Y').'.log';
+define('INCL_DIR', dirname(__FILE__) . DIRECTORY_SEPARATOR);
+define('ROOT_DIR', realpath(INCL_DIR . '..' . DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR);
+define('ADMIN_DIR', ROOT_DIR . 'admin' . DIRECTORY_SEPARATOR);
+define('FORUM_DIR', ROOT_DIR . 'forums' . DIRECTORY_SEPARATOR);
+define('PM_DIR', ROOT_DIR . 'pm_system' . DIRECTORY_SEPARATOR);
+define('PIMP_DIR', ROOT_DIR . 'PimpMyLog' . DIRECTORY_SEPARATOR);
+define('CACHE_DIR', ROOT_DIR . 'cache' . DIRECTORY_SEPARATOR);
+define('MODS_DIR', ROOT_DIR . 'mods' . DIRECTORY_SEPARATOR);
+define('LANG_DIR', ROOT_DIR . 'lang' . DIRECTORY_SEPARATOR);
+define('TEMPLATE_DIR', ROOT_DIR . 'templates' . DIRECTORY_SEPARATOR);
+define('BLOCK_DIR', ROOT_DIR . 'blocks' . DIRECTORY_SEPARATOR);
+define('IMDB_DIR', ROOT_DIR . 'imdb' . DIRECTORY_SEPARATOR);
+define('CLASS_DIR', INCL_DIR . 'class' . DIRECTORY_SEPARATOR);
+define('CLEAN_DIR', INCL_DIR . 'cleanup' . DIRECTORY_SEPARATOR);
+$INSTALLER09['cache'] = ROOT_DIR . 'cache';
+$INSTALLER09['backup_dir'] = INCL_DIR . 'backup';
+$INSTALLER09['dictbreaker'] = ROOT_DIR . 'dictbreaker';
+$INSTALLER09['torrent_dir'] = ROOT_DIR . 'torrents'; // must be writable for httpd user
+$INSTALLER09['sub_up_dir'] = ROOT_DIR . 'uploadsub'; // must be writable for httpd user
+$INSTALLER09['flood_file'] = INCL_DIR . 'settings' . DIRECTORY_SEPARATOR . 'limitfile.txt';
+$INSTALLER09['nameblacklist'] = ROOT_DIR . 'cache' . DIRECTORY_SEPARATOR . 'nameblacklist.txt';
+$INSTALLER09['happyhour'] = CACHE_DIR . 'happyhour' . DIRECTORY_SEPARATOR . 'happyhour.txt';
+$INSTALLER09['sql_error_log'] = ROOT_DIR . 'sqlerr_logs' . DIRECTORY_SEPARATOR . 'sql_err_' . date('M_D_Y') . '.log';
 //== XBT or PHP announce
 if (XBT_TRACKER == true) {
     $INSTALLER09['xbt_prefix'] = '#announce_urls:2710/';
@@ -251,7 +255,7 @@ $INSTALLER09['bucket_maxsize'] = 500 * 1024; //max size set to 500kb
 //==Class check by pdq
 $INSTALLER09['site']['owner'] = 1;
 //== Salt - change this
-$INSTALLER09['site']['salt2'] = 'jgutyxcjsaka';
+$INSTALLER09['site']['salt'] = 'jgutyxcjsak2';
 //= Change staff pin daily or weekly
 $INSTALLER09['staff']['staff_pin'] = 'uFie0y3Ihjkij8'; // should be mix of u/l case and min 12 chars length
 //= Change owner pin daily or weekly
@@ -268,7 +272,7 @@ define('TBVERSION', $INSTALLER09['variant']);
 // Arcade Games
 $INSTALLER09['arcade_games'] = array('asteroids', 'breakout', 'frogger', 'galaga', 'hexxagon', 'invaders', 'moonlander', 'pacman', 'psol', 'simon', 'snake', 'tetris', 'autobahn', 'ghosts-and-goblins', 'joust', 'ms-pac-man');
 $INSTALLER09['arcade_games_names'] = array('Asteroids', 'Breakout', 'Frogger', 'Galaga', 'Hexxagon', 'Space Invaders', 'Moonlander', 'Pacman', 'Pyramid Solitaire', 'Simon', 'Snake', 'Tetris', 'Autobahn', 'Ghosts\'n Goblins', 'Joust', 'Ms. Pac-Man');
+$INSTALLER09['top_score_points'] = 1000;
 
-// for cache busting
-$INSTALLER09['code_version'] = 999;  // increment when updating css or js
-$INSTALLER09['jquery_version'] = '2.2.4'; // jquery version
+$INSTALLER09['bad_words'] = ['fuck', 'shit', 'Moderator', 'Administrator', 'Admin', 'pussy', 'Sysop', 'cunt', 'nigger', 'VIP', 'Super User', 'Power User', 'ADMIN', 'SYSOP', 'MODERATOR', 'ADMINISTRATOR'];
+

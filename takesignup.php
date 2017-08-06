@@ -6,7 +6,7 @@ require_once INCL_DIR . 'password_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'function_bemail.php';
 dbconn();
-global $CURUSER;
+global $CURUSER, $INSTALLER09;
 if (!$CURUSER) {
     get_template();
 }
@@ -29,7 +29,7 @@ if ($submitme != 'X') {
     stderr('Ha Ha', 'You Missed, You plonker !');
 }
 if ($INSTALLER09['captcha_on']) {
-    if (empty($captchaSelection) || $_SESSION['simpleCaptchaAnswer'] != $captchaSelection) {
+    if (empty($captchaSelection) || $_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'simpleCaptchaAnswer'] != $captchaSelection) {
         header('Location: signup.php');
         exit();
     }

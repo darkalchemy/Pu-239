@@ -1,7 +1,7 @@
 <?php
 
 /**
-This file was created on Jul 30 2017 03:25:15.
+This file was created on Aug 06 2017 19:42:51.
 User Class Config.
 **/
 
@@ -25,18 +25,18 @@ UC_VIP => 'VIP',
 UC_UPLOADER => 'UPLOADER',
 UC_MODERATOR => 'MODERATOR',
 UC_ADMINISTRATOR => 'ADMINISTRATOR',
-UC_SYSOP => 'SYSOP'								
+UC_SYSOP => 'SYSOP'
   );
 
 
-$class_colors = array( 
+$class_colors = array(
   UC_USER => '8e35ef',
 UC_POWER_USER => 'f9a200',
 UC_VIP => '009f00',
 UC_UPLOADER => '0000ff',
 UC_MODERATOR => 'fe2e2e',
 UC_ADMINISTRATOR => 'b000b0',
-UC_SYSOP => '61ff00'								
+UC_SYSOP => '00FF00'
   );
 
 
@@ -47,7 +47,7 @@ UC_VIP => $INSTALLER09['pic_base_url'].'class/vip.gif',
 UC_UPLOADER => $INSTALLER09['pic_base_url'].'class/uploader.gif',
 UC_MODERATOR => $INSTALLER09['pic_base_url'].'class/moderator.gif',
 UC_ADMINISTRATOR => $INSTALLER09['pic_base_url'].'class/administrator.gif',
-UC_SYSOP => $INSTALLER09['pic_base_url'].'class/sysop.gif'										
+UC_SYSOP => $INSTALLER09['pic_base_url'].'class/sysop.gif'
   );
 
 

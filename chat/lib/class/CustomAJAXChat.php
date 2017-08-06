@@ -79,7 +79,6 @@ class CustomAJAXChat extends AJAXChat
                 }
             }
         }
-
         return $this->_channels;
     }
 
