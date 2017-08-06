@@ -616,11 +616,17 @@ function autoclean()
     }
 
     if (($tfreak_cron = $mc1->get_value('tfreak_cron_')) === false) {
-        $mc1->cache_value('tfreak_cron_', TIME_NOW, 300);
+        $mc1->cache_value('tfreak_cron_', TIME_NOW, 60);
         require_once INCL_DIR . 'newsrss.php';
-        foxnews_shout();
-        tfreak_shout();
-        github_shout();
+        $fox = $tfreak = $github = false;
+
+        $github = github_shout();
+        if ($github) {
+            $fox = foxnews_shout();
+        }
+        if ($fox) {
+            $tfreak = tfreak_shout();
+        }
     }
 }
 

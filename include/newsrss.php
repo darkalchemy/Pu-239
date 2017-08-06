@@ -38,10 +38,11 @@ function foxnews_shout()
             if ($newid) {
                 $msg = "[color=yellow]In The News:[/color] [url={$pub['link']}]" . htmlsafechars($pub['title']) . "[/url]";
                 autoshout($msg);
-                die();
+                return false;
             }
         }
     }
+    return true;
 }
 
 function tfreak_shout()
@@ -82,10 +83,11 @@ function tfreak_shout()
             if ($newid) {
                 $msg = "[color=yellow]In The News:[/color] [url={$pub['link']}]" . htmlsafechars($pub['title']) . "[/url]";
                 autoshout($msg);
-                die();
+                return false;
             }
         }
     }
+    return true;
 }
 
 function github_shout()
@@ -130,10 +132,11 @@ function github_shout()
                         LIMIT 1") or sqlerr(__FILE__, __LINE__);
             $newid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
             if ($newid) {
-                $msg = "[color=yellow]Git Commit:[/color] [url={$pub['link']}]" . htmlsafechars($pub['title']) . "[/url]";
+                $msg = "[color=yellow]Git Commit:[/color] [url={$pub['link']}]" . htmlsafechars($pub['title']) . "[/url] => " . htmlsafechars($pub['commit']);
                 autoshout($msg);
-                die();
+                return false;
             }
         }
     }
+    return true;
 }
