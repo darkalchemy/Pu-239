@@ -38,6 +38,7 @@ function foxnews_shout()
             if ($newid) {
                 $msg = "[color=yellow]In The News:[/color] [url={$pub['link']}]" . htmlsafechars($pub['title']) . "[/url]";
                 autoshout($msg);
+                die();
             }
         }
     }
@@ -81,6 +82,7 @@ function tfreak_shout()
             if ($newid) {
                 $msg = "[color=yellow]In The News:[/color] [url={$pub['link']}]" . htmlsafechars($pub['title']) . "[/url]";
                 autoshout($msg);
+                die();
             }
         }
     }
@@ -130,6 +132,7 @@ function github_shout()
             if ($newid) {
                 $msg = "[color=yellow]Git Commit:[/color] [url={$pub['link']}]" . htmlsafechars($pub['title']) . "[/url]";
                 autoshout($msg);
+                die();
             }
         }
     }

@@ -355,7 +355,7 @@ function cleanup_take_new()
             stderr($lang['cleanup_take_error'], "{$lang['cleanup_take_error2']}");
         }
     }
-    $params['clean_file'] = preg_replace('#\.{1,}#s', '.', $params['clean_file']);
+    $params['clean_file'] = preg_replace('#\.{1,}#s', '.', trim($params['clean_file']));
     if (!file_exists(CLEAN_DIR . "{$params['clean_file']}")) {
         stderr($lang['cleanup_take_error'], "{$lang['cleanup_take_error3']}");
     }
