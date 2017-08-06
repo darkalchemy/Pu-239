@@ -15,7 +15,7 @@ while ($result = mysqli_fetch_assoc($res)) {
     $ended = $result['ended'] >= 1 ? get_date($result['ended'], 'LONG') : 0;
     $started = $result['started'] >= 1 ? get_date($result['started'], 'LONG') : 0;
     $sql = 'SELECT t.gamenum, t.user_id, COUNT(t.correct) AS correct,
-                (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE correct = 0 AND user_id = t.user_id) AS incorrect,
+                (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE correct = 0 AND user_id = t.user_id AND gamenum = ' . sqlesc($gamenum) . ') AS incorrect,
                 u.username, u.modcomment
             FROM triviausers AS t
             INNER JOIN users AS u ON u.id = t.user_id
