@@ -166,7 +166,7 @@ $count = $row[0];
 if ($count) {
     $perpage = 25;
     $orderby = 'ORDER BY username ASC';
-    $HTMLOUT .= '<script  type="text/javascript">
+    $HTMLOUT .= '<script>
 	//<![CDATA[
 	var checkflag = "false";
 	function check(field) {

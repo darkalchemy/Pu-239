@@ -209,9 +209,9 @@ $HTMLOUT .= '
 <tr>
 <td align="center" colspan="6" class="colhead"><a class="altlink" href="javascript:SetChecked(1,\'wu[]\')"> ' . $lang['watched_selall'] . '</a> - <a class="altlink" href="javascript:SetChecked(0,\'wu[]\')">un-' . $lang['watched_selall'] . '</a>
         <input type="submit" class="button_big" value="remove selected' . $lang['watched_removedfrom'] . '" onmouseover="this.className=\'button_big_hover\'" onmouseout="this.className=\'button_big\'" /></td></tr></table></form>
-<script type="text/javascript" src="scripts/check_selected.js"></script>';
+<script src="./scripts/check_selected.js"></script>';
 $HTMLOUT .= '
-<script type="text/javascript">
+<script>
  /*<![CDATA[*/
 $(document).ready(function()    {';
 while ($div_link_number <= $how_many) {

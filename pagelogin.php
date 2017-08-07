@@ -63,7 +63,7 @@ $HTMLOUT .= "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN'
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
 <title>{$INSTALLER09['site_name']} Redirecting</title>
-<link rel='stylesheet' href='./templates/1/default.css' type='text/css' />
+<link rel='stylesheet' href='./templates/1/default.css' />
 <meta http-equiv='Refresh' content='1; URL=index.php' />
 </head>
 <body>

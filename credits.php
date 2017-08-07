@@ -139,7 +139,7 @@ if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
     exit();
 }
 
-$HTMLOUT .= "<script type='text/javascript'>
+$HTMLOUT .= "<script>
   <!--
   function confirm_delete(id)
   {

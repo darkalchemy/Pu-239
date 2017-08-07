@@ -230,7 +230,7 @@ if (mysqli_num_rows($r) > 0) {
 }
 //=== make up page
 $HTMLOUT .= '
-<script type="text/javascript">
+<script>
 /*<![CDATA[*/
 $(document).ready(function()	{
 //=== cats

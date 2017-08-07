@@ -139,8 +139,8 @@ empty($_SERVER['SERVER_NAME'])
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-    <link href="//fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-    <style type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style>
         html {
             font-family: sans-serif;
             font-size: 100%;
@@ -453,7 +453,7 @@ empty($_SERVER['SERVER_NAME'])
             <br style="clear:both;"/>
         </div>
     </div>
-    <script type="text/javascript">
+    <script>
         $(function () {
             var realtime = false;
 
@@ -536,7 +536,7 @@ empty($_SERVER['SERVER_NAME'])
             <?php endforeach; ?>
         </table>
     </div>
-    <script type="text/javascript">
+    <script>
         $(function () {
             $('span.showmore span.button').click(function () {
                 if ($(this).next().is(":visible")) {

@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'stylesheet' => $sid,
     ]);
     $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
-    $HTMLOUT .= "<script language='javascript' type='text/javascript'>
+    $HTMLOUT .= "<script>
         opener.location.reload(true);
         self.close();
       </script>";
@@ -30,7 +30,7 @@ $HTMLOUT .= "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'htt
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
 <title>Choose theme</title>
-<link rel='stylesheet' href='./templates/{$CURUSER['stylesheet']}/{$CURUSER['stylesheet']}.css' type='text/css' />
+<link rel='stylesheet' href='./templates/{$CURUSER['stylesheet']}/{$CURUSER['stylesheet']}.css' />
 </head>
 <body>
   <div align='center' style='width:200px'><fieldset>

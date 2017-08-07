@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         stderr('Oops', 'Missing form data - You must fill all fields');
     }
     if ($INSTALLER09['captcha_on']) {
-        if (empty($captchaSelection) || $_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'simpleCaptchaAnswer'] != $captchaSelection) {
+        if (empty($captchaSelection) || getSessionVar('simpleCaptchaAnswer') != $captchaSelection) {
             header('Location: recover.php');
             exit();
         }
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     stderr($lang['stderr_successhead'], sprintf($lang['stderr_mailed'], $email));
 } else {
     $HTMLOUT = '';
-    $HTMLOUT .= "<script type='text/javascript'>
+    $HTMLOUT .= "<script>
 	  /*<![CDATA[*/
 	  $(document).ready(function () {
 	  $('#captcharec').simpleCaptcha();

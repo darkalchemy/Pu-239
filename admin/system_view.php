@@ -39,7 +39,7 @@ if (isset($_GET['phpinfo']) and $_GET['phpinfo']) {
     $php_body = str_replace('%2C', '%2C<br>', $php_body);
     // PREVENT WRAP: Cookie , split
     $php_body = preg_replace("#,(\d+),#", ',<br>\\1,', $php_body);
-    $php_style = "<style type='text/css'>
+    $php_style = "<style>
 .center {text-align: center;}
 .center table { margin-left: auto; margin-right: auto; text-align: left; }
 .center th { text-align: center; }

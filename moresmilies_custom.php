@@ -15,10 +15,10 @@ $htmlout = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
 		<head>
         <meta name='MSSmartTagsPreventParsing' content='TRUE' />
 		<title>Custom Smilies</title>
-    <link rel='stylesheet' href='./templates/{$CURUSER['stylesheet']}/{$CURUSER['stylesheet']}.css' type='text/css' />
+    <link rel='stylesheet' href='./templates/{$CURUSER['stylesheet']}/{$CURUSER['stylesheet']}.css' />
     </head>
     <body>
-    <script type='text/javascript'>
+    <script>
     function SmileIT(smile,form,text){
     window.opener.document.forms[form].elements[text].value = window.opener.document.forms[form].elements[text].value+' '+smile+' ';
     window.opener.document.forms[form].elements[text].focus();

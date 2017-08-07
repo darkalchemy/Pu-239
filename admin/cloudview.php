@@ -29,7 +29,7 @@ if (isset($_POST['delcloud'])) {
     header('Refresh: 3; url=staffpanel.php?tool=cloudview&action=cloudview');
     stderr("{$lang['cloudview_success']}", "{$lang['cloudview_success_del']}");
 }
-$HTMLOUT .= '<script type="text/javascript">
+$HTMLOUT .= '<script>
 /*<![CDATA[*/
 var checkflag = "false";
 var marked_row = new Array;

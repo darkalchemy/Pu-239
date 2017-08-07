@@ -150,6 +150,7 @@ $lang = [
     'gl_stdfoot_using'          => 'Utilizand ',
     'gl_stdfoot_using1'         => 'CSS3, HTML5 &amp; PHP valide',
     'gl_stdfoot_sview'          => 'Vizualizare System',
+    'gl_stdfoot_logview'        => 'Logs Viewer',
     'gl_stdfoot_apc'            => 'Statistici APC',
     'gl_stdfoot_memcache'       => 'Memcache',
     'gl_stdfoot_flush'          => 'Cur&#259;&#355;&#259; Cache',

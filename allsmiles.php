@@ -11,11 +11,11 @@ $htmlout = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"h
 <head>
     <meta name='MSSmartTagsPreventParsing' content='TRUE' />
 	<title>More Smilies</title>
-    <link rel='stylesheet' href='./templates/" . $CURUSER['stylesheet'] . "/default.css?{$INSTALLER09['code_version']}' type='text/css' />
+    <link rel='stylesheet' href='./templates/" . $CURUSER['stylesheet'] . "/default.css?{$INSTALLER09['code_version']}' />
 </head>
 <body class='background-13'>
-<script type='text/javascript' src='./scripts/jquery-1.5.js'></script>
-<script type='text/javascript'>
+<script src='./scripts/jquery-1.5.js'></script>
+<script>
 function pops(smile){
     textcontent=window.opener.document.getElementById('inputField').value;
     window.opener.document.getElementById('inputField').value = textcontent + ' ' + smile;

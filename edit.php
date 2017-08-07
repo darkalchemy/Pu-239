@@ -52,7 +52,7 @@ if (!isset($CURUSER) || ($CURUSER['id'] != $row['owner'] && $CURUSER['class'] < 
     stderr($lang['edit_user_error'], sprintf($lang['edit_no_permission'], urlencode($_SERVER['REQUEST_URI'])));
 }
 $HTMLOUT = $mod_cache_name = '';
-$HTMLOUT = "<script type='text/javascript'>
+$HTMLOUT = "<script>
     window.onload = function() {
     setupDependencies('edit'); //name of form(s). Seperate each with a comma (ie: 'weboptions', 'myotherform' )
     };

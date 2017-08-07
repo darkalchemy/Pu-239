@@ -16,7 +16,7 @@ require_once 'imdb.class.php';
 
 echo "<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN'>\n";
 echo "<HTML><HEAD>\n <TITLE>IMDBPHP Cache Contents</TITLE>\n";
-echo " <STYLE TYPE='text/css'>body,td,th { font-size:12px; }</STYLE>\n";
+echo " <STYLE>body,td,th { font-size:12px; }</STYLE>\n";
 echo "</HEAD><BODY>\n";
 $imdb = new imdb('0');
 $movies = [];

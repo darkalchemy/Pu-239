@@ -85,7 +85,7 @@ if (is_array($scheduled_events)) {
     }
 }
 $HTMLOUT .= "
-<script type='text/javascript'>
+<script>
 /*<![CDATA[*/
 function checkAllGood(event){
 var result = confirm(\"Are you sure you want to remove '\" + event + \"' Event ?\");

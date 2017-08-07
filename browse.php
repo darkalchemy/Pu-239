@@ -40,7 +40,7 @@ if (function_exists('parked')) {
     parked();
 }
 $HTMLOUT = $searchin = $select_searchin = $where = $addparam = $new_button = $search_help_boolean = $vip_box = $only_free = '';
-$HTMLOUT .= '<script type="text/javascript">
+$HTMLOUT .= '<script>
 /*<![CDATA[*/
 $(document).ready(function(){
 	$("#help_open").click(function(){

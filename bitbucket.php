@@ -101,7 +101,7 @@ if (!isset($_FILES['file'])) {
 </tr>
 </table>
 </form>";
-    $HTMLOUT .= '<script type="text/javascript">
+    $HTMLOUT .= '<script>
 /*<![CDATA[*/
 function SelectAll(id)
 {
@@ -216,7 +216,7 @@ $HTMLOUT .= '<table width="300" align="center">
 <td align="center"><p><a href="' . $_SERVER['PHP_SELF'] . "\"><strong>{$lang['bitbucket_up_another']}</strong></a></p>
 <p>{$lang['bitbucket_thefile']}</p>
 <p><img src=\"" . $address . 'img.php/' . $pathlink . '" border="0" alt=""/></p>';
-$HTMLOUT .= '<script type="text/javascript">
+$HTMLOUT .= '<script>
 /*<![CDATA[*/
 function SelectAll(id)
 {

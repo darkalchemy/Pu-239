@@ -180,7 +180,7 @@ if (($torrent_cache['rep'] = $mc1->get_value('user_rep_' . $torrents['owner'])) 
         $mc1->add_value('user_rep_' . $torrents['owner'], $torrent_cache['rep'], 14 * 86400);
     }
 }
-$HTMLOUT .= "<script type='text/javascript'>
+$HTMLOUT .= "<script>
     /*<![CDATA[*/
 	var e = new sack();
 function do_rate(rate,id,what) {
@@ -681,7 +681,7 @@ if (XBT_TRACKER == true) {
 }
 
 $HTMLOUT .= tr($lang['details_thanks'], '
-	  <script type="text/javascript">
+	  <script>
 		/*<![CDATA[*/
 		$(document).ready(function() {
 			var tid = ' . $id . ';
@@ -890,7 +890,7 @@ if ($torrents['allow_comments'] == 'yes' || $CURUSER['class'] >= UC_STAFF && $CU
     die();
 }
 $HTMLOUT .= "<!-- accordion collapse going here -->
-<script type='text/javascript'>
+<script>
 /*<![CDATA[*/
 jQuery(document).ready(function() {
   jQuery('.content').hide();

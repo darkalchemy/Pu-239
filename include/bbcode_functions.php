@@ -59,9 +59,9 @@ function BBcode($body)
     $emoticons_staff = smilies_frame($staff_smilies, 1, ':dabunnies:');
     $tags = '<tr><td>not yet added</td></tr>';
     $bbcode = '
-	<script type="text/javascript" src="bbcode/markitup/jquery.markitup.js"></script>
-	<script type="text/javascript" src="bbcode/markitup/sets/default/set.js"></script>
-  <script type="text/javascript">
+	<script src="bbcode/markitup/jquery.markitup.js"></script>
+	<script src="bbcode/markitup/sets/default/set.js"></script>
+    <script>
 		/*<![CDATA[*/
 		// set up the emoticon stuff
 		$(document).ready(function()	{

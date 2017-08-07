@@ -651,7 +651,7 @@ $HTMLOUT .= '</div>';
 $HTMLOUT .= "<div id='edit'>";
 //==end blocks
 
-$HTMLOUT .= "<script type='text/javascript'>
+$HTMLOUT .= "<script>
        /*<![CDATA[*/
        function togglepic(bu, picid, formid){
               var pic = document.getElementById(picid);

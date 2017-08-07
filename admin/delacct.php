@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         stderr($lang['text_error'], $lang['text_unable']);
     }
 }
-$HTMLOUT = "<script type='text/javascript'>
+$HTMLOUT = "<script>
 function deleteConfirm(){
     var result = confirm('Are you sure to delete user?');
     if(result){

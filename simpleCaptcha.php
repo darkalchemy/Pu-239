@@ -19,7 +19,7 @@ $images = [
 // ------------------- STOP EDITING ---------------- //
 setSessionVar('simpleCaptchaAnswer', null);
 setSessionVar('simpleCaptchaTimestamp', TIME_NOW);
-$salty = salty($_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'simpleCaptchaTimestamp']);
+$salty = salty(getSessionVar('simpleCaptchaTimestamp'));
 $resp = [];
 header('Content-Type: application/json');
 if (!isset($images) || !is_array($images) || sizeof($images) < 3) {

@@ -282,7 +282,7 @@ $HTMLOUT .= $option_11 . '</select></td></tr>
 			<input type="submit" name="button" class="button" value="' . $lang['fm_mp_btn'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
 			</tr>
 			</table></form>
-	      <script type="text/javascript">
+	      <script>
 			/*<![CDATA[*/
 			function confirm_delete(id)
 			{

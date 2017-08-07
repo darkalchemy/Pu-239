@@ -149,6 +149,7 @@ $lang = [
     'gl_stdfoot_using'          => 'Using Valid ',
     'gl_stdfoot_using1'         => 'CSS3, HTML5 &amp; PHP',
     'gl_stdfoot_sview'          => 'System View',
+    'gl_stdfoot_logview'        => 'Logs Viewer',
     'gl_stdfoot_apc'            => 'APC Stats',
     'gl_stdfoot_opc'            => 'OpCache',
     'gl_stdfoot_memcache'       => 'Memcache',

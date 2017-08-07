@@ -7,7 +7,7 @@ $HTMLOUT .= '
 <script src="/scripts/jquery.mousewheel.js"></script>
 <!--<script src="/scripts/test.js"></script>-->';
 
-$HTMLOUT .= '<script type="text/javascript" language="javascript">
+$HTMLOUT .= '<script>
 /*<![CDATA[*/
 
 $(document).ready(function(){ $("#icarousel").iCarousel({

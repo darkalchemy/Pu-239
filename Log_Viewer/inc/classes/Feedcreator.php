@@ -473,7 +473,7 @@ class FeedCreator extends HtmlDescribable
     {
         $xml = '';
         if (isset($this->cssStyleSheet)) {
-            $xml .= '<?xml-stylesheet href="' . $this->cssStyleSheet . "\" type=\"text/css\"?>\n";
+            $xml .= '<?xml-stylesheet href="' . $this->cssStyleSheet . "\"?>\n";
         }
         if (isset($this->xslStyleSheet)) {
             $xml .= '<?xml-stylesheet href="' . $this->xslStyleSheet . "\" type=\"text/xsl\"?>\n";

@@ -12,7 +12,7 @@ $stdhead = [
     ],
 ];
 $HTMLOUT = '';
-$HTMLOUT .= '<script type="text/javascript">
+$HTMLOUT .= '<script>
     /*<![CDATA[*/
     $(document).ready(function()
     {

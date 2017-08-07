@@ -374,7 +374,7 @@ if ($msg && empty($html)) {
     <title>Reputation System</title>
     <link rel='stylesheet' href='./templates/<?php
     echo $CURUSER['stylesheet']; ?>/<?php
-    echo $CURUSER['stylesheet']; ?>.css' type='text/css'/>
+    echo $CURUSER['stylesheet']; ?>.css'/>
 </head>
 <body>
 <?php

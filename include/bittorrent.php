@@ -1365,12 +1365,18 @@ function sessionStart()
     }
 
     // Create a new CSRF token.
-    setSessionVar('csrf_token', bin2hex(random_bytes(64)));
+    if (empty($_SESSION[$INSTALLER09['sessionKeyPrefix'] . $INSTALLER09['session_csrf']])) {
+        setSessionVar($INSTALLER09['session_csrf'], bin2hex(random_bytes(64)));
+    }
 
     // Make sure we have a canary set and Regenerate session ID every five minutes:
-    if (empty($_SESSION['canary']) || $_SESSION['canary'] < time() - 300) {
+    //if (empty($_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'canary']) || $_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'canary'] >= TIME_NOW - 300) {
+    file_put_contents('/var/log/nginx/csrf.log', json_encode($_SESSION) . PHP_EOL, FILE_APPEND);
+    file_put_contents('/var/log/nginx/csrf.log', $_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'canary'] . PHP_EOL, FILE_APPEND);
+    file_put_contents('/var/log/nginx/csrf.log', TIME_NOW . " = " . (TIME_NOW - 300) . PHP_EOL, FILE_APPEND);
+    if (empty($_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'canary'])) {
         regenerateSessionID();
-        setSessionVar('canary', time());
+        setSessionVar('canary', TIME_NOW);
     }
 }
 
@@ -1392,6 +1398,7 @@ function destroySession()
 
 function regenerateSessionID()
 {
+    file_put_contents('/var/log/nginx/csrf.log', 'regenerate session => ' . json_encode($_SESSION) . PHP_EOL, FILE_APPEND);
     if (!empty($_SESSION)) {
         @session_regenerate_id(true);
     }
@@ -1406,6 +1413,10 @@ function validateToken($token, $key = null, $prefix = null) {
         $key = $INSTALLER09['session_csrf'];
     }
 
+//    file_put_contents('/var/log/nginx/csrf.log', $token . PHP_EOL, FILE_APPEND);
+//    file_put_contents('/var/log/nginx/csrf.log', $prefix . " - " . $key . PHP_EOL, FILE_APPEND);
+//    file_put_contents('/var/log/nginx/csrf.log', json_encode($_SESSION) . PHP_EOL, FILE_APPEND);
+
     if (empty($token)) {
         return false;
     } elseif (hash_equals($_SESSION[$prefix . $key], $token)) {
@@ -1413,6 +1424,7 @@ function validateToken($token, $key = null, $prefix = null) {
         setSessionVar($key, $prefix, bin2hex(random_bytes(64)));
         return true;
     }
+
     return false;
 }
 
@@ -1449,9 +1461,10 @@ function setSessionVar($key, $value, $prefix = null)
         $prefix = $INSTALLER09['sessionKeyPrefix'];
     }
 
+    //file_put_contents('/var/log/nginx/csrf.log', $prefix . ' = ' . $key . PHP_EOL, FILE_APPEND);
     // Set the session value:
     if (!empty($_SESSION[$prefix . $key])) {
-        unsetSessionVar($_SESSION[$prefix . $key]);
+        unsetSessionVar($key);
     }
     $_SESSION[$prefix . $key] = $value;
 }
@@ -1459,6 +1472,10 @@ function setSessionVar($key, $value, $prefix = null)
 function getSessionVar($key, $prefix = null)
 {
     global $INSTALLER09;
+    if (empty($key)) {
+        return null;
+    }
+
     if ($prefix === null) {
         $prefix = $INSTALLER09['sessionKeyPrefix'];
     }
@@ -1478,6 +1495,8 @@ function unsetSessionVar($key, $prefix = null)
         $prefix = $INSTALLER09['sessionKeyPrefix'];
     }
 
+    //file_put_contents('/var/log/nginx/csrf.log', $prefix . ' = ' . $key . PHP_EOL, FILE_APPEND);
+    //file_put_contents('/var/log/nginx/csrf.log', json_encode(debug_backtrace()) . PHP_EOL, FILE_APPEND);
     // Set the session value:
     unset($_SESSION[$prefix . $key]);
 }

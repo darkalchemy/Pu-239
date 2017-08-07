@@ -14,10 +14,10 @@ $HTMLOUT = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
 		<head>
 	 <meta name='MSSmartTagsPreventParsing' content='TRUE' />
 	 <title>{$INSTALLER09['site_name']} Radio</title>
-    <link rel='stylesheet' href='./templates/" . $CURUSER['stylesheet'] . '/' . $CURUSER['stylesheet'] . ".css' type='text/css' />
+    <link rel='stylesheet' href='./templates/" . $CURUSER['stylesheet'] . '/' . $CURUSER['stylesheet'] . ".css' />
     </head>
     <body>";
-$HTMLOUT .= "<script type='text/javascript'>
+$HTMLOUT .= "<script>
     /*<![CDATA[*/
     function roll_over(img_name, img_src)
     {

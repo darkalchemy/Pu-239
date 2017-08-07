@@ -62,7 +62,7 @@ $search->setsearchname($_GET['name']);
 echo "<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN'>\n";
 echo "<HTML><HEAD>\n";
 echo " <TITLE>Performing search for '" . $_GET['name'] . "' [IMDBPHP2 v" . $search->version . "]</TITLE>\n";
-echo " <STYLE TYPE='text/css'>body,td,th,h2 { font-size:12px; font-family:sans-serif; } th { background-color:#ffb000; } h2 { text-align:center; font-size:15px; margin-top: 20px; margin-bottom:0; }</STYLE>\n";
+echo " <STYLE>body,td,th,h2 { font-size:12px; font-family:sans-serif; } th { background-color:#ffb000; } h2 { text-align:center; font-size:15px; margin-top: 20px; margin-bottom:0; }</STYLE>\n";
 echo "</HEAD><BODY>\n";
 $sname = htmlspecialchars($_GET['name']);
 echo '<H2>[IMDBPHP2 v' . $search->version . " Demo] Search results for '$sname':</H2>\n";

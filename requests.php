@@ -325,7 +325,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
     </tr>
     </table></form>
 	 </td></tr></table><br>
-    <script type="text/javascript">
+    <script>
     /*<![CDATA[*/
     $(document).ready(function()	{
     //=== form validation
@@ -475,7 +475,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
    </tr>
    </table></form>
 	</td></tr></table><br>
-   <script type="text/javascript">
+   <script>
    /*<![CDATA[*/
    $(document).ready(function()	{
    //=== form validation

@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 if ($CURUSER['tenpercent'] == 'no') {
     $HTMLOUT .= "
-  <script type='text/javascript'>
+  <script>
   /*<![CDATA[*/
   function enablesubmit() {
 	document.tenpercent.submit.disabled = document.tenpercent.submit.checked;

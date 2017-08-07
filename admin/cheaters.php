@@ -40,7 +40,7 @@ $count = $row[0];
 $perpage = 15;
 $pager = pager($perpage, $count, 'staffpanel.php?tool=cheaters&amp;action=cheaters&amp;');
 $HTMLOUT .= "<form action='staffpanel.php?tool=cheaters&amp;action=cheaters' method='post'>
-<script type='text/javascript'>
+<script>
 /*<![CDATA[*/
 function klappe(id)
 {var klappText=document.getElementById('k'+id);var klappBild=document.getElementById('pic'+id);if(klappText.style.display=='none'){klappText.style.display='block';}
@@ -49,7 +49,7 @@ function klappe_news(id)
 {var klappText=document.getElementById('k'+id);var klappBild=document.getElementById('pic'+id);if(klappText.style.display=='none'){klappText.style.display='block';klappBild.src='{$INSTALLER09['pic_base_url']}minus.gif';}
 else{klappText.style.display='none';klappBild.src='{$INSTALLER09['pic_base_url']}plus.gif';}}	
 </script>
-<script type='text/javascript'>
+<script>
 var checkflag = 'false';
 function check(field) {
 if (checkflag == 'false') {

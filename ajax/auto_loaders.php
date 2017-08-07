@@ -31,7 +31,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
             }
         }
         $htmlout .= "
-						<style type='text/css'>
+						<style>
 						.t {display: table; }
 						.tr {display: table-row;}
 						.tdclear{height:5px;content:''}

@@ -28,7 +28,7 @@ if ($step == '1') {
             stderr('Oops', 'Missing form data - You must fill all fields');
         }
         if ($INSTALLER09['captcha_on']) {
-            if (empty($captchaSelection) || $_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'simpleCaptchaAnswer'] != $captchaSelection) {
+            if (empty($captchaSelection) || getSessionVar('simpleCaptchaAnswer') != $captchaSelection) {
                 stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error2']}");
                 exit();
             }
@@ -160,7 +160,7 @@ if ($step == '1') {
     }
 } else {
     $HTMLOUT .= "
-    <script type='text/javascript'>
+    <script>
 	  /*<![CDATA[*/
 	  $(document).ready(function () {
 	  $('#captchareset').simpleCaptcha();

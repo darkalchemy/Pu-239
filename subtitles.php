@@ -155,7 +155,7 @@ if ($mode == 'upload' || $mode == 'edit') {
     }
     $HTMLOUT .= begin_main_frame();
     $HTMLOUT .= begin_frame('' . ($mode == 'upload' ? 'New Subtitle' : 'Edit subtitle ' . htmlsafechars($arr['name']) . '') . '');
-    $HTMLOUT .= "<script type='text/javascript'>
+    $HTMLOUT .= "<script>
 function checkext(upload_field)
 {
     var re_text = /\.sub|\.srt|\.txt/i;

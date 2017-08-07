@@ -342,7 +342,7 @@ switch ($action) {
     </tr>
     </table></form>
 	 </td></tr></table><br>
-    <script type="text/javascript">
+    <script>
     /*<![CDATA[*/
     $(document).ready(function()	{
     //=== form validation
@@ -481,7 +481,7 @@ switch ($action) {
     </tr>
     </table></form>
 	 </td></tr></table><br>
-    <script type="text/javascript">
+    <script>
     /*<![CDATA[*/
     $(document).ready(function()	{
     //=== form validation

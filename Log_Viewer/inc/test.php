@@ -529,7 +529,7 @@ on several lines with timezone UTC+3
                             <div class="panel-body"><?php
                                 ob_start();
                                 phpinfo();
-                                preg_match('%<style type="text/css">(.*?)</style>.*?(<body>.*</body>)%s', ob_get_clean(), $matches);
+                                preg_match('%<style>(.*?)</style>.*?(<body>.*</body>)%s', ob_get_clean(), $matches);
                                 echo $matches[2]; ?></div>
                         </div>
                     </div>

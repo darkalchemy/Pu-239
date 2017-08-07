@@ -437,7 +437,7 @@ function stdfoot($stdfoot = false)
                 <div class='pull-right' align='right'>
                 {$lang['gl_stdfoot_powered']}" . TBVERSION . "<br>
                 {$lang['gl_stdfoot_using']}<b>{$lang['gl_stdfoot_using1']}</b><br>
-                " . ($debug ? "<a title='{$lang['gl_stdfoot_sview']}' rel='external' href='/staffpanel.php?tool=system_view'>{$lang['gl_stdfoot_sview']}</a> | " . "<a rel='external' title='OPCache' href='/staffpanel.php?tool=op'>{$lang['gl_stdfoot_opc']}</a> | " . "<a rel='external' title='Memcache' href='/staffpanel.php?tool=memcache'>{$lang['gl_stdfoot_memcache']}</a>" : '') . '';
+                " . ($debug ? "<a title='{$lang['gl_stdfoot_logview']}' rel='external' href='/Log_Viewer/'>{$lang['gl_stdfoot_logview']}</a> | " . "<a title='{$lang['gl_stdfoot_sview']}' rel='external' href='/staffpanel.php?tool=system_view'>{$lang['gl_stdfoot_sview']}</a> | " . "<a rel='external' title='OPCache' href='/staffpanel.php?tool=op'>{$lang['gl_stdfoot_opc']}</a> | " . "<a rel='external' title='Memcache' href='/staffpanel.php?tool=memcache'>{$lang['gl_stdfoot_memcache']}</a>" : '') . '';
         $htmlfoot .= '
                 </div>
             </div>

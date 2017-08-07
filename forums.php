@@ -158,7 +158,7 @@ $action = (in_array($posted_action, $valid_actions) ? $posted_action : 'forum');
 //=== some default global type stuff
 //=== let admin and above delete shite
 if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
-    $HTMLOUT .= "<script type='text/javascript'>
+    $HTMLOUT .= "<script>
   /*<![CDATA[*/
   function confirm_delete(id)
   {
@@ -170,7 +170,7 @@ if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
   /*]]>*/
   </script>";
 }
-$HTMLOUT .= "<script type='text/javascript'>
+$HTMLOUT .= "<script>
   /*<![CDATA[*/
 	var e = new sack();
 function do_rate(rate,id,what) {

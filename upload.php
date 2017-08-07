@@ -68,7 +68,7 @@ if (mysqli_num_rows($res_offer) > 0) {
     </tr>';
 }
 $HTMLOUT .= "
-    <script type='text/javascript'>
+    <script>
     window.onload = function() {
     setupDependencies('upload'); //name of form(s). Seperate each with a comma (ie: 'weboptions', 'myotherform' )
     };

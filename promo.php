@@ -298,7 +298,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
           <head>
 					<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />
 					<title>Users list for promo : " . htmlsafechars($a1['name']) . "</title>
-					<style type=\"text/css\">
+					<style>
 					body { background-color:#999999;
 					color:#333333;
 					font-family:tahoma;
@@ -340,7 +340,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
         stderr('Error', 'There is no promo if you want to make one click <a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo">here</a>');
     } else {
         $HTMLOUT .= begin_frame('Current Promos&#160;<font class="small"><a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo">- Add promo</a></font>');
-        $HTMLOUT .= "<script type='text/javascript'>
+        $HTMLOUT .= "<script>
 		/*<![CDATA[*/
 		function link(id)
 		{

@@ -98,7 +98,7 @@ $count_inactive = mysqli_num_rows($res);
 if ($count_inactive > 0) {
     //if ($count > $perpage)
     $HTMLOUT .= $pager['pagertop'];
-    $HTMLOUT .= "<script type='text/javascript'>
+    $HTMLOUT .= "<script>
     /*<![CDATA[*/
     var checkflag = 'false';
     function check(field) {

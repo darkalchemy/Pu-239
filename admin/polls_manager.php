@@ -215,8 +215,8 @@ function poll_box($max_poll_questions = '', $max_poll_choices = '', $form_type =
     $form_type = ($form_type != '' ? $form_type : 'poll_update');
     $HTMLOUT = '';
     $HTMLOUT .= "
-    <script type=\"text/javascript\" src=\"scripts/polls.js\"></script>
-     <script type=\"text/javascript\">
+     <script src='./scripts/polls.js'></script>
+     <script>
      //<![CDATA[
 
       var showfullonload = parseInt(\"{$show_open}\");
@@ -286,7 +286,7 @@ function poll_box($max_poll_questions = '', $max_poll_choices = '', $form_type =
      
     </form>  
      
-     <script type='text/javascript'>
+     <script>
       poll_init_state();
      </script>";
 

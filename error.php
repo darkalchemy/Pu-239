@@ -31,7 +31,7 @@ $htmlout = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
     <meta name='generator' content='TBDev.net' />
 	  <meta name='MSSmartTagsPreventParsing' content='TRUE' />
 		<title>{$page}</title>
-    <style type='text/css'>
+    <style>
     <!--
     body
     {

@@ -40,7 +40,7 @@ class Session
 
             self::$sessionState = self::SESSION_STARTED;
 
-            return session_start();
+            return sessionStart();
         }
 
         return true;

@@ -121,6 +121,7 @@ $staff_tools = [
     'user_hits'              => 'user_hits',
     'op'                     => 'op',
     'memcache'               => 'memcache',
+    'log_view'               => 'log_view',
     'invite_tree'            => 'invite_tree',
     'edit_moods'             => 'edit_moods',
     'mass_bonus_for_members' => 'mass_bonus_for_members',
@@ -153,7 +154,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
         if (!$sure) {
             stderr($lang['spanel_sanity_check'], $lang['spanel_are_you_sure_del'] . ': "' . htmlsafechars($arr['page_name']) . '"? ' . $lang['spanel_click'] . ' <a href="' . $_SERVER['PHP_SELF'] . '?action=' . $action . '&amp;id=' . $id . '&amp;sure=yes">' . $lang['spanel_here'] . '</a> ' . $lang['spanel_to_del_it_or'] . ' <a href="' . $_SERVER['PHP_SELF'] . '">' . $lang['spanel_here'] . '</a> ' . $lang['spanel_to_go_back'] . '.');
         }
-        $mc1->cache_value('is_staffs_');
+        $mc1->delete_value('is_staffs_');
         sql_query('DELETE FROM staffpanel WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
             if ($CURUSER['class'] <= UC_MAX) {

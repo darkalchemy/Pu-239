@@ -402,7 +402,7 @@ $HTMLOUT .= '<h1>' . $lang['sea_forums'] . '</h1>' . $links . ($count > 0 ? '<h1
 	</tr>
 	</table></form><br>' . $content . $links . '<br>';
 $HTMLOUT .= '
-   <script type="text/javascript">
+   <script>
    /*<![CDATA[*/
    // set up the show / hide stuff
 	$(document).ready(function()	{

@@ -39,7 +39,7 @@ $time_select .= '</select>';
 // TIMEZONE END
 $HTMLOUT = $year = $month = $day = '';
 $HTMLOUT .= "
-    <script type='text/javascript'>
+    <script>
     /*<![CDATA[*/
     $(function() {
     $('.password').pstrength();
@@ -57,7 +57,7 @@ $value = [
 ];
 $value[rand(1, count($value) - 1)] = 'X';
 $HTMLOUT .= "
-    <script type='text/javascript'>
+    <script>
 	  $(document).ready(function () {
 	  $('#captchainvite').simpleCaptcha();
     });

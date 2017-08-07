@@ -43,7 +43,7 @@ if ($searchby == 'name') {
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Subtitle Search</title>
-    <style type="text/css">
+    <style>
         body {
             font-family: "tahoma", "arial", "helvetica", "sans-serif";
             font-size: 9pt;

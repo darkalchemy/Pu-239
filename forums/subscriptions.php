@@ -139,5 +139,5 @@ $HTMLOUT .= $the_top_and_bottom . '<form action="' . $INSTALLER09['baseurl'] . '
 		<a class="altlink" href="javascript:SetChecked(1,\'remove[]\')"> <span style="color: black;">' . $lang['sub_select_all'] . '</span></a> - 
 		<a class="altlink" href="javascript:SetChecked(0,\'remove[]\')"><span style="color: black;">' . $lang['sub_un_select_all'] . '</span></a>  
 		<input type="submit" name="button" class="button" value="' . $lang['fe_remove'] . ' Selected" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
-		</tr></table></form><script type="text/javascript" src="' . $INSTALLER09['baseurl'] . '/scripts/check_selected.js"></script>
+		</tr></table></form><script src="' . $INSTALLER09['baseurl'] . '/scripts/check_selected.js"></script>
 		' . $the_top_and_bottom . '<br><br>' . $links . '<br>';

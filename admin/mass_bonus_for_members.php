@@ -603,7 +603,7 @@ $HTMLOUT .= '<form name="inputform" method="post" action="staffpanel.php?tool=ma
         <input type="submit" class="btn" name="button" value="' . $lang['bonusmanager_doit'] . '"  /></td>
     </tr>
     </table></form>
-<script type="text/javascript">
+<script>
 /*<![CDATA[*/
 $(document).ready(function(){
  $(".select_me").hide();

@@ -59,7 +59,7 @@ if ($CURUSER['auto_correct_dst']) {
 } else {
     $dst_correction = '';
 }
-$HTMLOUT .= "<script type='text/javascript'>
+$HTMLOUT .= "<script>
     /*<![CDATA[*/
     function daylight_show()
     {
@@ -75,7 +75,7 @@ $HTMLOUT .= "<script type='text/javascript'>
     /*]]>*/
     </script>";
 $HTMLOUT .= '
-    <script type="text/javascript">
+    <script>
     /*<![CDATA[*/
     $(document).ready(function()	{
     //=== show hide paranoia info

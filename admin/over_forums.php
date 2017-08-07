@@ -193,7 +193,7 @@ switch ($action) {
 			</table></form>';
         break;
 } //=== end switch
-$HTMLOUT .= '<script type="text/javascript">
+$HTMLOUT .= '<script>
 			/*<![CDATA[*/
 			function confirm_delete(id)
 			{

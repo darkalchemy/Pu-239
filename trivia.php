@@ -11,10 +11,12 @@ $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $result = mysqli_fetch_assoc($res);
 $qid = (int)$result['qid'];
 $display = $answered = '';
-$csrf = $INSTALLER09['sessionKeyPrefix'] . $INSTALLER09['session_csrf'];
+global $INSTALLER09;
+$csrf = $INSTALLER09['session_csrf'];
 
 if (!empty($_POST) && (int)$_POST['qid'] === $qid) {
     if (!empty($_POST['qid']) && !empty($_POST['user_id']) && !empty($_POST['ans']) && !empty($_POST['gamenum'])) {
+
         $qid = (int)$_POST['qid'];
         $user_id = (int)$_POST['user_id'];
         $answer = $_POST['ans'];
@@ -22,6 +24,8 @@ if (!empty($_POST) && (int)$_POST['qid'] === $qid) {
         $date = date('Y-m-d H:i:s');
         $ip = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'No IP';
 
+        file_put_contents('/var/log/nginx/csrf.log', $_POST['token'] . PHP_EOL, FILE_APPEND);
+        file_put_contents('/var/log/nginx/csrf.log', $csrf . PHP_EOL, FILE_APPEND);
         if (empty($_POST['token']) || !validateToken($_POST['token'])) {
             $username = get_one_row('users', 'username', 'WHERE id = ' . sqlesc($user_id));
             write_log("Trivia Game => using curl post => [$user_id]$username qid:$qid $date $ip");
@@ -177,7 +181,7 @@ if (empty($gamenum) || empty($qid)) {
                         <input type='hidden' name='user_id' value='{$user_id}'>
                         <input type='hidden' name='ans' value='answer1'>
                         <input type='hidden' name='gamenum' value='{$gamenum}'>
-                        <input type='hidden' name='token' value='" . $_SESSION[$csrf] . "'>
+                        <input type='hidden' name='token' value='" . getSessionVar($csrf) . "'>
                         <input type='submit' value='" . htmlspecialchars_decode($row['answer1']) . "' class='btnflex'>
                     </form>
                 </li>
@@ -187,7 +191,7 @@ if (empty($gamenum) || empty($qid)) {
                         <input type='hidden' name='user_id' value='{$user_id}'>
                         <input type='hidden' name='ans' value='answer2'>
                         <input type='hidden' name='gamenum' value='{$gamenum}'>
-                        <input type='hidden' name='token' value='" . $_SESSION[$csrf] . "'>
+                        <input type='hidden' name='token' value='" . getSessionVar($csrf) . "'>
                         <input type='submit' value='" . htmlspecialchars_decode($row['answer2']) . "' class='btnflex'>
                     </form>
                 </li>";
@@ -200,7 +204,7 @@ if (empty($gamenum) || empty($qid)) {
                         <input type='hidden' name='user_id' value='{$user_id}'>
                         <input type='hidden' name='ans' value='answer3'>
                         <input type='hidden' name='gamenum' value='{$gamenum}'>
-                        <input type='hidden' name='token' value='" . $_SESSION[$csrf] . "'>
+                        <input type='hidden' name='token' value='" . getSessionVar($csrf) . "'>
                         <input type='submit' value='" . htmlspecialchars_decode($row['answer3']) . "' class='btnflex'>
                     </form>
                 </li>";
@@ -213,7 +217,7 @@ if (empty($gamenum) || empty($qid)) {
                         <input type='hidden' name='user_id' value='{$user_id}'>
                         <input type='hidden' name='ans' value='answer4'>
                         <input type='hidden' name='gamenum' value='{$gamenum}'>
-                        <input type='hidden' name='token' value='" . $_SESSION[$csrf] . "'>
+                        <input type='hidden' name='token' value='" . getSessionVar($csrf) . "'>
                         <input type='submit' value='" . htmlspecialchars_decode($row['answer4']) . "' class='btnflex'>
                     </form>
                 </li>";
@@ -226,7 +230,7 @@ if (empty($gamenum) || empty($qid)) {
                         <input type='hidden' name='user_id' value='{$user_id}'>
                         <input type='hidden' name='ans' value='answer5'>
                         <input type='hidden' name='gamenum' value='{$gamenum}'>
-                        <input type='hidden' name='token' value='" . $_SESSION[$csrf] . "'>
+                        <input type='hidden' name='token' value='" . getSessionVar($csrf) . "'>
                         <input type='submit' value='" . htmlspecialchars_decode($row['answer5']) . "' class='btnflex'>
                     </form>
                 </li>";

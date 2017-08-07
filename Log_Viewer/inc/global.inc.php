@@ -1,4 +1,15 @@
 <?php
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'user_functions.php';
+dbconn();
+loggedinorreturn();
+
+If ($CURUSER['class'] < UC_SYSOP) {
+    setSessionVar('error', 'Access Not Allowed');
+    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    die();
+}
+
 /*! pimpmylog - 1.7.14 - 025d83c29c6cf8dbb697aa966c9e9f8713ec92f1*/
 /*
  * pimpmylog
@@ -809,22 +820,6 @@ function get_max_options($files)
     sort($options);
 
     return $options;
-}
-
-/**
- * Return a human representation of a size.
- *
- * @param string $bytes the string representation (can be an int)
- * @param int $decimals the number of digits in the float part
- *
- * @return string the human size
- */
-function human_filesize($bytes, $decimals = 0)
-{
-    $sz = __('B KBMBGBTBPB');
-    $factor = floor((strlen($bytes) - 1) / 3);
-
-    return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[(int)$factor * 2];
 }
 
 /**

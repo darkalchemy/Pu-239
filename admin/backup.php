@@ -85,7 +85,7 @@ if (is_array($required_class)) {
 }
 $mode = (isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : ''));
 if (empty($mode)) {
-    $HTMLOUT .= "<script type='text/javascript'>
+    $HTMLOUT .= "<script>
         /*<![CDATA[*/
         var checkflag = 'false';
         var marked_row = new Array;

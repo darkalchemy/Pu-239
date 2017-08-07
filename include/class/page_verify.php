@@ -19,13 +19,13 @@ class page_verify
 
     public function check($task_name = 'Default')
     {
-        global $CURUSER, $INSTALLER09, $lang, $_SESSION;
+        global $CURUSER, $INSTALLER09, $lang;
         $returl = (!empty($_SERVER['HTTP_REFERER']) ? htmlspecialchars($_SERVER['HTTP_REFERER']) : $INSTALLER09['baseurl'] . '/login.php');
         $returl = str_replace('&amp;', '&', $returl);
-        if (isset($_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'HTTP_USER_AGENT']) && $_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'HTTP_USER_AGENT'] != $_SERVER['HTTP_USER_AGENT']) {
+        if (getSessionVar('HTTP_USER_AGENT') != $_SERVER['HTTP_USER_AGENT']) {
             stderr('Error', "Please resubmit the form. <a href='" . $returl . "'>Click HERE</a>", false);
         }
-        if (isset($_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'Task']) && $_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'Task'] != md5('user_id:' . $CURUSER['id'] . '::taskname-' . $task_name . '::' . $_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'Task_Time'])) {
+        if (getSessionVar('Task') && getSessionVar('Task') != md5('user_id:' . $CURUSER['id'] . '::taskname-' . $task_name . '::' . getSessionVar('Task_Time'))) {
             stderr('Error', "Please resubmit the form. <a href='" . $returl . "'>Click HERE</a>", false);
         }
         $this->create();
@@ -33,9 +33,9 @@ class page_verify
 
     public function create($task_name = 'Default')
     {
-        global $INSTALLER09, $CURUSER, $_SESSION;
+        global $INSTALLER09, $CURUSER;
         setSessionVar('Task_Time', TIME_NOW);
-        setSessionVar('Task', md5('user_id:' . $CURUSER['id'] . '::taskname-' . $task_name . '::' . $_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'Task_Time']));
+        setSessionVar('Task', md5('user_id:' . $CURUSER['id'] . '::taskname-' . $task_name . '::' . getSessionVar('Task_Time')));
         setSessionVar('HTTP_USER_AGENT', !empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
     }
 }

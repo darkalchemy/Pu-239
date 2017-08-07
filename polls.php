@@ -166,7 +166,7 @@ function poll_header($pid = '', $poll_q = '')
 {
     global $INSTALLER09;
     $HTMLOUT = '';
-    $HTMLOUT .= "<script type=\"text/javascript\">
+    $HTMLOUT .= "<script>
     /*<![CDATA[*/
     function go_gadget_show()
     {

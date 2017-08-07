@@ -10,14 +10,14 @@ error_reporting(E_ALL);
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Avatar maker</title>
-    <link rel="stylesheet" href="css/colorpicker.css" type="text/css"/>
-    <link rel="stylesheet" href="css/fancycheckbox.css" type="text/css"/>
-    <link rel="stylesheet" href="css/avatarmaker.css" type="text/css"/>
-    <script type="text/javascript" src="js/fancycheckbox.js"></script>
-    <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/colorpicker.js"></script>
-    <script type="text/javascript" src="js/avatarmaker-core.js"></script>
-    <script type="text/javascript">
+    <link rel="stylesheet" href="css/colorpicker.css" />
+    <link rel="stylesheet" href="css/fancycheckbox.css" />
+    <link rel="stylesheet" href="css/avatarmaker.css" />
+    <script src="js/fancycheckbox.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/colorpicker.js"></script>
+    <script src="js/avatarmaker-core.js"></script>
+    <script>
         /*<![CDATA[*/
         $(document).ready(function () {
             $('#colorSelector').ColorPicker({

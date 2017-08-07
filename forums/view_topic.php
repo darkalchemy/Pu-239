@@ -663,16 +663,16 @@ $HTMLOUT .= $the_top_and_bottom . '</table>
 			only <span style="font-weight:bold;">' . get_user_class_name($min_delete_view_class) . '</span> ' . $lang['vt_and_above_can_see_these_options'] . '</td>
       </tr>') . '
       </table></form><br></div>
-      <script type="text/javascript" src="scripts/check_selected.js"></script>
-      <script src="scripts/jquery.trilemma.js" type="text/javascript"></script>
-      <script type="text/javascript">
+      <script src="scripts/check_selected.js"></script>
+      <script src="scripts/jquery.trilemma.js"></script>
+      <script>
       /*<![CDATA[*/
       $(function(){
       jQuery(\'.poll_select\').trilemma({max:' . $multi_options . ',disablelabels:true});
       });
       /*]]>*/
       </script>
-      <script type="text/javascript">
+      <script>
       /*<![CDATA[*/
       $(document).ready(function()	{
       //=== show hide staff tools

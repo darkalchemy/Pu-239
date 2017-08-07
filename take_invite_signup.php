@@ -28,7 +28,7 @@ if ($submitme != 'X') {
     stderr('Ha Ha', 'You Missed, You plonker !');
 }
 if ($INSTALLER09['captcha_on']) {
-    if (empty($captchaSelection) || $_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'simpleCaptchaAnswer'] != $captchaSelection) {
+    if (empty($captchaSelection) || getSessionVar('simpleCaptchaAnswer') != $captchaSelection) {
         header('Location: invite_signup.php');
         exit();
     }

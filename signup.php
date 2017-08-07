@@ -24,7 +24,7 @@ if (!$INSTALLER09['openreg']) {
 }
 $HTMLOUT = $year = $month = $day = $gender = '';
 $HTMLOUT .= "
-    <script type='text/javascript'>
+    <script>
     /*<![CDATA[*/
     $(function() {
     $('.password').pstrength();
@@ -82,7 +82,7 @@ $value = [
     '...',
 ];
 $value[rand(1, count($value) - 1)] = 'X';
-$HTMLOUT .= "<script type='text/javascript'>
+$HTMLOUT .= "<script>
 	  /*<![CDATA[*/
 	  $(document).ready(function () {
 	  $('#captchasignup').simpleCaptcha();
