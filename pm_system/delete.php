@@ -1,17 +1,8 @@
 <?php
 if (!defined('BUNNY_PM_SYSTEM')) {
-    $HTMLOUT = '';
-    $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-        <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-        <head>
-        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-        <title>ERROR</title>
-        </head><body>
-        <h1 style="text-align:center;">ERROR</h1>
-        <p style="text-align:center;">How did you get here? silly rabbit Trix are for kids!.</p>
-        </body></html>';
-    echo $HTMLOUT;
-    exit();
+    setSessionVar('error', 'Direct Access Not Allowed');
+    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    die();
 }
 //=== Delete a single message first make sure it's not an unread urgent staff message
 $res = sql_query('SELECT receiver, sender, urgent, unread, saved, location FROM messages WHERE id=' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);

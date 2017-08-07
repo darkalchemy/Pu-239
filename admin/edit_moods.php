@@ -1,6 +1,8 @@
 <?php
 if (!defined('IN_INSTALLER09_ADMIN')) {
-    require_once ROOT_DIR . '404.html';
+    setSessionVar('error', 'Access Not Allowed');
+    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    die();
 }
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));

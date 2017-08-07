@@ -11,7 +11,6 @@ $lang = array_merge(load_language('global'), load_language('recover'));
 $stdhead = [
     /* include js **/
     'js' => [
-        'jquery',
         'jquery.simpleCaptcha-0.2',
     ],
 ];

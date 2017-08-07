@@ -7,18 +7,9 @@ loggedinorreturn();
 $lang = array_merge(load_language('global'), load_language('snatches'));
 $HTMLOUT = '';
 if (empty($_GET['id'])) {
-    $HTMLOUT = '';
-    $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
-		\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
-		<html xmlns='http://www.w3.org/1999/xhtml'>
-		<head>
-		<title>Error!</title>
-		</head>
-		<body>
-	<div style='font-size:18px;color:black;background-color:red;text-align:center;'>Incorrect access<br>Silly Rabbit - Trix are for kids.. Snatches must be accessed using a valid id !</div>
-	</body></html>";
-    echo $HTMLOUT;
-    exit();
+    setSessionVar('error', 'Invalid Information');
+    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    die();
 }
 $id = 0 + $_GET['id'];
 if (!is_valid_id($id)) {

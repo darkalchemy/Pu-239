@@ -2,18 +2,9 @@
 $draft = $subject = $body = '';
 flood_limit('messages');
 if (!defined('BUNNY_PM_SYSTEM')) {
-    $HTMLOUT = '';
-    $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-        <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-        <head>
-        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-        <title>ERROR</title>
-        </head><body>
-        <h1 style="text-align:center;">ERROR</h1>
-        <p style="text-align:center;">How did you get here? silly rabbit Trix are for kids!.</p>
-        </body></html>';
-    echo $HTMLOUT;
-    exit();
+    setSessionVar('error', 'Access Not Allowed');
+    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    die();
 }
 //=== check to see if it's a preview or a post
 if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {

@@ -16,7 +16,11 @@
   | Author:  Harun Yayli <harunyayli at gmail.com>                       |
   +----------------------------------------------------------------------+
 */
-error_reporting(0);
+if (!defined('IN_INSTALLER09_ADMIN')) {
+    setSessionVar('error', 'Access Not Allowed');
+    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    die();
+}
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 class_check(UC_MAX);

@@ -1,19 +1,8 @@
 <?php
 if (!defined('IN_INSTALLER09_ADMIN')) {
-    header('HTTP/1.0 404 Not Found');
-    $HTMLOUT = '';
-    $h1_thingie = '';
-    $HTMLOUT .= '
-<html><head>
-<title>404 Not Found</title>
-</head><body>
-<h1>Not Found</h1>
-<p>The requested URL ' . htmlsafechars($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], '/') + 1) . ' was not found on this server.</p>
-<hr>
-<address>' . $_SERVER['SERVER_SOFTWARE'] . ' Server at ' . $INSTALLER09['baseurl'] . ' Port 80</address>
-</body></html>';
-    echo $HTMLOUT;
-    exit();
+    setSessionVar('error', 'Access Not Allowed');
+    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    die();
 }
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_new.php';

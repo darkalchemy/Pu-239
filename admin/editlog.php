@@ -14,18 +14,9 @@
 // their list up to date. If an update appears when the scripter hasn't made any
 // changes, then they know that another scripter has modified a script.
 if (!defined('IN_INSTALLER09_ADMIN')) {
-    $HTMLOUT = '';
-    $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
-		\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
-		<html xmlns='http://www.w3.org/1999/xhtml'>
-		<head>
-		<title>Error!</title>
-		</head>
-		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
-	</body></html>";
-    echo $HTMLOUT;
-    exit();
+    setSessionVar('error', 'Access Not Allowed');
+    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    die();
 }
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';

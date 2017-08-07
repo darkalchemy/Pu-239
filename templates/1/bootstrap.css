@@ -3764,6 +3764,7 @@ input[type="submit"].btn.btn-mini {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
+    font-size: 1.5em;
 }
 
 .alert,
@@ -3794,8 +3795,8 @@ input[type="submit"].btn.btn-mini {
 
 .alert-danger,
 .alert-error {
-    color: #b94a48;
-    background-color: #f2dede;
+    color: #000;
+    background-color: #f13e3e;
     border-color: #eed3d7;
 }
 

@@ -1,5 +1,4 @@
 <?php
-error_reporting(0);
 /* Locate images folder outside of webroot */
 define('BITBUCKET_DIR', DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'bucket'); // /path/to/bitbucket
 /* Sanity checking */

@@ -337,7 +337,13 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     <!-- End Platform Navigation and Global Messages
     ======================================================= -->";
     }
-    $htmlout .= "<br>
+    $htmlout .= "<br>";
+    if (getSessionVar('error')) {
+        $htmlout .= "
+    <div class='alert alert-error text-center'>" . getSessionVar('error') . "</div>";
+        unsetSessionVar('error');
+    }
+    $htmlout .= "
     <div id='base_content'>
     <!--<table class='mainouter' cellspacing='0' cellpadding='10'>
     <tr>

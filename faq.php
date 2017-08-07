@@ -7,7 +7,6 @@ $lang = array_merge(load_language('global'), load_language('faq'));
 $stdfoot = [
     /* include js **/
     'js' => [
-        'jquery',
         'jquery.scrollTo-min',
         'jquery.highlightFade',
         'init',

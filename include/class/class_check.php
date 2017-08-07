@@ -1,16 +1,8 @@
 <?php
 if (!defined('TBVERSION')) { //cannot access this file directly
-    $HTMLOUT = '';
-    $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-        <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-        <head>
-        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-        <title>ERROR</title>
-        </head><body>
-        <h1>ERROR</h1>Cannot Access this file directly.
-        </body></html>';
-    echo $HTMLOUT;
-    exit();
+    setSessionVar('error', 'Access Not Allowed');
+    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    die();
 }
 /** $class = UC_CLASS_NAME: minimum class required to view page
  *
