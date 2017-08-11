@@ -56,18 +56,15 @@ global $INSTALLER09;
 $HTMLOUT = '';
 $user_id = $CURUSER['id'];
 
-$sql = "SELECT clean_time, clean_time - unix_timestamp(NOW()) AS remaining FROM cleanup WHERE clean_file = 'trivia_update.php'";
+$sql = "SELECT clean_time - unix_timestamp(NOW()) AS round_remaining FROM cleanup WHERE clean_file = 'trivia_update.php'";
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $result = mysqli_fetch_assoc($res);
-$remaining = (int)$result['remaining'];
-$date = new DateTime("@{$result['clean_time']}");
-$date_round = $date->format('D, d M y H:i:s O');
+$round_remaining = (int)$result['round_remaining'];
 
-$sql = "SELECT clean_time, clean_time - unix_timestamp(NOW()) AS remaining FROM cleanup WHERE clean_file = 'trivia_points_update.php'";
+$sql = "SELECT clean_time - unix_timestamp(NOW()) AS game_remaining FROM cleanup WHERE clean_file = 'trivia_points_update.php'";
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $result = mysqli_fetch_assoc($res);
-$date = new DateTime("@{$result['clean_time']}");
-$date_game = $date->format('D, d M y H:i:s O');
+$game_remaining = (int)$result['game_remaining'];
 
 $num_totalq = get_row_count('triviaq');
 $num_remainingq = get_row_count('triviaq', 'WHERE asked = 0');
@@ -78,8 +75,8 @@ $result = mysqli_fetch_assoc($res);
 $gamenum = (int)$result['gamenum'];
 
 $refresh = 10;
-if ($remaining >= 1) {
-    $refresh = $remaining;
+if ($round_remaining >= 1) {
+    $refresh = $round_remaining;
 }
 
 $HTMLOUT = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
@@ -97,7 +94,7 @@ $HTMLOUT .= "
     <div style='calc(width: 100% - 20px); margin: 10px; font-size: 1.25em;'>
         <div>";
 
-if ($remaining >= 1) {
+if ($round_remaining >= 1) {
     $display = "
             {$lang['trivia_next_question']}
             <span id='clock_round'>
@@ -257,7 +254,7 @@ $HTMLOUT .= "
     <br>
 </body>";
 
-if ($remaining >= 1) {
+if ($round_remaining >= 1) {
     $HTMLOUT .= "
 <script src='./scripts/iframeResizer.contentWindow.min.js'></script>
 <script>
@@ -276,10 +273,13 @@ if ($remaining >= 1) {
         };
     }
 
-    function initializeClock(id, endtime){
+    function initializeClock(id, remaining) {
+        console.log(remaining);
         var clock = document.getElementById(id);
-        function updateClock(){
-            var t = getTimeRemaining(endtime);
+        var ending = new Date();
+        ending = new Date(ending.getTime() + 1000  * remaining);
+        function updateClock() {
+            var t = getTimeRemaining(ending);
             var daysSpan = clock.querySelector('.days');
             var hoursSpan = clock.querySelector('.hours');
             var minutesSpan = clock.querySelector('.minutes');
@@ -288,7 +288,7 @@ if ($remaining >= 1) {
             hoursSpan.innerHTML = t.hours;
             minutesSpan.innerHTML = t.minutes;
             secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
-            if(t.total<=0){
+            if(t.total<=0) {
                 clearInterval(timeinterval);
             }
         }
@@ -296,8 +296,8 @@ if ($remaining >= 1) {
         var timeinterval = setInterval(updateClock,1000);
     }
 
-    initializeClock('clock_round', '$date_round');
-    initializeClock('clock_game', '$date_game');
+    initializeClock('clock_round', '$round_remaining');
+    initializeClock('clock_game', '$game_remaining');
 </script>";
 }
 $HTMLOUT .= '
