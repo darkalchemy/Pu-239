@@ -30,7 +30,7 @@ if (!empty($_POST) && (int)$_POST['qid'] === $qid) {
             $username = get_one_row('users', 'username', 'WHERE id = ' . sqlesc($user_id));
             write_log("Trivia Game => using curl post => [$user_id]$username qid:$qid $date $ip");
         } else {
-            $rowcount = get_row_count('triviausers', 'WHERE user_id = ' . sqlesc($user_id) . ' AND qid = ' . sqlesc($qid));
+            $rowcount = get_row_count('triviausers', 'WHERE user_id = ' . sqlesc($user_id) . ' AND qid = ' . sqlesc($qid) . ' AND gamenum = ' . sqlesc($gamenum));
 
             if ($rowcount === 0) {
                 $sql = 'SELECT canswer FROM triviaq WHERE qid = ' . sqlesc($qid);
