@@ -49,43 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $body = sprintf($lang['email_request'], $email, $_SERVER['REMOTE_ADDR'], $INSTALLER09['baseurl'], $arr['id'], $hash) . $INSTALLER09['site_name'];
     @mail($arr['email'], "{$INSTALLER09['site_name']} {$lang['email_subjreset']}", $body, "From: {$INSTALLER09['site_email']}") or stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_nomail']}");
     stderr($lang['stderr_successhead'], $lang['stderr_confmailsent']);
-} elseif ($_GET) {
-    $id = 0 + $_GET['id'];
-    $md5 = $_GET['secret'];
-    if (!$id) {
-        die();
-    }
-    $res = sql_query('SELECT username, email, passhash, editsecret FROM users WHERE id = ' . sqlesc($id));
-    $arr = mysqli_fetch_assoc($res);
-    $email = $arr['email'];
-    $sec = $arr['editsecret'];
-    if ($md5 != md5($sec . $email . $arr['passhash'] . $sec)) {
-        die();
-    }
-    $newpassword = make_password();
-    $sec = mksecret();
-    $newpasshash = make_passhash($sec, md5($newpassword));
-    sql_query('UPDATE users SET secret=' . sqlesc($sec) . ", editsecret='', passhash=" . sqlesc($newpasshash) . ' WHERE id=' . sqlesc($id) . ' AND editsecret=' . sqlesc($arr['editsecret'])) or sqlerr(__FILE__, __LINE__);
-    $mc1->begin_transaction('MyUser_' . $id);
-    $mc1->update_row(false, [
-        'secret'     => $sec,
-        'editsecret' => '',
-        'passhash'   => $newpasshash,
-    ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
-    $mc1->begin_transaction('user' . $id);
-    $mc1->update_row(false, [
-        'secret'     => $secret,
-        'editsecret' => '',
-        'passhash'   => $newpasshash,
-    ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
-    if (!mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_noupdate']}");
-    }
-    $body = sprintf($lang['email_newpass'], $arr['username'], $newpassword, $INSTALLER09['baseurl']) . $INSTALLER09['site_name'];
-    @mail($email, "{$INSTALLER09['site_name']} {$lang['email_subject']}", $body, "From: {$INSTALLER09['site_email']}") or stderr($lang['stderr_errorhead'], $lang['stderr_nomail']);
-    stderr($lang['stderr_successhead'], sprintf($lang['stderr_mailed'], $email));
 } else {
     $HTMLOUT = '';
     $HTMLOUT .= "<script>
