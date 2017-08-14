@@ -14,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $insert = [
         'username'    => '',
         'email'       => '',
-        'secret'      => '',
         'passhash'    => '',
         'status'      => 'confirmed',
         'added'       => TIME_NOW,
@@ -25,17 +24,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         stderr($lang['std_err'], $lang['err_username']);
     }
-    if (isset($_POST['password']) && isset($_POST['password2']) && strlen($_POST['password']) > 6 && $_POST['password'] == $_POST['password2']) {
-        $insert['passhash'] = make_passhash($_POST['password']);
+    if (isset($_POST['password']) && isset($_POST['password2']) && strlen($_POST['password']) > 6 && trim($_POST['password']) == trim($_POST['password2'])) {
+        $insert['passhash'] = make_passhash(trim($_POST['password']));
     } else {
         stderr($lang['std_err'], $lang['err_password']);
     }
-    if (isset($_POST['email']) && validemail($_POST['email'])) {
-        $insert['email'] = $_POST['email'];
+    if (isset($_POST['email']) && validemail(trim($_POST['email']))) {
+        $insert['email'] = trim($_POST['email']);
     } else {
         stderr($lang['std_err'], $lang['err_email']);
     }
-    if (sql_query(sprintf('INSERT INTO users (username, email, secret, passhash, status, added, last_access) VALUES (%s)', join(', ', array_map('sqlesc', $insert))))) {
+    if (sql_query(sprintf('INSERT INTO users (username, email, passhash, status, added, last_access) VALUES (%s)', join(', ', array_map('sqlesc', $insert))))) {
         $user_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
         stderr($lang['std_success'], sprintf($lang['text_user_added'], $user_id));
     } else {
