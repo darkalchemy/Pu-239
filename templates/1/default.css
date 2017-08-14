@@ -795,6 +795,7 @@ body.background-14 {
     background-clip: border-box;
     -webkit-background-size: 80px 140px;
     background-size: 80px 140px;
+    background-attachment: fixed;
 }
 
 body.background-15 {
@@ -802,6 +803,7 @@ body.background-15 {
     background-color: rgb(40, 40, 40);
     background-color: rgba(40, 40, 40, 1);
     background-size: 16px 16px;
+    background-attachment: fixed;
 }
 
 body.text-1 {
