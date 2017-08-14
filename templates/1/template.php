@@ -136,6 +136,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         $htmlout .= "
         <!-- Main Navigation
         =================================================== -->
+        <div class='nav-wrapper'>
         <div id='navigation' class='navigation'>
             <ul>
         <li><a href='#'>{$lang['gl_torrent']}</a>
@@ -190,7 +191,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         if (!empty($active_users_cache)) {
             $htmlout .= "&#160;&#160;{$lang['gl_ausers']}&#160;[" . $active_users_cache['au'] . ']';
         }
-        $htmlout .= "</strong></small></div><div class='clear'></div>";
+        $htmlout .= "</strong></small></div></div><div class='clear'></div>";
     }
     $htmlout .= "
         <!-- END Main Navigation

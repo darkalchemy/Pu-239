@@ -960,6 +960,14 @@ body.background-2 #logo .slogan {
 
 /* MAIN NAVIGATION --> Begin */
 
+.nav-wrapper {
+    position: fixed;
+    z-index: 2;
+    width: 940px;
+    height: 40px;
+    margin: auto;
+}
+
 .navigation {
     clear: both;
     height: 40px;
