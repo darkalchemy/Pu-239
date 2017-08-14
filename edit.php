@@ -3,14 +3,13 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
-require_once CLASS_DIR . 'page_verify.php';
 global $CURUSER;
 if (!mkglobal('id')) {
-    die();
+    exit();
 }
-$id = 0 + $id;
+$id = (int)$id;
 if (!$id) {
-    die();
+    exit();
 }
 /* who is modding by pdq **/
 if ((isset($_GET['unedit']) && $_GET['unedit'] == 1) && $CURUSER['class'] >= UC_STAFF) {
@@ -22,18 +21,15 @@ if ((isset($_GET['unedit']) && $_GET['unedit'] == 1) && $CURUSER['class'] >= UC_
     header("Refresh: 1; url=$returl");
     exit();
 }
-dbconn();
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('edit'));
 $stdfoot = [
-    /* include js **/
     'js' => [
         'shout',
         'FormManager',
     ],
 ];
 $stdhead = [
-    /* include css **/
     'css' => [
         'forums',
         'style',
@@ -41,8 +37,6 @@ $stdhead = [
         'bbcode',
     ],
 ];
-$newpage = new page_verify();
-$newpage->create('teit');
 $res = sql_query('SELECT * FROM torrents WHERE id = ' . sqlesc($id));
 $row = mysqli_fetch_assoc($res);
 if (!$row) {

@@ -2,7 +2,7 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
@@ -11,7 +11,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_userhits'));
 $HTMLOUT = '';
-$id = 0 + $_GET['id'];
+$id = (int)$_GET['id'];
 if (!is_valid_id($id) || $CURUSER['id'] != $id && $CURUSER['class'] < UC_STAFF) {
     $id = $CURUSER['id'];
 }
@@ -50,4 +50,4 @@ if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
 echo stdhead($lang['userhits_profile'] . htmlsafechars($user['username']) . '') . $HTMLOUT . stdfoot();
-die();
+exit();

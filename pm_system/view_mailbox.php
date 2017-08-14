@@ -2,7 +2,7 @@
 if (!defined('BUNNY_PM_SYSTEM')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 //=== get mailbox name
 if ($mailbox > 1) {

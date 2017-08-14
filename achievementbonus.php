@@ -2,16 +2,12 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
-require_once CLASS_DIR . 'page_verify.php';
-dbconn(false);
-loggedinorreturn();
-$newpage = new page_verify();
-$newpage->check('takecounts');
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('achievementbonus'));
 $id = (int)$CURUSER['id'];
 $min = 1;
 $max = 32;
-$rand = (int)mt_rand((int)$min, (int)$max);
+$rand = (int)random_int((int)$min, (int)$max);
 $res = sql_query('SELECT achpoints FROM usersachiev WHERE id =' . sqlesc($id) . " AND achpoints >= '1'") or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_row($res);
 $count = $row['0'];

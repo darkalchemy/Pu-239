@@ -3,7 +3,7 @@ $all_my_boxes = $curuser_cache = $user_cache = $categories = '';
 if (!defined('BUNNY_PM_SYSTEM')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 if (isset($_POST['action2'])) {
     $good_actions = [
@@ -33,7 +33,7 @@ if (isset($_POST['action2'])) {
             ]);
             $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
             header('Location: pm_system.php?action=edit_mailboxes&pm=1');
-            die();
+            exit();
             break;
 
         case 'add':
@@ -59,7 +59,7 @@ if (isset($_POST['action2'])) {
             }
             //=== redirect back with messages :P
             header('Location: pm_system.php?action=edit_mailboxes' . $worked);
-            die();
+            exit();
             break;
         //=== edit boxes
 
@@ -95,7 +95,7 @@ if (isset($_POST['action2'])) {
             }
             //=== redirect back with messages :P
             header('Location: pm_system.php?action=edit_mailboxes' . $deleted . $worked);
-            die();
+            exit();
             break;
         //=== message settings     yes/no/friends
 
@@ -152,7 +152,7 @@ if (isset($_POST['action2'])) {
             $worked = '&pms=1';
             //=== redirect back with messages :P
             header('Location: pm_system.php?action=edit_mailboxes' . $worked);
-            die();
+            exit();
             break;
     } //=== end of case / switch
 } //=== end of $_POST stuff
@@ -171,7 +171,7 @@ if (mysqli_num_rows($res) > 0) {
                         <form action="pm_system.php" method="post">
                         <input type="hidden" name="action" value="edit_mailboxes" />
                         <input type="hidden" name="action2" value="edit_boxes" />' . $lang['pm_edmail_box'] . '' . ((int)$row['boxnumber'] - 1) . ' <span style="font-weight: bold;">' . htmlsafechars($row['name']) . ':</span></td>
-                        <td class="one" colspan="2" align="left"><input type="text" name="edit' . (0 + $row['id']) . '" value="' . htmlsafechars($row['name']) . '" style="text_default" />' . $lang['pm_edmail_contain'] . '' . htmlsafechars($messages) . '' . $lang['pm_edmail_messages'] . '</td>
+                        <td class="one" colspan="2" align="left"><input type="text" name="edit' . ((int)$row['id']) . '" value="' . htmlsafechars($row['name']) . '" style="text_default" />' . $lang['pm_edmail_contain'] . '' . htmlsafechars($messages) . '' . $lang['pm_edmail_messages'] . '</td>
                     </tr>';
     }
     $all_my_boxes .= '

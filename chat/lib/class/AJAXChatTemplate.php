@@ -93,6 +93,8 @@ class AJAXChatTemplate
             case 'LOGIN_CHANNEL_ID':
                 return $this->ajaxChat->getValidRequestChannelID();
 
+            case 'SITE_NAME';
+                return $this->ajaxChat->getConfig('siteName');
             case 'SESSION_NAME':
                 return $this->ajaxChat->getConfig('sessionName');
             case 'SESSION_KEY_PREFIX':
@@ -110,6 +112,8 @@ class AJAXChatTemplate
                 return rawurlencode($this->ajaxChat->getConfig('chatBotName'));
             case 'CHAT_BOT_ID':
                 return $this->ajaxChat->getConfig('chatBotID');
+            case 'CHAT_BOT_ROLE':
+                return $this->ajaxChat->getConfig('chatBotRole');
 
             case 'ALLOW_USER_MESSAGE_DELETE':
                 if ($this->ajaxChat->getConfig('allowUserMessageDelete')) {
@@ -210,11 +214,14 @@ class AJAXChatTemplate
     {
         global $INSTALLER09;
         $styleSheets = '';
-        foreach ($this->ajaxChat->getConfig('styleAvailable') as $style) {
-            $alternate = ($style == $this->ajaxChat->getConfig('styleDefault')) ? '' : 'alternate ';
-            $styleSheets .= '
-        <link rel="' . $alternate . 'stylesheet" href="./css/' . rawurlencode($style) . '.css" title="' . $this->ajaxChat->htmlEncode($style) . '" />';
-        }
+//        foreach ($this->ajaxChat->getConfig('styleAvailable') as $style) {
+//            $alternate = ($style == $this->ajaxChat->getConfig('styleDefault')) ? '' : 'alternate ';
+//            $styleSheets .= '
+//        <link rel="' . $alternate . 'stylesheet" href="./css/' . rawurlencode($style) . '.bundle.min.css" title="' . $this->ajaxChat->htmlEncode($style) . '" />';
+//        }
+        $styleSheets .= '
+        <link rel="stylesheet" href="./css/a70bcc2bae4f399dd7039a1373630136.min.css" title="transparent" />
+        <link rel="alternate stylesheet" href="./css/7b0a642f30613d9533487a0f1074d2d1.min.css" title="Uranium" />';
 
         return $styleSheets;
     }

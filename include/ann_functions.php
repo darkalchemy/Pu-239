@@ -58,7 +58,7 @@ function crazyhour_announce()
         if (mysqli_num_rows($cz['sql']) !== 0) {
             $cz['crazyhour'] = mysqli_fetch_assoc($cz['sql']);
         } else {
-            $cz['crazyhour']['var'] = mt_rand(TIME_NOW, (TIME_NOW + 86400));
+            $cz['crazyhour']['var'] = random_int(TIME_NOW, (TIME_NOW + 86400));
             $cz['crazyhour']['amount'] = 0;
             ann_sql_query('UPDATE LOW_PRIORITY freeleech SET var = ' . $cz['crazyhour']['var'] . ', amount = ' . $cz['crazyhour']['amount'] . ' 
          WHERE type = "crazyhour"') or ann_sqlerr(__FILE__, __LINE__);
@@ -68,7 +68,7 @@ function crazyhour_announce()
     if ($cz['crazyhour']['var'] < TIME_NOW) { // if crazyhour over
         if (($cz_lock = $mc1->add_value('crazyhour_lock', 1, 10)) !== false) {
             $cz['crazyhour_new'] = mktime(23, 59, 59, date('m'), date('d'), date('y'));
-            $cz['crazyhour']['var'] = mt_rand($cz['crazyhour_new'], ($cz['crazyhour_new'] + 86400));
+            $cz['crazyhour']['var'] = random_int($cz['crazyhour_new'], ($cz['crazyhour_new'] + 86400));
             $cz['crazyhour']['amount'] = 0;
             $cz['remaining'] = ($cz['crazyhour']['var'] - TIME_NOW);
             ann_sql_query('UPDATE LOW_PRIORITY freeleech SET var = ' . $cz['crazyhour']['var'] . ', amount = ' . $cz['crazyhour']['amount'] . ' ' . 'WHERE type = "crazyhour"') or ann_sqlerr(__FILE__, __LINE__);

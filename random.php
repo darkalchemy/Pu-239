@@ -1,7 +1,6 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-dbconn();
-loggedinorreturn();
+check_user_status();
 $lang = load_language('global');
 /** got code help from system =] **/
 $where = '';
@@ -29,6 +28,6 @@ $res = sql_query('SELECT id FROM torrents ' . $where . ' ORDER BY RAND() LIMIT 1
 while (list($id) = mysqli_fetch_array($res)) {
     if ($id != null) {
         header('Location: details.php?id=' . $id . $cat_id . '&random'); //add &random to indicate on details.php random browsing
-        die();
+        exit();
     }
 }

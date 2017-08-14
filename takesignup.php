@@ -1,7 +1,6 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-require_once CLASS_DIR . 'page_verify.php';
 require_once INCL_DIR . 'password_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'function_bemail.php';
@@ -10,6 +9,7 @@ global $CURUSER, $INSTALLER09;
 if (!$CURUSER) {
     get_template();
 }
+
 $ip = getip();
 if (!$INSTALLER09['openreg']) {
     stderr('Sorry', 'Invite only - Signups are closed presently if you have an invite code click <a href="' . $INSTALLER09['baseurl'] . '/invite_signup.php"><b> Here</b></a>');
@@ -20,8 +20,6 @@ if ($arr[0] >= $INSTALLER09['maxusers']) {
     stderr($lang['takesignup_error'], $lang['takesignup_limit']);
 }
 $lang = array_merge(load_language('global'), load_language('takesignup'));
-$newpage = new page_verify();
-$newpage->check('tesu');
 if (!mkglobal('wantusername:wantpassword:passagain:email' . ($INSTALLER09['captcha_on'] ? ':captchaSelection:' : ':') . 'submitme:passhint:hintanswer:country')) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_form_data']);
 }
@@ -41,7 +39,7 @@ function validusername($username)
         return false;
     }
     $namelength = strlen($username);
-    if (($namelength < 3) or ($namelength > 32)) {
+    if (($namelength < 3) or ($namelength > 64)) {
         stderr($lang['takesignup_user_error'], $lang['takesignup_username_length']);
     }
     // The following characters are allowed in user names
@@ -67,7 +65,7 @@ if ($wantpassword != $passagain) {
 if (strlen($wantpassword) < 6) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_pass_short']);
 }
-if (strlen($wantpassword) > 40) {
+if (strlen($wantpassword) > 100) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_pass_long']);
 }
 if ($wantpassword == $wantusername) {
@@ -122,17 +120,13 @@ if (isset($_POST['user_timezone']) && preg_match('#^\-?\d{1,2}(?:\.\d{1,2})?$#',
 $dst_in_use = localtime(TIME_NOW + ($time_offset * 3600), true);
 
 // TIMEZONE STUFF END
-$secret = mksecret();
-$wantpasshash = make_passhash($secret, md5($wantpassword));
-$editsecret = (!$arr[0] ? '' : $INSTALLER09['email_confirm'] ? make_passhash_login_key() : '');
-$wanthintanswer = md5($hintanswer);
+$wantpasshash = make_passhash($wantpassword);
+$wanthintanswer = make_passhash($hintanswer);
 $user_frees = (XBT_TRACKER == true ? '0' : TIME_NOW + 14 * 86400);
 check_banned_emails($email);
-$ret = sql_query('INSERT INTO users (username, passhash, secret, editsecret, birthday, country, gender, stylesheet, passhint, hintanswer, email, status, ip, ' . (!$arr[0] ? 'class, ' : '') . 'added, last_access, time_offset, dst_in_use, free_switch) VALUES (' . implode(',', array_map('sqlesc', [
+$ret = sql_query('INSERT INTO users (username, passhash, birthday, country, gender, stylesheet, passhint, hintanswer, email, status, ip, ' . (!$arr[0] ? 'class, ' : '') . 'added, last_access, time_offset, dst_in_use, free_switch) VALUES (' . implode(',', array_map('sqlesc', [
         $wantusername,
         $wantpasshash,
-        $secret,
-        $editsecret,
         $birthday,
         $country,
         $gender,
@@ -192,7 +186,5 @@ $body = str_replace([
 ], $lang['takesignup_email_body']);
 if ($arr[0] || $INSTALLER09['email_confirm']) {
     mail($email, "{$INSTALLER09['site_name']} {$lang['takesignup_confirm']}", $body, "{$lang['takesignup_from']} {$INSTALLER09['site_email']}");
-} else {
-    logincookie($id, $wantpasshash);
 }
 header('Refresh: 0; url=ok.php?type=' . (!$arr[0] ? 'sysop' : ($INSTALLER09['email_confirm'] ? 'signup&email=' . urlencode($email) : 'confirm')));

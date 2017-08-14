@@ -1,10 +1,9 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-dbconn(true);
-loggedinorreturn();
+check_user_status();
+
 $lang = array_merge(load_language('global'), load_language('trivia'));
-parked();
 
 $sql = 'SELECT qid FROM triviaq WHERE current = 1 AND asked = 1';
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -172,7 +171,7 @@ if (empty($gamenum) || empty($qid)) {
         <div>
             <h4 class='text-center'>" . htmlspecialchars_decode($row['question']) . "</h4>
             <br>
-            <ul class='answers-container' style='list-style: none;>
+            <ul class='answers-container' style='list-style: none;'>
                 <li style='margin-bottom: 5px;'>
                     <form id='happy' method='post' action='trivia.php'>
                         <input type='hidden' name='qid' value='{$qid}'>
@@ -256,8 +255,10 @@ $HTMLOUT .= "
 
 if ($round_remaining >= 1) {
     $HTMLOUT .= "
+<script src='./scripts/jquery-1.5.js'></script>
 <script src='./scripts/iframeResizer.contentWindow.min.js'></script>
 <script>
+    <!-- https://www.sitepoint.com/build-javascript-countdown-timer-no-dependencies/ -->
     function getTimeRemaining(endtime){
         var t = Date.parse(endtime) - Date.parse(new Date());
         var seconds = Math.floor( (t/1000) % 60 );
@@ -274,7 +275,6 @@ if ($round_remaining >= 1) {
     }
 
     function initializeClock(id, remaining) {
-        console.log(remaining);
         var clock = document.getElementById(id);
         var ending = new Date();
         ending = new Date(ending.getTime() + 1000  * remaining);

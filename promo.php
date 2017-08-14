@@ -3,7 +3,8 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'password_functions.php';
-dbconn(true);
+check_user_status();
+
 global $CURUSER;
 if (!$CURUSER) {
     get_template();
@@ -12,7 +13,7 @@ $lang = array_merge(load_language('global'), load_language('signup'));
 $HTMLOUT = '';
 
 $do = (isset($_GET['do']) ? $_GET['do'] : (isset($_POST['do']) ? $_POST['do'] : ''));
-$id = (isset($_GET['id']) ? 0 + $_GET['id'] : (isset($_POST['id']) ? 0 + $_POST['id'] : '0'));
+$id = (isset($_GET['id']) ? (int)$_GET['id'] : (isset($_POST['id']) ? (int)$_POST['id'] : '0'));
 $link = (isset($_GET['link']) ? $_GET['link'] : (isset($_POST['link']) ? $_POST['link'] : ''));
 $sure = (isset($_GET['sure']) && $_GET['sure'] == 'yes' ? 'yes' : 'no');
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
@@ -20,17 +21,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
     if (empty($promoname)) {
         stderr('Error', 'No name for the promo');
     }
-    $days_valid = (isset($_POST['days_valid']) ? 0 + $_POST['days_valid'] : 0);
+    $days_valid = (isset($_POST['days_valid']) ? (int)$_POST['days_valid'] : 0);
     if ($days_valid == 0) {
         stderr('Error', "Link will be valid for 0 days ? I don't think so!");
     }
-    $max_users = (isset($_POST['max_users']) ? 0 + $_POST['max_users'] : 0);
+    $max_users = (isset($_POST['max_users']) ? (int)$_POST['max_users'] : 0);
     if ($max_users == 0) {
         stderr('Error', 'Max users cant be 0 i think you missed that!');
     }
-    $bonus_upload = (isset($_POST['bonus_upload']) ? 0 + $_POST['bonus_upload'] : 0);
-    $bonus_invites = (isset($_POST['bonus_invites']) ? 0 + $_POST['bonus_invites'] : 0);
-    $bonus_karma = (isset($_POST['bonus_karma']) ? 0 + $_POST['bonus_karma'] : 0);
+    $bonus_upload = (isset($_POST['bonus_upload']) ? (int)$_POST['bonus_upload'] : 0);
+    $bonus_invites = (isset($_POST['bonus_invites']) ? (int)$_POST['bonus_invites'] : 0);
+    $bonus_karma = (isset($_POST['bonus_karma']) ? (int)$_POST['bonus_karma'] : 0);
     if ($bonus_upload == 0 && $bonus_invites == 0 && $bonus_karma == 0) {
         stderr('Error', 'No gift for the new users ?! :w00t: give them some gifts :D');
     }
@@ -91,13 +92,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
             stderr('Error', "That dosen't look like an email adress");
         }
         //==Check if username or password already exists
-        $var_check = sql_query('SELECT id, editsecret FROM users where username=' . sqlesc($username) . ' OR email=' . sqlesc($email)) or sqlerr(__FILE__, __LINE__);
+        $var_check = sql_query('SELECT id FROM users where username=' . sqlesc($username) . ' OR email=' . sqlesc($email)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($var_check) == 1) {
             stderr('Error', 'Username or password already exists');
         }
-        $secret = mksecret();
-        $passhash = make_passhash($secret, md5($password));
-        $editsecret = make_passhash_login_key();
+        $passhash = make_passhash($password);
         $passhint = (isset($_POST['passhint']) ? $_POST['passhint'] : '');
         if (empty($passhint)) {
             stderr('Error', 'No password hint question, you forgot about that?');
@@ -107,13 +106,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
             stderr('Error', 'No password hint answer, you forgot about that?');
         }
 
-        $wanthintanswer = md5($hintanswer);
+        $wanthintanswer = make_passhash($hintanswer);
 
-        $res = sql_query('INSERT INTO users(username, passhash, secret, editsecret, email, added, uploaded, invites, seedbonus, passhint, hintanswer) VALUES (' . implode(',', array_map('sqlesc', [
+        $res = sql_query('INSERT INTO users(username, passhash, email, added, uploaded, invites, seedbonus, passhint, hintanswer) VALUES (' . implode(',', array_map('sqlesc', [
                 $username,
                 $passhash,
-                $secret,
-                $editsecret,
                 $email,
                 TIME_NOW,
                 ($ar_check['bonus_upload'] * 1073741824),
@@ -128,13 +125,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
             $users = (empty($ar_check['users']) ? $userid : $ar_check['users'] . ',' . $userid);
             sql_query('update promo set accounts_made=accounts_made+1 , users=' . sqlesc($users) . ' WHERE id=' . sqlesc($ar_check['id'])) or sqlerr(__FILE__, __LINE__);
             //==Email part :)
-            $sec = $editsecret;
             $subject = $INSTALLER09['site_name'] . ' user registration confirmation';
             $message = 'Hi!
 						You used the link from promo ' . htmlsafechars($ar_check['name']) . " and registred a new account at {$INSTALLER09['site_name']}
 							
 						To confirm your account click the link below
-						{$INSTALLER09['baseurl']}/confirm.php?id=" . (int)$userid . "&secret=$sec
+						{$INSTALLER09['baseurl']}/confirm.php?id=" . (int)$userid . "
 
 						Welcome and enjoy your stay 
 						Staff at {$INSTALLER09['site_name']}";
@@ -172,7 +168,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
         }
     }
 } elseif ($do == 'addpromo') {
-    loggedinorreturn();
     if ($CURUSER['class'] < UC_STAFF) {
         stderr('Error', 'There is nothing for you here! Go play somewere else');
     }
@@ -261,8 +256,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
 						  <tr><td nowrap='nowrap' align='right'>Bonuses</td>
 							  <td align='left' width='100%'>
 								" . ($ar['bonus_upload'] > 0 ? '<b>upload</b>:&#160;' . mksize($ar['bonus_upload'] * 1073741824) . '<br>' : '') . '
-								' . ($ar['bonus_invites'] > 0 ? '<b>invites</b>:&#160;' . (0 + $ar['bonus_invites']) . '<br>' : '') . '
-								' . ($ar['bonus_karma'] > 0 ? '<b>karma</b>:&#160;' . (0 + $ar['bonus_karma']) . '<br>' : '') . "
+								' . ($ar['bonus_invites'] > 0 ? '<b>invites</b>:&#160;' . ((int)$ar['bonus_invites']) . '<br>' : '') . '
+								' . ($ar['bonus_karma'] > 0 ? '<b>karma</b>:&#160;' . ((int)$ar['bonus_karma']) . '<br>' : '') . "
 								</td></tr>
 								<tr>
 							  <td nowrap='nowrap' align='right'>Username</td>
@@ -331,7 +326,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
         }
     }
 } else {
-    loggedinorreturn();
     if ($CURUSER['class'] < UC_STAFF) {
         stderr('Error', 'There is nothing for you here! Go play somewere else');
     }
@@ -372,11 +366,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
 				<td nowrap='nowrap' align='center'>" . (htmlsafechars($ar['name'])) . "<br><input type='text' " . (!$active ? 'disabled="disabled"' : '') . " value='" . ($INSTALLER09['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $ar['link']) . "' size='60' name='" . (htmlsafechars($ar['name'])) . "' onclick='select();' /></td>
 				<td nowrap='nowrap' align='center'>" . (date('d/M-Y', $ar['added'])) . "</td>
 				<td nowrap='nowrap' align='center'>" . (date('d/M-Y', ($ar['added'] + (86400 * $ar['days_valid'])))) . "</td>
-				<td nowrap='nowrap' align='center'>" . (0 + $ar['max_users']) . "</td>
+				<td nowrap='nowrap' align='center'>" . ((int)$ar['max_users']) . "</td>
 				<td nowrap='nowrap' align='center'>" . ($ar['accounts_made'] > 0 ? '<a href="javascript:link(' . (int)$ar['id'] . ')" >' . (int)$ar['accounts_made'] . '</a>' : 0) . "</td>
 				<td nowrap='nowrap' align='center'>" . (mksize($ar['bonus_upload'] * 1073741824)) . "</td>
-				<td nowrap='nowrap' align='center'>" . (0 + $ar['bonus_invites']) . "</td>
-				<td nowrap='nowrap' align='center'>" . (0 + $ar['bonus_karma']) . "</td>
+				<td nowrap='nowrap' align='center'>" . ((int)$ar['bonus_invites']) . "</td>
+				<td nowrap='nowrap' align='center'>" . ((int)$ar['bonus_karma']) . "</td>
 				<td nowrap='nowrap' align='center'><a href='userdetails.php?id=" . (int)$ar['creator'] . "'>" . htmlsafechars($ar['username']) . "</a></td>
 				<td nowrap='nowrap' align='center'><a href='" . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . (int)$ar['id'] . "'><img src='pic/del.png' border='0' alt='Drop' /></a></td>
 			</tr>";

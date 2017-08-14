@@ -10,5 +10,5 @@ if (empty($hash_please)) {
 if ($hash_please != $salty) {
     die('Unsecure Logout - Hash mis-match please contact site admin');
 }
-logoutcookie();
+destroySession();
 header("Location: {$INSTALLER09['baseurl']}/");

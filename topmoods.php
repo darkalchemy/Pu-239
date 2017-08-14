@@ -1,11 +1,10 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'));
-$stdhead = [
+$stdfoot = [
     'js' => [
         'popup',
     ],
@@ -36,4 +35,4 @@ if ($topmoods === false) {
     $mc1->add_value($key, $topmoods, 0);
 }
 $HTMLOUT .= $abba . $topmoods . '</table>';
-echo stdhead('Top Moods') . $HTMLOUT . stdfoot($stdhead);
+echo stdhead('Top Moods') . $HTMLOUT . stdfoot($stdfoot);

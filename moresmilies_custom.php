@@ -2,8 +2,7 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'user_functions.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'));
 if ($CURUSER['smile_until'] == '0') {
     stderr('Error', 'you do not have access!');

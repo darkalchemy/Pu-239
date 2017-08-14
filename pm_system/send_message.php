@@ -4,7 +4,7 @@ flood_limit('messages');
 if (!defined('BUNNY_PM_SYSTEM')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 //=== check to see if it's a preview or a post
 if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
@@ -112,7 +112,7 @@ EOD;
     } else {
         header('Location: pm_system.php?action=view_mailbox&sent=1');
     }
-    die();
+    exit();
 } //=== end of takesendmessage script
 //=== basic page :D
 $receiver = (isset($_GET['receiver']) ? intval($_GET['receiver']) : (isset($_POST['receiver']) ? intval($_POST['receiver']) : 0));

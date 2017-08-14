@@ -2,7 +2,7 @@
 if (!defined('BUNNY_FORUMS')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 global $lang;
 $post_id = (isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0));
@@ -38,11 +38,11 @@ if ($mode == 'lock') {
     sql_query('UPDATE posts SET status = \'postlocked\', staff_lock=1 WHERE id = ' . sqlesc($post_id));
     //=== ok, all done here, send them back! \o/
     header('Location: forums.php?action=view_topic&post_id=' . $post_id . '&topic_id=' . $topic_id);
-    die();
+    exit();
 }
 if ($mode == 'unlock') {
     sql_query('UPDATE posts SET status = \'ok\', staff_lock=0 WHERE id = ' . sqlesc($post_id));
     //=== ok, all done here, send them back! \o/
     header('Location: forums.php?action=view_topic&post_id=' . $post_id . '&topic_id=' . $topic_id);
-    die();
+    exit();
 }

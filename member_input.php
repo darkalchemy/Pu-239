@@ -1,8 +1,7 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 //=== get action posted so we know what to do :P
 $posted_action = (isset($_POST['action']) ? htmlsafechars($_POST['action']) : (isset($_GET['action']) ? htmlsafechars($_GET['action']) : ''));
 //=== add all possible actions here and check them to be sure they are ok

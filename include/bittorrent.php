@@ -3,7 +3,7 @@ $start = microtime(true);
 
 if (!file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php')) {
     header('Location: /install');
-    die();
+    exit();
 }
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php';
@@ -148,8 +148,6 @@ function dbconn($autoclean = true)
         }
     }
     ((bool)mysqli_query($GLOBALS['___mysqli_ston'], "USE {$INSTALLER09['mysql_db']}")) or die('dbconn: mysql_select_db: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
-    userlogin();
-    referer();
     if ($autoclean) {
         register_shutdown_function('autoclean');
     }
@@ -157,7 +155,7 @@ function dbconn($autoclean = true)
 
 function status_change($id)
 {
-    sql_query('UPDATE announcement_process SET status = 0 WHERE user_id = ' . sqlesc($id) . ' AND status = 1');
+    sql_query('UPDATE announcement_process SET status = 0 WHERE user_id = ' . sqlesc($id) . ' AND status = 1') or sqlerr(__FILE__, __LINE__);
 }
 
 function hashit($var, $addtext = '')
@@ -174,7 +172,7 @@ function check_bans($ip, &$reason = '')
     $key = 'bans:::' . $ip;
     if (($ban = $mc1->get_value($key)) === false) {
         $nip = ipToStorageFormat($ip);
-        $ban_sql = sql_query('SELECT comment FROM bans WHERE (first <= ' . sqlesc($nip) . ' AND last >= ' . sqlesc($nip) . ') LIMIT 1');
+        $ban_sql = sql_query('SELECT comment FROM bans WHERE (first <= ' . sqlesc($nip) . ' AND last >= ' . sqlesc($nip) . ') LIMIT 1') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($ban_sql)) {
             $comment = mysqli_fetch_row($ban_sql);
             $reason = 'Manual Ban (' . $comment[0] . ')';
@@ -195,6 +193,13 @@ function check_bans($ip, &$reason = '')
     }
 }
 
+function logincookie($id, $updatedb = true)
+{
+    if ($updatedb) {
+        sql_query("UPDATE users SET last_login = " . TIME_NOW . " WHERE id = " . sqlesc($id)) or sqlerr(__file__, __line__);
+    }
+}
+
 function userlogin()
 {
     global $INSTALLER09, $mc1, $CURBLOCK, $mood, $whereis, $CURUSER;
@@ -206,11 +211,11 @@ function userlogin()
     if (isset($CURUSER)) {
         return;
     }
-    if (!$INSTALLER09['site_online'] || !get_mycookie('uid') || !get_mycookie('pass') || !get_mycookie('hashv')) {
+    if (!$INSTALLER09['site_online']) {
         return;
     }
-    $id = (int)get_mycookie('uid');
-    if (empty($id) || (strlen(get_mycookie('pass')) != 32) || (get_mycookie('hashv') != hashit($id, get_mycookie('pass')))) {
+    $id = getSessionVar('UserID');
+    if (!$id) {
         return;
     }
     if (($row = $mc1->get_value('MyUser_' . $id)) === false) {
@@ -295,11 +300,9 @@ function userlogin()
         $user_fields_ar_str = [
             'username',
             'passhash',
-            'secret',
             'torrent_pass',
             'email',
             'status',
-            'editsecret',
             'privacy',
             'info',
             'acceptpms',
@@ -369,7 +372,6 @@ function userlogin()
         if (mysqli_num_rows($res) == 0) {
             $salty = salty($CURUSER['username']);
             header("Location: {$INSTALLER09['baseurl']}/logout.php?hash_please={$salty}");
-
             return;
         }
         $row = mysqli_fetch_assoc($res);
@@ -384,12 +386,6 @@ function userlogin()
         }
         $mc1->cache_value('MyUser_' . $id, $row, $INSTALLER09['expires']['curuser']);
         unset($res);
-    }
-    if (get_mycookie('pass') !== md5($row['passhash'] . $_SERVER['REMOTE_ADDR'])) {
-        $salty = salty($CURUSER['username']);
-        header("Location: {$INSTALLER09['baseurl']}/logout.php?hash_please={$salty}");
-
-        return;
     }
     if (!isset($row['perms']) || (!($row['perms'] & bt_options::PERMS_BYPASS_BAN))) {
         $banned = false;
@@ -453,7 +449,7 @@ function userlogin()
             'bonuscomment',
         ];
         $stats_fields = implode(', ', array_merge($stats_fields_ar_int, $stats_fields_ar_float, $stats_fields_ar_str));
-        $s = sql_query('SELECT ' . $stats_fields . ' FROM users WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $s = sql_query('SELECT ' . $stats_fields . ' FROM users WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $stats = mysqli_fetch_assoc($s);
         foreach ($stats_fields_ar_int as $i) {
             $stats[$i] = (int)$stats[$i];
@@ -470,7 +466,7 @@ function userlogin()
     $row['uploaded'] = $stats['uploaded'];
     $row['downloaded'] = $stats['downloaded'];
     if (($ustatus = $mc1->get_value('userstatus_' . $id)) === false) {
-        $sql2 = sql_query('SELECT * FROM ustatus WHERE userid = ' . sqlesc($id));
+        $sql2 = sql_query('SELECT * FROM ustatus WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($sql2)) {
             $ustatus = mysqli_fetch_assoc($sql2);
         } else {
@@ -494,9 +490,9 @@ function userlogin()
     if (($CURBLOCK = $mc1->get_value($blocks_key)) === false) {
         $c_sql = sql_query('SELECT * FROM user_blocks WHERE userid = ' . sqlesc($row['id'])) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($c_sql) == 0) {
-            sql_query('INSERT INTO user_blocks(userid) VALUES(' . sqlesc($row['id']) . ')');
+            sql_query('INSERT INTO user_blocks(userid) VALUES(' . sqlesc($row['id']) . ')') or sqlerr(__FILE__, __LINE__);
             header('Location: index.php');
-            die();
+            exit();
         }
         $CURBLOCK = mysqli_fetch_assoc($c_sql);
         $CURBLOCK['index_page'] = (int)$CURBLOCK['index_page'];
@@ -549,9 +545,10 @@ function userlogin()
     }
     $userupdate1 = 'last_access_numb = ' . TIME_NOW;
     $update_time = ($row['onlinetime'] + $update_time);
-    if (($row['last_access'] != '0') and (($row['last_access']) < (TIME_NOW - 180))
-        /* 3 mins **/) {
-        sql_query('UPDATE users SET where_is =' . sqlesc($whereis) . ', last_access=' . TIME_NOW . ", $userupdate0, $userupdate1 WHERE id=" . sqlesc($row['id']));
+    if (($row['last_access'] != '0') && (($row['last_access']) < (TIME_NOW - 180))) {
+        sql_query('UPDATE users
+                    SET where_is =' . sqlesc($whereis) . ', last_access=' . TIME_NOW . ", $userupdate0, $userupdate1
+                    WHERE id = " . sqlesc($row['id'])) or sqlerr(__FILE__, __LINE__);
         $mc1->begin_transaction('MyUser_' . $row['id']);
         $mc1->update_row(false, [
             'last_access'      => TIME_NOW,
@@ -596,36 +593,41 @@ function charset()
 function autoclean()
 {
     global $INSTALLER09, $mc1;
-    // these clean_ids need to be run at specific interval, regardless of when they run
-    $run_at_specified_times = [82, 83];
-    $now = TIME_NOW;
-    $sql = sql_query("SELECT * FROM cleanup WHERE clean_on = 1 AND clean_time <= {$now} ORDER BY clean_time ASC LIMIT 0,1");
-    $row = mysqli_fetch_assoc($sql);
-    if ($row['clean_id']) {
-        $next_clean = intval($now + ($row['clean_increment'] ? $row['clean_increment'] : 15 * 60));
-        if (in_array($row['clean_id'], $run_at_specified_times)) {
-            $next_clean = intval($row['clean_time'] + $row['clean_increment']);
-        }
-        sql_query('UPDATE cleanup SET clean_time = ' . sqlesc($next_clean) . ' WHERE clean_id = ' . sqlesc($row['clean_id']));
-        if (file_exists(CLEAN_DIR . '' . $row['clean_file'])) {
-            require_once CLEAN_DIR . '' . $row['clean_file'];
-            if (function_exists('docleanup')) {
-                register_shutdown_function('docleanup', $row);
+    // only run every 5 seconds
+    if (($cleanup_timer = $mc1->get_value('cleanup_timer_')) === false) {
+        $mc1->cache_value('cleanup_timer_', 5, 5);
+
+        // these clean_ids need to be run at specific interval, regardless of when they run
+        $run_at_specified_times = [82, 83];
+        $now = TIME_NOW;
+        $sql = sql_query("SELECT * FROM cleanup WHERE clean_on = 1 AND clean_time <= {$now} ORDER BY clean_time ASC LIMIT 0,1") or sqlerr(__FILE__, __LINE__);
+        $row = mysqli_fetch_assoc($sql);
+        if ($row['clean_id']) {
+            $next_clean = intval($now + ($row['clean_increment'] ? $row['clean_increment'] : 15 * 60));
+            if (in_array($row['clean_id'], $run_at_specified_times)) {
+                $next_clean = intval($row['clean_time'] + $row['clean_increment']);
+            }
+            sql_query('UPDATE cleanup SET clean_time = ' . sqlesc($next_clean) . ' WHERE clean_id = ' . sqlesc($row['clean_id'])) or sqlerr(__FILE__, __LINE__);
+            if (file_exists(CLEAN_DIR . '' . $row['clean_file'])) {
+                require_once CLEAN_DIR . '' . $row['clean_file'];
+                if (function_exists('docleanup')) {
+                    register_shutdown_function('docleanup', $row);
+                }
             }
         }
-    }
 
-    if (($tfreak_cron = $mc1->get_value('tfreak_cron_')) === false) {
-        $mc1->cache_value('tfreak_cron_', TIME_NOW, 60);
-        require_once INCL_DIR . 'newsrss.php';
-        $fox = $tfreak = $github = false;
+        if (($tfreak_cron = $mc1->get_value('tfreak_cron_')) === false) {
+            $mc1->cache_value('tfreak_cron_', TIME_NOW, 60);
+            require_once INCL_DIR . 'newsrss.php';
+            $fox = $tfreak = $github = false;
 
-        $github = github_shout();
-        if ($github) {
-            $fox = foxnews_shout();
-        }
-        if ($fox) {
-            $tfreak = tfreak_shout();
+            $github = github_shout();
+            if ($github) {
+                $fox = foxnews_shout();
+            }
+            if ($fox) {
+                $tfreak = tfreak_shout();
+            }
         }
     }
 }
@@ -729,7 +731,7 @@ function genrelist()
     global $mc1, $INSTALLER09;
     if (($ret = $mc1->get_value('genrelist')) == false) {
         $ret = [];
-        $res = sql_query('SELECT id, image, name FROM categories ORDER BY name');
+        $res = sql_query('SELECT id, image, name FROM categories ORDER BY name') or sqlerr(__FILE__, __LINE__);
         while ($row = mysqli_fetch_assoc($res)) {
             $ret[] = $row;
         }
@@ -752,7 +754,7 @@ function create_moods($force = false)
                 $mood['name'][$rmood['id']] = $rmood['name'];
             }
         }
-        $mc1->cache_value($key, $mood, 86400 * 7);
+        $mc1->cache_value($key, $mood, 86400);
     }
 
     return $mood;
@@ -894,56 +896,6 @@ function httperr($code = 404)
     exit();
 }
 
-function logincookie($id, $passhash, $updatedb = 1, $expires = 0x7fffffff)
-{
-    set_mycookie('uid', $id, $expires);
-    set_mycookie('pass', $passhash, $expires);
-    set_mycookie('hashv', hashit($id, $passhash), $expires);
-    if ($updatedb) {
-        sql_query('UPDATE users SET last_login = ' . TIME_NOW . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    }
-}
-
-function set_mycookie($name, $value = '', $expires_in = 0, $sticky = 1)
-{
-    global $INSTALLER09;
-    if ($sticky == 1) {
-        $expires = TIME_NOW + 60 * 60 * 24 * 365;
-    } elseif ($expires_in) {
-        $expires = TIME_NOW + ($expires_in * 86400);
-    } else {
-        $expires = false;
-    }
-    $INSTALLER09['cookie_domain'] = $INSTALLER09['cookie_domain'] == '' ? '' : $INSTALLER09['cookie_domain'];
-    $INSTALLER09['cookie_path'] = $INSTALLER09['cookie_path'] == '' ? '/' : $INSTALLER09['cookie_path'];
-    if (PHP_VERSION < 5.2) {
-        if ($INSTALLER09['cookie_domain']) {
-            @setcookie($INSTALLER09['cookie_prefix'] . $name, $value, $expires, $INSTALLER09['cookie_path'], $INSTALLER09['cookie_domain'] . '; HttpOnly');
-        } else {
-            @setcookie($INSTALLER09['cookie_prefix'] . $name, $value, $expires, $INSTALLER09['cookie_path']);
-        }
-    } else {
-        @setcookie($INSTALLER09['cookie_prefix'] . $name, $value, $expires, $INSTALLER09['cookie_path'], $INSTALLER09['cookie_domain'], null, true);
-    }
-}
-
-function get_mycookie($name)
-{
-    global $INSTALLER09;
-    if (isset($_COOKIE[$INSTALLER09['cookie_prefix'] . $name]) and !empty($_COOKIE[$INSTALLER09['cookie_prefix'] . $name])) {
-        return urldecode($_COOKIE[$INSTALLER09['cookie_prefix'] . $name]);
-    } else {
-        return false;
-    }
-}
-
-function logoutcookie()
-{
-    set_mycookie('uid', '-1');
-    set_mycookie('pass', '-1');
-    set_mycookie('hashv', '-1');
-    destroySession();
-}
 
 function loggedinorreturn()
 {
@@ -1008,7 +960,7 @@ function sqlerr($file = '', $line = '')
     $the_error_no = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false));
     if (SQL_DEBUG == 0) {
         exit();
-    } elseif ($INSTALLER09['sql_error_log'] and SQL_DEBUG == 1) {
+    } elseif ($INSTALLER09['sql_error_log'] && SQL_DEBUG == 1) {
         $_error_string = "\n===================================================";
         $_error_string .= "\n Date: " . date('r');
         $_error_string .= "\n Error Number: " . $the_error_no;
@@ -1118,7 +1070,7 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0)
     if ($INSTALLER09['time_use_relative'] == 3) {
         $full_relative = 1;
     }
-    if ($full_relative and ($norelative != 1)) {
+    if ($full_relative && ($norelative != 1)) {
         $diff = TIME_NOW - $date;
         if ($diff < 3600) {
             if ($diff < 120) {
@@ -1141,7 +1093,7 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0)
         } else {
             return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
         }
-    } elseif ($INSTALLER09['time_use_relative'] and ($norelative != 1)) {
+    } elseif ($INSTALLER09['time_use_relative'] && ($norelative != 1)) {
         $this_time = gmdate('d,m,Y', ($date + $GLOBALS['offset']));
         if ($INSTALLER09['time_use_relative'] == 2) {
             $diff = TIME_NOW - $date;
@@ -1226,7 +1178,7 @@ function flood_limit($table)
         'comments' => 'comments.user',
         'messages' => 'messages.sender',
     ];
-    $q = sql_query('SELECT min(' . $table . '.added) as first_post, count(' . $table . '.id) as how_many FROM ' . $table . ' WHERE ' . $tb[$table] . ' = ' . $CURUSER['id'] . ' AND ' . TIME_NOW . ' - ' . $table . '.added < ' . $INSTALLER09['flood_time']);
+    $q = sql_query('SELECT min(' . $table . '.added) as first_post, count(' . $table . '.id) as how_many FROM ' . $table . ' WHERE ' . $tb[$table] . ' = ' . $CURUSER['id'] . ' AND ' . TIME_NOW . ' - ' . $table . '.added < ' . $INSTALLER09['flood_time']) or sqlerr(__FILE__, __LINE__);
     $a = mysqli_fetch_assoc($q);
     if ($a['how_many'] > $max[$CURUSER['class']]) {
         stderr($lang['gl_sorry'], $lang['gl_flood_msg'] . '' . mkprettytime($INSTALLER09['flood_time'] - (TIME_NOW - $a['first_post'])));
@@ -1303,7 +1255,8 @@ function referer()
         if (!empty($_SERVER['QUERY_STRING'])) {
             $http_page .= '?' . $_SERVER['QUERY_STRING'];
         }
-        sql_query('INSERT INTO referrers (browser, ip, referer, page, date) VALUES (' . sqlesc($http_agent) . ', ' . sqlesc($ip) . ', ' . sqlesc($http_referer) . ', ' . sqlesc($http_page) . ', ' . sqlesc(TIME_NOW) . ')');
+        sql_query('INSERT INTO referrers (browser, ip, referer, page, date)
+            VALUES (' . sqlesc($http_agent) . ', ' . sqlesc($ip) . ', ' . sqlesc($http_referer) . ', ' . sqlesc($http_page) . ', ' . sqlesc(TIME_NOW) . ')') or sqlerr(__FILE__, __LINE__);
     }
 }
 
@@ -1330,7 +1283,8 @@ function write_bonus_log($userid, $amount, $type)
 {
     $added = TIME_NOW;
     $donation_type = $type;
-    sql_query('INSERT INTO bonuslog (id, donation, type, added_at) VALUES(' . sqlesc($userid) . ', ' . sqlesc($amount) . ', ' . sqlesc($donation_type) . ", $added)") or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO bonuslog (id, donation, type, added_at)
+                VALUES(' . sqlesc($userid) . ', ' . sqlesc($amount) . ', ' . sqlesc($donation_type) . ", $added)") or sqlerr(__FILE__, __LINE__);
 }
 
 function human_filesize($bytes, $dec = 2)
@@ -1364,13 +1318,18 @@ function sessionStart()
         session_start();
     }
 
+    // Create a new AUTH token.
+    if (!getSessionVar('auth')) {
+        setSessionVar('auth', bin2hex(random_bytes(32)));
+    }
+
     // Create a new CSRF token.
-    if (empty($_SESSION[$INSTALLER09['sessionKeyPrefix'] . $INSTALLER09['session_csrf']])) {
-        setSessionVar($INSTALLER09['session_csrf'], bin2hex(random_bytes(64)));
+    if (!getSessionVar($INSTALLER09['session_csrf'])) {
+        setSessionVar($INSTALLER09['session_csrf'], bin2hex(random_bytes(32)));
     }
 
     // Make sure we have a canary set and Regenerate session ID every five minutes:
-    if (empty($_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'canary']) || $_SESSION[$INSTALLER09['sessionKeyPrefix'] . 'canary'] >= TIME_NOW - 300) {
+    if (!getSessionVar('canary') || getSessionVar('canary') >= TIME_NOW - 300) {
         regenerateSessionID();
         setSessionVar('canary', TIME_NOW);
     }
@@ -1394,28 +1353,26 @@ function destroySession()
 
 function regenerateSessionID()
 {
-    if (!empty($_SESSION)) {
-        @session_regenerate_id(true);
+    if (!session_id()) {
+        session_regenerate_id(false);
     }
 }
 
-function validateToken($token, $key = null, $prefix = null) {
+function validateToken($token, $key = null, $regen = false) {
     global $INSTALLER09;
-    if ($prefix === null) {
-        $prefix = $INSTALLER09['sessionKeyPrefix'];
-    }
     if ($key === null) {
         $key = $INSTALLER09['session_csrf'];
     }
-
     if (empty($token)) {
         return false;
-    } elseif (hash_equals($_SESSION[$prefix . $key], $token)) {
-        unsetSessionVar($key, $prefix);
-        setSessionVar($key, $prefix, bin2hex(random_bytes(64)));
+    }
+    if (hash_equals(getSessionVar($key), $token)) {
+        if ($regen) {
+            unsetSessionVar($key);
+            setSessionVar($key, bin2hex(random_bytes(32)));
+        }
         return true;
     }
-
     return false;
 }
 
@@ -1453,7 +1410,7 @@ function setSessionVar($key, $value, $prefix = null)
     }
 
     // Set the session value:
-    if (!empty($_SESSION[$prefix . $key])) {
+    if (getSessionVar($key, $prefix)) {
         unsetSessionVar($key);
     }
     $_SESSION[$prefix . $key] = $value;
@@ -1498,12 +1455,56 @@ function salty($username)
 function replace_unicode_strings($text)
 {
     $text = str_replace(['“', '”'], '"', $text);
-    $text = str_replace(['&rsquo;', '’'], "'", $text);
-    $text = str_replace(['&lsquo;', '‘'], "'", $text);
-    $text = str_replace(['&rdquo;', '”'], '"', $text);
-    $text = str_replace(['&ldquo;', '”'], '"', $text);
+    $text = str_replace(['&quot;', '&lsquo;', '‘', '&rsquo;', '’'], "'", $text);
+    $text = str_replace(['&ldquo;', '“', '&rdquo;', '”'], '"', $text);
     $text = str_replace(['&#8212;', '–'], '-', $text);
-    return html_entity_decode(htmlentities($text));
+    $text = str_replace('&amp;', '&#38;', $text);
+    return html_entity_decode(htmlentities($text, ENT_QUOTES));
+}
+
+function getPmCount($userid)
+{
+    global $mc1, $INSTALLER09;
+    if (($pmCount = $mc1->get_value('inbox_new_' . $userid)) === false) {
+        $res = sql_query('SELECT COUNT(id) FROM messages WHERE receiver = ' . sqlesc($userid) . " AND unread = 'yes' AND location = 1") or sqlerr(__LINE__, __FILE__);
+        $result = mysqli_fetch_row($res);
+        $pmCount = $result[0];
+        $mc1->cache_value('inbox_new_' . $userid, $pmCount, $INSTALLER09['expires']['unread']);
+    }
+
+    return $pmCount;
+}
+
+function parked()
+{
+    global $CURUSER;
+    if ($CURUSER['parked'] == 'yes') {
+        stderr('Error', '<b>Your account is currently parked.</b>');
+    }
+}
+
+function suspended()
+{
+    global $CURUSER;
+    if ($CURUSER['suspended'] == 'yes') {
+        stderr('Error', '<b>Your account is currently suspended.</b>');
+    }
+}
+
+function check_user_status()
+{
+    //file_put_contents('/var/log/nginx/login.log', json_encode($_SESSION) . PHP_EOL, FILE_APPEND);
+    dbconn();
+    userlogin();
+    referer();
+    if (!validateToken(getSessionVar('auth'), 'auth')) {
+        destroySession();
+        header('Location: login.php');
+        exit();
+    }
+    loggedinorreturn();
+    parked();
+    suspended();
 }
 
 if (file_exists('install/index.php')) {

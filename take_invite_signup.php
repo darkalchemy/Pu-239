@@ -3,7 +3,6 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 require_once INCL_DIR . 'function_bemail.php';
-require_once CLASS_DIR . 'page_verify.php';
 dbconn();
 global $CURUSER, $INSTALLER09;
 if (!$CURUSER) {
@@ -11,8 +10,6 @@ if (!$CURUSER) {
 }
 $lang = array_merge(load_language('global'), load_language('takesignup'));
 $ip = getip();
-$newpage = new page_verify();
-$newpage->check('tkIs');
 $res = sql_query('SELECT COUNT(id) FROM users') or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_row($res);
 if ($arr[0] >= $INSTALLER09['invites']) {
@@ -55,8 +52,8 @@ if (empty($wantusername) || empty($wantpassword) || empty($email) || empty($invi
 if (!blacklist($wantusername)) {
     stderr($lang['takesignup_user_error'], sprintf($lang['takesignup_badusername'], htmlsafechars($wantusername)));
 }
-if (strlen($wantusername) > 12) {
-    stderr('Error', 'Sorry, username is too long (max is 12 chars)');
+if (strlen($wantusername) > 64) {
+    stderr('Error', 'Sorry, username is too long (max is 64 chars)');
 }
 if ($wantpassword != $passagain) {
     stderr('Error', "The passwords didn't match! Must've typoed. Try again.");
@@ -64,8 +61,8 @@ if ($wantpassword != $passagain) {
 if (strlen($wantpassword) < 6) {
     stderr('Error', 'Sorry, password is too short (min is 6 chars)');
 }
-if (strlen($wantpassword) > 40) {
-    stderr('Error', 'Sorry, password is too long (max is 40 chars)');
+if (strlen($wantpassword) > 100) {
+    stderr('Error', 'Sorry, password is too long (max is 255 chars)');
 }
 if ($wantpassword == $wantusername) {
     stderr('Error', 'Sorry, password cannot be same as user name.');
@@ -121,20 +118,16 @@ if ($rows == 0) {
 if ($assoc['receiver'] != 0) {
     stderr('Error', "Invite already taken.\nPlease request a new one from your inviter.");
 }
-$secret = mksecret();
-$wantpasshash = make_passhash($secret, md5($wantpassword));
-$editsecret = (!$arr[0] ? '' : make_passhash_login_key());
+$wantpasshash = make_passhash($wantpassword);
 $wanthintanswer = md5($hintanswer);
 check_banned_emails($email);
 $user_frees = (TIME_NOW + 14 * 86400);
-$new_user = sql_query('INSERT INTO users (username, passhash, secret, passhint, hintanswer, editsecret, birthday, invitedby, email, added, last_access, last_login, time_offset, dst_in_use, free_switch, ip) VALUES (' . implode(',', array_map('sqlesc', [
+$new_user = sql_query('INSERT INTO users (username, passhash, passhint, hintanswer, birthday, invitedby, email, added, last_access, last_login, time_offset, dst_in_use, free_switch, ip) VALUES (' . implode(',', array_map('sqlesc', [
         $wantusername,
         $wantpasshash,
-        $secret,
-        $editsecret,
-        $birthday,
         $passhint,
         $wanthintanswer,
+        $birthday,
         (int)$assoc['sender'],
         $email,
         TIME_NOW,

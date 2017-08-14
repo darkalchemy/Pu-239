@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-dbconn(false);
+dbconn();
 $lang = array_merge(load_language('global'), load_language('videoformats'));
 $HTMLOUT = '';
 $HTMLOUT .= "

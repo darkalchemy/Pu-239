@@ -2,7 +2,7 @@
 if (!defined('BUNNY_FORUMS')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 global $lang;
 $dt = (TIME_NOW - $readpost_expiry);
@@ -24,4 +24,4 @@ while ($last_posts_read_arr = mysqli_fetch_assoc($last_posts_read_res)) {
 }
 //=== ok, all done here, send them back! \o/
 header('Location: forums.php?m=1');
-die();
+exit();

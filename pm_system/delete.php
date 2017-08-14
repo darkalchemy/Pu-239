@@ -2,7 +2,7 @@
 if (!defined('BUNNY_PM_SYSTEM')) {
     setSessionVar('error', 'Direct Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 //=== Delete a single message first make sure it's not an unread urgent staff message
 $res = sql_query('SELECT receiver, sender, urgent, unread, saved, location FROM messages WHERE id=' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);
@@ -30,4 +30,4 @@ if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
     stderr($lang['pm_error'], '' . $lang['pm_error'] . '<a class="altlink" href="pm_system.php?action=view_message&id=' . $pm_id . '>' . $lang['pm_delete_back'] . '</a>' . $lang['pm_delete_msg'] . '');
 }
 header('Location: pm_system.php?action=view_mailbox&deleted=1');
-die();
+exit();

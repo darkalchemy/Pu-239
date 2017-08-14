@@ -2,7 +2,7 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
@@ -48,7 +48,7 @@ function deletetorrent_xbt($tid)
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $tid = (isset($_POST['tid']) ? 0 + $_POST['tid'] : 0);
+    $tid = (isset($_POST['tid']) ? (int)$_POST['tid'] : 0);
     if ($tid == 0) {
         stderr($lang['datareset_stderr'], $lang['datareset_stderr1']);
     }

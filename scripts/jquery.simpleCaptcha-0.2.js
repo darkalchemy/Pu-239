@@ -126,7 +126,7 @@
 
     // options for simpleCaptcha instances...
     $.fn.simpleCaptcha.defaults = {
-        numImages: 5,                     // Number How many images to show the user (providing there are at least that many defined in the script file).
+        numImages: 6,                     // Number How many images to show the user (providing there are at least that many defined in the script file).
         introText: "<p align='center'>To make sure you are a human, we need you to click on the <span class='captchaText'></span>.</p>",
         // String Text to place above captcha images (can contain html). IMPORTANT: You should probably include a tag with the textClass name on it, for example: <span id='captchaText'></span>
         inputName: 'captchaSelection',    // String Name to use for the captcha hidden input, this is what you will need to check on the receiving end of the form submission.
@@ -140,5 +140,7 @@
 })(jQuery);
 
 $(document).ready(function () {
-    $('#captchalogin').simpleCaptcha();
+    if ($('#captcha_show').length) {
+        $('#captcha_show').simpleCaptcha();
+    }
 });

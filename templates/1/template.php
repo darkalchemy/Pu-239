@@ -59,59 +59,68 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         =================================================== -->
         <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/default.css' />
         <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/bootstrap.css' />
-        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/bootstrap-responsive.css' />
+        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/bootstrap-responsive.css' />";
+    if ($CURUSER) {
+        $htmlout .= "
         <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/themeChanger/css/colorpicker.css' />
-        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/themeChanger/css/themeChanger.css' />
+        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/themeChanger/css/themeChanger.css' />";
+    }
+    $htmlout .= "
         <style>#mlike{cursor:pointer;}</style>
         <!-- global javascript
         ================================================== -->
+        <script src='./scripts/turbolinks.js'></script>
         <script src='./scripts/jquery-1.5.js'></script>
+        <script src='./scripts/help.js'></script>";
+
+    if ($CURUSER) {
+        $htmlout .= "
         <script src='./scripts/jquery.status.js'></script>
         <script src='./scripts/jquery.cookie.js'></script>
         <script src='./scripts/help.js'></script>
-        <script src='./scripts/iframeResizer.min.js'></script>
-        <!-- template javascript
-    ================================================== -->
         <script src='./templates/{$INSTALLER09['stylesheet']}/themeChanger/js/colorpicker.js'></script>
         <script src='./templates/{$INSTALLER09['stylesheet']}/themeChanger/js/themeChanger.js'></script>
         <script src='./templates/{$INSTALLER09['stylesheet']}/js/jquery.smoothmenu.js'></script>
         <script src='./templates/{$INSTALLER09['stylesheet']}/js/core.js'></script>
         <script>
         /*<![CDATA[*/
-        // Like Dislike function
+            // Like Dislike function
+            //================================================== -->
+            $(function() {                          // the like js
+                $('span[id*=mlike]').like232({
+                    times : 5,              // times checked
+                    disabled : 5,           // disabled from liking for how many seconds
+                    time  : 5,              // period within check is performed
+                    url : '/ajax.like.php'
+                });
+            });
+        // template changer function
         //================================================== -->
-        $(function() {                          // the like js
-        $('span[id*=mlike]').like232({
-        times : 5,              // times checked
-        disabled : 5,           // disabled from liking for how many seconds
-        time  : 5,              // period within check is performed
-        url : '/ajax.like.php'
-        });
-        });
-    // template changer function
-    //================================================== -->
         function themes() {
           window.open('take_theme.php','My themes','height=150,width=200,resizable=no,scrollbars=no,toolbar=no,menubar=no');
         }
-    // language changer function
-    //================================================== -->
+        // language changer function
+        //================================================== -->
         function language_select() {
           window.open('take_lang.php','My language','height=150,width=200,resizable=no,scrollbars=no,toolbar=no,menubar=no');
         }
-    // radio function
-    //================================================== -->
+        // radio function
+        //================================================== -->
         function radio() {
           window.open('radio_popup.php','My Radio','height=700,width=800,resizable=no,scrollbars=no,toolbar=no,menubar=no');
         }
         /*]]>*/
         </script>
-        <script src='./ajax/helpers.js'></script>
+        <script src='./ajax/helpers.js'></script>";
+        }
+        $htmlout .= "
         {$js_incl}{$css_incl}
         <!--[if lt IE 9]>
         <script src='./templates/{$INSTALLER09['stylesheet']}/js/modernizr.custom.js'></script>
-    <script src='http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE8.js'></script>
-    <script src='./templates/{$INSTALLER09['stylesheet']}/js/ie.js'></script>
-        <![endif]-->
+        <script src='http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE8.js'></script>
+        <script src='./templates/{$INSTALLER09['stylesheet']}/js/ie.js'></script>
+        <![endif]-->";
+        $htmlout .= "
         </head>
         <body class='{$body_class}'>
         <!-- Main Outer Container
@@ -456,9 +465,13 @@ function stdfoot($stdfoot = false)
      <div id='control_panel'>
      <a href='#' id='control_label'></a>
      </div><!-- #control_panel -->
-    <!-- Ends Footer -->
+    <!-- Ends Footer -->";
+    if ($CURUSER) {
+        $htmlfoot .= "
     <script src='templates/{$INSTALLER09['stylesheet']}/js/general.js'></script>
-    <script src='scripts/bootstrap.js'></script>
+    <script src='scripts/bootstrap.js'></script>";
+    }
+    $htmlfoot .= "
 
     </body></html>\n";
 
@@ -529,7 +542,7 @@ function StatusBar()
             $r = sql_query('SELECT COUNT(uid) AS `count`, `left`, `active`, `connectable` FROM `xbt_files_users` WHERE uid= ' . sqlesc($CURUSER['id']) . ' GROUP BY `left`') or sqlerr(__LINE__, __FILE__);
             while ($a = mysqli_fetch_assoc($r)) {
                 $key = $a['left'] == 0 ? 'yes' : 'no';
-                $seed[$key] = number_format(0 + $a['count']);
+                $seed[$key] = number_format((int)$a['count']);
                 $seed['conn'] = $a['connectable'] == 0 ? 1 : 2;
             }
             $mc1->cache_value('MyPeers_XBT_' . $CURUSER['id'], $seed, $INSTALLER09['expires']['MyPeers_xbt_']);
@@ -561,7 +574,7 @@ function StatusBar()
             $r = sql_query('SELECT COUNT(id) AS count, seeder, connectable FROM peers WHERE userid=' . sqlesc($CURUSER['id']) . ' GROUP BY seeder');
             while ($a = mysqli_fetch_assoc($r)) {
                 $key = $a['seeder'] == 'yes' ? 'yes' : 'no';
-                $seed[$key] = number_format(0 + $a['count']);
+                $seed[$key] = number_format((int)$a['count']);
                 $seed['conn'] = $a['connectable'] == 'no' ? 1 : 2;
             }
             $mc1->cache_value('MyPeers_' . $CURUSER['id'], $seed, $INSTALLER09['expires']['MyPeers_']);
@@ -649,18 +662,18 @@ function StatusBar()
       var am_pm;
       if (s<10) {s="0" + s}
       if (m<10) {m="0" + m}
-      if (h>12) {h-=12;am_pm = "Pm"}
-      else {am_pm="Am"}
+      if (h>12) {h-=12;am_pm = "PM"}
+      else {am_pm="AM"}
       if (h<10) {h="0" + h}
       document.getElementById("clock").innerHTML=h + ":" + m + ":" + s + " " + am_pm;
       setTimeout("refrClock()",1000);
       }
       refrClock();
-        $(document).ready(function () {
-            $("#triviabox").iFrameResize({
-                enablePublicMethods: true,
-            });
-        });
+      $(document).ready(function () {
+          $("#triviabox").iFrameResize({
+              enablePublicMethods: true,
+          });
+      });
       </script>';
 
     return $StatusBar;

@@ -2,7 +2,7 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
-dbconn(true);
+dbconn();
 $lang = array_merge(load_language('global'), load_language('topten'));
 $HTMLOUT = '';
 function mysql_fetch_rowsarr($result, $numass = MYSQLI_BOTH)
@@ -90,7 +90,7 @@ if (isset($_GET['view']) && $_GET['view'] == 't') {
         $HTMLOUT .= '<h4>Insufficient Torrents (' . $counted . ')</h4></div>';
     }
     echo stdhead($lang['head_title']) . $HTMLOUT . stdfoot();
-    die();
+    exit();
 }
 if (isset($_GET['view']) && $_GET['view'] == 'c') {
     $view = strip_tags(isset($_GET['c']));
@@ -154,7 +154,7 @@ if (isset($_GET['view']) && $_GET['view'] == 'c') {
         $HTMLOUT .= '<h4>Insufficient Countries (' . $counted . ')</h4></div>';
     }
     echo stdhead($lang['head_title']) . $HTMLOUT . stdfoot();
-    die();
+    exit();
 }
 // Default display / Top Users
 $HTMLOUT .= "<div class='article' style='text-align:center'><div class='article_header'><h2>Top 10 Uploaders</h2></div>";

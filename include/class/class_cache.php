@@ -25,9 +25,6 @@ $md5 = md5($key);
             file_put_contents($file, serialize(['data'=>$value,'time'=>$expires]));
         }
 */
-if (!extension_loaded('memcache')) {
-    die('Memcache Extension not loaded.');
-}
 
 class CACHE extends Memcache
 {

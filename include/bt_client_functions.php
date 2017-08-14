@@ -465,7 +465,7 @@ function getclient($httpagent, $peer_id)
         return 'BitLord/' . ord(substr($peer_id, 4, 1)) . '.' . ord(substr($peer_id, 5, 1));
     }
     if ($short_id == 'BC') {
-        return 'BitComet/' . (0 + substr($peer_id, 3, 2)) . '.' . (0 + substr($peer_id, 5, 2));
+        return 'BitComet/' . ((int)substr($peer_id, 3, 2)) . '.' . ((int)substr($peer_id, 5, 2));
     }
     if (substr($peer_id, 0, 4) == 'exbc') {
         return 'BitComet/' . ord(substr($peer_id, 4, 1)) . '.' . ord(substr($peer_id, 5, 1));

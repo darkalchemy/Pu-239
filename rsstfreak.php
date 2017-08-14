@@ -2,8 +2,7 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'user_functions.php';
-dbconn();
-loggedinorreturn();
+check_user_status();
 $html = '';
 $lang = load_language('global');
 $use_limit = true;

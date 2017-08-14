@@ -2,18 +2,9 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('viewnfo'));
-/*
-$stdhead = array(
-    /** include css **/
-/*
-    'css' => array(
-        'viewnfo'
-    )
-);
-*/
+
 $id = (int)$_GET['id'];
 if ($CURUSER['class'] < UC_POWER_USER || !is_valid_id($id)) {
     die;

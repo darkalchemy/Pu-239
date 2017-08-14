@@ -1,13 +1,12 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-dbconn();
-loggedinorreturn();
+check_user_status();
 
 If ($CURUSER['class'] < UC_SYSOP) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 
 /*! pimpmylog - 1.7.14 - 025d83c29c6cf8dbb697aa966c9e9f8713ec92f1*/
@@ -29,7 +28,7 @@ If ($CURUSER['class'] < UC_SYSOP) {
 */
 if (realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME'])) {
     header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
-    die();
+    exit();
 }
 
 /*
@@ -985,9 +984,9 @@ function is_assoc($arr)
  *
  * @return string a random string of $l chars
  */
-function mt_rand_str($l, $c = 'abcdefghijklmnopqrstuvwxyz1234567890_-ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+function random_int_str($l, $c = 'abcdefghijklmnopqrstuvwxyz1234567890_-ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 {
-    for ($s = '', $cl = strlen($c) - 1, $i = 0; $i < $l; $s .= $c[mt_rand(0, $cl)], ++$i) {
+    for ($s = '', $cl = strlen($c) - 1, $i = 0; $i < $l; $s .= $c[random_int(0, $cl)], ++$i) {
     }
 
     return $s;
@@ -1074,7 +1073,7 @@ function is_not_local_ip($ip)
 function http404()
 {
     header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
-    die();
+    exit();
 }
 
 /**
@@ -1083,7 +1082,7 @@ function http404()
 function http403()
 {
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
-    die();
+    exit();
 }
 
 /**
@@ -1092,7 +1091,7 @@ function http403()
 function http500()
 {
     header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error');
-    die();
+    exit();
 }
 
 /**

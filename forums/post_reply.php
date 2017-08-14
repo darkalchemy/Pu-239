@@ -2,7 +2,7 @@
 if (!defined('BUNNY_FORUMS')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 global $lang;
 $page = $colour = $arr_quote = $extension_error = $size_error = '';
@@ -153,7 +153,7 @@ if (isset($_POST['button']) && $_POST['button'] == 'Post') {
         }
     } //=== end attachment stuff
     header('Location: forums.php?action=view_topic&topic_id=' . $topic_id . ($extension_error === '' ? '' : '&ee=' . $extension_error) . ($size_error === '' ? '' : '&se=' . $size_error) . '&page=' . $post_id . '#' . $post_id);
-    die();
+    exit();
 }
 $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpadding="0">
    	 <tr><td class="embedded" align="center">

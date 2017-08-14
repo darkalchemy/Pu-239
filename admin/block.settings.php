@@ -2,7 +2,7 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 $stdfoot = [
     /* include js **/

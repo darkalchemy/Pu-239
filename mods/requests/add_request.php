@@ -9,7 +9,7 @@ if ($CURUSER['class'] < $INSTALLER09['req_min_class']) {
     <b>" . $INSTALLER09['site_name'] . ' staff</b></div>';
     /////////////////////// HTML OUTPUT //////////////////////////////
     echo stdhead('Requests Page') . $HTMLOUT . stdfoot();
-    die();
+    exit();
 }
 $gigsneeded = ($INSTALLER09['req_gigs_upped'] * 1024 * 1024 * 1024);
 $gigsupped = $CURUSER['uploaded'];

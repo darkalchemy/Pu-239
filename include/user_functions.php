@@ -22,17 +22,6 @@ function autoshout($msg, $channel = 0, $ttl = 3600)
     sql_query('INSERT INTO ajax_chat_messages (userID, userName, userRole, channel, dateTime, ip, text, ttl) VALUES (' . sqlesc($INSTALLER09['bot_id']) . ', ' . sqlesc($INSTALLER09['chatBotName']) . ', 100, ' . sqlesc($channel) . ', NOW(), ' . sqlesc(ipToStorageFormat('127.0.0.1')) . ', ' . sqlesc($msg) . ', ' . sqlesc($ttl) . ')') or sqlerr(__FILE__, __LINE__);
 }
 
-function parked()
-{
-    global $CURUSER;
-    if ($CURUSER['parked'] == 'yes') {
-        stderr('Error', '<b>Your account is currently parked.</b>');
-    }
-    //require_once (CLASS_DIR . 'class_user_options.php');
-    //global $CURUSER;
-    //if ($CURUSER['opt1'] & user_options::PARKED) stderr("Error", "<b>Your account is currently parked.</b>");
-}
-
 //== Get rep by CF
 function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
 {

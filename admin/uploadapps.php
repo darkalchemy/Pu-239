@@ -2,7 +2,7 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
@@ -155,7 +155,7 @@ if ($action == 'viewapp') {
 }
 //== Accept application
 if ($action == 'acceptapp') {
-    $id = 0 + $_POST['id'];
+    $id = (int)$_POST['id'];
     if (!is_valid_id($id)) {
         stderr($lang['uploadapps_error'], $lang['uploadapps_noid']);
     }
@@ -198,7 +198,7 @@ if ($action == 'acceptapp') {
 }
 //== Reject application
 if ($action == 'rejectapp') {
-    $id = 0 + $_POST['id'];
+    $id = (int)$_POST['id'];
     if (!is_valid_id($id)) {
         stderr($lang['uploadapps_error'], $lang['uploadapps_no_up']);
     }

@@ -3,11 +3,10 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
-dbconn();
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'));
 $HTMLOUT = '';
-$id = (isset($_GET['id']) ? 0 + $_GET['id'] : '0');
+$id = (isset($_GET['id']) ? (int)$_GET['id'] : '0');
 if ($id == '0') {
     stderr('Err', 'I dont think so!');
 }

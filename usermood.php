@@ -1,6 +1,6 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-dbconn(false);
+dbconn();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('usermood'));
 if (!isset($CURUSER['id'])) {

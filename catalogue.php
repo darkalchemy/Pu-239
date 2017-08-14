@@ -4,8 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('catalogue'));
 $htmlout = '';
 function readMore($text, $char, $link)

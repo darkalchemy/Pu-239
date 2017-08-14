@@ -2,7 +2,7 @@
 if (!defined('BUNNY_FORUMS')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 global $lang;
 $post_id = (isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0));
@@ -57,7 +57,7 @@ if ($sanity_check > 0) {
     }
     //=== ok, all done here, send them back! \o/
     header('Location: ' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&topic_id=' . $topic_id);
-    die();
+    exit();
 } else {
     stderr($lang['fe_sanity_check'], '' . $lang['fe_are_you_sure_del_post'] . ' 
 	<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=delete_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '&amp;sanity_check=1">Here</a>.');

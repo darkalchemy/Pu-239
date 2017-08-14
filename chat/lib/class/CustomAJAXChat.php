@@ -9,17 +9,12 @@
 
 class CustomAJAXChat extends AJAXChat
 {
-    public function regenerateSessionID()
-    {
-        // Never regenerate the session ID
-    }
-
     // Initialize custom request variables:
     public function initCustomRequestVars()
     {
         global $CURUSER;
         //var_dump($CURUSER);
-        //die();
+        //exit();
 
         // Auto-login users:
         if (!$this->getRequestVar('login') && !empty($CURUSER)) {
@@ -33,7 +28,7 @@ class CustomAJAXChat extends AJAXChat
     {
         global $CURUSER;
         //var_dump($CURUSER);
-        //die();
+        //exit();
         if (!empty($CURUSER) && $CURUSER['enabled'] !== 'no' && $CURUSER['chatpost'] != 0) {
             $userData['userID'] = $CURUSER['id'];
             $userData['userName'] = $this->trimUserName($CURUSER['username']);
@@ -89,7 +84,7 @@ class CustomAJAXChat extends AJAXChat
     {
         // List containing the registered chat users:
         $users = null;
-        require AJAX_CHAT_PATH . 'lib/data/users.php';
+        require_once AJAX_CHAT_PATH . 'lib' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'users.php';
 
         return $users;
     }
@@ -129,7 +124,7 @@ class CustomAJAXChat extends AJAXChat
     {
         // List containing the custom channels:
         $channels = null;
-        require AJAX_CHAT_PATH . 'lib/data/channels.php';
+        require_once AJAX_CHAT_PATH . 'lib' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'channels.php';
         // Channel array structure should be:
         // ChannelName => ChannelID
         return array_flip($channels);

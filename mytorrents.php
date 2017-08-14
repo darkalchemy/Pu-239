@@ -4,14 +4,10 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'torrenttable_functions.php';
 require_once INCL_DIR . 'html_functions.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('mytorrents'), load_language('torrenttable_functions'));
 $stdfoot = [
-    /* include js **/
     'js' => [
-        'java_klappe',
-        'wz_tooltip',
     ],
 ];
 $HTMLOUT = '';

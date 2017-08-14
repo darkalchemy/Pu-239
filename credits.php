@@ -3,8 +3,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'comment_functions.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('credits'));
 
 $HTMLOUT = '';
@@ -37,7 +36,7 @@ if (isset($_POST['action']) == 'add' && $CURUSER['class'] >= UC_SYSOP) {
     $credit = ($_POST['credit']);
     sql_query('INSERT INTO modscredits (name, description,  category,  u232lnk,  status, credit) VALUES(' . sqlesc($name) . ', ' . sqlesc($description) . ', ' . sqlesc($category) . ', ' . sqlesc($link) . ', ' . sqlesc($status) . ', ' . sqlesc($credit) . ')') or sqlerr(__FILE__, __LINE__);
     header("Location: {$INSTALLER09['baseurl']}/credits.php");
-    die();
+    exit();
 }
 
 if ($action == 'delete' && $CURUSER['class'] >= UC_SYSOP) {
@@ -46,11 +45,11 @@ if ($action == 'delete' && $CURUSER['class'] >= UC_SYSOP) {
     }
     sql_query("DELETE FROM modscredits where id = '$id'") or sqlerr(__FILE__, __LINE__);
     header("Location: {$INSTALLER09['baseurl']}/credits.php");
-    die();
+    exit();
 }
 
 if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
-    $id = 0 + $_GET['id'];
+    $id = (int)$_GET['id'];
     $res = sql_query('SELECT name, description, category, u232lnk, status, credit FROM modscredits WHERE id =' . $id . '') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 0) {
         stderr("{$lang['credits_error']}", "{$lang['credits_nocr']}");
@@ -102,7 +101,7 @@ if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
     echo stdhead($lang['credits_editmod']) . $HTMLOUT . stdfoot();
     exit();
 } elseif ($action == 'update' && $CURUSER['class'] >= UC_SYSOP) {
-    $id = 0 + $_GET['id'];
+    $id = (int)$_GET['id'];
     if (!is_valid_id($id)) {
         stderr('Error', 'Invalid ID!');
     }

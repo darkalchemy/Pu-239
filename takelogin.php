@@ -2,24 +2,14 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
-require_once CLASS_DIR . 'page_verify.php';
 require_once CLASS_DIR . 'class_browser.php';
 dbconn();
 global $CURUSER, $INSTALLER09;
 if (!$CURUSER) {
     get_template();
 }
-//smth putyn
-$auth_key = [
-    '2d257f64005d740db092a6b91170ab5f',
-];
-$gotkey = isset($_POST['key']) && strlen($_POST['key']) == 32 && in_array($_POST['key'], $auth_key) ? true : false;
-if (!$gotkey) {
-    $newpage = new page_verify();
-    $newpage->check('takelogin');
-}
 $lang = array_merge(load_language('global'), load_language('takelogin'));
-// 09 failed logins thanks to pdq - Retro
+
 function failedloginscheck()
 {
     global $INSTALLER09;
@@ -31,7 +21,7 @@ function failedloginscheck()
         sql_query("UPDATE failedlogins SET banned = 'yes' WHERE ip=" . sqlesc($ip)) or sqlerr(__FILE__, __LINE__);
         stderr('Login Locked!', 'You have been <b>Exceeded</b> the allowed maximum login attempts without successful login, therefore your ip address <b>(' . htmlsafechars($ip) . ')</b> has been locked for 24 hours.');
     }
-} // End
+}
 if (!mkglobal('username:password' . ($INSTALLER09['captcha_on'] ? (!$gotkey ? ':captchaSelection:' : '') : ':') . 'submitme')) {
     die('Something went wrong');
 }
@@ -59,7 +49,7 @@ function bark($text = 'Username or password incorrect')
 }
 
 failedloginscheck();
-$res = sql_query('SELECT id, ip, passhash, perms, ssluse, secret, enabled FROM users WHERE username = ' . sqlesc($username) . " AND status = 'confirmed'");
+$res = sql_query('SELECT id, ip, passhash, perms, ssluse, enabled FROM users WHERE username = ' . sqlesc($username) . " AND status = 'confirmed'");
 $row = mysqli_fetch_assoc($res);
 $ip_escaped = sqlesc(getip());
 $ip = getip();
@@ -73,7 +63,7 @@ if (!$row) {
     }
     bark();
 }
-if ($row['passhash'] != make_passhash($row['secret'], md5($password))) {
+if (!password_verify($password, $row['passhash'])) {
     $fail = (@mysqli_fetch_row(sql_query("SELECT COUNT(id) from failedlogins where ip=$ip_escaped"))) or sqlerr(__FILE__, __LINE__);
     if ($fail[0] == 0) {
         sql_query("INSERT INTO failedlogins (ip, added, attempts) VALUES ($ip_escaped, $added, 1)") or sqlerr(__FILE__, __LINE__);
@@ -137,13 +127,13 @@ $mc1->update_row(false, [
     'last_access' => TIME_NOW,
     'last_login'  => TIME_NOW,
 ]);
+
 unsetSessionVar('simpleCaptchaAnswer');
 unsetSessionVar('simpleCaptchaTimestamp');
+setSessionVar('UserID', $row['id']);
+logincookie($row['id']);
 
 $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
-$passh = md5($row['passhash'] . $_SERVER['REMOTE_ADDR']);
-logincookie($row['id'], $passh);
-
 if (isset($_POST['returnto'])) {
     header("Location: {$INSTALLER09['baseurl']}" . urldecode($_POST['returnto']));
 } else {

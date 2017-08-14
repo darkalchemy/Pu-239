@@ -36,6 +36,14 @@ function docleanup($data)
             $mc1->delete_value('triviaquestions_');
         }
 
+        // cache for current question
+        $mc1->cache_value('trivia_current_qid_', (int)$qid, 360);
+        $mc1->delete_value('trivia_gamenum_');
+        $mc1->delete_value('trivia_round_remaining_');
+        $mc1->delete_value('trivia_game_remaining_');
+        $mc1->delete_value('trivia_current_question_');
+        $mc1->delete_value('trivia_correct_answer_');
+
         // clear previous question
         $sql = 'UPDATE triviaq SET current = 0 WHERE current = 1';
         sql_query($sql) or sqlerr(__FILE__, __LINE__);

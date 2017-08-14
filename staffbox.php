@@ -4,22 +4,19 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 function mkint($x)
 {
-    return 0 + $x;
+    return (int)$x;
 }
 
 $lang = array_merge(load_language('global'), load_language('staffbox'));
 $stdfoot = [
-    /* include js **/
     'js' => [
         'staffcontact',
     ],
 ];
 $stdhead = [
-    /* include css **/
     'css' => [
         'staffbox',
     ],

@@ -2,13 +2,12 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_memcache.php';
-dbconn();
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('delete'));
 if (!mkglobal('id')) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_missing_data']}");
 }
-$id = 0 + $id;
+$id = (int)$id;
 if (!is_valid_id($id)) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_missing_data']}");
 }
@@ -57,7 +56,7 @@ if (!$row) {
 if ($CURUSER['id'] != $row['owner'] && $CURUSER['class'] < UC_STAFF) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_not_owner']}\n");
 }
-$rt = 0 + $_POST['reasontype'];
+$rt = (int)$_POST['reasontype'];
 if (!is_int($rt) || $rt < 1 || $rt > 5) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_invalid']}");
 }

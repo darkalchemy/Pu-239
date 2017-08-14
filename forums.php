@@ -4,11 +4,9 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_rating.php';
 require_once CLASS_DIR . 'class_user_options.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('forums'), load_language('forums_global'));
 $stdhead = [
-    /* include css **/
     'css' => [
         'forums',
         'jquery.lightbox-0.5',
@@ -19,7 +17,6 @@ $stdhead = [
     ],
 ];
 $stdfoot = [
-    /* include js **/
     'js' => [
         'popup',
         'jquery.lightbox-0.5.min',
@@ -30,9 +27,6 @@ $stdfoot = [
 $over_forum_id = $count = $now_viewing = $child_boards = '';
 if ($INSTALLER09['forums_online'] == 0 and $CURUSER['class'] < UC_STAFF) {
     stderr($lang['fm_information'], $lang['fm_the_forums_are_currently_offline']);
-}
-if (function_exists('parked')) {
-    parked();
 }
 $HTMLOUT = '';
 //=== update members last forums access

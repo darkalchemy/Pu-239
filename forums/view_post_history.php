@@ -2,7 +2,7 @@
 if (!defined('BUNNY_FORUMS') || $CURUSER['class'] < UC_STAFF) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 global $lang;
 $post_id = (isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0));

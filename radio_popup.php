@@ -2,8 +2,7 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 //require_once INCL_DIR . 'html_functions.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'));
 require_once ROOT_DIR . 'radio.php';
 global $CURUSER, $INSTALLER09;

@@ -1,8 +1,7 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-dbconn();
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'));
 $xmasday = mktime(0, 0, 0, 12, 25, date('Y'));
 $today = mktime(date('G'), date('i'), date('s'), date('m'), date('d'), date('Y'));
@@ -14,7 +13,7 @@ $gifts = [
 ];
 $randgift = array_rand($gifts);
 $gift = $gifts[$randgift];
-$userid = 0 + $CURUSER['id'];
+$userid = (int)$CURUSER['id'];
 if (!is_valid_id($userid)) {
     stderr('Error', 'Invalid ID');
 }

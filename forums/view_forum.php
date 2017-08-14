@@ -2,7 +2,7 @@
 if (!defined('BUNNY_FORUMS')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'html_functions.php';
 global $lang, $INSTALLER09, $CURUSER;

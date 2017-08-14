@@ -1,8 +1,7 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-dbconn();
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('bookmark'));
 $HTMLOUT = '';
 if (!mkglobal('torrent')) {
@@ -15,9 +14,9 @@ if (!is_valid_id($userid)) {
 if ($userid != $CURUSER['id']) {
     stderr($lang['bookmark_err'], $lang['bookmark_denied']);
 }
-$torrentid = 0 + $_GET['torrent'];
+$torrentid = (int)$_GET['torrent'];
 if (!is_valid_id($torrentid)) {
-    die();
+    exit();
 }
 if (!isset($torrentid)) {
     stderr($lang['bookmark_err'], $lang['bookmark_failtorr']);
@@ -34,7 +33,7 @@ if (!in_array($action, $possible_actions)) {
 }
 if ($action == 'add') {
     $torrentid = (int)$_GET['torrent'];
-    $sure = isset($_GET['sure']) ? 0 + $_GET['sure'] : '';
+    $sure = isset($_GET['sure']) ? (int)$_GET['sure'] : '';
     if (!is_valid_id($torrentid)) {
         stderr($lang['bookmark_err'], $lang['bookmark_invalidid']);
     }
@@ -61,7 +60,7 @@ if ($action == 'add') {
 }
 if ($action == 'delete') {
     $torrentid = (int)$_GET['torrent'];
-    $sure = isset($_GET['sure']) ? 0 + $_GET['sure'] : '';
+    $sure = isset($_GET['sure']) ? (int)$_GET['sure'] : '';
     if (!is_valid_id($torrentid)) {
         stderr($lang['bookmark_err'], $lang['bookmark_invalidid']);
     }
@@ -84,7 +83,7 @@ if ($action == 'delete') {
     $HTMLOUT .= "<h2>{$lang['bookmark_deleted']}</h2>";
 } elseif ($action == 'public') {
     $torrentid = (int)$_GET['torrent'];
-    $sure = isset($_GET['sure']) ? 0 + $_GET['sure'] : '';
+    $sure = isset($_GET['sure']) ? (int)$_GET['sure'] : '';
     if (!is_valid_id($torrentid)) {
         stderr('Error', 'Invalid ID.');
     }
@@ -107,7 +106,7 @@ if ($action == 'delete') {
     $HTMLOUT .= "<h2>{$lang['bookmark_public']}</h2>";
 } elseif ($action == 'private') {
     $torrentid = (int)$_GET['torrent'];
-    $sure = isset($_GET['sure']) ? 0 + $_GET['sure'] : '';
+    $sure = isset($_GET['sure']) ? (int)$_GET['sure'] : '';
     if (!is_valid_id($torrentid)) {
         stderr($lang['bookmark_err'], $lang['bookmark_invalidid']);
     }

@@ -2,7 +2,7 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
@@ -28,7 +28,7 @@ if (isset($_POST['do_it'])) {
     $upload_folder = (isset($_POST['upload_folder']) ? htmlsafechars(trim($_POST['upload_folder'])) : '');
     sql_query('UPDATE forum_config SET delete_for_real = ' . sqlesc($delete_for_real) . ', min_delete_view_class = ' . sqlesc($min_delete_view_class) . ', readpost_expiry = ' . sqlesc($readpost_expiry) . ', min_upload_class = ' . sqlesc($min_upload_class) . ', accepted_file_extension = ' . sqlesc($accepted_file_extension) . ',  accepted_file_types = ' . sqlesc($accepted_file_types) . ', max_file_size = ' . $max_file_size . ', upload_folder = ' . sqlesc($upload_folder) . ' WHERE id = ' . sqlesc($config_id));
     header('Location: staffpanel.php?tool=forum_config&action=forum_config');
-    die();
+    exit();
 }
 $main_links = '<p><a class="altlink" href="staffpanel.php?tool=over_forums&amp;action=over_forums">' . $lang['forum_config_over'] . '</a> :: 
 						<a class="altlink" href="staffpanel.php?tool=forum_manage&amp;action=forum_manage">' . $lang['forum_config_manager'] . '</a> :: 

@@ -54,8 +54,6 @@ if (!$row) {
 if ($row['enabled'] == 'no') {
     stderr('Error', 'This account has been disabled.');
 }
-$passh = md5($row['passhash'] . $_SERVER['REMOTE_ADDR']);
-logincookie($row['id'], $passh);
 sql_query('DELETE FROM failedlogins WHERE ip = ' . sqlesc($ip)) or sqlerr(__FILE__, __LINE__);
 $HTMLOUT = '';
 $HTMLOUT .= "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN'

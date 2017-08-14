@@ -1,32 +1,23 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once CLASS_DIR . 'page_verify.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'function_onlinetime.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('userdetails'));
-if (function_exists('parked')) {
-    parked();
-}
-$newpage = new page_verify();
-$newpage->create('mdk1@@9');
+
 $stdhead = [
-    /* include css **/
     'css' => [
         'jquery-ui',
         'jquery.treeview',
     ],
 ];
 $stdfoot = [
-    /* include js **/
     'js' => [
         'popup',
-        'java_klappe',
         'flip_box',
         'jquery-ui-personalized-1.5.2.packed',
         'sprinkle',
@@ -250,7 +241,7 @@ if (($user_status = $mc1->get_value('user_status_' . $id)) === false) {
 if ($user['paranoia'] == 3 && $CURUSER['class'] < UC_STAFF && $CURUSER['id'] != $id) {
     stderr($lang['userdetails_error'], '<span style="font-weight: bold; text-align: center;"><img src="pic/smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" title="' . $lang['userdetails_tinfoil'] . '" />
        ' . $lang['userdetails_tinfoil2'] . ' <img src="pic/smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" title="' . $lang['userdetails_tinfoil'] . '" /></span>');
-    die();
+    exit();
 }
 //=== delete H&R
 if (isset($_GET['delete_hit_and_run']) && $CURUSER['class'] >= UC_STAFF) {
@@ -267,7 +258,7 @@ if (isset($_GET['delete_hit_and_run']) && $CURUSER['class'] >= UC_STAFF) {
         stderr($lang['userdetails_error'], $lang['userdetails_notdeleted']);
     }
     header('Location: ?id=' . $id . '&completed=1');
-    die();
+    exit();
 }
 $r = sql_query('SELECT t.id, t.name, t.seeders, t.leechers, c.name AS cname, c.image FROM torrents t LEFT JOIN categories c ON t.category = c.id WHERE t.owner = ' . sqlesc($id) . ' ORDER BY t.name') or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($r) > 0) {

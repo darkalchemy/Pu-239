@@ -2,8 +2,7 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'));
 if ($CURUSER['class'] < UC_ADMINISTRATOR) {
     stderr('Error', 'Your not authorised');
@@ -43,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $ann_query = (isset($_POST['ann_query']) ? rawurldecode(trim($_POST['ann_query'])) : '');
     $ann_hash = (isset($_POST['ann_hash']) ? trim($_POST['ann_hash']) : '');
     if (hashit($ann_query, $n_pms) != $ann_hash) {
-        die();
+        exit();
     } // Validate POST...
     if (!preg_match('/\\ASELECT.+?FROM.+?WHERE.+?\\z/', $ann_query)) {
         stderr('Error', 'Misformed Query');
@@ -54,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //== Preview POST data ...
     $body = trim((isset($_POST['body']) ? $_POST['body'] : ''));
     $subject = trim((isset($_POST['subject']) ? $_POST['subject'] : ''));
-    $expiry = 0 + (isset($_POST['expiry']) ? $_POST['expiry'] : 0);
+    $expiry = (int)(isset($_POST['expiry']) ? $_POST['expiry'] : 0);
     if ((isset($_POST['buttonval']) and $_POST['buttonval'] == 'Submit')) {
         //== Check values before inserting into row...
         if (empty($body)) {
@@ -129,6 +128,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <hr>
 <address>{$_SERVER['SERVER_SOFTWARE']} Server at {$INSTALLER09['baseurl']} Port 80</address></body></html>\n";
     echo $HTMLOUT;
-    die();
+    exit();
 }
 echo $HTMLOUT . stdfoot($stdfoot);

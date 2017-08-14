@@ -2,11 +2,7 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_memcache.php';
-dbconn(false);
-loggedinorreturn();
-/*
-fastdelete by Froggaard
-*/
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('fastdelete'));
 
 if (!in_array($CURUSER['id'], $INSTALLER09['allowed_staff']['id'])) {

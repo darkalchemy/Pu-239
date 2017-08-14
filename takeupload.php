@@ -1,27 +1,13 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-require_once CLASS_DIR . 'page_verify.php';
 require_once CLASS_DIR . 'class.bencdec.php';
 //require_once INCL_DIR . 'function_ircbot.php';
 require_once INCL_DIR . 'function_memcache.php';
-dbconn();
-loggedinorreturn();
+check_user_status();
 ini_set('upload_max_filesize', $INSTALLER09['max_torrent_size']);
 ini_set('memory_limit', '64M');
-//smth putyn
-//print_r($_POST);
-//print_r($_GET);
-//exit();
-$auth_key = [
-    '2d257f64005d740db092a6b91170ab5f',
-];
-$gotkey = isset($_POST['key']) && strlen($_POST['key']) == 32 && in_array($_POST['key'], $auth_key) ? true : false;
 $lang = array_merge(load_language('global'), load_language('takeupload'));
-if (!$gotkey) {
-    $newpage = new page_verify();
-    $newpage->check('taud');
-}
 if ($CURUSER['class'] < UC_UPLOADER or $CURUSER['uploadpos'] == 0 || $CURUSER['uploadpos'] > 1 || $CURUSER['suspended'] == 'yes') {
     header("Location: {$INSTALLER09['baseurl']}/upload.php");
     exit();
@@ -88,7 +74,7 @@ if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
 /////////////////////// NFO FILE END /////////////////////
 /// Set Freeleech on Torrent Time Based
 $free2 = 0;
-if (isset($_POST['free_length']) && ($free_length = 0 + $_POST['free_length'])) {
+if (isset($_POST['free_length']) && ($free_length = (int)$_POST['free_length'])) {
     if ($free_length == 255) {
         $free2 = 1;
     } elseif ($free_length == 42) {
@@ -100,7 +86,7 @@ if (isset($_POST['free_length']) && ($free_length = 0 + $_POST['free_length'])) 
 /// end
 /// Set Silver Torrent Time Based
 $silver = 0;
-if (isset($_POST['half_length']) && ($half_length = 0 + $_POST['half_length'])) {
+if (isset($_POST['half_length']) && ($half_length = (int)$_POST['half_length'])) {
     if ($half_length == 255) {
         $silver = 1;
     } elseif ($half_length == 42) {
@@ -127,7 +113,7 @@ if (isset($_POST['strip']) && $_POST['strip']) {
     strip($descr);
     //$descr = preg_replace("/\n+/","\n",$descr);
 }
-$catid = (0 + $_POST['type']);
+$catid = ((int)$_POST['type']);
 if (!is_valid_id($catid)) {
     stderr($lang['takeupload_failed'], $lang['takeupload_no_cat']);
 }
@@ -281,7 +267,7 @@ $ret = sql_query('INSERT INTO torrents (search_text, filename, owner, username, 
         $descr,
         $descr,
         $description,
-        0 + $_POST['type'],
+        (int)$_POST['type'],
         $free2,
         $silver,
         $dname,

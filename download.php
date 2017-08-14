@@ -14,10 +14,7 @@ if (!empty($T_Pass)) {
         $CURUSER = mysqli_fetch_assoc($q0);
     }
 } else {
-    loggedinorreturn();
-}
-if (function_exists('parked')) {
-    parked();
+    check_user_status();
 }
 $id = isset($_GET['torrent']) ? (int)$_GET['torrent'] : 0;
 $ssluse = isset($_GET['ssl']) && $_GET['ssl'] == 1 || $CURUSER['ssluse'] == 3 ? 1 : 0;

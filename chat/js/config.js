@@ -11,7 +11,6 @@ var UC_MODERATOR = 4;
 var UC_STAFF = 4;
 var UC_ADMINISTRATOR = 5;
 var UC_SYSOP = 6;
-var ChatBot = 100;
 
 // Ajax Chat config parameters:
 var ajaxChatConfig = {

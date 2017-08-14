@@ -2,16 +2,15 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
-dbconn();
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('snatches'));
 $HTMLOUT = '';
 if (empty($_GET['id'])) {
     setSessionVar('error', 'Invalid Information');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
-$id = 0 + $_GET['id'];
+$id = (int)$_GET['id'];
 if (!is_valid_id($id)) {
     stderr('Error', 'It appears that you have entered an invalid id.');
 }

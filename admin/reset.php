@@ -2,7 +2,7 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
@@ -14,13 +14,12 @@ $lang = array_merge($lang, load_language('ad_reset'));
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = trim(htmlsafechars($_POST['username']));
     $uid = (int)$_POST['uid'];
-    $secret = mksecret();
     $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     $newpassword = '';
     for ($i = 0; $i < 10; ++$i) {
-        $newpassword .= $chars[mt_rand(0, strlen($chars) - 1)];
+        $newpassword .= $chars[random_int(0, strlen($chars) - 1)];
     }
-    $passhash = make_passhash($secret, md5($newpassword));
+    $passhash = make_passhash($newpassword);
     $postkey = PostKey([
         $uid,
         $CURUSER['id'],

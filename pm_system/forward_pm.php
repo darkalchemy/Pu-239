@@ -2,7 +2,7 @@
 if (!defined('BUNNY_PM_SYSTEM')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 //=== make sure they "should" be forwarding this PM
 $res = sql_query('SELECT * FROM messages WHERE id=' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);
@@ -79,4 +79,4 @@ EOD;
     @mail($user['email'], $lang['pm_forwardpm_pmfrom'] . $username . $lang['pm_forwardpm_exc'], $body, "{$lang['pm_forwardpm_from']}{$INSTALLER09['site_email']}");
 }
 header('Location: pm_system.php?action=view_mailbox&forwarded=1');
-die();
+exit();

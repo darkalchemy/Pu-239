@@ -1,8 +1,7 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('setclass'));
 $HTMLOUT = '';
 if ($CURUSER['class'] < UC_STAFF or $CURUSER['override_class'] != 255) {
@@ -24,7 +23,7 @@ if (isset($_GET['action']) && htmlsafechars($_GET['action']) == 'editclass') { /
     ]);
     $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
     header("Location: {$INSTALLER09['baseurl']}/" . $returnto);
-    die();
+    exit();
 }
 // HTML Code to allow changes to current class
 $HTMLOUT .= "<br>

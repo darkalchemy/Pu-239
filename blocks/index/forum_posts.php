@@ -33,7 +33,7 @@ if (count($topics) > 0) {
             if (!$perpage) {
                 $perpage = 24;
             }
-            $posts = 0 + $topicarr['p_count'];
+            $posts = (int)$topicarr['p_count'];
             $replies = max(0, $posts - 1);
             $first = ($page * $perpage) - $perpage + 1;
             $last = $first + $perpage - 1;

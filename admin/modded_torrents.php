@@ -2,7 +2,7 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
@@ -72,7 +72,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
             $title = $put;
         }
         //echo stdhead("".$lang['mtor_no_torrents_modded']."") . $HTMLOUT . stdfoot();
-        //die();
+        //exit();
         // ENDS ALL UNMODDED TORRENTS
     } else {
         // IF ITS THE OTHER 2 CASES AS CHECKED BEFORE , NO NEED TO DO IT AGAIN
@@ -85,7 +85,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
             $HTMLOUT .= '<br><br><h3 align="center">' . $lang['mtor_no_torrents_have_been_modded'] . ' ' . $mode . '.</h3><br><br>';
             //echo stdhead("".$lang['mtor_no_torrents_modded']."") . $HTMLOUT . stdfoot();
             $title = '' . $lang['mtor_no_torrents_modded'] . " $mode";
-            //die();
+            //exit();
         } else {
             $perpage = 15;
             $pager = pager($perpage, $count, "{$_SERVER['PHP_SELF']}?");
@@ -105,7 +105,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
         }
     }
     echo stdhead($title) . $HTMLOUT . stdfoot();
-    die();
+    exit();
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $where = false;
     $ts = strtotime(date('F', time()) . ' ' . date('Y', time()));
@@ -141,7 +141,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
             $text = "by <u>$_POST[username]</u>";
             $title = "$_POST[username] : " . $lang['mtor_modded_torrents'] . '';
         }
-        //echo $query;die();
+        //echo $query;exit();
         $res = sql_query($query);
         $count = $res->num_rows;
         if ($count < 1) {
@@ -163,7 +163,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
         stderr($lang['mtor_error'], '' . $lang['mtor_empty_data_supplied'] . ' ! ' . $lang['mtor_please_try_again'] . '');
     }
     echo stdhead($title) . $HTMLOUT . stdfoot();
-    die();
+    exit();
 }
 $HTMLOUT = '';
 $HTMLOUT .= "

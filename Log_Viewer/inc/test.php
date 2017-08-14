@@ -92,7 +92,7 @@ function test($type, $regex, $match, $types, $logs, $headers = true, $multiline 
 if (@$_POST['action'] === 'regextest') {
     if ((!file_exists($access_file)) && (!Sentinel::isAdmin())) {
         echo json_encode(['msg' => 'Authentication error']);
-        die();
+        exit();
     }
 
     $return = [];
@@ -106,28 +106,28 @@ if (@$_POST['action'] === 'regextest') {
         $return['err'] = 'inputMatch';
         $return['msg'] = '<div class="alert alert-danger"><strong>' . __('Error') . '</strong> ' . __('Match is not a valid associative array') . '</div>';
         echo json_encode($return);
-        die();
+        exit();
     }
 
     if (!is_array($types)) {
         $return['err'] = 'inputTypes';
         $return['msg'] = '<div class="alert alert-danger"><strong>' . __('Error') . '</strong> ' . __('Types is not a valid associative array') . '</div>';
         echo json_encode($return);
-        die();
+        exit();
     }
 
     if (@preg_match($regex, 'this is just a test !') === false) {
         $return['err'] = 'inputRegEx';
         $return['msg'] = '<div class="alert alert-danger"><strong>' . __('Error') . '</strong> ' . __('RegEx is not a valid PHP PCRE regular expression') . '</div>';
         echo json_encode($return);
-        die();
+        exit();
     }
 
     header('Content-type: application/json');
     $return['msg'] = test('', $regex, $match, $types, $log, false, $multiline);
 
     echo json_encode($return);
-    die();
+    exit();
 }
 
 //////////////////////

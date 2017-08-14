@@ -1,15 +1,11 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-require_once CLASS_DIR . 'page_verify.php';
 require_once INCL_DIR . 'function_memcache.php';
 define('MIN_CLASS', UC_STAFF);
 define('NFO_SIZE', 65535);
-dbconn();
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('takeedit'));
-$newpage = new page_verify();
-$newpage->check('teit');
 $torrent_cache = $torrent_txt_cache = '';
 $possible_extensions = [
     'nfo',
@@ -122,7 +118,7 @@ if (isset($_POST['tags']) && ($tags = $_POST['tags']) != $fetch_assoc['tags']) {
     $updateset[] = 'tags = ' . sqlesc($tags);
     $torrent_cache['tags'] = $tags;
 }
-if (isset($_POST['type']) && (($category = 0 + $_POST['type']) != $fetch_assoc['category']) && is_valid_id($category)) {
+if (isset($_POST['type']) && (($category = (int)$_POST['type']) != $fetch_assoc['category']) && is_valid_id($category)) {
     $updateset[] = 'category = ' . sqlesc($category);
     $torrent_cache['category'] = $category;
 }
@@ -179,7 +175,7 @@ if (isset($_POST['poster']) && (($poster = $_POST['poster']) != $fetch_assoc['po
     $torrent_cache['poster'] = $poster;
 }
 //==09 Set Freeleech on Torrent Time Based
-if (isset($_POST['free_length']) && ($free_length = 0 + $_POST['free_length'])) {
+if (isset($_POST['free_length']) && ($free_length = (int)$_POST['free_length'])) {
     if ($free_length == 255) {
         $free = 1;
     } elseif ($free_length == 42) {
@@ -198,7 +194,7 @@ if (isset($_POST['fl']) && ($_POST['fl'] == 1)) {
 }
 /// end freeleech mod
 //==09 Set Silver on Torrent Time Based
-if (isset($_POST['half_length']) && ($half_length = 0 + $_POST['half_length'])) {
+if (isset($_POST['half_length']) && ($half_length = (int)$_POST['half_length'])) {
     if ($half_length == 255) {
         $silver = 1;
     } elseif ($half_length == 42) {

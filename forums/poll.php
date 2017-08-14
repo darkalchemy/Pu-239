@@ -2,7 +2,7 @@
 if (!defined('BUNNY_FORUMS')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 global $lang;
 $topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
@@ -84,7 +84,7 @@ switch ($action) {
             sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `option`, `ip`, `added`) VALUES (' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', 666, ' . sqlesc($ip) . ', ' . $added . ')');
             //=== all went well, send them back!
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-            die();
+            exit();
         } else {
             //=== if single vote (not array)
             if (is_valid_poll_vote($post_vote)) {
@@ -92,7 +92,7 @@ switch ($action) {
                 $success = 1;
             } else {
                 foreach ($post_vote as $votes) {
-                    $vote = 0 + $votes;
+                    $vote = (int)$votes;
                     if (is_valid_poll_vote($vote)) {
                         sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `option`, `ip`, `added`) VALUES(' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($vote) . ', ' . sqlesc($ip) . ', ' . $added . ')');
                         $success = 1;
@@ -105,7 +105,7 @@ switch ($action) {
             }
             //=== all went well, send them back!
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-            die();
+            exit();
         } //=== end of else
         break; //=== end casting a vote(s)
     //=== resetting vote ============================================================================================//
@@ -153,7 +153,7 @@ switch ($action) {
         sql_query('DELETE FROM forum_poll_votes WHERE poll_id = ' . sqlesc($arr_poll['poll_id']) . ' AND user_id = ' . sqlesc($CURUSER['id']));
         //=== all went well, send them back!
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-        die();
+        exit();
         break;
     //=== adding a poll ============================================================================================//
 
@@ -205,7 +205,7 @@ switch ($action) {
             }
             //=== all went well, send them back!
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-            die();
+            exit();
         } //=== end of posting poll to DB
         //=== ok looks like they can be here
         //=== options for amount of options lol
@@ -320,7 +320,7 @@ switch ($action) {
         }
         //=== all went well, send them back!
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-        die();
+        exit();
         break; //=== end delete poll
     //=== reseting a poll ============================================================================================//
 
@@ -345,7 +345,7 @@ switch ($action) {
         }
         //=== all went well, send them back!
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-        die();
+        exit();
         break; //=== end reset poll
     //=== closing a poll ============================================================================================//
 
@@ -370,7 +370,7 @@ switch ($action) {
         }
         //=== all went well, send them back!
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-        die();
+        exit();
         break; //=== end of poll close
     //=== opening a poll  (either after it was closed, or timed out) ===============================================================================//
 
@@ -395,7 +395,7 @@ switch ($action) {
         }
         //=== all went well, send them back!
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-        die();
+        exit();
         break; //=== end of open poll
     //=== edit a poll ============================================================================================//
 
@@ -441,7 +441,7 @@ switch ($action) {
             sql_query('DELETE FROM forum_poll_votes WHERE poll_id = ' . sqlesc($poll_id));
             //=== send them back!
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-            die();
+            exit();
         } //=== end of posting poll to DB
         //=== get poll stuff to edit
         $res_edit = sql_query('SELECT * FROM forum_poll WHERE id = ' . sqlesc($poll_id));
@@ -549,5 +549,5 @@ switch ($action) {
     default:
         //=== at the end of the day, if they are messing about doing what they shouldn't, let's give then what for!
         stderr($lang['gl_error'], $lang['poll_epic_fail_last_msg']);
-        die();
+        exit();
 } //=== end switch all actions

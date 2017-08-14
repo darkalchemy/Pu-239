@@ -1,8 +1,7 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'));
 $stdhead = [
     /* include css **/
@@ -63,7 +62,7 @@ switch ($action) {
             sql_query('INSERT INTO offer_votes (offer_id, user_id, vote) VALUES (' . sqlesc($id) . ', ' . sqlesc($CURUSER['id']) . ', \'' . $yes_or_no . '\')');
             sql_query('UPDATE offers SET ' . ($yes_or_no == 'yes' ? 'vote_yes_count = vote_yes_count + 1' : 'vote_no_count = vote_no_count + 1') . ' WHERE id = ' . sqlesc($id));
             header('Location: /offers.php?action=offer_details&voted=1&id=' . $id);
-            die();
+            exit();
         } else {
             stderr('USER ERROR', 'You have voted on this offer before.');
         }
@@ -270,7 +269,7 @@ switch ($action) {
                     (' . sqlesc($offer_name) . ', ' . sqlesc($image) . ', ' . sqlesc($body) . ', ' . sqlesc($category) . ', ' . TIME_NOW . ', ' . sqlesc($CURUSER['id']) . ',  ' . sqlesc($link) . ');');
             $new_offer_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
             header('Location: offers.php?action=offer_details&new=1&id=' . $new_offer_id);
-            die();
+            exit();
         }
         //=== start page
         $HTMLOUT .= '<table align="center" class="main" width="750px" border="0" cellspacing="0" cellpadding="0">
@@ -376,7 +375,7 @@ switch ($action) {
             sql_query('DELETE FROM offer_votes WHERE offer_id =' . $id);
             sql_query('DELETE FROM comments WHERE offer =' . $id);
             header('Location: /offers.php?offer_deleted=1');
-            die();
+            exit();
         }
         echo stdhead('Delete Offer.', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
         break;
@@ -415,7 +414,7 @@ switch ($action) {
             sql_query('UPDATE offers SET offer_name = ' . sqlesc($offer_name) . ', image = ' . sqlesc($image) . ', description = ' . sqlesc($body) . ', 
                     category = ' . sqlesc($category) . ', link = ' . sqlesc($link) . ' WHERE id = ' . sqlesc($id));
             header('Location: offers.php?action=offer_details&edited=1&id=' . $id);
-            die();
+            exit();
         }
         //=== start page
         $HTMLOUT .= '<table align="center" class="main" width="750px" border="0" cellspacing="0" cellpadding="0">
@@ -516,7 +515,7 @@ switch ($action) {
             $newid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
             sql_query('UPDATE offers SET comments = comments + 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             header('Location: /offers.php?action=offer_details&id=' . $id . '&viewcomm=' . $newid . '#comm' . $newid);
-            die();
+            exit();
         }
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
         $HTMLOUT .= $top_menu . '<form method="post" action="offers.php?action=add_comment">
@@ -578,7 +577,7 @@ switch ($action) {
             }
             sql_query('UPDATE comments SET text=' . sqlesc($body) . ', editedat=' . TIME_NOW . ', editedby=' . sqlesc($CURUSER['id']) . ' WHERE id=' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
             header('Location: /offers.php?action=offer_details&id=' . $id . '&viewcomm=' . $comment_id . '#comm' . $comment_id);
-            die();
+            exit();
         }
         if ($CURUSER['id'] == $arr['user']) {
             $avatar = avatar_stuff($CURUSER);
@@ -637,7 +636,7 @@ switch ($action) {
             sql_query('DELETE FROM comments WHERE id=' . sqlesc($comment_id));
             sql_query('UPDATE offers SET comments = comments - 1 WHERE id = ' . sqlesc($arr['offer']));
             header('Location: /offers.php?action=offer_details&id=' . $id . '&comment_deleted=1');
-            die();
+            exit();
         }
         break;
     //===========================================================================================//
@@ -678,7 +677,7 @@ switch ($action) {
         //=== ok, looks good :D let's set that status!
         sql_query('UPDATE offers SET status = ' . sqlesc($change_it) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         header('Location: /offers.php?action=offer_details&status_changed=1&id=' . $id);
-        die();
+        exit();
         break;
 } //=== end all actions / switch
 //=== functions n' stuff \o/

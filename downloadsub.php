@@ -1,8 +1,7 @@
 <?php
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'phpzip.php';
-dbconn();
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'));
 
 $action = (isset($_POST['action']) ? htmlsafechars($_POST['action']) : '');

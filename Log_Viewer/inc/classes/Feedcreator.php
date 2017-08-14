@@ -526,7 +526,7 @@ class FeedCreator extends HtmlDescribable
         header('Content-Type: ' . $this->contentType . '; charset=' . $this->encoding . '; filename=' . basename($filename));
         header('Content-Disposition: inline; filename=' . basename($filename));
         readfile($filename, 'r');
-        die();
+        exit();
     }
 
     /**

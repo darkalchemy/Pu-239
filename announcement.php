@@ -2,8 +2,7 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
-dbconn();
-loggedinorreturn();
+check_user_status();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('index'), load_language('announcement'));
 $dt = TIME_NOW;
@@ -26,7 +25,7 @@ if (($row['curr_ann_id'] == 0) and ($row['curr_ann_last_check'] == 0)) { // Forc
         $query = $ann_row['sql_query'];
         // Ensure it only selects...
         if (!preg_match('/\\ASELECT.+?FROM.+?WHERE.+?\\z/', $query)) {
-            die();
+            exit();
         }
         // The following line modifies the query to only return the current user
         // row if the existing query matches any attributes.

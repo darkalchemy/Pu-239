@@ -4,13 +4,11 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'));
 $HTMLOUT = $user = '';
 $action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : '';
 $stdhead = [
-    /* include css **/
     'css' => [
         'style',
         'style2',
@@ -61,7 +59,7 @@ function usercommenttable($rows)
 
 if ($action == 'add') {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $userid = 0 + $_POST['userid'];
+        $userid = (int)$_POST['userid'];
         if (!is_valid_id($userid)) {
             stderr('Error', 'Invalid ID.');
         }
@@ -80,7 +78,7 @@ if ($action == 'add') {
         header("Refresh: 0; url=userdetails.php?id=$userid&viewcomm=$newid#comm$newid");
         die;
     }
-    $userid = 0 + $_GET['userid'];
+    $userid = (int)$_GET['userid'];
     if (!is_valid_id($userid)) {
         stderr('Error', 'Invalid ID.');
     }
@@ -107,7 +105,7 @@ if ($action == 'add') {
     echo stdhead('Add a comment for "' . htmlsafechars($arr['username']) . '"', true, $stdhead) . $HTMLOUT . stdfoot();
     die;
 } elseif ($action == 'edit') {
-    $commentid = 0 + $_GET['cid'];
+    $commentid = (int)$_GET['cid'];
     if (!is_valid_id($commentid)) {
         stderr('Error', 'Invalid ID.');
     }
@@ -144,7 +142,7 @@ if ($action == 'add') {
     stdfoot();
     die;
 } elseif ($action == 'delete') {
-    $commentid = 0 + $_GET['cid'];
+    $commentid = (int)$_GET['cid'];
     if (!is_valid_id($commentid)) {
         stderr('Error', 'Invalid ID.');
     }
@@ -179,7 +177,7 @@ if ($action == 'add') {
     if ($CURUSER['class'] < UC_STAFF) {
         stderr('Error', 'Permission denied.');
     }
-    $commentid = 0 + $_GET['cid'];
+    $commentid = (int)$_GET['cid'];
     if (!is_valid_id($commentid)) {
         stderr('Error', 'Invalid ID.');
     }

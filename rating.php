@@ -3,8 +3,8 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 dbconn();
 $lang = array_merge(load_language('global'));
-$id = isset($_GET['id']) ? 0 + $_GET['id'] : 0;
-$rate = isset($_GET['rate']) ? 0 + $_GET['rate'] : 0;
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$rate = isset($_GET['rate']) ? (int)$_GET['rate'] : 0;
 $uid = $CURUSER['id'];
 $ajax = isset($_GET['ajax']) && $_GET['ajax'] == 1 ? true : false;
 $what = isset($_GET['what']) && $_GET['what'] == 'torrent' ? 'torrent' : 'topic';

@@ -2,18 +2,15 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'user_functions.php';
-require_once CLASS_DIR . 'page_verify.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_autopost.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 class_check(UC_STAFF);
 $lang = array_merge($lang, load_language('modtask'));
-$newpage = new page_verify();
-$newpage->check('mdk1@@9');
 
 $curuser_cache = $user_cache = $stats_cache = $user_stats_cache = '';
 $postkey = PostKey([
@@ -128,7 +125,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
     }
     // ====end
     // === Set donor - Time based
-    if ((isset($_POST['donorlength'])) && ($donorlength = 0 + $_POST['donorlength'])) {
+    if ((isset($_POST['donorlength'])) && ($donorlength = (int)$_POST['donorlength'])) {
         if ($donorlength == 255) {
             $modcomment = get_date(TIME_NOW, 'DATE', 1) . "{$lang['modtask_donor_set']} " . $CURUSER['username'] . ".\n" . $modcomment;
             $msg = sqlesc($lang['modtask_donor_received'] . $username);
@@ -164,7 +161,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
         $user_cache['class'] = UC_VIP;
     }
     // === add to donor length // thanks to CoLdFuSiOn
-    if ((isset($_POST['donorlengthadd'])) && ($donorlengthadd = 0 + $_POST['donorlengthadd'])) {
+    if ((isset($_POST['donorlengthadd'])) && ($donorlengthadd = (int)$_POST['donorlengthadd'])) {
         $donoruntil = (int)$user['donoruntil'];
         $dur = $donorlengthadd . $lang['modtask_donor_week'] . ($donorlengthadd > 1 ? $lang['modtask_donor_weeks'] : '');
         $msg = sqlesc($lang['modtask_donor_dear'] . htmlsafechars($user['username']) . "{$lang['modtask_donor_msg2']} $dur {$lang['modtask_donor_msg3']}" . $username);
@@ -219,7 +216,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
         $user_cache['enabled'] = $enabled;
     }
     //== Set download posssible Time based
-    if (isset($_POST['downloadpos']) && ($downloadpos = 0 + $_POST['downloadpos'])) {
+    if (isset($_POST['downloadpos']) && ($downloadpos = (int)$_POST['downloadpos'])) {
         unset($disable_pm);
         if (isset($_POST['disable_pm'])) {
             $disable_pm = $_POST['disable_pm'];
@@ -254,7 +251,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
 	             VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
     }
     //== Set upload posssible Time based
-    if (isset($_POST['uploadpos']) && ($uploadpos = 0 + $_POST['uploadpos'])) {
+    if (isset($_POST['uploadpos']) && ($uploadpos = (int)$_POST['uploadpos'])) {
         unset($updisable_pm);
         if (isset($_POST['updisable_pm'])) {
             $updisable_pm = $_POST['updisable_pm'];
@@ -289,7 +286,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
 	          VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
     }
     //== Set Pm posssible Time based
-    if (isset($_POST['sendpmpos']) && ($sendpmpos = 0 + $_POST['sendpmpos'])) {
+    if (isset($_POST['sendpmpos']) && ($sendpmpos = (int)$_POST['sendpmpos'])) {
         unset($pmdisable_pm);
         if (isset($_POST['pmdisable_pm'])) {
             $pmdisable_pm = $_POST['pmdisable_pm'];
@@ -324,7 +321,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
 	             VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
     }
     //== Set ajax chat posssible Time based
-    if (isset($_POST['chatpost']) && ($chatpost = 0 + $_POST['chatpost'])) {
+    if (isset($_POST['chatpost']) && ($chatpost = (int)$_POST['chatpost'])) {
         unset($chatdisable_pm);
         if (isset($_POST['chatdisable_pm'])) {
             $chatdisable_pm = $_POST['chatdisable_pm'];
@@ -359,7 +356,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
 	             VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
     }
     //== Set Immunity Status Time based
-    if (isset($_POST['immunity']) && ($immunity = 0 + $_POST['immunity'])) {
+    if (isset($_POST['immunity']) && ($immunity = (int)$_POST['immunity'])) {
         unset($immunity_pm);
         if (isset($_POST['immunity_pm'])) {
             $immunity_pm = $_POST['immunity_pm'];
@@ -391,7 +388,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
 	             VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
     }
     //== Set leechwarn Status Time based
-    if (isset($_POST['leechwarn']) && ($leechwarn = 0 + $_POST['leechwarn'])) {
+    if (isset($_POST['leechwarn']) && ($leechwarn = (int)$_POST['leechwarn'])) {
         unset($leechwarn_pm);
         if (isset($_POST['leechwarn_pm'])) {
             $leechwarn_pm = $_POST['leechwarn_pm'];
@@ -423,7 +420,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
 	             VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
     }
     //= Set warn Status Time based
-    if (isset($_POST['warned']) && ($warned = 0 + $_POST['warned'])) {
+    if (isset($_POST['warned']) && ($warned = (int)$_POST['warned'])) {
         unset($warned_pm);
         if (isset($_POST['warned_pm'])) {
             $warned_pm = $_POST['warned_pm'];
@@ -456,8 +453,8 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
     }
     //== Add remove uploaded
     if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
-        $uploadtoadd = 0 + $_POST['amountup'];
-        $downloadtoadd = 0 + $_POST['amountdown'];
+        $uploadtoadd = (int)$_POST['amountup'];
+        $downloadtoadd = (int)$_POST['amountdown'];
         $formatup = $_POST['formatup'];
         $formatdown = $_POST['formatdown'];
         $mpup = $_POST['upchange'];
@@ -652,7 +649,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
         $user_cache['freeslots'] = $freeslots;
     }
     //== Set Freeleech Status Time based
-    if (isset($_POST['free_switch']) && ($free_switch = 0 + $_POST['free_switch'])) {
+    if (isset($_POST['free_switch']) && ($free_switch = (int)$_POST['free_switch'])) {
         unset($free_pm);
         if (isset($_POST['free_pm'])) {
             $free_pm = $_POST['free_pm'];
@@ -687,7 +684,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
 	             VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
     }
     //== Set gaming posssible Time based
-    if (isset($_POST['game_access']) && ($game_access = 0 + $_POST['game_access'])) {
+    if (isset($_POST['game_access']) && ($game_access = (int)$_POST['game_access'])) {
         unset($game_disable_pm);
         if (isset($_POST['game_disable_pm'])) {
             $disable_pm = $_POST['game_disable_pm'];
@@ -722,7 +719,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
                  VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
     }
     /// Set avatar posssible Time based
-    if (isset($_POST['avatarpos']) && ($avatarpos = 0 + $_POST['avatarpos'])) {
+    if (isset($_POST['avatarpos']) && ($avatarpos = (int)$_POST['avatarpos'])) {
         unset($avatardisable_pm);
         if (isset($_POST['avatardisable_pm'])) {
             $avatardisable_pm = $_POST['avatardisable_pm'];
@@ -771,7 +768,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
             $added = sqlesc(TIME_NOW);
             sql_query('INSERT INTO messages (sender, receiver, msg, subject, added) VALUES (0, ' . sqlesc($userid) . ", $msg, $subject, $added)") or sqlerr(__FILE__, __LINE__);
         } else {
-            die();
+            exit();
         } //== Error
         $updateset[] = 'highspeed = ' . sqlesc($highspeed);
         $useredit['update'][] = $lang['modtask_highs_enabled'] . $highspeed . '';
@@ -793,7 +790,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
             $added = sqlesc(TIME_NOW);
             sql_query('INSERT INTO messages (sender, receiver, msg, subject, added) VALUES (0, ' . sqlesc($userid) . ", $msg, $subject, $added)") or sqlerr(__FILE__, __LINE__);
         } else {
-            die();
+            exit();
         } //== Error
         $updateset[] = 'can_leech = ' . sqlesc($can_leech);
         $useredit['update'][] = $lang['modtask_canleech_edited'] . $can_leech . '';

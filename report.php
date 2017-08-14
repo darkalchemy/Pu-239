@@ -1,12 +1,9 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-dbconn();
-loggedinorreturn();
-parked();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('report'));
 $stdhead = [
-    /* include css **/
     'css' => [
         'forums',
     ],
@@ -61,7 +58,7 @@ if ((isset($_GET['do_it'])) || (isset($_POST['do_it']))) {
     $mc1->delete_value('new_report_');
     $HTMLOUT .= "<table width='650'><tr><td class='colhead'><h1>{$lang['report_success']}</h1></td></tr>" . "<tr><td class='two' align='center'>{$lang['report_success1']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>{$id}</b>!<br><b>{$lang['report_reason']}</b> {$reason}</td></tr></table>";
     echo stdhead('Reports', true, $stdhead) . $HTMLOUT . stdfoot();
-    die();
+    exit();
 } //=== end do_it
 // === starting main page for reporting all...
 $HTMLOUT .= "<form method='post' action='report.php?type=$type$id_2b&amp;id=$id&amp;do_it=1'>

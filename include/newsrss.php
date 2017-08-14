@@ -6,7 +6,7 @@ function foxnews_shout()
     if ($INSTALLER09['autoshout_on'] == 1) {
         require_once INCL_DIR . 'user_functions.php';
         if (($xml = $mc1->get_value('foxnewsrss_')) === false) {
-            $xml = file_get_contents('http://feeds.foxnews.com/foxnews/latest');
+            $xml = file_get_contents('http://feeds.foxnews.com/foxnews/tech');
             $mc1->cache_value('foxnewsrss_', $xml, 300);
         }
         $doc = new DOMDocument();
@@ -136,7 +136,7 @@ function github_shout()
             $newid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
             if ($newid) {
                 $msg = "[color=yellow]Git Commit:[/color] [url={$pub['link']}]{$pub['title']}[/url] => {$pub['commit']}";
-                autoshout($msg);
+                autoshout($msg, 0, 86400);
                 return false;
             }
         }

@@ -6,8 +6,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'pager_new.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 define('BUNNY_PM_SYSTEM', true);
 /*********************************************************
  * - Pm system by snuggles
@@ -146,7 +145,7 @@ if (isset($_GET['change_pm_number'])) {
     } else {
         header('Location: pm_system.php?action=view_mailbox&pm=1&box=' . $mailbox);
     }
-    die();
+    exit();
 }
 //=== show small avatar drop down thingie / change on the fly
 if (isset($_GET['show_pm_avatar'])) {
@@ -167,7 +166,7 @@ if (isset($_GET['show_pm_avatar'])) {
     } else {
         header('Location: pm_system.php?action=view_mailbox&avatar=1&box=' . $mailbox);
     }
-    die();
+    exit();
 }
 //=== some get stuff to display messages
 $HTMLOUT = $h1_thingie = '';

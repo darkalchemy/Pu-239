@@ -2,7 +2,7 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
@@ -39,7 +39,7 @@ switch ($action) {
         }
         sql_query('DELETE FROM over_forums where id = ' . sqlesc($id));
         header('Location: staffpanel.php?tool=over_forums');
-        die();
+        exit();
         break;
     //=== edit forum
 
@@ -53,7 +53,7 @@ switch ($action) {
         }
         sql_query('UPDATE over_forums SET sort = ' . sqlesc($sort) . ', name = ' . sqlesc($name) . ', description = ' . sqlesc($desc) . ', min_class_view = ' . sqlesc($min_class_view) . ' WHERE id = ' . sqlesc($id));
         header('Location: staffpanel.php?tool=over_forums');
-        die();
+        exit();
         break;
     //=== add forum
 
@@ -67,7 +67,7 @@ switch ($action) {
         }
         sql_query('INSERT INTO over_forums (sort, name,  description,  min_class_view) VALUES (' . sqlesc($sort) . ', ' . sqlesc($name) . ', ' . sqlesc($desc) . ', ' . sqlesc($min_class_view) . ')');
         header('Location: staffpanel.php?tool=over_forums');
-        die();
+        exit();
         break;
     //=== edit over forum stuff
 

@@ -1,10 +1,7 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-dbconn(true);
-loggedinorreturn();
-//print_r($_POST);
-//print_r($_GET); exit;
+check_user_status();
 $lang = array_merge(load_language('global'));
 $poll_id = isset($_GET['pollid']) ? intval($_GET['pollid']) : false;
 if (!is_valid_id($poll_id)) {

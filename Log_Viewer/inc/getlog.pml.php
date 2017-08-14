@@ -29,7 +29,7 @@ if ((!isset($_POST['file'])) ||
     (!isset($_POST['max'])) ||
     (!isset($_POST['ldv']))
 ) {
-    die();
+    exit();
 }
 
 /*
@@ -111,27 +111,27 @@ header('Content-type: application/json');
 if (!csrf_verify()) {
     $return['error'] = __('Please refresh the page.');
     echo json_encode($return);
-    die();
+    exit();
 }
 
 if (!isset($files[$file_id])) {
     $return['error'] = sprintf(__('File ID <code>%s</code> does not exist, please review your configuration file and stop playing!'), $file_id);
     echo json_encode($return);
-    die();
+    exit();
 }
 
 $file_path = @$files[$file_id]['path'];
 if (!file_exists($file_path)) {
     $return['error'] = sprintf(__('File <code>%s</code> for file ID <code>%s</code> does not exist, please review your configuration file.'), $file_path, $file_id);
     echo json_encode($return);
-    die();
+    exit();
 }
 
 $errors = config_check($files);
 if (is_array($errors)) {
     $return['error'] = __('Configuration file has changed and is buggy now. Please refresh the page.');
     echo json_encode($return);
-    die();
+    exit();
 }
 
 $regex = $files[$file_id]['format']['regex'];
@@ -300,6 +300,6 @@ else {
 
 echo json_encode($return);
 
-die();
+exit();
 
 ?>

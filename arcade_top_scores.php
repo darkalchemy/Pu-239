@@ -1,16 +1,13 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR.'user_functions.php';
-dbconn(true);
-loggedinorreturn();
+check_user_status();
 
 $lang = load_language('global');
 global $INSTALLER09, $CURUSER;
 
 $stdfoot = array(
-    /* include js **/
     'js' => array(
-        'wz_tooltip',
     ),
 );
 

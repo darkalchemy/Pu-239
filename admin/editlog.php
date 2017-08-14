@@ -16,13 +16,13 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
+check_user_status();
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-loggedinorreturn();
 //== ID list - Add individual user IDs to this list for access to this script
 /*$allowed_ids = array(
     1

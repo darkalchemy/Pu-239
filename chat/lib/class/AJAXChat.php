@@ -56,7 +56,7 @@ class AJAXChat
         $config = null;
         if (!include(AJAX_CHAT_PATH . 'lib/config.php')) {
             echo '<strong>Error:</strong> Could not find a config.php file in "' . AJAX_CHAT_PATH . '"lib/". Check to make sure the file exists.';
-            die();
+            exit();
         }
         $this->_config = &$config;
 
@@ -66,7 +66,7 @@ class AJAXChat
 
     public function initCustomConfig()
     {
-        loggedinorreturn();
+        check_user_status();
     }
 
     public function initDataBaseConnection()
@@ -81,13 +81,13 @@ class AJAXChat
             $this->db->connect($this->_config['dbConnection']);
             if ($this->db->error()) {
                 echo $this->db->getError();
-                die();
+                exit();
             }
             // Select the database:
             $this->db->select($this->_config['dbConnection']['name']);
             if ($this->db->error()) {
                 echo $this->db->getError();
-                die();
+                exit();
             }
         }
         // Unset the dbConnection array for safety purposes:
@@ -311,11 +311,12 @@ class AJAXChat
             // Stop if an error occurs:
             if ($result->error()) {
                 echo $result->getError();
-                die();
+                exit();
             }
 
             while ($row = $result->fetch()) {
                 $row['ip'] = ipFromStorageFormat($row['ip']);
+                $row['pmCount'] = getPmCount($row['userID']);
                 array_push($this->_onlineUsersData, $row);
             }
 
@@ -375,7 +376,7 @@ class AJAXChat
         // Stop if an error occurs:
         if ($result->error()) {
             echo $result->getError();
-            die();
+            exit();
         }
 
         $this->removeUserFromOnlineUsersData();
@@ -447,7 +448,7 @@ class AJAXChat
         // Stop if an error occurs:
         if ($result->error()) {
             echo $result->getError();
-            die();
+            exit();
         }
 
         // increment userachiev
@@ -461,7 +462,7 @@ class AJAXChat
         // Stop if an error occurs:
         if ($result->error()) {
             echo $result->getError();
-            die();
+            exit();
         }
 
         if ($this->getConfig('socketServerEnabled')) {
@@ -530,6 +531,7 @@ class AJAXChat
             $xml .= ' userID="' . $onlineUserData['userID'] . '"';
             $xml .= ' userRole="' . $onlineUserData['userRole'] . '"';
             $xml .= ' channelID="' . $onlineUserData['channel'] . '"';
+            $xml .= ' pmCount="'.$onlineUserData['pmCount'].'"';
             $xml .= '>';
             $xml .= '<![CDATA[' . $this->encodeSpecialChars($onlineUserData['userName']) . ']]>';
             $xml .= '</user>';
@@ -713,9 +715,6 @@ class AJAXChat
             return false;
         }
 
-        // Use a new session id (if session has been started by the chat):
-        $this->regenerateSessionID();
-
         // Log in:
         $this->setUserID($userData['userID']);
         $this->setUserName($userData['userName']);
@@ -730,7 +729,7 @@ class AJAXChat
         // The client authenticates to the socket server using a socketRegistrationID:
         if ($this->getConfig('socketServerEnabled')) {
             $this->setSocketRegistrationID(
-                md5(uniqid(mt_rand(), true))
+                md5(uniqid(random_int(), true))
             );
         }
 
@@ -864,7 +863,7 @@ class AJAXChat
         // Stop if an error occurs:
         if ($result->error()) {
             echo $result->getError();
-            die();
+            exit();
         }
 
         $this->resetOnlineUsersData();
@@ -892,7 +891,7 @@ class AJAXChat
         // Stop if an error occurs:
         if ($result->error()) {
             echo $result->getError();
-            die();
+            exit();
         }
 
         if ($result->numRows() > 0) {
@@ -925,7 +924,7 @@ class AJAXChat
             // Stop if an error occurs:
             if ($result->error()) {
                 echo $result->getError();
-                die();
+                exit();
             }
         }
     }
@@ -972,7 +971,7 @@ class AJAXChat
             // Stop if an error occurs:
             if ($result->error()) {
                 echo $result->getError();
-                die();
+                exit();
             }
 
             while ($row = $result->fetch()) {
@@ -1013,14 +1012,6 @@ class AJAXChat
         }
 
         return false;
-    }
-
-    public function regenerateSessionID()
-    {
-        if ($this->_sessionNew) {
-            // Regenerate session id:
-            @session_regenerate_id(true);
-        }
     }
 
     public function setUserID($id)
@@ -1071,7 +1062,7 @@ class AJAXChat
         // Stop if an error occurs:
         if ($result->error()) {
             echo $result->getError();
-            die();
+            exit();
         }
     }
 
@@ -1288,7 +1279,7 @@ class AJAXChat
             // Stop if an error occurs:
             if ($result->error()) {
                 echo $result->getError();
-                die();
+                exit();
             }
 
             while ($row = $result->fetch()) {
@@ -1360,7 +1351,7 @@ class AJAXChat
         // Stop if an error occurs:
         if ($result->error()) {
             echo $result->getError();
-            die();
+            exit();
         }
 
         $this->resetOnlineUsersData();
@@ -1496,7 +1487,7 @@ class AJAXChat
         // Stop if an error occurs:
         if ($result->error()) {
             echo $result->getError();
-            die();
+            exit();
         }
 
         $this->resetOnlineUsersData();
@@ -1659,7 +1650,7 @@ class AJAXChat
         // Stop if an error occurs:
         if ($result->error()) {
             echo $result->getError();
-            die();
+            exit();
         }
 
         $row = $result->fetch();
@@ -1706,7 +1697,7 @@ class AJAXChat
             // Stop if an error occurs:
             if ($result->error()) {
                 echo $result->getError();
-                die();
+                exit();
             }
 
             if ($result->affectedRows() == 1) {
@@ -2086,7 +2077,7 @@ class AJAXChat
         // Stop if an error occurs:
         if ($result->error()) {
             echo $result->getError();
-            die();
+            exit();
         }
     }
 
@@ -2103,7 +2094,7 @@ class AJAXChat
         // Stop if an error occurs:
         if ($result->error()) {
             echo $result->getError();
-            die();
+            exit();
         }
     }
 
@@ -2163,7 +2154,7 @@ class AJAXChat
         // Stop if an error occurs:
         if ($result->error()) {
             echo $result->getError();
-            die();
+            exit();
         }
     }
 
@@ -2324,7 +2315,7 @@ class AJAXChat
         // Stop if an error occurs:
         if ($result->error()) {
             echo $result->getError();
-            die();
+            exit();
         }
 
         // Update the socket server authentication for the kicked user:
@@ -2373,7 +2364,7 @@ class AJAXChat
         // Stop if an error occurs:
         if ($result->error()) {
             echo $result->getError();
-            die();
+            exit();
         }
     }
 
@@ -2400,7 +2391,7 @@ class AJAXChat
         // Stop if an error occurs:
         if ($result->error()) {
             echo $result->getError();
-            die();
+            exit();
         }
     }
 
@@ -2480,7 +2471,7 @@ class AJAXChat
         // Stop if an error occurs:
         if ($result->error()) {
             echo $result->getError();
-            die();
+            exit();
         }
     }
 
@@ -2709,7 +2700,7 @@ class AJAXChat
 
     public function rollDice($sides)
     {
-        return mt_rand(1, $sides);
+        return random_int(1, $sides);
     }
 
     public function insertParsedMessageNick($textParts)
@@ -2873,7 +2864,7 @@ class AJAXChat
         // Stop if an error occurs:
         if ($result->error()) {
             echo $result->getError();
-            die();
+            exit();
         }
 
         $messages = '';
@@ -2977,7 +2968,7 @@ class AJAXChat
         // Stop if an error occurs:
         if ($result->error()) {
             echo $result->getError();
-            die();
+            exit();
         }
 
         $messages = '';
@@ -3061,7 +3052,7 @@ class AJAXChat
         // Stop if an error occurs:
         if ($result->error()) {
             echo $result->getError();
-            die();
+            exit();
         }
 
         $xml = '<messages>';
@@ -3325,7 +3316,7 @@ class AJAXChat
         if (!$this->_lang) {
             // Include the language file:
             $lang = null;
-            require AJAX_CHAT_PATH . 'lib/lang/' . $this->getLangCode() . '.php';
+            require_once AJAX_CHAT_PATH . 'lib' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . $this->getLangCode() . '.php';
             $this->_lang = &$lang;
         }
         if ($key === null) {

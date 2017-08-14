@@ -25,7 +25,7 @@ header('Content-type: application/json');
 if (!csrf_verify()) {
     $logs['error'] = __('Please refresh the page.');
     echo json_encode($logs);
-    die();
+    exit();
 }
 
 /*
@@ -47,18 +47,18 @@ if (isset($_POST['action'])) {
                     Session::write_close();
 
                     echo json_encode(['logs' => $lines]);
-                    die();
+                    exit();
                 } else {
                     echo json_encode(['error' => __('GIT is no more availble, please refresh the page')]);
-                    die();
+                    exit();
                 }
             } else {
                 echo json_encode(['error' => __('GIT is no more availble, please refresh the page')]);
-                die();
+                exit();
             }
         // no break
         default:
-            die();
+            exit();
             break;
     }
 }
@@ -87,7 +87,7 @@ if (file_exists('../version.js')) {
     $upgrade['footer'] = '<span class="text-danger">' . __('Unable to check your current version!') . '</span>';
 
     echo json_encode($upgrade);
-    die();
+    exit();
 }
 
 /*
@@ -116,7 +116,7 @@ try {
     */
     if (false === CHECK_UPGRADE) {
         echo json_encode($upgrade);
-        die();
+        exit();
     }
 
     /*
@@ -208,13 +208,13 @@ try {
         if (!isset($JSr_version['changelog'])) {
             $upgrade['footer'] = $default . ' - <a href="' . PIMPMYLOG_VERSION_URL . '" target="check"><span class="text-danger" title="' . sprintf(__('Error while fetching URL %s from the server hosting this Pimp my Log instance.'), PIMPMYLOG_VERSION_URL) . '">' . __('Remote version broken!') . '</span></a>';
             echo json_encode($upgrade);
-            die();
+            exit();
         }
 
         if (!is_array($JSr_version['changelog'])) {
             $upgrade['footer'] = $default . ' - <a href="' . PIMPMYLOG_VERSION_URL . '" target="check"><span class="text-danger" title="' . sprintf(__('Error while fetching URL %s from the server hosting this Pimp my Log instance.'), PIMPMYLOG_VERSION_URL) . '">' . __('Remote version broken!') . '</span></a>';
             echo json_encode($upgrade);
-            die();
+            exit();
         }
 
         foreach ($JSr_version['changelog'] as $version => $version_details) {
@@ -403,10 +403,10 @@ try {
 } catch (Exception $e) {
     $upgrade['footer'] = $default . ' - <a href="' . PIMPMYLOG_VERSION_URL . '" target="check"><span class="text-danger" title="' . sprintf(__('Unable to fetch URL %s from the server hosting this Pimp my Log instance.'), PIMPMYLOG_VERSION_URL) . '">' . __('Unable to check remote version!') . '</span></a>';
     echo json_encode($upgrade);
-    die();
+    exit();
 }
 
 echo json_encode($upgrade);
-die();
+exit();
 
 ?>

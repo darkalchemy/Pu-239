@@ -1,6 +1,5 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once CLASS_DIR . 'page_verify.php';
 require_once CACHE_DIR . 'timezones.php';
 dbconn();
 global $CURUSER;
@@ -12,11 +11,8 @@ if (isset($CURUSER)) {
     exit();
 }
 $stdfoot = [
-    /* include js **/
     'js' => [
-        'check',
-        'jquery.pstrength-min.1.2',
-        'jquery.simpleCaptcha-0.2',
+        '35f28ceada21b7326280c8796c9fa9b2.min'
     ],
 ];
 if (!$INSTALLER09['openreg']) {
@@ -25,15 +21,13 @@ if (!$INSTALLER09['openreg']) {
 $HTMLOUT = $year = $month = $day = $gender = '';
 $HTMLOUT .= "
     <script>
-    /*<![CDATA[*/
-    $(function() {
-    $('.password').pstrength();
-    });
-    /*]]>*/
+        /*<![CDATA[*/
+            $(function() {
+                $('.password').pstrength();
+            });
+        /*]]>*/
     </script>";
 $lang = array_merge(load_language('global'), load_language('signup'));
-$newpage = new page_verify();
-$newpage->create('tesu');
 if (get_row_count('users') >= $INSTALLER09['maxusers']) {
     stderr($lang['stderr_errorhead'], sprintf($lang['stderr_ulimit'], $INSTALLER09['maxusers']));
 }
@@ -82,23 +76,35 @@ $value = [
     '...',
 ];
 $value[rand(1, count($value) - 1)] = 'X';
-$HTMLOUT .= "<script>
-	  /*<![CDATA[*/
-	  $(document).ready(function () {
-	  $('#captchasignup').simpleCaptcha();
-    });
-    /*]]>*/
-    </script>
+$HTMLOUT .= "
     <form method='post' action='takesignup.php'>
-    <table border='1' cellspacing='0' cellpadding='10'>
-    <tr><td align='right' class='heading'>{$lang['signup_uname']}</td><td align='left'><input type='text' size='40' name='wantusername' id='wantusername' onblur='checkit();' /><div id='namecheck'></div></td></tr>
-    <tr><td align='right' class='heading'>{$lang['signup_pass']}</td><td align='left'><input class='password' type='password' size='40' name='wantpassword' /></td></tr>
-    <tr><td align='right' class='heading'>{$lang['signup_passa']}</td><td align='left'><input type='password' size='40' name='passagain' /></td></tr>
-    <tr valign='top'><td align='right' class='heading'>{$lang['signup_email']}</td><td align='left'><input type='text' size='40' name='email' />
-    <table width='250' border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'><span style='font-size: 1em;'>{$lang['signup_valemail']}</span></td></tr>
-    </table>
-    </td></tr>
-    <tr><td align='right' class='heading'>{$lang['signup_timez']}</td><td align='left'>{$time_select}</td></tr>";
+        <table border='1' cellspacing='0' cellpadding='10'>
+            <tr>
+                <td align='right' class='heading'>{$lang['signup_uname']}</td>
+                <td align='left'><input type='text' size='40' name='wantusername' id='wantusername' onblur='checkit();' /><div id='namecheck'></div></td>
+            </tr>
+            <tr valign='top'>
+                <td align='right' class='heading'>{$lang['signup_pass']}</td>
+                <td align='left'><input class='password' type='password' size='40' name='wantpassword' /></td>
+            </tr>
+            <tr>
+                <td align='right' class='heading'>{$lang['signup_passa']}</td>
+                <td align='left'><input type='password' size='40' name='passagain' /></td>
+            </tr>
+            <tr valign='top'>
+                <td align='right' class='heading'>{$lang['signup_email']}</td>
+                <td align='left'><input type='text' size='40' name='email' />
+                    <table width='250' border='0' cellspacing='0' cellpadding='0'>
+                        <tr>
+                            <td class='embedded'><span style='font-size: 1em;'>{$lang['signup_valemail']}</span></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td align='right' class='heading'>{$lang['signup_timez']}</td>
+                <td align='left'>{$time_select}</td>
+            </tr>";
 //==09 Birthday mod
 $year .= '<select name="year">';
 $year .= "<option value=\"0000\">{$lang['signup_year']}</option>";
@@ -135,7 +141,11 @@ while ($i <= 31) {
     ++$i;
 }
 $day .= '</select>';
-$HTMLOUT .= "<tr><td align='right' class='heading'>{$lang['signup_birth']}<span style='color:red'>*</span></td><td align='left'>" . $year . $month . $day . '</td></tr>';
+$HTMLOUT .= "
+            <tr>
+                <td align='right' class='heading'>{$lang['signup_birth']}<span style='color:red'>*</span></td>
+                <td align='left'>" . $year . $month . $day . '</td>
+            </tr>';
 //==End
 //==Passhint
 $passhint = '';
@@ -168,19 +178,56 @@ $questions = [
 foreach ($questions as $sph) {
     $passhint .= "<option value='" . $sph['id'] . "'>" . $sph['question'] . "</option>\n";
 }
-$HTMLOUT .= "<tr><td align='right' class='heading'>{$lang['signup_select']}</td><td align='left'><select name='passhint'>\n$passhint\n</select></td></tr>
-		<tr><td align='right' class='heading'>{$lang['signup_enter']}</td><td align='left'><input type='text' size='40'  name='hintanswer' /><br><span style='font-size: 1em;'>{$lang['signup_this_answer']}<br>{$lang['signup_this_answer1']}</span></td></tr>
-     <tr><td align='right' class='heading'>{$lang['signup_country']}</td><td align='left'><select name='country'>\n$country\n</select></td></tr>	
-     <tr><td align='right' class='heading'>{$lang['signup_gender']}</td><td align='left'>$gender</td></tr>
-    <tr><td align='right' class='heading'></td><td align='left'>
-    <input type='checkbox' name='rulesverify' value='yes' /> {$lang['signup_rules']}<br>
-    <input type='checkbox' name='faqverify' value='yes' /> {$lang['signup_faq']}<br>
-    <input type='checkbox' name='ageverify' value='yes' /> {$lang['signup_age']}</td></tr>
-    " . ($INSTALLER09['captcha_on'] ? "<tr><td class='rowhead' colspan='2' id='captchasignup'></td></tr>" : '') . "
-    <tr><td align='center' colspan='2'>{$lang['signup_click']} <strong>{$lang['signup_x']}</strong> {$lang['signup_click1']}</td></tr><tr>
-    <td colspan='2' align='center'>";
+$HTMLOUT .= "
+            <tr>
+                <td align='right' class='heading'>{$lang['signup_select']}</td>
+                <td align='left'><select name='passhint'>\n$passhint\n</select></td>
+            </tr>
+            <tr valign='top'>
+                <td align='right' class='heading'>{$lang['signup_enter']}</td>
+                <td align='left'>
+                    <input type='text' size='40'  name='hintanswer' /><br><span style='font-size: 1em;'>{$lang['signup_this_answer']}<br>{$lang['signup_this_answer1']}</span>
+                </td>
+            </tr>
+            <tr>
+                <td align='right' class='heading'>{$lang['signup_country']}</td>
+                <td align='left'><select name='country'>\n$country\n</select></td>
+            </tr>
+            <tr>
+                <td align='right' class='heading'>{$lang['signup_gender']}</td>
+                <td align='left'>$gender</td>
+            </tr>
+            <tr>
+                <td align='right' class='heading'></td>
+                <td align='left'>
+                    <div class='flex'>
+                        <input type='checkbox' name='rulesverify' value='yes'><label for='rulesverify' class='left20'>{$lang['signup_rules']}</label>
+                    </div>
+                    <div class='flex'>
+                        <input type='checkbox' name='faqverify' value='yes'><label for='faqverify' class='left20'>{$lang['signup_faq']}</label>
+                    </div>
+                    <div class='flex'>
+                        <input type='checkbox' name='ageverify' value='yes'><label for='ageverify' class='left20'>{$lang['signup_age']}</label>
+                    </div>
+                </td>
+            </tr>" . ($INSTALLER09['captcha_on'] ? "
+            <tr>
+                <td class='rowhead' colspan='2' id='captcha_show'></td>
+            </tr>" : '') . "
+            <tr>
+                <td align='center' colspan='2'>{$lang['signup_click']} <strong>{$lang['signup_x']}</strong> {$lang['signup_click1']}</td>
+            </tr>
+            <tr>
+                <td colspan='2' align='center'>
+                    <span class='answers-container'>";
 for ($i = 0; $i < count($value); ++$i) {
-    $HTMLOUT .= '<input name="submitme" type="submit" value="' . $value[$i] . '" class="btn" />';
+    $HTMLOUT .= '
+                        <input name="submitme" type="submit" value="' . $value[$i] . '" class="btn" />';
 }
-$HTMLOUT .= '</td></tr></table></form>';
+$HTMLOUT .= '
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </form>';
 echo stdhead($lang['head_signup']) . $HTMLOUT . stdfoot($stdfoot);

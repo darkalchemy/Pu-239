@@ -2,23 +2,17 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once CACHE_DIR . 'timezones.php';
-require_once CLASS_DIR . 'page_verify.php';
 dbconn();
 global $CURUSER;
 if (!$CURUSER) {
     get_template();
 }
 $stdfoot = [
-    /* include js **/
     'js' => [
-        'check',
-        'jquery.pstrength-min.1.2',
-        'jquery.simpleCaptcha-0.2',
+        '35f28ceada21b7326280c8796c9fa9b2.min'
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('signup'));
-$newpage = new page_verify();
-$newpage->create('tkIs');
 $res = sql_query('SELECT COUNT(*) FROM users') or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_row($res);
 if ($arr[0] >= $INSTALLER09['invites']) {
@@ -39,13 +33,6 @@ $time_select .= '</select>';
 // TIMEZONE END
 $HTMLOUT = $year = $month = $day = '';
 $HTMLOUT .= "
-    <script>
-    /*<![CDATA[*/
-    $(function() {
-    $('.password').pstrength();
-    });
-    /*]]>*/
-    </script>";
 // Normal Entry Point...
 $value = [
     '...',
@@ -57,11 +44,6 @@ $value = [
 ];
 $value[rand(1, count($value) - 1)] = 'X';
 $HTMLOUT .= "
-    <script>
-	  $(document).ready(function () {
-	  $('#captchainvite').simpleCaptcha();
-    });
-    </script>
     <p>{$lang['signup_cookies']}</p>
     <form method='post' action='{$INSTALLER09['baseurl']}/take_invite_signup.php'>
     <table border='1' cellspacing='0' cellpadding='10'>

@@ -74,13 +74,13 @@ $return = [];
 if (!csrf_verify()) {
     $return['error'] = __('Please refresh the page.');
     echo json_encode($return);
-    die();
+    exit();
 }
 
 if (!isset($files[$_POST['file']])) {
     $return['error'] = __('This log file does not exist.');
     echo json_encode($return);
-    die();
+    exit();
 }
 $file_id = $_POST['file'];
 $format = $_POST['format'];
@@ -185,6 +185,6 @@ switch (@$_POST['action']) {
 |
 */
 echo json_encode($return);
-die();
+exit();
 
 ?>

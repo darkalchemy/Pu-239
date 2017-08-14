@@ -2,7 +2,7 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
@@ -14,7 +14,7 @@ class_check($class);
 $HTMLOUT = '';
 $count2 = 0;
 if (isset($_GET['total_donors'])) {
-    $total_donors = 0 + $_GET['total_donors'];
+    $total_donors = (int)$_GET['total_donors'];
     if ($total_donors != '1') {
         stderr($lang['donate_err'], $lang['donate_err1']);
     }

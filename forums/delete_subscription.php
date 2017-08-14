@@ -2,7 +2,7 @@
 if (!defined('BUNNY_FORUMS')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 global $lang;
 
@@ -12,7 +12,7 @@ if ($topic_id > 0) {
     sql_query('DELETE FROM subscriptions WHERE topic_id = ' . sqlesc($topic_id) . ' AND user_id = ' . sqlesc($CURUSER['id']));
     //=== ok, all done here, send them back! \o/
     header('Location: ' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&topic_id=' . $topic_id . '&s=0');
-    die();
+    exit();
 }
 //=== delete stuff from subscriptions page stolen from pdq... thanks hun \o
 if (isset($_POST['remove'])) {
@@ -31,4 +31,4 @@ if (isset($_POST['remove'])) {
 }
 //=== ok, all done here, send them back! \o/
 header('Location: ' . $INSTALLER09['baseurl'] . '/forums.php?action=subscriptions');
-die();
+exit();

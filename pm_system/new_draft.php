@@ -3,7 +3,7 @@ $preview = $subject = $draft = '';
 if (!defined('BUNNY_PM_SYSTEM')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 if (isset($_POST['buttonval']) && $_POST['buttonval'] == 'save draft') {
     //=== make sure they wrote something :P
@@ -25,7 +25,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == 'save draft') {
         stderr($lang['pm_error'], $lang['pm_draft_err2']);
     }
     header('Location: pm_system.php?action=view_message&new_draft=1&id=' . $new_draft_id);
-    die();
+    exit();
 } //=== end save draft
 //=== Code for preview Retros code
 if (isset($_POST['buttonval']) && $_POST['buttonval'] == 'preview') {

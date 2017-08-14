@@ -2,7 +2,7 @@
 if (!defined('TBVERSION')) { //cannot access this file directly
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 /** $class = UC_CLASS_NAME: minimum class required to view page
  *

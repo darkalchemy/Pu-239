@@ -1,16 +1,12 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-require_once CLASS_DIR . 'page_verify.php';
 require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
-dbconn();
-loggedinorreturn();
+check_user_status();
 $curuser_cache = $user_cache = $urladd = $changedemail = $birthday = '';
 $lang = array_merge(load_language('global'), load_language('takeeditcp'));
-$newpage = new page_verify();
-$newpage->check('tkepe');
 function resize_image($in)
 {
     $out = [
@@ -158,34 +154,26 @@ elseif ($action == 'security') {
         if ($chpassword != $passagain) {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_not_match']);
         }
-        $secret = mksecret();
-        $passhash = make_passhash($secret, md5($chpassword));
-        $updateset[] = 'secret = ' . sqlesc($secret);
+        $passhash = make_passhash($chpassword);
         $updateset[] = 'passhash = ' . sqlesc($passhash);
-        $curuser_cache['secret'] = $secret;
-        $user_cache['secret'] = $secret;
         $curuser_cache['passhash'] = $passhash;
         $user_cache['passhash'] = $passhash;
-        logincookie($CURUSER['id'], md5($passhash . $_SERVER['REMOTE_ADDR']));
     }
     if ($email != $CURUSER['email']) {
         if (!validemail($email)) {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_not_valid_email']);
         }
         $r = sql_query('SELECT id FROM users WHERE email=' . sqlesc($email)) or sqlerr(__FILE__, __LINE__);
-        if (mysqli_num_rows($r) > 0 || ($CURUSER['passhash'] != make_passhash($CURUSER['secret'], md5($chmailpass)))) {
+        if (mysqli_num_rows($r) > 0 || ($CURUSER['passhash'] != make_passhash($chmailpass))) {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_address_taken']);
         }
         $changedemail = 1;
     }
     if ($secretanswer != '') {
-        if (strlen($secretanswer) > 40) {
-            stderr($lang['takeeditcp_sorry'], $lang['takeeditcp_secret_long']);
-        }
-        if (strlen($secretanswer) < 6) {
+        if (strlen($secretanswer) < 3) {
             stderr($lang['takeeditcp_sorry'], $lang['takeeditcp_secret_short']);
         }
-        $new_secret_answer = md5($secretanswer);
+        $new_secret_answer = make_passhash($secretanswer);
         $updateset[] = 'hintanswer = ' . sqlesc($new_secret_answer);
         $curuser_cache['hintanswer'] = $new_secret_answer;
         $user_cache['hintanswer'] = $new_secret_answer;
@@ -234,12 +222,8 @@ elseif ($action == 'security') {
         $user_cache['passhint'] = $changeq;
     }
     if ($changedemail) {
-        $sec = mksecret();
         $hash = md5($sec . $email . $sec);
         $obemail = urlencode($email);
-        $updateset[] = 'editsecret = ' . sqlesc($sec);
-        $curuser_cache['editsecret'] = $sec;
-        $user_cache['editsecret'] = $sec;
         $thishost = $_SERVER['HTTP_HOST'];
         $thisdomain = preg_replace('/^www\./is', '', $thishost);
         $body = str_replace([
@@ -559,7 +543,7 @@ if ($setbits || $clrbits) {
     sql_query('UPDATE users SET opt1 = ((opt1 | ' . $setbits . ') & ~' . $clrbits . '), opt2 = ((opt2 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 }
 // grab current data
-$res = sql_query('SELECT opt1, opt2 FROM users 
+$res = sql_query('SELECT opt1, opt2 FROM users
                      WHERE id = ' . sqlesc($CURUSER['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res);
 $row['opt1'] = (int)$row['opt1'];

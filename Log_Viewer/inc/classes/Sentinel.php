@@ -27,27 +27,27 @@ class Sentinel
                         $error = 2;
                         include_once PML_BASE . '/inc/login.inc.php';
                         self::release();
-                        die();
+                        exit();
                     }
 
                     $loggedin = self::signIn($_POST['username'], $_POST['password']);
 
                     if (is_array($loggedin)) { // signed in
                         header('Location: ' . $_POST['attempt']);
-                        die();
+                        exit();
                     } else { // error while signing in
                         $attempt = $_POST['attempt'];
                         $error = 1;
                         include_once PML_BASE . '/inc/login.inc.php';
                         self::release();
-                        die();
+                        exit();
                     }
                 } elseif (isset($_GET['signin'])) { // sign in page when anonymous access is enabled
                     $attempt = (isset($_GET['attempt'])) ? $_GET['attempt'] : $_SERVER['REQUEST_URI'] . '?' . $_SERVER['QUERY_STRING'];
                     $error = 0;
                     include_once PML_BASE . '/inc/login.inc.php';
                     self::release();
-                    die();
+                    exit();
                 } elseif (self::isAnonymousEnabled($files)) { // Anonymous access is enabled, simply return to let anonymosu users to parse logs
                     return null;
                 } else { // send form
@@ -55,7 +55,7 @@ class Sentinel
                     $error = 0;
                     include_once PML_BASE . '/inc/login.inc.php';
                     self::release();
-                    die();
+                    exit();
                 }
             } else {
                 if (isset($_GET['signout'])) {
@@ -70,7 +70,7 @@ class Sentinel
                         include_once PML_BASE . '/inc/login.inc.php';
                     }
 
-                    die();
+                    exit();
                 }
 
                 return $user;
@@ -402,7 +402,7 @@ class Sentinel
             throw new Exception('No lock has been requested');
         }
 
-        $file = '<?php if (realpath(__FILE__)===realpath($_SERVER["SCRIPT_FILENAME"])) {header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");die();}?>' . "\n";
+        $file = '<?php if (realpath(__FILE__)===realpath($_SERVER["SCRIPT_FILENAME"])) {header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");exit();}?>' . "\n";
         $file .= json_encode(self::$auth);
 
         self::write($file);
@@ -578,7 +578,7 @@ class Sentinel
      */
     private static function generateSecurityToken($len = 64)
     {
-        return mt_rand_str($len);
+        return random_int_str($len);
     }
 
     /**

@@ -27,11 +27,11 @@ $format = (isset($_GET['format']) ? $_GET['format'] : '');
 if ($format) {
     $pager .= 'format=' . $format . '&amp;';
 }
-$cds = (isset($_GET['cds']) ? 0 + $_GET['cds'] : '');
+$cds = (isset($_GET['cds']) ? (int)$_GET['cds'] : '');
 if ($cds) {
     $pager .= 'cds=' . $cds . '&amp;';
 }
-$offset = (isset($_GET['offset']) ? 0 + $_GET['offset'] : '');
+$offset = (isset($_GET['offset']) ? (int)$_GET['offset'] : '');
 
 if ($searchby == 'name') {
     $name = str_replace(['.', '/', '"', '!', '-', '+', '_', '@', '#', '$', '%', '&', '^', '(', ')', '*'], ' ', $name);

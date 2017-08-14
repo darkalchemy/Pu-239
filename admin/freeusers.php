@@ -2,7 +2,7 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
@@ -10,7 +10,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_freeusers'));
 $HTMLOUT = '';
-$remove = (isset($_GET['remove']) ? 0 + $_GET['remove'] : 0);
+$remove = (isset($_GET['remove']) ? (int)$_GET['remove'] : 0);
 if ($remove) {
     if (empty($remove)) {
         die($lang['freeusers_wtf']);

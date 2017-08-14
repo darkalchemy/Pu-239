@@ -3,8 +3,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'emoticons.php';
 require_once INCL_DIR . 'html_functions.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 $lang = load_language('global');
 $HTMLOUT = stdhead();
 $HTMLOUT .= begin_main_frame();

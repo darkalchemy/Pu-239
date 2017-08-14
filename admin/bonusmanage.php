@@ -2,7 +2,7 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
@@ -14,11 +14,11 @@ $HTMLOUT = $count = '';
 $res = sql_query('SELECT * FROM bonus ORDER BY orderid, bonusname') or sqlerr(__FILE__, __LINE__);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['id']) || isset($_POST['orderid']) || isset($_POST['points']) || isset($_POST['pointspool']) || isset($_POST['minpoints']) || isset($_POST['description']) || isset($_POST['enabled']) || isset($_POST['minclass'])) {
-        $id = 0 + $_POST['id'];
-        $points = 0 + $_POST['bonuspoints'];
-        $pointspool = 0 + $_POST['pointspool'];
-        $minpoints = 0 + $_POST['minpoints'];
-        $minclass = 0 + $_POST['minclass'];
+        $id = (int)$_POST['id'];
+        $points = (int)$_POST['bonuspoints'];
+        $pointspool = (int)$_POST['pointspool'];
+        $minpoints = (int)$_POST['minpoints'];
+        $minclass = (int)$_POST['minclass'];
         $descr = htmlsafechars($_POST['description']);
         $enabled = 'yes';
         if (isset($_POST['enabled']) == '') {

@@ -1,8 +1,7 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-dbconn();
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('ajax_status'));
 function url2short($x)
 {
@@ -41,7 +40,7 @@ $vdo = [
     'new'    => 1,
 ];
 $do = isset($_POST['action']) && isset($vdo[$_POST['action']]) ? $_POST['action'] : '';
-$id = isset($_POST['id']) ? 0 + $_POST['id'] : '';
+$id = isset($_POST['id']) ? (int)$_POST['id'] : '';
 $ss = isset($_POST['ss']) && !empty($_POST['ss']) ? $_POST['ss'] : '';
 switch ($do) {
     case 'edit':

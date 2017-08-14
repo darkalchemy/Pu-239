@@ -11,7 +11,7 @@ function pager($rpp, $count, $href, $opts = []) // thx yuna or whoever wrote it
         }
     }
     if (isset($_GET['page'])) {
-        $page = 0 + $_GET['page'];
+        $page = (int)$_GET['page'];
         if ($page < 0) {
             $page = $pagedefault;
         }

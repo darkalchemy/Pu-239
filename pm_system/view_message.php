@@ -3,7 +3,7 @@ $subject = $friends = '';
 if (!defined('BUNNY_PM_SYSTEM')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 //=== Get the message
 $res = sql_query('SELECT m.*, f.id AS friend, b.id AS blocked

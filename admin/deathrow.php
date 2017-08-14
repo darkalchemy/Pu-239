@@ -2,7 +2,7 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
@@ -36,7 +36,7 @@ function delete_torrent($delete_array, $page)
     }
     $delete = [];
     foreach ($delete_array as $remove) {
-        $delete[] = 0 + $remove;
+        $delete[] = (int)$remove;
     }
     $delete = array_unique($delete);
     $count = count($delete);
@@ -189,7 +189,7 @@ if ($count) {
         } else {
             $reason = $lang['deathrow_no_seed'] . calctime($z_time) . $lang['deathrow_new_torr'];
         }
-        $id = 0 + $queued['tid'];
+        $id = (int)$queued['tid'];
         $b .= '<tr>' . ($CURUSER['class'] >= UC_STAFF ? "<td align='center'><a href='userdetails.php?id=" . $queued['uid'] . "&amp;hit=1'><b>" . htmlsafechars($queued['username']) . '</b></a></td>' : "<td align='center'><strong>{$lang['deathrow_hidden']}</strong></td>") . "<td align='center'><a href='details.php?id=" . $id . "&amp;hit=1'>" . htmlsafechars($queued['torrent_name']) . "</a></td><td align='center'>" . $reason . "</td><td align='center'>" . ($queued['username'] == $CURUSER['username'] || $CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" name="remove[]" value="' . $id . '" /><b>' . ($queued['username'] == $CURUSER['username'] ? '&#160;&#160;<font color="#800000">' . $lang['deathrow_delete'] . '</font>' : '' . $lang['deathrow_delete1'] . '') . '</b>' : "{$lang['deathrow_ownstaff']}") . '</td></tr>';
     }
     $b .= '<tr><td class="table" colspan="11" align="right"><input type="button" value="' . $lang['deathrow_checkall'] . '" onclick="this.value=check(this.form.elements[\'remove[]\'])"/>

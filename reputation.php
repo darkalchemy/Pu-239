@@ -3,8 +3,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 $lang = load_language('reputation');
 define('TIMENOW', time());
 // mod or not?

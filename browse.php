@@ -6,8 +6,8 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'searchcloud_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
+
 if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
     sql_query('UPDATE users SET last_browse=' . TIME_NOW . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
@@ -23,22 +23,15 @@ if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
     header("Location: {$INSTALLER09['baseurl']}/browse.php");
 }
 $stdfoot = [
-    /* include js **/
     'js' => [
-        'java_klappe',
-        'wz_tooltip',
     ],
 ];
 $stdhead = [
-    /* include css **/
     'css' => [
         'browse',
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('browse'), load_language('torrenttable_functions'));
-if (function_exists('parked')) {
-    parked();
-}
 $HTMLOUT = $searchin = $select_searchin = $where = $addparam = $new_button = $search_help_boolean = $vip_box = $only_free = '';
 $HTMLOUT .= '<script>
 /*<![CDATA[*/

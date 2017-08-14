@@ -5,30 +5,18 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
-require_once CLASS_DIR . 'page_verify.php';
 require_once CACHE_DIR . 'timezones.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 $stdfoot = [
-    /* include js **/
     'js' => [
-        'keyboard',
+        'custom-form-elements'
     ],
 ];
 $stdhead = [
-    /* include js **/
-    'js'  => [
-        'custom-form-elements',
-    ],
-    /* include css **/
     'css' => [
-        'checkbox',
-        'usercp',
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('usercp'));
-$newpage = new page_verify();
-$newpage->create('tkepe');
 $HTMLOUT = $stylesheets = $wherecatina = '';
 $templates = sql_query('SELECT id, name FROM stylesheets ORDER BY id');
 while ($templ = mysqli_fetch_assoc($templates)) {
@@ -59,33 +47,6 @@ if ($CURUSER['auto_correct_dst']) {
 } else {
     $dst_correction = '';
 }
-$HTMLOUT .= "<script>
-    /*<![CDATA[*/
-    function daylight_show()
-    {
-    if ( document.getElementById( 'tz-checkdst' ).checked )
-    {
-    document.getElementById( 'tz-checkmanual' ).style.display = 'none';
-    }
-    else
-    {
-    document.getElementById( 'tz-checkmanual' ).style.display = 'block';
-    }
-    }
-    /*]]>*/
-    </script>";
-$HTMLOUT .= '
-    <script>
-    /*<![CDATA[*/
-    $(document).ready(function()	{
-    //=== show hide paranoia info
-    $("#paranoia_open").click(function() {
-    $("#paranoia_info").slideToggle("slow", function() {
-    });
-    });
-    });
-    /*]]>*/
-    </script>';
 $possible_actions = [
     'avatar',
     'signature',
@@ -112,36 +73,36 @@ if (isset($_GET['edited'])) {
 $HTMLOUT .= "<fieldset><legend>Welcome <a href='userdetails.php?id=" . (int)$CURUSER['id'] . "'>" . htmlsafechars($CURUSER['username']) . "</a> !</legend>\n
     <div class='nav-collapse collapse'>
     <div class='span11'><form method='post' action='takeeditcp.php'>
-		<div class='nav offset1'>
-		<ul class='nav nav-pills'>
-				  <li><a href='usercp.php?action=avatar'>Avatar</a></li>
-				  <li><a href='usercp.php?action=signature'>Signature</a></li>
-				  <li><a href='usercp.php?action=default'>Pm's</a></li>
-				  <li><a href='usercp.php?action=security'>Security</a></li>
-				  <li><a href='usercp.php?action=torrents'>Torrents</a></li>
-				  <li><a href='usercp.php?action=personal'>Personal</a></li>
-				  <li><a href='usercp.php?action=social'>Social</a></li>
-				  <li><a href='usercp.php?action=location'>Location</a></li>
-				  <li><a href='usercp.php?action=links'>Links</a></li>
-		</ul>
-		</div>
-	   <div class='span2 pull-left'>
-		<table class='table table-bordered'>";
+        <div class='nav offset1'>
+        <ul class='nav nav-pills'>
+                  <li><a href='usercp.php?action=avatar'>Avatar</a></li>
+                  <li><a href='usercp.php?action=signature'>Signature</a></li>
+                  <li><a href='usercp.php?action=default'>Pm's</a></li>
+                  <li><a href='usercp.php?action=security'>Security</a></li>
+                  <li><a href='usercp.php?action=torrents'>Torrents</a></li>
+                  <li><a href='usercp.php?action=personal'>Personal</a></li>
+                  <li><a href='usercp.php?action=social'>Social</a></li>
+                  <li><a href='usercp.php?action=location'>Location</a></li>
+                  <li><a href='usercp.php?action=links'>Links</a></li>
+        </ul>
+        </div>
+       <div class='span2 pull-left'>
+        <table class='table table-bordered'>";
 if (!empty($CURUSER['avatar']) && $CURUSER['av_w'] > 5 && $CURUSER['av_h'] > 5) {
     $HTMLOUT .= "
-		<tr><td><img class='img-polaroid' src='{$CURUSER['avatar']}' width='{$CURUSER['av_w']}' height='{$CURUSER['av_h']}' alt='' /></td></tr></table></div>";
+        <tr><td><img class='img-polaroid' src='{$CURUSER['avatar']}' width='{$CURUSER['av_w']}' height='{$CURUSER['av_h']}' alt='' /></td></tr></table></div>";
 } else {
     $HTMLOUT .= "<tr><td><img class='img-polaroid' src='{$INSTALLER09['pic_base_url']}forumicons/default_avatar.gif' alt='' /></td></tr>
-		</table>
-	</div>";
+        </table>
+    </div>";
 }
 //== Avatar
 if ($action == 'avatar') {
     $HTMLOUT .= "<div class='offset1 pull-left'>
-	<table class='table table-bordered'>
-	<tr>
-	<td><input type='hidden' name='action' value='avatar' />Avatar Options</td>
-	</tr>";
+    <table class='table table-bordered'>
+    <tr>
+    <td><input type='hidden' name='action' value='avatar' />Avatar Options</td>
+    </tr>";
     //==Disable avatar selection
     if (!($CURUSER['avatarpos'] == 0 or $CURUSER['avatarpos'] != 1)) {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['usercp_avatar']}</td><td><input name='avatar' size='50' value='" . htmlsafechars($CURUSER['avatar']) . "' /><br>
@@ -168,7 +129,7 @@ if ($action == 'avatar') {
 } //== Signature
 elseif ($action == 'signature') {
     $HTMLOUT .= "<div class='offset1 pull-left'>
-	<table class='table table-bordered'>";
+    <table class='table table-bordered'>";
     $HTMLOUT .= "<tr><td><input type='hidden' name='action' value='signature' />Signature Options</td></tr>";
     //=== signature stuff
     $HTMLOUT .= tr('View Signatures', '<input type="radio" name="signatures" ' . ($CURUSER['signatures'] == 'yes' ? 'checked="checked"' : '') . ' value="yes" /> Yes
@@ -180,7 +141,7 @@ elseif ($action == 'signature') {
 } //== Social
 elseif ($action == 'social') {
     $HTMLOUT .= "<div class='offset1 pull-left'>
-	<table class='table table-bordered'>";
+    <table class='table table-bordered'>";
     $HTMLOUT .= "<tr><td><input type='hidden' name='action' value='social' />Social</td></tr>";
     //=== social stuff
     $HTMLOUT .= tr('Google Talk', '<img src="pic/forums/google_talk.gif" alt="Google Talk" title="Google Talk" /><input type="text" size="30" name="google_talk"  value="' . htmlsafechars($CURUSER['google_talk']) . '" />', 1);
@@ -193,7 +154,7 @@ elseif ($action == 'social') {
 } //== Location
 elseif ($action == 'location') {
     $HTMLOUT .= "<div class='offset1 pull-left'>
-	<table class='table table-bordered'>";
+    <table class='table table-bordered'>";
     $datetime = unixstamp_to_human(TIME_NOW);
     $HTMLOUT .= "<tr><td><input type='hidden' name='action' value='location' />Location Options</td><td>Is this the correct time? [{$datetime['hour']}:{$datetime['minute']}]</td></tr>";
     //==Time Zone
@@ -212,18 +173,18 @@ elseif ($action == 'location') {
 } //== Links
 elseif ($action == 'links') {
     $HTMLOUT .= "<div class='offset1 pull-left'>
-	<table class='table table-bordered'>";
+    <table class='table table-bordered'>";
     $HTMLOUT .= "<tbody>
-	<tr><td><input type='hidden' name='action' value='links' />Links</td></tr>
-	<tr><td>" . htmlsafechars($CURUSER['username'], ENT_QUOTES) . "'s Menu</td></tr>
-	<tr><td><a href='mytorrents.php'>{$lang['usercp_edit_torrents']}</a></td></tr>
-	<tr><td><a href='friends.php'>{$lang['usercp_edit_friends']}</a></td></tr>
-	<tr><td><a href='users.php'>{$lang['usercp_search']}</a></td></tr>
-	<tr><td align='left'><a href='invite.php'>Invites</a></td></tr>
-	<tr><td align='left'><a href='tenpercent.php'>Lifesaver</a></td></tr></tbody><br><tbody>
-	<tr><td>" . htmlsafechars($CURUSER['username'], ENT_QUOTES) . "'s Entertainment</td></tr>
-	<tr><td align='left'><a href='topmoods.php'>Top Member Mood's</a></td></tr>
-	<tr><td align='left'><a href='lottery.php'>Lottery</a></td></tr>";
+    <tr><td><input type='hidden' name='action' value='links' />Links</td></tr>
+    <tr><td>" . htmlsafechars($CURUSER['username'], ENT_QUOTES) . "'s Menu</td></tr>
+    <tr><td><a href='mytorrents.php'>{$lang['usercp_edit_torrents']}</a></td></tr>
+    <tr><td><a href='friends.php'>{$lang['usercp_edit_friends']}</a></td></tr>
+    <tr><td><a href='users.php'>{$lang['usercp_search']}</a></td></tr>
+    <tr><td align='left'><a href='invite.php'>Invites</a></td></tr>
+    <tr><td align='left'><a href='tenpercent.php'>Lifesaver</a></td></tr></tbody><br><tbody>
+    <tr><td>" . htmlsafechars($CURUSER['username'], ENT_QUOTES) . "'s Entertainment</td></tr>
+    <tr><td align='left'><a href='topmoods.php'>Top Member Mood's</a></td></tr>
+    <tr><td align='left'><a href='lottery.php'>Lottery</a></td></tr>";
     if ($CURUSER['class'] >= UC_POWER_USER) {
         $HTMLOUT .= "<tr><td align='left'><a href='blackjack.php'>{$INSTALLER09['site_name']} Blackjack</a></td></tr>";
         $HTMLOUT .= "<tr><td align='left'><a href='casino.php'>{$INSTALLER09['site_name']} Casino</a></td></tr>";
@@ -232,7 +193,7 @@ elseif ($action == 'links') {
 } //== Security
 elseif ($action == 'security') {
     $HTMLOUT .= "<div class='offset0 span7 pull-left'>
-	<table class='table table-bordered'>";
+    <table class='table table-bordered'>";
     $HTMLOUT .= "<tr><td><input type='hidden' name='action' value='security' />Security Options</td></tr>";
     $HTMLOUT .= tr('SSL options', "<fieldset><legend><strong>SSL for</strong></legend>
        <select name='ssluse'>
@@ -257,27 +218,27 @@ elseif ($action == 'security') {
     //=== paranoia level sir_snugglebunny
     if ($CURUSER['class'] > UC_USER) {
         $HTMLOUT .= tr('My Paranoia', "<select name='paranoia'>
-	  <option value='0'" . ($CURUSER['paranoia'] == 0 ? " selected='selected'" : '') . ">I'm totally relaxed</option>
-	  <option value='1'" . ($CURUSER['paranoia'] == 1 ? " selected='selected'" : '') . ">I feel sort of relaxed</option>
-	  <option value='2'" . ($CURUSER['paranoia'] == 2 ? " selected='selected'" : '') . ">I'm paranoid</option>
-	  <option value='3'" . ($CURUSER['paranoia'] == 3 ? " selected='selected'" : '') . ">I wear a tin-foil hat</option>
-	  </select> <a class='altlink'  title='Click for more info' id='paranoia_open' style='font-weight:bold;cursor:pointer;'>Paranoia Levels explained!</a> <br><br>
-	  <div id='paranoia_info' style='display:none;background-color:transparent;max-width:400px;padding: 5px 5px 5px 10px;'>
-	  <span style='font-weight: bold;'>I'm totally relaxed</span><br>
-	  <span style='font-size: x-small;'>Default setting, nothing is hidden except your IP, passkey, email. the same as any tracker.</span><br><br>
-	  <span style='font-weight: bold;'>I'm a little paranoid</span><br>
-	  <span style='font-size: x-small;'>All info about torrents are hidden from other members except your share ratio, join date, last seen and PM button if you accept PMs. 
-	  Your comments are not hidden, and though your actual stats (up and down) are hidden on the forums, your actual ratio isn't, also, you will appear on snatched lists.</span><br><br>
-	  <span style='font-weight: bold;'>I'm paranoid</span><br>
-	  <span style='font-size: x-small;'>Same as 'a little paranoid' except your name will not appear on snatched lists, your ratio and stats as well as anything to do with actual 
-	  filesharing will not be visible to other members. You will appear as 'anonymous' on torrent comments, snatched lists et al. The member ratings and comments on your 
-	  details page will also be disabled.</span><br><br>
-	  <span style='font-weight: bold;'>I wear a tin-foil hat</span><br>
-	  <span style='font-size: x-small;'>No information will be available to other members on your details page. Your comments and thank you(s) on torrents will be anonymous, 
-	  your userdetails page will not be accessible, your stats will not appear at all, including your share ratio.</span><br><br>
-	  <span style='font-weight: bold;'>Please remember!</span><br>
-	  All of the above will not apply to staff... staff see all and know all... <br>Even at the highest level of paranoia, you can still be reported (though they won't know who they are reporting) 
-	  and you are not immune to our auto scripts...<br></div>", 1);
+      <option value='0'" . ($CURUSER['paranoia'] == 0 ? " selected='selected'" : '') . ">I'm totally relaxed</option>
+      <option value='1'" . ($CURUSER['paranoia'] == 1 ? " selected='selected'" : '') . ">I feel sort of relaxed</option>
+      <option value='2'" . ($CURUSER['paranoia'] == 2 ? " selected='selected'" : '') . ">I'm paranoid</option>
+      <option value='3'" . ($CURUSER['paranoia'] == 3 ? " selected='selected'" : '') . ">I wear a tin-foil hat</option>
+      </select> <a class='altlink'  title='Click for more info' id='paranoia_open' style='font-weight:bold;cursor:pointer;'>Paranoia Levels explained!</a> <br><br>
+      <div id='paranoia_info' style='display:none;background-color:transparent;max-width:400px;padding: 5px 5px 5px 10px;'>
+      <span style='font-weight: bold;'>I'm totally relaxed</span><br>
+      <span style='font-size: x-small;'>Default setting, nothing is hidden except your IP, passkey, email. the same as any tracker.</span><br><br>
+      <span style='font-weight: bold;'>I'm a little paranoid</span><br>
+      <span style='font-size: x-small;'>All info about torrents are hidden from other members except your share ratio, join date, last seen and PM button if you accept PMs.
+      Your comments are not hidden, and though your actual stats (up and down) are hidden on the forums, your actual ratio isn't, also, you will appear on snatched lists.</span><br><br>
+      <span style='font-weight: bold;'>I'm paranoid</span><br>
+      <span style='font-size: x-small;'>Same as 'a little paranoid' except your name will not appear on snatched lists, your ratio and stats as well as anything to do with actual
+      filesharing will not be visible to other members. You will appear as 'anonymous' on torrent comments, snatched lists et al. The member ratings and comments on your
+      details page will also be disabled.</span><br><br>
+      <span style='font-weight: bold;'>I wear a tin-foil hat</span><br>
+      <span style='font-size: x-small;'>No information will be available to other members on your details page. Your comments and thank you(s) on torrents will be anonymous,
+      your userdetails page will not be accessible, your stats will not appear at all, including your share ratio.</span><br><br>
+      <span style='font-weight: bold;'>Please remember!</span><br>
+      All of the above will not apply to staff... staff see all and know all... <br>Even at the highest level of paranoia, you can still be reported (though they won't know who they are reporting)
+      and you are not immune to our auto scripts...<br></div>", 1);
     }
     $HTMLOUT .= tr($lang['usercp_email'], "<input type='text' name='email' size='50' value='" . htmlsafechars($CURUSER['email']) . "' /><br>{$lang['usercp_email_pass']}<br><input type='password' name='chmailpass' size='50' class='keyboardInput' onkeypress='showkwmessage();return false;' />", 1);
     $HTMLOUT .= "<tr><td colspan='2' align='left'>{$lang['usercp_note']}</td></tr>\n";
@@ -325,7 +286,7 @@ elseif ($action == 'security') {
 } //== Torrents
 elseif ($action == 'torrents') {
     $HTMLOUT .= "<div class='offset1 pull-left'>
-	<table class='table table-bordered'>";
+    <table class='table table-bordered'>";
     $HTMLOUT .= "<tr><td><input type='hidden' name='action' value='torrents' />Torrent Options</td></tr>";
     //==cats
     $categories = '';
@@ -361,7 +322,7 @@ elseif ($action == 'torrents') {
 } //== Personal
 elseif ($action == 'personal') {
     $HTMLOUT .= "<div class='offset1 pull-left'>
-	<table class='table table-bordered'>";
+    <table class='table table-bordered'>";
     $HTMLOUT .= "<tr><td><input type='hidden' name='action' value='personal' />Personal Options</td></tr>";
     if ($CURUSER['class'] >= UC_VIP) {
         $HTMLOUT .= tr($lang['usercp_title'], "<input size='50' value='" . htmlsafechars($CURUSER['title']) . "' name='title' /><br>", 1);
@@ -457,7 +418,7 @@ elseif ($action == 'personal') {
     //== Default Pms
     if ($action == 'default') {
         $HTMLOUT .= "<div class='offset1 pull-left'>
-	<table class='table table-bordered'>";
+    <table class='table table-bordered'>";
     }
     $HTMLOUT .= "<tr><td><input type='hidden' name='action' value='default' />Pm options</td></tr>";
     $HTMLOUT .= tr($lang['usercp_accept_pm'], "<input type='radio' name='acceptpms'" . ($CURUSER['acceptpms'] == 'yes' ? " checked='checked'" : '') . " value='yes' />{$lang['usercp_except_blocks']}

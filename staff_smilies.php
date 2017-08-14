@@ -2,8 +2,7 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'user_functions.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 if ($CURUSER['class'] < UC_STAFF) {
     stderr('Error', 'Yer no tall enough');
     exit();
@@ -16,7 +15,7 @@ $htmlout = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
 		<head>
 	  <meta name='MSSmartTagsPreventParsing' content='TRUE' />
 		<title>Staff Smilies</title>
-    <link rel='stylesheet' href='./templates/" . $CURUSER['stylesheet'] . '/' . $CURUSER['stylesheet'] . ".css' />
+    <link rel='stylesheet' href='./templates/" . $CURUSER['stylesheet'] . '/default.css' />
     </head>
     <body>
     <script>

@@ -1,11 +1,10 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-dbconn();
-loggedinorreturn();
+check_user_status();
 global $INSTALLER09;
 $pm_what = isset($_POST['pm_what']) && $_POST['pm_what'] == 'last10' ? 'last10' : 'owner';
-$reseedid = 0 + $_POST['reseedid'];
-$uploader = 0 + $_POST['uploader'];
+$reseedid = (int)$_POST['reseedid'];
+$uploader = (int)$_POST['uploader'];
 $use_subject = true;
 $subject = 'Request reseed!';
 $pm_msg = 'User ' . $CURUSER['username'] . ' asked for a reseed on torrent ' . $INSTALLER09['baseurl'] . '/details.php?id=' . $reseedid . " !\nThank You!";

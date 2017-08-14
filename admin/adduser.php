@@ -2,7 +2,7 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
@@ -26,8 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         stderr($lang['std_err'], $lang['err_username']);
     }
     if (isset($_POST['password']) && isset($_POST['password2']) && strlen($_POST['password']) > 6 && $_POST['password'] == $_POST['password2']) {
-        $insert['secret'] = mksecret();
-        $insert['passhash'] = make_passhash($insert['secret'], md5($_POST['password']));
+        $insert['passhash'] = make_passhash($_POST['password']);
     } else {
         stderr($lang['std_err'], $lang['err_password']);
     }

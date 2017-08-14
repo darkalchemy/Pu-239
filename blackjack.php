@@ -1,8 +1,7 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-dbconn();
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('blackjack'));
 
 $HTMLOUT = $debugout = '';
@@ -14,7 +13,7 @@ if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['sus
 $blackjack['debug'] = false; // display debug info
 $blackjack['decks'] = 2; // number of decks in shoe
 $blackjack['dead_cards'] = 35; // number of cards remaining before shuffle
-$blackjack['shuffle'] = mt_rand(1000, 20000); // number of time to shuffle the deck
+$blackjack['shuffle'] = random_int(1000, 20000); // number of time to shuffle the deck
 $blackjack['allowed'] = [1, 10, 20, 50, 100, 250, 500, 1024]; // games allowed
 $blackjack['id'] = isset($_GET['id']) && in_array($_GET['id'], $blackjack['allowed']) ? (int)$_GET['id'] : 1;
 $blackjack['gameid'] = array_search($blackjack['id'], $blackjack['allowed']) + 1;
@@ -1133,7 +1132,7 @@ function shuffle_decks()
     }
     $debugout .= '<tr><td>deck - shuffled</td><td>' . json_encode($cards, JSON_PRETTY_PRINT) . '</td></tr>';
     // cut the decks
-    $split = mt_rand(20, 84);
+    $split = random_int(20, 84);
     $split_deck = array_chunk($cards, $split);
     $temp_deck = [];
     // recombine the decks in reverse order of cut

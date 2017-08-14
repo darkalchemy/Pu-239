@@ -8,12 +8,9 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'function_rating.php';
 require_once INCL_DIR . 'tvmaze_functions.php';
 require_once IMDB_DIR . 'imdb.class.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('details'));
-parked();
 $stdhead = [
-    /* include css **/
     'css' => [
         'bbcode',
         'rating_style',
@@ -21,12 +18,9 @@ $stdhead = [
     ],
 ];
 $stdfoot = [
-    /* include js **/
     'js' => [
         'popup',
         'jquery.thanks',
-        'wz_tooltip',
-        'java_klappe',
         'balloontip',
         'shout',
         'thumbs',
@@ -887,7 +881,7 @@ if ($torrents['allow_comments'] == 'yes' || $CURUSER['class'] >= UC_STAFF && $CU
 			</tr>
     </table>\n";
     echo stdhead("{$lang['details_details']}\"" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
-    die();
+    exit();
 }
 $HTMLOUT .= "<!-- accordion collapse going here -->
 <script>

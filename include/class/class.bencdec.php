@@ -365,7 +365,7 @@ class bencdec
                 return self::decode_error('Non-digit characters found in integer');
             }
         }
-        $int = 0 + $idata;
+        $int = (int)$idata;
         self::$bdata_position += $lenuptoep;
 
         return $int;

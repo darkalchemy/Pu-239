@@ -1,10 +1,9 @@
 <?php
 sleep(1);
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-dbconn();
-loggedinorreturn();
+check_user_status();
 if (!isset($CURUSER)) {
-    stderr('Error', 'Sorry but you cant add a thank you on your own torrent');
+    stderr('Error', "Sorry but you can't add a thank you on your own torrent");
 }
 $uid = (int)$CURUSER['id'];
 $tid = isset($_POST['torrentid']) ? (int)$_POST['torrentid'] : (isset($_GET['torrentid']) ? (int)$_GET['torrentid'] : 0);

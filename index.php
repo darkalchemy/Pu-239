@@ -1,12 +1,15 @@
 <?php
+if (!extension_loaded('memcache')) {
+    die('PHP Memcache Extension not loaded.');
+}
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once ROOT_DIR . 'polls.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
-dbconn(true);
-loggedinorreturn();
+check_user_status();
+
 $stdhead = [
     /* include js **/
     'js'  => [
@@ -21,15 +24,14 @@ $stdhead = [
 $stdfoot = [
     /* include js **/
     'js' => [
-        'java_klappe',
-        'jquery.cookie',
         'portals',
         'jquery-ui-i18n.min',
         'jquery.bgiframe-2.1.2',
         'jquery-ui.min',
+        'iframeResizer.min'
     ],
 ];
-$lang = array_merge(load_language('global'), load_language('index'));
+$lang = array_merge(load_language('global'), load_language('index'), load_language('trivia'));
 if (isset($_GET['act']) && $_GET['act'] == 'Arcade' && isset($_POST['gname'])) {
     require_once INCL_DIR . 'arcade.php';
 }
@@ -57,7 +59,6 @@ if (curuser::$blocks['index_page'] & block_index::AJAXCHAT && $BLOCKS['ajaxchat_
     $HTMLOUT .= '</div>';
 }
 
-// temporary index name
 if (curuser::$blocks['index_page'] & block_index::TRIVIA && $BLOCKS['trivia_on']) {
     $HTMLOUT .= "<div class='portlet' id='TRIVIA'>";
     require_once BLOCK_DIR . 'index/trivia.php';

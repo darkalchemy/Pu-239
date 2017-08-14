@@ -25,7 +25,7 @@ $lang = [
     'stderr_confmailsent' => 'A confirmation email has been mailed. Please allow a few minutes for the mail to arrive.',
     'stderr_nomail'       => 'Unable to send mail. Please contact an administrator about this error.',
     'stderr_noupdate'     => 'Unable to update user data. Please contact an administrator about this error.',
-    'stderr_mailed'       => 'The new account details have been mailed to <b>(%s)</b>. Please allow a few minutes for the mail to arrive.',
+    'stderr_mailed'       => 'The new account details have been mailed to the email on record. Please allow a few minutes for the mail to arrive.',
     //head
     'head_recover'        => 'Recover',
     //email

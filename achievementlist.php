@@ -1,10 +1,7 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-require_once CLASS_DIR . 'page_verify.php';
 dbconn();
-$newpage = new page_verify();
-$newpage->check('takecounts');
 $lang = array_merge(load_language('global'), load_language('achievementlist'));
 //$doUpdate = false;
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $CURUSER['class'] >= UC_MAX) {

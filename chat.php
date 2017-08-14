@@ -1,8 +1,7 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-dbconn();
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('chat'));
 $nick = ($CURUSER ? $CURUSER['username'] : ('Guest' . rand(1000, 9999)));
 $irc_url = 'irc.p2p-network.net';

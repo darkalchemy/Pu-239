@@ -6,15 +6,15 @@ $numImages = '';
 // -------------------- EDIT THESE ----------------- //
 $images = [
     'house'        => 'captchaImages/01.png',
-    'key'          => 'captchaImages/04.png',
-    'flag'         => 'captchaImages/06.png',
-    'clock'        => 'captchaImages/15.png',
-    'bug'          => 'captchaImages/16.png',
-    'pen'          => 'captchaImages/19.png',
-    'light bulb'   => 'captchaImages/21.png',
-    'musical note' => 'captchaImages/40.png',
-    'heart'        => 'captchaImages/43.png',
-    'world'        => 'captchaImages/99.png',
+    'key'          => 'captchaImages/02.png',
+    'flag'         => 'captchaImages/03.png',
+    'clock'        => 'captchaImages/04.png',
+    'bug'          => 'captchaImages/05.png',
+    'pen'          => 'captchaImages/06.png',
+    'light bulb'   => 'captchaImages/07.png',
+    'musical note' => 'captchaImages/08.png',
+    'heart'        => 'captchaImages/09.png',
+    'world'        => 'captchaImages/10.png'
 ];
 // ------------------- STOP EDITING ---------------- //
 setSessionVar('simpleCaptchaAnswer', null);

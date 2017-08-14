@@ -2,8 +2,7 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('announce_history'));
 $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : '');
 $HTMLOUT = '';
@@ -25,7 +24,7 @@ if ($action == 'read_announce') {
     if (!is_int($id)) {
         $HTMLOUT .= stdmsg($lang['annhistory_error'], $lang['annhistory_invalid']);
         echo stdhead($lang['annhistory_ann']) . $HTMLOUT . stdfoot();
-        die();
+        exit();
     }
     foreach ($ann_list as $x) {
         if ($x[0] == $id) {
@@ -35,7 +34,7 @@ if ($action == 'read_announce') {
     if (empty($subject) or empty($body)) {
         $HTMLOUT .= stdmsg($lang['annhistory_error'], $lang['annhistory_not']);
         echo stdhead($lang['annhistory_ann']) . $HTMLOUT . stdfoot();
-        die();
+        exit();
     }
     $HTMLOUT .= "<table width='100%' border='0' cellpadding='4' cellspacing='0'>
  	<tr>

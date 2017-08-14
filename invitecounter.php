@@ -1,11 +1,7 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once CLASS_DIR . 'page_verify.php';
 require_once INCL_DIR . 'user_functions.php';
-dbconn();
-loggedinorreturn();
-$newpage = new page_verify();
-$newpage->check('takecounts');
+check_user_status();
 $res = sql_query("SELECT COUNT(*) FROM users WHERE enabled = 'yes' AND invitedby =" . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 $arr3 = mysqli_fetch_row($res);
 $invitedcount = $arr3['0'];

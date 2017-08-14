@@ -5,8 +5,7 @@ require_once INCL_DIR . 'html_functions.php';
 
 //require_once INCL_DIR . 'function_ircbot.php';
 //== Updated casino.php by Bigjoos
-dbconn();
-loggedinorreturn();
+check_user_status();
 
 $lang = array_merge(load_language('global'), load_language('casino'));
 //== Config
@@ -125,13 +124,13 @@ if ($user_win < $user_everytimewin_mb) {
         $cheat_value = $cheat_value_max;
     }
     if ($casino_ratio_global < $cheat_ratio_global) {
-        $cheat_value = mt_rand($cheat_value, $cheat_value_max);
+        $cheat_value = random_int($cheat_value, $cheat_value_max);
     }
     if (($user_win - $user_lost) > ($max_download_user / $cheat_breakpoint)) {
         $cheat_value = $cheat_value_max;
     }
     if ($casino_ratio_user < $cheat_ratio_user) {
-        $cheat_value = mt_rand($cheat_value, $cheat_value_max);
+        $cheat_value = random_int($cheat_value, $cheat_value_max);
     }
 }
 if ($global_down > $max_download_global) {
@@ -178,7 +177,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
         stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " {$lang['casino_but_you_have_not_uploaded']} " . htmlsafechars(mksize($betmb)));
     }
     //mt_srand((double)microtime()*10000000);
-    if (mt_rand(0, $cheat_value) == $cheat_value) {
+    if (random_int(0, $cheat_value) == $cheat_value) {
         sql_query('UPDATE users SET uploaded = uploaded + ' . sqlesc($win) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         sql_query("UPDATE casino SET date = '" . TIME_NOW . "', trys = trys + 1, win = win + " . sqlesc($win) . '  WHERE userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $update['uploaded'] = ($User['uploaded'] + $win);
@@ -198,7 +197,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
         if (isset($_POST['number'])) {
             do {
                 //mt_srand((double)microtime()*10000000);
-                $fake_winner = mt_rand(1, 6);
+                $fake_winner = random_int(1, 6);
             } while ($_POST['number'] == $fake_winner);
         } else {
             if ($_POST['color'] == 'black') {
@@ -234,7 +233,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     }
     //== Convert bet amount into bits
     if (isset($_POST['unit'])) {
-        if (0 + $_POST['unit'] == 1) {
+        if ((int)$_POST['unit'] == 1) {
             $nobits = $amnt * $mb_basic;
         } else {
             $nobits = $amnt * $mb_basic * 1024;
@@ -256,7 +255,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
         //		}
         $rand = 0;
         for ($x = 1; $x <= 100000; ++$x) {
-            $random = (mt_rand(1, 10000));
+            $random = (random_int(1, 10000));
             if ($random > 5000) {
                 ++$rand;
             }
@@ -373,10 +372,10 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     $loca = sql_query("SELECT * FROM casino_bets WHERE challenged ='empty'") or sqlerr(__FILE__, __LINE__);
     $totbets = mysqli_num_rows($loca);
     if (isset($_POST['unit'])) {
-        if (0 + $_POST['unit'] == '1') {
-            $nobits = 0 + $_POST['amnt'] * $mb_basic;
+        if ((int)$_POST['unit'] == '1') {
+            $nobits = (int)$_POST['amnt'] * $mb_basic;
         } else {
-            $nobits = 0 + $_POST['amnt'] * $mb_basic * 1024;
+            $nobits = (int)$_POST['amnt'] * $mb_basic * 1024;
         }
     }
     if (isset($_POST['unit'])) {

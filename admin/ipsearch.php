@@ -2,7 +2,7 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
@@ -20,7 +20,7 @@ if ($ip) {
         $HTMLOUT .= stdmsg($lang['ipsearch_error'], $lang['ipsearch_invalid']);
         $HTMLOUT .= end_main_frame();
         echo stdhead('IP Search') . $HTMLOUT . stdfoot();
-        die();
+        exit();
     }
     $mask = isset($_GET['mask']) ? htmlsafechars(trim($_GET['mask'])) : '';
     if ($mask == '' || $mask == '255.255.255.255') {
@@ -39,7 +39,7 @@ if ($ip) {
                 $HTMLOUT .= stdmsg($lang['ipsearch_error'], $lang['ipsearch_subnet']);
                 $HTMLOUT .= end_main_frame();
                 echo stdhead('IP Search') . $HTMLOUT . stdfoot();
-                die();
+                exit();
             } else {
                 $mask = long2ip(pow(2, 32) - pow(2, 32 - $n));
             }
@@ -47,7 +47,7 @@ if ($ip) {
             $HTMLOUT .= stdmsg($lang['ipsearch_error'], $lang['ipsearch_subnet']);
             $HTMLOUT .= end_main_frame();
             echo stdhead('IP Search') . $HTMLOUT . stdfoot();
-            die();
+            exit();
         }
         $where1 = "INET_ATON(u.ip) & INET_ATON('$mask') = INET_ATON('$ip') & INET_ATON('$mask')";
         $where2 = "INET_ATON(ips.ip) & INET_ATON('$mask') = INET_ATON('$ip') & INET_ATON('$mask')";
@@ -69,7 +69,7 @@ if ($ip) {
         die;
     }
     $order = isset($_GET['order']) && $_GET['order'];
-    $page = isset($_GET['page']) && 0 + $_GET['page'];
+    $page = isset($_GET['page']) && (int)$_GET['page'];
     $perpage = 20;
     $pager = pager($perpage, $count, "staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=$order&amp;");
     if ($order == 'added') {

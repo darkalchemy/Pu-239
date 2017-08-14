@@ -34,7 +34,7 @@ if (isset($_SERVER['REQUEST_URI'])) {
     header('Expires: ' . $img['ex_date']);
     header('Cache-Control: private, max-age=604800');
     if ($img['stop']) {
-        die();
+        exit();
     }
     header('Last-Modified: ' . $img['lm_date']);
     header('Content-type: image/' . $pi['extension']);

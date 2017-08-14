@@ -8,7 +8,7 @@ while ($ac = mysqli_fetch_assoc($lconf)) {
     $lottery_config[$ac['name']] = $ac['value'];
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $tickets = isset($_POST['tickets']) ? 0 + $_POST['tickets'] : '';
+    $tickets = isset($_POST['tickets']) ? (int)$_POST['tickets'] : '';
     if (!$tickets) {
         stderr('Hmm', 'How many tickets you wanna buy?');
     }

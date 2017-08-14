@@ -2,8 +2,7 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
-dbconn();
-loggedinorreturn();
+check_user_status();
 $HTMLOUT = $sure = '';
 $lang = array_merge(load_language('global'), load_language('invite_code'));
 $do = (isset($_GET['do']) ? htmlsafechars($_GET['do']) : (isset($_POST['do']) ? htmlsafechars($_POST['do']) : ''));
@@ -97,7 +96,6 @@ elseif ($do == 'create_invite') {
     if ($arr[0] >= $INSTALLER09['invites']) {
         stderr($lang['invites_error'], $lang['invites_limit']);
     }
-    $invite = md5(mksecret());
     sql_query('INSERT INTO invite_codes (sender, invite_added, code) VALUES (' . sqlesc((int)$CURUSER['id']) . ', ' . TIME_NOW . ', ' . sqlesc($invite) . ')') or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE users SET invites = invites - 1 WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['invites'] = ($CURUSER['invites'] - 1);

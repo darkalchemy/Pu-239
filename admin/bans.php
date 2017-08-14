@@ -2,7 +2,7 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
@@ -17,8 +17,8 @@ if ($remove > 0) {
         stderr($lang['stderr_error'], $lang['stderr_error1']);
     }
     $ban = mysqli_fetch_assoc($banned);
-    $first = 0 + $ban['first'];
-    $last = 0 + $ban['last'];
+    $first = (int)$ban['first'];
+    $last = (int)$ban['last'];
     for ($i = $first; $i <= $last; ++$i) {
         $ip = long2ip($i);
         $mc1->delete_value('bans:::' . $ip);

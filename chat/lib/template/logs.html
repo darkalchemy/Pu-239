@@ -6,11 +6,7 @@
     <meta http-equiv="Content-Type" content="[CONTENT_TYPE/]"/>
     <title>[LANG]logsTitle[/LANG]</title>
     [STYLE_SHEETS/]
-    <script src="js/chat.js" charset="UTF-8"></script>
-    <script src="js/logs.js" charset="UTF-8"></script>
-    <script src="js/lang/[LANG_CODE/].js" charset="UTF-8"></script>
-    <script src="js/config.js" charset="UTF-8"></script>
-    <script src="js/FABridge.js" charset="UTF-8"></script>
+    <script src="./js/c51b3044a4f558b1da56bc038cfed641.min.js" charset="UTF-8"></script>
     <script>
         // <![CDATA[
         function toggleContainer(containerID, hideContainerIDs) {
@@ -60,6 +56,7 @@
             document.getElementById('blinkIntervalNumberSetting').value = ajaxChat.getSetting('blinkIntervalNumber');
         }
 
+        ajaxChatConfig.siteName = '[SITE_NAME/]';
         ajaxChatConfig.sessionName = '[SESSION_NAME/]';
         ajaxChatConfig.cookieExpiration = parseInt('[COOKIE_EXPIRATION/]');
         ajaxChatConfig.cookiePath = '[COOKIE_PATH/]';

@@ -3,13 +3,10 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
-require_once CLASS_DIR . 'page_verify.php';
 require_once CACHE_DIR . 'subs.php';
-dbconn(true);
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('upload'));
 $stdhead = [
-    /* include css **/
     'css' => [
         'forums',
         'style',
@@ -18,18 +15,12 @@ $stdhead = [
     ],
 ];
 $stdfoot = [
-    /* include js **/
     'js' => [
         'shout',
         'FormManager',
         'getname',
     ],
 ];
-if (function_exists('parked')) {
-    parked();
-}
-$newpage = new page_verify();
-$newpage->create('taud');
 $HTMLOUT = $offers = $subs_list = $request = $descr = '';
 if ($CURUSER['class'] < UC_UPLOADER or $CURUSER['uploadpos'] == 0 || $CURUSER['uploadpos'] > 1 || $CURUSER['suspended'] == 'yes') {
     stderr($lang['upload_sorry'], $lang['upload_no_auth']);

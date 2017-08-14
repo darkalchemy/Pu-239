@@ -18,7 +18,7 @@ function calctime($val)
 }
 
 if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']) && $_GET['hash'] == $hash)) {
-    dbconn(true);
+    dbconn();
     if (isset($_GET['search'])) {
         $search = trim($_GET['search']);
         $query = 'username = ' . sqlesc("$search") . " AND status='confirmed'";
@@ -29,7 +29,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
         }
         if ($num > 0) {
             $arr = mysqli_fetch_assoc($res);
-            $id = (isset($arr['id']) ? 0 + $arr['id'] : 0);
+            $id = (isset($arr['id']) ? (int)$arr['id'] : 0);
             $seedingbonus = (isset($arr['seedbonus']) ? (int)$arr['seedbonus'] : '');
             $username = htmlsafechars($arr['username']);
             if (isset($_GET['func']) && $_GET['func'] == 'stats') {
@@ -186,8 +186,8 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             if ($ninvites < 1) {
                 echo $who . ' - No such user, please try again.';
             } else {
-                $oldinvites = 0 + $ninvites['invites'];
-                $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? 0 + $_GET['amount'] : '');
+                $oldinvites = (int)$ninvites['invites'];
+                $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? (int)$_GET['amount'] : '');
                 sql_query('UPDATE users SET invites = invites+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $mc1->begin_transaction('user' . $ninvites['id']);
                 $mc1->update_row(false, [
@@ -201,7 +201,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
                 $res4 = sql_query("SELECT invites FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $oinvites = mysqli_fetch_assoc($res4);
-                $newinvites = 0 + $oinvites['invites'];
+                $newinvites = (int)$oinvites['invites'];
                 echo $who . 's Invites were changed from: ' . $oldinvites . ' to ' . $newinvites;
             }
         } elseif (isset($_GET['freeslots'])) {
@@ -212,8 +212,8 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             if ($nfreeslots < 1) {
                 echo $who . ' - No such user, please try again.';
             } else {
-                $oldfreeslots = 0 + $nfreeslots['freeslots'];
-                $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? 0 + $_GET['amount'] : '');
+                $oldfreeslots = (int)$nfreeslots['freeslots'];
+                $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? (int)$_GET['amount'] : '');
                 sql_query('UPDATE users SET freeslots = freeslots+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $mc1->begin_transaction('user' . $nfreeslots['id']);
                 $mc1->update_row(false, [
@@ -227,7 +227,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
                 $res6 = sql_query("SELECT freeslots FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $ofreeslots = mysqli_fetch_assoc($res6);
-                $newfreeslots = 0 + $ofreeslots['freeslots'];
+                $newfreeslots = (int)$ofreeslots['freeslots'];
                 echo $who . 's Freeslots were changed from: ' . $oldfreeslots . ' to ' . $newfreeslots;
             }
         } elseif (isset($_GET['reputation'])) {
@@ -238,8 +238,8 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             if ($nreputation < 1) {
                 echo $who . ' - No such user, please try again.';
             } else {
-                $oldreputation = 0 + $nreputation['reputation'];
-                $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? 0 + $_GET['amount'] : '');
+                $oldreputation = (int)$nreputation['reputation'];
+                $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? (int)$_GET['amount'] : '');
                 sql_query('UPDATE users SET reputation = reputation+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $mc1->begin_transaction('user' . $nreputation['id']);
                 $mc1->update_row(false, [
@@ -253,7 +253,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
                 $res4 = sql_query("SELECT reputation FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $oreputation = mysqli_fetch_assoc($res4);
-                $newreputation = 0 + $oreputation['reputation'];
+                $newreputation = (int)$oreputation['reputation'];
                 echo $who . 's Reputation was changed from: ' . $oldreputation . ' to ' . $newreputation;
             }
         }
@@ -292,8 +292,8 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             if ($ninvites < 1) {
                 echo $who . ' - No such user, please try again.';
             } else {
-                $oldinvites = 0 + $ninvites['invites'];
-                $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? 0 + $_GET['amount'] : '');
+                $oldinvites = (int)$ninvites['invites'];
+                $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? (int)$_GET['amount'] : '');
                 sql_query('UPDATE users SET invites = invites-' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $mc1->begin_transaction('user' . $ninvites['id']);
                 $mc1->update_row(false, [
@@ -307,7 +307,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
                 $res4 = sql_query("SELECT invites FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $oinvites = mysqli_fetch_assoc($res4);
-                $newinvites = 0 + $oinvites['invites'];
+                $newinvites = (int)$oinvites['invites'];
                 echo $who . 's Invites were changed from: ' . $oldinvites . ' to ' . $newinvites;
             }
         } elseif (isset($_GET['freeslots'])) {
@@ -318,8 +318,8 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             if ($nfreeslots < 1) {
                 echo $who . ' - No such user, please try again.';
             } else {
-                $oldfreeslots = 0 + $nfreeslots['freeslots'];
-                $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? 0 + $_GET['amount'] : '');
+                $oldfreeslots = (int)$nfreeslots['freeslots'];
+                $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? (int)$_GET['amount'] : '');
                 sql_query('UPDATE users SET freeslots = freeslots-' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $mc1->begin_transaction('user' . $nfreeslots['id']);
                 $mc1->update_row(false, [
@@ -333,7 +333,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
                 $res6 = sql_query("SELECT freeslots FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $ofreeslots = mysqli_fetch_assoc($res6);
-                $newfreeslots = 0 + $ofreeslots['freeslots'];
+                $newfreeslots = (int)$ofreeslots['freeslots'];
                 echo $who . 's Freeslots were changed from: ' . $oldfreeslots . ' to ' . $newfreeslots;
             }
         } elseif (isset($_GET['reputation'])) {
@@ -344,8 +344,8 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             if ($nreputation < 1) {
                 echo $who . ' - No such user, please try again.';
             } else {
-                $oldreputation = 0 + $nreputation['reputation'];
-                $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? 0 + $_GET['amount'] : '');
+                $oldreputation = (int)$nreputation['reputation'];
+                $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? (int)$_GET['amount'] : '');
                 sql_query('UPDATE users SET reputation = reputation-' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
                 $mc1->begin_transaction('user' . $nreputation['id']);
                 $mc1->update_row(false, [
@@ -359,7 +359,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
                 $res6 = sql_query("SELECT reputation FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $oreputation = mysqli_fetch_assoc($res6);
-                $newreputation = 0 + $oreputation['reputation'];
+                $newreputation = (int)$oreputation['reputation'];
                 echo $who . 's Reputation was changed from: ' . $oldreputation . ' to ' . $newreputation;
             }
         }
@@ -429,7 +429,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             } else {
                 $meoldfreeslots = $mefreeslots['freeslots'];
                 $whomoldfreeslots = $whomfreeslots['freeslots'];
-                $amount = (isset($_GET['amount']) && ($_GET['amount'] > 0) ? 0 + ($_GET['amount']) : '');
+                $amount = (isset($_GET['amount']) && ($_GET['amount'] > 0) ? (int)($_GET['amount']) : '');
                 if ($amount <= $meoldfreeslots) {
                     sql_query('UPDATE users SET freeslots = freeslots-' . sqlesc($amount) . " WHERE username = $me") or sqlerr(__FILE__, __LINE__);
                     sql_query('UPDATE users SET freeslots = freeslots+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
@@ -478,7 +478,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             } else {
                 $meoldreputation = $mereputation['reputation'];
                 $whomoldreputation = $whomreputation['reputation'];
-                $amount = (isset($_GET['amount']) && ($_GET['amount'] > 0) ? 0 + ($_GET['amount']) : '');
+                $amount = (isset($_GET['amount']) && ($_GET['amount'] > 0) ? (int)($_GET['amount']) : '');
                 if ($amount <= $meoldreputation) {
                     sql_query('UPDATE users SET reputation = reputation-' . sqlesc($amount) . " WHERE username = $me") or sqlerr(__FILE__, __LINE__);
                     sql_query('UPDATE users SET reputation = reputation+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
@@ -527,7 +527,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             } else {
                 $meoldinvites = $meinvites['invites'];
                 $whomoldinvites = $whominvites['invites'];
-                $amount = (isset($_GET['amount']) && ($_GET['amount'] > 0) ? 0 + ($_GET['amount']) : '');
+                $amount = (isset($_GET['amount']) && ($_GET['amount'] > 0) ? (int)($_GET['amount']) : '');
                 if ($amount <= $meoldinvites) {
                     sql_query('UPDATE users SET invites = invites-' . sqlesc($amount) . " WHERE username = $me") or sqlerr(__FILE__, __LINE__);
                     sql_query('UPDATE users SET invites = invites+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);

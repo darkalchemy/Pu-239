@@ -3,18 +3,13 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'comment_functions.php';
-dbconn(false);
-loggedinorreturn();
+check_user_status();
 $lang = array_merge(load_language('global'), load_language('comment'), load_language('capprove'));
-if ($CURUSER['suspended'] == 'yes') {
-    stderr('Sorry', 'Your account is suspended');
-}
 flood_limit('comments');
 $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : 0);
 //$vaction = array('add','delete','edit','approve','disapprove','vieworiginal','');
 //$action = (isset($_POST['action']) && in_array($_POST['action'],$vaction) ? htmlsafechars($_POST['action']) : (isset($_GET['action']) && in_array($_GET['action'],$vaction) ? htmlsafechars($_GET['action']) : ''));
 $stdhead = [
-    /* include css **/
     'css' => [
         'bbcode',
         'forums',
@@ -23,13 +18,11 @@ $stdhead = [
     ],
 ];
 $stdfoot = [
-    /* include js **/
     'js' => [
         'shout',
         'check_selected',
     ],
 ];
-/** comment stuffs by pdq **/
 $locale = 'torrent';
 $locale_link = 'details';
 $extra_link = '';

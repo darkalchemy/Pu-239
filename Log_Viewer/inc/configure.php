@@ -473,7 +473,7 @@ if (isset($_POST['s'])) {
 
     header('Content-type: application/json');
     echo json_encode($return);
-    die();
+    exit();
 }
 
 /*

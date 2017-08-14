@@ -2,7 +2,7 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
@@ -42,7 +42,7 @@ switch ($action) {
     case 'delete':
         if (!$id) {
             header('Location: staffpanel.php?tool=forum_manage&action=forum_manage');
-            die();
+            exit();
         }
         $res = sql_query('SELECT * FROM topics where forum_id = ' . sqlesc($id));
         $row = mysqli_fetch_array($res);
@@ -50,29 +50,29 @@ switch ($action) {
         sql_query('DELETE FROM topics where forum_id = ' . sqlesc($id));
         sql_query('DELETE FROM forums where id = ' . sqlesc($id));
         header('Location: staffpanel.php?tool=forum_manage&action=forum_manage');
-        die();
+        exit();
         break;
     //=== edit forum
 
     case 'edit_forum':
         if (!$name && !$desc && !$id) {
             header('Location: staffpanel.php?tool=forum_manage&action=forum_manage');
-            die();
+            exit();
         }
         sql_query('UPDATE forums SET sort = ' . sqlesc($sort) . ', name = ' . sqlesc($name) . ', parent_forum = ' . sqlesc($parent_forum) . ', description = ' . sqlesc($desc) . ', forum_id = ' . sqlesc($over_forums) . ', min_class_read = ' . sqlesc($min_class_read) . ', min_class_write = ' . sqlesc($min_class_write) . ', min_class_create = ' . sqlesc($min_class_create) . ' where id = ' . sqlesc($id));
         header('Location: staffpanel.php?tool=forum_manage&action=forum_manage');
-        die();
+        exit();
         break;
     //=== add forum
 
     case 'add_forum':
         if (!$name && !$desc) {
             header('Location: staffpanel.php?tool=forum_manage&action=forum_manage');
-            die();
+            exit();
         }
         sql_query('INSERT INTO forums (sort, name, parent_forum, description,  min_class_read,  min_class_write, min_class_create, forum_id) VALUES (' . sqlesc($sort) . ', ' . sqlesc($name) . ', ' . sqlesc($parent_forum) . ', ' . sqlesc($desc) . ', ' . sqlesc($min_class_read) . ', ' . sqlesc($min_class_write) . ', ' . sqlesc($min_class_create) . ', ' . sqlesc($over_forums) . ')');
         header('Location: staffpanel.php?tool=forum_manage&action=forum_manage');
-        die();
+        exit();
         break;
     //=== edit forum stuff
 

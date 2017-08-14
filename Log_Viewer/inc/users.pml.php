@@ -18,7 +18,7 @@ list($badges, $files, $tz) = config_load();
 |
 */
 if (!Sentinel::isAuthSet()) {
-    die();
+    exit();
 }
 $current_user = Sentinel::attempt($files);
 
@@ -85,7 +85,7 @@ $return = [];
 if (!csrf_verify()) {
     $return['error'] = __('Please refresh the page.');
     echo json_encode($return);
-    die();
+    exit();
 }
 
 /*
@@ -602,6 +602,6 @@ switch (@$_POST['action']) {
 |
 */
 echo json_encode($return);
-die();
+exit();
 
 ?>

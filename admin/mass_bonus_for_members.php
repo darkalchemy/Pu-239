@@ -2,7 +2,7 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
@@ -50,7 +50,7 @@ if (isset($_POST['all_or_selected_classes'])) {
 //=== switch for the actions \\o\o/o//
 switch ($action) {
     case 'upload_credit':
-        $GB = isset($_POST['GB']) ? 0 + $_POST['GB'] : 0;
+        $GB = isset($_POST['GB']) ? (int)$_POST['GB'] : 0;
         if ($GB < 1073741824 || $GB > 53687091200) { //=== forgot to enter GB or wrong numbers
             stderr($lang['bonusmanager_up_err'], $lang['bonusmanager_up_err1']);
         }
@@ -92,7 +92,7 @@ switch ($action) {
                 unset($users_buffer, $pm_buffer, $count);
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&GB=1');
-            die();
+            exit();
         } elseif ($free_for_classes === 0) {
             foreach ($free_for as $class) {
                 if (ctype_digit($class)) {
@@ -133,12 +133,12 @@ switch ($action) {
                 }
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&GB=2');
-            die();
+            exit();
         }
         break;
 
     case 'karma':
-        $karma = isset($_POST['karma']) ? 0 + $_POST['karma'] : 0;
+        $karma = isset($_POST['karma']) ? (int)$_POST['karma'] : 0;
         if ($karma < 100 || $karma > 5000) { //=== forgot to enter karma or wrong numbers
             stderr($lang['bonusmanager_karma_err'], $lang['bonusmanager_karma_err1']);
         }
@@ -179,7 +179,7 @@ switch ($action) {
                 unset($users_buffer, $pm_buffer, $count);
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&karma=1');
-            die();
+            exit();
         } elseif ($free_for_classes === 0) {
             foreach ($free_for as $class) {
                 if (ctype_digit($class)) {
@@ -220,12 +220,12 @@ switch ($action) {
                 }
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&karma=2');
-            die();
+            exit();
         }
         break;
 
     case 'freeslots':
-        $freeslots = isset($_POST['freeslots']) ? 0 + $_POST['freeslots'] : 0;
+        $freeslots = isset($_POST['freeslots']) ? (int)$_POST['freeslots'] : 0;
         if ($freeslots < 1 || $freeslots > 50) { //=== forgot to enter freeslots or wrong numbers
             stderr($lang['bonusmanager_freeslots_err'], $lang['bonusmanager_freeslots_err1']);
         }
@@ -270,7 +270,7 @@ switch ($action) {
                 unset($users_buffer, $pm_buffer, $count);
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&freeslots=1');
-            die();
+            exit();
         } elseif ($free_for_classes === 0) {
             foreach ($free_for as $class) {
                 if (ctype_digit($class)) {
@@ -315,12 +315,12 @@ switch ($action) {
                 }
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&freeslots=2');
-            die();
+            exit();
         }
         break;
 
     case 'invite':
-        $invites = isset($_POST['invites']) ? 0 + $_POST['invites'] : 0;
+        $invites = isset($_POST['invites']) ? (int)$_POST['invites'] : 0;
         if ($invites < 1 || $invites > 50) { //=== forgot to enter invites or wrong numbers
             stderr($lang['bonusmanager_invite_err'], $lang['bonusmanager_invite_err1']);
         }
@@ -365,7 +365,7 @@ switch ($action) {
                 unset($users_buffer, $pm_buffer, $count);
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&invites=1');
-            die();
+            exit();
         } elseif ($free_for_classes === 0) {
             foreach ($free_for as $class) {
                 if (ctype_digit($class)) {
@@ -410,7 +410,7 @@ switch ($action) {
                 }
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&invites=2');
-            die();
+            exit();
         }
     // no break
     case 'pm':
@@ -440,7 +440,7 @@ switch ($action) {
                 unset($pm_buffer, $count);
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&pm=1');
-            die();
+            exit();
         } elseif ($free_for_classes === 0) {
             foreach ($free_for as $class) {
                 if (ctype_digit($class)) {
@@ -463,7 +463,7 @@ switch ($action) {
                     }
                 }
                 header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&pm=2');
-                die();
+                exit();
             }
         }
         break;

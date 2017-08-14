@@ -5,15 +5,15 @@ function happyHour($action)
     //generate happy hour
     if ($action == 'generate') {
         $nextDay = date('Y-m-d', TIME_NOW + 86400);
-        $nextHoura = mt_rand(0, 2);
+        $nextHoura = random_int(0, 2);
         if ($nextHoura == 2) {
-            $nextHourb = mt_rand(0, 3);
+            $nextHourb = random_int(0, 3);
         } else {
-            $nextHourb = mt_rand(0, 9);
+            $nextHourb = random_int(0, 9);
         }
         $nextHour = $nextHoura . $nextHourb;
-        $nextMina = mt_rand(0, 5);
-        $nextMinb = mt_rand(0, 9);
+        $nextMina = random_int(0, 5);
+        $nextMinb = random_int(0, 9);
         $nextMin = $nextMina . $nextMinb;
         $happyHour = $nextDay . ' ' . $nextHour . ':' . $nextMin . '';
 

@@ -63,7 +63,7 @@ body.ajax-chat {
     position: absolute;
     z-index: 2;
     left: 20px;
-    top: 50px;
+    top: 10px;
     right: 50px;
 }
 
@@ -75,7 +75,7 @@ body.ajax-chat {
 #content #statusIconContainer {
     position: absolute;
     right: 20px;
-    top: 50px;
+    top: 10px;
     width: 22px;
     height: 22px;
 }
@@ -89,7 +89,7 @@ body.ajax-chat {
     position: absolute;
     left: 20px;
     right: 20px;
-    top: 85px;
+    top: 45px;
     bottom: 150px;
 }
 

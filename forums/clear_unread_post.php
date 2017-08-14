@@ -2,7 +2,7 @@
 if (!defined('BUNNY_FORUMS')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 global $lang;
 
@@ -22,4 +22,4 @@ if ($check_it_arr['last_post_read'] > 0) {
 }
 //=== ok, all done here, send them back! \o/
 header('Location: ' . $INSTALLER09['baseurl'] . '/forums.php?action=view_unread_posts');
-die();
+exit();

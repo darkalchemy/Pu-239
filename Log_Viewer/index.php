@@ -22,7 +22,7 @@ if (version_compare(PHP_VERSION, PHP_VERSION_REQUIRED) < 0) {
     $link_url = HELP_URL;
     $link_msg = __('Learn more');
     include_once 'inc/error.inc.php';
-    die();
+    exit();
 }
 
 /*
@@ -53,7 +53,7 @@ if (is_null($config_file_name)) {
     $link_url = 'inc/configure.php?' . $_SERVER['QUERY_STRING'];
     $link_msg = __('Configure now');
     include_once 'inc/error.inc.php';
-    die();
+    exit();
 }
 
 /*
@@ -90,7 +90,7 @@ if ($errors === false) {
     $link_url = '?signout&l=' . $locale;
     $link_msg = __('Sign out');
     include_once 'inc/error.inc.php';
-    die();
+    exit();
 }
 
 if (is_array($errors)) {
@@ -107,7 +107,7 @@ if (is_array($errors)) {
     $link_url = 'inc/configure.php?' . $_SERVER['QUERY_STRING'];
     $link_msg = __('Configure now');
     include_once 'inc/error.inc.php';
-    die();
+    exit();
 }
 
 /*

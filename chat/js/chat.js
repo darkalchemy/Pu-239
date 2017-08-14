@@ -42,6 +42,7 @@ var ajaxChat = {
     soundFiles: null,
     sounds: null,
     soundTransform: null,
+    siteName: null,
     sessionName: null,
     sessionKeyPrefix: null,
     cookieExpiration: null,
@@ -50,6 +51,7 @@ var ajaxChat = {
     cookieSecure: null,
     chatBotName: null,
     chatBotID: null,
+    chatBotRole: null,
     allowUserMessageDelete: null,
     inactiveTimeout: null,
     privateChannelDiff: null,
@@ -68,6 +70,7 @@ var ajaxChat = {
     userID: null,
     userName: null,
     userRole: null,
+    pmCount: null,
     channelID: null,
     channelName: null,
     channelSwitch: null,
@@ -106,6 +109,7 @@ var ajaxChat = {
         this.requestStatus = 'ok';
         this.DOMbufferRowClass = 'rowOdd';
         this.inUrlBBCode = false;
+        this.pmCount = 0;
         this.timeStamp = new Date();
         this.initConfig(config);
         this.initDirectories();
@@ -141,6 +145,7 @@ var ajaxChat = {
         this.emoticonFiles = config['emoticonFiles'];
         this.emoticonDisplay = config['emoticonDisplay'];
         this.soundFiles = config['soundFiles'];
+        this.siteName = config['siteName'];
         this.sessionName = config['sessionName'];
         this.sessionKeyPrefix = config['sessionKeyPrefix'];
         this.cookieExpiration = config['cookieExpiration'];
@@ -149,6 +154,7 @@ var ajaxChat = {
         this.cookieSecure = config['cookieSecure'];
         this.chatBotName = config['chatBotName'];
         this.chatBotID = config['chatBotID'];
+        this.chatBotRole = config['chatBotRole'];
         this.allowUserMessageDelete = config['allowUserMessageDelete'];
         this.inactiveTimeout = Math.max(config['inactiveTimeout'], 2);
         this.privateChannelDiff = config['privateChannelDiff'];
@@ -1067,6 +1073,22 @@ var ajaxChat = {
                         userRole
                     );
                 }
+                if (userID == this.userID) {
+                    pmCount = userNodes[i].getAttribute('pmCount');
+                    if (pmCount == 0) {
+                        window.parent.document.title = this.siteName + ' :: Home';
+                        document.title = this.siteName + ' :: Chat';
+                    } else {
+                        window.parent.document.title = this.siteName + ' :(' + pmCount + '): Home';
+                        document.title = this.siteName + ' :(' + pmCount + '): Chat';
+                    }
+                    var span = document.getElementById('pmcount');
+                    while(span.firstChild) {
+                        span.removeChild( span.firstChild );
+                    }
+                    span.appendChild(document.createTextNode(pmCount));
+                    this.pmCount = pmCount;
+                }
             }
             // Clear the offline users from the online users list:
             for (i = 0; i < this.usersList.length; i++) {
@@ -1275,9 +1297,8 @@ var ajaxChat = {
                     + '</a></li>';
             }
         } else {
-            menu = '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/quit\');">'
-                + this.lang['userMenuLogout']
-                + '</a></li>'
+            menu = '<li class="disc"><a target="_blank" href="../pm_system.php" title="How many unread site PMs you have.">'
+                + 'Unread PM (<span id="pmcount">0</span>)</a></li>'
                 + '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/who\');">'
                 + this.lang['userMenuWho']
                 + '</a></li>'
@@ -1351,7 +1372,7 @@ var ajaxChat = {
             new Date(),
             this.chatBotID,
             this.getEncodedChatBotName(),
-            4,
+            this.chatBotRole,
             null,
             messageText,
             null
@@ -1772,10 +1793,10 @@ var ajaxChat = {
                 return 'administrator';
             case 6:
                 return 'sysop';
-            case 100:
+            case this.chatBotID:
                 return 'chatbot';
             default:
-                return 'default';
+                return 'user';
         }
     },
 

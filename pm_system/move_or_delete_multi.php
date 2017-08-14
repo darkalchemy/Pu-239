@@ -2,7 +2,7 @@
 if (!defined('BUNNY_PM_SYSTEM')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 /********************************************************************************
  * why I used a different method for delete and move I have no idea...
@@ -28,7 +28,7 @@ if (isset($_POST['move'])) {
         stderr($lang['pm_error'], $lang['pm_move_err']);
     }
     header('Location: ?action=view_mailbox&multi_move=1&box=' . $mailbox);
-    die();
+    exit();
 }
 //=== delete
 if (isset($_POST['delete'])) {
@@ -61,5 +61,5 @@ if (isset($_POST['delete'])) {
     } else {
         header('Location: pm_system.php?action=view_mailbox&multi_delete=1&box=' . $mailbox);
     }
-    die();
+    exit();
 }

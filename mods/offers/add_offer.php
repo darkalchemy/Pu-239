@@ -10,7 +10,7 @@ if ($CURUSER['class'] < $INSTALLER09['offer_min_class']) {
     <b>" . $INSTALLER09['site_name'] . ' staff</b></div>';
     /////////////////////// HTML OUTPUT //////////////////////////////
     echo stdhead('Offers Page') . $HTMLOUT . stdfoot();
-    die();
+    exit();
 }
 $gigsneeded = ($INSTALLER09['offer_gigs_upped'] * 1024 * 1024 * 1024);
 $gigsupped = $CURUSER['uploaded'];

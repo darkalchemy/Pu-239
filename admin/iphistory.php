@@ -2,7 +2,7 @@
 if (!defined('IN_INSTALLER09_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$INSTALLER09['baseurl']}/index.php");
-    die();
+    exit();
 }
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'geoip.inc';
@@ -22,7 +22,7 @@ function write_logs($text,$type) {
 $lang = array_merge($lang, load_language('ad_iphistory'));
 //Clear the fields for use.
 $id = $color = '';
-$id = 0 + $_GET['id'];
+$id = (int)$_GET['id'];
 if (!is_valid_id($id)) {
     stderr("{$lang['stderr_error']}", "{$lang['stderr_badid']}");
 }
