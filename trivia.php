@@ -13,6 +13,13 @@ $display = $answered = '';
 global $INSTALLER09;
 $csrf = $INSTALLER09['session_csrf'];
 
+function clean_data($data) {
+    foreach ($data as $key => $value) {
+        $data[$key] = html_entity_decode(replace_unicode_strings(trim($value)));
+    }
+    return $data;
+}
+
 if (!empty($_POST) && (int)$_POST['qid'] === $qid) {
     if (!empty($_POST['qid']) && !empty($_POST['user_id']) && !empty($_POST['ans']) && !empty($_POST['gamenum'])) {
 
@@ -116,6 +123,7 @@ if (empty($gamenum) || empty($qid)) {
         $sql = 'SELECT question, answer1, answer2, answer3, answer4, answer5, asked FROM triviaq WHERE qid = ' . sqlesc($qid);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_assoc($res);
+        $row = clean_data($row);
 
         $sql = 'SELECT * FROM triviausers WHERE user_id = ' . sqlesc($user_id) . ' AND qid = ' . sqlesc($qid) . ' AND gamenum = ' . sqlesc($gamenum);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
