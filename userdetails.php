@@ -110,11 +110,9 @@ if (($user = $mc1->get_value('user' . $id)) === false) {
     $user_fields_ar_str = [
         'username',
         'passhash',
-        'secret',
         'torrent_pass',
         'email',
         'status',
-        'editsecret',
         'privacy',
         'info',
         'acceptpms',

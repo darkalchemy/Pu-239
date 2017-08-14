@@ -14,29 +14,13 @@ $lang = array_merge($lang, load_language('ad_reset'));
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = trim(htmlsafechars($_POST['username']));
     $uid = (int)$_POST['uid'];
-    $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    $newpassword = '';
-    for ($i = 0; $i < 10; ++$i) {
-        $newpassword .= $chars[random_int(0, strlen($chars) - 1)];
-    }
+    $newpassword = make_password();
     $passhash = make_passhash($newpassword);
     $postkey = PostKey([
         $uid,
         $CURUSER['id'],
     ]);
-    $res = sql_query('UPDATE users SET secret=' . sqlesc($secret) . ', passhash=' . sqlesc($passhash) . ' WHERE username=' . sqlesc($username) . ' AND id=' . sqlesc($uid) . ' AND class<' . $CURUSER['class']) or sqlerr(__FILE__, __LINE__);
-    $mc1->begin_transaction('MyUser_' . $uid);
-    $mc1->update_row(false, [
-        'secret'   => $secret,
-        'passhash' => $passhash,
-    ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
-    $mc1->begin_transaction('user' . $uid);
-    $mc1->update_row(false, [
-        'secret'   => $secret,
-        'passhash' => $passhash,
-    ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+    $res = sql_query('UPDATE users SET passhash = ' . sqlesc($passhash) . ' WHERE username = ' . sqlesc($username) . ' AND id = ' . sqlesc($uid) . ' AND class < ' . $CURUSER['class']) or sqlerr(__FILE__, __LINE__);
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) != 1) {
         stderr($lang['reset_stderr'], $lang['reset_stderr1']);
     }

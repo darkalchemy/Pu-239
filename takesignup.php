@@ -169,7 +169,6 @@ $latestuser_cache['king'] = '0';
 /* OOP **/
 $mc1->cache_value('latestuser', $latestuser_cache, $INSTALLER09['expires']['latestuser']);
 write_log('User account ' . (int)$id . ' (' . htmlsafechars($wantusername) . ') was created');
-$psecret = $editsecret;
 if ($INSTALLER09['autoshout_on'] == 1) {
     autoshout($message);
 }
@@ -182,7 +181,7 @@ $body = str_replace([
     $INSTALLER09['site_name'],
     $email,
     $ip,
-    "{$INSTALLER09['baseurl']}/confirm.php?id=$id&secret=$psecret",
+    "{$INSTALLER09['baseurl']}/confirm.php?id=$id",
 ], $lang['takesignup_email_body']);
 if ($arr[0] || $INSTALLER09['email_confirm']) {
     mail($email, "{$INSTALLER09['site_name']} {$lang['takesignup_confirm']}", $body, "{$lang['takesignup_from']} {$INSTALLER09['site_email']}");

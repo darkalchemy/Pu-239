@@ -593,7 +593,7 @@ function dynamic_user_vars($text)
     $tim = TIME_NOW + $zone;
     $cu = $CURUSER;
     // unset any variables ya dun want to display, or can't display
-    unset($cu['passhash'], $cu['secret'], $cu['editsecret'], $cu['torrent_pass'], $cu['modcomment']);
+    unset($cu['passhash'], $cu['torrent_pass'], $cu['modcomment']);
     $bbkeys = array_keys($cu);
     $bbkeys[] = 'curdate';
     $bbkeys[] = 'curtime';

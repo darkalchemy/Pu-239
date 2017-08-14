@@ -7,7 +7,7 @@ function make_passhash($pass)
     return password_hash($pass, PASSWORD_BCRYPT, $options);
 }
 
-function make_password()
+function make_password($bytes = 12)
 {
-    return bin2hex(random_bytes(12));
+    return bin2hex(random_bytes($bytes));
 }
