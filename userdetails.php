@@ -109,7 +109,6 @@ if (($user = $mc1->get_value('user' . $id)) === false) {
     ];
     $user_fields_ar_str = [
         'username',
-        'passhash',
         'torrent_pass',
         'email',
         'status',
@@ -134,7 +133,6 @@ if (($user = $mc1->get_value('user' . $id)) === false) {
         'highspeed',
         'hnrwarn',
         'parked',
-        'hintanswer',
         'support',
         'supportfor',
         'invitees',
@@ -159,7 +157,6 @@ if (($user = $mc1->get_value('user' . $id)) === false) {
         'icq',
         'show_email',
         'gotgift',
-        'hash1',
         'suspended',
         'warn_reason',
         'onirc',
@@ -551,9 +548,6 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
 //if (curuser::$blocks['userdetails_page'] & block_userdetails::SHOWFRIENDS && $BLOCKS['userdetails_showfriends_on']){
 require_once BLOCK_DIR . 'userdetails/showfriends.php';
 //}
-if (curuser::$blocks['userdetails_page'] & block_userdetails::LOGIN_LINK && $BLOCKS['userdetails_login_link_on']) {
-    require_once BLOCK_DIR . 'userdetails/loginlink.php';
-}
 if (curuser::$blocks['userdetails_page'] & block_userdetails::JOINED && $BLOCKS['userdetails_joined_on']) {
     require_once BLOCK_DIR . 'userdetails/joined.php';
 }

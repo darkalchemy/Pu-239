@@ -130,7 +130,7 @@ $mc1->update_row(false, [
 
 unsetSessionVar('simpleCaptchaAnswer');
 unsetSessionVar('simpleCaptchaTimestamp');
-setSessionVar('UserID', $row['id']);
+setSessionVar('userID', $row['id']);
 logincookie($row['id']);
 
 $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);

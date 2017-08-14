@@ -214,7 +214,7 @@ function userlogin()
     if (!$INSTALLER09['site_online']) {
         return;
     }
-    $id = getSessionVar('UserID');
+    $id = getSessionVar('userID');
     if (!$id) {
         return;
     }
@@ -299,7 +299,6 @@ function userlogin()
         ];
         $user_fields_ar_str = [
             'username',
-            'passhash',
             'torrent_pass',
             'email',
             'status',
@@ -324,7 +323,6 @@ function userlogin()
             'highspeed',
             'hnrwarn',
             'parked',
-            'hintanswer',
             'support',
             'supportfor',
             'invitees',
@@ -349,7 +347,6 @@ function userlogin()
             'icq',
             'show_email',
             'gotgift',
-            'hash1',
             'suspended',
             'warn_reason',
             'onirc',
@@ -413,7 +410,7 @@ function userlogin()
     if ($row['class'] >= UC_STAFF) {
         $allowed_ID = $INSTALLER09['allowed_staff']['id'];
         if (!in_array(((int)$row['id']), $allowed_ID, true)) {
-            $msg = 'Fake Account Detected: Username: ' . htmlsafechars($row['username']) . ' - UserID: ' . (int)$row['id'] . ' - UserIP : ' . getip();
+            $msg = 'Fake Account Detected: Username: ' . htmlsafechars($row['username']) . ' - userID: ' . (int)$row['id'] . ' - UserIP : ' . getip();
             // Demote and disable
             sql_query("UPDATE users SET enabled = 'no', class = 0 WHERE id =" . sqlesc($row['id'])) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('MyUser_' . $row['id']);

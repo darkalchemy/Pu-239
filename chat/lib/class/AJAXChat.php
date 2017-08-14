@@ -274,7 +274,7 @@ class AJAXChat
 
     public function getUserID()
     {
-        return getSessionVar('UserID');
+        return getSessionVar('userID');
     }
 
     public function isUserOnline($userID = null)
