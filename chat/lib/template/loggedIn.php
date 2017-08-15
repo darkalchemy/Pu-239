@@ -364,7 +364,7 @@
 <!--[if lt IE 8]>
     <script>var isIElt8 = true;</script>
 <![endif]-->
-<script src="js/b9474e971ce43cbae2a48b54c4fdb7f6.min.js" charset="UTF-8"></script>
+<script src="js/a49e16eff9f548fdd0eca06d28315bbe.min.js" charset="UTF-8"></script>
 <script>
     ajaxChatConfig.token = '[TOKEN/]';
     ajaxChatConfig.loginChannelID = parseInt('[LOGIN_CHANNEL_ID/]');

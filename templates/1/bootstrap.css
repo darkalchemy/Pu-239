@@ -112,8 +112,6 @@ Center-align a block level element
 
 div#base_content {
     width: 100%;
-    margin-left: -4px;
-    padding: 4px;
     background-color: rgba(165, 195, 165, .7);
     border: 1px solid #ccc;
     border: 1px solid rgba(0, 0, 0, 0.4);

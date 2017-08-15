@@ -57,14 +57,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         <link rel='shortcut icon' href='favicon.ico' />
         <!-- css
         =================================================== -->
-        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/default.css' />
-        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/bootstrap.css' />
-        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/bootstrap-responsive.css' />";
-    if ($CURUSER) {
-        $htmlout .= "
-        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/themeChanger/css/colorpicker.css' />
-        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/themeChanger/css/themeChanger.css' />";
-    }
+        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/6f978741493501e93248e8f1172b77c1.min.css' />";
     $htmlout .= "
         <style>#mlike{cursor:pointer;}</style>
         <!-- global javascript
@@ -78,8 +71,8 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         <script src='./scripts/jquery.status.js'></script>
         <script src='./scripts/jquery.cookie.js'></script>
         <script src='./scripts/help.js'></script>
-        <script src='./templates/{$INSTALLER09['stylesheet']}/themeChanger/js/colorpicker.js'></script>
-        <script src='./templates/{$INSTALLER09['stylesheet']}/themeChanger/js/themeChanger.js'></script>
+        <script src='./templates/themeChanger/js/colorpicker.js'></script>
+        <script src='./templates/themeChanger/js/themeChanger.js'></script>
         <script src='./templates/{$INSTALLER09['stylesheet']}/js/jquery.smoothmenu.js'></script>
         <script src='./templates/{$INSTALLER09['stylesheet']}/js/core.js'></script>
         <script>
@@ -136,8 +129,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         $htmlout .= "
         <!-- Main Navigation
         =================================================== -->
-        <div class='nav-wrapper'>
-        <div id='navigation' class='navigation'>
+        <div id='navigation' class='container navigation'>
             <ul>
         <li><a href='#'>{$lang['gl_torrent']}</a>
         <ul class='sub-menu'>
@@ -162,20 +154,20 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
             </ul><!--/ .sub-menu-->
         </li>
         <li><a href='#'>{$lang['gl_games']}</a>
-        <ul class='sub-menu'>
-                    <li><a href='./games.php'>{$lang['gl_games']}</a></li>
-                    <li><a href='./arcade.php'>{$lang['gl_arcade']}</a></li>
-                    <li><a href='./lottery.php'>{$lang['gl_lottery']}</a></li>
-                    </ul><!--/ .sub-menu-->
-        </li>
+            <ul class='sub-menu'>
+                <li><a href='./games.php'>{$lang['gl_games']}</a></li>
+                <li><a href='./arcade.php'>{$lang['gl_arcade']}</a></li>
+                <li><a href='./lottery.php'>{$lang['gl_lottery']}</a></li>
+                </ul><!--/ .sub-menu-->
+            </li>
             <li><a href='./donate.php'>{$lang['gl_donate']}</a></li>
             <li><a href='#'>{$lang['gl_forums']}</a>
-        <ul class='sub-menu'>
-                    <li><a href='./forums.php'>{$lang['gl_forums']}</a></li>
-        </ul>
-        </li>
-                <li> " . (isset($CURUSER) && $CURUSER['class'] < UC_STAFF ? "<a class='brand' href='./bugs.php?action=add'>{$lang['gl_breport']}</a>" : "<a class='brand' href='./bugs.php?action=bugs'>{$lang['gl_brespond']}</a>") . '</li>
-                <li>' . (isset($CURUSER) && $CURUSER['class'] < UC_STAFF ? "<a class='brand' href='./contactstaff.php'>{$lang['gl_cstaff']}</a>" : "<a class='brand' href='./staffbox.php'>{$lang['gl_smessages']}</a>") . '</li>
+            <ul class='sub-menu'>
+                <li><a href='./forums.php'>{$lang['gl_forums']}</a></li>
+            </ul>
+            </li>
+            <li> " . (isset($CURUSER) && $CURUSER['class'] < UC_STAFF ? "<a class='brand' href='./bugs.php?action=add'>{$lang['gl_breport']}</a>" : "<a class='brand' href='./bugs.php?action=bugs'>{$lang['gl_brespond']}</a>") . '</li>
+            <li>' . (isset($CURUSER) && $CURUSER['class'] < UC_STAFF ? "<a class='brand' href='./contactstaff.php'>{$lang['gl_cstaff']}</a>" : "<a class='brand' href='./staffbox.php'>{$lang['gl_smessages']}</a>") . '</li>
         </ul>
         <small>
         <strong>';
@@ -191,7 +183,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         if (!empty($active_users_cache)) {
             $htmlout .= "&#160;&#160;{$lang['gl_ausers']}&#160;[" . $active_users_cache['au'] . ']';
         }
-        $htmlout .= "</strong></small></div></div><div class='clear'></div>";
+        $htmlout .= "</strong></small></div><div class='clear'></div>";
     }
     $htmlout .= "
         <!-- END Main Navigation
@@ -670,10 +662,13 @@ function StatusBar()
       setTimeout("refrClock()",1000);
       }
       refrClock();
+
       $(document).ready(function () {
-          $("#triviabox").iFrameResize({
-              enablePublicMethods: true,
-          });
+          if ($("#triviabox").length) {
+              $("#triviabox").iFrameResize({
+                  enablePublicMethods: true,
+              });
+          };
       });
       </script>';
 

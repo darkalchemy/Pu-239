@@ -127,7 +127,7 @@ jQuery(document).ready(function () {
     ddsmoothmenu.init({
         mainmenuid: "navigation",
         orientation: "h",
-        classname: "navigation",
+        classname: "container navigation",
         contentsource: "markup"
     });
 
