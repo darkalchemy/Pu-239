@@ -34,7 +34,7 @@ if (isset($_POST['action']) == 'add' && $CURUSER['class'] >= UC_SYSOP) {
     $link = ($_POST['link']);
     $status = ($_POST['status']);
     $credit = ($_POST['credit']);
-    sql_query('INSERT INTO modscredits (name, description,  category,  u232lnk,  status, credit) VALUES(' . sqlesc($name) . ', ' . sqlesc($description) . ', ' . sqlesc($category) . ', ' . sqlesc($link) . ', ' . sqlesc($status) . ', ' . sqlesc($credit) . ')') or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO modscredits (name, description,  category,  pu239lnk,  status, credit) VALUES(' . sqlesc($name) . ', ' . sqlesc($description) . ', ' . sqlesc($category) . ', ' . sqlesc($link) . ', ' . sqlesc($status) . ', ' . sqlesc($credit) . ')') or sqlerr(__FILE__, __LINE__);
     header("Location: {$INSTALLER09['baseurl']}/credits.php");
     exit();
 }
@@ -50,7 +50,7 @@ if ($action == 'delete' && $CURUSER['class'] >= UC_SYSOP) {
 
 if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
     $id = (int)$_GET['id'];
-    $res = sql_query('SELECT name, description, category, u232lnk, status, credit FROM modscredits WHERE id =' . $id . '') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT name, description, category, pu239lnk, status, credit FROM modscredits WHERE id =' . $id . '') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 0) {
         stderr("{$lang['credits_error']}", "{$lang['credits_nocr']}");
     }
@@ -78,7 +78,7 @@ if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
         $HTMLOUT .= '</select></td></tr>';
 
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['credits_link']}</td>" .
-            "<td align='left' style='padding: 0px'><input type='text' size='60' maxlength='120' name='link' " . "value='" . htmlsafechars($mod['u232lnk']) . "' /></td></tr>\n" .
+            "<td align='left' style='padding: 0px'><input type='text' size='60' maxlength='120' name='link' " . "value='" . htmlsafechars($mod['pu239lnk']) . "' /></td></tr>\n" .
             "<tr>
   <td class='rowhead'>{$lang['credits_status']}</td>
   <td align='left' style='padding: 0px'>
@@ -133,7 +133,7 @@ if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
         stderr("{$lang['credits_error']}", "{$lang['credits_error6']}");
     }
 
-    sql_query('UPDATE modscredits SET name = ' . sqlesc($name) . ', category = ' . sqlesc($category) . ', status = ' . sqlesc($modstatus) . ',  u232lnk = ' . sqlesc($link) . ', credit = ' . sqlesc($credit) . ', description = ' . sqlesc($description) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE modscredits SET name = ' . sqlesc($name) . ', category = ' . sqlesc($category) . ', status = ' . sqlesc($modstatus) . ',  pu239lnk = ' . sqlesc($link) . ', credit = ' . sqlesc($credit) . ', description = ' . sqlesc($description) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     header("Location: {$_SERVER['PHP_SELF']}");
     exit();
 }
@@ -174,7 +174,7 @@ if ($row = mysqli_fetch_array($res)) {
         } else {
             $status = '[b][color=#018316]' . $row['status'] . '[/color][/b]';
         }
-        $link = $row['u232lnk'];
+        $link = $row['pu239lnk'];
         $credit = $row['credit'];
         $descr = $row['description'];
 

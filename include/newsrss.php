@@ -16,25 +16,21 @@ function foxnews_shout()
         foreach ($items as $item) {
             $title       = empty($item->getElementsByTagName('title')      ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('title')      ->item(0)->nodeValue;
             $link        = empty($item->getElementsByTagName('link')       ->item(0)->nodeValue) ? '' : $item->getElementsByTagName('link')       ->item(0)->nodeValue;
-            preg_match('/\d{4}\/\d{2}\/\d{2}\/(.*)/', $link, $match);
-            $short_link = !empty($match[1]) ? $match[1] : $link;
             $pubs[] = [
                         'title' => replace_unicode_strings($title),
                         'link' => replace_unicode_strings($link),
-                        'short_link' => replace_unicode_strings($short_link),
             ];
         }
         $pubs = array_reverse($pubs);
         foreach ($pubs as $pub) {
-            $title = sqlesc($pub['title']);
-            $short_link = sqlesc($pub['short_link']);
+            $link = sqlesc(hash(sha256, $pub['link']));
             sql_query("INSERT INTO newsrss (link)
-                        SELECT $short_link
+                        SELECT $link
                         FROM DUAL
                         WHERE NOT EXISTS(
                             SELECT 1
                             FROM newsrss
-                            WHERE link = $short_link
+                            WHERE link = $link
                         )
                         LIMIT 1") or sqlerr(__FILE__, __LINE__);
             $newid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
@@ -71,8 +67,7 @@ function tfreak_shout()
         }
         $pubs = array_reverse($pubs);
         foreach ($pubs as $pub) {
-            $title = sqlesc($pub['title']);
-            $link = sqlesc($pub['link']);
+            $link = sqlesc(hash(sha256, $pub['link']));
             sql_query("INSERT INTO newsrss (link)
                         SELECT $link
                         FROM DUAL
@@ -99,7 +94,7 @@ function github_shout()
     if ($INSTALLER09['autoshout_on'] == 1) {
         require_once INCL_DIR . 'user_functions.php';
         if (($rss = $mc1->get_value('githubcommitrss_')) === false) {
-            $rss = file_get_contents('https://github.com/darkalchemy/P-239-V1/commits/master.atom');
+            $rss = file_get_contents('https://github.com/darkalchemy/Pu-239/commits/master.atom');
             $mc1->cache_value('githubcommitrss_', $rss, 300);
         }
         $xml = simplexml_load_string($rss);
@@ -122,8 +117,7 @@ function github_shout()
         }
         $pubs = array_reverse($pubs);
         foreach ($pubs as $pub) {
-            $title = sqlesc($pub['title']);
-            $link = sqlesc($pub['link']);
+            $link = sqlesc(hash(sha256, $pub['link']));
             sql_query("INSERT INTO newsrss (link)
                         SELECT $link
                         FROM DUAL

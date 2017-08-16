@@ -80,7 +80,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
             // Like Dislike function
             //================================================== -->
             $(function() {                          // the like js
-                $('span[id*=mlike]').like232({
+                $('span[id*=mlike]').like239({
                     times : 5,              // times checked
                     disabled : 5,           // disabled from liking for how many seconds
                     time  : 5,              // period within check is performed

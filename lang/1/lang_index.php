@@ -14,8 +14,8 @@ $lang = [
     'index_disclaimer'           => 'Disclaimer',
     'index_donations'            => 'Donate',
     'index_serverload'           => 'Server Load',
-    'index_p-239'                => 'P-239 Forum',
-    'index_p-239_git'            => 'P-239 Repo',
+    'index_pu-239'               => 'Pu-239 Forum',
+    'index_pu-239_git'           => 'Pu-239 Repo',
     'index_serverscene'          => 'Server Scene',
     'index_birthday'             => 'Members birthdays',
     'index_trivia'               => 'Trivia Game',
@@ -108,7 +108,7 @@ It is your own responsibility to adhere to these terms.",
     //active users
     'index_active_users_no'      => 'There have been no active users in the last 15 minutes.',
     //advertise
-    'index_advertise_t'          => 'P-239',
+    'index_advertise_t'          => 'Pu-239',
     //announcement
     'index_ann_title'            => 'Announcement',
     'index_ann_click'            => 'Click ',

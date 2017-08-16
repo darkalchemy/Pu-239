@@ -1,4 +1,4 @@
-# P-239-V1
+# Pu-239
 
 There is a temporary site at http://tech-info.pw:8080 where you can view the code in action.
 

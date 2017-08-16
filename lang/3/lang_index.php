@@ -13,8 +13,8 @@ $lang = [
     'index_disclaimer'           => 'Termeni de utilizare',
     'index_donations'            => 'Doneaz&#259;',
     'index_serverload'           => 'Solicitare Server',
-    'index_p-239'                => 'P-239 Forum',
-    'index_p-239_git'            => 'P-239 Repo',
+    'index_pu-239'               => 'Pu-239 Forum',
+    'index_pu-239_git'           => 'Pu-239 Repo',
     'index_serverscene'          => 'Server Scene',
     'index_birthday'             => 'Anivers&#259;ri membri',
     'index_trivia'               => 'Trivia Game',
@@ -107,7 +107,7 @@ Este obliga&#355;ia dumneavoastra s&#259; v&#259; conforma&#355;i acestor termen
     //active users
     'index_active_users_no'      => 'Nici un utilizator activ &#238;n ultimele 15 minute.',
     //advertise
-    'index_advertise_t'          => 'P-239',
+    'index_advertise_t'          => 'Pu-239',
     //announcement
     'index_ann_title'            => 'Anun&#355',
     'index_ann_click'            => 'Clic ',

@@ -97,7 +97,7 @@
 
 
 $(function () {
-    $.fn.like232 = function (ex) {
+    $.fn.like239 = function (ex) {
         var ob = {agent: navigator.userAgent, ee: {}};
 
         function error(d) {

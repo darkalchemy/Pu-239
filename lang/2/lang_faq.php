@@ -132,9 +132,9 @@ $lang = [
     <br>
     <b>Where can I get a copy of the source code?<a name='site4' id='site4'></a></b><br>
     <br>
-    P-239 is an active open source project available for download via Github <a href='https://github.com/darkalchemy/V-239-V1' class='altlink'>Zip download</a>. Please note: We do not give any kind of support on the source code so please don't bug us about it. If it works, great, if not too bad. Use this software at your own risk!
+    Pu-239 is an active open source project available for download via Github <a href='https://github.com/darkalchemy/Pu-239' class='altlink'>Zip download</a>. Please note: We do not give any kind of support on the source code so please don't bug us about it. If it works, great, if not too bad. Use this software at your own risk!
     <p>
-    Here is a nice tutorial on getting it all to work. Note: This tutorial is not supported by P-239. Please direct all comments on the tutorial to the author</p>",
+    Here is a nice tutorial on getting it all to work. Note: This tutorial is not supported by Pu-239. Please direct all comments on the tutorial to the author</p>",
     'faq_userinfo_body'       => "<b>I registered an account but did not receive the confirmation e-mail!</b><a name='user1' id='user1'></a><br>
     <br>
     You can contact site staff with your request on irc<br>
