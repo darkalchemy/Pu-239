@@ -1,26 +1,34 @@
 #content .user {
     color: #8E35EF;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 #content .power_user {
     color: #F9A200;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 #content .vip {
     color: #009F00;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 #content .uploader {
     color: #0000FF;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 #content .moderator {
     color: #FE2E2E;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 #content .administrator {
     color: #B000B0;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 #content .sysop {
     color: #00FF00;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 #content .chatbot {
     color: #ff8b49;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 #content #chatList span.user {
     font-weight:bold;
@@ -43,7 +51,7 @@
 #content #chatList span.sysop {
     font-weight:bold;
 }
-#content #chatList span.chatBot {
+#content #chatList span.chatbot {
     font-weight:bold;
     font-style:italic;
 }

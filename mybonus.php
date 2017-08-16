@@ -858,7 +858,7 @@ if (isset($_GET['exchange'])) {
             while ($ar = mysqli_fetch_assoc($qr)) {
                 $new_rep = $ar['reputation'] - $rep_to_steal;
                 $update_users[] = '(' . $ar['id'] . ',' . ($ar['reputation'] - $rep_to_steal) . ',' . $ar['seedbonus'] . ')';
-                $pms[] = '(' . $INSTALLER09['bot_id'] . ',' . $ar['id'] . ',' . TIME_NOW . ',' . sprintf($pm['subject'], $thief_name) . ',' . sprintf($pm['message'], $thief_id, $thief_name, $new_rep) . ')';
+                $pms[] = '(' . $INSTALLER09['chatBotID'] . ',' . $ar['id'] . ',' . TIME_NOW . ',' . sprintf($pm['subject'], $thief_name) . ',' . sprintf($pm['message'], $thief_id, $thief_name, $new_rep) . ')';
                 $robbed_users[] = sprintf('[url=' . $INSTALLER09['baseurl'] . '/userdetails.php?id=%d]%s[/url]', $ar['id'], $ar['username']);
                 //== cache updates ???
                 $mc1->begin_transaction('MyUser_' . $ar['id']);

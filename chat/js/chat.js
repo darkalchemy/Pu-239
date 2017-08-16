@@ -1413,7 +1413,6 @@ var ajaxChat = {
         if (messageText.indexOf('/privmsg') === 0 || messageText.indexOf('/privmsgto') === 0 || messageText.indexOf('/privaction') === 0) {
             rowClass += ' private';
         }
-
         var dateTime = this.settings['dateFormat'] ? '<span class="dateTime" title="' + this.formatDate(this.settings['dateFormatTooltip'], dateObject) + '">'
             + this.formatDate(this.settings['dateFormat'], dateObject) + '</span> ' : '';
         return '<div id="'
@@ -1779,21 +1778,21 @@ var ajaxChat = {
 
     getRoleClass: function (roleID) {
         switch (parseInt(roleID)) {
-            case 0:
+            case parseInt(UC_USER):
                 return 'user';
-            case 1:
+            case parseInt(UC_POWER_USER):
                 return 'power_user';
-            case 2:
+            case parseInt(UC_VIP):
                 return 'vip';
-            case 3:
+            case parseInt(UC_UPLOADER):
                 return 'uploader';
-            case 4:
+            case parseInt(UC_MODERATOR):
                 return 'moderator';
-            case 5:
+            case parseInt(UC_ADMINISTRATOR):
                 return 'administrator';
-            case 6:
+            case parseInt(UC_SYSOP):
                 return 'sysop';
-            case this.chatBotID:
+            case parseInt(this.chatBotRole):
                 return 'chatbot';
             default:
                 return 'user';

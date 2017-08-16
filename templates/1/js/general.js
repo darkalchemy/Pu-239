@@ -134,7 +134,7 @@ jQuery(document).ready(function () {
     ddsmoothmenu.init({
         mainmenuid: "platform-menu",
         orientation: "h",
-        classname: "platform-menu",
+        classname: "container platform-menu",
         contentsource: "markup"
     });
     /* Smoothmenu --> End */

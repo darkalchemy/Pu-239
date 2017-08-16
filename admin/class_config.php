@@ -39,12 +39,14 @@ function write_css($data) {
         if (!empty($cname)) {
             $classdata .= "#content .{$cname} {
     color: $ccolor;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 ";
         }
     }
     $classdata .= "#content .chatbot {
     color: #ff8b49;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 ";
     foreach ($data as $class) {
@@ -56,7 +58,7 @@ function write_css($data) {
 ";
         }
     }
-    $classdata .= "#content #chatList span.chatBot {
+    $classdata .= "#content #chatList span.chatbot {
     font-weight:bold;
     font-style:italic;
 }

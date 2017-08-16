@@ -11,7 +11,6 @@
 <body class="ajax-chat">
 <div id="content">
     <div id="logoutChannelContainer">
-        <input type="button" id="logoutButton" value="[LANG]logout[/LANG]" onclick="ajaxChat.logout();"/>
         <div id="logoutChannelInner">
             <label for="channelSelection">[LANG]channel[/LANG]:</label>
             <select id="channelSelection" onchange="ajaxChat.switchChannel(this.options[this.selectedIndex].value);">[CHANNEL_OPTIONS/]</select>
@@ -364,7 +363,7 @@
 <!--[if lt IE 8]>
     <script>var isIElt8 = true;</script>
 <![endif]-->
-<script src="js/a49e16eff9f548fdd0eca06d28315bbe.min.js" charset="UTF-8"></script>
+<script src="js/8c6418692b8df4393550f65359f2d0a5.min.js" charset="UTF-8"></script>
 <script>
     ajaxChatConfig.token = '[TOKEN/]';
     ajaxChatConfig.loginChannelID = parseInt('[LOGIN_CHANNEL_ID/]');

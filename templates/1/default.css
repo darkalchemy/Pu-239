@@ -901,6 +901,7 @@ h6 {
     height: 80px;
     float: none;
     padding: 2.8em 0 3em;
+    margin-top: 40px;
 }
 
 #logo h1 {
@@ -966,7 +967,6 @@ body.background-2 #logo .slogan {
     -webkit-border-radius: 0 0 8px 8px;
     -moz-border-radius: 0 0 8px 8px;
     border-radius: 0 0 8px 8px;
-    display: flex;
     position: fixed;
     z-index: 2;
 }
@@ -1279,6 +1279,7 @@ img {
 }
 
 .flex {
+    display: -webkit-flex;
     display: flex;
     align-items: left;
 }

@@ -111,10 +111,10 @@ Center-align a block level element
 }
 
 div#base_content {
-    width: 100%;
+    width: calc(100% - 2px);
     background-color: rgba(165, 195, 165, .7);
-    border: 1px solid #ccc;
-    border: 1px solid rgba(0, 0, 0, 0.4);
+    border: 1px solid #fff;
+    border: 1px solid rgba(255, 255, 255, 1);
     -webkit-box-shadow: 0 1px 3px rgba(128, 128, 128, 0.7);
     -moz-box-shadow: 0 1px 3px rgba(128, 128, 128, 0.7);
     box-shadow: 0 1px 3px rgba(128, 128, 128, 0.7);
@@ -1934,7 +1934,7 @@ table {
 }
 
 .table {
-    width: 100%;
+    width: calc(100% - 4px);
     margin-bottom: 18px;
 }
 

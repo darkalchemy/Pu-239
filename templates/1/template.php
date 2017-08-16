@@ -57,7 +57,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         <link rel='shortcut icon' href='favicon.ico' />
         <!-- css
         =================================================== -->
-        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/6f978741493501e93248e8f1172b77c1.min.css' />";
+        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/a4e82fc16ba5b566f0673e90abd0af22.min.css' />";
     $htmlout .= "
         <style>#mlike{cursor:pointer;}</style>
         <!-- global javascript
@@ -190,11 +190,11 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         =================================================== -->
         <!-- Logo
         =================================================== -->
-            <div class='cl'>&#160;</div>
+            <div class='cl'></div>
             <!-- Logo -->
             <div id='logo'>
-            <h1>" . TBVERSION . "<span>&#160;&#160;Code</span></h1>
-            <p class='description'>&#160;&#160;&#160;<i>Making progress, 1 day at a time...</i></p>
+            <h1>" . TBVERSION . "<span> Code</span></h1>
+            <p class='description'><i>Making progress, 1 day at a time...</i></p>
             </div>
         <!-- End Logo
         =================================================== -->";
@@ -203,7 +203,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         $htmlout .= "
         <!-- Platform Navigation
         =================================================== -->
-        <div id='platform-menu' class='platform-menu'>
+        <div id='platform-menu' class='container platform-menu'>
             <a href='./index.php' class='home'>{$lang['gl_home']}</a>
                 <ul>
                     <li><a href='./pm_system.php'>{$lang['gl_pms']}</a></li>

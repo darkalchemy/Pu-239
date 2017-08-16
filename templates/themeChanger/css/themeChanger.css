@@ -58,7 +58,7 @@
     top: 20px;
     width: 29px;
     height: 31px;
-    background: url('../images/theme_control_bg.png') no-repeat center center #1f1f1f;
+    background: url('../themeChanger/images/theme_control_bg.png') no-repeat center center #1f1f1f;
     border-radius: 0 5px 5px 0;
     -moz-border-radius: 0 5px 5px 0;
     -webkit-border-radius: 0 5px 5px 0;
@@ -75,7 +75,7 @@
 }
 
 #control_panel #backgrounds a {
-    background-image: url('../images/patterns_sprite.png');
+    background-image: url('../themeChanger/images/patterns_sprite.png');
     background-repeat: no-repeat;
     border: 1px solid #000;
     width: 29px;
@@ -98,7 +98,7 @@
 }
 
 #nav ul li a {
-    background-image: url(../images/nav_sprite.png);
+    background-image: url(../themeChanger/images/nav_sprite.png);
     background-repeat: no-repeat;
     height: 32px;
     width: 32px;
@@ -262,7 +262,7 @@
     width: 11px;
     height: 11px;
     overflow: hidden;
-    background: url(../images/colorpicker_select.png);
+    background: url(../themeChanger/images/colorpicker_select.png);
     content: "";
 }
 

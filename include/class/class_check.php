@@ -81,7 +81,7 @@ function class_check($class = 0, $staff = true, $pin = false)
                 $topicid = (int)$INSTALLER09['staff']['forumid'];
                 $added = TIME_NOW;
                 $icon = 'topic_normal';
-                sql_query('INSERT INTO posts (topic_id, user_id, added, body, icon) ' . "VALUES($topicid , " . $INSTALLER09['bot_id'] . ", $added, $body, " . sqlesc($icon) . ')') or sqlerr(__FILE__, __LINE__);
+                sql_query('INSERT INTO posts (topic_id, user_id, added, body, icon) ' . "VALUES($topicid , " . $INSTALLER09['chatBotID'] . ", $added, $body, " . sqlesc($icon) . ')') or sqlerr(__FILE__, __LINE__);
                 /** get mysql_insert_id(); **/
                 $res = sql_query("SELECT id FROM posts WHERE topic_id = $topicid 
                                   ORDER BY id DESC LIMIT 1") or sqlerr(__FILE__, __LINE__);

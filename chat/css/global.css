@@ -373,7 +373,7 @@ body.ajax-chat {
     }
 
     #content #logoutChannelContainer {
-        top: 30px;
+        top: 5px;
         left: 5px;
         right: 0px;
     }
@@ -435,7 +435,7 @@ body.ajax-chat {
 
 @media (max-width: 480px) {
     #content #mainPanelContainer {
-        top: 65px;
+        top: 30px;
         left: 0px;
         right: 0px;
         bottom: 105px;
@@ -479,8 +479,8 @@ body.ajax-chat {
     #content #logoutChannelContainer #showChannelsButton {
         display: block;
         position: absolute;
-        right: 5px;
-        top: 5px;
+        left: 5px;
+        top: 0;
     }
 }
 

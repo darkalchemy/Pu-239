@@ -53,16 +53,12 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
         background-image:    -moz-linear-gradient(top, #464646, #181818);
         background-image:      -o-linear-gradient(top, #464646, #181818);
         background-image:         linear-gradient(to bottom, #464646, #181818);*/
-    color: #000;
+    color: #fff;
 }
 
 .ajax-chat h1, .ajax-chat h3 {
     color: #e2e9db;
     text-shadow: 1px 1px 2px #191919;
-}
-
-.ajax-chat a {
-    color: #23751c;
 }
 
 .ajax-chat input, .ajax-chat select {
@@ -202,8 +198,9 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
     color: red;
 }
 
-#content #chatList a {
-    color: #23751c;
+#content #chatList a,
+.ajax-chat a {
+    color: #65f1df;
 }
 
 #content #chatList .deleteSelected {
@@ -259,3 +256,13 @@ input[type=button]:active {
    background: #1b435e;
 }
 
+.ajax-chat .popup, 
+#content #chatList, 
+#content #onlineListContainer, 
+#content #helpContainer, 
+#content #settingsContainer, 
+#content #inputFieldContainer, 
+#loginContent input[type=text], 
+#loginContent input[type=password] {
+    background: rgba(0, 0, 0, .1);
+}
