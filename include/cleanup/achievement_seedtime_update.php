@@ -20,7 +20,7 @@ function docleanup($data)
     if (mysqli_num_rows($res) > 0) {
         $dt = TIME_NOW;
         $subject = sqlesc('New Achievement Earned!');
-        $points = rand(1, 3);
+        $points = random_int(1, 3);
         while ($arr = mysqli_fetch_assoc($res)) {
             $timeseeded = (int)$arr['seedtime'];
             $dayseed = (int)$arr['dayseed'];

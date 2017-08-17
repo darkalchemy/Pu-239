@@ -175,7 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ' . $lang['pm_search_match'] . '' . ($num_result === 1 ? '' : $lang['pm_search_matches']) . $lang['pm_search_excl'] . ($num_result === 0 ? $lang['pm_search_better'] : '') . '</div>';
     //=== let's make the table
     $HTMLOUT .= ($num_result > 0 ? '
-        <form action="pm_system.php" method="post"  name="messages" onsubmit="return ValidateForm(this,\'pm\')">
+        <form action="pm_system.php" method="post" name="messages" onsubmit="return ValidateForm(this,\'pm\')">
         <input type="hidden" name="action" value="move_or_delete_multi" />
     <table border="0" cellspacing="0" cellpadding="5" align="center" style="max-width:800px">
         ' . ($as_list_post == 2 ? '' : '

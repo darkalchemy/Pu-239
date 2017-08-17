@@ -4,6 +4,8 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'));
+global $INSTALLER09;
+
 $uploaded = (int)$CURUSER['uploaded'];
 $downloaded = (int)$CURUSER['downloaded'];
 $newuploaded = (int)($uploaded * 1.1);

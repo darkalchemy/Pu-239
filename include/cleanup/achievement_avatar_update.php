@@ -12,8 +12,8 @@ function docleanup($data)
         $msg = sqlesc('Congratulations, you have just earned the [b]Avatar Setter[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/piratesheep.png[/img]');
         while ($arr = mysqli_fetch_assoc($res)) {
             $dt = TIME_NOW;
-            $points = rand(1, 3);
-            $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+            $points = random_int(1, 3);
+            $msgs_buffer[] = '(0,' . $arr['id'] . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
             $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'Avatar Setter\', \'piratesheep.png\' , \'User has successfully set an avatar on profile settings.\')';
             $usersachiev_buffer[] = '(' . $arr['id'] . ',1, ' . $points . ')';
             $mc1->delete_value('inbox_new_' . $arr['id']);

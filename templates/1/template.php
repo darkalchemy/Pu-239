@@ -57,7 +57,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         <link rel='shortcut icon' href='favicon.ico' />
         <!-- css
         =================================================== -->
-        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/a4e82fc16ba5b566f0673e90abd0af22.min.css' />";
+        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/a03448ed064822b57b81af13e460e3e3.min.css' />";
     $htmlout .= "
         <style>#mlike{cursor:pointer;}</style>
         <!-- global javascript
@@ -163,6 +163,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
             <li><a href='./donate.php'>{$lang['gl_donate']}</a></li>
             <li><a href='#'>{$lang['gl_forums']}</a>
             <ul class='sub-menu'>
+                <li><a href='http://tech-info'>{$lang['gl_tforums']}</a></li>
                 <li><a href='./forums.php'>{$lang['gl_forums']}</a></li>
             </ul>
             </li>

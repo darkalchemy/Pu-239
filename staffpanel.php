@@ -257,7 +257,8 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
         if ($action == 'edit') {
             $HTMLOUT .= "<input type='hidden' name='id' value='{$id}' />";
         }
-        $HTMLOUT .= "<table cellpadding='5' width='100%' align='center'>
+        $HTMLOUT .= "
+    <table class='table table-bordered'  cellpadding='5' align='center'>
     <tr class='colhead'>
     <td colspan='2'>
      " . ($action == 'edit' ? $lang['spanel_edit'] . ' "' . $page_name . '"' : $lang['spanel_add_a_new']) . ' page' . "</td>
@@ -322,7 +323,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
      </tr>
      </table>
 
-     <table class='main'>
+     <table class='table table-bordered'>
      <tr>
      <td style='border:none;' align='center'><input type='submit' value='{$lang['spanel_submit']}' /></td>
      <td colspan='2' style='border:none;'>
@@ -353,7 +354,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
                 $end_table = (count($db_classes[$arr['av_class']]) == $i ? true : false);
                 if (!in_array($arr['av_class'], $unique_classes)) {
                     $unique_classes[] = $arr['av_class'];
-                    $HTMLOUT .= "<table cellpadding='5' width='100%' align='center'>
+                    $HTMLOUT .= "<table class='table table-bordered' cellpadding='5' align='center'>
       <tr>
       <td colspan='4' align='center'>
       <h2>" . ($class_color ? '<font color="#' . get_user_class_color($arr['av_class']) . '">' : '') . get_user_class_name($arr['av_class']) . ' Panel' . ($class_color ? '</font>' : '') . "</h2>

@@ -151,8 +151,9 @@ function tool_tip($link, $text, $title = false)
 $action = (in_array($posted_action, $valid_actions) ? $posted_action : 'forum');
 //=== some default global type stuff
 //=== let admin and above delete shite
+$jsbottom = '';
 if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
-    $HTMLOUT .= "<script>
+    $jsbottom .= "<script>
   /*<![CDATA[*/
   function confirm_delete(id)
   {
@@ -164,7 +165,7 @@ if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
   /*]]>*/
   </script>";
 }
-$HTMLOUT .= "<script>
+$jsbottom .= "<script>
   /*<![CDATA[*/
 	var e = new sack();
 function do_rate(rate,id,what) {
@@ -191,19 +192,26 @@ function do_rate(rate,id,what) {
    /*]]>*/
    </script>";
 //=== mini menu
-$mini_menu = '<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=subscriptions">' . $lang['fm_my_subscriptions'] . '</a> |
-	<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=search">' . $lang['fe_search'] . '</a> |
-	<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_unread_posts">' . $lang['fm_unread_posts'] . '</a> |
-	<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=new_replies">' . $lang['fm_new_replies'] . '</a> |
-	<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_my_posts">' . $lang['fm_my_posts'] . '</a> |
-	<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=mark_all_as_read">' . $lang['fm_mark_all_as_read'] . '</a> ' . ($CURUSER['class'] === UC_MAX ? '| <a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=member_post_history">' . $lang['fm_member_post_history'] . '</a>' : '');
-$location_bar = '<br><h1 align="center"><a class="altlink" href="index.php">' . $INSTALLER09['site_name'] . '</a>  <img src="' . $INSTALLER09['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" />
-   <a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php">' . $lang['fe_forums'] . '</a></h1>
-	<span style="text-align: center;">' . $mini_menu . '</span><br>' . (isset($_GET['m']) ? '<h1>' . $lang['fm_all_forums_up_to_date'] . '.</h1>' : '<br>');
+$mini_menu = '<a class="btn" href="./forums.php?action=subscriptions">' . $lang['fm_my_subscriptions'] . '</a>
+	<a class="btn" href="./forums.php?action=search">' . $lang['fe_search'] . '</a>
+	<a class="btn" href="./forums.php?action=view_unread_posts">' . $lang['fm_unread_posts'] . '</a>
+	<a class="btn" href="./forums.php?action=new_replies">' . $lang['fm_new_replies'] . '</a>
+	<a class="btn" href="./forums.php?action=view_my_posts">' . $lang['fm_my_posts'] . '</a>
+	<a class="btn" href="./forums.php?action=mark_all_as_read">' . $lang['fm_mark_all_as_read'] . '</a> ' . ($CURUSER['class'] === UC_MAX ? ' <a class="btn" href="./forums.php?action=member_post_history">' . $lang['fm_member_post_history'] . '</a>' : '');
+$title_bar = '
+    <h1 align="center">
+        <a class="altlink" href="index.php">' . $INSTALLER09['site_name'] . '</a>  <img src="' . $INSTALLER09['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" />
+        <a class="altlink" href="./forums.php">' . $lang['fe_forums'] . '</a>
+    </h1>';
+$location_bar = '
+	<div class="answers-container">' .
+        $mini_menu . '
+    </div>' . (isset($_GET['m']) ? '
+    <h1>' . $lang['fm_all_forums_up_to_date'] . '.</h1>' : '');
 $legend = '<br><!--<span style="text-align: center;">-->
-   <table border="0" cellspacing="5" cellpadding="5" width="600" align="center">
+   <table class="table table-bordered">
 	<tr>
-	<td class="forum_head_dark" colspan="8" align="center">' . $lang['fm_legend'] . '</td>
+	<th class="forum_head_dark" colspan="8" align="center">' . $lang['fm_legend'] . '</th>
 	</tr>
 	<tr>
 	<td class="one" align="center"><img src="pic/forums/unlockednew.gif" alt="unlockednew" title="' . $lang['fm_unlocked_new'] . '"/></td>
@@ -260,9 +268,9 @@ for ($i = 2; $i < 21; ++$i) {
     $options .= '<option class="body" value="' . $i . '" ' . ($multi_options === $i ? 'selected="selected"' : '') . '>' . $i . ' options</option>';
 }
 $more_options = '<div id="tools" ' . ((isset($_POST['poll_question']) && $_POST['poll_question'] !== '') ? '' : 'style="display:none"') . ' >
-   <br><table border="0" cellspacing="0" cellpadding="5" width="800" align="center">
+   <br><table class="table table-bordered">
 	<tr>
-	<td  class="forum_head_dark" align="left" colspan="3">' . $lang['fm_additional_options'] . '...</td>
+	    <th  class="forum_head_dark" align="left" colspan="3">' . $lang['fm_additional_options'] . '...</th>
 	</tr>' . ($CURUSER['class'] < $min_upload_class ? '' : '<tr>
 	<td class="three" align="center" valign="top" width="10"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/attach.gif" alt="' . $lang['fm_attach'] . '" /></td>
 	<td class="three" align="right" valign="top" width="20"><span style="white-space:nowrap;font-weight: bold;">' . $lang['fe_attachments'] . ':</span></td>
@@ -345,7 +353,7 @@ $forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POS
 //=== print the bottom of the page
 $the_bottom_of_the_page = '';
 $the_bottom_of_the_page .= insert_quick_jump_menu($forum_id) . $legend;
-$the_bottom_of_the_page .= stdfoot($stdfoot);
+$the_bottom_of_the_page .= $jsbottom . stdfoot($stdfoot);
 //=== here we go with all the possibilities \\o\o/o//
 //=== will be sure to put these in order of most hit to make it a bit faster...
 switch ($action) {
@@ -497,12 +505,21 @@ switch ($action) {
         //=== some default stuff
         //=== main huge query:
         $res_forums = sql_query('SELECT o_f.id AS over_forum_id, o_f.name AS over_forum_name, o_f.description AS over_forum_description, o_f.min_class_view AS over_forum_min_class_view, f.id AS real_forum_id, f.name, f.description, f.post_count, f.topic_count,  f.forum_id FROM over_forums AS o_f JOIN forums AS f WHERE o_f.min_class_view <= ' . $CURUSER['class'] . ' AND f.min_class_read <= ' . $CURUSER['class'] . ' AND parent_forum = 0 ORDER BY o_f.sort, f.sort ASC');
-        $HTMLOUT .= $location_bar . '<br><table border="0" cellspacing="0" cellpadding="5" width="95%">';
+        $HTMLOUT .= $title_bar . $location_bar . '<br><table class="table table-bordered">';
         //=== well... let's do the loop and make the damned page!
+        $i = 0;
         while ($arr_forums = mysqli_fetch_assoc($res_forums)) {
+            $space = $i++ >= 1 ? '<tr><td colspan="3"><br></td></tr>' : '';
             //=== if it's a forums section print it, if not, list the fourm sections in it \o/
-            $HTMLOUT .= ($arr_forums['over_forum_id'] != $over_forum_id ? '<tr><td align="left" class="forum_head_dark" colspan="3">
-	<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=section_view&amp;forum_id=' . (int)$arr_forums['over_forum_id'] . '" title="' . htmlsafechars($arr_forums['over_forum_description'], ENT_QUOTES) . '"><span style="color: white;">' . htmlsafechars($arr_forums['over_forum_name'], ENT_QUOTES) . '</span></a></td></tr>' : '');
+            $HTMLOUT .= ($arr_forums['over_forum_id'] != $over_forum_id ? '
+        ' . $space . '
+        <tr>
+            <th align="left" class="forum_head_dark" colspan="3">
+            	<a class="altlink" href="./forums.php?action=section_view&amp;forum_id=' . (int)$arr_forums['over_forum_id'] . '" title="' . htmlsafechars($arr_forums['over_forum_description'], ENT_QUOTES) . '">
+                    <span style="color: white;">' . htmlsafechars($arr_forums['over_forum_name'], ENT_QUOTES) . '</span>
+                </a>
+            </th>
+        </tr>' : '');
             if ($arr_forums['forum_id'] == $arr_forums['over_forum_id']) {
                 //=== change colors
                 $count = (++$count) % 2;
@@ -531,12 +548,12 @@ switch ($action) {
                     //== Anonymous  ->
                     if ($last_post_arr['tan'] == 'yes') {
                         if ($CURUSER['class'] < UC_STAFF && $last_post_arr['user_id'] != $CURUSER['id']) {
-                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . $lang['fe_anonymous'] . '</i> in &#9658; <a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$last_post_arr['topic_id'] . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
+                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . $lang['fe_anonymous'] . '</i> in &#9658; <a class="altlink" href="./forums.php?action=view_topic&amp;topic_id=' . (int)$last_post_arr['topic_id'] . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
                         } else {
-                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . $lang['fe_anonymous'] . '</i> [' . ($last_post_arr['username'] !== '' ? print_user_stuff($last_post_arr) : '' . $lang['fe_lost'] . '') . '] <span style="font-size: x-small;"> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>in &#9658; <a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$last_post_arr['topic_id'] . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
+                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . $lang['fe_anonymous'] . '</i> [' . ($last_post_arr['username'] !== '' ? print_user_stuff($last_post_arr) : '' . $lang['fe_lost'] . '') . '] <span style="font-size: x-small;"> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>in &#9658; <a class="altlink" href="./forums.php?action=view_topic&amp;topic_id=' . (int)$last_post_arr['topic_id'] . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
                         }
                     } else {
-                        $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . ($last_post_arr['username'] !== '' ? print_user_stuff($last_post_arr) : '' . $lang['fe_lost'] . '') . ' <span style="font-size: x-small;"> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>in &#9658; <a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$last_post_arr['topic_id'] . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
+                        $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . ($last_post_arr['username'] !== '' ? print_user_stuff($last_post_arr) : '' . $lang['fe_lost'] . '') . ' <span style="font-size: x-small;"> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>in &#9658; <a class="altlink" href="./forums.php?action=view_topic&amp;topic_id=' . (int)$last_post_arr['topic_id'] . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '"><span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>' . get_date($last_post_arr['added'], '') . '<br></span>';
                     }
                     //==
                     //=== get child boards if any - cached \0/
@@ -549,7 +566,7 @@ switch ($action) {
                             if ($child_boards) {
                                 $child_boards .= ', ';
                             }
-                            $child_boards .= '<a href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int)$arr['id'] . '" title="' . $lang['fm_click_to_view'] . '!" class="altlink">' . htmlsafechars($arr['name'], ENT_QUOTES) . '</a>';
+                            $child_boards .= '<a href="./forums.php?action=view_forum&amp;forum_id=' . (int)$arr['id'] . '" title="' . $lang['fm_click_to_view'] . '!" class="altlink">' . htmlsafechars($arr['name'], ENT_QUOTES) . '</a>';
                         }
                         $child_boards_cache['child_boards'] = $child_boards;
                         $mc1->cache_value($keys['child_boards'], $child_boards_cache, $INSTALLER09['expires']['child_boards']);
@@ -583,7 +600,7 @@ switch ($action) {
                 }
                 $HTMLOUT .= '<tr>
 	<td align="left" class="' . $class . '">
-	<table border="0" cellspacing="0" cellpadding="0">
+	<table class="table table-bordered">
 	<tr>
 	<td class="' . $class . '" align="left" width="30"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/' . $img . '.gif" alt="' . $img . '" title="' . $lang['fm_unlocked'] . '" /></td>
 	<td width="100%" class="' . $class . '" align="left">
@@ -604,7 +621,7 @@ switch ($action) {
             $child_boards = '';
             //$now_viewing = '';
         } //=== end while loop!
-        $HTMLOUT .= '</table><br>' . $location_bar . insert_quick_jump_menu() . '<br>';
+        $HTMLOUT .= '</table>' . $location_bar . '<br>' . $title_bar . insert_quick_jump_menu() . '<br>';
         //== whos looking - cached \0/
         $keys['now_viewing'] = 'now_viewing';
         if (($forum_users_cache = $mc1->get_value($keys['now_viewing'])) === false) {
@@ -626,9 +643,9 @@ switch ($action) {
             $forum_users_cache['forum_users'] = '' . $lang['fm_there_have_been_no_active_users_in_the_last_15_minutes'] . '.';
         }
         $forum_users = $forum_users_cache['forum_users'];
-        $HTMLOUT .= '<table border="0" cellspacing="5" cellpadding="5" style="max-width:80%;min-width:600px;" align="center">
+        $HTMLOUT .= '<table class="table table-bordered">
    <tr>
-   <td class="forum_head_dark" align="center">' . $lang['fm_members_currently_active'] . '</td>
+   <th class="forum_head_dark" align="center">' . $lang['fm_members_currently_active'] . '</th>
    </tr>
 	<tr>
 	<td class="three" align="center">' . $forum_users . '</td>
@@ -670,8 +687,8 @@ function insert_quick_jump_menu($current_forum = 0, $staff = false)
         $res = sql_query('SELECT f.id, f.name, f.parent_forum, f.min_class_read, of.name AS over_forum_name FROM forums AS f LEFT JOIN over_forums AS of ON f.forum_id = of.id ORDER BY of.sort, f.parent_forum, f.sort ASC');
         $switch = '';
         $quick_jump_menu = ($staff === false ? '
-				<table><tr><td>
-				<form method="get" action="' . $INSTALLER09['baseurl'] . '/forums.php" name="jump">
+				<table class="table table-bordered" ><tr><td>
+				<form method="get" action="./forums.php" name="jump">
 				<span style="text-align: center;font-weight: bold;">
 				<input type="hidden" name="action" value="view_forum" />' . $lang['fm_quick_jump'] . ': 
 				<select name="forum_id" onchange="if(this.options[this.selectedIndex].value != -1){ forms[\'jump\'].submit() }">

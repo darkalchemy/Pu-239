@@ -41,19 +41,19 @@ function happyHour($action)
     }
     //this will set all torrent free or just one category
     if ($action == 'todo') {
-        $act = rand(1, 2);
+        $act = random_int(1, 2);
         if ($act == 1) {
             $todo = 255;
         } // this will mean that all the torrent are free
         elseif ($act == 2) {
-            $todo = rand(1, 14);
+            $todo = random_int(1, 14);
         } // only one cat will be free || remember to change the number of categories i have 14 but you may have more
 
         return $todo;
     }
     //this will generate the multiplier so every torrent downloaded in the happy hour will have upload multiplied but this
     if ($action == 'multiplier') {
-        $multiplier = rand(11, 55) / 10; //max value of the multiplier will be 5,5 || you could change it to a higher or a lower value
+        $multiplier = random_int(11, 55) / 10; //max value of the multiplier will be 5,5 || you could change it to a higher or a lower value
 
         return $multiplier;
     }

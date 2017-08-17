@@ -21,26 +21,18 @@ while ($ac = mysqli_fetch_assoc($pconf)) {
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $update = [];
-    //can't be 0
-    /*
-    foreach(array('site_online'>0,'autoshout_on'>0,'seedbonus_on'>0,'forums_online'>0,'maxusers'>0,'invites'>0,'failedlogins'>0, 'totalneeded'>0) as $key=>$type) {
-     if(isset($_POST[$key]) && ($type == 0 && $_POST[$key] == 0 || $type == 0 && count($_POST[$key]) == 0))
-     stderr($lang['sitesettings_stderr'], $lang['sitesettings_stderr2']);
-    }
-    */
     foreach ($site_settings as $c_name => $c_value) {
         if (isset($_POST[$c_name]) && $_POST[$c_name] != $c_value) {
             $update[] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($_POST[$c_name]) ? join('|', $_POST[$c_name]) : $_POST[$c_name]) . ')';
         }
     }
-    if (sql_query('INSERT INTO site_config(name,value) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY update value=values(value)')) {
+    if (sql_query('INSERT INTO site_config(name,value) VALUES ' . join(', ', $update) . ' ON DUPLICATE KEY update value=VALUES(value)')) {
         $t = '$INSTALLER09';
         $configfile = '<' . "?php\n/**\n{$lang['sitesettings_file']}" . date('M d Y H:i:s') . ".\n{$lang['sitesettings_cfg']}\n**/\n";
         $res = sql_query('SELECT * from site_config ');
         while ($arr = mysqli_fetch_assoc($res)) {
             $configfile .= '' . $t . "['$arr[name]'] = $arr[value];\n";
         }
-        $configfile .= '?' . '>';
         $filenum = fopen('./cache/site_settings.php', 'w');
         ftruncate($filenum, 0);
         fwrite($filenum, $configfile);

@@ -1,2 +1,9 @@
+17 Aug, 2017
+fix: make more pages 'table' appear similar to the other pages
+fix: make invite_signup.php similar to signup.php
+update: make blakckjack use 1 table, use single image sprite for cards
+fix: admin adduser.php adds user to usersachiev table and autoshout
+fix: add color class 'user' to autoshout of new users
+
 16 Aug, 2017
 rename project to Pu-239

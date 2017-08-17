@@ -40,15 +40,14 @@ $num = min([
 ]);
 $keys = array_keys($images);
 $used = [];
-mt_srand(((float)microtime() * 587) / 33);
 for ($i = 0; $i < $num; ++$i) {
-    $r = rand(0, $size - 1);
+    $r = random_int(0, $size - 1);
     while (array_search($keys[$r], $used) !== false) {
-        $r = rand(0, $size - 1);
+        $r = random_int(0, $size - 1);
     }
     array_push($used, $keys[$r]);
 }
-$selectText = $used[rand(0, $num - 1)];
+$selectText = $used[random_int(0, $num - 1)];
 setSessionVar('simpleCaptchaAnswer', hash('sha512', $selectText . $salty));
 $resp['text'] = '' . $selectText;
 $resp['images'] = [];

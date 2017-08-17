@@ -18,7 +18,7 @@ $res_user_stuff = sql_query('SELECT id, username, uploaded, warned, suspended, e
 $arr_user_stuff = mysqli_fetch_assoc($res_user_stuff);
 $id = (int)$arr_user_stuff['id'];
 //=== Mark message read
-sql_query('UPDATE messages SET unread=\'no\' WHERE id=' . sqlesc($pm_id) . ' AND receiver=' . sqlesc($CURUSER['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+sql_query('UPDATE messages SET unread=\'no\' WHERE id = ' . sqlesc($pm_id) . ' AND receiver = ' . sqlesc($CURUSER['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
 $mc1->delete_value('inbox_new_' . $CURUSER['id']);
 $mc1->delete_value('inbox_new_sb_' . $CURUSER['id']);
 if ($message['friend'] > 0) {

@@ -439,7 +439,7 @@ div#base_usermenu {
     width: 228px;
     height: 25px;
     border: 1px solid #000000;
-    margin-left: 10px;
+    margin-left: -20px;
     background: #1F1F1F;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -462,13 +462,13 @@ div#slidingDiv {
     z-index: 99;
     display: none;
     height: auto;
-    width: 235px;
+    width: 227px;
     border: 1px solid #000000;
     border-top: none;
     background-color: #1F1F1F;
     position: absolute;
-    margin-left: 10px;
-    margin-top: -5px;
+    margin-left: -19px;
+    margin-top: -3px;
     -moz-border-radius-bottomleft: 5px;
     -webkit-border-radius-bottomleft: 5px;
     border-bottom-left-radius: 5px;
@@ -618,6 +618,7 @@ footer, header, hgroup, menu, nav {
     font-size: 100%;
     vertical-align: baseline;
     background: transparent;
+    box-sizing: border-box;
 }
 
 footer, header, hgroup, menu, nav, section {
@@ -898,9 +899,9 @@ h6 {
 
 #logo {
     clear: both;
-    height: 80px;
+    height: 150px;
     float: none;
-    padding: 2.8em 0 3em;
+    padding: 40px 0 30px;
     margin-top: 40px;
 }
 
@@ -1247,6 +1248,16 @@ img {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
+    margin: 5px;
+}
+
+.tooltipper_img {
+    vertical-align: unset;
+    margin: 5px;
+}
+
+.padded {
+    margin: 2px;
 }
 
 .answers-container {
@@ -1279,6 +1290,9 @@ img {
 }
 
 .flex {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
     align-items: left;
@@ -1352,9 +1366,9 @@ a:link {
 }
 
 .btnflex {
-   padding: 10px 40px;
-   font-size: 1.25em;
-   cursor: pointer;
+    padding: 10px 40px;
+    font-size: 1.25em;
+    cursor: pointer;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -1536,3 +1550,48 @@ a:link {
 #trivia_question {
     margin: 0;
 }
+
+.flex-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.flex-cell {
+    height: auto;
+    margin: 10px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, .15);
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    width: calc(33.33% - 20px);
+}
+
+.flex-cell img {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.bold {
+    font-weight: bold;
+    font-size: 1.25em;
+}
+
+.text-lime,
+.text-lime a:link,
+.text-lime a:hover,
+.text-lime a:active,  
+.text-lime a:visited {
+    color: #00FF00;
+}
+
+.text-red,
+.text-red a:link,
+.text-red a:hover,
+.text-red a:active,
+.text-red a:visited {
+    color: #CC0000;
+}
+

@@ -4,6 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_memcache.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('fastdelete'));
+global $INSTALLER09;
 
 if (!in_array($CURUSER['id'], $INSTALLER09['allowed_staff']['id'])) {
     stderr($lang['fastdelete_error'], $lang['fastdelete_no_acc']);

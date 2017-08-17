@@ -6,7 +6,7 @@ function docleanup($data)
     ignore_user_abort(1);
     $dt = TIME_NOW;
     $subject = sqlesc('New Achievement Earned!');
-    $points = rand(1, 3);
+    $points = random_int(1, 3);
     //Reset the daily AJAX Chat limits
     sql_query("UPDATE `usersachiev` SET `dailyshouts` = '0'") or sqlerr(__FILE__, __LINE__);
     if ($queries > 0) {

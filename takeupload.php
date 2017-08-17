@@ -8,6 +8,8 @@ check_user_status();
 ini_set('upload_max_filesize', $INSTALLER09['max_torrent_size']);
 ini_set('memory_limit', '64M');
 $lang = array_merge(load_language('global'), load_language('takeupload'));
+global $INSTALLER09;
+
 if ($CURUSER['class'] < UC_UPLOADER or $CURUSER['uploadpos'] == 0 || $CURUSER['uploadpos'] > 1 || $CURUSER['suspended'] == 'yes') {
     header("Location: {$INSTALLER09['baseurl']}/upload.php");
     exit();

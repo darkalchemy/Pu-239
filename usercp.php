@@ -186,8 +186,11 @@ elseif ($action == 'links') {
     <tr><td align='left'><a href='topmoods.php'>Top Member Mood's</a></td></tr>
     <tr><td align='left'><a href='lottery.php'>Lottery</a></td></tr>";
     if ($CURUSER['class'] >= UC_POWER_USER) {
+        $HTMLOUT .= "<tr><td align='left'><a href='games.php'>{$INSTALLER09['site_name']} Games</a></td></tr>";
         $HTMLOUT .= "<tr><td align='left'><a href='blackjack.php'>{$INSTALLER09['site_name']} Blackjack</a></td></tr>";
         $HTMLOUT .= "<tr><td align='left'><a href='casino.php'>{$INSTALLER09['site_name']} Casino</a></td></tr>";
+        $HTMLOUT .= "<tr><td align='left'><a href='arcade.php'>{$INSTALLER09['site_name']} Arcade</a></td></tr>";
+        $HTMLOUT .= "<tr><td align='left'><a href='lottery.php'>{$INSTALLER09['site_name']} Lotter</a></td></tr>";
     }
     $HTMLOUT .= '</tbody>';
 } //== Security

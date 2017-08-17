@@ -4,6 +4,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('uploadapp'));
+global $INSTALLER09;
+
 $HTMLOUT = '';
 // Fill in application
 if (isset($_POST['form']) != 1) {

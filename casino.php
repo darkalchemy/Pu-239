@@ -3,6 +3,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 
+global $INSTALLER09, $CURUSER;
 //require_once INCL_DIR . 'function_ircbot.php';
 //== Updated casino.php by Bigjoos
 check_user_status();
@@ -21,7 +22,7 @@ $user_everytimewin_mb = $mb_basic * 20; //== Means users that wins under 70 mb g
 $cheat_value = 8; //== Higher value -> less winner
 $cheat_breakpoint = 10; //== Very important value -> if (win MB > max_download_global/cheat_breakpoint)
 $cheat_value_max = 2; //== Then cheat_value = cheat_value_max -->> i hope you know what i mean. ps: must be higher as cheat_value.
-$cheat_ratio_user = .4; //== If casino_ratio_user > cheat_ratio_user -> $cheat_value = rand($cheat_value,$cheat_value_max)
+$cheat_ratio_user = .4; //== If casino_ratio_user > cheat_ratio_user -> $cheat_value = random_int($cheat_value,$cheat_value_max)
 $cheat_ratio_global = .4; //== Same as user just global
 $win_amount = 3; //== How much do the player win in the first game eg. bet 300, win_amount=3 ---->>> 300*3= 900 win
 $win_amount_on_number = 6; //== Same as win_amount for the number game
@@ -119,7 +120,6 @@ if ($global_win > 0) {
 if ($user_win < $user_everytimewin_mb) {
     $cheat_value = 8;
 } else {
-    //mt_srand((double)microtime()*10000000);
     if ($global_down > ($max_download_global / $cheat_breakpoint)) {
         $cheat_value = $cheat_value_max;
     }
@@ -176,7 +176,6 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     if ($CURUSER['uploaded'] < $betmb) {
         stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " {$lang['casino_but_you_have_not_uploaded']} " . htmlsafechars(mksize($betmb)));
     }
-    //mt_srand((double)microtime()*10000000);
     if (random_int(0, $cheat_value) == $cheat_value) {
         sql_query('UPDATE users SET uploaded = uploaded + ' . sqlesc($win) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         sql_query("UPDATE casino SET date = '" . TIME_NOW . "', trys = trys + 1, win = win + " . sqlesc($win) . '  WHERE userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -196,7 +195,6 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     } else {
         if (isset($_POST['number'])) {
             do {
-                //mt_srand((double)microtime()*10000000);
                 $fake_winner = random_int(1, 6);
             } while ($_POST['number'] == $fake_winner);
         } else {

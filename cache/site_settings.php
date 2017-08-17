@@ -1,6 +1,6 @@
 <?php
 /**
-This file created on Jul 27 2017 00:05:21.
+This file created on Aug 17 2017 15:07:56.
 Site Config.
 **/
 $INSTALLER09['site_online'] = 1;
@@ -27,4 +27,4 @@ $INSTALLER09['bonus_per_delete'] = 15;
 $INSTALLER09['bonus_per_thanks'] = 5;
 $INSTALLER09['auto_confirm'] = true;
 $INSTALLER09['email_confirm'] = false;
-?>
+$INSTALLER09['bonux_max_torrents'] = 100;

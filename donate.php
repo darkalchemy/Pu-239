@@ -6,7 +6,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CACHE_DIR . 'paypal_settings.php';
 check_user_status();
 $lang = array_merge(load_language('global'));
-$nick = ($CURUSER ? $CURUSER['username'] : ('Guest' . rand(1000, 9999)));
+$nick = ($CURUSER ? $CURUSER['username'] : ('Guest' . random_int(1000, 9999)));
 $form_template = <<<PAYPAL
 <form action='https://www.{$INSTALLER09['paypal_config']['sandbox']}paypal.com/cgi-bin/webscr' method='post'>
 <input type='hidden' name='business' value='{$INSTALLER09['paypal_config']['email']}' />

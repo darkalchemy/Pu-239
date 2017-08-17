@@ -2,6 +2,8 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
+global $INSTALLER09;
+
 $lang = array_merge(load_language('global'), load_language('friends'));
 $userid = isset($_GET['id']) ? (int)$_GET['id'] : $CURUSER['id'];
 $action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : '';
@@ -195,7 +197,7 @@ if (mysqli_num_rows($res) == 0) {
     $friendreqs = '<em>Your requests list is empty.</em>';
 } else {
     $i = 0;
-    $friendreqs = "<table width='100%' cellspacing='0' cellpadding='0'>";
+    $friendreqs = "<table class='table table-bordered' cellspacing='0' cellpadding='0'>";
     while ($friendreq = mysqli_fetch_assoc($res)) {
         if ($i % 6 == 0) {
             $friendreqs .= '<tr>';
@@ -273,9 +275,9 @@ foreach ($countries as $cntry) {
     }
 }
 $HTMLOUT .= "<br>
-  <table class='main' border='0' cellspacing='0' cellpadding='0'>
+  <table class='table table-bordered' border='0' cellspacing='0' cellpadding='0'>
   <tr><td class='embedded'><h1 style='margin:0px'>&#160;{$lang['friends_personal']}&#160;" . htmlsafechars($user['username'], ENT_QUOTES) . "&#160;$country</h1></td></tr></table>
-  <br><table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>
+  <br><table class='table table-bordered' border='0' cellspacing='0' cellpadding='0'>
   <tr>
   <td class='colhead'><h2 align='left' style='width:50%;'><a name='friends'>&#160;{$lang['friends_friends_list']}</a></h2></td>
   <td class='colhead'><h2 align='left' style='width:50%;vertical-align:top;'><a name='blocks'>&#160;{$lang['friends_blocks_list']}</a></h2></td>
@@ -286,7 +288,7 @@ $HTMLOUT .= "<br>
   </tr>
   </table>
   <br><br>
-  <table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>
+  <table class='table table-bordered' border='0' cellspacing='0' cellpadding='0'>
   <tr>
   <td class='colhead'><h2 align='left' style='width:50%;'><a name='friendsp'>&#160;{$lang['friends_pending_list']}</a></h2></td>
   <td class='colhead'><h2 align='left' style='width:50%;vertical-align:top;'><a name='friendreqs'>&#160;{$lang['friends_await_list']}</a></h2></td>

@@ -12,7 +12,7 @@ function docleanup($data)
         $msg = sqlesc('Congratulations, you have just earned the [b]Signature Setter[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/signature.png[/img]');
         while ($arr = mysqli_fetch_assoc($res)) {
             $dt = TIME_NOW;
-            $points = rand(1, 3);
+            $points = random_int(1, 3);
             $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
             $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'Signature Setter\', \'signature.png\' , \'User has successfully set a signature on profile settings.\')';
             $usersachiev_buffer[] = '(' . $arr['id'] . ',1, ' . $points . ')';

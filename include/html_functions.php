@@ -2,7 +2,7 @@
 //-------- Begins a main frame
 function begin_main_frame()
 {
-    return "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>" . "<tr><td class='embedded'>\n";
+    return "<table class='main text-center' width='750' border='0' cellspacing='0' cellpadding='0'>" . "<tr><td class='embedded'>\n";
 }
 
 //-------- Ends a main frame

@@ -75,8 +75,11 @@ $value = [
     '...',
     '...',
 ];
-$value[rand(1, count($value) - 1)] = 'X';
+$value[random_int(1, count($value) - 1)] = 'X';
+
 $HTMLOUT .= "
+    <div class='login-container center-block'>
+    <p>{$lang['signup_cookies']}</p>
     <form method='post' action='takesignup.php'>
         <table border='1' cellspacing='0' cellpadding='10'>
             <tr>
@@ -229,5 +232,6 @@ $HTMLOUT .= '
                 </td>
             </tr>
         </table>
-    </form>';
+    </form>
+    </div>';
 echo stdhead($lang['head_signup']) . $HTMLOUT . stdfoot($stdfoot);

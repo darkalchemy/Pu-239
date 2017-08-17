@@ -116,7 +116,7 @@ if ($bonus_type == 4) {
     $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
 }
 if ($bonus_type == 5) {
-    $rand_fail = rand(1, 5);
+    $rand_fail = random_int(1, 5);
     if ($rand_fail == 1) {
         $msg = "{$lang['gl_sorry']}, {$lang['achbon_failed_msg1']}";
         sql_query('UPDATE usersachiev SET achpoints = achpoints-1, spentpoints = spentpoints+1 WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);

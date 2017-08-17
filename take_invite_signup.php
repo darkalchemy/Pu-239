@@ -18,9 +18,10 @@ if ($arr[0] >= $INSTALLER09['invites']) {
 if (!$INSTALLER09['openreg_invites']) {
     stderr('Sorry', 'Invite Signups are closed presently');
 }
-if (!mkglobal('wantusername:wantpassword:passagain:email:invite' . ($INSTALLER09['captcha_on'] ? ':captchaSelection:' : ':') . 'submitme:passhint:hintanswer')) {
-    stderr('Oops', 'Missing form data - You must fill all fields');
+if (!mkglobal('wantusername:wantpassword:passagain:email:invite' . ($INSTALLER09['captcha_on'] ? ':captchaSelection:' : ':') . 'submitme:passhint:hintanswer:country')) {
+    stderr($lang['takesignup_user_error'], $lang['takesignup_form_data']);
 }
+
 if ($submitme != 'X') {
     stderr('Ha Ha', 'You Missed, You plonker !');
 }
@@ -46,8 +47,8 @@ function validusername($username)
     return true;
 }
 
-if (empty($wantusername) || empty($wantpassword) || empty($email) || empty($invite) || empty($passhint) || empty($hintanswer)) {
-    stderr('Error', "Don't leave any fields blank.");
+if (empty($wantusername) || empty($wantpassword) || empty($email) || empty($invite) || empty($passhint) || empty($hintanswer) || empty($country)) {
+    stderr($lang['takesignup_user_error'], $lang['takesignup_blank']);
 }
 if (!blacklist($wantusername)) {
     stderr($lang['takesignup_user_error'], sprintf($lang['takesignup_badusername'], htmlsafechars($wantusername)));
@@ -84,6 +85,11 @@ if (checkdate($_POST['month'], $_POST['day'], $_POST['year'])) {
 if ((date('Y') - $_POST['year']) < 17) {
     stderr('Error', 'You must be at least 18 years old to register.');
 }
+if (!(isset($_POST['country']))) {
+    stderr('Error', 'You have to set your country.');
+}
+$country = (((isset($_POST['country']) && is_valid_id($_POST['country'])) ? intval($_POST['country']) : 0));
+$gender = isset($_POST['gender']) && isset($_POST['gender']) ? htmlsafechars($_POST['gender']) : '';
 // make sure user agrees to everything...
 if ($_POST['rulesverify'] != 'yes' || $_POST['faqverify'] != 'yes' || $_POST['ageverify'] != 'yes') {
     stderr('Error', "Sorry, you're not qualified to become a member of this site.");
@@ -95,7 +101,7 @@ if ($a[0] != 0) {
 }
 //=== check if ip addy is already in use
 if ($INSTALLER09['dupeip_check_on']) {
-    $c = (mysqli_fetch_row(sql_query('SELECT COUNT(id) FROM users WHERE ip=' . sqlesc($ip)))) or sqlerr(__FILE__, __LINE__);
+    $c = (mysqli_fetch_row(sql_query('SELECT COUNT(id) FROM users WHERE ip = ' . sqlesc($ip)))) or sqlerr(__FILE__, __LINE__);
     if ($c[0] != 0) {
         stderr('Error', 'The ip ' . htmlsafechars($ip) . ' is already in use. We only allow one account per ip address.');
     }
@@ -140,7 +146,7 @@ $new_user = sql_query('INSERT INTO users (username, passhash, passhint, hintansw
     ])) . ')');
 sql_query('INSERT INTO usersachiev (id, username) VALUES (' . sqlesc($id) . ', ' . sqlesc($wantusername) . ')') or sqlerr(__FILE__, __LINE__);
 sql_query('UPDATE usersachiev SET invited=invited+1 WHERE id =' . sqlesc($assoc['sender'])) or sqlerr(__FILE__, __LINE__);
-$msg = "Welcome New {$INSTALLER09['site_name']} Member : - " . htmlsafechars($wantusername) . '';
+$msg = "Welcome New {$INSTALLER09['site_name']} Member : - [user]" . htmlsafechars($wantusername) . '[/user]';
 if (!$new_user) {
     if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
         stderr('Error', 'Username already exists!');
@@ -177,4 +183,4 @@ write_log('User account ' . htmlsafechars($wantusername) . ' was created!');
 if ($INSTALLER09['autoshout_on'] == 1) {
     autoshout($msg);
 }
-stderr('Success', 'Signup successfull, Your inviter needs to confirm your account now before you can use your account !');
+stderr('Success', 'Signup successfull, Your inviter needs to confirm your account now before you can use your account!');
