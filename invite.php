@@ -96,6 +96,7 @@ elseif ($do == 'create_invite') {
     if ($arr[0] >= $INSTALLER09['invites']) {
         stderr($lang['invites_error'], $lang['invites_limit']);
     }
+    $invite = make_password(16);
     sql_query('INSERT INTO invite_codes (sender, invite_added, code) VALUES (' . sqlesc((int)$CURUSER['id']) . ', ' . TIME_NOW . ', ' . sqlesc($invite) . ')') or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE users SET invites = invites - 1 WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['invites'] = ($CURUSER['invites'] - 1);
