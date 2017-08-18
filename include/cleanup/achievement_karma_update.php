@@ -57,7 +57,7 @@ function docleanup($data)
             if ($seedbonus >= 2000 && $lvl == 4) {
                 $msg = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL5[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/bonus5.png[/img]');
                 $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
-                $achievements_buffer[] = '( . $arr['id'] . ', ' . TIME_NOW . ', \'Bonus Banker LVL5\', \'bonus5.png\' , \'Earned at least 2000 bonus points.\')';
+                $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'Bonus Banker LVL5\', \'bonus5.png\' , \'Earned at least 2000 bonus points.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ', ' . $arr['id'] . ',5, ' . $points . ')';
                 $mc1->delete_value('inbox_new_' . $arr['id']);
                 $mc1->delete_value('inbox_new_sb_' . $arr['id']);

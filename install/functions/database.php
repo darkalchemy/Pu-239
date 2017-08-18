@@ -32,9 +32,15 @@ function db_insert()
         $file = 'install.php.sql';
     }
     $q = sprintf('/usr/bin/mysql -h %s -u %s -p%s %s < %sinstall/extra/'.$file, $INSTALLER09['mysql_host'], $INSTALLER09['mysql_user'], $INSTALLER09['mysql_pass'], $INSTALLER09['mysql_db'], $root); //== Linux
-    //$q = sprintf('c:\AppServ\MySQL\bin\mysql -h %s -u %s -p%s %s < %sinstall/extra/'.$file,$INSTALLER09['mysql_host'],$INSTALLER09['mysql_user'],$INSTALLER09['mysql_pass'],$INSTALLER09['mysql_db'],$root);  //== Win - remember to set your path up correctly - atm its set for appserv
     exec($q, $o);
-    if (!count($o)) {
+
+    // update cleanup log times, begin at the previous midnight
+    $timestamp = strtotime('yesterday midnight');
+    $sql = "UPDATE cleanup SET clean_time = $timestamp";
+    $q = sprintf('/usr/bin/mysql -h %s -u %s -p%s %s -e "%s"', $INSTALLER09['mysql_host'], $INSTALLER09['mysql_user'], $INSTALLER09['mysql_pass'], $INSTALLER09['mysql_db'], $root, $sql);
+    exec($q, $oo);
+
+    if (!count($o) && !count($oo)) {
         $out .= '<div class="readable">Database was imported</div><div class="info" style="text-align:center"><input type="button" value="Finish" onclick="window.location.href=\'?step=3\'"/></div>';
         file_put_contents('step2.lock', 1);
     } else {

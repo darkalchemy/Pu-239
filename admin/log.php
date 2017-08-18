@@ -45,7 +45,7 @@ if ($count > $perpage) {
 if (mysqli_num_rows($res) == 0) {
     $HTMLOUT .= "<b>{$lang['text_logempty']}</b>";
 } else {
-    $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5'>
+    $HTMLOUT .= "<table class='table table-bordered' border='1' cellspacing='0' cellpadding='5'>
       <tr>
         <td class='colhead' align='left'>{$lang['header_date']}</td>
         <td class='colhead' align='left'>{$lang['header_event']}</td>

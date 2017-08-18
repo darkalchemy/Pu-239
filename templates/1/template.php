@@ -26,9 +26,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         <script src='./scripts/" . $JS . ".js'></script>";
         }
     }
-    //== Include css files needed only for the page being used by pdq
-    $css_incl = '';
-    $css_incl .= '<!-- css goes here -->';
+    $css_incl = '<!-- css goes here -->';
     if (!empty($stdhead['css'])) {
         foreach ($stdhead['css'] as $CSS) {
             $css_incl .= "
@@ -57,7 +55,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         <link rel='shortcut icon' href='favicon.ico' />
         <!-- css
         =================================================== -->
-        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/a03448ed064822b57b81af13e460e3e3.min.css' />";
+        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/1e86f6e728f950a47e1188cdc6f21590.min.css' />";
     $htmlout .= "
         <style>#mlike{cursor:pointer;}</style>
         <!-- global javascript

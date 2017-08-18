@@ -93,7 +93,8 @@ CREATE TABLE `achievements` (
   `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `achievementid` int(5) NOT NULL DEFAULT '0',
   UNIQUE KEY `id` (`id`),
-  KEY `userid` (`userid`)
+  KEY `userid` (`userid`),
+  CONSTRAINT `achievements_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -120,7 +121,8 @@ CREATE TABLE `ajax_chat_bans` (
   `ip` varbinary(16) NOT NULL,
   PRIMARY KEY (`userID`),
   KEY `userName` (`userName`),
-  KEY `dateTime` (`dateTime`)
+  KEY `dateTime` (`dateTime`),
+  CONSTRAINT `ajax_chat_bans_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -170,7 +172,8 @@ CREATE TABLE `ajax_chat_invitations` (
   `channel` int(10) unsigned NOT NULL,
   `dateTime` datetime NOT NULL,
   PRIMARY KEY (`userID`,`channel`),
-  KEY `dateTime` (`dateTime`)
+  KEY `dateTime` (`dateTime`),
+  CONSTRAINT `ajax_chat_invitations_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -205,7 +208,9 @@ CREATE TABLE `ajax_chat_messages` (
   KEY `dateTime` (`dateTime`),
   KEY `ttl` (`ttl`),
   KEY `userID` (`userID`),
-  KEY `userName` (`userName`)
+  KEY `userName` (`userName`),
+  CONSTRAINT `ajax_chat_messages_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `ajax_chat_messages_ibfk_2` FOREIGN KEY (`userName`) REFERENCES `users` (`username`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -233,7 +238,9 @@ CREATE TABLE `ajax_chat_online` (
   `dateTime` datetime NOT NULL,
   `ip` varbinary(16) NOT NULL,
   PRIMARY KEY (`userID`),
-  KEY `userName` (`userName`)
+  KEY `userName` (`userName`),
+  CONSTRAINT `ajax_chat_online_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `ajax_chat_online_ibfk_2` FOREIGN KEY (`userName`) REFERENCES `users` (`username`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -262,7 +269,8 @@ CREATE TABLE `announcement_main` (
   `subject` mediumtext COLLATE utf8mb4_unicode_ci,
   `body` mediumtext COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`main_id`),
-  KEY `owner_id` (`owner_id`)
+  KEY `owner_id` (`owner_id`),
+  CONSTRAINT `announcement_main_ibfk_1` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -288,7 +296,8 @@ CREATE TABLE `announcement_process` (
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
   `status` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`process_id`),
-  KEY `user_id` (`user_id`)
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `announcement_process_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -320,7 +329,8 @@ CREATE TABLE `attachments` (
   `times_downloaded` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `post_id` (`post_id`),
-  KEY `user_id` (`user_id`)
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `attachments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -374,7 +384,8 @@ CREATE TABLE `bannedemails` (
   `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
-  KEY `addedby` (`addedby`)
+  KEY `addedby` (`addedby`),
+  CONSTRAINT `bannedemails_ibfk_1` FOREIGN KEY (`addedby`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -404,7 +415,8 @@ CREATE TABLE `bans` (
   `last` varbinary(16) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `first_last` (`first`),
-  KEY `addedby` (`addedby`)
+  KEY `addedby` (`addedby`),
+  CONSTRAINT `bans_ibfk_1` FOREIGN KEY (`addedby`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -440,7 +452,8 @@ CREATE TABLE `blackjack` (
   KEY `status` (`status`),
   KEY `date` (`date`),
   KEY `ddown` (`ddown`),
-  KEY `game_id` (`game_id`)
+  KEY `game_id` (`game_id`),
+  CONSTRAINT `blackjack_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -473,7 +486,9 @@ CREATE TABLE `blackjack_history` (
   PRIMARY KEY (`id`),
   KEY `game` (`game`),
   KEY `player1_userid` (`player1_userid`),
-  KEY `player2_userid` (`player2_userid`)
+  KEY `player2_userid` (`player2_userid`),
+  CONSTRAINT `blackjack_history_ibfk_1` FOREIGN KEY (`player1_userid`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `blackjack_history_ibfk_2` FOREIGN KEY (`player2_userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -498,7 +513,8 @@ CREATE TABLE `blocks` (
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `blockid` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `userid` (`userid`)
+  KEY `userid` (`userid`),
+  CONSTRAINT `blocks_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -588,7 +604,8 @@ CREATE TABLE `bookmarks` (
   `torrentid` int(10) unsigned NOT NULL DEFAULT '0',
   `private` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   PRIMARY KEY (`id`),
-  KEY `userid` (`userid`)
+  KEY `userid` (`userid`),
+  CONSTRAINT `bookmarks_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -610,14 +627,16 @@ DROP TABLE IF EXISTS `bugs`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `bugs` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `sender` int(10) NOT NULL DEFAULT '0',
+  `sender` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(12) NOT NULL DEFAULT '0',
   `priority` enum('low','high','veryhigh') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'low',
   `problem` mediumtext COLLATE utf8mb4_unicode_ci,
   `status` enum('fixed','ignored','na') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'na',
   `staff` int(10) NOT NULL DEFAULT '0',
   `title` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `sender` (`sender`),
+  CONSTRAINT `bugs_ibfk_1` FOREIGN KEY (`sender`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -670,7 +689,8 @@ CREATE TABLE `casino` (
   `date` int(11) NOT NULL DEFAULT '0',
   `enableplay` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `deposit` bigint(20) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`userid`)
+  PRIMARY KEY (`userid`),
+  CONSTRAINT `casino_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -692,14 +712,15 @@ DROP TABLE IF EXISTS `casino_bets`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `casino_bets` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `userid` int(10) NOT NULL DEFAULT '0',
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `proposed` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `challenged` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `amount` bigint(20) NOT NULL DEFAULT '0',
   `time` int(11) NOT NULL DEFAULT '0',
   `winner` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `userid` (`userid`)
+  KEY `userid` (`userid`),
+  CONSTRAINT `casino_bets_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -750,7 +771,7 @@ DROP TABLE IF EXISTS `cheaters`;
 CREATE TABLE `cheaters` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `added` int(11) NOT NULL,
-  `userid` int(10) NOT NULL DEFAULT '0',
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `torrentid` int(10) NOT NULL DEFAULT '0',
   `client` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rate` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -758,7 +779,9 @@ CREATE TABLE `cheaters` (
   `upthis` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `timediff` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `userip` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `userid` (`userid`),
+  CONSTRAINT `cheaters_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -902,7 +925,8 @@ CREATE TABLE `coins` (
   `points` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `torrentid` (`torrentid`),
-  KEY `userid` (`userid`)
+  KEY `userid` (`userid`),
+  CONSTRAINT `coins_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -941,7 +965,8 @@ CREATE TABLE `comments` (
   `checked` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `user` (`user`),
-  KEY `torrent` (`torrent`)
+  KEY `torrent` (`torrent`),
+  CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -991,7 +1016,9 @@ CREATE TABLE `dbbackup` (
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `added` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `userid` (`userid`),
+  CONSTRAINT `dbbackup_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1066,7 +1093,7 @@ DROP TABLE IF EXISTS `events`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `events` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `userid` int(11) NOT NULL,
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `startTime` int(11) NOT NULL,
   `endTime` int(11) NOT NULL,
   `overlayText` mediumtext COLLATE utf8mb4_unicode_ci,
@@ -1075,7 +1102,9 @@ CREATE TABLE `events` (
   `duploadEnabled` tinyint(1) NOT NULL,
   `hdownEnabled` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `startTime` (`startTime`)
+  KEY `startTime` (`startTime`),
+  KEY `userid` (`userid`),
+  CONSTRAINT `events_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1129,7 +1158,8 @@ CREATE TABLE `files` (
   `size` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `torrent` (`torrent`),
-  KEY `filename` (`filename`)
+  KEY `filename` (`filename`),
+  CONSTRAINT `files_ibfk_1` FOREIGN KEY (`torrent`) REFERENCES `torrents` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1158,7 +1188,8 @@ CREATE TABLE `flashscores` (
   PRIMARY KEY (`id`),
   KEY `game` (`game`),
   KEY `user` (`user_id`),
-  KEY `score` (`score`)
+  KEY `score` (`score`),
+  CONSTRAINT `flashscores_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1222,7 +1253,8 @@ CREATE TABLE `forum_poll` (
   `multi_options` smallint(2) unsigned NOT NULL DEFAULT '1',
   `poll_closed` enum('yes','no') COLLATE utf8mb4_unicode_ci DEFAULT 'no',
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `forum_poll_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1250,7 +1282,9 @@ CREATE TABLE `forum_poll_votes` (
   `ip` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `added` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `poll_id` (`poll_id`)
+  KEY `poll_id` (`poll_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `forum_poll_votes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1333,13 +1367,16 @@ DROP TABLE IF EXISTS `freeslots`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `freeslots` (
-  `torrentid` int(10) unsigned NOT NULL,
-  `userid` int(10) unsigned NOT NULL,
+  `torrentid` int(10) unsigned NOT NULL DEFAULT '0',
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `doubleup` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `free` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `addedup` int(11) NOT NULL DEFAULT '0',
   `addedfree` int(11) NOT NULL DEFAULT '0',
-  KEY `userid` (`userid`)
+  KEY `userid` (`userid`),
+  KEY `torrentid` (`torrentid`),
+  CONSTRAINT `freeslots_ibfk_1` FOREIGN KEY (`torrentid`) REFERENCES `torrents` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `freeslots_ibfk_2` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1366,7 +1403,9 @@ CREATE TABLE `friends` (
   `confirmed` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
-  KEY `friendid` (`friendid`)
+  KEY `friendid` (`friendid`),
+  CONSTRAINT `friends_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `friends_ibfk_2` FOREIGN KEY (`friendid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1391,7 +1430,9 @@ CREATE TABLE `funds` (
   `cash` decimal(8,2) NOT NULL DEFAULT '0.00',
   `user` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `user` (`user`),
+  CONSTRAINT `funds_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1414,10 +1455,13 @@ DROP TABLE IF EXISTS `happyhour`;
 CREATE TABLE `happyhour` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
-  `torrentid` int(10) NOT NULL DEFAULT '0',
+  `torrentid` int(10) unsigned NOT NULL DEFAULT '0',
   `multiplier` float NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `userid` (`userid`)
+  KEY `userid` (`userid`),
+  KEY `torrentid` (`torrentid`),
+  CONSTRAINT `happyhour_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `happyhour_ibfk_2` FOREIGN KEY (`torrentid`) REFERENCES `torrents` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1440,11 +1484,14 @@ DROP TABLE IF EXISTS `happylog`;
 CREATE TABLE `happylog` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
-  `torrentid` int(10) NOT NULL DEFAULT '0',
+  `torrentid` int(10) unsigned NOT NULL DEFAULT '0',
   `multi` float NOT NULL DEFAULT '0',
   `date` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `userid` (`userid`)
+  KEY `userid` (`userid`),
+  KEY `torrentid` (`torrentid`),
+  CONSTRAINT `happylog_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `happylog_ibfk_2` FOREIGN KEY (`torrentid`) REFERENCES `torrents` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1473,7 +1520,8 @@ CREATE TABLE `highscores` (
   PRIMARY KEY (`id`),
   KEY `game` (`game`),
   KEY `user` (`user_id`),
-  KEY `score` (`score`)
+  KEY `score` (`score`),
+  CONSTRAINT `highscores_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1552,7 +1600,8 @@ CREATE TABLE `invite_codes` (
   `email` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `sender` (`id`),
-  KEY `sender_2` (`sender`)
+  KEY `sender_2` (`sender`),
+  CONSTRAINT `invite_codes_ibfk_1` FOREIGN KEY (`sender`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1582,7 +1631,8 @@ CREATE TABLE `ips` (
   `lastlogin` int(11) NOT NULL DEFAULT '0',
   `lastannounce` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `userid` (`userid`)
+  KEY `userid` (`userid`),
+  CONSTRAINT `ips_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1608,9 +1658,11 @@ CREATE TABLE `likes` (
   `post_id` int(11) NOT NULL,
   `comment_id` int(11) NOT NULL,
   `user_comment_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0',
   `userip` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1656,10 +1708,11 @@ DROP TABLE IF EXISTS `manage_likes`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `manage_likes` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) NOT NULL,
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0',
   `disabled_time` int(10) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `user_id` (`user_id`)
+  UNIQUE KEY `user_id` (`user_id`),
+  CONSTRAINT `manage_likes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1772,14 +1825,16 @@ DROP TABLE IF EXISTS `news`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `news` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `userid` int(11) NOT NULL DEFAULT '0',
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(11) NOT NULL DEFAULT '0',
   `body` mediumtext COLLATE utf8mb4_unicode_ci,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sticky` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `anonymous` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY (`id`),
-  KEY `added` (`added`)
+  KEY `added` (`added`),
+  KEY `userid` (`userid`),
+  CONSTRAINT `news_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1829,7 +1884,9 @@ CREATE TABLE `notconnectablepmlog` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user` int(10) unsigned NOT NULL DEFAULT '0',
   `date` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `user` (`user`),
+  CONSTRAINT `notconnectablepmlog_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1855,7 +1912,8 @@ CREATE TABLE `now_viewing` (
   `topic_id` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`),
-  KEY `forum_id` (`forum_id`)
+  KEY `forum_id` (`forum_id`),
+  CONSTRAINT `now_viewing_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1882,7 +1940,8 @@ CREATE TABLE `offer_votes` (
   `vote` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   PRIMARY KEY (`id`),
   KEY `user_offer` (`offer_id`),
-  KEY `user_id` (`user_id`)
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `offer_votes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1919,7 +1978,8 @@ CREATE TABLE `offers` (
   PRIMARY KEY (`id`),
   KEY `id_added` (`id`),
   KEY `offered_by_name` (`offer_name`),
-  KEY `offered_by_user_id` (`offered_by_user_id`)
+  KEY `offered_by_user_id` (`offered_by_user_id`),
+  CONSTRAINT `offers_ibfk_1` FOREIGN KEY (`offered_by_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2018,7 +2078,9 @@ CREATE TABLE `peers` (
   KEY `connectable` (`connectable`),
   KEY `userid` (`userid`),
   KEY `torrent_pass` (`torrent_pass`),
-  KEY `torrent_connect` (`torrent`)
+  KEY `torrent_connect` (`torrent`),
+  CONSTRAINT `peers_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `peers_ibfk_2` FOREIGN KEY (`torrent`) REFERENCES `torrents` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2044,7 +2106,8 @@ CREATE TABLE `pmboxes` (
   `boxnumber` tinyint(4) NOT NULL DEFAULT '2',
   `name` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `userid` (`userid`)
+  KEY `userid` (`userid`),
+  CONSTRAINT `pmboxes_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2098,7 +2161,8 @@ CREATE TABLE `poll_voters` (
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`vid`),
   KEY `poll_id` (`poll_id`),
-  KEY `user_id` (`user_id`)
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `poll_voters_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2166,7 +2230,8 @@ CREATE TABLE `posts` (
   PRIMARY KEY (`id`),
   KEY `topicid` (`topic_id`),
   KEY `userid` (`user_id`),
-  KEY `body` (`post_title`)
+  KEY `body` (`post_title`),
+  CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2222,11 +2287,14 @@ DROP TABLE IF EXISTS `rating`;
 CREATE TABLE `rating` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `topic` int(10) NOT NULL DEFAULT '0',
-  `torrent` int(10) NOT NULL DEFAULT '0',
+  `torrent` int(10) unsigned NOT NULL DEFAULT '0',
   `rating` int(1) NOT NULL DEFAULT '0',
   `user` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `user` (`user`)
+  KEY `user` (`user`),
+  KEY `torrent` (`torrent`),
+  CONSTRAINT `rating_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `rating_ibfk_2` FOREIGN KEY (`torrent`) REFERENCES `torrents` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2253,7 +2321,8 @@ CREATE TABLE `read_posts` (
   `last_post_read` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `topic_id` (`topic_id`),
-  KEY `user_id` (`user_id`)
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `read_posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2313,7 +2382,9 @@ CREATE TABLE `reports` (
   `2nd_value` int(10) unsigned NOT NULL DEFAULT '0',
   `when_delt_with` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `delt_with` (`delt_with`)
+  KEY `delt_with` (`delt_with`),
+  KEY `reported_by` (`reported_by`),
+  CONSTRAINT `reports_ibfk_1` FOREIGN KEY (`reported_by`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2347,7 +2418,9 @@ CREATE TABLE `reputation` (
   KEY `whoadded` (`whoadded`),
   KEY `multi` (`postid`),
   KEY `dateadd` (`dateadd`),
-  KEY `locale` (`locale`)
+  KEY `locale` (`locale`),
+  CONSTRAINT `reputation_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `reputation_ibfk_2` FOREIGN KEY (`whoadded`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2399,7 +2472,9 @@ CREATE TABLE `request_votes` (
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
   `vote` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   PRIMARY KEY (`id`),
-  KEY `user_request` (`request_id`)
+  KEY `user_request` (`request_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `request_votes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2435,7 +2510,9 @@ CREATE TABLE `requests` (
   `link` varchar(240) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_added` (`id`),
-  KEY `requested_by_name` (`request_name`)
+  KEY `requested_by_name` (`request_name`),
+  KEY `requested_by_user_id` (`requested_by_user_id`),
+  CONSTRAINT `requests_ibfk_1` FOREIGN KEY (`requested_by_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2488,7 +2565,8 @@ CREATE TABLE `shit_list` (
   `shittyness` int(2) unsigned NOT NULL DEFAULT '0',
   `added` int(11) NOT NULL DEFAULT '0',
   `text` mediumtext COLLATE utf8mb4_unicode_ci,
-  KEY `userid` (`userid`)
+  KEY `userid` (`userid`),
+  CONSTRAINT `shit_list_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2583,7 +2661,9 @@ CREATE TABLE `snatched` (
   `finished` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY (`id`),
   KEY `tr_usr` (`torrentid`),
-  KEY `userid` (`userid`)
+  KEY `userid` (`userid`),
+  CONSTRAINT `snatched_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `snatched_ibfk_2` FOREIGN KEY (`torrentid`) REFERENCES `torrents` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2615,7 +2695,9 @@ CREATE TABLE `staffmessages` (
   `new` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY (`id`),
   KEY `answeredby` (`answeredby`),
-  KEY `sender` (`sender`)
+  KEY `sender` (`sender`),
+  CONSTRAINT `staffmessages_ibfk_1` FOREIGN KEY (`sender`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `staffmessages_ibfk_2` FOREIGN KEY (`answeredby`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2769,7 +2851,8 @@ CREATE TABLE `subscriptions` (
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
   `topic_id` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `subscriptions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2801,8 +2884,10 @@ CREATE TABLE `subtitles` (
   `cds` int(3) NOT NULL DEFAULT '0',
   `hits` int(10) NOT NULL DEFAULT '0',
   `added` int(11) NOT NULL DEFAULT '0',
-  `owner` int(10) NOT NULL DEFAULT '0',
-  KEY `id` (`id`)
+  `owner` int(10) unsigned NOT NULL DEFAULT '0',
+  KEY `id` (`id`),
+  KEY `owner` (`owner`),
+  CONSTRAINT `subtitles_ibfk_1` FOREIGN KEY (`owner`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2824,10 +2909,13 @@ DROP TABLE IF EXISTS `thanks`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thanks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `torrentid` int(11) NOT NULL DEFAULT '0',
+  `torrentid` int(10) unsigned NOT NULL DEFAULT '0',
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `userid` (`userid`)
+  KEY `userid` (`userid`),
+  KEY `torrentid` (`torrentid`),
+  CONSTRAINT `thanks_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `thanks_ibfk_2` FOREIGN KEY (`torrentid`) REFERENCES `torrents` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2850,10 +2938,13 @@ DROP TABLE IF EXISTS `thankyou`;
 CREATE TABLE `thankyou` (
   `tid` bigint(10) NOT NULL AUTO_INCREMENT,
   `uid` int(10) unsigned NOT NULL DEFAULT '0',
-  `torid` bigint(10) NOT NULL DEFAULT '0',
+  `torid` int(10) unsigned NOT NULL DEFAULT '0',
   `thank_date` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`tid`),
-  KEY `uid` (`uid`)
+  KEY `uid` (`uid`),
+  KEY `torid` (`torid`),
+  CONSTRAINT `thankyou_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `thankyou_ibfk_2` FOREIGN KEY (`torid`) REFERENCES `torrents` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2876,11 +2967,14 @@ DROP TABLE IF EXISTS `thumbsup`;
 CREATE TABLE `thumbsup` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `type` enum('torrents','posts','comments','users') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'torrents',
-  `torrentid` int(10) NOT NULL DEFAULT '0',
+  `torrentid` int(10) unsigned NOT NULL DEFAULT '0',
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `commentid` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `userid` (`userid`)
+  KEY `userid` (`userid`),
+  KEY `torrentid` (`torrentid`),
+  CONSTRAINT `thumbsup_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `thumbsup_ibfk_2` FOREIGN KEY (`torrentid`) REFERENCES `torrents` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2904,7 +2998,8 @@ CREATE TABLE `tickets` (
   `id` int(4) NOT NULL AUTO_INCREMENT,
   `user` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `user` (`user`)
+  KEY `user` (`user`),
+  CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2945,7 +3040,8 @@ CREATE TABLE `topics` (
   PRIMARY KEY (`id`),
   KEY `userid` (`user_id`),
   KEY `subject` (`topic_name`),
-  KEY `lastpost` (`last_post`)
+  KEY `lastpost` (`last_post`),
+  CONSTRAINT `topics_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3050,7 +3146,7 @@ DROP TABLE IF EXISTS `triviaq`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `triviaq` (
-  `qid` int(11) NOT NULL AUTO_INCREMENT,
+  `qid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `question` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `answer1` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `answer2` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -3084,15 +3180,12 @@ DROP TABLE IF EXISTS `triviasettings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `triviasettings` (
-  `gamenum` int(16) NOT NULL AUTO_INCREMENT,
+  `gamenum` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `started` datetime NOT NULL,
   `finished` datetime DEFAULT NULL,
   `gameon` tinyint(1) NOT NULL,
-  `correct` int(11) DEFAULT NULL,
-  `incorrect` int(11) DEFAULT NULL,
   PRIMARY KEY (`gamenum`),
-  KEY `gameon` (`gameon`),
-  KEY `correct` (`correct`)
+  KEY `gameon` (`gameon`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3113,16 +3206,19 @@ DROP TABLE IF EXISTS `triviausers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `triviausers` (
-  `user_id` int(11) NOT NULL,
-  `qid` int(11) NOT NULL,
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `qid` int(10) unsigned NOT NULL DEFAULT '0',
   `correct` tinyint(1) NOT NULL,
   `date` datetime NOT NULL,
-  `gamenum` int(11) NOT NULL,
+  `gamenum` int(10) unsigned NOT NULL DEFAULT '0',
   KEY `correct` (`correct`),
   KEY `gamenum` (`gamenum`),
   KEY `user_id` (`user_id`),
   KEY `qid` (`qid`),
-  KEY `multi` (`user_id`,`qid`,`gamenum`)
+  KEY `multi` (`user_id`,`qid`,`gamenum`),
+  CONSTRAINT `triviausers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `triviausers_ibfk_2` FOREIGN KEY (`qid`) REFERENCES `triviaq` (`qid`) ON DELETE CASCADE,
+  CONSTRAINT `triviausers_ibfk_3` FOREIGN KEY (`gamenum`) REFERENCES `triviasettings` (`gamenum`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3160,7 +3256,8 @@ CREATE TABLE `uploadapp` (
   `comment` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users` (`userid`),
-  KEY `status` (`status`)
+  KEY `status` (`status`),
+  CONSTRAINT `uploadapp_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3185,7 +3282,8 @@ CREATE TABLE `user_blocks` (
   `index_page` int(10) unsigned NOT NULL DEFAULT '4194303',
   `global_stdhead` int(10) unsigned NOT NULL DEFAULT '1023',
   `userdetails_page` bigint(20) unsigned NOT NULL DEFAULT '4294967295',
-  UNIQUE KEY `userid` (`userid`)
+  UNIQUE KEY `userid` (`userid`),
+  CONSTRAINT `user_blocks_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3216,7 +3314,8 @@ CREATE TABLE `usercomments` (
   `editedat` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `user` (`user`),
-  KEY `userid` (`userid`)
+  KEY `userid` (`userid`),
+  CONSTRAINT `usercomments_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3245,7 +3344,8 @@ CREATE TABLE `userhits` (
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
   KEY `added` (`added`),
-  KEY `hitid` (`hitid`)
+  KEY `hitid` (`hitid`),
+  CONSTRAINT `userhits_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3486,7 +3586,9 @@ CREATE TABLE `usersachiev` (
   `totalshouts` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
-  KEY `dailyshouts` (`dailyshouts`)
+  KEY `dailyshouts` (`dailyshouts`),
+  CONSTRAINT `usersachiev_ibfk_1` FOREIGN KEY (`id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `usersachiev_ibfk_2` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3513,7 +3615,8 @@ CREATE TABLE `ustatus` (
   `last_update` int(11) NOT NULL DEFAULT '0',
   `archive` mediumtext COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `userid` (`userid`)
+  UNIQUE KEY `userid` (`userid`),
+  CONSTRAINT `ustatus_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3541,7 +3644,9 @@ CREATE TABLE `wiki` (
   `time` int(11) NOT NULL DEFAULT '0',
   `lastedit` int(10) unsigned DEFAULT '0',
   `lastedituser` int(10) unsigned DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `userid` (`userid`),
+  CONSTRAINT `wiki_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3568,4 +3673,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-08-17 21:34:57
+-- Dump completed on 2017-08-18 13:38:43

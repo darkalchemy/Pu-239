@@ -92,9 +92,7 @@ function docleanup($data)
     }
 
     sql_query('UPDATE triviaq SET asked = 0, current = 0') or sqlerr(__FILE__, __LINE__);
-    $correct = get_row_count('triviausers', 'WHERE gamenum = ' . sqlesc($gamenum) . ' AND correct = 1');
-    $incorrect = get_row_count('triviausers', 'WHERE gamenum = ' . sqlesc($gamenum) . ' AND correct = 0');
-    sql_query('UPDATE triviasettings SET gameon = 0, finished = NOW(), correct = ' . sqlesc($correct) . ', incorrect = ' . sqlesc($incorrect) . ' WHERE gameon = 1') or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE triviasettings SET gameon = 0, finished = NOW() WHERE gameon = 1') or sqlerr(__FILE__, __LINE__);
     sql_query('INSERT INTO triviasettings (gameon, started) VALUES (1, NOW())') or sqlerr(__FILE__, __LINE__);
 
     if ($queries > 0) {
