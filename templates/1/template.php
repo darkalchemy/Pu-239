@@ -1,7 +1,7 @@
 <?php
 function stdhead($title = '', $msgalert = true, $stdhead = false)
 {
-    global $CURUSER, $INSTALLER09, $lang, $free, $_NO_COMPRESS, $query_stat, $querytime, $mc1, $BLOCKS, $CURBLOCK, $mood;
+    global $CURUSER, $INSTALLER09, $lang, $free, $query_stat, $querytime, $mc1, $BLOCKS, $CURBLOCK, $mood;
     if (!$INSTALLER09['site_online']) {
         die('Site is down for maintenance, please check back again later... thanks<br>');
     }
@@ -15,16 +15,8 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         $INSTALLER09['categorie_icon'] = isset($CURUSER['categorie_icon']) ? $CURUSER['categorie_icon'] : $INSTALLER09['categorie_icon'];
         $INSTALLER09['language'] = isset($CURUSER['language']) ? $CURUSER['language'] : $INSTALLER09['language'];
     }
-    /** ZZZZZZZZZZZZZZZZZZZZZZZZZZip it! */
-    if (!isset($_NO_COMPRESS)) if (!ob_start('ob_gzhandler')) ob_start();
-    //== Include js files needed only for the page being used by pdq
-    $js_incl = '';
-    $js_incl .= '<!-- javascript goes here or in footer -->';
-    if (!empty($stdhead['js'])) {
-        foreach ($stdhead['js'] as $JS) {
-            $js_incl .= "
-        <script src='./scripts/" . $JS . ".js'></script>";
-        }
+    if (!ob_start('ob_gzhandler')) {
+        ob_start('ob_gzhandler');
     }
     $css_incl = '<!-- css goes here -->';
     if (!empty($stdhead['css'])) {
@@ -45,7 +37,8 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         //$doctype = '<!DOCTYPE html>' . '<html xmlns="http://www.w3.org/1999/xhtml">';
         $doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" ' . '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' . '<html xmlns="http://www.w3.org/1999/xhtml">';
     }
-    $body_class = isset($_COOKIE['theme']) ? htmlsafechars($_COOKIE['theme']) : 'background-15 h-style-1 text-1 skin-1';
+    $body_class = isset($_COOKIE[$INSTALLER09['cookie_prefix'] . 'theme']) ? htmlsafechars($_COOKIE[$INSTALLER09['cookie_prefix'] . 'theme']) : 'background-15 h-style-1 text-1 skin-1';
+
     $htmlout = $doctype . "<head>
         <meta http-equiv='Content-Language' content='en-us' />
         <title>{$title}</title>
@@ -55,63 +48,12 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         <link rel='shortcut icon' href='favicon.ico' />
         <!-- css
         =================================================== -->
-        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/1e86f6e728f950a47e1188cdc6f21590.min.css' />";
+        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/1e072bc36dce71e4b89abf14e3dbc374.min.css' />";
     $htmlout .= "
-        <style>#mlike{cursor:pointer;}</style>
-        <!-- global javascript
-        ================================================== -->
-        <script src='./scripts/turbolinks.js'></script>
-        <script src='./scripts/jquery-1.5.js'></script>
-        <script src='./scripts/help.js'></script>";
+        <style>#mlike{cursor:pointer;}</style>";
 
-    if ($CURUSER) {
         $htmlout .= "
-        <script src='./scripts/jquery.status.js'></script>
-        <script src='./scripts/jquery.cookie.js'></script>
-        <script src='./scripts/help.js'></script>
-        <script src='./templates/themeChanger/js/colorpicker.js'></script>
-        <script src='./templates/themeChanger/js/themeChanger.js'></script>
-        <script src='./templates/{$INSTALLER09['stylesheet']}/js/jquery.smoothmenu.js'></script>
-        <script src='./templates/{$INSTALLER09['stylesheet']}/js/core.js'></script>
-        <script>
-        /*<![CDATA[*/
-            // Like Dislike function
-            //================================================== -->
-            $(function() {                          // the like js
-                $('span[id*=mlike]').like239({
-                    times : 5,              // times checked
-                    disabled : 5,           // disabled from liking for how many seconds
-                    time  : 5,              // period within check is performed
-                    url : '/ajax.like.php'
-                });
-            });
-        // template changer function
-        //================================================== -->
-        function themes() {
-          window.open('take_theme.php','My themes','height=150,width=200,resizable=no,scrollbars=no,toolbar=no,menubar=no');
-        }
-        // language changer function
-        //================================================== -->
-        function language_select() {
-          window.open('take_lang.php','My language','height=150,width=200,resizable=no,scrollbars=no,toolbar=no,menubar=no');
-        }
-        // radio function
-        //================================================== -->
-        function radio() {
-          window.open('radio_popup.php','My Radio','height=700,width=800,resizable=no,scrollbars=no,toolbar=no,menubar=no');
-        }
-        /*]]>*/
-        </script>
-        <script src='./ajax/helpers.js'></script>";
-        }
-        $htmlout .= "
-        {$js_incl}{$css_incl}
-        <!--[if lt IE 9]>
-        <script src='./templates/{$INSTALLER09['stylesheet']}/js/modernizr.custom.js'></script>
-        <script src='http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE8.js'></script>
-        <script src='./templates/{$INSTALLER09['stylesheet']}/js/ie.js'></script>
-        <![endif]-->";
-        $htmlout .= "
+        {$css_incl}
         </head>
         <body class='{$body_class}'>
         <!-- Main Outer Container
@@ -380,18 +322,10 @@ function stdfoot($stdfoot = false)
     }
     $header = '';
     if (!empty($MemStats['Hits']) && !empty($MemStats['curr_items']) && !empty($phptime) && !empty($percentmc) && !empty($cachetime)) {
-        $header = '<b>' . $lang['gl_stdfoot_querys_mstat'] . '</b> ' . mksize(memory_get_peak_usage()) . ' ' . $lang['gl_stdfoot_querys_mstat1'] . ' ' . round($phptime, 2) . 's | ' . round($percentmc, 2) . '' . $lang['gl_stdfoot_querys_mstat2'] . '' . number_format($cachetime, 5) . 's ' . $lang['gl_stdfoot_querys_mstat3'] . '' . $MemStats['Hits'] . '' . $lang['gl_stdfoot_querys_mstat4'] . '' . (100 - $MemStats['Hits']) . '' . $lang['gl_stdfoot_querys_mstat5'] . '' . number_format($MemStats['curr_items']);
+        $header = '<b>' . $lang['gl_stdfoot_querys_mstat'] . '</b> ' . mksize(memory_get_peak_usage()) . ' ' . $lang['gl_stdfoot_querys_mstat1'] . ' ' . round($phptime, 2) . 's | ' . round($percentmc, 2) . '' . $lang['gl_stdfoot_querys_mstat2'] . '' . number_format($cachetime, 4) . 's ' . $lang['gl_stdfoot_querys_mstat3'] . '' . $MemStats['Hits'] . '' . $lang['gl_stdfoot_querys_mstat4'] . '' . number_format((100 - $MemStats['Hits']), 3) . '' . $lang['gl_stdfoot_querys_mstat5'] . '' . number_format($MemStats['curr_items']);
     }
     $htmlfoot = '';
     //== query stats
-    //== include js files needed only for the page being used by pdq
-    $htmlfoot .= '<!-- javascript goes here -->';
-    if (!empty($stdfoot['js'])) {
-        foreach ($stdfoot['js'] as $JS) {
-            $htmlfoot .= '
-        <script src="./scripts/' . $JS . '.js"></script>';
-        }
-    }
     $querytime = 0;
     if ($CURUSER && $query_stat && $debug) {
         $htmlfoot .= "
@@ -423,12 +357,7 @@ function stdfoot($stdfoot = false)
             </fieldset>
         </div>';
     }
-    $htmlfoot .= "      <!-- external javascript
-        ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-
-        <!-- accordion library (optional, not used in demo)
-        <script src='templates/framework/js/bootstrap-collapse.js'></script> -->
+    $htmlfoot .= "
     </div>
 <!--</td></tr></table>-->";
     if ($CURUSER) {
@@ -452,20 +381,34 @@ function stdfoot($stdfoot = false)
     }
     $htmlfoot .= "
     </div>
-    <!--  End main outer container
-    ======================================================= -->
-     <div id='control_panel'>
-     <a href='#' id='control_label'></a>
-     </div><!-- #control_panel -->
-    <!-- Ends Footer -->";
-    if ($CURUSER) {
-        $htmlfoot .= "
-    <script src='templates/{$INSTALLER09['stylesheet']}/js/general.js'></script>
-    <script src='scripts/bootstrap.js'></script>";
-    }
-    $htmlfoot .= "
+    <div id='control_panel'>
+        <a href='#' id='control_label'></a>
+    </div>
+    <script>
+        var cookie_prefix   = '{$INSTALLER09['cookie_prefix']}';
+        var cookie_path     = '{$INSTALLER09['cookie_path']}';
+        var cookie_lifetime = '{$INSTALLER09['cookie_lifetime']}';
+        var cookie_domain   = '{$INSTALLER09['cookie_domain']}';
+        var cookie_secure   = '{$INSTALLER09['sessionCookieSecure']}';
+    </script>
+    <script src='./scripts/8717d4ee389463c6ef8c3d60704bb2a1.min.js'></script>";
 
-    </body></html>\n";
+    if (!empty($stdfoot['js'])) {
+        foreach ($stdfoot['js'] as $JS) {
+            $htmlfoot .= '
+    <script src="./scripts/' . $JS . '.js"></script>';
+        }
+    }
+
+    $htmlfoot .= "
+    <!--[if lt IE 9]>
+        <script src='./templates/{$INSTALLER09['stylesheet']}/js/modernizr.custom.js'></script>
+        <script src='http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE8.js'></script>
+        <script src='./templates/{$INSTALLER09['stylesheet']}/js/ie.js'></script>
+    <![endif]-->
+
+</body>
+</html>";
 
     return $htmlfoot;
 }
@@ -639,37 +582,6 @@ function StatusBar()
         " . ($CURUSER['class'] >= UC_STAFF || isset($CURUSER) && $CURUSER['got_blocks'] == 'yes' ? "<div class='slide_head'>{$lang['gl_userblocks']}</div><div class='slide_a'>{$lang['gl_myblocks']}</div><div class='slide_b'><a href='./user_blocks.php'>{$lang['gl_click']}</a></div>" : '') . '
          ' . ($CURUSER['class'] >= UC_STAFF || isset($CURUSER) && $CURUSER['got_moods'] == 'yes' ? "<div class='slide_c'>{$lang['gl_myunlocks']}</div><div class='slide_d'><a href='./user_unlocks.php'>{$lang['gl_click']}</a></div>" : '') . '
        </div>';
-    $StatusBar .= '
-    <script>
-      //<![CDATA[
-      function refrClock(){
-      var d=new Date();
-      var s=d.getSeconds();
-      var m=d.getMinutes();
-      var h=d.getHours();
-      var day=d.getDay();
-      var date=d.getDate();
-      var month=d.getMonth();
-      var year=d.getFullYear();
-      var am_pm;
-      if (s<10) {s="0" + s}
-      if (m<10) {m="0" + m}
-      if (h>12) {h-=12;am_pm = "PM"}
-      else {am_pm="AM"}
-      if (h<10) {h="0" + h}
-      document.getElementById("clock").innerHTML=h + ":" + m + ":" + s + " " + am_pm;
-      setTimeout("refrClock()",1000);
-      }
-      refrClock();
-
-      $(document).ready(function () {
-          if ($("#triviabox").length) {
-              $("#triviabox").iFrameResize({
-                  enablePublicMethods: true,
-              });
-          };
-      });
-      </script>';
 
     return $StatusBar;
 }

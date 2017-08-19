@@ -1,13 +1,4 @@
 <?php
-function cleanup_log($data)
-{
-    $text = sqlesc($data['clean_title']);
-    $added = TIME_NOW;
-    $ip = sqlesc($_SERVER['REMOTE_ADDR']);
-    $desc = sqlesc($data['clean_desc']);
-    sql_query("INSERT INTO cleanup_log (clog_event, clog_time, clog_ip, clog_desc) VALUES ($text, $added, $ip, {$desc})") or sqlerr(__FILE__, __LINE__);
-}
-
 function docleanup($data)
 {
     global $INSTALLER09, $queries, $mc1;
@@ -44,7 +35,9 @@ function docleanup($data)
     while ($user = mysqli_fetch_assoc($res)) {
         $users[] = $user['id'];
     }
-    delete_cleanup(implode(', ', $users), true);
+    if (count($users) >= 1) {
+        delete_cleanup(implode(', ', $users), true);
+    }
 
     if ($queries > 0) {
         write_log("Inactive Clean -------------------- Inactive Clean Complete using $queries queries--------------------");
@@ -59,6 +52,9 @@ function docleanup($data)
 
 function delete_cleanup($users, $using_foreign_keys = true)
 {
+    if (empty($users)) {
+        return;
+    }
     sql_query("DELETE FROM users WHERE id IN ({$users})") or sqlerr(__FILE__, __LINE__);
     sql_query("DELETE FROM staff_messages WHERE sender IN ({$users})") or sqlerr(__FILE__, __LINE__);
     sql_query("DELETE FROM staffmessages_answers WHERE sender IN ({$users})") or sqlerr(__FILE__, __LINE__);

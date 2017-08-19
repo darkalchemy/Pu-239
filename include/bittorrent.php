@@ -1499,6 +1499,15 @@ function check_user_status()
     suspended();
 }
 
+function cleanup_log($data)
+{
+    $text = sqlesc($data['clean_title']);
+    $added = TIME_NOW;
+    $ip = sqlesc($_SERVER['REMOTE_ADDR']);
+    $desc = sqlesc($data['clean_desc']);
+    sql_query("INSERT INTO cleanup_log (clog_event, clog_time, clog_ip, clog_desc) VALUES ($text, $added, $ip, {$desc})") or sqlerr(__FILE__, __LINE__);
+}
+
 if (file_exists('install/index.php')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"

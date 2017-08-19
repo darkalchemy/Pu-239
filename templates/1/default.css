@@ -146,7 +146,9 @@ td.colhead {
 }
 
 .captchaImage {
-    margin: 0 2px;
+    margin: 4px;
+    width: 48px;
+    height: 48px;
 }
 
 .captchaImages {
@@ -1595,3 +1597,19 @@ a:link {
     color: #CC0000;
 }
 
+.container-flex {
+    min-height: 100%;
+    margin: 15px;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.container-flex img {
+    margin: 15px;
+    width: 75%;
+    height: auto;
+}

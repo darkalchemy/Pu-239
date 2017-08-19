@@ -1,13 +1,4 @@
 <?php
-function cleanup_log($data)
-{
-    $text = sqlesc($data['clean_title']);
-    $added = TIME_NOW;
-    $ip = sqlesc($_SERVER['REMOTE_ADDR']);
-    $desc = sqlesc($data['clean_desc']);
-    sql_query("INSERT INTO cleanup_log (clog_event, clog_time, clog_ip, clog_desc) VALUES ($text, $added, $ip, {$desc})") or sqlerr(__FILE__, __LINE__);
-}
-
 function docleanup($data)
 {
     global $INSTALLER09, $queries;

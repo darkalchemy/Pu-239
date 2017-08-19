@@ -12,7 +12,7 @@ $lang = array_merge(load_language('global'), load_language('passhint'));
 $stdfoot = [
     /* include js **/
     'js' => [
-        '33f5449eeee219bbdbefa1a16361f6fa.min'
+        'df4d2f6e49d01dad532d335c41bfd2c1.min'
     ],
 ];
 $HTMLOUT = '';

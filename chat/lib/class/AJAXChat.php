@@ -32,6 +32,10 @@ class AJAXChat
 
     public function initialize()
     {
+        if (!ob_start('ob_gzhandler')) {
+            ob_start('ob_gzhandler');
+        }
+
         // Initialize the messages direction
         $this->postDirection = false;
 

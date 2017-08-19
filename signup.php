@@ -12,7 +12,7 @@ if (isset($CURUSER)) {
 }
 $stdfoot = [
     'js' => [
-        '35f28ceada21b7326280c8796c9fa9b2.min'
+        '3306e653dc7cbe855035108a3fdc1055.min'
     ],
 ];
 if (!$INSTALLER09['openreg']) {

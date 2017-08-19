@@ -130,7 +130,7 @@ $(function () {
     var $nav = $('.navigation li a');
     var $theme_control_panel = $('#control_panel');
 
-    var a_color = $.cookie('a_color');
+    var a_color = $.cookie(cookie_prefix + 'a_color');
     if (a_color != null)
         $('a').css('color', '#' + a_color);
 
@@ -140,16 +140,16 @@ $(function () {
         });
         $body.addClass(className);
 
-        var body_class = $.cookie('theme');
+        var body_class = $.cookie(cookie_prefix + 'theme');
         if (body_class != null) {
             new_class_pattern = className.replace(/\d{1,2}$/, '');
             body_class = body_class.replace(new RegExp(new_class_pattern + '\\d{1,2}'), className);
 
-            $.cookie('theme', body_class, {expires: 365});
+            $.cookie(cookie_prefix + 'theme', body_class, {expires: parseInt(cookie_lifetime), path: cookie_path, domain: cookie_domain});
 
         } else {
             body_class = $body.attr('class');
-            $.cookie('theme', body_class, {expires: 365});
+            $.cookie(cookie_prefix + 'theme', body_class, {expires: parseInt(cookie_lifetime), path: cookie_path, domain: cookie_domain});
         }
     }
 
@@ -288,7 +288,7 @@ $(function () {
                 onChange: function (hsb, hex, rgb) {
                     links_picker.css('backgroundColor', '#' + hex);
                     $('a').css('color', '#' + hex);
-                    $.cookie('a_color', hex, {expires: 365});
+                    $.cookie(cookie_prefix + 'a_color', hex, {expires: parseInt(cookie_lifetime), path: cookie_path, domain: cookie_domain});
                 }
             });
 

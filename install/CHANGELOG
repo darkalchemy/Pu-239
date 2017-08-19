@@ -1,3 +1,11 @@
+19 Aug, 2017
+fix inactive_update.php fail on empty set
+fix move js to just before closing body tag
+fix combine and minify most js files on index page
+fix themecontroller to use cookie_prefix when getting/setting cookie
+update jQuery Cookie Plugin to v1.4.1
+remove duplicated function from cleanup scripts
+
 18 Aug, 2017
 add foreign_keys.sql to create some foreign keys, nowhere near complete
 add mysql_drop_fks.php to remove foreign keys from database

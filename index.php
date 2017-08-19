@@ -11,24 +11,13 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 
 $stdhead = [
-    /* include js **/
-    'js'  => [
-        'gallery',
-    ],
-    /* include css **/
     'css' => [
-        'bbcode',
-        'index-portals',
+        '808665aaa5fd7eb9e46cba84ceaddb98.min'
     ],
 ];
 $stdfoot = [
-    /* include js **/
     'js' => [
-        'portals',
-        'jquery-ui-i18n.min',
-        'jquery.bgiframe-2.1.2',
-        'jquery-ui.min',
-        'iframeResizer.min'
+        '4b40a023cb5cc23957d3c0c7d08bf585.min'
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('index'), load_language('trivia'));
