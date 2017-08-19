@@ -391,7 +391,7 @@ function stdfoot($stdfoot = false)
         var cookie_domain   = '{$INSTALLER09['cookie_domain']}';
         var cookie_secure   = '{$INSTALLER09['sessionCookieSecure']}';
     </script>
-    <script src='./scripts/8717d4ee389463c6ef8c3d60704bb2a1.min.js'></script>";
+    <script src='./scripts/63e6784f830b8fa4d21ab8cb60edfbc1.min.js'></script>";
 
     if (!empty($stdfoot['js'])) {
         foreach ($stdfoot['js'] as $JS) {
