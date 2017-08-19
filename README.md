@@ -4,6 +4,25 @@ There is a temporary site at http://tech-info.pw:8080 where you can view the cod
 
 This is a fork of U-232 V4.
 
+```
+get the files
+git clone https://github.com/darkalchemy/Pu-239.git
+
+set ownership
+chown -R www-data:www-data Pu-239
+
+goto website and complete install
+
+delete /install folder once directed to
+
+create your first user and login
+
+goto admin and create your bot/system user
+
+goto admin cleanup and activate/deactivate scripts, they are initially set to yesterday midnight
+```
+
+
 credits:
 
 All Credit goes to the original code creators.

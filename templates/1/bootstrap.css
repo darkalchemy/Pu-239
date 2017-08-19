@@ -995,9 +995,10 @@ fieldset {
 
 legend {
     display: block;
-    width: 100%;
+    width: calc(100% - 40px);
     padding: 0;
     margin-bottom: 20px;
+    margin-left: 20px;
     font-size: 21px;
     line-height: 40px;
     color: #333333;
@@ -1135,6 +1136,11 @@ select {
     color: #000000;
     background-color: #ffffff;
     border: 1px solid #cccccc;
+    margin-bottom: 10px;
+}
+
+select:last-child {
+    margin-bottom: 0;
 }
 
 select[multiple],
@@ -5751,4 +5757,3 @@ a.label:hover {
 }
 
 /*bootstrap responsive*/
-

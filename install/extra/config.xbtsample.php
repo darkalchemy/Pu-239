@@ -1,7 +1,4 @@
 <?php
-/**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 error_reporting(E_ALL); //== turn off = 0 when live
 const REQUIRED_PHP = 50300, REQUIRED_PHP_VERSION = '5.3.0';
 if (PHP_VERSION_ID < REQUIRED_PHP) {
@@ -266,5 +263,5 @@ $INSTALLER09['staff_forums'] = array(
     1,
     2,
 ); // these forum ID's' should exist and be a staff forum's to stop autoshouts
-$INSTALLER09['variant'] = 'U-232 V4';
+$INSTALLER09['variant'] = 'Pu-239';
 define('TBVERSION', $INSTALLER09['variant']);

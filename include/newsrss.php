@@ -117,7 +117,7 @@ function github_shout()
         }
         $pubs = array_reverse($pubs);
         foreach ($pubs as $pub) {
-            $link = sqlesc(hash(sha256, $pub['link']));
+            $link = sqlesc(hash('sha256', $pub['link']));
             sql_query("INSERT INTO newsrss (link)
                         SELECT $link
                         FROM DUAL

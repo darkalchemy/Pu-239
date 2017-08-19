@@ -12,12 +12,12 @@ check_user_status();
 
 $stdhead = [
     'css' => [
-        '808665aaa5fd7eb9e46cba84ceaddb98.min'
+        'c7438ab8e18adf47fbbed9efb1548450.min'
     ],
 ];
 $stdfoot = [
     'js' => [
-        '4b40a023cb5cc23957d3c0c7d08bf585.min'
+        'fbdd05e2b26ba40c9267b1e20b6cc5a4.min'
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('index'), load_language('trivia'));

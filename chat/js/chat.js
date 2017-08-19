@@ -1053,6 +1053,9 @@ var ajaxChat = {
         if (userNodes.length) {
             var index, userID, userName, userRole, i,
                 onlineUsers = [];
+            if (userNodes.length != this.usersList.length) {
+                this.clearOnlineUsersList();
+            }
             for (i = 0; i < userNodes.length; i++) {
                 userID = userNodes[i].getAttribute('userID');
                 userName = userNodes[i].firstChild ? userNodes[i].firstChild.nodeValue : '';

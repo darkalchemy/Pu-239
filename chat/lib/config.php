@@ -10,9 +10,6 @@
 // import globals
 global $INSTALLER09;
 
-// Define AJAX Chat user roles:
-define('AJAX_CHAT_CHATBOT', $INSTALLER09['chatBotRole']);
-
 // AJAX Chat config parameters:
 $config = [];
 
@@ -66,6 +63,9 @@ $config['sourceEncoding'] = 'UTF-8';
 // The content-type of the XHTML page (e.g. "text/html", will be set dependent on browser capabilities if set to null):
 $config['contentType'] = null;
 
+// Site name:
+$config['siteName'] = $INSTALLER09['site_name'];
+
 // Session name used to identify the session cookie:
 $config['sessionName'] = $INSTALLER09['sessionName'];
 // Prefix added to every session key:
@@ -86,9 +86,9 @@ $config['defaultChannelID'] = 0;
 // Defines an array of channelIDs (e.g. array(0, 1)) to limit the number of available channels, will be ignored if set to null:
 $config['limitChannelList'] = null;
 
-// UserID plus this value are private channels (this is also the max userID and max channelID):
+// userID plus this value are private channels (this is also the max userID and max channelID):
 $config['privateChannelDiff'] = 500000000;
-// UserID plus this value are used for private messages:
+// userID plus this value are used for private messages:
 $config['privateMessageDiff'] = 1000000000;
 
 // Enable/Disable private Channels:
@@ -142,14 +142,15 @@ $config['changedNickSuffix'] = ']';
 $config['allowUserMessageDelete'] = true;
 
 // The userID used for ChatBot messages:
-$config['chatBotID'] = $INSTALLER09['bot_id'];
+$config['chatBotID'] = $INSTALLER09['chatBotID'];
 // The userName used for ChatBot messages
 $config['chatBotName'] = $INSTALLER09['chatBotName'];
-
+// The userRole used for ChatBot messages:
+$config['chatBotRole'] = $INSTALLER09['chatBotRole'];
 // Minutes until a user is declared inactive (last status update) - the minimum is 2 minutes:
-$config['inactiveTimeout'] = 2;
+$config['inactiveTimeout'] = 5;
 // Interval in minutes to check for inactive users:
-$config['inactiveCheckInterval'] = 5;
+$config['inactiveCheckInterval'] = 6;
 
 // Defines if messages are shown which have been sent before the user entered the channel:
 $config['requestMessagesPriorChannelEnter'] = true;

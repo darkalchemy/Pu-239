@@ -269,9 +269,7 @@ ALTER TABLE ustatus ADD FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASC
 ALTER TABLE usercomments ADD FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCADE;
 
 ## usersachiev
-ALTER TABLE usersachiev MODIFY `username` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL;
-ALTER TABLE usersachiev ADD FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE;
-ALTER TABLE usersachiev ADD FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE;
+ALTER TABLE usersachiev ADD FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCADE;
 
 ## wiki
 ALTER TABLE wiki ADD FOREIGN KEY (userid) REFERENCES users(id);

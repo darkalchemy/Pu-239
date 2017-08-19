@@ -1,5 +1,4 @@
 <?php
-//== O9 Top 5 and last5 torrents with tooltip
 $HTMLOUT .= "
    <fieldset class='header'><legend>{$lang['index_latest']}</legend></fieldset>
    <div class='container-fluid'>
@@ -33,13 +32,11 @@ if (count($top5torrents) > 0) {
         }
         $HTMLOUT .= '</table></div><br>';
     } else {
-        //== If there are no torrents
         if (empty($top5torrents)) {
             $HTMLOUT .= "<tbody><tr><td  colspan='5'>{$lang['top5torrents_no_torrents']}</td></tr></tbody></table></div>";
         }
     }
 }
-//==Last 5 begin
 if (($last5torrents = $mc1->get_value('last5_tor_')) === false) {
     $sql = "SELECT id, seeders, poster, leechers, name FROM torrents WHERE visible='yes' ORDER BY added DESC LIMIT {$INSTALLER09['latest_torrents_limit']}";
     $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -67,16 +64,11 @@ if (count($last5torrents) > 0) {
             $HTMLOUT .= "<td class='span1'>" . (int)$last5torrentarr['leechers'] . '</td>';
             $HTMLOUT .= '</tr></tbody>';
         }
-        $HTMLOUT .= '</table></div><hr>';
+        $HTMLOUT .= '</table></div>';
     } else {
-        //== If there are no torrents
         if (empty($last5torrents)) {
-            $HTMLOUT .= "<tbody><tr><td colspan='5'>{$lang['last5torrents_no_torrents']}</td></tr></tbody></table></div><hr>";
+            $HTMLOUT .= "<tbody><tr><td colspan='5'>{$lang['last5torrents_no_torrents']}</td></tr></tbody></table></div>";
         }
     }
 }
 $HTMLOUT .= '</div>';
-//== End 09 last5 and top5 torrents
-//==
-// End Class
-// End File

@@ -1,5 +1,4 @@
 <?php
-//==Stats Begin
 if (($stats_cache = $mc1->get_value('site_stats_')) === false) {
     $stats_cache = mysqli_fetch_assoc(sql_query("SELECT *, seeders + leechers AS peers, seeders / leechers AS ratio, unconnectables / (seeders + leechers) AS ratiounconn FROM stats WHERE id = '1' LIMIT 1"));
     $stats_cache['seeders'] = (int)$stats_cache['seeders'];
@@ -28,8 +27,6 @@ if (($stats_cache = $mc1->get_value('site_stats_')) === false) {
     $stats_cache['sysops'] = (int)$stats_cache['sysops'];
     $mc1->cache_value('site_stats_', $stats_cache, $INSTALLER09['expires']['site_stats']);
 }
-//==End
-//==Installer 09 stats
 $HTMLOUT .= "
 	<fieldset class='header'><legend>{$lang['index_stats_title']}</legend>
 		<div class='container-fluid cite text-center'>
@@ -87,7 +84,4 @@ $HTMLOUT .= "
 				</tbody>
 			</table>
 		</div>
-	</fieldset><hr>';
-//==End 09 stats
-// End Class
-// End File
+	</fieldset>';

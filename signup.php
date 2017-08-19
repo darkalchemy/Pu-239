@@ -19,14 +19,6 @@ if (!$INSTALLER09['openreg']) {
     stderr('Sorry', 'Invite only - Signups are closed presently if you have an invite code click <a href="' . $INSTALLER09['baseurl'] . '/invite_signup.php"><b> Here</b></a>');
 }
 $HTMLOUT = $year = $month = $day = $gender = '';
-$HTMLOUT .= "
-    <script>
-        /*<![CDATA[*/
-            $(function() {
-                $('.password').pstrength();
-            });
-        /*]]>*/
-    </script>";
 $lang = array_merge(load_language('global'), load_language('signup'));
 if (get_row_count('users') >= $INSTALLER09['maxusers']) {
     stderr($lang['stderr_errorhead'], sprintf($lang['stderr_ulimit'], $INSTALLER09['maxusers']));

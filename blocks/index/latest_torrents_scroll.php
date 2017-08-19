@@ -1,5 +1,4 @@
 <?php
-// 09 poster mod
 $HTMLOUT .= '
  
 		<script src="/scripts/raphael-min.js"></script>
@@ -83,7 +82,3 @@ if ($scroll_torrents) {
 $HTMLOUT .= '
 		</div>
 	</div></div>';
-
-//== end 09 poster mod
-// End Class
-// End File

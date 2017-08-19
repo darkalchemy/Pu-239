@@ -10,9 +10,5 @@ if (preg_match('/MSIE/i', $browser)) { //browser is IE
 		   <br><br><center><a href='http://www.mozilla.com/firefox'><img border='0' alt='{$lang['index_ie_firefox']}' title='{$lang['index_ie_firefox']}' src='{$INSTALLER09['pic_base_url']}getfirefox.gif' /></a>
 		   <br><strong>{$lang['index_ie_get']}</center>
 		   </div>
-   </fieldset>
-   <hr>";
+   </fieldset>";
 }
-//==
-// End Class
-// End File

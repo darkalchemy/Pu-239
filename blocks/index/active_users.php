@@ -1,5 +1,4 @@
 <?php
-//==Start activeusers - pdq
 $keys['activeusers'] = 'activeusers';
 if (($active_users_cache = $mc1->get_value($keys['activeusers'])) === false) {
     $dt = $_SERVER['REQUEST_TIME'] - 180;
@@ -10,7 +9,7 @@ if (($active_users_cache = $mc1->get_value($keys['activeusers'])) === false) {
     $v = ($actcount != 1 ? 's' : '');
     while ($arr = mysqli_fetch_assoc($res)) {
         if ($activeusers) {
-            $activeusers .= ",\n";
+            $activeusers .= ", ";
         }
         $activeusers .= format_username($arr['id']);
     }
@@ -32,8 +31,5 @@ $active_users = '
 			 <div id="div_info1" style="display:none;background-color:#FEFEF4;max-width:940px;padding: 5px 5px 5px 10px;">-->
 			 ' . $active_users_cache['activeusers'] . '
 			 </div>
-	</fieldset><hr>';
+	</fieldset>';
 $HTMLOUT .= $active_users;
-//== end activeusers
-// End Class
-// End File

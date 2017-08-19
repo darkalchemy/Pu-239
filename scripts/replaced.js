@@ -70,4 +70,8 @@ $(function() {
         time  : 5,              // period within check is performed
         url : '/ajax.like.php'
     });
+
+    if ($('.password').length) {
+        $('.password').pstrength();
+    };
 });

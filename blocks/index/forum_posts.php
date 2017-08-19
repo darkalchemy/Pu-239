@@ -1,5 +1,4 @@
 <?php
-//== Latest forum posts [set limit from config]
 $HTMLOUT .= "
 	<fieldset class='header'>
 		<legend>{$lang['latestposts_title']}</legend>
@@ -90,8 +89,7 @@ if (count($topics) > 0) {
         $HTMLOUT .= "
 				</table>
 			</div>
-	</fieldset>
-	<hr>\n";
+	</fieldset>";
     } else {
         //if there are no posts...
         if (empty($topics)) {
@@ -99,11 +97,7 @@ if (count($topics) > 0) {
         <tr><td colspan='4'>
          {$lang['latestposts_no_posts']}
         </td></tr></table>
-        </div></fieldset><hr>\n";
+        </div></fieldset>";
         }
     }
 }
-//$mc1->delete_value('last_posts_'.$CURUSER['class']);
-//end latest forum posts
-// End Class
-// End File

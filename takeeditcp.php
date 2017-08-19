@@ -49,7 +49,7 @@ if ($action == 'avatar') {
         if ($img_size[0] < 5 || $img_size[1] < 5) {
             stderr($lang['takeeditcp_user_error'], $lang['takeeditcp_small_image']);
         }
-        sql_query('UPDATE usersachiev SET avatarset=avatarset+1 WHERE id=' . sqlesc($CURUSER['id']) . " AND avatarset = '0'") or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE usersachiev SET avatarset = avatarset+1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND avatarset = '0'") or sqlerr(__FILE__, __LINE__);
         if (($img_size[0] > $INSTALLER09['av_img_width']) or ($img_size[1] > $INSTALLER09['av_img_height'])) {
             $image = resize_image([
                 'max_width'  => $INSTALLER09['av_img_width'],
@@ -109,7 +109,7 @@ elseif ($action == 'signature') {
         if ($img_size[0] < 5 || $img_size[1] < 5) {
             stderr($lang['takeeditcp_uerr'], $lang['takeeditcp_img_to_small']);
         }
-        sql_query('UPDATE usersachiev SET sigset=sigset+1 WHERE id=' . sqlesc($CURUSER['id']) . " AND sigset = '0'") or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE usersachiev SET sigset = sigset+1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND sigset = '0'") or sqlerr(__FILE__, __LINE__);
         if (($img_size[0] > $INSTALLER09['sig_img_width']) or ($img_size[1] > $INSTALLER09['sig_img_height'])) {
             $image = resize_image([
                 'max_width'  => $INSTALLER09['sig_img_width'],

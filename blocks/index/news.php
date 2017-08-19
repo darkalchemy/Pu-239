@@ -1,5 +1,4 @@
 <?php
-//==Installer09 MemCached News
 $adminbutton = '';
 if ($CURUSER['class'] >= UC_STAFF) {
     $adminbutton = "<a class='pull-right' href='staffpanel.php?tool=news&amp;mode=news'>{$lang['index_news_title']}</a>\n";
@@ -53,16 +52,13 @@ if ($news) {
     </div></div>";
             $HTMLOUT .= '
     <div id="ka' . (int)$array['nid'] . '" style="display:' . ($array['sticky'] == 'yes' ? '' : 'none') . ';margin-left:20px;margin-top:10px;"> ' . format_comment($array['body'], 0) . ' 
-    </div><hr> ';
+    </div>';
         }
     }
     $HTMLOUT .= "
-    </div></fieldset><hr>\n";
+    </div></fieldset>";
 }
 if (empty($news)) {
     $HTMLOUT .= "{$lang['index_news_not']}
-    </div></fieldset><hr>\n";
+    </div></fieldset>";
 }
-//==End
-// End Class
-// End File

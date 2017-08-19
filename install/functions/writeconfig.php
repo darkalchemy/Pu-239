@@ -1,5 +1,4 @@
 <?php
-
 //==09 Installer by putyn
 $foo = array(
     'Database' => array(
@@ -60,12 +59,12 @@ $foo = array(
         array(
             'text' => 'Path',
             'input' => 'config[cookie_path]',
-            'info' => 'Only required for sub-domain installs.',
+            'info' => 'Required "/" or other path.',
         ),
         array(
             'text' => 'Cookie Domain',
             'input' => 'config[cookie_domain]',
-            'info' => 'Your domain name - note exclude http and www.',
+            'info' => 'Your domain name - note exclude http and www.'
         ),
         array(
             'text' => 'Domain',

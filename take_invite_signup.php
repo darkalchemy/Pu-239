@@ -144,8 +144,8 @@ $new_user = sql_query('INSERT INTO users (username, passhash, passhint, hintansw
         $user_frees,
         $ip,
     ])) . ')');
-sql_query('INSERT INTO usersachiev (id, username) VALUES (' . sqlesc($id) . ', ' . sqlesc($wantusername) . ')') or sqlerr(__FILE__, __LINE__);
-sql_query('UPDATE usersachiev SET invited=invited+1 WHERE id =' . sqlesc($assoc['sender'])) or sqlerr(__FILE__, __LINE__);
+sql_query('INSERT INTO usersachiev (userid) VALUES (' . sqlesc($id) . ')') or sqlerr(__FILE__, __LINE__);
+sql_query('UPDATE usersachiev SET invited = invited+1 WHERE userid =' . sqlesc($assoc['sender'])) or sqlerr(__FILE__, __LINE__);
 $msg = "Welcome New {$INSTALLER09['site_name']} Member : - [user]" . htmlsafechars($wantusername) . '[/user]';
 if (!$new_user) {
     if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {

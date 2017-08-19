@@ -1,5 +1,4 @@
 <?php
-//== Best film of the week
 $categorie = genrelist();
 foreach ($categorie as $key => $value) {
     $change[$value['id']] = [
@@ -50,14 +49,10 @@ if (count($motw_cached) > 0) {
 				</table>
 			</div>
 		</div>
-	</fieldset><hr>';
+	</fieldset>';
     } else {
-        //== If there are no movie of the week
         if (empty($motw_cached)) {
-            $HTMLOUT .= "<tr><td colspan='5'>{$lang['index_mow_no']}!</td></tr></table></div></div></fieldset><hr>";
+            $HTMLOUT .= "<tr><td colspan='5'>{$lang['index_mow_no']}!</td></tr></table></div></div></fieldset>";
         }
     }
 }
-//==End
-// End Class
-// End File

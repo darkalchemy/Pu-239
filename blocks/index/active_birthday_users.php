@@ -1,5 +1,4 @@
 <?php
-//==Start birthdayusers pdq
 $current_date = getdate();
 $keys['birthdayusers'] = 'birthdayusers';
 if (($birthday_users_cache = $mc1->get_value($keys['birthdayusers'])) === false) {
@@ -27,8 +26,5 @@ $birthday_users =
 			 <!--<a href=\'javascript: klappe_news("a1")\'><img border=\'0\' src=\'pic/plus.gif\' id=\'pica1\' alt=\'' . $lang['index_hide_show'] . '\' /></a><div id=\'ka1\' style=\'display: none;\'>-->
 			  ' . $birthday_users_cache['birthdayusers'] . '
 		 </div><!--</div>-->
-	</fieldset><hr>';
+	</fieldset>';
 $HTMLOUT .= $birthday_users;
-//== end birthdayusers
-// End Class
-// End File

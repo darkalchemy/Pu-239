@@ -126,7 +126,7 @@ function delete_cleanup($users, $using_foreign_keys = true)
         sql_query("DELETE FROM user_blocks WHERE userid IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM usercomments WHERE userid IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM userhits WHERE userid IN ({$users})") or sqlerr(__FILE__, __LINE__);
-        sql_query("DELETE FROM usersachiev WHERE id IN ({$users})") or sqlerr(__FILE__, __LINE__);
+        sql_query("DELETE FROM usersachiev WHERE userid IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM ustatus WHERE userid IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM wiki WHERE userid IN ({$users})") or sqlerr(__FILE__, __LINE__);
     }

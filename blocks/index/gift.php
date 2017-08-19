@@ -10,9 +10,5 @@ if (($CURUSER['opt1'] & user_options::GOTGIFT) && $today != $xmasday) {
 			<a href='{$INSTALLER09['baseurl']}/gift.php?open=1'><img src='{$INSTALLER09['pic_base_url']}gift.png' style='float: center;border-style: none;' alt='{$lang['index_xmas_gift']}' title='{$lang['index_xmas_gift']}' /></a>
 			<br><br><br><br>
 			</div>
-	</fieldset>
-	<hr>";
+	</fieldset>";
 }
-//==
-// End Class
-// End File

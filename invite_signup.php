@@ -32,14 +32,6 @@ foreach ($TZ as $off => $words) {
 $time_select .= '</select>';
 // TIMEZONE END
 $HTMLOUT = $year = $month = $day = $gender = '';
-$HTMLOUT .= "
-    <script>
-        /*<![CDATA[*/
-            $(function() {
-                $('.password').pstrength();
-            });
-        /*]]>*/
-    </script>";
 $gender .= "<select name=\"gender\">
     <option value=\"Male\">{$lang['signup_male']}</option>
     <option value=\"Female\">{$lang['signup_female']}</option>

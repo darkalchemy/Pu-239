@@ -1,5 +1,4 @@
 <?php
-//== Last24 start - pdq
 $keys['last24'] = 'last24';
 if (($last24_cache = $mc1->get_value($keys['last24'])) === false) {
     $last24_cache = [];
@@ -45,8 +44,5 @@ $last_24 = '<fieldset class="header"><legend>' . $lang['index_active24'] . '<sma
      <p><b>' . $last24_cache['totalonline24'] . $last24_cache['ss24'] . '' . $lang['index_last24_during'] . '</b></p>
      <p>' . $last24_cache['activeusers24'] . '</p>
      <p><b>' . $lang['index_last24_most'] . $last24_cache['last24'] . $last24_cache['ss24'] . $lang['index_last24_on'] . $last24_cache['last24record'] . '</b></p>
-     </div><!--</div>--></fieldset><hr>';
+     </div><!--</div>--></fieldset>';
 $HTMLOUT .= $last_24;
-//== last24 end
-// End Class
-// End File

@@ -103,7 +103,7 @@ var ajaxChatConfig = {
         // Defines the audio backend:
         audioBackend: -1,
         // Defines the sound volume (0.0 = mute, 1.0 = max):
-        audioVolume: 0.0,
+        audioVolume: 0.3,
 
         // Defines the sound that is played when normal messages are reveived:
         soundReceive: 'sound_1',

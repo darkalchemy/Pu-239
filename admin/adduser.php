@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (sql_query(sprintf('INSERT INTO users (username, email, passhash, status, added, last_access) VALUES (%s)', join(', ', array_map('sqlesc', $insert))))) {
         $user_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
-        sql_query('INSERT INTO usersachiev (id, username) VALUES (' . sqlesc($user_id) . ', ' . sqlesc($insert['username']) . ')') or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO usersachiev (userid) VALUES (' . sqlesc($user_id) . ')') or sqlerr(__FILE__, __LINE__);
         $message = "Welcome New {$INSTALLER09['site_name']} Member : - [user]" . htmlsafechars($insert['username']) . '[/user]';
         if ($INSTALLER09['autoshout_on'] == 1) {
             autoshout($message);

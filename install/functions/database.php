@@ -37,7 +37,7 @@ function db_insert()
     // update cleanup log times, begin at the previous midnight
     $timestamp = strtotime('yesterday midnight');
     $sql = "UPDATE cleanup SET clean_time = $timestamp";
-    $q = sprintf('/usr/bin/mysql -h %s -u %s -p%s %s -e "%s"', $INSTALLER09['mysql_host'], $INSTALLER09['mysql_user'], $INSTALLER09['mysql_pass'], $INSTALLER09['mysql_db'], $root, $sql);
+    $q = sprintf('/usr/bin/mysql -h %s -u %s -p%s %s -e "%s"', $INSTALLER09['mysql_host'], $INSTALLER09['mysql_user'], $INSTALLER09['mysql_pass'], $INSTALLER09['mysql_db'], $sql);
     exec($q, $oo);
 
     if (!count($o) && !count($oo)) {

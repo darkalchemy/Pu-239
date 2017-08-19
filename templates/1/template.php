@@ -37,7 +37,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         //$doctype = '<!DOCTYPE html>' . '<html xmlns="http://www.w3.org/1999/xhtml">';
         $doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" ' . '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' . '<html xmlns="http://www.w3.org/1999/xhtml">';
     }
-    $body_class = isset($_COOKIE[$INSTALLER09['cookie_prefix'] . 'theme']) ? htmlsafechars($_COOKIE[$INSTALLER09['cookie_prefix'] . 'theme']) : 'background-15 h-style-1 text-1 skin-1';
+    $body_class = isset($_COOKIE[$INSTALLER09['cookie_prefix'] . 'theme']) ? htmlsafechars($_COOKIE[$INSTALLER09['cookie_prefix'] . 'theme']) : 'background-15 h-style-1 text-1 skin-2';
 
     $htmlout = $doctype . "<head>
         <meta http-equiv='Content-Language' content='en-us' />
@@ -48,7 +48,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         <link rel='shortcut icon' href='favicon.ico' />
         <!-- css
         =================================================== -->
-        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/1e072bc36dce71e4b89abf14e3dbc374.min.css' />";
+        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/905950ec1662b3234ad78a88584ed93d.min.css' />";
     $htmlout .= "
         <style>#mlike{cursor:pointer;}</style>";
 
@@ -329,32 +329,34 @@ function stdfoot($stdfoot = false)
     $querytime = 0;
     if ($CURUSER && $query_stat && $debug) {
         $htmlfoot .= "
-        <div class='row-fluid'>
-            <fieldset><legend>{$lang['gl_stdfoot_querys']}</legend>
-                <div class='box-content'>
-                    <table class='table  table-bordered'>
-                        <thead>
-                            <tr>
-                                <th align='center'>{$lang['gl_stdfoot_id']}</th>
-                                <th align='center'>{$lang['gl_stdfoot_qt']}</th>
-                                <th align='left'>{$lang['gl_stdfoot_qs']}</th>
-                            </tr>
+        <div class='content'>
+            <div class='portlet'>
+                <fieldset><legend>{$lang['gl_stdfoot_querys']}</legend>
+                    <div class='container-fluid'>
+                        <table class='table  table-bordered'>
+                            <thead>
+                                <tr>
+                                    <th align='center'>{$lang['gl_stdfoot_id']}</th>
+                                    <th align='center'>{$lang['gl_stdfoot_qt']}</th>
+                                    <th align='left'>{$lang['gl_stdfoot_qs']}</th>
+                                </tr>
                         </thead>";
         foreach ($query_stat as $key => $value) {
             $querytime += $value['seconds']; // query execution time
             $htmlfoot .= '
-                        <tbody>
-                            <tr>
-                                <td>' . ($key + 1) . "</td>
-                                <td align='center'><b>" . ($value['seconds'] > 0.01 ? "<font color='red' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</font>' : "<font color='green' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</font>') . "</b></td>
-                                <td align='left'>" . htmlsafechars($value['query']) . '<br></td>
-                            </tr>
-                        </tbody>';
+                            <tbody>
+                                <tr>
+                                    <td>' . ($key + 1) . "</td>
+                                    <td align='center'><b>" . ($value['seconds'] > 0.01 ? "<font color='red' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</font>' : "<font color='green' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</font>') . "</b></td>
+                                    <td align='left'>" . htmlsafechars($value['query']) . '<br></td>
+                                </tr>
+                            </tbody>';
         }
         $htmlfoot .= '
-                    </table>
-                </div>
-            </fieldset>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
         </div>';
     }
     $htmlfoot .= "
@@ -391,7 +393,7 @@ function stdfoot($stdfoot = false)
         var cookie_domain   = '{$INSTALLER09['cookie_domain']}';
         var cookie_secure   = '{$INSTALLER09['sessionCookieSecure']}';
     </script>
-    <script src='./scripts/63e6784f830b8fa4d21ab8cb60edfbc1.min.js'></script>";
+    <script src='./scripts/352c3ef59b3fe545376f9e1279a9ce55.min.js'></script>";
 
     if (!empty($stdfoot['js'])) {
         foreach ($stdfoot['js'] as $JS) {
@@ -536,7 +538,7 @@ function StatusBar()
         }
     }
     if (($Achievement_Points = $mc1->get_value('user_achievement_points_' . $CURUSER['id'])) === false) {
-        $Sql = sql_query('SELECT users.id, users.username, usersachiev.achpoints, usersachiev.spentpoints FROM users LEFT JOIN usersachiev ON users.id = usersachiev.id WHERE users.id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+        $Sql = sql_query('SELECT u.id, u.username, a.achpoints, a.spentpoints FROM users AS u LEFT JOIN usersachiev AS a ON u.id = a.userid WHERE u.id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $Achievement_Points = mysqli_fetch_assoc($Sql);
         $Achievement_Points['id'] = (int)$Achievement_Points['id'];
         $Achievement_Points['achpoints'] = (int)$Achievement_Points['achpoints'];
@@ -552,15 +554,7 @@ function StatusBar()
     }
     $StatusBar = $clock = '';
     $StatusBar .= "
-       <!-- Print Statusbar/User Menu -->
-       <script>
-       //<![CDATA[
-       function showSlidingDiv(){
-       $('#slidingDiv').animate({'height': 'toggle'}, { duration: 1000 });
-       }
-       //]]>
-       </script>
-       <div id='base_usermenu'>" . format_username($CURUSER) . " &#160;&#160;&#160;<span id='clock'>{$clock}</span>&#160;<span class='base_usermenu_arrow'><a href='#' onclick='showSlidingDiv(); return false;'><i class='icon-chevron-down'></i></a></span></div>
+       <div id='base_usermenu'>" . format_username($CURUSER['id']) . " &#160;&#160;&#160;<span id='clock'>{$clock}</span>&#160;<span class='base_usermenu_arrow'><a href='#' onclick='showSlidingDiv(); return false;'><i class='icon-chevron-down'></i></a></span></div>
        <div id='slidingDiv'>
        <div class='slide_head'>{$lang['gl_pstats']}</div>
        " . (isset($CURUSER) && $CURUSER['class'] < UC_STAFF ? "<div class='slide_a'>{$lang['gl_uclass']}</div><div class='slide_b'><b>(" . get_user_class_name($CURUSER['class']) . ')</b></div>' : "<div class='slide_a'>{$lang['gl_uclass']}</div><div class='slide_b'>{$usrclass}</div>") . "

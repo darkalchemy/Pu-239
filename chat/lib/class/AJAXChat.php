@@ -307,7 +307,7 @@ class AJAXChat
                     FROM
                         ' . $this->getDataBaseTable('online') . '
                     ORDER BY
-                        LOWER(userName);';
+                        userRole DESC, LOWER(userName);';
 
             // Create a new SQL query:
             $result = $this->db->sqlQuery($sql);
@@ -457,8 +457,8 @@ class AJAXChat
 
         // increment userachiev
         $sql = 'UPDATE usersachiev
-                    SET dailyshouts=dailyshouts+1, weeklyshouts=weeklyshouts+1, monthlyshouts=monthlyshouts+1, totalshouts=totalshouts+1
-                    WHERE id= ' . $this->db->makeSafe($userID);
+                    SET dailyshouts = dailyshouts+1, weeklyshouts = weeklyshouts+1, monthlyshouts = monthlyshouts+1, totalshouts = totalshouts+1
+                    WHERE userid = ' . $this->db->makeSafe($userID);
 
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);

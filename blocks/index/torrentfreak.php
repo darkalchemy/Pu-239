@@ -7,8 +7,4 @@ $HTMLOUT .= "
 $HTMLOUT .= rsstfreakinfo();
 $HTMLOUT .= '
 			</div>
-	</fieldset>
-	<hr>';
-//==
-// End Class
-// End File
+	</fieldset>';

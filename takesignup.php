@@ -149,7 +149,7 @@ if (!$ret) {
     }
 }
 $id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
-sql_query('INSERT INTO usersachiev (id, username) VALUES (' . sqlesc($id) . ', ' . sqlesc($wantusername) . ')') or sqlerr(__FILE__, __LINE__);
+sql_query('INSERT INTO usersachiev (userid) VALUES (' . sqlesc($id) . ')') or sqlerr(__FILE__, __LINE__);
 //==New member pm
 $added = TIME_NOW;
 $subject = sqlesc('Welcome');

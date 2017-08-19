@@ -575,25 +575,7 @@ switch ($action) {
                     if ($child_boards != '') {
                         $child_boards = '<hr><span style="font-size: xx-small;">' . $lang['sv_child_boards'] . ':</span> ' . $child_boards;
                     }
-                    //=== now_viewing
-                    /*
-                    $keys['now_viewing'] = 'now_viewing_section_view_main';
-                    if(($now_viewing_cache = $mc1->get_value($keys['now_viewing'])) === false) {
-                      $nowviewing = '';
-                      $now_viewing_cache = array();
-                      $res = sql_query('SELECT n_v.user_id, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.perms FROM now_viewing AS n_v LEFT JOIN users AS u ON n_v.user_id = u.id WHERE forum_id = '.sqlesc($arr_forums['real_forum_id'])) or sqlerr(__FILE__, __LINE__);
-                      while ($arr = mysqli_fetch_assoc($res)) {
-                          if ($nowviewing)
-                          $nowviewing .= ",\n";
-                          $nowviewing .= ($arr['perms'] & bt_options::PERMS_STEALTH ? '<i>UnKn0wn</i>' : format_username($arr));
-                    }
-                    $now_viewing_cache['now_viewing'] = $nowviewing;
-                    $mc1->cache_value($keys['now_viewing'], $now_viewing_cache, $INSTALLER09['expires']['section_view']);
-                    }
-                    if (!$now_viewing_cache['now_viewing']) $now_viewing_cache['now_viewing'] = ''.$lang['fm_there_have_been_no_active_users_in_the_last_15_minutes'].'.';
-                    $now_viewing = $now_viewing_cache['now_viewing'];
-                    */
-                } //=== end of only do more if there is a post there...
+                }
                 else {
                     $img = 'unlocked';
                     $last_post = 'N/A';
@@ -633,7 +615,7 @@ switch ($action) {
                 if ($forumusers) {
                     $forumusers .= ",\n";
                 }
-                $forumusers .= ($arr['perms'] & bt_options::PERMS_STEALTH ? '<i>UnKn0wn</i>' : format_username($arr));
+                $forumusers .= ($arr['perms'] & bt_options::PERMS_STEALTH ? '<i>UnKn0wn</i>' : format_username($arr['id']));
             }
             $forum_users_cache['forum_users'] = $forumusers;
             $forum_users_cache['actcount'] = $actcount;

@@ -190,7 +190,7 @@ function poll_footer()
     $HTMLOUT .= '<span><!--VOTE-->&#160;<!--SHOW--></span>
           <span><!-- no content --></span>
         </div></fieldset>
-    </form><hr>';
+    </form>';
 
     return $HTMLOUT;
 }

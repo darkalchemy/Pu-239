@@ -1,5 +1,4 @@
 <?php
-error_reporting(E_ALL); //== turn off = 0 when live
 const REQUIRED_PHP = 50300, REQUIRED_PHP_VERSION = '5.3.0';
 if (PHP_VERSION_ID < REQUIRED_PHP) {
     die('PHP ' . REQUIRED_PHP_VERSION . ' or higher is required.');
@@ -49,11 +48,11 @@ $INSTALLER09['mysql_pass'] = '#mysql_pass';
 $INSTALLER09['mysql_db'] = '#mysql_db';
 //== Cookie setup
 $INSTALLER09['sessionName'] = '#cookie_prefix';
-$INSTALLER09['cookie_prefix'] = '#cookie_prefix'; // This allows you to have multiple trackers, eg for demos, testing etc.
+$INSTALLER09['cookie_prefix'] = '#cookie_prefix' . '_'; // This allows you to have multiple trackers, eg for demos, testing etc.
 $INSTALLER09['cookie_path'] = '#cookie_path'; // ATTENTION: You should never need this unless the above applies eg: /tbdev
 $INSTALLER09['cookie_domain'] = '#cookie_domain'; // set to eg: .somedomain.com or is subdomain set to: .sub.somedomain.com
 $INSTALLER09['cookie_lifetime'] = 365; // length of time cookies will be valid
-$INSTALLER09['domain'] = '#domain';
+$INSTALLER09['domain'] = '.' . '#domain';
 $INSTALLER09['sessionCookieSecure'] = null; // using HTTPS only? then set this
 $INSTALLER09['sessionKeyPrefix'] = '#cookie_prefix' . '_'; // usefull if serving multiple sites
 $INSTALLER09['session_csrf'] = 'csrf_token'; // usefull if serving multiple sites
@@ -147,7 +146,7 @@ $INSTALLER09['minvotes'] = 1;
 $INSTALLER09['max_dead_torrent_time'] = 6 * 3600;
 $INSTALLER09['language'] = 1;
 // Site Bot
-$INSTALLER09['bot_id'] = 2;
+$INSTALLER09['chatBotID'] = 2;
 $INSTALLER09['chatBotName'] = 'CraftyBOT'; // Change to your Bot's Name
 $INSTALLER09['chatBotRole'] = 100;
 $INSTALLER09['staffpanel_online'] = 1;
@@ -186,6 +185,7 @@ define('BLOCK_DIR', ROOT_DIR . 'blocks' . DIRECTORY_SEPARATOR);
 define('IMDB_DIR', ROOT_DIR . 'imdb' . DIRECTORY_SEPARATOR);
 define('CLASS_DIR', INCL_DIR . 'class' . DIRECTORY_SEPARATOR);
 define('CLEAN_DIR', INCL_DIR . 'cleanup' . DIRECTORY_SEPARATOR);
+define('LOGVIEW_DIR', ADMIN_DIR . 'Log_Viewer' . DIRECTORY_SEPARATOR);
 $INSTALLER09['cache'] = ROOT_DIR . 'cache';
 $INSTALLER09['backup_dir'] = INCL_DIR . 'backup';
 $INSTALLER09['dictbreaker'] = ROOT_DIR . 'dictbreaker';
@@ -266,7 +266,7 @@ $INSTALLER09['staff_forums'] = [
     1,
     2,
 ]; // these forum ID's' should exist and be a staff forum's to stop autoshouts
-$INSTALLER09['variant'] = 'P-239 V1';
+$INSTALLER09['variant'] = 'Pu-239';
 define('TBVERSION', $INSTALLER09['variant']);
 
 // Arcade Games

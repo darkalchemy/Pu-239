@@ -1,4 +1,7 @@
 19 Aug, 2017
+fix installer
+update README
+fix update/reorder ajax chat online list when users count changes
 fix inactive_update.php fail on empty set
 fix move js to just before closing body tag
 fix combine and minify most js files on index page

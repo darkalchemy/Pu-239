@@ -1,7 +1,4 @@
 <?php
-/**
- \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/
- */
 error_reporting(E_ALL);
 ////////////////// GLOBAL VARIABLES /////////////////////////////////////
 //== Php poop
@@ -23,7 +20,7 @@ if (version_compare(PHP_VERSION, '5.1.0RC1', '>=')) {
     date_default_timezone_set('Europe/London');
 }
 $mc1 = new CACHE();
-//$mc1->MemcachePrefix = 'u232_3_';
+//$mc1->MemcachePrefix = 'Pu239_';
 define('TIME_NOW', time());
 define('ANN_SQL_DEBUG', 1);
 define('ANN_SQL_LOGGING', 0);
