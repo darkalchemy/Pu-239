@@ -1,5 +1,5 @@
 <?php
-function docleanup($data)
+function inactive_update($data)
 {
     global $INSTALLER09, $queries, $mc1;
     set_time_limit(1200);
@@ -56,7 +56,7 @@ function delete_cleanup($users, $using_foreign_keys = true)
         return;
     }
     sql_query("DELETE FROM users WHERE id IN ({$users})") or sqlerr(__FILE__, __LINE__);
-    sql_query("DELETE FROM staff_messages WHERE sender IN ({$users})") or sqlerr(__FILE__, __LINE__);
+    sql_query("DELETE FROM staffmessages WHERE sender IN ({$users})") or sqlerr(__FILE__, __LINE__);
     sql_query("DELETE FROM staffmessages_answers WHERE sender IN ({$users})") or sqlerr(__FILE__, __LINE__);
     sql_query("DELETE FROM messages WHERE sender IN ({$users})") or sqlerr(__FILE__, __LINE__);
     sql_query("DELETE FROM messages WHERE receiver IN ({$users})") or sqlerr(__FILE__, __LINE__);

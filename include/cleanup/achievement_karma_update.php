@@ -1,5 +1,5 @@
 <?php
-function docleanup($data)
+function achievement_karma_update($data)
 {
     global $INSTALLER09, $queries, $mc1;
     set_time_limit(0);
@@ -18,7 +18,7 @@ function docleanup($data)
                 $msg = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL1[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/bonus1.png[/img]');
                 $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'Bonus Banker LVL1\', \'bonus1.png\' , \'Earned at least 1 bonus point.\')';
-                $usersachiev_buffer[] = '(' . $arr['userid'] . ', ' . $arr['id'] . ',1, ' . $points . ')';
+                $usersachiev_buffer[] = '(' . $arr['id'] . ',1, ' . $points . ')';
                 $mc1->delete_value('inbox_new_' . $arr['id']);
                 $mc1->delete_value('inbox_new_sb_' . $arr['id']);
                 $mc1->delete_value('user_achievement_points_' . $arr['id']);
@@ -28,7 +28,7 @@ function docleanup($data)
                 $msg = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL2[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/bonus2.png[/img]');
                 $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'Bonus Banker LVL2\', \'bonus2.png\' , \'Earned at least 100 bonus points.\')';
-                $usersachiev_buffer[] = '(' . $arr['userid'] . ', ' . $arr['id'] . ',2, ' . $points . ')';
+                $usersachiev_buffer[] = '(' . $arr['id'] . ',2, ' . $points . ')';
                 $mc1->delete_value('inbox_new_' . $arr['id']);
                 $mc1->delete_value('inbox_new_sb_' . $arr['id']);
                 $mc1->delete_value('user_achievement_points_' . $arr['id']);
@@ -38,7 +38,7 @@ function docleanup($data)
                 $msg = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL3[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/bonus3.png[/img]');
                 $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'Bonus Banker LVL3\', \'bonus3.png\' , \'Earned at least 500 bonus points.\')';
-                $usersachiev_buffer[] = '(' . $arr['userid'] . ', ' . $arr['id'] . ',3, ' . $points . ')';
+                $usersachiev_buffer[] = '(' . $arr['id'] . ',3, ' . $points . ')';
                 $mc1->delete_value('inbox_new_' . $arr['id']);
                 $mc1->delete_value('inbox_new_sb_' . $arr['id']);
                 $mc1->delete_value('user_achievement_points_' . $arr['id']);
@@ -48,7 +48,7 @@ function docleanup($data)
                 $msg = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL4[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/bonus4.png[/img]');
                 $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'Bonus Banker LVL4\', \'bonus4.png\' , \'Earned at least 1000 bonus points.\')';
-                $usersachiev_buffer[] = '(' . $arr['userid'] . ', ' . $arr['id'] . ',4, ' . $points . ')';
+                $usersachiev_buffer[] = '(' . $arr['id'] . ',4, ' . $points . ')';
                 $mc1->delete_value('inbox_new_' . $arr['id']);
                 $mc1->delete_value('inbox_new_sb_' . $arr['id']);
                 $mc1->delete_value('user_achievement_points_' . $arr['id']);
@@ -58,7 +58,7 @@ function docleanup($data)
                 $msg = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL5[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/bonus5.png[/img]');
                 $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'Bonus Banker LVL5\', \'bonus5.png\' , \'Earned at least 2000 bonus points.\')';
-                $usersachiev_buffer[] = '(' . $arr['userid'] . ', ' . $arr['id'] . ',5, ' . $points . ')';
+                $usersachiev_buffer[] = '(' . $arr['id'] . ',5, ' . $points . ')';
                 $mc1->delete_value('inbox_new_' . $arr['id']);
                 $mc1->delete_value('inbox_new_sb_' . $arr['id']);
                 $mc1->delete_value('user_achievement_points_' . $arr['id']);
@@ -68,7 +68,7 @@ function docleanup($data)
                 $msg = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL6[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/bonus6.png[/img]');
                 $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'Bonus Banker LVL6\', \'bonus6.png\' , \'Earned at least 5000 bonus points.\')';
-                $usersachiev_buffer[] = '(' . $arr['userid'] . ', ' . $arr['id'] . ',6, ' . $points . ')';
+                $usersachiev_buffer[] = '(' . $arr['id'] . ',6, ' . $points . ')';
                 $mc1->delete_value('inbox_new_' . $arr['id']);
                 $mc1->delete_value('inbox_new_sb_' . $arr['id']);
                 $var1 = 'bonus';
@@ -77,7 +77,7 @@ function docleanup($data)
                 $msg = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL7[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/bonus7.png[/img]');
                 $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'Bonus Banker LVL7\', \'bonus7.png\' , \'Earned at least 10000 bonus points.\')';
-                $usersachiev_buffer[] = '(' . $arr['userid'] . ', ' . $arr['id'] . ',7, ' . $points . ')';
+                $usersachiev_buffer[] = '(' . $arr['id'] . ',7, ' . $points . ')';
                 $mc1->delete_value('inbox_new_' . $arr['id']);
                 $mc1->delete_value('inbox_new_sb_' . $arr['id']);
                 $mc1->delete_value('user_achievement_points_' . $arr['id']);
@@ -87,7 +87,7 @@ function docleanup($data)
                 $msg = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL8[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/bonus8.png[/img]');
                 $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'Bonus Banker LVL8\', \'bonus8.png\' , \'Earned at least 30000 bonus points.\')';
-                $usersachiev_buffer[] = '(' . $arr['userid'] . ', ' . $arr['id'] . ',8, ' . $points . ')';
+                $usersachiev_buffer[] = '(' . $arr['id'] . ',8, ' . $points . ')';
                 $mc1->delete_value('inbox_new_' . $arr['id']);
                 $mc1->delete_value('inbox_new_sb_' . $arr['id']);
                 $mc1->delete_value('user_achievement_points_' . $arr['id']);
@@ -97,7 +97,7 @@ function docleanup($data)
                 $msg = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL9[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/bonus9.png[/img]');
                 $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'Bonus Banker LVL9\', \'bonus9.png\' , \'Earned at least 70000 bonus points.\')';
-                $usersachiev_buffer[] = '(' . $arr['userid'] . ', ' . $arr['id'] . ',9, ' . $points . ')';
+                $usersachiev_buffer[] = '(' . $arr['id'] . ',9, ' . $points . ')';
                 $mc1->delete_value('inbox_new_' . $arr['id']);
                 $mc1->delete_value('inbox_new_sb_' . $arr['id']);
                 $mc1->delete_value('user_achievement_points_' . $arr['id']);
@@ -107,7 +107,7 @@ function docleanup($data)
                 $msg = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL10[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/bonus10.png[/img]');
                 $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'Bonus Banker LVL10\', \'bonus10.png\' , \'Earned at least 100000 bonus points.\')';
-                $usersachiev_buffer[] = '(' . $arr['userid'] . ', ' . $arr['id'] . ',10, ' . $points . ')';
+                $usersachiev_buffer[] = '(' . $arr['id'] . ',10, ' . $points . ')';
                 $mc1->delete_value('inbox_new_' . $arr['id']);
                 $mc1->delete_value('inbox_new_sb_' . $arr['id']);
                 $var1 = 'bonus';
@@ -116,7 +116,7 @@ function docleanup($data)
                 $msg = sqlesc('Congratulations, you have just earned the [b]Bonus Banker LVL11[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/bonus11.png[/img]');
                 $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'Bonus Banker LVL11\', \'bonus11.png\' , \'Earned at least 1000000 bonus points.\')';
-                $usersachiev_buffer[] = '(' . $arr['userid'] . ', ' . $arr['id'] . ',11, ' . $points . ')';
+                $usersachiev_buffer[] = '(' . $arr['id'] . ',11, ' . $points . ')';
                 $mc1->delete_value('inbox_new_' . $arr['id']);
                 $mc1->delete_value('inbox_new_sb_' . $arr['id']);
                 $mc1->delete_value('user_achievement_points_' . $arr['id']);

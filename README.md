@@ -20,6 +20,8 @@ create your first user and login
 goto admin and create your bot/system user
 
 goto admin cleanup and activate/deactivate scripts, they are initially set to yesterday midnight
+
+keeping AJAX Chat open after first installing will allow the cleanup to catchup
 ```
 
 

@@ -2843,6 +2843,9 @@ class AJAXChat
 
     public function getChatViewMessagesXML()
     {
+        // this is to run the autoclean
+        dbconn();
+
         // Get the last messages in descending order (this optimises the LIMIT usage):
         $sql = 'SELECT
                     id,

@@ -1,5 +1,5 @@
 <?php
-function docleanup($data)
+function ajax_chat_cleanup($data)
 {
     global $INSTALLER09, $queries, $mc1;
     require_once INCL_DIR.'user_functions.php';

@@ -100,7 +100,7 @@ function cleanup_show_main()
       <td class='colhead' width='40px'>{$lang['cleanup_on']}</td>
       <td class='colhead' style='width: 40px;'>{$lang['cleanup_run_now']}</td>
     </tr>";
-    $sql = sql_query('SELECT * FROM cleanup ORDER BY clean_time ASC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
+    $sql = sql_query('SELECT * FROM cleanup ORDER BY clean_time ASC, clean_increment DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
     if (!mysqli_num_rows($sql)) {
         stderr($lang['cleanup_stderr'], $lang['cleanup_panic']);
     }
@@ -150,6 +150,7 @@ function cleanup_show_edit()
     $row['clean_desc'] = htmlsafechars($row['clean_desc'], ENT_QUOTES);
     $row['clean_file'] = htmlsafechars($row['clean_file'], ENT_QUOTES);
     $row['clean_title'] = htmlsafechars($row['clean_title'], ENT_QUOTES);
+    $row['function_name'] = htmlsafechars($row['function_name'], ENT_QUOTES);
     $logyes = $row['clean_log'] ? 'checked="checked"' : '';
     $logno = !$row['clean_log'] ? 'checked="checked"' : '';
     $cleanon = $row['clean_on'] ? 'checked="checked"' : '';
@@ -170,9 +171,13 @@ function cleanup_show_edit()
     </div>
 
     <div style='margin-bottom:5px;'>
+    <label style='float:left;width:200px;'>{$lang['cleanup_show_fname']}</label>
+    <input type='text' value='{$row['function_name']}' name='function_name' style='width:380px;' />
+    </div>
+
+    <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_file']}</label>
     <input type='text' value='{$row['clean_file']}' name='clean_file' style='width:380px;' />
-
     </div>
 
 
@@ -231,6 +236,7 @@ function cleanup_take_edit()
                  'clean_title',
                  'clean_desc',
                  'clean_file',
+                 'function_name',
              ] as $x) {
         $opts = [
             'flags' => FILTER_FLAG_STRIP_LOW,
@@ -251,7 +257,7 @@ function cleanup_take_edit()
     foreach ($params as $k => $v) {
         $params[$k] = sqlesc($v);
     }
-    sql_query("UPDATE cleanup SET clean_title = {$params['clean_title']}, clean_desc = {$params['clean_desc']}, clean_file = {$params['clean_file']}, clean_time = {$params['clean_time']}, clean_increment = {$params['clean_increment']}, clean_log = {$params['clean_log']}, clean_on = {$params['clean_on']} WHERE clean_id = {$params['cid']}");
+    sql_query("UPDATE cleanup SET function_name = {$params['function_name']}, clean_title = {$params['clean_title']}, clean_desc = {$params['clean_desc']}, clean_file = {$params['clean_file']}, clean_time = {$params['clean_time']}, clean_increment = {$params['clean_increment']}, clean_log = {$params['clean_log']}, clean_on = {$params['clean_on']} WHERE clean_id = {$params['cid']}");
     cleanup_show_main();
     exit();
 }
@@ -275,10 +281,14 @@ function cleanup_show_new()
     </div>
 
     <div style='margin-bottom:5px;'>
+    <label style='float:left;width:200px;'>{$lang['cleanup_show_fname']}</label>
+    <input type='text' value='{$row['function_name']}' name='function_name' style='width:350px;' />
+    </div>
+
+    <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_file']}</label>
     <input type='text' value='' name='clean_file' style='width:350px;' />
     </div>
-
 
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>{$lang['cleanup_show_interval']}</label>
@@ -336,6 +346,7 @@ function cleanup_take_new()
                  'clean_title',
                  'clean_desc',
                  'clean_file',
+                 'function_name',
              ] as $x) {
         $opts = [
             'flags' => FILTER_FLAG_STRIP_LOW,
@@ -357,7 +368,7 @@ function cleanup_take_new()
     foreach ($params as $k => $v) {
         $params[$k] = sqlesc($v);
     }
-    sql_query("INSERT INTO cleanup (clean_title, clean_desc, clean_file, clean_time, clean_increment, clean_cron_key, clean_log, clean_on) VALUES ({$params['clean_title']}, {$params['clean_desc']}, {$params['clean_file']}, {$params['clean_time']}, {$params['clean_increment']}, {$params['clean_cron_key']}, {$params['clean_log']}, {$params['clean_on']})");
+    sql_query("INSERT INTO cleanup (function_name, clean_title, clean_desc, clean_file, clean_time, clean_increment, clean_cron_key, clean_log, clean_on) VALUES ({$params['function_name']}, {$params['clean_title']}, {$params['clean_desc']}, {$params['clean_file']}, {$params['clean_time']}, {$params['clean_increment']}, {$params['clean_cron_key']}, {$params['clean_log']}, {$params['clean_on']})");
     if (((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res)) {
         stderr($lang['cleanup_new_info'], "{$lang['cleanup_new_success']}");
     } else {

@@ -1,5 +1,5 @@
 <?php
-function docleanup($data)
+function freetorrents_update($data)
 {
     global $INSTALLER09, $queries, $mc1;
     set_time_limit(0);

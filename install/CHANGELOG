@@ -1,3 +1,6 @@
+20 Aug, 2017
+fix rename cleanup function names for concurrency
+
 19 Aug, 2017
 fix installer
 update README

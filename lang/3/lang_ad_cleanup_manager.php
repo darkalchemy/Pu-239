@@ -30,6 +30,7 @@ $lang = [
     'cleanup_show_title'    => 'Title',
     'cleanup_show_descr'    => 'Description',
     'cleanup_show_file'     => 'Cleanup File Name',
+    'cleanup_show_fname'    => 'Cleanup Function Name',
     'cleanup_show_interval' => 'Cleanup Interval',
     'cleanup_show_log'      => 'Cleanup Log',
     'cleanup_show_on'       => 'Cleanup On or Off?',

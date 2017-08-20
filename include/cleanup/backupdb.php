@@ -19,7 +19,7 @@ function tables($no_data = '')
     return join(' ', $tables);
 }
 
-function docleanup($data)
+function backupdb($data)
 {
     global $INSTALLER09, $queries, $bdir;
     set_time_limit(0);

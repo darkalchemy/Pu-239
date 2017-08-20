@@ -590,20 +590,19 @@ function charset()
 function autoclean()
 {
     global $INSTALLER09, $mc1;
-    // only run every 5 seconds
     if (($cleanup_timer = $mc1->get_value('cleanup_timer_')) === false) {
-        $mc1->cache_value('cleanup_timer_', 5, 5);
+        $mc1->cache_value('cleanup_timer_', 5, 1);
 
         $now = TIME_NOW;
-        $sql = sql_query("SELECT * FROM cleanup WHERE clean_on = 1 AND clean_time <= {$now} ORDER BY clean_time ASC, clean_increment ASC, clean_id ASC LIMIT 0,1") or sqlerr(__FILE__, __LINE__);
+        $sql = sql_query("SELECT * FROM cleanup WHERE clean_on = 1 AND clean_time <= {$now} ORDER BY clean_time ASC, clean_increment DESC LIMIT 0, 1") or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_assoc($sql);
         if ($row['clean_id']) {
             $next_clean = intval($row['clean_time'] + $row['clean_increment']);
             sql_query('UPDATE cleanup SET clean_time = ' . sqlesc($next_clean) . ' WHERE clean_id = ' . sqlesc($row['clean_id'])) or sqlerr(__FILE__, __LINE__);
-            if (file_exists(CLEAN_DIR . '' . $row['clean_file'])) {
-                require_once CLEAN_DIR . '' . $row['clean_file'];
-                if (function_exists('docleanup')) {
-                    register_shutdown_function('docleanup', $row);
+            if (file_exists(CLEAN_DIR . $row['clean_file'])) {
+                require_once CLEAN_DIR . $row['clean_file'];
+                if (function_exists($row['function_name'])) {
+                    register_shutdown_function($row['function_name'], $row);
                 }
             }
         }

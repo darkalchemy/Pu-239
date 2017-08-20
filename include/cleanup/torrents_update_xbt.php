@@ -1,5 +1,5 @@
 <?php
-function docleanup($data)
+function torrents_update_xbt($data)
 {
     global $INSTALLER09, $queries;
     set_time_limit(0);

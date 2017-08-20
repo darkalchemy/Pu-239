@@ -1,5 +1,5 @@
 <?php
-function docleanup($data)
+function user_update($data)
 {
     global $INSTALLER09, $queries, $mc1;
     set_time_limit(1200);

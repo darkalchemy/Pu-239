@@ -1,5 +1,5 @@
 <?php
-function docleanup($data)
+function optimizedb($data)
 {
     global $INSTALLER09, $queries;
     set_time_limit(1200);

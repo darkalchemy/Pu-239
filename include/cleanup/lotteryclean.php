@@ -1,5 +1,5 @@
 <?php
-function docleanup($data)
+function lotteryclean($data)
 {
     global $INSTALLER09, $queries;
     set_time_limit(0);

@@ -1,5 +1,5 @@
 <?php
-function docleanup($data)
+function expired_signup_update($data)
 {
     global $INSTALLER09, $queries, $mc1;
     set_time_limit(0);
