@@ -1,8 +1,9 @@
 <?php
 $HTMLOUT .= "
-	<fieldset class='header'>
-		<legend>{$lang['latestposts_title']}</legend>
-			<div class='container-fluid'>";
+    <a id='latestforum-hash'></a>
+    <fieldset id='latestforum' class='header'>
+        <legend class='flipper'><i class='fa fa-angle-up' aria-hidden='true'></i>{$lang['latestposts_title']}</legend>
+        <div class='cite text-center'>";
 $page = 1;
 $num = 0;
 if (($topics = $mc1->get_value('last_posts_' . $CURUSER['class'])) === false) {
@@ -14,15 +15,16 @@ if (($topics = $mc1->get_value('last_posts_' . $CURUSER['class'])) === false) {
 }
 if (count($topics) > 0) {
     $HTMLOUT .= "
-				<table class='table table-bordered '>
-					<thead>
-						<tr>
-							<th class='row-fluid span5'>{$lang['latestposts_topic_title']}</th>
-							<th class='row-fluid span1'>{$lang['latestposts_replies']}</th>
-							<th class='row-fluid span1'>{$lang['latestposts_views']}</th>
-							<th class='row-fluid span1'>{$lang['latestposts_last_post']}</th>
-						</tr>
-					</thead>";
+            <table class='table table-bordered '>
+                <thead>
+                    <tr>
+                        <th class='row-fluid span5'>{$lang['latestposts_topic_title']}</th>
+                        <th class='row-fluid span1'>{$lang['latestposts_replies']}</th>
+                        <th class='row-fluid span1'>{$lang['latestposts_views']}</th>
+                        <th class='row-fluid span1'>{$lang['latestposts_last_post']}</th>
+                    </tr>
+                </thead>
+                <tbody>";
     if ($topics) {
         foreach ($topics as $topicarr) {
             $topicid = (int)$topicarr['id'];
@@ -79,17 +81,18 @@ if (count($topics) > 0) {
             $lockedimg = ($topicarr['locked'] == 'yes' ? "<img src='" . $INSTALLER09['pic_base_url'] . "forumicons/locked.gif' border='0' alt='{$lang['index_fposts_locked']}' title='{$lang['index_fposts_lockedt']}' />&#160;" : '');
             $topic_name = $lockedimg . $stickyimg . "<a href='/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=last#" . (int)$topicarr['last_post'] . "'><b>" . htmlsafechars($topicarr['topic_name']) . "</b></a>&#160;&#160;$staffimg&#160;&#160;$menu<br><font class='small'>{$lang['index_fposts_in']}<a href='forums.php?action=view_forum&amp;forum_id=" . (int)$topicarr['forum_id'] . "'>" . htmlsafechars($topicarr['name']) . "</a>&#160;by&#160;$author&#160;&#160;($added)</font>";
             $HTMLOUT .= "
-					<tr>
-						<td>{$topic_name}</td>
-						<td align='center'>{$replies}</td>
-						<td align='center'>" . number_format($topicarr['views']) . "</td>
-						<td align='center'>{$username}</td>
-					</tr>";
+                    <tr>
+                        <td>{$topic_name}</td>
+                        <td align='center'>{$replies}</td>
+                        <td align='center'>" . number_format($topicarr['views']) . "</td>
+                        <td align='center'>{$username}</td>
+                    </tr>";
         }
         $HTMLOUT .= "
-				</table>
-			</div>
-	</fieldset>";
+                </tbody>
+            </table>
+        </div>
+    </fieldset>";
     } else {
         //if there are no posts...
         if (empty($topics)) {

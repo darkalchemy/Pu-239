@@ -220,8 +220,9 @@ class AJAXChatTemplate
 //        <link rel="' . $alternate . 'stylesheet" href="./css/' . rawurlencode($style) . '.bundle.min.css" title="' . $this->ajaxChat->htmlEncode($style) . '" />';
 //        }
         $styleSheets .= '
-        <link rel="stylesheet" href="./css/b336ddb77d949ab3782f1c40aedb558a.min.css" title="transparent" />
-        <link rel="alternate stylesheet" href="./css/479410949cf766ae5a87d9b747cdaf24.min.css" title="Uranium" />';
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Acme|Baloo+Bhaijaan|Encode+Sans+Condensed|Lobster|Nova+Square|Open+Sans|Oswald|PT+Sans+Narrow" />
+        <link rel="stylesheet" href="./css/' . get_stylesheet() . '/b63921c1a1ff0c863800c557ae27a017.min.css" title="transparent" />
+        <link rel="alternate stylesheet" href="./css/' . get_stylesheet() . '/aebc7abbdcc8f91acf94b0976a52f2a9.min.css" title="Uranium" />';
 
         return $styleSheets;
     }

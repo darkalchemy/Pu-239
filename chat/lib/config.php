@@ -10,6 +10,9 @@
 // import globals
 global $INSTALLER09;
 
+// Define AJAX Chat user roles:
+define('AJAX_CHAT_CHATBOT', $INSTALLER09['chatBotRole']);
+
 // AJAX Chat config parameters:
 $config = [];
 

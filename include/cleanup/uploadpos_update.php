@@ -44,7 +44,7 @@ function uploadpos_update($data)
     }
     //==End
     if ($queries > 0) {
-        write_log("Upload possible clean-------------------- Uploadpos cleanup Complete using $queries queries --------------------");
+        write_log("Upload Possible Cleanup: Completed using $queries queries");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items updated';

@@ -1,8 +1,8 @@
 <?php
 
 $lang['inviteadd_error'] = 'Error';
-$lang['inviteadd_aunknown'] = 'You can\'t do that! you can do this %s with invites';
-$lang['inviteadd_error2'] = 'You can\'t remove/add 0';
+$lang['inviteadd_aunknown'] = "You can't do that! you can do this %s with invites";
+$lang['inviteadd_error2'] = "You can't remove/add 0";
 $lang['inviteadd_noclass'] = 'You need at least one class selected';
 $lang['inviteadd_nousers'] = 'There are no users in the class(es) you selected';
 $lang['inviteadd_subject_r'] = 'Invites removed';

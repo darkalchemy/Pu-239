@@ -33,7 +33,7 @@
 
 /* Status Icon */
 #content #statusIconContainer {
-    background: url('../img/loading-sprite.png') no-repeat 0px 0px;
+    background: url('../../images/loading-sprite.png') no-repeat 0px 0px;
 }
 
 #content #statusIconContainer.waiting {

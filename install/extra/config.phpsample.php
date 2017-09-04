@@ -245,13 +245,17 @@ $INSTALLER09['av_img_width'] = 100;
 //== set this to size of user signatures
 $INSTALLER09['sig_img_height'] = 100;
 $INSTALLER09['sig_img_width'] = 500;
+
+//== Image uploads
+define('BITBUCKET_DIR', ROOT_DIR . 'bucket' . DIRECTORY_SEPARATOR);
+define('AVATAR_DIR', BITBUCKET_DIR . 'avatar' . DIRECTORY_SEPARATOR);
 $INSTALLER09['bucket_allowed'] = 0;
 $INSTALLER09['allowed_ext'] = [
     'image/gif',
     'image.jpg',
     'image/jpeg',
 ];
-$INSTALLER09['bucket_maxsize'] = 500 * 1024; //max size set to 500kb
+$INSTALLER09['bucket_maxsize'] = 1024 * 1024 * (ini_get('upload_max_filesize') >= ini_get('post_max_filesize') ? ini_get('upload_max_filesize') : ini_get('post_max_filesize'));
 //==Class check by pdq
 $INSTALLER09['site']['owner'] = 1;
 //== Salt - change this

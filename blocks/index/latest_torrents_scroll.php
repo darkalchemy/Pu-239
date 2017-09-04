@@ -51,7 +51,7 @@ easing: "ease-in-out",
 </script>';
 
 $HTMLOUT .= "<fieldset class='header'><legend>{$lang['index_latest']}</legend></fieldset>
-    <div class='container-fluid'>";
+    <div class='cite text-center'>";
 $HTMLOUT .= '<div id="carousel-container" class="carousel-container">
 <div id="icarousel" class="icarousel">';
 

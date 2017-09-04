@@ -110,7 +110,7 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
         }
         // now decide the locale
         if ($mode != '') {
-            return 'Rep: ' . $posneg . "<br><br><a href='javascript:;' onclick=\"PopUp('{$INSTALLER09['baseurl']}/reputation.php?pid=" . ($post_id != 0 ? (int)$post_id : (int)$user['id']) . '&amp;locale=' . $mode . "','Reputation',400,241,1,1);\"><img src='{$INSTALLER09['pic_base_url']}forumicons/giverep.jpg' border='0' alt='Add reputation:: " . htmlsafechars($user['username']) . "' title='Add reputation:: " . htmlsafechars($user['username']) . "' /></a>";
+            return 'Rep: ' . $posneg . "<br><br><a href='javascript:;' onclick=\"PopUp('{$INSTALLER09['baseurl']}/reputation.php?pid=" . ($post_id != 0 ? (int)$post_id : (int)$user['id']) . '&amp;locale=' . $mode . "','Reputation',400,300,1,1);\"><img src='{$INSTALLER09['pic_base_url']}forumicons/giverep.jpg' border='0' alt='Add reputation:: " . htmlsafechars($user['username']) . "' title='Add reputation:: " . htmlsafechars($user['username']) . "' /></a>";
         } else {
             return ' ' . $posneg;
         }
@@ -557,7 +557,7 @@ function avatar_stuff($avatar, $width = 80)
 {
     global $CURUSER, $INSTALLER09;
     require_once (CLASS_DIR . 'class_user_options.php');
-    $avatar_show = (!($CURUSER['opt1'] & user_options::AVATARS) ? '' : (!$avatar['avatar'] ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'default_avatar.gif" alt="avatar" />' : (($CURUSER['opt1'] & user_options::OFFENSIVE_AVATAR && $CURUSER['opt2'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'fuzzybunny.gif" alt="avatar" />' : '<img style="max-width:' . $width . 'px;" src="' . htmlsafechars($avatar['avatar']) . '" alt="avatar" />')));
+    $avatar_show = (!($CURUSER['opt1'] & user_options::AVATARS) ? '' : (!$avatar['avatar'] ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'forumicons/default_avatar.gif" alt="avatar" />' : (($CURUSER['opt1'] & user_options::OFFENSIVE_AVATAR && $CURUSER['opt2'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'fuzzybunny.gif" alt="avatar" />' : '<img style="max-width:' . $width . 'px;" src="' . htmlsafechars($avatar['avatar']) . '" alt="avatar" />')));
     return $avatar_show;
 }
 */
@@ -565,7 +565,7 @@ function avatar_stuff($avatar, $width = 80)
 function avatar_stuff($avatar, $width = 80)
 {
     global $CURUSER, $INSTALLER09;
-    $avatar_show = ($CURUSER['avatars'] == 'no' ? '' : (!$avatar['avatar'] ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'default_avatar.gif" alt="avatar" />' : (($avatar['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'fuzzybunny.gif" alt="avatar" />' : '<img style="max-width:' . $width . 'px;" src="' . htmlsafechars($avatar['avatar']) . '" alt="avatar" />')));
+    $avatar_show = ($CURUSER['avatars'] == 'no' ? '' : (!$avatar['avatar'] ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'forumicons/default_avatar.gif" alt="avatar" />' : (($avatar['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'fuzzybunny.gif" alt="avatar" />' : '<img style="max-width:' . $width . 'px;" src="' . htmlsafechars($avatar['avatar']) . '" alt="avatar" />')));
 
     return $avatar_show;
 }

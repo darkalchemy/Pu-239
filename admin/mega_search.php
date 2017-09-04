@@ -121,10 +121,10 @@ if (isset($_POST['user_names'])) {
     <td align="center" class="' . $class2 . '">
     <span style="color: blue;" title="added">' . get_date($arr['added'], '') . '</span><br>
     <span style="color: green;" title="last access">' . get_date($arr['last_access'], '') . '</span></td>
-    <td align="center" class="' . $class2 . '"><img src="pic/up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '" /> 
+    <td align="center" class="' . $class2 . '"><img src="./images/up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '" /> 
     <span style="color: green;">' . mksize($arr['uploaded']) . '</span>
     ' . ($INSTALLER09['ratio_free'] ? '' : '<br>
-    <img src="pic/dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '" />  
+    <img src="./images/dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '" />  
     <span style="color: red;">' . mksize($arr['downloaded']) . '</span></td>') . '
     <td align="center" class="' . $class2 . '">' . member_ratio($arr['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
     <td align="center" class="' . $class2 . '">' . make_nice_address($arr['ip']) . '<br></td>
@@ -186,10 +186,10 @@ if (isset($_POST['msg_to_analyze'])) {
     <span style="color: blue;" title="added">' . get_date($arr['added'], '') . '</span><br>
     <span style="color: green;" title="last access">' . get_date($arr['last_access'], '') . '</span></td>
     <td align="center" class="' . $class2 . '">
-    <img src="pic/up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '" /> 
+    <img src="./images/up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '" /> 
     <span style="color: green;">' . mksize($arr['uploaded']) . '</span>
     ' . ($INSTALLER09['ratio_free'] ? '' : '<br>
-    <img src="pic/dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '" />  
+    <img src="./images/dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '" />  
     <span style="color: red;">' . mksize($arr['downloaded']) . '</span></td>') . '
     <td align="center" class="' . $class2 . '">' . member_ratio($arr['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
     <td align="center" class="' . $class2 . '">' . make_nice_address($arr['ip']) . '<br></td>
@@ -279,10 +279,10 @@ if (isset($_POST['msg_to_analyze'])) {
                             <span style="color: green;" title="last access">' . get_date($arr['last_access'], '') . '</span>
                             </td>
                             <td align="center" class="' . $class2 . '">
-                            <img src="pic/up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '" /> 
+                            <img src="./images/up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '" /> 
                             <span style="color: green;">' . mksize($arr['uploaded']) . '</span>
                             ' . ($INSTALLER09['ratio_free'] ? '' : '<br>
-                            <img src="pic/dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '" />  
+                            <img src="./images/dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '" />  
                             <span style="color: red;">' . mksize($arr['downloaded']) . '</span></td>') . '
                             <td align="center" class="' . $class2 . '">' . member_ratio($arr['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
                             <td align="center" class="' . $class2 . '">' . make_nice_address($arr['ip']) . '<br>
@@ -327,9 +327,9 @@ if (isset($_POST['invite_code'])) {
                 <td align="center">' . htmlsafechars($user['ip']) . '</td>
                 <td align="center">' . get_date($user['last_access'], '') . '</td>
                 <td align="center">' . get_date($user['added'], '') . '</td>
-                <td align="center"><img src="pic/up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '" /> <span style="color: green;">' . mksize($user['uploaded']) . '</span>
+                <td align="center"><img src="./images/up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '" /> <span style="color: green;">' . mksize($user['uploaded']) . '</span>
                 ' . ($INSTALLER09['ratio_free'] ? '' : '<br>
-                <img src="pic/dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '" />  
+                <img src="./images/dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '" />  
                 <span style="color: red;">' . mksize($user['downloaded']) . '</span></td>') . '
                 <td align="center" class="' . $class2 . '">' . member_ratio($user['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $user['downloaded']) . '</td>
                 <td align="center">' . ($user['invitedby'] == 0 ? $lang['mega_open'] : print_user_stuff($user1)) . '</td>
@@ -362,9 +362,9 @@ if (isset($_POST['invite_code'])) {
                 <td align="center">' . htmlsafechars($user_invited['ip']) . '</td>
                 <td align="center">' . get_date($user_invited['last_access'], '') . '</td>
                 <td align="center">' . get_date($user_invited['added'], '') . '</td>
-                <td align="center"><img src="pic/up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '" /> <span style="color: green;">' . mksize($user_invited['uploaded']) . '</span>
+                <td align="center"><img src="./images/up.png" alt="' . $lang['mega_up'] . '" title="' . $lang['mega_uploaded'] . '" /> <span style="color: green;">' . mksize($user_invited['uploaded']) . '</span>
                 ' . ($INSTALLER09['ratio_free'] ? '' : '<br>
-                <img src="pic/dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '" />  
+                <img src="./images/dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '" />  
                 <span style="color: red;">' . mksize($user_invited['downloaded']) . '</span></td>') . '
                 <td align="center" class="' . $class2 . '">' . member_ratio($user_invited['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $user_invited['downloaded']) . '</td>
                 <td align="center">' . ($user_invited['invitedby'] == 0 ? $lang['mega_open'] : print_user_stuff($user2)) . '</td>

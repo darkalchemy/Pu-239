@@ -66,12 +66,12 @@ $lang = [
     'usercp_side1'                       => '(Check to turn Side Menu on!)',
     'usercp_revert'                      => 'Revert changes!',
     'usercp_none_select'                 => '---- None selected ----',
-    'usercp_q1'                          => 'Mother\'s birthplace',
+    'usercp_q1'                          => "Mother's birthplace",
     'usercp_q2'                          => 'Best childhood friend',
     'usercp_q3'                          => 'Name of first pet',
     'usercp_q4'                          => 'Favorite teacher',
     'usercp_q5'                          => 'Favorite historical person',
-    'usercp_q6'                          => 'Grandfather\'s occupation',
+    'usercp_q6'                          => "Grandfather's occupation",
     'usercp_question'                    => 'Question',
     'usercp_sec_answer'                  => 'Secret answer',
     'usercp_acc_parked'                  => 'Account parked',
@@ -91,5 +91,5 @@ $lang = [
     'usercp_icons'                       => 'Categories as images',
     'usercp_language'                    => 'Language',
     //usercp stdhead
-    'usercp_stdhead'                     => '\'s private page',
+    'usercp_stdhead'                     => "'s private page",
 ];

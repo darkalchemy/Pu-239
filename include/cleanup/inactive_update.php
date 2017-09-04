@@ -40,7 +40,7 @@ function inactive_update($data)
     }
 
     if ($queries > 0) {
-        write_log("Inactive Clean -------------------- Inactive Clean Complete using $queries queries--------------------");
+        write_log("Inactive Cleanup: Completed using $queries queries");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';
@@ -113,7 +113,7 @@ function delete_cleanup($users, $using_foreign_keys = true)
         sql_query("DELETE FROM reputation WHERE whoadded IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM request_votes WHERE user_id IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM requests WHERE requested_by_user_id IN ({$users})") or sqlerr(__FILE__, __LINE__);
-        sql_query("DELETE FROM shit_list_votes WHERE userid IN ({$users})") or sqlerr(__FILE__, __LINE__);
+        sql_query("DELETE FROM shit_list WHERE userid IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM snatched WHERE userid IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM subtitles WHERE owner IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM subscriptions WHERE user_id IN ({$users})") or sqlerr(__FILE__, __LINE__);

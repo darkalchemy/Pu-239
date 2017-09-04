@@ -71,8 +71,8 @@ $lang = [
     //FORUM REPLY
     'forum_reply_access'                  => '<h1>Incorrect access</h1>You cannot access this file directly.',
     'forum_reply_user_error'              => 'USER ERROR',
-    'forum_reply_select_topic'            => "You didn\'t specify a topic!",
-    'forum_reply_permission'              => "You don\'t have correct permissions for this topic!",
+    'forum_reply_select_topic'            => "You didn't specify a topic!",
+    'forum_reply_permission'              => "You don't have correct permissions for this topic!",
     'forum_reply_reply'                   => 'Post reply',
     //FORUM SEARCH
     'forum_search_access'                 => '<h1>Incorrect access</h1>You cannot access this file directly.',

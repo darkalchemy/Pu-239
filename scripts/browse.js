@@ -6,12 +6,12 @@ function ShowHideMainCats(tableCount) {
     if (MainCats.style.display == 'none') {
         MainCats.style.display = 'block';
         DefCats.style.display = 'block';
-        MainCatsPic.src = 'pic/minus.png';
+        MainCatsPic.src = './images/minus.png';
     }
     else {
         MainCats.style.display = 'none';
         DefCats.style.display = 'none';
-        MainCatsPic.src = 'pic/plus.png';
+        MainCatsPic.src = './images/plus.png';
     }
 
     for (i = 1; i <= tableCount; i++) {
@@ -20,7 +20,7 @@ function ShowHideMainCats(tableCount) {
         picID = 'pic' + i;
         picture = document.getElementById(picID);
         tabletype.style.display = 'none';
-        picture.src = 'pic/plus.png';
+        picture.src = './images/plus.png';
     }
 
 }
@@ -40,16 +40,16 @@ function ShowHideMainSubCats(tableNum, tableCount) {
             if (i == tableNum) {
                 if (tabletype.style.display == 'none') {
                     tabletype.style.display = 'block';
-                    picture.src = 'pic/minus.png';
+                    picture.src = './images/minus.png';
                 }
                 else {
                     tabletype.style.display = 'none';
-                    picture.src = 'pic/plus.png';
+                    picture.src = './images/plus.png';
                 }
             }
             else {
                 tabletype.style.display = 'none';
-                picture.src = 'pic/plus.png';
+                picture.src = './images/plus.png';
             }
 
         }

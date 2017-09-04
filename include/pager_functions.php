@@ -18,20 +18,23 @@ function pager($rpp, $count, $href, $opts = []) // thx yuna or whoever wrote it
     } else {
         $page = $pagedefault;
     }
-    $pager = '<td align="center" class="pager">Page:</td><td class="pagebr">&#160;</td>';
+    $pager = '
+                        <span class="pager">Page:</span>';
     $mp = $pages - 1;
-    $as = '<b>&#171;</b>';
+    $as = '<i class="fa fa-nomargin fa-angle-double-left" aria-hidden="true"></i>';
     if ($page >= 1) {
-        $pager .= '<td  align="center" class="pager">';
-        $pager .= "<a href=\"{$href}page=" . ($page - 1) . "\" style=\"text-decoration: none;\">$as</a>";
-        $pager .= '</td><td  align="center" class="pagebr">&#160;</td>';
+        $pager .= "
+                        <span>
+                            <a href=''{$href}page=" . ($page - 1) . "' class='pager'>$as</a>
+                        </span>";
     }
-    $as = '<b>&#187;</b>';
+    $as = '<i class="fa fa-nomargin fa-angle-double-right" aria-hidden="true"></i>';
     $pager2 = $bregs = '';
     if ($page < $mp && $mp >= 0) {
-        $pager2 .= '<td  align="center" class="pager">';
-        $pager2 .= "<a href=\"{$href}page=" . ($page + 1) . "\" style=\"text-decoration: none;\">$as</a>";
-        $pager2 .= "</td>$bregs";
+        $pager2 .= "
+                        <span>
+                            <a href='{$href}page=" . ($page + 1) . "' class='pager'>$as</a>
+                        </span>$bregs";
     } else {
         $pager2 .= $bregs;
     }
@@ -45,7 +48,8 @@ function pager($rpp, $count, $href, $opts = []) // thx yuna or whoever wrote it
         for ($i = 0; $i < $pages; ++$i) {
             if (($i >= $dotspace && $i <= $curdotend) || ($i >= $curdotstart && $i < $dotend)) {
                 if (!$dotted) {
-                    $pagerarr[] = '<td  align="center" class="pager">...</td><td  align="center" class="pagebr">&#160;</td>';
+                    $pagerarr[] = '
+                        <span class="pager">...</span>';
                 }
                 $dotted = 1;
                 continue;
@@ -58,14 +62,28 @@ function pager($rpp, $count, $href, $opts = []) // thx yuna or whoever wrote it
             }
             $text = $i + 1;
             if ($i != $page) {
-                $pagerarr[] = "<td  align=\"center\" class=\"pager\"><a title=\"$start&#160;-&#160;$end\" href=\"{$href}page=$i\" style=\"text-decoration: none;\"><b>$text</b></a></td><td  align=\"center\" class=\"pagebr\">&#160;</td>";
+                $pagerarr[] = "
+                        <span>
+                            <a title='$start - $end' href='{$href}page=$i' class='pager'>
+                                $text
+                            </a>
+                        </span>";
             } else {
-                $pagerarr[] = "<td  align=\"center\" class=\"highlight\"><b>$text</b></td><td align=\"center\" class=\"pagebr\">&#160;</td>";
+                $pagerarr[] = "
+                        <span class='highlight margin10'>
+                            $text
+                        </span>";
             }
         }
         $pagerstr = join('', $pagerarr);
-        $pagertop = "<table align=\"center\" class=\"main\"><tr>$pager $pagerstr $pager2</tr></table>\n";
-        $pagerbottom = "<div align=\"center\">Overall $count items in " . ($i) . ' page' . ($i > 1 ? '\'s' : '') . ", showing $rpp per page.</div><br><table align=\"center\" class=\"main\"><tr>$pager $pagerstr $pager2</tr></table>\n";
+        $pagertop = "<div>
+                        $pager $pagerstr $pager2
+                    </div>";
+        $pagerbottom = "
+                    <div>Overall $count items in " . ($i) . ' page' . ($i > 1 ? '\'s' : '') . ", showing $rpp per page.</div>
+                    <div class='margin10 text-center'>
+                        $pager $pagerstr $pager2
+                    </div>";
     } else {
         $pagertop = $pager;
         $pagerbottom = $pagertop;
@@ -108,7 +126,7 @@ function pager_rep($data)
     }
     if ($pager['pages'] > 1) {
         if (isset($data['mini'])) {
-            $pager['first_page'] = "<img src='pic/multipage.gif' alt='' title='' />";
+            $pager['first_page'] = "<img src='./images/multipage.gif' alt='' title='' />";
         } else {
             $pager['first_page'] = "<span style='background: #F0F5FA; border: 1px solid #072A66;padding: 1px 3px 1px 3px;'>{$pager['pages']} Pages</span>&#160;";
         }
@@ -131,7 +149,7 @@ function pager_rep($data)
         }
         $float = $mini ? '' : ' fleft';
         $pager['return'] = "<div class='pager{$float}'>{$pager['first_page']}{$pager['start']}{$previous_link}{$pager['page_span']}{$next_link}{$pager['end']}
-			</div>";
+            </div>";
     } else {
         $pager['return'] = '';
     }

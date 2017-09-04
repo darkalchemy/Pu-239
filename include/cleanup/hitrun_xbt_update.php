@@ -116,7 +116,7 @@ function hitrun_xbt_update($data)
         }
         //==End
         if ($queries > 0) {
-            write_log("XBT Hit And Run Clean -------------------- XBT Hit And Run Complete using $queries queries--------------------");
+            write_log("XBT HnR Cleanup: Completed using $queries queries");
         }
         if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
             $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';

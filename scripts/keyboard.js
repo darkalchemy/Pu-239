@@ -336,7 +336,7 @@ function buildKeyboardInputs() {
                     } else keyid = inputElems[y][x].id;
 
                     var keybut = document.createElement('img');
-                    keybut.src = "pic/keyboard.png";
+                    keybut.src = "./images/keyboard.png";
                     keybut.alt = "Keyboard interface";
                     keybut.className = "keyboardInputInitiator";
                     keybut.title = "Display graphical keyboard interface";

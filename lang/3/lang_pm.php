@@ -34,7 +34,7 @@ $lang = [
     'pm_delete_msg'            => ' la mesaj.',
     'pm_delete_err1'           => 'Mesajul nu a putut fi sters! ',
     //===Edit mailboxes
-    'pm_edmail_error'          => "His wit\'s as thick as a Tewkesbury mustard.",
+    'pm_edmail_error'          => "His wit's as thick as a Tewkesbury mustard.",
     'pm_edmail_err'            => 'to add new PM boxes you MUST enter at least one PM box name!',
     'pm_edmail_err1'           => 'Nici o cutie postala de editat',
     'pm_edmail_pm_1'           => '[mesaj privat]',

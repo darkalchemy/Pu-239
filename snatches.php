@@ -34,21 +34,21 @@ if ($count > $perpage) {
 }
 $HTMLOUT .= "<table width='78%'border='0' cellspacing='0' cellpadding='5'>
 <tr>
-<td class='colhead' align='left'>{$lang['snatches_username']}</td>
-<td class='colhead' align='center'>{$lang['snatches_connectable']}</td>
-<td class='colhead' align='right'>{$lang['snatches_uploaded']}</td>
-<td class='colhead' align='right'>{$lang['snatches_upspeed']}</td>
-" . ($INSTALLER09['ratio_free'] ? '' : "<td class='colhead' align='right'>{$lang['snatches_downloaded']}</td>") . '
-' . ($INSTALLER09['ratio_free'] ? '' : "<td class='colhead' align='right'>{$lang['snatches_downspeed']}</td>") . "
-<td class='colhead' align='right'>{$lang['snatches_ratio']}</td>
-<td class='colhead' align='right'>{$lang['snatches_completed']}</td>
-<td class='colhead' align='right'>{$lang['snatches_seedtime']}</td>
-<td class='colhead' align='right'>{$lang['snatches_leechtime']}</td>
-<td class='colhead' align='center'>{$lang['snatches_lastaction']}</td>
-<td class='colhead' align='center'>{$lang['snatches_completedat']}</td>
-<td class='colhead' align='center'>{$lang['snatches_client']}</td>
-<td class='colhead' align='center'>{$lang['snatches_port']}</td>
-<td class='colhead' align='center'>{$lang['snatches_announced']}</td>
+<td class='colhead text-left'>{$lang['snatches_username']}</td>
+<td class='colhead text-center'>{$lang['snatches_connectable']}</td>
+<td class='colhead text-right'>{$lang['snatches_uploaded']}</td>
+<td class='colhead text-right'>{$lang['snatches_upspeed']}</td>
+" . ($INSTALLER09['ratio_free'] ? '' : "<td class='colhead text-right'>{$lang['snatches_downloaded']}</td>") . '
+' . ($INSTALLER09['ratio_free'] ? '' : "<td class='colhead text-right'>{$lang['snatches_downspeed']}</td>") . "
+<td class='colhead text-right'>{$lang['snatches_ratio']}</td>
+<td class='colhead text-right'>{$lang['snatches_completed']}</td>
+<td class='colhead text-right'>{$lang['snatches_seedtime']}</td>
+<td class='colhead text-right'>{$lang['snatches_leechtime']}</td>
+<td class='colhead text-center'>{$lang['snatches_lastaction']}</td>
+<td class='colhead text-center'>{$lang['snatches_completedat']}</td>
+<td class='colhead text-center'>{$lang['snatches_client']}</td>
+<td class='colhead text-center'>{$lang['snatches_port']}</td>
+<td class='colhead text-center'>{$lang['snatches_announced']}</td>
 </tr>\n";
 $res = sql_query('SELECT s.*, s.userid AS su, torrents.username as username1, users.username as username2, users.paranoia, torrents.anonymous as anonymous1, users.anonymous as anonymous2, size, parked, warned, enabled, class, chatpost, leechwarn, donor, timesann, owner FROM snatched AS s INNER JOIN users ON s.userid = users.id INNER JOIN torrents ON s.torrentid = torrents.id WHERE complete_date !=0 AND torrentid = ' . sqlesc($id) . ' ORDER BY complete_date DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
 while ($arr = mysqli_fetch_assoc($res)) {
@@ -60,21 +60,21 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $username = (($arr['anonymous2'] == 'yes' or $arr['paranoia'] >= 2) ? ($CURUSER['class'] < UC_STAFF && $arr['userid'] != $CURUSER['id'] ? '' : $snatchuser . ' - ') . "<i>{$lang['snatches_anon']}</i>" : $snatchuser);
     //if($arr['owner'] != $arr['su']){
     $HTMLOUT .= "<tr>
-  <td align='left'>{$username}</td>
-  <td align='center'>" . ($arr['connectable'] == 'yes' ? "<font color='green'>Yes</font>" : "<font color='red'>No</font>") . "</td>
-  <td align='right'>" . mksize($arr['uploaded']) . "</td>
-  <td align='right'>" . htmlsafechars($upspeed) . '/s</td>
-  ' . ($INSTALLER09['ratio_free'] ? '' : "<td align='right'>" . mksize($arr['downloaded']) . '</td>') . '
-  ' . ($INSTALLER09['ratio_free'] ? '' : "<td align='right'>" . htmlsafechars($downspeed) . '/s</td>') . "
-  <td align='right'>" . htmlsafechars($ratio) . "</td>
-  <td align='right'>" . htmlsafechars($completed) . "</td>
-  <td align='right'>" . mkprettytime($arr['seedtime']) . "</td>
-  <td align='right'>" . mkprettytime($arr['leechtime']) . "</td>
-  <td align='center'>" . get_date($arr['last_action'], '', 0, 1) . "</td>
-  <td align='center'>" . get_date($arr['complete_date'], '', 0, 1) . "</td>
-  <td align='center'>" . htmlsafechars($arr['agent']) . "</td>
-  <td align='center'>" . (int)$arr['port'] . "</td>
-  <td align='center'>" . (int)$arr['timesann'] . "</td>
+  <td class='text-left'>{$username}</td>
+  <td class='text-center'>" . ($arr['connectable'] == 'yes' ? "<font color='green'>Yes</font>" : "<font color='red'>No</font>") . "</td>
+  <td class='text-right'>" . mksize($arr['uploaded']) . "</td>
+  <td class='text-right'>" . htmlsafechars($upspeed) . '/s</td>
+  ' . ($INSTALLER09['ratio_free'] ? '' : "<td class='text-right'>" . mksize($arr['downloaded']) . '</td>') . '
+  ' . ($INSTALLER09['ratio_free'] ? '' : "<td class='text-right'>" . htmlsafechars($downspeed) . '/s</td>') . "
+  <td class='text-right'>" . htmlsafechars($ratio) . "</td>
+  <td class='text-right'>" . htmlsafechars($completed) . "</td>
+  <td class='text-right'>" . mkprettytime($arr['seedtime']) . "</td>
+  <td class='text-right'>" . mkprettytime($arr['leechtime']) . "</td>
+  <td class='text-center'>" . get_date($arr['last_action'], '', 0, 1) . "</td>
+  <td class='text-center'>" . get_date($arr['complete_date'], '', 0, 1) . "</td>
+  <td class='text-center'>" . htmlsafechars($arr['agent']) . "</td>
+  <td class='text-center'>" . (int)$arr['port'] . "</td>
+  <td class='text-center'>" . (int)$arr['timesann'] . "</td>
   </tr>\n";
 }
 //}

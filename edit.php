@@ -25,7 +25,6 @@ check_user_status();
 $lang = array_merge(load_language('global'), load_language('edit'));
 $stdfoot = [
     'js' => [
-        'shout',
         'FormManager',
     ],
 ];

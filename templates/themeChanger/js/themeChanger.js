@@ -92,6 +92,22 @@ var page_config = {
                 3: {
                     name: 'Lobster',
                     className: 'h-style-4'
+                },
+                4: {
+                    name: 'Open Sans',
+                    className: 'h-style-5'
+                },
+                5: {
+                    name: 'Encode Sans Condensed',
+                    className: 'h-style-6'
+                },
+                6: {
+                    name: 'Baloo Bhaijaan',
+                    className: 'h-style-7'
+                },
+                7: {
+                    name: 'Acme',
+                    className: 'h-style-8'
                 }
             }
         },
@@ -100,20 +116,36 @@ var page_config = {
             id: 'text_style',
             list: {
                 0: {
-                    name: 'Arial',
+                    name: 'Oswald',
                     className: 'text-1'
                 },
                 1: {
-                    name: 'Tahoma',
+                    name: 'PT Sans Narrow',
                     className: 'text-2'
                 },
                 2: {
-                    name: 'Verdana',
+                    name: 'Nova Square',
                     className: 'text-3'
                 },
                 3: {
-                    name: 'Calibri',
+                    name: 'Lobster',
                     className: 'text-4'
+                },
+                4: {
+                    name: 'Open Sans',
+                    className: 'text-5'
+                },
+                5: {
+                    name: 'Encode Sans Condensed',
+                    className: 'text-6'
+                },
+                6: {
+                    name: 'Baloo Bhaijaan',
+                    className: 'text-7'
+                },
+                7: {
+                    name: 'Acme',
+                    className: 'text-8'
                 }
             }
         }
@@ -126,11 +158,11 @@ $(function () {
 
     /* Theme controller --> Begin */
 
+    //localStorage.clear();
     var $body = $('body');
     var $nav = $('.navigation li a');
     var $theme_control_panel = $('#control_panel');
-
-    var a_color = $.cookie(cookie_prefix + 'a_color');
+    var a_color = localStorage.getItem('a_color');
     if (a_color != null)
         $('a').css('color', '#' + a_color);
 
@@ -140,16 +172,15 @@ $(function () {
         });
         $body.addClass(className);
 
-        var body_class = $.cookie(cookie_prefix + 'theme');
+        var body_class = localStorage.getItem('theme');
+
         if (body_class != null) {
             new_class_pattern = className.replace(/\d{1,2}$/, '');
             body_class = body_class.replace(new RegExp(new_class_pattern + '\\d{1,2}'), className);
-
-            $.cookie(cookie_prefix + 'theme', body_class, {expires: parseInt(cookie_lifetime), path: cookie_path, domain: cookie_domain});
-
+            localStorage.setItem('theme', body_class);
         } else {
             body_class = $body.attr('class');
-            $.cookie(cookie_prefix + 'theme', body_class, {expires: parseInt(cookie_lifetime), path: cookie_path, domain: cookie_domain});
+            localStorage.setItem('theme', body_class);
         }
     }
 
@@ -167,9 +198,6 @@ $(function () {
             var bg_change_html = '<span>Menu Skin:</span>';
             bg_change_html += '<ul>';
             $.each(page_config.nav, function (idx, val) {
-                if ($body.hasClass(val.className)) {
-                    defaultSettings.nav = idx;
-                }
                 bg_change_html += '<li><a href="' + val.className + '" title="' + val.name + '" class="' + val.className + '"></a></li>';
                 nav.push(val.className);
             });
@@ -197,9 +225,6 @@ $(function () {
             var bg_change_html = '<span>Backgrounds:</span>';
             bg_change_html += '<ul>';
             $.each(page_config.backgrounds, function (idx, val) {
-                if ($body.hasClass(val.className)) {
-                    defaultSettings.pattern = idx;
-                }
                 bg_change_html += '<li><a href="' + val.className + '" title="' + val.name + '" class="' + val.className + '"></a></li>';
                 pattern_classes.push(val.className);
             });
@@ -242,7 +267,6 @@ $(function () {
                 $.each(val.list, function (list_idx, list_val) {
                     if ($body.hasClass(list_val.className)) {
                         select_html += '<option value="' + list_val.className + '" selected="selected">' + list_val.name + '</option>';
-                        defaultSettings.style[idx] = list_idx;
                     } else {
                         select_html += '<option value="' + list_val.className + '">' + list_val.name + '</option>';
                     }
@@ -268,6 +292,7 @@ $(function () {
             $('#text_style').change(function () {
                 if (!$body.hasClass($(this).val())) {
                     changeBodyClass($(this).val(), text_style_classes);
+                    $('iframe').contents().find('body').removeClass().addClass($(this).val());
                 }
             });
 
@@ -283,12 +308,12 @@ $(function () {
             $theme_control_panel.append($links_color_wrapper);
 
             var links_picker = $('#linkspicker');
-            links_picker.css('background-color', '#f15b19').ColorPicker({
-                color: '#f15b19',
+            links_picker.css('background-color', '#0a0b35').ColorPicker({
+                color: '#0a0b35',
                 onChange: function (hsb, hex, rgb) {
                     links_picker.css('backgroundColor', '#' + hex);
                     $('a').css('color', '#' + hex);
-                    $.cookie(cookie_prefix + 'a_color', hex, {expires: parseInt(cookie_lifetime), path: cookie_path, domain: cookie_domain});
+                    localStorage.setItem('a_color', hex);
                 }
             });
 
@@ -297,14 +322,16 @@ $(function () {
             /* Reset Settings  --> Begin */
 
             var setDefaultsSettings = function () {
-                changeBodyClass(page_config.nav[defaultSettings.nav].className, nav);
-                changeBodyClass(page_config.backgrounds[defaultSettings.pattern].className, pattern_classes);
-                $theme_control_panel.find('select').val(0);
-                changeBodyClass(page_config.styles.headerStyle.list[defaultSettings.style.headerStyle].className, header_style_classes);
-                changeBodyClass(page_config.styles.textStyle.list[defaultSettings.style.textStyle].className, text_style_classes);
-                links_picker.css({'background-color': '#f15b19'}).ColorPickerSetColor('#f15b19');
+                changeBodyClass(page_config.nav[1].className, nav);
+                changeBodyClass(page_config.backgrounds[14].className, pattern_classes);
+                $theme_control_panel.find('select').val(1);
+                changeBodyClass(page_config.styles.headerStyle.list[0].className, header_style_classes);
+                changeBodyClass(page_config.styles.textStyle.list[0].className, text_style_classes);
+                $('iframe').contents().find('body').removeClass().addClass('text-1');
+                links_picker.css({'background-color': '#008a05'}).ColorPickerSetColor('#008a05');
                 $('a').not(".latest-video a").attr('style', '');
                 $theme_control_panel.find('.active').removeClass();
+                localStorage.setItem('a_color', '008a05');
                 return false;
             };
             var $restore_button_wrapper = $('<div/>').addClass('restore_button_wrapper');

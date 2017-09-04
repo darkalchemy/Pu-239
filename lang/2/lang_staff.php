@@ -3,7 +3,7 @@
 $lang = [
     //Misc
     'stdhead_staff'    => 'Staff',
-    'staff_asup'       => 'All software support question\'s and those already answered in the FAQ will be ignored.',
+    'staff_asup'       => "All software support question's and those already answered in the FAQ will be ignored.",
     'staff_sysops'     => 'Sysops',
     'staff_admins'     => 'Administrators',
     'staff_mods'       => 'Moderators',
@@ -27,10 +27,7 @@ $lang = [
     'header_fls'       => 'First Line Support',
     //Support
     'header_first'     => 'FirstLine Support',
-    'text_first'       => 'General support questions should be directed 
-to these users.<br>
-Note that they are volunteers, giving away their time and effort to help 
-you. Treat them accordingly. (Languages listed are those besides English.)',
+    'text_first'       => 'General support questions should be directed to these users.<br>Note that they are volunteers, giving away their time and effort to help you. Treat them accordingly. (Languages listed are those besides English.)',
     'first_support'    => 'Support',
     'first_supportfor' => 'Support for:',
     'first_name'       => 'Username',

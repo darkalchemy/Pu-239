@@ -9,8 +9,8 @@ $lang = [
     'contactstaff_header'      => 'ContactStaff',
     'contactstaff_error'       => 'Error',
     //takecontact - 2 files merged
-    'contactstaff_no_sub'      => 'Your messages doesn\'t have a subject',
-    'contactstaff_no_msg'      => 'Your messages doesn\'t have a body',
+    'contactstaff_no_sub'      => "Your messages doesn't have a subject",
+    'contactstaff_no_msg'      => "Your messages doesn't have a body",
     'contactstaff_success'     => 'Success',
     'contactstaff_success_msg' => 'Message was sent! Wait for staff to respond now! Please wait while redirecting...',
     'contactstaff_mysql_err'   => 'There was something wrong, Mysql Err: %s',

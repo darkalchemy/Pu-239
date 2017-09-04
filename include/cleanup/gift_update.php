@@ -4,7 +4,6 @@ function gift_update($data)
     global $INSTALLER09, $queries, $mc1;
     set_time_limit(0);
     ignore_user_abort(1);
-    //===Reset Xmas gifts Bigjoos/pdq:)
     $res = sql_query("SELECT id, modcomment FROM users WHERE gotgift='yes'") or sqlerr(__FILE__, __LINE__);
     $users_buffer = [];
     if (mysqli_num_rows($res) > 0) {
@@ -24,13 +23,13 @@ function gift_update($data)
         $count = count($users_buffer);
         if ($count > 0) {
             sql_query('INSERT INTO users (id, gotgift) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE gotgift=values(gotgift)') or sqlerr(__FILE__, __LINE__);
-            write_log('Cleanup - Reset ' . $count . ' members Xmas gift');
+            write_log('Cleanup - Reset ' . $count . ' members Christmas Gift');
         }
         unset($users_buffer, $count);
     }
     //==End
     if ($queries > 0) {
-        write_log("Xmas gift reset Clean -------------------- Xmas gift reset cleanup Complete using $queries queries --------------------");
+        write_log("Christmas Gift Cleanup: Completed using $queries queries");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';

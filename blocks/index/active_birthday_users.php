@@ -19,12 +19,12 @@ if (($birthday_users_cache = $mc1->get_value($keys['birthdayusers'])) === false)
 if (!$birthday_users_cache['birthdayusers']) {
     $birthday_users_cache['birthdayusers'] = $lang['index_birthday_no'];
 }
-$birthday_users =
-    '<fieldset class="header">
-		<legend>' . $lang['index_birthday'] . '&#160;(' . $birthday_users_cache['actcount'] . ')</legend>
-		 <div class="container-fluid">
-			 <!--<a href=\'javascript: klappe_news("a1")\'><img border=\'0\' src=\'pic/plus.gif\' id=\'pica1\' alt=\'' . $lang['index_hide_show'] . '\' /></a><div id=\'ka1\' style=\'display: none;\'>-->
-			  ' . $birthday_users_cache['birthdayusers'] . '
-		 </div><!--</div>-->
-	</fieldset>';
-$HTMLOUT .= $birthday_users;
+$HTMLOUT .= "
+    <a id='birthday-hash'></a>
+    <fieldset id='birthday' class='header'>
+        <legend class='flipper'><i class='fa fa-angle-up' aria-hidden='true'></i>{$lang['index_birthday']} ({$birthday_users_cache['actcount']})</legend>
+            <div class='text-center'>
+                {$birthday_users_cache['birthdayusers']}
+            </div>
+    </fieldset>";
+

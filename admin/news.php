@@ -22,7 +22,6 @@ $stdhead = [
 $stdfoot = [
     /* include js **/
     'js' => [
-        'shout',
         'check_selected',
     ],
 ];

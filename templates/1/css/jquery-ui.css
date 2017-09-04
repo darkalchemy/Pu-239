@@ -56,7 +56,7 @@
 }
 
 .tabdiv li {
-    list-style-image: url("pic/star.png");
+    list-style-image: url("../../images/star.png");
     margin-left: 20px;
 }
 

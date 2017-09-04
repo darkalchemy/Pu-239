@@ -34,7 +34,7 @@ function peer_update($data)
         sql_query('UPDATE torrents SET ' . implode(', ', $update) . ' WHERE id = ' . $tid);
     }
     if ($queries > 0) {
-        write_log("Peers clean-------------------- Peer cleanup Complete using $queries queries --------------------");
+        write_log("Peers Cleanup: Completed using $queries queries");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';

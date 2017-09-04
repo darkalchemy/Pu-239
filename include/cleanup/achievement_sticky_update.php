@@ -15,7 +15,7 @@ function achievement_sticky_update($data)
             $stickyup = (int)$arr['stickyup'];
             $lvl = (int)$arr['stickyachiev'];
             if ($stickyup >= 1 && $lvl == 0) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Stick Em Up LVL1[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/sticky1.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]Stick Em Up LVL1[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/images/achievements/sticky1.png[/img]');
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'Stick Em Up LVL1\', \'sticky1.png\' , \'Uploading at least 1 sticky torrent to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',1, ' . $points . ')';
@@ -25,7 +25,7 @@ function achievement_sticky_update($data)
                 $var1 = 'stickyachiev';
             }
             if ($stickyup >= 5 && $lvl == 1) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Stick Em Up LVL2[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/sticky2.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]Stick Em Up LVL2[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/images/achievements/sticky2.png[/img]');
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'Stick Em Up LVL2\', \'sticky2.png\' , \'Uploading at least 5 sticky torrents to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',2, ' . $points . ')';
@@ -35,7 +35,7 @@ function achievement_sticky_update($data)
                 $var1 = 'stickyachiev';
             }
             if ($stickyup >= 10 && $lvl == 2) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Stick Em Up LVL3[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/sticky3.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]Stick Em Up LVL3[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/images/achievements/sticky3.png[/img]');
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'Stick Em Up LVL3\', \'sticky3.png\' , \'Uploading at least 10 sticky torrents to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',3, ' . $points . ')';
@@ -45,7 +45,7 @@ function achievement_sticky_update($data)
                 $var1 = 'stickyachiev';
             }
             if ($stickyup >= 25 && $lvl == 3) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Stick Em Up LVL4[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/sticky4.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]Stick Em Up LVL4[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/images/achievements/sticky4.png[/img]');
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'Stick Em Up LVL4\', \'sticky4.png\' , \'Uploading at least 25 sticky torrents to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',4, ' . $points . ')';
@@ -55,7 +55,7 @@ function achievement_sticky_update($data)
                 $var1 = 'stickyachiev';
             }
             if ($stickyup >= 50 && $lvl == 4) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Stick Em Up LVL5[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/sticky5.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]Stick Em Up LVL5[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/images/achievements/sticky5.png[/img]');
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'Stick Em Up LVL5\', \'sticky5.png\' , \'Uploading at least 50 sticky torrents to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',5, ' . $points . ')';
@@ -71,7 +71,7 @@ function achievement_sticky_update($data)
             sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE key UPDATE date=values(date),achievement=values(achievement),icon=values(icon),description=values(description)') or sqlerr(__FILE__, __LINE__);
             sql_query("INSERT INTO usersachiev (userid, $var1, achpoints) VALUES " . implode(', ', $usersachiev_buffer) . " ON DUPLICATE key UPDATE $var1=values($var1), achpoints=achpoints+values(achpoints)") or sqlerr(__FILE__, __LINE__);
             if ($queries > 0) {
-                write_log("Achievements Cleanup: Achievements Stickied Completed using $queries queries. Stickied Achievements awarded to - " . $count . ' Member(s)');
+                write_log("Achievements Cleanup: Stickied Completed using $queries queries. Stickied Achievements awarded to - " . $count . ' Member(s)');
             }
         }
         unset($usersachiev_buffer, $achievements_buffer, $msgs_buffer, $count);

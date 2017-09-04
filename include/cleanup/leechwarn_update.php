@@ -133,7 +133,7 @@ function leechwarn_update($data)
     }
     //==End
     if ($queries > 0) {
-        write_log("Leechwarn Clean -------------------- Leechwarn cleanup Complete using $queries queries --------------------");
+        write_log("Leechwarn Cleanup: Completed using $queries queries");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';

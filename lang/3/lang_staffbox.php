@@ -2,7 +2,7 @@
 
 $lang = [
     'staffbox_head'            => 'StaffBox',
-    'staffbox_class'           => 'You can\'t use this!',
+    'staffbox_class'           => "You can't use this!",
     'staffbox_err'             => 'Error',
     'staffbox_odd_err'         => 'Something was wrong, I have no idea what!',
     'staffbox_success'         => 'Success',
@@ -28,7 +28,7 @@ $lang = [
     'staffbox_pm_delete'       => 'Delete',
     'staffbox_pm_answer'       => 'Staff response:',
     'staffbox_pm_noanswer'     => 'No answer from the staff',
-    'staffbox_no_message'      => 'You didn\'t write any message for the user!',
+    'staffbox_no_message'      => "You didn't write any message for the user!",
     'staffbox_pm_restart'      => 'Reset',
     'staffbox_restart_ids'     => 'The messege(s) you selected were Reset for someone else to deal with! Wait while redirecting...',
 ];

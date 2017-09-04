@@ -27,7 +27,7 @@ $HTMLOUT .= '<h1>' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subj
     <table class="table table-bordered">
     <tr>
         <td align="left" colspan="2" class="colhead" valign="top"><h1>' . $lang['pm_forward_fwd_msg'] . '
-        <img src="pic/arrow_next.gif" alt=":" />' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subject']) . '</h1></td>
+        <img src="./images/forums/arrow_next.gif" alt=":" />' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subject']) . '</h1></td>
     </tr>
     <tr>
         <td align="right" class="one" valign="top"><span style="font-weight: bold;">' . $lang['pm_forward_to'] . '</span></td>

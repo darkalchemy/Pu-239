@@ -8,7 +8,7 @@ function cheatclean_update($data)
     $dt = (TIME_NOW - (30 * 86400));
     sql_query('DELETE FROM cheaters WHERE added < ' . sqlesc($dt)) or sqlerr(__FILE__, __LINE__);
     if ($queries > 0) {
-        write_log("Cheaters list clean-------------------- Removed old cheater entrys. Cleanup Complete using $queries queries --------------------");
+        write_log("Cheaters List Cleanup: Removed old cheater entrys. Completed using $queries queries");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';

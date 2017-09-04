@@ -14,7 +14,6 @@
 
 // AJAX Chat client side logic:
 var ajaxChat = {
-
     settingsInitiated: null,
     styleInitiated: null,
     initializeFunction: null,
@@ -173,9 +172,14 @@ var ajaxChat = {
 
     initDirectories: function () {
         this.dirs = {};
-        this.dirs['emoticons']  = this.baseURL+'../../../pic/smilies/';
-        this.dirs['sounds'] = this.baseURL + 'sounds/';
-        this.dirs['flash'] = this.baseURL + 'flash/';
+        //alert(this.baseURL);
+        //this.dirs['emoticons']  = this.baseURL + '../public/images/smilies/';
+        //this.dirs['sounds'] = this.baseURL + '../public/media/sounds/';
+        //this.dirs['flash'] = this.baseURL + '../public/media/flash/';
+        this.dirs['emoticons']  = './images/smilies/';
+        this.dirs['sounds'] = './media/sounds/';
+        this.dirs['flash'] = './media/flash/';
+
     },
 
     initSettings: function () {
@@ -769,7 +773,8 @@ var ajaxChat = {
             } else {
                 try {
                     this.sounds[soundID].currentTime = 0;
-                    return this.sounds[soundID].play();
+                    var playPromise = this.sounds[soundID].play();
+                    return playPromise;
                 } catch (e) {
                     this.debugMessage('playSound', e);
                 }
@@ -1425,7 +1430,7 @@ var ajaxChat = {
             + '">'
             + this.getDeletionLink(messageID, userID, userRole, channelID)
             + dateTime
-            + '<span class="'
+            + '<span class="tooltipper-ajax '
             + userClass
             + '"'
             + this.getChatListUserNameTitle(userID, userName, userRole, ip)
@@ -2924,7 +2929,7 @@ var ajaxChat = {
         if (!this.settings['lineBreaks']) {
             return text.replace(regExp, ' ');
         } else {
-            return text.replace(regExp, '<br>');
+            return text.replace(regExp, '<br/>');
         }
     },
 

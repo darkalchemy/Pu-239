@@ -85,7 +85,7 @@ function torrenttable($res, $variant = 'index')
         ++$i;
     }
     $htmlout .= "
-   <table border='1' cellspacing='0' cellpadding='5'>
+   <table class='text-center' border='1' cellspacing='0' cellpadding='5'>
    <tr>
    <td class='colhead' align='center'>{$lang['torrenttable_type']}</td>
    <td class='colhead' align='left'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=1&amp;type={$link1}'>{$lang['torrenttable_name']}</a></td>
@@ -143,7 +143,7 @@ function torrenttable($res, $variant = 'index')
         if (isset($row['cat_name'])) {
             $htmlout .= "<a href='browse.php?cat=" . (int)$row['category'] . "'>";
             if (isset($row['cat_pic']) && $row['cat_pic'] != '') {
-                $htmlout .= "<img border='0' src='{$INSTALLER09['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/{$row['cat_pic']}' alt='{$row['cat_name']}' />";
+                $htmlout .= "<img border='0' src='{$INSTALLER09['pic_base_url']}caticons/" . get_categorie_icons() . "/{$row['cat_pic']}' alt='{$row['cat_name']}' />";
             } else {
                 $htmlout .= htmlsafechars($row['cat_name']);
             }
@@ -267,7 +267,7 @@ function torrenttable($res, $variant = 'index')
         if ($variant == 'index') {
             $htmlout .= "<td align='right'>{$bookmark}</td>";
         }
-        if ($row['type'] == 'single') {
+        if ($row['numfiles'] <= 1) {
             $htmlout .= "<td align='right'>" . (int)$row['numfiles'] . "</td>\n";
         } else {
             if ($variant == 'index') {
@@ -321,7 +321,7 @@ function torrenttable($res, $variant = 'index')
             $htmlout .= "<td align='right'>0</td>\n";
         }
         if ($variant == 'index') {
-            $htmlout .= "<td align='center'>" . (isset($row['username']) ? (($row['anonymous'] == 'yes' && $CURUSER['class'] < UC_STAFF && $row['owner'] != $CURUSER['id']) ? '<i>' . $lang['torrenttable_anon'] . '</i>' : "<a href='userdetails.php?id=" . (int)$row['owner'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>') : '<i>(' . $lang['torrenttable_unknown_uploader'] . ')</i>') . "</td>\n";
+            $htmlout .= "<td align='center'>" . (isset($row['owner']) ? (($row['anonymous'] == 'yes' && $CURUSER['class'] < UC_STAFF && $row['owner'] != $CURUSER['id']) ? '<i>' . $lang['torrenttable_anon'] . '</i>' : format_username($row['owner'])) : '<i>(' . $lang['torrenttable_unknown_uploader'] . ')</i>') . "</td>\n";
         }
         if ($CURUSER['class'] >= UC_STAFF) {
             $url = 'edit.php?id=' . (int)$row['id'];
@@ -331,8 +331,8 @@ function torrenttable($res, $variant = 'index')
                 $keepget = $addthis;
             }
             $editlink = "a href=\"$url\" class=\"sublink\"";
-            $del_link = ($CURUSER['class'] === UC_MAX ? "<a href='fastdelete.php?id=" . (int)$row['id'] . "'>&#160;<img src='pic/button_delete2.gif' alt='Fast Delete' title='Fast Delete' /></a>" : '');
-            $htmlout .= "<td align='center'><$editlink><img src='pic/button_edit2.gif' alt='Fast Edit' title='Fast Edit' /></a>{$del_link}</td>\n";
+            $del_link = ($CURUSER['class'] === UC_MAX ? "<a href='fastdelete.php?id=" . (int)$row['id'] . "'>&#160;<img src='./images/button_delete2.gif' alt='Fast Delete' title='Fast Delete' /></a>" : '');
+            $htmlout .= "<td align='center'><$editlink><img src='./images/button_edit2.gif' alt='Fast Edit' title='Fast Edit' /></a>{$del_link}</td>\n";
         }
         $htmlout .= "</tr>\n";
         $htmlout .= '<tr id="kdescr' . (int)$row['id'] . '" style="display:none;"><td width="100%" colspan="13">' . format_comment($descr, false) . "</td></tr>\n";

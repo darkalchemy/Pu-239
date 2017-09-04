@@ -365,9 +365,9 @@ function userlogin()
             'browse_icons',
         ];
         $user_fields = implode(', ', array_merge($user_fields_ar_int, $user_fields_ar_float, $user_fields_ar_str));
-        $res = sql_query('SELECT ' . $user_fields . ' ' . 'FROM users ' . 'WHERE id = ' . sqlesc($id) . ' ' . "AND enabled='yes' " . "AND status = 'confirmed'") or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT ' . $user_fields . ' ' . 'FROM users ' . 'WHERE id = ' . sqlesc($id) . ' ' . "AND enabled = 'yes' " . "AND status = 'confirmed'") or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) == 0) {
-            $salty = salty($CURUSER['username']);
+            $salty = salty('i think you might be lost');
             header("Location: {$INSTALLER09['baseurl']}/logout.php?hash_please={$salty}");
             return;
         }
@@ -426,7 +426,7 @@ function userlogin()
             ]);
             $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
             write_log($msg);
-            $salty = salty($CURUSER['username']);
+            $salty = salty('i think you might be lost');
             header("Location: {$INSTALLER09['baseurl']}/logout.php?hash_please={$salty}");
             die;
         }
@@ -623,6 +623,24 @@ function autoclean()
     }
 }
 
+function get_stylesheet()
+{
+    global $INSTALLER09, $CURUSER;
+    return isset($CURUSER['stylesheet']) ? $CURUSER['stylesheet'] : $INSTALLER09['stylesheet'];
+}
+
+function get_categorie_icons()
+{
+    global $INSTALLER09, $CURUSER;
+    return isset($CURUSER['categorie_icon']) ? $CURUSER['categorie_icon'] : $INSTALLER09['categorie_icon'];
+}
+
+function get_language()
+{
+    global $INSTALLER09, $CURUSER;
+    return isset($CURUSER['language']) ? $CURUSER['language'] : $INSTALLER09['language'];
+}
+
 function get_template()
 {
     global $CURUSER, $INSTALLER09;
@@ -747,7 +765,6 @@ function create_moods($force = false)
         }
         $mc1->cache_value($key, $mood, 86400);
     }
-
     return $mood;
 }
 
@@ -890,10 +907,15 @@ function httperr($code = 404)
 
 function loggedinorreturn()
 {
-    global $CURUSER, $INSTALLER09;
+    global $CURUSER, $INSTALLER09, $mc1;
     if (!$CURUSER) {
-        header("Location: {$INSTALLER09['baseurl']}/login.php?returnto=" . urlencode($_SERVER['REQUEST_URI']));
-        exit();
+        if ($id = getSessionVar('userID')) {
+            $user = $mc1->get_value('MyUser_' . $id);
+            $CURUSER = $user;
+        } else {
+            header("Location: {$INSTALLER09['baseurl']}/login.php?returnto=" . urlencode($_SERVER['REQUEST_URI']));
+            exit();
+        }
     }
 }
 
@@ -993,7 +1015,7 @@ function write_log($text)
 {
     $text = sqlesc($text);
     $added = TIME_NOW;
-    sql_query("INSERT INTO sitelog (added, txt) VALUES($added, $text)") or sqlerr(__FILE__, __LINE__);
+    sql_query("INSERT INTO sitelog (added, txt) VALUES ($added, $text)") or sqlerr(__FILE__, __LINE__);
 }
 
 function sql_timestamp_to_unix_timestamp($s)
@@ -1178,7 +1200,7 @@ function flood_limit($table)
 
 function sql_query($query)
 {
-    global $query_stat;
+    global $query_stat, $queries;
     $query_start_time = microtime(true); // Start time
     $result = mysqli_query($GLOBALS['___mysqli_ston'], $query);
     $query_end_time = microtime(true); // End time
@@ -1187,6 +1209,7 @@ function sql_query($query)
         'seconds' => number_format($query_end_time - $query_start_time, 6),
         'query'   => $query,
     ];
+    $queries = count($query_stat);
 
     return $result;
 }
@@ -1220,7 +1243,7 @@ function get_percent_completed_image($p)
             break;
     }
 
-    return '<img src="/pic/' . $img . '.gif" alt="percent" />';
+    return '<img src="./images/' . $img . '.gif" alt="percent" />';
 }
 
 function strip_tags_array($ar)
@@ -1484,9 +1507,9 @@ function suspended()
 
 function check_user_status()
 {
-    //file_put_contents('/var/log/nginx/login.log', json_encode($_SESSION) . PHP_EOL, FILE_APPEND);
     dbconn();
     userlogin();
+    global $CURUSER;
     referer();
     if (!validateToken(getSessionVar('auth'), 'auth')) {
         destroySession();
@@ -1505,6 +1528,22 @@ function cleanup_log($data)
     $ip = sqlesc($_SERVER['REMOTE_ADDR']);
     $desc = sqlesc($data['clean_desc']);
     sql_query("INSERT INTO cleanup_log (clog_event, clog_time, clog_ip, clog_desc) VALUES ($text, $added, $ip, {$desc})") or sqlerr(__FILE__, __LINE__);
+}
+
+function random_color($minVal = 0, $maxVal = 255)
+{
+    // Make sure the parameters will result in valid colours
+    $minVal = $minVal < 0 || $minVal > 255 ? 0 : $minVal;
+    $maxVal = $maxVal < 0 || $maxVal > 255 ? 255 : $maxVal;
+
+    // Generate 3 values
+    $r = mt_rand($minVal, $maxVal);
+    $g = mt_rand($minVal, $maxVal);
+    $b = mt_rand($minVal, $maxVal);
+
+    // Return a hex colour ID string
+    return sprintf('#%02X%02X%02X', $r, $g, $b);
+
 }
 
 if (file_exists('install/index.php')) {

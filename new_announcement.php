@@ -8,9 +8,7 @@ if ($CURUSER['class'] < UC_ADMINISTRATOR) {
     stderr('Error', 'Your not authorised');
 }
 $stdfoot = [
-    /* include js **/
     'js' => [
-        'shout',
     ],
 ];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

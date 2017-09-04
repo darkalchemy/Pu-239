@@ -1,5 +1,5 @@
 .rating_load {
-    background: url(../pic/ratingload.gif) no-repeat right;
+    background: url(../../images/ratingload.gif) no-repeat right;
     width: 100px;
     height: 16px;
 }
@@ -8,7 +8,7 @@
 .star-rating a:hover,
 .star-rating a:active,
 .star-rating .current-rating {
-    background: url(../pic/star.png) left -1000px repeat-x;
+    background: url(../../images/star.png) left -1000px repeat-x;
     margin: 0;
     font-size: 0;
 }

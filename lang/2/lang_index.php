@@ -122,8 +122,8 @@ It is your own responsibility to adhere to these terms.",
     'index_fposts_locked'        => 'Locked',
     'index_fposts_lockedt'       => 'Locked Topic',
     'index_fposts_in'            => 'in ',
-    //xmas gift
-    'index_xmas_gift'            => 'Xmas Gift',
+    //Christmas gift
+    'index_christmas_gift'       => 'Christmas Gift',
     //ie user
     'index_ie_warn'              => 'Warning - Internet Explorer Browser',
     'index_ie_not'               => ' It appears as though you are running Internet Explorer, this site was <b>NOT</b> intended to be viewed with internet explorer and chances are it will not look right and may not even function correctly.',

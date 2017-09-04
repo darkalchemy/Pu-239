@@ -17,9 +17,9 @@ $res_edited = sql_query('SELECT id, username, class, donor, suspended, warned, e
 $arr_edited = mysqli_fetch_array($res_edited);
 $icon = htmlsafechars($arr['icon']);
 $post_title = htmlsafechars($arr['post_title'], ENT_QUOTES);
-$location_bar = '<h1><a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php">' . $lang['fe_forums'] . '</a> <img src="' . $INSTALLER09['pic_base_url'] . 'arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
+$location_bar = '<h1><a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php">' . $lang['fe_forums'] . '</a> <img src="' . $INSTALLER09['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
         <a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . htmlsafechars($arr['forum_name'], ENT_QUOTES) . '</a>
-        <img src="' . $INSTALLER09['pic_base_url'] . 'arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
+        <img src="' . $INSTALLER09['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
         <a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr['topic_name'], ENT_QUOTES) . '</a></h1>
         <span style="text-align: center;">' . $mini_menu . '</span><br><br>';
 $width = 100;

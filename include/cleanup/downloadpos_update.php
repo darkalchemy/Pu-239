@@ -38,7 +38,7 @@ function downloadpos_update($data)
         if ($count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO users (id, downloadpos, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE downloadpos=values(downloadpos), modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
-            write_log('Cleanup - Removed Download ban from ' . $count . ' members');
+            write_log("Download Possible Cleanup: Completed. Removed Download ban from $count members");
         }
         unset($users_buffer, $msgs_buffer, $count);
     }

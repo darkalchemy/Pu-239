@@ -36,7 +36,7 @@ HTML;
             $HTMLOUT .= '<br>';
         }
         $HTMLOUT .= '<label for="cat_' . (int)$a['id'] . "\">
-      <img src=\"{$INSTALLER09['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($a['image']) . '" alt="' . htmlsafechars($a['name']) . '" title="' . htmlsafechars($a['name']) . '" />
+      <img src=\"{$INSTALLER09['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($a['image']) . '" alt="' . htmlsafechars($a['name']) . '" title="' . htmlsafechars($a['name']) . '" />
      <input type="checkbox" name="cats[]" id="cat_' . (int)$a['id'] . '" value="' . (int)$a['id'] . "\" /></label>\n";
         ++$i;
     }

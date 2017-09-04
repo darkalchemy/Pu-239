@@ -8,12 +8,13 @@ function saveOrder() {
         // For each portlet in the column
         for (var i = 0, n = order.length; i < n; i++) {
             // Determine if it is 'opened' or 'closed'
-            var v = $('#' + order[i]).find('.container-fluid').is(':visible');
+            //var v = $('#' + order[i]).find('.container-fluid').is(':visible');
+            var v = $('#' + order[i]).find('.cite').is(':visible');
             // Modify the array we're saving to indicate what's open and
             //  what's not.
             order[i] = order[i] + ":" + v;
         }
-        $.cookie(cookieName, order, {path: "/", expires: new Date(2055, 1, 1)});
+        $.cookie(cookie_prefix + cookieName, order, {path: "/", expires: new Date(2055, 1, 1)});
     });
 }
 
@@ -22,7 +23,7 @@ function restoreOrder() {
     $(".content").each(function (index, value) {
         var colid = value.id;
         var cookieName = "cookie-" + colid
-        var cookie = $.cookie(cookieName);
+        var cookie = $.cookie(cookie_prefix + cookieName);
         if (cookie == null) {
             return;
         }
@@ -40,7 +41,8 @@ function restoreOrder() {
             if (visible === 'false') {
                 portlet.find(".ui-icon").toggleClass("ui-icon-minus");
                 portlet.find(".ui-icon").toggleClass("ui-icon-plus");
-                portlet.find(".container-fluid").hide();
+                //portlet.find(".container-fluid").hide();
+                portlet.find(".cite").hide();
             }
         }
     });

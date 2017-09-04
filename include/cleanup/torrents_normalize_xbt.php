@@ -57,7 +57,7 @@ function torrents_normalize_xbt($data)
         }
     } while (0);
     if ($queries > 0) {
-        write_log("XBT Normalize clean-------------------- XBT Normalize cleanup Complete using $queries queries --------------------");
+        write_log("XBT Normalize Cleanup: Completed using $queries queries");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';

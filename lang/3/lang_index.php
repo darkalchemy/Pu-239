@@ -122,8 +122,8 @@ Este obliga&#355;ia dumneavoastra s&#259; v&#259; conforma&#355;i acestor termen
     'index_fposts_locked'        => '&#206;nchis',
     'index_fposts_lockedt'       => 'Topic &#238;nchis',
     'index_fposts_in'            => '&#238;n ',
-    //xmas gift
-    'index_xmas_gift'            => 'Cadoul de Cr&#259;ciun',
+    //Christmas gift
+    'index_christmas_gift'       => 'Cadoul de Cr&#259;ciun',
     //ie user
     'index_ie_warn'              => 'Avertisment - Browser Internet Explorer',
     'index_ie_not'               => ' Se pare ca de&#351;i folose&#351;ti Internet Explorer, acest site <b>NU</b> a fost conceput pentru a fi vizualizat cu Internet Explorer &#351;i sunt &#351;anse ca unele func&#355;ii s&#259; nu fie afi&#351;ate corect.',

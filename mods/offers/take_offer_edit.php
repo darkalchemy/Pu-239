@@ -17,7 +17,7 @@ if (!empty($_POST['picture'])) {
     //    $picture2 = trim(urldecode($picture));
     //    $headers  = get_headers($picture2);
     //    if (strpos($headers[0], '200') === false)
-    //        $picture = $TBDEV['baseurl'].'/pic/notfound.png';
+    //        $picture = $TBDEV['baseurl'].'/images/notfound.png';
     $pic = '[img]' . $picture . "[/img]\n";
 }
 $descr = "$pic";

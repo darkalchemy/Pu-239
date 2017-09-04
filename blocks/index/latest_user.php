@@ -4,11 +4,10 @@ if (($latestuser = $mc1->get_value('latestuser')) === false) {
     $mc1->cache_value('latestuser', $latestuser, $INSTALLER09['expires']['latestuser']);
 }
 $HTMLOUT .= "
-	<fieldset class='header'>
-	<legend>{$lang['index_lmember']}</legend>
-		<div class='container-fluid'>
-		{$lang['index_wmember']}
-		" . format_username($latestuser['id']) . "!
-		</div>
-	</fieldset>";
-
+        <a id='latestuser-hash'></a>
+        <fieldset id='latestuser' class='header'>
+            <legend class='flipper'><i class='fa fa-angle-up' aria-hidden='true'></i>{$lang['index_lmember']}</legend>
+            <div class='text-center'><p id='newestuser'>
+                <p>{$lang['index_wmember']}  " . format_username($latestuser_cache['id']) . "!</p>
+            </div>
+        </fieldset>";

@@ -69,7 +69,8 @@ jQuery.fn.highlightFade = function (settings) {
         var e = (this.highlighting[a]) ? this.highlighting[a].end : jQuery.highlightFade.getBaseValue(this, a) || [255, 255, 255];
         var c = jQuery.highlightFade.getRGB(o['start'] || o['colour'] || o['color'] || d['start'] || [255, 255, 128]);
         var s = jQuery.speed(o['speed'] || d['speed']);
-        var r = o['final'] || (this.highlighting[a] && this.highlighting[a].orig) ? this.highlighting[a].orig : jQuery.curCSS(this, a);
+        //curCSS
+        var r = o['final'] || (this.highlighting[a] && this.highlighting[a].orig) ? this.highlighting[a].orig : jQuery.css(this, a);
         if (o['end'] || d['end']) r = jQuery.highlightFade.asRGBString(e = jQuery.highlightFade.getRGB(o['end'] || d['end']));
         if (typeof o['final'] != 'undefined') r = o['final'];
         if (this.highlighting[a] && this.highlighting[a].timer) window.clearInterval(this.highlighting[a].timer);

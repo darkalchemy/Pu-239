@@ -122,7 +122,7 @@ foreach ($pot_options as $Pot_option) {
    	      <div class=\"buttons\">
 	      <input name='want_pot' type='hidden' value='" . $Pot_option . "' />
           <button value='Exchange!' " . ($disabled == 'true' ? "disabled='disabled'" : '') . ' type="submit" class="positive">
-          <img src="pic/aff_tick.gif" alt="" /> Exchange!
+          <img src="./images/aff_tick.gif" alt="" /> Exchange!
           </button>
           </div>
 

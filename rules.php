@@ -18,14 +18,14 @@ $HTMLOUT .= '<script>
 	  //slides the element with class "menu_body" when paragraph with class "menu_head" is clicked 
 	  $("#firstpanel p.menu_head").click(function()
     {
-		$(this).css({backgroundImage:"url(pic/down2.png)"}).next("div.menu_body").slideToggle(300).siblings("div.menu_body").slideUp("slow");
-    //$(this).siblings().css({backgroundImage:"url(pic/left.png)"});
+		$(this).css({backgroundImage:"url(./images/down2.png)"}).next("div.menu_body").slideToggle(300).siblings("div.menu_body").slideUp("slow");
+    //$(this).siblings().css({backgroundImage:"url(./images/left.png)"});
 	  });
 	  //slides the element with class "menu_body" when mouse is over the paragraph
 	  $("#secondpanel p.menu_head").mouseover(function()
     {
-	  $(this).css({backgroundImage:"url(pic/down2.png)"}).next("div.menu_body").slideDown(500).siblings("div.menu_body").slideUp("slow");
-    //$(this).siblings().css({backgroundImage:"url(pic/left.png)"});
+	  $(this).css({backgroundImage:"url(./images/down2.png)"}).next("div.menu_body").slideDown(500).siblings("div.menu_body").slideUp("slow");
+    //$(this).siblings().css({backgroundImage:"url(./images/left.png)"});
 	  });
     });
     /*]]>*/
@@ -112,7 +112,7 @@ if (isset($CURUSER) and $CURUSER['class'] >= UC_STAFF) {
         <td class='embedded'>{$lang['rules_moderating_body']}</td>
       </tr>
       <tr>
-        <td class='embedded' bgcolor='#ffffff' valign='top'>&#160; <b><img src='pic/star.gif' alt='Donor' title='Donor' /></b></td>
+        <td class='embedded' bgcolor='#ffffff' valign='top'>&#160; <b><img src='./images/star.gif' alt='Donor' title='Donor' /></b></td>
         <td class='embedded' width='5'>&#160;</td>
         <td class='embedded'>{$lang['rules_moderating_body1']}</td>
       </tr>

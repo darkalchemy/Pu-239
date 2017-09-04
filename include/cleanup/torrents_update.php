@@ -36,7 +36,7 @@ function torrents_update($data)
     }
     unset($updatetorrents);
     if ($queries > 0) {
-        write_log("Torrent clean-------------------- Torrent cleanup Complete using $queries queries --------------------");
+        write_log("Torrent Cleanup: Complete using $queries queries");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items updated';

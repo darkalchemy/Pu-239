@@ -61,7 +61,7 @@ function lotteryclean($data)
     }
     //==End 09 seedbonus lottery by putyn
     if ($queries > 0) {
-        write_log("Lottery clean-------------------- lottery Complete using $queries queries --------------------");
+        write_log("Lottery Cleanup: Completed using $queries queries");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted';

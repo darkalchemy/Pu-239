@@ -5,6 +5,7 @@ if (!defined('BUNNY_FORUMS')) {
     exit();
 }
 global $lang;
+
 //$lang = array_merge($lang, load_language('global') , load_language('forums_global'), load_language('forums'));
 $colour = $class = $attachments = $members_votes = $status = $topic_poll = $stafflocked = $child = $parent_forum_name = $math_image = $math_text = $staff_tools = $staff_link = $now_viewing = '';
 $topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
@@ -229,7 +230,7 @@ if ($arr['parent_forum'] > 0) {
     $parent_forum_res = sql_query('SELECT name AS parent_forum_name FROM forums WHERE id=' . sqlesc($arr['parent_forum']));
     $parent_forum_arr = mysqli_fetch_row($parent_forum_res);
     $child = ($arr['parent_forum'] > 0 ? '<span style="font-size: x-small;"> [ ' . $lang['fe_child_board'] . ' ]</span>' : '');
-    $parent_forum_name = '<img src="' . $INSTALLER09['pic_base_url'] . 'arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
+    $parent_forum_name = '<img src="' . $INSTALLER09['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
 		<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . htmlsafechars($parent_forum_arr[0], ENT_QUOTES) . '</a>';
 }
 //=== top and bottom stuff
@@ -237,11 +238,11 @@ $the_top_and_bottom = '<tr><td class="three" width="33%" align="left" valign="mi
 		<td class="three" width="33%" align="center">' . (($count > $perpage) ? $menu : '') . '</td>
 		<td class="three" align="right">' . ($may_post ? $locked_or_reply_button : '<span style="font-weight: bold; font-size: x-small;">
 		You are not permitted to post in this thread.</span>') . '</td></tr>';
-$location_bar = '<a name="top"></a>' . $status_image . ' <a class="altlink" href="index.php">' . $INSTALLER09['site_name'] . '</a>  <img src="' . $INSTALLER09['pic_base_url'] . 'arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
+$location_bar = '<a name="top"></a>' . $status_image . ' <a class="altlink" href="index.php">' . $INSTALLER09['site_name'] . '</a>  <img src="' . $INSTALLER09['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
 			<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php">' . $lang['fe_forums'] . '</a> ' . $parent_forum_name . ' 
-			<img src="' . $INSTALLER09['pic_base_url'] . 'arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
+			<img src="' . $INSTALLER09['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
 			<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . $forum_name . $child . '</a>
-			<img src="' . $INSTALLER09['pic_base_url'] . 'arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
+			<img src="' . $INSTALLER09['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
 			<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . $topic_name . '</a> ' . $status_image . '<br>' . $forum_desc . '
 			<span style="text-align: center;">' . $mini_menu . (($topic_owner == $CURUSER['id'] && $arr['poll_id'] == 0 || $CURUSER['class'] >= UC_STAFF && $arr['poll_id'] == 0) ? '  |<a href="' . $INSTALLER09['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_add&amp;topic_id=' . $topic_id . '" class="altlink">&#160;' . $lang['fe_add_poll'] . '</a>' : '') . '</span><br><br>';
 $HTMLOUT .= ($upload_errors_size > 0 ? ($upload_errors_size === 1 ? '<div style="text-align: center;">One file was not uploaded. The maximum file size allowed is. ' . mksize($max_file_size) . '.</div>' : '<div style="text-align: center;">' . $upload_errors_size . ' file were not uploaded. The maximum file size allowed is. ' . mksize($max_file_size) . '.</div>') : '') . ($upload_errors_type > 0 ? ($upload_errors_type === 1 ? '<div style="text-align: center;">One file was not uploaded. The accepted formats are zip and rar.</div>' : '<div style="text-align: center;">' . $upload_errors_type . ' files were not uploaded. The accepted formats are zip and rar.</div>') : '') . $location_bar . $topic_poll . '<br>' . $subscription_on_off . '<br>
@@ -362,7 +363,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
          <td class="' . $class_alt . '" align="center" valign="top">' . ($arr['anonymous'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($arr)) . '<br>
 			' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : print_user_stuff($arr)) . ($arr['anonymous'] == 'yes' || $arr['title'] == '' ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($arr['title']) . ']</span>') . '<br>
 			<span style="font-weight: bold;">' . ($arr['anonymous'] == 'yes' ? '' : get_user_class_name($arr['class'])) . '</span><br>
-			' . ($arr['last_access'] > (TIME_NOW - 300) && $arr['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $INSTALLER09['pic_base_url'] . 'online.gif" alt="Online" title="Online" border="0" /> Online' : ' <img src="' . $INSTALLER09['pic_base_url'] . 'offline.gif" border="0" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" /> ' . $lang['fe_offline'] . '') . '<br>
+			' . ($arr['last_access'] > (TIME_NOW - 300) && $arr['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $INSTALLER09['pic_base_url'] . 'online.gif" alt="Online" title="Online" border="0" /> Online' : ' <img src="' . $INSTALLER09['pic_base_url'] . 'forums/offline.gif" border="0" alt="' . $lang['fe_offline'] . '" title="' . $lang['fe_offline'] . '" /> ' . $lang['fe_offline'] . '') . '<br>
 			' . $lang['fe_karma'] . ': ' . number_format($arr['seedbonus']) . '<br><br>' . $member_reputation . '<br>' . ($arr['google_talk'] !== '' ? ' <a href="http://talkgadget.google.com/talkgadget/popout?member=' . htmlsafechars($arr['google_talk']) . '" title="' . $lang['fe_click_for_google_talk_gadget'] . '"  target="_blank"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/google_talk.gif" alt="' . $lang['fe_google_talk'] . '" /></a> ' : '') . ($arr['icq'] !== '' ? ' <a href="http://people.icq.com/people/&amp;uin=' . htmlsafechars($arr['icq']) . '" title="' . $lang['fe_click_to_open_icq_page'] . '" target="_blank"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/icq.gif" alt="icq" /></a> ' : '') . ($arr['msn'] !== '' ? ' <a href="http://members.msn.com/' . htmlsafechars($arr['msn']) . '" target="_blank" title="' . $lang['fe_click_to_see_msn_details'] . '"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/msn.gif" alt="msn" /></a> ' : '') . ($arr['aim'] !== '' ? ' <a href="http://aim.search.aol.com/aol/search?s_it=searchbox.webhome&amp;q=' . htmlsafechars($arr['aim']) . '" target="_blank" title="' . $lang['fe_click_to_search_on_aim'] . '"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/aim.gif" alt="AIM" /></a> ' : '') . ($arr['yahoo'] !== '' ? ' <a href="http://webmessenger.yahoo.com/?im=' . htmlsafechars($arr['yahoo']) . '" target="_blank" title="' . $lang['fe_click_to_open_yahoo'] . '"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/yahoo.gif" alt="yahoo" /></a> ' : '') . '<br><br>' . ($arr['website'] !== '' ? ' <a href="' . htmlsafechars($arr['website']) . '" target="_blank" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/website.gif" alt="website" /></a> ' : '') . ($arr['show_email'] == 'yes' ? ' <a href="mailto:' . htmlsafechars($arr['email']) . '"  title="' . $lang['fe_click_to_email'] . '" target="_blank"><img src="' . $INSTALLER09['pic_base_url'] . 'email.gif" alt="email" width="25" /> </a>' : '') . '<br><br>
 			' . ($CURUSER['class'] >= UC_STAFF ? '   
 			<ul class="makeMenu">
@@ -380,7 +381,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
 			<tr><td class="' . $class_alt . '" align="right" valign="middle" colspan="3">' . (($arr['paranoia'] >= 1 && $CURUSER['class'] < UC_STAFF) ? '' : '
 			<span style="color: green;"><img src="' . $INSTALLER09['pic_base_url'] . 'up.png" alt="' . $lang['vt_uploaded'] . '" title="' . $lang['vt_uploaded'] . '" /> ' . mksize($arr['uploaded']) . '</span>&#160;&#160;  
 			' . ($INSTALLER09['ratio_free'] ? '' : '<span style="color: red;"><img src="' . $INSTALLER09['pic_base_url'] . 'dl.png" alt="' . $lang['vt_downloaded'] . '" title="' . $lang['vt_downloaded'] . '" /> ' . mksize($arr['downloaded']) . '</span>') . '&#160;&#160;') . (($arr['paranoia'] >= 2 && $CURUSER['class'] < UC_STAFF) ? '' : '' . $lang['vt_ratio'] . ': ' . member_ratio($arr['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $arr['downloaded']) . '&#160;&#160;
-			' . ($arr['hit_and_run_total'] == 0 ? '<img src="' . $INSTALLER09['pic_base_url'] . 'no_hit_and_runs2.gif" width="22" alt="' . ($arr['anonymous'] == 'yes' ? '' . $lang['fe_anonymous'] . '' : htmlsafechars($arr['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" title="' . ($arr['anonymous'] == 'yes' ? '' . $lang['fe_anonymous'] . '' : htmlsafechars($arr['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" />' : '') . '
+			' . ($arr['hit_and_run_total'] == 0 ? '<img src="' . $INSTALLER09['pic_base_url'] . 'forums/no_hit_and_runs2.gif" width="22" alt="' . ($arr['anonymous'] == 'yes' ? '' . $lang['fe_anonymous'] . '' : htmlsafechars($arr['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" title="' . ($arr['anonymous'] == 'yes' ? '' . $lang['fe_anonymous'] . '' : htmlsafechars($arr['username'])) . ' ' . $lang['vt_has_never_hit'] . ' &amp; ran!" />' : '') . '
 			&#160;&#160;&#160;&#160;') . '
 			<a class="altlink" href="pm_system.php?action=send_message&amp;receiver=' . $arr['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . '"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/send_pm.png" alt="' . $lang['vt_send_pm'] . '" title="' . $lang['vt_send_pm'] . '" width="18" /> ' . $lang['vt_send_message'] . '</a></td></tr></table></td></tr>';
     $attachments = '';
@@ -653,35 +654,4 @@ $HTMLOUT .= $the_top_and_bottom . '</table>
 			<td class="two" align="center" colspan="4"><span style="font-weight:bold;color:red;">*</span>
 			only <span style="font-weight:bold;">' . get_user_class_name($min_delete_view_class) . '</span> ' . $lang['vt_and_above_can_see_these_options'] . '</td>
       </tr>') . '
-      </table></form><br></div>
-      <script src="scripts/check_selected.js"></script>
-      <script src="scripts/jquery.trilemma.js"></script>
-      <script>
-      /*<![CDATA[*/
-      $(function(){
-      jQuery(\'.poll_select\').trilemma({max:' . $multi_options . ',disablelabels:true});
-      });
-      /*]]>*/
-      </script>
-      <script>
-      /*<![CDATA[*/
-      $(document).ready(function()	{
-      //=== show hide staff tools
-      $("#tool_open").click(function() {
-      $("#tools").slideToggle("slow", function() {
-      });
-      });
-      //=== show hide voters
-      $("#toggle_voters").click(function() {
-      $("#voters").slideToggle("slow", function() {
-      });
-      });
-      });
-      //=== show hide send PM
-      $("#pm_open").click(function() {
-      $("#pm").slideToggle("slow", function() {
-      });
-      });
-      /*]]>*/
-      </script>
-      ' : '');
+      </table></form><br></div>' : '');

@@ -46,7 +46,7 @@ function pager_new($count, $perpage, $page, $url, $page_link = false)
             }
             break;
     }
-    $menu = ($page == 1 ? ' <div style="text-align: center; font-weight: bold;"><img src="pic/arrow_prev.gif" alt="&lt;&lt;" /> Prev' : '<div style="text-align: center; font-weight: bold;"><a class="altlink" href="' . $url . '&amp;page=' . ($page - 1) . $page_link . '"><img src="pic/arrow_prev.gif" alt="&lt;&lt;" /> Prev</a>') . '&#160;&#160;&#160;' . $page_num . '&#160;&#160;&#160;' . ($page == $pages ? 'Next <img src="pic/arrow_next.gif" alt="&gt;&gt;" /></div> ' : ' <a class="altlink" href="' . $url . '&amp;page=' . ($page + 1) . $page_link . '">Next <img src="pic/arrow_next.gif" alt="&gt;&gt;" /></a></div>');
+    $menu = ($page == 1 ? ' <div style="text-align: center; font-weight: bold;"><img src="./images/forums/arrow_prev.gif" alt="&lt;&lt;" /> Prev' : '<div style="text-align: center; font-weight: bold;"><a class="altlink" href="' . $url . '&amp;page=' . ($page - 1) . $page_link . '"><img src="./images/forums/arrow_prev.gif" alt="&lt;&lt;" /> Prev</a>') . '&#160;&#160;&#160;' . $page_num . '&#160;&#160;&#160;' . ($page == $pages ? 'Next <img src="./images/forums/arrow_next.gif" alt="&gt;&gt;" /></div> ' : ' <a class="altlink" href="' . $url . '&amp;page=' . ($page + 1) . $page_link . '">Next <img src="./images/forums/arrow_next.gif" alt="&gt;&gt;" /></a></div>');
     $offset = ($page * $perpage) - $perpage;
     $LIMIT = ($count > 0 ? "LIMIT $offset,$perpage" : '');
 

@@ -89,7 +89,7 @@ if (!$_fromCache) {
     //country
     if ($var['use_country']) {
         $country = imagecreatefrompng('flags/' . $_flag . '.png');
-        //$country = imagecreatefrompng("../pic/flags/" . $_flag . ".gif");
+        //$country = imagecreatefrompng("../images/flags/" . $_flag . ".gif");
         imagecopy($im, $country, $_flag_xy[0], $_flag_xy[1], 0, 0, 16, 11);
     }
     //add username if the option is true

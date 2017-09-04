@@ -1,4 +1,31 @@
+4 Sept, 2017
+modify bbcode editor, add preview
+moved almost everything out of the webroot, incomplete
+merged default.css, bootstrap.css and bootstart-responsive.css
+updated to jquery 3.2.1
+updated jquery ui 1.12.1
+added more subtitle options for upload
+update upload
+moved bucket inside root
+updated bitbucket
+begin removing unneeded tables
+beigin replacing tooltips and hover popups with tooltipster
+begin modify all toggle/slide elements to operate uniformly
+
+21 Aug, 2017
+modify themeController to localstorage instead of cookies
+modify themeController add additional fonts and removed MS fonts
+modify themeController now also controls the fonts in AJAX Caht and trivia
+modify cleanup filelist.php
+
 20 Aug, 2017
+modify change sitelog message to be more consistant and easier to read
+fix install setting incorrect clean_time
+replaced Xmas with Christmas
+add function to return a random color
+fix incorrect minified js file being requested
+added cleanup log viewer in admin panel
+fix cleanup getting access to $queries count
 fix rename cleanup function names for concurrency
 
 19 Aug, 2017

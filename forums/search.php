@@ -94,8 +94,8 @@ if ($search) {
 	<a name="results"></a>
 	<table border="0" cellspacing="10" cellpadding="10" width="90%" align="center">	
 	<tr>
-	<td align="center" valign="middle" class="forum_head_dark" width="10"><img src="pic/forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
-	<td align="center" valign="middle" class="forum_head_dark" width="10"><img src="pic/forums/topic_normal.gif" alt="' . $lang['fe_thread_icon'] . '" title="' . $lang['fe_thread_icon'] . '" /></td>
+	<td align="center" valign="middle" class="forum_head_dark" width="10"><img src="./images/forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
+	<td align="center" valign="middle" class="forum_head_dark" width="10"><img src="./images/forums/topic_normal.gif" alt="' . $lang['fe_thread_icon'] . '" title="' . $lang['fe_thread_icon'] . '" /></td>
 	<td align="left" class="forum_head_dark">' . $lang['sea_topic_post'] . '</td>
 	<td align="left" class="forum_head_dark">' . $lang['sea_in_forum'] . '</td>
 	<td align="center" class="forum_head_dark">' . $lang['sea_relevance'] . '</td>
@@ -121,11 +121,11 @@ if ($search) {
                 $search_post = str_replace(' ', '+', $search);
                 $post_id = (int)$arr['post_id'];
                 $posts = (int)$arr['post_count'];
-                $post_text = tool_tip('<img src="pic/forums/mg.gif" height="14" alt="' . $lang['fe_preview'] . '" title="' . $lang['fe_preview'] . '" />', $body, '' . $lang['fe_post_preview'] . '');
+                $post_text = tool_tip('<img src="./images/forums/mg.gif" height="14" alt="' . $lang['fe_preview'] . '" title="' . $lang['fe_preview'] . '" />', $body, '' . $lang['fe_post_preview'] . '');
                 $rpic = ($arr['num_ratings'] != 0 ? ratingpic_forums(round($arr['rating_sum'] / $arr['num_ratings'], 1)) : '');
                 $content .= '<tr>
-		<td class="' . $class . '" align="center"><img src="pic/forums/' . ($posts < 30 ? ($arr['locked'] == 'yes' ? 'locked' : 'topic') : 'hot_topic') . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
-		<td class="' . $class . '" align="center">' . ($arr['icon'] == '' ? '<img src="pic/forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="pic/smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="' . htmlsafechars($arr['icon']) . '" title="' . htmlsafechars($arr['icon']) . '" />') . '</td>
+		<td class="' . $class . '" align="center"><img src="./images/forums/' . ($posts < 30 ? ($arr['locked'] == 'yes' ? 'locked' : 'topic') : 'hot_topic') . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
+		<td class="' . $class . '" align="center">' . ($arr['icon'] == '' ? '<img src="./images/forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="./images/smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="' . htmlsafechars($arr['icon']) . '" title="' . htmlsafechars($arr['icon']) . '" />') . '</td>
 		<td align="left" valign="middle" class="' . $class . '">
 		<table border="0" cellspacing="2" cellpadding="2">
 		<tr>
@@ -141,7 +141,7 @@ if ($search) {
 		</tr>
 		<tr>
 		<td  class="' . $class . '" align="right"><span style="font-style: italic;">' . $lang['ep_in_topic'] . ': </span></td>
-		<td  class="' . $class . '" align="left"> ' . ($arr['sticky'] == 'yes' ? '<img src="pic/forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" />' : '') . ($arr['poll_id'] > 0 ? '<img src="pic/forums/poll.gif" alt="Poll" title="Poll" />' : '') . '
+		<td  class="' . $class . '" align="left"> ' . ($arr['sticky'] == 'yes' ? '<img src="./images/forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" />' : '') . ($arr['poll_id'] > 0 ? '<img src="./images/forums/poll.gif" alt="Poll" title="Poll" />' : '') . '
 		<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . (int)$arr['topic_id'] . '" title="' . $lang['sea_go_to_topic'] . '">' . $topic_title . '</a>' . $post_text . '</td>
 		<td class="' . $class . '" align="right"> ' . $rpic . '</td>
 		</tr>
@@ -197,7 +197,7 @@ if ($show_as === 'posts') {
         }
         $post_id = (int)$arr['post_id'];
         $posts = (int)$arr['post_count'];
-        $post_icon = ($arr['icon'] != '' ? '<img src="pic/smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" /> ' : '<img src="pic/forums/topic_normal.gif" alt="Normal Topic" /> ');
+        $post_icon = ($arr['icon'] != '' ? '<img src="./images/smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" /> ' : '<img src="./images/forums/topic_normal.gif" alt="Normal Topic" /> ');
         $edited_by = '';
         if ($arr['edit_date'] > 0) {
             $res_edited = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr['edited_by']));
@@ -216,8 +216,8 @@ if ($show_as === 'posts') {
 	<td class="forum_head" align="left" valign="middle">
 	<span style="white-space:nowrap;">' . $post_icon . '<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '&amp;page=' . $page . '#' . (int)$arr['post_id'] . '" title="Link to Post">' . $post_title . '</a>&#160;&#160;&#160;&#160; ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span></td>
 	<td class="forum_head" align="right" valign="middle"><span style="white-space:nowrap;"> 
-	<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#top"><img src="pic/forums/up.gif" alt="' . $lang['fe_top'] . '" title="' . $lang['fe_top'] . '"/></a> 
-	<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#bottom"><img src="pic/forums/down.gif" alt="' . $lang['fe_bottom'] . '" title="' . $lang['fe_bottom'] . '" /></a> 
+	<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#top"><img src="./images/forums/up.gif" alt="' . $lang['fe_top'] . '" title="' . $lang['fe_top'] . '"/></a> 
+	<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#bottom"><img src="./images/forums/down.gif" alt="' . $lang['fe_bottom'] . '" title="' . $lang['fe_bottom'] . '" /></a> 
 	</span></td>
 	</tr>		
 	<tr><td class="' . $class_alt . '" align="center" width="100px" valign="top">' . ($arr['tan'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($arr)) . '<br>' . ($arr['tan'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : print_user_stuff($arr)) . ($arr['anonymous'] == 'yes' || $arr['title'] == '' ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($arr['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['tan'] == 'yes' ? '' : get_user_class_name($arr['class'])) . '</span><br>
@@ -350,8 +350,8 @@ $HTMLOUT .= '<h1>' . $lang['sea_forums'] . '</h1>' . $links . ($count > 0 ? '<h1
 	<td class="three" align="left">
 	<input type="text" class="search" name="search" value="' . htmlsafechars($search) . '" /> 	
 	<span style="text-align: right;">
-	<a class="altlink"  title="' . $lang['sea_open_boolean_search_help'] . '"  id="help_open" style="font-weight:bold;cursor:help;"><img src="pic/forums/more.gif" alt="+" title="+" width="18" /> ' . $lang['sea_open_boolean_search_help'] . '</a> 
-	<a class="altlink"  title="' . $lang['sea_close_boolean_search_help'] . '"  id="help_close" style="font-weight:bold;cursor:pointer;display:none"><img src="pic/forums/less.gif" alt="-" title="-" width="18" /> ' . $lang['sea_close_boolean_search_help'] . '</a> <br>
+	<a class="altlink"  title="' . $lang['sea_open_boolean_search_help'] . '"  id="help_open" style="font-weight:bold;cursor:help;"><img src="./images/forums/more.gif" alt="+" title="+" width="18" /> ' . $lang['sea_open_boolean_search_help'] . '</a> 
+	<a class="altlink"  title="' . $lang['sea_close_boolean_search_help'] . '"  id="help_close" style="font-weight:bold;cursor:pointer;display:none"><img src="./images/forums/less.gif" alt="-" title="-" width="18" /> ' . $lang['sea_close_boolean_search_help'] . '</a> <br>
 	</span>' . $search__help_boolean . '</td>
 	</tr>
 	<tr>

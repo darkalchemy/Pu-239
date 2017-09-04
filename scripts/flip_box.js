@@ -2,7 +2,7 @@
 // will open and close a <div> and change an image on click
 // how to use:
 //
-// <a name=$x id=$x></a> <img onclick="javascript:flipBox('".$arr['id']."')" src='pic/panel_on.gif' name='b_".$arr['id']."' style='vertical-align:middle;' />&#160;<a class=altlink href="#$x" onclick="javascript:flipBox('".$arr['id']."')" src='pic/panel_on.gif' name='b_".$arr['id']."'> LINK TEXT HERE</a>
+// <a name=$x id=$x></a> <img onclick="javascript:flipBox('".$arr['id']."')" src='./images/panel_on.gif' name='b_".$arr['id']."' style='vertical-align:middle;' />&#160;<a class=altlink href="#$x" onclick="javascript:flipBox('".$arr['id']."')" src='./images/panel_on.gif' name='b_".$arr['id']."'> LINK TEXT HERE</a>
 // <div align='left' id='box_".$arr['id']."' style='display:none'><p> CONTENT </p></div>
 // 
 // 

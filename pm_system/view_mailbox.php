@@ -91,11 +91,11 @@ if (mysqli_num_rows($res) === 0) {
         /*
                 $subject = (!empty($row['subject']) ? htmlsafechars($row['subject']) : 'No Subject');
                 $who_sent_it = ($row['id'] == 0 ? '<span style="font-weight: bold;">System</span>' : print_user_stuff($row).$friends);
-                $read_unread = ($row['unread'] === 'yes' ? '<img src="pic/pn_inboxnew.gif" title="' . $lang['pm_mailbox_unreadmsg'] . '" alt="' . $lang['pm_mailbox_unread'] . '" />' : '<img src="pic/pn_inbox.gif" title="' . $lang['pm_mailbox_readmsg'] . '" alt="' . $lang['pm_mailbox_read'] . '" />');
+                $read_unread = ($row['unread'] === 'yes' ? '<img src="./images/pn_inboxnew.gif" title="' . $lang['pm_mailbox_unreadmsg'] . '" alt="' . $lang['pm_mailbox_unread'] . '" />' : '<img src="./images/pn_inbox.gif" title="' . $lang['pm_mailbox_readmsg'] . '" alt="' . $lang['pm_mailbox_read'] . '" />');
                 $extra = ($row['unread'] === 'yes' ? $spacer.'' . $lang['pm_mailbox_char1'] . '<span style="color: red;">' . $lang['pm_mailbox_unread'] . '</span>' . $lang['pm_mailbox_char2'] . '' : '').($row['urgent'] === 'yes' ? $spacer.'<span style="color: red;">' . $lang['pm_mailbox_urgent'] . '</span>' : '');
                 $avatar = (($CURUSER['avatars'] === 'no' || $CURUSER['show_pm_avatar'] === 'no' || $row['id'] == 0)? '' : (empty($row['avatar']) ? '
-                <img width="40" src="pic/default_avatar.gif" alt="no avatar" />' : (($row['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ?
-                '<img width="40" src="pic/fuzzybunny.gif" alt="fuzzy!" />' : '<img width="40" src="'.htmlsafechars($row['avatar']).'" alt="avatar" />')));
+                <img width="40" src="./images/forumicons/default_avatar.gif" alt="no avatar" />' : (($row['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ?
+                '<img width="40" src="./images/fuzzybunny.gif" alt="fuzzy!" />' : '<img width="40" src="'.htmlsafechars($row['avatar']).'" alt="avatar" />')));
 
                 $HTMLOUT .= '
                 <tr>
@@ -108,10 +108,10 @@ if (mysqli_num_rows($res) === 0) {
         */
         $subject = (!empty($row['subject']) ? htmlsafechars($row['subject']) : $lang['pm_search_nosubject']);
         $who_sent_it = ($row['id'] == 0 ? '<span style="font-weight: bold;">' . $lang['pm_forward_system'] . '</span>' : print_user_stuff($row) . $friends);
-        $read_unread = ($row['unread'] === 'yes' ? '<img src="pic/pn_inboxnew.gif" title="' . $lang['pm_mailbox_unreadmsg'] . '" alt="' . $lang['pm_mailbox_unread'] . '" />' : '<img src="pic/pn_inbox.gif" title="' . $lang['pm_mailbox_readmsg'] . '" alt="' . $lang['pm_mailbox_read'] . '" />');
+        $read_unread = ($row['unread'] === 'yes' ? '<img src="./images/pn_inboxnew.gif" title="' . $lang['pm_mailbox_unreadmsg'] . '" alt="' . $lang['pm_mailbox_unread'] . '" />' : '<img src="./images/pn_inbox.gif" title="' . $lang['pm_mailbox_readmsg'] . '" alt="' . $lang['pm_mailbox_read'] . '" />');
         $extra = ($row['unread'] === 'yes' ? $spacer . '' . $lang['pm_mailbox_char1'] . '<span style="color: red;">' . $lang['pm_mailbox_unread'] . '</span>' . $lang['pm_mailbox_char2'] . '' : '') . ($row['urgent'] === 'yes' ? $spacer . '<span style="color: red;">' . $lang['pm_mailbox_urgent'] . '</span>' : '');
         $avatar = ((!$CURUSER['opt1'] & user_options::AVATARS || !$CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR || $row['id'] == 0) ? '' : (empty($row['avatar']) ? '
-                <img width="40" src="pic/default_avatar.gif" alt="no avatar" />' : (($row['opt1'] & user_options::OFFENSIVE_AVATAR && !$CURUSER['opt1'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img width="40" src="pic/fuzzybunny.gif" alt="fuzzy!" />' : '<img width="40" src="' . htmlsafechars($row['avatar']) . '" alt="avatar" />')));
+                <img width="40" src="./images/forumicons/default_avatar.gif" alt="no avatar" />' : (($row['opt1'] & user_options::OFFENSIVE_AVATAR && !$CURUSER['opt1'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img width="40" src="./images/fuzzybunny.gif" alt="fuzzy!" />' : '<img width="40" src="' . htmlsafechars($row['avatar']) . '" alt="avatar" />')));
         $HTMLOUT .= '
                 <tr>
                     <td class="' . $class . '" align="center">' . $read_unread . '</td>
@@ -148,8 +148,8 @@ $HTMLOUT .= (mysqli_num_rows($res) > 0 ? '
    </tr>
     <tr>
         <td colspan="5" align="left">
-        <img src="pic/pn_inboxnew.gif" title="' . $lang['pm_mailbox_unreadmsg'] . '" alt="' . $lang['pm_mailbox_unread'] . '" />' . $lang['pm_mailbox_unreadmsgs'] . '<br>
-        <img src="pic/pn_inbox.gif" title="' . $lang['pm_mailbox_readmsg'] . '" alt="' . $lang['pm_mailbox_read'] . '" />' . $lang['pm_mailbox_readmsgs'] . '</td>
+        <img src="./images/pn_inboxnew.gif" title="' . $lang['pm_mailbox_unreadmsg'] . '" alt="' . $lang['pm_mailbox_unread'] . '" />' . $lang['pm_mailbox_unreadmsgs'] . '<br>
+        <img src="./images/pn_inbox.gif" title="' . $lang['pm_mailbox_readmsg'] . '" alt="' . $lang['pm_mailbox_read'] . '" />' . $lang['pm_mailbox_readmsgs'] . '</td>
     </tr>' : '') . '
     </table>
         ' . ($perpage < $messages ? '' . $menu . '<br>' : '') . '

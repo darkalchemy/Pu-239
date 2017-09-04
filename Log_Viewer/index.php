@@ -734,7 +734,7 @@ $csrf = csrf_get();
                                                         class="form-control"
                                                         placeholder="<?php _h('Password Confirmation') ?>"></div>
                                             <span class="help-block"
-                                                  id="umUsersAddPwdHelp"><?php _e('Leave password fields blank if you don\'t want to change it'); ?></span>
+                                                  id="umUsersAddPwdHelp"><?php _e("Leave password fields blank if you don't want to change it"); ?></span>
                                         </div>
                                     </div>
                                     <div class="form-group"><label for="roles"

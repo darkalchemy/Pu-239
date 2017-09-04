@@ -115,7 +115,7 @@ if ($INSTALLER09['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] =
             $mark_of_cain = ($a['mark_of_cain'] == 'yes' ? "<img src='{$INSTALLER09['pic_base_url']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' title='{$lang['userdetails_c_tmofcain']}' />" . $checkbox_for_delete : '');
             $hit_n_run = ($a['hit_and_run'] > 0 ? "<img src='{$INSTALLER09['pic_base_url']}hnr.gif' width='40px' alt='{$lang['userdetails_c_hitrun']}' title='{$lang['userdetails_c_hitrun1']}' />" : '');
             if (XBT_TRACKER === false) {
-                $completed .= "<tr><td style='padding: 0px' class='$class'><img src='{$INSTALLER09['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
+                $completed .= "<tr><td style='padding: 0px' class='$class'><img src='{$INSTALLER09['pic_base_url']}caticons/" . get_categorie_icons() . "/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
     <td class='$class'><a class='altlink' href='{$INSTALLER09['baseurl']}/details.php?id=" . (int)$a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
     <br><font color='.$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00' && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['seeder'] == 'yes' ? "&#160;<font color='limegreen'> [<b>{$lang['userdetails_c_seeding']}</b>]</font>" : $hit_n_run . '&#160;' . $mark_of_cain) : '') . "</td>
     <td align='center' class='$class'>" . (int)$a['seeders'] . "</td>
@@ -127,7 +127,7 @@ if ($INSTALLER09['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] =
     <td align='center' class='$class'>" . get_date($a['last_action'], 'DATE') . "</td>
     <td align='center' class='$class'><font color='$dlc'>[{$lang['userdetails_c_dled']}$dl_speed ]</font></td></tr>";
             } else {
-                $completed .= "<tr><td style='padding: 0px' class='$class'><img src='{$INSTALLER09['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
+                $completed .= "<tr><td style='padding: 0px' class='$class'><img src='{$INSTALLER09['pic_base_url']}caticons/" . get_categorie_icons() . "/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
     <td class='$class'><a class='altlink' href='{$INSTALLER09['baseurl']}/details.php?id=" . (int)$a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
     <br><font color='.$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00' && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['active'] == 1 && $a['left'] = 0 ? "&#160;<font color='limegreen'> [<b>{$lang['userdetails_c_seeding']}</b>]</font>" : $hit_n_run) : '') . "</td>
     <td align='center' class='$class'>" . (int)$a['seeders'] . "</td>

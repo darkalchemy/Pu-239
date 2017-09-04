@@ -17,7 +17,7 @@ if (($last24_cache = $mc1->get_value($keys['last24'])) === false) {
     }
     while ($arr = mysqli_fetch_assoc($res)) {
         if ($activeusers24) {
-            $activeusers24 .= ",\n";
+            $activeusers24 .= ', ';
         }
         $activeusers24 .= format_username($arr['id']);
     }
@@ -36,13 +36,13 @@ if ($last24_cache['totalonline24'] != 1) {
 } else {
     $last24_cache['ss24'] = $lang['gl_member'];
 }
-$last_24 = '<fieldset class="header"><legend>' . $lang['index_active24'] . '<small><b>' . $lang['index_last24_list'] . '</b></small></legend>
-     <div class="container-fluid">
-     <!--<a href=\'javascript: klappe_news("a2")\'><img border=\'0\' src=\'pic/plus.gif\' id=\'pica2\' alt=\'' . $lang['index_hide_show'] . '\' /></a><div id=\'ka2\' style=\'display: none;\'>-->
-     <!--<a class="altlink"  title="' . $lang['index_click_more'] . '" id="div_open" style="font-weight:bold;cursor:pointer;"><img border=\'0\' src=\'pic/plus.gif\' alt=\'' . $lang['index_hide_show'] . '\' /></a>
-     <div id="div_info" style="display:none;background-color:#FEFEF4;max-width:940px;padding: 5px 5px 5px 10px;">-->
-     <p><b>' . $last24_cache['totalonline24'] . $last24_cache['ss24'] . '' . $lang['index_last24_during'] . '</b></p>
-     <p>' . $last24_cache['activeusers24'] . '</p>
-     <p><b>' . $lang['index_last24_most'] . $last24_cache['last24'] . $last24_cache['ss24'] . $lang['index_last24_on'] . $last24_cache['last24record'] . '</b></p>
-     </div><!--</div>--></fieldset>';
-$HTMLOUT .= $last_24;
+$HTMLOUT .= "
+        <a id='active24-hash'></a>
+        <fieldset id='active24' class='header'>
+            <legend class='flipper'><i class='fa fa-angle-up' aria-hidden='true'></i>{$lang['index_active24']}<small><b>{$lang['index_last24_list']}</b></small></legend>
+            <div class='text-center'>
+                <p><b>{$last24_cache['totalonline24']}{$last24_cache['ss24']}{$lang['index_last24_during']}</b></p>
+                <p>{$last24_cache['activeusers24']}</p>
+                <p><b>{$lang['index_last24_most']}{$last24_cache['last24']}{$last24_cache['ss24']}{$lang['index_last24_on']}{$last24_cache['last24record']}</b></p>
+            </div>
+        </fieldset>";

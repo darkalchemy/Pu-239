@@ -64,12 +64,12 @@ $lang = [
     'my_side1'                       => '(Check to turn Side Menu on!)',
     'my_revert'                      => 'Revert changes!',
     'my_none_select'                 => '---- None selected ----',
-    'my_q1'                          => 'Mother\'s birthplace',
+    'my_q1'                          => "Mother's birthplace",
     'my_q2'                          => 'Best childhood friend',
     'my_q3'                          => 'Name of first pet',
     'my_q4'                          => 'Favorite teacher',
     'my_q5'                          => 'Favorite historical person',
-    'my_q6'                          => 'Grandfather\'s occupation',
+    'my_q6'                          => "Grandfather's occupation",
     'my_question'                    => 'Question',
     'my_sec_answer'                  => 'Secret answer',
     'my_acc_parked'                  => 'Account parked',
@@ -84,5 +84,5 @@ $lang = [
     'my_scloud'                      => 'Search Cloud',
     'my_scloud1'                     => '(Enable/Disable searchcloud on browse !)',
     //my stdhead
-    'my_stdhead'                     => '\'s private page',
+    'my_stdhead'                     => "'s private page",
 ];

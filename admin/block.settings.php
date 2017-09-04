@@ -68,7 +68,7 @@ function get_cache_array()
         'ads_on'                           => 1,
         'radio_on'                         => 1,
         'torrentfreak_on'                  => 1,
-        'xmas_gift_on'                     => 1,
+        'christmas_gift_on'                => 1,
         'active_poll_on'                   => 1,
         'movie_ofthe_week_on'              => 1,
         'global_demotion_on'               => 1,
@@ -264,9 +264,9 @@ $HTMLOUT .= '
     
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
-    <b>' . $lang['block_xmas'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
-    <div>' . $lang['block_xmas_set'] . '</div></td>
-    <td width="40%"><div style="width: auto;" align="right"><#xmas_gift_on#></div></td>
+    <b>' . $lang['block_christmas'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
+    <div>' . $lang['block_christmas_set'] . '</div></td>
+    <td width="40%"><div style="width: auto;" align="right"><#christmas_gift_on#></div></td>
     </tr></table>
     
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
@@ -597,7 +597,7 @@ function redirect($url, $text, $time = 2)
 		<head>
 		<meta http-equiv='refresh' content=\"{$time}; url={$INSTALLER09['baseurl']}/{$url}\" />
 		<title>{$lang['block_stdhead']}</title>
-    <link rel='stylesheet' href='./templates/1/default.css' />
+    <link rel='stylesheet' href='./css/" . get_stylesheet() . "/f6612415ae84278cd9d18ea8bca45b07.min.css' />
     </head>
     <body>
     <div>

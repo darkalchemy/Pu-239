@@ -28,60 +28,61 @@ if (($stats_cache = $mc1->get_value('site_stats_')) === false) {
     $mc1->cache_value('site_stats_', $stats_cache, $INSTALLER09['expires']['site_stats']);
 }
 $HTMLOUT .= "
-	<fieldset class='header'><legend>{$lang['index_stats_title']}</legend>
-		<div class='container-fluid cite text-center'>
-		<!--<a href=\"javascript: klappe_news('a3')\"><img border=\"0\" src=\"pic/plus.gif\" id=\"pica3\" alt=\"{$lang['index_hide_show']}\" /></a><div id=\"ka3\" style=\"display: none;\">-->    
-			<table class='table table-bordered  table-striped'>
-				<tbody>
-					<tr>
-						<td class='row-fluid span2'>{$lang['index_stats_regged']}</td><td class='row-fluid span1'>{$stats_cache['regusers']}/{$INSTALLER09['maxusers']}</td>
-						<td class='row-fluid span2'>{$lang['index_stats_online']}</td><td class='row-fluid span1'>{$stats_cache['numactive']}</td>
-					</tr>
-					<tr>
-						<td>{$lang['index_stats_uncon']}</td><td>{$stats_cache['unconusers']}</td>
-						<td>{$lang['index_stats_donor']}</td><td>{$stats_cache['donors']}</td>
-					</tr>
-					<tr>
-						<td>{$lang['index_stats_newtor_month']}</td><td>{$stats_cache['torrentsmonth']}</td>
-						<td>{$lang['index_stats_gender_na']}</td><td>{$stats_cache['gender_na']}</td>
-					</tr>
-					<tr>
-						<td>{$lang['index_stats_gender_male']}</td><td>{$stats_cache['gender_male']}</td>
-						<td>{$lang['index_stats_gender_female']}</td><td>{$stats_cache['gender_female']}</td>
-					</tr>    
-					<tr>
-						<td>{$lang['index_stats_powerusers']}</td><td>{$stats_cache['powerusers']}</td>
-						<td>{$lang['index_stats_banned']}</td><td>{$stats_cache['disabled']}</td>
-					</tr>  
-					<tr>
-						<td>{$lang['index_stats_uploaders']}</td><td>{$stats_cache['uploaders']}</td>
-						<td>{$lang['index_stats_moderators']}</td><td>{$stats_cache['moderators']}</td>
-					</tr>
-					<tr>
-						<td>{$lang['index_stats_admin']}</td><td>{$stats_cache['administrators']}</td>
-						<td>{$lang['index_stats_sysops']}</td><td>{$stats_cache['sysops']}</td>
-					</tr>
-					<tr>
-						<td>{$lang['index_stats_topics']}</td><td>{$stats_cache['forumtopics']}</td>
-						<td>{$lang['index_stats_torrents']}</td><td>{$stats_cache['torrents']}</td>
-					</tr>
-					<tr>
-						<td>{$lang['index_stats_posts']}</td><td>{$stats_cache['forumposts']}</td>
-						<td>{$lang['index_stats_newtor']}</td><td>{$stats_cache['torrentstoday']}</td>
-					</tr>       
-					<tr>
-						<td>{$lang['index_stats_peers']}</td><td>{$stats_cache['peers']}</td>
-						<td>{$lang['index_stats_unconpeer']}</td><td>{$stats_cache['unconnectables']}</td>
-					</tr>
-					<tr>
-						<td>{$lang['index_stats_seeders']}</td><td align='right'>{$stats_cache['seeders']}</td>
-						<td><b>{$lang['index_stats_unconratio']}</b></td><td><b>" . round($stats_cache['ratiounconn'] * 100) . "</b></td>
-					</tr>
-					<tr>
-						<td>{$lang['index_stats_leechers']}</td><td>{$stats_cache['leechers']}</td>
-						<td>{$lang['index_stats_slratio']}</td><td>" . round($stats_cache['ratio'] * 100) . '</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</fieldset>';
+    <a id='stats-hash'></a>
+    <fieldset id='stats' class='header'>
+        <legend class='flipper'><i class='fa fa-angle-up' aria-hidden='true'></i>{$lang['index_stats_title']}</legend>
+        <div class='cite text-center'>
+            <table class='table table-bordered  table-striped'>
+                <tbody>
+                    <tr>
+                        <td class='row-fluid span2'>{$lang['index_stats_regged']}</td><td class='row-fluid span1'>{$stats_cache['regusers']}/{$INSTALLER09['maxusers']}</td>
+                        <td class='row-fluid span2'>{$lang['index_stats_online']}</td><td class='row-fluid span1'>{$stats_cache['numactive']}</td>
+                    </tr>
+                    <tr>
+                        <td>{$lang['index_stats_uncon']}</td><td>{$stats_cache['unconusers']}</td>
+                        <td>{$lang['index_stats_donor']}</td><td>{$stats_cache['donors']}</td>
+                    </tr>
+                    <tr>
+                        <td>{$lang['index_stats_newtor_month']}</td><td>{$stats_cache['torrentsmonth']}</td>
+                        <td>{$lang['index_stats_gender_na']}</td><td>{$stats_cache['gender_na']}</td>
+                    </tr>
+                    <tr>
+                        <td>{$lang['index_stats_gender_male']}</td><td>{$stats_cache['gender_male']}</td>
+                        <td>{$lang['index_stats_gender_female']}</td><td>{$stats_cache['gender_female']}</td>
+                    </tr>
+                    <tr>
+                        <td>{$lang['index_stats_powerusers']}</td><td>{$stats_cache['powerusers']}</td>
+                        <td>{$lang['index_stats_banned']}</td><td>{$stats_cache['disabled']}</td>
+                    </tr>
+                    <tr>
+                        <td>{$lang['index_stats_uploaders']}</td><td>{$stats_cache['uploaders']}</td>
+                        <td>{$lang['index_stats_moderators']}</td><td>{$stats_cache['moderators']}</td>
+                    </tr>
+                    <tr>
+                        <td>{$lang['index_stats_admin']}</td><td>{$stats_cache['administrators']}</td>
+                        <td>{$lang['index_stats_sysops']}</td><td>{$stats_cache['sysops']}</td>
+                    </tr>
+                    <tr>
+                        <td>{$lang['index_stats_topics']}</td><td>{$stats_cache['forumtopics']}</td>
+                        <td>{$lang['index_stats_torrents']}</td><td>{$stats_cache['torrents']}</td>
+                    </tr>
+                    <tr>
+                        <td>{$lang['index_stats_posts']}</td><td>{$stats_cache['forumposts']}</td>
+                        <td>{$lang['index_stats_newtor']}</td><td>{$stats_cache['torrentstoday']}</td>
+                    </tr>
+                    <tr>
+                        <td>{$lang['index_stats_peers']}</td><td>{$stats_cache['peers']}</td>
+                        <td>{$lang['index_stats_unconpeer']}</td><td>{$stats_cache['unconnectables']}</td>
+                    </tr>
+                    <tr>
+                        <td>{$lang['index_stats_seeders']}</td><td align='right'>{$stats_cache['seeders']}</td>
+                        <td><b>{$lang['index_stats_unconratio']}</b></td><td><b>" . round($stats_cache['ratiounconn'] * 100) . "</b></td>
+                    </tr>
+                    <tr>
+                        <td>{$lang['index_stats_leechers']}</td><td>{$stats_cache['leechers']}</td>
+                        <td>{$lang['index_stats_slratio']}</td><td>" . round($stats_cache['ratio'] * 100) . '</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </fieldset>';

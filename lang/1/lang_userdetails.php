@@ -164,9 +164,9 @@ $lang = [
     'karma_pupped'                  => 'Pure upload',
     'karma_rratio'                  => 'Real ratio',
     'karma_lsent'                   => 'Love sent',
-    'karma_lsent1'                  => 'points given as karma gift\'s',
+    'karma_lsent1'                  => "points given as karma gift's",
     'karma_lrec'                    => 'Love received',
-    'karma_lrec1'                   => ' points recieved as karma gift\'s',
+    'karma_lrec1'                   => " points recieved as karma gift's",
     'userdetails_parked'            => 'This Account is Currently Parked!',
     'userdetails_games'             => 'Games possible',
     //Added by whocares

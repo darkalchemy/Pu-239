@@ -48,7 +48,7 @@ function karmavip_update($data)
     }
     //==
     if ($queries > 0) {
-        write_log("Karma Vip Clean -------------------- Karma Vip cleanup Complete using $queries queries --------------------");
+        write_log("Karma Vip Cleanup: Completed using $queries queries");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';

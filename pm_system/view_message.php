@@ -31,11 +31,11 @@ if ($message['friend'] > 0) {
 }
 /*
     $avatar = ($CURUSER['avatars'] === 'no' ? '' : (empty($arr_user_stuff['avatar']) ? '
-    <img width="80" src="pic/default_avatar.gif" alt="no avatar" />' : (($arr_user_stuff['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ?
-    '<img width="80" src="pic/fuzzybunny.gif" alt="fuzzy!" />' : '<a href="'.htmlsafechars($arr_user_stuff['avatar']).'"><img width="80" src="'.htmlsafechars($arr_user_stuff['avatar']).'" alt="avatar" /></a>')));
+    <img width="80" src="./images/forumicons/default_avatar.gif" alt="no avatar" />' : (($arr_user_stuff['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ?
+    '<img width="80" src="./images/fuzzybunny.gif" alt="fuzzy!" />' : '<a href="'.htmlsafechars($arr_user_stuff['avatar']).'"><img width="80" src="'.htmlsafechars($arr_user_stuff['avatar']).'" alt="avatar" /></a>')));
 */
 $avatar = (!$CURUSER['opt1'] & user_options::AVATARS ? '' : (empty($arr_user_stuff['avatar']) ? '
-    <img width="80" src="pic/default_avatar.gif" alt="no avatar" />' : (($arr_user_stuff['opt1'] & user_options::OFFENSIVE_AVATAR && !$CURUSER['opt1'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img width="80" src="pic/fuzzybunny.gif" alt="fuzzy!" />' : '<a href="' . htmlsafechars($arr_user_stuff['avatar']) . '"><img width="80" src="' . htmlsafechars($arr_user_stuff['avatar']) . '" alt="avatar" /></a>')));
+    <img width="80" src="./images/forumicons/default_avatar.gif" alt="no avatar" />' : (($arr_user_stuff['opt1'] & user_options::OFFENSIVE_AVATAR && !$CURUSER['opt1'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img width="80" src="./images/fuzzybunny.gif" alt="fuzzy!" />' : '<a href="' . htmlsafechars($arr_user_stuff['avatar']) . '"><img width="80" src="' . htmlsafechars($arr_user_stuff['avatar']) . '" alt="avatar" /></a>')));
 $the_buttons = '<input type="submit" class="button_tiny" value="' . $lang['pm_viewmsg_move'] . '" onmouseover="this.className=\'button_tiny_hover\'" onmouseout="this.className=\'button_tiny\'" /></form>
             <a class="buttlink"  href="pm_system.php?action=delete&amp;id=' . $pm_id . '"><input type="submit" class="button_tiny" value="' . $lang['pm_viewmsg_delete'] . '" onmouseover="this.className=\'button_tiny_hover\'" onmouseout="this.className=\'button_tiny\'" /></a>' . ($message['draft'] === 'no' ? '
             <a class="buttlink"  href="pm_system.php?action=save_or_edit_draft&amp;id=' . $pm_id . '"><input type="submit" class="button" value="' . $lang['pm_viewmsg_sdraft'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></a>' . (($id < 1 || $message['sender'] === $CURUSER['id']) ? '' : ' 

@@ -10,7 +10,7 @@ function referrer_update($data)
     sql_query('DELETE FROM referrers WHERE date < ' . sqlesc($dt)) or sqlerr(__FILE__, __LINE__);
     // End Delete Last Referrers
     if ($queries > 0) {
-        write_log("Referrer Clean -------------------- Referrer cleanup Complete using $queries queries --------------------");
+        write_log("Referrer Cleanup: Completed using $queries queries");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';

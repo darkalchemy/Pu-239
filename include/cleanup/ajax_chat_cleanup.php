@@ -12,4 +12,8 @@ function ajax_chat_cleanup($data)
         sql_query("INSERT INTO ajax_chat_messages (userID, userName, userRole, channel, dateTime, ttl, ip, text) VALUES (2, " . sqlesc($INSTALLER09['chatBotName']) ." ," . sqlesc($INSTALLER09['chatBotRole']) . ", " . $row[1] . ", NOW(), 240, '', '/delete " . $row[0] . "')") or sqlerr(__FILE__, __LINE__);
         sql_query('DELETE FROM ajax_chat_messages WHERE id = ' . $row[0]) or sqlerr(__FILE__, __LINE__);
     }
+
+    if ($queries > 0) {
+        write_log("AJAX Chat Cleanup: Autoshout posts Deleted using $queries queries");
+    }
 }

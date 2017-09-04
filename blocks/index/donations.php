@@ -1,25 +1,32 @@
 <?php
+
+//== 09 Donation progress
 $progress = '';
 if (($totalfunds_cache = $mc1->get_value('totalfunds_')) === false) {
     $totalfunds_cache = mysqli_fetch_assoc(sql_query('SELECT sum(cash) as total_funds FROM funds'));
-    $totalfunds_cache['total_funds'] = (int)$totalfunds_cache['total_funds'];
+    $totalfunds_cache['total_funds'] = (int) $totalfunds_cache['total_funds'];
     $mc1->cache_value('totalfunds_', $totalfunds_cache, $INSTALLER09['expires']['total_funds']);
 }
-$funds_so_far = (int)$totalfunds_cache['total_funds'];
+$funds_so_far = (int) $totalfunds_cache['total_funds'];
 $funds_difference = $INSTALLER09['totalneeded'] - $funds_so_far;
-$Progress_so_far = number_format($funds_so_far / $INSTALLER09['totalneeded'] * 100, 1);
-if ($Progress_so_far >= 100) {
-    $Progress_so_far = 100;
+$progress = number_format($funds_so_far / $INSTALLER09['totalneeded'] * 100, 1);
+if ($progress >= 100) {
+    $progress = 100;
 }
-
-$HTMLOUT .= "<fieldset class='header'><legend>{$lang['index_donations']}</legend>
-			<div class='container-fluid text-center'>
-			<a href='./donate.php'><img border='0' src='{$INSTALLER09['pic_base_url']}makedonation.gif' alt='{$lang['index_donations']}' title='{$lang['index_donations']}'  /></a><br>
-				<table class='text-center' width='140' style='margin-bottom: 20px; height: 20%;' border='2'>
-					<tr>
-						<td bgcolor='transparent' align='center' valign='middle' width='$Progress_so_far%'>$Progress_so_far%</td>
-						<td bgcolor='grey' align='center' valign='middle'></td>
-					</tr>
-				</table>
-			</div>
-			</fieldset>";
+$HTMLOUT .= "
+        <a id='donations-hash'></a>
+        <fieldset id='donations' class='header'>
+            <legend class='flipper'><i class='fa fa-angle-up' aria-hidden='true'></i>{$lang['index_donations']}</legend>
+            <div class='text-center'>
+                <p>
+                    <a href='{$INSTALLER09['baseurl']}/donate.php'>
+                        <img border='0' style='width: 92px; height: 42px;' src='{$INSTALLER09['pic_base_url']}makedonation.gif' alt='{$lang['index_donations']}' title='{$lang['index_donations']}' class='tooltipper' />
+                    </a>
+                </p>
+                <div class='progress text-center' style='width: 250px;'>
+                    <div class='progress-bar progress-bar-success' role='progressbar' aria-valuenow='{$progress}' aria-valuemin='0' aria-valuemax='100' style='width:{$progress}%'>
+                        $progress% Complete
+                    </div>
+                </div>
+            </div>
+        </fieldset>";

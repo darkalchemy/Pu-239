@@ -19,7 +19,6 @@ $stdhead = [
 ];
 $stdfoot = [
     'js' => [
-        'shout',
         'check_selected',
     ],
 ];

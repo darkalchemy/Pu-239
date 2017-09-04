@@ -30,7 +30,7 @@ function birthday_update($data)
         if ($count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO users (id, uploaded) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE uploaded=uploaded+values(uploaded)') or sqlerr(__FILE__, __LINE__);
-            write_log("Cleanup: Pm'd' " . $count . ' member(s) and awarded a birthday prize');
+            write_log("Birthday Cleanup: Pm'd' " . $count . ' member(s) and awarded a birthday prize');
         }
         unset($users_buffer, $msgs_buffer, $count);
     }

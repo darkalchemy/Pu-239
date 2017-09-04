@@ -49,7 +49,7 @@ $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
    <meta http-equiv="Content-Language" content="en-us" />
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
    <title>' . $lang['user_mood_title'] . '</title>
-   <link rel="stylesheet" href="./templates/' . $CURUSER['stylesheet'] . '/' . $CURUSER['stylesheet'] . '.css" />
+   <link rel="stylesheet" href="./css/' . get_stylesheet() . '/f6612415ae84278cd9d18ea8bca45b07.min.css" />
 </head>
 <body>
 <h3 align="center">' . $CURUSER['username'] . '\'' . $lang['user_mood_s'] . '</h3>

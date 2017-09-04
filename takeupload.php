@@ -245,11 +245,10 @@ $dict['comment'] = ("In using this torrent you are bound by the {$INSTALLER09['s
 $visible = (XBT_TRACKER == true ? 'yes' : 'no');
 $torrent = str_replace('_', ' ', $torrent);
 $vip = (isset($_POST['vip']) ? '1' : '0');
-$ret = sql_query('INSERT INTO torrents (search_text, filename, owner, username, visible, vip, release_group, newgenre, poster, anonymous, allow_comments, info_hash, name, size, numfiles, type, offer, request, url, subs, descr, ori_descr, description, category, free, silver, save_as, youtube, tags, added, last_action, mtime, ctime, freetorrent, nfo, client_created_by) VALUES (' . implode(',', array_map('sqlesc', [
+$ret = sql_query('INSERT INTO torrents (search_text, filename, owner, visible, vip, release_group, newgenre, poster, anonymous, allow_comments, info_hash, name, size, numfiles, type, offer, request, url, subs, descr, ori_descr, description, category, free, silver, save_as, youtube, tags, added, last_action, mtime, ctime, freetorrent, nfo, client_created_by) VALUES (' . implode(',', array_map('sqlesc', [
         searchfield("$shortfname $dname $torrent"),
         $fname,
         $CURUSER['id'],
-        $CURUSER['username'],
         $visible,
         $vip,
         $release_group,

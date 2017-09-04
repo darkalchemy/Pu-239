@@ -18,7 +18,7 @@ if (count($motw_cached) > 0) {
     $HTMLOUT .= "
 	<fieldset class='header'>
 		<legend>{$lang['index_mow_title']}</legend>
-		<div class='container-fluid'>
+		<div class='cite text-center'>
 			<div class='module'><div class='badge badge-hot'></div> 
 				<table class='table table-bordered'>
 					<thead>
@@ -37,7 +37,7 @@ if (count($motw_cached) > 0) {
             $HTMLOUT .= "
 					<tbody>
 						<tr>
-							<td class='span1'><img border='0' src='pic/caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($mw['cat_pic']) . "' alt='" . htmlsafechars($mw['cat_name']) . "' title='" . htmlsafechars($mw['cat_name']) . "' /></td>
+							<td class='span1'><img border='0' src='./images/caticons/" . get_categorie_icons() . "/" . htmlsafechars($mw['cat_pic']) . "' alt='" . htmlsafechars($mw['cat_name']) . "' title='" . htmlsafechars($mw['cat_name']) . "' /></td>
 							<td class='span1'><a href='{$INSTALLER09['baseurl']}/details.php?id=" . (int)$m_w['id'] . "'><b>" . htmlsafechars($m_w['name']) . "</b></a></td>
 							<td class='span1'>" . (int)$m_w['times_completed'] . "</td>
 							<td class='span1'>" . (int)$m_w['seeders'] . "</td>

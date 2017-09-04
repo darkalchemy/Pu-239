@@ -9,7 +9,7 @@ function achievement_avatar_update($data)
     $msg_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $subject = sqlesc('New Achievement Earned!');
-        $msg = sqlesc('Congratulations, you have just earned the [b]Avatar Setter[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/pic/achievements/piratesheep.png[/img]');
+        $msg = sqlesc('Congratulations, you have just earned the [b]Avatar Setter[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/images/achievements/piratesheep.png[/img]');
         while ($arr = mysqli_fetch_assoc($res)) {
             $dt = TIME_NOW;
             $points = random_int(1, 3);
@@ -26,7 +26,7 @@ function achievement_avatar_update($data)
             sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE key UPDATE date=values(date),achievement=values(achievement),icon=values(icon),description=values(description)') or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO usersachiev (userid, avatarach, achpoints) VALUES ' . implode(', ', $usersachiev_buffer) . ' ON DUPLICATE key UPDATE avatarach=values(avatarach), achpoints=achpoints+values(achpoints)') or sqlerr(__FILE__, __LINE__);
             if ($queries > 0) {
-                write_log("Achievements Cleanup: Achievements Avatar Setter Completed using $queries queries. Avatar Achievements awarded to - " . $count . ' Member(s)');
+                write_log("Achievements Cleanup: Avatar Setter Completed using $queries queries. Avatar Achievements awarded to - " . $count . ' Member(s)');
             }
         }
         unset($usersachiev_buffer, $achievement_buffer, $msgs_buffer, $count);

@@ -173,31 +173,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
     }
     $HTMLOUT .= begin_frame('Add Promo Link');
     $HTMLOUT .= "<form action='" . ($_SERVER['PHP_SELF']) . "' method='post' >
-					<table width='50%' align='center' style='border-collapse:collapse;' cellpadding='10' cellspacing='0'>
+					<table width='50%' class='text-center' style='border-collapse:collapse;' cellpadding='10' cellspacing='0'>
 					  <tr>
-						<td nowrap='nowrap' align='right' colspan='1'>Promo Name</td>
-						<td align='left' width='100%' colspan='3'><input type='text' name='promoname' size='60' /></td>
+						<td nowrap='nowrap' class='text-right' colspan='1'>Promo Name</td>
+						<td class='text-left' width='100%' colspan='3'><input type='text' name='promoname' size='60' /></td>
 					  </tr>
 					  <tr>
-					  <td nowrap='nowrap' align='right' >Days valid</td>
-						<td align='left' width='100%' colspan='1'><input type='text' name='days_valid' size='15' /></td>
-						<td nowrap='nowrap' align='right' >Max users</td>
-						<td align='left' width='100%' colspan='2'><input type='text' name='max_users' size='15' /></td>
+					  <td nowrap='nowrap' class='text-right' >Days valid</td>
+						<td class='text-left' width='100%' colspan='1'><input type='text' name='days_valid' size='15' /></td>
+						<td nowrap='nowrap' class='text-right' >Max users</td>
+						<td class='text-left' width='100%' colspan='2'><input type='text' name='max_users' size='15' /></td>
 					  </tr>
 					  <tr>
-						<td align='right' rowspan='3' nowrap='nowrap' valign='top'>Bonuses</td>
+						<td class='text-right' rowspan='3' nowrap='nowrap' valign='top'>Bonuses</td>
 					  </tr>
 					  <tr>
-						<td align='center'>Upload</td>
-						<td align='center'>Invites</td>
-						<td align='center'>Karma</td>
+						<td class='text-center'>Upload</td>
+						<td class='text-center'>Invites</td>
+						<td class='text-center'>Karma</td>
 					  </tr>
 					  <tr>
-						<td align='center'><input type='text' name='bonus_upload' size='15' /></td>
-						<td align='center'><input type='text' name='bonus_invites' size='15' /></td>
-						<td align='center'><input type='text' name='bonus_karma' size='15' /></td>
+						<td class='text-center'><input type='text' name='bonus_upload' size='15' /></td>
+						<td class='text-center'><input type='text' name='bonus_invites' size='15' /></td>
+						<td class='text-center'><input type='text' name='bonus_karma' size='15' /></td>
 					  </tr>
-					  <tr><td align='center' colspan='4'><input type='hidden' value='addpromo' name='do'  /><input type='submit' value='Add Promo!' /></td></tr>
+					  <tr><td class='text-center' colspan='4'><input type='hidden' value='addpromo' name='do'  /><input type='submit' value='Add Promo!' /></td></tr>
 					</table>
 				</form>";
     $HTMLOUT .= end_frame();
@@ -251,24 +251,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
             }
 
             $HTMLOUT .= "<form action='" . ($_SERVER['PHP_SELF']) . "' method='post'>
-						  <table cellpadding='10' width='50%' align='center' cellspacing='0'  border='1' style='border-collapse:collapse'>
-						  <tr><td class='colhead' align='center' colspan='2'>Promo : " . htmlsafechars($ar['name']) . " </td></tr>
-						  <tr><td nowrap='nowrap' align='right'>Bonuses</td>
-							  <td align='left' width='100%'>
+						  <table cellpadding='10' width='50%' class='text-center' cellspacing='0'  border='1' style='border-collapse:collapse'>
+						  <tr><td class='colhead' class='text-center' colspan='2'>Promo : " . htmlsafechars($ar['name']) . " </td></tr>
+						  <tr><td nowrap='nowrap' class='text-right'>Bonuses</td>
+							  <td class='text-left' width='100%'>
 								" . ($ar['bonus_upload'] > 0 ? '<b>upload</b>:&#160;' . mksize($ar['bonus_upload'] * 1073741824) . '<br>' : '') . '
 								' . ($ar['bonus_invites'] > 0 ? '<b>invites</b>:&#160;' . ((int)$ar['bonus_invites']) . '<br>' : '') . '
 								' . ($ar['bonus_karma'] > 0 ? '<b>karma</b>:&#160;' . ((int)$ar['bonus_karma']) . '<br>' : '') . "
 								</td></tr>
 								<tr>
-							  <td nowrap='nowrap' align='right'>Username</td>
-							  <td align='left' width='100%'><input type='text' size='40' name='username' /></td>
+							  <td nowrap='nowrap' class='text-right'>Username</td>
+							  <td class='text-left' width='100%'><input type='text' size='40' name='username' /></td>
 							</tr>
-							<tr><td nowrap='nowrap' align='right'>Password</td><td align='left' width='100%'><input type='password' name='password' size='40' /></td></tr>
-							<tr><td nowrap='nowrap' align='right'>Password again</td><td align='left' width='100%'><input type='password' name='passwordagain' size='40' /></td></tr>
-							<tr><td nowrap='nowrap' align='right'>Email</td><td align='left' width='100%'><input type='text' name='mail' size='40'/></td></tr>
-                            <tr><td align='right' class='heading'>{$lang['signup_select']}</td><td align='left'><select name='passhint'>\n$passhint\n</select></td></tr>
-                            <tr><td align='right' class='heading'>{$lang['signup_enter']}</td><td align='left'><input type='text' size='40'  name='hintanswer' /><br><span style='font-size: 1em;'>{$lang['signup_this_answer']}<br>{$lang['signup_this_answer1']}</span></td></tr>
-							<tr><td colspan='2' class='colhead' align='center'><input type='hidden' name='link' value='" . ($link) . "'/><input type='hidden' name='do' value='signup'/><input type='submit' value='SignUp!' /></td></tr>
+							<tr><td nowrap='nowrap' class='text-right'>Password</td><td class='text-left' width='100%'><input type='password' name='password' size='40' /></td></tr>
+							<tr><td nowrap='nowrap' class='text-right'>Password again</td><td class='text-left' width='100%'><input type='password' name='passwordagain' size='40' /></td></tr>
+							<tr><td nowrap='nowrap' class='text-right'>Email</td><td class='text-left' width='100%'><input type='text' name='mail' size='40'/></td></tr>
+                            <tr><td class='text-right' class='heading'>{$lang['signup_select']}</td><td class='text-left'><select name='passhint'>\n$passhint\n</select></td></tr>
+                            <tr><td class='text-right' class='heading'>{$lang['signup_enter']}</td><td class='text-left'><input type='text' size='40'  name='hintanswer' /><br><span style='font-size: 1em;'>{$lang['signup_this_answer']}<br>{$lang['signup_this_answer1']}</span></td></tr>
+							<tr><td colspan='2' class='colhead' class='text-center'><input type='hidden' name='link' value='" . ($link) . "'/><input type='hidden' name='do' value='signup'/><input type='submit' value='SignUp!' /></td></tr>
 						  </table> 
 						</form>";
             $HTMLOUT .= end_frame();
@@ -307,14 +307,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
 					</style>
 					</head>
 					<body>
-					<table width='200' cellpadding='10' border='1' align='center' style='border-collapse:collapse'>
-						<tr><td class='rowhead' align='left' width='100'> User</td><td class='rowhead' align='left' nowrap='nowrap'>Added</td></tr>";
+					<table width='200' cellpadding='10' border='1' class='text-center' style='border-collapse:collapse'>
+						<tr><td class='rowhead' class='text-left' width='100'> User</td><td class='rowhead' class='text-left' nowrap='nowrap'>Added</td></tr>";
                 while ($ap = mysqli_fetch_assoc($q2)) {
-                    $HTMLOUT .= "<tr><td align='left' width='100'><a href='userdetails.php?id=" . (int)$ap['id'] . "'>" . htmlsafechars($ap['username']) . "</a></td><td  align='left' nowrap='nowrap' >" . get_date($ap['added'], 'LONG', 0, 1) . '</td></tr>';
+                    $HTMLOUT .= "<tr><td class='text-left' width='100'><a href='userdetails.php?id=" . (int)$ap['id'] . "'>" . htmlsafechars($ap['username']) . "</a></td><td  class='text-left' nowrap='nowrap' >" . get_date($ap['added'], 'LONG', 0, 1) . '</td></tr>';
                 }
                 $HTMLOUT .= "</table>
 						<br>
-					<div align='center'><a href='javascript:close()'><input type='button' value='Close' /></a></div>
+					<div class='text-center'><a href='javascript:close()'><input type='button' value='Close' /></a></div>
 					</body>
 					</html>";
                 echo $HTMLOUT;
@@ -343,36 +343,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
 		 }
 		 /*]]>*/
 		</script>";
-        $HTMLOUT .= "<table align='center' width='100%' cellpadding='5' cellspacing='0' border='1' style='border-collapse:collapse'>
+        $HTMLOUT .= "<table class='text-center' width='100%' cellpadding='5' cellspacing='0' border='1' style='border-collapse:collapse'>
 			<tr>
-				<td align='left' width='100%' rowspan='2'>Promo</td>
-				<td align='center' nowrap='nowrap' rowspan='2'>Added</td>
-				<td align='center' nowrap='nowrap' rowspan='2'>Valid Till</td>
-				<td align='center' nowrap='nowrap' colspan='2'>Users</td>
-				<td align='center' nowrap='nowrap' colspan='3' >Bonuses</td>
-				<td align='center' nowrap='nowrap' rowspan='2'>Added by</td>       
-				<td align='center' nowrap='nowrap' rowspan='2'>Remove</td>       
+				<td class='text-left' width='100%' rowspan='2'>Promo</td>
+				<td class='text-center' nowrap='nowrap' rowspan='2'>Added</td>
+				<td class='text-center' nowrap='nowrap' rowspan='2'>Valid Till</td>
+				<td class='text-center' nowrap='nowrap' colspan='2'>Users</td>
+				<td class='text-center' nowrap='nowrap' colspan='3' >Bonuses</td>
+				<td class='text-center' nowrap='nowrap' rowspan='2'>Added by</td>       
+				<td class='text-center' nowrap='nowrap' rowspan='2'>Remove</td>       
 			</tr>
 			<tr>
-				<td align='center' nowrap='nowrap'>max</td>
-				<td align='center' nowrap='nowrap'>till now</td>
-				<td align='center' nowrap='nowrap' >upload</td>
-				<td align='center' nowrap='nowrap' >invites</td>
-				<td align='center' nowrap='nowrap' >karma</td>       
+				<td class='text-center' nowrap='nowrap'>max</td>
+				<td class='text-center' nowrap='nowrap'>till now</td>
+				<td class='text-center' nowrap='nowrap' >upload</td>
+				<td class='text-center' nowrap='nowrap' >invites</td>
+				<td class='text-center' nowrap='nowrap' >karma</td>       
 			</tr>";
         while ($ar = mysqli_fetch_assoc($r)) {
             $active = (($ar['max_users'] == $ar['accounts_made']) || (($ar['added'] + (86400 * $ar['days_valid'])) < TIME_NOW)) ? false : true;
             $HTMLOUT .= '<tr ' . (!$active ? 'title="This promo has ended"' : '') . ">
-				<td nowrap='nowrap' align='center'>" . (htmlsafechars($ar['name'])) . "<br><input type='text' " . (!$active ? 'disabled="disabled"' : '') . " value='" . ($INSTALLER09['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $ar['link']) . "' size='60' name='" . (htmlsafechars($ar['name'])) . "' onclick='select();' /></td>
-				<td nowrap='nowrap' align='center'>" . (date('d/M-Y', $ar['added'])) . "</td>
-				<td nowrap='nowrap' align='center'>" . (date('d/M-Y', ($ar['added'] + (86400 * $ar['days_valid'])))) . "</td>
-				<td nowrap='nowrap' align='center'>" . ((int)$ar['max_users']) . "</td>
-				<td nowrap='nowrap' align='center'>" . ($ar['accounts_made'] > 0 ? '<a href="javascript:link(' . (int)$ar['id'] . ')" >' . (int)$ar['accounts_made'] . '</a>' : 0) . "</td>
-				<td nowrap='nowrap' align='center'>" . (mksize($ar['bonus_upload'] * 1073741824)) . "</td>
-				<td nowrap='nowrap' align='center'>" . ((int)$ar['bonus_invites']) . "</td>
-				<td nowrap='nowrap' align='center'>" . ((int)$ar['bonus_karma']) . "</td>
-				<td nowrap='nowrap' align='center'><a href='userdetails.php?id=" . (int)$ar['creator'] . "'>" . htmlsafechars($ar['username']) . "</a></td>
-				<td nowrap='nowrap' align='center'><a href='" . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . (int)$ar['id'] . "'><img src='pic/del.png' border='0' alt='Drop' /></a></td>
+				<td nowrap='nowrap' class='text-center'>" . (htmlsafechars($ar['name'])) . "<br><input type='text' " . (!$active ? 'disabled="disabled"' : '') . " value='" . ($INSTALLER09['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $ar['link']) . "' size='60' name='" . (htmlsafechars($ar['name'])) . "' onclick='select();' /></td>
+				<td nowrap='nowrap' class='text-center'>" . (date('d/M-Y', $ar['added'])) . "</td>
+				<td nowrap='nowrap' class='text-center'>" . (date('d/M-Y', ($ar['added'] + (86400 * $ar['days_valid'])))) . "</td>
+				<td nowrap='nowrap' class='text-center'>" . ((int)$ar['max_users']) . "</td>
+				<td nowrap='nowrap' class='text-center'>" . ($ar['accounts_made'] > 0 ? '<a href="javascript:link(' . (int)$ar['id'] . ')" >' . (int)$ar['accounts_made'] . '</a>' : 0) . "</td>
+				<td nowrap='nowrap' class='text-center'>" . (mksize($ar['bonus_upload'] * 1073741824)) . "</td>
+				<td nowrap='nowrap' class='text-center'>" . ((int)$ar['bonus_invites']) . "</td>
+				<td nowrap='nowrap' class='text-center'>" . ((int)$ar['bonus_karma']) . "</td>
+				<td nowrap='nowrap' class='text-center'><a href='userdetails.php?id=" . (int)$ar['creator'] . "'>" . htmlsafechars($ar['username']) . "</a></td>
+				<td nowrap='nowrap' class='text-center'><a href='" . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . (int)$ar['id'] . "'><img src='{$INSTALLER09['pic_base_url']}del.png' border='0' alt='Drop' /></a></td>
 			</tr>";
         }
         $HTMLOUT .= '</table>';

@@ -12,7 +12,7 @@ $("#close_status").click(function () {
 //Processing data
 $("#take_status").click(function () {
 
-    $("#load").html("<img  src=\"pic/loading.gif\" border=\"0\" alt=\"Loading...\" />");
+    $("#load").html("<img  src='./images/loading.gif' border='0' alt='Loading...' />");
     var status_text = $("#status_text").val(); //Status value
     var id_user =
 <

@@ -88,7 +88,7 @@ function pu_demote_update($data)
         }
         //==End
         if ($queries > 0) {
-            write_log("{$prev_class_name} Updates -------------------- Power User Demote Updates Clean Complete using $queries queries--------------------");
+            write_log("{$prev_class_name} Updates Cleanup: Completed using $queries queries");
         }
         if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
             $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';

@@ -22,14 +22,11 @@ if (($active_users_cache = $mc1->get_value($keys['activeusers'])) === false) {
 if (!$active_users_cache['activeusers']) {
     $active_users_cache['activeusers'] = $lang['index_active_users_no'];
 }
-$active_users = '
-	<fieldset class="header">
-		<legend>' . $lang['index_active'] . '&#160;(' . $active_users_cache['actcount'] . ')</legend>
-			 <div class="container-fluid">
-			 <!--<a href=\'javascript: klappe_news("a1")\'><img border=\'0\' src=\'pic/plus.gif\' id=\'pica1\' alt=\'' . $lang['index_hide_show'] . '\' /></a><div id=\'ka1\' style=\'display: none;\'>-->
-			 <!--<a class="altlink"  title="' . $lang['index_click_more'] . '" id="div_open1" style="font-weight:bold;cursor:pointer;"><img border=\'0\' src=\'pic/plus.gif\' alt=\'' . $lang['index_hide_show'] . '\' /></a>
-			 <div id="div_info1" style="display:none;background-color:#FEFEF4;max-width:940px;padding: 5px 5px 5px 10px;">-->
-			 ' . $active_users_cache['activeusers'] . '
-			 </div>
-	</fieldset>';
-$HTMLOUT .= $active_users;
+$HTMLOUT .= "
+    <a id='activeusers-hash'></a>
+    <fieldset id='activeusers' class='header'>
+        <legend class='flipper'><i class='fa fa-angle-up' aria-hidden='true'></i>{$lang['index_active']} ({$active_users_cache['actcount']})</legend>
+            <div class='text-center'>
+                {$active_users_cache['activeusers']}
+            </div>
+    </fieldset>";

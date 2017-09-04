@@ -3,7 +3,7 @@
 $lang = [
     //Misc
     'stdhead_staff'    => 'Staff',
-    'staff_asup'       => 'All software support question\'s and those already answered in the FAQ will be ignored.',
+    'staff_asup'       => "All software support question's and those already answered in the FAQ will be ignored.",
     'staff_sysops'     => 'Sysops',
     'staff_admins'     => 'Administrators',
     'staff_mods'       => 'Moderators',

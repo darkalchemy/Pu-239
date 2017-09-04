@@ -224,7 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <td class="' . $class . '" colspan="4">' . $body . '</td>
     </tr>' : '
     <tr>
-        <td class="' . $class . '"><img src="pic/readpm.gif" title="' . $lang['pm_search_messg'] . '" alt="' . $lang['pm_search_read'] . '" /></td>
+        <td class="' . $class . '"><img src="./images/readpm.gif" title="' . $lang['pm_search_messg'] . '" alt="' . $lang['pm_search_read'] . '" /></td>
         <td class="' . $class . '"><a class="altlink" href="pm_system.php?action=view_message&amp;id=' . $row['id'] . '">' . ($row['subject'] !== '' ? $subject : $lang['pm_search_nosubject']) . '</a> ' . ($all_boxes ? $lang['pm_search_foundin'] . $arr_box . $lang['pm_search_sign'] : '') . '</td>
         <td class="' . $class . '">' . ($row[$sender_reciever] == 0 ? $lang['pm_search_sysbot'] : $the_username) . '</td>
         <td class="' . $class . '">' . get_date($row['added'], '') . $lang['pm_search_gmt'] . get_date($row['added'], '', 0, 1) . '] </td>

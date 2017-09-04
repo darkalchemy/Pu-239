@@ -103,11 +103,9 @@ ajaxChat.view = {
         }
         ajaxChat.showHide(containerID);
     }
-
 };
 
 function initialize() {
-
     if (ajaxChat.view.isMobile()) {
         ajaxChat.setSetting('blink', false);
         ajaxChat.view.toggleContainer('onlineListContainer', ['settingsContainer', 'helpContainer']);
@@ -158,14 +156,38 @@ function initialize() {
     document.getElementById('blinkIntervalNumberSetting').value = ajaxChat.getSetting('blinkIntervalNumber');
 }
 
-
 function PopMoreSmiles(){
-    popOpen('../allsmiles.php', 'More Emoticons', 600, 500);
+    PopUp('../allsmiles.php','More Emoticons',600, 500, 1, 0);
 }
-function popOpen(url, title, w, h) {
-    wLeft = window.screenLeft ? window.screenLeft : window.screenX;
-    wTop = window.screenTop ? window.screenTop : window.screenY;
-    var left = wLeft + (window.innerWidth / 2) - (w / 2);
-    var left = wLeft + (window.innerWidth / 2) - (w / 2);
-    return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+
+function PopUp(url, name, width, height, center, resize, scroll, posleft, postop) {
+    showx = "";
+    showy = "";
+    if (posleft != 0) {
+        X = posleft;
+    }
+    if (postop != 0) {
+        Y = postop;
+    }
+    if (!scroll) {
+        scroll = 1;
+    }
+    if (!resize) {
+        resize = 1;
+    }
+    if (parseInt(navigator.appVersion) >= 4 && center) {
+        X = (screen.width - width) / 2;
+        Y = (screen.height - height) / 2;
+    }
+    if (X > 0) {
+        showx = ",left=" + X;
+    }
+    if (Y > 0) {
+        showy = ",top=" + Y;
+    }
+    if (scroll != 0) {
+        scroll = 1;
+    }
+    var Win = window.open(url, name, "width=" + width + ",height=" + height + showx + showy + ",resizable=" + resize + ",scrollbars=" + scroll + ",location=no,directories=no,status=no,menubar=no,toolbar=no");
+    event.preventDefault()
 }

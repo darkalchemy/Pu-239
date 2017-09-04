@@ -28,6 +28,7 @@ $lang = [
     'gl_general'                => 'General',
     'gl_stats'                  => 'Statistici',
     'gl_status'                 => 'Status',
+    'gl_bitbucket'              => 'BitBucket',
     'gl_announcements'          => 'Anun&#355;urile siteului',
     'gl_irc'                    => 'IRC',
     'gl_wiki'                   => 'Wiki',

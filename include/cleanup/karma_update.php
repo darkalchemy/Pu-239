@@ -42,7 +42,7 @@ function karma_update($data)
     }
     //== End
     if ($queries > 0) {
-        write_log("Karma clean-------------------- Karma cleanup Complete using $queries queries --------------------");
+        write_log("Karma Cleanup: Completed using $queries queries");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items updated';

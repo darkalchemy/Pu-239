@@ -3,180 +3,358 @@
 // By Jay Salvat - http://markitup.jaysalvat.com/
 // ------------------------------------------------------------------*/
 .markItUp * {
-    margin: 0px;
-    padding: 0px;
-    outline: none;
+    margin:0px; padding:0px;
+    outline:none;
 }
-
 .markItUp a:link,
 .markItUp a:visited {
-    color: #000;
-    text-decoration: none;
+    color:#000;
+    text-decoration:none;
 }
-
-.markItUp {
-    width: 700px;
-    margin: 5px 0 5px 0;
-    border: 5px solid #F5F5F5;
+.markItUp  {
+    /*width:700px;*/
+    margin:5px 0 5px 0;
+    border:5px solid #F5F5F5;
 }
-
-.markItUpContainer {
-    border: 1px solid #3C769D;
-    background: #FFF url(images/bg-container.png) repeat-x top left;
-    padding: 5px 5px 2px 5px;
-    font: 11px Verdana, Arial, Helvetica, sans-serif;
+.markItUpContainer  {
+    border:1px solid #3C769D;
+    background:#FFF url(../../images/markitup/bg-container.png) repeat-x top left;
+    padding:5px 5px 2px 5px;
+    font:11px Verdana, Arial, Helvetica, sans-serif;
 }
-
 .markItUpEditor {
-    font: 12px 'Courier New', Courier, monospace;
-    padding: 5px 5px 5px 35px;
-    border: 3px solid #3C769D;
-    width: 643px;
-    height: 320px;
-    background-image: url(images/bg.png);
-    background-repeat: repeat;
-    clear: both;
-    display: block;
-    line-height: 18px;
-    overflow: auto;
+    font:12px 'Courier New', Courier, monospace;
+    padding:5px;
+    border:3px solid #3C769D;
+    width:calc(100% - 16px);
+    height:320px;
+    background:#FFF url(../../images/markitup/bg-editor.png) no-repeat;
+    clear:both;
+    line-height:18px;
+    overflow:auto;
+    display: inherit;
 }
-
-.markItUpPreviewFrame {
-    overflow: auto;
-    background-color: #FFFFFF;
-    border: 1px solid #3C769D;
-    width: 99.9%;
-    height: 300px;
-    margin: 5px 0;
+.markItUpPreviewFrame   {
+    overflow:auto;
+    background-color:#FFFFFF;
+    border:1px solid #3C769D;
+    width:99.9%;
+    height:300px;
+    margin:5px 0;
 }
-
 .markItUpFooter {
-    width: 100%;
-    cursor: n-resize;
+    width:100%;
+    cursor:n-resize;
 }
-
 .markItUpResizeHandle {
-    overflow: hidden;
-    width: 22px;
-    height: 5px;
-    margin-left: auto;
-    margin-right: auto;
-    background-image: url(images/handle.png);
-    cursor: n-resize;
+    overflow:hidden;
+    width:22px; height:5px;
+    margin-left:auto;
+    margin-right:auto;
+    background-image:url(../../images/markitup/handle.png);
+    cursor:n-resize;
 }
-
 /***************************************************************************************/
 /* first row of buttons */
-.markItUpHeader ul li {
-    list-style: none;
-    float: left;
-    position: relative;
+.markItUpHeader ul li   {
+    list-style:none;
+    float:left;
+    position:relative;
+    padding: 3px;
+    margin-right: 1px;
 }
-
-.markItUpHeader ul li ul {
-    display: none;
+.markItUpHeader ul li ul{
+    display:none;
 }
-
-.markItUpHeader ul li:hover > ul {
-    display: block;
+.markItUpHeader ul li:hover > ul{
+    display:block;
 }
-
 .markItUpHeader ul .markItUpDropMenu {
-    background: transparent url(images/menu.png) no-repeat 115% 50%;
-    margin-right: 5px;
+    background:transparent url(../../images/markitup/menu.png) no-repeat 115% 50%;
+    margin-right:5px;
 }
-
 .markItUpHeader ul .markItUpDropMenu li {
-    margin-right: 0px;
+    margin-right:0px;
 }
-
 .markItUpHeader ul .markItUpSeparator {
-    margin: 0 10px;
-    width: 1px;
-    height: 16px;
-    overflow: hidden;
-    background-color: #CCC;
+    margin:0 10px;
+    width:1px;
+    height:16px;
+    overflow:hidden;
+    background-color:#CCC;
 }
-
 .markItUpHeader ul ul .markItUpSeparator {
-    width: auto;
-    height: 1px;
-    margin: 0px;
+    width:auto; height:1px;
+    margin:0px;
 }
-
 /* next rows of buttons */
 .markItUpHeader ul ul {
-    display: none;
-    position: absolute;
-    top: 18px;
-    left: 0px;
-    background: #F5F5F5;
-    border: 1px solid #3C769D;
-    height: inherit;
+    display:none;
+    position:absolute;
+    top:18px; left:0px;
+    background:#F5F5F5;
+    border:1px solid #3C769D;
+    height:inherit;
 }
-
 .markItUpHeader ul ul li {
-    float: none;
-    border-bottom: 1px solid #3C769D;
+    float:none;
+    border-bottom:1px solid #3C769D;
 }
-
 .markItUpHeader ul ul .markItUpDropMenu {
-    background: #F5F5F5 url(images/submenu.png) no-repeat 100% 50%;
+    background:#F5F5F5 url(../../images/markitup/submenu.png) no-repeat 100% 50%;
 }
-
 /* next rows of buttons */
 .markItUpHeader ul ul ul {
-    position: absolute;
-    top: -1px;
-    left: 150px;
+    position:absolute;
+    top:-1px; left:150px;
 }
-
 .markItUpHeader ul ul ul li {
-    float: none;
+    float:none;
 }
-
 .markItUpHeader ul a {
-    display: block;
-    width: 16px;
-    height: 16px;
-    text-indent: -10000px;
-    background-repeat: no-repeat;
-    padding: 3px;
-    margin: 0px;
+    display:block;
+    width:16px; height:16px;
+    text-indent:-10000px;
+    background-repeat:no-repeat;
+    padding:3px;
+    margin:0px;
 }
-
 .markItUpHeader ul ul a {
-    display: block;
-    padding-left: 0px;
-    text-indent: 0;
-    width: 120px;
-    padding: 5px 5px 5px 25px;
-    background-position: 2px 50%;
+    display:block;
+    padding-left:0px;
+    text-indent:0;
+    width:120px;
+    padding:5px 5px 5px 25px;
+    background-position:2px 50%;
 }
-
-.markItUpHeader ul ul a:hover {
-    color: #FFF;
-    background-color: #3C769D;
+.markItUpHeader ul ul a:hover  {
+    color:#FFF;
+    background-color:#3C769D;
 }
-
 /***************************************************************************************/
 .html .markItUpEditor {
-    background-image: url(images/bg-editor-html.png);
+    background-image:url(../../images/markitup/bg-editor-html.png);
 }
-
 .markdown .markItUpEditor {
-    background-image: url(images/bg-editor-markdown.png);
+    background-image:url(../../images/markitup/bg-editor-markdown.png);
 }
-
 .textile .markItUpEditor {
-    background-image: url(images/bg-editor-textile.png);
+    background-image:url(../../images/markitup/bg-editor-textile.png);
 }
-
 .bbcode .markItUpEditor {
-    background-image: url(images/bg-editor-bbcode.png);
+    background: navajowhite;
 }
-
 .wiki .markItUpEditor,
 .dotclear .markItUpEditor {
-    background-image: url(images/bg-editor-wiki.png);
+    background-image:url(../../images/markitup/bg-editor-wiki.png);
+}
+.bbcode {
+    position: relative;
+}
+.bbcode .markItUpButton1:before  {
+    content: "\f032";
+    font-family: FontAwesome;
+    font-size: 18px;
+    padding: 0;
+    cursor: pointer;
+    left: 5px;
+    position: absolute;
+}
+.bbcode .markItUpButton2:before {
+    content: "\f033";
+    font-family: FontAwesome;
+    font-size: 18px;
+    padding: 0;
+    cursor: pointer;
+    left: 5px;
+    position: absolute;
+}
+.bbcode .markItUpButton3:before {
+    content: "\f0cd";
+    font-family: FontAwesome;
+    font-size: 18px;
+    padding: 0;
+    cursor: pointer;
+    left: 5px;
+    position: absolute;
+}
+.bbcode .markItUpButton4:before {
+    content: "\f0cc";
+    font-family: FontAwesome;
+    font-size: 18px;
+    padding: 0;
+    cursor: pointer;
+    left: 5px;
+    position: absolute;
+}
+.bbcode .markItUpButton5:before {
+    content: "\f03e";
+    font-family: FontAwesome;
+    font-size: 18px;
+    padding: 0;
+    cursor: pointer;
+    left: 5px;
+    position: absolute;
+}
+.bbcode .markItUpButton6:before {
+    content: "\f0c1";
+    font-family: FontAwesome;
+    font-size: 18px;
+    padding: 0;
+    cursor: pointer;
+    left: 5px;
+    position: absolute;
+}
+.bbcode .markItUpButton7 a {
+    background-image:url(../../images/markitup/colors.png);
+    font-size: 18px;
+    padding: 0;
+    cursor: pointer;
+    left: 5px;
+}
+.bbcode .markItUpButton7 ul {
+    width:81px;
+    padding:1px;
+}
+.bbcode .markItUpButton7  li {
+    border:1px solid white;
+    width:25px; height:25px;
+    overflow:hidden;
+    padding:0px; margin:0px;
+    float:left;
+}
+.bbcode .markItUpButton7 ul a {
+    width:25px; height:25px;
+}
+.bbcode .markItUpButton7 ul a:hover {
+    background-color:none;
+}
+.bbcode .markItUpButton7 .col1-1 a {
+    background:yellow;
+}
+.bbcode .markItUpButton7 .col1-2 a {
+    background:orange;
+}
+.bbcode .markItUpButton7 .col1-3 a {
+    background:red;
+}
+.bbcode .markItUpButton7 .col2-1 a {
+    background:blue;
+}
+.bbcode .markItUpButton7 .col2-2 a {
+    background:purple;
+}
+.bbcode .markItUpButton7 .col2-3 a {
+    background:green;
+}
+.bbcode .markItUpButton7 .col3-1 a {
+    background:white;
+}
+.bbcode .markItUpButton7 .col3-2 a {
+    background:gray;
+}
+.bbcode .markItUpButton7 .col3-3 a {
+    background:black;
+}
+.bbcode .markItUpButton8:before {
+    content: "\f031";
+    font-family: FontAwesome;
+    font-size: 18px;
+    padding: 0;
+    cursor: pointer;
+    left: 5px;
+    position: absolute;
+}
+.bbcode .markItUpButton9:before {
+    content: "\f0ca";
+    font-family: FontAwesome;
+    font-size: 18px;
+    padding: 0;
+    cursor: pointer;
+    left: 5px;
+    position: absolute;
+}
+.bbcode .markItUpButton10:before {
+    content: "\f0cb";
+    font-family: FontAwesome;
+    font-size: 18px;
+    padding: 0;
+    cursor: pointer;
+    left: 5px;
+    position: absolute;
+}
+.bbcode .markItUpButton11 a {
+    background-image:url(../../images/markitup/list-item.png);
+}
+.bbcode .markItUpButton12:before {
+    content: "\f036";
+    font-family: FontAwesome;
+    font-size: 18px;
+    padding: 0;
+    cursor: pointer;
+    left: 5px;
+    position: absolute;
+}
+.bbcode .markItUpButton13:before {
+    content: "\f037";
+    font-family: FontAwesome;
+    font-size: 18px;
+    padding: 0;
+    cursor: pointer;
+    left: 5px;
+    position: absolute;
+}
+.bbcode .markItUpButton14:before {
+    content: "\f038";
+    font-family: FontAwesome;
+    font-size: 18px;
+    padding: 0;
+    cursor: pointer;
+    left: 5px;
+    position: absolute;
+}
+.bbcode .markItUpButton15:before {
+    content: "\f10e";
+    font-family: FontAwesome;
+    font-size: 18px;
+    padding: 0;
+    cursor: pointer;
+    left: 5px;
+    position: absolute;
+}
+.bbcode .markItUpButton16:before {
+    content: "\f121";
+    font-family: FontAwesome;
+    font-size: 18px;
+    padding: 0;
+    cursor: pointer;
+    left: 5px;
+    position: absolute;
+}
+.bbcode .markItUpButton17:before {
+    content: "\f0ce";
+    font-family: FontAwesome;
+    font-size: 18px;
+    padding: 0;
+    cursor: pointer;
+    left: 5px;
+    position: absolute;
+}
+.bbcode .markItUpButton18:before {
+    content: "\f0e2";
+    font-family: FontAwesome;
+    font-size: 18px;
+    padding: 0;
+    cursor: pointer;
+    left: 5px;
+    position: absolute;
+}
+.bbcode .markItUpButton19:before {
+    content: "\f046";
+    font-family: FontAwesome;
+    font-size: 18px;
+    padding: 0;
+    cursor: pointer;
+    left: 5px;
+    position: absolute;
 }

@@ -10,21 +10,19 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     } else {
         $title = $INSTALLER09['site_name'] . (isset($_GET['tbv']) ? ' (' . TBVERSION . ')' : '') . ' :: ' . htmlsafechars($title);
     }
-    if ($CURUSER) {
-        $INSTALLER09['stylesheet'] = isset($CURUSER['stylesheet']) ? $CURUSER['stylesheet'] : $INSTALLER09['stylesheet'];
-        $INSTALLER09['categorie_icon'] = isset($CURUSER['categorie_icon']) ? $CURUSER['categorie_icon'] : $INSTALLER09['categorie_icon'];
-        $INSTALLER09['language'] = isset($CURUSER['language']) ? $CURUSER['language'] : $INSTALLER09['language'];
-    }
-    if (!ob_start('ob_gzhandler')) {
-        ob_start('ob_gzhandler');
-    }
-    $css_incl = '<!-- css goes here -->';
+    $css_incl = '';
     if (!empty($stdhead['css'])) {
         foreach ($stdhead['css'] as $CSS) {
-            $css_incl .= "
-        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/css/" . $CSS . ".css' />";
+            if (strpos($CSS, 'http') === false) {
+                $css_incl .= "
+    <link rel='stylesheet' href='./css/" . get_stylesheet() . "/{$CSS}.css' />";
+            } else {
+                $css_incl .= "
+    <link rel='stylesheet' href='{$CSS}' />";
+            }
         }
     }
+
     if (isset($INSTALLER09['xhtml_strict'])) { //== Use strict mime type/doctype
         //== Only if browser/user agent supports xhtml strict mode
         if (isset($_SERVER['HTTP_ACCEPT']) && stristr($_SERVER['HTTP_ACCEPT'], 'application/xhtml+xml') && ($INSTALLER09['xhtml_strict'] === 1 || ($INSTALLER09['xhtml_strict'] == $CURUSER['username'] && $CURUSER['username'] != ''))) {
@@ -35,31 +33,36 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     if (!isset($doctype)) {
         header('Content-type:text/html; charset=' . charset());
         //$doctype = '<!DOCTYPE html>' . '<html xmlns="http://www.w3.org/1999/xhtml">';
-        $doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" ' . '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' . '<html xmlns="http://www.w3.org/1999/xhtml">';
+        $doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" ' . '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">';
     }
-    $body_class = isset($_COOKIE[$INSTALLER09['cookie_prefix'] . 'theme']) ? htmlsafechars($_COOKIE[$INSTALLER09['cookie_prefix'] . 'theme']) : 'background-15 h-style-1 text-1 skin-2';
+    $body_class = 'background-15 h-style-1 text-1 skin-2';
 
-    $htmlout = $doctype . "<head>
-        <meta http-equiv='Content-Language' content='en-us' />
-        <title>{$title}</title>
-        <link rel='alternate' type='application/rss+xml' title='Latest Torrents' href='./rss.php?torrent_pass={$CURUSER['torrent_pass']}' />
-        <!-- favicon
-        =================================================== -->
-        <link rel='shortcut icon' href='favicon.ico' />
-        <!-- css
-        =================================================== -->
-        <link rel='stylesheet' href='./templates/{$INSTALLER09['stylesheet']}/905950ec1662b3234ad78a88584ed93d.min.css' />";
-    $htmlout .= "
-        <style>#mlike{cursor:pointer;}</style>";
-
-        $htmlout .= "
-        {$css_incl}
-        </head>
-        <body class='{$body_class}'>
-        <!-- Main Outer Container
-        =================================================== -->
-    <div class='container'>
-        <!--<header class='clearfix'>-->";
+    $htmlout =
+$doctype . "
+<head>
+    <meta http-equiv='Content-Language' content='en-us' />
+    <title>{$title}</title>
+    <link rel='alternate' type='application/rss+xml' title='Latest Torrents' href='./rss.php?torrent_pass={$CURUSER['torrent_pass']}' />
+    <!-- favicon
+    =================================================== -->
+    <link rel='shortcut icon' href='favicon.ico' />
+    <!-- css
+    =================================================== -->
+    <link rel='stylesheet' href='./css/" . get_stylesheet() . "/f6612415ae84278cd9d18ea8bca45b07.min.css' />
+    <link rel='stylesheet' href='//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' integrity='sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN' crossorigin='anonymous'>
+    <link href='https://fonts.googleapis.com/css?family=Acme|Baloo+Bhaijaan|Encode+Sans+Condensed|Lobster|Nova+Square|Open+Sans|Oswald|PT+Sans+Narrow' rel='stylesheet' />
+    {$css_incl}
+    <style>#mlike{cursor:pointer;}</style>
+</head>
+<body class='{$body_class}'>
+    <script>
+        var theme = localStorage.getItem('theme');
+        if (theme) {
+            document.body.className = theme;
+        }
+    </script>
+    <div class='container'>";
     if ($CURUSER) {
         $active_users_cache = $last24_cache = 0;
         $keys['last24'] = 'last24';
@@ -67,51 +70,54 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         $keys['activeusers'] = 'activeusers';
         $active_users_cache = $mc1->get_value($keys['activeusers']);
         $htmlout .= "
-        <!-- Main Navigation
-        =================================================== -->
         <div id='navigation' class='container navigation'>
             <ul>
-        <li><a href='#'>{$lang['gl_torrent']}</a>
-        <ul class='sub-menu'>
-            <li><a href='./browse.php'>{$lang['gl_torrents']}</a></li>
-        <li><a href='./requests.php'>{$lang['gl_requests']}</a></li>
-            <li><a href='./offers.php'>{$lang['gl_offers']}</a></li>
-            <li><a href='./needseed.php?needed=seeders'>{$lang['gl_nseeds']}</a></li>
-        " . (isset($CURUSER) && $CURUSER['class'] <= UC_VIP ? "<li><a href='./uploadapp.php'>{$lang['gl_uapp']}</a> </li>" : "<li><a href='./upload.php'>{$lang['gl_upload']}</a></li>") . "
-                <li><a href='./bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
-        </ul><!--/ .sub-menu-->
-        </li>
-        <li><a href='#'>{$lang['gl_general']}</a>
-        <ul class='sub-menu'>
+                <li><a href='#'>{$lang['gl_torrent']}</a>
+                    <ul class='sub-menu'>
+                        <li><a href='./browse.php'>{$lang['gl_torrents']}</a></li>
+                        <li><a href='./requests.php'>{$lang['gl_requests']}</a></li>
+                        <li><a href='./offers.php'>{$lang['gl_offers']}</a></li>
+                        <li><a href='./needseed.php?needed=seeders'>{$lang['gl_nseeds']}</a></li>
+                        " . ($CURUSER['class'] <= UC_VIP ? "<li><a href='./uploadapp.php'>{$lang['gl_uapp']}</a> </li>" : "<li><a href='./upload.php'>{$lang['gl_upload']}</a></li>") . "
+                        <li><a href='./bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
+                    </ul>
+                </li>
+                <li><a href='#'>{$lang['gl_general']}</a>
+                    <ul class='sub-menu'>";
+            if ($INSTALLER09['bucket_allowed'] === 1) {
+                $htmlout .= "
+                        <li><a href='./bitbucket.php'>{$lang['gl_bitbucket']}</a></li>";
+            }
+            $htmlout .= "
                         <li><a href='./announcement.php'>{$lang['gl_announcements']}</a></li>
                         <li><a href='./topten.php'>{$lang['gl_stats']}</a></li>
                         <li><a href='./faq.php'>{$lang['gl_faq']}</a></li>
-                <li><a href='./chat.php'>{$lang['gl_irc']}</a></li>
+                        <li><a href='./chat.php'>{$lang['gl_irc']}</a></li>
                         <li><a href='./staff.php'>{$lang['gl_staff']}</a></li>
                         <li><a href='./wiki.php'>{$lang['gl_wiki']}</a></li>
-            <li><a href='#' onclick='radio();'>{$lang['gl_radio']}</a></li>
-            <li><a href='./rsstfreak.php'>{$lang['gl_tfreak']}</a></li>
-            </ul><!--/ .sub-menu-->
-        </li>
-        <li><a href='#'>{$lang['gl_games']}</a>
-            <ul class='sub-menu'>
-                <li><a href='./games.php'>{$lang['gl_games']}</a></li>
-                <li><a href='./arcade.php'>{$lang['gl_arcade']}</a></li>
-                <li><a href='./lottery.php'>{$lang['gl_lottery']}</a></li>
-                </ul><!--/ .sub-menu-->
-            </li>
-            <li><a href='./donate.php'>{$lang['gl_donate']}</a></li>
-            <li><a href='#'>{$lang['gl_forums']}</a>
-            <ul class='sub-menu'>
-                <li><a href='http://tech-info'>{$lang['gl_tforums']}</a></li>
-                <li><a href='./forums.php'>{$lang['gl_forums']}</a></li>
+                        <li><a href='#' onclick='radio();'>{$lang['gl_radio']}</a></li>
+                        <li><a href='./rsstfreak.php'>{$lang['gl_tfreak']}</a></li>
+                    </ul>
+                </li>
+                <li><a href='#'>{$lang['gl_games']}</a>
+                    <ul class='sub-menu'>
+                        <li><a href='./games.php'>{$lang['gl_games']}</a></li>
+                        <li><a href='./arcade.php'>{$lang['gl_arcade']}</a></li>
+                        <li><a href='./lottery.php'>{$lang['gl_lottery']}</a></li>
+                    </ul>
+                </li>
+                <li><a href='./donate.php'>{$lang['gl_donate']}</a></li>
+                <li><a href='#'>{$lang['gl_forums']}</a>
+                    <ul class='sub-menu'>
+                        <li><a href='http://tech-info'>{$lang['gl_tforums']}</a></li>
+                        <li><a href='./forums.php'>{$lang['gl_forums']}</a></li>
+                    </ul>
+                </li>
+                <li>" . ($CURUSER['class'] < UC_STAFF ? "<a class='brand' href='./bugs.php?action=add'>{$lang['gl_breport']}</a>" : "<a class='brand' href='./bugs.php?action=bugs'>{$lang['gl_brespond']}</a>") . '</li>
+                <li>' . ($CURUSER['class'] < UC_STAFF ? "<a class='brand' href='./contactstaff.php'>{$lang['gl_cstaff']}</a>" : "<a class='brand' href='./staffbox.php'>{$lang['gl_smessages']}</a>") . '</li>
             </ul>
-            </li>
-            <li> " . (isset($CURUSER) && $CURUSER['class'] < UC_STAFF ? "<a class='brand' href='./bugs.php?action=add'>{$lang['gl_breport']}</a>" : "<a class='brand' href='./bugs.php?action=bugs'>{$lang['gl_brespond']}</a>") . '</li>
-            <li>' . (isset($CURUSER) && $CURUSER['class'] < UC_STAFF ? "<a class='brand' href='./contactstaff.php'>{$lang['gl_cstaff']}</a>" : "<a class='brand' href='./staffbox.php'>{$lang['gl_smessages']}</a>") . '</li>
-        </ul>
-        <small>
-        <strong>';
+            <small>
+                <strong>';
         if (!empty($last24_cache)) {
             if ($last24_cache['totalonline24'] != 1) {
                 $last24_cache['ss24'] = $lang['gl_members'];
@@ -119,31 +125,37 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
                 $last24_cache['ss24'] = $lang['gl_member'];
             }
         }
-        $htmlout .= '
-                &#160;&#160;' . $last24_cache['totalonline24'] . $last24_cache['ss24'] . " {$lang['gl_last24']}<br>";
+        $htmlout .= "
+                    <div>
+                        <span class='left10'>
+                            {$last24_cache['totalonline24']}{$last24_cache['ss24']}{{$lang['gl_last24']}}
+                        </span>
+                    </div>";
         if (!empty($active_users_cache)) {
-            $htmlout .= "&#160;&#160;{$lang['gl_ausers']}&#160;[" . $active_users_cache['au'] . ']';
+            $htmlout .= "
+                    <div>
+                        <span class='left10'>
+                            {$lang['gl_ausers']} [{$active_users_cache['au']}]
+                        </span>
+                    </div>";
         }
-        $htmlout .= "</strong></small></div><div class='clear'></div>";
+        $htmlout .= "
+                </strong>
+            </small>
+        </div>
+        <div class='clear'>
+        </div>";
     }
     $htmlout .= "
-        <!-- END Main Navigation
-        =================================================== -->
-        <!-- Logo
-        =================================================== -->
-            <div class='cl'></div>
-            <!-- Logo -->
-            <div id='logo'>
-            <h1>" . TBVERSION . "<span> Code</span></h1>
+        <div class='cl'>
+        </div>
+        <div id='logo'>
+            <h1>" . TBVERSION . " Code</h1>
             <p class='description'><i>Making progress, 1 day at a time...</i></p>
-            </div>
-        <!-- End Logo
-        =================================================== -->";
+        </div>";
     if ($CURUSER) {
         $salty = salty($CURUSER['username']);
         $htmlout .= "
-        <!-- Platform Navigation
-        =================================================== -->
         <div id='platform-menu' class='container platform-menu'>
             <a href='./index.php' class='home'>{$lang['gl_home']}</a>
                 <ul>
@@ -156,19 +168,16 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
                     <li><a href='./friends.php'>{$lang['gl_friends']}</a></li>
                     <li><a href='./logout.php?hash_please={$salty}'>{$lang['gl_logout']}</a></li>
                 </ul>
-            <div class='container-fluid'>
-            <!--/ statusbar start-->
-            <div class='statusbar-container'>";
+                <div class='container-fluid'>
+                    <div class='statusbar-container'>";
         if ($CURUSER) {
             $htmlout .= StatusBar() . "
-            </div>
-            <!--/ statusbar end-->
-            <!-- Print Global Messages Start -->
-            </div>
-            <div id='base_globelmessage'>
-            <div id='gm_taps'>
-            <ul class='gm_taps'>
-                <li><b>{$lang['gl_alerts']}</b></li>";
+                    </div>
+                </div>
+                <div id='base_globelmessage'>
+                    <div id='gm_taps'>
+                        <ul class='gm_taps'>
+                            <li><b>{$lang['gl_alerts']}</b></li>";
 
             if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_REPORTS && $BLOCKS['global_staff_report_on']) {
                 require_once BLOCK_DIR . 'global/report.php';
@@ -200,7 +209,11 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
             if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_FREELEECH_CONTRIBUTION && $BLOCKS['global_freeleech_contribution_on']) {
                 require_once BLOCK_DIR . 'global/freeleech_contribution.php';
             }
-            $htmlout .= '</ul></div></div><!-- Print Global Messages End -->';
+
+            $htmlout .= '
+                        </ul>
+                    </div>
+                </div>';
         }
         /*
          $INSTALLER09['expires']['staff_check'] = 3600; //== test value
@@ -275,35 +288,28 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
           }
         */
         $htmlout .= "
-    </div>
-    <div class='clearfix'></div>
-    <!-- End Platform Navigation and Global Messages
-    ======================================================= -->";
+        </div>";
     }
-    $htmlout .= "<br>";
     if (getSessionVar('error')) {
         $htmlout .= "
-    <div class='alert alert-error text-center'>" . getSessionVar('error') . "</div>";
+        <div class='alert alert-error text-center'>" . getSessionVar('error') . "</div>";
         unsetSessionVar('error');
     }
     $htmlout .= "
-    <div id='base_content'>
-    <!--<table class='mainouter' cellspacing='0' cellpadding='10'>
-    <tr>
-    <td align='center' class='outer' style='padding-bottom: 10px'>-->";
+        <div id='base_content' class='round5'>
+            <div id='col1' class='content'>";
 
     return $htmlout;
 } // stdhead
 function stdfoot($stdfoot = false)
 {
-    global $CURUSER, $INSTALLER09, $start, $query_stat, $mc1, $querytime, $lang;
+    global $CURUSER, $INSTALLER09, $start, $query_stat, $queries, $mc1, $querytime, $lang;
     $debug = (SQL_DEBUG && in_array($CURUSER['id'], $INSTALLER09['allowed_staff']['id']) ? 1 : 0);
     $cachetime = ($mc1->Time / 1000);
     $seconds = microtime(true) - $start;
     $r_seconds = round($seconds, 5);
     //$phptime = $seconds - $cachetime;
     $phptime = $seconds - $querytime - $cachetime;
-    $queries = count($query_stat); // sql query count by pdq
     $percentphp = number_format(($phptime / $seconds) * 100, 2);
     //$percentsql  = number_format(($querytime / $seconds) * 100, 2);
     $percentmc = number_format(($cachetime / $seconds) * 100, 2);
@@ -329,44 +335,40 @@ function stdfoot($stdfoot = false)
     $querytime = 0;
     if ($CURUSER && $query_stat && $debug) {
         $htmlfoot .= "
-        <div class='content'>
-            <div class='portlet'>
-                <fieldset><legend>{$lang['gl_stdfoot_querys']}</legend>
-                    <div class='container-fluid'>
-                        <table class='table  table-bordered'>
-                            <thead>
+                <div class='container-fluid portlet'>
+                    <a id='queries-hash'></a>
+                    <fieldset id='queries' class='header'>
+                        <legend class='flipper'><i class='fa fa-angle-up' aria-hidden='true'></i>{$lang['gl_stdfoot_querys']}</legend>
+                        <table class='table table-bordered'>
+                            <tbody>
                                 <tr>
-                                    <th align='center'>{$lang['gl_stdfoot_id']}</th>
-                                    <th align='center'>{$lang['gl_stdfoot_qt']}</th>
-                                    <th align='left'>{$lang['gl_stdfoot_qs']}</th>
-                                </tr>
-                        </thead>";
+                                    <td class='colhead'>{$lang['gl_stdfoot_id']}</td>
+                                    <td class='colhead'>{$lang['gl_stdfoot_qt']}</td>
+                                    <td class='colhead'>{$lang['gl_stdfoot_qs']}</td>
+                                </tr>";
         foreach ($query_stat as $key => $value) {
             $querytime += $value['seconds']; // query execution time
             $htmlfoot .= '
-                            <tbody>
                                 <tr>
                                     <td>' . ($key + 1) . "</td>
                                     <td align='center'><b>" . ($value['seconds'] > 0.01 ? "<font color='red' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</font>' : "<font color='green' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</font>') . "</b></td>
                                     <td align='left'>" . htmlsafechars($value['query']) . '<br></td>
-                                </tr>
-                            </tbody>';
+                                </tr>';
         }
         $htmlfoot .= '
+                            </tbody>
                         </table>
-                    </div>
-                </fieldset>
-            </div>
-        </div>';
+                    </fieldset>
+                </div>';
     }
     $htmlfoot .= "
-    </div>
-<!--</td></tr></table>-->";
+            </div>
+        </div>";
     if ($CURUSER) {
         /* just in case **/
         $htmlfoot .= "
         <div class='nav-collapse collapse'>
-            <div class='container' >
+            <div class='container padding10' >
                 <div class='pull-left'>
                 " . $INSTALLER09['site_name'] . " {$lang['gl_stdfoot_querys_page']}" . $r_seconds . " {$lang['gl_stdfoot_querys_seconds']}<br>" . "
                 {$lang['gl_stdfoot_querys_server']}" . $queries . " {$lang['gl_stdfoot_querys_time']} " . ($queries != 1 ? "{$lang['gl_stdfoot_querys_times']}" : '') . '
@@ -382,31 +384,56 @@ function stdfoot($stdfoot = false)
         </div>';
     }
     $htmlfoot .= "
+        <div id='control_panel'>
+            <a href='#' id='control_label'></a>
+        </div>
     </div>
-    <div id='control_panel'>
-        <a href='#' id='control_label'></a>
-    </div>
+    <a href='#' class='back-to-top'>
+        <i class='fa fa-arrow-circle-up' style='font-size:48px'></i>
+    </a>
     <script>
         var cookie_prefix   = '{$INSTALLER09['cookie_prefix']}';
         var cookie_path     = '{$INSTALLER09['cookie_path']}';
         var cookie_lifetime = '{$INSTALLER09['cookie_lifetime']}';
         var cookie_domain   = '{$INSTALLER09['cookie_domain']}';
         var cookie_secure   = '{$INSTALLER09['sessionCookieSecure']}';
+        var csrf_token      = '" . getSessionVar('csrf_token') . "';
+        var x = document.getElementsByClassName('flipper');
+        var i;
+        for (i = 0; i < x.length; i++) {
+            var id = x[i].parentNode.id;
+            if (id && localStorage[id] === 'closed') {
+                var nextSibling = x[i].nextSibling;
+                while (nextSibling && nextSibling.nodeType != 1) {
+                    nextSibling = nextSibling.nextSibling;
+                }
+                nextSibling.style.display = 'none';
+                child = x[i].children[0];
+                child.classList.add('fa-expand');
+                child.classList.remove('fa-compress');
+            }
+        }
     </script>
-    <script src='./scripts/352c3ef59b3fe545376f9e1279a9ce55.min.js'></script>";
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script src='./js/af0ade9cd34b15b543ce38fdf1be17bf.min.js'></script>";
 
     if (!empty($stdfoot['js'])) {
         foreach ($stdfoot['js'] as $JS) {
-            $htmlfoot .= '
-    <script src="./scripts/' . $JS . '.js"></script>';
+            if (strpos($JS, 'http') === false) {
+                $htmlfoot .= "
+    <script src='./js/{$JS}.js'></script>";
+            } else {
+                $htmlfoot .= "
+    <script src='{$JS}'></script>";
+            }
         }
     }
 
     $htmlfoot .= "
     <!--[if lt IE 9]>
-        <script src='./templates/{$INSTALLER09['stylesheet']}/js/modernizr.custom.js'></script>
+        <script src='./templates/" . get_stylesheet() . "/js/modernizr.custom.js'></script>
         <script src='http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE8.js'></script>
-        <script src='./templates/{$INSTALLER09['stylesheet']}/js/ie.js'></script>
+        <script src='./templates/" . get_stylesheet() . "/js/ie.js'></script>
     <![endif]-->
 
 </body>
@@ -460,122 +487,12 @@ function StatusBar()
     if (!$CURUSER) {
         return '';
     }
-    $upped = mksize($CURUSER['uploaded']);
-    $downed = mksize($CURUSER['downloaded']);
-    //==Memcache unread pms
-    $PMCount = 0;
-    if (($unread1 = $mc1->get_value('inbox_new_sb_' . $CURUSER['id'])) === false) {
-        $res1 = sql_query('SELECT COUNT(id) FROM messages WHERE receiver=' . sqlesc($CURUSER['id']) . " AND unread = 'yes' AND location = '1'") or sqlerr(__LINE__, __FILE__);
-        list($PMCount) = mysqli_fetch_row($res1);
-        $PMCount = (int)$PMCount;
-        $unread1 = $mc1->cache_value('inbox_new_sb_' . $CURUSER['id'], $PMCount, $INSTALLER09['expires']['unread']);
-    }
-    $inbox = ($unread1 == 1 ? "$unread1&#160;{$lang['gl_msg_singular']}" : "$unread1&#160;{$lang['gl_msg_plural']}");
-    //==Memcache peers
-    if (XBT_TRACKER == true) {
-        if (($MyPeersXbtCache = $mc1->get_value('MyPeers_XBT_' . $CURUSER['id'])) === false) {
-            $seed['yes'] = $seed['no'] = 0;
-            $seed['conn'] = 3;
-            $r = sql_query('SELECT COUNT(uid) AS `count`, `left`, `active`, `connectable` FROM `xbt_files_users` WHERE uid= ' . sqlesc($CURUSER['id']) . ' GROUP BY `left`') or sqlerr(__LINE__, __FILE__);
-            while ($a = mysqli_fetch_assoc($r)) {
-                $key = $a['left'] == 0 ? 'yes' : 'no';
-                $seed[$key] = number_format((int)$a['count']);
-                $seed['conn'] = $a['connectable'] == 0 ? 1 : 2;
-            }
-            $mc1->cache_value('MyPeers_XBT_' . $CURUSER['id'], $seed, $INSTALLER09['expires']['MyPeers_xbt_']);
-            unset($r, $a);
-        } else {
-            $seed = $MyPeersXbtCache;
-        }
-        // for display connectable  1 / 2 / 3
-        if (!empty($seed['conn'])) {
-            switch ($seed['conn']) {
-                case 1:
-                    $connectable = "<img src='{$INSTALLER09['pic_base_url']}notcon.png' alt='{$lang['gl_not_connectable']}' title='{$lang['gl_not_connectable']}' />";
-                    break;
-
-                case 2:
-                    $connectable = "<img src='{$INSTALLER09['pic_base_url']}yescon.png' alt='{$lang['gl_connectable']}' title='{$lang['gl_connectable']}' />";
-                    break;
-
-                default:
-                    $connectable = "{$lang['gl_na_connectable']}";
-            }
-        } else {
-            $connectable = $lang['gl_na_connectable'];
-        }
-    } else {
-        if (($MyPeersCache = $mc1->get_value('MyPeers_' . $CURUSER['id'])) === false) {
-            $seed['yes'] = $seed['no'] = 0;
-            $seed['conn'] = 3;
-            $r = sql_query('SELECT COUNT(id) AS count, seeder, connectable FROM peers WHERE userid=' . sqlesc($CURUSER['id']) . ' GROUP BY seeder');
-            while ($a = mysqli_fetch_assoc($r)) {
-                $key = $a['seeder'] == 'yes' ? 'yes' : 'no';
-                $seed[$key] = number_format((int)$a['count']);
-                $seed['conn'] = $a['connectable'] == 'no' ? 1 : 2;
-            }
-            $mc1->cache_value('MyPeers_' . $CURUSER['id'], $seed, $INSTALLER09['expires']['MyPeers_']);
-            unset($r, $a);
-        } else {
-            $seed = $MyPeersCache;
-        }
-        // for display connectable  1 / 2 / 3
-        if (!empty($seed['conn'])) {
-            switch ($seed['conn']) {
-                case 1:
-                    $connectable = "<img src='{$INSTALLER09['pic_base_url']}notcon.png' alt='{$lang['gl_not_connectable']}' title='{$lang['gl_not_connectable']}' />";
-                    break;
-
-                case 2:
-                    $connectable = "<img src='{$INSTALLER09['pic_base_url']}yescon.png' alt='{$lang['gl_connectable']}' title='{$lang['gl_connectable']}' />";
-                    break;
-
-                default:
-                    $connectable = "{$lang['gl_na_connectable']}";
-            }
-        } else {
-            $connectable = $lang['gl_na_connectable'];
-        }
-    }
-    if (($Achievement_Points = $mc1->get_value('user_achievement_points_' . $CURUSER['id'])) === false) {
-        $Sql = sql_query('SELECT u.id, u.username, a.achpoints, a.spentpoints FROM users AS u LEFT JOIN usersachiev AS a ON u.id = a.userid WHERE u.id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-        $Achievement_Points = mysqli_fetch_assoc($Sql);
-        $Achievement_Points['id'] = (int)$Achievement_Points['id'];
-        $Achievement_Points['achpoints'] = (int)$Achievement_Points['achpoints'];
-        $Achievement_Points['spentpoints'] = (int)$Achievement_Points['spentpoints'];
-        $mc1->cache_value('user_achievement_points_' . $CURUSER['id'], $Achievement_Points, 0);
-    }
-    $member_reputation = get_reputation($CURUSER);
-    $usrclass = '';
-    if ($CURUSER['override_class'] != 255) {
-        $usrclass = '&#160;<b>(' . get_user_class_name($CURUSER['class']) . ')</b>&#160;';
-    } elseif ($CURUSER['class'] >= UC_STAFF) {
-        $usrclass = "&#160;<a href='./setclass.php'><b>(" . get_user_class_name($CURUSER['class']) . ')</b></a>&#160;';
-    }
     $StatusBar = $clock = '';
     $StatusBar .= "
-       <div id='base_usermenu'>" . format_username($CURUSER['id']) . " &#160;&#160;&#160;<span id='clock'>{$clock}</span>&#160;<span class='base_usermenu_arrow'><a href='#' onclick='showSlidingDiv(); return false;'><i class='icon-chevron-down'></i></a></span></div>
-       <div id='slidingDiv'>
-       <div class='slide_head'>{$lang['gl_pstats']}</div>
-       " . (isset($CURUSER) && $CURUSER['class'] < UC_STAFF ? "<div class='slide_a'>{$lang['gl_uclass']}</div><div class='slide_b'><b>(" . get_user_class_name($CURUSER['class']) . ')</b></div>' : "<div class='slide_a'>{$lang['gl_uclass']}</div><div class='slide_b'>{$usrclass}</div>") . "
-       <div class='slide_c'>{$lang['gl_rep']}</div><div class='slide_d'>$member_reputation</div>
-       <div class='slide_a'>{$lang['gl_invites']}</div><div class='slide_b'><a href='./invite.php'>{$CURUSER['invites']}</a></div>
-       <div class='slide_c'>{$lang['gl_karma']}</div><div class='slide_d'><a href='./mybonus.php'>{$CURUSER['seedbonus']}</a></div>
-       <div class='slide_a'>{$lang['gl_achpoints']}</div><div class='slide_b'><a href='./achievementhistory.php?id={$CURUSER['id']}'>" . (int)$Achievement_Points['achpoints'] . "</a></div>
-       <div class='slide_head'>{$lang['gl_tstats']}</div>
-       <div class='slide_a'>{$lang['gl_shareratio']}</div><div class='slide_b'>" . member_ratio($CURUSER['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $CURUSER['downloaded']) . '</div>';
-    if ($INSTALLER09['ratio_free']) {
-        $StatusBar .= "<div class='slide_c'>{$lang['gl_uploaded']}</div><div class='slide_d'>$upped</div>";
-    } else {
-        $StatusBar .= "<div class='slide_c'>{$lang['gl_uploaded']}</div><div class='slide_d'>$upped</div>
-       <div class='slide_a'>{$lang['gl_downloaded']}</div><div class='slide_b'>$downed</div>";
-    }
-    $StatusBar .= "<div class='slide_c'>{$lang['gl_seed_torrents']}</div><div class='slide_d'>{$seed['yes']}</div>
-       <div class='slide_a'>{$lang['gl_leech_torrents']}</div><div class='slide_b'>{$seed['no']}</div>
-       <div class='slide_c'>{$lang['gl_connectable']}</div><div class='slide_d'>{$connectable}</div>
-        " . ($CURUSER['class'] >= UC_STAFF || isset($CURUSER) && $CURUSER['got_blocks'] == 'yes' ? "<div class='slide_head'>{$lang['gl_userblocks']}</div><div class='slide_a'>{$lang['gl_myblocks']}</div><div class='slide_b'><a href='./user_blocks.php'>{$lang['gl_click']}</a></div>" : '') . '
-         ' . ($CURUSER['class'] >= UC_STAFF || isset($CURUSER) && $CURUSER['got_moods'] == 'yes' ? "<div class='slide_c'>{$lang['gl_myunlocks']}</div><div class='slide_d'><a href='./user_unlocks.php'>{$lang['gl_click']}</a></div>" : '') . '
-       </div>';
+                        <div id='base_usermenu' class='tooltipper-ajax'>
+                            <span id='clock' class='right20'>{$clock}</span>
+                            " . format_username($CURUSER['id']) . "
+                        </div>";
 
     return $StatusBar;
 }

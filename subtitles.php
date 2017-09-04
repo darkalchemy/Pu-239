@@ -260,19 +260,19 @@ elseif ($mode == 'details') {
             stderr('Sorry', 'There is no subtitle with that id');
         }
         if ($arr['lang'] == 'eng') {
-            $langs = '<img src="pic/flag/england.gif" border="0" alt="English" title="English" />';
+            $langs = '<img src="./images/flag/england.gif" border="0" alt="English" title="English" />';
         } elseif ($arr['lang'] == 'swe') {
-            $langs = '<img src="pic/flag/sweden.gif" border="0" alt="Swedish" title="Swedish" />';
+            $langs = '<img src="./images/flag/sweden.gif" border="0" alt="Swedish" title="Swedish" />';
         } elseif ($arr['lang'] == 'dan') {
-            $langs = '<img src="pic/flag/denmark.gif" border="0" alt="Danish" title="Danish" />';
+            $langs = '<img src="./images/flag/denmark.gif" border="0" alt="Danish" title="Danish" />';
         } elseif ($arr['lang'] == 'nor') {
-            $langs = '<img src="pic/flag/norway.gih" border="0" alt="Norwegian" title="Norwegian" />';
+            $langs = '<img src="./images/flag/norway.gih" border="0" alt="Norwegian" title="Norwegian" />';
         } elseif ($arr['lang'] == 'fin') {
-            $langs = '<img src="pic/flag/finland.gif" border="0" alt="Finnish" title="Finnish" />';
+            $langs = '<img src="./images/flag/finland.gif" border="0" alt="Finnish" title="Finnish" />';
         } elseif ($arr['lang'] == 'spa') {
-            $langs = '<img src="pic/flag/spain.gif" border="0" alt="Spanish" title="Spanish" />';
+            $langs = '<img src="./images/flag/spain.gif" border="0" alt="Spanish" title="Spanish" />';
         } elseif ($arr['lang'] == 'fre') {
-            $langs = '<img src="pic/flag/france.gif" border="0" alt="French" title="French" />';
+            $langs = '<img src="./images/flag/france.gif" border="0" alt="French" title="French" />';
         } else {
             $langs = '<b>Unknown</b>';
         }
@@ -283,10 +283,10 @@ elseif ($mode == 'details') {
 <br><br>
 <form action='downloadsub.php' method='post'>
 <input type='hidden' name='sid' value='" . (int)$arr['id'] . "' />
-<input type='submit' value='' style='background:url(pic/down.png) no-repeat; width:124px;height:25px;border:none;' />
+<input type='submit' value='' style='background:url(./images/down.png) no-repeat; width:124px;height:25px;border:none;' />
 <input type='hidden' name='action' value='download' />
 </form><br>
-<a href='#' onclick=\"window.open('subtitles.php?mode=preview&amp;id=" . (int)$arr['id'] . "','','height=500,width=400,resizable=yes,scrollbars=yes')\" ><img src='pic/preview.png' width='124' height='25' border='0' alt='Preview' title='Preview'  /></a>
+<a href='#' onclick=\"window.open('subtitles.php?mode=preview&amp;id=" . (int)$arr['id'] . "','','height=500,width=400,resizable=yes,scrollbars=yes')\" ><img src='./images/preview.png' width='124' height='25' border='0' alt='Preview' title='Preview'  /></a>
 </td></tr>
 <tr><td align='left'>Name :&#160;<b>" . htmlsafechars($arr['name']) . "</b></td></tr>
 <tr><td align='left'>IMDb :&#160;<a href='" . htmlsafechars($arr['imdb']) . "' target='_blank'>" . htmlsafechars($arr['imdb']) . "</a></td></tr>
@@ -299,8 +299,8 @@ elseif ($mode == 'details') {
 <tr><td align='left'>Hits :&#160;<b>" . (int)$arr['hits'] . "</b></td></tr>
 <tr><td align='left'>Uploader :&#160;<b><a href='userdetails.php?id=" . (int)$arr['owner'] . "' target='_blank'>" . htmlsafechars($arr['username']) . '</a></b>&#160;&#160;';
         if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_MODERATOR) {
-            $HTMLOUT .= "<a href='subtitles.php?mode=edit&amp;id=" . (int)$arr['id'] . "'><img src='pic/edit.png' alt='Edit Sub' title='Edit Sub' style='border:none;padding:2px;' /></a>
-<a href='subtitles.php?mode=delete&amp;id=" . (int)$arr['id'] . "'><img src='pic/drop.png' alt='Delete Sub' title='Delete Sub' style='border:none;padding:2px;' /></a>";
+            $HTMLOUT .= "<a href='subtitles.php?mode=edit&amp;id=" . (int)$arr['id'] . "'><img src='./images/edit.png' alt='Edit Sub' title='Edit Sub' style='border:none;padding:2px;' /></a>
+<a href='subtitles.php?mode=delete&amp;id=" . (int)$arr['id'] . "'><img src='./images/drop.png' alt='Delete Sub' title='Delete Sub' style='border:none;padding:2px;' /></a>";
         }
         $HTMLOUT .= "</td></tr>
 <tr><td align='left'>Added :&#160;<b>" . get_date($arr['added'], 'LONG', 0, 1) . '</b></td></tr>
@@ -389,34 +389,34 @@ elseif ($mode == 'details') {
             }
             $HTMLOUT .= "<td class='colhead' align='center'>Upper</td></tr>";
             if ($arr['lang'] == 'eng') {
-                $langs = '<img src="pic/flag/england.gif" border="0" alt="English" title="English" />';
+                $langs = '<img src="./images/flag/england.gif" border="0" alt="English" title="English" />';
             } elseif ($arr['lang'] == 'swe') {
-                $langs = '<img src="pic/flag/sweden.gif" border="0" alt="Swedish" title="Swedish" />';
+                $langs = '<img src="./images/flag/sweden.gif" border="0" alt="Swedish" title="Swedish" />';
             } elseif ($arr['lang'] == 'dan') {
-                $langs = '<img src="pic/flag/denmark.gif" border="0" alt="Danish" title="Danish" />';
+                $langs = '<img src="./images/flag/denmark.gif" border="0" alt="Danish" title="Danish" />';
             } elseif ($arr['lang'] == 'nor') {
-                $langs = '<img src="pic/flag/norway.gih" border="0" alt="Norwegian" title="Norwegian" />';
+                $langs = '<img src="./images/flag/norway.gih" border="0" alt="Norwegian" title="Norwegian" />';
             } elseif ($arr['lang'] == 'fin') {
-                $langs = '<img src="pic/flag/finland.gif" border="0" alt="Finnish" title="Finnish" />';
+                $langs = '<img src="./images/flag/finland.gif" border="0" alt="Finnish" title="Finnish" />';
             } elseif ($arr['lang'] == 'spa') {
-                $langs = '<img src="pic/flag/spain.gif" border="0" alt="Spanish" title="Spanish" />';
+                $langs = '<img src="./images/flag/spain.gif" border="0" alt="Spanish" title="Spanish" />';
             } elseif ($arr['lang'] == 'fre') {
-                $langs = '<img src="pic/flag/france.gif" border="0" alt="French" title="French" />';
+                $langs = '<img src="./images/flag/france.gif" border="0" alt="French" title="French" />';
             } else {
                 $langs = '<b>Unknown</b>';
             }
             $HTMLOUT .= "<tr valign='middle'>
 <td align='center'>{$langs}</td>
 <td><a href='subtitles.php?mode=details&amp;id=" . (int)$arr['id'] . "' onmouseover=\"tip('<img src=\'" . htmlsafechars($arr['poster']) . "\' width=\'100\'>')\" onmouseout=\"untip()\">" . htmlsafechars($arr['name']) . "</a></td>
-<td align='center'><a href='" . htmlsafechars($arr['imdb']) . "'  target='_blank'><img src='pic/imdb.gif' border='0' alt='Imdb' title='Imdb' /></a></td>
+<td align='center'><a href='" . htmlsafechars($arr['imdb']) . "'  target='_blank'><img src='./images/imdb.gif' border='0' alt='Imdb' title='Imdb' /></a></td>
 <td align='center'>" . get_date($arr['added'], 'LONG', 0, 1) . "</td>
 <td align='center'>" . htmlsafechars($arr['hits']) . "</td>
 <td align='center'>" . ($arr['fps'] == 0 ? 'Unknow' : htmlsafechars($arr['fps'])) . "</td>
 <td align='center'>" . ($arr['cds'] == 0 ? 'Unknow' : ($arr['cds'] == 255 ? 'More than 5 ' : htmlsafechars($arr['cds']))) . '</td>';
             if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_STAFF) {
                 $HTMLOUT .= "<td align='center' nowrap='nowrap'>
-<a href='subtitles.php?mode=edit&amp;id=" . (int)$arr['id'] . "'><img src='pic/edit.png' alt='Edit Sub' title='Edit Sub' style='border:none;padding:2px;' /></a>
-<a href='subtitles.php?mode=delete&amp;id=" . (int)$arr['id'] . "'><img src='pic/drop.png' alt='Delete Sub' title='Delete Sub' style='border:none;padding:2px;' /></a>
+<a href='subtitles.php?mode=edit&amp;id=" . (int)$arr['id'] . "'><img src='./images/edit.png' alt='Edit Sub' title='Edit Sub' style='border:none;padding:2px;' /></a>
+<a href='subtitles.php?mode=delete&amp;id=" . (int)$arr['id'] . "'><img src='./images/drop.png' alt='Delete Sub' title='Delete Sub' style='border:none;padding:2px;' /></a>
 </td>";
             }
             $HTMLOUT .= "<td align='center'><a href='userdetails.php?id=" . (int)$arr['owner'] . "'>" . htmlsafechars($arr['username']) . '</a></td></tr>';

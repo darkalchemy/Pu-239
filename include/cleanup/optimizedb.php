@@ -16,7 +16,7 @@ function optimizedb($data)
         $sql = sql_query("OPTIMIZE TABLE {$oht}");
     }
     if ($queries > 0) {
-        write_log("Auto-optimizedb--------------------Auto Optimization Complete using $queries queries --------------------");
+        write_log("Auto Optimize DB Cleanup: Commpleted using $queries queries");
     }
     if ($oht != '') {
         $data['clean_desc'] = "MySQLCleanup optimized {$oht} table(s)";

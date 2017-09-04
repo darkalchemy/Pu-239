@@ -70,19 +70,19 @@ check_user_status();
                     <tr>
                         <td nowrap="nowrap" class="info">Background color</td>
                         <td width="100%"><input type="text" id="bgColor" readonly="readonly" size="25"/>
-                            <img id="colorSelector" title="Select color" src="images/color_wheel.png" width="16"
+                            <img id="colorSelector" title="Select color" src="{$INSTALLER09['pic_base_url']}color_wheel.png" width="16"
                                  height="16" alt="Color Wheel"/></td>
                     </tr>
                     <tr>
                         <td nowrap="nowrap" class="info">Font color</td>
                         <td width="100%"><input type="text" id="fColor" readonly="readonly" size="25"/>
-                            <img id="colorSelector1" title="Select color" src="images/color_wheel.png" width="16"
+                            <img id="colorSelector1" title="Select color" src="{$INSTALLER09['pic_base_url']}color_wheel.png" width="16"
                                  height="16" alt="Color Wheel"/></td>
                     </tr>
                     <tr>
                         <td nowrap="nowrap" class="info">Border color</td>
                         <td width="100%"><input type="text" id="bColor" readonly="readonly" size="25"/>
-                            <img id="colorSelector2" title="Select color" src="images/color_wheel.png" width="16"
+                            <img id="colorSelector2" title="Select color" src="{$INSTALLER09['pic_base_url']}color_wheel.png" width="16"
                                  height="16" alt="Color Wheel"/></td>
                     </tr>
                     <tr>

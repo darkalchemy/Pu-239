@@ -1,11 +1,9 @@
 #loginContent {
-    font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 0.8em;
 }
 
 #loginContent h1 {
     font-size: 1.3em;
-    font-family: "Trebuchet MS", Verdana, Arial, sans-serif;
     font-weight: bold;
 }
 
@@ -26,13 +24,11 @@
 }
 
 #content {
-    font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 0.8em;
 }
 
 #content h1 {
     font-size: 1.3em;
-    font-family: "Trebuchet MS", Verdana, Arial, sans-serif;
     font-weight: bold;
 }
 

@@ -32,12 +32,11 @@ if (($active_irc_users_cache = $mc1->get_value($keys['activeircusers'])) === fal
 if (!$active_irc_users_cache['activeircusers']) {
     $active_irc_users_cache['activeircusers'] = $lang['index_irc_nousers'];
 }
-$active_irc_users = '
-	<fieldset class="header">
-		<legend>' . $lang['index_active_irc'] . '&#160;(' . $active_irc_users_cache['actcount'] . ')</legend>
-			 <div class="container-fluid">
-			 <!--<a href=\'javascript: klappe_news("a1")\'><img border=\'0\' src=\'pic/plus.gif\' id=\'pica1\' alt=\'' . $lang['index_hide_show'] . '\' /></a><div id=\'ka1\' style=\'display: none;\'>-->
-			  ' . $active_irc_users_cache['activeircusers'] . '
-			 </div><!--</div>-->
-	</fieldset>';
-$HTMLOUT .= $active_irc_users;
+$HTMLOUT .= "
+    <a id='irc-hash'></a>
+    <fieldset id='irc' class='header'>
+        <legend class='flipper'><i class='fa fa-angle-up' aria-hidden='true'></i>{$lang['index_active_irc']} ({$active_irc_users_cache['actcount']})</legend>
+            <div class='text-center'>
+                {$active_irc_users_cache['activeircusers']}
+            </div>
+    </fieldset>";

@@ -2,7 +2,7 @@ jQuery.preloadImages = function () {
     for (var i = 0; i < arguments.length; i++)
         jQuery("<img>").attr("src", arguments[i]);
 }
-jQuery.preloadImages("pic/home.png", "pic/homeo.png", "pic/browse.png", "pic/browseo.png", "pic/search.png", "pic/searcho.png", "pic/upload.png", "pic/uploado.png", "pic/chat.png", "pic/chato.png", "pic/forum.png", "pic/forumo.png", "pic/top.png", "pic/topo.png", "pic/rules.png", "pic/ruleso.png", "pic/faq.png", "pic/faqo.png", "pic/links.png", "pic/linkso.png", "pic/staff.png", "pic/staffo.png");
+jQuery.preloadImages("./images/home.png", "./images/homeo.png", "./images/browse.png", "./images/browseo.png", "./images/search.png", "./images/searcho.png", "./images/upload.png", "./images/uploado.png", "./images/chat.png", "./images/chato.png", "./images/forum.png", "./images/forumo.png", "./images/top.png", "./images/topo.png", "./images/rules.png", "./images/ruleso.png", "./images/faq.png", "./images/faqo.png", "./images/links.png", "./images/linkso.png", "./images/staff.png", "./images/staffo.png");
 
 jQuery(document).ready(function () {
 

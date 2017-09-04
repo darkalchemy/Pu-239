@@ -9,7 +9,7 @@ function failedlogin_update($data)
     $dt = (TIME_NOW - $secs); // calculate date.
     sql_query("DELETE FROM failedlogins WHERE added < $dt") or sqlerr(__FILE__, __LINE__);
     if ($queries > 0) {
-        write_log("Expired failed login clean-------------------- Expired failed logins cleanup Complete using $queries queries --------------------");
+        write_log("Expired Failed Login Cleanup: Completed using $queries queries");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';

@@ -115,12 +115,12 @@ function cleanup_show_main()
           <td>" . mkprettytime($row['clean_increment']) . "</td>
           <td>{$row['_clean_time']}</td>
           <td align='center'><a href='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=edit&amp;cid={$row['clean_id']}'>
-            <img src='./pic/aff_tick.gif' alt='{$lang['cleanup_edit2']}' title='{$lang['cleanup_edit']}' border='0' height='12' width='12' /></a></td>
+            <img src='./images/aff_tick.gif' alt='{$lang['cleanup_edit2']}' title='{$lang['cleanup_edit']}' border='0' height='12' width='12' /></a></td>
 
           <td align='center'><a href='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=delete&amp;cid={$row['clean_id']}'>
-            <img src='./pic/aff_cross.gif' alt='{$lang['cleanup_delete2']}' title='{$lang['cleanup_delete1']}' border='0' height='12' width='12' /></a></td>
+            <img src='./images/aff_cross.gif' alt='{$lang['cleanup_delete2']}' title='{$lang['cleanup_delete1']}' border='0' height='12' width='12' /></a></td>
           <td align='center'><a href='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=unlock&amp;cid={$row['clean_id']}&amp;clean_on={$row['clean_on']}'>
-            <img src='./pic/warned.png' alt='{$lang['cleanup_off_on2']}' title='{$lang['cleanup_off_on']}' border='0' height='12' width='12' /></a></td>
+            <img src='./images/warned.png' alt='{$lang['cleanup_off_on2']}' title='{$lang['cleanup_off_on']}' border='0' height='12' width='12' /></a></td>
 <td align='center'><a href='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=run&amp;cid={$row['clean_id']}'>{$lang['cleanup_run_now2']}</a></td>
  </tr>";
     }

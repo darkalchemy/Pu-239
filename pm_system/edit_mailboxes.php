@@ -214,7 +214,7 @@ if (mysqli_num_rows($r) > 0) {
     $i = 0;
     while ($a = mysqli_fetch_assoc($r)) {
         $categories .= ($i && $i % 2 == 0) ? '</tr><tr>' : '';
-        $categories .= "<td class='bottom' style='padding-right: 5px'><input name='cat" . (int)$a['id'] . "' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? " checked='checked'" : '') . " value='yes' />&#160;<a class='catlink' href='browse.php?cat=" . (int)$a['id'] . "'><img src='{$INSTALLER09['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($a['image']) . "' alt='" . htmlsafechars($a['name']) . "' title='" . htmlsafechars($a['name']) . "' /></a>&#160;" . htmlspecialchars($a['name']) . "</td>\n";
+        $categories .= "<td class='bottom' style='padding-right: 5px'><input name='cat" . (int)$a['id'] . "' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? " checked='checked'" : '') . " value='yes' />&#160;<a class='catlink' href='browse.php?cat=" . (int)$a['id'] . "'><img src='{$INSTALLER09['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($a['image']) . "' alt='" . htmlsafechars($a['name']) . "' title='" . htmlsafechars($a['name']) . "' /></a>&#160;" . htmlspecialchars($a['name']) . "</td>\n";
         ++$i;
     }
     $categories .= "</tr></table>\n";

@@ -7,7 +7,7 @@ function hidepeers() {
 
 function peerlist(id, what) {
     temppeers = document.getElementById("peerlist").innerHTML;
-    document.getElementById("peerlist").innerHTML = '<img src="pic/loading.gif" width="16" height="16">';
+    document.getElementById("peerlist").innerHTML = '<img src="./images/loading.gif" width="16" height="16">';
     document.getElementById("nopeerlist").innerHTML = '<a href=\"javascript:hidepeers();\">[Hide list]</a>';
     var url = 'ajax_peerlist.php?id=' + escape(id);
     try {
@@ -54,7 +54,7 @@ function hidefile() {
 function filelist() {
 
     tmpfiler = document.getElementById("filelist").innerHTML;
-    document.getElementById("filelist").innerHTML = '<img src="pic/loading.gif" width="16" height="16">';
+    document.getElementById("filelist").innerHTML = '<img src="./images/loading.gif" width="16" height="16">';
     document.getElementById("hidefile").innerHTML = '<a href=\"javascript:hidefile();\">[Hide list]</a>';
     var url = 'ajax_filelist.php?id=' + escape( < ? php echo
     $id;

@@ -11,7 +11,7 @@ $lang = [
     'news_act_delete' => 'Delete',
     //add
     'news_add_ok' => 'News item was added successfully.',
-    'news_add_body' => 'News body can\'t be empty.',
+    'news_add_body' => "News body can't be empty.",
     'news_add_err' => 'Something weird just happened.',
     //edit
     'news_edit_ok' => 'News item was edited successfully.',
@@ -38,7 +38,7 @@ $lang = [
     'news_add_title'     => 'The news title cannot be empty!',
     'news_add_success'   => 'News entry was added successfully.',
     'news_add_oopss'     => 'oopss',
-    'news_add_something' => 'Something\'s wrong !! .',
+    'news_add_something' => "Something's wrong!!",
     'news_edit_invalid'  => 'Invalid news item ID.',
     'news_edit_nonews'   => 'No news item with that ID .',
     'news_edit_body'     => 'Body cannot be empty!',

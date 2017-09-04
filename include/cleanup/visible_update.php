@@ -11,7 +11,7 @@ function visible_update($data)
         sql_query("UPDATE torrents SET visible='yes' WHERE visible='no' AND seeders > 0");
     }
     if ($queries > 0) {
-        write_log("Torrent Visible clean-------------------- Torrent Visible cleanup Complete using $queries queries --------------------");
+        write_log("Torrent Visible Cleanup: Completed using $queries queries");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';

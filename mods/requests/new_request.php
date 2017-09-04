@@ -23,7 +23,7 @@ if (!empty($_POST['picture'])) {
     //    $picture2 = trim(urldecode($_POST['picture']));
     //    $headers  = get_headers($picture2);
     //    if (strpos($headers[0], '200') === false)
-    //        $picture = $INSTALLER09['baseurl'].'/pic/notfound.png';
+    //        $picture = $INSTALLER09['baseurl'].'/images/notfound.png';
     $pic = '[img]' . $picture . "[/img]\n";
 }
 $descr = "$pic";

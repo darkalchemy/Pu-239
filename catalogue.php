@@ -102,7 +102,7 @@ if (count($rows) > 0) {
          <td align='center' valign='top' nowrap='nowrap'>
             <table align='center' width='160' border='1' cellpadding='2'>
                 <tr><td align='center' class='colhead'>{$lang['catol_upper']} : <a href='userdetails.php?id=" . (int)$row['owner'] . "'>" . ($row['user'] ? htmlsafechars($row['user']) : "{$lang['catol_unknown']}[" . (int)$row['owner'] . ']') . "</a></td></tr>
-                <tr><td align='center'>" . ($row['poster'] ? '<a href="' . htmlsafechars($row['poster']) . '"><img src="' . htmlsafechars($row['poster']) . "\" border=\"0\" width=\"150\" height=\"195\" alt=\"{$lang['catol_no_poster']}\" title=\"{$lang['catol_no_poster']}\" /></a>" : "<img src=\"pic/noposter.png\" border=\"0\" width=\"150\" alt=\"{$lang['catol_no_poster']}\" title=\"{$lang['catol_no_poster']}\" />") . "</td></tr>
+                <tr><td align='center'>" . ($row['poster'] ? '<a href="' . htmlsafechars($row['poster']) . '"><img src="' . htmlsafechars($row['poster']) . "\" border=\"0\" width=\"150\" height=\"195\" alt=\"{$lang['catol_no_poster']}\" title=\"{$lang['catol_no_poster']}\" /></a>" : "<img src='./images/noposter.png' border='0' width='150' alt='{$lang['catol_no_poster']}' title='{$lang['catol_no_poster']}' />") . "</td></tr>
             </table>
 
         </td>

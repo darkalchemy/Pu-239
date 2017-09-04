@@ -46,7 +46,7 @@ function anonymous_update($data)
     }
     //==End
     if ($queries > 0) {
-        write_log("Anonymous Profile Clean -------------------- Anonymous Profile cleanup Complete using $queries queries --------------------");
+        write_log("Anonymous Profile Cleanup: Completed using $queries queries");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';

@@ -19,7 +19,7 @@ function happyhour_update($data)
     }
     //== End
     if ($queries > 0) {
-        write_log("Happyhour Clean -------------------- Happyhour cleanup Complete using $queries queries --------------------");
+        write_log("Happyhour Cleanup: Completed using $queries queries");
     }
     if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';

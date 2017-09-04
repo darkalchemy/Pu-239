@@ -1,5 +1,3 @@
-/* -- Theme controll panel --> Begin -- */
-
 #control_panel {
     position: fixed;
     top: 30px;
@@ -7,7 +5,7 @@
     z-index: 999;
     padding: 16px;
     width: 208px;
-    background-color: #1f1f1f;
+    background-color: rgba(31, 31, 31, .9);
     color: #3d3d3d;
     -webkit-border-radius: 0 5px 5px 0;
     -moz-border-radius: 0 5px 5px 0;
@@ -58,7 +56,7 @@
     top: 20px;
     width: 29px;
     height: 31px;
-    background: url('../themeChanger/images/theme_control_bg.png') no-repeat center center #1f1f1f;
+    background: url('../1/themeChanger/images/theme_control_bg.png') no-repeat center center rgba(31, 31, 31, .9);
     border-radius: 0 5px 5px 0;
     -moz-border-radius: 0 5px 5px 0;
     -webkit-border-radius: 0 5px 5px 0;
@@ -75,7 +73,7 @@
 }
 
 #control_panel #backgrounds a {
-    background-image: url('../themeChanger/images/patterns_sprite.png');
+    background-image: url('../1/themeChanger/images/patterns_sprite.png');
     background-repeat: no-repeat;
     border: 1px solid #000;
     width: 29px;
@@ -98,7 +96,7 @@
 }
 
 #nav ul li a {
-    background-image: url(../themeChanger/images/nav_sprite.png);
+    background-image: url(../1/themeChanger/images/nav_sprite.png);
     background-repeat: no-repeat;
     height: 32px;
     width: 32px;
@@ -116,7 +114,7 @@
 
 /* Backgrounds --> Begin */
 
-#backgrounds .background-2 {
+#backgrounds .background-1 {
     background-position: 0 0;
 }
 
@@ -262,7 +260,7 @@
     width: 11px;
     height: 11px;
     overflow: hidden;
-    background: url(../themeChanger/images/colorpicker_select.png);
+    background: url(../1/themeChanger/images/colorpicker_select.png);
     content: "";
 }
 

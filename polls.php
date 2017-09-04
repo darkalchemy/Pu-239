@@ -15,7 +15,7 @@ function parse_poll()
         //search for a poll with given ID
         $query = sql_query('SELECT * FROM polls
                             LEFT JOIN poll_voters ON polls.pid = poll_voters.poll_id
-                            AND poll_voters.user_id = ' . sqlesc($CURUSER['id']) . ' 
+                            AND poll_voters.user_id = ' . sqlesc($CURUSER['id']) . '
                             ORDER BY polls.start_date DESC
                             LIMIT 1');
         //Did we find the poll?
@@ -51,14 +51,14 @@ function parse_poll()
         {
          if ( !$GVARS['allow_result_view'] )
          {
-          $check 		= 2;
+          $check        = 2;
          }
          else
          {
-        		$check      = 1;
+                $check      = 1;
           }
-    		 return $check.$poll_footer;
-        	$poll_footer = 'Guests can\'t view polls!';
+             return $check.$poll_footer;
+            $poll_footer = 'Guests can\'t view polls!';
         }
     */
     //allow viewing of poll results before voting?
@@ -178,8 +178,11 @@ function poll_header($pid = '', $poll_q = '')
     }
     /*]]>*/
     </script>
-    <form action='{$INSTALLER09['baseurl']}/polls_take_vote.php?pollid={$pid}&amp;st=main&amp;addpoll=1' method='post'>
-    <fieldset class='header'><legend>{$poll_q}</legend><div class='container-fluid'>";
+            <form action='{$INSTALLER09['baseurl']}/polls_take_vote.php?pollid={$pid}&amp;st=main&amp;addpoll=1' method='post'>
+                <a id='poll-hash'></a>
+                <fieldset id='poll' class='header'>
+                    <legend class='flipper'><i class='fa fa-angle-up' aria-hidden='true'></i>{$poll_q}</legend>
+                    <div>";
 
     return $HTMLOUT;
 }
@@ -187,10 +190,12 @@ function poll_header($pid = '', $poll_q = '')
 function poll_footer()
 {
     $HTMLOUT = '';
-    $HTMLOUT .= '<span><!--VOTE-->&#160;<!--SHOW--></span>
-          <span><!-- no content --></span>
-        </div></fieldset>
-    </form>';
+    $HTMLOUT .= '
+                        <div class="text-center"><!--VOTE--><!--SHOW--></div>
+                        <div class="text-center"><!-- no content --></div>
+                    </div>
+                </fieldset>
+            </form>';
 
     return $HTMLOUT;
 }
@@ -216,11 +221,11 @@ function poll_show_rendered_question($id = '', $question = '', $choice_html = ''
     $HTMLOUT = '';
     $HTMLOUT .= "
      <div align='center'>
- 	<div class='roundedCorners' style='text-align:center;padding:4px;'><span class='postdetails'><strong>{$question}</strong></span></div>
- 	<table cellpadding='4' cellspacing='0'>
- 	$choice_html
- 	</table>
- 	</div><br>";
+    <div class='roundedCorners' style='text-align:center;padding:4px;'><span class='postdetails'><strong>{$question}</strong></span></div>
+    <table cellpadding='4' cellspacing='0'>
+    $choice_html
+    </table>
+    </div><br>";
 
     return $HTMLOUT;
 }

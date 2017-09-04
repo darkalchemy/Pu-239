@@ -22,7 +22,7 @@ $lang = [
     //temp thingy
     'usersearch_count'        => 'Count Query',
     'usersearch_query'        => 'Search Query',
-    'usersearch_url'          => 'URL Parameters \'Actually\' Used',
+    'usersearch_url'          => "URL Parameters 'Actually' Used",
     //main table
     'usersearch_window_title' => 'Administrative User Search',
     'usersearch_title'        => 'Administrative User Search',

@@ -40,12 +40,12 @@ $lang = [
     'rep_ad_update_err4'         => 'No valid ID.',
     'rep_ad_update_save_success' => 'Saved Reputation Level Successfully.',
     //do_delete
-    'rep_ad_delete_no'           => "Rep ID doesn\'t exist",
+    'rep_ad_delete_no'           => "Rep ID doesn't exist",
     'rep_ad_delete_success'      => 'Reputation deleted successfully',
     //show_form_rep
     'rep_ad_rep_form_nothing'    => 'Nothing here by that ID.',
     'rep_ad_rep_form_title'      => 'User Reputation Manager',
-    'rep_ad_rep_form_erm'        => "Erm, it\'s not there!",
+    'rep_ad_rep_form_erm'        => "Erm, it's not there!",
     'rep_ad_rep_form_head'       => 'Edit Reputation',
     'rep_ad_rep_form_topic'      => 'Topic',
     'rep_ad_rep_form_left_by'    => 'Left By',
@@ -88,7 +88,7 @@ $lang = [
     'rep_ad_view_delete'         => 'Delete',
     //do_delete_rep
     'rep_ad_delete_rep_err1'     => 'ERROR',
-    'rep_ad_delete_rep_err2'     => "Can\'t find ID",
+    'rep_ad_delete_rep_err2'     => "Can't find ID",
     'rep_ad_delete_rep_err3'     => 'DELETE',
     'rep_ad_delete_rep_err4'     => 'No valid ID.',
     'rep_ad_delete_rep_success'  => 'Deleted Reputation Successfully',

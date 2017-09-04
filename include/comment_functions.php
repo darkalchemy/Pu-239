@@ -61,7 +61,7 @@ function commenttable($rows, $variant = 'torrent')
                 $username = htmlsafechars($row['username']);
                 $avatar1 = ($row['anonymous'] == 'yes' ? "<img src=\'{$INSTALLER09['pic_base_url']}anonymous_1.jpg\' width=\'150\' height=\'150\' border=\'0\' alt=\'Avatar\' title=\'Avatar\' />" : "<img src=\'" . htmlsafechars($row['avatar']) . "\' width=\'150\' height=\'150\' border=\'0\' alt=\'Avatar\' title=\'Avatar\' />");
                 if (!$avatar1) {
-                    $avatar1 = "{$INSTALLER09['pic_base_url']}default_avatar.gif";
+                    $avatar1 = "{$INSTALLER09['pic_base_url']}forumicons/default_avatar.gif";
                 }
                 $htmlout .= "<a name='comm" . (int)$row['id'] . "' onmouseover=\"Tip('<b>$username</b><br>$avatar1');\" onmouseout=\"UnTip();\" href='userdetails.php?id=" . (int)$row['user'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>' . ($row['donor'] == 'yes' ? "<img src='{$INSTALLER09['pic_base_url']}star.gif' alt='" . $lang['commenttable_donor_alt'] . "' />" : '') . ($row['warned'] == 'yes' ? "<img src='{$INSTALLER09['pic_base_url']}warned.gif' alt='" . $lang['commenttable_warned_alt'] . "' />" : '') . " ($title)\n";
                 $htmlout .= '<a href="javascript:;" onclick="PopUp(\'usermood.php\',\'Mood\',530,500,1,1);">
@@ -77,7 +77,7 @@ function commenttable($rows, $variant = 'torrent')
 		  <span id='mlike' data-com='" . (int)$row['id'] . "' class='comment {$wht}'>[" . ucfirst($wht) . "]</span><span class='tot-" . (int)$row['id'] . "' data-tot='" . (!empty($likes) && count(array_unique($likes)) > 0 ? count(array_unique($likes)) : '') . "'>&#160;{$att_str}</span></p>\n";
         $avatar = ($row['anonymous'] == 'yes' ? "{$INSTALLER09['pic_base_url']}anonymous_1.jpg" : htmlsafechars($row['avatar']));
         if (!$avatar) {
-            $avatar = "{$INSTALLER09['pic_base_url']}default_avatar.gif";
+            $avatar = "{$INSTALLER09['pic_base_url']}forumicons/default_avatar.gif";
         }
         $text = format_comment($row['text']);
         if ($row['editedby']) {

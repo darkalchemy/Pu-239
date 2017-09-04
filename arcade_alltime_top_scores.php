@@ -35,7 +35,7 @@ foreach ($list as $gname) {
     //=== do the top 10 for each game
     $count2 = '';
         while ($score_arr = mysqli_fetch_assoc($score_res)) {
-            $username = format_username_test($score_arr['user'], true, false, 'tooltipper');
+            $username = format_username($score_arr['user']);
             $ranking = sql_query('SELECT COUNT(id) FROM highscores WHERE game = '.sqlesc($gname).' AND score > '.sqlesc($score_arr['score'])) or sqlerr(__FILE__, __LINE__);
             $rankrow = mysqli_fetch_row($ranking);
 

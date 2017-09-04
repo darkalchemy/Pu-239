@@ -32,10 +32,6 @@ class AJAXChat
 
     public function initialize()
     {
-        if (!ob_start('ob_gzhandler')) {
-            ob_start('ob_gzhandler');
-        }
-
         // Initialize the messages direction
         $this->postDirection = false;
 
@@ -407,6 +403,7 @@ class AJAXChat
 
     public function insertChatBotMessage($channelID, $messageText, $ip = null, $mode = 0)
     {
+        file_put_contents('/var/log/nginx/ajaxchat.log', AJAX_CHAT_CHATBOT . PHP_EOL, FILE_APPEND);
         $this->insertCustomMessage(
             $this->getConfig('chatBotID'),
             $this->getConfig('chatBotName'),
@@ -426,7 +423,7 @@ class AJAXChat
         // 2 = messages with online user updates (nick)
 
         $ip = $ip ? $ip : $_SERVER['REMOTE_ADDR'];
-
+         file_put_contents('/var/log/nginx/ajaxchat.log', 'insert 2' . PHP_EOL, FILE_APPEND);
         $sql = 'INSERT INTO ' . $this->getDataBaseTable('messages') . '(
                                 userID,
                                 userName,
@@ -446,6 +443,7 @@ class AJAXChat
                     ' . $this->db->makeSafe($text) . '
                 );';
 
+         file_put_contents('/var/log/nginx/ajaxchat.log', $sql . PHP_EOL, FILE_APPEND);
         // Create a new SQL query:
         $result = $this->db->sqlQuery($sql);
 
@@ -1953,6 +1951,23 @@ class AJAXChat
         return getSessionVar('QueryUserName');
     }
 
+    function insertParsedMessageJoin($textParts) {
+        if(count($textParts) == 1) {
+            // join with no arguments is the own private channel, if allowed:
+            if($this->isAllowedToCreatePrivateChannel()) {
+                // Private channels are identified by square brackets:
+                $this->switchChannel($this->getChannelNameFromChannelID($this->getPrivateChannelID()));
+            } else {
+                $this->insertChatBotMessage(
+                    $this->getPrivateMessageID(),
+                    '/error MissingChannelName'
+                );
+            }
+        } else {
+            $this->switchChannel($textParts[1]);
+        }
+    }
+
     public function insertParsedMessagePrivMsg($textParts)
     {
         if ($this->isAllowedToSendPrivateMessage()) {
@@ -2504,14 +2519,18 @@ class AJAXChat
 
     public function insertParsedMessageWho($textParts)
     {
+        file_put_contents('/var/log/nginx/ajaxchat.log', 'clicked' . PHP_EOL, FILE_APPEND);
         if (count($textParts) == 1) {
+            file_put_contents('/var/log/nginx/ajaxchat.log', 'entered 1' . PHP_EOL, FILE_APPEND);
             if ($this->isAllowedToListHiddenUsers()) {
+                file_put_contents('/var/log/nginx/ajaxchat.log', 'entered 2' . PHP_EOL, FILE_APPEND);
                 // List online users from any channel:
                 $this->insertChatBotMessage(
                     $this->getPrivateMessageID(),
                     '/who ' . implode(' ', $this->getOnlineUsers())
                 );
             } else {
+                file_put_contents('/var/log/nginx/ajaxchat.log', 'entered 3' . PHP_EOL, FILE_APPEND);
                 // Get online users for all accessible channels:
                 $channels = $this->getChannels();
                 // Add the own private channel if allowed:
@@ -2530,6 +2549,7 @@ class AJAXChat
                 );
             }
         } else {
+            file_put_contents('/var/log/nginx/ajaxchat.log', 'entered 4' . PHP_EOL, FILE_APPEND);
             $channelName = $textParts[1];
             $channelID = $this->getChannelIDFromChannelName($channelName);
             if (!$this->validateChannel($channelID)) {
@@ -2539,6 +2559,7 @@ class AJAXChat
                     '/error InvalidChannelName ' . $channelName
                 );
             } else {
+                file_put_contents('/var/log/nginx/ajaxchat.log', 'entered 5' . PHP_EOL, FILE_APPEND);
                 // Get online users for the given channel:
                 $onlineUsers = $this->getOnlineUsers([$channelID]);
                 if (count($onlineUsers) > 0) {
@@ -3229,11 +3250,11 @@ class AJAXChat
     {
         switch ($this->getView()) {
             case 'chat':
-                return AJAX_CHAT_PATH . 'lib/template/loggedIn.php';
+                return AJAX_CHAT_PATH . 'lib/template/loggedIn.html';
             case 'logs':
                 return AJAX_CHAT_PATH . 'lib/template/logs.html';
             default:
-                return AJAX_CHAT_PATH . 'lib/template/loggedIn.php';
+                return AJAX_CHAT_PATH . 'lib/template/loggedIn.html';
         }
     }
 
