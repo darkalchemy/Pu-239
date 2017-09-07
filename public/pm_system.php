@@ -16,12 +16,12 @@ define('PM_DRAFTS', -2); //  new drafts folder
 $lang = array_merge(load_language('global'), load_language('takesignup'), load_language('pm'));
 $stdhead = [
     'css' => [
-        'b2ce79d22291d96155d01b3c569746a6.min',
+        '7ed2b968cb48494d1f1e1d61117bc433.min',
     ],
 ];
 $stdfoot = [
     'js' => [
-        '89fe72984f32ed9f02c73f05c4e6b8e9.min',
+        '936befd35c99dde2e1bd9bf7c95e14f2.min',
     ],
 ];
 $HTMLOUT = $count2 = $other_box_info = $maxpic = $maxbox = '';

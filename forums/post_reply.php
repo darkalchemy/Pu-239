@@ -158,12 +158,6 @@ if (isset($_POST['button']) && $_POST['button'] == 'Post') {
 $HTMLOUT .= '<table class="main" border="0" cellspacing="0" cellpadding="0">
      <tr><td class="embedded" align="center">
     <h1 style="text-align: center;">' . $lang['pr_reply_in_topic'] . ' "<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr['topic_name'], ENT_QUOTES) . '</a>"</h1>
-     ' . (isset($_POST['button']) && $_POST['button'] == '' . $lang['fe_preview'] . '' ? '
-    <table border="0" cellspacing="5" cellpadding="5" align="center">
-    <tr><td class="forum_head" colspan="2"><span style="font-weight: bold;">' . $lang['fe_preview'] . '</span></td></tr>
-    <tr><td width="80" valign="top" class="one">' . avatar_stuff($CURUSER) . '</td>
-    <td valign="top" align="left" class="two">' . ($bb_code == 'yes' ? format_comment($body) : format_comment_no_bbcode($body)) . '</td>
-    </tr></table><br><br>' : '') . '
     <form method="post" action="' . $INSTALLER09['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '&amp;page=' . $page . '" enctype="multipart/form-data">
     <table align="center" border="0" cellspacing="0" cellpadding="5">
     <tr><td align="left" class="forum_head_dark" colspan="2">' . $lang['fe_compose'] . '</td></tr>
@@ -236,7 +230,6 @@ $HTMLOUT .= '<table class="main" border="0" cellspacing="0" cellpadding="0">
    <img src="' . $INSTALLER09['pic_base_url'] . 'forums/subscribe.gif" alt="+" title="+" /> ' . $lang['fe_subscrib_to_tread'] . '
     <input type="radio" name="subscribe" value="yes"' . ($subscribe == 'yes' ? ' checked="checked"' : '') . ' />yes
     <input type="radio" name="subscribe" value="no"' . ($subscribe == 'no' ? ' checked="checked"' : '') . ' />no<br>
-    <input type="submit" name="button" class="button" value="' . $lang['fe_preview'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
     <input type="submit" name="button" class="button_tiny" value="' . $lang['fe_post'] . '" onmouseover="this.className=\'button_tiny_hover\'" onmouseout="this.className=\'button_tiny\'" />
     </td></tr>
     </table></form>';

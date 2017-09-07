@@ -41,15 +41,17 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     $htmlout =
 $doctype . "
 <head>
-    <meta http-equiv='Content-Language' content='en-us' />
+    <meta charset='UTF-8'>
     <title>{$title}</title>
     <link rel='alternate' type='application/rss+xml' title='Latest Torrents' href='./rss.php?torrent_pass={$CURUSER['torrent_pass']}' />
-    <!-- favicon
-    =================================================== -->
-    <link rel='shortcut icon' href='favicon.ico' />
-    <!-- css
-    =================================================== -->
-    <link rel='stylesheet' href='./css/" . get_stylesheet() . "/f6612415ae84278cd9d18ea8bca45b07.min.css' />
+    <link rel='apple-touch-icon' sizes='180x180' href='./apple-touch-icon.png'>
+    <link rel='icon' type='image/png' sizes='32x32' href='./favicon-32x32.png'>
+    <link rel='icon' type='image/png' sizes='16x16' href='./favicon-16x16.png'>
+    <link rel='manifest' href='/manifest.json'>
+    <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#5bbad5'>
+    <meta name='theme-color' content='#ffffff'>
+
+    <link rel='stylesheet' href='./css/" . get_stylesheet() . "/e0a618d82ab6ae6be19a4749c87426da.min.css' />
     <link rel='stylesheet' href='//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' integrity='sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN' crossorigin='anonymous'>
     <link href='https://fonts.googleapis.com/css?family=Acme|Baloo+Bhaijaan|Encode+Sans+Condensed|Lobster|Nova+Square|Open+Sans|Oswald|PT+Sans+Narrow' rel='stylesheet' />
     {$css_incl}
@@ -64,14 +66,17 @@ $doctype . "
     </script>
     <div class='container'>";
     if ($CURUSER) {
-        $active_users_cache = $last24_cache = 0;
-        $keys['last24'] = 'last24';
-        $last24_cache = $mc1->get_value($keys['last24']);
-        $keys['activeusers'] = 'activeusers';
-        $active_users_cache = $mc1->get_value($keys['activeusers']);
+        //$active_users_cache = $last24_cache = 0;
+        //$keys['last24'] = 'last24';
+        //$last24_cache = $mc1->get_value($keys['last24']);
+        //$keys['activeusers'] = 'activeusers';
+        //$active_users_cache = $mc1->get_value($keys['activeusers']);
         $htmlout .= "
         <div id='navigation' class='container navigation'>
             <ul>
+                <li>
+                    <a href='./index.php'><i class='fa fa-home fa-2x med-icon'></i></a>
+                </li>
                 <li><a href='#'>{$lang['gl_torrent']}</a>
                     <ul class='sub-menu'>
                         <li><a href='./browse.php'>{$lang['gl_torrents']}</a></li>
@@ -115,33 +120,8 @@ $doctype . "
                 </li>
                 <li>" . ($CURUSER['class'] < UC_STAFF ? "<a class='brand' href='./bugs.php?action=add'>{$lang['gl_breport']}</a>" : "<a class='brand' href='./bugs.php?action=bugs'>{$lang['gl_brespond']}</a>") . '</li>
                 <li>' . ($CURUSER['class'] < UC_STAFF ? "<a class='brand' href='./contactstaff.php'>{$lang['gl_cstaff']}</a>" : "<a class='brand' href='./staffbox.php'>{$lang['gl_smessages']}</a>") . '</li>
-            </ul>
-            <small>
-                <strong>';
-        if (!empty($last24_cache)) {
-            if ($last24_cache['totalonline24'] != 1) {
-                $last24_cache['ss24'] = $lang['gl_members'];
-            } else {
-                $last24_cache['ss24'] = $lang['gl_member'];
-            }
-        }
-        $htmlout .= "
-                    <div>
-                        <span class='left10'>
-                            {$last24_cache['totalonline24']}{$last24_cache['ss24']}{{$lang['gl_last24']}}
-                        </span>
-                    </div>";
-        if (!empty($active_users_cache)) {
-            $htmlout .= "
-                    <div>
-                        <span class='left10'>
-                            {$lang['gl_ausers']} [{$active_users_cache['au']}]
-                        </span>
-                    </div>";
-        }
-        $htmlout .= "
-                </strong>
-            </small>
+            </ul>';
+    $htmlout .= "
         </div>
         <div class='clear'>
         </div>";
@@ -157,27 +137,26 @@ $doctype . "
         $salty = salty($CURUSER['username']);
         $htmlout .= "
         <div id='platform-menu' class='container platform-menu'>
-            <a href='./index.php' class='home'>{$lang['gl_home']}</a>
-                <ul>
-                    <li><a href='./pm_system.php'>{$lang['gl_pms']}</a></li>
-                    <li><a href='./usercp.php?action=default'>{$lang['gl_usercp']}</a></li>
-                    " . (isset($CURUSER) && $CURUSER['class'] >= UC_STAFF ? "<li><a href='./staffpanel.php'>{$lang['gl_admin']}</a></li>" : '') . "
-                    <li><a href='#' onclick='themes();'>{$lang['gl_theme']}</a></li>
-                    <li><a href='#' onclick='language_select();'>{$lang['gl_language_select']}</a></li>
-                    <!--<li><a href='javascript:void(0)' onclick='status_showbox()'>{$lang['gl_status']}</a></li>-->
-                    <li><a href='./friends.php'>{$lang['gl_friends']}</a></li>
-                    <li><a href='./logout.php?hash_please={$salty}'>{$lang['gl_logout']}</a></li>
-                </ul>
-                <div class='container-fluid'>
-                    <div class='statusbar-container'>";
+            <ul>
+                <li><a href='./pm_system.php'>{$lang['gl_pms']}</a></li>
+                <li><a href='./usercp.php?action=default'>{$lang['gl_usercp']}</a></li>
+                " . (isset($CURUSER) && $CURUSER['class'] >= UC_STAFF ? "<li><a href='./staffpanel.php'>{$lang['gl_admin']}</a></li>" : '') . "
+                <li><a href='#' onclick='themes();'>{$lang['gl_theme']}</a></li>
+                <li><a href='#' onclick='language_select();'>{$lang['gl_language_select']}</a></li>
+                <!--<li><a href='javascript:void(0)' onclick='status_showbox()'>{$lang['gl_status']}</a></li>-->
+                <li><a href='./friends.php'>{$lang['gl_friends']}</a></li>
+                <li><a href='./logout.php?hash_please={$salty}'>{$lang['gl_logout']}</a></li>
+            </ul>
+            <div class='container-fluid'>
+                <div class='statusbar-container'>";
         if ($CURUSER) {
             $htmlout .= StatusBar() . "
-                    </div>
                 </div>
-                <div id='base_globelmessage'>
-                    <div id='gm_taps'>
-                        <ul class='gm_taps'>
-                            <li><b>{$lang['gl_alerts']}</b></li>";
+            </div>
+            <div id='base_globelmessage'>
+                <div id='gm_taps'>
+                    <ul class='gm_taps'>
+                        <li><b>{$lang['gl_alerts']}</b></li>";
 
             if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_REPORTS && $BLOCKS['global_staff_report_on']) {
                 require_once BLOCK_DIR . 'global/report.php';
@@ -211,9 +190,9 @@ $doctype . "
             }
 
             $htmlout .= '
-                        </ul>
-                    </div>
-                </div>';
+                    </ul>
+                </div>
+            </div>';
         }
         /*
          $INSTALLER09['expires']['staff_check'] = 3600; //== test value
@@ -409,13 +388,13 @@ function stdfoot($stdfoot = false)
                 }
                 nextSibling.style.display = 'none';
                 child = x[i].children[0];
-                child.classList.add('fa-expand');
-                child.classList.remove('fa-compress');
+                child.classList.add('fa-angle-down');
+                child.classList.remove('fa-angle-up');
             }
         }
     </script>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
-    <script src='./js/af0ade9cd34b15b543ce38fdf1be17bf.min.js'></script>";
+    <script src='./js/265e76ccaa14d6d2c13df8a4803389a9.min.js'></script>";
 
     if (!empty($stdfoot['js'])) {
         foreach ($stdfoot['js'] as $JS) {

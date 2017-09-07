@@ -6,12 +6,12 @@ $lang = array_merge(load_language('global'));
 global $INSTALLER09;
 $stdhead = [
     'css' => [
-        '96d88a662c8cf65318faf20c83f708b2.min',
+        'c1970cc2bf64b39bc420e74f0437f096.min',
     ],
 ];
 $stdfoot = [
     'js' => [
-        '28d14c4a18a66129541d1d70f439eea7.min',
+        'cc234532f5e31d9abe9e8d10b8f5b277.min',
     ],
 ];
 $HTMLOUT = $count2 = '';

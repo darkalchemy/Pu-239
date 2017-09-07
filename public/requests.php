@@ -5,12 +5,12 @@ check_user_status();
 $lang = array_merge(load_language('global'));
 $stdhead = [
     'css' => [
-        '96d88a662c8cf65318faf20c83f708b2.min',
+        'c1970cc2bf64b39bc420e74f0437f096.min',
     ],
 ];
 $stdfoot = [
     'js' => [
-        '28d14c4a18a66129541d1d70f439eea7.min',
+        'cc234532f5e31d9abe9e8d10b8f5b277.min',
     ],
 ];
 $HTMLOUT = $count2 = '';
@@ -243,47 +243,11 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
             $cat_image = htmlsafechars($cat_arr['cat_image'], ENT_QUOTES);
             $cat_name = htmlsafechars($cat_arr['cat_name'], ENT_QUOTES);
         }
-        //=== if posted and not preview, process it :D
-        if (isset($_POST['button']) && $_POST['button'] == 'Submit') {
-            sql_query('INSERT INTO requests (request_name, image, description, category, added, requested_by_user_id, link) VALUES
-                    (' . sqlesc($request_name) . ', ' . sqlesc($image) . ', ' . sqlesc($body) . ', ' . sqlesc($category) . ', ' . TIME_NOW . ', ' . sqlesc($CURUSER['id']) . ',  ' . sqlesc($link) . ');');
-            $new_request_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
-            header('Location: requests.php?action=request_details&new=1&id=' . $new_request_id);
-            exit();
-        }
         //=== start page
         $HTMLOUT .= '<table align="center" class="main" border="0" cellspacing="0" cellpadding="0">
    <tr>
    <td class="embedded" align="center"><h1 style="text-align: center;">New Request</h1>' . $top_menu . '
    <form method="post" action="requests.php?action=add_new_request" name="request_form" id="request_form">
-   ' . (isset($_POST['button']) && $_POST['button'] == 'Preview' ? '<br>
-    <table border="0" cellspacing="0" cellpadding="5" align="center">
-   <tr>
-   <td class="colhead" align="center" colspan="2"><h1>' . htmlsafechars($request_name, ENT_QUOTES) . '</h1></td>
-   </tr>
-   <tr>
-   <td class="two" align="right">image:</td>
-   <td class="two" align="left"><img src="' . htmlsafechars($image, ENT_QUOTES) . '" alt="image" style="max-width:600px;" /></td>
-   </tr>
-   <tr>
-   <td class="two" align="right">description:</td>
-   <td class="two" align="left">' . format_comment($body) . '</td>
-   </tr>
-   <tr>
-   <td class="two" align="right">category:</td>
-   <td class="two" align="left"><img border="0" src="./images/caticons/' . get_categorie_icons() . '/' . htmlsafechars($cat_image, ENT_QUOTES) . '" alt="' . htmlsafechars($cat_name, ENT_QUOTES) . '" /></td>
-    </tr>
-    <tr>
-    <td class="two" align="right">link:</td>
-    <td class="two" align="left"><a class="altlink" href="' . htmlsafechars($link, ENT_QUOTES) . '" target="_blank">' . htmlsafechars($link, ENT_QUOTES) . '</a></td>
-    </tr>
-    <tr>
-    <td class="two" align="right">requested by:</td>
-    <td class="two" align="left">' . print_user_stuff($CURUSER) . ' [ ' . get_user_class_name($CURUSER['class']) . ' ]
-    ratio: ' . member_ratio($CURUSER['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $CURUSER['downloaded']) . get_user_ratio_image($CURUSER['uploaded'], ($INSTALLER09['ratio_free'] ? '1' : $CURUSER['downloaded'])) . '</td>
-    </tr>
-    </table>
-    <br>' : '') . '
     <table border="0" cellspacing="0" cellpadding="5" align="center">
     <tr>
     <td class="colhead" align="center" colspan="2"><h1>Making a Request</h1></td>
@@ -314,7 +278,6 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
     </tr>
     <tr>
     <td colspan="2" align="center" class="two">
-    <input type="submit" name="button" class="button" value="Preview" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
     <input type="submit" name="button" class="button" value="Submit" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
     </tr>
     </table></form>
@@ -385,14 +348,6 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
         $cat_arr = mysqli_fetch_assoc($cat_res);
         $cat_image = htmlsafechars($cat_arr['cat_image'], ENT_QUOTES);
         $cat_name = htmlsafechars($cat_arr['cat_name'], ENT_QUOTES);
-        //=== if posted and not preview, process it :D
-        if (isset($_POST['button']) && $_POST['button'] == 'Edit') {
-            $remove_or_not = (isset($_POST['filled_by']) ? ' filled_by_user_id = 0, filled_torrent_id = 0' : '');
-            sql_query('UPDATE requests SET request_name = ' . sqlesc($request_name) . ', image = ' . sqlesc($image) . ', description = ' . sqlesc($body) . ',
-                    category = ' . sqlesc($category) . ', link = ' . sqlesc($link) . $remove_or_not . ' WHERE id = ' . sqlesc($id));
-            header('Location: requests.php?action=request_details&edited=1&id=' . $id);
-            exit();
-        }
         //=== start page
         $HTMLOUT .= '<table align="center" border="0" cellspacing="0" cellpadding="0">
    <tr>
@@ -400,29 +355,6 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
    <h1 style="text-align: center;">Edit Request</h1>' . $top_menu . '
    <form method="post" action="requests.php?action=edit_request" name="request_form" id="request_form">
    <input type="hidden" name="id" value="' . $id . '" />
-   ' . (isset($_POST['button']) && $_POST['button'] == 'Preview' ? '<br>
-    <table border="0" cellspacing="0" cellpadding="5" align="center">
-   <tr>
-   <td class="colhead" align="center" colspan="2"><h1>' . htmlsafechars($request_name, ENT_QUOTES) . '</h1></td>
-   </tr>
-   <tr>
-   <td class="two" align="right">image:</td>
-   <td class="two" align="left"><img src="' . htmlsafechars($image, ENT_QUOTES) . '" alt="image" style="max-width:600px;" /></td>
-   </tr>
-   <tr>
-   <td class="two" align="right">description:</td>
-   <td class="two" align="left">' . format_comment($body) . '</td>
-   </tr>
-   <tr>
-   <td class="two" align="right">category:</td>
-   <td class="two" align="left"><img border="0" src="./images/caticons/' . get_categorie_icons() . '/' . htmlsafechars($cat_image, ENT_QUOTES) . '" alt="' . htmlsafechars($cat_name, ENT_QUOTES) . '" /></td>
-   </tr>
-   <tr>
-   <td class="two" align="right">link:</td>
-   <td class="two" align="left"><a class="altlink" href="' . htmlsafechars($link, ENT_QUOTES) . '" target="_blank">' . htmlsafechars($link, ENT_QUOTES) . '</a></td>
-   </tr>
-   </table>
-   <br>' : '') . '
    <table border="0" cellspacing="0" cellpadding="5" align="center">
    <tr>
    <td class="colhead" align="center" colspan="2"><h1>Edit Request</h1></td>
@@ -456,7 +388,6 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
    </tr>') . '
    <tr>
    <td colspan="2" align="center" class="two">
-   <input type="submit" name="button" class="button" value="Preview" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
    <input type="submit" name="button" class="button" value="Edit" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
    </tr>
    </table></form>
@@ -492,30 +423,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
         }
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
         $HTMLOUT .= $top_menu . '<form method="post" action="requests.php?action=add_comment">
-    <input type="hidden" name="id" value="' . $id . '"/>
-    ' . (isset($_POST['button']) && $_POST['button'] == 'Preview' ? '
-    <table border="1" cellspacing="5" cellpadding="5" align="center">
-    <tr>
-    <td class="colhead" colspan="2"><h1>Preview</h1></td>
-    </tr>
-     <tr>
-    <td width="80" valign="top" class="two">' . avatar_stuff($CURUSER) . '</td>
-    <td valign="top" align="left" class="two">' . format_comment($body) . '</td>
-    </tr></table><br>' : '') . '
-     <table align="center" border="0" cellspacing="0" cellpadding="5">
-     <tr>
-    <td align="center" class="colhead" colspan="2"><h1>Add a comment to "' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '"</h1></td>
-    </tr>
-     <tr>
-    <td align="right" valign="top" class="two"><b>Comment:</b></td>
-    <td align="left" class="two">' . BBcode($body, false) . '   </td>
-    </tr>
-     <tr>
-    <td align="center" colspan="2" class="two">
-    <input name="button" type="submit" class="button" value="Preview" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
-    <input name="button" type="submit" class="button" value="Save" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
-    </tr>
-     </table></form>';
+    <input type="hidden" name="id" value="' . $id . '"/>';
         $res = sql_query('SELECT c.request, c.id AS comment_id, c.text, c.added, c.editedby, c.editedat,
                                 u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.title, u.leechwarn, u.chatpost, u.pirate,  u.king FROM comments AS c LEFT JOIN users AS u ON c.user = u.id WHERE request = ' . sqlesc($id) . ' ORDER BY c.id DESC LIMIT 5');
         $allrows = [];
@@ -581,7 +489,6 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
     </tr>
      <tr>
     <td align="center" colspan="2" class="two">
-    <input name="button" type="submit" class="button" value="Preview" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
     <input name="button" type="submit" class="button" value="Edit" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
     </tr>
      </table></form>';

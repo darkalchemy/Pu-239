@@ -337,7 +337,6 @@
                 "-o-transform": "none",
                 "-ms-transform": "none",
                 transform: "none",
-                left: b + "px",
                 top: c + "px",
                 width: this.defs.currentSlide.data("width") + "px",
                 height: this.defs.currentSlide.data("height") + "px",

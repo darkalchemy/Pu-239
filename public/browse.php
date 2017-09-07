@@ -28,7 +28,7 @@ $stdfoot = [
 ];
 $stdhead = [
     'css' => [
-        '005c59d533d9c5eebb0d46a0dc89a8cd.min',
+        '162706dade3c7c41293e8b0764346dad.min',
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('browse'), load_language('torrenttable_functions'));
@@ -227,6 +227,7 @@ if (isset($cleansearchstr)) {
 $where = count($wherea) ? 'WHERE ' . join(' AND ', $wherea) : '';
 $where_key = 'where::' . sha1($where);
 if (($count = $mc1->get_value($where_key)) === false) {
+    file_put_contents('/var/log/nginx/browse.log', "SELECT COUNT(id) FROM torrents $where" . PHP_EOL, FILE_APPEND);
     $res = sql_query("SELECT COUNT(id) FROM torrents $where") or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_row($res);
     $count = (int)$row[0];
@@ -357,7 +358,7 @@ $HTMLOUT .= "
         <tr>
             <td>
                 <div class='text-center margin20'>
-                    <input type='text' name='search' size='85' placeholder='Search' class='text-center' value='' />
+                    <input type='text' name='search' size='85' placeholder='Search' class='text-center' value='" . (!empty($_GET['search']) ? $_GET['search'] : '') . "' />
                 </div>
                 <div class='text-center margin20'>";
 //=== only free option :o)

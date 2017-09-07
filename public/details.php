@@ -12,12 +12,12 @@ check_user_status();
 $lang = array_merge(load_language('global'), load_language('details'));
 $stdhead = [
     'css' => [
-        'f1a15e1e78c3b6c874b87aabe042b429.min',
+        '98ec663711b575c5ed7400720c8e4c70.min',
     ],
 ];
 $stdfoot = [
     'js' => [
-        '7486db35a787a3aa53a503d5b46cf0d0.min',
+        '045b89f840426f848f8ef22c19ca1088.min',
     ],
 ];
 $HTMLOUT = $torrent_cache = '';

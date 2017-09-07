@@ -30,7 +30,9 @@ $(document).ready(function()    {
         });
 
     // Add editor
-    $('#bbcode').markItUp(myBbcodeSettings);
+    if ($('#bbcode_editor').length) {
+        $('#bbcode_editor').markItUp(myBbcodeSettings);
+    };
 
     // add smilies
     $('.emoticons a').click(function() {

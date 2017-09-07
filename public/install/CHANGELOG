@@ -1,0 +1,66 @@
+6 Sept, 2017
+fix all index blocks to display correctly
+fix returnto in fastdelete.php and edit.php
+update favicon
+update install scripts
+
+5 Sept, 2017
+removed php preview, replaced with inline bbcode editor preview
+fix bbcode parser adding extra newlines when displaying tables
+moved home button to sticky navbar
+
+4 Sept, 2017
+modify bbcode editor, add preview
+moved almost everything out of the webroot, incomplete
+merged default.css, bootstrap.css and bootstart-responsive.css
+updated to jquery 3.2.1
+updated jquery ui 1.12.1
+added more subtitle options for upload
+update upload
+moved bucket inside root
+updated bitbucket
+begin removing unneeded tables
+beigin replacing tooltips and hover popups with tooltipster
+begin modify all toggle/slide elements to operate uniformly
+
+21 Aug, 2017
+modify themeController to localstorage instead of cookies
+modify themeController add additional fonts and removed MS fonts
+modify themeController now also controls the fonts in AJAX Caht and trivia
+modify cleanup filelist.php
+
+20 Aug, 2017
+modify change sitelog message to be more consistant and easier to read
+fix install setting incorrect clean_time
+replaced Xmas with Christmas
+add function to return a random color
+fix incorrect minified js file being requested
+added cleanup log viewer in admin panel
+fix cleanup getting access to $queries count
+fix rename cleanup function names for concurrency
+
+19 Aug, 2017
+fix installer
+update README
+fix update/reorder ajax chat online list when users count changes
+fix inactive_update.php fail on empty set
+fix move js to just before closing body tag
+fix combine and minify most js files on index page
+fix themecontroller to use cookie_prefix when getting/setting cookie
+update jQuery Cookie Plugin to v1.4.1
+remove duplicated function from cleanup scripts
+
+18 Aug, 2017
+add foreign_keys.sql to create some foreign keys, nowhere near complete
+add mysql_drop_fks.php to remove foreign keys from database
+fix inactive_update.php to properly delete users
+
+17 Aug, 2017
+fix: make more pages 'table' appear similar to the other pages
+fix: make invite_signup.php similar to signup.php
+update: make blakckjack use 1 table, use single image sprite for cards
+fix: admin adduser.php adds user to usersachiev table and autoshout
+fix: add color class 'user' to autoshout of new users
+
+16 Aug, 2017
+rename project to Pu-239

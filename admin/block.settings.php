@@ -597,7 +597,7 @@ function redirect($url, $text, $time = 2)
 		<head>
 		<meta http-equiv='refresh' content=\"{$time}; url={$INSTALLER09['baseurl']}/{$url}\" />
 		<title>{$lang['block_stdhead']}</title>
-    <link rel='stylesheet' href='./css/" . get_stylesheet() . "/f6612415ae84278cd9d18ea8bca45b07.min.css' />
+    <link rel='stylesheet' href='./css/" . get_stylesheet() . "/e0a618d82ab6ae6be19a4749c87426da.min.css' />
     </head>
     <body>
     <div>

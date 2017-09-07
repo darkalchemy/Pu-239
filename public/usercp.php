@@ -9,7 +9,7 @@ require_once CACHE_DIR . 'timezones.php';
 check_user_status();
 $stdfoot = [
     'js' => [
-        'e3f1a7fb0919b310b3b42611aa080509.min'
+        '970d28503396b6e8e9dae121df737fa5.min'
     ],
 ];
 $stdhead = [
@@ -72,25 +72,32 @@ if (isset($_GET['edited'])) {
 }
 $HTMLOUT .= "<fieldset><legend>Welcome <a href='userdetails.php?id=" . (int)$CURUSER['id'] . "'>" . htmlsafechars($CURUSER['username']) . "</a> !</legend>\n
     <div class='nav-collapse collapse'>
-    <div class='span11'><form method='post' action='takeeditcp.php'>
-        <div class='nav offset1'>
-        <ul class='nav nav-pills'>
-                  <li><a href='usercp.php?action=avatar'>Avatar</a></li>
-                  <li><a href='usercp.php?action=signature'>Signature</a></li>
-                  <li><a href='usercp.php?action=default'>Pm's</a></li>
-                  <li><a href='usercp.php?action=security'>Security</a></li>
-                  <li><a href='usercp.php?action=torrents'>Torrents</a></li>
-                  <li><a href='usercp.php?action=personal'>Personal</a></li>
-                  <li><a href='usercp.php?action=social'>Social</a></li>
-                  <li><a href='usercp.php?action=location'>Location</a></li>
-                  <li><a href='usercp.php?action=links'>Links</a></li>
-        </ul>
-        </div>
-       <div class='span2 pull-left'>
-        <table class='table table-bordered'>";
+        <div class='span11'>
+            <form method='post' action='takeeditcp.php'>
+                <div class='nav text-center'>
+                    <ul class='nav flex-grid'>
+                        <li class='flex_cell_9'><a href='usercp.php?action=avatar'>Avatar</a></li>
+                        <li class='flex_cell_9'><a href='usercp.php?action=signature'>Signature</a></li>
+                        <li class='flex_cell_9'><a href='usercp.php?action=default'>Pm's</a></li>
+                        <li class='flex_cell_9'><a href='usercp.php?action=security'>Security</a></li>
+                        <li class='flex_cell_9'><a href='usercp.php?action=torrents'>Torrents</a></li>
+                        <li class='flex_cell_9'><a href='usercp.php?action=personal'>Personal</a></li>
+                        <li class='flex_cell_9'><a href='usercp.php?action=social'>Social</a></li>
+                        <li class='flex_cell_9'><a href='usercp.php?action=location'>Location</a></li>
+                        <li class='flex_cell_9'><a href='usercp.php?action=links'>Links</a></li>
+                    </ul>
+                </div>
+                <div class='span2 pull-left'>
+                    <table class='table table-bordered'>";
 if (!empty($CURUSER['avatar']) && $CURUSER['av_w'] > 5 && $CURUSER['av_h'] > 5) {
     $HTMLOUT .= "
-        <tr><td><img class='img-polaroid' src='{$CURUSER['avatar']}' width='{$CURUSER['av_w']}' height='{$CURUSER['av_h']}' alt='' /></td></tr></table></div>";
+                        <tr>
+                            <td>
+                                <img class='img-polaroid' src='{$CURUSER['avatar']}' width='{$CURUSER['av_w']}' height='{$CURUSER['av_h']}' alt='' />
+                            </td>
+                        </tr>
+                    </table>
+                </div>";
 } else {
     $HTMLOUT .= "<tr><td><img class='img-polaroid' src='{$INSTALLER09['pic_base_url']}forumicons/default_avatar.gif' alt='' /></td></tr>
         </table>
@@ -125,7 +132,7 @@ if ($action == 'avatar') {
     $HTMLOUT .= tr('View avatars', '<input type="radio" name="avatars" ' . ($CURUSER['avatars'] == 'yes' ? 'checked="checked"' : '') . ' value="yes" /> Yes (Low bandwidth user may want to disable this)
      <input type="radio" name="avatars" ' . ($CURUSER['avatars'] == 'no' ? 'checked="checked"' : '') . ' value="no" /> No', 1);
     //$HTMLOUT.= tr('View avatars', '<input class="styled" type="checkbox" name="avatars"' . (($CURUSER['opt1'] & user_options::AVATARS) ? ' checked="checked"' : '') . ' value="yes" /> (Low bandwidth user may want to disable this)', 1);
-    $HTMLOUT .= "<tr><td align='center' colspan='2'><input class='btn btn-primary' type='submit' value='Submit changes!' style='height: 25px' /></td></tr>";
+    $HTMLOUT .= "<tr><td class='text-center' colspan='2'><input class='btn btn-primary' type='submit' value='Submit changes!' style='height: 25px' /></td></tr>";
 } //== Signature
 elseif ($action == 'signature') {
     $HTMLOUT .= "<div class='offset1 pull-left'>
@@ -137,7 +144,7 @@ elseif ($action == 'signature') {
     //$HTMLOUT.= tr('View Signatures', '<input class="styled" type="checkbox" name="signatures"' . (($CURUSER['opt1'] & user_options::SIGNATURES) ? ' checked="checked"' : '') . ' value="yes" /> (Check to view signatures)', 1);
     $HTMLOUT .= tr('Signature', '<textarea name="signature" cols="50" rows="4">' . htmlsafechars($CURUSER['signature'], ENT_QUOTES) . '</textarea><br>BBcode can be used', 1);
     $HTMLOUT .= tr($lang['usercp_info'], "<textarea name='info' cols='50' rows='4'>" . htmlsafechars($CURUSER['info'], ENT_QUOTES) . "</textarea><br>{$lang['usercp_tags']}", 1);
-    $HTMLOUT .= "<tr ><td align='center' colspan='2'><input class='btn btn-primary' type='submit' value='Submit changes!' style='height: 25px' /></td></tr>";
+    $HTMLOUT .= "<tr ><td class='text-center' colspan='2'><input class='btn btn-primary' type='submit' value='Submit changes!' style='height: 25px' /></td></tr>";
 } //== Social
 elseif ($action == 'social') {
     $HTMLOUT .= "<div class='offset1 pull-left'>
@@ -150,7 +157,7 @@ elseif ($action == 'social') {
     $HTMLOUT .= tr('Yahoo ', '<img src="./images/forums/yahoo.gif" alt="Yahoo" title="Yahoo" /><input type="text" size="30" name="yahoo"  value="' . htmlsafechars($CURUSER['yahoo']) . '" />', 1);
     $HTMLOUT .= tr('icq ', '<img src="./images/forums/icq.gif" alt="Icq" title="Icq" /><input type="text" size="30" name="icq"  value="' . htmlsafechars($CURUSER['icq']) . '" />', 1);
     $HTMLOUT .= tr('Website ', '<img src="./images/forums/www.gif" alt="www" title="www" width="16px" height="16px" /><input type="text" size="30" name="website"  value="' . htmlsafechars($CURUSER['website']) . '" />', 1);
-    $HTMLOUT .= "<tr ><td align='center' colspan='2'><input class='btn btn-primary' type='submit' value='Submit changes!' style='height: 25px' /></td></tr>";
+    $HTMLOUT .= "<tr ><td class='text-center' colspan='2'><input class='btn btn-primary' type='submit' value='Submit changes!' style='height: 25px' /></td></tr>";
 } //== Location
 elseif ($action == 'location') {
     $HTMLOUT .= "<div class='offset1 pull-left'>
@@ -169,7 +176,7 @@ elseif ($action == 'location') {
     <option value='2'" . (get_language() == '2' ? " selected='selected'" : '') . ">Dk</option>
     <option value='3'" . (get_language() == '3' ? " selected='selected'" : '') . '>New</option>
     </select>', get_language());
-    $HTMLOUT .= "<tr ><td align='center' colspan='2'><input class='btn btn-primary' type='submit' value='Submit changes!' style='height: 25px' /></td></tr>";
+    $HTMLOUT .= "<tr ><td class='text-center' colspan='2'><input class='btn btn-primary' type='submit' value='Submit changes!' style='height: 25px' /></td></tr>";
 } //== Links
 elseif ($action == 'links') {
     $HTMLOUT .= "<div class='offset1 pull-left'>
@@ -181,16 +188,16 @@ elseif ($action == 'links') {
         <tr><td><a href='./mytorrents.php'>{$lang['usercp_edit_torrents']}</a></td></tr>
         <tr><td><a href='./friends.php'>{$lang['usercp_edit_friends']}</a></td></tr>
         <tr><td><a href='./users.php'>{$lang['usercp_search']}</a></td></tr>
-        <tr><td align='left'><a href='./invite.php'>Invites</a></td></tr>
-        <tr><td align='left'><a href='./tenpercent.php'>Lifesaver</a></td></tr></tbody><br><tbody>
+        <tr><td class='text-left'><a href='./invite.php'>Invites</a></td></tr>
+        <tr><td class='text-left'><a href='./tenpercent.php'>Lifesaver</a></td></tr></tbody><br><tbody>
         <tr><td>" . htmlsafechars($CURUSER['username'], ENT_QUOTES) . "'s Entertainment</td></tr>
-        <tr><td align='left'><a href='./topmoods.php'>Top Member Mood's</a></td></tr>";
+        <tr><td class='text-left'><a href='./topmoods.php'>Top Member Mood's</a></td></tr>";
     if ($CURUSER['class'] >= UC_POWER_USER) {
-        $HTMLOUT .= "<tr><td align='left'><a href='./games.php'>{$INSTALLER09['site_name']} Games</a></td></tr>";
-        $HTMLOUT .= "<tr><td align='left'><a href='./blackjack.php'>{$INSTALLER09['site_name']} Blackjack</a></td></tr>";
-        $HTMLOUT .= "<tr><td align='left'><a href='./casino.php'>{$INSTALLER09['site_name']} Casino</a></td></tr>";
-        $HTMLOUT .= "<tr><td align='left'><a href='./arcade.php'>{$INSTALLER09['site_name']} Arcade</a></td></tr>";
-        $HTMLOUT .= "<tr><td align='left'><a href='./lottery.php'>{$INSTALLER09['site_name']} Lottery</a></td></tr>";
+        $HTMLOUT .= "<tr><td class='text-left'><a href='./games.php'>{$INSTALLER09['site_name']} Games</a></td></tr>";
+        $HTMLOUT .= "<tr><td class='text-left'><a href='./blackjack.php'>{$INSTALLER09['site_name']} Blackjack</a></td></tr>";
+        $HTMLOUT .= "<tr><td class='text-left'><a href='./casino.php'>{$INSTALLER09['site_name']} Casino</a></td></tr>";
+        $HTMLOUT .= "<tr><td class='text-left'><a href='./arcade.php'>{$INSTALLER09['site_name']} Arcade</a></td></tr>";
+        $HTMLOUT .= "<tr><td class='text-left'><a href='./lottery.php'>{$INSTALLER09['site_name']} Lottery</a></td></tr>";
     }
     $HTMLOUT .= '</tbody>';
 } //== Security
@@ -244,7 +251,7 @@ elseif ($action == 'security') {
       and you are not immune to our auto scripts...<br></div>", 1);
     }
     $HTMLOUT .= tr($lang['usercp_email'], "<input type='text' name='email' size='50' value='" . htmlsafechars($CURUSER['email']) . "' /><br>{$lang['usercp_email_pass']}<br><input type='password' name='chmailpass' size='50' class='keyboardInput' onkeypress='showkwmessage();return false;' />", 1);
-    $HTMLOUT .= "<tr><td colspan='2' align='left'>{$lang['usercp_note']}</td></tr>\n";
+    $HTMLOUT .= "<tr><td colspan='2' class='text-left'>{$lang['usercp_note']}</td></tr>\n";
     //=== email forum stuff
     $HTMLOUT .= tr('Show Email', '<input type="radio" name="show_email" ' . ($CURUSER['show_email'] == 'yes' ? ' checked="checked"' : '') . ' value="yes" /> Yes
     <input type="radio" name="show_email" ' . ($CURUSER['show_email'] == 'no' ? ' checked="checked"' : '') . ' value="no" /> No<br>
@@ -285,7 +292,7 @@ elseif ($action == 'security') {
     }
     $HTMLOUT .= tr($lang['usercp_question'], "<select name='changeq'>\n$secretqs\n</select>", 1);
     $HTMLOUT .= tr($lang['usercp_sec_answer'], "<input type='text' name='secretanswer' size='40' />", 1);
-    $HTMLOUT .= "<tr ><td align='center' colspan='2'><input class='btn btn-primary' type='submit' value='Submit changes!' style='height: 25px' /></td></tr>";
+    $HTMLOUT .= "<tr ><td class='text-center' colspan='2'><input class='btn btn-primary' type='submit' value='Submit changes!' style='height: 25px' /></td></tr>";
 } //== Torrents
 elseif ($action == 'torrents') {
     $HTMLOUT .= "<div class='offset1 pull-left'>
@@ -321,7 +328,7 @@ elseif ($action == 'torrents') {
      <option value='4'" . (get_categorie_icons() == 4 ? " selected='selected'" : '') . '>Pirate</option>
      </select>', get_categorie_icons());
     $HTMLOUT .= tr($lang['usercp_tor_perpage'], "<input type='text' size='10' name='torrentsperpage' value='{$CURUSER['torrentsperpage']}' /> {$lang['usercp_default']}", 1);
-    $HTMLOUT .= "<tr><td align='center' colspan='2'><input class='btn btn-primary' type='submit' value='Submit changes!' style='height: 25px' /></td></tr>";
+    $HTMLOUT .= "<tr><td class='text-center' colspan='2'><input class='btn btn-primary' type='submit' value='Submit changes!' style='height: 25px' /></td></tr>";
 } //== Personal
 elseif ($action == 'personal') {
     $HTMLOUT .= "<div class='offset1 pull-left'>
@@ -416,7 +423,7 @@ elseif ($action == 'personal') {
         $HTMLOUT .= tr('Birthday', $year . $month . $day, 1);
     }
     //== End
-    $HTMLOUT .= "<tr><td align='center' colspan='2'><input class='btn btn-primary' type='submit' value='Submit changes!' style='height: 25px' /></td></tr>";
+    $HTMLOUT .= "<tr><td class='text-center' colspan='2'><input class='btn btn-primary' type='submit' value='Submit changes!' style='height: 25px' /></td></tr>";
 } else {
     //== Default Pms
     if ($action == 'default') {
@@ -437,7 +444,7 @@ elseif ($action == 'personal') {
     //$HTMLOUT.= tr("Torrent deletion Pm", "<input type='checkbox' name='pm_on_delete'" . (($CURUSER['opt2'] & user_options_2::PM_ON_DELETE) ? " checked='checked'" : "") . " value='yes' />(When any of your uploaded torrents are deleted, you will be PMed)", 1);
     $HTMLOUT .= tr('Torrent comment Pm', "<input type='radio' name='commentpm' " . ($CURUSER['commentpm'] == 'yes' ? " checked='checked'" : '') . " value='yes' />Yes <input type='radio' name='commentpm' " . ($CURUSER['commentpm'] == 'no' ? " checked='checked'" : '') . " value='no' />No<br>When any of your uploaded torrents are commented on, you will be PMed.", 1);
     //$HTMLOUT.= tr("Torrent comment Pm", "<input type='checkbox' name='commentpm'" . (($CURUSER['opt2'] & user_options_2::COMMENTPM) ? " checked='checked'" : "") . " value='yes' />(When any of your uploaded torrents are commented on, you will be PMed)", 1);
-    $HTMLOUT .= "<tr><td align='center' colspan='2'><input class='btn btn-primary' type='submit' value='Submit changes!' style='height: 25px' /></td></tr>";
+    $HTMLOUT .= "<tr><td class='text-center' colspan='2'><input class='btn btn-primary' type='submit' value='Submit changes!' style='height: 25px' /></td></tr>";
 }
 $HTMLOUT .= '</table></div></form></div></div></fieldset>';
 echo stdhead(htmlsafechars($CURUSER['username'], ENT_QUOTES) . "{$lang['usercp_stdhead']} ", true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);

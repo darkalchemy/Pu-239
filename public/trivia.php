@@ -87,8 +87,8 @@ $HTMLOUT = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
 <title>Trivia</title>
-<meta http-equiv='refresh' content={$refresh}; url=./trivia.php' />
-<link rel='stylesheet' href='./css/" . get_stylesheet() . "/b01f484dee6c8c971bf4cbd8eb42b712.min.css' />
+<meta http-equiv='refresh' content={$refresh}; url=./trivia.php'>
+<link rel='stylesheet' href='./css/" . get_stylesheet() . "/0dd7daf52570b404a09c81a8a776058d.min.css' />
 <link href='https://fonts.googleapis.com/css?family=Acme|Baloo+Bhaijaan|Encode+Sans+Condensed|Lobster|Nova+Square|Open+Sans|Oswald|PT+Sans+Narrow' rel='stylesheet' />
 </head>
 <body class='text-1'>
@@ -137,12 +137,12 @@ if (empty($gamenum) || empty($qid)) {
 
         if ($num_rows != 0) {
             $table = "
-            <table class='table table-bordered center-block'>
+            <table class='table text-center'>
                 <tr>
-                    <th align='left' width='5%'>Username</th>
-                    <th align='center' width='5%'>Ratio</th>
-                    <th align='center' width='5%'>Correct</th>
-                    <th align='center' width='5%'>Incorrect</th>
+                    <th class='text-left' width='5%'>Username</th>
+                    <th class='text-center' width='5%'>Ratio</th>
+                    <th class='text-center' width='5%'>Correct</th>
+                    <th class='text-center' width='5%'>Incorrect</th>
                 </tr>";
             $sql = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username,
                             (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE gamenum = ' . sqlesc($gamenum) . ' AND correct = 0 AND user_id = t.user_id) AS incorrect
@@ -159,10 +159,10 @@ if (empty($gamenum) || empty($qid)) {
                 $class = $i++ % 2 == 0 ? 'one' : 'two';
                 $table .= "
                 <tr class='$class'>
-                    <td align='left' width='5%'>" . format_username((int)$user_id) . "</td>
-                    <td align='center' width='5%'>" . sprintf('%.2f%%', $correct / ($correct + $incorrect) * 100) . "</td>
-                    <td align='center' width='5%'>$correct</td>
-                    <td align='center' width='5%'>$incorrect</td>
+                    <td class='text-left' width='5%'>" . format_username((int)$user_id) . "</td>
+                    <td class='text-center' width='5%'>" . sprintf('%.2f%%', $correct / ($correct + $incorrect) * 100) . "</td>
+                    <td class='text-center' width='5%'>$correct</td>
+                    <td class='text-center' width='5%'>$incorrect</td>
                 </tr>";
             }
             $table .= "
@@ -269,7 +269,7 @@ $HTMLOUT .= "
 if ($round_remaining >= 1) {
     $HTMLOUT .= "
 <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
-<script src='./js/a4c172a85fb36c2b00a6ef229205a674.min.js'></script>
+<script src='./js/2d28f39c1474c0e07517d68f18e88974.min.js'></script>
 <script>
     <!-- https://www.sitepoint.com/build-javascript-countdown-timer-no-dependencies/ -->
     function getTimeRemaining(endtime){

@@ -1113,7 +1113,7 @@ function output($blackjack, $HTMLOUT, $debugout)
     global $CURUSER;
     $stdhead = [
         'css' => [
-            '5147de5531166b423051f36cd7f8a175.min',
+            '406c410f1cbc7c730ab8c51f124f1967.min',
         ],
     ];
 

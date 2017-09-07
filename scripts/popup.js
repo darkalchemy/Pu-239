@@ -29,13 +29,3 @@ function PopUp(url, name, width, height, center, resize, scroll, posleft, postop
     var Win = window.open(url, name, "width=" + width + ",height=" + height + showx + showy + ",resizable=" + resize + ",scrollbars=" + scroll + ",location=no,directories=no,status=no,menubar=no,toolbar=no");
     event.preventDefault();
 }
-
-function slideme() {
-    if ($("#slide_divp").is(":hidden")) {
-        $("#slide_divp").slideDown("fast");
-        $("#slide_p").empty().html("Hide Poster");
-    } else {
-        $("#slide_divp").slideUp("fast");
-        $("#slide_p").empty().html("Show Poster");
-    }
-}

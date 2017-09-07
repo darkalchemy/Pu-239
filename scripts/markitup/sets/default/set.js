@@ -45,18 +45,19 @@ var myBbcodeSettings = {
         {name:'Quotes', key:'Q', openWith:'[quote]', closeWith:'[/quote]'},
         {name:'Code', key:'K', openWith:'[code]', closeWith:'[/code]'},
         {separator:'---------------' },
-        {name:'Table generator\n+alt key for th',
+        {name:'Table generator',
             className:'tablegenerator',
             placeholder:'Your text here...',
             replaceWith:function(h) {
                 var cols = prompt('How many cols?'),
                     rows = prompt('How many rows?'),
+                    thead = prompt('Is first row a table header? (yes or no)'),
                     html = '[table]\n';
-                //if (h.altKey) {
+                if (thead == 'yes') {
                     for (var c = 0; c < cols; c++) {
-                        html += '\t[th] [![TH'+(c+1)+'text:]!][/th]\n';
+                        html += '\t[th] [![TH'+(c+1)+' text:]!][/th]\n';
                     }
-                //}
+                }
                 for (var r = 0; r < rows; r++) {
                     html+= '\t[tr]\n';
                     for (var c = 0; c < cols; c++) {
@@ -64,7 +65,7 @@ var myBbcodeSettings = {
                     }
                     html+= '\t[/tr]\n';
                 }
-                html += '[/table]\n';
+                html += '[/table]';
                 return html;
             }
         },

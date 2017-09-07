@@ -6,7 +6,7 @@ $lang = array_merge(load_language('global'), load_language('faq'));
 $stdfoot = [
     /* include js **/
     'js' => [
-        'ef6642c41fbf7cfe2835053ab39d4c50.min'
+        'e0aa4449e1144d138ea6e11ea1a8e284.min'
     ],
 ];
 $HTMLOUT = '';

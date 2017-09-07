@@ -74,7 +74,7 @@ function BBcode($body)
         <table>
             <tr>
                 <td id="tblDefects">
-                    <textarea id="bbcode" name="body" cols="80" rows="20">' . $body . '</textarea>
+                    <textarea id="bbcode_editor" name="body" cols="70" rows="20">' . $body . '</textarea>
                     <div id="outer-preview" class="outer-preview">
                         <div class="inner-preview">
                             <div id="preview-window" class="preview-window">
@@ -204,9 +204,9 @@ function format_quotes($s)
             return $s;
         }
     } // Cannot close before opening. Return raw string...
-    $s = str_replace('[quote]', "<b>Quote:</b><br><table class='main-left' border='1' cellspacing='0' cellpadding='10'><tr><td>", $s);
-    $s = preg_replace('/\\[quote=(.+?)\\]/', "<b>\\1 wrote:</b><br><table class='main-left' border='1' cellspacing='0' cellpadding='10'><tr><td>", $s);
-    $s = str_replace('[/quote]', '</td></tr></table><br>', $s);
+    $s = str_replace('[quote]', "<div><b>Quote:</b><br><span class='quote'>", $s);
+    $s = preg_replace('/\\[quote=(.+?)\\]/', "<div><b>\\1 wrote:</b><br><span class='quote'>", $s);
+    $s = str_replace('[/quote]', '</span></div>', $s);
 
     return $s;
 }
@@ -289,10 +289,10 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
 
     // BBCode to find...
     $bb_code_in = [
-        '/\[table\](.*?)\[\/table\]/is',
-        '/\[tr\](.*?)\[\/tr\]/is',
-        '/\[td\](.*?)\[\/td\]/is',
-        '/\[th\](.*?)\[\/th\]/is',
+        '/\s*\[table\](.*?)\[\/table\]\n?/is',
+        '/\s*\[tr\](.*?)\[\/tr\]\s*/is',
+        '/\s*\[td\](.*?)\[\/td\]\s*/is',
+        '/\s*\[th\](.*?)\[\/th\]\s*/is',
         '/\[sup\](.*?)\[\/sup\]/is',
         '/\[sub\](.*?)\[\/sub\]/is',
         '/\[b\](.*?)\[\/b\]/is',
@@ -311,7 +311,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '/\[collapse=(.*?)\](.*?)\[\/collapse\]/is',
         '/\[size=([1-7])\](.*?)\[\/size\]/is',
         '/\[color=([a-zA-Z]+)\](.*?)\[\/color\]/is',
-        '/\[color=(#[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9])\](.*?)\[\/color\]/is',
+        '/\[color=(#[a-f0-9]{6})\](.*?)\[\/color\]/is',
         '/\[font=([a-zA-Z ,]+)\](.*?)\[\/font\]/is',
         '/\[spoiler\](.*?)\[\/spoiler\]/is',
         '/\[hide\](.*?)\[\/hide\]/is',
@@ -393,8 +393,9 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         // [url]http://www.example.com[/url]
         $s = preg_replace_callback("/\[url\]([^()<>\s]+?)\[\/url\]/is", 'islocal', $s);
     }
+
     // Linebreaks
-    //$s = nl2br($s);
+    $s = str_replace(["\r\n", "\r", "\n"], "<br>", $s);
 
     // Dynamic Vars
     $s = dynamic_user_vars($s);
@@ -456,7 +457,6 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     }
     $s = format_quotes($s);
     $s = check_BBcode($s);
-
     return $s;
 }
 

@@ -11,13 +11,13 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 $stdhead = [
     'css' => [
-        '5f2e2c7a8730d0910368c158695eed0f.min'
+        '12ee27333be9fe5ec379b4ad2663f3d2.min'
     ],
 ];
 
 $stdfoot = [
     'js' => [
-        '00cafecacb3e8a097d546488cae6d97e.min'
+        '46387be23f7a064e322957a121165120.min'
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('index'), load_language('trivia'));
@@ -81,13 +81,11 @@ if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS && $BLOCKS['la
     $HTMLOUT .= '</div>';
 }
 
-/*
-    if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SCROLL && $BLOCKS['latest_torrents_scroll_on']) {
+if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SCROLL && $BLOCKS['latest_torrents_scroll_on']) {
 $HTMLOUT .="<div class='container-fluid portlet' id='LATEST_TORRENTS_SCROLL'>";
         require_once (BLOCK_DIR . 'index/latest_torrents_scroll.php');
 $HTMLOUT .="</div>";
-    }
-*/
+}
 
 if (curuser::$blocks['index_page'] & block_index::STATS && $BLOCKS['stats_on']) {
     $HTMLOUT .= "<div class='container-fluid portlet' id='STATS'>";

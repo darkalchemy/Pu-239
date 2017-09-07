@@ -142,7 +142,7 @@
 
                 }
                 if (options.nameSpace) {
-                    nameSpace = 'div="'+options.nameSpace+'" class="'+options.nameSpace+'"';
+                    nameSpace = 'id="'+options.nameSpace+'" class="'+options.nameSpace+'"';
                 }
                 $$.wrap('<div '+nameSpace+'></div>');
                 $$.wrap('<div '+id+' class="markItUp"></div>');
@@ -498,26 +498,22 @@
             // open preview window
             function preview() {
                 if (typeof options.previewHandler === 'function') {
-                    console.log('options');
                     previewWindow = true;
                 } else if (options.previewInElement) {
                     previewWindow = $(options.previewInElement);
                     var  parent = $('#' + options.previewInElement).parent().parent().attr('id');
                     if ($('#' + parent).is(':visible')) {
-                        console.log('visible');
                         $('#' + parent).slideToggle(1000);
                         $('.emos').css({'margin-top':''});
                         $('.scroll').animate({'height':339}, 1000);
                         $('.emos').animate({'height':initHeight}, 1000);
                     } else {
-                        console.log('not visible');
                         $('#' + parent).slideToggle(1000);
                         $('.emos').css('margin-top', '5px');
                         $('.emos').animate({height: 713}, 1000);
                         $('.scroll').animate({height: 664}, 1000);
                     }
                 } else if (!previewWindow || previewWindow.closed) {
-                    console.log('closed');
                     if (options.previewInWindow) {
                         previewWindow = window.open('', 'preview', options.previewInWindow);
                         $(window).unload(function() {
@@ -554,11 +550,25 @@
             }
 
             function renderPreview() {
-                var phtml;
                 var parsedData = $$.val();
                 if (options.previewParser && typeof options.previewParser === 'function') {
                     parsedData = options.previewParser(parsedData);
                 }
+                if (parsedData.length > 1) {
+                    if (options.previewInElement != '') {
+                        var  parent = $('#' + options.previewInElement).parent().parent().attr('id');
+                        if ($('#' + parent).is(':visible')) {
+                            getAjax(parsedData);
+                        }
+                    } else {
+                        getAjax(parsedData);
+                    }
+                } else {
+                    return false;
+                }
+            }
+
+            function getAjax(parsedData) {
                 if (options.previewHandler && typeof options.previewHandler === 'function') {
                     options.previewHandler(parsedData);
                 } else if (options.previewParserPath !== '') {

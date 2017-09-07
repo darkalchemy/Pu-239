@@ -8,7 +8,7 @@ $lang = array_merge(load_language('global'), load_language('contactstaff'));
 $stdhead = [
     /* include css **/
     'css' => [
-        '0929cdaa8c0dc7cc57965e34b070d815.min',
+        '412080f730267ab4e0b90de539271948.min',
     ],
 ];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

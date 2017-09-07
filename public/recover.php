@@ -11,7 +11,7 @@ $lang = array_merge(load_language('global'), load_language('recover'));
 $stdhead = [
     /* include js **/
     'js' => [
-        '8f7d0f2dfbd5335a149bf9d7e6212b35.min'
+        'df4d2f6e49d01dad532d335c41bfd2c1.min'
     ],
 ];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

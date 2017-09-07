@@ -1,3 +1,7 @@
+var offset = 250;
+var animate_duration = 1250;
+var easing = 'easeInOutCubic';
+
 function themes() {
     PopUp('take_theme.php','My themes',300, 150, 1, 0);
 }
@@ -73,14 +77,14 @@ $(function() {
 
     if ($('#help_open').length) {
         $('#help_open').click(function(){
-            $('#help').slideToggle(1000, function() {
+            $('#help').slideToggle(animate_duration, easing, function() {
             });
         });
     };
 
     if (typeof(Storage) !== 'undefined') {
         $('.flipper').click(function(e) {
-            $(this).next().slideToggle(1000, function() {
+            $(this).next().slideToggle(animate_duration, easing, function() {
                 var id = $(this).parent().attr('id');
                 if (!$(this).is(':visible')) {
                     localStorage.setItem(id, 'closed');
@@ -110,19 +114,17 @@ $(function() {
         });
     };
 
-    var offset = 250;
-    var duration = 1250;
     $(window).scroll(function() {
         if ($(this).scrollTop() > offset) {
-            $('.back-to-top').fadeIn(duration);
+            $('.back-to-top').fadeIn(animate_duration);
         } else {
-            $('.back-to-top').fadeOut(duration);
+            $('.back-to-top').fadeOut(animate_duration);
         }
     });
 
     $('.back-to-top').click(function(event) {
         event.preventDefault();
-        $('html, body').animate({scrollTop: 0}, duration, 'swing');
+        $('html, body').animate({scrollTop: 0}, animate_duration, easing);
         $('.back-to-top').blur()
         return false;
     })
@@ -136,7 +138,50 @@ $(function() {
     };
 
     if ($('#upload_form').length) {
-        setupDependencies('upload');
+        setupDependencies('upload_form');
     };
 
+    if ($('#edit_form').length) {
+        setupDependencies('edit_form');
+    };
+
+    if ($('#icarousel').length) {
+        $('#icarousel').iCarousel({
+            easing: 'ease-in-out',
+            slides: 10,
+            make3D: !1,
+            perspective: 500,
+            animationSpeed: 500,
+            pauseTime: 5E3,
+            startSlide: 2,
+            directionNav: !0,
+            autoPlay: !0,
+            keyboardNav: !0,
+            touchNav: !0,
+            mouseWheel: true,
+            pauseOnHover: !1,
+            nextLabel: 'Next',
+            previousLabel: 'Previous',
+            playLabel: 'Play',
+            pauseLabel: 'Pause',
+            randomStart: !1,
+            slidesSpace: '200',
+            slidesTopSpace: '20',
+            direction: 'rtl',
+            timer: '360bar',
+            timerBg: '#000',
+            timerColor: '#FFF',
+            timerOpacity: 0.4,
+            timerDiameter: 35,
+            timerPadding: 4,
+            timerStroke: 3,
+            timerBarStroke: 1,
+            timerBarStrokeColor: '#FFF',
+            timerBarStrokeStyle: 'solid',
+            timerBarStrokeRadius: 4,
+            timerPosition: 'top-right',
+            timerX: 10,
+            timerY: 10
+        });
+    };
 });

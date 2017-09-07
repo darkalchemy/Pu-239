@@ -9,7 +9,7 @@ if (!$CURUSER) {
 }
 $stdfoot = [
     'js' => [
-        'a9e37cd43b634e14d2ad0913664003a0.min'
+        '3306e653dc7cbe855035108a3fdc1055.min'
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('signup'));

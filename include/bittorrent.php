@@ -1546,15 +1546,19 @@ function random_color($minVal = 0, $maxVal = 255)
 
 }
 
-if (file_exists('install/index.php')) {
-    $HTMLOUT = '';
-    $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
-    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
-    <html xmlns='http://www.w3.org/1999/xhtml'>
+if (file_exists('install')) {
+    $HTMLOUT = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-    <title>Warning</title>
+        <meta charset="UTF-8">
+        <title>Warning</title>
     </head>
-    <body><div style='font-size:33px;color:white;background-color:red;text-align:center;'>Delete the install directory</div></body></html>";
+    <body style="background: grey;">
+        <div style="font-size:33px;color:white;background-color:red;text-align:center;">
+            Delete the install directory
+        </div>
+    </body>
+</html>';
     echo $HTMLOUT;
     exit();
 }

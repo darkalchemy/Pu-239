@@ -1,9 +1,9 @@
 /*
-	Form Manager: A simple method of constructing complex dynamic forms.
-	Written by Twey, http://www.twey.co.uk/.
-	Use, copying, and modification allowed, so long as credit
-	remains intact, under the terms of the GNU General Public License,
-	version 2 or later. See http://www.gnu.org/copyleft/gpl.html for details.
+    Form Manager: A simple method of constructing complex dynamic forms.
+    Written by Twey, http://www.twey.co.uk/.
+    Use, copying, and modification allowed, so long as credit
+    remains intact, under the terms of the GNU General Public License,
+    version 2 or later. See http://www.gnu.org/copyleft/gpl.html for details.
 */
 
 
@@ -71,15 +71,17 @@ function isElementValue(el, v) {
 function setupDependencies() {
     var showEl = function () {
         this.style.display = "";
-        if (this.parentNode.tagName.toLowerCase() == "label")
+        if (this.parentNode.tagName.toLowerCase() == "label") {
             this.parentNode.style.display = "";
+        }
     };
     var hideEl = function () {
         this.style.display = "none";
         if (typeof this.checked !== "undefined") this.checked = false;
         else this.value = "";
-        if (this.parentNode.tagName.toLowerCase() == "label")
+        if (this.parentNode.tagName.toLowerCase() == "label") {
             this.parentNode.style.display = "none";
+        }
         this.hidden = true;
     };
     var calcDeps = function () {

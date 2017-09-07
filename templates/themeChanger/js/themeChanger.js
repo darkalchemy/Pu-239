@@ -331,7 +331,7 @@ $(function () {
                 links_picker.css({'background-color': '#008a05'}).ColorPickerSetColor('#008a05');
                 $('a').not(".latest-video a").attr('style', '');
                 $theme_control_panel.find('.active').removeClass();
-                localStorage.setItem('a_color', '008a05');
+                localStorage.removeItem('a_color');
                 return false;
             };
             var $restore_button_wrapper = $('<div/>').addClass('restore_button_wrapper');

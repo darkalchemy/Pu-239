@@ -8,12 +8,12 @@ check_user_status();
 $lang = array_merge(load_language('global'), load_language('upload'));
 $stdhead = [
     'css' => [
-        '96d88a662c8cf65318faf20c83f708b2.min',
+        'c1970cc2bf64b39bc420e74f0437f096.min',
     ],
 ];
 $stdfoot = [
     'js' => [
-        '53cc56e1d54d54a359c4a92fe02e1e3e.min',
+        '859c6d8f53d8ba83a5a80596082ae411.min',
     ],
 ];
 $HTMLOUT = $offers = $subs_list = $request = $descr = '';
@@ -55,7 +55,7 @@ if (mysqli_num_rows($res_offer) > 0) {
 }
 $HTMLOUT .= "
     <div align='center'>
-    <form id='upload_form' name='upload' enctype='multipart/form-data' action='./takeupload.php' method='post'>
+    <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='./takeupload.php' method='post'>
     <input type='hidden' name='MAX_FILE_SIZE' value='{$INSTALLER09['max_torrent_size']}' />
     <p class='top10'>{$lang['upload_announce_url']}:<b><input type='text' class='left5 text-center' size='80' readonly='readonly' value='{$INSTALLER09['announce_urls'][0]}' onclick='select()' /></b></p>";
 $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='10'>
@@ -128,7 +128,7 @@ foreach ($subs as $s) {
 $subs_list .= "
         </div>";
 
-$HTMLOUT .= tr('Subtitile', $subs_list, 1);
+$HTMLOUT .= tr('Subtitiles', $subs_list, 1);
 $rg = "<select name='release_group'>\n<option value='none'>None</option>\n<option value='p2p'>p2p</option>\n<option value='scene'>Scene</option>\n</select>\n";
 $HTMLOUT .= tr('Release Type', $rg, 1);
 $HTMLOUT .= tr("{$lang['upload_anonymous']}", "<div class='flex'><input type='checkbox' name='uplver' value='yes' /><span class='left5'>{$lang['upload_anonymous1']}</span></div>", 1);
@@ -179,12 +179,12 @@ $HTMLOUT .= "
     <tr>
         <td class='heading' align='right'><b>Genre</b></td>
         <td>
-            <div class='flex-grid genre_list'>";
+            <div class='flex-grid'>";
 
 for ($x = 0; $x < count($genres); ++$x) {
     $HTMLOUT .= "
                 <div class='flex_cell_5'>
-                    <input type='checkbox' class='reset' value='{$genres[$x]}'  name='{genres[]}' />
+                    <input type='radio' value='" . strtolower($genres[$x]) . "' name='genre' />
                     <span class='left5'>{$genres[$x]}</span>
                 </div>";
 }
@@ -195,69 +195,95 @@ $HTMLOUT .= "
                     <span class='left5'>None</span>
                 </div>
             </div>
-            <div class='flex-grid genre_list'>";
+            <label style='margin-bottom: 1em; padding-bottom: 1em; border-bottom: 3px silver groove;'>
+            <input type='hidden' class='Depends on genre being movie or genre being music' /></label>
+            <div class='flex-grid'>";
 
-$movie = [
+//== 09 Genre mod no mysql by Traffic
+//$HTMLOUT.= "
+    //<tr>
+        //<td class='heading' class='text-right'>
+            //<b>Genre</b>
+        //</td>
+        //<td class='text-left'>
+            //<table>
+                //<tr>
+    //<td style='border:none'><input type='radio' name='genre' value='movie' />Movie</td>
+    //<td style='border:none'><input type='radio' name='genre' value='music' />Music</td>
+    //<td style='border:none'><input type='radio' name='genre' value='game' />Game</td>
+    //<td style='border:none'><input type='radio' name='genre' value='apps' />Apps</td>
+    //<td style='border:none'><input type='radio' name='genre' value='' checked='checked' />None</td>
+    //</tr>
+    //</table>
+    //<table>
+    //<tr>
+    //<td colspan='4' style='border:none'>
+    //<label style='margin-bottom: 1em; padding-bottom: 1em; border-bottom: 3px silver groove;'>
+    //<input type='hidden' class='Depends on genre being movie or genre being music' /></label>";
+$movie = array(
     'Action',
     'Comedy',
     'Thriller',
     'Adventure',
     'Family',
     'Adult',
-    'Sci-fi',
-];
-for ($x = 0; $x < count($movie); ++$x) {
-    $HTMLOUT .= "
-                <div class='flex_cell_5'>
-                    <input type='checkbox' class='reset' value='{$movie[$x]}'  name='{movie[]}' />
+    'Sci-fi'
+);
+for ($x = 0; $x < count($movie); $x++) {
+    $HTMLOUT.= "
+                <label>
+                    <input type='checkbox' value='{$movie[$x]}' name='{movie[]}' class='DEPENDS ON genre BEING movie' />
                     <span class='left5'>{$movie[$x]}</span>
-                </div>";
+                </label>";
 }
-$music = [
+$music = array(
     'Hip Hop',
     'Rock',
     'Pop',
     'House',
     'Techno',
-    'Commercial',
-];
-for ($x = 0; $x < count($music); ++$x) {
-    $HTMLOUT .= "
-                <div class='flex_cell_5'>
-                    <input type='checkbox' class='reset' value='{$music[$x]}'  name='{music[]}' />
+    'Commercial'
+);
+for ($x = 0; $x < count($music); $x++) {
+    $HTMLOUT.= "
+                <label>
+                    <input type='checkbox' value='{$music[$x]}' name='{music[]}' class='DEPENDS ON genre BEING music' />
                     <span class='left5'>{$music[$x]}</span>
-                </div>";
+                </label>";
 }
-$game = [
+$game = array(
     'Fps',
     'Strategy',
     'Adventure',
     '3rd Person',
-    'Acton',
-];
-for ($x = 0; $x < count($game); ++$x) {
-    $HTMLOUT .= "
-                <div class='flex_cell_5'>
-                    <input type='checkbox' class='reset' value='{$game[$x]}'  name='{game[]}' />
+    'Acton'
+);
+for ($x = 0; $x < count($game); $x++) {
+    $HTMLOUT.= "
+                <label>
+                    <input type='checkbox' value='{$game[$x]}' name='{game[]}' class='DEPENDS ON genre BEING game' />
                     <span class='left5'>{$game[$x]}</span>
-                </div>";
+                </label>";
 }
-$apps = [
+$apps = array(
     'Burning',
     'Encoding',
     'Anti-Virus',
     'Office',
     'Os',
     'Misc',
-    'Image',
-];
-for ($x = 0; $x < count($apps); ++$x) {
-    $HTMLOUT .= "
-                <div class='flex_cell_5'>
-                    <input type='checkbox' class='reset' value='{$apps[$x]}'  name='{apps[]}' />
+    'Image'
+);
+for ($x = 0; $x < count($apps); $x++) {
+    $HTMLOUT.= "
+                <label>
+                    <input type='checkbox' value='{$apps[$x]}' name='{apps[]}' class='DEPENDS ON genre BEING apps' />
                     <span class='left5'>{$apps[$x]}</span>
-                </div>";
+                </label>";
 }
+$HTMLOUT.= "</td></tr></table></td></tr>";
+//== End
+
 
 if ($CURUSER['class'] >= UC_UPLOADER and XBT_TRACKER == false) {
     $HTMLOUT .= tr('Vip Torrent', "<div class='flex'><input type='checkbox' name='vip' value='1' /><span class='left5'>If this one is checked, only Vip's can download this torrent</span></div>", 1);

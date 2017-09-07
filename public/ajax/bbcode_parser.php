@@ -4,4 +4,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATO
 require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
 
-echo format_comment($_POST['data']);
+$output = format_comment($_POST['data']);
+//file_put_contents('/var/log/nginx/bbcode.log', $output . PHP_EOL, FILE_APPEND);
+echo $output;
+die();
