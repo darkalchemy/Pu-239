@@ -19,7 +19,9 @@ function autoshout($msg, $channel = 0, $ttl = 3600)
 {
     global $INSTALLER09;
     require_once INCL_DIR . 'bbcode_functions.php';
-    sql_query('INSERT INTO ajax_chat_messages (userID, userName, userRole, channel, dateTime, ip, text, ttl) VALUES (' . sqlesc($INSTALLER09['chatBotID']) . ', ' . sqlesc($INSTALLER09['chatBotName']) . ', 100, ' . sqlesc($channel) . ', NOW(), ' . sqlesc(ipToStorageFormat('127.0.0.1')) . ', ' . sqlesc($msg) . ', ' . sqlesc($ttl) . ')') or sqlerr(__FILE__, __LINE__);
+    if (user_exists($INSTALLER09['chatBotID'])) {
+        sql_query('INSERT INTO ajax_chat_messages (userID, userName, userRole, channel, dateTime, ip, text, ttl) VALUES (' . sqlesc($INSTALLER09['chatBotID']) . ', ' . sqlesc($INSTALLER09['chatBotName']) . ', 100, ' . sqlesc($channel) . ', NOW(), ' . sqlesc(ipToStorageFormat('127.0.0.1')) . ', ' . sqlesc($msg) . ', ' . sqlesc($ttl) . ')') or sqlerr(__FILE__, __LINE__);
+    }
 }
 
 //== Get rep by CF

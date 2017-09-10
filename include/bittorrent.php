@@ -1546,6 +1546,21 @@ function random_color($minVal = 0, $maxVal = 255)
 
 }
 
+function user_exists($user_id)
+{
+    global $mc1;
+    if (($userlist = $mc1->get_value('userlist_' . $user_id)) === false) {
+        $query = "SELECT id FROM users WHERE id = " . sqlesc($user_id);
+        $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
+        $res = mysqli_fetch_assoc($res);
+        if (empty($res)) {
+            return false;
+        }
+        $mc1->cache_value('userlist_' . $userid, $res, 86400);
+    }
+    return true;
+}
+
 if (file_exists('install')) {
     $HTMLOUT = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html xmlns="http://www.w3.org/1999/xhtml">

@@ -1,5 +1,5 @@
 <?php
-const REQUIRED_PHP = 50300, REQUIRED_PHP_VERSION = '5.3.0';
+const REQUIRED_PHP = 70100, REQUIRED_PHP_VERSION = '7.1.0';
 if (PHP_VERSION_ID < REQUIRED_PHP) {
     die('PHP ' . REQUIRED_PHP_VERSION . ' or higher is required.');
 }
@@ -27,9 +27,10 @@ if (!function_exists('sys_getloadavg')) {
         return [0, 0, 0];
     }
 }
+7.1.9-1+ub
 /* Compare php version for date/time stuff etc! */
-if (version_compare(PHP_VERSION, '5.1.0RC1', '>=')) {
-    date_default_timezone_set('Etc/UTC');
+if (version_compare(PHP_VERSION, '7.1.0', '>=')) {
+    date_default_timezone_set('UTC');
 }
 define('TIME_NOW', time());
 $INSTALLER09['time_adjust'] = 0;
@@ -47,13 +48,13 @@ $INSTALLER09['mysql_user'] = '#mysql_user';
 $INSTALLER09['mysql_pass'] = '#mysql_pass';
 $INSTALLER09['mysql_db'] = '#mysql_db';
 //== Cookie setup
-$INSTALLER09['sessionName'] = '#cookie_prefix';
+$INSTALLER09['sessionName'] = '#sessionName'; // A single word that identifies this install.
 $INSTALLER09['cookie_prefix'] = '#cookie_prefix' . '_'; // This allows you to have multiple trackers, eg for demos, testing etc.
 $INSTALLER09['cookie_path'] = '#cookie_path'; // ATTENTION: You should never need this unless the above applies eg: /tbdev
 $INSTALLER09['cookie_domain'] = '#cookie_domain'; // set to eg: .somedomain.com or is subdomain set to: .sub.somedomain.com
-$INSTALLER09['cookie_lifetime'] = 365; // length of time cookies will be valid
+$INSTALLER09['cookie_lifetime'] = '#cookie_lifetime'; // length of time cookies will be valid
 $INSTALLER09['domain'] = '.' . '#domain';
-$INSTALLER09['sessionCookieSecure'] = null; // using HTTPS only? then set this
+$INSTALLER09['sessionCookieSecure'] = '#sessionCookieSecure'; // using HTTPS only? then set this
 $INSTALLER09['sessionKeyPrefix'] = '#cookie_prefix' . '_'; // usefull if serving multiple sites
 $INSTALLER09['session_csrf'] = 'csrf_token'; // usefull if serving multiple sites
 //== Memcache expires

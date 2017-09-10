@@ -8,7 +8,7 @@ body {
 }
 #wrapper {
   margin: 50px auto;
-  width: 600px;
+  width: 375px;
   position: relative
 }
 fieldset,
@@ -28,9 +28,9 @@ legend {
   white-space: nowrap;
   text-align: right;
   font-weight: 700;
-  vertical-align: top;
   width: 120px!important;
   display: inline-block;
+  line-height: 18px;
 }
 td.input_input input {
   -moz-border-radius: 3px;
