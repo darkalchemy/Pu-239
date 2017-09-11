@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         stderr($lang['getrss_error'], $lang['getrss_nocat']);
     }
     $feed = isset($_POST['feed']) && $_POST['feed'] == 'dl' ? 'dl' : 'web';
-    $rsslink = $INSTALLER09['baseurl'] . '/rss.php?cats=' . join(',', $cats) . ($feed == 'dl' ? '&amp;type=dl' : '') . '&amp;torrent_pass=' . $CURUSER['torrent_pass'];
+    $rsslink = $site_config['baseurl'] . '/rss.php?cats=' . join(',', $cats) . ($feed == 'dl' ? '&amp;type=dl' : '') . '&amp;torrent_pass=' . $CURUSER['torrent_pass'];
     $HTMLOUT = "<div align=\"center\"><h2>{$lang['getrss_result']}</h2><br>
 		<input type=\"text\" size=\"120\" readonly=\"readonly\" value=\"{$rsslink}\" onclick=\"select()\" />
 	</div>";
@@ -36,7 +36,7 @@ HTML;
             $HTMLOUT .= '<br>';
         }
         $HTMLOUT .= '<label for="cat_' . (int)$a['id'] . "\">
-      <img src=\"{$INSTALLER09['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($a['image']) . '" alt="' . htmlsafechars($a['name']) . '" title="' . htmlsafechars($a['name']) . '" />
+      <img src=\"{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($a['image']) . '" alt="' . htmlsafechars($a['name']) . '" title="' . htmlsafechars($a['name']) . '" />
      <input type="checkbox" name="cats[]" id="cat_' . (int)$a['id'] . '" value="' . (int)$a['id'] . "\" /></label>\n";
         ++$i;
     }

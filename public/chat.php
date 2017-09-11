@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('chat'));
@@ -9,7 +9,7 @@ $irc_channel = '#09source weloveweed';
 $HTMLOUT = '';
 $HTMLOUT .= "<p>{$lang['chat_channel']}<a href='irc://{$irc_url}'>{$irc_channel}</a> {$lang['chat_network']}</p>
     <div class='borderwrap' align='center'>
-    <div class='maintitle'>{$INSTALLER09['site_name']}</div>
+    <div class='maintitle'>{$site_config['site_name']}</div>
     <div class='row1' align='center'>
     <applet code='IRCApplet.class' codebase='./javairc/' archive='irc.jar,pixx.jar' width='640' height='400'>
       <param name='CABINETS' value='irc.cab,securedirc.cab,pixx.cab' />
@@ -19,7 +19,7 @@ $HTMLOUT .= "<p>{$lang['chat_channel']}<a href='irc://{$irc_url}'>{$irc_channel}
       <param name='fullname' value='Java User' />
       <param name='host' value='{$irc_url}' />
       <param name='gui' value='pixx' />
-      <param name='quitmessage' value='{$INSTALLER09['site_name']} forever!' />
+      <param name='quitmessage' value='{$site_config['site_name']} forever!' />
       <param name='asl' value='true' />
       <param name='command1' value='/join {$irc_channel}' />
       <param name='style:bitmapsmileys' value='true' />

@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -33,17 +33,17 @@ if (isset($_GET['remove'])) {
             $mc1->update_row(false, [
                 'watched_user' => 0,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('user' . $remove_me_Ive_been_good);
             $mc1->update_row(false, [
                 'watched_user' => 0,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('user_stats_' . $remove_me_Ive_been_good);
             $mc1->update_row(false, [
                 'modcomment' => $modcomment,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
             $count = 1;
             $removed_log = '<a href="userdetails.php?id=' . $remove_me_Ive_been_good . '" class="altlink">' . htmlsafechars($user['username']) . '</a>';
         }
@@ -59,17 +59,17 @@ if (isset($_GET['remove'])) {
                 $mc1->update_row(false, [
                     'watched_user' => 0,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $mc1->begin_transaction('user' . $id);
                 $mc1->update_row(false, [
                     'watched_user' => 0,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
                 $mc1->begin_transaction('user_stats_' . $id);
                 $mc1->update_row(false, [
                     'modcomment' => $modcomment,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 $count = (++$count);
                 $removed_log .= '<a href="userdetails.php?id=' . $id . '" class="altlink">' . htmlsafechars($user['username']) . '</a> ';
             }
@@ -120,18 +120,18 @@ if (isset($_GET['add'])) {
         $mc1->update_row(false, [
             'watched_user' => TIME_NOW,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+        $mc1->commit_transaction($site_config['expires']['curuser']);
         $mc1->begin_transaction('user' . $member_whos_been_bad);
         $mc1->update_row(false, [
             'watched_user'        => TIME_NOW,
             'watched_user_reason' => $watched_user_reason,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+        $mc1->commit_transaction($site_config['expires']['user_cache']);
         $mc1->begin_transaction('user_stats_' . $member_whos_been_bad);
         $mc1->update_row(false, [
             'modcomment' => $modcomment,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+        $mc1->commit_transaction($site_config['expires']['user_stats']);
     }
     //=== Check if member was added
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) > 0) {
@@ -182,7 +182,7 @@ if ($how_many > 0) {
         <td align="center" class="' . $class . '">' . get_date($arr['watched_user'], '') . '</td>
         <td align="left" class="' . $class . '">' . print_user_stuff($arr) . '</td>
         <td align="left" class="' . $class . '">' . $the_flip_box . '</td>
-        <td align="center" class="' . $class . '">' . member_ratio($arr['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
+        <td align="center" class="' . $class . '">' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
         <td align="center" class="' . $class . '">' . ($invitor_arr['username'] == '' ? '' . $lang['watched_open_sign-ups'] . '' : print_user_stuff($invitor_arr)) . '</td>
         ' . ($CURUSER['class'] >= UC_STAFF ? '
         <td align="center" class="' . $class . '"><input type="checkbox" name="wu[]" value="' . (int)$arr['id'] . '" /></td>' : '') . '

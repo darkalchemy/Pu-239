@@ -1,10 +1,10 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'class_browser.php';
 dbconn();
-global $CURUSER, $INSTALLER09;
+global $CURUSER, $site_config;
 if (!$CURUSER) {
     get_template();
 }
@@ -12,23 +12,23 @@ $lang = array_merge(load_language('global'), load_language('takelogin'));
 
 function failedloginscheck()
 {
-    global $INSTALLER09;
+    global $site_config;
     $total = 0;
     $ip = getip();
     $res = sql_query('SELECT SUM(attempts) FROM failedlogins WHERE ip=' . sqlesc($ip)) or sqlerr(__FILE__, __LINE__);
     list($total) = mysqli_fetch_row($res);
-    if ($total >= $INSTALLER09['failedlogins']) {
+    if ($total >= $site_config['failedlogins']) {
         sql_query("UPDATE failedlogins SET banned = 'yes' WHERE ip=" . sqlesc($ip)) or sqlerr(__FILE__, __LINE__);
         stderr('Login Locked!', 'You have been <b>Exceeded</b> the allowed maximum login attempts without successful login, therefore your ip address <b>(' . htmlsafechars($ip) . ')</b> has been locked for 24 hours.');
     }
 }
-if (!mkglobal('username:password' . ($INSTALLER09['captcha_on'] ? ':captchaSelection:' : ':') . 'submitme')) {
+if (!mkglobal('username:password' . ($site_config['captcha_on'] ? ':captchaSelection:' : ':') . 'submitme')) {
     die('Something went wrong');
 }
 if ($submitme != 'X') {
     stderr('Ha Ha', 'You Missed, You plonker !');
 }
-if ($INSTALLER09['captcha_on']) {
+if ($site_config['captcha_on']) {
     if (empty($captchaSelection) || getSessionVar('simpleCaptchaAnswer') != $captchaSelection) {
         $url = 'login.php';
         if (!empty($_SERVER['HTTP_REFERER'])) {
@@ -41,7 +41,7 @@ if ($INSTALLER09['captcha_on']) {
 }
 function bark($text = 'Username or password incorrect')
 {
-    global $lang, $INSTALLER09, $mc1;
+    global $lang, $site_config, $mc1;
     $sha = sha1($_SERVER['REMOTE_ADDR']);
     $dict_key = 'dictbreaker:::' . $sha;
     $flood = $mc1->get_value($dict_key);
@@ -77,12 +77,12 @@ if (!password_verify($password, $row['passhash'])) {
     }
     $to = ((int)$row['id']);
     $subject = 'Failed login';
-    $msg = "[color=red]Security alert[/color]\n Account: ID=" . (int)$row['id'] . ' Somebody (probably you, ' . htmlsafechars($username) . ' !) tried to login but failed!' . "\nTheir [b]Ip Address [/b] was : " . htmlsafechars($ip) . "\n If this wasn't you please report this event to a {$INSTALLER09['site_name']} staff member\n - Thank you.\n";
+    $msg = "[color=red]Security alert[/color]\n Account: ID=" . (int)$row['id'] . ' Somebody (probably you, ' . htmlsafechars($username) . ' !) tried to login but failed!' . "\nTheir [b]Ip Address [/b] was : " . htmlsafechars($ip) . "\n If this wasn't you please report this event to a {$site_config['site_name']} staff member\n - Thank you.\n";
     $sql = 'INSERT INTO messages (sender, receiver, msg, subject, added) VALUES(0, ' . sqlesc($to) . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ", $added);";
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     $mc1->delete_value('inbox_new_' . $row['id']);
     $mc1->delete_value('inbox_new_sb_' . $row['id']);
-    bark("<b>Error</b>: Username or password entry incorrect <br>Have you forgotten your password? <a href='{$INSTALLER09['baseurl']}/resetpw.php'><b>Recover</b></a> your password !");
+    bark("<b>Error</b>: Username or password entry incorrect <br>Have you forgotten your password? <a href='{$site_config['baseurl']}/resetpw.php'><b>Recover</b></a> your password !");
 }
 if ($row['enabled'] == 'no') {
     bark($lang['tlogin_disabled']);
@@ -107,7 +107,7 @@ if (!$no_log_ip) {
     }
 } // End Ip logger
 if (isset($_POST['use_ssl']) && $_POST['use_ssl'] == 1 && !isset($_SERVER['HTTPS'])) {
-    $INSTALLER09['baseurl'] = str_replace('http', 'https', $INSTALLER09['baseurl']);
+    $site_config['baseurl'] = str_replace('http', 'https', $site_config['baseurl']);
 }
 $ssl_value = (isset($_POST['perm_ssl']) && $_POST['perm_ssl'] == 1 ? 'ssluse = 2' : 'ssluse = 1');
 $ssluse = ($row['ssluse'] == 2 ? 2 : 1);
@@ -123,7 +123,7 @@ $mc1->update_row(false, [
     'last_access' => TIME_NOW,
     'last_login'  => TIME_NOW,
 ]);
-$mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+$mc1->commit_transaction($site_config['expires']['curuser']);
 $mc1->begin_transaction('user' . $row['id']);
 $mc1->update_row(false, [
     'browser'     => $browser,
@@ -138,9 +138,9 @@ unsetSessionVar('simpleCaptchaTimestamp');
 setSessionVar('userID', $row['id']);
 logincookie($row['id']);
 
-$mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+$mc1->commit_transaction($site_config['expires']['user_cache']);
 if (isset($_POST['returnto'])) {
-    header("Location: {$INSTALLER09['baseurl']}" . urldecode($_POST['returnto']));
+    header("Location: {$site_config['baseurl']}" . urldecode($_POST['returnto']));
 } else {
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
 }

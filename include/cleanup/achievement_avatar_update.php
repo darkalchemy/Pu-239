@@ -1,15 +1,15 @@
 <?php
 function achievement_avatar_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
-    set_time_limit(0);
-    ignore_user_abort(1);
+    global $site_config, $queries, $mc1;
+    set_time_limit(1200);
+    ignore_user_abort(true);
     // Updated Avatar Setter Achievement
     $res = sql_query("SELECT userid, avatarset FROM usersachiev WHERE avatarset = 1 AND avatarach = 0") or sqlerr(__FILE__, __LINE__);
     $msg_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $subject = sqlesc('New Achievement Earned!');
-        $msg = sqlesc('Congratulations, you have just earned the [b]Avatar Setter[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/images/achievements/piratesheep.png[/img]');
+        $msg = sqlesc('Congratulations, you have just earned the [b]Avatar Setter[/b] achievement. :) [img]' . $site_config['baseurl'] . '/images/achievements/piratesheep.png[/img]');
         while ($arr = mysqli_fetch_assoc($res)) {
             $dt = TIME_NOW;
             $points = random_int(1, 3);

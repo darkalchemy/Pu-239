@@ -1,15 +1,15 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR.'user_functions.php';
 check_user_status();
 
 $lang = load_language('global');
-global $INSTALLER09, $CURUSER;
+global $site_config, $CURUSER;
 
 $scores = '';
 $player = $CURUSER['id'];
 
-$all_our_games = $INSTALLER09['arcade_games'];
+$all_our_games = $site_config['arcade_games'];
 
 $stdfoot = array(
     'js' => array(
@@ -43,8 +43,8 @@ $game_width = $game_height;
 $HTMLOUT = '';
 $HTMLOUT .= "
     <div class='container-fluid text-center'>
-        <h1>{$INSTALLER09['site_name']} Old School Arcade!</h1>
-        <span>Top Scores Earn {$INSTALLER09['top_score_points']} Karma Points</span>
+        <h1>{$site_config['site_name']} Old School Arcade!</h1>
+        <span>Top Scores Earn {$site_config['top_score_points']} Karma Points</span>
         <br><br>
         <a class='altlink' href='arcade.php'>Arcade</a> || <a class='altlink' href='arcade_top_scores.php'>Top Scores</a>
         <br><br>";
@@ -74,8 +74,8 @@ $res = sql_query('SELECT * FROM flashscores WHERE game = '.sqlesc($gamename).' O
 //$HTMLOUT .='<a class="altlink" href="arcade_top_scores.php">Top Scores</a> || <a class="altlink" href="arcade_ranking.php">Arcade Rankings</a>';
 
 if (mysqli_num_rows($res) > 0) {
-    $id = array_search($gamename, $INSTALLER09['arcade_games']);
-    $fullgamename = $INSTALLER09['arcade_games_names'][$id];
+    $id = array_search($gamename, $site_config['arcade_games']);
+    $fullgamename = $site_config['arcade_games_names'][$id];
     $HTMLOUT .= '
                     <table border="0" cellspacing="5" cellpadding="10" align="center" width="100%">
                         <tr>

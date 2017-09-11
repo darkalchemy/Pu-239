@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -162,7 +162,7 @@ function show_views()
             $img_width .= '%';
             $htmlout .= "<tr>
     			<td valign='middle'>$date</td>
-    			<td valign='middle'><img src='{$INSTALLER09['pic_base_url']}/bar_left.gif' border='0' width='4' height='11' align='middle' alt='' /><img src='{$INSTALLER09['pic_base_url']}/bar.gif' border='0' width='$img_width' height='11' align='middle' alt='' /><img src='{$INSTALLER09['pic_base_url']}/bar_right.gif' border='0' width='4' height='11' align='middle' alt='' /></td>
+    			<td valign='middle'><img src='{$site_config['pic_base_url']}/bar_left.gif' border='0' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}/bar.gif' border='0' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}/bar_right.gif' border='0' width='4' height='11' align='middle' alt='' /></td>
 					<td valign='middle'><center>{$data['result_count']}</center></td>
 					</tr>";
         }
@@ -180,7 +180,7 @@ function show_views()
 
 function result_screen($mode = 'reg')
 {
-    global $INSTALLER09, $inbound, $month_names, $lang;
+    global $site_config, $inbound, $month_names, $lang;
     $page_title = $lang['stats_ex_center_result'];
     $page_detail = '&#160;';
     if (!checkdate($inbound['to_month'], $inbound['to_day'], $inbound['to_year'])) {
@@ -308,7 +308,7 @@ function result_screen($mode = 'reg')
             }
             $htmlout .= "<tr>
     			<td valign='middle'>$date</td>
-    			<td valign='middle'><img src='{$INSTALLER09['pic_base_url']}/bar_left.gif' border='0' width='4' height='11' align='middle' alt='' /><img src='{$INSTALLER09['pic_base_url']}/bar.gif' border='0' width='$img_width' height='11' align='middle' alt='' /><img src='{$INSTALLER09['pic_base_url']}/bar_right.gif' border='0' width='4' height='11' align='middle' alt='' /></td>
+    			<td valign='middle'><img src='{$site_config['pic_base_url']}/bar_left.gif' border='0' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}/bar.gif' border='0' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}/bar_right.gif' border='0' width='4' height='11' align='middle' alt='' /></td>
 					<td valign='middle'><center>{$data['result_count']}</center></td>
 					</tr>";
         }
@@ -326,7 +326,7 @@ function result_screen($mode = 'reg')
 
 function main_screen($mode = 'reg')
 {
-    global $INSTALLER09, $lang;
+    global $site_config, $lang;
     $page_title = $lang['stats_ex_center'];
     $page_detail = "{$lang['stats_ex_details_main']}<br>{$lang['stats_ex_details_main1']}";
     if ($mode == 'reg') {
@@ -362,7 +362,7 @@ function main_screen($mode = 'reg')
       <span style='font-weight: bold; font-size: 12pt;'>{$lang['stats_ex_center']}</span>
       </div><br>
     {$menu}
-    <form action='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra' method='post' name='StatsForm'>
+    <form action='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra' method='post' name='StatsForm'>
     <input name='mode' value='{$form_code}' type='hidden' />
 
 	
@@ -481,17 +481,17 @@ function make_select($name, $in = [], $default = '')
 
 function make_side_menu()
 {
-    global $INSTALLER09, $lang;
+    global $site_config, $lang;
     $htmlout = "<div style='float:left;border: 1px solid black;padding:5px;'>
     <div align='left'><strong>{$lang['stats_ex_menu']}</strong></div>
-    <div align='left'>&#160;&#160;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=reg' style='text-decoration: none;'>{$lang['stats_ex_menureg']}</a></div>
-    <div align='left'>&#160;&#160;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=topic' style='text-decoration: none;'>{$lang['stats_ex_menutopnew']}</a></div>
-    <div align='left'>&#160;&#160;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=post' style='text-decoration: none;'>{$lang['stats_ex_menuposts']}</a></div>
-    <div align='left'>&#160;&#160;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=msg' style='text-decoration: none;'>{$lang['stats_ex_menupm']}</a></div>
-    <div align='left'>&#160;&#160;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=views' style='text-decoration: none;'>{$lang['stats_ex_menutopic']}</a></div>
-    <div align='left'>&#160;&#160;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=comms' style='text-decoration: none;'>{$lang['stats_ex_menucomm']}</a></div>
-    <div align='left'>&#160;&#160;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=torrents' style='text-decoration: none;'>{$lang['stats_ex_menutorr']}</a></div>
-    <div align='left'>&#160;&#160;<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=reps' style='text-decoration: none;'>{$lang['stats_ex_menurep']}</a></div>
+    <div align='left'>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=reg' style='text-decoration: none;'>{$lang['stats_ex_menureg']}</a></div>
+    <div align='left'>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=topic' style='text-decoration: none;'>{$lang['stats_ex_menutopnew']}</a></div>
+    <div align='left'>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=post' style='text-decoration: none;'>{$lang['stats_ex_menuposts']}</a></div>
+    <div align='left'>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=msg' style='text-decoration: none;'>{$lang['stats_ex_menupm']}</a></div>
+    <div align='left'>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=views' style='text-decoration: none;'>{$lang['stats_ex_menutopic']}</a></div>
+    <div align='left'>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=comms' style='text-decoration: none;'>{$lang['stats_ex_menucomm']}</a></div>
+    <div align='left'>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=torrents' style='text-decoration: none;'>{$lang['stats_ex_menutorr']}</a></div>
+    <div align='left'>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=reps' style='text-decoration: none;'>{$lang['stats_ex_menurep']}</a></div>
 </div>";
 
     return $htmlout;

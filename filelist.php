@@ -36,18 +36,18 @@ while ($subrow = mysqli_fetch_assoc($subres)) {
     if (preg_match('/\\.([A-Za-z0-9]+)$/', $subrow['filename'], $ext)) {
         $ext = strtolower($ext[1]);
     }
-    if (!file_exists("{$INSTALLER09['pic_base_url']}icons/" . $ext . '.png')) {
+    if (!file_exists("{$site_config['pic_base_url']}icons/" . $ext . '.png')) {
         $ext = 'Unknown';
     }
     if ($counter !== 0 && $counter % 10 == 0) {
         $HTMLOUT .= "
             <tr>
-                <td colspan='2' class='text-right'><a href='#top'><img src='{$INSTALLER09['pic_base_url']}/top.gif' alt='' /></a></td>
+                <td colspan='2' class='text-right'><a href='#top'><img src='{$site_config['pic_base_url']}/top.gif' alt='' /></a></td>
             </tr>";
     }
     $HTMLOUT .= "
             <tr>
-                <td><img src="{$INSTALLER09['pic_base_url']}icons/' . htmlsafechars($ext) . ".png' alt='" . htmlsafechars($ext) . " file' title='" . htmlsafechars($ext) . " file' /></td>
+                <td><img src="{$site_config['pic_base_url']}icons/' . htmlsafechars($ext) . ".png' alt='" . htmlsafechars($ext) . " file' title='" . htmlsafechars($ext) . " file' /></td>
                 <td>" . htmlsafechars($subrow['filename']) . "</td>
                 <td class='text-right'>" . mksize($subrow['size']) . "</td>
             </tr>";

@@ -1,9 +1,9 @@
 <?php
 function pu_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
+    global $site_config, $queries, $mc1;
     set_time_limit(1200);
-    ignore_user_abort(1);
+    ignore_user_abort(true);
     //== Updated promote power users
 
     /*
@@ -72,18 +72,18 @@ function pu_update($data)
                     'class'   => $class_value,
                     'invites' => $update['invites'],
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
                 $mc1->begin_transaction('user_stats_' . $arr['id']);
                 $mc1->update_row(false, [
                     'modcomment' => $modcomment,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 $mc1->begin_transaction('MyUser_' . $arr['id']);
                 $mc1->update_row(false, [
                     'class'   => $class_value,
                     'invites' => $update['invites'],
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $mc1->delete_value('inbox_new_' . $arr['id']);
                 $mc1->delete_value('inbox_new_sb_' . $arr['id']);
             }

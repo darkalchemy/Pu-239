@@ -39,12 +39,12 @@ if ($bonus_type == 1) {
         $mc1->update_row(false, [
             'downloaded' => $down - $bonus_do,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+        $mc1->commit_transaction($site_config['expires']['u_stats']);
         $mc1->begin_transaction('user_stats_' . $id);
         $mc1->update_row(false, [
             'downloaded' => $down - $bonus_do,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+        $mc1->commit_transaction($site_config['expires']['user_stats']);
     }
     if ($down < $bonus_do) {
         $msg = "{$lang['achbon_congratulations']}, {$lang['achbon_your_dl_been_reset_0']}";
@@ -56,12 +56,12 @@ if ($bonus_type == 1) {
         $mc1->update_row(false, [
             'downloaded' => 0,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+        $mc1->commit_transaction($site_config['expires']['u_stats']);
         $mc1->begin_transaction('user_stats_' . $id);
         $mc1->update_row(false, [
             'downloaded' => 0,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+        $mc1->commit_transaction($site_config['expires']['user_stats']);
     }
 }
 if ($bonus_type == 2) {
@@ -74,12 +74,12 @@ if ($bonus_type == 2) {
     $mc1->update_row(false, [
         'uploaded' => $up + $bonus_do,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+    $mc1->commit_transaction($site_config['expires']['u_stats']);
     $mc1->begin_transaction('user_stats_' . $id);
     $mc1->update_row(false, [
         'uploaded' => $up + $bonus_do,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+    $mc1->commit_transaction($site_config['expires']['user_stats']);
 }
 if ($bonus_type == 3) {
     $msg = "{$lang['achbon_congratulations']}, {$lang['achbon_you_hv_just_won']} $bonus_desc";
@@ -91,12 +91,12 @@ if ($bonus_type == 3) {
     $mc1->update_row(false, [
         'invites' => $invite + $bonus_do,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
     $mc1->begin_transaction('MyUser_' . $id);
     $mc1->update_row(false, [
         'invites' => $invite + $bonus_do,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
 }
 if ($bonus_type == 4) {
     $msg = "{$lang['achbon_congratulations']}, {$lang['achbon_you_hv_just_won']} $bonus_desc";
@@ -108,12 +108,12 @@ if ($bonus_type == 4) {
     $mc1->update_row(false, [
         'seedbonus' => $karma + $bonus_do,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+    $mc1->commit_transaction($site_config['expires']['u_stats']);
     $mc1->begin_transaction('user_stats_' . $id);
     $mc1->update_row(false, [
         'seedbonus' => $karma + $bonus_do,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+    $mc1->commit_transaction($site_config['expires']['user_stats']);
 }
 if ($bonus_type == 5) {
     $rand_fail = random_int(1, 5);

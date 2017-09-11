@@ -1,7 +1,7 @@
 <?php
 if (!defined('BUNNY_FORUMS')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 global $lang;
@@ -17,9 +17,9 @@ $over_forums_arr = mysqli_fetch_assoc($over_forums_res);
 if ($CURUSER['class'] < $over_forums_arr['min_class_view']) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
-$location_bar = '<h1><a class="altlink" href="' . $INSTALLER09['baseurl'] . '/index.php">' . $INSTALLER09['site_name'] . '</a>  <img src="' . $INSTALLER09['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
-	<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php">' . $lang['fe_forums'] . '</a> <img src="' . $INSTALLER09['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
-	<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=section_view&amp;forum_id=' . $forum_id . '">' . htmlsafechars($over_forums_arr['name'], ENT_QUOTES) . '</a></h1>' . $mini_menu . '<br><br>';
+$location_bar = '<h1><a class="altlink" href="' . $site_config['baseurl'] . '/index.php">' . $site_config['site_name'] . '</a>  <img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
+	<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums'] . '</a> <img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
+	<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=section_view&amp;forum_id=' . $forum_id . '">' . htmlsafechars($over_forums_arr['name'], ENT_QUOTES) . '</a></h1>' . $mini_menu . '<br><br>';
 $HTMLOUT .= $location_bar;
 //=== top and bottom stuff
 $HTMLOUT .= '<br><table border="0" cellspacing="0" cellpadding="5" width="90%">
@@ -36,14 +36,14 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
     //=== Get last post info
     if (($last_post_arr = $mc1->get_value('sv_last_post_' . $forums_arr['forum_id'] . '_' . $CURUSER['class'])) === false) {
         $last_post_arr = mysqli_fetch_assoc(sql_query('SELECT t.last_post, t.topic_name, t.id AS topic_id, t.anonymous AS tan, p.user_id, p.added, p.anonymous AS pan, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.perms, u.offensive_avatar FROM topics AS t LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\' AND' : '')) . ' forum_id=' . sqlesc($forums_arr['forum_id']) . ' ORDER BY last_post DESC LIMIT 1'));
-        $mc1->cache_value('sv_last_post_' . $forums_arr['forum_id'] . '_' . $CURUSER['class'], $last_post_arr, $INSTALLER09['expires']['sv_last_post']);
+        $mc1->cache_value('sv_last_post_' . $forums_arr['forum_id'] . '_' . $CURUSER['class'], $last_post_arr, $site_config['expires']['sv_last_post']);
     }
     //=== only do more if there is a stuff here...
     if ($last_post_arr['last_post'] > 0) {
         //=== get the last post read by CURUSER
         if (($last_read_post_arr = $mc1->get_value('sv_last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'])) === false) {
             $last_read_post_arr = mysqli_fetch_row(sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($last_post_arr['topic_id'])));
-            $mc1->cache_value('sv_last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'], $last_read_post_arr, $INSTALLER09['expires']['sv_last_read_post']);
+            $mc1->cache_value('sv_last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'], $last_read_post_arr, $site_config['expires']['sv_last_read_post']);
         }
         $image_and_link = ($last_post_arr['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_read_post_arr || $last_post_arr['last_post'] > $last_read_post_arr[0]) : 0;
         $img = ($image_and_link ? 'unlockednew' : 'unlocked');
@@ -57,10 +57,10 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
                 if ($child_boards) {
                     $child_boards .= ', ';
                 }
-                $child_boards .= '<a href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int)$arr['id'] . '" title="click to view!" class="altlink">' . htmlsafechars($arr['name'], ENT_QUOTES) . '</a>';
+                $child_boards .= '<a href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int)$arr['id'] . '" title="click to view!" class="altlink">' . htmlsafechars($arr['name'], ENT_QUOTES) . '</a>';
             }
             $child_boards_cache['child_boards'] = $child_boards;
-            $mc1->cache_value($keys['child_boards'], $child_boards_cache, $INSTALLER09['expires']['sv_child_boards']);
+            $mc1->cache_value($keys['child_boards'], $child_boards_cache, $site_config['expires']['sv_child_boards']);
         }
         $child_boards = $child_boards_cache['child_boards'];
         if ($child_boards !== '') {
@@ -79,7 +79,7 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
                 $nowviewing .= ($arr['perms'] & bt_options::PERMS_STEALTH ? '<i>' . $lang['fe_unkn0wn'] . '</i>' : format_username($arr));
             }
             $now_viewing_cache['now_viewing'] = $nowviewing;
-            $mc1->cache_value($keys['now_viewing'], $now_viewing_cache, $INSTALLER09['expires']['section_view']);
+            $mc1->cache_value($keys['now_viewing'], $now_viewing_cache, $site_config['expires']['section_view']);
         }
         if (!$now_viewing_cache['now_viewing']) {
             $now_viewing_cache['now_viewing'] = $lang['fe_there_not_been_active_visit_15'];
@@ -90,18 +90,18 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
         }
         if ($last_post_arr['tan'] == 'yes') {
             if ($CURUSER['class'] < UC_STAFF && $last_post_arr['user_id'] != $CURUSER['id']) {
-                $last_post = '' . $lang['fe_last_post_by'] . ': ' . $lang['sv_anonymous_in'] . ' &#9658; <a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$last_post_arr['topic_id'] . '&amp;page=p' . (int)$last_post_arr['last_post'] . '#' . (int)$last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '">
+                $last_post = '' . $lang['fe_last_post_by'] . ': ' . $lang['sv_anonymous_in'] . ' &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$last_post_arr['topic_id'] . '&amp;page=p' . (int)$last_post_arr['last_post'] . '#' . (int)$last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '">
 		<span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>
 		' . get_date($last_post_arr['added'], '') . '<br>';
             } else {
                 $last_post = '' . $lang['fe_last_post_by'] . ': ' . $lang['fe_anonymous'] . ' [' . print_user_stuff($last_post_arr) . '] <span style="font-size: x-small;"> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>
-		in &#9658; <a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$last_post_arr['topic_id'] . '&amp;page=p' . (int)$last_post_arr['last_post'] . '#' . (int)$last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '">
+		in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$last_post_arr['topic_id'] . '&amp;page=p' . (int)$last_post_arr['last_post'] . '#' . (int)$last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '">
 		<span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>
 		' . get_date($last_post_arr['added'], '') . '<br>';
             }
         } else {
             $last_post = '' . $lang['fe_last_post_by'] . ': ' . print_user_stuff($last_post_arr) . ' <span style="font-size: x-small;"> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>
-		in &#9658; <a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$last_post_arr['topic_id'] . '&amp;page=p' . (int)$last_post_arr['last_post'] . '#' . (int)$last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '">
+		in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$last_post_arr['topic_id'] . '&amp;page=p' . (int)$last_post_arr['last_post'] . '#' . (int)$last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '">
 		<span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>
 		' . get_date($last_post_arr['added'], '') . '<br>';
         }
@@ -112,9 +112,9 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
         $last_post = $lang['fe_na'];
     }
     $HTMLOUT .= '<tr>
-		<td class="' . $class . '" align="center" valign="middle" width="30"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/' . $img . '.gif" alt="' . $INSTALLER09['pic_base_url'] . 'forums/' . $img . '.gif" title="' . $INSTALLER09['pic_base_url'] . 'forums/' . $img . '.gif" /></td>
+		<td class="' . $class . '" align="center" valign="middle" width="30"><img src="' . $site_config['pic_base_url'] . 'forums/' . $img . '.gif" alt="' . $site_config['pic_base_url'] . 'forums/' . $img . '.gif" title="' . $site_config['pic_base_url'] . 'forums/' . $img . '.gif" /></td>
 		<td class="' . $class . '" align="left">
-		<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int)$forums_arr['forum_id'] . '">' . htmlsafechars($forums_arr['forum_name'], ENT_QUOTES) . '</a>
+		<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int)$forums_arr['forum_id'] . '">' . htmlsafechars($forums_arr['forum_name'], ENT_QUOTES) . '</a>
 		<br>' . htmlsafechars($forums_arr['forum_description'], ENT_QUOTES) . $child_boards . $now_viewing . '</td>
 		<td class="' . $class . '" align="center" width="80">' . number_format($forums_arr['post_count']) . ' ' . $lang['fe_posts'] . '<br>' . number_format($forums_arr['topic_count']) . ' ' . $lang['fe_topics'] . '</td>
 		<td class="' . $class . '" align="left" width="140">

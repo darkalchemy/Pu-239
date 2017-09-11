@@ -1,7 +1,7 @@
 <?php
 require_once CACHE_DIR . 'hit_and_run_settings.php';
 //==09 Hnr mod - sir_snugglebunny
-if ($INSTALLER09['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_POWER_USER) {
+if ($site_config['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_POWER_USER) {
     $completed = $count2 = $dlc = '';
     if (XBT_TRACKER === false) {
         $r = sql_query("SELECT torrents.name, torrents.added AS torrent_added, snatched.complete_date AS c, snatched.downspeed, snatched.seedtime, snatched.seeder, snatched.torrentid as tid, snatched.id, categories.id as category, categories.image, categories.name as catname, snatched.uploaded, snatched.downloaded, snatched.hit_and_run, snatched.mark_of_cain, snatched.complete_date, snatched.last_action, torrents.seeders, torrents.leechers, torrents.owner, snatched.start_date AS st, snatched.start_date FROM snatched JOIN torrents ON torrents.id = snatched.torrentid JOIN categories ON categories.id = torrents.category WHERE snatched.finished='yes' AND userid=" . sqlesc($id) . ' AND torrents.owner != ' . sqlesc($id) . ' ORDER BY snatched.id DESC') or sqlerr(__FILE__, __LINE__);
@@ -17,7 +17,7 @@ if ($INSTALLER09['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] =
     <td class='colhead' align='center'>{$lang['userdetails_s']}</td>
     <td class='colhead' align='center'>{$lang['userdetails_l']}</td>
     <td class='colhead' align='center'>{$lang['userdetails_ul']}</td>
-    " . ($INSTALLER09['ratio_free'] ? '' : "<td class='colhead' align='center'>{$lang['userdetails_dl']}</td>") . "
+    " . ($site_config['ratio_free'] ? '' : "<td class='colhead' align='center'>{$lang['userdetails_dl']}</td>") . "
     <td class='colhead' align='center'>{$lang['userdetails_ratio']}</td>
     <td class='colhead' align='center'>{$lang['userdetails_wcompleted']}</td>
     <td class='colhead' align='center'>{$lang['userdetails_laction']}</td>
@@ -30,25 +30,25 @@ if ($INSTALLER09['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] =
             $torrent_needed_seed_time = ($a['st'] - $a['torrent_added']);
             //=== get times per class
             switch (true) {
-                case $user['class'] <= $INSTALLER09['firstclass']:
-                    $days_3 = $INSTALLER09['_3day_first'] * 3600; //== 1 days
-                    $days_14 = $INSTALLER09['_14day_first'] * 3600; //== 1 days
-                    $days_over_14 = $INSTALLER09['_14day_over_first'] * 3600; //== 1 day
+                case $user['class'] <= $site_config['firstclass']:
+                    $days_3 = $site_config['_3day_first'] * 3600; //== 1 days
+                    $days_14 = $site_config['_14day_first'] * 3600; //== 1 days
+                    $days_over_14 = $site_config['_14day_over_first'] * 3600; //== 1 day
                     break;
-                case $user['class'] < $INSTALLER09['secondclass']:
-                    $days_3 = $INSTALLER09['_3day_second'] * 3600; //== 12 hours
-                    $days_14 = $INSTALLER09['_14day_second'] * 3600; //== 12 hours
-                    $days_over_14 = $INSTALLER09['_14day_over_second'] * 3600; //== 12 hours
+                case $user['class'] < $site_config['secondclass']:
+                    $days_3 = $site_config['_3day_second'] * 3600; //== 12 hours
+                    $days_14 = $site_config['_14day_second'] * 3600; //== 12 hours
+                    $days_over_14 = $site_config['_14day_over_second'] * 3600; //== 12 hours
                     break;
-                case $user['class'] >= $INSTALLER09['secondclass'] && $user['class'] < $INSTALLER09['thirdclass']:
-                    $days_3 = $INSTALLER09['_3day_second'] * 3600; //== 12 hours
-                    $days_14 = $INSTALLER09['_14day_second'] * 3600; //== 12 hours
-                    $days_over_14 = $INSTALLER09['_14day_over_second'] * 3600; //== 12 hours
+                case $user['class'] >= $site_config['secondclass'] && $user['class'] < $site_config['thirdclass']:
+                    $days_3 = $site_config['_3day_second'] * 3600; //== 12 hours
+                    $days_14 = $site_config['_14day_second'] * 3600; //== 12 hours
+                    $days_over_14 = $site_config['_14day_over_second'] * 3600; //== 12 hours
                     break;
-                case $user['class'] >= $INSTALLER09['thirdclass']:
-                    $days_3 = $INSTALLER09['_3day_third'] * 3600; //== 12 hours
-                    $days_14 = $INSTALLER09['_14day_third'] * 3600; //== 12 hours
-                    $days_over_14 = $INSTALLER09['_14day_over_third'] * 3600; //== 12 hours
+                case $user['class'] >= $site_config['thirdclass']:
+                    $days_3 = $site_config['_3day_third'] * 3600; //== 12 hours
+                    $days_14 = $site_config['_14day_third'] * 3600; //== 12 hours
+                    $days_over_14 = $site_config['_14day_over_third'] * 3600; //== 12 hours
                     break;
                 default:
                     $days_3 = 0; //== 12 hours
@@ -58,15 +58,15 @@ if ($INSTALLER09['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] =
             //=== times per torrent based on age
             $foo = $a['downloaded'] > 0 ? $a['uploaded'] / $a['downloaded'] : 0;
             switch (true) {
-                case ($a['st'] - $a['torrent_added']) < $INSTALLER09['torrentage1'] * 86400:
+                case ($a['st'] - $a['torrent_added']) < $site_config['torrentage1'] * 86400:
                     $minus_ratio = ($days_3 - $a['seedtime']) - ($foo * 3 * 86400);
                     break;
 
-                case ($a['st'] - $a['torrent_added']) < $INSTALLER09['torrentage2'] * 86400:
+                case ($a['st'] - $a['torrent_added']) < $site_config['torrentage2'] * 86400:
                     $minus_ratio = ($days_14 - $a['seedtime']) - ($foo * 2 * 86400);
                     break;
 
-                case ($a['st'] - $a['torrent_added']) >= $INSTALLER09['torrentage3'] * 86400:
+                case ($a['st'] - $a['torrent_added']) >= $site_config['torrentage3'] * 86400:
                     $minus_ratio = ($days_over_14 - $a['seedtime']) - ($foo * 86400);
                     break;
             }
@@ -111,29 +111,29 @@ if ($INSTALLER09['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] =
                     break;
             }
             //=== mark of cain / hit and run
-            $checkbox_for_delete = ($CURUSER['class'] >= UC_STAFF ? " [<a href='" . $INSTALLER09['baseurl'] . '/userdetails.php?id=' . $id . '&amp;delete_hit_and_run=' . (int)$What_Id . "'>{$lang['userdetails_c_remove']}</a>]" : '');
-            $mark_of_cain = ($a['mark_of_cain'] == 'yes' ? "<img src='{$INSTALLER09['pic_base_url']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' title='{$lang['userdetails_c_tmofcain']}' />" . $checkbox_for_delete : '');
-            $hit_n_run = ($a['hit_and_run'] > 0 ? "<img src='{$INSTALLER09['pic_base_url']}hnr.gif' width='40px' alt='{$lang['userdetails_c_hitrun']}' title='{$lang['userdetails_c_hitrun1']}' />" : '');
+            $checkbox_for_delete = ($CURUSER['class'] >= UC_STAFF ? " [<a href='" . $site_config['baseurl'] . '/userdetails.php?id=' . $id . '&amp;delete_hit_and_run=' . (int)$What_Id . "'>{$lang['userdetails_c_remove']}</a>]" : '');
+            $mark_of_cain = ($a['mark_of_cain'] == 'yes' ? "<img src='{$site_config['pic_base_url']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' title='{$lang['userdetails_c_tmofcain']}' />" . $checkbox_for_delete : '');
+            $hit_n_run = ($a['hit_and_run'] > 0 ? "<img src='{$site_config['pic_base_url']}hnr.gif' width='40px' alt='{$lang['userdetails_c_hitrun']}' title='{$lang['userdetails_c_hitrun1']}' />" : '');
             if (XBT_TRACKER === false) {
-                $completed .= "<tr><td style='padding: 0px' class='$class'><img src='{$INSTALLER09['pic_base_url']}caticons/" . get_categorie_icons() . "/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
-    <td class='$class'><a class='altlink' href='{$INSTALLER09['baseurl']}/details.php?id=" . (int)$a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
+                $completed .= "<tr><td style='padding: 0px' class='$class'><img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
+    <td class='$class'><a class='altlink' href='{$site_config['baseurl']}/details.php?id=" . (int)$a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
     <br><font color='.$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00' && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['seeder'] == 'yes' ? "&#160;<font color='limegreen'> [<b>{$lang['userdetails_c_seeding']}</b>]</font>" : $hit_n_run . '&#160;' . $mark_of_cain) : '') . "</td>
     <td align='center' class='$class'>" . (int)$a['seeders'] . "</td>
     <td align='center' class='$class'>" . (int)$a['leechers'] . "</td>
     <td align='center' class='$class'>" . mksize($a['uploaded']) . '</td>
-    ' . ($INSTALLER09['ratio_free'] ? '' : "<td align='center' class='$class'>" . mksize($a['downloaded']) . '</td>') . "
+    ' . ($site_config['ratio_free'] ? '' : "<td align='center' class='$class'>" . mksize($a['downloaded']) . '</td>') . "
     <td align='center' class='$class'>" . ($a['downloaded'] > 0 ? "<font color='" . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . "'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</font>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . "<br></td>
     <td align='center' class='$class'>" . get_date($a['complete_date'], 'DATE') . "</td>
     <td align='center' class='$class'>" . get_date($a['last_action'], 'DATE') . "</td>
     <td align='center' class='$class'><font color='$dlc'>[{$lang['userdetails_c_dled']}$dl_speed ]</font></td></tr>";
             } else {
-                $completed .= "<tr><td style='padding: 0px' class='$class'><img src='{$INSTALLER09['pic_base_url']}caticons/" . get_categorie_icons() . "/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
-    <td class='$class'><a class='altlink' href='{$INSTALLER09['baseurl']}/details.php?id=" . (int)$a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
+                $completed .= "<tr><td style='padding: 0px' class='$class'><img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
+    <td class='$class'><a class='altlink' href='{$site_config['baseurl']}/details.php?id=" . (int)$a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
     <br><font color='.$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00' && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['active'] == 1 && $a['left'] = 0 ? "&#160;<font color='limegreen'> [<b>{$lang['userdetails_c_seeding']}</b>]</font>" : $hit_n_run) : '') . "</td>
     <td align='center' class='$class'>" . (int)$a['seeders'] . "</td>
     <td align='center' class='$class'>" . (int)$a['leechers'] . "</td>
     <td align='center' class='$class'>" . mksize($a['uploaded']) . '</td>
-    ' . ($INSTALLER09['ratio_free'] ? '' : "<td align='center' class='$class'>" . mksize($a['downloaded']) . '</td>') . "
+    ' . ($site_config['ratio_free'] ? '' : "<td align='center' class='$class'>" . mksize($a['downloaded']) . '</td>') . "
     <td align='center' class='$class'>" . ($a['downloaded'] > 0 ? "<font color='" . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . "'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</font>' : ($a['uploaded'] > 0 ? $lang['userdetails_c_inf'] : '---')) . "<br></td>
     <td align='center' class='$class'>" . get_date($a['completedtime'], 'DATE') . "</td>
     <td align='center' class='$class'>" . get_date($a['mtime'], 'DATE') . "</td>

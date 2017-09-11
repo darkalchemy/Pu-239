@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'password_functions.php';
@@ -10,7 +10,7 @@ $HTMLOUT = '';
 $SaLt = 'mE0wI924dsfsfs!@B'; // change this!
 $SaLty = '8368364562'; // NEW!
 $skey = 'eTe5$Ybnsccgbsfdsfsw4h6W'; // change this!
-$maxsize = $INSTALLER09['bucket_maxsize'];
+$maxsize = $site_config['bucket_maxsize'];
 $folders = date('Y/m');
 $formats = [
     '.gif',
@@ -42,9 +42,9 @@ if (!isset($_FILES['file'])) {
         $folder_m = (!isset($_GET['month']) ? '&month=' . date('m') : '&month=' . (int)$_GET['month']);
         $yea = (!isset($_GET['year']) ? '&year=' . date('Y') : '&year=' . (int)$_GET['year']);
         if (isset($_GET['type']) && $_GET['type'] == 2) {
-            header("Refresh: 2; url={$INSTALLER09['baseurl']}/bitbucket.php?images=2");
+            header("Refresh: 2; url={$site_config['baseurl']}/bitbucket.php?images=2");
         } else {
-            header("Refresh: 2; url={$INSTALLER09['baseurl']}/bitbucket.php?images=1" . $yea . $folder_m);
+            header("Refresh: 2; url={$site_config['baseurl']}/bitbucket.php?images=1" . $yea . $folder_m);
         }
         exit($lang['bitbucket_deleting'] . $delfile . $lang['bitbucket_redir']);
     }
@@ -59,13 +59,13 @@ if (!isset($_FILES['file'])) {
         $mc1->update_row(false, [
             'avatar' => $_GET['avatar'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+        $mc1->commit_transaction($site_config['expires']['curuser']);
         $mc1->begin_transaction('user' . $CURUSER['id']);
         $mc1->update_row(false, [
             'avatar' => $_GET['avatar'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
-        header("Refresh: 0; url={$INSTALLER09['baseurl']}/bitbucket.php?images=$type&updated=avatar");
+        $mc1->commit_transaction($site_config['expires']['user_cache']);
+        header("Refresh: 0; url={$site_config['baseurl']}/bitbucket.php?images=$type&updated=avatar");
     }
     if (isset($_GET['updated']) && $_GET['updated'] == 'avatar') {
         $HTMLOUT .= "
@@ -132,18 +132,18 @@ if (!isset($_FILES['file'])) {
     } elseif (isset($_GET['images']) && $_GET['images'] == 2) {
         $HTMLOUT .= "
             <div>
-                <a href='{$INSTALLER09['baseurl']}/bitbucket.php?images=1'>{$lang['bitbucket_viewmonths']}</a>
+                <a href='{$site_config['baseurl']}/bitbucket.php?images=1'>{$lang['bitbucket_viewmonths']}</a>
             </div>
             <div>
-                <a href='{$INSTALLER09['baseurl']}/bitbucket.php'>{$lang['bitbucket_hidemya']}</a>
+                <a href='{$site_config['baseurl']}/bitbucket.php'>{$lang['bitbucket_hidemya']}</a>
             </div>";
     } else {
         $HTMLOUT .= "
             <div>
-                <a href='{$INSTALLER09['baseurl']}/bitbucket.php?images=1'>{$lang['bitbucket_viewmonths']}</a>
+                <a href='{$site_config['baseurl']}/bitbucket.php?images=1'>{$lang['bitbucket_viewmonths']}</a>
             </div>
             <div>
-                <a href='{$INSTALLER09['baseurl']}/bitbucket.php?images=2'>{$lang['bitbucket_viewmya']}</a>
+                <a href='{$site_config['baseurl']}/bitbucket.php?images=2'>{$lang['bitbucket_viewmya']}</a>
             </div>";
     }
     if (isset($_GET['images'])) {
@@ -159,23 +159,23 @@ if (!isset($_FILES['file'])) {
                 $HTMLOUT .= "
             <div class='bitbucket'>
                 <div>
-                    <a href='{$INSTALLER09['baseurl']}/img.php?{$filename}'>
-                        <img src='{$INSTALLER09['baseurl']}/img.php?{$filename}' width='200' alt='' />
+                    <a href='{$site_config['baseurl']}/img.php?{$filename}'>
+                        <img src='{$site_config['baseurl']}/img.php?{$filename}' width='200' alt='' />
                     </a>
                 </div>
                 <div>{$lang['bitbucket_directlink']}</div>
                 <div>
-                    <input style='font-size: 9pt;' id='d{$eid}d' onclick=\"SelectAll('d{$eid}d');\" type='text' size='70' value='{$INSTALLER09['baseurl']}/img.php?{$filename}' readonly='readonly' />
+                    <input style='font-size: 9pt;' id='d{$eid}d' onclick=\"SelectAll('d{$eid}d');\" type='text' size='70' value='{$site_config['baseurl']}/img.php?{$filename}' readonly='readonly' />
                 </div>
                 <div>{$lang['bitbucket_tags']}</div>
                 <div>
-                    <input style='font-size: 9pt;text-align: center;' id='t{$eid}t' onclick=\"SelectAll('t{$eid}t');\" type='text' size='70' value='[img]{$INSTALLER09['baseurl']}/img.php?{$filename}[/img]' readonly='readonly' />
+                    <input style='font-size: 9pt;text-align: center;' id='t{$eid}t' onclick=\"SelectAll('t{$eid}t');\" type='text' size='70' value='[img]{$site_config['baseurl']}/img.php?{$filename}[/img]' readonly='readonly' />
                 </div>
                 <div>
-                    <a href='{$INSTALLER09['baseurl']}/bitbucket.php?type=" . ((isset($_GET['images']) && $_GET['images'] == 2) ? '2' : '1') . "&amp;avatar={$INSTALLER09['baseurl']}/img.php?{$filename}'>{$lang['bitbucket_maketma']}</a>
+                    <a href='{$site_config['baseurl']}/bitbucket.php?type=" . ((isset($_GET['images']) && $_GET['images'] == 2) ? '2' : '1') . "&amp;avatar={$site_config['baseurl']}/img.php?{$filename}'>{$lang['bitbucket_maketma']}</a>
                 </div>
                 <div>
-                    <a href='{$INSTALLER09['baseurl']}/bitbucket.php?type=" . ((isset($_GET['images']) && $_GET['images'] == 2) ? '2' : '1') . '&amp;delete=' . $encryptedfilename . '&amp;delhash=' . md5($filename . $USERSALT . $SaLt) . '&amp;month=' . (!isset($_GET['month']) ? date('m') : ($_GET['month'] < 10 ? '0' : '') . (int)$_GET['month']) . '&amp;year=' . (!isset($_GET['year']) ? date('Y') : (int)$_GET['year']) . "'>{$lang['bitbucket_delete']}</a>
+                    <a href='{$site_config['baseurl']}/bitbucket.php?type=" . ((isset($_GET['images']) && $_GET['images'] == 2) ? '2' : '1') . '&amp;delete=' . $encryptedfilename . '&amp;delhash=' . md5($filename . $USERSALT . $SaLt) . '&amp;month=' . (!isset($_GET['month']) ? date('m') : ($_GET['month'] < 10 ? '0' : '') . (int)$_GET['month']) . '&amp;year=' . (!isset($_GET['year']) ? date('Y') : (int)$_GET['year']) . "'>{$lang['bitbucket_delete']}</a>
                 </div>
             </div>";
             } else {
@@ -233,7 +233,7 @@ if (isset($_POST['from']) && $_POST['from'] == 'upload') {
             <b><font color='red'>{$lang['bitbucket_success']}</b>
         </div>
         <div>
-            <b><strong>{$INSTALLER09['baseurl']}/img.php?{$pathlink}</strong></font></b>
+            <b><strong>{$site_config['baseurl']}/img.php?{$pathlink}</strong></font></b>
         </div>";
     exit();
 }
@@ -244,21 +244,21 @@ $HTMLOUT .= "
             </div>
             <div>{$lang['bitbucket_thefile']}</div>
             <div>
-                <img src='{$INSTALLER09['baseurl']}/img.php?{$pathlink}' border='0' width='200' alt='' />
+                <img src='{$site_config['baseurl']}/img.php?{$pathlink}' border='0' width='200' alt='' />
             </div>
             <div>{$lang['bitbucket_directlink']}</div>
             <div>
-                <input style='font-size: 9pt;' id='direct' onclick=\"SelectAll('direct');\" type='text' size='70' value='{$INSTALLER09['baseurl']}/img.php?{$pathlink}' readonly='readonly' />
+                <input style='font-size: 9pt;' id='direct' onclick=\"SelectAll('direct');\" type='text' size='70' value='{$site_config['baseurl']}/img.php?{$pathlink}' readonly='readonly' />
             </div>
             <div>{$lang['bitbucket_tags']}</div>
             <div>
-                <input style='font-size: 9pt;text-align: center;' id='tag' onclick=\"SelectAll('tag');\" type='text' size='70' value='[img]{$INSTALLER09['baseurl']}/img.php?{$pathlink}[/img]' readonly='readonly' />
+                <input style='font-size: 9pt;text-align: center;' id='tag' onclick=\"SelectAll('tag');\" type='text' size='70' value='[img]{$site_config['baseurl']}/img.php?{$pathlink}[/img]' readonly='readonly' />
             </div>
             <div>
-                <a href='{$INSTALLER09['baseurl']}/bitbucket.php?images=1'>{$lang['bitbucket_viewmyi']}</a>
+                <a href='{$site_config['baseurl']}/bitbucket.php?images=1'>{$lang['bitbucket_viewmyi']}</a>
             </div>
             <div>
-                <a href='{$INSTALLER09['baseurl']}/bitbucket.php?images=2'>{$lang['bitbucket_viewmya']}</a>
+                <a href='{$site_config['baseurl']}/bitbucket.php?images=2'>{$lang['bitbucket_viewmya']}</a>
             </div>
             <script>
                 function SelectAll(id) {

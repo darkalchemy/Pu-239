@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once CACHE_DIR . 'timezones.php';
 dbconn();
 global $CURUSER;
@@ -7,24 +7,24 @@ if (!$CURUSER) {
     get_template();
 }
 if (isset($CURUSER)) {
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 $stdfoot = [
     'js' => [
-        '3306e653dc7cbe855035108a3fdc1055.min'
+        get_file('captcha2_js')
     ],
 ];
-if (!$INSTALLER09['openreg']) {
-    stderr('Sorry', 'Invite only - Signups are closed presently if you have an invite code click <a href="' . $INSTALLER09['baseurl'] . '/invite_signup.php"><b> Here</b></a>');
+if (!$site_config['openreg']) {
+    stderr('Sorry', 'Invite only - Signups are closed presently if you have an invite code click <a href="' . $site_config['baseurl'] . '/invite_signup.php"><b> Here</b></a>');
 }
 $HTMLOUT = $year = $month = $day = $gender = '';
 $lang = array_merge(load_language('global'), load_language('signup'));
-if (get_row_count('users') >= $INSTALLER09['maxusers']) {
-    stderr($lang['stderr_errorhead'], sprintf($lang['stderr_ulimit'], $INSTALLER09['maxusers']));
+if (get_row_count('users') >= $site_config['maxusers']) {
+    stderr($lang['stderr_errorhead'], sprintf($lang['stderr_ulimit'], $site_config['maxusers']));
 }
 //==timezone select
-$offset = (string)$INSTALLER09['time_offset'];
+$offset = (string)$site_config['time_offset'];
 $time_select = "<select name='user_timezone'>";
 foreach ($TZ as $off => $words) {
     if (preg_match("/^time_(-?[\d\.]+)$/", $off, $match)) {
@@ -35,13 +35,13 @@ $time_select .= '</select>';
 //==country by pdq
 function countries()
 {
-    global $mc1, $INSTALLER09;
+    global $mc1, $site_config;
     if (($ret = $mc1->get_value('countries::arr')) === false) {
         $res = sql_query('SELECT id, name, flagpic FROM countries ORDER BY name ASC') or sqlerr(__FILE__, __LINE__);
         while ($row = mysqli_fetch_assoc($res)) {
             $ret[] = $row;
         }
-        $mc1->cache_value('countries::arr', $ret, $INSTALLER09['expires']['user_flag']);
+        $mc1->cache_value('countries::arr', $ret, $site_config['expires']['user_flag']);
     }
 
     return $ret;
@@ -73,7 +73,7 @@ $HTMLOUT .= "
     <div class='login-container center-block'>
     <p>{$lang['signup_cookies']}</p>
     <form method='post' action='takesignup.php'>
-        <table border='1' cellspacing='0' cellpadding='10'>
+        <table class='table table-bordered' cellspacing='0' cellpadding='10'>
             <tr>
                 <td align='right' class='heading'>{$lang['signup_uname']}</td>
                 <td align='left'><input type='text' size='40' name='wantusername' id='wantusername' onblur='checkit();' /><div id='namecheck'></div></td>
@@ -205,7 +205,7 @@ $HTMLOUT .= "
                         <input type='checkbox' name='ageverify' value='yes'><label for='ageverify' class='left20'>{$lang['signup_age']}</label>
                     </div>
                 </td>
-            </tr>" . ($INSTALLER09['captcha_on'] ? "
+            </tr>" . ($site_config['captcha_on'] ? "
             <tr>
                 <td class='rowhead' colspan='2' id='captcha_show'></td>
             </tr>" : '') . "

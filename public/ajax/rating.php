@@ -29,23 +29,23 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
                 'num_ratings' => $update['num_ratings'],
                 'rating_sum'  => $update['rating_sum'],
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['torrent_details']);
+            $mc1->commit_transaction($site_config['expires']['torrent_details']);
         }
-        if ($INSTALLER09['seedbonus_on'] == 1) {
+        if ($site_config['seedbonus_on'] == 1) {
             //===add karma
-            $amount = ($what == 'torrent' ? $INSTALLER09['bonus_per_rating'] : $INSTALLER09['bonus_per_topic']);
+            $amount = ($what == 'torrent' ? $site_config['bonus_per_rating'] : $site_config['bonus_per_topic']);
             sql_query("UPDATE users SET seedbonus = seedbonus+$amount WHERE id = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
             $update['seedbonus'] = ($CURUSER['seedbonus'] + $amount);
             $mc1->begin_transaction('userstats_' . $CURUSER['id']);
             $mc1->update_row(false, [
                 'seedbonus' => $update['seedbonus'],
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
             $mc1->update_row(false, [
                 'seedbonus' => $update['seedbonus'],
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
             //===end
         }
         if ($ajax) {

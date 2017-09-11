@@ -1,10 +1,10 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 require_once INCL_DIR . 'function_bemail.php';
 dbconn();
-global $CURUSER, $INSTALLER09;
+global $CURUSER, $site_config;
 if (!$CURUSER) {
     get_template();
 }
@@ -12,20 +12,20 @@ $lang = array_merge(load_language('global'), load_language('takesignup'));
 $ip = getip();
 $res = sql_query('SELECT COUNT(id) FROM users') or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_row($res);
-if ($arr[0] >= $INSTALLER09['invites']) {
-    stderr($lang['stderr_errorhead'], sprintf($lang['stderr_ulimit'], $INSTALLER09['invites']));
+if ($arr[0] >= $site_config['invites']) {
+    stderr($lang['stderr_errorhead'], sprintf($lang['stderr_ulimit'], $site_config['invites']));
 }
-if (!$INSTALLER09['openreg_invites']) {
+if (!$site_config['openreg_invites']) {
     stderr('Sorry', 'Invite Signups are closed presently');
 }
-if (!mkglobal('wantusername:wantpassword:passagain:email:invite' . ($INSTALLER09['captcha_on'] ? ':captchaSelection:' : ':') . 'submitme:passhint:hintanswer:country')) {
+if (!mkglobal('wantusername:wantpassword:passagain:email:invite' . ($site_config['captcha_on'] ? ':captchaSelection:' : ':') . 'submitme:passhint:hintanswer:country')) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_form_data']);
 }
 
 if ($submitme != 'X') {
     stderr('Ha Ha', 'You Missed, You plonker !');
 }
-if ($INSTALLER09['captcha_on']) {
+if ($site_config['captcha_on']) {
     if (empty($captchaSelection) || getSessionVar('simpleCaptchaAnswer') != $captchaSelection) {
         header('Location: invite_signup.php');
         exit();
@@ -100,7 +100,7 @@ if ($a[0] != 0) {
     stderr('Error', 'The e-mail address <b>' . htmlsafechars($email) . '</b> is already in use.');
 }
 //=== check if ip addy is already in use
-if ($INSTALLER09['dupeip_check_on']) {
+if ($site_config['dupeip_check_on']) {
     $c = (mysqli_fetch_row(sql_query('SELECT COUNT(id) FROM users WHERE ip = ' . sqlesc($ip)))) or sqlerr(__FILE__, __LINE__);
     if ($c[0] != 0) {
         stderr('Error', 'The ip ' . htmlsafechars($ip) . ' is already in use. We only allow one account per ip address.');
@@ -110,7 +110,7 @@ if ($INSTALLER09['dupeip_check_on']) {
 if (isset($_POST['user_timezone']) && preg_match('#^\-?\d{1,2}(?:\.\d{1,2})?$#', $_POST['user_timezone'])) {
     $time_offset = sqlesc($_POST['user_timezone']);
 } else {
-    $time_offset = isset($INSTALLER09['time_offset']) ? sqlesc($INSTALLER09['time_offset']) : '0';
+    $time_offset = isset($site_config['time_offset']) ? sqlesc($site_config['time_offset']) : '0';
 }
 // have a stab at getting dst parameter?
 $dst_in_use = localtime(TIME_NOW + ($time_offset * 3600), true);
@@ -146,7 +146,7 @@ $new_user = sql_query('INSERT INTO users (username, passhash, passhint, hintansw
     ])) . ')');
 sql_query('INSERT INTO usersachiev (userid) VALUES (' . sqlesc($id) . ')') or sqlerr(__FILE__, __LINE__);
 sql_query('UPDATE usersachiev SET invited = invited+1 WHERE userid =' . sqlesc($assoc['sender'])) or sqlerr(__FILE__, __LINE__);
-$msg = "Welcome New {$INSTALLER09['site_name']} Member : - [user]" . htmlsafechars($wantusername) . '[/user]';
+$msg = "Welcome New {$site_config['site_name']} Member : - [user]" . htmlsafechars($wantusername) . '[/user]';
 if (!$new_user) {
     if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
         stderr('Error', 'Username already exists!');
@@ -155,7 +155,7 @@ if (!$new_user) {
 //===send PM to inviter
 $sender = (int)$assoc['sender'];
 $added = TIME_NOW;
-$msg = sqlesc("Hey there [you] ! :wave:\nIt seems that someone you invited to {$INSTALLER09['site_name']} has arrived ! :clap2: \n\n Please go to your [url={$INSTALLER09['baseurl']}/invite.php]Invite page[/url] to confirm them so they can log in.\n\ncheers\n");
+$msg = sqlesc("Hey there [you] ! :wave:\nIt seems that someone you invited to {$site_config['site_name']} has arrived ! :clap2: \n\n Please go to your [url={$site_config['baseurl']}/invite.php]Invite page[/url] to confirm them so they can log in.\n\ncheers\n");
 $subject = sqlesc('Someone you invited has arrived!');
 sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($sender) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
 $mc1->delete_value('inbox_new_' . $sender);
@@ -176,11 +176,11 @@ $latestuser_cache['king'] = '0';
 //$latestuser_cache['perms'] =  (int)$arr['perms'];
 
 /* OOPs **/
-$mc1->cache_value('latestuser', $latestuser_cache, 0, $INSTALLER09['expires']['latestuser']);
+$mc1->cache_value('latestuser', $latestuser_cache, 0, $site_config['expires']['latestuser']);
 $mc1->delete_value('birthdayusers');
 $mc1->delete_value('chat_users_list');
 write_log('User account ' . htmlsafechars($wantusername) . ' was created!');
-if ($INSTALLER09['autoshout_on'] == 1) {
+if ($site_config['autoshout_on'] == 1) {
     autoshout($msg);
 }
 stderr('Success', 'Signup successfull, Your inviter needs to confirm your account now before you can use your account!');

@@ -1,9 +1,9 @@
 <?php
 function cleanlog_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
-    set_time_limit(0);
-    ignore_user_abort(1);
+    global $site_config, $queries, $mc1;
+    set_time_limit(1200);
+    ignore_user_abort(true);
     //== Delete cleanup log
     $dt = sqlesc(TIME_NOW - 1 * 86400);
     sql_query('DELETE FROM cleanup_log WHERE clog_time < ' . $dt) or sqlerr(__FILE__, __LINE__);

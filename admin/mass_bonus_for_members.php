@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -61,7 +61,7 @@ switch ($action) {
             $pm_buffer = $users_buffer = [];
             if (mysqli_num_rows($res_GB) > 0) {
                 $subject = sqlesc($lang['bonusmanager_up_added']);
-                $msg = sqlesc($lang['bonusmanager_up_addedmsg'] . $bonus_added . $lang['bonusmanager_up_addedmsg1'] . $INSTALLER09['site_name'] . "{$lang['bonusmanager_up_addedmsg2']}{$lang['bonusmanager_up_addedmsg22']}" . $GB . ' ' . $GB_new . '');
+                $msg = sqlesc($lang['bonusmanager_up_addedmsg'] . $bonus_added . $lang['bonusmanager_up_addedmsg1'] . $site_config['site_name'] . "{$lang['bonusmanager_up_addedmsg2']}{$lang['bonusmanager_up_addedmsg22']}" . $GB . ' ' . $GB_new . '');
                 while ($arr_GB = mysqli_fetch_assoc($res_GB)) {
                     $GB_new = ($arr_GB['uploaded'] + $GB);
                     $modcomment = $arr_GB['modcomment'];
@@ -74,12 +74,12 @@ switch ($action) {
                         'uploaded'   => $GB_new,
                         'modcomment' => $modcomment,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                    $mc1->commit_transaction($site_config['expires']['user_stats']);
                     $mc1->begin_transaction('userstats_' . $arr_GB['id']);
                     $mc1->update_row(false, [
                         'uploaded' => $GB_new,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                    $mc1->commit_transaction($site_config['expires']['u_stats']);
                     $mc1->delete_value('inbox_new_' . $arr_GB['id']);
                     $mc1->delete_value('inbox_new_sb_' . $arr_GB['id']);
                 }
@@ -100,7 +100,7 @@ switch ($action) {
                     $pm_buffer = $users_buffer = [];
                     if (mysqli_num_rows($res_GB) > 0) {
                         $subject = sqlesc($lang['bonusmanager_up_added']);
-                        $msg = sqlesc($lang['bonusmanager_up_addedmsg'] . $bonus_added . $lang['bonusmanager_up_addedmsg3'] . $INSTALLER09['site_name'] . $lang['bonusmanager_up_addedmsg2']);
+                        $msg = sqlesc($lang['bonusmanager_up_addedmsg'] . $bonus_added . $lang['bonusmanager_up_addedmsg3'] . $site_config['site_name'] . $lang['bonusmanager_up_addedmsg2']);
                         while ($arr_GB = mysqli_fetch_assoc($res_GB)) {
                             $GB_new = ($arr_GB['uploaded'] + $GB);
                             $modcomment = $arr_GB['modcomment'];
@@ -113,12 +113,12 @@ switch ($action) {
                                 'uploaded'   => $GB_new,
                                 'modcomment' => $modcomment,
                             ]);
-                            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                            $mc1->commit_transaction($site_config['expires']['user_stats']);
                             $mc1->begin_transaction('userstats_' . $arr_GB['id']);
                             $mc1->update_row(false, [
                                 'uploaded' => $GB_new,
                             ]);
-                            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                            $mc1->commit_transaction($site_config['expires']['u_stats']);
                             $mc1->delete_value('inbox_new_' . $arr_GB['id']);
                             $mc1->delete_value('inbox_new_sb_' . $arr_GB['id']);
                         }
@@ -148,7 +148,7 @@ switch ($action) {
             $pm_buffer = $users_buffer = [];
             if (mysqli_num_rows($res_karma) > 0) {
                 $subject = sqlesc($lang['bonusmanager_karma_added']);
-                $msg = sqlesc($lang['bonusmanager_karma_addedmsg'] . $karma . $lang['bonusmanager_karma_addedmsg1'] . $INSTALLER09['site_name'] . $lang['bonusmanager_karma_addedmsg2']);
+                $msg = sqlesc($lang['bonusmanager_karma_addedmsg'] . $karma . $lang['bonusmanager_karma_addedmsg1'] . $site_config['site_name'] . $lang['bonusmanager_karma_addedmsg2']);
                 while ($arr_karma = mysqli_fetch_assoc($res_karma)) {
                     $karma_new = ($arr_karma['seedbonus'] + $karma);
                     $modcomment = $arr_karma['modcomment'];
@@ -161,12 +161,12 @@ switch ($action) {
                         'seedbonus'  => $karma_new,
                         'modcomment' => $modcomment,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                    $mc1->commit_transaction($site_config['expires']['user_stats']);
                     $mc1->begin_transaction('userstats_' . $arr_karma['id']);
                     $mc1->update_row(false, [
                         'seedbonus' => $karma_new,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                    $mc1->commit_transaction($site_config['expires']['u_stats']);
                     $mc1->delete_value('inbox_new_' . $arr_karma['id']);
                     $mc1->delete_value('inbox_new_sb_' . $arr_karma['id']);
                 }
@@ -187,7 +187,7 @@ switch ($action) {
                     $pm_buffer = $users_buffer = [];
                     if (mysqli_num_rows($res_karma) > 0) {
                         $subject = sqlesc($lang['bonusmanager_karma_added']);
-                        $msg = sqlesc($lang['bonusmanager_karma_addedmsg'] . $karma . $lang['bonusmanager_karma_addedmsg3'] . $INSTALLER09['site_name'] . $lang['bonusmanager_karma_addedmsg2']);
+                        $msg = sqlesc($lang['bonusmanager_karma_addedmsg'] . $karma . $lang['bonusmanager_karma_addedmsg3'] . $site_config['site_name'] . $lang['bonusmanager_karma_addedmsg2']);
                         while ($arr_karma = mysqli_fetch_assoc($res_karma)) {
                             $karma_new = ($arr_karma['seedbonus'] + $karma);
                             $modcomment = $arr_karma['modcomment'];
@@ -200,12 +200,12 @@ switch ($action) {
                                 'seedbonus'  => $karma_new,
                                 'modcomment' => $modcomment,
                             ]);
-                            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                            $mc1->commit_transaction($site_config['expires']['user_stats']);
                             $mc1->begin_transaction('userstats_' . $arr_karma['id']);
                             $mc1->update_row(false, [
                                 'seedbonus' => $karma_new,
                             ]);
-                            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                            $mc1->commit_transaction($site_config['expires']['u_stats']);
                             $mc1->delete_value('inbox_new_' . $arr_karma['id']);
                             $mc1->delete_value('inbox_new_sb_' . $arr_karma['id']);
                         }
@@ -235,7 +235,7 @@ switch ($action) {
             $pm_buffer = $users_buffer = [];
             if (mysqli_num_rows($res_freeslots) > 0) {
                 $subject = sqlesc($lang['bonusmanager_freeslots_added']);
-                $msg = sqlesc($lang['bonusmanager_freeslots_addedmsg'] . $freeslots . $lang['bonusmanager_freeslots_addedmsg1'] . $INSTALLER09['site_name'] . $lang['bonusmanager_freeslots_addedmsg2']);
+                $msg = sqlesc($lang['bonusmanager_freeslots_addedmsg'] . $freeslots . $lang['bonusmanager_freeslots_addedmsg1'] . $site_config['site_name'] . $lang['bonusmanager_freeslots_addedmsg2']);
                 while ($arr_freeslots = mysqli_fetch_assoc($res_freeslots)) {
                     $freeslots_new = ($arr_freeslots['freeslots'] + $freeslots);
                     $modcomment = $arr_freeslots['modcomment'];
@@ -247,17 +247,17 @@ switch ($action) {
                     $mc1->update_row(false, [
                         'freeslots' => $freeslots_new,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                    $mc1->commit_transaction($site_config['expires']['curuser']);
                     $mc1->begin_transaction('user' . $arr_freeslots['id']);
                     $mc1->update_row(false, [
                         'freeslots' => $freeslots_new,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                    $mc1->commit_transaction($site_config['expires']['user_cache']);
                     $mc1->begin_transaction('user_stats_' . $arr_freeslots['id']);
                     $mc1->update_row(false, [
                         'modcomment' => $modcomment,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                    $mc1->commit_transaction($site_config['expires']['user_stats']);
                     $mc1->delete_value('inbox_new_' . $arr_freeslots['id']);
                     $mc1->delete_value('inbox_new_sb_' . $arr_freeslots['id']);
                 }
@@ -278,7 +278,7 @@ switch ($action) {
                     $pm_buffer = $users_buffer = [];
                     if (mysqli_num_rows($res_freeslots) > 0) {
                         $subject = sqlesc($lang['bonusmanager_freeslots_added']);
-                        $msg = sqlesc($lang['bonusmanager_freeslots_addedmsg'] . $freeslots . $lang['bonusmanager_freeslots_addedmsg3'] . $INSTALLER09['site_name'] . $lang['bonusmanager_freeslots_addedmsg2']);
+                        $msg = sqlesc($lang['bonusmanager_freeslots_addedmsg'] . $freeslots . $lang['bonusmanager_freeslots_addedmsg3'] . $site_config['site_name'] . $lang['bonusmanager_freeslots_addedmsg2']);
                         while ($arr_freeslots = mysqli_fetch_assoc($res_freeslots)) {
                             $freeslots_new = ($arr_freeslots['freeslots'] + $freeslots);
                             $modcomment = $arr_freeslots['modcomment'];
@@ -290,17 +290,17 @@ switch ($action) {
                             $mc1->update_row(false, [
                                 'freeslots' => $freeslots_new,
                             ]);
-                            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                            $mc1->commit_transaction($site_config['expires']['curuser']);
                             $mc1->begin_transaction('user' . $arr_freeslots['id']);
                             $mc1->update_row(false, [
                                 'freeslots' => $freeslots_new,
                             ]);
-                            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                            $mc1->commit_transaction($site_config['expires']['user_cache']);
                             $mc1->begin_transaction('user_stats_' . $arr_freeslots['id']);
                             $mc1->update_row(false, [
                                 'modcomment' => $modcomment,
                             ]);
-                            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                            $mc1->commit_transaction($site_config['expires']['user_stats']);
                             $mc1->delete_value('inbox_new_' . $arr_freeslots['id']);
                             $mc1->delete_value('inbox_new_sb_' . $arr_freeslots['id']);
                         }
@@ -330,7 +330,7 @@ switch ($action) {
             $pm_buffer = $users_buffer = [];
             if (mysqli_num_rows($res_invites) > 0) {
                 $subject = sqlesc($lang['bonusmanager_invite_added']);
-                $msg = sqlesc($lang['bonusmanager_invite_addedmsg'] . $invites . $lang['bonusmanager_invite_addedmsg1'] . $INSTALLER09['site_name'] . $lang['bonusmanager_invite_addedmsg2']);
+                $msg = sqlesc($lang['bonusmanager_invite_addedmsg'] . $invites . $lang['bonusmanager_invite_addedmsg1'] . $site_config['site_name'] . $lang['bonusmanager_invite_addedmsg2']);
                 while ($arr_invites = mysqli_fetch_assoc($res_invites)) {
                     $invites_new = ($arr_invites['invites'] + $invites);
                     $modcomment = $arr_invites['modcomment'];
@@ -342,17 +342,17 @@ switch ($action) {
                     $mc1->update_row(false, [
                         'invites' => $invites_new,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                    $mc1->commit_transaction($site_config['expires']['curuser']);
                     $mc1->begin_transaction('user' . $arr_invites['id']);
                     $mc1->update_row(false, [
                         'invites' => $invites_new,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                    $mc1->commit_transaction($site_config['expires']['user_cache']);
                     $mc1->begin_transaction('user_stats_' . $arr_invites['id']);
                     $mc1->update_row(false, [
                         'modcomment' => $modcomment,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                    $mc1->commit_transaction($site_config['expires']['user_stats']);
                     $mc1->delete_value('inbox_new_' . $arr_invites['id']);
                     $mc1->delete_value('inbox_new_sb_' . $arr_invites['id']);
                 }
@@ -373,7 +373,7 @@ switch ($action) {
                     $pm_buffer = $users_buffer = [];
                     if (mysqli_num_rows($res_invites) > 0) {
                         $subject = sqlesc($lang['bonusmanager_invite_added']);
-                        $msg = sqlesc($lang['bonusmanager_invite_addedmsg'] . $invites . $lang['bonusmanager_invite_addedmsg3'] . $INSTALLER09['site_name'] . $lang['bonusmanager_invite_addedmsg2']);
+                        $msg = sqlesc($lang['bonusmanager_invite_addedmsg'] . $invites . $lang['bonusmanager_invite_addedmsg3'] . $site_config['site_name'] . $lang['bonusmanager_invite_addedmsg2']);
                         while ($arr_invites = mysqli_fetch_assoc($res_invites)) {
                             $invites_new = ($arr_invites['invites'] + $invites);
                             $modcomment = $arr_invites['modcomment'];
@@ -385,17 +385,17 @@ switch ($action) {
                             $mc1->update_row(false, [
                                 'invites' => $invites_new,
                             ]);
-                            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                            $mc1->commit_transaction($site_config['expires']['curuser']);
                             $mc1->begin_transaction('user' . $arr_invites['id']);
                             $mc1->update_row(false, [
                                 'invites' => $invites_new,
                             ]);
-                            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                            $mc1->commit_transaction($site_config['expires']['user_cache']);
                             $mc1->begin_transaction('user_stats_' . $arr_invites['id']);
                             $mc1->update_row(false, [
                                 'modcomment' => $modcomment,
                             ]);
-                            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                            $mc1->commit_transaction($site_config['expires']['user_stats']);
                             $mc1->delete_value('inbox_new_' . $arr_invites['id']);
                             $mc1->delete_value('inbox_new_sb_' . $arr_invites['id']);
                         }
@@ -560,7 +560,7 @@ $h1_thingie .= (isset($_GET['karma']) ? ($_GET['karma'] === 1 ? '<h2>' . $lang['
 $h1_thingie .= (isset($_GET['freeslots']) ? ($_GET['freeslots'] === 1 ? '<h2>' . $lang['bonusmanager_h1_freeslot'] . '<h2>' : '<h2>' . $lang['bonusmanager_h1_freeslot1'] . '</h2>') : '');
 $h1_thingie .= (isset($_GET['invites']) ? ($_GET['invites'] === 1 ? '<h2>' . $lang['bonusmanager_h1_invite'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_invite1'] . '</h2>') : '');
 $h1_thingie .= (isset($_GET['pm']) ? ($_GET['pm'] === 1 ? '<h2>' . $lang['bonusmanager_h1_pm'] . '</h2>' : '<h2>' . $lang['bonusmanager_h1_pm1'] . '</h2>') : '');
-$HTMLOUT .= '<h1>' . $INSTALLER09['site_name'] . ' ' . $lang['bonusmanager_mass_bonus'] . '</h1>' . $h1_thingie;
+$HTMLOUT .= '<h1>' . $site_config['site_name'] . ' ' . $lang['bonusmanager_mass_bonus'] . '</h1>' . $h1_thingie;
 $HTMLOUT .= '<form name="inputform" method="post" action="staffpanel.php?tool=mass_bonus_for_members&amp;action=mass_bonus_for_members" enctype="multipart/form-data">
         <input type="hidden" id="action_2" name="action_2" value="" />
     <table align="center" width="80%" border="0" cellspacing="5" cellpadding="5">

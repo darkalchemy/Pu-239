@@ -7,7 +7,7 @@ $lang = array_merge(load_language('global'), load_language('snatches'));
 $HTMLOUT = '';
 if (empty($_GET['id'])) {
     setSessionVar('error', 'Invalid Information');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 $id = (int)$_GET['id'];
@@ -27,7 +27,7 @@ $pager = pager($perpage, $count, "snatches.php?id=$id&amp;");
 if (!$count) {
     stderr('No snatches', "It appears that there are currently no snatches for the torrent <a href='details.php?id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['name']) . '</a>.');
 }
-$HTMLOUT .= "<h1>Snatches for torrent <a href='{$INSTALLER09['baseurl']}/details.php?id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></h1>\n";
+$HTMLOUT .= "<h1>Snatches for torrent <a href='{$site_config['baseurl']}/details.php?id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></h1>\n";
 $HTMLOUT .= "<h2>Currently {$row['0']} snatch" . ($row[0] == 1 ? '' : 'es') . "</h2>\n";
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
@@ -36,7 +36,7 @@ $HTMLOUT .= "<table width='78%'border='0' cellspacing='0' cellpadding='5'>
 <tr>
 <td class='colhead' align='left'>{$lang['snatches_username']}</td>
 <td class='colhead' align='right'>{$lang['snatches_uploaded']}</td>
-" . ($INSTALLER09['ratio_free'] ? '' : "<td class='colhead' align='right'>{$lang['snatches_downloaded']}</td>") . "
+" . ($site_config['ratio_free'] ? '' : "<td class='colhead' align='right'>{$lang['snatches_downloaded']}</td>") . "
 <td class='colhead' align='right'>{$lang['snatches_ratio']}</td>
 <td class='colhead' align='right'>{$lang['snatches_seedtime']}</td>
 <td class='colhead' align='right'>{$lang['snatches_leechtime']}</td>
@@ -50,14 +50,14 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $ratio = ($arr['downloaded'] > 0 ? number_format($arr['uploaded'] / $arr['downloaded'], 3) : ($arr['uploaded'] > 0 ? 'Inf.' : '---'));
     $upspeed = ($arr['upspeed'] > 0 ? mksize($arr['upspeed']) : ($arr['seedtime'] > 0 ? mksize($arr['uploaded'] / ($arr['seedtime'] + $arr['leechtime'])) : mksize(0)));
     $downspeed = ($arr['downspeed'] > 0 ? mksize($arr['downspeed']) : ($arr['leechtime'] > 0 ? mksize($arr['downloaded'] / $arr['leechtime']) : mksize(0)));
-    $active = ($arr['active'] == 1 ? $active = "<img src='" . $INSTALLER09['pic_base_url'] . "aff_tick.gif' alt='Yes' title='Yes' />" : $active = "<img src='" . $INSTALLER09['pic_base_url'] . "aff_cross.gif' alt='No' title='No' />");
-    $completed = ($arr['completed'] >= 1 ? $completed = "<img src='" . $INSTALLER09['pic_base_url'] . "aff_tick.gif' alt='Yes' title='Yes' />" : $completed = "<img src='" . $INSTALLER09['pic_base_url'] . "aff_cross.gif' alt='No' title='No' />");
+    $active = ($arr['active'] == 1 ? $active = "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='Yes' title='Yes' />" : $active = "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='No' title='No' />");
+    $completed = ($arr['completed'] >= 1 ? $completed = "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='Yes' title='Yes' />" : $completed = "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='No' title='No' />");
     $snatchuser = (isset($arr['username2']) ? ("<a href='userdetails.php?id=" . (int)$arr['uid'] . "'><b>" . htmlsafechars($arr['username2']) . '</b></a>') : "{$lang['snatches_unknown']}");
     $username = (($arr['anonymous2'] == 'yes' or $arr['paranoia'] >= 2) ? ($CURUSER['class'] < UC_STAFF && $arr['uid'] != $CURUSER['id'] ? '' : $snatchuser . ' - ') . "<i>{$lang['snatches_anon']}</i>" : $snatchuser);
     $HTMLOUT .= "<tr>
   <td align='left'>{$username}</td>
   <td align='right'>" . mksize($arr['uploaded']) . '</td>
-  ' . ($INSTALLER09['ratio_free'] ? '' : "<td align='right'>" . mksize($arr['downloaded']) . '</td>') . "
+  ' . ($site_config['ratio_free'] ? '' : "<td align='right'>" . mksize($arr['downloaded']) . '</td>') . "
   <td align='right'>" . htmlsafechars($ratio) . "</td>
   <td align='right'>" . mkprettytime($arr['seedtime']) . "</td>
   <td align='right'>" . mkprettytime($arr['leechtime']) . "</td>

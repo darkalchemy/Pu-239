@@ -1,7 +1,7 @@
 <?php
 function invincible($id, $invincible = true, $bypass_bans = true)
 {
-    global $CURUSER, $mc1, $INSTALLER09;
+    global $CURUSER, $mc1, $site_config;
     $ip = '127.0.0.1';
     $setbits = $clrbits = 0;
     if ($invincible) {
@@ -47,18 +47,18 @@ function invincible($id, $invincible = true, $bypass_bans = true)
         'ip'    => $ip,
         'perms' => $row['perms'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
     $mc1->begin_transaction('MyUser_' . $id);
     $mc1->update_row(false, [
         'ip'    => $ip,
         'perms' => $row['perms'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
     $mc1->begin_transaction('user_stats_' . $id);
     $mc1->update_row(false, [
         'modcomment' => $modcomment,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+    $mc1->commit_transaction($site_config['expires']['user_stats']);
     //'ipf'   => $ip,
     if ($id == $CURUSER['id']) {
         $mc1->begin_transaction('user' . $CURUSER['id']);
@@ -66,18 +66,18 @@ function invincible($id, $invincible = true, $bypass_bans = true)
             'ip'    => $ip,
             'perms' => $row['perms'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+        $mc1->commit_transaction($site_config['expires']['user_cache']);
         $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
         $mc1->update_row(false, [
             'ip'    => $ip,
             'perms' => $row['perms'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+        $mc1->commit_transaction($site_config['expires']['curuser']);
         $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
         $mc1->update_row(false, [
             'modcomment' => $modcomment,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+        $mc1->commit_transaction($site_config['expires']['user_stats']);
     }
     write_log('Member [b][url=userdetails.php?id=' . $id . ']' . (htmlsafechars($row['username'])) . '[/url][/b] is ' . $display . ' invincible thanks to [b]' . $CURUSER['username'] . '[/b]');
     // header ouput

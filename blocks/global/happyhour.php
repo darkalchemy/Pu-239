@@ -1,6 +1,6 @@
 <?php
 // happy hour
-if (XBT_TRACKER == false or $INSTALLER09['happy_hour'] == true) {
+if (XBT_TRACKER == false or $site_config['happy_hour'] == true) {
     if ($CURUSER) {
         require_once INCL_DIR . 'function_happyhour.php';
         if (happyHour('check')) {

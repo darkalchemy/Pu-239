@@ -1,10 +1,10 @@
 <?php
 function karma_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
-    set_time_limit(0);
-    ignore_user_abort(1);
-    if ($INSTALLER09['seedbonus_on'] == 1) {
+    global $site_config, $queries, $mc1;
+    set_time_limit(1200);
+    ignore_user_abort(true);
+    if ($site_config['seedbonus_on'] == 1) {
         $bmt = get_one_row('site_config', 'value', 'WHERE name = "bonux_max_torrents"');
         $What_id = (XBT_TRACKER == true ? 'fid' : 'torrent');
         $What_user_id = (XBT_TRACKER == true ? 'uid' : 'userid');
@@ -18,18 +18,18 @@ function karma_update($data)
                 }
                 $Buffer_User = (XBT_TRACKER == true ? $arr['uid'] : $arr['userid']);
                 if ($arr['users_id'] == $Buffer_User && $arr['users_id'] != null) {
-                    $users_buffer[] = '(' . $Buffer_User . ', ' . $INSTALLER09['bonus_per_duration'] . ' * ' . $arr['tcount'] . ')';
-                    $update['seedbonus'] = ($arr['seedbonus'] + $INSTALLER09['bonus_per_duration'] * $arr['tcount']);
+                    $users_buffer[] = '(' . $Buffer_User . ', ' . $site_config['bonus_per_duration'] . ' * ' . $arr['tcount'] . ')';
+                    $update['seedbonus'] = ($arr['seedbonus'] + $site_config['bonus_per_duration'] * $arr['tcount']);
                     $mc1->begin_transaction('userstats_' . $Buffer_User);
                     $mc1->update_row(false, [
                         'seedbonus' => $update['seedbonus'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                    $mc1->commit_transaction($site_config['expires']['u_stats']);
                     $mc1->begin_transaction('user_stats_' . $Buffer_User);
                     $mc1->update_row(false, [
                         'seedbonus' => $update['seedbonus'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                    $mc1->commit_transaction($site_config['expires']['user_stats']);
                 }
             }
             $count = count($users_buffer);

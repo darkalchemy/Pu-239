@@ -35,8 +35,8 @@ $mc1->update_row(false, [
     'thanks'   => $update['thanks'],
     'comments' => $update['comments'],
 ]);
-$mc1->commit_transaction($INSTALLER09['expires']['torrent_details']);
-if ($INSTALLER09['seedbonus_on'] == 1) {
+$mc1->commit_transaction($site_config['expires']['torrent_details']);
+if ($site_config['seedbonus_on'] == 1) {
     //===add karma
     sql_query('UPDATE users SET seedbonus = seedbonus+5.0 WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($CURUSER['seedbonus'] + 5);
@@ -44,12 +44,12 @@ if ($INSTALLER09['seedbonus_on'] == 1) {
     $mc1->update_row(false, [
         'seedbonus' => $update['seedbonus'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+    $mc1->commit_transaction($site_config['expires']['u_stats']);
     $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
     $mc1->update_row(false, [
         'seedbonus' => $update['seedbonus'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+    $mc1->commit_transaction($site_config['expires']['user_stats']);
     //===end
 }
 header("Refresh: 0; url=details.php?id=$id");

@@ -1,7 +1,7 @@
 <?php
 if (!defined('BUNNY_PM_SYSTEM')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 //=== make sure they "should" be forwarding this PM
@@ -71,12 +71,12 @@ if (strpos($to_username['notifs'], '[pm]') !== false) {
 
 {$lang['pm_forwardpm_url']}
 
-{$INSTALLER09['baseurl']}/pm_system.php
+{$site_config['baseurl']}/pm_system.php
 
 --
-{$INSTALLER09['site_name']}
+{$site_config['site_name']}
 EOD;
-    @mail($user['email'], $lang['pm_forwardpm_pmfrom'] . $username . $lang['pm_forwardpm_exc'], $body, "{$lang['pm_forwardpm_from']}{$INSTALLER09['site_email']}");
+    @mail($user['email'], $lang['pm_forwardpm_pmfrom'] . $username . $lang['pm_forwardpm_exc'], $body, "{$lang['pm_forwardpm_from']}{$site_config['site_email']}");
 }
 header('Location: pm_system.php?action=view_mailbox&forwarded=1');
 exit();

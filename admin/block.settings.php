@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 $stdfoot = [
@@ -587,7 +587,7 @@ function template_out($matches)
 
 function redirect($url, $text, $time = 2)
 {
-    global $INSTALLER09, $lang;
+    global $site_config, $lang;
     $page_title = "{$lang['block_page_title']}";
     $page_detail = "<em>{$lang['block_redir']}</em>";
     $html = "
@@ -595,7 +595,7 @@ function redirect($url, $text, $time = 2)
 		\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
 		<html xmlns='http://www.w3.org/1999/xhtml'>
 		<head>
-		<meta http-equiv='refresh' content=\"{$time}; url={$INSTALLER09['baseurl']}/{$url}\" />
+		<meta http-equiv='refresh' content=\"{$time}; url={$site_config['baseurl']}/{$url}\" />
 		<title>{$lang['block_stdhead']}</title>
     <link rel='stylesheet' href='./css/" . get_stylesheet() . "/e0a618d82ab6ae6be19a4749c87426da.min.css' />
     </head>
@@ -606,7 +606,7 @@ function redirect($url, $text, $time = 2)
 		<div style='font-size:12px'>$text
 		<br>
 		<br>
-		<a href='{$INSTALLER09['baseurl']}/{$url}'>Click here if not redirected...</a>
+		<a href='{$site_config['baseurl']}/{$url}'>Click here if not redirected...</a>
 		</div>
 		</div>
 		</div></body></html>";

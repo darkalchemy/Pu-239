@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'ann_config.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'ann_config.php';
 require_once INCL_DIR . 'ann_functions.php';
 require_once CLASS_DIR . 'class_bt_options.php';
 
@@ -33,7 +33,7 @@ function getip()
 
 function check_bans($ip, &$reason = '')
 {
-    global $INSTALLER09, $mc1;
+    global $site_config, $mc1;
     $key = 'bans:::' . $ip;
     if (($ban = $mc1->get_value($key)) === false) {
         $nip = ip2long($ip);
@@ -110,10 +110,10 @@ if (!$torrent_pass) {
     die('scrape error');
 }
 
-if (!@($GLOBALS['___mysqli_ston'] = mysqli_connect($INSTALLER09['mysql_host'], $INSTALLER09['mysql_user'], $INSTALLER09['mysql_pass']))) {
+if (!@($GLOBALS['___mysqli_ston'] = mysqli_connect($site_config['mysql_host'], $site_config['mysql_user'], $site_config['mysql_pass']))) {
     exit();
 }
-@((bool)mysqli_query($GLOBALS['___mysqli_ston'], "USE {$INSTALLER09['mysql_db']}")) or exit();
+@((bool)mysqli_query($GLOBALS['___mysqli_ston'], "USE {$site_config['mysql_db']}")) or exit();
 $numhash = count($_GET['info_hash']);
 $torrents = [];
 if ($numhash < 1) {

@@ -17,17 +17,17 @@ function get_parked()
 
 function autoshout($msg, $channel = 0, $ttl = 3600)
 {
-    global $INSTALLER09;
+    global $site_config;
     require_once INCL_DIR . 'bbcode_functions.php';
-    if (user_exists($INSTALLER09['chatBotID'])) {
-        sql_query('INSERT INTO ajax_chat_messages (userID, userName, userRole, channel, dateTime, ip, text, ttl) VALUES (' . sqlesc($INSTALLER09['chatBotID']) . ', ' . sqlesc($INSTALLER09['chatBotName']) . ', 100, ' . sqlesc($channel) . ', NOW(), ' . sqlesc(ipToStorageFormat('127.0.0.1')) . ', ' . sqlesc($msg) . ', ' . sqlesc($ttl) . ')') or sqlerr(__FILE__, __LINE__);
+    if (user_exists($site_config['chatBotID'])) {
+        sql_query('INSERT INTO ajax_chat_messages (userID, userName, userRole, channel, dateTime, ip, text, ttl) VALUES (' . sqlesc($site_config['chatBotID']) . ', ' . sqlesc($site_config['chatBotName']) . ', 100, ' . sqlesc($channel) . ', NOW(), ' . sqlesc(ipToStorageFormat('127.0.0.1')) . ', ' . sqlesc($msg) . ', ' . sqlesc($ttl) . ')') or sqlerr(__FILE__, __LINE__);
     }
 }
 
 //== Get rep by CF
 function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
 {
-    global $INSTALLER09, $CURUSER;
+    global $site_config, $CURUSER;
     $member_reputation = '';
     if ($rep_is_on) {
         include CACHE_DIR . '/rep_cache.php';
@@ -104,15 +104,15 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
             $rep_level = $user_reputation ? $user_reputation : 'rep_undefined'; // just incase
             for ($i = 0; $i <= $rep_bar; ++$i) {
                 if ($i >= 5) {
-                    $posneg .= "<img src='{$INSTALLER09['pic_base_url']}rep/reputation_$rep_img_2.gif' alt=\"Reputation Power $rep_power\n" . htmlsafechars($user['username']) . " $rep_level\" title=\"Reputation Power $rep_power " . htmlsafechars($user['username']) . " $rep_level\" />";
+                    $posneg .= "<img src='{$site_config['pic_base_url']}rep/reputation_$rep_img_2.gif' alt=\"Reputation Power $rep_power\n" . htmlsafechars($user['username']) . " $rep_level\" title=\"Reputation Power $rep_power " . htmlsafechars($user['username']) . " $rep_level\" />";
                 } else {
-                    $posneg .= "<img src='{$INSTALLER09['pic_base_url']}rep/reputation_$rep_img.gif' alt=\"Reputation Power $rep_power\n" . htmlsafechars($user['username']) . " $rep_level\" title=\"Reputation Power $rep_power " . htmlsafechars($user['username']) . " $rep_level\" />";
+                    $posneg .= "<img src='{$site_config['pic_base_url']}rep/reputation_$rep_img.gif' alt=\"Reputation Power $rep_power\n" . htmlsafechars($user['username']) . " $rep_level\" title=\"Reputation Power $rep_power " . htmlsafechars($user['username']) . " $rep_level\" />";
                 }
             }
         }
         // now decide the locale
         if ($mode != '') {
-            return 'Rep: ' . $posneg . "<br><br><a href='javascript:;' onclick=\"PopUp('{$INSTALLER09['baseurl']}/reputation.php?pid=" . ($post_id != 0 ? (int)$post_id : (int)$user['id']) . '&amp;locale=' . $mode . "','Reputation',400,300,1,1);\"><img src='{$INSTALLER09['pic_base_url']}forumicons/giverep.jpg' border='0' alt='Add reputation:: " . htmlsafechars($user['username']) . "' title='Add reputation:: " . htmlsafechars($user['username']) . "' /></a>";
+            return 'Rep: ' . $posneg . "<br><br><a href='javascript:;' onclick=\"PopUp('{$site_config['baseurl']}/reputation.php?pid=" . ($post_id != 0 ? (int)$post_id : (int)$user['id']) . '&amp;locale=' . $mode . "','Reputation',400,300,1,1);\"><img src='{$site_config['pic_base_url']}forumicons/giverep.jpg' border='0' alt='Add reputation:: " . htmlsafechars($user['username']) . "' title='Add reputation:: " . htmlsafechars($user['username']) . "' /></a>";
         } else {
             return ' ' . $posneg;
         }
@@ -124,9 +124,9 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
 //== End
 function write_staffs()
 {
-    global $INSTALLER09;
+    global $site_config;
     //==ids
-    $t = '$INSTALLER09';
+    $t = '$site_config';
     $iconfigfile = '<' . "?php\n/**\nThis file created on " . date('M d Y H:i:s') . ".\nSite Config staff mod.\n**/\n";
     $ri = sql_query('SELECT id, username, class FROM users WHERE class BETWEEN ' . UC_STAFF . ' AND ' . UC_MAX . ' ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
     $iconfigfile .= '' . $t . "['allowed_staff']['id'] = array(";
@@ -142,7 +142,7 @@ function write_staffs()
     fwrite($filenum, $iconfigfile);
     fclose($filenum);
     //==names
-    $t = '$INSTALLER09';
+    $t = '$site_config';
     $nconfigfile = '<' . "?php\n/**\nThis file created on " . date('M d Y H:i:s') . ".\nSite Config staff mod.\n**/\n";
     $nconfigfile .= '' . $t . "['staff']['allowed'] = array(";
     $nconfigfile .= '' . join(',', $usernames);
@@ -303,42 +303,42 @@ function get_slr_color($ratio)
 
 function ratio_image_machine($ratio_to_check)
 {
-    global $INSTALLER09;
+    global $site_config;
     switch ($ratio_to_check) {
         case $ratio_to_check >= 5:
-            return '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/yay.gif" alt="Yay" title="Yay" />';
+            return '<img src="' . $site_config['pic_base_url'] . 'smilies/yay.gif" alt="Yay" title="Yay" />';
             break;
 
         case $ratio_to_check >= 4:
-            return '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/pimp.gif" alt="Pimp" title="Pimp" />';
+            return '<img src="' . $site_config['pic_base_url'] . 'smilies/pimp.gif" alt="Pimp" title="Pimp" />';
             break;
 
         case $ratio_to_check >= 3:
-            return '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/w00t.gif" alt="W00t" title="W00t" />';
+            return '<img src="' . $site_config['pic_base_url'] . 'smilies/w00t.gif" alt="W00t" title="W00t" />';
             break;
 
         case $ratio_to_check >= 2:
-            return '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/grin.gif" alt="Grin" title="Grin" />';
+            return '<img src="' . $site_config['pic_base_url'] . 'smilies/grin.gif" alt="Grin" title="Grin" />';
             break;
 
         case $ratio_to_check >= 1.5:
-            return '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/evo.gif" alt="Evo" title="Evo" />';
+            return '<img src="' . $site_config['pic_base_url'] . 'smilies/evo.gif" alt="Evo" title="Evo" />';
             break;
 
         case $ratio_to_check >= 1:
-            return '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/smile1.gif" alt="Smile" title="Smile" />';
+            return '<img src="' . $site_config['pic_base_url'] . 'smilies/smile1.gif" alt="Smile" title="Smile" />';
             break;
 
         case $ratio_to_check >= 0.5:
-            return '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/noexpression.gif" alt="Blank" title="Blank" />';
+            return '<img src="' . $site_config['pic_base_url'] . 'smilies/noexpression.gif" alt="Blank" title="Blank" />';
             break;
 
         case $ratio_to_check >= 0.25:
-            return '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/cry.gif" alt="Cry" title="Cry" />';
+            return '<img src="' . $site_config['pic_base_url'] . 'smilies/cry.gif" alt="Cry" title="Cry" />';
             break;
 
         case $ratio_to_check < 0.25:
-            return '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/shit.gif" alt="Shit" title="Shit" />';
+            return '<img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="Shit" title="Shit" />';
             break;
     }
 }
@@ -414,7 +414,7 @@ function min_class($min = UC_MIN, $max = UC_MAX)
 
 function format_username_array($user, $icons = true)
 {
-    global $INSTALLER09;
+    global $site_config;
     $user['id'] = (int)$user['id'];
     $user['class'] = (int)$user['class'];
     if ($user['id'] == 0) {
@@ -425,13 +425,13 @@ function format_username_array($user, $icons = true)
     $username = '<span style="color:#' . get_user_class_color($user['class']) . ';"><b>' . htmlsafechars($user['username']) . '</b></span>';
     $str = '<span style="white-space: nowrap;"><a class="user_' . $user['id'] . '" href="./userdetails.php?id=' . $user['id'] . '" target="_blank">' . $username . '</a>';
     if ($icons != false) {
-        $str .= ($user['donor'] == 'yes' ? '<img src="' . $INSTALLER09['pic_base_url'] . 'star.png" alt="Donor" title="Donor" />' : '');
-        $str .= ($user['warned'] >= 1 ? '<img src="' . $INSTALLER09['pic_base_url'] . 'alertred.png" alt="Warned" title="Warned" />' : '');
-        $str .= ($user['leechwarn'] >= 1 ? '<img src="' . $INSTALLER09['pic_base_url'] . 'alertblue.png" alt="Leech Warned" title="Leech Warned" />' : '');
-        $str .= ($user['enabled'] != 'yes' ? '<img src="' . $INSTALLER09['pic_base_url'] . 'disabled.gif" alt="Disabled" title="Disabled" />' : '');
-        $str .= ($user['chatpost'] == 0 ? '<img src="' . $INSTALLER09['pic_base_url'] . 'warned.png" alt="No Chat" title="Shout disabled" />' : '');
-        $str .= ($user['pirate'] != 0 ? '<img src="' . $INSTALLER09['pic_base_url'] . 'pirate.png" alt="Pirate" title="Pirate" />' : '');
-        $str .= ($user['king'] != 0 ? '<img src="' . $INSTALLER09['pic_base_url'] . 'king.png" alt="King" title="King" />' : '');
+        $str .= ($user['donor'] == 'yes' ? '<img src="' . $site_config['pic_base_url'] . 'star.png" alt="Donor" title="Donor" />' : '');
+        $str .= ($user['warned'] >= 1 ? '<img src="' . $site_config['pic_base_url'] . 'alertred.png" alt="Warned" title="Warned" />' : '');
+        $str .= ($user['leechwarn'] >= 1 ? '<img src="' . $site_config['pic_base_url'] . 'alertblue.png" alt="Leech Warned" title="Leech Warned" />' : '');
+        $str .= ($user['enabled'] != 'yes' ? '<img src="' . $site_config['pic_base_url'] . 'disabled.gif" alt="Disabled" title="Disabled" />' : '');
+        $str .= ($user['chatpost'] == 0 ? '<img src="' . $site_config['pic_base_url'] . 'warned.png" alt="No Chat" title="Shout disabled" />' : '');
+        $str .= ($user['pirate'] != 0 ? '<img src="' . $site_config['pic_base_url'] . 'pirate.png" alt="Pirate" title="Pirate" />' : '');
+        $str .= ($user['king'] != 0 ? '<img src="' . $site_config['pic_base_url'] . 'king.png" alt="King" title="King" />' : '');
     }
     $str .= '</span>';
 
@@ -440,7 +440,7 @@ function format_username_array($user, $icons = true)
 
 function format_username($user_id, $icons = true)
 {
-    global $INSTALLER09, $mc1;
+    global $site_config, $mc1;
     if (!is_array($user_id) && is_numeric($user_id)) {
         if (($user = $mc1->get_value('user_icons_' . $user_id)) === false) {
             $res = sql_query("SELECT gotgift, gender, id, class, username, donor, title, suspended, warned, leechwarn, downloadpos, chatpost, pirate, king, enabled, perms
@@ -466,15 +466,15 @@ function format_username($user_id, $icons = true)
     $str = '<span style="white-space: nowrap;"><a class="user_' . $user['id'] . '" href="./userdetails.php?id=' . $user['id'] . '" target="_blank">' . $username . '</a>';
 
     if ($icons != false) {
-        $str .= (isset($user['king']) && $user['king'] >= TIME_NOW ? '<img class="tooltipper" src="'.$INSTALLER09['pic_base_url'].'king.png" alt="King" title="King" width="14px" height="14px" />' : '');
-        $str .= ($user['donor'] == 'yes' ? '<img class="tooltipper" src="'.$INSTALLER09['pic_base_url'].'star.png" alt="Donor" title="Donor" width="14px" height="14px" />' : '');
-        $str .= ($user['warned'] >= 1 ? '<img class="tooltipper" src="'.$INSTALLER09['pic_base_url'].'alertred.png" alt="Warned" title="Warned" width="14px" height="14px" />' : '');
-        $str .= ($user['leechwarn'] >= 1 ? '<img class="tooltipper" src="'.$INSTALLER09['pic_base_url'].'alertblue.png" alt="Leech Warned" title="Leech Warned" width="14px" height="14px" />' : '');
-        $str .= ($user['enabled'] != 'yes' ? '<img class="tooltipper" src="'.$INSTALLER09['pic_base_url'].'disabled.gif" alt="Disabled" title="Disabled" width="14px" height="14px" />' : '');
-        $str .= (isset($user['downloadpos']) && $user['downloadpos'] != 1 ? '<img class="tooltipper" src="'.$INSTALLER09['pic_base_url'].'downloadpos.gif" alt="Download Disabled" title="Download Disabled" width="14px" height="14px" />' : '');
-        $str .= ($user['chatpost'] == 0 ? '<img class="tooltipper" src="'.$INSTALLER09['pic_base_url'].'warned.png" alt="No Chat" title="Shout disabled" width="14px" height="14px" />' : '');
-        $str .= ($user['pirate'] != 0 ? '<img class="tooltipper" src="'.$INSTALLER09['pic_base_url'].'pirate.png" alt="Pirate" title="Pirate" width="14px" height="14px" />' : '');
-        $str .= (isset($user['gotgift']) && $user['gotgift'] == 'yes' ? '<img class="tooltipper" height="16px" src="'.$INSTALLER09['pic_base_url'].'gift.png" alt="Christmas Gift" title="Has Claimed a Christmas Gift" />' : '');
+        $str .= (isset($user['king']) && $user['king'] >= TIME_NOW ? '<img class="tooltipper" src="'.$site_config['pic_base_url'].'king.png" alt="King" title="King" width="14px" height="14px" />' : '');
+        $str .= ($user['donor'] == 'yes' ? '<img class="tooltipper" src="'.$site_config['pic_base_url'].'star.png" alt="Donor" title="Donor" width="14px" height="14px" />' : '');
+        $str .= ($user['warned'] >= 1 ? '<img class="tooltipper" src="'.$site_config['pic_base_url'].'alertred.png" alt="Warned" title="Warned" width="14px" height="14px" />' : '');
+        $str .= ($user['leechwarn'] >= 1 ? '<img class="tooltipper" src="'.$site_config['pic_base_url'].'alertblue.png" alt="Leech Warned" title="Leech Warned" width="14px" height="14px" />' : '');
+        $str .= ($user['enabled'] != 'yes' ? '<img class="tooltipper" src="'.$site_config['pic_base_url'].'disabled.gif" alt="Disabled" title="Disabled" width="14px" height="14px" />' : '');
+        $str .= (isset($user['downloadpos']) && $user['downloadpos'] != 1 ? '<img class="tooltipper" src="'.$site_config['pic_base_url'].'downloadpos.gif" alt="Download Disabled" title="Download Disabled" width="14px" height="14px" />' : '');
+        $str .= ($user['chatpost'] == 0 ? '<img class="tooltipper" src="'.$site_config['pic_base_url'].'warned.png" alt="No Chat" title="Shout disabled" width="14px" height="14px" />' : '');
+        $str .= ($user['pirate'] != 0 ? '<img class="tooltipper" src="'.$site_config['pic_base_url'].'pirate.png" alt="Pirate" title="Pirate" width="14px" height="14px" />' : '');
+        $str .= (isset($user['gotgift']) && $user['gotgift'] == 'yes' ? '<img class="tooltipper" height="16px" src="'.$site_config['pic_base_url'].'gift.png" alt="Christmas Gift" title="Has Claimed a Christmas Gift" />' : '');
     }
     $str .= '</span>';
 
@@ -511,42 +511,42 @@ function member_ratio($up, $down)
 //=== get smilie based on ratio
 function get_user_ratio_image($ratio)
 {
-    global $INSTALLER09;
+    global $site_config;
     switch ($ratio) {
         case $ratio == 0:
             return;
             break;
 
         case $ratio < 0.6:
-            return ' <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/shit.gif" alt=" Bad ratio :("  title=" Bad ratio :("/>';
+            return ' <img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt=" Bad ratio :("  title=" Bad ratio :("/>';
             break;
 
         case $ratio <= 0.7:
-            return ' <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/weep.gif" alt=" Could be better"  title=" Could be better" />';
+            return ' <img src="' . $site_config['pic_base_url'] . 'smilies/weep.gif" alt=" Could be better"  title=" Could be better" />';
             break;
 
         case $ratio <= 0.8:
-            return ' <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/cry.gif" alt=" Getting there!" title=" Getting there!" />';
+            return ' <img src="' . $site_config['pic_base_url'] . 'smilies/cry.gif" alt=" Getting there!" title=" Getting there!" />';
             break;
 
         case $ratio <= 1.5:
-            return ' <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/smile1.gif" alt=" Good Ratio :)" title=" Good Ratio :)" />';
+            return ' <img src="' . $site_config['pic_base_url'] . 'smilies/smile1.gif" alt=" Good Ratio :)" title=" Good Ratio :)" />';
             break;
 
         case $ratio <= 2.0:
-            return ' <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/grin.gif" alt=" Great Ratio :)" title=" Great Ratio :)" />';
+            return ' <img src="' . $site_config['pic_base_url'] . 'smilies/grin.gif" alt=" Great Ratio :)" title=" Great Ratio :)" />';
             break;
 
         case $ratio <= 3.0:
-            return ' <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/w00t.gif" alt=" Wow! :D" title=" Wow! :D" />';
+            return ' <img src="' . $site_config['pic_base_url'] . 'smilies/w00t.gif" alt=" Wow! :D" title=" Wow! :D" />';
             break;
 
         case $ratio <= 4.0:
-            return ' <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/pimp.gif" alt=" Fa-boo Ratio!" title=" Fa-boo Ratio!" />';
+            return ' <img src="' . $site_config['pic_base_url'] . 'smilies/pimp.gif" alt=" Fa-boo Ratio!" title=" Fa-boo Ratio!" />';
             break;
 
         case $ratio > 4.0:
-            return ' <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/yahoo.gif" alt=" Great ratio :-D" title=" Great ratio :-D" />';
+            return ' <img src="' . $site_config['pic_base_url'] . 'smilies/yahoo.gif" alt=" Great ratio :-D" title=" Great ratio :-D" />';
             break;
     }
 
@@ -557,17 +557,17 @@ function get_user_ratio_image($ratio)
 /*
 function avatar_stuff($avatar, $width = 80)
 {
-    global $CURUSER, $INSTALLER09;
+    global $CURUSER, $site_config;
     require_once (CLASS_DIR . 'class_user_options.php');
-    $avatar_show = (!($CURUSER['opt1'] & user_options::AVATARS) ? '' : (!$avatar['avatar'] ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'forumicons/default_avatar.gif" alt="avatar" />' : (($CURUSER['opt1'] & user_options::OFFENSIVE_AVATAR && $CURUSER['opt2'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'fuzzybunny.gif" alt="avatar" />' : '<img style="max-width:' . $width . 'px;" src="' . htmlsafechars($avatar['avatar']) . '" alt="avatar" />')));
+    $avatar_show = (!($CURUSER['opt1'] & user_options::AVATARS) ? '' : (!$avatar['avatar'] ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'forumicons/default_avatar.gif" alt="avatar" />' : (($CURUSER['opt1'] & user_options::OFFENSIVE_AVATAR && $CURUSER['opt2'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'fuzzybunny.gif" alt="avatar" />' : '<img style="max-width:' . $width . 'px;" src="' . htmlsafechars($avatar['avatar']) . '" alt="avatar" />')));
     return $avatar_show;
 }
 */
 //=== avatar stuff... hell it's called all over the place :-o
 function avatar_stuff($avatar, $width = 80)
 {
-    global $CURUSER, $INSTALLER09;
-    $avatar_show = ($CURUSER['avatars'] == 'no' ? '' : (!$avatar['avatar'] ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'forumicons/default_avatar.gif" alt="avatar" />' : (($avatar['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'fuzzybunny.gif" alt="avatar" />' : '<img style="max-width:' . $width . 'px;" src="' . htmlsafechars($avatar['avatar']) . '" alt="avatar" />')));
+    global $CURUSER, $site_config;
+    $avatar_show = ($CURUSER['avatars'] == 'no' ? '' : (!$avatar['avatar'] ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'forumicons/default_avatar.gif" alt="avatar" />' : (($avatar['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'fuzzybunny.gif" alt="avatar" />' : '<img style="max-width:' . $width . 'px;" src="' . htmlsafechars($avatar['avatar']) . '" alt="avatar" />')));
 
     return $avatar_show;
 }
@@ -575,7 +575,7 @@ function avatar_stuff($avatar, $width = 80)
 //=== added a function to get all user info and print them up with link to userdetails page, class color, user icons... pdq's idea \o/
 function print_user_stuff($arr)
 {
-    global $CURUSER, $INSTALLER09;
+    global $CURUSER, $site_config;
 
     return '<span style="white-space:nowrap;"><a href="userdetails.php?id=' . (int)$arr['id'] . '" title="' . get_user_class_name($arr['class']) . '">
   <span style="font-weight: bold;"></span></a>' . format_username($arr) . '</span> ';
@@ -584,8 +584,8 @@ function print_user_stuff($arr)
 //made by putyn@tbdev
 function blacklist($fo)
 {
-    global $INSTALLER09;
-    $blacklist = file_exists($INSTALLER09['nameblacklist']) && is_array(unserialize(file_get_contents($INSTALLER09['nameblacklist']))) ? unserialize(file_get_contents($INSTALLER09['nameblacklist'])) : [];
+    global $site_config;
+    $blacklist = file_exists($site_config['nameblacklist']) && is_array(unserialize(file_get_contents($site_config['nameblacklist']))) ? unserialize(file_get_contents($site_config['nameblacklist'])) : [];
     if (isset($blacklist[$fo]) && $blacklist[$fo] == 1) {
         return false;
     }
@@ -637,7 +637,7 @@ function get_cache_config_data($the_names, $the_colors, $the_images)
 //Clear forum memecache for all classes
 function clr_forums_cache($post_id)
 {
-    global $mc1, $INSTALLER09;
+    global $mc1, $site_config;
     $uclass = UC_MIN;
     while ($uclass <= UC_MAX) {
         $mc1->delete_value('last_post_' . $post_id . '_' . $uclass);

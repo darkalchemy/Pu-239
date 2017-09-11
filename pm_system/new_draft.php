@@ -2,7 +2,7 @@
 $preview = $subject = $draft = '';
 if (!defined('BUNNY_PM_SYSTEM')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 if (isset($_POST['buttonval']) && $_POST['buttonval'] == 'save draft') {

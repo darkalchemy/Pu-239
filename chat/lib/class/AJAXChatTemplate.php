@@ -63,10 +63,13 @@ class AJAXChatTemplate
 
     public function replaceTemplateTags($tagData)
     {
-        global $INSTALLER09;
+        global $site_config;
         switch ($tagData[1]) {
             case 'AJAX_CHAT_URL':
                 return $this->ajaxChat->htmlEncode($this->ajaxChat->getChatURL());
+
+            case 'JS':
+                return $this->ajaxChat->getConfig('js');
 
             case 'LANG':
                 return $this->ajaxChat->htmlEncode($this->ajaxChat->getLang((isset($tagData[2]) ? $tagData[2] : null)));
@@ -212,7 +215,7 @@ class AJAXChatTemplate
 
     public function getStyleSheetLinkTags()
     {
-        global $INSTALLER09;
+        global $site_config;
         $styleSheets = '';
 //        foreach ($this->ajaxChat->getConfig('styleAvailable') as $style) {
 //            $alternate = ($style == $this->ajaxChat->getConfig('styleDefault')) ? '' : 'alternate ';
@@ -221,8 +224,8 @@ class AJAXChatTemplate
 //        }
         $styleSheets .= '
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Acme|Baloo+Bhaijaan|Encode+Sans+Condensed|Lobster|Nova+Square|Open+Sans|Oswald|PT+Sans+Narrow" />
-        <link rel="stylesheet" href="./css/' . get_stylesheet() . '/9a08feab093711f70128ea06cf4be3a7.min.css" title="transparent" />
-        <link rel="alternate stylesheet" href="./css/' . get_stylesheet() . '/4cbc81b733e5b87d001e83cac550cdd1.min.css" title="Uranium" />';
+        <link rel="stylesheet" href="' . get_file('chat_css_trans') . '" title="transparent" />
+        <link rel="alternate stylesheet" href="' . get_file('chat_css_uranium') . '" title="Uranium" />';
 
         return $styleSheets;
     }

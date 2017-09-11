@@ -1,7 +1,7 @@
 <?php
 if (!defined('BUNNY_FORUMS')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 global $lang;
@@ -106,7 +106,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
 			</span></td>
 			</tr>	
 			<tr>
-		   <td class="' . $class_alt . '" align="center" width="100px" valign="top">' . ($arr['anonymous'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($CURUSER)) . '<br>' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : print_user_stuff($CURUSER)) . ($arr['anonymous'] == 'yes' || $CURUSER['title'] == '' ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($CURUSER['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['anonymous'] == 'yes' ? '' : get_user_class_name($CURUSER['class'])) . '</span><br></td>
+		   <td class="' . $class_alt . '" align="center" width="100px" valign="top">' . ($arr['anonymous'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($CURUSER)) . '<br>' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : print_user_stuff($CURUSER)) . ($arr['anonymous'] == 'yes' || $CURUSER['title'] == '' ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($CURUSER['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['anonymous'] == 'yes' ? '' : get_user_class_name($CURUSER['class'])) . '</span><br></td>
 		<td class="' . $post_status . '" align="left" valign="top" colspan="2">' . $body . $edited_by . '</td>
 		</tr>
 			<tr><td class="' . $class_alt . '" align="right" valign="middle" colspan="3"></td></tr>';

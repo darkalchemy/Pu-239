@@ -1,5 +1,5 @@
 <?php
-if (!defined('IN_INSTALLER09_CRON')) {
+if (!defined('IN_site_config_CRON')) {
     $HTMLOUT = '';
     $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
 		\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
@@ -14,10 +14,10 @@ if (!defined('IN_INSTALLER09_CRON')) {
     exit();
 }
 require_once 'config.php';
-if (!@($GLOBALS['___mysqli_ston'] = mysqli_connect($INSTALLER09['mysql_host'], $INSTALLER09['mysql_user'], $INSTALLER09['mysql_pass']))) {
+if (!@($GLOBALS['___mysqli_ston'] = mysqli_connect($site_config['mysql_host'], $site_config['mysql_user'], $site_config['mysql_pass']))) {
     sqlerr(__FILE__, __LINE__);
 }
-((bool)mysqli_query($GLOBALS['___mysqli_ston'], "USE {$INSTALLER09['mysql_db']}")) or sqlerr(__FILE__, 'dbconn: mysql_select_db: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+((bool)mysqli_query($GLOBALS['___mysqli_ston'], "USE {$site_config['mysql_db']}")) or sqlerr(__FILE__, 'dbconn: mysql_select_db: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
 $now = TIME_NOW;
 $sql = sql_query("SELECT * FROM cleanup WHERE clean_cron_key = '{$argv[1]}' LIMIT 0,1");
 $row = mysqli_fetch_assoc($sql);

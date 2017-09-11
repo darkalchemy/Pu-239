@@ -1,6 +1,6 @@
 <?php
 define('BUNNY_FORUMS', true);
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_rating.php';
 require_once CLASS_DIR . 'class_user_options.php';
@@ -17,7 +17,7 @@ $stdfoot = [
     ],
 ];
 $over_forum_id = $count = $now_viewing = $child_boards = '';
-if ($INSTALLER09['forums_online'] == 0 and $CURUSER['class'] < UC_STAFF) {
+if ($site_config['forums_online'] == 0 and $CURUSER['class'] < UC_STAFF) {
     stderr($lang['fm_information'], $lang['fm_the_forums_are_currently_offline']);
 }
 $HTMLOUT = '';
@@ -163,7 +163,7 @@ $mini_menu = '<a class="btn" href="./forums.php?action=subscriptions">' . $lang[
     <a class="btn" href="./forums.php?action=mark_all_as_read">' . $lang['fm_mark_all_as_read'] . '</a> ' . ($CURUSER['class'] === UC_MAX ? ' <a class="btn" href="./forums.php?action=member_post_history">' . $lang['fm_member_post_history'] . '</a>' : '');
 $title_bar = '
     <h1 align="center">
-        <a class="altlink" href="index.php">' . $INSTALLER09['site_name'] . '</a>  <img src="' . $INSTALLER09['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" />
+        <a class="altlink" href="index.php">' . $site_config['site_name'] . '</a>  <img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" />
         <a class="altlink" href="./forums.php">' . $lang['fe_forums'] . '</a>
     </h1>';
 $location_bar = '
@@ -235,12 +235,12 @@ $more_options = '<div id="tools" ' . ((isset($_POST['poll_question']) && $_POST[
     <tr>
         <th  class="forum_head_dark" align="left" colspan="3">' . $lang['fm_additional_options'] . '...</th>
     </tr>' . ($CURUSER['class'] < $min_upload_class ? '' : '<tr>
-    <td class="three" align="center" valign="top" width="10"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/attach.gif" alt="' . $lang['fm_attach'] . '" /></td>
+    <td class="three" align="center" valign="top" width="10"><img src="' . $site_config['pic_base_url'] . 'forums/attach.gif" alt="' . $lang['fm_attach'] . '" /></td>
     <td class="three" align="right" valign="top" width="20"><span style="white-space:nowrap;font-weight: bold;">' . $lang['fe_attachments'] . ':</span></td>
     <td class="three" align="left" valign="top">
     <input type="file" size="30" name="attachment[]" /> <a title="' . $lang['fm_add_more_attachments'] . '"  id="more" style="white-space:nowrap;font-weight:bold;cursor:pointer;">' . $lang['fm_add_more_attachments'] . '</a>
-    <img src="' . $INSTALLER09['pic_base_url'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '" width="18" style="vertical-align: middle;" />
-    <img src="' . $INSTALLER09['pic_base_url'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" width="18" style="vertical-align: middle;" /><br>
+    <img src="' . $site_config['pic_base_url'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '" width="18" style="vertical-align: middle;" />
+    <img src="' . $site_config['pic_base_url'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" width="18" style="vertical-align: middle;" /><br>
     <div id="attach_more" style="display:none">
     <input type="file" size="30" name="attachment[]" /><br>
     <input type="file" size="30" name="attachment[]" /><br>
@@ -250,21 +250,21 @@ $more_options = '<div id="tools" ' . ((isset($_POST['poll_question']) && $_POST[
     </tr>') . ((isset($_GET['action']) && $_GET['action'] != 'new_topic') ? '' : '<tr>
     <td class="three" align="center" valign="top" width="10"></td>
     <td class="three" align="right" valign="top" width="20"></td>
-    <td class="three" align="left"><span style="white-space:nowrap;font-weight: bold;"> <img src="' . $INSTALLER09['pic_base_url'] . 'forums/poll.gif" alt="" style="vertical-align: middle;" /> ' . $lang['poll_add_poll_to_topic'] . '</span>
+    <td class="three" align="left"><span style="white-space:nowrap;font-weight: bold;"> <img src="' . $site_config['pic_base_url'] . 'forums/poll.gif" alt="" style="vertical-align: middle;" /> ' . $lang['poll_add_poll_to_topic'] . '</span>
     </td>
     </tr>
     <tr>
-    <td class="three" align="center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/question.png" alt="Question" width="24" style="vertical-align: middle;" /></td>
+    <td class="three" align="center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'forums/question.png" alt="Question" width="24" style="vertical-align: middle;" /></td>
     <td class="three" align="right"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_question'] . ':</span></td>
     <td class="three" align="left"><input type="text" name="poll_question" class="text_default" value="' . (isset($_POST['poll_question']) ? strip_tags($_POST['poll_question']) : '') . '" /></td>
     </tr>
     <tr>
-    <td class="three" align="center" valign="top"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/options.gif" alt="' . $lang['poll_answers'] . '" width="24" style="vertical-align: middle;" /></td>
+    <td class="three" align="center" valign="top"><img src="' . $site_config['pic_base_url'] . 'forums/options.gif" alt="' . $lang['poll_answers'] . '" width="24" style="vertical-align: middle;" /></td>
     <td class="three" align="right" valign="top"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_answers'] . ':</span></td>
     <td class="three" align="left" valign="top"><textarea cols="30" rows="4" name="poll_answers" class="text_area_small">' . (isset($_POST['poll_answers']) ? strip_tags($_POST['poll_answers']) : '') . '</textarea><br> ' . $lang['poll_one_option_per_line_min_2_op_max_20_options_bbcode_is_enabled.'] . '</td>
     </tr>
     <tr>
-    <td class="three" align="center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/clock.png" alt="' . $lang['poll_starts'] . '" width="30" style="vertical-align: middle;" /></td>
+    <td class="three" align="center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'forums/clock.png" alt="' . $lang['poll_starts'] . '" width="30" style="vertical-align: middle;" /></td>
     <td class="three" align="right"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_starts'] . ':</span></td>
     <td class="three" align="left"><select name="poll_starts">
    <option class="body" value="0" ' . ($poll_starts === 0 ? 'selected="selected"' : '') . '>' . $lang['poll_start_now'] . '!</option>
@@ -278,7 +278,7 @@ $more_options = '<div id="tools" ' . ((isset($_POST['poll_question']) && $_POST[
     </select> ' . $lang['fm_when_to_start_the_poll'] . ' "' . $lang['poll_start_now'] . '!"</td>
     </tr>
     <tr>
-    <td class="three" align="center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/stop.png" alt="' . $lang['poll_ends'] . '" width="20" style="vertical-align: middle;" /></td>
+    <td class="three" align="center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'forums/stop.png" alt="' . $lang['poll_ends'] . '" width="20" style="vertical-align: middle;" /></td>
     <td class="three" align="right"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_ends'] . ':</span></td>
     <td class="three" align="left"><select name="poll_ends">
     <option class="body" value="1356048000" ' . ($poll_ends === 1356048000 ? 'selected="selected"' : '') . '>' . $lang['poll_run_forever'] . '</option>
@@ -297,7 +297,7 @@ $more_options = '<div id="tools" ' . ((isset($_POST['poll_question']) && $_POST[
     </select> How long should this poll run? Default is "run forever"</td>
     </tr>
     <tr>
-    <td class="three" align="center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/multi.gif" alt="' . $lang['poll_multi_options'] . '" width="20" style="vertical-align: middle;" /></td>
+    <td class="three" align="center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'forums/multi.gif" alt="' . $lang['poll_multi_options'] . '" width="20" style="vertical-align: middle;" /></td>
     <td class="three" align="right"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_multi_options'] . ':</span></td>
     <td class="three" align="left"><select name="multi_options">
     <option class="body" value="1" ' . ($multi_options === 1 ? 'selected="selected"' : '') . '>' . $lang['poll_single_option'] . '!</option>
@@ -496,7 +496,7 @@ switch ($action) {
                 if (($last_post_arr = $mc1->get_value('last_post_' . $forum_id . '_' . $CURUSER['class'])) === false) {
                     $last_post_arr = mysqli_fetch_assoc(sql_query('SELECT t.id AS topic_id, t.topic_name, t.last_post, t.anonymous AS tan, p.added, p.anonymous AS pan, p.user_id, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.avatar_rights FROM topics AS t LEFT JOIN posts AS p ON p.topic_id = t.id RIGHT JOIN users AS u ON u.id = p.user_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? ' t.status != \'deleted\' AND p.status != \'deleted\' AND' : '')) . ' t.forum_id = ' . sqlesc($forum_id) . ' ORDER BY p.id DESC LIMIT 1'));
                     //==
-                    $mc1->cache_value('last_post_' . $forum_id . '_' . $CURUSER['class'], $last_post_arr, $INSTALLER09['expires']['last_post']);
+                    $mc1->cache_value('last_post_' . $forum_id . '_' . $CURUSER['class'], $last_post_arr, $site_config['expires']['last_post']);
                 }
                 //=== only do more if there is a post there...
                 if ($last_post_arr['last_post'] > 0) {
@@ -504,7 +504,7 @@ switch ($action) {
                     //=== get the last post read by CURUSER (with Retro's $readpost_expiry thingie) - cached \0/
                     if (($last_read_post_arr = $mc1->get_value('last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'])) === false) {
                         $last_read_post_arr = mysqli_fetch_row(sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($last_post_arr['topic_id'])));
-                        $mc1->cache_value('last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'], $last_read_post_arr, $INSTALLER09['expires']['last_read_post']);
+                        $mc1->cache_value('last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'], $last_read_post_arr, $site_config['expires']['last_read_post']);
                     }
                     $image_to_use = ($last_post_arr['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_read_post_arr or $last_post_id > $last_read_post_arr[0]) : 0;
                     $img = ($image_to_use ? 'unlockednew' : 'unlocked');
@@ -532,7 +532,7 @@ switch ($action) {
                             $child_boards .= '<a href="./forums.php?action=view_forum&amp;forum_id=' . (int)$arr['id'] . '" title="' . $lang['fm_click_to_view'] . '!" class="altlink">' . htmlsafechars($arr['name'], ENT_QUOTES) . '</a>';
                         }
                         $child_boards_cache['child_boards'] = $child_boards;
-                        $mc1->cache_value($keys['child_boards'], $child_boards_cache, $INSTALLER09['expires']['child_boards']);
+                        $mc1->cache_value($keys['child_boards'], $child_boards_cache, $site_config['expires']['child_boards']);
                     }
                     $child_boards = $child_boards_cache['child_boards'];
                     if ($child_boards != '') {
@@ -547,7 +547,7 @@ switch ($action) {
     <td align="left" class="' . $class . '">
     <table class="table table-bordered">
     <tr>
-    <td class="' . $class . '" align="left" width="30"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/' . $img . '.gif" alt="' . $img . '" title="' . $lang['fm_unlocked'] . '" /></td>
+    <td class="' . $class . '" align="left" width="30"><img src="' . $site_config['pic_base_url'] . 'forums/' . $img . '.gif" alt="' . $img . '" title="' . $lang['fm_unlocked'] . '" /></td>
     <td width="100%" class="' . $class . '" align="left">
     ' . bubble('<span style="font-weight: bold;"><a class="altlink" href="?action=view_forum&amp;forum_id=' . (int)$arr_forums['real_forum_id'] . '">
     ' . $forum_name . '</a></span>', '<span style="font-size: x-small;">' . $forum_name . '</span>
@@ -582,7 +582,7 @@ switch ($action) {
             }
             $forum_users_cache['forum_users'] = $forumusers;
             $forum_users_cache['actcount'] = $actcount;
-            $mc1->cache_value($keys['now_viewing'], $forum_users_cache, $INSTALLER09['expires']['forum_users']);
+            $mc1->cache_value($keys['now_viewing'], $forum_users_cache, $site_config['expires']['forum_users']);
         }
         if (!$forum_users_cache['forum_users']) {
             $forum_users_cache['forum_users'] = '' . $lang['fm_there_have_been_no_active_users_in_the_last_15_minutes'] . '.';
@@ -614,19 +614,19 @@ function highlightWords($text, $words)
 
 function ratingpic_forums($num)
 {
-    global $INSTALLER09;
+    global $site_config;
     $r = round($num * 2) / 2;
     if ($r < 1 || $r > 5) {
         return;
     }
 
-    return '<img src="' . $INSTALLER09['pic_base_url'] . 'forums/rating/' . $r . '.gif" alt="rating: ' . $num . ' / 5" />';
+    return '<img src="' . $site_config['pic_base_url'] . 'forums/rating/' . $r . '.gif" alt="rating: ' . $num . ' / 5" />';
 }
 
 //=== Inserts a quick jump menu ......UPDATED!  now used for staff stuff too \o/ - cached
 function insert_quick_jump_menu($current_forum = 0, $staff = false)
 {
-    global $CURUSER, $INSTALLER09, $mc1, $lang;
+    global $CURUSER, $site_config, $mc1, $lang;
     $cachename = 'f_insertJumpTo' . $CURUSER['id'] . ($staff === false ? '' : '_staff');
     if (($quick_jump_menu = $mc1->get_value($cachename)) === false) {
         $res = sql_query('SELECT f.id, f.name, f.parent_forum, f.min_class_read, of.name AS over_forum_name FROM forums AS f LEFT JOIN over_forums AS of ON f.forum_id = of.id ORDER BY of.sort, f.parent_forum, f.sort ASC');
@@ -650,10 +650,10 @@ function insert_quick_jump_menu($current_forum = 0, $staff = false)
             }
         }
         $quick_jump_menu .= ($staff === false ? '</select></span></form></td></tr></table><br>' : '');
-        $mc1->cache_value($cachename, $quick_jump_menu, $INSTALLER09['expires']['forum_insertJumpTo']);
+        $mc1->cache_value($cachename, $quick_jump_menu, $site_config['expires']['forum_insertJumpTo']);
     }
 
     return $quick_jump_menu;
 }
 
-echo stdhead($INSTALLER09['site_name'] . ' ' . $lang['fe_forums'] . '', true, $stdhead) . $HTMLOUT;
+echo stdhead($site_config['site_name'] . ' ' . $lang['fe_forums'] . '', true, $stdhead) . $HTMLOUT;

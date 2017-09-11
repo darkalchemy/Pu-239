@@ -1,9 +1,9 @@
 <?php
 function trivia_points_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
+    global $site_config, $queries, $mc1;
     set_time_limit(1200);
-    ignore_user_abort(1);
+    ignore_user_abort(true);
     $count = 0;
 
     $msgs_buffer = $users_buffer = $users = [];
@@ -63,7 +63,7 @@ function trivia_points_update($data)
             $mc1->update_row(false, [
                 'modcomment' => $modcomment,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
             sql_query('UPDATE users SET modcomment = ' . sqlesc($modcomment) . ", seedbonus = seedbonus + $points WHERE id = " . sqlesc($user_id)) or sqlerr(__FILE__, __LINE__);
             $count = $i++;
         }

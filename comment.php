@@ -82,9 +82,9 @@ if ($action == 'add') {
         sql_query("INSERT INTO comments (user, $locale, added, text, ori_text, anonymous) VALUES (" . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . TIME_NOW . ', ' . sqlesc($body) . ', ' . sqlesc($body) . ", $anon)");
         $newid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
         sql_query("UPDATE $table_type SET comments = comments + 1 WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        if ($INSTALLER09['seedbonus_on'] == 1) {
-            if ($INSTALLER09['karma'] && isset($CURUSER['seedbonus'])) {
-                sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($INSTALLER09['bonus_per_comment']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+        if ($site_config['seedbonus_on'] == 1) {
+            if ($site_config['karma'] && isset($CURUSER['seedbonus'])) {
+                sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($site_config['bonus_per_comment']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
             }
             $update['comments'] = ($arr['comments'] + 1);
             $mc1->begin_transaction('torrent_details_' . $id);
@@ -92,17 +92,17 @@ if ($action == 'add') {
                 'comments' => $update['comments'],
             ]);
             $mc1->commit_transaction(0);
-            $update['seedbonus'] = ($CURUSER['seedbonus'] + $INSTALLER09['bonus_per_comment']);
+            $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus_per_comment']);
             $mc1->begin_transaction('userstats_' . $CURUSER['id']);
             $mc1->update_row(false, [
                 'seedbonus' => $update['seedbonus'],
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
             $mc1->update_row(false, [
                 'seedbonus' => $update['seedbonus'],
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
             //===end
         }
         // --- pm if new comment mod---//
@@ -111,7 +111,7 @@ if ($action == 'add') {
         if ($cpm_r['commentpm'] == 'yes') {
             $added = TIME_NOW;
             $subby = sqlesc('Someone has left a comment');
-            $notifs = sqlesc("You have received a comment on your torrent [url={$INSTALLER09['baseurl']}/details.php?id={$id}] " . htmlsafechars($arr['name']) . '[/url].');
+            $notifs = sqlesc("You have received a comment on your torrent [url={$site_config['baseurl']}/details.php?id={$id}] " . htmlsafechars($arr['name']) . '[/url].');
             sql_query('INSERT INTO messages (sender, receiver, subject, msg, added) VALUES(0, ' . sqlesc($arr['owner']) . ", $subby, $notifs, $added)") or sqlerr(__FILE__, __LINE__);
         }
         // ---end---//
@@ -133,7 +133,7 @@ if ($action == 'add') {
       <br><form name='compose' method='post' action='comment.php?action=add'>
       <input type='hidden' name='tid' value='{$id}'/>
       <input type='hidden' name='locale' value='$name' />";
-    if ($INSTALLER09['BBcode'] && function_exists('BBcode')) {
+    if ($site_config['BBcode'] && function_exists('BBcode')) {
         $HTMLOUT .= BBcode($body, false);
     } else {
         $HTMLOUT .= "<textarea name='text' rows='10' cols='60'></textarea>";
@@ -191,7 +191,7 @@ if ($action == 'add') {
       <input type='hidden' name='locale' value='$name' />
        <input type='hidden' name='tid' value='" . (int)$arr['tid'] . "' />
       <input type='hidden' name='cid' value='$commentid' />";
-    if ($INSTALLER09['BBcode'] && function_exists('BBcode')) {
+    if ($site_config['BBcode'] && function_exists('BBcode')) {
         $HTMLOUT .= BBcode(htmlsafechars($arr['text']), false);
     } else {
         $HTMLOUT .= "<textarea name='text' rows='10' cols='60'>" . htmlsafechars($arr['text']) . '</textarea>';
@@ -224,8 +224,8 @@ if ($action == 'add') {
     if ($id && mysqli_affected_rows($GLOBALS['___mysqli_ston']) > 0) {
         sql_query("UPDATE $table_type SET comments = comments - 1 WHERE id = " . sqlesc($id));
     }
-    if ($INSTALLER09['seedbonus_on'] == 1) {
-        if ($INSTALLER09['karma'] && isset($CURUSER['seedbonus'])) {
+    if ($site_config['seedbonus_on'] == 1) {
+        if ($site_config['karma'] && isset($CURUSER['seedbonus'])) {
             sql_query('UPDATE users SET seedbonus = seedbonus-3.0 WHERE id =' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         }
         $arr['comments'] = (isset($arr['comments']) ? $arr['comments'] : 0);
@@ -240,12 +240,12 @@ if ($action == 'add') {
         $mc1->update_row(false, [
             'seedbonus' => $update['seedbonus'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+        $mc1->commit_transaction($site_config['expires']['u_stats']);
         $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
         $mc1->update_row(false, [
             'seedbonus' => $update['seedbonus'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+        $mc1->commit_transaction($site_config['expires']['user_stats']);
         //===end
     }
     header("Refresh: 0; url=$locale_link.php?id=$tid$extra_link");

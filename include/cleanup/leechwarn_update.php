@@ -1,9 +1,9 @@
 <?php
 function leechwarn_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
+    global $site_config, $queries, $mc1;
     set_time_limit(1200);
-    ignore_user_abort(1);
+    ignore_user_abort(true);
     //== 09 Auto leech warn by Bigjoos/pdq
     //== Updated/modified autoleech warning script
     $minratio = 0.3; // ratio < 0.4
@@ -29,18 +29,18 @@ function leechwarn_update($data)
                 'leechwarn'   => $update['leechwarn'],
                 'downloadpos' => 0,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $arr['id']);
             $mc1->update_row(false, [
                 'leechwarn'   => $update['leechwarn'],
                 'downloadpos' => 0,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('user_stats_' . $arr['id']);
             $mc1->update_row(false, [
                 'modcomment' => $modcomment,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
             $mc1->delete_value('inbox_new_' . $arr['id']);
             $mc1->delete_value('inbox_new_sb_' . $arr['id']);
         }
@@ -72,18 +72,18 @@ function leechwarn_update($data)
                 'leechwarn'   => 0,
                 'downloadpos' => 1,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $arr['id']);
             $mc1->update_row(false, [
                 'leechwarn'   => 0,
                 'downloadpos' => 1,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('user_stats_' . $arr['id']);
             $mc1->update_row(false, [
                 'modcomment' => $modcomment,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
             $mc1->delete_value('inbox_new_' . $arr['id']);
             $mc1->delete_value('inbox_new_sb_' . $arr['id']);
         }
@@ -111,18 +111,18 @@ function leechwarn_update($data)
                 'leechwarn' => 0,
                 'enabled'   => 'no',
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('user_stats_' . $arr['id']);
             $mc1->update_row(false, [
                 'modcomment' => $modcomment,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
             $mc1->begin_transaction('MyUser_' . $arr['id']);
             $mc1->update_row(false, [
                 'leechwarn' => 0,
                 'enabled'   => 'no',
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
         }
         $count = count($users_buffer);
         if ($count > 0) {

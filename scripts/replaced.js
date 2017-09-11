@@ -1,6 +1,6 @@
 var offset = 250;
 var animate_duration = 1250;
-var easing = 'easeInOutCubic';
+var easing = 'swing';
 
 function themes() {
     PopUp('take_theme.php','My themes',300, 150, 1, 0);
@@ -96,24 +96,6 @@ $(function() {
         });
     }
 
-    if ($('#navigation').length) {
-        ddsmoothmenu.init({
-            mainmenuid: 'navigation',
-            orientation: 'h',
-            classname: 'container navigation',
-            contentsource: 'markup'
-        });
-    };
-
-    if ($('#platform-menu').length) {
-        ddsmoothmenu.init({
-            mainmenuid: 'platform-menu',
-            orientation: 'h',
-            classname: 'container platform-menu',
-            contentsource: 'markup'
-        });
-    };
-
     $(window).scroll(function() {
         if ($(this).scrollTop() > offset) {
             $('.back-to-top').fadeIn(animate_duration);
@@ -145,7 +127,7 @@ $(function() {
         setupDependencies('edit_form');
     };
 
-    if ($('#icarousel').length) {
+    if ($('#icarousel-slides').length) {
         $('#icarousel').iCarousel({
             easing: 'ease-in-out',
             slides: 10,
@@ -184,4 +166,37 @@ $(function() {
             timerY: 10
         });
     };
+    if ($('#IE_ALERT').length) {
+        if (navigator.userAgent.search("MSIE") >= 0) {
+            $('#IE_ALERT').slideToggle(animate_duration, easing, function() {
+            });
+        }
+    };
+
+    $('#hamburger').click(function(event) {
+        event.preventDefault();
+        $('#navbar').addClass('showNav');
+        var winHeight = $(window).outerHeight();
+        $('#menuWrapper').css('height',winHeight + 'px');
+        $('#menuWrapper').slideToggle(animate_duration, easing, function() {
+        });
+    });
+
+    $('#close').click(function(event) {
+        event.preventDefault();
+        $('#menuWrapper').slideToggle(animate_duration, easing, function() {
+            $('#navbar').removeClass('showNav');
+            $('#menuWrapper').css('height','auto');
+        });
+    });
+
+    $('#menuWrapper ul li').hover( function () {
+        var el = $(this).children('ul');
+        // check if it has a class of .hov
+        if (el.hasClass('hov')) {
+            $(el).removeClass('hov');
+        } else {
+            $(el).addClass('hov');
+        }
+    });
 });

@@ -2,7 +2,7 @@
 $all_my_boxes = $curuser_cache = $user_cache = $categories = '';
 if (!defined('BUNNY_PM_SYSTEM')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 if (isset($_POST['action2'])) {
@@ -26,12 +26,12 @@ if (isset($_POST['action2'])) {
             $mc1->update_row(false, [
                 'pms_per_page' => $change_pm_number,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
             $mc1->update_row(false, [
                 'pms_per_page' => $change_pm_number,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             header('Location: pm_system.php?action=edit_mailboxes&pm=1');
             exit();
             break;
@@ -141,12 +141,12 @@ if (isset($_POST['action2'])) {
             if ($curuser_cache) {
                 $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
                 $mc1->update_row(false, $curuser_cache);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
             }
             if ($user_cache) {
                 $mc1->begin_transaction('user' . $CURUSER['id']);
                 $mc1->update_row(false, $user_cache);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
             }
             sql_query('UPDATE users SET ' . implode(', ', $updateset) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
             $worked = '&pms=1';
@@ -214,7 +214,7 @@ if (mysqli_num_rows($r) > 0) {
     $i = 0;
     while ($a = mysqli_fetch_assoc($r)) {
         $categories .= ($i && $i % 2 == 0) ? '</tr><tr>' : '';
-        $categories .= "<td class='bottom' style='padding-right: 5px'><input name='cat" . (int)$a['id'] . "' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? " checked='checked'" : '') . " value='yes' />&#160;<a class='catlink' href='browse.php?cat=" . (int)$a['id'] . "'><img src='{$INSTALLER09['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($a['image']) . "' alt='" . htmlsafechars($a['name']) . "' title='" . htmlsafechars($a['name']) . "' /></a>&#160;" . htmlspecialchars($a['name']) . "</td>\n";
+        $categories .= "<td class='bottom' style='padding-right: 5px'><input name='cat" . (int)$a['id'] . "' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? " checked='checked'" : '') . " value='yes' />&#160;<a class='catlink' href='browse.php?cat=" . (int)$a['id'] . "'><img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($a['image']) . "' alt='" . htmlsafechars($a['name']) . "' title='" . htmlsafechars($a['name']) . "' /></a>&#160;" . htmlspecialchars($a['name']) . "</td>\n";
         ++$i;
     }
     $categories .= "</tr></table>\n";

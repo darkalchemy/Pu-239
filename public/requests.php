@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'));
@@ -185,7 +185,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
   <tr>
   <td class="two" align="right">requested by:</td>
   <td class="two" align="left">' . print_user_stuff($arr) . ' [ ' . get_user_class_name($arr['class']) . ' ]
-  ratio: ' . member_ratio($arr['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $arr['downloaded']) . get_user_ratio_image($arr['uploaded'], ($INSTALLER09['ratio_free'] ? '1' : $arr['downloaded'])) . '</td>
+  ratio: ' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . get_user_ratio_image($arr['uploaded'], ($site_config['ratio_free'] ? '1' : $arr['downloaded'])) . '</td>
   </tr>' . ($arr['filled_torrent_id'] > 0 ? '<tr>
   <td class="two" align="right">filled:</td>
   <td class="two" align="left"><a class="altlink" href="details.php?id=' . $arr['filled_torrent_id'] . '">yes, click to view torrent!</a></td>
@@ -524,7 +524,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
 function comment_table($rows)
 {
     $count2 = '';
-    global $CURUSER, $INSTALLER09;
+    global $CURUSER, $site_config;
     $comment_table = '<table class="main" border="0" cellspacing="0" cellpadding="0" align="center">
     <tr>
     <td class="three" align="center">';

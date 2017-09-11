@@ -1,11 +1,11 @@
 <?php
 function readpost_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
+    global $site_config, $queries, $mc1;
     set_time_limit(1200);
-    ignore_user_abort(1);
+    ignore_user_abort(true);
     // Remove expired readposts...
-    $dt = TIME_NOW - $INSTALLER09['readpost_expiry'];
+    $dt = TIME_NOW - $site_config['readpost_expiry'];
     sql_query('DELETE read_posts FROM read_posts LEFT JOIN posts ON read_posts.last_post_read = posts.id WHERE posts.added < ' . sqlesc($dt)) or sqlerr(__FILE__, __LINE__);
     if ($queries > 0) {
         write_log("Readpost Cleanup: Completed using $queries queries");

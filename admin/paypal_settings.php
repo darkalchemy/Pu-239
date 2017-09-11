@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once CLASS_DIR . 'class_check.php';
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     if (sql_query('INSERT INTO paypal_config(name,value) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY update value=values(value)')) {
-        $t = '$INSTALLER09';
+        $t = '$site_config';
         $iconfigfile = '<' . "?php\n/**\n{$lang['paypal_file_created']}" . date('M d Y H:i:s') . ".\n{$lang['paypal_site']}.\n**/\n";
         $res = sql_query('SELECT * from paypal_config ');
         while ($arr = mysqli_fetch_assoc($res)) {

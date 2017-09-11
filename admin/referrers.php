@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -53,7 +53,7 @@ if ($count > 0) {
 			<td>' . get_date($data['date'], '') . '</td>
 			<td>' . $browser . '</td>
 			<td>' . htmlsafechars($data['ip']) . '</td>
-			<td>' . htmlsafechars($data['ip']) . ' ' . ((int)$data['uid'] ? "<a href='{$INSTALLER09['baseurl']}/userdetails.php?id=" . (int)$data['uid'] . "'>" : '') . '' . (htmlsafechars($data['username']) ? '&#160;[' . htmlsafechars($data['username']) . ']</a>' : "{$lang['ref_guest']}") . "
+			<td>' . htmlsafechars($data['ip']) . ' ' . ((int)$data['uid'] ? "<a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$data['uid'] . "'>" : '') . '' . (htmlsafechars($data['username']) ? '&#160;[' . htmlsafechars($data['username']) . ']</a>' : "{$lang['ref_guest']}") . "
 </td><td><a href='" . htmlsafechars($data['referer']) . "'>" . htmlsafechars(CutName($data['referer'], '50')) . "</a></td><!--<td><a href='" . htmlsafechars($data['page']) . "'>{$lang['ref_view']}</a></td>--></tr>";
             $browser = '';
         }

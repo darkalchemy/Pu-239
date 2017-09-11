@@ -1,7 +1,7 @@
 <?php
 if (!defined('BUNNY_FORUMS')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 global $lang;
@@ -220,7 +220,7 @@ if ($show_as === 'posts') {
 	<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#bottom"><img src="./images/forums/down.gif" alt="' . $lang['fe_bottom'] . '" title="' . $lang['fe_bottom'] . '" /></a> 
 	</span></td>
 	</tr>		
-	<tr><td class="' . $class_alt . '" align="center" width="100px" valign="top">' . ($arr['tan'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $INSTALLER09['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($arr)) . '<br>' . ($arr['tan'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : print_user_stuff($arr)) . ($arr['anonymous'] == 'yes' || $arr['title'] == '' ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($arr['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['tan'] == 'yes' ? '' : get_user_class_name($arr['class'])) . '</span><br>
+	<tr><td class="' . $class_alt . '" align="center" width="100px" valign="top">' . ($arr['tan'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($arr)) . '<br>' . ($arr['tan'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : print_user_stuff($arr)) . ($arr['anonymous'] == 'yes' || $arr['title'] == '' ? '' : '<br><span style=" font-size: xx-small;">[' . htmlsafechars($arr['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['tan'] == 'yes' ? '' : get_user_class_name($arr['class'])) . '</span><br>
 	</td><td class="' . $class . '" align="left" valign="top" colspan="2">' . $body . $edited_by . '</td></tr>
 	<tr><td class="' . $class_alt . '" align="right" valign="middle" colspan="3"></td></tr>';
     } //=== end of while loop
@@ -333,7 +333,7 @@ $sort_by_drop_down = '<select name="sort_by">
 $HTMLOUT .= '<h1>' . $lang['sea_forums'] . '</h1>' . $links . ($count > 0 ? '<h1>' . $count . ' ' . $lang['sea_search_results'] . ' ' . $lang['sea_below'] . '</h1>' : ($search ? $content : '<br>')) . '
 	<form method="get" action="forums.php?"><input type="hidden" name="action" value="search" /><table border="0" cellspacing="10" cellpadding="10" width="800px" align="center">
 	<tr>
-	<td class="forum_head_dark"align="center" colspan="2"><span style="color: white; font-weight: bold;">' . $INSTALLER09['site_name'] . ' ' . $lang['sea_forums_search'] . '</span></td>
+	<td class="forum_head_dark"align="center" colspan="2"><span style="color: white; font-weight: bold;">' . $site_config['site_name'] . ' ' . $lang['sea_forums_search'] . '</span></td>
 	</tr>
 	<tr>
 	<td class="three" align="right" width="30px" valign="middle">

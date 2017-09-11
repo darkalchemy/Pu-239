@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
  	<tr>
  	<td class='embedded'><div align='center'>
  	<h1>Create Announcement for " . ($n_pms) . ' user' . ($n_pms > 1 ? 's' : '') . '&#160;!</h1>';
-    $HTMLOUT .= "<form name='compose' method='post' action='{$INSTALLER09['baseurl']}/new_announcement.php'>
+    $HTMLOUT .= "<form name='compose' method='post' action='{$site_config['baseurl']}/new_announcement.php'>
  	<table border='1' cellspacing='0' cellpadding='5'>
  	<tr>
  	<td colspan='2'><b>Subject: </b>
@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $HTMLOUT = '';
     $HTMLOUT .= '<html><h1>Not Found</h1><p>The requested URL ' . htmlsafechars($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], '/') + 1) . " was not found on this server.</p>
 <hr>
-<address>{$_SERVER['SERVER_SOFTWARE']} Server at {$INSTALLER09['baseurl']} Port 80</address></body></html>\n";
+<address>{$_SERVER['SERVER_SOFTWARE']} Server at {$site_config['baseurl']} Port 80</address></body></html>\n";
     echo $HTMLOUT;
     exit();
 }

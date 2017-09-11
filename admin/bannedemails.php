@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -56,7 +56,7 @@ if (mysqli_num_rows($res) == 0) {
     while ($arr = mysqli_fetch_assoc($res)) {
         $HTMLOUT .= "<tr><td align='left'>" . get_date($arr['added'], '') . "</td>
             <td align='left'>" . htmlsafechars($arr['email']) . "</td>
-            <td align='left'><a href='{$INSTALLER09['baseurl']}/userdetails.php?id=" . (int)$arr['addedby'] . "'>" . htmlsafechars($arr['username']) . "</a></td>
+            <td align='left'><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$arr['addedby'] . "'>" . htmlsafechars($arr['username']) . "</a></td>
             <td align='left'>" . htmlsafechars($arr['comment']) . "</td>
             <td align='left'><a href='staffpanel.php?tool=bannedemails&amp;remove=" . (int)$arr['id'] . "'>{$lang['ad_banemail_remove1']}</a></td></tr>\n";
     }

@@ -1,3 +1,8 @@
+11 Sept, 2017
+replace js navbar with css navbar
+removed or replaced all document.write
+fix install issues with foreign key issues
+
 6 Sept, 2017
 fix all index blocks to display correctly
 fix returnto in fastdelete.php and edit.php

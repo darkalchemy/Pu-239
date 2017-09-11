@@ -1,7 +1,7 @@
 <?php
 if (!defined('BUNNY_FORUMS')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 global $lang;

@@ -13,9 +13,9 @@
 // will show the update, then update their list using the update button, to bring
 // their list up to date. If an update appears when the scripter hasn't made any
 // changes, then they know that another scripter has modified a script.
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -27,7 +27,7 @@ class_check($class);
 /*$allowed_ids = array(
     1
 ); //== 1 Is Sysop*/
-if (!in_array($CURUSER['id'], $INSTALLER09['allowed_staff']['id'] /*$allowed_ids*/)) {
+if (!in_array($CURUSER['id'], $site_config['allowed_staff']['id'] /*$allowed_ids*/)) {
     stderr($lang['editlog_error'], $lang['editlog_denied']);
 }
 $lang = array_merge($lang, load_language('editlog'));

@@ -2,16 +2,16 @@
 if (!defined('IN_REQUESTS')) {
     exit('No direct script access allowed');
 }
-if ($CURUSER['class'] < $INSTALLER09['req_min_class']) {
+if ($CURUSER['class'] < $site_config['req_min_class']) {
     $HTMLOUT .= "<h1>Oops!</h1>
-    <div class='some class'>{$lang['add_must_be']}" . get_user_class_name($INSTALLER09['req_min_class']) . "{$lang['add_ratio_above']}" . $INSTALLER09['req_min_ratio'] . "{$lang['add_make_req']}
+    <div class='some class'>{$lang['add_must_be']}" . get_user_class_name($site_config['req_min_class']) . "{$lang['add_ratio_above']}" . $site_config['req_min_ratio'] . "{$lang['add_make_req']}
     <br><br>{$lang['add_faq']}<br><br>
-    <b>" . $INSTALLER09['site_name'] . ' staff</b></div>';
+    <b>" . $site_config['site_name'] . ' staff</b></div>';
     /////////////////////// HTML OUTPUT //////////////////////////////
     echo stdhead('Requests Page') . $HTMLOUT . stdfoot();
     exit();
 }
-$gigsneeded = ($INSTALLER09['req_gigs_upped'] * 1024 * 1024 * 1024);
+$gigsneeded = ($site_config['req_gigs_upped'] * 1024 * 1024 * 1024);
 $gigsupped = $CURUSER['uploaded'];
 $ratio = (($CURUSER['downloaded'] > 0) ? ($CURUSER['uploaded'] / $CURUSER['downloaded']) : 0);
 if ($CURUSER['class'] < UC_VIP) {
@@ -21,17 +21,17 @@ if ($CURUSER['class'] < UC_VIP) {
     }
 }
 $HTMLOUT .= "<h3>{$lang['add_rules']}</h3>";
-$HTMLOUT .= "{$lang['add_rules1']}<b> " . $INSTALLER09['req_min_ratio'] . "</b>{$lang['add_rules2']}<b>" . $INSTALLER09['req_gigs_upped'] . ' GB</b>.<br>' . ($INSTALLER09['karma'] ? "{$lang['add_rules3']}<b><a class='altlink' href='mybonus.php'>" . $INSTALLER09['req_cost_bonus'] . ' Karma Points</a></b>....<br><br>' : '') . " 
+$HTMLOUT .= "{$lang['add_rules1']}<b> " . $site_config['req_min_ratio'] . "</b>{$lang['add_rules2']}<b>" . $site_config['req_gigs_upped'] . ' GB</b>.<br>' . ($site_config['karma'] ? "{$lang['add_rules3']}<b><a class='altlink' href='mybonus.php'>" . $site_config['req_cost_bonus'] . ' Karma Points</a></b>....<br><br>' : '') . " 
 {$lang['add_rules4']}<a class='altlink' href='userdetails.php?id=" . $CURUSER['id'] . "'>" . $CURUSER['username'] . '</a>, ';
-if ($INSTALLER09['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus'] < $INSTALLER09['req_cost_bonus']) {
+if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus'] < $site_config['req_cost_bonus']) {
     $HTMLOUT .= "{$lang['add_rules7']}<a class='altlink' href='mybonus.php'>Karma Points</a> ...
         {$lang['add_rules8']}<p>{$lang['add_rules9']}
         <a class='altlink' href='viewrequests.php'><b>{$lang['add_rules6']}</b></a></p>\n<br><br>";
 } elseif ($gigsupped < $gigsneeded && $CURUSER['class'] < UC_VIP) {
-    $HTMLOUT .= "{$lang['add_rules10']}<b>" . $INSTALLER09['req_gigs_upped'] . " GB</b>{$lang['add_rules11']}<p>
+    $HTMLOUT .= "{$lang['add_rules10']}<b>" . $site_config['req_gigs_upped'] . " GB</b>{$lang['add_rules11']}<p>
     {$lang['add_rules9']}<a class='altlink' href='viewrequests.php'><b>{$lang['add_rules6']}</b></a></p>\n
     <br><br>";
-} elseif ($ratio < $INSTALLER09['req_min_ratio'] && $CURUSER['class'] < UC_VIP) {
+} elseif ($ratio < $site_config['req_min_ratio'] && $CURUSER['class'] < UC_VIP) {
     $sss = ($gigsupped < $gigsneeded ? 's' : '');
     $HTMLOUT .= "{$lang['add_rules15']}<b>" . member_ratio($CURUSER['uploaded'], $CURUSER['downloaded']) . '</b>' . ($gigsupped < $gigsneeded ? "{$lang['add_rules12']}<b> " . round($gigs, 2) . ' GB</b>' : '') . " {$lang['add_rules13']}$sss{$lang['add_rules14']}<br><br>
          <p>{$lang['add_rules9']}<a href='viewrequests.php'><b>{$lang['add_rules6']}</b></a></p>\n<br><br>";
@@ -61,7 +61,7 @@ if ($INSTALLER09['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
 <br>\n";
     $HTMLOUT .= "<form method='post' name='compose' action='viewrequests.php?new_request'><a name='add' id='add'></a>
 <table border='1' cellspacing='0' width='750px' cellpadding='5'><tr><td class='colhead' align='left' colspan='2'>
-{$lang['add_good_ratio']}" . $INSTALLER09['req_gigs_upped'] . "{$lang['add_share']}</td></tr>
+{$lang['add_good_ratio']}" . $site_config['req_gigs_upped'] . "{$lang['add_share']}</td></tr>
 <tr><td align='right'><b>{$lang['add_title']}</b></td><td align='left'><input type='text' size='40' name='requesttitle' />
 <select name='category'><option value='0'>{$lang['add_select_cat']}</option>\n";
     $res2 = sql_query('SELECT id, name FROM categories order by name');
@@ -83,7 +83,7 @@ if ($INSTALLER09['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
 </td></tr>
 
 <tr><td align='right'><b>{$lang['add_description']}</b></td><td align='left'>\n";
-    if ($INSTALLER09['textbbcode']) {
+    if ($site_config['textbbcode']) {
         require_once INCL_DIR . 'bbcode_functions.php';
         $HTMLOUT .= textbbcode('add_request', 'body', '');
     } else {

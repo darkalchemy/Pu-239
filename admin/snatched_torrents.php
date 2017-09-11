@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -113,7 +113,7 @@ if (mysqli_num_rows($result) != 0) {
 <td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_torname']}</td>
 <td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_announced']}</td>
 <td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_upload']}</td>
-" . ($INSTALLER09['ratio_free'] ? '' : "<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_download']}</td>") . "
+" . ($site_config['ratio_free'] ? '' : "<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_download']}</td>") . "
 <td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_seedtime']}</td>
 <td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_leechtime']}</td>
 <td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_startdate']}</td>
@@ -129,7 +129,7 @@ if (mysqli_num_rows($result) != 0) {
 <td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_marked']}</td>
 <td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_announced']}</td>
 <td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_upload']}</td>
-" . ($INSTALLER09['ratio_free'] ? '' : "<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_download']}</td>") . "
+" . ($site_config['ratio_free'] ? '' : "<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_download']}</td>") . "
 <td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_seedtime']}</td>
 <td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_leechtime']}</td>
 <td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_startdate']}</td>
@@ -147,7 +147,7 @@ if (mysqli_num_rows($result) != 0) {
 <td align='center'><a href='/details.php?id=" . (int)$row['fid'] . "'><b>" . $smallname . "</b></a></td>
 <td align='center'><b>" . htmlsafechars($row['announced']) . "</b></td>
 <td align='center'><b>" . mksize($row['uploaded']) . '</b></td>
-' . ($INSTALLER09['ratio_free'] ? '' : "<td align='center'><b>" . mksize($row['downloaded']) . '</b></td>') . "
+' . ($site_config['ratio_free'] ? '' : "<td align='center'><b>" . mksize($row['downloaded']) . '</b></td>') . "
 <td align='center'><b>" . get_snatched_color($row['seedtime']) . "</b></td>
 <td align='center'><b>" . mkprettytime($row['leechtime']) . "</b></td><td align='center'><b>" . get_date($row['started'], 'LONG', 0, 1) . '</b></td>';
             if ($row['completedtime'] > 0) {
@@ -155,7 +155,7 @@ if (mysqli_num_rows($result) != 0) {
             } else {
                 $HTMLOUT .= "<td align='center'><b><font color='red'>{$lang['ad_snatched_torrents_ncomplete']}</font></b></td>";
             }
-            $HTMLOUT .= "<td align='center'>" . ($row['seeders'] >= 1 ? "<img src='" . $INSTALLER09['pic_base_url'] . "aff_tick.gif' alt='{$lang['ad_snatched_torrents_yes']}' title='{$lang['ad_snatched_torrents_yes']}' />" : "<img src='" . $INSTALLER09['pic_base_url'] . "aff_cross.gif' alt='{$lang['ad_snatched_torrents_no']}' title='{$lang['ad_snatched_torrents_no']}' />") . '</td></tr>';
+            $HTMLOUT .= "<td align='center'>" . ($row['seeders'] >= 1 ? "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='{$lang['ad_snatched_torrents_yes']}' title='{$lang['ad_snatched_torrents_yes']}' />" : "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='{$lang['ad_snatched_torrents_no']}' title='{$lang['ad_snatched_torrents_no']}' />") . '</td></tr>';
         } else {
             $HTMLOUT .= "<tr><td><a href='/userdetails.php?id=" . (int)$row['userid'] . "'><b>" . htmlsafechars($row['username']) . "</b></a></td>
 <td align='center'><a href='/details.php?id=" . (int)$row['torrentid'] . "'><b>" . $smallname . "</b></a></td>
@@ -163,7 +163,7 @@ if (mysqli_num_rows($result) != 0) {
 <td align='center'><b>" . htmlsafechars($row['mark_of_cain']) . "</b></td>
 <td align='center'><b>" . htmlsafechars($row['timesann']) . "</b></td>
 <td align='center'><b>" . mksize($row['uploaded']) . '</b></td>
-' . ($INSTALLER09['ratio_free'] ? '' : "<td align='center'><b>" . mksize($row['downloaded']) . '</b></td>') . "
+' . ($site_config['ratio_free'] ? '' : "<td align='center'><b>" . mksize($row['downloaded']) . '</b></td>') . "
 <td align='center'><b>" . get_snatched_color($row['seedtime']) . "</b></td>
 <td align='center'><b>" . mkprettytime($row['leechtime']) . "</b></td>
 <td align='center'><b>" . get_date($row['start_date'], 'LONG', 0, 1) . '</b></td>';
@@ -172,7 +172,7 @@ if (mysqli_num_rows($result) != 0) {
             } else {
                 $HTMLOUT .= "<td align='center'><b><font color='red'>{$lang['ad_snatched_torrents_ncomplete']}</font></b></td></tr>";
             }
-            $HTMLOUT .= "<td align='center'><b>" . ($row['seeder'] == 'yes' ? "<img src='" . $INSTALLER09['pic_base_url'] . "aff_tick.gif' alt='{$lang['ad_snatched_torrents_yes']}' title='{$lang['ad_snatched_torrents_yes']}' />" : "<img src='" . $INSTALLER09['pic_base_url'] . "aff_cross.gif' alt='{$lang['ad_snatched_torrents_no']}' title='{$lang['ad_snatched_torrents_no']}' />") . '</b></td></tr>';
+            $HTMLOUT .= "<td align='center'><b>" . ($row['seeder'] == 'yes' ? "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='{$lang['ad_snatched_torrents_yes']}' title='{$lang['ad_snatched_torrents_yes']}' />" : "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='{$lang['ad_snatched_torrents_no']}' title='{$lang['ad_snatched_torrents_no']}' />") . '</b></td></tr>';
         }
     }
     $HTMLOUT .= '</table>';

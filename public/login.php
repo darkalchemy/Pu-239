@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 dbconn();
 
@@ -7,12 +7,12 @@ global $CURUSER;
 if (!$CURUSER) {
     get_template();
 } else {
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 $stdfoot = [
     'js' => [
-        'df4d2f6e49d01dad532d335c41bfd2c1.min'
+        get_file('captcha1_js')
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('login'));
@@ -20,12 +20,12 @@ $left = $total = '';
 
 function left()
 {
-    global $INSTALLER09;
+    global $site_config;
     $total = 0;
     $ip = getip();
     $fail = sql_query('SELECT SUM(attempts) FROM failedlogins WHERE ip=' . sqlesc($ip)) or sqlerr(__FILE__, __LINE__);
     list($total) = mysqli_fetch_row($fail);
-    $left = $INSTALLER09['failedlogins'] - $total;
+    $left = $site_config['failedlogins'] - $total;
     if ($left <= 2) {
         $left = "
         <span style='color:red'>{$left}</span>";
@@ -49,7 +49,7 @@ if (!isset($_GET['nowarn'])) {
             <h4>{$lang['login_cookies']}</h4>
             <h4>{$lang['login_cookies1']}</h4>
             <h4>
-                <b>[{$INSTALLER09['failedlogins']}]</b> {$lang['login_failed']}<br>{$lang['login_failed_1']}<b> " . left() . " </b> {$lang['login_failed_2']}
+                <b>[{$site_config['failedlogins']}]</b> {$lang['login_failed']}<br>{$lang['login_failed_1']}<b> " . left() . " </b> {$lang['login_failed_2']}
             </h4>
         </div>";
 }
@@ -69,11 +69,11 @@ $HTMLOUT.= "
                 <table class='table table-bordered center-block'>
                     <tr>
                         <td>{$lang['login_username']}</td>
-                        <td align='left'><input type='text' size='40' name='username' /></td>
+                        <td align='left'><input type='text' size='30' name='username' /></td>
                     </tr>
                     <tr>
                         <td>{$lang['login_password']}</td>
-                        <td align='left'><input type='password' size='40' name='password' /></td>
+                        <td align='left'><input type='password' size='30' name='password' /></td>
                     </tr>
                     <tr>";
 if ($got_ssl) {
@@ -89,7 +89,7 @@ if ($got_ssl) {
                         </td>";
 }
 $HTMLOUT .= "
-                    </tr>" . ($INSTALLER09['captcha_on'] ? "
+                    </tr>" . ($site_config['captcha_on'] ? "
                     <tr>
                         <td align='center' class='rowhead' colspan='2' id='captcha_show'></td>
                     </tr>" : '') . "
@@ -101,7 +101,7 @@ $HTMLOUT .= "
                             <span class='answers-container'>";
 for ($i = 0; $i < count($value); ++$i) {
     $HTMLOUT .= "
-                                <input name='submitme' type='submit' value='{$value[$i]}' class='btn btn-small' />";
+                                <input name='submitme' type='submit' value='{$value[$i]}' class='btn' />";
 }
 $HTMLOUT .= "
                             </span>";
@@ -115,9 +115,9 @@ $HTMLOUT .= "           </td>
                     <tr>
                         <td colspan='2'>
                             <span class='answers-container'>
-                                <em class='btn btn-mini'><strong>{$lang['login_signup']}</strong></em>&#160;&#160;&#160;&#160;
-                                <em class='btn btn-mini'><strong>{$lang['login_forgot']}</strong></em>&#160;&#160;&#160;&#160;
-                                <em class='btn btn-mini'><strong>{$lang['login_forgot_1']}</strong></em>
+                                <em class='btn'>{$lang['login_signup']}</em>
+                                <em class='btn'>{$lang['login_forgot']}</em>
+                                <em class='btn'>{$lang['login_forgot_1']}</em>
                             </span>
                         </td>
                     </tr>

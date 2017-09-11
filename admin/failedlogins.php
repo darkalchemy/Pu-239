@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -28,21 +28,21 @@ function validate($id)
 if ($mode == 'ban') {
     validate($id);
     sql_query("UPDATE failedlogins SET banned = 'yes' WHERE id=" . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    header('Refresh: 2; url=' . $INSTALLER09['baseurl'] . '/staffpanel.php?tool=failedlogins');
+    header('Refresh: 2; url=' . $site_config['baseurl'] . '/staffpanel.php?tool=failedlogins');
     stderr($lang['failed_success'], "{$lang['failed_message_ban']}");
     exit();
 }
 if ($mode == 'removeban') {
     validate($id);
     sql_query("UPDATE failedlogins SET banned = 'no' WHERE id=" . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    header('Refresh: 2; url=' . $INSTALLER09['baseurl'] . '/staffpanel.php?tool=failedlogins');
+    header('Refresh: 2; url=' . $site_config['baseurl'] . '/staffpanel.php?tool=failedlogins');
     stderr($lang['failed_success'], "{$lang['failed_message_unban']}");
     exit();
 }
 if ($mode == 'delete') {
     validate($id);
     sql_query('DELETE FROM failedlogins WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    header('Refresh: 2; url=' . $INSTALLER09['baseurl'] . '/staffpanel.php?tool=failedlogins');
+    header('Refresh: 2; url=' . $site_config['baseurl'] . '/staffpanel.php?tool=failedlogins');
     stderr($lang['failed_success'], "{$lang['failed_message_deleted']}");
     exit();
 }
@@ -88,7 +88,7 @@ if (mysqli_num_rows($res) == 0) {
     $HTMLOUT .= "<tr><td class='colhead'>{$lang['failed_main_id']}</td><td class='colhead' align='left'>{$lang['failed_main_ip']}</td><td class='colhead' align='left'>{$lang['failed_main_added']}</td>" . "<td class='colhead' align='left'>{$lang['failed_main_attempts']}</td><td class='colhead' align='left'>{$lang['failed_main_status']}</td></tr>\n";
     while ($arr = mysqli_fetch_assoc($res)) {
         $HTMLOUT .= "<tr><td align='left'><b>" . (int)$arr['id'] . "</b></td>
-  <td align='left'><b>" . htmlsafechars($arr['ip']) . ' ' . ((int)$arr['uid'] ? "<a href='{$INSTALLER09['baseurl']}/userdetails.php?id=" . (int)$arr['uid'] . "'>" : '') . ' ' . (htmlsafechars($arr['username']) ? '(' . htmlsafechars($arr['username']) . ')</a>' : '') . "</b></td>
+  <td align='left'><b>" . htmlsafechars($arr['ip']) . ' ' . ((int)$arr['uid'] ? "<a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$arr['uid'] . "'>" : '') . ' ' . (htmlsafechars($arr['username']) ? '(' . htmlsafechars($arr['username']) . ')</a>' : '') . "</b></td>
   <td align='left'><b>" . get_date($arr['added'], '', 1, 0) . "</b></td>
   <td align='left'><b>" . (int)$arr['attempts'] . "</b></td>
   <td align='left'>

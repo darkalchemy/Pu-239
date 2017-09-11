@@ -60,7 +60,7 @@ if ($action == 'viewposts') {
         $topicname = htmlsafechars($arr['topic_name']);
         $forumid = (int)$arr['f_id'];
         $forumname = htmlsafechars($arr['name']);
-        $dt = (TIME_NOW - $INSTALLER09['readpost_expiry']);
+        $dt = (TIME_NOW - $site_config['readpost_expiry']);
         $newposts = 0;
         if ($arr['added'] > $dt) {
             $newposts = ($arr['last_post_read'] < $arr['last_post']) && $CURUSER['id'] == $userid;

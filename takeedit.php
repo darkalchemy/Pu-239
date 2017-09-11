@@ -144,7 +144,7 @@ if ($CURUSER['class'] > UC_STAFF) {
  *
  */
 //== Subs
-if (in_array($category, $INSTALLER09['movie_cats'])) {
+if (in_array($category, $site_config['movie_cats'])) {
     $subs = isset($_POST['subs']) ? implode(',', $_POST['subs']) : '';
     $updateset[] = 'subs = ' . sqlesc($subs);
     $torrent_cache['subs'] = $subs;
@@ -282,14 +282,14 @@ if (sizeof($updateset) > 0) {
 if ($torrent_cache) {
     $mc1->begin_transaction('torrent_details_' . $id);
     $mc1->update_row(false, $torrent_cache);
-    $mc1->commit_transaction($INSTALLER09['expires']['torrent_details']);
+    $mc1->commit_transaction($site_config['expires']['torrent_details']);
     $mc1->delete_value('top5_tor_');
     $mc1->delete_value('last5_tor_');
 }
 if ($torrent_txt_cache) {
     $mc1->begin_transaction('torrent_details_txt' . $id);
     $mc1->update_row(false, $torrent_txt_cache);
-    $mc1->commit_transaction($INSTALLER09['expires']['torrent_details_text']);
+    $mc1->commit_transaction($site_config['expires']['torrent_details_text']);
 }
 remove_torrent($infohash);
 write_log('torrent edited - ' . htmlsafechars($name) . ' was edited by ' . (($fetch_assoc['anonymous'] == 'yes') ? 'Anonymous' : htmlsafechars($CURUSER['username'])) . '');

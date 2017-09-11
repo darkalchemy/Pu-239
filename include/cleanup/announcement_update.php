@@ -1,9 +1,9 @@
 <?php
 function announcement_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
+    global $site_config, $queries, $mc1;
     set_time_limit(1200);
-    ignore_user_abort(1);
+    ignore_user_abort(true);
     //== Delete expired announcements and processors
     sql_query('DELETE announcement_process FROM announcement_process LEFT JOIN users ON announcement_process.user_id = users.id WHERE users.id IS NULL') or sqlerr(__FILE__, __LINE__);
     sql_query('DELETE FROM announcement_main WHERE expires < ' . TIME_NOW) or sqlerr(__FILE__, __LINE__);

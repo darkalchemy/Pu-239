@@ -25,40 +25,40 @@ if (!is_valid_id($id)) {
 }
 $res = sql_query('SELECT name, owner, vip, category, filename, info_hash FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res);
-$fn = $INSTALLER09['torrent_dir'] . '/' . $id . '.torrent';
+$fn = $site_config['torrent_dir'] . '/' . $id . '.torrent';
 if (!$row || !is_file($fn) || !is_readable($fn)) {
     stderr('Err', 'There was an error with the file or with the query, please contact staff');
 }
 if (($CURUSER['downloadpos'] == 0 || $CURUSER['can_leech'] == 0 || $CURUSER['downloadpos'] > 1 || $CURUSER['suspended'] == 'yes') && !($CURUSER['id'] == $row['owner'])) {
     stderr('Error', 'Your download rights have been disabled.');
 }
-if (($CURUSER['seedbonus'] === 0 || $CURUSER['seedbonus'] < $INSTALLER09['bonus_per_download'])) {
+if (($CURUSER['seedbonus'] === 0 || $CURUSER['seedbonus'] < $site_config['bonus_per_download'])) {
     stderr('Error', 'Your dont have enough credit to download, trying seeding back some torrents =]');
 }
 if ($row['vip'] == 1 && $CURUSER['class'] < UC_VIP) {
     stderr('VIP Access Required', 'You must be a VIP In order to view details or download this torrent! You may become a Vip By Donating to our site. Donating ensures we stay online to provide you more Vip-Only Torrents!');
 }
 
-if (happyHour('check') && happyCheck('checkid', $row['category']) && XBT_TRACKER == false && $INSTALLER09['happy_hour'] == true) {
+if (happyHour('check') && happyCheck('checkid', $row['category']) && XBT_TRACKER == false && $site_config['happy_hour'] == true) {
     $multiplier = happyHour('multiplier');
     happyLog($CURUSER['id'], $id, $multiplier);
     sql_query('INSERT INTO happyhour (userid, torrentid, multiplier ) VALUES (' . sqlesc($CURUSER['id']) . ',' . sqlesc($id) . ',' . sqlesc($multiplier) . ')') or sqlerr(__FILE__, __LINE__);
     $mc1->delete_value($CURUSER['id'] . '_happy');
 }
-if ($INSTALLER09['seedbonus_on'] == 1 && $row['owner'] != $CURUSER['id']) {
+if ($site_config['seedbonus_on'] == 1 && $row['owner'] != $CURUSER['id']) {
     //===remove karma
-    sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($INSTALLER09['bonus_per_download']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    $update['seedbonus'] = ($CURUSER['seedbonus'] - $INSTALLER09['bonus_per_download']);
+    sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($site_config['bonus_per_download']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    $update['seedbonus'] = ($CURUSER['seedbonus'] - $site_config['bonus_per_download']);
     $mc1->begin_transaction('userstats_' . $CURUSER['id']);
     $mc1->update_row(false, [
         'seedbonus' => $update['seedbonus'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+    $mc1->commit_transaction($site_config['expires']['u_stats']);
     $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
     $mc1->update_row(false, [
         'seedbonus' => $update['seedbonus'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+    $mc1->commit_transaction($site_config['expires']['user_stats']);
     //===end
 }
 sql_query('UPDATE torrents SET hits = hits + 1 WHERE id = ' . sqlesc($id));
@@ -113,12 +113,12 @@ if (isset($_GET['slot'])) {
     $mc1->update_row(false, [
         'freeslots' => $CURUSER['freeslots'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
     $mc1->begin_transaction('user' . $CURUSER['id']);
     $mc1->update_row(false, [
         'freeslots' => $user['freeslots'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
 }
 /* end **/
 $mc1->delete_value('MyPeers_' . $CURUSER['id']);
@@ -138,18 +138,18 @@ if (!isset($CURUSER['torrent_pass']) || strlen($CURUSER['torrent_pass']) != 32) 
     $mc1->update_row(false, [
         'torrent_pass' => $CURUSER['torrent_pass'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
     $mc1->begin_transaction('user' . $CURUSER['id']);
     $mc1->update_row(false, [
         'torrent_pass' => $CURUSER['torrent_pass'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
 }
-$dict = bencdec::decode_file($fn, $INSTALLER09['max_torrent_size']);
+$dict = bencdec::decode_file($fn, $site_config['max_torrent_size']);
 if (XBT_TRACKER == true) {
-    $dict['announce'] = $INSTALLER09['xbt_prefix'] . $CURUSER['torrent_pass'] . $INSTALLER09['xbt_suffix'];
+    $dict['announce'] = $site_config['xbt_prefix'] . $CURUSER['torrent_pass'] . $site_config['xbt_suffix'];
 } else {
-    $dict['announce'] = $INSTALLER09['announce_urls'][$ssluse] . '?torrent_pass=' . $CURUSER['torrent_pass'];
+    $dict['announce'] = $site_config['announce_urls'][$ssluse] . '?torrent_pass=' . $CURUSER['torrent_pass'];
 }
 $dict['uid'] = (int)$CURUSER['id'];
 $tor = bencdec::encode($dict);
@@ -160,27 +160,27 @@ if ($zipuse) {
         '.',
         '-',
     ], '_', $row['name']);
-    $file_name = $INSTALLER09['torrent_dir'] . '/' . $row['name'] . '.torrent';
+    $file_name = $site_config['torrent_dir'] . '/' . $row['name'] . '.torrent';
     if (file_put_contents($file_name, $tor)) {
         $zip = new PHPZip();
         $files = [
             $file_name,
         ];
-        $file_name = $INSTALLER09['torrent_dir'] . '/' . $row['name'] . '.zip';
+        $file_name = $site_config['torrent_dir'] . '/' . $row['name'] . '.zip';
         $zip->Zip($files, $file_name);
         $zip->forceDownload($file_name);
-        unlink($INSTALLER09['torrent_dir'] . '/' . $row['name'] . '.torrent');
-        unlink($INSTALLER09['torrent_dir'] . '/' . $row['name'] . '.zip');
+        unlink($site_config['torrent_dir'] . '/' . $row['name'] . '.torrent');
+        unlink($site_config['torrent_dir'] . '/' . $row['name'] . '.zip');
     } else {
         stderr('Error', 'Can\'t create the new file, please contatct staff');
     }
 } else {
     if ($text) {
-        header('Content-Disposition: attachment; filename="[' . $INSTALLER09['site_name'] . ']' . $row['name'] . '.txt"');
+        header('Content-Disposition: attachment; filename="[' . $site_config['site_name'] . ']' . $row['name'] . '.txt"');
         header('Content-Type: text/plain');
         echo $tor;
     } else {
-        header('Content-Disposition: attachment; filename="[' . $INSTALLER09['site_name'] . ']' . $row['filename'] . '"');
+        header('Content-Disposition: attachment; filename="[' . $site_config['site_name'] . ']' . $row['filename'] . '"');
         header('Content-Type: application/x-bittorrent');
         echo $tor;
     }

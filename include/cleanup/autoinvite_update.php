@@ -1,9 +1,9 @@
 <?php
 function autoinvite_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
+    global $site_config, $queries, $mc1;
     set_time_limit(1200);
-    ignore_user_abort(1);
+    ignore_user_abort(true);
     //== 09 Auto invite by Bigjoos/pdq
     $ratiocheck = 1.0;
     $joined = (TIME_NOW - 86400 * 90);
@@ -11,7 +11,7 @@ function autoinvite_update($data)
     $msgs_buffer = $users_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $subject = 'Auto Invites';
-        $msg = "Congratulations, your user group met a set out criteria therefore you have been awarded 2 invites  :)\n Please use them carefully. Cheers " . $INSTALLER09['site_name'] . " staff.\n";
+        $msg = "Congratulations, your user group met a set out criteria therefore you have been awarded 2 invites  :)\n Please use them carefully. Cheers " . $site_config['site_name'] . " staff.\n";
         while ($arr = mysqli_fetch_assoc($res)) {
             $ratio = number_format($arr['uploaded'] / $arr['downloaded'], 3);
             $modcomment = $arr['modcomment'];
@@ -24,17 +24,17 @@ function autoinvite_update($data)
             $mc1->update_row(false, [
                 'invites' => $update['invites'],
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('user_stats_' . $arr['id']);
             $mc1->update_row(false, [
                 'modcomment' => $modcomment,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
             $mc1->begin_transaction('MyUser_' . $arr['id']);
             $mc1->update_row(false, [
                 'invites' => $update['invites'],
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->delete_value('inbox_new_' . $arr['id']);
             $mc1->delete_value('inbox_new_sb_' . $arr['id']);
         }

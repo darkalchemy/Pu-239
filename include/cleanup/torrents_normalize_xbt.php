@@ -1,9 +1,9 @@
 <?php
 function torrents_normalize_xbt($data)
 {
-    global $INSTALLER09, $queries, $mc1;
-    set_time_limit(0);
-    ignore_user_abort(1);
+    global $site_config, $queries, $mc1;
+    set_time_limit(1200);
+    ignore_user_abort(true);
     do {
         $res = sql_query('SELECT id FROM torrents');
         $ar = [];
@@ -15,7 +15,7 @@ function torrents_normalize_xbt($data)
             break;
         }
 
-        $dp = opendir($INSTALLER09['torrent_dir']);
+        $dp = opendir($site_config['torrent_dir']);
         if (!$dp) {
             break;
         }
@@ -30,7 +30,7 @@ function torrents_normalize_xbt($data)
             if (isset($ar[$id]) && $ar[$id]) {
                 continue;
             }
-            $ff = $INSTALLER09['torrent_dir'] . "/$file";
+            $ff = $site_config['torrent_dir'] . "/$file";
             unlink($ff);
         }
         closedir($dp);

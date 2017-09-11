@@ -1,2 +1,2 @@
 <?php
-$INSTALLER09['allowed_staff']['id'] = array(1);
+$site_config['allowed_staff']['id'] = array(1);

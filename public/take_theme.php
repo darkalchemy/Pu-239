@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'));
@@ -13,12 +13,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mc1->update_row(false, [
         'stylesheet' => $sid,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
     $mc1->begin_transaction('user' . $CURUSER['id']);
     $mc1->update_row(false, [
         'stylesheet' => $sid,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
     $HTMLOUT .= "<script>
         opener.location.reload(true);
         self.close();

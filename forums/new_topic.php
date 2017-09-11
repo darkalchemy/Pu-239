@@ -1,7 +1,7 @@
 <?php
 if (!defined('BUNNY_FORUMS')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 global $lang;
@@ -73,26 +73,26 @@ if (isset($_POST['button']) && $_POST['button'] == 'Post') {
     $mc1->delete_value('forum_posts_' . $CURUSER['id']);
     sql_query('UPDATE `topics` SET first_post =  ' . sqlesc($post_id) . ', last_post = ' . sqlesc($post_id) . ', post_count = 1 WHERE id=' . sqlesc($topic_id));
     sql_query('UPDATE `forums` SET post_count = post_count +1, topic_count = topic_count + 1 WHERE id =' . sqlesc($forum_id));
-    if ($INSTALLER09['autoshout_on'] == 1) {
-        $message = $CURUSER['username'] . ' ' . $lang['nt_created_new_topic'] . " [url={$INSTALLER09['baseurl']}/forums.php?action=view_topic&topic_id=$topic_id&page=last]{$topic_name}[/url]";
+    if ($site_config['autoshout_on'] == 1) {
+        $message = $CURUSER['username'] . ' ' . $lang['nt_created_new_topic'] . " [url={$site_config['baseurl']}/forums.php?action=view_topic&topic_id=$topic_id&page=last]{$topic_name}[/url]";
         //////remember to edit the ids to your staffforum ids :)
-        if (!in_array($forum_id, $INSTALLER09['staff_forums'])) {
+        if (!in_array($forum_id, $site_config['staff_forums'])) {
             autoshout($message);
         }
     }
-    if ($INSTALLER09['seedbonus_on'] == 1) {
-        sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($INSTALLER09['bonus_per_topic']) . ' WHERE id =  ' . sqlesc($CURUSER['id'] . '')) or sqlerr(__FILE__, __LINE__);
-        $update['seedbonus'] = ($CURUSER['seedbonus'] + $INSTALLER09['bonus_per_topic']);
+    if ($site_config['seedbonus_on'] == 1) {
+        sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($site_config['bonus_per_topic']) . ' WHERE id =  ' . sqlesc($CURUSER['id'] . '')) or sqlerr(__FILE__, __LINE__);
+        $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus_per_topic']);
         $mc1->begin_transaction('userstats_' . $CURUSER['id']);
         $mc1->update_row(false, [
             'seedbonus' => $update['seedbonus'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+        $mc1->commit_transaction($site_config['expires']['u_stats']);
         $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
         $mc1->update_row(false, [
             'seedbonus' => $update['seedbonus'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+        $mc1->commit_transaction($site_config['expires']['user_stats']);
     }
     //=== stuff for file uploads
     if ($CURUSER['class'] >= $min_upload_class) {
@@ -158,36 +158,36 @@ $arr = mysqli_fetch_assoc($res);
 $section_name = htmlsafechars($arr['name'], ENT_QUOTES);
 $HTMLOUT .= '<table align="center" class="main" width="750px" border="0" cellspacing="0" cellpadding="0">
    <tr><td class="embedded" align="center">
-   <h1 style="text-align: center;">' . $lang['nt_new_topic_in'] . ' "<a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . $section_name . '</a>"</h1>
-    <form method="post" action="' . $INSTALLER09['baseurl'] . '/forums.php?action=new_topic&amp;forum_id=' . $forum_id . '" enctype="multipart/form-data">
+   <h1 style="text-align: center;">' . $lang['nt_new_topic_in'] . ' "<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . $section_name . '</a>"</h1>
+    <form method="post" action="' . $site_config['baseurl'] . '/forums.php?action=new_topic&amp;forum_id=' . $forum_id . '" enctype="multipart/form-data">
     <table align="center" width="80%" border="0" cellspacing="0" cellpadding="5">
     <tr><td align="left" class="forum_head_dark" colspan="2">' . $lang['fe_compose'] . '</td></tr>
     <tr><td align="right" class="two"><span style="white-space:nowrap; font-weight: bold;">' . $lang['fe_icon'] . '</span></td>
     <td align="left" class="two">
     <table>
     <tr>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/smile1.gif" alt="' . $lang['fe_smile'] . '" title="' . $lang['fe_smile'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/grin.gif" alt="' . $lang['fe_smilee_grin'] . '" title="' . $lang['fe_smilee_grin'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/tongue.gif" alt="' . $lang['fe_smilee_tongue'] . '" title="' . $lang['fe_smilee_tongue'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/cry.gif" alt="' . $lang['fe_smilee_cry'] . '" title="' . $lang['fe_smilee_cry'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/wink.gif" alt="' . $lang['fe_smilee_wink'] . '" title="' . $lang['fe_smilee_wink'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/rolleyes.gif" alt="' . $lang['fe_smilee_roll_eyes'] . '" title="' . $lang['fe_smilee_roll_eyes'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/blink.gif" alt="' . $lang['fe_smilee_blink'] . '" title="' . $lang['fe_smilee_blink'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/bow.gif" alt="' . $lang['fe_smilee_bow'] . '" title="' . $lang['fe_smilee_bow'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/clap2.gif" alt="' . $lang['fe_smilee_clap'] . '" title="' . $lang['fe_smilee_clap'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/hmmm.gif" alt="' . $lang['fe_smilee_hmm'] . '" title="' . $lang['fe_smilee_hmm'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/devil.gif" alt="' . $lang['fe_smilee_devil'] . '" title="' . $lang['fe_smilee_devil'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/angry.gif" alt="' . $lang['fe_smilee_angry'] . '" title="' . $lang['fe_smilee_angry'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/shit.gif" alt="' . $lang['fe_smilee_shit'] . '" title="' . $lang['fe_smilee_shit'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/sick.gif" alt="' . $lang['fe_smilee_sick'] . '" title="' . $lang['fe_smilee_sick'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/tease.gif" alt="' . $lang['fe_smilee_tease'] . '" title="' . $lang['fe_smilee_tease'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/love.gif" alt="' . $lang['fe_smilee_love'] . '" title="' . $lang['fe_smilee_love'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/ohmy.gif" alt="' . $lang['fe_smilee_oh_my'] . '" title="' . $lang['fe_smilee_oh_my'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/yikes.gif" alt="' . $lang['fe_smilee_yikes'] . '" title="' . $lang['fe_smilee_yikes'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/spider.gif" alt="' . $lang['fe_smilee_spider'] . '" title="' . $lang['fe_smilee_spider'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/wall.gif" alt="' . $lang['fe_smilee_wall'] . '" title="' . $lang['fe_smilee_wall'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/idea.gif" alt="' . $lang['fe_smilee_idea'] . '" title="' . $lang['fe_smilee_idea'] . '" /></td>
-    <td class="two text-center" valign="middle"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/question.gif" alt="' . $lang['fe_smilee_question'] . '" title="' . $lang['fe_smilee_question'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/smile1.gif" alt="' . $lang['fe_smile'] . '" title="' . $lang['fe_smile'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/grin.gif" alt="' . $lang['fe_smilee_grin'] . '" title="' . $lang['fe_smilee_grin'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/tongue.gif" alt="' . $lang['fe_smilee_tongue'] . '" title="' . $lang['fe_smilee_tongue'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/cry.gif" alt="' . $lang['fe_smilee_cry'] . '" title="' . $lang['fe_smilee_cry'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/wink.gif" alt="' . $lang['fe_smilee_wink'] . '" title="' . $lang['fe_smilee_wink'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/rolleyes.gif" alt="' . $lang['fe_smilee_roll_eyes'] . '" title="' . $lang['fe_smilee_roll_eyes'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/blink.gif" alt="' . $lang['fe_smilee_blink'] . '" title="' . $lang['fe_smilee_blink'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/bow.gif" alt="' . $lang['fe_smilee_bow'] . '" title="' . $lang['fe_smilee_bow'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/clap2.gif" alt="' . $lang['fe_smilee_clap'] . '" title="' . $lang['fe_smilee_clap'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/hmmm.gif" alt="' . $lang['fe_smilee_hmm'] . '" title="' . $lang['fe_smilee_hmm'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/devil.gif" alt="' . $lang['fe_smilee_devil'] . '" title="' . $lang['fe_smilee_devil'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/angry.gif" alt="' . $lang['fe_smilee_angry'] . '" title="' . $lang['fe_smilee_angry'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="' . $lang['fe_smilee_shit'] . '" title="' . $lang['fe_smilee_shit'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/sick.gif" alt="' . $lang['fe_smilee_sick'] . '" title="' . $lang['fe_smilee_sick'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/tease.gif" alt="' . $lang['fe_smilee_tease'] . '" title="' . $lang['fe_smilee_tease'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/love.gif" alt="' . $lang['fe_smilee_love'] . '" title="' . $lang['fe_smilee_love'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/ohmy.gif" alt="' . $lang['fe_smilee_oh_my'] . '" title="' . $lang['fe_smilee_oh_my'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/yikes.gif" alt="' . $lang['fe_smilee_yikes'] . '" title="' . $lang['fe_smilee_yikes'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/spider.gif" alt="' . $lang['fe_smilee_spider'] . '" title="' . $lang['fe_smilee_spider'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/wall.gif" alt="' . $lang['fe_smilee_wall'] . '" title="' . $lang['fe_smilee_wall'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/idea.gif" alt="' . $lang['fe_smilee_idea'] . '" title="' . $lang['fe_smilee_idea'] . '" /></td>
+    <td class="two text-center" valign="middle"><img src="' . $site_config['pic_base_url'] . 'smilies/question.gif" alt="' . $lang['fe_smilee_question'] . '" title="' . $lang['fe_smilee_question'] . '" /></td>
     </tr>
     <tr>
     <td class="two text-center" valign="middle"><input type="radio" name="icon" value="smile1"' . ($icon === 'smile1' ? ' checked="checked"' : '') . ' /></td>
@@ -231,7 +231,7 @@ $HTMLOUT .= '<table align="center" class="main" width="750px" border="0" cellspa
     <tr><td align="center" colspan="2" class="two" >
    <!- Anonymous  ->
    ' . $lang['fe_anonymous_topic'] . ' : <input type="checkbox" name="anonymous" value="yes" /><br>
-   <img src="' . $INSTALLER09['pic_base_url'] . 'forums/subscribe.gif" alt="+" title="+" /> ' . $lang['fe_subscrib_to_tread'] . '
+   <img src="' . $site_config['pic_base_url'] . 'forums/subscribe.gif" alt="+" title="+" /> ' . $lang['fe_subscrib_to_tread'] . '
     <input type="radio" name="subscribe" value="yes"' . ($subscribe === 'yes' ? ' checked="checked"' : '') . ' />yes
     <input type="radio" name="subscribe" value="no"' . ($subscribe === 'no' ? ' checked="checked"' : '') . ' />no <br>
     <input type="submit" name="button" class="button_tiny" value="' . $lang['fe_post'] . '" onmouseover="this.className=\'button_tiny_hover\'" onmouseout="this.className=\'button_tiny\'" />

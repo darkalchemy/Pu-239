@@ -1,9 +1,9 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('blackjack'));
-global $INSTALLER09, $CURUSER;
+global $site_config, $CURUSER;
 
 $HTMLOUT = $debugout = '';
 
@@ -92,7 +92,7 @@ $required_ratio = 1.0;
 
 $blackjack['mb'] = 1024 * 1024 * 1024 * $blackjack['modifier'];
 $game_size = mksize($blackjack['mb'], 0);
-$link = '[url=' . $INSTALLER09['baseurl'] . '/blackjack.php?id=' . $id . ']BlackJack ' . $game_size . '[/url]';
+$link = '[url=' . $site_config['baseurl'] . '/blackjack.php?id=' . $id . ']BlackJack ' . $game_size . '[/url]';
 $now = TIME_NOW;
 $game = isset($_POST['game']) ? htmlsafechars($_POST['game']) : '';
 $start_ = isset($_POST['start_']) ? htmlsafechars($_POST['start_']) : '';
@@ -108,7 +108,7 @@ if (count($list) > 0) {
         if ($card != $player_cards[0]) {
             $player_showcards .= "<div class='card {$arr['pic']}'></div>";
         } else {
-            $player_showcards .= "<img src='{$INSTALLER09['pic_base_url']}back.png' width='71' height='97' border='0' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
+            $player_showcards .= "<img src='{$site_config['pic_base_url']}back.png' width='71' height='97' border='0' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
         }
         $player_showcards_end .= "<div class='card {$arr['pic']}'></div>";;
     }
@@ -125,7 +125,7 @@ if (count($list) > 0) {
             if ($card != $dealer_cards[0]) {
                 $player_showcards .= "<div class='card {$arr['pic']}'></div>";
             } else {
-                $player_showcards .= "<img src='{$INSTALLER09['pic_base_url']}back.png' width='71' height='97' border='0' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
+                $player_showcards .= "<img src='{$site_config['pic_base_url']}back.png' width='71' height='97' border='0' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
             }
         }
         $player_showcards_end = $player_showcards;
@@ -195,7 +195,7 @@ if ($game) {
             } else {
                 $ratio = 0;
             }
-            if ($INSTALLER09['ratio_free'] === false && $ratio < $required_ratio) {
+            if ($site_config['ratio_free'] === false && $ratio < $required_ratio) {
                 stderr("{$lang['bj_sorry2']} " . $CURUSER['username'], "{$lang['bj_your_ratio_is_lower_req']} " . $required_ratio . '%.');
             }
             $res = sql_query("SELECT * FROM blackjack WHERE userid = " . sqlesc($CURUSER['id']) . " AND game_id = " . sqlesc($blackjack['gameid'])) or sqlerr(__FILE__, __LINE__);
@@ -222,7 +222,7 @@ if ($game) {
                 $dealer_card = getCard($cardcount, $blackjack['gameid'], false);
                 $dealer_cardids[] = $dealer_card;
                 $player_showcards .= "
-                    <img src='{$INSTALLER09['pic_base_url']}back.png' width='71' height='97' border='0' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
+                    <img src='{$site_config['pic_base_url']}back.png' width='71' height='97' border='0' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
                 // player card 2
                 $card = getCard($cardcount, $blackjack['gameid'], false);
                 $cardids[] = $card;
@@ -409,25 +409,25 @@ if ($game) {
                     $mc1->update_row(false, [
                         'uploaded' => $update['uploaded'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                    $mc1->commit_transaction($site_config['expires']['u_stats']);
                     // winner $CURUSER
                     $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
                     $mc1->update_row(false, [
                         'uploaded' => $update['uploaded'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                    $mc1->commit_transaction($site_config['expires']['user_stats']);
                     // loser $a
                     $mc1->begin_transaction('userstats_' . $a['userid']);
                     $mc1->update_row(false, [
                         'uploaded' => $update['uploaded_loser'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                    $mc1->commit_transaction($site_config['expires']['u_stats']);
                     // loser $a
                     $mc1->begin_transaction('user_stats_' . $a['userid']);
                     $mc1->update_row(false, [
                         'uploaded' => $update['uploaded_loser'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                    $mc1->commit_transaction($site_config['expires']['user_stats']);
 
                     //== curuser values
                     // winner $CURUSER
@@ -435,25 +435,25 @@ if ($game) {
                     $mc1->update_row(false, [
                         'bjwins' => $update['bjwins'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                    $mc1->commit_transaction($site_config['expires']['curuser']);
                     // winner $CURUSER
                     $mc1->begin_transaction('user' . $CURUSER['id']);
                     $mc1->update_row(false, [
                         'bjwins' => $update['bjwins'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                    $mc1->commit_transaction($site_config['expires']['user_cache']);
                     // loser $a
                     $mc1->begin_transaction('MyUser_' . $a['userid']);
                     $mc1->update_row(false, [
                         'bjlosses' => $update['bjlosses'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                    $mc1->commit_transaction($site_config['expires']['curuser']);
                     // loser $a
                     $mc1->begin_transaction('user' . $a['userid']);
                     $mc1->update_row(false, [
                         'bjlosses' => $update['bjlosses'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                    $mc1->commit_transaction($site_config['expires']['user_cache']);
 
                     $lost_str = str_replace('10GB', mksize($blackjack['mb'], 0), $lang['bj_you_loss_to_10']);
                     $msg = sqlesc("BlackJack $game_size: $lost_str " . $CURUSER['username'] . " ({$lang['bj_you_had']} " . $a['points'] . " {$lang['bj_points2']}, " . $CURUSER['username'] . " {$lang['bj_had_21_points']}).\n\n");
@@ -468,7 +468,7 @@ if ($game) {
 
                 $sql = 'INSERT INTO messages (sender, receiver, added, msg, subject) VALUES(0, ' . sqlesc($a['userid']) . ", $now, $msg, $subject)";
                 sql_query($sql) or sqlerr(__FILE__, __LINE__);
-                if ($INSTALLER09['autoshout_on'] == 1 || $INSTALLER09['irc_autoshout_on'] == 1) {
+                if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
                     $classColor = get_user_class_color($CURUSER['class']);
                     $opponent = get_user_class_color($a['class']);
                     $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played [color=#$opponent]{$a['username']}[/color] $outcome ($points to {$a['points']}) $link.";
@@ -491,7 +491,7 @@ if ($game) {
                         </p>";
             } else {
                 sql_query("UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $now . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . " AND userid = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-                if ($INSTALLER09['autoshout_on'] == 1 || $INSTALLER09['irc_autoshout_on'] == 1) {
+                if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
                     $classColor = get_user_class_color($CURUSER['class']);
                     $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played $link.";
                     autoshout($msg);
@@ -549,50 +549,50 @@ if ($game) {
                     $mc1->update_row(false, [
                         'uploaded' => $update['uploaded'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                    $mc1->commit_transaction($site_config['expires']['u_stats']);
                     // winner $a
                     $mc1->begin_transaction('user_stats_' . $a['userid']);
                     $mc1->update_row(false, [
                         'uploaded' => $update['uploaded'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                    $mc1->commit_transaction($site_config['expires']['user_stats']);
                     // loser $CURUSER
                     $mc1->begin_transaction('userstats_' . $CURUSER['id']);
                     $mc1->update_row(false, [
                         'uploaded' => $update['uploaded_loser'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                    $mc1->commit_transaction($site_config['expires']['u_stats']);
                     // loser $CURUSER
                     $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
                     $mc1->update_row(false, [
                         'uploaded' => $update['uploaded_loser'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                    $mc1->commit_transaction($site_config['expires']['user_stats']);
                     //== curuser values
                     // winner $a
                     $mc1->begin_transaction('MyUser_' . $a['userid']);
                     $mc1->update_row(false, [
                         'bjwins' => $update['bjwins'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                    $mc1->commit_transaction($site_config['expires']['curuser']);
                     // winner $a
                     $mc1->begin_transaction('user' . $a['userid']);
                     $mc1->update_row(false, [
                         'bjwins' => $update['bjwins'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                    $mc1->commit_transaction($site_config['expires']['user_cache']);
                     // loser $CURUSER
                     $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
                     $mc1->update_row(false, [
                         'bjlosses' => $update['bjlosses'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                    $mc1->commit_transaction($site_config['expires']['curuser']);
                     // loser $CURUSER
                     $mc1->begin_transaction('user' . $CURUSER['id']);
                     $mc1->update_row(false, [
                         'bjlosses' => $update['bjlosses'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                    $mc1->commit_transaction($site_config['expires']['user_cache']);
 
                     $won_str = str_replace('10GB', mksize($blackjack['mb'], 0), $lang['bj_you_beat_10']);
                     $msg = sqlesc("BlackJack $game_size: $won_str " . $CURUSER['username'] . " ({$lang['bj_you_had']} " . $a['points'] . " {$lang['bj_points2']}, " . $CURUSER['username'] . " had $points points).\n\n");
@@ -601,7 +601,7 @@ if ($game) {
                 $sql = 'INSERT INTO messages (sender, receiver, added, msg, subject) VALUES(0, ' . sqlesc($a['userid']) . ", $now, $msg, $subject)";
                 sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
-                if ($INSTALLER09['autoshout_on'] == 1 || $INSTALLER09['irc_autoshout_on'] == 1) {
+                if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
                     $classColor = get_user_class_color($CURUSER['class']);
                     $opponent = get_user_class_color($a['class']);
                     $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played [color=#$opponent]{$a['username']}[/color] $outcome ($points to {$a['points']}) $link.";
@@ -624,7 +624,7 @@ if ($game) {
                         </p>";
             } else {
                 sql_query("UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $now . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . " AND userid = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-                if ($INSTALLER09['autoshout_on'] == 1 || $INSTALLER09['irc_autoshout_on'] == 1) {
+                if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
                     $classColor = get_user_class_color($CURUSER['class']);
                     $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played $link.";
                     autoshout($msg);
@@ -778,51 +778,51 @@ if ($game) {
                 $mc1->update_row(false, [
                     'uploaded' => $update['uploaded'],
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $update['winnerid']);
                 $mc1->update_row(false, [
                     'uploaded' => $update['uploaded'],
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 $mc1->begin_transaction('userstats_' . $update['loserid']);
                 $mc1->update_row(false, [
                     'uploaded' => $update['uploaded_loser'],
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $update['loserid']);
                 $mc1->update_row(false, [
                     'uploaded' => $update['uploaded_loser'],
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 //== curuser values
                 $mc1->begin_transaction('MyUser_' . $update['winnerid']);
                 $mc1->update_row(false, [
                     'bjwins' => $update['bjwins'],
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $mc1->begin_transaction('user' . $update['winnerid']);
                 $mc1->update_row(false, [
                     'bjwins' => $update['bjwins'],
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
                 // loser $CURUSER
                 $mc1->begin_transaction('MyUser_' . $update['loserid']);
                 $mc1->update_row(false, [
                     'bjlosses' => $update['bjlosses'],
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 // loser $CURUSER
                 $mc1->begin_transaction('user' . $update['loserid']);
                 $mc1->update_row(false, [
                     'bjlosses' => $update['bjlosses'],
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
             }
 
             $sql = 'INSERT INTO messages (sender, receiver, added, msg, subject) VALUES(0, ' . sqlesc($a['userid']) . ", $now, $msg, $subject)";
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
-            if ($INSTALLER09['autoshout_on'] == 1 || $INSTALLER09['irc_autoshout_on'] == 1) {
+            if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
                 $classColor = get_user_class_color($CURUSER['class']);
                 $opponent = get_user_class_color($a['class']);
                 $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played [color=#$opponent]{$a['username']}[/color] $outcome ({$playerarr['points']} to {$a['points']}) $link.";
@@ -846,7 +846,7 @@ if ($game) {
                         </p>";
         } else {
             sql_query("UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $now . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . " AND userid = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-            if ($INSTALLER09['autoshout_on'] == 1 || $INSTALLER09['irc_autoshout_on'] == 1) {
+            if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
                 $classColor = get_user_class_color($CURUSER['class']);
                 $msg = "[color=#$classColor]{$CURUSER['username']}[/color] has just played $link.";
                 autoshout($msg);

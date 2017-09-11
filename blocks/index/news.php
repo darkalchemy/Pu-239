@@ -7,10 +7,10 @@ if ($CURUSER['class'] >= UC_STAFF) {
 $HTMLOUT .= "
     <a id='news-hash'></a>
     <fieldset id='news' class='header'>
-        <legend class='flipper'><i class='fa fa-angle-up' aria-hidden='true'></i>{$lang['news_title']}
+        <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['news_title']}
             <span class='news'>{$adminbutton}</span>
         </legend>
-        <div class='cite text-center'>";
+        <div class='text-center bottom20'>";
 $prefix = 'min5l3ss';
 $news = $mc1->get_value('latest_news_');
 if ($news === false) {
@@ -19,7 +19,7 @@ if ($news === false) {
     while ($array = mysqli_fetch_assoc($res)) {
         $news[] = $array;
     }
-    $mc1->cache_value('latest_news_', $news, $INSTALLER09['expires']['latest_news']);
+    $mc1->cache_value('latest_news_', $news, $site_config['expires']['latest_news']);
 }
 $news_flag = 0;
 if ($news) {

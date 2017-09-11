@@ -2,14 +2,14 @@
 $HTMLOUT .= "
     <a id='latesttorrents-hash'></a>
     <fieldset id='latesttorrents' class='header'>
-        <legend class='flipper'><i class='fa fa-angle-up' aria-hidden='true'></i>{$lang['index_latest']}</legend>
+        <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_latest']}</legend>
         <div class='cite text-center'>";
 if (($top5torrents = $mc1->get_value('top5_tor_')) === false) {
-    $res = sql_query("SELECT id, seeders, poster, leechers, name from torrents ORDER BY seeders + leechers DESC LIMIT {$INSTALLER09['latest_torrents_limit']}") or sqlerr(__FILE__, __LINE__);
+    $res = sql_query("SELECT id, seeders, poster, leechers, name from torrents ORDER BY seeders + leechers DESC LIMIT {$site_config['latest_torrents_limit']}") or sqlerr(__FILE__, __LINE__);
     while ($top5torrent = mysqli_fetch_assoc($res)) {
         $top5torrents[] = $top5torrent;
     }
-    $mc1->cache_value('top5_tor_', $top5torrents, $INSTALLER09['expires']['top5_torrents']);
+    $mc1->cache_value('top5_tor_', $top5torrents, $site_config['expires']['top5_torrents']);
 }
 if (count($top5torrents) > 0) {
     $HTMLOUT .= "
@@ -31,12 +31,12 @@ if (count($top5torrents) > 0) {
             if (strlen($torrname) > 50) {
                 $torrname = substr($torrname, 0, 50) . '...';
             }
-            $poster = empty($top5torrentarr['poster']) ? "<img src='{$INSTALLER09['pic_base_url']}noposter.jpg' width='150' height='220' />" : "<img src='" . htmlsafechars($top5torrentarr['poster']) . "' width='150' height='220' />";
+            $poster = empty($top5torrentarr['poster']) ? "<img src='{$site_config['pic_base_url']}noposter.jpg' width='150' height='220' />" : "<img src='" . htmlsafechars($top5torrentarr['poster']) . "' width='150' height='220' />";
             $HTMLOUT .= "
                 <tbody>
                     <tr>
                         <td class='span5'>
-                            <a href='{$INSTALLER09['baseurl']}/details.php?id=" . (int)$top5torrentarr['id'] . "&amp;hit=1' class='tooltipper' title=\"<b>{$lang['index_ltst_name']}" . htmlsafechars($top5torrentarr['name']) . "</b><br><b>{$lang['index_ltst_seeder']}" . (int)$top5torrentarr['seeders'] . "</b><br><b>{$lang['index_ltst_leecher']}" . (int)$top5torrentarr['leechers'] . "</b><br>$poster\">
+                            <a href='{$site_config['baseurl']}/details.php?id=" . (int)$top5torrentarr['id'] . "&amp;hit=1' class='tooltipper' title=\"<b>{$lang['index_ltst_name']}" . htmlsafechars($top5torrentarr['name']) . "</b><br><b>{$lang['index_ltst_seeder']}" . (int)$top5torrentarr['seeders'] . "</b><br><b>{$lang['index_ltst_leecher']}" . (int)$top5torrentarr['leechers'] . "</b><br>$poster\">
                                 {$torrname}
                             </a>
                         </td>
@@ -62,12 +62,12 @@ if (count($top5torrents) > 0) {
     }
 }
 if (($last5torrents = $mc1->get_value('last5_tor_')) === false) {
-    $sql = "SELECT id, seeders, poster, leechers, name FROM torrents WHERE visible='yes' ORDER BY added DESC LIMIT {$INSTALLER09['latest_torrents_limit']}";
+    $sql = "SELECT id, seeders, poster, leechers, name FROM torrents WHERE visible='yes' ORDER BY added DESC LIMIT {$site_config['latest_torrents_limit']}";
     $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     while ($last5torrent = mysqli_fetch_assoc($result)) {
         $last5torrents[] = $last5torrent;
     }
-    $mc1->cache_value('last5_tor_', $last5torrents, $INSTALLER09['expires']['last5_torrents']);
+    $mc1->cache_value('last5_tor_', $last5torrents, $site_config['expires']['last5_torrents']);
 }
 if (count($last5torrents) > 0) {
     $HTMLOUT .= "<div class='module'><div class='badge badge-new'></div><table class='table table-bordered'>";
@@ -82,8 +82,8 @@ if (count($last5torrents) > 0) {
             if (strlen($torrname) > 50) {
                 $torrname = substr($torrname, 0, 50) . '...';
             }
-            $poster = empty($last5torrentarr['poster']) ? "<img src=\'{$INSTALLER09['pic_base_url']}noposter.jpg\' width=\'150\' height=\'220\' />" : "<img src=\'" . htmlsafechars($last5torrentarr['poster']) . "\' width=\'150\' height=\'220\' />";
-            $HTMLOUT .= "<tbody><tr><td class='span5'><a href=\"{$INSTALLER09['baseurl']}/details.php?id=" . (int)$last5torrentarr['id'] . "&amp;hit=1\"></a><a href=\"{$INSTALLER09['baseurl']}/details.php?id=" . (int)$last5torrentarr['id'] . "&amp;hit=1\" class='tooltipper' title=\"<b>{$lang['index_ltst_name']}" . htmlsafechars($last5torrentarr['name']) . "</b><br><b>{$lang['index_ltst_seeder']}" . (int)$last5torrentarr['seeders'] . "</b><br><b>{$lang['index_ltst_leecher']}" . (int)$last5torrentarr['leechers'] . "</b><br>$poster\">{$torrname}</a></td>";
+            $poster = empty($last5torrentarr['poster']) ? "<img src=\'{$site_config['pic_base_url']}noposter.jpg\' width=\'150\' height=\'220\' />" : "<img src=\'" . htmlsafechars($last5torrentarr['poster']) . "\' width=\'150\' height=\'220\' />";
+            $HTMLOUT .= "<tbody><tr><td class='span5'><a href=\"{$site_config['baseurl']}/details.php?id=" . (int)$last5torrentarr['id'] . "&amp;hit=1\"></a><a href=\"{$site_config['baseurl']}/details.php?id=" . (int)$last5torrentarr['id'] . "&amp;hit=1\" class='tooltipper' title=\"<b>{$lang['index_ltst_name']}" . htmlsafechars($last5torrentarr['name']) . "</b><br><b>{$lang['index_ltst_seeder']}" . (int)$last5torrentarr['seeders'] . "</b><br><b>{$lang['index_ltst_leecher']}" . (int)$last5torrentarr['leechers'] . "</b><br>$poster\">{$torrname}</a></td>";
             $HTMLOUT .= "<td class='span1'>" . (int)$last5torrentarr['seeders'] . '</td>';
             $HTMLOUT .= "<td class='span1'>" . (int)$last5torrentarr['leechers'] . '</td>';
             $HTMLOUT .= '</tr></tbody>';

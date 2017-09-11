@@ -17,7 +17,7 @@ if (($active_users_cache = $mc1->get_value($keys['activeusers'])) === false) {
     $active_users_cache['actcount'] = $actcount;
     $active_users_cache['au'] = number_format($actcount);
     $last24_cache['v'] = $v;
-    $mc1->cache_value($keys['activeusers'], $active_users_cache, $INSTALLER09['expires']['activeusers']);
+    $mc1->cache_value($keys['activeusers'], $active_users_cache, $site_config['expires']['activeusers']);
 }
 if (!$active_users_cache['activeusers']) {
     $active_users_cache['activeusers'] = $lang['index_active_users_no'];
@@ -25,8 +25,8 @@ if (!$active_users_cache['activeusers']) {
 $HTMLOUT .= "
     <a id='activeusers-hash'></a>
     <fieldset id='activeusers' class='header'>
-        <legend class='flipper'><i class='fa fa-angle-up' aria-hidden='true'></i>{$lang['index_active']} ({$active_users_cache['actcount']})</legend>
-            <div class='text-center'>
+        <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_active']} ({$active_users_cache['actcount']})</legend>
+            <div class='text-center bottom20'>
                 {$active_users_cache['activeusers']}
             </div>
     </fieldset>";

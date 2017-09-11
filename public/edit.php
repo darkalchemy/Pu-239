@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
@@ -48,7 +48,7 @@ $HTMLOUT = $mod_cache_name = $subs_list = '';
 if ($CURUSER['class'] >= UC_STAFF) {
     if (($mod_cache_name = $mc1->get_value('editedby_' . $id)) === false) {
         $mod_cache_name = $CURUSER['username'];
-        $mc1->add_value('editedby_' . $id, $mod_cache_name, $INSTALLER09['expires']['ismoddin']);
+        $mc1->add_value('editedby_' . $id, $mod_cache_name, $site_config['expires']['ismoddin']);
     }
     $HTMLOUT .= '<h1><font size="+1"><font color="#FF0000">' . $mod_cache_name . '</font> is currently editing this torrent!</font></h1>';
 }

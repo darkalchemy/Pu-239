@@ -1,9 +1,9 @@
 <?php
 function sitestats_update($data)
 {
-    global $INSTALLER09, $queries;
-    set_time_limit(0);
-    ignore_user_abort(1);
+    global $site_config, $queries;
+    set_time_limit(1200);
+    ignore_user_abort(true);
     //== 09 Stats
     $XBT_Seeder = mysqli_fetch_assoc(sql_query('SELECT sum(seeders) AS seeders FROM torrents')) or sqlerr(__FILE__, __LINE__);
     $XBT_Leecher = mysqli_fetch_assoc(sql_query('SELECT sum(leechers) AS leechers FROM torrents')) or sqlerr(__FILE__, __LINE__);

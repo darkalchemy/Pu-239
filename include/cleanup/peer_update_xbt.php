@@ -1,11 +1,11 @@
 <?php
 function peer_update_xbt($data)
 {
-    global $INSTALLER09, $queries, $mc1;
-    set_time_limit(0);
-    ignore_user_abort(1);
+    global $site_config, $queries, $mc1;
+    set_time_limit(1200);
+    ignore_user_abort(true);
     $torrent_seeds = $torrent_leeches = [];
-    $deadtime = TIME_NOW - floor($INSTALLER09['announce_interval'] * 1.3);
+    $deadtime = TIME_NOW - floor($site_config['announce_interval'] * 1.3);
     $dead_peers = sql_query('SELECT fid, uid, peer_id, `left`, `active` FROM xbt_files_users WHERE mtime < ' . $deadtime);
     while ($dead_peer = mysqli_fetch_assoc($dead_peers)) {
         $torrentid = (int)$dead_peer['fid'];

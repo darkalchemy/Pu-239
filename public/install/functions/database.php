@@ -2,28 +2,38 @@
 
 function db_test()
 {
-    global $root, $INSTALLER09;
+    global $root, $site_config;
     $out = '<fieldset><legend>Database</legend>';
     require_once $root.'include/config.php';
-    $mysqli_test = new mysqli($INSTALLER09['mysql_host'], $INSTALLER09['mysql_user'], $INSTALLER09['mysql_pass'], $INSTALLER09['mysql_db']);
+    $mysqli_test = new mysqli($site_config['mysql_host'], $site_config['mysql_user'], $site_config['mysql_pass'], $site_config['mysql_db']);
     if (!$mysqli_test->connect_error) {
         $out .= '<div class="readable">Connection to database was made</div>';
-        if ($mysqli_test->select_db($INSTALLER09['mysql_db'])) {
-            $out .= '<div class="readable">Data base exists, data can be imported</div>';
-            $out .= '<form action="index.php" method="post"><div class="info" style="text-align:center;"><input type="hidden" name="do" value="db_insert" /><input type="hidden" name="xbt" value="'.$_GET['xbt'].'" /><input type="submit" value="Import database" /></div></form>';
+        if ($mysqli_test->select_db($site_config['mysql_db'])) {
+            $out .= '<div class="readable">Data base exists, data can be imported</div>
+                         <form action="index.php" method="post">
+                             <div style="text-align:center;">
+                                 <input type="hidden" name="do" value="db_insert" />
+                                 <input type="hidden" name="xbt" value="'.$_GET['xbt'].'" />
+                                 <input type="submit" value="Import database" />
+                             </div>
+                         </form>';
         } else {
-            $out .= '<div class="notreadable">There was an error while selecting the database<br>'.$mysqli_test->error.'</div><div class="info" style="text-align:center"><input type="button" value="Reload" onclick="window.location.reload()"/></div>';
+            $out .= '<div class="notreadable">There was an error while selecting the database<br>'.$mysqli_test->error.'</div>
+                    </fieldset>
+                    <div style="text-align:center"><input type="button" value="Reload" onclick="window.location.reload()"/></div>';
         }
     } else {
-        $out .= '<div class="notreadable">There was an error while connection to the database<br>'.$mysqli_test->connect_error.'</div><div class="info" style="text-align:center"><input type="button" value="Reload" onclick="window.location.reload()"/></div>';
+        $out .= '<div class="notreadable">There was an error while connection to the database<br>'.$mysqli_test->connect_error.'</div>
+                </fieldset>
+                <div class="info" style="text-align:center">
+                <input type="button" value="Reload" onclick="window.location.reload()"/></div>';
     }
-    $out .= '</fieldset>';
     echo $out;
 }
 //== Win - remember to set your path up correctly in the query- atm its set for appserv c:\AppServ\MySQL\bin\mysql
 function db_insert()
 {
-    global $root, $public, $INSTALLER09;
+    global $root, $public, $site_config;
     $out = '<fieldset><legend>Database</legend>';
     require_once $root . 'include/config.php';
     if ($_POST['xbt'] == 1) {
@@ -31,21 +41,26 @@ function db_insert()
     } elseif ($_POST['xbt'] == 0) {
         $file = 'install.php.sql';
     }
-    $q = sprintf('/usr/bin/mysql -h %s -u %s -p%s %s < %sinstall/extra/'.$file, $INSTALLER09['mysql_host'], $INSTALLER09['mysql_user'], $INSTALLER09['mysql_pass'], $INSTALLER09['mysql_db'], $public); //== Linux
+    $q = sprintf('/usr/bin/mysql -h %s -u %s -p%s %s < %sinstall/extra/'.$file, $site_config['mysql_host'], $site_config['mysql_user'], $site_config['mysql_pass'], $site_config['mysql_db'], $public); //== Linux
+    set_time_limit(1200);
+    ini_set('max_execution_time', 1200);
+    ini_set('request_terminate_timeout', 1200);
+    ignore_user_abort(true);
     exec($q, $o);
 
     // update cleanup log times, begin at the previous midnight
     $timestamp = strtotime('today midnight');
     $sql = "UPDATE cleanup SET clean_time = $timestamp";
-    $q = sprintf('/usr/bin/mysql -h %s -u %s -p%s %s -e "%s"', $INSTALLER09['mysql_host'], $INSTALLER09['mysql_user'], $INSTALLER09['mysql_pass'], $INSTALLER09['mysql_db'], $sql);
+    $q = sprintf('/usr/bin/mysql -h %s -u %s -p%s %s -e "%s"', $site_config['mysql_host'], $site_config['mysql_user'], $site_config['mysql_pass'], $site_config['mysql_db'], $sql);
     exec($q, $oo);
 
     if (!count($o) && !count($oo)) {
-        $out .= '<div class="readable">Database was imported</div><div class="info" style="text-align:center"><input type="button" value="Finish" onclick="window.location.href=\'?step=3\'"/></div>';
+        $out .= '<div class="readable">Database was imported</div>
+                </fieldset>
+                <div style="text-align:center"><input type="button" value="Finish" onclick="window.location.href=\'?step=3\'"/></div>';
         file_put_contents('step2.lock', 1);
     } else {
-        $out .= '<div class="notreadable">There was an error while importing the database<br>'.$o.'</div>';
+        $out .= '<div class="notreadable">There was an error while importing the database<br>'.$o.'</div></fieldset>';
     }
-    $out .= '</fieldset>';
     echo $out;
 }

@@ -39,7 +39,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             } elseif (isset($_GET['func']) && $_GET['func'] == 'check') {
                 echo htmlsafechars($arr['username']) . ' - Seedbonus: (' . number_format($arr['seedbonus'], 1) . ')';
             } elseif (isset($_GET['func']) && $_GET['func'] == 'ircbonus') {
-                $ircbonus = (!empty($arr['irctotal']) ? number_format($arr['irctotal'] / ($INSTALLER09['autoclean_interval'] * 4), 1) : '0.0');
+                $ircbonus = (!empty($arr['irctotal']) ? number_format($arr['irctotal'] / ($site_config['autoclean_interval'] * 4), 1) : '0.0');
                 echo $arr['username'] . ' - IRC Bonus: (' . $ircbonus . ')';
             } elseif (isset($_GET['func']) && $_GET['func'] == 'irctotal') {
                 $irctotal = (!empty($arr['irctotal']) ? calctime($arr['irctotal']) : $arr['username'] . ' has never been on IRC!');
@@ -95,29 +95,29 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->update_row(false, [
                     'username' => $newname,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
                 $mc1->begin_transaction('MyUser_' . $nsetusername['id']);
                 $mc1->update_row(false, [
                     'username' => $newname,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $mc1->begin_transaction('userstats_' . $nsetusername['id']);
                 $mc1->update_row(false, [
                     'modcomment' => $modcomment,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $nsetusername['id']);
                 $mc1->update_row(false, [
                     'modcomment' => $modcomment,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 echo $who . 's name was changed from: ' . $who . ' to ' . $newusername . ' by ' . $modd;
             }
         }
     } elseif (isset($_GET['topirc'])) {
         $res = sql_query("SELECT id, username, class, irctotal FROM users WHERE onirc = 'yes' GROUP BY class ORDER BY irctotal DESC") or sqlerr(__FILE__, __LINE__);
         while ($arr = mysqli_fetch_assoc($res)) {
-            $ircbonus = (!empty($arr['irctotal']) ? number_format($arr['irctotal'] / ($INSTALLER09['autoclean_interval'] * 4), 1) : '0.0');
+            $ircbonus = (!empty($arr['irctotal']) ? number_format($arr['irctotal'] / ($site_config['autoclean_interval'] * 4), 1) : '0.0');
             $ircusers = (isset($ircusers) ? ($ircusers) : '');
             if ($ircusers) {
                 $ircusers .= ",\n";
@@ -167,12 +167,12 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->update_row(false, [
                     'seedbonus' => $nbonus['seedbonus'] + $amount,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $nbonus['id']);
                 $mc1->update_row(false, [
                     'seedbonus' => $nbonus['seedbonus'] + $amount,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 $res1 = sql_query("SELECT seedbonus FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $obonus = mysqli_fetch_assoc($res1);
                 $newbonus = $obonus['seedbonus'];
@@ -193,12 +193,12 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->update_row(false, [
                     'invites' => $ninvites['invites'] + $amount,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
                 $mc1->begin_transaction('MyUser_' . $ninvites['id']);
                 $mc1->update_row(false, [
                     'invites' => $ninvites['invites'] + $amount,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $res4 = sql_query("SELECT invites FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $oinvites = mysqli_fetch_assoc($res4);
                 $newinvites = (int)$oinvites['invites'];
@@ -219,12 +219,12 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->update_row(false, [
                     'freeslots' => $nfreeslots['freeslots'] + $amount,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
                 $mc1->begin_transaction('MyUser_' . $nfreeslots['id']);
                 $mc1->update_row(false, [
                     'freeslots' => $nfreeslots['freeslots'] + $amount,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $res6 = sql_query("SELECT freeslots FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $ofreeslots = mysqli_fetch_assoc($res6);
                 $newfreeslots = (int)$ofreeslots['freeslots'];
@@ -245,12 +245,12 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->update_row(false, [
                     'reputation' => $nreputation['reputation'] + $amount,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
                 $mc1->begin_transaction('MyUser_' . $nreputation['id']);
                 $mc1->update_row(false, [
                     'reputation' => $nreputation['reputation'] + $amount,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $res4 = sql_query("SELECT reputation FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $oreputation = mysqli_fetch_assoc($res4);
                 $newreputation = (int)$oreputation['reputation'];
@@ -273,12 +273,12 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->update_row(false, [
                     'seedbonus' => $nbonus['seedbonus'] - $amount,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $nbonus['id']);
                 $mc1->update_row(false, [
                     'seedbonus' => $nbonus['seedbonus'] - $amount,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 $res1 = sql_query("SELECT seedbonus FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $obonus = mysqli_fetch_assoc($res1);
                 $newbonus = $obonus['seedbonus'];
@@ -299,12 +299,12 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->update_row(false, [
                     'invites' => $ninvites['invites'] - $amount,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
                 $mc1->begin_transaction('MyUser_' . $ninvites['id']);
                 $mc1->update_row(false, [
                     'invites' => $ninvites['invites'] - $amount,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $res4 = sql_query("SELECT invites FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $oinvites = mysqli_fetch_assoc($res4);
                 $newinvites = (int)$oinvites['invites'];
@@ -325,12 +325,12 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->update_row(false, [
                     'freeslots' => $nfreeslots['freeslots'] - $amount,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
                 $mc1->begin_transaction('MyUser_' . $nfreeslots['id']);
                 $mc1->update_row(false, [
                     'freeslots' => $nfreeslots['freeslots'] - $amount,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $res6 = sql_query("SELECT freeslots FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $ofreeslots = mysqli_fetch_assoc($res6);
                 $newfreeslots = (int)$ofreeslots['freeslots'];
@@ -351,12 +351,12 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->update_row(false, [
                     'reputation' => $nreputation['reputation'] - $amount,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
                 $mc1->begin_transaction('MyUser_' . $nreputation['id']);
                 $mc1->update_row(false, [
                     'reputation' => $nreputation['reputation'] - $amount,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $res6 = sql_query("SELECT reputation FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $oreputation = mysqli_fetch_assoc($res6);
                 $newreputation = (int)$oreputation['reputation'];
@@ -388,22 +388,22 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                     $mc1->update_row(false, [
                         'seedbonus' => $mebonus['seedbonus'] - $amount,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                    $mc1->commit_transaction($site_config['expires']['u_stats']);
                     $mc1->begin_transaction('user_stats_' . $mebonus['id']);
                     $mc1->update_row(false, [
                         'seedbonus' => $mebonus['seedbonus'] - $amount,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                    $mc1->commit_transaction($site_config['expires']['user_stats']);
                     $mc1->begin_transaction('userstats_' . $whombonus['id']);
                     $mc1->update_row(false, [
                         'seedbonus' => $whombonus['seedbonus'] + $amount,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                    $mc1->commit_transaction($site_config['expires']['u_stats']);
                     $mc1->begin_transaction('user_stats_' . $whombonus['id']);
                     $mc1->update_row(false, [
                         'seedbonus' => $whombonus['seedbonus'] + $amount,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                    $mc1->commit_transaction($site_config['expires']['user_stats']);
                     $res1 = sql_query("SELECT seedbonus FROM users WHERE username = $me LIMIT 1") or sqlerr(__FILE__, __LINE__);
                     $meobonus = mysqli_fetch_assoc($res1);
                     $res2 = sql_query("SELECT seedbonus FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -437,22 +437,22 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                     $mc1->update_row(false, [
                         'freeslots' => $mefreeslots['freeslots'] - $amount,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                    $mc1->commit_transaction($site_config['expires']['user_cache']);
                     $mc1->begin_transaction('MyUser_' . $mefreeslots['id']);
                     $mc1->update_row(false, [
                         'freeslots' => $mefreeslots['freeslots'] - $amount,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                    $mc1->commit_transaction($site_config['expires']['curuser']);
                     $mc1->begin_transaction('user' . $whomfreeslots['id']);
                     $mc1->update_row(false, [
                         'freeslots' => $whomfreeslots['freeslots'] + $amount,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                    $mc1->commit_transaction($site_config['expires']['user_cache']);
                     $mc1->begin_transaction('MyUser_' . $whomfreeslots['id']);
                     $mc1->update_row(false, [
                         'freeslots' => $whomfreeslots['freeslots'] + $amount,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                    $mc1->commit_transaction($site_config['expires']['curuser']);
                     $res1 = sql_query("SELECT freeslots FROM users WHERE username = $me LIMIT 1") or sqlerr(__FILE__, __LINE__);
                     $meofreeslots = mysqli_fetch_assoc($res1);
                     $res2 = sql_query("SELECT freeslots FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -486,22 +486,22 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                     $mc1->update_row(false, [
                         'reputation' => $mereputation['reputation'] - $amount,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                    $mc1->commit_transaction($site_config['expires']['user_cache']);
                     $mc1->begin_transaction('MyUser_' . $mereputation['id']);
                     $mc1->update_row(false, [
                         'reputation' => $mereputation['reputation'] - $amount,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                    $mc1->commit_transaction($site_config['expires']['curuser']);
                     $mc1->begin_transaction('user' . $whomreputation['id']);
                     $mc1->update_row(false, [
                         'reputation' => $whomreputation['reputation'] + $amount,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                    $mc1->commit_transaction($site_config['expires']['user_cache']);
                     $mc1->begin_transaction('MyUser_' . $whomreputation['id']);
                     $mc1->update_row(false, [
                         'reputation' => $whomreputation['reputation'] + $amount,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                    $mc1->commit_transaction($site_config['expires']['curuser']);
                     $res1 = sql_query("SELECT reputation FROM users WHERE username = $me LIMIT 1") or sqlerr(__FILE__, __LINE__);
                     $meoreputation = mysqli_fetch_assoc($res1);
                     $res2 = sql_query("SELECT reputation FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -535,22 +535,22 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                     $mc1->update_row(false, [
                         'invite' => $meinvite['invite'] - $amount,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                    $mc1->commit_transaction($site_config['expires']['user_cache']);
                     $mc1->begin_transaction('MyUser_' . $meinvite['id']);
                     $mc1->update_row(false, [
                         'invite' => $meinvite['invite'] - $amount,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                    $mc1->commit_transaction($site_config['expires']['curuser']);
                     $mc1->begin_transaction('user' . $whominvite['id']);
                     $mc1->update_row(false, [
                         'invite' => $whominvite['invite'] + $amount,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                    $mc1->commit_transaction($site_config['expires']['user_cache']);
                     $mc1->begin_transaction('MyUser_' . $whominvite['id']);
                     $mc1->update_row(false, [
                         'invite' => $whominvite['invite'] + $amount,
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                    $mc1->commit_transaction($site_config['expires']['curuser']);
                     $res1 = sql_query("SELECT invites FROM users WHERE username = $me LIMIT 1") or sqlerr(__FILE__, __LINE__);
                     $meoinvites = mysqli_fetch_assoc($res1);
                     $res2 = sql_query("SELECT invites FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -581,22 +581,22 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->update_row(false, [
                     'uploadpos' => $toggle,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
                 $mc1->begin_transaction('MyUser_' . $upos['id']);
                 $mc1->update_row(false, [
                     'uploadpos' => $toggle,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $mc1->begin_transaction('userstats_' . $upos['id']);
                 $mc1->update_row(false, [
                     'modcomment' => $modcomment,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $upos['id']);
                 $mc1->update_row(false, [
                     'modcomment' => $modcomment,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 echo $who . 's uploadpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -618,22 +618,22 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->update_row(false, [
                     'downloadpos' => $toggle,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
                 $mc1->begin_transaction('MyUser_' . $dpos['id']);
                 $mc1->update_row(false, [
                     'downloadpos' => $toggle,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $mc1->begin_transaction('userstats_' . $dpos['id']);
                 $mc1->update_row(false, [
                     'modcomment' => $modcomment,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $dpos['id']);
                 $mc1->update_row(false, [
                     'modcomment' => $modcomment,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 echo $who . 's downloadpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -655,22 +655,22 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->update_row(false, [
                     'forum_post' => $toggle,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
                 $mc1->begin_transaction('MyUser_' . $fpos['id']);
                 $mc1->update_row(false, [
                     'forum_post' => $toggle,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $mc1->begin_transaction('userstats_' . $fpos['id']);
                 $mc1->update_row(false, [
                     'modcomment' => $modcomment,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $fpos['id']);
                 $mc1->update_row(false, [
                     'modcomment' => $modcomment,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 echo $who . 's forumpost changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -692,22 +692,22 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->update_row(false, [
                     'chatpost' => $toggle,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
                 $mc1->begin_transaction('MyUser_' . $cpos['id']);
                 $mc1->update_row(false, [
                     'chatpost' => $toggle,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $mc1->begin_transaction('userstats_' . $cpos['id']);
                 $mc1->update_row(false, [
                     'modcomment' => $modcomment,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $cpos['id']);
                 $mc1->update_row(false, [
                     'modcomment' => $modcomment,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 echo $who . 's chatpost changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -729,22 +729,22 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->update_row(false, [
                     'avatarpos' => $toggle,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
                 $mc1->begin_transaction('MyUser_' . $apos['id']);
                 $mc1->update_row(false, [
                     'avatarpos' => $toggle,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $mc1->begin_transaction('userstats_' . $apos['id']);
                 $mc1->update_row(false, [
                     'modcomment' => $modcomment,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $apos['id']);
                 $mc1->update_row(false, [
                     'modcomment' => $modcomment,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 echo $who . 's avatarpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -766,22 +766,22 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->update_row(false, [
                     'invite_rights' => $toggle,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
                 $mc1->begin_transaction('MyUser_' . $ipos['id']);
                 $mc1->update_row(false, [
                     'invite_rights' => $toggle,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $mc1->begin_transaction('userstats_' . $ipos['id']);
                 $mc1->update_row(false, [
                     'modcomment' => $modcomment,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $ipos['id']);
                 $mc1->update_row(false, [
                     'modcomment' => $modcomment,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 echo $who . 's invite rights changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -803,22 +803,22 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $mc1->update_row(false, [
                     'enabled' => $toggle,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
                 $mc1->begin_transaction('MyUser_' . $epos['id']);
                 $mc1->update_row(false, [
                     'enabled' => $toggle,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $mc1->begin_transaction('userstats_' . $epos['id']);
                 $mc1->update_row(false, [
                     'modcomment' => $modcomment,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $epos['id']);
                 $mc1->update_row(false, [
                     'modcomment' => $modcomment,
                 ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 echo $who . 's enabled changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -842,23 +842,23 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 'support'    => 'yes',
                 'supportfor' => $supportfors,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $support['id']);
             $mc1->update_row(false, [
                 'support'    => 'yes',
                 'supportfor' => $supportfors,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('userstats_' . $support['id']);
             $mc1->update_row(false, [
                 'modcomment' => $modcomment,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $support['id']);
             $mc1->update_row(false, [
                 'modcomment' => $modcomment,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
             $mc1->delete_value('MyUser_' . $whom);
             echo $who . 's support changed added to First line support to cover ' . $supportfors . ' by ' . $modd;
         }

@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -544,16 +544,16 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
         }
         if (!empty($avatar)) {
             $img_size = @getimagesize($avatar);
-            if ($img_size == false || !in_array($img_size['mime'], $INSTALLER09['allowed_ext'])) {
+            if ($img_size == false || !in_array($img_size['mime'], $site_config['allowed_ext'])) {
                 stderr("{$lang['modtask_user_error']}", "{$lang['modtask_not_image']}");
             }
             if ($img_size[0] < 5 || $img_size[1] < 5) {
                 stderr("{$lang['modtask_user_error']}", "{$lang['modtask_image_small']}");
             }
-            if (($img_size[0] > $INSTALLER09['av_img_width']) or ($img_size[1] > $INSTALLER09['av_img_height'])) {
+            if (($img_size[0] > $site_config['av_img_width']) or ($img_size[1] > $site_config['av_img_height'])) {
                 $image = resize_image([
-                    'max_width'  => $INSTALLER09['av_img_width'],
-                    'max_height' => $INSTALLER09['av_img_height'],
+                    'max_width'  => $site_config['av_img_width'],
+                    'max_height' => $site_config['av_img_height'],
                     'cur_width'  => $img_size[0],
                     'cur_height' => $img_size[1],
                 ]);
@@ -578,16 +578,16 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
         }
         if (!empty($signature)) {
             $img_size = @getimagesize($signature);
-            if ($img_size == false || !in_array($img_size['mime'], $INSTALLER09['allowed_ext'])) {
+            if ($img_size == false || !in_array($img_size['mime'], $site_config['allowed_ext'])) {
                 stderr("{$lang['modtask_user_error']}", "{$lang['modtask_not_image']}");
             }
             if ($img_size[0] < 5 || $img_size[1] < 5) {
                 stderr("{$lang['modtask_user_error']}", "{$lang['modtask_image_small']}");
             }
-            if (($img_size[0] > $INSTALLER09['sig_img_width']) or ($img_size[1] > $INSTALLER09['sig_img_height'])) {
+            if (($img_size[0] > $site_config['sig_img_width']) or ($img_size[1] > $site_config['sig_img_height'])) {
                 $image = resize_image([
-                    'max_width'  => $INSTALLER09['sig_img_width'],
-                    'max_height' => $INSTALLER09['sig_img_height'],
+                    'max_width'  => $site_config['sig_img_width'],
+                    'max_height' => $site_config['sig_img_height'],
                     'cur_width'  => $img_size[0],
                     'cur_height' => $img_size[1],
                 ]);
@@ -858,9 +858,9 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
             $user_cache['invite_on'] = 'no';
             $useredit['update'][] = $lang['modtask_suspended_yes'];
             $subject = sqlesc($lang['modtask_suspend_title']);
-            $msg = sqlesc($lang['modtask_suspend_msg'] . $username . ".\n[b]{$lang['modtask_suspend_msg1']}[/b]\n" . sqlesc($suspended_reason) . ".\n\n{$lang['modtask_suspend_msg2']}\n\n{$lang['modtask_suspend_msg3']}\n\n{$lang['modtask_suspend_msg4']}\n" . $INSTALLER09['site_name'] . $lang['modtask_suspend_msg5']);
+            $msg = sqlesc($lang['modtask_suspend_msg'] . $username . ".\n[b]{$lang['modtask_suspend_msg1']}[/b]\n" . sqlesc($suspended_reason) . ".\n\n{$lang['modtask_suspend_msg2']}\n\n{$lang['modtask_suspend_msg3']}\n\n{$lang['modtask_suspend_msg4']}\n" . $site_config['site_name'] . $lang['modtask_suspend_msg5']);
             //=== post to forum
-            $body = sqlesc("{$lang['modtask_suspend_acc_for']}[b][url=" . $INSTALLER09['baseurl'] . '/userdetails.php?id=' . (int)$user['id'] . ']' . htmlsafechars($user['username']) . "[/url][/b]{$lang['modtask_suspend_has_by']}" . $CURUSER['username'] . "\n\n [b]{$lang['modtask_suspend_reason']}[/b]\n " . sqlesc($suspended_reason) . ".\n");
+            $body = sqlesc("{$lang['modtask_suspend_acc_for']}[b][url=" . $site_config['baseurl'] . '/userdetails.php?id=' . (int)$user['id'] . ']' . htmlsafechars($user['username']) . "[/url][/b]{$lang['modtask_suspend_has_by']}" . $CURUSER['username'] . "\n\n [b]{$lang['modtask_suspend_reason']}[/b]\n " . sqlesc($suspended_reason) . ".\n");
             auto_post($subject, $body);
         }
         if ($_POST['suspended'] === 'no') {
@@ -871,7 +871,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
             $updateset[] = "invite_on = 'yes'";
             $useredit['update'][] = $lang['modtask_suspended_no'];
             $subject = sqlesc($lang['modtask_unsuspend_title']);
-            $msg = sqlesc($lang['modtask_unsuspend_msg'] . $username . ".\n[b]{$lang['modtask_suspend_msg1']}[/b]\n" . sqlesc($suspended_reason) . ". \n\n{$lang['modtask_suspend_msg4']}\n" . $INSTALLER09['site_name'] . $lang['modtask_suspend_msg5']);
+            $msg = sqlesc($lang['modtask_unsuspend_msg'] . $username . ".\n[b]{$lang['modtask_suspend_msg1']}[/b]\n" . sqlesc($suspended_reason) . ". \n\n{$lang['modtask_suspend_msg4']}\n" . $site_config['site_name'] . $lang['modtask_suspend_msg5']);
         }
         $updateset[] = 'suspended = ' . sqlesc($_POST['suspended']);
         $curuser_cache['suspended'] = $_POST['suspended'];
@@ -1032,22 +1032,22 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
     if ($curuser_cache) {
         $mc1->begin_transaction('MyUser_' . $userid);
         $mc1->update_row(false, $curuser_cache);
-        $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+        $mc1->commit_transaction($site_config['expires']['curuser']);
     }
     if ($user_cache) {
         $mc1->begin_transaction('user' . $userid);
         $mc1->update_row(false, $user_cache);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+        $mc1->commit_transaction($site_config['expires']['user_cache']);
     }
     if ($stats_cache) {
         $mc1->begin_transaction('userstats_' . $userid);
         $mc1->update_row(false, $stats_cache);
-        $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+        $mc1->commit_transaction($site_config['expires']['u_stats']);
     }
     if ($user_stats_cache) {
         $mc1->begin_transaction('user_stats_' . $userid);
         $mc1->update_row(false, $user_stats_cache);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+        $mc1->commit_transaction($site_config['expires']['user_stats']);
     }
     if (sizeof($updateset) > 0) {
         sql_query('UPDATE users SET ' . implode(', ', $updateset) . ' WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
@@ -1069,17 +1069,17 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
         'opt1' => $row['opt1'],
         'opt2' => $row['opt2'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
     $mc1->begin_transaction('user_' . $userid);
     $mc1->update_row(false, [
         'opt1' => $row['opt1'],
         'opt2' => $row['opt2'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
     //== 09 Updated Sysop log - thanks to pdq
     write_info("{$lang['modtask_sysop_user_acc']} $userid (<a href='userdetails.php?id=$userid'>" . htmlsafechars($user['username']) . "</a>)\n{$lang['modtask_sysop_thing']}" . join(', ', $useredit['update']) . "{$lang['modtask_gl_by']}<a href='userdetails.php?id={$CURUSER['id']}'>{$CURUSER['username']}</a>");
     $returnto = htmlsafechars($_POST['returnto']);
-    header("Location: {$INSTALLER09['baseurl']}/$returnto");
+    header("Location: {$site_config['baseurl']}/$returnto");
     stderr("{$lang['modtask_user_error']}", "{$lang['modtask_try_again']}");
 }
 stderr("{$lang['modtask_user_error']}", "{$lang['modtask_no_idea']}");

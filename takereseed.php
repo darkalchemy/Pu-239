@@ -1,13 +1,13 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 check_user_status();
-global $INSTALLER09;
+global $site_config;
 $pm_what = isset($_POST['pm_what']) && $_POST['pm_what'] == 'last10' ? 'last10' : 'owner';
 $reseedid = (int)$_POST['reseedid'];
 $uploader = (int)$_POST['uploader'];
 $use_subject = true;
 $subject = 'Request reseed!';
-$pm_msg = 'User ' . $CURUSER['username'] . ' asked for a reseed on torrent ' . $INSTALLER09['baseurl'] . '/details.php?id=' . $reseedid . " !\nThank You!";
+$pm_msg = 'User ' . $CURUSER['username'] . ' asked for a reseed on torrent ' . $site_config['baseurl'] . '/details.php?id=' . $reseedid . " !\nThank You!";
 $pms = [];
 if ($pm_what == 'last10') {
     $res = sql_query('SELECT snatched.userid, snatched.torrentid FROM snatched  where snatched.torrentid =' . sqlesc($reseedid) . " AND snatched.seeder='yes' LIMIT 10") or sqlerr(__FILE__, __LINE__);
@@ -25,8 +25,8 @@ $mc1->begin_transaction('torrent_details_' . $reseedid);
 $mc1->update_row(false, [
     'last_reseed' => TIME_NOW,
 ]);
-$mc1->commit_transaction($INSTALLER09['expires']['torrent_details']);
-if ($INSTALLER09['seedbonus_on'] == 1) {
+$mc1->commit_transaction($site_config['expires']['torrent_details']);
+if ($site_config['seedbonus_on'] == 1) {
     //===remove karma
     sql_query('UPDATE users SET seedbonus = seedbonus-10.0 WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($CURUSER['seedbonus'] - 10);
@@ -34,12 +34,12 @@ if ($INSTALLER09['seedbonus_on'] == 1) {
     $mc1->update_row(false, [
         'seedbonus' => $update['seedbonus'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+    $mc1->commit_transaction($site_config['expires']['u_stats']);
     $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
     $mc1->update_row(false, [
         'seedbonus' => $update['seedbonus'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+    $mc1->commit_transaction($site_config['expires']['user_stats']);
     //===end
 }
 header("Refresh: 0; url=./details.php?id=$reseedid&reseed=1");

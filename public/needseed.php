@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
@@ -42,7 +42,7 @@ if ($needed == 'leechers') {
             $cat = "<img src=\"./images/caticons/" . get_categorie_icons() . "/{$needseed['cat_pic']}\" alt=\"{$needseed['cat_name']}\" title=\"{$needseed['cat_name']}\" />";
             $torrname = htmlsafechars(CutName($arr['name'], 80));
             $peers = (int)$arr['seeders'] . ' seeder' . ((int)$arr['seeders'] > 1 ? 's' : '') . ', ' . (int)$arr['leechers'] . ' leecher' . ((int)$arr['leechers'] > 1 ? 's' : '');
-            $HTMLOUT .= "<tr><td><a href='{$INSTALLER09['baseurl']}/userdetails.php?id=" . (int)$What_User_ID . "'>" . htmlsafechars($arr['username']) . '</a>&#160;(' . member_ratio($arr['uploaded'], $arr['downloaded']) . ")</td><td><a href='{$INSTALLER09['baseurl']}/details.php?id=" . (int)$What_ID . "' title='{$torrname}'>{$torrname}</a></td><td>{$cat}</td><td>{$peers}</td></tr>\n";
+            $HTMLOUT .= "<tr><td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$What_User_ID . "'>" . htmlsafechars($arr['username']) . '</a>&#160;(' . member_ratio($arr['uploaded'], $arr['downloaded']) . ")</td><td><a href='{$site_config['baseurl']}/details.php?id=" . (int)$What_ID . "' title='{$torrname}'>{$torrname}</a></td><td>{$cat}</td><td>{$peers}</td></tr>\n";
         }
         $HTMLOUT .= "</table>\n";
     } else {
@@ -63,7 +63,7 @@ if ($needed == 'leechers') {
             $needseed['cat_pic'] = htmlsafechars($change[$arr['category']]['image']);
             $cat = "<img src=\"./images/caticons/" . get_categorie_icons() . "/{$needseed['cat_pic']}\" alt=\"{$needseed['cat_name']}\" title=\"{$needseed['cat_name']}\" />";
             $torrname = htmlsafechars(CutName($arr['name'], 80));
-            $HTMLOUT .= "<tr><td>{$cat}</td><td><a href='{$INSTALLER09['baseurl']}/details.php?id=" . (int)$arr['id'] . "&amp;hit=1' title='{$torrname}'>{$torrname}</a></td><td align='center'><span style='color: red'>" . (int)$arr['seeders'] . "</span></td><td align='center'>" . (int)$arr['leechers'] . "</td></tr>\n";
+            $HTMLOUT .= "<tr><td>{$cat}</td><td><a href='{$site_config['baseurl']}/details.php?id=" . (int)$arr['id'] . "&amp;hit=1' title='{$torrname}'>{$torrname}</a></td><td align='center'><span style='color: red'>" . (int)$arr['seeders'] . "</span></td><td align='center'>" . (int)$arr['leechers'] . "</td></tr>\n";
         }
         $HTMLOUT .= "</table>\n";
     } else {

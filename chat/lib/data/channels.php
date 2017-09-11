@@ -7,7 +7,7 @@
  * @link https://blueimp.net/ajax/
  */
 
-global $INSTALLER09, $mc1;
+global $site_config, $mc1;
 
 // List containing the custom channels:
 $channels = [];
@@ -15,7 +15,7 @@ $sql = 'SELECT name FROM ajax_chat_channels ORDER BY id ASC';
 $hashed = md5($sql);
 if (($channels = $mc1->get_value('channels_' . $hashed)) === false) {
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    $channels[] = $INSTALLER09['site_name'];
+    $channels[] = $site_config['site_name'];
     while ($channel = mysqli_fetch_assoc($res)) {
         $channels[] = $channel['name'];
     }

@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once CLASS_DIR . 'class_check.php';
@@ -9,7 +9,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_class_config'));
 
-if (!in_array($CURUSER['id'], $INSTALLER09['allowed_staff']['id'])) {
+if (!in_array($CURUSER['id'], $site_config['allowed_staff']['id'])) {
     stderr($lang['classcfg_error'], $lang['classcfg_denied']);
 }
 //get the config from db - stoner/pdq
@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             while ($arr = mysqli_fetch_assoc($res)) {
                 $the_names .= "$arr[name] => '$arr[classname]',";
                 $the_colors .= "$arr[name] => '$arr[classcolor]',";
-                $the_images .= "$arr[name] => " . '$INSTALLER09[' . "'pic_base_url'" . ']' . ".'class/$arr[classpic]',";
+                $the_images .= "$arr[name] => " . '$site_config[' . "'pic_base_url'" . ']' . ".'class/$arr[classpic]',";
             }
             $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
             $configfile .= "\n\n\n?" . '>';
@@ -164,10 +164,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     foreach ($row1 as $row2) {
                         $mc1->begin_transaction('MyUser_' . $row2['id']);
                         $mc1->update_row(false, ['class' => $row2['class']]);
-                        $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                        $mc1->commit_transaction($site_config['expires']['curuser']);
                         $mc1->begin_transaction('user' . $row2['id']);
                         $mc1->update_row(false, ['class' => $row2['class']]);
-                        $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                        $mc1->commit_transaction($site_config['expires']['user_cache']);
                     }
                 }
             }
@@ -188,10 +188,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     foreach ($row1 as $row2) {
                         $mc1->begin_transaction('MyUser_' . $row2['id']);
                         $mc1->update_row(false, ['class' => $row2['class']]);
-                        $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                        $mc1->commit_transaction($site_config['expires']['curuser']);
                         $mc1->begin_transaction('user' . $row2['id']);
                         $mc1->update_row(false, ['class' => $row2['class']]);
-                        $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                        $mc1->commit_transaction($site_config['expires']['user_cache']);
                     }
                 }
             }
@@ -209,7 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 while ($arr = mysqli_fetch_assoc($res)) {
                     $the_names .= "$arr[name] => '$arr[classname]',";
                     $the_colors .= "$arr[name] => '$arr[classcolor]',";
-                    $the_images .= "$arr[name] => " . '$INSTALLER09[' . "'pic_base_url'" . ']' . ".'class/$arr[classpic]',";
+                    $the_images .= "$arr[name] => " . '$site_config[' . "'pic_base_url'" . ']' . ".'class/$arr[classpic]',";
                 }
                 $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
                 $configfile .= "\n\n\n?" . '>';
@@ -266,10 +266,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             foreach ($row1 as $row2) {
                 $mc1->begin_transaction('MyUser_' . $row2['id']);
                 $mc1->update_row(false, ['class' => $row2['class']]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $mc1->begin_transaction('user' . $row2['id']);
                 $mc1->update_row(false, ['class' => $row2['class']]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
             }
         }
         if (sql_query('DELETE FROM class_config WHERE name = ' . sqlesc($name) . '')) {
@@ -286,7 +286,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             while ($arr = mysqli_fetch_assoc($res)) {
                 $the_names .= "$arr[name] => '$arr[classname]',";
                 $the_colors .= "$arr[name] => '$arr[classcolor]',";
-                $the_images .= "$arr[name] => " . '$INSTALLER09[' . "'pic_base_url'" . ']' . ".'class/$arr[classpic]',";
+                $the_images .= "$arr[name] => " . '$site_config[' . "'pic_base_url'" . ']' . ".'class/$arr[classpic]',";
             }
             $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
             $configfile .= "\n\n\n?" . '>';

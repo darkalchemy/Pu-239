@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -31,7 +31,7 @@ if (isset($_GET['act'])) {
         $TEMPLATE = sql_query('SELECT * FROM stylesheets WHERE id=' . sqlesc($ID) . ' LIMIT 1');
         $TEM = mysqli_fetch_array($TEMPLATE);
         $HTML .= "
-			<form action='{$INSTALLER09['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=4' method='post'>
+			<form action='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=4' method='post'>
          <input type='hidden' value='" . (int)$TEM['id'] . "' name='uri' />
          <table width='50%'>
 			<tr><td colspan='2' class='colhead' align='center'>{$lang['themes_edit_tem']} " . htmlsafechars($TEM['name']) . "</td></tr>
@@ -55,7 +55,7 @@ if (isset($_GET['act'])) {
         if (!is_valid_id($ID)) {
             stderr("{$lang['themes_error']}", "{$lang['themes_inv_id']}");
         }
-        stderr("{$lang['themes_delete_q']}", "{$lang['themes_delete_sure_q']}<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=5&amp;id=$ID&amp;sure=1'>
+        stderr("{$lang['themes_delete_q']}", "{$lang['themes_delete_sure_q']}<a href='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=5&amp;id=$ID&amp;sure=1'>
 			{$lang['themes_delete_sure_q2']}</a> {$lang['themes_delete_sure_q3']}");
     }
     if ($ACT == 3) { //--ADD NEW
@@ -111,7 +111,7 @@ if (isset($_GET['act'])) {
         if (!@sql_query('UPDATE stylesheets SET ' . implode(', ', $EDIT) . ' WHERE id=' . sqlesc($URI))) {
             stderr("{$lang['themes_error']}", "{$lang['themes_some_wrong']}");
         }
-        header("Location: {$INSTALLER09['baseurl']}/staffpanel.php?tool=themes&action=themes&msg=1");
+        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=themes&action=themes&msg=1");
     }
     if ($ACT == 5) { //--DELETE FINAL
         if (!isset($_GET['id'])) {
@@ -130,7 +130,7 @@ if (isset($_GET['act'])) {
         sql_query('DELETE FROM stylesheets WHERE id=' . sqlesc($ID));
         $RANDSTYLE = mysqli_fetch_array(sql_query('SELECT id FROM stylesheets ORDER BY RAND() LIMIT 1'));
         sql_query('UPDATE users SET stylesheet=' . sqlesc($RANDSTYLE['id']) . ' WHERE stylesheet=' . sqlesc($ID));
-        header("Location: {$INSTALLER09['baseurl']}/staffpanel.php?tool=themes&action=themes&msg=2");
+        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=themes&action=themes&msg=2");
     }
     if ($ACT == 6) { //--ADD NEW SAVE
         if (!isset($_POST['id'])) {
@@ -143,11 +143,11 @@ if (isset($_GET['act'])) {
             stderr("{$lang['themes_error']}", "{$lang['themes_inv_name']}");
         }
         if (!file_exists('templates/' . $_POST['id'] . '/template.php')) {
-            stderr("{$lang['themes_nofile']}", "{$lang['themes_inv_file']}<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=7&amp;id=" . (int)$_POST['id'] . '&amp;uri=' . (int)$_POST['uri'] . '&amp;name=' . htmlsafechars($_POST['name']) . "'>{$lang['themes_file_exists']}</a>/
-			<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=themes'>{$lang['themes_not_exists']}</a>");
+            stderr("{$lang['themes_nofile']}", "{$lang['themes_inv_file']}<a href='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=7&amp;id=" . (int)$_POST['id'] . '&amp;uri=' . (int)$_POST['uri'] . '&amp;name=' . htmlsafechars($_POST['name']) . "'>{$lang['themes_file_exists']}</a>/
+			<a href='{$site_config['baseurl']}/staffpanel.php?tool=themes'>{$lang['themes_not_exists']}</a>");
         }
         sql_query('INSERT INTO stylesheets(id, uri, name)VALUES(' . sqlesc($_POST['id']) . ', ' . sqlesc($_POST['uri']) . ', ' . sqlesc($_POST['name']) . ')');
-        header("Location: {$INSTALLER09['baseurl']}/staffpanel.php?tool=themes&action=themes&msg=3");
+        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=themes&action=themes&msg=3");
     }
     if ($ACT == 7) { //--ADD NEW IF FOLDER NO EXISTS
         if (!isset($_GET['id'])) {
@@ -174,7 +174,7 @@ if (isset($_GET['msg'])) {
 }
 if (!isset($_GET['act'])) {
     $HTML .= "<table width='80%'>
-		<tr><td colspan='5'><a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=3'><span class='btn'>{$lang['themes_addnew']}</span></a></td></tr>
+		<tr><td colspan='5'><a href='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=3'><span class='btn'>{$lang['themes_addnew']}</span></a></td></tr>
 		<tr>
 		<td class='colhead'>{$lang['themes_id']}</td>
 		<td class='colhead'>{$lang['themes_uri']}</td>
@@ -190,8 +190,8 @@ if (!isset($_GET['act'])) {
 			<td align='left'>" . html($TE['uri']) . "</td>
 			<td align='left'>" . html($TE['name']) . "</td>
 			<td align='left'><b>" . (file_exists('templates/' . (int)$TE['id'] . '/template.php') ? "{$lang['themes_file_exists']}" : "{$lang['themes_not_exists']}") . "</b></td>
-			<td align='left'><a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=1&amp;id=" . (int)$TE['id'] . "'>[{$lang['themes_edit']}]</a>
-			<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=2&amp;id=" . (int)$TE['id'] . "'>[{$lang['themes_delete']}]</a></td>
+			<td align='left'><a href='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=1&amp;id=" . (int)$TE['id'] . "'>[{$lang['themes_edit']}]</a>
+			<a href='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=2&amp;id=" . (int)$TE['id'] . "'>[{$lang['themes_delete']}]</a></td>
 			</tr>
 			";
     }

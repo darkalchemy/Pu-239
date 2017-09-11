@@ -1,10 +1,10 @@
 <?php
 function optimizedb($data)
 {
-    global $INSTALLER09, $queries;
+    global $site_config, $queries;
     set_time_limit(1200);
-    ignore_user_abort(1);
-    $sql = sql_query("SHOW TABLE STATUS FROM {$INSTALLER09['mysql_db']}");
+    ignore_user_abort(true);
+    $sql = sql_query("SHOW TABLE STATUS FROM {$site_config['mysql_db']}");
     $oht = '';
     while ($row = mysqli_fetch_assoc($sql)) {
         if ($row['Data_free'] > 100) {

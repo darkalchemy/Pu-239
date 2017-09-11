@@ -1,9 +1,9 @@
 <?php
 function silvertorrents_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
-    set_time_limit(0);
-    ignore_user_abort(1);
+    global $site_config, $queries, $mc1;
+    set_time_limit(1200);
+    ignore_user_abort(true);
     //=== Clean silver
     $res = sql_query('SELECT id, silver FROM torrents WHERE silver > 1 AND silver < ' . TIME_NOW) or sqlerr(__FILE__, __LINE__);
     $Silver_buffer = [];
@@ -14,7 +14,7 @@ function silvertorrents_update($data)
             $mc1->update_row(false, [
                 'silver' => 0,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['torrent_details']);
+            $mc1->commit_transaction($site_config['expires']['torrent_details']);
         }
         $count = count($Silver_buffer);
         if ($count > 0) {

@@ -2,17 +2,17 @@
 if (!defined('IN_OFFERS')) {
     exit('No direct script access allowed');
 }
-if ($CURUSER['class'] < $INSTALLER09['offer_min_class']) {
+if ($CURUSER['class'] < $site_config['offer_min_class']) {
     $HTMLOUT .= "<h1>Oops!</h1>
-    <div class='some class'>You must be " . get_user_class_name($INSTALLER09['offer_min_class']) . ' or above <b>AND</b> have a ratio above <b>' . $INSTALLER09['offer_min_ratio'] . "</b> to make an offer.
+    <div class='some class'>You must be " . get_user_class_name($site_config['offer_min_class']) . ' or above <b>AND</b> have a ratio above <b>' . $site_config['offer_min_ratio'] . "</b> to make an offer.
     <br><br> Please see the <a href='faq.php'><b>FAQ</b></a> 
     for more information on different user classes and what they can do.<br><br>
-    <b>" . $INSTALLER09['site_name'] . ' staff</b></div>';
+    <b>" . $site_config['site_name'] . ' staff</b></div>';
     /////////////////////// HTML OUTPUT //////////////////////////////
     echo stdhead('Offers Page') . $HTMLOUT . stdfoot();
     exit();
 }
-$gigsneeded = ($INSTALLER09['offer_gigs_upped'] * 1024 * 1024 * 1024);
+$gigsneeded = ($site_config['offer_gigs_upped'] * 1024 * 1024 * 1024);
 $gigsupped = $CURUSER['uploaded'];
 $ratio = (($CURUSER['downloaded'] > 0) ? ($CURUSER['uploaded'] / $CURUSER['downloaded']) : 0);
 if ($CURUSER['class'] < UC_VIP) {
@@ -22,17 +22,17 @@ if ($CURUSER['class'] < UC_VIP) {
     }
 }
 $HTMLOUT .= '<h3>Offer Rules</h3>';
-$HTMLOUT .= 'To make an offer you must have a ratio of at least<b> ' . $INSTALLER09['offer_min_ratio'] . '</b> AND have uploaded at least <b>' . $INSTALLER09['offer_gigs_upped'] . ' GB</b>.<br>' . ($INSTALLER09['karma'] ? " A offer will also cost you <b><a class='altlink' href='mybonus.php'>" . $INSTALLER09['offer_cost_bonus'] . ' Karma Points</a></b>....<br><br>' : '') . " 
+$HTMLOUT .= 'To make an offer you must have a ratio of at least<b> ' . $site_config['offer_min_ratio'] . '</b> AND have uploaded at least <b>' . $site_config['offer_gigs_upped'] . ' GB</b>.<br>' . ($site_config['karma'] ? " A offer will also cost you <b><a class='altlink' href='mybonus.php'>" . $site_config['offer_cost_bonus'] . ' Karma Points</a></b>....<br><br>' : '') . " 
 In your particular case <a class='altlink' href='userdetails.php?id=" . $CURUSER['id'] . "'>" . $CURUSER['username'] . '</a>, ';
-if ($INSTALLER09['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus'] < $INSTALLER09['offer_cost_bonus']) {
+if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus'] < $site_config['offer_cost_bonus']) {
     $HTMLOUT .= "you do not have enough <a class='altlink' href='mybonus.php'>Karma Points</a> ...
         you can not make offers.<p>To view all offers, click 
         <a class='altlink' href='viewoffers.php'><b>here</b></a></p>\n<br><br>";
 } elseif ($gigsupped < $gigsneeded && $CURUSER['class'] < UC_VIP) {
-    $HTMLOUT .= 'you have <b>not</b> yet uploaded <b>' . $INSTALLER09['offer_gigs_upped'] . " GB</b>... you can not make offers.<p>
+    $HTMLOUT .= 'you have <b>not</b> yet uploaded <b>' . $site_config['offer_gigs_upped'] . " GB</b>... you can not make offers.<p>
     To view all offers, click <a class='altlink' href='viewoffers.php'><b>here</b></a></p>\n
     <br><br>";
-} elseif ($ratio < $INSTALLER09['offer_min_ratio'] && $CURUSER['class'] < UC_VIP) {
+} elseif ($ratio < $site_config['offer_min_ratio'] && $CURUSER['class'] < UC_VIP) {
     $sss = ($gigsupped < $gigsneeded ? 's' : '');
     $HTMLOUT .= 'your ratio of <b>' . member_ratio($CURUSER['uploaded'], $CURUSER['downloaded']) . '</b>' . ($gigsupped < $gigsneeded ? ' and your total uploaded of<b> ' . round($gigs, 2) . ' GB</b>' : '') . " fail$sss to meet the minimum requirements. to Make a Offer.<br><br>
          <p>To view all offers, click <a href='viewoffers.php'><b>here</b></a></p>\n<br><br>";
@@ -62,7 +62,7 @@ Please search torrents before adding an offer!</td></tr><tr><td align='left'>
 <br>\n";
     $HTMLOUT .= "<form method='post' name='compose' action='viewoffers.php?new_offer'><a name='add' id='add'></a>
 <table border='1' cellspacing='0' width='750px' cellpadding='5'><tr><td class='colhead' align='left' colspan='2'>
-Offers are for Users with a good ratio who have uploaded at least " . $INSTALLER09['offer_gigs_upped'] . " gigs Only... Share and you shall recieve!</td></tr>
+Offers are for Users with a good ratio who have uploaded at least " . $site_config['offer_gigs_upped'] . " gigs Only... Share and you shall recieve!</td></tr>
 <tr><td align='right'><b>Title</b></td><td align='left'><input type='text' size='40' name='offertitle' />
 <select name='category'><option value='0'>(Select a Category)</option>\n";
     $res2 = sql_query('SELECT id, name FROM categories order by name');
@@ -84,7 +84,7 @@ Offers are for Users with a good ratio who have uploaded at least " . $INSTALLER
 </td></tr>
 
 <tr><td align='right'><b>Description</b></td><td align='left'>\n";
-    if ($INSTALLER09['textbbcode']) {
+    if ($site_config['textbbcode']) {
         require_once INCL_DIR . 'bbcode_functions.php';
         $HTMLOUT .= textbbcode('add_offer', 'body', '');
     } else {

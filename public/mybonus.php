@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
@@ -10,7 +10,7 @@ $stdhead = [
                     'forums'
                 ]
     ];
-if ($INSTALLER09['seedbonus_on'] == 0) {
+if ($site_config['seedbonus_on'] == 0) {
     stderr('Information', 'The Karma bonus system is currently offline for maintainance work');
 }
 
@@ -36,16 +36,16 @@ if (isset($_GET['freeleech_success']) && $_GET['freeleech_success']) {
     if ($freeleech_success == '1') {
         if ($_GET['norefund'] != '0') {
             $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-                "<td align='left' class='one'><img src='{$INSTALLER09['pic_base_url']}/smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>
-{$CURUSER['username']} you have set the tracker <b>Free Leech !</b> <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br><br>Remaining " . htmlsafechars($_GET['norefund']) . ' points have been contributed towards the next freeleech period automatically!' .
-                "<br> click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
+                "<td align='left' class='one'><img src='{$site_config['pic_base_url']}/smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>
+{$CURUSER['username']} you have set the tracker <b>Free Leech !</b> <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br><br>Remaining " . htmlsafechars($_GET['norefund']) . ' points have been contributed towards the next freeleech period automatically!' .
+                "<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
                 '</td></tr></table>';
             echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         } else {
             $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-                "<td align='left' class='one'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>
-{$CURUSER['username']} you have set the tracker <b>Free Leech !</b> <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br>" .
-                "<br> click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
+                "<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>
+{$CURUSER['username']} you have set the tracker <b>Free Leech !</b> <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br>" .
+                "<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
                 '</td></tr></table>';
             echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         }
@@ -54,9 +54,9 @@ if (isset($_GET['freeleech_success']) && $_GET['freeleech_success']) {
     }
     if ($freeleech_success == '2') {
         $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-            "<td align='left' class='one'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>" .
-            "{$CURUSER['username']} you have contributed towards making the tracker Free Leech ! <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br>" .
-            "<br> click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
+            "<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>" .
+            "{$CURUSER['username']} you have contributed towards making the tracker Free Leech ! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br>" .
+            "<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
             '</td></tr></table>';
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
@@ -71,16 +71,16 @@ if (isset($_GET['doubleup_success']) && $_GET['doubleup_success']) {
     if ($doubleup_success == '1') {
         if ($_GET['norefund'] != '0') {
             $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-                "<td align='left' class='one'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>
-{$CURUSER['username']} you have set the tracker <b>Double Up !</b> <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br><br>Remaining " . htmlsafechars($_GET['norefund']) . ' points have been contributed towards the next Double upload period automatically!' .
-                "<br> click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
+                "<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>
+{$CURUSER['username']} you have set the tracker <b>Double Up !</b> <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br><br>Remaining " . htmlsafechars($_GET['norefund']) . ' points have been contributed towards the next Double upload period automatically!' .
+                "<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
                 '</td></tr></table>';
             echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         } else {
             $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-                "<td align='left' class='one'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>
-{$CURUSER['username']} you have set the tracker <b>Double Up !</b> <img src={$INSTALLER09['pic_base_url']}smilies/w00t.gif alt='w00t' title='W00t' /><br>" .
-                "<b /r> click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
+                "<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>
+{$CURUSER['username']} you have set the tracker <b>Double Up !</b> <img src={$site_config['pic_base_url']}smilies/w00t.gif alt='w00t' title='W00t' /><br>" .
+                "<b /r> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
                 '</td></tr></table>';
             echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         }
@@ -89,9 +89,9 @@ if (isset($_GET['doubleup_success']) && $_GET['doubleup_success']) {
     }
     if ($doubleup_success == '2') {
         $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-            "<td align='left' class='one'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>" .
-            "{$CURUSER['username']} you have contributed towards making the tracker Double Upload ! <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br>" .
-            "<br> click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
+            "<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>" .
+            "{$CURUSER['username']} you have contributed towards making the tracker Double Upload ! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br>" .
+            "<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
             '</td></tr></table>';
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
@@ -106,16 +106,16 @@ if (isset($_GET['halfdown_success']) && $_GET['halfdown_success']) {
     if ($halfdown_success == '1') {
         if ($_GET['norefund'] != '0') {
             $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-                "<td align='left' class='one'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>
-{$CURUSER['username']} you have set the tracker <b>Half Download !</b> <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br><br>Remaining " . htmlsafechars($_GET['norefund']) . ' points have been contributed towards the next Half download period automatically!' .
-                "<br> click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
+                "<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>
+{$CURUSER['username']} you have set the tracker <b>Half Download !</b> <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br><br>Remaining " . htmlsafechars($_GET['norefund']) . ' points have been contributed towards the next Half download period automatically!' .
+                "<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
                 '</td></tr></table>';
             echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         } else {
             $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-                "<td align='left' class='one'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>
-{$CURUSER['username']} you have set the tracker <b>Half Download !</b> <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br>" .
-                "<br> click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
+                "<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>
+{$CURUSER['username']} you have set the tracker <b>Half Download !</b> <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br>" .
+                "<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
                 '</td></tr></table>';
             echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         }
@@ -124,9 +124,9 @@ if (isset($_GET['halfdown_success']) && $_GET['halfdown_success']) {
     }
     if ($halfdown_success == '2') {
         $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-            "<td align='left' class='one'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>" .
-            "{$CURUSER['username']} you have contributed towards making the tracker Half Download ! <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br>" .
-            "<br> click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
+            "<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>" .
+            "{$CURUSER['username']} you have contributed towards making the tracker Half Download ! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br>" .
+            "<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
             '</td></tr></table>';
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
@@ -170,10 +170,10 @@ switch (true) {
         }
 
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>
-<td class='one' align='left'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
+<td class='one' align='left'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
 <td class='one' align='left'><b>Congratulations ! </b>" . $CURUSER['username'] . ' you have just increased your upload amount by ' . $amt . "!
-<img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br><br><br> click to go back to your
-<a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
+<img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br><br><br> click to go back to your
+<a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -181,10 +181,10 @@ switch (true) {
         I_smell_a_rat($_GET['anonymous_success']);
     }
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>
-<td class='one' align='left'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
+<td class='one' align='left'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
 <td class='one' align='left'><b>Congratulations ! </b>" . $CURUSER['username'] . " you have just purchased Anonymous profile for 14 days!
-<img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br><br><br> click to go back to your
-<a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
+<img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br><br><br> click to go back to your
+<a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -192,10 +192,10 @@ switch (true) {
         I_smell_a_rat($_GET['parked_success']);
     }
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>
-<td class='one' align='left'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
+<td class='one' align='left'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
 <td class='one' align='left'><b>Congratulations ! </b>" . $CURUSER['username'] . " you have just purchased parked option for your profile !
-<img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br><br><br> click to go back to your
-<a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
+<img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br><br><br> click to go back to your
+<a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -203,10 +203,10 @@ switch (true) {
         I_smell_a_rat($_GET['freeyear_success']);
     }
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>
-<td class='one' align='left'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
+<td class='one' align='left'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
 <td class='one' align='left'><b>Congratulations ! </b>" . $CURUSER['username'] . " you have just purchased freeleech for one year!
-<img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br><br><br> click to go back to your
-<a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
+<img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br><br><br> click to go back to your
+<a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -215,10 +215,10 @@ switch (true) {
     }
 
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>
-<td class='one' align='left'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
+<td class='one' align='left'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
 <td class='one' align='left'><b>Congratulations ! </b>" . $CURUSER['username'] . " you have got your self 3 freeleech slots!!
-<img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br><br><br> click to go back to your
-<a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
+<img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br><br><br> click to go back to your
+<a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -227,10 +227,10 @@ switch (true) {
     }
 
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>
-<td class='one' align='left'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
+<td class='one' align='left'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
 <td class='one' align='left'><b>Congratulations ! </b>" . $CURUSER['username'] . " you have got your self 200 points !!
-<img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br><br><br> click to go back to your
-<a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
+<img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br><br><br> click to go back to your
+<a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -239,10 +239,10 @@ switch (true) {
     }
 
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>
-<td class='one' align='left'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td>
+<td class='one' align='left'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td>
 <td class='one' align='left'><b>Sorry ! </b>" . $CURUSER['username'] . " you just got yourself 2 freeslots !!
-<img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='W00t' title='W00t' /><br><br><br><br> click to go back to your
-<a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
+<img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='W00t' title='W00t' /><br><br><br><br> click to go back to your
+<a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -250,9 +250,9 @@ switch (true) {
         I_smell_a_rat($_GET['pirate_success']);
     }
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr>
-<tr><td align='left' class='one'><img src='{$INSTALLER09['pic_base_url']}smilies/pirate2.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
-<b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself Pirate Status and Freeleech for two weeks! <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
-<br> Click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
+<tr><td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/pirate2.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+<b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself Pirate Status and Freeleech for two weeks! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
+<br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -260,9 +260,9 @@ switch (true) {
         I_smell_a_rat($_GET['king_success']);
     }
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr>
-<tr><td align='left' class='one'><img src='{$INSTALLER09['pic_base_url']}smilies/king.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
-<b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself King Status and Freeleech for one month! <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
-<br> Click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
+<tr><td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/king.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+<b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself King Status and Freeleech for one month! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
+<br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -284,10 +284,10 @@ switch (true) {
         }
 
         $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-            "<td class='one align='left'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td>" .
+            "<td class='one align='left'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td>" .
             "<td class='one' align='left'><b>Congratulations ! </b>" . $CURUSER['username'] . ' you have just decreased your download amount by ' . $amt . '!' .
-            "<img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' /><br><br><br><br> click to go back to your " .
-            "<a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
+            "<img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' /><br><br><br><br> click to go back to your " .
+            "<a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -295,9 +295,9 @@ switch (true) {
         I_smell_a_rat($_GET['class_success']);
 
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr>
-<tr><td align='left' class='one'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
-<b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself VIP Status for one month! <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
-<br> Click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
+<tr><td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+<b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself VIP Status for one month! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
+<br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -305,9 +305,9 @@ switch (true) {
         I_smell_a_rat($_GET['smile_success']);
 
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr>
-<tr><td align='left' class='one'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
-<b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself a set of custom smilies for one month! <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
-<br> Click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
+<tr><td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+<b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself a set of custom smilies for one month! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
+<br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -315,9 +315,9 @@ switch (true) {
         I_smell_a_rat($_GET['warning_success']);
 
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr>
-<tr><td align='left' class='one'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
-<b>Congratulations! </b>" . $CURUSER['username'] . " you have removed your warning for the low price of 1000 points!! <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
-<br> Click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
+<tr><td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+<b>Congratulations! </b>" . $CURUSER['username'] . " you have removed your warning for the low price of 1000 points!! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
+<br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -325,9 +325,9 @@ switch (true) {
         I_smell_a_rat($_GET['invite_success']);
 
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
-<b>Congratulations! </b>" . $CURUSER['username'] . " you have got your self 3 new invites! <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br>
-click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
+<img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+<b>Congratulations! </b>" . $CURUSER['username'] . " you have got your self 3 new invites! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br>
+click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -335,9 +335,9 @@ click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybo
         I_smell_a_rat($_GET['freeslots_success']);
 
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
-<b>Congratulations! </b>" . $CURUSER['username'] . " you have got your self 3 freeleech slots! <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br>
-click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
+<img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+<b>Congratulations! </b>" . $CURUSER['username'] . " you have got your self 3 freeleech slots! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br>
+click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -345,9 +345,9 @@ click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybo
         I_smell_a_rat($_GET['title_success']);
 
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>
-<td align='left' class='one'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
-<b>Congratulations! </b>" . $CURUSER['username'] . ' you are now known as <b>' . $CURUSER['title'] . "</b>! <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
-<br> click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
+<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+<b>Congratulations! </b>" . $CURUSER['username'] . ' you are now known as <b>' . $CURUSER['title'] . "</b>! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
+<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -355,9 +355,9 @@ click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybo
         I_smell_a_rat($_GET['ratio_success']);
 
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>
-<td align='left' class='one'><img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'><b>Congratulations! </b> " . $CURUSER['username'] . " you
-have gained a 1 to 1 ratio on the selected torrent, and the difference in MB has been added to your total upload! <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
-<br> click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>
+<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'><b>Congratulations! </b> " . $CURUSER['username'] . " you
+have gained a 1 to 1 ratio on the selected torrent, and the difference in MB has been added to your total upload! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
+<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>
 </td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
@@ -366,9 +366,9 @@ have gained a 1 to 1 ratio on the selected torrent, and the difference in MB has
         I_smell_a_rat($_GET['gift_fail']);
 
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Huh?</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$INSTALLER09['pic_base_url']}smilies/cry.gif' alt='bad_karma' title='Bad karma' /></td><td align='left' class='one'><b>Not so fast there Mr. fancy pants!</b><br>
+<img src='{$site_config['pic_base_url']}smilies/cry.gif' alt='bad_karma' title='Bad karma' /></td><td align='left' class='one'><b>Not so fast there Mr. fancy pants!</b><br>
 <b>" . $CURUSER['username'] . "...</b> you can not spread the karma to yourself...<br>If you want to spread the love, pick another user! <br>
-<br> click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
+<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -376,8 +376,8 @@ have gained a 1 to 1 ratio on the selected torrent, and the difference in MB has
         I_smell_a_rat($_GET['gift_fail_user']);
 
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Error</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$INSTALLER09['pic_base_url']}smilies/cry.gif' alt='bad_karma' title='Bad karma' /></td><td align='left' class='one'><b>Sorry " . $CURUSER['username'] . "...</b>
-<br> No User with that username <br><br> click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.
+<img src='{$site_config['pic_base_url']}smilies/cry.gif' alt='bad_karma' title='Bad karma' /></td><td align='left' class='one'><b>Sorry " . $CURUSER['username'] . "...</b>
+<br> No User with that username <br><br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.
 <br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
@@ -396,8 +396,8 @@ Click to go back to your <a class="altlink" href="mybonus.php">Karma Points</a> 
         I_smell_a_rat($_GET['gift_fail_points']);
 
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Oops!</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$INSTALLER09['pic_base_url']}smilies/cry.gif' alt='oups' title='Bad karma' /></td><td align='left' class='one'><b>Sorry </b>" . $CURUSER['username'] . " you dont have enough Karma points
-<br> go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
+<img src='{$site_config['pic_base_url']}smilies/cry.gif' alt='oups' title='Bad karma' /></td><td align='left' class='one'><b>Sorry </b>" . $CURUSER['username'] . " you dont have enough Karma points
+<br> go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -405,10 +405,10 @@ Click to go back to your <a class="altlink" href="mybonus.php">Karma Points</a> 
         I_smell_a_rat($_GET['gift_success']);
 
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'><b>Congratulations! " . $CURUSER['username'] . ' </b>
+<img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'><b>Congratulations! " . $CURUSER['username'] . ' </b>
 you have spread the Karma well.<br><br>Member <b>' . htmlsafechars($_GET['usernamegift']) . '</b> will be pleased with your kindness!<br><br>This is the message that was sent:<br>
 <b>Subject:</b> Someone Loves you!<br> <p>You have been given a gift of <b>' . ((int) $_GET['gift_amount_points']) . '</b> Karma points by ' . $CURUSER['username'] . "</p><br>
-You may also <a class='altlink' href='{$INSTALLER09['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . ((int) $_GET['gift_id']) . "'>send " . htmlsafechars($_GET['usernamegift']) . " a message as well</a>, or go back to your <a class='altlink' href='mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
+You may also <a class='altlink' href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . ((int) $_GET['gift_id']) . "'>send " . htmlsafechars($_GET['usernamegift']) . " a message as well</a>, or go back to your <a class='altlink' href='mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -416,9 +416,9 @@ You may also <a class='altlink' href='{$INSTALLER09['baseurl']}/pm_system.php?ac
         I_smell_a_rat($_GET['bounty_success']);
     }
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr>
-<tr><td align='left' class='one'><img src='{$INSTALLER09['pic_base_url']}smilies/pirate2.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
-<b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself bounty and robbed many users of there reputation points! <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
-<br> Click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
+<tr><td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/pirate2.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+<b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself bounty and robbed many users of there reputation points! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
+<br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -426,9 +426,9 @@ You may also <a class='altlink' href='{$INSTALLER09['baseurl']}/pm_system.php?ac
         I_smell_a_rat($_GET['reputation_success']);
 
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
-<b>Congratulations! </b>" . $CURUSER['username'] . " you have got your 100 rep points! <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br>
-click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
+<img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+<b>Congratulations! </b>" . $CURUSER['username'] . " you have got your 100 rep points! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br>
+click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -436,9 +436,9 @@ click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybo
         I_smell_a_rat($_GET['immunity_success']);
 
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$INSTALLER09['pic_base_url']}smilies/yay.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
-<b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself immuntiy from auto hit and run warnings and auto leech warnings ! <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br>
-click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
+<img src='{$site_config['pic_base_url']}smilies/yay.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+<b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself immuntiy from auto hit and run warnings and auto leech warnings ! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br>
+click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -446,9 +446,9 @@ click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybo
         I_smell_a_rat($_GET['userblocks_success']);
 
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
-<b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself access to control the site user blocks! <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br>
-click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
+<img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+<b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself access to control the site user blocks! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br>
+click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 
@@ -456,9 +456,9 @@ click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybo
         I_smell_a_rat($_GET['user_unlocks_success']);
 
         $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$INSTALLER09['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
-<b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself unlocked bonus moods for use on site! <img src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br>
-click to go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
+<img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+<b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself unlocked bonus moods for use on site! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br>
+click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
 }
@@ -518,18 +518,18 @@ if (isset($_GET['exchange'])) {
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['uploaded' => $upload + $arr_points['menge'], 'seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['uploaded' => $upload + $arr_points['menge'], 'seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?up_success=1&amt=$points");
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?up_success=1&amt=$points");
             die;
             break;
 
         case 'reputation':
 //=== trade for reputation
             if ($CURUSER['class'] < UC_POWER_USER || $User['reputation'] >= 5000) {
-                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you already have to many rep points :-P<br>go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you already have to many rep points :-P<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $rep = $reputation + $arr_points['menge'];
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for 100 rep points.\n " . $bonuscomment;
@@ -538,24 +538,24 @@ if (isset($_GET['exchange'])) {
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('user' . $userid);
             $mc1->update_row(false, ['reputation' => $rep]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $userid);
             $mc1->update_row(false, ['reputation' => $rep]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?reputation_success=1");
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?reputation_success=1");
             die;
             break;
 
         case 'immunity':
 //=== trade for immunity
             if ($CURUSER['class'] < UC_POWER_USER || $User['reputation'] < 3000) {
-                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep :-P<br>go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep :-P<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for 1 years immunity status.\n " . $bonuscomment;
             $immunity = (86400 * 365 + TIME_NOW);
@@ -564,17 +564,17 @@ if (isset($_GET['exchange'])) {
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('user' . $userid);
             $mc1->update_row(false, ['immunity' => $immunity]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $userid);
             $mc1->update_row(false, ['immunity' => $immunity]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?immunity_success=1");
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?immunity_success=1");
             die;
             break;
 
@@ -582,7 +582,7 @@ if (isset($_GET['exchange'])) {
 //=== trade for userblock access
             $reputation = $User['reputation'];
             if ($CURUSER['class'] < UC_POWER_USER || $User['reputation'] < 50) {
-                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep points yet - Minimum 50 required :-P<br>go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep points yet - Minimum 50 required :-P<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for user blocks access.\n " . $bonuscomment;
             sql_query("UPDATE users
@@ -590,17 +590,17 @@ if (isset($_GET['exchange'])) {
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('user' . $userid);
             $mc1->update_row(false, ['got_blocks' => 'yes']);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $userid);
             $mc1->update_row(false, ['got_blocks' => 'yes']);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?userblocks_success=1");
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?userblocks_success=1");
             die;
             break;
 
@@ -608,7 +608,7 @@ if (isset($_GET['exchange'])) {
 //=== trade for user_unlocks access
             $reputation = $User['reputation'];
             if ($CURUSER['class'] < UC_POWER_USER || $User['reputation'] < 50) {
-                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep points yet - Minimum 50 required :-P<br>go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides...Sorry your not a Power User or you dont have enough rep points yet - Minimum 50 required :-P<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for user unlocks access.\n " . $bonuscomment;
             sql_query("UPDATE users
@@ -616,17 +616,17 @@ if (isset($_GET['exchange'])) {
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('user' . $userid);
             $mc1->update_row(false, ['got_moods' => 'yes']);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $userid);
             $mc1->update_row(false, ['got_moods' => 'yes']);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?user_unlocks_success=1");
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?user_unlocks_success=1");
             die;
             break;
 
@@ -642,17 +642,17 @@ if (isset($_GET['exchange'])) {
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('user' . $userid);
             $mc1->update_row(false, ['anonymous_until' => $anonymous_until]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $userid);
             $mc1->update_row(false, ['anonymous_until' => $anonymous_until]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?anonymous_success=1");
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?anonymous_success=1");
             die;
             break;
 
@@ -668,17 +668,17 @@ if (isset($_GET['exchange'])) {
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('user' . $userid);
             $mc1->update_row(false, ['parked_until' => $parked_until]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $userid);
             $mc1->update_row(false, ['parked_until' => $parked_until]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?parked_success=1");
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?parked_success=1");
             die;
             break;
 
@@ -694,11 +694,11 @@ if (isset($_GET['exchange'])) {
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['downloaded' => $download - $arr_points['menge'], 'seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['downloaded' => $download - $arr_points['menge'], 'seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?dload_success=1&amt=$points");
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?dload_success=1&amt=$points");
             die;
             break;
 
@@ -714,17 +714,17 @@ if (isset($_GET['exchange'])) {
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('user' . $userid);
             $mc1->update_row(false, ['free_switch' => $free_switch]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $userid);
             $mc1->update_row(false, ['free_switch' => $free_switch]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?freeyear_success=1");
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?freeyear_success=1");
             die;
             break;
 
@@ -738,17 +738,17 @@ if (isset($_GET['exchange'])) {
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('user' . $userid);
             $mc1->update_row(false, ['freeslots' => $slots]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $userid);
             $mc1->update_row(false, ['freeslots' => $slots]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?freeslots_success=1");
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?freeslots_success=1");
             die;
             break;
 
@@ -766,17 +766,17 @@ if (isset($_GET['exchange'])) {
                         WHERE id = ' . sqlesc($userid) . ' AND invites =' . sqlesc($invites)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('user' . $userid);
             $mc1->update_row(false, ['invites' => $inv]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $userid);
             $mc1->update_row(false, ['invites' => $inv]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $karma]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $karma, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?itrade_success=1");
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?itrade_success=1");
             die;
             break;
 
@@ -795,24 +795,24 @@ if (isset($_GET['exchange'])) {
                         WHERE id = ' . sqlesc($userid) . ' AND invites = ' . sqlesc($invites)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('user' . $userid);
             $mc1->update_row(false, ['invites' => $inv, 'freeslots' => $fslot]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $userid);
             $mc1->update_row(false, ['invites' => $inv, 'freeslots' => $fslot]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?itrade2_success=1");
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?itrade2_success=1");
             die;
             break;
 
         case 'pirate':
 //=== trade for 2 weeks pirate status
             if ($CURUSER['pirate'] != 0 or $CURUSER['king'] != 0) {
-                stderr('Error', "Now why would you want to add what you already have?<br>go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Now why would you want to add what you already have?<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $pirate = (86400 * 14 + TIME_NOW);
             $free_switch = (14 * 86400 + TIME_NOW);
@@ -822,17 +822,17 @@ if (isset($_GET['exchange'])) {
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('user' . $userid);
             $mc1->update_row(false, ['free_switch' => $free_switch, 'pirate' => $pirate]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $userid);
             $mc1->update_row(false, ['free_switch' => $free_switch, 'pirate' => $pirate]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?pirate_success=1");
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?pirate_success=1");
             die;
             break;
 
@@ -848,7 +848,7 @@ if (isset($_GET['exchange'])) {
             $pm = [];
             $pm['subject'] = sqlesc('You just got robbed by %s');
             $pm['subject_thief'] = sqlesc('Theft summary');
-            $pm['message'] = sqlesc("Hey\nWe are sorry to announce that you have been robbed by [url=" . $INSTALLER09['baseurl'] . "/userdetails.php?id=%d]%s[/url]\nNow your total reputation is [b]%d[/b]\n[color=#ff0000]This is normal and you should not worry, if you have enough bonus points you can rob other people[/color]");
+            $pm['message'] = sqlesc("Hey\nWe are sorry to announce that you have been robbed by [url=" . $site_config['baseurl'] . "/userdetails.php?id=%d]%s[/url]\nNow your total reputation is [b]%d[/b]\n[color=#ff0000]This is normal and you should not worry, if you have enough bonus points you can rob other people[/color]");
             $pm['message_thief'] = sqlesc("Hey %s\nYou robbed:\n%s\nYour total reputation is now [b]%d[/b] but you lost [b]%d[/b] karma points ");
             $foo = [50 => 3, 100 => 3, 150 => 4, 200 => 5, 250 => 5, 300 => 6];
             $user_limit = isset($foo[$rep_to_steal]) ? $foo[$rep_to_steal] : 0;
@@ -860,22 +860,22 @@ if (isset($_GET['exchange'])) {
             while ($ar = mysqli_fetch_assoc($qr)) {
                 $new_rep = $ar['reputation'] - $rep_to_steal;
                 $update_users[] = '(' . $ar['id'] . ',' . ($ar['reputation'] - $rep_to_steal) . ',' . $ar['seedbonus'] . ')';
-                $pms[] = '(' . $INSTALLER09['chatBotID'] . ',' . $ar['id'] . ',' . TIME_NOW . ',' . sprintf($pm['subject'], $thief_name) . ',' . sprintf($pm['message'], $thief_id, $thief_name, $new_rep) . ')';
-                $robbed_users[] = sprintf('[url=' . $INSTALLER09['baseurl'] . '/userdetails.php?id=%d]%s[/url]', $ar['id'], $ar['username']);
+                $pms[] = '(' . $site_config['chatBotID'] . ',' . $ar['id'] . ',' . TIME_NOW . ',' . sprintf($pm['subject'], $thief_name) . ',' . sprintf($pm['message'], $thief_id, $thief_name, $new_rep) . ')';
+                $robbed_users[] = sprintf('[url=' . $site_config['baseurl'] . '/userdetails.php?id=%d]%s[/url]', $ar['id'], $ar['username']);
                 //== cache updates ???
                 $mc1->begin_transaction('MyUser_' . $ar['id']);
                 $mc1->update_row(false, ['reputation' => $ar['reputation'] - $rep_to_steal]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $mc1->begin_transaction('user' . $ar['id']);
                 $mc1->update_row(false, ['reputation' => $ar['reputation'] - $rep_to_steal]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
 
                 $mc1->begin_transaction('userstats_' . $ar['id']);
                 $mc1->update_row(false, ['seedbonus' => $ar['seedbonus']]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $ar['id']);
                 $mc1->update_row(false, ['seedbonus' => $ar['seedbonus']]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 //$mc1->delete_value('inbox_new_'.$pms);
                 //$mc1->delete_value('inbox_new_sb_'.$pms);
                 // end
@@ -893,28 +893,28 @@ if (isset($_GET['exchange'])) {
                 //== cache updates ???
                 $mc1->begin_transaction('MyUser_' . $thief_id);
                 $mc1->update_row(false, ['reputation' => $new_rep]);
-                $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+                $mc1->commit_transaction($site_config['expires']['curuser']);
                 $mc1->begin_transaction('user' . $thief_id);
                 $mc1->update_row(false, ['reputation' => $new_rep]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+                $mc1->commit_transaction($site_config['expires']['user_cache']);
 
                 $mc1->begin_transaction('userstats_' . $thief_id);
                 $mc1->update_row(false, ['seedbonus' => $new_bonus]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $thief_id);
                 $mc1->update_row(false, ['seedbonus' => $new_bonus]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 //$mc1->delete_value('inbox_new_'.$pms);
                 //$mc1->delete_value('inbox_new_sb_'.$pms);
             }
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?bounty_success=1");
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?bounty_success=1");
             die;
             break;
 
         case 'king':
 //=== trade for one month king status
             if ($CURUSER['king'] != 0 or $CURUSER['pirate'] != 0) {
-                stderr('Error', "Now why would you want to add what you already have?<br>go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Now why would you want to add what you already have?<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $king = (86400 * 30 + TIME_NOW);
             $free_switch = (30 * 86400 + TIME_NOW);
@@ -924,17 +924,17 @@ if (isset($_GET['exchange'])) {
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('user' . $userid);
             $mc1->update_row(false, ['free_switch' => $free_switch, 'king' => $king]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $userid);
             $mc1->update_row(false, ['free_switch' => $free_switch, 'king' => $king]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?king_success=1");
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?king_success=1");
             die;
             break;
 
@@ -964,10 +964,10 @@ if (isset($_GET['exchange'])) {
                             WHERE id = '11' LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $mc1->begin_transaction('userstats_' . $userid);
                 $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $userid);
                 $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 $mc1->delete_value('freecontribution_');
                 $mc1->delete_value('top_donators_');
                 $mc1->delete_value('freeleech_counter');
@@ -977,7 +977,7 @@ if (isset($_GET['exchange'])) {
                 write_bonus_log($CURUSER['id'], $donation, $type = 'freeleech');
                 $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the freeleech contribution pot and has activated freeleech for 3 days ' . $donation . '/' . $points . '';
                 autoshout($msg);
-                header("Refresh: 0; url={$INSTALLER09['baseurl']}//mybonus.php?freeleech_success=1&norefund=$norefund");
+                header("Refresh: 0; url={$site_config['baseurl']}//mybonus.php?freeleech_success=1&norefund=$norefund");
                 die;
             } else {
                 // add to the pool
@@ -990,10 +990,10 @@ if (isset($_GET['exchange'])) {
                             WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 $mc1->begin_transaction('userstats_' . $userid);
                 $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $userid);
                 $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 $mc1->delete_value('freecontribution_');
                 $mc1->delete_value('top_donators_');
                 $mc1->delete_value('freeleech_counter');
@@ -1002,9 +1002,9 @@ if (isset($_GET['exchange'])) {
                 $mc1->delete_value('freecontribution_datas_alerts_');
                 write_bonus_log($CURUSER['id'], $donation, $type = 'freeleech');
                 $Remaining = ($arr_points['points'] - $arr_points['pointspool'] - $donation);
-                $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the freeleech contribution pot ! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Freeleech contribution:[/b][/color] [url={$INSTALLER09['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
+                $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the freeleech contribution pot ! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Freeleech contribution:[/b][/color] [url={$site_config['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
                 autoshout($msg);
-                header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?freeleech_success=2");
+                header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?freeleech_success=2");
                 die;
             }
             die;
@@ -1036,10 +1036,10 @@ if (isset($_GET['exchange'])) {
                             WHERE id = '12' LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $mc1->begin_transaction('userstats_' . $userid);
                 $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $userid);
                 $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 $mc1->delete_value('freecontribution_');
                 $mc1->delete_value('top_donators2_');
                 $mc1->delete_value('doubleupload_counter');
@@ -1049,7 +1049,7 @@ if (isset($_GET['exchange'])) {
                 write_bonus_log($CURUSER['id'], $donation, $type = 'doubleupload');
                 $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the double upload contribution pot and has activated Double Upload for 3 days ' . $donation . '/' . $points . '';
                 autoshout($msg);
-                header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?doubleup_success=1&norefund=$norefund");
+                header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?doubleup_success=1&norefund=$norefund");
                 die;
             } else {
                 // add to the pool
@@ -1062,10 +1062,10 @@ if (isset($_GET['exchange'])) {
                             WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 $mc1->begin_transaction('userstats_' . $userid);
                 $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $userid);
                 $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 $mc1->delete_value('freecontribution_');
                 $mc1->delete_value('top_donators2_');
                 $mc1->delete_value('doubleupload_counter');
@@ -1074,9 +1074,9 @@ if (isset($_GET['exchange'])) {
                 $mc1->delete_value('freecontribution_datas_alerts_');
                 write_bonus_log($CURUSER['id'], $donation, $type = 'doubleupload');
                 $Remaining = ($arr_points['points'] - $arr_points['pointspool'] - $donation);
-                $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the double upload contribution pot ! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Double upload contribution:[/b][/color] [url={$INSTALLER09['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
+                $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the double upload contribution pot ! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Double upload contribution:[/b][/color] [url={$site_config['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
                 autoshout($msg);
-                header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?doubleup_success=2");
+                header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?doubleup_success=2");
                 die;
             }
             die;
@@ -1108,10 +1108,10 @@ if (isset($_GET['exchange'])) {
                             WHERE id = '13' LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $mc1->begin_transaction('userstats_' . $userid);
                 $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $userid);
                 $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 $mc1->delete_value('freecontribution_');
                 $mc1->delete_value('top_donators3_');
                 $mc1->delete_value('halfdownload_counter');
@@ -1121,7 +1121,7 @@ if (isset($_GET['exchange'])) {
                 write_bonus_log($CURUSER['id'], $donation, $type = 'halfdownload');
                 $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the half download contribution pot and has activated half download for 3 days ' . $donation . '/' . $points . '';
                 autoshout($msg);
-                header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?halfdown_success=1&norefund=$norefund");
+                header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?halfdown_success=1&norefund=$norefund");
                 die;
             } else {
                 // add to the pool
@@ -1134,10 +1134,10 @@ if (isset($_GET['exchange'])) {
                             WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
                 $mc1->begin_transaction('userstats_' . $userid);
                 $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $userid);
                 $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 $mc1->delete_value('freecontribution_');
                 $mc1->delete_value('top_donators3_');
                 $mc1->delete_value('halfdownload_counter');
@@ -1146,9 +1146,9 @@ if (isset($_GET['exchange'])) {
                 $mc1->delete_value('freecontribution_datas_alerts_');
                 write_bonus_log($CURUSER['id'], $donation, $type = 'halfdownload');
                 $Remaining = ($arr_points['points'] - $arr_points['pointspool'] - $donation);
-                $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the half download contribution pot ! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Half download contribution:[/b][/color] [url={$INSTALLER09['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
+                $msg = $CURUSER['username'] . ' Donated ' . $donation . ' karma point' . ($donation > 1 ? 's' : '') . ' into the half download contribution pot ! * Only [b]' . htmlsafechars($Remaining) . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Half download contribution:[/b][/color] [url={$site_config['baseurl']}/mybonus.php]" . $donation . '/' . $points . '[/url]';
                 autoshout($msg);
-                header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?halfdown_success=2");
+                header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?halfdown_success=2");
                 die;
             }
             die;
@@ -1164,13 +1164,13 @@ if (isset($_GET['exchange'])) {
                                         LIMIT 1') or sqlerr(__FILE__, __LINE__);
             $arr_snatched = mysqli_fetch_assoc($res_snatched);
             if ($arr_snatched['size'] > 6442450944) {
-                stderr('Error', "One to One ratio only works on torrents smaller then 6GB!<br><br>Back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Points</a> page.");
+                stderr('Error', "One to One ratio only works on torrents smaller then 6GB!<br><br>Back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Points</a> page.");
             }
             if ($arr_snatched['name'] == '') {
-                stderr('Error', "No torrent with that ID!<br>Back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Points</a> page.");
+                stderr('Error', "No torrent with that ID!<br>Back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Points</a> page.");
             }
             if ($arr_snatched['uploaded'] >= $arr_snatched['downloaded']) {
-                stderr('Error', "Your ratio on that torrent is fine, you must have selected the wrong torrent ID.<br>Back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Points</a> page.");
+                stderr('Error', "Your ratio on that torrent is fine, you must have selected the wrong torrent ID.<br>Back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Points</a> page.");
             }
             sql_query('UPDATE snatched
                         SET uploaded = ' . sqlesc($arr_snatched['downloaded']) . '
@@ -1182,11 +1182,11 @@ if (isset($_GET['exchange'])) {
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['uploaded' => $upload + $difference, 'seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['uploaded' => $upload + $difference, 'seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?ratio_success=1");
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?ratio_success=1");
             die;
             break;
 
@@ -1210,21 +1210,21 @@ if (isset($_GET['exchange'])) {
                         WHERE id = ' . sqlesc($torrent_number)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
             $mc1->begin_transaction('torrent_details_' . $torrent_number);
             $mc1->update_row(false, ['added' => TIME_NOW, 'bump' => 'yes', 'free' => $free_time]);
             $mc1->commit_transaction(0);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?bump_success=1&t_name={$torrent_number}");
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?bump_success=1&t_name={$torrent_number}");
             die;
             break;
 
         case 'class':
 //=== trade for one month VIP status
             if ($CURUSER['class'] > UC_VIP) {
-                stderr('Error', "Now why would you want to lower yourself to VIP?<br>go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "Now why would you want to lower yourself to VIP?<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $vip_until = (86400 * 28 + TIME_NOW);
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for 1 month VIP Status.\n " . $bonuscomment;
@@ -1233,24 +1233,24 @@ if (isset($_GET['exchange'])) {
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('user' . $userid);
             $mc1->update_row(false, ['class' => 2, 'vip_added' => 'yes', 'vip_until' => $vip_until]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $userid);
             $mc1->update_row(false, ['class' => 2, 'vip_added' => 'yes', 'vip_until' => $vip_until]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?class_success=1");
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?class_success=1");
             die;
             break;
 
         case 'warning':
 //=== trade for removal of warning :P
             if ($CURUSER['warned'] == 0) {
-                stderr('Error', "How can we remove a warning that isn't there?<br>go back to your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
+                stderr('Error', "How can we remove a warning that isn't there?<br>go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page and think that one over.");
             }
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for removing warning.\n " . $bonuscomment;
             $res_warning = sql_query('SELECT modcomment
@@ -1270,19 +1270,19 @@ if (isset($_GET['exchange'])) {
                         VALUES (0, ' . sqlesc($userid) . ", $dt, $msg, $subject)") or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('user' . $userid);
             $mc1->update_row(false, ['warned' => 0]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $userid);
             $mc1->update_row(false, ['warned' => 0]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment, 'modcomment' => $modcomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
             $mc1->delete_value('inbox_new_' . $userid);
             $mc1->delete_value('inbox_new_sb_' . $userid);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?warning_success=1");
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?warning_success=1");
             die;
             break;
 
@@ -1295,17 +1295,17 @@ if (isset($_GET['exchange'])) {
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('user' . $userid);
             $mc1->update_row(false, ['smile_until' => $smile_until]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $userid);
             $mc1->update_row(false, ['smile_until' => $smile_until]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?smile_success=1");
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?smile_success=1");
             die;
             break;
 
@@ -1319,17 +1319,17 @@ if (isset($_GET['exchange'])) {
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('user' . $userid);
             $mc1->update_row(false, ['invites' => $inv]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $userid);
             $mc1->update_row(false, ['invites' => $inv]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?invite_success=1");
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?invite_success=1");
             die;
             break;
 
@@ -1339,24 +1339,24 @@ if (isset($_GET['exchange'])) {
              * the user class is just for show, but what the hell :p Add more or edit to your liking.
              *note if they try to use a restricted word, they will recieve the special title "I just wasted my karma" *****/
             $title = strip_tags(htmlsafechars($_POST['title']));
-            $title = str_replace($INSTALLER09['bad_words'], 'I just wasted my karma', $title);
+            $title = str_replace($site_config['bad_words'], 'I just wasted my karma', $title);
             $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $points . " Points for custom title. Old title was {$CURUSER['title']} new title is " . $title . ".\n " . $bonuscomment;
             sql_query('UPDATE users
                         SET title = ' . sqlesc($title) . ', seedbonus = ' . sqlesc($seedbonus) . ', bonuscomment = ' . sqlesc($bonuscomment) . '
                         WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $mc1->begin_transaction('user' . $userid);
             $mc1->update_row(false, ['title' => $title]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $userid);
             $mc1->update_row(false, ['title' => $title]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('userstats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $userid);
             $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-            header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?title_success=1");
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?title_success=1");
             die;
             break;
 
@@ -1384,11 +1384,11 @@ if (isset($_GET['exchange'])) {
                 $seedbonus = $bonus - $points;
                 $giftbonus1 = $userseedbonus + $points;
                 if ($userid == $useridgift) {
-                    header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?gift_fail=1");
+                    header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?gift_fail=1");
                     die;
                 }
                 if (!$useridgift) {
-                    header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?gift_fail_user=1");
+                    header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?gift_fail_user=1");
                     die;
                 }
                 sql_query('SELECT bonuscomment, id
@@ -1403,16 +1403,16 @@ if (isset($_GET['exchange'])) {
                             WHERE id = ' . sqlesc($useridgift)) or sqlerr(__FILE__, __LINE__);
                 $mc1->begin_transaction('userstats_' . $userid);
                 $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $userid);
                 $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 $mc1->begin_transaction('userstats_' . $useridgift);
                 $mc1->update_row(false, ['seedbonus' => $giftbonus1]);
-                $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                $mc1->commit_transaction($site_config['expires']['u_stats']);
                 $mc1->begin_transaction('user_stats_' . $useridgift);
                 $mc1->update_row(false, ['seedbonus' => $giftbonus1, 'bonuscomment' => $bonuscomment_gift]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                $mc1->commit_transaction($site_config['expires']['user_stats']);
                 //===send message
                 $subject = sqlesc('Someone Loves you');
                 $added = sqlesc(TIME_NOW);
@@ -1421,10 +1421,10 @@ if (isset($_GET['exchange'])) {
                             VALUES (0, $subject, $useridgift, $msg, $added)") or sqlerr(__FILE__, __LINE__);
                 $mc1->delete_value('inbox_new_' . $useridgift);
                 $mc1->delete_value('inbox_new_sb_' . $useridgift);
-                header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?gift_success=1&gift_amount_points=$points&usernamegift=$usernamegift&gift_id=$useridgift");
+                header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?gift_success=1&gift_amount_points=$points&usernamegift=$usernamegift&gift_id=$useridgift");
                 die;
             } else {
-                header("Refresh: 0; url={$INSTALLER09['baseurl']}/mybonus.php?gift_fail_points=1");
+                header("Refresh: 0; url={$site_config['baseurl']}/mybonus.php?gift_fail_points=1");
                 die;
             }
             break;
@@ -1671,7 +1671,7 @@ if (count($top_donators2) > 0) {
             //$top_donators2_username = htmlsafechars($b['username']);
             $user_stuff = $b;
             $user_stuff['id'] = (int)$b['userid'];
-            $top_donator2 .= "<a href='{$INSTALLER09['baseurl']}/userdetails.php?id=$top_donators2_id'>" . format_username($user_stuff['id']) . "</a> [$damount_donated2]<br>";
+            $top_donator2 .= "<a href='{$site_config['baseurl']}/userdetails.php?id=$top_donators2_id'>" . format_username($user_stuff['id']) . "</a> [$damount_donated2]<br>";
         }
     } else {
         //== If there are no donators
@@ -1703,7 +1703,7 @@ if (count($top_donators3) > 0) {
             //$top_donators3_username = htmlsafechars($c['username']);
             $user_stuff = $c;
             $user_stuff['id'] = (int)$c['userid'];
-            $top_donator3 .= "<a href='{$INSTALLER09['baseurl']}/userdetails.php?id=$top_donators3_id'>" . format_username($user_stuff['id']) . "</a> [$damount_donated3]<br>";
+            $top_donator3 .= "<a href='{$site_config['baseurl']}/userdetails.php?id=$top_donators3_id'>" . format_username($user_stuff['id']) . "</a> [$damount_donated3]<br>";
         }
     } else {
         //== If there are no donators
@@ -1746,7 +1746,7 @@ $HTMLOUT .= "
             <table align='center' width='100%' border='1' cellspacing='0' cellpadding='5'>
             <tr>
             <td align='center' colspan='4' style='background:transparent;height:25px;'>
-            Exchange your <a class='altlink' href='{$INSTALLER09['baseurl']}/mybonus.php'>Karma Bonus Points</a> [ current " . $bonus . " ] for goodies!
+            Exchange your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Points</a> [ current " . $bonus . " ] for goodies!
             <br><br>[ If no buttons appear, you have not earned enough bonus points to trade. ]<br><br>
             </td></tr>
             <tr>
@@ -1782,31 +1782,31 @@ while ($gets = mysqli_fetch_assoc($res)) {
 
     switch (true) {
         case $gets['id'] == 5:
-            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$INSTALLER09['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>Special Title</b> you would like to have <input type='text' name='title' size='30' maxlength='30' /> click Exchange! </td><td align='center' class='" . $class . "'>" . (float)$gets['points'] . '</td>';
+            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>Special Title</b> you would like to have <input type='text' name='title' size='30' maxlength='30' /> click Exchange! </td><td align='center' class='" . $class . "'>" . (float)$gets['points'] . '</td>';
             break;
         case $gets['id'] == 7:
-            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$INSTALLER09['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br><br>Enter the <b>username</b> of the person you would like to send karma to, and select how many points you want to send and click Exchange!<br>' . $otheroption . "</td><td align=center class='" . $class . "'>min.<br>" . (float)$gets['points'] . '<br>max.<br>100000.0</td>';
+            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br><br>Enter the <b>username</b> of the person you would like to send karma to, and select how many points you want to send and click Exchange!<br>' . $otheroption . "</td><td align=center class='" . $class . "'>min.<br>" . (float)$gets['points'] . '<br>max.<br>100000.0</td>';
             break;
         case $gets['id'] == 9:
-            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$INSTALLER09['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "</td><td align='center' class='" . $class . "'>min.<br>" . (float)$gets['points'] . '</td>';
+            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "</td><td align='center' class='" . $class . "'>min.<br>" . (float)$gets['points'] . '</td>';
             break;
         case $gets['id'] == 10:
-            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$INSTALLER09['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='text' name='torrent_id' size='4' maxlength='8' /> you would like to buy a 1 to 1 ratio on.</td><td align='center' class='" . $class . "'>min.<br>" . (float)$gets['points'] . '</td>';
+            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='text' name='torrent_id' size='4' maxlength='8' /> you would like to buy a 1 to 1 ratio on.</td><td align='center' class='" . $class . "'>min.<br>" . (float)$gets['points'] . '</td>';
             break;
         case $gets['id'] == 11:
-            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$INSTALLER09['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color=\"#000000\">" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator . "<br>Enter the <b>amount to contribute</b><input type='text' name='donate' size='10' maxlength='10' /></td><td align='center' class='" . $class . "'>" . (float)$gets['minpoints'] . ' <br></td>';
+            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color=\"#000000\">" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator . "<br>Enter the <b>amount to contribute</b><input type='text' name='donate' size='10' maxlength='10' /></td><td align='center' class='" . $class . "'>" . (float)$gets['minpoints'] . ' <br></td>';
             break;
         case $gets['id'] == 12:
-            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$INSTALLER09['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color=\"#000000\">" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator2 . "<br>Enter the <b>amount to contribute</b><input type='text' name='donate' size='10' maxlength='10' /></td><td align='center' class='" . $class . "'>" . (float)$gets['minpoints'] . ' <br></td>';
+            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color=\"#000000\">" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator2 . "<br>Enter the <b>amount to contribute</b><input type='text' name='donate' size='10' maxlength='10' /></td><td align='center' class='" . $class . "'>" . (float)$gets['minpoints'] . ' <br></td>';
             break;
         case $gets['id'] == 13:
-            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$INSTALLER09['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color=\"#000000\">" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator3 . "<br>Enter the <b>amount to contribute</b><input type='text' name='donate' size='10' maxlength='10' /></td><td align='center' class='" . $class . "'>" . (float)$gets['minpoints'] . ' <br></td>';
+            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color=\"#000000\">" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator3 . "<br>Enter the <b>amount to contribute</b><input type='text' name='donate' size='10' maxlength='10' /></td><td align='center' class='" . $class . "'>" . (float)$gets['minpoints'] . ' <br></td>';
             break;
         case $gets['id'] == 34:
-            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$INSTALLER09['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='text' name='torrent_id' size='4' maxlength='8' /> you would like to bump.</td><td align='center' class='" . $class . "'>min.<br>" . (float)$gets['points'] . '</td>';
+            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='text' name='torrent_id' size='4' maxlength='8' /> you would like to bump.</td><td align='center' class='" . $class . "'>min.<br>" . (float)$gets['points'] . '</td>';
             break;
         default:
-            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$INSTALLER09['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "</td><td align='center' class='" . $class . "'>" . (float)$gets['points'] . '</td>';
+            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "</td><td align='center' class='" . $class . "'>" . (float)$gets['points'] . '</td>';
     }
 
     if ($bonus >= $gets['points'] or $bonus >= $gets['minpoints']) {
@@ -1897,7 +1897,7 @@ $HTMLOUT .= "</tr></table>
   <br><br>&#186;&#160;*Please note, staff can give or take away points for breaking the rules, or doing good for the community.
   <br>
   <div align='center'><br>
-  <a class='altlink' href='{$INSTALLER09['baseurl']}/index.php'><b>Back to homepage</b></a></div>
+  <a class='altlink' href='{$site_config['baseurl']}/index.php'><b>Back to homepage</b></a></div>
   </td></tr></table></div>";
 
 echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();

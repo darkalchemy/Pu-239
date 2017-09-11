@@ -1,12 +1,12 @@
 <?php
 function peer_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
-    set_time_limit(0);
-    ignore_user_abort(1);
+    global $site_config, $queries, $mc1;
+    set_time_limit(1200);
+    ignore_user_abort(true);
     require_once INCL_DIR . 'ann_functions.php';
     $torrent_seeds = $torrent_leeches = [];
-    $deadtime = TIME_NOW - floor($INSTALLER09['announce_interval'] * 1.3);
+    $deadtime = TIME_NOW - floor($site_config['announce_interval'] * 1.3);
     $dead_peers = sql_query('SELECT torrent, userid, peer_id, seeder FROM peers WHERE last_action < ' . $deadtime);
     while ($dead_peer = mysqli_fetch_assoc($dead_peers)) {
         $torrentid = (int)$dead_peer['torrent'];

@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once CLASS_DIR . 'class_check.php';
@@ -12,7 +12,7 @@ $lang = array_merge($lang, load_language('ad_class_promo'));
 /*$allowed_ids = array(
 1
 ); //== 1 Is Sysop*/
-if (!in_array($CURUSER['id'], $INSTALLER09['allowed_staff']['id'] /*$allowed_ids*/)) {
+if (!in_array($CURUSER['id'], $site_config['allowed_staff']['id'] /*$allowed_ids*/)) {
     stderr($lang['classpromo_error'], $lang['classpromo_denied']);
 }
 //get the config from db - stoner/pdq

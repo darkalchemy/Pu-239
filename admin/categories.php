@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -50,7 +50,7 @@ switch ($params['mode']) {
 }
 function move_cat()
 {
-    global $INSTALLER09, $params, $mc1, $lang;
+    global $site_config, $params, $mc1, $lang;
     if ((!isset($params['id']) or !is_valid_id($params['id'])) or (!isset($params['new_cat_id']) or !is_valid_id($params['new_cat_id']))) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
@@ -69,7 +69,7 @@ function move_cat()
     $mc1->delete_value('genrelist');
     $mc1->delete_value('categories');
     if (-1 != mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        header("Location: {$INSTALLER09['baseurl']}/staffpanel.php?tool=categories&action=categories");
+        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories&action=categories");
     } else {
         stderr($lang['categories_error'], $lang['categories_move_error4']);
     }
@@ -125,7 +125,7 @@ function move_cat_form()
 
 function add_cat()
 {
-    global $INSTALLER09, $params, $mc1, $lang;
+    global $site_config, $params, $mc1, $lang;
     foreach ([
                  'new_cat_name',
                  'new_cat_desc',
@@ -148,13 +148,13 @@ function add_cat()
     if (-1 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     } else {
-        header("Location: {$INSTALLER09['baseurl']}/staffpanel.php?tool=categories&action=categories");
+        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories&action=categories");
     }
 }
 
 function delete_cat()
 {
-    global $INSTALLER09, $params, $mc1, $lang;
+    global $site_config, $params, $mc1, $lang;
     if (!isset($params['id']) or !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
@@ -182,7 +182,7 @@ function delete_cat()
     $mc1->delete_value('genrelist');
     $mc1->delete_value('categories');
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        header("Location: {$INSTALLER09['baseurl']}/staffpanel.php?tool=categories&action=categories");
+        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories&action=categories");
     } else {
         stderr($lang['categories_error'], $lang['categories_del_error1']);
     }
@@ -247,7 +247,7 @@ function delete_cat_form()
 
 function edit_cat()
 {
-    global $INSTALLER09, $params, $mc1, $lang;
+    global $site_config, $params, $mc1, $lang;
     if (!isset($params['id']) or !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
@@ -273,13 +273,13 @@ function edit_cat()
     if (-1 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     } else {
-        header("Location: {$INSTALLER09['baseurl']}/staffpanel.php?tool=categories&action=categories");
+        header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories&action=categories");
     }
 }
 
 function edit_cat_form()
 {
-    global $INSTALLER09, $params, $lang;
+    global $site_config, $params, $lang;
     if (!isset($params['id']) or !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
@@ -289,7 +289,7 @@ function edit_cat_form()
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     }
     $r = mysqli_fetch_assoc($q);
-    $dh = opendir($INSTALLER09['pic_base_url'] . 'caticons/1');
+    $dh = opendir($site_config['pic_base_url'] . 'caticons/1');
     $files = [];
     while (false !== ($file = readdir($dh))) {
         if (($file != '.') && ($file != '..')) {
@@ -341,9 +341,9 @@ function edit_cat_form()
 
 function show_categories()
 {
-    global $INSTALLER09, $lang;
+    global $site_config, $lang;
     $htmlout = '';
-    $dh = opendir($INSTALLER09['pic_base_url'] . 'caticons/1');
+    $dh = opendir($site_config['pic_base_url'] . 'caticons/1');
     $files = [];
     while (false !== ($file = readdir($dh))) {
         if (($file != '.') && ($file != '..')) {
@@ -419,18 +419,18 @@ function show_categories()
         $htmlout = '<h1>' . $lang['categories_show_oops'] . '</h1>';
     } else {
         while ($row = mysqli_fetch_assoc($query)) {
-            $cat_image = file_exists($INSTALLER09['pic_base_url'] . 'caticons/1/' . $row['image']) ? "<img border='0' src='{$INSTALLER09['pic_base_url']}caticons/1/" . htmlsafechars($row['image']) . "' alt='" . (int)$row['id'] . "' />" : "{$lang['categories_show_no_image']}";
+            $cat_image = file_exists($site_config['pic_base_url'] . 'caticons/1/' . $row['image']) ? "<img border='0' src='{$site_config['pic_base_url']}caticons/1/" . htmlsafechars($row['image']) . "' alt='" . (int)$row['id'] . "' />" : "{$lang['categories_show_no_image']}";
             $htmlout .= "<tr>
           <td height='48' width='60'><b>{$lang['categories_show_id2']} (" . (int)$row['id'] . ")</b></td>	
           <td width='120'>" . htmlsafechars($row['name']) . "</td>
           <td width='250'>" . htmlsafechars($row['cat_desc']) . "</td>
           <td align='center' width='45'>$cat_image</td>
           <td align='center' width='18'><a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=edit_cat&amp;id=" . (int)$row['id'] . "'>
-            <img src='{$INSTALLER09['pic_base_url']}aff_tick.gif' alt='{$lang['categories_show_edit2']}' title='{$lang['categories_show_edit']}' width='12' height='12' border='0' /></a></td>
+            <img src='{$site_config['pic_base_url']}aff_tick.gif' alt='{$lang['categories_show_edit2']}' title='{$lang['categories_show_edit']}' width='12' height='12' border='0' /></a></td>
           <td align='center' width='18'><a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=del_cat&amp;id=" . (int)$row['id'] . "'>
-            <img src='{$INSTALLER09['pic_base_url']}aff_cross.gif' alt='{$lang['categories_show_delete2']}' title='{$lang['categories_show_delete']}' width='12' height='12' border='0' /></a></td>
+            <img src='{$site_config['pic_base_url']}aff_cross.gif' alt='{$lang['categories_show_delete2']}' title='{$lang['categories_show_delete']}' width='12' height='12' border='0' /></a></td>
           <td align='center' width='18'><a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=move_cat&amp;id=" . (int)$row['id'] . "'>
-            <img src='{$INSTALLER09['pic_base_url']}plus.gif' alt='{$lang['categories_show_move2']}' title='{$lang['categories_show_move']}' width='12' height='12' border='0' /></a></td>
+            <img src='{$site_config['pic_base_url']}plus.gif' alt='{$lang['categories_show_move2']}' title='{$lang['categories_show_move']}' width='12' height='12' border='0' /></a></td>
         </tr>";
         }
     } //endif

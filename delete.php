@@ -14,7 +14,7 @@ if (!is_valid_id($id)) {
 //==delete torrents by putyn
 function deletetorrent($id)
 {
-    global $INSTALLER09, $mc1, $CURUSER, $lang;
+    global $site_config, $mc1, $CURUSER, $lang;
     sql_query('DELETE peers.*, files.*, comments.*, snatched.*, thanks.*, bookmarks.*, coins.*, rating.*, torrents.* FROM torrents 
 				 LEFT JOIN peers ON peers.torrent = torrents.id
 				 LEFT JOIN files ON files.torrent = torrents.id
@@ -26,13 +26,13 @@ function deletetorrent($id)
 				 LEFT JOIN snatched ON snatched.torrentid = torrents.id
                                  LEFT JOIN thumbsup ON thumbsup.torrentid = torrents.id
 				 WHERE torrents.id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    unlink("{$INSTALLER09['torrent_dir']}/$id.torrent");
+    unlink("{$site_config['torrent_dir']}/$id.torrent");
     $mc1->delete_value('MyPeers_' . $CURUSER['id']);
 }
 
 function deletetorrent_xbt($id)
 {
-    global $INSTALLER09, $mc1, $CURUSER, $lang;
+    global $site_config, $mc1, $CURUSER, $lang;
     sql_query('UPDATE torrents SET flags = 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     sql_query('DELETE files.*, comments.*, thankyou.*, thanks.*, thumbsup.*, bookmarks.*, coins.*, rating.*, xbt_files_users.* FROM xbt_files_users
                                  LEFT JOIN files ON files.torrent = xbt_files_users.fid
@@ -44,7 +44,7 @@ function deletetorrent_xbt($id)
                                  LEFT JOIN rating ON rating.torrent = xbt_files_users.fid
                                  LEFT JOIN thumbsup ON thumbsup.torrentid = xbt_files_users.fid
                                  WHERE xbt_files_users.fid =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    unlink("{$INSTALLER09['torrent_dir']}/$id.torrent");
+    unlink("{$site_config['torrent_dir']}/$id.torrent");
     $mc1->delete_value('MyPeers_XBT_' . $CURUSER['id']);
 }
 
@@ -71,7 +71,7 @@ if ($rt == 1) {
     if (!$reason[2]) {
         stderr("{$lang['delete_failed']}", "{$lang['delete_violated']}");
     }
-    $reasonstr = $INSTALLER09['site_name'] . "{$lang['delete_rules']}" . trim($reason[2]);
+    $reasonstr = $site_config['site_name'] . "{$lang['delete_rules']}" . trim($reason[2]);
 } else {
     if (!$reason[3]) {
         stderr("{$lang['delete_failed']}", "{$lang['delete_reason']}");
@@ -91,20 +91,20 @@ $mc1->delete_value('scroll_tor_');
 $mc1->delete_value('torrent_details_' . $id);
 $mc1->delete_value('torrent_details_text' . $id);
 write_log("{$lang['delete_torrent']} $id ({$row['name']}){$lang['delete_deleted_by']}{$CURUSER['username']} ($reasonstr)\n");
-if ($INSTALLER09['seedbonus_on'] == 1) {
+if ($site_config['seedbonus_on'] == 1) {
     //===remove karma
-    sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($INSTALLER09['bonus_per_delete']) . ' WHERE id = ' . sqlesc($row['owner'])) or sqlerr(__FILE__, __LINE__);
-    $update['seedbonus'] = ($CURUSER['seedbonus'] - $INSTALLER09['bonus_per_delete']);
+    sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($site_config['bonus_per_delete']) . ' WHERE id = ' . sqlesc($row['owner'])) or sqlerr(__FILE__, __LINE__);
+    $update['seedbonus'] = ($CURUSER['seedbonus'] - $site_config['bonus_per_delete']);
     $mc1->begin_transaction('userstats_' . $row['owner']);
     $mc1->update_row(false, [
         'seedbonus' => $update['seedbonus'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+    $mc1->commit_transaction($site_config['expires']['u_stats']);
     $mc1->begin_transaction('user_stats_' . $row['owner']);
     $mc1->update_row(false, [
         'seedbonus' => $update['seedbonus'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+    $mc1->commit_transaction($site_config['expires']['user_stats']);
     //===end
 }
 if ($CURUSER['id'] != $row['owner'] and $CURUSER['pm_on_delete'] == 'yes') {
@@ -119,7 +119,7 @@ if ($CURUSER['id'] != $row['owner'] and $CURUSER['pm_on_delete'] == 'yes') {
 if (isset($_POST['returnto'])) {
     $ret = "<a href='" . htmlsafechars($_POST['returnto']) . "'>{$lang['delete_go_back']}</a>";
 } else {
-    $ret = "<a href='{$INSTALLER09['baseurl']}/browse.php'>{$lang['delete_back_browse']}</a>";
+    $ret = "<a href='{$site_config['baseurl']}/browse.php'>{$lang['delete_back_browse']}</a>";
 }
 $HTMLOUT = '';
 $HTMLOUT .= "<h2>{$lang['delete_deleted']}</h2>

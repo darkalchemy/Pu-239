@@ -3,7 +3,7 @@ $draft = $subject = $body = '';
 flood_limit('messages');
 if (!defined('BUNNY_PM_SYSTEM')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 //=== check to see if it's a preview or a post
@@ -82,12 +82,12 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
 
 {$lang['pm_forwardpm_url']}
 
-{$INSTALLER09['baseurl']}/pm_system.php
+{$site_config['baseurl']}/pm_system.php
 
 --
-{$INSTALLER09['site_name']}
+{$site_config['site_name']}
 EOD;
-        @mail($user['email'], $lang['pm_forwardpm_pmfrom'] . $username . '!', $body, "{$lang['pm_forwardpm_from']}{$INSTALLER09['site_email']}");
+        @mail($user['email'], $lang['pm_forwardpm_pmfrom'] . $username . '!', $body, "{$lang['pm_forwardpm_from']}{$site_config['site_email']}");
     }
     //=== if they don't want to keep the message they are replying to then delete it!
     if ($delete != 0) {

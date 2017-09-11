@@ -2,7 +2,7 @@
 $body = '';
 if (!defined('BUNNY_PM_SYSTEM')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 //=== Get the info

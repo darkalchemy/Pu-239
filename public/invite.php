@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 check_user_status();
@@ -34,7 +34,7 @@ if ($do == 'view_page') {
         $HTMLOUT .= "<tr class='one'>
 <td align='center'><b>{$lang['invites_username']}</b></td>
 <td align='center'><b>{$lang['invites_uploaded']}</b></td>
-" . ($INSTALLER09['ratio_free'] ? '' : "<td align='center'><b>{$lang['invites_downloaded']}</b></td>") . "
+" . ($site_config['ratio_free'] ? '' : "<td align='center'><b>{$lang['invites_downloaded']}</b></td>") . "
 <td align='center'><b>{$lang['invites_ratio']}</b></td>
 <td align='center'><b>{$lang['invites_status']}</b></td>
 <td align='center'><b>{$lang['invites_confirm']}</b></td>
@@ -44,17 +44,17 @@ if ($do == 'view_page') {
             if ($arr['status'] == 'pending') {
                 $user = "<td align='center'>" . htmlsafechars($arr['username']) . '</td>';
             } else {
-                $user = "<td align='center'><a href='{$INSTALLER09['baseurl']}/userdetails.php?id=" . (int)$arr['id'] . "'>" . format_username($arr) . '</a></td>';
+                $user = "<td align='center'><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$arr['id'] . "'>" . format_username($arr) . '</a></td>';
             }
-            $ratio = member_ratio($arr['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $arr['downloaded']);
+            $ratio = member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']);
             if ($arr['status'] == 'confirmed') {
                 $status = "<font color='#1f7309'>{$lang['invites_confirm1']}</font>";
             } else {
                 $status = "<font color='#ca0226'>{$lang['invites_pend']}</font>";
             }
-            $HTMLOUT .= "<tr class='one'>" . $user . "<td align='center'>" . mksize($arr['uploaded']) . '</td>' . ($INSTALLER09['ratio_free'] ? '' : "<td align='center'>" . mksize($arr['downloaded']) . '</td>') . "<td align='center'>" . $ratio . "</td><td align='center'>" . $status . '</td>';
+            $HTMLOUT .= "<tr class='one'>" . $user . "<td align='center'>" . mksize($arr['uploaded']) . '</td>' . ($site_config['ratio_free'] ? '' : "<td align='center'>" . mksize($arr['downloaded']) . '</td>') . "<td align='center'>" . $ratio . "</td><td align='center'>" . $status . '</td>';
             if ($arr['status'] == 'pending') {
-                $HTMLOUT .= "<td align='center'><a href='?do=confirm_account&amp;userid=" . (int)$arr['id'] . '&amp;sender=' . (int)$CURUSER['id'] . "'><img src='{$INSTALLER09['pic_base_url']}confirm.png' alt='confirm' title='Confirm' border='0' /></a></td></tr>";
+                $HTMLOUT .= "<td align='center'><a href='?do=confirm_account&amp;userid=" . (int)$arr['id'] . '&amp;sender=' . (int)$CURUSER['id'] . "'><img src='{$site_config['pic_base_url']}confirm.png' alt='confirm' title='Confirm' border='0' /></a></td></tr>";
             } else {
                 $HTMLOUT .= "<td align='center'>---</td></tr>";
             }
@@ -71,9 +71,9 @@ if ($do == 'view_page') {
         for ($i = 0; $i < $num_row; ++$i) {
             $fetch_assoc = mysqli_fetch_assoc($select);
             $HTMLOUT .= "<tr class='one'>
-<td>" . htmlsafechars($fetch_assoc['code']) . " <a href='?do=send_email&amp;id=" . (int)$fetch_assoc['id'] . "'><img src='{$INSTALLER09['pic_base_url']}email.gif' border='0' alt='Email' title='Send Email' /></a></td>
+<td>" . htmlsafechars($fetch_assoc['code']) . " <a href='?do=send_email&amp;id=" . (int)$fetch_assoc['id'] . "'><img src='{$site_config['pic_base_url']}email.gif' border='0' alt='Email' title='Send Email' /></a></td>
 <td>" . get_date($fetch_assoc['invite_added'], '', 0, 1) . '</td>';
-            $HTMLOUT .= "<td><a href='?do=delete_invite&amp;id=" . (int)$fetch_assoc['id'] . '&amp;sender=' . (int)$CURUSER['id'] . "'><img src='{$INSTALLER09['pic_base_url']}del.png' border='0' alt='Delete'/></a></td>
+            $HTMLOUT .= "<td><a href='?do=delete_invite&amp;id=" . (int)$fetch_assoc['id'] . '&amp;sender=' . (int)$CURUSER['id'] . "'><img src='{$site_config['pic_base_url']}del.png' border='0' alt='Delete'/></a></td>
 <td>" . htmlsafechars($fetch_assoc['status']) . '</td></tr>';
         }
     }
@@ -93,7 +93,7 @@ elseif ($do == 'create_invite') {
     }
     $res = sql_query('SELECT COUNT(id) FROM users') or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_row($res);
-    if ($arr[0] >= $INSTALLER09['invites']) {
+    if ($arr[0] >= $site_config['invites']) {
         stderr($lang['invites_error'], $lang['invites_limit']);
     }
     $invite = make_password(16);
@@ -104,12 +104,12 @@ elseif ($do == 'create_invite') {
     $mc1->update_row(false, [
         'invites' => $update['invites'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']); // 15 mins
+    $mc1->commit_transaction($site_config['expires']['curuser']); // 15 mins
     $mc1->begin_transaction('user' . $CURUSER['id']);
     $mc1->update_row(false, [
         'invites' => $update['invites'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']); // 15 mins
+    $mc1->commit_transaction($site_config['expires']['user_cache']); // 15 mins
     header('Location: ?do=view_page');
 } /*
  * @action Send e-mail
@@ -130,31 +130,31 @@ elseif ($do == 'send_email') {
         }
         $inviter = htmlsafechars($CURUSER['username']);
         $body = <<<EOD
-You have been invited to {$INSTALLER09['site_name']} by $inviter. They have
+You have been invited to {$site_config['site_name']} by $inviter. They have
 specified this address ($email) as your email. If you do not know this person, please ignore this email. Please do not reply.
 
 This is a private site and you must agree to the rules before you can enter:
 
-{$INSTALLER09['baseurl']}/useragreement.php
+{$site_config['baseurl']}/useragreement.php
 
-{$INSTALLER09['baseurl']}/rules.php
+{$site_config['baseurl']}/rules.php
 
-{$INSTALLER09['baseurl']}/faq.php
+{$site_config['baseurl']}/faq.php
 
 ------------------------------------------------------------
 
 To confirm your invitation, you have to follow this link and type the invite code:
 
-{$INSTALLER09['baseurl']}/invite_signup.php
+{$site_config['baseurl']}/invite_signup.php
 
 Invite Code: $invite
 
 ------------------------------------------------------------
 
 After you do this, your inviter need's to confirm your account. 
-We urge you to read the RULES and FAQ before you start using {$INSTALLER09['site_name']}.
+We urge you to read the RULES and FAQ before you start using {$site_config['site_name']}.
 EOD;
-        $sendit = mail($email, "You have been invited to {$INSTALLER09['site_name']}", $body, "From: {$INSTALLER09['site_email']}", "-f{$INSTALLER09['site_email']}");
+        $sendit = mail($email, "You have been invited to {$site_config['site_name']}", $body, "From: {$site_config['site_email']}", "-f{$site_config['site_email']}");
         if (!$sendit) {
             stderr($lang['invites_error'], $lang['invites_unable']);
         } else {
@@ -191,12 +191,12 @@ elseif ($do == 'delete_invite') {
     $mc1->update_row(false, [
         'invites' => $update['invites'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']); // 15 mins
+    $mc1->commit_transaction($site_config['expires']['curuser']); // 15 mins
     $mc1->begin_transaction('user' . $CURUSER['id']);
     $mc1->update_row(false, [
         'invites' => $update['invites'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']); // 15 mins
+    $mc1->commit_transaction($site_config['expires']['user_cache']); // 15 mins
     header('Location: ?do=view_page');
 } /*
  * @action Confirm Accounts
@@ -221,27 +221,27 @@ elseif ($do = 'confirm_account') {
     $mc1->update_row(false, [
         'status' => 'confirmed',
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']); // 15 mins
+    $mc1->commit_transaction($site_config['expires']['curuser']); // 15 mins
     $mc1->begin_transaction('user' . $userid);
     $mc1->update_row(false, [
         'status' => 'confirmed',
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']); // 15 mins
+    $mc1->commit_transaction($site_config['expires']['user_cache']); // 15 mins
 
     //==pm to new invitee/////
     $msg = sqlesc("Hey there :wave:
-Welcome to {$INSTALLER09['site_name']}!\n
+Welcome to {$site_config['site_name']}!\n
 We have made many changes to the site, and we hope you enjoy them!\n 
-We have been working hard to make {$INSTALLER09['site_name']} somethin' special!\n
-{$INSTALLER09['site_name']} has a strong community (just check out forums), and is a feature rich site. We hope you'll join in on all the fun!\n
-Be sure to read the [url={$INSTALLER09['baseurl']}/rules.php]Rules[/url] and [url={$INSTALLER09['baseurl']}/faq.php]FAQ[/url] before you start using the site.\n
-We are a strong friendly community here :D {$INSTALLER09['site_name']} is so much more then just torrents.\n
+We have been working hard to make {$site_config['site_name']} somethin' special!\n
+{$site_config['site_name']} has a strong community (just check out forums), and is a feature rich site. We hope you'll join in on all the fun!\n
+Be sure to read the [url={$site_config['baseurl']}/rules.php]Rules[/url] and [url={$site_config['baseurl']}/faq.php]FAQ[/url] before you start using the site.\n
+We are a strong friendly community here :D {$site_config['site_name']} is so much more then just torrents.\n
 Just for kicks, we've started you out with 200.0 Karma Bonus  Points, and a couple of bonus GB to get ya started!\n 
 so, enjoy\n  
 cheers,\n 
-{$INSTALLER09['site_name']} Staff.\n");
+{$site_config['site_name']} Staff.\n");
     $id = (int)$assoc['id'];
-    $subject = sqlesc("Welcome to {$INSTALLER09['site_name']} !");
+    $subject = sqlesc("Welcome to {$site_config['site_name']} !");
     $added = TIME_NOW;
     sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($id) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
     ///////////////////end////////////

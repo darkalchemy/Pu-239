@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -30,7 +30,7 @@ function calctime($val)
 
 function delete_torrent($delete_array, $page)
 {
-    global $INSTALLER09, $CURUSER, $mc1, $lang;
+    global $site_config, $CURUSER, $mc1, $lang;
     if (empty($delete_array)) {
         return false;
     }
@@ -55,7 +55,7 @@ function delete_torrent($delete_array, $page)
         $names[] = htmlsafechars($row['name']);
         $id = (int)$row['id'];
         /* unlink() **/
-        unlink("{$INSTALLER09['torrent_dir']}/$id.torrent");
+        unlink("{$site_config['torrent_dir']}/$id.torrent");
         // announce
         remove_torrent_peers($id);
         remove_torrent($row['info_hash']);

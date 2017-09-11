@@ -1,7 +1,7 @@
 <?php
 function happyHour($action)
 {
-    global $INSTALLER09;
+    global $site_config;
     //generate happy hour
     if ($action == 'generate') {
         $nextDay = date('Y-m-d', TIME_NOW + 86400);
@@ -19,7 +19,7 @@ function happyHour($action)
 
         return $happyHour;
     }
-    $file = $INSTALLER09['happyhour'];
+    $file = $site_config['happyhour'];
     $happy = unserialize(file_get_contents($file));
     $happyHour = strtotime($happy['time']);
     $happyDate = $happyHour;
@@ -61,8 +61,8 @@ function happyHour($action)
 
 function happyCheck($action, $id = null)
 {
-    global $INSTALLER09;
-    $file = $INSTALLER09['happyhour'];
+    global $site_config;
+    $file = $site_config['happyhour'];
     $happy = unserialize(file_get_contents($file));
     $happycheck = $happy['catid'];
     if ($action == 'check') {
@@ -75,8 +75,8 @@ function happyCheck($action, $id = null)
 
 function happyFile($act)
 {
-    global $INSTALLER09;
-    $file = $INSTALLER09['happyhour'];
+    global $site_config;
+    $file = $site_config['happyhour'];
     $happy = unserialize(file_get_contents($file));
     if ($act == 'set') {
         $array_happy = [
@@ -92,7 +92,7 @@ function happyFile($act)
         ];
     }
     $array_happy = serialize($array_happy);
-    $file = $INSTALLER09['happyhour'];
+    $file = $site_config['happyhour'];
     $file = fopen($file, 'w');
     ftruncate($file, 0);
     fwrite($file, $array_happy);

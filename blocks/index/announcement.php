@@ -13,7 +13,7 @@
    <tr><td style='padding: 10px; background:lightgrey'>
    ".format_comment($ann_body)."
    <br><br>
-   {$lang['index_ann_click']}<a href='{$INSTALLER09['baseurl']}/clear_announcement.php'>
+   {$lang['index_ann_click']}<a href='{$site_config['baseurl']}/clear_announcement.php'>
    <i><b>{$lang['index_ann_here']}</b></i></a>{$lang['index_ann_clear']}</td></tr></table></div><br>\n";
    }
 */

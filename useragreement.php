@@ -6,7 +6,7 @@ dbconn();
 $lang = array_merge(load_language('global'), load_language('useragreement'));
 $HTMLOUT = '';
 $HTMLOUT .= "<br><div class='main_section'>";
-$HTMLOUT .= begin_frame($INSTALLER09['site_name'] . " {$lang['frame_usragrmnt']}");
+$HTMLOUT .= begin_frame($site_config['site_name'] . " {$lang['frame_usragrmnt']}");
 $HTMLOUT .= "<p></p> {$lang['text_usragrmnt']}";
 $HTMLOUT .= end_frame();
 $HTMLOUT .= '</div>';

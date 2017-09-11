@@ -61,7 +61,7 @@ function smilies_frame($smilies_set)
 //=== BBcode function will add a BBcode markup text area with smilies frame and tags if Javascript is enabled if not, it will just make a text area
 function BBcode($body)
 {
-    global $CURUSER, $smilies, $customsmilies, $staff_smilies, $INSTALLER09;
+    global $CURUSER, $smilies, $customsmilies, $staff_smilies, $site_config;
     $emoticons_normal = smilies_frame($smilies, 3, ':hslocked:');
     $emoticons_custom = smilies_frame($customsmilies, 3, ':wink_skull:');
     $emoticons_staff = smilies_frame($staff_smilies, 1, ':dabunnies:');
@@ -213,16 +213,16 @@ function format_quotes($s)
 
 function islocal($link)
 {
-    global $INSTALLER09;
+    global $site_config;
     $flag = false;
     $limit = 600;
-    $INSTALLER09['url'] = str_replace([
+    $site_config['url'] = str_replace([
         'http://',
         'www',
         'http://www',
         'https://',
         'https://www',
-    ], '', $INSTALLER09['baseurl']);
+    ], '', $site_config['baseurl']);
     if (false !== stristr($link[0], '[url=')) {
         $url = trim($link[1]);
         $title = trim($link[2]);
@@ -244,7 +244,7 @@ function islocal($link)
     }
     $url = htmlsafechars($url);
 
-    return '<a href="' . ((stristr($url, $INSTALLER09['url']) !== false) ? '' : 'http://nullrefer.com/?') . $url . '" target="_blank">' . $lshort . '</a>';
+    return '<a href="' . ((stristr($url, $site_config['url']) !== false) ? '' : 'http://nullrefer.com/?') . $url . '" target="_blank">' . $lshort . '</a>';
 }
 
 function format_urls($s)
@@ -254,15 +254,15 @@ function format_urls($s)
 
 function format_comment($text, $strip_html = true, $urls = true, $images = true)
 {
-    global $smilies, $staff_smilies, $customsmilies, $INSTALLER09, $CURUSER;
+    global $smilies, $staff_smilies, $customsmilies, $site_config, $CURUSER;
     $s = $text;
     unset($text);
     $s = validate_imgs($s);
-    $INSTALLER09['url'] = str_replace(['http://', 'www', 'http://www', 'https://', 'https://www'], '', $INSTALLER09['baseurl']);
+    $site_config['url'] = str_replace(['http://', 'www', 'http://www', 'https://', 'https://www'], '', $site_config['baseurl']);
     if (isset($_SERVER['HTTPS']) && (bool)$_SERVER['HTTPS'] == true) {
-        $s = preg_replace('/http:\/\/((?:www\.)?' . $INSTALLER09['url'] . ')/i', 'https://$1', $s);
+        $s = preg_replace('/http:\/\/((?:www\.)?' . $site_config['url'] . ')/i', 'https://$1', $s);
     } else {
-        $s = preg_replace('/https:\/\/((?:www\.)?' . $INSTALLER09['url'] . ')/i', 'http://$1', $s);
+        $s = preg_replace('/https:\/\/((?:www\.)?' . $site_config['url'] . ')/i', 'http://$1', $s);
     }
     // This fixes the extraneous ;) smilies problem. When there was an html escaped
     // char before a closing bracket - like >), "), ... - this would be encoded
@@ -442,17 +442,17 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     $s = str_replace('  ', ' &#160;', $s);
     if (isset($smilies)) {
         foreach ($smilies as $code => $url) {
-            $s = str_replace($code, "<img border='0' src=\"{$INSTALLER09['pic_base_url']}smilies/{$url}\" alt=\"\" />", $s);
+            $s = str_replace($code, "<img border='0' src=\"{$site_config['pic_base_url']}smilies/{$url}\" alt=\"\" />", $s);
         }
     }
     if (isset($staff_smilies)) {
         foreach ($staff_smilies as $code => $url) {
-            $s = str_replace($code, "<img border='0' src=\"{$INSTALLER09['pic_base_url']}smilies/{$url}\" alt=\"\" />", $s);
+            $s = str_replace($code, "<img border='0' src=\"{$site_config['pic_base_url']}smilies/{$url}\" alt=\"\" />", $s);
         }
     }
     if (isset($customsmilies)) {
         foreach ($customsmilies as $code => $url) {
-            $s = str_replace($code, "<img border='0' src=\"{$INSTALLER09['pic_base_url']}smilies/{$url}\" alt=\"\" />", $s);
+            $s = str_replace($code, "<img border='0' src=\"{$site_config['pic_base_url']}smilies/{$url}\" alt=\"\" />", $s);
         }
     }
     $s = format_quotes($s);
@@ -463,7 +463,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
 //=== no bb code in post
 function format_comment_no_bbcode($text, $strip_html = true)
 {
-    global $INSTALLER09;
+    global $site_config;
     $s = $text;
     if ($strip_html) {
         //$s = htmlsafechars($s);
@@ -566,7 +566,7 @@ function format_comment_no_bbcode($text, $strip_html = true)
 
 function _MediaTag($content, $type)
 {
-    global $INSTALLER09;
+    global $site_config;
     if ($content == '' or $type == '') {
         return;
     }
@@ -619,7 +619,7 @@ function user_key_codes($key)
 
 function dynamic_user_vars($text)
 {
-    global $CURUSER, $INSTALLER09;
+    global $CURUSER, $site_config;
     if (!isset($CURUSER)) {
         return;
     }

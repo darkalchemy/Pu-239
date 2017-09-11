@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('users'));
@@ -112,8 +112,8 @@ if ($arr[0] > 0) {
     $HTMLOUT .= "<table class='table table-condensed'>\n";
     $HTMLOUT .= "<tr><td class='colhead' align='left'>{$lang['users_username']}</td><td class='colhead'>{$lang['users_regd']}</td><td class='colhead'>{$lang['users_la']}</td><td class='colhead' align='left'>{$lang['users_class']}</td><td class='colhead'>{$lang['users_country']}</td></tr>\n";
     while ($row = mysqli_fetch_assoc($res)) {
-        $country = ($row['name'] != null) ? "<td style='padding: 0px' align='center'><img src='{$INSTALLER09['pic_base_url']}flag/" . htmlsafechars($row['flagpic']) . "' alt='" . htmlsafechars($row['name']) . "' /></td>" : "<td align='center'>---</td>";
-        $HTMLOUT .= "<tr><td align='left'><a href='userdetails.php?id=" . (int)$row['id'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>' . ($row['donor'] > 0 ? "<img src='{$INSTALLER09['pic_base_url']}star.gif' border='0' alt='{$lang['users_donor']}' />" : '') . '</td>' . '<td>' . get_date($row['added'], '') . '</td><td>' . get_date($row['last_access'], '') . '</td>' . "<td align='left'>" . get_user_class_name($row['class']) . "</td>$country</tr>\n";
+        $country = ($row['name'] != null) ? "<td style='padding: 0px' align='center'><img src='{$site_config['pic_base_url']}flag/" . htmlsafechars($row['flagpic']) . "' alt='" . htmlsafechars($row['name']) . "' /></td>" : "<td align='center'>---</td>";
+        $HTMLOUT .= "<tr><td align='left'><a href='userdetails.php?id=" . (int)$row['id'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>' . ($row['donor'] > 0 ? "<img src='{$site_config['pic_base_url']}star.gif' border='0' alt='{$lang['users_donor']}' />" : '') . '</td>' . '<td>' . get_date($row['added'], '') . '</td><td>' . get_date($row['last_access'], '') . '</td>' . "<td align='left'>" . get_user_class_name($row['class']) . "</td>$country</tr>\n";
     }
     $HTMLOUT .= "</table></div>\n";
 }

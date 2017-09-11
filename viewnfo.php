@@ -14,7 +14,7 @@ $a = mysqli_fetch_assoc($r) or die("{$lang['text_puke']}");
 $HTMLOUT = '';
 $HTMLOUT .= "
 <div>
-<div>{$lang['text_nfofor']}<a href='{$INSTALLER09['baseurl']}/details.php?id=$id'>" . htmlsafechars($a['name']) . "</a></div>
+<div>{$lang['text_nfofor']}<a href='{$site_config['baseurl']}/details.php?id=$id'>" . htmlsafechars($a['name']) . "</a></div>
 <div>{$lang['text_forbest']}<a href='ftp://{$_SERVER['HTTP_HOST']}/misc/linedraw.ttf'>{$lang['text_linedraw']}</a>{$lang['text_font']}</div>
 <div>
 <table border='1' cellspacing='0' cellpadding='5'>

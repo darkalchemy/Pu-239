@@ -1,13 +1,13 @@
 <?php
 function processkill_update($data)
 {
-    global $INSTALLER09, $queries;
+    global $site_config, $queries;
     set_time_limit(1200);
-    ignore_user_abort(1);
+    ignore_user_abort(true);
     $sql = sql_query('SHOW PROCESSLIST');
     $cnt = 0;
     while ($arr = mysqli_fetch_assoc($sql)) {
-        if ($arr['db'] == $INSTALLER09['mysql_db'] and $arr['Command'] == 'Sleep' and $arr['Time'] > 60) {
+        if ($arr['db'] == $site_config['mysql_db'] and $arr['Command'] == 'Sleep' and $arr['Time'] > 60) {
             sql_query("KILL {$arr['Id']}");
             ++$cnt;
         }

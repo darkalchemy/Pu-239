@@ -1,14 +1,14 @@
 <?php
 if (!defined('BUNNY_FORUMS')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 global $lang;
 
 //=== start page
 $colour = $topicpoll = '';
-$links = '<span style="text-align: center;"><a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';
+$links = '<span style="text-align: center;"><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';
 $HTMLOUT .= '<h1>' . $lang['nr_new_replys_to_treads'] . ' ' . $lang['nr_youve_posted_in'] . '</h1>' . $links;
 //$time = $readpost_expiry;
 $res_count = sql_query('SELECT t.id, t.last_post FROM topics AS t LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN forums as f ON f.id = t.forum_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' f.min_class_read <= ' . $CURUSER['class']);
@@ -34,7 +34,7 @@ if ($count == 0) {
     //=== get stuff for the pager
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 0;
     $perpage = isset($_GET['perpage']) ? (int)$_GET['perpage'] : 20;
-    list($menu, $LIMIT) = pager_new($count, $perpage, $page, $INSTALLER09['baseurl'] . '/forums.php?action=view_unread_posts' . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
+    list($menu, $LIMIT) = pager_new($count, $perpage, $page, $site_config['baseurl'] . '/forums.php?action=view_unread_posts' . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
     //=== top and bottom stuff
     $the_top_and_bottom = '<br><table border="0" cellspacing="0" cellpadding="0" width="90%">
    <tr><td class="three" align="center" valign="middle">' . (($count > $perpage) ? $menu : '') . '</td>
@@ -52,8 +52,8 @@ if ($count == 0) {
    ORDER BY t.last_post DESC ' . $LIMIT);
     $HTMLOUT .= $the_top_and_bottom . '<table border="0" cellspacing="5" cellpadding="10" width="90%">
 	<tr>
-	<td align="center" valign="middle" class="forum_head_dark" width="10"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
-	<td align="center" valign="middle" class="forum_head_dark" width="10"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/topic_normal.gif" alt=' . $lang['fe_thread_icon'] . '" title=' . $lang['fe_thread_icon'] . '" /></td>
+	<td align="center" valign="middle" class="forum_head_dark" width="10"><img src="' . $site_config['pic_base_url'] . 'forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
+	<td align="center" valign="middle" class="forum_head_dark" width="10"><img src="' . $site_config['pic_base_url'] . 'forums/topic_normal.gif" alt=' . $lang['fe_thread_icon'] . '" title=' . $lang['fe_thread_icon'] . '" /></td>
 	<td align="left" class="forum_head_dark">' . $lang['fe_new_posts'] . '!</td>
 	<td class="forum_head_dark" align="center" width="10">' . $lang['fe_replies'] . '</td>
 	<td class="forum_head_dark" align="center" width="10">' . $lang['fe_views'] . '</td>
@@ -87,12 +87,12 @@ if ($count == 0) {
             $rpic = ($arr_unread['num_ratings'] != 0 ? ratingpic_forums(round($arr_unread['rating_sum'] / $arr_unread['num_ratings'], 1)) : '');
             $sub = sql_query('SELECT user_id FROM subscriptions WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($arr_unread['topic_id']));
             $subscriptions = (mysqli_num_rows($sub) > 0 ? 1 : 0);
-            $icon = ($arr_unread['icon'] == '' ? '<img src="' . $INSTALLER09['pic_base_url'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="./images/smilies/' . htmlsafechars($arr_unread['icon']) . '.gif" alt="' . htmlsafechars($arr_unread['icon']) . '" title="' . htmlsafechars($arr_unread['icon']) . '" />');
-            $first_post_text = tool_tip(' <img src="' . $INSTALLER09['pic_base_url'] . 'forums/mg.gif" height="14" alt="' . $lang['fe_preview'] . '" title="' . $lang['fe_preview'] . '" />', format_comment($arr_unread['body'], true, false, false), '' . $lang['fe_last_post'] . ' ' . $lang['fe_preview'] . '');
-            $topic_name = ($sticky ? '<img src="' . $INSTALLER09['pic_base_url'] . 'forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" /> ' : ' ') . ($topicpoll ? '<img src="' . $INSTALLER09['pic_base_url'] . 'forums/poll.gif" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '" /> ' : ' ') . ' <a class="altlink" href="?action=view_topic&amp;topic_id=' . (int)$arr_unread['topic_id'] . '" title="' . $lang['fe_1st_post_in_tread'] . '">' . htmlsafechars($arr_unread['topic_name'], ENT_QUOTES) . '</a><a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$arr_unread['topic_id'] . '&amp;page=0#' . (int)$arr_post_read[0] . '" title="' . $lang['fe_1st_unread_post_topic'] . '"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/last_post.gif" alt="First unread post" title="First unread post" /></a>' . ($posted ? '<img src="' . $INSTALLER09['pic_base_url'] . 'forums/posted.gif" alt="Posted" title="Posted" /> ' : ' ') . ($subscriptions ? '<img src="' . $INSTALLER09['pic_base_url'] . 'forums/subscriptions.gif" alt="' . $lang['fe_subscribed'] . '" title="' . $lang['fe_subscribed'] . '" /> ' : ' ') . ' <img src="' . $INSTALLER09['pic_base_url'] . 'forums/new.gif" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!" />';
+            $icon = ($arr_unread['icon'] == '' ? '<img src="' . $site_config['pic_base_url'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="./images/smilies/' . htmlsafechars($arr_unread['icon']) . '.gif" alt="' . htmlsafechars($arr_unread['icon']) . '" title="' . htmlsafechars($arr_unread['icon']) . '" />');
+            $first_post_text = tool_tip(' <img src="' . $site_config['pic_base_url'] . 'forums/mg.gif" height="14" alt="' . $lang['fe_preview'] . '" title="' . $lang['fe_preview'] . '" />', format_comment($arr_unread['body'], true, false, false), '' . $lang['fe_last_post'] . ' ' . $lang['fe_preview'] . '');
+            $topic_name = ($sticky ? '<img src="' . $site_config['pic_base_url'] . 'forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" /> ' : ' ') . ($topicpoll ? '<img src="' . $site_config['pic_base_url'] . 'forums/poll.gif" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '" /> ' : ' ') . ' <a class="altlink" href="?action=view_topic&amp;topic_id=' . (int)$arr_unread['topic_id'] . '" title="' . $lang['fe_1st_post_in_tread'] . '">' . htmlsafechars($arr_unread['topic_name'], ENT_QUOTES) . '</a><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$arr_unread['topic_id'] . '&amp;page=0#' . (int)$arr_post_read[0] . '" title="' . $lang['fe_1st_unread_post_topic'] . '"><img src="' . $site_config['pic_base_url'] . 'forums/last_post.gif" alt="First unread post" title="First unread post" /></a>' . ($posted ? '<img src="' . $site_config['pic_base_url'] . 'forums/posted.gif" alt="Posted" title="Posted" /> ' : ' ') . ($subscriptions ? '<img src="' . $site_config['pic_base_url'] . 'forums/subscriptions.gif" alt="' . $lang['fe_subscribed'] . '" title="' . $lang['fe_subscribed'] . '" /> ' : ' ') . ' <img src="' . $site_config['pic_base_url'] . 'forums/new.gif" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!" />';
             //=== print here
             $HTMLOUT .= '<tr>
-		<td class="' . $class . '" align="center"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/' . $topicpic . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
+		<td class="' . $class . '" align="center"><img src="' . $site_config['pic_base_url'] . 'forums/' . $topicpic . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
 		<td class="' . $class . '" align="center">' . $icon . '</td>
 		<td align="left" valign="middle" class="' . $class . '">
 		<table border="0" cellspacing="0" cellpadding="0">
@@ -102,7 +102,7 @@ if ($count == 0) {
 		</tr>
 		</table>
 		' . ($arr_unread['topic_desc'] !== '' ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($arr_unread['topic_desc'], ENT_QUOTES) . '</span>' : '') . '  
-		<hr>in: <a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int)$arr_unread['forum_id'] . '">' . htmlsafechars($arr_unread['forum_name'], ENT_QUOTES) . '</a>
+		<hr>in: <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int)$arr_unread['forum_id'] . '">' . htmlsafechars($arr_unread['forum_name'], ENT_QUOTES) . '</a>
 		' . ($arr_unread['topic_desc'] !== '' ? ' [ <span style="font-size: x-small;">' . htmlsafechars($arr_unread['topic_desc'], ENT_QUOTES) . '</span> ]' : '') . '</td>
 		<td align="center" class="' . $class . '">' . number_format($arr_unread['post_count'] - 1) . '</td>
 		<td align="center" class="' . $class . '">' . number_format($arr_unread['views']) . '</td>

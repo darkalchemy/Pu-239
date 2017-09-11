@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -60,12 +60,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $mc1->update_row(false, [
                 'enabled' => 'no',
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('user' . $uid);
             $mc1->update_row(false, [
                 'enabled' => 'no',
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $d = mysqli_affected_rows($GLOBALS['___mysqli_ston']);
             header('Refresh: 2; url=' . $r);
             stderr($lang['hnrwarn_success'], $d . $lang['hnrwarn_user'] . ($d > 1 ? $lang['hnrwarn_s'] : '') . ' disabled!');
@@ -83,12 +83,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $mc1->update_row(false, [
             'hnrwarn' => 'no',
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+        $mc1->commit_transaction($site_config['expires']['curuser']);
         $mc1->begin_transaction('user' . $id);
         $mc1->update_row(false, [
             'hnrwarn' => 'no',
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+        $mc1->commit_transaction($site_config['expires']['user_cache']);
         if (count($pms)) {
             $g = sql_query('INSERT INTO messages(sender,receiver,subject,msg,added) VALUE ' . join(',', $pms)) or sqlerr(__FILE__, __LINE__);
             $q1 = sql_query("UPDATE users set hnrwarn='no', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['hnrwarn_rem_log'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . join(',', $_uids) . ')') or sqlerr(__FILE__, __LINE__);

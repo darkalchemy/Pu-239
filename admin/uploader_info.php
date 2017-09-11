@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -28,7 +28,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
     //=== change colors
     $count = (++$count) % 2;
     $class = ($count == 0 ? 'one' : 'two');
-    $ratio = member_ratio($arr['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $arr['downloaded']);
+    $ratio = member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']);
     $HTMLOUT .= '<tr>
 <td class="' . $class . '" align="center">' . $i . '</td>
 <td class="' . $class . '" align="center">' . (int)$arr['how_many_torrents'] . '</td>
@@ -36,7 +36,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
 <td class="' . $class . '" align="left">' . get_user_class_name($arr['class']) . '</td>
 <td class="' . $class . '" align="left">' . $ratio . '</td>
 <td class="' . $class . '" align="left">' . get_date($arr['added'], 'DATE', 0, 1) . '</td>
-<td class="' . $class . '" align="center"><a href="pm_system.php?action=send_message&amp;receiver=' . (int)$arr['id'] . '"><img src="' . $INSTALLER09['pic_base_url'] . '/button_pm.gif" alt="' . $lang['upinfo_pm'] . '" title="' . $lang['upinfo_pm'] . '" border="0" /></a></td>
+<td class="' . $class . '" align="center"><a href="pm_system.php?action=send_message&amp;receiver=' . (int)$arr['id'] . '"><img src="' . $site_config['pic_base_url'] . '/button_pm.gif" alt="' . $lang['upinfo_pm'] . '" title="' . $lang['upinfo_pm'] . '" border="0" /></a></td>
 </tr>';
 }
 $HTMLOUT .= '</table>';

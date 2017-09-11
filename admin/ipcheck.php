@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -19,7 +19,7 @@ $HTMLOUT .= "<tr align='center'>
  <td class='colhead' width='70'>{$lang['ipcheck_email']}</td>
  <td class='colhead' width='70'>{$lang['ipcheck_regged']}</td>
  <td class='colhead' width='75'>{$lang['ipcheck_lastacc']}</td>
- " . ($INSTALLER09['ratio_free'] ? '' : "<td class='colhead' width='70'>{$lang['ipcheck_dload']}</td>") . "
+ " . ($site_config['ratio_free'] ? '' : "<td class='colhead' width='70'>{$lang['ipcheck_dload']}</td>") . "
  <td class='colhead' width='70'>{$lang['ipcheck_upped']}</td>
  <td class='colhead' width='45'>{$lang['ipcheck_ratio']}</td>
  <td class='colhead' width='125'>{$lang['ipcheck_ip']}</td></tr>\n";
@@ -55,9 +55,9 @@ while ($ras = mysqli_fetch_assoc($res)) {
                                   <td align='center'>" . htmlsafechars($arr['email']) . "</td>
                                   <td align='center'>$added</td>
                                   <td align='center'>$last_access</td>
-                                  " . ($INSTALLER09['ratio_free'] ? '' : "<td align='center'>$downloaded</td>") . "
+                                  " . ($site_config['ratio_free'] ? '' : "<td align='center'>$downloaded</td>") . "
                                   <td align='center'>$uploaded</td>
-                                  <td align='center'>" . member_ratio($arr['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $arr['downloaded']) . "</td>
+                                  <td align='center'>" . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . "</td>
                                   <td align='center'><span style=\"font-weight: bold;\">" . htmlsafechars($arr['ip']) . "</span></td>\n</tr>\n";
                 $ip = htmlsafechars($arr['ip']);
             }

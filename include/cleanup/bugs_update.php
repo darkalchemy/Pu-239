@@ -1,9 +1,9 @@
 <?php
 function bugs_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
+    global $site_config, $queries, $mc1;
     set_time_limit(1200);
-    ignore_user_abort(1);
+    ignore_user_abort(true);
     //== delete bugs
     $days = 14;
     $time = (TIME_NOW - ($days * 86400));

@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'pager_functions.php';
@@ -15,7 +15,7 @@ $lang = array_merge($lang, load_language('inactive'));
 // made by putyn tbdev.net
 // email part by x0r tbdev.net
 // config
-$replyto = "{$INSTALLER09['site_email']}"; // The Reply-to email.
+$replyto = "{$site_config['site_email']}"; // The Reply-to email.
 $record_mail = true; // set this true or false . If you set this true every time whene you send a mail the time , userid , and the number of mail sent will be recorded
 $days = 50; //number of days of inactivity
 // end config
@@ -37,11 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 write_log("User: $username Was deleted by {$CURUSER['username']}");
             }
         }
-        stderr($lang['inactive_success'], "{$lang['inactive_deleted']} <a href='" . $INSTALLER09['baseurl'] . "/staffpanel.php?tool=inactive>{$lang['inactive_back']}</a>");
+        stderr($lang['inactive_success'], "{$lang['inactive_deleted']} <a href='" . $site_config['baseurl'] . "/staffpanel.php?tool=inactive>{$lang['inactive_back']}</a>");
     }
     if ($action == 'disable' && (!empty($_POST['userid']))) {
         sql_query("UPDATE users SET enabled='no' WHERE id IN (" . implode(', ', array_map('sqlesc', $_POST['userid'])) . ') ');
-        stderr($lang['inactive_success'], "{$lang['inactive_disabled']} <a href='" . $INSTALLER09['baseurl'] . "/staffpanel.php?tool=inactive>{$lang['inactive_back']}</a>");
+        stderr($lang['inactive_success'], "{$lang['inactive_disabled']} <a href='" . $site_config['baseurl'] . "/staffpanel.php?tool=inactive>{$lang['inactive_back']}</a>");
     }
     if ($action == 'mail' && (!empty($_POST['userid']))) {
         $res = sql_query('SELECT id, email, modcomment, username, added, last_access FROM users WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['userid'])) . ') ORDER BY last_access DESC ');
@@ -52,16 +52,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email = htmlsafechars($arr['email']);
             $added = get_date($arr['added'], 'DATE');
             $last_access = get_date($arr['last_access'], 'DATE');
-            $subject = "{$lang['inactive_youracc']}{$INSTALLER09['site_name']} !";
+            $subject = "{$lang['inactive_youracc']}{$site_config['site_name']} !";
             $message = "{$lang['inactive_hey']}
-            {$lang['inactive_youracc']} {$INSTALLER09['site_name']} {$lang['inactive_marked']} {$INSTALLER09['site_name']}{$lang['inactive_plogin']}\n
+            {$lang['inactive_youracc']} {$site_config['site_name']} {$lang['inactive_marked']} {$site_config['site_name']}{$lang['inactive_plogin']}\n
             {$lang['inactive_yourusername']} $username\n
             {$lang['inactive_created']} $added\n
             {$lang['inactive_lastaccess']} $last_access\n
-            {$lang['inactive_loginat']} {$INSTALLER09['baseurl']}/login.php\n
-            {$lang['inactive_forgotten']} {$INSTALLER09['baseurl']}/resetpw.php\n
-            {$lang['inactive_welcomeback']} {$INSTALLER09['site_name']}";
-            $headers = 'From: ' . $INSTALLER09['site_email'] . "\r\n" . 'Reply-To:' . $replyto . "\r\n" . 'X-Mailer: PHP/' . phpversion();
+            {$lang['inactive_loginat']} {$site_config['baseurl']}/login.php\n
+            {$lang['inactive_forgotten']} {$site_config['baseurl']}/resetpw.php\n
+            {$lang['inactive_welcomeback']} {$site_config['site_name']}";
+            $headers = 'From: ' . $site_config['site_email'] . "\r\n" . 'Reply-To:' . $replyto . "\r\n" . 'X-Mailer: PHP/' . phpversion();
             $mail = @mail($email, $subject, $message, $headers);
         }
         if ($record_mail) {
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
         if ($mail) {
-            stderr($lang['inactive_success'], "{$lang['inactive_msgsent']} <a href='" . $INSTALLER09['baseurl'] . "/staffpanel.php?tool=inactive'>{$lang['inactive_back']}</a>");
+            stderr($lang['inactive_success'], "{$lang['inactive_msgsent']} <a href='" . $site_config['baseurl'] . "/staffpanel.php?tool=inactive'>{$lang['inactive_back']}</a>");
         } else {
             stderr($lang['inactive_error'], "{$lang['inactive_tryagain']}");
         }
@@ -118,11 +118,11 @@ if ($count_inactive > 0) {
     <td class='colhead'>{$lang['inactive_lastseen']}</td>
     <td class='colhead' align='center'>{$lang['inactive_x']}</td></tr>";
     while ($arr = mysqli_fetch_assoc($res)) {
-        $ratio = (member_ratio($arr['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $arr['downloaded']));
+        $ratio = (member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']));
         $last_seen = (($arr['last_access'] == '0') ? 'never' : '' . get_date($arr['last_access'], 'DATE') . '&#160;');
         $class = get_user_class_name($arr['class']);
         $HTMLOUT .= "<tr>
-        <td><a href='{$INSTALLER09['baseurl']}/userdetails.php?id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['username']) . '</a></td>
+        <td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['username']) . '</a></td>
         <td>' . $class . "</td>
         <td style='max-width:130px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;'><a href='mailto:" . htmlsafechars($arr['email']) . "'>" . htmlsafechars($arr['email']) . '</a></td>
         <td>' . $ratio . '</td>
@@ -141,7 +141,7 @@ if ($count_inactive > 0) {
         $ress = sql_query("SELECT avps.value_s AS userid, avps.value_i AS last_mail, avps.value_u AS mails, users.username FROM avps LEFT JOIN users ON avps.value_s=users.id WHERE avps.arg='inactivemail' LIMIT 1");
         $date = mysqli_fetch_assoc($ress);
         if ($date['last_mail'] > 0) {
-            $HTMLOUT .= "<tr><td colspan='6' class='colhead' align='center' style='color:red;'>{$lang['inactive_lastmail']} <a href='{$INSTALLER09['baseurl']}/userdetails.php?id=" . htmlsafechars($date['userid']) . "'>" . htmlsafechars($date['username']) . "</a> {$lang['inactive_on']} <b>" . get_date($date['last_mail'], 'DATE') . ' -  ' . $date['mails'] . "</b>{$lang['inactive_email']} " . ($date['mails'] > 1 ? 's' : '') . "  {$lang['inactive_sent']}</td></tr>";
+            $HTMLOUT .= "<tr><td colspan='6' class='colhead' align='center' style='color:red;'>{$lang['inactive_lastmail']} <a href='{$site_config['baseurl']}/userdetails.php?id=" . htmlsafechars($date['userid']) . "'>" . htmlsafechars($date['username']) . "</a> {$lang['inactive_on']} <b>" . get_date($date['last_mail'], 'DATE') . ' -  ' . $date['mails'] . "</b>{$lang['inactive_email']} " . ($date['mails'] > 1 ? 's' : '') . "  {$lang['inactive_sent']}</td></tr>";
         }
     }
     $HTMLOUT .= '</table></form>';

@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 
@@ -10,8 +10,8 @@ $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $result = mysqli_fetch_assoc($res);
 $qid = (int)$result['qid'];
 $display = $answered = '';
-global $INSTALLER09;
-$csrf = $INSTALLER09['session_csrf'];
+global $site_config;
+$csrf = $site_config['session_csrf'];
 
 function clean_data($data) {
     foreach ($data as $key => $value) {
@@ -56,7 +56,7 @@ if (!empty($_POST) && (int)$_POST['qid'] === $qid) {
 }
 
 unset($_POST);
-global $INSTALLER09;
+global $site_config;
 $HTMLOUT = '';
 $user_id = $CURUSER['id'];
 
@@ -88,16 +88,16 @@ $HTMLOUT = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http
 <head>
 <title>Trivia</title>
 <meta http-equiv='refresh' content={$refresh}; url=./trivia.php'>
-<link rel='stylesheet' href='./css/" . get_stylesheet() . "/0dd7daf52570b404a09c81a8a776058d.min.css' />
+<link rel='stylesheet' href='" . get_file('trivia_css') . "' />
 <link href='https://fonts.googleapis.com/css?family=Acme|Baloo+Bhaijaan|Encode+Sans+Condensed|Lobster|Nova+Square|Open+Sans|Oswald|PT+Sans+Narrow' rel='stylesheet' />
 </head>
-<body class='text-1'>
+<body class='text-1 transparent'>
 <script>
     var theme = localStorage.getItem('theme');
     if (theme) {
         var myRegexp = /text-(\d)/g;
         var match = myRegexp.exec(theme);
-        document.body.className = 'text-' + match[1];
+        document.body.className = 'transparent text-' + match[1];
     }
 </script>";
 
@@ -269,7 +269,7 @@ $HTMLOUT .= "
 if ($round_remaining >= 1) {
     $HTMLOUT .= "
 <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
-<script src='./js/2d28f39c1474c0e07517d68f18e88974.min.js'></script>
+<script src='" . get_file('trivia_js') ."'></script>
 <script>
     <!-- https://www.sitepoint.com/build-javascript-countdown-timer-no-dependencies/ -->
     function getTimeRemaining(endtime){

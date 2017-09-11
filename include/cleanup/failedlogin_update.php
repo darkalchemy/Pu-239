@@ -1,9 +1,9 @@
 <?php
 function failedlogin_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
-    set_time_limit(0);
-    ignore_user_abort(1);
+    global $site_config, $queries, $mc1;
+    set_time_limit(1200);
+    ignore_user_abort(true);
     //== Failed logins
     $secs = 1 * 86400; // Delete failed login attempts per one day.
     $dt = (TIME_NOW - $secs); // calculate date.

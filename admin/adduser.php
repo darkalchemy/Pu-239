@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -35,10 +35,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         stderr($lang['std_err'], $lang['err_email']);
     }
     if (sql_query(sprintf('INSERT INTO users (username, email, passhash, status, added, last_access) VALUES (%s)', join(', ', array_map('sqlesc', $insert))))) {
-        $user_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
+        $user_id = 0;
+        while ($user_id === 0) {
+            usleep(500);
+            $user_id = get_one_row('users', 'id', 'WHERE username = ' . sqlesc($insert['username']));
+        }
+        //$user_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
         sql_query('INSERT INTO usersachiev (userid) VALUES (' . sqlesc($user_id) . ')') or sqlerr(__FILE__, __LINE__);
-        $message = "Welcome New {$INSTALLER09['site_name']} Member : - [user]" . htmlsafechars($insert['username']) . '[/user]';
-        if ($INSTALLER09['autoshout_on'] == 1) {
+        $message = "Welcome New {$site_config['site_name']} Member : - [user]" . htmlsafechars($insert['username']) . '[/user]';
+        if ($site_config['autoshout_on'] == 1) {
             autoshout($message);
         }
         stderr($lang['std_success'], sprintf($lang['text_user_added'], $user_id));

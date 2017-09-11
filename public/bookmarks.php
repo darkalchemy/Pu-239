@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'torrenttable_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
@@ -8,14 +8,14 @@ $lang = array_merge(load_language('global'), load_language('torrenttable_functio
 $htmlout = '';
 function bookmarktable($res, $variant = 'index')
 {
-    global $INSTALLER09, $CURUSER, $lang;
+    global $site_config, $CURUSER, $lang;
     $htmlout = '';
     $htmlout .= "
    <span>{$lang['bookmarks_icon']}
-   <img src='{$INSTALLER09['pic_base_url']}aff_cross.gif' alt='{$lang['bookmarks_del']}' border='none' />{$lang['bookmarks_del1']}
-   <img src='{$INSTALLER09['pic_base_url']}zip.gif' alt='{$lang['bookmarks_down']}' border='none' />{$lang['bookmarks_down1']}
-   <img alt='{$lang['bookmarks_private']}' src='{$INSTALLER09['pic_base_url']}key.gif' border='none'  /> {$lang['bookmarks_private1']}
-   <img src='{$INSTALLER09['pic_base_url']}public.gif' alt='{$lang['bookmarks_public']}' border='none'  />{$lang['bookmarks_public1']}</span>
+   <img src='{$site_config['pic_base_url']}aff_cross.gif' alt='{$lang['bookmarks_del']}' border='none' />{$lang['bookmarks_del1']}
+   <img src='{$site_config['pic_base_url']}zip.gif' alt='{$lang['bookmarks_down']}' border='none' />{$lang['bookmarks_down1']}
+   <img alt='{$lang['bookmarks_private']}' src='{$site_config['pic_base_url']}key.gif' border='none'  /> {$lang['bookmarks_private1']}
+   <img src='{$site_config['pic_base_url']}public.gif' alt='{$lang['bookmarks_public']}' border='none'  />{$lang['bookmarks_public1']}</span>
    <table class='table table-bordered'>
    <tr>
    <td class='colhead text-center'>{$lang['torrenttable_type']}</td>
@@ -53,7 +53,7 @@ function bookmarktable($res, $variant = 'index')
         if (isset($row['cat_name'])) {
             $htmlout .= '<a href="browse.php?cat=' . (int)$row['category'] . '">';
             if (isset($row['cat_pic']) && $row['cat_pic'] != '') {
-                $htmlout .= "<img border='0' src='{$INSTALLER09['pic_base_url']}caticons/". get_categorie_icons() . "/" . htmlsafechars($row['cat_pic']) . "' alt='" . htmlsafechars($row['cat_name']) . "' />";
+                $htmlout .= "<img border='0' src='{$site_config['pic_base_url']}caticons/". get_categorie_icons() . "/" . htmlsafechars($row['cat_pic']) . "' alt='" . htmlsafechars($row['cat_name']) . "' />";
             } else {
                 $htmlout .= htmlsafechars($row['cat_name']);
             }
@@ -72,15 +72,15 @@ function bookmarktable($res, $variant = 'index')
             $htmlout .= '&amp;hit=1';
         }
         $htmlout .= "'><b>$dispname</b></a>&#160;</td>\n";
-        $htmlout .= ($variant == 'index' ? "<td class='text-center'><a href='bookmark.php?torrent={$id}&amp;action=delete'><img src='{$INSTALLER09['pic_base_url']}aff_cross.gif' border='0' alt='{$lang['bookmarks_del3']}' title='{$lang['bookmarks_del3']}' /></a></td>" : '');
-        $htmlout .= ($variant == 'index' ? "<td class='text-center'><a href='download.php?torrent={$id}'><img src='{$INSTALLER09['pic_base_url']}zip.gif' border='0' alt='{$lang['bookmarks_down3']}' title='{$lang['bookmarks_down3']}' /></a></td>" : '');
+        $htmlout .= ($variant == 'index' ? "<td class='text-center'><a href='bookmark.php?torrent={$id}&amp;action=delete'><img src='{$site_config['pic_base_url']}aff_cross.gif' border='0' alt='{$lang['bookmarks_del3']}' title='{$lang['bookmarks_del3']}' /></a></td>" : '');
+        $htmlout .= ($variant == 'index' ? "<td class='text-center'><a href='download.php?torrent={$id}'><img src='{$site_config['pic_base_url']}zip.gif' border='0' alt='{$lang['bookmarks_down3']}' title='{$lang['bookmarks_down3']}' /></a></td>" : '');
         $bm = sql_query('SELECT * FROM bookmarks WHERE torrentid=' . sqlesc($id) . ' && userid=' . sqlesc($CURUSER['id']));
         $bms = mysqli_fetch_assoc($bm);
         if ($bms['private'] == 'yes' && $bms['userid'] == $CURUSER['id']) {
-            $makepriv = "<a href='bookmark.php?torrent={$id}&amp;action=public'><img src='{$INSTALLER09['pic_base_url']}key.gif' border='0' alt='{$lang['bookmarks_public2']}' title='{$lang['bookmarks_public2']}' /></a>";
+            $makepriv = "<a href='bookmark.php?torrent={$id}&amp;action=public'><img src='{$site_config['pic_base_url']}key.gif' border='0' alt='{$lang['bookmarks_public2']}' title='{$lang['bookmarks_public2']}' /></a>";
             $htmlout .= '' . ($variant == 'index' ? "<td class='text-center'>{$makepriv}</td>" : '');
         } elseif ($bms['private'] == 'no' && $bms['userid'] == $CURUSER['id']) {
-            $makepriv = "<a href='bookmark.php?torrent=" . $id . "&amp;action=private'><img src='{$INSTALLER09['pic_base_url']}public.gif' border='0' alt='{$lang['bookmarks_private2']}' title='{$lang['bookmarks_private2']}' /></a>";
+            $makepriv = "<a href='bookmark.php?torrent=" . $id . "&amp;action=private'><img src='{$site_config['pic_base_url']}public.gif' border='0' alt='{$lang['bookmarks_private2']}' title='{$lang['bookmarks_private2']}' /></a>";
             $htmlout .= '' . ($variant == 'index' ? "<td class='text-center'>{$makepriv}</td>" : '');
         }
         if ($variant == 'mytorrents') {

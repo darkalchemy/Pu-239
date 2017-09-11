@@ -5,7 +5,7 @@ check_user_status();
 
 If ($CURUSER['class'] < UC_SYSOP) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 

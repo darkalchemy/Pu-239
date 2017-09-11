@@ -1,9 +1,9 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 
-global $INSTALLER09, $CURUSER;
+global $site_config, $CURUSER;
 //require_once INCL_DIR . 'function_ircbot.php';
 //== Updated casino.php by Bigjoos
 check_user_status();
@@ -94,7 +94,7 @@ if ($CURUSER['downloaded'] > 0) {
 } else {
     $ratio = 0;
 }
-if ($INSTALLER09['ratio_free'] === false && $ratio < $required_ratio) {
+if ($site_config['ratio_free'] === false && $ratio < $required_ratio) {
     stderr($lang['gl_sorry'], '' . htmlsafechars($CURUSER['username']) . " {$lang['casino_your_ratio_is_under']} {$required_ratio}");
 }
 $global_down2 = sql_query('SELECT (sum(win)-sum(lost)) AS globaldown,(sum(deposit)) AS globaldeposit, sum(win) AS win, sum(lost) AS lost FROM casino') or sqlerr(__FILE__, __LINE__);
@@ -185,12 +185,12 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
         $mc1->update_row(false, [
             'uploaded' => $update['uploaded'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+        $mc1->commit_transaction($site_config['expires']['u_stats']);
         $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
         $mc1->update_row(false, [
             'uploaded' => $update['uploaded'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+        $mc1->commit_transaction($site_config['expires']['user_stats']);
         stderr($lang['casino_yes'], '' . htmlsafechars($winner_was) . " {$lang['casino_is_the_result']} " . htmlsafechars($CURUSER['username']) . " {$lang['casino_you_got_it_and_win']} " . htmlsafechars(mksize($win)) . "&#160;&#160;&#160;$goback");
     } else {
         if (isset($_POST['number'])) {
@@ -212,12 +212,12 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
         $mc1->update_row(false, [
             'uploaded' => $update['uploaded_loser'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+        $mc1->commit_transaction($site_config['expires']['u_stats']);
         $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
         $mc1->update_row(false, [
             'uploaded' => $update['uploaded_loser'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+        $mc1->commit_transaction($site_config['expires']['user_stats']);
         stderr($lang['gl_sorry'], '' . htmlsafechars($fake_winner) . " {$lang['casino_is_the_winner_and_not']} " . htmlsafechars($winner_was) . ', ' . htmlsafechars($CURUSER['username']) . " {$lang['casino_you_lost']} " . htmlsafechars(mksize($betmb)) . "&#160;&#160;&#160;$goback");
     }
 } else {
@@ -284,12 +284,12 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
             $mc1->update_row(false, [
                 'uploaded' => $update['uploaded'],
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
             $mc1->update_row(false, [
                 'uploaded' => $update['uploaded'],
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
             if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 0) {
                 sql_query('INSERT INTO casino (userid, date, deposit) VALUES (' . sqlesc($tbet['userid']) . ", $time, -" . sqlesc($tbet['amount']) . ')') or sqlerr(__FILE__, __LINE__);
             }
@@ -322,13 +322,13 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
             $mc1->update_row(false, [
                 'uploaded' => $update['uploaded'],
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
 
             $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
             $mc1->update_row(false, [
                 'uploaded' => $update['uploaded'],
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
 
             // get bet owner uploaded
             $sql = sql_query('SELECT uploaded FROM users WHERE id = ' . sqlesc($tbet['userid'])) or sqlerr(__FILE__, __LINE__);
@@ -341,12 +341,12 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
             $mc1->update_row(false, [
                 'uploaded' => $update['uploaded_2'],
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $tbet['userid']);
             $mc1->update_row(false, [
                 'uploaded' => $update['uploaded_2'],
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
 
             if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 0) {
                 sql_query('INSERT INTO casino (userid, date, deposit) VALUES (' . sqlesc($tbet['userid']) . ", $time, -" . sqlesc($tbet['amount']) . ')') or sqlerr(__FILE__, __LINE__);
@@ -418,13 +418,13 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
         $mc1->update_row(false, [
             'uploaded' => $update['uploaded'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+        $mc1->commit_transaction($site_config['expires']['u_stats']);
         $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
         $mc1->update_row(false, [
             'uploaded' => $update['uploaded'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
-        if ($INSTALLER09['autoshout_on'] == 1 || $INSTALLER09['irc_autoshout_on'] == 1) {
+        $mc1->commit_transaction($site_config['expires']['user_stats']);
+        if ($site_config['autoshout_on'] == 1 || $site_config['irc_autoshout_on'] == 1) {
             autoshout($message);
             //ircbot($messages);
         }
@@ -447,7 +447,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
         } else {
             $HTMLOUT .= "<br>
             <form name='p2p' method='post' action='{$casino}'>
-            <h1>{$INSTALLER09['site_name']} {$lang['casino_stdhead']} - {$lang['casino_bet_p2p_with_other_users']}:</h1>
+            <h1>{$site_config['site_name']} {$lang['casino_stdhead']} - {$lang['casino_bet_p2p_with_other_users']}:</h1>
             <table class='width50 text-center' cellspacing='0' cellpadding='3'>";
             $HTMLOUT .= "<tr><td class='text-center' colspan='2' class='colhead'>{$lang['casino_place_bet']}</td></tr>";
             $HTMLOUT .= "<tr><td class='text-center'><b>{$lang['casino_amount_to_bet']}</b>
@@ -537,7 +537,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     $HTMLOUT .= "<table class='width50 text-center' cellspacing='0' cellpadding='3'>";
     $HTMLOUT .= "<tr><td class='text-center' class='colhead' colspan='3'>{$CURUSER['username']}'s {$lang['casino_details']}</td></tr>
             <tr><td class='text-center'>
-            <h1>User @ {$INSTALLER09['site_name']} {$lang['casino_stdhead']}</h1>
+            <h1>User @ {$site_config['site_name']} {$lang['casino_stdhead']}</h1>
             <table class='message' cellspacing='0' cellpadding='5'>";
     $HTMLOUT .= tr($lang['casino_you_can_win'], mksize($max_download_user), 1);
     $HTMLOUT .= tr($lang['casino_won'], mksize($user_win), 1);

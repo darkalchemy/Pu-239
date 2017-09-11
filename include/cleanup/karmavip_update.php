@@ -1,14 +1,14 @@
 <?php
 function karmavip_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
+    global $site_config, $queries, $mc1;
     set_time_limit(1200);
-    ignore_user_abort(1);
+    ignore_user_abort(true);
     $res = sql_query("SELECT id, modcomment FROM users WHERE vip_added='yes' AND donoruntil < " . TIME_NOW . " AND vip_until < " . TIME_NOW . '') or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $users_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $subject = 'VIP status expired.';
-        $msg = "Your VIP status has timed out and has been auto-removed by the system. Become a VIP again by donating to {$INSTALLER09['site_name']} , or exchanging some Karma Bonus Points. Cheers !\n";
+        $msg = "Your VIP status has timed out and has been auto-removed by the system. Become a VIP again by donating to {$site_config['site_name']} , or exchanging some Karma Bonus Points. Cheers !\n";
         while ($arr = mysqli_fetch_assoc($res)) {
             $modcomment = $arr['modcomment'];
             $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - Vip status Automatically Removed By System.\n" . $modcomment;
@@ -21,19 +21,19 @@ function karmavip_update($data)
                 'vip_added' => 'no',
                 'vip_until' => 0,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('user_stats' . $arr['id']);
             $mc1->update_row(false, [
                 'modcomment' => $modcomment,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
             $mc1->begin_transaction('MyUser_' . $arr['id']);
             $mc1->update_row(false, [
                 'class'     => 1,
                 'vip_added' => 'no',
                 'vip_until' => 0,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->delete_value('inbox_new_' . $arr['id']);
             $mc1->delete_value('inbox_new_sb_' . $arr['id']);
         }

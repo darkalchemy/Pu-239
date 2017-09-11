@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -104,7 +104,7 @@ if ($ip) {
     }
     $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5'>\n";
     $HTMLOUT .= "<tr>
-	  <td class='colhead'><a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=username'>{$lang['ipsearch_username']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_ratio']}</td>" . "<td class='colhead'><a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=email'>{$lang['ipsearch_email']}</a></td>" . "<td class='colhead'><a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_ip'>{$lang['ipsearch_ip']}</a></td>" . "<td class='colhead'><a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_access'>{$lang['ipsearch_access']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_num']}</td>" . "<td class='colhead'><a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask'>{$lang['ipsearch_access']} on <br>" . htmlsafechars($ip) . '</a></td>' . "<td class='colhead'><a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=added'>{$lang['ipsearch_added']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_invited']}</td></tr>";
+	  <td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=username'>{$lang['ipsearch_username']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_ratio']}</td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=email'>{$lang['ipsearch_email']}</a></td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_ip'>{$lang['ipsearch_ip']}</a></td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_access'>{$lang['ipsearch_access']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_num']}</td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask'>{$lang['ipsearch_access']} on <br>" . htmlsafechars($ip) . '</a></td>' . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=added'>{$lang['ipsearch_added']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_invited']}</td></tr>";
     while ($user = mysqli_fetch_assoc($res)) {
         if ($user['added'] == '0') {
             $user['added'] = '---';
@@ -119,7 +119,7 @@ if ($ip) {
             if ($array[0] == 0) {
                 $ipstr = $user['last_ip'];
             } else {
-                $ipstr = "<a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($user['last_ip']) . "'><font color='#FF0000'><b>" . htmlsafechars($user['last_ip']) . '</b></font></a>';
+                $ipstr = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($user['last_ip']) . "'><font color='#FF0000'><b>" . htmlsafechars($user['last_ip']) . '</b></font></a>';
             }
         } else {
             $ipstr = '---';
@@ -133,16 +133,16 @@ if ($ip) {
             if ($invitedby == '') {
                 $invitedby = "<i>[{$lang['ipsearch_deleted']}]</i>";
             } else {
-                $invitedby = "<a href='{$INSTALLER09['baseurl']}/userdetails.php?id={$user['invitedby']}'>" . htmlsafechars($invitedby) . '</a>';
+                $invitedby = "<a href='{$site_config['baseurl']}/userdetails.php?id={$user['invitedby']}'>" . htmlsafechars($invitedby) . '</a>';
             }
         } else {
             $invitedby = '--';
         }
         $HTMLOUT .= "<tr>
-	   	<td><b><a href='{$INSTALLER09['baseurl']}/userdetails.php?id=" . (int)$user['id'] . "'></a></b>" . format_username($user) . '</td>' . '<td>' . member_ratio($user['uploaded'], $user['downloaded']) . '</td>
+	   	<td><b><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$user['id'] . "'></a></b>" . format_username($user) . '</td>' . '<td>' . member_ratio($user['uploaded'], $user['downloaded']) . '</td>
 		  <td>' . $user['email'] . '</td><td>' . $ipstr . "</td>
 		  <td><div align='center'>" . get_date($user['last_access'], 'DATE', 1, 0) . "</div></td>
-		  <td><div align='center'><b><a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=" . (int)$user['id'] . "'>" . htmlsafechars($iphistory) . "</a></b></div></td>
+		  <td><div align='center'><b><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=" . (int)$user['id'] . "'>" . htmlsafechars($iphistory) . "</a></b></div></td>
 		  <td><div align='center'>" . get_date($user['access'], 'DATE', 1, 0) . "</div></td>
 		  <td><div align='center'>" . get_date($user['added'], 'DATE', 1, 0) . "</div></td>
 		  <td><div align='center'>" . $invitedby . "</div></td>

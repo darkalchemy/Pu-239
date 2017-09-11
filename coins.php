@@ -42,7 +42,7 @@ sql_query('INSERT INTO coins (userid, torrentid, points) VALUES (' . sqlesc($CUR
 sql_query('UPDATE users SET seedbonus=seedbonus+' . sqlesc($points) . ' WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 sql_query('UPDATE users SET seedbonus=seedbonus-' . sqlesc($points) . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 sql_query('UPDATE torrents SET points=points+' . sqlesc($points) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$msg = sqlesc("{$lang['coins_you_have_been_given']} " . htmlspecialchars($points) . " {$lang['coins_points_by']} " . $CURUSER['username'] . " {$lang['coins_for_torrent']} [url=" . $INSTALLER09['baseurl'] . '/details.php?id=' . $id . ']' . htmlspecialchars($row['name']) . '[/url].');
+$msg = sqlesc("{$lang['coins_you_have_been_given']} " . htmlspecialchars($points) . " {$lang['coins_points_by']} " . $CURUSER['username'] . " {$lang['coins_for_torrent']} [url=" . $site_config['baseurl'] . '/details.php?id=' . $id . ']' . htmlspecialchars($row['name']) . '[/url].');
 $subject = sqlesc($lang['coins_you_have_been_given_a_gift']);
 sql_query("INSERT INTO messages (sender, receiver, msg, added, subject) VALUES(0, " . sqlesc($userid) . ", $msg, " . TIME_NOW . ", $subject)") or sqlerr(__FILE__, __LINE__);
 $update['points'] = ($row['points'] + $points);
@@ -53,29 +53,29 @@ $mc1->begin_transaction('torrent_details_' . $id);
 $mc1->update_row(false, [
     'points' => $update['points'],
 ]);
-$mc1->commit_transaction($INSTALLER09['expires']['torrent_details']);
+$mc1->commit_transaction($site_config['expires']['torrent_details']);
 //==The uploader
 $mc1->begin_transaction('userstats_' . $userid);
 $mc1->update_row(false, [
     'seedbonus' => $update['seedbonus_uploader'],
 ]);
-$mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+$mc1->commit_transaction($site_config['expires']['u_stats']);
 $mc1->begin_transaction('user_stats_' . $userid);
 $mc1->update_row(false, [
     'seedbonus' => $update['seedbonus_uploader'],
 ]);
-$mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+$mc1->commit_transaction($site_config['expires']['user_stats']);
 //==The donator
 $mc1->begin_transaction('userstats_' . $CURUSER['id']);
 $mc1->update_row(false, [
     'seedbonus' => $update['seedbonus_donator'],
 ]);
-$mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+$mc1->commit_transaction($site_config['expires']['u_stats']);
 $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
 $mc1->update_row(false, [
     'seedbonus' => $update['seedbonus_donator'],
 ]);
-$mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+$mc1->commit_transaction($site_config['expires']['user_stats']);
 //== delete the pm keys
 $mc1->delete_value('inbox_new_' . $userid);
 $mc1->delete_value('inbox_new_sb_' . $userid);

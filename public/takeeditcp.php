@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
@@ -43,17 +43,17 @@ if ($action == 'avatar') {
     }
     if (!empty($avatar)) {
         $img_size = @getimagesize($avatar);
-        if ($img_size == false || !in_array($img_size['mime'], $INSTALLER09['allowed_ext'])) {
+        if ($img_size == false || !in_array($img_size['mime'], $site_config['allowed_ext'])) {
             stderr($lang['takeeditcp_user_error'], $lang['takeeditcp_image_error']);
         }
         if ($img_size[0] < 5 || $img_size[1] < 5) {
             stderr($lang['takeeditcp_user_error'], $lang['takeeditcp_small_image']);
         }
         sql_query('UPDATE usersachiev SET avatarset = avatarset+1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND avatarset = '0'") or sqlerr(__FILE__, __LINE__);
-        if (($img_size[0] > $INSTALLER09['av_img_width']) or ($img_size[1] > $INSTALLER09['av_img_height'])) {
+        if (($img_size[0] > $site_config['av_img_width']) or ($img_size[1] > $site_config['av_img_height'])) {
             $image = resize_image([
-                'max_width'  => $INSTALLER09['av_img_width'],
-                'max_height' => $INSTALLER09['av_img_height'],
+                'max_width'  => $site_config['av_img_width'],
+                'max_height' => $site_config['av_img_height'],
                 'cur_width'  => $img_size[0],
                 'cur_height' => $img_size[1],
             ]);
@@ -103,17 +103,17 @@ elseif ($action == 'signature') {
     }
     if (!empty($signature)) {
         $img_size = @getimagesize($signature);
-        if ($img_size == false || !in_array($img_size['mime'], $INSTALLER09['allowed_ext'])) {
+        if ($img_size == false || !in_array($img_size['mime'], $site_config['allowed_ext'])) {
             stderr($lang['takeeditcp_uerr'], $lang['takeeditcp_img_unsupported']);
         }
         if ($img_size[0] < 5 || $img_size[1] < 5) {
             stderr($lang['takeeditcp_uerr'], $lang['takeeditcp_img_to_small']);
         }
         sql_query('UPDATE usersachiev SET sigset = sigset+1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND sigset = '0'") or sqlerr(__FILE__, __LINE__);
-        if (($img_size[0] > $INSTALLER09['sig_img_width']) or ($img_size[1] > $INSTALLER09['sig_img_height'])) {
+        if (($img_size[0] > $site_config['sig_img_width']) or ($img_size[1] > $site_config['sig_img_height'])) {
             $image = resize_image([
-                'max_width'  => $INSTALLER09['sig_img_width'],
-                'max_height' => $INSTALLER09['sig_img_height'],
+                'max_width'  => $site_config['sig_img_width'],
+                'max_height' => $site_config['sig_img_height'],
                 'cur_width'  => $img_size[0],
                 'cur_height' => $img_size[1],
             ]);
@@ -234,17 +234,17 @@ elseif ($action == 'security') {
             '<#CHANGE_LINK#>',
         ], [
             $CURUSER['username'],
-            $INSTALLER09['site_name'],
+            $site_config['site_name'],
             $email,
             $_SERVER['REMOTE_ADDR'],
-            "{$INSTALLER09['baseurl']}/confirmemail.php?uid={$CURUSER['id']}&key=$hash&email=$obemail",
+            "{$site_config['baseurl']}/confirmemail.php?uid={$CURUSER['id']}&key=$hash&email=$obemail",
         ], $lang['takeeditcp_email_body']);
-        mail($email, "$thisdomain {$lang['takeeditcp_confirm']}", $body, "{$lang['takeeditcp_email_from']}{$INSTALLER09['site_email']}");
+        mail($email, "$thisdomain {$lang['takeeditcp_confirm']}", $body, "{$lang['takeeditcp_email_from']}{$site_config['site_email']}");
         $emailquery = sql_query('SELECT id, username, email FROM users WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $spm = mysqli_fetch_assoc($emailquery);
         $dt = TIME_NOW;
         $subject = sqlesc($lang['takeeditcp_email_alert']);
-        $msg = sqlesc("{$lang['takeeditcp_email_user']}[url={$INSTALLER09['baseurl']}/userdetails.php?id=" . (int)$spm['id'] . '][b]' . htmlsafechars($spm['username']) . "[/b][/url]{$lang['takeeditcp_email_changed']}{$lang['takeeditcp_email_old']}" . htmlsafechars($spm['email']) . "{$lang['takeeditcp_email_new']}$email{$lang['takeeditcp_email_check']}");
+        $msg = sqlesc("{$lang['takeeditcp_email_user']}[url={$site_config['baseurl']}/userdetails.php?id=" . (int)$spm['id'] . '][b]' . htmlsafechars($spm['username']) . "[/b][/url]{$lang['takeeditcp_email_changed']}{$lang['takeeditcp_email_old']}" . htmlsafechars($spm['email']) . "{$lang['takeeditcp_email_new']}$email{$lang['takeeditcp_email_check']}");
         $pmstaff = sql_query('SELECT id FROM users WHERE class = ' . UC_ADMINISTRATOR) or sqlerr(__FILE__, __LINE__);
         while ($arr = mysqli_fetch_assoc($pmstaff)) {
             sql_query('INSERT INTO messages(sender, receiver, added, msg, subject) VALUES(0, ' . sqlesc($arr['id']) . ", $dt, $msg, $subject)") or sqlerr(__FILE__, __LINE__);
@@ -529,12 +529,12 @@ elseif ($action == 'default') {
 if ($curuser_cache) {
     $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
     $mc1->update_row(false, $curuser_cache);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
 }
 if ($user_cache) {
     $mc1->begin_transaction('user' . $CURUSER['id']);
     $mc1->update_row(false, $user_cache);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
 }
 if (sizeof($updateset) > 0) {
     sql_query('UPDATE users SET ' . implode(',', $updateset) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -553,11 +553,11 @@ $mc1->update_row(false, [
     'opt1' => $row['opt1'],
     'opt2' => $row['opt2'],
 ]);
-$mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+$mc1->commit_transaction($site_config['expires']['curuser']);
 $mc1->begin_transaction('user_' . $CURUSER['id']);
 $mc1->update_row(false, [
     'opt1' => $row['opt1'],
     'opt2' => $row['opt2'],
 ]);
-$mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
-header("Location: {$INSTALLER09['baseurl']}/usercp.php?edited=1&action=$action" . $urladd);
+$mc1->commit_transaction($site_config['expires']['user_cache']);
+header("Location: {$site_config['baseurl']}/usercp.php?edited=1&action=$action" . $urladd);

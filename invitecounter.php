@@ -6,4 +6,4 @@ $res = sql_query("SELECT COUNT(*) FROM users WHERE enabled = 'yes' AND invitedby
 $arr3 = mysqli_fetch_row($res);
 $invitedcount = $arr3['0'];
 sql_query('UPDATE usersachiev SET invited = ' . sqlesc($invitedcount) . ' WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-header("Location: {$INSTALLER09['baseurl']}/index.php");
+header("Location: {$site_config['baseurl']}/index.php");

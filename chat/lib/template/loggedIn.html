@@ -22,7 +22,7 @@
             <label for="channelSelection">[LANG]channel[/LANG]:</label>
             <select id="channelSelection" onchange="ajaxChat.switchChannel(this.options[this.selectedIndex].value);">[CHANNEL_OPTIONS/]</select>
         </div>
-        <input type="image" src="./images/pixel.gif" class="button" id="showChannelsButton" alt="[LANG]toggleHelp[/LANG]"/>
+        <input type="image" src="../images/pixel.gif" class="button" id="showChannelsButton" alt="[LANG]toggleHelp[/LANG]"/>
     </div>
     <div id="statusIconContainer" class="waiting"></div>
 
@@ -222,7 +222,7 @@
                     <dd><select id="soundReceiveSetting"
                                 onchange="ajaxChat.setSetting('soundReceive', this.options[this.selectedIndex].value);">
                         <option value="">-</option>
-                    </select><input type="image" src="./images/pixel.gif" class="button playback"
+                    </select><input type="image" src="../images/pixel.gif" class="button playback"
                                     alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
                                     onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
                     </dd>
@@ -232,7 +232,7 @@
                     <dd><select id="soundSendSetting"
                                 onchange="ajaxChat.setSetting('soundSend', this.options[this.selectedIndex].value);">
                         <option value="">-</option>
-                    </select><input type="image" src="./images/pixel.gif" class="button playback"
+                    </select><input type="image" src="../images/pixel.gif" class="button playback"
                                     alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
                                     onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
                     </dd>
@@ -242,7 +242,7 @@
                     <dd><select id="soundEnterSetting"
                                 onchange="ajaxChat.setSetting('soundEnter', this.options[this.selectedIndex].value);">
                         <option value="">-</option>
-                    </select><input type="image" src="./images/pixel.gif" class="button playback"
+                    </select><input type="image" src="../images/pixel.gif" class="button playback"
                                     alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
                                     onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
                     </dd>
@@ -252,7 +252,7 @@
                     <dd><select id="soundLeaveSetting"
                                 onchange="ajaxChat.setSetting('soundLeave', this.options[this.selectedIndex].value);">
                         <option value="">-</option>
-                    </select><input type="image" src="./images/pixel.gif" class="button playback"
+                    </select><input type="image" src="../images/pixel.gif" class="button playback"
                                     alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
                                     onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
                     </dd>
@@ -262,7 +262,7 @@
                     <dd><select id="soundChatBotSetting"
                                 onchange="ajaxChat.setSetting('soundChatBot', this.options[this.selectedIndex].value);">
                         <option value="">-</option>
-                    </select><input type="image" src="./images/pixel.gif" class="button playback"
+                    </select><input type="image" src="../images/pixel.gif" class="button playback"
                                     alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
                                     onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
                     </dd>
@@ -272,7 +272,7 @@
                     <dd><select id="soundErrorSetting"
                                 onchange="ajaxChat.setSetting('soundError', this.options[this.selectedIndex].value);">
                         <option value="">-</option>
-                    </select><input type="image" src="./images/pixel.gif" class="button playback"
+                    </select><input type="image" src="../images/pixel.gif" class="button playback"
                                     alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
                                     onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
                     </dd>
@@ -282,7 +282,7 @@
                     <dd><select id="soundPrivateSetting"
                                 onchange="ajaxChat.setSetting('soundPrivate', this.options[this.selectedIndex].value);">
                         <option value="">-</option>
-                    </select><input type="image" src="./images/pixel.gif" class="button playback"
+                    </select><input type="image" src="../images/pixel.gif" class="button playback"
                                     alt="[LANG]playSelectedSound[/LANG]" title="[LANG]playSelectedSound[/LANG]"
                                     onclick="ajaxChat.playSound(this.previousSibling.options[this.previousSibling.selectedIndex].value);"/>
                     </dd>
@@ -341,18 +341,18 @@
     </div>
     <div id="colorCodesContainer" style="display:none;" dir="ltr"></div>
     <div id="optionsContainer">
-        <input type="image" src="./images/pixel.gif" class="button" id="helpButton" alt="[LANG]toggleHelp[/LANG]"
+        <input type="image" src="../images/pixel.gif" class="button" id="helpButton" alt="[LANG]toggleHelp[/LANG]"
                title="[LANG]toggleHelp[/LANG]"
                onclick="ajaxChat.view.toggleContainer('helpContainer', ['onlineListContainer','settingsContainer']);"/>
-        <input type="image" src="./images/pixel.gif" class="button" id="settingsButton" alt="[LANG]toggleSettings[/LANG]"
+        <input type="image" src="../images/pixel.gif" class="button" id="settingsButton" alt="[LANG]toggleSettings[/LANG]"
                title="[LANG]toggleSettings[/LANG]"
                onclick="ajaxChat.view.toggleContainer('settingsContainer', ['onlineListContainer','helpContainer']);"/>
-        <input type="image" src="./images/pixel.gif" class="button" id="onlineListButton" alt="[LANG]toggleOnlineList[/LANG]"
+        <input type="image" src="../images/pixel.gif" class="button" id="onlineListButton" alt="[LANG]toggleOnlineList[/LANG]"
                title="[LANG]toggleOnlineList[/LANG]"
                onclick="ajaxChat.view.toggleContainer('onlineListContainer', ['settingsContainer','helpContainer']);"/>
-        <input type="image" src="./images/pixel.gif" class="button" id="audioButton" alt="[LANG]toggleAudio[/LANG]"
+        <input type="image" src="../images/pixel.gif" class="button" id="audioButton" alt="[LANG]toggleAudio[/LANG]"
                title="[LANG]toggleAudio[/LANG]" onclick="ajaxChat.toggleSetting('audio', 'audioButton');"/>
-        <input type="image" src="./images/pixel.gif" class="button" id="autoScrollButton" alt="[LANG]toggleAutoScroll[/LANG]"
+        <input type="image" src="../images/pixel.gif" class="button" id="autoScrollButton" alt="[LANG]toggleAutoScroll[/LANG]"
                title="[LANG]toggleAutoScroll[/LANG]"
                onclick="ajaxChat.toggleSetting('autoScroll', 'autoScrollButton');"/>
     </div>
@@ -370,7 +370,7 @@
 <!--[if lt IE 8]>
     <script>var isIElt8 = true;</script>
 <![endif]-->
-<script src="js/34f020afe4846d81cb78cd8a88bb2a64.min.js" charset="UTF-8"></script>
+<script src="[JS/]" charset="UTF-8"></script>
 <script>
     ajaxChatConfig.token = '[TOKEN/]';
     ajaxChatConfig.loginChannelID = parseInt('[LOGIN_CHANNEL_ID/]');

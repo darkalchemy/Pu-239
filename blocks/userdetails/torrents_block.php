@@ -1,7 +1,7 @@
 <?php
 function snatchtable($res)
 {
-    global $INSTALLER09, $lang, $CURUSER;
+    global $site_config, $lang, $CURUSER;
     $htmlout = '';
     $htmlout = "<table class='main' border='1' cellspacing='0' cellpadding='5'>
  <tr>
@@ -9,8 +9,8 @@ function snatchtable($res)
 <td class='colhead'>{$lang['userdetails_s_torr']}</td>
 <td class='colhead'>{$lang['userdetails_s_up']}</td>
 <td class='colhead'>{$lang['userdetails_rate']}</td>
-" . ($INSTALLER09['ratio_free'] ? '' : "<td class='colhead'>{$lang['userdetails_downl']}</td>") . '
-' . ($INSTALLER09['ratio_free'] ? '' : "<td class='colhead'>{$lang['userdetails_rate']}</td>") . "
+" . ($site_config['ratio_free'] ? '' : "<td class='colhead'>{$lang['userdetails_downl']}</td>") . '
+' . ($site_config['ratio_free'] ? '' : "<td class='colhead'>{$lang['userdetails_rate']}</td>") . "
 <td class='colhead'>{$lang['userdetails_ratio']}</td>
 <td class='colhead'>{$lang['userdetails_activity']}</td>
 <td class='colhead'>{$lang['userdetails_s_fin']}</td>
@@ -22,12 +22,12 @@ function snatchtable($res)
         $XBT_or_PHP = (XBT_TRACKER == true ? $arr['fid'] : $arr['torrentid']);
         $XBT_or_PHP_TIME = (XBT_TRACKER == true ? $arr['completedtime'] : $arr['complete_date']);
         $htmlout .= "<tr>
- <td style='padding: 0px'><img src='{$INSTALLER09['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($arr['catimg']) . "' alt='" . htmlsafechars($arr['catname']) . "' width='42' height='42' /></td>
+ <td style='padding: 0px'><img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($arr['catimg']) . "' alt='" . htmlsafechars($arr['catname']) . "' width='42' height='42' /></td>
  <td><a href='details.php?id=" . (int)$XBT_or_PHP . "'><b>" . (strlen($arr['name']) > 50 ? substr($arr['name'], 0, 50 - 3) . '...' : htmlsafechars($arr['name'])) . '</b></a></td>
  <td>' . mksize($arr['uploaded']) . "</td>
  <td>$upspeed/s</td>
- " . ($INSTALLER09['ratio_free'] ? '' : '<td>' . mksize($arr['downloaded']) . '</td>') . '
- ' . ($INSTALLER09['ratio_free'] ? '' : "<td>$downspeed/s</td>") . "
+ " . ($site_config['ratio_free'] ? '' : '<td>' . mksize($arr['downloaded']) . '</td>') . '
+ ' . ($site_config['ratio_free'] ? '' : "<td>$downspeed/s</td>") . "
  <td>$ratio</td>
  <td>" . mkprettytime($arr['seedtime'] + $arr['leechtime']) . '</td>
  <td>' . ($XBT_or_PHP_TIME != 0 ? "<font color='green'><b>{$lang['userdetails_yes']}</b></font>" : "<font color='red'><b>{$lang['userdetails_no']}</b></font>") . "</td>
@@ -40,7 +40,7 @@ function snatchtable($res)
 
 function maketable($res)
 {
-    global $INSTALLER09, $lang, $CURUSER;
+    global $site_config, $lang, $CURUSER;
 
     $htmlout = '';
     $htmlout .= "<table class='main' border='1' cellspacing='0' cellpadding='5'>" . "<tr><td class='colhead' align='center'>{$lang['userdetails_type']}</td>
@@ -48,7 +48,7 @@ function maketable($res)
          <td class='colhead' align='center'>{$lang['userdetails_size']}</td>
          <td class='colhead' align='right'>{$lang['userdetails_se']}</td>
          <td class='colhead' align='right'>{$lang['userdetails_le']}</td>
-         <td class='colhead' align='center'>{$lang['userdetails_upl']}</td>\n" . '' . ($INSTALLER09['ratio_free'] ? '' : "<td class='colhead' align='center'>{$lang['userdetails_downl']}</td>") . "
+         <td class='colhead' align='center'>{$lang['userdetails_upl']}</td>\n" . '' . ($site_config['ratio_free'] ? '' : "<td class='colhead' align='center'>{$lang['userdetails_downl']}</td>") . "
          <td class='colhead' align='center'>{$lang['userdetails_ratio']}</td></tr>\n";
     foreach ($res as $arr) {
         if ($arr['downloaded'] > 0) {
@@ -59,7 +59,7 @@ function maketable($res)
         } else {
             $ratio = '---';
         }
-        $catimage = "{$INSTALLER09['pic_base_url']}caticons/" . get_categorie_icons() . "/{$arr['image']}";
+        $catimage = "{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/{$arr['image']}";
         $catname = htmlsafechars($arr['catname']);
         $catimage = '<img src="' . htmlsafechars($catimage) . "\" title=\"$catname\" alt=\"$catname\" width='42' height='42' />";
         $size = str_replace(' ', '<br>', mksize($arr['size']));
@@ -68,7 +68,7 @@ function maketable($res)
         $seeders = number_format($arr['seeders']);
         $leechers = number_format($arr['leechers']);
         $XBT_or_PHP = (XBT_TRACKER == true ? $arr['fid'] : $arr['torrent']);
-        $htmlout .= "<tr><td style='padding: 0px'>$catimage</td>\n" . "<td><a href='details.php?id=" . (int)$XBT_or_PHP . "&amp;hit=1'><b>" . htmlsafechars($arr['torrentname']) . "</b></a></td><td align='center'>$size</td><td align='right'>$seeders</td><td align='right'>$leechers</td><td align='center'>$uploaded</td>\n" . '' . ($INSTALLER09['ratio_free'] ? '' : "<td align='center'>$downloaded</td>") . "<td align='center'>$ratio</td></tr>\n";
+        $htmlout .= "<tr><td style='padding: 0px'>$catimage</td>\n" . "<td><a href='details.php?id=" . (int)$XBT_or_PHP . "&amp;hit=1'><b>" . htmlsafechars($arr['torrentname']) . "</b></a></td><td align='center'>$size</td><td align='right'>$seeders</td><td align='right'>$leechers</td><td align='center'>$uploaded</td>\n" . '' . ($site_config['ratio_free'] ? '' : "<td align='center'>$downloaded</td>") . "<td align='center'>$ratio</td></tr>\n";
     }
     $htmlout .= "</table>\n";
 
@@ -133,7 +133,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
             $ressnatch = sql_query('SELECT x.*, t.name AS name, c.name AS catname, c.image AS catimg FROM xbt_files_users AS x INNER JOIN torrents AS t ON x.fid = t.id LEFT JOIN categories AS c ON t.category = c.id WHERE x.uid =' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
         }
         $user_snatches_data = snatchtable($ressnatch);
-        $mc1->cache_value('user_snatches_data_' . $id, $user_snatches_data, $INSTALLER09['expires']['user_snatches_data']);
+        $mc1->cache_value('user_snatches_data_' . $id, $user_snatches_data, $site_config['expires']['user_snatches_data']);
     }
     /*
     if (isset($user_snatches_data))

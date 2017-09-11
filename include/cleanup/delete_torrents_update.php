@@ -1,9 +1,9 @@
 <?php
 function delete_torrents_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
+    global $site_config, $queries, $mc1;
     set_time_limit(1200);
-    ignore_user_abort(1);
+    ignore_user_abort(true);
     //==delete torrents by putyn
     $days = 30;
     $dt = (TIME_NOW - ($days * 86400));
@@ -21,7 +21,7 @@ function delete_torrents_update($data)
                                  LEFT JOIN thumbsup ON thumbsup.torrentid = torrents.id
 				 LEFT JOIN snatched ON snatched.torrentid = torrents.id
 				 WHERE torrents.id = ' . sqlesc($arr['id'])) or sqlerr(__FILE__, __LINE__);
-        @unlink("{$INSTALLER09['torrent_dir']}/{$arr['id']}.torrent");
+        @unlink("{$site_config['torrent_dir']}/{$arr['id']}.torrent");
         $msg = 'Torrent ' . (int)$arr['id'] . ' (' . htmlsafechars($arr['name']) . ") was deleted by system (older than $days days and no seeders)";
         sql_query("INSERT INTO messages (sender, receiver, added, msg, subject, saved, location) VALUES (0, " . (int)$arr['owner'] . ", " .
                     TIME_NOW . ", " . sqlesc($msg) . ", 'Torrent Deleted', 'yes', 1)") or sqlerr(__FILE__, __LINE__);

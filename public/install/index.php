@@ -5,6 +5,7 @@ if ($public[strlen($public) - 1] != DIRECTORY_SEPARATOR) {
     $public = $public . DIRECTORY_SEPARATOR;
 }
 $root = realpath($public . '..') . DIRECTORY_SEPARATOR;
+
 if (file_exists($public . 'include/install.lock')) {
     die('This was already installed, huh ? how this happened');
 }
@@ -62,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         foreach ($foo as $fo => $fooo) {
             $out .= createblock($fo, $fooo);
         }
-        $out .= '<fieldset><div style="text-align:center"><input type="submit" value="Submit data" /><input type="hidden" value="write" name="do" /></div></fieldset></form>';
+        $out .= '<div style="text-align:center"><input type="submit" value="Submit data" /><input type="hidden" value="write" name="do" /></div></form>';
         echo $out;
         break;
 
@@ -73,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         break;
 
     case 3:
-        $out = '<fieldset><legend>All done</legend><div class="info">Installation complete</div></fieldset>';
+        $out = '<fieldset><legend>All done</legend><div class="info">Installation complete</div><div class="info">goto <a href="./../signup.php">Signup</a> to create your first user.</div></fieldset>';
         echo $out;
         break;
     }

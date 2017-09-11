@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'));
@@ -61,7 +61,7 @@ if (!$_POST['nullvote']) {
                 $update['votes'] = ($poll_data['votes'] + 1);
                 $mc1->begin_transaction('poll_data_'.$CURUSER['id']);
                 $mc1->update_row(false, array('votes' => $update['votes']));
-                $mc1->commit_transaction($INSTALLER09['expires']['poll_data']);
+                $mc1->commit_transaction($site_config['expires']['poll_data']);
     */
     if (-1 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         stderr('DBERROR', 'Could not update records');
@@ -90,10 +90,10 @@ if (!$_POST['nullvote']) {
                 $update['votes'] = ($poll_data['votes'] + 1);
                 $mc1->begin_transaction('poll_data_'.$CURUSER['id']);
                 $mc1->update_row(false, array('votes' => $update['votes']));
-                $mc1->commit_transaction($INSTALLER09['expires']['poll_data']);
+                $mc1->commit_transaction($site_config['expires']['poll_data']);
     */
     if (-1 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         stderr('DBERROR', 'Could not update records');
     }
 }
-header("location: {$INSTALLER09['baseurl']}/index.php");
+header("location: {$site_config['baseurl']}/index.php");

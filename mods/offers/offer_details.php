@@ -39,7 +39,7 @@ $HTMLOUT .= "<tr>
 <a class='altlink' href='viewoffers.php'><b>All offers</b></a> </td></tr><tr><td align='right'>
 <b>Vote for this offer</b></td><td align='left'><a href='viewoffers.php?id=" . $id . "&amp;offer_vote'><b>Vote</b></a>
 </td></tr>
-" . ($INSTALLER09['reports'] ? "<tr><td align='right'><b>Report Offer</b></td><td align='left'>
+" . ($site_config['reports'] ? "<tr><td align='right'><b>Report Offer</b></td><td align='left'>
 for breaking the rules 
 <form action='report.php?type=Offer&amp;id=$id' method='post'><input class='btn' type='submit' name='submit' value='Report Offer' /></form></td>
 </tr>" : '');
@@ -47,11 +47,11 @@ if ($num['torrentid'] == 0) {
     $HTMLOUT .= "<tr><td align='right' valign='top'><b>Accept This Offer</b></td>
     <td>
     <form method='post' action='viewoffers.php?id=" . $id . "&amp;offer_filled'>
-    <strong>" . $INSTALLER09['baseurl'] . "/details.php?id=</strong><input type='text' size='10' name='torrentid' value='' /> <input type='submit' value='Fill Offer' class='btn' /><br>
+    <strong>" . $site_config['baseurl'] . "/details.php?id=</strong><input type='text' size='10' name='torrentid' value='' /> <input type='submit' value='Fill Offer' class='btn' /><br>
     Enter the <b>ID</b>  of the torrent. (copy/paste the <strong>ID</strong> from another window/tab the correct ID number)<br></form></td>
     </tr>\n";
 } else {
-    $HTMLOUT .= "<tr><td align='right' valign='top'><b>This Offer was accepted:</b></td><td><a class='altlink' href='details.php?id=" . $num['torrentid'] . "'><b>" . $INSTALLER09['baseurl'] . '/details.php?id=' . $num['torrentid'] . '</b></a></td></tr>';
+    $HTMLOUT .= "<tr><td align='right' valign='top'><b>This Offer was accepted:</b></td><td><a class='altlink' href='details.php?id=" . $num['torrentid'] . "'><b>" . $site_config['baseurl'] . '/details.php?id=' . $num['torrentid'] . '</b></a></td></tr>';
 }
 $HTMLOUT .= "<tr><td class='embedded' colspan='2'><p><a name='startcomments'></a></p>\n";
 $commentbar = "<p align='center'><a class='index' href='comment.php?action=add&amp;tid=$id&amp;type=offer'>Add Comment</a></p>\n";

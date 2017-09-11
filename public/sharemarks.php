@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'torrenttable_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
@@ -9,14 +9,14 @@ $lang = array_merge(load_language('global'), load_language('torrenttable_functio
 $htmlout = '';
 function sharetable($res, $variant = 'index')
 {
-    global $INSTALLER09, $CURUSER, $lang;
+    global $site_config, $CURUSER, $lang;
     $htmlout = '';
     $htmlout .= "
 <span>Icon Legend :
-<img src='{$INSTALLER09['pic_base_url']}aff_cross.gif' alt='Delete Bookmark' border='none' /> = Delete Bookmark |
-<img src='{$INSTALLER09['pic_base_url']}zip.gif' alt='Download Bookmark' border='none' /> = Download Torrent |
-<img alt='Bookmark is Private' src='{$INSTALLER09['pic_base_url']}key.gif' border='none'  /> = Bookmark is Private |
-<img src='{$INSTALLER09['pic_base_url']}public.gif' alt='Bookmark is Public' border='none'  /> = Bookmark is Public</span>
+<img src='{$site_config['pic_base_url']}aff_cross.gif' alt='Delete Bookmark' border='none' /> = Delete Bookmark |
+<img src='{$site_config['pic_base_url']}zip.gif' alt='Download Bookmark' border='none' /> = Download Torrent |
+<img alt='Bookmark is Private' src='{$site_config['pic_base_url']}key.gif' border='none'  /> = Bookmark is Private |
+<img src='{$site_config['pic_base_url']}public.gif' alt='Bookmark is Public' border='none'  /> = Bookmark is Public</span>
 <table border='1' cellspacing='0' cellpadding='5'>
 <tr>
 <td class='colhead' align='center'>Type</td>
@@ -59,7 +59,7 @@ function sharetable($res, $variant = 'index')
         if (isset($row['cat_name'])) {
             $htmlout .= "<a href='browse.php?cat=" . (int)$row['category'] . "'>";
             if (isset($row['cat_pic']) && $row['cat_pic'] != '') {
-                $htmlout .= "<img border='0' src='{$INSTALLER09['pic_base_url']}caticons/" . get_categorie_icons() . "/{$row['cat_pic']}' alt='{$row['cat_name']}' />";
+                $htmlout .= "<img border='0' src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/{$row['cat_pic']}' alt='{$row['cat_name']}' />";
             } else {
                 $htmlout .= $row['cat_name'];
             }
@@ -78,10 +78,10 @@ function sharetable($res, $variant = 'index')
             $htmlout .= '&amp;hit=1';
         }
         $htmlout .= "'><b>$dispname</b></a>&#160;</td>";
-        $htmlout .= ($variant == 'index' ? "<td align='center'><a href=\"download.php?torrent={$id}\"><img src='{$INSTALLER09['pic_base_url']}zip.gif' border='0' alt='Download Bookmark!' title='Download Bookmark!' /></a></td>" : '');
+        $htmlout .= ($variant == 'index' ? "<td align='center'><a href=\"download.php?torrent={$id}\"><img src='{$site_config['pic_base_url']}zip.gif' border='0' alt='Download Bookmark!' title='Download Bookmark!' /></a></td>" : '');
         $bm = sql_query('SELECT * FROM bookmarks WHERE torrentid=' . sqlesc($id) . ' AND userid=' . sqlesc($CURUSER['id']));
         $bms = mysqli_fetch_assoc($bm);
-        $bookmarked = (empty($bms) ? '<a href=\'bookmark.php?torrent=' . $id . '&amp;action=add\'><img src=\'' . $INSTALLER09['pic_base_url'] . 'bookmark.gif\' border=\'0\' alt=\'Bookmark it!\' title=\'Bookmark it!\'></a>' : '<a href="bookmark.php?torrent=' . $id . '&amp;action=delete"><img src=\'' . $INSTALLER09['pic_base_url'] . 'aff_cross.gif\' border=\'0\' alt=\'Delete Bookmark!\' title=\'Delete Bookmark!\' /></a>');
+        $bookmarked = (empty($bms) ? '<a href=\'bookmark.php?torrent=' . $id . '&amp;action=add\'><img src=\'' . $site_config['pic_base_url'] . 'bookmark.gif\' border=\'0\' alt=\'Bookmark it!\' title=\'Bookmark it!\'></a>' : '<a href="bookmark.php?torrent=' . $id . '&amp;action=delete"><img src=\'' . $site_config['pic_base_url'] . 'aff_cross.gif\' border=\'0\' alt=\'Delete Bookmark!\' title=\'Delete Bookmark!\' /></a>');
         $htmlout .= ($variant == 'index' ? "<td align='center'>{$bookmarked}</td>" : '');
         if ($variant == 'mytorrents') {
             $htmlout .= "</td><td align='center'><a href='edit.php?returnto=" . urlencode($_SERVER['REQUEST_URI']) . '&amp;id=' . (int)$row['id'] . "'>{$lang['torrenttable_edit']}</a>\n";

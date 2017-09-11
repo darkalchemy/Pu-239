@@ -1,9 +1,9 @@
 <?php
 function freetorrents_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
-    set_time_limit(0);
-    ignore_user_abort(1);
+    global $site_config, $queries, $mc1;
+    set_time_limit(1200);
+    ignore_user_abort(true);
     //=== Clean free
     $res = sql_query('SELECT id, free FROM torrents WHERE free > 1 AND free < ' . TIME_NOW) or sqlerr(__FILE__, __LINE__);
     $Free_buffer = [];
@@ -14,7 +14,7 @@ function freetorrents_update($data)
             $mc1->update_row(false, [
                 'free' => 0,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['torrent_details']);
+            $mc1->commit_transaction($site_config['expires']['torrent_details']);
         }
         $count = count($Free_buffer);
         if ($count > 0) {

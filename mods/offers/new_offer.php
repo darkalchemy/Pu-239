@@ -23,7 +23,7 @@ if (!empty($_POST['picture'])) {
     //    $picture2 = trim(urldecode($picture));
     //    $headers  = get_headers($picture2);
     //    if (strpos($headers[0], '200') === false)
-    //        $picture = $INSTALLER09['baseurl'].'/images/notfound.png';
+    //        $picture = $site_config['baseurl'].'/images/notfound.png';
     $pic = '[img]' . $picture . "[/img]\n";
 }
 $descr = "$pic";
@@ -33,12 +33,12 @@ $descr = sqlesc($descr);
 sql_query("INSERT INTO offers (hits, userid, cat, offer, descr, added) VALUES(1,$CURUSER[id], $cat, $offer2, $descr, " . TIME_NOW . ')') or sqlerr(__FILE__, __LINE__);
 $id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
 sql_query("INSERT INTO voted_offers VALUES(0, $id, $CURUSER[id])") or sqlerr();
-if ($INSTALLER09['karma'] && isset($CURUSER['seedbonus'])) {
-    mysqli_query($GLOBALS['___mysqli_ston'], 'UPDATE users SET seedbonus = seedbonus-' . $INSTALLER09['offer_cost_bonus'] . " WHERE id = $CURUSER[id]") or sqlerr(__FILE__, __LINE__);
+if ($site_config['karma'] && isset($CURUSER['seedbonus'])) {
+    mysqli_query($GLOBALS['___mysqli_ston'], 'UPDATE users SET seedbonus = seedbonus-' . $site_config['offer_cost_bonus'] . " WHERE id = $CURUSER[id]") or sqlerr(__FILE__, __LINE__);
 }
 write_log('Offer (' . $offer . ") was added to the Offer section by $CURUSER[username]");
-if ($INSTALLER09['autoshout_on'] == 1) {
-    $message = " [b][color=blue]New Offer[/color][/b]  [url={$INSTALLER09['baseurl']}/viewoffers.php?id=$id&offer_details] " . $offer . '[/url]  ';
+if ($site_config['autoshout_on'] == 1) {
+    $message = " [b][color=blue]New Offer[/color][/b]  [url={$site_config['baseurl']}/viewoffers.php?id=$id&offer_details] " . $offer . '[/url]  ';
     autoshout($message);
 }
 /* IRC announce **/

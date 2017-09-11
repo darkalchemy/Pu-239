@@ -1,10 +1,10 @@
 <?php
 function expired_signup_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
-    set_time_limit(0);
-    ignore_user_abort(1);
-    $deadtime = TIME_NOW - $INSTALLER09['signup_timeout'];
+    global $site_config, $queries, $mc1;
+    set_time_limit(1200);
+    ignore_user_abort(true);
+    $deadtime = TIME_NOW - $site_config['signup_timeout'];
     $res = sql_query("SELECT id, username, added, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE status = 'pending' AND added < $deadtime AND last_login < $deadtime AND last_access < $deadtime ORDER BY username DESC");
     if (mysqli_num_rows($res) != 0) {
         while ($arr = mysqli_fetch_assoc($res)) {

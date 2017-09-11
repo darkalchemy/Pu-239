@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -47,7 +47,7 @@ if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
 $HTMLOUT .= begin_table();
-$HTMLOUT .= "<tr><td colspan='9' align='center'><a class='altlink' href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=donations&amp;action=donations'>{$lang['donate_curr_don']}</a> || <a class='altlink' href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=donations&amp;action=donations&amp;total_donors=1'>{$lang['donate_all_don']}</a></td></tr>";
+$HTMLOUT .= "<tr><td colspan='9' align='center'><a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=donations&amp;action=donations'>{$lang['donate_curr_don']}</a> || <a class='altlink' href='{$site_config['baseurl']}/staffpanel.php?tool=donations&amp;action=donations&amp;total_donors=1'>{$lang['donate_all_don']}</a></td></tr>";
 $HTMLOUT .= "<tr><td class='colhead'>{$lang['donate_id']}</td><td class='colhead' align='left'>{$lang['donate_username']}</td><td class='colhead' align='left'>{$lang['donate_email']}</td>" . "<td class='colhead' align='left'>{$lang['donate_joined']}</td><td class='colhead' align='left'>{$lang['donate_until']}</td><td class='colhead' align='left'>" . "{$lang['donate_current']}</td><td class='colhead' align='left'>{$lang['donate_total']}</td><td class='colhead' align='left'>{$lang['donate_pm']}</td></tr>";
 while ($arr = mysqli_fetch_assoc($res)) {
     // =======change colors
@@ -59,14 +59,14 @@ while ($arr = mysqli_fetch_assoc($res)) {
         $class = 'two';
     }
     // =======end
-    $HTMLOUT .= "<tr><td valign='bottom' class='$class'><a class='altlink' href='{$INSTALLER09['baseurl']}/userdetails.php?id=" . htmlsafechars($arr['id']) . "'>" . htmlsafechars($arr['id']) . '</a></td>' . "<td align='left' valign='bottom' class='$class'><a class='altlink' href='{$INSTALLER09['baseurl']}/userdetails.php?id=" . htmlsafechars($arr['id']) . "'><b>" . htmlsafechars($arr['username']) . '</b></a>' . "</td><td align='left' valign='bottom' class='$class'><a class='altlink' href='mailto:" . htmlsafechars($arr['email']) . "'>" . htmlsafechars($arr['email']) . '</a>' . "</td><td align='left' valign='bottom' class='$class'><font size=\"-3\"> " . get_date($arr['added'], 'DATE') . '</font>' . "</td><td align='left' valign='bottom' class='$class'>";
+    $HTMLOUT .= "<tr><td valign='bottom' class='$class'><a class='altlink' href='{$site_config['baseurl']}/userdetails.php?id=" . htmlsafechars($arr['id']) . "'>" . htmlsafechars($arr['id']) . '</a></td>' . "<td align='left' valign='bottom' class='$class'><a class='altlink' href='{$site_config['baseurl']}/userdetails.php?id=" . htmlsafechars($arr['id']) . "'><b>" . htmlsafechars($arr['username']) . '</b></a>' . "</td><td align='left' valign='bottom' class='$class'><a class='altlink' href='mailto:" . htmlsafechars($arr['email']) . "'>" . htmlsafechars($arr['email']) . '</a>' . "</td><td align='left' valign='bottom' class='$class'><font size=\"-3\"> " . get_date($arr['added'], 'DATE') . '</font>' . "</td><td align='left' valign='bottom' class='$class'>";
     $donoruntil = (int)$arr['donoruntil'];
     if ($donoruntil == '0') {
         $HTMLOUT .= 'n/a';
     } else {
         $HTMLOUT .= '<font size="-3"> ' . get_date($arr['donoruntil'], 'DATE') . ' [ ' . mkprettytime($donoruntil - TIME_NOW) . " ]{$lang['donate_togo']}</font>";
     }
-    $HTMLOUT .= "</td><td align='left' valign='bottom' class='$class'><b>&#163;" . htmlsafechars($arr['donated']) . '</b></td>' . "<td align='left' valign='bottom' class='$class'><b>&#163;" . htmlsafechars($arr['total_donated']) . '</b></td>' . "<td align='left' valign='bottom' class='$class'><b><a class='altlink' href='{$INSTALLER09['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . (int)$arr['id'] . "'>{$lang['donate_sendpm']}</a></b></td></tr>";
+    $HTMLOUT .= "</td><td align='left' valign='bottom' class='$class'><b>&#163;" . htmlsafechars($arr['donated']) . '</b></td>' . "<td align='left' valign='bottom' class='$class'><b>&#163;" . htmlsafechars($arr['total_donated']) . '</b></td>' . "<td align='left' valign='bottom' class='$class'><b><a class='altlink' href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . (int)$arr['id'] . "'>{$lang['donate_sendpm']}</a></b></td></tr>";
 }
 $HTMLOUT .= end_table();
 $HTMLOUT .= end_frame();

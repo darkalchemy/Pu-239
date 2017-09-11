@@ -4,8 +4,8 @@ if (!defined('TBVERSION')) {
 }
 $is = $fl = '';
 $isfree['yep'] = $isfree['expires'] = 0;
-$freeimg = '<img src="' . $INSTALLER09['pic_base_url'] . 'freedownload.gif" border="0" alt="Free download" title="Free download" />';
-$silverimg = '<img src="' . $INSTALLER09['pic_base_url'] . 'silverdownload.gif" border="0" alt="Silver Torrent" title="Silver Torrent" />';
+$freeimg = '<img src="' . $site_config['pic_base_url'] . 'freedownload.gif" border="0" alt="Free download" title="Free download" />';
+$silverimg = '<img src="' . $site_config['pic_base_url'] . 'silverdownload.gif" border="0" alt="Silver Torrent" title="Silver Torrent" />';
 if (isset($free)) {
     foreach ($free as $fl) {
         switch ($fl['modifier']) {

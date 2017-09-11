@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -63,7 +63,7 @@ function sql_get_version()
     return $mysql_version . ' (' . $true_version . ')';
 }
 
-$php_version = phpversion() . ' (' . @php_sapi_name() . ") ( <a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=system_view&amp;action=system_view&amp;phpinfo=1'>{$lang['system_phpinfo']}</a> )";
+$php_version = phpversion() . ' (' . @php_sapi_name() . ") ( <a href='{$site_config['baseurl']}/staffpanel.php?tool=system_view&amp;action=system_view&amp;phpinfo=1'>{$lang['system_phpinfo']}</a> )";
 $server_software = php_uname();
 // print $php_version ." ".$server_software;
 $load_limit = '--';

@@ -18,7 +18,7 @@ $stdhead = [
 function usercommenttable($rows)
 {
     $htmlout = '';
-    global $CURUSER, $INSTALLER09, $userid, $lang;
+    global $CURUSER, $site_config, $userid, $lang;
     $htmlout .= begin_main_frame();
     $htmlout .= begin_frame();
     $count = 0;
@@ -31,14 +31,14 @@ function usercommenttable($rows)
             } else {
                 $title = htmlsafechars($title);
             }
-            $htmlout .= "<a name='comm" . (int)$row['id'] . "' href='userdetails.php?id=" . (int)$row['user'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>' . ($row['donor'] == 'yes' ? "<img src=\"{$INSTALLER09['pic_base_url']}star.gif\" alt='Donor' />" : '') . ($row['warned'] >= 1 ? '<img src=' . "\"{$INSTALLER09['pic_base_url']}warned.gif\" alt=\"Warned\" />" : '') . " ($title)\n";
+            $htmlout .= "<a name='comm" . (int)$row['id'] . "' href='userdetails.php?id=" . (int)$row['user'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>' . ($row['donor'] == 'yes' ? "<img src=\"{$site_config['pic_base_url']}star.gif\" alt='Donor' />" : '') . ($row['warned'] >= 1 ? '<img src=' . "\"{$site_config['pic_base_url']}warned.gif\" alt=\"Warned\" />" : '') . " ($title)\n";
         } else {
             $htmlout .= '<a name="comm' . (int)$row['id'] . "\"><i>(orphaned)</i></a>\n";
         }
         $htmlout .= ' ' . get_date($row['added'], 'DATE', 0, 1) . '' . ($userid == $CURUSER['id'] || $row['user'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=edit&amp;cid=" . (int)$row['id'] . "'>Edit</a>]" : '') . ($userid == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=delete&amp;cid=" . (int)$row['id'] . "'>Delete</a>]" : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=vieworiginal&amp;cid=" . (int)$row['id'] . "'>View original</a>]" : '') . "</p>\n";
         $avatar = ($CURUSER['avatars'] == 'yes' ? htmlsafechars($row['avatar']) : '');
         if (!$avatar) {
-            $avatar = "{$INSTALLER09['pic_base_url']}/forumicons/default_avatar.gif";
+            $avatar = "{$site_config['pic_base_url']}/forumicons/default_avatar.gif";
         }
         $text = format_comment($row['text']);
         if ($row['editedby']) {
@@ -128,7 +128,7 @@ if ($action == 'add') {
         if ($returnto) {
             header("Location: $returnto");
         } else {
-            header("Location: {$INSTALLER09['baseurl']}/userdetails.php?id={$userid}");
+            header("Location: {$site_config['baseurl']}/userdetails.php?id={$userid}");
         }
         die;
     }
@@ -170,7 +170,7 @@ if ($action == 'add') {
     if ($returnto) {
         header("Location: $returnto");
     } else {
-        header("Location: {$INSTALLER09['baseurl']}/userdetails.php?id={$userid}");
+        header("Location: {$site_config['baseurl']}/userdetails.php?id={$userid}");
     }
     die;
 } elseif ($action == 'vieworiginal') {

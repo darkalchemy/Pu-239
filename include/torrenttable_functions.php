@@ -15,7 +15,7 @@ function readMore($text, $char, $link)
 
 function torrenttable($res, $variant = 'index')
 {
-    global $INSTALLER09, $CURUSER, $lang, $free, $mc1;
+    global $site_config, $CURUSER, $lang, $free, $mc1;
     require_once INCL_DIR . 'bbcode_functions.php';
     require_once CLASS_DIR . 'class_user_options_2.php';
     $htmlout = $prevdate = $nuked = $free_slot = $freetorrent = $free_color = $slots_check = $double_slot = $private = $newgenre = $oldlink = $char = $description = $type = $sort = $row = $youtube = '';
@@ -89,10 +89,10 @@ function torrenttable($res, $variant = 'index')
    <tr>
    <td class='colhead' class='text-center'>{$lang['torrenttable_type']}</td>
    <td class='colhead' align='left'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=1&amp;type={$link1}'>{$lang['torrenttable_name']}</a></td>
-   <td class='colhead' align='left'><img src='{$INSTALLER09['pic_base_url']}zip.gif' border='0' alt='Download' title='Download' /></td>";
+   <td class='colhead' align='left'><img src='{$site_config['pic_base_url']}zip.gif' border='0' alt='Download' title='Download' /></td>";
     $htmlout .= ($variant == 'index' ? "
             <td class='colhead' class='text-center'>
-                <a href='{$INSTALLER09['baseurl']}/bookmarks.php'>
+                <a href='{$site_config['baseurl']}/bookmarks.php'>
                     <i class='fa fa-check fa-browse' title='Go To My Bookmarks'></i>
                 </a>
             </td>" : '');
@@ -148,7 +148,7 @@ function torrenttable($res, $variant = 'index')
         if (isset($row['cat_name'])) {
             $htmlout .= "<a href='browse.php?cat=" . (int)$row['category'] . "'>";
             if (isset($row['cat_pic']) && $row['cat_pic'] != '') {
-                $htmlout .= "<img border='0' src='{$INSTALLER09['pic_base_url']}caticons/" . get_categorie_icons() . "/{$row['cat_pic']}' alt='{$row['cat_name']}' />";
+                $htmlout .= "<img border='0' src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/{$row['cat_pic']}' alt='{$row['cat_name']}' />";
             } else {
                 $htmlout .= htmlsafechars($row['cat_name']);
             }
@@ -159,10 +159,10 @@ function torrenttable($res, $variant = 'index')
         $htmlout .= "</td>\n";
         $dispname = htmlsafechars($row['name']);
         $smalldescr = (!empty($row['description']) ? '<i>[' . htmlsafechars($row['description']) . ']</i>' : '');
-        $checked = ((!empty($row['checked_by']) && $CURUSER['class'] >= UC_USER) ? "&#160;<img src='{$INSTALLER09['pic_base_url']}mod.gif' width='15' border='0' alt='Checked - by " . htmlsafechars($row['checked_by']) . "' title='Checked - by " . htmlsafechars($row['checked_by']) . "' />" : '');
-        $poster = empty($row['poster']) ? "<img src=\'{$INSTALLER09['pic_base_url']}noposter.png\' width=\'150\' height=\'220\' border=\'0\' alt=\'Poster\' title=\'poster\' />" : "<img src=\'" . htmlsafechars($row['poster']) . "\' width=\'150\' height=\'220\' border=\'0\' alt=\'Poster\' title=\'poster\' />";
+        $checked = ((!empty($row['checked_by']) && $CURUSER['class'] >= UC_USER) ? "&#160;<img src='{$site_config['pic_base_url']}mod.gif' width='15' border='0' alt='Checked - by " . htmlsafechars($row['checked_by']) . "' title='Checked - by " . htmlsafechars($row['checked_by']) . "' />" : '');
+        $poster = empty($row['poster']) ? "<img src=\'{$site_config['pic_base_url']}noposter.png\' width=\'150\' height=\'220\' border=\'0\' alt=\'Poster\' title=\'poster\' />" : "<img src=\'" . htmlsafechars($row['poster']) . "\' width=\'150\' height=\'220\' border=\'0\' alt=\'Poster\' title=\'poster\' />";
         //$rating = empty($row["rating"]) ? "No votes yet":"".ratingpic($row["rating"])."";
-        $youtube = (!empty($row['youtube']) ? "<a href='" . htmlsafechars($row['youtube']) . "' target='_blank'><img src='{$INSTALLER09['pic_base_url']}youtube.png' width='14' height='14' border='0' alt='Youtube Trailer' title='Youtube Trailer' /></a>" : '');
+        $youtube = (!empty($row['youtube']) ? "<a href='" . htmlsafechars($row['youtube']) . "' target='_blank'><img src='{$site_config['pic_base_url']}youtube.png' width='14' height='14' border='0' alt='Youtube Trailer' title='Youtube Trailer' /></a>" : '');
         if (isset($row['descr'])) {
             $descr = str_replace('"', '&quot;', readMore($row['descr'], 350, 'details.php?id=' . (int)$row['id'] . '&amp;hit=1'));
         }
@@ -185,13 +185,13 @@ function torrenttable($res, $variant = 'index')
             }
             $newgenre = '<i>' . join(', ', $newgenre) . '</i>';
         }
-        $sticky = ($row['sticky'] == 'yes' ? "<img src='{$INSTALLER09['pic_base_url']}sticky.gif' style='border:none' alt='Sticky' title='Sticky !' />" : '');
-        $nuked = ($row['nuked'] == 'yes' ? "<img src='{$INSTALLER09['pic_base_url']}nuked.gif' style='border:none' alt='Nuked'  class='text-right' title='Reason :" . htmlsafechars($row['nukereason']) . "' />" : '');
-        $release_group = ($row['release_group'] == 'scene' ? "&#160;<img src='{$INSTALLER09['pic_base_url']}scene.gif' title='Scene' alt='Scene' style='border:none' />" : ($row['release_group'] == 'p2p' ? "&#160;<img src='{$INSTALLER09['pic_base_url']}p2p.gif' title='P2P' alt='P2P' />" : ''));
+        $sticky = ($row['sticky'] == 'yes' ? "<img src='{$site_config['pic_base_url']}sticky.gif' style='border:none' alt='Sticky' title='Sticky !' />" : '');
+        $nuked = ($row['nuked'] == 'yes' ? "<img src='{$site_config['pic_base_url']}nuked.gif' style='border:none' alt='Nuked'  class='text-right' title='Reason :" . htmlsafechars($row['nukereason']) . "' />" : '');
+        $release_group = ($row['release_group'] == 'scene' ? "&#160;<img src='{$site_config['pic_base_url']}scene.gif' title='Scene' alt='Scene' style='border:none' />" : ($row['release_group'] == 'p2p' ? "&#160;<img src='{$site_config['pic_base_url']}p2p.gif' title='P2P' alt='P2P' />" : ''));
         $viponly = ($row['vip'] == 1 ? "<i class='fa fa-star-half-o fa-browse text-yellow' title='Vip Torrent'></i>" : '');
-        $bump = ($row['bump'] == 'yes' ? "<img src='{$INSTALLER09['pic_base_url']}up.gif' width='12px' alt='Re-Animated torrent' title='This torrent was ReAnimated!' />" : '');
+        $bump = ($row['bump'] == 'yes' ? "<img src='{$site_config['pic_base_url']}up.gif' width='12px' alt='Re-Animated torrent' title='This torrent was ReAnimated!' />" : '');
         /** FREE Torrent **/
-        $freetorrent = (XBT_TRACKER == true && $row['freetorrent'] >= 1 ? "<img src='{$INSTALLER09['pic_base_url']}freedownload.gif' border='0' alt='Vip Torrent' title='Vip Torrent' />" : '');
+        $freetorrent = (XBT_TRACKER == true && $row['freetorrent'] >= 1 ? "<img src='{$site_config['pic_base_url']}freedownload.gif' border='0' alt='Vip Torrent' title='Vip Torrent' />" : '');
         $free_tag = ($row['free'] != 0 ? ' <a class="info" href="#"><b>[FREE]</b> <span>' . ($row['free'] > 1 ? 'Expires: ' . get_date($row['free'], 'DATE') . '<br>(' . mkprettytime($row['free'] - TIME_NOW) . ' to go)<br>' : 'Unlimited<br>') . '</span></a>' : $all_free_tag);
         /** Silver Torrent **/
         $silver_tag = ($row['silver'] != 0 ? ' <a class="info" href="#"><b>[SILVER]</b> <span>' . ($row['silver'] > 1 ? 'Expires: ' . get_date($row['silver'], 'DATE') . '<br>(' . mkprettytime($row['silver'] - TIME_NOW) . ' to go)<br>' : 'Unlimited<br>') . '</span></a>' : '');
@@ -208,12 +208,12 @@ function torrenttable($res, $variant = 'index')
                 }
             }
         }
-        $free_slot = ($free_slot == 1 ? '&#160;<img src="' . $INSTALLER09['pic_base_url'] . 'freedownload.gif" width="12px" alt="Free Slot" title="Free Slot in Use" />&#160;<small>Free Slot</small>' : '');
-        $double_slot = ($double_slot == 1 ? '&#160;<img src="' . $INSTALLER09['pic_base_url'] . 'doubleseed.gif" width="12px" alt="Double Upload Slot" title="Double Upload Slot in Use" />&#160;<small>Double Slot</small><br>' : '');
+        $free_slot = ($free_slot == 1 ? '&#160;<img src="' . $site_config['pic_base_url'] . 'freedownload.gif" width="12px" alt="Free Slot" title="Free Slot in Use" />&#160;<small>Free Slot</small>' : '');
+        $double_slot = ($double_slot == 1 ? '&#160;<img src="' . $site_config['pic_base_url'] . 'doubleseed.gif" width="12px" alt="Double Upload Slot" title="Double Upload Slot in Use" />&#160;<small>Double Slot</small><br>' : '');
         $nuked = ($row['nuked'] != 'no' && $row['nuked'] != '' ? '&#160;<span title="Nuked ' . htmlsafechars($row['nuked']) . '" class="browse-icons-nuked"></span>' : '');
         //==
         $Subs = '';
-        if (in_array($row['category'], $INSTALLER09['movie_cats']) && !empty($row['subs'])) {
+        if (in_array($row['category'], $site_config['movie_cats']) && !empty($row['subs'])) {
             $subs_array = explode(',', $row['subs']);
             require_once CACHE_DIR . 'subs.php';
             foreach ($subs_array as $k => $sid) {
@@ -230,7 +230,7 @@ function torrenttable($res, $variant = 'index')
                                 <span class='flex-item'>
                                     $viponly
                                 </span>";
-        $htmlout .= "' onmouseover=\"Tip('<b>" . CutName($dispname, 80) . '</b><br><b>Added: ' . get_date($row['added'], 'DATE', 0, 1) . '</b><br><b>Size: ' . mksize(htmlsafechars($row['size'])) . "</b><br><b>Subtitle: {$Subs}</b><br><b>Seeders: " . htmlsafechars($row['seeders']) . '</b><br><b>Leechers: ' . htmlsafechars($row['leechers']) . "</b><br>$poster');\" onmouseout=\"UnTip();\"><b>" . CutName($dispname, 45) . "</b></a><a href=\"javascript:klappe_descr('descr" . (int)$row['id'] . "');\" ><img src=\"{$INSTALLER09['pic_base_url']}plus.png\" border=\"0\" alt=\"Show torrent info in this page\" title=\"Show torrent info in this page\" /></a>{$youtube}{$viponly}{$release_group}{$sticky}" . ($row['added'] >= $CURUSER['last_browse'] ? " <img src='{$INSTALLER09['pic_base_url']}newb.png' border='0' alt='New !' title='New !' />" : '') . "{$checked}{$freetorrent}{$free_tag}{$silver_tag}<br>{$free_slot}{$double_slot}{$nuked}{$newgenre}{$bump}{$smalldescr}</td>\n";
+        $htmlout .= "' onmouseover=\"Tip('<b>" . CutName($dispname, 80) . '</b><br><b>Added: ' . get_date($row['added'], 'DATE', 0, 1) . '</b><br><b>Size: ' . mksize(htmlsafechars($row['size'])) . "</b><br><b>Subtitle: {$Subs}</b><br><b>Seeders: " . htmlsafechars($row['seeders']) . '</b><br><b>Leechers: ' . htmlsafechars($row['leechers']) . "</b><br>$poster');\" onmouseout=\"UnTip();\"><b>" . CutName($dispname, 45) . "</b></a><a href=\"javascript:klappe_descr('descr" . (int)$row['id'] . "');\" ><img src=\"{$site_config['pic_base_url']}plus.png\" border=\"0\" alt=\"Show torrent info in this page\" title=\"Show torrent info in this page\" /></a>{$youtube}{$viponly}{$release_group}{$sticky}" . ($row['added'] >= $CURUSER['last_browse'] ? " <img src='{$site_config['pic_base_url']}newb.png' border='0' alt='New !' title='New !' />" : '') . "{$checked}{$freetorrent}{$free_tag}{$silver_tag}<br>{$free_slot}{$double_slot}{$nuked}{$newgenre}{$bump}{$smalldescr}</td>\n";
         if ($variant == 'mytorrents') {
             $htmlout .= "
                 <td>

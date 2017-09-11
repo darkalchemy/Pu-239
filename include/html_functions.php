@@ -72,13 +72,13 @@ function tr($x, $y, $noesc = 0)
 //-------- Inserts a smilies frame
 function insert_smilies_frame()
 {
-    global $smilies, $INSTALLER09;
+    global $smilies, $site_config;
     $htmlout = '';
     $htmlout .= begin_frame('Smilies', true);
     $htmlout .= begin_table(false, 5);
     $htmlout .= "<tr><td class='colhead'>Type...</td><td class='colhead'>To make a...</td></tr>\n";
     foreach ($smilies as $code => $url) {
-        $htmlout .= "<tr><td>$code</td><td><img src=\"{$INSTALLER09['pic_base_url']}smilies/{$url}\" alt='' /></td></tr>\n";
+        $htmlout .= "<tr><td>$code</td><td><img src=\"{$site_config['pic_base_url']}smilies/{$url}\" alt='' /></td></tr>\n";
     }
     $htmlout .= end_table();
     $htmlout .= end_frame();

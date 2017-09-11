@@ -1,8 +1,8 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-global $INSTALLER09;
+global $site_config;
 
 $lang = array_merge(load_language('global'), load_language('friends'));
 $userid = isset($_GET['id']) ? (int)$_GET['id'] : $CURUSER['id'];
@@ -37,7 +37,7 @@ if ($action == 'add') {
         $r = sql_query("SELECT id, confirmed FROM $table_is WHERE userid=" . sqlesc($userid) . " AND $field_is=" . sqlesc($targetid)) or sqlerr(__FILE__, __LINE__);
         $q = mysqli_fetch_assoc($r);
         $subject = sqlesc('New Friend Request!');
-        $body = sqlesc("[url={$INSTALLER09['baseurl']}/userdetails.php?id=$userid][b]This person[/b][/url] has added you to their Friends List. See all Friend Requests [url={$INSTALLER09['baseurl']}/friends.php#pending][b]Here[/b][/url]\n ");
+        $body = sqlesc("[url={$site_config['baseurl']}/userdetails.php?id=$userid][b]This person[/b][/url] has added you to their Friends List. See all Friend Requests [url={$site_config['baseurl']}/friends.php#pending][b]Here[/b][/url]\n ");
         sql_query('INSERT INTO messages (sender, receiver, added, subject, msg) VALUES (0, ' . sqlesc($targetid) . ", '" . TIME_NOW . "', $subject, $body)") or sqlerr(__FILE__, __LINE__);
         $mc1->delete_value('inbox_new_' . $targetid);
         $mc1->delete_value('inbox_new_sb_' . $targetid);
@@ -60,7 +60,7 @@ if ($action == 'add') {
         $mc1->delete_value('Friends_' . $targetid);
         $mc1->delete_value('user_friends_' . $targetid);
         $mc1->delete_value('user_friends_' . $userid);
-        header("Location: {$INSTALLER09['baseurl']}/friends.php?id=$userid#$frag");
+        header("Location: {$site_config['baseurl']}/friends.php?id=$userid#$frag");
         die;
     }
 }
@@ -89,7 +89,7 @@ if ($action == 'confirm') {
         $mc1->delete_value('user_friends_' . $targetid);
         $mc1->delete_value('user_friends_' . $userid);
         $subject = sqlesc('You have a new friend!');
-        $body = sqlesc("[url={$INSTALLER09['baseurl']}/userdetails.php?id=$userid][b]This person[/b][/url] has just confirmed your Friendship Request. See your Friends  [url={$INSTALLER09['baseurl']}/friends.php][b]Here[/b][/url]\n ");
+        $body = sqlesc("[url={$site_config['baseurl']}/userdetails.php?id=$userid][b]This person[/b][/url] has just confirmed your Friendship Request. See your Friends  [url={$site_config['baseurl']}/friends.php][b]Here[/b][/url]\n ");
         sql_query('INSERT INTO messages (sender, receiver, added, subject, msg) VALUES (0, ' . sqlesc($targetid) . ", '" . TIME_NOW . "', $subject, $body)") or sqlerr(__FILE__, __LINE__);
         $mc1->delete_value('inbox_new_' . $targetid);
         $mc1->delete_value('inbox_new_sb_' . $targetid);
@@ -173,19 +173,19 @@ if (mysqli_num_rows($res) == 0) {
 } else {
     while ($friendp = mysqli_fetch_assoc($res)) {
         $dt = TIME_NOW - 180;
-        $online = ($friendp['last_access'] >= $dt && $friendp['perms'] < bt_options::PERMS_STEALTH ? '&#160;<img src="' . $INSTALLER09['baseurl'] . '/images/staff/online.png" border="0" alt="Online" title="Online" />' : '<img src="' . $INSTALLER09['baseurl'] . '/images/staff/offline.png" border="0" alt="Offline" title="Offline" />');
+        $online = ($friendp['last_access'] >= $dt && $friendp['perms'] < bt_options::PERMS_STEALTH ? '&#160;<img src="' . $site_config['baseurl'] . '/images/staff/online.png" border="0" alt="Online" title="Online" />' : '<img src="' . $site_config['baseurl'] . '/images/staff/offline.png" border="0" alt="Offline" title="Offline" />');
         $title = htmlsafechars($friendp['title']);
         if (!$title) {
             $title = get_user_class_name($friendp['class']);
         }
         $linktouser = "<a href='userdetails.php?id=" . (int)$friendp['id'] . "'><b>" . format_username($friendp) . "</b></a>[$title]<br>{$lang['friends_last_seen']} " . ($friendp['perms'] < bt_options::PERMS_STEALTH ? get_date($friendp['last_access'], '') : 'Never');
-        $confirm = "<br><span class='btn'><a href='{$INSTALLER09['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=friend&amp;targetid=" . (int)$friendp['id'] . "'>Confirm</a></span>";
-        $block = "&#160;<span class='btn'><a href='{$INSTALLER09['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=" . (int)$friendp['id'] . "'>Block</a></span>";
+        $confirm = "<br><span class='btn'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=friend&amp;targetid=" . (int)$friendp['id'] . "'>Confirm</a></span>";
+        $block = "&#160;<span class='btn'><a href='{$site_config['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=" . (int)$friendp['id'] . "'>Block</a></span>";
         $avatar = ($CURUSER['avatars'] == 'yes' ? htmlsafechars($friendp['avatar']) : '');
         if (!$avatar) {
-            $avatar = "{$INSTALLER09['pic_base_url']}forumicons/default_avatar.gif";
+            $avatar = "{$site_config['pic_base_url']}forumicons/default_avatar.gif";
         }
-        $reject = "&#160;<span class='btn'><a href='{$INSTALLER09['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=friend&amp;targetid=" . (int)$friendp['id'] . "'>{$lang['friends_reject']}</a></span>";
+        $reject = "&#160;<span class='btn'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=friend&amp;targetid=" . (int)$friendp['id'] . "'>{$lang['friends_reject']}</a></span>";
         $friendsp .= "<div style='border: 1px solid black;padding:5px;'>" . ($avatar ? "<img width='50px' src='$avatar' style='float:right;' alt='Avatar' />" : '') . "<p >{$linktouser}<br><br>{$confirm}{$block}{$reject}</p></div><br>";
     }
 }
@@ -202,7 +202,7 @@ if (mysqli_num_rows($res) == 0) {
         if ($i % 6 == 0) {
             $friendreqs .= '<tr>';
         }
-        $friendreqs .= "<td style='border: none; padding: 4px; spacing: 0px;'><a href='{$INSTALLER09['baseurl']}/userdetails.php?id=" . (int)$friendreq['id'] . "'><b>" . format_username($friendreq) . '</b></a></td></tr>';
+        $friendreqs .= "<td style='border: none; padding: 4px; spacing: 0px;'><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$friendreq['id'] . "'><b>" . format_username($friendreq) . '</b></a></td></tr>';
         if ($i % 6 == 5) {
             $friendreqs .= '</tr>';
         }
@@ -220,18 +220,18 @@ if (mysqli_num_rows($res) == 0) {
 } else {
     while ($friend = mysqli_fetch_assoc($res)) {
         $dt = TIME_NOW - 180;
-        $online = ($friend['last_access'] >= $dt && $friend['perms'] < bt_options::PERMS_STEALTH ? '&#160;<img src="' . $INSTALLER09['baseurl'] . '/images/staff/online.png" border="0" alt="Online" title="Online" />' : '<img src="' . $INSTALLER09['baseurl'] . '/images/staff/offline.png" border="0" alt="Offline" title="Offline" />');
+        $online = ($friend['last_access'] >= $dt && $friend['perms'] < bt_options::PERMS_STEALTH ? '&#160;<img src="' . $site_config['baseurl'] . '/images/staff/online.png" border="0" alt="Online" title="Online" />' : '<img src="' . $site_config['baseurl'] . '/images/staff/offline.png" border="0" alt="Offline" title="Offline" />');
         $title = htmlsafechars($friend['title']);
         if (!$title) {
             $title = get_user_class_name($friend['class']);
         }
-        $ratio = member_ratio($friend['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $friend['downloaded']);
+        $ratio = member_ratio($friend['uploaded'], $site_config['ratio_free'] ? '0' : $friend['downloaded']);
         $linktouser = "<a href='userdetails.php?id=" . (int)$friend['id'] . "'><b>" . format_username($friend) . "</b></a>[$title]&#160;[$ratio]<br>{$lang['friends_last_seen']} " . ($friend['perms'] < bt_options::PERMS_STEALTH ? get_date($friend['last_access'], '') : 'Never');
-        $delete = "<span class='btn'><a href='{$INSTALLER09['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . (int)$friend['id'] . "'>{$lang['friends_remove']}</a></span>";
-        $pm_link = "&#160;<span class='btn'><a href='{$INSTALLER09['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . (int)$friend['id'] . "'>{$lang['friends_pm']}</a></span>";
+        $delete = "<span class='btn'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . (int)$friend['id'] . "'>{$lang['friends_remove']}</a></span>";
+        $pm_link = "&#160;<span class='btn'><a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . (int)$friend['id'] . "'>{$lang['friends_pm']}</a></span>";
         $avatar = ($CURUSER['avatars'] == 'yes' ? htmlsafechars($friend['avatar']) : '');
         if (!$avatar) {
-            $avatar = "{$INSTALLER09['pic_base_url']}forumicons/default_avatar.gif";
+            $avatar = "{$site_config['pic_base_url']}forumicons/default_avatar.gif";
         }
         $friends .= "<div style='border: 1px solid black;padding:5px;'>" . ($avatar ? "<img width='50px' src='$avatar' style='float:right;' alt='' />" : '') . "<p >{$linktouser}&#160;{$online}<br><br>{$delete}{$pm_link}</p></div><br>";
     }
@@ -245,7 +245,7 @@ if (mysqli_num_rows($res) == 0) {
 } else {
     while ($block = mysqli_fetch_assoc($res)) {
         $blocks .= "<div style='border: 1px solid black;padding:5px;'>";
-        $blocks .= "<span class='btn' style='float:right;'><a href='{$INSTALLER09['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=block&amp;targetid=" . (int)$block['id'] . "'>{$lang['friends_delete']}</a></span><br>";
+        $blocks .= "<span class='btn' style='float:right;'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=block&amp;targetid=" . (int)$block['id'] . "'>{$lang['friends_delete']}</a></span><br>";
         $blocks .= "<p><a href='userdetails.php?id=" . (int)$block['id'] . "'><b>" . format_username($block) . '</b></a></p></div><br>';
     }
 }
@@ -254,13 +254,13 @@ if (mysqli_num_rows($res) == 0) {
 //==country by pdq
 function countries()
 {
-    global $mc1, $INSTALLER09;
+    global $mc1, $site_config;
     if (($ret = $mc1->get_value('countries::arr')) === false) {
         $res = sql_query('SELECT id, name, flagpic FROM countries ORDER BY name ASC') or sqlerr(__FILE__, __LINE__);
         while ($row = mysqli_fetch_assoc($res)) {
             $ret[] = $row;
         }
-        $mc1->cache_value('countries::arr', $ret, $INSTALLER09['expires']['user_flag']);
+        $mc1->cache_value('countries::arr', $ret, $site_config['expires']['user_flag']);
     }
 
     return $ret;
@@ -270,7 +270,7 @@ $country = '';
 $countries = countries();
 foreach ($countries as $cntry) {
     if ($cntry['id'] == $user['country']) {
-        $country = "<img src=\"{$INSTALLER09['pic_base_url']}flag/{$cntry['flagpic']}\" alt=\"" . htmlsafechars($cntry['name']) . "\" style='margin-left: 8pt' />";
+        $country = "<img src=\"{$site_config['pic_base_url']}flag/{$cntry['flagpic']}\" alt=\"" . htmlsafechars($cntry['name']) . "\" style='margin-left: 8pt' />";
         break;
     }
 }

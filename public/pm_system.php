@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'html_functions.php';
@@ -16,12 +16,12 @@ define('PM_DRAFTS', -2); //  new drafts folder
 $lang = array_merge(load_language('global'), load_language('takesignup'), load_language('pm'));
 $stdhead = [
     'css' => [
-        '7ed2b968cb48494d1f1e1d61117bc433.min',
+        get_file('pm_css')
     ],
 ];
 $stdfoot = [
     'js' => [
-        '936befd35c99dde2e1bd9bf7c95e14f2.min',
+        get_file('pm_js')
     ],
 ];
 $HTMLOUT = $count2 = $other_box_info = $maxpic = $maxbox = '';
@@ -115,11 +115,15 @@ if (!in_array($order_by, $good_order_by)) {
     stderr($lang['pm_error'], $lang['pm_error_temp']);
 }
 //=== top of page:
-$top_links = '<div style="text-align: center;">
-        <a class="altlink"  href="pm_system.php?action=search">' . $lang['pm_search'] . '</a> || 
-        <a class="altlink"  href="pm_system.php?action=edit_mailboxes">' . $lang['pm_manager'] . '</a> || 
-        <a class="altlink" href="pm_system.php?action=new_draft">' . $lang['pm_write_new'] . '</a> || 
-        <a class="altlink" href="pm_system.php?action=view_mailbox">' . $lang['pm_in_box'] . '</a></div><br>';
+$top_links = '
+    <div class="text-center">
+        <ul class="answers-container">
+            <li><a class="altlink" href="pm_system.php?action=search">' . $lang['pm_search'] . '</a></li>
+            <li><a class="altlink" href="pm_system.php?action=edit_mailboxes">' . $lang['pm_manager'] . '</a></li>
+            <li><a class="altlink" href="pm_system.php?action=new_draft">' . $lang['pm_write_new'] . '</a></li>
+            <li><a class="altlink" href="pm_system.php?action=view_mailbox">' . $lang['pm_in_box'] . '</a></li>
+        </ul>
+    </div>';
 //=== change  number of PMs per page on the fly
 if (isset($_GET['change_pm_number'])) {
     $change_pm_number = (isset($_GET['change_pm_number']) ? intval($_GET['change_pm_number']) : 20);
@@ -128,12 +132,12 @@ if (isset($_GET['change_pm_number'])) {
     $mc1->update_row(false, [
         'pms_per_page' => $change_pm_number,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
     $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
     $mc1->update_row(false, [
         'pms_per_page' => $change_pm_number,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
     if (isset($_GET['edit_mail_boxes'])) {
         header('Location: pm_system.php?action=edit_mailboxes&pm=1');
     } else {
@@ -149,12 +153,12 @@ if (isset($_GET['show_pm_avatar'])) {
     $mc1->update_row(false, [
         'show_pm_avatar' => $show_pm_avatar,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
     $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
     $mc1->update_row(false, [
         'show_pm_avatar' => $show_pm_avatar,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
     if (isset($_GET['edit_mail_boxes'])) {
         header('Location: pm_system.php?action=edit_mailboxes&avatar=1');
     } else {
@@ -234,7 +238,7 @@ switch ($action) {
 //=== get all PM boxes
 function get_all_boxes()
 {
-    global $CURUSER, $mc1, $INSTALLER09, $lang;
+    global $CURUSER, $mc1, $site_config, $lang;
     if (($get_all_boxes = $mc1->get_value('get_all_boxes' . $CURUSER['id'])) === false) {
         $res = sql_query('SELECT boxnumber, name FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
         $get_all_boxes = '<select name="box">
@@ -245,7 +249,7 @@ function get_all_boxes()
             $get_all_boxes .= '<option class="body" value="' . (int)$row['boxnumber'] . '">' . htmlsafechars($row['name']) . '</option>';
         }
         $get_all_boxes .= '</select>';
-        $mc1->cache_value('get_all_boxes' . $CURUSER['id'], $get_all_boxes, $INSTALLER09['expires']['get_all_boxes']);
+        $mc1->cache_value('get_all_boxes' . $CURUSER['id'], $get_all_boxes, $site_config['expires']['get_all_boxes']);
     }
 
     return $get_all_boxes;
@@ -254,7 +258,7 @@ function get_all_boxes()
 //=== insert jump to box
 function insertJumpTo($mailbox)
 {
-    global $CURUSER, $mc1, $INSTALLER09, $lang;
+    global $CURUSER, $mc1, $site_config, $lang;
     if (($insertJumpTo = $mc1->get_value('insertJumpTo' . $CURUSER['id'])) === false) {
         $res = sql_query('SELECT boxnumber,name FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
         $insertJumpTo = '<form action="pm_system.php" method="get">
@@ -268,7 +272,7 @@ function insertJumpTo($mailbox)
             $insertJumpTo .= '<option class="body" value="pm_system.php?action=view_mailbox&amp;box=' . (int)$row['boxnumber'] . '" ' . ((int)$row['boxnumber'] == $mailbox ? 'selected="selected"' : '') . '>' . htmlsafechars($row['name']) . '</option>';
         }
         $insertJumpTo .= '</select></form>';
-        $mc1->cache_value('insertJumpTo' . $CURUSER['id'], $insertJumpTo, $INSTALLER09['expires']['insertJumpTo']);
+        $mc1->cache_value('insertJumpTo' . $CURUSER['id'], $insertJumpTo, $site_config['expires']['insertJumpTo']);
     }
 
     return $insertJumpTo;

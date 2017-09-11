@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -60,12 +60,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $mc1->update_row(false, [
                 'enabled' => 'no',
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('user' . $_uid);
             $mc1->update_row(false, [
                 'enabled' => 'no',
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $d = mysqli_affected_rows($GLOBALS['___mysqli_ston']);
             header('Refresh: 2; url=' . $r);
             stderr($lang['warn_stdmsg_success'], $d . $lang['warn_stdmsg_user'] . ($d > 1 ? 's' : '') . $lang['warn_stdmsg_disabled']);
@@ -81,12 +81,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $mc1->update_row(false, [
             'warned' => 0,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+        $mc1->commit_transaction($site_config['expires']['curuser']);
         $mc1->begin_transaction('user' . $_uid);
         $mc1->update_row(false, [
             'warned' => 0,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+        $mc1->commit_transaction($site_config['expires']['user_cache']);
         $pms = [];
         foreach ($_uids as $id) {
             $pms[] = '(0,' . $id . ',' . sqlesc($sub) . ',' . sqlesc($body) . ',' . sqlesc(TIME_NOW) . ')';

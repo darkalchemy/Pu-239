@@ -1,9 +1,9 @@
 <?php
 function backup_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
-    set_time_limit(0);
-    ignore_user_abort(1);
+    global $site_config, $queries, $mc1;
+    set_time_limit(1200);
+    ignore_user_abort(true);
     //== Delete old backup's
     $days = 3;
     $res = sql_query('SELECT id, name FROM dbbackup WHERE added < ' . sqlesc(TIME_NOW - ($days * 86400))) or sqlerr(__FILE__, __LINE__);
@@ -11,7 +11,7 @@ function backup_update($data)
         $ids = [];
         while ($arr = mysqli_fetch_assoc($res)) {
             $ids[] = (int)$arr['id'];
-            $filename = $INSTALLER09['backup_dir'] . '/' . $arr['name'];
+            $filename = $site_config['backup_dir'] . '/' . $arr['name'];
             if (is_file($filename)) {
                 unlink($filename);
             }

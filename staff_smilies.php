@@ -36,7 +36,7 @@ while ((list($code, $url) = each($staff_smilies))) {
     $htmlout .= "
             <td align='center'>
                 <a href=\"javascript: SmileIT('" . str_replace("'", "\'", $code) . "','" . htmlsafechars($_GET['form']) . "','" . htmlsafechars($_GET['text']) . "')\">
-                    <img border='0' src='{$INSTALLER09['pic_base_url']}smilies/" . $url . "' alt='' />
+                    <img border='0' src='{$site_config['pic_base_url']}smilies/" . $url . "' alt='' />
                 </a>
             </td>";
     ++$count;

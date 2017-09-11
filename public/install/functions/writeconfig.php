@@ -195,7 +195,7 @@ function saveconfig()
         $keys = array_map('foo', array_keys($_POST['announce']));
         $values = array_values($_POST['announce']);
         $announce = preg_replace($keys, $values, $announce);
-        if (file_put_contents($root.'include/ann_config.php', $announce)) {
+        if (file_put_contents($root . 'include/ann_config.php', $announce)) {
             $out .= '
         <div class="readable">Announce file was saved</div>';
             file_put_contents('announce.lock', 1);
@@ -215,13 +215,13 @@ function saveconfig()
             $xbt = 0;
         }
         $out .= '
-        <div style="text-align:center" class="info"><input type="button" value="Next step" onclick="window.location.href=\'index.php?step=2&xbt='.$xbt.'\'"/></div>';
+        </fieldset>
+        <div style="text-align:center"><input type="button" value="Next step" onclick="window.location.href=\'index.php?step=2&xbt='.$xbt.'\'"/></div>';
         file_put_contents('step1.lock', 1);
     } else {
         $out .= '
+        </fieldset>
         <div style="text-align:center" class="info"><input type="button" value="Go back" onclick="window.go(-1)"/></div>';
     }
-    $out .= '
-    </fieldset>';
     echo $out;
 }

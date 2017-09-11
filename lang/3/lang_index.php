@@ -24,7 +24,7 @@ $lang = [
     'news_edit'                  => 'Editeaz&#259;',
     'news_delete'                => '&#350;terge',
     //latest torrents
-    'latesttorrents_title'       => $INSTALLER09['latest_torrents_limit'] . ' ultimele torente',
+    'latesttorrents_title'       => $site_config['latest_torrents_limit'] . ' ultimele torente',
     'latesttorrents_type'        => 'Tip',
     'latesttorrents_name'        => 'Nume',
     'latesttorrents_seeders'     => 'Seederi',
@@ -50,7 +50,7 @@ $lang = [
     'clog_edit'                  => 'Editeaz&#259;',
     'clog_delete'                => '&#350;terge',
     //latest forum posts
-    'latestposts_title'          => $INSTALLER09['latest_posts_limit'] . ' Latest Forum Posts',
+    'latestposts_title'          => $site_config['latest_posts_limit'] . ' Latest Forum Posts',
     'latestposts_topic_title'    => 'Titlu&#160;subiect',
     'latestposts_replies'        => 'R&#259;spunsuri',
     'latestposts_views'          => 'Vizualiz&#259;ri',

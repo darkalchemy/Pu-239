@@ -1,9 +1,9 @@
 <?php
 function inactive_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
+    global $site_config, $queries, $mc1;
     set_time_limit(1200);
-    ignore_user_abort(1);
+    ignore_user_abort(true);
 
     //$users = [4, 17, 18];
 

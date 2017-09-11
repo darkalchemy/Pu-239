@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -17,14 +17,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             unset($limits[$class]);
         }
     }
-    if (file_put_contents($INSTALLER09['flood_file'], serialize($limits))) {
+    if (file_put_contents($site_config['flood_file'], serialize($limits))) {
         header('Refresh: 2; url=/staffpanel.php?tool=floodlimit');
         stderr($lang['floodlimit_success'], $lang['floodlimit_saved']);
     } else {
         stderr($lang['floodlimit_stderr'], $lang['floodlimit_wentwrong'] . $_file . $lang['floodlimit_exist']);
     }
 } else {
-    if (!file_exists($INSTALLER09['flood_file']) || !is_array($limit = unserialize(file_get_contents($INSTALLER09['flood_file'])))) {
+    if (!file_exists($site_config['flood_file']) || !is_array($limit = unserialize(file_get_contents($site_config['flood_file'])))) {
         $limit = [];
     }
     $out = begin_main_frame() . begin_frame($lang['floodlimit_editflood']);

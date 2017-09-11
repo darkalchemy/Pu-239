@@ -1,9 +1,9 @@
 <?php
 function lotteryclean($data)
 {
-    global $INSTALLER09, $queries;
-    set_time_limit(0);
-    ignore_user_abort(1);
+    global $site_config, $queries;
+    set_time_limit(1200);
+    ignore_user_abort(true);
     $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
     while ($aconf = mysqli_fetch_assoc($lconf)) {
         $lottery_config[$aconf['name']] = $aconf['value'];

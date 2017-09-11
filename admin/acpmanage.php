@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -33,12 +33,12 @@ if (isset($_POST['ids'])) {
     $mc1->update_row(false, [
         'enabled' => 'yes',
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
     $mc1->begin_transaction('user' . $id);
     $mc1->update_row(false, [
         'enabled' => 'yes',
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
     //else
     if ($do == 'confirm') {
         sql_query("UPDATE users SET status = 'confirmed' WHERE ID IN(" . join(', ', array_map('sqlesc', $ids)) . ") AND status = 'pending'") or sqlerr(__FILE__, __LINE__);
@@ -47,12 +47,12 @@ if (isset($_POST['ids'])) {
     $mc1->update_row(false, [
         'status' => 'confirmed',
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
     $mc1->begin_transaction('user' . $id);
     $mc1->update_row(false, [
         'status' => 'confirmed',
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
     //else
     if ($do == 'delete' && ($CURUSER['class'] >= UC_SYSOP)) {
         $res_del = sql_query('SELECT id, username, added, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE ID IN(' . join(', ', array_map('sqlesc', $ids)) . ') AND class < 3 ORDER BY username DESC');

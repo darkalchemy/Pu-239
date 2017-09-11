@@ -27,7 +27,7 @@ if (($active_irc_users_cache = $mc1->get_value($keys['activeircusers'])) === fal
     }
     $active_irc_users_cache['activeircusers'] = $activeircusers;
     $active_irc_users_cache['actcount'] = $actcount;
-    $mc1->cache_value($keys['activeircusers'], $active_irc_users_cache, $INSTALLER09['expires']['activeircusers']);
+    $mc1->cache_value($keys['activeircusers'], $active_irc_users_cache, $site_config['expires']['activeircusers']);
 }
 if (!$active_irc_users_cache['activeircusers']) {
     $active_irc_users_cache['activeircusers'] = $lang['index_irc_nousers'];
@@ -35,8 +35,8 @@ if (!$active_irc_users_cache['activeircusers']) {
 $HTMLOUT .= "
     <a id='irc-hash'></a>
     <fieldset id='irc' class='header'>
-        <legend class='flipper'><i class='fa fa-angle-up' aria-hidden='true'></i>{$lang['index_active_irc']} ({$active_irc_users_cache['actcount']})</legend>
-            <div class='text-center'>
+        <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_active_irc']} ({$active_irc_users_cache['actcount']})</legend>
+            <div class='text-center bottom20'>
                 {$active_irc_users_cache['activeircusers']}
             </div>
     </fieldset>";

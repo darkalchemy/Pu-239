@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once CACHE_DIR . 'timezones.php';
 dbconn();
@@ -9,20 +9,20 @@ if (!$CURUSER) {
 }
 $stdfoot = [
     'js' => [
-        '3306e653dc7cbe855035108a3fdc1055.min'
+        get_file('captcha2_js')
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('signup'));
 $res = sql_query('SELECT COUNT(*) FROM users') or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_row($res);
-if ($arr[0] >= $INSTALLER09['invites']) {
-    stderr('Sorry', 'The current user account limit (' . number_format($INSTALLER09['invites']) . ') has been reached. Inactive accounts are pruned all the time, please check back again later...');
+if ($arr[0] >= $site_config['invites']) {
+    stderr('Sorry', 'The current user account limit (' . number_format($site_config['invites']) . ') has been reached. Inactive accounts are pruned all the time, please check back again later...');
 }
-if (!$INSTALLER09['openreg_invites']) {
+if (!$site_config['openreg_invites']) {
     stderr('Sorry', 'Invite Signups are closed presently');
 }
 // TIMEZONE STUFF
-$offset = (string)$INSTALLER09['time_offset'];
+$offset = (string)$site_config['time_offset'];
 $time_select = "<select name='user_timezone'>";
 foreach ($TZ as $off => $words) {
     if (preg_match("/^time_(-?[\d\.]+)$/", $off, $match)) {
@@ -52,7 +52,7 @@ $value[random_int(1, count($value) - 1)] = 'X';
 $HTMLOUT .= "
     <div class='login-container center-block'>
     <p>{$lang['signup_cookies']}</p>
-    <form method='post' action='{$INSTALLER09['baseurl']}/take_invite_signup.php'>
+    <form method='post' action='{$site_config['baseurl']}/take_invite_signup.php'>
     <table border='1' cellspacing='0' cellpadding='10'>
     <tr><td align='right' class='heading'>{$lang['signup_uname']}</td><td align='left'><input type='text' size='40' name='wantusername' id='wantusername' onblur='checkit();' /><div id='namecheck'></div></td></tr>
     <tr><td align='right' class='heading'>{$lang['signup_pass']}</td><td align='left'><input class='password' type='password' size='40' name='wantpassword' /></td></tr>
@@ -148,7 +148,7 @@ $HTMLOUT .= "<tr><td align='right' class='heading'>{$lang['signup_select']}</td>
       <input type='checkbox' name='rulesverify' value='yes' /> {$lang['signup_rules']}<br>
       <input type='checkbox' name='faqverify' value='yes' /> {$lang['signup_faq']}<br>
       <input type='checkbox' name='ageverify' value='yes' /> {$lang['signup_age']}</td></tr>
-      " . ($INSTALLER09['captcha_on'] ? "<tr><td align='center' class='rowhead' colspan='2' id='captcha_show'></td></tr>" : '') . "
+      " . ($site_config['captcha_on'] ? "<tr><td align='center' class='rowhead' colspan='2' id='captcha_show'></td></tr>" : '') . "
       <tr><td align='center' colspan='2'>{$lang['signup_click']} <strong>{$lang['signup_x']}</strong> {$lang['signup_click1']}</td></tr><tr>
       <td colspan='2' align='center'><span class='answers-container'>";
 for ($i = 0; $i < count($value); ++$i) {

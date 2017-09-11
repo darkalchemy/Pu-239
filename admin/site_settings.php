@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once CLASS_DIR . 'class_check.php';
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     if (sql_query('INSERT INTO site_config(name,value) VALUES ' . join(', ', $update) . ' ON DUPLICATE KEY update value=VALUES(value)')) {
-        $t = '$INSTALLER09';
+        $t = '$site_config';
         $configfile = '<' . "?php\n/**\n{$lang['sitesettings_file']}" . date('M d Y H:i:s') . ".\n{$lang['sitesettings_cfg']}\n**/\n";
         $res = sql_query('SELECT * from site_config ');
         while ($arr = mysqli_fetch_assoc($res)) {

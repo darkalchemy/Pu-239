@@ -39,7 +39,7 @@ $HTMLOUT .= "<tr>
 <a class='altlink' href='viewrequests.php'><b>{$lang['details_all_req']}</b></a> </td></tr><tr><td align='right'>
 <b>{$lang['details_vote_req']}</b></td><td align='left'><a href='viewrequests.php?id=" . $id . "&amp;req_vote'><b>{$lang['details_vote']}</b></a>
 </td></tr>
-" . ($INSTALLER09['reports'] ? "<tr><td align='right'><b>{$lang['details_report']}</b></td><td align='left'>
+" . ($site_config['reports'] ? "<tr><td align='right'><b>{$lang['details_report']}</b></td><td align='left'>
 {$lang['details_break']} 
 <form action='report.php?type=Request&amp;id=$id' method='post'><input class='btn' type='submit' name='submit' value='{$lang['details_report']}' /></form></td>
 </tr>" : '');
@@ -47,11 +47,11 @@ if ($num['torrentid'] == 0) {
     $HTMLOUT .= "<tr><td align='right' valign='top'><b>{$lang['details_fill_this']}</b></td>
 <td>" . ($CURUSER['id'] != $num['userid'] ? "
 <form method='post' action='viewrequests.php?id=" . $id . "&amp;req_filled'>
-    <strong>" . $INSTALLER09['baseurl'] . "/details.php?id=</strong><input type='text' size='10' name='torrentid' value='' /> <input type='submit' value='{$lang['details_fill']}' class='btn' /><br>
+    <strong>" . $site_config['baseurl'] . "/details.php?id=</strong><input type='text' size='10' name='torrentid' value='' /> <input type='submit' value='{$lang['details_fill']}' class='btn' /><br>
 {$lang['details_enter_id']}<br></form>" : "{$lang['details_yours']}") . "</td>
 </tr>\n";
 } else {
-    $HTMLOUT .= "<tr><td align='right' valign='top'><b>{$lang['details_filled']}</b></td><td><a class='altlink' href='details.php?id=" . $num['torrentid'] . "'><b>" . $INSTALLER09['baseurl'] . '/details.php?id=' . $num['torrentid'] . '</b></a></td></tr>';
+    $HTMLOUT .= "<tr><td align='right' valign='top'><b>{$lang['details_filled']}</b></td><td><a class='altlink' href='details.php?id=" . $num['torrentid'] . "'><b>" . $site_config['baseurl'] . '/details.php?id=' . $num['torrentid'] . '</b></a></td></tr>';
 }
 $HTMLOUT .= "<tr><td class='embedded' colspan='2'><p><a name='startcomments'></a></p>\n";
 $commentbar = "<p align='center'><a class='index' href='comment.php?action=add&amp;tid=$id&amp;type=request'>{$lang['details_add_comment']}</a></p>\n";

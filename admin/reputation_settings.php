@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -22,7 +22,7 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
 /////////////////////////////
 function rep_cache()
 {
-    global $rep_set_cache, $INSTALLER09, $lang;
+    global $rep_set_cache, $site_config, $lang;
     $rep_out = '<' . "?php\n\n\$GVARS = array(\n";
     foreach ($_POST as $k => $v) {
         $rep_out .= ($k == 'rep_undefined') ? "\t'{$k}' => '" . htmlsafechars($v, ENT_QUOTES) . "',\n" : "\t'{$k}' => " . intval($v) . ",\n";
@@ -210,7 +210,7 @@ $HTMLOUT = preg_replace_callback('|<#(.*?)#>|', 'template_out', $HTMLOUT);
 echo stdhead($lang['repset_stdhead']) . $HTMLOUT . stdfoot();
 function template_out($matches)
 {
-    global $GVARS, $INSTALLER09, $lang;
+    global $GVARS, $site_config, $lang;
     if ($matches[1] == 'rep_is_online') {
         return '' . $lang['repset_yes'] . '<input name="rep_is_online" value="1" ' . ($GVARS['rep_is_online'] == 1 ? 'checked="checked"' : '') . ' type="radio">&#160;&#160;&#160;<input name="rep_is_online" value="0" ' . ($GVARS['rep_is_online'] == 1 ? '' : 'checked="checked"') . ' type="radio">' . $lang['repset_no'] . '';
     } else {
@@ -220,14 +220,14 @@ function template_out($matches)
 
 function redirect($url, $text, $time = 2)
 {
-    global $INSTALLER09, $lang;
+    global $site_config, $lang;
     $page_title = $lang['repset_adminredir'];
     $page_detail = "<em>{$lang['repset_redirecting']}</em>";
     $html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
 		\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
 		<html xmlns='http://www.w3.org/1999/xhtml'>
 		<head>
-		<meta http-equiv='refresh' content=\"{$time}; url={$INSTALLER09['baseurl']}/{$url}\" />
+		<meta http-equiv='refresh' content=\"{$time}; url={$site_config['baseurl']}/{$url}\" />
 		<title>{$lang['repset_block']}</title>
     <link rel='stylesheet' href='./css/" . get_stylesheet() . "/e0a618d82ab6ae6be19a4749c87426da.min.css' />
     </head>
@@ -238,7 +238,7 @@ function redirect($url, $text, $time = 2)
 							 <div style='font-size:12px'>$text
 							 <br>
 							 <br>
-							 <center><a href='{$INSTALLER09['baseurl']}/{$url}'>{$lang['repset_clickredirect']}</a></center>
+							 <center><a href='{$site_config['baseurl']}/{$url}'>{$lang['repset_clickredirect']}</a></center>
 							 </div>
 							</div>
 						   </div></body></html>";

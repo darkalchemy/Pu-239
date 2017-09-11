@@ -19,7 +19,7 @@ $langs = [
 ];
 function radioinfo($radio)
 {
-    global $langs, $INSTALLER09, $mc1, $CURUSER;
+    global $langs, $site_config, $mc1, $CURUSER;
     $xml = $html = $history = '';
     if ($hand = @fsockopen($radio['host'], $radio['port'], $errno, $errstr, 30)) {
         fputs($hand, 'GET /admin.cgi?pass=' . $radio['password'] . "&mode=viewxml HTTP/1.1\nUser-Agent:Mozilla/5.0 " . "(Windows; U; Windows NT 6.1; en-GB; rv:1.9.2.6) Gecko/20100625 Firefox/3.6.6\n\n");
@@ -53,7 +53,7 @@ function radioinfo($radio)
                 $mc1->cache_value('current_radio_song', $md5_current_song, 0);
             }
             $html = '<fieldset>
-                <legend>' . $INSTALLER09['site_name'] . ' radio</legend><ul>';
+                <legend>' . $site_config['site_name'] . ' radio</legend><ul>';
             foreach ($data as $d) {
                 $html .= '<li><b>' . $d . '</b></li>';
             }
@@ -75,8 +75,8 @@ function radioinfo($radio)
             return $html;
         }
     } else {
-        $html .= '<fieldset><legend>' . $INSTALLER09['site_name'] . ' radio</legend>
-    <font size="3" color="red"><img src="' . $INSTALLER09['pic_base_url'] . 'off1.gif" alt="Off" title="Off" border="0" /><br>
+        $html .= '<fieldset><legend>' . $site_config['site_name'] . ' radio</legend>
+    <font size="3" color="red"><img src="' . $site_config['pic_base_url'] . 'off1.gif" alt="Off" title="Off" border="0" /><br>
     <b>Sorry ' . $CURUSER['username'] . ' Radio is currently Offline</b></font></fieldset><br>';
     }
 

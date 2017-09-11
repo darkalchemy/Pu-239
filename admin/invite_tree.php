@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -181,7 +181,7 @@ if ($id !== 0) {
 			<td class="colhead">' . $lang['invite_search_country'] . '</td>
 			<td class="colhead">' . $lang['invite_search_edit'] . '</td></tr>';
         while ($row = mysqli_fetch_assoc($res)) {
-            $country = ($row['name'] != null) ? '<td style="padding: 0px" align="center"><img src="' . $INSTALLER09['pic_base_url'] . 'flag/' . (int)$row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" /></td>' : '<td align="center">---</td>';
+            $country = ($row['name'] != null) ? '<td style="padding: 0px" align="center"><img src="' . $site_config['pic_base_url'] . 'flag/' . (int)$row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" /></td>' : '<td align="center">---</td>';
             $HTMLOUT .= '<tr><td align="left">' . format_username($row) . '</td>
 		<td>' . get_date($row['added'], '') . '</td><td>' . get_date($row['last_access'], '') . '</td>
 		<td align="left">' . get_user_class_name($row['class']) . '</td>

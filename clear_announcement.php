@@ -8,11 +8,11 @@ $mc1->update_row(false, [
     'curr_ann_id'         => 0,
     'curr_ann_last_check' => 0,
 ]);
-$mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+$mc1->commit_transaction($site_config['expires']['user_cache']);
 $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
 $mc1->update_row(false, [
     'curr_ann_id'         => 0,
     'curr_ann_last_check' => 0,
 ]);
-$mc1->commit_transaction($INSTALLER09['expires']['curuser']);
-header("Location: {$INSTALLER09['baseurl']}/index.php");
+$mc1->commit_transaction($site_config['expires']['curuser']);
+header("Location: {$site_config['baseurl']}/index.php");

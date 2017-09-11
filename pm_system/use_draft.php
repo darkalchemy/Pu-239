@@ -2,7 +2,7 @@
 $preview = '';
 if (!defined('BUNNY_PM_SYSTEM')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 $save_or_edit = (isset($_POST['edit']) ? 'edit' : (isset($_GET['edit']) ? 'edit' : 'save'));
@@ -88,12 +88,12 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
 
 {$lang['pm_forwardpm_url']}
 
-{$INSTALLER09['baseurl']}/pm_system.php
+{$site_config['baseurl']}/pm_system.php
 
 --
-{$INSTALLER09['site_name']}
+{$site_config['site_name']}
 EOD;
-            @mail($user['email'], $lang['pm_forwardpm_pmfrom'] . $username . $lang['pm_forwardpm_exc'], $body, "{$lang['pm_forwardpm_from']}{$INSTALLER09['site_email']}");
+            @mail($user['email'], $lang['pm_forwardpm_pmfrom'] . $username . $lang['pm_forwardpm_exc'], $body, "{$lang['pm_forwardpm_from']}{$site_config['site_email']}");
         }
         //=== if returnto sent
         if ($returnto) {

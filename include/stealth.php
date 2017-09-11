@@ -1,7 +1,7 @@
 <?php
 function stealth($id, $stealth = true)
 {
-    global $CURUSER, $mc1, $INSTALLER09;
+    global $CURUSER, $mc1, $site_config;
     $setbits = $clrbits = 0;
     if ($stealth) {
         $display = 'is';
@@ -27,33 +27,33 @@ function stealth($id, $stealth = true)
     $mc1->update_row(false, [
         'perms' => $row['perms'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
     $mc1->begin_transaction('MyUser_' . $id);
     $mc1->update_row(false, [
         'perms' => $row['perms'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
     $mc1->begin_transaction('user_stats_' . $id);
     $mc1->update_row(false, [
         'modcomment' => $modcomment,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+    $mc1->commit_transaction($site_config['expires']['user_stats']);
     if ($id == $CURUSER['id']) {
         $mc1->begin_transaction('user' . $CURUSER['id']);
         $mc1->update_row(false, [
             'perms' => $row['perms'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+        $mc1->commit_transaction($site_config['expires']['user_cache']);
         $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
         $mc1->update_row(false, [
             'perms' => $row['perms'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+        $mc1->commit_transaction($site_config['expires']['curuser']);
         $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
         $mc1->update_row(false, [
             'modcomment' => $modcomment,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+        $mc1->commit_transaction($site_config['expires']['user_stats']);
     }
     write_log('Member [b][url=userdetails.php?id=' . $id . ']' . (htmlsafechars($row['username'])) . '[/url][/b] ' . $display . ' in Stealth Mode thanks to [b]' . $CURUSER['username'] . '[/b]');
     // header ouput

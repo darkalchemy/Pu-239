@@ -1,7 +1,7 @@
 <?php
 function parse_poll()
 {
-    global $CURUSER, $INSTALLER09, $mc1;
+    global $CURUSER, $site_config, $mc1;
     $htmlout = '';
     $check = 0;
     $poll_footer = '';
@@ -25,7 +25,7 @@ function parse_poll()
         while ($row = mysqli_fetch_assoc($query)) {
             $poll_data = $row;
         }
-        $mc1->cache_value('poll_data_' . $CURUSER['id'], $poll_data, $INSTALLER09['expires']['poll_data']);
+        $mc1->cache_value('poll_data_' . $CURUSER['id'], $poll_data, $site_config['expires']['poll_data']);
     }
     //return $poll_data;
     $member_voted = 0;
@@ -164,21 +164,21 @@ function parse_poll()
 ///////////////////////////////////////////////
 function poll_header($pid = '', $poll_q = '')
 {
-    global $INSTALLER09;
+    global $site_config;
     $HTMLOUT = '';
     $HTMLOUT .= "<script>
     /*<![CDATA[*/
     function go_gadget_show()
     {
-      window.location = \"{$INSTALLER09['baseurl']}/index.php?pollid={$pid}&mode=show&st=main\";
+      window.location = \"{$site_config['baseurl']}/index.php?pollid={$pid}&mode=show&st=main\";
     }
     function go_gadget_vote()
     {
-      window.location = \"{$INSTALLER09['baseurl']}/index.php?pollid={$pid}&st=main\";
+      window.location = \"{$site_config['baseurl']}/index.php?pollid={$pid}&st=main\";
     }
     /*]]>*/
     </script>
-            <form action='{$INSTALLER09['baseurl']}/polls_take_vote.php?pollid={$pid}&amp;st=main&amp;addpoll=1' method='post'>
+            <form action='{$site_config['baseurl']}/polls_take_vote.php?pollid={$pid}&amp;st=main&amp;addpoll=1' method='post'>
                 <a id='poll-hash'></a>
                 <fieldset id='poll' class='header'>
                     <legend class='flipper'><i class='fa fa-angle-up' aria-hidden='true'></i>{$poll_q}</legend>
@@ -202,13 +202,13 @@ function poll_footer()
 
 function poll_show_rendered_choice($choice_id = '', $votes = '', $id = '', $answer = '', $percentage = '', $width = '')
 {
-    global $INSTALLER09;
+    global $site_config;
     $HTMLOUT = '';
     $HTMLOUT .= "<tr>
       <td width='25%' colspan='2'>$answer</td>
       <td width='10%' nowrap='nowrap'> [ <b>$votes</b> ] </td>
       <td width='70%' nowrap='nowrap'>
-      <img src='{$INSTALLER09['pic_base_url']}polls/bar.gif' width='$width' height='11' align='middle' alt='' />
+      <img src='{$site_config['pic_base_url']}polls/bar.gif' width='$width' height='11' align='middle' alt='' />
       &#160;[$percentage%]
       </td>
       </tr>";

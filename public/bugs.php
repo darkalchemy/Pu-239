@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
@@ -31,23 +31,23 @@ if ($action == 'viewbug') {
         while ($q1 = mysqli_fetch_assoc($query1)) {
             switch ($status) {
                 case 'fixed':
-                    $msg = sqlesc('Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been treated by one of our coder, and is done.\n\nWe would to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$INSTALLER09['site_name']}'s coders.\n");
+                    $msg = sqlesc('Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been treated by one of our coder, and is done.\n\nWe would to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$site_config['site_name']}'s coders.\n");
                     $uq = 'UPDATE users SET uploaded = uploaded +' . 1024 * 1024 * 1024 * 2 . ' WHERE id = ' . sqlesc($q1['sender']) . '';
                     $update['uploaded'] = ($q1['uploaded'] + 1024 * 1024 * 1024 * 2);
                     $mc1->begin_transaction('userstats_' . $q1['sender']);
                     $mc1->update_row(false, [
                         'uploaded' => $update['uploaded'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+                    $mc1->commit_transaction($site_config['expires']['u_stats']);
                     $mc1->begin_transaction('user_stats_' . $q1['sender']);
                     $mc1->update_row(false, [
                         'uploaded' => $update['uploaded'],
                     ]);
-                    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+                    $mc1->commit_transaction($site_config['expires']['user_stats']);
                     break;
 
                 case 'ignored':
-                    $msg = sqlesc('Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been ignored by one of our coder.\n\nPossibly it was not a bug.\n\nBest regards, {$INSTALLER09['site_name']}'s coders.\n");
+                    $msg = sqlesc('Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been ignored by one of our coder.\n\nPossibly it was not a bug.\n\nBest regards, {$site_config['site_name']}'s coders.\n");
                     $uq = '';
                     break;
             }

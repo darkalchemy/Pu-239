@@ -66,8 +66,8 @@ $HTMLOUT .= "<form method='post' action='report.php?type=$type$id_2b&amp;id=$id&
     <tr><td class='colhead' colspan='2'>
     <h1>Report: " . str_replace('_', ' ', $type) . '</h1></td></tr>' . "
     <tr><td class='one' colspan='2' align='center'>
-    <img src='{$INSTALLER09['pic_base_url']}warned.png' alt='warned' title='Warned' border='0' /> {$lang['report_report']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>$id</b>" . "
-    <img src='{$INSTALLER09['pic_base_url']}warned.png' alt='warned' title='Warned' border='0' /><br>{$lang['report_report1']} <a class='altlink' href='rules.php' target='_blank'>{$lang['report_rules']}</a>?</td></tr>" . "
+    <img src='{$site_config['pic_base_url']}warned.png' alt='warned' title='Warned' border='0' /> {$lang['report_report']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>$id</b>" . "
+    <img src='{$site_config['pic_base_url']}warned.png' alt='warned' title='Warned' border='0' /><br>{$lang['report_report1']} <a class='altlink' href='rules.php' target='_blank'>{$lang['report_rules']}</a>?</td></tr>" . "
     <tr><td class='two' align='right'><b>{$lang['report_reason']}</b></td><td class='two'><textarea name='reason' cols='70' rows='5'></textarea><br> [ {$lang['report_req']} ]<br></td></tr>" . "
     <tr><td class='one' colspan='2' align='center'><input type='submit' class='button' value='{$lang['report_confirm']}' /></td></tr></table></form>";
 echo stdhead('Report', true, $stdhead) . $HTMLOUT . stdfoot();

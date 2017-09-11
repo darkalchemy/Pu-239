@@ -4,5 +4,5 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 
 setSessionVar('error', 'Access Not Allowed');
-header("Location: {$INSTALLER09['baseurl']}/index.php");
+header("Location: {$site_config['baseurl']}/index.php");
 exit();

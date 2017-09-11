@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'html_functions.php';
@@ -179,7 +179,7 @@ if (($user = $mc1->get_value('user' . $id)) === false) {
     foreach ($user_fields_ar_str as $i) {
         $user[$i] = $user[$i];
     }
-    $mc1->cache_value('user' . $id, $user, $INSTALLER09['expires']['user_cache']);
+    $mc1->cache_value('user' . $id, $user, $site_config['expires']['user_cache']);
 }
 if ($user['status'] == 'pending') {
     stderr($lang['userdetails_error'], $lang['userdetails_pending']);
@@ -187,7 +187,7 @@ if ($user['status'] == 'pending') {
 // user stats
 $What_Cache = (XBT_TRACKER == true ? 'user_stats_xbt_' : 'user_stats_');
 if (($user_stats = $mc1->get_value($What_Cache . $id)) === false) {
-    $What_Expire = (XBT_TRACKER == true ? $INSTALLER09['expires']['user_stats_xbt'] : $INSTALLER09['expires']['user_stats']);
+    $What_Expire = (XBT_TRACKER == true ? $site_config['expires']['user_stats_xbt'] : $site_config['expires']['user_stats']);
     $stats_fields_ar_int = [
         'uploaded',
         'downloaded',
@@ -224,7 +224,7 @@ if (($user_status = $mc1->get_value('user_status_' . $id)) === false) {
             'archive'     => '',
         ];
     }
-    $mc1->add_value('user_status_' . $id, $user_status, $INSTALLER09['expires']['user_status']); // 30 days
+    $mc1->add_value('user_status_' . $id, $user_status, $site_config['expires']['user_status']); // 30 days
 }
 //===  paranoid settings
 if ($user['paranoia'] == 3 && $CURUSER['class'] < UC_STAFF && $CURUSER['id'] != $id) {
@@ -253,7 +253,7 @@ $r = sql_query('SELECT t.id, t.name, t.seeders, t.leechers, c.name AS cname, c.i
 if (mysqli_num_rows($r) > 0) {
     $torrents = "<table class='main' border='1' cellspacing='0' cellpadding='5'>\n" . "<tr><td class='colhead'>{$lang['userdetails_type']}</td><td class='colhead'>{$lang['userdetails_name']}</td><td class='colhead'>{$lang['userdetails_seeders']}</td><td class='colhead'>{$lang['userdetails_leechers']}</td></tr>\n";
     while ($a = mysqli_fetch_assoc($r)) {
-        $cat = "<img src=\"{$INSTALLER09['pic_base_url']}/caticons/" . get_categorie_icons() . "/" . htmlsafechars($a['image']) . '" title="' . htmlsafechars($a['cname']) . '" alt="' . htmlsafechars($a['cname']) . '" />';
+        $cat = "<img src=\"{$site_config['pic_base_url']}/caticons/" . get_categorie_icons() . "/" . htmlsafechars($a['image']) . '" title="' . htmlsafechars($a['cname']) . '" alt="' . htmlsafechars($a['cname']) . '" />';
         $torrents .= "<tr><td style='padding: 0px'>$cat</td><td><a href='details.php?id=" . (int)$a['id'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . '</b></a></td>' . "<td class='text-right'>" . (int)$a['seeders'] . "</td><td class='text-right'>" . (int)$a['leechers'] . "</td></tr>\n";
     }
     $torrents .= '</table>';
@@ -297,13 +297,13 @@ if ((($user['class'] >= UC_STAFF or $user['id'] == $CURUSER['id']) || ($user['cl
 //==country by pdq
 function countries()
 {
-    global $mc1, $INSTALLER09;
+    global $mc1, $site_config;
     if (($ret = $mc1->get_value('countries::arr')) === false) {
         $res = sql_query('SELECT id, name, flagpic FROM countries ORDER BY name ASC') or sqlerr(__FILE__, __LINE__);
         while ($row = mysqli_fetch_assoc($res)) {
             $ret[] = $row;
         }
-        $mc1->cache_value('countries::arr', $ret, $INSTALLER09['expires']['user_flag']);
+        $mc1->cache_value('countries::arr', $ret, $site_config['expires']['user_flag']);
     }
 
     return $ret;
@@ -313,7 +313,7 @@ $country = '';
 $countries = countries();
 foreach ($countries as $cntry) {
     if ($cntry['id'] == $user['country']) {
-        $country = "<img src=\"{$INSTALLER09['pic_base_url']}flag/{$cntry['flagpic']}\" alt=\"" . htmlsafechars($cntry['name']) . "\" style='margin-left: 8pt' />";
+        $country = "<img src=\"{$site_config['pic_base_url']}flag/{$cntry['flagpic']}\" alt=\"" . htmlsafechars($cntry['name']) . "\" style='margin-left: 8pt' />";
         break;
     }
 }
@@ -349,12 +349,12 @@ if (!(isset($_GET['hit'])) && $CURUSER['id'] != $user['id']) {
         $mc1->update_row(false, [
             'hits' => $update['user_hits'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+        $mc1->commit_transaction($site_config['expires']['curuser']);
         $mc1->begin_transaction('user' . $id);
         $mc1->update_row(false, [
             'hits' => $update['user_hits'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+        $mc1->commit_transaction($site_config['expires']['user_cache']);
         sql_query('INSERT INTO userhits (userid, hitid, number, added) VALUES(' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . sqlesc($hitnumber) . ', ' . sqlesc(TIME_NOW) . ')') or sqlerr(__FILE__, __LINE__);
     }
 }
@@ -368,7 +368,7 @@ if (($user['opt1'] & user_options::ANONYMOUS) && ($CURUSER['class'] < UC_STAFF &
     if ($user['info']) {
         $HTMLOUT .= "<tr vclass='text-top'><td class='text-left' colspan='2' class=text bgcolor='#F4F4F0'>'" . format_comment($user['info']) . "'</td></tr>\n";
     }
-    $HTMLOUT .= "<tr><td colspan='2' class='text-center'><form method='get' action='{$INSTALLER09['baseurl']}/pm_system.php?action=send_message'><input type='hidden' name='receiver' value='" . (int)$user['id'] . "' /><input type='submit' value='{$lang['userdetails_sendmess']}' style='height: 23px' /></form>";
+    $HTMLOUT .= "<tr><td colspan='2' class='text-center'><form method='get' action='{$site_config['baseurl']}/pm_system.php?action=send_message'><input type='hidden' name='receiver' value='" . (int)$user['id'] . "' /><input type='submit' value='{$lang['userdetails_sendmess']}' style='height: 23px' /></form>";
     if ($CURUSER['class'] < UC_STAFF && $user['id'] != $CURUSER['id']) {
         $HTMLOUT .= end_main_frame();
         echo stdhead($lang['userdetails_anonymoususer']) . $HTMLOUT . stdfoot();
@@ -378,13 +378,13 @@ if (($user['opt1'] & user_options::ANONYMOUS) && ($CURUSER['class'] < UC_STAFF &
 }
 $h1_thingie = ((isset($_GET['sn']) || isset($_GET['wu'])) ? '<h1>' . $lang['userdetails_updated'] . '</h1>' : '');
 if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
-    $suspended .= ($user['suspended'] == 'yes' ? '&#160;&#160;<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" title="' . $lang['userdetails_suspended'] . '" />&#160;<b>' . $lang['userdetails_usersuspended'] . '</b>&#160;<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" title="' . $lang['userdetails_suspended'] . '" />' : '');
+    $suspended .= ($user['suspended'] == 'yes' ? '&#160;&#160;<img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" title="' . $lang['userdetails_suspended'] . '" />&#160;<b>' . $lang['userdetails_usersuspended'] . '</b>&#160;<img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" title="' . $lang['userdetails_suspended'] . '" />' : '');
 }
 if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
-    $watched_user .= ($user['watched_user'] == 0 ? '' : '&#160;&#160;<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/excl.gif" align="middle" alt="' . $lang['userdetails_watched'] . '" title="' . $lang['userdetails_watched'] . '" /> <b>' . $lang['userdetails_watchlist1'] . ' <a href="staffpanel.php?tool=watched_users" >' . $lang['userdetails_watchlist2'] . '</a></b> <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/excl.gif" align="middle" alt="' . $lang['userdetails_watched'] . '" title="' . $lang['userdetails_watched'] . '" />');
+    $watched_user .= ($user['watched_user'] == 0 ? '' : '&#160;&#160;<img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" align="middle" alt="' . $lang['userdetails_watched'] . '" title="' . $lang['userdetails_watched'] . '" /> <b>' . $lang['userdetails_watchlist1'] . ' <a href="staffpanel.php?tool=watched_users" >' . $lang['userdetails_watchlist2'] . '</a></b> <img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" align="middle" alt="' . $lang['userdetails_watched'] . '" title="' . $lang['userdetails_watched'] . '" />');
 }
-$perms .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_NO_IP) ? '&#160;&#160;<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  title="' . $lang['userdetails_invincible'] . '" />' : '') : '');
-$stealth .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? '&#160;&#160;<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stelth'] . '"  title="' . $lang['userdetails_stelth'] . '" />' : '') : '');
+$perms .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_NO_IP) ? '&#160;&#160;<img src="' . $site_config['pic_base_url'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  title="' . $lang['userdetails_invincible'] . '" />' : '') : '');
+$stealth .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? '&#160;&#160;<img src="' . $site_config['pic_base_url'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stelth'] . '"  title="' . $lang['userdetails_stelth'] . '" />' : '') : '');
 $enabled = $user['enabled'] == 'yes';
 $HTMLOUT .= "<table class='main' border='0' cellspacing='0' cellpadding='0'>" . "<tr><td class='embedded'><h1 style='margin:0px'>" . format_username($user, true) . "</h1>$country$perms$stealth$watched_user$suspended$h1_thingie</td></tr></table>\n";
 if ($user['opt1'] & user_options::PARKED) {
@@ -396,12 +396,12 @@ if (!$enabled) {
     if (($friends = $mc1->get_value('Friends_' . $id)) === false) {
         $r3 = sql_query('SELECT id FROM friends WHERE userid=' . sqlesc($CURUSER['id']) . ' AND friendid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $friends = mysqli_num_rows($r3);
-        $mc1->cache_value('Friends_' . $id, $friends, $INSTALLER09['expires']['user_friends']);
+        $mc1->cache_value('Friends_' . $id, $friends, $site_config['expires']['user_friends']);
     }
     if (($blocks = $mc1->get_value('Blocks_' . $id)) === false) {
         $r4 = sql_query('SELECT id FROM blocks WHERE userid=' . sqlesc($CURUSER['id']) . ' AND blockid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $blocks = mysqli_num_rows($r4);
-        $mc1->cache_value('Blocks_' . $id, $blocks, $INSTALLER09['expires']['user_blocks']);
+        $mc1->cache_value('Blocks_' . $id, $blocks, $site_config['expires']['user_blocks']);
     }
     if ($friends > 0) {
         $HTMLOUT .= "<p>(<a href='friends.php?action=delete&amp;type=friend&amp;targetid=$id'>{$lang['userdetails_remove_friends']}</a>)</p>\n";
@@ -420,7 +420,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     if (($shit_list = $mc1->get_value('shit_list_' . $id)) === false) {
         $check_if_theyre_shitty = sql_query('SELECT suspect FROM shit_list WHERE userid=' . sqlesc($CURUSER['id']) . ' AND suspect=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         list($shit_list) = mysqli_fetch_row($check_if_theyre_shitty);
-        $mc1->cache_value('shit_list_' . $id, $shit_list, $INSTALLER09['expires']['shit_list']);
+        $mc1->cache_value('shit_list_' . $id, $shit_list, $site_config['expires']['shit_list']);
     }
     if ($shit_list > 0) {
         $shitty = "<img src='./images/smilies/shit.gif' alt='Shit' title='Shit' />";
@@ -436,15 +436,15 @@ if ($user['donor'] && $CURUSER['id'] == $user['id'] || $CURUSER['class'] == UC_S
         $HTMLOUT .= '';
     } else {
         $HTMLOUT .= "<br><b>{$lang['userdetails_donatedtill']} - " . get_date($user['donoruntil'], 'DATE') . '';
-        $HTMLOUT .= ' [ ' . mkprettytime($donoruntil - TIME_NOW) . " ] {$lang['userdetails_togo']}...</b><font size=\"-2\"> {$lang['userdetails_renew']} <a class='altlink' href='{$INSTALLER09['baseurl']}/donate.php'>{$lang['userdetails_here']}</a>.</font><br><br>\n";
+        $HTMLOUT .= ' [ ' . mkprettytime($donoruntil - TIME_NOW) . " ] {$lang['userdetails_togo']}...</b><font size=\"-2\"> {$lang['userdetails_renew']} <a class='altlink' href='{$site_config['baseurl']}/donate.php'>{$lang['userdetails_here']}</a>.</font><br><br>\n";
     }
 }
 if ($CURUSER['id'] == $user['id']) {
-    $HTMLOUT .= "<h1><a href='{$INSTALLER09['baseurl']}/usercp.php?action=default'>{$lang['userdetails_editself']}</a></h1>
-              <h1><a href='{$INSTALLER09['baseurl']}/view_announce_history.php'>{$lang['userdetails_announcements']}</a></h1>";
+    $HTMLOUT .= "<h1><a href='{$site_config['baseurl']}/usercp.php?action=default'>{$lang['userdetails_editself']}</a></h1>
+              <h1><a href='{$site_config['baseurl']}/view_announce_history.php'>{$lang['userdetails_announcements']}</a></h1>";
 }
 if ($CURUSER['id'] != $user['id']) {
-    $HTMLOUT .= "<h1><a href='{$INSTALLER09['baseurl']}/sharemarks.php?id=$id'>{$lang['userdetails_sharemarks']}</a></h1>\n";
+    $HTMLOUT .= "<h1><a href='{$site_config['baseurl']}/sharemarks.php?id=$id'>{$lang['userdetails_sharemarks']}</a></h1>\n";
 }
 //==invincible no iplogging and ban bypass by pdq
 $invincible = $mc1->get_value('display_' . $CURUSER['id']);
@@ -599,7 +599,7 @@ $moodname = (isset($mood['name'][$user['mood']]) ? htmlsafechars($mood['name'][$
 $moodpic = (isset($mood['image'][$user['mood']]) ? htmlsafechars($mood['image'][$user['mood']]) : 'noexpression.gif');
 $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_currentmood'] . '</td><td class="text-left"><span class="tool">
        <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'' . $lang['userdetails_mood'] . '\',530,500,1,1);">
-       <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" border="0" />
+       <img src="' . $site_config['pic_base_url'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" border="0" />
        <span class="tip">' . htmlsafechars($user['username']) . ' ' . $moodname . ' !</span></a></span></td></tr>';
 if (curuser::$blocks['userdetails_page'] & block_userdetails::SEEDBONUS && $BLOCKS['userdetails_seedbonus_on']) {
     require_once BLOCK_DIR . 'userdetails/seedbonus.php';
@@ -1109,7 +1109,7 @@ if ($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) {
         $HTMLOUT .= "<tr>
          <td class='rowhead'>{$lang['userdetails_addupload']}</td>
          <td class='text-center'>
-         <img src='{$INSTALLER09['pic_base_url']}plus.gif' alt='{$lang['userdetails_change_ratio']}' title='{$lang['userdetails_change_ratio']}!' id='uppic' onclick=\"togglepic('{$INSTALLER09['baseurl']}', 'uppic','upchange')\" />
+         <img src='{$site_config['pic_base_url']}plus.gif' alt='{$lang['userdetails_change_ratio']}' title='{$lang['userdetails_change_ratio']}!' id='uppic' onclick=\"togglepic('{$site_config['baseurl']}', 'uppic','upchange')\" />
          <input type='text' name='amountup' size='10' />
          </td>
          <td>
@@ -1122,7 +1122,7 @@ if ($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) {
          <tr>
          <td class='rowhead'>{$lang['userdetails_adddownload']}</td>
          <td class='text-center'>
-         <img src='{$INSTALLER09['pic_base_url']}plus.gif' alt='{$lang['userdetails_change_ratio']}' title='{$lang['userdetails_change_ratio']}!' id='downpic' onclick=\"togglepic('{$INSTALLER09['baseurl']}','downpic','downchange')\" />
+         <img src='{$site_config['pic_base_url']}plus.gif' alt='{$lang['userdetails_change_ratio']}' title='{$lang['userdetails_change_ratio']}!' id='downpic' onclick=\"togglepic('{$site_config['baseurl']}','downpic','downchange')\" />
          <input type='text' name='amountdown' size='10' />
          </td>
          <td>

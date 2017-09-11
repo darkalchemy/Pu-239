@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 $HTMLOUT = '';
@@ -24,7 +24,7 @@ if ($topmoods === false) {
     while ($arr = mysqli_fetch_assoc($res)) {
         $topmoods .= '<tr><td align="center">' . (int)$arr['moodcount'] . '</td>
                  <td align="center">' . htmlsafechars($arr['name']) . ' ' . ($arr['bonus'] == 1 ? '<a href="/mybonus.php" style="color:lime">(bonus)</a>' : '') . '</td>
-                 <td align="center"><img src="' . $INSTALLER09['pic_base_url'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt="" /></td>
+                 <td align="center"><img src="' . $site_config['pic_base_url'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt="" /></td>
                  </tr>';
     }
     $mc1->add_value($key, $topmoods, 0);

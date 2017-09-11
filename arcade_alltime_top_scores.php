@@ -4,24 +4,24 @@ require_once INCL_DIR.'user_functions.php';
 check_user_status();
 
 $lang = load_language('global');
-global $INSTALLER09;
+global $site_config;
 
 $HTMLOUT = '';
-$HTMLOUT .= '<h1>'.$INSTALLER09['site_name'].' Arcade Top Scores!</h1>
+$HTMLOUT .= '<h1>'.$site_config['site_name'].' Arcade Top Scores!</h1>
         <span>Top Scores Earn 2000 Karma Points</span>
         <br><br>
         <a class="altlink" href="arcade.php">Arcade</a>
         <br><br>';
 
-$list = $INSTALLER09['arcade_games_names'];
+$list = $site_config['arcade_games_names'];
 sort($list);
 foreach ($list as $gname) {
-    $game_id = array_search($gname, $INSTALLER09['arcade_games_names']);
-    $game = $INSTALLER09['arcade_games'][$game_id];
+    $game_id = array_search($gname, $site_config['arcade_games_names']);
+    $game = $site_config['arcade_games'][$game_id];
     //=== get high score (5)
     $score_res = sql_query('SELECT * FROM highscores WHERE game = '.sqlesc($game).' ORDER BY score DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($score_res) !== 0) {
-        $HTMLOUT .= "<a name='".$game."'><br><br></a><a href='flash.php?gameURI=".$game.'.swf&amp;gamename='.$game.'&amp;game_id='.$game_id."'><img style='width:33%;height:auto;max-height:33%;' src='".$INSTALLER09['pic_base_url'].'games/'.$game.".png' alt='".$gname."' /></span></a>";
+        $HTMLOUT .= "<a name='".$game."'><br><br></a><a href='flash.php?gameURI=".$game.'.swf&amp;gamename='.$game.'&amp;game_id='.$game_id."'><img style='width:33%;height:auto;max-height:33%;' src='".$site_config['pic_base_url'].'games/'.$game.".png' alt='".$gname."' /></span></a>";
 //                  <h2><a href='flash.php?gameURI=" . $game . ".swf&amp;gamename=" . $game . "&amp;game_id=" . $game_id . "'>$gname</a></h2>";
 //      $HTMLOUT .= '<h2>' . $gname . '</h2>';
         $HTMLOUT .= '<table border="0" cellspacing="5" cellpadding="5" align="center" width="500px">

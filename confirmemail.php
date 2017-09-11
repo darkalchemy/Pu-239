@@ -36,14 +36,14 @@ $mc1->update_row(false, [
     'editsecret' => '',
     'email'      => $email,
 ]);
-$mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+$mc1->commit_transaction($site_config['expires']['curuser']);
 $mc1->begin_transaction('user' . $id);
 $mc1->update_row(false, [
     'editsecret' => '',
     'email'      => $email,
 ]);
-$mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+$mc1->commit_transaction($site_config['expires']['user_cache']);
 if (!mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
     stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_not_complete']}");
 }
-header("Refresh: 0; url={$INSTALLER09['baseurl']}/usercp.php?action=security&emailch=1");
+header("Refresh: 0; url={$site_config['baseurl']}/usercp.php?action=security&emailch=1");

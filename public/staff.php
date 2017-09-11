@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
@@ -29,7 +29,7 @@ while ($arr2 = mysqli_fetch_assoc($query)) {
 }
 function DoStaff($staff, $staffclass, $cols = 2)
 {
-    global $INSTALLER09;
+    global $site_config;
     $htmlout = '';
     $dt = TIME_NOW - 180;
     $counter = count($staff);
@@ -43,8 +43,8 @@ function DoStaff($staff, $staffclass, $cols = 2)
             if (isset($staff[$r])) {
                 $htmlout .= "<td class='staff_username'><a href='userdetails.php?id=" . (int)$staff[$r]['id'] . "'><font color='#" . get_user_class_color($staff[$r]['class']) . "'><b>" . htmlsafechars($staff[$r]['username']) . '</b></font></a></td>' . "
             <td class='staff_online'><img style='vertical-align: middle;' src='images/staff" . ($staff[$r]['last_access'] > $dt && $staff[$r]['perms'] < bt_options::PERMS_STEALTH ? '/online.png' : '/offline.png') . "' border='0' height='16' alt='' /></td>" . "
-            <td class='staff_online'><a href='pm_system.php?action=send_message&amp;receiver=" . (int)$staff[$r]['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . "'><img style='vertical-align: middle;' src='{$INSTALLER09['pic_base_url']}mailicon.png' border='0' title=\"Personal Message\" alt='' /></a></td>" . "
-            <td class='staff_online'><img style='vertical-align: middle;' height='16' src='{$INSTALLER09['pic_base_url']}flag/" . htmlsafechars($staff[$r]['flagpic']) . "' border='0' alt='" . htmlsafechars($staff[$r]['name']) . "' /></td>";
+            <td class='staff_online'><a href='pm_system.php?action=send_message&amp;receiver=" . (int)$staff[$r]['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . "'><img style='vertical-align: middle;' src='{$site_config['pic_base_url']}mailicon.png' border='0' title=\"Personal Message\" alt='' /></a></td>" . "
+            <td class='staff_online'><img style='vertical-align: middle;' height='16' src='{$site_config['pic_base_url']}flag/" . htmlsafechars($staff[$r]['flagpic']) . "' border='0' alt='" . htmlsafechars($staff[$r]['name']) . "' /></td>";
                 ++$r;
             } else {
                 $htmlout .= '<td>&#160;</td>';
@@ -64,7 +64,7 @@ $dt = TIME_NOW - 180;
 if (!empty($support)) {
     foreach ($support as $a) {
         $firstline .= "<tr><td class='staff_username'><a href='userdetails.php?id=" . (int)$a['id'] . "'><font color='#" . get_user_class_color($a['class']) . "'><b>" . htmlsafechars($a['username']) . "</b></font></a></td>
-        <td class='staff_online'><img style='vertical-align: middle;' src='{$INSTALLER09['pic_base_url']}" . ($a['last_access'] > $dt ? 'online.png' : 'offline.png') . "' border='0' alt='' /></td>" . "<td class='staff_online'><a href='pm_system.php?action=send_message&amp;receiver=" . (int)$a['id'] . "'>" . "<img style='vertical-align: middle;' src='{$INSTALLER09['pic_base_url']}mailicon.png' border='0' title=\"{$lang['alt_pm']}\" alt='' /></a></td>" . "<td class='staff_online'><img style='vertical-align: middle;' src='{$INSTALLER09['pic_base_url']}flag/" . htmlsafechars($a['flagpic']) . "' border='0' alt='" . htmlsafechars($a['name']) . "' /></td>" . "<td class='staff_online'>" . htmlsafechars($a['supportfor']) . '</td></tr>';
+        <td class='staff_online'><img style='vertical-align: middle;' src='{$site_config['pic_base_url']}" . ($a['last_access'] > $dt ? 'online.png' : 'offline.png') . "' border='0' alt='' /></td>" . "<td class='staff_online'><a href='pm_system.php?action=send_message&amp;receiver=" . (int)$a['id'] . "'>" . "<img style='vertical-align: middle;' src='{$site_config['pic_base_url']}mailicon.png' border='0' title=\"{$lang['alt_pm']}\" alt='' /></a></td>" . "<td class='staff_online'><img style='vertical-align: middle;' src='{$site_config['pic_base_url']}flag/" . htmlsafechars($a['flagpic']) . "' border='0' alt='" . htmlsafechars($a['name']) . "' /></td>" . "<td class='staff_online'>" . htmlsafechars($a['supportfor']) . '</td></tr>';
     }
     $htmlout .= "
         <div class='global_text'><div class='headline'>{$lang['header_fls']}</div><table width='97%' border='0' cellpadding='3'>

@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -50,8 +50,8 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
     //=== if really seeding list them
     if ($Xbt_Seed) {
         if ($Uid_ID !== $hit_and_run_arr['owner']) {
-            $ratio_site = member_ratio($hit_and_run_arr['up'], $INSTALLER09['ratio_free'] ? '0' : $hit_and_run_arr['down']);
-            $ratio_torrent = member_ratio($hit_and_run_arr['uload'], $INSTALLER09['ratio_free'] ? '0' : $hit_and_run_arr['dload']);
+            $ratio_site = member_ratio($hit_and_run_arr['up'], $site_config['ratio_free'] ? '0' : $hit_and_run_arr['down']);
+            $ratio_torrent = member_ratio($hit_and_run_arr['uload'], $site_config['ratio_free'] ? '0' : $hit_and_run_arr['dload']);
             $avatar = ($CURUSER['avatars'] == 'yes' ? ($hit_and_run_arr['avatar'] == '' ? '<img src="./images/forumicons/default_avatar.gif"  width="40" alt="default avatar" />' : '<img src="' . htmlsafechars($hit_and_run_arr['avatar']) . '" alt="avatar"  width="40" />') : '');
             $torrent_needed_seed_time = $hit_and_run_arr['seedtime'];
             //=== get times per class
@@ -109,7 +109,7 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
 			' . $lang['hitnrun_seeded'] . '' . mkprettytime($hit_and_run_arr['seedtime']) . '<br>
 			**' . $lang['hitnrun_still'] . ' ' . mkprettytime($minus_ratio) . '</td>
 			<td align="left">' . $lang['hitnrun_uploaded'] . '' . mksize($hit_and_run_arr['uload']) . '<br>
-			' . ($INSTALLER09['ratio_free'] ? '' : '' . $lang['hitnrun_downloaded'] . '' . mksize($hit_and_run_arr['dload']) . '<br>') . '
+			' . ($site_config['ratio_free'] ? '' : '' . $lang['hitnrun_downloaded'] . '' . mksize($hit_and_run_arr['dload']) . '<br>') . '
 			' . $lang['hitnrun_ratio'] . '<font color="' . get_ratio_color($ratio_torrent) . '">' . $ratio_torrent . '</font><br>
 			' . $lang['hitnrun_site_ratio'] . '<font color="' . get_ratio_color($ratio_site) . '" title="' . $lang['hitnrun_includes'] . '">' . $ratio_site . '</font></td>
 			<td align="center"><a href="pm_system.php?action=send_message&amp;receiver=' . (int)$Uid_ID . '"><img src="./images/pm.gif" border="0" alt="PM" title="' . $lang['hitnrun_send'] . '" /></a><br>

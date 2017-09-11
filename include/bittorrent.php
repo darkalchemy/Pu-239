@@ -7,6 +7,7 @@ if (!file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php')) {
 }
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php';
+require_once INCL_DIR . 'files.php';
 
 // start session on every page request
 sessionStart();
@@ -83,22 +84,22 @@ function htmlsafechars($txt = '')
 
 function PostKey($ids = [])
 {
-    global $INSTALLER09;
+    global $site_config;
     if (!is_array($ids)) {
         return false;
     }
 
-    return md5($INSTALLER09['tracker_post_key'] . join('', $ids) . $INSTALLER09['tracker_post_key']);
+    return md5($site_config['tracker_post_key'] . join('', $ids) . $site_config['tracker_post_key']);
 }
 
 function CheckPostKey($ids, $key)
 {
-    global $INSTALLER09;
+    global $site_config;
     if (!is_array($ids) or !$key) {
         return false;
     }
 
-    return $key == md5($INSTALLER09['tracker_post_key'] . join('', $ids) . $INSTALLER09['tracker_post_key']);
+    return $key == md5($site_config['tracker_post_key'] . join('', $ids) . $site_config['tracker_post_key']);
 }
 
 function validip($ip)
@@ -132,8 +133,8 @@ function getip()
 
 function dbconn($autoclean = true)
 {
-    global $INSTALLER09;
-    if (!@($GLOBALS['___mysqli_ston'] = mysqli_connect($INSTALLER09['mysql_host'], $INSTALLER09['mysql_user'], $INSTALLER09['mysql_pass']))) {
+    global $site_config;
+    if (!@($GLOBALS['___mysqli_ston'] = mysqli_connect($site_config['mysql_host'], $site_config['mysql_user'], $site_config['mysql_pass']))) {
         switch (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))) {
             case 1040:
             case 2002:
@@ -147,7 +148,7 @@ function dbconn($autoclean = true)
                 die('[' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) . '] dbconn: mysql_connect: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         }
     }
-    ((bool)mysqli_query($GLOBALS['___mysqli_ston'], "USE {$INSTALLER09['mysql_db']}")) or die('dbconn: mysql_select_db: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+    ((bool)mysqli_query($GLOBALS['___mysqli_ston'], "USE {$site_config['mysql_db']}")) or die('dbconn: mysql_select_db: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
     if ($autoclean) {
         register_shutdown_function('autoclean');
     }
@@ -165,7 +166,7 @@ function hashit($var, $addtext = '')
 
 function check_bans($ip, &$reason = '')
 {
-    global $INSTALLER09, $mc1;
+    global $site_config, $mc1;
     if (empty($ip)) {
         return false;
     }
@@ -202,7 +203,7 @@ function logincookie($id, $updatedb = true)
 
 function userlogin()
 {
-    global $INSTALLER09, $mc1, $CURBLOCK, $mood, $whereis, $CURUSER;
+    global $site_config, $mc1, $CURBLOCK, $mood, $whereis, $CURUSER;
     unset($GLOBALS['CURUSER']);
     $dt = TIME_NOW;
     $ip = getip();
@@ -211,7 +212,7 @@ function userlogin()
     if (isset($CURUSER)) {
         return;
     }
-    if (!$INSTALLER09['site_online']) {
+    if (!$site_config['site_online']) {
         return;
     }
     $id = getSessionVar('userID');
@@ -368,7 +369,7 @@ function userlogin()
         $res = sql_query('SELECT ' . $user_fields . ' ' . 'FROM users ' . 'WHERE id = ' . sqlesc($id) . ' ' . "AND enabled = 'yes' " . "AND status = 'confirmed'") or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) == 0) {
             $salty = salty('i think you might be lost');
-            header("Location: {$INSTALLER09['baseurl']}/logout.php?hash_please={$salty}");
+            header("Location: {$site_config['baseurl']}/logout.php?hash_please={$salty}");
             return;
         }
         $row = mysqli_fetch_assoc($res);
@@ -381,7 +382,7 @@ function userlogin()
         foreach ($user_fields_ar_str as $i) {
             $row[$i] = $row[$i];
         }
-        $mc1->cache_value('MyUser_' . $id, $row, $INSTALLER09['expires']['curuser']);
+        $mc1->cache_value('MyUser_' . $id, $row, $site_config['expires']['curuser']);
         unset($res);
     }
     if (!isset($row['perms']) || (!($row['perms'] & bt_options::PERMS_BYPASS_BAN))) {
@@ -408,7 +409,7 @@ function userlogin()
         }
     }
     if ($row['class'] >= UC_STAFF) {
-        $allowed_ID = $INSTALLER09['allowed_staff']['id'];
+        $allowed_ID = $site_config['allowed_staff']['id'];
         if (!in_array(((int)$row['id']), $allowed_ID, true)) {
             $msg = 'Fake Account Detected: Username: ' . htmlsafechars($row['username']) . ' - userID: ' . (int)$row['id'] . ' - UserIP : ' . getip();
             // Demote and disable
@@ -418,22 +419,22 @@ function userlogin()
                 'enabled' => 'no',
                 'class'   => 0,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->begin_transaction('user' . $row['id']);
             $mc1->update_row(false, [
                 'enabled' => 'no',
                 'class'   => 0,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             write_log($msg);
             $salty = salty('i think you might be lost');
-            header("Location: {$INSTALLER09['baseurl']}/logout.php?hash_please={$salty}");
+            header("Location: {$site_config['baseurl']}/logout.php?hash_please={$salty}");
             die;
         }
     }
     $What_Cache = (XBT_TRACKER == true ? 'userstats_xbt_' : 'userstats_');
     if (($stats = $mc1->get_value($What_Cache . $id)) === false) {
-        $What_Expire = (XBT_TRACKER == true ? $INSTALLER09['expires']['u_stats_xbt'] : $INSTALLER09['expires']['u_stats']);
+        $What_Expire = (XBT_TRACKER == true ? $site_config['expires']['u_stats_xbt'] : $site_config['expires']['u_stats']);
         $stats_fields_ar_int = [
             'uploaded',
             'downloaded',
@@ -473,14 +474,14 @@ function userlogin()
                 'archive'     => '',
             ];
         }
-        $mc1->add_value('userstatus_' . $id, $ustatus, $INSTALLER09['expires']['u_status']); // 30 days
+        $mc1->add_value('userstatus_' . $id, $ustatus, $site_config['expires']['u_status']); // 30 days
     }
     $row['last_status'] = $ustatus['last_status'];
     $row['last_update'] = $ustatus['last_update'];
     $row['archive'] = $ustatus['archive'];
     if ($row['ssluse'] > 1 && !isset($_SERVER['HTTPS']) && !defined('NO_FORCE_SSL')) {
-        $INSTALLER09['baseurl'] = str_replace('http', 'https', $INSTALLER09['baseurl']);
-        header('Location: ' . $INSTALLER09['baseurl'] . $_SERVER['REQUEST_URI']);
+        $site_config['baseurl'] = str_replace('http', 'https', $site_config['baseurl']);
+        header('Location: ' . $site_config['baseurl'] . $_SERVER['REQUEST_URI']);
         exit();
     }
     $blocks_key = 'blocks::' . $row['id'];
@@ -553,7 +554,7 @@ function userlogin()
             'last_access_numb' => TIME_NOW,
             'where_is'         => $whereis,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+        $mc1->commit_transaction($site_config['expires']['curuser']);
         $mc1->begin_transaction('user' . $row['id']);
         $mc1->update_row(false, [
             'last_access'      => TIME_NOW,
@@ -561,7 +562,7 @@ function userlogin()
             'last_access_numb' => TIME_NOW,
             'where_is'         => $whereis,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+        $mc1->commit_transaction($site_config['expires']['user_cache']);
     }
     if ($row['override_class'] < $row['class']) {
         $row['class'] = $row['override_class'];
@@ -573,7 +574,7 @@ function userlogin()
 
 function charset()
 {
-    global $CURUSER, $INSTALLER09;
+    global $CURUSER, $site_config;
     $lang_charset = $CURUSER['language'];
     switch ($lang_charset) {
         case $lang_charset == 2:
@@ -589,7 +590,7 @@ function charset()
 
 function autoclean()
 {
-    global $INSTALLER09, $mc1;
+    global $site_config, $mc1;
     if (($cleanup_timer = $mc1->get_value('cleanup_timer_')) === false) {
         $mc1->cache_value('cleanup_timer_', 5, 1);
 
@@ -625,32 +626,32 @@ function autoclean()
 
 function get_stylesheet()
 {
-    global $INSTALLER09, $CURUSER;
-    return isset($CURUSER['stylesheet']) ? $CURUSER['stylesheet'] : $INSTALLER09['stylesheet'];
+    global $site_config, $CURUSER;
+    return isset($CURUSER['stylesheet']) ? $CURUSER['stylesheet'] : $site_config['stylesheet'];
 }
 
 function get_categorie_icons()
 {
-    global $INSTALLER09, $CURUSER;
-    return isset($CURUSER['categorie_icon']) ? $CURUSER['categorie_icon'] : $INSTALLER09['categorie_icon'];
+    global $site_config, $CURUSER;
+    return isset($CURUSER['categorie_icon']) ? $CURUSER['categorie_icon'] : $site_config['categorie_icon'];
 }
 
 function get_language()
 {
-    global $INSTALLER09, $CURUSER;
-    return isset($CURUSER['language']) ? $CURUSER['language'] : $INSTALLER09['language'];
+    global $site_config, $CURUSER;
+    return isset($CURUSER['language']) ? $CURUSER['language'] : $site_config['language'];
 }
 
 function get_template()
 {
-    global $CURUSER, $INSTALLER09;
+    global $CURUSER, $site_config;
     if (isset($CURUSER)) {
         if (file_exists(TEMPLATE_DIR . "{$CURUSER['stylesheet']}/template.php")) {
             require_once TEMPLATE_DIR . "{$CURUSER['stylesheet']}/template.php";
         } else {
-            if (isset($INSTALLER09)) {
-                if (file_exists(TEMPLATE_DIR . "{$INSTALLER09['stylesheet']}/template.php")) {
-                    require_once TEMPLATE_DIR . "{$INSTALLER09['stylesheet']}/template.php";
+            if (isset($site_config)) {
+                if (file_exists(TEMPLATE_DIR . "{$site_config['stylesheet']}/template.php")) {
+                    require_once TEMPLATE_DIR . "{$site_config['stylesheet']}/template.php";
                 } else {
                     echo 'Sorry, Templates do not seem to be working properly and missing some code. Please report this to the programmers/owners.';
                 }
@@ -663,8 +664,8 @@ function get_template()
             }
         }
     } else {
-        if (file_exists(TEMPLATE_DIR . "{$INSTALLER09['stylesheet']}/template.php")) {
-            require_once TEMPLATE_DIR . "{$INSTALLER09['stylesheet']}/template.php";
+        if (file_exists(TEMPLATE_DIR . "{$site_config['stylesheet']}/template.php")) {
+            require_once TEMPLATE_DIR . "{$site_config['stylesheet']}/template.php";
         } else {
             echo 'Sorry, Templates do not seem to be working properly and missing some code. Please report this to the programmers/owners.';
         }
@@ -703,7 +704,7 @@ function get_template()
 
 function make_freeslots($userid, $key)
 {
-    global $mc1, $INSTALLER09;
+    global $mc1, $site_config;
     if (($slot = $mc1->get_value($key . $userid)) === false) {
         $res_slots = sql_query('SELECT * FROM freeslots WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
         $slot = [];
@@ -720,7 +721,7 @@ function make_freeslots($userid, $key)
 
 function make_bookmarks($userid, $key)
 {
-    global $mc1, $INSTALLER09;
+    global $mc1, $site_config;
     if (($book = $mc1->get_value($key . $userid)) === false) {
         $res_books = sql_query('SELECT * FROM bookmarks WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
         $book = [];
@@ -737,14 +738,14 @@ function make_bookmarks($userid, $key)
 
 function genrelist()
 {
-    global $mc1, $INSTALLER09;
+    global $mc1, $site_config;
     if (($ret = $mc1->get_value('genrelist')) == false) {
         $ret = [];
         $res = sql_query('SELECT id, image, name FROM categories ORDER BY name') or sqlerr(__FILE__, __LINE__);
         while ($row = mysqli_fetch_assoc($res)) {
             $ret[] = $row;
         }
-        $mc1->cache_value('genrelist', $ret, $INSTALLER09['expires']['genrelist']);
+        $mc1->cache_value('genrelist', $ret, $site_config['expires']['genrelist']);
     }
 
     return $ret;
@@ -752,7 +753,7 @@ function genrelist()
 
 function create_moods($force = false)
 {
-    global $mc1, $INSTALLER09;
+    global $mc1, $site_config;
     $key = 'moods';
     if (($mood = $mc1->get_value($key)) === false || $force) {
         $res_moods = sql_query('SELECT * FROM moods ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
@@ -907,13 +908,13 @@ function httperr($code = 404)
 
 function loggedinorreturn()
 {
-    global $CURUSER, $INSTALLER09, $mc1;
+    global $CURUSER, $site_config, $mc1;
     if (!$CURUSER) {
         if ($id = getSessionVar('userID')) {
             $user = $mc1->get_value('MyUser_' . $id);
             $CURUSER = $user;
         } else {
-            header("Location: {$INSTALLER09['baseurl']}/login.php?returnto=" . urlencode($_SERVER['REQUEST_URI']));
+            header("Location: {$site_config['baseurl']}/login.php?returnto=" . urlencode($_SERVER['REQUEST_URI']));
             exit();
         }
     }
@@ -968,12 +969,12 @@ function stderr($heading, $text)
 // Basic MySQL error handler
 function sqlerr($file = '', $line = '')
 {
-    global $INSTALLER09, $CURUSER;
+    global $site_config, $CURUSER;
     $the_error = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
     $the_error_no = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false));
     if (SQL_DEBUG == 0) {
         exit();
-    } elseif ($INSTALLER09['sql_error_log'] && SQL_DEBUG == 1) {
+    } elseif ($site_config['sql_error_log'] && SQL_DEBUG == 1) {
         $_error_string = "\n===================================================";
         $_error_string .= "\n Date: " . date('r');
         $_error_string .= "\n Error Number: " . $the_error_no;
@@ -982,7 +983,7 @@ function sqlerr($file = '', $line = '')
         $_error_string .= "\n in file " . $file . ' on line ' . $line;
         $_error_string .= "\n URL:" . $_SERVER['REQUEST_URI'];
         $_error_string .= "\n Username: {$CURUSER['username']}[{$CURUSER['id']}]";
-        if ($FH = @fopen($INSTALLER09['sql_error_log'], 'a')) {
+        if ($FH = @fopen($site_config['sql_error_log'], 'a')) {
             @fwrite($FH, $_error_string);
             @fclose($FH);
         }
@@ -1040,11 +1041,11 @@ function unixstamp_to_human($unix = 0)
 
 function get_time_offset()
 {
-    global $CURUSER, $INSTALLER09;
+    global $CURUSER, $site_config;
     $r = 0;
-    $r = (($CURUSER['time_offset'] != '') ? $CURUSER['time_offset'] : $INSTALLER09['time_offset']) * 3600;
-    if ($INSTALLER09['time_adjust']) {
-        $r += ($INSTALLER09['time_adjust'] * 60);
+    $r = (($CURUSER['time_offset'] != '') ? $CURUSER['time_offset'] : $site_config['time_offset']) * 3600;
+    if ($site_config['time_adjust']) {
+        $r += ($site_config['time_adjust'] * 60);
     }
     if ($CURUSER['dst_in_use']) {
         $r += 3600;
@@ -1055,16 +1056,16 @@ function get_time_offset()
 
 function get_date($date, $method, $norelative = 0, $full_relative = 0)
 {
-    global $INSTALLER09;
+    global $site_config;
     static $offset_set = 0;
     static $today_time = 0;
     static $yesterday_time = 0;
     $time_options = [
-        'JOINED' => $INSTALLER09['time_joined'],
-        'SHORT'  => $INSTALLER09['time_short'],
-        'LONG'   => $INSTALLER09['time_long'],
-        'TINY'   => $INSTALLER09['time_tiny'] ? $INSTALLER09['time_tiny'] : 'j M Y - G:i',
-        'DATE'   => $INSTALLER09['time_date'] ? $INSTALLER09['time_date'] : 'j M Y',
+        'JOINED' => $site_config['time_joined'],
+        'SHORT'  => $site_config['time_short'],
+        'LONG'   => $site_config['time_long'],
+        'TINY'   => $site_config['time_tiny'] ? $site_config['time_tiny'] : 'j M Y - G:i',
+        'DATE'   => $site_config['time_date'] ? $site_config['time_date'] : 'j M Y',
     ];
     if (!$date) {
         return '--';
@@ -1074,13 +1075,13 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0)
     }
     if ($offset_set == 0) {
         $GLOBALS['offset'] = get_time_offset();
-        if ($INSTALLER09['time_use_relative']) {
+        if ($site_config['time_use_relative']) {
             $today_time = gmdate('d,m,Y', (TIME_NOW + $GLOBALS['offset']));
             $yesterday_time = gmdate('d,m,Y', ((TIME_NOW - 86400) + $GLOBALS['offset']));
         }
         $offset_set = 1;
     }
-    if ($INSTALLER09['time_use_relative'] == 3) {
+    if ($site_config['time_use_relative'] == 3) {
         $full_relative = 1;
     }
     if ($full_relative && ($norelative != 1)) {
@@ -1106,9 +1107,9 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0)
         } else {
             return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
         }
-    } elseif ($INSTALLER09['time_use_relative'] && ($norelative != 1)) {
+    } elseif ($site_config['time_use_relative'] && ($norelative != 1)) {
         $this_time = gmdate('d,m,Y', ($date + $GLOBALS['offset']));
-        if ($INSTALLER09['time_use_relative'] == 2) {
+        if ($site_config['time_use_relative'] == 2) {
             $diff = TIME_NOW - $date;
             if ($diff < 3600) {
                 if ($diff < 120) {
@@ -1119,9 +1120,9 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0)
             }
         }
         if ($this_time == $today_time) {
-            return str_replace('{--}', 'Today', gmdate($INSTALLER09['time_use_relative_format'], ($date + $GLOBALS['offset'])));
+            return str_replace('{--}', 'Today', gmdate($site_config['time_use_relative_format'], ($date + $GLOBALS['offset'])));
         } elseif ($this_time == $yesterday_time) {
-            return str_replace('{--}', 'Yesterday', gmdate($INSTALLER09['time_use_relative_format'], ($date + $GLOBALS['offset'])));
+            return str_replace('{--}', 'Yesterday', gmdate($site_config['time_use_relative_format'], ($date + $GLOBALS['offset'])));
         } else {
             return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
         }
@@ -1132,13 +1133,13 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0)
 
 function ratingpic($num)
 {
-    global $INSTALLER09;
+    global $site_config;
     $r = round($num * 2) / 2;
     if ($r < 1 || $r > 5) {
         return;
     }
 
-    return "<img src=\"{$INSTALLER09['pic_base_url']}ratings/{$r}.gif\" border=\"0\" alt=\"Rating: $num / 5\" title=\"Rating: $num / 5\" />";
+    return "<img src=\"{$site_config['pic_base_url']}ratings/{$r}.gif\" border=\"0\" alt=\"Rating: $num / 5\" title=\"Rating: $num / 5\" />";
 }
 
 function hash_pad($hash)
@@ -1159,17 +1160,17 @@ function CutName_B($txt, $len = 20)
 
 function load_language($file = '')
 {
-    global $INSTALLER09, $CURUSER;
+    global $site_config, $CURUSER;
     if (!isset($GLOBALS['CURUSER']) or empty($GLOBALS['CURUSER']['language'])) {
-        if (!file_exists(LANG_DIR . "{$INSTALLER09['language']}/lang_{$file}.php")) {
-            stderr('System Error', 'Can\'t find language files');
+        if (!file_exists(LANG_DIR . "{$site_config['language']}/lang_{$file}.php")) {
+            stderr('System Error', "Can't find language files");
         }
-        require_once LANG_DIR . "{$INSTALLER09['language']}/lang_{$file}.php";
+        require_once LANG_DIR . "{$site_config['language']}/lang_{$file}.php";
 
         return $lang;
     }
     if (!file_exists(LANG_DIR . "{$CURUSER['language']}/lang_{$file}.php")) {
-        stderr('System Error', 'Can\'t find language files');
+        stderr('System Error', "Can't find language files");
     } else {
         require_once LANG_DIR . "{$CURUSER['language']}/lang_{$file}.php";
     }
@@ -1179,8 +1180,8 @@ function load_language($file = '')
 
 function flood_limit($table)
 {
-    global $CURUSER, $INSTALLER09, $lang;
-    if (!file_exists($INSTALLER09['flood_file']) || !is_array($max = unserialize(file_get_contents($INSTALLER09['flood_file'])))) {
+    global $CURUSER, $site_config, $lang;
+    if (!file_exists($site_config['flood_file']) || !is_array($max = unserialize(file_get_contents($site_config['flood_file'])))) {
         return;
     }
     if (!isset($max[$CURUSER['class']])) {
@@ -1191,10 +1192,10 @@ function flood_limit($table)
         'comments' => 'comments.user',
         'messages' => 'messages.sender',
     ];
-    $q = sql_query('SELECT min(' . $table . '.added) as first_post, count(' . $table . '.id) as how_many FROM ' . $table . ' WHERE ' . $tb[$table] . ' = ' . $CURUSER['id'] . ' AND ' . TIME_NOW . ' - ' . $table . '.added < ' . $INSTALLER09['flood_time']) or sqlerr(__FILE__, __LINE__);
+    $q = sql_query('SELECT min(' . $table . '.added) as first_post, count(' . $table . '.id) as how_many FROM ' . $table . ' WHERE ' . $tb[$table] . ' = ' . $CURUSER['id'] . ' AND ' . TIME_NOW . ' - ' . $table . '.added < ' . $site_config['flood_time']) or sqlerr(__FILE__, __LINE__);
     $a = mysqli_fetch_assoc($q);
     if ($a['how_many'] > $max[$CURUSER['class']]) {
-        stderr($lang['gl_sorry'], $lang['gl_flood_msg'] . '' . mkprettytime($INSTALLER09['flood_time'] - (TIME_NOW - $a['first_post'])));
+        stderr($lang['gl_sorry'], $lang['gl_flood_msg'] . '' . mkprettytime($site_config['flood_time'] - (TIME_NOW - $a['first_post'])));
     }
 }
 
@@ -1311,17 +1312,17 @@ function human_filesize($bytes, $dec = 2)
 
 function sessionStart()
 {
-    global $INSTALLER09;
+    global $site_config;
     if (!session_id()) {
         // Set the session name:
-        session_name($INSTALLER09['sessionName']);
+        session_name($site_config['sessionName']);
 
         // Set session cookie parameters:
         session_set_cookie_params(
-            $INSTALLER09['cookie_lifetime'] * 86400,
-            $INSTALLER09['cookie_path'],
-            $INSTALLER09['cookie_domain'],
-            $INSTALLER09['sessionCookieSecure']
+            $site_config['cookie_lifetime'] * 86400,
+            $site_config['cookie_path'],
+            $site_config['cookie_domain'],
+            $site_config['sessionCookieSecure']
         );
 
         // enforce php settings before start session
@@ -1338,8 +1339,8 @@ function sessionStart()
     }
 
     // Create a new CSRF token.
-    if (!getSessionVar($INSTALLER09['session_csrf'])) {
-        setSessionVar($INSTALLER09['session_csrf'], bin2hex(random_bytes(32)));
+    if (!getSessionVar($site_config['session_csrf'])) {
+        setSessionVar($site_config['session_csrf'], bin2hex(random_bytes(32)));
     }
 
     // Make sure we have a canary set and Regenerate session ID every five minutes:
@@ -1373,9 +1374,9 @@ function regenerateSessionID()
 }
 
 function validateToken($token, $key = null, $regen = false) {
-    global $INSTALLER09;
+    global $site_config;
     if ($key === null) {
-        $key = $INSTALLER09['session_csrf'];
+        $key = $site_config['session_csrf'];
     }
     if (empty($token)) {
         return false;
@@ -1418,9 +1419,9 @@ function ipFromStorageFormat($ip)
 
 function setSessionVar($key, $value, $prefix = null)
 {
-    global $INSTALLER09;
+    global $site_config;
     if ($prefix === null) {
-        $prefix = $INSTALLER09['sessionKeyPrefix'];
+        $prefix = $site_config['sessionKeyPrefix'];
     }
 
     // Set the session value:
@@ -1432,13 +1433,13 @@ function setSessionVar($key, $value, $prefix = null)
 
 function getSessionVar($key, $prefix = null)
 {
-    global $INSTALLER09;
+    global $site_config;
     if (empty($key)) {
         return null;
     }
 
     if ($prefix === null) {
-        $prefix = $INSTALLER09['sessionKeyPrefix'];
+        $prefix = $site_config['sessionKeyPrefix'];
     }
 
     // Return the session value if existing:
@@ -1451,9 +1452,9 @@ function getSessionVar($key, $prefix = null)
 
 function unsetSessionVar($key, $prefix = null)
 {
-    global $INSTALLER09;
+    global $site_config;
     if ($prefix === null) {
-        $prefix = $INSTALLER09['sessionKeyPrefix'];
+        $prefix = $site_config['sessionKeyPrefix'];
     }
 
     // Set the session value:
@@ -1462,7 +1463,7 @@ function unsetSessionVar($key, $prefix = null)
 
 function salty($username)
 {
-    global $INSTALLER09;
+    global $site_config;
     return bin2hex(random_bytes(64));
 }
 
@@ -1478,12 +1479,12 @@ function replace_unicode_strings($text)
 
 function getPmCount($userid)
 {
-    global $mc1, $INSTALLER09;
+    global $mc1, $site_config;
     if (($pmCount = $mc1->get_value('inbox_new_' . $userid)) === false) {
         $res = sql_query('SELECT COUNT(id) FROM messages WHERE receiver = ' . sqlesc($userid) . " AND unread = 'yes' AND location = 1") or sqlerr(__LINE__, __FILE__);
         $result = mysqli_fetch_row($res);
         $pmCount = $result[0];
-        $mc1->cache_value('inbox_new_' . $userid, $pmCount, $INSTALLER09['expires']['unread']);
+        $mc1->cache_value('inbox_new_' . $userid, $pmCount, $site_config['expires']['unread']);
     }
 
     return $pmCount;
@@ -1562,18 +1563,21 @@ function user_exists($user_id)
 }
 
 if (file_exists('install')) {
-    $HTMLOUT = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-    <html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta charset="UTF-8">
-        <title>Warning</title>
-    </head>
-    <body style="background: grey;">
-        <div style="font-size:33px;color:white;background-color:red;text-align:center;">
-            Delete the install directory
-        </div>
-    </body>
-</html>';
+    $HTMLOUT = "<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Warning</title>
+</head>
+<body style='background: grey;'>
+    <div style='font-size:33px;color:white;background-color:red;text-align:center;'>
+        Delete the install directory
+        <p>' . ROOT_DIR. 'public' . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR . '</p>
+    </div>
+</body>
+</html>";
     echo $HTMLOUT;
     exit();
 }

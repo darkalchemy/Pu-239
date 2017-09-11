@@ -50,18 +50,18 @@ if ($want_pot && (isset($pot_options[$want_pot]))) {
         $mc1->update_row(false, [
             'seedbonus' => $update['seedbonus_donator'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+        $mc1->commit_transaction($site_config['expires']['u_stats']);
         $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
         $mc1->update_row(false, [
             'seedbonus' => $update['seedbonus_donator'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+        $mc1->commit_transaction($site_config['expires']['curuser']);
         $mc1->delete_value('Sitepot_');
         write_log('Site Pot ' . $CURUSER['username'] . ' has donated ' . $want_pot . " karma points to the site pot. {$Remaining} karma points remaining.");
         sql_query('UPDATE avps SET value_i = value_i + ' . sqlesc($want_pot) . " 
                      WHERE arg = 'sitepot'") or sqlerr(__FILE__, __LINE__);
         require_once INCL_DIR . 'bbcode_functions.php';
-        $msg = $CURUSER['username'] . ' put ' . $want_pot . ' karma point' . ($want_pot > 1 ? 's' : '') . ' into the site pot! * Only [b]' . $Remaining . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Site Pot:[/b][/color] [url={$INSTALLER09['baseurl']}/sitepot.php]" . $give . '/' . $potsize . '[/url]';
+        $msg = $CURUSER['username'] . ' put ' . $want_pot . ' karma point' . ($want_pot > 1 ? 's' : '') . ' into the site pot! * Only [b]' . $Remaining . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Site Pot:[/b][/color] [url={$site_config['baseurl']}/sitepot.php]" . $give . '/' . $potsize . '[/url]';
         autoshout($msg);
         header('Location: sitepot.php');
         exit();
@@ -76,12 +76,12 @@ if ($want_pot && (isset($pot_options[$want_pot]))) {
         $mc1->update_row(false, [
             'seedbonus' => $update['seedbonus_donator'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+        $mc1->commit_transaction($site_config['expires']['u_stats']);
         $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
         $mc1->update_row(false, [
             'seedbonus' => $update['seedbonus_donator'],
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+        $mc1->commit_transaction($site_config['expires']['curuser']);
         $mc1->delete_value('Sitepot_');
         write_log('Site Pot ' . $CURUSER['username'] . ' has donated ' . $want_pot . ' karma points to the site pot.');
         sql_query('UPDATE avps SET value_i = value_i + ' . sqlesc($want_pot) . ", 

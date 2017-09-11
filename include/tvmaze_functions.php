@@ -25,7 +25,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
 
 function tvmaze(&$torrents)
 {
-    global $mc1, $INSTALLER09;
+    global $mc1, $site_config;
     $tvmaze_data = '';
     $row_update = [];
     if (preg_match("/^(.*)S\d+(E\d+)?/i", $torrents['name'], $tmp)) {

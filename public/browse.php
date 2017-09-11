@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'torrenttable_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
@@ -14,13 +14,13 @@ if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
     $mc1->update_row(false, [
         'last_browse' => TIME_NOW,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
     $mc1->begin_transaction('user' . $CURUSER['id']);
     $mc1->update_row(false, [
         'last_browse' => TIME_NOW,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
-    header("Location: {$INSTALLER09['baseurl']}/browse.php");
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
+    header("Location: {$site_config['baseurl']}/browse.php");
 }
 $stdfoot = [
     'js' => [
@@ -231,7 +231,7 @@ if (($count = $mc1->get_value($where_key)) === false) {
     $res = sql_query("SELECT COUNT(id) FROM torrents $where") or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_row($res);
     $count = (int)$row[0];
-    $mc1->cache_value($where_key, $count, $INSTALLER09['expires']['browse_where']);
+    $mc1->cache_value($where_key, $count, $site_config['expires']['browse_where']);
 }
 $torrentsperpage = $CURUSER['torrentsperpage'];
 if (!$torrentsperpage) {
@@ -250,7 +250,7 @@ if ($count) {
         $addparam = $pagerlink;
     }
     $pager = pager($torrentsperpage, $count, 'browse.php?' . $addparam);
-    $query = "SELECT id, search_text, category, leechers, seeders, bump, release_group, subs, name, times_completed, size, added, poster, descr, free, freetorrent, silver, comments, numfiles, filename, anonymous, sticky, nuked, vip, nukereason, newgenre, description, owner, youtube, checked_by, IF(nfo <> '', 1, 0) as nfoav," . "IF(num_ratings < {$INSTALLER09['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating FROM torrents {$where} {$orderby} {$pager['limit']}";
+    $query = "SELECT id, search_text, category, leechers, seeders, bump, release_group, subs, name, times_completed, size, added, poster, descr, free, freetorrent, silver, comments, numfiles, filename, anonymous, sticky, nuked, vip, nukereason, newgenre, description, owner, youtube, checked_by, IF(nfo <> '', 1, 0) as nfoav," . "IF(num_ratings < {$site_config['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating FROM torrents {$where} {$orderby} {$pager['limit']}";
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
 } else {
     unset($query);
@@ -277,26 +277,26 @@ $HTMLOUT .= "<br><br>
                             <tr>";
 $i = 0;
 foreach ($cats as $cat) {
-    $HTMLOUT .= ($i && $i % $INSTALLER09['catsperrow'] == 0) ? '
+    $HTMLOUT .= ($i && $i % $site_config['catsperrow'] == 0) ? '
                             </tr>
                         <tr>' : '';
     $HTMLOUT .= "
                                 <td class='bottom' style='padding-bottom: 2px;padding-left: 7px'>
                                     <input name='c{$cat['id']}' class='styled' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? "checked='checked' " : '') . "value='1' />
                                     <a class='catlink' href='./browse.php?cat={$cat['id']}'> " . (($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) ? "
-                                        <img src='{$INSTALLER09['pic_base_url']}caticons/"  . get_categorie_icons() . "/" . htmlsafechars($cat['image']) . "' alt='" . htmlsafechars($cat['name']) . "' title='" . htmlsafechars($cat['name']) . "' />" : '' . htmlsafechars($cat['name']) . '') . "
+                                        <img src='{$site_config['pic_base_url']}caticons/"  . get_categorie_icons() . "/" . htmlsafechars($cat['image']) . "' alt='" . htmlsafechars($cat['name']) . "' title='" . htmlsafechars($cat['name']) . "' />" : '' . htmlsafechars($cat['name']) . '') . "
                                     </a>
                                 </td>";
     ++$i;
 }
 $alllink = "<div class='text-left'>&#160;</div>";
 $ncats = count($cats);
-$nrows = ceil($ncats / $INSTALLER09['catsperrow']);
-$lastrowcols = $ncats % $INSTALLER09['catsperrow'];
+$nrows = ceil($ncats / $site_config['catsperrow']);
+$lastrowcols = $ncats % $site_config['catsperrow'];
 if ($lastrowcols != 0) {
-    if ($INSTALLER09['catsperrow'] - $lastrowcols != 1) {
+    if ($site_config['catsperrow'] - $lastrowcols != 1) {
         $HTMLOUT .= "
-                                <td class='bottom' rowspan='" . ($INSTALLER09['catsperrow'] - $lastrowcols - 1) . "'>&#160;</td>";
+                                <td class='bottom' rowspan='" . ($site_config['catsperrow'] - $lastrowcols - 1) . "'>&#160;</td>";
     }
     $HTMLOUT .= "
                                 <td class='bottom' style='padding-left: 5px'>
@@ -311,7 +311,7 @@ $HTMLOUT .= "
                     <table class='main text-center'>
                         <tr>
                             <td>&#160;</td>";
-if ($ncats % $INSTALLER09['catsperrow'] == 0) {
+if ($ncats % $site_config['catsperrow'] == 0) {
     $HTMLOUT .= "
                             <td class='bottom text-right' style='padding-left: 15px' rowspan='$nrows' valign='middle'>
                                 $alllink
@@ -336,12 +336,12 @@ if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     $mc1->update_row(false, [
         'last_browse' => TIME_NOW,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
     $mc1->begin_transaction('user' . $CURUSER['id']);
     $mc1->update_row(false, [
         'last_browse' => TIME_NOW,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
 }
 $HTMLOUT .= "
     <table class='main text-center' border='0' cellspacing='0' cellpadding='0'>

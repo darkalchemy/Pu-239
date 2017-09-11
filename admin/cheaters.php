@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -37,8 +37,8 @@ function klappe(id)
 {var klappText=document.getElementById('k'+id);var klappBild=document.getElementById('pic'+id);if(klappText.style.display=='none'){klappText.style.display='block';}
 else{klappText.style.display='none';}}
 function klappe_news(id)
-{var klappText=document.getElementById('k'+id);var klappBild=document.getElementById('pic'+id);if(klappText.style.display=='none'){klappText.style.display='block';klappBild.src='{$INSTALLER09['pic_base_url']}minus.gif';}
-else{klappText.style.display='none';klappBild.src='{$INSTALLER09['pic_base_url']}plus.gif';}}	
+{var klappText=document.getElementById('k'+id);var klappBild=document.getElementById('pic'+id);if(klappText.style.display=='none'){klappText.style.display='block';klappBild.src='{$site_config['pic_base_url']}minus.gif';}
+else{klappText.style.display='none';klappBild.src='{$site_config['pic_base_url']}plus.gif';}}	
 </script>
 <script>
 var checkflag = 'false';
@@ -82,8 +82,8 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $torrname = htmlsafechars(CutName($arr['tname'], 80));
     $users = $arr;
     $users['id'] = (int)$arr['userid'];
-    $cheater = "<b><a href='{$INSTALLER09['baseurl']}/userdetails.php?id=" . (int)$arr['id'] . "'>" . format_username($users) . "</a></b>{$lang['cheaters_hbcc']}<br>
-    <b>{$lang['cheaters_torrent']} <a href='{$INSTALLER09['baseurl']}/details.php?id=" . (int)$arr['tid'] . "' title='{$torrname}'>{$torrname}</a></b>
+    $cheater = "<b><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$arr['id'] . "'>" . format_username($users) . "</a></b>{$lang['cheaters_hbcc']}<br>
+    <b>{$lang['cheaters_torrent']} <a href='{$site_config['baseurl']}/details.php?id=" . (int)$arr['tid'] . "' title='{$torrname}'>{$torrname}</a></b>
 <br>{$lang['cheaters_upped']} <b>" . mksize((int)$arr['upthis']) . "</b><br>{$lang['cheaters_speed']} <b>" . mksize((int)$arr['rate']) . "/s</b><br>{$lang['cheaters_within']} <b>" . (int)$arr['timediff'] . " {$lang['cheaters_sec']}</b><br>{$lang['cheaters_uc']} <b>" . htmlsafechars($arr['client']) . "</b><br>{$lang['cheaters_ipa']} <b>" . htmlsafechars($arr['userip']) . '</b>';
     $HTMLOUT .= '<tr><td class="table" width="10" align="center">' . (int)$arr['cid'] . '</td>
     <td class="table" align="left">' . format_username($users) . "<a href=\"javascript:klappe('a1" . (int)$arr['cid'] . "')\"> {$lang['cheaters_added']}" . get_date($arr['added'], 'DATE') . '</a>

@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
@@ -375,7 +375,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         sql_query('UPDATE user_blocks SET ' . implode(',', $updateset) . ' WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     }
     $mc1->delete_value('blocks::' . $id);
-    header('Location: ' . $INSTALLER09['baseurl'] . '/user_blocks.php');
+    header('Location: ' . $site_config['baseurl'] . '/user_blocks.php');
     exit();
 }
 //==Index

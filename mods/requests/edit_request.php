@@ -29,7 +29,7 @@ $HTMLOUT .= "<br>
 <tr><td align='right'><b>{$lang['add_description']}</b></td>
 
 <td align='left'>";
-if ($INSTALLER09['textbbcode']) {
+if ($site_config['textbbcode']) {
     require_once INCL_DIR . 'bbcode_functions.php';
     $HTMLOUT .= textbbcode('edit_request', 'body', $body);
 } else {

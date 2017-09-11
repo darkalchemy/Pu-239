@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 
 header('Content-Type: application/json');
-global $INSTALLER09, $mc1;
+global $site_config, $mc1;
 $lang = array_merge(load_language('global'), load_language('index'));
 
 //file_put_contents('/var/log/nginx/ajax.log', json_encode($CURUSER) . PHP_EOL, FILE_APPEND);
@@ -26,7 +26,7 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
                 $seed[$key] = number_format((int)$a['count']);
                 $seed['conn'] = $a['connectable'] == 0 ? 1 : 2;
             }
-            $mc1->cache_value('MyPeers_XBT_' . $CURUSER['id'], $seed, $INSTALLER09['expires']['MyPeers_xbt_']);
+            $mc1->cache_value('MyPeers_XBT_' . $CURUSER['id'], $seed, $site_config['expires']['MyPeers_xbt_']);
             unset($r, $a);
         } else {
             $seed = $MyPeersXbtCache;
@@ -44,7 +44,7 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
                 $seed[$key] = number_format((int)$a['count']);
                 $seed['conn'] = $a['connectable'] == 'no' ? 1 : 2;
             }
-            $mc1->cache_value('MyPeers_' . $CURUSER['id'], $seed, $INSTALLER09['expires']['MyPeers_']);
+            $mc1->cache_value('MyPeers_' . $CURUSER['id'], $seed, $site_config['expires']['MyPeers_']);
             unset($r, $a);
         } else {
             $seed = $MyPeersCache;
@@ -54,11 +54,11 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
     if (!empty($seed['conn'])) {
         switch ($seed['conn']) {
             case 1:
-                $connectable = "<img src='{$INSTALLER09['pic_base_url']}notcon.png' alt='{$lang['gl_not_connectable']}' title='{$lang['gl_not_connectable']}' />";
+                $connectable = "<img src='{$site_config['pic_base_url']}notcon.png' alt='{$lang['gl_not_connectable']}' title='{$lang['gl_not_connectable']}' />";
                 break;
 
             case 2:
-                $connectable = "<img src='{$INSTALLER09['pic_base_url']}yescon.png' alt='{$lang['gl_connectable']}' title='{$lang['gl_connectable']}' />";
+                $connectable = "<img src='{$site_config['pic_base_url']}yescon.png' alt='{$lang['gl_connectable']}' title='{$lang['gl_connectable']}' />";
                 break;
 
             default:
@@ -115,10 +115,10 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
     <div class='left'>{$lang['gl_tstats']}</div>
     <div class='flex-user-stats'>
         <div class='left'>{$lang['gl_shareratio']}</div>
-        <div>" . member_ratio($CURUSER['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $CURUSER['downloaded']) . "</div>
+        <div>" . member_ratio($CURUSER['uploaded'], $site_config['ratio_free'] ? '0' : $CURUSER['downloaded']) . "</div>
     </div>";
 
-    if ($INSTALLER09['ratio_free']) {
+    if ($site_config['ratio_free']) {
         $StatusBar .= "
     <div class='flex-user-stats'>
         <div class='left'>{$lang['gl_uploaded']}</div>

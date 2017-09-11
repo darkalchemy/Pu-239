@@ -94,22 +94,22 @@ switch ($do) {
                 }
             }
         }
-        if ($INSTALLER09['seedbonus_on'] == 1) {
+        if ($site_config['seedbonus_on'] == 1) {
             // ===add karma
-            sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($INSTALLER09['bonus_per_thanks']) . ' WHERE id =' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($site_config['bonus_per_thanks']) . ' WHERE id =' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
             $sql = sql_query('SELECT seedbonus ' . 'FROM users ' . 'WHERE id = ' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
             $User = mysqli_fetch_assoc($sql);
-            $update['seedbonus'] = ($User['seedbonus'] + $INSTALLER09['bonus_per_thanks']);
+            $update['seedbonus'] = ($User['seedbonus'] + $site_config['bonus_per_thanks']);
             $mc1->begin_transaction('userstats_' . $uid);
             $mc1->update_row(false, [
                 'seedbonus' => $update['seedbonus'],
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+            $mc1->commit_transaction($site_config['expires']['u_stats']);
             $mc1->begin_transaction('user_stats_' . $uid);
             $mc1->update_row(false, [
                 'seedbonus' => $update['seedbonus'],
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
             // ===end
         }
         break;

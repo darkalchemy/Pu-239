@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -10,7 +10,7 @@ require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_nameblacklist'));
-$blacklist = file_exists($INSTALLER09['nameblacklist']) && is_array(unserialize(file_get_contents($INSTALLER09['nameblacklist']))) ? unserialize(file_get_contents($INSTALLER09['nameblacklist'])) : [];
+$blacklist = file_exists($site_config['nameblacklist']) && is_array(unserialize(file_get_contents($site_config['nameblacklist']))) ? unserialize(file_get_contents($site_config['nameblacklist'])) : [];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $badnames = isset($_POST['badnames']) && !empty($_POST['badnames']) ? trim($_POST['badnames']) : '';
     if (empty($badnames)) {
@@ -23,11 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         $blacklist[$badnames] = (int)1;
     }
-    if (file_put_contents($INSTALLER09['nameblacklist'], serialize($blacklist))) {
+    if (file_put_contents($site_config['nameblacklist'], serialize($blacklist))) {
         header('Refresh:2; url=staffpanel.php?tool=nameblacklist');
         stderr($lang['name_success'], $lang['name_file']);
     } else {
-        stderr($lang['name_err'], ' ' . $lang['name_hmm'] . '<b>' . $INSTALLER09['nameblacklist'] . '</b>' . $lang['name_is'] . '');
+        stderr($lang['name_err'], ' ' . $lang['name_hmm'] . '<b>' . $site_config['nameblacklist'] . '</b>' . $lang['name_is'] . '');
     }
 } else {
     $out = begin_main_frame();

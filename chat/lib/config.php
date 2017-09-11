@@ -8,24 +8,27 @@
  */
 
 // import globals
-global $INSTALLER09;
+global $site_config;
 
 // Define AJAX Chat user roles:
-define('AJAX_CHAT_CHATBOT', $INSTALLER09['chatBotRole']);
+define('AJAX_CHAT_CHATBOT', $site_config['chatBotRole']);
 
 // AJAX Chat config parameters:
 $config = [];
+
+// javascript file
+$config['js'] = get_file('chatjs');
 
 // Database connection values:
 $config['dbConnection'] = [];
 // Database hostname:
 $config['dbConnection']['host'] = 'localhost';
 // Database username:
-$config['dbConnection']['user'] = $INSTALLER09['mysql_user'];
+$config['dbConnection']['user'] = $site_config['mysql_user'];
 // Database password:
-$config['dbConnection']['pass'] = $INSTALLER09['mysql_pass'];
+$config['dbConnection']['pass'] = $site_config['mysql_pass'];
 // Database name:
-$config['dbConnection']['name'] = $INSTALLER09['mysql_db'];
+$config['dbConnection']['name'] = $site_config['mysql_db'];
 // Database type:
 $config['dbConnection']['type'] = null;
 // Database link:
@@ -67,23 +70,23 @@ $config['sourceEncoding'] = 'UTF-8';
 $config['contentType'] = null;
 
 // Site name:
-$config['siteName'] = $INSTALLER09['site_name'];
+$config['siteName'] = $site_config['site_name'];
 
 // Session name used to identify the session cookie:
-$config['sessionName'] = $INSTALLER09['sessionName'];
+$config['sessionName'] = $site_config['sessionName'];
 // Prefix added to every session key:
-$config['sessionKeyPrefix'] = $INSTALLER09['sessionKeyPrefix'];
+$config['sessionKeyPrefix'] = $site_config['sessionKeyPrefix'];
 // The lifetime of the language, style and setting cookies in days:
-$config['sessionCookieLifeTime'] = $INSTALLER09['cookie_lifetime'];
+$config['sessionCookieLifeTime'] = $site_config['cookie_lifetime'];
 // The path of the cookies, '/' allows to read the cookies from all directories:
-$config['sessionCookiePath'] = $INSTALLER09['cookie_path'];
+$config['sessionCookiePath'] = $site_config['cookie_path'];
 // The domain of the cookies, defaults to the hostname of the server if set to null:
-$config['sessionCookieDomain'] = $INSTALLER09['cookie_domain'];
+$config['sessionCookieDomain'] = $site_config['cookie_domain'];
 // If enabled, cookies must be sent over secure (SSL/TLS encrypted) connections:
-$config['sessionCookieSecure'] = $INSTALLER09['sessionCookieSecure'];
+$config['sessionCookieSecure'] = $site_config['sessionCookieSecure'];
 
 // Default channelName used together with the defaultChannelID if no channel with this ID exists:
-$config['defaultChannelName'] = $INSTALLER09['site_name'];
+$config['defaultChannelName'] = $site_config['site_name'];
 // ChannelID used when no channel is given:
 $config['defaultChannelID'] = 0;
 // Defines an array of channelIDs (e.g. array(0, 1)) to limit the number of available channels, will be ignored if set to null:
@@ -145,11 +148,11 @@ $config['changedNickSuffix'] = ']';
 $config['allowUserMessageDelete'] = true;
 
 // The userID used for ChatBot messages:
-$config['chatBotID'] = $INSTALLER09['chatBotID'];
+$config['chatBotID'] = $site_config['chatBotID'];
 // The userName used for ChatBot messages
-$config['chatBotName'] = $INSTALLER09['chatBotName'];
+$config['chatBotName'] = $site_config['chatBotName'];
 // The userRole used for ChatBot messages:
-$config['chatBotRole'] = $INSTALLER09['chatBotRole'];
+$config['chatBotRole'] = $site_config['chatBotRole'];
 // Minutes until a user is declared inactive (last status update) - the minimum is 2 minutes:
 $config['inactiveTimeout'] = 5;
 // Interval in minutes to check for inactive users:

@@ -1,9 +1,9 @@
 <?php
 function torrents_update_xbt($data)
 {
-    global $INSTALLER09, $queries;
-    set_time_limit(0);
-    ignore_user_abort(1);
+    global $site_config, $queries;
+    set_time_limit(1200);
+    ignore_user_abort(true);
     /** sync torrent counts - pdq **/
     $tsql = 'SELECT t.id, t.seeders, (
     SELECT COUNT(*)

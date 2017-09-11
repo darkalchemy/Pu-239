@@ -1,15 +1,15 @@
 <?php
 function achievement_corrupt_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
-    set_time_limit(0);
-    ignore_user_abort(1);
+    global $site_config, $queries, $mc1;
+    set_time_limit(1200);
+    ignore_user_abort(true);
     // Updated Corruption Counts
     $res = sql_query("SELECT u.id, u.corrupt, a.corrupt FROM users AS u LEFT JOIN usersachiev AS a ON u.id = a.userid WHERE enabled = 'yes' AND u.corrupt >= '1' AND a.corrupt = '0'") or sqlerr(__FILE__, __LINE__);
     $msg_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $subject = sqlesc('New Achievement Earned!');
-        $msg = sqlesc('Congratulations, you have just earned the [b]Corruption Counts[/b] achievement. :) [img]' . $INSTALLER09['baseurl'] . '/images/achievements/corrupt.png[/img]');
+        $msg = sqlesc('Congratulations, you have just earned the [b]Corruption Counts[/b] achievement. :) [img]' . $site_config['baseurl'] . '/images/achievements/corrupt.png[/img]');
         while ($arr = mysqli_fetch_assoc($res)) {
             $dt = TIME_NOW;
             $points = random_int(1, 3);

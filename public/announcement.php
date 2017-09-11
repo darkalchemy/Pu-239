@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
@@ -42,12 +42,12 @@ if (($row['curr_ann_id'] == 0) and ($row['curr_ann_last_check'] == 0)) { // Forc
             $mc1->update_row(false, [
                 'curr_ann_id' => $ann_row['main_id'],
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
             $mc1->update_row(false, [
                 'curr_ann_id' => $ann_row['main_id'],
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $status = 2;
         } else {
             // Announcement not valid for member...
@@ -56,12 +56,12 @@ if (($row['curr_ann_id'] == 0) and ($row['curr_ann_last_check'] == 0)) { // Forc
             $mc1->update_row(false, [
                 'curr_ann_last_check' => $dt,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
             $mc1->update_row(false, [
                 'curr_ann_last_check' => $dt,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $status = 1;
         }
         // Create or set status of process
@@ -80,12 +80,12 @@ if (($row['curr_ann_id'] == 0) and ($row['curr_ann_last_check'] == 0)) { // Forc
         $mc1->update_row(false, [
             'curr_ann_last_check' => $dt,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+        $mc1->commit_transaction($site_config['expires']['user_cache']);
         $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
         $mc1->update_row(false, [
             'curr_ann_last_check' => $dt,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+        $mc1->commit_transaction($site_config['expires']['curuser']);
     }
     unset($result);
     unset($ann_row);
@@ -110,7 +110,7 @@ if ((!empty($ann_subject)) and (!empty($ann_body))) {
    <font color='blue'>
     " . format_comment($ann_body) . "
     </font><br><br>
-    {$lang['annouce_click']} <a href='{$INSTALLER09['baseurl']}/clear_announcement.php'>
+    {$lang['annouce_click']} <a href='{$site_config['baseurl']}/clear_announcement.php'>
     <i><b>{$lang['annouce_here']}</b></i></a> {$lang['annouce_to_clr_annouce']}.</div></div>\n";
 }
 if ((empty($ann_subject)) and (empty($ann_body))) {

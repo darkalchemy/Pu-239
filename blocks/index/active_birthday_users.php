@@ -14,7 +14,7 @@ if (($birthday_users_cache = $mc1->get_value($keys['birthdayusers'])) === false)
     }
     $birthday_users_cache['birthdayusers'] = $birthdayusers;
     $birthday_users_cache['actcount'] = $actcount;
-    $mc1->cache_value($keys['birthdayusers'], $birthday_users_cache, $INSTALLER09['expires']['birthdayusers']);
+    $mc1->cache_value($keys['birthdayusers'], $birthday_users_cache, $site_config['expires']['birthdayusers']);
 }
 if (!$birthday_users_cache['birthdayusers']) {
     $birthday_users_cache['birthdayusers'] = $lang['index_birthday_no'];
@@ -22,8 +22,8 @@ if (!$birthday_users_cache['birthdayusers']) {
 $HTMLOUT .= "
     <a id='birthday-hash'></a>
     <fieldset id='birthday' class='header'>
-        <legend class='flipper'><i class='fa fa-angle-up' aria-hidden='true'></i>{$lang['index_birthday']} ({$birthday_users_cache['actcount']})</legend>
-            <div class='text-center'>
+        <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_birthday']} ({$birthday_users_cache['actcount']})</legend>
+            <div class='text-center bottom20'>
                 {$birthday_users_cache['birthdayusers']}
             </div>
     </fieldset>";

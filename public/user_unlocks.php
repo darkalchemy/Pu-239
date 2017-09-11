@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
@@ -54,13 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mc1->update_row(false, [
         'perms' => $row['perms'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
     $mc1->begin_transaction('user_' . $id);
     $mc1->update_row(false, [
         'perms' => $row['perms'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
-    header('Location: ' . $INSTALLER09['baseurl'] . '/user_unlocks.php');
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
+    header('Location: ' . $site_config['baseurl'] . '/user_unlocks.php');
     exit();
 }
 $checkbox_unlock_moods = (($CURUSER['perms'] & bt_options::UNLOCK_MORE_MOODS) ? ' checked="checked"' : '');

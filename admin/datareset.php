@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -15,7 +15,7 @@ $HTMLOUT = '';
 //==delete torrents by putyn
 function deletetorrent($tid)
 {
-    global $INSTALLER09, $mc1, $CURUSER, $lang;
+    global $site_config, $mc1, $CURUSER, $lang;
     sql_query('DELETE peers.*, files.*, comments.*, snatched.*, thanks.*, bookmarks.*, coins.*, rating.*, torrents.* FROM torrents 
 				 LEFT JOIN peers ON peers.torrent = torrents.id
 				 LEFT JOIN files ON files.torrent = torrents.id
@@ -26,13 +26,13 @@ function deletetorrent($tid)
 				 LEFT JOIN rating ON rating.torrent = torrents.id
 				 LEFT JOIN snatched ON snatched.torrentid = torrents.id
 				 WHERE torrents.id =' . sqlesc($tid)) or sqlerr(__FILE__, __LINE__);
-    unlink("{$INSTALLER09['torrent_dir']}/$id.torrent");
+    unlink("{$site_config['torrent_dir']}/$id.torrent");
     $mc1->delete_value('MyPeers_' . $CURUSER['id']);
 }
 
 function deletetorrent_xbt($tid)
 {
-    global $INSTALLER09, $mc1, $CURUSER, $lang;
+    global $site_config, $mc1, $CURUSER, $lang;
     sql_query('UPDATE torrents SET flags = 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     sql_query('DELETE files.*, comments.*, xbt_files_users.*, thanks.*, bookmarks.*, coins.*, rating.*, torrents.* FROM torrents 
 				 LEFT JOIN files ON files.torrent = torrents.id
@@ -43,7 +43,7 @@ function deletetorrent_xbt($tid)
 				 LEFT JOIN rating ON rating.torrent = torrents.id
 				 LEFT JOIN xbt_files_users ON xbt_files_users.fid = torrents.id
 				 WHERE torrents.id =' . sqlesc($tid) . ' AND flags=1') or sqlerr(__FILE__, __LINE__);
-    unlink("{$INSTALLER09['torrent_dir']}/$id.torrent");
+    unlink("{$site_config['torrent_dir']}/$id.torrent");
     $mc1->delete_value('MyPeers_XBT_' . $CURUSER['id']);
 }
 
@@ -68,12 +68,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $mc1->update_row(false, [
             'downloaded' => $new_download,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['u_status']);
+        $mc1->commit_transaction($site_config['expires']['u_status']);
         $mc1->begin_transaction('user' . $a['uid']);
         $mc1->update_row(false, [
             'downloaded' => $new_download,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+        $mc1->commit_transaction($site_config['expires']['curuser']);
     }
     //==Send the pm !!
     sql_query('INSERT into messages (sender, receiver, added, msg) VALUES ' . join(',', array_map('sqlesc', $pms))) or sqlerr(__FILE__, __LINE__);

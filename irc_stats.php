@@ -47,7 +47,7 @@ if ($_hash === $hash) {
             if ($a['warned'] == 'yes') {
                 $txt .= 'This user is warned. Reason ' . $a['warn_reason'] . "\n";
             }
-            $txt .= $INSTALLER09['baseurl'] . '/userdetails.php?id=' . $a['id'];
+            $txt .= $site_config['baseurl'] . '/userdetails.php?id=' . $a['id'];
             echo $txt;
         } else {
             exit('User "' . $_user . '" not found!');

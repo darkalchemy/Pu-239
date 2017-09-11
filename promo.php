@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
     if (!$q) {
         stderr('Error', 'Something wrong happned, please retry');
     } else {
-        stderr('Success', 'The promo link <b>' . htmlsafechars($promoname) . '</b> was added! here is the link <br><input type="text" name="promo-link" value="' . $INSTALLER09['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $link . '" size="80" onclick="select();"  /><br><a href="' . $_SERVER['PHP_SELF'] . '"><input type="button" value="Back to Promos" /></a>');
+        stderr('Success', 'The promo link <b>' . htmlsafechars($promoname) . '</b> was added! here is the link <br><input type="text" name="promo-link" value="' . $site_config['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $link . '" size="80" onclick="select();"  /><br><a href="' . $_SERVER['PHP_SELF'] . '"><input type="button" value="Back to Promos" /></a>');
     }
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'signup') {
     //==err("w00t");
@@ -125,27 +125,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
             $users = (empty($ar_check['users']) ? $userid : $ar_check['users'] . ',' . $userid);
             sql_query('update promo set accounts_made=accounts_made+1 , users=' . sqlesc($users) . ' WHERE id=' . sqlesc($ar_check['id'])) or sqlerr(__FILE__, __LINE__);
             //==Email part :)
-            $subject = $INSTALLER09['site_name'] . ' user registration confirmation';
+            $subject = $site_config['site_name'] . ' user registration confirmation';
             $message = 'Hi!
-						You used the link from promo ' . htmlsafechars($ar_check['name']) . " and registred a new account at {$INSTALLER09['site_name']}
+						You used the link from promo ' . htmlsafechars($ar_check['name']) . " and registred a new account at {$site_config['site_name']}
 							
 						To confirm your account click the link below
-						{$INSTALLER09['baseurl']}/confirm.php?id=" . (int)$userid . "
+						{$site_config['baseurl']}/confirm.php?id=" . (int)$userid . "
 
 						Welcome and enjoy your stay 
-						Staff at {$INSTALLER09['site_name']}";
-            $headers = 'From: ' . $INSTALLER09['site_email'] . "\r\n" . 'Reply-To:' . $INSTALLER09['site_email'] . "\r\n" . 'X-Mailer: PHP/' . phpversion();
+						Staff at {$site_config['site_name']}";
+            $headers = 'From: ' . $site_config['site_email'] . "\r\n" . 'Reply-To:' . $site_config['site_email'] . "\r\n" . 'X-Mailer: PHP/' . phpversion();
             $mail = @mail($email, $subject, $message, $headers);
 
             //==New member pm
             $added = TIME_NOW;
             $subject = sqlesc('Welcome');
-            $msg = sqlesc('Hey there ' . htmlsafechars($username) . " ! Welcome to {$INSTALLER09['site_name']} ! :clap2: \n\n Please ensure your connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\ncheers {$INSTALLER09['site_name']} staff.\n");
+            $msg = sqlesc('Hey there ' . htmlsafechars($username) . " ! Welcome to {$site_config['site_name']} ! :clap2: \n\n Please ensure your connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\ncheers {$site_config['site_name']} staff.\n");
             sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($userid) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
             //==End new member pm
             write_log('User account ' . (int)$id . ' (' . htmlsafechars($username) . ') was created');
-            if ($INSTALLER09['autoshout_on'] == 1) {
-                $message = "Welcome New {$INSTALLER09['site_name']} Member : - " . htmlsafechars($username) . '';
+            if ($site_config['autoshout_on'] == 1) {
+                $message = "Welcome New {$site_config['site_name']} Member : - " . htmlsafechars($username) . '';
                 autoshout($message);
             }
 
@@ -363,7 +363,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
         while ($ar = mysqli_fetch_assoc($r)) {
             $active = (($ar['max_users'] == $ar['accounts_made']) || (($ar['added'] + (86400 * $ar['days_valid'])) < TIME_NOW)) ? false : true;
             $HTMLOUT .= '<tr ' . (!$active ? 'title="This promo has ended"' : '') . ">
-				<td nowrap='nowrap' class='text-center'>" . (htmlsafechars($ar['name'])) . "<br><input type='text' " . (!$active ? 'disabled="disabled"' : '') . " value='" . ($INSTALLER09['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $ar['link']) . "' size='60' name='" . (htmlsafechars($ar['name'])) . "' onclick='select();' /></td>
+				<td nowrap='nowrap' class='text-center'>" . (htmlsafechars($ar['name'])) . "<br><input type='text' " . (!$active ? 'disabled="disabled"' : '') . " value='" . ($site_config['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $ar['link']) . "' size='60' name='" . (htmlsafechars($ar['name'])) . "' onclick='select();' /></td>
 				<td nowrap='nowrap' class='text-center'>" . (date('d/M-Y', $ar['added'])) . "</td>
 				<td nowrap='nowrap' class='text-center'>" . (date('d/M-Y', ($ar['added'] + (86400 * $ar['days_valid'])))) . "</td>
 				<td nowrap='nowrap' class='text-center'>" . ((int)$ar['max_users']) . "</td>
@@ -372,7 +372,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
 				<td nowrap='nowrap' class='text-center'>" . ((int)$ar['bonus_invites']) . "</td>
 				<td nowrap='nowrap' class='text-center'>" . ((int)$ar['bonus_karma']) . "</td>
 				<td nowrap='nowrap' class='text-center'><a href='userdetails.php?id=" . (int)$ar['creator'] . "'>" . htmlsafechars($ar['username']) . "</a></td>
-				<td nowrap='nowrap' class='text-center'><a href='" . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . (int)$ar['id'] . "'><img src='{$INSTALLER09['pic_base_url']}del.png' border='0' alt='Drop' /></a></td>
+				<td nowrap='nowrap' class='text-center'><a href='" . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . (int)$ar['id'] . "'><img src='{$site_config['pic_base_url']}del.png' border='0' alt='Drop' /></a></td>
 			</tr>";
         }
         $HTMLOUT .= '</table>';

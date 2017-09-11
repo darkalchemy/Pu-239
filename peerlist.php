@@ -12,14 +12,14 @@ if (!isset($id) || !is_valid_id($id)) {
 $HTMLOUT = '';
 function dltable($name, $arr, $torrent)
 {
-    global $CURUSER, $lang, $INSTALLER09;
+    global $CURUSER, $lang, $site_config;
     $htmlout = '';
     if (!count($arr)) {
         return $htmlout = "<div align='left'><b>{$lang['peerslist_no']} $name {$lang['peerslist_data_available']}</b></div>\n";
     }
     $htmlout = "\n";
     $htmlout .= "<table width='100%' class='main' border='1' cellspacing='0' cellpadding='5'>\n";
-    $htmlout .= "<tr><td colspan='11' class='colhead'>" . count($arr) . " $name</td></tr>" . "<tr><td class='colhead'>{$lang['peerslist_user_ip']}</td>" . "<td class='colhead' align='center'>{$lang['peerslist_connectable']}</td>" . "<td class='colhead' align='right'>{$lang['peerslist_uploaded']}</td>" . "<td class='colhead' align='right'>{$lang['peerslist_rate']}</td>" . '' . ($INSTALLER09['ratio_free'] ? '' : "<td class='colhead' align='right'>{$lang['peerslist_downloaded']}</td>") . '' . '' . ($INSTALLER09['ratio_free'] ? '' : "<td class='colhead' align='right'>{$lang['peerslist_rate']}</td>") . '' . "<td class='colhead' align='right'>{$lang['peerslist_ratio']}</td>" . "<td class='colhead' align='right'>{$lang['peerslist_complete']}</td>" . "<td class='colhead' align='right'>{$lang['peerslist_connected']}</td>" . "<td class='colhead' align='right'>{$lang['peerslist_idle']}</td>" . "<td class='colhead' align='left'>{$lang['peerslist_client']}</td></tr>\n";
+    $htmlout .= "<tr><td colspan='11' class='colhead'>" . count($arr) . " $name</td></tr>" . "<tr><td class='colhead'>{$lang['peerslist_user_ip']}</td>" . "<td class='colhead' align='center'>{$lang['peerslist_connectable']}</td>" . "<td class='colhead' align='right'>{$lang['peerslist_uploaded']}</td>" . "<td class='colhead' align='right'>{$lang['peerslist_rate']}</td>" . '' . ($site_config['ratio_free'] ? '' : "<td class='colhead' align='right'>{$lang['peerslist_downloaded']}</td>") . '' . '' . ($site_config['ratio_free'] ? '' : "<td class='colhead' align='right'>{$lang['peerslist_rate']}</td>") . '' . "<td class='colhead' align='right'>{$lang['peerslist_ratio']}</td>" . "<td class='colhead' align='right'>{$lang['peerslist_complete']}</td>" . "<td class='colhead' align='right'>{$lang['peerslist_connected']}</td>" . "<td class='colhead' align='right'>{$lang['peerslist_idle']}</td>" . "<td class='colhead' align='left'>{$lang['peerslist_client']}</td></tr>\n";
     $now = TIME_NOW;
     $mod = $CURUSER['class'] >= UC_STAFF;
     foreach ($arr as $e) {
@@ -37,13 +37,13 @@ function dltable($name, $arr, $torrent)
         $htmlout .= "<td align='center'>" . ($e['connectable'] == 'yes' ? "{$lang['peerslist_yes']}" : "<font color='red'>{$lang['peerslist_no']}</font>") . "</td>\n";
         $htmlout .= "<td align='right'>" . mksize($e['uploaded']) . "</td>\n";
         $htmlout .= "<td align='right'><span style=\"white-space: nowrap;\">" . mksize(($e['uploaded'] - $e['uploadoffset']) / $secs) . "/s</span></td>\n";
-        $htmlout .= '' . ($INSTALLER09['ratio_free'] ? '' : "<td align='right'>" . mksize($e['downloaded']) . '</td>') . "\n";
+        $htmlout .= '' . ($site_config['ratio_free'] ? '' : "<td align='right'>" . mksize($e['downloaded']) . '</td>') . "\n";
         if ($e['seeder'] == 'no') {
-            $htmlout .= '' . ($INSTALLER09['ratio_free'] ? '' : "<td align='right'><span style=\"white-space: nowrap;\">" . mksize(($e['downloaded'] - $e['downloadoffset']) / $secs) . '/s</span></td>') . "\n";
+            $htmlout .= '' . ($site_config['ratio_free'] ? '' : "<td align='right'><span style=\"white-space: nowrap;\">" . mksize(($e['downloaded'] - $e['downloadoffset']) / $secs) . '/s</span></td>') . "\n";
         } else {
-            $htmlout .= '' . ($INSTALLER09['ratio_free'] ? '' : "<td align='right'><span style=\"white-space: nowrap;\">" . mksize(($e['downloaded'] - $e['downloadoffset']) / max(1, $e['finishedat'] - $e['st'])) . '/s</span></td>') . "\n";
+            $htmlout .= '' . ($site_config['ratio_free'] ? '' : "<td align='right'><span style=\"white-space: nowrap;\">" . mksize(($e['downloaded'] - $e['downloadoffset']) / max(1, $e['finishedat'] - $e['st'])) . '/s</span></td>') . "\n";
         }
-        $htmlout .= '<td align="right">' . member_ratio($e['uploaded'], $INSTALLER09['ratio_free'] ? '0' : $e['downloaded']) . "</td>\n";
+        $htmlout .= '<td align="right">' . member_ratio($e['uploaded'], $site_config['ratio_free'] ? '0' : $e['downloaded']) . "</td>\n";
         $htmlout .= "<td align='right'>" . sprintf('%.2f%%', 100 * (1 - ($e['to_go'] / $torrent['size']))) . "</td>\n";
         $htmlout .= "<td align='right'>" . mkprettytime($now - $e['st']) . "</td>\n";
         $htmlout .= "<td align='right'>" . mkprettytime($now - $e['la']) . "</td>\n";
@@ -110,7 +110,7 @@ function seed_sort($a, $b)
 
 usort($seeders, 'seed_sort');
 usort($downloaders, 'leech_sort');
-$HTMLOUT .= "<h1>Peerlist for <a href='{$INSTALLER09['baseurl']}/details.php?id=$id'>" . htmlsafechars($row['name']) . '</a></h1>';
+$HTMLOUT .= "<h1>Peerlist for <a href='{$site_config['baseurl']}/details.php?id=$id'>" . htmlsafechars($row['name']) . '</a></h1>';
 $HTMLOUT .= dltable("{$lang['peerslist_seeders']}<a name='seeders'></a>", $seeders, $row);
 $HTMLOUT .= '<br>' . dltable("{$lang['peerslist_leechers']}<a name='leechers'></a>", $downloaders, $row);
 echo stdhead("{$lang['peerslist_stdhead']}") . $HTMLOUT . stdfoot();

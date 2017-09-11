@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
@@ -176,7 +176,7 @@ if (isset($input['reason']) && !empty($input['reason'])) {
 }
 //$input['do'] = 'addrep';
 //$input['reputation'] = 1;
-//$INSTALLER09['baseurl'] ='';
+//$site_config['baseurl'] ='';
 ///////////////////////////////////////////////
 //	Are we adding a rep or what?
 ///////////////////////////////////////////////
@@ -191,12 +191,12 @@ if (isset($input['do']) && $input['do'] == 'addrep') {
     $mc1->update_row(false, [
         'reputation' => $res['reputation'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
     $mc1->begin_transaction('user' . $res['userid']);
     $mc1->update_row(false, [
         'reputation' => $res['reputation'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
     $mc1->delete_value('user_rep_' . $res['userid']);
     $save = [
         'reputation' => $score,
@@ -210,7 +210,7 @@ if (isset($input['do']) && $input['do'] == 'addrep') {
     //print( join( ',', $save) );
     //print( join(',', array_keys($save)));
     sql_query('INSERT INTO reputation (' . join(',', array_keys($save)) . ') VALUES (' . join(',', $save) . ')');
-    header("Location: {$INSTALLER09['baseurl']}/reputation.php?pid={$input['pid']}&done=1");
+    header("Location: {$site_config['baseurl']}/reputation.php?pid={$input['pid']}&done=1");
 } // Move along, nothing to see here!
 else {
     if ($res['userid'] == $CURUSER['id']) { // same as him!
@@ -234,7 +234,7 @@ else {
                     $posneg = 'balance';
                 }
                 if ($GVARS['g_rep_seeown']) {
-                    $postrep['reason'] = $postrep['reason'] . " <span class='desc'>{$lang['rep_left_by']} <a href=\"{$INSTALLER09['baseurl']}/userdetails.php?id={$postrep['leftby_id']}\" target='_blank'>{$postrep['leftby_name']}</a></span>";
+                    $postrep['reason'] = $postrep['reason'] . " <span class='desc'>{$lang['rep_left_by']} <a href=\"{$site_config['baseurl']}/userdetails.php?id={$postrep['leftby_id']}\" target='_blank'>{$postrep['leftby_name']}</a></span>";
                 }
                 $reasonbits .= "<tr>
 	<td class='row2' width='1%'><img src='./images/rep/reputation_$posneg.gif' border='0' alt='' /></td>
@@ -268,25 +268,25 @@ else {
         }
         switch ($rep_locale) {
             case 'comments':
-                $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/details.php?id=%d&amp;viewcomm=%d#comm%d' target='_blank'>this Comment</a> is %s<br>Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
+                $rep_info = sprintf("Your reputation on <a href='{$site_config['baseurl']}/details.php?id=%d&amp;viewcomm=%d#comm%d' target='_blank'>this Comment</a> is %s<br>Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
                 break;
 
             case 'torrents':
-                $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/details.php?id=%d' target='_blank'>this Torrent</a> is %s<br>Total: %s points.", $input['pid'], $rep, $total);
+                $rep_info = sprintf("Your reputation on <a href='{$site_config['baseurl']}/details.php?id=%d' target='_blank'>this Torrent</a> is %s<br>Total: %s points.", $input['pid'], $rep, $total);
                 break;
 
             case 'users':
-                $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/userdetails.php?id=%d' target='_blank'>your profile</a> is %s<br>Total: %s points.", $input['pid'], $rep, $total);
+                $rep_info = sprintf("Your reputation on <a href='{$site_config['baseurl']}/userdetails.php?id=%d' target='_blank'>your profile</a> is %s<br>Total: %s points.", $input['pid'], $rep, $total);
                 break;
 
             default:
-                $rep_info = sprintf("Your reputation on <a href='{$INSTALLER09['baseurl']}/forums.php?action=viewtopic&amp;topicid=%d&amp;page=p%d#%d' target='_blank'>this Post</a> is %s<br>Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
+                $rep_info = sprintf("Your reputation on <a href='{$site_config['baseurl']}/forums.php?action=viewtopic&amp;topicid=%d&amp;page=p%d#%d' target='_blank'>this Post</a> is %s<br>Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
         }
         ///////////////////////////////////////////////
         //	Compile some HTML for the 'own post'/ 'user view' reputation
         //	Feel free to do ya own html/css here
         ///////////////////////////////////////////////
-        //$rep_info = sprintf("".$lang["info_your_rep_on"]." <a href='{$INSTALLER09['baseurl']}/forums.php?action=viewtopic&amp;topicid=%d&amp;page=p%d#%d' target='_blank'>".$lang["info_this_post"]."</a> ".$lang["info_is"]." %s.", $res['topicid'], $input['pid'], $input['pid'], $rep );
+        //$rep_info = sprintf("".$lang["info_your_rep_on"]." <a href='{$site_config['baseurl']}/forums.php?action=viewtopic&amp;topicid=%d&amp;page=p%d#%d' target='_blank'>".$lang["info_this_post"]."</a> ".$lang["info_is"]." %s.", $res['topicid'], $input['pid'], $input['pid'], $rep );
         $rep_points = sprintf('' . $lang['info_you_have'] . ' %d ' . $lang['info_reputation_points'] . '', $CURUSER['reputation']);
         $html = "
                         <tr>

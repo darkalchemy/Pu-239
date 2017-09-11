@@ -2,8 +2,8 @@
 
 function foxnews_shout()
 {
-    global $INSTALLER09, $mc1;
-    if ($INSTALLER09['autoshout_on'] == 1) {
+    global $site_config, $mc1;
+    if ($site_config['autoshout_on'] == 1) {
         require_once INCL_DIR . 'user_functions.php';
         if (($xml = $mc1->get_value('foxnewsrss_')) === false) {
             $xml = file_get_contents('http://feeds.foxnews.com/foxnews/tech');
@@ -46,8 +46,8 @@ function foxnews_shout()
 
 function tfreak_shout()
 {
-    global $INSTALLER09, $mc1;
-    if ($INSTALLER09['autoshout_on'] == 1) {
+    global $site_config, $mc1;
+    if ($site_config['autoshout_on'] == 1) {
         require_once INCL_DIR . 'user_functions.php';
         if (($xml = $mc1->get_value('tfreaknewsrss_')) === false) {
             $xml = file_get_contents('http://feed.torrentfreak.com/Torrentfreak/');
@@ -90,8 +90,8 @@ function tfreak_shout()
 
 function github_shout()
 {
-    global $INSTALLER09, $mc1;
-    if ($INSTALLER09['autoshout_on'] == 1) {
+    global $site_config, $mc1;
+    if ($site_config['autoshout_on'] == 1) {
         require_once INCL_DIR . 'user_functions.php';
         if (($rss = $mc1->get_value('githubcommitrss_')) === false) {
             $rss = file_get_contents('https://github.com/darkalchemy/Pu-239/commits/master.atom');

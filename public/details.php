@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
@@ -102,7 +102,7 @@ if (($torrents = $mc1->get_value('torrent_details_' . $id)) === false) {
         'tags',
     ];
     $tor_fields = implode(', ', array_merge($tor_fields_ar_int, $tor_fields_ar_str));
-    $result = sql_query('SELECT ' . $tor_fields . ", LENGTH(nfo) AS nfosz, IF(num_ratings < {$INSTALLER09['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating FROM torrents WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    $result = sql_query('SELECT ' . $tor_fields . ", LENGTH(nfo) AS nfosz, IF(num_ratings < {$site_config['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating FROM torrents WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $torrents = mysqli_fetch_assoc($result);
     foreach ($tor_fields_ar_int as $i) {
         $torrents[$i] = (int)$torrents[$i];
@@ -110,17 +110,17 @@ if (($torrents = $mc1->get_value('torrent_details_' . $id)) === false) {
     foreach ($tor_fields_ar_str as $i) {
         $torrents[$i] = $torrents[$i];
     }
-    $mc1->cache_value('torrent_details_' . $id, $torrents, $INSTALLER09['expires']['torrent_details']);
+    $mc1->cache_value('torrent_details_' . $id, $torrents, $site_config['expires']['torrent_details']);
 }
 //==
 if (($torrents_xbt = $mc1->get_value('torrent_xbt_data_' . $id)) === false && XBT_TRACKER == true) {
     $torrents_xbt = mysqli_fetch_assoc(sql_query('SELECT seeders, leechers, times_completed FROM torrents WHERE id =' . sqlesc($id))) or sqlerr(__FILE__, __LINE__);
-    $mc1->cache_value('torrent_xbt_data_' . $id, $torrents_xbt, $INSTALLER09['expires']['torrent_xbt_data']);
+    $mc1->cache_value('torrent_xbt_data_' . $id, $torrents_xbt, $site_config['expires']['torrent_xbt_data']);
 }
 //==
 if (($torrents_txt = $mc1->get_value('torrent_details_txt' . $id)) === false) {
     $torrents_txt = mysqli_fetch_assoc(sql_query('SELECT descr FROM torrents WHERE id =' . sqlesc($id))) or sqlerr(__FILE__, __LINE__);
-    $mc1->cache_value('torrent_details_txt' . $id, $torrents_txt, $INSTALLER09['expires']['torrent_details_text']);
+    $mc1->cache_value('torrent_details_txt' . $id, $torrents_txt, $site_config['expires']['torrent_details_text']);
 }
 //==
 if (isset($_GET['hit'])) {
@@ -130,7 +130,7 @@ if (isset($_GET['hit'])) {
     $mc1->update_row(false, [
         'views' => $update['views'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['torrent_details']);
+    $mc1->commit_transaction($site_config['expires']['torrent_details']);
     header("Location: details.php?id=$id");
     exit();
 }
@@ -152,8 +152,8 @@ $torrents['times_completed'] = ((XBT_TRACKER === false || $torrent_cache['times_
 $torrent['addup'] = get_date($torrent['addedup'], 'DATE');
 $torrent['addfree'] = get_date($torrent['addedfree'], 'DATE');
 $torrent['idk'] = (TIME_NOW + 14 * 86400);
-$torrent['freeimg'] = '<img src="' . $INSTALLER09['pic_base_url'] . 'freedownload.gif" alt="" />';
-$torrent['doubleimg'] = '<img src="' . $INSTALLER09['pic_base_url'] . 'doubleseed.gif" alt="" />';
+$torrent['freeimg'] = '<img src="' . $site_config['pic_base_url'] . 'freedownload.gif" alt="" />';
+$torrent['doubleimg'] = '<img src="' . $site_config['pic_base_url'] . 'doubleseed.gif" alt="" />';
 $torrent['free_color'] = '#FF0000';
 $torrent['silver_color'] = 'silver';
 //==rep user query by pdq
@@ -240,7 +240,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
             'checked_by'   => $CURUSER['username'],
             'checked_when' => TIME_NOW,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['torrent_details']);
+        $mc1->commit_transaction($site_config['expires']['torrent_details']);
         $mc1->delete_value('checked_by_' . $id);
         write_log("Torrent <a href=details.php?id=$id>(" . htmlsafechars($torrents['name']) . ")</a> was checked by {$CURUSER['username']}");
         header("Location: details.php?id=$id&checked=done#Success");
@@ -251,7 +251,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
             'checked_by'   => $CURUSER['username'],
             'checked_when' => TIME_NOW,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['torrent_details']);
+        $mc1->commit_transaction($site_config['expires']['torrent_details']);
         $mc1->delete_value('checked_by_' . $id);
         write_log("Torrent <a href=details.php?id=$id>(" . htmlsafechars($torrents['name']) . ")</a> was re-checked by {$CURUSER['username']}");
         header("Location: details.php?id=$id&rechecked=done#Success");
@@ -262,7 +262,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
             'checked_by'   => '',
             'checked_when' => '',
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['torrent_details']);
+        $mc1->commit_transaction($site_config['expires']['torrent_details']);
         $mc1->delete_value('checked_by_' . $id);
         write_log("Torrent <a href=details.php?id=$id>(" . htmlsafechars($torrents['name']) . ")</a> was un-checked by {$CURUSER['username']}");
         header("Location: details.php?id=$id&clearchecked=done#Success");
@@ -292,7 +292,7 @@ $HTMLOUT .= "</div>
 		{$lang['details_thumbs']}
 			<div id='thumbsup'>
 			<a href=\"javascript:ThumbsUp('" . (int)$torrents['id'] . "')\">
-			<img src='{$INSTALLER09['pic_base_url']}thumb_up.png' alt='Thumbs Up' title='Thumbs Up' width='12' height='12' /></a>&#160;&#160;&#160;(" . $thumbs . ")
+			<img src='{$site_config['pic_base_url']}thumb_up.png' alt='Thumbs Up' title='Thumbs Up' width='12' height='12' /></a>&#160;&#160;&#160;(" . $thumbs . ")
 			</div>
 	   </div>
 		</div>\n";
@@ -309,7 +309,7 @@ $HTMLOUT .= '
 			regular download link. Doing so will result in one Freeleech Slot being taken away from your total.
 		</div>
 		<div id="balloon3" class="balloonstyle">
-			Remember to show your gratitude and Thank the Uploader. <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/smile1.gif" alt="" />
+			Remember to show your gratitude and Thank the Uploader. <img src="' . $site_config['pic_base_url'] . 'smilies/smile1.gif" alt="" />
 		</div>';
 /* end **/
 $HTMLOUT .= '<hr><div>';
@@ -424,13 +424,13 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
     $HTMLOUT .= '<tr>
 		<td class="heading" valign="top" align="right">Karma Points</td>
 		<td valign="top" align="left"><b>In total ' . (int)$torrents['points'] . ' Karma Points given to this torrent of which ' . $my_points . ' from you.<br><br>
-		<a href="coins.php?id=' . $id . '&amp;points=10"><img src="' . $INSTALLER09['pic_base_url'] . '10coin.png" alt="10" title="10 Points" /></a>&#160;&#160;
-		<a href="coins.php?id=' . $id . '&amp;points=20"><img src="' . $INSTALLER09['pic_base_url'] . '20coin.png" alt="20" title="20 Points" /></a>&#160;&#160;
-		<a href="coins.php?id=' . $id . '&amp;points=50"><img src="' . $INSTALLER09['pic_base_url'] . '50coin.png" alt="50" title="50 Points" /></a>&#160;&#160;
-		<a href="coins.php?id=' . $id . '&amp;points=100"><img src="' . $INSTALLER09['pic_base_url'] . '100coin.png" alt="100" title="100 Points" /></a>&#160;&#160;
-		<a href="coins.php?id=' . $id . '&amp;points=200"><img src="' . $INSTALLER09['pic_base_url'] . '200coin.png" alt="200" title="200 Points" /></a>&#160;&#160;
-		<a href="coins.php?id=' . $id . '&amp;points=500"><img src="' . $INSTALLER09['pic_base_url'] . '500coin.png" alt="500" title="500 Points" /></a>&#160;&#160;
-		<a href="coins.php?id=' . $id . '&amp;points=1000"><img src="' . $INSTALLER09['pic_base_url'] . '1000coin.png" alt="1000" title="1000 Points" /></a></b>&#160;&#160;
+		<a href="coins.php?id=' . $id . '&amp;points=10"><img src="' . $site_config['pic_base_url'] . '10coin.png" alt="10" title="10 Points" /></a>&#160;&#160;
+		<a href="coins.php?id=' . $id . '&amp;points=20"><img src="' . $site_config['pic_base_url'] . '20coin.png" alt="20" title="20 Points" /></a>&#160;&#160;
+		<a href="coins.php?id=' . $id . '&amp;points=50"><img src="' . $site_config['pic_base_url'] . '50coin.png" alt="50" title="50 Points" /></a>&#160;&#160;
+		<a href="coins.php?id=' . $id . '&amp;points=100"><img src="' . $site_config['pic_base_url'] . '100coin.png" alt="100" title="100 Points" /></a>&#160;&#160;
+		<a href="coins.php?id=' . $id . '&amp;points=200"><img src="' . $site_config['pic_base_url'] . '200coin.png" alt="200" title="200 Points" /></a>&#160;&#160;
+		<a href="coins.php?id=' . $id . '&amp;points=500"><img src="' . $site_config['pic_base_url'] . '500coin.png" alt="500" title="500 Points" /></a>&#160;&#160;
+		<a href="coins.php?id=' . $id . '&amp;points=1000"><img src="' . $site_config['pic_base_url'] . '1000coin.png" alt="1000" title="1000 Points" /></a></b>&#160;&#160;
 		<br>By clicking on the coins you can give Karma Points to the uploader of this torrent.</td></tr>';
     /** END **/
     /** pdq's ratio afer d/load **/
@@ -558,7 +558,7 @@ $HTMLOUT .= "
 <div class='row-fluid'>
 <table align='center' class='table table-bordered span3'>\n";
 
-if (in_array($torrents['category'], $INSTALLER09['movie_cats']) && !empty($torrents['subs'])) {
+if (in_array($torrents['category'], $site_config['movie_cats']) && !empty($torrents['subs'])) {
     $HTMLOUT .= "<tr>
 				<td class='rowhead'>Subtitles</td>
 				<td align='left'>";
@@ -584,7 +584,7 @@ if ($moderator) {
     $HTMLOUT .= tr("{$lang['details_banned']}", $torrents['banned']);
 }
 if ($torrents['nuked'] == 'yes') {
-    $HTMLOUT .= "<tr><td class='rowhead'><b>Nuked</b></td><td align='left'><img src='{$INSTALLER09['pic_base_url']}nuked.gif' alt='Nuked' title='Nuked' /></td></tr>\n";
+    $HTMLOUT .= "<tr><td class='rowhead'><b>Nuked</b></td><td align='left'><img src='{$site_config['pic_base_url']}nuked.gif' alt='Nuked' title='Nuked' /></td></tr>\n";
 }
 if (!empty($torrents['nukereason'])) {
     $HTMLOUT .= "<tr><td class='rowhead'><b>Nuke-Reason</b></td><td align='left'>" . htmlsafechars($torrents['nukereason']) . "</td></tr>\n";
@@ -834,29 +834,29 @@ $HTMLOUT .= "<p>
 					<textarea name='body' cols='280' rows='4'></textarea>
 					<input type='hidden' name='tid' value='" . htmlsafechars($id) . "' />
 					<br>
-					<a href=\"javascript:SmileIT(':-)','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/smile1.gif' alt='Smile' title='Smile' /></a> 
-					<a href=\"javascript:SmileIT(':smile:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/smile2.gif' alt='Smiling' title='Smiling' /></a> 
-					<a href=\"javascript:SmileIT(':-D','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/grin.gif' alt='Grin' title='Grin' /></a> 
-					<a href=\"javascript:SmileIT(':lol:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/laugh.gif' alt='Laughing' title='Laughing' /></a> 
-					<a href=\"javascript:SmileIT(':w00t:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/w00t.gif' alt='W00t' title='W00t' /></a> 
-					<a href=\"javascript:SmileIT(':blum:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/blum.gif' alt='Rasp' title='Rasp' /></a> 
-					<a href=\"javascript:SmileIT(';-)','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/wink.gif' alt='Wink' title='Wink' /></a> 
-					<a href=\"javascript:SmileIT(':devil:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/devil.gif' alt='Devil' title='Devil' /></a> 
-					<a href=\"javascript:SmileIT(':yawn:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/yawn.gif' alt='Yawn' title='Yawn' /></a> 
-					<a href=\"javascript:SmileIT(':-/','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/confused.gif' alt='Confused' title='Confused' /></a> 
-					<a href=\"javascript:SmileIT(':o)','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/clown.gif' alt='Clown' title='Clown' /></a> 
-					<a href=\"javascript:SmileIT(':innocent:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/innocent.gif' alt='Innocent' title='innocent' /></a> 
-					<a href=\"javascript:SmileIT(':whistle:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/whistle.gif' alt='Whistle' title='Whistle' /></a> 
-					<a href=\"javascript:SmileIT(':unsure:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/unsure.gif' alt='Unsure' title='Unsure' /></a> 
-					<a href=\"javascript:SmileIT(':blush:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/blush.gif' alt='Blush' title='Blush' /></a> 
-					<a href=\"javascript:SmileIT(':hmm:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/hmm.gif' alt='Hmm' title='Hmm' /></a> 
-					<a href=\"javascript:SmileIT(':hmmm:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/hmmm.gif' alt='Hmmm' title='Hmmm' /></a> 
-					<a href=\"javascript:SmileIT(':huh:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/huh.gif' alt='Huh' title='Huh' /></a> 
-					<a href=\"javascript:SmileIT(':look:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/look.gif' alt='Look' title='Look' /></a> 
-					<a href=\"javascript:SmileIT(':rolleyes:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/rolleyes.gif' alt='Roll Eyes' title='Roll Eyes' /></a> 
-					<a href=\"javascript:SmileIT(':kiss:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/kiss.gif' alt='Kiss' title='Kiss' /></a> 
-					<a href=\"javascript:SmileIT(':blink:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/blink.gif' alt='Blink' title='Blink' /></a> 
-					<a href=\"javascript:SmileIT(':baby:','comment','body')\"><img border='0' src='{$INSTALLER09['pic_base_url']}smilies/baby.gif' alt='Baby' title='Baby' /></a>
+					<a href=\"javascript:SmileIT(':-)','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/smile1.gif' alt='Smile' title='Smile' /></a> 
+					<a href=\"javascript:SmileIT(':smile:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/smile2.gif' alt='Smiling' title='Smiling' /></a> 
+					<a href=\"javascript:SmileIT(':-D','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/grin.gif' alt='Grin' title='Grin' /></a> 
+					<a href=\"javascript:SmileIT(':lol:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/laugh.gif' alt='Laughing' title='Laughing' /></a> 
+					<a href=\"javascript:SmileIT(':w00t:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='W00t' title='W00t' /></a> 
+					<a href=\"javascript:SmileIT(':blum:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/blum.gif' alt='Rasp' title='Rasp' /></a> 
+					<a href=\"javascript:SmileIT(';-)','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/wink.gif' alt='Wink' title='Wink' /></a> 
+					<a href=\"javascript:SmileIT(':devil:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/devil.gif' alt='Devil' title='Devil' /></a> 
+					<a href=\"javascript:SmileIT(':yawn:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/yawn.gif' alt='Yawn' title='Yawn' /></a> 
+					<a href=\"javascript:SmileIT(':-/','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/confused.gif' alt='Confused' title='Confused' /></a> 
+					<a href=\"javascript:SmileIT(':o)','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/clown.gif' alt='Clown' title='Clown' /></a> 
+					<a href=\"javascript:SmileIT(':innocent:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/innocent.gif' alt='Innocent' title='innocent' /></a> 
+					<a href=\"javascript:SmileIT(':whistle:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/whistle.gif' alt='Whistle' title='Whistle' /></a> 
+					<a href=\"javascript:SmileIT(':unsure:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/unsure.gif' alt='Unsure' title='Unsure' /></a> 
+					<a href=\"javascript:SmileIT(':blush:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/blush.gif' alt='Blush' title='Blush' /></a> 
+					<a href=\"javascript:SmileIT(':hmm:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/hmm.gif' alt='Hmm' title='Hmm' /></a> 
+					<a href=\"javascript:SmileIT(':hmmm:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/hmmm.gif' alt='Hmmm' title='Hmmm' /></a> 
+					<a href=\"javascript:SmileIT(':huh:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/huh.gif' alt='Huh' title='Huh' /></a> 
+					<a href=\"javascript:SmileIT(':look:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/look.gif' alt='Look' title='Look' /></a> 
+					<a href=\"javascript:SmileIT(':rolleyes:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/rolleyes.gif' alt='Roll Eyes' title='Roll Eyes' /></a> 
+					<a href=\"javascript:SmileIT(':kiss:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/kiss.gif' alt='Kiss' title='Kiss' /></a> 
+					<a href=\"javascript:SmileIT(':blink:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/blink.gif' alt='Blink' title='Blink' /></a> 
+					<a href=\"javascript:SmileIT(':baby:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/baby.gif' alt='Baby' title='Baby' /></a>
 					<br>
 					<input class='btn btn-primary' type='submit' value='Submit' />
 					</td>
@@ -889,7 +889,7 @@ jQuery(document).ready(function() {
 </script>";
 $commentbar = "<p class='h1 btn btn-primary'>Comments Open/Close</p><div class='content'><p align='center' ><a class='index' href='comment.php?action=add&amp;tid=$id'>{$lang['details_add_comment']}</a>
     <br><a class='index' href='takethankyou.php?id=" . $id . "'>
-    <img src='{$INSTALLER09['pic_base_url']}smilies/thankyou.gif' alt='Thanks' title='Thank You' border='0' /></a></p>\n";
+    <img src='{$site_config['pic_base_url']}smilies/thankyou.gif' alt='Thanks' title='Thank You' border='0' /></a></p>\n";
 $count = (int)$torrents['comments'];
 if (!$count) {
     $HTMLOUT .= "<h2>{$lang['details_no_comment']}</h2>\n";

@@ -1,12 +1,12 @@
 <?php
 if (!defined('BUNNY_FORUMS')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 global $lang;
 $posts = $lppostid = $topicpoll = $colour = $rpic = $content = '';
-$links = '<span style="text-align: center;"><a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';
+$links = '<span style="text-align: center;"><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';
 $HTMLOUT .= '<h1>Subscribed Forums for ' . print_user_stuff($CURUSER) . '</h1>' . $links;
 //=== Get count
 $res = sql_query('SELECT COUNT(id) FROM subscriptions WHERE user_id=' . sqlesc($CURUSER['id']));
@@ -26,7 +26,7 @@ if ($count == 0) {
 //=== get stuff for the pager
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 0;
 $perpage = (isset($_GET['perpage']) ? (int)$_GET['perpage'] : 20);
-list($menu, $LIMIT) = pager_new($count, $perpage, $page, $INSTALLER09['baseurl'] . '/forums.php?action=subscriptions' . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
+list($menu, $LIMIT) = pager_new($count, $perpage, $page, $site_config['baseurl'] . '/forums.php?action=subscriptions' . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
 //=== top and bottom stuff
 $the_top_and_bottom = '<table border="0" cellspacing="0" cellpadding="0" width="90%">
 	<tr><td class="three" align="center" valign="middle">' . (($count > $perpage) ? $menu : '') . '</td>
@@ -52,8 +52,8 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
     } else {
         $thread_starter = ($first_post_arr['username'] !== '' ? print_user_stuff($first_post_arr) : '' . $lang['fe_lost'] . ' [' . (int)$first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
     }
-    $icon = ($first_post_arr['icon'] == '' ? '<img src="' . $INSTALLER09['pic_base_url'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '" title="' . htmlsafechars($first_post_arr['icon']) . '" />');
-    $first_post_text = tool_tip(' <img src="' . $INSTALLER09['pic_base_url'] . 'forums/mg.gif" height="14" alt="' . $lang['fe_preview'] . '" title="' . $lang['fe_preview'] . '" />', format_comment($first_post_arr['body'], true, false, false), '' . $lang['fe_first_post'] . ' ' . $lang['fe_preview'] . '');
+    $icon = ($first_post_arr['icon'] == '' ? '<img src="' . $site_config['pic_base_url'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="' . $site_config['pic_base_url'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '" title="' . htmlsafechars($first_post_arr['icon']) . '" />');
+    $first_post_text = tool_tip(' <img src="' . $site_config['pic_base_url'] . 'forums/mg.gif" height="14" alt="' . $lang['fe_preview'] . '" title="' . $lang['fe_preview'] . '" />', format_comment($first_post_arr['body'], true, false, false), '' . $lang['fe_first_post'] . ' ' . $lang['fe_preview'] . '');
     //=== last post read in topic
     $last_unread_post_res = sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($topic_id));
     $last_unread_post_arr = mysqli_fetch_row($last_unread_post_res);
@@ -67,38 +67,38 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
             break;
 
         case $total_pages > 11:
-            $multi_pages = ' <span style="font-size: xx-small;"> <img src="' . $INSTALLER09['pic_base_url'] . 'forums/multipage.gif" alt="+" title="+" />';
+            $multi_pages = ' <span style="font-size: xx-small;"> <img src="' . $site_config['pic_base_url'] . 'forums/multipage.gif" alt="+" title="+" />';
             for ($i = 1; $i < 5; ++$i) {
-                $multi_pages .= ' <a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $i . '">' . $i . '</a>';
+                $multi_pages .= ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $i . '">' . $i . '</a>';
             }
             $multi_pages .= ' ... ';
             for ($i = ($total_pages - 2); $i <= $total_pages; ++$i) {
-                $multi_pages .= ' <a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $i . '">' . $i . '</a>';
+                $multi_pages .= ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $i . '">' . $i . '</a>';
             }
             $multi_pages .= '</span>';
             break;
 
         case $total_pages < 11:
-            $multi_pages = ' <span style="font-size: xx-small;"> <img src="' . $INSTALLER09['pic_base_url'] . 'forums/multipage.gif" alt="+" title="+" />';
+            $multi_pages = ' <span style="font-size: xx-small;"> <img src="' . $site_config['pic_base_url'] . 'forums/multipage.gif" alt="+" title="+" />';
             for ($i = 1; $i < $total_pages; ++$i) {
-                $multi_pages .= ' <a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $i . '">' . $i . '</a>';
+                $multi_pages .= ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $i . '">' . $i . '</a>';
             }
             $multi_pages .= '</span>';
             break;
     }
     $new = ($topic_arr['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_unread_post_arr || $lppostid > $last_unread_post_arr[0]) : 0;
     $topicpic = ($posts < 30 ? ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'topicnew' : 'topic')) : ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'hot_topic_new' : 'hot_topic')));
-    $topic_name = ($sticky ? '<img src="' . $INSTALLER09['pic_base_url'] . 'forums/pinned2.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" /> ' : ' ') . ($topicpoll ? '<img src="' . $INSTALLER09['pic_base_url'] . 'forums/poll.gif" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '" /> ' : ' ') . ' <a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($topic_arr['topic_name'], ENT_QUOTES) . '</a> ' . $multi_pages;
+    $topic_name = ($sticky ? '<img src="' . $site_config['pic_base_url'] . 'forums/pinned2.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" /> ' : ' ') . ($topicpoll ? '<img src="' . $site_config['pic_base_url'] . 'forums/poll.gif" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '" /> ' : ' ') . ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($topic_arr['topic_name'], ENT_QUOTES) . '</a> ' . $multi_pages;
     //=== change colors
     $colour = (++$colour) % 2;
     $class = ($colour == 0 ? 'one' : 'two');
     $content .= '<tr>
-		<td class="' . $class . '" align="center"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/' . $topicpic . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
+		<td class="' . $class . '" align="center"><img src="' . $site_config['pic_base_url'] . 'forums/' . $topicpic . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
 		<td class="' . $class . '" align="center">' . $icon . '</td>
 		<td align="left" valign="middle" class="' . $class . '">
 		<table border="0" cellspacing="0" cellpadding="0">
 		<tr>
-		<td  class="' . $class . '" align="left">' . $topic_name . $first_post_text . ($new ? ' <img src="' . $INSTALLER09['pic_base_url'] . 'forums/new.gif" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!" />' : '') . '</td>
+		<td  class="' . $class . '" align="left">' . $topic_name . $first_post_text . ($new ? ' <img src="' . $site_config['pic_base_url'] . 'forums/new.gif" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!" />' : '') . '</td>
 		<td class="' . $class . '" align="right">' . $rpic . '</td>
 		</tr>
 		</table>
@@ -107,22 +107,22 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
 		<td align="center" class="' . $class . '">' . number_format($topic_arr['post_count'] - 1) . '</td>
 		<td align="center" class="' . $class . '">' . number_format($topic_arr['views']) . '</td>
 		<td align="center" class="' . $class . '"><span style="white-space:nowrap;">' . get_date($topic_arr['added'], '') . '</span><br>by&#160;' . $last_post_username . '</td>
-		<td align="center" class="' . $class . '"><a class="altlink" href="' . $INSTALLER09['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=p' . $last_post_id . '#' . $last_post_id . '" title="last post in this thread">
-		<img src="' . $INSTALLER09['pic_base_url'] . 'forums/last_post.gif" alt="Last post" title="Last post" /></a></td>
+		<td align="center" class="' . $class . '"><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=p' . $last_post_id . '#' . $last_post_id . '" title="last post in this thread">
+		<img src="' . $site_config['pic_base_url'] . 'forums/last_post.gif" alt="Last post" title="Last post" /></a></td>
 		<td align="center" class="' . $class . '"><input type="checkbox" name="remove[]" value="' . (int)$topic_arr['subscribed_id'] . '" /></td>
 		</tr>';
 }
-$HTMLOUT .= $the_top_and_bottom . '<form action="' . $INSTALLER09['baseurl'] . '/forums.php?action=delete_subscription" method="post" name="checkme">
+$HTMLOUT .= $the_top_and_bottom . '<form action="' . $site_config['baseurl'] . '/forums.php?action=delete_subscription" method="post" name="checkme">
 		<table border="0" cellspacing="0" cellpadding="5" width="90%">
 		<tr>
-		<td align="center" valign="middle" class="forum_head_dark" width="10"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
-		<td align="center" valign="middle" class="forum_head_dark" width="10"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/topic_normal.gif" alt=' . $lang['fe_thread_icon'] . '" title=' . $lang['fe_thread_icon'] . '" /></td>
+		<td align="center" valign="middle" class="forum_head_dark" width="10"><img src="' . $site_config['pic_base_url'] . 'forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
+		<td align="center" valign="middle" class="forum_head_dark" width="10"><img src="' . $site_config['pic_base_url'] . 'forums/topic_normal.gif" alt=' . $lang['fe_thread_icon'] . '" title=' . $lang['fe_thread_icon'] . '" /></td>
 		<td align="left" class="forum_head_dark">' . $lang['fe_topic'] . '</td>
 		<td align="center" class="forum_head_dark">' . $lang['fe_started_by'] . '</td>
 		<td class="forum_head_dark" align="center" width="10">' . $lang['fe_replies'] . '</td>
 		<td class="forum_head_dark" align="center" width="10">' . $lang['fe_views'] . '</td>
 		<td align="center" class="forum_head_dark" width="140">' . $lang['fe_last_post'] . '</td>
-		<td align="center" valign="middle" class="forum_head_dark" width="10"><img src="' . $INSTALLER09['pic_base_url'] . 'forums/last_post.gif" alt="Last post" title="Last post" /></td>
+		<td align="center" valign="middle" class="forum_head_dark" width="10"><img src="' . $site_config['pic_base_url'] . 'forums/last_post.gif" alt="Last post" title="Last post" /></td>
 		<td align="center" valign="middle" class="forum_head_dark" width="10"></td>
 		</tr>' . $content . '
 		<tr>
@@ -130,5 +130,5 @@ $HTMLOUT .= $the_top_and_bottom . '<form action="' . $INSTALLER09['baseurl'] . '
 		<a class="altlink" href="javascript:SetChecked(1,\'remove[]\')"> <span style="color: black;">' . $lang['sub_select_all'] . '</span></a> - 
 		<a class="altlink" href="javascript:SetChecked(0,\'remove[]\')"><span style="color: black;">' . $lang['sub_un_select_all'] . '</span></a>  
 		<input type="submit" name="button" class="button" value="' . $lang['fe_remove'] . ' Selected" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
-		</tr></table></form><script src="' . $INSTALLER09['baseurl'] . '/scripts/check_selected.js"></script>
+		</tr></table></form><script src="' . $site_config['baseurl'] . '/scripts/check_selected.js"></script>
 		' . $the_top_and_bottom . '<br><br>' . $links . '<br>';

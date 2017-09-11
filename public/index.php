@@ -2,7 +2,7 @@
 if (!extension_loaded('memcache')) {
     die('PHP Memcache Extension not loaded.');
 }
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once ROOT_DIR . 'polls.php';
@@ -11,13 +11,13 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 $stdhead = [
     'css' => [
-        '12ee27333be9fe5ec379b4ad2663f3d2.min'
+        get_file('index_css')
     ],
 ];
 
 $stdfoot = [
     'js' => [
-        '46387be23f7a064e322957a121165120.min'
+        get_file('index_js')
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('index'), load_language('trivia'));
@@ -33,11 +33,11 @@ if (curuser::$blocks['index_page'] & block_index::IE_ALERT && $BLOCKS['ie_user_a
     $HTMLOUT .= '</div>';
 }
 
-if (curuser::$blocks['index_page'] & block_index::ANNOUNCEMENT && $BLOCKS['announcement_on']) {
-    $HTMLOUT .= "<div class='container-fluid portlet' id='ANNOUNCEMENT'>";
-    require_once BLOCK_DIR . 'index/announcement.php';
-    $HTMLOUT .= '</div>';
-}
+//if (curuser::$blocks['index_page'] & block_index::ANNOUNCEMENT && $BLOCKS['announcement_on']) {
+//    $HTMLOUT .= "<div class='container-fluid portlet' id='ANNOUNCEMENT'>";
+//    require_once BLOCK_DIR . 'index/announcement.php';
+//    $HTMLOUT .= '</div>';
+//}
 
 if (curuser::$blocks['index_page'] & block_index::AJAXCHAT && $BLOCKS['ajaxchat_on'] && $CURUSER['chatpost'] === 1) {
     $HTMLOUT .= "<div class='container-fluid portlet' id='AJAXCHAT'>";
@@ -82,9 +82,9 @@ if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS && $BLOCKS['la
 }
 
 if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SCROLL && $BLOCKS['latest_torrents_scroll_on']) {
-$HTMLOUT .="<div class='container-fluid portlet' id='LATEST_TORRENTS_SCROLL'>";
-        require_once (BLOCK_DIR . 'index/latest_torrents_scroll.php');
-$HTMLOUT .="</div>";
+    $HTMLOUT .="<div class='container-fluid portlet' id='LATEST_TORRENTS_SCROLL'>";
+    require_once (BLOCK_DIR . 'index/latest_torrents_scroll.php');
+    $HTMLOUT .="</div>";
 }
 
 if (curuser::$blocks['index_page'] & block_index::STATS && $BLOCKS['stats_on']) {

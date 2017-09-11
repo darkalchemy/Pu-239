@@ -6,7 +6,7 @@ check_user_status();
 function rsstfreakinfo()
 {
     require_once INCL_DIR . 'html_functions.php';
-    global $INSTALLER09;
+    global $site_config;
     $html = '';
     $use_limit = true;
     $limit = 5;

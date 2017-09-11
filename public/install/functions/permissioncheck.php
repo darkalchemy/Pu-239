@@ -48,7 +48,7 @@ function permissioncheck()
     }
     $out .= '</fieldset>';
     if ($continue) {
-        $out .= '<fieldset><div style="text-align:center"><input type="button" onclick="window.location.href=\'index.php?step=1\'" value="Next step" /></div></fieldset>';
+        $out .= '<div style="text-align:center"><input type="button" onclick="window.location.href=\'index.php?step=1\'" value="Next step" /></div>';
         file_put_contents('step0.lock', '1');
     }
 

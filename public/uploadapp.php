@@ -1,10 +1,10 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('uploadapp'));
-global $INSTALLER09;
+global $site_config;
 
 $HTMLOUT = '';
 // Fill in application
@@ -139,7 +139,7 @@ if (isset($_POST['form']) != 1) {
         }
     } else {
         $subject = sqlesc('Uploader application');
-        $msg = sqlesc("An uploader application has just been filled in by [url={$INSTALLER09['baseurl']}/userdetails.php?id=" . (int)$CURUSER['id'] . "][b]{$CURUSER['username']}[/b][/url]. Click [url={$INSTALLER09['baseurl']}/staffpanel.php?tool=uploadapps&action=show][b]Here[/b][/url] to go to the uploader applications page.");
+        $msg = sqlesc("An uploader application has just been filled in by [url={$site_config['baseurl']}/userdetails.php?id=" . (int)$CURUSER['id'] . "][b]{$CURUSER['username']}[/b][/url]. Click [url={$site_config['baseurl']}/staffpanel.php?tool=uploadapps&action=show][b]Here[/b][/url] to go to the uploader applications page.");
         $dt = TIME_NOW;
         $subres = sql_query('SELECT id FROM users WHERE class = ' . UC_STAFF) or sqlerr(__FILE__, __LINE__);
         while ($arr = mysqli_fetch_assoc($subres)) {

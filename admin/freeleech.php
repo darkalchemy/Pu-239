@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -18,7 +18,7 @@ if (isset($_GET['remove'])) {
     ftruncate($filenum, 0);
     fwrite($filenum, $configfile);
     fclose($filenum);
-    header("Location: {$INSTALLER09['baseurl']}/staffpanel.php?tool=freeleech");
+    header("Location: {$site_config['baseurl']}/staffpanel.php?tool=freeleech");
     die;
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ftruncate($filenum, 0);
     fwrite($filenum, $configfile);
     fclose($filenum);
-    header("Location: {$INSTALLER09['baseurl']}/staffpanel.php?tool=freeleech");
+    header("Location: {$site_config['baseurl']}/staffpanel.php?tool=freeleech");
     die;
 }
 require_once CACHE_DIR . 'free_cache.php';

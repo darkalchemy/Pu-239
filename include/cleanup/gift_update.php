@@ -1,9 +1,9 @@
 <?php
 function gift_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
-    set_time_limit(0);
-    ignore_user_abort(1);
+    global $site_config, $queries, $mc1;
+    set_time_limit(1200);
+    ignore_user_abort(true);
     $res = sql_query("SELECT id, modcomment FROM users WHERE gotgift='yes'") or sqlerr(__FILE__, __LINE__);
     $users_buffer = [];
     if (mysqli_num_rows($res) > 0) {
@@ -13,12 +13,12 @@ function gift_update($data)
             $mc1->update_row(false, [
                 'gotgift' => 'no',
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('MyUser_' . $arr['id']);
             $mc1->update_row(false, [
                 'gotgift' => 'no',
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
         }
         $count = count($users_buffer);
         if ($count > 0) {

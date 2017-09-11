@@ -9,7 +9,7 @@
  */
 
 // Path to the chat directory:
-define('AJAX_CHAT_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'chat' . DIRECTORY_SEPARATOR);
+define('AJAX_CHAT_PATH', realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'chat' . DIRECTORY_SEPARATOR);
 
 // Include custom libraries and initialization code:
 require_once AJAX_CHAT_PATH . 'lib' . DIRECTORY_SEPARATOR . 'custom.php';

@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('setclass'));
@@ -16,20 +16,20 @@ if (isset($_GET['action']) && htmlsafechars($_GET['action']) == 'editclass') { /
     $mc1->update_row(false, [
         'override_class' => $newclass,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
     $mc1->begin_transaction('user' . $CURUSER['id']);
     $mc1->update_row(false, [
         'override_class' => $newclass,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
-    header("Location: {$INSTALLER09['baseurl']}/" . $returnto);
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
+    header("Location: {$site_config['baseurl']}/" . $returnto);
     exit();
 }
 // HTML Code to allow changes to current class
 $HTMLOUT .= "<br>
 <font size='4'><b>{$lang['set_class_allow']}</b></font>
 <br><br>
-<form method='get' action='{$INSTALLER09['baseurl']}/setclass.php'>
+<form method='get' action='{$site_config['baseurl']}/setclass.php'>
 	<input type='hidden' name='action' value='editclass' />
 	<input type='hidden' name='returnto' value='userdetails.php?id=" . (int)$CURUSER['id'] . "' />
 	<table width='150' border='2' cellspacing='5' cellpadding='5'>

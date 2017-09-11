@@ -1,9 +1,9 @@
 <?php
-global $INSTALLER09, $CURUSER;
+global $site_config, $CURUSER;
 //====  make sure name is what you expect or error... add or remove to match your site
 if (isset($_POST['gname'])) {
     $gname = htmlspecialchars($_POST['gname']);
-    $all_our_games = $INSTALLER09['arcade_games'];
+    $all_our_games = $site_config['arcade_games'];
     if (!in_array($gname, $all_our_games)) {
         stderr('Error', 'I smell a fat rat!');
     }
@@ -25,24 +25,24 @@ $highScore = 0;
 $highScore = get_one_row('flashscores', 'score', 'WHERE game = '.sqlesc($gname).' ORDER BY score DESC limit 1');
 
 sql_query('INSERT INTO flashscores (game, user_id, level, score) VALUES ('.sqlesc($gname).', '.sqlesc($CURUSER['id']).', '.sqlesc($level).', '.sqlesc($score).')') or sqlerr(__FILE__, __LINE__);
-$game_id = array_search($gname, $INSTALLER09['arcade_games']);
-$game = $INSTALLER09['arcade_games_names'][$game_id];
-$link = '[url='.$INSTALLER09['baseurl'].'/flash.php?gameURI='.$gname.'.swf&gamename='.$gname.'&game_id='.$game_id.']'.$game.'[/url]';
-//$link = '[url=' . $INSTALLER09['baseurl'] . '/arcade.php]' . $game . '[/url]';
+$game_id = array_search($gname, $site_config['arcade_games']);
+$game = $site_config['arcade_games_names'][$game_id];
+$link = '[url='.$site_config['baseurl'].'/flash.php?gameURI='.$gname.'.swf&gamename='.$gname.'&game_id='.$game_id.']'.$game.'[/url]';
+//$link = '[url=' . $site_config['baseurl'] . '/arcade.php]' . $game . '[/url]';
 $classColor = get_user_class_color($CURUSER['class']);
 if ($highScore < $score) {
-    $message = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just set a new high score of ".number_format($score)." in $link and earned {$INSTALLER09['top_score_points']} karma points.";
+    $message = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just set a new high score of ".number_format($score)." in $link and earned {$site_config['top_score_points']} karma points.";
     $bonuscomment = get_one_row('users', 'bonuscomment', 'WHERE id = '.$CURUSER['id']);
-    $bonuscomment = get_date(TIME_NOW, 'DATE', 1)." - {$INSTALLER09['top_score_points']} Points for setting a new high score in $game.\n ".$bonuscomment;
-    sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($INSTALLER09['top_score_points']) . ', bonuscomment = '.sqlesc($bonuscomment).' WHERE id = '.sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    $bonuscomment = get_date(TIME_NOW, 'DATE', 1)." - {$site_config['top_score_points']} Points for setting a new high score in $game.\n ".$bonuscomment;
+    sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['top_score_points']) . ', bonuscomment = '.sqlesc($bonuscomment).' WHERE id = '.sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $seedbonus = get_one_row('users', 'seedbonus', 'WHERE id = '.$CURUSER['id']);
 
     $mc1->begin_transaction('userstats_'.$CURUSER['id']);
     $mc1->update_row(false, array('seedbonus' => $seedbonus));
-    $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+    $mc1->commit_transaction($site_config['expires']['u_stats']);
     $mc1->begin_transaction('user_stats_'.$CURUSER['id']);
     $mc1->update_row(false, array('seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment));
-    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+    $mc1->commit_transaction($site_config['expires']['user_stats']);
 } elseif ($score >= .9 * $highScore) {
     $message = "[color=#$classColor][b]{$CURUSER['username']}[/b][/color] has just played $link and scored a whopping ".number_format($score).'. Excellent! The high score remains '.number_format($highScore).'.';
 } else {
@@ -50,7 +50,7 @@ if ($highScore < $score) {
 }
 
 require_once INCL_DIR.'user_functions.php';
-if ($INSTALLER09['autoshout_on'] == 1) {
+if ($site_config['autoshout_on'] == 1) {
     autoshout($message);
 }
 // update alltime high scores
@@ -71,4 +71,4 @@ while ($row = $res->fetch_assoc()) {
     }
 }
 
-header('Location: ' . $INSTALLER09['baseurl'] . "/arcade_top_scores.php#{$gname}");
+header('Location: ' . $site_config['baseurl'] . "/arcade_top_scores.php#{$gname}");

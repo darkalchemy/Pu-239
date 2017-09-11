@@ -11,11 +11,11 @@ if ($cats) {
 }
 if (!empty($torrent_pass)) {
     if (strlen($torrent_pass) != 32) {
-        die('Your passkey is not long enough! Go to ' . $INSTALLER09['site_name'] . ' and reset your passkey');
+        die('Your passkey is not long enough! Go to ' . $site_config['site_name'] . ' and reset your passkey');
     } else {
         $q0 = sql_query('SELECT * FROM users where torrent_pass = ' . sqlesc($torrent_pass)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($q0) == 0) {
-            die('Your passkey is invalid! Go to ' . $INSTALLER09['site_name'] . ' and reset your passkey');
+            die('Your passkey is invalid! Go to ' . $site_config['site_name'] . ' and reset your passkey');
         } else {
             $CURUSER = mysqli_fetch_assoc($q0);
         }
@@ -23,7 +23,7 @@ if (!empty($torrent_pass)) {
 } else {
     die('Your link doesn\'t have a passkey');
 }
-$INSTALLER09['rssdescr'] = $INSTALLER09['site_name'] . ' some motto goes here!';
+$site_config['rssdescr'] = $site_config['site_name'] . ' some motto goes here!';
 $where = !empty($cats) ? 't.category IN (' . $cats . ') AND ' : '';
 $where .= $CURUSER['class'] < UC_VIP ? 't.vip=\'0\' AND ' : '';
 $counts = [15, 30, 50, 100];
@@ -33,12 +33,12 @@ if (!empty($_GET['count']) && in_array((int)$_GET['count'], $counts)) {
     $limit = 'LIMIT 15';
 }
 header('Content-Type: application/xml');
-$HTMLOUT = "<?xml version=\"1.0\" encoding=\"windows-1251\" ?>\n<rss version=\"0.91\">\n<channel>\n" . '<title>' . $INSTALLER09['site_name'] . "</title>\n<link>" . $INSTALLER09['baseurl'] . "</link>\n<description>" . $INSTALLER09['rssdescr'] . "</description>\n" . "<language>en-usde</language>\n<copyright>Copyright © " . date('Y') . ' ' . $INSTALLER09['site_name'] . "</copyright>\n<webMaster>" . $INSTALLER09['site_email'] . '(' . $INSTALLER09['site_name'] . ")</webMaster>\n" . '<image><title>' . $INSTALLER09['site_name'] . "</title>\n<url>" . $INSTALLER09['baseurl'] . "/favicon.ico</url>\n<link>" . $INSTALLER09['baseurl'] . "</link>\n" . "<width>16</width>\n<height>16</height>\n<description>" . $INSTALLER09['rssdescr'] . "</description>\n</image>\n";
+$HTMLOUT = "<?xml version=\"1.0\" encoding=\"windows-1251\" ?>\n<rss version=\"0.91\">\n<channel>\n" . '<title>' . $site_config['site_name'] . "</title>\n<link>" . $site_config['baseurl'] . "</link>\n<description>" . $site_config['rssdescr'] . "</description>\n" . "<language>en-usde</language>\n<copyright>Copyright © " . date('Y') . ' ' . $site_config['site_name'] . "</copyright>\n<webMaster>" . $site_config['site_email'] . '(' . $site_config['site_name'] . ")</webMaster>\n" . '<image><title>' . $site_config['site_name'] . "</title>\n<url>" . $site_config['baseurl'] . "/favicon.ico</url>\n<link>" . $site_config['baseurl'] . "</link>\n" . "<width>16</width>\n<height>16</height>\n<description>" . $site_config['rssdescr'] . "</description>\n</image>\n";
 $res = sql_query('SELECT t.id,t.name,t.descr,t.size,t.category,t.seeders,t.leechers,t.added, c.name as catname FROM torrents as t LEFT JOIN categories as c ON t.category = c.id WHERE ' . $where . ' t.visible="yes" ORDER BY t.added DESC ' . $limit) or sqlerr(__FILE__, __LINE__);
 while ($a = mysqli_fetch_assoc($res)) {
-    $link = $INSTALLER09['baseurl'] . ($feed == 'dl' ? '/download.php?torrent=' . (int)$a['id'] . '&amp;torrent_pass=' . $torrent_pass : '/details.php?id=' . (int)$a['id'] . '&amp;hit=1');
+    $link = $site_config['baseurl'] . ($feed == 'dl' ? '/download.php?torrent=' . (int)$a['id'] . '&amp;torrent_pass=' . $torrent_pass : '/details.php?id=' . (int)$a['id'] . '&amp;hit=1');
     $br = '&lt;br/&gt;';
-    $guidlink = $INSTALLER09['baseurl'] . '/details.php?id=' . (int)$a['id'];
+    $guidlink = $site_config['baseurl'] . '/details.php?id=' . (int)$a['id'];
     $HTMLOUT .= '<item><title>' . htmlsafechars($a['name']) . "</title><link>{$link}</link><description>{$br}Category: " . htmlsafechars($a['catname']) . " {$br} Size: " . mksize((int)$a['size']) . " {$br} Leechers: " . (int)$a['leechers'] . " {$br} Seeders: " . (int)$a['seeders'] . " {$br} Added: " . get_date($a['added'], 'DATE') . " {$br} Description: " . htmlsafechars(substr($a['descr'], 0, 450)) . " {$br}</description>\n<guid>{$guidlink}</guid>\n<pubDate>" . date(DATE_RSS, $a['added']) . "</pubDate>\n</item>\n";
 }
 $HTMLOUT .= "</channel>\n</rss>\n";

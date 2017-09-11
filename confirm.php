@@ -21,7 +21,7 @@ if (!$row) {
     stderr("{$lang['confirm_user_error']}", "{$lang['confirm_invalid_id']}");
 }
 if ($row['status'] != 'pending') {
-    header("Refresh: 0; url={$INSTALLER09['baseurl']}/ok.php?type=confirmed");
+    header("Refresh: 0; url={$site_config['baseurl']}/ok.php?type=confirmed");
     exit();
 }
 $sec = $row['editsecret'];
@@ -33,13 +33,13 @@ $mc1->begin_transaction('MyUser_' . $id);
 $mc1->update_row(false, [
     'status' => 'confirmed',
 ]);
-$mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+$mc1->commit_transaction($site_config['expires']['curuser']);
 $mc1->begin_transaction('user' . $id);
 $mc1->update_row(false, [
     'status' => 'confirmed',
 ]);
-$mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+$mc1->commit_transaction($site_config['expires']['user_cache']);
 if (!mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
     stderr("{$lang['confirm_user_error']}", "{$lang['confirm_cannot_confirm']}");
 }
-header("Refresh: 0; url={$INSTALLER09['baseurl']}/ok.php?type=confirm");
+header("Refresh: 0; url={$site_config['baseurl']}/ok.php?type=confirm");

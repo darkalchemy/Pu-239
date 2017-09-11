@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -37,7 +37,7 @@ if ($ip) {
             $HTMLOUT .= "<tr><td>$first</td><td>$last</td><td>$comment</td></tr>\n";
         }
         $HTMLOUT .= "</table>\n";
-        stderr($lang['testip_result'], "<table border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded' style='padding-right: 5px'><img src='{$INSTALLER09['pic_base_url']}smilies/excl.gif' alt='' /></td><td class='embedded'>" . sprintf($lang['testip_notice2'], $ip) . "</td></tr></table><p>$HTMLOUT</p>");
+        stderr($lang['testip_result'], "<table border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded' style='padding-right: 5px'><img src='{$site_config['pic_base_url']}smilies/excl.gif' alt='' /></td><td class='embedded'>" . sprintf($lang['testip_notice2'], $ip) . "</td></tr></table><p>$HTMLOUT</p>");
     }
 }
 $HTMLOUT .= "

@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 require_once INCL_DIR . 'user_functions.php';
@@ -29,7 +29,7 @@ $ct_r = sql_query('SELECT id,name FROM countries ORDER BY name') or sqlerr(__FIL
 while ($ct_a = mysqli_fetch_assoc($ct_r)) {
     $countries .= "<option value='" . (int)$ct_a['id'] . "'" . ($CURUSER['country'] == $ct_a['id'] ? " selected='selected'" : '') . '>' . htmlsafechars($ct_a['name']) . "</option>\n";
 }
-$offset = ($CURUSER['time_offset'] != '') ? (string)$CURUSER['time_offset'] : (string)$INSTALLER09['time_offset'];
+$offset = ($CURUSER['time_offset'] != '') ? (string)$CURUSER['time_offset'] : (string)$site_config['time_offset'];
 $time_select = "<select name='user_timezone'>";
 foreach ($TZ as $off => $words) {
     if (preg_match("/^time_(-?[\d\.]+)$/", $off, $match)) {
@@ -75,16 +75,16 @@ $HTMLOUT .= "<fieldset><legend>Welcome <a href='userdetails.php?id=" . (int)$CUR
         <div class='span11'>
             <form method='post' action='takeeditcp.php'>
                 <div class='nav text-center'>
-                    <ul class='nav flex-grid'>
-                        <li class='flex_cell_9'><a href='usercp.php?action=avatar'>Avatar</a></li>
-                        <li class='flex_cell_9'><a href='usercp.php?action=signature'>Signature</a></li>
-                        <li class='flex_cell_9'><a href='usercp.php?action=default'>Pm's</a></li>
-                        <li class='flex_cell_9'><a href='usercp.php?action=security'>Security</a></li>
-                        <li class='flex_cell_9'><a href='usercp.php?action=torrents'>Torrents</a></li>
-                        <li class='flex_cell_9'><a href='usercp.php?action=personal'>Personal</a></li>
-                        <li class='flex_cell_9'><a href='usercp.php?action=social'>Social</a></li>
-                        <li class='flex_cell_9'><a href='usercp.php?action=location'>Location</a></li>
-                        <li class='flex_cell_9'><a href='usercp.php?action=links'>Links</a></li>
+                    <ul class='answers-container'>
+                        <li><a class='altlink' href='usercp.php?action=avatar'>Avatar</a></li>
+                        <li><a class='altlink' href='usercp.php?action=signature'>Signature</a></li>
+                        <li><a class='altlink' href='usercp.php?action=default'>Pm's</a></li>
+                        <li><a class='altlink' href='usercp.php?action=security'>Security</a></li>
+                        <li><a class='altlink' href='usercp.php?action=torrents'>Torrents</a></li>
+                        <li><a class='altlink' href='usercp.php?action=personal'>Personal</a></li>
+                        <li><a class='altlink' href='usercp.php?action=social'>Social</a></li>
+                        <li><a class='altlink' href='usercp.php?action=location'>Location</a></li>
+                        <li><a class='altlink' href='usercp.php?action=links'>Links</a></li>
                     </ul>
                 </div>
                 <div class='span2 pull-left'>
@@ -99,7 +99,7 @@ if (!empty($CURUSER['avatar']) && $CURUSER['av_w'] > 5 && $CURUSER['av_h'] > 5) 
                     </table>
                 </div>";
 } else {
-    $HTMLOUT .= "<tr><td><img class='img-polaroid' src='{$INSTALLER09['pic_base_url']}forumicons/default_avatar.gif' alt='' /></td></tr>
+    $HTMLOUT .= "<tr><td><img class='img-polaroid' src='{$site_config['pic_base_url']}forumicons/default_avatar.gif' alt='' /></td></tr>
         </table>
     </div>";
 }
@@ -114,8 +114,8 @@ if ($action == 'avatar') {
     if (!($CURUSER['avatarpos'] == 0 or $CURUSER['avatarpos'] != 1)) {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['usercp_avatar']}</td><td><input name='avatar' size='50' value='" . htmlsafechars($CURUSER['avatar']) . "' /><br>
     <font class='small'>Width should be 150px. (Will be resized if necessary)\n<br>
-    If you need a avatar, try our  <a href='{$INSTALLER09['baseurl']}/avatar/index.php'>Avatar creator</a>.<br>
-    If you need a host for your image, try our  <a href='{$INSTALLER09['baseurl']}/bitbucket.php'>Bitbucket</a>.</font>
+    If you need a avatar, try our  <a href='{$site_config['baseurl']}/avatar/index.php'>Avatar creator</a>.<br>
+    If you need a host for your image, try our  <a href='{$site_config['baseurl']}/bitbucket.php'>Bitbucket</a>.</font>
     </td></tr>";
     } else {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['usercp_avatar']}</td><td><input name='avatar' size='50' value='" . htmlsafechars($CURUSER['avatar']) . "' readonly='readonly'/>
@@ -193,11 +193,11 @@ elseif ($action == 'links') {
         <tr><td>" . htmlsafechars($CURUSER['username'], ENT_QUOTES) . "'s Entertainment</td></tr>
         <tr><td class='text-left'><a href='./topmoods.php'>Top Member Mood's</a></td></tr>";
     if ($CURUSER['class'] >= UC_POWER_USER) {
-        $HTMLOUT .= "<tr><td class='text-left'><a href='./games.php'>{$INSTALLER09['site_name']} Games</a></td></tr>";
-        $HTMLOUT .= "<tr><td class='text-left'><a href='./blackjack.php'>{$INSTALLER09['site_name']} Blackjack</a></td></tr>";
-        $HTMLOUT .= "<tr><td class='text-left'><a href='./casino.php'>{$INSTALLER09['site_name']} Casino</a></td></tr>";
-        $HTMLOUT .= "<tr><td class='text-left'><a href='./arcade.php'>{$INSTALLER09['site_name']} Arcade</a></td></tr>";
-        $HTMLOUT .= "<tr><td class='text-left'><a href='./lottery.php'>{$INSTALLER09['site_name']} Lottery</a></td></tr>";
+        $HTMLOUT .= "<tr><td class='text-left'><a href='./games.php'>{$site_config['site_name']} Games</a></td></tr>";
+        $HTMLOUT .= "<tr><td class='text-left'><a href='./blackjack.php'>{$site_config['site_name']} Blackjack</a></td></tr>";
+        $HTMLOUT .= "<tr><td class='text-left'><a href='./casino.php'>{$site_config['site_name']} Casino</a></td></tr>";
+        $HTMLOUT .= "<tr><td class='text-left'><a href='./arcade.php'>{$site_config['site_name']} Arcade</a></td></tr>";
+        $HTMLOUT .= "<tr><td class='text-left'><a href='./lottery.php'>{$site_config['site_name']} Lottery</a></td></tr>";
     }
     $HTMLOUT .= '</tbody>';
 } //== Security
@@ -306,7 +306,7 @@ elseif ($action == 'torrents') {
         $i = 0;
         while ($a = mysqli_fetch_assoc($r)) {
             $categories .= ($i && $i % 2 == 0) ? '</tr><tr>' : '';
-            $categories .= "<td class='bottom' style='padding-right: 5px'><input name='cat{$a['id']}' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? " checked='checked'" : '') . " value='yes' />&#160;<a class='catlink' href='browse.php?cat={$a['id']}'><img src='{$INSTALLER09['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlspecialchars($a['image']) . "' alt='" . htmlspecialchars($a['name']) . "' title='" . htmlspecialchars($a['name']) . "' /></a>&#160;" . htmlspecialchars($a['name']) . "</td>\n";
+            $categories .= "<td class='bottom' style='padding-right: 5px'><input name='cat{$a['id']}' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? " checked='checked'" : '') . " value='yes' />&#160;<a class='catlink' href='browse.php?cat={$a['id']}'><img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlspecialchars($a['image']) . "' alt='" . htmlspecialchars($a['name']) . "' title='" . htmlspecialchars($a['name']) . "' /></a>&#160;" . htmlspecialchars($a['name']) . "</td>\n";
             ++$i;
         }
         $categories .= "</tr></table>\n";

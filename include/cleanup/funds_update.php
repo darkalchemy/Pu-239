@@ -1,9 +1,9 @@
 <?php
 function funds_update($data)
 {
-    global $INSTALLER09, $queries, $mc1;
+    global $site_config, $queries, $mc1;
     set_time_limit(1200);
-    ignore_user_abort(1);
+    ignore_user_abort(true);
     // ===Clear funds after one month
     $secs = 30 * 86400;
     $dt = sqlesc(TIME_NOW - $secs);
@@ -16,7 +16,7 @@ function funds_update($data)
     $msgs_buffer = $users_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $subject = 'Donor status removed by system.';
-        $msg = "Your Donor status has timed out and has been auto-removed by the system, and your Vip status has been removed. We would like to thank you once again for your support to {$INSTALLER09['site_name']}. If you wish to re-new your donation, Visit the site paypal link. Cheers!\n";
+        $msg = "Your Donor status has timed out and has been auto-removed by the system, and your Vip status has been removed. We would like to thank you once again for your support to {$site_config['site_name']}. If you wish to re-new your donation, Visit the site paypal link. Cheers!\n";
         while ($arr = mysqli_fetch_assoc($res)) {
             $modcomment = $arr['modcomment'];
             $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - Donation status Automatically Removed By System.\n" . $modcomment;
@@ -30,19 +30,19 @@ function funds_update($data)
                 'donor'      => 'no',
                 'donoruntil' => 0,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $mc1->begin_transaction('user_stats_' . $arr['id']);
             $mc1->update_row(false, [
                 'modcomment' => $modcomment,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+            $mc1->commit_transaction($site_config['expires']['user_stats']);
             $mc1->begin_transaction('MyUser_' . $arr['id']);
             $mc1->update_row(false, [
                 'class'      => $update['class'],
                 'donor'      => 'no',
                 'donoruntil' => 0,
             ]);
-            $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+            $mc1->commit_transaction($site_config['expires']['curuser']);
             $mc1->delete_value('inbox_new_' . $arr['id']);
             $mc1->delete_value('inbox_new_sb_' . $arr['id']);
         }

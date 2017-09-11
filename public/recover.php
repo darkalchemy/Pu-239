@@ -1,9 +1,9 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 dbconn();
-global $CURUSER, $INSTALLER09;
+global $CURUSER, $site_config;
 if (!$CURUSER) {
     get_template();
 }
@@ -11,14 +11,14 @@ $lang = array_merge(load_language('global'), load_language('recover'));
 $stdhead = [
     /* include js **/
     'js' => [
-        'df4d2f6e49d01dad532d335c41bfd2c1.min'
+        get_file('captcha1_js')
     ],
 ];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (!mkglobal('email' . ($INSTALLER09['captcha_on'] ? ':captchaSelection' : '') . '')) {
+    if (!mkglobal('email' . ($site_config['captcha_on'] ? ':captchaSelection' : '') . '')) {
         stderr('Oops', 'Missing form data - You must fill all fields');
     }
-    if ($INSTALLER09['captcha_on']) {
+    if ($site_config['captcha_on']) {
         if (empty($captchaSelection) || getSessionVar('simpleCaptchaAnswer') != $captchaSelection) {
             header('Location: recover.php');
             exit();
@@ -34,8 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_dberror']}");
     }
     $hash = $arr['passhash'];
-    $body = sprintf($lang['email_request'], $email, $_SERVER['REMOTE_ADDR'], $INSTALLER09['baseurl'], $arr['id'], $hash) . $INSTALLER09['site_name'];
-    @mail($arr['email'], "{$INSTALLER09['site_name']} {$lang['email_subjreset']}", $body, "From: {$INSTALLER09['site_email']}") or stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_nomail']}");
+    $body = sprintf($lang['email_request'], $email, $_SERVER['REMOTE_ADDR'], $site_config['baseurl'], $arr['id'], $hash) . $site_config['site_name'];
+    @mail($arr['email'], "{$site_config['site_name']} {$lang['email_subjreset']}", $body, "From: {$site_config['site_email']}") or stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_nomail']}");
     stderr($lang['stderr_successhead'], $lang['stderr_confmailsent']);
     unsetSessionVar('simpleCaptchaAnswer');
     unsetSessionVar('simpleCaptchaTimestamp');
@@ -53,8 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_noupdate']}");
     }
-    $body = sprintf($lang['email_newpass'], $arr['username'], $newpassword, $INSTALLER09['baseurl']) . $INSTALLER09['site_name'];
-    @mail($email, "{$INSTALLER09['site_name']} {$lang['email_subject']}", $body, "From: {$INSTALLER09['site_email']}") or stderr($lang['stderr_errorhead'], $lang['stderr_nomail']);
+    $body = sprintf($lang['email_newpass'], $arr['username'], $newpassword, $site_config['baseurl']) . $site_config['site_name'];
+    @mail($email, "{$site_config['site_name']} {$lang['email_subject']}", $body, "From: {$site_config['site_email']}") or stderr($lang['stderr_errorhead'], $lang['stderr_nomail']);
     stderr($lang['stderr_successhead'], $lang['stderr_mailed']);
     unsetSessionVar('simpleCaptchaAnswer');
     unsetSessionVar('simpleCaptchaTimestamp');
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $HTMLOUT .= "
     <div class='login-container center-block'>
         <form method='post' action='{$_SERVER['PHP_SELF']}'>
-            <table border='1' cellspacing='0' cellpadding='10'>" . ($INSTALLER09['captcha_on'] ? "
+            <table border='1' cellspacing='0' cellpadding='10'>" . ($site_config['captcha_on'] ? "
                 <tr>
                     <td colspan='2'>
                         <h2 class='text-center'>{$lang['recover_unamepass']}</h2>

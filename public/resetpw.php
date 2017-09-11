@@ -1,10 +1,10 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 dbconn();
 
-global $CURUSER, $INSTALLER09;
+global $CURUSER, $site_config;
 if (!$CURUSER) {
     get_template();
 }
@@ -12,7 +12,7 @@ $lang = array_merge(load_language('global'), load_language('passhint'));
 $stdfoot = [
     /* include js **/
     'js' => [
-        'df4d2f6e49d01dad532d335c41bfd2c1.min'
+        get_file('captcha1_js')
     ],
 ];
 $HTMLOUT = '';
@@ -23,10 +23,10 @@ if ($CURUSER) {
 $step = (isset($_GET['step']) ? (int)$_GET['step'] : (isset($_POST['step']) ? (int)$_POST['step'] : ''));
 if ($step == '1') {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if (!mkglobal('email' . ($INSTALLER09['captcha_on'] ? ':captchaSelection' : '') . '')) {
+        if (!mkglobal('email' . ($site_config['captcha_on'] ? ':captchaSelection' : '') . '')) {
             stderr('Oops', 'Missing form data - You must fill all fields');
         }
-        if ($INSTALLER09['captcha_on']) {
+        if ($site_config['captcha_on']) {
             if (empty($captchaSelection) || !hash_equals($captchaSelection, getSessionVar('simpleCaptchaAnswer'))) {
                 stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error2']}");
                 exit();
@@ -153,18 +153,18 @@ if ($step == '1') {
     $mc1->update_row(false, [
         'passhash'   => $newpassword,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
     $mc1->begin_transaction('user' . $id);
     $mc1->update_row(false, [
         'passhash'   => $newpassword,
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
     unsetSessionVar('simpleCaptchaAnswer');
     unsetSessionVar('simpleCaptchaTimestamp');
     if (!mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error13']}");
     } else {
-        stderr("{$lang['stderr_successhead']}", "{$lang['stderr_error14']} <a href='{$INSTALLER09['baseurl']}/login.php' class='altlink'><b>{$lang['stderr_error15']}</b></a> {$lang['stderr_error16']}", false);
+        stderr("{$lang['stderr_successhead']}", "{$lang['stderr_error14']} <a href='{$site_config['baseurl']}/login.php' class='altlink'><b>{$lang['stderr_error15']}</b></a> {$lang['stderr_error16']}", false);
     }
 } else {
     $HTMLOUT.= "
@@ -177,7 +177,7 @@ if ($step == '1') {
                 <tr>
                     <td class='rowhead'>{$lang['main_email_add']}</td>
                     <td><input type='text' size='40' name='email' /></td>
-                </tr>" . ($INSTALLER09['captcha_on'] ? "
+                </tr>" . ($site_config['captcha_on'] ? "
                 <tr>
                     <td class='rowhead' colspan='2' id='captcha_show'></td>
                 </tr>" : '') . "

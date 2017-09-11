@@ -1,7 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER09_ADMIN')) {
+if (!defined('IN_site_config_ADMIN')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 require_once INCL_DIR . 'user_functions.php';
@@ -28,12 +28,12 @@ if (isset($mode) && $mode == 'change') {
         $mc1->update_row(false, [
             'username' => $uname,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+        $mc1->commit_transaction($site_config['expires']['curuser']);
         $mc1->begin_transaction('user' . $uid);
         $mc1->update_row(false, [
             'username' => $uname,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+        $mc1->commit_transaction($site_config['expires']['user_cache']);
         $added = TIME_NOW;
         $changed = sqlesc("{$lang['namechanger_changed_to']} $uname");
         $subject = sqlesc($lang['namechanger_changed']);

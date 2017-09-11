@@ -17,14 +17,14 @@ if (isset($_GET['id'])) {
         $mc1->update_row(false, [
             'mood' => $moodid,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+        $mc1->commit_transaction($site_config['expires']['curuser']);
         $mc1->begin_transaction('user' . $CURUSER['id']);
         $mc1->update_row(false, [
             'mood' => $moodid,
         ]);
-        $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+        $mc1->commit_transaction($site_config['expires']['user_cache']);
         $mc1->delete_value('topmoods');
-        write_log('<b>' . $lang['user_mood_change'] . '</b> ' . $CURUSER['username'] . ' ' . htmlsafechars($rmood['name']) . '<img src="' . $INSTALLER09['pic_base_url'] . 'smilies/' . htmlsafechars($rmood['image']) . '" alt="" />');
+        write_log('<b>' . $lang['user_mood_change'] . '</b> ' . $CURUSER['username'] . ' ' . htmlsafechars($rmood['name']) . '<img src="' . $site_config['pic_base_url'] . 'smilies/' . htmlsafechars($rmood['image']) . '" alt="" />');
         $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
       <html xmlns="http://www.w3.org/1999/xhtml">
@@ -62,7 +62,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
     }
     $HTMLOUT .= '<td>
          <a href="?id=' . (int)$arr['id'] . '">
-         <img src="' . $INSTALLER09['pic_base_url'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt="" />' . htmlsafechars($arr['name']) . '
+         <img src="' . $site_config['pic_base_url'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt="" />' . htmlsafechars($arr['name']) . '
          </a>
          </td>';
     ++$count;

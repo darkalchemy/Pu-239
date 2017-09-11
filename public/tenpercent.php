@@ -1,10 +1,10 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'));
-global $INSTALLER09;
+global $site_config;
 
 $uploaded = (int)$CURUSER['uploaded'];
 $downloaded = (int)$CURUSER['downloaded'];
@@ -35,22 +35,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mc1->update_row(false, [
         'uploaded' => $update['uploaded'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['u_stats']);
+    $mc1->commit_transaction($site_config['expires']['u_stats']);
     $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
     $mc1->update_row(false, [
         'uploaded' => $update['uploaded'],
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_stats']);
+    $mc1->commit_transaction($site_config['expires']['user_stats']);
     $mc1->begin_transaction('user' . $CURUSER['id']);
     $mc1->update_row(false, [
         'tenpercent' => 'yes',
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
     $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
     $mc1->update_row(false, [
         'tenpercent' => 'yes',
     ]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
     $res1 = sql_query('INSERT INTO messages (sender, poster, receiver, subject, msg, added) VALUES (0, 0, ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($subject) . ', ' . sqlesc($msg) . ", '" . TIME_NOW . "')") or sqlerr(__FILE__, __LINE__);
     $mc1->delete_value('inbox_new_' . $CURUSER['id']);
     $mc1->delete_value('inbox_new_sb_' . $CURUSER['id']);

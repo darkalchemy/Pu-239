@@ -18,7 +18,7 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
         }
         $resip = sql_query('SELECT ip FROM ips WHERE userid = ' . sqlesc($id) . ' GROUP BY ip') or sqlerr(__FILE__, __LINE__);
         $iphistory['ips'] = mysqli_num_rows($resip);
-        $mc1->cache_value('ip_history_' . $id, $iphistory, $INSTALLER09['expires']['iphistory']);
+        $mc1->cache_value('ip_history_' . $id, $iphistory, $site_config['expires']['iphistory']);
     }
     if (isset($addr)) {
         if ($CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
@@ -26,7 +26,7 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
         }
     }
     if ($CURUSER['class'] >= UC_STAFF && $iphistory['ips'] > 0) {
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_ip_history']}</td><td align='left'>{$lang['userdetails_ip_earlier']}<b><a href='{$INSTALLER09['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=" . (int)$user['id'] . "'>{$iphistory['ips']} {$lang['userdetails_ip_different']}</a></b></td></tr>\n";
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_ip_history']}</td><td align='left'>{$lang['userdetails_ip_earlier']}<b><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=" . (int)$user['id'] . "'>{$iphistory['ips']} {$lang['userdetails_ip_different']}</a></b></td></tr>\n";
     }
 }
 //==end

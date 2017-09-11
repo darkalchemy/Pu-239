@@ -25,17 +25,17 @@ if (($stats_cache = $mc1->get_value('site_stats_')) === false) {
     $stats_cache['moderators'] = (int)$stats_cache['moderators'];
     $stats_cache['administrators'] = (int)$stats_cache['administrators'];
     $stats_cache['sysops'] = (int)$stats_cache['sysops'];
-    $mc1->cache_value('site_stats_', $stats_cache, $INSTALLER09['expires']['site_stats']);
+    $mc1->cache_value('site_stats_', $stats_cache, $site_config['expires']['site_stats']);
 }
 $HTMLOUT .= "
     <a id='stats-hash'></a>
     <fieldset id='stats' class='header'>
-        <legend class='flipper'><i class='fa fa-angle-up' aria-hidden='true'></i>{$lang['index_stats_title']}</legend>
+        <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_stats_title']}</legend>
         <div class='cite text-center'>
             <table class='table table-bordered  table-striped'>
                 <tbody>
                     <tr>
-                        <td class='row-fluid span2'>{$lang['index_stats_regged']}</td><td class='row-fluid span1'>{$stats_cache['regusers']}/{$INSTALLER09['maxusers']}</td>
+                        <td class='row-fluid span2'>{$lang['index_stats_regged']}</td><td class='row-fluid span1'>{$stats_cache['regusers']}/{$site_config['maxusers']}</td>
                         <td class='row-fluid span2'>{$lang['index_stats_online']}</td><td class='row-fluid span1'>{$stats_cache['numactive']}</td>
                     </tr>
                     <tr>

@@ -11,11 +11,11 @@ if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
     sql_query('UPDATE users SET last_browse=' . TIME_NOW . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
     $mc1->update_row(false, ['last_browse' => TIME_NOW]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
     $mc1->begin_transaction('user' . $CURUSER['id']);
     $mc1->update_row(false, ['last_browse' => TIME_NOW]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
-    header("Location: {$INSTALLER09['baseurl']}/torrents-today.php");
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
+    header("Location: {$site_config['baseurl']}/torrents-today.php");
 }
 $stdfoot = [
     'js' => [
@@ -166,7 +166,7 @@ if (($count = $mc1->get_value($where_key)) === false) {
     $res = sql_query("SELECT COUNT(id) FROM torrents $where") or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_row($res);
     $count = (int)$row[0];
-    $mc1->cache_value($where_key, $count, $INSTALLER09['expires']['browse_where']);
+    $mc1->cache_value($where_key, $count, $site_config['expires']['browse_where']);
 }
 $torrentsperpage = $CURUSER['torrentsperpage'];
 if (!$torrentsperpage) {
@@ -188,7 +188,7 @@ if ($count) {
     $pager = pager($torrentsperpage, $count, 'torrents-today.php?' . $addparam);
 
     /*
-    $INSTALLER09['expires']['torrent_browse'] = 30;
+    $site_config['expires']['torrent_browse'] = 30;
     if (($torrents = $mc1->get_value('torrent_browse_' . $CURUSER['class'])) === false) {
     $tor_fields_ar_int = array(
         'id',
@@ -239,14 +239,14 @@ if ($count) {
         'tags'
     );
     $tor_fields = implode(', ', array_merge($tor_fields_ar_int, $tor_fields_ar_str));
-    $result = sql_query("SELECT " . $tor_fields . ", LENGTH(nfo) AS nfosz, IF(num_ratings < {$INSTALLER09['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating FROM torrents {$where} {$orderby} {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
+    $result = sql_query("SELECT " . $tor_fields . ", LENGTH(nfo) AS nfosz, IF(num_ratings < {$site_config['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating FROM torrents {$where} {$orderby} {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
     $torrents = mysqli_fetch_assoc($result);
     foreach ($tor_fields_ar_int as $i) $torrents[$i] = (int)$torrents[$i];
     foreach ($tor_fields_ar_str as $i) $torrents[$i] = $torrents[$i];
-    $mc1->cache_value('torrent_browse_' . $CURUSER['class'], $torrents, $INSTALLER09['expires']['torrent_browse']);
+    $mc1->cache_value('torrent_browse_' . $CURUSER['class'], $torrents, $site_config['expires']['torrent_browse']);
     }
     */
-    $query = "SELECT id, search_text, category, leechers, seeders, bump, release_group, subs, name, times_completed, size, added, poster, descr, type, free, silver, comments, numfiles, filename, anonymous, sticky, nuked, vip, nukereason, newgenre, description, owner, username, youtube, checked_by, IF(nfo <> '', 1, 0) as nfoav," . "IF(num_ratings < {$INSTALLER09['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating " . "FROM torrents {$where} {$orderby} {$pager['limit']}";
+    $query = "SELECT id, search_text, category, leechers, seeders, bump, release_group, subs, name, times_completed, size, added, poster, descr, type, free, silver, comments, numfiles, filename, anonymous, sticky, nuked, vip, nukereason, newgenre, description, owner, username, youtube, checked_by, IF(nfo <> '', 1, 0) as nfoav," . "IF(num_ratings < {$site_config['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating " . "FROM torrents {$where} {$orderby} {$pager['limit']}";
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
 } else {
     unset($query);
@@ -275,18 +275,18 @@ $HTMLOUT .= "<br><br>
     <tr>";
 $i = 0;
 foreach ($cats as $cat) {
-    $HTMLOUT .= ($i && $i % $INSTALLER09['catsperrow'] == 0) ? '</tr><tr>' : '';
+    $HTMLOUT .= ($i && $i % $site_config['catsperrow'] == 0) ? '</tr><tr>' : '';
     $HTMLOUT .= "<td class='bottom' style=\"padding-bottom: 2px;padding-left: 7px\">
-      <input name='c" . (int)$cat['id'] . "' class=\"styled\" type=\"checkbox\" " . (in_array($cat['id'], $wherecatina) ? "checked='checked' " : '') . "value='1' /><a class='catlink' href='torrents-today.php?cat=" . (int)$cat['id'] . "'> " . (($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) ? "<img src='{$INSTALLER09['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($cat['image']) . "' alt='" . htmlsafechars($cat['name']) . "' title='" . htmlsafechars($cat['name']) . "' />" : '' . htmlsafechars($cat['name']) . '') . "</a></td>\n";
+      <input name='c" . (int)$cat['id'] . "' class=\"styled\" type=\"checkbox\" " . (in_array($cat['id'], $wherecatina) ? "checked='checked' " : '') . "value='1' /><a class='catlink' href='torrents-today.php?cat=" . (int)$cat['id'] . "'> " . (($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) ? "<img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($cat['image']) . "' alt='" . htmlsafechars($cat['name']) . "' title='" . htmlsafechars($cat['name']) . "' />" : '' . htmlsafechars($cat['name']) . '') . "</a></td>\n";
     ++$i;
 }
 $alllink = "<div align='left'>&#160;</div>";
 $ncats = count($cats);
-$nrows = ceil($ncats / $INSTALLER09['catsperrow']);
-$lastrowcols = $ncats % $INSTALLER09['catsperrow'];
+$nrows = ceil($ncats / $site_config['catsperrow']);
+$lastrowcols = $ncats % $site_config['catsperrow'];
 if ($lastrowcols != 0) {
-    if ($INSTALLER09['catsperrow'] - $lastrowcols != 1) {
-        $HTMLOUT .= "<td class='bottom' rowspan='" . ($INSTALLER09['catsperrow'] - $lastrowcols - 1) . "'>&#160;</td>";
+    if ($site_config['catsperrow'] - $lastrowcols != 1) {
+        $HTMLOUT .= "<td class='bottom' rowspan='" . ($site_config['catsperrow'] - $lastrowcols - 1) . "'>&#160;</td>";
     }
     $HTMLOUT .= "<td class='bottom' style=\"padding-left: 5px\">$alllink</td>\n";
 }
@@ -296,7 +296,7 @@ $HTMLOUT .= "</tr>
     <td class='bottom'>
     <table class='main'>
     <tr><td>&#160;</td>";
-if ($ncats % $INSTALLER09['catsperrow'] == 0) {
+if ($ncats % $site_config['catsperrow'] == 0) {
     $HTMLOUT .= "<td class='bottom' style='padding-left: 15px' rowspan='$nrows' valign='middle' align='right'>$alllink</td>\n";
 }
 $HTMLOUT .= '</tr>
@@ -313,10 +313,10 @@ if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     sql_query('UPDATE users SET last_browse=' . TIME_NOW . ' where id=' . $CURUSER['id']);
     $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
     $mc1->update_row(false, ['last_browse' => TIME_NOW]);
-    $mc1->commit_transaction($INSTALLER09['expires']['curuser']);
+    $mc1->commit_transaction($site_config['expires']['curuser']);
     $mc1->begin_transaction('user' . $CURUSER['id']);
     $mc1->update_row(false, ['last_browse' => TIME_NOW]);
-    $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+    $mc1->commit_transaction($site_config['expires']['user_cache']);
 }
 $HTMLOUT .= "<br>
     <table width='1000' class='main' border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>

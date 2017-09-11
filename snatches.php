@@ -7,7 +7,7 @@ $lang = array_merge(load_language('global'), load_language('snatches'));
 $HTMLOUT = '';
 if (empty($_GET['id'])) {
     setSessionVar('error', 'Invalid Information');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 $id = (int)$_GET['id'];
@@ -27,7 +27,7 @@ $pager = pager($perpage, $count, "snatches.php?id=$id&amp;");
 if (!$count) {
     stderr('No snatches', "It appears that there are currently no snatches for the torrent <a href='details.php?id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['name']) . '</a>.');
 }
-$HTMLOUT .= "<h1>Snatches for torrent <a href='{$INSTALLER09['baseurl']}/details.php?id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></h1>\n";
+$HTMLOUT .= "<h1>Snatches for torrent <a href='{$site_config['baseurl']}/details.php?id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></h1>\n";
 $HTMLOUT .= "<h2>Currently {$row['0']} snatch" . ($row[0] == 1 ? '' : 'es') . "</h2>\n";
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
@@ -38,8 +38,8 @@ $HTMLOUT .= "<table width='78%'border='0' cellspacing='0' cellpadding='5'>
 <td class='colhead text-center'>{$lang['snatches_connectable']}</td>
 <td class='colhead text-right'>{$lang['snatches_uploaded']}</td>
 <td class='colhead text-right'>{$lang['snatches_upspeed']}</td>
-" . ($INSTALLER09['ratio_free'] ? '' : "<td class='colhead text-right'>{$lang['snatches_downloaded']}</td>") . '
-' . ($INSTALLER09['ratio_free'] ? '' : "<td class='colhead text-right'>{$lang['snatches_downspeed']}</td>") . "
+" . ($site_config['ratio_free'] ? '' : "<td class='colhead text-right'>{$lang['snatches_downloaded']}</td>") . '
+' . ($site_config['ratio_free'] ? '' : "<td class='colhead text-right'>{$lang['snatches_downspeed']}</td>") . "
 <td class='colhead text-right'>{$lang['snatches_ratio']}</td>
 <td class='colhead text-right'>{$lang['snatches_completed']}</td>
 <td class='colhead text-right'>{$lang['snatches_seedtime']}</td>
@@ -64,8 +64,8 @@ while ($arr = mysqli_fetch_assoc($res)) {
   <td class='text-center'>" . ($arr['connectable'] == 'yes' ? "<font color='green'>Yes</font>" : "<font color='red'>No</font>") . "</td>
   <td class='text-right'>" . mksize($arr['uploaded']) . "</td>
   <td class='text-right'>" . htmlsafechars($upspeed) . '/s</td>
-  ' . ($INSTALLER09['ratio_free'] ? '' : "<td class='text-right'>" . mksize($arr['downloaded']) . '</td>') . '
-  ' . ($INSTALLER09['ratio_free'] ? '' : "<td class='text-right'>" . htmlsafechars($downspeed) . '/s</td>') . "
+  ' . ($site_config['ratio_free'] ? '' : "<td class='text-right'>" . mksize($arr['downloaded']) . '</td>') . '
+  ' . ($site_config['ratio_free'] ? '' : "<td class='text-right'>" . htmlsafechars($downspeed) . '/s</td>') . "
   <td class='text-right'>" . htmlsafechars($ratio) . "</td>
   <td class='text-right'>" . htmlsafechars($completed) . "</td>
   <td class='text-right'>" . mkprettytime($arr['seedtime']) . "</td>

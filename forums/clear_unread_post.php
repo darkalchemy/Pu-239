@@ -1,7 +1,7 @@
 <?php
 if (!defined('BUNNY_FORUMS')) {
     setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$INSTALLER09['baseurl']}/index.php");
+    header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
 global $lang;
@@ -21,5 +21,5 @@ if ($check_it_arr['last_post_read'] > 0) {
     $mc1->delete_value('sv_last_read_post_' . $topic_id . '_' . $CURUSER['id']);
 }
 //=== ok, all done here, send them back! \o/
-header('Location: ' . $INSTALLER09['baseurl'] . '/forums.php?action=view_unread_posts');
+header('Location: ' . $site_config['baseurl'] . '/forums.php?action=view_unread_posts');
 exit();

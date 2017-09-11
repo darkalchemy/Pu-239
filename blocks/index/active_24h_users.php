@@ -26,7 +26,7 @@ if (($last24_cache = $mc1->get_value($keys['last24'])) === false) {
     $last24_cache['last24record'] = $last24record;
     $last24_cache['last24'] = number_format($last24);
     $last24_cache['ss24'] = $_ss24;
-    $mc1->cache_value($keys['last24'], $last24_cache, $INSTALLER09['expires']['last24']);
+    $mc1->cache_value($keys['last24'], $last24_cache, $site_config['expires']['last24']);
 }
 if (!$last24_cache['activeusers24']) {
     $last24_cache['activeusers24'] = $lang['index_last24_nousers'];
@@ -39,7 +39,7 @@ if ($last24_cache['totalonline24'] != 1) {
 $HTMLOUT .= "
         <a id='active24-hash'></a>
         <fieldset id='active24' class='header'>
-            <legend class='flipper'><i class='fa fa-angle-up' aria-hidden='true'></i>{$lang['index_active24']}<small><b>{$lang['index_last24_list']}</b></small></legend>
+            <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_active24']}<small><b>{$lang['index_last24_list']}</b></small></legend>
             <div class='text-center'>
                 <p><b>{$last24_cache['totalonline24']}{$last24_cache['ss24']}{$lang['index_last24_during']}</b></p>
                 <p>{$last24_cache['activeusers24']}</p>

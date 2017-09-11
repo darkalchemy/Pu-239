@@ -35,7 +35,7 @@ if (isset($_POST['action']) == 'add' && $CURUSER['class'] >= UC_SYSOP) {
     $status = ($_POST['status']);
     $credit = ($_POST['credit']);
     sql_query('INSERT INTO modscredits (name, description,  category,  pu239lnk,  status, credit) VALUES(' . sqlesc($name) . ', ' . sqlesc($description) . ', ' . sqlesc($category) . ', ' . sqlesc($link) . ', ' . sqlesc($status) . ', ' . sqlesc($credit) . ')') or sqlerr(__FILE__, __LINE__);
-    header("Location: {$INSTALLER09['baseurl']}/credits.php");
+    header("Location: {$site_config['baseurl']}/credits.php");
     exit();
 }
 
@@ -44,7 +44,7 @@ if ($action == 'delete' && $CURUSER['class'] >= UC_SYSOP) {
         stderr("{$lang['credits_error']}", "{$lang['credits_error2']}");
     }
     sql_query("DELETE FROM modscredits where id = '$id'") or sqlerr(__FILE__, __LINE__);
-    header("Location: {$INSTALLER09['baseurl']}/credits.php");
+    header("Location: {$site_config['baseurl']}/credits.php");
     exit();
 }
 

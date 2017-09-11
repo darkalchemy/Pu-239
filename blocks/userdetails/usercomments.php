@@ -2,7 +2,7 @@
 function usercommenttable($rows)
 {
     $htmlout = '';
-    global $CURUSER, $INSTALLER09, $userid, $lang;
+    global $CURUSER, $site_config, $userid, $lang;
     $htmlout .= "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>" . "<tr><td class='embedded'>";
     $htmlout .= begin_frame();
     $count = 0;
@@ -15,14 +15,14 @@ function usercommenttable($rows)
             } else {
                 $title = htmlsafechars($title);
             }
-            $htmlout .= "<a name='comm" . (int)$row['id'] . "' href='userdetails.php?id=" . (int)$row['user'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>' . ($row['donor'] == 'yes' ? "<img src=\"{$INSTALLER09['pic_base_url']}star.gif\" alt='{$lang['userdetails_donor']}' />" : '') . ($row['warned'] >= '1' ? '<img src=' . "\"{$INSTALLER09['pic_base_url']}warned.gif\" alt=\"{$lang['userdetails_warned']}\" />" : '') . " ($title)\n";
+            $htmlout .= "<a name='comm" . (int)$row['id'] . "' href='userdetails.php?id=" . (int)$row['user'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>' . ($row['donor'] == 'yes' ? "<img src=\"{$site_config['pic_base_url']}star.gif\" alt='{$lang['userdetails_donor']}' />" : '') . ($row['warned'] >= '1' ? '<img src=' . "\"{$site_config['pic_base_url']}warned.gif\" alt=\"{$lang['userdetails_warned']}\" />" : '') . " ($title)\n";
         } else {
             $htmlout .= '<a name="comm' . (int)$row['id'] . "\"><i>{$lang['userdetails_orphaned']}</i></a>\n";
         }
         $htmlout .= ' ' . get_date($row['added'], 'DATE', 0, 1) . '' . ($userid == $CURUSER['id'] || $row['user'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=edit&amp;cid=" . (int)$row['id'] . "'>{$lang['userdetails_comm_edit']}</a>]" : '') . ($userid == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=delete&amp;cid=" . (int)$row['id'] . "'>{$lang['userdetails_comm_delete']}</a>]" : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=vieworiginal&amp;cid=" . (int)$row['id'] . "'>{$lang['userdetails_comm_voriginal']}</a>]" : '') . "</p>\n";
         $avatar = ($CURUSER['avatars'] == 'yes' ? htmlsafechars($row['avatar']) : '');
         if (!$avatar) {
-            $avatar = "{$INSTALLER09['pic_base_url']}forumicons/default_avatar.gif";
+            $avatar = "{$site_config['pic_base_url']}forumicons/default_avatar.gif";
         }
         $text = format_comment($row['text']);
         if ($row['editedby']) {

@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
@@ -56,8 +56,8 @@ if (mysqli_num_rows($res_offer) > 0) {
 $HTMLOUT .= "
     <div align='center'>
     <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='./takeupload.php' method='post'>
-    <input type='hidden' name='MAX_FILE_SIZE' value='{$INSTALLER09['max_torrent_size']}' />
-    <p class='top10'>{$lang['upload_announce_url']}:<b><input type='text' class='left5 text-center' size='80' readonly='readonly' value='{$INSTALLER09['announce_urls'][0]}' onclick='select()' /></b></p>";
+    <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['max_torrent_size']}' />
+    <p class='top10'>{$lang['upload_announce_url']}:<b><input type='text' class='left5 text-center' size='80' readonly='readonly' value='{$site_config['announce_urls'][0]}' onclick='select()' /></b></p>";
 $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='10'>
     <tr>
     <td class='heading' valign='top' align='right'>{$lang['upload_imdb_url']}</td>

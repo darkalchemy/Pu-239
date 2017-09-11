@@ -2,7 +2,7 @@
 /** freeleech countdown **/
 function freeleech_countdown()
 {
-    global $CURUSER, $mc1, $lang, $INSTALLER09;
+    global $CURUSER, $mc1, $lang, $site_config;
     $htmlout = $freetitle = '';
     $cimg = '<img src="./images/cat_free.gif" alt="FREE!" />';
     $freeleech['freeleech_countdown'] = $mc1->get_value('freeleech_countdown');
@@ -43,7 +43,7 @@ function freeleech_countdown()
                 'var' => $freeleech['freeleech_countdown']['var'],
             ]);
             $mc1->commit_transaction(0);
-            $free_message = 'Freeleech is now active! Making for ' . $ahead_by . ' of Freeleech! Thanks to all ' . $INSTALLER09['site_name'] . ' Members!' . 'It will end at Monday 12:00 am GMT';
+            $free_message = 'Freeleech is now active! Making for ' . $ahead_by . ' of Freeleech! Thanks to all ' . $site_config['site_name'] . ' Members!' . 'It will end at Monday 12:00 am GMT';
             //== log shoutbot ircbot
             require_once INCL_DIR . 'bbcode_functions.php';
         }
