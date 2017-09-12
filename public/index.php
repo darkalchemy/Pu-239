@@ -123,7 +123,8 @@ if (curuser::$blocks['index_page'] & block_index::LATEST_USER && $BLOCKS['latest
     $HTMLOUT .= '</div>';
 }
 
-if (curuser::$blocks['index_page'] & block_index::ACTIVE_POLL && $BLOCKS['active_poll_on']) {
+$poll_data = get_poll();
+if (!empty($poll_data) && curuser::$blocks['index_page'] & block_index::ACTIVE_POLL && $BLOCKS['active_poll_on']) {
     $HTMLOUT .= "<div class='container-fluid portlet' id='ACTIVE_POLL'>";
     require_once BLOCK_DIR . 'index/poll.php';
     $HTMLOUT .= '</div>';

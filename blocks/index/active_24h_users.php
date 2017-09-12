@@ -39,7 +39,7 @@ if ($last24_cache['totalonline24'] != 1) {
 $HTMLOUT .= "
         <a id='active24-hash'></a>
         <fieldset id='active24' class='header'>
-            <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_active24']}<small><b>{$lang['index_last24_list']}</b></small></legend>
+            <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_active24']} <small>{$lang['index_last24_list']}</small></legend>
             <div class='text-center'>
                 <p><b>{$last24_cache['totalonline24']}{$last24_cache['ss24']}{$lang['index_last24_during']}</b></p>
                 <p>{$last24_cache['activeusers24']}</p>

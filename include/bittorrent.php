@@ -1562,6 +1562,26 @@ function user_exists($user_id)
     return true;
 }
 
+function get_poll()
+{
+    global $CURUSER, $mc1;
+    if (($poll_data = $mc1->get_value('poll_data_' . $CURUSER['id'])) === false) {
+        $query = sql_query('SELECT * FROM polls
+                            LEFT JOIN poll_voters ON polls.pid = poll_voters.poll_id
+                            AND poll_voters.user_id = ' . sqlesc($CURUSER['id']) . '
+                            ORDER BY polls.start_date DESC
+                            LIMIT 1');
+        if (!mysqli_num_rows($query)) {
+            return '';
+        }
+        while ($row = mysqli_fetch_assoc($query)) {
+            $poll_data = $row;
+        }
+        $mc1->cache_value('poll_data_' . $CURUSER['id'], $poll_data, $site_config['expires']['poll_data']);
+    }
+    return $poll_data;
+}
+
 if (file_exists('install')) {
     $HTMLOUT = "<!DOCTYPE html>
 <html>

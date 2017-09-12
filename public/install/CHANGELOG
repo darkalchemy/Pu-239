@@ -1,4 +1,10 @@
 11 Sept, 2017
+fix back to top z-index
+hide index page poll block when no poll
+hide index page ie alert block if not using ie
+index page more mobile friendly
+
+11 Sept, 2017
 replace js navbar with css navbar
 removed or replaced all document.write
 fix install issues with foreign key issues
