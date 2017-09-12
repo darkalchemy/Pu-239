@@ -5,12 +5,12 @@ check_user_status();
 $lang = array_merge(load_language('global'));
 $stdhead = [
     'css' => [
-        'c1970cc2bf64b39bc420e74f0437f096.min',
+        get_file(requests_css)
     ],
 ];
 $stdfoot = [
     'js' => [
-        'cc234532f5e31d9abe9e8d10b8f5b277.min',
+        get_file(requests_js)
     ],
 ];
 $HTMLOUT = $count2 = '';

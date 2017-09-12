@@ -4,7 +4,6 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('blackjack'));
 global $site_config, $CURUSER;
-
 $HTMLOUT = $debugout = '';
 
 if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['suspended'] == 'yes') {
@@ -1113,7 +1112,7 @@ function output($blackjack, $HTMLOUT, $debugout)
     global $CURUSER;
     $stdhead = [
         'css' => [
-            '406c410f1cbc7c730ab8c51f124f1967.min',
+            get_file('bj_css')
         ],
     ];
 

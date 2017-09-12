@@ -1,4 +1,5 @@
 12 Sept, 2017
+fix blackjack cards incorrect info in sql table
 fix AJAX Chat log viewer
 add link to AJAX Chat log viewer
 fix overflow-y on index page

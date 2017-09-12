@@ -7,13 +7,12 @@ if (!defined('IN_site_config_ADMIN')) {
 $stdfoot = [
     /* include js **/
     'js' => [
-        'custom-form-elements',
     ],
 ];
 $stdhead = [
     /* include css **/
     'css' => [
-        'global_blocks',
+        get_file('globalblocks_css')
     ],
 ];
 require_once CLASS_DIR . 'class_check.php';

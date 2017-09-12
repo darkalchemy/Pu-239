@@ -105,7 +105,7 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
     </div>
     <div class='flex-user-stats'>
         <div class='left'>{$lang['gl_karma']}</div>
-        <div><a href='./mybonus.php'>{$CURUSER['seedbonus']}</a></div>
+        <div><a href='./mybonus.php'>" . number_format($CURUSER['seedbonus']) . "</a></div>
     </div>
     <div class='flex-user-stats'>
         <div class='left'>{$lang['gl_achpoints']}</div>

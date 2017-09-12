@@ -6,13 +6,12 @@ check_user_status();
 $stdfoot = [
     /* include js **/
     'js' => [
-        '970d28503396b6e8e9dae121df737fa5.min',
     ],
 ];
 $stdhead = [
     /* include css **/
     'css' => [
-        '20b7201df0dfb6d3f9a14a2e99e8215d.min',
+        get_file('userblocks_css')
     ],
 ];
 $lang = load_language('global');

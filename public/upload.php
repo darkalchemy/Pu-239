@@ -8,12 +8,12 @@ check_user_status();
 $lang = array_merge(load_language('global'), load_language('upload'));
 $stdhead = [
     'css' => [
-        'c1970cc2bf64b39bc420e74f0437f096.min',
+        get_file('upload_css')
     ],
 ];
 $stdfoot = [
     'js' => [
-        '859c6d8f53d8ba83a5a80596082ae411.min',
+        get_file('upload_js')
     ],
 ];
 $HTMLOUT = $offers = $subs_list = $request = $descr = '';
@@ -58,7 +58,7 @@ $HTMLOUT .= "
     <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='./takeupload.php' method='post'>
     <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['max_torrent_size']}' />
     <p class='top10'>{$lang['upload_announce_url']}:<b><input type='text' class='left5 text-center' size='80' readonly='readonly' value='{$site_config['announce_urls'][0]}' onclick='select()' /></b></p>";
-$HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='10'>
+$HTMLOUT .= "<table class=table table-bordered' cellspacing='0' cellpadding='10'>
     <tr>
     <td class='heading' valign='top' align='right'>{$lang['upload_imdb_url']}</td>
     <td valign='top' align='left'><input type='text' name='url' size='80' /><br>{$lang['upload_imdb_tfi']}{$lang['upload_imdb_rfmo']}</td>
@@ -199,28 +199,7 @@ $HTMLOUT .= "
             <input type='hidden' class='Depends on genre being movie or genre being music' /></label>
             <div class='flex-grid'>";
 
-//== 09 Genre mod no mysql by Traffic
-//$HTMLOUT.= "
-    //<tr>
-        //<td class='heading' class='text-right'>
-            //<b>Genre</b>
-        //</td>
-        //<td class='text-left'>
-            //<table>
-                //<tr>
-    //<td style='border:none'><input type='radio' name='genre' value='movie' />Movie</td>
-    //<td style='border:none'><input type='radio' name='genre' value='music' />Music</td>
-    //<td style='border:none'><input type='radio' name='genre' value='game' />Game</td>
-    //<td style='border:none'><input type='radio' name='genre' value='apps' />Apps</td>
-    //<td style='border:none'><input type='radio' name='genre' value='' checked='checked' />None</td>
-    //</tr>
-    //</table>
-    //<table>
-    //<tr>
-    //<td colspan='4' style='border:none'>
-    //<label style='margin-bottom: 1em; padding-bottom: 1em; border-bottom: 3px silver groove;'>
-    //<input type='hidden' class='Depends on genre being movie or genre being music' /></label>";
-$movie = array(
+$movie = [
     'Action',
     'Comedy',
     'Thriller',
@@ -228,7 +207,7 @@ $movie = array(
     'Family',
     'Adult',
     'Sci-fi'
-);
+];
 for ($x = 0; $x < count($movie); $x++) {
     $HTMLOUT.= "
                 <label>
@@ -236,14 +215,14 @@ for ($x = 0; $x < count($movie); $x++) {
                     <span class='left5'>{$movie[$x]}</span>
                 </label>";
 }
-$music = array(
+$music = [
     'Hip Hop',
     'Rock',
     'Pop',
     'House',
     'Techno',
     'Commercial'
-);
+];
 for ($x = 0; $x < count($music); $x++) {
     $HTMLOUT.= "
                 <label>
@@ -251,13 +230,13 @@ for ($x = 0; $x < count($music); $x++) {
                     <span class='left5'>{$music[$x]}</span>
                 </label>";
 }
-$game = array(
+$game = [
     'Fps',
     'Strategy',
     'Adventure',
     '3rd Person',
     'Acton'
-);
+];
 for ($x = 0; $x < count($game); $x++) {
     $HTMLOUT.= "
                 <label>
@@ -265,7 +244,7 @@ for ($x = 0; $x < count($game); $x++) {
                     <span class='left5'>{$game[$x]}</span>
                 </label>";
 }
-$apps = array(
+$apps = [
     'Burning',
     'Encoding',
     'Anti-Virus',
@@ -273,7 +252,7 @@ $apps = array(
     'Os',
     'Misc',
     'Image'
-);
+];
 for ($x = 0; $x < count($apps); $x++) {
     $HTMLOUT.= "
                 <label>
@@ -295,5 +274,5 @@ $HTMLOUT .= "
         </table>
         </form>
         </div>";
-////////////////////////// HTML OUTPUT //////////////////////////
+
 echo stdhead($lang['upload_stdhead'], true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);

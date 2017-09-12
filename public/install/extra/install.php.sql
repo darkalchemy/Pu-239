@@ -659,7 +659,7 @@ DROP TABLE IF EXISTS `cards`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cards` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `points` int(11) NOT NULL DEFAULT '0',
   `pic` mediumtext COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`)
@@ -672,7 +672,7 @@ CREATE TABLE `cards` (
 
 LOCK TABLES `cards` WRITE;
 /*!40000 ALTER TABLE `cards` DISABLE KEYS */;
-INSERT INTO `cards` VALUES (1,2,'2p.bmp'),(2,3,'3p.bmp'),(3,4,'4p.bmp'),(4,5,'5p.bmp'),(5,6,'6p.bmp'),(6,7,'7p.bmp'),(7,8,'8p.bmp'),(8,9,'9p.bmp'),(9,10,'10p.bmp'),(10,10,'vp.bmp'),(11,10,'dp.bmp'),(12,10,'kp.bmp'),(13,1,'tp.bmp'),(14,2,'2b.bmp'),(15,3,'3b.bmp'),(16,4,'4b.bmp'),(17,5,'5b.bmp'),(18,6,'6b.bmp'),(19,7,'7b.bmp'),(20,8,'8b.bmp'),(21,9,'9b.bmp'),(22,10,'10b.bmp'),(23,10,'vb.bmp'),(24,10,'db.bmp'),(25,10,'kb.bmp'),(26,1,'tb.bmp'),(27,2,'2k.bmp'),(28,3,'3k.bmp'),(29,4,'4k.bmp'),(30,5,'5k.bmp'),(31,6,'6k.bmp'),(32,7,'7k.bmp'),(33,8,'8k.bmp'),(34,9,'9k.bmp'),(35,10,'10k.bmp'),(36,10,'vk.bmp'),(37,10,'dk.bmp'),(38,10,'kk.bmp'),(39,1,'tk.bmp'),(40,2,'2c.bmp'),(41,3,'3c.bmp'),(42,4,'4c.bmp'),(43,5,'5c.bmp'),(44,6,'6c.bmp'),(45,7,'7c.bmp'),(46,8,'8c.bmp'),(47,9,'9c.bmp'),(48,10,'10c.bmp'),(49,10,'vc.bmp'),(50,10,'dc.bmp'),(51,10,'kc.bmp'),(52,1,'tc.bmp');
+INSERT INTO `cards` VALUES (1,2,'two_spades'),(2,3,'three_spades'),(3,4,'four_spades'),(4,5,'five_spades'),(5,6,'six_spades'),(6,7,'seven_spades'),(7,8,'eight_spades'),(8,9,'nine_spades'),(9,10,'ten_spades'),(10,10,'jack_spades'),(11,10,'queen_spades'),(12,10,'king_spades'),(13,1,'ace_spades'),(14,2,'two_diamonds'),(15,3,'three_diamonds'),(16,4,'four_diamonds'),(17,5,'five_diamonds'),(18,6,'six_diamonds'),(19,7,'seven_diamonds'),(20,8,'eight_diamonds'),(21,9,'nine_diamonds'),(22,10,'ten_diamonds'),(23,10,'jack_diamonds'),(24,10,'queen_diamonds'),(25,10,'king_diamonds'),(26,1,'ace_diamonds'),(27,2,'two_clubs'),(28,3,'three_clubs'),(29,4,'four_clubs'),(30,5,'five_clubs'),(31,6,'six_clubs'),(32,7,'seven_clubs'),(33,8,'eight_clubs'),(34,9,'nine_clubs'),(35,10,'ten_clubs'),(36,10,'jack_clubs'),(37,10,'queen_clubs'),(38,10,'king_clubs'),(39,1,'ace_clubs'),(40,2,'two_hearts'),(41,3,'three_hearts'),(42,4,'four_hearts'),(43,5,'five_hearts'),(44,6,'six_hearts'),(45,7,'seven_hearts'),(46,8,'eight_hearts'),(47,9,'nine_hearts'),(48,10,'ten_hearts'),(49,10,'jack_hearts'),(50,10,'queen_hearts'),(51,10,'king_hearts'),(52,1,'ace_hearts');
 /*!40000 ALTER TABLE `cards` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3674,4 +3674,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-09-11 19:28:38
+-- Dump completed on 2017-09-12  8:43:41
