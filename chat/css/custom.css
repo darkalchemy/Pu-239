@@ -53,3 +53,14 @@
     font-family: 'Acme', sans-serif;
 }
 
+a {
+    color: #0f0;
+    transition: all .3s ease;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #005580;
+    text-decoration: none;
+}
+

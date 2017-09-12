@@ -12,7 +12,7 @@
 }
 
 #loginContent a:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 #loginContent #loginRegisteredUsers {
@@ -41,7 +41,7 @@
 }
 
 #content a:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 #content #copyright {

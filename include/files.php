@@ -6,19 +6,19 @@ function get_file($file) {
         if ($site_config['production']) {
             switch($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/cad04d222e1d8a14cac97a58fe371585.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/f6f22429c2c4e848e285616f1d173fdb.min.css";
                 case 'js':
                     return "{$site_config['baseurl']}/js/{$style}/fd23322a9aecdf552abb9dbf0594aa65.min.js";
                 case 'chatjs':
-                    return "{$site_config['baseurl']}/js/{$style}/34f020afe4846d81cb78cd8a88bb2a64.min.js";
+                    return "{$site_config['baseurl']}/js/{$style}/676a8765fd55d727153cb9e58a31b418.min.js";
                 case 'chat_log_js':
-                    return "{$site_config['baseurl']}/js/{$style}/c802e2633a390de7a06f38aeb8a1eba8.min.js";
+                    return "{$site_config['baseurl']}/js/{$style}/fabd1e485fe73b8413e5582e735711c4.min.js";
                 case 'chat_css_trans':
-                    return "{$site_config['baseurl']}/css/{$style}/fa4698eaed7ce222182a40fa5a7ecda3.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/d69f2c2146849a79ae370e0a223d908c.min.css";
                 case 'chat_css_uranium':
-                    return "{$site_config['baseurl']}/css/{$style}/8fedd740cb2907c109403a13185045c2.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/e4d826df88da85d81855fa53c02087af.min.css";
                 case 'trivia_css':
-                    return "{$site_config['baseurl']}/css/{$style}/6e687d65e9a4bca44ee411965da1d339.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/5ca10c4e0ef96bb6445932cd0486a6ec.min.css";
                 case 'trivia_js':
                     return "{$site_config['baseurl']}/js/{$style}/2d28f39c1474c0e07517d68f18e88974.min.js";
                 case 'index_css':
@@ -30,7 +30,7 @@ function get_file($file) {
                 case 'captcha2_js':
                     return "{$site_config['baseurl']}/js/{$style}/7106b1289a96cca0556c128cd75cf02d.min.js";
                 case 'pm_css':
-                    return "{$site_config['baseurl']}/css/{$style}/fef0e0a0a817772cfb73c7a918560f01.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/888120ce1b3a23707e2d49c698850e32.min.css";
                 case 'pm_js':
                     return "{$site_config['baseurl']}/js/{$style}/936befd35c99dde2e1bd9bf7c95e14f2.min.js";
                 case 'warn_js':
@@ -40,7 +40,7 @@ function get_file($file) {
                 case 'globalblocks_css':
                     return "{$site_config['baseurl']}/css/{$style}/9dfd83b9e59499bf7716ea6a32d81ef1.min.css";
                 case 'upload_css':
-                    return "{$site_config['baseurl']}/css/{$style}/8350cf6d9d1c2ab30d96cd453876d217.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/16ba74f6ef84e55ebc931e13ef46be28.min.css";
                 case 'upload_js':
                     return "{$site_config['baseurl']}/js/{$style}/859c6d8f53d8ba83a5a80596082ae411.min.js";
                 case 'bj_css':
@@ -61,9 +61,9 @@ function get_file($file) {
                 case 'chat_log_js':
                     return "{$site_config['baseurl']}/js/{$style}/47cafc8e674fc97c64e23cb6c35be5eb.js";
                 case 'chat_css_trans':
-                    return "{$site_config['baseurl']}/css/{$style}/469fe29d6676c398b79fd8e9910bb38b.css";
+                    return "{$site_config['baseurl']}/css/{$style}/23a52335b2c956344882320b3f1c19a8.css";
                 case 'chat_css_uranium':
-                    return "{$site_config['baseurl']}/css/{$style}/252f8bd82f508cca8ea439bdd92a41d5.css";
+                    return "{$site_config['baseurl']}/css/{$style}/4e661e82f1a3fd5ff5aab0a8175a0644.css";
                 case 'trivia_css':
                     return "{$site_config['baseurl']}/css/{$style}/193c0f2e4f8153fbf274c43db806cd3b.css";
                 case 'trivia_js':

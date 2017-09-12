@@ -28,7 +28,6 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #content #inputFieldContainer #inputField:focus {
     outline: none;
-    /*box-shadow: 0px 0px 8px 1px #376e34;*/
 }
 
 #loginContent #loginButton {
@@ -214,11 +213,6 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #content #chatList .chatBotErrorMessage {
     color: red;
-}
-
-#content #chatList a,
-.ajax-chat a {
-    color: #65f1df;
 }
 
 #content #chatList .deleteSelected {
