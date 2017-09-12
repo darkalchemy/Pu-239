@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="[CONTENT_TYPE/]"/>
     <title>[LANG]logsTitle[/LANG]</title>
     [STYLE_SHEETS/]
-    <script src="./chat/js/c802e2633a390de7a06f38aeb8a1eba8.min.js" charset="UTF-8"></script>
+    <script src="[JSLOG/]" charset="UTF-8"></script>
     <script>
         // <![CDATA[
         function toggleContainer(containerID, hideContainerIDs) {
@@ -25,7 +25,6 @@
         }
 
         function initialize() {
-            toggleContainer('settingsContainer');
             ajaxChat.updateButton('audio', 'audioButton');
             ajaxChat.updateButton('autoScroll', 'autoScrollButton');
             document.getElementById('bbCodeSetting').checked = ajaxChat.getSetting('bbCode');
@@ -93,11 +92,16 @@
     </script>
 </head>
 
-<body class="ajax-chat">
+<body class="ajax-chat text-1">
+<script>
+    var theme = localStorage.getItem('theme');
+    if (theme) {
+        document.body.className = 'ajax-chat ' + theme;
+    }
+</script>
+
 <div id="content">
-    <h1 id="headline">[LANG]logsTitle[/LANG]</h1>
     <div id="logoutChannelContainer">
-        <input type="button" id="logoutButton" value="[LANG]logout[/LANG]" onclick="ajaxChat.logout();"/>
         <label for="channelSelection">[LANG]channel[/LANG]:</label>
         <select id="channelSelection" onchange="ajaxChat.getLogs();">[LOGS_CHANNEL_OPTIONS/]</select>
         <label for="yearSelection">[LANG]logsDate[/LANG]:</label>
@@ -106,15 +110,15 @@
         <select id="daySelection" onchange="ajaxChat.getLogs();">[LOGS_DAY_OPTIONS/]</select>
         <label for="hourSelection">[LANG]logsTime[/LANG]:</label>
         <select id="hourSelection" onchange="ajaxChat.getLogs();">[LOGS_HOUR_OPTIONS/]</select>
-        <label for="styleSelection">[LANG]style[/LANG]:</label>
-        <select id="styleSelection" onchange="ajaxChat.setActiveStyleSheet(ajaxChat.getSelectedStyle());">[STYLE_OPTIONS/]</select>
         <label for="languageSelection">[LANG]language[/LANG]:</label>
         <select id="languageSelection" onchange="ajaxChat.switchLanguage(this.value);">[LANGUAGE_OPTIONS/]</select>
     </div>
     <!--[if lt IE 7]>
     <div></div>
     <![endif]-->
-    <div id="chatList"></div>
+    <div id="mainPanelContainer">
+        <div id="chatList"></div>
+    </div>
     <div id="inputFieldContainer">
         <textarea id="inputField" rows="1" cols="50" title="[LANG]inputLineBreak[/LANG]"
                   onkeypress="ajaxChat.handleInputFieldKeyPress(event);"></textarea>
@@ -123,8 +127,6 @@
         <input type="button" id="submitButton" value="[LANG]logsSearch[/LANG]" onclick="ajaxChat.sendMessage();"/>
     </div>
     <div id="optionsContainer">
-        <input type="image" src="./images/pixel.gif" class="button" id="settingsButton" alt="[LANG]toggleSettings[/LANG]"
-               title="[LANG]toggleSettings[/LANG]" onclick="toggleContainer('settingsContainer');"/>
         <input type="image" src="./images/pixel.gif" class="button" id="audioButton" alt="[LANG]toggleAudio[/LANG]"
                title="[LANG]toggleAudio[/LANG]" onclick="ajaxChat.toggleSetting('audio', 'audioButton');"/>
         <input type="image" src="./images/pixel.gif" class="button" id="autoScrollButton" alt="[LANG]toggleAutoScroll[/LANG]"
@@ -311,10 +313,15 @@
 
         Thanks,
         Sebastian Tschan
-    //-->
+    //
     <div id="copyright"><a href="https://blueimp.net/ajax/">AJAX Chat</a> &copy; <a href="https://blueimp.net">blueimp.net</a>
-    </div>
+    </div> -->
 </div>
 <div id="flashInterfaceContainer"></div>
+<script>
+    if (!window.parent.document.getElementById('ajaxchat')) {
+        ajaxChat.setActiveStyleSheet('Uranium');
+    }
+</script>
 </body>
 </html>

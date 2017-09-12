@@ -1257,10 +1257,10 @@ var ajaxChat = {
                     + ' \');" title="Private Message in chat.">'
                 + this.lang['userMenuSendPrivateMessage']
                 + '</a></li>'
-                    + '<li><a target="_blank" href="../pm_system.php?action=send_message&amp;receiver='
-                    + userID
-                    + '" title="Private Message using site messages.">'
-                    + 'PM User '
+                + '<li><a target="_blank" href="../pm_system.php?action=send_message&amp;receiver='
+                + userID
+                + '" title="Private Message using site messages.">'
+                + 'PM User '
                 + '</a></li>'
                 + '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/query '
                 + encodedUserName
@@ -1333,6 +1333,11 @@ var ajaxChat = {
                     menu += '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/bans\');">'
                         + this.lang['userMenuBans']
                         + '</a></li>';
+                }
+                if (this.userRole >= UC_ADMINISTRATOR) {
+                    menu += '<li><a href="../ajaxchat.php?view=logs" title="View AJAX Chat Logs.">'
+                         + 'View Logs'
+                         + '</a></li>'
                 }
             }
         }

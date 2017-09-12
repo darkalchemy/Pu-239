@@ -18,7 +18,9 @@ $config = [];
 
 // javascript file
 $config['js'] = get_file('chatjs');
-
+$config['jslog'] = get_file('chat_log_js');
+echo $config['jslog'];
+die();
 // Database connection values:
 $config['dbConnection'] = [];
 // Database hostname:

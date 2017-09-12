@@ -65,6 +65,9 @@ body.ajax-chat {
     left: 20px;
     top: 10px;
     right: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 #content #logoutChannelContainer select {

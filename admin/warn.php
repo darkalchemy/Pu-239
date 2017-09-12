@@ -18,6 +18,7 @@ function mkint($x)
 
 $stdfoot = [
     'js' => [
+        get_file('warn_js')
     ],
 ];
 $this_url = $_SERVER['SCRIPT_NAME'];

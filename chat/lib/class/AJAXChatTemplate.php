@@ -70,6 +70,8 @@ class AJAXChatTemplate
 
             case 'JS':
                 return $this->ajaxChat->getConfig('js');
+            case 'JSLOG':
+                return $this->ajaxChat->getConfig('jslog');
 
             case 'LANG':
                 return $this->ajaxChat->htmlEncode($this->ajaxChat->getLang((isset($tagData[2]) ? $tagData[2] : null)));
