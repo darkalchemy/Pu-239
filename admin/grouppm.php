@@ -6,10 +6,22 @@ if (!defined('IN_site_config_ADMIN')) {
 }
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'bbcode_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_grouppm'));
+
+$stdhead = [
+    'css' => [
+        get_file('upload_css')
+    ],
+];
+$stdfoot = [
+    'js' => [
+    ],
+];
+
 $HTMLOUT = '';
 $err = [];
 $FSCLASS = UC_STAFF; //== First staff class;
@@ -34,8 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $groups = isset($_POST['groups']) ? $_POST['groups'] : '';
     //$groups = isset($_POST["groups"]) ? array_map('mkint',$_POST["groups"]) : ""; //no need for this kind of check because every value its checked inside the switch also the array contains no integer values so that will be a problem
     $subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : '';
-    $msg = isset($_POST['message']) ? htmlsafechars($_POST['message']) : '';
-    $msg = str_replace('&amp', '&', $_POST['message']);
+    $msg = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
+    $msg = str_replace('&amp', '&', $_POST['body']);
     $sender = isset($_POST['system']) && $_POST['system'] == 'yes' ? 0 : $CURUSER['id'];
     if (empty($subject)) {
         $err[] = $lang['grouppm_nosub'];
@@ -102,15 +114,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $ids = array_unique($ids);
         if (sizeof($ids) > 0) {
             $pms = [];
-            $msg .= $lang['grouppm_this'] . join(', ', $sent2classes);
+            $msg .= "\n[p]" . $lang['grouppm_this'] . join(', ', $sent2classes) . "[/p]";
             foreach ($ids as $rid) {
                 $pms[] = '(' . $sender . ',' . $rid . ',' . TIME_NOW . ',' . sqlesc($msg) . ',' . sqlesc($subject) . ')';
             }
             if (sizeof($pms) > 0) {
                 $r = sql_query('INSERT INTO messages(sender,receiver,added,msg,subject) VALUES ' . join(',', $pms)) or sqlerr(__FILE__, __LINE__);
             }
-            $mc1->delete_value('inbox_new_' . $rid);
-            $mc1->delete_value('inbox_new_sb_' . $rid);
+            foreach ($ids as $rid) {
+                $mc1->delete_value('inbox_new_' . $rid);
+                $mc1->delete_value('inbox_new_sb_' . $rid);
+            }
             $err[] = ($r ? $lang['grouppm_sent'] : $lang['grouppm_again']);
         } else {
             $err[] = $lang['grouppm_nousers'];
@@ -166,26 +180,26 @@ if (sizeof($err) > 0) {
     $HTMLOUT .= '<div class="' . $class . "\">$errs</div>";
 }
 $HTMLOUT .= "<fieldset style='border:1px solid #333333; padding:5px;'>
-	<legend style='padding:3px 5px 3px 5px; border:solid 1px #333333; font-size:12px;font-weight:bold;'>{$lang['grouppm_head']}</legend>
-	<form action='staffpanel.php?tool=grouppm&amp;action=grouppm' method='post'>
-	  <table width='500' border='1' style='border-collapse:collapse' cellpadding='5' cellspacing='0' align='center'>
-		<tr>
-		  <td nowrap='nowrap' align='left' colspan='2'><b>{$lang['grouppm_sub']}</b> &#160;&#160;
-			<input type='text' name='subject' size='30' style='width:300px;'/></td>
-		</tr>
-		<tr>
-		  <td nowrap='nowrap' valign='top' align='left'><b>{$lang['grouppm_body']}</b></td>
-		  <td nowrap='nowrap' align='left'><b>{$lang['grouppm_groups']}</b></td>
-		  </tr>
-		<tr>
-		  <td width='100%' align='center'><textarea name='message' rows='5' cols='32' style='width:300px; height:155px'></textarea></td>
-		  <td width='100%' >" . dropdown() . "</td>
-		</tr>
-		<tr>
-		 <td align='left'><label for='sys'>{$lang['grouppm_sendas']}</label><input id='sys' type='checkbox' name='system' value='yes' /></td><td align='right' ><input type='submit' value='{$lang['grouppm_send']}' /></td>
-		</tr>
-	  </table>
-	</form>
-	</fieldset>";
+    <legend style='padding:3px 5px 3px 5px; border:solid 1px #333333; font-size:12px;font-weight:bold;'>{$lang['grouppm_head']}</legend>
+    <form action='staffpanel.php?tool=grouppm&amp;action=grouppm' method='post'>
+      <table width='500' border='1' style='border-collapse:collapse' cellpadding='5' cellspacing='0' align='center'>
+        <tr>
+          <td nowrap='nowrap' align='left' colspan='2'><b>{$lang['grouppm_sub']}</b> &#160;&#160;
+            <input type='text' name='subject' size='30' style='width:300px;'/></td>
+        </tr>
+        <tr>
+          <td nowrap='nowrap' valign='top' align='left'><b>{$lang['grouppm_body']}</b></td>
+          <td nowrap='nowrap' align='left'><b>{$lang['grouppm_groups']}</b></td>
+          </tr>
+        <tr>
+          <td width='100%' align='center'>" . BBcode(false) . "</td>
+          <td width='100%' >" . dropdown() . "</td>
+        </tr>
+        <tr>
+         <td align='left'><label for='sys'>{$lang['grouppm_sendas']}</label><input id='sys' type='checkbox' name='system' value='yes' /></td><td align='right' ><input type='submit' value='{$lang['grouppm_send']}' /></td>
+        </tr>
+      </table>
+    </form>
+    </fieldset>";
 $HTMLOUT .= end_main_frame();
-echo stdhead($lang['grouppm_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['grouppm_stdhead'], true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);

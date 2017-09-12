@@ -32,7 +32,7 @@ $stdfoot = [
 ];
 $stdhead = [
     'css' => [
-        'c1970cc2bf64b39bc420e74f0437f096.min',
+        get_file('upload_css')
     ],
 ];
 $res = sql_query('SELECT * FROM torrents WHERE id = ' . sqlesc($id));

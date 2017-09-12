@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class.bencdec.php';
 //require_once INCL_DIR . 'function_ircbot.php';
@@ -286,7 +286,7 @@ if (XBT_TRACKER == false) {
 }
 $id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
 $mc1->delete_value('MyPeers_' . $CURUSER['id']);
-//$mc1->delete_value('lastest_tor_');  //
+$mc1->delete_value('lastest_tor_');
 $mc1->delete_value('last5_tor_');
 $mc1->delete_value('scroll_tor_');
 if (isset($_POST['uplver']) && $_POST['uplver'] == 'yes') {

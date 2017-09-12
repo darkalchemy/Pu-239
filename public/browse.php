@@ -28,7 +28,7 @@ $stdfoot = [
 ];
 $stdhead = [
     'css' => [
-        '162706dade3c7c41293e8b0764346dad.min',
+        get_file('browse_css')
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('browse'), load_language('torrenttable_functions'));

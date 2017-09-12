@@ -8,12 +8,12 @@ check_user_status();
 $lang = array_merge(load_language('global'), load_language('forums'), load_language('forums_global'));
 $stdhead = [
     'css' => [
-        '5a0b9d43b4f1882d2299e9b6f8ab95e9.min',
+        get_file('forums_css')
     ],
 ];
 $stdfoot = [
     'js' => [
-        'fec7301ddf230ff4da1e66bcdd5c82b0.min',
+        get_file('forums_js')
     ],
 ];
 $over_forum_id = $count = $now_viewing = $child_boards = '';

@@ -530,6 +530,9 @@ body.ajax-chat {
     color: #1e90ff
   }
 }
+:root {
+  --main-color: #0f0
+}
 .mentioned {
   color: #5eff00;
   text-shadow: 1px 1px #2c6609
@@ -559,7 +562,7 @@ body.ajax-chat {
   font-family: Acme,sans-serif
 }
 a {
-  color: #0f0;
+  color: var(--main-color);
   transition: all .3s ease;
   text-decoration: none
 }

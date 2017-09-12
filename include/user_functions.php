@@ -462,7 +462,7 @@ function format_username($user_id, $icons = true)
         return 'unknown[' . $user['id'] . ']';
     }
 
-    $username = '<span style="color:#' . get_user_class_color($user['class']) . ';"><b>' . htmlsafechars($user['username']) . '</b></span>';
+    $username = '<span id="list' . $user['id'] . '" style="color:#' . get_user_class_color($user['class']) . ';"><b>' . htmlsafechars($user['username']) . '</b></span>';
     $str = '<span style="white-space: nowrap;"><a class="user_' . $user['id'] . '" href="./userdetails.php?id=' . $user['id'] . '" target="_blank">' . $username . '</a>';
 
     if ($icons != false) {

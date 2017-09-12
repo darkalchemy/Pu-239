@@ -6,25 +6,25 @@ function get_file($file) {
         if ($site_config['production']) {
             switch($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/f6f22429c2c4e848e285616f1d173fdb.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/b14952f782412ad57768b16e3f9b620a.min.css";
                 case 'js':
-                    return "{$site_config['baseurl']}/js/{$style}/fd23322a9aecdf552abb9dbf0594aa65.min.js";
+                    return "{$site_config['baseurl']}/js/{$style}/1b80dc48461987b9ecff299c9697c491.min.js";
                 case 'chatjs':
                     return "{$site_config['baseurl']}/js/{$style}/676a8765fd55d727153cb9e58a31b418.min.js";
                 case 'chat_log_js':
                     return "{$site_config['baseurl']}/js/{$style}/fabd1e485fe73b8413e5582e735711c4.min.js";
                 case 'chat_css_trans':
-                    return "{$site_config['baseurl']}/css/{$style}/d69f2c2146849a79ae370e0a223d908c.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/31dc15d6bc042c141388d0641029c15a.min.css";
                 case 'chat_css_uranium':
-                    return "{$site_config['baseurl']}/css/{$style}/e4d826df88da85d81855fa53c02087af.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/2e1870f28f32d4a417c960ed80c20be9.min.css";
                 case 'trivia_css':
-                    return "{$site_config['baseurl']}/css/{$style}/5ca10c4e0ef96bb6445932cd0486a6ec.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/c600ef136762b21f782d0285f4007136.min.css";
                 case 'trivia_js':
                     return "{$site_config['baseurl']}/js/{$style}/2d28f39c1474c0e07517d68f18e88974.min.js";
                 case 'index_css':
                     return "{$site_config['baseurl']}/css/{$style}/12ee27333be9fe5ec379b4ad2663f3d2.min.css";
                 case 'index_js':
-                    return "{$site_config['baseurl']}/js/{$style}/46387be23f7a064e322957a121165120.min.js";
+                    return "{$site_config['baseurl']}/js/{$style}/40b1146d782a9512de996cc4c2f55d04.min.js";
                 case 'captcha1_js':
                     return "{$site_config['baseurl']}/js/{$style}/ec52af588beb0882cd49865b619c2326.min.js";
                 case 'captcha2_js':
@@ -47,31 +47,53 @@ function get_file($file) {
                     return "{$site_config['baseurl']}/css/{$style}/406c410f1cbc7c730ab8c51f124f1967.min.css";
                 case 'requests_css':
                     return "{$site_config['baseurl']}/css/{$style}/cc234532f5e31d9abe9e8d10b8f5b277.min.css";
+                case 'browse_css':
+                    return "{$site_config['baseurl']}/css/{$style}/162706dade3c7c41293e8b0764346dad.min.css";
+                case 'contactstaff_css':
+                    return "{$site_config['baseurl']}/css/{$style}/412080f730267ab4e0b90de539271948.min.css";
+                case 'staff_css':
+                    return "{$site_config['baseurl']}/css/{$style}/4628d6c70491d19e9ab217458edfadfa.min.css";
+                case 'faq_js':
+                    return "{$site_config['baseurl']}/css/{$style}/e0aa4449e1144d138ea6e11ea1a8e284.min.js";
+                case 'acp_js':
+                    return "{$site_config['baseurl']}/css/{$style}/4bd2b11d16f9048a1f7318a216382353.min.js";
+                case 'userdetails_css':
+                    return "{$site_config['baseurl']}/css/{$style}/8651a0bc912710e02ab234ae7ef895e1.min.css";
+                case 'userdetails_js':
+                    return "{$site_config['baseurl']}/js/{$style}/de8c9a9e792812564093f25a33fe67fe.min.js";
+                case 'details_css':
+                    return "{$site_config['baseurl']}/css/{$style}/98ec663711b575c5ed7400720c8e4c70.min.css";
+                case 'details_js':
+                    return "{$site_config['baseurl']}/js/{$style}/045b89f840426f848f8ef22c19ca1088.min.js";
+                case 'forums_css':
+                    return "{$site_config['baseurl']}/css/{$style}/579d04c1258e6c55d9a8e4335b7332a7.min.css";
+                case 'forums_js':
+                    return "{$site_config['baseurl']}/js/{$style}/fec7301ddf230ff4da1e66bcdd5c82b0.min.js";
                 default:
                     return '';
             }
         } else {
             switch($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/3cee26e12fdbe5f5e006c4377aeeab6c.css";
+                    return "{$site_config['baseurl']}/css/{$style}/2330e3d6c29ddd44cbff1e696ba478ec.css";
                 case 'js':
-                    return "{$site_config['baseurl']}/js/{$style}/8b14bfc7e5bba792911826621b20f540.js";
+                    return "{$site_config['baseurl']}/js/{$style}/ffc7bc5cf0b69c3197c328f31ffa972a.js";
                 case 'chatjs':
                     return "{$site_config['baseurl']}/js/{$style}/fb37a1914d51f9bc487b54b121d6028d.js";
                 case 'chat_log_js':
                     return "{$site_config['baseurl']}/js/{$style}/47cafc8e674fc97c64e23cb6c35be5eb.js";
                 case 'chat_css_trans':
-                    return "{$site_config['baseurl']}/css/{$style}/23a52335b2c956344882320b3f1c19a8.css";
+                    return "{$site_config['baseurl']}/css/{$style}/b10a14d8b93395e71485be2f6605f599.css";
                 case 'chat_css_uranium':
-                    return "{$site_config['baseurl']}/css/{$style}/4e661e82f1a3fd5ff5aab0a8175a0644.css";
+                    return "{$site_config['baseurl']}/css/{$style}/2283699534ff11f5736248de623d7def.css";
                 case 'trivia_css':
-                    return "{$site_config['baseurl']}/css/{$style}/193c0f2e4f8153fbf274c43db806cd3b.css";
+                    return "{$site_config['baseurl']}/css/{$style}/ed50197a56829b6a281b79e7ab369922.css";
                 case 'trivia_js':
                     return "{$site_config['baseurl']}/js/{$style}/a4c172a85fb36c2b00a6ef229205a674.js";
                 case 'index_css':
                     return "{$site_config['baseurl']}/css/{$style}/5f2e2c7a8730d0910368c158695eed0f.css";
                 case 'index_js':
-                    return "{$site_config['baseurl']}/js/{$style}/1eaee3837b719499d7967a7f957ab5af.js";
+                    return "{$site_config['baseurl']}/js/{$style}/9758386ba0c155a29cd839b8fdd6dc99.js";
                 case 'captcha1_js':
                     return "{$site_config['baseurl']}/js/{$style}/80396c584bddf0c78f6c1824f91b5408.js";
                 case 'captcha2_js':
@@ -94,6 +116,28 @@ function get_file($file) {
                     return "{$site_config['baseurl']}/css/{$style}/5147de5531166b423051f36cd7f8a175.css";
                 case 'requests_css':
                     return "{$site_config['baseurl']}/css/{$style}/669490a15a05f7cd24021af15c45ef35.css";
+                case 'browse_css':
+                    return "{$site_config['baseurl']}/css/{$style}/005c59d533d9c5eebb0d46a0dc89a8cd.css";
+                case 'contactstaff_css':
+                    return "{$site_config['baseurl']}/css/{$style}/0929cdaa8c0dc7cc57965e34b070d815.css";
+                case 'staff_css':
+                    return "{$site_config['baseurl']}/css/{$style}/c892f3d6b6fdc7c28caf77ee72afee6a.css";
+                case 'faq_js':
+                    return "{$site_config['baseurl']}/css/{$style}/ef6642c41fbf7cfe2835053ab39d4c50.js";
+                case 'acp_js':
+                    return "{$site_config['baseurl']}/css/{$style}/b507dbbb9dbc3fa55bae9d4fa752fbab.js";
+                case 'userdetails_css':
+                    return "{$site_config['baseurl']}/css/{$style}/02d32a579bcaab03b02aae41e92d4cfa.css";
+                case 'userdetails_js':
+                    return "{$site_config['baseurl']}/js/{$style}/a549e8e2c1c915d869068fb27cbb5e16.js";
+                case 'details_css':
+                    return "{$site_config['baseurl']}/css/{$style}/f1a15e1e78c3b6c874b87aabe042b429.css";
+                case 'details_js':
+                    return "{$site_config['baseurl']}/js/{$style}/7486db35a787a3aa53a503d5b46cf0d0.js";
+                case 'forums_css':
+                    return "{$site_config['baseurl']}/css/{$style}/c15468f3c3d49839ce44660fd0d5f6f2.css";
+                case 'forums_js':
+                    return "{$site_config['baseurl']}/js/{$style}/b32f500ceebb7d1340a6faf66990f23e.js";
                 default:
                     return '';
             }

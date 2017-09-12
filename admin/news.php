@@ -12,15 +12,11 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $HTMLOUT = '';
 $stdhead = [
-    /* include css **/
     'css' => [
-        'forums',
-        'style',
-        'style2',
+        get_file('upload_css')
     ],
 ];
 $stdfoot = [
-    /* include js **/
     'js' => [
         'check_selected',
     ],

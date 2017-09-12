@@ -127,7 +127,7 @@ if ($count == 0) {
 } else {
     $HTMLOUT .= "<form action='staffpanel.php?tool=warn&amp;action=warn' method='post'>
                 <table width='600' cellpadding='3' cellspacing='2' style='border-collapse:separate;' align='center'>
-                <tr>           
+                <tr>
                         <td class='colhead' align='left' width='100%' >{$lang['warn_user']}</td>
                         <td class='colhead' align='center' nowrap='nowrap'>{$lang['warn_ratio']}</td>
                         <td class='colhead' align='center' nowrap='nowrap'>{$lang['warn_class']}</td>

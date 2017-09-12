@@ -497,12 +497,12 @@
         goNext: function (a) {
             a = a ? a : !1;
             if (!a && this.defs.lock) return !1;
-            this.defs.slide == this.defs.total ? this.goSlide(0, !1, a) : this.goSlide(this.defs.slide + 1, !1, a)
+            this.defs.slide == this.defs.total ? this.goSlide(0, !1, a) : this.goSlide(this.defs.slide + 1, !1, a);
         },
         goPrev: function (a) {
             a = a ? a : !1;
             if (!a && this.defs.lock) return !1;
-            0 == this.defs.slide ? this.goSlide(this.defs.total - 1, !1, a) : this.goSlide(this.defs.slide - 1, !1, a)
+            0 == this.defs.slide ? this.goSlide(this.defs.total - 1, !1, a) : this.goSlide(this.defs.slide - 1, !1, a);
         },
         events: function () {
             var a = this;
@@ -563,8 +563,9 @@
             a.el.bind("iCarousel:previous", function () {
                 a.goPrev()
             });
-            a.el.mousewheel && a.options.mouseWheel && a.el.mousewheel(function (d, c) {
-                0 > c ? a.goNext() : a.goPrev()
+            a.el.bind('mousewheel', function(d, c) {
+                d.preventDefault();
+                0 > c ? a.goNext() : a.goPrev();
             });
             a.slides.click(function () {
                 var d = g(this).attr("index");

@@ -1,4 +1,7 @@
 12 Sept, 2017
+update jquery.mousewheel.js
+fix scroller mouse scroll not scroll entire page
+fix themeChanger font color in iframes
 update css/js minified files
 update AJAX Chat links to behave same as the rest of the site
 fix blackjack cards incorrect info in sql table

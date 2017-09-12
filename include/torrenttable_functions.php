@@ -85,7 +85,7 @@ function torrenttable($res, $variant = 'index')
         ++$i;
     }
     $htmlout .= "
-   <table class='text-center' border='1' cellspacing='0' cellpadding='5'>
+   <table class='table text-center' border='1' cellspacing='0' cellpadding='5'>
    <tr>
    <td class='colhead' class='text-center'>{$lang['torrenttable_type']}</td>
    <td class='colhead' align='left'><a href='{$_SERVER['PHP_SELF']}?{$oldlink}sort=1&amp;type={$link1}'>{$lang['torrenttable_name']}</a></td>

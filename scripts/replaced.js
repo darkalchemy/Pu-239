@@ -127,13 +127,13 @@ $(function() {
         setupDependencies('edit_form');
     };
 
-    if ($('#icarousel-slides').length) {
+    if ($('#carousel-container').length) {
         $('#icarousel').iCarousel({
             easing: 'ease-in-out',
             slides: 10,
             make3D: !1,
             perspective: 500,
-            animationSpeed: 500,
+            animationSpeed: animate_duration,
             pauseTime: 5E3,
             startSlide: 2,
             directionNav: !0,
@@ -152,7 +152,7 @@ $(function() {
             direction: 'rtl',
             timer: '360bar',
             timerBg: '#000',
-            timerColor: '#FFF',
+            timerColor: '#0f0',
             timerOpacity: 0.4,
             timerDiameter: 35,
             timerPadding: 4,

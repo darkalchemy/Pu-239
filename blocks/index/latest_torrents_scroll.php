@@ -3,7 +3,10 @@
 $HTMLOUT .= "
     <a id='scroller-hash'></a>
     <fieldset id='scroller' class='header'>
-        <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_latest']}</legend>
+        <legend class='flipper'>
+            <i class='fa fa-angle-up' aria-hidden='true'></i>
+            {$lang['index_latest']}
+        </legend>
         <div id='carousel-container' class='carousel-container'>
             <div id='icarousel' class='icarousel'>";
 
@@ -32,8 +35,8 @@ if ($scroll_torrents) {
         $name = substr($name, 0, 50);
 
         $HTMLOUT .= "
-                <div id='icarousel-slides' class='slide'>
-                    <a href='./details.php?id={$id}'>
+                <div class='slide'>
+                    <a href='./details?id={$id}'>
                         <img src='" . htmlsafechars($poster) . "' alt='{$name}' title='{$name}\n{$lang['latesttorrents_seeders']} : {$seeders}\n{$lang['latesttorrents_leechers']} : {$leechers}' width='200' height='350' border='0' />
                     </a>
                 </div>";

@@ -167,7 +167,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
 }
 $HTMLOUT = '';
 $HTMLOUT .= "
-<div class='container-fluid'>
+<div class='container'>
  <div class='row-fluid' style='margin:0 auto;border:1px solid black'>
   <div class='span12' style='text-align:center;'><h1>" . $lang['mtor_modded_torrents_complete_panel'] . "</h1></div>
   <div class='span12' style='text-align:center;'><h4>" . $lang['mtor_quick_links'] . "</h4><a class='btn btn-danger' href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=today' data-toggle='tooltip' data-placement='top' title='Tooltip on top'>" . $lang['mtor_modded_today'] . "</a>&#160;&#160;&#160;&#160;&#160;<a class='btn btn-danger' href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=yesterday' >" . $lang['mtor_modded_yesterday'] . "</a>

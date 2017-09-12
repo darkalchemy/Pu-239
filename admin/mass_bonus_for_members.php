@@ -14,10 +14,7 @@ $lang = array_merge($lang, load_language('ad_bonus_for_members'));
 $stdhead = [
     /* include css **/
     'css' => [
-        'forums',
-        'style',
-        'style2',
-        'jquery.lightbox-0.5',
+        get_file('upload_css')
     ],
 ];
 $stdfoot = [
@@ -473,7 +470,7 @@ $count = 1;
 $all_classes_check_boxes = '<table border="0" cellspacing="5" cellpadding="5" align="left"><tr>';
 for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
     $all_classes_check_boxes .= '<td class="one">
-		<input type="checkbox" name="free_for_classes[]" value="' . $i . '" checked="checked" /> <span style="font-weight: bold;color:#' . get_user_class_color($i) . ';">' . get_user_class_name($i) . '</span></td>';
+        <input type="checkbox" name="free_for_classes[]" value="' . $i . '" checked="checked" /> <span style="font-weight: bold;color:#' . get_user_class_color($i) . ';">' . get_user_class_name($i) . '</span></td>';
     if ($count == 6) {
         $all_classes_check_boxes .= '</tr>' . ($i < UC_MAX ? '<tr>' : '');
         $count = 0;
@@ -522,7 +519,7 @@ $invites_drop_down = '
         <option class="head" value="">' . $lang['bonusmanager_invite_add'] . '</option>';
 $i = 1;
 while ($i <= 50) {
-    $invites_drop_down .= '<option class="body" value="' . $i . '.0">' . $i . $lang['bonusmanager_invite_add'] . ($i !== 1 ? 's' : '') . '</option>';
+    $invites_drop_down .= '<option class="body" value="' . $i . '.0">' . $i . ' ' . $lang['bonusmanager_invite_add'] . ($i !== 1 ? 's' : '') . '</option>';
     $i = ($i < 10 ? $i = $i + 1 : $i = $i + 5);
 }
 $invites_drop_down .= '</select>' . $lang['bonusmanager_invite_amount'] . '';
@@ -576,41 +573,21 @@ $HTMLOUT .= '<form name="inputform" method="post" action="staffpanel.php?tool=ma
         <div id="div_invite" class="select_me"><br>' . $invites_drop_down . '<hr></div>
         <div id="div_pm" class="select_me"><br>' . $pm_drop_down . '<hr></div>
         </td>
-    </tr>                
-	<tr>
-		<td class="one" valign="top" align="right"><span style="font-weight: bold;">' . $lang['bonusmanager_apply_bonus'] . '</span></td>
+    </tr>
+    <tr>
+        <td class="one" valign="top" align="right"><span style="font-weight: bold;">' . $lang['bonusmanager_apply_bonus'] . '</span></td>
         <td valign="top" align="left" class="one">
-        <input type="checkbox" id="all_or_selected_classes" name="all_or_selected_classes" value="1"  checked="checked" /> 
+        <input type="checkbox" id="all_or_selected_classes" name="all_or_selected_classes" value="1"  checked="checked" />
         <span style="font-weight: bold;">' . $lang['bonusmanager_all_classes'] . '</span>' . $lang['bonusmanager_uncheck'] . '
         <div id="classes_open" style="display:none;"><br>' . $all_classes_check_boxes . '</div></td>
-	</tr>            
-	<tr>
-		<td class="one" valign="top" align="right"></td>
+    </tr>
+    <tr>
+        <td class="one" valign="top" align="right"></td>
         <td valign="top" align="left" class="one">' . $lang['bonusmanager_note'] . '<br></td>
-	</tr>        
+    </tr>
     <tr>
         <td align="center" class="one" colspan="2">
         <input type="submit" class="btn" name="button" value="' . $lang['bonusmanager_doit'] . '"  /></td>
     </tr>
-    </table></form>
-<script>
-/*<![CDATA[*/
-$(document).ready(function(){
- $(".select_me").hide();
-  $("#bonus_options_1").change(function() {
-    $(".select_me").hide();
-    $("#div_" + $(this).val()).show();
-    //=== change the hidden input actin 2 thingie
-      var text = $(this).val();
-      $("#action_2").val(text);
- });
-//=== show hide selected classes
-$("#all_or_selected_classes").click(function() {
-  $("#classes_open").slideToggle("slow", function() {
-  });
-});
-
-});
-/*]]>*/
-</script>';
+    </table></form>';
 echo stdhead($lang['bonusmanager_h1_upload'], true, $stdhead) . $HTMLOUT . stdfoot();

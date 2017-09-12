@@ -163,9 +163,10 @@ $(function () {
     var $nav = $('.navigation li a');
     var $theme_control_panel = $('#control_panel');
     var a_color = localStorage.getItem('a_color');
-    if (a_color != null)
-        $('a').css('color', '#' + a_color);
-
+    if (a_color != null) {
+        $('body').get(0).style.setProperty('--main-color', '#' + a_color);
+        $('iframe').contents().find('body').css('--main-color', '#' + a_color);
+    }
     function changeBodyClass(className, classesArray) {
         $.each(classesArray, function (idx, val) {
             $body.removeClass(val);
@@ -292,7 +293,7 @@ $(function () {
             $('#text_style').change(function () {
                 if (!$body.hasClass($(this).val())) {
                     changeBodyClass($(this).val(), text_style_classes);
-                    $('iframe').contents().find('body').removeClass().addClass($(this).val());
+                    $('iframe').contents().find('body').removeClass('text-1 text-2 text-3 text-4 text-5 text-6 text-7 text-8').addClass($(this).val());
                 }
             });
 
@@ -312,7 +313,8 @@ $(function () {
                 color: '#0a0b35',
                 onChange: function (hsb, hex, rgb) {
                     links_picker.css('backgroundColor', '#' + hex);
-                    $('a').css('color', '#' + hex);
+                    $('body').get(0).style.setProperty('--main-color', '#' + hex);
+                    $('iframe').contents().find('body').css('--main-color', '#' + hex);
                     localStorage.setItem('a_color', hex);
                 }
             });
@@ -327,9 +329,10 @@ $(function () {
                 $theme_control_panel.find('select').val(1);
                 changeBodyClass(page_config.styles.headerStyle.list[0].className, header_style_classes);
                 changeBodyClass(page_config.styles.textStyle.list[0].className, text_style_classes);
-                $('iframe').contents().find('body').removeClass().addClass('text-1');
+                $('iframe').contents().find('body').removeClass('text-2 text-3 text-4 text-5 text-6 text-7 text-8').addClass('text-1');
                 links_picker.css({'background-color': '#008a05'}).ColorPickerSetColor('#008a05');
-                $('a').not(".latest-video a").attr('style', '');
+                $('body').get(0).style.setProperty('--main-color', '#0f0');
+                $('iframe').contents().find('body').css('--main-color', '#0f0');
                 $theme_control_panel.find('.active').removeClass();
                 localStorage.removeItem('a_color');
                 return false;

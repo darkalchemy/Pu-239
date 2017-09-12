@@ -36,7 +36,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
 <td class="' . $class . '" align="left">' . get_user_class_name($arr['class']) . '</td>
 <td class="' . $class . '" align="left">' . $ratio . '</td>
 <td class="' . $class . '" align="left">' . get_date($arr['added'], 'DATE', 0, 1) . '</td>
-<td class="' . $class . '" align="center"><a href="pm_system.php?action=send_message&amp;receiver=' . (int)$arr['id'] . '"><img src="' . $site_config['pic_base_url'] . '/button_pm.gif" alt="' . $lang['upinfo_pm'] . '" title="' . $lang['upinfo_pm'] . '" border="0" /></a></td>
+<td class="' . $class . '" align="center"><a href="pm_system.php?action=send_message&amp;receiver=' . (int)$arr['id'] . '"><img src="' . $site_config['pic_base_url'] . 'button_pm.gif" alt="' . $lang['upinfo_pm'] . '" title="' . $lang['upinfo_pm'] . '" border="0" /></a></td>
 </tr>';
 }
 $HTMLOUT .= '</table>';

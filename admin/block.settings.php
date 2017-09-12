@@ -162,112 +162,112 @@ $HTMLOUT .= '
     <div>' . $lang['block_active_user_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#active_users_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_active_user24'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_active_user24_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#active_24h_users_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_active_irc'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_active_irc_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#active_irc_users_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_birthday'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_birthday_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#active_birthday_users_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_stats'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_stats_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#stats_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_disclaimer'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_disclaimer_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#disclaimer_on#></div></td>
-    </tr></table>  
-    
+    </tr></table>
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_latest_users'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_latest_users_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#latest_user_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_forum_post'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_forum_post_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#forum_posts_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_torrents'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_torrents_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#latest_torrents_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_torrents_scroll'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_torrents_scroll_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#latest_torrents_scroll_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_announcement'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_announcement_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#announcement_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_donation'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_donation_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#donation_progress_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_advertise'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_advertise_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#ads_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_radio'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_radio_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#radio_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_torrent_freak'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_torrent_freak_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#torrentfreak_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_christmas'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_christmas_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#christmas_gift_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_poll'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
@@ -281,16 +281,16 @@ $HTMLOUT .= '
     <div>' . $lang['block_movie_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#movie_ofthe_week_on#></div></td>
     </tr></table>
-    
+
     <div><h1>' . $lang['block_stdhead_settings'] . '</h1></div>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_freelech'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_freelech_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#global_freeleech_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_demotion'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
@@ -311,35 +311,35 @@ $HTMLOUT .= '
     <div>' . $lang['block_staff_warnings_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#global_staff_warn_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_staff_reports'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_staff_reports_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#global_staff_report_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_upload_alert'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_upload_alert_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#global_staff_uploadapp_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_happyhour'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_happyhour_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#global_happyhour_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_crazyhour'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_crazyhour_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#global_crazyhour_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_bug'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
@@ -353,219 +353,219 @@ $HTMLOUT .= '
     <div>' . $lang['block_karma_contributions_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#global_freeleech_contribution_on#></div></td>
     </tr></table>
-    
+
     <div><h1>' . $lang['block_userdetails'] . '</h1></div>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_login_link'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_login_link_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_login_link_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_flush'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_flush_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_flush_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_joined'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_joined_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_joined_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_user_online_time'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_user_online_time_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_online_time_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_browser_os'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_browser_os_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_browser_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_reputation'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_reputation_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_reputation_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_userhits'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_userhits_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_profile_hits_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_birthday_userdetails'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_birthday_userdetails_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_birthday_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_contact'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_contact_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_contact_info_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_iphistory'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_iphistory_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_iphistory_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_traffic'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_traffic_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_traffic_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_shareratio'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_shareratio_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_share_ratio_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_seedtime'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_seedtime_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_seedtime_ratio_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_seedbonus'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_seedbonus_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_seedbonus_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_ircstats'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_ircstats_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_irc_stats_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_conn_port'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_conn_port_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_connectable_port_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_avatar'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_avatar_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_avatar_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_userclass'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_userclass_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_userclass_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_gender'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_gender_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_gender_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_freeslot_freelech'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_freeslot_freelech_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_freestuffs_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_torrent_comment'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_torrent_comment_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_comments_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_forum_user_post'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_forum_user_post_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_forumposts_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_invitedby'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_invitedby_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_invitedby_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_torrent_info'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_torrent_info_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_torrents_block_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_completed'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_completed_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_completed_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_staff_snatched'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_staff_snatched_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_snatched_staff_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_user_info'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_user_info_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_userinfo_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_show_pm'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_show_pm_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_showpm_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_report'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_report_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_report_user_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_user_status'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
     <div>' . $lang['block_user_status_set'] . '</div></td>
     <td width="40%"><div style="width: auto;" align="right"><#userdetails_user_status_on#></div></td>
     </tr></table>
-    
+
     <table width="100%" border="0" cellpadding="5" cellspacing="0"><tr>
     <td width="60%">
     <b>' . $lang['block_user_comments'] . '</b><div><hr style="color:#A83838;" size="1" /></div>
@@ -590,25 +590,25 @@ function redirect($url, $text, $time = 2)
     $page_title = "{$lang['block_page_title']}";
     $page_detail = "<em>{$lang['block_redir']}</em>";
     $html = "
-		<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
-		\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
-		<html xmlns='http://www.w3.org/1999/xhtml'>
-		<head>
-		<meta http-equiv='refresh' content=\"{$time}; url={$site_config['baseurl']}/{$url}\" />
-		<title>{$lang['block_stdhead']}</title>
-    <link rel='stylesheet' href='./css/" . get_stylesheet() . "/e0a618d82ab6ae6be19a4749c87426da.min.css' />
+        <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
+        \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
+        <html xmlns='http://www.w3.org/1999/xhtml'>
+        <head>
+        <meta http-equiv='refresh' content=\"{$time}; url={$site_config['baseurl']}/{$url}\" />
+        <title>{$lang['block_stdhead']}</title>
+    <link rel='stylesheet' href='" . get_file('css') . "' />
     </head>
     <body>
     <div>
-	  <div>{$lang['block_redir1']}</div>
-		<div style='padding:8px'>
-		<div style='font-size:12px'>$text
-		<br>
-		<br>
-		<a href='{$site_config['baseurl']}/{$url}'>Click here if not redirected...</a>
-		</div>
-		</div>
-		</div></body></html>";
+      <div>{$lang['block_redir1']}</div>
+        <div style='padding:8px'>
+        <div style='font-size:12px'>$text
+        <br>
+        <br>
+        <a href='{$site_config['baseurl']}/{$url}'>Click here if not redirected...</a>
+        </div>
+        </div>
+        </div></body></html>";
     echo $html;
     exit;
 }

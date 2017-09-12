@@ -12,9 +12,8 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_mega_search'));
 $stdhead = [
-    /* include css **/
     'css' => [
-        'forums',
+        get_file('upload_css')
     ],
 ];
 //=== bubble tool tip

@@ -11,12 +11,12 @@ $lang = array_merge(load_language('global'), load_language('userdetails'));
 
 $stdhead = [
     'css' => [
-        '8651a0bc912710e02ab234ae7ef895e1.min',
+        get_file('userdetails_css')
     ],
 ];
 $stdfoot = [
     'js' => [
-        'de8c9a9e792812564093f25a33fe67fe.min',
+        get_file('userdetails_js')
     ],
 ];
 $id = (int)$_GET['id'];

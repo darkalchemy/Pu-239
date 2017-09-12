@@ -229,7 +229,7 @@ function redirect($url, $text, $time = 2)
 		<head>
 		<meta http-equiv='refresh' content=\"{$time}; url={$site_config['baseurl']}/{$url}\" />
 		<title>{$lang['repset_block']}</title>
-    <link rel='stylesheet' href='./css/" . get_stylesheet() . "/e0a618d82ab6ae6be19a4749c87426da.min.css' />
+    <link rel='stylesheet' href='" . get_file('css') . "' />
     </head>
     <body>
 						    <div>

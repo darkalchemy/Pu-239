@@ -6,7 +6,7 @@ check_user_status();
 $lang = array_merge(load_language('global'), load_language('staff'));
 $stdhead = [
     'css' => [
-        '4628d6c70491d19e9ab217458edfadfa.min',
+        get_file('staff_css')
     ],
 ];
 $support = $mods = $admin = $sysop = [];
