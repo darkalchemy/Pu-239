@@ -37,7 +37,7 @@ if ($scroll_torrents) {
         $HTMLOUT .= "
                 <div class='slide'>
                     <a href='./details?id={$id}'>
-                        <img src='" . htmlsafechars($poster) . "' alt='{$name}' title='{$name}\n{$lang['latesttorrents_seeders']} : {$seeders}\n{$lang['latesttorrents_leechers']} : {$leechers}' width='200' height='350' border='0' />
+                        <img src='" . htmlsafechars($poster) . "' class='tooltipper' alt='{$name}' title='{$name}<br>{$lang['latesttorrents_seeders']} : {$seeders}<br>{$lang['latesttorrents_leechers']} : {$leechers}' width='200' height='300' border='0' />
                     </a>
                 </div>";
     }

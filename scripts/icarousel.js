@@ -65,6 +65,12 @@
             top: b.defs.height / 2 - e.height() / 2 + "px",
             left: b.defs.width / 2 - e.width() / 2 + "px"
         });
+        //var id = a.parent().attr('id');
+        //var parent = document.getElementById(id);
+        //var innerDiv = document.createElement('div');
+        //innerDiv.setAttribute('id', 'iCarousel-timer');
+        //innerDiv.innerHTML = '<div></div>';
+        //parent.appendChild(innerDiv);
         a.append('<div id="iCarousel-timer"><div></div></div>');
         b.iCarouselTimer = g("#iCarousel-timer", a);
         b.iCarouselTimer.hide();
@@ -337,6 +343,7 @@
                 "-o-transform": "none",
                 "-ms-transform": "none",
                 transform: "none",
+                left: b + "px",
                 top: c + "px",
                 width: this.defs.currentSlide.data("width") + "px",
                 height: this.defs.currentSlide.data("height") + "px",
@@ -497,12 +504,12 @@
         goNext: function (a) {
             a = a ? a : !1;
             if (!a && this.defs.lock) return !1;
-            this.defs.slide == this.defs.total ? this.goSlide(0, !1, a) : this.goSlide(this.defs.slide + 1, !1, a);
+            this.defs.slide == this.defs.total ? this.goSlide(0, !1, a) : this.goSlide(this.defs.slide + 1, !1, a)
         },
         goPrev: function (a) {
             a = a ? a : !1;
             if (!a && this.defs.lock) return !1;
-            0 == this.defs.slide ? this.goSlide(this.defs.total - 1, !1, a) : this.goSlide(this.defs.slide - 1, !1, a);
+            0 == this.defs.slide ? this.goSlide(this.defs.total - 1, !1, a) : this.goSlide(this.defs.slide - 1, !1, a)
         },
         events: function () {
             var a = this;
@@ -563,7 +570,7 @@
             a.el.bind("iCarousel:previous", function () {
                 a.goPrev()
             });
-            a.el.bind('mousewheel', function(d, c) {
+            a.el.mousewheel && a.options.mouseWheel && a.el.bind('mousewheel', function(d, c) {
                 d.preventDefault();
                 0 > c ? a.goNext() : a.goPrev();
             });

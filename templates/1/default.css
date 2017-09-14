@@ -1,9 +1,10 @@
 :root {
   --main-color: #0f0;
-  --white-color: #fff;
+  --white-color: #f9f9f9;
   --black-color: #000;
   --secondary-color: #ddd;
   --alternate-color: #aaa;
+  --grey-color: #999;
 }
 
 * {
@@ -289,7 +290,7 @@ a.iCarouselNav {
   text-align: center
 }
 .simpleCaptchaSelected {
-  border: 2px solid #999;
+  border: 2px solid var(--grey-color);
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
@@ -322,18 +323,22 @@ a.iCarouselNav {
   width: 99%;
   text-align: left;
   padding: 10px;
-  border: 0 solid #999;
+  border: 0 solid var(--grey-color);
   border-top: none;
-  background: #999;
+  background: var(--grey-color);
   margin-bottom: 10px
 }
 .carousel-container {
   width: 100%;
-  overflow: hidden
+  overflow: hidden;
+  margin-bottom: 20px;
+  border-radius: 5px;
 }
 #icarousel {
-  height: 360px;
+  width: 200px;
+  height: 300px;
   margin-left: 42%;
+  position: relative;
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   -o-transform-style: preserve-3d;
@@ -342,21 +347,23 @@ a.iCarouselNav {
   -moz-perspective: 1000px;
   -o-perspective: 1000px;
   -ms-perspective: 1000px;
-  perspective: 1000px
+  perspective: 1000px;
 }
 #icarousel .slide {
   width: 200px;
-  height: auto
+  height: auto;
+  visibility: hidden;
 }
 #icarousel .slide img,
 .round5 {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--main-color);
 }
 a.iCarouselNav {
   display: block;
-  top: 178px;
+  top: 130px;
   width: 43px;
   height: 43px;
   background: url(./images/arrows.png) no-repeat;
@@ -378,7 +385,7 @@ a#iCarouselPrev:hover {
   transition-property: none;
 }
 a#iCarouselNext {
-  left: 200px;
+  left: 215px;
   background-position: right top;
   -webkit-transition-property: none;
   -moz-transition-property: none;
@@ -600,7 +607,7 @@ select {
   margin-top: 5px;
   margin-bottom: 5px;
   padding: 5px;
-  background: #999;
+  background: var(--grey-color);
   -moz-box-shadow: 0 0 8px rgba(0,0,0,.5) inset;
   -webkit-box-shadow: 0 0 8px rgba(0,0,0,.5) inset;
   box-shadow: 0 0 8px rgba(0,0,0,.5) inset;
@@ -668,7 +675,7 @@ select {
   background-size: 128px 128px
 }
 .background-9 {
-  background: linear-gradient(63deg,#999 23%,transparent 23%) 7px 0,linear-gradient(63deg,transparent 74%,#999 78%),linear-gradient(63deg,transparent 34%,#999 38%,#999 58%,transparent 62%),#444;
+  background: linear-gradient(63deg,var(--grey-color) 23%,transparent 23%) 7px 0,linear-gradient(63deg,transparent 74%,var(--grey-color) 78%),linear-gradient(63deg,transparent 34%,var(--grey-color) 38%,var(--grey-color) 58%,transparent 62%),#444;
   background-size: 16px 48px
 }
 .background-10 {
@@ -1068,7 +1075,7 @@ dd {
   background: #C3DCC4;
 }
 .btnflex {
-  background: #999;
+  background: var(--grey-color);
   padding: 10px 40px;   
   font-size: 1.25em;
   border: 1px solid #0c0c0c;
@@ -1761,7 +1768,7 @@ input[type=search]::-webkit-search-decoration {
   }
   blockquote,
   pre {
-    border: 1px solid #999
+    border: 1px solid var(--grey-color)
   }
   thead {
     display: table-header-group
@@ -2080,10 +2087,10 @@ cite {
 }
 .muted,
 blockquote small {
-  color: #999
+  color: var(--grey-color)
 }
 a.muted:hover {
-  color: grey
+  color: var(--grey-color)
 }
 .alert,
 .alert h4,
@@ -2164,7 +2171,7 @@ hr {
 abbr[data-original-title],
 abbr[title] {
   cursor: help;
-  border-bottom: 1px dotted #999
+  border-bottom: 1px dotted var(--grey-color)
 }
 abbr.initialism {
   font-size: 90%
@@ -2263,7 +2270,7 @@ legend {
 }
 legend small {
   font-size: 15px;
-  color: #999
+  color: var(--grey-color)
 }
 button,
 label,
@@ -2381,7 +2388,7 @@ select:focus {
 }
 .uneditable-input,
 .uneditable-textarea {
-  color: #999;
+  color: var(--grey-color);
   cursor: not-allowed;
   background-color: #fcfcfc;
   border-color: #ccc;
@@ -2395,15 +2402,15 @@ select:focus {
 }
 input:-moz-placeholder,
 textarea:-moz-placeholder {
-  color: #999
+  color: var(--grey-color)
 }
 input:-ms-input-placeholder,
 textarea:-ms-input-placeholder {
-  color: #999
+  color: var(--grey-color)
 }
 input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
-  color: #999
+  color: var(--grey-color)
 }
 .checkbox,
 .radio {
@@ -2970,7 +2977,7 @@ table {
 }
 .table-striped tbody tr:nth-child(odd) td,
 .table-striped tbody tr:nth-child(odd) th {
-  background-color: #f9f9f9
+  background-color: var(--white-color)
 }
 .btn,
 .pagination ul > .active > a,
@@ -3628,7 +3635,7 @@ table th[class*=span] {
 .navbar-inverse .brand,
 .navbar-inverse .navbar-link,
 .navbar-inverse .navbar-text {
-  color: #999
+  color: var(--grey-color)
 }
 .dropdown-menu .disabled > a:hover {
   text-decoration: none;
@@ -4232,7 +4239,7 @@ input[type=submit].btn::-moz-focus-inner {
 .nav-header {
   display: block;
   font-size: 11px;
-  color: #999
+  color: var(--grey-color)
 }
 .nav li + .nav-header {
   margin-top: 9px
@@ -4368,8 +4375,8 @@ input[type=submit].btn::-moz-focus-inner {
 .nav-pills .open .dropdown-toggle,
 .nav-tabs .open .dropdown-toggle {
   color: var(--white-color);
-  background-color: #999;
-  border-color: #999
+  background-color: var(--grey-color);
+  border-color: var(--grey-color)
 }
 .nav li.dropdown.open .caret,
 .nav li.dropdown.open a:hover .caret,
@@ -4379,7 +4386,7 @@ input[type=submit].btn::-moz-focus-inner {
   opacity: 1
 }
 .tabs-stacked .open > a:hover {
-  border-color: #999
+  border-color: var(--grey-color)
 }
 .tabs-below > .nav-tabs {
   border-top: 1px solid var(--secondary-color)
@@ -4710,7 +4717,7 @@ input[type=submit].btn::-moz-focus-inner {
 }
 .navbar-inverse .brand,
 .navbar-inverse .nav > li > a {
-  color: #999;
+  color: var(--grey-color);
   text-shadow: 0 -1px 0 rgba(0,0,0,.25)
 }
 .highlight,
@@ -4738,8 +4745,8 @@ input[type=submit].btn::-moz-focus-inner {
   border-left-color: #111
 }
 .navbar-inverse .nav li.dropdown > .dropdown-toggle .caret {
-  border-top-color: #999;
-  border-bottom-color: #999
+  border-top-color: var(--grey-color);
+  border-bottom-color: var(--grey-color)
 }
 .navbar-inverse .navbar-search .search-query {
   color: var(--white-color);
@@ -4837,13 +4844,13 @@ input[type=submit].btn::-moz-focus-inner {
 }
 .pagination ul > .active > a,
 .pagination ul > .active > span {
-  color: #999;
+  color: var(--grey-color);
   cursor: default
 }
 .pagination ul > .disabled > a,
 .pagination ul > .disabled > a:hover,
 .pagination ul > .disabled > span {
-  color: #999;
+  color: var(--grey-color);
   cursor: default;
   background-color: transparent
 }
@@ -4939,7 +4946,7 @@ input[type=submit].btn::-moz-focus-inner {
 .pager .disabled > a,
 .pager .disabled > a:hover,
 .pager .disabled > span {
-  color: #999;
+  color: var(--grey-color);
   cursor: default;
   background-color: var(--white-color)
 }
@@ -5141,7 +5148,7 @@ a.thumbnail:hover {
   color: var(--white-color);
   white-space: nowrap;
   vertical-align: baseline;
-  background-color: #999;
+  background-color: var(--grey-color);
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px
@@ -5227,11 +5234,11 @@ a.label:hover {
   margin-bottom: 20px;
   overflow: hidden;
   background-color: #f7f7f7;
-  background-image: -moz-linear-gradient(top,#f5f5f5,#f9f9f9);
-  background-image: -webkit-gradient(linear,0 0,0 100%,from(#f5f5f5),to(#f9f9f9));
-  background-image: -webkit-linear-gradient(top,#f5f5f5,#f9f9f9);
-  background-image: -o-linear-gradient(top,#f5f5f5,#f9f9f9);
-  background-image: linear-gradient(to bottom,#f5f5f5,#f9f9f9);
+  background-image: -moz-linear-gradient(top,#f5f5f5,var(--white-color));
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(#f5f5f5),to(var(--white-color)));
+  background-image: -webkit-linear-gradient(top,#f5f5f5,var(--white-color));
+  background-image: -o-linear-gradient(top,#f5f5f5,var(--white-color));
+  background-image: linear-gradient(to bottom,#f5f5f5,var(--white-color));
   background-repeat: repeat-x;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -6348,7 +6355,7 @@ a.label:hover {
   }
   .navbar-inverse .nav-collapse .dropdown-menu a,
   .navbar-inverse .nav-collapse .nav > li > a {
-    color: #999
+    color: var(--grey-color)
   }
   .navbar-inverse .nav-collapse .dropdown-menu a:hover,
   .navbar-inverse .nav-collapse .nav > li > a:hover {
