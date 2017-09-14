@@ -157,7 +157,7 @@ sql_query('INSERT INTO usersachiev SET userid = ' . sqlesc($id)) or sqlerr(__FIL
 //==New member pm
 $added = TIME_NOW;
 $subject = sqlesc('Welcome');
-$msg = sqlesc('Hey there ' . htmlsafechars($wantusername) . " ! Welcome to {$site_config['site_name']} ! :clap2: \n\n Please ensure your connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\ncheers {$site_config['site_name']} staff.\n");
+$msg = sqlesc('Hey there ' . htmlsafechars($wantusername) . " ! Welcome to {$site_config['site_name']} ! :clap2: \n\n Please ensure your connectable before downloading or uploading any torrents\n - If your unsure then please use the forum and Faq or pm admin onsite.\n\nBe aware that the users database is deleted every few days.\n\ncheers {$site_config['site_name']} staff.\n");
 sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($id) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
 //==End new member pm
 $latestuser_cache['id'] = (int)$id;

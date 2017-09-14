@@ -6,7 +6,7 @@ function get_file($file) {
         if ($site_config['production']) {
             switch($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/8a3e48b00435115013d90639c4199441.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/67a750d93379c5b805ebaed8218b88bd.min.css";
                 case 'js':
                     return "{$site_config['baseurl']}/js/{$style}/323258b63087b0e4c2af4ab598b048fb.min.js";
                 case 'chatjs':
@@ -18,7 +18,7 @@ function get_file($file) {
                 case 'chat_css_uranium':
                     return "{$site_config['baseurl']}/css/{$style}/2e1870f28f32d4a417c960ed80c20be9.min.css";
                 case 'trivia_css':
-                    return "{$site_config['baseurl']}/css/{$style}/f1e55048321bb1a42761978b7e3a9e39.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/c51ed2f415c9c74c8709216414fc4176.min.css";
                 case 'trivia_js':
                     return "{$site_config['baseurl']}/js/{$style}/2d28f39c1474c0e07517d68f18e88974.min.js";
                 case 'index_css':
@@ -75,7 +75,7 @@ function get_file($file) {
         } else {
             switch($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/ee91cb6d02f3d589e58b55c1e896df2e.css";
+                    return "{$site_config['baseurl']}/css/{$style}/3232b496810ce42f82bbb9634dfa9707.css";
                 case 'js':
                     return "{$site_config['baseurl']}/js/{$style}/b537ea582726d105bdd9e5acc8dcb722.js";
                 case 'chatjs':
@@ -87,7 +87,7 @@ function get_file($file) {
                 case 'chat_css_uranium':
                     return "{$site_config['baseurl']}/css/{$style}/2283699534ff11f5736248de623d7def.css";
                 case 'trivia_css':
-                    return "{$site_config['baseurl']}/css/{$style}/b9cd62a1851892296ddecf04b7eae88e.css";
+                    return "{$site_config['baseurl']}/css/{$style}/a1a7d22565e402dede4a8bb765c79632.css";
                 case 'trivia_js':
                     return "{$site_config['baseurl']}/js/{$style}/a4c172a85fb36c2b00a6ef229205a674.js";
                 case 'index_css':
