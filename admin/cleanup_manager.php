@@ -72,13 +72,14 @@ function manualclean()
             $next_clean = intval($row['clean_time'] + $row['clean_increment']);
         }
         sql_query('UPDATE cleanup SET clean_time = ' . sqlesc($next_clean) . ' WHERE clean_id = ' . sqlesc($row['clean_id'])) or sqlerr(__FILE__, __LINE__);
-        if (is_file(CLEAN_DIR . '' . $row['clean_file'])) {
-            require_once CLEAN_DIR . '' . $row['clean_file'];
-        }
-        if (function_exists('docleanup')) {
-            docleanup($row);
+        if (file_exists(CLEAN_DIR . $row['clean_file'])) {
+            require_once CLEAN_DIR . $row['clean_file'];
+            if (function_exists($row['function_name'])) {
+                register_shutdown_function($row['function_name'], $row);
+            }
         }
     }
+
     cleanup_show_main(); //instead of header() so can see queries in footer (using sql_query())
     exit();
 }

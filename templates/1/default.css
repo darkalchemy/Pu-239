@@ -386,7 +386,7 @@ a#iCarouselPrev:hover {
   transition-property: none;
 }
 a#iCarouselNext {
-  left: 215px;
+  left: 205px;
   background-position: right top;
   -webkit-transition-property: none;
   -moz-transition-property: none;

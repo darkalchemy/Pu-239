@@ -222,19 +222,14 @@ $site_config['comment_check'] = 1; //set it to 0 if you wanna allow commenting w
 //for subs & youtube mode
 $site_config['movie_cats'] = array(
     3,
-    5,
-    6,
     10,
     11,
 );
 $site_config['slider_cats'] = array(
     3,
-    5,
-    6,
     10,
     11,
 );
-$site_config['moviecats'] = '3,5,6,10,11';
 $youtube_pattern = "/^http(s)?\:\/\/www\.youtube\.com\/watch\?v\=[\w-]{11}/i";
 //== set this to size of user avatars
 $site_config['av_img_height'] = 100;

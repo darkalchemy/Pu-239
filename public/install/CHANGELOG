@@ -1,4 +1,6 @@
 14 Sept, 2017
+fix cleanup manual run
+fix MOW
 add missing jquery-ui is merged and minified js files
 fix iCarousel centering
 remove navbar border radius along top
