@@ -337,7 +337,8 @@ a.iCarouselNav {
 #icarousel {
   width: 200px;
   height: 300px;
-  margin-left: 42%;
+  margin-left: auto;
+  margin-right: auto;
   position: relative;
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
@@ -880,9 +881,6 @@ h6 {
 }
 .text-right {
   text-align: right!important
-}
-.tooltipper {
-  margin: 5px
 }
 .tooltipper_img {
   vertical-align: unset;

@@ -228,7 +228,8 @@ header#navbar .nav_container ul > li:hover ul {
     z-index: 1005;
     height: 50px;
     box-shadow: 0 0 15px 0 rgba(0,0,0,.1);
-    background-color: #333
+    background-color: #333;
+    border-radius: 0;
   }
   header#navbar ul {
     /*display: none;*/

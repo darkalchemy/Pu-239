@@ -454,7 +454,8 @@ header#navbar .nav_container ul > li > ul a:hover {
     z-index: 1005;
     height: 50px;
     box-shadow: 0 0 15px 0 rgba(0,0,0,.1);
-    background-color: #333
+    background-color: #333;
+    border-radius: 0
   }
   header#navbar ul {
     opacity: 0
@@ -899,7 +900,8 @@ a.iCarouselNav {
 #icarousel {
   width: 200px;
   height: 300px;
-  margin-left: 42%;
+  margin-left: auto;
+  margin-right: auto;
   position: relative;
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
@@ -1442,9 +1444,6 @@ h6 {
 }
 .text-right {
   text-align: right!important
-}
-.tooltipper {
-  margin: 5px
 }
 .tooltipper_img {
   vertical-align: unset;

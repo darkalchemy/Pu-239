@@ -4,6 +4,8 @@ There is a temporary site at http://tech-info.pw:8080 where you can view the cod
 
 This is a fork of U-232 V4.
 
+Be aware that the users table is deleted every few days. This is still a WIP and many pages may not be functional.
+
 ```
 get the files
 git clone https://github.com/darkalchemy/Pu-239.git
