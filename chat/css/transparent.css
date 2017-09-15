@@ -229,13 +229,15 @@ input[type=button]:active {
    background: #1b435e;
 }
 
-.ajax-chat .popup, 
-#content #chatList, 
-#content #onlineListContainer, 
-#content #helpContainer, 
-#content #settingsContainer, 
-#content #inputFieldContainer, 
-#loginContent input[type=text], 
-#loginContent input[type=password] {
-    background: rgba(0, 0, 0, .1);
+@media (min-width: 701px) {
+    .ajax-chat .popup, 
+    #content #chatList, 
+    #content #onlineListContainer, 
+    #content #helpContainer, 
+    #content #settingsContainer, 
+    #content #inputFieldContainer, 
+    #loginContent input[type=text], 
+    #loginContent input[type=password] {
+        background: rgba(0, 0, 0, .1);
+    }
 }

@@ -137,13 +137,15 @@ if (empty($gamenum) || empty($qid)) {
 
         if ($num_rows != 0) {
             $table = "
-            <table class='table text-center'>
-                <tr>
-                    <th class='text-left' width='5%'>Username</th>
-                    <th class='text-center' width='5%'>Ratio</th>
-                    <th class='text-center' width='5%'>Correct</th>
-                    <th class='text-center' width='5%'>Incorrect</th>
-                </tr>";
+            <table class='table table-bordered table-striped text-center'>
+                <thead>
+                    <tr>
+                        <th class='text-left' width='5%'>Username</th>
+                        <th class='text-center' width='5%'>Ratio</th>
+                        <th class='text-center' width='5%'>Correct</th>
+                        <th class='text-center' width='5%'>Incorrect</th>
+                    </tr>
+                </thead>";
             $sql = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username,
                             (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE gamenum = ' . sqlesc($gamenum) . ' AND correct = 0 AND user_id = t.user_id) AS incorrect
                         FROM triviausers AS t
@@ -153,17 +155,17 @@ if (empty($gamenum) || empty($qid)) {
                         ORDER BY correct DESC, incorrect ASC
                         LIMIT 10';
             $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-            $i = 0;
             while ($result = mysqli_fetch_assoc($res)) {
                 extract($result);
-                $class = $i++ % 2 == 0 ? 'one' : 'two';
                 $table .= "
-                <tr class='$class'>
-                    <td class='text-left' width='5%'>" . format_username((int)$user_id) . "</td>
-                    <td class='text-center' width='5%'>" . sprintf('%.2f%%', $correct / ($correct + $incorrect) * 100) . "</td>
-                    <td class='text-center' width='5%'>$correct</td>
-                    <td class='text-center' width='5%'>$incorrect</td>
-                </tr>";
+                <tbody>
+                    <tr>
+                        <td class='text-left' width='5%'>" . format_username((int)$user_id) . "</td>
+                        <td class='text-center' width='5%'>" . sprintf('%.2f%%', $correct / ($correct + $incorrect) * 100) . "</td>
+                        <td class='text-center' width='5%'>$correct</td>
+                        <td class='text-center' width='5%'>$incorrect</td>
+                    </tr>
+                </tbody>";
             }
             $table .= "
             </table>";

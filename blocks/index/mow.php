@@ -27,40 +27,41 @@ if (count($motw_cached) > 0) {
         <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_mow_title']}</legend>
         <div class='text-center bottom20'>
             <div class='module'><div class='badge badge-hot'></div>
-                <table class='table table-bordered'>
+                <table class='table table-bordered table-striped'>
                     <thead>
                         <tr>
-                            <th class='span1'>{$lang['index_mow_type']}</th>
-                            <th class='span5'>{$lang['index_mow_name']}</th>
-                            <th class='span1'>{$lang['index_mow_snatched']}</th>
-                            <th class='span1'>{$lang['index_mow_seeder']}</th>
-                            <th class='span1'>{$lang['index_mow_leecher']}</th>
+                            <th class='span1 text-center'>{$lang['index_mow_type']}</th>
+                            <th class='span8'>{$lang['index_mow_name']}</th>
+                            <th class='span1 text-center'>{$lang['index_mow_snatched']}</th>
+                            <th class='span1 text-center'>{$lang['index_mow_seeder']}</th>
+                            <th class='span1 text-center'>{$lang['index_mow_leecher']}</th>
                         </tr>
-                    </thead>";
+                    </thead>
+                    <tbody>";
     if ($motw_cached) {
         foreach ($motw_cached as $m_w) {
             $mw['cat_name'] = htmlsafechars($change[$m_w['category']]['name']);
             $mw['cat_pic'] = htmlsafechars($change[$m_w['category']]['image']);
+            $poster = empty($m_w['poster']) ? "<img src='{$site_config['pic_base_url']}noposter.jpg' width='150' height='220' />" : "<img src='" . htmlsafechars($m_w['poster']) . "' width='150' height='220' />";
+
             $HTMLOUT .= "
-                    <tbody>
                         <tr>
-                            <td class='span1'><img border='0' src='./images/caticons/" . get_categorie_icons() . "/" . htmlsafechars($mw['cat_pic']) . "' alt='" . htmlsafechars($mw['cat_name']) . "' title='" . htmlsafechars($mw['cat_name']) . "' /></td>
-                            <td class='span1'><a href='{$site_config['baseurl']}/details.php?id=" . (int)$m_w['id'] . "'><b>" . htmlsafechars($m_w['name']) . "</b></a></td>
-                            <td class='span1'>" . (int)$m_w['times_completed'] . "</td>
-                            <td class='span1'>" . (int)$m_w['seeders'] . "</td>
-                            <td class='span1'>" . (int)$m_w['leechers'] . '</td>
-                        </tr>
-                    </tbody>';
+                            <td class='span1 text-center'><img border='0' src='./images/caticons/" . get_categorie_icons() . "/" . htmlsafechars($mw['cat_pic']) . "' alt='" . htmlsafechars($mw['cat_name']) . "' title='" . htmlsafechars($mw['cat_name']) . "' /></td>
+                            <td class='span8'><a href='{$site_config['baseurl']}/details.php?id=" . (int)$m_w['id'] . "' class='tooltipper' title=\"<b>{$lang['index_ltst_name']}" . htmlsafechars($m_w['name']) . "</b><br><b>{$lang['index_ltst_seeder']}" . (int)$m_w['seeders'] . "</b><br><b>{$lang['index_ltst_leecher']}"  . (int)$m_w['leechers'] . "</b><br>$poster\"><b>" . htmlsafechars($m_w['name']) . "</b></a></td>
+                            <td class='span1 text-center'>" . (int)$m_w['times_completed'] . "</td>
+                            <td class='span1 text-center'>" . (int)$m_w['seeders'] . "</td>
+                            <td class='span1 text-center'>" . (int)$m_w['leechers'] . "</td>
+                        </tr>";
         }
-        $HTMLOUT .= '
+        $HTMLOUT .= "
+                    </tbody>
                 </table>
             </div>
         </div>
-    </fieldset>';
+    </fieldset>";
     } else {
         if (empty($motw_cached)) {
             $HTMLOUT .= "
-                    </tbody>
                         <tr>
                             <td colspan='5'>{$lang['index_mow_no']}!</td>
                         </tr>

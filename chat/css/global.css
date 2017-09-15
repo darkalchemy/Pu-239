@@ -420,8 +420,8 @@ body.ajax-chat {
     }
 
     #content #inputFieldContainer {
-        left: 5px;
-        right: 5px;
+        left: 0;
+        right: 0;
         bottom: 75px;
     }
 
@@ -433,6 +433,8 @@ body.ajax-chat {
     #content #onlineListContainer, #content #helpContainer, #content #settingsContainer {
         margin-left: 0;
         border-left-width: 0;
+        background: rgba(0, 0, 0, .85);
+        display: none;
     }
 }
 

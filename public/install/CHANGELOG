@@ -1,7 +1,11 @@
+15 Sept, 2017
+update index blocks -> torrents to uniform style
+remove excess borders on table-bordered
+
 14 Sept, 2017
 fix cleanup manual run
 fix MOW
-add missing jquery-ui is merged and minified js files
+add missing jquery-ui in merged and minified js files
 fix iCarousel centering
 remove navbar border radius along top
 
