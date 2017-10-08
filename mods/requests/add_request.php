@@ -39,8 +39,8 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
     $HTMLOUT .= "{$lang['add_rules5']} 
     <a class='altlink' href='viewrequests.php'>{$lang['add_rules6']}</a></p>\n";
     /* search first **/
-    $HTMLOUT .= "<form method='get' action='browse.php'><table width='750px' border='1' cellspacing='0' cellpadding='5'><tr><td class='colhead' align='left'>
-{$lang['add_search_before']}</td></tr><tr><td align='left'>
+    $HTMLOUT .= "<form method='get' action='browse.php'><table width='750px' border='1' cellspacing='0' cellpadding='5'><tr><td class='colhead'>
+{$lang['add_search_before']}</td></tr><tr><td>
 <input type='text' name='search' size='40' value='' class='btn' />{$lang['add_in']}<select name='cat'> <option value='0'>{$lang['add_all_types']}</option>
 ";
     $catdropdown = '';
@@ -60,9 +60,9 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
 <input type='submit' value='{$lang['req_search']}' class='btn' /></td></tr></table></form>
 <br>\n";
     $HTMLOUT .= "<form method='post' name='compose' action='viewrequests.php?new_request'><a name='add' id='add'></a>
-<table border='1' cellspacing='0' width='750px' cellpadding='5'><tr><td class='colhead' align='left' colspan='2'>
+<table border='1' cellspacing='0' width='750px' cellpadding='5'><tr><td class='colhead' colspan='2'>
 {$lang['add_good_ratio']}" . $site_config['req_gigs_upped'] . "{$lang['add_share']}</td></tr>
-<tr><td align='right'><b>{$lang['add_title']}</b></td><td align='left'><input type='text' size='40' name='requesttitle' />
+<tr><td><b>{$lang['add_title']}</b></td><td><input type='text' size='40' name='requesttitle' />
 <select name='category'><option value='0'>{$lang['add_select_cat']}</option>\n";
     $res2 = sql_query('SELECT id, name FROM categories order by name');
     $num = mysqli_num_rows($res2);
@@ -73,8 +73,8 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
         $catdropdown2 .= '>' . htmlspecialchars($cats2['name']) . "</option>\n";
     }
     $HTMLOUT .= $catdropdown2 . " </select></td></tr>
-<tr><td align='right' valign='top'><b>{$lang['add_image']}</b></td>
-<td align='left'>
+<tr><td><b>{$lang['add_image']}</b></td>
+<td>
 <input type='text' name='picture' size='80' /><br>
 {$lang['add_direct_link']}<br>
 <!--
@@ -82,7 +82,7 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
 -->
 </td></tr>
 
-<tr><td align='right'><b>{$lang['add_description']}</b></td><td align='left'>\n";
+<tr><td><b>{$lang['add_description']}</b></td><td>\n";
     if ($site_config['textbbcode']) {
         require_once INCL_DIR . 'bbcode_functions.php';
         $HTMLOUT .= textbbcode('add_request', 'body', '');
@@ -90,7 +90,7 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
         $HTMLOUT .= "<textarea name='body' rows='20' cols='80'></textarea>";
     }
     $HTMLOUT .= "</td></tr>
-<tr><td align='center' colspan='2'>
+<tr><td colspan='2'>
 <input type='submit' value='{$lang['add_ok']}' class='btn' /></td></tr></table>
 </form>
 <br><br>\n";
@@ -100,9 +100,9 @@ if (mysqli_num_rows($rescount) > 0) {
     $res = sql_query('SELECT users.username, requests.id, requests.userid, requests.cat, requests.request, requests.added, categories.name, categories.image, uploaded, downloaded FROM users inner join requests ON requests.userid = users.id left join categories ON requests.cat = categories.id order by requests.id desc LIMIT 10') or sqlerr();
     $num = mysqli_num_rows($res);
     $HTMLOUT .= "<table border='1' cellspacing='0' width='750px' cellpadding='5'>
-    <tr><td width='50px' class='colhead' align='left'>{$lang['add_cat']}</td>
-    <td class='colhead' align='left'>{$lang['add_request']}</td><td class='colhead' align='center'>{$lang['req_added']}</td>
-    <td class='colhead' align='center'>{$lang['req_req_by']}</td></tr>\n";
+    <tr><td width='50px' class='colhead'>{$lang['add_cat']}</td>
+    <td class='colhead'>{$lang['add_request']}</td><td class='colhead'>{$lang['req_added']}</td>
+    <td class='colhead'>{$lang['req_req_by']}</td></tr>\n";
     foreach ($cats as $key => $value) {
         $change[$value['id']] = [
             'id'    => $value['id'],
@@ -111,19 +111,19 @@ if (mysqli_num_rows($rescount) > 0) {
         ];
     }
     while ($arr = mysqli_fetch_assoc($res)) {
-        $addedby = "<td style='padding: 0px' align='center'><b><a href='userdetails.php?id=$arr[userid]'>$arr[username]</a></b></td>";
+        $addedby = "<td style='padding: 0px'><b><a href='userdetails.php?id=$arr[userid]'>$arr[username]</a></b></td>";
         $catname = htmlspecialchars($change[$arr['cat']]['name']);
         $catpic = htmlspecialchars($change[$arr['cat']]['image']);
         $catimage = "<img src='./images/caticons/" . $catpic . "' title='$catname' alt='$catname' />";
         $HTMLOUT .= "<tr>
-    <td align='center'>" . $catimage . "</td>
-    <td align='left'><a href='viewrequests.php?id=$arr[id]&amp;req_details'>
+    <td>" . $catimage . "</td>
+    <td><a href='viewrequests.php?id=$arr[id]&amp;req_details'>
     <b>" . htmlspecialchars($arr['request']) . "</b></a></td>
-    <td align='center'>" . get_date($arr['added'], '') . "</td>
+    <td>" . get_date($arr['added'], '') . "</td>
     $addedby
     </tr>\n";
     }
-    $HTMLOUT .= "<tr><td align='center' colspan='4'>
+    $HTMLOUT .= "<tr><td colspan='4'>
 <form method='get' action='viewrequests.php'>
 <input type='submit' value='{$lang['req_show_all']}' class='btn' />
 </form>

@@ -33,7 +33,7 @@ switch ($view) {
             "<hr class='separator' />" .
             '<br>' .
             "<table cellpadding='5' cellspacing='0' width='950px'>" .
-            "<tr><td align='center' colspan='9'><strong><em>{$lang['text_all_comm']}</em></strong></td></tr>" .
+            "<tr><td colspan='9'><strong><em>{$lang['text_all_comm']}</em></strong></td></tr>" .
             '<tr>' .
             "<td class='colhead'>{$lang['text_comm_id']}</td>" .
             "<td class='colhead'>{$lang['text_user_id']}</td>" .
@@ -83,7 +83,7 @@ switch ($view) {
 
         if ($rows == 0) {
             //==== Display an error if there are no rows in the MySQLI table
-            $HTMLOUT .= "<tr><td align='center' colspan='9'>{$lang['text_no_rows']}</td></tr>";
+            $HTMLOUT .= "<tr><td colspan='9'>{$lang['text_no_rows']}</td></tr>";
         }
 
         $HTMLOUT .= '</table>';
@@ -98,10 +98,10 @@ switch ($view) {
         $HTMLOUT = "<form method='post' action='staffpanel.php?tool=comments&amp;view=results'>" .
             "<table cellpadding='5' cellspacing='0'>" .
             '<tr>' .
-            "<td align='center' class='colhead' colspan='2'>{$lang['text_search']}</td>" .
+            "<td class='colhead' colspan='2'>{$lang['text_search']}</td>" .
             '</tr>' .
-            "<tr><td align='right'>{$lang['text_keywords']}</td><td><input type='text' name='keywords' size='40' /></td></tr>" .
-            "<tr><td align='center' colspan='2'><input type='submit' value='{$lang['text_submit']}' /></td></tr>" .
+            "<tr><td>{$lang['text_keywords']}</td><td><input type='text' name='keywords' size='40' /></td></tr>" .
+            "<tr><td colspan='2'><input type='submit' value='{$lang['text_submit']}' /></td></tr>" .
             '</table>' .
             '</form>';
 
@@ -126,7 +126,7 @@ switch ($view) {
 
         //==== HTML Output
         $HTMLOUT = "<table cellpadding='5' cellspacing='0'>" .
-            "<tr><td align='center' colspan='8'><strong><em>{$lang['text_results']} " . htmlsafechars($_POST['keywords']) . '</em>' .
+            "<tr><td colspan='8'><strong><em>{$lang['text_results']} " . htmlsafechars($_POST['keywords']) . '</em>' .
             '</strong></td></tr>' .
             "<tr><td class='colhead'>{$lang['text_comm_id']}</td>" .
             "<td class='colhead'>{$lang['text_user_id']}</td>" .
@@ -196,7 +196,7 @@ $HTMLOUT = "<h3><a href='staffpanel.php?tool=comments'>{$lang['text_overview']}<
     "<hr class='separator' />" .
     '<br>' .
     "<table cellpadding='5' cellspacing='0' width='950px'>" .
-    "<tr><td align='center' colspan='9'><strong><em>{$lang['text_recent']}</em></strong></td></tr>" .
+    "<tr><td colspan='9'><strong><em>{$lang['text_recent']}</em></strong></td></tr>" .
     '<tr>' .
     "<td class='colhead'>{$lang['text_comm_id']}</td>" .
     "<td class='colhead'>{$lang['text_user_id']}</td>" .
@@ -246,7 +246,7 @@ while ($comment = mysqli_fetch_assoc($query)) {
 
 if ($rows == 0) {
     //==== Show an error if there are no rows in the MySQLI table
-    $HTMLOUT .= "<tr><td align='center' colspan='9'>{$lang['text_no_rows']}</td></tr>";
+    $HTMLOUT .= "<tr><td colspan='9'>{$lang['text_no_rows']}</td></tr>";
 }
 
 $HTMLOUT .= '</table>';

@@ -17,15 +17,17 @@ $HTMLOUT .= "
         <a id='donations-hash'></a>
         <fieldset id='donations' class='header'>
             <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_donations']}</legend>
-            <div class='text-center'>
-                <p>
-                    <a href='{$site_config['baseurl']}/donate.php'>
-                        <img border='0' style='width: 92px; height: 42px;' src='{$site_config['pic_base_url']}makedonation.gif' alt='{$lang['index_donations']}' title='{$lang['index_donations']}' class='tooltipper' />
-                    </a>
-                </p>
-                <div class='progress text-center' style='width: 250px;'>
-                    <div class='progress-bar progress-bar-success' role='progressbar' aria-valuenow='{$progress}' aria-valuemin='0' aria-valuemax='100' style='width:{$progress}%'>
-                        $progress% Complete
+            <div class='bordered padleft10 padright10'>
+                <div class='alt_bordered transparent text-center'>
+                    <div>
+                        <a href='{$site_config['baseurl']}/donate.php'>
+                            <img border='0' style='width: 92px; height: 42px;' src='{$site_config['pic_base_url']}makedonation.gif' alt='{$lang['index_donations']}' title='{$lang['index_donations']}' class='tooltipper' />
+                        </a>
+                    </div>
+                    <div class='progress text-center top20 w-25'>
+                        <div class='progress-bar progress-bar-success' role='progressbar' aria-valuenow='{$progress}' aria-valuemin='0' aria-valuemax='100' style='width:{$progress}%'>
+                            $progress% Complete
+                        </div>
                     </div>
                 </div>
             </div>

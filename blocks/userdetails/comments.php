@@ -8,9 +8,9 @@ if (($torrentcomments = $mc1->get_value('torrent_comments_' . $id)) === false) {
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_comments']}</td>";
     if ($torrentcomments && (($user['class'] >= UC_POWER_USER && $user['id'] == $CURUSER['id']) || $CURUSER['class'] >= UC_STAFF)) {
-        $HTMLOUT .= "<td align='left'><a href='userhistory.php?action=viewcomments&amp;id=$id'>" . (int)$torrentcomments . "</a></td></tr>\n";
+        $HTMLOUT .= "<td><a href='userhistory.php?action=viewcomments&amp;id=$id'>" . (int)$torrentcomments . "</a></td></tr>\n";
     } else {
-        $HTMLOUT .= "<td align='left'>" . (int)$torrentcomments . "</td></tr>\n";
+        $HTMLOUT .= "<td>" . (int)$torrentcomments . "</td></tr>\n";
     }
 }
 //==end

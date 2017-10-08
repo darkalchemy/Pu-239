@@ -17,11 +17,11 @@ if ($count > 0) {
     $HTMLOUT .= "<p>{$lang['view_vote_this']}<a class='altlink' href='viewrequests.php?id=$id&amp;req_vote'><b>{$lang['view_req']}</b></a></p>";
     $HTMLOUT .= $pager['pagertop'];
     if (mysqli_num_rows($res) == 0) {
-        $HTMLOUT .= "<p align='center'><b>{$lang['view_nothing']}</b></p>\n";
+        $HTMLOUT .= "<p><b>{$lang['view_nothing']}</b></p>\n";
     } else {
         $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5'>
-<tr><td class='colhead'>{$lang['view_name']}</td><td class='colhead' align='left'>{$lang['view_upl']}</td><td class='colhead' align='left'>{$lang['view_dl']}</td>
-<td class='colhead' align='left'>{$lang['view_ratio']}</td></tr>\n";
+<tr><td class='colhead'>{$lang['view_name']}</td><td class='colhead'>{$lang['view_upl']}</td><td class='colhead'>{$lang['view_dl']}</td>
+<td class='colhead'>{$lang['view_ratio']}</td></tr>\n";
         while ($arr = mysqli_fetch_assoc($res)) {
             $ratio = member_ratio($arr['uploaded'], $arr['downloaded']);
             $uploaded = mksize($arr['uploaded']);
@@ -31,9 +31,9 @@ if ($count > 0) {
             $arr['id'] = $arr['userid'];
             $username = format_username($arr['userid']);
             $HTMLOUT .= "<tr><td>$username</td>
-             <td align='left'>$uploaded</td>
-             <td align='left'>$downloaded</td>
-             <td align='left'>$ratio</td></tr>\n";
+             <td>$uploaded</td>
+             <td>$downloaded</td>
+             <td>$ratio</td></tr>\n";
         }
         $HTMLOUT .= "</table>\n";
     }

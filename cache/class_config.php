@@ -1,7 +1,7 @@
 <?php
 
 /**
-This file was created on Aug 06 2017 19:42:51.
+This file was created on Sep 22 2017 16:43:48.
 User Class Config.
 **/
 
@@ -36,7 +36,7 @@ UC_VIP => '009f00',
 UC_UPLOADER => '0000ff',
 UC_MODERATOR => 'fe2e2e',
 UC_ADMINISTRATOR => 'b000b0',
-UC_SYSOP => '00FF00'
+UC_SYSOP => '61df00'
   );
 
 
@@ -49,6 +49,3 @@ UC_MODERATOR => $site_config['pic_base_url'].'class/moderator.gif',
 UC_ADMINISTRATOR => $site_config['pic_base_url'].'class/administrator.gif',
 UC_SYSOP => $site_config['pic_base_url'].'class/sysop.gif'
   );
-
-
-?>

@@ -8,9 +8,9 @@ if (($forumposts = $mc1->get_value('forum_posts_' . $id)) === false) {
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_posts']}</td>";
     if ($forumposts && (($user['class'] >= UC_POWER_USER && $user['id'] == $CURUSER['id']) || $CURUSER['class'] >= UC_STAFF)) {
-        $HTMLOUT .= "<td align='left'><a href='userhistory.php?action=viewposts&amp;id=$id'>" . htmlsafechars($forumposts) . "</a></td></tr>\n";
+        $HTMLOUT .= "<td><a href='userhistory.php?action=viewposts&amp;id=$id'>" . htmlsafechars($forumposts) . "</a></td></tr>\n";
     } else {
-        $HTMLOUT .= "<td align='left'>" . htmlsafechars($forumposts) . "</td></tr>\n";
+        $HTMLOUT .= "<td>" . htmlsafechars($forumposts) . "</td></tr>\n";
     }
 }
 //==end

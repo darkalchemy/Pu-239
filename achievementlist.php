@@ -19,13 +19,13 @@ $res = sql_query('SELECT a1.*, (SELECT COUNT(a2.id) FROM achievements AS a2 WHER
 $HTMLOUT = '';
 $HTMLOUT .= "<h1>{$lang['achlst_std_head']}</h1>\n";
 if (mysqli_num_rows($res) == 0) {
-    $HTMLOUT .= "<p align='center'><b>{$lang['achlst_there_no_ach_msg']}!<br>{$lang['achlst_staff_been_lazy']}!</b></p>\n";
+    $HTMLOUT .= "<p><b>{$lang['achlst_there_no_ach_msg']}!<br>{$lang['achlst_staff_been_lazy']}!</b></p>\n";
 } else {
     $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5'>
 		<tr>
-		<td class='colhead' align='left'>{$lang['achlst_achievname']}</td>
-		<td class='colhead' align='center'>{$lang['achlst_description']}</td>
-		<td class='colhead' align='center'>{$lang['achlst_earned']}</td>
+		<td class='colhead'>{$lang['achlst_achievname']}</td>
+		<td class='colhead'>{$lang['achlst_description']}</td>
+		<td class='colhead'>{$lang['achlst_earned']}</td>
 		</tr>\n";
     while ($arr = mysqli_fetch_assoc($res)) {
         $notes = htmlsafechars($arr['notes']);
@@ -34,9 +34,9 @@ if (mysqli_num_rows($res) == 0) {
             $clienticon = "<img src='" . $site_config['pic_base_url'] . 'achievements/' . htmlsafechars($arr['clienticon']) . "' title='" . htmlsafechars($arr['achievname']) . "' alt='" . htmlsafechars($arr['achievname']) . "' />";
         }
         $HTMLOUT .= "<tr>
-			<td class='one' align='center'>$clienticon</td>
-			<td class='two' align='center'>$notes</td>
-			<td class='one' align='center'>" . htmlsafechars($arr['count']) . "<br>times</td>
+			<td class='one'>$clienticon</td>
+			<td class='two'>$notes</td>
+			<td class='one'>" . htmlsafechars($arr['count']) . "<br>times</td>
 			</tr>\n";
     }
     $HTMLOUT .= "</table>\n";
@@ -55,7 +55,7 @@ if ($CURUSER['class'] == UC_MAX) {
 		<td class='colhead'>{$lang['achlst_description']}</td><td class='one'><textarea cols='60' rows='6' name='notes'></textarea></td>
 		</tr>
 		<tr>
-		<td colspan='2' align='center' class='two'><input type='submit' name='okay' value='{$lang['achlst_add_me']}!' class='btn' /></td>
+		<td colspan='2' class='two'><input type='submit' name='okay' value='{$lang['achlst_add_me']}!' class='btn' /></td>
 		</tr>
 		</table>
 		</form>";

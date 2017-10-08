@@ -253,9 +253,9 @@ $lang = [
           <td class='embedded'>Has donated money to {$site_config['site_name']} . </td>
         </tr>
         <tr>
-            <td class='embedded' valign='top' bgcolor='#F5F4EA'>&#160; <b>VIP</b></td>
-            <td class='embedded' width='5'>&#160;</td>
-            <td class='embedded' valign='top'>Same privileges as Power User and is considered an Elite Member of {$site_config['site_name']}. Immune to automatic demotion.</td>
+            <td class='embedded'>&#160; <b>VIP</b></td>
+            <td class='embedded'>&#160;</td>
+            <td class='embedded'>Same privileges as Power User and is considered an Elite Member of {$site_config['site_name']}. Immune to automatic demotion.</td>
         </tr>
         <tr>
             <td class='embedded' bgcolor='#F5F4EA'>&#160; <b>Other</b></td>
@@ -268,9 +268,9 @@ $lang = [
             <td class='embedded'>Same as PU except with upload rights and immune to automatic demotion.</td>
         </tr>
         <tr>
-            <td class='embedded' valign='top' bgcolor='#F5F4EA'>&#160; <b><font color='#A83838'>Moderator</font></b></td>
-            <td class='embedded' width='5'>&#160;</td>
-            <td class='embedded' valign='top'>Can edit and delete any uploaded torrents. Can also moderate user	comments and disable accounts.</td>
+            <td class='embedded'>&#160; <b><font color='#A83838'>Moderator</font></b></td>
+            <td class='embedded'>&#160;</td>
+            <td class='embedded'>Can edit and delete any uploaded torrents. Can also moderate user	comments and disable accounts.</td>
         </tr>
         <tr>
             <td class='embedded' bgcolor='#F5F4EA'>&#160; <b><font color='#A83838'>Administrator</font></b></td>
@@ -292,9 +292,9 @@ $lang = [
     'faq_promotion_body'      => "
     <table cellspacing='3' cellpadding='0'>
         <tr>
-            <td class='embedded' bgcolor='#F5F4EA' valign='top' width='100'>&#160; <b>Power User</b></td>
-            <td class='embedded' width='5'>&#160;</td>
-            <td class='embedded' valign='top'>
+            <td class='embedded'>&#160; <b>Power User</b></td>
+            <td class='embedded'>&#160;</td>
+            <td class='embedded'>
                 Must have been be a member for at least 4 weeks, have uploaded at least 25GB and have a ratio at or above 1.05.
                 <br>
                 The promotion is automatic when these conditions are met. Note that you will be automatically demoted from this status if your ratio drops below 0.95 at any time.
@@ -306,9 +306,9 @@ $lang = [
             <td class='embedded'>Just donate, and send <a class='altlink' href='pm_system.php?action=send_message&amp;receiver=1'>Sysop</a> - and only sysop - the details.</td>
         </tr>
         <tr>
-            <td class='embedded' bgcolor='#F5F4EA' valign='top'>&#160; <b>VIP</b></td>
-            <td class='embedded' width='5'>&#160;</td>
-            <td class='embedded' valign='top'>
+            <td class='embedded'>&#160; <b>VIP</b></td>
+            <td class='embedded'>&#160;</td>
+            <td class='embedded'>
                 Assigned by mods at their discretion to users they feel contribute something special to the site.
                 <br>
                 (Anyone begging for VIP status will be automatically disqualified.)
@@ -571,44 +571,44 @@ $lang = [
     <br>
     <table cellspacing='3' cellpadding='0'>
         <tr>
-            <td class='embedded' width='70'>Ratio below</td>
-            <td class='embedded' width='40' bgcolor='#F5F4EA'><div align='center'><font color='#BB0000'>0.50</font></div></td>
-            <td class='embedded' width='10'>&#160;</td>
-            <td class='embedded' width='110'>and/or upload below</td>
-            <td class='embedded' width='40' bgcolor='#F5F4EA'><div align='center'>5.0GB</div></td>
-            <td class='embedded' width='10'>&#160;</td>
-            <td class='embedded' width='50'>delay of</td>
-            <td class='embedded' width='40' bgcolor='#F5F4EA'><div align='center'>48h</div></td>
+            <td class='embedded'>Ratio below</td>
+            <td class='embedded'><div class='text-center'><font color='#BB0000'>0.50</font></div></td>
+            <td class='embedded'>&#160;</td>
+            <td class='embedded'>and/or upload below</td>
+            <td class='embedded'><div class='text-center'>5.0GB</div></td>
+            <td class='embedded'>&#160;</td>
+            <td class='embedded'>delay of</td>
+            <td class='embedded'><div class='text-center'>48h</div></td>
         </tr>
         <tr>
             <td class='embedded'>Ratio below</td>
-            <td class='embedded' bgcolor='#F5F4EA'><div align='center'><font color='#A10000'>0.65</font></div></td>
-            <td class='embedded' width='10'>&#160;</td>
+            <td class='embedded'><div class='text-center'><font color='#A10000'>0.65</font></div></td>
+            <td class='embedded'>&#160;</td>
             <td class='embedded'>and/or upload below</td>
-            <td class='embedded' bgcolor='#F5F4EA'><div align='center'>6.5GB</div></td>
-            <td class='embedded' width='10'>&#160;</td>
+            <td class='embedded'><div class='text-center'>6.5GB</div></td>
+            <td class='embedded'>&#160;</td>
             <td class='embedded'>delay of</td>
-            <td class='embedded' bgcolor='#F5F4EA'><div align='center'>24h</div></td>
+            <td class='embedded'><div class='text-center'>24h</div></td>
         </tr>
         <tr>
             <td class='embedded'>Ratio below</td>
-            <td class='embedded' bgcolor='#F5F4EA'><div align='center'><font color='#880000'>0.80</font></div></td>
+            <td class='embedded' bgcolor='#F5F4EA'><div><font color='#880000'>0.80</font></div></td>
             <td class='embedded' width='10'>&#160;</td>
             <td class='embedded'>and/or upload below</td>
-            <td class='embedded' bgcolor='#F5F4EA'><div align='center'>8.0GB</div></td>
+            <td class='embedded' bgcolor='#F5F4EA'><div>8.0GB</div></td>
             <td class='embedded' width='10'>&#160;</td>
             <td class='embedded'>delay of</td>
-            <td class='embedded' bgcolor='#F5F4EA'><div align='center'>12h</div></td>
+            <td class='embedded' bgcolor='#F5F4EA'><div>12h</div></td>
         </tr>
         <tr>
             <td class='embedded'>Ratio below</td>
-            <td class='embedded' bgcolor='#F5F4EA'><div align='center'><font color='#6E0000'>0.95</font></div></td>
+            <td class='embedded' bgcolor='#F5F4EA'><div><font color='#6E0000'>0.95</font></div></td>
             <td class='embedded' width='10'>&#160;</td>
             <td class='embedded'>and/or upload below</td>
-            <td class='embedded' bgcolor='#F5F4EA'><div align='center'>9.5GB</div></td>
+            <td class='embedded' bgcolor='#F5F4EA'><div>9.5GB</div></td>
             <td class='embedded' width='10'>&#160;</td>
             <td class='embedded'>delay of</td>
-            <td class='embedded' bgcolor='#F5F4EA'><div align='center'>06h</div></td>
+            <td class='embedded' bgcolor='#F5F4EA'><div>06h</div></td>
         </tr>
     </table>
     <br>
@@ -652,23 +652,23 @@ $lang = [
     <table cellspacing='3' cellpadding='0'>
         <tr>
             <td class='embedded' width='80'>Direct Connect</td>
-            <td class='embedded' width='80' bgcolor='#F5F4EA'><div align='center'>411 - 413</div></td>
+            <td class='embedded' width='80' bgcolor='#F5F4EA'><div>411 - 413</div></td>
         </tr>
         <tr>
             <td class='embedded' width='80'>Kazaa</td>
-            <td class='embedded' width='80' bgcolor='#F5F4EA'><div align='center'>1214</div></td>
+            <td class='embedded' width='80' bgcolor='#F5F4EA'><div>1214</div></td>
         </tr>
         <tr>
             <td class='embedded' width='80'>eDonkey</td>
-            <td class='embedded' width='80' bgcolor='#F5F4EA'><div align='center'>4662</div></td>
+            <td class='embedded' width='80' bgcolor='#F5F4EA'><div>4662</div></td>
         </tr>
         <tr>
             <td class='embedded' width='80'>Gnutella</td>
-            <td class='embedded' width='80' bgcolor='#F5F4EA'><div align='center'>6346 - 6347</div></td>
+            <td class='embedded' width='80' bgcolor='#F5F4EA'><div>6346 - 6347</div></td>
         </tr>
         <tr>
           <td class='embedded' width='80'>BitTorrent</td>
-          <td class='embedded' width='80' bgcolor='#F5F4EA'><div align='center'>6881 - 6889</div></td>
+          <td class='embedded' width='80' bgcolor='#F5F4EA'><div>6881 - 6889</div></td>
        </tr>
     </table>
     <br>
@@ -797,29 +797,29 @@ $lang = [
     'faq_proxy_body2'         => "
     <table width='100%' border='1' cellspacing='0' cellpadding='10'>
         <tr>
-            <td class='embedded' valign='top' bgcolor='#F5F4EA' width='100'>&#160;Transparent</td>
+            <td class='embedded' bgcolor='#F5F4EA' width='100'>&#160;Transparent</td>
             <td class='embedded' width='10'>&#160;</td>
-            <td class='embedded' valign='top'>A transparent proxy is one that needs no configuration on the clients. It works by automatically redirecting all port 80 traffic to the proxy. (Sometimes used as synonymous for non-anonymous.)</td>
+            <td class='embedded'>A transparent proxy is one that needs no configuration on the clients. It works by automatically redirecting all port 80 traffic to the proxy. (Sometimes used as synonymous for non-anonymous.)</td>
         </tr>
         <tr>
-            <td class='embedded' valign='top' bgcolor='#F5F4EA'>&#160;Explicit/Voluntary</td>
+            <td class='embedded' bgcolor='#F5F4EA'>&#160;Explicit/Voluntary</td>
             <td class='embedded' width='10'>&#160;</td>
-            <td class='embedded' valign='top'>Clients must configure their browsers to use them.</td>
+            <td class='embedded'>Clients must configure their browsers to use them.</td>
         </tr>
         <tr>
-            <td class='embedded' valign='top' bgcolor='#F5F4EA'>&#160;Anonymous</td>
+            <td class='embedded' bgcolor='#F5F4EA'>&#160;Anonymous</td>
             <td class='embedded' width='10'>&#160;</td>
-            <td class='embedded' valign='top'>The proxy sends no client identification to the server. (HTTP_X_FORWARDED_FOR header is not sent; the server does not see your IP.)</td>
+            <td class='embedded'>The proxy sends no client identification to the server. (HTTP_X_FORWARDED_FOR header is not sent; the server does not see your IP.)</td>
         </tr>
         <tr>
-            <td class='embedded' valign='top' bgcolor='#F5F4EA'>&#160;Highly Anonymous</td>
+            <td class='embedded' bgcolor='#F5F4EA'>&#160;Highly Anonymous</td>
             <td class='embedded' width='10'>&#160;</td>
-            <td class='embedded' valign='top'>The proxy sends no client nor proxy identification to the server. (HTTP_X_FORWARDED_FOR, HTTP_VIA and HTTP_PROXY_CONNECTION headers are not sent; the server doesn't see your IP and doesn't even know you're using a proxy.)</td>
+            <td class='embedded'>The proxy sends no client nor proxy identification to the server. (HTTP_X_FORWARDED_FOR, HTTP_VIA and HTTP_PROXY_CONNECTION headers are not sent; the server doesn't see your IP and doesn't even know you're using a proxy.)</td>
         </tr>
         <tr>
-            <td class='embedded' valign='top' bgcolor='#F5F4EA'>&#160;Public</td>
+            <td class='embedded' bgcolor='#F5F4EA'>&#160;Public</td>
             <td class='embedded' width='10'>&#160;</td>
-            <td class='embedded' valign='top'>(Self explanatory)</td>
+            <td class='embedded'>(Self explanatory)</td>
         </tr>
     </table>
     <br>

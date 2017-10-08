@@ -12,10 +12,10 @@ function insert_tag($name, $description, $syntax, $example, $remarks)
     $htmlout = '';
     $htmlout .= "<div class='sub'><b>$name</b></div>\n";
     $htmlout .= "<table class='main' width='100%' border='1' cellspacing='0' cellpadding='5'>\n";
-    $htmlout .= "<tr valign='top'><td width='25%'>{$lang['tags_description']}</td><td>$description</td></tr>\n";
-    $htmlout .= "<tr valign='top'><td>{$lang['tags_systax']}</td><td><tt>$syntax</tt></td></tr>\n";
-    $htmlout .= "<tr valign='top'><td>{$lang['tags_example']}</td><td><tt>$example</tt></td></tr>\n";
-    $htmlout .= "<tr valign='top'><td>{$lang['tags_result']}</td><td>$result</td></tr>\n";
+    $htmlout .= "<tr><td width='25%'>{$lang['tags_description']}</td><td>$description</td></tr>\n";
+    $htmlout .= "<tr><td>{$lang['tags_systax']}</td><td><tt>$syntax</tt></td></tr>\n";
+    $htmlout .= "<tr><td>{$lang['tags_example']}</td><td><tt>$example</tt></td></tr>\n";
+    $htmlout .= "<tr><td>{$lang['tags_result']}</td><td>$result</td></tr>\n";
     if ($remarks != '') {
         $htmlout .= "<tr><td>{$lang['tags_remarks']}</td><td>$remarks</td></tr>\n";
     }

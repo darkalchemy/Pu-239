@@ -41,19 +41,15 @@ function karmavip_update($data)
         if ($count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO users (id, class, vip_added, vip_until, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE class=values(class),vip_added=values(vip_added),vip_until=values(vip_until),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+        }
+        if ($data['clean_log']) {
             write_log('Cleanup - Karma Vip status expired on - ' . $count . ' Member(s)');
         }
         unset($users_buffer, $msgs_buffer, $count);
         status_change($arr['id']); //== For Retros announcement mod
     }
     //==
-    if ($queries > 0) {
+    if ($data['clean_log'] && $queries > 0) {
         write_log("Karma Vip Cleanup: Completed using $queries queries");
-    }
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
     }
 }

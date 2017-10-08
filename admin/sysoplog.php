@@ -31,10 +31,10 @@ $res = sql_query("SELECT added, txt FROM infolog $where ORDER BY added DESC {$pa
 $HTMLOUT .= "<h1>{$lang['sysoplog_staff']}</h1>";
 $HTMLOUT .= "<table border='1' cellspacing='0' width='115' cellpadding='5'>\n
              <tr>
-			 <td class='tabletitle' align='left'>{$lang['sysoplog_search']}</td>\n
+			 <td class='tabletitle'>{$lang['sysoplog_search']}</td>\n
 			 </tr>
              <tr>
-			 <td class='table' align='left'>\n
+			 <td class='table'>\n
 			 <form method='post' action='staffpanel.php?tool=sysoplog&amp;action=sysoplog'>\n
 			 <input type='text' name='search' size='40' value='' />\n
 			 <input type='submit' value='{$lang['sysoplog_search']}' style='height: 20px' />\n
@@ -47,9 +47,9 @@ if (mysqli_num_rows($res) == 0) {
 } else {
     $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5'>
       <tr>
-        <td class='colhead' align='left'>{$lang['sysoplog_date']}</td>
-        <td class='colhead' align='left'>{$lang['sysoplog_time']}</td>
-        <td class='colhead' align='left'>{$lang['sysoplog_event']}</td>
+        <td class='colhead'>{$lang['sysoplog_date']}</td>
+        <td class='colhead'>{$lang['sysoplog_time']}</td>
+        <td class='colhead'>{$lang['sysoplog_event']}</td>
       </tr>";
     while ($arr = mysqli_fetch_assoc($res)) {
         $color = '#FF4763';
@@ -102,7 +102,7 @@ if (mysqli_num_rows($res) == 0) {
         $time = get_date($arr['added'], 'LONG', 0, 1);
         $HTMLOUT .= "<tr class='tableb'><td style='background-color:$color'><font color='black'>{$date}</font></td>
 <td style='background-color:$color'><font color='black'>{$time}</font></td>
-<td style='background-color:$color' align='left'><font color='black'>{$arr['txt']}</font></td></tr>\n";
+<td style='background-color:$color'><font color='black'>{$arr['txt']}</font></td></tr>\n";
     }
     $HTMLOUT .= '</table>';
 }

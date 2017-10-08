@@ -12,7 +12,7 @@ $lang = array_merge($lang, load_language('ad_forum_config'));
 $HTMLOUT = $time_drop_down = $accepted_file_extension = $accepted_file_types = $member_class_drop_down = '';
 $settings_saved = false;
 //=== be sure to set your id (below) in the DB. as well as setting your upload dir to something unique
-$config_id = 13;
+$config_id = 1;
 if (isset($_POST['do_it'])) {
     $delete_for_real = (isset($_POST['delete_for_real']) ? intval($_POST['delete_for_real']) : 0);
     $min_delete_view_class = ((isset($_POST['min_delete_view_class']) && valid_class($_POST['min_delete_view_class'])) ? intval($_POST['min_delete_view_class']) : 0);
@@ -30,11 +30,11 @@ if (isset($_POST['do_it'])) {
     header('Location: staffpanel.php?tool=forum_config&action=forum_config');
     exit();
 }
-$main_links = '<p><a class="altlink" href="staffpanel.php?tool=over_forums&amp;action=over_forums">' . $lang['forum_config_over'] . '</a> :: 
-						<a class="altlink" href="staffpanel.php?tool=forum_manage&amp;action=forum_manage">' . $lang['forum_config_manager'] . '</a> :: 
-						<span style="font-weight: bold;">' . $lang['forum_config_config'] . '</span><br></p>';
-$res = sql_query('SELECT delete_for_real, min_delete_view_class, readpost_expiry, min_upload_class, accepted_file_extension, 
-								accepted_file_types, max_file_size, upload_folder FROM forum_config WHERE id = ' . sqlesc($config_id));
+$main_links = '<p><a class="altlink" href="staffpanel.php?tool=over_forums&amp;action=over_forums">' . $lang['forum_config_over'] . '</a> ::
+                        <a class="altlink" href="staffpanel.php?tool=forum_manage&amp;action=forum_manage">' . $lang['forum_config_manager'] . '</a> ::
+                        <span style="font-weight: bold;">' . $lang['forum_config_config'] . '</span><br></p>';
+$res = sql_query('SELECT delete_for_real, min_delete_view_class, readpost_expiry, min_upload_class, accepted_file_extension,
+                                accepted_file_types, max_file_size, upload_folder FROM forum_config WHERE id = ' . sqlesc($config_id));
 $arr = mysqli_fetch_array($res);
 $weeks = 1;
 for ($i = 7; $i <= 365; $i = $i + 7) {
@@ -50,66 +50,66 @@ foreach ($accepted_file_types1 as $x) {
     $accepted_file_types .= $x . ' ';
 }
 $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=forum_config&amp;action=forum_config">
-			<input type="hidden" name="do_it" value="1" />
-		<table  border="0" cellspacing="0" cellpadding="3" align="center">
-		<tr>
-		    <td colspan="2" class="forum_head_dark">' . $lang['forum_config_edit'] . '</td>
-		</tr>
-		<tr>
-		    <td align="right" class="three" valign="top"><span style="font-weight: bold;">' . $lang['forum_config_delete'] . '</span></td>
-		    <td align="left" class="three">
-			<input type="radio" name="delete_for_real" value="1" ' . ($arr['delete_for_real'] == 1 ? 'checked="checked"' : '') . ' />' . $lang['forum_config_yes'] . '
-			<input type="radio" name="delete_for_real" value="0" ' . ($arr['delete_for_real'] == 0 ? 'checked="checked"' : '') . ' />' . $lang['forum_config_no'] . '<br>
-			' . $lang['forum_config_no_desc'] . '</td>
-		</tr>
-		<tr>
-		    <td align="right" class="three" valign="top"><span style="font-weight: bold;">' . $lang['forum_config_min'] . '</span></td>
-		    <td align="left" class="three">
-			<select name="min_delete_view_class"> ' . member_class_drop_down($arr['min_delete_view_class']) . '</select><br>
-			' . $lang['forum_config_min_desc'] . '<br>' . $lang['forum_config_min_desc1'] . '</td>
-		</tr>
-		<tr>
-		    <td align="right" class="three" valign="top"><span style="font-weight: bold;">' . $lang['forum_config_expire'] . '</span></td>
-		    <td align="left" class="three">
-			<select name="readpost_expiry"> ' . $time_drop_down . '</select><br>
-			' . $lang['forum_config_expire_desc'] . '<br>' . $lang['forum_config_expire_desc1'] . '</td>
-		</tr>
-		<tr>
-		    <td align="right" class="three" valign="top"><span style="font-weight: bold;">' . $lang['forum_config_upload'] . '</span></td>
-		    <td align="left" class="three">
-			<select name="min_upload_class"> ' . member_class_drop_down($arr['min_upload_class']) . '</select><br>
-			' . $lang['forum_config_upload_desc'] . '</td>
-		</tr>
-		  <tr>
-		    <td align="right"  class="three"><span style="font-weight: bold;">' . $lang['forum_config_accepted'] . '</span>  </td>
-		    <td align="left" class="three">
-			<input name="accepted_file_extension" type="text" class="text_default" size="30" maxlength="200" value="' . htmlsafechars($accepted_file_extension) . '" /><br>
-			' . $lang['forum_config_accepted_desc'] . '</td>
- 		 </tr>
-		  <tr>
-		    <td align="right"  class="three"><span style="font-weight: bold;">' . $lang['forum_config_accepted2'] . '</span>  </td>
-		    <td align="left" class="three">
-			<input name="accepted_file_types" type="text" class="text_default" size="30" maxlength="200" value="' . htmlsafechars($accepted_file_types) . '" /><br>
-			' . $lang['forum_config_accepted2_desc'] . '</td>
- 		 </tr>
-		  <tr>
-		    <td align="right"  class="three"><span style="font-weight: bold;">' . $lang['forum_config_size'] . '</span>  </td>
-		    <td align="left" class="three">
-			<input name="max_file_size" type="text" class="text_default" size="30" maxlength="200" value="' . intval($arr['max_file_size']) . '" /><br>
-			' . $lang['forum_config_size_desc'] . '' . mksize($arr['max_file_size']) . '.</td>
- 		 </tr>
-		  <tr>
-		    <td align="right"  class="three"><span style="font-weight: bold;">' . $lang['forum_config_folder'] . '</span>  </td>
-		    <td align="left" class="three">
-			<input name="upload_folder" type="text" class="text_default" size="30" maxlength="200" value="' . htmlsafechars($arr['upload_folder']) . '" /><br>
-			' . $lang['forum_config_folder_desc'] . '<br>
-			' . $lang['forum_config_folder_desc1'] . '</td>
- 		 </tr>
-		<tr>
-		    <td colspan="2" class="three" align="center">
-			<input type="submit" name="button" class="button_big" value="' . $lang['forum_config_save'] . '" onmouseover="this.className=\'button_big_hover\'" onmouseout="this.className=\'button_big\'" /></td>
-		</tr>
-		</table></form>';
+            <input type="hidden" name="do_it" value="1" />
+        <table class="table table-bordered table-striped">
+        <tr>
+            <td colspan="2" class="forum_head_dark">' . $lang['forum_config_edit'] . '</td>
+        </tr>
+        <tr>
+            <td><span style="font-weight: bold;">' . $lang['forum_config_delete'] . '</span></td>
+            <td>
+            <input type="radio" name="delete_for_real" value="1" ' . ($arr['delete_for_real'] == 1 ? 'checked="checked"' : '') . ' />' . $lang['forum_config_yes'] . '
+            <input type="radio" name="delete_for_real" value="0" ' . ($arr['delete_for_real'] == 0 ? 'checked="checked"' : '') . ' />' . $lang['forum_config_no'] . '<br>
+            ' . $lang['forum_config_no_desc'] . '</td>
+        </tr>
+        <tr>
+            <td><span style="font-weight: bold;">' . $lang['forum_config_min'] . '</span></td>
+            <td>
+            <select name="min_delete_view_class"> ' . member_class_drop_down($arr['min_delete_view_class']) . '</select><br>
+            ' . $lang['forum_config_min_desc'] . '<br>' . $lang['forum_config_min_desc1'] . '</td>
+        </tr>
+        <tr>
+            <td><span style="font-weight: bold;">' . $lang['forum_config_expire'] . '</span></td>
+            <td>
+            <select name="readpost_expiry"> ' . $time_drop_down . '</select><br>
+            ' . $lang['forum_config_expire_desc'] . '<br>' . $lang['forum_config_expire_desc1'] . '</td>
+        </tr>
+        <tr>
+            <td><span style="font-weight: bold;">' . $lang['forum_config_upload'] . '</span></td>
+            <td>
+            <select name="min_upload_class"> ' . member_class_drop_down($arr['min_upload_class']) . '</select><br>
+            ' . $lang['forum_config_upload_desc'] . '</td>
+        </tr>
+          <tr>
+            <td><span style="font-weight: bold;">' . $lang['forum_config_accepted'] . '</span>  </td>
+            <td>
+            <input name="accepted_file_extension" type="text" class="text_default" size="30" maxlength="200" value="' . htmlsafechars($accepted_file_extension) . '" /><br>
+            ' . $lang['forum_config_accepted_desc'] . '</td>
+         </tr>
+          <tr>
+            <td><span style="font-weight: bold;">' . $lang['forum_config_accepted2'] . '</span>  </td>
+            <td>
+            <input name="accepted_file_types" type="text" class="text_default" size="30" maxlength="200" value="' . htmlsafechars($accepted_file_types) . '" /><br>
+            ' . $lang['forum_config_accepted2_desc'] . '</td>
+         </tr>
+          <tr>
+            <td><span style="font-weight: bold;">' . $lang['forum_config_size'] . '</span>  </td>
+            <td>
+            <input name="max_file_size" type="text" class="text_default" size="30" maxlength="200" value="' . intval($arr['max_file_size']) . '" /><br>
+            ' . $lang['forum_config_size_desc'] . '' . mksize($arr['max_file_size']) . '.</td>
+         </tr>
+          <tr>
+            <td><span style="font-weight: bold;">' . $lang['forum_config_folder'] . '</span>  </td>
+            <td>
+            <input name="upload_folder" type="text" class="text_default" size="30" maxlength="200" value="' . htmlsafechars($arr['upload_folder']) . '" /><br>
+            ' . $lang['forum_config_folder_desc'] . '<br>
+            ' . $lang['forum_config_folder_desc1'] . '</td>
+         </tr>
+        <tr>
+            <td colspan="2">
+            <input type="submit" name="button" class="button_big" value="' . $lang['forum_config_save'] . '" /></td>
+        </tr>
+        </table></form>';
 function member_class_drop_down($member_class)
 {
     $member_class_drop_down = '';

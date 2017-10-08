@@ -12,17 +12,13 @@ function expired_signup_update($data)
             $res_del = sql_query('DELETE FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
             $mc1->delete_value('MyUser_' . $userid);
             $mc1->delete_value('user' . $userid);
-            write_log("Expired Signup Cleanup: User: {$arr['username']} was deleted");
+            if ($data['clean_log']) {
+                write_log("Expired Signup Cleanup: User: {$arr['username']} was deleted");
+            }
         }
     }
 
-    if ($queries > 0) {
+    if ($data['clean_log'] && $queries > 0) {
         write_log("Expired Signup clean-------------------- Expired Signup cleanup Complete using $queries queries --------------------");
-    }
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
     }
 }

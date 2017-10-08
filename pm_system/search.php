@@ -66,36 +66,36 @@ $HTMLOUT .= '<h1>' . $lang['pm_search_title'] . '</h1>' . $top_links . '
         <input type="hidden" name="action"  value="' . $lang['pm_search_btn'] . '" />
     <table class="table table-bordered">
     <tr>
-        <td class="colhead" align="left" colspan="2">' . $lang['pm_search_s'] . '</td>
+        <td class="colhead" colspan="2">' . $lang['pm_search_s'] . '</td>
     </tr>
     <tr>
-        <td class="one" align="right" valign="middle"><span style="font-weight: bold;">' . $lang['pm_search_terms'] . '</span></td>
-        <td class="one" align="left"><input type="text" class="search" name="keywords" value="' . $keywords . '" />' . $lang['pm_search_common'] . '</td>
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_search_terms'] . '</span></td>
+        <td class="one"><input type="text" class="search" name="keywords" value="' . $keywords . '" />' . $lang['pm_search_common'] . '</td>
     </tr>
     <tr>
-        <td class="one" align="right" valign="middle"><span style="font-weight: bold;">' . $lang['pm_search_box'] . '</span></td>
-        <td class="one" align="left">' . $get_all_boxes . '</td>
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_search_box'] . '</span></td>
+        <td class="one">' . $get_all_boxes . '</td>
     </tr>
     <tr>
-        <td class="one" align="right" valign="middle"><span style="font-weight: bold;">' . $lang['pm_search_allbox'] . '</span></td>
-        <td class="one" align="left"><input name="all_boxes" type="checkbox" value="1" ' . ($all_boxes == 1 ? ' checked="checked"' : '') . ' />' . $lang['pm_search_ignored'] . '</td>
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_search_allbox'] . '</span></td>
+        <td class="one"><input name="all_boxes" type="checkbox" value="1" ' . ($all_boxes == 1 ? ' checked="checked"' : '') . ' />' . $lang['pm_search_ignored'] . '</td>
     </tr>
     <tr>
-        <td class="one" align="right" valign="middle"><span style="font-weight: bold;">' . $lang['pm_search_member_by'] . '</span></td>
-        <td class="one" align="left"><input type="text" class="member" name="member" value="' . $member . '" />' . $lang['pm_search_member_only'] . '</td>
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_search_member_by'] . '</span></td>
+        <td class="one"><input type="text" class="member" name="member" value="' . $member . '" />' . $lang['pm_search_member_only'] . '</td>
     </tr>
     <tr>
-        <td class="one" align="right" valign="middle"><span style="font-weight: bold;">' . $lang['pm_search_system'] . '</span></td>
-        <td class="one" align="left"><input name="system" type="checkbox" value="system" ' . ($member_sys == 'system' ? ' checked="checked"' : '') . ' />' . $lang['pm_search_system_only'] . '</td>
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_search_system'] . '</span></td>
+        <td class="one"><input name="system" type="checkbox" value="system" ' . ($member_sys == 'system' ? ' checked="checked"' : '') . ' />' . $lang['pm_search_system_only'] . '</td>
     </tr>
     <tr>
-        <td class="one" align="right" valign="middle"><span style="font-weight: bold;">' . $lang['pm_search_in'] . '</span></td>
-        <td class="one" align="left"><input name="subject" type="checkbox" value="1" ' . ($subject == 1 ? ' checked="checked"' : '') . ' />' . $lang['pm_search_subject'] . ' 
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_search_in'] . '</span></td>
+        <td class="one"><input name="subject" type="checkbox" value="1" ' . ($subject == 1 ? ' checked="checked"' : '') . ' />' . $lang['pm_search_subject'] . ' 
         <input name="text" type="checkbox" value="1" ' . ($text === 1 ? ' checked="checked"' : '') . ' />' . $lang['pm_search_msgtext'] . '</td>
     </tr>
     <tr>
-        <td class="one" align="right" valign="middle"><span style="font-weight: bold;">' . $lang['pm_search_sortby'] . '</span></td>
-        <td class="one" align="left">
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_search_sortby'] . '</span></td>
+        <td class="one">
         <select name="sort">
             <option value="relevance" ' . ($sort === 'relevance' ? ' selected="selected"' : '') . '>' . $lang['pm_search_relevance'] . '</option>
             <option value="subject" ' . ($sort === 'subject' ? ' selected="selected"' : '') . '>' . $lang['pm_search_subject'] . '</option>
@@ -106,8 +106,8 @@ $HTMLOUT .= '<h1>' . $lang['pm_search_title'] . '</h1>' . $top_links . '
             <input name="ASC" type="radio" value="2" ' . ((isset($_POST['ASC']) && $_POST['ASC'] == 2 || !isset($_POST['ASC'])) ? ' checked="checked"' : '') . ' />' . $lang['pm_search_desc'] . '</td>
     </tr>
     <tr>
-        <td class="one" align="right" valign="middle"><span style="font-weight: bold;">' . $lang['pm_search_show'] . '</span></td>
-        <td class="one" align="left">
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_search_show'] . '</span></td>
+        <td class="one">
         <select name="limit">
             <option value="25"' . (($limit == 25 || !$limit) ? ' selected="selected"' : '') . '>' . $lang['pm_search_25'] . '</option>
             <option value="50"' . ($limit == 50 ? ' selected="selected"' : '') . '>' . $lang['pm_search_50'] . '</option>
@@ -119,12 +119,12 @@ $HTMLOUT .= '<h1>' . $lang['pm_search_title'] . '</h1>' . $top_links . '
         </select></td>
     </tr>' . ($limit < 100 ? '
     <tr>
-        <td class="one" align="right" valign="middle"><span style="font-weight: bold;">' . $lang['pm_search_display'] . '</span></td>
-        <td class="one" align="left"><input name="as_list_post" type="radio" value="1" ' . ($as_list_post == 1 ? ' checked="checked"' : '') . ' /> <span style="font-weight: bold;">' . $lang['pm_search_list'] . '</span> 
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_search_display'] . '</span></td>
+        <td class="one"><input name="as_list_post" type="radio" value="1" ' . ($as_list_post == 1 ? ' checked="checked"' : '') . ' /> <span style="font-weight: bold;">' . $lang['pm_search_list'] . '</span> 
         <input name="as_list_post" type="radio" value="2" ' . ($as_list_post == 2 ? ' checked="checked"' : '') . ' /> <span style="font-weight: bold;"> ' . $lang['pm_search_message'] . '</span></td>
     </tr>' : '') . '
     <tr>
-        <td colspan="2" align="center" class="one">
+        <td colspan="2" class="one">
         <input type="submit" class="button" name="change" value="' . $lang['pm_search_btn'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
     </tr>
     </table></form>';
@@ -177,10 +177,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $HTMLOUT .= ($num_result > 0 ? '
         <form action="pm_system.php" method="post" name="messages" onsubmit="return ValidateForm(this,\'pm\')">
         <input type="hidden" name="action" value="move_or_delete_multi" />
-    <table border="0" cellspacing="0" cellpadding="5" align="center" style="max-width:800px">
+    <table border="0" cellspacing="0" cellpadding="5" style="max-width:800px">
         ' . ($as_list_post == 2 ? '' : '
     <tr>
-        <td colspan="5" class="colhead" align="center"><h1>' . $mailbox_name . '</h1></td>
+        <td colspan="5" class="colhead"><h1>' . $mailbox_name . '</h1></td>
     </tr>
     <tr>
         <td width= "1%" class="colhead">&#160;</td>
@@ -235,7 +235,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 //=== the bottom
 $HTMLOUT .= ($num_result > 0 ? '
     <tr>
-        <td colspan="4" align="right" class="colhead">
+        <td colspan="4" class="colhead">
         <a class="altlink" href="javascript:SetChecked(1,\'pm[]\')">' . $lang['pm_search_selall'] . '</a> - 
         <a class="altlink" href="javascript:SetChecked(0,\'pm[]\')">' . $lang['pm_search_unselall'] . '</a>&#160;&#160;&#160;&#160;&#160;
         <input type="submit" class="button" name="move" value="' . $lang['pm_search_move_to'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /> ' . get_all_boxes() . ' or  

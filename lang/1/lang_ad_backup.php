@@ -9,7 +9,7 @@ $lang = [
     'backup_unknow'            => 'Unknow action!',
     'backup_succes'            => 'Success',
     'backup_nofound'           => 'Nothing Found',
-    'backup_welcome'           => "<br><h1 align='center'>Welcome {$CURUSER['username']} to the Database Backup Manager.</h1>",
+    'backup_welcome'           => "<h1>Welcome {$CURUSER['username']}, to the Database Backup Manager.</h1>",
     'backup_name'              => 'Name',
     'backup_addedon'           => 'Added on',
     'backup_addedby'           => 'Added by',

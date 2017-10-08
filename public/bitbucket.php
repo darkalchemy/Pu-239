@@ -165,11 +165,11 @@ if (!isset($_FILES['file'])) {
                 </div>
                 <div>{$lang['bitbucket_directlink']}</div>
                 <div>
-                    <input style='font-size: 9pt;' id='d{$eid}d' onclick=\"SelectAll('d{$eid}d');\" type='text' size='70' value='{$site_config['baseurl']}/img.php?{$filename}' readonly='readonly' />
+                    <input id='d{$eid}d' onclick=\"SelectAll('d{$eid}d');\" type='text' size='70' value='{$site_config['baseurl']}/img.php?{$filename}' readonly='readonly' />
                 </div>
                 <div>{$lang['bitbucket_tags']}</div>
                 <div>
-                    <input style='font-size: 9pt;text-align: center;' id='t{$eid}t' onclick=\"SelectAll('t{$eid}t');\" type='text' size='70' value='[img]{$site_config['baseurl']}/img.php?{$filename}[/img]' readonly='readonly' />
+                    <input id='t{$eid}t' onclick=\"SelectAll('t{$eid}t');\" type='text' size='70' value='[img]{$site_config['baseurl']}/img.php?{$filename}[/img]' readonly='readonly' />
                 </div>
                 <div>
                     <a href='{$site_config['baseurl']}/bitbucket.php?type=" . ((isset($_GET['images']) && $_GET['images'] == 2) ? '2' : '1') . "&amp;avatar={$site_config['baseurl']}/img.php?{$filename}'>{$lang['bitbucket_maketma']}</a>
@@ -248,11 +248,11 @@ $HTMLOUT .= "
             </div>
             <div>{$lang['bitbucket_directlink']}</div>
             <div>
-                <input style='font-size: 9pt;' id='direct' onclick=\"SelectAll('direct');\" type='text' size='70' value='{$site_config['baseurl']}/img.php?{$pathlink}' readonly='readonly' />
+                <input id='direct' onclick=\"SelectAll('direct');\" type='text' size='70' value='{$site_config['baseurl']}/img.php?{$pathlink}' readonly='readonly' />
             </div>
             <div>{$lang['bitbucket_tags']}</div>
             <div>
-                <input style='font-size: 9pt;text-align: center;' id='tag' onclick=\"SelectAll('tag');\" type='text' size='70' value='[img]{$site_config['baseurl']}/img.php?{$pathlink}[/img]' readonly='readonly' />
+                <input id='tag' onclick=\"SelectAll('tag');\" type='text' size='70' value='[img]{$site_config['baseurl']}/img.php?{$pathlink}[/img]' readonly='readonly' />
             </div>
             <div>
                 <a href='{$site_config['baseurl']}/bitbucket.php?images=1'>{$lang['bitbucket_viewmyi']}</a>

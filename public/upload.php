@@ -8,7 +8,6 @@ check_user_status();
 $lang = array_merge(load_language('global'), load_language('upload'));
 $stdhead = [
     'css' => [
-        get_file('upload_css')
     ],
 ];
 $stdfoot = [
@@ -21,11 +20,11 @@ if ($CURUSER['class'] < UC_UPLOADER or $CURUSER['uploadpos'] == 0 || $CURUSER['u
     stderr($lang['upload_sorry'], $lang['upload_no_auth']);
 }
 //==== request dropdown
-$res_request = sql_query('SELECT id, request_name FROM requests WHERE filled_by_user_id = 0 ORDER BY request_name ASC');
+$res_request = sql_query('SELECT id, request_name FROM requests WHERE filled_by_user_id = 0 ORDER BY request_name ASC') or sqlerr(__FILE__, __LINE__);
 $request = '
     <tr>
-    <td  valign="middle" align="right"><span style="font-weight: bold;">Request:</span></td>
-    <td valign="top" align="left" >
+    <td><span>Request:</span></td>
+    <td>
         <select name="request">
         <option class="body" value="0"> Requests </option>';
 if ($res_request) {
@@ -38,12 +37,15 @@ if ($res_request) {
 $request .= "</select><span class='left5'>If you are filling a request please select it here so interested members can be notified.</span></td>
     </tr>";
 //=== offers list if member has made any offers
-$res_offer = sql_query('SELECT id, offer_name FROM offers WHERE offered_by_user_id = ' . sqlesc($CURUSER['id']) . ' AND status = \'approved\' ORDER BY offer_name ASC');
+$res_offer = sql_query("SELECT id, offer_name
+                        FROM offers
+                        WHERE offered_by_user_id = " . sqlesc($CURUSER['id']) . " AND status = 'approved'
+                        ORDER BY offer_name ASC") or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($res_offer) > 0) {
     $offers = '
     <tr>
-    <td valign="middle" align="right"><span style="font-weight: bold;">My Offers:</span></td>
-    <td valign="top" align="left" >
+    <td><span>My Offers:</span></td>
+    <td>
     <select name="offer">
     <option class="body" value="0">My Offers</option>';
     $message = '<option class="body" value="0">Your have no approved offers yet</option>';
@@ -54,53 +56,53 @@ if (mysqli_num_rows($res_offer) > 0) {
     </tr>';
 }
 $HTMLOUT .= "
-    <div align='center'>
+    <div>
     <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='./takeupload.php' method='post'>
     <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['max_torrent_size']}' />
-    <p class='top10'>{$lang['upload_announce_url']}:<b><input type='text' class='left5 text-center' size='80' readonly='readonly' value='{$site_config['announce_urls'][0]}' onclick='select()' /></b></p>";
-$HTMLOUT .= "<table class=table table-bordered' cellspacing='0' cellpadding='10'>
+    <p class='top10'>{$lang['upload_announce_url']}:<b><input type='text' class='left5 text-center' readonly='readonly' value='{$site_config['announce_urls'][0]}' onclick='select()' /></b></p>";
+$HTMLOUT .= "<table class='table table-bordered table-striped'>
     <tr>
-    <td class='heading' valign='top' align='right'>{$lang['upload_imdb_url']}</td>
-    <td valign='top' align='left'><input type='text' name='url' size='80' /><br>{$lang['upload_imdb_tfi']}{$lang['upload_imdb_rfmo']}</td>
+    <td class='heading'>{$lang['upload_imdb_url']}</td>
+    <td><input type='text' name='url' /><br>{$lang['upload_imdb_tfi']}{$lang['upload_imdb_rfmo']}</td>
     </tr>
     <tr>
-    <td class='heading' valign='top' align='right'>{$lang['upload_poster']}</td>
-    <td valign='top' align='left'><input type='text' name='poster' size='80' /><br>{$lang['upload_poster1']}</td>
+    <td class='heading'>{$lang['upload_poster']}</td>
+    <td><input type='text' name='poster' /><br>{$lang['upload_poster1']}</td>
     </tr>
     <tr>
-    <td class='heading' valign='top' align='right'>{$lang['upload_youtube']}</td>
-    <td valign='top' align='left'><input type='text' name='youtube' size='80' /><br>({$lang['upload_youtube_info']})</td>
+    <td class='heading'>{$lang['upload_youtube']}</td>
+    <td><input type='text' name='youtube' /><br>({$lang['upload_youtube_info']})</td>
     </tr>
     <tr>
-    <td class='heading' valign='top' align='right'><b>{$lang['upload_bitbucket']}</b></td>
-    <td valign='top' align='left'>
-    <iframe src='imgup.html' style='width:600px; height:48px; border:none' frameborder='0'></iframe>
+    <td class='heading'><b>{$lang['upload_bitbucket']}</b></td>
+    <td>
+    <iframe src='imgup.html'></iframe>
     <br>{$lang['upload_bitbucket_1']}
     </td>
     </tr>
     <tr>
-    <td class='heading' valign='top' align='right'>{$lang['upload_torrent']}</td>
-    <td valign='top' align='left'><input type='file' name='file' id='torrent' onchange='getname()' size='80' /></td>
+    <td class='heading'>{$lang['upload_torrent']}</td>
+    <td><input type='file' name='file' id='torrent' onchange='getname()' /></td>
     </tr>
     <tr>
-    <td class='heading' valign='top' align='right'>{$lang['upload_name']}</td>
-    <td valign='top' align='left'><input type='text' id='name' name='name' size='80' /><br>({$lang['upload_filename']})</td>
+    <td class='heading'>{$lang['upload_name']}</td>
+    <td><input type='text' id='name' name='name' /><br>({$lang['upload_filename']})</td>
     </tr>
     <tr>
-    <td class='heading' valign='top' align='right'>{$lang['upload_tags']}</td>
-    <td valign='top' align='left'><input type='text' name='tags' size='80' /><br>({$lang['upload_tag_info']})</td>
+    <td class='heading'>{$lang['upload_tags']}</td>
+    <td><input type='text' name='tags' /><br>({$lang['upload_tag_info']})</td>
     </tr>
     <tr>
-    <td class='heading' valign='top' align='right'>{$lang['upload_small_description']}</td>
-    <td valign='top' align='left'><input type='text' name='description' size='80' /><br>({$lang['upload_small_descr']})</td>
+    <td class='heading'>{$lang['upload_small_description']}</td>
+    <td><input type='text' name='description' /><br>({$lang['upload_small_descr']})</td>
     </tr>
     <tr>
-    <td class='heading' valign='top' align='right'>{$lang['upload_nfo']}</td>
-    <td valign='top' align='left'><input type='file' name='nfo' size='80' /><br>({$lang['upload_nfo_info']})</td>
+    <td class='heading'>{$lang['upload_nfo']}</td>
+    <td><input type='file' name='nfo' /><br>({$lang['upload_nfo_info']})</td>
     </tr>
     <tr>
-    <td class='heading' valign='top' align='right'>{$lang['upload_description']}</td>
-    <td valign='top' align='left' style='white-space: nowrap;'>" . BBcode(false) . "
+    <td class='heading'>{$lang['upload_description']}</td>
+    <td>" . BBcode(false) . "
     <br>({$lang['upload_html_bbcode']})</td>
     </tr>";
 $s = "<select name='type'>\n<option value='0'>({$lang['upload_choose_one']})</option>\n";
@@ -110,8 +112,8 @@ foreach ($cats as $row) {
 }
 $s .= "</select>\n";
 $HTMLOUT .= "<tr>
-    <td class='heading' valign='top' align='right'>{$lang['upload_type']}</td>
-    <td valign='top' align='left'>$s</td>
+    <td class='heading'>{$lang['upload_type']}</td>
+    <td>$s</td>
     </tr>";
 $HTMLOUT .= $offers;
 $HTMLOUT .= $request;
@@ -138,8 +140,8 @@ if ($CURUSER['class'] == UC_MAX) {
 $HTMLOUT .= tr('Strip ASCII', "<div class='flex'><input type='checkbox' name='strip' value='strip' checked='checked' /><span class='left5'><a href='http://en.wikipedia.org/wiki/ASCII_art' target='_blank'>What is this ?</a></span></div>", 1);
 if ($CURUSER['class'] >= UC_UPLOADER and XBT_TRACKER == false) {
     $HTMLOUT .= "<tr>
-    <td class='heading' valign='top' align='right'>Free Leech</td>
-    <td valign='top' align='left'>
+    <td class='heading'>Free Leech</td>
+    <td>
     <select name='free_length'>
     <option value='0'>Not Free</option>
     <option value='42'>Free for 1 day</option>
@@ -151,8 +153,8 @@ if ($CURUSER['class'] >= UC_UPLOADER and XBT_TRACKER == false) {
     </select></td>
     </tr>";
     $HTMLOUT .= "<tr>
-    <td class='heading' valign='top' align='right'>Silver Torrent</td>
-    <td valign='top' align='left'>
+    <td class='heading'>Silver Torrent</td>
+    <td>
     <select name='half_length'>
     <option value='0'>Not Silver</option>
     <option value='42'>Silver for 1 day</option>
@@ -177,7 +179,7 @@ $genres = [
 
 $HTMLOUT .= "
     <tr>
-        <td class='heading' align='right'><b>Genre</b></td>
+        <td class='heading'><b>Genre</b></td>
         <td>
             <div class='flex-grid'>";
 
@@ -195,7 +197,7 @@ $HTMLOUT .= "
                     <span class='left5'>None</span>
                 </div>
             </div>
-            <label style='margin-bottom: 1em; padding-bottom: 1em; border-bottom: 3px silver groove;'>
+            <label>
             <input type='hidden' class='Depends on genre being movie or genre being music' /></label>
             <div class='flex-grid'>";
 
@@ -269,7 +271,7 @@ if ($CURUSER['class'] >= UC_UPLOADER and XBT_TRACKER == false) {
 }
 $HTMLOUT .= "
         <tr>
-            <td align='center' colspan='2'><input type='submit' class='btn' value='{$lang['upload_submit']}' /></td>
+            <td colspan='2'><input type='submit' class='btn' value='{$lang['upload_submit']}' /></td>
         </tr>
         </table>
         </form>

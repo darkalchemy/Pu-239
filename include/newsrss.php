@@ -1,6 +1,6 @@
 <?php
 
-function foxnews_shout()
+function foxnews_shout($links)
 {
     global $site_config, $mc1;
     if ($site_config['autoshout_on'] == 1) {
@@ -23,7 +23,13 @@ function foxnews_shout()
         }
         $pubs = array_reverse($pubs);
         foreach ($pubs as $pub) {
-            $link = sqlesc(hash(sha256, $pub['link']));
+            $link = hash('sha256', $pub['link']);
+            if (in_array($link, $links)) {
+                continue;
+            }
+            $links[] = $link;
+            $link = sqlesc($link);
+            $mc1->cache_value('tfreak_news_links_', $links, 86400);
             sql_query("INSERT INTO newsrss (link)
                         SELECT $link
                         FROM DUAL
@@ -44,7 +50,7 @@ function foxnews_shout()
     return true;
 }
 
-function tfreak_shout()
+function tfreak_shout($links)
 {
     global $site_config, $mc1;
     if ($site_config['autoshout_on'] == 1) {
@@ -67,7 +73,13 @@ function tfreak_shout()
         }
         $pubs = array_reverse($pubs);
         foreach ($pubs as $pub) {
-            $link = sqlesc(hash(sha256, $pub['link']));
+            $link = hash('sha256', $pub['link']);
+            if (in_array($link, $links)) {
+                continue;
+            }
+            $links[] = $link;
+            $link = sqlesc($link);
+            $mc1->cache_value('tfreak_news_links_', $links, 86400);
             sql_query("INSERT INTO newsrss (link)
                         SELECT $link
                         FROM DUAL
@@ -88,7 +100,7 @@ function tfreak_shout()
     return true;
 }
 
-function github_shout()
+function github_shout($links)
 {
     global $site_config, $mc1;
     if ($site_config['autoshout_on'] == 1) {
@@ -117,7 +129,13 @@ function github_shout()
         }
         $pubs = array_reverse($pubs);
         foreach ($pubs as $pub) {
-            $link = sqlesc(hash('sha256', $pub['link']));
+            $link = hash('sha256', $pub['link']);
+            if (in_array($link, $links)) {
+                continue;
+            }
+            $links[] = $link;
+            $link = sqlesc($link);
+            $mc1->cache_value('tfreak_news_links_', $links, 86400);
             sql_query("INSERT INTO newsrss (link)
                         SELECT $link
                         FROM DUAL

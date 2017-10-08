@@ -76,8 +76,9 @@ function radioinfo($radio)
         }
     } else {
         $html .= '<fieldset><legend>' . $site_config['site_name'] . ' radio</legend>
-    <font size="3" color="red"><img src="' . $site_config['pic_base_url'] . 'off1.gif" alt="Off" title="Off" border="0" /><br>
-    <b>Sorry ' . $CURUSER['username'] . ' Radio is currently Offline</b></font></fieldset><br>';
+    <span class="size_3 text-red">
+        <img src="' . $site_config['pic_base_url'] . 'off1.gif" alt="Off-Line" class="tooltipper" title="Off-Line" border="0" /><br>
+        <b>Sorry ' . $CURUSER['username'] . ', the radio is currently offline</b></span></fieldset><br>';
     }
 
     return $html;

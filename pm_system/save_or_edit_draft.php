@@ -39,10 +39,10 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == 'preview') {
     $preview = '
     <table class="table table-bordered">
     <tr>
-        <td align="left" colspan="2" class="colhead"><span style="font-weight: bold;">' . $lang['pm_draft_subject'] . '</span>' . htmlsafechars($subject) . '</td>
+        <td colspan="2" class="colhead"><span style="font-weight: bold;">' . $lang['pm_draft_subject'] . '</span>' . htmlsafechars($subject) . '</td>
     </tr>
     <tr>
-        <td align="center" valign="top" class="one" width="80px" id="photocol">' . avatar_stuff($CURUSER) . '</td>
+        <td class="one" width="80px" id="photocol">' . avatar_stuff($CURUSER) . '</td>
         <td class="two" style="min-width:400px;padding:10px;vertical-align: top;text-align: left;">' . format_comment($draft) . '</td>
     </tr>
     </table><br>';
@@ -62,18 +62,18 @@ $HTMLOUT .= '<legend>' . $lang['pm_draft_save_edit'] . '' . $subject . '</legend
         <input type="hidden" name="action" value="save_or_edit_draft" />
     <table class="table table-bordered">
     <tr>
-        <td class="colhead" align="left" colspan="2">' . $lang['pm_edmail_edit'] . '</td>
+        <td class="colhead" colspan="2">' . $lang['pm_edmail_edit'] . '</td>
     </tr>
     <tr>
-        <td class="one" valign="top" align="right"><span style="font-weight: bold;">' . $lang['pm_draft_subject'] . '</span></td>
-        <td class="one" valign="top" align="left"><input type="text" class="text_default" name="subject" value="' . $subject . '" /></td>
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_draft_subject'] . '</span></td>
+        <td class="one"><input type="text" class="text_default" name="subject" value="' . $subject . '" /></td>
     </tr>
     <tr>
-        <td class="one" valign="top" align="right"><span style="font-weight: bold;">' . $lang['pm_draft_body'] . '</span></td>
-        <td class="one" valign="top" align="left">' . BBcode($draft, false) . '</td>
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_draft_body'] . '</span></td>
+        <td class="one">' . BBcode($draft, false) . '</td>
     </tr>
     <tr>
-        <td colspan="2" align="center" class="one">
+        <td colspan="2" class="one">
         <input type="submit" class="btn btn-primary" name="buttonval" value="' . $lang['pm_draft_preview'] . '"/>
         <input type="submit" class="btn btn-primary" name="buttonval" value="' . $lang['pm_draft_save_as'] . '" /></td>
     </tr>

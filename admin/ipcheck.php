@@ -14,7 +14,7 @@ $HTMLOUT = '';
 $HTMLOUT .= begin_frame('', true);
 $HTMLOUT .= begin_table();
 $res = sql_query("SELECT count(*) AS dupl, ip FROM users WHERE enabled = 'yes' AND ip <> '' AND ip <> '127.0.0.0' GROUP BY ip ORDER BY dupl DESC, ip") or sqlerr(__FILE__, __LINE__);
-$HTMLOUT .= "<tr align='center'>
+$HTMLOUT .= "<tr>
  <td class='colhead' width='90'>{$lang['ipcheck_user']}</td>
  <td class='colhead' width='70'>{$lang['ipcheck_email']}</td>
  <td class='colhead' width='70'>{$lang['ipcheck_regged']}</td>
@@ -51,14 +51,14 @@ while ($ras = mysqli_fetch_assoc($res)) {
                 } else {
                     $utc = ' bgcolor="333333"';
                 }
-                $HTMLOUT .= "<tr$utc><td align='left'><a href='userdetails.php?id=" . (int)$arr['id'] . "'>" . format_username($arr, true) . "</a></td>
-                                  <td align='center'>" . htmlsafechars($arr['email']) . "</td>
-                                  <td align='center'>$added</td>
-                                  <td align='center'>$last_access</td>
-                                  " . ($site_config['ratio_free'] ? '' : "<td align='center'>$downloaded</td>") . "
-                                  <td align='center'>$uploaded</td>
-                                  <td align='center'>" . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . "</td>
-                                  <td align='center'><span style=\"font-weight: bold;\">" . htmlsafechars($arr['ip']) . "</span></td>\n</tr>\n";
+                $HTMLOUT .= "<tr$utc><td><a href='userdetails.php?id=" . (int)$arr['id'] . "'>" . format_username($arr, true) . "</a></td>
+                                  <td>" . htmlsafechars($arr['email']) . "</td>
+                                  <td>$added</td>
+                                  <td>$last_access</td>
+                                  " . ($site_config['ratio_free'] ? '' : "<td>$downloaded</td>") . "
+                                  <td>$uploaded</td>
+                                  <td>" . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . "</td>
+                                  <td><span style=\"font-weight: bold;\">" . htmlsafechars($arr['ip']) . "</span></td>\n</tr>\n";
                 $ip = htmlsafechars($arr['ip']);
             }
         }

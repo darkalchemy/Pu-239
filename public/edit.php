@@ -27,7 +27,7 @@ if ((isset($_GET['unedit']) && $_GET['unedit'] == 1) && $CURUSER['class'] >= UC_
 $lang = array_merge(load_language('global'), load_language('edit'));
 $stdfoot = [
     'js' => [
-        '859c6d8f53d8ba83a5a80596082ae411.min',
+        get_file('upload_js')
     ],
 ];
 $stdhead = [
@@ -52,13 +52,13 @@ if ($CURUSER['class'] >= UC_STAFF) {
     }
     $HTMLOUT .= '<h1><font size="+1"><font color="#FF0000">' . $mod_cache_name . '</font> is currently editing this torrent!</font></h1>';
 }
-$ismodd = '<tr><td align=\'center\' class=\'colhead\' colspan=\'2\'><b>Edit Torrent</b> ' . (($CURUSER['class'] > UC_UPLOADER) ? '<small><a href="edit.php?id=' . $id . '&amp;unedit=1">Click here</a> to add temp edit notification while you edit this torrent</small>' : '') . '</td></tr>';
+$ismodd = '<tr><td class=\'colhead\' colspan=\'2\'><b>Edit Torrent</b> ' . (($CURUSER['class'] > UC_UPLOADER) ? '<small><a href="edit.php?id=' . $id . '&amp;unedit=1">Click here</a> to add temp edit notification while you edit this torrent</small>' : '') . '</td></tr>';
 $HTMLOUT .= "<form method='post' id='edit_form' name='edit_form' action='takeedit.php' enctype='multipart/form-data'>
     <input type='hidden' name='id' value='$id' />";
 if (isset($_GET['returnto'])) {
     $HTMLOUT .= "<input type='hidden' name='returnto' value='" . htmlsafechars($_GET['returnto']) . "' />\n";
 }
-$HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='10'>\n";
+$HTMLOUT .= "<table class='table table-bordered table-striped'>\n";
 $HTMLOUT .= $ismodd;
 $HTMLOUT .= tr("{$lang['edit_imdb_url']}", "<input type='text' name='url' size='80' value='" . htmlsafechars($row['url']) . "' />", 1);
 $HTMLOUT .= tr($lang['edit_poster'], "<input type='text' name='poster' size='80' value='" . htmlsafechars($row['poster']) . "' /><br>{$lang['edit_poster1']}\n", 1);
@@ -107,7 +107,7 @@ $HTMLOUT .= tr('Subtitiles', $subs_list, 1);
 
 $rg = "<select name='release_group'>\n<option value='scene'" . ($row['release_group'] == 'scene' ? " selected='selected'" : '') . ">Scene</option>\n<option value='p2p'" . ($row['release_group'] == 'p2p' ? " selected='selected'" : '') . ">p2p</option>\n<option value='none'" . ($row['release_group'] == 'none' ? " selected='selected'" : '') . ">None</option> \n</select>\n";
 $HTMLOUT .= tr('Release Group', $rg, 1);
-$HTMLOUT .= tr($lang['edit_visible'], "<input type='checkbox' name='visible'" . (($row['visible'] == 'yes') ? " checked='checked'" : '') . " value='1' /> {$lang['edit_visible_mainpage']}<br><table border='0' cellspacing='0' cellpadding='0' width='420'><tr><td class='embedded'>{$lang['edit_visible_info']}</td></tr></table>", 1);
+$HTMLOUT .= tr($lang['edit_visible'], "<input type='checkbox' name='visible'" . (($row['visible'] == 'yes') ? " checked='checked'" : '') . " value='1' /> {$lang['edit_visible_mainpage']}<br><table class='table table-bordered table-striped'><tr><td class='embedded'>{$lang['edit_visible_info']}</td></tr></table>", 1);
 if ($CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= tr($lang['edit_banned'], "<input type='checkbox' name='banned'" . (($row['banned'] == 'yes') ? " checked='checked'" : '') . " value='1' /> {$lang['edit_banned']}", 1);
 }
@@ -154,7 +154,7 @@ if ($CURUSER['class'] >= UC_STAFF && $CURUSER['class'] == UC_MAX) {
         $messc = '&#160;Only staff members are able to comment on this torrent!';
     }
     $HTMLOUT .= "<tr>
-    <td align='right'><font color='red'>&#160;*&#160;</font><b>&#160;{$lang['edit_comment']}</b></td>
+    <td><font color='red'>&#160;*&#160;</font><b>&#160;{$lang['edit_comment']}</b></td>
     <td>
     <select name='allow_comments'>
     <option value='" . htmlsafechars($row['allow_comments']) . "'>" . htmlsafechars($row['allow_comments']) . "</option>
@@ -174,24 +174,24 @@ if ($CURUSER['class'] >= UC_STAFF) {
 //==09 Genre mod no sql
 $HTMLOUT .= "
     <tr>
-    <td class='heading' align='right'><b>Genre</b>&#160;&#160;&#160;<br>Optional&#160;&#160;&#160;
+    <td class='heading'><b>Genre</b>&#160;&#160;&#160;<br>Optional&#160;&#160;&#160;
     </td>
-    <td align='left'>
-    <table>
+    <td>
+    <table class='table table-bordered table-striped'>
     <tr>
-    <td align='left'>
+    <td>
     <input type='radio' name='genre' value='keep' checked='checked' />Dont touch it [ Current: " . htmlsafechars($row['newgenre']) . " ]<br></td>
-    <td style='border:none'><input type='radio' name='genre' value='movie' />Movie</td>
-    <td style='border:none'><input type='radio' name='genre' value='music' />Music</td>
-    <td style='border:none'><input type='radio' name='genre' value='game' />Game</td>
-    <td style='border:none'><input type='radio' name='genre' value='apps' />Apps</td>
-    <td style='border:none'><input type='radio' name='genre' value='none' />None</td>
+    <td><input type='radio' name='genre' value='movie' />Movie</td>
+    <td><input type='radio' name='genre' value='music' />Music</td>
+    <td><input type='radio' name='genre' value='game' />Game</td>
+    <td><input type='radio' name='genre' value='apps' />Apps</td>
+    <td><input type='radio' name='genre' value='none' />None</td>
     </tr>
     </table>
-    <table>
+    <table class='table table-bordered table-striped'>
     <tr>
-    <td colspan='4' style='border:none'>
-    <label style='margin-bottom: 1em; padding-bottom: 1em; border-bottom: 3px silver groove;'>
+    <td colspan='4'>
+    <label>
     <input type='hidden' class='Depends on genre being movie or genre being music' /></label>";
 $movie = [
     'Action',
@@ -239,14 +239,14 @@ for ($x = 0; $x < count($apps); ++$x) {
     $HTMLOUT .= "<label><input type=\"checkbox\" value=\"$apps[$x]\" name=\"apps[]\" class=\"DEPENDS ON genre BEING apps\" />$apps[$x]</label>";
 }
 $HTMLOUT .= '</td></tr></table></td></tr>';
-$HTMLOUT .= "<tr><td colspan='2' align='center'><input type='submit' value='{$lang['edit_submit']}' class='btn' /> <input type='reset' value='{$lang['edit_revert']}' class='btn' /></td></tr>
+$HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['edit_submit']}' class='btn' /> <input type='reset' value='{$lang['edit_revert']}' class='btn' /></td></tr>
     </table>
     </form>
     <br>
     <form name='delete_form' method='post' action='delete.php'>
-    <table align='center' border='1' cellspacing='0' cellpadding='5'>
+    <table border='1' cellspacing='0' cellpadding='5'>
     <tr>
-      <td class='colhead' style='background-color: #F5F4EA;padding-bottom: 5px' colspan='2'><b>{$lang['edit_delete_torrent']}.</b> {$lang['edit_reason']}</td>
+      <td class='colhead' colspan='2'><b>{$lang['edit_delete_torrent']}.</b> {$lang['edit_reason']}</td>
     </tr>
     <tr>
       <td><input name='reasontype' type='radio' value='1' />&#160;{$lang['edit_dead']} </td><td> {$lang['edit_peers']}</td>
@@ -266,7 +266,7 @@ $HTMLOUT .= "<tr><td colspan='2' align='center'><input type='submit' value='{$la
 if (isset($_GET['returnto'])) {
     $HTMLOUT .= "<input type='hidden' name='returnto' value='" . htmlsafechars($_GET['returnto']) . "' />\n";
 }
-$HTMLOUT .= "<tr><td colspan='2' align='center'><input type='submit' value='{$lang['edit_delete']}' class='btn' /></td>
+$HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['edit_delete']}' class='btn' /></td>
     </tr>
     </table>
     </form>";

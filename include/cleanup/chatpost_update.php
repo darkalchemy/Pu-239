@@ -38,18 +38,14 @@ function chatpost_update($data)
         if ($count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO users (id, chatpost, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE chatpost=values(chatpost), modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+        }
+        if ($data['clean_log']) {
             write_log('Cleanup - Removed Chatpost ban from ' . $count . ' members');
         }
         unset($users_buffer, $msgs_buffer, $count);
     }
     //==End
-    if ($queries > 0) {
+    if ($data['clean_log'] && $queries > 0) {
         write_log("Chatpost Cleanup: Completed using $queries queries");
-    }
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items updated';
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
     }
 }

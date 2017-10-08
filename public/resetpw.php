@@ -10,7 +10,6 @@ if (!$CURUSER) {
 }
 $lang = array_merge(load_language('global'), load_language('passhint'));
 $stdfoot = [
-    /* include js **/
     'js' => [
         get_file('captcha1_js')
     ],
@@ -47,9 +46,9 @@ if ($step == '1') {
             stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error4']}");
         } else {
             $HTMLOUT .= "
-            <div class='login-container center-block'>
+            <div class='login-container container-fluid portlet'>
                 <form method='post' action='" . $_SERVER['PHP_SELF'] . "?step=2'>
-                    <table border='1' cellspacing='0' cellpadding='10'>
+                    <table class='table table-bordered top20 bottom20'>
                         <tr>
                             <td class='rowhead'>{$lang['main_question']}</td>";
             $id[1] = '/1/';
@@ -66,14 +65,18 @@ if ($step == '1') {
             $question[6] = "{$lang['main_question6']}";
             $passhint = preg_replace($id, $question, (int)$assoc['passhint']);
             $HTMLOUT .= "
-                            <td><i><b>{$passhint}?</b></i><input type='hidden' name='id' value='" . (int)$assoc['id'] . "' /></td>
+                            <td><i><b>{$passhint}?</b></i><input type='hidden' name='id' value='" . (int)$assoc['id'] . "' class='w-100' /></td>
                         </tr>
                         <tr>
                             <td class='rowhead'>{$lang['main_sec_answer']}</td>
-                            <td><input type='text' size='40' name='answer' /></td>
+                            <td><input type='text' class='w-100' name='answer' /></td>
                         </tr>
                         <tr>
-                            <td colspan='2' align='center'><input type='submit' value='{$lang['main_next']}' class='btn' /></td>
+                            <td colspan='2'>
+                                <div class='text-center'>
+                                    <input type='submit' value='{$lang['main_next']}' class='btn' />
+                                </div>
+                            </td>
                         </tr>
                     </table>
                 </form>
@@ -103,21 +106,23 @@ if ($step == '1') {
     } else {
         $sechash = $fetch['hintanswer'];
         $HTMLOUT .= "
-        <div class='login-container center-block'>
+        <div class='login-container container-fluid portlet'>
             <form method='post' action='?step=3'>
-                <table border='1' cellspacing='0' cellpadding='10'>
+                <table class='table table-bordered top20 bottom20'>
                     <tr>
                         <td class='rowhead'>{$lang['main_new_pass']}</td>
-                        <td><input type='password' size='40' name='newpass' /></td>
+                        <td><input type='password' class='w-100' name='newpass' /></td>
                     </tr>
                     <tr>
-                        <td class='rowhead'>{$lang['main_new_pass_confirm']}</td><td><input type='password' size='40' name='newpassagain' /></td>
+                        <td class='rowhead'>{$lang['main_new_pass_confirm']}</td><td><input type='password' class='w-100' name='newpassagain' /></td>
                     </tr>
                     <tr>
-                        <td colspan='2' align='center'>
-                            <input type='submit' value='{$lang['main_changeit']}' class='btn' />
-                            <input type='hidden' name='id' value='" . (int)$fetch['id'] . "' />
-                            <input type='hidden' name='hash' value='" . $sechash . "' />
+                        <td colspan='2'>
+                            <div class='text-center'>
+                                <input type='submit' value='{$lang['main_changeit']}' class='btn' />
+                                <input type='hidden' name='id' value='" . (int)$fetch['id'] . "' />
+                                <input type='hidden' name='hash' value='" . $sechash . "' />
+                            </div>
                         </td>
                     </tr>
                 </table>
@@ -168,21 +173,25 @@ if ($step == '1') {
     }
 } else {
     $HTMLOUT.= "
-    <div class='login-container center-block'>
+    <div class='login-container container-fluid portlet'>
         <form method='post' action='" . $_SERVER['PHP_SELF'] . "?step=1'>
-            <table border='1' cellspacing='0' cellpadding='10'>
+            <table class='table table-bordered top20 bottom20'>
                 <tr>
                     <td colspan='2'><p>{$lang['main_body']}</p><br></td>
                 </tr>
                 <tr>
                     <td class='rowhead'>{$lang['main_email_add']}</td>
-                    <td><input type='text' size='40' name='email' /></td>
+                    <td><input type='text' class='w-100' name='email' /></td>
                 </tr>" . ($site_config['captcha_on'] ? "
                 <tr>
                     <td class='rowhead' colspan='2' id='captcha_show'></td>
                 </tr>" : '') . "
                 <tr>
-                    <td colspan='2' align='center'><input type='submit' value='{$lang['main_recover']}' class='btn' /></td>
+                    <td colspan='2'>
+                        <div class='text-center'>
+                            <input type='submit' value='{$lang['main_recover']}' class='btn' />
+                        </div>
+                    </td>
                 </tr>
             </table>
         </form>

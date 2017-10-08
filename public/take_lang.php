@@ -31,7 +31,7 @@ $HTMLOUT .= "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'htt
 <head>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
     <title>Choose Language</title>
-    <link rel='stylesheet' href='./css/" . get_stylesheet() . "/e0a618d82ab6ae6be19a4749c87426da.min.css' />
+    <link rel='stylesheet' href='" . get_file('css') . "' />
 </head>
 <body class='$body_class'>
     <script>
@@ -45,7 +45,7 @@ $HTMLOUT .= "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'htt
             <legend class='text-lime'>Change language</legend>
             <form action='take_lang.php' method='post'>
                 <p class='text-center'>
-                    <select name='language' onchange='this.form.submit();' size='1' style='color: #000000; border: 1px solid #808080; background-color: #ececec'>
+                    <select name='language' onchange='this.form.submit();' size='1'>
                         <option value='1'" . (get_language() == '1' ? " selected='selected'" : '') . ">En</option>
                         <option value='2'" . (get_language() == '2' ? " selected='selected'" : '') . ">Dk</option>
                         <option value='3'" . (get_language() == '3' ? " selected='selected'" : '') . ">Rm</option>

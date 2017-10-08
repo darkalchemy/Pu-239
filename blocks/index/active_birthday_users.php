@@ -23,8 +23,10 @@ $HTMLOUT .= "
     <a id='birthday-hash'></a>
     <fieldset id='birthday' class='header'>
         <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_birthday']} ({$birthday_users_cache['actcount']})</legend>
-            <div class='text-center bottom20'>
+        <div class='bordered padleft10 padright10'>
+            <div class='alt_bordered transparent text-center'>
                 {$birthday_users_cache['birthdayusers']}
             </div>
+        </div>
     </fieldset>";
 

@@ -4,7 +4,6 @@ function sendpmpos_update($data)
     global $site_config, $queries, $mc1;
     set_time_limit(1200);
     ignore_user_abort(true);
-    //=== Pm ban removal by Bigjoos/pdq:)
     $res = sql_query('SELECT id, modcomment FROM users WHERE sendpmpos > 1 AND sendpmpos < ' . TIME_NOW) or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $users_buffer = [];
     if (mysqli_num_rows($res) > 0) {
@@ -38,18 +37,13 @@ function sendpmpos_update($data)
         if ($count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO users (id, sendpmpos, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE sendpmpos=values(sendpmpos), modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+        }
+        if ($data['clean_log']) {
             write_log('Cleanup - Removed Pm ban from ' . $count . ' members');
         }
         unset($users_buffer, $msgs_buffer, $count);
     }
-    //==End
-    if ($queries > 0) {
+    if ($data['clean_log'] && $queries > 0) {
         write_log("PM Possible Cleanup: Completed using $queries queries");
-    }
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items updated';
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
     }
 }

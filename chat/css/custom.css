@@ -59,12 +59,20 @@
 
 a {
     color: var(--main-color);
-    transition: all .3s ease;
     text-decoration: none;
 }
 
 a:hover {
     color: #005580;
     text-decoration: none;
+}
+
+a,
+input[type=button],
+select {
+    -webkit-transition: all 0.35s ease-in-out;
+    -moz-transition: all 0.35s ease-in-out;
+    -o-transition: all 0.35s ease-in-out;
+    transition: all 0.35s ease-in-out;
 }
 

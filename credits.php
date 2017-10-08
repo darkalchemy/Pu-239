@@ -58,14 +58,14 @@ if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
         $HTMLOUT .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . '?action=update&amp;id=' . $id . "'>
   <table width='50%' cellpadding='10' cellspacing='1' border='1'>
 	<tr><td class='rowhead'>{$lang['credits_mod']}</td>" .
-            "<td align='left' style='padding: 0px'><input type='text' size='60' maxlength='120' name='name' " . "value='" . htmlsafechars($mod['name']) . "' /></td></tr>\n" .
+            "<td style='padding: 0px'><input type='text' size='60' maxlength='120' name='name' " . "value='" . htmlsafechars($mod['name']) . "' /></td></tr>\n" .
             "<tr>
 	<td class='rowhead'>{$lang['credits_description']}</td>" .
-            "<td align='left' style='padding: 0px'>
+            "<td style='padding: 0px'>
 	<input type='text' size='60' maxlength='120' name='description' value='" . htmlsafechars($mod['description']) . "' /></td></tr>\n" .
             "<tr>
 	<td class='rowhead'>{$lang['credits_category']}</td>
-  <td align='left' style='padding: 0px'>
+  <td style='padding: 0px'>
   <select name='category'>";
 
         $result = sql_query('SHOW COLUMNS FROM modscredits WHERE field=\'category\'');
@@ -78,10 +78,10 @@ if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
         $HTMLOUT .= '</select></td></tr>';
 
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['credits_link']}</td>" .
-            "<td align='left' style='padding: 0px'><input type='text' size='60' maxlength='120' name='link' " . "value='" . htmlsafechars($mod['pu239lnk']) . "' /></td></tr>\n" .
+            "<td style='padding: 0px'><input type='text' size='60' maxlength='120' name='link' " . "value='" . htmlsafechars($mod['pu239lnk']) . "' /></td></tr>\n" .
             "<tr>
   <td class='rowhead'>{$lang['credits_status']}</td>
-  <td align='left' style='padding: 0px'>
+  <td style='padding: 0px'>
   <select name='modstatus'>";
 
         $result = sql_query('SHOW COLUMNS FROM modscredits WHERE field=\'status\'');
@@ -93,9 +93,9 @@ if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
 
         $HTMLOUT .= '</select></td></tr>';
 
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['credits_credits']}</td><td align='left' style='padding: 0px'>
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['credits_credits']}</td><td style='padding: 0px'>
   <input type='text' size='60' maxlength='120' name='credits' value='" . htmlsafechars($mod['credit']) . "' /></td></tr>\n";
-        $HTMLOUT .= "<tr><td colspan='2' align='center'><input type='submit' value='Submit' /></td></tr>\n";
+        $HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='Submit' /></td></tr>\n";
         $HTMLOUT .= '</table></form>';
     }
     echo stdhead($lang['credits_editmod']) . $HTMLOUT . stdfoot();
@@ -158,10 +158,10 @@ $res = sql_query('SELECT * FROM modscredits') or sqlerr(__FILE__, __LINE__);
 
 $HTMLOUT .= "<table width='80%' cellpadding='10' cellspacing='1' border='1'>
     <tr>
-    <td align='center' class='colhead'>{$lang['credits_name']}</td>
-    <td align='center' class='colhead'>{$lang['credits_category']}</td>
-    <td align='center' class='colhead'>{$lang['credits_status']}</td>
-    <td align='center' class='colhead'>{$lang['credits_credits']}</td>
+    <td class='colhead'>{$lang['credits_name']}</td>
+    <td class='colhead'>{$lang['credits_category']}</td>
+    <td class='colhead'>{$lang['credits_status']}</td>
+    <td class='colhead'>{$lang['credits_credits']}</td>
     </tr>";
 
 if ($row = mysqli_fetch_array($res)) {

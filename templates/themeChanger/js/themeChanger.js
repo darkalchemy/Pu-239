@@ -79,35 +79,43 @@ var page_config = {
             list: {
                 0: {
                     name: 'Oswald',
-                    className: 'h-style-1'
+                    className: 'h-style-1',
+                    class: 'text-1'
                 },
                 1: {
                     name: 'PT Sans Narrow',
-                    className: 'h-style-2'
+                    className: 'h-style-2',
+                    class: 'text-2'
                 },
                 2: {
                     name: 'Nova Square',
-                    className: 'h-style-3'
+                    className: 'h-style-3',
+                    class: 'text-3'
                 },
                 3: {
                     name: 'Lobster',
-                    className: 'h-style-4'
+                    className: 'h-style-4',
+                    class: 'text-4'
                 },
                 4: {
                     name: 'Open Sans',
-                    className: 'h-style-5'
+                    className: 'h-style-5',
+                    class: 'text-5'
                 },
                 5: {
                     name: 'Encode Sans Condensed',
-                    className: 'h-style-6'
+                    className: 'h-style-6',
+                    class: 'text-6'
                 },
                 6: {
                     name: 'Baloo Bhaijaan',
-                    className: 'h-style-7'
+                    className: 'h-style-7',
+                    class: 'text-7'
                 },
                 7: {
                     name: 'Acme',
-                    className: 'h-style-8'
+                    className: 'h-style-8',
+                    class: 'text-8'
                 }
             }
         },
@@ -117,35 +125,43 @@ var page_config = {
             list: {
                 0: {
                     name: 'Oswald',
-                    className: 'text-1'
+                    className: 'text-1',
+                    class: 'text-1'
                 },
                 1: {
                     name: 'PT Sans Narrow',
-                    className: 'text-2'
+                    className: 'text-2',
+                    class: 'text-2'
                 },
                 2: {
                     name: 'Nova Square',
-                    className: 'text-3'
+                    className: 'text-3',
+                    class: 'text-3'
                 },
                 3: {
                     name: 'Lobster',
-                    className: 'text-4'
+                    className: 'text-4',
+                    class: 'text-4'
                 },
                 4: {
                     name: 'Open Sans',
-                    className: 'text-5'
+                    className: 'text-5',
+                    class: 'text-5'
                 },
                 5: {
                     name: 'Encode Sans Condensed',
-                    className: 'text-6'
+                    className: 'text-6',
+                    class: 'text-6'
                 },
                 6: {
                     name: 'Baloo Bhaijaan',
-                    className: 'text-7'
+                    className: 'text-7',
+                    class: 'text-7'
                 },
                 7: {
                     name: 'Acme',
-                    className: 'text-8'
+                    className: 'text-8',
+                    class: 'text-8'
                 }
             }
         }
@@ -266,10 +282,13 @@ $(function () {
                 });
                 select_html = '';
                 $.each(val.list, function (list_idx, list_val) {
+                    if (list_val.class) {
+                        var classes = ' class="' + list_val.class + '"';
+                    }
                     if ($body.hasClass(list_val.className)) {
-                        select_html += '<option value="' + list_val.className + '" selected="selected">' + list_val.name + '</option>';
+                        select_html += '<option value="' + list_val.className + '" ' + (classes||'') + ' selected="selected">' + list_val.name + '</option>';
                     } else {
-                        select_html += '<option value="' + list_val.className + '">' + list_val.name + '</option>';
+                        select_html += '<option value="' + list_val.className + '"' + (classes||'') + '>' + list_val.name + '</option>';
                     }
                 });
                 $select_element.html(select_html);
@@ -331,8 +350,8 @@ $(function () {
                 changeBodyClass(page_config.styles.textStyle.list[0].className, text_style_classes);
                 $('iframe').contents().find('body').removeClass('text-2 text-3 text-4 text-5 text-6 text-7 text-8').addClass('text-1');
                 links_picker.css({'background-color': '#008a05'}).ColorPickerSetColor('#008a05');
-                $('body').get(0).style.setProperty('--main-color', '#0f0');
-                $('iframe').contents().find('body').css('--main-color', '#0f0');
+                $('body').get(0).style.setProperty('--main-color', '#9193de');
+                $('iframe').contents().find('body').css('--main-color', '#9193de');
                 $theme_control_panel.find('.active').removeClass();
                 localStorage.removeItem('a_color');
                 return false;

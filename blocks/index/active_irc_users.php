@@ -36,7 +36,9 @@ $HTMLOUT .= "
     <a id='irc-hash'></a>
     <fieldset id='irc' class='header'>
         <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_active_irc']} ({$active_irc_users_cache['actcount']})</legend>
-            <div class='text-center bottom20'>
+        <div class='bordered padleft10 padright10'>
+            <div class='alt_bordered transparent text-center'>
                 {$active_irc_users_cache['activeircusers']}
             </div>
+        </div>
     </fieldset>";

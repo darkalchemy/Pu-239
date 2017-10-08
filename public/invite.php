@@ -25,26 +25,26 @@ if ($do == 'view_page') {
     $rows = mysqli_num_rows($query);
     $HTMLOUT = '';
     $HTMLOUT .= "
-<table border='1' width='750' cellspacing='0' cellpadding='5'>
+<table class='table table-bordered table-striped'>
 <tr class='table'>
 <td colspan='7' class='colhead'><b>{$lang['invites_users']}</b></td></tr>";
     if (!$rows) {
         $HTMLOUT .= "<tr><td colspan='7' class='colhead'>{$lang['invites_nousers']}</td></tr>";
     } else {
         $HTMLOUT .= "<tr class='one'>
-<td align='center'><b>{$lang['invites_username']}</b></td>
-<td align='center'><b>{$lang['invites_uploaded']}</b></td>
-" . ($site_config['ratio_free'] ? '' : "<td align='center'><b>{$lang['invites_downloaded']}</b></td>") . "
-<td align='center'><b>{$lang['invites_ratio']}</b></td>
-<td align='center'><b>{$lang['invites_status']}</b></td>
-<td align='center'><b>{$lang['invites_confirm']}</b></td>
+<td><b>{$lang['invites_username']}</b></td>
+<td><b>{$lang['invites_uploaded']}</b></td>
+" . ($site_config['ratio_free'] ? '' : "<td><b>{$lang['invites_downloaded']}</b></td>") . "
+<td><b>{$lang['invites_ratio']}</b></td>
+<td><b>{$lang['invites_status']}</b></td>
+<td><b>{$lang['invites_confirm']}</b></td>
 </tr>";
         for ($i = 0; $i < $rows; ++$i) {
             $arr = mysqli_fetch_assoc($query);
             if ($arr['status'] == 'pending') {
-                $user = "<td align='center'>" . htmlsafechars($arr['username']) . '</td>';
+                $user = "<td>" . htmlsafechars($arr['username']) . '</td>';
             } else {
-                $user = "<td align='center'><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$arr['id'] . "'>" . format_username($arr) . '</a></td>';
+                $user = "<td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$arr['id'] . "'>" . format_username($arr) . '</a></td>';
             }
             $ratio = member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']);
             if ($arr['status'] == 'confirmed') {
@@ -52,18 +52,18 @@ if ($do == 'view_page') {
             } else {
                 $status = "<font color='#ca0226'>{$lang['invites_pend']}</font>";
             }
-            $HTMLOUT .= "<tr class='one'>" . $user . "<td align='center'>" . mksize($arr['uploaded']) . '</td>' . ($site_config['ratio_free'] ? '' : "<td align='center'>" . mksize($arr['downloaded']) . '</td>') . "<td align='center'>" . $ratio . "</td><td align='center'>" . $status . '</td>';
+            $HTMLOUT .= "<tr class='one'>" . $user . "<td>" . mksize($arr['uploaded']) . '</td>' . ($site_config['ratio_free'] ? '' : "<td>" . mksize($arr['downloaded']) . '</td>') . "<td>" . $ratio . "</td><td>" . $status . '</td>';
             if ($arr['status'] == 'pending') {
-                $HTMLOUT .= "<td align='center'><a href='?do=confirm_account&amp;userid=" . (int)$arr['id'] . '&amp;sender=' . (int)$CURUSER['id'] . "'><img src='{$site_config['pic_base_url']}confirm.png' alt='confirm' title='Confirm' border='0' /></a></td></tr>";
+                $HTMLOUT .= "<td><a href='?do=confirm_account&amp;userid=" . (int)$arr['id'] . '&amp;sender=' . (int)$CURUSER['id'] . "'><img src='{$site_config['pic_base_url']}confirm.png' alt='confirm' title='Confirm' border='0' /></a></td></tr>";
             } else {
-                $HTMLOUT .= "<td align='center'>---</td></tr>";
+                $HTMLOUT .= "<td>---</td></tr>";
             }
         }
     }
     $HTMLOUT .= '</table><br>';
     $select = sql_query('SELECT * FROM invite_codes WHERE sender = ' . sqlesc($CURUSER['id']) . " AND status = 'Pending'") or sqlerr(__FILE__, __LINE__);
     $num_row = mysqli_num_rows($select);
-    $HTMLOUT .= "<table border='1' width='750' cellspacing='0' cellpadding='5'>" . "<tr class='tabletitle'><td colspan='6' class='colhead'><b>{$lang['invites_codes']}</b></td></tr>";
+    $HTMLOUT .= "<table class='table table-bordered table-striped'>" . "<tr class='tabletitle'><td colspan='6' class='colhead'><b>{$lang['invites_codes']}</b></td></tr>";
     if (!$num_row) {
         $HTMLOUT .= "<tr class='one'><td colspan='1'>{$lang['invites_nocodes']}</td></tr>";
     } else {
@@ -77,7 +77,7 @@ if ($do == 'view_page') {
 <td>" . htmlsafechars($fetch_assoc['status']) . '</td></tr>';
         }
     }
-    $HTMLOUT .= "<tr class='one'><td colspan='6' align='center'><form action='?do=create_invite' method='post'><input type='submit' value='{$lang['invites_create']}' style='height: 20px' /></form></td></tr>";
+    $HTMLOUT .= "<tr class='one'><td colspan='6'><form action='?do=create_invite' method='post'><input type='submit' value='{$lang['invites_create']}' /></form></td></tr>";
     $HTMLOUT .= '</table>';
     echo stdhead('Invites') . $HTMLOUT . stdfoot();
     die;
@@ -167,8 +167,8 @@ EOD;
     }
     $query = sql_query('SELECT * FROM invite_codes WHERE id = ' . sqlesc($id) . ' AND sender = ' . sqlesc($CURUSER['id']) . ' AND status = "Pending"') or sqlerr(__FILE__, __LINE__);
     $fetch = mysqli_fetch_assoc($query) or stderr($lang['invites_error'], $lang['invites_noexsist']);
-    $HTMLOUT .= "<form method='post' action='?do=send_email'><table border='1' cellspacing='0' cellpadding='10'>
-<tr><td class='rowhead'>E-Mail</td><td><input type='text' size='40' name='email' /></td></tr><tr><td colspan='2' align='center'><input type='hidden' name='code' value='" . htmlsafechars($fetch['code']) . "' /></td></tr><tr><td colspan='2' align='center'><input type='submit' value='Send e-mail' class='btn' /></td></tr></table></form>";
+    $HTMLOUT .= "<form method='post' action='?do=send_email'><table class='table table-bordered table-striped'>
+<tr><td class='rowhead'>E-Mail</td><td><input type='text' size='40' name='email' /></td></tr><tr><td colspan='2'><input type='hidden' name='code' value='" . htmlsafechars($fetch['code']) . "' /></td></tr><tr><td colspan='2'><input type='submit' value='Send e-mail' class='btn' /></td></tr></table></form>";
     echo stdhead('Invites') . $HTMLOUT . stdfoot();
 } /*
  * @action Delete Invites

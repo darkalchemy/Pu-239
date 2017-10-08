@@ -22,11 +22,11 @@ if ($count > 0) {
     $HTMLOUT .= "<p>Vote for this <a class='altlink' href='viewoffers.php?id=$id&amp;offer_vote'><b>Offer</b></a></p>";
     $HTMLOUT .= $pager['pagertop'];
     if (mysqli_num_rows($res) == 0) {
-        $HTMLOUT .= "<p align='center'><b>Nothing found</b></p>\n";
+        $HTMLOUT .= "<p><b>Nothing found</b></p>\n";
     } else {
         $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5'>
-<tr><td class='colhead'>Username</td><td class='colhead' align='left'>Uploaded</td><td class='colhead' align='left'>Downloaded</td>
-<td class='colhead' align='left'>Share Ratio</td></tr>\n";
+<tr><td class='colhead'>Username</td><td class='colhead'>Uploaded</td><td class='colhead'>Downloaded</td>
+<td class='colhead'>Share Ratio</td></tr>\n";
         while ($arr = mysqli_fetch_assoc($res)) {
             $ratio = member_ratio($arr['uploaded'], $arr['downloaded']);
             $uploaded = mksize($arr['uploaded']);
@@ -36,9 +36,9 @@ if ($count > 0) {
             $arr['id'] = $arr['userid'];
             $username = format_username($arr['userid']);
             $HTMLOUT .= "<tr><td>$username</td>
-             <td align='left'>$uploaded</td>
-             <td align='left'>$downloaded</td>
-             <td align='left'>$ratio</td></tr>\n";
+             <td>$uploaded</td>
+             <td>$downloaded</td>
+             <td>$ratio</td></tr>\n";
         }
         $HTMLOUT .= "</table>\n";
     }

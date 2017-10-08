@@ -19,20 +19,22 @@ function rsstfreakinfo()
     $items = $doc->getElementsByTagName('item');
     foreach ($items as $item) {
         $html .= "
-                    <div class='bordered'>
+                    <div class='alt_bordered'>
                         <h3>
                             <u>" . $item->getElementsByTagName('title')->item(0)->nodeValue . "</u>
                         </h3>
-                        <font class='small'>
+                        <span class='size_2'>
                             by " . str_replace(['<![CDATA[', ']]>'], '', $item->getElementsByTagName('creator')->item(0)->nodeValue) . " on " . $item->getElementsByTagName('pubDate')->item(0)->nodeValue . "
-                        </font>
-                        <br>" .
-                        str_replace(['<![CDATA[', ']]>'], '', $item->getElementsByTagName('description')->item(0)->nodeValue) . "
-                        <a href='" . $item->getElementsByTagName('link')->item(0)->nodeValue . "' target='_blank'>
-                            <font class='small'>
-                                Read more
-                            </font>
-                        </a>
+                        </span>
+                        <br>
+                        <div>" .
+                            str_replace(['<![CDATA[', ']]>', 'href="'], ['', '', 'href="' . $site_config['anonymizer_url']], $item->getElementsByTagName('description')->item(0)->nodeValue) . "
+                            <a href='{$site_config['anonymizer_url']}" . $item->getElementsByTagName('link')->item(0)->nodeValue . "' target='_blank'>
+                                <span class='size_2'>
+                                    Read more
+                                </span>
+                            </a>
+                        </div>
                     </div>";
         if ($use_limit && $icount == $limit) {
             break;

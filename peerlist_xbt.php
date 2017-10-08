@@ -36,11 +36,11 @@ function dltable($name, $arr, $torrent)
     global $CURUSER, $lang, $site_config;
     $htmlout = '';
     if (!count($arr)) {
-        return $htmlout = "<div align='left'><b>{$lang['peerslist_no']} $name {$lang['peerslist_data_available']}</b></div>\n";
+        return $htmlout = "<div><b>{$lang['peerslist_no']} $name {$lang['peerslist_data_available']}</b></div>\n";
     }
     $htmlout = "\n";
     $htmlout .= "<table width='100%' class='main' border='1' cellspacing='0' cellpadding='5'>\n";
-    $htmlout .= "<tr><td colspan='11' class='colhead'>" . count($arr) . " $name</td></tr>" . "<tr><td class='colhead'>{$lang['peerslist_user_ip']}</td>" . "<td class='colhead' align='right'>{$lang['peerslist_uploaded']}</td>" . "<td class='colhead' align='right'>{$lang['peerslist_rate']}</td>" . '' . ($site_config['ratio_free'] ? '' : "<td class='colhead' align='right'>{$lang['peerslist_downloaded']}</td>") . '' . '' . ($site_config['ratio_free'] ? '' : "<td class='colhead' align='right'>{$lang['peerslist_rate']}</td>") . '' . "<td class='colhead' align='right'>{$lang['peerslist_ratio']}</td>" . "<td class='colhead' align='right'>{$lang['peerslist_complete']}</td>" . "<td class='colhead' align='right'>{$lang['peerslist_idle']}</td>" . "<td class='colhead' align='left'>{$lang['peerslist_client']}</td></tr>\n";
+    $htmlout .= "<tr><td colspan='11' class='colhead'>" . count($arr) . " $name</td></tr>" . "<tr><td class='colhead'>{$lang['peerslist_user_ip']}</td>" . "<td class='colhead'>{$lang['peerslist_uploaded']}</td>" . "<td class='colhead'>{$lang['peerslist_rate']}</td>" . '' . ($site_config['ratio_free'] ? '' : "<td class='colhead'>{$lang['peerslist_downloaded']}</td>") . '' . '' . ($site_config['ratio_free'] ? '' : "<td class='colhead'>{$lang['peerslist_rate']}</td>") . '' . "<td class='colhead'>{$lang['peerslist_ratio']}</td>" . "<td class='colhead'>{$lang['peerslist_complete']}</td>" . "<td class='colhead'>{$lang['peerslist_idle']}</td>" . "<td class='colhead'>{$lang['peerslist_client']}</td></tr>\n";
     $now = TIME_NOW;
     $mod = $CURUSER['class'] >= UC_STAFF;
     foreach ($arr as $e) {
@@ -56,14 +56,14 @@ function dltable($name, $arr, $torrent)
         } else {
             $htmlout .= '<td>' . ($mod ? XBT_IP_CONVERT($e['ipa']) : preg_replace('/\.\d+$/', '.xxx', XBT_IP_CONVERT($e['ipa']))) . "</td>\n";
         }
-        $htmlout .= "<td align='right'>" . mksize($e['uploaded']) . "</td>\n";
-        $htmlout .= "<td align='right'><span style=\"white-space: nowrap;\">" . htmlsafechars($upspeed) . "/s</span></td>\n";
-        $htmlout .= '' . ($site_config['ratio_free'] ? '' : "<td align='right'>" . mksize($e['downloaded']) . '</td>') . "\n";
-        $htmlout .= '' . ($site_config['ratio_free'] ? '' : "<td align='right'><span style=\"white-space: nowrap;\">" . htmlsafechars($downspeed) . '/s</span></td>') . "\n";
-        $htmlout .= '<td align="right">' . member_ratio($e['uploaded'], $site_config['ratio_free'] ? '0' : $e['downloaded']) . "</td>\n";
-        $htmlout .= "<td align='right'>" . sprintf('%.2f%%', 100 * (1 - ($e['left'] / $torrent['size']))) . "</td>\n";
-        $htmlout .= "<td align='right'>" . mkprettytime($now - $e['la']) . "</td>\n";
-        $htmlout .= "<td align='left'>" . htmlsafechars(getagent($e['peer_id'], $e['peer_id'])) . "</td>\n";
+        $htmlout .= "<td>" . mksize($e['uploaded']) . "</td>\n";
+        $htmlout .= "<td><span style=\"white-space: nowrap;\">" . htmlsafechars($upspeed) . "/s</span></td>\n";
+        $htmlout .= '' . ($site_config['ratio_free'] ? '' : "<td>" . mksize($e['downloaded']) . '</td>') . "\n";
+        $htmlout .= '' . ($site_config['ratio_free'] ? '' : "<td><span style=\"white-space: nowrap;\">" . htmlsafechars($downspeed) . '/s</span></td>') . "\n";
+        $htmlout .= '<td>' . member_ratio($e['uploaded'], $site_config['ratio_free'] ? '0' : $e['downloaded']) . "</td>\n";
+        $htmlout .= "<td>" . sprintf('%.2f%%', 100 * (1 - ($e['left'] / $torrent['size']))) . "</td>\n";
+        $htmlout .= "<td>" . mkprettytime($now - $e['la']) . "</td>\n";
+        $htmlout .= "<td>" . htmlsafechars(getagent($e['peer_id'], $e['peer_id'])) . "</td>\n";
         $htmlout .= "</tr>\n";
     }
     $htmlout .= "</table>\n";

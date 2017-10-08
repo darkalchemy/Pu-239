@@ -20,9 +20,9 @@ if ($user['birthday'] != '0') {
     if ($month2 > $month1) {
         $age = $year2 - $year1;
     }
-    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_age']}</td><td align='left'>" . htmlsafechars($age) . "</td></tr>\n";
+    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_age']}</td><td>" . htmlsafechars($age) . "</td></tr>\n";
     $birthday = date('Y-m-d', strtotime($birthday));
-    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_birthday']}</td><td align='left'>" . htmlsafechars($birthday) . "</td></tr>\n";
+    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_birthday']}</td><td>" . htmlsafechars($birthday) . "</td></tr>\n";
 }
 //==End
 // End Class

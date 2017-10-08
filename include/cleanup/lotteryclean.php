@@ -60,13 +60,7 @@ function lotteryclean($data)
         sql_query('DELETE FROM tickets') or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
     }
     //==End 09 seedbonus lottery by putyn
-    if ($queries > 0) {
+    if ($data['clean_log'] && $queries > 0) {
         write_log("Lottery Cleanup: Completed using $queries queries");
-    }
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted';
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
     }
 }

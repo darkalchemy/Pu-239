@@ -22,11 +22,11 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
     }
     if (isset($addr)) {
         if ($CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
-            $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_address']}</td><td align='left'>{$addr}{$iphistory['use']}&#160;(<a class='altlink' href='staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=" . (int)$user['id'] . "'><b>{$lang['userdetails_ip_hist']}</b></a>)&#160;(<a class='altlink' href='staffpanel.php?tool=iphistory&amp;action=iplist&amp;id=" . (int)$user['id'] . "'><b>{$lang['userdetails_ip_list']}</b></a>)</td></tr>\n";
+            $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_address']}</td><td>{$addr}{$iphistory['use']}&#160;(<a class='altlink' href='staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=" . (int)$user['id'] . "'><b>{$lang['userdetails_ip_hist']}</b></a>)&#160;(<a class='altlink' href='staffpanel.php?tool=iphistory&amp;action=iplist&amp;id=" . (int)$user['id'] . "'><b>{$lang['userdetails_ip_list']}</b></a>)</td></tr>\n";
         }
     }
     if ($CURUSER['class'] >= UC_STAFF && $iphistory['ips'] > 0) {
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_ip_history']}</td><td align='left'>{$lang['userdetails_ip_earlier']}<b><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=" . (int)$user['id'] . "'>{$iphistory['ips']} {$lang['userdetails_ip_different']}</a></b></td></tr>\n";
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_ip_history']}</td><td>{$lang['userdetails_ip_earlier']}<b><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=" . (int)$user['id'] . "'>{$iphistory['ips']} {$lang['userdetails_ip_different']}</a></b></td></tr>\n";
     }
 }
 //==end

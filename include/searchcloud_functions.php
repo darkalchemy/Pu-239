@@ -3,7 +3,9 @@ function searchcloud($limit = 50)
 {
     global $mc1, $site_config;
     if (!($return = $mc1->get_value('searchcloud'))) {
-        $search_q = sql_query('SELECT searchedfor,howmuch FROM searchcloud ORDER BY id DESC ' . ($limit > 0 ? 'LIMIT ' . $limit : '')) or sqlerr(__FILE__, __LINE__);
+        $search_q = sql_query('SELECT searchedfor, howmuch
+                                FROM searchcloud
+                                ORDER BY id DESC ' . ($limit > 0 ? 'LIMIT ' . $limit : '')) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($search_q)) {
             $return = [];
             while ($search_a = mysqli_fetch_assoc($search_q)) {
@@ -18,7 +20,6 @@ function searchcloud($limit = 50)
         return [];
     }
     ksort($return);
-
     return $return;
 }
 
@@ -43,12 +44,10 @@ function searchcloud_insert($word)
 
 function cloud()
 {
-    //min / max font sizes
-    $small = 10;
-    $big = 35;
-    //get tag info from worker function
+    $small = 14;
+    $big = 40;
     $tags = searchcloud();
-    //amounts
+
     if (isset($tags)) {
         $minimum_count = min(array_values($tags));
         $maximum_count = max(array_values($tags));
@@ -58,22 +57,18 @@ function cloud()
         }
         $cloud_html = '';
         $cloud_tags = [];
+        $tags = shuffle_assoc($tags, 3);
         foreach ($tags as $tag => $count) {
-            $size = $small + ($count - $minimum_count) * ($big - $small) / $spread;
-            //set up colour array for font colours.
-            $colour_array = [
-                'yellow',
-                'green',
-                'blue',
-                'purple',
-                'orange',
-                '#0099FF',
-            ];
-            //spew out some html malarky!
-            $cloud_tags[] = '<a style="color:' . $colour_array[random_int(0, 5)] . '; font-size: ' . floor($size) . 'px' . '" class="tag_cloud" href="browse.php?search=' . urlencode($tag) . '&amp;searchin=all&amp;incldead=1' . '" title="\'' . htmlsafechars($tag) . '\' returned a count of ' . $count . '">' . htmlsafechars(stripslashes($tag)) . '</a>';
+            $size = floor($small + round(($count - $minimum_count) * ($big - $small) / $spread, 0, PHP_ROUND_HALF_UP));
+            $color = random_color(100, 200);
+            $cloud_tags[] = "
+                            <a class='tooltipper tag_cloud' style='color:{$color}; font-size: {$size}px' href='./browse.php?search=" . urlencode($tag) . "&amp;searchin=all&amp;incldead=1' title='<span class=\"size_5 text-main\">\"" . htmlsafechars($tag) . "\"</span><br>has been searched for {$count} times.'>
+                                <span class='padding10'>" . htmlsafechars(stripslashes($tag)) . "</span>
+                            </a>";
         }
         $cloud_html = join("\n", $cloud_tags) . "\n";
 
         return $cloud_html;
     }
 }
+

@@ -12,10 +12,10 @@ $stdfoot = [
 $HTMLOUT = '';
 $HTMLOUT .= "
     <div class='container-fluid portlet padding20 bottom20'>
-        <table class='main' border='0' cellspacing='0' cellpadding='0'>
+        <table class='table table-bordered table-striped'>
             <tr>
                 <td class='embedded'>
-                    <table border='1' cellspacing='0' cellpadding='10'>
+                    <table class='table table-bordered table-striped'>
                         <tr>
                             <td id='top_zone' class='text'>
                                 {$lang['faq_welcome']}
@@ -27,11 +27,11 @@ $HTMLOUT .= "
         </table>
     </div>
     <div class='container-fluid portlet padding20 bottom20'>
-        <table class='main' width='100%' border='0' cellspacing='0' cellpadding='0'>
+        <table class='table table-bordered table-striped'>
             <tr>
                 <td class='embedded'>
                     <h2>{$lang['faq_contents_header']}</h2>
-                    <table width='100%' border='1' cellspacing='0' cellpadding='10'>
+                    <table class='table table-bordered table-striped'>
                         <tr>
                             <td class='text'>
                                 <a id='question_1' onclick='return false;' href='#'><b>{$lang['faq_siteinfo_header']}</b></a>
@@ -59,11 +59,11 @@ $HTMLOUT .= "
         </table>
     </div>
     <div class='container-fluid portlet padding20 bottom20'>
-        <table class='main' border='0' cellspacing='0' cellpadding='0'>
+        <table class='table table-bordered table-striped'>
             <tr>
                 <td class='embedded'>
                     <h3 id='answer_1'>{$lang['faq_siteinfo_header']}</h3>
-                    <table border='1' cellspacing='0' cellpadding='10'>
+                    <table class='table table-bordered table-striped'>
                         <tr>
                             <td class='text'>
                                 <div id='answer_1_text'>
@@ -77,11 +77,11 @@ $HTMLOUT .= "
         </table>
     </div>
     <div class='container-fluid portlet padding20 bottom20'>
-        <table class='main' border='0' cellspacing='0' cellpadding='0'>
+        <table class='table table-bordered table-striped'>
             <tr>
                 <td class='embedded'>
                     <h3 id='answer_2'>{$lang['faq_userinfo_header']}</h3>
-                    <table border='1' cellspacing='0' cellpadding='10'>
+                    <table class='table table-bordered table-striped'>
                         <tr>
                             <td class='text'>
                                 <div id='answer_2_text'>
@@ -98,11 +98,11 @@ $HTMLOUT .= "
         </table>
     </div>
     <div class='container-fluid portlet padding20 bottom20'>
-        <table class='main' border='0' cellspacing='0' cellpadding='0'>
+        <table class='table table-bordered table-striped'>
             <tr>
                 <td class='embedded'>
                     <h3 id='answer_3'>{$lang['faq_stats_header']}</h3>
-                    <table border='1' cellspacing='0' cellpadding='10'>
+                    <table class='table table-bordered table-striped'>
                         <tr>
                             <td class='text'>
                                 <div id='answer_3_text'>
@@ -116,11 +116,11 @@ $HTMLOUT .= "
         </table>
     </div>
     <div class='container-fluid portlet padding20 bottom20'>
-        <table class='main' border='0' cellspacing='0' cellpadding='0'>
+        <table class='table table-bordered table-striped'>
             <tr>
                 <td class='embedded'>
                     <h3 id='answer_4'>{$lang['faq_uploading_header']}</h3>
-                    <table border='1' cellspacing='0' cellpadding='10'>
+                    <table class='table table-bordered table-striped'>
                         <tr>
                             <td class='text'>
                                 <div id='answer_4_text'>
@@ -134,11 +134,11 @@ $HTMLOUT .= "
         </table>
     </div>
     <div class='container-fluid portlet padding20 bottom20'>
-        <table class='main' border='0' cellspacing='0' cellpadding='0'>
+        <table class='table table-bordered table-striped'>
             <tr>
                 <td class='embedded'>
                     <h3 id='answer_5'>{$lang['faq_downloading_header']}</h3>
-                    <table border='1' cellspacing='0' cellpadding='10'>
+                    <table class='table table-bordered table-striped'>
                         <tr>
                             <td class='text'>
                                 <div id='answer_5_text'>
@@ -225,11 +225,11 @@ $HTMLOUT .= "
         </table>
     </div>
     <div class='container-fluid portlet padding20 bottom20'>
-        <table class='main' border='0' cellspacing='0' cellpadding='0'>
+        <table class='table table-bordered table-striped'>
             <tr>
                 <td class='embedded'>
                     <h3 id='answer_6'>{$lang['faq_improve_speed_title']}</h3>
-                    <table border='1' cellspacing='0' cellpadding='10'>
+                    <table class='table table-bordered table-striped'>
                         <tr>
                             <td class='text'>
                                 <div id='answer_6_text'>
@@ -243,11 +243,11 @@ $HTMLOUT .= "
         </table>
     </div>
     <div class='container-fluid portlet padding20 bottom20'>
-        <table class='main' border='0' cellspacing='0' cellpadding='0'>
+        <table class='table table-bordered table-striped'>
             <tr>
                 <td class='embedded'>
                     <h3 id='answer_7'>{$lang['faq_proxy_title']}</h3>
-                    <table border='1' cellspacing='0' cellpadding='10'>
+                    <table class='table table-bordered table-striped'>
                         <tr>
                             <td class='text'>
                                 <div id='answer_7_text'>
@@ -262,11 +262,11 @@ $HTMLOUT .= "
         </table>
     </div>
     <div class='container-fluid portlet padding20 bottom20'>
-        <table class='main' border='0' cellspacing='0' cellpadding='0'>
+        <table class='table table-bordered table-striped'>
             <tr>
                 <td class='embedded'>
                     <h3 id='answer_8'>{$lang['faq_blocked_title']}</h3>
-                    <table border='1' cellspacing='0' cellpadding='10'>
+                    <table class='table table-bordered table-striped'>
                         <tr>
                             <td class='text'>
                                 <div id='answer_8_text'>
@@ -284,11 +284,11 @@ $HTMLOUT .= "
         </table>
     </div>
     <div class='container-fluid portlet padding20 bottom20'>
-        <table class='main' border='0' cellspacing='0' cellpadding='0'>
+        <table class='table table-bordered table-striped'>
             <tr>
                 <td class='embedded'>
                     <h3 id='answer_9'>{$lang['faq_problem_title']}</h3>
-                    <table border='1' cellspacing='0' cellpadding='10'>
+                    <table class='table table-bordered table-striped'>
                         <tr>
                             <td class='text'>
                                 <div id='answer_9_text'>

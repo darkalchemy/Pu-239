@@ -26,39 +26,39 @@ $HTMLOUT .= '<h1>' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subj
         <input type="hidden" name="action" value="forward_pm" />
     <table class="table table-bordered">
     <tr>
-        <td align="left" colspan="2" class="colhead" valign="top"><h1>' . $lang['pm_forward_fwd_msg'] . '
+        <td colspan="2" class="colhead"><h1>' . $lang['pm_forward_fwd_msg'] . '
         <img src="./images/forums/arrow_next.gif" alt=":" />' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subject']) . '</h1></td>
     </tr>
     <tr>
-        <td align="right" class="one" valign="top"><span style="font-weight: bold;">' . $lang['pm_forward_to'] . '</span></td>
-        <td align="left" class="one" valign="top"><input type="text" name="to" value="' . $lang['pm_forward_user'] . '" class="member" onfocus="this.value=\'\';" /></td>
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_forward_to'] . '</span></td>
+        <td class="one"><input type="text" name="to" value="' . $lang['pm_forward_user'] . '" class="member" onfocus="this.value=\'\';" /></td>
     </tr>
     <tr>
-        <td align="right" class="one" valign="top"><span style="font-weight: bold;">' . $lang['pm_forward_original'] . '</span></td>
-        <td align="left" class="one" valign="top"><span style="font-weight: bold;">' . $forwarded_username . '</span></td>
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_forward_original'] . '</span></td>
+        <td class="one"><span style="font-weight: bold;">' . $forwarded_username . '</span></td>
     </tr>
     <tr>
-        <td align="right" class="one" valign="top"><span style="font-weight: bold;">' . $lang['pm_forward_from'] . '</span></td>
-        <td align="left" class="one" valign="top"><span style="font-weight: bold;">' . $CURUSER['username'] . '</span></td>
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_forward_from'] . '</span></td>
+        <td class="one"><span style="font-weight: bold;">' . $CURUSER['username'] . '</span></td>
     </tr>
     <tr>
-        <td align="right" class="one" valign="top"><span style="font-weight: bold;">' . $lang['pm_forward_subject'] . '</span></td>
-        <td align="left" class="one" valign="top"><input type="text" class="text_default" name="subject" value="' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subject']) . '" /></td>
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_forward_subject'] . '</span></td>
+        <td class="one"><input type="text" class="text_default" name="subject" value="' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subject']) . '" /></td>
     </tr>
     <tr>
-        <td align="center" class="one"></td>
-        <td align="left" class="two">' . $lang['pm_forward_org_msg'] . '' . $forwarded_username . '' . $lang['pm_forward_org_msg1'] . '<br>' . format_comment($message['msg']) . '</td>
+        <td class="one"></td>
+        <td class="two">' . $lang['pm_forward_org_msg'] . '' . $forwarded_username . '' . $lang['pm_forward_org_msg1'] . '<br>' . format_comment($message['msg']) . '</td>
     </tr>
     <tr>
-        <td align="right" class="one" valign="top"></td>
-        <td align="left" class="one"><span style="font-weight: bold;">' . $lang['pm_forward_appear'] . '</span></td>
+        <td class="one"></td>
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_forward_appear'] . '</span></td>
     </tr>
     <tr>
-        <td align="right" class="one" valign="top"><span style="font-weight: bold;">' . $lang['pm_forward_message'] . '</span></td>
-        <td align="left" class="one" valign="top">' . BBcode($body, false) . '</td>
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_forward_message'] . '</span></td>
+        <td class="one">' . BBcode($body, false) . '</td>
     </tr>
     <tr>
-        <td colspan="2" align="center" class="one">' . ($CURUSER['class'] >= UC_STAFF ? '<span class="label label-danger">' . $lang['pm_forward_mark'] . '</span>
+        <td colspan="2" class="one">' . ($CURUSER['class'] >= UC_STAFF ? '<span class="label label-danger">' . $lang['pm_forward_mark'] . '</span>
         <input type="checkbox" name="urgent" value="yes" />&#160;' : '') . '' . $lang['pm_forward_save'] . '
         <input type="checkbox" name="save" value="1" />
         <input type="hidden" name="first_from" value="' . $forwarded_username . '" /> 

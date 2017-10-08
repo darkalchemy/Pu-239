@@ -126,28 +126,28 @@ if ($count == 0) {
     $HTMLOUT .= stdmsg($lang['warn_hey'], $lang['warn_hey_msg'] . strtolower($title));
 } else {
     $HTMLOUT .= "<form action='staffpanel.php?tool=warn&amp;action=warn' method='post'>
-                <table width='600' cellpadding='3' cellspacing='2' style='border-collapse:separate;' align='center'>
+                <table width='600' cellpadding='3' cellspacing='2' style='border-collapse:separate;'>
                 <tr>
-                        <td class='colhead' align='left' width='100%' >{$lang['warn_user']}</td>
-                        <td class='colhead' align='center' nowrap='nowrap'>{$lang['warn_ratio']}</td>
-                        <td class='colhead' align='center' nowrap='nowrap'>{$lang['warn_class']}</td>
-                        <td class='colhead' align='center' nowrap='nowrap'>{$lang['warn_ltacces']}</td>
-                        <td class='colhead' align='center' nowrap='nowrap'>{$lang['warn_joined']}</td>
-                        <td class='colhead' align='center' nowrap='nowrap'><input type='checkbox' name='checkall' /></td>
+                        <td class='colhead' width='100%' >{$lang['warn_user']}</td>
+                        <td class='colhead' nowrap='nowrap'>{$lang['warn_ratio']}</td>
+                        <td class='colhead' nowrap='nowrap'>{$lang['warn_class']}</td>
+                        <td class='colhead' nowrap='nowrap'>{$lang['warn_ltacces']}</td>
+                        <td class='colhead' nowrap='nowrap'>{$lang['warn_joined']}</td>
+                        <td class='colhead' nowrap='nowrap'><input type='checkbox' name='checkall' /></td>
                 </tr>";
     while ($a = mysqli_fetch_assoc($g)) {
         $tip = ($do == 'warned' ? $lang['warn_for'] . $a['warn_reason'] . '<br>' . $lang['warn_till'] . get_date($a['warned'], 'DATE', 1) . ' - ' . mkprettytime($a['warned'] - TIME_NOW) : $lang['warn_disabled_for'] . $a['disable_reason']);
         $HTMLOUT .= "<tr>
-                                  <td align='left' width='100%'><a href='userdetails.php?id=" . (int)$a['id'] . "' onmouseover=\"Tip('($tip)')\" onmouseout=\"UnTip()\">" . htmlsafechars($a['username']) . "</a></td>
-                                  <td align='left' nowrap='nowrap'>" . (float)$a['ratio'] . "<br><font class='small'><b>{$lang['warn_down']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['warn_upl']}</b> " . mksize($a['uploaded']) . "</font></td>
-                                  <td align='center' nowrap='nowrap'>" . get_user_class_name($a['class']) . "</td>
-                                  <td align='center' nowrap='nowrap'>" . get_date($a['last_access'], 'LONG', 0, 1) . "</td>
-                                  <td align='center' nowrap='nowrap'>" . get_date($a['added'], 'DATE', 1) . "</td>
-                                  <td align='center' nowrap='nowrap'><input type='checkbox' name='users[]' value='" . (int)$a['id'] . "' /></td>
+                                  <td width='100%'><a href='userdetails.php?id=" . (int)$a['id'] . "' onmouseover=\"Tip('($tip)')\" onmouseout=\"UnTip()\">" . htmlsafechars($a['username']) . "</a></td>
+                                  <td nowrap='nowrap'>" . (float)$a['ratio'] . "<br><font class='small'><b>{$lang['warn_down']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['warn_upl']}</b> " . mksize($a['uploaded']) . "</font></td>
+                                  <td nowrap='nowrap'>" . get_user_class_name($a['class']) . "</td>
+                                  <td nowrap='nowrap'>" . get_date($a['last_access'], 'LONG', 0, 1) . "</td>
+                                  <td nowrap='nowrap'>" . get_date($a['added'], 'DATE', 1) . "</td>
+                                  <td nowrap='nowrap'><input type='checkbox' name='users[]' value='" . (int)$a['id'] . "' /></td>
                                 </tr>";
     }
     $HTMLOUT .= "<tr>
-                        <td colspan='6' class='colhead' align='center'>
+                        <td colspan='6' class='colhead'>
                                 <select name='action'>
                                         <option value='unwarn'>{$lang['warn_unwarn']}</option>
                                         <option value='disable'>{$lang['warn_disable']}</option>

@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'));
-$HTMLOUT .= '<table>
+$HTMLOUT .= '<table class="table table-bordered table-striped">
       <tr>
       <td class="embedded">
 You may select your mood by clicking on the smiley in the left side menu or clicking <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'Mood\',530,500,1,1);">here</a>.
@@ -12,19 +12,19 @@ You may select your mood by clicking on the smiley in the left side menu or clic
      </tr>
      </table>';
 $abba = '<h2>Top Moods</h2>
-         <table border="1" cellspacing="0" cellpadding="5">
-         <tr><td class="colhead" align="center">Count</td>
-         <td class="colhead" align="center">Mood</td>
-         <td class="colhead" align="center">Icon</td>
+         <table class="table table-bordered table-striped">
+         <tr><td class="colhead">Count</td>
+         <td class="colhead">Mood</td>
+         <td class="colhead">Icon</td>
          </tr>';
 $key = 'topmoods';
 $topmoods = $mc1->get_value($key);
 if ($topmoods === false) {
     $res = sql_query('SELECT moods.*, users.mood, COUNT(users.mood) as moodcount ' . 'FROM users LEFT JOIN moods ON (users.mood = moods.id) GROUP BY users.mood ' . 'ORDER BY moodcount DESC, moods.id ASC') or sqlerr(__FILE__, __LINE__);
     while ($arr = mysqli_fetch_assoc($res)) {
-        $topmoods .= '<tr><td align="center">' . (int)$arr['moodcount'] . '</td>
-                 <td align="center">' . htmlsafechars($arr['name']) . ' ' . ($arr['bonus'] == 1 ? '<a href="/mybonus.php" style="color:lime">(bonus)</a>' : '') . '</td>
-                 <td align="center"><img src="' . $site_config['pic_base_url'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt="" /></td>
+        $topmoods .= '<tr><td>' . (int)$arr['moodcount'] . '</td>
+                 <td>' . htmlsafechars($arr['name']) . ' ' . ($arr['bonus'] == 1 ? '<a href="/mybonus.php">(bonus)</a>' : '') . '</td>
+                 <td><img src="' . $site_config['pic_base_url'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt="" /></td>
                  </tr>';
     }
     $mc1->add_value($key, $topmoods, 0);

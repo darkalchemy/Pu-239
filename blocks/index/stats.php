@@ -31,8 +31,8 @@ $HTMLOUT .= "
     <a id='stats-hash'></a>
     <fieldset id='stats' class='header'>
         <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_stats_title']}</legend>
-        <div class='cite text-center'>
-            <table class='table table-bordered  table-striped'>
+        <div class='text-center'>
+            <table class='table table-bordered table-striped'>
                 <tbody>
                     <tr>
                         <td class='row-fluid span2'>{$lang['index_stats_regged']}</td><td class='row-fluid span1'>{$stats_cache['regusers']}/{$site_config['maxusers']}</td>
@@ -75,7 +75,7 @@ $HTMLOUT .= "
                         <td>{$lang['index_stats_unconpeer']}</td><td>{$stats_cache['unconnectables']}</td>
                     </tr>
                     <tr>
-                        <td>{$lang['index_stats_seeders']}</td><td align='right'>{$stats_cache['seeders']}</td>
+                        <td>{$lang['index_stats_seeders']}</td><td>{$stats_cache['seeders']}</td>
                         <td><b>{$lang['index_stats_unconratio']}</b></td><td><b>" . round($stats_cache['ratiounconn'] * 100) . "</b></td>
                     </tr>
                     <tr>

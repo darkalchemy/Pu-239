@@ -51,23 +51,23 @@ $HTMLOUT .= "
 <form method='post' action='staffpanel.php?tool=cloudview&amp;action=cloudview'>
 <table border='1' cellspacing='0' cellpadding='5'>\n
 <tr>
-<td class='colhead' align='left' width='1%'>{$lang['cloudview_phrase']}</td>
-<td class='colhead' align='left' width='1%'>{$lang['cloudview_hits']}</td>
-<td class='colhead' align='left' width='1%'>{$lang['cloudview_ip']}</td>
+<td class='colhead' width='1%'>{$lang['cloudview_phrase']}</td>
+<td class='colhead' width='1%'>{$lang['cloudview_hits']}</td>
+<td class='colhead' width='1%'>{$lang['cloudview_ip']}</td>
 <td class='colhead' width='1%'>{$lang['cloudview_del']}</td></tr>\n";
 while ($arr = mysqli_fetch_assoc($search_q)) {
     $search_phrase = htmlsafechars($arr['searchedfor']);
     $hits = (int)$arr['howmuch'];
     $ip = htmlsafechars($arr['ip']);
     $HTMLOUT .= "<tr>
-<td class='one' align='left'>$search_phrase</td>
-<td class='two' align='left'>$hits</td>
-<td class='two' align='left'>$ip</td>
-<td class='one' align='center'><input type='checkbox' name='delcloud[]' title='{$lang['cloudview_mark']}' value='" . (int)$arr['id'] . "' /></td></tr>\n";
+<td class='one'>$search_phrase</td>
+<td class='two'>$hits</td>
+<td class='two'>$ip</td>
+<td class='one'><input type='checkbox' name='delcloud[]' title='{$lang['cloudview_mark']}' value='" . (int)$arr['id'] . "' /></td></tr>\n";
 }
 $HTMLOUT .= "<tr>
-<td colspan='4' class='colhead' align='right'>{$lang['cloudview_markall_search']}<input type='checkbox' title='{$lang['cloudview_markall']}' value='{$lang['cloudview_markall']}' onclick=\"this.value=check(form.elements);\" /></td></tr>
-<tr><td colspan='4' class='colhead' align='center'><input type='submit' value='{$lang['cloudview_del_terms']}' /></td></tr>";
+<td colspan='4' class='colhead'>{$lang['cloudview_markall_search']}<input type='checkbox' title='{$lang['cloudview_markall']}' value='{$lang['cloudview_markall']}' onclick=\"this.value=check(form.elements);\" /></td></tr>
+<tr><td colspan='4' class='colhead'><input type='submit' value='{$lang['cloudview_del_terms']}' /></td></tr>";
 $HTMLOUT .= '</table></form>';
 $HTMLOUT .= end_main_frame();
 if ($count > $perpage) {

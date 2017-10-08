@@ -97,22 +97,22 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
             $color = ($minus_ratio > 0 ? get_ratio_color($minus_ratio) : 'limegreen');
             $users = $hit_and_run_arr;
             $users['id'] = (int)$Uid_ID;
-            $HTMLOUT .= '<tr><td align="left">' . $avatar . '</td>
-			<td align="left"><a class="altlink" href="userdetails.php?id=' . (int)$Uid_ID . '&amp;completed=1#completed">' . format_username($users) . '</a>  [ ' . get_user_class_name($hit_and_run_arr['class']) . ' ]
+            $HTMLOUT .= '<tr><td>' . $avatar . '</td>
+			<td><a class="altlink" href="userdetails.php?id=' . (int)$Uid_ID . '&amp;completed=1#completed">' . format_username($users) . '</a>  [ ' . get_user_class_name($hit_and_run_arr['class']) . ' ]
 </td>
-			<td align="left"><a class="altlink" href="details.php?id=' . (int)$T_ID . '&amp;hit=1">' . htmlsafechars($hit_and_run_arr['name']) . '</a><br>
+			<td><a class="altlink" href="details.php?id=' . (int)$T_ID . '&amp;hit=1">' . htmlsafechars($hit_and_run_arr['name']) . '</a><br>
 			' . $lang['hitnrun_leechers'] . '' . (int)$hit_and_run_arr['numleeching'] . '<br>
 			' . $lang['hitnrun_seeders'] . ' ' . (int)$hit_and_run_arr['numseeding'] . '
          </td>
-			<td align="left">' . $lang['hitnrun_finished'] . ' ' . get_date($C_Date, '') . '<br>
+			<td>' . $lang['hitnrun_finished'] . ' ' . get_date($C_Date, '') . '<br>
 			' . $lang['hitnrun_stopped'] . ' ' . get_date($hit_and_run_arr['hit_and_run'], '') . '<br>
 			' . $lang['hitnrun_seeded'] . '' . mkprettytime($hit_and_run_arr['seedtime']) . '<br>
 			**' . $lang['hitnrun_still'] . ' ' . mkprettytime($minus_ratio) . '</td>
-			<td align="left">' . $lang['hitnrun_uploaded'] . '' . mksize($hit_and_run_arr['uload']) . '<br>
+			<td>' . $lang['hitnrun_uploaded'] . '' . mksize($hit_and_run_arr['uload']) . '<br>
 			' . ($site_config['ratio_free'] ? '' : '' . $lang['hitnrun_downloaded'] . '' . mksize($hit_and_run_arr['dload']) . '<br>') . '
 			' . $lang['hitnrun_ratio'] . '<font color="' . get_ratio_color($ratio_torrent) . '">' . $ratio_torrent . '</font><br>
 			' . $lang['hitnrun_site_ratio'] . '<font color="' . get_ratio_color($ratio_site) . '" title="' . $lang['hitnrun_includes'] . '">' . $ratio_site . '</font></td>
-			<td align="center"><a href="pm_system.php?action=send_message&amp;receiver=' . (int)$Uid_ID . '"><img src="./images/pm.gif" border="0" alt="PM" title="' . $lang['hitnrun_send'] . '" /></a><br>
+			<td><a href="pm_system.php?action=send_message&amp;receiver=' . (int)$Uid_ID . '"><img src="./images/pm.gif" border="0" alt="PM" title="' . $lang['hitnrun_send'] . '" /></a><br>
 			<a class="altlink" href="staffpanel.php?tool=shit_list&amp;action2=new&amp;shit_list_id=' . (int)$Uid_ID . '&amp;return_to=staffpanel.php?tool=hit_and_run" ><img src="./images/smilies/shit.gif" border="0" alt="Shit" title="' . $lang['hitnrun_shit'] . '" /></a></td></tr>';
         } //=== end if not owner
     } //=== if not seeding list them

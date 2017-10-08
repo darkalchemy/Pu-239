@@ -105,8 +105,8 @@ while ($row = mysqli_fetch_array($res)) {
     list($formatted_Tsize, $formatted_Tbytes) = byteformat($tablesize, 3, ($tablesize > 0) ? 1 : 0);
     $thispage = '&amp;Do=T&amp;table=' . urlencode($row['Name']);
     $overhead = ($formatted_Dfree > 0) ? "<a href='staffpanel.php?tool=mysql_overview&amp;action=mysql_overview$thispage'><font color='red'><b>$formatted_Dfree $formatted_Fbytes</b></font></a>" : "$formatted_Dfree $formatted_Fbytes";
-    $HTMLOUT .= "<tr align='right'>
-          <td align='left'><span style='font-weight:bold;'>" . strtoupper($row['Name']) . "</span></td>
+    $HTMLOUT .= "<tr>
+          <td><span style='font-weight:bold;'>" . strtoupper($row['Name']) . "</span></td>
           <td>{$formatted_Tsize} {$formatted_Tbytes}</td>
           <td>{$row['Rows']}</td>
           <td>{$formatted_Avg} {$formatted_Abytes}</td>
@@ -115,7 +115,7 @@ while ($row = mysqli_fetch_array($res)) {
           <td>{$overhead}</td>
         </tr>
         <tr>
-          <td colspan='7' align='right'><i><b>{$lang['mysql_over_rf']}</b></i> {$row['Row_format']}
+          <td colspan='7'><i><b>{$lang['mysql_over_rf']}</b></i> {$row['Row_format']}
           <br><i><b>{$lang['mysql_over_ct']}</b></i> {$row['Create_time']}
           <br><i><b>{$lang['mysql_over_ut']}</b></i> {$row['Update_time']}
           <br><i><b>{$lang['mysql_over_chkt']}</b></i> {$row['Check_time']}</td>
@@ -125,7 +125,7 @@ while ($row = mysqli_fetch_array($res)) {
 } //end while
 $HTMLOUT .= "<tr>
       <td><b>{$lang['mysql_over_tables']} {$count}</b></td>
-      <td colspan='6' align='right'>{$lang['mysql_over_if']} <span style='font-weight:bold;color:red;'>{$lang['mysql_over_red']}</span>{$lang['mysql_over_it_needs']}</td>
+      <td colspan='6'>{$lang['mysql_over_if']} <span style='font-weight:bold;color:red;'>{$lang['mysql_over_red']}</span>{$lang['mysql_over_it_needs']}</td>
     </tr>
 
     <!-- End table -->

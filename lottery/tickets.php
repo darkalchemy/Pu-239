@@ -100,27 +100,27 @@ if (count($lottery['current_user']['tickets'])) {
     $html .= '<li>You own ticket numbers : <b>' . join('</b>, <b>', $lottery['current_user']['tickets']) . '</b></li>';
 }
 $html .= "</ul><hr>
-   <table width='400' class='main' align='center' border='1' cellspacing='0' cellpadding='5'>
+   <table width='400' class='main' border='1' cellspacing='0' cellpadding='5'>
     <tr>
       <td class='table'>Total Pot</td>
-      <td class='table' align='right'>" . $lottery['total_pot'] . "</td>
+      <td class='table'>" . $lottery['total_pot'] . "</td>
     </tr>
     <tr>
       <td class='table'>Total Tickets Purchased</td>
-      <td class='table' align='right'>" . $lottery['total_tickets'] . " Tickets</td>
+      <td class='table'>" . $lottery['total_tickets'] . " Tickets</td>
     </tr>
     <tr>
       <td class='table'>Tickets Purchased by You</td>
-      <td class='table' align='right'>" . $lottery['current_user']['total_tickets'] . " Tickets</td>
+      <td class='table'>" . $lottery['current_user']['total_tickets'] . " Tickets</td>
     </tr>
     <tr>
       <td class='table'>Purchaseable</td>
-      <td class='table' align='right'>" . ($lottery['current_user']['could_buy'] > $lottery['current_user']['can_buy'] ? 'you have points for <b>' . $lottery['current_user']['can_buy'] . '</b> ticket(s) but you can buy another <b>' . ($lottery['current_user']['could_buy'] - $lottery['current_user']['can_buy']) . '</b> ticket(s) if you get more bonus points' : $lottery['current_user']['can_buy']) . '</td>
+      <td class='table'>" . ($lottery['current_user']['could_buy'] > $lottery['current_user']['can_buy'] ? 'you have points for <b>' . $lottery['current_user']['can_buy'] . '</b> ticket(s) but you can buy another <b>' . ($lottery['current_user']['could_buy'] - $lottery['current_user']['can_buy']) . '</b> ticket(s) if you get more bonus points' : $lottery['current_user']['can_buy']) . '</td>
     </tr>';
 if ($lottery['current_user']['can_buy'] > 0) {
     $html .= "
       <tr>
-        <td class='table' colspan='2' align='center'> 
+        <td class='table' colspan='2'> 
           <form action='lottery.php?do=tickets' method='post'>
               <input type='text' size='5' name='tickets' /><input type='submit' value='Buy tickets' />
           </form>

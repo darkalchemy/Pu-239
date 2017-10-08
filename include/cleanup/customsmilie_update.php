@@ -35,7 +35,7 @@ function customsmilie_update($data)
             $mc1->delete_value('inbox_new_sb_' . $arr['id']);
         }
         $count = count($users_buffer);
-        if ($count > 0) {
+        if ($data['clean_log'] && $count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO users (id, smile_until, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE smile_until=values(smile_until),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
             write_log('Cleanup - Removed Custom smilies from ' . $count . ' members');
@@ -43,13 +43,7 @@ function customsmilie_update($data)
         unset($users_buffer, $msgs_buffer, $count);
     }
     //==
-    if ($queries > 0) {
+    if ($data['clean_log'] && $queries > 0) {
         write_log("Custom Smilie Cleanup: Completed using $queries queries");
-    }
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
     }
 }

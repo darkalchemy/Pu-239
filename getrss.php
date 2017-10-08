@@ -22,12 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 } else {
     $HTMLOUT = <<<HTML
 <form action="{$_SERVER['PHP_SELF']}" method="post">
-<table width="500" cellpadding="2" cellspacing="0" align="center">
+<table width="500" cellpadding="2" cellspacing="0">
 <tr>
-	<td colspan="2" align="center" class="colhead">{$lang['getrss_title']}</td>
+	<td colspan="2" class="colhead">{$lang['getrss_title']}</td>
 </tr>
 <tr>
-	<td align="right" valign="top">{$lang['getrss_cat']}</td><td align="left" width="100%">
+	<td>{$lang['getrss_cat']}</td><td width="100%">
 HTML;
     $q1 = sql_query('SELECT id, name, image FROM categories ORDER BY id') or sqlerr(__FILE__, __LINE__);
     $i = 0;
@@ -44,9 +44,9 @@ HTML;
 </td>
 </tr>
 <tr>
-	<td align="right">{$lang['getrss_feed']}</td><td align="left"><input type="radio" checked="checked" name="feed" id="std" value="web"/><label for="std">{$lang['getrss_web']}</label><br><input type="radio" name="feed" id="dl" value="dl"/><label for="dl">{$lang['getrss_dl']}</label></td>
+	<td>{$lang['getrss_feed']}</td><td><input type="radio" checked="checked" name="feed" id="std" value="web"/><label for="std">{$lang['getrss_web']}</label><br><input type="radio" name="feed" id="dl" value="dl"/><label for="dl">{$lang['getrss_dl']}</label></td>
  </tr>
- <tr><td colspan="2" align="center"><input type="submit" value="{$lang['getrss_btn']}" /></td></tr>
+ <tr><td colspan="2"><input type="submit" value="{$lang['getrss_btn']}" /></td></tr>
 </table>
 </form>
 HTML;

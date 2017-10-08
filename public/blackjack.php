@@ -281,14 +281,14 @@ if ($game) {
                 <a id='blackjack-hash'></a>
                 <h1>{$lang['bj_welcome']}, " . format_username($CURUSER['id']) . "</h1>
                 <section class='container-fluid portlet'>
-                    <table class='table table-bordered text-center portlet'>
+                    <table class='table table-bordered table-striped'>
                         <tr>
-                            <td class='text-center card-background' style='width:50%;'>" . trim($player_showcards) . "</td>
-                            <td class='text-center card-background' style='width:50%;'>" . trim($showcards) . "</td>
+                            <td class='text-center card-background'>" . trim($player_showcards) . "</td>
+                            <td class='text-center card-background'>" . trim($showcards) . "</td>
                         </tr>
                         <tr>
-                            <td class='text-center' style='width:50%;'>{$userName}</td>
-                            <td class='text-center' style='width:50%;'>" . format_username($CURUSER['id']) . "<br>{$lang['bj_points']} = {$points}<br>{$user_warning}</td>
+                            <td class='text-center'>{$userName}</td>
+                            <td class='text-center'>" . format_username($CURUSER['id']) . "<br>{$lang['bj_points']} = {$points}<br>{$user_warning}</td>
                         </tr>";
                 if (!$ddown) {
                     $HTMLOUT .= "
@@ -360,14 +360,14 @@ if ($game) {
             <a id='blackjack-hash'></a>
             <h1>{$lang['bj_game_over']}</h1>
             <section class='container-fluid portlet'>
-                <table class='table table-bordered text-center portlet'>
+                <table class='table table-bordered table-striped'>
                     <tr>
-                        <td class='text-center card-background' style='width:50%;'>{$player_showcards_end}</td>
-                        <td class='text-center card-background' style='width:50%;'>{$showcards}</td>
+                        <td class='text-center card-background'>{$player_showcards_end}</td>
+                        <td class='text-center card-background'>{$showcards}</td>
                     </tr>
                     <tr>
-                        <td class='text-center' style='width:50%;'>{$userName}</td>
-                        <td class='text-center' style='width:50%;'>" . format_username($CURUSER['id']) . "<br>{$lang['bj_points']} = {$points}<br>{$user_warning}</td>
+                        <td class='text-center'>{$userName}</td>
+                        <td class='text-center'>" . format_username($CURUSER['id']) . "<br>{$lang['bj_points']} = {$points}<br>{$user_warning}</td>
                     </tr>
                     <tr>
                         <td class='text-center' colspan='2'>";
@@ -644,14 +644,14 @@ if ($game) {
             <a id='blackjack-hash'></a>
             <h1>{$lang['bj_welcome']}, " . format_username($CURUSER['id']) . "</h1>
             <section class='container-fluid portlet'>
-                <table class='table table-bordered text-center portlet'>
+                <table class='table table-bordered table-striped'>
                     <tr>
-                        <td class='text-center card-background' style='width:50%;'>{$player_showcards}</td>
-                        <td class='text-center card-background' style='width:50%;'>{$showcards}</td>
+                        <td class='text-center card-background'>{$player_showcards}</td>
+                        <td class='text-center card-background'>{$showcards}</td>
                     </tr>
                     <tr>
-                        <td class='text-center' style='width:50%;'>{$userName}</td>
-                        <td class='text-center' style='width:50%;'>" . format_username($CURUSER['id']) . "<br>{$lang['bj_points']} = {$points}<br>{$user_warning}</td>
+                        <td class='text-center'>{$userName}</td>
+                        <td class='text-center'>" . format_username($CURUSER['id']) . "<br>{$lang['bj_points']} = {$points}<br>{$user_warning}</td>
                     </tr>";
             if (!$ddown) {
                 $HTMLOUT .= "
@@ -700,14 +700,14 @@ if ($game) {
             <a id='blackjack-hash'></a>
             <h1>{$lang['bj_game_over']}</h1>
             <section class='container-fluid portlet'>
-                <table class='table table-bordered text-center portlet'>
+                <table class='table table-bordered table-striped'>
                     <tr>
-                        <td class='text-center card-background' style='width:50%;'>{$player_showcards_end}</td>
-                        <td class='text-center card-background' style='width:50%;'>{$showcards}</td>
+                        <td class='text-center card-background'>{$player_showcards_end}</td>
+                        <td class='text-center card-background'>{$showcards}</td>
                     </tr>
                     <tr>
-                        <td class='text-center' style='width:50%;'>{$userName}</td>
-                        <td class='text-center' style='width:50%;'>" . format_username($CURUSER['id']) . "<br>{$lang['bj_points']} = {$playerarr['points']}</td>
+                        <td class='text-center'>{$userName}</td>
+                        <td class='text-center'>" . format_username($CURUSER['id']) . "<br>{$lang['bj_points']} = {$playerarr['points']}</td>
                     </tr>
                     <tr>
                         <td class='text-center' colspan='2'>";
@@ -885,7 +885,7 @@ if ($game) {
             <h1><a href='games.php' title='Return to the Games' class='tooltipper'>{$blackjack['title']}</a></h1>
             $opponent
             <section class='container-fluid portlet'>
-                <table class='table table-bordered portlet'>
+                <table class='table table-bordered table-striped'>
                     <tr>
                         <td class='card-background text-center'>
                             <div class='card ace_spades'></div>
@@ -912,7 +912,7 @@ if ($game) {
                 </table>
             </section>
             <section class='container-fluid portlet'>
-                <table class='table table-bordered text-center portlet'>
+                <table class='table table-bordered table-striped'>
                     <tr>
                         <td colspan='2'>
                             <h1>{$lang['bj_personal_stats']}</h1>
@@ -948,7 +948,7 @@ if ($game) {
 
     $HTMLOUT .= "
             <section class='container-fluid portlet'>
-                <table class='table table-bordered text-center portlet'>
+                <table class='table table-bordered table-striped'>
                     <tr>
                         <td colspan='4'>
                             <h1>Site Statistics</h1>
@@ -1000,7 +1000,7 @@ if ($game) {
     if (count($bjgames) > 0) {
         $HTMLOUT .= "
             <section class='container-fluid portlet'>
-                <table class='table table-bordered text-center portlet'>
+                <table class='table table-bordered table-striped'>
                     <tr>
                         <td colspan='2'>
                             <h1>Last " . count($bjgames) . " Games of {$blackjack['title']}</h1>
@@ -1011,7 +1011,7 @@ if ($game) {
             $aces_0 = $aces_1 = $aces_2 = $aces_3 = $aces_4 = $aces_5 = $aces_6 = $aces_7 = $aces_8 = $aces_9 = $points_0 = $points_1 = $points_2 = $points_3 = $points_4 = $points_5 = $points_6 = $points_7 = $points_8 = $points_9 = 0;
             $HTMLOUT .= "
                     <tr>
-                        <td class='text-center' style='width:50%;'>";
+                        <td class='text-center'>";
             $cards_a = explode(' ', $bjgame['player1_cards']);
             foreach ($cards_a as $card_a) {
                 $cardarr = getCardData($card_a);
@@ -1020,7 +1020,7 @@ if ($game) {
             }
             $HTMLOUT .= "
                         </td>
-                        <td class='text-center' style='width:50%;'>";
+                        <td class='text-center'>";
             $cards_b = explode(' ', $bjgame['player2_cards']);
             foreach ($cards_b as $card_b) {
                 $cardarr = getCardData($card_b);
@@ -1043,10 +1043,10 @@ if ($game) {
                         </td>
                     </tr>
                     <tr>
-                        <td class='text-center' style='width:50%;'>
+                        <td class='text-center'>
                             " . format_username($bjgame['player1_userid']) . ': ' . $bjgame['player1_points'] . "
                         </td>
-                        <td class='text-center' style='width:50%;'>
+                        <td class='text-center'>
                             " . format_username($bjgame['player2_userid']) . ': ' . ${'points_' . $g} . '
                         </td>
                     </tr>';
@@ -1120,7 +1120,7 @@ function output($blackjack, $HTMLOUT, $debugout)
         <fieldset id='debug' class='header'>
             <legend>Debug Info</legend>
             <div id='table' class='container-fluid portlet'>
-                <table id='last10List' class='table table-hover table-condensed table-striped compact portlet' width='100%'>
+                <table id='last10List' class='table table-bordered table-striped'>
                     {$debugout}
                 </table>
             </div>

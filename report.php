@@ -56,7 +56,7 @@ if ((isset($_GET['do_it'])) || (isset($_POST['do_it']))) {
     $dt = TIME_NOW;
     sql_query('INSERT into reports (reported_by, reporting_what, reporting_type, reason, added, 2nd_value) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . sqlesc($type) . ', ' . sqlesc($reason) . ", $dt, " . sqlesc($id_2) . ')') or sqlerr(__FILE__, __LINE__);
     $mc1->delete_value('new_report_');
-    $HTMLOUT .= "<table width='650'><tr><td class='colhead'><h1>{$lang['report_success']}</h1></td></tr>" . "<tr><td class='two' align='center'>{$lang['report_success1']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>{$id}</b>!<br><b>{$lang['report_reason']}</b> {$reason}</td></tr></table>";
+    $HTMLOUT .= "<table width='650'><tr><td class='colhead'><h1>{$lang['report_success']}</h1></td></tr>" . "<tr><td class='two'>{$lang['report_success1']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>{$id}</b>!<br><b>{$lang['report_reason']}</b> {$reason}</td></tr></table>";
     echo stdhead('Reports', true, $stdhead) . $HTMLOUT . stdfoot();
     exit();
 } //=== end do_it
@@ -65,10 +65,10 @@ $HTMLOUT .= "<form method='post' action='report.php?type=$type$id_2b&amp;id=$id&
     <table width='650'>
     <tr><td class='colhead' colspan='2'>
     <h1>Report: " . str_replace('_', ' ', $type) . '</h1></td></tr>' . "
-    <tr><td class='one' colspan='2' align='center'>
+    <tr><td class='one' colspan='2'>
     <img src='{$site_config['pic_base_url']}warned.png' alt='warned' title='Warned' border='0' /> {$lang['report_report']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>$id</b>" . "
     <img src='{$site_config['pic_base_url']}warned.png' alt='warned' title='Warned' border='0' /><br>{$lang['report_report1']} <a class='altlink' href='rules.php' target='_blank'>{$lang['report_rules']}</a>?</td></tr>" . "
-    <tr><td class='two' align='right'><b>{$lang['report_reason']}</b></td><td class='two'><textarea name='reason' cols='70' rows='5'></textarea><br> [ {$lang['report_req']} ]<br></td></tr>" . "
-    <tr><td class='one' colspan='2' align='center'><input type='submit' class='button' value='{$lang['report_confirm']}' /></td></tr></table></form>";
+    <tr><td class='two'><b>{$lang['report_reason']}</b></td><td class='two'><textarea name='reason' cols='70' rows='5'></textarea><br> [ {$lang['report_req']} ]<br></td></tr>" . "
+    <tr><td class='one' colspan='2'><input type='submit' class='button' value='{$lang['report_confirm']}' /></td></tr></table></form>";
 echo stdhead('Report', true, $stdhead) . $HTMLOUT . stdfoot();
 die;

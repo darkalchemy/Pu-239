@@ -68,32 +68,32 @@ $checkbox_unlock_stealth = (($CURUSER['perms'] & bt_options::PERMS_STEALTH) ? ' 
 $HTMLOUT = '';
 $HTMLOUT .= '
 <div class="container">
-    <form action="" method="post">        
+    <form action="" method="post">
         <fieldset><legend>User Unlock Settings</legend>
         <div class="row-fluid">
             <div class="span3 offset1">
-                <table class="table table-bordered">
+                <table class="table table-bordered table-striped">
                     <tr>
                         <td>
                             <b>Enable Bonus Moods?</b>
                             <div class="slideThree"> <input type="checkbox" id="unlock_user_moods" name="unlock_user_moods" value="yes"' . $checkbox_unlock_moods . ' />
                                 <label for="unlock_user_moods"></label>
                             </div>
-                            <div><hr style="color:#A83838;" size="1" /></div>
+                            <div><hr></div>
                             <span>Check this option to unlock bonus mood smilies.</span>
                         </td>
                     </tr>
                 </table>
             </div>
             <div class="span3 offset0">
-                <table class="table table-bordered">
+                <table class="table table-bordered table-striped">
                     <tr>
                         <td>
                             <b>User Stealth Mode<?</b>
                             <div class="slideThree"> <input type="checkbox" id="perms_stealth" name="perms_stealth" value="yes"' . $checkbox_unlock_stealth . ' />
                                 <label for="perms_stealth"></label>
                             </div>
-                            <div><hr style="color:#A83838;" size="1" /></div>
+                            <div><hr></div>
                             <span>Check this option to unlock Stealth Mode.</span>
                         </td>
                     </tr>

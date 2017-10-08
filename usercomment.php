@@ -31,7 +31,7 @@ function usercommenttable($rows)
             } else {
                 $title = htmlsafechars($title);
             }
-            $htmlout .= "<a name='comm" . (int)$row['id'] . "' href='userdetails.php?id=" . (int)$row['user'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>' . ($row['donor'] == 'yes' ? "<img src=\"{$site_config['pic_base_url']}star.gif\" alt='Donor' />" : '') . ($row['warned'] >= 1 ? '<img src=' . "\"{$site_config['pic_base_url']}warned.gif\" alt=\"Warned\" />" : '') . " ($title)\n";
+            $htmlout .= format_username($row['id']);
         } else {
             $htmlout .= '<a name="comm' . (int)$row['id'] . "\"><i>(orphaned)</i></a>\n";
         }
@@ -42,13 +42,16 @@ function usercommenttable($rows)
         }
         $text = format_comment($row['text']);
         if ($row['editedby']) {
-            $text .= "<font size='1' class='small'><br><br>Last edited by <a href='userdetails.php?id=" . (int)$row['editedby'] . "'><b>" . htmlsafechars($row['edit_name']) . '</b></a> ' . get_date($row['editedat'], 'DATE', 0, 1) . "</font>\n";
+            $text .= "<font size='1' class='small'><br><br>Last edited by " . format_username($row['editedby']) . ' ' . get_date($row['editedat'], 'DATE', 0, 1) . "</font>\n";
         }
-        $htmlout .= begin_table(true);
-        $htmlout .= "<tr valign='top'>\n";
-        $htmlout .= "<td align='center' width='150' style='padding:0px'><img width='150' src=\"{$avatar}\" alt=\"Avatar\" /></td>\n";
-        $htmlout .= "<td class='text'>{$text}</td>\n";
-        $htmlout .= "</tr>\n";
+        $htmlout .= begin_table(false);
+        $htmlout .= "
+                    <tr>
+                        <td class='text-center' width='150'>
+                            <img src='{$avatar}' alt='Avatar' class='avatar' />
+                        </td>
+                        <td class='text'>{$text}</td>
+                    </tr>";
         $htmlout .= end_table();
     }
     $htmlout .= end_frame();
@@ -93,7 +96,12 @@ if ($action == 'add') {
     <div>" . BBcode(false) . "</div>
     <br><br>
     <input type='submit' class='btn' value='Do it!' /></form>\n";
-    $res = sql_query('SELECT usercomments.id, usercomments.text, usercomments.editedby, usercomments.editedat, usercomments.added, usercomments.edit_name, username, users.id as user, users.avatar, users.title, users.anonymous, users.class, users.donor, users.warned, users.leechwarn, users.chatpost FROM usercomments LEFT JOIN users ON usercomments.user = users.id WHERE user = ' . sqlesc($userid) . ' ORDER BY usercomments.id DESC LIMIT 5');
+    $res = sql_query('SELECT c.id, c.text, c.editedby, c.editedat, c.added, c.username, users.id as user, u.avatar, u.title, u.anonymous, u.class, u.donor, u.warned, u.leechwarn, u.chatpost
+                        FROM usercomments AS c
+                        LEFT JOIN users AS u ON c.user = u.id
+                        WHERE user = ' . sqlesc($userid) . "
+                        ORDER BY c.id DESC
+                        LIMIT 5");
     $allrows = [];
     while ($row = mysqli_fetch_assoc($res)) {
         $allrows[] = $row;
@@ -124,7 +132,7 @@ if ($action == 'add') {
             stderr('Error', 'Comment body cannot be empty!');
         }
         $editedat = sqlesc(TIME_NOW);
-        sql_query('UPDATE usercomments SET text=' . sqlesc($body) . ", editedat={$editedat}, edit_name=" . sqlesc($CURUSER['username']) . ', editedby=' . sqlesc($CURUSER['id']) . ' WHERE id=' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE usercomments SET text = ' . sqlesc($body) . ", editedat = {$editedat}, editedby = ' . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
         if ($returnto) {
             header("Location: $returnto");
         } else {
@@ -187,7 +195,7 @@ if ($action == 'add') {
         stderr('Error', 'Invalid ID');
     }
     $HTMLOUT .= "<h1>Original contents of comment #{$commentid}</h1>
-    <table width='500' border='1' cellspacing='0' cellpadding='5'>
+    <table>
     <tr><td class='comment'>\n";
     $HTMLOUT .= ' ' . htmlsafechars($arr['ori_text']);
     $HTMLOUT .= "</td></tr></table>\n";

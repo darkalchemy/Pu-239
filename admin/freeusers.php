@@ -45,21 +45,21 @@ $res2 = sql_query('SELECT id, username, class, free_switch FROM users WHERE free
 $count = mysqli_num_rows($res2);
 $HTMLOUT .= "<h1>{$lang['freeusers_head']} ($count)</h1>";
 if ($count == 0) {
-    $HTMLOUT .= '<p align="center"><b>' . $lang['freeusers_nothing'] . '</b></p>';
+    $HTMLOUT .= '<p><b>' . $lang['freeusers_nothing'] . '</b></p>';
 } else {
     $HTMLOUT .= "<table border='1' width='50%' cellspacing='0' cellpadding='3'>
           <tr><td class='colhead'>{$lang['freeusers_username']}</td><td class='colhead'>{$lang['freeusers_class']}</td>
           <td class='colhead'>{$lang['freeusers_expires']}</td><td class='colhead'>{$lang['freeusers_remove']}</td></tr>";
     while ($arr2 = mysqli_fetch_assoc($res2)) {
-        $HTMLOUT .= "<tr><td><a href='userdetails.php?id=" . (int)$arr2['id'] . "'>" . htmlsafechars($arr2['username']) . "</a></td><td align='left'>" . get_user_class_name($arr2['class']);
+        $HTMLOUT .= "<tr><td><a href='userdetails.php?id=" . (int)$arr2['id'] . "'>" . htmlsafechars($arr2['username']) . "</a></td><td>" . get_user_class_name($arr2['class']);
         if ($arr2['class'] > UC_ADMINISTRATOR && $arr2['id'] != $CURUSER['id']) {
-            $HTMLOUT .= "</td><td align='left'>{$lang['freeusers_until']}" . get_date($arr2['free_switch'], 'DATE') . ' 
-(' . mkprettytime($arr2['free_switch'] - TIME_NOW) . "{$lang['freeusers_togo']})" . "</td><td align='left'><font color='red'>{$lang['freeusers_notallowed']}</font></td>
+            $HTMLOUT .= "</td><td>{$lang['freeusers_until']}" . get_date($arr2['free_switch'], 'DATE') . ' 
+(' . mkprettytime($arr2['free_switch'] - TIME_NOW) . "{$lang['freeusers_togo']})" . "</td><td><font color='red'>{$lang['freeusers_notallowed']}</font></td>
 </tr>";
         } else {
-            $HTMLOUT .= "</td><td align='left'>{$lang['freeusers_until']}" . get_date($arr2['free_switch'], 'DATE') . ' 
+            $HTMLOUT .= "</td><td>{$lang['freeusers_until']}" . get_date($arr2['free_switch'], 'DATE') . ' 
 (' . mkprettytime($arr2['free_switch'] - TIME_NOW) . "{$lang['freeusers_togo']})" . "</td>
-<td align='left'><a href='staffpanel.php?tool=freeusers&amp;action=freeusers&amp;remove=" . (int)$arr2['id'] . "' onclick=\"return confirm('{$lang['freeusers_confirm']}')\">{$lang['freeusers_rem']}</a></td></tr>";
+<td><a href='staffpanel.php?tool=freeusers&amp;action=freeusers&amp;remove=" . (int)$arr2['id'] . "' onclick=\"return confirm('{$lang['freeusers_confirm']}')\">{$lang['freeusers_rem']}</a></td></tr>";
         }
     }
     $HTMLOUT .= '</table>';

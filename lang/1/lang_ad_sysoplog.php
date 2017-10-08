@@ -23,5 +23,5 @@ $lang = [
     'sysoplog_dem'       => 'Demoted ',
     'sysoplog_web'       => 'website ',
     'sysoplog_sys'       => 'Sysop Infolog',
-    'sysoplog_times'     => 'Times are in GMT.',
+    'sysoplog_times'     => '* Times are in UTC.',
 ];

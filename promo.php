@@ -185,7 +185,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
 						<td class='text-left' width='100%' colspan='2'><input type='text' name='max_users' size='15' /></td>
 					  </tr>
 					  <tr>
-						<td class='text-right' rowspan='3' nowrap='nowrap' valign='top'>Bonuses</td>
+						<td class='text-right' rowspan='3'>Bonuses</td>
 					  </tr>
 					  <tr>
 						<td class='text-center'>Upload</td>

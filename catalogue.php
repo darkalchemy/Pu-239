@@ -18,24 +18,24 @@ function peer_list($array)
     $htmlout = '';
     $htmlout .= "<table width='100%' border='1' cellpadding='5' style='border-collapse:collapse'>
                 <tr>
-            <td align='center' class='colhead'>{$lang['catol_user']}</td>
-            <td align='center' class='colhead'>{$lang['catol_port']}&amp;{$lang['catol_ip']}</td>
-            <td align='center' class='colhead'>{$lang['catol_ratio']}</td>
-            <td align='center' class='colhead'>{$lang['catol_downloaded']}</td>
-            <td align='center' class='colhead'>{$lang['catol_uploaded']}</td>
-            <td align='center' class='colhead'>{$lang['catol_started']}</td>
-            <td align='center' class='colhead'>{$lang['catol_finished']}</td>
+            <td class='colhead'>{$lang['catol_user']}</td>
+            <td class='colhead'>{$lang['catol_port']}&amp;{$lang['catol_ip']}</td>
+            <td class='colhead'>{$lang['catol_ratio']}</td>
+            <td class='colhead'>{$lang['catol_downloaded']}</td>
+            <td class='colhead'>{$lang['catol_uploaded']}</td>
+            <td class='colhead'>{$lang['catol_started']}</td>
+            <td class='colhead'>{$lang['catol_finished']}</td>
        </tr>";
     foreach ($array as $p) {
         $time = max(1, (TIME_NOW - $p['started']) - (TIME_NOW - $p['last_action']));
         $htmlout .= "<tr>
-            <td align='center'><a href='userdetails.php?id=" . (int)$p['p_uid'] . "' >" . htmlsafechars($p['p_user']) . "</a></td>
-            <td align='center'>" . ($CURUSER['class'] >= UC_STAFF ? htmlsafechars($p['ip']) . ' : ' . (int)$p['port'] : 'xx.xx.xx.xx:xxxx') . "</td>
-            <td align='center'>" . ($p['downloaded'] > 0 ? number_format(($p['uploaded'] / $p['downloaded']), 2) : ($p['uploaded'] > 0 ? '&infin;' : '---')) . "</td>
-            <td align='center'>" . ($p['downloaded'] > 0 ? mksize($p['downloaded']) . ' @' . (mksize(($p['downloaded'] - $p['downloadoffset']) / $time)) . 's' : '0kb') . "</td>
-            <td align='center'>" . ($p['uploaded'] > 0 ? mksize($p['uploaded']) . ' @' . (mksize(($p['uploaded'] - $p['uploadoffset']) / $time)) . 's' : '0kb') . "</td>
-            <td align='center'>" . (get_date($p['started'], 'LONG', 0, 1)) . "</td>
-            <td align='center'>" . (get_date($p['finishedat'], 'LONG', 0, 1)) . '</td>
+            <td><a href='userdetails.php?id=" . (int)$p['p_uid'] . "' >" . htmlsafechars($p['p_user']) . "</a></td>
+            <td>" . ($CURUSER['class'] >= UC_STAFF ? htmlsafechars($p['ip']) . ' : ' . (int)$p['port'] : 'xx.xx.xx.xx:xxxx') . "</td>
+            <td>" . ($p['downloaded'] > 0 ? number_format(($p['uploaded'] / $p['downloaded']), 2) : ($p['uploaded'] > 0 ? '&infin;' : '---')) . "</td>
+            <td>" . ($p['downloaded'] > 0 ? mksize($p['downloaded']) . ' @' . (mksize(($p['downloaded'] - $p['downloadoffset']) / $time)) . 's' : '0kb') . "</td>
+            <td>" . ($p['uploaded'] > 0 ? mksize($p['uploaded']) . ' @' . (mksize(($p['uploaded'] - $p['uploadoffset']) / $time)) . 's' : '0kb') . "</td>
+            <td>" . (get_date($p['started'], 'LONG', 0, 1)) . "</td>
+            <td>" . (get_date($p['finishedat'], 'LONG', 0, 1)) . '</td>
             </tr>';
     }
     $htmlout .= '</table>';
@@ -76,7 +76,7 @@ if (isset($tids) && count($tids)) {
         $peers[$pa['tid']][] = $pa;
     }
 }
-$htmlout .= "<div align='center' style='width:90%'>
+$htmlout .= "<div style='width:90%'>
         <fieldset style='border:2px solid #333333;'>
             <legend style='padding:5xp 0px 0px 5px;'>{$lang['catol_search']}</legend>
                 <form  action='" . $_SERVER['PHP_SELF'] . "' method='get' style='margin:10px;'>
@@ -95,34 +95,34 @@ $htmlout .= '</fieldset></div><br>';
 $htmlout .= begin_frame();
 if (count($rows) > 0) {
     $htmlout .= "<table width='95%' border='1' cellpadding='5' style='border-collapse:collapse'>
-        <tr><td align='left' colspan='2' class='colhead'>{$lang['catol_std_head']}</td></tr>
-        <tr><td align='left' colspan='2' >{$top}</td></tr>";
+        <tr><td colspan='2' class='colhead'>{$lang['catol_std_head']}</td></tr>
+        <tr><td colspan='2' >{$top}</td></tr>";
     foreach ($rows as $row) {
         $htmlout .= "<tr>
-         <td align='center' valign='top' nowrap='nowrap'>
-            <table align='center' width='160' border='1' cellpadding='2'>
-                <tr><td align='center' class='colhead'>{$lang['catol_upper']} : <a href='userdetails.php?id=" . (int)$row['owner'] . "'>" . ($row['user'] ? htmlsafechars($row['user']) : "{$lang['catol_unknown']}[" . (int)$row['owner'] . ']') . "</a></td></tr>
-                <tr><td align='center'>" . ($row['poster'] ? '<a href="' . htmlsafechars($row['poster']) . '"><img src="' . htmlsafechars($row['poster']) . "\" border=\"0\" width=\"150\" height=\"195\" alt=\"{$lang['catol_no_poster']}\" title=\"{$lang['catol_no_poster']}\" /></a>" : "<img src='./images/noposter.png' border='0' width='150' alt='{$lang['catol_no_poster']}' title='{$lang['catol_no_poster']}' />") . "</td></tr>
+         <td nowrap='nowrap'>
+            <table width='160' border='1' cellpadding='2'>
+                <tr><td class='colhead'>{$lang['catol_upper']} : <a href='userdetails.php?id=" . (int)$row['owner'] . "'>" . ($row['user'] ? htmlsafechars($row['user']) : "{$lang['catol_unknown']}[" . (int)$row['owner'] . ']') . "</a></td></tr>
+                <tr><td>" . ($row['poster'] ? '<a href="' . htmlsafechars($row['poster']) . '"><img src="' . htmlsafechars($row['poster']) . "\" border=\"0\" width=\"150\" height=\"195\" alt=\"{$lang['catol_no_poster']}\" title=\"{$lang['catol_no_poster']}\" /></a>" : "<img src='./images/noposter.png' border='0' width='150' alt='{$lang['catol_no_poster']}' title='{$lang['catol_no_poster']}' />") . "</td></tr>
             </table>
 
         </td>
 
-            <td align='center' width='100%' valign='top'>
+            <td width='100%'>
             <table width='100%' cellpadding='3' cellspacing='0' border='1' style='border-collapse:collapse;font-weight:bold;'>
             <tr>
-                <td align='center' width='100%' rowspan='2' ><a href='details.php?id=" . (int)$row['id'] . "&amp;hit=1'><b>" . substr(htmlsafechars($row['name']), 0, 60) . "</b></a></td>
-                <td align='center' class='colhead'>{$lang['catol_added']}</td>
-                <td align='center' class='colhead'>{$lang['catol_size']}</td>
-                <td align='center' class='colhead'>{$lang['catol_snatched']}</td>
-                <td align='center' class='colhead'>S.</td>
-                <td align='center' class='colhead'>L.</td>
+                <td width='100%' rowspan='2' ><a href='details.php?id=" . (int)$row['id'] . "&amp;hit=1'><b>" . substr(htmlsafechars($row['name']), 0, 60) . "</b></a></td>
+                <td class='colhead'>{$lang['catol_added']}</td>
+                <td class='colhead'>{$lang['catol_size']}</td>
+                <td class='colhead'>{$lang['catol_snatched']}</td>
+                <td class='colhead'>S.</td>
+                <td class='colhead'>L.</td>
             </tr>
             <tr>
-                <td align='center'>" . get_date($row['added'], 'LONG', 0, 1) . "</td>
-                <td align='center' nowrap='nowrap'>" . (mksize($row['size'])) . "</td>
-                <td align='center' nowrap='nowrap'>" . ($row['snatched'] > 0 ? ($row['snatched'] == 1 ? (int)$row['snatched'] . ' time' : (int)$row['snatched'] . ' times') : 0) . "</td>
-                <td align='center'>" . (int)$row['seeders'] . "</td>
-                <td align='center'>" . (int)$row['leechers'] . "</td>
+                <td>" . get_date($row['added'], 'LONG', 0, 1) . "</td>
+                <td nowrap='nowrap'>" . (mksize($row['size'])) . "</td>
+                <td nowrap='nowrap'>" . ($row['snatched'] > 0 ? ($row['snatched'] == 1 ? (int)$row['snatched'] . ' time' : (int)$row['snatched'] . ' times') : 0) . "</td>
+                <td>" . (int)$row['seeders'] . "</td>
+                <td>" . (int)$row['leechers'] . "</td>
             </tr>
             <tr><td width='100%' colspan='6' class='colhead' >{$lang['catol_info']}.</td></tr>
             <tr><td width='100%' colspan='6' style='font-weight:normal;' >" . readMore($row['descr'], 500, 'details.php?id=' . (int)$row['id'] . '&amp;hit=1') . "</td></tr>
@@ -130,8 +130,8 @@ if (count($rows) > 0) {
             <tr><td width='100%' colspan='6' style='font-weight:normal;' >" . (isset($peers[$row['id']]) ? peer_list($peers[$row['id']]) : "{$lang['catol_no_info_show']}") . '</td></tr>
             </table></td></tr>';
     }
-    $htmlout .= "<tr><td align='left' colspan='2' >{$bottom}</td></tr>
-        <tr><td align='right' colspan='2' class='colhead'>{$lang['catol_orig_created_by']}</td></tr>
+    $htmlout .= "<tr><td colspan='2' >{$bottom}</td></tr>
+        <tr><td colspan='2' class='colhead'>{$lang['catol_orig_created_by']}</td></tr>
         </table>";
 } else {
     $htmlout .= "<h2>{$lang['catol_nothing_found']}!</h2>";

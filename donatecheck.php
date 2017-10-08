@@ -1,6 +1,5 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once CACHE_DIR . 'paypal_settings.php';
 dbconn();
 //$payment_status = "Completed";//Only uncomment if using sandbox mode
 $donate_goods = [

@@ -299,13 +299,13 @@ else {
             $html .= "
                                     <fieldset class='fieldset'>
 								        <legend>{$lang['rep_comments']}</legend>
-								        <table class='ipbtable' cellpadding='0'>
+								        <table class='table table-bordered table-striped'>
 								            $reasonbits
 								        </table>
 							        </fieldset><br>";
         }
         $html .= "
-                                    <div class='formsubtitle' align='center'><strong>{$rep_points}</strong></div>
+                                    <div class='formsubtitle'><strong>{$rep_points}</strong></div>
 						        </div>
 						    </td>
 					    </tr>";
@@ -328,19 +328,19 @@ else {
     							    <div class='tablepad'>
 	        							<fieldset>
 			        						<legend>$rep_text</legend>
-					        				<table class='f_row' cellspacing='0'>
+					        				<table class='table table-bordered table-striped'>
 							            		<tr>
 										            <td>
             											<div>
                                                             <label for='rb_reputation_pos'>
-                											    <input type='radio' name='reputation' value='pos' id='rb_reputation_pos' checked='checked' class='radiobutton' style='margin:0px;' /> &#160;{$lang['rep_i_approve']}
+                											    <input type='radio' name='reputation' value='pos' id='rb_reputation_pos' checked='checked' class='radiobutton' /> &#160;{$lang['rep_i_approve']}
                                                             </label>
                                                         </div>";
         if ($negativerep) {
             $html .= "
                                                         <div>
                                                             <label for='rb_reputation_neg'>
-                                                                <input type='radio' name='reputation' value='neg' id='rb_reputation_neg' class='radiobutton' style='margin:0px;' /> &#160;{$lang['rep_i_disapprove']}
+                                                                <input type='radio' name='reputation' value='neg' id='rb_reputation_neg' class='radiobutton' /> &#160;{$lang['rep_i_disapprove']}
                                                             </label>
                                                         </div>";
         }
@@ -349,13 +349,13 @@ else {
 							                    <tr>
                     								<td>
 					                    				{$lang['rep_your_comm_on_this_post']} " . $this_rep . "<br>
-                    									<input type='text' size='40' maxlength='250' name='reason' style='margin:0px;' />
+                    									<input type='text' size='40' maxlength='250' name='reason' />
 					                    			</td>
                     							</tr>
                                             </table>
                 						</fieldset>
                 					</div>
-				                	<div align='center' style='margin-top:3px;'>
+				                	<div>
                 						<input type='hidden' name='act' value='reputation' />
 				                		<input type='hidden' name='do' value='addrep' />
                 						<input type='hidden' name='pid' value='{$input['pid']}' />
@@ -392,7 +392,7 @@ $htmlout = "
 <head>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
     <title>Reputation System</title>
-    <link rel='stylesheet' href='./css/" . get_stylesheet() . "/e0a618d82ab6ae6be19a4749c87426da.min.css' />
+    <link rel='stylesheet' href='" . get_file('css') . "' />
 </head>
 <body class='$body_class'>
     <script>
@@ -403,7 +403,7 @@ $htmlout = "
     </script>
     <div class='text-center'>
         <div class='text-lime'>Reputation System</div>
-            <table class='main' cellspacing='1'>
+            <table class='table table-bordered table-striped'>
                 $html";
 if ($closewindow) {
     $htmlout .= "

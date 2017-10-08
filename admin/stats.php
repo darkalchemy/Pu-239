@@ -52,10 +52,10 @@ if (mysqli_num_rows($res) == 0) {
         $HTMLOUT .= "<tr>
         <td><a href='userdetails.php?id=" . (int)$uper['id'] . "'><b>" . htmlsafechars($uper['name']) . '</b></a></td>
         <td ' . ($uper['last'] ? ('>' . get_date($uper['last'], '') . ' (' . get_date($uper['last'], '', 0, 1) . ')') : "align='center'>---") . "</td>
-        <td align='right'>{$uper['n_t']}</td>
-        <td align='right'>" . ($n_tor > 0 ? number_format(100 * $uper['n_t'] / $n_tor, 1) . '%' : '---') . "</td>
-        <td align='right'>" . $uper['n_p'] . "</td>
-        <td align='right'>" . ($n_peers > 0 ? number_format(100 * $uper['n_p'] / $n_peers, 1) . '%' : '---') . "</td></tr>\n";
+        <td>{$uper['n_t']}</td>
+        <td>" . ($n_tor > 0 ? number_format(100 * $uper['n_t'] / $n_tor, 1) . '%' : '---') . "</td>
+        <td>" . $uper['n_p'] . "</td>
+        <td>" . ($n_peers > 0 ? number_format(100 * $uper['n_p'] / $n_peers, 1) . '%' : '---') . "</td></tr>\n";
     }
     $HTMLOUT .= end_table();
     $HTMLOUT .= end_frame();
@@ -89,10 +89,10 @@ if ($n_tor == 0) {
         $HTMLOUT .= "<tr>
         <td class='rowhead'>" . htmlsafechars($cat['name']) . '</td>
         <td ' . ($cat['last'] ? ('>' . get_date($cat['last'], '') . ' (' . get_date($cat['last'], '', 0, 1) . ')') : "align='center'>---") . "</td>
-        <td align='right'>{$cat['n_t']}</td>
-        <td align='right'>" . number_format(100 * $cat['n_t'] / $n_tor, 1) . "%</td>
-        <td align='right'>{$cat['n_p']}</td>
-        <td align='right'>" . ($n_peers > 0 ? number_format(100 * $cat['n_p'] / $n_peers, 1) . '%' : '---') . "</td></tr>\n";
+        <td>{$cat['n_t']}</td>
+        <td>" . number_format(100 * $cat['n_t'] / $n_tor, 1) . "%</td>
+        <td>{$cat['n_p']}</td>
+        <td>" . ($n_peers > 0 ? number_format(100 * $cat['n_p'] / $n_peers, 1) . '%' : '---') . "</td></tr>\n";
     }
     $HTMLOUT .= end_table();
     $HTMLOUT .= end_frame();

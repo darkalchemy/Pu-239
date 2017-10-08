@@ -47,22 +47,18 @@ function funds_update($data)
             $mc1->delete_value('inbox_new_sb_' . $arr['id']);
         }
         $count = count($users_buffer);
-        if ($count > 0) {
+        if ($data['clean_log'] && $count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO users (id, class, donor, donoruntil, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE class=values(class),
             donor=values(donor),donoruntil=values(donoruntil),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+        }
+        if ($data['clean_log']) {
             write_log('Cleanup: Donation status expired - ' . $count . ' Member(s)');
         }
         unset($users_buffer, $msgs_buffer, $update, $count);
     }
     //===End===//
-    if ($queries > 0) {
+    if ($data['clean_log'] && $queries > 0) {
         write_log("Delete Old Funds Cleanup: Completed using $queries queries");
-    }
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
     }
 }

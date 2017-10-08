@@ -39,12 +39,12 @@ if ($action == 'app' || $action == 'show') {
     $count = $row[0];
     $perpage = 15;
     $pager = pager($perpage, $count, '.staffpanel.php?tool=uploadapps&amp;.');
-    $HTMLOUT .= "<h1 align='center'>{$lang['uploadapps_applications']}</h1>";
+    $HTMLOUT .= "<h1>{$lang['uploadapps_applications']}</h1>";
     if ($count == 0) {
         $HTMLOUT .= "<table class='main' width='850' border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>
-        <div align='right'><font class='small'>{$hide}</font></div></td></tr></table>
+        <div><font class='small'>{$hide}</font></div></td></tr></table>
         <table width='100%' border='1' cellspacing='0' cellpadding='5'><tr><td>
-        <div align='center'>{$lang['uploadapps_noapps']}</div>
+        <div>{$lang['uploadapps_noapps']}</div>
         </td></tr></table>";
     } else {
         $HTMLOUT .= "<form method='post' action='staffpanel.php?tool=uploadapps&amp;action=takeappdelete'>";
@@ -52,18 +52,18 @@ if ($action == 'app' || $action == 'show') {
             $HTMLOUT .= $pager['pagertop'];
         }
         $HTMLOUT .= "<table class='main' width='850' border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>
-        <div align='right'><font class='small'>{$hide}</font></div>
-        <table width='100%' border='1' cellspacing='0' cellpadding='5' align='center'>
+        <div><font class='small'>{$hide}</font></div>
+        <table width='100%' border='1' cellspacing='0' cellpadding='5'>
         <tr>
-        <td class='colhead' align='left'>{$lang['uploadapps_applied']}</td>
-        <td class='colhead' align='left'>{$lang['uploadapps_application']}</td>
-        <td class='colhead' align='left'>{$lang['uploadapps_username']}</td>
-        <td class='colhead' align='left'>{$lang['uploadapps_joined']}</td>
-        <td class='colhead' align='left'>{$lang['uploadapps_class']}</td>
-        <td class='colhead' align='left'>{$lang['uploadapps_upped']}</td>
-        <td class='colhead' align='left'>{$lang['uploadapps_ratio']}</td>
-        <td class='colhead' align='left'>{$lang['uploadapps_status']}</td>
-        <td class='colhead' align='left'>{$lang['uploadapps_delete']}</td>
+        <td class='colhead'>{$lang['uploadapps_applied']}</td>
+        <td class='colhead'>{$lang['uploadapps_application']}</td>
+        <td class='colhead'>{$lang['uploadapps_username']}</td>
+        <td class='colhead'>{$lang['uploadapps_joined']}</td>
+        <td class='colhead'>{$lang['uploadapps_class']}</td>
+        <td class='colhead'>{$lang['uploadapps_upped']}</td>
+        <td class='colhead'>{$lang['uploadapps_ratio']}</td>
+        <td class='colhead'>{$lang['uploadapps_status']}</td>
+        <td class='colhead'>{$lang['uploadapps_delete']}</td>
         </tr>\n";
         $res = sql_query("SELECT uploadapp.*, users.id AS uid, users.username, users.class, users.added, users.uploaded, users.downloaded FROM uploadapp INNER JOIN users on uploadapp.userid = users.id $where1 " . $pager['limit']) or sqlerr(__FILE__, __LINE__);
         while ($arr = mysqli_fetch_assoc($res)) {
@@ -89,7 +89,7 @@ if ($action == 'app' || $action == 'show') {
             </tr>\n";
         }
         $HTMLOUT .= "</table>
-        <div align='right'><input type='submit' value='Delete' /></div>
+        <div><input type='submit' value='Delete' /></div>
         </td></tr></table></form>\n";
         if ($count > $perpage) {
             $HTMLOUT .= $pager['pagerbottom'];
@@ -103,7 +103,7 @@ if ($action == 'viewapp') {
     $arr = mysqli_fetch_assoc($res);
     $membertime = get_date($arr['added'], '', 0, 1);
     $elapsed = get_date($arr['applied'], '', 0, 1);
-    $HTMLOUT .= "<h1 align='center'>Uploader application</h1>
+    $HTMLOUT .= "<h1>Uploader application</h1>
     <table width='750' border='1' cellspacing='0' cellpadding='5'>
     <tr>
     <td class='rowhead' width='25%'>{$lang['uploadapps_username1']} </td><td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$arr['uid'] . "'>" . htmlsafechars($arr['username']) . "</a></td>
@@ -147,10 +147,10 @@ if ($action == 'viewapp') {
     <tr><td colspan='2'>{$lang['uploadapps_create']} <b>" . htmlsafechars($arr['creating']) . "</b><br>{$lang['uploadapps_seeding']} <b>" . htmlsafechars($arr['seeding']) . '</b></td></tr>';
     }
     if ($arr['status'] == 'pending') {
-        $HTMLOUT .= "<tr><td align='center' colspan='2'><form method='post' action='staffpanel.php?tool=uploadapps&amp;action=acceptapp'><input name='id' type='hidden' value='" . (int)$arr['id'] . "' /><b>{$lang['uploadapps_note']}</b><br><input type='text' name='note' size='40' /> <input type='submit' value='{$lang['uploadapps_accept']}' style='height: 20px' /></form><br><form method='post' action='staffpanel.php?tool=uploadapps&amp;action=rejectapp'><input name='id' type='hidden' value='" . (int)$arr['id'] . "' /><b>{$lang['uploadapps_reason']}</b><br><input type='text' name='reason' size='40' /> <input type='submit' value='{$lang['uploadapps_reject']}' style='height: 20px' /></form></td></tr></table>";
+        $HTMLOUT .= "<tr><td colspan='2'><form method='post' action='staffpanel.php?tool=uploadapps&amp;action=acceptapp'><input name='id' type='hidden' value='" . (int)$arr['id'] . "' /><b>{$lang['uploadapps_note']}</b><br><input type='text' name='note' size='40' /> <input type='submit' value='{$lang['uploadapps_accept']}' style='height: 20px' /></form><br><form method='post' action='staffpanel.php?tool=uploadapps&amp;action=rejectapp'><input name='id' type='hidden' value='" . (int)$arr['id'] . "' /><b>{$lang['uploadapps_reason']}</b><br><input type='text' name='reason' size='40' /> <input type='submit' value='{$lang['uploadapps_reject']}' style='height: 20px' /></form></td></tr></table>";
     } else {
-        $HTMLOUT .= "<tr><td colspan='2' align='center'>{$lang['uploadapps_application']} " . ($arr['status'] == 'accepted' ? 'accepted' : 'rejected') . ' by <b>' . htmlsafechars($arr['moderator']) . "</b><br>{$lang['uploadapps_comm']}" . htmlsafechars($arr['comment']) . "</td></tr></table>
-    <div align='center'><a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'>{$lang['uploadapps_return']}</a></div>";
+        $HTMLOUT .= "<tr><td colspan='2'>{$lang['uploadapps_application']} " . ($arr['status'] == 'accepted' ? 'accepted' : 'rejected') . ' by <b>' . htmlsafechars($arr['moderator']) . "</b><br>{$lang['uploadapps_comm']}" . htmlsafechars($arr['comment']) . "</td></tr></table>
+    <div><a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'>{$lang['uploadapps_return']}</a></div>";
     }
 }
 //== Accept application

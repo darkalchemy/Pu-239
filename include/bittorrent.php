@@ -13,8 +13,6 @@ require_once INCL_DIR . 'files.php';
 sessionStart();
 
 require_once CACHE_DIR . 'free_cache.php';
-require_once CACHE_DIR . 'site_settings.php';
-require_once CACHE_DIR . 'staff_settings.php';
 require_once CACHE_DIR . 'class_config.php';
 //==Start memcache
 require_once CLASS_DIR . 'class_cache.php';
@@ -32,6 +30,8 @@ require_once CLASS_DIR . 'class_blocks_stdhead.php';
 require_once CLASS_DIR . 'class_blocks_userdetails.php';
 require_once CLASS_DIR . 'class_bt_options.php';
 require_once CACHE_DIR . 'block_settings_cache.php';
+require_once INCL_DIR . 'password_functions.php';
+require_once INCL_DIR . 'site_config.php';
 
 $load = sys_getloadavg();
 if ($load[0] > 20) {
@@ -139,7 +139,7 @@ function dbconn($autoclean = true)
             case 1040:
             case 2002:
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    die("<html><head><meta http-equiv='refresh' content=\"5 $_SERVER[REQUEST_URI]\"></head><body><table border='0' width='100%' height='100%'><tr><td><h3 align='center'>The server load is very high at the moment. Retrying, please wait...</h3></td></tr></table></body></html>");
+                    die("<html><head><meta http-equiv='refresh' content=\"5 $_SERVER[REQUEST_URI]\"></head><body><table border='0' width='100%' height='100%'><tr><td><h3>The server load is very high at the moment. Retrying, please wait...</h3></td></tr></table></body></html>");
                 } else {
                     die('Too many users. Please press the Refresh button in your browser to retry.');
                 }
@@ -292,7 +292,6 @@ function userlogin()
             'wait_time',
             'torrents_limit',
             'peers_limit',
-            'torrent_pass_version',
         ];
         $user_fields_ar_float = [
             'time_offset',
@@ -409,7 +408,7 @@ function userlogin()
         }
     }
     if ($row['class'] >= UC_STAFF) {
-        $allowed_ID = $site_config['allowed_staff']['id'];
+        $allowed_ID = $site_config['is_staff']['allowed'];
         if (!in_array(((int)$row['id']), $allowed_ID, true)) {
             $msg = 'Fake Account Detected: Username: ' . htmlsafechars($row['username']) . ' - userID: ' . (int)$row['id'] . ' - UserIP : ' . getip();
             // Demote and disable
@@ -592,13 +591,16 @@ function autoclean()
 {
     global $site_config, $mc1;
     if (($cleanup_timer = $mc1->get_value('cleanup_timer_')) === false) {
-        $mc1->cache_value('cleanup_timer_', 5, 1);
+        $mc1->cache_value('cleanup_timer_', 5, 1); // runs only every 1 second
 
         $now = TIME_NOW;
-        $sql = sql_query("SELECT * FROM cleanup WHERE clean_on = 1 AND clean_time <= {$now} ORDER BY clean_time ASC, clean_increment DESC LIMIT 0, 1") or sqlerr(__FILE__, __LINE__);
+        $sql = sql_query("SELECT * FROM cleanup WHERE clean_on = 1 AND clean_time < {$now} ORDER BY clean_time ASC, clean_increment DESC LIMIT 0, 1") or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_assoc($sql);
         if ($row['clean_id']) {
             $next_clean = intval($row['clean_time'] + $row['clean_increment']);
+            if ($row['clean_id'] == 82) {
+                $next_clean = ceil(TIME_NOW / 300) * 300;
+            }
             sql_query('UPDATE cleanup SET clean_time = ' . sqlesc($next_clean) . ' WHERE clean_id = ' . sqlesc($row['clean_id'])) or sqlerr(__FILE__, __LINE__);
             if (file_exists(CLEAN_DIR . $row['clean_file'])) {
                 require_once CLEAN_DIR . $row['clean_file'];
@@ -609,17 +611,18 @@ function autoclean()
         }
 
         if (($tfreak_cron = $mc1->get_value('tfreak_cron_')) === false) {
+            if (($tfreak_news = $mc1->get_value('tfreak_news_links_')) === false) {
+                $sql = sql_query("SELECT link FROM newsrss") or sqlerr(__FILE__, __LINE__);
+                while ($tfreak_new = mysqli_fetch_assoc($sql)) {
+                    $tfreak_news[] = $tfreak_new['link'];
+                }
+                $mc1->cache_value('tfreak_news_links_', $tfreak_news, 86400);
+            }
             $mc1->cache_value('tfreak_cron_', TIME_NOW, 60);
             require_once INCL_DIR . 'newsrss.php';
-            $fox = $tfreak = $github = false;
-
-            $github = github_shout();
-            if ($github) {
-                $fox = foxnews_shout();
-            }
-            if ($fox) {
-                $tfreak = tfreak_shout();
-            }
+            $github = github_shout($tfreak_news);
+            $fox = foxnews_shout($tfreak_news);
+            $tfreak = tfreak_shout($tfreak_news);
         }
     }
 }
@@ -1027,8 +1030,8 @@ function sql_timestamp_to_unix_timestamp($s)
 function unixstamp_to_human($unix = 0)
 {
     $offset = get_time_offset();
-    $tmp = gmdate('j,n,Y,G,i', $unix + $offset);
-    list($day, $month, $year, $hour, $min) = explode(',', $tmp);
+    $tmp = gmdate('j,n,Y,G,i,A', $unix + $offset);
+    list($day, $month, $year, $hour, $min, $ampm) = explode(',', $tmp);
 
     return [
         'day'    => $day,
@@ -1036,6 +1039,7 @@ function unixstamp_to_human($unix = 0)
         'year'   => $year,
         'hour'   => $hour,
         'minute' => $min,
+        'ampm'   => $ampm,
     ];
 }
 
@@ -1199,9 +1203,13 @@ function flood_limit($table)
     }
 }
 
-function sql_query($query)
+function sql_query($query, $log = true)
 {
-    global $query_stat, $queries;
+    global $query_stat, $queries, $site_config;
+    if ($site_config['log_queries'] && $log) {
+        $sql = "INSERT INTO queries (query, dateTime) VALUES (" . sqlesc(preg_replace('/[ \t\n\t\r]+/', ' ', preg_replace('/\s*$^\s*/m', ' ', $query))) . ", NOW())";
+        sql_query($sql, false);
+    }
     $query_start_time = microtime(true); // Start time
     $result = mysqli_query($GLOBALS['___mysqli_ston'], $query);
     $query_end_time = microtime(true); // End time
@@ -1522,15 +1530,6 @@ function check_user_status()
     suspended();
 }
 
-function cleanup_log($data)
-{
-    $text = sqlesc($data['clean_title']);
-    $added = TIME_NOW;
-    $ip = sqlesc($_SERVER['REMOTE_ADDR']);
-    $desc = sqlesc($data['clean_desc']);
-    sql_query("INSERT INTO cleanup_log (clog_event, clog_time, clog_ip, clog_desc) VALUES ($text, $added, $ip, {$desc})") or sqlerr(__FILE__, __LINE__);
-}
-
 function random_color($minVal = 0, $maxVal = 255)
 {
     // Make sure the parameters will result in valid colours
@@ -1580,6 +1579,72 @@ function get_poll()
         $mc1->cache_value('poll_data_' . $CURUSER['id'], $poll_data, $site_config['expires']['poll_data']);
     }
     return $poll_data;
+}
+
+function shuffle_assoc($list, $times = 1)
+{
+    if (!is_array($list)) {
+        return $list;
+    }
+
+    $keys = array_keys($list);
+    foreach (range(0, $times) as $number) {
+        shuffle($keys);
+    }
+    $random = array();
+    foreach ($keys as $key) {
+        $random[$key] = $list[$key];
+    }
+    return $random;
+}
+
+function make_torrentpass()
+{
+    global $mc1;
+    $passes = [];
+    if (($passes = $mc1->get_value('torrent_passes_')) === false) {
+        $sql = "SELECT torrent_pass FROM users";
+        $query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        while ($row = mysqli_fetch_assoc($query)) {
+            $passes[] = $row['torrent_pass'];
+        }
+        $sql = "SELECT torrent_pass FROM torrent_pass";
+        $query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        while ($row = mysqli_fetch_assoc($query)) {
+            $passes[] = $row['torrent_pass'];
+        }
+        $mc1->cache_value('torrent_passes_', $passes, 86400);
+    }
+
+    $tpass = make_password(16);
+    while (in_array($tpass, $passes)) {
+        $tpass = make_password(16);
+    }
+    $passes[] = $tpass;
+    $mc1->cache_value('torrent_passes_', $passes, 86400);
+    return $tpass;
+}
+
+function get_scheme()
+{
+    if (isset($_SERVER['REQUEST_SCHEME'])) {
+        $scheme = $_SERVER['REQUEST_SCHEME'];
+    }
+    return $scheme;
+}
+
+function countries()
+{
+    global $mc1, $site_config;
+    if (($ret = $mc1->get_value('countries::arr')) === false) {
+        $res = sql_query('SELECT id, name, flagpic FROM countries ORDER BY name ASC') or sqlerr(__FILE__, __LINE__);
+        while ($row = mysqli_fetch_assoc($res)) {
+            $ret[] = $row;
+        }
+        $mc1->cache_value('countries::arr', $ret, $site_config['expires']['user_flag']);
+    }
+
+    return $ret;
 }
 
 if (file_exists('install')) {

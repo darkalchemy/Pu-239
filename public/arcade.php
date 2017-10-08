@@ -29,7 +29,7 @@ foreach ($list as $gamename) {
     $HTMLOUT .= "
                 <div class='flex_cell_3'>
                     <a class='altlink' href='flash.php?gameURI=" . $game . '.swf&amp;gamename=' . $game . '&amp;game_id=' . $id . "'>
-                        <img style='width:100%;height:auto;max-height:100%;' src='" . $site_config['pic_base_url'] . 'games/' . $game . ".png' alt='" . $game . "' />
+                        <img src='" . $site_config['pic_base_url'] . 'games/' . $game . ".png' alt='" . $game . "' />
                     </a>
                 </div>";
 

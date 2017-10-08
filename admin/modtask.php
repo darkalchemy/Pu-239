@@ -247,8 +247,8 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
             $curuser_cache['downloadpos'] = $downloadpos_until;
             $user_cache['downloadpos'] = $downloadpos_until;
         }
-        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added) 
-	             VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added)
+                 VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
     }
     //== Set upload posssible Time based
     if (isset($_POST['uploadpos']) && ($uploadpos = (int)$_POST['uploadpos'])) {
@@ -282,8 +282,8 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
             $curuser_cache['uploadpos'] = $uploadpos_until;
             $user_cache['uploadpos'] = $uploadpos_until;
         }
-        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added) 
-	          VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added)
+              VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
     }
     //== Set Pm posssible Time based
     if (isset($_POST['sendpmpos']) && ($sendpmpos = (int)$_POST['sendpmpos'])) {
@@ -317,8 +317,8 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
             $curuser_cache['sendpmpos'] = $sendpmpos_until;
             $user_cache['sendpmpos'] = $sendpmpos_until;
         }
-        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added) 
-	             VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added)
+                 VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
     }
     //== Set ajax chat posssible Time based
     if (isset($_POST['chatpost']) && ($chatpost = (int)$_POST['chatpost'])) {
@@ -352,8 +352,8 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
             $curuser_cache['chatpost'] = $chatpost_until;
             $user_cache['chatpost'] = $chatpost_until;
         }
-        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added) 
-	             VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added)
+                 VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
     }
     //== Set Immunity Status Time based
     if (isset($_POST['immunity']) && ($immunity = (int)$_POST['immunity'])) {
@@ -384,8 +384,8 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
             $curuser_cache['immunity'] = $immunity_until;
             $user_cache['immunity'] = $immunity_until;
         }
-        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added) 
-	             VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added)
+                 VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
     }
     //== Set leechwarn Status Time based
     if (isset($_POST['leechwarn']) && ($leechwarn = (int)$_POST['leechwarn'])) {
@@ -416,8 +416,8 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
             $curuser_cache['leechwarn'] = $leechwarn_until;
             $user_cache['leechwarn'] = $leechwarn_until;
         }
-        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added) 
-	             VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added)
+                 VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
     }
     //= Set warn Status Time based
     if (isset($_POST['warned']) && ($warned = (int)$_POST['warned'])) {
@@ -448,8 +448,8 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
             $curuser_cache['warned'] = $warned_until;
             $user_cache['warned'] = $warned_until;
         }
-        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added) 
-	             VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added)
+                 VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
     }
     //== Add remove uploaded
     if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
@@ -505,15 +505,13 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
     }
     //== Reset Torrent pass
     if ((isset($_POST['reset_torrent_pass'])) && ($_POST['reset_torrent_pass'])) {
-        $newpasskeyversion = ($user['torrent_pass_version'] + 1);
-        $newpasskey = md5($user['username'] . TIME_NOW . $user['passhash']);
+        $sql = "INSERT INTO torrent_pass (torrent_pass) VALUES (" . sqlesc($user['torrent_pass']) . ")";
+        sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        $newpasskey = make_torrentpass();
         $modcomment = get_date(TIME_NOW, 'DATE', 1) . "{$lang['modtask_passkey']}" . sqlesc($user['torrent_pass']) . "{$lang['modtask_reset']}" . sqlesc($newpasskey) . "{$lang['modtask_by']}" . $CURUSER['username'] . ".\n" . $modcomment;
         $curuser_cache['torrent_pass'] = $newpasskey;
         $user_cache['torrent_pass'] = $newpasskey;
-        $curuser_cache['torrent_pass_version'] = $newpasskeyversion;
-        $user_cache['torrent_pass_version'] = $newpasskeyversion;
         $updateset[] = 'torrent_pass=' . sqlesc($newpasskey);
-        $updateset[] = 'torrent_pass_version=torrent_pass_version+1';
         $useredit['update'][] = $lang['modtask_torrent_pass'] . sqlesc($user['torrent_pass']) . $lang['modtask_torrent_pass_reset'] . $newpasskey . '';
     }
     //== seedbonus
@@ -680,8 +678,8 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
             $curuser_cache['free_switch'] = $free_until;
             $user_cache['free_switch'] = $free_until;
         }
-        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added) 
-	             VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added)
+                 VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
     }
     //== Set gaming posssible Time based
     if (isset($_POST['game_access']) && ($game_access = (int)$_POST['game_access'])) {
@@ -750,7 +748,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
             $curuser_cache['avatarpos'] = $avatarpos_until;
             $user_cache['avatarpos'] = $avatarpos_until;
         }
-        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added) 
+        sql_query('INSERT INTO messages (sender, receiver, subject, msg, added)
                 VALUES (0, ' . sqlesc($userid) . ", $subject, $msg, $added)") or sqlerr(__FILE__, __LINE__);
     }
     //== Set higspeed Upload Enable / Disable

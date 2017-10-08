@@ -75,7 +75,7 @@ if ((isset($_GET['deal_with_report'])) || (isset($_POST['deal_with_report']))) {
 }
 // === end deal_with_report
 // === main reports page
-$HTMLOUT .= "<table width='600'><tr><td class='colhead'><h1>{$lang['reports_active']}</h1></td></tr><tr><td class='clearalt6' align='center'>";
+$HTMLOUT .= "<table width='600'><tr><td class='colhead'><h1>{$lang['reports_active']}</h1></td></tr><tr><td class='clearalt6'>";
 // === if get delete
 if ((isset($_GET['delete'])) && ($CURUSER['class'] == UC_MAX)) {
     $res = sql_query('DELETE FROM reports WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
@@ -89,22 +89,19 @@ $count = $row[0];
 $perpage = 15;
 $pager = pager($perpage, $count, 'staffpanel.php?tool=reports&amp;');
 if ($count == '0') {
-    $HTMLOUT .= "<p align='center'><b>{$lang['reports_nice']}</b></p></td></tr>";
+    $HTMLOUT .= "<p><b>{$lang['reports_nice']}</b></p></td></tr>";
 } else {
     $HTMLOUT .= $pager['pagertop'];
     $HTMLOUT .= "<form method='post' action='staffpanel.php?tool=reports&amp;action=reports&amp;deal_with_report=1'>
-   <table width='650'><tr><td class='colhead' align='left' valign='top'>{$lang['reports_added']}</td>
-   <td class='colhead' align='left' valign='top'>{$lang['reports_report']}</td>" . "
-   <td class='colhead' align='left' valign='top'>{$lang['reports_report1']}</td>" . "
-   <td class='colhead' align='left' valign='top'>{$lang['reports_type']}</td><td class='colhead' align='left' valign='top'>{$lang['reports_reason']}</td>" . "
-   <td class='colhead' align='center' valign='top'>{$lang['reports_dealt']}</td><td class='colhead' align='center' valign='top'>{$lang['reports_deal']}</td>" . '
-   ' . ($CURUSER['class'] == UC_MAX ? "<td class='colhead' align='center' valign='top'>{$lang['reports_delete']}</td>" : '') . '</tr>';
+   <table width='650'><tr><td class='colhead'>{$lang['reports_added']}</td>
+   <td class='colhead'>{$lang['reports_report']}</td>" . "
+   <td class='colhead'>{$lang['reports_report1']}</td>" . "
+   <td class='colhead'>{$lang['reports_type']}</td><td class='colhead'>{$lang['reports_reason']}</td>" . "
+   <td class='colhead'>{$lang['reports_dealt']}</td><td class='colhead'>{$lang['reports_deal']}</td>" . '
+   ' . ($CURUSER['class'] == UC_MAX ? "<td class='colhead'>{$lang['reports_delete']}</td>" : '') . '</tr>';
     // === get the info
     $res_info = sql_query("SELECT reports.id, reports.reported_by, reports.reporting_what, reports.reporting_type, reports.reason, reports.who_delt_with_it, reports.delt_with, reports.added, reports.how_delt_with, reports.when_delt_with, reports.2nd_value, users.username FROM reports INNER JOIN users on reports.reported_by = users.id ORDER BY id DESC {$pager['limit']}");
     while ($arr_info = mysqli_fetch_assoc($res_info)) {
-        // =======change colors thanks Jaits
-        $count2 = (++$count2) % 2;
-        $class = ($count2 == 0 ? 'one' : 'two');
         // =======end
         // === cute solved in thing taked from helpdesk mod by nuerher
         $added = (int)$arr_info['added'];
@@ -191,25 +188,25 @@ if ($count == '0') {
                     break;
             }
         }
-        $HTMLOUT .= "<tr><td align='left' valign='top' class='$class'>" . get_date($arr_info['added'], 'DATE', 0, 1) . "</td>
-        <td align='left' valign='top' class='$class'><a class='altlink' href='userdetails.php?id=" . (int)$arr_info['reported_by'] . "'>" . '<b>' . htmlsafechars($arr_info['username']) . "</b></a></td>
-        <td align='left' valign='top' class='$class'>{$link_to_thing}</td>
-        <td align='left' valign='top' class='$class'><b>" . str_replace('_', ' ', $arr_info['reporting_type']) . '</b>' . "</td>
-        <td align='left' valign='top' class='$class'>" . htmlsafechars($arr_info['reason']) . "</td>
-        <td align='center' valign='top' class='$class'>{$dealtwith} {$delt_link}</td>
-        <td align='center' valign='middle' class='$class'>{$checkbox}</td>" . ($CURUSER['class'] == UC_MAX ? "<td align='center' valign='middle' class='$class'><a class='altlink' href='staffpanel.php?tool=reports&amp;action=reports&amp;id=" . (int)$arr_info['id'] . "&amp;delete=1'><font color='red'>{$lang['reports_delete']}</font></a></td>" : '') . "</tr>\n";
+        $HTMLOUT .= "<tr><td>" . get_date($arr_info['added'], 'DATE', 0, 1) . "</td>
+        <td><a class='altlink' href='userdetails.php?id=" . (int)$arr_info['reported_by'] . "'>" . '<b>' . htmlsafechars($arr_info['username']) . "</b></a></td>
+        <td>{$link_to_thing}</td>
+        <td><b>" . str_replace('_', ' ', $arr_info['reporting_type']) . '</b>' . "</td>
+        <td>" . htmlsafechars($arr_info['reason']) . "</td>
+        <td>{$dealtwith} {$delt_link}</td>
+        <td>{$checkbox}</td>" . ($CURUSER['class'] == UC_MAX ? "<td><a class='altlink' href='staffpanel.php?tool=reports&amp;action=reports&amp;id=" . (int)$arr_info['id'] . "&amp;delete=1'><font color='red'>{$lang['reports_delete']}</font></a></td>" : '') . "</tr>\n";
         // ===how was it delt with?
         if ($arr_info['how_delt_with']) {
             $HTMLOUT .= "<tr>
-        <td colspan='" . ($CURUSER['class'] == UC_MAX ? '8' : '7') . "' class='$class' align='left'><b>{$lang['reports_with']} " . htmlsafechars($arr_who['username']) . ':</b> ' . get_date($arr_info['when_delt_with'], 'LONG', 0, 1) . "</td></tr>
-        <tr><td colspan='" . ($CURUSER['class'] == UC_MAX ? '8' : '7') . "' class='$class' align='left'>" . htmlsafechars($arr_info['how_delt_with']) . '<br><br></td></tr>';
+        <td colspan='" . ($CURUSER['class'] == UC_MAX ? '8' : '7') . "'><b>{$lang['reports_with']} " . htmlsafechars($arr_who['username']) . ':</b> ' . get_date($arr_info['when_delt_with'], 'LONG', 0, 1) . "</td></tr>
+        <tr><td colspan='" . ($CURUSER['class'] == UC_MAX ? '8' : '7') . "'>" . htmlsafechars($arr_info['how_delt_with']) . '<br><br></td></tr>';
         }
     }
 }
 $HTMLOUT .= '</table>';
 if ($count > '0') {
     // === deal with it
-    $HTMLOUT .= "<br><br><p align='center'><b>{$lang['reports_how']} {$CURUSER['username']} {$lang['reports_dealt1']}</br></b>{$lang['reports_please']} [ {$lang['reports_req']} ] </p><br>
+    $HTMLOUT .= "<br><br><p><b>{$lang['reports_how']} {$CURUSER['username']} {$lang['reports_dealt1']}</br></b>{$lang['reports_please']} [ {$lang['reports_req']} ] </p><br>
 <textarea name='how_delt_with' cols='70' rows='5'></textarea><br><br>" . "<input type='submit' class='button' value='{$lang['reports_confirm']}' /><br><br></form></td></tr></table>";
 } //=== end if count
 echo stdhead($lang['reports_stdhead']) . $HTMLOUT . stdfoot();

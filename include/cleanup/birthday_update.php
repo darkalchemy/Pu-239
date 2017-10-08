@@ -27,18 +27,13 @@ function birthday_update($data)
             $mc1->commit_transaction($site_config['expires']['user_stats']);
         }
         $count = count($users_buffer);
-        if ($count > 0) {
+        if ($data['clean_log'] && $count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO users (id, uploaded) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE uploaded=uploaded+values(uploaded)') or sqlerr(__FILE__, __LINE__);
+        }
+        if ($data['clean_log']) {
             write_log("Birthday Cleanup: Pm'd' " . $count . ' member(s) and awarded a birthday prize');
         }
         unset($users_buffer, $msgs_buffer, $count);
-    }
-    //==End
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
     }
 }

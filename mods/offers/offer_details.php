@@ -18,14 +18,14 @@ $num = mysqli_fetch_assoc($res);
 $added = get_date($num['utadded'], '');
 $s = htmlspecialchars($num['offer']);
 $HTMLOUT .= '<h3>Details Of Offer: ' . $s . '</h3>';
-$HTMLOUT .= "<table border='1' width='750px' cellspacing='0' cellpadding='5'><tr><td align='center' colspan='2'><h1>$s</h1></td></tr>";
+$HTMLOUT .= "<table border='1' width='750px' cellspacing='0' cellpadding='5'><tr><td colspan='2'><h1>$s</h1></td></tr>";
 if ($num['descr']) {
     require_once 'include/bbcode_functions.php';
-    $HTMLOUT .= "<tr><td align='right' valign='top'><b>Description</b></td>
-    <td align='left' colspan='2' valign='top'>" . format_comment($num['descr']) . '</td></tr>';
+    $HTMLOUT .= "<tr><td><b>Description</b></td>
+    <td colspan='2'>" . format_comment($num['descr']) . '</td></tr>';
 }
-$HTMLOUT .= "<tr><td align='right'><b>Added</b></td>
-<td align='left'>$added</td></tr>";
+$HTMLOUT .= "<tr><td><b>Added</b></td>
+<td>$added</td></tr>";
 if ($CURUSER['id'] == $num['userid'] || $CURUSER['class'] >= UC_MODERATOR) {
     $edit = " | <a class='altlink' href='viewoffers.php?id=" . $id . "&amp;edit_offer'>Edit Offer</a> |";
     $delete = " <a class='altlink' href='viewoffers.php?id=" . $id . "&amp;del_offer'>Delete offer</a> ";
@@ -34,27 +34,27 @@ if ($CURUSER['id'] == $num['userid'] || $CURUSER['class'] >= UC_MODERATOR) {
     }
 }
 $HTMLOUT .= "<tr>
-<td align='right'><b>offered&#160;By</b></td><td align='left'>
+<td><b>offered&#160;By</b></td><td>
 <a class='altlink' href='userdetails.php?id=$num[userid]'>{$num['username']}</a>  $edit  $delete $reset  |
-<a class='altlink' href='viewoffers.php'><b>All offers</b></a> </td></tr><tr><td align='right'>
-<b>Vote for this offer</b></td><td align='left'><a href='viewoffers.php?id=" . $id . "&amp;offer_vote'><b>Vote</b></a>
+<a class='altlink' href='viewoffers.php'><b>All offers</b></a> </td></tr><tr><td>
+<b>Vote for this offer</b></td><td><a href='viewoffers.php?id=" . $id . "&amp;offer_vote'><b>Vote</b></a>
 </td></tr>
-" . ($site_config['reports'] ? "<tr><td align='right'><b>Report Offer</b></td><td align='left'>
+" . ($site_config['reports'] ? "<tr><td><b>Report Offer</b></td><td>
 for breaking the rules 
 <form action='report.php?type=Offer&amp;id=$id' method='post'><input class='btn' type='submit' name='submit' value='Report Offer' /></form></td>
 </tr>" : '');
 if ($num['torrentid'] == 0) {
-    $HTMLOUT .= "<tr><td align='right' valign='top'><b>Accept This Offer</b></td>
+    $HTMLOUT .= "<tr><td><b>Accept This Offer</b></td>
     <td>
     <form method='post' action='viewoffers.php?id=" . $id . "&amp;offer_filled'>
     <strong>" . $site_config['baseurl'] . "/details.php?id=</strong><input type='text' size='10' name='torrentid' value='' /> <input type='submit' value='Fill Offer' class='btn' /><br>
     Enter the <b>ID</b>  of the torrent. (copy/paste the <strong>ID</strong> from another window/tab the correct ID number)<br></form></td>
     </tr>\n";
 } else {
-    $HTMLOUT .= "<tr><td align='right' valign='top'><b>This Offer was accepted:</b></td><td><a class='altlink' href='details.php?id=" . $num['torrentid'] . "'><b>" . $site_config['baseurl'] . '/details.php?id=' . $num['torrentid'] . '</b></a></td></tr>';
+    $HTMLOUT .= "<tr><td><b>This Offer was accepted:</b></td><td><a class='altlink' href='details.php?id=" . $num['torrentid'] . "'><b>" . $site_config['baseurl'] . '/details.php?id=' . $num['torrentid'] . '</b></a></td></tr>';
 }
 $HTMLOUT .= "<tr><td class='embedded' colspan='2'><p><a name='startcomments'></a></p>\n";
-$commentbar = "<p align='center'><a class='index' href='comment.php?action=add&amp;tid=$id&amp;type=offer'>Add Comment</a></p>\n";
+$commentbar = "<p><a class='index' href='comment.php?action=add&amp;tid=$id&amp;type=offer'>Add Comment</a></p>\n";
 $subres = sql_query("SELECT COUNT(*) FROM comments WHERE offer = $id");
 $subrow = mysqli_fetch_array($subres);
 $count = $subrow[0];

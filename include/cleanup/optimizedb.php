@@ -15,13 +15,10 @@ function optimizedb($data)
     if ($oht != '') {
         $sql = sql_query("OPTIMIZE TABLE {$oht}");
     }
-    if ($queries > 0) {
+    if ($data['clean_log'] && $queries > 0) {
         write_log("Auto Optimize DB Cleanup: Commpleted using $queries queries");
     }
-    if ($oht != '') {
+    if ($data['clean_log'] && $oht != '') {
         $data['clean_desc'] = "MySQLCleanup optimized {$oht} table(s)";
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
     }
 }

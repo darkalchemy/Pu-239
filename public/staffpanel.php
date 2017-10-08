@@ -6,36 +6,21 @@ check_user_status();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('staff_panel'));
 
-//==
 $staff_classes1['name'] = '';
 $staff = sqlesc(UC_STAFF);
 if (($staff_classes = $mc1->get_value('is_staffs_')) === false) {
-    $res = sql_query("SELECT value from class_config WHERE name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX') AND value >= '$staff' ORDER BY value asc");
+    $res = sql_query("SELECT value FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX') AND value >= '$staff' ORDER BY value ASC");
     $staff_classes = [];
     while (($row = mysqli_fetch_assoc($res))) {
         $staff_classes[] = $row['value'];
     }
-    $mc1->cache_value('is_staffs_', $staff_classes, 900); //==  test values 900 to 0 with delete keys //==
+    $mc1->cache_value('is_staffs_', $staff_classes, 0);
 }
 
 if (!$CURUSER) {
     stderr($lang['spanel_error'], $lang['spanel_access_denied']);
 }
-/*
- * Staff classes config
- *
- * UC_XYZ  : integer -> the name of the defined class
- *
- * Options for a selected class
- ** add    : boolean -> enable/disable page adding
- ** edit   : boolean -> enable/disable page editing
- ** delete : boolean -> enable/disable page deletion
- ** log    : boolean -> enable/disable the loging of the actions
- *
- * @ result $staff_classes array();
- * @ new $staff_tools array add in following format : 'delacct'         => 'delacct',
- *
- */
+
 if ($site_config['staffpanel_online'] == 0) {
     stderr($lang['spanel_information'], $lang['spanel_panel_cur_offline']);
 }
@@ -164,7 +149,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
                 }
             }
         }
-        $HTMLOUT .= begin_main_frame();
+        //$HTMLOUT .= begin_main_frame();
         if (!empty($errors)) {
             $HTMLOUT .= stdmsg($lang['spanel_there'] . ' ' . (count($errors) > 1 ? 'are' : 'is') . ' ' . count($errors) . ' error' . (count($errors) > 1 ? 's' : '') . ' ' . $lang['spanel_in_the_form'] . '.', '<b>' . implode('<br>', $errors) . '</b>');
             $HTMLOUT .= '<br>';
@@ -175,21 +160,25 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
             $HTMLOUT .= "<input type='hidden' name='id' value='{$id}' />";
         }
         $HTMLOUT .= "
-    <table class='table table-bordered'  cellpadding='5' align='center'>
-    <tr class='colhead'>
-    <td colspan='2'>
-     " . ($action == 'edit' ? $lang['spanel_edit'] . ' "' . $page_name . '"' : $lang['spanel_add_a_new']) . ' page' . "</td>
-    </tr>
-    <tr>
-    <td class='rowhead' width='1%'>{$lang['spanel_pg_name']}</td><td align='left'><input type='text' size='50' name='page_name' value='{$page_name}' /></td>
-    </tr>
-    <tr>
-    <td class='rowhead'>{$lang['spanel_filename']}</td><td align='left'><input type='text' size='50' name='file_name' value='{$file_name}' /><b></b></td>
-    </tr>
-    <tr>
-    <td class='rowhead'>{$lang['spanel_description']}</td><td align='left'><input type='text' size='50' name='description' value='{$description}' /></td>
-    </tr>
-    ";
+    <div class='container-fluid portlet'>
+    <table class='table table-bordered table-striped top20'>
+        <thead>
+            <tr>
+                <th colspan='2'>
+                    " . ($action == 'edit' ? $lang['spanel_edit'] . ' "' . $page_name . '"' : $lang['spanel_add_a_new']) . ' Staffpage' . "
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class='rowhead' width='1%'>{$lang['spanel_pg_name']}</td><td><input type='text' size='50' name='page_name' value='{$page_name}' /></td>
+            </tr>
+            <tr>
+                <td class='rowhead'>{$lang['spanel_filename']}</td><td><input type='text' size='50' name='file_name' value='{$file_name}' /><b></b></td>
+            </tr>
+            <tr>
+                <td class='rowhead'>{$lang['spanel_description']}</td><td><input type='text' size='50' name='description' value='{$description}' /></td>
+            </tr>";
 
         $types = [
             'user',
@@ -198,19 +187,25 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
             'other',
         ];
 
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['spanel_type_of_tool']}</td><td align='left'>
-     <select name='type'>";
+        $HTMLOUT .= "
+            <tr>
+                <td class='rowhead'>{$lang['spanel_type_of_tool']}</td>
+                <td>
+                    <select name='type'>";
         foreach ($types as $types) {
-            $HTMLOUT .= '<option value="' . $types . '"' . ($types == $type ? ' selected="selected"' : '') . '>' . ucfirst($types) . '
-</option>';
+            $HTMLOUT .= '
+                        <option value="' . $types . '"' . ($types == $type ? ' selected="selected"' : '') . '>' . ucfirst($types) . '</option>';
         }
-        $HTMLOUT .= '</select></td></tr>';
+        $HTMLOUT .= '
+                    </select>
+                </td>
+            </tr>';
         /*
         $HTMLOUT.="<select name='type'>";
         $maxclass = UC_MAX;
         for ($class = UC_STAFF; $class <= $maxclass; ++$class)
 
-        $HTMLOUT.= '<option' . ($class_color ? ' style="background-color:#' . get_user_class_color($class) . ';"' : '') . ' value="' . $class . '"' . ($class == $av_class ? ' selected="selected"' : '') . '>' . get_user_class_name($class) . '</option>';
+        $HTMLOUT.= '<option value="' . $class . '"' . ($class == $av_class ? ' selected="selected"' : '') . '>' . get_user_class_name($class) . '</option>';
         $HTMLOUT.= "</select></td></tr>";
         */
 
@@ -225,37 +220,45 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
         </tr>";*/
 
         $HTMLOUT .= "
-    <tr>
-    <td class='rowhead'><span style='white-space: nowrap;'>{$lang['spanel_available_for']}</span></td>
-    <td align='left'>";
-
-        $HTMLOUT .= "<select name='av_class'>";
+            <tr>
+                <td class='rowhead'>
+                    <span>{$lang['spanel_available_for']}</span>
+                    </td>
+                <td>
+                    <select name='av_class'>";
         $maxclass = UC_MAX;
         for ($class = UC_STAFF; $class <= $maxclass; ++$class) {
-            $HTMLOUT .= '<option' . ($class_color ? ' style="background-color:#' . get_user_class_color($class) . ';"' : '') . ' value="' . $class . '"' . ($class == $av_class ? ' selected="selected"' : '') . '>' . get_user_class_name($class) . '</option>';
+            $HTMLOUT .= '
+                        <option value="' . $class . '"' . ($class == $av_class ? ' selected="selected"' : '') . '>' . get_user_class_name($class) . '</option>';
         }
-        $HTMLOUT .= '</select></td>';
+        $HTMLOUT .= '
+                    </select>
+                </td>';
 
         $HTMLOUT .= "
-     </tr>
-     </table>
+            </tr>
+        </tbody>
+    </table>
 
-     <table class='table table-bordered'>
-     <tr>
-     <td style='border:none;' align='center'><input type='submit' value='{$lang['spanel_submit']}' /></td>
-     <td colspan='2' style='border:none;'>
-     <form method='post' action='{$_SERVER['PHP_SELF']}'><input type='submit' value='{$lang['spanel_cancel']}' /></form>
-         </td>
-     </tr>
-     </table></form>";
-        $HTMLOUT .= end_main_frame();
+    <div class='flex flex-justify-center top20'>
+            <input type='submit' value='{$lang['spanel_submit']}' />
+        </form>
+        <form method='post' action='{$_SERVER['PHP_SELF']}'>
+            <input type='submit' value='{$lang['spanel_cancel']}' />
+        </form>
+    </div>
+    </div>";
+        //$HTMLOUT .= end_main_frame();
         echo stdhead($lang['spanel_header'] . ' :: ' . ($action == 'edit' ? '' . $lang['spanel_edit'] . ' "' . $page_name . '"' : $lang['spanel_add_a_new']) . ' page') . $HTMLOUT . stdfoot();
     } else {
-        $HTMLOUT .= begin_main_frame();
-        $HTMLOUT .= "<h1 align='center'>{$lang['spanel_welcome']} {$CURUSER['username']} {$lang['spanel_to_the']} {$lang['spanel_header']}!</h1><br>";
+        //$HTMLOUT .= begin_main_frame();
+        $HTMLOUT .= "
+                <h1 class='text-center'>{$lang['spanel_welcome']} {$CURUSER['username']} {$lang['spanel_to_the']} {$lang['spanel_header']}!</h1>";
         if ($CURUSER['class'] == UC_MAX) {
-            $HTMLOUT .= stdmsg($lang['spanel_options'], '<a href="staffpanel.php?action=add" title="' . $lang['spanel_add_a_new_pg'] . '">' . $lang['spanel_add_a_new_pg'] . '</a>');
-            $HTMLOUT .= '<br>';
+            $HTMLOUT .= "
+                <div class='text-center bottom20'>
+                    <a href='./staffpanel.php?action=add' class='tooltipper' title='{$lang['spanel_add_a_new_pg']}'>{$lang['spanel_add_a_new_pg']}</a>
+                </div>";
         }
         $res = sql_query('SELECT staffpanel.*, users.username ' . 'FROM staffpanel ' . 'LEFT JOIN users ON users.id = staffpanel.added_by ' . 'WHERE av_class <= ' . sqlesc($CURUSER['class']) . ' ' . 'ORDER BY av_class DESC, page_name ASC') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) > 0) {
@@ -267,58 +270,71 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
                 $db_classes[$value['av_class']][] = $value['av_class'];
             }
             $i = 1;
+            $HTMLOUT .= "
+        <div class='container-fluid portlet'>";
             foreach ($mysql_data as $key => $arr) {
                 $end_table = (count($db_classes[$arr['av_class']]) == $i ? true : false);
                 if (!in_array($arr['av_class'], $unique_classes)) {
                     $unique_classes[] = $arr['av_class'];
-                    $HTMLOUT .= "<table class='table table-bordered' cellpadding='5' align='center'>
-      <tr>
-      <td colspan='4' align='center'>
-      <h2>" . ($class_color ? '<font color="#' . get_user_class_color($arr['av_class']) . '">' : '') . get_user_class_name($arr['av_class']) . ' Panel' . ($class_color ? '</font>' : '') . "</h2>
-      </td>
-      </tr>
-      <tr align='center'>
-      <td class='colhead' align='left' width='100%'>{$lang['spanel_pg_name']}</td>
-      <td class='colhead'><span style='white-space: nowrap;'>{$lang['spanel_added_by']}</span></td>
-      <td class='colhead'><span style='white-space: nowrap;'>{$lang['spanel_date_added']}</span></td>";
+                    $HTMLOUT .= "
+        <h2 class='text-center top20 text-shadow'>" . ($class_color ? '<font color="#' . get_user_class_color($arr['av_class']) . '">' : '') . get_user_class_name($arr['av_class']) . '\'s Panel' . ($class_color ? '</font>' : '') . "</h2>
+        <table class='table table-bordered table-striped bottom20'>
+            <thead>
+                <tr>
+                    <th>{$lang['spanel_pg_name']}</th>
+                    <th class='text-center w-10'>{$lang['spanel_added_by']}</th>
+                    <th class='text-center w-10'>{$lang['spanel_date_added']}</th>";
                     if ($CURUSER['class'] == UC_MAX) {
-                        $HTMLOUT .= "<td class='colhead'>{$lang['spanel_links']}</td>";
+                        $HTMLOUT .= "
+                    <th class='text-center w-10'>{$lang['spanel_links']}</th>";
                     }
-                    $HTMLOUT .= '</tr>';
+                    $HTMLOUT .= '
+                </tr>
+            </thead>
+            <tbody>';
                 }
-                $HTMLOUT .= "<tr align='center'>
-            <td align='left'>
-      <a href='" . htmlsafechars($arr['file_name']) . "' title='" . htmlsafechars($arr['page_name']) . "'>
-      " . htmlsafechars($arr['page_name']) . "</a><br><font class='small'>" . htmlsafechars($arr['description']) . "</font>
-            </td>
-      <td>
-          " . format_username($arr['added_by']) . "
-      </td>
-      <td>
-      <span style='white-space: nowrap;'>" . get_date($arr['added'], 'LONG', 0, 1) . '<br></span>
-      </td>';
+                $HTMLOUT .= "
+                <tr>
+                    <td>
+                        <div class='size_4'>
+                            <a href='" . htmlsafechars($arr['file_name']) . "' class='tooltipper' title='" . htmlsafechars($arr['description'] . '<br>' . $arr['file_name']) . "'>" . htmlsafechars($arr['page_name']) . "</a>
+                        </div>
+                    </td>
+                    <td class='text-center'>
+                        " . format_username($arr['added_by']) . "
+                    </td>
+                    <td class='text-center'>
+                        <span>" . get_date($arr['added'], 'DATE', 0, 1) . "<br></span>
+                    </td>";
                 if ($CURUSER['class'] == UC_MAX) {
-                    $HTMLOUT .= "<td><span style='white-space: nowrap;'>";
-                    if ($CURUSER['class'] == UC_MAX) {
-                        $HTMLOUT .= "<a href='staffpanel.php?action=edit&amp;id=" . (int)$arr['id'] . "' title='" . $lang['spanel_edit'] . "'><img src='{$site_config['pic_base_url']}button_edit2.gif' height='15px' width='14px' alt='" . $lang['spanel_edit'] . "' style='padding-right:3px' /></a>";
-                    }
-                    if ($CURUSER['class'] == UC_MAX) {
-                        $HTMLOUT .= "<a href='staffpanel.php?action=delete&amp;id=" . (int)$arr['id'] . "' title='" . $lang['spanel_delete'] . "'><img src='{$site_config['pic_base_url']}button_delete2.gif' height='13px' width='13px' alt='" . $lang['spanel_delete'] . "' style='padding-left:3px' /></a>";
-                    }
-                    $HTMLOUT .= '</span>
-            </td>';
+                    $HTMLOUT .= "
+                    <td>
+                        <div class='flex flex-justify-center'>
+                            <a href='staffpanel.php?action=edit&amp;id=" . (int)$arr['id'] . "' class='tooltipper' title='" . $lang['spanel_edit'] . "'>
+                                <img src='{$site_config['pic_base_url']}button_edit2.gif' width='15px' height='auto' alt='" . $lang['spanel_edit'] . "' />
+                            </a>
+                            <a href='staffpanel.php?action=delete&amp;id=" . (int)$arr['id'] . "' class='tooltipper' title='" . $lang['spanel_delete'] . "'>
+                                <img src='{$site_config['pic_base_url']}button_delete2.gif' width='14px' height='auto' alt='" . $lang['spanel_delete'] . "' />
+                            </a>
+                        </div>
+                    </td>";
                 }
-                $HTMLOUT .= '</tr>';
+                $HTMLOUT .= '
+                </tr>';
                 ++$i;
                 if ($end_table) {
                     $i = 1;
-                    $HTMLOUT .= '</table><br>';
+                    $HTMLOUT .= '
+            </tbody>
+        </table>';
                 }
             }
+        $HTMLOUT .= '
+        </div>';
         } else {
             $HTMLOUT .= stdmsg($lang['spanel_sorry'], $lang['spanel_nothing_found']);
         }
-        $HTMLOUT .= end_main_frame();
+        //$HTMLOUT .= end_main_frame();
         echo stdhead($lang['spanel_header']) . $HTMLOUT . stdfoot();
     }
 }

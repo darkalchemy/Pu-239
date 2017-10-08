@@ -12,13 +12,7 @@ function processkill_update($data)
             ++$cnt;
         }
     }
-    if ($queries > 0) {
-        write_log("Proccess Kill Cleanup: Completed using $queries queries");
-    }
-    if ($cnt != 0) {
-        $data['clean_desc'] = "MySQLCleanup killed {$cnt} processes";
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
+    if ($data['clean_log'] && $queries > 0) {
+        write_log("Process Kill Cleanup: Completed using $queries queries");
     }
 }

@@ -102,7 +102,7 @@ function loadavg($return_all = false)
     <div style='background:transparent;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['index_serverload']}</span></div>
     <br>
     <table width='100%' border='1' cellspacing='0' cellpadding='1'>
-        <tr><td align='center'>
+        <tr><td>
         <table class='main' border='0' width='402'>
     <tr><td style='padding: 0px; background-image: url({$site_config['pic_base_url']}loadbarbg.gif); background-repeat: repeat-x'>";
     $perc = get_server_load();
@@ -120,7 +120,7 @@ $HTMLOUT .= "
     <div style='background:transparent;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['index_serverload']}</span></div>
     <br>
     <table width='100%' border='1' cellspacing='0' cellpadding='1'>
-			<tr><td align='center'>
+			<tr><td>
 		    <table class='main' border='0' width='402'>
     			<tr><td style='padding: 0px; background-image: url({$site_config['pic_base_url']}loadbarbg.gif); background-repeat: repeat-x'>";
 $percent = min(100, round(exec('ps ax | grep -c apache') / 256 * 100));

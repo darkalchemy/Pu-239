@@ -207,7 +207,7 @@ function poll_show_rendered_question($id = '', $question = '', $choice_html = ''
 {
     $HTMLOUT = '';
     $HTMLOUT .= "
-     <div align='center'>
+     <div class='text-center'>
     <div class='roundedCorners' style='text-align:center;padding:4px;'><span class='postdetails'><strong>{$question}</strong></span></div>
     <table cellpadding='4' cellspacing='0'>
     $choice_html
@@ -220,7 +220,7 @@ function poll_show_rendered_question($id = '', $question = '', $choice_html = ''
 function show_total_votes($total_votes = '')
 {
     $HTMLOUT = '';
-    $HTMLOUT .= "<div align='center'><b>Total Votes: $total_votes</b></div>";
+    $HTMLOUT .= "<div class='text-center'><b>Total Votes: $total_votes</b></div>";
 
     return $HTMLOUT;
 }
@@ -248,7 +248,7 @@ function poll_show_form_question($id = '', $question = '', $choice_html = '')
 {
     $HTMLOUT = '';
     $HTMLOUT .= "
-    <div align='left'>
+    <div class='text-left'>
       <div style='padding:4px;'><span class='postdetails'><strong>{$question}</strong></span></div>
       $choice_html
     </div>";

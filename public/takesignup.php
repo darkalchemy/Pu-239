@@ -123,9 +123,11 @@ $dst_in_use = localtime(TIME_NOW + ($time_offset * 3600), true);
 $wantpasshash = make_passhash($wantpassword);
 $wanthintanswer = make_passhash($hintanswer);
 $user_frees = (XBT_TRACKER == true ? '0' : TIME_NOW + 14 * 86400);
+$torrent_pass = make_torrentpass();
 check_banned_emails($email);
-$ret = sql_query('INSERT INTO users (username, passhash, birthday, country, gender, stylesheet, passhint, hintanswer, email, status, ip, ' . (!$arr[0] ? 'class, ' : '') . 'added, last_access, time_offset, dst_in_use, free_switch) VALUES (' . implode(',', array_map('sqlesc', [
+$ret = sql_query('INSERT INTO users (username, torrent_pass, passhash, birthday, country, gender, stylesheet, passhint, hintanswer, email, status, ip, ' . (!$arr[0] ? 'class, ' : '') . 'added, last_access, time_offset, dst_in_use, free_switch) VALUES (' . implode(',', array_map('sqlesc', [
         $wantusername,
+        $torrent_pass,
         $wantpasshash,
         $birthday,
         $country,

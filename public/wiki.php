@@ -21,8 +21,8 @@ function newmsg($heading = '', $text = '', $div = 'success', $htmlstrip = false)
         $text = htmlsafechars(trim($text));
     }
     $htmlout = '';
-    $htmlout .= "<table class=\"main\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"embedded\">\n";
-    $htmlout .= "<div class=\"$div\">" . ($heading ? "<b>$heading</b><br>" : '') . "$text</div></td></tr></table>\n";
+    $htmlout .= "<table class='table table-bordered table-striped'><tr><td class='embedded'>\n";
+    $htmlout .= "<div class='$div'>" . ($heading ? "<b>$heading</b><br>" : '') . "$text</div></td></tr></table>\n";
 
     return $htmlout;
 }
@@ -69,7 +69,7 @@ function datetimetransform($input)
 function navmenu()
 {
     global $lang;
-    $ret = '<div id="wiki-navigation" align="center"><div><a href="wiki.php">' . $lang['wiki_index'] . '</a> - <a href="wiki.php?action=add">' . $lang['wiki_add'] . '</a></div><div align="right"><form action="wiki.php" method="post">';
+    $ret = '<div id="wiki-navigation"><div><a href="wiki.php">' . $lang['wiki_index'] . '</a> - <a href="wiki.php?action=add">' . $lang['wiki_add'] . '</a></div><div><form action="wiki.php" method="post">';
     $ret .= "\n" . '<a href="wiki.php?action=sort&amp;letter=a">A</a>';
     for ($i = 0; $i < 25; ++$i) {
         $ret .= "\n- " . '<a href="wiki.php?action=sort&amp;letter=' . chr($i + 98) . '">' . chr($i + 66) . '</a>';
@@ -106,7 +106,7 @@ function wikireplace($input)
         '/\=\=\ (.+?)\ \=\=/i',
     ], [
         '<a href="wiki.php?action=article&name=$1">$1</a>',
-        '<div id="$1" style="border-bottom: 1px solid grey; font-weight: bold; width: 100%; font-size: 14px;">$1</div>',
+        '<div id="$1">$1</div>',
     ], $input);
 }
 
@@ -116,15 +116,15 @@ function wikimenu()
     $res2 = sql_query('SELECT name FROM wiki ORDER BY id DESC LIMIT 1');
     $latest = mysqli_fetch_assoc($res2);
     $latestarticle = articlereplace(htmlsafechars($latest['name']));
-    $ret = "<div id=\"wiki-content-right\">
-					<div id=\"details\">
+    $ret = "<div id='wiki-content-right'>
+					<div id='details'>
 						<ul>
 							<li><b>{$lang['wiki_permissions']}</b></li></ul>
 							{$lang['wiki_read_user']}<br>
 							{$lang['wiki_write_user']}<br>
 							{$lang['wiki_edit_staff']}
 							<ul><li><b>{$lang['wiki_latest_article']}</b></li></ul>
-							<a href=\"wiki.php?action=article&amp;name=$latestarticle\">" . htmlsafechars($latest['name']) . '</a>
+							<a href='wiki.php?action=article&amp;name=$latestarticle'>" . htmlsafechars($latest['name']) . '</a>
 					</div>
 				</div>
 		';
@@ -149,7 +149,7 @@ VALUES (' . sqlesc($name) . ', ' . sqlesc($body) . ', ' . sqlesc($CURUSER['id'])
     }
     if (isset($_POST['wiki'])) {
         $wikisearch = articlereplace(htmlsafechars($_POST['article']));
-        $HTMLOUT .= "<meta http-equiv=\"refresh\" content=\"0; url=wiki.php?action=article&name=$wikisearch\">";
+        $HTMLOUT .= "<meta http-equiv='refresh' content='0; url=wiki.php?action=article&name=$wikisearch'>";
     }
 }
 $HTMLOUT .= begin_main_frame();
@@ -195,10 +195,10 @@ if ($action == 'article') {
             $check = sql_query('SELECT username FROM users WHERE id =' . sqlesc($wiki['userid']));
             $author = mysqli_fetch_assoc($check);
             $HTMLOUT .= '
-				<div id="wiki-content-left" align="right">
+				<div id="wiki-content-left">
 					<div id="name"><b><a href="wiki.php?action=article&amp;name=' . htmlsafechars($wiki['name']) . '">' . htmlsafechars($wiki['name']) . '</a></b></div>
-					<div id="content">' . ($wiki['userid'] > 0 ? "<i>{$lang['wiki_added_by_art']}<a href=\"userdetails.php?id=" . (int)$wiki['userid'] . '"><b>' . htmlsafechars($author['username']) . '</b></a></i><br><br>' : '') . wikireplace(format_comment($wiki['body'])) . '';
-            $HTMLOUT .= '<div align="right">' . ($edit ? "$edit" : '') . ($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $wiki['userid'] ? ' - <a href="wiki.php?action=edit&amp;id=' . (int)$wiki['id'] . "\">{$lang['wiki_edit']}</a>" : '') . '</div>';
+					<div id="content">' . ($wiki['userid'] > 0 ? "<i>{$lang['wiki_added_by_art']}<a href='userdetails.php?id=" . (int)$wiki['userid'] . '"><b>' . htmlsafechars($author['username']) . '</b></a></i><br><br>' : '') . wikireplace(format_comment($wiki['body'])) . '';
+            $HTMLOUT .= '<div>' . ($edit ? "$edit" : '') . ($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $wiki['userid'] ? ' - <a href="wiki.php?action=edit&amp;id=' . (int)$wiki['id'] . "'>{$lang['wiki_edit']}</a>" : '') . '</div>';
             $HTMLOUT .= '</div></div>';
         }
         $HTMLOUT .= wikimenu();
@@ -214,7 +214,7 @@ if ($action == 'article') {
                 }
                 $HTMLOUT .= '
 				<div class="wiki-search">
-					<b><a href="wiki.php?action=article&amp;name=' . articlereplace(htmlsafechars($wiki['name'])) . '">' . htmlsafechars($wiki['name']) . "</a></b>{$lang['wiki_added_by']}<a href=\"userdetails.php?id=" . (int)$wiki['userid'] . '">' . htmlsafechars($wikiname['username']) . '</a></div>';
+					<b><a href="wiki.php?action=article&amp;name=' . articlereplace(htmlsafechars($wiki['name'])) . '">' . htmlsafechars($wiki['name']) . "</a></b>{$lang['wiki_added_by']}<a href='userdetails.php?id=" . (int)$wiki['userid'] . '">' . htmlsafechars($wikiname['username']) . '</a></div>';
             }
         } else {
             $HTMLOUT .= newerr($lang['wiki_error'], $lang['wiki_no_art_found']);
@@ -226,11 +226,11 @@ if ($action == 'add') {
     $HTMLOUT .= navmenu();
     $HTMLOUT .= '<div id="wiki-container"><div id="wiki-row">';
     $HTMLOUT .= '
-				<div id="wiki-content-left" align="right">
+				<div id="wiki-content-left">
 					<form method="post" action="wiki.php">
 					<div><input type="text" name="article-name" id="name" /></div>
 					<div id="content-add"><textarea name="article-body" rows="70" cols="10" id="body">' . htmlsafechars($wiki['body']) . "</textarea>
-					<div align=\"center\"><input type=\"submit\" name=\"article-add\" value=\"{$lang['wiki_ok']}\" /></div>
+					<div><input type='submit' name='article-add' value='{$lang['wiki_ok']}' /></div>
 				</div></form></div>";
     $HTMLOUT .= wikimenu();
     $HTMLOUT .= '</div>';
@@ -246,12 +246,12 @@ if ($action == 'edit') {
   <div id="wiki-row">';
         while ($wiki = mysqli_fetch_array($res)) {
             $HTMLOUT .= '
-				<div id="wiki-content-left" align="right">
+				<div id="wiki-content-left">
 					<form method="post" action="wiki.php">
 					<div><input type="hidden" name="article-id" value="' . (int)$wiki['id'] . '" />
 					<input type="text" name="article-name" id="name" value="' . htmlsafechars($wiki['name']) . '" /></div>
-					<div id="content-add"><table width="100%" style="height: 100%;" id="wikiedit" border="0" cellpadding="0" cellspacing="0"><tr><td><textarea name="article-body" rows="70" cols="10" id="body">' . htmlsafechars($wiki['body']) . "</textarea>
-					<div align=\"center\"><input type=\"submit\" name=\"article-edit\" value=\"{$lang['wiki_edit']}\" /></div></td></tr></table>";
+					<div id="content-add"><table class="table table-bordered table-striped" id="wikiedit"><tr><td><textarea name="article-body" rows="70" cols="10" id="body">' . htmlsafechars($wiki['body']) . "</textarea>
+					<div><input type='submit' name='article-edit' value='{$lang['wiki_edit']}' /></div></td></tr></table>";
             $HTMLOUT .= '</div></form></div>';
         }
         $HTMLOUT .= wikimenu();
@@ -272,7 +272,7 @@ if ($action == 'sort') {
             }
             $HTMLOUT .= '
 				<div class="wiki-search">
-					<b><a href="wiki.php?action=article&amp;name=' . articlereplace(htmlsafechars($wiki['name'])) . '">' . htmlsafechars($wiki['name']) . "</a></b>{$lang['wiki_added_by1']}<a href=\"userdetails.php?id=" . (int)$wiki['userid'] . '">' . htmlsafechars($wikiname['username']) . '</a></div>';
+					<b><a href="wiki.php?action=article&amp;name=' . articlereplace(htmlsafechars($wiki['name'])) . '">' . htmlsafechars($wiki['name']) . "</a></b>{$lang['wiki_added_by1']}<a href='userdetails.php?id=" . (int)$wiki['userid'] . '">' . htmlsafechars($wikiname['username']) . '</a></div>';
         }
     } else {
         $HTMLOUT .= navmenu();

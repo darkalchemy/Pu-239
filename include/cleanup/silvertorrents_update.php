@@ -19,18 +19,14 @@ function silvertorrents_update($data)
         $count = count($Silver_buffer);
         if ($count > 0) {
             sql_query('INSERT INTO torrents (id, silver) VALUES ' . implode(', ', $Silver_buffer) . ' ON DUPLICATE key UPDATE silver=values(silver)') or sqlerr(__FILE__, __LINE__);
+        }
+        if ($data['clean_log']) {
             write_log('Cleanup - Removed Silver from ' . $count . ' torrents');
         }
         unset($Silver_buffer, $count);
     }
     //==End
-    if ($queries > 0) {
+    if ($data['clean_log'] && $queries > 0) {
         write_log("Silver Torrents Cleanup: Completed using $queries queries");
-    }
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items updated';
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
     }
 }

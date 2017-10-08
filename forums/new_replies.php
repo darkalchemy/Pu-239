@@ -8,7 +8,7 @@ global $lang;
 
 //=== start page
 $colour = $topicpoll = '';
-$links = '<span style="text-align: center;"><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';
+$links = '<span><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';
 $HTMLOUT .= '<h1>' . $lang['nr_new_replys_to_treads'] . ' ' . $lang['nr_youve_posted_in'] . '</h1>' . $links;
 //$time = $readpost_expiry;
 $res_count = sql_query('SELECT t.id, t.last_post FROM topics AS t LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN forums as f ON f.id = t.forum_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' f.min_class_read <= ' . $CURUSER['class']);
@@ -25,7 +25,7 @@ while ($arr_count = mysqli_fetch_assoc($res_count)) {
 }
 //=== nothing here? kill the page
 if ($count == 0) {
-    $HTMLOUT .= '<br><br><table border="0" cellspacing="10" cellpadding="10" width="400px">
+    $HTMLOUT .= '<br><br><table class="table table-bordered table-striped">
    <tr><td class="three"align="center">
    <h1>' . $lang['fe_no_unread_posts'] . '!</h1>' . $lang['fe_you_are_uptodate_topics'] . ' ' . $lang['nr_youve_posted_in'] . '.<br><br>
 	</td></tr></table><br><br>';
@@ -36,8 +36,8 @@ if ($count == 0) {
     $perpage = isset($_GET['perpage']) ? (int)$_GET['perpage'] : 20;
     list($menu, $LIMIT) = pager_new($count, $perpage, $page, $site_config['baseurl'] . '/forums.php?action=view_unread_posts' . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
     //=== top and bottom stuff
-    $the_top_and_bottom = '<br><table border="0" cellspacing="0" cellpadding="0" width="90%">
-   <tr><td class="three" align="center" valign="middle">' . (($count > $perpage) ? $menu : '') . '</td>
+    $the_top_and_bottom = '<br><table class="table table-bordered table-striped">
+   <tr><td class="three">' . (($count > $perpage) ? $menu : '') . '</td>
 	</tr></table>';
     //=== main huge query:
     $res_unread = sql_query('SELECT t.id AS topic_id, t.topic_name AS topic_name, t.last_post, t.post_count, 
@@ -50,14 +50,14 @@ if ($count == 0) {
    LEFT JOIN users AS u on u.id = t.user_id
    WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' f.min_class_read <= ' . $CURUSER['class'] . ' 
    ORDER BY t.last_post DESC ' . $LIMIT);
-    $HTMLOUT .= $the_top_and_bottom . '<table border="0" cellspacing="5" cellpadding="10" width="90%">
+    $HTMLOUT .= $the_top_and_bottom . '<table class="table table-bordered table-striped">
 	<tr>
-	<td align="center" valign="middle" class="forum_head_dark" width="10"><img src="' . $site_config['pic_base_url'] . 'forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
-	<td align="center" valign="middle" class="forum_head_dark" width="10"><img src="' . $site_config['pic_base_url'] . 'forums/topic_normal.gif" alt=' . $lang['fe_thread_icon'] . '" title=' . $lang['fe_thread_icon'] . '" /></td>
-	<td align="left" class="forum_head_dark">' . $lang['fe_new_posts'] . '!</td>
-	<td class="forum_head_dark" align="center" width="10">' . $lang['fe_replies'] . '</td>
-	<td class="forum_head_dark" align="center" width="10">' . $lang['fe_views'] . '</td>
-	<td align="center" class="forum_head_dark">' . $lang['fe_started_by'] . '</td>
+	<td class="forum_head_dark" width="10"><img src="' . $site_config['pic_base_url'] . 'forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
+	<td class="forum_head_dark" width="10"><img src="' . $site_config['pic_base_url'] . 'forums/topic_normal.gif" alt=' . $lang['fe_thread_icon'] . '" title=' . $lang['fe_thread_icon'] . '" /></td>
+	<td class="forum_head_dark">' . $lang['fe_new_posts'] . '!</td>
+	<td class="forum_head_dark" width="10">' . $lang['fe_replies'] . '</td>
+	<td class="forum_head_dark" width="10">' . $lang['fe_views'] . '</td>
+	<td class="forum_head_dark">' . $lang['fe_started_by'] . '</td>
 	</tr>';
     //=== ok let's show the posts...
     while ($arr_unread = mysqli_fetch_assoc($res_unread)) {
@@ -66,9 +66,6 @@ if ($count == 0) {
         $did_i_post_here = sql_query('SELECT user_id FROM posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($arr_unread['topic_id']));
         $posted = (mysqli_num_rows($did_i_post_here) > 0 ? 1 : 0);
         if ($arr_post_read[0] < $arr_unread['last_post'] && $posted) {
-            //=== change colors
-            $colour = (++$colour) % 2;
-            $class = ($colour == 0 ? 'one' : 'two');
             $locked = $arr_unread['locked'] == 'yes';
             $sticky = $arr_unread['sticky'] == 'yes';
             $topic_poll = $arr_unread['poll_id'] > 0;
@@ -92,21 +89,21 @@ if ($count == 0) {
             $topic_name = ($sticky ? '<img src="' . $site_config['pic_base_url'] . 'forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" /> ' : ' ') . ($topicpoll ? '<img src="' . $site_config['pic_base_url'] . 'forums/poll.gif" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '" /> ' : ' ') . ' <a class="altlink" href="?action=view_topic&amp;topic_id=' . (int)$arr_unread['topic_id'] . '" title="' . $lang['fe_1st_post_in_tread'] . '">' . htmlsafechars($arr_unread['topic_name'], ENT_QUOTES) . '</a><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$arr_unread['topic_id'] . '&amp;page=0#' . (int)$arr_post_read[0] . '" title="' . $lang['fe_1st_unread_post_topic'] . '"><img src="' . $site_config['pic_base_url'] . 'forums/last_post.gif" alt="First unread post" title="First unread post" /></a>' . ($posted ? '<img src="' . $site_config['pic_base_url'] . 'forums/posted.gif" alt="Posted" title="Posted" /> ' : ' ') . ($subscriptions ? '<img src="' . $site_config['pic_base_url'] . 'forums/subscriptions.gif" alt="' . $lang['fe_subscribed'] . '" title="' . $lang['fe_subscribed'] . '" /> ' : ' ') . ' <img src="' . $site_config['pic_base_url'] . 'forums/new.gif" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!" />';
             //=== print here
             $HTMLOUT .= '<tr>
-		<td class="' . $class . '" align="center"><img src="' . $site_config['pic_base_url'] . 'forums/' . $topicpic . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
-		<td class="' . $class . '" align="center">' . $icon . '</td>
-		<td align="left" valign="middle" class="' . $class . '">
-		<table border="0" cellspacing="0" cellpadding="0">
+		<td><img src="' . $site_config['pic_base_url'] . 'forums/' . $topicpic . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
+		<td>' . $icon . '</td>
+		<td>
+		<table class="table table-bordered table-striped">
 		<tr>
-		<td  class="' . $class . '" align="left">' . $topic_name . $first_post_text . ' </td>
-		<td class="' . $class . '" align="right">' . $rpic . '</td>
+		<td >' . $topic_name . $first_post_text . ' </td>
+		<td>' . $rpic . '</td>
 		</tr>
 		</table>
-		' . ($arr_unread['topic_desc'] !== '' ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($arr_unread['topic_desc'], ENT_QUOTES) . '</span>' : '') . '  
+		' . ($arr_unread['topic_desc'] !== '' ? '&#9658; <span>' . htmlsafechars($arr_unread['topic_desc'], ENT_QUOTES) . '</span>' : '') . '  
 		<hr>in: <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int)$arr_unread['forum_id'] . '">' . htmlsafechars($arr_unread['forum_name'], ENT_QUOTES) . '</a>
-		' . ($arr_unread['topic_desc'] !== '' ? ' [ <span style="font-size: x-small;">' . htmlsafechars($arr_unread['topic_desc'], ENT_QUOTES) . '</span> ]' : '') . '</td>
-		<td align="center" class="' . $class . '">' . number_format($arr_unread['post_count'] - 1) . '</td>
-		<td align="center" class="' . $class . '">' . number_format($arr_unread['views']) . '</td>
-		<td align="center" class="' . $class . '">' . $thread_starter . '</td>
+		' . ($arr_unread['topic_desc'] !== '' ? ' [ <span>' . htmlsafechars($arr_unread['topic_desc'], ENT_QUOTES) . '</span> ]' : '') . '</td>
+		<td>' . number_format($arr_unread['post_count'] - 1) . '</td>
+		<td>' . number_format($arr_unread['views']) . '</td>
+		<td>' . $thread_starter . '</td>
 		</tr>';
         }
     }

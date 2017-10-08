@@ -16,18 +16,24 @@ if ($CURUSER['class'] < UC_UPLOADER or $CURUSER['uploadpos'] == 0 || $CURUSER['u
 }
 foreach (explode(':', 'body:type:name') as $v) {
     if (!isset($_POST[$v])) {
-        stderr($lang['takeupload_failed'], $lang['takeupload_no_formdata']);
+        setSessionVar('error', $lang['takeupload_no_formdata']);
+        header("Location: {$site_config['baseurl']}/upload.php");
+        exit();
     }
 }
 if (!isset($_FILES['file'])) {
-    stderr($lang['takeupload_failed'], $lang['takeupload_no_formdata']);
+    setSessionVar('error', $lang['takeupload_no_formdata']);
+    header("Location: {$site_config['baseurl']}/upload.php");
+    exit();
 }
 $url = strip_tags(isset($_POST['url']) ? trim($_POST['url']) : '');
 $poster = strip_tags(isset($_POST['poster']) ? trim($_POST['poster']) : '');
 $f = $_FILES['file'];
 $fname = unesc($f['name']);
 if (empty($fname)) {
-    stderr($lang['takeupload_failed'], $lang['takeupload_no_filename']);
+    setSessionVar('error', $lang['takeupload_no_filename']);
+    header("Location: {$site_config['baseurl']}/upload.php");
+    exit();
 }
 if (isset($_POST['uplver']) && $_POST['uplver'] == 'yes') {
     $anonymous = 'yes';
@@ -59,17 +65,25 @@ $nfo = sqlesc('');
 if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
     $nfofile = $_FILES['nfo'];
     if ($nfofile['name'] == '') {
-        stderr($lang['takeupload_failed'], $lang['takeupload_no_nfo']);
+        setSessionVar('error', $lang['takeupload_no_nfo']);
+        header("Location: {$site_config['baseurl']}/upload.php");
+        exit();
     }
     if ($nfofile['size'] == 0) {
-        stderr($lang['takeupload_failed'], $lang['takeupload_0_byte']);
+        setSessionVar('error', $lang['takeupload_0_byte']);
+        header("Location: {$site_config['baseurl']}/upload.php");
+        exit();
     }
     if ($nfofile['size'] > 65535) {
-        stderr($lang['takeupload_failed'], $lang['takeupload_nfo_big']);
+        setSessionVar('error', $lang['takeupload_nfo_big']);
+        header("Location: {$site_config['baseurl']}/upload.php");
+        exit();
     }
     $nfofilename = $nfofile['tmp_name'];
     if (@!is_uploaded_file($nfofilename)) {
-        stderr($lang['takeupload_failed'], $lang['takeupload_nfo_failed']);
+        setSessionVar('error', $lang['takeupload_nfo_failed']);
+        header("Location: {$site_config['baseurl']}/upload.php");
+        exit();
     }
     $nfo = sqlesc(str_replace("\x0d\x0d\x0a", "\x0d\x0a", @file_get_contents($nfofilename)));
 }
@@ -105,7 +119,9 @@ if (!$descr) {
     if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
         $descr = preg_replace('/[^\\x20-\\x7e\\x0a\\x0d]/', ' ', $nfo);
     } else {
-        stderr($lang['takeupload_failed'], $lang['takeupload_no_descr']);
+        setSessionVar('error', $lang['takeupload_no_descr']);
+        header("Location: {$site_config['baseurl']}/upload.php");
+        exit();
     }
 }
 $description = strip_tags(isset($_POST['description']) ? trim($_POST['description']) : '');
@@ -117,7 +133,9 @@ if (isset($_POST['strip']) && $_POST['strip']) {
 }
 $catid = ((int)$_POST['type']);
 if (!is_valid_id($catid)) {
-    stderr($lang['takeupload_failed'], $lang['takeupload_no_cat']);
+    setSessionVar('error', $lang['takeupload_no_cat']);
+    header("Location: {$site_config['baseurl']}/upload.php");
+    exit();
 }
 $request = (((isset($_POST['request']) && is_valid_id($_POST['request'])) ? intval($_POST['request']) : 0));
 $offer = (((isset($_POST['offer']) && is_valid_id($_POST['offer'])) ? intval($_POST['offer']) : 0));
@@ -134,10 +152,14 @@ if (isset($_POST['youtube']) && preg_match($youtube_pattern, $_POST['youtube'], 
 }
 $tags = strip_tags(isset($_POST['tags']) ? trim($_POST['tags']) : '');
 if (!validfilename($fname)) {
-    stderr($lang['takeupload_failed'], $lang['takeupload_invalid']);
+    setSessionVar('error', $lang['takeupload_invalid']);
+    header("Location: {$site_config['baseurl']}/upload.php");
+    exit();
 }
 if (!preg_match('/^(.+)\.torrent$/si', $fname, $matches)) {
-    stderr($lang['takeupload_failed'], $lang['takeupload_not_torrent']);
+    setSessionVar('error', $lang['takeupload_not_torrent']);
+    header("Location: {$site_config['baseurl']}/upload.php");
+    exit();
 }
 $shortfname = $torrent = $matches[1];
 if (!empty($_POST['name'])) {
@@ -145,72 +167,106 @@ if (!empty($_POST['name'])) {
 }
 $tmpname = $f['tmp_name'];
 if (!is_uploaded_file($tmpname)) {
-    stderr($lang['takeupload_failed'], $lang['takeupload_eek']);
+    setSessionVar('error', $lang['takeupload_eek']);
+    header("Location: {$site_config['baseurl']}/upload.php");
+    exit();
 }
 if (!filesize($tmpname)) {
-    stderr($lang['takeupload_failed'], $lang['takeupload_no_file']);
+    setSessionVar('error', $lang['takeupload_no_file']);
+    header("Location: {$site_config['baseurl']}/upload.php");
+    exit();
 }
 // bencdec by djGrrr <3
 $dict = bencdec::decode_file($tmpname, $site_config['max_torrent_size'], bencdec::OPTION_EXTENDED_VALIDATION);
 if ($dict === false) {
-    stderr('Error', 'What the hell did you upload? This is not a bencoded file!');
+    setSessionVar('error', 'What did you upload? This is not a bencoded file!');
+    header("Location: {$site_config['baseurl']}/upload.php");
+    exit();
 }
 if (isset($dict['announce-list'])) {
     unset($dict['announce-list']);
 }
 $dict['info']['private'] = 1;
 if (!isset($dict['info'])) {
-    stderr('Error', 'invalid torrent, info dictionary does not exist');
+    setSessionVar('error', 'invalid torrent, info dictionary does not exist');
+    header("Location: {$site_config['baseurl']}/upload.php");
+    exit();
 }
 $info = &$dict['info'];
 $infohash = pack('H*', sha1(bencdec::encode($info)));
+if (get_row_count('torrents', "WHERE info_hash = " . sqlesc($infohash)) > 0) {
+    setSessionVar('error', 'This torrent has already been uploaded! Please use the search function before uploading.');
+    header("Location: {$site_config['baseurl']}/upload.php");
+    exit();
+}
 if (bencdec::get_type($info) != 'dictionary') {
-    stderr('Error', 'invalid torrent, info is not a dictionary');
+    setSessionVar('error', 'invalid torrent, info is not a dictionary');
+    header("Location: {$site_config['baseurl']}/upload.php");
+    exit();
 }
 if (!isset($info['name']) || !isset($info['piece length']) || !isset($info['pieces'])) {
-    stderr('Error', 'invalid torrent, missing parts of the info dictionary');
+    setSessionVar('error', 'invalid torrent, missing parts of the info dictionary');
+    header("Location: {$site_config['baseurl']}/upload.php");
+    exit();
 }
 if (bencdec::get_type($info['name']) != 'string' || bencdec::get_type($info['piece length']) != 'integer' || bencdec::get_type($info['pieces']) != 'string') {
-    stderr('Error', 'invalid torrent, invalid types in info dictionary');
+    setSessionVar('error', 'invalid torrent, invalid types in info dictionary');
+    header("Location: {$site_config['baseurl']}/upload.php");
+    exit();
 }
 $dname = $info['name'];
 $plen = $info['piece length'];
 $pieces_len = strlen($info['pieces']);
 if ($pieces_len % 20 != 0) {
-    stderr('Error', 'invalid pieces');
+    setSessionVar('error', 'invalid pieces');
+    header("Location: {$site_config['baseurl']}/upload.php");
+    exit();
 }
 if ($plen % 4096) {
-    stderr('Error', 'piece size is not mod(4096), wtf kind of torrent is that?');
+    setSessionVar('error', 'piece size is not mod(4096), invalid torrent.');
+    header("Location: {$site_config['baseurl']}/upload.php");
+    exit();
 }
 $filelist = [];
 if (isset($info['length'])) {
     if (bencdec::get_type($info['length']) != 'integer') {
-        stderr('Error', 'length must be an integer');
+        setSessionVar('error', 'length must be an integer');
+        header("Location: {$site_config['baseurl']}/upload.php");
+        exit();
     }
     $totallen = $info['length'];
     $filelist[] = [
         $dname,
         $totallen,
     ];
-    $type = 'single';
 } else {
     if (!isset($info['files'])) {
-        stderr('Error', 'missing both length and files');
+        setSessionVar('error', 'missing both length and files');
+        header("Location: {$site_config['baseurl']}/upload.php");
+        exit();
     }
     if (bencdec::get_type($info['files']) != 'list') {
-        stderr('Error', 'invalid files, not a list');
+        setSessionVar('error', 'invalid files, not a list');
+        header("Location: {$site_config['baseurl']}/upload.php");
+        exit();
     }
     $flist = &$info['files'];
     if (!count($flist)) {
-        stderr('Error', 'no files');
+        setSessionVar('error', 'no files');
+        header("Location: {$site_config['baseurl']}/upload.php");
+        exit();
     }
     $totallen = 0;
     foreach ($flist as $fn) {
         if (!isset($fn['length']) || !isset($fn['path'])) {
-            stderr('Error', 'file info not found');
+            setSessionVar('error', 'file info not found');
+            header("Location: {$site_config['baseurl']}/upload.php");
+            exit();
         }
         if (bencdec::get_type($fn['length']) != 'integer' || bencdec::get_type($fn['path']) != 'list') {
-            stderr('Error', 'invalid file info');
+            setSessionVar('error', 'invalid file info');
+            header("Location: {$site_config['baseurl']}/upload.php");
+            exit();
         }
         $ll = $fn['length'];
         $ff = $fn['path'];
@@ -218,12 +274,16 @@ if (isset($info['length'])) {
         $ffa = [];
         foreach ($ff as $ffe) {
             if (bencdec::get_type($ffe) != 'string') {
-                stderr('Error', 'filename type error');
+                setSessionVar('error', 'filename type error');
+                header("Location: {$site_config['baseurl']}/upload.php");
+                exit();
             }
             $ffa[] = $ffe;
         }
         if (!count($ffa)) {
-            stderr('Error', 'filename error');
+            setSessionVar('error', 'filename error');
+            header("Location: {$site_config['baseurl']}/upload.php");
+            exit();
         }
         $ffe = implode('/', $ffa);
         $filelist[] = [
@@ -231,12 +291,13 @@ if (isset($info['length'])) {
             $ll,
         ];
     }
-    $type = 'multi';
 }
 $num_pieces = $pieces_len / 20;
 $expected_pieces = (int)ceil($totallen / $plen);
 if ($num_pieces != $expected_pieces) {
-    stderr('Whoops', 'total file size and number of pieces do not match');
+    setSessionVar('error', 'total file size and number of pieces do not match');
+    header("Location: {$site_config['baseurl']}/upload.php");
+    exit();
 }
 //==
 $tmaker = (isset($dict['created by']) && !empty($dict['created by'])) ? sqlesc($dict['created by']) : sqlesc($lang['takeupload_unkown']);
@@ -245,7 +306,7 @@ $dict['comment'] = ("In using this torrent you are bound by the {$site_config['s
 $visible = (XBT_TRACKER == true ? 'yes' : 'no');
 $torrent = str_replace('_', ' ', $torrent);
 $vip = (isset($_POST['vip']) ? '1' : '0');
-$ret = sql_query('INSERT INTO torrents (search_text, filename, owner, visible, vip, release_group, newgenre, poster, anonymous, allow_comments, info_hash, name, size, numfiles, type, offer, request, url, subs, descr, ori_descr, description, category, free, silver, save_as, youtube, tags, added, last_action, mtime, ctime, freetorrent, nfo, client_created_by) VALUES (' . implode(',', array_map('sqlesc', [
+$sql = 'INSERT INTO torrents (search_text, filename, owner, visible, vip, release_group, newgenre, poster, anonymous, allow_comments, info_hash, name, size, numfiles, offer, request, url, subs, descr, ori_descr, description, category, free, silver, save_as, youtube, tags, added, last_action, mtime, ctime, freetorrent, nfo, client_created_by) VALUES (' . implode(',', array_map('sqlesc', [
         searchfield("$shortfname $dname $torrent"),
         $fname,
         $CURUSER['id'],
@@ -260,7 +321,6 @@ $ret = sql_query('INSERT INTO torrents (search_text, filename, owner, visible, v
         $torrent,
         $totallen,
         count($filelist),
-        $type,
         $offer,
         $request,
         $url,
@@ -274,12 +334,17 @@ $ret = sql_query('INSERT INTO torrents (search_text, filename, owner, visible, v
         $dname,
         $youtube,
         $tags,
-    ])) . ', ' . TIME_NOW . ', ' . TIME_NOW . ', ' . TIME_NOW . ', ' . TIME_NOW . ", $freetorrent, $nfo, $tmaker)");
+    ])) . ', ' . TIME_NOW . ', ' . TIME_NOW . ', ' . TIME_NOW . ', ' . TIME_NOW . ", $freetorrent, $nfo, $tmaker)";
+$ret = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 if (!$ret) {
     if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
-        stderr($lang['takeupload_failed'], $lang['takeupload_already']);
+        setSessionVar('error', $lang['takeupload_already']);
+        header("Location: {$site_config['baseurl']}/upload.php");
+        exit();
     }
-    stderr($lang['takeupload_failed'], 'mysql puked: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+    setSessionVar('error', 'mysql puked: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+    header("Location: {$site_config['baseurl']}/upload.php");
+    exit();
 }
 if (XBT_TRACKER == false) {
     remove_torrent($infohash);
@@ -295,7 +360,7 @@ if (isset($_POST['uplver']) && $_POST['uplver'] == 'yes') {
     $message = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] " . htmlsafechars($torrent) . '[/url] Uploaded by ' . htmlsafechars($CURUSER['username']) . '';
 }
 $messages = "{$site_config['site_name']} New Torrent: $torrent Uploaded By: $anon " . mksize($totallen) . " {$site_config['baseurl']}/details.php?id=$id";
-sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id));
+sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 function file_list($arr, $id)
 {
     foreach ($arr as $v) {
@@ -305,18 +370,20 @@ function file_list($arr, $id)
     return join(',', $new);
 }
 
-sql_query('INSERT INTO files (torrent, filename, size) VALUES ' . file_list($filelist, $id));
+sql_query('INSERT INTO files (torrent, filename, size) VALUES ' . file_list($filelist, $id)) or sqlerr(__FILE__, __LINE__);
 //==
 $dir = $site_config['torrent_dir'] . '/' . $id . '.torrent';
 if (!bencdec::encode_file($dir, $dict)) {
-    stderr('Error', 'Could not properly encode file');
+    setSessionVar('error', 'Could not properly encode file');
+    header("Location: {$site_config['baseurl']}/upload.php");
+    exit();
 }
 @unlink($tmpname);
 chmod($dir, 0664);
 //==
 if ($site_config['seedbonus_on'] == 1) {
     //===add karma
-    sql_query('UPDATE users SET seedbonus=seedbonus+' . sqlesc($site_config['bonus_per_upload']) . ', numuploads=numuploads+1 WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus_per_upload']) . ', numuploads = numuploads+ 1  WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     //===end
     $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus_per_upload']);
     $mc1->begin_transaction('userstats_' . $CURUSER['id']);
@@ -336,12 +403,12 @@ if ($site_config['autoshout_on'] == 1) {
 }
 //=== if it was an offer notify the folks who liked it :D
 if ($offer > 0) {
-    $res_offer = sql_query('SELECT user_id FROM offer_votes WHERE vote = \'yes\' AND user_id != ' . sqlesc($CURUSER['id']) . ' AND offer_id = ' . sqlesc($offer)) or sqlerr(__FILE__, __LINE__);
+    $res_offer = sql_query("SELECT user_id FROM offer_votes WHERE vote = 'yes' AND user_id != " . sqlesc($CURUSER['id']) . " AND offer_id = " . sqlesc($offer)) or sqlerr(__FILE__, __LINE__);
     $subject = sqlesc('An offer you voted for has been uploaded!');
     $message = sqlesc("Hi, \n An offer you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent, ENT_QUOTES) . '[/url] to see the torrent page!');
     while ($arr_offer = mysqli_fetch_assoc($res_offer)) {
-        sql_query('INSERT INTO messages (sender, receiver, added, msg, subject, saved, location) 
-    VALUES(0, ' . sqlesc($arr_offer['user_id']) . ', ' . TIME_NOW . ', ' . $message . ', ' . $subject . ', \'yes\', 1)') or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO messages (sender, receiver, added, msg, subject, saved, location)
+    VALUES(0, ' . sqlesc($arr_offer['user_id']) . ', ' . TIME_NOW . ', ' . $message . ', ' . $subject . ', "yes", 1)') or sqlerr(__FILE__, __LINE__);
         $mc1->delete_value('inbox_new_' . $arr_offer['user_id']);
         $mc1->delete_value('inbox_new_sb_' . $arr_offer['user_id']);
     }
@@ -351,12 +418,12 @@ if ($offer > 0) {
 $filled = 0;
 //=== if it was a request notify the folks who voted :D
 if ($request > 0) {
-    $res_req = sql_query('SELECT user_id FROM request_votes WHERE vote = \'yes\' AND request_id = ' . sqlesc($request)) or sqlerr(__FILE__, __LINE__);
+    $res_req = sql_query('SELECT user_id FROM request_votes WHERE vote = "yes" AND request_id = ' . sqlesc($request)) or sqlerr(__FILE__, __LINE__);
     $subject = sqlesc('A  request you were interested in has been uploaded!');
     $message = sqlesc("Hi :D \n A request you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent, ENT_QUOTES) . '[/url] to see the torrent page!');
     while ($arr_req = mysqli_fetch_assoc($res_req)) {
-        sql_query('INSERT INTO messages (sender, receiver, added, msg, subject, saved, location) 
-    VALUES(0, ' . sqlesc($arr_req['user_id']) . ', ' . TIME_NOW . ', ' . $message . ', ' . $subject . ', \'yes\', 1)') or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO messages (sender, receiver, added, msg, subject, saved, location)
+    VALUES(0, ' . sqlesc($arr_req['user_id']) . ', ' . TIME_NOW . ', ' . $message . ', ' . $subject . ', "yes", 1)') or sqlerr(__FILE__, __LINE__);
         $mc1->delete_value('inbox_new_' . $arr_req['user_id']);
         $mc1->delete_value('inbox_new_sb_' . $arr_req['user_id']);
     }
@@ -369,16 +436,20 @@ if ($filled == 0) {
     write_log(sprintf($lang['takeupload_log'], $id, $torrent, $CURUSER['username']));
 }
 /* RSS feeds */
+/*
 if (($fd1 = @fopen('rss.xml', 'w')) && ($fd2 = fopen('rssdd.xml', 'w'))) {
     $cats = '';
-    $res = sql_query('SELECT id, name FROM categories');
+    $res = sql_query('SELECT id, name FROM categories') or sqlerr(__FILE__, __LINE__);
     while ($arr = mysqli_fetch_assoc($res)) {
         $cats[$arr['id']] = $arr['name'];
     }
     $s = "<?xml version=\"1.0\" encoding=\"iso-8859-1\" ?>\n<rss version=\"0.91\">\n<channel>\n" . "<title>{$site_config['site_name']}</title>\n<description>Installer09 is the best!</description>\n<link>{$site_config['baseurl']}/</link>\n";
     @fwrite($fd1, $s);
     @fwrite($fd2, $s);
-    $r = sql_query('SELECT id,name,descr,filename,category FROM torrents ORDER BY added DESC LIMIT 15') or sqlerr(__FILE__, __LINE__);
+    $r = sql_query('SELECT id, name, descr, filename, category
+                    FROM torrents
+                    ORDER BY added DESC
+                    LIMIT 15') or sqlerr(__FILE__, __LINE__);
     while ($a = mysqli_fetch_assoc($r)) {
         $cat = $cats[$a['category']];
         $s = "<item>\n<title>" . htmlsafechars($a['name'] . " ($cat)") . "</title>\n" . '<description>' . htmlsafechars($a['descr']) . "</description>\n";
@@ -394,6 +465,7 @@ if (($fd1 = @fopen('rss.xml', 'w')) && ($fd2 = fopen('rssdd.xml', 'w'))) {
     @fclose($fd1);
     @fclose($fd2);
 }
+*/
 /* Email notifs */
 /*******************
  *
@@ -451,4 +523,6 @@ if (($fd1 = @fopen('rss.xml', 'w')) && ($fd2 = fopen('rssdd.xml', 'w'))) {
  * }
  * }
  *******************/
-header("Location: {$site_config['baseurl']}/details.php?id=$id&uploaded=1");
+
+setSessionVar('success', $lang['details_success']);
+header("Location: {$site_config['baseurl']}/details.php?id=$id");

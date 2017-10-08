@@ -14,7 +14,7 @@ if ($site_config['seedbonus_on'] == 0) {
     stderr('Information', 'The Karma bonus system is currently offline for maintainance work');
 }
 
-$HTMLOUT = $class = '';
+$HTMLOUT = '';
 
 function I_smell_a_rat($var)
 {
@@ -35,15 +35,15 @@ if (isset($_GET['freeleech_success']) && $_GET['freeleech_success']) {
     }
     if ($freeleech_success == '1') {
         if ($_GET['norefund'] != '0') {
-            $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-                "<td align='left' class='one'><img src='{$site_config['pic_base_url']}/smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>
+            $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>" .
+                "<td><img src='{$site_config['pic_base_url']}/smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td><b>Congratulations! </b>
 {$CURUSER['username']} you have set the tracker <b>Free Leech !</b> <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br><br>Remaining " . htmlsafechars($_GET['norefund']) . ' points have been contributed towards the next freeleech period automatically!' .
                 "<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
                 '</td></tr></table>';
             echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         } else {
-            $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-                "<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>
+            $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>" .
+                "<td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td><b>Congratulations! </b>
 {$CURUSER['username']} you have set the tracker <b>Free Leech !</b> <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br>" .
                 "<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
                 '</td></tr></table>';
@@ -53,8 +53,8 @@ if (isset($_GET['freeleech_success']) && $_GET['freeleech_success']) {
         die;
     }
     if ($freeleech_success == '2') {
-        $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-            "<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>" .
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>" .
+            "<td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td><b>Congratulations! </b>" .
             "{$CURUSER['username']} you have contributed towards making the tracker Free Leech ! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br>" .
             "<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
             '</td></tr></table>';
@@ -70,15 +70,15 @@ if (isset($_GET['doubleup_success']) && $_GET['doubleup_success']) {
     }
     if ($doubleup_success == '1') {
         if ($_GET['norefund'] != '0') {
-            $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-                "<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>
+            $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>" .
+                "<td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td><b>Congratulations! </b>
 {$CURUSER['username']} you have set the tracker <b>Double Up !</b> <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br><br>Remaining " . htmlsafechars($_GET['norefund']) . ' points have been contributed towards the next Double upload period automatically!' .
                 "<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
                 '</td></tr></table>';
             echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         } else {
-            $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-                "<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>
+            $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>" .
+                "<td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td><b>Congratulations! </b>
 {$CURUSER['username']} you have set the tracker <b>Double Up !</b> <img src={$site_config['pic_base_url']}smilies/w00t.gif alt='w00t' title='W00t' /><br>" .
                 "<b /r> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
                 '</td></tr></table>';
@@ -88,8 +88,8 @@ if (isset($_GET['doubleup_success']) && $_GET['doubleup_success']) {
         die;
     }
     if ($doubleup_success == '2') {
-        $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-            "<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>" .
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>" .
+            "<td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td><b>Congratulations! </b>" .
             "{$CURUSER['username']} you have contributed towards making the tracker Double Upload ! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br>" .
             "<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
             '</td></tr></table>';
@@ -105,15 +105,15 @@ if (isset($_GET['halfdown_success']) && $_GET['halfdown_success']) {
     }
     if ($halfdown_success == '1') {
         if ($_GET['norefund'] != '0') {
-            $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-                "<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>
+            $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>" .
+                "<td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td><b>Congratulations! </b>
 {$CURUSER['username']} you have set the tracker <b>Half Download !</b> <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br><br>Remaining " . htmlsafechars($_GET['norefund']) . ' points have been contributed towards the next Half download period automatically!' .
                 "<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
                 '</td></tr></table>';
             echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         } else {
-            $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-                "<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>
+            $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>" .
+                "<td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td><b>Congratulations! </b>
 {$CURUSER['username']} you have set the tracker <b>Half Download !</b> <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br>" .
                 "<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
                 '</td></tr></table>';
@@ -123,8 +123,8 @@ if (isset($_GET['halfdown_success']) && $_GET['halfdown_success']) {
         die;
     }
     if ($halfdown_success == '2') {
-        $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-            "<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td align='left' class='one'><b>Congratulations! </b>" .
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>" .
+            "<td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td><td><b>Congratulations! </b>" .
             "{$CURUSER['username']} you have contributed towards making the tracker Half Download ! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' /><br>" .
             "<br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>" .
             '</td></tr></table>';
@@ -141,37 +141,37 @@ switch (true) {
         $amt = (float)$_GET['amt'];
 
         switch ($amt) {
-            case $amt == 275.0:
+            case $amt == 275:
                 $amt = '1 GB';
                 break;
-            case $amt == 350.0:
+            case $amt == 350:
                 $amt = '2.5 GB';
                 break;
-            case $amt == 550.0:
+            case $amt == 550:
                 $amt = '5 GB';
                 break;
-            case $amt == 1000.0:
+            case $amt == 1000:
                 $amt = '10 GB';
                 break;
-            case $amt == 2000.0:
+            case $amt == 2000:
                 $amt = '25 GB';
                 break;
-            case $amt == 4000.0:
+            case $amt == 4000:
                 $amt = '50 GB';
                 break;
-            case $amt == 8000.0:
+            case $amt == 8000:
                 $amt = '100 GB';
                 break;
-            case $amt == 40000.0:
+            case $amt == 40000:
                 $amt = '520 GB';
                 break;
             default:
                 $amt = '1 TB';
         }
 
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>
-<td class='one' align='left'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
-<td class='one' align='left'><b>Congratulations ! </b>" . $CURUSER['username'] . ' you have just increased your upload amount by ' . $amt . "!
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>
+<td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
+<td><b>Congratulations ! </b>" . $CURUSER['username'] . ' you have just increased your upload amount by ' . $amt . "!
 <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br><br><br> click to go back to your
 <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -180,9 +180,9 @@ switch (true) {
     case isset($_GET['anonymous_success']): {
         I_smell_a_rat($_GET['anonymous_success']);
     }
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>
-<td class='one' align='left'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
-<td class='one' align='left'><b>Congratulations ! </b>" . $CURUSER['username'] . " you have just purchased Anonymous profile for 14 days!
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>
+<td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
+<td><b>Congratulations ! </b>" . $CURUSER['username'] . " you have just purchased Anonymous profile for 14 days!
 <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br><br><br> click to go back to your
 <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -191,9 +191,9 @@ switch (true) {
     case isset($_GET['parked_success']): {
         I_smell_a_rat($_GET['parked_success']);
     }
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>
-<td class='one' align='left'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
-<td class='one' align='left'><b>Congratulations ! </b>" . $CURUSER['username'] . " you have just purchased parked option for your profile !
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>
+<td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
+<td><b>Congratulations ! </b>" . $CURUSER['username'] . " you have just purchased parked option for your profile !
 <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br><br><br> click to go back to your
 <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -202,9 +202,9 @@ switch (true) {
     case isset($_GET['freeyear_success']): {
         I_smell_a_rat($_GET['freeyear_success']);
     }
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>
-<td class='one' align='left'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
-<td class='one' align='left'><b>Congratulations ! </b>" . $CURUSER['username'] . " you have just purchased freeleech for one year!
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>
+<td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
+<td><b>Congratulations ! </b>" . $CURUSER['username'] . " you have just purchased freeleech for one year!
 <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br><br><br> click to go back to your
 <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -214,9 +214,9 @@ switch (true) {
         I_smell_a_rat($_GET['freeslots_success']);
     }
 
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>
-<td class='one' align='left'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
-<td class='one' align='left'><b>Congratulations ! </b>" . $CURUSER['username'] . " you have got your self 3 freeleech slots!!
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>
+<td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
+<td><b>Congratulations ! </b>" . $CURUSER['username'] . " you have got your self 3 freeleech slots!!
 <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br><br><br> click to go back to your
 <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -226,9 +226,9 @@ switch (true) {
         I_smell_a_rat($_GET['itrade_success']);
     }
 
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>
-<td class='one' align='left'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
-<td class='one' align='left'><b>Congratulations ! </b>" . $CURUSER['username'] . " you have got your self 200 points !!
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>
+<td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td>
+<td><b>Congratulations ! </b>" . $CURUSER['username'] . " you have got your self 200 points !!
 <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br><br><br> click to go back to your
 <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -238,9 +238,9 @@ switch (true) {
         I_smell_a_rat($_GET['itrade2_success']);
     }
 
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>
-<td class='one' align='left'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td>
-<td class='one' align='left'><b>Sorry ! </b>" . $CURUSER['username'] . " you just got yourself 2 freeslots !!
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>
+<td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td>
+<td><b>Sorry ! </b>" . $CURUSER['username'] . " you just got yourself 2 freeslots !!
 <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='W00t' title='W00t' /><br><br><br><br> click to go back to your
 <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -249,8 +249,8 @@ switch (true) {
     case isset($_GET['pirate_success']): {
         I_smell_a_rat($_GET['pirate_success']);
     }
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr>
-<tr><td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/pirate2.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr>
+<tr><td><img src='{$site_config['pic_base_url']}smilies/pirate2.gif' alt='good_karma' title='Good karma' /></td><td>
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself Pirate Status and Freeleech for two weeks! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
 <br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -259,8 +259,8 @@ switch (true) {
     case isset($_GET['king_success']): {
         I_smell_a_rat($_GET['king_success']);
     }
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr>
-<tr><td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/king.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr>
+<tr><td><img src='{$site_config['pic_base_url']}smilies/king.gif' alt='good_karma' title='Good karma' /></td><td>
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself King Status and Freeleech for one month! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
 <br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -273,19 +273,19 @@ switch (true) {
         $amt = (float)$_GET['amt'];
 
         switch ($amt) {
-            case $amt == 150.0:
+            case $amt == 150:
                 $amt = '1 GB';
                 break;
-            case $amt == 300.0:
+            case $amt == 300:
                 $amt = '2.5 GB';
                 break;
             default:
                 $amt = '5 GB';
         }
 
-        $HTMLOUT .= "<table width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>" .
-            "<td class='one align='left'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td>" .
-            "<td class='one' align='left'><b>Congratulations ! </b>" . $CURUSER['username'] . ' you have just decreased your download amount by ' . $amt . '!' .
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>" .
+            "<td class='one><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' /></td>" .
+            "<td><b>Congratulations ! </b>" . $CURUSER['username'] . ' you have just decreased your download amount by ' . $amt . '!' .
             "<img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' /><br><br><br><br> click to go back to your " .
             "<a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -294,8 +294,8 @@ switch (true) {
     case isset($_GET['class_success']):
         I_smell_a_rat($_GET['class_success']);
 
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr>
-<tr><td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr>
+<tr><td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td>
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself VIP Status for one month! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
 <br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -304,8 +304,8 @@ switch (true) {
     case isset($_GET['smile_success']):
         I_smell_a_rat($_GET['smile_success']);
 
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr>
-<tr><td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr>
+<tr><td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td>
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself a set of custom smilies for one month! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
 <br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -314,8 +314,8 @@ switch (true) {
     case isset($_GET['warning_success']):
         I_smell_a_rat($_GET['warning_success']);
 
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr>
-<tr><td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr>
+<tr><td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td>
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have removed your warning for the low price of 1000 points!! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
 <br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -324,8 +324,8 @@ switch (true) {
     case isset($_GET['invite_success']):
         I_smell_a_rat($_GET['invite_success']);
 
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr><td>
+<img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td>
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got your self 3 new invites! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br>
 click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -334,8 +334,8 @@ click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybo
     case isset($_GET['freeslots_success']):
         I_smell_a_rat($_GET['freeslots_success']);
 
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr><td>
+<img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td>
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got your self 3 freeleech slots! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br>
 click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -344,8 +344,8 @@ click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybo
     case isset($_GET['title_success']):
         I_smell_a_rat($_GET['title_success']);
 
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>
-<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>
+<td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td>
 <b>Congratulations! </b>" . $CURUSER['username'] . ' you are now known as <b>' . $CURUSER['title'] . "</b>! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
 <br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -354,8 +354,8 @@ click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybo
     case isset($_GET['ratio_success']):
         I_smell_a_rat($_GET['ratio_success']);
 
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr>
-<td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'><b>Congratulations! </b> " . $CURUSER['username'] . " you
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>
+<td><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td><b>Congratulations! </b> " . $CURUSER['username'] . " you
 have gained a 1 to 1 ratio on the selected torrent, and the difference in MB has been added to your total upload! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
 <br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br>
 </td></tr></table>";
@@ -365,8 +365,8 @@ have gained a 1 to 1 ratio on the selected torrent, and the difference in MB has
     case isset($_GET['gift_fail']):
         I_smell_a_rat($_GET['gift_fail']);
 
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Huh?</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$site_config['pic_base_url']}smilies/cry.gif' alt='bad_karma' title='Bad karma' /></td><td align='left' class='one'><b>Not so fast there Mr. fancy pants!</b><br>
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Huh?</h1></td></tr><tr><td>
+<img src='{$site_config['pic_base_url']}smilies/cry.gif' alt='bad_karma' title='Bad karma' /></td><td><b>Not so fast there Mr. fancy pants!</b><br>
 <b>" . $CURUSER['username'] . "...</b> you can not spread the karma to yourself...<br>If you want to spread the love, pick another user! <br>
 <br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -375,8 +375,8 @@ have gained a 1 to 1 ratio on the selected torrent, and the difference in MB has
     case isset($_GET['gift_fail_user']):
         I_smell_a_rat($_GET['gift_fail_user']);
 
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Error</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$site_config['pic_base_url']}smilies/cry.gif' alt='bad_karma' title='Bad karma' /></td><td align='left' class='one'><b>Sorry " . $CURUSER['username'] . "...</b>
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Error</h1></td></tr><tr><td>
+<img src='{$site_config['pic_base_url']}smilies/cry.gif' alt='bad_karma' title='Bad karma' /></td><td><b>Sorry " . $CURUSER['username'] . "...</b>
 <br> No User with that username <br><br> click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.
 <br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -387,7 +387,7 @@ have gained a 1 to 1 ratio on the selected torrent, and the difference in MB has
                                 FROM torrents
                                 WHERE id = ' . sqlesc((int) $_GET['t_name'])) or sqlerr(__FILE__, __LINE__);
         $arr_free = mysqli_fetch_assoc($res_free);
-        stderr('Success!', '<img src="./images/smilies/karma.gif" alt="good karma" /> <b>Congratulations ' . $CURUSER['username'] . '!!!</b> <img src="./images/smilies/karma.gif" alt="good karma" /><br>  you have ReAnimated the torrent <b><a class="altlink" href="details.php?id=' . $arr_free['id'] . '">' . htmlsafechars($arr_free['name']) . '</a></b>! Bringing it back to page one! <img src="./images/smilies/w00t.gif" alt="w00t" /><br><br>
+        stderr('Success!', '<img src="./images/smilies/karma.gif" alt="good karma" /> <b>Congratulations ' . $CURUSER['username'] . '!!!</b> <img src="./images/smilies/karma.gif" alt="good karma" /><br> you have ReAnimated the torrent <b><a class="altlink" href="details.php?id=' . $arr_free['id'] . '">' . htmlsafechars($arr_free['name']) . '</a></b>! Bringing it back to page one! <img src="./images/smilies/w00t.gif" alt="w00t" /><br><br>
 Click to go back to your <a class="altlink" href="mybonus.php">Karma Points</a> page.<br><br>');
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
@@ -395,8 +395,8 @@ Click to go back to your <a class="altlink" href="mybonus.php">Karma Points</a> 
     case isset($_GET['gift_fail_points']):
         I_smell_a_rat($_GET['gift_fail_points']);
 
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Oops!</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$site_config['pic_base_url']}smilies/cry.gif' alt='oups' title='Bad karma' /></td><td align='left' class='one'><b>Sorry </b>" . $CURUSER['username'] . " you dont have enough Karma points
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Oops!</h1></td></tr><tr><td>
+<img src='{$site_config['pic_base_url']}smilies/cry.gif' alt='oups' title='Bad karma' /></td><td><b>Sorry </b>" . $CURUSER['username'] . " you dont have enough Karma points
 <br> go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
         die;
@@ -404,8 +404,8 @@ Click to go back to your <a class="altlink" href="mybonus.php">Karma Points</a> 
     case isset($_GET['gift_success']):
         I_smell_a_rat($_GET['gift_success']);
 
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'><b>Congratulations! " . $CURUSER['username'] . ' </b>
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr><td>
+<img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td><b>Congratulations! " . $CURUSER['username'] . ' </b>
 you have spread the Karma well.<br><br>Member <b>' . htmlsafechars($_GET['usernamegift']) . '</b> will be pleased with your kindness!<br><br>This is the message that was sent:<br>
 <b>Subject:</b> Someone Loves you!<br> <p>You have been given a gift of <b>' . ((int) $_GET['gift_amount_points']) . '</b> Karma points by ' . $CURUSER['username'] . "</p><br>
 You may also <a class='altlink' href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . ((int) $_GET['gift_id']) . "'>send " . htmlsafechars($_GET['usernamegift']) . " a message as well</a>, or go back to your <a class='altlink' href='mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
@@ -415,8 +415,8 @@ You may also <a class='altlink' href='{$site_config['baseurl']}/pm_system.php?ac
     case isset($_GET['bounty_success']): {
         I_smell_a_rat($_GET['bounty_success']);
     }
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr>
-<tr><td align='left' class='one'><img src='{$site_config['pic_base_url']}smilies/pirate2.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr>
+<tr><td><img src='{$site_config['pic_base_url']}smilies/pirate2.gif' alt='good_karma' title='Good karma' /></td><td>
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself bounty and robbed many users of there reputation points! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br>
 <br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Points</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -425,8 +425,8 @@ You may also <a class='altlink' href='{$site_config['baseurl']}/pm_system.php?ac
     case isset($_GET['reputation_success']):
         I_smell_a_rat($_GET['reputation_success']);
 
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr><td>
+<img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td>
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got your 100 rep points! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br>
 click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -435,8 +435,8 @@ click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybo
     case isset($_GET['immunity_success']):
         I_smell_a_rat($_GET['immunity_success']);
 
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$site_config['pic_base_url']}smilies/yay.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr><td>
+<img src='{$site_config['pic_base_url']}smilies/yay.gif' alt='good_karma' title='Good karma' /></td><td>
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself immuntiy from auto hit and run warnings and auto leech warnings ! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br>
 click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -445,8 +445,8 @@ click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybo
     case isset($_GET['userblocks_success']):
         I_smell_a_rat($_GET['userblocks_success']);
 
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr><td>
+<img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td>
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself access to control the site user blocks! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br>
 click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -455,8 +455,8 @@ click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybo
     case isset($_GET['user_unlocks_success']):
         I_smell_a_rat($_GET['user_unlocks_success']);
 
-        $HTMLOUT .= "<table align='center' width='80%'><tr><td class='colhead' align='left' colspan='2'><h1>Success!</h1></td></tr><tr><td align='left' class='one'>
-<img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td align='left' class='one'>
+        $HTMLOUT .= "<table class='table table-bordered table-striped'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr><td>
+<img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' /></td><td>
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself unlocked bonus moods for use on site! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='w00t' /><br><br>
 click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br><br></td></tr></table>";
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();
@@ -1432,14 +1432,13 @@ if (isset($_GET['exchange'])) {
 }
 
 //==== This is the default page
-$HTMLOUT .= "<div class='roundedCorners' style='text-align:left;width:80%;border:1px solid black;padding:5px;'>
-<div style='background:transparent;height:25px;'>
-<span style='font-weight:bold;font-size:12pt;'> Karma Bonus Point's system :</span></div>";
-//== 09 Ezeros freeleech contribution - Bigjoos.Ezero
+$HTMLOUT .= "
+    <div class='container-fluid portlet'>
+        <div class='text-center size_6 top20 bottom20'>Karma Bonus Point's System</div>";
 $fpoints = $dpoints = $hpoints = $freeleech_enabled = $double_upload_enabled = $half_down_enabled = $top_donators = $top_donators2 = $top_donators3 = $count1 = '';
 // eZER0's mod for bonus contribution
 // Limited this to 3 because of performance reasons and i wanted to go through last 3 events, anyway the most we can have
-// is that halfdownload is enabled, double upload is enabled as well as freeleech !
+// is that halfdownload is enabled, double upload is enabled as well as freeleech!
 if (XBT_TRACKER == false) {
     if (($scheduled_events = $mc1->get_value('freecontribution_datas_')) === false) {
         $scheduled_events = mysql_fetch_all('SELECT * from `events` ORDER BY `startTime` DESC LIMIT 3;', []);
@@ -1483,10 +1482,6 @@ if (XBT_TRACKER == false) {
             }
         }
     }
-    //$mc1->delete_value('freecontribution_datas_');
-    //=== freeleech contribution meter
-    //$target_fl = 30000;
-    //=== get total points
     if (($freeleech_counter = $mc1->get_value('freeleech_counter')) === false) {
         $total_fl = sql_query('SELECT SUM(pointspool) AS pointspool, points
                                 FROM bonus
@@ -1576,43 +1571,43 @@ if (XBT_TRACKER == false) {
     }
     switch ($percent_hd) {
         case $percent_hd >= 90:
-            $font_color_hd = '<strong><font color="green">' . number_format($percent_hd) . '&#160;%</font></strong>';
+            $font_color_hd = '<strong><font color="green">' . number_format($percent_hd) . ' %</font></strong>';
             break;
         case $percent_hd >= 80:
-            $font_color_hd = '<strong><font color="lightgreen">' . number_format($percent_hd) . '&#160;%</font></strong>';
+            $font_color_hd = '<strong><font color="lightgreen">' . number_format($percent_hd) . ' %</font></strong>';
             break;
         case $percent_hd >= 70:
-            $font_color_hd = '<strong><font color="jade">' . number_format($percent_hd) . '&#160;%</font></strong>';
+            $font_color_hd = '<strong><font color="jade">' . number_format($percent_hd) . ' %</font></strong>';
             break;
         case $percent_hd >= 50:
-            $font_color_hd = '<strong><font color="turquoise">' . number_format($percent_hd) . '&#160;%</font></strong>';
+            $font_color_hd = '<strong><font color="turquoise">' . number_format($percent_hd) . ' %</font></strong>';
             break;
         case $percent_hd >= 40:
-            $font_color_hd = '<strong><font color="lightblue">' . number_format($percent_hd) . '&#160;%</font></strong>';
+            $font_color_hd = '<strong><font color="lightblue">' . number_format($percent_hd) . ' %</font></strong>';
             break;
         case $percent_hd >= 30:
-            $font_color_hd = '<strong><font color="yellow">' . number_format($percent_hd) . '&#160;%</font></strong>';
+            $font_color_hd = '<strong><font color="yellow">' . number_format($percent_hd) . ' %</font></strong>';
             break;
         case $percent_hd >= 20:
-            $font_color_hd = '<strong><font color="orange">' . number_format($percent_hd) . '&#160;%</font></strong>';
+            $font_color_hd = '<strong><font color="orange">' . number_format($percent_hd) . ' %</font></strong>';
             break;
         case $percent_hd < 20:
-            $font_color_hd = '<strong><font color="red">' . number_format($percent_hd) . '&#160;%</font></strong>';
+            $font_color_hd = '<strong><font color="red">' . number_format($percent_hd) . ' %</font></strong>';
             break;
     }
 
     if ($freeleech_enabled) {
-        $fstatus = "<strong><font color='green'>&#160;ON&#160;</font></strong>";
+        $fstatus = "<strong><font color='green'> ON </font></strong>";
     } else {
         $fstatus = $font_color_fl . '';
     }
     if ($double_upload_enabled) {
-        $dstatus = "<strong><font color='green'>&#160;ON&#160;</font></strong>";
+        $dstatus = "<strong><font color='green'> ON </font></strong>";
     } else {
         $dstatus = $font_color_du . '';
     }
     if ($half_down_enabled) {
-        $hstatus = "<strong><font color='green'>&#160;ON&#160;</font></strong>";
+        $hstatus = "<strong><font color='green'> ON </font></strong>";
     } else {
         $hstatus = $font_color_hd . '';
     }
@@ -1634,15 +1629,9 @@ if (count($top_donators) > 0) {
     $top_donator = "<h4>Top 10 Contributors </h4>\n";
     if ($top_donators) {
         foreach ($top_donators as $a) {
-            $top_donators_id = (int)$a['id'];
-            $damount_donated = (int)$a['total'];
-            //$top_donators_username = htmlsafechars($a['username']);
-            $user_stuff = $a;
-            $user_stuff['id'] = (int)$a['userid'];
-            $top_donator .= "<a href='./userdetails.php?id=$top_donators_id'>" . format_username($user_stuff['id']) . "</a> [$damount_donated]<br>";
+            $top_donator .= format_username($a['id']) . "  [" . number_format($a['total']) . "<br>";
         }
     } else {
-        //== If there are no donators
         if (empty($top_donators)) {
             $top_donator .= 'Nobodys contibuted yet !!';
         }
@@ -1666,15 +1655,9 @@ if (count($top_donators2) > 0) {
     $top_donator2 = "<h4>Top 10 Contributors </h4>\n";
     if ($top_donators2) {
         foreach ($top_donators2 as $b) {
-            $top_donators2_id = (int)$b['id'];
-            $damount_donated2 = (int)$b['total'];
-            //$top_donators2_username = htmlsafechars($b['username']);
-            $user_stuff = $b;
-            $user_stuff['id'] = (int)$b['userid'];
-            $top_donator2 .= "<a href='{$site_config['baseurl']}/userdetails.php?id=$top_donators2_id'>" . format_username($user_stuff['id']) . "</a> [$damount_donated2]<br>";
+            $top_donator2 .= format_username($b['id']) . " [" . number_format($b['total']) . "]<br>";
         }
     } else {
-        //== If there are no donators
         if (empty($top_donators2)) {
             $top_donator2 .= 'Nobodys contibuted yet !!';
         }
@@ -1698,17 +1681,11 @@ if (count($top_donators3) > 0) {
     $top_donator3 = "<h4>Top 10 Contributors </h4>\n";
     if ($top_donators3) {
         foreach ($top_donators3 as $c) {
-            $top_donators3_id = (int)$c['id'];
-            $damount_donated3 = (int)$c['total'];
-            //$top_donators3_username = htmlsafechars($c['username']);
-            $user_stuff = $c;
-            $user_stuff['id'] = (int)$c['userid'];
-            $top_donator3 .= "<a href='{$site_config['baseurl']}/userdetails.php?id=$top_donators3_id'>" . format_username($user_stuff['id']) . "</a> [$damount_donated3]<br>";
+            $top_donator3 .= format_username($c['id']) . " [" . number_format($c['total']) . "]<br>";
         }
     } else {
-        //== If there are no donators
         if (empty($top_donators3)) {
-            $top_donator3 .= 'Nobodys contibuted yet !!';
+            $top_donator3 .= 'Nobodys contibuted yet!';
         }
     }
 }
@@ -1716,118 +1693,120 @@ if (count($top_donators3) > 0) {
 //==End
 if (XBT_TRACKER == false) {
     //== Show the percentages
-    $HTMLOUT .= "<div align='center' style='background:transparent;height:25px;'>&#160;FreeLeech&#160;[&#160;";
+    $HTMLOUT .= "<div class='text-center size_5'> FreeLeech [ ";
     if ($freeleech_enabled) {
-        $HTMLOUT .= '<font color="green"><strong>&#160;ON</strong></font>&#160;' . get_date($freeleech_start_time, 'DATE') . '&#160;-&#160;' . get_date($freeleech_end_time, 'DATE');
+        $HTMLOUT .= '<font color="green"><strong> ON</strong></font> ' . get_date($freeleech_start_time, 'DATE') . ' - ' . get_date($freeleech_end_time, 'wDATE');
     } else {
         $HTMLOUT .= "<strong>{$fstatus}</strong>";
     }
-    $HTMLOUT .= '&#160;]';
+    $HTMLOUT .= ' ]';
 
-    $HTMLOUT .= '&#160;DoubleUpload&#160;[&#160;';
+    $HTMLOUT .= ' DoubleUpload [ ';
     if ($double_upload_enabled) {
-        $HTMLOUT .= '<font color="green"><strong>&#160;ON</strong></font>&#160;' . get_date($double_upload_start_time, 'DATE') . '&#160;-&#160;' . get_date($double_upload_end_time, 'DATE');
+        $HTMLOUT .= '<font color="green"><strong> ON</strong></font> ' . get_date($double_upload_start_time, 'DATE') . ' - ' . get_date($double_upload_end_time, 'DATE');
     } else {
         $HTMLOUT .= "<strong>{$dstatus}</strong>";
     }
-    $HTMLOUT .= '&#160;]';
+    $HTMLOUT .= ' ]';
 
-    $HTMLOUT .= '&#160;Half Download&#160;[&#160;';
+    $HTMLOUT .= ' Half Download [ ';
     if ($half_down_enabled) {
-        $HTMLOUT .= '<font color="green"><strong>&#160;ON</strong></font>&#160;' . get_date($half_down_start_time, 'DATE') . '&#160;-&#160;' . get_date($half_down_end_time, 'DATE');
+        $HTMLOUT .= '<font color="green"><strong> ON</strong></font> ' . get_date($half_down_start_time, 'DATE') . ' - ' . get_date($half_down_end_time, 'DATE');
     } else {
         $HTMLOUT .= "<strong>{$hstatus}</strong>";
     }
-    $HTMLOUT .= '&#160;]</div>';
+    $HTMLOUT .= ' ]</div>';
     //==End
 }
 $bonus = (float)$CURUSER['seedbonus'];
 $HTMLOUT .= "
-            <table align='center' width='100%' border='1' cellspacing='0' cellpadding='5'>
-            <tr>
-            <td align='center' colspan='4' style='background:transparent;height:25px;'>
-            Exchange your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Points</a> [ current " . $bonus . " ] for goodies!
-            <br><br>[ If no buttons appear, you have not earned enough bonus points to trade. ]<br><br>
-            </td></tr>
-            <tr>
-            <td style='background:transparent;height:25px;' align='left'>Description</td>
-            <td style='background:transparent;height:25px;' align='center'>Points</td>
-            <td style='background:transparent;height:25px;' align='center'>Trade</td></tr>";
+            <div class='bordered text-center top20'>
+                <span class='size_5'>Exchange your <span class='text-main'>" . number_format($bonus) . "</span> Karma Bonus Points for goodies!</span>
+                <br>
+                <span class='size_2'>
+                    [ If no buttons appear, you have not earned enough bonus points to trade. ]
+                </span>
+            </div>
+            <table class='table table-bordered table-striped top20 bottom20'>
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Points</th>
+                        <th>Trade</th>
+                    </tr>
+                </thead>";
 
 $res = sql_query("SELECT *
                     FROM bonus
                     WHERE enabled = 'yes'
                     ORDER BY id ASC") or sqlerr(__FILE__, __LINE__);
 while ($gets = mysqli_fetch_assoc($res)) {
-    //=======change colors
-    $count1 = (++$count1) % 2;
-    $class = ($count1 == 0 ? 'one' : 'two');
     $otheroption = "
-            <div class='" . $class . "'><b>Username:</b>
+            <div><b>Username:</b>
             <input type='text' name='username' size='20' maxlength='24' /></div>
-            <div class='" . $class . "'> <b>to be given: </b>
+            <div> <b>to be given: </b>
             <select name='bonusgift'>
-            <option value='100.0'> 100.0</option>
-            <option value='200.0'> 200.0</option>
-            <option value='300.0'> 300.0</option>
-            <option value='400.0'> 400.0</option>
-            <option value='500.0'> 500.0</option>
-            <option value='1000.0'> 1000.0</option>
-            <option value='5000.0'> 5000.0</option>
-            <option value='10000.0'> 20000.0</option>
-            <option value='20000.0'> 20000.0</option>
-            <option value='50000.0'> 50000.0</option>
-            <option value='100000.0'> 100000.0</option>
+            <option value='100'> 100</option>
+            <option value='200'> 200</option>
+            <option value='300'> 300</option>
+            <option value='400'> 400</option>
+            <option value='500'> 500</option>
+            <option value='1000'> 1,000</option>
+            <option value='5000'> 5,000</option>
+            <option value='10000'> 10,000</option>
+            <option value='20000'> 20,000</option>
+            <option value='50000'> 50,000</option>
+            <option value='100000'> 100,000</option>
             </select> Karma points!</div>";
 
     switch (true) {
         case $gets['id'] == 5:
-            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>Special Title</b> you would like to have <input type='text' name='title' size='30' maxlength='30' /> click Exchange! </td><td align='center' class='" . $class . "'>" . (float)$gets['points'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>Special Title</b> you would like to have <input type='text' name='title' size='30' maxlength='30' /> click Exchange! </td><td>" . (float)$gets['points'] . '</td>';
             break;
         case $gets['id'] == 7:
-            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br><br>Enter the <b>username</b> of the person you would like to send karma to, and select how many points you want to send and click Exchange!<br>' . $otheroption . "</td><td align=center class='" . $class . "'>min.<br>" . (float)$gets['points'] . '<br>max.<br>100000.0</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br><br>Enter the <b>username</b> of the person you would like to send karma to, and select how many points you want to send and click Exchange!<br>' . $otheroption . "</td><td>min.<br>" . (float)$gets['points'] . '<br>max.<br>100000</td>';
             break;
         case $gets['id'] == 9:
-            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "</td><td align='center' class='" . $class . "'>min.<br>" . (float)$gets['points'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "</td><td>min.<br>" . (float)$gets['points'] . '</td>';
             break;
         case $gets['id'] == 10:
-            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='text' name='torrent_id' size='4' maxlength='8' /> you would like to buy a 1 to 1 ratio on.</td><td align='center' class='" . $class . "'>min.<br>" . (float)$gets['points'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='text' name='torrent_id' size='4' maxlength='8' /> you would like to buy a 1 to 1 ratio on.</td><td>min.<br>" . (float)$gets['points'] . '</td>';
             break;
         case $gets['id'] == 11:
-            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color=\"#000000\">" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator . "<br>Enter the <b>amount to contribute</b><input type='text' name='donate' size='10' maxlength='10' /></td><td align='center' class='" . $class . "'>" . (float)$gets['minpoints'] . ' <br></td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color=\"#000000\">" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator . "<br>Enter the <b>amount to contribute</b><input type='text' name='donate' size='10' maxlength='10' /></td><td>" . (float)$gets['minpoints'] . ' <br></td>';
             break;
         case $gets['id'] == 12:
-            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color=\"#000000\">" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator2 . "<br>Enter the <b>amount to contribute</b><input type='text' name='donate' size='10' maxlength='10' /></td><td align='center' class='" . $class . "'>" . (float)$gets['minpoints'] . ' <br></td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color=\"#000000\">" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator2 . "<br>Enter the <b>amount to contribute</b><input type='text' name='donate' size='10' maxlength='10' /></td><td>" . (float)$gets['minpoints'] . ' <br></td>';
             break;
         case $gets['id'] == 13:
-            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color=\"#000000\">" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator3 . "<br>Enter the <b>amount to contribute</b><input type='text' name='donate' size='10' maxlength='10' /></td><td align='center' class='" . $class . "'>" . (float)$gets['minpoints'] . ' <br></td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color=\"#000000\">" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator3 . "<br>Enter the <b>amount to contribute</b><input type='text' name='donate' size='10' maxlength='10' /></td><td>" . (float)$gets['minpoints'] . ' <br></td>';
             break;
         case $gets['id'] == 34:
-            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='text' name='torrent_id' size='4' maxlength='8' /> you would like to bump.</td><td align='center' class='" . $class . "'>min.<br>" . (float)$gets['points'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='text' name='torrent_id' size='4' maxlength='8' /> you would like to bump.</td><td>min.<br>" . (float)$gets['points'] . '</td>';
             break;
         default:
-            $HTMLOUT .= "<tr><td align='left' class='" . $class . "'><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "</td><td align='center' class='" . $class . "'>" . (float)$gets['points'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "</td><td>" . (float)$gets['points'] . '</td>';
     }
 
     if ($bonus >= $gets['points'] or $bonus >= $gets['minpoints']) {
         switch (true) {
             case $gets['id'] == 7:
-                $HTMLOUT .= "<td class='" . $class . "'><input class='button' type='submit' name='submit' value='Karma Gift!' /></td></form>";
+                $HTMLOUT .= "<td><input class='btn' type='submit' name='submit' value='Karma Gift!' /></td></form>";
                 break;
             case $gets['id'] == 11:
-                $HTMLOUT .= "<td align='center' class='" . $class . "'>" . ((float)$gets['points'] - (float)$gets['pointspool']) . " <br>Points needed! <br><input class='button' type='submit' name='submit' value='Contribute!' /></td></form>";
+                $HTMLOUT .= "<td>" . ((float)$gets['points'] - (float)$gets['pointspool']) . " <br>Points needed! <br><input class='btn' type='submit' name='submit' value='Contribute!' /></td></form>";
                 break;
             case $gets['id'] == 12:
-                $HTMLOUT .= "<td align='center' class='" . $class . "'>" . ((float)$gets['points'] - (float)$gets['pointspool']) . " <br>Points needed! <br><input class='button' type='submit' name='submit' value='Contribute!' /></td></form>";
+                $HTMLOUT .= "<td>" . ((float)$gets['points'] - (float)$gets['pointspool']) . " <br>Points needed! <br><input class='btn' type='submit' name='submit' value='Contribute!' /></td></form>";
                 break;
             case $gets['id'] == 13:
-                $HTMLOUT .= "<td align='center' class='" . $class . "'>" . ((float)$gets['points'] - (float)$gets['pointspool']) . " <br>Points needed! <br><input class='button' type='submit' name='submit' value='Contribute!' /></td></form>";
+                $HTMLOUT .= "<td>" . ((float)$gets['points'] - (float)$gets['pointspool']) . " <br>Points needed! <br><input class='btn' type='submit' name='submit' value='Contribute!' /></td></form>";
                 break;
             default:
-                $HTMLOUT .= "<td class='" . $class . "'><input class='button' type='submit' name='submit' value='Exchange!' /></td></form>";
+                $HTMLOUT .= "<td><input class='btn' type='submit' name='submit' value='Exchange!' /></td></form>";
         }
     } else {
-        $HTMLOUT .= "<td class='" . $class . "' align='center'><b>Not Enough Karma</b></td>";
+        $HTMLOUT .= "<td><b>Not Enough Karma</b></td>";
     }
 }
 
@@ -1843,61 +1822,83 @@ $at = $at >= $bmt ? $bmt : $at;
 
 $atform = number_format($at);
 $activet = number_format($at * $bpt * 2, 2);
+//crap
+$HTMLOUT .= "</tr></table></div>
+    <div class='container-fluid portlet'>
+        <h2 class='top20'>What the hell are these Karma Bonus points, and how do I get them?</h2>
+        <div class='bordered padleft10 padright10 bottom10'>
+            <div class='alt_bordered transparent'>
+                <h4>
+                    For every hour that you seed a torrent, you are awarded with " . number_format($bpt * 2) . " Karma Bonus Point...
+                </h4>
+                <p>
+                    If you save up enough of them, you can trade them in for goodies like bonus GB(s) to increase your upload stats, also to get more invites, or doing the real Karma booster... give them to another user!<br>
+                    This is awarded on a per torrent basis (max of $bmt) even if there are no leechers on the Torrent you are seeding! <br>
+                    Seeding Torrents Based on Connectable Status =
+                    <span>
+                        <span class='tooltipper' title='Seeding $atform torrents'> $atform </span>*
+                        <span class='tooltipper' title='$bpt per announce period'> $bpt </span>*
+                        <span class='tooltipper' title='2 announce periods per hour'> 2 </span>= $activet
+                    </span>
+                    karma per hour
+                </p>
+            </div>
+        </div>
 
-$HTMLOUT .= "</tr></table>
-  <div style='background:transparent;height:25px;'>
-  <span style='font-weight:bold;font-size:12pt;'>What the hell are these Karma Bonus points,
-  and how do I get them?</span></div>
-  <table align='center' width='100%'>
-  <tr>
-  <td class='one'>For every hour that you seed a torrent, you are awarded with " . number_format($bpt * 2) . " Karma Bonus Point... <br>
-  If you save up enough of them, you can trade them in for goodies like bonus GB(s) to increase your upload stats,<br>
-  also to get more invites, or doing the real Karma booster... give them to another user !<br>
-  This is awarded on a per torrent basis (max of $bmt) even if there are no leechers on the Torrent you are seeding! <br>
-  <br>
-  Seeding Torrents Based on Connectable Status = <span style='color:lime'><span title='Seeding $atform torrents'> $atform </span>*<span title='$bpt per announce period'> $bpt </span>*<span title='2 announce periods per hour'> 2 </span>= $activet</span> karma per hour <br><br>
+        <div class='bordered padleft10 padright10 bottom10'>
+            <div class='alt_bordered transparent'>
+                <h4>Other things that will get you karma points:</h4>
+                <p>
+                    Uploading a new torrent = 15 points<br>
+                    Filling a request = 10 points<br>
+                    Comment on torrent = 3 points<br>
+                    Saying thanks = 2 points<br>
+                    Rating a torrent = 2 points<br>
+                    Making a post = 1 point<br>
+                    Starting a topic = 2 points
+                </p>
+            </div>
+        </div>
 
-  <h1>Other things that will get you karma points : </h1>
-  &#186;&#160;Uploading a new torrent = 15 points
-  <br>&#186;&#160;Filling a request = 10 points
-  <br>&#186;&#160;Comment on torrent = 3 points
-  <br>&#186;&#160;Saying thanks = 2 points
-  <br>&#186;&#160;Rating a torrent = 2 points
-  <br>&#186;&#160;Making a post = 1 point
-  <br>&#186;&#160;Starting a topic = 2 points
-  <br>
-  <h1>Some things that will cost you karma points:</h1>
-  <br>
-  &#186;&#160;Upload credit
-  <br>&#186;&#160;Custom title
-  <br>&#186;&#160;One month VIP status
-  <br>&#186;&#160;A 1:1 ratio on a torrent
-  <br>&#186;&#160;Buying off your warning
-  <br>&#186;&#160;One month custom smilies for the forums and comments
-  <br>&#186;&#160;Getting extra invites
-  <br>&#186;&#160;Getting extra freeslots
-  <br>&#186;&#160;Giving a gift of karma points to another user
-  <br>&#186;&#160;Asking for a re-seed
-  <br>&#186;&#160;Making a request
-  <br>&#186;&#160;Freeleech, Doubleupload, Halfdownload contribution
-  <br>&#186;&#160;Anonymous profile
-  <br>&#186;&#160;Download reduction
-  <br>&#186;&#160;Freeleech for a year
-  <br>&#186;&#160;Pirate or King status
-  <br>&#186;&#160;Unlocking parked option
-  <br>&#186;&#160;Pirates bounty
-  <br>&#186;&#160;Reputation points
-  <br>&#186;&#160;Userblocks
-  <br>&#186;&#160;Bump a torrent
-  <br>&#186;&#160;User immuntiy
-  <br>&#186;&#160;User unlocks
-  <br>&#186;&#160;But keep in mind that everything that can get you karma can also be lost...<br><br>
-  Ie : if you up a torrent then delete it, you will gain and then lose 15 points, making a post and having it deleted will do the same... and there are other hidden bonus karma points all
-  over the site which is another way to help out your ratio !
-  <br><br>&#186;&#160;*Please note, staff can give or take away points for breaking the rules, or doing good for the community.
-  <br>
-  <div align='center'><br>
-  <a class='altlink' href='{$site_config['baseurl']}/index.php'><b>Back to homepage</b></a></div>
-  </td></tr></table></div>";
+        <div class='bordered padleft10 padright10 bottom10'>
+            <div class='alt_bordered transparent'>
+                <h4>Some things that will cost you karma points:</h4>
+                <p>
+                    Upload credit<br>
+                    Custom title<br>
+                    One month VIP status<br>
+                    A 1:1 ratio on a torrent<br>
+                    Buying off your warning<br>
+                    One month custom smilies for the forums and comments<br>
+                    Getting extra invites<br>
+                    Getting extra freeslots<br>
+                    Giving a gift of karma points to another user<br>
+                    Asking for a re-seed<br>
+                    Making a request<br>
+                    Freeleech, Doubleupload, Halfdownload contribution<br>
+                    Anonymous profile<br>
+                    Download reduction<br>
+                    Freeleech for a year<br>
+                    Pirate or King status<br>
+                    Unlocking parked option<br>
+                    Pirates bounty<br>
+                    Reputation points<br>
+                    Userblocks<br>
+                    Bump a torrent<br>
+                    User immuntiy<br>
+                    User unlocks<br>
+                </p>
+                <p>
+                    But keep in mind that everything that can get you karma can also be lost...<br>
+                </p>
+                <p>
+                    ie: If you up a torrent then delete it, you will gain and then lose 15 points, making a post and having it deleted will do the same... and there are other hidden bonus karma points all over the site which is another way to help out your ratio !
+                </p>
+                <span>
+                    *Please note, staff can give or take away points for breaking the rules, or doing good for the community.
+                </span>
+            </div>
+        </div>
+    </div>";
 
 echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page", true, $stdhead) . $HTMLOUT . stdfoot();

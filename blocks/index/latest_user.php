@@ -7,7 +7,9 @@ $HTMLOUT .= "
         <a id='latestuser-hash'></a>
         <fieldset id='latestuser' class='header'>
             <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_lmember']}</legend>
-            <div class='text-center'><p id='newestuser'>
-                <p>{$lang['index_wmember']}  " . format_username($latestuser_cache['id']) . "!</p>
+            <div class='bordered padleft10 padright10'>
+                <div class='alt_bordered transparent text-center'>
+                    <span>{$lang['index_wmember']} " . format_username($latestuser['id']) . "!</span>
+                </div>
             </div>
         </fieldset>";

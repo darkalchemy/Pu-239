@@ -90,17 +90,22 @@ function cleanup_show_main()
     $count1 = get_row_count('cleanup');
     $perpage = 15;
     $pager = pager($perpage, $count1, 'staffpanel.php?tool=cleanup_manager&amp;');
-    $htmlout = "<h2>{$lang['cleanup_head']}</h2>
-    <table class='table table-bordered' bgcolor='#333333' border='1' cellpadding='5px' width='80%'>
-    <tr>
-      <td class='colhead'>{$lang['cleanup_title']}</td>
-      <td class='colhead' width='150px'>{$lang['cleanup_run']}</td>
-      <td class='colhead' width='150px'>{$lang['cleanup_next']}</td>
-      <td class='colhead' width='40px'>{$lang['cleanup_edit']}</td>
-      <td class='colhead' width='40px'>{$lang['cleanup_delete']}</td>
-      <td class='colhead' width='40px'>{$lang['cleanup_on']}</td>
-      <td class='colhead' style='width: 40px;'>{$lang['cleanup_run_now']}</td>
-    </tr>";
+    $htmlout = "
+    <div class='container-fluid portlet'>
+        <h2 class='text-center top20'>{$lang['cleanup_head']}</h2>
+        <table class='table table-bordered table-striped bottom20'>
+            <thead>
+                <tr>
+                    <th class='colhead'>{$lang['cleanup_title']}</th>
+                    <th class='colhead' width='150px'>{$lang['cleanup_run']}</th>
+                    <th class='colhead' width='150px'>{$lang['cleanup_next']}</th>
+                    <th class='colhead' width='40px'>{$lang['cleanup_edit']}</th>
+                    <th class='colhead' width='40px'>{$lang['cleanup_delete']}</th>
+                    <th class='colhead' width='40px'>{$lang['cleanup_on']}</th>
+                    <th class='colhead' style='width: 40px;'>{$lang['cleanup_run_now']}</th>
+                </tr>
+            </thead>
+            <tbody>";
     $sql = sql_query('SELECT * FROM cleanup ORDER BY clean_time ASC, clean_increment DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
     if (!mysqli_num_rows($sql)) {
         stderr($lang['cleanup_stderr'], $lang['cleanup_panic']);
@@ -115,17 +120,17 @@ function cleanup_show_main()
           <td{$row['_class']}><strong>{$row['clean_title']}{$row['_title']}</strong><br>{$row['clean_desc']}</td>
           <td>" . mkprettytime($row['clean_increment']) . "</td>
           <td>{$row['_clean_time']}</td>
-          <td align='center'><a href='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=edit&amp;cid={$row['clean_id']}'>
+          <td><a href='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=edit&amp;cid={$row['clean_id']}'>
             <img src='./images/aff_tick.gif' alt='{$lang['cleanup_edit2']}' title='{$lang['cleanup_edit']}' border='0' height='12' width='12' /></a></td>
 
-          <td align='center'><a href='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=delete&amp;cid={$row['clean_id']}'>
+          <td><a href='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=delete&amp;cid={$row['clean_id']}'>
             <img src='./images/aff_cross.gif' alt='{$lang['cleanup_delete2']}' title='{$lang['cleanup_delete1']}' border='0' height='12' width='12' /></a></td>
-          <td align='center'><a href='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=unlock&amp;cid={$row['clean_id']}&amp;clean_on={$row['clean_on']}'>
+          <td><a href='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=unlock&amp;cid={$row['clean_id']}&amp;clean_on={$row['clean_on']}'>
             <img src='./images/warned.png' alt='{$lang['cleanup_off_on2']}' title='{$lang['cleanup_off_on']}' border='0' height='12' width='12' /></a></td>
-<td align='center'><a href='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=run&amp;cid={$row['clean_id']}'>{$lang['cleanup_run_now2']}</a></td>
+<td><a href='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=run&amp;cid={$row['clean_id']}'>{$lang['cleanup_run_now2']}</a></td>
  </tr>";
     }
-    $htmlout .= '</table>';
+    $htmlout .= '</tbody></table></div>';
     if ($count1 > $perpage) {
         $htmlout .= $pager['pagerbottom'];
     }
@@ -195,7 +200,7 @@ function cleanup_show_edit()
     {$lang['cleanup_show_yes']} <input name='clean_on' value='1' $cleanon type='radio' />&#160;&#160;&#160;<input name='clean_on' value='0' $cleanoff type='radio' /> {$lang['cleanup_show_no']}
     </div>
 
-    <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_show_edit']}' class='button' />&#160;<input type='button' value='{$lang['cleanup_show_cancel']}' onclick='javascript: history.back()' /></div>
+    <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_show_edit']}' class='btn' />&#160;<input type='button' value='{$lang['cleanup_show_cancel']}' onclick='javascript: history.back()' /></div>
     </form>
     </div>";
     echo stdhead($lang['cleanup_show_stdhead']) . $htmlout . stdfoot();
@@ -306,7 +311,7 @@ function cleanup_show_new()
     {$lang['cleanup_show_yes']} <input name='clean_on' value='1' type='radio' />&#160;&#160;&#160;<input name='clean_on' value='0' checked='checked' type='radio' /> {$lang['cleanup_show_no']}
     </div>
 
-    <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_new_add']}' class='button' />&#160;<input type='button' value='{$lang['cleanup_new_cancel']}' onclick='javascript: history.back()' /></div>
+    <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_new_add']}' class='btn' />&#160;<input type='button' value='{$lang['cleanup_new_cancel']}' onclick='javascript: history.back()' /></div>
     </form>
     </div>";
     echo stdhead($lang['cleanup_new_stdhead']) . $htmlout . stdfoot();

@@ -99,12 +99,12 @@ function show_level()
 		<td width='20%' $css>{$lang['rep_ad_show_min']}</td>
 		<td width='15%' $css>{$lang['rep_ad_show_controls']}</td></tr>";
     while ($res = mysqli_fetch_assoc($query)) {
-        $html .= "<tr>\n" . '	<td>#' . $res['reputationlevelid'] . "</td>\n" . "	<td>{$lang['rep_ad_show_user']} <b>" . htmlsafechars($res['level']) . "</b></td>\n" . "	<td align='center'><input type='text' name='reputation[" . $res['reputationlevelid'] . "]' value='" . $res['minimumreputation'] . "' size='12' /></td>\n" . "	<td align='center'><span class='btn'><a href='staffpanel.php?tool=reputation_ad&amp;mode=edit&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>{$lang['rep_ad_show_edit']}</a></span>&#160;<span class='btn'><a href='staffpanel.php?tool=reputation_ad&amp;mode=dodelete&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>{$lang['rep_ad_show_del']}</a></span></td>\n" . "</tr>\n";
+        $html .= "<tr>\n" . '	<td>#' . $res['reputationlevelid'] . "</td>\n" . "	<td>{$lang['rep_ad_show_user']} <b>" . htmlsafechars($res['level']) . "</b></td>\n" . "	<td><input type='text' name='reputation[" . $res['reputationlevelid'] . "]' value='" . $res['minimumreputation'] . "' size='12' /></td>\n" . "	<td><span class='btn'><a href='staffpanel.php?tool=reputation_ad&amp;mode=edit&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>{$lang['rep_ad_show_edit']}</a></span>&#160;<span class='btn'><a href='staffpanel.php?tool=reputation_ad&amp;mode=dodelete&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>{$lang['rep_ad_show_del']}</a></span></td>\n" . "</tr>\n";
     }
-    $html .= "<tr><td colspan='3' align='center'>
+    $html .= "<tr><td colspan='3'>
 					<input type='submit' value='{$lang['rep_ad_show_update']}' accesskey='s' class='btn' /> 
 					<input type='reset' value='{$lang['rep_ad_show_reset']}' accesskey='r' class='btn' /></td>
-					<td align='center'><span class='btn'><a href='staffpanel.php?tool=reputation_ad&amp;mode=add'>{$lang['rep_ad_show_add']}</a></span>
+					<td><span class='btn'><a href='staffpanel.php?tool=reputation_ad&amp;mode=add'>{$lang['rep_ad_show_add']}</a></span>
 					</td></tr>";
     $html .= '</table>';
     $html .= '</form>';
@@ -145,7 +145,7 @@ function show_form($type = 'edit')
     $html .= "<td><input type='text' name='level' value=\"{$replevel}\" size='35' maxlength='250' /></td></tr>";
     $html .= "<tr><td>{$lang['rep_ad_form_min']}<div>{$lang['rep_ad_form_option']}</div></td>";
     $html .= "<td><input type='text' name='minimumreputation' value=\"{$minrep}\" size='35' maxlength='10' /></td></tr>";
-    $html .= "<tr><td colspan='2' align='center'><input type='submit' value='$button' accesskey='s' class='btn' /> <input type='reset' value='{$lang['rep_ad_show_reset']}' accesskey='r' class='btn' /> $extra</td></tr>";
+    $html .= "<tr><td colspan='2'><input type='submit' value='$button' accesskey='s' class='btn' /> <input type='reset' value='{$lang['rep_ad_show_reset']}' accesskey='r' class='btn' /> $extra</td></tr>";
     $html .= '</table>';
     $html .= '</form>';
     html_out($html, $title);
@@ -255,7 +255,7 @@ function show_form_rep()
     $html .= "<tr><td>{$lang['rep_ad_rep_form_left_for']}</td><td width='63%'>{$res['leftfor_name']}</td></tr>";
     $html .= "<tr><td>{$lang['rep_ad_rep_form_comment']}</td><td width='63%'><input type='text' name='reason' value='" . htmlsafechars($res['reason']) . "' size='35' maxlength='250' /></td></tr>";
     $html .= "<tr><td>{$lang['rep_ad_rep_form_rep']}</td><td><input type='text' name='reputation' value='{$res['reputation']}' size='35' maxlength='10' /></td></tr>";
-    $html .= "<tr><td colspan='2' align='center'><input type='submit' value='{$lang['rep_ad_rep_form_save']}' accesskey='s' class='btn' /> <input type='reset' tabindex='1' value='{$lang['rep_ad_rep_form_reset']}' accesskey='r' class='btn' /></td></tr>";
+    $html .= "<tr><td colspan='2'><input type='submit' value='{$lang['rep_ad_rep_form_save']}' accesskey='s' class='btn' /> <input type='reset' tabindex='1' value='{$lang['rep_ad_rep_form_reset']}' accesskey='r' class='btn' /></td></tr>";
     $html .= '</table></form>';
     html_out($html, $title);
 }
@@ -291,7 +291,7 @@ function view_list()
 				<span>{$lang['rep_ad_view_year']}<br><input type='text' class='textinput' name='end[year]' value='" . $now_date['year'] . "' size='4' maxlength='4' tabindex='4' /></span>
 			</div></td></tr>";
     $html .= "<tr><td class='tdrow2' colspan='2'><div class='desctext'>{$lang['rep_ad_view_end_select']}</div></td></tr>";
-    $html .= "<tr><td colspan='2' align='center'><input type='submit' value='{$lang['rep_ad_view_search']}' accesskey='s' class='btn' tabindex='5' /> <input type='reset' value='{$lang['rep_ad_view_reset']}' accesskey='r' class='btn' tabindex='6' /></td></tr>";
+    $html .= "<tr><td colspan='2'><input type='submit' value='{$lang['rep_ad_view_search']}' accesskey='s' class='btn' tabindex='5' /> <input type='reset' value='{$lang['rep_ad_view_reset']}' accesskey='r' class='btn' tabindex='6' /></td></tr>";
     $html .= '</table></form>';
     //echo $html; exit;
     // I hate work, but someone has to do it!
@@ -369,7 +369,7 @@ function view_list()
         //echo_r($input); exit;
         $total = mysqli_fetch_assoc($query);
         if (!$total['cnt']) {
-            $html .= "<tr><td colspan='7' align='center'>{$lang['rep_ad_view_none_found']}</td></tr>";
+            $html .= "<tr><td colspan='7'>{$lang['rep_ad_view_none_found']}</td></tr>";
         }
         // do the pager thang!
         $deflimit = 10;
@@ -401,7 +401,7 @@ function view_list()
             $html .= "<td><a href='userdetails.php?id={$r['leftby_id']}' target='_blank'>{$r['leftby_name']}</a></td>";
             $html .= "<td><a href='userdetails.php?id={$r['leftfor_id']}' target='_blank'>{$r['leftfor_name']}</a></td>";
             $html .= "<td>{$r['dateadd']}</td>";
-            $html .= "<td align='right'>{$r['reputation']}</td>";
+            $html .= "<td>{$r['reputation']}</td>";
             $html .= "<td><a href='forums.php?action=viewtopic&amp;topicid={$r['topic_id']}&amp;page=p{$r['postid']}#{$r['postid']}' target='_blank'>" . htmlsafechars($r['reason']) . '</a></td>';
             $html .= "<td><a href='staffpanel.php?tool=reputation_ad&amp;mode=editrep&amp;reputationid={$r['reputationid']}'><span class='btn'>{$lang['rep_ad_view_edit']}</span></a>&#160;<a href='reputation_ad.php?mode=dodelrep&amp;reputationid={$r['reputationid']}'><span class='btn'>{$lang['rep_ad_view_delete']}</span></a></td></tr>";
         }
@@ -575,17 +575,10 @@ function rep_cache()
     if (!mysqli_num_rows($query)) {
         stderr($lang['rep_ad_cache_cache'], $lang['rep_ad_cache_none']);
     }
-    $rep_cache_file = "{$site_config['baseurl']}/cache/rep_cache.php";
-    $rep_out = '<' . "?php\n\n\$reputations = array(\n";
+    $rep_out = '<' . "?php\n\n\$reputations = [\n";
     while ($row = mysqli_fetch_assoc($query)) {
         $rep_out .= "\t{$row['minimumreputation']} => '{$row['level']}',\n";
     }
-    $rep_out .= "\n);\n\n?" . '>';
-    clearstatcache($rep_cache_file);
-    if (is_file($rep_cache_file) && is_writable($rep_cache_file)) {
-        $filenum = fopen($rep_cache_file, 'w');
-        ftruncate($filenum, 0);
-        fwrite($filenum, $rep_out);
-        fclose($filenum);
-    }
+    $rep_out .= "\n];";
+    file_put_contents(CACHE_DIR . 'rep_cache.php', $rep_out);
 }

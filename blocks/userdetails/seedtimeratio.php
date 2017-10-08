@@ -33,7 +33,7 @@ if ($cache_share_ratio['seed_time_total'] > 0 && $cache_share_ratio['total_numbe
     $avg_time_ratio = (($cache_share_ratio['seed_time_total'] / $cache_share_ratio['total_number']) / 86400 / $days);
     $avg_time_seeding = mkprettytime($cache_share_ratio['seed_time_total'] / $cache_share_ratio['total_number']);
     if ($user['id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF) {
-        $HTMLOUT .= '<tr><td class="clearalt5" align="right"><b>' . $lang['userdetails_time_ratio'] . '</b></td><td align="left" class="clearalt5">' . (($user_stats['downloaded'] > 0 || $user_stats['uploaded'] > 2147483648) ? '<font color="' . get_ratio_color(number_format($avg_time_ratio, 3)) . '">' . number_format($avg_time_ratio, 3) . '</font>     ' . ratio_image_machine(number_format($avg_time_ratio, 3)) . '     [<font color="' . get_ratio_color(number_format($avg_time_ratio, 3)) . '"> ' . $avg_time_seeding . '</font>' . $lang['userdetails_time_ratio_per'] . '' : $lang['userdetails_inf']) . '</td></tr>';
+        $HTMLOUT .= '<tr><td class="clearalt5"><b>' . $lang['userdetails_time_ratio'] . '</b></td><td class="clearalt5">' . (($user_stats['downloaded'] > 0 || $user_stats['uploaded'] > 2147483648) ? '<font color="' . get_ratio_color(number_format($avg_time_ratio, 3)) . '">' . number_format($avg_time_ratio, 3) . '</font>     ' . ratio_image_machine(number_format($avg_time_ratio, 3)) . '     [<font color="' . get_ratio_color(number_format($avg_time_ratio, 3)) . '"> ' . $avg_time_seeding . '</font>' . $lang['userdetails_time_ratio_per'] . '' : $lang['userdetails_inf']) . '</td></tr>';
     }
 }
 //==end

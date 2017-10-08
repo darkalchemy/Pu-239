@@ -95,7 +95,6 @@ if (($user = $mc1->get_value('user' . $id)) === false) {
         'wait_time',
         'torrents_limit',
         'peers_limit',
-        'torrent_pass_version',
     ];
     $user_fields_ar_float = [
         'time_offset',
@@ -228,7 +227,7 @@ if (($user_status = $mc1->get_value('user_status_' . $id)) === false) {
 }
 //===  paranoid settings
 if ($user['paranoia'] == 3 && $CURUSER['class'] < UC_STAFF && $CURUSER['id'] != $id) {
-    stderr($lang['userdetails_error'], '<span style="font-weight: bold; text-align: center;"><img src="./images/smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" title="' . $lang['userdetails_tinfoil'] . '" />
+    stderr($lang['userdetails_error'], '<span><img src="./images/smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" title="' . $lang['userdetails_tinfoil'] . '" />
        ' . $lang['userdetails_tinfoil2'] . ' <img src="./images/smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" title="' . $lang['userdetails_tinfoil'] . '" /></span>');
     exit();
 }
@@ -251,10 +250,10 @@ if (isset($_GET['delete_hit_and_run']) && $CURUSER['class'] >= UC_STAFF) {
 }
 $r = sql_query('SELECT t.id, t.name, t.seeders, t.leechers, c.name AS cname, c.image FROM torrents t LEFT JOIN categories c ON t.category = c.id WHERE t.owner = ' . sqlesc($id) . ' ORDER BY t.name') or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($r) > 0) {
-    $torrents = "<table class='main' border='1' cellspacing='0' cellpadding='5'>\n" . "<tr><td class='colhead'>{$lang['userdetails_type']}</td><td class='colhead'>{$lang['userdetails_name']}</td><td class='colhead'>{$lang['userdetails_seeders']}</td><td class='colhead'>{$lang['userdetails_leechers']}</td></tr>\n";
+    $torrents = "<table class='table table-bordered table-striped'>\n" . "<tr><td class='colhead'>{$lang['userdetails_type']}</td><td class='colhead'>{$lang['userdetails_name']}</td><td class='colhead'>{$lang['userdetails_seeders']}</td><td class='colhead'>{$lang['userdetails_leechers']}</td></tr>\n";
     while ($a = mysqli_fetch_assoc($r)) {
-        $cat = "<img src=\"{$site_config['pic_base_url']}/caticons/" . get_categorie_icons() . "/" . htmlsafechars($a['image']) . '" title="' . htmlsafechars($a['cname']) . '" alt="' . htmlsafechars($a['cname']) . '" />';
-        $torrents .= "<tr><td style='padding: 0px'>$cat</td><td><a href='details.php?id=" . (int)$a['id'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . '</b></a></td>' . "<td class='text-right'>" . (int)$a['seeders'] . "</td><td class='text-right'>" . (int)$a['leechers'] . "</td></tr>\n";
+        $cat = !empty($a['image']) ? "<img src=\"{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($a['image']) . '" title="' . htmlsafechars($a['cname']) . '" alt="' . htmlsafechars($a['cname']) . '" />' : '';
+        $torrents .= "<tr><td>$cat</td><td><a href='details.php?id=" . (int)$a['id'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . '</b></a></td>' . "<td class='text-right'>" . (int)$a['seeders'] . "</td><td class='text-right'>" . (int)$a['leechers'] . "</td></tr>\n";
     }
     $torrents .= '</table>';
 }
@@ -294,26 +293,12 @@ if ((($user['class'] >= UC_STAFF or $user['id'] == $CURUSER['id']) || ($user['cl
         $HTMLOUT .= stealth($id, false);
     }
 } // End
-//==country by pdq
-function countries()
-{
-    global $mc1, $site_config;
-    if (($ret = $mc1->get_value('countries::arr')) === false) {
-        $res = sql_query('SELECT id, name, flagpic FROM countries ORDER BY name ASC') or sqlerr(__FILE__, __LINE__);
-        while ($row = mysqli_fetch_assoc($res)) {
-            $ret[] = $row;
-        }
-        $mc1->cache_value('countries::arr', $ret, $site_config['expires']['user_flag']);
-    }
-
-    return $ret;
-}
 
 $country = '';
 $countries = countries();
 foreach ($countries as $cntry) {
     if ($cntry['id'] == $user['country']) {
-        $country = "<img src=\"{$site_config['pic_base_url']}flag/{$cntry['flagpic']}\" alt=\"" . htmlsafechars($cntry['name']) . "\" style='margin-left: 8pt' />";
+        $country = "<img src='{$site_config['pic_base_url']}flag/{$cntry['flagpic']}' alt='" . htmlsafechars($cntry['name']) . "' />";
         break;
     }
 }
@@ -360,7 +345,7 @@ if (!(isset($_GET['hit'])) && $CURUSER['id'] != $user['id']) {
 }
 $HTMLOUT = $perms = $stealth = $suspended = $watched_user = $h1_thingie = '';
 if (($user['opt1'] & user_options::ANONYMOUS) && ($CURUSER['class'] < UC_STAFF && $user['id'] != $CURUSER['id'])) {
-    $HTMLOUT .= "<table width='100%' border='1' cellspacing='0' cellpadding='5' class='main'>";
+    $HTMLOUT .= "<table class='table table-bordered table-striped'>";
     $HTMLOUT .= "<tr><td colspan='2' class='text-center'>{$lang['userdetails_anonymous']}</td></tr>";
     if ($user['avatar']) {
         $HTMLOUT .= "<tr><td colspan='2' class='text-center'><img src='" . htmlsafechars($user['avatar']) . "'></td></tr>\n";
@@ -368,7 +353,7 @@ if (($user['opt1'] & user_options::ANONYMOUS) && ($CURUSER['class'] < UC_STAFF &
     if ($user['info']) {
         $HTMLOUT .= "<tr vclass='text-top'><td class='text-left' colspan='2' class=text bgcolor='#F4F4F0'>'" . format_comment($user['info']) . "'</td></tr>\n";
     }
-    $HTMLOUT .= "<tr><td colspan='2' class='text-center'><form method='get' action='{$site_config['baseurl']}/pm_system.php?action=send_message'><input type='hidden' name='receiver' value='" . (int)$user['id'] . "' /><input type='submit' value='{$lang['userdetails_sendmess']}' style='height: 23px' /></form>";
+    $HTMLOUT .= "<tr><td colspan='2' class='text-center'><form method='get' action='{$site_config['baseurl']}/pm_system.php?action=send_message'><input type='hidden' name='receiver' value='" . (int)$user['id'] . "' /><input type='submit' value='{$lang['userdetails_sendmess']}' /></form>";
     if ($CURUSER['class'] < UC_STAFF && $user['id'] != $CURUSER['id']) {
         $HTMLOUT .= end_main_frame();
         echo stdhead($lang['userdetails_anonymoususer']) . $HTMLOUT . stdfoot();
@@ -381,12 +366,12 @@ if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
     $suspended .= ($user['suspended'] == 'yes' ? '&#160;&#160;<img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" title="' . $lang['userdetails_suspended'] . '" />&#160;<b>' . $lang['userdetails_usersuspended'] . '</b>&#160;<img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" title="' . $lang['userdetails_suspended'] . '" />' : '');
 }
 if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
-    $watched_user .= ($user['watched_user'] == 0 ? '' : '&#160;&#160;<img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" align="middle" alt="' . $lang['userdetails_watched'] . '" title="' . $lang['userdetails_watched'] . '" /> <b>' . $lang['userdetails_watchlist1'] . ' <a href="staffpanel.php?tool=watched_users" >' . $lang['userdetails_watchlist2'] . '</a></b> <img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" align="middle" alt="' . $lang['userdetails_watched'] . '" title="' . $lang['userdetails_watched'] . '" />');
+    $watched_user .= ($user['watched_user'] == 0 ? '' : '&#160;&#160;<img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" title="' . $lang['userdetails_watched'] . '" /> <b>' . $lang['userdetails_watchlist1'] . ' <a href="staffpanel.php?tool=watched_users" >' . $lang['userdetails_watchlist2'] . '</a></b> <img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" title="' . $lang['userdetails_watched'] . '" />');
 }
 $perms .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_NO_IP) ? '&#160;&#160;<img src="' . $site_config['pic_base_url'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  title="' . $lang['userdetails_invincible'] . '" />' : '') : '');
 $stealth .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? '&#160;&#160;<img src="' . $site_config['pic_base_url'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stelth'] . '"  title="' . $lang['userdetails_stelth'] . '" />' : '') : '');
 $enabled = $user['enabled'] == 'yes';
-$HTMLOUT .= "<table class='main' border='0' cellspacing='0' cellpadding='0'>" . "<tr><td class='embedded'><h1 style='margin:0px'>" . format_username($user, true) . "</h1>$country$perms$stealth$watched_user$suspended$h1_thingie</td></tr></table>\n";
+$HTMLOUT .= "<table class='table table-bordered table-striped'>" . "<tr><td class='embedded'><h1>" . format_username($user, true) . "</h1>$country$perms$stealth$watched_user$suspended$h1_thingie</td></tr></table>\n";
 if ($user['opt1'] & user_options::PARKED) {
     $HTMLOUT .= "<p><b>{$lang['userdetails_parked']}</b></p>\n";
 }
@@ -463,7 +448,7 @@ if ($stealth) {
 $HTMLOUT .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? '[<a title=' . "\n" . '"' . $lang['userdetails_stelth_def1'] . ' ' . "\n" . ' ' . $lang['userdetails_stelth_def2'] . '" href="userdetails.php?id=' . $id . '&amp;stealth=no">' . "\n" . '' . $lang['userdetails_stelth_disable'] . '</a>]' : ' - [<a title="' . $lang['userdetails_stelth_def1'] . '' . "
                \n" . ' ' . $lang['userdetails_stelth_def2'] . '" ' . "\n" . 'href="userdetails.php?id=' . $id . '&amp;stealth=yes">' . $lang['userdetails_stelth_enable'] . '</a>]') : '');
 $HTMLOUT .= begin_main_frame();
-$flex_cell = $CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class'] ? 'flex_cell_5' : 'flex_cell_4';
+$flex_cell = ($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CURUSER['class'] === UC_MAX ? 'flex_cell_5' : 'flex_cell_4';
 $HTMLOUT .= "
         <div id='tabs' class='widget'>
             <ul class='flex-grid'>
@@ -471,7 +456,7 @@ $HTMLOUT .= "
                 <li class='$flex_cell'><a href='#general'>{$lang['userdetails_general']}</a></li>
                 <li class='$flex_cell'><a href='#activity'>{$lang['userdetails_activity']}</a></li>
                 <li class='$flex_cell'><a href='#comments'>{$lang['userdetails_usercomments']}</a></li>";
-if ($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) {
+if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CURUSER['class'] === UC_MAX) {
     $HTMLOUT .= "
                 <li class='$flex_cell'><a href='#edit'>{$lang['userdetails_edit_user']}</a></li>";
 }
@@ -480,7 +465,7 @@ $HTMLOUT .= '
 $HTMLOUT .= "
             <div class='tabdiv'>
                 <div id='torrents'>
-                    <table class='text-center' width='100%' border='1' cellspacing='0' cellpadding='5' bgcolor='transparent'>\n";
+                    <table class='table table-bordered table-striped'>\n";
 if (curuser::$blocks['userdetails_page'] & block_userdetails::FLUSH && $BLOCKS['userdetails_flush_on']) {
     require_once BLOCK_DIR . 'userdetails/flush.php';
 }
@@ -507,30 +492,30 @@ if (curuser::$blocks['userdetails_page'] & block_userdetails::CONNECTABLE_PORT &
 }
 $HTMLOUT .= '</table></div>';
 $HTMLOUT .= "<div id='general'> ";
-$HTMLOUT .= "<table class='text-center' width='100%' border='1' cellspacing='0' cellpadding='5'>\n";
+$HTMLOUT .= "<table class='table table-bordered table-striped'>\n";
 // === make sure prople can't see their own naughty history by snuggles
 if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
     //=== watched user stuff
-    $the_flip_box = '[ <a name="watched_user"></a><a class="altlink" href="#watched_user" onclick="javascript:flipBox(\'3\')" title="' . $lang['userdetails_flip1'] . '">' . ($user['watched_user'] > 0 ? '' . $lang['userdetails_flip2'] . ' ' : '' . $lang['userdetails_flip3'] . ' ') . '<img onclick="javascript:flipBox(\'3\')" src="./images/panel_on.gif" name="b_3" style="vertical-align:middle;"   width="8" height="8" alt="' . $lang['userdetails_flip1'] . '" title="' . $lang['userdetails_flip1'] . '" /></a> ]';
+    $the_flip_box = '[ <a name="watched_user"></a><a class="altlink" href="#watched_user" onclick="javascript:flipBox(\'3\')" title="' . $lang['userdetails_flip1'] . '">' . ($user['watched_user'] > 0 ? '' . $lang['userdetails_flip2'] . ' ' : '' . $lang['userdetails_flip3'] . ' ') . '<img onclick="javascript:flipBox(\'3\')" src="./images/panel_on.gif" name="b_3" width="8" height="8" alt="' . $lang['userdetails_flip1'] . '" title="' . $lang['userdetails_flip1'] . '" /></a> ]';
     $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_watched'] . '</td>
                             <td class="text-left">' . ($user['watched_user'] > 0 ? '' . $lang['userdetails_watched_since'] . '  ' . get_date($user['watched_user'], '') . ' ' : ' ' . $lang['userdetails_not_watched'] . ' ') . $the_flip_box . '
-                            <div class="text-left" id="box_3" style="display:none">
+                            <div class="text-left" id="box_3">
                             <form method="post" action="member_input.php" name="notes_for_staff">
                             <input name="id" type="hidden" value="' . $id . '" />
                             <input type="hidden" value="watched_user" name="action" />
                             ' . $lang['userdetails_add_watch'] . '
                             <input type="radio" value="yes" name="add_to_watched_users"' . ($user['watched_user'] > 0 ? ' checked="checked"' : '') . ' /> ' . $lang['userdetails_yes1'] . '
                             <input type="radio" value="no" name="add_to_watched_users"' . ($user['watched_user'] == 0 ? ' checked="checked"' : '') . ' /> ' . $lang['userdetails_no1'] . ' <br>
-                            <span id="desc_text" style="color:red;font-size: xx-small;">* ' . $lang['userdetails_watch_change1'] . '<br>
+                            <span id="desc_text">* ' . $lang['userdetails_watch_change1'] . '<br>
                             ' . $lang['userdetails_watch_change2'] . '</span><br>
                             <textarea id="watched_reason" cols="50" rows="6" name="watched_reason">' . htmlsafechars($user['watched_user_reason']) . '</textarea><br>
                             <input id="watched_user_button" type="submit" value="' . $lang['userdetails_submit'] . '" class="btn" name="watched_user_button" />
                             </form></div> </td></tr>';
     //=== staff Notes
-    $the_flip_box_4 = '[ <a name="staff_notes"></a><a class="altlink" href="#staff_notes" onclick="javascript:flipBox(\'4\')" name="b_4" title="' . $lang['userdetails_open_staff'] . '">view <img onclick="javascript:flipBox(\'4\')" src="./images/panel_on.gif" name="b_4" style="vertical-align:middle;" width="8" height="8" alt="' . $lang['userdetails_open_staff'] . '" title="' . $lang['userdetails_open_staff'] . '" /></a> ]';
+    $the_flip_box_4 = '[ <a name="staff_notes"></a><a class="altlink" href="#staff_notes" onclick="javascript:flipBox(\'4\')" name="b_4" title="' . $lang['userdetails_open_staff'] . '">view <img onclick="javascript:flipBox(\'4\')" src="./images/panel_on.gif" name="b_4" width="8" height="8" alt="' . $lang['userdetails_open_staff'] . '" title="' . $lang['userdetails_open_staff'] . '" /></a> ]';
     $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_staffnotes'] . '</td><td class="text-left">
-                            <a class="altlink" href="#staff_notes" onclick="javascript:flipBox(\'6\')" name="b_6" title="' . $lang['userdetails_aev_staffnote'] . '">' . ($user['staff_notes'] !== '' ? '' . $lang['userdetails_vae'] . ' ' : '' . $lang['userdetails_add'] . ' ') . '<img onclick="javascript:flipBox(\'6\')" src="./images/panel_on.gif" name="b_6" style="vertical-align:middle;" width="8" height="8" alt="' . $lang['userdetails_aev_staffnote'] . '" title="' . $lang['userdetails_aev_staffnote'] . '" /></a>
-                            <div class="text-left" id="box_6" style="display:none">
+                            <a class="altlink" href="#staff_notes" onclick="javascript:flipBox(\'6\')" name="b_6" title="' . $lang['userdetails_aev_staffnote'] . '">' . ($user['staff_notes'] !== '' ? '' . $lang['userdetails_vae'] . ' ' : '' . $lang['userdetails_add'] . ' ') . '<img onclick="javascript:flipBox(\'6\')" src="./images/panel_on.gif" name="b_6" width="8" height="8" alt="' . $lang['userdetails_aev_staffnote'] . '" title="' . $lang['userdetails_aev_staffnote'] . '" /></a>
+                            <div class="text-left" id="box_6">
                             <form method="post" action="member_input.php" name="notes_for_staff">
                             <input name="id" type="hidden" value="' . (int)$user['id'] . '" />
                             <input type="hidden" value="staff_notes" name="action" id="action" />
@@ -539,9 +524,9 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
                             </form>
                             </div> </td></tr>';
     //=== system comments
-    $the_flip_box_7 = '[ <a name="system_comments"></a><a class="altlink" href="#system_comments" onclick="javascript:flipBox(\'7\')"  name="b_7" title="' . $lang['userdetails_open_system'] . '">view <img onclick="javascript:flipBox(\'7\')" src="./images/panel_on.gif" name="b_7" style="vertical-align:middle;" width="8" height="8" alt="' . $lang['userdetails_open_system'] . '" title="' . $lang['userdetails_open_system'] . '" /></a> ]';
+    $the_flip_box_7 = '[ <a name="system_comments"></a><a class="altlink" href="#system_comments" onclick="javascript:flipBox(\'7\')"  name="b_7" title="' . $lang['userdetails_open_system'] . '">view <img onclick="javascript:flipBox(\'7\')" src="./images/panel_on.gif" name="b_7" width="8" height="8" alt="' . $lang['userdetails_open_system'] . '" title="' . $lang['userdetails_open_system'] . '" /></a> ]';
     if (!empty($user_stats['modcomment'])) {
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_system']}</td><td class='text-left'>" . ($user_stats['modcomment'] != '' ? $the_flip_box_7 . '<div class="text-left" id="box_7" style="display:none"><hr>' . format_comment($user_stats['modcomment']) . '</div>' : '') . "</td></tr>\n";
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_system']}</td><td class='text-left'>" . ($user_stats['modcomment'] != '' ? $the_flip_box_7 . '<div class="text-left" id="box_7"><hr>' . format_comment($user_stats['modcomment']) . '</div>' : '') . "</td></tr>\n";
     }
 }
 //==Begin blocks
@@ -589,7 +574,7 @@ if (curuser::$blocks['userdetails_page'] & block_userdetails::SHOWPM && $BLOCKS[
 }
 $HTMLOUT .= '</table></div>';
 $HTMLOUT .= "<div id='activity'>";
-$HTMLOUT .= "<table class='text-center' width='100%' border='1' cellspacing='0' cellpadding='5'>\n";
+$HTMLOUT .= "<table class='table table-bordered table-striped'>\n";
 //==where is user now
 if (!empty($user['where_is'])) {
     $HTMLOUT .= "<tr><td class='rowhead' width='1%'>{$lang['userdetails_location']}</td><td class='text-left' width='99%'>" . format_urls($user['where_is']) . "</td></tr>\n";
@@ -650,7 +635,7 @@ $HTMLOUT .= "<script>
        }
        /*]]>*/
        </script>";
-if ($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) {
+if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CURUSER['class'] === UC_MAX) {
     //$HTMLOUT .= begin_frame("Edit User", true);
     $HTMLOUT .= "<form method='post' action='staffpanel.php?tool=modtask'>\n";
     require_once CLASS_DIR . 'validator.php';
@@ -664,7 +649,7 @@ if ($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) {
     $HTMLOUT .= "<input type='hidden' name='postkey' value='$postkey' />\n";
     $HTMLOUT .= "<input type='hidden' name='returnto' value='userdetails.php?id=$id' />\n";
     $HTMLOUT .= "
-         <table class='main' border='1' cellspacing='0' cellpadding='5'>\n";
+         <table class='table table-bordered table-striped'>";
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_title']}</td><td colspan='2' class='text-left'><input type='text' size='60' name='title' value='" . htmlsafechars($user['title']) . "' /></td></tr>\n";
     $avatar = htmlsafechars($user['avatar']);
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_avatar_url']}</td><td colspan='2' class='text-left'><input type='text' size='60' name='avatar' value='$avatar' /></td></tr>\n";
@@ -734,7 +719,9 @@ if ($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) {
         $HTMLOUT .= "<input type='hidden' name='class' value='{$user['class']}' />\n";
     } else {
         $HTMLOUT .= "<tr><td class='rowhead'>Class</td><td colspan='2' class='text-left'><select name='class'>\n";
-        if ($CURUSER['class'] == UC_STAFF) {
+        if ($CURUSER['class'] === UC_MAX) {
+            $maxclass = UC_SYSOP;
+        } elseif ($CURUSER['class'] === UC_STAFF) {
             $maxclass = UC_VIP;
         } else {
             $maxclass = $CURUSER['class'] - 1;
@@ -757,7 +744,7 @@ if ($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) {
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_add_comment']}</td><td colspan='2' class='text-left'><textarea cols='60' rows='2' name='addcomment'></textarea></td></tr>\n";
     //=== bonus comment
     $bonuscomment = htmlsafechars($user_stats['bonuscomment']);
-    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_bonus_comment']}</td><td colspan='2' class='text-left'><textarea cols='60' rows='6' name='bonuscomment' readonly='readonly' style='background:purple;color:yellow;'>$bonuscomment</textarea></td></tr>\n";
+    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_bonus_comment']}</td><td colspan='2' class='text-left'><textarea cols='60' rows='6' name='bonuscomment' readonly='readonly'>$bonuscomment</textarea></td></tr>\n";
     //==end
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_enabled']}</td><td colspan='2' class='text-left'><input name='enabled' value='yes' type='radio'" . ($enabled ? " checked='checked'" : '') . " />{$lang['userdetails_yes']} <input name='enabled' value='no' type='radio'" . (!$enabled ? " checked='checked'" : '') . " />{$lang['userdetails_no']}</td></tr>\n";
     if ($CURUSER['class'] >= UC_STAFF && XBT_TRACKER == false) {

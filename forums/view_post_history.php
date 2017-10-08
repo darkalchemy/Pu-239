@@ -21,20 +21,20 @@ $location_bar = '<h1><a class="altlink" href="' . $site_config['baseurl'] . '/fo
         <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . htmlsafechars($arr['forum_name'], ENT_QUOTES) . '</a>
         <img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
         <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr['topic_name'], ENT_QUOTES) . '</a></h1>
-        <span style="text-align: center;">' . $mini_menu . '</span><br><br>';
+        <span>' . $mini_menu . '</span><br><br>';
 $width = 100;
 $HTMLOUT .= $location_bar;
 $HTMLOUT .= '<h1>' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</>' : htmlsafechars($arr['username'])) . '\'s ' . $lang['vph_final_edit_post'] . '. ' . $lang['vph_last_edit_by'] . ': ' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : print_user_stuff($arr_edited)) . '</h1>
-    <table border="0" cellspacing="5" cellpadding="10" width="90%">
+    <table class="table table-bordered table-striped">
     <tr>
-    <td class="forum_head" align="left" width="120px" valign="middle">
-    <span style="white-space:nowrap;">#' . $post_id . '
-    <span style="font-weight: bold;">' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : htmlsafechars($arr['username'])) . '</span></span></td>
-    <td class="forum_head" align="left" valign="middle">
-    <span style="white-space:nowrap;"> ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . '] GMT ' . ($post_title !== '' ? '&#160;&#160;&#160;&#160; ' . $lang['fe_title'] . ': <span style="font-weight: bold;">' . $post_title . '</span>' : '') . ($icon !== '' ? ' <img src="' . $site_config['pic_base_url'] . 'smilies/' . $icon . '.gif" alt="' . $icon . '" title="' . $icon . '"/>' : '') . '</span>
+    <td class="forum_head" width="120px">
+    <span>#' . $post_id . '
+    <span>' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : htmlsafechars($arr['username'])) . '</span></span></td>
+    <td class="forum_head">
+    <span> ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . '] UTC ' . ($post_title !== '' ? '&#160;&#160;&#160;&#160; ' . $lang['fe_title'] . ': <span>' . $post_title . '</span>' : '') . ($icon !== '' ? ' <img src="' . $site_config['pic_base_url'] . 'smilies/' . $icon . '.gif" alt="' . $icon . '" title="' . $icon . '"/>' : '') . '</span>
     </td></tr>
     <tr>
-    <td class="two" align="center" width="120px" valign="top">' . ($arr['anonymous'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($arr)) . '<br>' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : print_user_stuff($arr)) . '</td>
-    <td class="one" align="left" valign="top" colspan="2">' . ($arr['bbcode'] == 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body'])) . '</td>
+    <td class="two" width="120px">' . ($arr['anonymous'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($arr)) . '<br>' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : print_user_stuff($arr)) . '</td>
+    <td class="one" colspan="2">' . ($arr['bbcode'] == 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body'])) . '</td>
     </tr>
     </table><br><h1>' . $lang['fe_post_history'] . '</h1>[ ' . $lang['vph_all_post_edits_date'] . '. ]<br><br>' . htmlspecialchars_decode($arr['post_history']) . '<br>' . $location_bar;

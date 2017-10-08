@@ -1,11 +1,17 @@
 <?php
-//==Temp demotion
-if ($CURUSER['override_class'] != 255 && $CURUSER) { // Second condition needed so that this box isn't displayed for non members/logged out members.
-    $htmlout .= "<li>
-<a class='tooltip' href='./restoreclass.php'><b class='btn btn-warning btn-small'>{$lang['gl_temp_demotion']}</b>
-<span class='custom info alert alert-warning'><em>{$lang['gl_temp_demotion1']}</em>   
-{$lang['gl_temp_demotion2']}</span></a></li>";
+if ($CURUSER['override_class'] != 255 && $CURUSER) {
+    $htmlout .= "
+    <li>
+        <a href='./restoreclass.php'>
+            <b class='btn btn-warning btn-small dt-tooltipper' data-tooltip-content='#demotion_tooltip'>
+                {$lang['gl_temp_demotion']}
+            </b>
+            <div class='tooltip_templates'>
+                <span id='demotion_tooltip'>
+                    <em>{$lang['gl_temp_demotion1']}</em><br>
+                    {$lang['gl_temp_demotion2']}
+                </span>
+            </div>
+        </a>
+    </li>";
 }
-//==End
-// End Class
-// End File

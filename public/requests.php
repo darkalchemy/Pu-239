@@ -5,7 +5,7 @@ check_user_status();
 $lang = array_merge(load_language('global'));
 $stdhead = [
     'css' => [
-        get_file(requests_css)
+        get_file(upload_css)
     ],
 ];
 $stdfoot = [
@@ -41,7 +41,7 @@ $valid_actions = [
 //=== check posted action, and if no action was posted, show the default page
 $action = (in_array($posted_action, $valid_actions) ? $posted_action : 'default');
 //=== top menu :D
-$top_menu = '<p style="text-align: center;"><a class="altlink" href="requests.php">view requests</a> || <a class="altlink" href="requests.php?action=add_new_request">new request</a></p>';
+$top_menu = '<p><a class="altlink" href="requests.php">view requests</a> || <a class="altlink" href="requests.php?action=add_new_request">new request</a></p>';
 switch ($action) {
     case 'vote':
         //=== kill if nasty
@@ -81,30 +81,28 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
             stderr('Error!', 'Sorry, there are no current requests!');
         }
         $HTMLOUT .= (isset($_GET['new']) ? '<h1>Request Added!</h1>' : '') . (isset($_GET['request_deleted']) ? '<h1>Request Deleted!</h1>' : '') . $top_menu . '' . $menu . '<br>';
-        $HTMLOUT .= '<table border="0" cellspacing="0" cellpadding="5" align="center">
+        $HTMLOUT .= '<table class="table table-bordered table-striped">
     <tr>
-        <td class="colhead" align="center">Type</td>
-        <td class="colhead" align="left">Name</td>
-        <td class="colhead" align="center">Added</td>
-        <td class="colhead" align="center">Comm</td>
-        <td class="colhead" align="center">Votes</td>
-        <td class="colhead" align="center">Requested By</td>
-        <td class="colhead" align="center">Filled</td>
+        <td>Type</td>
+        <td>Name</td>
+        <td>Added</td>
+        <td>Comm</td>
+        <td>Votes</td>
+        <td>Requested By</td>
+        <td>Filled</td>
     </tr>';
         while ($main_query_arr = mysqli_fetch_assoc($main_query_res)) {
             //=======change colors
-            $count2 = (++$count2) % 2;
-            $class = ($count2 == 0 ? 'one' : 'two');
             $HTMLOUT .= '
     <tr>
-        <td class="' . $class . '" align="center" style="margin: 0; padding: 1;"><img border="0" src="./images/caticons/' . get_categorie_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '" /></td>
-        <td class="' . $class . '" align="left"><a class="altlink" href="requests.php?action=request_details&amp;id=' . (int)$main_query_arr['request_id'] . '">' . htmlsafechars($main_query_arr['request_name'], ENT_QUOTES) . '</a></td>
-        <td class="' . $class . '" align="center">' . get_date($main_query_arr['added'], 'LONG') . '</td>
-        <td class="' . $class . '" align="center">' . number_format($main_query_arr['comments']) . '</td>
-        <td class="' . $class . '" align="center">yes: ' . number_format($main_query_arr['vote_yes_count']) . '<br>
+        <td><img src="./images/caticons/' . get_categorie_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '" /></td>
+        <td><a class="altlink" href="requests.php?action=request_details&amp;id=' . (int)$main_query_arr['request_id'] . '">' . htmlsafechars($main_query_arr['request_name'], ENT_QUOTES) . '</a></td>
+        <td>' . get_date($main_query_arr['added'], 'LONG') . '</td>
+        <td>' . number_format($main_query_arr['comments']) . '</td>
+        <td>yes: ' . number_format($main_query_arr['vote_yes_count']) . '<br>
         no: ' . number_format($main_query_arr['vote_no_count']) . '</td>
-        <td class="' . $class . '" align="center">' . print_user_stuff($main_query_arr) . '</td>
-        <td class="' . $class . '" align="center">' . ($main_query_arr['filled_by_user_id'] > 0 ? '<a href="details.php?id=' . (int)$main_query_arr['filled_torrent_id'] . '" title="go to torrent page!!!"><span style="color: limegreen;font-weight: bold;">yes!</span></a>' : '<span style="color: red;font-weight: bold;">no</span>') . '</td>
+        <td>' . print_user_stuff($main_query_arr) . '</td>
+        <td>' . ($main_query_arr['filled_by_user_id'] > 0 ? '<a href="details.php?id=' . (int)$main_query_arr['filled_torrent_id'] . '" title="go to torrent page!!!"><span>yes!</span></a>' : '<span>no</span>') . '</td>
     </tr>';
         }
         $HTMLOUT .= '</table>';
@@ -155,50 +153,50 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
         }
         //=== start page
         $HTMLOUT .= (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . '
-  <table border="0" cellspacing="0" cellpadding="5" align="center">
+  <table class="table table-bordered table-striped">
   <tr>
-  <td class="colhead" align="center" colspan="2"><h1>' . htmlsafechars($arr['request_name'], ENT_QUOTES) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="requests.php?action=edit_request&amp;id=' . $id . '">edit</a> ]
+  <td colspan="2"><h1>' . htmlsafechars($arr['request_name'], ENT_QUOTES) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="requests.php?action=edit_request&amp;id=' . $id . '">edit</a> ]
   [ <a href="requests.php?action=delete_request&amp;id=' . $id . '">delete</a> ]') . '</h1></td>
   </tr>
   <tr>
-  <td class="two" align="right">image:</td>
-  <td class="two" align="left"><img src="' . strip_tags($arr['image']) . '" alt="image" style="max-width:600px;" /></td>
+  <td>image:</td>
+  <td><img src="' . strip_tags($arr['image']) . '" alt="image" /></td>
   </tr>
   <tr>
-  <td class="two" align="right">description:</td>
-  <td class="two" align="left">' . format_comment($arr['description']) . '</td>
+  <td>description:</td>
+  <td>' . format_comment($arr['description']) . '</td>
   </tr>
   <tr>
-  <td class="two" align="right">category:</td>
-  <td class="two" align="left"><img border="0" src="./images/caticons/' . get_categorie_icons() . '/' . htmlsafechars($arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($arr['cat_name'], ENT_QUOTES) . '" /></td>
+  <td>category:</td>
+  <td><img src="./images/caticons/' . get_categorie_icons() . '/' . htmlsafechars($arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($arr['cat_name'], ENT_QUOTES) . '" /></td>
   </tr>
   <tr>
-  <td class="two" align="right">link:</td>
-  <td class="two" align="left"><a class="altlink" href="' . htmlsafechars($arr['link'], ENT_QUOTES) . '"  target="_blank">' . htmlsafechars($arr['link'], ENT_QUOTES) . '</a></td>
+  <td>link:</td>
+  <td><a class="altlink" href="' . htmlsafechars($arr['link'], ENT_QUOTES) . '"  target="_blank">' . htmlsafechars($arr['link'], ENT_QUOTES) . '</a></td>
   </tr>
   <tr>
-  <td class="two" align="right">votes:</td>
-  <td class="two" align="left">
-  <span style="font-weight:bold;color: green;">yes: ' . number_format($arr['vote_yes_count']) . '</span> ' . $vote_yes . '<br>
-  <span style="font-weight:bold;color: red;">no: ' . number_format($arr['vote_no_count']) . '</span> ' . $vote_no . '<br> ' . $your_vote_was . '</td>
+  <td>votes:</td>
+  <td>
+  <span>yes: ' . number_format($arr['vote_yes_count']) . '</span> ' . $vote_yes . '<br>
+  <span>no: ' . number_format($arr['vote_no_count']) . '</span> ' . $vote_no . '<br> ' . $your_vote_was . '</td>
   </tr>
   <tr>
-  <td class="two" align="right">requested by:</td>
-  <td class="two" align="left">' . print_user_stuff($arr) . ' [ ' . get_user_class_name($arr['class']) . ' ]
+  <td>requested by:</td>
+  <td>' . print_user_stuff($arr) . ' [ ' . get_user_class_name($arr['class']) . ' ]
   ratio: ' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . get_user_ratio_image($arr['uploaded'], ($site_config['ratio_free'] ? '1' : $arr['downloaded'])) . '</td>
   </tr>' . ($arr['filled_torrent_id'] > 0 ? '<tr>
-  <td class="two" align="right">filled:</td>
-  <td class="two" align="left"><a class="altlink" href="details.php?id=' . $arr['filled_torrent_id'] . '">yes, click to view torrent!</a></td>
+  <td>filled:</td>
+  <td><a class="altlink" href="details.php?id=' . $arr['filled_torrent_id'] . '">yes, click to view torrent!</a></td>
   </tr>' : '') . '
   <tr>
-  <td class="two" align="right">Report Request</td>
-  <td class="two" align="left"><form action="report.php?type=Request&amp;id=' . $id . '" method="post">
+  <td>Report Request</td>
+  <td><form action="report.php?type=Request&amp;id=' . $id . '" method="post">
   <input type="submit" class="button_med" value="Report This Request" onmouseover="this.className=\'button_med_hover\'" onmouseout="this.className=\'button_med\'" />
   For breaking the <a class="altlink" href="rules.php">rules</a></form></td>
   </tr>
   </table>';
         $HTMLOUT .= '<h1>Comments for ' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '</h1><p><a name="startcomments"></a></p>';
-        $commentbar = '<p align="center"><a class="index" href="requests.php?action=add_comment&amp;id=' . $id . '">Add a comment</a></p>';
+        $commentbar = '<p><a class="index" href="requests.php?action=add_comment&amp;id=' . $id . '">Add a comment</a></p>';
         $count = (int)$arr['comments'];
         if (!$count) {
             $HTMLOUT .= '<h2>No comments yet</h2>';
@@ -244,42 +242,44 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
             $cat_name = htmlsafechars($cat_arr['cat_name'], ENT_QUOTES);
         }
         //=== start page
-        $HTMLOUT .= '<table align="center" class="main" border="0" cellspacing="0" cellpadding="0">
+        $HTMLOUT .= '<table class="table table-bordered table-striped">
    <tr>
-   <td class="embedded" align="center"><h1 style="text-align: center;">New Request</h1>' . $top_menu . '
+   <td class="embedded"><h1>New Request</h1>' . $top_menu . '
    <form method="post" action="requests.php?action=add_new_request" name="request_form" id="request_form">
-    <table border="0" cellspacing="0" cellpadding="5" align="center">
+    <table class="table table-bordered table-striped">
+    <tbody>
     <tr>
-    <td class="colhead" align="center" colspan="2"><h1>Making a Request</h1></td>
+    <td colspan="2"><h1>Making a Request</h1></td>
     </tr>
     <tr>
-    <td align="center" colspan="2" class="two">Before you make an request, <a class="altlink" href="search.php">Search</a>
+    <td colspan="2">Before you make an request, <a class="altlink" href="search.php">Search</a>
     to be sure it has not yet been requested, offered, or uploaded!<br><br>Be sure to fill in all fields!</td>
     </tr>
     <tr>
-    <td class="two" align="right">name:</td>
-    <td class="two" align="left"><input type="text" size="80"  name="request_name" value="' . htmlsafechars($request_name, ENT_QUOTES) . '" class="required" /></td>
+    <td>name:</td>
+    <td><input type="text" name="request_name" value="' . htmlsafechars($request_name, ENT_QUOTES) . '" class="required" /></td>
     </tr>
     <tr>
-    <td class="two" align="right">image:</td>
-    <td class="two" align="left"><input type="text" size="80"  name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required" /></td>
+    <td>image:</td>
+    <td><input type="text" name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required" /></td>
     </tr>
     <tr>
-    <td class="two" align="right">link:</td>
-    <td class="two" align="left"><input type="text" size="80"  name="link" value="' . htmlsafechars($link, ENT_QUOTES) . '" class="required" /></td>
+    <td>link:</td>
+    <td><input type="text" name="link" value="' . htmlsafechars($link, ENT_QUOTES) . '" class="required" /></td>
     </tr>
     <tr>
-    <td class="two" align="right">category:</td>
-    <td class="two" align="left">' . $category_drop_down . '</td>
+    <td>category:</td>
+    <td>' . $category_drop_down . '</td>
     </tr>
     <tr>
-    <td class="two" align="right">description:</td>
-    <td class="two" align="left">' . BBcode($body, false) . '</td>
+    <td>description:</td>
+    <td>' . BBcode($body, false) . '</td>
     </tr>
     <tr>
-    <td colspan="2" align="center" class="two">
+    <td colspan="2">
     <input type="submit" name="button" class="button" value="Submit" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
     </tr>
+    </tbody>
     </table></form>
      </td></tr></table><br>';
         echo stdhead('Add new request.', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
@@ -349,45 +349,45 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
         $cat_image = htmlsafechars($cat_arr['cat_image'], ENT_QUOTES);
         $cat_name = htmlsafechars($cat_arr['cat_name'], ENT_QUOTES);
         //=== start page
-        $HTMLOUT .= '<table align="center" border="0" cellspacing="0" cellpadding="0">
+        $HTMLOUT .= '<table class="table table-bordered table-striped">
    <tr>
-   <td class="embedded" align="center">
-   <h1 style="text-align: center;">Edit Request</h1>' . $top_menu . '
+   <td class="embedded">
+   <h1>Edit Request</h1>' . $top_menu . '
    <form method="post" action="requests.php?action=edit_request" name="request_form" id="request_form">
    <input type="hidden" name="id" value="' . $id . '" />
-   <table border="0" cellspacing="0" cellpadding="5" align="center">
+   <table class="table table-bordered table-striped">
    <tr>
-   <td class="colhead" align="center" colspan="2"><h1>Edit Request</h1></td>
+   <td colspan="2"><h1>Edit Request</h1></td>
    </tr>
    <tr>
-   <td align="center" colspan="2" class="two">Be sure to fill in all fields!</td>
+   <td colspan="2">Be sure to fill in all fields!</td>
    </tr>
    <tr>
-   <td class="two" align="right">name:</td>
-   <td class="two" align="left"><input type="text" size="80"  name="request_name" value="' . htmlsafechars($request_name, ENT_QUOTES) . '" class="required" /></td>
+   <td>name:</td>
+   <td><input type="text" name="request_name" value="' . htmlsafechars($request_name, ENT_QUOTES) . '" class="required" /></td>
    </tr>
    <tr>
-   <td class="two" align="right">image:</td>
-   <td class="two" align="left"><input type="text" size="80"  name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required" /></td>
+   <td>image:</td>
+   <td><input type="text" name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required" /></td>
    </tr>
    <tr>
-   <td class="two" align="right">link:</td>
-   <td class="two" align="left"><input type="text" size="80"  name="link" value="' . htmlsafechars($link, ENT_QUOTES) . '" class="required" /></td>
+   <td>link:</td>
+   <td><input type="text" name="link" value="' . htmlsafechars($link, ENT_QUOTES) . '" class="required" /></td>
    </tr>
    <tr>
-   <td class="two" align="right">category:</td>
-   <td class="two" align="left">' . $category_drop_down . '</td>
+   <td>category:</td>
+   <td>' . $category_drop_down . '</td>
    </tr>
    <tr>
-   <td class="two" align="right">description:</td>
-   <td class="two" align="left">' . BBcode($body, false) . '</td>
+   <td>description:</td>
+   <td>' . BBcode($body, false) . '</td>
    </tr>' . ($edit_arr['filled_by_user_id'] == 0 ? '' : '
    <tr>
-   <td class="two" align="right">filled:</td>
-   <td class="two" align="left">' . $filled_by . ' <input type="checkbox" name="filled_by" value="1"' . (isset($_POST['filled_by']) ? ' "checked"' : '') . ' /> check this box to re-set this request. [ removes filled by ]  </td>
+   <td>filled:</td>
+   <td>' . $filled_by . ' <input type="checkbox" name="filled_by" value="1"' . (isset($_POST['filled_by']) ? ' "checked"' : '') . ' /> check this box to re-set this request. [ removes filled by ]  </td>
    </tr>') . '
    <tr>
-   <td colspan="2" align="center" class="two">
+   <td colspan="2">
    <input type="submit" name="button" class="button" value="Edit" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
    </tr>
    </table></form>
@@ -472,23 +472,23 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
         $HTMLOUT .= $top_menu . '<form method="post" action="requests.php?action=edit_comment">
     <input type="hidden" name="id" value="' . $arr['request'] . '"/>
     <input type="hidden" name="comment_id" value="' . $comment_id . '"/>
-     ' . (isset($_POST['button']) && $_POST['button'] == 'Preview' ? '<table border="0" cellspacing="5" cellpadding="5" align="center">
+     ' . (isset($_POST['button']) && $_POST['button'] == 'Preview' ? '<table class="table table-bordered table-striped">
     <tr>
-    <td class="colhead" colspan="2"><h1>Preview</h1></td>
+    <td colspan="2"><h1>Preview</h1></td>
     </tr>
      <tr>
-    <td width="80" valign="top" class="two">' . $avatar . '</td>
-    <td valign="top" align="left" class="two">' . format_comment($body) . '</td>
+    <td>' . $avatar . '</td>
+    <td>' . format_comment($body) . '</td>
     </tr></table><br>' : '') . '
-    <table align="center" border="0" cellspacing="0" cellpadding="5">
+    <table class="table table-bordered table-striped">
      <tr>
-    <td align="center" class="colhead" colspan="2"><h1>Edit comment to "' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '"</h1></td>
+    <td colspan="2"><h1>Edit comment to "' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '"</h1></td>
     </tr>
      <tr>
-    <td align="right" valign="top" class="two"><b>Comment:</b></td><td align="left">' . BBcode($body, false) . '</td>
+    <td><b>Comment:</b></td><td>' . BBcode($body, false) . '</td>
     </tr>
      <tr>
-    <td align="center" colspan="2" class="two">
+    <td colspan="2">
     <input name="button" type="submit" class="button" value="Edit" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
     </tr>
      </table></form>';
@@ -525,18 +525,16 @@ function comment_table($rows)
 {
     $count2 = '';
     global $CURUSER, $site_config;
-    $comment_table = '<table class="main" border="0" cellspacing="0" cellpadding="0" align="center">
+    $comment_table = '<table class="table table-bordered table-striped">
     <tr>
-    <td class="three" align="center">';
+    <td class="three">';
     foreach ($rows as $row) {
         //=======change colors
-        $count2 = (++$count2) % 2;
-        $class = ($count2 == 0 ? 'one' : 'two');
         $text = format_comment($row['text']);
         if ($row['editedby']) {
             $res_user = sql_query('SELECT username FROM users WHERE id=' . sqlesc($row['editedby'])) or sqlerr(__FILE__, __LINE__);
             $arr_user = mysqli_fetch_assoc($res_user);
-            $text .= '<p><font size="1" class="small">Last edited by <a href="userdetails.php?id=' . (int)$row['editedby'] . '"><b>' . htmlsafechars($arr_user['username']) . '</b></a> at ' . get_date($row['editedat'], 'DATE') . '</font></p>';
+            $text .= '<p>Last edited by <a href="userdetails.php?id=' . (int)$row['editedby'] . '"><b>' . htmlsafechars($arr_user['username']) . '</b></a> at ' . get_date($row['editedat'], 'DATE') . '</p>';
         }
         $top_comment_stuff = $row['comment_id'] . ' by ' . (isset($row['username']) ? print_user_stuff($row) . ($row['title'] !== '' ? ' [ ' . htmlsafechars($row['title']) . ' ] ' : ' [ ' . get_user_class_name($row['class']) . ' ]  ') : ' M.I.A. ') . get_date($row['added'], '') . ($row['id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? '
      - [<a href="requests.php?action=edit_comment&amp;id=' . (int)$row['request'] . '&amp;comment_id=' . (int)$row['comment_id'] . '">Edit</a>]' : '') . ($CURUSER['class'] >= UC_STAFF ? '
@@ -544,13 +542,13 @@ function comment_table($rows)
      - [<a href="comment.php?action=vieworiginal&amp;cid=' . (int)$row['id'] . '">View original</a>]' : '') . '
     - [<a href="report.php?type=Request_Comment&amp;id_2=' . (int)$row['request'] . '&amp;id=' . (int)$row['comment_id'] . '">Report</a>]';
         $comment_table .= '
-    <table border="0" cellspacing="0" cellpadding="5">
+    <table class="table table-bordered table-striped">
     <tr>
-    <td align="left" colspan="2" class="colhead"># ' . $top_comment_stuff . '</td>
+    <td colspan="2"># ' . $top_comment_stuff . '</td>
     </tr>
     <tr>
-    <td align="center" width="80" class="' . $class . '" style="padding: 0px;">' . avatar_stuff($row) . '</td>
-    <td class="' . $class . '">' . $text . '</td>
+    <td>' . avatar_stuff($row) . '</td>
+    <td>' . $text . '</td>
     </tr>
     </table><br>';
     }

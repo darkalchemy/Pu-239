@@ -6,7 +6,7 @@ check_user_status();
 $lang = array_merge(load_language('global'), load_language('fastdelete'));
 global $site_config;
 
-if (!in_array($CURUSER['id'], $site_config['allowed_staff']['id'])) {
+if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'])) {
     stderr($lang['fastdelete_error'], $lang['fastdelete_no_acc']);
 }
 

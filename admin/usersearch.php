@@ -29,9 +29,9 @@ if (isset($_GET['h'])) {
     echo $lang['usersearch_instructions'];
     //$HTMLOUT .= $lang['usersearch_instructions'];
 } else {
-    $HTMLOUT .= "<p align='center'>(<a href='staffpanel.php?tool=usersearch&amp;action=usersearch&amp;h=1'>{$lang['usersearch_inlink']}</a>)";
+    $HTMLOUT .= "<p>(<a href='staffpanel.php?tool=usersearch&amp;action=usersearch&amp;h=1'>{$lang['usersearch_inlink']}</a>)";
     $HTMLOUT .= "&#160;-&#160;(<a href='staffpanel.php?tool=usersearch'>{$lang['usersearch_reset']}</a>)</p>\n";
-    //echo "<p align='center'>(<a href='staffpanel.php?tool=usersearch&amp;action=usersearch&amp;h=1'>{$lang['usersearch_inlink']}</a>)";
+    //echo "<p>(<a href='staffpanel.php?tool=usersearch&amp;action=usersearch&amp;h=1'>{$lang['usersearch_inlink']}</a>)";
     //echo "&#160;-&#160;(<a href='staffpanel.php?tool=usersearch'>{$lang['usersearch_reset']}</a>)</p>\n";
 }
 $highlight = " bgcolor='lightgrey'";
@@ -41,7 +41,7 @@ $highlight = " bgcolor='lightgrey'";
         <table border="1" cellspacing="0" cellpadding="5">
             <tr>
 
-                <td valign="middle" class='rowhead'><?php
+                <td class='rowhead'><?php
                     echo $lang['usersearch_name'] ?></td>
                 <td <?php
                 echo (isset($_POST['n']) && !empty($_POST['n'])) ? $highlight : '' ?>><input name="n" type="text"
@@ -49,7 +49,7 @@ $highlight = " bgcolor='lightgrey'";
                     echo isset($_POST['n']) ? htmlsafechars($_POST['n']) : '' ?>" size='25' />
                 </td>
 
-                <td valign="middle" class='rowhead'><?php
+                <td class='rowhead'><?php
                     echo $lang['usersearch_ratio'] ?></td>
                 <td <?php
                 echo (isset($_POST['r']) && !empty($_POST['r'])) ? $highlight : '' ?>><select name="rt">
@@ -71,7 +71,7 @@ $highlight = " bgcolor='lightgrey'";
                     echo isset($_POST['r2']) ? $_POST['r2'] : '' ?>" size="5" maxlength="4" />
                 </td>
 
-                <td valign="middle" class='rowhead'><?php
+                <td class='rowhead'><?php
                     echo $lang['usersearch_status'] ?></td>
                 <td <?php
                 echo (isset($_POST['st']) && !empty($_POST['st'])) ? $highlight : '' ?>><select name="st">
@@ -88,14 +88,14 @@ $highlight = " bgcolor='lightgrey'";
                     </select></td>
             </tr>
             <tr>
-                <td valign="middle" class='rowhead'><?php
+                <td class='rowhead'><?php
                     echo $lang['usersearch_email'] ?></td>
                 <td <?php
                 echo (isset($_POST['em']) && !empty($_POST['em'])) ? $highlight : '' ?>><input name="em" type="text"
                                                                                                value=""<?php
                     echo isset($_POST['em']) ? $_POST['em'] : '' ?>" size="25" />
                 </td>
-                <td valign="middle" class='rowhead'><?php
+                <td class='rowhead'><?php
                     echo $lang['usersearch_ip'] ?></td>
                 <td <?php
                 echo (isset($_POST['ip']) && !empty($_POST['ip'])) ? $highlight : '' ?>><input name="ip" type="text"
@@ -103,7 +103,7 @@ $highlight = " bgcolor='lightgrey'";
                     echo isset($_POST['ip']) ? $_POST['ip'] : '' ?>" maxlength="17" />
                 </td>
 
-                <td valign="middle" class='rowhead'><?php
+                <td class='rowhead'><?php
                     echo $lang['usersearch_acstatus'] ?></td>
                 <td <?php
                 echo (isset($_POST['as']) && !empty($_POST['as'])) ? $highlight : '' ?>><select name="as">
@@ -120,21 +120,21 @@ $highlight = " bgcolor='lightgrey'";
                     </select></td>
             </tr>
             <tr>
-                <td valign="middle" class='rowhead'><?php
+                <td class='rowhead'><?php
                     echo $lang['usersearch_comments'] ?></td>
                 <td <?php
                 echo (isset($_POST['co']) && !empty($_POST['co'])) ? $highlight : '' ?>><input name="co" type="text"
                                                                                                value=""<?php
                     echo isset($_POST['co']) ? $_POST['co'] : '' ?>" size="25" />
                 </td>
-                <td valign="middle" class='rowhead'><?php
+                <td class='rowhead'><?php
                     echo $lang['usersearch_mask'] ?></td>
                 <td <?php
                 echo (isset($_POST['ma']) && !empty($_POST['ma'])) ? $highlight : '' ?>><input name="ma" type="text"
                                                                                                value=""<?php
                     echo isset($_POST['ma']) ? $_POST['ma'] : '' ?>" maxlength="17" />
                 </td>
-                <td valign="middle" class='rowhead'><?php
+                <td class='rowhead'><?php
                     echo $lang['usersearch_class'] ?></td>
                 <td <?php
                 echo (isset($_POST['c']) && !empty($_POST['c'])) ? $highlight : '' ?>><select name="c">
@@ -156,7 +156,7 @@ $highlight = " bgcolor='lightgrey'";
             </tr>
             <tr>
 
-                <td valign="middle" class='rowhead'><?php
+                <td class='rowhead'><?php
                     echo $lang['usersearch_joined'] ?></td>
 
                 <td <?php
@@ -182,7 +182,7 @@ $highlight = " bgcolor='lightgrey'";
                 </td>
 
 
-                <td valign="middle" class='rowhead'><?php
+                <td class='rowhead'><?php
                     echo $lang['usersearch_uploaded'] ?></td>
 
                 <td <?php
@@ -206,7 +206,7 @@ $highlight = " bgcolor='lightgrey'";
                     <input name="ul2" type="text" id="ul2" size="8" maxlength="7" value=""<?php
                     echo isset($_POST['ul2']) ? $_POST['ul2'] : '' ?>" />
                 </td>
-                <td valign="middle" class="rowhead"><?php
+                <td class="rowhead"><?php
                     echo $lang['usersearch_donor'] ?></td>
 
                 <td <?php
@@ -225,7 +225,7 @@ $highlight = " bgcolor='lightgrey'";
             </tr>
             <tr>
 
-                <td valign="middle" class='rowhead'><?php
+                <td class='rowhead'><?php
                     echo $lang['usersearch_lastseen'] ?></td>
 
                 <td <?php
@@ -249,7 +249,7 @@ $highlight = " bgcolor='lightgrey'";
                     <input name="ls2" type="text" value=""<?php
                     echo isset($_POST['ls2']) ? $_POST['ls2'] : '' ?>" size="12" maxlength="10" />
                 </td>
-                <td valign="middle" class='rowhead'><?php
+                <td class='rowhead'><?php
                     echo $lang['usersearch_downloaded'] ?></td>
 
                 <td <?php
@@ -274,7 +274,7 @@ $highlight = " bgcolor='lightgrey'";
                     echo isset($_POST['dl2']) ? $_POST['dl2'] : '' ?>" />
                 </td>
 
-                <td valign="middle" class='rowhead'><?php
+                <td class='rowhead'><?php
                     echo $lang['usersearch_warned'] ?></td>
 
                 <td <?php
@@ -295,13 +295,13 @@ $highlight = " bgcolor='lightgrey'";
             <tr>
                 <td class="rowhead"></td>
                 <td></td>
-                <td valign="middle" class='rowhead'><?php
+                <td class='rowhead'><?php
                     echo $lang['usersearch_active'] ?></td>
                 <td <?php
                 echo (isset($_POST['ac']) && !empty($_POST['ac'])) ? $highlight : '' ?>><input name="ac" type="checkbox"
                                                                                                value="1" <?php
                     echo (isset($_POST['ac'])) ? "checked='checked'" : '' ?> /></td>
-                <td valign="middle" class='rowhead'><?php
+                <td class='rowhead'><?php
                     echo $lang['usersearch_banned'] ?></td>
                 <td <?php
                 echo (isset($_POST['dip']) && !empty($_POST['dip'])) ? $highlight : '' ?>><input name="dip"
@@ -310,7 +310,7 @@ $highlight = " bgcolor='lightgrey'";
                     echo (isset($_POST['dip'])) ? "checked='checked'" : '' ?> /></td>
             </tr>
             <tr>
-                <td colspan="6" align='center'><input name="submit" type='submit' class='btn-clean'/></td>
+                <td colspan="6"><input name="submit" type='submit' class='btn-clean'/></td>
             </tr>
         </table>
         <br><br>
@@ -828,10 +828,10 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
             $HTMLOUT .= $pager['pagertop'];
         }
         $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5'>\n
-        <tr><td class='colhead' align='left'>{$lang['usersearch_name']}</td>
-    	  <td class='colhead' align='left'>{$lang['usersearch_ratio']}</td>
-        <td class='colhead' align='left'>{$lang['usersearch_ip']}</td>
-        <td class='colhead' align='left'>{$lang['usersearch_email']}</td>" . "<td class='colhead' align='left'>{$lang['usersearch_joined']}</td>" . "<td class='colhead' align='left'>{$lang['usersearch_lastseen']}</td>" . "<td class='colhead' align='left'>{$lang['usersearch_asts']}</td>" . "<td class='colhead' align='left'>{$lang['usersearch_enabled']}</td>" . "<td class='colhead'>{$lang['usersearch_pR']}</td>" . "<td class='colhead'>{$lang['usersearch_pUL']}</td>" . "<td class='colhead'>{$lang['usersearch_pDL']}</td>" . "<td class='colhead'>{$lang['usersearch_history']}</td></tr>";
+        <tr><td class='colhead'>{$lang['usersearch_name']}</td>
+    	  <td class='colhead'>{$lang['usersearch_ratio']}</td>
+        <td class='colhead'>{$lang['usersearch_ip']}</td>
+        <td class='colhead'>{$lang['usersearch_email']}</td>" . "<td class='colhead'>{$lang['usersearch_joined']}</td>" . "<td class='colhead'>{$lang['usersearch_lastseen']}</td>" . "<td class='colhead'>{$lang['usersearch_asts']}</td>" . "<td class='colhead'>{$lang['usersearch_enabled']}</td>" . "<td class='colhead'>{$lang['usersearch_pR']}</td>" . "<td class='colhead'>{$lang['usersearch_pUL']}</td>" . "<td class='colhead'>{$lang['usersearch_pDL']}</td>" . "<td class='colhead'>{$lang['usersearch_history']}</td></tr>";
         $ids = '';
         while ($user = mysqli_fetch_array($res)) {
             if ($user['ip']) {
@@ -870,14 +870,14 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
             $HTMLOUT .= "<tr><td><b><a href='userdetails.php?id=" . (int)$user['id'] . "'>" . htmlsafechars($user['username']) . '</a></b>' . ($user['donor'] == 'yes' ? "<img src='./images/star.gif' alt=\"{$lang['usersearch_donor']}\" />" : '') . ($user['warned'] == 'yes' ? "<img src=\"./images/warned.gif\" alt=\"{$lang['usersearch_warned']}\" />" : '') . '</td>
           <td>' . ratios($user['uploaded'], $user['downloaded']) . '</td>
           <td>' . $ipstr . '</td><td>' . htmlsafechars($user['email']) . "</td>
-          <td><div align='center'>" . get_date($user['added'], '') . "</div></td>
-          <td><div align='center'>" . get_date($user['last_access'], '', 0, 1) . "</div></td>
-          <td><div align='center'>" . htmlsafechars($user['status']) . "</div></td>
-          <td><div align='center'>" . htmlsafechars($user['enabled']) . "</div></td>
-          <td><div align='center'>" . ratios($pul, $pdl) . "</div></td>
-          <td><div align='right'>" . number_format($pul / 1048576) . "</div></td>
-          <td><div align='right'>" . number_format($pdl / 1048576) . "</div></td>
-          <td><div align='center'>" . ($n_posts ? "<a href='userhistory.php?action=viewposts&amp;id=" . (int)$user['id'] . "'>$n_posts</a>" : $n_posts) . '|' . ($n_comments ? "<a href='userhistory.php?action=viewcomments&amp;id=" . (int)$user['id'] . "'>$n_comments</a>" : $n_comments) . "</div></td></tr>\n";
+          <td><div>" . get_date($user['added'], '') . "</div></td>
+          <td><div>" . get_date($user['last_access'], '', 0, 1) . "</div></td>
+          <td><div>" . htmlsafechars($user['status']) . "</div></td>
+          <td><div>" . htmlsafechars($user['enabled']) . "</div></td>
+          <td><div>" . ratios($pul, $pdl) . "</div></td>
+          <td><div>" . number_format($pul / 1048576) . "</div></td>
+          <td><div>" . number_format($pdl / 1048576) . "</div></td>
+          <td><div>" . ($n_posts ? "<a href='userhistory.php?action=viewposts&amp;id=" . (int)$user['id'] . "'>$n_posts</a>" : $n_posts) . '|' . ($n_comments ? "<a href='userhistory.php?action=viewcomments&amp;id=" . (int)$user['id'] . "'>$n_comments</a>" : $n_comments) . "</div></td></tr>\n";
         }
         $HTMLOUT .= '</table>';
         if ($count > $perpage) {
@@ -889,7 +889,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
 <table border='1' cellpadding='5' cellspacing='0'>
 <tr>
 <td>
-<div align='center'>
+<div>
 <input name='n_pms' type='hidden' value='" . $count . "' />
 <input name='ann_query' type='hidden' value='" . rawurlencode($announcement_query) . "' />
 <input name='ann_hash' type='hidden' value ='" . (hashit($announcement_query, $count)) . "' />

@@ -13,7 +13,7 @@ $htmlout = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" "ht
 <head>
     <meta name='MSSmartTagsPreventParsing' content='TRUE' />
 	<title>Custom Smilies</title>
-    <link rel='stylesheet' href='./css/" . get_stylesheet() . "/e0a618d82ab6ae6be19a4749c87426da.min.css' />
+    <link rel='stylesheet' href='" . get_file('css') . "' />
 </head>
 <body>
     <script>

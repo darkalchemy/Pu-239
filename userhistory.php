@@ -83,7 +83,7 @@ if ($action == 'viewposts') {
                 $body .= "<p><font size='1' class='small'>{$lang['posts_lasteditedby']} <a href='userdetails.php?id=" . (int)$arr['edited_by'] . "'><b>" . htmlsafechars($subrow['username']) . "</b></a> {$lang['posts_at']} " . get_date($arr['edit_date'], 'LONG', 0, 1) . "</font></p>\n";
             }
         }
-        $HTMLOUT .= "<tr valign='top'><td class='comment'>$body</td></tr>\n";
+        $HTMLOUT .= "<tr><td class='comment'>$body</td></tr>\n";
         $HTMLOUT .= end_table();
     }
     $HTMLOUT .= end_frame();
@@ -149,7 +149,7 @@ if ($action == 'viewcomments') {
         </td></tr></table></div>\n";
         $HTMLOUT .= begin_table(true);
         $body = format_comment($arr['text']);
-        $HTMLOUT .= "<tr valign='top'><td class='comment'>$body</td></tr>\n";
+        $HTMLOUT .= "<tr><td class='comment'>$body</td></tr>\n";
         $HTMLOUT .= end_table();
     }
     $HTMLOUT .= end_frame();

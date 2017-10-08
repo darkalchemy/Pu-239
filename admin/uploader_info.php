@@ -21,22 +21,19 @@ if ($count1 > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
 $HTMLOUT .= '<table border="0" cellspacing="0" cellpadding="5">
-   <tr><td class="colhead" align="center">' . $lang['upinfo_rank'] . '</td><td class="colhead" align="center">' . $lang['upinfo_torrent'] . '</td><td class="colhead" align="left">' . $lang['upinfo_member'] . '</td><td class="colhead" align="left">' . $lang['upinfo_class'] . '</td><td class="colhead" align="left">' . $lang['upinfo_ratio'] . '</td><td class="colhead" align="left">' . $lang['upinfo_ltupload'] . '</td><td class="colhead" align="center">' . $lang['upinfo_sendpm'] . '</td></tr>';
+   <tr><td class="colhead">' . $lang['upinfo_rank'] . '</td><td class="colhead">' . $lang['upinfo_torrent'] . '</td><td class="colhead">' . $lang['upinfo_member'] . '</td><td class="colhead">' . $lang['upinfo_class'] . '</td><td class="colhead">' . $lang['upinfo_ratio'] . '</td><td class="colhead">' . $lang['upinfo_ltupload'] . '</td><td class="colhead">' . $lang['upinfo_sendpm'] . '</td></tr>';
 $i = 0;
 while ($arr = mysqli_fetch_assoc($res)) {
     ++$i;
-    //=== change colors
-    $count = (++$count) % 2;
-    $class = ($count == 0 ? 'one' : 'two');
     $ratio = member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']);
     $HTMLOUT .= '<tr>
-<td class="' . $class . '" align="center">' . $i . '</td>
-<td class="' . $class . '" align="center">' . (int)$arr['how_many_torrents'] . '</td>
-<td class="' . $class . '" align="left">' . format_username($arr) . '</td>
-<td class="' . $class . '" align="left">' . get_user_class_name($arr['class']) . '</td>
-<td class="' . $class . '" align="left">' . $ratio . '</td>
-<td class="' . $class . '" align="left">' . get_date($arr['added'], 'DATE', 0, 1) . '</td>
-<td class="' . $class . '" align="center"><a href="pm_system.php?action=send_message&amp;receiver=' . (int)$arr['id'] . '"><img src="' . $site_config['pic_base_url'] . 'button_pm.gif" alt="' . $lang['upinfo_pm'] . '" title="' . $lang['upinfo_pm'] . '" border="0" /></a></td>
+<td>' . $i . '</td>
+<td>' . (int)$arr['how_many_torrents'] . '</td>
+<td>' . format_username($arr) . '</td>
+<td>' . get_user_class_name($arr['class']) . '</td>
+<td>' . $ratio . '</td>
+<td>' . get_date($arr['added'], 'DATE', 0, 1) . '</td>
+<td><a href="pm_system.php?action=send_message&amp;receiver=' . (int)$arr['id'] . '"><img src="' . $site_config['pic_base_url'] . 'button_pm.gif" alt="' . $lang['upinfo_pm'] . '" title="' . $lang['upinfo_pm'] . '" border="0" /></a></td>
 </tr>';
 }
 $HTMLOUT .= '</table>';

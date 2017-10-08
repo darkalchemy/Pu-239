@@ -134,14 +134,14 @@ function show_views()
       </div><br>
     {$menu}
 		
-		<div><table align='center' border='0' cellpadding='5' cellspacing='0' width='70%'>
+		<div><table border='0' cellpadding='5' cellspacing='0' width='70%'>
 		<tr>
-    <td colspan='3' align='left'>{$heading}</td>
+    <td colspan='3'>{$heading}</td>
     </tr>
 		<tr>
-    <td align='center' width='20%'>{$lang['stats_ex_date']}</td>
-    <td align='center' width='70%'>{$lang['stats_ex_result']}</td>
-    <td align='center' width='10%'>{$lang['stats_ex_count']}</td>
+    <td width='20%'>{$lang['stats_ex_date']}</td>
+    <td width='70%'>{$lang['stats_ex_result']}</td>
+    <td width='10%'>{$lang['stats_ex_count']}</td>
     </tr>";
     if (mysqli_num_rows($q)) {
         while ($row = mysqli_fetch_assoc($q)) {
@@ -161,18 +161,18 @@ function show_views()
             }
             $img_width .= '%';
             $htmlout .= "<tr>
-    			<td valign='middle'>$date</td>
-    			<td valign='middle'><img src='{$site_config['pic_base_url']}/bar_left.gif' border='0' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}/bar.gif' border='0' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}/bar_right.gif' border='0' width='4' height='11' align='middle' alt='' /></td>
-					<td valign='middle'><center>{$data['result_count']}</center></td>
+    			<td>$date</td>
+    			<td><img src='{$site_config['pic_base_url']}/bar_left.gif' border='0' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}/bar.gif' border='0' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}/bar_right.gif' border='0' width='4' height='11' align='middle' alt='' /></td>
+					<td><center>{$data['result_count']}</center></td>
 					</tr>";
         }
         $htmlout .= "<tr>
-<td valign='middle' width='20%'>&#160;</td>
-<td valign='middle' width='70%'><div align='right'><b>{$lang['stats_ex_total']}</b></div></td>
-<td valign='middle' width='10%'><center><b>{$running_total}</b></center></td>
+<td width='20%'>&#160;</td>
+<td width='70%'><div><b>{$lang['stats_ex_total']}</b></div></td>
+<td width='10%'><center><b>{$running_total}</b></center></td>
 </tr>";
     } else {
-        $htmlout .= "<tr><td colspan='3' align='center'>{$lang['stats_ex_noresult']}</td></tr>";
+        $htmlout .= "<tr><td colspan='3'>{$lang['stats_ex_noresult']}</td></tr>";
     }
     $htmlout .= '</table></div></div>';
     echo stdhead($page_title) . $htmlout . stdfoot();
@@ -274,14 +274,14 @@ function result_screen($mode = 'reg')
       </div><br>
     {$menu}
 		
-		<div><table align='center' border='0' cellpadding='5' cellspacing='0' width='70%'>
+		<div><table border='0' cellpadding='5' cellspacing='0' width='70%'>
 		<tr>
-    <td colspan='3' align='left'>{$heading}<br>{$page_detail}</td>
+    <td colspan='3'>{$heading}<br>{$page_detail}</td>
     </tr>
 		<tr>
-    <td align='center' width='20%'>{$lang['stats_ex_date']}</td>
-    <td align='center' width='70%'>{$lang['stats_ex_result']}</td>
-    <td align='center' width='10%'>{$lang['stats_ex_count']}</td>
+    <td width='20%'>{$lang['stats_ex_date']}</td>
+    <td width='70%'>{$lang['stats_ex_result']}</td>
+    <td width='10%'>{$lang['stats_ex_count']}</td>
     </tr>";
     if (mysqli_num_rows($q1)) {
         while ($row = mysqli_fetch_assoc($q1)) {
@@ -307,18 +307,18 @@ function result_screen($mode = 'reg')
                 $date = date($php_date, $data['result_maxdate']);
             }
             $htmlout .= "<tr>
-    			<td valign='middle'>$date</td>
-    			<td valign='middle'><img src='{$site_config['pic_base_url']}/bar_left.gif' border='0' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}/bar.gif' border='0' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}/bar_right.gif' border='0' width='4' height='11' align='middle' alt='' /></td>
-					<td valign='middle'><center>{$data['result_count']}</center></td>
+    			<td>$date</td>
+    			<td><img src='{$site_config['pic_base_url']}/bar_left.gif' border='0' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}/bar.gif' border='0' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}/bar_right.gif' border='0' width='4' height='11' align='middle' alt='' /></td>
+					<td><center>{$data['result_count']}</center></td>
 					</tr>";
         }
         $htmlout .= "<tr>
-<td valign='middle' width='20%'>&#160;</td>
-<td valign='middle' width='70%'><div align='right'><b>{$lang['stats_ex_total']}</b></div></td>
-<td valign='middle' width='10%'><center><b>{$running_total}</b></center></td>
+<td width='20%'>&#160;</td>
+<td width='70%'><div><b>{$lang['stats_ex_total']}</b></div></td>
+<td width='10%'><center><b>{$running_total}</b></center></td>
 </tr>";
     } else {
-        $htmlout .= "<tr><td colspan='3' align='center'>{$lang['stats_ex_noresult']}</td></tr>";
+        $htmlout .= "<tr><td colspan='3'>{$lang['stats_ex_noresult']}</td></tr>";
     }
     $htmlout .= '</table></div></div>';
     echo stdhead($page_title) . $htmlout . stdfoot();
@@ -483,15 +483,15 @@ function make_side_menu()
 {
     global $site_config, $lang;
     $htmlout = "<div style='float:left;border: 1px solid black;padding:5px;'>
-    <div align='left'><strong>{$lang['stats_ex_menu']}</strong></div>
-    <div align='left'>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=reg' style='text-decoration: none;'>{$lang['stats_ex_menureg']}</a></div>
-    <div align='left'>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=topic' style='text-decoration: none;'>{$lang['stats_ex_menutopnew']}</a></div>
-    <div align='left'>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=post' style='text-decoration: none;'>{$lang['stats_ex_menuposts']}</a></div>
-    <div align='left'>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=msg' style='text-decoration: none;'>{$lang['stats_ex_menupm']}</a></div>
-    <div align='left'>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=views' style='text-decoration: none;'>{$lang['stats_ex_menutopic']}</a></div>
-    <div align='left'>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=comms' style='text-decoration: none;'>{$lang['stats_ex_menucomm']}</a></div>
-    <div align='left'>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=torrents' style='text-decoration: none;'>{$lang['stats_ex_menutorr']}</a></div>
-    <div align='left'>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=reps' style='text-decoration: none;'>{$lang['stats_ex_menurep']}</a></div>
+    <div><strong>{$lang['stats_ex_menu']}</strong></div>
+    <div>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=reg' style='text-decoration: none;'>{$lang['stats_ex_menureg']}</a></div>
+    <div>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=topic' style='text-decoration: none;'>{$lang['stats_ex_menutopnew']}</a></div>
+    <div>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=post' style='text-decoration: none;'>{$lang['stats_ex_menuposts']}</a></div>
+    <div>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=msg' style='text-decoration: none;'>{$lang['stats_ex_menupm']}</a></div>
+    <div>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=views' style='text-decoration: none;'>{$lang['stats_ex_menutopic']}</a></div>
+    <div>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=comms' style='text-decoration: none;'>{$lang['stats_ex_menucomm']}</a></div>
+    <div>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=torrents' style='text-decoration: none;'>{$lang['stats_ex_menutorr']}</a></div>
+    <div>&#160;&#160;<a href='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra&amp;mode=reps' style='text-decoration: none;'>{$lang['stats_ex_menurep']}</a></div>
 </div>";
 
     return $htmlout;

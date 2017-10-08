@@ -94,7 +94,7 @@ function move_cat_form()
     }
     $select .= "</select>\n";
     $check .= "<tr>
-      <td align='right' width='50%'><span style='color:limegreen;font-weight:bold;'>{$lang['categories_select_new']}</span></td>
+      <td width='50%'><span style='color:limegreen;font-weight:bold;'>{$lang['categories_select_new']}</span></td>
       <td>$select</td>
     </tr>";
     $htmlout = '';
@@ -102,7 +102,7 @@ function move_cat_form()
       <input type='hidden' name='mode' value='takemove_cat' />
       <input type='hidden' name='id' value='{$r['id']}' />
     
-      <table class='torrenttable' align='center' width='80%' bgcolor='#555555' cellspacing='2' cellpadding='4px'>
+      <table class='torrenttable' width='80%' bgcolor='#555555' cellspacing='2' cellpadding='4px'>
       <tr>
         <td colspan='2' class='colhead'>" . $lang['categories_move_about'] . htmlsafechars($r['name'], ENT_QUOTES) . "</td>
       </tr>
@@ -110,12 +110,12 @@ function move_cat_form()
         <td colspan='2'>{$lang['categories_move_note']}</td>
       </tr>
       <tr>
-        <td align='right' width='50%'><span style='color:red;font-weight:bold;'>{$lang['categories_move_old']}</span></td>
+        <td width='50%'><span style='color:red;font-weight:bold;'>{$lang['categories_move_old']}</span></td>
         <td>" . htmlsafechars($r['name'], ENT_QUOTES) . "</td>
       </tr>
       {$check}
       <tr>
-        <td colspan='2' align='center'>
+        <td colspan='2'>
          <input type='submit' class='btn' value='{$lang['categories_move']}' /><input type='button' class='btn' value={$lang['categories_cancel']}' onclick=\"history.go(-1)\" /></td>
       </tr>
       </table>
@@ -210,7 +210,7 @@ function delete_cat_form()
         }
         $select .= "</select>\n";
         $check .= "<tr>
-        <td align='right' width='50%'>{$lang['categories_select_new']}<br><span style='color:red;font-weight:bold;'>{$lang['categories_del_warning']}</span></td>
+        <td width='50%'>{$lang['categories_select_new']}<br><span style='color:red;font-weight:bold;'>{$lang['categories_del_warning']}</span></td>
         <td>$select</td>
       </tr>";
     }
@@ -219,25 +219,25 @@ function delete_cat_form()
       <input type='hidden' name='mode' value='takedel_cat' />
       <input type='hidden' name='id' value='" . (int)$r['id'] . "' />
     
-      <table class='torrenttable' align='center' width='80%' bgcolor='#555555' cellspacing='2' cellpadding='2'>
+      <table class='torrenttable' width='80%' bgcolor='#555555' cellspacing='2' cellpadding='2'>
       <tr>
         <td colspan='2' class='colhead'>{$lang['categories_del_about']}" . htmlsafechars($r['name'], ENT_QUOTES) . "</td>
       </tr>
       <tr>
-        <td align='right' width='50%'>{$lang['categories_del_name']}</td>
+        <td width='50%'>{$lang['categories_del_name']}</td>
         <td>" . htmlsafechars($r['name'], ENT_QUOTES) . "</td>
       </tr>
       <tr>
-        <td align='right'>{$lang['categories_del_description']}</td>
+        <td>{$lang['categories_del_description']}</td>
         <td>" . htmlsafechars($r['cat_desc'], ENT_QUOTES) . "</td>
       </tr>
       <tr>
-        <td align='right'>{$lang['categories_del_image']}</td>
+        <td>{$lang['categories_del_image']}</td>
         <td>" . htmlsafechars($r['image'], ENT_QUOTES) . "</td>
       </tr>
       {$check}
       <tr>
-        <td colspan='2' align='center'>
+        <td colspan='2'>
          <input type='submit' class='btn' value='{$lang['categories_del_delete']}' /><input type='button' class='btn' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\" /></td>
       </tr>
       </table>
@@ -307,12 +307,12 @@ function edit_cat_form()
         }
         $select .= "</select>\n";
         $check = "<tr>
-        <td align='right' width='50%'>{$lang['categories_edit_select_new']}<br><span style='color:limegreen;font-weight:bold;'>{$lang['categories_edit_info']}</span></td>
+        <td width='50%'>{$lang['categories_edit_select_new']}<br><span style='color:limegreen;font-weight:bold;'>{$lang['categories_edit_info']}</span></td>
         <td>$select</td>
       </tr>";
     } else {
         $check = "<tr>
-        <td align='right' width='50%'>{$lang['categories_edit_select_new']}</td>
+        <td width='50%'>{$lang['categories_edit_select_new']}</td>
         <td><span style='color:red;font-weight:bold;'>{$lang['categories_edit_warning']}</span></td>
       </tr>";
     }
@@ -320,18 +320,18 @@ function edit_cat_form()
       <input type='hidden' name='mode' value='takeedit_cat' />
       <input type='hidden' name='id' value='" . (int)$r['id'] . "' />
     
-      <table class='torrenttable' align='center' width='80%' bgcolor='#555555' cellspacing='2' cellpadding='2'>
+      <table class='torrenttable' width='80%' bgcolor='#555555' cellspacing='2' cellpadding='2'>
       <tr>
-        <td align='right'>{$lang['categories_edit_name']}</td>
+        <td>{$lang['categories_edit_name']}</td>
         <td><input type='text' name='cat_name' class='option' size='50' value='" . htmlsafechars($r['name'], ENT_QUOTES) . "' /></td>
       </tr>
       <tr>
-        <td align='right'>{$lang['categories_del_description']}</td>
+        <td>{$lang['categories_del_description']}</td>
         <td><textarea cols='50' rows='5' name='cat_desc'>" . htmlsafechars($r['cat_desc'], ENT_QUOTES) . "</textarea></td>
       </tr>
       {$check}
       <tr>
-        <td colspan='2' align='center'>
+        <td colspan='2'>
          <input type='submit' class='btn' value='{$lang['categories_edit_edit']}' /><input type='button' class='btn' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\" /></td>
       </tr>
       </table>
@@ -362,12 +362,12 @@ function show_categories()
         }
         $select .= "</select>\n";
         $check = "<tr>
-        <td align='right' width='50%'>{$lang['categories_edit_select_new']}<br><span style='color:limegreen;font-weight:bold;'>{$lang['categories_edit_warning1']}</span></td>
+        <td width='50%'>{$lang['categories_edit_select_new']}<br><span style='color:limegreen;font-weight:bold;'>{$lang['categories_edit_warning1']}</span></td>
         <td>$select</td>
       </tr>";
     } else {
         $check = "<tr>
-        <td align='right' width='50%'>{$lang['categories_edit_select_new']}</td>
+        <td width='50%'>{$lang['categories_edit_select_new']}</td>
         <td><span style='color:red;font-weight:bold;'{$lang['categories_edit_select_warning']}</span></td>
       </tr>";
     }
@@ -376,25 +376,25 @@ function show_categories()
     
     <table class='torrenttable' border='1' width='80%' bgcolor='#555555' cellspacing='2' cellpadding='2'>
     <tr>
-      <td class='colhead' colspan='2' align='center'>
+      <td class='colhead' colspan='2'>
         <b>{$lang['categories_show_make']}</b>
       </td>
     </tr>
     <tr>
-      <td align='right'>{$lang['categories_edit_name']}</td>
-      <td align='left'><input type='text' name='new_cat_name' size='50' maxlength='50' /></td>
+      <td>{$lang['categories_edit_name']}</td>
+      <td><input type='text' name='new_cat_name' size='50' maxlength='50' /></td>
     </tr>
     <tr>
-      <td align='right'>{$lang['categories_del_description']}</td>
-      <td align='left'><textarea cols='50' rows='5' name='new_cat_desc'></textarea></td>
+      <td>{$lang['categories_del_description']}</td>
+      <td><textarea cols='50' rows='5' name='new_cat_desc'></textarea></td>
     </tr>
     <!--<tr>
-      <td align='right'>{$lang['categories_show_file']}</td>
-      <td align='left'><input type='text' name='new_cat_image' class='option' size='50' /></td>
+      <td>{$lang['categories_show_file']}</td>
+      <td><input type='text' name='new_cat_image' class='option' size='50' /></td>
     </tr>-->
     {$check}
     <tr>
-      <td colspan='2' align='center'>
+      <td colspan='2'>
         <input type='submit' value='{$lang['categories_show_add']}' class='btn' />
         <input type='reset' value='{$lang['categories_show_reset']}' class='btn' />
       </td>
@@ -424,12 +424,12 @@ function show_categories()
           <td height='48' width='60'><b>{$lang['categories_show_id2']} (" . (int)$row['id'] . ")</b></td>	
           <td width='120'>" . htmlsafechars($row['name']) . "</td>
           <td width='250'>" . htmlsafechars($row['cat_desc']) . "</td>
-          <td align='center' width='45'>$cat_image</td>
-          <td align='center' width='18'><a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=edit_cat&amp;id=" . (int)$row['id'] . "'>
+          <td width='45'>$cat_image</td>
+          <td width='18'><a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=edit_cat&amp;id=" . (int)$row['id'] . "'>
             <img src='{$site_config['pic_base_url']}aff_tick.gif' alt='{$lang['categories_show_edit2']}' title='{$lang['categories_show_edit']}' width='12' height='12' border='0' /></a></td>
-          <td align='center' width='18'><a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=del_cat&amp;id=" . (int)$row['id'] . "'>
+          <td width='18'><a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=del_cat&amp;id=" . (int)$row['id'] . "'>
             <img src='{$site_config['pic_base_url']}aff_cross.gif' alt='{$lang['categories_show_delete2']}' title='{$lang['categories_show_delete']}' width='12' height='12' border='0' /></a></td>
-          <td align='center' width='18'><a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=move_cat&amp;id=" . (int)$row['id'] . "'>
+          <td width='18'><a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=move_cat&amp;id=" . (int)$row['id'] . "'>
             <img src='{$site_config['pic_base_url']}plus.gif' alt='{$lang['categories_show_move2']}' title='{$lang['categories_show_move']}' width='12' height='12' border='0' /></a></td>
         </tr>";
         }

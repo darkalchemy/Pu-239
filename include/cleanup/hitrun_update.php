@@ -4,14 +4,13 @@ function hitrun_update($data)
     global $site_config, $queries, $mc1;
     set_time_limit(1200);
     ignore_user_abort(true);
-    include CACHE_DIR . 'hit_and_run_settings.php';
     if ($site_config['hnr_online'] == 1) {
         //===09 hnr by sir_snugglebunny
         $secs = $site_config['caindays'] * 86400;
         $hnr = TIME_NOW - $secs;
-        $res = sql_query('SELECT id FROM snatched WHERE hit_and_run <> \'0\' AND hit_and_run < ' . sqlesc($hnr) . '') or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT id FROM snatched WHERE hit_and_run <> "0" AND hit_and_run < ' . sqlesc($hnr) . '') or sqlerr(__FILE__, __LINE__);
         while ($arr = mysqli_fetch_assoc($res)) {
-            sql_query('UPDATE snatched SET mark_of_cain = \'yes\' WHERE id=' . sqlesc($arr['id'])) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE snatched SET mark_of_cain = "yes" WHERE id = ' . sqlesc($arr['id'])) or sqlerr(__FILE__, __LINE__);
         }
         //=== hit and run... disable Downloading rights if they have 3 marks of cain
         $res_fuckers = sql_query('SELECT COUNT(*) AS poop, snatched.userid, users.username, users.modcomment, users.hit_and_run_total, users.downloadpos FROM snatched LEFT JOIN users ON snatched.userid = users.id WHERE snatched.mark_of_cain = \'yes\' AND users.hnrwarn = \'no\' AND users.immunity = \'0\' GROUP BY snatched.userid') or sqlerr(__FILE__, __LINE__);
@@ -109,14 +108,8 @@ function hitrun_update($data)
             }
         }
         //==End
-        if ($queries > 0) {
+        if ($data['clean_log'] && $queries > 0) {
             write_log("HnR Cleanup: Completed using $queries queries");
-        }
-        if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-            $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';
-        }
-        if ($data['clean_log']) {
-            cleanup_log($data);
         }
     }
 }

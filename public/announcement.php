@@ -114,13 +114,12 @@ if ((!empty($ann_subject)) and (!empty($ann_body))) {
     <i><b>{$lang['annouce_here']}</b></i></a> {$lang['annouce_to_clr_annouce']}.</div></div>\n";
 }
 if ((empty($ann_subject)) and (empty($ann_body))) {
-    $HTMLOUT .= "<div align='center' class='article'>
+    $HTMLOUT .= "<div class='article'>
       <div class='article_header'>{$lang['index_announce']}</div>
     <div class='headbody'>
     <div class='tabular'>
         <div class='tabular-row'>
-        <div class='tabular-cell'><b><font color='red'>{$lang['annouce_announcement']}&#160;: 
-    {$lang['annouce_nothing_here']}</font></b></div></div>
+        <div class='tabular-cell'><b>{$lang['annouce_announcement']}&#160;:{$lang['annouce_nothing_here']}</b></div></div>
     <font color='blue'>{$lang['annouce_cur_no_new_ann']}</font>
     </div></div></div>\n";
 }

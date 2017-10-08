@@ -27,7 +27,7 @@ class_check($class);
 /*$allowed_ids = array(
     1
 ); //== 1 Is Sysop*/
-if (!in_array($CURUSER['id'], $site_config['allowed_staff']['id'] /*$allowed_ids*/)) {
+if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'] /*$allowed_ids*/)) {
     stderr($lang['editlog_error'], $lang['editlog_denied']);
 }
 $lang = array_merge($lang, load_language('editlog'));
@@ -120,10 +120,10 @@ unset($last);
 // Remove lists from current code...
 unset($data);
 unset($fetch_set);
-$HTMLOUT .= "<table width='750' border='1' cellspacing='2' cellpadding='5' align='center'>
+$HTMLOUT .= "<table width='750' border='1' cellspacing='2' cellpadding='5'>
 <tr>
-<td align='center' width='70%' bgcolor='orange'><strong>{$lang['editlog_new']}</strong></td>
-<td align='center' bgcolor='orange'><strong>{$lang['editlog_added']}</strong></td>
+<td width='70%' bgcolor='orange'><strong>{$lang['editlog_new']}</strong></td>
+<td bgcolor='orange'><strong>{$lang['editlog_added']}</strong></td>
 </tr>";
 reset($current);
 $count = 0;
@@ -131,10 +131,10 @@ foreach ($current as $x) {
     if ($x['status'] == 'new') {
         $HTMLOUT .= "
 <tr>
-<td align='center'>";
+<td>";
         $HTMLOUT .= htmlsafechars(substr($x['name'], 2));
         $HTMLOUT .= "</td>
-<td align='center'>";
+<td>";
         $HTMLOUT .= get_date($x['modify'], 'DATE', 0, 1);
         $HTMLOUT .= '</td>
 </tr>';
@@ -144,16 +144,16 @@ foreach ($current as $x) {
 if (!$count) {
     $HTMLOUT .= "
 <tr>
-<td align='center' colspan='2'><b>{$lang['editlog_no_new']}</b></td>
+<td colspan='2'><b>{$lang['editlog_no_new']}</b></td>
 </tr>";
 }
 $HTMLOUT .= "
 </table>
 <br><br><br>
-<table width='750' border='1' cellspacing='2' cellpadding='5' align='center'>
+<table width='750' border='1' cellspacing='2' cellpadding='5'>
 <tr>
-<td align='center' width='70%' bgcolor='orange'><strong>{$lang['editlog_modified']}</strong></td>
-<td align='center' bgcolor='orange'><strong>{$lang['editlog_modified1']}</strong></td>
+<td width='70%' bgcolor='orange'><strong>{$lang['editlog_modified']}</strong></td>
+<td bgcolor='orange'><strong>{$lang['editlog_modified1']}</strong></td>
 </tr>";
 reset($current);
 $count = 0;
@@ -161,10 +161,10 @@ foreach ($current as $x) {
     if ($x['status'] == 'modified') {
         $HTMLOUT .= "
 <tr>
-<td align='center'>";
+<td>";
         $HTMLOUT .= htmlsafechars(substr($x['name'], 2));
         $HTMLOUT .= "</td>
-<td align='center'>";
+<td>";
         $HTMLOUT .= get_date($x['modify'], 'DATE', 0, 1);
         $HTMLOUT .= '</td>
 </tr>';
@@ -174,16 +174,16 @@ foreach ($current as $x) {
 if (!$count) {
     $HTMLOUT .= "
 <tr>
-<td align='center' colspan='2'><b>{$lang['editlog_no_modified']}</b></td>
+<td colspan='2'><b>{$lang['editlog_no_modified']}</b></td>
 </tr>";
 }
 $HTMLOUT .= "
 </table>
 <br><br><br>
-<table width='750' border='1' cellspacing='2' cellpadding='5' align='center'>
+<table width='750' border='1' cellspacing='2' cellpadding='5'>
 <tr>
-<td align='center' width='70%' bgcolor='orange'><strong>{$lang['editlog_deleted']}</strong></td>
-<td align='center' bgcolor='orange'><strong>{$lang['editlog_deleted1']}</strong></td>
+<td width='70%' bgcolor='orange'><strong>{$lang['editlog_deleted']}</strong></td>
+<td bgcolor='orange'><strong>{$lang['editlog_deleted1']}</strong></td>
 </tr>";
 reset($current);
 $count = 0;
@@ -191,10 +191,10 @@ foreach ($current as $x) {
     if ($x['status'] == 'deleted') {
         $HTMLOUT .= "
 <tr>
-<td align='center'>";
+<td>";
         $HTMLOUT .= htmlsafechars(substr($x['name'], 2));
         $HTMLOUT .= "</td>
-<td align='center'>";
+<td>";
         $HTMLOUT .= get_date($x['modify'], 'DATE', 0, 1);
         $HTMLOUT .= '</td>
 </tr>';
@@ -204,16 +204,16 @@ foreach ($current as $x) {
 if (!$count) {
     $HTMLOUT .= "
 <tr>
-<td align='center' colspan='2'><b>{$lang['editlog_no_deleted']}</b></td>
+<td colspan='2'><b>{$lang['editlog_no_deleted']}</b></td>
 </tr>";
 }
 $HTMLOUT .= "
 </table>
 <br><br><br>
 <form method='post' action='staffpanel.php?tool=editlog&amp;action=editlog'>
-<table width='750' border='1' cellspacing='2' cellpadding='5' align='center'>
+<table width='750' border='1' cellspacing='2' cellpadding='5'>
 <tr>
-<td align='center' bgcolor='orange'>
+<td bgcolor='orange'>
 <input name='update' type='submit' value='{$lang['editlog_update']}' />
 </td>
 </tr>

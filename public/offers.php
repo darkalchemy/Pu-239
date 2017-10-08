@@ -14,7 +14,7 @@ $stdfoot = [
         'cc234532f5e31d9abe9e8d10b8f5b277.min',
     ],
 ];
-$HTMLOUT = $count2 = '';
+$HTMLOUT = '';
 if ($CURUSER['class'] < UC_POWER_USER) {
     stderr('Error!', 'Sorry, power user and up only!');
 }
@@ -40,7 +40,7 @@ $valid_actions = [
 //=== check posted action, and if no action was posted, show the default page
 $action = (in_array($posted_action, $valid_actions) ? $posted_action : 'default');
 //=== top menu :D
-$top_menu = '<div class="article" style="text-align:center"><div class="article_header"><a class="altlink" href="offers.php">view offers</a> || <a class="altlink" href="offers.php?action=add_new_offer">make offer</a></div>';
+$top_menu = '<div class="article"><div class="article_header"><a class="altlink" href="offers.php">view offers</a> || <a class="altlink" href="offers.php?action=add_new_offer">make offer</a></div>';
 switch ($action) {
     case 'vote':
         //===========================================================================================//
@@ -88,31 +88,29 @@ switch ($action) {
             stderr('Error!', 'Sorry, there are no current offers!');
         }
         $HTMLOUT .= (isset($_GET['new']) ? '<h1>Offer Added!</h1>' : '') . (isset($_GET['offer_deleted']) ? '<h1>Offer Deleted!</h1>' : '') . $top_menu . '' . $menu . '<br>';
-        $HTMLOUT .= '<table border="0" cellspacing="0" cellpadding="5" align="center">
+        $HTMLOUT .= '<table class="table table-bordered table-striped">
        <tr>
-        <td class="colhead" align="center">Type</td>
-        <td class="colhead" align="left">Name</td>
-        <td class="colhead" align="center">Added</td>
-        <td class="colhead" align="center">Comm</td>
-        <td class="colhead" align="center">Votes</td>
-        <td class="colhead" align="center">Offered By</td>
-        <td class="colhead" align="center">Status</td>
+        <td class="colhead">Type</td>
+        <td class="colhead">Name</td>
+        <td class="colhead">Added</td>
+        <td class="colhead">Comm</td>
+        <td class="colhead">Votes</td>
+        <td class="colhead">Offered By</td>
+        <td class="colhead">Status</td>
     </tr>';
         while ($main_query_arr = mysqli_fetch_assoc($main_query_res)) {
             //=======change colors
-            $count2 = (++$count2) % 2;
-            $class = ($count2 == 0 ? 'one' : 'two');
-            $status = ($main_query_arr['status'] == 'approved' ? '<span style="color: limegreen;font-weight: bold;">Approved!</span>' : ($main_query_arr['status'] == 'pending' ? '<span style="color: skyblue;font-weight: bold;">Pending...</span>' : '<span style="color: red;font-weight: bold;">denied</span>'));
+            $status = ($main_query_arr['status'] == 'approved' ? '<span>Approved!</span>' : ($main_query_arr['status'] == 'pending' ? '<span>Pending...</span>' : '<span>denied</span>'));
             $HTMLOUT .= '
     <tr>
-        <td class="' . $class . '" align="center" style="margin: 0; padding: 1;"><img border="0" src="./images/caticons/' . get_categorie_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '" /></td>
-        <td class="' . $class . '" align="left"><a class="altlink" href="offers.php?action=offer_details&amp;id=' . $main_query_arr['offer_id'] . '">' . htmlsafechars($main_query_arr['offer_name'], ENT_QUOTES) . '</a></td>
-        <td class="' . $class . '" align="center">' . get_date($main_query_arr['added'], 'LONG') . '</td>
-        <td class="' . $class . '" align="center">' . number_format($main_query_arr['comments']) . '</td>
-        <td class="' . $class . '" align="center">yes: ' . number_format($main_query_arr['vote_yes_count']) . '<br>
+        <td><img border="0" src="./images/caticons/' . get_categorie_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '" /></td>
+        <td><a class="altlink" href="offers.php?action=offer_details&amp;id=' . $main_query_arr['offer_id'] . '">' . htmlsafechars($main_query_arr['offer_name'], ENT_QUOTES) . '</a></td>
+        <td>' . get_date($main_query_arr['added'], 'LONG') . '</td>
+        <td>' . number_format($main_query_arr['comments']) . '</td>
+        <td>yes: ' . number_format($main_query_arr['vote_yes_count']) . '<br>
         no: ' . number_format($main_query_arr['vote_no_count']) . '</td>
-        <td class="' . $class . '" align="center">' . print_user_stuff($main_query_arr) . '</td>
-        <td class="' . $class . '" align="center">' . $status . '</td>
+        <td>' . print_user_stuff($main_query_arr) . '</td>
+        <td>' . $status . '</td>
     </tr>';
         }
         $HTMLOUT .= '</table>';
@@ -172,48 +170,48 @@ switch ($action) {
                     <input type="submit" class="button" value="change status!" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
                     </form> ');
         //=== start page
-        $HTMLOUT .= (isset($_GET['status_changed']) ? '<h1>Offer Status Updated!</h1>' : '') . (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . ($arr['status'] == 'approved' ? '<span style="color: limegreen;font-weight: bold;">status: approved!</span>' : ($arr['status'] == 'pending' ? '<span style="color: skyblue;font-weight: bold;">status: pending...</span>' : '<span style="color: red;font-weight: bold;">status: denied</span>')) . $status_drop_down . '<br><br>
-    <table border="0" cellspacing="0" cellpadding="5" align="center">
+        $HTMLOUT .= (isset($_GET['status_changed']) ? '<h1>Offer Status Updated!</h1>' : '') . (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . ($arr['status'] == 'approved' ? '<span>status: approved!</span>' : ($arr['status'] == 'pending' ? '<span>status: pending...</span>' : '<span>status: denied</span>')) . $status_drop_down . '<br><br>
+    <table class="table table-bordered table-striped">
     <tr>
-    <td class="colhead" align="center" colspan="2"><h1>' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="offers.php?action=edit_offer&amp;id=' . $id . '">edit</a> ]
+    <td class="colhead" colspan="2"><h1>' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . ($CURUSER['class'] < UC_STAFF ? '' : ' [ <a href="offers.php?action=edit_offer&amp;id=' . $id . '">edit</a> ]
     [ <a href="offers.php?action=delete_offer&amp;id=' . $id . '">delete</a> ]') . '</h1></td>
     </tr>
     <tr>
-    <td class="two" align="right">image:</td>
-    <td align="left" class="two"><img src="' . strip_tags($arr['image']) . '" alt="image" style="max-width:600px;" /></td>
+    <td>image:</td>
+    <td><img src="' . strip_tags($arr['image']) . '" alt="image" /></td>
     </tr>
     <tr>
-    <td class="two" align="right">description:</td>
-    <td align="left" class="two">' . format_comment($arr['description']) . '</td>
+    <td>description:</td>
+    <td>' . format_comment($arr['description']) . '</td>
     </tr>
     <tr>
-    <td class="two" align="right">category:</td>
-    <td align="left" class="two"><img border="0" src="./images/caticons/' . get_categorie_icons() . '/' . htmlsafechars($arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($arr['cat_name'], ENT_QUOTES) . '" /></td>
+    <td>category:</td>
+    <td><img border="0" src="./images/caticons/' . get_categorie_icons() . '/' . htmlsafechars($arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($arr['cat_name'], ENT_QUOTES) . '" /></td>
     </tr>
     <tr>
-    <td class="two" align="right">link:</td>
-    <td align="left" class="two"><a class="altlink" href="' . htmlsafechars($arr['link'], ENT_QUOTES) . '"  target="_blank">' . htmlsafechars($arr['link'], ENT_QUOTES) . '</a></td>
+    <td>link:</td>
+    <td><a class="altlink" href="' . htmlsafechars($arr['link'], ENT_QUOTES) . '"  target="_blank">' . htmlsafechars($arr['link'], ENT_QUOTES) . '</a></td>
     </tr>
     <tr>
-    <td class="two" align="right">votes:</td>
-    <td align="left" class="two">
-    <span style="font-weight:bold;color: green;">yes: ' . number_format($arr['vote_yes_count']) . '</span> ' . $vote_yes . '<br>
-    <span style="font-weight:bold;color: red;">no: ' . number_format($arr['vote_no_count']) . '</span> ' . $vote_no . '<br> ' . $your_vote_was . '</td>
+    <td>votes:</td>
+    <td>
+    <span>yes: ' . number_format($arr['vote_yes_count']) . '</span> ' . $vote_yes . '<br>
+    <span>no: ' . number_format($arr['vote_no_count']) . '</span> ' . $vote_no . '<br> ' . $your_vote_was . '</td>
     </tr>
     <tr>
-    <td class="two" align="right">offered by:</td>
-    <td align="left" class="two">' . print_user_stuff($arr) . ' [ ' . get_user_class_name($arr['class']) . ' ]
+    <td>offered by:</td>
+    <td>' . print_user_stuff($arr) . ' [ ' . get_user_class_name($arr['class']) . ' ]
     ratio: ' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . get_user_ratio_image($arr['uploaded'], ($site_config['ratio_free'] ? '1' : $arr['downloaded'])) . '</td>
     </tr>
     <tr>
-    <td class="two" align="right">Report Offer</td>
-    <td class="two" align="left"><form action="report.php?type=Offer&amp;id=' . $id . '" method="post">
+    <td>Report Offer</td>
+    <td><form action="report.php?type=Offer&amp;id=' . $id . '" method="post">
     <input type="submit" class="button_med" value="Report This Offer" onmouseover="this.className=\'button_med_hover\'" onmouseout="this.className=\'button_med\'" />
     For breaking the <a class="altlink" href="rules.php">rules</a></form></td>
     </tr>
     </table>';
         $HTMLOUT .= '<h1>Comments for ' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '</h1><p><a name="startcomments"></a></p>';
-        $commentbar = '<p align="center"><a class="index" href="offers.php?action=add_comment&amp;id=' . $id . '">Add a comment</a></p>';
+        $commentbar = '<p><a class="index" href="offers.php?action=add_comment&amp;id=' . $id . '">Add a comment</a></p>';
         $count = (int)$arr['comments'];
         if (!$count) {
             $HTMLOUT .= '<h2>No comments yet</h2>';
@@ -268,70 +266,70 @@ switch ($action) {
             exit();
         }
         //=== start page
-        $HTMLOUT .= '<table align="center" class="main" border="0" cellspacing="0" cellpadding="0">
+        $HTMLOUT .= '<table class="table table-bordered table-striped">
     <tr>
-    <td class="embedded" align="center">
-    <h1 style="text-align: center;">New Offer</h1>' . $top_menu . '
+    <td class="embedded">
+    <h1>New Offer</h1>' . $top_menu . '
     <form method="post" action="offers.php?action=add_new_offer" name="offer_form" id="offer_form">
    ' . (isset($_POST['button']) && $_POST['button'] == 'Preview' ? '<br>
-     <table border="0" cellspacing="0" cellpadding="5" align="center">
+     <table class="table table-bordered table-striped">
     <tr>
-    <td class="colhead" align="center" colspan="2"><h1>' . htmlsafechars($offer_name, ENT_QUOTES) . '</h1></td>
+    <td class="colhead" colspan="2"><h1>' . htmlsafechars($offer_name, ENT_QUOTES) . '</h1></td>
     </tr>
     <tr>
-    <td align="right" class="two">image:</td>
-    <td align="left" class="two"><img src="' . htmlsafechars($image, ENT_QUOTES) . '" alt="image" style="max-width:600px;" /></td>
+    <td>image:</td>
+    <td><img src="' . htmlsafechars($image, ENT_QUOTES) . '" alt="image" /></td>
     </tr>
     <tr>
-    <td  class="two" align="right">description:</td>
-    <td align="left" class="two">' . format_comment($body) . '</td>
+    <td >description:</td>
+    <td>' . format_comment($body) . '</td>
     </tr>
     <tr>
-    <td class="two" align="right">category:</td>
-    <td align="left" class="two"><img border="0" src="./images/caticons/' . get_categorie_icons() . '/' . htmlsafechars($cat_image, ENT_QUOTES) . '" alt="' . htmlsafechars($cat_name, ENT_QUOTES) . '" /></td>
+    <td>category:</td>
+    <td><img border="0" src="./images/caticons/' . get_categorie_icons() . '/' . htmlsafechars($cat_image, ENT_QUOTES) . '" alt="' . htmlsafechars($cat_name, ENT_QUOTES) . '" /></td>
     </tr>
     <tr>
-    <td class="two" align="right">link:</td>
-    <td align="left" class="two"><a class="altlink" href="' . htmlsafechars($link, ENT_QUOTES) . '" target="_blank">' . htmlsafechars($link, ENT_QUOTES) . '</a></td>
+    <td>link:</td>
+    <td><a class="altlink" href="' . htmlsafechars($link, ENT_QUOTES) . '" target="_blank">' . htmlsafechars($link, ENT_QUOTES) . '</a></td>
     </tr>
     <tr>
-    <td class="two" align="right">offered by:</td>
-    <td align="left" class="two">' . print_user_stuff($CURUSER) . ' [ ' . get_user_class_name($CURUSER['class']) . ' ]
+    <td>offered by:</td>
+    <td>' . print_user_stuff($CURUSER) . ' [ ' . get_user_class_name($CURUSER['class']) . ' ]
     ratio: ' . member_ratio($CURUSER['uploaded'], $site_config['ratio_free'] ? '0' : $CURUSER['downloaded']) . get_user_ratio_image($CURUSER['uploaded'], ($site_config['ratio_free'] ? '1' : $CURUSER['downloaded'])) . '</td>
     </tr>
     </table>
     <br>' : '') . '
-    <table border="0" cellspacing="0" cellpadding="5" align="center">
+    <table class="table table-bordered table-striped">
     <tr>
-    <td class="colhead" align="center" colspan="2"><h1>Making a Offer</h1></td>
+    <td class="colhead" colspan="2"><h1>Making a Offer</h1></td>
     </tr>
     <tr>
-    <td align="center" colspan="2" class="two">Before you make an offer, <a class="altlink" href="search.php">Search</a>
+    <td colspan="2">Before you make an offer, <a class="altlink" href="search.php">Search</a>
     to be sure it has not yet been requested, offered, or uploaded!<br><br>
     Be sure to fill in all fields!</td>
     </tr>
     <tr>
-    <td class="two" align="right">name:</td>
-    <td align="left" class="two"><input type="text" size="80"  name="offer_name" value="' . htmlsafechars($offer_name, ENT_QUOTES) . '" class="required" /></td>
+    <td>name:</td>
+    <td><input type="text"  name="offer_name" value="' . htmlsafechars($offer_name, ENT_QUOTES) . '" class="required" /></td>
     </tr>
     <tr>
-    <td class="two" align="right">image:</td>
-    <td align="left" class="two"><input type="text" size="80"  name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required" /></td>
+    <td>image:</td>
+    <td><input type="text"  name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required" /></td>
     </tr>
     <tr>
-    <td class="two" align="right">link:</td>
-    <td align="left" class="two"><input type="text" size="80"  name="link" value="' . htmlsafechars($link, ENT_QUOTES) . '" class="required" /></td>
+    <td>link:</td>
+    <td><input type="text"  name="link" value="' . htmlsafechars($link, ENT_QUOTES) . '" class="required" /></td>
     </tr>
     <tr>
-    <td class="two" align="right">category:</td>
-    <td align="left" class="two">' . $category_drop_down . '</td>
+    <td>category:</td>
+    <td>' . $category_drop_down . '</td>
     </tr>
     <tr>
-    <td class="two" align="right">description:</td>
-    <td align="left" class="two">' . BBcode($body, false) . '</td>
+    <td>description:</td>
+    <td>' . BBcode($body, false) . '</td>
     </tr>
     <tr>
-    <td colspan="2" align="center" class="two">
+    <td colspan="2">
     <input type="submit" name="button" class="button" value="Preview" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
     <input type="submit" name="button" class="button" value="Submit" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
     </tr>
@@ -405,64 +403,64 @@ switch ($action) {
             exit();
         }
         //=== start page
-        $HTMLOUT .= '<table align="center" class="main" border="0" cellspacing="0" cellpadding="0">
+        $HTMLOUT .= '<table class="table table-bordered table-striped">
     <tr>
-    <td class="embedded" align="center">
-    <h1 style="text-align: center;">Edit Offer</h1>' . $top_menu . '
+    <td class="embedded">
+    <h1>Edit Offer</h1>' . $top_menu . '
     <form method="post" action="offers.php?action=edit_offer" name="offer_form" id="offer_form">
     <input type="hidden" name="id" value="' . $id . '" />
     ' . (isset($_POST['button']) && $_POST['button'] == 'Preview' ? '<br>
-     <table border="0" cellspacing="0" cellpadding="5" align="center">
+     <table class="table table-bordered table-striped">
     <tr>
-    <td class="colhead" align="center" colspan="2"><h1>' . htmlsafechars($offer_name, ENT_QUOTES) . '</h1></td>
+    <td class="colhead" colspan="2"><h1>' . htmlsafechars($offer_name, ENT_QUOTES) . '</h1></td>
     </tr>
     <tr>
-    <td class="two" align="right">image:</td>
-    <td class="two" align="left"><img src="' . htmlsafechars($image, ENT_QUOTES) . '" alt="image" style="max-width:600px;" /></td>
+    <td>image:</td>
+    <td><img src="' . htmlsafechars($image, ENT_QUOTES) . '" alt="image" /></td>
     </tr>
     <tr>
-    <td class="two" align="right">description:</td>
-    <td class="two" align="left">' . format_comment($body) . '</td>
+    <td>description:</td>
+    <td>' . format_comment($body) . '</td>
     </tr>
     <tr>
-    <td class="two" align="right">category:</td>
-    <td class="two" align="left"><img border="0" src="./images/caticons/' . get_categorie_icons() . '/' . htmlsafechars($cat_image, ENT_QUOTES) . '" alt="' . htmlsafechars($cat_name, ENT_QUOTES) . '" /></td>
+    <td>category:</td>
+    <td><img border="0" src="./images/caticons/' . get_categorie_icons() . '/' . htmlsafechars($cat_image, ENT_QUOTES) . '" alt="' . htmlsafechars($cat_name, ENT_QUOTES) . '" /></td>
     </tr>
     <tr>
-    <td class="two" align="right">link:</td>
-    <td class="two" align="left"><a class="altlink" href="' . htmlsafechars($link, ENT_QUOTES) . '" target="_blank">' . htmlsafechars($link, ENT_QUOTES) . '</a></td>
+    <td>link:</td>
+    <td><a class="altlink" href="' . htmlsafechars($link, ENT_QUOTES) . '" target="_blank">' . htmlsafechars($link, ENT_QUOTES) . '</a></td>
     </tr>
     </table>
     <br>' : '') . '
-    <table border="0" cellspacing="0" cellpadding="5" align="center">
+    <table class="table table-bordered table-striped">
     <tr>
-    <td class="colhead" align="center" colspan="2"><h1>Edit Offer</h1></td>
+    <td class="colhead" colspan="2"><h1>Edit Offer</h1></td>
     </tr>
     <tr>
-    <td align="center" colspan="2" class="two">Be sure to fill in all fields!</td>
+    <td colspan="2">Be sure to fill in all fields!</td>
     </tr>
     <tr>
-    <td class="two" align="right">name:</td>
-    <td class="two" align="left"><input type="text" size="80"  name="offer_name" value="' . htmlsafechars($offer_name, ENT_QUOTES) . '" class="required" /></td>
+    <td>name:</td>
+    <td><input type="text"  name="offer_name" value="' . htmlsafechars($offer_name, ENT_QUOTES) . '" class="required" /></td>
     </tr>
     <tr>
-    <td class="rowhead" align="right">image:</td>
-    <td align="left"><input type="text" size="80"  name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required" /></td>
+    <td class="rowhead">image:</td>
+    <td><input type="text"  name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required" /></td>
     </tr>
     <tr>
-    <td class="two" align="right">link:</td>
-    <td class="two" align="left"><input type="text" size="80"  name="link" value="' . htmlsafechars($link, ENT_QUOTES) . '" class="required" /></td>
+    <td>link:</td>
+    <td><input type="text"  name="link" value="' . htmlsafechars($link, ENT_QUOTES) . '" class="required" /></td>
     </tr>
     <tr>
-    <td class="two" align="right">category:</td>
-    <td class="two" align="left">' . $category_drop_down . '</td>
+    <td>category:</td>
+    <td>' . $category_drop_down . '</td>
     </tr>
     <tr>
-    <td class="two" align="right">description:</td>
-    <td class="two" align="left">' . BBcode($body, false) . '</td>
+    <td>description:</td>
+    <td>' . BBcode($body, false) . '</td>
     </tr>
     <tr>
-    <td colspan="2" align="center" class="two">
+    <td colspan="2">
     <input type="submit" name="button" class="button" value="Preview" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
     <input type="submit" name="button" class="button" value="Edit" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
     </tr>
@@ -500,24 +498,24 @@ switch ($action) {
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
         $HTMLOUT .= $top_menu . '<form method="post" action="offers.php?action=add_comment">
     <input type="hidden" name="id" value="' . $id . '"/>' . (isset($_POST['button']) && $_POST['button'] == 'Preview' ? '
-    <table border="0" cellspacing="5" cellpadding="5" align="center">
+    <table class="table table-bordered table-striped">
     <tr>
     <td class="colhead" colspan="2"><h1>Preview</h1></td>
     </tr>
      <tr>
-    <td width="80" valign="top" class="two">' . avatar_stuff($CURUSER) . '</td>
-    <td valign="top" align="left" class="two">' . format_comment($body) . '</td>
+    <td>' . avatar_stuff($CURUSER) . '</td>
+    <td>' . format_comment($body) . '</td>
     </tr></table><br>' : '') . '
-     <table align="center" border="0" cellspacing="0" cellpadding="5">
+     <table class="table table-bordered table-striped">
      <tr>
-    <td align="center" class="colhead" colspan="2"><h1>Add a comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"</h1></td>
+    <td class="colhead" colspan="2"><h1>Add a comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"</h1></td>
     </tr>
      <tr>
-    <td align="right" valign="top" class="two"><b>Comment:</b></td>
-    <td align="left" class="two">' . BBcode($body, false) . '   </td>
+    <td><b>Comment:</b></td>
+    <td>' . BBcode($body, false) . '   </td>
     </tr>
      <tr>
-    <td align="center" colspan="2" class="two">
+    <td colspan="2">
     <input name="button" type="submit" class="button" value="Preview" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
     <input name="button" type="submit" class="button" value="Save" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
     </tr>
@@ -569,24 +567,24 @@ switch ($action) {
         $HTMLOUT .= $top_menu . '<form method="post" action="offers.php?action=edit_comment">
     <input type="hidden" name="id" value="' . $arr['offer'] . '"/>
     <input type="hidden" name="comment_id" value="' . $comment_id . '"/>
-     ' . (isset($_POST['button']) && $_POST['button'] == 'Preview' ? '<table border="0" cellspacing="5" cellpadding="5" align="center">
+     ' . (isset($_POST['button']) && $_POST['button'] == 'Preview' ? '<table class="table table-bordered table-striped">
     <tr>
     <td class="colhead" colspan="2"><h1>Preview</h1></td>
     </tr>
      <tr>
-    <td width="80" valign="top" class="two">' . $avatar . '</td>
-    <td valign="top" align="left" class="two">' . format_comment($body) . '</td>
+    <td>' . $avatar . '</td>
+    <td>' . format_comment($body) . '</td>
     </tr></table><br>' : '') . '
-    <table align="center" border="0" cellspacing="0" cellpadding="5">
+    <table class="table table-bordered table-striped">
      <tr>
-    <td align="center" class="colhead" colspan="2"><h1>Edit comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"</h1></td>
+    <td class="colhead" colspan="2"><h1>Edit comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"</h1></td>
     </tr>
      <tr>
-    <td align="right" valign="top" class="two"><b>Comment:</b></td>
-    <td align="left" class="two">' . BBcode($body, false) . '</td>
+    <td><b>Comment:</b></td>
+    <td>' . BBcode($body, false) . '</td>
     </tr>
      <tr>
-    <td align="center" colspan="2" class="two">
+    <td colspan="2">
     <input name="button" type="submit" class="button" value="Preview" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
     <input name="button" type="submit" class="button" value="Edit" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
     </tr>
@@ -663,21 +661,18 @@ switch ($action) {
 //=== functions n' stuff \o/
 function comment_table($rows)
 {
-    $count2 = '';
     global $CURUSER, $site_config;
-    $comment_table = '<table class="main" border="0" cellspacing="0" cellpadding="0" align="center">
+    $comment_table = '<table class="table table-bordered table-striped">
     <tr>
-    <td class="three" align="center">';
+    <td class="three">';
     foreach ($rows as $row) {
         //=======change colors
-        $count2 = (++$count2) % 2;
-        $class = ($count2 == 0 ? 'one' : 'two');
         $text = format_comment($row['text']);
         if ($row['editedby']) {
             $res_user = sql_query('SELECT username FROM users WHERE id=' . sqlesc($row['editedby'])) or sqlerr(__FILE__, __LINE__);
             $arr_user = mysqli_fetch_assoc($res_user);
-            $text .= '<p><font size="1" class="small">Last edited by <a href="userdetails.php?id=' . (int)$row['editedby'] . '">
-        <b>' . htmlsafechars($arr_user['username']) . '</b></a> at ' . get_date($row['editedat'], 'DATE') . '</font></p>';
+            $text .= '<p>Last edited by <a href="userdetails.php?id=' . (int)$row['editedby'] . '">
+        <b>' . htmlsafechars($arr_user['username']) . '</b></a> at ' . get_date($row['editedat'], 'DATE') . '</p>';
         }
         $top_comment_stuff = $row['comment_id'] . ' by ' . (isset($row['username']) ? print_user_stuff($row) . ($row['title'] !== '' ? ' [ ' . htmlsafechars($row['title']) . ' ] ' : ' [ ' . get_user_class_name($row['class']) . ' ]  ') : ' M.I.A. ') . get_date($row['added'], '') . ($row['id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? '
      - [<a href="offers.php?action=edit_comment&amp;id=' . (int)$row['offer'] . '&amp;comment_id=' . (int)$row['comment_id'] . '">Edit</a>]' : '') . ($CURUSER['class'] >= UC_STAFF ? '
@@ -685,13 +680,13 @@ function comment_table($rows)
      - [<a href="comment.php?action=vieworiginal&amp;cid=' . (int)$row['id'] . '">View original</a>]' : '') . '
      - [<a href="report.php?type=Offer_Comment&amp;id_2=' . (int)$row['offer'] . '&amp;id=' . (int)$row['comment_id'] . '">Report</a>]';
         $comment_table .= '
-    <table border="0" cellspacing="0" cellpadding="5">
+    <table class="table table-bordered table-striped">
     <tr>
-    <td align="left" colspan="2" class="colhead"># ' . $top_comment_stuff . '</td>
+    <td colspan="2" class="colhead"># ' . $top_comment_stuff . '</td>
     </tr>
     <tr>
-    <td align="center" width="80" class="' . $class . '" style="padding: 0px;">' . avatar_stuff($row) . '</td>
-    <td class="' . $class . '">' . $text . '</td>
+    <td>' . avatar_stuff($row) . '</td>
+    <td>' . $text . '</td>
     </tr>
     </table><br>';
     }

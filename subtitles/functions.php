@@ -104,25 +104,25 @@ function build_result($array, $pager)
     $time = get_results($array['search']['results']);
     //print the content
     if (count($result) == 0) {
-        echo '<div align="center"><h2>No result found</h2></div>';
+        echo '<div><h2>No result found</h2></div>';
     } else {
         ?>
         <table width="55%" style="border-collapse:collapse;" border="1" cellspacing="0" cellpadding="5">
             <tr>
-                <td colspan="9" align="right">Search took&#160;<font class="releasename">
+                <td colspan="9">Search took&#160;<font class="releasename">
                         <?php echo $time['searchtime'] ?>
                         s</font>, Items found <font class="releasename">
                         <?php echo $time['itemsfound'] ?>
                     </font></td>
             </tr>
             <tr>
-                <td align="left" colspan="4" width="100%">Movie name</td>
-                <td nowrap="nowrap" align="center">Added</td>
-                <td nowrap="nowrap" align="center"><img src="imgs/icon-files.gif" width="12" height="12" alt=" "
+                <td colspan="4" width="100%">Movie name</td>
+                <td nowrap="nowrap">Added</td>
+                <td nowrap="nowrap"><img src="imgs/icon-files.gif" width="12" height="12" alt=" "
                                                         title="CDs"/></td>
-                <td nowrap="nowrap" align="center"><img src="imgs/icon-format.gif" width="12" height="13" alt=" "
+                <td nowrap="nowrap"><img src="imgs/icon-format.gif" width="12" height="13" alt=" "
                                                         title="Format"/></td>
-                <td nowrap="nowrap" align="center"><img src="imgs/icon-upper.gif" width="15" height="17" alt=" "
+                <td nowrap="nowrap"><img src="imgs/icon-upper.gif" width="15" height="17" alt=" "
                                                         title="Uploader"/></td>
             </tr>
             <?php
@@ -130,31 +130,31 @@ function build_result($array, $pager)
             for ($i = 0; $i < $count; ++$i) {
                 $movie = ($count == 1 ? get_details($result) : get_details($result[$i])); ?>
                 <tr>
-                    <td align="center" nowrap="nowrap"><img src="flag/<?php echo $movie['iso639'] ?>.gif" width="18"
+                    <td nowrap="nowrap"><img src="flag/<?php echo $movie['iso639'] ?>.gif" width="18"
                                                             height="12" border="0"
                                                             alt="<?php echo $movie['language'] ?>"
                                                             title="<?php echo $movie['language'] ?>"/></td>
-                    <td align="left" colspan="2" width="100%"><a href="<?php echo $base . $movie['detail'] ?>"
+                    <td colspan="2" width="100%"><a href="<?php echo $base . $movie['detail'] ?>"
                                                                  target="_blank">
                             <?php echo $movie['movie'] ?>
                         </a>
                         <?php echo $movie['releasename'] ? '<br><font class="releasename">' . $movie['releasename'] . '</font>' : '' ?>
                     </td>
-                    <td nowrap="nowrap" align="center"><a href="<?php echo $base . $movie['download'] ?>"
+                    <td nowrap="nowrap"><a href="<?php echo $base . $movie['download'] ?>"
                                                           target="blank"><img src="imgs/icon-download.gif" width="12"
                                                                               height="12" border="0" alt=" "
                                                                               title="download"/></a></td>
                     <td nowrap="nowrap"
-                        align="center"><?php echo str_replace(' ', '<br>', $movie['subadddate']) ?></td>
-                    <td nowrap="nowrap" align="center"><?php echo $movie['files'] ?></td>
-                    <td nowrap="nowrap" align="center"><?php echo $movie['format'] ?></td>
+                       ><?php echo str_replace(' ', '<br>', $movie['subadddate']) ?></td>
+                    <td nowrap="nowrap"><?php echo $movie['files'] ?></td>
+                    <td nowrap="nowrap"><?php echo $movie['format'] ?></td>
                     <td nowrap="nowrap"
-                        align="center"><?php echo $movie['user'] == '' ? 'Unknown' : $movie['user'] ?></td>
+                       ><?php echo $movie['user'] == '' ? 'Unknown' : $movie['user'] ?></td>
                 </tr>
                 <?php
             } ?>
         </table>
-        <?php echo $time['itemsfound'] > 40 ? '<br><div align="center">' . pager($time['itemsfound'], $pager) . '</div>' : '' ?>
+        <?php echo $time['itemsfound'] > 40 ? '<br><div>' . pager($time['itemsfound'], $pager) . '</div>' : '' ?>
         <?php
     }
 }

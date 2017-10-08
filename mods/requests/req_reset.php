@@ -10,11 +10,11 @@ if (($CURUSER['id'] == $arr['userid']) || ($CURUSER['class'] >= UC_MODERATOR) ||
         sql_query('UPDATE users SET seedbonus = seedbonus-' . $site_config['req_comment_bonus'] . " WHERE id = $arr[filledby]") or sqlerr(__FILE__, __LINE__);
     }
     sql_query("UPDATE requests SET torrentid = 0, filledby = 0 WHERE id = $id") or sqlerr(__FILE__, __LINE__);
-    $HTMLOUT .= "<h1 align='center'>{$lang['reset_success']}</h1>" . "<p align='center'>{$lang['add_request']} $id (" . htmlspecialchars($arr['request']) . "){$lang['reset_successfully']}</p>
-<p align='center'><a class='altlink' href='viewrequests.php'><b>{$lang['req_view_all']}</b></a></p><br><br>";
+    $HTMLOUT .= "<h1>{$lang['reset_success']}</h1>" . "<p>{$lang['add_request']} $id (" . htmlspecialchars($arr['request']) . "){$lang['reset_successfully']}</p>
+<p><a class='altlink' href='viewrequests.php'><b>{$lang['req_view_all']}</b></a></p><br><br>";
 } else {
     $HTMLOUT .= "<table>
-<tr><td class='colhead' align='left'><h1>{$lang['error_error']}</h1></td></tr><tr><td align='left'>" . "{$lang['reset_sorry']}<br><br></td></tr>
+<tr><td class='colhead'><h1>{$lang['error_error']}</h1></td></tr><tr><td>" . "{$lang['reset_sorry']}<br><br></td></tr>
 </table>";
 }
 $HTMLOUT .= "</td></tr></table>\n";

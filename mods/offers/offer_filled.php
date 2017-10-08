@@ -41,9 +41,9 @@ if (mysqli_num_rows($res) > 0) {
 }
 ((mysqli_free_result($res) || (is_object($res) && (get_class($res) == 'mysqli_result'))) ? true : false);
 $HTMLOUT .= "<table class='main' width='750px' border='0' cellspacing='0' cellpadding='0'>" . "<tr><td class='embedded'>\n";
-$HTMLOUT .= "<h1 align='center'>Success!</h1>
+$HTMLOUT .= "<h1>Success!</h1>
 <table cellspacing='10' cellpadding='10'>
-<tr><td align='left'>Offer $id (" . htmlspecialchars($arr['offer']) . ") successfully accepted with <a class='altlink' href='details.php?id=" . $torrentid . "'>" . $site_config['baseurl'] . '/details.php?id=' . $torrentid . "</a>.  
+<tr><td>Offer $id (" . htmlspecialchars($arr['offer']) . ") successfully accepted with <a class='altlink' href='details.php?id=" . $torrentid . "'>" . $site_config['baseurl'] . '/details.php?id=' . $torrentid . "</a>.  
 <br><br>User <a class='altlink' href='userdetails.php?id=$arr[userid]'><b>$arr[username]</b></a> automatically PMd.  <br><br>
 If you have made a mistake in filling in the URL or have realised that your torrent does not actually satisfy this offer
 , please reset the offer so someone else can fill it by clicking <a class='altlink' href='viewoffers.php?id=$id&amp;offer_reset'>HERE</a> 

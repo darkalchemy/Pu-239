@@ -1,8 +1,11 @@
+var animate_duration = 1250;
+var animation = 'fade';
+
 $(document).ready(function() {
 	$('.tooltipper').tooltipster({
 		theme: 'tooltipster-borderless',
-		animation: 'grow',
-		animationDuration: 750,
+		animation: animation,
+		animationDuration: animate_duration,
 		arrow: true,
 		contentAsHTML: true,
 		maxWidth: 500,
@@ -15,8 +18,8 @@ function initAll() {
 	$('.dt-tooltipper.tooltipstered').tooltipster('destroy');
 	$('.dt-tooltipper').tooltipster({
 		theme: 'tooltipster-borderless',
-		animation: 'grow',
-		animationDuration: 750,
+		animation: animation,
+		animationDuration: animate_duration,
 		arrow: true,
 		contentAsHTML: true,
 		maxWidth: 500,
@@ -41,12 +44,12 @@ function initAll() {
 		theme: ['tooltipster-borderless', 'tooltipster-custom'],
 		contentAsHTML: true,
         interactive: true,
-		animation: 'grow',
-		animationDuration: 750,
-		updateAnimation: 'grow',
+		animation: animation,
+		animationDuration: animate_duration,
+		updateAnimation: animation,
 		arrow: true,
         minWidth: 250,
-		content: '<br>&nbsp;&nbsp;&nbsp;patience, grasshopper...&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;',
+		content: 'patience, grasshopper...',
 		functionBefore: function(instance, helper) {
 			var $origin = $(helper.origin);
 			if ($origin.data('loaded') !== true) {

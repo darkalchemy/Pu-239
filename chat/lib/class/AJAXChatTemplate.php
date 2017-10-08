@@ -196,6 +196,9 @@ class AJAXChatTemplate
             case 'TOKEN':
                 return session_id();
 
+            case 'ANON_LINK':
+                return $this->ajaxChat->getConfig('anonymous_link');
+
             default:
                 return $this->ajaxChat->replaceCustomTemplateTags($tagData[1], (isset($tagData[2]) ? $tagData[2] : null));
         }

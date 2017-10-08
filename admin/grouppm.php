@@ -182,21 +182,21 @@ if (sizeof($err) > 0) {
 $HTMLOUT .= "<fieldset style='border:1px solid #333333; padding:5px;'>
     <legend style='padding:3px 5px 3px 5px; border:solid 1px #333333; font-size:12px;font-weight:bold;'>{$lang['grouppm_head']}</legend>
     <form action='staffpanel.php?tool=grouppm&amp;action=grouppm' method='post'>
-      <table width='500' border='1' style='border-collapse:collapse' cellpadding='5' cellspacing='0' align='center'>
+      <table width='500' border='1' style='border-collapse:collapse' cellpadding='5' cellspacing='0'>
         <tr>
-          <td nowrap='nowrap' align='left' colspan='2'><b>{$lang['grouppm_sub']}</b> &#160;&#160;
+          <td nowrap='nowrap' colspan='2'><b>{$lang['grouppm_sub']}</b> &#160;&#160;
             <input type='text' name='subject' size='30' style='width:300px;'/></td>
         </tr>
         <tr>
-          <td nowrap='nowrap' valign='top' align='left'><b>{$lang['grouppm_body']}</b></td>
-          <td nowrap='nowrap' align='left'><b>{$lang['grouppm_groups']}</b></td>
+          <td nowrap='nowrap'><b>{$lang['grouppm_body']}</b></td>
+          <td nowrap='nowrap'><b>{$lang['grouppm_groups']}</b></td>
           </tr>
         <tr>
-          <td width='100%' align='center'>" . BBcode(false) . "</td>
+          <td width='100%'>" . BBcode(false) . "</td>
           <td width='100%' >" . dropdown() . "</td>
         </tr>
         <tr>
-         <td align='left'><label for='sys'>{$lang['grouppm_sendas']}</label><input id='sys' type='checkbox' name='system' value='yes' /></td><td align='right' ><input type='submit' value='{$lang['grouppm_send']}' /></td>
+         <td><label for='sys'>{$lang['grouppm_sendas']}</label><input id='sys' type='checkbox' name='system' value='yes' /></td><td ><input type='submit' value='{$lang['grouppm_send']}' /></td>
         </tr>
       </table>
     </form>

@@ -32,10 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 } else {
     $out = begin_main_frame();
     $out .= stdmsg($lang['name_curr'], count($blacklist) ? join(', ', array_keys($blacklist)) : $lang['name_no']);
-    $out .= stdmsg($lang['name_add'], '<form action="staffpanel.php?tool=nameblacklist&amp;action=nameblacklist" method="post"><table width="90%" cellspacing="2" cellpadding="5" align="center" style="border-collapse:separate">
-	<tr><td align="center"><textarea rows="3" cols="100" name="badnames"></textarea></td></tr>
-    <tr><td align="center">' . $lang['name_note'] . '</td></tr>
-	<tr> <td align="center"><input type="submit" value="' . $lang['name_update'] . '"/></td></tr>
+    $out .= stdmsg($lang['name_add'], '<form action="staffpanel.php?tool=nameblacklist&amp;action=nameblacklist" method="post"><table width="90%" cellspacing="2" cellpadding="5" style="border-collapse:separate">
+	<tr><td><textarea rows="3" cols="100" name="badnames"></textarea></td></tr>
+    <tr><td>' . $lang['name_note'] . '</td></tr>
+	<tr> <td><input type="submit" value="' . $lang['name_update'] . '"/></td></tr>
 	</table></form>');
     $out .= end_main_frame();
     echo stdhead($lang['name_stdhead']) . $out . stdfoot();

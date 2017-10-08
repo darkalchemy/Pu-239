@@ -31,19 +31,14 @@ function irc_update($data)
         $count = count($users_buffer);
         if ($count > 0) {
             sql_query('INSERT INTO users (id,seedbonus,irctotal) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE seedbonus=seedbonus+values(seedbonus),irctotal=irctotal+values(irctotal)') or sqlerr(__FILE__, __LINE__);
-            //sql_query("INSERT INTO users (id,uploaded,irctotal) VALUES ".implode(', ',$users_buffer)." ON DUPLICATE key UPDATE uploaded=uploaded+values(uploaded),irctotal=irctotal+values(irctotal)") or sqlerr(__FILE__,__LINE__);
+        }
+        if ($data['clean_log']) {
             write_log('Cleanup ' . $count . ' users idling on IRC');
         }
         unset($users_buffer, $update, $count);
     }
     //== End
-    if ($queries > 0) {
+    if ($data['clean_log'] && $queries > 0) {
         write_log("Irc Cleanup: Completed using $queries queries");
-    }
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' Users updated';
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
     }
 }

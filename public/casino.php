@@ -246,11 +246,11 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     //== Take Bet
     if (isset($_GET['takebet'])) {
         $betid = (int)$_GET['takebet'];
-        //		if (($casino_times = $mc1->get_value('casinotimes_' . $betid)) === false) {
-        //			$mc1->cache_value('casinotimes_' . $betid, 600);
-        //		} else {
-        //			stderr($lang['gl_sorry'], "{$lang['casino_someone_has_already_taken_that_bet']}!&#160;&#160;&#160;$goback");
-        //		}
+        //      if (($casino_times = $mc1->get_value('casinotimes_' . $betid)) === false) {
+        //          $mc1->cache_value('casinotimes_' . $betid, 600);
+        //      } else {
+        //          stderr($lang['gl_sorry'], "{$lang['casino_someone_has_already_taken_that_bet']}!&#160;&#160;&#160;$goback");
+        //      }
         $rand = 0;
         for ($x = 1; $x <= 100000; ++$x) {
             $random = (random_int(1, 10000));
@@ -402,7 +402,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
         }
         $betsp = sql_query('SELECT id, amount FROM casino_bets WHERE userid = ' . sqlesc($CURUSER['id']) . ' ORDER BY time ASC') or sqlerr(__FILE__, __LINE__);
         $tbet2 = mysqli_fetch_row($betsp);
-        $dummy = "<h2>{$lang['casino_bet_added_you_will_receive_a_pm_notify']}</h2>";
+        $dummy = "<h2 class='text-center'>{$lang['casino_bet_added_you_will_receive_a_pm_notify']}</h2>";
         $user = $CURUSER['username'];
         $bet = mksize($nobits);
         $classColor = get_user_class_color($CURUSER['class']);
@@ -434,72 +434,106 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     }
     $loca = sql_query("SELECT * FROM casino_bets WHERE challenged ='empty'");
     $totbets = mysqli_num_rows($loca);
-    //== Output html begin
-    $HTMLOUT = '';
-    $HTMLOUT .= "<table class='message width50 text-center' cellspacing='0' cellpadding='5'>
-            <tr>
-            <td class='text-center'>";
-    $HTMLOUT = $dummy;
+    $HTMLOUT = "
+    <div class='table-wrapper bottom20'>
+        <div class='container-fluid portlet'>";
+    $HTMLOUT .= $dummy;
     //== Place bet table
     if ($openbet < $maxusrbet) {
         if ($totbets >= $maxtotbet) {
-            $HTMLOUT .= "<br>{$lang['casino_there_are_already']} " . htmlsafechars($maxtotbet) . " {$lang['casino_bets_open_take_an_open_bet']}!<br>";
+            $HTMLOUT .= "{$lang['casino_there_are_already']} " . htmlsafechars($maxtotbet) . " {$lang['casino_bets_open_take_an_open_bet']}!";
         } else {
-            $HTMLOUT .= "<br>
+            $HTMLOUT .= "
             <form name='p2p' method='post' action='{$casino}'>
-            <h1>{$site_config['site_name']} {$lang['casino_stdhead']} - {$lang['casino_bet_p2p_with_other_users']}:</h1>
-            <table class='width50 text-center' cellspacing='0' cellpadding='3'>";
-            $HTMLOUT .= "<tr><td class='text-center' colspan='2' class='colhead'>{$lang['casino_place_bet']}</td></tr>";
-            $HTMLOUT .= "<tr><td class='text-center'><b>{$lang['casino_amount_to_bet']}</b>
-            <input type='text' name='amnt' size='5' value='1' />
-            <select name='unit'>
-            <option value='1'>MB</option>
-            <option value='2'>GB</option>
-            </select></td></tr>";
-            $HTMLOUT .= "<tr><td class='text-center' colspan='2'><input type='submit' class='btn-clean' value='{$lang['casino_gamble']}!' />";
-            $HTMLOUT .= '</td></tr></table></form><br>';
+                <h1 class='text-center'>{$site_config['site_name']} {$lang['casino_stdhead']} - {$lang['casino_bet_p2p_with_other_users']}:</h1>
+                <table class='table table-bordered table-striped top20 bottom20'>
+                    <thead>
+                        <tr>
+                            <td class='text-center' colspan='2'>{$lang['casino_place_bet']}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class='text-center'><b>{$lang['casino_amount_to_bet']}</b>
+                                <input type='text' name='amnt' size='5' value='1' />
+                                <select name='unit'>
+                                    <option value='1'>MB</option>
+                                    <option value='2'>GB</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class='text-center' colspan='2'>
+                                <input type='submit' class='btn-clean' value='{$lang['casino_gamble']}!' />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>";
         }
     } else {
         $HTMLOUT .= "<b>{$lang['casino_you_already_have']} " . htmlsafechars($maxusrbet) . " {$lang['casino_open_bets_wait_until_they_are_comp']}.</b><br><br>";
     }
     //== Open Bets table
     $maxbetShow = mksize($maxbet);
-    $HTMLOUT .= '<table class="width50 text-center" cellspacing="0" cellpadding="3">';
-    $HTMLOUT .= "<tr><td class='text-center' class='colhead' colspan='4'>{$lang['casino_open_bets']} - Max Bet {$maxbetShow} - Limit {$maxusrbet} Active Bets</td></tr>";
-    $HTMLOUT .= "<tr>
-            <td class='text-center' width='15%'><b>{$lang['casino_name']}</b></td><td width='15%' class='text-center'><b>{$lang['casino_amount']}</b></td>
-            <td width='45%' class='text-center'><b>{$lang['casino_time']}</b></td><td class='text-center'><b>{$lang['casino_take_bet']}</b></td>
-            </tr>";
+    $HTMLOUT .= "
+                <table class='table table-bordered table-striped top20 bottom20'>
+                    <thead>
+                        <tr>
+                            <th class='text-center' colspan='4'>{$lang['casino_open_bets']} - Max Bet {$maxbetShow} - Limit {$maxusrbet} Active Bets</th>
+                        </tr>
+                        <tr>
+                            <td class='text-center'><b>{$lang['casino_name']}</b></td>
+                            <td class='text-center'><b>{$lang['casino_amount']}</b></td>
+                            <td class='text-center'><b>{$lang['casino_time']}</b></td>
+                            <td class='text-center'><b>{$lang['casino_take_bet']}</b></td>
+                        </tr>
+                    </thead>
+                    <tbody>";
     while ($res = mysqli_fetch_assoc($loca)) {
-        $HTMLOUT .= '<tr>
-            <td class="text-center">' . htmlsafechars($res['proposed']) . '</td>
-            <td class="text-center">' . htmlsafechars(mksize($res['amount'])) . '</td>
-            <td class="text-center">' . get_date($res['time'], 'LONG', 0, 1) . "</td>
-            <td class='text-center'><b><a href='{$casino}?takebet=" . (int)$res['id'] . "'>{$lang['casino_take_bet']}</a></b></td>
-            </tr>";
+        $HTMLOUT .= "
+                        <tr>
+                            <td class='text-center'>" . format_username($res['userid']) . "</td>
+                            <td class='text-center'>" . htmlsafechars(mksize($res['amount'])) . "</td>
+                            <td class='text-center'>" . get_date($res['time'], 'LONG', 0, 1) . "</td>
+                            <td class='text-center'>
+                                <b><a href='{$casino}?takebet=" . (int)$res['id'] . "'>{$lang['casino_take_bet']}</a></b>
+                            </td>
+                        </tr>";
         $abcdefgh = 1;
     }
     if ($abcdefgh == false) {
-        $HTMLOUT .= "<tr><td class='text-center' colspan='4'>{$lang['casino_sorry_no_bets_currently']}.</td></tr>";
+        $HTMLOUT .= "
+                        <tr>
+                            <td class='text-center' colspan='4'>{$lang['casino_sorry_no_bets_currently']}.</td>
+                        </tr>";
     }
-    $HTMLOUT .= '</table><br>';
+    $HTMLOUT .= "
+                    </tbody>
+                </table>";
     //== Bet on color table
-    $HTMLOUT .= "<form name='casino' method='post' action='{$casino}'>
-            <table class='message width50 text-center' cellspacing='0' cellpadding='5'>\n";
-    $HTMLOUT .= "<tr><td class='text-center' class='colhead' colspan='2'>{$lang['casino_bet_on_a_colour']}</td></tr>";
+    $HTMLOUT .= "
+            <form name='casino' method='post' action='{$casino}'>
+                <table class='table table-bordered table-striped top20 bottom20'>
+                    <thead>
+                        <tr>
+                            <td class='text-center' class='colhead' colspan='2'>{$lang['casino_bet_on_a_colour']}</td>
+                        </tr>
+                    </thead>
+                    <tbody>";
     $HTMLOUT .= tr($lang['casino_black'], '<input name="color" type="radio" checked="checked" value="black" />', 1);
     $HTMLOUT .= tr($lang['casino_red'], '<input name="color" type="radio" checked="checked" value="red" />', 1);
     $HTMLOUT .= tr($lang['casino_how_much'], "
-            <select name='betmb'>
-            <option value='{$bet_value1}'>" . mksize($bet_value1) . "</option>
-            <option value='{$bet_value2}'>" . mksize($bet_value2) . "</option>
-            <option value='{$bet_value3}'>" . mksize($bet_value3) . "</option>
-            <option value='{$bet_value4}'>" . mksize($bet_value4) . "</option>
-            <option value='{$bet_value5}'>" . mksize($bet_value5) . "</option>
-            <option value='{$bet_value6}'>" . mksize($bet_value6) . "</option>
-            <option value='{$bet_value7}'>" . mksize($bet_value7) . "</option>
-            <option value='{$bet_value8}'>" . mksize($bet_value8) . '</option>
-            </select>', 1);
+                            <select name='betmb'>
+                                <option value='{$bet_value1}'>" . mksize($bet_value1) . "</option>
+                                <option value='{$bet_value2}'>" . mksize($bet_value2) . "</option>
+                                <option value='{$bet_value3}'>" . mksize($bet_value3) . "</option>
+                                <option value='{$bet_value4}'>" . mksize($bet_value4) . "</option>
+                                <option value='{$bet_value5}'>" . mksize($bet_value5) . "</option>
+                                <option value='{$bet_value6}'>" . mksize($bet_value6) . "</option>
+                                <option value='{$bet_value7}'>" . mksize($bet_value7) . "</option>
+                                <option value='{$bet_value8}'>" . mksize($bet_value8) . '</option>
+                            </select>', 1);
     $real_chance = 2;
     if ($show_real_chance) {
         $real_chance = $cheat_value + 1;
@@ -507,24 +541,33 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     $HTMLOUT .= tr($lang['casino_your_chance'], '1 : ' . $real_chance, 1);
     $HTMLOUT .= tr($lang['casino_you_can_win'], $win_amount . ' * stake', 1);
     $HTMLOUT .= tr($lang['casino_bet_on_color'], "<input type='submit' class='btn-clean' value='{$lang['casino_do_it']}!' />", 1);
-    $HTMLOUT .= '</table></form><br>';
+    $HTMLOUT .= "
+                    </tbody>
+                </table>
+            </form>";
     //== Bet on number table
-    $HTMLOUT .= "<form name='casino' method='post' action='{$casino}'>
-            <table class='message width50 text-center' cellspacing='0' cellpadding='5'>\n";
-    $HTMLOUT .= "<tr><td class='text-center' class='colhead' colspan='2'>{$lang['casino_bet_on_a_number']}</td></tr>";
+    $HTMLOUT .= "
+            <form name='casino' method='post' action='{$casino}'>
+                <table class='table table-bordered table-striped top20 bottom20'>
+                    <thead>
+                        <tr>
+                            <td class='text-center' class='colhead' colspan='2'>{$lang['casino_bet_on_a_number']}</td>
+                        </tr>
+                    </thead>
+                    <tbody>";
     $HTMLOUT .= tr($lang['casino_number'], '<input name="number" type="radio" checked="checked" value="1" />1&#160;&#160;<input name="number" type="radio" value="2" />2&#160;&#160;<input name="number" type="radio" value="3" />3', 1);
     $HTMLOUT .= tr('', '<input name="number" type="radio" value="4" />4&#160;&#160;<input name="number" type="radio" value="5" />5&#160;&#160;<input name="number" type="radio" value="6" />6', 1);
     $HTMLOUT .= tr($lang['casino_how_much'], "
-            <select name='betmb'>
-            <option value='{$bet_value1}'>" . mksize($bet_value1) . "</option>
-            <option value='{$bet_value2}'>" . mksize($bet_value2) . "</option>
-            <option value='{$bet_value3}'>" . mksize($bet_value3) . "</option>
-            <option value='{$bet_value4}'>" . mksize($bet_value4) . "</option>
-            <option value='{$bet_value5}'>" . mksize($bet_value5) . "</option>
-            <option value='{$bet_value6}'>" . mksize($bet_value6) . "</option>
-            <option value='{$bet_value7}'>" . mksize($bet_value7) . "</option>
-            <option value='{$bet_value8}'>" . mksize($bet_value8) . '</option>
-            </select>', 1);
+                                <select name='betmb'>
+                                    <option value='{$bet_value1}'>" . mksize($bet_value1) . "</option>
+                                    <option value='{$bet_value2}'>" . mksize($bet_value2) . "</option>
+                                    <option value='{$bet_value3}'>" . mksize($bet_value3) . "</option>
+                                    <option value='{$bet_value4}'>" . mksize($bet_value4) . "</option>
+                                    <option value='{$bet_value5}'>" . mksize($bet_value5) . "</option>
+                                    <option value='{$bet_value6}'>" . mksize($bet_value6) . "</option>
+                                    <option value='{$bet_value7}'>" . mksize($bet_value7) . "</option>
+                                    <option value='{$bet_value8}'>" . mksize($bet_value8) . '</option>
+                                </select>', 1);
     $real_chance = 6;
     if ($show_real_chance) {
         $real_chance = $cheat_value + 5;
@@ -532,34 +575,52 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     $HTMLOUT .= tr($lang['casino_your_chance'], '1 : ' . $real_chance, 1);
     $HTMLOUT .= tr($lang['casino_you_can_win'], $win_amount_on_number . ' * stake', 1);
     $HTMLOUT .= tr($lang['casino_bet_on_a_number'], "<input type='submit' class='btn-clean' value='{$lang['casino_do_it']}!' />", 1);
-    $HTMLOUT .= '</table></form><br>';
+    $HTMLOUT .= "
+                    </tbody>
+                </table>
+            </form>";
     //== User stats table
-    $HTMLOUT .= "<table class='width50 text-center' cellspacing='0' cellpadding='3'>";
-    $HTMLOUT .= "<tr><td class='text-center' class='colhead' colspan='3'>{$CURUSER['username']}'s {$lang['casino_details']}</td></tr>
-            <tr><td class='text-center'>
-            <h1>User @ {$site_config['site_name']} {$lang['casino_stdhead']}</h1>
-            <table class='message' cellspacing='0' cellpadding='5'>";
+    $HTMLOUT .= "
+            <div class='bordered top20 bottom20'>
+                <div class='text-center top20'>
+                    <span class='size_7'>{$CURUSER['username']}'s {$lang['casino_details']}</span>
+                </div>
+                <div class='flex-container flex-top'>
+                    <div class='text-center w-25 top20'>
+                        <span class='size_6'>User @ {$site_config['site_name']} {$lang['casino_stdhead']}</span>
+                        <table class='table table-bordered table-striped'>";
     $HTMLOUT .= tr($lang['casino_you_can_win'], mksize($max_download_user), 1);
     $HTMLOUT .= tr($lang['casino_won'], mksize($user_win), 1);
     $HTMLOUT .= tr($lang['casino_lost'], mksize($user_lost), 1);
     $HTMLOUT .= tr($lang['casino_ratio'], $casino_ratio_user, 1);
     $HTMLOUT .= tr($lang['casino_deposit_on_p2p'], mksize($user_deposit + $nobits));
-    $HTMLOUT .= "</table>
-            </td><td class='text-center'>
-            <h1>{$lang['casino_global_stats']}</h1>
-            <table class='message' cellspacing='0' cellpadding='5'>";
+    $HTMLOUT .= "
+                        </table>
+                    </div>
+                    <div class='text-center w-25 top20'>
+                        <span class='size_6'>{$lang['casino_global_stats']}</span>
+                        <table class='table table-bordered table-striped'>";
     $HTMLOUT .= tr($lang['casino_users_can_win'], mksize($max_download_global), 1);
     $HTMLOUT .= tr($lang['casino_won'], mksize($global_win), 1);
     $HTMLOUT .= tr($lang['casino_lost'], mksize($global_lost), 1);
     $HTMLOUT .= tr($lang['casino_ratio'], $casino_ratio_global, 1);
     $HTMLOUT .= tr($lang['casino_deposit'], mksize($global_deposit));
-    $HTMLOUT .= '</table>';
-    $HTMLOUT .= "</td><td class='text-center'>
-            <h1>{$lang['casino_user_stats']}</h1>
-            <table class='message' cellspacing='0' cellpadding='5'>";
+    $HTMLOUT .= "
+                        </table>
+                    </div>
+                    <div class='text-center w-25 top20'>
+                        <span class='size_6'>{$lang['casino_user_stats']}</span>
+                        <table class='table table-bordered table-striped'>";
     $HTMLOUT .= tr($lang['casino_uploaded'], mksize($User['uploaded'] - $nobits));
     $HTMLOUT .= tr($lang['casino_downloaded'], mksize($User['downloaded']));
     $HTMLOUT .= tr($lang['casino_ratio'], $ratio);
-    $HTMLOUT .= '</table></td></tr></table>';
+    $HTMLOUT .= "
+                        </table>
+                    </div>
+                </div>
+            </div>";
 }
+$HTMLOUT .= "
+        </div>
+    </div>";
 echo stdhead("{$lang['casino_stdhead']}") . $HTMLOUT . stdfoot();

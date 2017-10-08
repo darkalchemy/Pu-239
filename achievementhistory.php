@@ -26,7 +26,7 @@ if (!$count) {
 $pager = pager($perpage, $count, "?id=$id&amp;");
 if ($id == $CURUSER['id']) {
     $HTMLOUT .= "
-	<div class='row-fluid' align='center'>
+	<div class='row-fluid'>
 		<span class='btn btn-small'>
 		<a href='/achievementlist.php'>{$lang['achievement_history_al']}</a></span>
 		<span class='btn btn-small'>
@@ -39,7 +39,7 @@ if ($id == $CURUSER['id']) {
 	";
 }
 $HTMLOUT .= "
-	<div class='row-fluid' align='center'>
+	<div class='row-fluid'>
 		<fieldset>
 			<legend>
 			{$lang['achievement_history_afu']}

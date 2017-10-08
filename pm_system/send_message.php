@@ -157,10 +157,10 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_preview'
     $HTMLOUT .= '<legend>' . $lang['pm_send_previewpm'] . '</legend>
     <table class="table table-bordered">
     <tr>
-        <td align="left" colspan="2" class="colhead"><span style="font-weight: bold;">subject: </span>' . htmlsafechars($subject) . '</td>
+        <td colspan="2" class="colhead"><span style="font-weight: bold;">subject: </span>' . htmlsafechars($subject) . '</td>
     </tr>
     <tr>
-        <td align="center" valign="top" class="one" width="0px" id="photocol">' . $avatar . '</td>
+        <td class="one" width="0px" id="photocol">' . $avatar . '</td>
         <td class="two" style="min-width:400px;padding:10px;vertical-align: top;text-align: left;">' . format_comment($body) . '</td>
     </tr>
     </table><br>';
@@ -173,18 +173,18 @@ $HTMLOUT .= '<form name="compose" method="post" action="pm_system.php">
         <h1>' . $lang['pm_send_msgto'] . '<a class="altlink" href="userdetails.php?id=' . $receiver . '">' . $arr_member[0] . '</a></h1>
     <table class="table table-bordered">
     <tr>
-        <td align="left" colspan="2" class="colhead">' . $lang['pm_send_sendmsg'] . '</td>
+        <td colspan="2" class="colhead">' . $lang['pm_send_sendmsg'] . '</td>
     </tr>
     <tr>
-        <td align="right" class="one"><span style="font-weight: bold;">' . $lang['pm_send_subject'] . '</span></td>
-        <td align="left" class="one"><input name="subject" type="text" class="text_default" value="' . $subject . '" /></td>
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_send_subject'] . '</span></td>
+        <td class="one"><input name="subject" type="text" class="text_default" value="' . $subject . '" /></td>
     </tr>
     <tr>
-        <td align="right" class="one"><span style="font-weight: bold;">' . $lang['pm_send_body'] . '</span></td>
-        <td align="left" class="one">' . BBcode($body, false) . '</td>
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_send_body'] . '</span></td>
+        <td class="one">' . BBcode($body, false) . '</td>
     </tr>
     <tr>
-        <td align="center" colspan="2" class="one">' . ($CURUSER['class'] >= UC_STAFF ? '
+        <td colspan="2" class="one">' . ($CURUSER['class'] >= UC_STAFF ? '
         <input type="checkbox" name="urgent" value="yes" ' . ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? ' checked="checked"' : '') . ' /> 
         <span class="label label-danger">' . $lang['pm_send_mark'] . '</span>' : '') . '
         <input type="checkbox" name="delete" value="' . $replyto . '" ' . ((isset($_POST['delete']) && $_POST['delete'] > 0) ? ' checked="checked"' : ($CURUSER['deletepms'] == 'yes' ? ' checked="checked"' : '')) . ' />' . $lang['pm_send_delete'] . '

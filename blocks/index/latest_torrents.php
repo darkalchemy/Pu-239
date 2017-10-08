@@ -3,9 +3,9 @@ $HTMLOUT .= "
     <a id='latesttorrents-hash'></a>
     <fieldset id='latesttorrents' class='header'>
         <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_latest']}</legend>
-        <div class='cite text-center'>";
+        <div class='text-center'>";
 if (($top5torrents = $mc1->get_value('top5_tor_')) === false) {
-    $res = sql_query("SELECT t.id, t.seeders, t.poster, t.leechers, t.name, t.times_completed, t.category, c.image, c.name AS cat, t.times_completed
+    $res = sql_query("SELECT t.id, t.seeders, t.poster, t.leechers, t.name, t.times_completed, t.category, c.image AS cat_pic, c.name AS cat_name, t.times_completed, t.added, t.size
                         FROM torrents AS t
                         INNER JOIN categories AS c ON t.category = c.id
                         ORDER BY seeders + leechers DESC
@@ -20,7 +20,7 @@ if (count($top5torrents) > 0) {
             <div class='module'>
                 <div class='badge badge-top'>
             </div>
-            <table class='table table-bordered table-striped'>";
+            <table class='table table-bordered table-striped bottom10'>";
     $HTMLOUT .= "
                 <thead>
                     <tr>
@@ -38,14 +38,28 @@ if (count($top5torrents) > 0) {
             if (strlen($torrname) > 50) {
                 $torrname = substr($torrname, 0, 50) . '...';
             }
-            $poster = empty($top5torrentarr['poster']) ? "<img src='{$site_config['pic_base_url']}noposter.jpg' width='150' height='220' />" : "<img src='" . htmlsafechars($top5torrentarr['poster']) . "' width='150' height='220' />";
+            $poster = empty($top5torrentarr['poster']) ? "<img src='{$site_config['pic_base_url']}noposter.png' width='150' height='220' />" : "<img src='" . htmlsafechars($top5torrentarr['poster']) . "' width='150' height='220' />";
+            $title = "
+                <div class='flex'>
+                    <span class='margin10'>
+                        $poster
+                    </span>
+                    <span class='margin10'>
+                        <b>{$lang['index_ltst_name']} " . htmlsafechars($top5torrentarr['name']) . "</b><br>
+                        <b>Added: " . get_date($top5torrentarr['added'], 'DATE', 0, 1) . "</b><br>
+                        <b>Size: " . mksize(htmlsafechars($top5torrentarr['size'])) . "</b><br>
+                        <b>{$lang['index_ltst_seeder']} " . (int)$top5torrentarr['seeders'] . "</b><br>
+                        <b>{$lang['index_ltst_leecher']} " . (int)$top5torrentarr['leechers'] . "</b><br>
+                    </span>
+                </div>";
+
             $HTMLOUT .= "
                     <tr>
                         <td class='span1 text-center'>
-                            <img border='0' src='./images/caticons/" . get_categorie_icons() . "/" . htmlsafechars($mw['cat_pic']) . "' alt='" . htmlsafechars($mw['cat_name']) . "' title='" . htmlsafechars($mw['cat_name']) . "' />
+                            <img src='./images/caticons/" . get_categorie_icons() . "/" . htmlsafechars($top5torrentarr['cat_pic']) . "' class='tooltipper' alt='" . htmlsafechars($top5torrentarr['cat_name']) . "' title='" . htmlsafechars($top5torrentarr['cat_name']) . "' />
                         </td>
                         <td class='span8'>
-                            <a href='{$site_config['baseurl']}/details.php?id=" . (int)$top5torrentarr['id'] . "&amp;hit=1' class='tooltipper' title=\"<b>{$lang['index_ltst_name']}" . htmlsafechars($top5torrentarr['name']) . "</b><br><b>{$lang['index_ltst_seeder']} " . (int)$top5torrentarr['seeders'] . "</b><br><b>{$lang['index_ltst_leecher']} " . (int)$top5torrentarr['leechers'] . "</b><br>$poster\">
+                            <a href='{$site_config['baseurl']}/details.php?id=" . (int)$top5torrentarr['id'] . "&amp;hit=1' class='tooltipper' title=\"$title\">
                                 {$torrname}
                             </a>
                         </td>
@@ -71,7 +85,7 @@ if (count($top5torrents) > 0) {
     }
 }
 if (($last5torrents = $mc1->get_value('last5_tor_')) === false) {
-    $sql = "SELECT t.id, t.seeders, t.poster, t.leechers, t.name, t.times_completed, t.category, c.image, c.name AS cat, t.times_completed
+    $sql = "SELECT t.id, t.seeders, t.poster, t.leechers, t.name, t.times_completed, t.category, c.image AS cat_pic, c.name AS cat_name, t.times_completed, t.added, t.size
                 FROM torrents AS t
                 INNER JOIN categories AS c ON t.category = c.id
                 WHERE visible='yes'
@@ -104,14 +118,27 @@ if (count($last5torrents) > 0) {
             if (strlen($torrname) > 50) {
                 $torrname = substr($torrname, 0, 50) . '...';
             }
-            $poster = empty($last5torrentarr['poster']) ? "<img src='{$site_config['pic_base_url']}noposter.jpg' width='150' height='220' />" : "<img src='" . htmlsafechars($last5torrentarr['poster']) . "' width='150' height='220' />";
+            $poster = empty($last5torrentarr['poster']) ? "<img src='{$site_config['pic_base_url']}noposter.png' width='150' height='220' />" : "<img src='" . htmlsafechars($last5torrentarr['poster']) . "' width='150' height='220' />";
+            $title = "
+                <div class='flex'>
+                    <span class='margin10'>
+                        $poster
+                    </span>
+                    <span class='margin10 var(--grey-color)'>
+                        <b>{$lang['index_ltst_name']} " . htmlsafechars($last5torrentarr['name']) . "</b><br>
+                        <b>Added: " . get_date($last5torrentarr['added'], 'DATE', 0, 1) . "</b><br>
+                        <b>Size: " . mksize(htmlsafechars($last5torrentarr['size'])) . "</b><br>
+                        <b>{$lang['index_ltst_seeder']} " . (int)$last5torrentarr['seeders'] . "</b><br>
+                        <b>{$lang['index_ltst_leecher']} " . (int)$last5torrentarr['leechers'] . "</b><br>
+                    </span>
+                </div>";
             $HTMLOUT .= "
                                 <tr>
                                     <td class='span1 text-center'>
-                                        <img border='0' src='./images/caticons/" . get_categorie_icons() . "/" . htmlsafechars($mw['cat_pic']) . "' alt='" . htmlsafechars($mw['cat_name']) . "' title='" . htmlsafechars($mw['cat_name']) . "' />
+                                        <img src='./images/caticons/" . get_categorie_icons() . "/" . htmlsafechars($last5torrentarr['cat_pic']) . "' class='tooltipper' alt='" . htmlsafechars($last5torrentarr['cat_name']) . "' title='" . htmlsafechars($last5torrentarr['cat_name']) . "' />
                                     </td>
                                     <td class='span8'>
-                                        <a href='{$site_config['baseurl']}/details.php?id=" . (int)$last5torrentarr['id'] . "&amp;hit=1' class='tooltipper' title=\"<b>{$lang['index_ltst_name']}" . htmlsafechars($last5torrentarr['name']) . "</b><br><b>{$lang['index_ltst_seeder']} " . (int)$last5torrentarr['seeders'] . "</b><br><b>{$lang['index_ltst_leecher']} " . (int)$last5torrentarr['leechers'] . "</b><br>$poster\">
+                                        <a href='{$site_config['baseurl']}/details.php?id=" . (int)$last5torrentarr['id'] . "&amp;hit=1' class='tooltipper' title=\"$title\">
                                             {$torrname}
                                         </a>
                                     </td>

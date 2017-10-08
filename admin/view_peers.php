@@ -74,7 +74,7 @@ $res = sql_query("SELECT COUNT($Which_ID) FROM $Which_Table") or sqlerr(__FILE__
 $row = mysqli_fetch_row($res);
 $count = $row[0];
 $peersperpage = 15;
-$HTMLOUT .= "<h2 align='center'>{$lang['wpeers_h2']}</h2>
+$HTMLOUT .= "<h2>{$lang['wpeers_h2']}</h2>
 <font class='small'>{$lang['wpeers_there']}" . htmlsafechars($count) . "{$lang['wpeers_peer']}" . ($count > 1 ? $lang['wpeers_ps'] : '') . "{$lang['wpeers_curr']}</font>";
 $HTMLOUT .= begin_main_frame();
 $pager = pager($peersperpage, $count, 'staffpanel.php?tool=view_peers&amp;action=view_peers&amp;');
@@ -89,37 +89,37 @@ if (XBT_TRACKER == true) {
 $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($result) != 0) {
     if (XBT_TRACKER == true) {
-        $HTMLOUT .= "<table width='100%' border='1' cellspacing='0' cellpadding='5' align='center'>
+        $HTMLOUT .= "<table width='100%' border='1' cellspacing='0' cellpadding='5'>
 <tr>
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_user']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_torrent']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_ip']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_up']}</td>
-" . ($site_config['ratio_free'] == true ? '' : "<td class='colhead' align='center' width='1%'>{$lang['wpeers_dn']}</td>") . "
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_pssky']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_seed']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_last']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_uspeed']}</td>
-" . ($site_config['ratio_free'] == true ? '' : "<td class='colhead' align='center' width='1%'>{$lang['wpeers_dspeed']}</td>") . "
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_togo']}</td>
+<td class='colhead' width='1%'>{$lang['wpeers_user']}</td>
+<td class='colhead' width='1%'>{$lang['wpeers_torrent']}</td>
+<td class='colhead' width='1%'>{$lang['wpeers_ip']}</td>
+<td class='colhead' width='1%'>{$lang['wpeers_up']}</td>
+" . ($site_config['ratio_free'] == true ? '' : "<td class='colhead' width='1%'>{$lang['wpeers_dn']}</td>") . "
+<td class='colhead' width='1%'>{$lang['wpeers_pssky']}</td>
+<td class='colhead' width='1%'>{$lang['wpeers_seed']}</td>
+<td class='colhead' width='1%'>{$lang['wpeers_last']}</td>
+<td class='colhead' width='1%'>{$lang['wpeers_uspeed']}</td>
+" . ($site_config['ratio_free'] == true ? '' : "<td class='colhead' width='1%'>{$lang['wpeers_dspeed']}</td>") . "
+<td class='colhead' width='1%'>{$lang['wpeers_togo']}</td>
 </tr>";
     } else {
-        $HTMLOUT .= "<table width='100%' border='1' cellspacing='0' cellpadding='5' align='center'>
+        $HTMLOUT .= "<table width='100%' border='1' cellspacing='0' cellpadding='5'>
 <tr>
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_user']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_torrent']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_ip']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_port']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_up']}</td>
-" . ($site_config['ratio_free'] == true ? '' : "<td class='colhead' align='center' width='1%'>{$lang['wpeers_dn']}</td>") . "
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_pssky']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_con']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_seed']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_start']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_last']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_upoff']}</td>
-" . ($site_config['ratio_free'] == true ? '' : "<td class='colhead' align='center' width='1%'>{$lang['wpeers_dnoff']}</td>") . "
-<td class='colhead' align='center' width='1%'>{$lang['wpeers_togo']}</td>
+<td class='colhead' width='1%'>{$lang['wpeers_user']}</td>
+<td class='colhead' width='1%'>{$lang['wpeers_torrent']}</td>
+<td class='colhead' width='1%'>{$lang['wpeers_ip']}</td>
+<td class='colhead' width='1%'>{$lang['wpeers_port']}</td>
+<td class='colhead' width='1%'>{$lang['wpeers_up']}</td>
+" . ($site_config['ratio_free'] == true ? '' : "<td class='colhead' width='1%'>{$lang['wpeers_dn']}</td>") . "
+<td class='colhead' width='1%'>{$lang['wpeers_pssky']}</td>
+<td class='colhead' width='1%'>{$lang['wpeers_con']}</td>
+<td class='colhead' width='1%'>{$lang['wpeers_seed']}</td>
+<td class='colhead' width='1%'>{$lang['wpeers_start']}</td>
+<td class='colhead' width='1%'>{$lang['wpeers_last']}</td>
+<td class='colhead' width='1%'>{$lang['wpeers_upoff']}</td>
+" . ($site_config['ratio_free'] == true ? '' : "<td class='colhead' width='1%'>{$lang['wpeers_dnoff']}</td>") . "
+<td class='colhead' width='1%'>{$lang['wpeers_togo']}</td>
 </tr>";
     }
     while ($row = mysqli_fetch_assoc($result)) {
@@ -135,32 +135,32 @@ if (mysqli_num_rows($result) != 0) {
             $HTMLOUT .= '<tr>
 <td><a href="userdetails.php?id=' . (int)($row['uid']) . '">' . htmlsafechars($row['username']) . '</a></td>
 <td><a href="details.php?id=' . (int)($row['fid']) . '">' . $smallname . '</a></td>
-<td align="center">' . htmlsafechars(XBT_IP_CONVERT($row['ipa'])) . '</td>
-<td align="center">' . htmlsafechars(mksize($row['uploaded'])) . '</td>
-' . ($site_config['ratio_free'] == true ? '' : '<td align="center">' . htmlsafechars(mksize($row['downloaded'])) . '</td>') . '
-<td align="center">' . htmlsafechars($row['torrent_pass']) . '</td>
-<td align="center">' . ($row['seeders'] >= 1 ? "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
-<td align="center">' . get_date($row['mtime'], 'DATE', 0, 1) . '</td>
-<td align="center">' . htmlsafechars(mksize($row['upspeed'])) . '/s</td>
-' . ($site_config['ratio_free'] == true ? '' : '<td align="center">' . htmlsafechars(mksize($row['downspeed'])) . '/s</td>') . '
-<td align="center">' . htmlsafechars(mksize($row['left'])) . '</td>
+<td>' . htmlsafechars(XBT_IP_CONVERT($row['ipa'])) . '</td>
+<td>' . htmlsafechars(mksize($row['uploaded'])) . '</td>
+' . ($site_config['ratio_free'] == true ? '' : '<td>' . htmlsafechars(mksize($row['downloaded'])) . '</td>') . '
+<td>' . htmlsafechars($row['torrent_pass']) . '</td>
+<td>' . ($row['seeders'] >= 1 ? "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
+<td>' . get_date($row['mtime'], 'DATE', 0, 1) . '</td>
+<td>' . htmlsafechars(mksize($row['upspeed'])) . '/s</td>
+' . ($site_config['ratio_free'] == true ? '' : '<td>' . htmlsafechars(mksize($row['downspeed'])) . '/s</td>') . '
+<td>' . htmlsafechars(mksize($row['left'])) . '</td>
 </tr>';
         } else {
             $HTMLOUT .= '<tr>
 <td><a href="userdetails.php?id=' . (int)($row['userid']) . '">' . htmlsafechars($row['username']) . '</a></td>
 <td><a href="details.php?id=' . (int)($row['torrent']) . '">' . $smallname . '</a></td>
-<td align="center">' . htmlsafechars($row['ip']) . '</td>
-<td align="center">' . htmlsafechars($row['port']) . '</td>
-<td align="center">' . htmlsafechars(mksize($row['uploaded'])) . '</td>
-' . ($site_config['ratio_free'] == true ? '' : '<td align="center">' . htmlsafechars(mksize($row['downloaded'])) . '</td>') . '
-<td align="center">' . htmlsafechars($row['torrent_pass']) . '</td>
-<td align="center">' . ($row['connectable'] == 'yes' ? "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
-<td align="center">' . ($row['seeder'] == 'yes' ? "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
-<td align="center">' . get_date($row['started'], 'DATE') . '</td>
-<td align="center">' . get_date($row['last_action'], 'DATE', 0, 1) . '</td>
-<td align="center">' . htmlsafechars(mksize($row['uploadoffset'])) . '</td>
-' . ($site_config['ratio_free'] == true ? '' : '<td align="center">' . htmlsafechars(mksize($row['downloadoffset'])) . '</td>') . '
-<td align="center">' . htmlsafechars(mksize($row['to_go'])) . '</td>
+<td>' . htmlsafechars($row['ip']) . '</td>
+<td>' . htmlsafechars($row['port']) . '</td>
+<td>' . htmlsafechars(mksize($row['uploaded'])) . '</td>
+' . ($site_config['ratio_free'] == true ? '' : '<td>' . htmlsafechars(mksize($row['downloaded'])) . '</td>') . '
+<td>' . htmlsafechars($row['torrent_pass']) . '</td>
+<td>' . ($row['connectable'] == 'yes' ? "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
+<td>' . ($row['seeder'] == 'yes' ? "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
+<td>' . get_date($row['started'], 'DATE') . '</td>
+<td>' . get_date($row['last_action'], 'DATE', 0, 1) . '</td>
+<td>' . htmlsafechars(mksize($row['uploadoffset'])) . '</td>
+' . ($site_config['ratio_free'] == true ? '' : '<td>' . htmlsafechars(mksize($row['downloadoffset'])) . '</td>') . '
+<td>' . htmlsafechars(mksize($row['to_go'])) . '</td>
 </tr>';
         }
     }

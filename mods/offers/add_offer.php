@@ -40,8 +40,8 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
     $HTMLOUT .= "you <b>can</b> make offers.<p>To view all offers, click 
     <a class='altlink' href='viewoffers.php'>here</a></p>\n";
     /* search first **/
-    $HTMLOUT .= "<form method='get' action='browse.php'><table width='750px' border='1' cellspacing='0' cellpadding='5'><tr><td class='colhead' align='left'>
-Please search torrents before adding an offer!</td></tr><tr><td align='left'>
+    $HTMLOUT .= "<form method='get' action='browse.php'><table width='750px' border='1' cellspacing='0' cellpadding='5'><tr><td class='colhead'>
+Please search torrents before adding an offer!</td></tr><tr><td>
 <input type='text' name='search' size='40' value='' class='btn' /> in <select name='cat'> <option value='0'>(all types)</option>
 ";
     $catdropdown = '';
@@ -61,9 +61,9 @@ Please search torrents before adding an offer!</td></tr><tr><td align='left'>
 <input type='submit' value='Search!' class='btn' /></td></tr></table></form>
 <br>\n";
     $HTMLOUT .= "<form method='post' name='compose' action='viewoffers.php?new_offer'><a name='add' id='add'></a>
-<table border='1' cellspacing='0' width='750px' cellpadding='5'><tr><td class='colhead' align='left' colspan='2'>
+<table border='1' cellspacing='0' width='750px' cellpadding='5'><tr><td class='colhead' colspan='2'>
 Offers are for Users with a good ratio who have uploaded at least " . $site_config['offer_gigs_upped'] . " gigs Only... Share and you shall recieve!</td></tr>
-<tr><td align='right'><b>Title</b></td><td align='left'><input type='text' size='40' name='offertitle' />
+<tr><td><b>Title</b></td><td><input type='text' size='40' name='offertitle' />
 <select name='category'><option value='0'>(Select a Category)</option>\n";
     $res2 = sql_query('SELECT id, name FROM categories order by name');
     $num = mysqli_num_rows($res2);
@@ -74,8 +74,8 @@ Offers are for Users with a good ratio who have uploaded at least " . $site_conf
         $catdropdown2 .= '>' . htmlspecialchars($cats2['name']) . "</option>\n";
     }
     $HTMLOUT .= $catdropdown2 . " </select></td></tr>
-<tr><td align='right' valign='top'><b>Image</b></td>
-<td align='left'>
+<tr><td><b>Image</b></td>
+<td>
 <input type='text' name='picture' size='80' /><br>
 (Direct link to image, NO TAGS NEEDED! Will be shown in description)<br>
 <!--
@@ -83,7 +83,7 @@ Offers are for Users with a good ratio who have uploaded at least " . $site_conf
 -->
 </td></tr>
 
-<tr><td align='right'><b>Description</b></td><td align='left'>\n";
+<tr><td><b>Description</b></td><td>\n";
     if ($site_config['textbbcode']) {
         require_once INCL_DIR . 'bbcode_functions.php';
         $HTMLOUT .= textbbcode('add_offer', 'body', '');
@@ -91,7 +91,7 @@ Offers are for Users with a good ratio who have uploaded at least " . $site_conf
         $HTMLOUT .= "<textarea name='body' rows='20' cols='80'></textarea>";
     }
     $HTMLOUT .= "</td></tr>
-<tr><td align='center' colspan='2'>
+<tr><td colspan='2'>
 <input type='submit' value='Okay' class='btn' /></td></tr></table>
 </form>
 <br><br>\n";
@@ -101,9 +101,9 @@ if (mysqli_num_rows($rescount) > 0) {
     $res = sql_query('SELECT users.username, offers.id, offers.userid, offers.cat, offers.offer, offers.added, categories.name, categories.image, uploaded, downloaded FROM users inner join offers ON offers.userid = users.id left join categories ON offers.cat = categories.id order by offers.id desc LIMIT 10') or sqlerr();
     $num = mysqli_num_rows($res);
     $HTMLOUT .= "<table border='1' cellspacing='0' width='750px' cellpadding='5'>
-    <tr><td width='50px' class='colhead' align='left'>Category</td>
-    <td class='colhead' align='left'>Offer</td><td class='colhead' align='center'>Added</td>
-    <td class='colhead' align='center'>Offered By</td></tr>\n";
+    <tr><td width='50px' class='colhead'>Category</td>
+    <td class='colhead'>Offer</td><td class='colhead'>Added</td>
+    <td class='colhead'>Offered By</td></tr>\n";
     foreach ($cats as $key => $value) {
         $change[$value['id']] = [
             'id'    => $value['id'],
@@ -112,19 +112,19 @@ if (mysqli_num_rows($rescount) > 0) {
         ];
     }
     while ($arr = mysqli_fetch_assoc($res)) {
-        $addedby = "<td style='padding: 0px' align='center'><b><a href='userdetails.php?id=$arr[userid]'>$arr[username]</a></b></td>";
+        $addedby = "<td style='padding: 0px'><b><a href='userdetails.php?id=$arr[userid]'>$arr[username]</a></b></td>";
         $catname = htmlspecialchars($change[$arr['cat']]['name']);
         $catpic = htmlspecialchars($change[$arr['cat']]['image']);
         $catimage = "<img src='./images/caticons/" . $catpic . "' title='$catname' alt='$catname' />";
         $HTMLOUT .= "<tr>
-    <td align='center'>" . $catimage . "</td>
-    <td align='left'><a href='viewoffers.php?id=$arr[id]&amp;offer_details'>
+    <td>" . $catimage . "</td>
+    <td><a href='viewoffers.php?id=$arr[id]&amp;offer_details'>
     <b>" . htmlspecialchars($arr['offer']) . "</b></a></td>
-    <td align='center'>" . get_date($arr['added'], '') . "</td>
+    <td>" . get_date($arr['added'], '') . "</td>
     $addedby
     </tr>\n";
     }
-    $HTMLOUT .= "<tr><td align='center' colspan='4'>
+    $HTMLOUT .= "<tr><td colspan='4'>
 <form method='get' action='viewoffers.php'>
 <input type='submit' value='Show All' class='btn' />
 </form>

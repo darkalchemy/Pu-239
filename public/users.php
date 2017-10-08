@@ -51,12 +51,12 @@ $aa = range('0', '9');
 $bb = range('a', 'z');
 $cc = array_merge($aa, $bb);
 unset($aa, $bb);
-$HTMLOUT .= "<div align='center'>";
+$HTMLOUT .= "<div>";
 $count = 0;
 foreach ($cc as $L) {
     $HTMLOUT .= ($count == 10) ? '<br><br>' : '';
     if (!strcmp($L, $letter)) {
-        $HTMLOUT .= "<span class='btn' style='background:orange;'>" . strtoupper($L) . "</span>\n";
+        $HTMLOUT .= "<span class='btn'>" . strtoupper($L) . "</span>\n";
     } else {
         $HTMLOUT .= "<a href='users.php?letter=$L'><span class='btn'>" . strtoupper($L) . "</span></a>\n";
     }
@@ -86,7 +86,7 @@ if ($arr[0] > $perpage) {
             continue;
         }
         if ($i == $page) {
-            $pagemenu .= "&#160;<span class='btn' style='background:orange;'>$i</span>\n";
+            $pagemenu .= "&#160;<span class='btn'>$i</span>\n";
         } else {
             $pagemenu .= "&#160;<a href='users.php?$q1&amp;page=$i'><span class='btn'>$i</span></a>\n";
         }
@@ -95,12 +95,12 @@ if ($arr[0] > $perpage) {
         }
     }
     if ($page == 1) {
-        $browsemenu .= "<span class='btn' style='background:orange;'>&lsaquo;</span>$pagemenu";
+        $browsemenu .= "<span class='btn'>&lsaquo;</span>$pagemenu";
     } else {
         $browsemenu .= "<a href='users.php?$q1&amp;page=1' title='{$lang['pager_first']}(1)'><span class='btn'>&laquo;</span></a>&#160;<a href='users.php?$q1&amp;page=" . ($page - 1) . "'><span class='btn'>&lsaquo;</span></a>$pagemenu";
     }
     if ($page == $pages) {
-        $browsemenu .= "<span class='btn' style='background:orange;'>&rsaquo;</span>";
+        $browsemenu .= "<span class='btn'>&rsaquo;</span>";
     } else {
         $browsemenu .= "<a href='users.php?$q1&amp;page=" . ($page + 1) . "'><span class='btn'>&rsaquo;</span></a>&#160;<a href='users.php?$q1&amp;page=" . $pages . "' title='{$lang['pager_last']}($pages)'><span class='btn'>&raquo;</span></a>";
     }
@@ -109,15 +109,15 @@ $offset = ($page * $perpage) - $perpage;
 if ($arr[0] > 0) {
     $res = sql_query("SELECT users.*, countries.name, countries.flagpic FROM users FORCE INDEX ( username ) LEFT JOIN countries ON country = countries.id WHERE $query1 ORDER BY username LIMIT $offset,$perpage") or sqlerr(__FILE__, __LINE__);
     $HTMLOUT .= "<div class='container-fluid text-center'>";
-    $HTMLOUT .= "<table class='table table-condensed'>\n";
-    $HTMLOUT .= "<tr><td class='colhead' align='left'>{$lang['users_username']}</td><td class='colhead'>{$lang['users_regd']}</td><td class='colhead'>{$lang['users_la']}</td><td class='colhead' align='left'>{$lang['users_class']}</td><td class='colhead'>{$lang['users_country']}</td></tr>\n";
+    $HTMLOUT .= "<table class='table table-bordered table-striped'>\n";
+    $HTMLOUT .= "<tr><td class='colhead'>{$lang['users_username']}</td><td class='colhead'>{$lang['users_regd']}</td><td class='colhead'>{$lang['users_la']}</td><td class='colhead'>{$lang['users_class']}</td><td class='colhead'>{$lang['users_country']}</td></tr>\n";
     while ($row = mysqli_fetch_assoc($res)) {
-        $country = ($row['name'] != null) ? "<td style='padding: 0px' align='center'><img src='{$site_config['pic_base_url']}flag/" . htmlsafechars($row['flagpic']) . "' alt='" . htmlsafechars($row['name']) . "' /></td>" : "<td align='center'>---</td>";
-        $HTMLOUT .= "<tr><td align='left'><a href='userdetails.php?id=" . (int)$row['id'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>' . ($row['donor'] > 0 ? "<img src='{$site_config['pic_base_url']}star.gif' border='0' alt='{$lang['users_donor']}' />" : '') . '</td>' . '<td>' . get_date($row['added'], '') . '</td><td>' . get_date($row['last_access'], '') . '</td>' . "<td align='left'>" . get_user_class_name($row['class']) . "</td>$country</tr>\n";
+        $country = ($row['name'] != null) ? "<td><img src='{$site_config['pic_base_url']}flag/" . htmlsafechars($row['flagpic']) . "' alt='" . htmlsafechars($row['name']) . "' /></td>" : "<td>---</td>";
+        $HTMLOUT .= "<tr><td><a href='userdetails.php?id=" . (int)$row['id'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>' . ($row['donor'] > 0 ? "<img src='{$site_config['pic_base_url']}star.gif' border='0' alt='{$lang['users_donor']}' />" : '') . '</td>' . '<td>' . get_date($row['added'], '') . '</td><td>' . get_date($row['last_access'], '') . '</td>' . "<td>" . get_user_class_name($row['class']) . "</td>$country</tr>\n";
     }
     $HTMLOUT .= "</table></div>\n";
 }
-$HTMLOUT .= ($arr[0] > $perpage) ? "<div align='center'><p>$browsemenu</p></div>" : '<br>';
+$HTMLOUT .= ($arr[0] > $perpage) ? "<div><p>$browsemenu</p></div>" : '<br>';
 $HTMLOUT .= '</fieldset>';
 echo stdhead($lang['head_users']) . $HTMLOUT . stdfoot();
 die;

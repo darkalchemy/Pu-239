@@ -56,13 +56,7 @@ function torrents_normalize($data)
                   OR t.id IN ($ids)");
         }
     } while (0);
-    if ($queries > 0) {
+    if ($data['clean_log'] && $queries > 0) {
         write_log("Normalize Cleanup: Completed using $queries queries");
-    }
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
     }
 }

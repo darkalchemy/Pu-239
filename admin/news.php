@@ -112,12 +112,12 @@ if ($mode == 'edit') {
         <form method='post' name='compose' action='staffpanel.php?tool=news&amp;mode=edit&amp;newsid=$newsid'>
         <table border='1' cellspacing='0' cellpadding='5'>
         <tr><td><input type='text' name='title' value='" . htmlsafechars($arr['title']) . "' /></td></tr>
-        <tr><td align='left' style='padding: 0px'>
+        <tr><td style='padding: 0px'>
          " . BBcode(htmlsafechars($arr['body']), false) . "
         </td></tr>
         <tr><td colspan='2' class='rowhead'>{$lang['news_sticky']}<input type='radio' " . ($arr['sticky'] == 'yes' ? " checked='checked'" : '') . " name='sticky' value='yes' />{$lang['news_yes']}<input name='sticky' type='radio' value='no' " . ($arr['sticky'] == 'no' ? " checked='checked'" : '') . " />{$lang['news_no']}</td></tr>
         <tr><td colspan='2' class='rowhead'>{$lang['news_anonymous']}<input type='radio' " . ($arr['anonymous'] == 'yes' ? " checked='checked'" : '') . " name='anonymous' value='yes' />{$lang['news_yes']}<input name='anonymous' type='radio' value='no' " . ($arr['anonymous'] == 'no' ? " checked='checked'" : '') . " />{$lang['news_no']}</td></tr>
-        <tr><td colspan='2' align='center'><input type='submit' value='{$lang['news_okay']}' class='btn' /></td></tr>
+        <tr><td colspan='2'><input type='submit' value='{$lang['news_okay']}' class='btn' /></td></tr>
         </table>
         </form>\n";
         echo stdhead($lang['news_stdhead'], true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
@@ -133,7 +133,7 @@ if ($mode == 'news') {
     <h1>{$lang['news_submit_new']}</h1><table border='1' cellspacing='0' cellpadding='5'>
     <tr><td><input type='text' name='title' value='' /></td></tr>\n";
     $HTMLOUT .= "<tr>
-    <td align='left' style='padding: 0px'>" . BBcode(false) . '</td></tr>';
+    <td style='padding: 0px'>" . BBcode(false) . '</td></tr>';
     $HTMLOUT .= "<tr><td colspan='2' class='rowhead'>{$lang['news_sticky']}<input type='radio' checked='checked' name='sticky' value='yes' />{$lang['news_yes']}<input name='sticky' type='radio' value='no' />{$lang['news_no']}</td></tr><tr><td colspan='2' class='rowhead'>{$lang['news_anonymous']}<input type='radio' checked='checked' name='anonymous' value='yes' />{$lang['news_yes']}<input name='anonymous' type='radio' value='no' />{$lang['news_no']}</td></tr>\n
     <tr><td colspan='2' class='rowhead'><input type='submit' value='{$lang['news_okay']}' class='btn' /></td></tr>\n
     </table></form><br><br>\n";
@@ -150,7 +150,7 @@ if ($mode == 'news') {
         - [<a href='staffpanel.php?tool=news&amp;mode=delete&amp;newsid=$newsid&amp;sure=1&amp;h=$hash'><b>{$lang['news_delete']}</b></a>]
         </td></tr></table>\n";
         $HTMLOUT .= begin_table(true);
-        $HTMLOUT .= "<tr valign='top'><td class='comment'><b>" . htmlsafechars($title) . '</b><br>' . format_comment($body) . "</td></tr>\n";
+        $HTMLOUT .= "<tr><td class='comment'><b>" . htmlsafechars($title) . '</b><br>' . format_comment($body) . "</td></tr>\n";
         $HTMLOUT .= end_table();
         $HTMLOUT .= '<br>';
     }

@@ -29,8 +29,8 @@ function usercommenttable($rows)
             $text .= "<font size='1' class='small'><br><br>{$lang['userdetails_comm_ledited']}<a href='userdetails.php?id=" . (int)$row['editedby'] . "'><b>" . htmlsafechars($row['username']) . '</b></a> ' . get_date($row['editedat'], 'DATE', 0, 1) . "</font>\n";
         }
         $htmlout .= "<table width='100%' border='1' cellspacing='0' cellpadding='5'>";
-        $htmlout .= "<tr valign='top'>\n";
-        $htmlout .= "<td align='center' width='150' style='padding:0px'><img width='150' src=\"{$avatar}\" alt=\"Avatar\" /></td>\n";
+        $htmlout .= "<tr>\n";
+        $htmlout .= "<td width='150' style='padding:0px'><img width='150' src=\"{$avatar}\" alt=\"Avatar\" /></td>\n";
         $htmlout .= "<td class='text'>$text</td>\n";
         $htmlout .= "</tr>\n";
         $htmlout .= '</table>';

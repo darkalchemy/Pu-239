@@ -22,17 +22,14 @@ $location_bar = '<h1><a class="altlink" href="' . $site_config['baseurl'] . '/in
 	<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=section_view&amp;forum_id=' . $forum_id . '">' . htmlsafechars($over_forums_arr['name'], ENT_QUOTES) . '</a></h1>' . $mini_menu . '<br><br>';
 $HTMLOUT .= $location_bar;
 //=== top and bottom stuff
-$HTMLOUT .= '<br><table border="0" cellspacing="0" cellpadding="5" width="90%">
+$HTMLOUT .= '<br><table class="table table-bordered table-striped">
 	<tr>
-	<td class="forum_head_dark" align="left" colspan="4"><span style="color: white;">' . $lang['sv_section_view_for'] . ' ' . htmlsafechars($over_forums_arr['name'], ENT_QUOTES) . '</span></td>
+	<td class="forum_head_dark" colspan="4"><span>' . $lang['sv_section_view_for'] . ' ' . htmlsafechars($over_forums_arr['name'], ENT_QUOTES) . '</span></td>
    </tr>';
 //=== basic query
 $forums_res = sql_query('SELECT name AS forum_name, description AS forum_description, id AS forum_id, post_count, topic_count FROM forums WHERE min_class_read < ' . sqlesc($CURUSER['class']) . ' AND forum_id=' . sqlesc($forum_id) . ' AND parent_forum = 0 ORDER BY sort');
 //=== lets start the loop \o/
 while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
-    //=== change colors
-    $colour = (++$colour) % 2;
-    $class = ($colour == 0 ? 'one' : 'two');
     //=== Get last post info
     if (($last_post_arr = $mc1->get_value('sv_last_post_' . $forums_arr['forum_id'] . '_' . $CURUSER['class'])) === false) {
         $last_post_arr = mysqli_fetch_assoc(sql_query('SELECT t.last_post, t.topic_name, t.id AS topic_id, t.anonymous AS tan, p.user_id, p.added, p.anonymous AS pan, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.perms, u.offensive_avatar FROM topics AS t LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\' AND' : '')) . ' forum_id=' . sqlesc($forums_arr['forum_id']) . ' ORDER BY last_post DESC LIMIT 1'));
@@ -64,7 +61,7 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
         }
         $child_boards = $child_boards_cache['child_boards'];
         if ($child_boards !== '') {
-            $child_boards = '<hr><span style="font-size: xx-small;">' . $lang['sv_child_boards'] . ':</span> ' . $child_boards;
+            $child_boards = '<hr><span>' . $lang['sv_child_boards'] . ':</span> ' . $child_boards;
         }
         //=== now_viewing
         $keys['now_viewing'] = 'now_viewing_section_view';
@@ -86,23 +83,23 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
         }
         $now_viewing = $now_viewing_cache['now_viewing'];
         if ($now_viewing !== '') {
-            $now_viewing = '<hr><span style="font-size: xx-small;">' . $lang['sv_now_viewing'] . ':</span>' . $now_viewing;
+            $now_viewing = '<hr><span>' . $lang['sv_now_viewing'] . ':</span>' . $now_viewing;
         }
         if ($last_post_arr['tan'] == 'yes') {
             if ($CURUSER['class'] < UC_STAFF && $last_post_arr['user_id'] != $CURUSER['id']) {
                 $last_post = '' . $lang['fe_last_post_by'] . ': ' . $lang['sv_anonymous_in'] . ' &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$last_post_arr['topic_id'] . '&amp;page=p' . (int)$last_post_arr['last_post'] . '#' . (int)$last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '">
-		<span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>
+		<span>' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>
 		' . get_date($last_post_arr['added'], '') . '<br>';
             } else {
-                $last_post = '' . $lang['fe_last_post_by'] . ': ' . $lang['fe_anonymous'] . ' [' . print_user_stuff($last_post_arr) . '] <span style="font-size: x-small;"> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>
+                $last_post = '' . $lang['fe_last_post_by'] . ': ' . $lang['fe_anonymous'] . ' [' . print_user_stuff($last_post_arr) . '] <span> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>
 		in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$last_post_arr['topic_id'] . '&amp;page=p' . (int)$last_post_arr['last_post'] . '#' . (int)$last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '">
-		<span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>
+		<span>' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>
 		' . get_date($last_post_arr['added'], '') . '<br>';
             }
         } else {
-            $last_post = '' . $lang['fe_last_post_by'] . ': ' . print_user_stuff($last_post_arr) . ' <span style="font-size: x-small;"> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>
+            $last_post = '' . $lang['fe_last_post_by'] . ': ' . print_user_stuff($last_post_arr) . ' <span> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>
 		in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$last_post_arr['topic_id'] . '&amp;page=p' . (int)$last_post_arr['last_post'] . '#' . (int)$last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '">
-		<span style="font-weight: bold;">' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>
+		<span>' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>
 		' . get_date($last_post_arr['added'], '') . '<br>';
         }
     } //=== end of only do more if there is a post there...
@@ -112,13 +109,13 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
         $last_post = $lang['fe_na'];
     }
     $HTMLOUT .= '<tr>
-		<td class="' . $class . '" align="center" valign="middle" width="30"><img src="' . $site_config['pic_base_url'] . 'forums/' . $img . '.gif" alt="' . $site_config['pic_base_url'] . 'forums/' . $img . '.gif" title="' . $site_config['pic_base_url'] . 'forums/' . $img . '.gif" /></td>
-		<td class="' . $class . '" align="left">
+		<td><img src="' . $site_config['pic_base_url'] . 'forums/' . $img . '.gif" alt="' . $site_config['pic_base_url'] . 'forums/' . $img . '.gif" title="' . $site_config['pic_base_url'] . 'forums/' . $img . '.gif" /></td>
+		<td>
 		<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int)$forums_arr['forum_id'] . '">' . htmlsafechars($forums_arr['forum_name'], ENT_QUOTES) . '</a>
 		<br>' . htmlsafechars($forums_arr['forum_description'], ENT_QUOTES) . $child_boards . $now_viewing . '</td>
-		<td class="' . $class . '" align="center" width="80">' . number_format($forums_arr['post_count']) . ' ' . $lang['fe_posts'] . '<br>' . number_format($forums_arr['topic_count']) . ' ' . $lang['fe_topics'] . '</td>
-		<td class="' . $class . '" align="left" width="140">
-		<span style="white-space:nowrap;">' . $last_post . '</span>
+		<td>' . number_format($forums_arr['post_count']) . ' ' . $lang['fe_posts'] . '<br>' . number_format($forums_arr['topic_count']) . ' ' . $lang['fe_topics'] . '</td>
+		<td>
+		<span>' . $last_post . '</span>
 		</td>
 		</tr>';
 }

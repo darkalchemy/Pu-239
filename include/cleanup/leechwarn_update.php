@@ -91,13 +91,12 @@ function leechwarn_update($data)
         if ($count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO users (id, leechwarn, downloadpos, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE leechwarn=values(leechwarn),downloadpos=values(downloadpos),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+        }
+        if ($data['clean_log']) {
             write_log('Cleanup: System removed auto leech Warning(s) and renabled download(s) - ' . $count . ' Member(s)');
         }
         unset($users_buffer, $msgs_buffer, $count);
     }
-    //==End
-    //== 09 Auto leech warn by Bigjoos/pdq
-    //== Disabled expired leechwarns
     $res = sql_query("SELECT id, modcomment FROM users WHERE leechwarn > '1' AND leechwarn < " . TIME_NOW . " AND leechwarn <> '0' ") or sqlerr(__FILE__, __LINE__);
     $users_buffer = [];
     if (mysqli_num_rows($res) > 0) {
@@ -127,18 +126,14 @@ function leechwarn_update($data)
         $count = count($users_buffer);
         if ($count > 0) {
             sql_query('INSERT INTO users (id, leechwarn, enabled, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE class=values(class),leechwarn=values(leechwarn),enabled=values(enabled),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+        }
+        if ($data['clean_log']) {
             write_log('Cleanup: Disabled ' . $count . ' Member(s) - Leechwarns expired');
         }
         unset($users_buffer, $count);
     }
     //==End
-    if ($queries > 0) {
+    if ($data['clean_log'] && $queries > 0) {
         write_log("Leechwarn Cleanup: Completed using $queries queries");
-    }
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
     }
 }

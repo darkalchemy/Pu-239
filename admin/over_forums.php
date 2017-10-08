@@ -78,27 +78,27 @@ switch ($action) {
             $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=over_forums&amp;action=over_forums">
 			<input type="hidden" name="action2" value="edit_forum">
 			<input type="hidden" name="id" value="' . $id . '">
-		<table width="600"  border="0" cellspacing="0" cellpadding="3" align="center">
+		<table class="table table-bordered table-striped">
 		<tr>
 		    <td colspan="2" class="forum_head_dark">' . $lang['ad_over_editfor'] . '' . htmlsafechars($row['name'], ENT_QUOTES) . '</td>
 		  </tr>
-		    <td align="right" class="three"><span style="font-weight: bold;">' . $lang['ad_over_name'] . '</span></td>
-		    <td align="left" class="three"><input name="name" type="text" class="text_default" size="20" maxlength="60" value="' . htmlsafechars($row['name'], ENT_QUOTES) . '" /></td>
+		    <td class="three"><span style="font-weight: bold;">' . $lang['ad_over_name'] . '</span></td>
+		    <td class="three"><input name="name" type="text" class="text_default" size="20" maxlength="60" value="' . htmlsafechars($row['name'], ENT_QUOTES) . '" /></td>
 		  </tr>
 		  <tr>
-		    <td align="right"  class="three"><span style="font-weight: bold;">' . $lang['ad_over_description'] . '</span>  </td>
-		    <td align="left" class="three"><input name="desc" type="text" class="text_default" size="30" maxlength="200" value="' . htmlsafechars($row['description'], ENT_QUOTES) . '" /></td>
+		    <td  class="three"><span style="font-weight: bold;">' . $lang['ad_over_description'] . '</span>  </td>
+		    <td class="three"><input name="desc" type="text" class="text_default" size="30" maxlength="200" value="' . htmlsafechars($row['description'], ENT_QUOTES) . '" /></td>
  		 </tr>
 		    <tr>
-		    <td align="right" class="three"><span style="font-weight: bold;">' . $lang['ad_over_minview'] . ' </span></td>
-		    <td align="left" class="three">
+		    <td class="three"><span style="font-weight: bold;">' . $lang['ad_over_minview'] . ' </span></td>
+		    <td class="three">
 		    <select name="min_class_view">';
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $over_forums .= '<option class="body" value="' . $i . '"' . ($row['min_class_view'] == $i ? ' selected="selected"' : '') . '>' . get_user_class_name($i) . '</option>';
             }
             $HTMLOUT .= $over_forums . '</select></td></tr><tr> 
-		    <td align="right" class="three"><span style="font-weight: bold;">' . $lang['ad_over_sort'] . '</span></td>
-		    <td align="left" class="three">
+		    <td class="three"><span style="font-weight: bold;">' . $lang['ad_over_sort'] . '</span></td>
+		    <td class="three">
 		    <select name="sort">';
             $res = mysqli_query($GLOBALS['___mysqli_ston'], 'SELECT sort FROM over_forums');
             $nr = mysqli_num_rows($res);
@@ -108,7 +108,7 @@ switch ($action) {
             }
             $HTMLOUT .= $sorted . '</select></td></tr>
 			<tr>
-			    <td colspan="2" class="three" align="center">
+			    <td colspan="2" class="three">
 				<input type="submit" name="button" class="button" value="' . $lang['ad_over_editbut'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
 			    </td>
 		  </tr>
@@ -118,25 +118,22 @@ switch ($action) {
     //=== over forum stuff
 
     case 'forum':
-        $HTMLOUT .= $main_links . '<table width="750"  border="0" align="center" cellpadding="2" cellspacing="0">
-		<tr><td class="forum_head_dark" align="center">' . $lang['ad_over_sort1'] . '</td>
-			<td class="forum_head_dark" align="left">' . $lang['ad_over_name1'] . '</td>
-			<td class="forum_head_dark" align="center">' . $lang['ad_over_minview1'] . '</td>
-			<td class="forum_head_dark" align="center">' . $lang['ad_over_modify'] . '</td>
+        $HTMLOUT .= $main_links . '<table class="table table-bordered table-striped">
+		<tr><td class="forum_head_dark">' . $lang['ad_over_sort1'] . '</td>
+			<td class="forum_head_dark">' . $lang['ad_over_name1'] . '</td>
+			<td class="forum_head_dark">' . $lang['ad_over_minview1'] . '</td>
+			<td class="forum_head_dark">' . $lang['ad_over_modify'] . '</td>
 		</tr>';
         $res = sql_query('SELECT * FROM over_forums ORDER BY sort ASC');
         if (mysqli_num_rows($res) > 0) {
             while ($row = mysqli_fetch_array($res)) {
-                //=== change colors
-                $count = (++$count) % 2;
-                $class = ($count == 0 ? 'one' : 'two');
                 $over_forums .= '<tr>
-			<td class="' . $class . '" align="center">' . (int)$row['sort'] . '</td>
-			<td class="' . $class . '">
+			<td>' . (int)$row['sort'] . '</td>
+			<td>
 			<a class="altlink" href="forums.php?action=forum_view&amp;fourm_id=' . (int)$row['id'] . '">' . htmlsafechars($row['name'], ENT_QUOTES) . '</a><br>
 			' . htmlsafechars($row['description'], ENT_QUOTES) . '</td>
-			<td class="' . $class . '" align="center">' . get_user_class_name($row['min_class_view']) . '</td>
-			<td align="center" class="' . $class . '">
+			<td>' . get_user_class_name($row['min_class_view']) . '</td>
+			<td>
 			<a class="altlink" href="staffpanel.php?tool=over_forums&amp;action=over_forums&amp;action2=edit_forum_page&amp;id=' . (int)$row['id'] . '">' . $lang['ad_over_edit'] . '</a>&#160;|&#160;
 			<a href="javascript:confirm_delete(\'' . (int)$row['id'] . '\');"><span style="font-weight: bold;">' . $lang['ad_over_delete'] . '</span></a></td>
 			</tr>';
@@ -145,21 +142,21 @@ switch ($action) {
         $HTMLOUT .= $over_forums . '</table><br><br>
 			<form method="post" action="staffpanel.php?tool=over_forums&amp;action=over_forums">
 			<input type="hidden" name="action2" value="add_forum" />
-			<table width="600"  border="0" cellspacing="0" cellpadding="3" align="center">
-			<tr align="center">
+			<table class="table table-bordered table-striped">
+			<tr>
  			   <td colspan="2" class="forum_head_dark">' . $lang['ad_over_makenew'] . '</td>
 			  </tr>
 			  <tr>
-			    <td align="right" class="three"><span style="font-weight: bold;">' . $lang['ad_over_name'] . '</span></td>
-			    <td align="left" class="three"><input name="name" type="text" class="text_default" size="20" maxlength="60" /></td>
+			    <td class="three"><span style="font-weight: bold;">' . $lang['ad_over_name'] . '</span></td>
+			    <td class="three"><input name="name" type="text" class="text_default" size="20" maxlength="60" /></td>
 			  </tr>
 			  <tr>
- 			   <td align="right" class="three"><span style="font-weight: bold;">' . $lang['ad_over_description'] . '</span>  </td>
-			    <td align="left" class="three"><input name="desc" type="text" class="text_default" size="30" maxlength="200" /></td>
+ 			   <td class="three"><span style="font-weight: bold;">' . $lang['ad_over_description'] . '</span>  </td>
+			    <td class="three"><input name="desc" type="text" class="text_default" size="30" maxlength="200" /></td>
 			  </tr>
 			<tr>
-			    <td align="right" class="three"><span style="font-weight: bold;">' . $lang['ad_over_minview'] . '</span> </td>
-			    <td align="left" class="three">
+			    <td class="three"><span style="font-weight: bold;">' . $lang['ad_over_minview'] . '</span> </td>
+			    <td class="three">
  			   <select name="min_class_view">';
         for ($i = 0; $i <= $maxclass; ++$i) {
             $min_class_viewer .= '<option class="body" value="' . $i . '">' . get_user_class_name($i) . '</option>';
@@ -168,8 +165,8 @@ switch ($action) {
 			</td>
 			</tr>
 			<tr>
-			<td align="right" class="three"><span style="font-weight: bold;">' . $lang['ad_over_sort'] . '</span> </td>
-			<td align="left" class="three">
+			<td class="three"><span style="font-weight: bold;">' . $lang['ad_over_sort'] . '</span> </td>
+			<td class="three">
 			<select name="sort">';
         $res = sql_query('SELECT sort FROM over_forums');
         $nr = mysqli_num_rows($res);
@@ -179,7 +176,7 @@ switch ($action) {
         }
         $HTMLOUT .= $sorted . '</select></td></tr>
 			 <tr>
-			<td colspan="2" class="three" align="center">
+			<td colspan="2" class="three">
 			<input type="submit" name="button" class="button" value="' . $lang['ad_over_makebutton'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
 			</tr>
 			</table></form>';

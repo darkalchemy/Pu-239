@@ -91,20 +91,16 @@ function pu_update($data)
             if ($count > 0) {
                 sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
                 sql_query('INSERT INTO users (id, class, invites, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE class=values(class), invites = invites+values(invites), modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+            }
+            if ($data['clean_log']) {
                 write_log('Cleanup: Promoted ' . $count . ' member(s) from ' . $prev_class_name . ' to ' . $class_name . '');
             }
             unset($users_buffer, $msgs_buffer, $update, $count);
-            status_change($arr['id']); //== For Retros announcement mod
+            status_change($arr['id']);
         }
         //==
-        if ($queries > 0) {
+        if ($data['clean_log'] && $queries > 0) {
             write_log("$class_name Updates Cleanup: Completed using $queries queries");
-        }
-        if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-            $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';
-        }
-        if ($data['clean_log']) {
-            cleanup_log($data);
         }
     }
 }

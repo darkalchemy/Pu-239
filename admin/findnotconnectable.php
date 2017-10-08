@@ -22,18 +22,18 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) == 'list') {
     $HTMLOUT .= "$count {$lang['non_con_unique']}</p>";
     @((mysqli_free_result($result) || (is_object($result) && (get_class($result) == 'mysqli_result'))) ? true : false);
     if (mysqli_num_rows($res2) == 0) {
-        $HTMLOUT .= "<p align='center'><b>{$lang['non_con_all']}</b></p>\n";
+        $HTMLOUT .= "<p><b>{$lang['non_con_all']}</b></p>\n";
     } else {
         $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5'>\n";
         $HTMLOUT .= "<tr><td class='colhead'>{$lang['non_con_name']}</td><td class='colhead'>{$lang['non_con_tor']}</td><td class='colhead'>{$lang['non_con_client']}</td></tr>\n";
         while ($arr2 = mysqli_fetch_assoc($res2)) {
             $r2 = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr2['userid'])) or sqlerr(__FILE__, __LINE__);
             $a2 = mysqli_fetch_assoc($r2);
-            $HTMLOUT .= "<tr><td><a href='userdetails.php?id=" . (int)$arr2['userid'] . "'>" . htmlsafechars($a2['username']) . "</a></td><td align='left'><a href='details.php?id=" . (int)$arr2['torrent'] . "&amp;dllist=1#seeders'>" . (int)$arr2['torrent'] . '</a>';
+            $HTMLOUT .= "<tr><td><a href='userdetails.php?id=" . (int)$arr2['userid'] . "'>" . htmlsafechars($a2['username']) . "</a></td><td><a href='details.php?id=" . (int)$arr2['torrent'] . "&amp;dllist=1#seeders'>" . (int)$arr2['torrent'] . '</a>';
             if ($arr2['seeder'] == 'yes') {
                 $HTMLOUT .= "<font color='red'>*</font>";
             }
-            $HTMLOUT .= "</td><td align='left'>" . htmlsafechars($arr2['agent']) . "</td></tr>\n";
+            $HTMLOUT .= "</td><td>" . htmlsafechars($arr2['agent']) . "</td></tr>\n";
         }
         $HTMLOUT .= "</table>\n";
     }
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) == 'sendpm') {
     $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>
-<div align='center'>
+<div>
 <h1>{$lang['non_con_mass']}</h1>
 <form method='post' action='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable'>";
     if (isset($_GET['returnto']) || isset($_SERVER['HTTP_REFERER'])) {
@@ -76,7 +76,7 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) == 'sendpm') {
 </tr>
 <tr><td><textarea name='msg' cols='120' rows='15'>$body</textarea></td></tr>
 
-<tr><td colspan='2' align='center'><input type='submit' value='Send' class='btn'/></td></tr>
+<tr><td colspan='2'><input type='submit' value='Send' class='btn'/></td></tr>
 </table>
 <input type='hidden' name='receiver' value='$receiver'/>
 </form>

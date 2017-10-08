@@ -36,7 +36,7 @@ $HTMLOUT .= "<form method=\"post\" action=\"staffpanel.php?tool=bannedemails\">
 <tr><td class='rowhead'align='left'>{$lang['ad_banemail_comment']}</td>
 <td><input type=\"text\" name=\"comment\" size=\"40\"/></td></tr>
 <tr><td colspan='2'>{$lang['ad_banemail_info']}</td></tr>
-<tr><td colspan='2' align='center'>
+<tr><td colspan='2'>
 <input type=\"submit\" value=\"{$lang['ad_banemail_ok']}\" class=\"btn\"/></td></tr>
 </table></form>\n";
 $HTMLOUT .= end_frame();
@@ -49,16 +49,16 @@ if ($count1 > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
 if (mysqli_num_rows($res) == 0) {
-    $HTMLOUT .= "<p align='center'><b>{$lang['ad_banemail_nothing']}</b></p>\n";
+    $HTMLOUT .= "<p><b>{$lang['ad_banemail_nothing']}</b></p>\n";
 } else {
     $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5'>\n";
-    $HTMLOUT .= "<tr><td class='colhead'>{$lang['ad_banemail_add1']}</td><td class='colhead' align='left'>{$lang['ad_banemail_email']}</td>" . "<td class='colhead' align='left'>{$lang['ad_banemail_by']}</td><td class='colhead' align='left'>{$lang['ad_banemail_comment']}</td><td class='colhead'>{$lang['ad_banemail_remove']}</td></tr>\n";
+    $HTMLOUT .= "<tr><td class='colhead'>{$lang['ad_banemail_add1']}</td><td class='colhead'>{$lang['ad_banemail_email']}</td>" . "<td class='colhead'>{$lang['ad_banemail_by']}</td><td class='colhead'>{$lang['ad_banemail_comment']}</td><td class='colhead'>{$lang['ad_banemail_remove']}</td></tr>\n";
     while ($arr = mysqli_fetch_assoc($res)) {
-        $HTMLOUT .= "<tr><td align='left'>" . get_date($arr['added'], '') . "</td>
-            <td align='left'>" . htmlsafechars($arr['email']) . "</td>
-            <td align='left'><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$arr['addedby'] . "'>" . htmlsafechars($arr['username']) . "</a></td>
-            <td align='left'>" . htmlsafechars($arr['comment']) . "</td>
-            <td align='left'><a href='staffpanel.php?tool=bannedemails&amp;remove=" . (int)$arr['id'] . "'>{$lang['ad_banemail_remove1']}</a></td></tr>\n";
+        $HTMLOUT .= "<tr><td>" . get_date($arr['added'], '') . "</td>
+            <td>" . htmlsafechars($arr['email']) . "</td>
+            <td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$arr['addedby'] . "'>" . htmlsafechars($arr['username']) . "</a></td>
+            <td>" . htmlsafechars($arr['comment']) . "</td>
+            <td><a href='staffpanel.php?tool=bannedemails&amp;remove=" . (int)$arr['id'] . "'>{$lang['ad_banemail_remove1']}</a></td></tr>\n";
     }
     $HTMLOUT .= "</table>\n";
 }

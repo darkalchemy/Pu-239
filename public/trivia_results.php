@@ -28,12 +28,12 @@ while ($result = mysqli_fetch_assoc($res)) {
         $date = $result['ended'] >= 1 ? "Ended: $ended" : "Started: $started";
         $table .= "
             <h3>Game #{$gamenum} $date</h3>
-            <table class='table table-bordered center-block'>
+            <table class='table table-bordered table-striped'>
                 <tr>
-                    <th align='left' width='5%'>Username</th>
-                    <th align='center' width='5%'>Ratio</th>
-                    <th align='center' width='5%'>Correct</th>
-                    <th align='center' width='5%'>Incorrect</th>
+                    <th>Username</th>
+                    <th>Ratio</th>
+                    <th>Correct</th>
+                    <th>Incorrect</th>
                 </tr>";
 
         while ($player = mysqli_fetch_assoc($query)) {
@@ -41,10 +41,10 @@ while ($result = mysqli_fetch_assoc($res)) {
             $class = $i++ % 2 == 0 ? 'one' : 'two';
             $table .= "
                 <tr class='$class'>
-                    <td align='left' width='5%'>" . format_username((int)$user_id) . "</td>
-                    <td align='center' width='5%'>" . sprintf('%.2f%%', $correct / ($correct + $incorrect) * 100) . "</td>
-                    <td align='center' width='5%'>$correct</td>
-                    <td align='center' width='5%'>$incorrect</td>
+                    <td>" . format_username((int)$user_id) . "</td>
+                    <td>" . sprintf('%.2f%%', $correct / ($correct + $incorrect) * 100) . "</td>
+                    <td>$correct</td>
+                    <td>$incorrect</td>
                 </tr>";
         }
         $table .= "

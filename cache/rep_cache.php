@@ -1,6 +1,9 @@
 <?php
 
-$reputations = [-999999 => 'is infamous around these parts', -50 => 'can only hope to improve', -10 => 'has a little shameless behaviour in the past',
+$reputations = [
+                -999999 => 'is infamous around these parts',
+                -50     => 'can only hope to improve',
+                -10     => 'has a little shameless behaviour in the past',
                 0       => 'is an unknown quantity at this point',
                 15      => 'is on a distinguished road',
                 50      => 'will become famous soon enough',

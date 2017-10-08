@@ -85,17 +85,17 @@ switch ($do) {
 					      <div class='global_icon_sb'><img src='images/global.design/helpdesk.png' alt='' title='Helpdesk' class='global_image' width='25'/></div>
                 <div class='global_head_sb'>Helpdesk</div><br>
                 <div class='global_text_sb'><br><br>
-								<table width='90%' border='1' cellspacing='0' cellpadding='5' align='center'>
+								<table class='table table-bordered table-striped'>
 								 <tr><td>{$lang['staffbox_pm_from']}&#160;<a href='userdetails.php?id=" . (int)$a['sender'] . "'>" . htmlsafechars($a['username']) . '</a> at ' . get_date($a['added'], 'DATE', 1) . "<br>
 								 {$lang['staffbox_pm_subject']} : <b>" . htmlsafechars($a['subject']) . "</b><br>
-								 {$lang['staffbox_pm_answered']} : <b>" . ($a['answeredby'] > 0 ? "<a href='userdetails.php?id=" . (int)$a['answeredby'] . "'>" . htmlsafechars($a['username2']) . '</a>' : "<span style='color:#ff0000'>No</span>") . '</b>
+								 {$lang['staffbox_pm_answered']} : <b>" . ($a['answeredby'] > 0 ? "<a href='userdetails.php?id=" . (int)$a['answeredby'] . "'>" . htmlsafechars($a['username2']) . '</a>' : "<span>No</span>") . '</b>
 								</td></tr>
 								<tr><td>' . format_comment($a['msg']) . "
 								</td></tr>
 								<tr><td>{$lang['staffbox_pm_answer']}<br>
 									" . ($a['answeredby'] == 0 ? "<textarea rows='5' cols='75' name='message' ></textarea>" : ($a['answer'] ? format_comment($a['answer']) : "<b>{$lang['staffbox_pm_noanswer']}</b>")) . "
 								</td></tr>
-								<tr><td align='left'>
+								<tr><td>
 									<select name='do'>
 										<option value='setanswered' " . ($a['answeredby'] > 0 ? 'disabled=\'disabled\'' : '') . ">{$lang['staffbox_pm_reply']}</option>
 										<option value='restart' " . ($a['answeredby'] != $CURUSER['id'] ? 'disabled=\'disabled\'' : '') . ">{$lang['staffbox_pm_restart']}</option>
@@ -143,25 +143,25 @@ switch ($do) {
   <div class='global_head_sb'>Helpdesk</div>
   <div class='global_text_sb'><br>";
             $HTMLOUT .= $pager['pagertop'];
-            $HTMLOUT .= "<table width='80%' border='1' cellspacing='0' cellpadding='5' align='center'>";
+            $HTMLOUT .= "<table class='table table-bordered table-striped'>";
             $HTMLOUT .= "<tr>
-                 <td class='colhead' align='center' width='100%'>{$lang['staffbox_subject']}</td>
-                 <td class='colhead' align='center'>{$lang['staffbox_sender']}</td>
-                 <td class='colhead' align='center'>{$lang['staffbox_added']}</td>
-                 <td class='colhead' align='center'>{$lang['staffbox_answered']}</td>
-                 <td class='colhead' align='center'><input type='checkbox' name='t' onclick=\"checkbox('staffbox')\" /></td>
+                 <td class='colhead'>{$lang['staffbox_subject']}</td>
+                 <td class='colhead'>{$lang['staffbox_sender']}</td>
+                 <td class='colhead'>{$lang['staffbox_added']}</td>
+                 <td class='colhead'>{$lang['staffbox_answered']}</td>
+                 <td class='colhead'><input type='checkbox' name='t' onclick=\"checkbox('staffbox')\" /></td>
                 </tr>";
             $r = sql_query('SELECT s.id, s.added, s.subject, s.answered, s.answeredby, s.sender, s.answer, u.username, u2.username as username2 FROM staffmessages as s LEFT JOIN users as u ON s.sender = u.id LEFT JOIN users as u2 ON s.answeredby = u2.id ORDER BY id desc ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
             while ($a = mysqli_fetch_assoc($r)) {
                 $HTMLOUT .= "<tr>
-                   <td align='center'><a href='" . $_SERVER['PHP_SELF'] . '?do=view&amp;id=' . (int)$a['id'] . "'>" . htmlsafechars($a['subject']) . "</a></td>
-                   <td align='center'><b>" . ($a['username'] ? "<a href='userdetails.php?id=" . (int)$a['sender'] . "'>" . htmlsafechars($a['username']) . '</a>' : 'Unknown[' . (int)$a['sender'] . ']') . "</b></td>
-                   <td align='center' nowrap='nowrap'>" . get_date($a['added'], 'DATE', 1) . "<br><span class='small'>" . get_date($a['added'], 0, 1) . "</span></td>
-				   <td align='center'><b>" . ($a['answeredby'] > 0 ? "by <a href='userdetails.php?id=" . (int)$a['answeredby'] . "'>" . htmlsafechars($a['username2']) . '</a>' : "<span style='color:#ff0000'>No</span>") . "</b></td>
-                   <td align='center'><input type='checkbox' name='id[]' value='" . (int)$a['id'] . "' /></td>
+                   <td><a href='" . $_SERVER['PHP_SELF'] . '?do=view&amp;id=' . (int)$a['id'] . "'>" . htmlsafechars($a['subject']) . "</a></td>
+                   <td><b>" . ($a['username'] ? "<a href='userdetails.php?id=" . (int)$a['sender'] . "'>" . htmlsafechars($a['username']) . '</a>' : 'Unknown[' . (int)$a['sender'] . ']') . "</b></td>
+                   <td nowrap='nowrap'>" . get_date($a['added'], 'DATE', 1) . "<br><span class='small'>" . get_date($a['added'], 0, 1) . "</span></td>
+				   <td><b>" . ($a['answeredby'] > 0 ? "by <a href='userdetails.php?id=" . (int)$a['answeredby'] . "'>" . htmlsafechars($a['username2']) . '</a>' : "<span>No</span>") . "</b></td>
+                   <td><input type='checkbox' name='id[]' value='" . (int)$a['id'] . "' /></td>
                   </tr>\n";
             }
-            $HTMLOUT .= "<tr><td align='right' colspan='5'>
+            $HTMLOUT .= "<tr><td colspan='5'>
 					<select name='do'>
 						<option value='delete'>{$lang['staffbox_do_delete']}</option>
 						<option value='setanswered'>{$lang['staffbox_do_set']}</option>

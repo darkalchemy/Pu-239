@@ -128,9 +128,11 @@ $wantpasshash = make_passhash($wantpassword);
 $wanthintanswer = md5($hintanswer);
 check_banned_emails($email);
 $user_frees = (TIME_NOW + 14 * 86400);
-$new_user = sql_query('INSERT INTO users (username, passhash, passhint, hintanswer, birthday, invitedby, email, added, last_access, last_login, time_offset, dst_in_use, free_switch, ip) VALUES (' . implode(',', array_map('sqlesc', [
+$torrent_pass = make_torrentpass();
+$new_user = sql_query('INSERT INTO users (username, passhash, torrent_pass, passhint, hintanswer, birthday, invitedby, email, added, last_access, last_login, time_offset, dst_in_use, free_switch, ip) VALUES (' . implode(',', array_map('sqlesc', [
         $wantusername,
         $wantpasshash,
+        $torrent_pass,
         $passhint,
         $wanthintanswer,
         $birthday,

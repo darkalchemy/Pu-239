@@ -24,12 +24,12 @@ foreach ($list as $gname) {
         $HTMLOUT .= "<a name='".$game."'><br><br></a><a href='flash.php?gameURI=".$game.'.swf&amp;gamename='.$game.'&amp;game_id='.$game_id."'><img style='width:33%;height:auto;max-height:33%;' src='".$site_config['pic_base_url'].'games/'.$game.".png' alt='".$gname."' /></span></a>";
 //                  <h2><a href='flash.php?gameURI=" . $game . ".swf&amp;gamename=" . $game . "&amp;game_id=" . $game_id . "'>$gname</a></h2>";
 //      $HTMLOUT .= '<h2>' . $gname . '</h2>';
-        $HTMLOUT .= '<table border="0" cellspacing="5" cellpadding="5" align="center" width="500px">
+        $HTMLOUT .= '<table border="0" cellspacing="5" cellpadding="5" width="500px">
             <tr>
-                <td class="colhead" align="center">Rank</td>
+                <td class="colhead">Rank</td>
                 <td class="colhead" width="75%">Name</td>
-                <td class="colhead" align="center">Level</td>
-                <td class="colhead" align="center">Score</td>
+                <td class="colhead">Level</td>
+                <td class="colhead">Score</td>
             </tr>';
 
     //=== do the top 10 for each game
@@ -45,10 +45,10 @@ foreach ($list as $gname) {
 
             $HTMLOUT .= '
     <tr'.($score_arr['user'] == $CURUSER['id'] ? ' style="background-color:green"' : '').'>
-        <td class="'.$class.'" align="center">'.number_format($rankrow[0] + 1).'</td>
-        <td class="'.$class.'" align="left">'.$username.'</td>
-        <td align="center" class="'.$class.'">'.(int) $score_arr['level'].'</td>
-        <td class="'.$class.'" align="center">'.number_format($score_arr['score']).'</td>
+        <td class="'.$class.'">'.number_format($rankrow[0] + 1).'</td>
+        <td class="'.$class.'">'.$username.'</td>
+        <td class="'.$class.'">'.(int) $score_arr['level'].'</td>
+        <td class="'.$class.'">'.number_format($score_arr['score']).'</td>
     </tr>';
         }
     //=== get members high score if any

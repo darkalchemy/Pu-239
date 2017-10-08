@@ -1,65 +1,51 @@
 <?php
-if (!defined('TBVERSION')) { //cannot access this file directly
+if (!defined('TBVERSION')) {
     setSessionVar('error', 'Access Not Allowed');
     header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }
-/** $class = UC_CLASS_NAME: minimum class required to view page
- *
- */
+
 function class_check($class = 0, $staff = true, $pin = false)
 {
     global $CURUSER, $site_config, $mc1;
-    require_once CACHE_DIR . 'staff_settings2.php';
-    /* basic checking **/
     if (!$CURUSER) {
-        require_once '404.html';
-        //die('404');
+        header("Location: {$site_config['baseurl']}/404.html");
         exit();
     }
-    /* required class check **/
+
     if ($CURUSER['class'] >= $class) {
-        /* require correct staff PIN **/
         if ($pin) {
-            // not allowed staff!
-            if (!isset($site_config['staff']['allowed'][$CURUSER['username']])) {
-                require_once '404.html';
-                //die('404 - Kiss my aRse !!');
+            if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'])) {
+                header("Location: {$site_config['baseurl']}/404.html");
                 exit();
             }
             $passed = false;
-            // have sent a username/pass and are using their own username
             if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW']) && $_SERVER['PHP_AUTH_USER'] === ($CURUSER['username'])) {
-                // generate a passhash from the sent password
                 $hash = md5($site_config['site']['salt2'] . $_SERVER['PHP_AUTH_PW'] . $CURUSER['secret']);
-                // if the password is correct, exit this function
                 if (md5($site_config['site']['salt2'] . $site_config['staff']['staff_pin'] . $CURUSER['secret']) === $hash) {
                     $passed = true;
                 }
             }
             if (!$passed) {
-                // they're not allowed, the username doesn't match their own, the password is
-                // wrong or they have not sent user/pass yet so we exit
                 header('WWW-Authenticate: Basic realm="Administration"');
                 header('HTTP/1.0 401 Unauthorized');
-                $HTMLOUT = '';
-                $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-                      <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-                      <head>
-                      <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-                      <title>ERROR</title>
-                      </head><body>
-                      <h1 align="center">ERROR</h1><p align="center">Sorry! Access denied!</p>
-                      </body></html>';
+                $HTMLOUT = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <title>ERROR</title>
+</head>
+<body>
+<h1>ERROR</h1>
+<p>Sorry! Access denied!</p>
+</body>
+</html>';
                 echo $HTMLOUT;
                 exit();
             }
-        } // end PIN
-        if ($staff) { // staff class required
-            /* do some checking **/
-            //if ((!valid_class($CURUSER['class'])) || (!isset($site_config['staff']['allowed'][strtolower($CURUSER['username'])]))) { // failed: illegal access ...
-            if (($CURUSER['class'] > UC_MAX) || (!isset($site_config['staff']['allowed'][$CURUSER['username']]))) { // failed: illegal access ...
-                /** user info **/
+        }
+        if ($staff) {
+            if (($CURUSER['class'] > UC_MAX) || (!in_array($CURUSER['id'], $site_config['is_staff']['allowed']))) {
                 $ip = getip();
                 /** file ban them **/
                 // @fclose(@fopen(INCL_DIR.'bans/'.$ip, 'w'));
@@ -82,7 +68,7 @@ function class_check($class = 0, $staff = true, $pin = false)
                 $added = TIME_NOW;
                 $icon = 'topic_normal';
                 if (user_exists($site_config['chatBotID'])) {
-                    sql_query('INSERT INTO posts (topic_id, user_id, added, body, icon) ' . "VALUES($topicid , " . $site_config['chatBotID'] . ", $added, $body, " . sqlesc($icon) . ')') or sqlerr(__FILE__, __LINE__);
+                    sql_query('INSERT INTO posts (topic_id, user_id, added, body, icon) ' . "VALUES ($topicid , " . $site_config['chatBotID'] . ", $added, $body, " . sqlesc($icon) . ')') or sqlerr(__FILE__, __LINE__);
                     /** get mysql_insert_id(); **/
                     $res = sql_query("SELECT id FROM posts WHERE topic_id = $topicid
                                         ORDER BY id DESC LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -130,12 +116,11 @@ function class_check($class = 0, $staff = true, $pin = false)
                 }
             }
         }
-    } else { // if less than required class
-        if (!$staff) { // if not staff page :P
+    } else {
+        if (!$staff) {
             stderr('ERROR', 'No Permission. Page is for ' . get_user_class_name($class) . 's and above. Read FAQ.');
-        } else { // if staff page
-            require_once '404.html';
-            //die('404');
+        } else {
+            header("Location: {$site_config['baseurl']}/404.html");
             exit();
         }
     }

@@ -9,7 +9,7 @@ $lang = [
     'text_cannot'        => 'Nu po&#355;i accesa direct acest fisier.',
     'text_sitelog'       => 'Registru Site',
     'text_logempty'      => 'Registru gol',
-    'text_times'         => 'Fusul orar este setat pe GMT.',
+    'text_times'         => 'Fusul orar este setat pe UTC.',
     //The table
     'header_date'        => 'Data',
     'header_time'        => 'Ora',

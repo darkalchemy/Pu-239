@@ -65,15 +65,37 @@ function BBcode($body)
     $emoticons_normal = smilies_frame($smilies, 3, ':hslocked:');
     $emoticons_custom = smilies_frame($customsmilies, 3, ':wink_skull:');
     $emoticons_staff = smilies_frame($staff_smilies, 1, ':dabunnies:');
-    $tags = '
-            <tr>
-                <td>not yet added</td>
-            </tr>';
 
     $bbcode = '
-        <table>
-            <tr>
-                <td id="tblDefects">
+            <div class="flex-justify-center">
+                <div class="emos">
+                    <ul class="flex-row">
+                        <li>
+                            <a href="#BBcode" id="smilies" class="altlink">Smilies</a>
+                        </li>' . ($CURUSER['smile_until'] > 0 ? '
+                        <li>
+                            <a href="#BBcode" id="custom" class="altlink">Custom</a>
+                        </li>' : '') . ($CURUSER['class'] < UC_STAFF ? '' : '
+                        <li>
+                            <a href="#BBcode" id="staff" class="altlink">Staff</a>
+                        </li>') . '
+                    </ul>
+                    <div class="scroll" id="box_0" style="display:none">
+                        <div class="smilies_frame">
+                            <img src="./images/forums/updating.gif" alt="Loading..." />
+                        </div>
+                    </div>
+                    <div class="scroll" id="box_1" style="display:none">
+                        ' . $emoticons_normal . '
+                    </div>
+                    ' . ($CURUSER['smile_until'] > 0 ? '<div class="scroll" id="box_2" style="display:none">
+                        ' . $emoticons_custom . '
+                    </div>' : '') . ($CURUSER['class'] < UC_STAFF ? '' : '<div class="scroll" id="box_3" style="display:none">
+                        ' . $emoticons_staff . '
+                    </div>') . '
+                </div>
+                <div id="tblDefects">
+                    <div class="table-wrapper">
                     <textarea id="bbcode_editor" name="body" cols="70" rows="20">' . $body . '</textarea>
                     <div id="outer-preview" class="outer-preview">
                         <div class="inner-preview">
@@ -81,38 +103,10 @@ function BBcode($body)
                             </div>
                         </div>
                     </div>
-                </td>
-                <td>
-                    <div class="emos">
-                        <ul class="flex-row">
-                            <li>
-                                <a href="#BBcode" id="smilies" class="altlink">Smilies</a>
-                            </li>' . ($CURUSER['smile_until'] > 0 ? '
-                            <li>
-                                <a href="#BBcode" id="custom" class="altlink">Custom</a>
-                            </li>' : '') . ($CURUSER['class'] < UC_STAFF ? '' : '
-                            <li>
-                                <a href="#BBcode" id="staff" class="altlink">Staff</a>
-                            </li>') . '
-                        </ul>
-                        <div class="scroll" id="box_0" style="display:none">
-                            <div class="smilies_frame">
-                                <img src="./images/forums/updating.gif" alt="Loading..." />
-                            </div>
-                        </div>
-                        <div class="scroll" id="box_1" style="display:none">
-                            ' . $emoticons_normal . '
-                        </div>
-                        ' . ($CURUSER['smile_until'] > 0 ? '<div class="scroll" id="box_2" style="display:none">
-                            ' . $emoticons_custom . '
-                        </div>' : '') . ($CURUSER['class'] < UC_STAFF ? '' : '<div class="scroll" id="box_3" style="display:none">
-                            ' . $emoticons_staff . '
-                        </div>') . '
                     </div>
-                </td>
-            </tr>
-        </table>
-        ' . (($CURUSER['class'] < UC_UPLOADER && (isset($_GET['action']) && $_GET['action'] != 'new_topic')) ? '' : '<span style="text-align: right;">
+                </div>
+            </div>
+        ' . (($CURUSER['class'] < UC_UPLOADER && (isset($_GET['action']) && $_GET['action'] != 'new_topic')) ? '' : '<span class="text-right">
             <a class="altlink"  title="More Options"  id="tool_open" style="font-weight:bold;cursor:pointer;"><img src="./images/forums/more.gif" alt="+" width="18" /> More Options</a>
             <a class="altlink"  title="Close More Options"  id="tool_close" style="font-weight:bold;cursor:pointer;display:none"><img src="./images/forums/less.gif" alt="-" width="18" /> Close More Options</a>
         </span>');
@@ -244,7 +238,7 @@ function islocal($link)
     }
     $url = htmlsafechars($url);
 
-    return '<a href="' . ((stristr($url, $site_config['url']) !== false) ? '' : 'http://nullrefer.com/?') . $url . '" target="_blank">' . $lshort . '</a>';
+    return '<a href="' . ((stristr($url, $site_config['url']) !== false) ? '' : $site_config['anonymizer_url']) . $url . '" target="_blank">' . $lshort . '</a>';
 }
 
 function format_urls($s)
@@ -303,6 +297,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '/\[center\](.*?)\[\/center\]/is',
         '/\[left\](.*?)\[\/left\]/is',
         '/\[right\](.*?)\[\/right\]/is',
+        '/\[justify\](.*?)\[\/justify\]/is',
         '/\[blockquote\](.*?)\[\/blockquote\]/is',
         '/\[strike\](.*?)\[\/strike\]/is',
         '/\[s\](.*?)\[\/s\]/is',
@@ -313,6 +308,14 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '/\[color=([a-zA-Z]+)\](.*?)\[\/color\]/is',
         '/\[color=(#[a-f0-9]{6})\](.*?)\[\/color\]/is',
         '/\[font=([a-zA-Z ,]+)\](.*?)\[\/font\]/is',
+        '/\[font01\](.*?)\[\/font01\]/is',
+        '/\[font02\](.*?)\[\/font02\]/is',
+        '/\[font03\](.*?)\[\/font03\]/is',
+        '/\[font04\](.*?)\[\/font04\]/is',
+        '/\[font05\](.*?)\[\/font05\]/is',
+        '/\[font06\](.*?)\[\/font06\]/is',
+        '/\[font07\](.*?)\[\/font07\]/is',
+        '/\[font08\](.*?)\[\/font08\]/is',
         '/\[spoiler\](.*?)\[\/spoiler\]/is',
         '/\[hide\](.*?)\[\/hide\]/is',
         '/\[youtube=[^\s\'"<>]*youtube.com.*v=([^\s\'"<>]+)\]/imsU',
@@ -334,7 +337,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     ];
     // And replace them by...
     $bb_code_out = [
-        '<table class="table text-center">\1</table>',
+        '<table class="table table-bordered table-striped">\1</table>',
         '<tr>\1</tr>',
         '<td>\1</td>',
         '<th>\1</th>',
@@ -345,9 +348,10 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<span style="text-decoration: underline;">\1</span>',
         '<a class="altlink" href="mailto:\1">\1</a>',
         '<div style="text-align: \1;">\2</div>',
-        '<div style="text-align: center;">\1</div>',
-        '<div style="text-align: left;">\1</div>',
-        '<div style="text-align: right;">\1</div>',
+        '<div class="text-center">\1</div>',
+        '<div class="text-left">\1</div>',
+        '<div class="text-right">\1</div>',
+        '<div class="text-justify">\1</div>',
         '<blockquote class="style"><span>\1</span></blockquote>',
         '<span style="text-decoration: line-through;">\1</span>',
         '<span style="text-decoration: line-through;">\1</span>',
@@ -358,6 +362,14 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<span style="color:\1;">\2</span>',
         '<span style="color:\1;">\2</span>',
         '<span style="font-family:\'\1\';">\2</span>',
+        '<span class="text-1">\1</span>',
+        '<span class="text-2">\1</span>',
+        '<span class="text-3">\1</span>',
+        '<span class="text-4">\1</span>',
+        '<span class="text-5">\1</span>',
+        '<span class="text-6">\1</span>',
+        '<span class="text-7">\1</span>',
+        '<span class="text-8">\1</span>',
         "<div style='margin-bottom: 5px;'><span class='flip btn-clean'>Show Spoiler!</span><div class='panel spoiler' style='display:none;'>\\1</div></div><br>",
         "<div style='margin-bottom: 5px;'><span class='flip btn-clean'>Show Hide!</span><div class='panel spoiler' style='display:none;'>\\1</div></div><br>",
         "<div style='width: 500px; height: 281px;' class='text-center'><div class='youtube-embed rndcorners text-center' style='height: 100%; width: 100%;'><iframe width='1920px' height='1080px' src='//www.youtube.com/embed/\\1?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen ></iframe></div></div>",
@@ -370,7 +382,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<span><video width="500" loop muted autoplay><source src="\1" /><source src="\1" type="video/mp4" />Your browser does not support the video tag.</video></span>',
         '<span><video width="500" loop muted autoplay><source src="\1" /><source src="\1" type="video/webm" />Your browser does not support the video tag.</video></span>',
         '<span><video width="500" loop muted autoplay><source src="\1" /><source src="\1" type="video/ogv" />Your browser does not support the video tag.</video></span>',
-        '<span style="text-align: center;"><p>Audio From: \1</p><embed type="application/x-shockwave-flash" src="http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=\\1" width="400" height="27" allowscriptaccess="never" quality="best" bgcolor="#ffffff" wmode="window" flashvars="playerMode=embedded" /></span>',
+        '<span class="text-center"><p>Audio From: \1</p><embed type="application/x-shockwave-flash" src="http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=\\1" width="400" height="27" allowscriptaccess="never" quality="best" bgcolor="#ffffff" wmode="window" flashvars="playerMode=embedded" /></span>',
         '<ol class="style" start="\1">\2</ol>',
         '<ul class="style">\1</ul>',
         '<li>\1</li>',
@@ -623,7 +635,7 @@ function dynamic_user_vars($text)
     if (!isset($CURUSER)) {
         return;
     }
-    $zone = 0; // GMT
+    $zone = 0; // UTC
     //$zone = 3600 * -5; // EST
     $tim = TIME_NOW + $zone;
     $cu = $CURUSER;

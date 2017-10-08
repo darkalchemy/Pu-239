@@ -16,55 +16,11 @@ if (!in_array($CURUSER['id'], $allowed_ids)) {
     stderr($lang['backup_stderr'], $lang['backup_stderr1']);
 }
 $lang = array_merge($lang, load_language('ad_backup'));
-$HTMLOUT = '';
-/**
- * Configs Start.
- */
-/**
- * Change to the class allowed to access this page, use an array for more classes.
- *
- * example: $required_class = array(UC_SYSOP, UC_ADMINISTRATOR);
- */
-$required_class = UC_MAX;
-/**
- * Set to true to compress the backed up database using gzip.
- */
-$use_gzip = false;
-/**
- * Set's the document root, change only if you know what you are doing.
- */
-$ROOT = $_SERVER['DOCUMENT_ROOT'] . '/';
-/**
- * The path to the gzip.exe file, no begining slash.
- */
-$gzip_path = $ROOT . 'include/gzip/gzip.exe';
-/**
- * The path to your backup folder, no begining/ending slash.
- *
- * example: $backupdir = $ROOT.'include/backups';
- */
-$backupdir = $site_config['backup_dir'];
-/**
- * The path to the mysqldump file, used to backup the databases.
- */
-//$mysqldump_path = 'c:/webdev/mysql/bin/mysqldump';
-$mysqldump_path = '/usr/bin/mysqldump'; //==Linux
+global $site_config;
 
-/**
- * Set to true, to be redirected to the download page after backup.
- */
-$autodl = false;
-/**
- * Set to true, to automatically delete de file after download.
- */
-$autodel = false;
-/**
- * Set to false if you don't want to write the actions to the log.
- */
-$write2log = true;
-/*
- * Configs End
- */
+$HTMLOUT = '';
+$required_class = UC_MAX;
+
 if (is_array($required_class)) {
     if (!in_array($CURUSER['class'], $required_class)) {
         stderr($lang['backup_stderr'], $lang['backup_stderr']);
@@ -76,74 +32,114 @@ if (is_array($required_class)) {
 }
 $mode = (isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : ''));
 if (empty($mode)) {
-    $HTMLOUT .= "<script>
-        /*<![CDATA[*/
-        var checkflag = 'false';
-        var marked_row = new Array;
-       
-        function check(field)
-        {
-                if (checkflag == 'false')
-                {
-                        for (i = 0; i < field.length; i++)
-                                field[i].checked = true;
-                       
-                        checkflag = 'true';
-                       
-                        return 'Un-Check All';
-                }
-                else
-                {
-                        for (i = 0; i < field.length; i++)
-                                field[i].checked = false;
-                       
-                        checkflag = 'false';
-                       
-                        return 'Check All';
-                }
-        };
-        /*]]>*/
-        </script>";
-    $HTMLOUT .= begin_main_frame();
-    $HTMLOUT .= $lang['backup_welcome'];
-    $HTMLOUT .= "<br><h1 align='center'></h1>";
-    $res = sql_query('SELECT db.id, db.name, db.added, u.id AS uid, u.username ' . 'FROM dbbackup AS db ' . 'LEFT JOIN users AS u ON u.id = db.userid ' . 'ORDER BY db.added DESC') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT db.id, db.name, db.added, u.id AS uid, u.username
+                        FROM dbbackup AS db
+                        LEFT JOIN users AS u ON u.id = db.userid
+                        ORDER BY db.added DESC') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
-        $HTMLOUT .= "<form method='post' action='staffpanel.php?tool=backup&amp;mode=delete'>
-   <input type='hidden' name='action' value='delete' />
-   <table align='center' cellpadding='5' width='75%'>
-                <tr>
-                <td class='colhead' width='100%'>{$lang['backup_name']}</td>
-                <td class='colhead' align='center'>{$lang['backup_addedon']}</td>
-   <td class='colhead' style='white-space:nowrap;'>{$lang['backup_addedby']}</td>
-                <td class='colhead' align='center'><input style='margin:0' type='checkbox' title='{$lang['backup_markall']}' onclick=\"this.value=check(form);\" /></td>
-                </tr>";
+        $HTMLOUT .= "
+        <form method='post' action='staffpanel.php?tool=backup&amp;mode=delete'>
+            <input type='hidden' name='action' value='delete' />
+            <div class='container-fluid portlet'>
+                {$lang['backup_welcome']}
+                <table id='checkbox_container' class='table table-bordered table-striped top20 bottom20'>
+                    <thead>
+                        <tr>
+                            <td>{$lang['backup_name']}</th>
+                            <td>{$lang['backup_addedon']}</th>
+                            <td>{$lang['backup_addedby']}</th>
+                            <td><input type='checkbox' id='checkAll' class='tooltipper' title='{$lang['backup_markall']}' /></th>
+                        </tr>
+                    </thead>
+                    <tbody>";
         while ($arr = mysqli_fetch_assoc($res)) {
-            $HTMLOUT .= "<tr>
-                        <td><a href='staffpanel.php?tool=backup&amp;mode=download&amp;id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></td>
-                        <td style='white-space:nowrap;'>" . get_date($arr['added'], 'DATE', 1, 0) . "</td>
-     <td align='center'>";
-            if (!empty($arr['username'])) {
-                $HTMLOUT .= "<a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$arr['uid'] . "'>" . htmlsafechars($arr['username']) . '</a>';
+            $HTMLOUT .= "
+                        <tr>
+                            <td><a href='staffpanel.php?tool=backup&amp;mode=download&amp;id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></td>
+                            <td>" . get_date($arr['added'], 'LONG', 1, 0) . "</td>
+                            <td>";
+            if (!empty($arr['uid'])) {
+                $HTMLOUT .= format_username($arr['uid']);
             } else {
-                $HTMLOUT .= 'unknown[' . (int)$arr['uid'] . ']';
+                $HTMLOUT .= '
+                                unknown[' . (int)$arr['uid'] . ']';
             }
-            $HTMLOUT .= "</td>
-                        <td><input type='checkbox' style='margin:0' name='ids[]' title='{$lang['backup_mark']}' value='" . (int)$arr['id'] . "' /></td>
+            $HTMLOUT .= "
+                            </td>
+                            <td>
+                                <input type='checkbox' name='ids[]' class='tooltipper' title='{$lang['backup_mark']}' value='" . (int)$arr['id'] . "' />
+                            </td>
                         </tr>";
         }
-        $HTMLOUT .= "<tr>
-    <td colspan='4' align='center'>
-    <input type='button' value='{$lang['backup_checkall']}' onclick=\"this.value=check(form);\" />
-    <input type='submit' value='{$lang['backup_delselected']}' onclick=\"return confirm(''{$lang['backup_confirm']}'');\" />
-                 </td></tr></table></form>";
+        $HTMLOUT .= "
+                    </tbody>
+                </table>
+                <div class='text-center top20 bottom20 answers-container flex-center'>
+                    <a class='btn right20' href='./staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
+                    <input type='submit' class='btn' value='{$lang['backup_delselected']}' onclick=\"return confirm(''{$lang['backup_confirm']}'');\" />
+                </div>
+            </div>
+        </form>";
+
+    $HTMLOUT .= "
+            <div class='text-center top20'>
+                <span class='flipper pointer'>
+                    <i class='fa fa-angle-down fa-2x text-main' aria-hidden='true'></i>
+                    <span class='text-main size_4 left10'>{$lang['backup_settingschk']}</span>
+                </span>
+                <div class='container-fluid portlet is_hidden top20'>
+                    <table class='table table-bordered table-striped top20 bottom20'>
+                        <tbody>
+                            <tr>
+                                <td>{$lang['backup_qzip']}</td>
+                                <td>{$lang['backup_optional']}</td>
+                                <td class='rowhead'>" . ($site_config['db_use_gzip'] ? "<div class='text-center text-center text-green'>{$lang['backup_yes']}</div>" : "<div class='text-center text-red'>{$lang['backup_no']}</div>") . "</td>
+                            </tr>
+                            <tr>
+                                <td>{$lang['backup_qzippath']}</td>
+                                <td>{$site_config['db_backup_gzip_path']}</td>
+                                <td>" . (is_file($site_config['db_backup_gzip_path']) ? "<div class='text-center text-green'>{$lang['backup_yes']}</div>" : "<div class='text-center text-red'>{$lang['backup_no']}</div>") . "</td>
+                            </tr>
+                            <tr>
+                                <td>{$lang['backup_pathfolder']}</td>
+                                <td>{$site_config['backup_dir']}</td>
+                                <td>" . (is_dir($site_config['backup_dir']) ? "<div class='text-center text-green'>{$lang['backup_yes']}</div>" : "<div class='text-center text-red'>{$lang['backup_no']}</div>") . "</td>
+                            </tr>
+                            <tr>
+                                <td colspan='2'>{$lang['backup_readfolder']}</td>
+                                <td>" . (is_readable($site_config['backup_dir']) ? "<div class='text-center text-green'>{$lang['backup_yes']}</div>" : "<div class='text-center text-red'>{$lang['backup_no']}</div>") . "</td>
+                            </tr>
+                            <tr>
+                                <td colspan='2'>{$lang['backup_writable']}</td>
+                                <td>" . (is_writable($site_config['backup_dir']) ? "<div class='text-center text-green'>{$lang['backup_yes']}</div>" : "<div class='text-center text-red'>{$lang['backup_no']}</div>") . "</td>
+                            </tr>
+                            <tr>
+                                <td>{$lang['backup_mysqldump']}</td>
+                                <td>{$site_config['db_backup_mysqldump_path']}</td>
+                                <td>" . (preg_match('/mysqldump/i', exec($site_config['db_backup_mysqldump_path'])) ? "<div class='text-center text-green'>{$lang['backup_yes']}</div>" : "<div class='text-center text-red'>{$lang['backup_no']}</div>") . "</td>
+                            </tr>
+                            <tr>
+                                <td colspan='2'>{$lang['backup_downafter']}</td>
+                                <td>" . ($site_config['db_backup_auto_download'] ? "<div class='text-center text-green'>{$lang['backup_yes']}</div>" : "<div class='text-center text-red'>{$lang['backup_no']}</div>") . "</td>
+                            </tr>
+                            <tr>
+                                <td colspan='2'>{$lang['backup_delafter']}</td>
+                                <td>" . ($site_config['db_backup_auto_delete'] ? "<div class='text-center text-green'>{$lang['backup_yes']}</div>" : "<div class='text-center text-red'>{$lang['backup_no']}</div>") . "</td>
+                            </tr>
+                            <tr>
+                                <td colspan='2'>{$lang['backup_writeact']}</td>
+                                <td>" . ($site_config['db_backup_write_to_log'] ? "<div class='text-center text-green'>{$lang['backup_yes']}</div>" : "<div class='text-center text-red'>{$lang['backup_no']}</div>") . "</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>";
     } else {
         $HTMLOUT .= begin_frame();
-        $HTMLOUT .= "<h2 align='center'>'{$lang['backup_nofound']}'</h2>";
+        $HTMLOUT .= "<h2>'{$lang['backup_nofound']}'</h2>";
         $HTMLOUT .= end_frame();
     }
     $HTMLOUT .= '<br>';
-    $HTMLOUT .= stdmsg($lang['backup_options'], "<div align='center'><a href='staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>&#160;&#160;-&#160;&#160;<a href='staffpanel.php?tool=backup&amp;mode=check'>{$lang['backup_settingschk']}</a></div>");
     if (!empty($_GET)) {
         $HTMLOUT .= '<br>';
     }
@@ -163,18 +159,18 @@ if (empty($mode)) {
     $mysql_pass = $site_config['mysql_pass'];
     $mysql_db = $site_config['mysql_db'];
     $ext = $mysql_db . '-' . date('d') . '-' . date('m') . '-' . date('Y') . '_' . date('H') . '-' . date('i') . '-' . date('s') . '_' . date('D') . '.sql';
-    $filepath = $backupdir . '/' . $ext;
-    exec("$mysqldump_path --default-character-set=latin1 -h $mysql_host -u $mysql_user -p$mysql_pass $mysql_db > $filepath");
-    if ($use_gzip) {
-        exec($gzip_path . ' ' . $filepath);
+    $filepath = $site_config['backup_dir'] . '/' . $ext;
+    exec("{$site_config['db_backup_mysqldump_path']} -h $mysql_host -u $mysql_user -p$mysql_pass $mysql_db > $filepath");
+    if ($site_config['db_backup_use_gzip']) {
+        exec("{$site_config['db_backup_gzip_path']} --best $filepath");
     }
-    sql_query('INSERT INTO dbbackup (name, added, userid) VALUES (' . sqlesc($ext . ($use_gzip ? '.gz' : '')) . ', ' . TIME_NOW . ', ' . sqlesc($CURUSER['id']) . ')') or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO dbbackup (name, added, userid) VALUES (' . sqlesc($ext . ($site_config['db_backup_use_gzip'] ? '.gz' : '')) . ', ' . TIME_NOW . ', ' . sqlesc($CURUSER['id']) . ')') or sqlerr(__FILE__, __LINE__);
     $location = 'mode=backup';
-    if ($autodl) {
+    if ($site_config['db_backup_auto_download']) {
         $id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
         $location = 'mode=download&id=' . $id;
     }
-    if ($write2log) {
+    if ($site_config['db_backup_write_to_log']) {
         write_log($CURUSER['username'] . '(' . get_user_class_name($CURUSER['class']) . ') ' . $lang['backup_successfully'] . '');
     }
     header('Location: staffpanel.php?tool=backup');
@@ -185,7 +181,7 @@ if (empty($mode)) {
     }
     $res = sql_query('SELECT name FROM dbbackup WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
-    $filename = $backupdir . '/' . $arr['name'];
+    $filename = $site_config['backup_dir'] . '/' . $arr['name'];
     //print $filename;
     //exit();
     if (!is_file($filename)) {
@@ -205,10 +201,10 @@ if (empty($mode)) {
         default:
             $ctype = 'application/force-download';
     }
-    if ($write2log) {
+    if ($site_config['db_backup_write_to_log']) {
         write_log($CURUSER['username'] . '(' . get_user_class_name($CURUSER['class']) . ') downloaded a database(' . htmlsafechars($arr['name']) . ').');
     }
-    header('Refresh: 0; url=staffpanel.php' . ($autodl && !$autodel ? '' : '?tool=backup&mode=delete&id=' . $id));
+    header('Refresh: 0; url=staffpanel.php' . ($site_config['db_backup_auto_download'] && !$site_config['db_backup_auto_delete'] ? '' : '?tool=backup&mode=delete&id=' . $id));
     header('Pragma: public');
     header('Expires: 0');
     header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
@@ -232,13 +228,13 @@ if (empty($mode)) {
         $count = mysqli_num_rows($res);
         if ($count > 0) {
             while ($arr = mysqli_fetch_assoc($res)) {
-                $filename = $backupdir . '/' . $arr['name'];
+                $filename = $site_config['backup_dir'] . '/' . $arr['name'];
                 if (is_file($filename)) {
                     unlink($filename);
                 }
             }
             sql_query('DELETE FROM dbbackup WHERE id IN (' . implode(', ', array_map('sqlesc', $ids)) . ')') or sqlerr(__FILE__, __LINE__);
-            if ($write2log) {
+            if ($site_config['db_backup_write_to_log']) {
                 write_log($CURUSER['username'] . '(' . get_user_class_name($CURUSER['class']) . ') ' . $lang['backup_deleted1'] . ' ' . $count . ($count > 1 ? $lang['backup_database_plural'] : $lang['backup_database_singular']) . '.');
             }
             $location = 'backup';
@@ -249,50 +245,6 @@ if (empty($mode)) {
         $location = 'noselection';
     }
     header('Location:staffpanel.php?tool=backup&mode=' . $location);
-} elseif ($mode == 'check') {
-    $HTMLOUT .= begin_main_frame();
-    $HTMLOUT .= "<table align='center' cellpadding='5' width='55%'>
-         <tr>
-  <td class='colhead' colspan='2'>{$lang['backup_settingschk']}(<a href='staffpanel.php?tool=backup'>{$lang['backup_goback']}</a>)</td>
-         </tr>
-         <tr>
-  <td>{$lang['backup_qzip']}<br><font class='small'>{$lang['backup_optional']}</font></td>
-  <td width='1%' align='center'><b>" . ($use_gzip ? "<font color='green'>{$lang['backup_yes']}</font>" : "<font color='red'>{$lang['backup_no']}</font>") . "</b></td>
-         </tr>
-  <tr>
-  <td>{$lang['backup_qzippath']}<br><font class='small'>" . $gzip_path . "</font></td>
-  <td width='1%' align='center'><b>" . (is_file($gzip_path) ? "<font color='green'>{$lang['backup_yes']}</font>" : "<font color='red'>{$lang['backup_no']}</font>") . "</b></td>
-  </tr>
-  <tr>
-  <td>{$lang['backup_pathfolder']}<br><font class='small'>" . $backupdir . "</font></td>
-  <td width='1%' align='center'><b>" . (is_dir($backupdir) ? "<font color='green'>{$lang['backup_yes']}</font>" : "<font color='red'>{$lang['backup_no']}</font>") . "</b></td>
-         </tr>
-  <tr>
-  <td>{$lang['backup_readfolder']}</td>
-  <td width='1%' align='center'><b>" . (is_readable($backupdir) ? "<font color='green'>{$lang['backup_yes']}</font>" : "<font color='red'>{$lang['backup_no']}</font>") . "</b></td>
-         </tr>
-  <tr>
-  <td>{$lang['backup_writable']}</td>
-  <td width='1%' align='center'><b>" . (is_writable($backupdir) ? "<font color='green'>{$lang['backup_yes']}</font>" : "<font color='red'>{$lang['backup_no']}</font>") . "</b></td>
-         </tr>
-  <tr>
-  <td>{$lang['backup_mysqldump']}<br><font class='small'>" . $mysqldump_path . "</font></td>
-  <td width='1%' align='center'><b>" . (preg_match('/mysqldump/i', exec($mysqldump_path)) ? "<font color='green'>{$lang['backup_yes']}</font>" : "<font color='red'>{$lang['backup_no']}</font>") . "</b></td>
-         </tr>
-  <tr>
-  <td>{$lang['backup_downafter']}</td>
-  <td width='1%' align='center'><b>" . ($autodl ? "<font color='green'>{$lang['backup_yes']}</font>" : "<font color='red'>{$lang['backup_no']}</font>") . "</b></td>
-         </tr>
-  <tr>
-  <td>{$lang['backup_delafter']}</td>
-  <td width='1%' align='center'><b>" . ($autodel ? "<font color='green'>{$lang['backup_yes']}</font>" : "<font color='red'>{$lang['backup_no']}</font>") . "</b></td>
-         </tr>
-  <tr>
-  <td>{$lang['backup_writeact']}</td>
-  <td width='1%' align='center'><b>" . ($write2log ? "<font color='green'>{$lang['backup_yes']}</font>" : "<font color='red'>{$lang['backup_no']}</font>") . '</b></td>
-         </tr></table>';
-    $HTMLOUT .= end_main_frame();
-    echo stdhead($lang['backup_stdhead']) . $HTMLOUT . stdfoot();
 } else {
     stderr($lang['backup_srry'], $lang['backup_unknow']);
 }

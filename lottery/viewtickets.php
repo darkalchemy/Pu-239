@@ -17,7 +17,7 @@ $qs = sql_query('SELECT count(t.id) as tickets , u.username, u.id, u.seedbonus F
 if (!mysqli_num_rows($qs)) {
     $html .= '<h2>Not tickets were bought</h2>';
 } else {
-    $html .= "<table width='80%' cellpadding='5' cellspacing='0' border='1' align='center'>
+    $html .= "<table width='80%' cellpadding='5' cellspacing='0' border='1'>
     <tr>
       <td width='100%'>Username</td>
       <td style='white-space:nowrap;'>tickets</td>
@@ -25,9 +25,9 @@ if (!mysqli_num_rows($qs)) {
     </tr>";
     while ($ar = mysqli_fetch_assoc($qs)) {
         $html .= "<tr>
-                  <td align='left'><a href='userdetails.php?id=" . (int)$ar['id'] . "'>" . htmlsafechars($ar['username']) . "</a></td>
-                  <td align='center'>" . (int)$ar['tickets'] . "</td>
-                  <td align='center'>" . (float)$ar['seedbonus'] . '</td>
+                  <td><a href='userdetails.php?id=" . (int)$ar['id'] . "'>" . htmlsafechars($ar['username']) . "</a></td>
+                  <td>" . (int)$ar['tickets'] . "</td>
+                  <td>" . (float)$ar['seedbonus'] . '</td>
         </tr>';
     }
     $html .= '</table>';

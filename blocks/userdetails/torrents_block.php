@@ -43,13 +43,13 @@ function maketable($res)
     global $site_config, $lang, $CURUSER;
 
     $htmlout = '';
-    $htmlout .= "<table class='main' border='1' cellspacing='0' cellpadding='5'>" . "<tr><td class='colhead' align='center'>{$lang['userdetails_type']}</td>
+    $htmlout .= "<table class='main' border='1' cellspacing='0' cellpadding='5'>" . "<tr><td class='colhead'>{$lang['userdetails_type']}</td>
          <td class='colhead'>{$lang['userdetails_name']}</td>
-         <td class='colhead' align='center'>{$lang['userdetails_size']}</td>
-         <td class='colhead' align='right'>{$lang['userdetails_se']}</td>
-         <td class='colhead' align='right'>{$lang['userdetails_le']}</td>
-         <td class='colhead' align='center'>{$lang['userdetails_upl']}</td>\n" . '' . ($site_config['ratio_free'] ? '' : "<td class='colhead' align='center'>{$lang['userdetails_downl']}</td>") . "
-         <td class='colhead' align='center'>{$lang['userdetails_ratio']}</td></tr>\n";
+         <td class='colhead'>{$lang['userdetails_size']}</td>
+         <td class='colhead'>{$lang['userdetails_se']}</td>
+         <td class='colhead'>{$lang['userdetails_le']}</td>
+         <td class='colhead'>{$lang['userdetails_upl']}</td>\n" . '' . ($site_config['ratio_free'] ? '' : "<td class='colhead'>{$lang['userdetails_downl']}</td>") . "
+         <td class='colhead'>{$lang['userdetails_ratio']}</td></tr>\n";
     foreach ($res as $arr) {
         if ($arr['downloaded'] > 0) {
             $ratio = number_format($arr['uploaded'] / $arr['downloaded'], 3);
@@ -68,7 +68,7 @@ function maketable($res)
         $seeders = number_format($arr['seeders']);
         $leechers = number_format($arr['leechers']);
         $XBT_or_PHP = (XBT_TRACKER == true ? $arr['fid'] : $arr['torrent']);
-        $htmlout .= "<tr><td style='padding: 0px'>$catimage</td>\n" . "<td><a href='details.php?id=" . (int)$XBT_or_PHP . "&amp;hit=1'><b>" . htmlsafechars($arr['torrentname']) . "</b></a></td><td align='center'>$size</td><td align='right'>$seeders</td><td align='right'>$leechers</td><td align='center'>$uploaded</td>\n" . '' . ($site_config['ratio_free'] ? '' : "<td align='center'>$downloaded</td>") . "<td align='center'>$ratio</td></tr>\n";
+        $htmlout .= "<tr><td style='padding: 0px'>$catimage</td>\n" . "<td><a href='details.php?id=" . (int)$XBT_or_PHP . "&amp;hit=1'><b>" . htmlsafechars($arr['torrentname']) . "</b></a></td><td>$size</td><td>$seeders</td><td>$leechers</td><td>$uploaded</td>\n" . '' . ($site_config['ratio_free'] ? '' : "<td>$downloaded</td>") . "<td>$ratio</td></tr>\n";
     }
     $htmlout .= "</table>\n";
 
@@ -77,11 +77,11 @@ function maketable($res)
 
 if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     if (isset($torrents)) {
-        $HTMLOUT .= "<tr valign=\"top\"><td class=\"rowhead\" width=\"10%\">{$lang['userdetails_uploaded_t']}</td><td align=\"left\" width=\"90%\"><a href=\"javascript: klappe_news('a')\"><img border=\"0\" src=\"./images/plus.png\" id=\"pica\" alt=\"Show/Hide\" /></a><div id=\"ka\" style=\"display: none;\">$torrents</div></td></tr>\n";
+        $HTMLOUT .= "<tr><td class=\"rowhead\" width=\"10%\">{$lang['userdetails_uploaded_t']}</td><td align=\"left\" width=\"90%\"><a href=\"javascript: klappe_news('a')\"><img border=\"0\" src=\"./images/plus.png\" id=\"pica\" alt=\"Show/Hide\" /></a><div id=\"ka\" style=\"display: none;\">$torrents</div></td></tr>\n";
     }
     /*
     if (isset($torrents)) {
-       $HTMLOUT .= "   <tr valign=\"top\">
+       $HTMLOUT .= "   <tr>
                         <td class=\"rowhead\" width=\"10%\">
                          {$lang['userdetails_uploaded_t']}
                       </td>
@@ -94,7 +94,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
     */
     /*
     if (isset($seeding)) {
-       $HTMLOUT .= "   <tr valign=\"top\">
+       $HTMLOUT .= "   <tr>
                         <td class=\"rowhead\" width=\"10%\">
                          {$lang['userdetails_cur_seed']}
                       </td>
@@ -106,11 +106,11 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
     }
     */
     if (isset($seeding)) {
-        $HTMLOUT .= "<tr valign=\"top\"><td class=\"rowhead\" width=\"10%\">{$lang['userdetails_cur_seed']}</td><td align=\"left\" width=\"90%\"><a href=\"javascript: klappe_news('a1')\"><img border=\"0\" src=\"./images/plus.png\" id=\"pica1\" alt=\"Show/Hide\" /></a><div id=\"ka1\" style=\"display: none;\">" . maketable($seeding) . "</div></td></tr>\n";
+        $HTMLOUT .= "<tr><td class=\"rowhead\" width=\"10%\">{$lang['userdetails_cur_seed']}</td><td align=\"left\" width=\"90%\"><a href=\"javascript: klappe_news('a1')\"><img border=\"0\" src=\"./images/plus.png\" id=\"pica1\" alt=\"Show/Hide\" /></a><div id=\"ka1\" style=\"display: none;\">" . maketable($seeding) . "</div></td></tr>\n";
     }
     /*
     if (isset($leeching)) {
-       $HTMLOUT .= "   <tr valign=\"top\">
+       $HTMLOUT .= "   <tr>
                         <td class=\"rowhead\" width=\"10%\">
                          {$lang['userdetails_cur_leech']}
                       </td>
@@ -122,7 +122,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
     }
     */
     if (isset($leeching)) {
-        $HTMLOUT .= "<tr valign=\"top\"><td class=\"rowhead\" width=\"10%\">{$lang['userdetails_cur_leech']}</td><td align=\"left\" width=\"90%\"><a href=\"javascript: klappe_news('a2')\"><img border=\"0\" src=\"./images/plus.png\" id=\"pica2\" alt=\"Show/Hide\" /></a><div id=\"ka2\" style=\"display: none;\">" . maketable($leeching) . "</div></td></tr>\n";
+        $HTMLOUT .= "<tr><td class=\"rowhead\" width=\"10%\">{$lang['userdetails_cur_leech']}</td><td align=\"left\" width=\"90%\"><a href=\"javascript: klappe_news('a2')\"><img border=\"0\" src=\"./images/plus.png\" id=\"pica2\" alt=\"Show/Hide\" /></a><div id=\"ka2\" style=\"display: none;\">" . maketable($leeching) . "</div></td></tr>\n";
     }
     //==Snatched
 
@@ -137,7 +137,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
     }
     /*
     if (isset($user_snatches_data))
-       $HTMLOUT .= "   <tr valign=\"top\">
+       $HTMLOUT .= "   <tr>
                         <td class=\"rowhead\" width=\"10%\">
                          {$lang['userdetails_cur_snatched']}
                       </td>
@@ -149,7 +149,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
     //}
     */
     if (isset($user_snatches_data)) {
-        $HTMLOUT .= "<tr valign=\"top\"><td class=\"rowhead\" width=\"10%\">{$lang['userdetails_cur_snatched']}</td><td align=\"left\" width=\"90%\"><a href=\"javascript: klappe_news('a3')\"><img border=\"0\" src=\"./images/plus.png\" id=\"pica3\" alt=\"Show/Hide\" /></a><div id=\"ka3\" style=\"display: none;\">$user_snatches_data</div></td></tr>\n";
+        $HTMLOUT .= "<tr><td class=\"rowhead\" width=\"10%\">{$lang['userdetails_cur_snatched']}</td><td align=\"left\" width=\"90%\"><a href=\"javascript: klappe_news('a3')\"><img border=\"0\" src=\"./images/plus.png\" id=\"pica3\" alt=\"Show/Hide\" /></a><div id=\"ka3\" style=\"display: none;\">$user_snatches_data</div></td></tr>\n";
     }
 }
 //==End

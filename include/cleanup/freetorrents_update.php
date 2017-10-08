@@ -17,20 +17,16 @@ function freetorrents_update($data)
             $mc1->commit_transaction($site_config['expires']['torrent_details']);
         }
         $count = count($Free_buffer);
-        if ($count > 0) {
+        if ($data['clean_log'] && $count > 0) {
             sql_query('INSERT INTO torrents (id, free) VALUES ' . implode(', ', $Free_buffer) . ' ON DUPLICATE key UPDATE free=values(free)') or sqlerr(__FILE__, __LINE__);
+        }
+        if ($data['clean_log']) {
             write_log('Cleanup - Removed Free from ' . $count . ' torrents');
         }
         unset($Free_buffer, $count);
     }
     //==End
-    if ($queries > 0) {
+    if ($data['clean_log'] && $queries > 0) {
         write_log("Free Cleanup: Completed using $queries queries");
-    }
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items updated';
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
     }
 }

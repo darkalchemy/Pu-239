@@ -14,7 +14,7 @@ $HTMLOUT = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"h
 <head>
     <meta name='MSSmartTagsPreventParsing' content='TRUE' />
 	<title>{$site_config['site_name']} Radio</title>
-    <link rel='stylesheet' href='./css/" . get_stylesheet() . "/e0a618d82ab6ae6be19a4749c87426da.min.css' />
+    <link rel='stylesheet' href='" . get_file('css') . "' />
 </head>
 <body class='$body_class'>
     <script>
@@ -27,12 +27,12 @@ $HTMLOUT = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"h
         }
     </script>
     <h2>{$site_config['site_name']} Site Radio</h2>
-    <div  align='center'>
-        <a href='http://{$radio['host']}:{$radio['port']}/listen.pls' onmouseover=\"roll_over('winamp', './images/winamp_over.png')\" onmouseout=\"roll_over('winamp', './images/winamp.png')\" style='border:hidden;'>
-            <img src='./images/winamp.png' name='winamp' alt='Click here to listen with Winamp' title='Click here to listen with Winamp' style='border:hidden;' />
+    <div>
+        <a href='http://{$radio['host']}:{$radio['port']}/listen.pls' onmouseover=\"roll_over('winamp', './images/winamp_over.png')\" onmouseout=\"roll_over('winamp', './images/winamp.png')\">
+            <img src='./images/winamp.png' name='winamp' alt='Click here to listen with Winamp' title='Click here to listen with Winamp' />
         </a>
-        <a href='http://{$radio['host']}:{$radio['port']}/listen.asx' onmouseover=\"roll_over('wmp', './images/wmp_over.png')\" onmouseout=\"roll_over('wmp', './images/wmp.png')\" style='border:hidden;'>
-            <img src='./images/wmp.png' name='wmp' alt='Click here to listen with Windows Media Player' title='Click here to listen with Windows Media Player' style='border:hidden;' />
+        <a href='http://{$radio['host']}:{$radio['port']}/listen.asx' onmouseover=\"roll_over('wmp', './images/wmp_over.png')\" onmouseout=\"roll_over('wmp', './images/wmp.png')\">
+            <img src='./images/wmp.png' name='wmp' alt='Click here to listen with Windows Media Player' title='Click here to listen with Windows Media Player' />
         </a>
     </div>
     {radioinfo($radio)}

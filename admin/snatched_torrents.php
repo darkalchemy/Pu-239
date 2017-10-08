@@ -86,7 +86,7 @@ function get_snatched_color($st)
 $What_Table = (XBT_TRACKER == true ? 'xbt_files_users' : 'snatched');
 $What_Value = (XBT_TRACKER == true ? 'WHERE completedtime != "0"' : 'WHERE complete_date != "0"');
 $count = number_format(get_row_count($What_Table, $What_Value));
-$HTMLOUT .= "<h2 align='center'>{$lang['ad_snatched_torrents_allsnatched']}</h2>
+$HTMLOUT .= "<h2>{$lang['ad_snatched_torrents_allsnatched']}</h2>
 <font class='small'>{$lang['ad_snatched_torrents_currently']}&#160;" . htmlsafechars($count) . "&#160;{$lang['ad_snatched_torrents_snatchedtor']}</font>";
 $HTMLOUT .= begin_main_frame();
 $Which_ID = (XBT_TRACKER == true ? 'fid' : 'id');
@@ -107,34 +107,34 @@ if (XBT_TRACKER == true) {
 $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($result) != 0) {
     if (XBT_TRACKER == true) {
-        $HTMLOUT .= "<table width='100%' border='1' cellspacing='0' cellpadding='5' align='center'>
+        $HTMLOUT .= "<table width='100%' border='1' cellspacing='0' cellpadding='5'>
 <tr>
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_name']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_torname']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_announced']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_upload']}</td>
-" . ($site_config['ratio_free'] ? '' : "<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_download']}</td>") . "
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_seedtime']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_leechtime']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_startdate']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_enddate']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_seeding']}</td>
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_name']}</td>
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_torname']}</td>
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_announced']}</td>
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_upload']}</td>
+" . ($site_config['ratio_free'] ? '' : "<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_download']}</td>") . "
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_seedtime']}</td>
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_leechtime']}</td>
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_startdate']}</td>
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_enddate']}</td>
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_seeding']}</td>
 </tr>";
     } else {
-        $HTMLOUT .= "<table width='100%' border='1' cellspacing='0' cellpadding='5' align='center'>
+        $HTMLOUT .= "<table width='100%' border='1' cellspacing='0' cellpadding='5'>
 <tr>
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_name']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_torname']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_hnr']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_marked']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_announced']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_upload']}</td>
-" . ($site_config['ratio_free'] ? '' : "<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_download']}</td>") . "
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_seedtime']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_leechtime']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_startdate']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_enddate']}</td>
-<td class='colhead' align='center' width='1%'>{$lang['ad_snatched_torrents_seeding']}</td>
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_name']}</td>
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_torname']}</td>
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_hnr']}</td>
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_marked']}</td>
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_announced']}</td>
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_upload']}</td>
+" . ($site_config['ratio_free'] ? '' : "<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_download']}</td>") . "
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_seedtime']}</td>
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_leechtime']}</td>
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_startdate']}</td>
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_enddate']}</td>
+<td class='colhead' width='1%'>{$lang['ad_snatched_torrents_seeding']}</td>
 </tr>";
     }
     while ($row = mysqli_fetch_assoc($result)) {
@@ -144,35 +144,35 @@ if (mysqli_num_rows($result) != 0) {
         }
         if (XBT_TRACKER == true) {
             $HTMLOUT .= "<tr><td><a href='/userdetails.php?id=" . (int)$row['uid'] . "'><b>" . htmlsafechars($row['username']) . "</b></a></td>
-<td align='center'><a href='/details.php?id=" . (int)$row['fid'] . "'><b>" . $smallname . "</b></a></td>
-<td align='center'><b>" . htmlsafechars($row['announced']) . "</b></td>
-<td align='center'><b>" . mksize($row['uploaded']) . '</b></td>
-' . ($site_config['ratio_free'] ? '' : "<td align='center'><b>" . mksize($row['downloaded']) . '</b></td>') . "
-<td align='center'><b>" . get_snatched_color($row['seedtime']) . "</b></td>
-<td align='center'><b>" . mkprettytime($row['leechtime']) . "</b></td><td align='center'><b>" . get_date($row['started'], 'LONG', 0, 1) . '</b></td>';
+<td><a href='/details.php?id=" . (int)$row['fid'] . "'><b>" . $smallname . "</b></a></td>
+<td><b>" . htmlsafechars($row['announced']) . "</b></td>
+<td><b>" . mksize($row['uploaded']) . '</b></td>
+' . ($site_config['ratio_free'] ? '' : "<td><b>" . mksize($row['downloaded']) . '</b></td>') . "
+<td><b>" . get_snatched_color($row['seedtime']) . "</b></td>
+<td><b>" . mkprettytime($row['leechtime']) . "</b></td><td><b>" . get_date($row['started'], 'LONG', 0, 1) . '</b></td>';
             if ($row['completedtime'] > 0) {
-                $HTMLOUT .= "<td align='center'><b>" . get_date($row['completedtime'], 'LONG', 0, 1) . '</b></td>';
+                $HTMLOUT .= "<td><b>" . get_date($row['completedtime'], 'LONG', 0, 1) . '</b></td>';
             } else {
-                $HTMLOUT .= "<td align='center'><b><font color='red'>{$lang['ad_snatched_torrents_ncomplete']}</font></b></td>";
+                $HTMLOUT .= "<td><b><font color='red'>{$lang['ad_snatched_torrents_ncomplete']}</font></b></td>";
             }
-            $HTMLOUT .= "<td align='center'>" . ($row['seeders'] >= 1 ? "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='{$lang['ad_snatched_torrents_yes']}' title='{$lang['ad_snatched_torrents_yes']}' />" : "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='{$lang['ad_snatched_torrents_no']}' title='{$lang['ad_snatched_torrents_no']}' />") . '</td></tr>';
+            $HTMLOUT .= "<td>" . ($row['seeders'] >= 1 ? "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='{$lang['ad_snatched_torrents_yes']}' title='{$lang['ad_snatched_torrents_yes']}' />" : "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='{$lang['ad_snatched_torrents_no']}' title='{$lang['ad_snatched_torrents_no']}' />") . '</td></tr>';
         } else {
             $HTMLOUT .= "<tr><td><a href='/userdetails.php?id=" . (int)$row['userid'] . "'><b>" . htmlsafechars($row['username']) . "</b></a></td>
-<td align='center'><a href='/details.php?id=" . (int)$row['torrentid'] . "'><b>" . $smallname . "</b></a></td>
-<td align='center'><b>" . get_date($row['hit_and_run'], 'LONG', 0, 1) . "</b></td>
-<td align='center'><b>" . htmlsafechars($row['mark_of_cain']) . "</b></td>
-<td align='center'><b>" . htmlsafechars($row['timesann']) . "</b></td>
-<td align='center'><b>" . mksize($row['uploaded']) . '</b></td>
-' . ($site_config['ratio_free'] ? '' : "<td align='center'><b>" . mksize($row['downloaded']) . '</b></td>') . "
-<td align='center'><b>" . get_snatched_color($row['seedtime']) . "</b></td>
-<td align='center'><b>" . mkprettytime($row['leechtime']) . "</b></td>
-<td align='center'><b>" . get_date($row['start_date'], 'LONG', 0, 1) . '</b></td>';
+<td><a href='/details.php?id=" . (int)$row['torrentid'] . "'><b>" . $smallname . "</b></a></td>
+<td><b>" . get_date($row['hit_and_run'], 'LONG', 0, 1) . "</b></td>
+<td><b>" . htmlsafechars($row['mark_of_cain']) . "</b></td>
+<td><b>" . htmlsafechars($row['timesann']) . "</b></td>
+<td><b>" . mksize($row['uploaded']) . '</b></td>
+' . ($site_config['ratio_free'] ? '' : "<td><b>" . mksize($row['downloaded']) . '</b></td>') . "
+<td><b>" . get_snatched_color($row['seedtime']) . "</b></td>
+<td><b>" . mkprettytime($row['leechtime']) . "</b></td>
+<td><b>" . get_date($row['start_date'], 'LONG', 0, 1) . '</b></td>';
             if ($row['complete_date'] > 0) {
-                $HTMLOUT .= "<td align='center'><b>" . get_date($row['complete_date'], 'LONG', 0, 1) . '</b></td>';
+                $HTMLOUT .= "<td><b>" . get_date($row['complete_date'], 'LONG', 0, 1) . '</b></td>';
             } else {
-                $HTMLOUT .= "<td align='center'><b><font color='red'>{$lang['ad_snatched_torrents_ncomplete']}</font></b></td></tr>";
+                $HTMLOUT .= "<td><b><font color='red'>{$lang['ad_snatched_torrents_ncomplete']}</font></b></td></tr>";
             }
-            $HTMLOUT .= "<td align='center'><b>" . ($row['seeder'] == 'yes' ? "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='{$lang['ad_snatched_torrents_yes']}' title='{$lang['ad_snatched_torrents_yes']}' />" : "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='{$lang['ad_snatched_torrents_no']}' title='{$lang['ad_snatched_torrents_no']}' />") . '</b></td></tr>';
+            $HTMLOUT .= "<td><b>" . ($row['seeder'] == 'yes' ? "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='{$lang['ad_snatched_torrents_yes']}' title='{$lang['ad_snatched_torrents_yes']}' />" : "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='{$lang['ad_snatched_torrents_no']}' title='{$lang['ad_snatched_torrents_no']}' />") . '</b></td></tr>';
         }
     }
     $HTMLOUT .= '</table>';

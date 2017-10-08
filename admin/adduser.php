@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'status'      => 'confirmed',
         'added'       => TIME_NOW,
         'last_access' => TIME_NOW,
+        'torrent_pass' => make_torrentpass()
     ];
     if (isset($_POST['username']) && strlen($_POST['username']) >= 5) {
         $insert['username'] = $_POST['username'];
@@ -34,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         stderr($lang['std_err'], $lang['err_email']);
     }
-    if (sql_query(sprintf('INSERT INTO users (username, email, passhash, status, added, last_access) VALUES (%s)', join(', ', array_map('sqlesc', $insert))))) {
+    if (sql_query(sprintf('INSERT INTO users (username, email, passhash, status, added, last_access, torrent_pass) VALUES (%s)', join(', ', array_map('sqlesc', $insert))))) {
         $user_id = 0;
         while ($user_id === 0) {
             usleep(500);
@@ -68,7 +69,7 @@ $HTMLOUT = '
   <tr><td class="rowhead">' . $lang['text_password'] . '</td><td><input type="password" name="password" size="40" /></td></tr>
   <tr><td class="rowhead">' . $lang['text_password2'] . '</td><td><input type="password" name="password2" size="40" /></td></tr>
   <tr><td class="rowhead">' . $lang['text_email'] . '</td><td><input type="text" name="email" size="40" /></td></tr>
-  <tr><td colspan="2" align="center"><input type="submit" value="' . $lang['btn_okay'] . '" class="btn" /></td></tr>
+  <tr><td colspan="2"><input type="submit" value="' . $lang['btn_okay'] . '" class="btn" /></td></tr>
   </table>
   </form>';
 echo stdhead($lang['std_adduser']) . $HTMLOUT . stdfoot();

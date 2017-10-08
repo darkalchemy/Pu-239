@@ -3,7 +3,7 @@ $HTMLOUT .= "
     <a id='latestforum-hash'></a>
     <fieldset id='latestforum' class='header'>
         <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['latestposts_title']}</legend>
-        <div class='cite text-center'>";
+        <div class='text-center'>";
 $page = 1;
 $num = 0;
 if (($topics = $mc1->get_value('last_posts_' . $CURUSER['class'])) === false) {
@@ -15,7 +15,7 @@ if (($topics = $mc1->get_value('last_posts_' . $CURUSER['class'])) === false) {
 }
 if (count($topics) > 0) {
     $HTMLOUT .= "
-            <table class='table table-bordered '>
+            <table class='table table-bordered table-striped'>
                 <thead>
                     <tr>
                         <th class='row-fluid span5'>{$lang['latestposts_topic_title']}</th>
@@ -83,9 +83,9 @@ if (count($topics) > 0) {
             $HTMLOUT .= "
                     <tr>
                         <td>{$topic_name}</td>
-                        <td align='center'>{$replies}</td>
-                        <td align='center'>" . number_format($topicarr['views']) . "</td>
-                        <td align='center'>{$username}</td>
+                        <td>{$replies}</td>
+                        <td>" . number_format($topicarr['views']) . "</td>
+                        <td>{$username}</td>
                     </tr>";
         }
         $HTMLOUT .= "

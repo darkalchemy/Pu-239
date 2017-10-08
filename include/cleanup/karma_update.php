@@ -35,19 +35,15 @@ function karma_update($data)
             $count = count($users_buffer);
             if ($count > 0) {
                 sql_query('INSERT INTO users (id,seedbonus) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE seedbonus=seedbonus+values(seedbonus)') or sqlerr(__FILE__, __LINE__);
+            }
+            if ($data['clean_log']) {
                 write_log('Cleanup - ' . $count . ' users received seedbonus');
             }
             unset($users_buffer, $update, $count);
         }
     }
     //== End
-    if ($queries > 0) {
+    if ($data['clean_log'] && $queries > 0) {
         write_log("Karma Cleanup: Completed using $queries queries");
-    }
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items updated';
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
     }
 }

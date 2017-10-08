@@ -30,9 +30,6 @@ if ($res_sub_forums) {
     //===sub forums
     $sub_forums_stuff = '';
     while ($sub_forums_arr = mysqli_fetch_array($res_sub_forums)) {
-        //=== change colors
-        $colour = (++$colour) % 2;
-        $class = ($colour == 0 ? 'one' : 'two');
         if ($CURUSER['class'] < $sub_forums_arr['min_class_read']) {
             die;
         }
@@ -67,21 +64,21 @@ if ($res_sub_forums) {
             //== Anonymous
             if ($post_arr['tan'] == 'yes') {
                 if ($CURUSER['class'] < UC_STAFF && $post_arr['user_id'] != $CURUSER['id']) {
-                    $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . $lang['fe_anonymous'] . '</i> in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name'], ENT_QUOTES) . '">
-						<span style="font-weight: bold;">' . CutName(htmlsafechars($post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a>' . $topic_status_image . '<br>
+                    $last_post = '<span>' . $lang['fe_last_post_by'] . ': <i>' . $lang['fe_anonymous'] . '</i> in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name'], ENT_QUOTES) . '">
+						<span>' . CutName(htmlsafechars($post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a>' . $topic_status_image . '<br>
 						' . get_date($post_arr['added'], '') . '<br></span>';
                 } else {
-                    $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . $lang['fe_anonymous'] . '</i> [' . print_user_stuff($post_arr) . '] 
-						<span style="font-size: x-small;"> [ ' . get_user_class_name($post_arr['class']) . ' ] </span><br>
+                    $last_post = '<span>' . $lang['fe_last_post_by'] . ': <i>' . $lang['fe_anonymous'] . '</i> [' . print_user_stuff($post_arr) . '] 
+						<span> [ ' . get_user_class_name($post_arr['class']) . ' ] </span><br>
 						in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name'], ENT_QUOTES) . '">
-						<span style="font-weight: bold;">' . CutName(htmlsafechars($post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a>' . $topic_status_image . '<br>
+						<span>' . CutName(htmlsafechars($post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a>' . $topic_status_image . '<br>
 						' . get_date($post_arr['added'], '') . '<br></span>';
                 }
             } else {
-                $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . print_user_stuff($post_arr) . ' 
-						<span style="font-size: x-small;"> [ ' . get_user_class_name($post_arr['class']) . ' ] </span><br>
+                $last_post = '<span>' . $lang['fe_last_post_by'] . ': ' . print_user_stuff($post_arr) . ' 
+						<span> [ ' . get_user_class_name($post_arr['class']) . ' ] </span><br>
 						in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name'], ENT_QUOTES) . '">
-						<span style="font-weight: bold;">' . CutName(htmlsafechars($post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a>' . $topic_status_image . '<br>
+						<span>' . CutName(htmlsafechars($post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a>' . $topic_status_image . '<br>
 						' . get_date($post_arr['added'], '') . '<br></span>';
             }
             //=== last post read in topic
@@ -95,33 +92,33 @@ if ($res_sub_forums) {
             $img = 'unlocked';
         }
         $sub_forums_stuff .= '<tr>
-								<td align="left" class="' . $class . '"><table border="0" cellspacing="0" cellpadding="0">
+								<td><table class="table table-bordered table-striped">
 								<tr>
-								<td class="' . $class . '" style="padding-right: 5px"><img src="' . $site_config['pic_base_url'] . 'forums/' . $img . '.gif" alt="' . $img . '" title="' . $img . '" /></td>
-								<td class="' . $class . '"><a class="altlink" href="?action=view_forum&amp;forum_id=' . (int)$sub_forums_arr['sub_forum_id'] . '">
+								<td><img src="' . $site_config['pic_base_url'] . 'forums/' . $img . '.gif" alt="' . $img . '" title="' . $img . '" /></td>
+								<td><a class="altlink" href="?action=view_forum&amp;forum_id=' . (int)$sub_forums_arr['sub_forum_id'] . '">
 								' . htmlsafechars($sub_forums_arr['sub_form_name'], ENT_QUOTES) . '</a>
-								' . ($CURUSER['class'] >= UC_ADMINISTRATOR ? '<span style="font-size: x-small;"> 
+								' . ($CURUSER['class'] >= UC_ADMINISTRATOR ? '<span>
 								[<a class="altlink" href="staffpanel.php?tool=forum_manage&amp;action=forum_manage&amp;action2=edit_forum_page&amp;id=' . (int)$sub_forums_arr['sub_forum_id'] . '">' . $lang['fe_edit'] . '</a>] 
 								[<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=delete_forum&amp;forum_id=' . (int)$sub_forums_arr['sub_forum_id'] . '">' . $lang['fe_delete'] . '</a>]
 								</span>' : '') . '<br>
-								<span style="font-size: x-small;">' . htmlsafechars($sub_forums_arr['sub_form_description'], ENT_QUOTES) . '</span></td>
+								<span>' . htmlsafechars($sub_forums_arr['sub_form_description'], ENT_QUOTES) . '</span></td>
 								</tr>
 								</table>
 								</td>
-								<td class="' . $class . '" align="center" width="100px"><span style="font-size: x-small;"> 
+								<td width="100px"><span>
 								' . number_format($sub_forums_arr['sub_form_post_count']) . ' ' . $lang['fe_posts'] . '<br>
 								' . number_format($sub_forums_arr['sub_form_topic_count']) . ' ' . $lang['fe_topics'] . '</span></td>
-								<td class="' . $class . '" align="left" width="200px"><span style="font-size: x-small;"> ' . $last_post . ' </span></td>
+								<td width="200px"><span> ' . $last_post . ' </span></td>
 								</tr>';
     } //=== end while loop
-    $sub_forums = ($sub_forums_stuff !== '' ? '<table border="0" cellspacing="0" cellpadding="5" width="90%">
-					<tr><td class="forum_head_dark" align="left" colspan="3">' . $forum_name . ' ' . $lang['fe_child_boards2'] . '</td>
+    $sub_forums = ($sub_forums_stuff !== '' ? '<table class="table table-bordered table-striped">
+					<tr><td class="forum_head_dark" colspan="3">' . $forum_name . ' ' . $lang['fe_child_boards2'] . '</td>
 					</tr>' . $sub_forums_stuff . '</table>' : '');
     //=== now we need the parent forums name :P I'll try to get this into another query :P
     $parent_forum_res = sql_query('SELECT name AS parent_forum_name FROM forums WHERE id=' . sqlesc($parent_forum_id) . ' LIMIT 1');
     $parent_forum_arr = mysqli_fetch_assoc($parent_forum_res);
     if ($arr['parent_forum'] > 0) {
-        $child = '<span style="font-size: x-small;"> [ ' . $lang['fe_child_board'] . ' ]</span>';
+        $child = '<span> [ ' . $lang['fe_child_board'] . ' ]</span>';
         $parent_forum_name = '<img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
 			<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $parent_forum_id . '">' . htmlsafechars($parent_forum_arr['parent_forum_name'], ENT_QUOTES) . '</a>';
     }
@@ -145,7 +142,7 @@ $topic_res = sql_query('SELECT t.id as id, t.user_id as user_id, t.topic_name as
 				LEFT JOIN posts AS p ON t.id = p.topic_id 
 				WHERE  ' . ($CURUSER['class'] < UC_STAFF ? ' status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? ' status != \'deleted\'  AND' : '')) . '  forum_id=' . $forum_id . ' GROUP BY p.topic_id ORDER BY sticky, post_added DESC ' . $LIMIT);
 
-$location_bar = '<h1><a class="altlink" href="index.php">' . $site_config['site_name'] . '</a>  <img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
+$location_bar = '<h1 class="text-center"><a class="altlink" href="index.php">' . $site_config['site_name'] . '</a>  <img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
 			<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums'] . '</a> ' . $parent_forum_name . ' <img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" />
 			<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . $forum_name . $child . '</a></h1>
 			' . $mini_menu . '
@@ -249,7 +246,7 @@ if ($count > 0) {
                 break;
 
             case $total_pages > 11:
-                $multi_pages = ' <span style="font-size: xx-small;"> <img src="' . $site_config['pic_base_url'] . 'forums/multipage.gif" alt="+" title="+" />';
+                $multi_pages = ' <span> <img src="' . $site_config['pic_base_url'] . 'forums/multipage.gif" alt="+" title="+" />';
                 for ($i = 1; $i < 5; ++$i) {
                     $multi_pages .= ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $i . '">' . $i . '</a>';
                 }
@@ -261,7 +258,7 @@ if ($count > 0) {
                 break;
 
             case $total_pages < 11:
-                $multi_pages = ' <span style="font-size: xx-small;"> <img src="' . $site_config['pic_base_url'] . 'forums/multipage.gif" alt="+" title="+" />';
+                $multi_pages = ' <span> <img src="' . $site_config['pic_base_url'] . 'forums/multipage.gif" alt="+" title="+" />';
                 for ($i = 1; $i < $total_pages; ++$i) {
                     $multi_pages .= ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $i . '">' . $i . '</a>';
                 }
@@ -271,70 +268,67 @@ if ($count > 0) {
         $new = ($arr_post_stuff['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_unread_post_res || $last_post_id > $last_unread_post_id) : 0;
         $topic_pic = ($posts < 30 ? ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'topicnew' : 'topic')) : ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'hot_topic_new' : 'hot_topic')));
         $topic_name = ($sticky ? '<img src="' . $site_config['pic_base_url'] . 'forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" /> ' : ' ') . ($topic_poll ? '<img src="' . $site_config['pic_base_url'] . 'forums/poll.gif" alt="Poll:" title="' . $lang['fe_poll'] . '" /> ' : ' ') . ' <a class="altlink" href="?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($topic_arr['topic_name'], ENT_QUOTES) . '</a> ' . ($posted ? '<img src="' . $site_config['pic_base_url'] . 'forums/posted.gif" alt="Posted" title="Posted" /> ' : ' ') . ($subscriptions ? '<img src="' . $site_config['pic_base_url'] . 'forums/subscriptions.gif" alt="' . $lang['fe_subscribed'] . '" title="Subcribed" /> ' : ' ') . ($new ? ' <img src="' . $site_config['pic_base_url'] . 'forums/new.gif" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!" />' : '') . $multi_pages;
-        //=== change colors
-        $colour = (++$colour) % 2;
-        $class = ($colour == 0 ? 'one' : 'two');
         $rpic = ($topic_arr['num_ratings'] != 0 ? ratingpic_forums(round($topic_arr['rating_sum'] / $topic_arr['num_ratings'], 1)) : '');
         //=== delete thread  //= .$delete_me
         if ($CURUSER['class'] == UC_MAX && $forum_id === 2) { //=== set this to your forum that you don't want to bother with the sanity check
-            $delete_me = '&#160;&#160;&#160;&#160;&#160;<span style="font-size: x-small;">[ <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=delete_topic&amp;topic_id=' . $topic_id . '&amp;sure=1&amp;send_me_back=666">' . $lang['fe_delete'] . '</a> ]</span>';
+            $delete_me = '&#160;&#160;&#160;&#160;&#160;<span>[ <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=delete_topic&amp;topic_id=' . $topic_id . '&amp;sure=1&amp;send_me_back=666">' . $lang['fe_delete'] . '</a> ]</span>';
         }
         $content .= '<tr>
-		<td class="' . $class . '" align="center"><img src="' . $site_config['pic_base_url'] . 'forums/' . $topic_pic . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
-		<td class="' . $class . '" align="center">' . $icon . '</td>
-		<td align="left" valign="middle" class="' . $class . '">
-		<table border="0" cellspacing="0" cellpadding="0">
+		<td><img src="' . $site_config['pic_base_url'] . 'forums/' . $topic_pic . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
+		<td>' . $icon . '</td>
+		<td>
+		<table class="table table-bordered table-striped">
 		<tr>
-		<td  class="' . $class . '" align="left">' . $topic_name . $first_post_text . $topic_status_image . '</td>
-		<td class="' . $class . '" align="right">' . $rpic . '</td>
+		<td >' . $topic_name . $first_post_text . $topic_status_image . '</td>
+		<td>' . $rpic . '</td>
 		</tr>
 		</table>
-		' . ($topic_arr['topic_desc'] !== '' ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars($topic_arr['topic_desc'], ENT_QUOTES) . '</span>' : '') . '</td>
-		<td align="center" class="' . $class . '">' . $thread_starter . '</td>
-		<td align="center" class="' . $class . '">' . number_format($topic_arr['post_count']) . '</td>
-		<td align="center" class="' . $class . '">' . number_format($topic_arr['views']) . '</td>
-		<td align="center" class="' . $class . '"><span style="white-space:nowrap;">' . get_date($arr_post_stuff['added'], '') . '</span><br>
+		' . ($topic_arr['topic_desc'] !== '' ? '&#9658; <span>' . htmlsafechars($topic_arr['topic_desc'], ENT_QUOTES) . '</span>' : '') . '</td>
+		<td>' . $thread_starter . '</td>
+		<td>' . number_format($topic_arr['post_count']) . '</td>
+		<td>' . number_format($topic_arr['views']) . '</td>
+		<td><span>' . get_date($arr_post_stuff['added'], '') . '</span><br>
 		<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . $lang['fe_go_to_the_last_post_in_this_thread'] . '">' . $lang['fe_last_post'] . '</a> by&#160;' . $last_post_username . '</td>
-		<td align="center" class="' . $class . '">' . $post_status_image . ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $last_unread_post_id . '#' . $last_unread_post_id . '" title="' . $lang['fe_last_unread_post_in_this_thread'] . '">
+		<td>' . $post_status_image . ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '&amp;page=' . $last_unread_post_id . '#' . $last_unread_post_id . '" title="' . $lang['fe_last_unread_post_in_this_thread'] . '">
 		<img src="' . $site_config['pic_base_url'] . 'forums/last_post.gif" alt="' . $lang['fe_last_post'] . '" title="' . $lang['fe_last_post'] . '" /></a></td>
 		</tr>';
     }
-    $the_top_and_bottom = '<table border="0" cellspacing="0" cellpadding="5" width="100%">
-		<tr><td class="three" width="33%" align="left"></td>
-		<td class="three" width="33%" align="center">' . (($count > $perpage) ? $menu : '') . '</td>
-		<td class="three"  width="34%" align="right">' . ($locked == 'yes' && $_GET['action'] == 'view_topic' ? '<span style="font-weight: bold; font-size: x-small;">
+    $the_top_and_bottom = '<table class="table table-bordered table-striped">
+		<tr><td class="three" width="33%"></td>
+		<td class="three" width="33%">' . (($count > $perpage) ? $menu : '') . '</td>
+		<td class="three"  width="34%">' . ($locked == 'yes' && $_GET['action'] == 'view_topic' ? '<span>
 		' . $lang['fe_this_topic_is_locked'] . '... ' . $lang['fe_no_new_posts_are_allowed'] . '.</span>' : ($may_post ? '<form action="' . $site_config['baseurl'] . '/forums.php" method="post" name="new">
 		<input type="hidden" name="action" value="new_topic" />
 		<input type="hidden" name="forum_id" value="' . $forum_id . '" />
 		<input type="submit" name="button" class="button" value="' . $lang['fe_new_topic'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
-		</form>' : '<span style="font-weight: bold; font-size: x-small;">
+		</form>' : '<span>
 		' . $lang['fe_you_are_not_permitted_to_post_in_this_forum.'] . '</span>')) . '</td></tr></table>';
 } else {
-    $content .= '<tr><td align="center" class="clear" colspan="8">
-	<span style="font-weight: bold; text-align: center;">' . $lang['fe_no_topics_found'] . '</span><br>
+    $content .= '<tr><td class="clear" colspan="8">
+	<span>' . $lang['fe_no_topics_found'] . '</span><br>
 		' . ($may_post ? '<form action="' . $site_config['baseurl'] . '/forums.php" method="post" name="new">
 		<input type="hidden" name="action" value="new_topic" />
 		<input type="hidden" name="forum_id" value="' . $forum_id . '" />
         <input type="submit" name="button" class="button" value="' . $lang['fe_start_new_topic'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
-		</form></td></tr>' : '<span style="font-weight: bold; font-size: x-small;">' . $lang['fe_you_are_not_permitted_to_post_in_this_forum.'] . '</span>');
+		</form></td></tr>' : '<span>' . $lang['fe_you_are_not_permitted_to_post_in_this_forum.'] . '</span>');
     $the_top_and_bottom = '';
 }
 $HTMLOUT .= $location_bar . '<br>' . $sub_forums . '
-		<table border="0" cellspacing="0" cellpadding="5" width="90%">
-		<tr><td align="center" class="clear" colspan="8">
+		<table class="table table-bordered table-striped">
+		<tr><td class="clear" colspan="8">
 		' . $the_top_and_bottom . '
 		</td>
 		</tr>
 		' . ($count == 0 ? '' : '<tr>
-		<td align="center" valign="middle" class="forum_head_dark" width="10"><img src="' . $site_config['pic_base_url'] . 'forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
-		<td align="center" valign="middle" class="forum_head_dark" width="10"><img src="' . $site_config['pic_base_url'] . 'forums/topic_normal.gif" alt=' . $lang['fe_thread_icon'] . '" title=' . $lang['fe_thread_icon'] . '" /></td>
-		<td align="left" class="forum_head_dark">' . $lang['fe_topic'] . '</td>
-		<td align="center" class="forum_head_dark">' . $lang['fe_started_by'] . '</td>
-		<td class="forum_head_dark" align="center" width="10">' . $lang['fe_replies'] . '</td>
-		<td class="forum_head_dark" align="center" width="10">' . $lang['fe_views'] . '</td>
-		<td align="center" class="forum_head_dark" width="140">' . $lang['fe_last_post'] . '</td>
-		<td align="center" valign="middle" class="forum_head_dark" width="10"><img src="' . $site_config['pic_base_url'] . 'forums/last_post.gif" alt="' . $lang['fe_last_post'] . '" title="' . $lang['fe_last_post'] . '" /></td>
+		<td class="forum_head_dark" width="10"><img src="' . $site_config['pic_base_url'] . 'forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
+		<td class="forum_head_dark" width="10"><img src="' . $site_config['pic_base_url'] . 'forums/topic_normal.gif" alt=' . $lang['fe_thread_icon'] . '" title=' . $lang['fe_thread_icon'] . '" /></td>
+		<td class="forum_head_dark">' . $lang['fe_topic'] . '</td>
+		<td class="forum_head_dark">' . $lang['fe_started_by'] . '</td>
+		<td class="forum_head_dark" width="10">' . $lang['fe_replies'] . '</td>
+		<td class="forum_head_dark" width="10">' . $lang['fe_views'] . '</td>
+		<td class="forum_head_dark" width="140">' . $lang['fe_last_post'] . '</td>
+		<td class="forum_head_dark" width="10"><img src="' . $site_config['pic_base_url'] . 'forums/last_post.gif" alt="' . $lang['fe_last_post'] . '" title="' . $lang['fe_last_post'] . '" /></td>
 		</tr>') . $content . '
-		<tr><td align="center" class="clear" colspan="8">
+		<tr><td class="clear" colspan="8">
 		' . $the_top_and_bottom . '</td>
 		</tr></table><br>' . $location_bar;

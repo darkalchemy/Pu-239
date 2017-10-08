@@ -142,7 +142,12 @@ if ($action == 'add') {
       <label for='anonymous'>Tick this to post anonymously</label>
       <input id='anonymous' type='checkbox' name='anonymous' value='yes' />
       <br><input type='submit' class='btn' value='{$lang['comment_doit']}' /></form>";
-    $res = sql_query("SELECT comments.id, text, comments.added, comments.$locale, comments.anonymous, comments.editedby, comments.editedat, comments.edit_name, username, users.id as user, users.title, users.avatar, users.offavatar, users.av_w, users.av_h, users.class, users.reputation, users.mood, users.donor, users.warned FROM comments LEFT JOIN users ON comments.user = users.id WHERE $locale = " . sqlesc($id) . ' ORDER BY comments.id DESC LIMIT 5');
+    $res = sql_query("SELECT c.id, c.text, c.added, c.$locale, c.anonymous, c.editedby, c.editedat, c.username, u.id as user, u.title, u.avatar, u.offavatar, u.av_w, u.av_h, u.class, u.reputation, u.mood, u.donor, u.warned
+                        FROM comments AS c
+                        LEFT JOIN users AS u ON c.user = u.id
+                        WHERE $locale = " . sqlesc($id) . "
+                        ORDER BY c.id DESC
+                        LIMIT 5");
     $allrows = [];
     while ($row = mysqli_fetch_assoc($res)) {
         $allrows[] = $row;
@@ -178,9 +183,9 @@ if ($action == 'add') {
         $text = htmlsafechars($body);
         $editedat = TIME_NOW;
         if (isset($_POST['lasteditedby']) || $CURUSER['class'] < UC_STAFF) {
-            sql_query('UPDATE comments SET text=' . sqlesc($text) . ", editedat=$editedat, edit_name=" . sqlesc($CURUSER['username']) . ', editedby=' . sqlesc($CURUSER['id']) . ' WHERE id=' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE comments SET text = ' . sqlesc($text) . ", editedat = $editedat, editedby = " . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
         } else {
-            sql_query('UPDATE comments SET text=' . sqlesc($text) . ", editedat=$editedat, editedby=0 WHERE id=" . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE comments SET text = ' . sqlesc($text) . ", editedat = $editedat, editedby = 0 WHERE id = " . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
         }
         header("Refresh: 0; url=$locale_link.php?id=" . (int)$arr['tid'] . "$extra_link&viewcomm=$commentid#comm$commentid");
         die;

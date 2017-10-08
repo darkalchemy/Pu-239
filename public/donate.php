@@ -3,7 +3,6 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'html_functions.php';
-require_once CACHE_DIR . 'paypal_settings.php';
 check_user_status();
 $lang = array_merge(load_language('global'));
 $nick = ($CURUSER ? $CURUSER['username'] : ('Guest' . random_int(1000, 9999)));
@@ -90,15 +89,15 @@ $done = isset($_GET['done']) && $_GET['done'] == 1 ? true : false;
 if ($site_config['paypal_config']['enable'] == 0) {
     $out = stdmsg('Sorry', 'Donation system is currently offline.');
 } else {
-    $out = begin_main_frame() . ($done ? stdmsg('Success', 'Your donations was sent to paypal wait for processing, this should be immediately! If any errors appear youll be contacted by someone from staff') : '') . begin_frame('Donate') . '<table width=\'80%\' align=\'center\' cellpadding=\'2\' cellspacing=\'3\'><tr>';
+    $out = begin_main_frame() . ($done ? stdmsg('Success', 'Your donations was sent to paypal wait for processing, this should be immediately! If any errors appear youll be contacted by someone from staff') : '') . begin_frame('Donate') . '<table class="table table-bordered table-striped"><tr>';
     foreach ($donate as $amount => $ops) {
-        $out .= '<td align=\'center\' valign=\'top\'><table cellpadding=\'2\'>
-			  <tr><td class=\'colhead\' align=\'center\'>Donate ' . $amount . ' ' . $site_config['paypal_config']['currency'] . '</td></tr>
-			  <tr><td align=\'left\'><ul style=\'margin-left: 0px;padding-left:15px\'>';
+        $out .= '<td><table class="table table-bordered table-striped">
+			  <tr><td class="colhead">Donate ' . $amount . ' ' . $site_config['paypal_config']['currency'] . '</td></tr>
+			  <tr><td><ul>';
         foreach ($ops as $op) {
             $out .= '<li>' . $op . '</li>';
         }
-        $out .= '</ul></td></tr><tr><td align=\'center\'>' . str_replace([
+        $out .= '</ul></td></tr><tr><td>' . str_replace([
                 '#amount',
                 '#item_name',
                 '#item_number',

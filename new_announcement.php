@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $HTMLOUT = '';
     $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>
  	<tr>
- 	<td class='embedded'><div align='center'>
+ 	<td class='embedded'><div class='text-center'>
  	<h1>Create Announcement for " . ($n_pms) . ' user' . ($n_pms > 1 ? 's' : '') . '&#160;!</h1>';
     $HTMLOUT .= "<form name='compose' method='post' action='{$site_config['baseurl']}/new_announcement.php'>
  	<table border='1' cellspacing='0' cellpadding='5'>
@@ -91,10 +91,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
  	<td colspan='2'><b>Subject: </b>
  	<input name='subject' type='text' size='76' value='" . htmlsafechars($subject) . "' /></td>
  	</tr>
- 	<tr><td colspan='2'><div align='center'>
+ 	<tr><td colspan='2'><div class='text-center'>
                        " . BBcode(false) . '
   </div></td></tr>';
-    $HTMLOUT .= "<tr><td colspan='2' align='center'>";
+    $HTMLOUT .= "<tr><td colspan='2' class='text-center'>";
     $HTMLOUT .= "<select name='expiry'>";
     reset($days);
     foreach ($days as $x) {
@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($body) {
         $newtime = TIME_NOW + (86400 * $expiry);
         $HTMLOUT .= "<table width='700' class='main' border='0' cellspacing='1' cellpadding='1'>
- 	<tr><td bgcolor='#663366' align='center' valign='baseline'><h2><font color='white'>Announcement: 
+ 	<tr><td class='text-center'><h2><font class='text-white'>Announcement: 
  	" . htmlsafechars($subject) . "</font></h2></td></tr>
  	<tr><td class='text'>
  	" . format_comment($body) . '<br><hr>Expires: ' . get_date($newtime, 'DATE') . '';

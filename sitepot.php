@@ -101,9 +101,9 @@ if ($want_pot && (isset($pot_options[$want_pot]))) {
 }
 $HTMLOUT = '';
 $HTMLOUT .= "<table cellpadding='10' width='70%'>
-      <tr><td align='center' colspan='3'>Once the Site Pot has <b>" . $potsize . "</b> karma points, 
+      <tr><td colspan='3'>Once the Site Pot has <b>" . $potsize . "</b> karma points, 
       Freeleech will be turned on for everybody for 24 hours. 
-      <p align='center'><font size='+1'>
+      <p><font size='+1'>
       <b>Site Pot: " . $SitePot['value_i'] . '/' . $potsize . '</b>
       </font></p>You have <b>' . round($CURUSER['seedbonus'], 1) . '</b> karma points.<br>
       </td></tr>';

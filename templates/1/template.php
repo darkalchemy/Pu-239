@@ -35,8 +35,8 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#5bbad5' />
     <meta name='theme-color' content='#ffffff'>
     <link rel='stylesheet' href='" . get_file('css') . "' />
-    <link rel='stylesheet' href='//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' integrity='sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN' crossorigin='anonymous'>
-    <link href='https://fonts.googleapis.com/css?family=Acme|Baloo+Bhaijaan|Encode+Sans+Condensed|Lobster|Nova+Square|Open+Sans|Oswald|PT+Sans+Narrow' rel='stylesheet' />
+    <link rel='stylesheet' href='//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' integrity='sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN' crossorigin='anonymous' />
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Acme|Baloo+Bhaijaan|Encode+Sans+Condensed|Lobster|Nova+Square|Open+Sans|Oswald|PT+Sans+Narrow' />
     {$css_incl}
     <style>#mlike{cursor:pointer;}</style>
 </head>
@@ -54,14 +54,13 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         $htmlout .= "
             <div id='logo'>
                 <h1>" . TBVERSION . " Code</h1>
-                <p class='description'><i>Making progress, 1 day at a time...</i></p>
+                <p class='description left20'><i>Making progress, 1 day at a time...</i></p>
             </div>";
         $htmlout .= platform_menu();
         $htmlout .= "
             <div id='base_globelmessage'>
                 <div id='gm_taps'>
-                    <ul class='gm_taps level-right'>
-                        <li><b>{$lang['gl_alerts']}</b></li>";
+                    <ul class='gm_taps level-right'>";
 
             if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_REPORTS && $BLOCKS['global_staff_report_on']) {
                 require_once BLOCK_DIR . 'global/report.php';
@@ -175,12 +174,17 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         //</div>";
 
     $htmlout .= "
-        <div id='base_content'>";
+        <div id='base_content'>
+            <div class='inner-wrapper'>";
 
     if (getSessionVar('error')) {
         $htmlout .= "
-            <div class='alert alert-error text-center'>" . getSessionVar('error') . "</div>";
+                <div class='alert alert-error text-center'>" . getSessionVar('error') . "</div>";
         unsetSessionVar('error');
+    } elseif (getSessionVar('success')) {
+        $htmlout .= "
+                <div class='alert alert-success text-center'>" . getSessionVar('success') . "</div>";
+        unsetSessionVar('success');
     }
 
     return $htmlout;
@@ -188,21 +192,18 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
 function stdfoot($stdfoot = false)
 {
     global $CURUSER, $site_config, $start, $query_stat, $queries, $mc1, $querytime, $lang;
-    $debug = (SQL_DEBUG && in_array($CURUSER['id'], $site_config['allowed_staff']['id']) ? 1 : 0);
+    $debug = (SQL_DEBUG && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
     $cachetime = ($mc1->Time / 1000);
     $seconds = microtime(true) - $start;
     $r_seconds = round($seconds, 5);
-    //$phptime = $seconds - $cachetime;
     $phptime = $seconds - $querytime - $cachetime;
     $percentphp = number_format(($phptime / $seconds) * 100, 2);
-    //$percentsql  = number_format(($querytime / $seconds) * 100, 2);
     $percentmc = number_format(($cachetime / $seconds) * 100, 2);
     if (($MemStats = $mc1->get_value('mc_hits')) === false) {
         $MemStats = $mc1->getStats();
         $MemStats['Hits'] = (($MemStats['get_hits'] / $MemStats['cmd_get'] < 0.7) ? '' : number_format(($MemStats['get_hits'] / $MemStats['cmd_get']) * 100, 3));
         $mc1->cache_value('mc_hits', $MemStats, 10);
     }
-    // load averages - pdq
     if ($debug) {
         if (($uptime = $mc1->get_value('uptime')) === false) {
             $uptime = `uptime`;
@@ -215,7 +216,6 @@ function stdfoot($stdfoot = false)
         $header = '<b>' . $lang['gl_stdfoot_querys_mstat'] . '</b> ' . mksize(memory_get_peak_usage()) . ' ' . $lang['gl_stdfoot_querys_mstat1'] . ' ' . round($phptime, 2) . 's | ' . round($percentmc, 2) . '' . $lang['gl_stdfoot_querys_mstat2'] . '' . number_format($cachetime, 4) . 's ' . $lang['gl_stdfoot_querys_mstat3'] . '' . $MemStats['Hits'] . '' . $lang['gl_stdfoot_querys_mstat4'] . '' . number_format((100 - $MemStats['Hits']), 3) . '' . $lang['gl_stdfoot_querys_mstat5'] . '' . number_format($MemStats['curr_items']);
     }
     $htmlfoot = '';
-    //== query stats
     $querytime = 0;
     if ($CURUSER && $query_stat && $debug) {
         $htmlfoot .= "
@@ -224,20 +224,22 @@ function stdfoot($stdfoot = false)
                     <fieldset id='queries' class='header'>
                         <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['gl_stdfoot_querys']}</legend>
                         <div class='text-center'>
-                            <table class='table table-bordered'>
-                                <tbody>
+                            <table class='table table-bordered table-striped bottom10'>
+                                <thead>
                                     <tr>
-                                        <td class='colhead'>{$lang['gl_stdfoot_id']}</td>
-                                        <td class='colhead'>{$lang['gl_stdfoot_qt']}</td>
-                                        <td class='colhead'>{$lang['gl_stdfoot_qs']}</td>
-                                    </tr>";
+                                        <th>{$lang['gl_stdfoot_id']}</th>
+                                        <th>{$lang['gl_stdfoot_qt']}</th>
+                                        <th>{$lang['gl_stdfoot_qs']}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>";
         foreach ($query_stat as $key => $value) {
             $querytime += $value['seconds']; // query execution time
             $htmlfoot .= '
                                     <tr>
                                         <td>' . ($key + 1) . "</td>
-                                        <td align='center'><b>" . ($value['seconds'] > 0.01 ? "<font color='red' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</font>' : "<font color='green' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</font>') . "</b></td>
-                                        <td align='left'>" . htmlsafechars($value['query']) . '<br></td>
+                                        <td><b>" . ($value['seconds'] > 0.01 ? "<font color='red' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</font>' : "<font color='green' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</font>') . "</b></td>
+                                        <td>" . htmlsafechars($value['query']) . '<br></td>
                                     </tr>';
         }
         $htmlfoot .= '
@@ -248,6 +250,7 @@ function stdfoot($stdfoot = false)
                 </div>';
     }
     $htmlfoot .= "
+                </div>
             </div>";
         //</div>";
     if ($CURUSER) {
@@ -259,10 +262,10 @@ function stdfoot($stdfoot = false)
                 {$lang['gl_stdfoot_querys_server']}" . $queries . " {$lang['gl_stdfoot_querys_time']} " . ($queries != 1 ? "{$lang['gl_stdfoot_querys_times']}" : '') . '
                 ' . ($debug ? '<br><b>' . $header . "</b><br><b>{$lang['gl_stdfoot_uptime']}</b> " . $uptime . '' : ' ') . "
                 </div>
-                <div class='pull-right' align='right'>
+                <div class='pull-right'>
                 {$lang['gl_stdfoot_powered']}" . TBVERSION . "<br>
                 {$lang['gl_stdfoot_using']}<b>{$lang['gl_stdfoot_using1']}</b><br>
-                " . ($debug ? "<a title='{$lang['gl_stdfoot_logview']}' rel='external' href='/Log_Viewer/'>{$lang['gl_stdfoot_logview']}</a> | " . "<a title='{$lang['gl_stdfoot_sview']}' rel='external' href='/staffpanel.php?tool=system_view'>{$lang['gl_stdfoot_sview']}</a> | " . "<a rel='external' title='OPCache' href='/staffpanel.php?tool=op'>{$lang['gl_stdfoot_opc']}</a> | " . "<a rel='external' title='Memcache' href='/staffpanel.php?tool=memcache'>{$lang['gl_stdfoot_memcache']}</a>" : '') . '';
+                " . ($debug ? "<a title='{$lang['gl_stdfoot_logview']}' rel='external' href='./staffpanel.php?tool=log_viewer'>{$lang['gl_stdfoot_logview']}</a> | " . "<a title='{$lang['gl_stdfoot_sview']}' rel='external' href='/staffpanel.php?tool=system_view'>{$lang['gl_stdfoot_sview']}</a> | " . "<a rel='external' title='OPCache' href='/staffpanel.php?tool=op'>{$lang['gl_stdfoot_opc']}</a> | " . "<a rel='external' title='Memcache' href='/staffpanel.php?tool=memcache'>{$lang['gl_stdfoot_memcache']}</a>" : '') . '';
         $htmlfoot .= "
                 </div>
             </div>
@@ -297,11 +300,19 @@ function stdfoot($stdfoot = false)
                 child = x[i].children[0];
                 child.classList.add('fa-angle-down');
                 child.classList.remove('fa-angle-up');
+            } else if (id && localStorage[id] === 'open') {
+                var nextSibling = x[i].nextSibling;
+                while (nextSibling && nextSibling.nodeType != 1) {
+                    nextSibling = nextSibling.nextSibling;
+                }
+                nextSibling.style.display = 'block';
+                child = x[i].children[0];
+                child.classList.add('fa-angle-up');
+                child.classList.remove('fa-angle-down');
             }
         }
     </script>
-    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
-    <script src='" . get_file('js') . "'></script>";
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>";
 
     if (!empty($stdfoot['js'])) {
         foreach ($stdfoot['js'] as $JS) {
@@ -311,6 +322,7 @@ function stdfoot($stdfoot = false)
     }
 
     $htmlfoot .= "
+    <script src='" . get_file('js') . "'></script>
     <!--[if lt IE 9]>
         <script src='./templates/" . get_stylesheet() . "/js/modernizr.custom.js'></script>
         <script src='http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE8.js'></script>
@@ -344,7 +356,7 @@ function StatusBar()
     $StatusBar .= "
                     <div id='base_usermenu' class='tooltipper-ajax'>
                         <span id='clock' class='text-white right20'>{$clock}</span>
-                        " . format_username($CURUSER['id']) . "
+                        " . format_username($CURUSER['id'], true, false) . "
                     </div>";
 
     return $StatusBar;
@@ -409,6 +421,16 @@ function navbar()
                             </li>
                             <li><a href='{$site_config['baseurl']}/donate.php'>{$lang['gl_donate']}</a></li>
                             <li>
+                                <a href='#'>User</a>
+                                <ul class='ddFade ddFadeSlow'>
+                                    <li><a href='./pm_system.php'>{$lang['gl_pms']}</a></li>
+                                    <li><a href='./usercp.php?action=default'>{$lang['gl_usercp']}</a></li>
+                                    <li><a href='#' onclick='themes();'>{$lang['gl_theme']}</a></li>
+                                    <li><a href='#' onclick='language_select();'>{$lang['gl_language_select']}</a></li>
+                                    <li><a href='./friends.php'>{$lang['gl_friends']}</a></li>
+                                </ul>
+                            </li>
+                            <li>
                                 <a href='#'>{$lang['gl_forums']}</a>
                                 <ul class='ddFade ddFadeSlow'>
                                     <li><a href='http://tech-info.pw:8080'>{$lang['gl_tforums']}</a></li>
@@ -417,6 +439,12 @@ function navbar()
                             </li>
                             <li>" . ($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/bugs.php?action=add'>{$lang['gl_breport']}</a>" : "<a href='{$site_config['baseurl']}/bugs.php?action=bugs'>{$lang['gl_brespond']}</a>") . "</li>
                             <li>" . ($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/contactstaff.php'>{$lang['gl_cstaff']}</a>" : "<a href='{$site_config['baseurl']}/staffbox.php'>{$lang['gl_smessages']}</a>") . "</li>
+                            " . ($CURUSER['class'] >= UC_STAFF ? "<li>
+                                <a href='#'>Staff</a>
+                                <ul class='ddFade ddFadeSlow'>
+                                    <li><a href='./staffpanel.php'>{$lang['gl_admin']}</a></li>
+                                </ul>
+                            </li>" : "") . "
                         </ul>
                         <ul class='level-right'>
                             <li>
@@ -438,15 +466,6 @@ function platform_menu() {
     $menu = "
         <div id='platform-menu' class='container platform-menu'>
             <div class='platform-wrapper'>
-                <ul class='level-left'>
-                    <li><a href='./pm_system.php'>{$lang['gl_pms']}</a></li>
-                    <li><a href='./usercp.php?action=default'>{$lang['gl_usercp']}</a></li>
-                    " . ($CURUSER['class'] >= UC_STAFF ? "<li><a href='./staffpanel.php'>{$lang['gl_admin']}</a></li>" : '') . "
-                    <li><a href='#' onclick='themes();'>{$lang['gl_theme']}</a></li>
-                    <li><a href='#' onclick='language_select();'>{$lang['gl_language_select']}</a></li>
-                    <!--<li><a href='javascript:void(0)' onclick='status_showbox()'>{$lang['gl_status']}</a></li>-->
-                    <li><a href='./friends.php'>{$lang['gl_friends']}</a></li>
-                </ul>
                 <ul class='level-right'>" .
                     StatusBar() . "
                 </ul>

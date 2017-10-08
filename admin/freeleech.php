@@ -13,11 +13,8 @@ $HTMLOUT = '';
 if (isset($_GET['remove'])) {
     $configfile = '<' . $lang['freelech_thisfile'] . date('M d Y H:i:s') . $lang['freelech_modby'];
     $configfile .= $lang['freelech_config_file'];
-    $configfile .= "\n);\n\n?" . '>';
-    $filenum = fopen('cache/free_cache.php', 'w');
-    ftruncate($filenum, 0);
-    fwrite($filenum, $configfile);
-    fclose($filenum);
+    $configfile .= "\n);";
+    file_put_contents(CACHE_DIR . 'free_cache.php', $configfile);
     header("Location: {$site_config['baseurl']}/staffpanel.php?tool=freeleech");
     die;
 }
@@ -38,26 +35,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die;
     }
     $configfile .= "array('modifier'=> {$fl['modifier']}, 'expires'=> {$fl['expires']}, 'setby'=> '{$fl['setby']}', 'title'=> '{$fl['title']}', 'message'=> '{$fl['message']}')";
-    $configfile .= "\n);\n\n?" . '>';
-    $filenum = fopen('cache/free_cache.php', 'w');
-    ftruncate($filenum, 0);
-    fwrite($filenum, $configfile);
-    fclose($filenum);
+    $configfile .= "\n);";
+    file_put_contents(CACHE_DIR . 'free_cache.php', $configfile);
     header("Location: {$site_config['baseurl']}/staffpanel.php?tool=freeleech");
     die;
 }
 require_once CACHE_DIR . 'free_cache.php';
 if (isset($free) && (count($free) < 1)) {
     $HTMLOUT .= '<h1>' . $lang['freelech_current'] . '</h1>
-                 <p align="center"><b>' . $lang['freelech_nofound'] . '</b></p>';
+                 <p><b>' . $lang['freelech_nofound'] . '</b></p>';
 } else {
     $HTMLOUT .= "<br><table border='1' cellspacing='0' cellpadding='5'>
-        <tr><td class='colhead' align='left'>{$lang['freelech_free_all']}</td>
-		<td class='colhead' align='left'>{$lang['freelech_expires']}</td>
-        <td class='colhead' align='left'>{$lang['freelech_setby']}</td>
-		<td class='colhead' align='left'>{$lang['freelech_title']}</td>
-		<td class='colhead' align='left'>{$lang['freelech_message']}</td>
-		<td class='colhead' align='left'>{$lang['freelech_remove']}</td></tr>";
+        <tr><td class='colhead'>{$lang['freelech_free_all']}</td>
+		<td class='colhead'>{$lang['freelech_expires']}</td>
+        <td class='colhead'>{$lang['freelech_setby']}</td>
+		<td class='colhead'>{$lang['freelech_title']}</td>
+		<td class='colhead'>{$lang['freelech_message']}</td>
+		<td class='colhead'>{$lang['freelech_remove']}</td></tr>";
     $checked1 = $checked2 = $checked3 = $checked4 = '';
     foreach ($free as $fl) {
         switch ($fl['modifier']) {
@@ -85,10 +79,10 @@ if (isset($free) && (count($free) < 1)) {
                 $mode = $lang['freelech_not_enable'];
         }
         $HTMLOUT .= "<tr><td>$mode
-		     </td><td align='left'>" . ($fl['expires'] != 'Inf.' && $fl['expires'] != 1 ? "{$lang['freelech_until']}" . get_date($fl['expires'], 'DATE') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . "{$lang['freelech_togo']})" : '' . $lang['freelech_unlimited'] . '') . " </td>
-			 <td align='left'>{$fl['setby']}</td>
-			 <td align='left'>{$fl['title']}</td>
-			 <td align='left'>{$fl['message']}</td>
+		     </td><td>" . ($fl['expires'] != 'Inf.' && $fl['expires'] != 1 ? "{$lang['freelech_until']}" . get_date($fl['expires'], 'DATE') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . "{$lang['freelech_togo']})" : '' . $lang['freelech_unlimited'] . '') . " </td>
+			 <td>{$fl['setby']}</td>
+			 <td>{$fl['title']}</td>
+			 <td>{$fl['message']}</td>
 		     <td><a href='staffpanel.php?tool=freeleech&amp;action=freeleech&amp;remove'>{$lang['freelech_remove']}</a>
 			 </td></tr>";
     }
@@ -101,7 +95,7 @@ $HTMLOUT .= "<h2>{$lang['freelech_set_free']}</h2>
 	<tr><td class='rowhead'>{$lang['freelech_mode']}</td>
 	<td> <table width='100%'>
  <tr>
- <td align='left'>{$lang['freelech_torr_free']}</td>
+ <td>{$lang['freelech_torr_free']}</td>
  <td><input name=\"modifier\" type=\"radio\" $checked1 value=\"1\" /></td>
  </tr>
  <tr>
@@ -134,10 +128,10 @@ $HTMLOUT .= "<h2>{$lang['freelech_set_free']}</h2>
 			<tr><td class='rowhead'>{$lang['freelech_setby']}</td>
 	<td><input type='text' size='40' value ='" . $CURUSER['username'] . "' name='setby' />
 	</td></tr>
-	<tr><td colspan='2' align='center'>
+	<tr><td colspan='2'>
 	<input type='submit' name='okay' value='{$lang['freelech_doit']}' class='btn' />
 	</td></tr>
-	<tr><td colspan='2' align='center'>
+	<tr><td colspan='2'>
 	<input type='hidden' name='cacheit' value='{$lang['freelech_cache']}' class='btn' />
 	</td></tr>
 	</table></form>";

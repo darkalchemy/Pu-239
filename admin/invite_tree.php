@@ -24,7 +24,7 @@ if ($id !== 0) {
 		| <a href="staffpanel.php?tool=invite_tree&amp;action=invite_tree' . (isset($_GET['deeper']) ? '' : '&amp;deeper=1') . '&amp;id=' . $id . '" title=" ' . $lang['invite_click'] . ' ' . (isset($_GET['deeper']) ? $lang['invite_shrink'] : $lang['invite_expand']) . ' ' . $lang['invite_this'] . ' ">' . $lang['invite_expand_tree'] . '</a> | 
 		| <a href="staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;really_deep=1&amp;id=' . $id . '" title="' . $lang['invite_click_more'] . '">' . $lang['invite_expand_more'] . '</a></p>';
     $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpadding="0">
-		<tr><td class="embedded" align="center">';
+		<tr><td class="embedded">';
     //=== members invites
     $rez_invited = sql_query('SELECT id, username, email, uploaded, downloaded, status, warned, suspended, enabled, donor, email, ip, class, chatpost, leechwarn, pirate, king FROM users WHERE invitedby = ' . sqlesc($id) . ' ORDER BY added');
     if (mysqli_num_rows($rez_invited) < 1) {
@@ -44,7 +44,7 @@ if ($id !== 0) {
                 $rez_invited_deeper = sql_query('SELECT id, username, email, uploaded, downloaded, status, warned, suspended, enabled, donor, email, ip, class, chatpost, leechwarn, pirate, king FROM users WHERE invitedby = ' . sqlesc($arr_invited['id']) . ' ORDER BY added');
                 if (mysqli_num_rows($rez_invited_deeper) > 0) {
                     $deeper .= '<tr><td  class="two" colspan="6"><span style="font-weight: bold;">' . htmlsafechars($arr_invited['username']) . (substr($arr_invited['username'], -1) == 's' ? '\'' : '\'s') . '' . $lang['invite_invites'] . '</span><br>
-						<div align="center"><table width="95%" border="1" cellspacing="0" cellpadding="5">
+						<div><table width="95%" border="1" cellspacing="0" cellpadding="5">
 						<tr><td class="colhead"><span style="font-weight: bold;">' . $lang['invite_username'] . '</span></td>
 						<td class="colhead"><span style="font-weight: bold;">' . $lang['invite_email'] . '</span></td>
 						<td class="colhead"><span style="font-weight: bold;">' . $lang['invite_uploaded'] . '</span></td>
@@ -58,7 +58,7 @@ if ($id !== 0) {
                             $rez_invited_really_deep = sql_query('SELECT id, username, email, uploaded, downloaded, status, warned, suspended, enabled, donor, email, ip, class, chatpost, leechwarn, pirate, king FROM users WHERE invitedby = ' . sqlesc($arr_invited_deeper['id']) . ' ORDER BY added');
                             if (mysqli_num_rows($rez_invited_really_deep) > 0) {
                                 $really_deep .= '<tr><td  class="one" colspan="6"><span style="font-weight: bold;">' . htmlsafechars($arr_invited_deeper['username']) . (substr($arr_invited_deeper['username'], -1) == 's' ? '\'' : '\'s') . ' Invites:</span><br>
-										<div align="center"><table width="95%" border="1" cellspacing="0" cellpadding="5">
+										<div><table width="95%" border="1" cellspacing="0" cellpadding="5">
 										<tr><td class="colhead"><span style="font-weight: bold;">' . $lang['invite_username'] . '</span></td>
 										<td class="colhead"><span style="font-weight: bold;">' . $lang['invite_email'] . '</span></td>
 										<td class="colhead"><span style="font-weight: bold;">' . $lang['invite_uploaded'] . '</span></td>
@@ -150,7 +150,7 @@ if ($id !== 0) {
     $bb = range('a', 'z');
     $cc = array_merge($aa, $bb);
     unset($aa, $bb);
-    $HTMLOUT .= '<div align="center">';
+    $HTMLOUT .= '<div>';
     $count = 0;
     foreach ($cc as $L) {
         $HTMLOUT .= ($count == 10) ? '<br><br>' : '';
@@ -174,19 +174,19 @@ if ($id !== 0) {
         $res = sql_query('SELECT users.*, countries.name, countries.flagpic FROM users FORCE INDEX ( username ) LEFT JOIN countries ON country = countries.id WHERE ' . $query . ' ORDER BY username ' . $LIMIT);
         $HTMLOUT .= '<table border="1" cellspacing="0" cellpadding="5">
 
-			<tr><td class="colhead" align="left">' . $lang['invite_search_user'] . '</td>
+			<tr><td class="colhead">' . $lang['invite_search_user'] . '</td>
 			<td class="colhead">' . $lang['invite_search_reg'] . '</td>
 			<td class="colhead">' . $lang['invite_search_la'] . '</td>
-			<td class="colhead" align="left">' . $lang['invite_search_class'] . '</td>
+			<td class="colhead">' . $lang['invite_search_class'] . '</td>
 			<td class="colhead">' . $lang['invite_search_country'] . '</td>
 			<td class="colhead">' . $lang['invite_search_edit'] . '</td></tr>';
         while ($row = mysqli_fetch_assoc($res)) {
-            $country = ($row['name'] != null) ? '<td style="padding: 0px" align="center"><img src="' . $site_config['pic_base_url'] . 'flag/' . (int)$row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" /></td>' : '<td align="center">---</td>';
-            $HTMLOUT .= '<tr><td align="left">' . format_username($row) . '</td>
+            $country = ($row['name'] != null) ? '<td style="padding: 0px"><img src="' . $site_config['pic_base_url'] . 'flag/' . (int)$row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" /></td>' : '<td>---</td>';
+            $HTMLOUT .= '<tr><td>' . format_username($row) . '</td>
 		<td>' . get_date($row['added'], '') . '</td><td>' . get_date($row['last_access'], '') . '</td>
-		<td align="left">' . get_user_class_name($row['class']) . '</td>
+		<td>' . get_user_class_name($row['class']) . '</td>
 		' . $country . '
-		<td align="center">
+		<td>
 		<a href="staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;id=' . (int)$row['id'] . '" title="' . $lang['invite_search_look'] . '"><span class="btn">' . $lang['invite_search_view'] . '</span></a></td></tr>';
         }
         $HTMLOUT .= '</table>';

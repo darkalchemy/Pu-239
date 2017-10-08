@@ -54,8 +54,23 @@ function status_edit() {
 function status_showbox(text) {
     if (typeof text == 'undefined')
         var text = '';
-    var status_box = "<div id='status_box' style='display:none;'><div id='status_title' >Status update</div><div id='status_content'><textarea name='status' id='box_status' onkeyup='status_count()' cols='50' style='width:50%;'rows='4'>" + text + "</textarea><br><div style='text-align:right;'><input type='button' value='Update' onclick='status_update()' /><input type='button' value='Cancel' onclick='status_distroy_box()'/></div></div><div id='status_tool'><div style='float:left;'>NO bbcode or html allowed</div><div style='float:right;' id='status_count'>140</div><div style='clear:both;'></div></div>";
-    $('body').after(status_box);
+    var status_box = "
+        <div id='status_box' class='bordered bottom10 padding20 is_hidden'>
+            <div id='status_title'>Status update</div>
+            <div id='status_content'>
+                <textarea name='status' id='box_status' onkeyup='status_count()' cols='50' style='width:50%;'rows='4'>" + text + "</textarea><br>
+                <div style='text-align:right;'>
+                    <input type='button' value='Update' onclick='status_update()' />
+                    <input type='button' value='Cancel' onclick='status_distroy_box()'/>
+                </div>
+            </div>
+            <div id='status_tool'>
+                <div style='float:left;'>NO bbcode or html allowed</div>
+                <div style='float:right;' id='status_count'>140</div>
+                <div style='clear:both;'></div>
+            </div>
+        </div>";
+    $('#dostuff').after(status_box);
     $("#status_box").css("top", (($(window).height() / 2) - ($("#status_box").height() / 2)));
     $("#status_box").css("left", (($(window).width() / 2) - ($("#status_box").width() / 2)));
     $("#status_box").fadeIn('slow');

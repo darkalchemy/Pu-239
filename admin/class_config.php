@@ -9,7 +9,7 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_class_config'));
 
-if (!in_array($CURUSER['id'], $site_config['allowed_staff']['id'])) {
+if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'])) {
     stderr($lang['classcfg_error'], $lang['classcfg_denied']);
 }
 //get the config from db - stoner/pdq
@@ -37,7 +37,8 @@ function write_css($data) {
         $cname = str_replace(' ', '_', strtolower($class['className']));
         $ccolor = strtoupper($class['classColor']);
         if (!empty($cname)) {
-            $classdata .= "#content .{$cname} {
+            //$classdata .= "#content .{$cname} {
+            $classdata .= ".{$cname} {
     color: $ccolor;
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
@@ -63,11 +64,24 @@ function write_css($data) {
     font-style:italic;
 }
 ";
-    file_put_contents('./chat/css/classcolors.css', $classdata . PHP_EOL);
+    foreach ($data as $class) {
+        $cname = str_replace(' ', '_', strtolower($class['className']));
+        $ccolor = strtoupper($class['classColor']);
+        if (!empty($cname)) {
+            $classdata .= ".{$cname}_bk {
+    background: $ccolor;
+}
+";
+        }
+    }
+
+    file_put_contents(ROOT_DIR . 'chat/css/classcolors.css', $classdata . PHP_EOL);
+    file_put_contents(ROOT_DIR . 'templates/1/css/classcolors.css', $classdata . PHP_EOL);
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $data = [];
+    $mc1->delete_value('is_staffs_');
     if ($mode == 'edit') {
         foreach ($class_config as $c_name => $value) {
             // handing from database
@@ -106,16 +120,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $the_images .= "$arr[name] => " . '$site_config[' . "'pic_base_url'" . ']' . ".'class/$arr[classpic]',";
             }
             $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
-            $configfile .= "\n\n\n?" . '>';
-            $filenum = fopen('./cache/class_config.php', 'w');
-            ftruncate($filenum, 0);
-            fwrite($filenum, $configfile);
-            fclose($filenum);
-            stderr($lang['classcfg_success'], $lang['classcfg_success_save']);
+            file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
+            setSessionVar('success', $lang['classcfg_success_save']);
         } else {
-            stderr($lang['classcfg_error'], $lang['classcfg_error_query1']);
+            setSessionVar('error', $lang['classcfg_error_query1']);
         }
-        exit;
+        unset($_POST);
     }
     //ADD CLASS
     if ($mode == 'add') {
@@ -212,16 +222,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $the_images .= "$arr[name] => " . '$site_config[' . "'pic_base_url'" . ']' . ".'class/$arr[classpic]',";
                 }
                 $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
-                $configfile .= "\n\n\n?" . '>';
-                $filenum = fopen('./cache/class_config.php', 'w');
-                ftruncate($filenum, 0);
-                fwrite($filenum, $configfile);
-                fclose($filenum);
-                stderr($lang['classcfg_success'], $lang['classcfg_success_save']);
+                file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
+                setSessionVar('success', $lang['classcfg_success_save']);
             } else {
-                stderr($lang['classcfg_error'], $lang['classcfg_error_query2']);
+                setSessionVar('error', $lang['classcfg_error_query2']);
             }
-            exit;
+            unset($_POST);
         }
     }
     // remove
@@ -289,80 +295,122 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $the_images .= "$arr[name] => " . '$site_config[' . "'pic_base_url'" . ']' . ".'class/$arr[classpic]',";
             }
             $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
-            $configfile .= "\n\n\n?" . '>';
-            $filenum = fopen('./cache/class_config.php', 'w');
-            ftruncate($filenum, 0);
-            fwrite($filenum, $configfile);
-            fclose($filenum);
-            stderr($lang['classcfg_success'], $lang['classcfg_success_reset']);
+            file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
+            setSessionVar('success', $lang['classcfg_success_reset']);
         } else {
-            stderr($lang['classcfg_error'], $lang['classcfg_error_query2']);
+            setSessionVar('error', $lang['classcfg_error_query2']);
         }
-        exit;
+        unset($_POST);
     }
 }
 $HTMLOUT .= "
-    <h3>{$lang['classcfg_class_settings']}</h3>
+    <div class='container-fluid portlet bordered'>
+        <h3 class='text-center top20'>{$lang['classcfg_class_settings']}</h3>
         <form name='edit' action='staffpanel.php?tool=class_config&amp;mode=edit' method='post'>
-            <table width='100%' border='0' cellpadding='5' cellspacing='0' >
-                <tr>
-                    <td align='center'>{$lang['classcfg_class_name']}</td>
-                    <td align='center'>{$lang['classcfg_class_value']}</td>
-                    <td align='center'>{$lang['classcfg_class_refname']}</td>
-                    <td align='center'>{$lang['classcfg_class_color']}</td>
-                    <td align='center'>{$lang['classcfg_class_pic']}</td>
-                    <td align='center'>{$lang['classcfg_class_del']}</td>
-                </tr>";
+            <table class='table table-bordered table-stiped bottom20'>
+                <thead>
+                    <tr>
+                        <th>{$lang['classcfg_class_name']}</th>
+                        <th class='text-center'>{$lang['classcfg_class_value']}</th>
+                        <th class='text-center'>{$lang['classcfg_class_refname']}</th>
+                        <th class='text-center'>{$lang['classcfg_class_color']}</th>
+                        <th class='text-center'>{$lang['classcfg_class_pic']}</th>
+                        <th class='text-center'>{$lang['classcfg_class_del']}</th>
+                    </tr>
+                </thead>
+                <tbody>";
 $res = sql_query("SELECT * from class_config WHERE name NOT IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
 while ($arr = mysqli_fetch_assoc($res)) {
+    $cname = str_replace(' ', '_', strtolower($arr['classname'])) . '_bk';
     $HTMLOUT .= "
-                <tr style='background-color: #{$arr['classcolor']}'>
-                    <td width='50%' class='table' align='left'>" . htmlsafechars($arr['name']) . "</td>
-                    <td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='2' value='" . (int)$arr['value'] . " 'readonly='readonly' /></td>
-                    <td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['classname']) . "' /></td>
-                    <td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='#" . htmlsafechars($arr['classcolor']) . "' /></td>
-                    <td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['classpic']) . "' /></td>
-                    <td class='table' align='center'><form name='remove' action='staffpanel.php?tool=class_config&amp;mode=remove' method='post'><input type='hidden' name='remove' value='" . htmlsafechars($arr['name']) . "' /><input type='submit' value='{$lang['classcfg_class_remove']}' /></form></td>
-                </tr>";
+                    <tr class='{$cname}'>
+                        <td class='text-white'>" . htmlsafechars($arr['name']) . "</td>
+                        <td class='text-center'>
+                            <input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='2' value='" . (int)$arr['value'] . " 'readonly='readonly' />
+                        </td>
+                        <td class='text-center'>
+                            <input class='w-100' type='text' name='" . htmlsafechars($arr['name']) . "[]' value='" . htmlsafechars($arr['classname']) . "' />
+                        </td>
+                        <td class='text-center'>
+                            <input class='w-100' type='text' name='" . htmlsafechars($arr['name']) . "[]' value='#" . htmlsafechars($arr['classcolor']) . "' />
+                        </td>
+                        <td class='text-center'>
+                            <input class='w-100' type='text' name='" . htmlsafechars($arr['name']) . "[]' value='" . htmlsafechars($arr['classpic']) . "' />
+                        </td>
+                        <td class='text-center'>
+                            <form name='remove' action='staffpanel.php?tool=class_config&amp;mode=remove' method='post'>
+                                <input type='hidden' name='remove' value='" . htmlsafechars($arr['name']) . "' />
+                                <input type='submit' class='btn' value='{$lang['classcfg_class_remove']}' />
+                            </form>
+                        </td>
+                    </tr>";
 }
 $HTMLOUT .= '
-            </table><br><br> ';
+                </tbody>
+            </table>';
 
-$HTMLOUT .= "<h3>{$lang['classcfg_class_security']}</h3>
-
-<table width='100%' border='0' cellpadding='5' cellspacing='0' ><tr>
-<td align='center'>{$lang['classcfg_class_name']}</td>
-<td align='center'>{$lang['classcfg_class_value']}</td>
-
-
-</tr>";
+$HTMLOUT .= "
+            <h3 class='text-center top20'>{$lang['classcfg_class_security']}</h3>
+            <table class='table table-bordered table-stiped bottom20'>
+                <thead>
+                    <tr>
+                        <th>{$lang['classcfg_class_name']}</th>
+                        <th>{$lang['classcfg_class_value']}</th>
+                    </tr>
+                </thead>
+                <tbody>";
 $res1 = sql_query("SELECT * from class_config WHERE name IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
 while ($arr1 = mysqli_fetch_assoc($res1)) {
     $HTMLOUT .= "
-<tr>
-<td width='50%' class='table' align='left'>" . htmlsafechars($arr1['name']) . "</td>
-<td class='table' align='center'><input type='text' name='" . htmlsafechars($arr1['name']) . "[]' size='2' value='" . (int)$arr1['value'] . "' /></td>
-<td class='table' align='center'><form name='remove' action='staffpanel.php?tool=class_config&amp;mode=remove' method='post'></form></td>
-</tr>";
+                    <tr>
+                        <td>" . htmlsafechars($arr1['name']) . "</td>
+                        <td>
+                            <input class='w-100' type='text' name='" . htmlsafechars($arr1['name']) . "[]' value='" . (int)$arr1['value'] . "' />
+                        </td>
+                    </tr>";
 }
-$HTMLOUT .= "<tr><td colspan='7' class='table' align='center'><input type='submit' value='{$lang['classcfg_class_apply']}' /></td></tr></table></form>";
+$HTMLOUT .= "
+                    <tr>
+                        <td colspan='2'>
+                            <div class='text-center'>
+                                <input type='submit' class='btn' value='{$lang['classcfg_class_apply']}' />
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>";
 
-$HTMLOUT .= "<h3>{$lang['classcfg_class_add']}</h3>
-<form name='add' action='staffpanel.php?tool=class_config&amp;mode=add' method='post'>
-<table width='100%' border='1' cellpadding='5' cellspacing='0' ><tr>
-<th>{$lang['classcfg_class_name']}</th>
-<th>{$lang['classcfg_class_level']}</th>
-<th>{$lang['classcfg_class_refname']}</th>
-<th>{$lang['classcfg_class_color']}</th>
-<th>{$lang['classcfg_class_pic']}</th>
-</tr>
-<tr>
-                <td align='center'><input type='text' name='name' size='20' value='' /></td>
-                <td align='center'><input type='text' name='value' size='20' value='' /></td>
-                <td align='center'><input type='text' name='cname' size='20' value='' /></td>
-                <td align='center'><input type='text' name='color' size='20' value='#ff0000' /></td>
-                <td align='center'><input type='text' name='pic' size='20' value='' /></td>
-                </tr>
-<tr><td colspan='5' class='table' align='center'><input type='submit' value='{$lang['classcfg_add_new']}' /></td></tr>
-</table></form>";
+$HTMLOUT .= "
+        <h3 class='text-center top20'>{$lang['classcfg_class_add']}</h3>
+        <form name='add' action='staffpanel.php?tool=class_config&amp;mode=add' method='post'>
+            <table class='table table-bordered table-stiped bottom20'>
+                <thead>
+                    <tr>
+                        <th>{$lang['classcfg_class_name']}</th>
+                        <th>{$lang['classcfg_class_level']}</th>
+                        <th>{$lang['classcfg_class_refname']}</th>
+                        <th>{$lang['classcfg_class_color']}</th>
+                        <th>{$lang['classcfg_class_pic']}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input class='w-100' type='text' name='name' value='' /></td>
+                        <td><input class='w-100' type='text' name='value' value='' /></td>
+                        <td><input class='w-100' type='text' name='cname' value='' /></td>
+                        <td><input class='w-100' type='text' name='color' value='#ff0000' /></td>
+                        <td><input class='w-100' type='text' name='pic' value='' /></td>
+                    </tr>
+                    <tr>
+                        <td colspan='5'>
+                            <div class='text-center'>
+                                <input type='submit' class='btn' value='{$lang['classcfg_add_new']}' />
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>";
 echo stdhead($lang['classcfg_stdhead']) . $HTMLOUT . stdfoot();

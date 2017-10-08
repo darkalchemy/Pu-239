@@ -23,5 +23,5 @@ $lang = [
     'sysoplog_dem'       => 'Retrogradat ',
     'sysoplog_web'       => 'website ',
     'sysoplog_sys'       => 'Sysop Infolog',
-    'sysoplog_times'     => 'Fusul orar este setat pe GMT.',
+    'sysoplog_times'     => 'Fusul orar este setat pe UTC.',
 ];

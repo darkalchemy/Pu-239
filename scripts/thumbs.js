@@ -1,5 +1,5 @@
 function ThumbsUp(id) {
-    var url = 'ajax_thumbsup.php?id=' + escape(id);
+    var url = './ajax/thumbsup.php?id=' + escape(id);
     try {
         request = new ActiveXObject('Msxml2.XMLHTTP');
     } catch (e) {

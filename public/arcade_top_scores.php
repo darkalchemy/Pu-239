@@ -11,7 +11,7 @@ $stdfoot = array(
     ),
 );
 
-$HTMLOUT = "<div class='container-fluid text-center' align='center'>
+$HTMLOUT = "<div class='container-fluid text-center'>
         <h1>{$site_config['site_name']} Arcade Top Scores!</h1>
         <span>Top Scores Earn {$site_config['top_score_points']} Karma Points</span>
         <br><br>
@@ -28,15 +28,15 @@ foreach ($list as $gname) {
     $sql = 'SELECT * FROM flashscores WHERE game = '.sqlesc($game).' ORDER BY score DESC LIMIT 25';
     $score_res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($score_res) !== 0) {
-        $HTMLOUT .= "<a name='".$game."'><br><br></a><a href='flash.php?gameURI=".$game.'.swf&amp;gamename='.$game.'&amp;game_id='.$game_id."'><img style='width:33%;height:auto;max-height:33%;' src='".$site_config['pic_base_url'].'games/'.$game.".png' alt='".$gname."' /></span></a>";
+        $HTMLOUT .= "<a name='".$game."'><br><br></a><a href='flash.php?gameURI=".$game.'.swf&amp;gamename='.$game.'&amp;game_id='.$game_id."'><img src='".$site_config['pic_base_url'].'games/'.$game.".png' alt='".$gname."' /></span></a>";
 //                  <h2><a href='flash.php?gameURI=" . $game . ".swf&amp;gamename=" . $game . "&amp;game_id=" . $game_id . "'>$gname</a></h2>";
 //      $HTMLOUT .= '<h2>' . $gname . '</h2>';
-        $HTMLOUT .= '<table border="0" cellspacing="5" cellpadding="5" align="center" width="500px">
+        $HTMLOUT .= '<table class="table table-bordered table-striped">
             <tr>
-                <td class="colhead" align="center">Rank</td>
-                <td class="colhead" width="75%">Name</td>
-                <td class="colhead" align="center">Level</td>
-                <td class="colhead" align="center">Score</td>
+                <td class="colhead">Rank</td>
+                <td class="colhead">Name</td>
+                <td class="colhead">Level</td>
+                <td class="colhead">Score</td>
             </tr>';
 
     //=== do the top 10 for each game
@@ -45,15 +45,13 @@ foreach ($list as $gname) {
         $at_score_res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         while ($at_score_arr = mysqli_fetch_assoc($at_score_res)) {
             $at_username = format_username($at_score_arr['user_id']);
-            $count2 = (++$count2) % 2;
-            $class = ($count2 == 0 ? 'one' : 'two');
             $HTMLOUT .= '
-        <tr'.($at_score_arr['user_id'] == $CURUSER['id'] ? ' style="background-color:green"' : '').'>
-            <td class="'.$class.'" align="center">0</td>
-            <td class="'.$class.'" align="left">'.$at_username.'</td>
-            <td align="center" class="'.$class.'">'.(int) $at_score_arr['level'].'</td>
-            <td class="'.$class.'" align="center">'.number_format($at_score_arr['score']).'</td>
-        </tr><tr style="border: none;"><td style="border: none;" colspan="4"></td></tr>';
+            <tr' . ($at_score_arr['user_id'] == $CURUSER['id'] ? '' : '') . '>
+            <td>0</td>
+            <td>'.$at_username.'</td>
+            <td>'.(int) $at_score_arr['level'].'</td>
+            <td>'.number_format($at_score_arr['score']).'</td>
+        </tr><tr><td colspan="4"></td></tr>';
         }
 
         while ($score_arr = mysqli_fetch_assoc($score_res)) {
@@ -63,15 +61,13 @@ foreach ($list as $gname) {
             $rankrow = mysqli_fetch_row($ranking);
 
     //=======change colors
-    $count2 = (++$count2) % 2;
-            $class = ($count2 == 0 ? 'one' : 'two');
 
             $HTMLOUT .= '
-    <tr'.($score_arr['user_id'] == $CURUSER['id'] ? ' style="background-color:green"' : '').'>
-        <td class="'.$class.'" align="center">'.number_format($rankrow[0] + 1).'</td>
-        <td class="'.$class.'" align="left">'.$username.'</td>
-        <td align="center" class="'.$class.'">'.(int) $score_arr['level'].'</td>
-        <td class="'.$class.'" align="center">'.number_format($score_arr['score']).'</td>
+    <tr'.($score_arr['user_id'] == $CURUSER['id'] ? '' : '').'>
+        <td>'.number_format($rankrow[0] + 1).'</td>
+        <td>'.$username.'</td>
+        <td>'.(int) $score_arr['level'].'</td>
+        <td>'.number_format($score_arr['score']).'</td>
     </tr>';
         }
     //=== get members high score if any
@@ -115,7 +111,7 @@ $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $member_high_score = mysqli_fetch_assoc($result);
 if (!empty($member_played_most_games) && !empty($member_high_score)) {
     $HTMLOUT .= '<br><br>
-        <table border="0" cellspacing="10" cellpadding="5" align="center" width="500px">
+        <table class="table table-bordered table-striped">
             <tr>
                 <td class="colhead" colspan="2"><h2>Stats</h2></td>
             </tr>
@@ -124,16 +120,16 @@ if (!empty($member_played_most_games) && !empty($member_high_score)) {
                 scoring '.number_format($member_totals['score']).' points in total!<br></td>
             </tr>
             <tr>
-                <td class="colhead" align="center">Most Bored Award</td>
-                <td class="colhead" align="center">Highest Score Award</td>
+                <td class="colhead">Most Bored Award</td>
+                <td class="colhead">Highest Score Award</td>
             </tr>
             <tr>
-                <td class="two" align="center">
+                <td class="two">
                 The most Bored award goes to: ' . format_username($member_played_most_games['user_id']) . '
-                With ' . number_format($member_played_most_games['count']) . ' games played!<br><span style="font-weight: bold;">Congratulations!</span></td>
-                <td class="two" align="center">
+                With ' . number_format($member_played_most_games['count']) . ' games played!<br><span>Congratulations!</span></td>
+                <td class="two">
                 The highest score award goes to: ' . format_username($member_high_score['user_id']) . '
-                With a total score of ' . number_format($member_high_score['score']) . ' playing ' . number_format($member_high_score['count']).' games!<br><span style="font-weight: bold;">Congratulations!</span></td>
+                With a total score of ' . number_format($member_high_score['score']) . ' playing ' . number_format($member_high_score['count']).' games!<br><span>Congratulations!</span></td>
             </tr>
         </table></div>';
 }

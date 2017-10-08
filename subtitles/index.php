@@ -116,15 +116,15 @@ if ($searchby == 'name') {
     </style>
 </head>
 <body>
-<div align="center">
+<div>
     <fieldset>
         <legend>Search for subtitle</legend>
         <form action=" " method="get">
             <table width="40%" cellpadding="10" border="1" cellspacing="0" style="border-collapse:collapse"
-                   align="center">
+                  >
                 <tr>
-                    <td nowrap="nowrap" align="center">Search</td>
-                    <td align="left" colspan="7" nowrap="nowrap"><input type="text" name="sub_name"
+                    <td nowrap="nowrap">Search</td>
+                    <td colspan="7" nowrap="nowrap"><input type="text" name="sub_name"
                                                                         value="<?php echo $name ? $name : '' ?>"
                                                                         size="80"/>
                         &#160;by&#160;
@@ -137,17 +137,17 @@ if ($searchby == 'name') {
                         </select></td>
                 </tr>
                 <tr>
-                    <td nowrap="nowrap" align="center">Subtitle format</td>
+                    <td nowrap="nowrap">Subtitle format</td>
                     <td><?php echo build_menu('format', $format_menu, $format) ?></td>
-                    <td nowrap="nowrap" align="center">Cds</td>
+                    <td nowrap="nowrap">Cds</td>
                     <td><?php echo build_menu('cds', $cds_menu, $cds) ?></td>
-                    <td nowrap="nowrap" align="center">Language</td>
+                    <td nowrap="nowrap">Language</td>
                     <td><?php echo build_menu('lang', $lang_menu, $lang) ?></td>
-                    <td nowrap="nowrap" align="center">FPS</td>
+                    <td nowrap="nowrap">FPS</td>
                     <td><?php echo build_menu('fps', $fps_menu, $fps) ?></td>
                 </tr>
                 <tr>
-                    <td align="center" colspan="8"><input type="submit" value="Search"/></td>
+                    <td colspan="8"><input type="submit" value="Search"/></td>
                 </tr>
             </table>
         </form>

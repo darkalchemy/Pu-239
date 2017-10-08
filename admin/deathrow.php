@@ -180,7 +180,7 @@ if ($count) {
 
     $query = "SELECT * FROM deathrow {$orderby} {$pager['limit']}";
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
-    $b = "<p><b>$count {$lang['deathrow_title']}</b>" . "</p><form action='' method='post'><table width='95%' border='1' id='deathtable' cellspacing='0' cellpadding='5'>" . "<thead><tr><th class='colhead' align='center'>{$lang['deathrow_uname']}</th><th class='colhead' align='center'>{$lang['deathrow_tname']}</th><th class='colhead'>{$lang['deathrow_del_resn']}</th><th class='colhead'>{$lang['deathrow_del_torr']}</th></tr></thead>\n";
+    $b = "<p><b>$count {$lang['deathrow_title']}</b>" . "</p><form action='' method='post'><table width='95%' border='1' id='deathtable' cellspacing='0' cellpadding='5'>" . "<thead><tr><th class='colhead'>{$lang['deathrow_uname']}</th><th class='colhead'>{$lang['deathrow_tname']}</th><th class='colhead'>{$lang['deathrow_del_resn']}</th><th class='colhead'>{$lang['deathrow_del_torr']}</th></tr></thead>\n";
     while ($queued = mysqli_fetch_assoc($res)) {
         if ($queued['reason'] == 1) {
             $reason = $lang['deathrow_nopeer'] . calctime($x_time);
@@ -190,9 +190,9 @@ if ($count) {
             $reason = $lang['deathrow_no_seed'] . calctime($z_time) . $lang['deathrow_new_torr'];
         }
         $id = (int)$queued['tid'];
-        $b .= '<tr>' . ($CURUSER['class'] >= UC_STAFF ? "<td align='center'><a href='userdetails.php?id=" . $queued['uid'] . "&amp;hit=1'><b>" . htmlsafechars($queued['username']) . '</b></a></td>' : "<td align='center'><strong>{$lang['deathrow_hidden']}</strong></td>") . "<td align='center'><a href='details.php?id=" . $id . "&amp;hit=1'>" . htmlsafechars($queued['torrent_name']) . "</a></td><td align='center'>" . $reason . "</td><td align='center'>" . ($queued['username'] == $CURUSER['username'] || $CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" name="remove[]" value="' . $id . '" /><b>' . ($queued['username'] == $CURUSER['username'] ? '&#160;&#160;<font color="#800000">' . $lang['deathrow_delete'] . '</font>' : '' . $lang['deathrow_delete1'] . '') . '</b>' : "{$lang['deathrow_ownstaff']}") . '</td></tr>';
+        $b .= '<tr>' . ($CURUSER['class'] >= UC_STAFF ? "<td><a href='userdetails.php?id=" . $queued['uid'] . "&amp;hit=1'><b>" . htmlsafechars($queued['username']) . '</b></a></td>' : "<td><strong>{$lang['deathrow_hidden']}</strong></td>") . "<td><a href='details.php?id=" . $id . "&amp;hit=1'>" . htmlsafechars($queued['torrent_name']) . "</a></td><td>" . $reason . "</td><td>" . ($queued['username'] == $CURUSER['username'] || $CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" name="remove[]" value="' . $id . '" /><b>' . ($queued['username'] == $CURUSER['username'] ? '&#160;&#160;<font color="#800000">' . $lang['deathrow_delete'] . '</font>' : '' . $lang['deathrow_delete1'] . '') . '</b>' : "{$lang['deathrow_ownstaff']}") . '</td></tr>';
     }
-    $b .= '<tr><td class="table" colspan="11" align="right"><input type="button" value="' . $lang['deathrow_checkall'] . '" onclick="this.value=check(this.form.elements[\'remove[]\'])"/>
+    $b .= '<tr><td class="table" colspan="11"><input type="button" value="' . $lang['deathrow_checkall'] . '" onclick="this.value=check(this.form.elements[\'remove[]\'])"/>
 <input type="submit" name="submit" value="' . $lang['deathrow_apply'] . '" /></td></tr></table></form>';
     $HTMLOUT .= ($pager['pagertop']);
     $HTMLOUT = $b;

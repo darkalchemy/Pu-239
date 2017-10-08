@@ -167,36 +167,36 @@ if (mysqli_num_rows($res) > 0) {
         $messages = (int)$arr_count[0];
         $all_my_boxes .= '
                     <tr>
-                        <td class="one" align="right">
+                        <td class="one">
                         <form action="pm_system.php" method="post">
                         <input type="hidden" name="action" value="edit_mailboxes" />
                         <input type="hidden" name="action2" value="edit_boxes" />' . $lang['pm_edmail_box'] . '' . ((int)$row['boxnumber'] - 1) . ' <span style="font-weight: bold;">' . htmlsafechars($row['name']) . ':</span></td>
-                        <td class="one" colspan="2" align="left"><input type="text" name="edit' . ((int)$row['id']) . '" value="' . htmlsafechars($row['name']) . '" style="text_default" />' . $lang['pm_edmail_contain'] . '' . htmlsafechars($messages) . '' . $lang['pm_edmail_messages'] . '</td>
+                        <td class="one" colspan="2"><input type="text" name="edit' . ((int)$row['id']) . '" value="' . htmlsafechars($row['name']) . '" style="text_default" />' . $lang['pm_edmail_contain'] . '' . htmlsafechars($messages) . '' . $lang['pm_edmail_messages'] . '</td>
                     </tr>';
     }
     $all_my_boxes .= '
                     <tr>
                         <td class="one"></td>
-                        <td class="one" colspan="2" align="left">' . $lang['pm_edmail_names'] . '<br>
+                        <td class="one" colspan="2">' . $lang['pm_edmail_names'] . '<br>
                         ' . $lang['pm_edmail_if'] . '</td>
                     </tr>
                     <tr>
                         <td class="one"></td>
-                        <td class="one" align="left" colspan="2"><span style="font-weight: bold;">' . $lang['pm_edmail_note'] . '</span>
+                        <td class="one" colspan="2"><span style="font-weight: bold;">' . $lang['pm_edmail_note'] . '</span>
                         <ul>
                             <li>' . $lang['pm_edmail_if1'] . '</li>
                             <li>' . $lang['pm_edmail_if2'] . '<a class="altlink" href="pm_system.php?action=view_mailbox">' . $lang['pm_edmail_main'] . '</a>.</li>
                         </ul></td>
                     </tr>
                     <tr>
-                        <td class="one" align="center" colspan="3">
+                        <td class="one" colspan="3">
                         <input type="submit" class="button" value="' . $lang['pm_edmail_edit'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></form></td>
                     </tr>';
 } else {
     $all_my_boxes .= '
                     <tr>
                         <td class="one"></td>
-                        <td class="one" colspan="2" align="center"><span style="font-weight: bold;">' . $lang['pm_edmail_nobox'] . '</span><br></td>
+                        <td class="one" colspan="2"><span style="font-weight: bold;">' . $lang['pm_edmail_nobox'] . '</span><br></td>
                     </tr>';
 }
 //=== per page drop down
@@ -239,90 +239,90 @@ $HTMLOUT .= '<h1>' . $lang['pm_edmail_title'] . '</h1>' . $h1_thingie . $top_lin
         <input type="hidden" name="action2" value="add" />
     <table class="table table-bordered">
     <tr>
-        <td class="colhead" align="left" colspan="3"><h1>' . $lang['pm_edmail_add_mbox'] . '</h1></td>
+        <td class="colhead" colspan="3"><h1>' . $lang['pm_edmail_add_mbox'] . '</h1></td>
     </tr>
     <tr>
-        <td class="one" align="left"></td>
-        <td class="one" align="left" colspan="2">' . $lang['pm_edmail_as_a'] . '' . get_user_class_name($CURUSER['class']) . $lang['pm_edmail_you_may'] . $maxboxes . $lang['pm_edmail_pm_box'] . ($maxboxes !== 1 ? $lang['pm_edmail_pm_boxes'] : '') . '' . $lang['pm_edmail_other'] . '<br>' . $lang['pm_edmail_currently'] . '' . mysqli_num_rows($res) . $lang['pm_edmail_custom'] . (mysqli_num_rows($res) !== 1 ? $lang['pm_edmail_custom_es'] : '') . $lang['pm_edmail_may_add'] . ($maxboxes - mysqli_num_rows($res)) . '' . $lang['pm_edmail_more_extra'] . '<br><br>
+        <td class="one"></td>
+        <td class="one" colspan="2">' . $lang['pm_edmail_as_a'] . '' . get_user_class_name($CURUSER['class']) . $lang['pm_edmail_you_may'] . $maxboxes . $lang['pm_edmail_pm_box'] . ($maxboxes !== 1 ? $lang['pm_edmail_pm_boxes'] : '') . '' . $lang['pm_edmail_other'] . '<br>' . $lang['pm_edmail_currently'] . '' . mysqli_num_rows($res) . $lang['pm_edmail_custom'] . (mysqli_num_rows($res) !== 1 ? $lang['pm_edmail_custom_es'] : '') . $lang['pm_edmail_may_add'] . ($maxboxes - mysqli_num_rows($res)) . '' . $lang['pm_edmail_more_extra'] . '<br><br>
         <span style="font-weight: bold;">' . $lang['pm_edmail_following'] . '</span>' . $lang['pm_edmail_chars'] . '<br></td>
     </tr>';
 //=== make loop for oh let's say 5 boxes...
 for ($i = 1; $i < 6; ++$i) {
     $HTMLOUT .= '
             <tr>
-                <td class="one" align="right"><span style="font-weight: bold;">box ' . $i . ':</span></td>
-                <td class="one" align="left"><input type="text" name="new[]" class="text_default" maxlength="100" /></td>
-                <td class="one" align="left"></td>
+                <td class="one"><span style="font-weight: bold;">box ' . $i . ':</span></td>
+                <td class="one"><input type="text" name="new[]" class="text_default" maxlength="100" /></td>
+                <td class="one"></td>
             </tr>';
 }
 $HTMLOUT .= '
     <tr>
-        <td class="one" align="left"></td>
-        <td class="one" align="left">' . $lang['pm_edmail_only_fill'] . '<br>
+        <td class="one"></td>
+        <td class="one">' . $lang['pm_edmail_only_fill'] . '<br>
 		' . $lang['pm_edmail_blank'] . '</td>
-        <td class="one" align="left"><input type="submit" class="button_tiny" name="move" value="' . $lang['pm_edmail_add'] . '" onmouseover="this.className=\'button_tiny_hover\'" onmouseout="this.className=\'button_tiny\'" /></form></td>
+        <td class="one"><input type="submit" class="button_tiny" name="move" value="' . $lang['pm_edmail_add'] . '" onmouseover="this.className=\'button_tiny_hover\'" onmouseout="this.className=\'button_tiny\'" /></form></td>
     </tr>
     <tr>
-        <td class="colhead" colspan="3" align="left"><h1>' . $lang['pm_edmail_ed_del'] . '</h1></td>
+        <td class="colhead" colspan="3"><h1>' . $lang['pm_edmail_ed_del'] . '</h1></td>
     </tr>
         ' . $all_my_boxes . '
     <tr>
-        <td class="colhead" colspan="3" align="left"><h1>' . $lang['pm_edmail_msg_settings'] . '</h1></td>
+        <td class="colhead" colspan="3"><h1>' . $lang['pm_edmail_msg_settings'] . '</h1></td>
     </tr>
     <tr>
-        <td class="one" align="right"><span style="font-weight: bold;">' . $lang['pm_edmail_pm_page'] . '</span></td>
-        <td class="one" align="left">
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_edmail_pm_page'] . '</span></td>
+        <td class="one">
         <form action="pm_system.php" method="post">
         <input type="hidden" name="action" value="edit_mailboxes" />
         <input type="hidden" name="action2" value="message_settings" />
         ' . $per_page_drop_down . '' . $lang['pm_edmail_s_how_many'] . '</td>
-        <td class="one" align="left"></td>
+        <td class="one"></td>
     </tr>
     <tr>
-        <td class="one" align="right"><span style="font-weight: bold;">' . $lang['pm_edmail_av'] . '</span></td>
-        <td class="one" align="left">
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_edmail_av'] . '</span></td>
+        <td class="one">
         <select name="show_pm_avatar">
         <option value="yes" ' . ($CURUSER['show_pm_avatar'] === 'yes' ? ' selected="selected"' : '') . '>' . $lang['pm_edmail_show_av'] . '</option>
         <option value="no" ' . ($CURUSER['show_pm_avatar'] === 'no' ? ' selected="selected"' : '') . '>' . $lang['pm_edmail_dshow_av'] . '</option>
         </select>' . $lang['pm_edmail_show_av_box'] . '</td>
-        <td class="one" align="left"></td>
+        <td class="one"></td>
     </tr>
     <tr>
-        <td class="one" align="right"><span style="font-weight: bold;">' . $lang['pm_edmail_accept'] . '</span></td>
-        <td class="one" align="left">
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_edmail_accept'] . '</span></td>
+        <td class="one">
         <input type="radio" name="acceptpms" ' . ($CURUSER['acceptpms'] == 'yes' ? ' checked="checked"' : '') . ' value="yes" />' . $lang['pm_edmail_all'] . '
         <input type="radio" name="acceptpms" ' . ($CURUSER['acceptpms'] == 'friends' ? ' checked="checked"' : '') . ' value="friends" />' . $lang['pm_edmail_friend'] . '
         <input type="radio" name="acceptpms" ' . ($CURUSER['acceptpms'] == 'no' ? ' checked="checked"' : '') . ' value="no" />' . $lang['pm_edmail_staff'] . '</td>
-        <td class="one" align="left"></td>
+        <td class="one"></td>
     </tr>
     <tr>
-        <td class="one" align="right"><span style="font-weight: bold;">' . $lang['pm_edmail_save'] . '</span></td>
-        <td class="one" align="left"><input type="checkbox" name="save_pms" ' . ($CURUSER['savepms'] == 'yes' ? ' checked="checked"' : '') . '  />' . $lang['pm_edmail_default'] . '</td>
-        <td class="one" align="left"></td>
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_edmail_save'] . '</span></td>
+        <td class="one"><input type="checkbox" name="save_pms" ' . ($CURUSER['savepms'] == 'yes' ? ' checked="checked"' : '') . '  />' . $lang['pm_edmail_default'] . '</td>
+        <td class="one"></td>
     </tr>
     <tr>
-        <td class="one" align="right"><span style="font-weight: bold;">' . $lang['pm_edmail_del_pms'] . '</span></td>
-        <td class="one" align="left"><input type="checkbox" name="deletepms" ' . ($CURUSER['deletepms'] == 'yes' ? ' checked="checked"' : '') . ' />' . $lang['pm_edmail_default_r'] . '</td>
-        <td class="one" align="left"></td>
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_edmail_del_pms'] . '</span></td>
+        <td class="one"><input type="checkbox" name="deletepms" ' . ($CURUSER['deletepms'] == 'yes' ? ' checked="checked"' : '') . ' />' . $lang['pm_edmail_default_r'] . '</td>
+        <td class="one"></td>
     </tr>
     <tr>
-        <td class="one" align="right"><span style="font-weight: bold;">' . $lang['pm_edmail_email_notif'] . '</span></td>
-        <td class="one" align="left"><input type="checkbox" name="pmnotif" ' . (strpos($CURUSER['notifs'], $lang['pm_edmail_pm_1']) !== false ? ' checked="checked"' : '') . '  value="yes" />' . $lang['pm_edmail_notify'] . '</td>
-        <td class="one" align="left"></td>
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_edmail_email_notif'] . '</span></td>
+        <td class="one"><input type="checkbox" name="pmnotif" ' . (strpos($CURUSER['notifs'], $lang['pm_edmail_pm_1']) !== false ? ' checked="checked"' : '') . '  value="yes" />' . $lang['pm_edmail_notify'] . '</td>
+        <td class="one"></td>
     </tr>
     <tr>
-        <td class="one" align="right"></td>
-        <td class="one" align="left"><input type="checkbox" name="emailnotif" ' . (strpos($CURUSER['notifs'], $lang['pm_edmail_email_1']) !== false ? ' checked="checked"' : '') . '  value="yes" />' . $lang['pm_edmail_notify1'] . '</td>
-        <td class="one" align="left"></td>
+        <td class="one"></td>
+        <td class="one"><input type="checkbox" name="emailnotif" ' . (strpos($CURUSER['notifs'], $lang['pm_edmail_email_1']) !== false ? ' checked="checked"' : '') . '  value="yes" />' . $lang['pm_edmail_notify1'] . '</td>
+        <td class="one"></td>
     </tr>
     <tr>
-        <td class="one" align="right" valign="top"><span style="font-weight: bold;">' . $lang['pm_edmail_cats'] . '</span></td>
-        <td class="one" align="left"><a class="altlink"  title="' . $lang['pm_edmail_clickmore'] . '" id="cat_open" style="font-weight:bold;cursor:pointer;">' . $lang['pm_edmail_show_hide'] . '</a>' . $lang['pm_edmail_torr'] . '
+        <td class="one"><span style="font-weight: bold;">' . $lang['pm_edmail_cats'] . '</span></td>
+        <td class="one"><a class="altlink"  title="' . $lang['pm_edmail_clickmore'] . '" id="cat_open" style="font-weight:bold;cursor:pointer;">' . $lang['pm_edmail_show_hide'] . '</a>' . $lang['pm_edmail_torr'] . '
         <div id="cat" style="display:none;">' . $lang['pm_edmail_def_cats'] . '<br>' . $categories . '</div></td>
-        <td class="one" align="left"></td>
+        <td class="one"></td>
     </tr>
     <tr>
-        <td class="one" align="center" colspan="3">
+        <td class="one" colspan="3">
         <input type="submit" class="btn btn-default" value="' . $lang['pm_edmail_change'] . '" /></form></td>
     </tr>
     </table></form>';

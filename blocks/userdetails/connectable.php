@@ -24,10 +24,10 @@ if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_ST
     } else {
         $connectable = "<font color='orange'><b>{$lang['userdetails_unknown']}</b></font>";
     }
-    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_connectable']}</td><td align='left'>" . $connectable . '</td></tr>';
+    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_connectable']}</td><td>" . $connectable . '</td></tr>';
     if (!empty($port)) {
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_port']}</td><td class='tablea' align='left'>" . htmlsafechars($port) . "</td></tr>
-    <tr><td class='rowhead'>{$lang['userdetails_client']}</td><td class='tablea' align='left'>" . htmlsafechars($Ident_Client) . '</td></tr>';
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_port']}</td><td class='tablea'>" . htmlsafechars($port) . "</td></tr>
+    <tr><td class='rowhead'>{$lang['userdetails_client']}</td><td class='tablea'>" . htmlsafechars($Ident_Client) . '</td></tr>';
     }
 }
 //==End

@@ -23,18 +23,14 @@ function gift_update($data)
         $count = count($users_buffer);
         if ($count > 0) {
             sql_query('INSERT INTO users (id, gotgift) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE gotgift=values(gotgift)') or sqlerr(__FILE__, __LINE__);
+        }
+        if ($data['clean_log']) {
             write_log('Cleanup - Reset ' . $count . ' members Christmas Gift');
         }
         unset($users_buffer, $count);
     }
     //==End
-    if ($queries > 0) {
+    if ($data['clean_log'] && $queries > 0) {
         write_log("Christmas Gift Cleanup: Completed using $queries queries");
-    }
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
     }
 }

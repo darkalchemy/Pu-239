@@ -36,7 +36,7 @@ class AJAXChatHTTPHeader
         // Prevent caching:
         if ($this->_noCache) {
             header('Cache-Control: no-cache, must-revalidate');
-            header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+            header('Expires: Mon, 26 Jul 1997 05:00:00 UTC');
         }
 
         // Send the content-type-header:

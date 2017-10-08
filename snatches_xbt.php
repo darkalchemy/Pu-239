@@ -34,16 +34,16 @@ if ($count > $perpage) {
 }
 $HTMLOUT .= "<table width='78%'border='0' cellspacing='0' cellpadding='5'>
 <tr>
-<td class='colhead' align='left'>{$lang['snatches_username']}</td>
-<td class='colhead' align='right'>{$lang['snatches_uploaded']}</td>
-" . ($site_config['ratio_free'] ? '' : "<td class='colhead' align='right'>{$lang['snatches_downloaded']}</td>") . "
-<td class='colhead' align='right'>{$lang['snatches_ratio']}</td>
-<td class='colhead' align='right'>{$lang['snatches_seedtime']}</td>
-<td class='colhead' align='right'>{$lang['snatches_leechtime']}</td>
-<td class='colhead' align='center'>{$lang['snatches_lastaction']}</td>
-<td class='colhead' align='center'>{$lang['snatches_announced']}</td>
-<td class='colhead' align='center'>Active</td>
-<td class='colhead' align='right'>{$lang['snatches_completed']}</td>
+<td class='colhead'>{$lang['snatches_username']}</td>
+<td class='colhead'>{$lang['snatches_uploaded']}</td>
+" . ($site_config['ratio_free'] ? '' : "<td class='colhead'>{$lang['snatches_downloaded']}</td>") . "
+<td class='colhead'>{$lang['snatches_ratio']}</td>
+<td class='colhead'>{$lang['snatches_seedtime']}</td>
+<td class='colhead'>{$lang['snatches_leechtime']}</td>
+<td class='colhead'>{$lang['snatches_lastaction']}</td>
+<td class='colhead'>{$lang['snatches_announced']}</td>
+<td class='colhead'>Active</td>
+<td class='colhead'>{$lang['snatches_completed']}</td>
 </tr>\n";
 $res = sql_query('SELECT x.*, x.uid AS xu, torrents.username as username1, users.username as username2, users.paranoia, torrents.anonymous as anonymous1, users.anonymous as anonymous2, size, parked, warned, enabled, class, chatpost, leechwarn, donor, uid FROM xbt_files_users AS x INNER JOIN users ON x.uid = users.id INNER JOIN torrents ON x.fid = torrents.id WHERE fid = ' . sqlesc($id) . ' AND completedtime !=0 ORDER BY fid DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
 while ($arr = mysqli_fetch_assoc($res)) {
@@ -55,16 +55,16 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $snatchuser = (isset($arr['username2']) ? ("<a href='userdetails.php?id=" . (int)$arr['uid'] . "'><b>" . htmlsafechars($arr['username2']) . '</b></a>') : "{$lang['snatches_unknown']}");
     $username = (($arr['anonymous2'] == 'yes' or $arr['paranoia'] >= 2) ? ($CURUSER['class'] < UC_STAFF && $arr['uid'] != $CURUSER['id'] ? '' : $snatchuser . ' - ') . "<i>{$lang['snatches_anon']}</i>" : $snatchuser);
     $HTMLOUT .= "<tr>
-  <td align='left'>{$username}</td>
-  <td align='right'>" . mksize($arr['uploaded']) . '</td>
-  ' . ($site_config['ratio_free'] ? '' : "<td align='right'>" . mksize($arr['downloaded']) . '</td>') . "
-  <td align='right'>" . htmlsafechars($ratio) . "</td>
-  <td align='right'>" . mkprettytime($arr['seedtime']) . "</td>
-  <td align='right'>" . mkprettytime($arr['leechtime']) . "</td>
-  <td align='right'>" . get_date($arr['mtime'], '', 0, 1) . "</td>
-  <td align='right'>" . (int)$arr['announced'] . "</td>
-  <td align='center'>" . $active . "</td>
-  <td align='center'>" . $completed . "</td>
+  <td>{$username}</td>
+  <td>" . mksize($arr['uploaded']) . '</td>
+  ' . ($site_config['ratio_free'] ? '' : "<td>" . mksize($arr['downloaded']) . '</td>') . "
+  <td>" . htmlsafechars($ratio) . "</td>
+  <td>" . mkprettytime($arr['seedtime']) . "</td>
+  <td>" . mkprettytime($arr['leechtime']) . "</td>
+  <td>" . get_date($arr['mtime'], '', 0, 1) . "</td>
+  <td>" . (int)$arr['announced'] . "</td>
+  <td>" . $active . "</td>
+  <td>" . $completed . "</td>
   </tr>\n";
 }
 $HTMLOUT .= "</table>\n";

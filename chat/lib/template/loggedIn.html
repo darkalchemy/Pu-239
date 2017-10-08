@@ -335,9 +335,7 @@
                onclick="ajaxChat.insertBBCode('img');"/>
         <input id="bbCodeColor" type="button" value="[LANG]bbCodeLabelColor[/LANG]"
                title="[LANG]bbCodeTitleColor[/LANG]"/>
-        <input id="bbCodeEmoticon" type="button" value="[LANG]bbCodeLabelEmoticon[/LANG]"
-               title="[LANG]bbCodeTitleEmoticon[/LANG]"/>
-        <input id="bbCodeSmilies" type="button" value="Smilies" onclick="PopMoreSmiles();" />
+        <input id="bbCodeSmilies" type="button" value="Smilies" onclick="PopMoreSmiles();" title="[LANG]bbCodeTitleEmoticon[/LANG]" />
     </div>
     <div id="colorCodesContainer" style="display:none;" dir="ltr"></div>
     <div id="optionsContainer">
@@ -372,6 +370,7 @@
 <![endif]-->
 <script src="[JS/]" charset="UTF-8"></script>
 <script>
+    ajaxChatConfig.anonLink = '[ANON_LINK/]';
     ajaxChatConfig.token = '[TOKEN/]';
     ajaxChatConfig.loginChannelID = parseInt('[LOGIN_CHANNEL_ID/]');
     ajaxChatConfig.siteName = '[SITE_NAME/]';

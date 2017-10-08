@@ -175,9 +175,6 @@ if ($how_many > 0) {
         ' . ($CURUSER['class'] >= UC_STAFF ? '<td class="colhead text-center">&#160;</td>' : '') . '
     </tr>';
     while ($arr = @mysqli_fetch_assoc($res)) {
-        //=== change colors
-        $count2 = (++$count2) % 2;
-        $class = ($count2 == 0 ? 'one' : 'two');
         $invitor_arr = [];
         if ($arr['invitedby'] != 0) {
             $invitor_res = sql_query('SELECT id, username, donor, class, enabled, warned, leechwarn, chatpost, pirate, king, suspended FROM users WHERE id = ' . sqlesc($arr['invitedby'])) or sqlerr(__FILE__, __LINE__);
@@ -188,13 +185,13 @@ if ($how_many > 0) {
         <div class="text-left" id="d' . $div_link_number . '" style="display:none"><p class="top10">' . format_comment($arr['watched_user_reason']) . '</p></div>';
         $HTMLOUT .= '
     <tr>
-        <td class="text-center ' . $class . '">' . get_date($arr['watched_user'], '') . '</td>
-        <td class="text-left ' . $class . '">' . print_user_stuff($arr) . '</td>
-        <td class="text-left ' . $class . '">' . $the_flip_box . '</td>
-        <td class="text-center ' . $class . '">' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
-        <td class="text-center ' . $class . '">' . ($invitor_arr['username'] == '' ? '' . $lang['watched_open_sign-ups'] . '' : print_user_stuff($invitor_arr)) . '</td>
+        <td class="text-center">' . get_date($arr['watched_user'], '') . '</td>
+        <td class="text-left">' . print_user_stuff($arr) . '</td>
+        <td class="text-left">' . $the_flip_box . '</td>
+        <td class="text-center">' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
+        <td class="text-center">' . ($invitor_arr['username'] == '' ? '' . $lang['watched_open_sign-ups'] . '' : print_user_stuff($invitor_arr)) . '</td>
         ' . ($CURUSER['class'] >= UC_STAFF ? '
-        <td class="text-center ' . $class . '"><input type="checkbox" name="wu[]" value="' . (int)$arr['id'] . '" /></td>' : '') . '
+        <td class="text-center"><input type="checkbox" name="wu[]" value="' . (int)$arr['id'] . '" /></td>' : '') . '
     </tr>';
         $div_link_number++;
     }

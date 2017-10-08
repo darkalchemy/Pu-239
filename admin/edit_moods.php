@@ -50,7 +50,7 @@ if ($edit_mood['action'] == 'edit' && $edit_mood['id']) {
             <td><input type='text' name='image' size='40' value ='" . htmlsafechars($edit_mood['arr']['image']) . "' /></td></tr>
             <tr><td class='colhead'>{$lang['moods_bonus']}</td>
             <td><input type='checkbox' name='bonus'" . ($edit_mood['arr']['bonus'] ? ' checked="checked"' : '') . " /></td></tr>
-            <tr><td colspan='2' align='center'>
+            <tr><td colspan='2'>
             <input type='hidden' name='id' value='" . (int)$edit_mood['id'] . "' />
             <input type='submit' name='okay' value='{$lang['moods_add']}' class='btn' />
             </td></tr>
@@ -66,7 +66,7 @@ if ($edit_mood['action'] == 'edit' && $edit_mood['id']) {
          <td><input type='text' name='image' size='40' value ='smiley1.gif' /></td></tr>
          <tr><td class='colhead'>{$lang['moods_bonus']}</td>
          <td><input type='checkbox' name='bonus' /></td></tr>
-         <tr><td colspan='2' align='center'>
+         <tr><td colspan='2'>
          <input type='submit' name='okay' value='{$lang['moods_add']}' class='btn' />
          </td></tr>
          </table></form>";
@@ -74,9 +74,9 @@ if ($edit_mood['action'] == 'edit' && $edit_mood['id']) {
 $HTMLOUT .= '<h1>' . $lang['moods_current'] . '</h1>';
 $HTMLOUT .= "<table border='1' width='85%' cellspacing='0' cellpadding='5'>
       <tr><td class='colhead'>{$lang['moods_added1']}</td>
-      <td class='colhead' align='left'>{$lang['moods_name']}</td>
-      <td class='colhead' align='left'>{$lang['moods_image']}</td>
-      <td class='colhead' align='left'>{$lang['moods_bonus']}</td>
+      <td class='colhead'>{$lang['moods_name']}</td>
+      <td class='colhead'>{$lang['moods_image']}</td>
+      <td class='colhead'>{$lang['moods_bonus']}</td>
       <td class='colhead'>{$lang['moods_edit1']}</td>" .
 //<td class='colhead'>{$lang['moods_remove']}</td>
     '</tr>';
@@ -86,9 +86,9 @@ if (mysqli_num_rows($res)) {
     while ($arr = mysqli_fetch_assoc($res)) {
         $HTMLOUT .= '<tr ' . (($color = !$color) ? ' style="background-color:#000000;"' : 'style="background-color:#0f0f0f;"') . '>
       <td><img src="' . $site_config['pic_base_url'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt="" /></td>
-      <td align="left">' . htmlsafechars($arr['name']) . '</td>
-      <td align="left">' . htmlsafechars($arr['image']) . '</td>
-      <td align="left">' . ($arr['bonus'] != 0 ? '' . $lang['moods_yes'] . '' : '' . $lang['moods_no'] . '') . '</td>
+      <td>' . htmlsafechars($arr['name']) . '</td>
+      <td>' . htmlsafechars($arr['image']) . '</td>
+      <td>' . ($arr['bonus'] != 0 ? '' . $lang['moods_yes'] . '' : '' . $lang['moods_no'] . '') . '</td>
       <td><a style="color:#FF0000" href="staffpanel.php?tool=edit_moods&amp;id=' . (int)$arr['id'] . '&amp;action=edit">' . $lang['moods_edit1'] . '</a></td></tr>' .
             //<td><a style="color:#FF0000" href="staffpanel.php?tool=edit_moods&amp;action=remove$amp;id='.$arr['id'].'&amp;hash='.$form_hash.'>'.$lang['moods_remove'].'</a></td></tr>
             '';

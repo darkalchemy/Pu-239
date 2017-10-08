@@ -49,20 +49,12 @@ $HTMLOUT .= "
         <a class='altlink' href='arcade.php'>Arcade</a> || <a class='altlink' href='arcade_top_scores.php'>Top Scores</a>
         <br><br>";
 
-//  if(isset($_GET['game_id'])) {
-//      $colspan = ($game_id < 9 ? 3 : 4);
-//      $table_width = ($game_id > 10 ? 80 : 40);
-//      $game_width = ($game_id > 10 ? 800 : 500);
-
-        $colspan = 4;
-        $table_width = 30;
-//      $game_width = 700;
-//      $game_height = 700;
+$colspan = 4;
 
 $HTMLOUT .= '
-        <table border="0" cellspacing="5" cellpadding="10" align="center" width="'.$table_width.'%">
+        <table class="table table-bordered table-striped">
             <tr>
-                <td class="two" align="center">
+                <td>
                     <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0" width="'.$game_width.'" height="'.$game_height.'">
                         <param name="movie" value="./media/flash_games/'.$gameURI.'" />
                         <param name="quality" value="high" />
@@ -77,29 +69,26 @@ if (mysqli_num_rows($res) > 0) {
     $id = array_search($gamename, $site_config['arcade_games']);
     $fullgamename = $site_config['arcade_games_names'][$id];
     $HTMLOUT .= '
-                    <table border="0" cellspacing="5" cellpadding="10" align="center" width="100%">
+                    <table class="table table-bordered table-striped">
                         <tr>
-                            <td class="two" align="center" colspan="'.$colspan.'"><span style="font-weight: bold;">'.$fullgamename.'</span></td>
+                            <td colspan="'.$colspan.'"><span>'.$fullgamename.'</span></td>
                         </tr>
                         <tr><td class="colhead">Rank</td>
                             <td class="colhead" width="75%">Name</td>
                             <td class="colhead">Level</td>
                             <td class="colhead">Score</td>
                         </tr>';
-    $count2 = '';
     $at_score_res = sql_query('SELECT * FROM highscores WHERE game = '.sqlesc($gamename).' ORDER BY score DESC LIMIT 15') or sqlerr(__FILE__, __LINE__);
     while ($at_score_arr = mysqli_fetch_assoc($at_score_res)) {
         $at_username = format_username($at_score_arr['user_id']);
         $at_ranking = sql_query('SELECT COUNT(id) FROM highscores WHERE game = '.sqlesc($gamename).' AND score > '.sqlesc($at_score_arr['score'])) or sqlerr(__FILE__, __LINE__);
         $at_rankrow = mysqli_fetch_row($at_ranking);
-        $count2 = (++$count2) % 2;
-        $class = ($count2 == 0 ? 'one' : 'two');
         $HTMLOUT .= '
-                        <tr'.($at_score_arr['user_id'] == $CURUSER['id'] ? ' style="background-color:green"' : '').'>
-                            <td class="'.$class.'" align="center">0</td>
-                            <td class="'.$class.'" align="left">'.$at_username.'</td>
-                            <td align="center" class="'.$class.'">'.(int) $at_score_arr['level'].'</td>
-                            <td class="'.$class.'" align="center">'.number_format($at_score_arr['score']).'</td>
+                        <tr'.($at_score_arr['user_id'] == $CURUSER['id'] ? '' : '').'>
+                            <td>0</td>
+                            <td>'.$at_username.'</td>
+                            <td>'.(int) $at_score_arr['level'].'</td>
+                            <td>'.number_format($at_score_arr['score']).'</td>
                         </tr>';
     }
 
@@ -108,16 +97,13 @@ if (mysqli_num_rows($res) > 0) {
         $ranking = sql_query('SELECT COUNT(id) FROM flashscores WHERE game = '.sqlesc($gamename).' AND score > '.sqlesc($row['score'])) or sqlerr(__FILE__, __LINE__);
         $rankrow = mysqli_fetch_row($ranking);
 
-    //=======change colors
-    $count2 = (++$count2) % 2;
-        $class = ($count2 == 0 ? 'one' : 'two');
 
         $HTMLOUT .= '
-                        <tr'.($row['user_id'] == $player ? ' style="background-color:green"' : '').'>
-                            <td class="'.$class.'" align="center">'.number_format($rankrow[0] + 1).'</td>
-                            <td class="'.$class.'" align="left">'.$username.'</td>
-                            <td class="'.$class.'" align="center">'.(int) $row['level'].'</td>
-                            <td class="'.$class.'" align="center">'.number_format($row['score']).'</td>
+                        <tr'.($row['user_id'] == $player ? '' : '').'>
+                            <td>'.number_format($rankrow[0] + 1).'</td>
+                            <td>'.$username.'</td>
+                            <td>'.(int) $row['level'].'</td>
+                            <td>'.number_format($row['score']).'</td>
                         </tr>';
     }
     $member_score_res = sql_query('SELECT * FROM flashscores WHERE game = '.sqlesc($gamename).' AND user_id = '.sqlesc($CURUSER['id']).' ORDER BY score DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
@@ -131,11 +117,11 @@ if (mysqli_num_rows($res) > 0) {
 
         if ($member_rank > 10) {
             $HTMLOUT .= '
-                        <tr style="background-color:green">
-                            <td align="center">'.$member_rank.'</td>
-                            <td width="75%" align="left">'.format_username($CURUSER['id']).'</td>
-                            <td align="center">'.(int) $row['level'].'</td>
-                            <td class="'.$class.'" align="center">'.number_format($member_score_arr['score']).'</td>
+                        <tr>
+                            <td>'.$member_rank.'</td>
+                            <td width="75%">'.format_username($CURUSER['id']).'</td>
+                            <td>'.(int) $row['level'].'</td>
+                            <td class="'.$class.'">'.number_format($member_score_arr['score']).'</td>
                         </tr>';
         }
     }
@@ -146,12 +132,12 @@ if (mysqli_num_rows($res) > 0) {
 //}
 else {
     $HTMLOUT .= '
-                    <table border="0" cellspacing="5" cellpadding="10" align="center" width="800px">
+                    <table class="table table-bordered table-striped">
                         <tr>
-                            <td class="two" align="center">'.htmlsafechars($_GET['gamename'], ENT_QUOTES).'</TD>
+                            <td>'.htmlsafechars($_GET['gamename'], ENT_QUOTES).'</TD>
                         </tr>
                         <tr>
-                            <td class="two" align="center">Sorry, we cannot save scores of this game!</td>
+                            <td>Sorry, we cannot save scores of this game!</td>
                         </tr>
                     </table>';
 }

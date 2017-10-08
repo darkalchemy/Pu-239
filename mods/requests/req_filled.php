@@ -42,9 +42,9 @@ if (mysqli_num_rows($res) > 0) {
 }
 ((mysqli_free_result($res) || (is_object($res) && (get_class($res) == 'mysqli_result'))) ? true : false);
 $HTMLOUT .= "<table class='main' width='750px' border='0' cellspacing='0' cellpadding='0'>" . "<tr><td class='embedded'>\n";
-$HTMLOUT .= "<h1 align='center'>{$lang['reset_success']}</h1>
+$HTMLOUT .= "<h1>{$lang['reset_success']}</h1>
 <table cellspacing='10' cellpadding='10'>
-<tr><td align='left'>{$lang['filled_your']}$id (" . htmlspecialchars($arr['request']) . "){$lang['filled_success']}<a class='altlink' href='details.php?id=" . $torrentid . "'>" . $site_config['baseurl'] . '/details.php?id=' . $torrentid . "</a>.  
+<tr><td>{$lang['filled_your']}$id (" . htmlspecialchars($arr['request']) . "){$lang['filled_success']}<a class='altlink' href='details.php?id=" . $torrentid . "'>" . $site_config['baseurl'] . '/details.php?id=' . $torrentid . "</a>.  
 <br><br>{$lang['filled_user']}<a class='altlink' href='userdetails.php?id=$arr[userid]'><b>$arr[username]</b></a>{$lang['filled_pm']}<br><br>
 {$lang['filled_mistake']}<br>{$lang['filled_reset']}<a class='altlink' href='viewrequests.php?id=$id&amp;req_reset'>{$lang['filled_here']}</a> 
 <br><br>{$lang['filled_unless']}<br><br>

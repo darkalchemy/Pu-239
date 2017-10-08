@@ -34,7 +34,7 @@ if (isset($_GET['act'])) {
             <form action='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=4' method='post'>
          <input type='hidden' value='" . (int)$TEM['id'] . "' name='uri' />
          <table width='50%'>
-            <tr><td colspan='2' class='colhead' align='center'>{$lang['themes_edit_tem']} " . htmlsafechars($TEM['name']) . "</td></tr>
+            <tr><td colspan='2' class='colhead'>{$lang['themes_edit_tem']} " . htmlsafechars($TEM['name']) . "</td></tr>
             <tr><td class='rowhead'>{$lang['themes_id']}<br>{$lang['themes_explain_id']}</td>
          <td><input type='text' value='" . (int)$TEM['id'] . "' name='id' /></td></tr>
             <tr><td class='rowhead'>{$lang['themes_uri']}</td>
@@ -44,7 +44,7 @@ if (isset($_GET['act'])) {
             <tr><td class='rowhead'>{$lang['themes_is_folder']}</td><td>
             <b>" . (file_exists(TEMPLATE_DIR .  (int)$TEM['id'] . '/template.php') ? "{$lang['themes_file_exists']}" : "{$lang['themes_not_exists']}") . "</b>
             </td></tr>
-            <tr><td class='colhead' colspan='2' align='center'><input type='submit' value='{$lang['themes_save']}' /></td></tr></table></form>
+            <tr><td class='colhead' colspan='2'><input type='submit' value='{$lang['themes_save']}' /></td></tr></table></form>
             ";
     }
     if ($ACT == 2) { //--DELETE
@@ -70,13 +70,13 @@ if (isset($_GET['act'])) {
         $HTML .= "
             <form action='staffpanel.php?tool=themes&amp;action=themes&amp;act=6' method='post'>
             <table width='50%'>
-            <tr><td class='colhead' colspan='2' align='center'>{$lang['themes_addnew']}</td></tr>
-            <tr valign='middle'><td class='rowhead'>{$lang['themes_id']}</td><td><input type='text' value='' name='id' /><br>
+            <tr><td class='colhead' colspan='2'>{$lang['themes_addnew']}</td></tr>
+            <tr><td class='rowhead'>{$lang['themes_id']}</td><td><input type='text' value='' name='id' /><br>
             {$lang['themes_takenids']}<b>" . implode(', ', $TAKEN) . "</b></td></tr>
-            <tr valign='middle'><td class='rowhead'>{$lang['themes_uri']}</td><td><input type='text' value='' name='uri' /></td></tr>
-            <tr valign='middle'><td class='rowhead'>{$lang['themes_name']}</td><td><input type='text' value='' name='name' /></td></tr>
+            <tr><td class='rowhead'>{$lang['themes_uri']}</td><td><input type='text' value='' name='uri' /></td></tr>
+            <tr><td class='rowhead'>{$lang['themes_name']}</td><td><input type='text' value='' name='name' /></td></tr>
             <tr><td colspan='2'>{$lang['themes_guide']}</td></tr>
-            <tr><td class='colhead' colspan='2' align='center'><input type='submit' value='{$lang['themes_add']}' /></td></tr>
+            <tr><td class='colhead' colspan='2'><input type='submit' value='{$lang['themes_add']}' /></td></tr>
             </table>
             </form>
             ";
@@ -186,15 +186,15 @@ if (!isset($_GET['act'])) {
     while ($TE = mysqli_fetch_array($TEMPLATES)) {
         $HTML .= "
             <tr>
-            <td align='left'>$TE[id]</td>
-            <td align='left'>" . html($TE['uri']) . "</td>
-            <td align='left'>" . html($TE['name']) . "</td>
-            <td align='left'><b>" . (file_exists(TEMPLATE_DIR . (int)$TE['id'] . '/template.php') ? "{$lang['themes_file_exists']}" : "{$lang['themes_not_exists']}") . "</b></td>
-            <td align='left'><a href='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=1&amp;id=" . (int)$TE['id'] . "'>[{$lang['themes_edit']}]</a>
+            <td>$TE[id]</td>
+            <td>" . html($TE['uri']) . "</td>
+            <td>" . html($TE['name']) . "</td>
+            <td><b>" . (file_exists(TEMPLATE_DIR . (int)$TE['id'] . '/template.php') ? "{$lang['themes_file_exists']}" : "{$lang['themes_not_exists']}") . "</b></td>
+            <td><a href='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=1&amp;id=" . (int)$TE['id'] . "'>[{$lang['themes_edit']}]</a>
             <a href='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=2&amp;id=" . (int)$TE['id'] . "'>[{$lang['themes_delete']}]</a></td>
             </tr>
             ";
     }
-    $HTML .= "<tr><td class='colhead' colspan='5' align='center'></td></tr></table>";
+    $HTML .= "<tr><td class='colhead' colspan='5'></td></tr></table>";
 }
 echo stdhead("{$lang['stdhead_templates']}") . $HTML . stdfoot();

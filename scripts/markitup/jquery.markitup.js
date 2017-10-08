@@ -27,7 +27,6 @@
 (function($) {
     $.fn.markItUp = function(settings, extraSettings) {
         var method, params, options, ctrlKey, shiftKey, altKey; ctrlKey = shiftKey = altKey = false;
-        var initHeight = $('.emos').outerHeight();
 
         if (typeof settings == 'string') {
             method = settings;
@@ -213,7 +212,18 @@
                         for (j = levels.length -1; j >= 0; j--) {
                             t += levels[j]+"-";
                         }
-                        li = $('<li class="markItUpButton markItUpButton'+t+(i)+' '+(button.className||'')+'" title="'+title+'"><a href="#" '+key+'>'+(button.name||'')+'</a></li>')
+                        var setTitle = ' title="'+title+'"';
+                        var addClass = '';
+                        if (typeof button.className !== 'undefined') {
+                            var str = button.className;
+                            if (str.includes('font_') || str.includes('text-') || str.includes('size') || str.includes('colors')) {
+                                setTitle = '';
+                            }
+                            if (str.includes('text-')) {
+                                addClass = ' '+str;
+                            }
+                        }
+                        li = $('<li class="tooltipper markItUpButton markItUpButton'+t+(i)+' '+(button.className||'')+'"'+setTitle+'><a href="#" '+key+'>'+(button.showName||'')+'</a></li>')
                         .bind("contextmenu.markItUp", function() { // prevent contextmenu on mac and allow ctrl+click
                             return false;
                         }).bind('click.markItUp', function(e) {
@@ -502,17 +512,7 @@
                 } else if (options.previewInElement) {
                     previewWindow = $(options.previewInElement);
                     var  parent = $('#' + options.previewInElement).parent().parent().attr('id');
-                    if ($('#' + parent).is(':visible')) {
-                        $('#' + parent).slideToggle(1000);
-                        $('.emos').css({'margin-top':''});
-                        $('.scroll').animate({'height':339}, 1000);
-                        $('.emos').animate({'height':initHeight}, 1000);
-                    } else {
-                        $('#' + parent).slideToggle(1000);
-                        $('.emos').css('margin-top', '5px');
-                        $('.emos').animate({height: 713}, 1000);
-                        $('.scroll').animate({height: 664}, 1000);
-                    }
+                    $('#' + parent).slideToggle(1250);
                 } else if (!previewWindow || previewWindow.closed) {
                     if (options.previewInWindow) {
                         previewWindow = window.open('', 'preview', options.previewInWindow);

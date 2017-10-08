@@ -17,29 +17,29 @@ function sharetable($res, $variant = 'index')
 <img src='{$site_config['pic_base_url']}zip.gif' alt='Download Bookmark' border='none' /> = Download Torrent |
 <img alt='Bookmark is Private' src='{$site_config['pic_base_url']}key.gif' border='none'  /> = Bookmark is Private |
 <img src='{$site_config['pic_base_url']}public.gif' alt='Bookmark is Public' border='none'  /> = Bookmark is Public</span>
-<table border='1' cellspacing='0' cellpadding='5'>
+<table class='table table-bordered table-striped'>
 <tr>
-<td class='colhead' align='center'>Type</td>
-<td class='colhead' align='left'>Name</td>";
+<td class='colhead'>Type</td>
+<td class='colhead'>Name</td>";
     $userid = (int)$_GET['id'];
     if ($CURUSER['id'] == $userid) {
-        $htmlout .= ($variant == 'index' ? '<td class="colhead" align="center">Download</td><td class="colhead" align="right">' : '') . 'Delete</td>';
+        $htmlout .= ($variant == 'index' ? '<td class="colhead">Download</td><td class="colhead">' : '') . 'Delete</td>';
     } else {
-        $htmlout .= ($variant == 'index' ? '<td class="colhead" align="center">Download</td><td class="colhead" align="right">' : '') . 'Bookmark</td>';
+        $htmlout .= ($variant == 'index' ? '<td class="colhead">Download</td><td class="colhead">' : '') . 'Bookmark</td>';
     }
     if ($variant == 'mytorrents') {
-        $htmlout .= "<td class='colhead' align='center'>{$lang['torrenttable_edit']}</td>\n";
-        $htmlout .= "<td class='colhead' align='center'>{$lang['torrenttable_visible']}</td>\n";
+        $htmlout .= "<td class='colhead'>{$lang['torrenttable_edit']}</td>\n";
+        $htmlout .= "<td class='colhead'>{$lang['torrenttable_visible']}</td>\n";
     }
-    $htmlout .= "<td class='colhead' align='right'>{$lang['torrenttable_files']}</td>
-   <td class='colhead' align='right'>{$lang['torrenttable_comments']}</td>
-   <td class='colhead' align='center'>{$lang['torrenttable_added']}</td>
-   <td class='colhead' align='center'>{$lang['torrenttable_size']}</td>
-   <td class='colhead' align='center'>{$lang['torrenttable_snatched']}</td>
-   <td class='colhead' align='right'>{$lang['torrenttable_seeders']}</td>
-   <td class='colhead' align='right'>{$lang['torrenttable_leechers']}</td>";
+    $htmlout .= "<td class='colhead'>{$lang['torrenttable_files']}</td>
+   <td class='colhead'>{$lang['torrenttable_comments']}</td>
+   <td class='colhead'>{$lang['torrenttable_added']}</td>
+   <td class='colhead'>{$lang['torrenttable_size']}</td>
+   <td class='colhead'>{$lang['torrenttable_snatched']}</td>
+   <td class='colhead'>{$lang['torrenttable_seeders']}</td>
+   <td class='colhead'>{$lang['torrenttable_leechers']}</td>";
     if ($variant == 'index') {
-        $htmlout .= "<td class='colhead' align='center'>{$lang['torrenttable_uppedby']}</td>\n";
+        $htmlout .= "<td class='colhead'>{$lang['torrenttable_uppedby']}</td>\n";
     }
     $htmlout .= "</tr>\n";
     $categories = genrelist();
@@ -55,7 +55,7 @@ function sharetable($res, $variant = 'index')
         $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
         $id = (int)$row['id'];
         $htmlout .= "<tr>\n";
-        $htmlout .= "<td align='center' style='padding: 0px'>";
+        $htmlout .= "<td>";
         if (isset($row['cat_name'])) {
             $htmlout .= "<a href='browse.php?cat=" . (int)$row['category'] . "'>";
             if (isset($row['cat_pic']) && $row['cat_pic'] != '') {
@@ -69,7 +69,7 @@ function sharetable($res, $variant = 'index')
         }
         $htmlout .= "</td>\n";
         $dispname = htmlsafechars($row['name']);
-        $htmlout .= "<td align='left'><a href='details.php?";
+        $htmlout .= "<td><a href='details.php?";
         if ($variant == 'mytorrents') {
             $htmlout .= 'returnto=' . urlencode($_SERVER['REQUEST_URI']) . '&amp;';
         }
@@ -78,16 +78,16 @@ function sharetable($res, $variant = 'index')
             $htmlout .= '&amp;hit=1';
         }
         $htmlout .= "'><b>$dispname</b></a>&#160;</td>";
-        $htmlout .= ($variant == 'index' ? "<td align='center'><a href=\"download.php?torrent={$id}\"><img src='{$site_config['pic_base_url']}zip.gif' border='0' alt='Download Bookmark!' title='Download Bookmark!' /></a></td>" : '');
+        $htmlout .= ($variant == 'index' ? "<td><a href=\"download.php?torrent={$id}\"><img src='{$site_config['pic_base_url']}zip.gif' border='0' alt='Download Bookmark!' title='Download Bookmark!' /></a></td>" : '');
         $bm = sql_query('SELECT * FROM bookmarks WHERE torrentid=' . sqlesc($id) . ' AND userid=' . sqlesc($CURUSER['id']));
         $bms = mysqli_fetch_assoc($bm);
         $bookmarked = (empty($bms) ? '<a href=\'bookmark.php?torrent=' . $id . '&amp;action=add\'><img src=\'' . $site_config['pic_base_url'] . 'bookmark.gif\' border=\'0\' alt=\'Bookmark it!\' title=\'Bookmark it!\'></a>' : '<a href="bookmark.php?torrent=' . $id . '&amp;action=delete"><img src=\'' . $site_config['pic_base_url'] . 'aff_cross.gif\' border=\'0\' alt=\'Delete Bookmark!\' title=\'Delete Bookmark!\' /></a>');
-        $htmlout .= ($variant == 'index' ? "<td align='center'>{$bookmarked}</td>" : '');
+        $htmlout .= ($variant == 'index' ? "<td>{$bookmarked}</td>" : '');
         if ($variant == 'mytorrents') {
-            $htmlout .= "</td><td align='center'><a href='edit.php?returnto=" . urlencode($_SERVER['REQUEST_URI']) . '&amp;id=' . (int)$row['id'] . "'>{$lang['torrenttable_edit']}</a>\n";
+            $htmlout .= "</td><td><a href='edit.php?returnto=" . urlencode($_SERVER['REQUEST_URI']) . '&amp;id=' . (int)$row['id'] . "'>{$lang['torrenttable_edit']}</a>\n";
         }
         if ($variant == 'mytorrents') {
-            $htmlout .= "<td align='right'>";
+            $htmlout .= "<td>";
             if ($row['visible'] == 'no') {
                 $htmlout .= "<b>{$lang['torrenttable_not_visible']}</b>";
             } else {
@@ -96,32 +96,32 @@ function sharetable($res, $variant = 'index')
             $htmlout .= "</td>\n";
         }
         if ($row['type'] == 'single') {
-            $htmlout .= "<td align='right'>" . (int)$row['numfiles'] . "</td>\n";
+            $htmlout .= "<td>" . (int)$row['numfiles'] . "</td>\n";
         } else {
             if ($variant == 'index') {
-                $htmlout .= "<td align='right'><b><a href='filelist.php?id=$id'>" . (int)$row['numfiles'] . "</a></b></td>\n";
+                $htmlout .= "<td><b><a href='filelist.php?id=$id'>" . (int)$row['numfiles'] . "</a></b></td>\n";
             } else {
-                $htmlout .= "<td align='right'><b><a href='filelist.php?id=$id'>" . (int)$row['numfiles'] . "</a></b></td>\n";
+                $htmlout .= "<td><b><a href='filelist.php?id=$id'>" . (int)$row['numfiles'] . "</a></b></td>\n";
             }
         }
         if (!$row['comments']) {
-            $htmlout .= "<td align='right'>" . (int)$row['comments'] . "</td>\n";
+            $htmlout .= "<td>" . (int)$row['comments'] . "</td>\n";
         } else {
             if ($variant == 'index') {
-                $htmlout .= "<td align='right'><b><a href='details.php?id=$id&amp;hit=1&amp;tocomm=1'>" . (int)$row['comments'] . "</a></b></td>\n";
+                $htmlout .= "<td><b><a href='details.php?id=$id&amp;hit=1&amp;tocomm=1'>" . (int)$row['comments'] . "</a></b></td>\n";
             } else {
-                $htmlout .= "<td align='right'><b><a href='details.php?id=$id&amp;page=0#startcomments'>" . (int)$row['comments'] . "</a></b></td>\n";
+                $htmlout .= "<td><b><a href='details.php?id=$id&amp;page=0#startcomments'>" . (int)$row['comments'] . "</a></b></td>\n";
             }
         }
-        $htmlout .= "<td align='center'><span style='white-space: nowrap;'>" . str_replace(',', '<br>', get_date($row['added'], '')) . "</span></td>\n";
+        $htmlout .= "<td><span>" . str_replace(',', '<br>', get_date($row['added'], '')) . "</span></td>\n";
         $htmlout .= "
-    <td align='center'>" . str_replace(' ', '<br>', mksize($row['size'])) . "</td>\n";
+    <td>" . str_replace(' ', '<br>', mksize($row['size'])) . "</td>\n";
         if ($row['times_completed'] != 1) {
             $_s = '' . $lang['torrenttable_time_plural'] . '';
         } else {
             $_s = '' . $lang['torrenttable_time_singular'] . '';
         }
-        $htmlout .= "<td align='center'><a href='snatches.php?id=$id'>" . number_format($row['times_completed']) . "<br>$_s</a></td>\n";
+        $htmlout .= "<td><a href='snatches.php?id=$id'>" . number_format($row['times_completed']) . "<br>$_s</a></td>\n";
         if ($row['seeders']) {
             if ($variant == 'index') {
                 if ($row['leechers']) {
@@ -129,25 +129,25 @@ function sharetable($res, $variant = 'index')
                 } else {
                     $ratio = 1;
                 }
-                $htmlout .= "<td align='right'><b><a href='peerlist.php?id=$id#seeders'>
+                $htmlout .= "<td><b><a href='peerlist.php?id=$id#seeders'>
                <font color='" . get_slr_color($ratio) . "'>" . (int)$row['seeders'] . "</font></a></b></td>\n";
             } else {
-                $htmlout .= "<td align='right'><b><a class='" . linkcolor($row['seeders']) . "' href='peerlist.php?id=$id#seeders'>" . (int)$row['seeders'] . "</a></b></td>\n";
+                $htmlout .= "<td><b><a class='" . linkcolor($row['seeders']) . "' href='peerlist.php?id=$id#seeders'>" . (int)$row['seeders'] . "</a></b></td>\n";
             }
         } else {
-            $htmlout .= "<td align='right'><span class='" . linkcolor($row['seeders']) . "'>" . (int)$row['seeders'] . "</span></td>\n";
+            $htmlout .= "<td><span class='" . linkcolor($row['seeders']) . "'>" . (int)$row['seeders'] . "</span></td>\n";
         }
         if ($row['leechers']) {
             if ($variant == 'index') {
-                $htmlout .= "<td align='right'><b><a href='peerlist.php?id=$id#leechers'>" . number_format($row['leechers']) . "</a></b></td>\n";
+                $htmlout .= "<td><b><a href='peerlist.php?id=$id#leechers'>" . number_format($row['leechers']) . "</a></b></td>\n";
             } else {
-                $htmlout .= "<td align='right'><b><a class='" . linkcolor($row['leechers']) . "' href='peerlist.php?id=$id#leechers'>" . (int)$row['leechers'] . "</a></b></td>\n";
+                $htmlout .= "<td><b><a class='" . linkcolor($row['leechers']) . "' href='peerlist.php?id=$id#leechers'>" . (int)$row['leechers'] . "</a></b></td>\n";
             }
         } else {
-            $htmlout .= "<td align='right'>0</td>\n";
+            $htmlout .= "<td>0</td>\n";
         }
         if ($variant == 'index') {
-            $htmlout .= "<td align='center'>" . (isset($row['username']) ? ("<a href='userdetails.php?id=" . (int)$row['owner'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>') : '<i>(' . $lang['torrenttable_unknown_uploader'] . ')</i>') . "</td>\n";
+            $htmlout .= "<td>" . (isset($row['username']) ? ("<a href='userdetails.php?id=" . (int)$row['owner'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>') : '<i>(' . $lang['torrenttable_unknown_uploader'] . ')</i>') . "</td>\n";
         }
         $htmlout .= "</tr>\n";
     }

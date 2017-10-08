@@ -212,34 +212,34 @@ switch ($action) {
         for ($i = 2; $i < 21; ++$i) {
             $options .= '<option class="body" value="' . $i . '">' . $i . ' options</option>';
         }
-        $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpadding="0">
+        $HTMLOUT .= '<table class="table table-bordered table-striped">
 	<tr>
-		<td class="embedded" align="center">
-		<h1 style="text-align: center;">' . $lang['poll_add_poll_in'] . ' "<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr_poll['topic_name'], ENT_QUOTES) . '</a>"</h1>
+		<td class="embedded">
+		<h1>' . $lang['poll_add_poll_in'] . ' "<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr_poll['topic_name'], ENT_QUOTES) . '</a>"</h1>
 		
 	<form action="forums.php?action=poll" method="post" name="poll">
 		<input type="hidden" name="topic_id" value="' . $topic_id . '" />
 		<input type="hidden" name="action_2" value="poll_add" />
 		<input type="hidden" name="add_the_poll" value="1" />
-	<table border="0" cellspacing="0" cellpadding="5" width="800" align="center">
+	<table class="table table-bordered table-striped">
 	<tr>
-		<td class="forum_head_dark" colspan="3"><span style="color: white; font-weight: bold;"><img src="./images/forums/poll.gif" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '" style="vertical-align: middle;" /> ' . $lang['poll_add_poll_to_topic'] . '!</span></td>
+		<td class="forum_head_dark" colspan="3"><span><img src="./images/forums/poll.gif" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '" /> ' . $lang['poll_add_poll_to_topic'] . '!</span></td>
 	</tr>
 	<tr>		
-		<td class="three" align="center" valign="middle"><img src="./images/forums/question.png" alt="' . $lang['fe_smilee_question'] . '" title="' . $lang['fe_smilee_question'] . '" width="24" style="vertical-align: middle;" /></td>
-		<td class="three" align="right"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_question'] . ':</span></td>
-		<td class="three" align="left"><input type="text" name="poll_question" class="text_default" value="" /></td>
+		<td><img src="./images/forums/question.png" alt="' . $lang['fe_smilee_question'] . '" title="' . $lang['fe_smilee_question'] . '" width="24" /></td>
+		<td><span>' . $lang['poll_question'] . ':</span></td>
+		<td><input type="text" name="poll_question" class="text_default" value="" /></td>
 	</tr>
 	<tr>
-		<td class="three" align="center" valign="top"><img src="./images/forums/options.gif" alt="' . $lang['poll_options'] . '" title="' . $lang['poll_options'] . '" width="24" style="vertical-align: middle;" /></td>
-		<td class="three" align="right" valign="top"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_answers'] . ':</span></td>
-		<td class="three" align="left" valign="top"><textarea cols="30" rows="4" name="poll_answers" class="text_area_small"></textarea>
+		<td><img src="./images/forums/options.gif" alt="' . $lang['poll_options'] . '" title="' . $lang['poll_options'] . '" width="24" /></td>
+		<td><span>' . $lang['poll_answers'] . ':</span></td>
+		<td><textarea cols="30" rows="4" name="poll_answers" class="text_area_small"></textarea>
 		<br> ' . $lang['poll_one_option_per_line_min_2_op_max_20_options_bbcode_is_enabled.'] . '</td>
 	</tr>
 	<tr>		
-		<td class="three" align="center" valign="middle"><img src="./images/forums/clock.png" alt="' . $lang['poll_clock'] . '" title="' . $lang['poll_clock'] . '" width="30" style="vertical-align: middle;" /></td>
-		<td class="three" align="right"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_starts'] . ':</span></td>
-		<td class="three" align="left"><select name="poll_starts">
+		<td><img src="./images/forums/clock.png" alt="' . $lang['poll_clock'] . '" title="' . $lang['poll_clock'] . '" width="30" /></td>
+		<td><span>' . $lang['poll_starts'] . ':</span></td>
+		<td><select name="poll_starts">
 											<option class="body" value="0">' . $lang['poll_start_now'] . '!</option>
 											<option class="body" value="1">' . sprintf($lang['poll_in_x_day'], 1) . '</option>
 											<option class="body" value="2">' . sprintf($lang['poll_in_x_days'], 2) . '</option>
@@ -251,9 +251,9 @@ switch ($action) {
 											</select> ' . $lang['poll_when_to_start_the_poll_default_is_start_now'] . '!"</td>
 	</tr>
 	<tr>		
-		<td class="three" align="center" valign="middle"><img src="./images/forums/stop.png" alt="' . $lang['poll_stop'] . '" title="' . $lang['poll_stop'] . '" width="20" style="vertical-align: middle;" /></td>
-		<td class="three" align="right"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_ends'] . ':</span></td>
-		<td class="three" align="left"><select name="poll_ends">
+		<td><img src="./images/forums/stop.png" alt="' . $lang['poll_stop'] . '" title="' . $lang['poll_stop'] . '" width="20" /></td>
+		<td><span>' . $lang['poll_ends'] . ':</span></td>
+		<td><select name="poll_ends">
 											<option class="body" value="1356048000">' . $lang['poll_run_forever'] . '</option>
 											<option class="body" value="1">' . sprintf($lang['poll_in_x_day'], 1) . '</option>
 											<option class="body" value="2">' . sprintf($lang['poll_in_x_days'], 2) . '</option>
@@ -270,22 +270,22 @@ switch ($action) {
 											</select> ' . $lang['poll_how_long_should_this_poll_run'] . '? ' . $lang['poll_default_is'] . ' "' . $lang['poll_run_forever'] . '"</td>
 	</tr>
 	<tr>		
-		<td class="three" align="center" valign="middle"><img src="./images/forums/multi.gif" alt="' . $lang['poll_multi'] . '" title="' . $lang['poll_multi'] . '" width="20" style="vertical-align: middle;" /></td>
-		<td class="three" align="right"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_multi_options'] . ':</span></td>
-		<td class="three" align="left"><select name="multi_options">
+		<td><img src="./images/forums/multi.gif" alt="' . $lang['poll_multi'] . '" title="' . $lang['poll_multi'] . '" width="20" /></td>
+		<td><span>' . $lang['poll_multi_options'] . ':</span></td>
+		<td><select name="multi_options">
 											<option class="body" value="1">' . $lang['poll_single_option'] . '!</option>
 											' . $options . '
 											</select> ' . $lang['poll_allow_members_to_have_more_then_one_selection'] . '? ' . $lang['poll_default_is'] . ' "' . $lang['poll_single_option'] . '!"</td>
 	</tr>
 	<tr>		
-		<td class="three" align="center" valign="middle"></td>
-		<td class="three" align="right"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_change_vote'] . ':</span></td>
-		<td class="three" align="left"><input name="change_vote" value="yes" type="radio"' . ($change_vote === 'yes' ? ' checked="checked"' : '') . ' />Yes 
+		<td></td>
+		<td><span>' . $lang['poll_change_vote'] . ':</span></td>
+		<td><input name="change_vote" value="yes" type="radio"' . ($change_vote === 'yes' ? ' checked="checked"' : '') . ' />Yes 
 													<input name="change_vote" value="no" type="radio"' . ($change_vote === 'no' ? ' checked="checked"' : '') . ' />No   <br> ' . $lang['poll_allow_members_to_change_their_vote'] . '? ' . $lang['poll_default_is'] . ' "no"
 	</td>
 	</tr>
 	<tr>
-		<td class="forum_head_dark" colspan="3" align="center">
+		<td class="forum_head_dark" colspan="3">
 		<input type="submit" name="button" class="button" value="' . $lang['fe_add_poll'] . '!" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
 	</tr>
 	</table></form><br></td>
@@ -462,34 +462,34 @@ switch ($action) {
         //=== ok looks like they can be here
         $HTMLOUT .= '
 	<form action="forums.php?action=poll" method="post" name="poll">
-	<table class="main" width="750px" border="0" cellspacing="0" cellpadding="0">
+	<table class="table table-bordered table-striped">
 	<tr>
-		<td class="embedded" align="center">
-		<h1 style="text-align: center;">' . $lang['poll_edit_poll_in'] . ' "<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr_poll['topic_name'], ENT_QUOTES) . '</a>"</h1>
+		<td class="embedded">
+		<h1>' . $lang['poll_edit_poll_in'] . ' "<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . htmlsafechars($arr_poll['topic_name'], ENT_QUOTES) . '</a>"</h1>
 		<input type="hidden" name="topic_id" value="' . $topic_id . '" />
 		<input type="hidden" name="action_2" value="poll_edit" />
 		<input type="hidden" name="do_poll_edit" value="1" />
 
-	<table border="0" cellspacing="0" cellpadding="5" width="800" align="center">
+	<table class="table table-bordered table-striped">
 	<tr>
-		<td class="forum_head_dark" colspan="3"><span style="color: white; font-weight: bold;"><img src="./images/forums/poll.gif" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '" style="vertical-align: middle;" /> ' . $lang['poll_add_poll_to_topic'] . '!</span>  
+		<td class="forum_head_dark" colspan="3"><span><img src="./images/forums/poll.gif" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '" /> ' . $lang['poll_add_poll_to_topic'] . '!</span>  
 		        ' . $lang['poll_editing_the_poll_will_re_set_all_the_votes'] . '</td>
 	</tr>
 	<tr>		
-		<td class="three" align="center" valign="middle"><img src="./images/forums/question.png" alt="' . $lang['fe_smilee_question'] . '" title="' . $lang['fe_smilee_question'] . '" width="24" style="vertical-align: middle;" /></td>
-		<td class="three" align="right"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_question'] . ':</span></td>
-		<td class="three" align="left"><input type="text" name="poll_question" class="text_default" value="' . $poll_question . '" /></td>
+		<td><img src="./images/forums/question.png" alt="' . $lang['fe_smilee_question'] . '" title="' . $lang['fe_smilee_question'] . '" width="24" /></td>
+		<td><span>' . $lang['poll_question'] . ':</span></td>
+		<td><input type="text" name="poll_question" class="text_default" value="' . $poll_question . '" /></td>
 	</tr>
 	<tr>
-		<td class="three" align="center" valign="top"><img src="./images/forums/options.gif" alt="' . $lang['poll_options'] . '" title="' . $lang['poll_options'] . '" width="24" style="vertical-align: middle;" /></td>
-		<td class="three" align="right" valign="top"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_answers'] . ':</span></td>
-		<td class="three" align="left" valign="top"><textarea cols="30" rows="4" name="poll_answers" class="text_area_small">' . strip_tags($poll_answers) . '</textarea><br> 
+		<td><img src="./images/forums/options.gif" alt="' . $lang['poll_options'] . '" title="' . $lang['poll_options'] . '" width="24" /></td>
+		<td><span>' . $lang['poll_answers'] . ':</span></td>
+		<td><textarea cols="30" rows="4" name="poll_answers" class="text_area_small">' . strip_tags($poll_answers) . '</textarea><br> 
 		' . $lang['poll_one_option_per_line_min_2_op_max_20_options_bbcode_is_enabled.'] . '</td>
 	</tr>
 	<tr>		
-		<td class="three" align="center" valign="middle"><img src="./images/forums/clock.png" alt="' . $lang['poll_clock'] . '" title="' . $lang['poll_clock'] . '" width="30" style="vertical-align: middle;" /></td>
-		<td class="three" align="right"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_starts'] . ':</span></td>
-		<td class="three" align="left"><select name="poll_starts">
+		<td><img src="./images/forums/clock.png" alt="' . $lang['poll_clock'] . '" title="' . $lang['poll_clock'] . '" width="30" /></td>
+		<td><span>' . $lang['poll_starts'] . ':</span></td>
+		<td><select name="poll_starts">
 											<option class="body" value="0">' . $lang['poll_start_now'] . '!</option>
 											<option class="body" value="1">' . sprintf($lang['poll_in_x_day'], 1) . '</option>
 											<option class="body" value="2">' . sprintf($lang['poll_in_x_days'], 2) . '</option>
@@ -502,9 +502,9 @@ switch ($action) {
 											Poll set to start: ' . get_date($poll_starts, '') . '</td>
 	</tr>
 	<tr>		
-		<td class="three" align="center" valign="middle"><img src="./images/forums/stop.png" alt="' . $lang['poll_stop'] . '" title="' . $lang['poll_stop'] . '" width="20" style="vertical-align: middle;" /></td>
-		<td class="three" align="right"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_ends'] . ':</span></td>
-		<td class="three" align="left"><select name="poll_ends">
+		<td><img src="./images/forums/stop.png" alt="' . $lang['poll_stop'] . '" title="' . $lang['poll_stop'] . '" width="20" /></td>
+		<td><span>' . $lang['poll_ends'] . ':</span></td>
+		<td><select name="poll_ends">
 											<option class="body" value="1356048000">' . $lang['poll_run_forever'] . '</option>
 											<option class="body" value="1">' . sprintf($lang['poll_in_x_day'], 1) . '</option>
 											<option class="body" value="2">' . sprintf($lang['poll_in_x_days'], 2) . '</option>
@@ -523,21 +523,21 @@ switch ($action) {
 											Poll set to end: ' . ($poll_ends === 1356048000 ? '' . $lang['poll_run_forever'] . '' : get_date($poll_ends, '')) . '</td>
 	</tr>
 	<tr>		
-		<td class="three" align="center" valign="middle"><img src="./images/forums/multi.gif" alt="' . $lang['poll_multi'] . '" title="' . $lang['poll_multi'] . '" width="20" style="vertical-align: middle;" /></td>
-		<td class="three" align="right"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_multi_options'] . ':</span></td>
-		<td class="three" align="left"><select name="multi_options">
+		<td><img src="./images/forums/multi.gif" alt="' . $lang['poll_multi'] . '" title="' . $lang['poll_multi'] . '" width="20" /></td>
+		<td><span>' . $lang['poll_multi_options'] . ':</span></td>
+		<td><select name="multi_options">
 											<option class="body" value="1" ' . ($multi_options == 1 ? 'selected="selected"' : '') . '>' . $lang['poll_single_option'] . '!</option>
 											' . $options . '
 											</select> ' . $lang['poll_allow_members_to_have_more_then_one_selection'] . '? ' . $lang['poll_default_is'] . ' "' . $lang['poll_single_option'] . '!"</td>
 	</tr>
 	<tr>		
-		<td class="three" align="center" valign="middle"></td>
-		<td class="three" align="right"><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_change_vote'] . ':</span></td>
-		<td class="three" align="left"><input name="change_vote" value="yes" type="radio"' . ($change_vote === 'yes' ? ' checked="checked"' : '') . ' />Yes 
+		<td></td>
+		<td><span>' . $lang['poll_change_vote'] . ':</span></td>
+		<td><input name="change_vote" value="yes" type="radio"' . ($change_vote === 'yes' ? ' checked="checked"' : '') . ' />Yes 
 													<input name="change_vote" value="no" type="radio"' . ($change_vote == 'no' ? ' checked="checked"' : '') . ' />No   <br> ' . $lang['poll_allow_members_to_change_their_vote'] . '? ' . $lang['poll_default_is'] . ' "no"</td>
 	</tr>
 	<tr>
-	<td class="forum_head_dark" colspan="3" align="center">
+	<td class="forum_head_dark" colspan="3">
 	<input type="submit" name="button" class="button" value="' . $lang['poll_edit_poll'] . '!" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
 	</tr>
 	</table><br></td>

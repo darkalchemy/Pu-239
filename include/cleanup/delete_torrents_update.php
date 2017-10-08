@@ -27,15 +27,11 @@ function delete_torrents_update($data)
                     TIME_NOW . ", " . sqlesc($msg) . ", 'Torrent Deleted', 'yes', 1)") or sqlerr(__FILE__, __LINE__);
         $mc1->delete_value('inbox_new_' . (int)$arr['owner']);
         $mc1->delete_value('inbox_new_sb_' . (int)$arr['owner']);
-        write_log($msg);
+        if ($data['clean_log']) {
+            write_log($msg);
+        }
     }
-    if ($queries > 0) {
+    if ($data['clean_log'] && $queries > 0) {
         write_log("Delete Old Torrents Cleanup: Completed using $queries queries");
-    }
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items deleted/updated';
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
     }
 }

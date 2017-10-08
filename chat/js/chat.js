@@ -167,6 +167,7 @@ var ajaxChat = {
         this.debug = config['debug'];
         this.DOMbuffering = false;
         this.DOMbuffer = "";
+        this.anonymizer = config['anonLink'];
         this.retryTimerDelay = (this.inactiveTimeout * 6000 - this.timerRate) / 4 + this.timerRate;
     },
 
@@ -1435,7 +1436,7 @@ var ajaxChat = {
             + '">'
             + this.getDeletionLink(messageID, userID, userRole, channelID)
             + dateTime
-            + '<span class="tooltipper-ajax '
+            + '<span class="'
             + userClass
             + '"'
             + this.getChatListUserNameTitle(userID, userName, userRole, ip)
@@ -2813,7 +2814,7 @@ var ajaxChat = {
         var hostname = new RegExp(window.location.hostname, 'g');
         var res = url.match(hostname);
         if (!res) {
-            url = 'https://privatelink.de/en/?' + url;
+            url = this.anonymizer + url;
         }
 
         link = '<a href="'

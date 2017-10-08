@@ -35,21 +35,17 @@ function avatarpos_update($data)
             $mc1->delete_value('inbox_new_sb_' . $arr['id']);
         }
         $count = count($users_buffer);
-        if ($count > 0) {
+        if ($data['clean_log'] && $count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO users (id, avatarpos, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE avatarpos=values(avatarpos), modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+        }
+        if ($data['clean_log']) {
             write_log('Cleanup - Removed Avatar ban from ' . $count . ' members');
         }
         unset($users_buffer, $msgs_buffer, $count);
     }
     //==End
-    if ($queries > 0) {
-        write_log("Avatar Possible Cleanip: Completed using $queries queries");
-    }
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items updated';
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
+    if ($data['clean_log'] && $queries > 0) {
+        write_log("Avatar Possible Cleanup: Completed using $queries queries");
     }
 }

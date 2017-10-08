@@ -49,24 +49,23 @@ check_user_status();
     </script>
 </head>
 <body>
-<div class="loader" style="display:none;">Wait while the avatar is saved!</div>
-<table width="600" border="0" align="center">
+<div class="loader is_hidden">Wait while the avatar is saved!</div>
+<table class="text-center">
     <tr>
-        <td valign="top">
-            <fieldset style="width:170px;">
+        <td>
+            <fieldset>
                 <legend>Preview</legend>
-                <div align="center">
+                <div class="text-center">
                     <input type="hidden" value="<?php
                     echo $CURUSER['username'] ?>" id="user"/>
                     <img id="preview" src="avatar.php?user=<?php
                     echo $CURUSER['username'] ?>" width="150" height="190" alt="Avatar"/></div>
             </fieldset>
         </td>
-        <td valign="top">
+        <td>
             <fieldset style="width:400px;">
                 <legend>Avatar body</legend>
-                <table border="0" cellpadding="4" cellspacing="2" style="border-collapse:separate" align="center"
-                       class="avy_body">
+                <table class="avy_body text-center">
                     <tr>
                         <td nowrap="nowrap" class="info">Background color</td>
                         <td width="100%"><input type="text" id="bgColor" readonly="readonly" size="25"/>
@@ -133,11 +132,10 @@ check_user_status();
         </td>
     </tr>
     <tr>
-        <td valign="top">
+        <td>
             <fieldset style="width:170px;">
                 <legend>Final link</legend>
-                <table border="0" cellpadding="4" cellspacing="2" style="border-collapse:separate" align="center"
-                       class="avy_body">
+                <table class="avy_body text-center">
                     <tr>
                         <td nowrap="nowrap" class="info"><input style="width:150px;" type="text" onclick="select();"
                                                                 value="<?php
@@ -149,14 +147,13 @@ check_user_status();
                 </table>
             </fieldset>
         </td>
-        <td valign="top">
+        <td>
             <fieldset style="width:400px;">
                 <legend>Settings</legend>
-                <table border="0" cellpadding="4" cellspacing="2" style="border-collapse:separate" align="center"
-                       class="avy_body">
+                <table class="avy_body text-center">
                     <tr>
                         <td nowrap="nowrap" class="info">Line 1</td>
-                        <td width="100%" align="center">
+                        <td class="text-center w-100">
                             <select id="drp1" onchange="get_drp();change_label('line1',this.value);update();">
                             </select>
                             <input type="text" id="line1" onchange="update();"/>
@@ -164,7 +161,7 @@ check_user_status();
                     </tr>
                     <tr>
                         <td nowrap="nowrap" class="info">Line 2</td>
-                        <td width="100%" align="center">
+                        <td class="text-center w-100">
                             <select id="drp2" onchange="get_drp();change_label('line2',this.value);update();">
                             </select>
                             <input type="text" id="line2" onchange="update();"/>
@@ -172,7 +169,7 @@ check_user_status();
                     </tr>
                     <tr>
                         <td nowrap="nowrap" class="info">Line 3</td>
-                        <td width="100%" align="center">
+                        <td class="text-center w-100">
                             <select id="drp3" onchange="get_drp();change_label('line3',this.value);update();">
                             </select>
                             <input type="text" id="line3" onchange="update();"/>

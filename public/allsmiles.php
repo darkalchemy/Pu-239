@@ -11,7 +11,7 @@ $htmlout = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"h
 <head>
     <meta name='MSSmartTagsPreventParsing' content='TRUE' />
     <title>More Smilies</title>
-    <link rel='stylesheet' href='./css/" . get_stylesheet() . "/e0a618d82ab6ae6be19a4749c87426da.min.css' />
+    <link rel='stylesheet' href='" . get_file('css') . "' />
 </head>
 <body class='$body_class'>
     <script>
@@ -31,22 +31,28 @@ $count = 0;
 $list = '';
 foreach ($smilies as $code => $url) {
     $list .= "
-        <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
-            <img border='0' src='./images/smilies/" . $url . "' alt='' />
-        </a>";
+        <span class='margin10 bordered mw-50 text-center'>
+            <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
+                <img src='./images/smilies/" . $url . "' alt='' />
+            </a>
+        </span>";
 }
 foreach ($customsmilies as $code => $url) {
     $list .= "
-        <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
-            <img border='0' src='./images/smilies/" . $url . "' alt='' />
-        </a>";
+        <span class='margin10 bordered mw-50 text-center'>
+            <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
+                <img src='./images/smilies/" . $url . "' alt='' />
+            </a>
+        </span>";
 }
 if ($CURUSER['class'] >= UC_STAFF) {
     foreach ($staff_smilies as $code => $url) {
         $list .= "
-        <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
-            <img border='0' src='./images/smilies/" . $url . "' alt='' />
-        </a>";
+        <span class='margin10 bordered mw-50 text-center'>
+            <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
+                <img src='./images/smilies/" . $url . "' alt='' />
+            </a>
+        </span>";
     }
 }
 $htmlout .= "

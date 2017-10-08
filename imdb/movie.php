@@ -33,7 +33,7 @@ if (isset($_GET['mid']) && preg_match('/^[0-9]+$/', $_GET['mid'])) {
     echo ' <title>' . $movie->title() . ' (' . $movie->year() . ') [IMDBPHP2 v' . $movie->version . " Demo]</title>\n";
     echo " <style>body,td,th { font-size:12px; font-family:sans-serif; } b.active { color:#b00;background-color:#fff;text-decoration:underline;}</style>\n";
     echo " <meta http-equiv='Content-Type' content='text/html; charset=$charset'>\n";
-    echo "</head>\n<body onload='fix_colspan()'>\n<table border='1' align='center' style='border-collapse:collapse'>";
+    echo "</head>\n<body onload='fix_colspan()'>\n<table class='text-center'>";
 
     // Title & year
     echo '<tr><th colspan="3" style="background-color:#ffb000">';
@@ -43,7 +43,7 @@ if (isset($_GET['mid']) && preg_match('/^[0-9]+$/', $_GET['mid'])) {
     flush();
 
     // Photo
-    echo '<tr><td id="photocol" rowspan="29" valign="top">';
+    echo '<tr><td id="photocol" rowspan="29">';
     if (($photo_url = $movie->photo_localurl()) != false) {
         echo '<img src="' . $photo_url . '" alt="Cover">';
     } else {
@@ -54,7 +54,7 @@ if (isset($_GET['mid']) && preg_match('/^[0-9]+$/', $_GET['mid'])) {
     $aka = $movie->alsoknow();
     $cc = count($aka);
     if (!empty($aka)) {
-        echo '</td><td valign=top width=120><b>Also known as:</b> </td><td>';
+        echo '</td><td width=120><b>Also known as:</b> </td><td>';
         foreach ($aka as $ak) {
             echo $ak['title'];
             if (!empty($ak['year'])) {
@@ -107,7 +107,7 @@ if (isset($_GET['mid']) && preg_match('/^[0-9]+$/', $_GET['mid'])) {
     $runtime = $movie->runtime();
     if (!empty($runtime)) {
         ++$rows;
-        echo "<tr><td valign=top><b>Runtime:</b></td><td>$runtime minutes</td></tr>\n";
+        echo "<tr><td><b>Runtime:</b></td><td>$runtime minutes</td></tr>\n";
     }
     flush();
 
@@ -121,7 +121,7 @@ if (isset($_GET['mid']) && preg_match('/^[0-9]+$/', $_GET['mid'])) {
         } else {
             echo '<tr><td rowspan="2"><b>MPAA:</b></td><td>';
         }
-        echo "<table align='left' border='1' style='border-collapse:collapse;background-color:#ddd;'><tr><th style='background-color:#07f;'>Country</th><th style='background-color:#07f;'>Rating</th></tr>";
+        echo "<table><tr><th>Country</th><th>Rating</th></tr>";
         foreach ($mpaa as $key => $mpaa) {
             echo "<tr><td>$key</td><td>$mpaa</td></tr>";
         }
@@ -211,7 +211,7 @@ if (isset($_GET['mid']) && preg_match('/^[0-9]+$/', $_GET['mid'])) {
     $tagline = $movie->tagline();
     if (!empty($tagline)) {
         ++$rows;
-        echo "<tr><td valign='top'><b>Tagline:</b></td><td>$tagline</td></tr>\n";
+        echo "<tr><td><b>Tagline:</b></td><td>$tagline</td></tr>\n";
     }
 
     //==[ Staff ]==
@@ -219,8 +219,8 @@ if (isset($_GET['mid']) && preg_match('/^[0-9]+$/', $_GET['mid'])) {
     $director = $movie->director();
     if (!empty($director)) {
         ++$rows;
-        echo '<tr><td valign=top><b>Director:</b></td><td>';
-        echo "<table align='left' border='1' style='border-collapse:collapse;background-color:#ddd;'><tr><th style='background-color:#07f;'>Name</th><th style='background-color:#07f;'>Role</th></tr>";
+        echo '<tr><td><b>Director:</b></td><td>';
+        echo "<table><tr><th>Name</th><th>Role</th></tr>";
         for ($i = 0; $i < count($director); ++$i) {
             echo '<tr><td width=200>';
             echo "<a href='person.php?engine=$engine&mid=" . $director[$i]['imdb'] . "'>";
@@ -234,8 +234,8 @@ if (isset($_GET['mid']) && preg_match('/^[0-9]+$/', $_GET['mid'])) {
     $write = $movie->writing();
     if (!empty($write)) {
         ++$rows;
-        echo '<tr><td valign=top><b>Writing By:</b></td><td>';
-        echo "<table align='left' border='1' style='border-collapse:collapse;background-color:#ddd;'><tr><th style='background-color:#07f;'>Name</th><th style='background-color:#07f;'>Role</th></tr>";
+        echo '<tr><td><b>Writing By:</b></td><td>';
+        echo "<table><tr><th>Name</th><th>Role</th></tr>";
         for ($i = 0; $i < count($write); ++$i) {
             echo '<tr><td width=200>';
             echo "<a href='person.php?engine=$engine&mid=" . $write[$i]['imdb'] . "'>";
@@ -250,8 +250,8 @@ if (isset($_GET['mid']) && preg_match('/^[0-9]+$/', $_GET['mid'])) {
     $produce = $movie->producer();
     if (!empty($produce)) {
         ++$rows;
-        echo '<tr><td valign=top><b>Produced By:</b></td><td>';
-        echo "<table align='left' border='1' style='border-collapse:collapse;background-color:#ddd;'><tr><th style='background-color:#07f;'>Name</th><th style='background-color:#07f;'>Role</th></tr>";
+        echo '<tr><td><b>Produced By:</b></td><td>';
+        echo "<table><tr><th>Name</th><th>Role</th></tr>";
         for ($i = 0; $i < count($produce); ++$i) {
             echo '<tr><td width=200>';
             echo "<a href='person.php?engine=$engine&mid=" . $produce[$i]['imdb'] . "'>";

@@ -107,32 +107,32 @@ if (isset($CURUSER) and $CURUSER['class'] >= UC_STAFF) {
      <div class='menu_body'>
      <table border='0' cellspacing='3' cellpadding='0'>
       <tr>
-        <td class='embedded' bgcolor='#ffffff' valign='top' width='80'>&#160; <b><font color='f9a200'>{$lang['rules_moderating_pu']}</font></b></td>
+        <td class='embedded' bgcolor='#ffffff' width='80'>&#160; <b><font color='f9a200'>{$lang['rules_moderating_pu']}</font></b></td>
         <td class='embedded' width='5'>&#160;</td>
         <td class='embedded'>{$lang['rules_moderating_body']}</td>
       </tr>
       <tr>
-        <td class='embedded' bgcolor='#ffffff' valign='top'>&#160; <b><img src='./images/star.gif' alt='Donor' title='Donor' /></b></td>
+        <td class='embedded' bgcolor='#ffffff'>&#160; <b><img src='./images/star.gif' alt='Donor' title='Donor' /></b></td>
         <td class='embedded' width='5'>&#160;</td>
         <td class='embedded'>{$lang['rules_moderating_body1']}</td>
       </tr>
       <tr>
-        <td class='embedded' bgcolor='#ffffff' valign='top'>&#160; <b><font color='009F00'>{$lang['rules_moderating_vip']}</font></b></td>
+        <td class='embedded' bgcolor='#ffffff'>&#160; <b><font color='009F00'>{$lang['rules_moderating_vip']}</font></b></td>
         <td class='embedded' width='5'>&#160;</td>
         <td class='embedded'>{$lang['rules_moderating_body2']}</td>
       </tr>
       <tr>
-        <td class='embedded' bgcolor='#ffffff' valign='top'>&#160; <b>{$lang['rules_moderating_other']}</b></td>
+        <td class='embedded' bgcolor='#ffffff'>&#160; <b>{$lang['rules_moderating_other']}</b></td>
         <td class='embedded' width='5'>&#160;</td>
         <td class='embedded'>{$lang['rules_moderating_body3']}</td>
       </tr>
       <tr>
-        <td class='embedded' bgcolor='#ffffff' valign='top'>&#160; <b><font color='0000FF'>{$lang['rules_moderating_uploader']}</font></b></td>
+        <td class='embedded' bgcolor='#ffffff'>&#160; <b><font color='0000FF'>{$lang['rules_moderating_uploader']}</font></b></td>
         <td class='embedded' width='5'>&#160;</td>
         <td class='embedded'>{$lang['rules_moderating_body4']}</td>
       </tr>
       <tr>
-        <td class='embedded' bgcolor='#ffffff' valign='top'>&#160; <b><font color='#FE2E2E'>{$lang['rules_moderating_mod']}</font></b></td>
+        <td class='embedded' bgcolor='#ffffff'>&#160; <b><font color='#FE2E2E'>{$lang['rules_moderating_mod']}</font></b></td>
         <td class='embedded' width='5'>&#160;</td>
         <td class='embedded'>{$lang['rules_moderating_body5']}</td>
       </tr>

@@ -50,6 +50,10 @@ header#navbar ul > li > a {
   transition: all .3s ease;
   line-height: 40px
 }
+header#navbar ul > li:last-child a:hover {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
 header#navbar .nav_container ul > li > ul {
   position: absolute;
   left: 10px;
@@ -185,7 +189,7 @@ header#navbar .nav_container ul > li:hover ul {
 #hamburger:hover > span::before {
   background: rgba(250,250,250,.5)
 }
-@media only screen and (max-width:1000px) {
+@media only screen and (max-width:768px) {
   .home {
     display: inline-block
   }

@@ -20,9 +20,9 @@ function getRate($id, $what)
     // outputs
     $p = ($rating_cache['count'] > 0 ? round((($rating_cache['sum'] / $rating_cache['count']) * 20), 2) : 0);
     if ($rating_cache['rated']) {
-        $rate = '<ul class="star-rating" title="You rated this ' . $what . ' ' . htmlsafechars($rating_cache['rating']) . ' star' . (htmlsafechars($rating_cache['rating']) > 1 ? 's' : '') . '"><li style="width: ' . $p . '%;" class="current-rating">.</li></ul>';
+        $rate = '<ul class="star-rating tooltipper" title="You rated this ' . $what . ' ' . htmlsafechars($rating_cache['rating']) . ' star' . (htmlsafechars($rating_cache['rating']) > 1 ? 's' : '') . '"><li style="width: ' . $p . '%;" class="current-rating">.</li></ul>';
     } elseif ($what == 'torrent' && $completecount == 0) {
-        $rate = '<ul class="star-rating" title="You must download this ' . $what . ' in order to rate it."><li style="width: ' . $p . '%;" class="current-rating">.</li></ul>';
+        $rate = '<ul class="star-rating tooltipper" title="You must download this ' . $what . ' in order to rate it."><li style="width: ' . $p . '%;" class="current-rating">.</li></ul>';
     } else {
         $i = 1;
         $rate = '<ul class="star-rating"><li style="width: ' . $p . '%;" class="current-rating">.</li>';
@@ -33,7 +33,7 @@ function getRate($id, $what)
                      'four-stars',
                      'five-stars',
                  ] as $star) {
-            $rate .= '<li><a href="rating.php?id=' . (int)$id . '&amp;rate=' . $i . '&amp;ref=' . urlencode($_SERVER['REQUEST_URI']) . '&amp;what=' . $what . '" class="' . $star . '" onclick="do_rate(' . $i . ',' . $id . ",'" . $what . "'); return false\" title=\"" . $i . ' star' . ($i > 1 ? 's' : '') . " out of 5\" >$i</a></li>";
+            $rate .= '<li><a href="./rating.php?id=' . (int)$id . '&amp;rate=' . $i . '&amp;ref=' . urlencode($_SERVER['REQUEST_URI']) . '&amp;what=' . $what . '" class="' . $star . ' tooltipper" onclick="do_rate(' . $i . ',' . $id . ",'" . $what . "'); return false\" title=\"" . $i . ' star' . ($i > 1 ? 's' : '') . " out of 5\" >$i</a></li>";
             ++$i;
         }
         $rate .= '</ul>';

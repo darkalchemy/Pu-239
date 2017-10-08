@@ -16,13 +16,7 @@ function forum_update($data)
         $forum['posts'] = $forum['topics'] > 0 ? $forum['posts'] : 0;
         sql_query('update forums set post_count = ' . sqlesc($forum['posts']) . ', topic_count = ' . sqlesc($forum['topics']) . ' where id=' . sqlesc($forum['id']));
     }
-    if ($queries > 0) {
+    if ($data['clean_log'] && $queries > 0) {
         write_log("Forum Cleanup: Completed using $queries queries");
-    }
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items updated';
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
     }
 }

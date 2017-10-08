@@ -7,14 +7,14 @@ $html = '';
 $lang = load_language('global');
 $use_limit = true;
 $limit = 15;
-$html .= "<div class='container-fluid' style='width:90%;border:1px solid black;margin:0 auto;'><div class='row-fluid'>";
+$html .= "<div class='container-fluid'><div class='row-fluid'>";
 $xml = file_get_contents('http://feed.torrentfreak.com/Torrentfreak/');
 $icount = 1;
 $doc = new DOMDocument();
 @$doc->loadXML($xml);
 $items = $doc->getElementsByTagName('item');
 foreach ($items as $item) {
-    $html .= "<div class='span12' style='padding:5px;'><center><h2>" . $item->getElementsByTagName('title')->item(0)->nodeValue . '</h2></center><hr>' . preg_replace("/<p>Source\:(.*?)width=\"1\"\/>/is", '', $item->getElementsByTagName('encoded')->item(0)->nodeValue) . '<hr></div>';
+    $html .= "<div class='span12'><center><h2>" . $item->getElementsByTagName('title')->item(0)->nodeValue . '</h2></center><hr>' . preg_replace("/<p>Source\:(.*?)width=\"1\"\/>/is", '', $item->getElementsByTagName('encoded')->item(0)->nodeValue) . '<hr></div>';
     if ($use_limit && $icount == $limit) {
         break;
     }

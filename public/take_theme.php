@@ -30,7 +30,7 @@ $HTMLOUT .= "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'htt
 <head>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
     <title>Choose theme</title>
-    <link rel='stylesheet' href='./css/" . get_stylesheet() . "/e0a618d82ab6ae6be19a4749c87426da.min.css' />
+    <link rel='stylesheet' href='" . get_file('css') . "' />
 </head>
 <body class='$body_class'>
     <script>
@@ -45,7 +45,7 @@ $HTMLOUT .= "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'htt
             </script>
             <form action='take_theme.php' method='post'>
                 <p class='text-center'>
-                    <select name='stylesheet' onchange='this.form.submit();' size='1' style='font-family: Verdana; font-size: 8pt; color: #000000; border: 1px solid #808080; background-color: #ececec'>";
+                    <select name='stylesheet' onchange='this.form.submit();' size='1'>";
 $ss_r = sql_query('SELECT id, name from stylesheets ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
 while ($ar = mysqli_fetch_assoc($ss_r)) {
     $out .= '

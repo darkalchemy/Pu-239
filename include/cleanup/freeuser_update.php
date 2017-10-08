@@ -4,7 +4,6 @@ function freeuser_update($data)
     global $site_config, $queries, $mc1;
     set_time_limit(1200);
     ignore_user_abort(true);
-    //=== Free user removal by Bigjoos/pdq:)
     $res = sql_query('SELECT id, modcomment FROM users WHERE free_switch > 1 AND free_switch < ' . TIME_NOW) or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $users_buffer = [];
     if (mysqli_num_rows($res) > 0) {
@@ -35,21 +34,16 @@ function freeuser_update($data)
             $mc1->delete_value('inbox_new_sb_' . $arr['id']);
         }
         $count = count($users_buffer);
-        if ($count > 0) {
+        if ($data['clean_log'] && $count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO users (id, free_switch, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE free_switch=values(free_switch), modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+        }
+        if ($data['clean_log']) {
             write_log('Cleanup - Removed Freeleech from ' . $count . ' members');
         }
         unset($users_buffer, $msgs_buffer, $count);
     }
-    //==End
-    if ($queries > 0) {
+    if ($data['clean_log'] && $queries > 0) {
         write_log("Freelech Cleanup: Completed using $queries queries");
-    }
-    if (false !== mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
-        $data['clean_desc'] = mysqli_affected_rows($GLOBALS['___mysqli_ston']) . ' items updated';
-    }
-    if ($data['clean_log']) {
-        cleanup_log($data);
     }
 }

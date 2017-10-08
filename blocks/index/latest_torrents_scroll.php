@@ -7,8 +7,9 @@ $HTMLOUT .= "
             <i class='fa fa-angle-up' aria-hidden='true'></i>
             {$lang['index_latest']}
         </legend>
-        <div id='carousel-container' class='carousel-container'>
-            <div id='icarousel' class='icarousel'>";
+        <div class='bordered padleft10 padright10'>
+            <div id='carousel-container' class='alt_bordered transparent carousel-container'>
+                <div id='icarousel' class='icarousel'>";
 
 if (($scroll_torrents = $mc1->get_value('scroll_tor_')) === false) {
     $scroll = sql_query("SELECT id, seeders, leechers, name, poster
@@ -35,15 +36,16 @@ if ($scroll_torrents) {
         $name = substr($name, 0, 50);
 
         $HTMLOUT .= "
-                <div class='slide'>
-                    <a href='./details?id={$id}'>
-                        <img src='" . htmlsafechars($poster) . "' class='tooltipper' alt='{$name}' title='{$name}<br>{$lang['latesttorrents_seeders']} : {$seeders}<br>{$lang['latesttorrents_leechers']} : {$leechers}' width='200' height='300' border='0' />
-                    </a>
-                </div>";
+                    <div class='slide'>
+                        <a href='./details?id={$id}'>
+                            <img src='" . htmlsafechars($poster) . "' class='tooltipper' alt='{$name}' title='{$name}<br>{$lang['latesttorrents_seeders']} : {$seeders}<br>{$lang['latesttorrents_leechers']} : {$leechers}' width='200' height='300' border='0' />
+                        </a>
+                    </div>";
     }
 }
 
 $HTMLOUT .= '
+                </div>
             </div>
         </div>
     </fieldset>';

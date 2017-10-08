@@ -170,9 +170,9 @@ function checkext(upload_field)
 }
 </script>
 <form enctype='multipart/form-data' method='post' action='subtitles.php'>
-<table style='width:400px; border:solid 1px #000000;' align='center' cellpadding='5' cellspacing='0'>";
+<table style='width:400px; border:solid 1px #000000;' cellpadding='5' cellspacing='0'>";
     if ($mode == 'upload') {
-        $HTMLOUT .= "<tr><td colspan='2' align='center' class='colhead'><font color='red'><b>Only .srt, .sub , .txt  file are accepted<br>Max file size " . mksize($site_config['sub_max_size']) . '</b></font></td></tr>';
+        $HTMLOUT .= "<tr><td colspan='2' class='colhead'><font color='red'><b>Only .srt, .sub , .txt  file are accepted<br>Max file size " . mksize($site_config['sub_max_size']) . '</b></font></td></tr>';
     }
     $HTMLOUT .= "<tr><td class='rowhead' style='border:none'>Language&#160;<font color='red'>*</font></td><td style='border:none'><select name='language' title='Select the subtitle language'>
 	<option value=''>- Select -</option>
@@ -212,7 +212,7 @@ function checkext(upload_field)
 <option value='255' " . ($mode == 'edit' && $arr['cds'] == '255' ? 'selected="selected"' : '') . ">More</option>
 </select>
 </td></tr>
-<tr><td colspan='2' align='center' class='colhead'>";
+<tr><td colspan='2' class='colhead'>";
     if ($mode == 'upload') {
         $HTMLOUT .= "<input type='submit' value='Upload it' />
 <input type='hidden' name='action' value='upload' />";
@@ -277,8 +277,8 @@ elseif ($mode == 'details') {
             $langs = '<b>Unknown</b>';
         }
         $HTMLOUT .= begin_main_frame();
-        $HTMLOUT .= "<table width='600' cellpadding='5' cellspacing='0' border='1' align='center' style='border-collapse:collapse;'>
-<tr><td width='150' rowspan='10' valign='top' align='center'>
+        $HTMLOUT .= "<table width='600' cellpadding='5' cellspacing='0' border='1' style='border-collapse:collapse;'>
+<tr><td width='150' rowspan='10'>
 <img src='" . htmlsafechars($arr['poster']) . "' width='150' height='195' alt='" . htmlsafechars($arr['name']) . "' />
 <br><br>
 <form action='downloadsub.php' method='post'>
@@ -288,22 +288,22 @@ elseif ($mode == 'details') {
 </form><br>
 <a href='#' onclick=\"window.open('subtitles.php?mode=preview&amp;id=" . (int)$arr['id'] . "','','height=500,width=400,resizable=yes,scrollbars=yes')\" ><img src='./images/preview.png' width='124' height='25' border='0' alt='Preview' title='Preview'  /></a>
 </td></tr>
-<tr><td align='left'>Name :&#160;<b>" . htmlsafechars($arr['name']) . "</b></td></tr>
-<tr><td align='left'>IMDb :&#160;<a href='" . htmlsafechars($arr['imdb']) . "' target='_blank'>" . htmlsafechars($arr['imdb']) . "</a></td></tr>
-<tr><td align='left'>Language :&#160;{$langs}</td></tr>";
+<tr><td>Name :&#160;<b>" . htmlsafechars($arr['name']) . "</b></td></tr>
+<tr><td>IMDb :&#160;<a href='" . htmlsafechars($arr['imdb']) . "' target='_blank'>" . htmlsafechars($arr['imdb']) . "</a></td></tr>
+<tr><td>Language :&#160;{$langs}</td></tr>";
         if (!empty($arr['comment'])) {
-            $HTMLOUT .= "<tr><td align='left'><fieldset><legend><b>Comment</b></legend>&#160;" . htmlsafechars($arr['comment']) . '</fieldset></td></tr>';
+            $HTMLOUT .= "<tr><td><fieldset><legend><b>Comment</b></legend>&#160;" . htmlsafechars($arr['comment']) . '</fieldset></td></tr>';
         }
-        $HTMLOUT .= "<tr><td align='left'>FPS :&#160;<b>" . ($arr['fps'] == 0 ? 'Unknown' : htmlsafechars($arr['fps'])) . "</b></td></tr>
-<tr><td align='left'>Cd# :&#160;<b>" . ($arr['cds'] == 0 ? 'Unknown' : ($arr['cds'] == 255 ? 'More than 5 ' : htmlsafechars($arr['cds']))) . "</b></td></tr>
-<tr><td align='left'>Hits :&#160;<b>" . (int)$arr['hits'] . "</b></td></tr>
-<tr><td align='left'>Uploader :&#160;<b><a href='userdetails.php?id=" . (int)$arr['owner'] . "' target='_blank'>" . htmlsafechars($arr['username']) . '</a></b>&#160;&#160;';
+        $HTMLOUT .= "<tr><td>FPS :&#160;<b>" . ($arr['fps'] == 0 ? 'Unknown' : htmlsafechars($arr['fps'])) . "</b></td></tr>
+<tr><td>Cd# :&#160;<b>" . ($arr['cds'] == 0 ? 'Unknown' : ($arr['cds'] == 255 ? 'More than 5 ' : htmlsafechars($arr['cds']))) . "</b></td></tr>
+<tr><td>Hits :&#160;<b>" . (int)$arr['hits'] . "</b></td></tr>
+<tr><td>Uploader :&#160;<b><a href='userdetails.php?id=" . (int)$arr['owner'] . "' target='_blank'>" . htmlsafechars($arr['username']) . '</a></b>&#160;&#160;';
         if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_MODERATOR) {
             $HTMLOUT .= "<a href='subtitles.php?mode=edit&amp;id=" . (int)$arr['id'] . "'><img src='./images/edit.png' alt='Edit Sub' title='Edit Sub' style='border:none;padding:2px;' /></a>
 <a href='subtitles.php?mode=delete&amp;id=" . (int)$arr['id'] . "'><img src='./images/drop.png' alt='Delete Sub' title='Delete Sub' style='border:none;padding:2px;' /></a>";
         }
         $HTMLOUT .= "</td></tr>
-<tr><td align='left'>Added :&#160;<b>" . get_date($arr['added'], 'LONG', 0, 1) . '</b></td></tr>
+<tr><td>Added :&#160;<b>" . get_date($arr['added'], 'LONG', 0, 1) . '</b></td></tr>
 </table>';
         $HTMLOUT .= end_main_frame();
         echo stdhead('Details for ' . htmlsafechars($arr['name']) . '') . $HTMLOUT . stdfoot();
@@ -352,8 +352,8 @@ elseif ($mode == 'details') {
     $perpage = 5;
     $pager = pager($perpage, $count, 'subtitles.php?' . $link);
     $res = sql_query("SELECT s.id, s.name,s.lang, s.imdb,s.fps,s.poster,s.cds,s.hits,s.added,s.owner,s.comment, u.username FROM subtitles AS s LEFT JOIN users AS u ON s.owner=u.id $where ORDER BY s.added DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
-    $HTMLOUT .= "<table width='700' cellpadding='5' cellspacing='0' border='0' align='center' style='font-weight:bold'>
-<tr><td style='border:none' valign='middle'>
+    $HTMLOUT .= "<table width='700' cellpadding='5' cellspacing='0' border='0' style='font-weight:bold'>
+<tr><td style='border:none'>
 <fieldset style='text-align:center; border:#0066CC solid 1px; background-color:#999999'>
 <legend style='text-align:center; border:#0066CC solid 1px ; background-color:#999999;font-size:13px;'><b>Search</b></legend>
 <form action='subtitles.php' method='get'>
@@ -375,19 +375,19 @@ elseif ($mode == 'details') {
         if ($count > $perpage) {
             $HTMLOUT .= "<div align=\"left\" style=\"padding:5px\">{$pager['pagertop']}</div>";
         }
-        $HTMLOUT .= "<table width='700' cellpadding='5' cellspacing='0' border='1' align='center' style='font-weight:bold'>
-<tr><td class='colhead' align='center'>Lang</td>
-<td class='colhead' align='left' style='width:80%'>Name</td>
-<td class='colhead' align='center'>IMDb</td>
-<td class='colhead' align='center'>Added</td>
-<td class='colhead' align='center'>Hits</td>
-<td class='colhead' align='center'>FPS</td>
-<td class='colhead' align='center'>CD#</td>";
+        $HTMLOUT .= "<table width='700' cellpadding='5' cellspacing='0' border='1' style='font-weight:bold'>
+<tr><td class='colhead'>Lang</td>
+<td class='colhead' style='width:80%'>Name</td>
+<td class='colhead'>IMDb</td>
+<td class='colhead'>Added</td>
+<td class='colhead'>Hits</td>
+<td class='colhead'>FPS</td>
+<td class='colhead'>CD#</td>";
         while ($arr = mysqli_fetch_assoc($res)) {
             if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_MODERATOR) {
-                $HTMLOUT .= "<td class='colhead' align='center'>Tools</td>";
+                $HTMLOUT .= "<td class='colhead'>Tools</td>";
             }
-            $HTMLOUT .= "<td class='colhead' align='center'>Upper</td></tr>";
+            $HTMLOUT .= "<td class='colhead'>Upper</td></tr>";
             if ($arr['lang'] == 'eng') {
                 $langs = '<img src="./images/flag/england.gif" border="0" alt="English" title="English" />';
             } elseif ($arr['lang'] == 'swe') {
@@ -405,21 +405,21 @@ elseif ($mode == 'details') {
             } else {
                 $langs = '<b>Unknown</b>';
             }
-            $HTMLOUT .= "<tr valign='middle'>
-<td align='center'>{$langs}</td>
+            $HTMLOUT .= "<tr>
+<td>{$langs}</td>
 <td><a href='subtitles.php?mode=details&amp;id=" . (int)$arr['id'] . "' onmouseover=\"tip('<img src=\'" . htmlsafechars($arr['poster']) . "\' width=\'100\'>')\" onmouseout=\"untip()\">" . htmlsafechars($arr['name']) . "</a></td>
-<td align='center'><a href='" . htmlsafechars($arr['imdb']) . "'  target='_blank'><img src='./images/imdb.gif' border='0' alt='Imdb' title='Imdb' /></a></td>
-<td align='center'>" . get_date($arr['added'], 'LONG', 0, 1) . "</td>
-<td align='center'>" . htmlsafechars($arr['hits']) . "</td>
-<td align='center'>" . ($arr['fps'] == 0 ? 'Unknow' : htmlsafechars($arr['fps'])) . "</td>
-<td align='center'>" . ($arr['cds'] == 0 ? 'Unknow' : ($arr['cds'] == 255 ? 'More than 5 ' : htmlsafechars($arr['cds']))) . '</td>';
+<td><a href='" . htmlsafechars($arr['imdb']) . "'  target='_blank'><img src='./images/imdb.gif' border='0' alt='Imdb' title='Imdb' /></a></td>
+<td>" . get_date($arr['added'], 'LONG', 0, 1) . "</td>
+<td>" . htmlsafechars($arr['hits']) . "</td>
+<td>" . ($arr['fps'] == 0 ? 'Unknow' : htmlsafechars($arr['fps'])) . "</td>
+<td>" . ($arr['cds'] == 0 ? 'Unknow' : ($arr['cds'] == 255 ? 'More than 5 ' : htmlsafechars($arr['cds']))) . '</td>';
             if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_STAFF) {
-                $HTMLOUT .= "<td align='center' nowrap='nowrap'>
+                $HTMLOUT .= "<td nowrap='nowrap'>
 <a href='subtitles.php?mode=edit&amp;id=" . (int)$arr['id'] . "'><img src='./images/edit.png' alt='Edit Sub' title='Edit Sub' style='border:none;padding:2px;' /></a>
 <a href='subtitles.php?mode=delete&amp;id=" . (int)$arr['id'] . "'><img src='./images/drop.png' alt='Delete Sub' title='Delete Sub' style='border:none;padding:2px;' /></a>
 </td>";
             }
-            $HTMLOUT .= "<td align='center'><a href='userdetails.php?id=" . (int)$arr['owner'] . "'>" . htmlsafechars($arr['username']) . '</a></td></tr>';
+            $HTMLOUT .= "<td><a href='userdetails.php?id=" . (int)$arr['owner'] . "'>" . htmlsafechars($arr['username']) . '</a></td></tr>';
         }
         $HTMLOUT .= '</table>';
     }

@@ -1,95 +1,107 @@
-15 Sept, 2017
-update index blocks -> torrents to uniform style
-remove excess borders on table-bordered
+8 Oct, 2017
+remove: cleanup log
+move: DB Backup config settings to db and site_config
+remove: torrent.type from database
+remove: torrent.username from database
+update: pushed AJAX Chat to the borders
+update: AJAX Chat to use same mysqli object as the rest of the site
+add: anonymizer url to site settings and all links use this
+add: simple logs viewer
+remove: LogViewer
+add: option to log all queries to the database
+update: admin/site_config
+remove: many inline style
+update: index blocks -> torrents to uniform style
+remove: excess borders on table-bordered
 
 14 Sept, 2017
-fix cleanup manual run
-fix MOW
-add missing jquery-ui in merged and minified js files
-fix iCarousel centering
-remove navbar border radius along top
+fix: cleanup manual run
+fix: MOW
+add: missing jquery-ui in merged and minified js files
+fix: iCarousel centering
+remove: navbar border radius along top
 
 13 Sept, 2017
-fix iCarousel 3d
+fix: iCarousel 3d
 
 12 Sept, 2017
-update jquery.mousewheel.js
-fix scroller mouse scroll not scroll entire page
-fix themeChanger font color in iframes
-update css/js minified files
-update AJAX Chat links to behave same as the rest of the site
-fix blackjack cards incorrect info in sql table
-fix AJAX Chat log viewer
-add link to AJAX Chat log viewer
-fix overflow-y on index page
+update: jquery.mousewheel.js
+fix: scroller mouse scroll not scroll entire page
+fix: themeChanger font color in iframes
+update: css/js minified files
+update: AJAX Chat links to behave same as the rest of the site
+fix: blackjack cards incorrect info in sql table
+fix: AJAX Chat log viewer
+add: link to AJAX Chat log viewer
+fix: overflow-y on index page
 
 11 Sept, 2017
-fix back to top z-index
+fix: back to top z-index
 hide index page poll block when no poll
 hide index page ie alert block if not using ie
 index page more mobile friendly
 
 11 Sept, 2017
 replace js navbar with css navbar
-removed or replaced all document.write
-fix install issues with foreign key issues
+remove: or replaced all document.write
+fix: install issues with foreign key issues
 
 6 Sept, 2017
-fix all index blocks to display correctly
-fix returnto in fastdelete.php and edit.php
-update favicon
-update install scripts
+fix: all index blocks to display correctly
+fix: returnto in fastdelete.php and edit.php
+update: favicon
+update: install scripts
 
 5 Sept, 2017
-removed php preview, replaced with inline bbcode editor preview
-fix bbcode parser adding extra newlines when displaying tables
-moved home button to sticky navbar
+remove: php preview, replaced with inline bbcode editor preview
+fix: bbcode parser adding extra newlines when displaying tables
+moved: home button to sticky navbar
 
 4 Sept, 2017
-modify bbcode editor, add preview
+modify: bbcode editor, add preview
 moved almost everything out of the webroot, incomplete
-merged default.css, bootstrap.css and bootstart-responsive.css
-updated to jquery 3.2.1
-updated jquery ui 1.12.1
-added more subtitle options for upload
-update upload
-moved bucket inside root
-updated bitbucket
-begin removing unneeded tables
-beigin replacing tooltips and hover popups with tooltipster
-begin modify all toggle/slide elements to operate uniformly
+merge: default.css, bootstrap.css and bootstart-responsive.css
+update: jquery 3.2.1
+update: jquery ui 1.12.1
+add: more subtitle options for upload
+update: upload
+moved: bucket inside root
+update: bitbucket
+begin removing: unneeded tables
+begin replacing: tooltips and hover popups with tooltipster
+begin modify: all toggle/slide elements to operate uniformly
 
 21 Aug, 2017
-modify themeController to localstorage instead of cookies
-modify themeController add additional fonts and removed MS fonts
-modify themeController now also controls the fonts in AJAX Caht and trivia
-modify cleanup filelist.php
+modify: themeController to localstorage instead of cookies
+modify: themeController add additional fonts and removed MS fonts
+modify: themeController now also controls the fonts in AJAX Caht and trivia
+modify: cleanup filelist.php
 
 20 Aug, 2017
-modify change sitelog message to be more consistant and easier to read
-fix install setting incorrect clean_time
-replaced Xmas with Christmas
-add function to return a random color
-fix incorrect minified js file being requested
-added cleanup log viewer in admin panel
-fix cleanup getting access to $queries count
-fix rename cleanup function names for concurrency
+modify: change sitelog message to be more consistant and easier to read
+fix: install setting incorrect clean_time
+replace: Xmas with Christmas
+add: function to return a random color
+fix: incorrect minified js file being requested
+add: cleanup log viewer in admin panel
+fix: cleanup getting access to $queries count
+fix: rename cleanup function names for concurrency
 
 19 Aug, 2017
-fix installer
-update README
-fix update/reorder ajax chat online list when users count changes
-fix inactive_update.php fail on empty set
-fix move js to just before closing body tag
-fix combine and minify most js files on index page
-fix themecontroller to use cookie_prefix when getting/setting cookie
-update jQuery Cookie Plugin to v1.4.1
-remove duplicated function from cleanup scripts
+fix: installer
+update: README
+fix: update/reorder ajax chat online list when users count changes
+fix: inactive_update.php fail on empty set
+fix: move js to just before closing body tag
+fix: combine and minify most js files on index page
+fix: themecontroller to use cookie_prefix: when getting/setting cookie
+update: jQuery Cookie Plugin to v1.4.1
+remove: duplicated function from cleanup scripts
 
 18 Aug, 2017
-add foreign_keys.sql to create some foreign keys, nowhere near complete
-add mysql_drop_fks.php to remove foreign keys from database
-fix inactive_update.php to properly delete users
+add: foreign_keys.sql to create some foreign keys, nowhere near complete
+add: mysql_drop_fks.php to remove foreign keys from database
+fix: inactive_update.php to properly delete users
 
 17 Aug, 2017
 fix: make more pages 'table' appear similar to the other pages
@@ -99,4 +111,4 @@ fix: admin adduser.php adds user to usersachiev table and autoshout
 fix: add color class 'user' to autoshout of new users
 
 16 Aug, 2017
-rename project to Pu-239
+rename: project to Pu-239

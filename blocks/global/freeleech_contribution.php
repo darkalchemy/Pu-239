@@ -63,28 +63,28 @@ if (XBT_TRACKER == true) {
 
     switch ($percent_fl) {
         case $percent_fl >= 90:
-            $font_color_fl = '<strong><font color="green">' . number_format($percent_fl) . ' %</font></strong>';
+            $font_color_fl = '<span class="text-green">' . number_format($percent_fl) . ' %</span>';
             break;
         case $percent_fl >= 80:
-            $font_color_fl = '<strong><font color="lightgreen">' . number_format($percent_fl) . ' %</font></strong>';
+            $font_color_fl = '<span class="text-lightgreen">' . number_format($percent_fl) . ' %</span>';
             break;
         case $percent_fl >= 70:
-            $font_color_fl = '<strong><font color="jade">' . number_format($percent_fl) . ' %</font></strong>';
+            $font_color_fl = '<span class="text-jade">' . number_format($percent_fl) . ' %</span>';
             break;
         case $percent_fl >= 50:
-            $font_color_fl = '<strong><font color="turquoise">' . number_format($percent_fl) . ' %</font></strong>';
+            $font_color_fl = '<span class="text-turquoise">' . number_format($percent_fl) . ' %</span>';
             break;
         case $percent_fl >= 40:
-            $font_color_fl = '<strong><font color="lightblue">' . number_format($percent_fl) . ' %</font></strong>';
+            $font_color_fl = '<span class="text-lightblue">' . number_format($percent_fl) . ' %</span>';
             break;
         case $percent_fl >= 30:
-            $font_color_fl = '<strong><font color="gold">' . number_format($percent_fl) . ' %</font></strong>';
+            $font_color_fl = '<span class="text-gold">' . number_format($percent_fl) . ' %</span>';
             break;
         case $percent_fl >= 20:
-            $font_color_fl = '<strong><font color="orange">' . number_format($percent_fl) . ' %</font></strong>';
+            $font_color_fl = '<span class="text-orange">' . number_format($percent_fl) . ' %</span>';
             break;
         case $percent_fl < 20:
-            $font_color_fl = '<strong><font color="red">' . number_format($percent_fl) . ' %</font></strong>';
+            $font_color_fl = '<span class="text-red">' . number_format($percent_fl) . ' %</span>';
             break;
     }
     //=== get total points
@@ -100,28 +100,28 @@ if (XBT_TRACKER == true) {
 
     switch ($percent_du) {
         case $percent_du >= 90:
-            $font_color_du = '<strong><font color="green">' . number_format($percent_du) . ' %</font></strong>';
+            $font_color_du = '<span class="text-green">' . number_format($percent_du) . ' %</span>';
             break;
         case $percent_du >= 80:
-            $font_color_du = '<strong><font color="lightgreen">' . number_format($percent_du) . ' %</font></strong>';
+            $font_color_du = '<span class="text-lightgreen">' . number_format($percent_du) . ' %</span>';
             break;
         case $percent_du >= 70:
-            $font_color_du = '<strong><font color="jade">' . number_format($percent_du) . ' %</font></strong>';
+            $font_color_du = '<span class="text-jade">' . number_format($percent_du) . ' %</span>';
             break;
         case $percent_du >= 50:
-            $font_color_du = '<strong><font color="turquoise">' . number_format($percent_du) . ' %</font></strong>';
+            $font_color_du = '<span class="text-turquoise">' . number_format($percent_du) . ' %</span>';
             break;
         case $percent_du >= 40:
-            $font_color_du = '<strong><font color="lightblue">' . number_format($percent_du) . ' %</font></strong>';
+            $font_color_du = '<span class="text-lightblue">' . number_format($percent_du) . ' %</span>';
             break;
         case $percent_du >= 30:
-            $font_color_du = '<strong><font color="gold">' . number_format($percent_du) . ' %</font></strong>';
+            $font_color_du = '<span class="text-gold">' . number_format($percent_du) . ' %</span>';
             break;
         case $percent_du >= 20:
-            $font_color_du = '<strong><font color="orange">' . number_format($percent_du) . ' %</font></strong>';
+            $font_color_du = '<span class="text-orange">' . number_format($percent_du) . ' %</span>';
             break;
         case $percent_du < 20:
-            $font_color_du = '<strong><font color="red">' . number_format($percent_du) . ' %</font></strong>';
+            $font_color_du = '<span class="text-red">' . number_format($percent_du) . ' %</span>';
             break;
     }
     //=== get total points
@@ -137,69 +137,78 @@ if (XBT_TRACKER == true) {
 
     switch ($percent_hd) {
         case $percent_hd >= 90:
-            $font_color_hd = '<strong><font color="green">' . number_format($percent_hd) . '&#160;%</font></strong>';
+            $font_color_hd = '<span class="text-green">' . number_format($percent_hd) . ' %</span>';
             break;
         case $percent_hd >= 80:
-            $font_color_hd = '<strong><font color="lightgreen">' . number_format($percent_hd) . '&#160;%</font></strong>';
+            $font_color_hd = '<span class="text-lightgreen">' . number_format($percent_hd) . ' %</span>';
             break;
         case $percent_hd >= 70:
-            $font_color_hd = '<strong><font color="jade">' . number_format($percent_hd) . '&#160;%</font></strong>';
+            $font_color_hd = '<span class="text-jade">' . number_format($percent_hd) . ' %</span>';
             break;
         case $percent_hd >= 50:
-            $font_color_hd = '<strong><font color="turquoise">' . number_format($percent_hd) . '&#160;%</font></strong>';
+            $font_color_hd = '<span class="text-turquoise">' . number_format($percent_hd) . ' %</span>';
             break;
         case $percent_hd >= 40:
-            $font_color_hd = '<strong><font color="lightblue">' . number_format($percent_hd) . '&#160;%</font></strong>';
+            $font_color_hd = '<span class="text-lightblue">' . number_format($percent_hd) . ' %</span>';
             break;
         case $percent_hd >= 30:
-            $font_color_hd = '<strong><font color="gold">' . number_format($percent_hd) . '&#160;%</font></strong>';
+            $font_color_hd = '<span class="text-gold">' . number_format($percent_hd) . ' %</span>';
             break;
         case $percent_hd >= 20:
-            $font_color_hd = '<strong><font color="orange">' . number_format($percent_hd) . '&#160;%</font></strong>';
+            $font_color_hd = '<span class="text-orange">' . number_format($percent_hd) . ' %</span>';
             break;
         case $percent_hd < 20:
-            $font_color_hd = '<strong><font color="red">' . number_format($percent_hd) . '&#160;%</font></strong>';
+            $font_color_hd = '<span class="text-red">' . number_format($percent_hd) . ' %</span>';
             break;
     }
 
     if ($freeleech_enabled) {
-        $fstatus = "<strong><font color='green'>&#160;ON&#160;</font></strong>";
+        $fstatus = "<span class='text-green'> ON </span>";
     } else {
         $fstatus = $font_color_fl . '';
     }
     if ($double_upload_enabled) {
-        $dstatus = "<strong><font color='green'>&#160;ON&#160;</font></strong>";
+        $dstatus = "<span class='text-green'> ON </span>";
     } else {
         $dstatus = $font_color_du . '';
     }
     if ($half_down_enabled) {
-        $hstatus = "<strong><font color='green'>&#160;ON&#160;</font></strong>";
+        $hstatus = "<span class='text-green'> ON </span>";
     } else {
         $hstatus = $font_color_hd . '';
     }
-    $htmlout .= "<li><a class='tooltip' href='./mybonus.php'><b class='btn btn-success btn-small'>Karma Contribution's</b><span class='custom info alert alert-success'><em>Karma Contribution's</em>Freeleech&#160;[&#160;";
+    $htmlout .= "
+                <li>
+                    <a href='./mybonus.php'>
+                        <b class='btn btn-success btn-small dt-tooltipper' data-tooltip-content='#karma_tooltip'>Karma Contribution's</b>
+                        <div class='tooltip_templates'>
+                            <span id='karma_tooltip'><em>Karma Contribution's</em><br>Freeleech [ ";
     if ($freeleech_enabled) {
-        $htmlout .= '<font color="green"><strong>&#160;ON</strong></font>&#160;' . get_date($freeleech_start_time, 'DATE') . '&#160;-&#160;' . get_date($freeleech_end_time, 'DATE');
+        $htmlout .= '<span class="text-lime"> ON </span>' . get_date($freeleech_start_time, 'DATE') . ' - ' . get_date($freeleech_end_time, 'DATE');
     } else {
-        $htmlout .= "<strong>{$fstatus}</strong>";
+        $htmlout .= $fstatus;
     }
-    $htmlout .= '&#160;]<br>';
+    $htmlout .= ' ]<br>';
 
-    $htmlout .= 'DoubleUpload&#160;[&#160;';
+    $htmlout .= 'DoubleUpload [ ';
     if ($double_upload_enabled) {
-        $htmlout .= '<font color="green"><strong>&#160;ON</strong></font>&#160;' . get_date($double_upload_start_time, 'DATE') . '&#160;-&#160;' . get_date($double_upload_end_time, 'DATE');
+        $htmlout .= '<span class="text-lime"> ON </span>' . get_date($double_upload_start_time, 'DATE') . ' - ' . get_date($double_upload_end_time, 'DATE');
     } else {
-        $htmlout .= "<strong>{$dstatus}</strong>";
+        $htmlout .= $dstatus;
     }
-    $htmlout .= '&#160;]<br>';
+    $htmlout .= ' ]<br>';
 
-    $htmlout .= 'Half Download&#160;[&#160;';
+    $htmlout .= 'Half Download [ ';
     if ($half_down_enabled) {
-        $htmlout .= '<font color="green"><strong>&#160;ON</strong></font>&#160;' . get_date($half_down_start_time, 'DATE') . '&#160;-&#160;' . get_date($half_down_end_time, 'DATE');
+        $htmlout .= '<span class="text-lime"> ON</span> ' . get_date($half_down_start_time, 'DATE') . ' - ' . get_date($half_down_end_time, 'DATE');
     } else {
-        $htmlout .= "<strong>{$hstatus}</strong>";
+        $htmlout .= $hstatus;
     }
-    $htmlout .= '&#160;]</span></a></li>';
+    $htmlout .= ' ]
+                            </span>
+                        </div>
+                    </a>
+                </li>';
 }
 //=== karma contribution alert end
 // End Class

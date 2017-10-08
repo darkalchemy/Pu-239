@@ -84,8 +84,8 @@ if (mysqli_num_rows($res) != 0) {
         $HTMLOUT .= $pager['pagertop'];
     }
     $HTMLOUT .= "<form action='staffpanel.php?tool=acpmanage&amp;action=acpmanage' method='post'>";
-    $HTMLOUT .= begin_table('', true);
-    $HTMLOUT .= "<tr align='center'><td class='colhead'>
+    $HTMLOUT .= begin_table();
+    $HTMLOUT .= "<tr><td class='colhead'>
       <input style='margin:0' type='checkbox' title='" . $lang['text_markall'] . "' value='" . $lang['text_markall'] . "' onclick=\"this.value=check(form);\" /></td>
       <td class='colhead'>{$lang['text_username']}</td>
       <td class='colhead' style='white-space: nowrap;'>{$lang['text_reg']}</td>
@@ -111,7 +111,7 @@ if (mysqli_num_rows($res) != 0) {
         $class = get_user_class_name($arr['class']);
         $status = htmlsafechars($arr['status']);
         $enabled = htmlsafechars($arr['enabled']);
-        $HTMLOUT .= "<tr align='center'><td><input type=\"checkbox\" name=\"ids[]\" value=\"" . (int)$arr['id'] . "\" /></td><td><a href='/userdetails.php?id=" . (int)$arr['id'] . "'><b>" . htmlsafechars($arr['username']) . '</b></a>' . ($arr['donor'] == 'yes' ? "<img src='./images/star.gif' border='0' alt='" . $lang['text_donor'] . "' />" : '') . ($arr['warned'] >= 1 ? "<img src='./images/warned.gif' border='0' alt='" . $lang['text_warned'] . "' />" : '') . "</td>
+        $HTMLOUT .= "<tr><td><input type=\"checkbox\" name=\"ids[]\" value=\"" . (int)$arr['id'] . "\" /></td><td><a href='/userdetails.php?id=" . (int)$arr['id'] . "'><b>" . htmlsafechars($arr['username']) . '</b></a>' . ($arr['donor'] == 'yes' ? "<img src='./images/star.gif' border='0' alt='" . $lang['text_donor'] . "' />" : '') . ($arr['warned'] >= 1 ? "<img src='./images/warned.gif' border='0' alt='" . $lang['text_warned'] . "' />" : '') . "</td>
         <td style='white-space: nowrap;'>{$added}</td>
         <td style='white-space: nowrap;'>{$last_access}</td>
         <td>{$class}</td>
@@ -123,9 +123,9 @@ if (mysqli_num_rows($res) != 0) {
         </tr>\n";
     }
     if (($CURUSER['class'] >= UC_SYSOP)) {
-        $HTMLOUT .= "<tr><td colspan='10' align='center'><select name='do'><option value='enabled' disabled='disabled' selected='selected'>{$lang['text_wtd']}</option><option value='enabled'>{$lang['text_es']}</option><option value='confirm'>{$lang['text_cs']}</option><option value='delete'>{$lang['text_ds']}</option></select><input type='submit' value='" . $lang['text_submit'] . "' /></td></tr>";
+        $HTMLOUT .= "<tr><td colspan='10'><select name='do'><option value='enabled' disabled='disabled' selected='selected'>{$lang['text_wtd']}</option><option value='enabled'>{$lang['text_es']}</option><option value='confirm'>{$lang['text_cs']}</option><option value='delete'>{$lang['text_ds']}</option></select><input type='submit' value='" . $lang['text_submit'] . "' /></td></tr>";
     } else {
-        $HTMLOUT .= "<tr><td colspan='10' align='center'><select name='do'><option value='enabled' disabled='disabled' selected='selected'>{$lang['text_wtd']}</option><option value='enabled'>{$lang['text_es']}</option><option value='confirm'>{$lang['text_cs']}</option></select><input type='submit' value='" . $lang['text_submit'] . "' /></td></tr>";
+        $HTMLOUT .= "<tr><td colspan='10'><select name='do'><option value='enabled' disabled='disabled' selected='selected'>{$lang['text_wtd']}</option><option value='enabled'>{$lang['text_es']}</option><option value='confirm'>{$lang['text_cs']}</option></select><input type='submit' value='" . $lang['text_submit'] . "' /></td></tr>";
     }
 
     $HTMLOUT .= end_table();

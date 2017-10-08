@@ -8,8 +8,7 @@ if (!$CURUSER) {
     get_template();
 }
 $lang = array_merge(load_language('global'), load_language('recover'));
-$stdhead = [
-    /* include js **/
+$stdfoot = [
     'js' => [
         get_file('captcha1_js')
     ],
@@ -59,11 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     unsetSessionVar('simpleCaptchaAnswer');
     unsetSessionVar('simpleCaptchaTimestamp');
 } else {
-    $HTMLOUT = '';
     $HTMLOUT .= "
-    <div class='login-container center-block'>
+    <div class='login-container container-fluid portlet'>
         <form method='post' action='{$_SERVER['PHP_SELF']}'>
-            <table border='1' cellspacing='0' cellpadding='10'>" . ($site_config['captcha_on'] ? "
+            <table class='table table-bordered top20 bottom20'>" . ($site_config['captcha_on'] ? "
                 <tr>
                     <td colspan='2'>
                         <h2 class='text-center'>{$lang['recover_unamepass']}</h2>
@@ -75,13 +73,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </tr>" : '') . "
                 <tr>
                     <td class='rowhead'>{$lang['recover_regdemail']}</td>
-                    <td><input type='text' size='40' name='email' /></td>
+                    <td><input type='text' class='w-100' name='email' /></td>
                 </tr>
                 <tr>
-                    <td colspan='2' align='center'><input type='submit' value='{$lang['recover_btn']}' class='btn' /></td>
+                    <td colspan='2'>
+                        <div class='text-center'>
+                            <input type='submit' value='{$lang['recover_btn']}' class='btn' />
+                        </div>
+                    </td>
                 </tr>
             </table>
         </form>
     </div>";
-    echo stdhead($lang['head_recover'], true, $stdhead) . $HTMLOUT . stdfoot();
+    echo stdhead($lang['head_recover'], true) . $HTMLOUT . stdfoot($stdfoot);
 }

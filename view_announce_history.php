@@ -9,7 +9,7 @@ $HTMLOUT = '';
 $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadding='10'>
 <tr>
 <td class='embedded'>
-<h2 align='center'><font size='6'>{$lang['annhistory_ann']}</font></h2>";
+<h2><font size='6'>{$lang['annhistory_ann']}</font></h2>";
 $query1 = sprintf('SELECT m.main_id, m.subject, m.body FROM announcement_main AS m ' . 'LEFT JOIN announcement_process AS p ' . 'ON m.main_id = p.main_id AND p.user_id = %s ' . 'WHERE p.status = 2', sqlesc($CURUSER['id']));
 $result = sql_query($query1);
 $ann_list = [];
@@ -50,12 +50,12 @@ if ($action == 'read_announce') {
  	</tr>
  	</table>";
 }
-$HTMLOUT .= "<table align='center' width='30%' border='0' cellpadding='4' cellspacing='0'>
+$HTMLOUT .= "<table width='30%' border='0' cellpadding='4' cellspacing='0'>
 <tr>
-<td align='center' bgcolor='orange'><b>{$lang['annhistory_subject1']}</b></td>
+<td bgcolor='orange'><b>{$lang['annhistory_subject1']}</b></td>
 </tr>";
 foreach ($ann_list as $x) {
-    $HTMLOUT .= "<tr><td align='center'><a href='?action=read_announce&amp;id=" . (int)$x[0] . "'>" . htmlsafechars($x[1]) . "</a></td></tr>\n";
+    $HTMLOUT .= "<tr><td><a href='?action=read_announce&amp;id=" . (int)$x[0] . "'>" . htmlsafechars($x[1]) . "</a></td></tr>\n";
 }
 $HTMLOUT .= '</table>';
 $HTMLOUT .= '</td></tr></table>';

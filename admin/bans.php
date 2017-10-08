@@ -59,7 +59,7 @@ $res = sql_query("SELECT b.*, u.username FROM bans b LEFT JOIN users u on b.adde
 $HTMLOUT = '';
 $HTMLOUT .= "<h1>{$lang['text_current']}</h1>\n";
 if (mysqli_num_rows($res) == 0) {
-    $HTMLOUT .= "<p align='center'><b>{$lang['text_nothing']}</b></p>\n";
+    $HTMLOUT .= "<p><b>{$lang['text_nothing']}</b></p>\n";
 } else {
     if ($count > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
@@ -67,10 +67,10 @@ if (mysqli_num_rows($res) == 0) {
     $HTMLOUT .= "<br>
       <table border='1' cellspacing='0' cellpadding='5'>\n";
     $HTMLOUT .= "<tr>
-        <td class='colhead'>{$lang['header_added']}</td><td class='colhead' align='left'>{$lang['header_firstip']}</td>
-        <td class='colhead' align='left'>{$lang['header_lastip']}</td>
-        <td class='colhead' align='left'>{$lang['header_by']}</td>
-        <td class='colhead' align='left'>{$lang['header_comment']}</td>
+        <td class='colhead'>{$lang['header_added']}</td><td class='colhead'>{$lang['header_firstip']}</td>
+        <td class='colhead'>{$lang['header_lastip']}</td>
+        <td class='colhead'>{$lang['header_by']}</td>
+        <td class='colhead'>{$lang['header_comment']}</td>
         <td class='colhead'>{$lang['header_remove']}</td>
       </tr>\n";
     while ($arr = mysqli_fetch_assoc($res)) {
@@ -78,10 +78,10 @@ if (mysqli_num_rows($res) == 0) {
         $arr['last'] = long2ip($arr['last']);
         $HTMLOUT .= '<tr>
           <td>' . get_date($arr['added'], '') . "</td>
-          <td align='left'>" . htmlsafechars($arr['first']) . "</td>
-          <td align='left'>" . htmlsafechars($arr['last']) . "</td>
-          <td align='left'><a href='userdetails.php?id=" . (int)$arr['addedby'] . "'>" . htmlsafechars($arr['username']) . "</a></td>
-          <td align='left'>" . htmlsafechars($arr['comment'], ENT_QUOTES) . "</td>
+          <td>" . htmlsafechars($arr['first']) . "</td>
+          <td>" . htmlsafechars($arr['last']) . "</td>
+          <td><a href='userdetails.php?id=" . (int)$arr['addedby'] . "'>" . htmlsafechars($arr['username']) . "</a></td>
+          <td>" . htmlsafechars($arr['comment'], ENT_QUOTES) . "</td>
           <td><a href='staffpanel.php?tool=bans&amp;remove=" . (int)$arr['id'] . "'>{$lang['text_remove']}</a></td>
          </tr>\n";
     }
@@ -105,7 +105,7 @@ if ($CURUSER['class'] == UC_MAX) {
       <td class='rowhead'>{$lang['table_comment']}</td><td><input type='text' name='comment' size='40' /></td>
       </tr>
       <tr>
-      <td colspan='2' align='center'><input type='submit' name='okay' value='{$lang['btn_add']}' class='btn' /></td>
+      <td colspan='2'><input type='submit' name='okay' value='{$lang['btn_add']}' class='btn' /></td>
       </tr>
       </table>
       </form>";

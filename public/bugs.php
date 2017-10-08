@@ -113,14 +113,14 @@ if ($action == 'viewbug') {
         }
         $HTMLOUT .= "<form method='post' action='{$_SERVER['PHP_SELF']}?action=viewbug'>
       <input type='hidden' name='id' value='" . (int)$a['id'] . "'/>
-      <table cellpadding='5' cellspacing='0' border='0' align='center'>
+      <table class='table table-bordered table-striped'>
       <tr><td class='rowhead'>{$lang['title']}:</td><td>{$title}</td></tr>
       <tr><td class='rowhead'>{$lang['added']} / {$lang['by']}</td><td>{$added} / {$addedby}</td></tr>
       <tr><td class='rowhead'>{$lang['priority']}</td><td>" . $priority . "</td></tr>
       <tr><td class='rowhead'>{$lang['problem_bug']}</td><td><textarea cols='60' rows='10' readonly='readonly'>{$problem}</textarea></td></tr>
       <tr><td class='rowhead'>{$lang['status']} / {$lang['by']}</td><td>{$status} - {$by}</td></tr>";
         if ($a['status'] == 'na') {
-            $HTMLOUT .= "<tr><td colspan='2' align='center'><input type='submit' value='{$lang['submit_btn_fix']}' class='btn'/></td></tr>\n";
+            $HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['submit_btn_fix']}' class='btn'/></td></tr>\n";
         }
     }
     $HTMLOUT .= "</table></form><a href='bugs.php?action=bugs'>{$lang['go_back']}</a>\n";
@@ -139,15 +139,15 @@ if ($action == 'viewbug') {
         $count = mysqli_num_rows($r);
         $HTMLOUT .= $pager['pagertop'];
         $HTMLOUT .= "
-      <!--<h1 align='center'>There is <font color='#FF0000'>{$count}</font> new bug" . ($count > 1 ? 's' : '') . ". Please check them.</h1>-->
-      <h1 align='center'>" . sprintf($lang['h1_count_bugs'], $count, ($count > 1 ? 's' : '')) . "</h1>
-      <font class='small' style='font-weight:bold;'>{$lang['delete_when']}</font><br>
-      <table cellpadding='10' cellspacing='0' border='0' align='center'><tr>
-      <td class='colhead' align='center'>{$lang['title']}</td>
-      <td class='colhead' align='center'>{$lang['added']} / {$lang['by']}</td>
-      <td class='colhead' align='center'>{$lang['priority']}</td>
-      <td class='colhead' align='center'>{$lang['status']}</td>
-      <td class='colhead' align='center'>{$lang['coder']}</td>
+      <!--<h1>There is <font color='#FF0000'>{$count}</font> new bug" . ($count > 1 ? 's' : '') . ". Please check them.</h1>-->
+      <h1>" . sprintf($lang['h1_count_bugs'], $count, ($count > 1 ? 's' : '')) . "</h1>
+      <font class='small'>{$lang['delete_when']}</font><br>
+      <table class='table table-bordered table-striped'><tr>
+      <td class='colhead'>{$lang['title']}</td>
+      <td class='colhead'>{$lang['added']} / {$lang['by']}</td>
+      <td class='colhead'>{$lang['priority']}</td>
+      <td class='colhead'>{$lang['status']}</td>
+      <td class='colhead'>{$lang['coder']}</td>
       </tr>";
         while ($q1 = mysqli_fetch_assoc($res)) {
             switch ($q1['priority']) {
@@ -177,11 +177,11 @@ if ($action == 'viewbug') {
                     break;
             }
             $HTMLOUT .= "<tr>
-          <td align='center'><a href='?action=viewbug&amp;id=" . (int)$q1['id'] . "'>" . htmlsafechars($q1['title']) . "</a></td>
-          <td align='center' nowrap='nowrap'>" . get_date($q1['added'], 'TINY') . " / <a href='userdetails.php?id=" . (int)$q1['sender'] . "'>" . htmlsafechars($q1['username']) . "</a></td>
-          <td align='center'>{$priority}</td>
-          <td align='center'>{$status}</td>
-      <td align='center'>" . ($q1['status'] != 'na' ? "<a href='userdetails.php?id=" . (int)$q1['staff'] . "'>" . htmlsafechars($q1['staffusername']) . '</a>' : '---') . '</td>
+          <td><a href='?action=viewbug&amp;id=" . (int)$q1['id'] . "'>" . htmlsafechars($q1['title']) . "</a></td>
+          <td nowrap='nowrap'>" . get_date($q1['added'], 'TINY') . " / <a href='userdetails.php?id=" . (int)$q1['sender'] . "'>" . htmlsafechars($q1['username']) . "</a></td>
+          <td>{$priority}</td>
+          <td>{$status}</td>
+      <td>" . ($q1['status'] != 'na' ? "<a href='userdetails.php?id=" . (int)$q1['staff'] . "'>" . htmlsafechars($q1['staffusername']) . '</a>' : '---') . '</td>
       </tr>';
         }
         $HTMLOUT .= '</table>';
@@ -212,7 +212,7 @@ if ($action == 'viewbug') {
         }
     }
     $HTMLOUT .= "<form method='post' action='bugs.php?action=add'>
-                  <table cellpadding='5' cellspacing='0' border='0' align='center'>
+                  <table class='table table-bordered table-striped'>
                   <tr><td class='rowhead'>{$lang['title']}:</td><td><input type='text' name='title' size='60'/><br>{$lang['proper_title']}</td></tr>
                   <tr><td class='rowhead'>{$lang['problem_bug']}:</td><td><textarea cols='60' rows='10' name='problem'></textarea><br>{$lang['describe_problem']}</td></tr>
                   <tr><td class='rowhead'>{$lang['priority']}:</td><td><select name='priority'>
@@ -222,7 +222,7 @@ if ($action == 'viewbug') {
                   <option value='veryhigh'>{$lang['veryhigh']}</option>
                   </select>
                   <br>{$lang['only_veryhigh_when']}</td></tr>
-                  <tr><td colspan='2' align='center'><input type='submit' value='{$lang['submit_btn_send']}' class='btn'/></td></tr>
+                  <tr><td colspan='2'><input type='submit' value='{$lang['submit_btn_send']}' class='btn'/></td></tr>
                   </table></form>";
 }
 echo stdhead("{$lang['header']}") . $HTMLOUT . stdfoot();

@@ -467,7 +467,7 @@ switch ($action) {
 } //=== end switch
 //=== make the class based selection thingie bit here :D
 $count = 1;
-$all_classes_check_boxes = '<table border="0" cellspacing="5" cellpadding="5" align="left"><tr>';
+$all_classes_check_boxes = '<table border="0" cellspacing="5" cellpadding="5"><tr>';
 for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
     $all_classes_check_boxes .= '<td class="one">
         <input type="checkbox" name="free_for_classes[]" value="' . $i . '" checked="checked" /> <span style="font-weight: bold;color:#' . get_user_class_color($i) . ';">' . get_user_class_name($i) . '</span></td>';
@@ -528,17 +528,17 @@ $subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : $lang['
 $body = isset($_POST['body']) ? htmlsafechars($_POST['body']) : $lang['bonusmanager_pm_texthere'];
 $pm_drop_down = '<form name="compose" method="post" action="mass_bonus_for_members.php">
                  <input type="hidden" name="pm" value="pm" />
-                 <table border="0" cellspacing="0" cellpadding="5" align="center" style="max-width:800px">
+                 <table border="0" cellspacing="0" cellpadding="5" style="max-width:800px">
                  <tr>
-                 <td align="left" colspan="2" class="colhead">' . $lang['bonusmanager_pm_send'] . '</td>
+                 <td colspan="2" class="colhead">' . $lang['bonusmanager_pm_send'] . '</td>
                  </tr>
                  <tr>
-                 <td align="right" class="one"><span style="font-weight: bold;">' . $lang['bonusmanager_pm_subject'] . '</span></td>
-                 <td align="left" class="one"><input name="subject" type="text" class="text_default" value="' . $subject . '" /></td>
+                 <td class="one"><span style="font-weight: bold;">' . $lang['bonusmanager_pm_subject'] . '</span></td>
+                 <td class="one"><input name="subject" type="text" class="text_default" value="' . $subject . '" /></td>
                  </tr>
                  <tr>
-                 <td align="right" class="one"><span style="font-weight: bold;">' . $lang['bonusmanager_pm_body'] . '</span></td>
-                 <td align="left" class="one">' . BBcode($body, false) . '</td>
+                 <td class="one"><span style="font-weight: bold;">' . $lang['bonusmanager_pm_body'] . '</span></td>
+                 <td class="one">' . BBcode($body, false) . '</td>
                  </tr>
                  </table></form>';
 $drop_down = '
@@ -560,13 +560,13 @@ $h1_thingie .= (isset($_GET['pm']) ? ($_GET['pm'] === 1 ? '<h2>' . $lang['bonusm
 $HTMLOUT .= '<h1>' . $site_config['site_name'] . ' ' . $lang['bonusmanager_mass_bonus'] . '</h1>' . $h1_thingie;
 $HTMLOUT .= '<form name="inputform" method="post" action="staffpanel.php?tool=mass_bonus_for_members&amp;action=mass_bonus_for_members" enctype="multipart/form-data">
         <input type="hidden" id="action_2" name="action_2" value="" />
-    <table align="center" width="80%" border="0" cellspacing="5" cellpadding="5">
+    <table width="80%" border="0" cellspacing="5" cellpadding="5">
     <tr>
-        <td align="center" class="colhead" colspan="2">' . $lang['bonusmanager_mass_bonus_selected'] . '</td>
+        <td class="colhead" colspan="2">' . $lang['bonusmanager_mass_bonus_selected'] . '</td>
     </tr>
     <tr>
-        <td align="right" class="one" width="160px" valign="top"><span style="font-weight: bold;">' . $lang['bonusmanager_bonus_type'] . '</span></td>
-        <td align="left" class="one">' . $drop_down . '
+        <td class="one" width="160px"><span style="font-weight: bold;">' . $lang['bonusmanager_bonus_type'] . '</span></td>
+        <td class="one">' . $drop_down . '
         <div id="div_upload_credit" class="select_me"><br>' . $bonus_GB . '<hr></div>
         <div id="div_karma" class="select_me"><br>' . $karma_drop_down . '<hr></div>
         <div id="div_freeslots" class="select_me"><br>' . $free_leech_slot_drop_down . '<hr></div>
@@ -575,18 +575,18 @@ $HTMLOUT .= '<form name="inputform" method="post" action="staffpanel.php?tool=ma
         </td>
     </tr>
     <tr>
-        <td class="one" valign="top" align="right"><span style="font-weight: bold;">' . $lang['bonusmanager_apply_bonus'] . '</span></td>
-        <td valign="top" align="left" class="one">
+        <td class="one"><span style="font-weight: bold;">' . $lang['bonusmanager_apply_bonus'] . '</span></td>
+        <td class="one">
         <input type="checkbox" id="all_or_selected_classes" name="all_or_selected_classes" value="1"  checked="checked" />
         <span style="font-weight: bold;">' . $lang['bonusmanager_all_classes'] . '</span>' . $lang['bonusmanager_uncheck'] . '
         <div id="classes_open" style="display:none;"><br>' . $all_classes_check_boxes . '</div></td>
     </tr>
     <tr>
-        <td class="one" valign="top" align="right"></td>
-        <td valign="top" align="left" class="one">' . $lang['bonusmanager_note'] . '<br></td>
+        <td class="one"></td>
+        <td class="one">' . $lang['bonusmanager_note'] . '<br></td>
     </tr>
     <tr>
-        <td align="center" class="one" colspan="2">
+        <td class="one" colspan="2">
         <input type="submit" class="btn" name="button" value="' . $lang['bonusmanager_doit'] . '"  /></td>
     </tr>
     </table></form>';

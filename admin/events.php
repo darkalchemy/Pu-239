@@ -205,22 +205,22 @@ if (!is_array($scheduled_events)) {
         }
         $HTMLOUT .= "<tr><td align=\"center\">{$username}</td><td align=\"center\">{$text}</td><td align=\"center\">{$start}</td><td align=\"center\">{$end}</td><td align=\"center\">{$freeleech}</td><td align=\"center\">{$doubleUpload}</td><td align=\"center\">{$halfdownload}</td><td align=\"center\">{$showdates}</td><td align=\"center\"><input type=\"submit\" name=\"editEvent_$id\" value=\"{$lang['events_edit']}\" /> <input type=\"submit\" onclick=\"return checkAllGood('$text')\" name=\"removeEvent_$id\" value=\"{$lang['events_remove']}\" /></td></tr>";
     }
-    $HTMLOUT .= "<tr><td colspan='9' align='right'><input type='submit' name='editEvent_-1' value='{$lang['events_add']}'' /></td></tr></table>";
+    $HTMLOUT .= "<tr><td colspan='9'><input type='submit' name='editEvent_-1' value='{$lang['events_add']}'' /></td></tr></table>";
     foreach ($_POST as $key => $value) {
         if (gettype($pos = strpos($key, '_')) != 'boolean') {
             $id = (int)substr($key, $pos + 1);
             if (gettype(strpos($key, 'editEvent_')) != 'boolean') {
                 if ($id == -1) {
                     $HTMLOUT .= "<table>
-<tr><th align='right'>{$lang['events_userid']}</th><td><input type='text' name='userid' value='{$CURUSER['id']}' /></td></tr>
-<tr><th align='right'>{$lang['events_txt']}</th><td><input type='text' name='editText' /></td></tr>
-<tr><th align='right'>{$lang['events_starttime']}</th><td><input type='text' name='editStartTime' /></td></tr>
-<tr><th align='right'>{$lang['events_endtime']}</th><td><input type='text' name='editEndTime' /></td></tr>
-<tr><th align='right'>{$lang['events_freel']}</th><td><input type='checkbox' name='editFreeleech' /></td></tr>
-<tr><th align='right'>{$lang['events_double']}</th><td><input type='checkbox' name='editDoubleupload' /></td></tr>
-<tr><th align='right'>{$lang['events_half']}</th><td><input type='checkbox' name='editHalfdownload' /></td></tr>
-<tr><th align='right'>{$lang['events_showd']}</th><td><input type='checkbox' name='editShowDates' /></td></tr>
-<tr><td colspan='2' align='center'><input type='submit' name='saveEvent_-1' value='{$lang['events_save']}' /></td></tr>
+<tr><th>{$lang['events_userid']}</th><td><input type='text' name='userid' value='{$CURUSER['id']}' /></td></tr>
+<tr><th>{$lang['events_txt']}</th><td><input type='text' name='editText' /></td></tr>
+<tr><th>{$lang['events_starttime']}</th><td><input type='text' name='editStartTime' /></td></tr>
+<tr><th>{$lang['events_endtime']}</th><td><input type='text' name='editEndTime' /></td></tr>
+<tr><th>{$lang['events_freel']}</th><td><input type='checkbox' name='editFreeleech' /></td></tr>
+<tr><th>{$lang['events_double']}</th><td><input type='checkbox' name='editDoubleupload' /></td></tr>
+<tr><th>{$lang['events_half']}</th><td><input type='checkbox' name='editHalfdownload' /></td></tr>
+<tr><th>{$lang['events_showd']}</th><td><input type='checkbox' name='editShowDates' /></td></tr>
+<tr><td colspan='2'><input type='submit' name='saveEvent_-1' value='{$lang['events_save']}' /></td></tr>
 </table>";
                 } else {
                     foreach ($scheduled_events as $scheduled_event) {
@@ -253,15 +253,15 @@ if (!is_array($scheduled_events)) {
                                 $showdates = '';
                             }
                             $HTMLOUT .= "<table>
-<tr><th align='right'>{$lang['events_userid']}</th><td><input type='text' name='userid' value='{$CURUSER['id']}' /></td></tr>
-<tr><th align='right'>{$lang['events_txt']}</th><td><input type='text' name='editText' value='{$text}' /></td></tr>
-<tr><th align='right'>{$lang['events_starttime']}</th><td><input type='text' name='editStartTime' value='{$start}' /></td></tr>
-<tr><th align='right'>{$lang['events_endtime']}</th><td><input type='text' name='editEndTime' value='{$end}' /></td></tr>
-<tr><th align='right'>{$lang['events_freel']}</th><td><input type='checkbox' name='editFreeleech' value='{$freeleech}' /></td></tr>
-<tr><th align='right'>{$lang['events_double']}</th><td><input type='checkbox' name='editDoubleupload' value='{$doubleUpload}' /></td></tr>
-<tr><th align='right'>{$lang['events_half']}</th><td><input type='checkbox' name='editHalfdownload' value='{$halfdownload}' /></td></tr>
-<tr><th align='right'>{$lang['events_showd']}</th><td><input type='checkbox' name='editShowDates' value='{$showdates}' /></td></tr>
-<tr><td colspan='2' align='center'><input type='submit' name='saveEvent_{$id}' value='{$lang['events_save']}' /></td></tr>
+<tr><th>{$lang['events_userid']}</th><td><input type='text' name='userid' value='{$CURUSER['id']}' /></td></tr>
+<tr><th>{$lang['events_txt']}</th><td><input type='text' name='editText' value='{$text}' /></td></tr>
+<tr><th>{$lang['events_starttime']}</th><td><input type='text' name='editStartTime' value='{$start}' /></td></tr>
+<tr><th>{$lang['events_endtime']}</th><td><input type='text' name='editEndTime' value='{$end}' /></td></tr>
+<tr><th>{$lang['events_freel']}</th><td><input type='checkbox' name='editFreeleech' value='{$freeleech}' /></td></tr>
+<tr><th>{$lang['events_double']}</th><td><input type='checkbox' name='editDoubleupload' value='{$doubleUpload}' /></td></tr>
+<tr><th>{$lang['events_half']}</th><td><input type='checkbox' name='editHalfdownload' value='{$halfdownload}' /></td></tr>
+<tr><th>{$lang['events_showd']}</th><td><input type='checkbox' name='editShowDates' value='{$showdates}' /></td></tr>
+<tr><td colspan='2'><input type='submit' name='saveEvent_{$id}' value='{$lang['events_save']}' /></td></tr>
 </table>";
                             break;
                         }

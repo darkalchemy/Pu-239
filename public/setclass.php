@@ -32,10 +32,10 @@ $HTMLOUT .= "<br>
 <form method='get' action='{$site_config['baseurl']}/setclass.php'>
 	<input type='hidden' name='action' value='editclass' />
 	<input type='hidden' name='returnto' value='userdetails.php?id=" . (int)$CURUSER['id'] . "' />
-	<table width='150' border='2' cellspacing='5' cellpadding='5'>
+	<table class='table table-bordered table-striped'>
 	<tr>
 	<td>Class</td>
-	<td align='left'>
+	<td>
 	<select name='class'>";
 $maxclass = $CURUSER['class'] - 1;
 for ($i = 0; $i <= $maxclass; ++$i) {
@@ -44,7 +44,7 @@ for ($i = 0; $i <= $maxclass; ++$i) {
     }
 }
 $HTMLOUT .= "</select></td></tr>
-		<tr><td colspan='3' align='center'><input type='submit' class='btn' value='{$lang['set_class_ok']}' /></td></tr>
+		<tr><td colspan='3'><input type='submit' class='btn' value='{$lang['set_class_ok']}' /></td></tr>
 	</table>
 </form>
 <br>";

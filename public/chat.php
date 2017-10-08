@@ -5,12 +5,12 @@ check_user_status();
 $lang = array_merge(load_language('global'), load_language('chat'));
 $nick = ($CURUSER ? $CURUSER['username'] : ('Guest' . random_int(1000, 9999)));
 $irc_url = 'irc.p2p-network.net';
-$irc_channel = '#09source weloveweed';
+$irc_channel = '#pu-239';
 $HTMLOUT = '';
 $HTMLOUT .= "<p>{$lang['chat_channel']}<a href='irc://{$irc_url}'>{$irc_channel}</a> {$lang['chat_network']}</p>
-    <div class='borderwrap' align='center'>
+    <div class='borderwrap'>
     <div class='maintitle'>{$site_config['site_name']}</div>
-    <div class='row1' align='center'>
+    <div class='row1'>
     <applet code='IRCApplet.class' codebase='./javairc/' archive='irc.jar,pixx.jar' width='640' height='400'>
       <param name='CABINETS' value='irc.cab,securedirc.cab,pixx.cab' />
       <param name='name' value='{$nick}' />

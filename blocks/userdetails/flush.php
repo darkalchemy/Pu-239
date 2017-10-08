@@ -2,8 +2,8 @@
 /* Flush all torrents mod */
 //=== flush torrents staff or members own torrents
 if ($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $user['id']) {
-    $HTMLOUT .= '<tr valign="top"><td class="rowhead"><a name="flush"></a>' . $lang['userdetails_flush_title'] . '</td>
-			<td align="left">
+    $HTMLOUT .= '<tr><td class="rowhead"><a name="flush"></a>' . $lang['userdetails_flush_title'] . '</td>
+			<td>
 			<form method="post" id="form" action="" name="flush_thing">
 			<input id="id" type="hidden" value="' . (int)$user['id'] . '" name="id" />
 			<input id="action2" type="hidden" value="flush_torrents" name="action2" />

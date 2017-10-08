@@ -53,24 +53,24 @@ $htmlout = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
     </style>
     </head>
     <body>
-    <div align='center'>
+    <div>
     <table width='300' border='0' cellpadding='0' cellspacing='0'>
     <!--Error pic layout-->
     <tr>
-    <td width='300' height='50' valign='top'><!--Error 404 EmptyCell-->&#160;</td>
+    <td width='300' height='50'><!--Error 404 EmptyCell-->&#160;</td>
     </tr>
     <tr>
-    <td height='520' valign='top'><img src='{$site_config['pic_base_url']}error404.png' alt='Error Not Found' width='300' height='520' border='0' usemap='#Map' /></td>
+    <td height='520'><img src='{$site_config['pic_base_url']}error404.png' alt='Error Not Found' width='300' height='520' border='0' usemap='#Map' /></td>
     </tr>
     <tr>
-    <td height='14' valign='top'><div align='center'><span class='style1'></span></div></td>
+    <td height='14'><div><span class='style1'></span></div></td>
     </tr>
     </table></div><map name='Map' id='map'>
     <area shape='rect' coords='99,425,203,481' alt='Error Not Found' />
     </map>
-    <p align='center'><b>{$page}</b></p>
-    <p align='center'>{$text}</p><br>
-    <p align='center'>You will be redirected back to {$domain} in 5 seconds</p>
+    <p><b>{$page}</b></p>
+    <p>{$text}</p><br>
+    <p>You will be redirected back to {$domain} in 5 seconds</p>
     </body>
     </html>";
 echo $htmlout;

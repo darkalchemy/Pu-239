@@ -18,10 +18,10 @@ if (isset($_POST['form']) != 1) {
     } elseif ($arr['status'] == 'rejected') {
         stderr($lang['uploadapp_user_error'], $lang['uploadapp_rejected']);
     } else {
-        $HTMLOUT .= "<h1 align='center'>{$lang['uploadapp_application']}</h1>
-        <table width='750' border='1' cellspacing='0' cellpadding='10'><tr><td>
+        $HTMLOUT .= "<h1>{$lang['uploadapp_application']}</h1>
+        <table class='table table-bordered table-striped'><tr><td>
         <form action='./uploadapp.php' method='post' enctype='multipart/form-data'>
-        <table border='1' cellspacing='0' cellpadding='5' align='center'>";
+        <table class='table table-bordered table-striped'>";
         $ratio = member_ratio($CURUSER['uploaded'], $CURUSER['downloaded']);
         if (XBT_TRACKER === false) {
             $res = sql_query('SELECT connectable FROM peers WHERE userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -86,7 +86,7 @@ if (isset($_POST['form']) != 1) {
      	  <input name='seeding' type='radio' value='no' checked='checked' />{$lang['uploadapp_no']}
         <br><br>
         <input name='form' type='hidden' value='1' />
-        <div align='center'><input type='submit' name='Submit' value='{$lang['uploadapp_send']}' /></div></td>
+        <div><input type='submit' name='Submit' value='{$lang['uploadapp_send']}' /></div></td>
         </tr>
         </table></form>
         </td></tr></table>";

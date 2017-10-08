@@ -62,12 +62,12 @@
                     // Add images to container with click handlers
                     var imgBox = n.find('.' + o.imageBoxClass);
                     $.each(data.images, function () {
-                        imgBox.append("<img class='" + o.imageClass + "' src='" + this.file + "' alt='' title='" + this.hash + "' />");
+                        imgBox.append("<img class='" + o.imageClass + "' src='" + this.file + "' alt='' data-title='" + this.hash + "' />");
                     });
                     imgBox.find('img.' + o.imageClass)
                         .click(function (e) {
                             n.find('img.' + o.imageClass).removeClass('simpleCaptchaSelected');
-                            var hash = $(this).addClass('simpleCaptchaSelected').attr('title');
+                            var hash = $(this).addClass('simpleCaptchaSelected').attr('data-title');
                             $('#' + inputId).val(hash);
                             n.trigger('select.simpleCaptcha', [hash]);
                             return false;

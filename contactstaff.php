@@ -35,23 +35,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div ><br>
     <form method='post' name='message' action='" . $_SERVER['PHP_SELF'] . "'>
 				 <table class='main' width='450' border='0' cellspacing='0' cellpadding='2'>
-				  <tr><td align='center' colspan='2'>
+				  <tr><td colspan='2'>
 					<h1>{$lang['contactstaff_title']}</h1>
 					<p class='small'>{$lang['contactstaff_info']}</p>
 				  </td></tr>
-				  <tr><td align='right'>
+				  <tr><td>
 					{$lang['contactstaff_subject']}
-				  </td><td align='left'>
+				  </td><td>
 					<input type='text' size='50' name='subject' style='margin-left: 5px;' />
 				  </td></tr>
-		<tr><td align='center' colspan='2'>";
+		<tr><td colspan='2'>";
     if (isset($_GET['returnto'])) {
         $HTMLOUT .= "<input type='hidden' name='returnto' value='" . urlencode($_GET['returnto']) . "' />";
     }
     $HTMLOUT .= "<textarea name='msg' cols='80' rows='15'></textarea>
                        </td>
                      </tr>
-                    <tr><td align='center' colspan='2'><input type='submit' value='{$lang['contactstaff_sendit']}' class='btn' /></td></tr>
+                    <tr><td colspan='2'><input type='submit' value='{$lang['contactstaff_sendit']}' class='btn' /></td></tr>
                     </table>
         </form></div>";
     echo stdhead($lang['contactstaff_header'], true, $stdhead) . $HTMLOUT . stdfoot();

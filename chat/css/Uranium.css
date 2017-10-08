@@ -75,6 +75,11 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
     -webkit-box-shadow: 0px 0px 8px 1px #495a49;
 }
 
+.logoutChannelInner .popup {
+    box-shadow: 0;
+    -webkit-box-shadow: 0; 
+}
+
 #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer {
     background-color: #171717;
     border: 0;

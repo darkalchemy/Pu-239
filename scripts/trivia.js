@@ -13,7 +13,6 @@ function trivia_refresh() {
                 if (flag) {
                     initializeClock('clock_game', data['game_remaining']);
                     flag = false;
-                    console.log('fired');
                 }
             }
             if (data['gameon'] == 0) {
@@ -47,7 +46,6 @@ function trivia_refresh() {
                 }
                 $('#clocks').attr('class', 'showing');
             }
-            console.log('Response ' + JSON.stringify(data));
         }
     });
 }
@@ -73,7 +71,6 @@ $('.trivia_submit').click(function() {
                 $('#incorrect').attr('class', 'showing');
             }
             $('#clocks').attr('class', 'showing');
-            console.log('Response ' + JSON.stringify(data));
         }
     });
 });

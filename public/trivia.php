@@ -88,7 +88,7 @@ $HTMLOUT = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http
 <head>
 <title>Trivia</title>
 <meta http-equiv='refresh' content={$refresh}; url=./trivia.php'>
-<link rel='stylesheet' href='" . get_file('trivia_css') . "' />
+<link rel='stylesheet' href='" . get_file('css') . "' />
 <link href='https://fonts.googleapis.com/css?family=Acme|Baloo+Bhaijaan|Encode+Sans+Condensed|Lobster|Nova+Square|Open+Sans|Oswald|PT+Sans+Narrow' rel='stylesheet' />
 </head>
 <body class='text-1 transparent'>
@@ -102,14 +102,14 @@ $HTMLOUT = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http
 </script>";
 
 $HTMLOUT .= "
-    <div style='calc(width: 100% - 20px); margin: 10px; font-size: 1.25em;'>
+    <div>
         <div>";
 
 if ($round_remaining >= 1) {
     $display = "
             {$lang['trivia_next_question']}
             <span id='clock_round'>
-                <span style='display: none;' class='days'></span><span style='display: none;' class='hours'></span><span class='minutes'></span>:<span class='seconds'></span>
+                <span class='days'></span><span class='hours'></span><span class='minutes'></span>:<span class='seconds'></span>
             </span><br>
             Game Ends in:
             <span id='clock_game'>
@@ -137,7 +137,7 @@ if (empty($gamenum) || empty($qid)) {
 
         if ($num_rows != 0) {
             $table = "
-            <table class='table table-bordered table-striped text-center'>
+            <table class='table table-bordered table-striped'>
                 <thead>
                     <tr>
                         <th class='text-left' width='5%'>Username</th>
@@ -186,8 +186,8 @@ if (empty($gamenum) || empty($qid)) {
         <div>
             <h4 class='text-center'>" . htmlspecialchars_decode($row['question']) . "</h4>
             <br>
-            <ul class='answers-container' style='list-style: none;'>
-                <li style='margin-bottom: 5px;'>
+            <ul class='answers-container flex-center'>
+                <li>
                     <form id='happy' method='post' action='trivia.php'>
                         <input type='hidden' name='qid' value='{$qid}'>
                         <input type='hidden' name='user_id' value='{$user_id}'>
@@ -197,7 +197,7 @@ if (empty($gamenum) || empty($qid)) {
                         <input type='submit' value='" . htmlspecialchars_decode($row['answer1']) . "' class='btnflex'>
                     </form>
                 </li>
-                <li style='margin-bottom: 5px;'>
+                <li>
                     <form id='submit1' method='post' action='trivia.php'>
                         <input type='hidden' name='qid' value='{$qid}'>
                         <input type='hidden' name='user_id' value='{$user_id}'>
@@ -210,7 +210,7 @@ if (empty($gamenum) || empty($qid)) {
 
             if ($row['answer3'] != null) {
                 $HTMLOUT .= "
-                <li style='margin-bottom: 5px;'>
+                <li>
                     <form id='submit2' method='post' action='trivia.php'>
                         <input type='hidden' name='qid' value='{$qid}'>
                         <input type='hidden' name='user_id' value='{$user_id}'>
@@ -223,7 +223,7 @@ if (empty($gamenum) || empty($qid)) {
             }
             if ($row['answer4'] != null) {
                 $HTMLOUT .= "
-                <li style='margin-bottom: 5px;'>
+                <li>
                     <form id='submit3' method='post' action='trivia.php'>
                         <input type='hidden' name='qid' value='{$qid}'>
                         <input type='hidden' name='user_id' value='{$user_id}'>
@@ -236,7 +236,7 @@ if (empty($gamenum) || empty($qid)) {
             }
             if ($row['answer5'] != null) {
                 $HTMLOUT .= "
-                <li style='margin-bottom: 5px;'>
+                <li>
                     <form id='submit4' method='post' action='trivia.php'>
                         <input type='hidden' name='qid' value='{$qid}'>
                         <input type='hidden' name='user_id' value='{$user_id}'>
@@ -261,7 +261,7 @@ $HTMLOUT .= "
     <div class='text-center'>
         <a href='./trivia_results.php' target='_top' class='btn-clean'>Trivia Results</a>
     </div>
-    <div class='text-center' style='margin-top: 20px'>
+    <div class='text-center top20'>
         $answered
         $display
     </div>

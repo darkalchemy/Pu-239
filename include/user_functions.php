@@ -15,7 +15,7 @@ function get_parked()
     return $CURUSER['parked_until'];
 }
 
-function autoshout($msg, $channel = 0, $ttl = 3600)
+function autoshout($msg, $channel = 0, $ttl = 7200)
 {
     global $site_config;
     require_once INCL_DIR . 'bbcode_functions.php';
@@ -30,7 +30,7 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
     global $site_config, $CURUSER;
     $member_reputation = '';
     if ($rep_is_on) {
-        include CACHE_DIR . '/rep_cache.php';
+        include CACHE_DIR . 'rep_cache.php';
         //require_once (CLASS_DIR . 'class_user_options.php');
         // ok long winded file checking, but it's much better than file_exists
         if (!isset($reputations) || !is_array($reputations) || count($reputations) < 1) {
@@ -124,34 +124,8 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
 //== End
 function write_staffs()
 {
-    global $site_config;
-    //==ids
-    $t = '$site_config';
-    $iconfigfile = '<' . "?php\n/**\nThis file created on " . date('M d Y H:i:s') . ".\nSite Config staff mod.\n**/\n";
-    $ri = sql_query('SELECT id, username, class FROM users WHERE class BETWEEN ' . UC_STAFF . ' AND ' . UC_MAX . ' ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
-    $iconfigfile .= '' . $t . "['allowed_staff']['id'] = array(";
-    while ($ai = mysqli_fetch_assoc($ri)) {
-        $ids[] = $ai['id'];
-        $usernames[] = "'" . $ai['username'] . "' => 1";
-    }
-    $iconfigfile .= '' . join(',', $ids);
-    $iconfigfile .= ');';
-    $iconfigfile .= "\n?" . '>';
-    $filenum = fopen('./cache/staff_settings.php', 'w');
-    ftruncate($filenum, 0);
-    fwrite($filenum, $iconfigfile);
-    fclose($filenum);
-    //==names
-    $t = '$site_config';
-    $nconfigfile = '<' . "?php\n/**\nThis file created on " . date('M d Y H:i:s') . ".\nSite Config staff mod.\n**/\n";
-    $nconfigfile .= '' . $t . "['staff']['allowed'] = array(";
-    $nconfigfile .= '' . join(',', $usernames);
-    $nconfigfile .= ');';
-    $nconfigfile .= "\n?" . '>';
-    $filenum1 = fopen('./cache/staff_settings2.php', 'w');
-    ftruncate($filenum1, 0);
-    fwrite($filenum1, $nconfigfile);
-    fclose($filenum1);
+    global $mc1;
+    $mc1->delete_value('staff_settings_');
 }
 
 function get_ratio_color($ratio)
@@ -438,12 +412,12 @@ function format_username_array($user, $icons = true)
     return $str;
 }
 
-function format_username($user_id, $icons = true)
+function format_username($user_id, $icons = true, $tooltipper = true)
 {
     global $site_config, $mc1;
     if (!is_array($user_id) && is_numeric($user_id)) {
         if (($user = $mc1->get_value('user_icons_' . $user_id)) === false) {
-            $res = sql_query("SELECT gotgift, gender, id, class, username, donor, title, suspended, warned, leechwarn, downloadpos, chatpost, pirate, king, enabled, perms
+            $res = sql_query("SELECT gotgift, gender, id, class, username, donor, title, suspended, warned, leechwarn, downloadpos, chatpost, pirate, king, enabled, perms, avatar
                                 FROM users
                                 WHERE id = " . sqlesc($user_id)) or sqlerr(__FILE__, __LINE__);
             $user = mysqli_fetch_assoc($res);
@@ -454,6 +428,24 @@ function format_username($user_id, $icons = true)
         return format_username_array($user_id);
     }
 
+    $avatar = !empty($user['avatar']) ? "<img src='{$user['avatar']}' class='avatar' />" : "<img src='./images/forumicons/default_avatar.gif' class='avatar' />";
+    $tip = $tooltip = '';
+    if ($tooltipper) {
+        $tip = "
+                        <div class='tooltip_templates'>
+                            <span id='id_{$user['id']}_tooltip' class='flex tooltip'>
+                                <div class='right20'>
+                                    {$avatar}
+                                </div>
+                                <div  style='min-width: 150px; align: left;'>
+                                     <span style='color:#" . get_user_class_color($user['class']) . ";'>
+                                         " . htmlsafechars($user['username']) . "
+                                     </span>
+                                </div>
+                            </span>
+                        </div>";
+        $tooltip = "class='dt-tooltipper' data-tooltip-content='#id_{$user['id']}_tooltip'";
+    }
     $user['id'] = (int) $user['id'];
     $user['class'] = (int) $user['class'];
     if ($user['id'] == 0) {
@@ -462,8 +454,15 @@ function format_username($user_id, $icons = true)
         return 'unknown[' . $user['id'] . ']';
     }
 
-    $username = '<span id="list' . $user['id'] . '" style="color:#' . get_user_class_color($user['class']) . ';"><b>' . htmlsafechars($user['username']) . '</b></span>';
-    $str = '<span style="white-space: nowrap;"><a class="user_' . $user['id'] . '" href="./userdetails.php?id=' . $user['id'] . '" target="_blank">' . $username . '</a>';
+    $username = '
+                    <span ' . $tooltip . ' style="color:#' . get_user_class_color($user['class']) . ';">
+                        <b>' . htmlsafechars($user['username']) . '</b>' .
+                        $tip . '
+                    </span>';
+    $str = '
+            <span style="white-space: nowrap;">
+                <a class="user_' . $user['id'] . '" href="./userdetails.php?id=' . $user['id'] . '" target="_blank">' . $username . '
+            </a>';
 
     if ($icons != false) {
         $str .= (isset($user['king']) && $user['king'] >= TIME_NOW ? '<img class="tooltipper" src="'.$site_config['pic_base_url'].'king.png" alt="King" title="King" width="14px" height="14px" />' : '');

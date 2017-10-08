@@ -12,7 +12,7 @@ $lang = array_merge($lang, load_language('ad_class_promo'));
 /*$allowed_ids = array(
 1
 ); //== 1 Is Sysop*/
-if (!in_array($CURUSER['id'], $site_config['allowed_staff']['id'] /*$allowed_ids*/)) {
+if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'] /*$allowed_ids*/)) {
     stderr($lang['classpromo_error'], $lang['classpromo_denied']);
 }
 //get the config from db - stoner/pdq
@@ -99,33 +99,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $HTMLOUT .= "<h3>{$lang['classpromo_user_sett']}</h3>
 <form name='edit' action='staffpanel.php?tool=class_promo&amp;mode=edit' method='post'>
 <table width='100%' border='0' cellpadding='5' cellspacing='0' ><tr>
-<td align='center'>{$lang['classpromo_clsname']}</td>
-<td align='center'>&#160;</td>
-<td align='center'>{$lang['classpromo_minratio']}</td>
-<td align='center'>{$lang['classpromo_minupl']}</td>
-<td align='center'>{$lang['classpromo_mintime']}</td>
-<td align='center'>{$lang['classpromo_lowratio']}</td>
-<td align='center'>{$lang['classpromo_remove']}</td>
+<td>{$lang['classpromo_clsname']}</td>
+<td>&#160;</td>
+<td>{$lang['classpromo_minratio']}</td>
+<td>{$lang['classpromo_minupl']}</td>
+<td>{$lang['classpromo_mintime']}</td>
+<td>{$lang['classpromo_lowratio']}</td>
+<td>{$lang['classpromo_remove']}</td>
 </tr>";
 $res = sql_query('SELECT * from class_promo ORDER BY id  ASC');
 while ($arr = mysqli_fetch_assoc($res)) {
     $HTMLOUT .= "
 <tr>
 
-<td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='25' value='" . get_user_class_name(htmlsafechars($arr['name'])) . " ' readonly='readonly'/> (" . htmlsafechars($arr['name']) . ")</td>
-<td class='table' align='center'>&#160;<input type='hidden' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['id']) . "' /></td>
-<td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['min_ratio']) . "'  /></td>
-<td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['uploaded']) . "' /></td>
-<td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['time']) . "'  /></td>
-<td class='table' align='center'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['low_ratio']) . "'  /></td>
+<td class='table'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='25' value='" . get_user_class_name(htmlsafechars($arr['name'])) . " ' readonly='readonly'/> (" . htmlsafechars($arr['name']) . ")</td>
+<td class='table'>&#160;<input type='hidden' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['id']) . "' /></td>
+<td class='table'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['min_ratio']) . "'  /></td>
+<td class='table'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['uploaded']) . "' /></td>
+<td class='table'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['time']) . "'  /></td>
+<td class='table'><input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='8' value='" . htmlsafechars($arr['low_ratio']) . "'  /></td>
 
-<td class='table' align='center'>
+<td class='table'>
 <form name='remove' action='staffpanel.php?tool=class_promo&amp;mode=remove' method='post'><input type='hidden' name='remove' value='" . htmlsafechars($arr['name']) . "' /><input type='submit' value='{$lang['classpromo_remove']}' /></form></td>
 </tr>";
 }
 //$HTMLOUT.= "<br><br> ";
 
-$HTMLOUT .= "<tr><td colspan='7' class='table' align='center'><input type='submit' value='{$lang['classpromo_apply']}' /></td></tr></table></form>";
+$HTMLOUT .= "<tr><td colspan='7' class='table'><input type='submit' value='{$lang['classpromo_apply']}' /></td></tr></table></form>";
 
 $HTMLOUT .= "<div class='usage'>
 {$lang['classpromo_info_minratio']}<br>
@@ -147,18 +147,18 @@ $HTMLOUT .= "<h3>{$lang['classpromo_add_new_rule']}</h3>
 <th>{$lang['classpromo_lowratio']}</th>
 </tr>
 <tr>";
-$HTMLOUT .= "<td align='center'><select name='name'>";
+$HTMLOUT .= "<td><select name='name'>";
 $maxclass = UC_STAFF;
 for ($i = 1; $i < $maxclass; ++$i) {
     $HTMLOUT .= "<option value='$i'>" . get_user_class_name($i) . "</option>\n";
 }
 $HTMLOUT .= "</select></td>
 
-                <td align='center'><input type='text' name='min_ratio' size='20' value=''  /></td>
-                <td align='center'><input type='text' name='uploaded' size='20' value=''  /></td>
-                <td align='center'><input type='text' name='time' size='20' value='' /></td>
-                <td align='center'><input type='text' name='low_ratio' size='20' value=''  /></td>
+                <td><input type='text' name='min_ratio' size='20' value=''  /></td>
+                <td><input type='text' name='uploaded' size='20' value=''  /></td>
+                <td><input type='text' name='time' size='20' value='' /></td>
+                <td><input type='text' name='low_ratio' size='20' value=''  /></td>
                 </tr>
-<tr><td colspan='5' class='table' align='center'><input type='submit' value='{$lang['classpromo_add_new']}' /></td></tr>
+<tr><td colspan='5' class='table'><input type='submit' value='{$lang['classpromo_add_new']}' /></td></tr>
 </table></form>";
 echo stdhead($lang['classpromo_stdhead']) . $HTMLOUT . stdfoot();

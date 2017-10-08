@@ -28,10 +28,10 @@ function left()
     $left = $site_config['failedlogins'] - $total;
     if ($left <= 2) {
         $left = "
-        <span style='color:red'>{$left}</span>";
+        <span>{$left}</span>";
     } else {
         $left = "
-        <span style='color:green'>{$left}</span>";
+        <span>{$left}</span>";
     }
 
     return $left;
@@ -44,14 +44,15 @@ if (!empty($_GET['returnto'])) {
 }
 if (!isset($_GET['nowarn'])) {
     $HTMLOUT .= "
-        <div class='login-container center-block'>
-            <h4>{$lang['login_error']}</h4>
-            <h4>{$lang['login_cookies']}</h4>
-            <h4>{$lang['login_cookies1']}</h4>
-            <h4>
-                <b>[{$site_config['failedlogins']}]</b> {$lang['login_failed']}<br>{$lang['login_failed_1']}<b> " . left() . " </b> {$lang['login_failed_2']}
-            </h4>
-        </div>";
+        <div class='login-container container-fluid portlet'>
+            <div class='margin20'>
+                <h4>{$lang['login_error']}</h4>
+                <h4>{$lang['login_cookies']}</h4>
+                <h4>{$lang['login_cookies1']}</h4>
+                <h4>
+                    <b>[{$site_config['failedlogins']}]</b> {$lang['login_failed']}<br>{$lang['login_failed_1']}<b> " . left() . " </b> {$lang['login_failed_2']}
+                </h4>
+            </div>";
 }
 $got_ssl = isset($_SERVER['HTTPS']) && (bool)$_SERVER['HTTPS'] == true ? true : false;
 $value = [
@@ -64,16 +65,15 @@ $value = [
 ];
 $value[random_int(1, count($value) - 1)] = 'X';
 $HTMLOUT.= "
-        <div class='login-container center-block'>
-            <form class='well form-inline' method='post' action='takelogin.php'>
-                <table class='table table-bordered center-block'>
+            <form class='form-inline' method='post' action='takelogin.php'>
+                <table class='table table-bordered bottom20'>
                     <tr>
                         <td>{$lang['login_username']}</td>
-                        <td align='left'><input type='text' size='30' name='username' /></td>
+                        <td><input type='text' class='w-100' name='username' /></td>
                     </tr>
                     <tr>
                         <td>{$lang['login_password']}</td>
-                        <td align='left'><input type='password' size='30' name='password' /></td>
+                        <td><input type='password' class='w-100' name='password' /></td>
                     </tr>
                     <tr>";
 if ($got_ssl) {
@@ -91,7 +91,7 @@ if ($got_ssl) {
 $HTMLOUT .= "
                     </tr>" . ($site_config['captcha_on'] ? "
                     <tr>
-                        <td align='center' class='rowhead' colspan='2' id='captcha_show'></td>
+                        <td class='rowhead' colspan='2' id='captcha_show'></td>
                     </tr>" : '') . "
                     <tr>
                         <td colspan='2'><em class='center-block'>{$lang['login_click']}<strong>{$lang['login_x']}</strong></em></td>
@@ -114,10 +114,10 @@ $HTMLOUT .= "           </td>
                     </tr>
                     <tr>
                         <td colspan='2'>
-                            <span class='answers-container'>
-                                <em class='btn'>{$lang['login_signup']}</em>
-                                <em class='btn'>{$lang['login_forgot']}</em>
-                                <em class='btn'>{$lang['login_forgot_1']}</em>
+                            <span class='flex-container'>
+                                <em class='btn margin10'>{$lang['login_signup']}</em>
+                                <em class='btn margin10'>{$lang['login_forgot']}</em>
+                                <em class='btn margin10'>{$lang['login_forgot_1']}</em>
                             </span>
                         </td>
                     </tr>

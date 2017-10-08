@@ -209,14 +209,14 @@ if ($count) {
         'free',
         'silver',
         'rating_sum',
-    'checked_when',
+        'checked_when',
         'num_ratings',
-        'mtime'
+        'mtime',
+        'checked_by',
     );
     $tor_fields_ar_str = array(
         'banned',
         'info_hash',
-        'checked_by',
         'filename',
         'search_text',
         'name',
@@ -258,7 +258,7 @@ if (isset($cleansearchstr)) {
 } else {
     $title = '';
 }
-$HTMLOUT .= "<div class='article' align='center'>";
+$HTMLOUT .= "<div class='article'>";
 if ($CURUSER['opt1'] & user_options::VIEWSCLOUD) {
     $HTMLOUT .= "<div id='wrapper' style='width:80%;border:1px solid black;background-color:pink;'>";
 
@@ -280,7 +280,7 @@ foreach ($cats as $cat) {
       <input name='c" . (int)$cat['id'] . "' class=\"styled\" type=\"checkbox\" " . (in_array($cat['id'], $wherecatina) ? "checked='checked' " : '') . "value='1' /><a class='catlink' href='torrents-today.php?cat=" . (int)$cat['id'] . "'> " . (($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) ? "<img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($cat['image']) . "' alt='" . htmlsafechars($cat['name']) . "' title='" . htmlsafechars($cat['name']) . "' />" : '' . htmlsafechars($cat['name']) . '') . "</a></td>\n";
     ++$i;
 }
-$alllink = "<div align='left'>&#160;</div>";
+$alllink = "<div>&#160;</div>";
 $ncats = count($cats);
 $nrows = ceil($ncats / $site_config['catsperrow']);
 $lastrowcols = $ncats % $site_config['catsperrow'];
@@ -297,7 +297,7 @@ $HTMLOUT .= "</tr>
     <table class='main'>
     <tr><td>&#160;</td>";
 if ($ncats % $site_config['catsperrow'] == 0) {
-    $HTMLOUT .= "<td class='bottom' style='padding-left: 15px' rowspan='$nrows' valign='middle' align='right'>$alllink</td>\n";
+    $HTMLOUT .= "<td class='bottom' style='padding-left: 15px' rowspan='$nrows'>$alllink</td>\n";
 }
 $HTMLOUT .= '</tr>
     </table>
