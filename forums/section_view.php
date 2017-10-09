@@ -1,9 +1,4 @@
 <?php
-if (!defined('BUNNY_FORUMS')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 global $lang;
 $child_boards = $now_viewing = $colour = '';
 $forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));

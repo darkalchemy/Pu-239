@@ -1,10 +1,5 @@
 <?php
 $subject = $friends = '';
-if (!defined('BUNNY_PM_SYSTEM')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 //=== Get the message
 $res = sql_query('SELECT m.*, f.id AS friend, b.id AS blocked
                             FROM messages AS m LEFT JOIN friends AS f ON f.userid = ' . sqlesc($CURUSER['id']) . ' AND f.friendid = m.sender

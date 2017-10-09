@@ -1,7 +1,4 @@
 <?php
-if (!defined('IN_OFFERS')) {
-    exit('No direct script access allowed');
-}
 $HTMLOUT .= "<table class='main' width='750px' border='0' cellspacing='0' cellpadding='0'>" . "<tr><td class='embedded'>\n";
 $res = sql_query("SELECT userid, acceptedby, offer, torrentid FROM offers WHERE id = $id") or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_assoc($res);

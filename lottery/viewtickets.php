@@ -1,9 +1,4 @@
 <?php
-if (!defined('IN_LOTTERY')) {
-    die('You can\'t access this file directly!');
-}
-ini_set('display_errors', 1);
-//get config from database
 $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($lconf)) {
     $lottery_config[$ac['name']] = $ac['value'];

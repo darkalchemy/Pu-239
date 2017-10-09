@@ -1,7 +1,4 @@
 <?php
-if (!defined('IN_OFFERS')) {
-    exit('No direct script access allowed');
-}
 $res = sql_query('SELECT * FROM voted_offers WHERE offerid = ' . $id . ' and userid = ' . $CURUSER['id']) or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_assoc($res);
 if ($arr) {

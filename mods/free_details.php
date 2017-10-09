@@ -1,7 +1,4 @@
 <?php
-if (!defined('TBVERSION')) {
-    exit('No direct script access allowed');
-}
 $is = $fl = '';
 $isfree['yep'] = $isfree['expires'] = 0;
 $freeimg = '<img src="' . $site_config['pic_base_url'] . 'freedownload.gif" border="0" alt="Free download" title="Free download" />';

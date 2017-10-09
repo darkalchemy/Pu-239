@@ -1,7 +1,4 @@
 <?php
-if (!defined('IN_REQUESTS')) {
-    exit('No direct script access allowed');
-}
 $res = sql_query('SELECT * FROM voted_requests WHERE requestid = ' . $id . ' and userid = ' . $CURUSER['id']) or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_assoc($res);
 if ($arr) {

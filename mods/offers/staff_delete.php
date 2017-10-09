@@ -1,8 +1,4 @@
 <?php
-if (!defined('IN_OFFERS')) {
-    exit('No direct script access allowed');
-}
-
 if ($CURUSER['class'] >= UC_MODERATOR) {
     if (empty($_POST['deloff'])) {
         stderr('ERROR', "Don't leave any fields blank.");

@@ -1,7 +1,4 @@
 <?php
-if (!defined('IN_OFFERS')) {
-    exit('No direct script access allowed');
-}
 $torrentid = (isset($_POST['torrentid']) ? (int)$_POST['torrentid'] : 0);
 if ($torrentid < 1) {
     stderr('Error', 'That ID looks funky!');

@@ -1,8 +1,4 @@
 <?php
-if (!defined('IN_LOTTERY')) {
-    die('You can\'t access this file directly!');
-}
-//get config from database
 $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($lconf)) {
     $lottery_config[$ac['name']] = $ac['value'];
@@ -82,51 +78,63 @@ if ($CURUSER['seedbonus'] < ($lottery['current_user']['could_buy'] * $lottery_co
 if (time() > $lottery_config['end_date'] || $lottery_config['user_tickets'] <= $lottery['current_user']['total_tickets']) {
     $lottery['current_user']['can_buy'] = 0;
 }
-//print('<pre>'.print_r($lottery,1));
-$html = begin_main_frame() . begin_frame('Lottery', true);
-$html .= "<ul style='text-align:left;'>
-    <li>Tickets are non-refundable</li>
-    <li>Each ticket costs <b>" . $lottery_config['ticket_amount'] . '</b> which is taken from your seedbonus amount</li>
-    <li>Purchaseable shows how many tickets you can afford</li>
-    <li>You can only buy up to your purchaseable amount.</li>
-    <li>The competiton will end: <b>' . get_date($lottery_config['end_date'], 'LONG') . '</b></li>
-    <li>There will be <b>' . $lottery_config['total_winners'] . '</b> winners who will be picked at random</li>
-    <li>Winner(s) will get <b>' . $lottery['per_user'] . '</b> added to their seedbonus amount</li>
-    <li>The Winners will be announced once the lottery has closed and posted on the home page.</li>';
+$html .= "
+    <div class='container-fluid portlet'>
+        <h1 class='text-center'>{$site_config['site_name']} Lottery</h1>
+        <div class='bordered padleft10 padright10 bottom10 top20'>
+            <div class='alt_bordered transparent text-center'>
+                <ul style='text-align:left;'>
+                    <li>Tickets are non-refundable</li>
+                    <li>Each ticket costs <b>" . number_format($lottery_config['ticket_amount']) . '</b> Karma Bonus Points, which is taken from your seedbonus amount</li>
+                    <li>Purchaseable shows how many tickets you can afford to purchase.</li>
+                    <li>You can only buy up to your purchaseable amount.</li>
+                    <li>The competiton will end: <b>' . get_date($lottery_config['end_date'], 'LONG') . '</b></li>
+                    <li>There will be <b>' . $lottery_config['total_winners'] . '</b> winner(s) who will be picked at random.</li>
+                    <li>Winner(s) will get <b>' . number_format($lottery['per_user']) . '</b> added to their seedbonus amount</li>
+                    <li>The Winners will be announced once the lottery has closed and posted on the home page.</li>';
 if (!$lottery_config['use_prize_fund']) {
-    $html .= '<li>The more tickets that are sold the bigger the pot will be !</li>';
+    $html .= '
+                    <li>The more tickets that are sold the bigger the pot will be !</li>';
 }
 if (count($lottery['current_user']['tickets'])) {
-    $html .= '<li>You own ticket numbers : <b>' . join('</b>, <b>', $lottery['current_user']['tickets']) . '</b></li>';
+    $html .= '
+                    <li>You own ticket numbers : <b>' . join('</b>, <b>', $lottery['current_user']['tickets']) . '</b></li>';
 }
-$html .= "</ul><hr>
-   <table width='400' class='main' border='1' cellspacing='0' cellpadding='5'>
-    <tr>
-      <td class='table'>Total Pot</td>
-      <td class='table'>" . $lottery['total_pot'] . "</td>
-    </tr>
-    <tr>
-      <td class='table'>Total Tickets Purchased</td>
-      <td class='table'>" . $lottery['total_tickets'] . " Tickets</td>
-    </tr>
-    <tr>
-      <td class='table'>Tickets Purchased by You</td>
-      <td class='table'>" . $lottery['current_user']['total_tickets'] . " Tickets</td>
-    </tr>
-    <tr>
-      <td class='table'>Purchaseable</td>
-      <td class='table'>" . ($lottery['current_user']['could_buy'] > $lottery['current_user']['can_buy'] ? 'you have points for <b>' . $lottery['current_user']['can_buy'] . '</b> ticket(s) but you can buy another <b>' . ($lottery['current_user']['could_buy'] - $lottery['current_user']['can_buy']) . '</b> ticket(s) if you get more bonus points' : $lottery['current_user']['can_buy']) . '</td>
-    </tr>';
+$html .= "
+                </ul>
+            </div>
+        </div>
+        <table class='table table-bordered table-striped top20 bottom20'>
+            <tr>
+                <td>Total Pot</td>
+                <td>" . number_format($lottery['total_pot']) . "</td>
+            </tr>
+            <tr>
+                <td>Total Tickets Purchased</td>
+                <td>" . number_format($lottery['total_tickets']) . " Tickets</td>
+            </tr>
+            <tr>
+                <td>Tickets Purchased by You</td>
+                <td>" . number_format($lottery['current_user']['total_tickets']) . " Tickets</td>
+            </tr>
+            <tr>
+                <td>Purchaseable</td>
+                <td>" . ($lottery['current_user']['could_buy'] > $lottery['current_user']['can_buy'] ? 'you have points for <b>' . number_format($lottery['current_user']['can_buy']) . '</b> ticket(s) but you can buy another <b>' . ($lottery['current_user']['could_buy'] - $lottery['current_user']['can_buy']) . '</b> ticket(s) if you get more bonus points' : number_format($lottery['current_user']['can_buy'])) . '</td>
+            </tr>';
 if ($lottery['current_user']['can_buy'] > 0) {
     $html .= "
-      <tr>
-        <td class='table' colspan='2'> 
-          <form action='lottery.php?do=tickets' method='post'>
-              <input type='text' size='5' name='tickets' /><input type='submit' value='Buy tickets' />
-          </form>
-        </td>
-      </tr>";
+            <tr>
+                <td colspan='2'>
+                    <form action='lottery.php?do=tickets' method='post'>
+                        <div class='text-center'>
+                            <input type='text' size='5' name='tickets' />
+                            <input type='submit' value='Buy tickets' />
+                        </div>
+                    </form>
+                </td>
+            </tr>";
 }
-$html .= '</table>';
-$html .= end_frame() . end_main_frame();
+$html .= '
+        </table>
+    </div>';
 echo stdhead('Buy tickets for lottery') . $html . stdfoot();

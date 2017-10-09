@@ -1,10 +1,5 @@
 <?php
 $preview = '';
-if (!defined('BUNNY_PM_SYSTEM')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 $save_or_edit = (isset($_POST['edit']) ? 'edit' : (isset($_GET['edit']) ? 'edit' : 'save'));
 if (isset($_POST['buttonval']) && $_POST['buttonval'] == 'save as draft') {
     //=== make sure they wrote something :P

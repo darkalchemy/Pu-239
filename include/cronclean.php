@@ -1,18 +1,4 @@
 <?php
-if (!defined('IN_site_config_CRON')) {
-    $HTMLOUT = '';
-    $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
-		\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
-		<html xmlns='http://www.w3.org/1999/xhtml'>
-		<head>
-		<title>Error!</title>
-		</head>
-		<body>
-	<div style='font-size:33px;color:white;background-color:red;text-align:center;'>Incorrect access<br>You cannot access this file directly.</div>
-	</body></html>";
-    echo $HTMLOUT;
-    exit();
-}
 require_once 'config.php';
 if (!@($GLOBALS['___mysqli_ston'] = mysqli_connect($site_config['mysql_host'], $site_config['mysql_user'], $site_config['mysql_pass']))) {
     sqlerr(__FILE__, __LINE__);

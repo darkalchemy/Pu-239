@@ -1,41 +1,6 @@
 <?php
 require_once 'emoticons.php';
-function source_highlighter($source, $lang2geshi)
-{
-    require_once 'geshi/geshi.php';
-    $source = str_replace([
-        '&#039;',
-        '&gt;',
-        '&lt;',
-        '&quot;',
-        '&amp;',
-    ], [
-        "'",
-        '>',
-        '<',
-        '"',
-        '&',
-    ], $source);
-    $lang2geshi = ($lang2geshi == 'html' ? 'html4strict' : $lang2geshi);
-    $geshi = new GeSHi($source, $lang2geshi);
-    $geshi->set_header_type(GESHI_HEADER_PRE_VALID);
-    $geshi->set_overall_style('font: normal normal 100% monospace; color: #000066;', false);
-    $geshi->set_line_style('color: #003030;', 'font-weight: bold; color: #006060;', true);
-    $geshi->set_code_style('color: #000020;font-family:monospace; font-size:12px;line-height:13px;', true);
-    $geshi->enable_classes(false);
-    $geshi->set_link_styles(GESHI_LINK, 'color: #000060;');
-    $geshi->set_link_styles(GESHI_HOVER, 'background-color: #f0f000;');
-    $return = "<div class=\"codetop\">Code</div><div class=\"codemain\">\n";
-    $return .= $geshi->parse_code();
-    $return .= "\n</div>\n";
 
-    return $return;
-}
-
-//=== Inserts  smilies frame and smilie set: use by $use_this = smilies_frame($smilies,4,':thankyou:');
-// $smilies_set > from emoticons
-// 4 > number of columns
-// $last_smilie_and_stop > blank to show all smilies, or smilie code to stop at say :thankyou: that is too big to display in the div
 function smilies_frame($smilies_set)
 {
     global $smilies, $customsmilies, $staff_smilies;
@@ -58,7 +23,6 @@ function smilies_frame($smilies_set)
     return $emoticons;
 }
 
-//=== BBcode function will add a BBcode markup text area with smilies frame and tags if Javascript is enabled if not, it will just make a text area
 function BBcode($body)
 {
     global $CURUSER, $smilies, $customsmilies, $staff_smilies, $site_config;
@@ -114,23 +78,6 @@ function BBcode($body)
     return $bbcode;
 }
 
-//Finds last occurrence of needle in haystack
-//in PHP5 use strripos() instead of this
-function _strlastpos($haystack, $needle, $offset = 0)
-{
-    $addLen = strlen($needle);
-    $endPos = $offset - $addLen;
-    while (true) {
-        if (($newPos = strpos($haystack, $needle, $endPos + $addLen)) === false) {
-            break;
-        }
-
-        $endPos = $newPos;
-    }
-
-    return ($endPos >= 0) ? $endPos : false;
-}
-
 function validate_imgs($s)
 {
     $start = '(http|https)://';
@@ -148,7 +95,6 @@ function validate_imgs($s)
     return $s;
 }
 
-//=== new test for BBcode errors from http://codesnippets.joyent.com/posts/show/959 by berto
 function check_BBcode($html)
 {
     preg_match_all('#<(?!img|br|hr\b)\b([a-z]+)(?: .*)?(?<![/|/ ])>#iU', $html, $result);
@@ -171,7 +117,6 @@ function check_BBcode($html)
     return $html;
 }
 
-//==format quotes by Retro
 function format_quotes($s)
 {
     preg_match_all('/\\[quote.*?\\]/', $s, $result, PREG_PATTERN_ORDER);
@@ -446,29 +391,70 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         $s = preg_replace("/\[username\]/i", $CURUSER['username'], $s);
     }
 
-    // [php]code[/php]
-    if (stripos($s, '[php]') !== false) {
-        $s = preg_replace("#\[(php|sql|html)\](.+?)\[\/\\1\]#ise", "source_highlighter('\\2','\\1')", $s);
-    }
     // Maintain spacing
     $s = str_replace('  ', ' &#160;', $s);
     if (isset($smilies)) {
         foreach ($smilies as $code => $url) {
-            $s = str_replace($code, "<img border='0' src=\"{$site_config['pic_base_url']}smilies/{$url}\" alt=\"\" />", $s);
+            $s = str_replace($code, "<img border='0' src='{$site_config['pic_base_url']}smilies/{$url}' alt='' />", $s);
         }
     }
     if (isset($staff_smilies)) {
         foreach ($staff_smilies as $code => $url) {
-            $s = str_replace($code, "<img border='0' src=\"{$site_config['pic_base_url']}smilies/{$url}\" alt=\"\" />", $s);
+            $s = str_replace($code, "<img border='0' src='{$site_config['pic_base_url']}smilies/{$url}' alt='' />", $s);
         }
     }
     if (isset($customsmilies)) {
         foreach ($customsmilies as $code => $url) {
-            $s = str_replace($code, "<img border='0' src=\"{$site_config['pic_base_url']}smilies/{$url}\" alt=\"\" />", $s);
+            $s = str_replace($code, "<img border='0' src='{$site_config['pic_base_url']}smilies/{$url}' alt='' />", $s);
         }
     }
     $s = format_quotes($s);
+    $s = format_code($s);
     $s = check_BBcode($s);
+    return $s;
+}
+
+function format_code($s)
+{
+    if (preg_match('/\[code\]/', $s)) {
+        preg_match_all('/\\[code.*?\\]/', $s, $result, PREG_PATTERN_ORDER);
+        $openquotecount = count($openquote = $result[0]);
+        preg_match_all('/\\[\/code\\]/', $s, $result, PREG_PATTERN_ORDER);
+        $closequotecount = count($closequote = $result[0]);
+        if ($openquotecount != $closequotecount) {
+            return $s;
+        } // quote mismatch. Return raw string...
+        // Get position of opening quotes
+        $openval = array();
+        $pos = -1;
+        foreach ($openquote as $val) {
+            $openval[] = $pos = strpos($s, $val, $pos + 1);
+        }
+        // Get position of closing quotes
+        $closeval = array();
+        $pos = -1;
+        foreach ($closequote as $val) {
+            $closeval[] = $pos = strpos($s, $val, $pos + 1);
+        }
+        for ($i = 0; $i < count($openval); ++$i) {
+            if ($openval[$i] > $closeval[$i]) {
+                return $s;
+            }
+        } // Cannot close before opening. Return raw string...
+        $s = str_replace("\t", '    ', $s);
+        $s = str_replace('[code]', "
+            <div class='bordered bg-grey'>
+                <div>
+                    <b>code:</b>
+                </div>
+                <div class='quote'>
+                    <p class='code'>", $s);
+        $s = str_replace('[/code]', "
+                    </p>
+                </div>
+        </div>", $s);
+    }
+
     return $s;
 }
 

@@ -7,7 +7,6 @@ require_once INCL_DIR . 'pager_new.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-define('BUNNY_PM_SYSTEM', true);
 // Define constants
 define('PM_DELETED', 0); // Message was deleted
 define('PM_INBOX', 1); // Message located in Inbox for reciever

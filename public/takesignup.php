@@ -143,7 +143,7 @@ $mc1->delete_value('birthdayusers');
 $mc1->delete_value('chat_users_list');
 $message = "Welcome New {$site_config['site_name']} Member : - [user]" . htmlsafechars($wantusername) . '[/user]';
 if (!$arr[0]) {
-    write_staffs();
+    $mc1->delete_value('staff_settings_');
 }
 if (!$ret) {
     if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {

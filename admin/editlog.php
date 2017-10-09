@@ -1,102 +1,52 @@
 <?php
-// Written by RetroKill to allow scripters to see what scripts have changed since
-// they last updated their own list.
-//
-// This script will create a unique list for each member allowed to access this
-// script. It allows them to see what scripts have been updated since they last
-// updated their own list, allowing scripters to work together better.
-//
-// The first run will produce no results, as it will initialise the list for the
-// member running the script. Further runs will show the scripter when a script
-// has been updated from their original list (someone else, or they, have modified
-// a script). When a member updates a script, they should run this script, which
-// will show the update, then update their list using the update button, to bring
-// their list up to date. If an update appears when the scripter hasn't made any
-// changes, then they know that another scripter has modified a script.
-if (!defined('IN_site_config_ADMIN')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 check_user_status();
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-//== ID list - Add individual user IDs to this list for access to this script
-/*$allowed_ids = array(
-    1
-); //== 1 Is Sysop*/
-if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'] /*$allowed_ids*/)) {
-    stderr($lang['editlog_error'], $lang['editlog_denied']);
-}
 $lang = array_merge($lang, load_language('editlog'));
 $HTMLOUT = '';
-$file_data = './dir_list/data_' . $CURUSER['username'] . '.txt';
+$file_data = ROOT_DIR . 'dir_list' . DIRECTORY_SEPARATOR . 'data_' . $CURUSER['username'] . '.txt';
 if (file_exists($file_data)) {
-    // Fetch existing data
     $data = unserialize(file_get_contents($file_data));
     $exist = true;
 } else {
-    // Initialise File
     $exist = false;
 }
 $fetch_set = [];
 $i = 0;
-$directories = [];
-//== Enter directories to log... if you dont have them - comment them out or edit
-//$directories[] = '/var/bucket/';
-//$directories[] = '/var/bucket/avatars/';
-$directories[] = './'; // Webroot
-$directories[] = './include/';
-$directories[] = './forums/';
-$directories[] = './mods/';
-$directories[] = './scripts/';
-$directories[] = './uploads/';
-$directories[] = './uploadsub/';
-$directories[] = './lottery/';
-$directories[] = './avatar/';
-$directories[] = './templates/';
-$directories[] = './include/settings/';
-$directories[] = './cache/';
-$directories[] = './sqlerr_logs/';
-//$directories[] = './torrents/';  //== watch this fella if you have 1000's of torrents it will timeout
-$directories[] = './admin/';
-foreach ($directories as $x) {
-    if ($handle = opendir($x)) {
-        while (false !== ($file = readdir($handle))) {
-            if ($file != '.' && $file != '..') {
-                if (!is_dir($x . '/' . $file)) {
-                    $fetch_set[$i]['modify'] = filemtime($x . $file);
-                    $fetch_set[$i]['size'] = filesize($x . $file);
-                    $fetch_set[$i]['name'] = $x . $file;
-                    $fetch_set[$i]['key'] = $i;
-                    ++$i;
-                }
-            }
+$directories[] = ROOT_DIR;
+global $site_config;
+$included_extentions = explode(' ', $site_config['coders_log_allowed_ext']);
+foreach ($directories as $path) {
+    $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
+    foreach($objects as $name => $object) {
+        $ext = pathinfo($name, PATHINFO_EXTENSION);
+        if (in_array($ext, $included_extentions)) {
+            $fetch_set[$i]['modify'] = filemtime($name);
+            $fetch_set[$i]['size'] = filesize($name);
+            $fetch_set[$i]['hash'] = hash_file('sha256', $name);
+            $fetch_set[$i]['name'] = $name;
+            $fetch_set[$i]['key'] = $i;
+            ++$i;
         }
-        closedir($handle);
     }
 }
 if (!$exist or (isset($_POST['update']) and ($_POST['update'] == 'Update'))) {
-    // Create first disk image of files
-    // OR update existing data...
     $data = serialize($fetch_set);
-    $handle = fopen($file_data, 'w');
-    fputs($handle, $data);
-    fclose($handle);
-    $data = unserialize($data);
+    file_put_contents($file_data, $data);
+    setSessionVar('success', "Coder's Log updated for {$CURUSER['username']}");
+    $data = $fetch_set;
+    unset($_POST);
 }
-// We now need to link current contents with stored contents.
 reset($fetch_set);
 reset($data);
 $current = $fetch_set;
 $last = $data;
 foreach ($current as $x) {
-    // Search the data sets for differences
     foreach ($last as $y) {
         if ($x['name'] == $y['name']) {
-            if (($x['size'] == $y['size']) and ($x['modify'] == $y['modify'])) {
+            if (($x['hash'] === $y['hash'])) {
                 unset($current[$x['key']]);
                 unset($last[$y['key']]);
             } else {
@@ -111,112 +61,118 @@ foreach ($current as $x) {
         $current[$x['key']]['status'] = 'new';
     }
 }
-$current += $last; // Add deleted entries to current list
+$current += $last;
 unset($last);
-// $fetch_data contains a current list of directory
-// $data contains the last snapshot of the directory
-// $current contains a current list of files in the directory that are
-// new, modified or deleted...
-// Remove lists from current code...
 unset($data);
 unset($fetch_set);
-$HTMLOUT .= "<table width='750' border='1' cellspacing='2' cellpadding='5'>
-<tr>
-<td width='70%' bgcolor='orange'><strong>{$lang['editlog_new']}</strong></td>
-<td bgcolor='orange'><strong>{$lang['editlog_added']}</strong></td>
-</tr>";
+$HTMLOUT .= "
+    <div class='container-fluid portlet'>
+        <h2 class='text-center top20'>Coder's Log</h2>
+        <div class='bordered bottom20'>
+            <div class='alt_bordered transparent'>
+                <div class='text-center'>Tracking " . str_replace(' ', ', ', $site_config['coders_log_allowed_ext']) . " files only!</div>
+                <div class='text-center'>" . number_format(count($current)) . " files have been added, modifed or deleted since your last update of the " . number_format($i) . " files being tracked.</div>
+            </div>
+        </div>
+
+        <table class='table table-bordered table-striped'>
+            <thead>
+                <tr>
+                    <th>{$lang['editlog_new']}</th>
+                    <th class='rowhead'>{$lang['editlog_added']}</th>
+                </tr>
+            </thead>";
 reset($current);
 $count = 0;
+$current = array_msort($current, array('name'=>SORT_ASC));
 foreach ($current as $x) {
     if ($x['status'] == 'new') {
         $HTMLOUT .= "
-<tr>
-<td>";
-        $HTMLOUT .= htmlsafechars(substr($x['name'], 2));
-        $HTMLOUT .= "</td>
-<td>";
-        $HTMLOUT .= get_date($x['modify'], 'DATE', 0, 1);
-        $HTMLOUT .= '</td>
-</tr>';
+                <tr>
+                    <td>" .
+                        htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . "
+                    </td>
+                    <td>" .
+                        get_date($x['modify'], 'DATE', 0, 1) . "
+                    </td>
+                </tr>";
         ++$count;
     }
 }
 if (!$count) {
     $HTMLOUT .= "
-<tr>
-<td colspan='2'><b>{$lang['editlog_no_new']}</b></td>
-</tr>";
+                <tr>
+                    <td colspan='2' class='text-white'>{$lang['editlog_no_new']}</td>
+                </tr>";
 }
 $HTMLOUT .= "
-</table>
-<br><br><br>
-<table width='750' border='1' cellspacing='2' cellpadding='5'>
-<tr>
-<td width='70%' bgcolor='orange'><strong>{$lang['editlog_modified']}</strong></td>
-<td bgcolor='orange'><strong>{$lang['editlog_modified1']}</strong></td>
-</tr>";
+        </table>
+        <table class='table table-bordered table-striped top20'>
+            <thead>
+                <tr>
+                    <th>{$lang['editlog_modified']}</th>
+                    <th class='rowhead'>{$lang['editlog_modified1']}</th>
+                </tr>
+            </thead>";
 reset($current);
 $count = 0;
 foreach ($current as $x) {
     if ($x['status'] == 'modified') {
         $HTMLOUT .= "
-<tr>
-<td>";
-        $HTMLOUT .= htmlsafechars(substr($x['name'], 2));
-        $HTMLOUT .= "</td>
-<td>";
-        $HTMLOUT .= get_date($x['modify'], 'DATE', 0, 1);
-        $HTMLOUT .= '</td>
-</tr>';
+                <tr>
+                    <td>" .
+                        htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . "
+                    </td>
+                    <td>" .
+                        get_date($x['modify'], 'DATE', 0, 1) . "
+                    </td>
+                </tr>";
         ++$count;
     }
 }
 if (!$count) {
     $HTMLOUT .= "
-<tr>
-<td colspan='2'><b>{$lang['editlog_no_modified']}</b></td>
-</tr>";
+                <tr>
+                    <td colspan='2' class='text-white'>{$lang['editlog_no_modified']}</td>
+                </tr>";
 }
 $HTMLOUT .= "
-</table>
-<br><br><br>
-<table width='750' border='1' cellspacing='2' cellpadding='5'>
-<tr>
-<td width='70%' bgcolor='orange'><strong>{$lang['editlog_deleted']}</strong></td>
-<td bgcolor='orange'><strong>{$lang['editlog_deleted1']}</strong></td>
-</tr>";
+        </table>
+        <table class='table table-bordered table-striped top20'>
+            <thead>
+                <tr>
+                    <th>{$lang['editlog_deleted']}</th>
+                    <th class='rowhead'>{$lang['editlog_deleted1']}</th>
+                </tr>
+            </thead>";
 reset($current);
 $count = 0;
 foreach ($current as $x) {
     if ($x['status'] == 'deleted') {
         $HTMLOUT .= "
-<tr>
-<td>";
-        $HTMLOUT .= htmlsafechars(substr($x['name'], 2));
-        $HTMLOUT .= "</td>
-<td>";
-        $HTMLOUT .= get_date($x['modify'], 'DATE', 0, 1);
-        $HTMLOUT .= '</td>
-</tr>';
+                <tr>
+                    <td>" .
+                        htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . "
+                    </td>
+                    <td>" .
+                        get_date($x['modify'], 'DATE', 0, 1) . "
+                    </td>
+                </tr>";
         ++$count;
     }
 }
 if (!$count) {
     $HTMLOUT .= "
-<tr>
-<td colspan='2'><b>{$lang['editlog_no_deleted']}</b></td>
-</tr>";
+                <tr>
+                    <td colspan='2' class='text-white'>{$lang['editlog_no_deleted']}</td>
+                </tr>";
 }
 $HTMLOUT .= "
-</table>
-<br><br><br>
-<form method='post' action='staffpanel.php?tool=editlog&amp;action=editlog'>
-<table width='750' border='1' cellspacing='2' cellpadding='5'>
-<tr>
-<td bgcolor='orange'>
-<input name='update' type='submit' value='{$lang['editlog_update']}' />
-</td>
-</tr>
-</table>
-</form>";
+        </table>
+        <form method='post' action='staffpanel.php?tool=editlog&amp;action=editlog'>
+            <div class='text-center top20 bottom20'>
+                <input name='update' type='submit' value='{$lang['editlog_update']}' class='btn' />
+            </div>
+        </form>
+    </div>";
 echo stdhead($lang['editlog_stdhead']) . $HTMLOUT . stdfoot();

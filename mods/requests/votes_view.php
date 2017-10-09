@@ -1,7 +1,4 @@
 <?php
-if (!defined('IN_REQUESTS')) {
-    exit('No direct script access allowed');
-}
 $res2 = sql_query('select count(voted_requests.id) AS c from voted_requests inner join users on voted_requests.userid = users.id inner join requests on voted_requests.requestid = requests.id WHERE voted_requests.requestid =' . $id) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res2);
 $count = (int)$row['c'];

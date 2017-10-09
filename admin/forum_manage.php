@@ -1,9 +1,4 @@
 <?php
-if (!defined('IN_site_config_ADMIN')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
@@ -22,7 +17,7 @@ $over_forums = (isset($_POST['over_forums']) ? intval($_POST['over_forums']) : 0
 $min_class_read = (isset($_POST['min_class_read']) ? intval($_POST['min_class_read']) : 0);
 $min_class_write = (isset($_POST['min_class_write']) ? intval($_POST['min_class_write']) : 0);
 $min_class_create = (isset($_POST['min_class_create']) ? intval($_POST['min_class_create']) : 0);
-$main_links = '<p><a class="altlink" href="staffpanel.php?tool=over_forums&amp;action=over_forums">' . $lang['fm_overforum'] . '</a> :: 
+$main_links = '<p><a class="altlink" href="./staffpanel.php?tool=over_forums&amp;action=over_forums">' . $lang['fm_overforum'] . '</a> :: 
 						<span style="font-weight: bold;">' . $lang['fm_forummanager'] . '</span> :: 
 						<a class="altlink" href="staffpanel.php?tool=forum_config&amp;action=forum_config">' . $lang['fm_configure'] . '</a><br></p>';
 //=== post / get action posted so we know what to do :P

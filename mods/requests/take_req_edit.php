@@ -1,7 +1,4 @@
 <?php
-if (!defined('IN_REQUESTS')) {
-    exit('No direct script access allowed');
-}
 $res = sql_query("SELECT userid, cat FROM requests WHERE id = $id") or sqlerr(__FILE__, __LINE__);
 $num = mysqli_fetch_assoc($res);
 if ($CURUSER['id'] != $num['userid'] && $CURUSER['class'] < UC_MODERATOR) {

@@ -6,9 +6,9 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         die('Site is down for maintenance, please check back again later... thanks<br>');
     }
     if ($title == '') {
-        $title = $site_config['site_name'] . (isset($_GET['tbv']) ? ' (' . TBVERSION . ')' : '');
+        $title = $site_config['site_name'];
     } else {
-        $title = $site_config['site_name'] . (isset($_GET['tbv']) ? ' (' . TBVERSION . ')' : '') . ' :: ' . htmlsafechars($title);
+        $title = $site_config['site_name'] . ' :: ' . htmlsafechars($title);
     }
     $css_incl = '';
     if (!empty($stdhead['css'])) {
@@ -53,7 +53,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     if ($CURUSER) {
         $htmlout .= "
             <div id='logo'>
-                <h1>" . TBVERSION . " Code</h1>
+                <h1>" . $site_config['variant'] . " Code</h1>
                 <p class='description left20'><i>Making progress, 1 day at a time...</i></p>
             </div>";
         $htmlout .= platform_menu();
@@ -263,7 +263,7 @@ function stdfoot($stdfoot = false)
                 ' . ($debug ? '<br><b>' . $header . "</b><br><b>{$lang['gl_stdfoot_uptime']}</b> " . $uptime . '' : ' ') . "
                 </div>
                 <div class='pull-right'>
-                {$lang['gl_stdfoot_powered']}" . TBVERSION . "<br>
+                {$lang['gl_stdfoot_powered']}" . $site_config['variant'] . "<br>
                 {$lang['gl_stdfoot_using']}<b>{$lang['gl_stdfoot_using1']}</b><br>
                 " . ($debug ? "<a title='{$lang['gl_stdfoot_logview']}' rel='external' href='./staffpanel.php?tool=log_viewer'>{$lang['gl_stdfoot_logview']}</a> | " . "<a title='{$lang['gl_stdfoot_sview']}' rel='external' href='/staffpanel.php?tool=system_view'>{$lang['gl_stdfoot_sview']}</a> | " . "<a rel='external' title='OPCache' href='/staffpanel.php?tool=op'>{$lang['gl_stdfoot_opc']}</a> | " . "<a rel='external' title='Memcache' href='/staffpanel.php?tool=memcache'>{$lang['gl_stdfoot_memcache']}</a>" : '') . '';
         $htmlfoot .= "
@@ -292,6 +292,9 @@ function stdfoot($stdfoot = false)
         for (i = 0; i < x.length; i++) {
             var id = x[i].parentNode.id;
             if (id && localStorage[id] === 'closed') {
+                var el = document.getElementById(id);
+                el.classList.add('no-margin');
+                el.classList.add('no-padding');
                 var nextSibling = x[i].nextSibling;
                 while (nextSibling && nextSibling.nodeType != 1) {
                     nextSibling = nextSibling.nextSibling;
@@ -337,11 +340,17 @@ function stdfoot($stdfoot = false)
 
 function stdmsg($heading, $text)
 {
-    $htmlout .= '';
+    $htmlout .= "
+        <div class='bordered padleft10 padright10 top20 bottom20'>
+            <div class='alt_bordered transparent'>";
     if ($heading) {
-        $htmlout .= "<h2>$heading</h2>\n";
+        $htmlout .= "
+                <h2>$heading</h2>";
     }
-    $htmlout .= "<div>$text</div>";
+    $htmlout .= "
+                <span>$text</span>
+            </div>
+        </div>";
 
     return $htmlout;
 }

@@ -1,9 +1,4 @@
 <?php
-if (!defined('BUNNY_PM_SYSTEM')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 /********************************************************************************
  * why I used a different method for delete and move I have no idea...
  * must have combined two scripts at one point but now it's just funny...

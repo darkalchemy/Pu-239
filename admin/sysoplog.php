@@ -1,14 +1,10 @@
 <?php
-if (!defined('IN_site_config_ADMIN')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
-class_check(UC_MAX);
+$class = get_access(basename($_SERVER['REQUEST_URI']));
+class_check($class);
 $lang = array_merge($lang, load_language('ad_sysoplog'));
 $HTMLOUT = $where = '';
 $search = isset($_POST['search']) ? strip_tags($_POST['search']) : '';
@@ -37,7 +33,7 @@ $HTMLOUT .= "<table border='1' cellspacing='0' width='115' cellpadding='5'>\n
 			 <td class='table'>\n
 			 <form method='post' action='staffpanel.php?tool=sysoplog&amp;action=sysoplog'>\n
 			 <input type='text' name='search' size='40' value='' />\n
-			 <input type='submit' value='{$lang['sysoplog_search']}' style='height: 20px' />\n
+			 <input type='submit' value='{$lang['sysoplog_search']}' class='btn' />\n
 			 </form></td></tr></table>";
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];

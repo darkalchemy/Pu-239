@@ -1,10 +1,5 @@
 <?php
 $preview = $subject = $draft = '';
-if (!defined('BUNNY_PM_SYSTEM')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 if (isset($_POST['buttonval']) && $_POST['buttonval'] == 'save draft') {
     //=== make sure they wrote something :P
     if (empty($_POST['subject'])) {

@@ -1,7 +1,4 @@
 <?php
-if (!defined('IN_OFFERS')) {
-    exit('No direct script access allowed');
-}
 if ($CURUSER['class'] < $site_config['offer_min_class']) {
     $HTMLOUT .= "<h1>Oops!</h1>
     <div class='some class'>You must be " . get_user_class_name($site_config['offer_min_class']) . ' or above <b>AND</b> have a ratio above <b>' . $site_config['offer_min_ratio'] . "</b> to make an offer.

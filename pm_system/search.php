@@ -1,10 +1,5 @@
 <?php
 $num_result = $and_member = '';
-if (!defined('BUNNY_PM_SYSTEM')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 //=== get post / get stuff
 $keywords = (isset($_POST['keywords']) ? htmlsafechars($_POST['keywords']) : '');
 $member = (isset($_POST['member']) ? htmlsafechars($_POST['member']) : '');

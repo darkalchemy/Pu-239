@@ -1,9 +1,4 @@
 <?php
-if (!defined('IN_site_config_ADMIN')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 $stdfoot = [
     /* include js **/
     'js' => [

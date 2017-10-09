@@ -1,7 +1,4 @@
 <?php
-if (!defined('IN_REQUESTS')) {
-    exit('No direct script access allowed');
-}
 if ($CURUSER['class'] < $site_config['req_min_class']) {
     $HTMLOUT .= "<h1>Oops!</h1>
     <div class='some class'>{$lang['add_must_be']}" . get_user_class_name($site_config['req_min_class']) . "{$lang['add_ratio_above']}" . $site_config['req_min_ratio'] . "{$lang['add_make_req']}

@@ -715,7 +715,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
         $HTMLOUT .= "</td></tr>\n";
     }
     // ====End
-    if ($CURUSER['class'] == UC_STAFF && $user['class'] > UC_VIP) {
+    if ($CURUSER['class'] === UC_STAFF && $user['class'] > UC_VIP) {
         $HTMLOUT .= "<input type='hidden' name='class' value='{$user['class']}' />\n";
     } else {
         $HTMLOUT .= "<tr><td class='rowhead'>Class</td><td colspan='2' class='text-left'><select name='class'>\n";

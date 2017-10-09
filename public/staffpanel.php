@@ -24,7 +24,6 @@ if (!$CURUSER) {
 if ($site_config['staffpanel_online'] == 0) {
     stderr($lang['spanel_information'], $lang['spanel_panel_cur_offline']);
 }
-define('IN_site_config_ADMIN', true);
 require_once CLASS_DIR . 'class_check.php';
 class_check(UC_STAFF);
 $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : null));
@@ -58,6 +57,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
         }
         $mc1->delete_value('is_staffs_');
         sql_query('DELETE FROM staffpanel WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $mc1->delete_value('av_class_');
         if (mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
             if ($CURUSER['class'] <= UC_MAX) {
                 write_log($lang['spanel_page'] . ' "' . htmlsafechars($arr['page_name']) . '"(' . ($class_color ? '[color="#' . get_user_class_color($arr['av_class']) . '"]' : '') . get_user_class_name($arr['av_class']) . ($class_color ? '[/color]' : '') . ') ' . $lang['spanel_was_del_sp_by'] . ' [url="' . $site_config['baseurl'] . '/userdetails.php?id=' . (int)$CURUSER['id'] . '"]' . $CURUSER['username'] . '[/url](' . ($class_color ? '[color="#' . get_user_class_color($CURUSER['class']) . '"]' : '') . get_user_class_name($CURUSER['class']) . ($class_color ? '[/color]' : '') . ')');
@@ -127,6 +127,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
                             TIME_NOW,
                         ])) . ')');
                     $mc1->delete_value('is_staffs_');
+                    $mc1->delete_value('av_class_');
                     if (!$res) {
                         if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
                             $errors[] = $lang['spanel_this_fname_sub'];
@@ -136,6 +137,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
                     }
                 } else {
                     $res = sql_query('UPDATE staffpanel SET page_name = ' . sqlesc($page_name) . ', file_name = ' . sqlesc($file_name) . ', description = ' . sqlesc($description) . ', type = ' . sqlesc($type) . ', av_class = ' . sqlesc((int)$av_class) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+                    $mc1->delete_value('av_class_');
                     if (!$res) {
                         $errors[] = $lang['spanel_db_error_msg'];
                     }
@@ -149,7 +151,6 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
                 }
             }
         }
-        //$HTMLOUT .= begin_main_frame();
         if (!empty($errors)) {
             $HTMLOUT .= stdmsg($lang['spanel_there'] . ' ' . (count($errors) > 1 ? 'are' : 'is') . ' ' . count($errors) . ' error' . (count($errors) > 1 ? 's' : '') . ' ' . $lang['spanel_in_the_form'] . '.', '<b>' . implode('<br>', $errors) . '</b>');
             $HTMLOUT .= '<br>';
@@ -196,30 +197,10 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
             $HTMLOUT .= '
                         <option value="' . $types . '"' . ($types == $type ? ' selected="selected"' : '') . '>' . ucfirst($types) . '</option>';
         }
-        $HTMLOUT .= '
+        $HTMLOUT .= "
                     </select>
                 </td>
-            </tr>';
-        /*
-        $HTMLOUT.="<select name='type'>";
-        $maxclass = UC_MAX;
-        for ($class = UC_STAFF; $class <= $maxclass; ++$class)
-
-        $HTMLOUT.= '<option value="' . $class . '"' . ($class == $av_class ? ' selected="selected"' : '') . '>' . get_user_class_name($class) . '</option>';
-        $HTMLOUT.= "</select></td></tr>";
-        */
-
-        /*
-        <tr><select name='type'>
-        <option value='user'>User</option>
-        <option value='settings'>Settings</option>
-        <option value='stats'>Stats</option>
-        <option value='other'>Other</option>
-        </select>
-        </td>
-        </tr>";*/
-
-        $HTMLOUT .= "
+            </tr>
             <tr>
                 <td class='rowhead'>
                     <span>{$lang['spanel_available_for']}</span>
@@ -248,10 +229,8 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
         </form>
     </div>
     </div>";
-        //$HTMLOUT .= end_main_frame();
         echo stdhead($lang['spanel_header'] . ' :: ' . ($action == 'edit' ? '' . $lang['spanel_edit'] . ' "' . $page_name . '"' : $lang['spanel_add_a_new']) . ' page') . $HTMLOUT . stdfoot();
     } else {
-        //$HTMLOUT .= begin_main_frame();
         $HTMLOUT .= "
                 <h1 class='text-center'>{$lang['spanel_welcome']} {$CURUSER['username']} {$lang['spanel_to_the']} {$lang['spanel_header']}!</h1>";
         if ($CURUSER['class'] == UC_MAX) {
@@ -334,7 +313,6 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
         } else {
             $HTMLOUT .= stdmsg($lang['spanel_sorry'], $lang['spanel_nothing_found']);
         }
-        //$HTMLOUT .= end_main_frame();
         echo stdhead($lang['spanel_header']) . $HTMLOUT . stdfoot();
     }
 }

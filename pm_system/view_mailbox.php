@@ -1,9 +1,4 @@
 <?php
-if (!defined('BUNNY_PM_SYSTEM')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 //=== get mailbox name
 if ($mailbox > 1) {
     //== get name of PM box if not in or out

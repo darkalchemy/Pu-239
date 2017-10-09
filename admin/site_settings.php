@@ -1,11 +1,7 @@
 <?php
-if (!defined('IN_site_config_ADMIN')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 require_once CLASS_DIR . 'class_check.php';
-class_check(UC_MAX);
+$class = get_access(basename($_SERVER['REQUEST_URI']));
+class_check($class);
 $lang = array_merge($lang, load_language('ad_sitesettings'));
 $site_settings = $current_site_settings = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {

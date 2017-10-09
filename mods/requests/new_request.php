@@ -1,7 +1,4 @@
 <?php
-if (!defined('IN_REQUESTS')) {
-    exit('No direct script access allowed');
-}
 $request = (isset($_POST['requesttitle']) ? $_POST['requesttitle'] : '');
 if ($request == '') {
     stderr("{$lang['error_error']}", "{$lang['error_title']}");

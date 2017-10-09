@@ -80,8 +80,10 @@ $(function() {
                 var id = $(this).parent().attr('id');
                 if (!$(this).is(':visible')) {
                     localStorage.setItem(id, 'closed');
+                    $(this).parent().addClass('no-margin no-padding');
                 } else {
                     localStorage.setItem(id, 'open');
+                    $(this).parent().removeClass('no-margin no-padding');
                 }
             });
             $(this).parent().find('.fa').toggleClass('fa-angle-up fa-angle-down');
@@ -191,19 +193,10 @@ $(function() {
 
     $('#menuWrapper ul li').hover( function () {
         var el = $(this).children('ul');
-        // check if it has a class of .hov
         if (el.hasClass('hov')) {
             $(el).removeClass('hov');
         } else {
             $(el).addClass('hov');
-        }
-    });
-
-    $('#checkThemAll').click(function(){
-        if ($('#checkThemAll').is(':checked')) {
-            $('#cat-container input:checkbox').prop('checked', true);
-        } else {
-            $('#cat-container input:checkbox').prop('checked', false);
         }
     });
 
@@ -234,7 +227,6 @@ $(function() {
     if ($('#checkAll').length) {
         $("#checkAll").change(function () {
             $("input:checkbox").prop('checked', $(this).prop("checked"));
-            //document.getElementById("checkbox_container").submit();
         });
 
         if ($('input:checkbox:checked').length == $('input:checkbox').length - 1) {

@@ -1,4 +1,12 @@
+9 Oct, 2017
+remove: unneeded check for direct file access in files not in webroot
+remove: geshi syntax highlighter
+update: coders log
+add: bbcode code for [code]
+
 8 Oct, 2017
+update: minified css and js files
+remove: margin and padding on collapsed divs
 remove: cleanup log
 move: DB Backup config settings to db and site_config
 remove: torrent.type from database

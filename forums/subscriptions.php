@@ -1,9 +1,4 @@
 <?php
-if (!defined('BUNNY_FORUMS')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 global $lang;
 $posts = $lppostid = $topicpoll = $colour = $rpic = $content = '';
 $links = '<span><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';

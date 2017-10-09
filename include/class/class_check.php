@@ -1,10 +1,4 @@
 <?php
-if (!defined('TBVERSION')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
-
 function class_check($class = 0, $staff = true, $pin = false)
 {
     global $CURUSER, $site_config, $mc1;
@@ -126,8 +120,6 @@ function class_check($class = 0, $staff = true, $pin = false)
     }
 }
 
-//===== Auto Set Script Access Class by Mistero ================\\
-//===== Modded For V4 By Stoner ================\\
 function get_access($script)
 {
     global $CURUSER, $site_config, $mc1;
@@ -144,7 +136,7 @@ function get_access($script)
         $classid = sql_query("SELECT av_class FROM staffpanel WHERE file_name LIKE '%$ending%'") or sqlerr(__FILE__, __LINE__);
         $classid = mysqli_fetch_assoc($classid);
         $class = (int)$classid['av_class'];
-        $mc1->cache_value('av_class_' . $ending, $class, 900); //== test values 15 minutes to 0 once delete key in place //==
+        $mc1->cache_value('av_class_' . $ending, $class, 0);
     }
 
     return $class;

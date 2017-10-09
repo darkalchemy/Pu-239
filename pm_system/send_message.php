@@ -1,11 +1,6 @@
 <?php
 $draft = $subject = $body = '';
 flood_limit('messages');
-if (!defined('BUNNY_PM_SYSTEM')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 //=== check to see if it's a preview or a post
 if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     //=== check to see they have everything or...

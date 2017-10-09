@@ -10,7 +10,6 @@
 */
 
 /* Absolute local path to your server 'log' directory */
-//define('LOG_PATH','/var/log');
 define('LOG_PATH', '/var/log/nginx');
 
 define('DISPLAY_REVERSE', true); // true = displays log entries starting with the most recent

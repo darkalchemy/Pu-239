@@ -5,7 +5,6 @@ require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 $lang = load_language('reputation');
-define('TIMENOW', time());
 // mod or not?
 $is_mod = ($CURUSER['class'] >= UC_STAFF) ? true : false;
 //$CURUSER['class'] = 2;
@@ -145,7 +144,7 @@ if (!$is_mod) {
             if (($i < $GVARS['rep_repeat']) && ($check['userid'] == $CURUSER['id'])) { //$res['userid'] ) )
                 rep_output($lang['info_cannot_rate_own']);
             }
-            if ((($i + 1) == $GVARS['rep_maxperday']) && (($check['dateadd'] + 86400) > TIMENOW)) {
+            if ((($i + 1) == $GVARS['rep_maxperday']) && (($check['dateadd'] + 86400) > TIME_NOW)) {
                 rep_output($lang['info_daily_rep_limit_expired']);
             }
             ++$i;
@@ -202,7 +201,7 @@ if (isset($input['do']) && $input['do'] == 'addrep') {
         'reputation' => $score,
         'whoadded'   => $CURUSER['id'],
         'reason'     => sqlesc($reason),
-        'dateadd'    => TIMENOW,
+        'dateadd'    => TIME_NOW,
         'locale'     => sqlesc($rep_locale),
         'postid'     => (int)$input['pid'],
         'userid'     => $res['userid'],
@@ -451,7 +450,7 @@ function fetch_reppower($user = [], $rep = 'pos')
             $reppower += intval($user['reputation'] / $GVARS['rep_kppower']);
         }
         if ($GVARS['rep_rdpower']) { // time based power
-            $reppower += intval((TIMENOW - $user['added']) / 86400 / $GVARS['rep_rdpower']);
+            $reppower += intval((TIME_NOW - $user['added']) / 86400 / $GVARS['rep_rdpower']);
         }
         if ($rep != 'pos') {
             // Negative rep is worth half that of positive, but must be atleast 1, else it gets messy

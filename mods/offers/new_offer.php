@@ -1,7 +1,4 @@
 <?php
-if (!defined('IN_OFFERS')) {
-    exit('No direct script access allowed');
-}
 $offer = (isset($_POST['offertitle']) ? $_POST['offertitle'] : '');
 if ($offer == '') {
     stderr('Error', 'You must enter a title!');

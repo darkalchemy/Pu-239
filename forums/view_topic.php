@@ -1,9 +1,4 @@
 <?php
-if (!defined('BUNNY_FORUMS')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 global $lang;
 
 //$lang = array_merge($lang, load_language('global') , load_language('forums_global'), load_language('forums'));

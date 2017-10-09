@@ -1,10 +1,5 @@
 <?php
 $all_my_boxes = $curuser_cache = $user_cache = $categories = '';
-if (!defined('BUNNY_PM_SYSTEM')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 if (isset($_POST['action2'])) {
     $good_actions = [
         'add',

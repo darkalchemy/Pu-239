@@ -1,9 +1,4 @@
 <?php
-if (!defined('BUNNY_FORUMS')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 global $lang;
 $dt = (TIME_NOW - $readpost_expiry);
 $last_posts_read_res = sql_query('SELECT t.id, t.last_post FROM topics AS t LEFT JOIN posts AS p ON p.id = t.last_post AND p.added > ' . $dt);

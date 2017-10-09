@@ -1,9 +1,4 @@
 <?php
-if (!defined('IN_site_config_ADMIN')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_autopost.php';
@@ -1052,7 +1047,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
     }
     status_change($userid);
     if ((isset($_POST['class'])) && (($class = $_POST['class']) != $user['class'])) {
-        write_staffs();
+        $mc1->delete_value('staff_settings_');
     }
     if (sizeof($setbits) > 0 || sizeof($clrbits) > 0) {
         sql_query('UPDATE users SET opt1 = ((opt1 | ' . $setbits . ') & ~' . $clrbits . '), opt2 = ((opt2 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);

@@ -1,7 +1,4 @@
 <?php
-if (!defined('IN_OFFERS')) {
-    exit('No direct script access allowed');
-}
 $res2 = sql_query('SELECT COUNT(v.id) AS c
                     FROM voted_offers AS v
                     INNER JOIN users AS u ON v.userid = u.id

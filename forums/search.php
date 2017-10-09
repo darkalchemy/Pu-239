@@ -1,9 +1,4 @@
 <?php
-if (!defined('BUNNY_FORUMS')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 global $lang;
 $author_error = $content = $count = $count2 = $edited_by = $row_count = $over_forum_id = $selected_forums = $author_id = $content = '';
 //=== get all the search stuff

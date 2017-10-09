@@ -121,13 +121,6 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
     return '<span title="Set offline by admin setting">Rep System Offline</span>';
 }
 
-//== End
-function write_staffs()
-{
-    global $mc1;
-    $mc1->delete_value('staff_settings_');
-}
-
 function get_ratio_color($ratio)
 {
     if ($ratio < 0.1) {

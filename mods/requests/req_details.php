@@ -1,9 +1,5 @@
 <?php
-if (!defined('IN_REQUESTS')) {
-    exit('No direct script access allowed');
-}
 $stdfoot = [
-    /* include js **/
     'js' => [
         'popup',
     ],

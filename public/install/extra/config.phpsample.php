@@ -33,7 +33,6 @@ if (version_compare(PHP_VERSION, '7.1.0', '>=')) {
     date_default_timezone_set('UTC');
 }
 define('TIME_NOW', time());
-$site_config['production'] = false; // use minified css/js or not
 $site_config['time_adjust'] = 0;
 $site_config['time_offset'] = '0';
 $site_config['time_use_relative'] = 1;
@@ -268,7 +267,6 @@ $site_config['staff_forums'] = [
     2,
 ]; // these forum ID's' should exist and be a staff forum's to stop autoshouts
 $site_config['variant'] = 'Pu-239';
-define('TBVERSION', $site_config['variant']);
 
 // Arcade Games
 $site_config['arcade_games'] = array('asteroids', 'breakout', 'frogger', 'galaga', 'hexxagon', 'invaders', 'moonlander', 'pacman', 'psol', 'simon', 'snake', 'tetris', 'autobahn', 'ghosts-and-goblins', 'joust', 'ms-pac-man');

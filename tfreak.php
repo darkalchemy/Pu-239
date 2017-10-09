@@ -19,7 +19,7 @@ function rsstfreakinfo()
     $items = $doc->getElementsByTagName('item');
     foreach ($items as $item) {
         $html .= "
-                    <div class='alt_bordered'>
+                    <div class='alt_bordered transparent'>
                         <h3>
                             <u>" . $item->getElementsByTagName('title')->item(0)->nodeValue . "</u>
                         </h3>

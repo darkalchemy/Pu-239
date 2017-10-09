@@ -1,9 +1,4 @@
 <?php
-if (!defined('BUNNY_FORUMS')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 global $lang;
 //=== post  action posted so we know what to do :P
 $posted_staff_action = strip_tags((isset($_POST['action_2']) ? $_POST['action_2'] : ''));

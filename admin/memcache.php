@@ -16,14 +16,10 @@
   | Author:  Harun Yayli <harunyayli at gmail.com>                       |
   +----------------------------------------------------------------------+
 */
-if (!defined('IN_site_config_ADMIN')) {
-    setSessionVar('error', 'Access Not Allowed');
-    header("Location: {$site_config['baseurl']}/index.php");
-    exit();
-}
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
-class_check(UC_MAX);
+$class = get_access(basename($_SERVER['REQUEST_URI']));
+class_check($class);
 $VERSION = '$Id: memcache.php,v 1.1.2.3 2008/08/28 18:07:54 mikl Exp $';
 //define('ADMIN_USERNAME','memcache_stats'); 	// Admin Username
 //define('ADMIN_PASSWORD','richmond1');  	// Admin Password

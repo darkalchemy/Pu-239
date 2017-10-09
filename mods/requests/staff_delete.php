@@ -1,7 +1,4 @@
 <?php
-if (!defined('IN_REQUESTS')) {
-    exit('No direct script access allowed');
-}
 if ($CURUSER['class'] >= UC_MODERATOR) {
     if (empty($_POST['delreq'])) {
         stderr("{$lang['error_error']}", "{$lang['error_empty']}");
