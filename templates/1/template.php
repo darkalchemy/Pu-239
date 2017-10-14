@@ -2,6 +2,10 @@
 function stdhead($title = '', $msgalert = true, $stdhead = false)
 {
     global $CURUSER, $site_config, $lang, $free, $query_stat, $querytime, $mc1, $BLOCKS, $CURBLOCK, $mood;
+
+    if ($_SERVER['REQUEST_URI'] != '/' && $_SERVER['REQUEST_URI'] != '/index.php') {
+        unsetSessionVar('Channel');
+    }
     if (!$site_config['site_online']) {
         die('Site is down for maintenance, please check back again later... thanks<br>');
     }

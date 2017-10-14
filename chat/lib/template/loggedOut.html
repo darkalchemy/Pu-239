@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="[LANG_CODE/]" lang="[LANG_CODE/]" dir="[BASE_DIRECTION/]">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="[CONTENT_TYPE/]" />
+    <title>[LANG]title[/LANG]</title>
+    [STYLE_SHEETS/]
+</head>
+
+<body class="ajax-chat text-1">
+    <script>
+        var theme = localStorage.getItem("theme");
+        if (theme) {
+            document.body.className = "ajax-chat " + theme;
+        }
+    </script>
+    <div id="loginContent">
+        <div id="errorContainer">[ERROR_MESSAGES/]</div>
+        <!--
+            Please retain the full copyright notice below including the link to blueimp.net.
+            This not only gives respect to the amount of time given freely by the developer
+            but also helps build interest, traffic and use of AJAX Chat.
+            Thanks,
+            Sebastian Tschan
+        <div id="copyright">
+            <a href="https://blueimp.net/ajax/">AJAX Chat</a> &copy; <a href="https://blueimp.net">blueimp.net</a>
+        </div>//-->
+    </div>
+</body>
+</html>

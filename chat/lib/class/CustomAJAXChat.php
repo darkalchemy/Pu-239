@@ -13,8 +13,6 @@ class CustomAJAXChat extends AJAXChat
     public function initCustomRequestVars()
     {
         global $CURUSER;
-        //var_dump($CURUSER);
-        //exit();
 
         // Auto-login users:
         if (!$this->getRequestVar('login') && !empty($CURUSER)) {
@@ -27,8 +25,6 @@ class CustomAJAXChat extends AJAXChat
     public function getValidLoginUserData()
     {
         global $CURUSER;
-        //var_dump($CURUSER);
-        //exit();
         if (!empty($CURUSER) && $CURUSER['enabled'] !== 'no' && $CURUSER['chatpost'] != 0) {
             $userData['userID'] = $CURUSER['id'];
             $userData['userName'] = $this->trimUserName($CURUSER['username']);
@@ -41,6 +37,11 @@ class CustomAJAXChat extends AJAXChat
                 $userData['channels'] = [0, 1];
             }
             return $userData;
+        }
+
+        if ($CURUSER['enabled'] === 'no' && $CURUSER['chatpost'] === 0) {
+            unsetSessionVar('Channel');
+            $this->addInfoMessage('errorBanned');
         }
     }
 

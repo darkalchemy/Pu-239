@@ -17,6 +17,8 @@ require_once CACHE_DIR . 'class_config.php';
 //==Start memcache
 require_once CLASS_DIR . 'class_cache.php';
 $mc1 = new CACHE();
+$redis = new Redis();
+$redis->pconnect('127.0.0.1', 6379);
 
 //==Block class
 class curuser

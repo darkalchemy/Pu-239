@@ -667,8 +667,7 @@ a.iCarouselNav {
 #icarousel,
 .center-block,
 .container,
-.login-container,
-.text-center {
+.login-container {
     margin-left: auto;
     margin-right: auto;
 }

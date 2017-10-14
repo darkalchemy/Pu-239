@@ -1,7 +1,7 @@
 var animate_duration = 1250;
 var animation = 'fade';
 
-$(document).ready(function() {
+$(function() {
 	$('.tooltipper').tooltipster({
 		theme: 'tooltipster-borderless',
 		animation: animation,

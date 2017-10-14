@@ -7,7 +7,15 @@ $HTMLOUT .= "
 $page = 1;
 $num = 0;
 if (($topics = $mc1->get_value('last_posts_' . $CURUSER['class'])) === false) {
-    $topicres = sql_query('SELECT t.id, t.user_id, t.topic_name, t.locked, t.forum_id, t.last_post, t.sticky, t.views, t.anonymous AS tan, f.min_class_read, f.name ' . ', (SELECT COUNT(id) FROM posts WHERE topic_id=t.id) AS p_count ' . ', p.user_id AS puser_id, p.added, p.anonymous AS pan ' . ', u.id AS uid, u.username ' . ', u2.username AS u2_username ' . 'FROM topics AS t ' . 'LEFT JOIN forums AS f ON f.id = t.forum_id ' . 'LEFT JOIN posts AS p ON p.id=(SELECT MAX(id) FROM posts WHERE topic_id = t.id) ' . 'LEFT JOIN users AS u ON u.id=p.user_id ' . 'LEFT JOIN users AS u2 ON u2.id=t.user_id ' . 'WHERE f.min_class_read <= ' . $CURUSER['class'] . ' ' . "ORDER BY t.last_post DESC LIMIT {$site_config['latest_posts_limit']}") or sqlerr(__FILE__, __LINE__);
+    $topicres = sql_query('SELECT t.id, t.user_id AS tuser_id, t.topic_name, t.locked, t.forum_id, t.last_post, t.sticky, t.views, t.anonymous AS tan,
+                            f.min_class_read, f.name,
+                            (SELECT COUNT(id) FROM posts WHERE topic_id = t.id) AS p_count, p.user_id AS puser_id, p.added, p.anonymous AS pan
+                            FROM topics AS t
+                            LEFT JOIN forums AS f ON f.id = t.forum_id
+                            LEFT JOIN posts AS p ON p.id = (SELECT MAX(id) FROM posts WHERE topic_id = t.id)
+                            WHERE f.min_class_read <= ' . $CURUSER['class'] . "
+                            ORDER BY t.last_post DESC
+                            LIMIT {$site_config['latest_posts_limit']}") or sqlerr(__FILE__, __LINE__);
     while ($topic = mysqli_fetch_assoc($topicres)) {
         $topics[] = $topic;
     }
@@ -28,7 +36,6 @@ if (count($topics) > 0) {
     if ($topics) {
         foreach ($topics as $topicarr) {
             $topicid = (int)$topicarr['id'];
-            $topic_userid = (int)$topicarr['user_id'];
             $perpage = (int)$CURUSER['postsperpage'];
 
             if (!$perpage) {
@@ -59,22 +66,22 @@ if (count($topics) > 0) {
             }
             $added = get_date($topicarr['added'], '', 0, 1);
             if ($topicarr['pan'] == 'yes') {
-                if ($CURUSER['class'] < UC_STAFF && $topicarr['user_id'] != $CURUSER['id']) {
-                    $username = (!empty($topicarr['username']) ? "<i>{$lang['index_fposts_anonymous']}</i>" : "<i>{$lang['index_fposts_unknow']}</i>");
+                if ($CURUSER['class'] < UC_STAFF && $topicarr['tuser_id'] != $CURUSER['id']) {
+                    $username = (!empty($topicarr['puser_id']) ? "<i>{$lang['index_fposts_anonymous']}</i>" : "<i>{$lang['index_fposts_unknow']}</i>");
                 } else {
-                    $username = (!empty($topicarr['username']) ? "<i>{$lang['index_fposts_anonymous']}</i><br><a href='" . $site_config['baseurl'] . '/userdetails.php?id=' . (int)$topicarr['puser_id'] . "'><b>[" . htmlsafechars($topicarr['username']) . ']</b></a>' : "<i>{$lang['index_fposts_unknow']}[$topic_userid]</i>");
+                    $username = (!empty($topicarr['puser_id']) ? "<i>{$lang['index_fposts_anonymous']}</i>[ " . format_username($topicarr['puser_id']) . ' ]': "<i>{$lang['index_fposts_unknow']}[{$topicarr['tuser_id']}]</i>");
                 }
             } else {
-                $username = (!empty($topicarr['username']) ? "<a href='" . $site_config['baseurl'] . '/userdetails.php?id=' . (int)$topicarr['puser_id'] . "'><b>" . htmlsafechars($topicarr['username']) . '</b></a>' : "<i>{$lang['index_fposts_unknow']}[$topic_userid]</i>");
+                $username = (!empty($topicarr['puser_id']) ? format_username($topicarr['puser_id']) : "<i>{$lang['index_fposts_unknow']}[{$topicarr['tuser_id']}]</i>");
             }
             if ($topicarr['tan'] == 'yes') {
-                if ($CURUSER['class'] < UC_STAFF && $topicarr['user_id'] != $CURUSER['id']) {
-                    $author = (!empty($topicarr['u2_username']) ? "<i>{$lang['index_fposts_anonymous']}</i>" : ($topic_userid == '0' ? '<i>System</i>' : "<i>{$lang['index_fposts_unknow']}</i>"));
+                if ($CURUSER['class'] < UC_STAFF && $topicarr['tuser_id'] != $CURUSER['id']) {
+                    $author = (!empty($topicarr['tuser_id']) ? "<i>{$lang['index_fposts_anonymous']}</i>" : ($topicarr['tuser_id'] == '0' ? '<i>System</i>' : "<i>{$lang['index_fposts_unknow']}</i>"));
                 } else {
-                    $author = (!empty($topicarr['u2_username']) ? "<i>{$lang['index_fposts_anonymous']}</i><br><a href='" . $site_config['baseurl'] . '/userdetails.php?id=' . $topic_userid . "'><b>[" . htmlsafechars($topicarr['u2_username']) . ']</b></a>' : ($topic_userid == '0' ? '<i>System</i>' : "<i>{$lang['index_fposts_unknow']}[$topic_userid]</i>"));
+                    $author = (!empty($topicarr['tuser_id']) ? "<i>{$lang['index_fposts_anonymous']}</i><br>[ " . format_username($topicarr['tuser_id']) . ' ]' : ($topicarr['tuser_id'] == '0' ? '<i>System</i>' : "<i>{$lang['index_fposts_unknow']}[{$topicarr['tuser_id']}]</i>"));
                 }
             } else {
-                $author = (!empty($topicarr['u2_username']) ? "<a href='" . $site_config['baseurl'] . '/userdetails.php?id=' . $topic_userid . "'><b>" . htmlsafechars($topicarr['u2_username']) . '</b></a>' : ($topic_userid == '0' ? '<i>System</i>' : "<i>{$lang['index_fposts_unknow']}[$topic_userid]</i>"));
+                $author = (!empty($topicarr['tuser_id']) ? format_username($topicarr['tuser_id']) : ($topicarr['tuser_id'] == '0' ? '<i>System</i>' : "<i>{$lang['index_fposts_unknow']}[{$topicarr['tuser_id']}]</i>"));
             }
             $staffimg = ($topicarr['min_class_read'] >= UC_STAFF ? "<img src='" . $site_config['pic_base_url'] . "staff.png' border='0' alt='Staff forum' title='Staff Forum' />" : '');
             $stickyimg = ($topicarr['sticky'] == 'yes' ? "<img src='" . $site_config['pic_base_url'] . "sticky.gif' border='0' alt='{$lang['index_fposts_sticky']}' title='{$lang['index_fposts_stickyt']}' />&#160;&#160;" : '');

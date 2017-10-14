@@ -174,9 +174,6 @@ var ajaxChat = {
     initDirectories: function () {
         this.dirs = {};
         //alert(this.baseURL);
-        //this.dirs['emoticons']  = this.baseURL + '../public/images/smilies/';
-        //this.dirs['sounds'] = this.baseURL + '../public/media/sounds/';
-        //this.dirs['flash'] = this.baseURL + '../public/media/flash/';
         this.dirs['emoticons']  = './images/smilies/';
         this.dirs['sounds'] = './media/sounds/';
         this.dirs['flash'] = './media/flash/';
@@ -1255,44 +1252,37 @@ var ajaxChat = {
         if (encodedUserName !== this.encodedUserName) {
             menu = '<li><a href="javascript:ajaxChat.insertMessageWrapper(\'/msg '
                 + encodedUserName
-                    + ' \');" title="Private Message in chat.">'
+                + ' \');" title="Private Message this user in AJAX Chat.">'
                 + this.lang['userMenuSendPrivateMessage']
                 + '</a></li>'
                 + '<li><a target="_blank" href="../pm_system.php?action=send_message&amp;receiver='
                 + userID
-                + '" title="Private Message using site messages.">'
+                + '" title="Private Message this user using site messages.">'
                 + 'PM User '
                 + '</a></li>'
                 + '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/query '
                 + encodedUserName
-                + '\');">'
+                + '\');" title="Open a private channel between you and this user.">'
                 + this.lang['userMenuOpenPrivateChannel']
                 + '</a></li>'
-                + '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/query\');">'
+                + '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/query\');" title="Close a private channel between you and this user.">'
                 + this.lang['userMenuClosePrivateChannel']
                 + '</a></li>'
                 + '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/ignore '
                 + encodedUserName
-                + '\');">'
+                + '\');" title="(un)Ignore this user.">'
                 + this.lang['userMenuIgnore']
+                + '</a></li>'
+                + '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/invite '
+                + encodedUserName
+                + '\');" title="Invite this user to your private channel.">'
+                + this.lang['userMenuInvite']
+                + '</a></li>'
+                + '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/uninvite '
+                + encodedUserName
+                + '\');" title="Revoke an Invitation to this user to your private channel.">'
+                + this.lang['userMenuUninvite']
                 + '</a></li>';
-            if (isInline) {
-                menu += '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/invite '
-                    + encodedUserName
-                    + '\');">'
-                    + this.lang['userMenuInvite']
-                    + '</a></li>'
-                    + '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/uninvite '
-                    + encodedUserName
-                    + '\');">'
-                    + this.lang['userMenuUninvite']
-                    + '</a></li>'
-                    + '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/whereis '
-                    + encodedUserName
-                    + '\');">'
-                    + this.lang['userMenuWhereis']
-                    + '</a></li>';
-            }
             if (this.userRole >= UC_STAFF) {
                 menu += '<li><a href="javascript:ajaxChat.insertMessageWrapper(\'/kick '
                     + encodedUserName

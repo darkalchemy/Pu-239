@@ -57,10 +57,8 @@ function delete_cleanup($users, $using_foreign_keys = true)
 
     if (!$using_foriegn_keys) {
         sql_query("DELETE FROM achievements WHERE userid IN ({$users})") or sqlerr(__FILE__, __LINE__);
-        sql_query("DELETE FROM ajax_chat_bans WHERE userID IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM ajax_chat_invitations WHERE userID IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM ajax_chat_messages WHERE userID IN ({$users})") or sqlerr(__FILE__, __LINE__);
-        sql_query("DELETE FROM ajax_chat_online WHERE userID IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM announcement_main WHERE owner_id IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM announcement_process WHERE user_id IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM attachments WHERE user_id IN ({$users})") or sqlerr(__FILE__, __LINE__);

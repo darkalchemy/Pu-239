@@ -5,7 +5,6 @@ body.ajax-chat {
 #loginContent {
   margin: 0 auto;
   padding-top: 20px;
-  width: 250px;
   font-size: .9em
 }
 #loginContent #loginHeadline {
@@ -128,8 +127,7 @@ body.ajax-chat {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 70px;
-  padding: 0
+  bottom: 70px
 }
 #content #inputFieldContainer #inputField {
   width: 100%;
@@ -145,12 +143,6 @@ body.ajax-chat {
   left: 0;
   bottom: 0;
   padding: 3px
-}
-#content #bbCodeContainer input {
-  display: block;
-  float: left;
-  margin-right: 2px;
-  color: #1d1d1d
 }
 #content #bbCodeContainer #bbCodeEmoticon {
   display: none
@@ -579,6 +571,14 @@ select {
   -o-transition: all .35s ease-in-out;
   transition: all .35s ease-in-out
 }
+.circle {
+  list-style-type: circle;
+  color: #c00
+}
+.disc {
+  list-style-type: disc;
+  color: #0f0
+}
 .user {
   color: #8e35ef;
   text-shadow: -1px 0 #000,0 1px #000,1px 0 #000,0 -1px #000
@@ -664,11 +664,15 @@ textarea {
   -webkit-border-radius: 5px;
   border: 0
 }
+#content #inputFieldContainer {
+  background: #0e0e0e;
+  padding: 0
+}
 #content #inputFieldContainer #inputField {
+  box-shadow: inset 1px 1px 5px 1px #000;
   border: 0;
   padding: 3px 12px;
-  width: calc(100% - 27px);
-  background: 0 0
+  width: calc(100% - 27px)
 }
 #content #inputFieldContainer #inputField:focus {
   outline: 0
@@ -679,9 +683,18 @@ textarea {
 #loginContent #errorContainer {
   color: red
 }
+#errorContainer {
+  font-size: 2em;
+  text-shadow: -1px 0 #000,0 1px #000,1px 0 #000,0 -1px #000
+}
 .ajax-chat {
   height: 100%;
-  color: #fff
+  background-color: #464646;
+  background-image: -webkit-linear-gradient(top,#464646,#181818);
+  background-image: -moz-linear-gradient(top,#464646,#181818);
+  background-image: -o-linear-gradient(top,#464646,#181818);
+  background-image: linear-gradient(to bottom,#464646,#181818);
+  color: #b0b8a8
 }
 .ajax-chat h1,
 .ajax-chat h3 {
@@ -700,8 +713,8 @@ textarea {
 #content input,
 #content select,
 #content textarea {
-  background-color: rgba(0,0,0,.1);
-  color: #000
+  background-color: #0e0e0e;
+  color: #b0b8a8
 }
 #content #chatList,
 #content #helpContainer,
@@ -722,6 +735,7 @@ textarea {
 #content #helpContainer,
 #content #onlineListContainer,
 #content #settingsContainer {
+  background-color: #171717;
   border: 0
 }
 #content #chatList:after,
@@ -735,13 +749,15 @@ textarea {
   top: 17px;
   left: 0;
   width: 0;
-  height: 98%
+  height: 98%;
+  box-shadow: 1px 0 8px 1px #000
 }
 #content #chatList:after {
   top: 0;
   left: 17px;
   width: 98%;
-  height: 0
+  height: 0;
+  box-shadow: 0 1px 8px 1px #000
 }
 #content #helplist table,
 #content #settingsList table {
@@ -763,6 +779,24 @@ textarea {
 #content #statusIconContainer.retrying {
   background-position: 0 -44px
 }
+#content #bbCodeContainer input {
+  display: block;
+  float: left;
+  margin-right: 2px;
+  background-color: #d8ffd6;
+  background-image: -webkit-linear-gradient(top,#d8ffd6,#467a44);
+  background-image: -moz-linear-gradient(top,#d8ffd6,#467a44);
+  background-image: -o-linear-gradient(top,#d8ffd6,#467a44);
+  background-image: linear-gradient(to bottom,#d8ffd6,#467a44);
+  color: #1d1d1d
+}
+#content #bbCodeContainer input:hover {
+  background-color: #fff;
+  background-image: -webkit-linear-gradient(top,#fff,#08ff35);
+  background-image: -moz-linear-gradient(top,#fff,#08ff35);
+  background-image: -o-linear-gradient(top,#fff,#08ff35);
+  background-image: linear-gradient(to bottom,#fff,#08ff35)
+}
 #content #bbCodeContainer input:active,
 #content #logoutButton:active,
 #content #submitButton:active,
@@ -772,13 +806,28 @@ textarea {
 #content #logoutButton,
 #content #submitButton,
 #loginContent #loginButton {
+  background-color: #4fff58;
+  background-image: -webkit-linear-gradient(top,#4fff58,#194221);
+  background-image: -moz-linear-gradient(top,#4fff58,#194221);
+  background-image: -o-linear-gradient(top,#4fff58,#194221);
+  background-image: linear-gradient(to bottom,#4fff58,#194221);
   font-weight: 700;
   color: #fff;
   text-shadow: 0 0 5px #000
 }
+#content #logoutButton:hover,
+#content #submitButton:hover,
+#loginContent #loginButton:hover {
+  background-color: #99ffa8;
+  background-image: -webkit-linear-gradient(top,#99ffa8,#002405);
+  background-image: -moz-linear-gradient(top,#99ffa8,#002405);
+  background-image: -o-linear-gradient(top,#99ffa8,#002405);
+  background-image: linear-gradient(to bottom,#99ffa8,#002405)
+}
 .ajax-chat #content .popup#colorCodesContainer,
 .ajax-chat .popup {
   border: 0;
+  background: rgba(0,0,0,.7);
   padding: 5px
 }
 #content #colorCodesContainer a {
@@ -798,7 +847,7 @@ textarea {
 #content .rowEven,
 #helpList dl:nth-child(even),
 #settingsList dl:nth-child(even) {
-  background-color: rgba(0,0,0,.1)
+  background-color: #131413
 }
 #content #chatList .rowEven.private,
 #content #chatList .rowOdd.private {
@@ -808,49 +857,17 @@ textarea {
 #content #chatList .chatBotErrorMessage {
   color: red
 }
-input[type=button] {
-  border-top: 1px solid #96d1f8;
-  background: #4f5e4f;
-  background: -webkit-gradient(linear,left top,left bottom,from(#a5c3a5),to(#4f5e4f));
-  background: -webkit-linear-gradient(top,#a5c3a5,#4f5e4f);
-  background: -moz-linear-gradient(top,#a5c3a5,#4f5e4f);
-  background: -ms-linear-gradient(top,#a5c3a5,#4f5e4f);
-  background: -o-linear-gradient(top,#a5c3a5,#4f5e4f);
-  padding: 6px 14px;
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
-  -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
-  -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
-  box-shadow: rgba(0,0,0,1) 0 1px 0;
-  text-shadow: rgba(0,0,0,.4) 0 1px 0;
-  color: #fff;
-  font-size: 14px;
-  text-decoration: none;
-  vertical-align: middle
+#content #helpContainer h3,
+#content #onlineListContainer h3,
+#content #settingsContainer h3 {
+  background-color: #171717;
+  background-image: -webkit-linear-gradient(top,#3b6c37,#223220,#171717);
+  background-image: -moz-linear-gradient(top,#3b6c37,#223220,#171717);
+  background-image: -o-linear-gradient(top,#3b6c37,#223220,#171717);
+  background-image: linear-gradient(to bottom,#3b6c37,#223220,#171717)
 }
-input[type=button]:hover {
-  border-top-color: #28597a;
-  background: -webkit-gradient(linear,left top,left bottom,from(#4f5e4f),to(#a5c3a5));
-  background: -webkit-linear-gradient(top,#4f5e4f,#a5c3a5);
-  background: -moz-linear-gradient(top,#4f5e4f,#a5c3a5);
-  background: -ms-linear-gradient(top,#4f5e4f,#a5c3a5);
-  background: -o-linear-gradient(top,#4f5e4f,#a5c3a5);
-  color: #ccc
-}
-input[type=button]:active {
-  border-top-color: #1b435e;
-  background: #1b435e
-}
-@media (min-width:701px) {
-  #content #chatList,
-  #content #helpContainer,
-  #content #inputFieldContainer,
-  #content #onlineListContainer,
-  #content #settingsContainer,
-  #loginContent input[type=password],
-  #loginContent input[type=text],
-  .ajax-chat .popup {
-    background: rgba(0,0,0,.1)
-  }
+.text-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto
 }

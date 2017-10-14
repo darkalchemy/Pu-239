@@ -38,6 +38,11 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
     color: red;
 }
 
+#errorContainer {
+    font-size: 2em;
+    text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;    
+}
+
 .ajax-chat {
     height: 100%;
     color: #fff;
@@ -232,6 +237,12 @@ input[type=button]:hover {
 input[type=button]:active {
    border-top-color: #1b435e;
    background: #1b435e;
+}
+
+.text-center {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 @media (min-width: 701px) {

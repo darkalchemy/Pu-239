@@ -1,3 +1,13 @@
+14 Oct, 2017
+update: index page forum posts, remove unneeded joins
+fix: AJAX Chat kick/ban user
+remove: destroy session from AJAX Chat so not logged out of site
+fix: AJAX Chat endless loop when user is banned or disabled
+remove: AJAX Chat channels from mysql
+move: AJAX Chat online table to redis
+move: AJAX Chat bans table to redis
+begin: move AJAX-Chat from mysql to redis
+
 9 Oct, 2017
 remove: unneeded check for direct file access in files not in webroot
 remove: geshi syntax highlighter

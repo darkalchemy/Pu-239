@@ -76,3 +76,12 @@ select {
     transition: all 0.35s ease-in-out;
 }
 
+.circle {
+    list-style-type: circle;
+    color: #CC0000;
+}
+
+.disc {
+    list-style-type: disc;
+    color: #00FF00;
+}
