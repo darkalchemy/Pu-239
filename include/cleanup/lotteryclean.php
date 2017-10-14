@@ -9,10 +9,15 @@ function lotteryclean($data)
         $lottery_config[$aconf['name']] = $aconf['value'];
     }
     if ($lottery_config['enable'] && TIME_NOW > $lottery_config['end_date']) {
-        $q = mysqli_query($GLOBALS['___mysqli_ston'], 'SELECT t.user as uid, u.seedbonus, u.modcomment FROM tickets as t LEFT JOIN users as u ON u.id = t.user ORDER BY RAND() ') or sqlerr(__FILE__, __LINE__);
+        $q = sql_query('SELECT t.user as uid, u.seedbonus, u.modcomment
+                            FROM tickets as t
+                            LEFT JOIN users as u ON u.id = t.user
+                            ORDER BY RAND()') or sqlerr(__FILE__, __LINE__);
         while ($a = mysqli_fetch_assoc($q)) {
             $tickets[] = $a;
         }
+        shuffle($tickets);
+        shuffle($tickets);
         shuffle($tickets);
         $lottery['winners'] = [];
         $lottery['total_tickets'] = count($tickets);
@@ -31,10 +36,11 @@ function lotteryclean($data)
         }
         $lottery['user_pot'] = round($lottery['total_pot'] / $lottery_config['total_winners'], 2);
         $msg['subject'] = sqlesc('You have won the lottery');
-        $msg['body'] = sqlesc('Congratulations, You have won : ' . ($lottery['user_pot']) . '. This has been added to your seedbonus total amount. Thanks for playing Lottery.');
+        $msg['body'] = sqlesc('Congratulations, You have won : ' . number_format($lottery['user_pot']) . '. This has been added to your seedbonus total amount. Thanks for playing Lottery.');
         foreach ($lottery['winners'] as $winner) {
-            $_userq[] = '(' . $winner['uid'] . ',' . ($winner['seedbonus'] + $lottery['user_pot']) . ',' . sqlesc('User won the lottery: ' . ($lottery['user_pot']) . ' at ' . get_date(TIME_NOW, 'LONG') . "\n" . $winner['modcomment']) . ')';
+            $_userq[] = '(' . sqlesc($winner['username']) . ',' . $winner['uid'] . ',' . ($winner['seedbonus'] + $lottery['user_pot']) . ',' . sqlesc("User won the lottery: {$lottery['user_pot']} at " . get_date(TIME_NOW, 'LONG') .  (!empty($winner['modcomment']) ? "\n" . $winner['modcomment'] : '')) . ')';
             $_pms[] = '(0,' . $winner['uid'] . ',' . $msg['subject'] . ',' . $msg['body'] . ',' . TIME_NOW . ')';
+            $uids[] = $winner['uid'];
         }
         $lconfig_update = [
             '(\'enable\',0)',
@@ -43,12 +49,12 @@ function lotteryclean($data)
             '(\'lottery_winners\',\'' . join('|', array_keys($lottery['winners'])) . '\')',
         ];
         if (count($_userq)) {
-            sql_query('INSERT INTO users(id,seedbonus,modcomment) VALUES ' . join(',', $_userq) . ' ON DUPLICATE KEY UPDATE seedbonus = values(seedbonus), modcomment = values(modcomment)') or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            sql_query('INSERT INTO users(username, id,seedbonus,modcomment) VALUES ' . join(',', $_userq) . ' ON DUPLICATE KEY UPDATE seedbonus = VALUES(seedbonus), modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
         }
         if (count($_pms)) {
-            sql_query('INSERT INTO messages(sender, receiver, subject, msg, added) VALUES ' . join(',', $_pms)) or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            sql_query('INSERT INTO messages(sender, receiver, subject, msg, added) VALUES ' . join(',', $_pms)) or sqlerr(__FILE__, __LINE__);
         }
-        foreach ($_pms['id'] as $user_id) {
+        foreach ($uids as $user_id) {
             $mc1->delete_value('inbox_new_' . $user_id);
             $mc1->delete_value('inbox_new_sb_' . $user_id);
             $mc1->delete_value('userstats_' . $user_id);
@@ -56,10 +62,10 @@ function lotteryclean($data)
             $mc1->delete_value('MyUser_' . $user_id);
             $mc1->delete_value('user' . $user_id);
         }
-        sql_query('INSERT INTO lottery_config(name,value) VALUES ' . join(',', $lconfig_update) . ' ON DUPLICATE KEY UPDATE value=values(value)') or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
-        sql_query('DELETE FROM tickets') or die(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+        sql_query('INSERT INTO lottery_config(name,value) VALUES ' . join(',', $lconfig_update) . ' ON DUPLICATE KEY UPDATE value=VALUES(value)') or sqlerr(__FILE__, __LINE__);
+        sql_query('DELETE FROM tickets') or sqlerr(__FILE__, __LINE__);
     }
-    //==End 09 seedbonus lottery by putyn
+
     if ($data['clean_log'] && $queries > 0) {
         write_log("Lottery Cleanup: Completed using $queries queries");
     }

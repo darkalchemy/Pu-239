@@ -101,7 +101,7 @@ function cleanup_show_main()
                 </tr>
             </thead>
             <tbody>";
-    $sql = sql_query('SELECT * FROM cleanup ORDER BY clean_time ASC, clean_increment DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
+    $sql = sql_query('SELECT * FROM cleanup ORDER BY clean_on DESC, clean_time ASC, clean_increment DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
     if (!mysqli_num_rows($sql)) {
         stderr($lang['cleanup_stderr'], $lang['cleanup_panic']);
     }
@@ -115,14 +115,14 @@ function cleanup_show_main()
           <td{$row['_class']}><strong>{$row['clean_title']}{$row['_title']}</strong><br>{$row['clean_desc']}</td>
           <td>" . mkprettytime($row['clean_increment']) . "</td>
           <td>{$row['_clean_time']}</td>
-          <td><a href='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=edit&amp;cid={$row['clean_id']}'>
-            <img src='./images/aff_tick.gif' alt='{$lang['cleanup_edit2']}' title='{$lang['cleanup_edit']}' border='0' height='12' width='12' /></a></td>
+          <td><a href='./staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=edit&amp;cid={$row['clean_id']}'>
+            <img src='./images/aff_tick.gif' alt='{$lang['cleanup_edit2']}' class='tooltipper' title='{$lang['cleanup_edit']}' height='12' width='12' /></a></td>
 
-          <td><a href='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=delete&amp;cid={$row['clean_id']}'>
-            <img src='./images/aff_cross.gif' alt='{$lang['cleanup_delete2']}' title='{$lang['cleanup_delete1']}' border='0' height='12' width='12' /></a></td>
-          <td><a href='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=unlock&amp;cid={$row['clean_id']}&amp;clean_on={$row['clean_on']}'>
-            <img src='./images/warned.png' alt='{$lang['cleanup_off_on2']}' title='{$lang['cleanup_off_on']}' border='0' height='12' width='12' /></a></td>
-<td><a href='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=run&amp;cid={$row['clean_id']}'>{$lang['cleanup_run_now2']}</a></td>
+          <td><a href='./staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=delete&amp;cid={$row['clean_id']}'>
+            <img src='./images/aff_cross.gif' alt='{$lang['cleanup_delete2']}' class='tooltipper' title='{$lang['cleanup_delete1']}' height='12' width='12' /></a></td>
+          <td><a href='./staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=unlock&amp;cid={$row['clean_id']}&amp;clean_on={$row['clean_on']}'>
+            <img src='./images/warned.png' alt='{$lang['cleanup_off_on2']}' class='tooltipper' title='{$lang['cleanup_off_on']}' height='12' width='12' /></a></td>
+<td><a href='./staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=run&amp;cid={$row['clean_id']}'>{$lang['cleanup_run_now2']}</a></td>
  </tr>";
     }
     $htmlout .= '</tbody></table></div>';

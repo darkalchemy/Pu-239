@@ -1,4 +1,6 @@
 14 Oct, 2017
+update: admin cleanup log, moved disabled to last, instead of first
+fix: lottery
 update: Arcade and related files
 update: index page forum posts, remove unneeded joins
 fix: AJAX Chat kick/ban user
