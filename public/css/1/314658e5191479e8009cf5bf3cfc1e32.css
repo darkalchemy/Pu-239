@@ -306,6 +306,9 @@ textarea {
   -o-transition: all .75s ease-in-out;
   transition: all .75s ease-in-out
 }
+.bg-window {
+  background: rgba(0,0,0,.1)
+}
 .bg-grey {
   background: var(--grey-color)!important
 }
@@ -546,6 +549,9 @@ textarea {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px
+}
+.text-shadow {
+  text-shadow: -1px 0 var(--black-color),0 1px var(--black-color),1px 0 var(--black-color),0 -1px var(--black-color)
 }
 .inner-wrapper {
   background: rgba(0,0,0,.1);
@@ -894,12 +900,16 @@ a.iCarouselNav {
   width: 200px;
   height: auto
 }
-#icarousel .slide img,
-.round5 {
+#icarousel .slide img {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
   border: 1px solid var(--main-color)
+}
+.round5 {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px
 }
 a.iCarouselNav {
   display: block;
@@ -1366,6 +1376,12 @@ h6 {
 .padright20 {
   padding-right: 20px
 }
+.padtop10 {
+  padding-top: 10px
+}
+.padbottom10 {
+  padding-bottom: 10px
+}
 .answers-container {
   margin: auto;
   display: -webkit-box;
@@ -1510,10 +1526,11 @@ dd {
   background: #1b435e
 }
 .altlink {
-  font-size: 1em;
-  margin-top: 2px;
-  margin-bottom: 2px;
-  color: #555
+  font-size: 1.1em;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  color: #555;
+  padding: 5px
 }
 .altlink:hover,
 .btnflex:hover {
@@ -2184,6 +2201,7 @@ legend small {
   margin: auto;
   padding: 8px 15px 7px
 }
+.bordered,
 .table td,
 .table th,
 .table-bordered {

@@ -6,7 +6,7 @@ $lang = load_language('global');
 
 global $site_config, $CURUSER;
 if ($CURUSER['class'] < UC_USER) {
-    stderr('Error!', 'Sorry, you must be this tall to play on this game... User and up can play in the arcade!');
+    stderr('Error!', 'Sorry, you must be this tall to ride this ride... User and up can play in the arcade!');
 }
 
 $HTMLOUT = "
@@ -14,9 +14,9 @@ $HTMLOUT = "
             <div class='text-center'>
                 <h1>{$site_config['site_name']} Old School Arcade!</h1>
                 <span>Top Scores Earn {$site_config['top_score_points']} Karma Points</span>
-                <br><br>
-                <span><a class='altlink' href='arcade_top_scores.php'>Top Scores</a></span>
-               <br><br>
+                <div class='flex-container top10'>
+                    <a class='altlink' href='./arcade_top_scores.php'>Top Scores</a>
+                </div>
             </div>
             <div class='flex-grid'>";
 
@@ -26,10 +26,11 @@ foreach ($list as $gamename) {
     $id = $i + 1;
     $game_id = array_search($gamename, $site_config['arcade_games_names']);
     $game = $site_config['arcade_games'][$game_id];
+    $fullgamename = $site_config['arcade_games_names'][$game_id];
     $HTMLOUT .= "
                 <div class='flex_cell_3'>
-                    <a class='altlink' href='flash.php?gameURI=" . $game . '.swf&amp;gamename=' . $game . '&amp;game_id=' . $id . "'>
-                        <img src='" . $site_config['pic_base_url'] . 'games/' . $game . ".png' alt='" . $game . "' />
+                    <a href='./flash.php?gameURI={$game}.swf&amp;gamename={$game}&amp;game_id={$id}' class='tooltipper' title='{$fullgamename}'>
+                        <img src='{$site_config['pic_base_url']}games/{$game}.png' alt='{$game}' />
                     </a>
                 </div>";
 

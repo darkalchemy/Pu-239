@@ -81,6 +81,10 @@ textarea {
     transition: all 0.75s ease-in-out;
 }
 
+.bg-window {
+    background: rgba(0, 0, 0, .1);
+}
+
 .bg-grey {
     background: var(--grey-color) !important;
 }
@@ -369,6 +373,9 @@ textarea {
     border-radius: 5px;
 }
 
+.text-shadow {
+    text-shadow: -1px 0 var(--black-color), 0 1px var(--black-color), 1px 0 var(--black-color), 0 -1px var(--black-color);
+}
 .inner-wrapper {
     background: rgba(0, 0, 0, 0.1);
     padding: 10px;
@@ -767,12 +774,17 @@ a.iCarouselNav {
     height: auto;
 }
 
-#icarousel .slide img,
-.round5 {
+#icarousel .slide img {
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
     border: 1px solid var(--main-color);
+}
+
+.round5 {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 
 a.iCarouselNav {
@@ -1319,6 +1331,14 @@ h6 {
     padding-right: 20px;
 }
 
+.padtop10 {
+    padding-top: 10px;
+}
+
+.padbottom10 {
+    padding-bottom: 10px;
+}
+
 .answers-container {
     margin: auto;
     display: -webkit-box;
@@ -1491,10 +1511,11 @@ dd {
 }
 
 .altlink {
-    font-size: 1em;
-    margin-top: 2px;
-    margin-bottom: 2px;
+    font-size: 1.1em;
+    margin-top: 3px;
+    margin-bottom: 3px;
     color: #555;
+    padding: 5px;
 }
 
 .altlink:hover,
@@ -2271,7 +2292,8 @@ legend small {
 
 .table td,
 .table th,
-.table-bordered {
+.table-bordered,
+.bordered {
     -webkit-margin-start: 2px;
     -webkit-margin-end: 2px;
 }

@@ -1,4 +1,5 @@
 14 Oct, 2017
+update: Arcade and related files
 update: index page forum posts, remove unneeded joins
 fix: AJAX Chat kick/ban user
 remove: destroy session from AJAX Chat so not logged out of site

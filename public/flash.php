@@ -42,54 +42,64 @@ $game_width = $game_height;
 
 $HTMLOUT = '';
 $HTMLOUT .= "
-    <div class='container-fluid text-center'>
+    <div class='container-fluid portlet text-center'>
         <h1>{$site_config['site_name']} Old School Arcade!</h1>
         <span>Top Scores Earn {$site_config['top_score_points']} Karma Points</span>
-        <br><br>
-        <a class='altlink' href='arcade.php'>Arcade</a> || <a class='altlink' href='arcade_top_scores.php'>Top Scores</a>
-        <br><br>";
+        <div class='flex-container top10'>
+            <span class='right10'>
+                <a class='altlink' href='./arcade.php'>Arcade</a>
+            </span>
+            <span>
+                <a class='altlink' href='./arcade_top_scores.php'>Top Scores</a>
+            </span>
+        </div>";
 
-$colspan = 4;
-
-$HTMLOUT .= '
-        <table class="table table-bordered table-striped">
-            <tr>
-                <td>
-                    <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0" width="'.$game_width.'" height="'.$game_height.'">
-                        <param name="movie" value="./media/flash_games/'.$gameURI.'" />
-                        <param name="quality" value="high" />
-                        <embed src="./media/flash_games/'.$gameURI.'" quality="high" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash type=application/x-shockwave-flash" width="'.$game_width.'" height="'.$game_height.'"></embed>
-                    </object>';
+$HTMLOUT .= "
+        <div class='bordered padleft10 padright10 top20'>
+            <div class='alt_bordered transparent text-center'>
+                <object classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0' width='{$game_width}' height='{$game_height}'>
+                    <param name='movie' value='./media/flash_games/{$gameURI}' />
+                    <param name='quality' value='high' />
+                    <embed src='./media/flash_games/{$gameURI}' quality='high' pluginspage='http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash type=application/x-shockwave-flash' width='{$game_width}' height='{$game_height}'></embed>
+                </object>
+            </div>
+        </div>";
 
 $res = sql_query('SELECT * FROM flashscores WHERE game = '.sqlesc($gamename).' ORDER BY score DESC LIMIT 15') or sqlerr(__FILE__, __LINE__);
-
-//$HTMLOUT .='<a class="altlink" href="arcade_top_scores.php">Top Scores</a> || <a class="altlink" href="arcade_ranking.php">Arcade Rankings</a>';
 
 if (mysqli_num_rows($res) > 0) {
     $id = array_search($gamename, $site_config['arcade_games']);
     $fullgamename = $site_config['arcade_games_names'][$id];
-    $HTMLOUT .= '
-                    <table class="table table-bordered table-striped">
-                        <tr>
-                            <td colspan="'.$colspan.'"><span>'.$fullgamename.'</span></td>
-                        </tr>
-                        <tr><td class="colhead">Rank</td>
-                            <td class="colhead" width="75%">Name</td>
-                            <td class="colhead">Level</td>
-                            <td class="colhead">Score</td>
-                        </tr>';
+    $HTMLOUT .= "
+        <table class='table table-bordered table-striped top20 bottom20'>
+            <thead>
+                <tr>
+                    <th colspan='4'>
+                        <div class='size_4 text-center'>
+                            $fullgamename
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>Level</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>";
     $at_score_res = sql_query('SELECT * FROM highscores WHERE game = '.sqlesc($gamename).' ORDER BY score DESC LIMIT 15') or sqlerr(__FILE__, __LINE__);
     while ($at_score_arr = mysqli_fetch_assoc($at_score_res)) {
         $at_username = format_username($at_score_arr['user_id']);
         $at_ranking = sql_query('SELECT COUNT(id) FROM highscores WHERE game = '.sqlesc($gamename).' AND score > '.sqlesc($at_score_arr['score'])) or sqlerr(__FILE__, __LINE__);
         $at_rankrow = mysqli_fetch_row($at_ranking);
         $HTMLOUT .= '
-                        <tr'.($at_score_arr['user_id'] == $CURUSER['id'] ? '' : '').'>
-                            <td>0</td>
-                            <td>'.$at_username.'</td>
-                            <td>'.(int) $at_score_arr['level'].'</td>
-                            <td>'.number_format($at_score_arr['score']).'</td>
-                        </tr>';
+                <tr'.($at_score_arr['user_id'] == $CURUSER['id'] ? ' class="text-main text-shadow"' : '').'>
+                    <td>0</td>
+                    <td>' . $at_username . '</td>
+                    <td>' . (int)$at_score_arr['level'] . '</td>
+                    <td>' . number_format($at_score_arr['score']) . '</td>
+                </tr>';
     }
 
     while ($row = mysqli_fetch_assoc($res)) {
@@ -99,12 +109,12 @@ if (mysqli_num_rows($res) > 0) {
 
 
         $HTMLOUT .= '
-                        <tr'.($row['user_id'] == $player ? '' : '').'>
-                            <td>'.number_format($rankrow[0] + 1).'</td>
-                            <td>'.$username.'</td>
-                            <td>'.(int) $row['level'].'</td>
-                            <td>'.number_format($row['score']).'</td>
-                        </tr>';
+                <tr'.($row['user_id'] == $player ? ' class="text-main text-shadow"' : '').'>
+                    <td>' . number_format($rankrow[0] + 1) . '</td>
+                    <td>' . $username . '</td>
+                    <td>' . (int)$row['level'] . '</td>
+                    <td>' . number_format($row['score']) . '</td>
+                </tr>';
     }
     $member_score_res = sql_query('SELECT * FROM flashscores WHERE game = '.sqlesc($gamename).' AND user_id = '.sqlesc($CURUSER['id']).' ORDER BY score DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
 
@@ -117,35 +127,47 @@ if (mysqli_num_rows($res) > 0) {
 
         if ($member_rank > 10) {
             $HTMLOUT .= '
-                        <tr>
-                            <td>'.$member_rank.'</td>
-                            <td width="75%">'.format_username($CURUSER['id']).'</td>
-                            <td>'.(int) $row['level'].'</td>
-                            <td class="'.$class.'">'.number_format($member_score_arr['score']).'</td>
-                        </tr>';
+                <tr>
+                    <td>' . $member_rank . '</td>
+                    <td>' . format_username($CURUSER['id']) . '</td>
+                    <td>' . (int)$row['level'] . '</td>
+                    <td>' . number_format($member_score_arr['score']) . '</td>
+                </tr>';
         }
     }
 
     $HTMLOUT .= '
-                    </table>';
+            </tbody>
+        </table>';
 }
 //}
 else {
-    $HTMLOUT .= '
-                    <table class="table table-bordered table-striped">
-                        <tr>
-                            <td>'.htmlsafechars($_GET['gamename'], ENT_QUOTES).'</TD>
-                        </tr>
-                        <tr>
-                            <td>Sorry, we cannot save scores of this game!</td>
-                        </tr>
-                    </table>';
+    $id = array_search($gamename, $site_config['arcade_games']);
+    $fullgamename = $site_config['arcade_games_names'][$id];
+    $HTMLOUT .= "
+        <table class='table table-bordered table-striped top20 bottom20'>
+            <thead>
+                <tr>
+                    <th colspan='4'>
+                        <div class='size_4 text-center'>
+                            $fullgamename
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class='text-center'>
+                            Sorry, we cannot save scores of this game or there are no scores saved, yet.
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>";
 }
 
 $HTMLOUT .= '
-                </td>
-            </tr>
-        </table>
     </div>';
 
 echo stdhead('Old School Arcade').$HTMLOUT.stdfoot($stdfoot);
