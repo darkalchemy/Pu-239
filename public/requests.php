@@ -101,7 +101,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
         <td>' . number_format($main_query_arr['comments']) . '</td>
         <td>yes: ' . number_format($main_query_arr['vote_yes_count']) . '<br>
         no: ' . number_format($main_query_arr['vote_no_count']) . '</td>
-        <td>' . print_user_stuff($main_query_arr) . '</td>
+        <td>' . format_username($main_query_arr) . '</td>
         <td>' . ($main_query_arr['filled_by_user_id'] > 0 ? '<a href="details.php?id=' . (int)$main_query_arr['filled_torrent_id'] . '" title="go to torrent page!!!"><span>yes!</span></a>' : '<span>no</span>') . '</td>
     </tr>';
         }
@@ -137,13 +137,13 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
                     <input type="hidden" name="action" value="vote" />
                     <input type="hidden" name="id" value="' . $id . '" />
                     <input type="hidden" name="vote" value="1" />
-                    <input type="submit" class="button" value="vote yes!" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
+                    <input type="submit" class="button" value="vote yes!" />
                     </form> ~ you will be notified when this request is filled.';
             $vote_no = '<form method="post" action="requests.php">
                     <input type="hidden" name="action" value="vote" />
                     <input type="hidden" name="id" value="' . $id . '" />
                     <input type="hidden" name="vote" value="2" />
-                    <input type="submit" class="button" value="vote no!" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
+                    <input type="submit" class="button" value="vote no!" />
                     </form> ~ you are being a stick in the mud.';
             $your_vote_was = '';
         } else {
@@ -182,7 +182,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
   </tr>
   <tr>
   <td>requested by:</td>
-  <td>' . print_user_stuff($arr) . ' [ ' . get_user_class_name($arr['class']) . ' ]
+  <td>' . format_username($arr) . ' [ ' . get_user_class_name($arr['class']) . ' ]
   ratio: ' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . get_user_ratio_image($arr['uploaded'], ($site_config['ratio_free'] ? '1' : $arr['downloaded'])) . '</td>
   </tr>' . ($arr['filled_torrent_id'] > 0 ? '<tr>
   <td>filled:</td>
@@ -191,7 +191,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
   <tr>
   <td>Report Request</td>
   <td><form action="report.php?type=Request&amp;id=' . $id . '" method="post">
-  <input type="submit" class="button_med" value="Report This Request" onmouseover="this.className=\'button_med_hover\'" onmouseout="this.className=\'button_med\'" />
+  <input type="submit" class="button_med" value="Report This Request" />
   For breaking the <a class="altlink" href="rules.php">rules</a></form></td>
   </tr>
   </table>';
@@ -277,7 +277,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
     </tr>
     <tr>
     <td colspan="2">
-    <input type="submit" name="button" class="button" value="Submit" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
+    <input type="submit" name="button" class="button" value="Submit" /></td>
     </tr>
     </tbody>
     </table></form>
@@ -330,7 +330,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
         if ($edit_arr['filled_by_user_id'] > 0) {
             $filled_by_res = sql_query('SELECT id, username, warned, suspended, enabled, leechwarn, chatpost, pirate, king, donor, class FROM users WHERE id =' . sqlesc($edit_arr['filled_by_user_id'])) or sqlerr(__FILE__, __LINE__);
             $filled_by_arr = mysqli_fetch_assoc($edit_res);
-            $filled_by = 'this request was filled by ' . print_user_stuff($filled_by_arr);
+            $filled_by = 'this request was filled by ' . format_username($filled_by_arr);
         }
         $request_name = strip_tags(isset($_POST['request_name']) ? trim($_POST['request_name']) : $edit_arr['request_name']);
         $image = strip_tags(isset($_POST['image']) ? trim($_POST['image']) : $edit_arr['image']);
@@ -388,7 +388,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
    </tr>') . '
    <tr>
    <td colspan="2">
-   <input type="submit" name="button" class="button" value="Edit" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
+   <input type="submit" name="button" class="button" value="Edit" /></td>
    </tr>
    </table></form>
     </td></tr></table><br>';
@@ -489,7 +489,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
     </tr>
      <tr>
     <td colspan="2">
-    <input name="button" type="submit" class="button" value="Edit" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
+    <input name="button" type="submit" class="button" value="Edit" /></td>
     </tr>
      </table></form>';
         echo stdhead('Edit comment to "' . $arr['request_name'] . '"', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
@@ -536,7 +536,7 @@ function comment_table($rows)
             $arr_user = mysqli_fetch_assoc($res_user);
             $text .= '<p>Last edited by <a href="userdetails.php?id=' . (int)$row['editedby'] . '"><b>' . htmlsafechars($arr_user['username']) . '</b></a> at ' . get_date($row['editedat'], 'DATE') . '</p>';
         }
-        $top_comment_stuff = $row['comment_id'] . ' by ' . (isset($row['username']) ? print_user_stuff($row) . ($row['title'] !== '' ? ' [ ' . htmlsafechars($row['title']) . ' ] ' : ' [ ' . get_user_class_name($row['class']) . ' ]  ') : ' M.I.A. ') . get_date($row['added'], '') . ($row['id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? '
+        $top_comment_stuff = $row['comment_id'] . ' by ' . (isset($row['username']) ? format_username($row) . ($row['title'] !== '' ? ' [ ' . htmlsafechars($row['title']) . ' ] ' : ' [ ' . get_user_class_name($row['class']) . ' ]  ') : ' M.I.A. ') . get_date($row['added'], '') . ($row['id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? '
      - [<a href="requests.php?action=edit_comment&amp;id=' . (int)$row['request'] . '&amp;comment_id=' . (int)$row['comment_id'] . '">Edit</a>]' : '') . ($CURUSER['class'] >= UC_STAFF ? '
      - [<a href="requests.php?action=delete_comment&amp;id=' . (int)$row['request'] . '&amp;comment_id=' . (int)$row['comment_id'] . '">Delete</a>]' : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? '
      - [<a href="comment.php?action=vieworiginal&amp;cid=' . (int)$row['id'] . '">View original</a>]' : '') . '

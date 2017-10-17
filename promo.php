@@ -310,7 +310,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
 					<table width='200' cellpadding='10' border='1' class='text-center' style='border-collapse:collapse'>
 						<tr><td class='rowhead' class='text-left' width='100'> User</td><td class='rowhead' class='text-left' nowrap='nowrap'>Added</td></tr>";
                 while ($ap = mysqli_fetch_assoc($q2)) {
-                    $HTMLOUT .= "<tr><td class='text-left' width='100'><a href='userdetails.php?id=" . (int)$ap['id'] . "'>" . htmlsafechars($ap['username']) . "</a></td><td  class='text-left' nowrap='nowrap' >" . get_date($ap['added'], 'LONG', 0, 1) . '</td></tr>';
+                    $HTMLOUT .= "<tr><td class='text-left' width='100'>" . format_username($ap['id']) . "</td><td  class='text-left' nowrap='nowrap' >" . get_date($ap['added'], 'LONG', 0, 1) . '</td></tr>';
                 }
                 $HTMLOUT .= "</table>
 						<br>
@@ -371,7 +371,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
 				<td nowrap='nowrap' class='text-center'>" . (mksize($ar['bonus_upload'] * 1073741824)) . "</td>
 				<td nowrap='nowrap' class='text-center'>" . ((int)$ar['bonus_invites']) . "</td>
 				<td nowrap='nowrap' class='text-center'>" . ((int)$ar['bonus_karma']) . "</td>
-				<td nowrap='nowrap' class='text-center'><a href='userdetails.php?id=" . (int)$ar['creator'] . "'>" . htmlsafechars($ar['username']) . "</a></td>
+				<td nowrap='nowrap' class='text-center'>" . format_username($ar['creator']) . "</a></td>
 				<td nowrap='nowrap' class='text-center'><a href='" . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . (int)$ar['id'] . "'><img src='{$site_config['pic_base_url']}del.png' border='0' alt='Drop' /></a></td>
 			</tr>";
         }

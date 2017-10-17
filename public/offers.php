@@ -109,7 +109,7 @@ switch ($action) {
         <td>' . number_format($main_query_arr['comments']) . '</td>
         <td>yes: ' . number_format($main_query_arr['vote_yes_count']) . '<br>
         no: ' . number_format($main_query_arr['vote_no_count']) . '</td>
-        <td>' . print_user_stuff($main_query_arr) . '</td>
+        <td>' . format_username($main_query_arr) . '</td>
         <td>' . $status . '</td>
     </tr>';
         }
@@ -145,13 +145,13 @@ switch ($action) {
                     <input type="hidden" name="action" value="vote" />
                     <input type="hidden" name="id" value="' . $id . '" />
                     <input type="hidden" name="vote" value="1" />
-                    <input type="submit" class="button" value="vote yes!" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
+                    <input type="submit" class="button" value="vote yes!" />
                     </form> ~ you will be notified when this offer is filled.';
             $vote_no = '<form method="post" action="offers.php">
                     <input type="hidden" name="action" value="vote" />
                     <input type="hidden" name="id" value="' . $id . '" />
                     <input type="hidden" name="vote" value="2" />
-                    <input type="submit" class="button" value="vote no!" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
+                    <input type="submit" class="button" value="vote no!" />
                     </form> ~ you are being a stick in the mud.';
             $your_vote_was = '';
         } else {
@@ -167,7 +167,7 @@ switch ($action) {
                     <option class="body" value="approved"' . ($arr['status'] == 'approved' ? ' selected="selected"' : '') . '>Status: approved</option>
                     <option class="body" value="denied"' . ($arr['status'] == 'denied' ? ' selected="selected"' : '') . '>Status: denied</option>
                     </select>
-                    <input type="submit" class="button" value="change status!" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
+                    <input type="submit" class="button" value="change status!" />
                     </form> ');
         //=== start page
         $HTMLOUT .= (isset($_GET['status_changed']) ? '<h1>Offer Status Updated!</h1>' : '') . (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . ($arr['status'] == 'approved' ? '<span>status: approved!</span>' : ($arr['status'] == 'pending' ? '<span>status: pending...</span>' : '<span>status: denied</span>')) . $status_drop_down . '<br><br>
@@ -200,13 +200,13 @@ switch ($action) {
     </tr>
     <tr>
     <td>offered by:</td>
-    <td>' . print_user_stuff($arr) . ' [ ' . get_user_class_name($arr['class']) . ' ]
+    <td>' . format_username($arr) . ' [ ' . get_user_class_name($arr['class']) . ' ]
     ratio: ' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . get_user_ratio_image($arr['uploaded'], ($site_config['ratio_free'] ? '1' : $arr['downloaded'])) . '</td>
     </tr>
     <tr>
     <td>Report Offer</td>
     <td><form action="report.php?type=Offer&amp;id=' . $id . '" method="post">
-    <input type="submit" class="button_med" value="Report This Offer" onmouseover="this.className=\'button_med_hover\'" onmouseout="this.className=\'button_med\'" />
+    <input type="submit" class="button_med" value="Report This Offer" />
     For breaking the <a class="altlink" href="rules.php">rules</a></form></td>
     </tr>
     </table>';
@@ -294,7 +294,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>offered by:</td>
-    <td>' . print_user_stuff($CURUSER) . ' [ ' . get_user_class_name($CURUSER['class']) . ' ]
+    <td>' . format_username($CURUSER) . ' [ ' . get_user_class_name($CURUSER['class']) . ' ]
     ratio: ' . member_ratio($CURUSER['uploaded'], $site_config['ratio_free'] ? '0' : $CURUSER['downloaded']) . get_user_ratio_image($CURUSER['uploaded'], ($site_config['ratio_free'] ? '1' : $CURUSER['downloaded'])) . '</td>
     </tr>
     </table>
@@ -330,8 +330,8 @@ switch ($action) {
     </tr>
     <tr>
     <td colspan="2">
-    <input type="submit" name="button" class="button" value="Preview" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
-    <input type="submit" name="button" class="button" value="Submit" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
+    <input type="submit" name="button" class="button" value="Preview" />
+    <input type="submit" name="button" class="button" value="Submit" /></td>
     </tr>
     </table></form>
      </td></tr></table><br>';
@@ -461,8 +461,8 @@ switch ($action) {
     </tr>
     <tr>
     <td colspan="2">
-    <input type="submit" name="button" class="button" value="Preview" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
-    <input type="submit" name="button" class="button" value="Edit" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
+    <input type="submit" name="button" class="button" value="Preview" />
+    <input type="submit" name="button" class="button" value="Edit" /></td>
     </tr>
     </table></form>
      </td></tr></table><br>';
@@ -516,8 +516,8 @@ switch ($action) {
     </tr>
      <tr>
     <td colspan="2">
-    <input name="button" type="submit" class="button" value="Preview" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
-    <input name="button" type="submit" class="button" value="Save" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
+    <input name="button" type="submit" class="button" value="Preview" />
+    <input name="button" type="submit" class="button" value="Save" /></td>
     </tr>
      </table></form>';
         $res = sql_query('SELECT c.offer, c.id AS comment_id, c.text, c.added, c.editedby, c.editedat, u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.title, u.leechwarn, u.chatpost, u.pirate, u.king FROM comments AS c LEFT JOIN users AS u ON c.user = u.id WHERE offer = ' . sqlesc($id) . ' ORDER BY c.id DESC LIMIT 5');
@@ -585,8 +585,8 @@ switch ($action) {
     </tr>
      <tr>
     <td colspan="2">
-    <input name="button" type="submit" class="button" value="Preview" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
-    <input name="button" type="submit" class="button" value="Edit" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
+    <input name="button" type="submit" class="button" value="Preview" />
+    <input name="button" type="submit" class="button" value="Edit" /></td>
     </tr>
      </table></form>';
         echo stdhead('Edit comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
@@ -674,7 +674,7 @@ function comment_table($rows)
             $text .= '<p>Last edited by <a href="userdetails.php?id=' . (int)$row['editedby'] . '">
         <b>' . htmlsafechars($arr_user['username']) . '</b></a> at ' . get_date($row['editedat'], 'DATE') . '</p>';
         }
-        $top_comment_stuff = $row['comment_id'] . ' by ' . (isset($row['username']) ? print_user_stuff($row) . ($row['title'] !== '' ? ' [ ' . htmlsafechars($row['title']) . ' ] ' : ' [ ' . get_user_class_name($row['class']) . ' ]  ') : ' M.I.A. ') . get_date($row['added'], '') . ($row['id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? '
+        $top_comment_stuff = $row['comment_id'] . ' by ' . (isset($row['username']) ? format_username($row) . ($row['title'] !== '' ? ' [ ' . htmlsafechars($row['title']) . ' ] ' : ' [ ' . get_user_class_name($row['class']) . ' ]  ') : ' M.I.A. ') . get_date($row['added'], '') . ($row['id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? '
      - [<a href="offers.php?action=edit_comment&amp;id=' . (int)$row['offer'] . '&amp;comment_id=' . (int)$row['comment_id'] . '">Edit</a>]' : '') . ($CURUSER['class'] >= UC_STAFF ? '
      - [<a href="offers.php?action=delete_comment&amp;id=' . (int)$row['offer'] . '&amp;comment_id=' . (int)$row['comment_id'] . '">Delete</a>]' : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? '
      - [<a href="comment.php?action=vieworiginal&amp;cid=' . (int)$row['id'] . '">View original</a>]' : '') . '

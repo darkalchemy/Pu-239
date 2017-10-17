@@ -154,7 +154,7 @@ function torrenttable($res, $variant = 'index')
         if ($row['sticky'] == 'yes') {
             $htmlout .= "<tr class='highlight'>";
         } else {
-            $htmlout .= '<tr class="' . (($free_color && $all_free_tag != '') || ($row['free'] != 0) || $slots_check ? 'freeleech_color' : 'browse_color') . '">';
+            $htmlout .= '<tr class="' . (($free_color && $all_free_tag!= '') || ($row['free'] != 0) || $slots_check ? 'freeleech_color' : 'browse_color') . '">';
         }
         $htmlout .= "<td class='text-center'>";
         if (isset($row['cat_name'])) {
@@ -200,7 +200,7 @@ function torrenttable($res, $variant = 'index')
             }
             $newgenre = '<i>' . join(', ', $newgenre) . '</i>';
         }
-        $sticky = ($row['sticky'] == 'yes' ? "<img src='{$site_config['pic_base_url']}sticky.gif' class='tooltipper' alt='Sticky' title='Sticky !' />" : '');
+        $sticky = ($row['sticky'] == 'yes' ? "<img src='{$site_config['pic_base_url']}sticky.gif' class='tooltipper' alt='Sticky' title='Sticky!' />" : '');
         $nuked = ($row['nuked'] == 'yes' ? "<img src='{$site_config['pic_base_url']}nuked.gif' class='tooltipper' alt='Nuked'  class='text-right' title='Reason :" . htmlsafechars($row['nukereason']) . "' />" : '');
         $release_group = ($row['release_group'] == 'scene' ? " <img src='{$site_config['pic_base_url']}scene.gif' class='tooltipper' title='Scene' alt='Scene' />" : ($row['release_group'] == 'p2p' ? " <img src='{$site_config['pic_base_url']}p2p.gif' class='tooltipper' title='P2P' alt='P2P' />" : ''));
         $viponly = ($row['vip'] == 1 ? "<i class='fa fa-star-half-o fa-browse text-yellow tooltipper' title='Vip Torrent'></i>" : '');
@@ -228,7 +228,7 @@ function torrenttable($res, $variant = 'index')
         $nuked = ($row['nuked'] != 'no' && $row['nuked'] != '' ? ' <span title="Nuked ' . htmlsafechars($row['nuked']) . '" class="browse-icons-nuked"></span>' : '');
         //==
         $Subs = '';
-        if (in_array($row['category'], $site_config['movie_cats']) && !empty($row['subs'])) {
+        if (in_array($row['category'], $site_config['movie_cats']) &&!empty($row['subs'])) {
             $subs_array = explode(',', $row['subs']);
             require_once CACHE_DIR . 'subs.php';
             foreach ($subs_array as $k => $sid) {
@@ -259,7 +259,7 @@ function torrenttable($res, $variant = 'index')
                         <b class='size_4 text-main'>Leechers:</b> " . (int)$row['leechers'] . "<br>
                     </span>
                 </div>";
-        $new = $row['added'] >= $CURUSER['last_browse'] ? " <img src='{$site_config['pic_base_url']}newb.png' class='tooltipper' alt='New !' title='New !' />" : '';
+        $new = $row['added'] >= $CURUSER['last_browse'] ? " <img src='{$site_config['pic_base_url']}newb.png' class='tooltipper' alt='New!' title='New!' />" : '';
         $desc = "
                 <span id='desc_{$row['id']}'>
                     <span class='flipper'>

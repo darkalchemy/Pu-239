@@ -108,59 +108,6 @@ LOCK TABLES `achievements` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `ajax_chat_bans`
---
-
-DROP TABLE IF EXISTS `ajax_chat_bans`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ajax_chat_bans` (
-  `userID` int(10) unsigned NOT NULL DEFAULT '0',
-  `userName` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dateTime` datetime NOT NULL,
-  `ip` varbinary(16) NOT NULL,
-  PRIMARY KEY (`userID`),
-  KEY `userName` (`userName`),
-  KEY `dateTime` (`dateTime`),
-  CONSTRAINT `ajax_chat_bans_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `ajax_chat_bans`
---
-
-LOCK TABLES `ajax_chat_bans` WRITE;
-/*!40000 ALTER TABLE `ajax_chat_bans` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ajax_chat_bans` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `ajax_chat_channels`
---
-
-DROP TABLE IF EXISTS `ajax_chat_channels`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ajax_chat_channels` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `allowed_classes` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '1',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `ajax_chat_channels`
---
-
-LOCK TABLES `ajax_chat_channels` WRITE;
-/*!40000 ALTER TABLE `ajax_chat_channels` DISABLE KEYS */;
-INSERT INTO `ajax_chat_channels` VALUES (1,'Staff','4, 5, 6'),(2,'Sysop','6');
-/*!40000 ALTER TABLE `ajax_chat_channels` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `ajax_chat_invitations`
 --
 
@@ -221,36 +168,6 @@ CREATE TABLE `ajax_chat_messages` (
 LOCK TABLES `ajax_chat_messages` WRITE;
 /*!40000 ALTER TABLE `ajax_chat_messages` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ajax_chat_messages` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `ajax_chat_online`
---
-
-DROP TABLE IF EXISTS `ajax_chat_online`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ajax_chat_online` (
-  `userID` int(10) unsigned NOT NULL DEFAULT '0',
-  `userName` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `userRole` int(1) NOT NULL,
-  `channel` int(10) unsigned NOT NULL,
-  `dateTime` datetime NOT NULL,
-  `ip` varbinary(16) NOT NULL,
-  PRIMARY KEY (`userID`),
-  KEY `userName` (`userName`),
-  CONSTRAINT `ajax_chat_online_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `ajax_chat_online_ibfk_2` FOREIGN KEY (`userName`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `ajax_chat_online`
---
-
-LOCK TABLES `ajax_chat_online` WRITE;
-/*!40000 ALTER TABLE `ajax_chat_online` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ajax_chat_online` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1713,11 +1630,11 @@ CREATE TABLE `messages` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sender` int(10) unsigned NOT NULL DEFAULT '0',
   `receiver` int(10) unsigned NOT NULL DEFAULT '0',
-  `added` int(11) NOT NULL,
+  `added` int(10) unsigned NOT NULL DEFAULT '0',
   `subject` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `msg` mediumtext COLLATE utf8mb4_unicode_ci,
   `unread` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
-  `poster` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `poster` int(10) unsigned NOT NULL DEFAULT '0',
   `location` smallint(6) NOT NULL DEFAULT '1',
   `saved` enum('no','yes') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `urgent` enum('no','yes') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
@@ -3699,4 +3616,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-10-09 19:13:59
+-- Dump completed on 2017-10-17 22:20:17

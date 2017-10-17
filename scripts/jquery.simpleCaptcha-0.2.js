@@ -133,7 +133,7 @@
         scriptPath: 'simpleCaptcha.php',  // String Relative path to the script file to use (usually simpleCaptcha.php).
         introClass: 'captchaIntro',       // String Class to use for the captcha introduction text container.
         textClass: 'captchaText',         // String Class to look for to place the text for the correct captcha image.
-        imageBoxClass: 'answers-container',   // String Class to use for the captchas images container.
+        imageBoxClass: 'flex-justify-center',   // String Class to use for the captchas images container.
         imageClass: 'captchaImage'        // String Class to use for each captcha image.
     };
 

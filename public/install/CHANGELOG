@@ -1,3 +1,13 @@
+17 Oct 2017
+update: database schema
+add: missing images
+fix: BBcode editor using 100% of available space
+update: index news block
+fix: admin news add/edit
+update: captcha pages
+remove: print_user_stuff function
+remove: javascript to change button class on hover
+
 14 Oct, 2017
 update: admin cleanup log, moved disabled to last, instead of first
 fix: lottery

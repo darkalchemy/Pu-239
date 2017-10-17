@@ -6,7 +6,7 @@ function get_file($file) {
         if ($site_config['in_production']) {
             switch($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/0c7d470b37a1f152c612e25ee29f925c.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/bf15dec3655d6f92981b5a813e424f46.min.css";
                 case 'js':
                     return "{$site_config['baseurl']}/js/{$style}/b55b044c1a3fbc923ae46c270a5c10c1.min.js";
                 case 'chatjs':
@@ -22,9 +22,9 @@ function get_file($file) {
                 case 'index_js':
                     return "{$site_config['baseurl']}/js/{$style}/46ada7fb8831525d44d3168dc3cec47f.min.js";
                 case 'captcha1_js':
-                    return "{$site_config['baseurl']}/js/{$style}/592eda4935d1ef20432a018178f0a489.min.js";
+                    return "{$site_config['baseurl']}/js/{$style}/18d0e43301d28b2090751e0210e4fff3.min.js";
                 case 'captcha2_js':
-                    return "{$site_config['baseurl']}/js/{$style}/f8d4243e12418125f8714d55569c7bb4.min.js";
+                    return "{$site_config['baseurl']}/js/{$style}/5a6ceecb5c88300a01cf08a64fac6b9b.min.js";
                 case 'pm_js':
                     return "{$site_config['baseurl']}/js/{$style}/936befd35c99dde2e1bd9bf7c95e14f2.min.js";
                 case 'warn_js':
@@ -49,7 +49,7 @@ function get_file($file) {
         } else {
             switch($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/314658e5191479e8009cf5bf3cfc1e32.css";
+                    return "{$site_config['baseurl']}/css/{$style}/02356cb1892f6bd1b780e8e1dff8f886.css";
                 case 'js':
                     return "{$site_config['baseurl']}/js/{$style}/dc638a734b3ff25a8b8a03ce0acd7a67.js";
                 case 'chatjs':
@@ -65,9 +65,9 @@ function get_file($file) {
                 case 'index_js':
                     return "{$site_config['baseurl']}/js/{$style}/7dbee50100d034706665eba73ead4720.js";
                 case 'captcha1_js':
-                    return "{$site_config['baseurl']}/js/{$style}/e5a7028ceed4a74506b9edf36aaaf53c.js";
+                    return "{$site_config['baseurl']}/js/{$style}/1557552471b322c8660d996d7e9e39bf.js";
                 case 'captcha2_js':
-                    return "{$site_config['baseurl']}/js/{$style}/d66c90e1824cd1ebed3df8f54f4b7a92.js";
+                    return "{$site_config['baseurl']}/js/{$style}/f1cfcbaa990460b2ad1280997a1e9419.js";
                 case 'pm_js':
                     return "{$site_config['baseurl']}/js/{$style}/89fe72984f32ed9f02c73f05c4e6b8e9.js";
                 case 'warn_js':

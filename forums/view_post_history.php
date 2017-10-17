@@ -19,7 +19,7 @@ $location_bar = '<h1><a class="altlink" href="' . $site_config['baseurl'] . '/fo
         <span>' . $mini_menu . '</span><br><br>';
 $width = 100;
 $HTMLOUT .= $location_bar;
-$HTMLOUT .= '<h1>' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</>' : htmlsafechars($arr['username'])) . '\'s ' . $lang['vph_final_edit_post'] . '. ' . $lang['vph_last_edit_by'] . ': ' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : print_user_stuff($arr_edited)) . '</h1>
+$HTMLOUT .= '<h1>' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</>' : htmlsafechars($arr['username'])) . '\'s ' . $lang['vph_final_edit_post'] . '. ' . $lang['vph_last_edit_by'] . ': ' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : format_username($arr_edited)) . '</h1>
     <table class="table table-bordered table-striped">
     <tr>
     <td class="forum_head" width="120px">
@@ -29,7 +29,7 @@ $HTMLOUT .= '<h1>' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous']
     <span> ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . '] UTC ' . ($post_title !== '' ? '&#160;&#160;&#160;&#160; ' . $lang['fe_title'] . ': <span>' . $post_title . '</span>' : '') . ($icon !== '' ? ' <img src="' . $site_config['pic_base_url'] . 'smilies/' . $icon . '.gif" alt="' . $icon . '" title="' . $icon . '"/>' : '') . '</span>
     </td></tr>
     <tr>
-    <td class="two" width="120px">' . ($arr['anonymous'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($arr)) . '<br>' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : print_user_stuff($arr)) . '</td>
+    <td class="two" width="120px">' . ($arr['anonymous'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($arr)) . '<br>' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : format_username($arr)) . '</td>
     <td class="one" colspan="2">' . ($arr['bbcode'] == 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body'])) . '</td>
     </tr>
     </table><br><h1>' . $lang['fe_post_history'] . '</h1>[ ' . $lang['vph_all_post_edits_date'] . '. ]<br><br>' . htmlspecialchars_decode($arr['post_history']) . '<br>' . $location_bar;

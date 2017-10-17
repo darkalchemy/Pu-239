@@ -58,9 +58,10 @@ function BBcode($body)
                         ' . $emoticons_staff . '
                     </div>') . '
                 </div>
-                <div id="tblDefects">
+                <div id="tblDefects" class="w-100">
                     <div class="table-wrapper">
-                    <textarea id="bbcode_editor" name="body" cols="70" rows="20">' . $body . '</textarea>
+                    <!-- <textarea id="bbcode_editor" name="body" cols="70" rows="20">' . $body . '</textarea> -->
+                    <textarea id="bbcode_editor" name="body" rows="20">' . $body . '</textarea>
                     <div id="outer-preview" class="outer-preview">
                         <div class="inner-preview">
                             <div id="preview-window" class="preview-window">

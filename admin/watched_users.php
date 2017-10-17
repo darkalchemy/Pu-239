@@ -108,7 +108,7 @@ if (isset($_GET['add'])) {
  </tr>
  <tr>
  <td class="colhead">
- <input type="submit" class="button_big" value="' . $lang['watched_addtowu'] . '!"" onmouseover="this.className=\'button_big_hover\'" onmouseout="this.className=\'button_big\'" /><form><td>
+ <input type="submit" class="button_big" value="' . $lang['watched_addtowu'] . '!"" /><form><td>
     </tr>
     </table>';
             stderr('watched Users', $naughty_box);
@@ -181,10 +181,10 @@ if ($how_many > 0) {
         $HTMLOUT .= '
     <tr>
         <td class="text-center">' . get_date($arr['watched_user'], '') . '</td>
-        <td class="text-left">' . print_user_stuff($arr) . '</td>
+        <td class="text-left">' . format_username($arr) . '</td>
         <td class="text-left">' . $the_flip_box . '</td>
         <td class="text-center">' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
-        <td class="text-center">' . ($invitor_arr['username'] == '' ? '' . $lang['watched_open_sign-ups'] . '' : print_user_stuff($invitor_arr)) . '</td>
+        <td class="text-center">' . ($invitor_arr['username'] == '' ? '' . $lang['watched_open_sign-ups'] . '' : format_username($invitor_arr)) . '</td>
         ' . ($CURUSER['class'] >= UC_STAFF ? '
         <td class="text-center"><input type="checkbox" name="wu[]" value="' . (int)$arr['id'] . '" /></td>' : '') . '
     </tr>';
@@ -198,7 +198,7 @@ if ($how_many > 0) {
 $HTMLOUT .= '
 <tr>
 <td class="text-center" colspan="6" class="colhead"><a class="altlink" href="javascript:SetChecked(1,\'wu[]\')"> ' . $lang['watched_selall'] . '</a> - <a class="altlink" href="javascript:SetChecked(0,\'wu[]\')">un-' . $lang['watched_selall'] . '</a>
-        <input type="submit" class="button_big" value="remove selected' . $lang['watched_removedfrom'] . '" onmouseover="this.className=\'button_big_hover\'" onmouseout="this.className=\'button_big\'" /></td></tr></table>
+        <input type="submit" class="button_big" value="remove selected' . $lang['watched_removedfrom'] . '" /></td></tr></table>
         </form>';
 
 

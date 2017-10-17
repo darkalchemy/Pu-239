@@ -3,7 +3,7 @@ $HTMLOUT .= "
     <a id='latestforum-hash'></a>
     <fieldset id='latestforum' class='header'>
         <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['latestposts_title']}</legend>
-        <div class='text-center'>";
+        <div class='table-wrapper text-center'>";
 $page = 1;
 $num = 0;
 if (($topics = $mc1->get_value('last_posts_' . $CURUSER['class'])) === false) {

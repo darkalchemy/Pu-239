@@ -65,7 +65,7 @@ function radioinfo($radio)
                 } else {
                     $users = [];
                     while ($a1 = mysqli_fetch_assoc($q1)) {
-                        $users[] = sprintf('<a href="/userdetails.php?id=%d">%s</a>', $a1['id'], $a1['username']);
+                        $users[] = format_username($a1['id']);
                     }
                     $html .= '<li><b>Listeners</b>: ' . join(', ', $users) . '</li>';
                 }

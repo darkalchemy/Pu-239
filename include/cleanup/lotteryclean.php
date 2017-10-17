@@ -1,7 +1,7 @@
 <?php
 function lotteryclean($data)
 {
-    global $site_config, $queries;
+    global $site_config, $queries, $mc1;
     set_time_limit(1200);
     ignore_user_abort(true);
     $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
@@ -62,7 +62,9 @@ function lotteryclean($data)
             $mc1->delete_value('MyUser_' . $user_id);
             $mc1->delete_value('user' . $user_id);
         }
-        sql_query('INSERT INTO lottery_config(name,value) VALUES ' . join(',', $lconfig_update) . ' ON DUPLICATE KEY UPDATE value=VALUES(value)') or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO lottery_config(name,value)
+                    VALUES ' . join(',', $lconfig_update) . '
+                    ON DUPLICATE KEY UPDATE value=VALUES(value)') or sqlerr(__FILE__, __LINE__);
         sql_query('DELETE FROM tickets') or sqlerr(__FILE__, __LINE__);
     }
 

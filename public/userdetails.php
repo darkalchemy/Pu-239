@@ -371,7 +371,7 @@ if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
 $perms .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_NO_IP) ? '&#160;&#160;<img src="' . $site_config['pic_base_url'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  title="' . $lang['userdetails_invincible'] . '" />' : '') : '');
 $stealth .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? '&#160;&#160;<img src="' . $site_config['pic_base_url'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stelth'] . '"  title="' . $lang['userdetails_stelth'] . '" />' : '') : '');
 $enabled = $user['enabled'] == 'yes';
-$HTMLOUT .= "<table class='table table-bordered table-striped'>" . "<tr><td class='embedded'><h1>" . format_username($user, true) . "</h1>$country$perms$stealth$watched_user$suspended$h1_thingie</td></tr></table>\n";
+$HTMLOUT .= "<table class='table table-bordered table-striped'>" . "<tr><td class='embedded'><h1>" . format_username($user['id']) . "</h1>$country$perms$stealth$watched_user$suspended$h1_thingie</td></tr></table>\n";
 if ($user['opt1'] & user_options::PARKED) {
     $HTMLOUT .= "<p><b>{$lang['userdetails_parked']}</b></p>\n";
 }

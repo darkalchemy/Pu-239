@@ -70,10 +70,10 @@ if ($count == 0) {
                 if ($CURUSER['class'] < UC_STAFF && $arr_unread['user_id'] != $CURUSER['id']) {
                     $thread_starter = ($arr_unread['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
                 } else {
-                    $thread_starter = ($arr_unread['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . print_user_stuff($arr_unread) . ']' : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
+                    $thread_starter = ($arr_unread['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . format_username($arr_unread) . ']' : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
                 }
             } else {
-                $thread_starter = ($arr_unread['username'] !== '' ? print_user_stuff($arr_unread) : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
+                $thread_starter = ($arr_unread['username'] !== '' ? format_username($arr_unread) : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
             }
             $topicpic = ($arr_unread['post_count'] < 30 ? ($locked ? 'lockednew' : 'topicnew') : ($locked ? 'lockednew' : 'hot_topic_new'));
             $rpic = ($arr_unread['num_ratings'] != 0 ? ratingpic_forums(round($arr_unread['rating_sum'] / $arr_unread['num_ratings'], 1)) : '');

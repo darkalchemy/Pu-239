@@ -128,7 +128,7 @@ if ($search) {
 		</tr>
 		<tr>
 		<td><span>by: </span></td>
-		<td>' . ($arr['pan'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : print_user_stuff($arr)) . '</td>
+		<td>' . ($arr['pan'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : format_username($arr)) . '</td>
 		<td></td>
 		</tr>
 		<tr>
@@ -208,7 +208,7 @@ if ($show_as === 'posts') {
 	<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#bottom"><img src="./images/forums/down.gif" alt="' . $lang['fe_bottom'] . '" title="' . $lang['fe_bottom'] . '" /></a> 
 	</span></td>
 	</tr>		
-	<tr><td>' . ($arr['tan'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($arr)) . '<br>' . ($arr['tan'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : print_user_stuff($arr)) . ($arr['anonymous'] == 'yes' || $arr['title'] == '' ? '' : '<br><span>[' . htmlsafechars($arr['title']) . ']</span>') . '<br><span>' . ($arr['tan'] == 'yes' ? '' : get_user_class_name($arr['class'])) . '</span><br>
+	<tr><td>' . ($arr['tan'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($arr)) . '<br>' . ($arr['tan'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : format_username($arr)) . ($arr['anonymous'] == 'yes' || $arr['title'] == '' ? '' : '<br><span>[' . htmlsafechars($arr['title']) . ']</span>') . '<br><span>' . ($arr['tan'] == 'yes' ? '' : get_user_class_name($arr['class'])) . '</span><br>
 	</td><td colspan="2">' . $body . $edited_by . '</td></tr>
 	<tr><td colspan="3"></td></tr>';
     } //=== end of while loop
@@ -375,7 +375,7 @@ $HTMLOUT .= '<h1>' . $lang['sea_forums'] . '</h1>' . $links . ($count > 0 ? '<h1
 	<td class="three" width="30px" colspan="2">
 	<input type="radio" name="show_as" value="list" ' . ($show_as === 'list' ? 'checked="checked"' : '') . ' /> <span>' . $lang['sea_results_as_list'] . '</span>  
 	<input type="radio" name="show_as" value="posts" ' . ($show_as === 'posts' ? 'checked="checked"' : '') . ' /> <span>' . $lang['sea_results_as_posts'] . '</span>  
-	<input type="submit" name="button" class="button" value="' . $lang['gl_search'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
+	<input type="submit" name="button" class="button" value="' . $lang['gl_search'] . '" />
 	</td>
 	</tr>
 	</table></form><br>' . $content . $links . '<br>';

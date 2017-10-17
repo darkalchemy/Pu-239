@@ -60,19 +60,19 @@ $HTMLOUT .= "
     <p class='left10 top10'>{$lang['signup_cookies']}</p>
     <form method='post' action='takesignup.php'>
         <table class='table table-bordered bottom20'>
-            <tr>
+            <tr class='no_hover'>
                 <td class='heading'>{$lang['signup_uname']}</td>
                 <td><input type='text' name='wantusername' id='wantusername' class='w-100' onblur='checkit();' /><div id='namecheck'></div></td>
             </tr>
-            <tr>
+            <tr class='no_hover'>
                 <td class='heading'>{$lang['signup_pass']}</td>
                 <td><input class='password w-100' type='password' name='wantpassword' /></td>
             </tr>
-            <tr>
+            <tr class='no_hover'>
                 <td class='heading'>{$lang['signup_passa']}</td>
                 <td><input type='password' name='passagain' class='w-100' /></td>
             </tr>
-            <tr>
+            <tr class='no_hover'>
                 <td class='heading'>{$lang['signup_email']}</td>
                 <td><input type='text' name='email' class='w-100' />
                     <div class='alt_bordered top10'>
@@ -80,7 +80,7 @@ $HTMLOUT .= "
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr class='no_hover'>
                 <td class='heading'>{$lang['signup_timez']}</td>
                 <td>{$time_select}</td>
             </tr>";
@@ -121,7 +121,7 @@ while ($i <= 31) {
 }
 $day .= '</select>';
 $HTMLOUT .= "
-            <tr>
+            <tr class='no_hover'>
                 <td class='heading'>{$lang['signup_birth']}<span>*</span></td>
                 <td>" . $year . $month . $day . '</td>
             </tr>';
@@ -158,25 +158,25 @@ foreach ($questions as $sph) {
     $passhint .= "<option value='" . $sph['id'] . "'>" . $sph['question'] . "</option>\n";
 }
 $HTMLOUT .= "
-            <tr>
+            <tr class='no_hover'>
                 <td class='heading'>{$lang['signup_select']}</td>
                 <td><select name='passhint' class='w-100'>\n$passhint\n</select></td>
             </tr>
-            <tr>
+            <tr class='no_hover'>
                 <td class='heading'>{$lang['signup_enter']}</td>
                 <td>
                     <input type='text' name='hintanswer' class='w-100' /><br><span>{$lang['signup_this_answer']}<br>{$lang['signup_this_answer1']}</span>
                 </td>
             </tr>
-            <tr>
+            <tr class='no_hover'>
                 <td class='heading'>{$lang['signup_country']}</td>
                 <td><select name='country' class='w-100'>\n$country\n</select></td>
             </tr>
-            <tr>
+            <tr class='no_hover'>
                 <td class='heading'>{$lang['signup_gender']}</td>
                 <td>$gender</td>
             </tr>
-            <tr>
+            <tr class='no_hover'>
                 <td class='heading'></td>
                 <td>
                   <input type='checkbox' name='rulesverify' value='yes' /> {$lang['signup_rules']}<br>
@@ -184,13 +184,13 @@ $HTMLOUT .= "
                   <input type='checkbox' name='ageverify' value='yes' /> {$lang['signup_age']}
                 </td>
             </tr>" . ($site_config['captcha_on'] ? "
-            <tr>
+            <tr class='no_hover'>
                 <td class='rowhead' colspan='2' id='captcha_show'></td>
             </tr>" : '') . "
-            <tr>
+            <tr class='no_hover'>
                 <td colspan='2'>{$lang['signup_click']} <strong>{$lang['signup_x']}</strong> {$lang['signup_click1']}</td>
             </tr>
-            <tr>
+            <tr class='no_hover'>
                 <td colspan='2'>
                     <span class='answers-container'>";
 for ($i = 0; $i < count($value); ++$i) {

@@ -402,7 +402,7 @@ switch ($staff_action) {
 	<input type="hidden" name="action_2" value="delete_topic" />
 	<input type="hidden" name="sanity_check" value="1" />
 	<input type="hidden" name="topic_id" value="' . $topic_id . '" />
-	<input type="submit" name="button" class="button" value="' . $lang['fe_del_topic'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
+	<input type="submit" name="button" class="button" value="' . $lang['fe_del_topic'] . '" />
 	</form>');
         }
         //=== if you want the un-delete option (only admin and up can see "deleted" posts)

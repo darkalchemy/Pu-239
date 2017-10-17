@@ -107,7 +107,7 @@ if (isset($_POST['user_names'])) {
                 $random_number = random_int(1, 666666666);
                 $found .= '<tr>
     <td>' . $search_users . '</td>
-    <td>' . print_user_stuff($arr) . '</td>
+    <td>' . format_username($arr) . '</td>
     <td>' . htmlsafechars($arr['email']) . '</td>
     <td>
     <span style="color: blue;" title="added">' . get_date($arr['added'], '') . '</span><br>
@@ -162,13 +162,13 @@ if (isset($_POST['msg_to_analyze'])) {
                     if ($arr['invitedby'] > 0) {
                         $res_inviter = sql_query('SELECT id, username, class, donor, suspended, leechwarn, chatpost, pirate, king, warned, enabled FROM users WHERE id = ' . sqlesc($arr['invitedby']));
                         $arr_inviter = mysqli_fetch_array($res_inviter);
-                        $inviter = ($arr_inviter['username'] !== '' ? print_user_stuff($arr_inviter) : 'open signups');
+                        $inviter = ($arr_inviter['username'] !== '' ? format_username($arr_inviter) : 'open signups');
                     } else {
                         $inviter = $lang['mega_open'];
                     }
                     $random_number = random_int(1, 666666666);
                     $matches_for_email .= '<tr>
-    <td>' . print_user_stuff($arr) . '</td>
+    <td>' . format_username($arr) . '</td>
     <td>' . htmlsafechars($arr['email']) . '</td>
     <td>
     <span style="color: blue;" title="added">' . get_date($arr['added'], '') . '</span><br>
@@ -213,7 +213,7 @@ if (isset($_POST['msg_to_analyze'])) {
             $similar_emails .= '<h1>' . $lang['mega_email_using'] . ' "' . $email . '" </h1>';
             $number = 1;
             while ($arr = mysqli_fetch_array($res_search_others_like)) {
-                $similar_emails .= str_ireplace($email, '<span style="color: red; font-weight: bold;">' . $email . '</span>', $arr['email']) . $lang['mega_used_by'] . print_user_stuff($arr) . '<br>';
+                $similar_emails .= str_ireplace($email, '<span style="color: red; font-weight: bold;">' . $email . '</span>', $arr['email']) . $lang['mega_used_by'] . format_username($arr) . '<br>';
             }
         }
     } //=== end emails like XXX
@@ -248,7 +248,7 @@ if (isset($_POST['msg_to_analyze'])) {
                     if ($arr['invitedby'] > 0) {
                         $res_inviter = sql_query('SELECT id, username, class, donor, suspended, leechwarn, chatpost, pirate, king, warned, enabled FROM users WHERE id = ' . sqlesc($arr['invitedby']));
                         $arr_inviter = mysqli_fetch_array($res_inviter);
-                        $inviter = ($arr_inviter['username'] !== '' ? print_user_stuff($arr_inviter) : $lang['mega_open']);
+                        $inviter = ($arr_inviter['username'] !== '' ? format_username($arr_inviter) : $lang['mega_open']);
                     } else {
                         $inviter = $lang['mega_open'];
                     }
@@ -256,7 +256,7 @@ if (isset($_POST['msg_to_analyze'])) {
                     //$ip_history = nl2br($arr['ip_history']);
                     $random_number = random_int(1, 666666666);
                     $matches_for_ip .= '<tr>
-                            <td>' . print_user_stuff($arr) . '</td>
+                            <td>' . format_username($arr) . '</td>
                             <td><span style="color: red; font-weight: bold;">' . $tested_ip . ' </span></td>
                             <td>' . htmlsafechars($arr['email']) . '</td>
                             <td>
@@ -294,7 +294,7 @@ if (isset($_POST['invite_code'])) {
         } else {
             $u1 = sql_query('SELECT id, username, donor, class, enabled, leechwarn, chatpost, pirate, king, warned, suspended FROM users WHERE  id=' . sqlesc($user['invitedby']));
             $user1 = mysqli_fetch_array($u1);
-            $HTMLOUT .= '<h1>' . print_user_stuff($user) . $lang['mega_made'] . $invite_code . '  (' . get_date($user['invite_added'], '') . ')</h1>
+            $HTMLOUT .= '<h1>' . format_username($user) . $lang['mega_made'] . $invite_code . '  (' . get_date($user['invite_added'], '') . ')</h1>
                 <table width="90%">
                 <tr>
                 <td class="colhead">' . $lang['mega_invited'] . '</td>
@@ -307,7 +307,7 @@ if (isset($_POST['invite_code'])) {
                 <td class="colhead">' . $lang['mega_invited_by'] . '</td>
                 </tr>
                 <tr>
-                <td>' . print_user_stuff($user) . '</td>
+                <td>' . format_username($user) . '</td>
                 <td>' . htmlsafechars($user['email']) . '</td>
                 <td>' . htmlsafechars($user['ip']) . '</td>
                 <td>' . get_date($user['last_access'], '') . '</td>
@@ -317,7 +317,7 @@ if (isset($_POST['invite_code'])) {
                 <img src="./images/dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '" />  
                 <span style="color: red;">' . mksize($user['downloaded']) . '</span></td>') . '
                 <td>' . member_ratio($user['uploaded'], $site_config['ratio_free'] ? '0' : $user['downloaded']) . '</td>
-                <td>' . ($user['invitedby'] == 0 ? $lang['mega_open'] : print_user_stuff($user1)) . '</td>
+                <td>' . ($user['invitedby'] == 0 ? $lang['mega_open'] : format_username($user1)) . '</td>
                 </tr>
                 </table>';
         }
@@ -328,7 +328,7 @@ if (isset($_POST['invite_code'])) {
         } else {
             $u2 = sql_query('SELECT id, username, donor, class, enabled, warned, leechwarn, chatpost, pirate, king, suspended FROM users WHERE id=' . sqlesc($user_invited['invitedby']));
             $user2 = mysqli_fetch_array($u2);
-            $HTMLOUT .= '<h1>' . print_user_stuff($user_invited) . $lang['mega_used_from'] . print_user_stuff($user) . '</h1>
+            $HTMLOUT .= '<h1>' . format_username($user_invited) . $lang['mega_used_from'] . format_username($user) . '</h1>
                 <table width="90%">
                 <tr>
                 <td class="colhead">' . $lang['mega_invited'] . '</td>
@@ -341,7 +341,7 @@ if (isset($_POST['invite_code'])) {
                 <td class="colhead">' . $lang['mega_invited_by'] . '</td>
                 </tr>
                 <tr>
-                <td>' . print_user_stuff($user_invited) . '</td>
+                <td>' . format_username($user_invited) . '</td>
                 
                 <td>' . htmlsafechars($user_invited['email']) . '</td>
                 <td>' . htmlsafechars($user_invited['ip']) . '</td>
@@ -352,7 +352,7 @@ if (isset($_POST['invite_code'])) {
                 <img src="./images/dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '" />  
                 <span style="color: red;">' . mksize($user_invited['downloaded']) . '</span></td>') . '
                 <td>' . member_ratio($user_invited['uploaded'], $site_config['ratio_free'] ? '0' : $user_invited['downloaded']) . '</td>
-                <td>' . ($user_invited['invitedby'] == 0 ? $lang['mega_open'] : print_user_stuff($user2)) . '</td>
+                <td>' . ($user_invited['invitedby'] == 0 ? $lang['mega_open'] : format_username($user2)) . '</td>
                 </tr>
                 </table>';
         }

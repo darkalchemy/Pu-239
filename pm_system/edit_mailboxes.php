@@ -185,7 +185,7 @@ if (mysqli_num_rows($res) > 0) {
                     </tr>
                     <tr>
                         <td class="one" colspan="3">
-                        <input type="submit" class="button" value="' . $lang['pm_edmail_edit'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></form></td>
+                        <input type="submit" class="button" value="' . $lang['pm_edmail_edit'] . '" /></form></td>
                     </tr>';
 } else {
     $all_my_boxes .= '
@@ -255,7 +255,7 @@ $HTMLOUT .= '
         <td class="one"></td>
         <td class="one">' . $lang['pm_edmail_only_fill'] . '<br>
 		' . $lang['pm_edmail_blank'] . '</td>
-        <td class="one"><input type="submit" class="button_tiny" name="move" value="' . $lang['pm_edmail_add'] . '" onmouseover="this.className=\'button_tiny_hover\'" onmouseout="this.className=\'button_tiny\'" /></form></td>
+        <td class="one"><input type="submit" class="button_tiny" name="move" value="' . $lang['pm_edmail_add'] . '" /></form></td>
     </tr>
     <tr>
         <td class="colhead" colspan="3"><h1>' . $lang['pm_edmail_ed_del'] . '</h1></td>

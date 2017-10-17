@@ -6,7 +6,7 @@ $HTMLOUT .= "
         <div class='bordered padleft10 padright10'>
             <div class='alt_bordered transparent text-center'>
                 <a href='https://github.com/darkalchemy/Pu-239'>
-                    <img src='./images/logo.png' alt='Pu-239' title='Pu-239'>
+                    <img src='./images/logo.png' alt='Pu-239' class='tooltipper mw-100' title='Pu-239'>
                 </a>
             </div>
         </div>

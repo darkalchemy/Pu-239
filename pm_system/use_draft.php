@@ -154,7 +154,7 @@ $HTMLOUT .= '<h1>' . $lang['pm_usedraft'] . '' . $subject . '</h1>' . $top_links
         <td colspan="2" class="one">' . ($CURUSER['class'] >= UC_STAFF ? '
         <input type="checkbox" name="urgent" value="yes" ' . ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? ' checked="checked"' : '') . ' /> 
         <span style="font-weight: bold;color:red;">' . $lang['pm_send_mark'] . '</span>' : '') . '
-        <input type="submit" class="button" name="buttonval" value="' . $lang['pm_send_preview'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
-        <input type="submit" class="button" name="buttonval" value="' . $save_or_edit . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
+        <input type="submit" class="button" name="buttonval" value="' . $lang['pm_send_preview'] . '" />
+        <input type="submit" class="button" name="buttonval" value="' . $save_or_edit . '" /></td>
     </tr>
     </table></form>';

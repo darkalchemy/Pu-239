@@ -18,14 +18,13 @@ function getRate($id, $what)
     $completeres = sql_query('SELECT * FROM ' . (XBT_TRACKER == true ? 'xbt_files_users' : 'snatched') . ' WHERE ' . (XBT_TRACKER == true ? 'completedtime !=0' : 'complete_date !=0') . ' AND ' . (XBT_TRACKER == true ? 'uid' : 'userid') . ' = ' . $CURUSER['id'] . ' AND ' . (XBT_TRACKER == true ? 'fid' : 'torrentid') . ' = ' . $id);
     $completecount = mysqli_num_rows($completeres);
     // outputs
-    $p = ($rating_cache['count'] > 0 ? round((($rating_cache['sum'] / $rating_cache['count']) * 20), 2) : 0);
     if ($rating_cache['rated']) {
-        $rate = '<ul class="star-rating tooltipper" title="You rated this ' . $what . ' ' . htmlsafechars($rating_cache['rating']) . ' star' . (htmlsafechars($rating_cache['rating']) > 1 ? 's' : '') . '"><li style="width: ' . $p . '%;" class="current-rating">.</li></ul>';
+        $rate = '<ul class="star-rating tooltipper" title="You rated this ' . $what . ' ' . htmlsafechars($rating_cache['rating']) . ' star' . (htmlsafechars($rating_cache['rating']) > 1 ? 's' : '') . '"><li class="current-rating">.</li></ul>';
     } elseif ($what == 'torrent' && $completecount == 0) {
-        $rate = '<ul class="star-rating tooltipper" title="You must download this ' . $what . ' in order to rate it."><li style="width: ' . $p . '%;" class="current-rating">.</li></ul>';
+        $rate = '<ul class="star-rating tooltipper" title="You must download this ' . $what . ' in order to rate it."><li class="current-rating">.</li></ul>';
     } else {
         $i = 1;
-        $rate = '<ul class="star-rating"><li style="width: ' . $p . '%;" class="current-rating">.</li>';
+        $rate = '<ul class="star-rating"><li class="current-rating">.</li>';
         foreach ([
                      'one-star',
                      'two-stars',
@@ -33,7 +32,7 @@ function getRate($id, $what)
                      'four-stars',
                      'five-stars',
                  ] as $star) {
-            $rate .= '<li><a href="./rating.php?id=' . (int)$id . '&amp;rate=' . $i . '&amp;ref=' . urlencode($_SERVER['REQUEST_URI']) . '&amp;what=' . $what . '" class="' . $star . ' tooltipper" onclick="do_rate(' . $i . ',' . $id . ",'" . $what . "'); return false\" title=\"" . $i . ' star' . ($i > 1 ? 's' : '') . " out of 5\" >$i</a></li>";
+            $rate .= '<li><a href="./ajax/rating.php?id=' . (int)$id . '&amp;rate=' . $i . '&amp;ref=' . urlencode($_SERVER['REQUEST_URI']) . '&amp;what=' . $what . '" class="' . $star . ' tooltipper" onclick="do_rate(' . $i . ',' . $id . ",'" . $what . "'); return false\" title=\"" . $i . ' star' . ($i > 1 ? 's' : '') . " out of 5\" >$i</a></li>";
             ++$i;
         }
         $rate .= '</ul>';
@@ -53,7 +52,5 @@ function getRate($id, $what)
 
 function showRate($rate_sum, $rate_count)
 {
-    $p = ($rate_count > 0 ? round((($rate_sum / $rate_count) * 20), 2) : 0);
-
-    return '<ul class="star-rating"><li style="width: ' . $p . '%;" class="current-rating" >.</li></ul>';
+    return '<ul class="star-rating"><li class="current-rating" >.</li></ul>';
 }

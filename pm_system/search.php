@@ -38,7 +38,7 @@ if ($member) {
     }
     //=== if searching by member...
     $and_member = ($mailbox >= 1 ? ' AND sender = ' . sqlesc($arr_username['id']) . ' AND saved = \'yes\' ' : ' AND receiver = ' . sqlesc($arr_username['id']) . ' AND saved = \'yes\' ');
-    $the_username = print_user_stuff($arr_username);
+    $the_username = format_username($arr_username);
 }
 if ($member_sys) {
     $and_member = ' AND sender = 0 ';
@@ -120,7 +120,7 @@ $HTMLOUT .= '<h1>' . $lang['pm_search_title'] . '</h1>' . $top_links . '
     </tr>' : '') . '
     <tr>
         <td colspan="2" class="one">
-        <input type="submit" class="button" name="change" value="' . $lang['pm_search_btn'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
+        <input type="submit" class="button" name="change" value="' . $lang['pm_search_btn'] . '" /></td>
     </tr>
     </table></form>';
 //=== do the search and print page :)
@@ -193,7 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$member) {
             $res_username = sql_query('SELECT id, username, warned, suspended, enabled, donor, leechwarn, chatpost, pirate, king, class FROM users WHERE id = ' . sqlesc($row[$sender_reciever]) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
             $arr_username = mysqli_fetch_assoc($res_username);
-            $the_username = print_user_stuff($arr_username);
+            $the_username = format_username($arr_username);
         }
         //=== if searching all boxes...
         $arr_box = ($row['location'] == 1 ? $lang['pm_inbox'] : ($row['location'] == -1 ? $lang['pm_sentbox'] : ($row['location'] == -2 ? $lang['pm_drafts'] : '')));
@@ -232,8 +232,8 @@ $HTMLOUT .= ($num_result > 0 ? '
     <tr>
         <td colspan="4" class="colhead">
         <a class="altlink" href="javascript:SetChecked(1,\'pm[]\')">' . $lang['pm_search_selall'] . '</a> - 
-        <a class="altlink" href="javascript:SetChecked(0,\'pm[]\')">' . $lang['pm_search_unselall'] . '</a>&#160;&#160;&#160;&#160;&#160;
-        <input type="submit" class="button" name="move" value="' . $lang['pm_search_move_to'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /> ' . get_all_boxes() . ' or  
-        <input type="submit" class="button" name="delete" value="' . $lang['pm_search_delete'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />' . $lang['pm_search_selected'] . '</td>
+        <a class="altlink" href="javascript:SetChecked(0,\'pm[]\')">' . $lang['pm_search_unselall'] . '</a>
+        <input type="submit" class="button" name="move" value="' . $lang['pm_search_move_to'] . '" /> ' . get_all_boxes() . ' or
+        <input type="submit" class="button" name="delete" value="' . $lang['pm_search_delete'] . '" />' . $lang['pm_search_selected'] . '</td>
     </tr>
     </table></form>' : '') . '<br>';

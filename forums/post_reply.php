@@ -225,7 +225,7 @@ $HTMLOUT .= '<table class="table table-bordered table-striped">
    <img src="' . $site_config['pic_base_url'] . 'forums/subscribe.gif" alt="+" title="+" /> ' . $lang['fe_subscrib_to_tread'] . '
     <input type="radio" name="subscribe" value="yes"' . ($subscribe == 'yes' ? ' checked="checked"' : '') . ' />yes
     <input type="radio" name="subscribe" value="no"' . ($subscribe == 'no' ? ' checked="checked"' : '') . ' />no<br>
-    <input type="submit" name="button" class="button_tiny" value="' . $lang['fe_post'] . '" onmouseover="this.className=\'button_tiny_hover\'" onmouseout="this.className=\'button_tiny\'" />
+    <input type="submit" name="button" class="button_tiny" value="' . $lang['fe_post'] . '" />
     </td></tr>
     </table></form>';
 //=== get last ten posts
@@ -245,10 +245,10 @@ while ($arr = mysqli_fetch_assoc($res_posts)) {
         if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
             $HTMLOUT .= '<tr><td><img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" /><br><i>' . $lang['fe_anonymous'] . '</i></td>';
         } else {
-            $HTMLOUT .= '<tr><td>' . avatar_stuff($arr) . '<br><i>' . $lang['fe_anonymous'] . '</i>[' . print_user_stuff($arr) . ']</td>';
+            $HTMLOUT .= '<tr><td>' . avatar_stuff($arr) . '<br><i>' . $lang['fe_anonymous'] . '</i>[' . format_username($arr) . ']</td>';
         }
     } else {
-        $HTMLOUT .= '<tr><td>' . avatar_stuff($arr) . '<br>' . print_user_stuff($arr) . '</td>';
+        $HTMLOUT .= '<tr><td>' . avatar_stuff($arr) . '<br>' . format_username($arr) . '</td>';
     }
     $HTMLOUT .= '<td colspan="2">' . ($arr['bbcode'] == 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body'])) . '</td></tr>';
 } //=== end while loop

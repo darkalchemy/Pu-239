@@ -62,20 +62,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class='login-container container-fluid portlet'>
         <form method='post' action='{$_SERVER['PHP_SELF']}'>
             <table class='table table-bordered top20 bottom20'>" . ($site_config['captcha_on'] ? "
-                <tr>
+                <tr class='no_hover'>
                     <td colspan='2'>
                         <h2 class='text-center'>{$lang['recover_unamepass']}</h2>
                         <p>{$lang['recover_form']}</p>
                     </td>
                 </tr>
-                <tr>
+                <tr class='no_hover'>
                     <td class='rowhead' colspan='2' id='captcha_show'></td>
                 </tr>" : '') . "
-                <tr>
+                <tr class='no_hover'>
                     <td class='rowhead'>{$lang['recover_regdemail']}</td>
                     <td><input type='text' class='w-100' name='email' /></td>
                 </tr>
-                <tr>
+                <tr class='no_hover'>
                     <td colspan='2'>
                         <div class='text-center'>
                             <input type='submit' value='{$lang['recover_btn']}' class='btn' />

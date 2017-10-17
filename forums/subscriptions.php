@@ -2,7 +2,7 @@
 global $lang;
 $posts = $lppostid = $topicpoll = $colour = $rpic = $content = '';
 $links = '<span><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';
-$HTMLOUT .= '<h1>Subscribed Forums for ' . print_user_stuff($CURUSER) . '</h1>' . $links;
+$HTMLOUT .= '<h1>Subscribed Forums for ' . format_username($CURUSER) . '</h1>' . $links;
 //=== Get count
 $res = sql_query('SELECT COUNT(id) FROM subscriptions WHERE user_id=' . sqlesc($CURUSER['id']));
 $row = mysqli_fetch_row($res);
@@ -33,7 +33,7 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
     $locked = $topic_arr['locked'] == 'yes';
     $sticky = $topic_arr['sticky'] == 'yes';
     $topic_poll = $topic_arr['poll_id'] > 0;
-    $last_post_username = ($topic_arr['pan'] == 'no' && $topic_arr['username'] !== '' ? print_user_stuff($topic_arr) : '[<i>' . $lang['fe_anonymous'] . '</i>]');
+    $last_post_username = ($topic_arr['pan'] == 'no' && $topic_arr['username'] !== '' ? format_username($topic_arr) : '[<i>' . $lang['fe_anonymous'] . '</i>]');
     $last_post_id = (int)$topic_arr['last_post'];
     //=== Get author / first post info
     $first_post_res = sql_query('SELECT p.added, p.icon, p.body, p.user_id, p.anonymous, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND' : '')) . ' topic_id=' . sqlesc($topic_id) . ' ORDER BY id DESC LIMIT 1');
@@ -42,10 +42,10 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
         if ($CURUSER['class'] < UC_STAFF && $first_post_arr['user_id'] != $CURUSER['id']) {
             $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . (int)$first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
         } else {
-            $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . print_user_stuff($first_post_arr) . ']' : '' . $lang['fe_lost'] . ' [' . (int)$first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
+            $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . format_username($first_post_arr) . ']' : '' . $lang['fe_lost'] . ' [' . (int)$first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
         }
     } else {
-        $thread_starter = ($first_post_arr['username'] !== '' ? print_user_stuff($first_post_arr) : '' . $lang['fe_lost'] . ' [' . (int)$first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
+        $thread_starter = ($first_post_arr['username'] !== '' ? format_username($first_post_arr) : '' . $lang['fe_lost'] . ' [' . (int)$first_post_arr['id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
     }
     $icon = ($first_post_arr['icon'] == '' ? '<img src="' . $site_config['pic_base_url'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="' . $site_config['pic_base_url'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '" title="' . htmlsafechars($first_post_arr['icon']) . '" />');
     $first_post_text = tool_tip(' <img src="' . $site_config['pic_base_url'] . 'forums/mg.gif" height="14" alt="' . $lang['fe_preview'] . '" title="' . $lang['fe_preview'] . '" />', format_comment($first_post_arr['body'], true, false, false), '' . $lang['fe_first_post'] . ' ' . $lang['fe_preview'] . '');
@@ -121,6 +121,6 @@ $HTMLOUT .= $the_top_and_bottom . '<form action="' . $site_config['baseurl'] . '
 		<td class="forum_head_dark" colspan="9">
 		<a class="altlink" href="javascript:SetChecked(1,\'remove[]\')"> <span>' . $lang['sub_select_all'] . '</span></a> - 
 		<a class="altlink" href="javascript:SetChecked(0,\'remove[]\')"><span>' . $lang['sub_un_select_all'] . '</span></a>  
-		<input type="submit" name="button" class="button" value="' . $lang['fe_remove'] . ' Selected" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
+		<input type="submit" name="button" class="button" value="' . $lang['fe_remove'] . ' Selected" /></td>
 		</tr></table></form><script src="' . $site_config['baseurl'] . '/scripts/check_selected.js"></script>
 		' . $the_top_and_bottom . '<br><br>' . $links . '<br>';

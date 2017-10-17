@@ -281,7 +281,7 @@ switch ($action) {
 	</tr>
 	<tr>
 		<td class="forum_head_dark" colspan="3">
-		<input type="submit" name="button" class="button" value="' . $lang['fe_add_poll'] . '!" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
+		<input type="submit" name="button" class="button" value="' . $lang['fe_add_poll'] . '!" /></td>
 	</tr>
 	</table></form><br></td>
 	</tr>
@@ -533,7 +533,7 @@ switch ($action) {
 	</tr>
 	<tr>
 	<td class="forum_head_dark" colspan="3">
-	<input type="submit" name="button" class="button" value="' . $lang['poll_edit_poll'] . '!" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
+	<input type="submit" name="button" class="button" value="' . $lang['poll_edit_poll'] . '!" /></td>
 	</tr>
 	</table><br></td>
 	</tr>

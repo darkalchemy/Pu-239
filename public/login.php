@@ -67,17 +67,17 @@ $value[random_int(1, count($value) - 1)] = 'X';
 $HTMLOUT.= "
             <form class='form-inline' method='post' action='takelogin.php'>
                 <table class='table table-bordered bottom20'>
-                    <tr>
+                    <tr class='no_hover'>
                         <td>{$lang['login_username']}</td>
                         <td><input type='text' class='w-100' name='username' /></td>
                     </tr>
-                    <tr>
+                    <tr class='no_hover'>
                         <td>{$lang['login_password']}</td>
                         <td><input type='password' class='w-100' name='password' /></td>
-                    </tr>
-                    <tr>";
+                    </tr>";
 if ($got_ssl) {
     $HTMLOUT .= "
+                    <tr class='no_hover'>
                         <td>{$lang['login_use_ssl']}</td>
                         <td>
                             <label class='label label-inverse' for='ssl'>{$lang['login_ssl1']}&#160;
@@ -86,17 +86,22 @@ if ($got_ssl) {
                             <label class='label label-inverse' for='ssl2'>{$lang['login_ssl2']}&#160;
                                 <input type='checkbox' name='perm_ssl' " . ($got_ssl ? '' : "disabled='disabled' title='SSL connection not available'") . " value='1' id='ssl2'/>
                             </label>
-                        </td>";
+                        </td>
+                    </tr>";
 }
-$HTMLOUT .= "
-                    </tr>" . ($site_config['captcha_on'] ? "
-                    <tr>
+$HTMLOUT .=
+                    ($site_config['captcha_on'] ? "
+                    <tr class='no_hover'>
                         <td class='rowhead' colspan='2' id='captcha_show'></td>
                     </tr>" : '') . "
-                    <tr>
-                        <td colspan='2'><em class='center-block'>{$lang['login_click']}<strong>{$lang['login_x']}</strong></em></td>
+                    <tr class='no_hover'>
+                        <td colspan='2'>
+                            <span class='text-center'>
+                                {$lang['login_click']}<strong>{$lang['login_x']}</strong>
+                            </span>
+                        </td>
                     </tr>
-                    <tr>
+                    <tr class='no_hover'>
                         <td colspan='2' class='text-center'>
                             <span class='answers-container'>";
 for ($i = 0; $i < count($value); ++$i) {
@@ -112,12 +117,12 @@ if (isset($returnto)) {
 }
 $HTMLOUT .= "           </td>
                     </tr>
-                    <tr>
+                    <tr class='no_hover'>
                         <td colspan='2'>
-                            <span class='flex-container'>
-                                <em class='btn margin10'>{$lang['login_signup']}</em>
-                                <em class='btn margin10'>{$lang['login_forgot']}</em>
-                                <em class='btn margin10'>{$lang['login_forgot_1']}</em>
+                            <span class='answers-container'>
+                                <span>{$lang['login_signup']}</span>
+                                <span>{$lang['login_forgot']}</span>
+                                <span>{$lang['login_forgot_1']}</span>
                             </span>
                         </td>
                     </tr>

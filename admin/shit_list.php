@@ -63,7 +63,7 @@ switch ($action2) {
       <input type="hidden" name="shit_list_id" value="' . $shit_list_id . '" />
       <input type="hidden" name="return_to" value="' . $return_to . '" />
      
-      <input type="submit" class="button" value="' . $lang['shitlist_addthis'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" /></td>
+      <input type="submit" class="button" value="' . $lang['shitlist_addthis'] . '" /></td>
    </tr>
    </table></form>';
         break;
@@ -137,7 +137,7 @@ if (mysqli_num_rows($res) == 0) {
         $HTMLOUT .= (($i % 2 == 1) ? '<tr>' : '') . '
       <td class="' . (($i % 2 == 0) ? 'one' : 'two') . '" width="80">' . avatar_stuff($shit_list) . '<br>
 
-      ' . print_user_stuff($shit_list) . '<br>
+      ' . format_username($shit_list) . '<br>
 
       <b> [ ' . get_user_class_name($shit_list['class']) . ' ]</b><br>
 

@@ -31,7 +31,7 @@ $HTMLOUT .= "
     <a id='stats-hash'></a>
     <fieldset id='stats' class='header'>
         <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_stats_title']}</legend>
-        <div class='text-center'>
+        <div class='table-wrapper text-center'>
             <table class='table table-bordered table-striped'>
                 <tbody>
                     <tr>

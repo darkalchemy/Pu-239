@@ -16,11 +16,9 @@ if (($last24_cache = $mc1->get_value($keys['last24'])) === false) {
         sql_query('UPDATE avps SET value_s = 0, value_i = ' . sqlesc($last24) . ', value_u = ' . sqlesc($period) . ' WHERE arg = "last24"') or sqlerr(__FILE__, __LINE__);
     }
     while ($arr = mysqli_fetch_assoc($res)) {
-        if ($activeusers24) {
-            $activeusers24 .= ', ';
-        }
-        $activeusers24 .= format_username($arr['id'], true, true);
+        $list[] = format_username($arr['id'], true, true);
     }
+    $activeusers24 = implode(', ', $list);
     $last24_cache['activeusers24'] = $activeusers24;
     $last24_cache['totalonline24'] = number_format($totalonline24);
     $last24_cache['last24record'] = $last24record;

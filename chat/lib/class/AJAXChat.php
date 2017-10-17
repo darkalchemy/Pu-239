@@ -1147,7 +1147,6 @@ class AJAXChat
 
     public function getInvitations()
     {
-        global $redis;
         if ($this->_invitations === null) {
             $this->_invitations = [];
 
@@ -1216,8 +1215,13 @@ class AJAXChat
     {
         global $redis;
         $this->resetOnlineUsersData();
-        $redis->zAdd('online_active', TIME_NOW + $this->getConfig('inactiveTimeout') * 60, $this->getUserID());
-        $redis->hMSet("user:{$this->getUserID()}", ['userName' => $this->getUserName(), 'userRole' => $this->getUserRole(), 'channel' => $this->getChannel(), 'dateTime' => TIME_NOW, 'ip' => $_SERVER['REMOTE_ADDR']]);
+        $pipe = $redis->multi(Redis::PIPELINE);
+        $pipe->zAdd('online_active', TIME_NOW + $this->getConfig('inactiveTimeout') * 60, $this->getUserID());
+        $pipe->hMSet("user:{$this->getUserID()}", ['userName' => $this->getUserName(), 'userRole' => $this->getUserRole(), 'channel' => $this->getChannel(), 'dateTime' => TIME_NOW, 'ip' => $_SERVER['REMOTE_ADDR']]);
+        $pipe->exec();
+//        $redis->zAdd("user:username:{$this->getUserName()}", $this->getUserID());
+//        $redis->zAdd("user:id:{$this->getUserID()}", $this->getUserName());
+//        $redis->zAdd("users:online", TIME_NOW + $this->getConfig('inactiveTimeout') * 60, $this->getUserID());
     }
 
     public function getChannelNameFromChannelID($channelID)
@@ -1328,9 +1332,11 @@ class AJAXChat
     public function addToOnlineList()
     {
         global $redis;
-        $redis->zAdd($this->getDataBaseTable('online'), sprintf('%04d', 999 - $this->getUserRole()), $this->getUserID());
-        $redis->zAdd('online_active', TIME_NOW + $this->getConfig('inactiveTimeout') * 60, $this->getUserID());
-        $redis->hMSet("user:{$this->getUserID()}", ['userName' => $this->getUserName(), 'userID' => $this->getUserID(), 'userRole' => $this->getUserRole(), 'channel' => $this->getChannel(), 'dateTime' => TIME_NOW, 'ip' => $_SERVER['REMOTE_ADDR']]);
+        $pipe = $redis->multi(Redis::PIPELINE);
+        $pipe->zAdd($this->getDataBaseTable('online'), sprintf('%04d', 999 - $this->getUserRole()), $this->getUserID());
+        $pipe->zAdd('online_active', TIME_NOW + $this->getConfig('inactiveTimeout') * 60, $this->getUserID());
+        $pipe->hMSet("user:{$this->getUserID()}", ['userName' => $this->getUserName(), 'userID' => $this->getUserID(), 'userRole' => $this->getUserRole(), 'channel' => $this->getChannel(), 'dateTime' => TIME_NOW, 'ip' => $_SERVER['REMOTE_ADDR']]);
+        $pipe->exec();
         $this->resetOnlineUsersData();
     }
 
@@ -2117,7 +2123,6 @@ class AJAXChat
 
     public function kickUser($userName, $banMinutes = null, $userID = null)
     {
-        global $redis;
         if ($userID === null) {
             $userID = $this->getIDFromName($userName);
         }

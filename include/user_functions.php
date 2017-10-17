@@ -500,7 +500,6 @@ function member_ratio($up, $down)
     return $ratio;
 }
 
-//=== get smilie based on ratio
 function get_user_ratio_image($ratio)
 {
     global $site_config;
@@ -545,17 +544,6 @@ function get_user_ratio_image($ratio)
     return '';
 }
 
-//=== avatar stuff... hell it's called all over the place :-o
-/*
-function avatar_stuff($avatar, $width = 80)
-{
-    global $CURUSER, $site_config;
-    require_once (CLASS_DIR . 'class_user_options.php');
-    $avatar_show = (!($CURUSER['opt1'] & user_options::AVATARS) ? '' : (!$avatar['avatar'] ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'forumicons/default_avatar.gif" alt="avatar" />' : (($CURUSER['opt1'] & user_options::OFFENSIVE_AVATAR && $CURUSER['opt2'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'fuzzybunny.gif" alt="avatar" />' : '<img style="max-width:' . $width . 'px;" src="' . htmlsafechars($avatar['avatar']) . '" alt="avatar" />')));
-    return $avatar_show;
-}
-*/
-//=== avatar stuff... hell it's called all over the place :-o
 function avatar_stuff($avatar, $width = 80)
 {
     global $CURUSER, $site_config;
@@ -564,16 +552,6 @@ function avatar_stuff($avatar, $width = 80)
     return $avatar_show;
 }
 
-//=== added a function to get all user info and print them up with link to userdetails page, class color, user icons... pdq's idea \o/
-function print_user_stuff($arr)
-{
-    global $CURUSER, $site_config;
-
-    return '<span style="white-space:nowrap;"><a href="userdetails.php?id=' . (int)$arr['id'] . '" title="' . get_user_class_name($arr['class']) . '">
-  <span style="font-weight: bold;"></span></a>' . format_username($arr) . '</span> ';
-}
-
-//made by putyn@tbdev
 function blacklist($fo)
 {
     global $site_config;
@@ -599,7 +577,7 @@ function get_server_load($windows = 0)
             ++$i;
         }
 
-        return round($cpu_stats / 2); // remove /2 for single processor systems
+        return round($cpu_stats / 4); // remove /4 for single processor systems
     }
 }
 
@@ -624,9 +602,6 @@ function get_cache_config_data($the_names, $the_colors, $the_images)
     return $configfile;
 }
 
-/** end functions **/
-
-//Clear forum memecache for all classes
 function clr_forums_cache($post_id)
 {
     global $mc1, $site_config;

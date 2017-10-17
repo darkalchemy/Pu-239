@@ -63,14 +63,14 @@ if ($res_sub_forums) {
 						<span>' . CutName(htmlsafechars($post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a>' . $topic_status_image . '<br>
 						' . get_date($post_arr['added'], '') . '<br></span>';
                 } else {
-                    $last_post = '<span>' . $lang['fe_last_post_by'] . ': <i>' . $lang['fe_anonymous'] . '</i> [' . print_user_stuff($post_arr) . '] 
+                    $last_post = '<span>' . $lang['fe_last_post_by'] . ': <i>' . $lang['fe_anonymous'] . '</i> [' . format_username($post_arr) . '] 
 						<span> [ ' . get_user_class_name($post_arr['class']) . ' ] </span><br>
 						in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name'], ENT_QUOTES) . '">
 						<span>' . CutName(htmlsafechars($post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a>' . $topic_status_image . '<br>
 						' . get_date($post_arr['added'], '') . '<br></span>';
                 }
             } else {
-                $last_post = '<span>' . $lang['fe_last_post_by'] . ': ' . print_user_stuff($post_arr) . ' 
+                $last_post = '<span>' . $lang['fe_last_post_by'] . ': ' . format_username($post_arr) . ' 
 						<span> [ ' . get_user_class_name($post_arr['class']) . ' ] </span><br>
 						in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $last_topic_id . '&amp;page=' . $last_post_id . '#' . $last_post_id . '" title="' . htmlsafechars($post_arr['topic_name'], ENT_QUOTES) . '">
 						<span>' . CutName(htmlsafechars($post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a>' . $topic_status_image . '<br>
@@ -137,11 +137,6 @@ $topic_res = sql_query('SELECT t.id as id, t.user_id as user_id, t.topic_name as
 				LEFT JOIN posts AS p ON t.id = p.topic_id 
 				WHERE  ' . ($CURUSER['class'] < UC_STAFF ? ' status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? ' status != \'deleted\'  AND' : '')) . '  forum_id=' . $forum_id . ' GROUP BY p.topic_id ORDER BY sticky, post_added DESC ' . $LIMIT);
 
-$location_bar = '<h1 class="text-center"><a class="altlink" href="index.php">' . $site_config['site_name'] . '</a>  <img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
-			<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums'] . '</a> ' . $parent_forum_name . ' <img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" />
-			<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . $forum_name . $child . '</a></h1>
-			' . $mini_menu . '
-			<br><br>';
 if ($count > 0) {
     while ($topic_arr = mysqli_fetch_assoc($topic_res)) {
         $topic_id = (int)$topic_arr['id'];
@@ -196,10 +191,10 @@ if ($count > 0) {
             if ($CURUSER['class'] < UC_STAFF && $arr_post_stuff['user_id'] != $CURUSER['id']) {
                 $last_post_username = ($arr_post_stuff['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . (int)$arr_post_stuff['id'] . ']');
             } else {
-                $last_post_username = ($arr_post_stuff['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . print_user_stuff($arr_post_stuff) . ']' : '' . $lang['fe_lost'] . ' [' . (int)$arr_post_stuff['id'] . ']');
+                $last_post_username = ($arr_post_stuff['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . format_username($arr_post_stuff) . ']' : '' . $lang['fe_lost'] . ' [' . (int)$arr_post_stuff['id'] . ']');
             }
         } else {
-            $last_post_username = ($arr_post_stuff['username'] !== '' ? print_user_stuff($arr_post_stuff) : '' . $lang['fe_lost'] . ' [' . (int)$arr_post_stuff['id'] . ']');
+            $last_post_username = ($arr_post_stuff['username'] !== '' ? format_username($arr_post_stuff) : '' . $lang['fe_lost'] . ' [' . (int)$arr_post_stuff['id'] . ']');
         }
         //==
         $last_post_id = (int)$arr_post_stuff['last_post_id'];
@@ -216,10 +211,10 @@ if ($count > 0) {
             if ($CURUSER['class'] < UC_STAFF && $first_post_arr['user_id'] != $CURUSER['id']) {
                 $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
             } else {
-                $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . print_user_stuff($first_post_arr) . ']' : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
+                $thread_starter = ($first_post_arr['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . format_username($first_post_arr) . ']' : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
             }
         } else {
-            $thread_starter = ($first_post_arr['username'] !== '' ? print_user_stuff($first_post_arr) : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
+            $thread_starter = ($first_post_arr['username'] !== '' ? format_username($first_post_arr) : '' . $lang['fe_lost'] . ' [' . $topic_arr['user_id'] . ']') . '<br>' . get_date($first_post_arr['added'], '');
         }
         //==
         $icon = ($first_post_arr['icon'] == '' ? '<img src="' . $site_config['pic_base_url'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="' . $site_config['pic_base_url'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '" />');
@@ -295,7 +290,7 @@ if ($count > 0) {
 		' . $lang['fe_this_topic_is_locked'] . '... ' . $lang['fe_no_new_posts_are_allowed'] . '.</span>' : ($may_post ? '<form action="' . $site_config['baseurl'] . '/forums.php" method="post" name="new">
 		<input type="hidden" name="action" value="new_topic" />
 		<input type="hidden" name="forum_id" value="' . $forum_id . '" />
-		<input type="submit" name="button" class="button" value="' . $lang['fe_new_topic'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
+		<input type="submit" name="button" class="button" value="' . $lang['fe_new_topic'] . '" />
 		</form>' : '<span>
 		' . $lang['fe_you_are_not_permitted_to_post_in_this_forum.'] . '</span>')) . '</td></tr></table>';
 } else {
@@ -304,11 +299,11 @@ if ($count > 0) {
 		' . ($may_post ? '<form action="' . $site_config['baseurl'] . '/forums.php" method="post" name="new">
 		<input type="hidden" name="action" value="new_topic" />
 		<input type="hidden" name="forum_id" value="' . $forum_id . '" />
-        <input type="submit" name="button" class="button" value="' . $lang['fe_start_new_topic'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
+        <input type="submit" name="button" class="button" value="' . $lang['fe_start_new_topic'] . '" />
 		</form></td></tr>' : '<span>' . $lang['fe_you_are_not_permitted_to_post_in_this_forum.'] . '</span>');
     $the_top_and_bottom = '';
 }
-$HTMLOUT .= $location_bar . '<br>' . $sub_forums . '
+$HTMLOUT .= $mini_menu . '<br>' . $sub_forums . '
 		<table class="table table-bordered table-striped">
 		<tr><td class="clear" colspan="8">
 		' . $the_top_and_bottom . '
@@ -326,4 +321,4 @@ $HTMLOUT .= $location_bar . '<br>' . $sub_forums . '
 		</tr>') . $content . '
 		<tr><td class="clear" colspan="8">
 		' . $the_top_and_bottom . '</td>
-		</tr></table><br>' . $location_bar;
+		</tr></table><br>' . $mini_menu;

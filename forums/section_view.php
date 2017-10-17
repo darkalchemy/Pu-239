@@ -86,13 +86,13 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
 		<span>' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>
 		' . get_date($last_post_arr['added'], '') . '<br>';
             } else {
-                $last_post = '' . $lang['fe_last_post_by'] . ': ' . $lang['fe_anonymous'] . ' [' . print_user_stuff($last_post_arr) . '] <span> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>
+                $last_post = '' . $lang['fe_last_post_by'] . ': ' . $lang['fe_anonymous'] . ' [' . format_username($last_post_arr) . '] <span> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>
 		in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$last_post_arr['topic_id'] . '&amp;page=p' . (int)$last_post_arr['last_post'] . '#' . (int)$last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '">
 		<span>' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>
 		' . get_date($last_post_arr['added'], '') . '<br>';
             }
         } else {
-            $last_post = '' . $lang['fe_last_post_by'] . ': ' . print_user_stuff($last_post_arr) . ' <span> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>
+            $last_post = '' . $lang['fe_last_post_by'] . ': ' . format_username($last_post_arr) . ' <span> [ ' . get_user_class_name($last_post_arr['class']) . ' ] </span><br>
 		in &#9658; <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$last_post_arr['topic_id'] . '&amp;page=p' . (int)$last_post_arr['last_post'] . '#' . (int)$last_post_arr['last_post'] . '" title="' . htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES) . '">
 		<span>' . CutName(htmlsafechars($last_post_arr['topic_name'], ENT_QUOTES), 30) . '</span></a><br>
 		' . get_date($last_post_arr['added'], '') . '<br>';

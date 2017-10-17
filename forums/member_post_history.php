@@ -45,7 +45,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
         }
     }
     $HTMLOUT .= $option . '</select>
-	 <input type="submit" class="button" value="' . $lang['gl_search'] . '" onmouseover="this.className=\'button_hover\'" onmouseout="this.className=\'button\'" />
+	 <input type="submit" class="button" value="' . $lang['gl_search'] . '" />
 	 </form>
 	 <br><br>';
     $aa = range('0', '9');
@@ -84,7 +84,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
         while ($row = mysqli_fetch_assoc($res)) {
             $country = ($row['name'] != null) ? '<td><img src="./images/flag/' . $row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" /></td>' : '<td>---</td>';
             $HTMLOUT .= '<tr>
-   <td>' . print_user_stuff($row) . '</td>
+   <td>' . format_username($row) . '</td>
 	<td>' . get_date($row['added'], '') . '</td>
 	<td>' . ($row['perms'] < bt_options::PERMS_STEALTH ? get_date($row['last_access'], '') : 'Never') . '</td>
 	<td>' . get_user_class_name($row['class']) . '</td>
@@ -113,11 +113,11 @@ $res = sql_query('SELECT p.id AS post_id, p.topic_id, p.user_id, p.added, p.body
 $user_res = sql_query('SELECT id, username, class, donor, suspended, warned, enabled, chatpost, leechwarn, pirate, king, title, avatar, offensive_avatar FROM users WHERE id = ' . sqlesc($member_id));
 $user_arr = mysqli_fetch_assoc($user_res);
 if ($count == 0) {
-    stderr($lang['gl_sorry'], ($user_arr['username'] != '' ? print_user_stuff($user_arr) . ' ' . $lang['vmp_has_no_posts_look'] . '!' : $lang['fe_no_mem_with_id']));
+    stderr($lang['gl_sorry'], ($user_arr['username'] != '' ? format_username($user_arr) . ' ' . $lang['vmp_has_no_posts_look'] . '!' : $lang['fe_no_mem_with_id']));
 }
 $links = '<span><a class="altlink" href="forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';
 $the_top_and_bottom = '<tr><td colspan="3">' . (($count > $perpage) ? $menu : '') . '</td></tr>';
-$HTMLOUT .= '<h1>' . $count . ' ' . $lang['fe_posts_by'] . ' ' . print_user_stuff($user_arr) . '</h1>' . $links . '
+$HTMLOUT .= '<h1>' . $count . ' ' . $lang['fe_posts_by'] . ' ' . format_username($user_arr) . '</h1>' . $links . '
 	<div><a class="altlink" href="forums.php?action=member_post_history&amp;id=' . $member_id . '" title="' . $lang['vmp_view_posts_new_to_old'] . '">' . $lang['vmp_sort_by_newest_posts_1st'] . '</a> || 
 	<a class="altlink" href="forums.php?action=member_post_history&amp;id=' . $member_id . '&amp;ASC_DESC=ASC" title="' . $lang['vmp_view_posts_old_to_new'] . '">' . $lang['vmp_sort_by_oldest_posts_1st'] . '</a></div><br>';
 $HTMLOUT .= '<a name="top"></a><table class="table table-bordered table-striped">' . $the_top_and_bottom;
@@ -205,7 +205,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
 		<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#bottom"><img src="./images/forums/down.gif" alt="' . $lang['fe_bottom'] . '" /></a></span></td>
 		</tr>	
 		<tr>
-		<td>' . ($arr['anonymous'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($user_arr)) . '<br>' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : print_user_stuff($user_arr)) . ($arr['anonymous'] == 'yes' || $user_arr['title'] == '' ? '' : '<br><span>[' . htmlsafechars($user_arr['title']) . ']</span>') . '<br><span>' . ($arr['anonymous'] == 'yes' ? '' : get_user_class_name($user_arr['class'])) . '</span><br></td>
+		<td>' . ($arr['anonymous'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($user_arr)) . '<br>' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : format_username($user_arr)) . ($arr['anonymous'] == 'yes' || $user_arr['title'] == '' ? '' : '<br><span>[' . htmlsafechars($user_arr['title']) . ']</span>') . '<br><span>' . ($arr['anonymous'] == 'yes' ? '' : get_user_class_name($user_arr['class'])) . '</span><br></td>
 		<td class="' . $post_status . '" colspan="2">' . $body . $edited_by . '</td>
 		</tr>
 		<tr>

@@ -2,7 +2,7 @@
 $adminbutton = '';
 if ($CURUSER['class'] >= UC_STAFF) {
     $adminbutton = "
-        <a class='pull-right' href='staffpanel.php?tool=news&amp;mode=news'>{$lang['index_news_title']}</a>";
+        <a class='pull-right' href='./staffpanel.php?tool=news&amp;mode=news'>{$lang['index_news_title']}</a>";
 }
 $HTMLOUT .= "
     <a id='news-hash'></a>
@@ -12,11 +12,14 @@ $HTMLOUT .= "
         </legend>
         <div class='bordered padleft10 padright10'>
             <div class='alt_bordered transparent text-center'>";
-$prefix = 'min5l3ss';
-$news = $mc1->get_value('latest_news_');
-if ($news === false) {
+
+if (($news = $mc1->get_value('latest_news_')) === false) {
     $news = [];
-    $res = sql_query('SELECT ' . $prefix . '.id AS nid, ' . $prefix . '.userid, ' . $prefix . '.added, ' . $prefix . '.title, ' . $prefix . '.body, ' . $prefix . '.sticky, ' . $prefix . '.anonymous, u.username, u.id, u.class, u.warned, u.chatpost, u.pirate, u.king, u.leechwarn, u.enabled, u.donor FROM news AS ' . $prefix . ' LEFT JOIN users AS u ON u.id = ' . $prefix . '.userid WHERE ' . $prefix . '.added + ( 3600 *24 *45 ) > ' . TIME_NOW . ' ORDER BY sticky, ' . $prefix . '.added DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT n.id AS nid, n.userid, n.added, n.title, n.body, n.sticky, n.anonymous
+        FROM news AS n
+        WHERE n.added + ( 3600 *24 *45 ) > ' . TIME_NOW . '
+        ORDER BY sticky, added DESC
+        LIMIT 10') or sqlerr(__FILE__, __LINE__);
     while ($array = mysqli_fetch_assoc($res)) {
         $news[] = $array;
     }
@@ -30,54 +33,34 @@ if ($news) {
             $hash = md5('the@@saltto66??' . $array['nid'] . 'add' . '@##mu55y==');
             $button = "
                 <div class='pull-right'>
-                    <a href='staffpanel.php?tool=news&amp;mode=edit&amp;newsid=" . (int)$array['nid'] . "'>
-                        <i class='icon-edit' title='{$lang['index_news_ed']}'></i>
+                    <a href='./staffpanel.php?tool=news&amp;mode=edit&amp;newsid=" . (int)$array['nid'] . "'>
+                        <i class='fa fa-edit fa-2x right10 tooltipper' aria-hidden='true' title='{$lang['index_news_ed']}'></i>
                     </a>
-                    <a href='staffpanel.php?tool=news&amp;mode=delete&amp;newsid=" . (int)$array['nid'] . "&amp;h={$hash}'>
-                        <i class='icon-remove' title='{$lang['index_news_del']}'></i>
+                    <a href='./staffpanel.php?tool=news&amp;mode=delete&amp;newsid=" . (int)$array['nid'] . "&amp;h={$hash}'>
+                        <i class='fa fa-remove fa-2x tooltipper' aria-hidden='true' title='{$lang['index_news_del']}'></i>
                     </a>
                 </div>";
         }
         $HTMLOUT .= "
-            <div class='article'>";
-        if ($news_flag < 2) {
-            $HTMLOUT .= "
-                    <div class='section'>
-                        <a href=\"javascript: klappe_news('a" . (int)$array['nid'] . "')\">
-                            <img border='0' src='./images/plus.png' id='pica" . (int)$array['nid'] . "' alt='{$lang['index_hide_show']}' /> " . get_date($array['added'], 'DATE') . "{$lang['index_news_txt']}" . '' . htmlsafechars($array['title']) . "
-                        </a>
-                        {$lang['index_news_added']}<b>" . (($array['anonymous'] == 'yes' && $CURUSER['class'] < UC_STAFF && $array['userid'] != $CURUSER['id']) ? "<i>{$lang['index_news_anon']}</i>" : format_username($array['userid'])) . "</b>
-                        {$button}
+                <div id='{$array['nid']}' class='header bg-window top20 bottom20 padding10 round5 text-left'>
+                    <div class='flipper size_5 text-main left20'>
+                        <i class='fa fa-angle-up right10' aria-hidden='true'></i><span class='right10'>" . htmlsafechars($array['title']) . "</span>
+                    </div>
+                    <div class='tooltip padtop20 padbottom20 padleft10'>
+                        <div class='size_2'>" . get_date($array['added'], 'DATE') . "{$lang['index_news_added']}" . (($array['anonymous'] === 'yes' && $CURUSER['class'] < UC_STAFF && $array['userid'] != $CURUSER['id']) ? "<i>{$lang['index_news_anon']}</i>" : format_username($array['userid'])) . "{$button}</div>
+                        <div>
+                            " . format_comment($array['body'], 0) . "
+                        </div>
                     </div>
                 </div>";
-            $HTMLOUT .= '
-                <div id="ka' . (int)$array['nid'] . '" style="display:' . ($array['sticky'] == 'yes' ? '' : 'none') . ';margin-left:20px;margin-top:10px;"> ' . format_comment($array['body'], 0) . '
-        </div><br> ';
-            $news_flag = ($news_flag + 1);
-        } else {
-            $HTMLOUT .= "
-                <div class='section'>
-                    <a href=\"javascript: klappe_news('a" . (int)$array['nid'] . "')\">
-                        <img border=\"0\" src='./images/plus.png' id='pica" . (int)$array['nid'] . "' alt='{$lang['index_news_title']}' /> " . get_date($array['added'], 'DATE') . "{$lang['index_news_txt']}" . '' . htmlsafechars($array['title']) . "
-                    </a>
-                    {$lang['index_news_added']}<b>" . (($array['anonymous'] == 'yes' && $CURUSER['class'] < UC_STAFF && $array['userid'] != $CURUSER['id']) ? "<i>{$lang['index_news_anon']}</i>" : format_username($array['userid'])) . "</b>
-                    {$button}
-                </div>
-            </div>";
-            $HTMLOUT .= '
-            <div id="ka' . (int)$array['nid'] . '" style="display:' . ($array['sticky'] == 'yes' ? '' : 'none') . ';margin-left:20px;margin-top:10px;"> ' . format_comment($array['body'], 0) . '
-            </div>';
-        }
     }
-    $HTMLOUT .= "
-            </div>
-        </div>
-    </fieldset>";
 }
 if (empty($news)) {
-    $HTMLOUT .= "
-        " . format_comment($lang['index_news_not']) . "
+    $HTMLOUT .= format_comment($lang['index_news_not']);
+}
+
+$HTMLOUT .= "
             </div>
         </div>
     </fieldset>";
-}
+
