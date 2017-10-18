@@ -7,9 +7,10 @@ require_once INCL_DIR . 'searchcloud_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
+global $CURUSER, $site_config, $mc1;
 
 if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
-    sql_query('UPDATE users SET last_browse=' . TIME_NOW . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE users SET last_browse = ' . TIME_NOW . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
     $mc1->update_row(false, [
         'last_browse' => TIME_NOW,
@@ -32,7 +33,7 @@ $stdhead = [
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('browse'), load_language('torrenttable_functions'));
-$HTMLOUT = $searchin = $select_searchin = $where = $addparam = $new_button = $vip_box = $only_free = '';
+$HTMLOUT = $searchin = $select_searchin = $where = $addparam = $new_button = $vip_box = $only_free = $searchstr = $searchincrt = '';
 
 $catids = genrelist();
 if (isset($_GET['search'])) {
@@ -52,7 +53,7 @@ $valid_searchin = [
     'genre' => [
         'newgenre',
     ],
-    'all'   => [
+    'all' => [
         'name',
         'newgenre',
         'descr',
@@ -115,8 +116,7 @@ if (isset($_GET['incldead']) && $_GET['incldead'] == 1) {
     }
 }
 if (isset($_GET['only_free']) && $_GET['only_free'] == 1) {
-    if (XBT_TRACKER == true ? $wherea[] = "freetorrent >= '1'" : $wherea[] = "free >= '1'") ;
-    //$wherea[] = "free >= '1'";
+    $wherea[] = XBT_TRACKER == true ? $wherea[] = "freetorrent >= '1'" : $wherea[] = "free >= '1'";
     $addparam .= 'only_free=1&amp;';
 }
 if (isset($_GET['vip']) && $_GET['vip'] == 1) {
@@ -223,7 +223,7 @@ if ($count) {
     } else {
         $addparam = $pagerlink;
     }
-    $pager = pager($torrentsperpage, $count, 'browse.php?' . $addparam);
+    $pager = pager($torrentsperpage, $count, './browse.php?' . $addparam);
     $query = "SELECT t.id, t.search_text, t.category, t.leechers, t.seeders, t.bump, t.release_group, t.subs, t.name, t.times_completed, t.size, t.added, t.poster, t.descr, t.free, t.freetorrent, t.silver, t.comments, t.numfiles, t.filename, t.anonymous, t.sticky, t.nuked, t.vip, t.nukereason, t.newgenre, t.description, t.owner, t.youtube, t.checked_by, IF(t.nfo <> '', 1, 0) as nfoav," . "IF(t.num_ratings < {$site_config['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS rating, t.checked_when, c.username AS checked_by_username
                 FROM torrents AS t
                 LEFT JOIN users AS c ON t.checked_by = c.id
@@ -249,16 +249,16 @@ if ($CURUSER['opt1'] & user_options::VIEWSCLOUD) {
 // create the category table
 $HTMLOUT .= "
                             <div class='table-responsive text-center bg-dark'>
-                                <form id='catsids' method='get' action='browse.php'>
+                                <form id='catsids' method='get' action='./browse.php'>
                                     <div id='checkbox_container' class='answers-container'>";
 if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
     foreach ($catids as $cat) {
         $HTMLOUT .= "
                                         <span class='margin10 bordered'>
-                                            <input name='c".(int) $cat['id']."' class='styled' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? " checked" : '') . " value='1' />
+                                            <input name='c" . (int)$cat['id'] . "' class='styled' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? " checked" : '') . " value='1' />
                                             <span class='cat-image left10'>
-                                                <a href='./browse.php?c".(int) $cat['id']."'>
-                                                    <img class='radius-sm tooltipper' src='{$INSTALLER09['pic_base_url']}images/caticons/{$CURUSER['categorie_icon']}/".htmlsafechars($cat['image'])."'alt='".htmlsafechars($cat['name'])."' title='".htmlsafechars($cat['name'])."' />
+                                                <a href='./browse.php?c" . (int)$cat['id'] . "'>
+                                                    <img class='radius-sm tooltipper' src='{$INSTALLER09['pic_base_url']}images/caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' title='" . htmlsafechars($cat['name']) . "' />
                                                 </a>
                                             </span>
                                         </span>";
@@ -267,9 +267,9 @@ if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
     foreach ($catids as $cat) {
         $HTMLOUT .= "
                                         <span class='margin10 bordered tooltipper' title='" . htmlsafechars($cat['name']) . "'>
-                                            <label for='c".(int) $cat['id']."'>
-                                                <input name='c".(int) $cat['id']."' class='styled1' type='checkbox' ".(in_array($cat['id'], $wherecatina) ? "checked='checked' " : '')."value='1' />
-                                                <a class='catlink' href='./browse.php?cat=".(int) $cat['id']."'>".htmlsafechars($cat['name']).'</a>
+                                            <label for='c" . (int)$cat['id'] . "'>
+                                                <input name='c" . (int)$cat['id'] . "' class='styled1' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? "checked='checked' " : '') . "value='1' />
+                                                <a class='catlink' href='./browse.php?cat=" . (int)$cat['id'] . "'>" . htmlsafechars($cat['name']) . '</a>
                                             </label>
                                         </span>';
     }
@@ -286,7 +286,7 @@ if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
         <br>";
 } else {
     //== clear new tag automatically
-    sql_query('UPDATE users SET last_browse=' . TIME_NOW . ' where id=' . $CURUSER['id']);
+    sql_query('UPDATE users SET last_browse = ' . TIME_NOW . ' WHERE id = ' . $CURUSER['id']);
     $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
     $mc1->update_row(false, [
         'last_browse' => TIME_NOW,
@@ -350,7 +350,7 @@ foreach ([
              'title' => 'Name',
              'descr' => 'Description',
              'genre' => 'Genre',
-             'all'   => 'All',
+             'all' => 'All',
          ] as $k => $v) {
     $searchin .= '
                         <option value="' . $k . '" ' . ($select_searchin == $k ? 'selected=\'selected\'' : '') . '>' . $v . '</option>';
@@ -404,7 +404,7 @@ if (!$no_log_ip) {
         sql_query('INSERT INTO ips (userid, ip, lastbrowse, type) VALUES (' . sqlesc($userid) . ', ' . sqlesc($ip) . ", $added, 'Browse')") or sqlerr(__FILE__, __LINE__);
         $mc1->delete_value('ip_history_' . $userid);
     } else {
-        sql_query("UPDATE ips SET lastbrowse = $added WHERE ip=" . sqlesc($ip) . ' AND userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE ips SET lastbrowse = $added WHERE ip = " . sqlesc($ip) . ' AND userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
         $mc1->delete_value('ip_history_' . $userid);
     }
 }

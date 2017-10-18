@@ -67,12 +67,7 @@ if (empty($mode)) {
                             </td>
                         </tr>";
         }
-        $HTMLOUT .= "
-                    </tbody>
-                </table>
-                <div class='text-center top20 bottom20 answers-container flex-center'>
-                    <a class='btn right20' href='./staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
-                    <input type='submit' class='btn' value='{$lang['backup_delselected']}' onclick=\"return confirm(''{$lang['backup_confirm']}'');\" />
+        $HTMLOUT .= " />
                 </div>
             </div>
         </form>";

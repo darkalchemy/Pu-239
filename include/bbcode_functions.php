@@ -9,7 +9,7 @@ function smilies_frame($smilies_set)
     foreach ($smilies_set as $code => $url) {
         $list .= "
             <div class='container-flex'>
-                <a href='#' title='{$code}'>
+                <a href='#' class='tooltipper' title='{$code}'>
                     <img border='0' src='./images/smilies/" . $url . "' alt='' />
                 </a>
             </div>";
@@ -70,11 +70,11 @@ function BBcode($body)
                     </div>
                     </div>
                 </div>
-            </div>
-        ' . (($CURUSER['class'] < UC_UPLOADER && (isset($_GET['action']) && $_GET['action'] != 'new_topic')) ? '' : '<span class="text-right">
-            <a class="altlink"  title="More Options"  id="tool_open" style="font-weight:bold;cursor:pointer;"><img src="./images/forums/more.gif" alt="+" width="18" /> More Options</a>
-            <a class="altlink"  title="Close More Options"  id="tool_close" style="font-weight:bold;cursor:pointer;display:none"><img src="./images/forums/less.gif" alt="-" width="18" /> Close More Options</a>
-        </span>');
+            </div>';
+//        ' . (($CURUSER['class'] < UC_UPLOADER && (isset($_GET['action']) && $_GET['action'] != 'new_topic')) ? '' : '<span class="text-right">
+//            <a class="altlink"  title="More Options"  id="tool_open" style="font-weight:bold;cursor:pointer;"><img src="./images/forums/more.gif" alt="+" width="18" /> More Options</a>
+//            <a class="altlink"  title="Close More Options"  id="tool_close" style="font-weight:bold;cursor:pointer;display:none"><img src="./images/forums/less.gif" alt="-" width="18" /> Close More Options</a>
+//        </span>');
 
     return $bbcode;
 }

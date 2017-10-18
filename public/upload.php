@@ -5,6 +5,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once CACHE_DIR . 'subs.php';
 check_user_status();
+global $CURUSER, $site_config;
 $lang = array_merge(load_language('global'), load_language('upload'));
 $stdhead = [
     'css' => [
@@ -19,7 +20,6 @@ $HTMLOUT = $offers = $subs_list = $request = $descr = '';
 if ($CURUSER['class'] < UC_UPLOADER or $CURUSER['uploadpos'] == 0 || $CURUSER['uploadpos'] > 1 || $CURUSER['suspended'] == 'yes') {
     stderr($lang['upload_sorry'], $lang['upload_no_auth']);
 }
-//==== request dropdown
 $res_request = sql_query('SELECT id, request_name FROM requests WHERE filled_by_user_id = 0 ORDER BY request_name ASC') or sqlerr(__FILE__, __LINE__);
 $request = '
     <tr>
@@ -56,22 +56,23 @@ if (mysqli_num_rows($res_offer) > 0) {
     </tr>';
 }
 $HTMLOUT .= "
-    <div>
+    <div class='container-fluid portlet'>
     <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='./takeupload.php' method='post'>
     <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['max_torrent_size']}' />
-    <p class='top10'>{$lang['upload_announce_url']}:<b><input type='text' class='left5 text-center' readonly='readonly' value='{$site_config['announce_urls'][0]}' onclick='select()' /></b></p>";
-$HTMLOUT .= "<table class='table table-bordered table-striped'>
+    <h1 class='text-center'>Upload a Torrent</h1>
+    <p class='top10 text-center'>{$lang['upload_announce_url']}:<br><input type='text' class='left5 text-center w-100 top10' readonly='readonly' value='{$site_config['announce_urls'][0]}?torrent_pass={$CURUSER['torrent_pass']}' onclick='select()' /></p>";
+$HTMLOUT .= "<table class='table table-bordered table-striped top20 bottom20'>
     <tr>
     <td class='heading'>{$lang['upload_imdb_url']}</td>
-    <td><input type='text' name='url' /><br>{$lang['upload_imdb_tfi']}{$lang['upload_imdb_rfmo']}</td>
+    <td><input type='text' name='url' class='w-100' /><br>{$lang['upload_imdb_tfi']}{$lang['upload_imdb_rfmo']}</td>
     </tr>
     <tr>
     <td class='heading'>{$lang['upload_poster']}</td>
-    <td><input type='text' name='poster' /><br>{$lang['upload_poster1']}</td>
+    <td><input type='text' name='poster' class='w-100' /><br>{$lang['upload_poster1']}</td>
     </tr>
     <tr>
     <td class='heading'>{$lang['upload_youtube']}</td>
-    <td><input type='text' name='youtube' /><br>({$lang['upload_youtube_info']})</td>
+    <td><input type='text' name='youtube' class='w-100' /><br>({$lang['upload_youtube_info']})</td>
     </tr>
     <tr>
     <td class='heading'><b>{$lang['upload_bitbucket']}</b></td>
@@ -82,19 +83,21 @@ $HTMLOUT .= "<table class='table table-bordered table-striped'>
     </tr>
     <tr>
     <td class='heading'>{$lang['upload_torrent']}</td>
-    <td><input type='file' name='file' id='torrent' onchange='getname()' /></td>
+    <td>
+        <input type='file' name='file' id='torrent' onchange='getname()' class='inputfile' />
+    </td>
     </tr>
     <tr>
     <td class='heading'>{$lang['upload_name']}</td>
-    <td><input type='text' id='name' name='name' /><br>({$lang['upload_filename']})</td>
+    <td><input type='text' id='name' name='name' class='w-100' /><br>({$lang['upload_filename']})</td>
     </tr>
     <tr>
     <td class='heading'>{$lang['upload_tags']}</td>
-    <td><input type='text' name='tags' /><br>({$lang['upload_tag_info']})</td>
+    <td><input type='text' name='tags' class='w-100' /><br>({$lang['upload_tag_info']})</td>
     </tr>
     <tr>
     <td class='heading'>{$lang['upload_small_description']}</td>
-    <td><input type='text' name='description' /><br>({$lang['upload_small_descr']})</td>
+    <td><input type='text' name='description' class='w-100' /><br>({$lang['upload_small_descr']})</td>
     </tr>
     <tr>
     <td class='heading'>{$lang['upload_nfo']}</td>
@@ -121,9 +124,9 @@ $subs_list .= "
         <div class='flex-grid'>";
 foreach ($subs as $s) {
     $subs_list .= "
-            <div class='flex_cell_5'>
+            <div class='flex_cell_5 tooltipper' title='" . htmlsafechars($s['name']) . "'>
                 <input name='subs[]' type='checkbox' class='reset' value='{$s['id']}' />
-                <image class='sub_flag left5' src='{$s['pic']}' alt='{$s['name']}' title='" . htmlsafechars($s['name']) . "' />
+                <image class='sub_flag left5' src='{$s['pic']}' alt='" . htmlsafechars($s['name']) . "' />
                 <span class='left5'>" . htmlsafechars($s['name']) . "</span>
             </div>";
 }
@@ -262,8 +265,9 @@ for ($x = 0; $x < count($apps); $x++) {
                     <span class='left5'>{$apps[$x]}</span>
                 </label>";
 }
-$HTMLOUT.= "</td></tr></table></td></tr>";
-//== End
+$HTMLOUT.= "
+            </td>
+        </tr>";
 
 
 if ($CURUSER['class'] >= UC_UPLOADER and XBT_TRACKER == false) {
@@ -271,7 +275,11 @@ if ($CURUSER['class'] >= UC_UPLOADER and XBT_TRACKER == false) {
 }
 $HTMLOUT .= "
         <tr>
-            <td colspan='2'><input type='submit' class='btn' value='{$lang['upload_submit']}' /></td>
+            <td colspan='2'>
+                <div class='text-center'>
+                    <input type='submit' class='btn' value='{$lang['upload_submit']}' />
+                </div>
+            </td>
         </tr>
         </table>
         </form>

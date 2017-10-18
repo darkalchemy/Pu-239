@@ -1,8 +1,9 @@
 <?php
+global $CURUSER, $mc1, $site_config, $lang;
 $adminbutton = '';
 if ($CURUSER['class'] >= UC_STAFF) {
     $adminbutton = "
-        <a class='pull-right' href='./staffpanel.php?tool=news&amp;mode=news'>{$lang['index_news_title']}</a>";
+        <a class='pull-right size_3' href='./staffpanel.php?tool=news&amp;mode=news'>{$lang['index_news_title']}</a>";
 }
 $HTMLOUT .= "
     <a id='news-hash'></a>
@@ -10,8 +11,7 @@ $HTMLOUT .= "
         <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['news_title']}
             <span class='news'>{$adminbutton}</span>
         </legend>
-        <div class='bordered padleft10 padright10'>
-            <div class='alt_bordered transparent text-center'>";
+        <div>";
 
 if (($news = $mc1->get_value('latest_news_')) === false) {
     $news = [];
@@ -25,7 +25,7 @@ if (($news = $mc1->get_value('latest_news_')) === false) {
     }
     $mc1->cache_value('latest_news_', $news, $site_config['expires']['latest_news']);
 }
-$news_flag = 0;
+$i = 0;
 if ($news) {
     foreach ($news as $array) {
         $button = '';
@@ -34,25 +34,28 @@ if ($news) {
             $button = "
                 <div class='pull-right'>
                     <a href='./staffpanel.php?tool=news&amp;mode=edit&amp;newsid=" . (int)$array['nid'] . "'>
-                        <i class='fa fa-edit fa-2x right10 tooltipper' aria-hidden='true' title='{$lang['index_news_ed']}'></i>
+                        <i class='fa fa-edit fa-2x tooltipper' aria-hidden='true' title='{$lang['index_news_ed']}'></i>
                     </a>
                     <a href='./staffpanel.php?tool=news&amp;mode=delete&amp;newsid=" . (int)$array['nid'] . "&amp;h={$hash}'>
                         <i class='fa fa-remove fa-2x tooltipper' aria-hidden='true' title='{$lang['index_news_del']}'></i>
                     </a>
                 </div>";
         }
+        $top = $i++ >= 1 ? ' top20' : '';
         $HTMLOUT .= "
-                <div id='{$array['nid']}' class='header bg-window top20 bottom20 padding10 round5 text-left'>
-                    <div class='flipper size_5 text-main left20'>
-                        <i class='fa fa-angle-up right10' aria-hidden='true'></i><span class='right10'>" . htmlsafechars($array['title']) . "</span>
-                    </div>
-                    <div class='tooltip padtop20 padbottom20 padleft10'>
-                        <div class='size_2'>" . get_date($array['added'], 'DATE') . "{$lang['index_news_added']}" . (($array['anonymous'] === 'yes' && $CURUSER['class'] < UC_STAFF && $array['userid'] != $CURUSER['id']) ? "<i>{$lang['index_news_anon']}</i>" : format_username($array['userid'])) . "{$button}</div>
-                        <div>
+            <div class='bordered padleft10 padright10{$top}'>
+                <div id='{$array['nid']}' class='header alt_bordered transparent text-left'>
+                    <legend class='flipper'>
+                        <i class='fa fa-angle-up right10' aria-hidden='true'></i><span>" . htmlsafechars($array['title']) . "</span>
+                    </legend>
+                    <div class='bg-window round5 padding10'>
+                        <div class='bottom20 size_2'>" . get_date($array['added'], 'DATE') . "{$lang['index_news_added']}" . (($array['anonymous'] === 'yes' && $CURUSER['class'] < UC_STAFF && $array['userid'] != $CURUSER['id']) ? "<i>{$lang['index_news_anon']}</i>" : format_username($array['userid'])) . "{$button}</div>
+                        <div class='text-white'>
                             " . format_comment($array['body'], 0) . "
                         </div>
                     </div>
-                </div>";
+                </div>
+            </div>";
     }
 }
 if (empty($news)) {
@@ -60,7 +63,6 @@ if (empty($news)) {
 }
 
 $HTMLOUT .= "
-            </div>
         </div>
     </fieldset>";
 

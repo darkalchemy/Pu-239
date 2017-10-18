@@ -1,5 +1,6 @@
 <?php
 
+global $mc1, $site_config, $lang;
 $HTMLOUT .= "
     <a id='scroller-hash'></a>
     <fieldset id='scroller' class='header'>
@@ -37,7 +38,7 @@ if ($scroll_torrents) {
 
         $HTMLOUT .= "
                     <div class='slide'>
-                        <a href='./details?id={$id}'>
+                        <a href='./details.php?id={$id}'>
                             <img src='" . htmlsafechars($poster) . "' class='tooltipper' alt='{$name}' title='{$name}<br>{$lang['latesttorrents_seeders']} : {$seeders}<br>{$lang['latesttorrents_leechers']} : {$leechers}' width='200' height='300' border='0' />
                         </a>
                     </div>";

@@ -1,3 +1,8 @@
+18 Oct 2017
+remove: empty extra tools button from bbcode editor
+update: tfreak news block format to match news block
+replace: fast delete and fast edit images with font awesome icons
+
 17 Oct 2017
 update: database schema
 add: missing images
