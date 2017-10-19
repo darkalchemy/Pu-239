@@ -1,6 +1,6 @@
 # Pu-239
 
-There is a temporary site at http://tech-info.pw:8080 where you can view the code in action.
+There is a temporary site at http://pu-239.pw:8080 where you can view the code in action.
 
 ```
 Running on:
