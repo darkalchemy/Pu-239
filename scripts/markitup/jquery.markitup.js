@@ -606,7 +606,6 @@
                     } catch(e) {
                         sp = 0;
                     }
-                    //http://tech-info.pw:8080/images/winamp.png
                     previewWindow.document.open();
                     previewWindow.document.write(data);
                     previewWindow.document.close();

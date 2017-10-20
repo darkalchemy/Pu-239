@@ -21,7 +21,7 @@ function rsstfreakinfo()
             <div class='bordered padleft10 padright10{$top}'>
                 <div id='" . md5($item->getElementsByTagName('title')->item(0)->nodeValue) . "' class='header alt_bordered transparent text-left'>
                     <legend class='flipper'>
-                        <i class='fa fa-angle-up right10' aria-hidden='true'></i><span>" . htmlsafechars($item->getElementsByTagName('title')->item(0)->nodeValue) . "</span>
+                        <i class='fa fa-angle-up right10' aria-hidden='true'></i><small>" . htmlsafechars($item->getElementsByTagName('title')->item(0)->nodeValue) . "</small>
                     </legend>
                     <div class='bg-window round5 padding10'>
                         <div class='bottom20 size_2'>

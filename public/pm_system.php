@@ -115,12 +115,12 @@ if (!in_array($order_by, $good_order_by)) {
 }
 //=== top of page:
 $top_links = '
-    <div class="text-center">
+    <div class="text-center top20">
         <ul class="answers-container">
-            <li><a class="altlink" href="pm_system.php?action=search">' . $lang['pm_search'] . '</a></li>
-            <li><a class="altlink" href="pm_system.php?action=edit_mailboxes">' . $lang['pm_manager'] . '</a></li>
-            <li><a class="altlink" href="pm_system.php?action=new_draft">' . $lang['pm_write_new'] . '</a></li>
-            <li><a class="altlink" href="pm_system.php?action=view_mailbox">' . $lang['pm_in_box'] . '</a></li>
+            <li><a class="altlink bordered padding10" href="./pm_system.php?action=search">' . $lang['pm_search'] . '</a></li>
+            <li><a class="altlink bordered padding10" href="./pm_system.php?action=edit_mailboxes">' . $lang['pm_manager'] . '</a></li>
+            <li><a class="altlink bordered padding10" href="./pm_system.php?action=new_draft">' . $lang['pm_write_new'] . '</a></li>
+            <li><a class="altlink bordered padding10" href="./pm_system.php?action=view_mailbox">' . $lang['pm_in_box'] . '</a></li>
         </ul>
     </div>';
 //=== change  number of PMs per page on the fly

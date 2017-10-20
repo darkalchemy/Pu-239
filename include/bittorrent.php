@@ -1167,6 +1167,7 @@ function CutName_B($txt, $len = 20)
 function load_language($file = '')
 {
     global $site_config, $CURUSER;
+    $lang = '';
     if (!isset($GLOBALS['CURUSER']) or empty($GLOBALS['CURUSER']['language'])) {
         if (!file_exists(LANG_DIR . "{$site_config['language']}/lang_{$file}.php")) {
             stderr('System Error', "Can't find language files");
@@ -1558,14 +1559,14 @@ function user_exists($user_id)
         if (empty($res)) {
             return false;
         }
-        $mc1->cache_value('userlist_' . $userid, $res, 86400);
+        $mc1->cache_value('userlist_' . $user_id, $res, 86400);
     }
     return true;
 }
 
 function get_poll()
 {
-    global $CURUSER, $mc1;
+    global $CURUSER, $mc1, $site_config;
     if (($poll_data = $mc1->get_value('poll_data_' . $CURUSER['id'])) === false) {
         $query = sql_query('SELECT * FROM polls
                             LEFT JOIN poll_voters ON polls.pid = poll_voters.poll_id
@@ -1671,6 +1672,69 @@ function countries()
     }
 
     return $ret;
+}
+
+function breadcrumbs($separator = ' &raquo; ', $home = 'Home')
+{
+    $path = array_filter(explode('/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)));
+    $query = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+    $base = ($_SERVER['HTTPS'] ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
+    $breadcrumbs = ["<a href='$base'>$home</a>"];
+    $last = end(array_keys($path));
+    if (!empty($query)) {
+        $last = '';
+    }
+
+    foreach ($path AS $x => $crumb) {
+        $title = ucwords(str_replace(['.php', '_'], ['', ' '], $crumb));
+        if ($x != $last) {
+            $breadcrumbs[] = "<a href='$base$crumb'>$title</a>";
+        } else {
+            $breadcrumbs[] = $title;
+        }
+    }
+
+    if (!empty($query)) {
+        $query_str = '';
+        if (getSessionVar('query_str')) {
+            $query_str = getSessionVar('query_str');
+        }
+
+        $action = explode('=', $query);
+        if ($action[0] === 'action') {
+            if ($action[1] === 'view_topic&topic_id') {
+                $breadcrumbs[] = "<a href='{$base}forums.php?{$query_str}'>Forum</a>";
+            }
+            $type = explode('&', str_replace('view', '', $action[1]));
+            if (!empty($action[2])) {
+                $breadcrumbs[] = ucwords(str_replace(['_', '-'], ' ', $type[0])) . ' #' . $action[2];
+            } else {
+                array_pop($breadcrumbs);
+                $breadcrumbs[] = ucwords(str_replace(['_', '-'], ' ', $type[0]));
+            }
+        } elseif ($action[0] === 'tool') {
+            $breadcrumbs[] = ucwords(str_replace(['_', '-'], ' ', $action[1]));
+        } elseif ($action[0] === 'id') {
+            if (in_array('details.php', $path)) {
+                array_pop($breadcrumbs);
+                $breadcrumbs[] = "<a href='{$base}browse.php?{$query_str}'>Browse</a>";
+                $breadcrumbs[] = "Torrent Details";
+            } elseif (in_array('userdetails.php', $path)) {
+                array_pop($breadcrumbs);
+                $breadcrumbs[] = "User Details";
+            }
+        } elseif ($action[0] === 'search') {
+            array_pop($breadcrumbs);
+            $breadcrumbs[] = "Browse";
+        }
+    }
+
+    $current = "<span class='text-white'>" . end($breadcrumbs) . "</span>";
+    array_pop($breadcrumbs);
+    $breadcrumbs[] = $current;
+
+    setSessionVar('query_str', parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY));
+    return implode($separator, $breadcrumbs);
 }
 
 if (file_exists('install')) {

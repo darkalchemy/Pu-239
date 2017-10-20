@@ -1,3 +1,8 @@
+20 Oct 2017
+add: breadcrumbs to all pages except index page
+update: staffpanel.php
+update: view_mailbox.php
+
 18 Oct 2017
 remove: empty extra tools button from bbcode editor
 update: tfreak news block format to match news block

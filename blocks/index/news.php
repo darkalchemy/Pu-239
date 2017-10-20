@@ -46,7 +46,7 @@ if ($news) {
             <div class='bordered padleft10 padright10{$top}'>
                 <div id='{$array['nid']}' class='header alt_bordered transparent text-left'>
                     <legend class='flipper'>
-                        <i class='fa fa-angle-up right10' aria-hidden='true'></i><span>" . htmlsafechars($array['title']) . "</span>
+                        <i class='fa fa-angle-up right10' aria-hidden='true'></i><small>" . htmlsafechars($array['title']) . "</small>
                     </legend>
                     <div class='bg-window round5 padding10'>
                         <div class='bottom20 size_2'>" . get_date($array['added'], 'DATE') . "{$lang['index_news_added']}" . (($array['anonymous'] === 'yes' && $CURUSER['class'] < UC_STAFF && $array['userid'] != $CURUSER['id']) ? "<i>{$lang['index_news_anon']}</i>" : format_username($array['userid'])) . "{$button}</div>

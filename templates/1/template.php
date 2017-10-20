@@ -7,7 +7,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     if (!$site_config['site_online']) {
         die('Site is down for maintenance, please check back again later... thanks<br>');
     }
-    if ($title == '') {
+    if (empty($title)) {
         $title = $site_config['site_name'];
     } else {
         $title = $site_config['site_name'] . ' :: ' . htmlsafechars($title);
@@ -178,6 +178,14 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     $htmlout .= "
         <div id='base_content'>
             <div class='inner-wrapper'>";
+
+    $index_array = ['/', '/index.php'];
+    if (!in_array($_SERVER['REQUEST_URI'], $index_array)) {
+        $htmlout .= "
+                <div class='text-center size_6 text-main bottom10 text-shadow padding10'>
+                    " . breadcrumbs() . "
+                </div>";
+    }
 
     if (getSessionVar('error')) {
         $htmlout .= "
@@ -444,7 +452,7 @@ function navbar()
                             <li>
                                 <a href='#'>{$lang['gl_forums']}</a>
                                 <ul class='ddFade ddFadeSlow'>
-                                    <li><a href='http://tech-info.pw:8080'>{$lang['gl_tforums']}</a></li>
+                                    <li><a href='http://pu-239.pw:8080'>{$lang['gl_tforums']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/forums.php'>{$lang['gl_forums']}</a></li>
                                 </ul>
                             </li>

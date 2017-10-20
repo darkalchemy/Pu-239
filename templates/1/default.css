@@ -2304,8 +2304,7 @@ input[type=search]::-webkit-search-decoration {
 
 .muted,
 a.muted:hover,
-blockquote small,
-legend small {
+blockquote small {
     color: var(--grey-color);
 }
 
@@ -3013,12 +3012,13 @@ pre .code {
 legend {
     width: calc(100% - 10px);
     margin-left: 5px;
-    font-size: 21px;
+    font-size: 20px;
     line-height: 40px;
 }
 
 legend small {
     font-size: 15px;
+    line-height: 30px;
 }
 
 button,

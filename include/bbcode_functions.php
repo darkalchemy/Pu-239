@@ -3,8 +3,7 @@ require_once 'emoticons.php';
 
 function smilies_frame($smilies_set)
 {
-    global $smilies, $customsmilies, $staff_smilies;
-    $emoticons = '';
+    $list = $emoticons = '';
 
     foreach ($smilies_set as $code => $url) {
         $list .= "
@@ -71,10 +70,6 @@ function BBcode($body)
                     </div>
                 </div>
             </div>';
-//        ' . (($CURUSER['class'] < UC_UPLOADER && (isset($_GET['action']) && $_GET['action'] != 'new_topic')) ? '' : '<span class="text-right">
-//            <a class="altlink"  title="More Options"  id="tool_open" style="font-weight:bold;cursor:pointer;"><img src="./images/forums/more.gif" alt="+" width="18" /> More Options</a>
-//            <a class="altlink"  title="Close More Options"  id="tool_close" style="font-weight:bold;cursor:pointer;display:none"><img src="./images/forums/less.gif" alt="-" width="18" /> Close More Options</a>
-//        </span>');
 
     return $bbcode;
 }

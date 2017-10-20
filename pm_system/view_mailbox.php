@@ -34,7 +34,10 @@ $res = sql_query('SELECT m.id AS message_id, m.sender, m.receiver, m.added, m.su
 //=== Start Page
 //echo stdhead(htmlsafechars($mailbox_name));
 //=== let's make the table
-$HTMLOUT .= $h1_thingie . $top_links . "
+$HTMLOUT .= "
+    <div class='container-fluid portlet'>
+    $h1_thingie
+    $top_links
     <a name='pm'></a>
         <h3 class='text-center top20'>
             <span class='size_1'>{$messages} / {$maxbox}</span>
@@ -53,17 +56,17 @@ $HTMLOUT .= $h1_thingie . $top_links . "
                             Mailbox
                         </th>
                         <th>
-                            <a class='altlink' href='./pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
+                            <a class='altlink bordered padding10' href='././pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
                                 ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . "&amp;order_by=subject{$desc_asc}#pm' title='{$lang['pm_mailbox_sorder']}{$desc_asc_2}'>{$lang['pm_mailbox_subject']}
                             </a>
                         </th>
                         <th>
-                            <a class='altlink' href='pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
+                            <a class='altlink bordered padding10' href='./pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
                                 ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . "&amp;order_by=username{$desc_asc}#pm' title='{$lang['pm_mailbox_morder']}{$desc_asc_2}'>" . ($mailbox === PM_SENTBOX ? $lang['pm_search_sent_to'] : $lang['pm_search_sender']) . "
                             </a>
                         </th>
                         <th>
-                            <a class='altlink' href='pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
+                            <a class='altlink bordered padding10' href='./pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
                                 ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . "&amp;order_by=added{$desc_asc}#pm' title='{$lang['pm_mailbox_dorder']}{$desc_asc_2}'>{$lang['pm_mailbox_date']}
                             </a>
                         </th>
@@ -101,7 +104,7 @@ if (mysqli_num_rows($res) === 0) {
         $HTMLOUT .= '
                 <tr>
                     <td>' . $read_unread . '</td>
-                    <td><a class="altlink"  href="pm_system.php?action=view_message&amp;id=' . (int)$row['message_id'] . '">' . $subject . '</a>' . $extra . '</td>
+                    <td><a class="altlink"  href="./pm_system.php?action=view_message&amp;id=' . (int)$row['message_id'] . '">' . $subject . '</a>' . $extra . '</td>
                     <td>' . $avatar . $who_sent_it . '</td>
                     <td>' . get_date($row['added'], '') . '</td>
                     <td><input type="checkbox" name="pm[]" value="' . (int)$row['message_id'] . '" /></td>

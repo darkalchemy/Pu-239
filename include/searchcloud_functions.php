@@ -5,7 +5,7 @@ function searchcloud($limit = 50)
     if (!($return = $mc1->get_value('searchcloud'))) {
         $search_q = sql_query('SELECT searchedfor, howmuch
                                 FROM searchcloud
-                                ORDER BY id DESC ' . ($limit > 0 ? 'LIMIT ' . $limit : '')) or sqlerr(__FILE__, __LINE__);
+                                ORDER BY id DESC' . ($limit > 0 ? ' LIMIT ' . $limit : '')) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($search_q)) {
             $return = [];
             while ($search_a = mysqli_fetch_assoc($search_q)) {
@@ -25,7 +25,7 @@ function searchcloud($limit = 50)
 
 function searchcloud_insert($word)
 {
-    global $mc1, $site_config;
+    global $mc1;
     $searchcloud = searchcloud();
     $ip = getip();
     $howmuch = isset($searchcloud[$word]) ? $searchcloud[$word] + 1 : 1;
