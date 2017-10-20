@@ -7,7 +7,8 @@ $lang = array_merge(load_language('global'), load_language('trivia'));
 $sql = "SELECT gamenum, IFNULL(unix_timestamp(finished), 0) AS ended, IFNULL(unix_timestamp(started), 0) AS started FROM triviasettings GROUP BY gamenum ORDER BY gamenum DESC LIMIT 10";
 //$sql = "SELECT gamenum, unix_timestamp(finished) AS ended, unix_timestamp(started) AS started FROM triviasettings GROUP BY gamenum ORDER BY gamenum DESC LIMIT 10";
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-$table = '';
+$table = "
+            <div class='container-fluid portlet'>";
 while ($result = mysqli_fetch_assoc($res)) {
     $gamenum = (int)$result['gamenum'];
     $ended = $result['ended'] >= 1 ? get_date($result['ended'], 'LONG') : 0;
@@ -27,29 +28,37 @@ while ($result = mysqli_fetch_assoc($res)) {
         $i = 0;
         $date = $result['ended'] >= 1 ? "Ended: $ended" : "Started: $started";
         $table .= "
-            <h3>Game #{$gamenum} $date</h3>
-            <table class='table table-bordered table-striped'>
-                <tr>
-                    <th>Username</th>
-                    <th>Ratio</th>
-                    <th>Correct</th>
-                    <th>Incorrect</th>
-                </tr>";
+                <div class='bg-window text-center top20 round5'>
+                    <div class='padtop20'>
+                        <h3>Game #{$gamenum} $date</h3>
+                    </div>
+                    <table class='table table-bordered table-striped bottom20'>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Ratio</th>
+                                <th>Correct</th>
+                                <th>Incorrect</th>
+                            </tr>
+                        </thead>
+                        <tbody>";
 
         while ($player = mysqli_fetch_assoc($query)) {
             extract($player);
-            $class = $i++ % 2 == 0 ? 'one' : 'two';
-            $table .= "
-                <tr class='$class'>
-                    <td>" . format_username((int)$user_id) . "</td>
-                    <td>" . sprintf('%.2f%%', $correct / ($correct + $incorrect) * 100) . "</td>
-                    <td>$correct</td>
-                    <td>$incorrect</td>
-                </tr>";
+                $table .= "
+                        <tr>
+                            <td>" . format_username((int)$user_id) . "</td>
+                            <td>" . sprintf('%.2f%%', $correct / ($correct + $incorrect) * 100) . "</td>
+                            <td>$correct</td>
+                            <td>$incorrect</td>
+                        </tr>";
         }
         $table .= "
-            </table><br><br>";
+                        </tbody>
+                    </table>
+                </div>";
     }
 }
-
+$table .= "
+            </div>";
 echo stdhead('Trivia') . $table . stdfoot();

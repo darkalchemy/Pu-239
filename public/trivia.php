@@ -145,7 +145,8 @@ if (empty($gamenum) || empty($qid)) {
                         <th class='text-center' width='5%'>Correct</th>
                         <th class='text-center' width='5%'>Incorrect</th>
                     </tr>
-                </thead>";
+                </thead>
+                <tbody>";
             $sql = 'SELECT t.user_id, COUNT(t.correct) AS correct, u.username,
                             (SELECT COUNT(correct) AS incorrect FROM triviausers WHERE gamenum = ' . sqlesc($gamenum) . ' AND correct = 0 AND user_id = t.user_id) AS incorrect
                         FROM triviausers AS t
@@ -158,16 +159,15 @@ if (empty($gamenum) || empty($qid)) {
             while ($result = mysqli_fetch_assoc($res)) {
                 extract($result);
                 $table .= "
-                <tbody>
                     <tr>
                         <td class='text-left' width='5%'>" . format_username((int)$user_id) . "</td>
                         <td class='text-center' width='5%'>" . sprintf('%.2f%%', $correct / ($correct + $incorrect) * 100) . "</td>
                         <td class='text-center' width='5%'>$correct</td>
                         <td class='text-center' width='5%'>$incorrect</td>
-                    </tr>
-                </tbody>";
+                    </tr>";
             }
             $table .= "
+                </tbody>
             </table>";
             if ($row2['correct'] == 1) {
                 $answered = $lang['trivia_correct'] . '<br>';

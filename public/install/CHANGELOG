@@ -1,4 +1,6 @@
 20 Oct 2017
+update: trivia pages
+fix: removed lines from backup.php
 add: breadcrumbs to all pages except index page
 update: staffpanel.php
 update: view_mailbox.php

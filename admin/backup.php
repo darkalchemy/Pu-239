@@ -11,8 +11,9 @@ $allowed_ids = [
 if (!in_array($CURUSER['id'], $allowed_ids)) {
     stderr($lang['backup_stderr'], $lang['backup_stderr1']);
 }
+global $site_config, $CURUSER, $lang;
+
 $lang = array_merge($lang, load_language('ad_backup'));
-global $site_config;
 
 $HTMLOUT = '';
 $required_class = UC_MAX;
@@ -34,9 +35,9 @@ if (empty($mode)) {
                         ORDER BY db.added DESC') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         $HTMLOUT .= "
-        <form method='post' action='staffpanel.php?tool=backup&amp;mode=delete'>
-            <input type='hidden' name='action' value='delete' />
-            <div class='container-fluid portlet'>
+        <div class='container-fluid portlet'>
+            <form method='post' action='./staffpanel.php?tool=backup&amp;mode=delete'>
+                <input type='hidden' name='action' value='delete' />
                 {$lang['backup_welcome']}
                 <table id='checkbox_container' class='table table-bordered table-striped top20 bottom20'>
                     <thead>
@@ -51,7 +52,7 @@ if (empty($mode)) {
         while ($arr = mysqli_fetch_assoc($res)) {
             $HTMLOUT .= "
                         <tr>
-                            <td><a href='staffpanel.php?tool=backup&amp;mode=download&amp;id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></td>
+                            <td><a href='./staffpanel.php?tool=backup&amp;mode=download&amp;id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></td>
                             <td>" . get_date($arr['added'], 'LONG', 1, 0) . "</td>
                             <td>";
             if (!empty($arr['uid'])) {
@@ -67,18 +68,20 @@ if (empty($mode)) {
                             </td>
                         </tr>";
         }
-        $HTMLOUT .= " />
+        $HTMLOUT .= "
+                    </tbody>
+                </table>
+                <div class='text-center top20 bottom20 answers-container flex-center'>
+                    <a class='btn right20' href='./staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
+                    <input type='submit' class='btn' value='{$lang['backup_delselected']}' onclick=\"return confirm(''{$lang['backup_confirm']}'');\" />
                 </div>
-            </div>
-        </form>";
-
-    $HTMLOUT .= "
-            <div class='text-center top20'>
+            </form>
+            <div class='text-center top20 bottom20'>
                 <span class='flipper pointer'>
                     <i class='fa fa-angle-down fa-2x text-main' aria-hidden='true'></i>
                     <span class='text-main size_4 left10'>{$lang['backup_settingschk']}</span>
                 </span>
-                <div class='container-fluid portlet is_hidden top20'>
+                <div class='container-fluid portlet is_hidden top20 bottom20'>
                     <table class='table table-bordered table-striped top20 bottom20'>
                         <tbody>
                             <tr>
@@ -124,16 +127,12 @@ if (empty($mode)) {
                         </tbody>
                     </table>
                 </div>
-            </div>";
+            </div>
+        </div>";
     } else {
-        $HTMLOUT .= begin_frame();
         $HTMLOUT .= "<h2>'{$lang['backup_nofound']}'</h2>";
-        $HTMLOUT .= end_frame();
     }
-    $HTMLOUT .= '<br>';
-    if (!empty($_GET)) {
-        $HTMLOUT .= '<br>';
-    }
+
     if (isset($_GET['backedup'])) {
         $HTMLOUT .= stdmsg($lang['backup_success'], $lang['backup_backedup']);
     } elseif (isset($_GET['deleted'])) {
@@ -141,7 +140,6 @@ if (empty($mode)) {
     } elseif (isset($_GET['noselection'])) {
         $HTMLOUT .= stdmsg($lang['backup_stderr'], $lang['backup_selectb']);
     }
-    $HTMLOUT .= end_main_frame();
     echo stdhead($lang['backup_stdhead']) . $HTMLOUT . stdfoot();
 } elseif ($mode == 'backup') {
     global $site_config;
@@ -173,8 +171,7 @@ if (empty($mode)) {
     $res = sql_query('SELECT name FROM dbbackup WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
     $filename = $site_config['backup_dir'] . '/' . $arr['name'];
-    //print $filename;
-    //exit();
+
     if (!is_file($filename)) {
         stderr($lang['backup_stderr'], $lang['backup_inexistent']);
     }
