@@ -5312,13 +5312,14 @@ input[type=submit].btn::-moz-focus-inner {
 }
 
 .alert {
-    padding: 8px 35px 8px 14px;
+    padding: 12px;
     background-color: #fcf8e3;
     border: 1px solid #fbeed5;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
     font-size: 1.5em;
+    margin: 3px;
 }
 
 .alert .close {

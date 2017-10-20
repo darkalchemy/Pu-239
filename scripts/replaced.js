@@ -234,4 +234,9 @@ $(function() {
         }
     };
 
+    if ($('.alert').length) {
+        setTimeout(function(){
+            $('.alert').slideUp(animate_duration, function() { $('.alert').remove();});
+        }, 15000);
+    };
 });

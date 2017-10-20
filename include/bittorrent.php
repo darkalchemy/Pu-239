@@ -1713,7 +1713,8 @@ function breadcrumbs($separator = ' &raquo; ', $home = 'Home')
                 $breadcrumbs[] = ucwords(str_replace(['_', '-'], ' ', $type[0]));
             }
         } elseif ($action[0] === 'tool') {
-            $breadcrumbs[] = ucwords(str_replace(['_', '-'], ' ', $action[1]));
+            $type = explode('&', str_replace('&mode', '', $action[1]));
+            $breadcrumbs[] = ucwords(str_replace(['_', '-'], ' ', $type[0]));
         } elseif ($action[0] === 'id') {
             if (in_array('details.php', $path)) {
                 array_pop($breadcrumbs);
