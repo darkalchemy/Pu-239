@@ -1,5 +1,9 @@
+21 Oct 2017
+fix: missing $subs in torrenttable.php
+fix: browse.php
+
 20 Oct 2017
-add: auto remove alerts after 15 seconds
+add: auto remove alerts that use session variables after 15 seconds
 update: trivia pages
 fix: removed lines from backup.php
 add: breadcrumbs to all pages except index page

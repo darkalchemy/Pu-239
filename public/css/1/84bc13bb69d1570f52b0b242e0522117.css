@@ -482,10 +482,6 @@ a.tt_f2 span,
 audio:not([controls]) {
   display: none
 }
-.cloud,
-.desc {
-  background: var(--secondary-color)
-}
 #lightbox-container-image,
 .alt_bordered,
 .bordered,
@@ -535,13 +531,13 @@ textarea {
   width: 100%;
   min-height: 70px;
   line-height: 35px;
-  border: 1px solid var(--black-color);
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
   text-shadow: -1px 0 var(--black-color),0 1px var(--black-color),1px 0 var(--black-color),0 -1px var(--black-color)
 }
 .desc {
+  background: var(--secondary-color);
   border: 1px solid var(--black-color);
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -815,18 +811,31 @@ a.iCarouselNav {
   -moz-transition: all .35s ease-in-out;
   -o-transition: all .35s ease-in-out;
   transition: all .35s ease-in-out;
-  border: 2px solid var(--grey-color);
-  background: rgba(0,0,0,.3)
+  border: 2px solid transparent;
+  background: rgba(0,0,0,.1)
+}
+.captchaImage:active,
+.captchaImage:focus {
+  -webkit-transition: all .35s ease-in-out;
+  -moz-transition: all .35s ease-in-out;
+  -o-transition: all .35s ease-in-out;
+  transition: all .35s ease-in-out;
+  border: 2px solid var(--main-color);
+  background: rgba(0,0,0,.2)
+}
+.simpleCaptchaSelected {
+  -webkit-transition: all .35s ease-in-out;
+  -moz-transition: all .35s ease-in-out;
+  -o-transition: all .35s ease-in-out;
+  transition: all .35s ease-in-out;
+  border: 2px solid var(--main-color);
+  background: rgba(0,0,0,.4)
 }
 .captchaImages {
   margin: 5px auto;
   width: 350px;
   max-width: 100%;
   text-align: center
-}
-.simpleCaptchaSelected {
-  border: 2px solid var(--main-color);
-  background: rgba(0,0,0,.3)
 }
 #icarousel,
 .center-block,
@@ -7075,13 +7084,6 @@ a.tt_f2:hover span.middle {
   max-height: 300px;
   overflow: hidden
 }
-.member,
-.search {
-  border: 2px inset #878261;
-  color: var(--black-color);
-  padding: 4px 4px 4px 22px;
-  width: 230px
-}
 option.head {
   text-align: center;
   font-weight: 700;
@@ -7096,10 +7098,15 @@ ul.makeMenu ul {
 }
 .search {
   background: url(../../images/forums/search.png) 4px 4px no-repeat #fefef4;
-  height: 18px;
-  max-width: 90%
+  border: 2px inset #878261;
+  color: var(--black-color);
+  padding: 4px 4px 4px 22px
 }
 .member {
+  border: 2px inset #878261;
+  color: var(--black-color);
+  padding: 4px 4px 4px 22px;
+  width: 230px;
   background: url(../../images/forums/member.png) 4px 4px no-repeat #fefef4;
   height: 18px
 }

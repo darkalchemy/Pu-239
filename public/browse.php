@@ -33,7 +33,8 @@ $stdhead = [
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('browse'), load_language('torrenttable_functions'));
-$HTMLOUT = $searchin = $select_searchin = $where = $addparam = $new_button = $vip_box = $only_free = $searchstr = $searchincrt = '';
+$HTMLOUT = $searchin = $select_searchin = $where = $addparam = $new_button = $vip_box = $only_free = $searchstr = '';
+$searchincrt = [];
 
 $catids = genrelist();
 if (isset($_GET['search'])) {
@@ -240,45 +241,53 @@ if (isset($cleansearchstr)) {
 } else {
     $title = '';
 }
+
+$HTMLOUT .= "
+            <div class='container-fluid portlet'>
+                <div class='top20 bottom20'>";
 if ($CURUSER['opt1'] & user_options::VIEWSCLOUD) {
     $HTMLOUT .= "
-                            <div id='wrapper' class='cloud text-center'>" . cloud() . "
+                            <div id='wrapper' class='cloud bg-window text-center bottom10'>" . cloud() . "
                             </div>";
 }
 
 // create the category table
 $HTMLOUT .= "
-                            <div class='table-responsive text-center bg-dark'>
+                            <div class='table-responsive text-center'>
                                 <form id='catsids' method='get' action='./browse.php'>
-                                    <div id='checkbox_container' class='answers-container'>";
+                                    <div class='bg-window padding20 round5 top20 bottom20'>
+                                        <div id='checkbox_container' class='answers-container'>";
 if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
     foreach ($catids as $cat) {
         $HTMLOUT .= "
-                                        <span class='margin10 bordered'>
-                                            <input name='c" . (int)$cat['id'] . "' class='styled' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? " checked" : '') . " value='1' />
-                                            <span class='cat-image left10'>
-                                                <a href='./browse.php?c" . (int)$cat['id'] . "'>
-                                                    <img class='radius-sm tooltipper' src='{$INSTALLER09['pic_base_url']}images/caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' title='" . htmlsafechars($cat['name']) . "' />
-                                                </a>
-                                            </span>
-                                        </span>";
+                                            <span class='margin10 bordered'>
+                                                <input name='c" . (int)$cat['id'] . "' class='styled' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? " checked" : '') . " value='1' />
+                                                <span class='cat-image left10'>
+                                                    <a href='./browse.php?c" . (int)$cat['id'] . "'>
+                                                        <img class='radius-sm tooltipper' src='{$INSTALLER09['pic_base_url']}images/caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' title='" . htmlsafechars($cat['name']) . "' />
+                                                    </a>
+                                                </span>
+                                            </span>";
     }
 } else {
     foreach ($catids as $cat) {
         $HTMLOUT .= "
-                                        <span class='margin10 bordered tooltipper' title='" . htmlsafechars($cat['name']) . "'>
-                                            <label for='c" . (int)$cat['id'] . "'>
-                                                <input name='c" . (int)$cat['id'] . "' class='styled1' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? "checked='checked' " : '') . "value='1' />
-                                                <a class='catlink' href='./browse.php?cat=" . (int)$cat['id'] . "'>" . htmlsafechars($cat['name']) . '</a>
-                                            </label>
-                                        </span>';
+                                            <span class='margin10 bordered tooltipper' title='" . htmlsafechars($cat['name']) . "'>
+                                                <label for='c" . (int)$cat['id'] . "'>
+                                                    <input name='c" . (int)$cat['id'] . "' class='styled1' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? " checked" : '') . "value='1' />
+                                                    <a class='catlink' href='./browse.php?cat=" . (int)$cat['id'] . "'>" . htmlsafechars($cat['name']) . "</a>
+                                                </label>
+                                            </span>";
     }
 }
 $HTMLOUT .= "
-                                    </div>
-                                    <label for='checkAll'>
-                                        <input type='checkbox' id='checkAll' /><span> Select All Categories</span>
-                                    </label>";
+                                        </div>
+                                        <div class='text-center'>
+                                            <label for='checkAll'>
+                                                <input type='checkbox' id='checkAll' /><span> Select All Categories</span>
+                                            </label>
+                                        </div>
+                                    </div>";
 
 if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     $new_button = "
@@ -299,53 +308,32 @@ if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     $mc1->commit_transaction($site_config['expires']['user_cache']);
 }
 
-$HTMLOUT .= "
-<!--                <div id='search_help'><h3>Torrent Search</h3>
-                    <span class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'> Search Help</i></span>
-                    <div id='help' class='desc'>
-                        <h2 class='text-center bottom20'>The boolean search supports the following operators:</h2>
-                        <p><span class-'bold'>+</span> A leading plus sign indicates that this word must be present.</p>
-                        <p><span class-'bold'>-</span> A leading minus sign indicates that this word must not be present.</p>
-                        <p>By default (when neither + nor - is specified) the word is optional, but results that contain it are rated higher.<p>
-                        <p><span class-'bold'>*</span> The asterisk serves as the wildcard operator. Unlike the other operators, it should be appended to the word to be affected. Words match if they begin with the word preceding the * operator.</p>
-                        <p><span class-'bold'>> <</span> These two operators are used to change a word\'s contribution to the relevance value that is assigned to a word. The > operator increases the contribution and the < operator decreases it.</p>
-                        <p><span class-'bold'>~</span> A leading tilde acts as a negation operator, causing the word\'s contribution to the words\'s relevance to be negative. A row containing such a word is rated lower than others, but is not excluded altogether, as it would be with the - operator.</p>
-                        <p><span class-'bold'>' '</span> A phrase that is enclosed within double quotes return only results that contain the phrase literally, as it was typed.</p>
-                        <p><span class-'bold'>( )</span> Parentheses group words into subexpressions. Parenthesized groups can be nested.</p>
-                    </div>
-                </div>
--->
 
-                <div class='text-center margin20'>
-                    <input type='text' name='search' placeholder='Search' class='search' value='" . (!empty($_GET['search']) ? $_GET['search'] : '') . "' />
-                </div>
-                <div class='text-center margin20'>";
-//=== only free option :o)
 $only_free = ((isset($_GET['only_free'])) ? intval($_GET['only_free']) : '');
-//=== only vip option
+
 $vip = ((isset($_GET['vip'])) ? intval($_GET['vip']) : '');
-//=== checkbox for only free torrents
+
 $only_free_box = '
                     <label for="only_free" class="bottom10 right10">
                         <input type="checkbox" class="right5" name="only_free" value="1"' . (isset($_GET['only_free']) ? ' checked="checked"' : '') . ' />
                         Only Free Torrents
                     </label>';
-//=== checkbox for only VIP torrents
+
 $vip_box = '
-                    <label for="vip" class="bottom10 left10">
+                    <label for="vip" class="bottom10">
                         <input type="checkbox" class="right5" name="vip" value="1"' . (isset($_GET['vip']) ? ' checked="checked"' : '') . ' />
                         VIP torrents
                     </label>';
 $selected = (isset($_GET['incldead'])) ? (int)$_GET['incldead'] : '';
 $deadcheck = '';
 $deadcheck .= "
-                    <select name='incldead' class='left10'>
+                    <select name='incldead'>
                         <option value='0'>{$lang['browse_active']}</option>
                         <option value='1'" . ($selected == 1 ? " selected='selected'" : '') . ">{$lang['browse_inc_dead']}</option>
                         <option value='2'" . ($selected == 2 ? " selected='selected'" : '') . ">{$lang['browse_dead']}</option>
                     </select>";
 $searchin = '
-                    <select name="searchin" class="right10">';
+                    <select name="searchin">';
 foreach ([
              'title' => 'Name',
              'descr' => 'Description',
@@ -353,22 +341,29 @@ foreach ([
              'all' => 'All',
          ] as $k => $v) {
     $searchin .= '
-                        <option value="' . $k . '" ' . ($select_searchin == $k ? 'selected=\'selected\'' : '') . '>' . $v . '</option>';
+                        <option value="' . $k . '"' . ($select_searchin == $k ? ' selected' : '') . '>' . $v . '</option>';
 }
 $searchin .= '
                     </select>';
 $HTMLOUT .= "
-                <div class='flex flex-center'>
-                    $searchin
-                    $deadcheck
-                </div>";
-$HTMLOUT .= "
-                </div>
-                <div class='flex flex-center'>
-                    $only_free_box $vip_box
-                </div>
-                <div class='text-center top10'>
-                    <input type='submit' value='{$lang['search_search_btn']}' class='btn' />
+                <div class='bg-window padding20 round5'>
+                    <div class='padding10'>
+                        <input type='text' name='search' placeholder='Search' class='search w-50' value='" . (!empty($_GET['search']) ? $_GET['search'] : '') . "' />
+                    </div>
+                    <div class='flex-container'>
+                        <div class='padding10'>
+                            $searchin
+                        </div>
+                        <div class='padding10'>
+                            $deadcheck
+                        </div>
+                    </div>
+                    <div class='flex-container'>
+                        $only_free_box $vip_box
+                    </div>
+                    <div class='text-center'>
+                        <input type='submit' value='{$lang['search_search_btn']}' class='btn' />
+                    </div>
                 </div>
             </form>";
 $HTMLOUT .= "{$new_button}";
@@ -408,5 +403,7 @@ if (!$no_log_ip) {
         $mc1->delete_value('ip_history_' . $userid);
     }
 }
-//== End Ip logger
+$HTMLOUT .= "
+                    </div>
+                </div>";
 echo stdhead($title, true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);

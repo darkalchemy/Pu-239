@@ -15,12 +15,16 @@ function readMore($text, $char, $link)
 
 function torrenttable($res, $variant = 'index')
 {
-    global $site_config, $CURUSER, $lang, $free, $mc1;
+    $htmlout = $prevdate = $nuked = $free_slot = $freetorrent = $free_color = $slots_check = $double_slot = $private = $newgenre = $youtube = '';
+    $Subs = $subs = '';
+    $link1 = $link2 = $link3 = $link4 = $link5 = $link6 = $link7 = $link8 = $link9 = '';
+    $oldlink = [];
+
+    global $site_config, $CURUSER, $lang, $free;
     require_once INCL_DIR . 'bbcode_functions.php';
     require_once CLASS_DIR . 'class_user_options_2.php';
-    $htmlout = $prevdate = $nuked = $free_slot = $freetorrent = $free_color = $slots_check = $double_slot = $private = $newgenre = $oldlink = $char = $description = $type = $sort = $row = $youtube = '';
-    $count_get = 0;
-    /* ALL FREE/DOUBLE **/
+    require_once CACHE_DIR . 'subs.php';
+
     foreach ($free as $fl) {
         switch ($fl['modifier']) {
             case 1:
@@ -47,7 +51,6 @@ function torrenttable($res, $variant = 'index')
             Expires: ' . get_date($fl['expires'], 'DATE') . '<br>
             (' . mkprettytime($fl['expires'] - TIME_NOW) . ' to go)</span></a><br>' : 'Unlimited</span></a><br>') : '');
     }
-    $oldlink = [];
     foreach ($_GET as $key => $var) {
         if (in_array($key, [
             'sort',
@@ -85,8 +88,8 @@ function torrenttable($res, $variant = 'index')
         ++$i;
     }
     $htmlout .= "
-    <div class='container-fluid portlet'>
-        <table class='table table-bordered table-striped top20 bottom20'>
+    <div class='table-wrapper'>
+        <table class='table table-bordered table-striped'>
             <thead>
                 <tr>
                     <th>{$lang['torrenttable_type']}</th>
@@ -226,8 +229,6 @@ function torrenttable($res, $variant = 'index')
         $free_slot = ($free_slot == 1 ? ' <img src="' . $site_config['pic_base_url'] . 'freedownload.gif" class="tooltipper" width="12px" alt="Free Slot" title="Free Slot in Use" /> <small>Free Slot</small>' : '');
         $double_slot = ($double_slot == 1 ? ' <img src="' . $site_config['pic_base_url'] . 'doubleseed.gif" class="tooltipper" width="12px" alt="Double Upload Slot" title="Double Upload Slot in Use" /> <small>Double Slot</small><br>' : '');
         $nuked = ($row['nuked'] != 'no' && $row['nuked'] != '' ? ' <span title="Nuked ' . htmlsafechars($row['nuked']) . '" class="browse-icons-nuked"></span>' : '');
-        //==
-        $Subs = '';
         if (in_array($row['category'], $site_config['movie_cats']) &&!empty($row['subs'])) {
             $subs_array = explode(',', $row['subs']);
             require_once CACHE_DIR . 'subs.php';
