@@ -120,42 +120,35 @@ if (isset($_GET['only_free']) && $_GET['only_free'] == 1) {
     $wherea[] = XBT_TRACKER == true ? $wherea[] = "freetorrent >= '1'" : $wherea[] = "free >= '1'";
     $addparam .= 'only_free=1&amp;';
 }
-if (isset($_GET['vip']) && $_GET['vip'] == 1) {
-    $wherea[] = "vip = '1'";
-    $addparam .= 'vip=1&amp;';
+if (isset($_GET['vip'])) {
+    if ($_GET['vip'] == 2) {
+        $wherea[] = "vip = '1'";
+    } elseif ($_GET['vip'] == 1) {
+        $wherea[] = "vip = '0'";
+    }
+    $addparam .= "vip={$_GET['vip']}&amp;";
 }
 $category = (isset($_GET['cat'])) ? (int)$_GET['cat'] : false;
-$all = isset($_GET['all']) ? $_GET['all'] : false;
-if (!$all) {
-    if (!$_GET && $CURUSER['notifs']) {
-        $all = true;
-        foreach ($catids as $cat) {
-            $all &= $cat['id'];
-            if (strpos($CURUSER['notifs'], '[cat' . $cat['id'] . ']') !== false) {
-                $wherecatina[] = $cat['id'];
-                $addparam .= "c{$cat['id']}=1&amp;";
-            }
-        }
-    } elseif ($category) {
-        if (!is_valid_id($category)) {
-            stderr("{$lang['browse_error']}", "{$lang['browse_invalid_cat']}");
-        }
-        $wherecatina[] = $category;
-        $addparam .= "cat=$category&amp;";
-    } else {
-        $all = true;
-        foreach ($catids as $cat) {
-            $all &= isset($_GET["c{$cat['id']}"]);
-            if (isset($_GET["c{$cat['id']}"])) {
-                $wherecatina[] = $cat['id'];
-                $addparam .= "c{$cat['id']}=1&amp;";
-            }
+if (!$_GET && $CURUSER['notifs']) {
+    foreach ($catids as $cat) {
+        if (strpos($CURUSER['notifs'], '[cat' . $cat['id'] . ']') !== false) {
+            $wherecatina[] = $cat['id'];
+            $addparam .= "c{$cat['id']}=1&amp;";
         }
     }
-}
-if ($all) {
-    $wherecatina = [];
-    $addparam = '';
+} elseif ($category) {
+    if (!is_valid_id($category)) {
+        stderr("{$lang['browse_error']}", "{$lang['browse_invalid_cat']}");
+    }
+    $wherecatina[] = $cat['id'];
+    $addparam .= "cat=$category&amp;";
+} else {
+    foreach ($catids as $cat) {
+        if (isset($_GET["c{$cat['id']}"])) {
+            $wherecatina[] = $cat['id'];
+            $addparam .= "c{$cat['id']}=1&amp;";
+        }
+    }
 }
 
 if (count($wherecatina) > 1) {
@@ -310,27 +303,28 @@ if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
 
 
 $only_free = ((isset($_GET['only_free'])) ? intval($_GET['only_free']) : '');
-
-$vip = ((isset($_GET['vip'])) ? intval($_GET['vip']) : '');
-
 $only_free_box = '
-                    <label for="only_free" class="bottom10 right10">
-                        <input type="checkbox" class="right5" name="only_free" value="1"' . (isset($_GET['only_free']) ? ' checked="checked"' : '') . ' />
+                    <label for="only_free" class="bottom10">
+                        <input type="checkbox" class="right5" name="only_free" value="1"' . (isset($_GET['only_free']) ? ' checked' : '') . ' />
                         Only Free Torrents
                     </label>';
 
-$vip_box = '
-                    <label for="vip" class="bottom10">
-                        <input type="checkbox" class="right5" name="vip" value="1"' . (isset($_GET['vip']) ? ' checked="checked"' : '') . ' />
-                        VIP torrents
-                    </label>';
+$vip = ((isset($_GET['vip'])) ? intval($_GET['vip']) : '');
+$vip_box = "
+                    <select name='vip'>
+                        <option value='0'>VIP Torrents Included</option>
+                        <option value='1'" . ($vip == 1 ? " selected" : '') . ">VIP Torrents Not Included</option>
+                        <option value='2'" . ($vip == 2 ? " selected" : '') . ">VIP Torrents Only</option>
+                    </select>";
+
+
 $selected = (isset($_GET['incldead'])) ? (int)$_GET['incldead'] : '';
 $deadcheck = '';
 $deadcheck .= "
                     <select name='incldead'>
                         <option value='0'>{$lang['browse_active']}</option>
-                        <option value='1'" . ($selected == 1 ? " selected='selected'" : '') . ">{$lang['browse_inc_dead']}</option>
-                        <option value='2'" . ($selected == 2 ? " selected='selected'" : '') . ">{$lang['browse_dead']}</option>
+                        <option value='1'" . ($selected == 1 ? " selected" : '') . ">{$lang['browse_inc_dead']}</option>
+                        <option value='2'" . ($selected == 2 ? " selected" : '') . ">{$lang['browse_dead']}</option>
                     </select>";
 $searchin = '
                     <select name="searchin">';
@@ -348,7 +342,7 @@ $searchin .= '
 $HTMLOUT .= "
                 <div class='bg-window padding20 round5'>
                     <div class='padding10'>
-                        <input type='text' name='search' placeholder='Search' class='search w-50' value='" . (!empty($_GET['search']) ? $_GET['search'] : '') . "' />
+                        <input type='text' name='search' placeholder='{$lang['search_search']}' class='search w-50' value='" . (!empty($_GET['search']) ? $_GET['search'] : '') . "' />
                     </div>
                     <div class='flex-container'>
                         <div class='padding10'>
@@ -357,9 +351,12 @@ $HTMLOUT .= "
                         <div class='padding10'>
                             $deadcheck
                         </div>
+                        <div class='padding10'>
+                            $vip_box
+                        </div>
                     </div>
                     <div class='flex-container'>
-                        $only_free_box $vip_box
+                        $only_free_box
                     </div>
                     <div class='text-center'>
                         <input type='submit' value='{$lang['search_search_btn']}' class='btn' />

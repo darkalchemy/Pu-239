@@ -1201,7 +1201,6 @@ p {
   margin: 0 0 1.5em;
   padding: 0
 }
-crap,
 h1,
 h2,
 h3,
@@ -2857,6 +2856,7 @@ input[type=text],
 input[type=time],
 input[type=url],
 input[type=week],
+select,
 textarea {
   color: var(--black-color);
   background-color: var(--white-color);

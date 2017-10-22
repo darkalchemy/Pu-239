@@ -1,4 +1,6 @@
 21 Oct 2017
+fix: browse.php checkbox selection
+change: vip to include, not include and only in search results
 fix: missing $subs in torrenttable.php
 fix: browse.php
 

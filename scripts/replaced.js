@@ -212,7 +212,7 @@ $(function() {
     };
 
     if ($('#tz-checkdst').length) {
-        if (!$("#tz-checkdst").is(":checked")) {
+        if (!$('#tz-checkdst').is(':checked')) {
             $('#tz-checkmanual').show();
         };
     };
@@ -225,13 +225,21 @@ $(function() {
     $('li a[href=".' + this.location.pathname + this.location.search + '"]').addClass('is_active');
 
     if ($('#checkAll').length) {
-        $("#checkAll").change(function () {
-            $("input:checkbox").prop('checked', $(this).prop("checked"));
+        $('#checkAll').change(function () {
+            $('#checkbox_container :checkbox').prop('checked', $(this).prop('checked'));
         });
 
-        if ($('input:checkbox:checked').length == $('input:checkbox').length - 1) {
-            $("#checkAll").prop("checked", true);
+        if ($('#checkbox_container :checkbox:checked').length == $('#checkbox_container :checkbox').length) {
+            $('#checkAll').prop('checked', true);
         }
+
+        $('#checkbox_container :checkbox').click(function() {
+            if ($('#checkbox_container :checkbox:checked').length == $('#checkbox_container :checkbox').length) {
+                $('#checkAll').prop('checked', true);
+            } else {
+                $('#checkAll').prop('checked', false);
+            }
+        });
     };
 
     if ($('.alert').length) {
