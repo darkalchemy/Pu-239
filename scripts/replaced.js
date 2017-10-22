@@ -224,6 +224,13 @@ $(function() {
 
     $('li a[href=".' + this.location.pathname + this.location.search + '"]').addClass('is_active');
 
+    if ($('#checkThemAll').length) {
+        $('#checkThemAll').change(function () {
+            $('input:checkbox').prop('checked', $(this).prop('checked'));
+        });
+    };
+
+
     if ($('#checkAll').length) {
         $('#checkAll').change(function () {
             $('#checkbox_container :checkbox').prop('checked', $(this).prop('checked'));

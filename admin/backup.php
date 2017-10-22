@@ -45,7 +45,7 @@ if (empty($mode)) {
                             <td>{$lang['backup_name']}</th>
                             <td>{$lang['backup_addedon']}</th>
                             <td>{$lang['backup_addedby']}</th>
-                            <td><input type='checkbox' id='checkAll' class='tooltipper' title='{$lang['backup_markall']}' /></th>
+                            <td><input type='checkbox' id='checkThemAll' class='tooltipper' title='{$lang['backup_markall']}' /></th>
                         </tr>
                     </thead>
                     <tbody>";

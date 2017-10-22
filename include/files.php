@@ -6,9 +6,9 @@ function get_file($file) {
         if ($site_config['in_production']) {
             switch($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/1789a8e161f69ad32b8e6d3f403ff456.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/9fb8f7df1131c7f6bd350f7113ff18fa.min.css";
                 case 'js':
-                    return "{$site_config['baseurl']}/js/{$style}/1ab306c459bab270bab551eb87d4ad63.min.js";
+                    return "{$site_config['baseurl']}/js/{$style}/d1a921196bba8854b93764e631d96fc2.min.js";
                 case 'chatjs':
                     return "{$site_config['baseurl']}/js/{$style}/e1be3ab27b0f675bba0144fb3a8a52cd.min.js";
                 case 'chat_log_js':
@@ -49,9 +49,9 @@ function get_file($file) {
         } else {
             switch($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/b27b44d07429a15ff2205444a5e69fc6.css";
+                    return "{$site_config['baseurl']}/css/{$style}/ce265bdf66517fecb51aeaebf004e15c.css";
                 case 'js':
-                    return "{$site_config['baseurl']}/js/{$style}/9ca6cf7867f8dd57a3066f40890e6c62.js";
+                    return "{$site_config['baseurl']}/js/{$style}/9896798a1c7de0c9c22620a9fd082c67.js";
                 case 'chatjs':
                     return "{$site_config['baseurl']}/js/{$style}/1136229325e431a12bd5a911b88a9aef.js";
                 case 'chat_log_js':

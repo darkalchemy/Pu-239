@@ -1724,7 +1724,7 @@ function breadcrumbs($separator = ' &raquo; ', $home = 'Home')
                 array_pop($breadcrumbs);
                 $breadcrumbs[] = "User Details";
             }
-        } elseif ($action[0] === 'search') {
+        } elseif ($action[0] === 'search' || strpos($query, 'searchin')) {
             array_pop($breadcrumbs);
             $breadcrumbs[] = "Browse";
         }
