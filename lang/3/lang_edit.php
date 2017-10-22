@@ -42,7 +42,7 @@ $lang = [
     'edit_cover_add'           => 'Add more',
     'edit_imdb_url'            => 'Imdb Url',
     'edit_comment'             => 'Allow Comments',
-    'edit_youtube'             => "<a href='http://youtube.com' target='_blank'>Youtube</a>",
+    'edit_youtube'             => "<a href='{$site_config['anonymizer_url']}http://youtube.com' target='_blank'>Youtube</a>",
     'edit_youtube_info'        => 'Link should look like <b>http://www.youtube.com/watch?v=camI8yuoy8U</b>',
     'edit_torrent_tags'        => 'Torrent tags',
     'edit_tags_info'           => 'Multiple tags must be seperated by a comma like tag1,tag2',

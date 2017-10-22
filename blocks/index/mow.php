@@ -53,7 +53,7 @@ if (count($motw_cached) > 0) {
                             <td class='span1 text-center'><img src='./images/caticons/" . get_categorie_icons() . "/" . $mw['cat_pic'] . "' class='tooltipper' alt='" . $mw['cat_name'] . "' title='" . $mw['cat_name'] . "' /></td>
                             <td class='span8'>
                                 <a href='{$site_config['baseurl']}/details.php?id=" . (int)$m_w['id'] . "&amp;hit=1'>
-                                    <span class='dt-tooltipper' data-tooltip-content='#id_{$m_w['id']}_tooltip'>
+                                    <span class='dt-tooltipper-large' data-tooltip-content='#id_{$m_w['id']}_tooltip'>
                                         {$torrname}
                                         <div class='tooltip_templates'>
                                             <span id='id_{$m_w['id']}_tooltip'>

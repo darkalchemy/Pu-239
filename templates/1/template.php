@@ -64,123 +64,50 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
                 <div id='gm_taps'>
                     <ul class='gm_taps level-right'>";
 
-            if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_REPORTS && $BLOCKS['global_staff_report_on']) {
-                require_once BLOCK_DIR . 'global/report.php';
-            }
-            if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_UPLOADAPP && $BLOCKS['global_staff_uploadapp_on']) {
-                require_once BLOCK_DIR . 'global/uploadapp.php';
-            }
-            if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_HAPPYHOUR && $BLOCKS['global_happyhour_on'] && XBT_TRACKER == false) {
-                require_once BLOCK_DIR . 'global/happyhour.php';
-            }
-            if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_STAFF_MESSAGE && $BLOCKS['global_staff_warn_on']) {
-                require_once BLOCK_DIR . 'global/staffmessages.php';
-            }
-            if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_NEWPM && $BLOCKS['global_message_on']) {
-                require_once BLOCK_DIR . 'global/message.php';
-            }
-            if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_DEMOTION && $BLOCKS['global_demotion_on']) {
-                require_once BLOCK_DIR . 'global/demotion.php';
-            }
-            if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_FREELEECH && $BLOCKS['global_freeleech_on'] && XBT_TRACKER == false) {
-                require_once BLOCK_DIR . 'global/freeleech.php';
-            }
-            if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_CRAZYHOUR && $BLOCKS['global_crazyhour_on'] && XBT_TRACKER == false) {
-                require_once BLOCK_DIR . 'global/crazyhour.php';
-            }
-            if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_BUG_MESSAGE && $BLOCKS['global_bug_message_on']) {
-                require_once BLOCK_DIR . 'global/bugmessages.php';
-            }
-            if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_FREELEECH_CONTRIBUTION && $BLOCKS['global_freeleech_contribution_on']) {
-                require_once BLOCK_DIR . 'global/freeleech_contribution.php';
-            }
+        if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_REPORTS && $BLOCKS['global_staff_report_on']) {
+            require_once BLOCK_DIR . 'global/report.php';
+        }
+        if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_UPLOADAPP && $BLOCKS['global_staff_uploadapp_on']) {
+            require_once BLOCK_DIR . 'global/uploadapp.php';
+        }
+        if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_HAPPYHOUR && $BLOCKS['global_happyhour_on'] && XBT_TRACKER == false) {
+            require_once BLOCK_DIR . 'global/happyhour.php';
+        }
+        if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_STAFF_MESSAGE && $BLOCKS['global_staff_warn_on']) {
+            require_once BLOCK_DIR . 'global/staffmessages.php';
+        }
+        if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_NEWPM && $BLOCKS['global_message_on']) {
+            require_once BLOCK_DIR . 'global/message.php';
+        }
+        if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_DEMOTION && $BLOCKS['global_demotion_on']) {
+            require_once BLOCK_DIR . 'global/demotion.php';
+        }
+        if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_FREELEECH && $BLOCKS['global_freeleech_on'] && XBT_TRACKER == false) {
+            require_once BLOCK_DIR . 'global/freeleech.php';
+        }
+        if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_CRAZYHOUR && $BLOCKS['global_crazyhour_on'] && XBT_TRACKER == false) {
+            require_once BLOCK_DIR . 'global/crazyhour.php';
+        }
+        if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_BUG_MESSAGE && $BLOCKS['global_bug_message_on']) {
+            require_once BLOCK_DIR . 'global/bugmessages.php';
+        }
+        if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_FREELEECH_CONTRIBUTION && $BLOCKS['global_freeleech_contribution_on']) {
+            require_once BLOCK_DIR . 'global/freeleech_contribution.php';
+        }
+        require_once BLOCK_DIR . 'global/lottery.php';
 
-            $htmlout .= '
+        $htmlout .= '
                     </ul>
                 </div>
             </div>';
-        }
-        /*
-         $site_config['expires']['staff_check'] = 3600; //== test value
-         if ($CURUSER['class'] >= UC_STAFF)
-         {
-         if (($mysql_data = $mc1->get_value('is_staff_' . $CURUSER['class'])) === false) {
-         $res = sql_query('SELECT * FROM staffpanel WHERE av_class <= ' . sqlesc($CURUSER['class']) . ' ORDER BY page_name ASC') or sqlerr(__FILE__, __LINE__);
-          while ($arr = mysqli_fetch_assoc($res)) $mysql_data[] = $arr;
-         $mc1->cache_value('is_staff_' . $CURUSER['class'], $mysql_data, $site_config['expires']['staff_check']);
-          }
-          if ($mysql_data) {
-           $htmlout .= '<div class="Staff_tools">Staff Tools:
-             <div class="btn-group">
-             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-             User
-             <span class="caret"></span>
-             </a>
-          <ul class="dropdown-menu">';
-
-          foreach ($mysql_data as $key => $value){
-          if ($value['av_class'] <= $CURUSER['class'] && $value['type'] == 'user') {
-          $htmlout .= '<li><a href="'.htmlsafechars($value["file_name"]).'">'.htmlsafechars($value["page_name"]).'</a></li>';
-          }
-          }
-          $htmlout .= '</ul></div>';
-
-          $htmlout .= '
-          <div class="btn-group">
-          <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-            Settings
-            <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">';
-
-          foreach ($mysql_data as $key => $value){
-          if ($value['av_class'] <= $CURUSER['class'] && $value['type'] == 'settings') {
-          $htmlout .= '<li><a href="'.htmlsafechars($value["file_name"]).'">'.htmlsafechars($value["page_name"]).'</a></li>';
-          }
-          }
-          $htmlout .= '    </ul></div>';
-
-          $htmlout .= '
-          <div class="btn-group">
-          <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-            Stats
-            <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">';
-
-          foreach ($mysql_data as $key => $value){
-          if ((int)$value['av_class'] <= $CURUSER['class'] && htmlsafechars($value['type']) == 'stats') {
-          $htmlout .= '<li><a href="'.htmlsafechars($value["file_name"]).'">'.htmlsafechars($value["page_name"]).'</a></li>';
-          }
-          }
-          $htmlout .= '</ul></div>';
-
-          $htmlout .= '
-          <div class="btn-group">
-          <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-            Other
-            <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">';
-
-          foreach ($mysql_data as $key => $value){
-          if ((int)$value['av_class'] <= $CURUSER['class'] && htmlsafechars($value['type']) == 'other') {
-          $htmlout .= '<li><a href="'.htmlsafechars($value["file_name"]).'">'.htmlsafechars($value["page_name"]).'</a></li>';
-          }
-          }
-          $htmlout .= '    </ul></div></div>';
-          }
-          }
-        */
-        //$htmlout .= "
-        //</div>";
+    }
 
     $htmlout .= "
         <div id='base_content'>
             <div class='inner-wrapper'>";
 
-    $index_array = ['/', '/index.php'];
-    if (!in_array($_SERVER['REQUEST_URI'], $index_array)) {
+    $index_array = ['/', '/index.php', '/login.php'];
+    if ($CURUSER && !in_array($_SERVER['REQUEST_URI'], $index_array)) {
         $htmlout .= "
                 <div class='text-center size_6 text-main bottom10 text-shadow padding10'>
                     " . breadcrumbs() . "
@@ -275,7 +202,7 @@ function stdfoot($stdfoot = false)
                 <div class='pull-right'>
                 {$lang['gl_stdfoot_powered']}" . $site_config['variant'] . "<br>
                 {$lang['gl_stdfoot_using']}<b>{$lang['gl_stdfoot_using1']}</b><br>
-                " . ($debug ? "<a title='{$lang['gl_stdfoot_logview']}' rel='external' href='./staffpanel.php?tool=log_viewer'>{$lang['gl_stdfoot_logview']}</a> | " . "<a title='{$lang['gl_stdfoot_sview']}' rel='external' href='/staffpanel.php?tool=system_view'>{$lang['gl_stdfoot_sview']}</a> | " . "<a rel='external' title='OPCache' href='/staffpanel.php?tool=op'>{$lang['gl_stdfoot_opc']}</a> | " . "<a rel='external' title='Memcache' href='/staffpanel.php?tool=memcache'>{$lang['gl_stdfoot_memcache']}</a>" : '') . '';
+                " . ($debug ? "<a title='{$lang['gl_stdfoot_logview']}' rel='external' href='{$site_config['baseurl']}/staffpanel.php?tool=log_viewer'>{$lang['gl_stdfoot_logview']}</a> | " . "<a title='{$lang['gl_stdfoot_sview']}' rel='external' href='/staffpanel.php?tool=system_view'>{$lang['gl_stdfoot_sview']}</a> | " . "<a rel='external' title='OPCache' href='/staffpanel.php?tool=op'>{$lang['gl_stdfoot_opc']}</a> | " . "<a rel='external' title='Memcache' href='/staffpanel.php?tool=memcache'>{$lang['gl_stdfoot_memcache']}</a>" : '') . '';
         $htmlfoot .= "
                 </div>
             </div>
@@ -350,7 +277,7 @@ function stdfoot($stdfoot = false)
 
 function stdmsg($heading, $text)
 {
-    $htmlout .= "
+    $htmlout = "
         <div class='bordered padleft10 padright10 top20 bottom20'>
             <div class='alt_bordered transparent'>";
     if ($heading) {
@@ -383,8 +310,94 @@ function StatusBar()
 
 function navbar()
 {
-    global $site_config, $CURUSER, $lang;
-    $navbar = '';
+    global $site_config, $CURUSER, $lang, $mc1;
+    $navbar = $panel = $user_panel = $settings_panel = $stats_panel = $other_panel = '';
+
+    if ($CURUSER['class'] >= UC_STAFF) {
+        if (($staff_panel = $mc1->get_value('staff_panels_' . $CURUSER['class'])) === false) {
+            $res = sql_query('SELECT * FROM staffpanel
+                            WHERE navbar = 1 AND av_class <= ' . sqlesc($CURUSER['class']) . '
+                            ORDER BY page_name ASC') or sqlerr(__FILE__, __LINE__);
+            while ($arr = mysqli_fetch_assoc($res)) $staff_panel[] = $arr;
+            $mc1->cache_value('staff_panels_' . $CURUSER['class'], $staff_panel, 0);
+        }
+
+        if ($staff_panel) {
+            foreach ($staff_panel as $key => $value) {
+                if ($value['av_class'] <= $CURUSER['class'] && $value['type'] == 'user') {
+                    $user_panel .= "
+                        <li>
+                            <a href='" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . "</a>
+                        </li>";
+                } elseif ($value['av_class'] <= $CURUSER['class'] && $value['type'] == 'settings') {
+                    $settings_panel .= "
+                        <li>
+                            <a href='" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . "</a>
+                        </li>";
+                } elseif ($value['av_class'] <= $CURUSER['class'] && $value['type'] == 'stats') {
+                    $stats_panel .= "
+                        <li>
+                            <a href='" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . "</a>
+                        </li>";
+                } elseif ($value['av_class'] <= $CURUSER['class'] && $value['type'] == 'other') {
+                    $other_panel .= "
+                        <li>
+                            <a href='" . htmlsafechars($value['file_name']) . "'>" . htmlsafechars($value['page_name']) . "</a>
+                        </li>";
+                }
+            }
+
+            if (!empty($user_panel)) {
+                $panel .= "
+                    <li>
+                        <a href='#'>[Users]</a>
+                        <ul class='ddFade ddFadeSlow'>
+                            <li>
+                                <a href='{$site_config['baseurl']}/staffpanel.php'>Staff Panel</a>
+                            </li>
+                            $user_panel
+                        </ul>
+                   </li>";
+            }
+            if (!empty($settings_panel)) {
+                $panel .= "
+                   <li>
+                        <a href='#'>[Settings]</a>
+                        <ul class='ddFade ddFadeSlow'>
+                            <li>
+                                <a href='{$site_config['baseurl']}/staffpanel.php'>Staff Panel</a>
+                            </li>
+                            $settings_panel
+                        </ul>
+                    </li>";
+            }
+            if (!empty($stats_panel)) {
+                $panel .= "
+                    <li>
+                        <a href='#'>[Stats]</a>
+                        <ul class='ddFade ddFadeSlow'>
+                            <li>
+                                <a href='{$site_config['baseurl']}/staffpanel.php'>Staff Panel</a>
+                            </li>
+                            $stats_panel
+                        </ul>
+                   </li>";
+            }
+            if (!empty($other_panel)) {
+                $panel .= "
+                    <li>
+                        <a href='#'>[Other]</a>
+                        <ul class='ddFade ddFadeSlow'>
+                            <li>
+                                <a href='{$site_config['baseurl']}/staffpanel.php'>Staff Panel</a>
+                            </li>
+                            $other_panel
+                        </ul>
+                   </li>";
+            }
+        }
+    }
+
     if ($CURUSER) {
         $salty = salty($CURUSER['username']);
         $navbar .= "
@@ -423,6 +436,7 @@ function navbar()
                                     <li><a href='{$site_config['baseurl']}/announcement.php'>{$lang['gl_announcements']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/topten.php'>{$lang['gl_stats']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/faq.php'>{$lang['gl_faq']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/rules.php'>{$lang['gl_rules']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/chat.php'>{$lang['gl_irc']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/staff.php'>{$lang['gl_staff']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/wiki.php'>{$lang['gl_wiki']}</a></li>
@@ -442,11 +456,11 @@ function navbar()
                             <li>
                                 <a href='#'>User</a>
                                 <ul class='ddFade ddFadeSlow'>
-                                    <li><a href='./pm_system.php'>{$lang['gl_pms']}</a></li>
-                                    <li><a href='./usercp.php?action=default'>{$lang['gl_usercp']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/pm_system.php'>{$lang['gl_pms']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/usercp.php?action=default'>{$lang['gl_usercp']}</a></li>
                                     <li><a href='#' onclick='themes();'>{$lang['gl_theme']}</a></li>
                                     <li><a href='#' onclick='language_select();'>{$lang['gl_language_select']}</a></li>
-                                    <li><a href='./friends.php'>{$lang['gl_friends']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/friends.php'>{$lang['gl_friends']}</a></li>
                                 </ul>
                             </li>
                             <li>
@@ -456,14 +470,9 @@ function navbar()
                                     <li><a href='{$site_config['baseurl']}/forums.php'>{$lang['gl_forums']}</a></li>
                                 </ul>
                             </li>
-                            <li>" . ($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/bugs.php?action=add'>{$lang['gl_breport']}</a>" : "<a href='{$site_config['baseurl']}/bugs.php?action=bugs'>{$lang['gl_brespond']}</a>") . "</li>
-                            <li>" . ($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/contactstaff.php'>{$lang['gl_cstaff']}</a>" : "<a href='{$site_config['baseurl']}/staffbox.php'>{$lang['gl_smessages']}</a>") . "</li>
-                            " . ($CURUSER['class'] >= UC_STAFF ? "<li>
-                                <a href='#'>Staff</a>
-                                <ul class='ddFade ddFadeSlow'>
-                                    <li><a href='./staffpanel.php'>{$lang['gl_admin']}</a></li>
-                                </ul>
-                            </li>" : "") . "
+                            <li>" . ($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/bugs.php?action=add'>{$lang['gl_breport']}</a>" : "<a href='{$site_config['baseurl']}/bugs.php?action=bugs'>[Bugs]</a>") . "</li>
+                            <li>" . ($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/contactstaff.php'>{$lang['gl_cstaff']}</a>" : "<a href='{$site_config['baseurl']}/staffbox.php'>[Messages]</a>") . "</li>
+                            $panel
                         </ul>
                         <ul class='level-right'>
                             <li>
@@ -481,7 +490,6 @@ function navbar()
 }
 
 function platform_menu() {
-    global $CURUSER, $lang;
     $menu = "
         <div id='platform-menu' class='container platform-menu'>
             <div class='platform-wrapper'>

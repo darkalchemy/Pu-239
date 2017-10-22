@@ -6,9 +6,9 @@ function get_file($file) {
         if ($site_config['in_production']) {
             switch($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/9fb8f7df1131c7f6bd350f7113ff18fa.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/a989f000aa998cd85b9c517dc8355880.min.css";
                 case 'js':
-                    return "{$site_config['baseurl']}/js/{$style}/d1a921196bba8854b93764e631d96fc2.min.js";
+                    return "{$site_config['baseurl']}/js/{$style}/fb66d2e1826bcd43b9dbd959e79f8a30.min.js";
                 case 'chatjs':
                     return "{$site_config['baseurl']}/js/{$style}/e1be3ab27b0f675bba0144fb3a8a52cd.min.js";
                 case 'chat_log_js':
@@ -38,7 +38,7 @@ function get_file($file) {
                 case 'acp_js':
                     return "{$site_config['baseurl']}/css/{$style}/4bd2b11d16f9048a1f7318a216382353.min.js";
                 case 'userdetails_js':
-                    return "{$site_config['baseurl']}/js/{$style}/de8c9a9e792812564093f25a33fe67fe.min.js";
+                    return "{$site_config['baseurl']}/js/{$style}/32dbd5455e43945a91592a3650a03d21.min.js";
                 case 'details_js':
                     return "{$site_config['baseurl']}/js/{$style}/a19a35e544f07fe730c1bac6be4c6444.min.js";
                 case 'forums_js':
@@ -49,9 +49,9 @@ function get_file($file) {
         } else {
             switch($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/ce265bdf66517fecb51aeaebf004e15c.css";
+                    return "{$site_config['baseurl']}/css/{$style}/79d5419288d8eb15f9317b1ba4713791.css";
                 case 'js':
-                    return "{$site_config['baseurl']}/js/{$style}/9896798a1c7de0c9c22620a9fd082c67.js";
+                    return "{$site_config['baseurl']}/js/{$style}/1b60f44c0383f30c0e247dbf4bfcfba9.js";
                 case 'chatjs':
                     return "{$site_config['baseurl']}/js/{$style}/1136229325e431a12bd5a911b88a9aef.js";
                 case 'chat_log_js':
@@ -81,7 +81,7 @@ function get_file($file) {
                 case 'acp_js':
                     return "{$site_config['baseurl']}/css/{$style}/b507dbbb9dbc3fa55bae9d4fa752fbab.js";
                 case 'userdetails_js':
-                    return "{$site_config['baseurl']}/js/{$style}/a549e8e2c1c915d869068fb27cbb5e16.js";
+                    return "{$site_config['baseurl']}/js/{$style}/418463ca939f7c566b454e009a828c65.js";
                 case 'details_js':
                     return "{$site_config['baseurl']}/js/{$style}/df64482a5151fb7175c4e1e8abd84ef9.js";
                 case 'forums_js':

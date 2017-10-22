@@ -464,7 +464,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
                         </tr>
                         <tr>
                             <td class='text-center' colspan='2'>
-                                <input type='submit' class='btn-clean' value='{$lang['casino_gamble']}!' />
+                                <input type='submit' class='btn' value='{$lang['casino_gamble']}!' />
                             </td>
                         </tr>
                     </tbody>
@@ -540,7 +540,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     }
     $HTMLOUT .= tr($lang['casino_your_chance'], '1 : ' . $real_chance, 1);
     $HTMLOUT .= tr($lang['casino_you_can_win'], $win_amount . ' * stake', 1);
-    $HTMLOUT .= tr($lang['casino_bet_on_color'], "<input type='submit' class='btn-clean' value='{$lang['casino_do_it']}!' />", 1);
+    $HTMLOUT .= tr($lang['casino_bet_on_color'], "<input type='submit' class='btn' value='{$lang['casino_do_it']}!' />", 1);
     $HTMLOUT .= "
                     </tbody>
                 </table>
@@ -574,7 +574,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     }
     $HTMLOUT .= tr($lang['casino_your_chance'], '1 : ' . $real_chance, 1);
     $HTMLOUT .= tr($lang['casino_you_can_win'], $win_amount_on_number . ' * stake', 1);
-    $HTMLOUT .= tr($lang['casino_bet_on_a_number'], "<input type='submit' class='btn-clean' value='{$lang['casino_do_it']}!' />", 1);
+    $HTMLOUT .= tr($lang['casino_bet_on_a_number'], "<input type='submit' class='btn' value='{$lang['casino_do_it']}!' />", 1);
     $HTMLOUT .= "
                     </tbody>
                 </table>

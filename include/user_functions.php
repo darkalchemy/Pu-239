@@ -430,14 +430,14 @@ function format_username($user_id, $icons = true, $tooltipper = true)
                                 <div class='right20'>
                                     {$avatar}
                                 </div>
-                                <div  style='min-width: 150px; align: left;'>
+                                <div style='min-width: 150px; align: left;'>
                                      <span style='color:#" . get_user_class_color($user['class']) . ";'>
                                          " . htmlsafechars($user['username']) . "
                                      </span>
                                 </div>
                             </span>
                         </div>";
-        $tooltip = "class='dt-tooltipper' data-tooltip-content='#id_{$user['id']}_tooltip'";
+        $tooltip = "class='dt-tooltipper-large' data-tooltip-content='#id_{$user['id']}_tooltip'";
     }
     $user['id'] = (int) $user['id'];
     $user['class'] = (int) $user['class'];

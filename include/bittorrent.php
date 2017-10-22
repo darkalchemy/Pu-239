@@ -799,33 +799,33 @@ function unesc($x)
 }
 
 //Extended mksize Function
-function mksize($bytes)
+function mksize($bytes, $dec = 2)
 {
     $bytes = max(0, (int)$bytes);
 
     if ($bytes < 1024000) {
-        return number_format($bytes / 1024, 2) . ' KB';
+        return number_format($bytes / 1024, $dec) . ' KB';
     } //Kilobyte
     elseif ($bytes < 1048576000) {
-        return number_format($bytes / 1048576, 2) . ' MB';
+        return number_format($bytes / 1048576, $dec) . ' MB';
     } //Megabyte
     elseif ($bytes < 1073741824000) {
-        return number_format($bytes / 1073741824, 2) . ' GB';
+        return number_format($bytes / 1073741824, $dec) . ' GB';
     } //Gigebyte
     elseif ($bytes < 1099511627776000) {
-        return number_format($bytes / 1099511627776, 3) . ' TB';
+        return number_format($bytes / 1099511627776, $dec) . ' TB';
     } //Terabyte
     elseif ($bytes < 1125899906842624000) {
-        return number_format($bytes / 1125899906842624, 3) . ' PB';
+        return number_format($bytes / 1125899906842624, $dec) . ' PB';
     } //Petabyte
     elseif ($bytes < 1152921504606846976000) {
-        return number_format($bytes / 1152921504606846976, 3) . ' EB';
+        return number_format($bytes / 1152921504606846976, $dec) . ' EB';
     } //Exabyte
     elseif ($bytes < 1180591620717411303424000) {
-        return number_format($bytes / 1180591620717411303424, 3) . ' ZB';
+        return number_format($bytes / 1180591620717411303424, $dec) . ' ZB';
     } //Zettabyte
     else {
-        return number_format($bytes / 1208925819614629174706176, 3) . ' YB';
+        return number_format($bytes / 1208925819614629174706176, $dec) . ' YB';
     } //Yottabyte
 }
 
@@ -1704,6 +1704,8 @@ function breadcrumbs($separator = ' &raquo; ', $home = 'Home')
         if ($action[0] === 'action') {
             if ($action[1] === 'view_topic&topic_id') {
                 $breadcrumbs[] = "<a href='{$base}forums.php?{$query_str}'>Forum</a>";
+            } elseif ($action[1] === 'add') {
+                $breadcrumbs[] = "<a href='{$base}staffpanel.php?{$query_str}'>Forum</a>";
             }
             $type = explode('&', str_replace('view', '', $action[1]));
             if (!empty($action[2])) {
@@ -1727,6 +1729,9 @@ function breadcrumbs($separator = ' &raquo; ', $home = 'Home')
         } elseif ($action[0] === 'search' || strpos($query, 'searchin')) {
             array_pop($breadcrumbs);
             $breadcrumbs[] = "Browse";
+        } elseif ($action[0] === 'do') {
+            array_pop($breadcrumbs);
+            $breadcrumbs[] = "Invite";
         }
     }
 
@@ -1737,6 +1742,33 @@ function breadcrumbs($separator = ' &raquo; ', $home = 'Home')
     setSessionVar('query_str', parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY));
     return implode($separator, $breadcrumbs);
 }
+
+function bubble($link, $text)
+{
+    $id = uniqid('id_');
+    $bubble = "
+        <span class='dt-tooltipper-small size_5 text-main' data-tooltip-content='#{$id}'>
+            $link
+        </span>
+        <div class='tooltip_templates'>
+            <span id='$id'>
+                $text
+            </span>
+        </div>";
+
+    return $bubble;
+}
+
+function make_nice_address($ip)
+{
+    $dom = @gethostbyaddr($ip);
+    if ($dom == $ip || @gethostbyname($dom) != $ip) {
+        return $ip;
+    } else {
+        return $ip . '<br>' . $dom;
+    }
+}
+
 
 if (file_exists('install')) {
     $HTMLOUT = "<!DOCTYPE html>

@@ -52,7 +52,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
     } else {
         $HTMLOUT .= '<font size="-3"> ' . get_date($arr['donoruntil'], 'DATE') . ' [ ' . mkprettytime($donoruntil - TIME_NOW) . " ]{$lang['donate_togo']}</font>";
     }
-    $HTMLOUT .= "</td><td><b>&#163;" . htmlsafechars($arr['donated']) . '</b></td>' . "<td><b>&#163;" . htmlsafechars($arr['total_donated']) . '</b></td>' . "<td><b><a class='altlink' href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . (int)$arr['id'] . "'>{$lang['donate_sendpm']}</a></b></td></tr>";
+    $HTMLOUT .= "</td><td><b>&#36;" . htmlsafechars($arr['donated']) . '</b></td>' . "<td><b>&#36;" . htmlsafechars($arr['total_donated']) . '</b></td>' . "<td><b><a class='altlink' href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . (int)$arr['id'] . "'>{$lang['donate_sendpm']}</a></b></td></tr>";
 }
 $HTMLOUT .= end_table();
 $HTMLOUT .= end_frame();

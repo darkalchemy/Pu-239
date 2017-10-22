@@ -180,31 +180,44 @@ if (XBT_TRACKER == true) {
     $htmlout .= "
                 <li>
                     <a href='./mybonus.php'>
-                        <b class='btn btn-success btn-small dt-tooltipper' data-tooltip-content='#karma_tooltip'>Karma Contribution's</b>
+                        <b class='btn btn-success btn-small dt-tooltipper-small' data-tooltip-content='#karma_tooltip'>Karma Contribution's</b>
                         <div class='tooltip_templates'>
-                            <span id='karma_tooltip'><em>Karma Contribution's</em><br>Freeleech [ ";
+                            <span id='karma_tooltip'>
+                                <div class='size_4 text-center text-lime bottom10'>Karma Contribution's</div>
+                                <div class='answers-container'>
+                                    <span>Freeleech</span><span> [ ";
     if ($freeleech_enabled) {
         $htmlout .= '<span class="text-lime"> ON </span>' . get_date($freeleech_start_time, 'DATE') . ' - ' . get_date($freeleech_end_time, 'DATE');
     } else {
         $htmlout .= $fstatus;
     }
-    $htmlout .= ' ]<br>';
+    $htmlout .= ' ]
+                                    </span>
+                                </div>';
 
-    $htmlout .= 'DoubleUpload [ ';
+    $htmlout .= "
+                                <div class='answers-container'>
+                                    <span>DoubleUpload</span><span> [ ";
     if ($double_upload_enabled) {
         $htmlout .= '<span class="text-lime"> ON </span>' . get_date($double_upload_start_time, 'DATE') . ' - ' . get_date($double_upload_end_time, 'DATE');
     } else {
         $htmlout .= $dstatus;
     }
-    $htmlout .= ' ]<br>';
+    $htmlout .= ' ]
+                                    </span>
+                                </div>';
 
-    $htmlout .= 'Half Download [ ';
+    $htmlout .= "
+                                <div class='answers-container'>
+                                    <span>Half Download</span><span> [ ";
     if ($half_down_enabled) {
         $htmlout .= '<span class="text-lime"> ON</span> ' . get_date($half_down_start_time, 'DATE') . ' - ' . get_date($half_down_end_time, 'DATE');
     } else {
         $htmlout .= $hstatus;
     }
     $htmlout .= ' ]
+                                    </span>
+                                </div>
                             </span>
                         </div>
                     </a>

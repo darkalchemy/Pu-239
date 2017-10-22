@@ -46,7 +46,7 @@ if (count($top5torrents) > 0) {
                             </td>
                             <td class='span8'>
                                 <a href='{$site_config['baseurl']}/details.php?id=" . (int)$top5torrentarr['id'] . "&amp;hit=1'>
-                                    <span class='dt-tooltipper' data-tooltip-content='#id_{$top5torrentarr['id']}_tooltip'>
+                                    <span class='dt-tooltipper-large' data-tooltip-content='#id_{$top5torrentarr['id']}_tooltip'>
                                         {$torrname}
                                         <div class='tooltip_templates'>
                                             <span id='id_{$top5torrentarr['id']}_tooltip'>
@@ -131,7 +131,7 @@ if (count($last5torrents) > 0) {
                             </td>
                             <td class='span8'>
                                 <a href='{$site_config['baseurl']}/details.php?id=" . (int)$last5torrentarr['id'] . "&amp;hit=1'>
-                                    <span class='dt-tooltipper' data-tooltip-content='#id_{$last5torrentarr['id']}_tooltip'>
+                                    <span class='dt-tooltipper-large' data-tooltip-content='#id_{$last5torrentarr['id']}_tooltip'>
                                         {$torrname}
                                         <div class='tooltip_templates'>
                                             <span id='id_{$last5torrentarr['id']}_tooltip'>

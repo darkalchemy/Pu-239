@@ -3,160 +3,130 @@
 $lang = [
     //FAQ
     'faq_welcome'             => "
-    <b>Welcome to {$site_config['site_name']}!</b><br>
-    <br>
-    Our goal is not to become another Bytemonsoon or Suprnova (not dizzying either of them though). The goal is to provide the absolutely latest stuff. Therefore, only specially authorised users have permission to upload torrents. If you have access to 0-day stuff do not hesitate to <a class='altlink' href='staff.php'>contact</a> us!
-    <br>
-    <br>
-    This is a private tracker, and you have to register before you can get full access to the site. Before you do anything here at {$site_config['site_name']} we suggest you read the <a class='altlink' href='rules.php'>rules</a>! There are only a few rules to abide by, but we do enforce them!
-    <br>
-    <br>
-    Before you go any further you should read the {$site_config['site_name']} <a class='altlink' href='useragreement.php'>user agreement</a>.
-    <br>",
+    <div class='text-center'>
+        <h1>Welcome to {$site_config['site_name']}!</h1>
+    </div>
+    <p>
+        Our goal is not to become another Bytemonsoon or Suprnova (not dizzying either of them though). The goal is to provide the absolutely latest stuff. Therefore, only specially authorised users have permission to upload torrents. If you have access to 0-day stuff do not hesitate to <a href='./staff.php'>contact</a> us!
+    </p>
+    <p>
+        This is a private tracker, and you have to register before you can get full access to the site. Before you do anything here at {$site_config['site_name']} we suggest you read the <a href='./rules.php'>rules</a>! There are only a few rules to abide by, but we do enforce them!
+    </p>
+    <p>
+        Before you go any further you should read the {$site_config['site_name']} <a href='./useragreement.php'>user agreement</a>.
+    </p>",
     'faq_contents_header'     => 'Contents',
     'faq_siteinfo_header'     => 'Site information',
     'faq_siteinfo'            => "
     <ul>
-        <li><a href='#site1' class='altlink'>What is this bittorrent all about anyway? How do I get the files?</a></li>
-        <li><a href='#site2' class='altlink'>Where does the donated money go?</a></li>
-        <li><a href='#site4' class='altlink'>Where can I get a copy of the source code?</a></li>
-    </ul>
-    <br>",
+        <li><a href='#site1'>What is this bittorrent all about anyway? How do I get the files?</a></li>
+        <li><a href='#site2'>Where does the donated money go?</a></li>
+        <li><a href='#site4'>Where can I get a copy of the source code?</a></li>
+    </ul>",
     'faq_userinfo_header'     => 'User information',
     'faq_userinfo'            => "
     <ul>
-        <li><a href='#user1' class='altlink'>I registered an account but did not receive the confirmation e-mail!</a></li>
-        <li><a href='#user2' class='altlink'>I've lost my user name or password! Can you send it to me?</a></li>
-        <li><a href='#user3' class='altlink'>Can you rename my account?</a></li>
-        <li><a href='#user4' class='altlink'>Can you delete my (confirmed) account?</a>
-            <img src='{$site_config['pic_base_url']}updated.png' alt='Updated' width='46' height='11' />
-        </li>
-        <li><a href='#userb' class='altlink'>So, what's MY ratio?</a></li>
-        <li><a href='#user5' class='altlink'>Why is my IP displayed on my details page?</a></li>
-        <li><a href='#user6' class='altlink'>Help! I cannot login!? (a.k.a. Login of Death)</a></li>
-        <li><a href='#user7' class='altlink'>My IP address is dynamic. How do I stay logged in?</a>
-            <img src='{$site_config['pic_base_url']}updated.png' alt='Updated' width='46' height='11' />
-        </li>
-        <li><a href='#user8' class='altlink'>Why am I listed as not connectable? (And why should I care?)</a></li>
-        <li><a href='#user9' class='altlink'>What are the different user classes?</a></li>
-        <li><a href='#usera' class='altlink'>How does this promotion thing work anyway?</a></li>
-        <li><a href='#usere' class='altlink'>Hey! I've seen Power Users with less than 25GB uploaded!</a></li>
-        <li><a href='#userc' class='altlink'>Why can't my friend become a member?</a>
-            <img src='{$site_config['pic_base_url']}updated.png' alt='Updated' width='46' height='11' />
-        </li>
-        <li><a href='#userd' class='altlink'>How do I add an avatar to my profile?</a></li>
-    </ul>
-    <br>",
+        <li><a href='#user1'>I registered an account but did not receive the confirmation e-mail!</a></li>
+        <li><a href='#user2'>I've lost my user name or password! Can you send it to me?</a></li>
+        <li><a href='#user3'>Can you rename my account?</a></li>
+        <li><a href='#user4'>Can you delete my (confirmed) account?</a></li>
+        <li><a href='#userb'>So, what's MY ratio?</a></li>
+        <li><a href='#user5'>Why is my IP displayed on my details page?</a></li>
+        <li><a href='#user6'>Help! I cannot login!? (a.k.a. Login of Death)</a></li>
+        <li><a href='#user7'>My IP address is dynamic. How do I stay logged in?</a></li>
+        <li><a href='#user8'>Why am I listed as not connectable? (And why should I care?)</a></li>
+        <li><a href='#user9'>What are the different user classes?</a></li>
+        <li><a href='#usera'>How does this promotion thing work anyway?</a></li>
+        <li><a href='#usere'>Hey! I've seen Power Users with less than 25GB uploaded!</a></li>
+        <li><a href='#userc'>Why can't my friend become a member?</a></li>
+        <li><a href='#userd'>How do I add an avatar to my profile?</a></li>
+    </ul>",
     'faq_stats_header'        => 'Stats',
     'faq_stats'               => "
     <ul>
-        <li><a href='#stats1' class='altlink'>Most common reasons for stats not updating</a></li>
-        <li><a href='#stats2' class='altlink'>Best practices</a></li>
-        <li><a href='#stats3' class='altlink'>May I use any bittorrent client?</a></li>
-        <li><a href='#stats4' class='altlink'>Why is a torrent I'm leeching/seeding listed several times in my profile?</a></li>
-        <li><a href='#stats5' class='altlink'>I've finished or cancelled a torrent. Why is it still listed in my profile?</a></li>
-        <li><a href='#stats6' class='altlink'>Why do I sometimes see torrents I'm not leeching in my profile!?</a>
-            <img src='{$site_config['pic_base_url']}/updated.png' alt='Updated' width='46' height='11' />
-        </li>
-        <li><a href='#stats7' class='altlink'>Multiple IPs (Can I login from different computers?)</a>
-            <img src='{$site_config['pic_base_url']}updated.png' alt='Updated' width='46' height='11' />
-        </li>
-        <li><a href='#stats8' class='altlink'>How does NAT/ICS change the picture?</a></li>
-        <li><a href='#stats9' class='altlink'>For those of you who are interested (Anatomy of a torrent session)</a></li>
-    </ul>
-    <br>",
+        <li><a href='#stats1'>Most common reasons for stats not updating</a></li>
+        <li><a href='#stats2'>Best practices</a></li>
+        <li><a href='#stats3'>May I use any bittorrent client?</a></li>
+        <li><a href='#stats4'>Why is a torrent I'm leeching/seeding listed several times in my profile?</a></li>
+        <li><a href='#stats5'>I've finished or cancelled a torrent. Why is it still listed in my profile?</a></li>
+        <li><a href='#stats6'>Why do I sometimes see torrents I'm not leeching in my profile!?</a></li>
+        <li><a href='#stats7'>Multiple IPs (Can I login from different computers?)</a></li>
+        <li><a href='#stats8'>How does NAT/ICS change the picture?</a></li>
+        <li><a href='#stats9'>For those of you who are interested (Anatomy of a torrent session)</a></li>
+    </ul>",
     'faq_uploading_header'    => 'Uploading',
     'faq_uploading'           => "
     <ul>
-        <li><a href='#up1' class='altlink'>Why can't I upload torrents?</a> </li>
-        <li><a href='#up2' class='altlink'>What criteria must I meet before I can join the Uploader team?</a></li>
-        <li><a href='#up3' class='altlink'>Can I upload your torrents to other trackers?</a>
-            <img src='{$site_config['pic_base_url']}new.png' alt='New' width='27' height='11' />
-        </li>
-    </ul>
-    <br>",
+        <li><a href='#up1'>Why can't I upload torrents?</a> </li>
+        <li><a href='#up2'>What criteria must I meet before I can join the Uploader team?</a></li>
+        <li><a href='#up3'>Can I upload your torrents to other trackers?</a></li>
+    </ul>",
     'faq_downloading_header'  => 'Downloading',
     'faq_downloading'         => "
     <ul>
-        <li><a href='#dl1' class='altlink'>How do I use the files I've downloaded?</a></li>
-        <li><a href='#dl2' class='altlink'>Downloaded a movie and don't know what CAM/TS/TC/SCR means?</a></li>
-        <li><a href='#dl3' class='altlink'>Why did an active torrent suddenly disappear?</a>
-            <img src='{$site_config['pic_base_url']}updated.png' alt='Updated' width='46' height='11' />
-        </li>
-        <li><a href='#dl4' class='altlink'>How do I resume a broken download or reseed something?</a></li>
-        <li><a href='#dl5' class='altlink'>Why do my downloads sometimes stall at 99%?</a></li>
-        <li><a href='#dl6' class='altlink'>What are these &quot;a piece has failed an hash check&quot; messages?</a></li>
-        <li><a href='#dl7' class='altlink'>The torrent is supposed to be 100MB. How come I downloaded 120MB?</a></li>
-        <li><a href='#dl8' class='altlink'>Why do I get a &quot;Not authorized (xx h) - READ THE FAQ!&quot; error?</a>
-            <img src='{$site_config['pic_base_url']}new.png' alt='New' width='27' height='11' />
-        </li>
-        <li><a href='#dl9' class='altlink'>Why do I get a &quot;rejected by tracker - Port xxxx is blacklisted&quot; error?</a>
-            <img src='{$site_config['pic_base_url']}new.png' alt='New' width='27' height='11' />
-        </li>
-        <li><a href='#dla' class='altlink'>What's this 'IOError - [Errno13] Permission denied' error?</a>
-            <img src='{$site_config['pic_base_url']}new.png' alt='New' width='27' height='11' />
-        </li>
-        <li><a href='#dlb' class='altlink'>What's this &quot;TTL&quot; in the browse page?</a>
-            <img src='{$site_config['pic_base_url']}new.png' alt='New' width='27' height='11' />
-        </li>
-    </ul>
-    <br>",
+        <li><a href='#dl1'>How do I use the files I've downloaded?</a></li>
+        <li><a href='#dl2'>Downloaded a movie and don't know what CAM/TS/TC/SCR means?</a></li>
+        <li><a href='#dl3'>Why did an active torrent suddenly disappear?</a></li>
+        <li><a href='#dl4'>How do I resume a broken download or reseed something?</a></li>
+        <li><a href='#dl5'>Why do my downloads sometimes stall at 99%?</a></li>
+        <li><a href='#dl6'>What are these &quot;a piece has failed an hash check&quot; messages?</a></li>
+        <li><a href='#dl7'>The torrent is supposed to be 100MB. How come I downloaded 120MB?</a></li>
+        <li><a href='#dl8'>Why do I get a &quot;Not authorized (xx h) - READ THE FAQ!&quot; error?</a></li>
+        <li><a href='#dl9'>Why do I get a &quot;rejected by tracker - Port xxxx is blacklisted&quot; error?</a></li>
+        <li><a href='#dla'>What's this 'IOError - [Errno13] Permission denied' error?</a></li>
+        <li><a href='#dlb'>What's this &quot;TTL&quot; in the browse page?</a></li>
+    </ul>",
     'faq_improve_header'      => 'How can I improve my download speed?',
     'faq_improve'             => "
     <ul>
-        <li><a href='#dlsp1' class='altlink'>Do not immediately jump on new torrents</a></li>
-        <li><a href='#dlsp2' class='altlink'>Make yourself connectable</a></li>
-        <li><a href='#dlsp3' class='altlink'>Limit your upload speed</a></li>
-        <li><a href='#dlsp4' class='altlink'>Limit the number of simultaneous connections</a></li>
-        <li><a href='#dlsp5' class='altlink'>Limit the number of simultaneous uploads</a></li>
-        <li><a href='#dlsp6' class='altlink'>Just give it some time</a></li>
-        <li><a href='#dlsp7' class='altlink'>Why is my browsing so slow while leeching?</a></li>
-    </ul>
-    <br>",
+        <li><a href='#dlsp1'>Do not immediately jump on new torrents</a></li>
+        <li><a href='#dlsp2'>Make yourself connectable</a></li>
+        <li><a href='#dlsp3'>Limit your upload speed</a></li>
+        <li><a href='#dlsp4'>Limit the number of simultaneous connections</a></li>
+        <li><a href='#dlsp5'>Limit the number of simultaneous uploads</a></li>
+        <li><a href='#dlsp6'>Just give it some time</a></li>
+        <li><a href='#dlsp7'>Why is my browsing so slow while leeching?</a></li>
+    </ul>",
     'faq_isp_header'          => 'My ISP uses a transparent proxy. What should I do?',
     'faq_isp'                 => "
     <ul>
-        <li><a href='#prox1' class='altlink'>What is a proxy?</a></li>
-        <li><a href='#prox2' class='altlink'>How do I find out if I'm behind a (transparent/anonymous) proxy?</a></li>
-        <li><a href='#prox3' class='altlink'>Why am I listed as not connectable even though I'm not NAT/Firewalled?</a></li>
-        <li><a href='#prox4' class='altlink'>Can I bypass my ISP's proxy?</a></li>
-        <li><a href='#prox5' class='altlink'>How do I make my bittorrent client use a proxy?</a></li>
-        <li><a href='#prox6' class='altlink'>Why can't I signup from behind a proxy?</a></li>
-        <li><a href='#prox7' class='altlink'>Does this apply to other torrent sites?</a></li>
-    </ul>
-    <br>",
+        <li><a href='#prox1'>What is a proxy?</a></li>
+        <li><a href='#prox2'>How do I find out if I'm behind a (transparent/anonymous) proxy?</a></li>
+        <li><a href='#prox3'>Why am I listed as not connectable even though I'm not NAT/Firewalled?</a></li>
+        <li><a href='#prox4'>Can I bypass my ISP's proxy?</a></li>
+        <li><a href='#prox5'>How do I make my bittorrent client use a proxy?</a></li>
+        <li><a href='#prox6'>Why can't I signup from behind a proxy?</a></li>
+        <li><a href='#prox7'>Does this apply to other torrent sites?</a></li>
+    </ul>",
     'faq_connect_header'      => "Why can't I connect? Is the site blocking me?",
     'faq_connect'             => "
     <ul>
-        <li><a href='#conn1' class='altlink'>Name resolution problems</a></li>
-        <li><a href='#conn2' class='altlink'>Maybe my address is blacklisted?</a></li>
-        <li><a href='#conn3' class='altlink'>Your ISP blocks the site's address</a></li>
-        <li><a href='#conn4' class='altlink'>Alternate port (81)</a>
-            <img src='{$site_config['pic_base_url']}updated.png' alt='Updated' width='46' height='11' />
-        </li>
-    </ul>
-    <br>",
+        <li><a href='#conn1'>Name resolution problems</a></li>
+        <li><a href='#conn2'>Maybe my address is blacklisted?</a></li>
+        <li><a href='#conn3'>Your ISP blocks the site's address</a></li>
+        <li><a href='#conn4'>Alternate port (81)</a></li>
+    </ul>",
     'faq_problem'             => "<b>What if I can't find the answer to my problem here?</b>",
     'faq_siteinfo_body'       => "
     <br>
     <b>What is this bittorrent all about anyway? How do I get the files?</b><a name='site1' id='site1'></a>
     <br>
     <br>
-    Check out <a class='altlink' href='redir.php?url=http://www.btfaq.com/'>Brian's BitTorrent FAQ and Guide</a>.
+    Check out <a href='{$site_config['anonymizer_url']}http://www.btfaq.com/'>Brian's BitTorrent FAQ and Guide</a>.
     <br>
     <br>
     <br>
     <b>Where does the donated money go?</b><a name='site2' id='site2'></a>
     <br>
     <br>
-    {$site_config['site_name']} is situated on a dedicated server in the Hinterlands. For the moment we have monthly running costs of approximately &pound; 213.
+    {$site_config['site_name']} is situated on a dedicated server in the Hinterlands. For the moment we have monthly running costs of approximately &#36;125.00.
     <br>
     <br>
     <br>
     <b>Where can I get a copy of the source code?<a name='site4' id='site4'></a></b>
     <br>
     <br>
-    Pu-239 is an active open source project available for download via Github <a href='https://github.com/darkalchemy/Pu-239' class='altlink'>Zip download</a>. Please note: We do not give any kind of support on the source code so please don't bug us about it. If it works, great, if not too bad. Use this software at your own risk!",
+    Pu-239 is an active open source project available for download via Github <a href='{$site_config['anonymizer_url']}https://github.com/darkalchemy/Pu-239'>Zip download</a>. Please note: We do not give any kind of support on the source code so please don't bug us about it. If it works, great, if not too bad. Use this software at your own risk!",
     'faq_userinfo_body'       => "
     <b>I registered an account but did not receive the confirmation e-mail!</b><a name='user1' id='user1'></a>
     <br>
@@ -168,7 +138,7 @@ $lang = [
     <b>I've lost my user name or password! Can you send it to me?</b><a name='user2' id='user2'></a>
     <br>
     <br>
-    Please use <a class='altlink' href='recover.php'>this form</a> to have the login details mailed back to you.
+    Please use <a href='recover.php'>this form</a> to have the login details mailed back to you.
     <br>
     <br>
     <br>
@@ -189,7 +159,7 @@ $lang = [
     <b>So, what's MY ratio?</b><a name='userb' id='userb'></a>
     <br>
     <br>
-    Click on your <a class='altlink' href='usercp.php?action=default'>profile</a>, then on your user name (at the top).
+    Click on your <a href='usercp.php?action=default'>profile</a>, then on your user name (at the top).
     <br>
     <br>
     It's important to distinguish between your overall ratio and the individual ratio on each torrent you may be seeding or leeching. The overall ratio takes into account the total uploaded and downloaded from your account since you joined the site. The individual ratio takes into account those values for each torrent.
@@ -229,7 +199,7 @@ $lang = [
     This means that other peers in the swarm will be unable to connect to you, only you to them. Even worse, if two peers are both in this state they will not be able to connect at all. This obviously has a detrimental effect on the overall speed.
     <br>
     <br>
-    The way to solve the problem involves opening the ports used for incoming connections (the same range you defined in your client) on the firewall and/or configuring your NAT server to use a basic form of NAT for that range instead of NAPT (the actual process differs widely between different router models. Check your router documentation and/or support forum. You will also find lots of information on the subject at <a class='altlink' href='redir.php?url=http://portforward.com/'>PortForward</a>).
+    The way to solve the problem involves opening the ports used for incoming connections (the same range you defined in your client) on the firewall and/or configuring your NAT server to use a basic form of NAT for that range instead of NAPT (the actual process differs widely between different router models. Check your router documentation and/or support forum. You will also find lots of information on the subject at <a href='{$site_config['anonymizer_url']}http://portforward.com/'>PortForward</a>).
     <br>
     <br>
     <br>
@@ -253,8 +223,8 @@ $lang = [
           <td class='embedded'>Has donated money to {$site_config['site_name']} . </td>
         </tr>
         <tr>
-            <td class='embedded'>&#160; <b>VIP</b></td>
-            <td class='embedded'>&#160;</td>
+            <td class='embedded' bgcolor='#F5F4EA'>&#160; <b>VIP</b></td>
+            <td class='embedded' width='5'>&#160;</td>
             <td class='embedded'>Same privileges as Power User and is considered an Elite Member of {$site_config['site_name']}. Immune to automatic demotion.</td>
         </tr>
         <tr>
@@ -268,8 +238,8 @@ $lang = [
             <td class='embedded'>Same as PU except with upload rights and immune to automatic demotion.</td>
         </tr>
         <tr>
-            <td class='embedded'>&#160; <b><font color='#A83838'>Moderator</font></b></td>
-            <td class='embedded'>&#160;</td>
+            <td class='embedded' bgcolor='#F5F4EA'>&#160; <b><font color='#A83838'>Moderator</font></b></td>
+            <td class='embedded' width='5'>&#160;</td>
             <td class='embedded'>Can edit and delete any uploaded torrents. Can also moderate user	comments and disable accounts.</td>
         </tr>
         <tr>
@@ -292,8 +262,8 @@ $lang = [
     'faq_promotion_body'      => "
     <table cellspacing='3' cellpadding='0'>
         <tr>
-            <td class='embedded'>&#160; <b>Power User</b></td>
-            <td class='embedded'>&#160;</td>
+            <td class='embedded' bgcolor='#F5F4EA' width='100'>&#160; <b>Power User</b></td>
+            <td class='embedded' width='5'>&#160;</td>
             <td class='embedded'>
                 Must have been be a member for at least 4 weeks, have uploaded at least 25GB and have a ratio at or above 1.05.
                 <br>
@@ -303,11 +273,11 @@ $lang = [
         <tr>
             <td class='embedded' bgcolor='#F5F4EA'>&#160; <img src='{$site_config['pic_base_url']}star.gif' alt='Star' /></td>
             <td class='embedded' width='5'>&#160;</td>
-            <td class='embedded'>Just donate, and send <a class='altlink' href='pm_system.php?action=send_message&amp;receiver=1'>Sysop</a> - and only sysop - the details.</td>
+            <td class='embedded'>Just donate, and send <a href='pm_system.php?action=send_message&amp;receiver=1'>Sysop</a> - and only sysop - the details.</td>
         </tr>
         <tr>
-            <td class='embedded'>&#160; <b>VIP</b></td>
-            <td class='embedded'>&#160;</td>
+            <td class='embedded' bgcolor='#F5F4EA'>&#160; <b>VIP</b></td>
+            <td class='embedded' width='5'>&#160;</td>
             <td class='embedded'>
                 Assigned by mods at their discretion to users they feel contribute something special to the site.
                 <br>
@@ -347,7 +317,7 @@ $lang = [
     <b>How do I add an avatar to my profile?</b><a name='userd'></a>
     <br>
     <br>
-    First, find an image that you like, and that is within the <a class='altlink' href='rules.php'>rules</a>. Then you will have to find a place to host it, such as our own <a class='altlink' href='bitbucket.php'>BitBucket</a>. (Other popular choices are <a class='altlink' href='http://photobucket.com/'>Photobucket</a>, <a class='altlink' href='http://uploadit.org/'>Upload-It!</a> or <a class='altlink' href='http://www.imageshack.us/'>ImageShack</a>). All that is left to do is copy the URL you were given when uploading it to the avatar field in your <a class='altlink' href='usercp.php?action=default'>profile</a>.
+    First, find an image that you like, and that is within the <a href='rules.php'>rules</a>. Then you will have to find a place to host it, such as our own <a href='bitbucket.php'>BitBucket</a>. (Other popular choices are <a href='{$site_config['anonymizer_url']}http://photobucket.com/'>Photobucket</a>, <a href='{$site_config['anonymizer_url']}http://uploadit.org/'>Upload-It!</a> or <a href='{$site_config['anonymizer_url']}http://www.imageshack.us/'>ImageShack</a>). All that is left to do is copy the URL you were given when uploading it to the avatar field in your <a href='usercp.php?action=default'>profile</a>.
     <br>
     <br>
     Please do not make a post just to test your avatar. If everything is allright you'll see it in your ",
@@ -436,7 +406,7 @@ $lang = [
     You should use the same {$site_config['site_name']} account in all the computers.
     <br>
     <br>
-    Note also that in the ICS case it is preferable to run the BT client on the ICS gateway. Clients running on the other computers will be unconnectable (they will be listed as such, as explained elsewhere in the FAQ) unless you specify the appropriate services in your ICS configuration (a good explanation of how to do this for Windows XP can be found <a class='altlink' href='redir.php?url=http://www.microsoft.com/downloads/details.aspx?FamilyID=1dcff3ce-f50f-4a34-ae67-cac31ccd7bc9&amp;displaylang=en'>here</a>). In the NAT case you should configure different ranges for clients on different computers and create appropriate NAT rules in the router. (Details vary widely from router to router and are outside the scope of this FAQ. Check your router documentation and/or support forum.)
+    Note also that in the ICS case it is preferable to run the BT client on the ICS gateway. Clients running on the other computers will be unconnectable (they will be listed as such, as explained elsewhere in the FAQ) unless you specify the appropriate services in your ICS configuration (a good explanation of how to do this for Windows XP can be found <a href='{$site_config['anonymizer_url']}http://www.microsoft.com/downloads/details.aspx?FamilyID=1dcff3ce-f50f-4a34-ae67-cac31ccd7bc9&amp;displaylang=en'>here</a>). In the NAT case you should configure different ranges for clients on different computers and create appropriate NAT rules in the router. (Details vary widely from router to router and are outside the scope of this FAQ. Check your router documentation and/or support forum.)
     <br>
     <br>
     <br>
@@ -453,7 +423,7 @@ $lang = [
     <b>For those of you who are interested...</b><a name='stats9' id='stats9'></a>
     <br>
     <br>
-    Some <a class='altlink' href='anatomy.php'>info</a> about the &quot;Anatomy of a torrent session&quot;.
+    Some <a href='anatomy.php'>info</a> about the &quot;Anatomy of a torrent session&quot;.
     <br>",
     'faq_uploading_body'      => "
     <br>
@@ -471,7 +441,7 @@ $lang = [
     <br>
     * include a proper NFO,
     <br>
-    * are genuine scene releases. If it's not on <a class='altlink' href='redir.php?url=http://www.nforce.nl'>NFOrce</a> or <a href='http://www.grokmusiq.com/' class='altlink'>grokMusiQ</a> then forget it!
+    * are genuine scene releases. If it's not on <a href='{$site_config['anonymizer_url']}http://www.nforce.nl'>NFOrce</a> or <a href='{$site_config['anonymizer_url']}http://www.grokmusiq.com/'>grokMusiQ</a> then forget it!
     <br>
     * are not older than seven (7) days,
     <br>
@@ -482,7 +452,7 @@ $lang = [
     Also, you should have at least 2MBit upload bandwith.<
     br>
     <br>
-    If you think you can match these criteria do not hesitate to <a class='altlink' href='staff.php'>contact</a> one of the administrators.
+    If you think you can match these criteria do not hesitate to <a href='staff.php'>contact</a> one of the administrators.
     <br>
     <b>Remember!</b> Write your application carefully! Be sure to include your UL speed and what kind of stuff you're planning to upload.
     <br>
@@ -506,14 +476,14 @@ $lang = [
     <b>How do I use the files I've downloaded?</b><a name='dl1'></a>
     <br>
     <br>
-    Check out <a class='altlink' href='formats.php'>this guide</a>.
+    Check out <a href='formats.php'>this guide</a>.
     <br>
     <br>
     <br>
     <b>Downloaded a movie and don't know what CAM/TS/TC/SCR means?</b><a name='dl2'></a>
     <br>
     <br>
-    Check out <a class='altlink' href='videoformats.php'>this guide</a>.
+    Check out <a href='videoformats.php'>this guide</a>.
     <br>
     <br>
     <br>
@@ -522,7 +492,7 @@ $lang = [
     <br>
     There may be three reasons for this:
     <br>
-    (<b>1</b>) The torrent may have been out-of-sync with the site <a class='altlink' href='rules.php'>rules</a>.
+    (<b>1</b>) The torrent may have been out-of-sync with the site <a href='rules.php'>rules</a>.
     <br>
     (<b>2</b>) The uploader may have deleted it because it was a bad release. A replacement will probably be uploaded to take its place.
     <br>
@@ -571,24 +541,24 @@ $lang = [
     <br>
     <table cellspacing='3' cellpadding='0'>
         <tr>
-            <td class='embedded'>Ratio below</td>
-            <td class='embedded'><div class='text-center'><font color='#BB0000'>0.50</font></div></td>
-            <td class='embedded'>&#160;</td>
-            <td class='embedded'>and/or upload below</td>
-            <td class='embedded'><div class='text-center'>5.0GB</div></td>
-            <td class='embedded'>&#160;</td>
-            <td class='embedded'>delay of</td>
-            <td class='embedded'><div class='text-center'>48h</div></td>
+            <td class='embedded' width='70'>Ratio below</td>
+            <td class='embedded' width='40' bgcolor='#F5F4EA'><div><font color='#BB0000'>0.50</font></div></td>
+            <td class='embedded' width='10'>&#160;</td>
+            <td class='embedded' width='110'>and/or upload below</td>
+            <td class='embedded' width='40' bgcolor='#F5F4EA'><div>5.0GB</div></td>
+            <td class='embedded' width='10'>&#160;</td>
+            <td class='embedded' width='50'>delay of</td>
+            <td class='embedded' width='40' bgcolor='#F5F4EA'><div>48h</div></td>
         </tr>
         <tr>
             <td class='embedded'>Ratio below</td>
-            <td class='embedded'><div class='text-center'><font color='#A10000'>0.65</font></div></td>
-            <td class='embedded'>&#160;</td>
+            <td class='embedded' bgcolor='#F5F4EA'><div><font color='#A10000'>0.65</font></div></td>
+            <td class='embedded' width='10'>&#160;</td>
             <td class='embedded'>and/or upload below</td>
-            <td class='embedded'><div class='text-center'>6.5GB</div></td>
-            <td class='embedded'>&#160;</td>
+            <td class='embedded' bgcolor='#F5F4EA'><div>6.5GB</div></td>
+            <td class='embedded' width='10'>&#160;</td>
             <td class='embedded'>delay of</td>
-            <td class='embedded'><div class='text-center'>24h</div></td>
+            <td class='embedded' bgcolor='#F5F4EA'><div>24h</div></td>
         </tr>
         <tr>
             <td class='embedded'>Ratio below</td>
@@ -672,7 +642,7 @@ $lang = [
        </tr>
     </table>
     <br>
-    In order to use use our tracker you must configure your client to use any port range that does not contain those ports (a range within the region 49152 through 65535 is preferable, cf. <a class='altlink' href='http://www.iana.org/assignments/port-numbers'>IANA</a>). Notice that some clients, like Azureus 2.0.7.0 or higher, use a single port for all torrents, while most others use one port per open torrent. The size of the range you choose should take this into account (typically less than 10 ports wide. There is no benefit whatsoever in choosing a wide range, and there are possible security implications).
+    In order to use use our tracker you must configure your client to use any port range that does not contain those ports (a range within the region 49152 through 65535 is preferable, cf. <a href='{$site_config['anonymizer_url']}http://www.iana.org/assignments/port-numbers'>IANA</a>). Notice that some clients, like Azureus 2.0.7.0 or higher, use a single port for all torrents, while most others use one port per open torrent. The size of the range you choose should take this into account (typically less than 10 ports wide. There is no benefit whatsoever in choosing a wide range, and there are possible security implications).
     <br>
     <br>
     These ports are used for connections between peers, not client to tracker. Therefore this change will not interfere with your ability to use other trackers (in fact it should <i>increase</i> your speed with torrents from any tracker, not just ours). Your client will also still be able to connect to peers that are using the standard ports. If your client does not allow custom ports to be used, you will have to switch to one that does.
@@ -681,7 +651,7 @@ $lang = [
     Do not ask us, or in the forums, which ports you should choose. The more random the choice is the harder it will be for ISPs to catch on to us and start limiting speeds on the ports we use. If we simply define another range ISPs will start throttling that range also.
     <br>
     <br>
-    Finally, remember to forward the chosen ports in your router and/or open them in your firewall, should you have them. See the <i><a href='#user8' class='altlink'>Why am I listed as not connectable?</a></i> &#160;section and links therein for more information on this.
+    Finally, remember to forward the chosen ports in your router and/or open them in your firewall, should you have them. See the <i><a href='#user8'>Why am I listed as not connectable?</a></i> &#160;section and links therein for more information on this.
     <br>
     <br>
     <br>",
@@ -726,7 +696,7 @@ $lang = [
     <b>Make yourself connectable</b> <a name='dlsp2'></a>
     <br>
     <br>
-    See the <i><a href='#user8' class='altlink'>Why am I listed as not connectable?</a></i> &#160;section.
+    See the <i><a href='#user8'>Why am I listed as not connectable?</a></i> &#160;section.
     <br>
     <br>
     <br>
@@ -774,7 +744,7 @@ $lang = [
     <b>Why is my browsing so slow while leeching?</b><a name='dlsp7'></a>
     <br>
     <br>
-    Your download speed is always finite. If you are a peer in a fast torrent it will almost certainly saturate your download bandwidth, and your browsing will suffer. At the moment there is no client that allows you to limit the download speed, only the upload. You will have to use a third-party solution, such as <a class='altlink' href='redir.php?url=http://www.netlimiter.com/'>NetLimiter</a>.
+    Your download speed is always finite. If you are a peer in a fast torrent it will almost certainly saturate your download bandwidth, and your browsing will suffer. At the moment there is no client that allows you to limit the download speed, only the upload. You will have to use a third-party solution, such as <a href='{$site_config['anonymizer_url']}http://www.netlimiter.com/'>NetLimiter</a>.
     <br>
     <br>
     Browsing was used just as an example, the same would apply to gaming, IMing, etc...
@@ -830,7 +800,7 @@ $lang = [
     <b>How do I find out if I'm behind a (transparent/anonymous) proxy?</b><a name='prox2'></a>
     <br>
     <br>
-    Try <a href='redir.php?url=http://proxyjudge.org' class='altlink'>ProxyJudge</a>. It lists the HTTP headers that the server where it is running received from you. The relevant ones are HTTP_CLIENT_IP, HTTP_X_FORWARDED_FOR and REMOTE_ADDR.
+    Try <a href='{$site_config['anonymizer_url']}http://proxyjudge.org'>ProxyJudge</a>. It lists the HTTP headers that the server where it is running received from you. The relevant ones are HTTP_CLIENT_IP, HTTP_X_FORWARDED_FOR and REMOTE_ADDR.
     <br>
     <br>
     <br>
@@ -844,7 +814,7 @@ $lang = [
     <b>Can I bypass my ISP's proxy?</b><a name='prox4'></a>
     <br>
     <br>
-    If your ISP only allows HTTP traffic through port 80 or blocks the usual proxy ports then you would need to use something like <a href='redir.php?url=http://www.socks.permeo.com'>socks</a> and that is outside the scope of this FAQ.
+    If your ISP only allows HTTP traffic through port 80 or blocks the usual proxy ports then you would need to use something like <a href='{$site_config['anonymizer_url']}http://www.socks.permeo.com'>socks</a> and that is outside the scope of this FAQ.
     <br>
     <br>
     The site accepts connections on port 81 besides the usual 80, and using them may be enough to fool some proxies. So the first thing to try should be connecting to {$site_config['baseurl']}:81. Note that even if this works your bt client will still try to connect to port 80 unless you edit the announce url in the .torrent file.
@@ -854,12 +824,12 @@ $lang = [
     <br>
     <ul>
         <li>
-            Choose any public <b>non-anonymous</b> proxy that does <b>not</b> use port 80 (e.g. from <a href='redir.php?url=http://tools.rosinstrument.com/proxy' class='altlink'>this</a>, <a href='redir.php?url=http://www.proxy4free.com/index.html' class='altlink'>this</a> or <a href='redir.php?url=http://www.samair.ru/proxy' class='altlink'>this</a> list).
+            Choose any public <b>non-anonymous</b> proxy that does <b>not</b> use port 80 (e.g. from <a href='{$site_config['anonymizer_url']}http://tools.rosinstrument.com/proxy'>this</a>, <a href='{$site_config['anonymizer_url']}http://www.proxy4free.com/index.html'>this</a> or <a href='{$site_config['anonymizer_url']}http://www.samair.ru/proxy'>this</a> list).
         </li>
         <li>
             Configure your computer to use that proxy. For Windows XP, do <i>Start</i>, <i>Control Panel</i>, <i>Internet Options</i>, <i>Connections</i>, <i>LAN Settings</i>, <i>Use a Proxy server</i>, <i>Advanced</i> and type in the IP and port of your chosen proxy. Or from Internet Explorer use <i>Tools</i>, <i>Internet Options</i>, ...
         </li>
-        <li>(Facultative) Visit <a href='redir.php?url=http://proxyjudge.org' class='altlink'>ProxyJudge</a>. If you see an HTTP_X_FORWARDED_FOR in the list followed by your IP then everything should be ok, otherwise choose another proxy and try again.
+        <li>(Facultative) Visit <a href='{$site_config['anonymizer_url']}http://proxyjudge.org'>ProxyJudge</a>. If you see an HTTP_X_FORWARDED_FOR in the list followed by your IP then everything should be ok, otherwise choose another proxy and try again.
         </li>
         <li>
             Visit {$site_config['site_name']}. Hopefully the tracker will now pickup your real IP (check your profile to make sure).
@@ -898,7 +868,7 @@ $lang = [
     <b>Maybe my address is blacklisted?</b><a name='conn2'></a>
     <br>
     <br>
-    The site blocks addresses listed in the (former) <a class='altlink' href='redir.php?url=http://methlabs.org/'>PeerGuardian</a> database, as well as addresses of banned users. This works at Apache/PHP level, it's just a script that blocks <i>logins</i> from those addresses. It should not stop you from reaching the site. In particular it does not block lower level protocols, you should be able to ping/traceroute the server even if your address is blacklisted. If you cannot then the reason for the problem lies elsewhere.
+    The site blocks addresses listed in the (former) <a href='{$site_config['anonymizer_url']}http://methlabs.org/'>PeerGuardian</a> database, as well as addresses of banned users. This works at Apache/PHP level, it's just a script that blocks <i>logins</i> from those addresses. It should not stop you from reaching the site. In particular it does not block lower level protocols, you should be able to ping/traceroute the server even if your address is blacklisted. If you cannot then the reason for the problem lies elsewhere.
     <br>
     <br>
     If somehow your address is indeed blocked in the PG database do not contact us about it, it is not our policy to open <i>ad hoc</i> exceptions. You should clear your IP with the database maintainers instead.
@@ -920,7 +890,7 @@ $lang = [
     'faq_alt_port'            => 'Alternate port (81)',
     'faq_alt_port_body'       => "
     <br>
-    Some of our torrents use ports other than the usual HTTP port 80. This may cause problems for some users, for instance those behind some firewall or proxy configurations. You can easily solve this by editing the .torrent file yourself with any torrent editor, e.g. <a href='redir.php?url=http://sourceforge.net/projects/burst/' class='altlink'>MakeTorrent</a>, and replacing the announce url {$site_config['baseurl']}:81 with {$site_config['site_name']}:80 or just {$site_config['site_name']}.
+    Some of our torrents use ports other than the usual HTTP port 80. This may cause problems for some users, for instance those behind some firewall or proxy configurations. You can easily solve this by editing the .torrent file yourself with any torrent editor, e.g. <a href='{$site_config['anonymizer_url']}http://sourceforge.net/projects/burst/'>MakeTorrent</a>, and replacing the announce url {$site_config['baseurl']}:81 with {$site_config['site_name']}:80 or just {$site_config['site_name']}.
     <br>
     <br>
     Editing the .torrent with Notepad is not recommended. It may look like a text file, but it is in fact a bencoded file. If for some reason you must use a plain text editor, change the announce url to {$site_config['site_name']}:80, not {$site_config['site_name']}. (If you're thinking about changing the number before the announce url instead, you know too much to be reading this.)
@@ -929,7 +899,7 @@ $lang = [
     'faq_problem_title'       => "What if I can't find the answer to my problem here?",
     'faq_problem_body'        => "
     <br>
-    Post in the <a class='altlink' href='forums.php'>Forums</a>, by all means. You'll find they are usually a friendly and helpful place, provided you follow a few basic guidelines:
+    Post in the <a href='forums.php'>Forums</a>, by all means. You'll find they are usually a friendly and helpful place, provided you follow a few basic guidelines:
     <ul>
         <li>
             Make sure your problem is not really in this FAQ. There's no point in posting just to be sent back here.

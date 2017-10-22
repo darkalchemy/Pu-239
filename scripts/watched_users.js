@@ -23,7 +23,7 @@ $(function () {
         $("#watched_user_button").hide();
 
         //=== submit the thanks
-        $.post("member_input.php", {
+        $.post("ajax/member_input.php", {
             action: WhatAction,
             id: user,
             watched: add_to_watched_users,

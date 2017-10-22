@@ -259,7 +259,7 @@ $HTMLOUT .= "
     </div>
     <br>
     <div class='text-center'>
-        <a href='./trivia_results.php' target='_top' class='btn-clean'>Trivia Results</a>
+        <a href='./trivia_results.php' target='_top' class='btn'>Trivia Results</a>
     </div>
     <div class='text-center top20'>
         $answered

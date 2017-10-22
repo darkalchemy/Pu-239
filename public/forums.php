@@ -122,13 +122,6 @@ if ($CURUSER['class'] >= UC_STAFF) {
         'member_post_history',
     ];
 }
-//=== bubble tool tip
-function bubble($link, $text)
-{
-    $bubble = '<a href="#" class="tt_f"><span class="tooltip_forum_bubble"><span class="top"></span><span class="middle">' . $text . '</span><span class="bottom"></span></span>' . $link . '</a>';
-
-    return $bubble;
-}
 
 //=== tool tip
 function tool_tip($link, $text, $title = false)

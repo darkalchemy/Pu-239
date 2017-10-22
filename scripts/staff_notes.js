@@ -26,7 +26,7 @@ $(function () {
             $("#staff_notes_button").hide();
 
             //=== submit the note
-            $.post("member_input.php", {action: "staff_notes", id: id, notes: new_staff_note});
+            $.post("ajax/member_input.php", {action: "staff_notes", id: id, notes: new_staff_note});
             $("#update").fadeOut();
             $("#new_staff_note").show();
             $("#staff_notes_button").show();

@@ -1,10 +1,9 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-//=== get action posted so we know what to do :P
+
 $posted_action = (isset($_POST['action']) ? htmlsafechars($_POST['action']) : (isset($_GET['action']) ? htmlsafechars($_GET['action']) : ''));
-//=== add all possible actions here and check them to be sure they are ok
 $valid_actions = [
     'flush_torrents',
     'staff_notes',
@@ -12,10 +11,8 @@ $valid_actions = [
 ];
 $action = (in_array($posted_action, $valid_actions) ? $posted_action : '');
 if ($action == '') {
-    //=== redirect to index if they try to access the page directly ... perhaps add some hacker dork thingie here as well...
     header('Location: index.php');
 } else {
-    //=== add all new actions to this case switch thingie
     switch ($action) {
         case 'flush_torrents':
             $id = isset($_POST['id']) ? intval($_POST['id']) : 0;

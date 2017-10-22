@@ -57,14 +57,12 @@ switch (true) {
             $html .= stdmsg('Last lottery', '' . get_date($lottery_config['lottery_winners_time'], 'LONG') . '');
             $uids = (strpos($lottery_config['lottery_winners'], '|') ? explode('|', $lottery_config['lottery_winners']) : $lottery_config['lottery_winners']);
             $last_winners = [];
-            $qus = sql_query('SELECT id,username FROM users WHERE id ' . (is_array($uids) ? 'IN (' . join(',', $uids) . ')' : '=' . $uids)) or sqlerr(__FILE__, __LINE__);
+            $qus = sql_query('SELECT id, username FROM users WHERE id ' . (is_array($uids) ? 'IN (' . join(',', $uids) . ')' : '=' . $uids)) or sqlerr(__FILE__, __LINE__);
             while ($aus = mysqli_fetch_assoc($qus)) {
-                $last_winners[] = "<a href='userdetails.php?id=" . (int)$aus['id'] . "'>" . htmlsafechars($aus['username']) . '</a>';
+                $last_winners[] = format_username($aus['id']);
             }
-            $html .= begin_main_frame();
             $html .= stdmsg('Lottery Winners Info', "<ul><li>Last winners: " . join(', ', $last_winners) . '</li><li>Amount won	(each): ' . $lottery_config['lottery_winners_amount'] . "</li></ul><br>
         <p>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "<a href='lottery.php?do=config'>[Lottery configuration]</a>&#160;&#160;" : 'Nothing Configured Atm Sorry') . '</p>');
-            $html .= end_main_frame();
         } else {
             $html .= "
                     <div class='bordered padleft10 padright10 top20 bottom20'>

@@ -16,7 +16,7 @@ $(function() {
 
 function initAll() {
 	$('.dt-tooltipper.tooltipstered').tooltipster('destroy');
-	$('.dt-tooltipper').tooltipster({
+	$('.dt-tooltipper-large').tooltipster({
 		theme: 'tooltipster-borderless',
 		animation: animation,
 		animationDuration: animate_duration,
@@ -24,6 +24,15 @@ function initAll() {
 		contentAsHTML: true,
 		maxWidth: 500,
 	});
+
+    $('.dt-tooltipper-small').tooltipster({
+        theme: 'tooltipster-borderless',
+        animation: animation,
+        animationDuration: animate_duration,
+        arrow: true,
+        contentAsHTML: true,
+        maxWidth: 250,
+    });
 
 	$('.tooltipper-ajax.tooltipstered').tooltipster('destroy');
 

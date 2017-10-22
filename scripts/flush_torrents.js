@@ -21,7 +21,7 @@ $(function () {
             $("#flush_button").hide();
 
             //=== submit the thanks
-            $.post("member_input.php", {action: "flush_torrents", id: id});
+            $.post("ajax/member_input.php", {action: "flush_torrents", id: id});
             $("#success").show();
 
         } //=== end flush

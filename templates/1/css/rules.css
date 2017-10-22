@@ -8,7 +8,7 @@
     position: relative;
     margin: 1px;
     font-weight: bold;
-    background: #ffffff url(left.png) center right no-repeat;
+    background: #ffffff url(images/left.png) center right no-repeat;
 }
 
 .menu_body {
@@ -18,20 +18,22 @@
 .menu_body a {
     display: block;
     color: #006699;
-    background-color: #EFEFEF;
     padding-left: 10px;
     font-weight: bold;
     text-decoration: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: var(--main-color);
 }
 
 .menu_body a:hover {
     color: #000000;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
-div.global_icon_r {
+.global_icon_r {
     width: 63px;
-    height: 29px;
+    height: 35px;
     text-align: center;
     padding-top: 6px;
     background: -moz-linear-gradient(100% 100% 90deg, #9c9b9b, #cfcfcf);
@@ -39,12 +41,10 @@ div.global_icon_r {
     -moz-border-radius-topleft: 8px;
     -webkit-border-radius-topleft: 8px;
     border-top-left-radius: 8px;
-    float: left;
-    display: inline;
     border-color: #eae9e9;
 }
 
-div.global_head_r {
+.global_head_r {
     width: 884px;
     height: 35px;
     margin-right: 1px;
@@ -64,7 +64,7 @@ div.global_head_r {
     padding-left: 20px;
 }
 
-div.global_text_r {
+.global_text_r {
     width: 938px;
     text-align: left;
     color: #474747;

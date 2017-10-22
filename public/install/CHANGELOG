@@ -1,4 +1,14 @@
 22 Oct 2017
+update: rules.php
+update: faq.php
+update: useragreement.php
+fix: rules.php, faq.php, useragreement.php accessible when not logged in
+update: add anonymizer url to lang files
+replace: $#163; with $#36;
+update: admin/mega_search.php
+add: lottery site alert
+add: more staff links to navbar
+update: blackjack.php
 fix: admin/backup.php checkboxes
 
 21 Oct 2017

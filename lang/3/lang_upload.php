@@ -26,7 +26,7 @@ $lang = [
     'upload_imdb_url'          => 'Imdb Url',
     'upload_imdb_tfi'          => '(Taken from Imdb - ',
     'upload_imdb_rfmo'         => 'Add the Imdb url to display Imdb data on details.)',
-    'upload_youtube'           => "<a href='http://youtube.com' target='_blank'>Youtube</a>",
+    'upload_youtube'           => "<a href='{$site_config['anonymizer_url']}http://youtube.com' target='_blank'>Youtube</a>",
     'upload_youtube_info'      => "Direct link to youtube, will be shown on torrent's details page.<br>Link should look like <b>http://www.youtube.com/watch?v=camI8yuoy8U</b>",
     //upload stdhead
     'upload_comment'           => 'Allow Comments',

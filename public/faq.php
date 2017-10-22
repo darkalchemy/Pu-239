@@ -1,148 +1,172 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-check_user_status();
+if (!getSessionVar('LoggedIn')) {
+    dbconn();
+    get_template();
+} else {
+    check_user_status();
+}
+
 $lang = array_merge(load_language('global'), load_language('faq'));
 $stdfoot = [
-    /* include js **/
     'js' => [
-        get_file('faq_js')
     ],
 ];
-$HTMLOUT = '';
-$HTMLOUT .= "
-    <div class='container-fluid portlet padding20 bottom20'>
-        <table class='table table-bordered table-striped'>
-            <tr>
-                <td class='embedded'>
-                    <table class='table table-bordered table-striped'>
-                        <tr>
-                            <td id='top_zone' class='text'>
-                                {$lang['faq_welcome']}
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class='container-fluid portlet padding20 bottom20'>
-        <table class='table table-bordered table-striped'>
-            <tr>
-                <td class='embedded'>
-                    <h2>{$lang['faq_contents_header']}</h2>
-                    <table class='table table-bordered table-striped'>
-                        <tr>
-                            <td class='text'>
-                                <a id='question_1' onclick='return false;' href='#'><b>{$lang['faq_siteinfo_header']}</b></a>
-                                    {$lang['faq_siteinfo']}
-                                <a id='question_2' onclick='return false;' href='#'><b>{$lang['faq_userinfo_header']}</b></a>
-                                    {$lang['faq_userinfo']}
-                                <a id='question_3' onclick='return false;' href='#'><b>{$lang['faq_stats_header']}</b></a>
-                                    {$lang['faq_stats']}
-                                <a id='question_4' onclick='return false;' href='#'><b>{$lang['faq_uploading_header']}</b></a>
-                                    {$lang['faq_uploading']}
-                                <a id='question_5' onclick='return false;' href='#'><b>{$lang['faq_downloading_header']}</b></a>
-                                    {$lang['faq_downloading']}
-                                <a id='question_6' onclick='return false;' href='#'><b>{$lang['faq_improve_header']}</b></a>
-                                    {$lang['faq_improve']}
-                                <a id='question_7' onclick='return false;' href='#'><b>{$lang['faq_isp_header']}</b></a>
-                                    {$lang['faq_isp']}
-                                <a id='question_8' onclick='return false;' href='#'><b>{$lang['faq_connect_header']}</b></a>
-                                    {$lang['faq_connect']}
-                                <a id='question_9' onclick='return false;' href='#'><br>{$lang['faq_problem']}</b></a>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class='container-fluid portlet padding20 bottom20'>
-        <table class='table table-bordered table-striped'>
-            <tr>
-                <td class='embedded'>
-                    <h3 id='answer_1'>{$lang['faq_siteinfo_header']}</h3>
-                    <table class='table table-bordered table-striped'>
-                        <tr>
-                            <td class='text'>
-                                <div id='answer_1_text'>
-                                    {$lang['faq_siteinfo_body']}
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class='container-fluid portlet padding20 bottom20'>
-        <table class='table table-bordered table-striped'>
-            <tr>
-                <td class='embedded'>
-                    <h3 id='answer_2'>{$lang['faq_userinfo_header']}</h3>
-                    <table class='table table-bordered table-striped'>
-                        <tr>
-                            <td class='text'>
-                                <div id='answer_2_text'>
-                                    {$lang['faq_userinfo_body']}
-                                    {$lang['faq_promotion_header']}
-                                    {$lang['faq_promotion_body']}
-                                    <a class='altlink' href='userdetails.php?id={$CURUSER['id']}'>{$lang['faq_details_page']}</a>.
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class='container-fluid portlet padding20 bottom20'>
-        <table class='table table-bordered table-striped'>
-            <tr>
-                <td class='embedded'>
-                    <h3 id='answer_3'>{$lang['faq_stats_header']}</h3>
-                    <table class='table table-bordered table-striped'>
-                        <tr>
-                            <td class='text'>
-                                <div id='answer_3_text'>
-                                    {$lang['faq_stats_body']}
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class='container-fluid portlet padding20 bottom20'>
-        <table class='table table-bordered table-striped'>
-            <tr>
-                <td class='embedded'>
-                    <h3 id='answer_4'>{$lang['faq_uploading_header']}</h3>
-                    <table class='table table-bordered table-striped'>
-                        <tr>
-                            <td class='text'>
-                                <div id='answer_4_text'>
-                                    {$lang['faq_uploading_body']}
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class='container-fluid portlet padding20 bottom20'>
-        <table class='table table-bordered table-striped'>
-            <tr>
-                <td class='embedded'>
-                    <h3 id='answer_5'>{$lang['faq_downloading_header']}</h3>
-                    <table class='table table-bordered table-striped'>
-                        <tr>
-                            <td class='text'>
-                                <div id='answer_5_text'>
-                                    {$lang['faq_downloading_body']}";
+$HTMLOUT = "
+        <div class='container-fluid portlet top20 bottom20 padtop20'>
+            <div class='bordered padleft10 padright10'>
+                <div class='alt_bordered transparent'>
+                    {$lang['faq_welcome']}
+                </div>
+            </div>
+            <fieldset id='rules'>
+                <legend>
+                    <img src='./images/info.png' alt='' class='tooltipper right5' title='Guidelines' width='25' />{$lang['faq_contents_header']}
+                </legend>
+                <div class='bordered padleft10 padright10'>
+                    <div class='alt_bordered transparent'>
+                        <div id='accordion'>
+                            <p class='menu_head'>
+                                {$lang['faq_siteinfo_header']}
+                            </p>
+                            <div class='menu_body bg-window round5 padding10'>
+                                {$lang['faq_siteinfo']}
+                            </div>
+                            <p class='menu_head'>
+                                {$lang['faq_userinfo_header']}
+                            </p>
+                            <div class='menu_body bg-window round5 padding10'>
+                                {$lang['faq_userinfo']}
+                            </div>
+                            <p class='menu_head'>
+                                {$lang['faq_stats_header']}
+                            </p>
+                            <div class='menu_body bg-window round5 padding10'>
+                                {$lang['faq_stats']}
+                            </div>
+                            <p class='menu_head'>
+                                {$lang['faq_uploading_header']}
+                            </p>
+                            <div class='menu_body bg-window round5 padding10'>
+                                {$lang['faq_uploading']}
+                            </div>
+                            <p class='menu_head'>
+                                {$lang['faq_downloading_header']}
+                            </p>
+                            <div class='menu_body bg-window round5 padding10'>
+                                {$lang['faq_downloading']}
+                            </div>
+                            <p class='menu_head'>
+                                {$lang['faq_improve_header']}
+                            </p>
+                            <div class='menu_body bg-window round5 padding10'>
+                                {$lang['faq_improve']}
+                            </div>
+                            <p class='menu_head'>
+                                {$lang['faq_isp_header']}
+                            </p>
+                            <div class='menu_body bg-window round5 padding10'>
+                                {$lang['faq_isp']}
+                            </div>
+                            <p class='menu_head'>
+                                {$lang['faq_connect_header']}
+                            </p>
+                            <div class='menu_body bg-window round5 padding10'>
+                                {$lang['faq_connect']}
+                            </div>
+                            <p class='menu_head'>
+                                {$lang['faq_problem']}
+                            </p>
+                            <div class='menu_body bg-window round5 padding10'>
+                                <a href='#answer_9'>{$lang['faq_problem']}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+
+            <table class='table table-bordered table-striped top20 bottom20'>
+                <tr class='no_hover'>
+                    <td class='embedded'>
+                        <h3 id='answer_1'>{$lang['faq_siteinfo_header']}</h3>
+                        <table class='table table-bordered table-striped'>
+                            <tr class='no_hover'>
+                                <td class='text'>
+                                    <div id='answer_1_text'>
+                                        {$lang['faq_siteinfo_body']}
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+    
+            <table class='table table-bordered table-striped top20 bottom20'>
+                <<tr class='no_hover'>
+                    <td class='embedded'>
+                        <h3 id='answer_2'>{$lang['faq_userinfo_header']}</h3>
+                        <table class='table table-bordered table-striped'>
+                            <tr class='no_hover'>
+                                <td class='text'>
+                                    <div id='answer_2_text'>
+                                        {$lang['faq_userinfo_body']}
+                                        {$lang['faq_promotion_header']}
+                                        {$lang['faq_promotion_body']}
+                                        <a class='altlink' href='userdetails.php?id={$CURUSER['id']}'>{$lang['faq_details_page']}</a>.
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+    
+            <table class='table table-bordered table-striped top20 bottom20'>
+               <tr class='no_hover'>
+                    <td class='embedded'>
+                        <h3 id='answer_3'>{$lang['faq_stats_header']}</h3>
+                        <table class='table table-bordered table-striped'>
+                            <tr class='no_hover'>
+                                <td class='text'>
+                                    <div id='answer_3_text'>
+                                        {$lang['faq_stats_body']}
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+    
+            <table class='table table-bordered table-striped top20 bottom20'>
+                <tr class='no_hover'>
+                    <td class='embedded'>
+                        <h3 id='answer_4'>{$lang['faq_uploading_header']}</h3>
+                        <table class='table table-bordered table-striped'>
+                            <tr class='no_hover'>
+                                <td class='text'>
+                                    <div id='answer_4_text'>
+                                        {$lang['faq_uploading_body']}
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+    
+            <table class='table table-bordered table-striped top20 bottom20'>
+                <tr class='no_hover'>
+                    <td class='embedded'>
+                        <h3 id='answer_5'>{$lang['faq_downloading_header']}</h3>
+                        <table class='table table-bordered table-striped'>
+                            <tr class='no_hover'>
+                                <td class='text'>
+                                    <div id='answer_5_text'>
+                                        {$lang['faq_downloading_body']}";
 if ($CURUSER) {
     $byratio = 0;
     $byul = 0;
@@ -214,92 +238,88 @@ if ($CURUSER) {
     <br>';
 }
 $HTMLOUT .= "
-                                    {$lang['faq_downloading_body1']}
-                                    {$lang['faq_downloading_body2']}
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class='container-fluid portlet padding20 bottom20'>
-        <table class='table table-bordered table-striped'>
-            <tr>
-                <td class='embedded'>
-                    <h3 id='answer_6'>{$lang['faq_improve_speed_title']}</h3>
-                    <table class='table table-bordered table-striped'>
-                        <tr>
-                            <td class='text'>
-                                <div id='answer_6_text'>
-                                    {$lang['faq_improve_speed_body']}
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class='container-fluid portlet padding20 bottom20'>
-        <table class='table table-bordered table-striped'>
-            <tr>
-                <td class='embedded'>
-                    <h3 id='answer_7'>{$lang['faq_proxy_title']}</h3>
-                    <table class='table table-bordered table-striped'>
-                        <tr>
-                            <td class='text'>
-                                <div id='answer_7_text'>
-                                    {$lang['faq_proxy_body']}
-                                    {$lang['faq_proxy_body2']}
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class='container-fluid portlet padding20 bottom20'>
-        <table class='table table-bordered table-striped'>
-            <tr>
-                <td class='embedded'>
-                    <h3 id='answer_8'>{$lang['faq_blocked_title']}</h3>
-                    <table class='table table-bordered table-striped'>
-                        <tr>
-                            <td class='text'>
-                                <div id='answer_8_text'>
-                                    {$lang['faq_blocked_body']}
-                                    <b>{$lang['faq_alt_port']}</b>
-                                    <a name='conn4'></a>
-                                    <br>
-                                    {$lang['faq_alt_port_body']}
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class='container-fluid portlet padding20 bottom20'>
-        <table class='table table-bordered table-striped'>
-            <tr>
-                <td class='embedded'>
-                    <h3 id='answer_9'>{$lang['faq_problem_title']}</h3>
-                    <table class='table table-bordered table-striped'>
-                        <tr>
-                            <td class='text'>
-                                <div id='answer_9_text'>
-                                    {$lang['faq_problem_body']}
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>";
+                                        {$lang['faq_downloading_body1']}
+                                        {$lang['faq_downloading_body2']}
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+    
+            <table class='table table-bordered table-striped top20 bottom20'>
+                <tr class='no_hover'>
+                    <td class='embedded'>
+                        <h3 id='answer_6'>{$lang['faq_improve_speed_title']}</h3>
+                        <table class='table table-bordered table-striped'>
+                            <tr class='no_hover'>
+                                <td class='text'>
+                                    <div id='answer_6_text'>
+                                        {$lang['faq_improve_speed_body']}
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+    
+            <table class='table table-bordered table-striped top20 bottom20'>
+                <tr class='no_hover'>
+                    <td class='embedded'>
+                        <h3 id='answer_7'>{$lang['faq_proxy_title']}</h3>
+                        <table class='table table-bordered table-striped'>
+                            <tr class='no_hover'>
+                                <td class='text'>
+                                    <div id='answer_7_text'>
+                                        {$lang['faq_proxy_body']}
+                                        {$lang['faq_proxy_body2']}
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+    
+            <table class='table table-bordered table-striped top20 bottom20'>
+                <tr class='no_hover'>
+                    <td class='embedded'>
+                        <h3 id='answer_8'>{$lang['faq_blocked_title']}</h3>
+                        <table class='table table-bordered table-striped'>
+                            <tr class='no_hover'>
+                                <td class='text'>
+                                    <div id='answer_8_text'>
+                                        {$lang['faq_blocked_body']}
+                                        <b>{$lang['faq_alt_port']}</b>
+                                        <a name='conn4'></a>
+                                        <br>
+                                        {$lang['faq_alt_port_body']}
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+    
+            <table class='table table-bordered table-striped top20 bottom20'>
+                <tr class='no_hover'>
+                    <td class='embedded'>
+                        <h3 id='answer_9'>{$lang['faq_problem_title']}</h3>
+                        <table class='table table-bordered table-striped'>
+                            <tr class='no_hover'>
+                                <td class='text'>
+                                    <div id='answer_9_text'>
+                                        {$lang['faq_problem_body']}
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>";
 
 echo stdhead('FAQ') . $HTMLOUT . stdfoot($stdfoot);
