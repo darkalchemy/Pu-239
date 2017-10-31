@@ -15,7 +15,7 @@ This is a fork of U-232 V4.
 
 PHP 7.0+ is required, PHP 7.1 recommended.
 
-Memcached and Redis are rquired
+Memcached and Redis are required
 
 Be aware that the users table is deleted every few days. This is still a WIP and many pages may not be functional in there current location. Do not use the xbt install, as it's update has not been started and is likely broken.
 
