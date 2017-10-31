@@ -17,17 +17,19 @@ function checkpreviousstep()
     }
 }
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset='UTF-8'>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
     <title>Pu-239</title>
-    <link type="text/css" href="extra/installer.css" rel="stylesheet" />
+    <link type='text/css' href='extra/installer.css' rel='stylesheet' />
 </head>
 <body>
 
-<div id="wrapper">
-<div id="logo"></div>
+<div id='wrapper'>
+<div id='logo'></div>
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $valid_do = array(
@@ -52,11 +54,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 } else {
     switch ($step) {
     case 0:
+        require_once 'functions/extensionscheck.php';
+        echo extensionscheck();
+        break;
+
+    case 1:
         require_once 'functions/permissioncheck.php';
         echo permissioncheck();
         break;
 
-    case 1:
+    case 2:
         checkpreviousstep();
         require_once 'functions/writeconfig.php';
         $out = '<form action="index.php" method="post">';
@@ -67,16 +74,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo $out;
         break;
 
-    case 2:
+    case 3:
         checkpreviousstep();
         require_once 'functions/database.php';
         db_test();
         break;
 
-    case 3:
+    case 4:
         $out = '<fieldset><legend>All done</legend><div class="info">Installation complete</div><div class="info">goto <a href="./../signup.php">Signup</a> to create your first user.</div></fieldset>';
         echo $out;
         break;
+
     }
 }
 ?>

@@ -251,7 +251,9 @@ $site_config['allowed_ext'] = [
     'image.jpg',
     'image/jpeg',
 ];
-$site_config['bucket_maxsize'] = 1024 * 1024 * (ini_get('upload_max_filesize') >= ini_get('post_max_filesize') ? ini_get('upload_max_filesize') : ini_get('post_max_filesize'));
+$upload_max_filesize = ini_get('upload_max_filesize') !== null ? return_bytes(ini_get('upload_max_filesize')) : 0;
+$post_max_filesize = ini_get('post_max_filesize') !== null ? return_bytes(ini_get('post_max_filesize')) : 0;
+$site_config['bucket_maxsize'] = $upload_max_filesize >= $post_max_filesize ? $upload_max_filesize : $post_max_filesize;
 //==Class check by pdq
 $site_config['site']['owner'] = 1;
 //== Salt - change this

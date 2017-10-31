@@ -1769,23 +1769,31 @@ function make_nice_address($ip)
     }
 }
 
+function return_bytes($val)
+{
+    if ($val == '') {
+        return;
+    }
+    $val = strtolower(trim($val));
+    $last = $val[strlen($val)-1];
+    $val = rtrim($val, $last);
+
+    switch($last) {
+        case 'g':
+            $val *= (1024 * 1024 * 1024);
+            break;
+        case 'm':
+            $val *= (1024 * 1024);
+            break;
+        case 'k':
+            $val *= 1024;
+            break;
+    }
+
+    return $val;
+}
 
 if (file_exists('install')) {
-    $HTMLOUT = "<!DOCTYPE html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <title>Warning</title>
-</head>
-<body style='background: grey;'>
-    <div style='font-size:33px;color:white;background-color:red;text-align:center;'>
-        Delete the install directory
-        <p>' . ROOT_DIR. 'public' . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR . '</p>
-    </div>
-</body>
-</html>";
-    echo $HTMLOUT;
-    exit();
+    setSessionVar('error', 'Delete the install directory<br>' . ROOT_DIR. 'public' . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR);
 }
+

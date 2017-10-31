@@ -1,3 +1,11 @@
+31 Oct 2017
+add: php extensions check during install
+add: missing js files
+remove: incorrect references
+add: missing functions
+fix: ini_get method
+fix: installer
+
 22 Oct 2017
 update: rules.php
 update: faq.php

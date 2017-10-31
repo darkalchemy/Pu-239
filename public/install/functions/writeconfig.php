@@ -1,5 +1,4 @@
 <?php
-//==09 Installer by putyn
 $foo = [
     'Database - Site' => [
         [
@@ -121,8 +120,8 @@ function foo($x)
 }
 function createblock($fo, $foo)
 {
-    if (file_exists('step1.lock')) {
-        header('Location: index.php?step=2');
+    if (file_exists('step2.lock')) {
+        header('Location: index.php?step=3');
     }
     $out = '
     <fieldset>
@@ -217,7 +216,7 @@ function saveconfig()
         $out .= '
         </fieldset>
         <div style="text-align:center"><input type="button" value="Next step" onclick="window.location.href=\'index.php?step=2&xbt='.$xbt.'\'"/></div>';
-        file_put_contents('step1.lock', 1);
+        file_put_contents('step2.lock', 1);
     } else {
         $out .= '
         </fieldset>

@@ -19,8 +19,8 @@ function checkdir(&$dirs)
 function permissioncheck()
 {
     global $root, $public;
-    if (file_exists('step0.lock')) {
-        header('Location: index.php?step=1');
+    if (file_exists('step1.lock')) {
+        header('Location: index.php?step=2');
     }
     $dirs = array(
         $root . 'dir_list/' => 0,
@@ -49,7 +49,7 @@ function permissioncheck()
     $out .= '</fieldset>';
     if ($continue) {
         $out .= '<div style="text-align:center"><input type="button" onclick="window.location.href=\'index.php?step=1\'" value="Next step" /></div>';
-        file_put_contents('step0.lock', '1');
+        file_put_contents('step1.lock', '1');
     }
 
     return $out;

@@ -1,7 +1,7 @@
 <?php
 if ($CURUSER) {
     if (($lottery_info = $mc1->get_value('lottery_info_')) === false) {
-        $res = sql_query('SELECT * FROM lottery_info') or sqlerr(__FILE__, __LINE__);
+        $res = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
         while ($ac = mysqli_fetch_assoc($res)) {
             $lottery_info[$ac['name']] = $ac['value'];
         }

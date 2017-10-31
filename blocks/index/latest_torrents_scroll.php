@@ -1,17 +1,6 @@
 <?php
 
 global $mc1, $site_config, $lang;
-$HTMLOUT .= "
-    <a id='scroller-hash'></a>
-    <fieldset id='scroller' class='header'>
-        <legend class='flipper'>
-            <i class='fa fa-angle-up' aria-hidden='true'></i>
-            {$lang['index_latest']}
-        </legend>
-        <div class='bordered padleft10 padright10'>
-            <div id='carousel-container' class='alt_bordered transparent carousel-container'>
-                <div id='icarousel' class='icarousel'>";
-
 if (($scroll_torrents = $mc1->get_value('scroll_tor_')) === false) {
     $scroll = sql_query("SELECT id, seeders, leechers, name, poster
                             FROM torrents
@@ -25,6 +14,17 @@ if (($scroll_torrents = $mc1->get_value('scroll_tor_')) === false) {
 }
 
 if ($scroll_torrents) {
+	$HTMLOUT .= "
+    <a id='scroller-hash'></a>
+    <fieldset id='scroller' class='header'>
+        <legend class='flipper'>
+            <i class='fa fa-angle-up' aria-hidden='true'></i>
+            {$lang['index_latest']}
+        </legend>
+        <div class='bordered padleft10 padright10'>
+            <div id='carousel-container' class='alt_bordered transparent carousel-container'>
+                <div id='icarousel' class='icarousel'>";
+
     foreach ($scroll_torrents as $s_t) {
         $i = $site_config['latest_torrents_limit_scroll'];
         $id = (int)$s_t['id'];
@@ -43,10 +43,23 @@ if ($scroll_torrents) {
                         </a>
                     </div>";
     }
-}
 
-$HTMLOUT .= '
+	$HTMLOUT .= '
                 </div>
             </div>
         </div>
     </fieldset>';
+} else {
+	$HTMLOUT .= "
+    <a id='scroller-hash'></a>
+    <fieldset id='scroller' class='header'>
+        <legend class='flipper'>
+            <i class='fa fa-angle-up' aria-hidden='true'></i>
+            {$lang['index_latest']}
+        </legend>
+        <div class='bordered padleft10 padright10'>
+			No Torrents to display.
+		</div>
+	</fieldset>";
+}
+
