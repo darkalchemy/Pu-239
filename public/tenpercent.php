@@ -88,13 +88,13 @@ $HTMLOUT .= "<h1>10&#37;</h1>
 &#8226;&#160;The staff will <b>not</b> reset your 10&#37; addition for any reason.<br><br>
 </b></td></tr></table>
 <table class='table table-bordered table-striped'>
-<tr><td class='normalrowhead'>Current&#160;upload&#160;amount:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($uploaded)) . "</td><td class='embedded' width='5%'></td><td class='normalrowhead'>Increase:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($newuploaded - $uploaded)) . "</td><td class='embedded' width='5%'></td><td class='normalrowhead'>New&#160;upload&#160;amount:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($newuploaded)) . "</td></tr>
-<tr><td class='normalrowhead'>Current&#160;download&#160;amount:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($downloaded)) . "</td><td class='embedded' width='5%'></td><td class='normalrowhead'>Increase:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize(0)) . "</td><td class='embedded' width='5%'></td><td class='normalrowhead'>New&#160;download&#160;amount:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($downloaded)) . "</td></tr>
-<tr><td class='normalrowhead'>Current&#160;ratio:</td><td class='normal'>$ratio</td><td class='embedded' width='5%'></td><td class='normalrowhead'>Increase:</td><td class='normal'>$ratiochange</td><td class='embedded' width='5%'></td><td class='normalrowhead'>New&#160;ratio:</td><td class='normal'>$newratio</td></tr>
+<tr><td class='normalheading'>Current&#160;upload&#160;amount:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($uploaded)) . "</td><td class='embedded' width='5%'></td><td class='normalheading'>Increase:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($newuploaded - $uploaded)) . "</td><td class='embedded' width='5%'></td><td class='normalheading'>New&#160;upload&#160;amount:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($newuploaded)) . "</td></tr>
+<tr><td class='normalheading'>Current&#160;download&#160;amount:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($downloaded)) . "</td><td class='embedded' width='5%'></td><td class='normalheading'>Increase:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize(0)) . "</td><td class='embedded' width='5%'></td><td class='normalheading'>New&#160;download&#160;amount:</td><td class='normal'>" . str_replace(' ', '&#160;', mksize($downloaded)) . "</td></tr>
+<tr><td class='normalheading'>Current&#160;ratio:</td><td class='normal'>$ratio</td><td class='embedded' width='5%'></td><td class='normalheading'>Increase:</td><td class='normal'>$ratiochange</td><td class='embedded' width='5%'></td><td class='normalheading'>New&#160;ratio:</td><td class='normal'>$newratio</td></tr>
 </table>
 <form name='tenpercent' method='post' action='tenpercent.php'>
 <table class='table table-bordered table-striped'>
 <tr><td><b>Yes please </b><input type='checkbox' name='sure' value='1' onclick='if (this.checked) enablesubmit(); else disablesubmit();' /></td></tr>
-<tr><td><input type='submit' name='submit' value='Add 10%' class='btn' disabled='disabled' /></td></tr>
+<tr><td><input type='submit' name='submit' value='Add 10%' class='button' disabled='disabled' /></td></tr>
 </table></form>\n";
 echo stdhead('Ten Percent') . $HTMLOUT . stdfoot();

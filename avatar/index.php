@@ -50,12 +50,12 @@ check_user_status();
 </head>
 <body>
 <div class="loader is_hidden">Wait while the avatar is saved!</div>
-<table class="text-center">
+<table class="has-text-centered">
     <tr>
         <td>
             <fieldset>
                 <legend>Preview</legend>
-                <div class="text-center">
+                <div class="has-text-centered">
                     <input type="hidden" value="<?php
                     echo $CURUSER['username'] ?>" id="user"/>
                     <img id="preview" src="avatar.php?user=<?php
@@ -65,7 +65,7 @@ check_user_status();
         <td>
             <fieldset style="width:400px;">
                 <legend>Avatar body</legend>
-                <table class="avy_body text-center">
+                <table class="avy_body has-text-centered">
                     <tr>
                         <td nowrap="nowrap" class="info">Background color</td>
                         <td width="100%"><input type="text" id="bgColor" readonly="readonly" size="25"/>
@@ -135,7 +135,7 @@ check_user_status();
         <td>
             <fieldset style="width:170px;">
                 <legend>Final link</legend>
-                <table class="avy_body text-center">
+                <table class="avy_body has-text-centered">
                     <tr>
                         <td nowrap="nowrap" class="info"><input style="width:150px;" type="text" onclick="select();"
                                                                 value="<?php
@@ -150,10 +150,10 @@ check_user_status();
         <td>
             <fieldset style="width:400px;">
                 <legend>Settings</legend>
-                <table class="avy_body text-center">
+                <table class="avy_body has-text-centered">
                     <tr>
                         <td nowrap="nowrap" class="info">Line 1</td>
-                        <td class="text-center w-100">
+                        <td class="has-text-centered w-100">
                             <select id="drp1" onchange="get_drp();change_label('line1',this.value);update();">
                             </select>
                             <input type="text" id="line1" onchange="update();"/>
@@ -161,7 +161,7 @@ check_user_status();
                     </tr>
                     <tr>
                         <td nowrap="nowrap" class="info">Line 2</td>
-                        <td class="text-center w-100">
+                        <td class="has-text-centered w-100">
                             <select id="drp2" onchange="get_drp();change_label('line2',this.value);update();">
                             </select>
                             <input type="text" id="line2" onchange="update();"/>
@@ -169,7 +169,7 @@ check_user_status();
                     </tr>
                     <tr>
                         <td nowrap="nowrap" class="info">Line 3</td>
-                        <td class="text-center w-100">
+                        <td class="has-text-centered w-100">
                             <select id="drp3" onchange="get_drp();change_label('line3',this.value);update();">
                             </select>
                             <input type="text" id="line3" onchange="update();"/>

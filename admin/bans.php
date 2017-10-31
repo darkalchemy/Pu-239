@@ -100,7 +100,7 @@ if ($CURUSER['class'] == UC_MAX) {
       <td class='rowhead'>{$lang['table_comment']}</td><td><input type='text' name='comment' size='40' /></td>
       </tr>
       <tr>
-      <td colspan='2'><input type='submit' name='okay' value='{$lang['btn_add']}' class='btn' /></td>
+      <td colspan='2'><input type='submit' name='okay' value='{$lang['btn_add']}' class='button' /></td>
       </tr>
       </table>
       </form>";

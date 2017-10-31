@@ -10,11 +10,11 @@ if ($CURUSER['class'] < UC_USER) {
 }
 
 $HTMLOUT = "
-        <div class='container-fluid portlet top10'>
-            <div class='text-center'>
+        <div class='container is-fluid portlet top10'>
+            <div class='has-text-centered'>
                 <h1>{$site_config['site_name']} Old School Arcade!</h1>
                 <span>Top Scores Earn {$site_config['top_score_points']} Karma Points</span>
-                <div class='flex-container top10'>
+                <div class='level-center top10'>
                     <a class='altlink' href='./arcade_top_scores.php'>Top Scores</a>
                 </div>
             </div>

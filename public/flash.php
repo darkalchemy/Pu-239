@@ -42,10 +42,10 @@ $game_width = $game_height;
 
 $HTMLOUT = '';
 $HTMLOUT .= "
-    <div class='container-fluid portlet text-center'>
+    <div class='container is-fluid portlet has-text-centered'>
         <h1>{$site_config['site_name']} Old School Arcade!</h1>
         <span>Top Scores Earn {$site_config['top_score_points']} Karma Points</span>
-        <div class='flex-container top10'>
+        <div class='level-center top10'>
             <span class='right10'>
                 <a class='altlink' href='./arcade.php'>Arcade</a>
             </span>
@@ -55,8 +55,8 @@ $HTMLOUT .= "
         </div>";
 
 $HTMLOUT .= "
-        <div class='bordered padleft10 padright10 top20'>
-            <div class='alt_bordered transparent text-center'>
+        <div class='bordered top20'>
+            <div class='alt_bordered bg-00 has-text-centered'>
                 <object classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0' width='{$game_width}' height='{$game_height}'>
                     <param name='movie' value='./media/flash_games/{$gameURI}' />
                     <param name='quality' value='high' />
@@ -75,7 +75,7 @@ if (mysqli_num_rows($res) > 0) {
             <thead>
                 <tr>
                     <th colspan='4'>
-                        <div class='size_4 text-center'>
+                        <div class='size_4 has-text-centered'>
                             $fullgamename
                         </div>
                     </th>
@@ -94,7 +94,7 @@ if (mysqli_num_rows($res) > 0) {
         $at_ranking = sql_query('SELECT COUNT(id) FROM highscores WHERE game = '.sqlesc($gamename).' AND score > '.sqlesc($at_score_arr['score'])) or sqlerr(__FILE__, __LINE__);
         $at_rankrow = mysqli_fetch_row($at_ranking);
         $HTMLOUT .= '
-                <tr'.($at_score_arr['user_id'] == $CURUSER['id'] ? ' class="text-main text-shadow"' : '').'>
+                <tr'.($at_score_arr['user_id'] == $CURUSER['id'] ? ' class="has-text-primary text-shadow"' : '').'>
                     <td>0</td>
                     <td>' . $at_username . '</td>
                     <td>' . (int)$at_score_arr['level'] . '</td>
@@ -109,7 +109,7 @@ if (mysqli_num_rows($res) > 0) {
 
 
         $HTMLOUT .= '
-                <tr'.($row['user_id'] == $player ? ' class="text-main text-shadow"' : '').'>
+                <tr'.($row['user_id'] == $player ? ' class="has-text-primary text-shadow"' : '').'>
                     <td>' . number_format($rankrow[0] + 1) . '</td>
                     <td>' . $username . '</td>
                     <td>' . (int)$row['level'] . '</td>
@@ -149,7 +149,7 @@ else {
             <thead>
                 <tr>
                     <th colspan='4'>
-                        <div class='size_4 text-center'>
+                        <div class='size_4 has-text-centered'>
                             $fullgamename
                         </div>
                     </th>
@@ -158,7 +158,7 @@ else {
             <tbody>
                 <tr>
                     <td>
-                        <div class='text-center'>
+                        <div class='has-text-centered'>
                             Sorry, we cannot save scores of this game or there are no scores saved, yet.
                         </div>
                     </td>

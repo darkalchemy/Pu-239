@@ -48,13 +48,13 @@ WHERE type = "crazyhour"') or sqlerr(__FILE__, __LINE__);
             $crazytitle = $lang['gl_crazy_title'];
             $crazymessage = $lang['gl_crazy_message'] . ' <b> ' . $lang['gl_crazy_message1'] . '</b> ' . $lang['gl_crazy_message2'] . ' <strong> ' . $lang['gl_crazy_message3'] . '</strong>!';
             $htmlout .= '<li>
-<a class="tooltip" href="#"><b class="btn btn-success btn-small">' . $lang['gl_crazy_on'] . '<span class="custom info alert alert-success"><em>' . $lang['gl_crazy_'] . '</em>
+<a class="tooltip" href="#"><b class="button is-success is-small">' . $lang['gl_crazy_on'] . '<span class="custom info alert alert-success"><em>' . $lang['gl_crazy_'] . '</em>
 ' . $crazytitle . '...' . $crazymessage . ' ' . ' ' . $lang['gl_crazy_ends'] . ' ' . mkprettytime($crazyhour['remaining']) . '&#160;' . $lang['gl_crazy_at'] . ' ' . get_date($crazyhour['crazyhour']['var'], 'LONG') . '</span></b></a></li>';
 
             return $htmlout;
         }
         $htmlout .= '<li>
-<a class="tooltip" href="#"><b class="btn btn-info btn-small">' . $lang['gl_crazy_'] . '</b>
+<a class="tooltip" href="#"><b class="button is-info is-small">' . $lang['gl_crazy_'] . '</b>
 <span class="custom info alert alert-info"><em>' . $lang['gl_crazy_'] . '</em>
 ' . $lang['gl_crazy_message4'] . '<br>' . $lang['gl_crazy_message5'] . '<br> ' . '' . $lang['gl_crazy_message6'] . ' ' . mkprettytime($crazyhour['crazyhour']['var'] - 3600 - TIME_NOW) . '&#160;' . $lang['gl_crazy_at'] . ' ' . get_date($crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'LONG') . '</span></a></li>';
 

@@ -12,11 +12,11 @@ $stdfoot = array(
 );
 
 $HTMLOUT = "
-    <div class='container-fluid portlet text-center'>
+    <div class='container is-fluid portlet has-text-centered'>
         <h1>{$site_config['site_name']} Arcade Top Scores!</h1>
         <div class='bottom10'>
             <div>Top Scores Earn {$site_config['top_score_points']} Karma Points</div>
-            <div class='flex-container top10'>
+            <div class='level-center top10'>
                 <a class='altlink' href='./arcade.php'>Back to the Arcade</a>
             </div>
         </div>";
@@ -31,7 +31,7 @@ foreach ($list as $gname) {
     $score_res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($score_res) !== 0) {
         $HTMLOUT .= "
-        <div class='bg-window text-center padtop10 round5'>
+        <div class='bg-02 has-text-centered padtop10 round5'>
             <a name='{$game}'></a>
             <a href='./flash.php?gameURI={$game}.swf&amp;gamename={$game}&amp;game_id={$game_id}'>
                 <img src='{$site_config['pic_base_url']}games/{$game}.png' alt='{$gname}' class='round5' />
@@ -52,7 +52,7 @@ foreach ($list as $gname) {
         while ($at_score_arr = mysqli_fetch_assoc($at_score_res)) {
             $at_username = format_username($at_score_arr['user_id']);
             $HTMLOUT .= '
-                    <tr' . ($at_score_arr['user_id'] == $CURUSER['id'] ? ' class="text-main text-shadow"' : '') . '>
+                    <tr' . ($at_score_arr['user_id'] == $CURUSER['id'] ? ' class="has-text-primary text-shadow"' : '') . '>
                         <td>0</td>
                         <td>'.$at_username.'</td>
                         <td>'.(int) $at_score_arr['level'].'</td>
@@ -70,7 +70,7 @@ foreach ($list as $gname) {
             $rankrow = mysqli_fetch_row($ranking);
 
             $HTMLOUT .= '
-                    <tr'.($score_arr['user_id'] == $CURUSER['id'] ? ' class="text-main text-shadow"' : '').'>
+                    <tr'.($score_arr['user_id'] == $CURUSER['id'] ? ' class="has-text-primary text-shadow"' : '').'>
                         <td>' . number_format($rankrow[0] + 1) . '</td>
                         <td>' . $username . '</td>
                         <td>' . (int) $score_arr['level'] . '</td>
@@ -89,7 +89,7 @@ foreach ($list as $gname) {
             $HTMLOUT .= '
                     <tr>
                         <td colspan="4">
-                            <div class="top10 bottom10 text-center">Your high score was ' . number_format($score_arr[0]) . ' and you ranked ' . number_format($member_rank_arr[0] + 1). '.</div>
+                            <div class="top10 bottom10 has-text-centered">Your high score was ' . number_format($score_arr[0]) . ' and you ranked ' . number_format($member_rank_arr[0] + 1). '.</div>
                         </td>
                     </tr>
                 </tbody>
@@ -121,33 +121,33 @@ $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $member_high_score = mysqli_fetch_assoc($result);
 if (!empty($member_played_most_games) && !empty($member_high_score)) {
     $HTMLOUT .= '
-        <div class="bg-window text-center padtop10 round5">
+        <div class="bg-02 has-text-centered padtop10 round5">
             <h2>Stats</h2>
             <table class="table table-bordered table-striped top20 bottom20">
                 <thead>
                     <tr>
                         <th colspan="2">
-                            <div class="size_4 text-center">So far, you have played a total of ' . number_format($member_totals['count']) . ' games, scoring ' . number_format($member_totals['score']) . ' points in total!</div>
+                            <div class="size_4 has-text-centered">So far, you have played a total of ' . number_format($member_totals['count']) . ' games, scoring ' . number_format($member_totals['score']) . ' points in total!</div>
                         </th>
                     </tr>
                     <tr>
                         <th class="w-50">
-                            <div class="size_3 text-center">Most Bored Award</div>
+                            <div class="size_3 has-text-centered">Most Bored Award</div>
                         </th>
                         <th>
-                            <div class="size_3 text-center">Highest Score Award</div>
+                            <div class="size_3 has-text-centered">Highest Score Award</div>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>
-                            <div class="text-center">
+                            <div class="has-text-centered">
                                 Congratulations!<br>The Most Bored award goes to: ' . format_username($member_played_most_games['user_id']) . ' with, ' . number_format($member_played_most_games['count']) . ' games played!
                             </div>
                         </td>
                         <td>
-                            <div class="text-center">
+                            <div class="has-text-centered">
                                 Congratulations!<br>The Highest Score Award goes to: ' . format_username($member_high_score['user_id']) . ', with a total score of ' . number_format($member_high_score['score']) . ' playing ' . number_format($member_high_score['count']).' games!
                             </div>
                         </td>

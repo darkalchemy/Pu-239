@@ -6,9 +6,9 @@ if (($latestuser = $mc1->get_value('latestuser')) === false) {
 $HTMLOUT .= "
         <a id='latestuser-hash'></a>
         <fieldset id='latestuser' class='header'>
-            <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_lmember']}</legend>
-            <div class='bordered padleft10 padright10'>
-                <div class='alt_bordered transparent text-center'>
+            <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_lmember']}</legend>
+            <div class='bordered'>
+                <div class='alt_bordered bg-00 has-text-centered'>
                     <span>{$lang['index_wmember']} " . format_username($latestuser['id']) . "!</span>
                 </div>
             </div>

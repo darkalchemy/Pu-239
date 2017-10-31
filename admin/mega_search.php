@@ -18,33 +18,33 @@ $user_names = (isset($_POST['user_names']) ? preg_replace('/[^a-zA-Z0-9_\-\s]/',
 $HTMLOUT = $found = $not_found = $count = $no_matches_for_this_email = $matches_for_email = $no_matches_for_this_ip = $matches_for_ip = '';
 $number = 0;
 $HTMLOUT .= '
-    <div class="container-fluid portlet">
+    <div class="container is-fluid portlet">
         <h1 style="text-align: center;">' . $lang['mega_heading'] . '</h1>
-        <div class="text-center size_4 text-white top10 bottom10">' . $lang['mega_analyze'] . '</div>
-        <div class="bg-window round5 bottom20 padding10">
+        <div class="has-text-centered size_4 has-text-white top10 bottom10">' . $lang['mega_analyze'] . '</div>
+        <div class="bg-02 round5 bottom20 padding10">
             <form method="post" action="staffpanel.php?tool=mega_search&amp;action=mega_search">
                 ' . bubble($lang['mega_text'], $lang['mega_text_1']) . '
                 <textarea name="msg_to_analyze" rows="20" class="w-100">' . $msg_to_analyze . '</textarea>
-                <div class="text-center">
-                    <input type="submit" class="btn" value="' . $lang['mega_search_btn'] . '" />
+                <div class="has-text-centered">
+                    <input type="submit" class="button" value="' . $lang['mega_search_btn'] . '" />
                 </div>
             </form>
         </div>
-        <div class="bg-window round5 bottom20 padding10">
+        <div class="bg-02 round5 bottom20 padding10">
             <form method="post" action="staffpanel.php?tool=mega_search&amp;action=mega_search">
                 ' . bubble('<b>' . $lang['mega_invite'] . '</b>', $lang['mega_invite_1']) . '
                 <input type="text" name="invite_code" class="w-100" value="' . $invite_code . '" />
-                <div class="text-center top10">
-                    <input type="submit" class="btn" value="' . $lang['mega_search_btn'] . '" />
+                <div class="has-text-centered top10">
+                    <input type="submit" class="button" value="' . $lang['mega_search_btn'] . '" />
                 </div>
             </form>
         </div>
-        <div class="bg-window round5 bottom20 padding10">
+        <div class="bg-02 round5 bottom20 padding10">
             <form method="post" action="staffpanel.php?tool=mega_search&amp;action=mega_search">
                 ' . bubble('<b>' . $lang['mega_names'] . '</b>', $lang['mega_names_1']) . '
                 <textarea name="user_names" rows="4" class="w-100">' . $user_names . '</textarea>
-                <div class="text-center">
-                    <input type="submit" class="btn" value="' . $lang['mega_search_btn'] . '" />
+                <div class="has-text-centered">
+                    <input type="submit" class="button" value="' . $lang['mega_search_btn'] . '" />
                 </div>
             </form>
         </div>';
@@ -65,11 +65,11 @@ if (isset($_POST['user_names'])) {
                 <td>' . htmlsafechars($arr['email']) . '</td>
                 <td>
                     <span class="tooltipper text-blue" title="added">' . get_date($arr['added'], '') . '</span><br>
-                    <span class="tooltipper text-lime" title="last access">' . get_date($arr['last_access'], '') . '</span>
+                    <span class="tooltipper has-text-success" title="last access">' . get_date($arr['last_access'], '') . '</span>
                 </td>
                 <td>
                     <img src="./images/up.png" alt="' . $lang['mega_up'] . '" class="tooltipper" title="' . $lang['mega_uploaded'] . '" /> 
-                    <span class="text-lime">' . mksize($arr['uploaded']) . '</span>
+                    <span class="has-text-success">' . mksize($arr['uploaded']) . '</span>
                     ' . ($site_config['ratio_free'] ? '
                 </td>' : '<br>
                     <img class="tooltipper" src="./images/dl.png" alt="' . $lang['mega_down'] . '" title="' . $lang['mega_downloaded'] . '" />  
@@ -127,11 +127,11 @@ if (isset($_POST['msg_to_analyze'])) {
                 <td>' . htmlsafechars($arr['email']) . '</td>
                 <td>
                     <span class="tooltipper text-blue" title="added">' . get_date($arr['added'], '') . '</span><br>
-                    <span class="tooltipper text-lime" title="last access">' . get_date($arr['last_access'], '') . '</span>
+                    <span class="tooltipper has-text-success" title="last access">' . get_date($arr['last_access'], '') . '</span>
                 </td>
                 <td>
                     <img src="./images/up.png" alt="' . $lang['mega_up'] . '" class="tooltipper" title="' . $lang['mega_uploaded'] . '" /> 
-                    <span class="text-lime">' . mksize($arr['uploaded']) . '</span>
+                    <span class="has-text-success">' . mksize($arr['uploaded']) . '</span>
                     ' . ($site_config['ratio_free'] ? '
                 </td>' : '<br>
                     <img src="./images/dl.png" alt="' . $lang['mega_down'] . '" class="tooltipper" title="' . $lang['mega_downloaded'] . '" />  

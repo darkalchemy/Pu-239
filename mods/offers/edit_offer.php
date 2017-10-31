@@ -42,6 +42,6 @@ if ($CURUSER['class'] >= UC_MODERATOR) {
     <tr><td>
     <b>Torrent ID</b></td><td><input type='text' size='10' name='torrentid' value='$numz[torrentid]' /></td></tr>";
 }
-$HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='Edit Offer' class='btn' /></td></tr></table></form><br>\n";
+$HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='Edit Offer' class='button' /></td></tr></table></form><br>\n";
 /////////////////////// HTML OUTPUT //////////////////////////////
 echo stdhead('Edit Offer') . $HTMLOUT . stdfoot();

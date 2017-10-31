@@ -98,7 +98,7 @@ if ($arr['poll_id'] > 0) {
                 <thead>
                     <tr>
                         <th class="forum_head_dark" colspan="5">
-                            <div class="answers-container">
+                            <div class="level-center">
                                 <div class="flex flex-left padding10">
                                     <img src="' . $site_config['pic_base_url'] . 'forums/poll.gif" alt="" class="right10" />
                                     <span>Poll
@@ -314,7 +314,7 @@ $locked_or_reply_button = ($locked === 'yes' ? '
             <span>' . $lang['fe_this_topic_is_locked'] . ', you may not post in this thread.</span>' : ($CURUSER['forum_post'] == 'no' ? '
             <span>Your posting rights have been removed. You may not post.</span>
         </span>' : '
-        <a href="' . $site_config['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '" class="btn">
+        <a href="' . $site_config['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '" class="button">
             Add Reply
         </a>'));
 
@@ -332,7 +332,7 @@ if ($arr['parent_forum'] > 0) {
 $the_top_and_bottom = "
         <tr>
             <th colspan='5'>
-                <div class='answers-container'>
+                <div class='level-center'>
                     <div class='flex-left padding10'>
                         $subscriptions
                     </div>
@@ -348,13 +348,13 @@ $the_top_and_bottom = "
         </tr>";
 
 $location_bar = '
-        <div class="flex-container">
+        <div class="level-center">
         ' . $mini_menu . (($topic_owner == $CURUSER['id'] && $arr['poll_id'] == 0 || $CURUSER['class'] >= UC_STAFF && $arr['poll_id'] == 0) ? '
             <a href="' . $site_config['baseurl'] . '/forums.php?action=poll&amp;action_2=poll_add&amp;topic_id=' . $topic_id . '" class="altlink bordered">' . $lang['fe_add_poll'] . '</a>' : '') . '
         </div>';
 
 $HTMLOUT .= "
-    <div class='container-fluid portlet'>" . ($upload_errors_size > 0 ? ($upload_errors_size === 1 ? '
+    <div class='container is-fluid portlet'>" . ($upload_errors_size > 0 ? ($upload_errors_size === 1 ? '
         <div>One file was not uploaded. The maximum file size allowed is: ' . mksize($max_file_size) . '.</div>' : '
         <div>' . $upload_errors_size . ' file were not uploaded. The maximum file size allowed is: ' . mksize($max_file_size) . '.</div>') : '') . ($upload_errors_type > 0 ? ($upload_errors_type === 1 ? '
         <div>One file was not uploaded. The accepted formats are zip and rar.</div>' : '
@@ -366,7 +366,7 @@ $HTMLOUT .= "
                 ' . $the_top_and_bottom . '
                     <tr>
                         <th colspan="5">
-                            <div class="answers-container">
+                            <div class="level-center">
                                 <div class="flex flex-left padding10">
                                     <img src="' . $site_config['pic_base_url'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" class="right10 tooltipper" title="' . $lang['fe_topic'] . '" />' . $lang['fe_author'] . '
                                     <span class="left10">
@@ -464,7 +464,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
                     <thead>
                         <tr>
                             <th colspan="2">
-                                <div class="answers-container">
+                                <div class="level-center">
                                     <div class="flex flex-left padding10">
                                         <a name="' . $post_id . '"></a>
                                         ' . ($CURUSER['class'] >= UC_STAFF ? '

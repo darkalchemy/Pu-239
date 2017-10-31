@@ -177,7 +177,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
             $HTMLOUT .= "<input type='hidden' name='id' value='{$id}' />";
         }
         $HTMLOUT .= "
-    <div class='container-fluid portlet'>
+    <div class='container is-fluid portlet'>
         <table class='table table-bordered table-striped top20'>
             <thead>
                 <tr>
@@ -262,10 +262,10 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
     </table>
 
     <div class='flex flex-justify-center top20'>
-            <input type='submit' class='btn' value='{$lang['spanel_submit']}' />
+            <input type='submit' class='button' value='{$lang['spanel_submit']}' />
         </form>
         <form method='post' action='{$_SERVER['PHP_SELF']}'>
-            <input type='submit' class='btn' value='{$lang['spanel_cancel']}' />
+            <input type='submit' class='button' value='{$lang['spanel_cancel']}' />
         </form>
     </div>
     </div>";
@@ -274,7 +274,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
         if ($CURUSER['class'] == UC_MAX) {
             $add_button = "
                 <div class='text-center bottom20'>
-                    <a href='{$site_config['baseurl']}/staffpanel.php?action=add' class='tooltipper btn' title='{$lang['spanel_add_a_new_pg']}'>{$lang['spanel_add_a_new_pg']}</a>
+                    <a href='{$site_config['baseurl']}/staffpanel.php?action=add' class='tooltipper button' title='{$lang['spanel_add_a_new_pg']}'>{$lang['spanel_add_a_new_pg']}</a>
                 </div>";
         }
         $res = sql_query('SELECT s.*, u.username 
@@ -292,7 +292,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
             }
             $i = 1;
             $HTMLOUT .= "
-        <div class='container-fluid portlet'>
+        <div class='container is-fluid portlet'>
             <h1 class='text-center'>{$lang['spanel_welcome']} {$CURUSER['username']} {$lang['spanel_to_the']} {$lang['spanel_header']}!</h1>";
 
             foreach ($mysql_data as $key => $arr) {
@@ -300,7 +300,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
                 if (!in_array($arr['av_class'], $unique_classes)) {
                     $unique_classes[] = $arr['av_class'];
                     $HTMLOUT .= "
-        <div class='bg-window round5'>
+        <div class='bg-02 round5'>
             <h2 class='text-center top20 text-shadow'>" . ($class_color ? '<font color="#' . get_user_class_color($arr['av_class']) . '">' : '') . get_user_class_name($arr['av_class']) . '\'s Panel' . ($class_color ? '</font>' : '') . "</h2>
             {$add_button}
             <table class='table table-bordered table-striped bottom20'>

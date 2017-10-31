@@ -46,7 +46,7 @@ if ($step == '1') {
             stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error4']}");
         } else {
             $HTMLOUT .= "
-            <div class='login-container container-fluid portlet'>
+            <div class='half-container has-text-centered portlet'>
                 <form method='post' action='" . $_SERVER['PHP_SELF'] . "?step=2'>
                     <table class='table table-bordered top20 bottom20'>
                         <tr class='no_hover'>
@@ -73,8 +73,8 @@ if ($step == '1') {
                         </tr>
                         <tr class='no_hover'>
                             <td colspan='2'>
-                                <div class='text-center'>
-                                    <input type='submit' value='{$lang['main_next']}' class='btn' />
+                                <div class='has-text-centered'>
+                                    <input type='submit' value='{$lang['main_next']}' class='button' />
                                 </div>
                             </td>
                         </tr>
@@ -106,7 +106,7 @@ if ($step == '1') {
     } else {
         $sechash = $fetch['hintanswer'];
         $HTMLOUT .= "
-        <div class='login-container container-fluid portlet'>
+        <div class='half-container has-text-centered portlet'>
             <form method='post' action='?step=3'>
                 <table class='table table-bordered top20 bottom20'>
                     <tr class='no_hover'>
@@ -118,8 +118,8 @@ if ($step == '1') {
                     </tr>
                     <tr class='no_hover'>
                         <td colspan='2'>
-                            <div class='text-center'>
-                                <input type='submit' value='{$lang['main_changeit']}' class='btn' />
+                            <div class='has-text-centered'>
+                                <input type='submit' value='{$lang['main_changeit']}' class='button' />
                                 <input type='hidden' name='id' value='" . (int)$fetch['id'] . "' />
                                 <input type='hidden' name='hash' value='" . $sechash . "' />
                             </div>
@@ -173,7 +173,7 @@ if ($step == '1') {
     }
 } else {
     $HTMLOUT.= "
-    <div class='login-container container-fluid portlet'>
+    <div class='half-container has-text-centered portlet'>
         <form method='post' action='" . $_SERVER['PHP_SELF'] . "?step=1'>
             <table class='table table-bordered top20 bottom20'>
                 <tr class='no_hover'>
@@ -184,12 +184,12 @@ if ($step == '1') {
                     <td><input type='text' class='w-100' name='email' /></td>
                 </tr>" . ($site_config['captcha_on'] ? "
                 <tr class='no_hover'>
-                    <td class='rowhead' colspan='2' id='captcha_show'></td>
+                    <td colspan='2' id='captcha_show'></td>
                 </tr>" : '') . "
                 <tr class='no_hover'>
                     <td colspan='2'>
-                        <div class='text-center'>
-                            <input type='submit' value='{$lang['main_recover']}' class='btn' />
+                        <div class='has-text-centered'>
+                            <input type='submit' value='{$lang['main_recover']}' class='button' />
                         </div>
                     </td>
                 </tr>

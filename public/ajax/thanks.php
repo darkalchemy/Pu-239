@@ -30,7 +30,7 @@ function print_list()
             'status' => true,
         ]);
     } else {
-        $form = !$hadTh ? "<br><form action='./ajax/thanks.php' method='post'><input type='submit' class='btn' name='submit' value='Say thanks' /><input type='hidden' name='torrentid' value='{$tid}' /><input type='hidden' name='action' value='add' /></form>" : '';
+        $form = !$hadTh ? "<br><form action='./ajax/thanks.php' method='post'><input type='submit' class='button' name='submit' value='Say thanks' /><input type='hidden' name='torrentid' value='{$tid}' /><input type='hidden' name='action' value='add' /></form>" : '';
         $out = (count($list) > 0 ? join(', ', $list) : 'Not yet');
 
         return <<<IFRAME

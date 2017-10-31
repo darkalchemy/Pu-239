@@ -1,7 +1,13 @@
 <?php
-function pager($rpp, $count, $href, $opts = []) // thx yuna or whoever wrote it
+function pager($rpp, $count, $href, $opts = [])
 {
+    // $rpp = results per page
+    // $count = total number to process
+    // $href = the link
+    // $ops = unkonwn
+
     $pages = ceil($count / $rpp);
+
     if (!isset($opts['lastpagedefault'])) {
         $pagedefault = 0;
     } else {
@@ -19,25 +25,17 @@ function pager($rpp, $count, $href, $opts = []) // thx yuna or whoever wrote it
         $page = $pagedefault;
     }
     $mp = $pages - 1;
-    $as = '<i class="fa fa-nomargin fa-angle-double-left" aria-hidden="true"></i>';
+    $pager = $pager2 = '';
     if ($page >= 1) {
-        $pager .= "
-                        <span>
-                            <a href=''{$href}page=" . ($page - 1) . "' class='pager'>$as</a>
-                        </span>";
+        $pager = "
+                        <a href='{$href}page=" . ($page - 1) . "' class='pagination-previous button is-dark tooltipper is_hidden-mobile'  title='Goto Page $page'>Previous</a>";
     }
-    $as = '<i class="fa fa-nomargin fa-angle-double-right" aria-hidden="true"></i>';
-    $pager2 = $bregs = '';
     if ($page < $mp && $mp >= 0) {
-        $pager2 .= "
-                        <span>
-                            <a href='{$href}page=" . ($page + 1) . "' class='pager'>$as</a>
-                        </span>$bregs";
-    } else {
-        $pager2 .= $bregs;
+        $pager2 = "
+                        <a href='{$href}page=" . ($page + 1) . "' class='pagination-next button is-dark tooltipper is_hidden-mobile' title='Goto Page " . ($page + 2) . "'>Next</a>";
     }
     if ($count) {
-        $pagerarr = [];
+        $pagerarr[] = "<ul class='pagination-list'>";
         $dotted = 0;
         $dotspace = 3;
         $dotend = $pages - $dotspace;
@@ -46,8 +44,8 @@ function pager($rpp, $count, $href, $opts = []) // thx yuna or whoever wrote it
         for ($i = 0; $i < $pages; ++$i) {
             if (($i >= $dotspace && $i <= $curdotend) || ($i >= $curdotstart && $i < $dotend)) {
                 if (!$dotted) {
-                    $pagerarr[] = '
-                        <span class="pager">...</span>';
+                    $pagerarr[] = "
+                            <li><span class='pagination-ellipsis'>&hellip;</span></li>";
                 }
                 $dotted = 1;
                 continue;
@@ -61,27 +59,23 @@ function pager($rpp, $count, $href, $opts = []) // thx yuna or whoever wrote it
             $text = $i + 1;
             if ($i != $page) {
                 $pagerarr[] = "
-                        <span>
-                            <a title='$start - $end' href='{$href}page=$i' class='pager tooltipper'>
-                                $text
-                            </a>
-                        </span>";
+                            <li><a title='View Torrents $start - $end' href='{$href}page=$i' class='pagination-link button is-dark tooltipper' aria-label='Goto page $text'>$text</a></li>";
             } else {
                 $pagerarr[] = "
-                        <span class='highlight margin10'>
-                            $text
-                        </span>";
+                            <li><a class='pagination-link is-current' aria-label='Page $text' aria-current='page'>$text</a></li>";
             }
         }
+        $pagerarr[] = "
+                        </ul>";
         $pagerstr = join('', $pagerarr);
-        $pagertop = "<div class='text-center top20 bottom20'>
-                        $pager $pagerstr $pager2
-                    </div>";
+        $pagertop = "<nav class='pagination is-centered is-marginless is-small' role='navigation' aria-label='pagination'>{$pager}{$pager2}
+                        $pagerstr
+                    </nav>";
         $pagerbottom = "
-                    <div class='text-center'>Overall $count items in " . ($i) . ' page' . ($i > 1 ? '\'s' : '') . ", showing $rpp per page.</div>
-                    <div class='margin10 text-center'>
-                        $pager $pagerstr $pager2
-                    </div>";
+                    <div class='has-text-centered bottom10'>Overall $count items in " . ($i) . ' page' . ($i > 1 ? '\'s' : '') . ", showing $rpp per page.</div>
+                    <nav class='pagination is-centered is-marginless is-small' role='navigation' aria-label='pagination'>{$pager}{$pager2}
+                        $pagerstr
+                    </nav>";
     } else {
         $pagertop = $pager;
         $pagerbottom = $pagertop;

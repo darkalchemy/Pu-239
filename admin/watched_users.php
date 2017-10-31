@@ -103,7 +103,7 @@ if (isset($_GET['add'])) {
  <td class="colhead">' . $lang['watched_add'] . ' ' . $user['username'] . '' . $lang['watched_towu'] . '</td>
  </tr>
  <tr>
- <td class="text-center"><b>' . $lang['watched_pleasefil'] . '' . htmlsafechars($user['username']) . ' ' . $lang['watched_userlist'] . '</b><br>
+ <td class="has-text-centered"><b>' . $lang['watched_pleasefil'] . '' . htmlsafechars($user['username']) . ' ' . $lang['watched_userlist'] . '</b><br>
  <textarea cols="60" rows="6" name="reason">' . htmlsafechars($user['watched_user_reason']) . '</textarea><br></td>
  </tr>
  <tr>
@@ -154,7 +154,7 @@ $i = 1;
 $HTMLOUT .= $H1_thingie . '<br>
         <form action="staffpanel.php?tool=watched_users&amp;action=watched_users&amp;remove=1" method="post"  name="checkme" onsubmit="return ValidateForm(this,\'wu\')">
         <h1>' . $lang['watched_users'] . '[ ' . $watched_users . ' ]</h1>
-    <table border="0" cellspacing="5" cellpadding="5" class="text-center" style="max-width:800px">';
+    <table border="0" cellspacing="5" cellpadding="5" class="has-text-centered" style="max-width:800px">';
 //=== get the member info...
 $res = sql_query('SELECT id, username, added, watched_user_reason, watched_user, uploaded, downloaded, warned, suspended, enabled, donor, class, leechwarn, chatpost, pirate, king, invitedby FROM users WHERE watched_user != \'0\' ORDER BY ' . $ORDER_BY . $ASC) or sqlerr(__FILE__, __LINE__);
 $how_many = mysqli_num_rows($res);
@@ -164,10 +164,10 @@ if ($how_many > 0) {
     <tr>
         <td class="colhead"><a href="staffpanel.php?tool=watched_users&amp;action=watched_users&amp;sort=watched_user&amp;ASC=' . $ASC . '">' . $lang['watched_isadded'] . '</a></td>
         <td class="colhead"><a href="staffpanel.php?tool=watched_users&amp;action=watched_users&amp;sort=username&amp;ASC=' . $ASC . '">' . $lang['watched_username'] . '</a></td>
-        <td class="colhead text-left" width="400">' . $lang['watched_suspicion'] . '</td>
-        <td class="colhead text-center">' . $lang['watched_stats'] . '</td>
-        <td class="colhead text-center"><a href="staffpanel.php?tool=watched_users&amp;action=watched_users&amp;sort=invited_by&amp;ASC=' . $ASC . '">' . $lang['watched_invitedby'] . '</a></td>
-        ' . ($CURUSER['class'] >= UC_STAFF ? '<td class="colhead text-center">&#160;</td>' : '') . '
+        <td class="colhead has-text-left" width="400">' . $lang['watched_suspicion'] . '</td>
+        <td class="colhead has-text-centered">' . $lang['watched_stats'] . '</td>
+        <td class="colhead has-text-centered"><a href="staffpanel.php?tool=watched_users&amp;action=watched_users&amp;sort=invited_by&amp;ASC=' . $ASC . '">' . $lang['watched_invitedby'] . '</a></td>
+        ' . ($CURUSER['class'] >= UC_STAFF ? '<td class="colhead has-text-centered">&#160;</td>' : '') . '
     </tr>';
     while ($arr = @mysqli_fetch_assoc($res)) {
         $invitor_arr = [];
@@ -177,27 +177,27 @@ if ($how_many > 0) {
         }
         $the_flip_box = '
         [ <a id="d' . $div_link_number . '_open" class="show_warned" style="font-weight:bold;cursor:pointer;">' . $lang['watched_viewreason'] . '</a> ]
-        <div class="text-left" id="d' . $div_link_number . '" style="display:none"><p class="top10">' . format_comment($arr['watched_user_reason']) . '</p></div>';
+        <div class="has-text-left" id="d' . $div_link_number . '" style="display:none"><p class="top10">' . format_comment($arr['watched_user_reason']) . '</p></div>';
         $HTMLOUT .= '
     <tr>
-        <td class="text-center">' . get_date($arr['watched_user'], '') . '</td>
-        <td class="text-left">' . format_username($arr) . '</td>
-        <td class="text-left">' . $the_flip_box . '</td>
-        <td class="text-center">' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
-        <td class="text-center">' . ($invitor_arr['username'] == '' ? '' . $lang['watched_open_sign-ups'] . '' : format_username($invitor_arr)) . '</td>
+        <td class="has-text-centered">' . get_date($arr['watched_user'], '') . '</td>
+        <td class="has-text-left">' . format_username($arr) . '</td>
+        <td class="has-text-left">' . $the_flip_box . '</td>
+        <td class="has-text-centered">' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
+        <td class="has-text-centered">' . ($invitor_arr['username'] == '' ? '' . $lang['watched_open_sign-ups'] . '' : format_username($invitor_arr)) . '</td>
         ' . ($CURUSER['class'] >= UC_STAFF ? '
-        <td class="text-center"><input type="checkbox" name="wu[]" value="' . (int)$arr['id'] . '" /></td>' : '') . '
+        <td class="has-text-centered"><input type="checkbox" name="wu[]" value="' . (int)$arr['id'] . '" /></td>' : '') . '
     </tr>';
         $div_link_number++;
     }
     $div_link_number = 1;
 } else {
     $HTMLOUT .= '<tr>
-<td class="text-center one"><h1>' . $lang['watched_usrempty'] . '!</h1></td></tr>';
+<td class="has-text-centered one"><h1>' . $lang['watched_usrempty'] . '!</h1></td></tr>';
 }
 $HTMLOUT .= '
 <tr>
-<td class="text-center" colspan="6" class="colhead"><a class="altlink" href="javascript:SetChecked(1,\'wu[]\')"> ' . $lang['watched_selall'] . '</a> - <a class="altlink" href="javascript:SetChecked(0,\'wu[]\')">un-' . $lang['watched_selall'] . '</a>
+<td class="has-text-centered" colspan="6" class="colhead"><a class="altlink" href="javascript:SetChecked(1,\'wu[]\')"> ' . $lang['watched_selall'] . '</a> - <a class="altlink" href="javascript:SetChecked(0,\'wu[]\')">un-' . $lang['watched_selall'] . '</a>
         <input type="submit" class="button_big" value="remove selected' . $lang['watched_removedfrom'] . '" /></td></tr></table>
         </form>';
 

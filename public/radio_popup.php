@@ -7,7 +7,7 @@ $lang = array_merge(load_language('global'));
 require_once ROOT_DIR . 'radio.php';
 global $CURUSER, $site_config;
 
-$body_class = 'background-15 h-style-1 text-1 skin-2';
+$body_class = 'background-16 h-style-9 text-9 skin-2';
 $HTMLOUT = '';
 $HTMLOUT = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
 <html xmlns='http://www.w3.org/1999/xhtml'>
@@ -36,7 +36,7 @@ $HTMLOUT = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"h
         </a>
     </div>
     {radioinfo($radio)}
-    <div class='text-center'>
+    <div class='has-text-centered'>
         <a class='altlink' href='javascript: window.close()'><b>[ Close window ]</b></a>
     </div>
 </body>

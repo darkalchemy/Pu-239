@@ -40,7 +40,7 @@ $HTMLOUT .= "<h1>{$lang['reset_title']}</h1>
 <input size='40' name='username' /></td></tr>
 <tr>
 <td colspan='2'>
-<input type='submit' class='btn' value='reset' />
+<input type='submit' class='button' value='reset' />
 </td>
 </tr>
 </table></form>";

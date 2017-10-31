@@ -53,7 +53,7 @@ function radioinfo($radio)
                 $mc1->cache_value('current_radio_song', $md5_current_song, 0);
             }
             $html = '<fieldset>
-                <legend>' . $site_config['site_name'] . ' radio</legend><ul>';
+                <legend>' . $site_config['site_name'] . ' Radio</legend><ul>';
             foreach ($data as $d) {
                 $html .= '<li><b>' . $d . '</b></li>';
             }
@@ -75,10 +75,12 @@ function radioinfo($radio)
             return $html;
         }
     } else {
-        $html .= '<fieldset><legend>' . $site_config['site_name'] . ' radio</legend>
-    <span class="size_3 text-red">
-        <img src="' . $site_config['pic_base_url'] . 'off1.gif" alt="Off-Line" class="tooltipper" title="Off-Line" border="0" /><br>
-        <b>Sorry ' . $CURUSER['username'] . ', the radio is currently offline</b></span></fieldset><br>';
+        $html .= '
+                <h2>' . $site_config['site_name'] . ' Radio</h2>
+                <span class="size_3 text-red">
+                    <img src="' . $site_config['pic_base_url'] . 'off1.gif" alt="Off-Line" class="tooltipper" title="Off-Line" border="0" /><br>
+                    <b>Sorry ' . $CURUSER['username'] . ', the radio is currently offline</b>
+                </h2>';
     }
 
     return $html;

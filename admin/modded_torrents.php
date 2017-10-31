@@ -27,7 +27,7 @@ function do_sort($arr, $empty = false)
                     </td>
                     <td>" . get_date($res['added'], 'LONG') . "</td>
                     <td>
-                        <a class='btn-small btn btn-danger' href='edit.php?id=" . (int)$res['id'] . "' >" . $lang['mtor_edit'] . '</a>
+                        <a class='is-small button is-danger' href='edit.php?id=" . (int)$res['id'] . "' >" . $lang['mtor_edit'] . '</a>
                     </td>
                 </tr>';
         }
@@ -128,7 +128,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                 }
                 $trim = trim($trim, ',');
                 $HTMLOUT .= "
-                <div class='text-center'>
+                <div class='has-text-centered'>
                     <h4>" . $lang['mtor_summary'] . "</h4>$trim
                 </div>
                 <table class='table table-bordered table-striped'>
@@ -199,7 +199,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                 $HTMLOUT .= $pager['pagertop'];
                 $trim = "$_POST[username] : $count";
                 $HTMLOUT .= "
-                <div class='text-center'>
+                <div class='has-text-centered'>
                     <h4>" . $lang['mtor_summary'] . "</h4>$trim
                 </div>
                 <table class='table table-bordered table-striped'>
@@ -225,17 +225,17 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
 }
 $HTMLOUT = '';
 $HTMLOUT .= "
-    <div class='container-fluid portlet'>
+    <div class='container is-fluid portlet'>
         <div class='row-fluid bottom20'>
-            <h1 class='text-center'>" . $lang['mtor_modded_torrents_complete_panel'] . "</h1>
-            <h4 class='text-center'>" . $lang['mtor_quick_links'] . "</h4>
+            <h1 class='has-text-centered'>" . $lang['mtor_modded_torrents_complete_panel'] . "</h1>
+            <h4 class='has-text-centered'>" . $lang['mtor_quick_links'] . "</h4>
             <div class='flex flex-center flex-wrap'>
-                <a class='btn btn-danger right10' href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=today' data-toggle='tooltip' data-placement='top' title='Tooltip on top'>" . $lang['mtor_modded_today'] . "</a>
-                <a class='btn btn-danger right10' href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=yesterday' >" . $lang['mtor_modded_yesterday'] . "</a>
-                <a class='btn btn-danger' href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=unmodded' >" . $lang['mtor_all_unmodded_torrents'] . "</a>
+                <a class='button is-danger right10' href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=today' data-toggle='tooltip' data-placement='top' title='Tooltip on top'>" . $lang['mtor_modded_today'] . "</a>
+                <a class='button is-danger right10' href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=yesterday' >" . $lang['mtor_modded_yesterday'] . "</a>
+                <a class='button is-danger' href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=unmodded' >" . $lang['mtor_all_unmodded_torrents'] . "</a>
             </div>
 
-   <div class='text-center'>
+   <div class='has-text-centered'>
 
    <form method='post' action='{$_SERVER['PHP_SELF']}?tool=modded_torrents'>
     <div class='control-group'>
@@ -257,7 +257,7 @@ $HTMLOUT .= "
       <input type='text' placeholder='" . $lang['mtor_day'] . "' class='input-small' name='day' />
       <input type='text' class='input-small' placeholder='" . $lang['mtor_month'] . "' name='month' />
       <input type='text' class='input-small' placeholder='" . $lang['mtor_year'] . "' name='year' value='" . date('Y', time()) . "'/>
-        <button type='submit' class='btn'>" . $lang['mtor_search'] . '</button>
+        <button type='submit' class='button'>" . $lang['mtor_search'] . '</button>
 
     </div>
   </div>

@@ -138,7 +138,7 @@ if ($id !== 0) {
         }
     }
     $HTMLOUT .= '</select>
-			<input type="submit" value="' . $lang['invite_btn'] . '" class="btn" />
+			<input type="submit" value="' . $lang['invite_btn'] . '" class="button" />
 			</form>
 			<br><br>';
     $aa = range('0', '9');
@@ -150,9 +150,9 @@ if ($id !== 0) {
     foreach ($cc as $L) {
         $HTMLOUT .= ($count == 10) ? '<br><br>' : '';
         if (!strcmp($L, $letter)) {
-            $HTMLOUT .= ' <span class="btn" style="background:orange;">' . strtoupper($L) . '</span>';
+            $HTMLOUT .= ' <span class="button" style="background:orange;">' . strtoupper($L) . '</span>';
         } else {
-            $HTMLOUT .= ' <a href="staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;letter=' . $L . '"><span class="btn">' . strtoupper($L) . '</span></a>';
+            $HTMLOUT .= ' <a href="staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;letter=' . $L . '"><span class="button">' . strtoupper($L) . '</span></a>';
         }
         ++$count;
     }
@@ -182,7 +182,7 @@ if ($id !== 0) {
 		<td>' . get_user_class_name($row['class']) . '</td>
 		' . $country . '
 		<td>
-		<a href="staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;id=' . (int)$row['id'] . '" title="' . $lang['invite_search_look'] . '"><span class="btn">' . $lang['invite_search_view'] . '</span></a></td></tr>';
+		<a href="staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;id=' . (int)$row['id'] . '" title="' . $lang['invite_search_look'] . '"><span class="button">' . $lang['invite_search_view'] . '</span></a></td></tr>';
         }
         $HTMLOUT .= '</table>';
     } else {

@@ -533,7 +533,7 @@ $pm_drop_down = '<form name="compose" method="post" action="mass_bonus_for_membe
                  </tr>
                  <tr>
                  <td class="one"><span style="font-weight: bold;">' . $lang['bonusmanager_pm_body'] . '</span></td>
-                 <td class="one">' . BBcode($body, false) . '</td>
+                 <td class="one">' . BBcode($body) . '</td>
                  </tr>
                  </table></form>';
 $drop_down = '
@@ -582,7 +582,7 @@ $HTMLOUT .= '<form name="inputform" method="post" action="staffpanel.php?tool=ma
     </tr>
     <tr>
         <td class="one" colspan="2">
-        <input type="submit" class="btn" name="button" value="' . $lang['bonusmanager_doit'] . '"  /></td>
+        <input type="submit" class="button" name="button" value="' . $lang['bonusmanager_doit'] . '"  /></td>
     </tr>
     </table></form>';
 echo stdhead($lang['bonusmanager_h1_upload'], true, $stdhead) . $HTMLOUT . stdfoot();

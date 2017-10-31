@@ -1209,7 +1209,7 @@ function flood_limit($table)
 function sql_query($query, $log = true)
 {
     global $query_stat, $queries, $site_config;
-    if ($site_config['log_queries'] && $log) {
+    if (isset($site_config['log_queries']) && $site_config['log_queries'] && $log) {
         $sql = "INSERT INTO queries (query, dateTime) VALUES (" . sqlesc(preg_replace('/[ \t\n\t\r]+/', ' ', preg_replace('/\s*$^\s*/m', ' ', $query))) . ", NOW())";
         sql_query($sql, false);
     }
@@ -1681,7 +1681,12 @@ function breadcrumbs($separator = ' &raquo; ', $home = 'Home')
     $base = ($_SERVER['HTTPS'] ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
     $breadcrumbs = ["<a href='$base'>$home</a>"];
     $last = end(array_keys($path));
+    $action = [];
+
     if (!empty($query)) {
+        $action = explode('=', $query);
+    }
+    if ($action[0] === 'action') {
         $last = '';
     }
 
@@ -1694,6 +1699,19 @@ function breadcrumbs($separator = ' &raquo; ', $home = 'Home')
         }
     }
 
+    if ($action[0] === 'action') {
+        $type = explode('&', str_replace(['-', '_'], ' ', $action[1]));
+        $breadcrumbs[] = ucwords($type[0]);
+    }
+
+//    if (!empty($query)) {
+//        $query_str = '';
+//        if (getSessionVar('query_str')) {
+//            $query_str = getSessionVar('query_str');
+//        }
+//    }
+
+        /*
     if (!empty($query)) {
         $query_str = '';
         if (getSessionVar('query_str')) {
@@ -1734,8 +1752,8 @@ function breadcrumbs($separator = ' &raquo; ', $home = 'Home')
             $breadcrumbs[] = "Invite";
         }
     }
-
-    $current = "<span class='text-white'>" . end($breadcrumbs) . "</span>";
+*/
+    $current = "<span class='has-text-white'>" . end($breadcrumbs) . "</span>";
     array_pop($breadcrumbs);
     $breadcrumbs[] = $current;
 
@@ -1747,7 +1765,7 @@ function bubble($link, $text)
 {
     $id = uniqid('id_');
     $bubble = "
-        <span class='dt-tooltipper-small size_5 text-main' data-tooltip-content='#{$id}'>
+        <span class='dt-tooltipper-small size_5 has-text-primary' data-tooltip-content='#{$id}'>
             $link
         </span>
         <div class='tooltip_templates'>
@@ -1771,9 +1789,6 @@ function make_nice_address($ip)
 
 function return_bytes($val)
 {
-    if ($val == '') {
-        return;
-    }
     $val = strtolower(trim($val));
     $last = $val[strlen($val)-1];
     $val = rtrim($val, $last);
@@ -1794,6 +1809,21 @@ function return_bytes($val)
 }
 
 if (file_exists('install')) {
-    setSessionVar('error', 'Delete the install directory<br>' . ROOT_DIR. 'public' . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR);
+    $HTMLOUT = "<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Warning</title>
+</head>
+<body style='background: grey;'>
+    <div style='font-size:33px;color:white;background-color:red;text-align:center;'>
+        Delete the install directory
+        <p>" . ROOT_DIR . "public" . DIRECTORY_SEPARATOR . "install" . DIRECTORY_SEPARATOR . "</p>
+    </div>
+</body>
+</html>";
+    echo $HTMLOUT;
+    exit();
 }
-

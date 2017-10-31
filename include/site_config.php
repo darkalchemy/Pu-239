@@ -33,7 +33,11 @@ if (($staff_settings = $mc1->get_value('staff_settings_')) === false) {
     while ($staff_setting = mysqli_fetch_assoc($res)) {
         $staff_settings['is_staff']['allowed'][] = (int)$staff_setting['id'];
     }
-    $mc1->cache_value('staff_settings_', $staff_settings, 86400);
+    if (!empty($staff_settings['is_staff']['allowed'])) {
+        $mc1->cache_value('staff_settings_', $staff_settings, 86400);
+    } else {
+        $staff_settings['is_staff']['allowed'] = 0;
+    }
 }
 
 $site_config = array_merge($site_settings, $site_config, $paypal_settings, $hnr_settings, $staff_settings);

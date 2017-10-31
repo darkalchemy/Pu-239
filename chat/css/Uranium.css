@@ -239,6 +239,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #content #chatList span.dateTime {
     font-family: "Lucida Console", Monaco, monospace;
+    font-size: .7em;
 }
 
 .text-center {

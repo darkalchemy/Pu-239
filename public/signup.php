@@ -56,24 +56,24 @@ $value = [
 $value[random_int(1, count($value) - 1)] = 'X';
 
 $HTMLOUT .= "
-    <div class='login-container container-fluid portlet'>
+    <div class='half-container has-text-centered portlet'>
     <p class='left10 top10'>{$lang['signup_cookies']}</p>
     <form method='post' action='takesignup.php'>
         <table class='table table-bordered bottom20'>
             <tr class='no_hover'>
-                <td class='heading'>{$lang['signup_uname']}</td>
+                <td class='rowhead'>{$lang['signup_uname']}</td>
                 <td><input type='text' name='wantusername' id='wantusername' class='w-100' onblur='checkit();' /><div id='namecheck'></div></td>
             </tr>
             <tr class='no_hover'>
-                <td class='heading'>{$lang['signup_pass']}</td>
+                <td class='rowhead'>{$lang['signup_pass']}</td>
                 <td><input class='password w-100' type='password' name='wantpassword' /></td>
             </tr>
             <tr class='no_hover'>
-                <td class='heading'>{$lang['signup_passa']}</td>
+                <td class='rowhead'>{$lang['signup_passa']}</td>
                 <td><input type='password' name='passagain' class='w-100' /></td>
             </tr>
             <tr class='no_hover'>
-                <td class='heading'>{$lang['signup_email']}</td>
+                <td class='rowhead'>{$lang['signup_email']}</td>
                 <td><input type='text' name='email' class='w-100' />
                     <div class='alt_bordered top10'>
                         <span>{$lang['signup_valemail']}</span>
@@ -81,7 +81,7 @@ $HTMLOUT .= "
                 </td>
             </tr>
             <tr class='no_hover'>
-                <td class='heading'>{$lang['signup_timez']}</td>
+                <td class='rowhead'>{$lang['signup_timez']}</td>
                 <td>{$time_select}</td>
             </tr>";
 //==09 Birthday mod
@@ -122,7 +122,7 @@ while ($i <= 31) {
 $day .= '</select>';
 $HTMLOUT .= "
             <tr class='no_hover'>
-                <td class='heading'>{$lang['signup_birth']}<span>*</span></td>
+                <td class='rowhead'>{$lang['signup_birth']}<span>*</span></td>
                 <td>" . $year . $month . $day . '</td>
             </tr>';
 //==End
@@ -159,43 +159,45 @@ foreach ($questions as $sph) {
 }
 $HTMLOUT .= "
             <tr class='no_hover'>
-                <td class='heading'>{$lang['signup_select']}</td>
+                <td class='rowhead'>{$lang['signup_select']}</td>
                 <td><select name='passhint' class='w-100'>\n$passhint\n</select></td>
             </tr>
             <tr class='no_hover'>
-                <td class='heading'>{$lang['signup_enter']}</td>
+                <td class='rowhead'>{$lang['signup_enter']}</td>
                 <td>
                     <input type='text' name='hintanswer' class='w-100' /><br><span>{$lang['signup_this_answer']}<br>{$lang['signup_this_answer1']}</span>
                 </td>
             </tr>
             <tr class='no_hover'>
-                <td class='heading'>{$lang['signup_country']}</td>
+                <td class='rowhead'>{$lang['signup_country']}</td>
                 <td><select name='country' class='w-100'>\n$country\n</select></td>
             </tr>
             <tr class='no_hover'>
-                <td class='heading'>{$lang['signup_gender']}</td>
+                <td class='rowhead'>{$lang['signup_gender']}</td>
                 <td>$gender</td>
             </tr>
             <tr class='no_hover'>
-                <td class='heading'></td>
+                <td class='rowhead'></td>
                 <td>
-                  <input type='checkbox' name='rulesverify' value='yes' /> {$lang['signup_rules']}<br>
-                  <input type='checkbox' name='faqverify' value='yes' /> {$lang['signup_faq']}<br>
-                  <input type='checkbox' name='ageverify' value='yes' /> {$lang['signup_age']}
+                    <input type='checkbox' name='rulesverify' value='yes' /> {$lang['signup_rules']}<br>
+                    <input type='checkbox' name='faqverify' value='yes' /> {$lang['signup_faq']}<br>
+                    <input type='checkbox' name='ageverify' value='yes' /> {$lang['signup_age']}
                 </td>
             </tr>" . ($site_config['captcha_on'] ? "
             <tr class='no_hover'>
-                <td class='rowhead' colspan='2' id='captcha_show'></td>
+                <td colspan='2' id='captcha_show'></td>
             </tr>" : '') . "
             <tr class='no_hover'>
-                <td colspan='2'>{$lang['signup_click']} <strong>{$lang['signup_x']}</strong> {$lang['signup_click1']}</td>
+                <td colspan='2'>
+                {$lang['signup_click']} <span class='has-text-danger is-bold'>{$lang['signup_x']}</span> {$lang['signup_click1']}
+                </td>
             </tr>
             <tr class='no_hover'>
                 <td colspan='2'>
-                    <span class='answers-container'>";
+                    <span class='tabs is-marginless'>";
 for ($i = 0; $i < count($value); ++$i) {
     $HTMLOUT .= '
-                        <input name="submitme" type="submit" value="' . $value[$i] . '" class="btn" />';
+                        <input name="submitme" type="submit" value="' . $value[$i] . '" class="button" />';
 }
 $HTMLOUT .= '
                     </span>

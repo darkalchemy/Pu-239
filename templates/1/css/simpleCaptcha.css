@@ -1,0 +1,41 @@
+.captchaImage,
+.captchaImage:hover,
+.captchaImage:active,
+.captchaImage:focus,
+.simpleCaptchaSelected {
+    -webkit-transition: all 0.35s ease-in-out;
+    -moz-transition: all 0.35s ease-in-out;
+    -o-transition: all 0.35s ease-in-out;
+    transition: all 0.35s ease-in-out;
+}
+
+.captchaImage {
+    width: 48px;
+    height: 48px;
+    padding: .1875em;
+    -webkit-border-radius: .1875em;
+    -moz-border-radius: .1875em;
+    border-radius: .1875em;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+.captchaImage:hover {
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.captchaImage:active {
+    border: 2px solid red;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.captchaImage:focus {
+    border: 2px solid red;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.simpleCaptchaSelected {
+    border: 2px solid red;
+    background: rgba(0, 0, 0, 0.4);
+}

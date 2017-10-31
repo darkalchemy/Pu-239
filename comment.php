@@ -134,14 +134,14 @@ if ($action == 'add') {
       <input type='hidden' name='tid' value='{$id}'/>
       <input type='hidden' name='locale' value='$name' />";
     if ($site_config['BBcode'] && function_exists('BBcode')) {
-        $HTMLOUT .= BBcode($body, false);
+        $HTMLOUT .= BBcode($body);
     } else {
         $HTMLOUT .= "<textarea name='text' rows='10' cols='60'></textarea>";
     }
     $HTMLOUT .= "<br>
       <label for='anonymous'>Tick this to post anonymously</label>
       <input id='anonymous' type='checkbox' name='anonymous' value='yes' />
-      <br><input type='submit' class='btn' value='{$lang['comment_doit']}' /></form>";
+      <br><input type='submit' class='button' value='{$lang['comment_doit']}' /></form>";
     $res = sql_query("SELECT c.id, c.text, c.added, c.$locale, c.anonymous, c.editedby, c.editedat, c.username, u.id as user, u.title, u.avatar, u.offavatar, u.av_w, u.av_h, u.class, u.reputation, u.mood, u.donor, u.warned
                         FROM comments AS c
                         LEFT JOIN users AS u ON c.user = u.id
@@ -197,12 +197,12 @@ if ($action == 'add') {
        <input type='hidden' name='tid' value='" . (int)$arr['tid'] . "' />
       <input type='hidden' name='cid' value='$commentid' />";
     if ($site_config['BBcode'] && function_exists('BBcode')) {
-        $HTMLOUT .= BBcode(htmlsafechars($arr['text']), false);
+        $HTMLOUT .= BBcode($arr['text']);
     } else {
         $HTMLOUT .= "<textarea name='text' rows='10' cols='60'>" . htmlsafechars($arr['text']) . '</textarea>';
     }
     $HTMLOUT .= '
-      <br>' . ($CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" value="lasteditedby" checked="checked" name="lasteditedby" id="lasteditedby" /> Show Last Edited By<br><br>' : '') . ' <input type="submit" class="btn" value="' . $lang['comment_doit'] . '" /></form>';
+      <br>' . ($CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" value="lasteditedby" checked="checked" name="lasteditedby" id="lasteditedby" /> Show Last Edited By<br><br>' : '') . ' <input type="submit" class="button" value="' . $lang['comment_doit'] . '" /></form>';
     echo stdhead("{$lang['comment_edit']}'" . $arr[$name] . "'", true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
     die;
 } elseif ($action == 'delete') {

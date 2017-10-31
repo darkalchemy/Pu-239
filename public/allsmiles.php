@@ -4,7 +4,7 @@ require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
 
 $lang = array_merge(load_language('global'));
-$body_class = 'background-15 h-style-1 text-1 skin-2';
+$body_class = 'background-16 h-style-9 text-9 skin-2';
 $htmlout = '';
 $htmlout = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
 <html xmlns='http://www.w3.org/1999/xhtml'>
@@ -31,32 +31,38 @@ $count = 0;
 $list = '';
 foreach ($smilies as $code => $url) {
     $list .= "
-        <span class='margin10 bordered mw-50 text-center'>
-            <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
-                <img src='./images/smilies/" . $url . "' alt='' />
-            </a>
+        <span class='margin10 mw-50 is-flex'>
+            <span class='bordered'>
+                <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
+                    <img src='./images/smilies/" . $url . "' alt='' />
+                </a>
+            </span>
         </span>";
 }
 foreach ($customsmilies as $code => $url) {
     $list .= "
-        <span class='margin10 bordered mw-50 text-center'>
-            <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
-                <img src='./images/smilies/" . $url . "' alt='' />
-            </a>
+        <span class='margin10 mw-50 is-flex'>
+            <span class='bordered'>
+                <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
+                    <img src='./images/smilies/" . $url . "' alt='' />
+                </a>
+            </span>
         </span>";
 }
 if ($CURUSER['class'] >= UC_STAFF) {
     foreach ($staff_smilies as $code => $url) {
         $list .= "
-        <span class='margin10 bordered mw-50 text-center'>
-            <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
-                <img src='./images/smilies/" . $url . "' alt='' />
-            </a>
+        <span class='margin10 mw-50 is-flex'>
+            <span class='bordered'>
+                <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
+                    <img src='./images/smilies/" . $url . "' alt='' />
+                </a>
+            </span>
         </span>";
     }
 }
 $htmlout .= "
-    <div class='container-flex'>
+    <div class='level-center'>
         $list
     </div>
 </body>

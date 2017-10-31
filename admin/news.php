@@ -105,7 +105,7 @@ if ($mode == 'edit') {
         stderr($lang['news_success'], $lang['news_edit_success']);
     } else {
         $HTMLOUT .= "
-        <div class='container-fluid portlet'>
+        <div class='container is-fluid portlet'>
             <h1>{$lang['news_edit_item']}</h1>
             <form method='post' name='compose' action='./staffpanel.php?tool=news&amp;mode=edit&amp;newsid=$newsid'>
                 <table class='table table-bordered table-striped'>
@@ -122,7 +122,7 @@ if ($mode == 'edit') {
                             BBcode Editor
                         </td>
                         <td>
-                            " . BBcode(htmlsafechars($arr['body']), false) . "
+                            " . BBcode($arr['body']) . "
                         </td>
                     </tr>
                     <tr>
@@ -150,8 +150,8 @@ if ($mode == 'edit') {
                     </tr>
                     <tr>
                         <td colspan='2'>
-                            <div class='text-center'>
-                                <input type='submit' value='{$lang['news_okay']}' class='btn' />
+                            <div class='has-text-centered'>
+                                <input type='submit' value='{$lang['news_okay']}' class='button' />
                             </div>
                         </td>
                     </tr>
@@ -166,7 +166,7 @@ if ($mode == 'edit') {
 if ($mode == 'news') {
     $res = sql_query('SELECT n.id AS newsid, n.body, n.title, n.userid, n.added, n.anonymous, u.id, u.username, u.class, u.warned, u.chatpost, u.pirate, u.king, u.leechwarn, u.enabled, u.donor FROM news AS n LEFT JOIN users AS u ON u.id=n.userid ORDER BY sticky, added DESC') or sqlerr(__FILE__, __LINE__);
     $HTMLOUT .= "
-    <div class='container-fluid portlet'>
+    <div class='container is-fluid portlet'>
         <h1>{$lang['news_submit_new']}</h1>
         <form method='post' name='compose' action='./staffpanel.php?tool=news&amp;mode=add'>
                 <table class='table table-bordered table-striped'>
@@ -182,7 +182,7 @@ if ($mode == 'news') {
                         <td>
                             BBcode Editor
                         </td>
-                        <td>" . BBcode(false) . "
+                        <td>" . BBcode() . "
                         </td>
                     </tr>
                     <tr>
@@ -209,8 +209,8 @@ if ($mode == 'news') {
                     </tr>
                     <tr class='no_hover'>
                         <td colspan='2'>
-                            <div class='text-center'>
-                                <input type='submit' value='{$lang['news_okay']}' class='btn' />
+                            <div class='has-text-centered'>
+                                <input type='submit' value='{$lang['news_okay']}' class='button' />
                             </div>
                         </td>
                     </tr>

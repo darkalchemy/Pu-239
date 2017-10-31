@@ -2,7 +2,7 @@
 if (XBT_TRACKER == true) {
     $htmlout .= "
         <li>
-        <a class='tooltip' href='index.php#'><b class='btn btn-success btn-small'>XBT TRACKER</b>
+        <a class='tooltip' href='index.php#'><span class='button is-success is-small'>XBT TRACKER</span>
         <span class='custom info alert alert-success'><em>XBT TRACKER</em>
       <br>XBT TRACKER running - No crazyhours, happyhours, freeslots active :-(<br><br></span></a></li>";
 } else {
@@ -180,14 +180,14 @@ if (XBT_TRACKER == true) {
     $htmlout .= "
                 <li>
                     <a href='./mybonus.php'>
-                        <b class='btn btn-success btn-small dt-tooltipper-small' data-tooltip-content='#karma_tooltip'>Karma Contribution's</b>
+                        <span class='btn tag is-success dt-tooltipper-small' data-tooltip-content='#karma_tooltip'>Karma Contribution's</span>
                         <div class='tooltip_templates'>
                             <span id='karma_tooltip'>
-                                <div class='size_4 text-center text-lime bottom10'>Karma Contribution's</div>
-                                <div class='answers-container'>
+                                <div class='size_4 has-text-centered has-text-success .has-text-weight-bold bottom10'>Karma Contribution's</div>
+                                <div class='level-center'>
                                     <span>Freeleech</span><span> [ ";
     if ($freeleech_enabled) {
-        $htmlout .= '<span class="text-lime"> ON </span>' . get_date($freeleech_start_time, 'DATE') . ' - ' . get_date($freeleech_end_time, 'DATE');
+        $htmlout .= '<span class="has-text-success"> ON </span>' . get_date($freeleech_start_time, 'DATE') . ' - ' . get_date($freeleech_end_time, 'DATE');
     } else {
         $htmlout .= $fstatus;
     }
@@ -196,10 +196,10 @@ if (XBT_TRACKER == true) {
                                 </div>';
 
     $htmlout .= "
-                                <div class='answers-container'>
+                                <div class='level-center'>
                                     <span>DoubleUpload</span><span> [ ";
     if ($double_upload_enabled) {
-        $htmlout .= '<span class="text-lime"> ON </span>' . get_date($double_upload_start_time, 'DATE') . ' - ' . get_date($double_upload_end_time, 'DATE');
+        $htmlout .= '<span class="has-text-success"> ON </span>' . get_date($double_upload_start_time, 'DATE') . ' - ' . get_date($double_upload_end_time, 'DATE');
     } else {
         $htmlout .= $dstatus;
     }
@@ -208,10 +208,10 @@ if (XBT_TRACKER == true) {
                                 </div>';
 
     $htmlout .= "
-                                <div class='answers-container'>
+                                <div class='level-center'>
                                     <span>Half Download</span><span> [ ";
     if ($half_down_enabled) {
-        $htmlout .= '<span class="text-lime"> ON</span> ' . get_date($half_down_start_time, 'DATE') . ' - ' . get_date($half_down_end_time, 'DATE');
+        $htmlout .= '<span class="has-text-success"> ON</span> ' . get_date($half_down_start_time, 'DATE') . ' - ' . get_date($half_down_end_time, 'DATE');
     } else {
         $htmlout .= $hstatus;
     }

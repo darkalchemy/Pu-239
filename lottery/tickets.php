@@ -4,46 +4,54 @@ while ($ac = mysqli_fetch_assoc($lconf)) {
     $lottery_config[$ac['name']] = $ac['value'];
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $fail = false;
     $tickets = isset($_POST['tickets']) ? (int)$_POST['tickets'] : '';
     if (!$tickets) {
-        stderr('Hmm', 'How many tickets you wanna buy?');
+        setSessionVar('error', "How many tickets you wanna buy? [{$_POST['tickets']}]");
+        $fail = true;
+    } elseif ($tickets <= 0) {
+        setSessionVar('error', "you can't buy a negative quantity? [{$_POST['tickets']}]");
+        $fail = true;
     }
-    $user_tickets = get_row_count('tickets', 'where user=' . $CURUSER['id']);
+    $user_tickets = get_row_count('tickets', 'WHERE user = ' . $CURUSER['id']);
     if ($user_tickets + $tickets > $lottery_config['user_tickets']) {
-        stderr('Hmmm', 'You reached your limit max is ' . $lottery_config['user_tickets'] . ' ticket(s)');
-    }
-    if ($CURUSER['seedbonus'] < $tickets * $lottery_config['ticket_amount']) {
-        stderr('Hmmmm', 'You need more points to buy the amount of tickets you want');
+        setSessionVar('error', 'You reached your limit max is ' . $lottery_config['user_tickets'] . ' ticket(s)');
+        $fail = true;
+    } elseif ($CURUSER['seedbonus'] < $tickets * $lottery_config['ticket_amount']) {
+        setSessionVar('error', 'You need more points to buy the amount of tickets you want');
+        $fail = true;
     }
     for ($i = 1; $i <= $tickets; ++$i) {
         $t[] = '(' . $CURUSER['id'] . ')';
     }
-    if (sql_query('INSERT INTO tickets(user) VALUES ' . join(', ', $t))) {
-        sql_query('UPDATE users SET seedbonus = seedbonus - ' . ($tickets * $lottery_config['ticket_amount']) . ' WHERE id = ' . $CURUSER['id']);
-        $seedbonus_new = $CURUSER['seedbonus'] - ($tickets * $lottery_config['ticket_amount']);
-        $What_Cache = (XBT_TRACKER == true ? 'userstats_xbt_' : 'userstats_');
-        $What_Expire = (XBT_TRACKER == true ? $site_config['expires']['u_stats_xbt'] : $site_config['expires']['u_stats']);
-        $mc1->begin_transaction($What_Cache . $CURUSER['id']);
-        $mc1->update_row(false, [
-            'seedbonus' => $seedbonus_new,
-        ]);
-        $mc1->commit_transaction($What_Expire);
-        $What_Cache = (XBT_TRACKER == true ? 'user_stats_xbt_' : 'user_stats_');
-        $What_Expire = (XBT_TRACKER == true ? $site_config['expires']['user_stats_xbt'] : $site_config['expires']['user_stats']);
-        $mc1->begin_transaction($What_Cache . $CURUSER['id']);
-        $mc1->update_row(false, [
-            'seedbonus' => $seedbonus_new,
-        ]);
-        $mc1->commit_transaction($What_Expire);
-        stderr('Success', 'You bought <b>' . $tickets . '</b>, your new amount is <b>' . ($tickets + $user_tickets) . '</b>');
-    } else {
-        stderr('Errr', 'There was an error with the update query, mysql error: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+    if (!$fail) {
+        if (sql_query('INSERT INTO tickets(user) VALUES ' . join(', ', $t))) {
+            sql_query('UPDATE users SET seedbonus = seedbonus - ' . ($tickets * $lottery_config['ticket_amount']) . ' WHERE id = ' . $CURUSER['id']);
+            $seedbonus_new = $CURUSER['seedbonus'] - ($tickets * $lottery_config['ticket_amount']);
+            $What_Cache = (XBT_TRACKER == true ? 'userstats_xbt_' : 'userstats_');
+            $What_Expire = (XBT_TRACKER == true ? $site_config['expires']['u_stats_xbt'] : $site_config['expires']['u_stats']);
+            $mc1->begin_transaction($What_Cache . $CURUSER['id']);
+            $mc1->update_row(false, [
+                'seedbonus' => $seedbonus_new,
+            ]);
+            $mc1->commit_transaction($What_Expire);
+            $What_Cache = (XBT_TRACKER == true ? 'user_stats_xbt_' : 'user_stats_');
+            $What_Expire = (XBT_TRACKER == true ? $site_config['expires']['user_stats_xbt'] : $site_config['expires']['user_stats']);
+            $mc1->begin_transaction($What_Cache . $CURUSER['id']);
+            $mc1->update_row(false, [
+                'seedbonus' => $seedbonus_new,
+            ]);
+            $mc1->commit_transaction($What_Expire);
+            setSessionVar('success', 'You bought <b class="has-text-primary">' . number_format($tickets) . '</b>. You now have <b class="has-text-primary">' . number_format($tickets + $user_tickets) . '</b> tickets!
+');
+        } else {
+            setSessionVar('error', 'There was an error with the update query, mysql error: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+        }
     }
-    exit;
 }
 $classes_allowed = (strpos($lottery_config['class_allowed'], '|') ? explode('|', $lottery_config['class_allowed']) : $lottery_config['class_allowed']);
 if (!(is_array($classes_allowed) ? in_array($CURUSER['class'], $classes_allowed) : $CURUSER['class'] == $classes_allowed)) {
-    stderr('Error', 'Your class is not allowed to play in this lottery');
+    setSessionVar('error', 'Your class is not allowed to play in this lottery');
 }
 //some default values
 $lottery['total_pot'] = 0;
@@ -79,10 +87,10 @@ if (time() > $lottery_config['end_date'] || $lottery_config['user_tickets'] <= $
     $lottery['current_user']['can_buy'] = 0;
 }
 $html .= "
-    <div class='container-fluid portlet'>
-        <h1 class='text-center'>{$site_config['site_name']} Lottery</h1>
-        <div class='bordered padleft10 padright10 bottom10 top20'>
-            <div class='alt_bordered transparent text-center'>
+    <div class='container is-fluid portlet'>
+        <h1 class='has-text-centered'>{$site_config['site_name']} Lottery</h1>
+        <div class='bordered bottom10 top20'>
+            <div class='alt_bordered bg-00 has-text-centered'>
                 <ul style='text-align:left;'>
                     <li>Tickets are non-refundable</li>
                     <li>Each ticket costs <b>" . number_format($lottery_config['ticket_amount']) . '</b> Karma Bonus Points, which is taken from your seedbonus amount</li>
@@ -120,21 +128,17 @@ $html .= "
             <tr>
                 <td>Purchaseable</td>
                 <td>" . ($lottery['current_user']['could_buy'] > $lottery['current_user']['can_buy'] ? 'you have points for <b>' . number_format($lottery['current_user']['can_buy']) . '</b> ticket(s) but you can buy another <b>' . ($lottery['current_user']['could_buy'] - $lottery['current_user']['can_buy']) . '</b> ticket(s) if you get more bonus points' : number_format($lottery['current_user']['can_buy'])) . '</td>
-            </tr>';
+            </tr>
+        </table>';
 if ($lottery['current_user']['can_buy'] > 0) {
     $html .= "
-            <tr>
-                <td colspan='2'>
-                    <form action='lottery.php?do=tickets' method='post'>
-                        <div class='text-center'>
-                            <input type='text' size='5' name='tickets' />
-                            <input type='submit' value='Buy tickets' />
-                        </div>
-                    </form>
-                </td>
-            </tr>";
+        <form action='lottery.php?action=tickets' method='post'>
+            <div class='has-text-centered bottom20'>
+                <input type='text' size='10' name='tickets' />
+                <input type='submit' value='Buy tickets' class='button' />
+            </div>
+        </form>";
 }
 $html .= '
-        </table>
     </div>';
 echo stdhead('Buy tickets for lottery') . $html . stdfoot();

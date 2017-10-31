@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'torrenttable_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
@@ -19,11 +19,13 @@ if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
 }
 $stdfoot = [
     'js' => [
-     ];
+    ],
+];
 $stdhead = [
     'css' => [
-            'browse'],
-     ];
+        get_file('browse_css')
+    ],
+];
 $lang = array_merge(load_language('global'), load_language('browse'), load_language('torrenttable_functions'));
 $HTMLOUT = $searchin = $select_searchin = $where = $addparam = $new_button = '';
 $cats = genrelist();
@@ -340,7 +342,7 @@ foreach (['title' => 'Name', 'descr' => 'Description', 'genre' => 'Genre', 'all'
 }
 $searchin .= '</select>';
 $HTMLOUT .= $searchin . '&#160;' . $deadcheck . '&#160;' . $only_free_box;
-$HTMLOUT .= "<input type='submit' value='{$lang['search_search_btn']}' class='btn' />
+$HTMLOUT .= "<input type='submit' value='{$lang['search_search_btn']}' class='button' />
             </td></tr></table></form><br>";
 $HTMLOUT .= "{$new_button}";
 if (isset($cleansearchstr)) {

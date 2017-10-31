@@ -37,13 +37,13 @@ $HTMLOUT .= "<tr>
 </td></tr>
 " . ($site_config['reports'] ? "<tr><td><b>Report Offer</b></td><td>
 for breaking the rules 
-<form action='report.php?type=Offer&amp;id=$id' method='post'><input class='btn' type='submit' name='submit' value='Report Offer' /></form></td>
+<form action='report.php?type=Offer&amp;id=$id' method='post'><input class='button' type='submit' name='submit' value='Report Offer' /></form></td>
 </tr>" : '');
 if ($num['torrentid'] == 0) {
     $HTMLOUT .= "<tr><td><b>Accept This Offer</b></td>
     <td>
     <form method='post' action='viewoffers.php?id=" . $id . "&amp;offer_filled'>
-    <strong>" . $site_config['baseurl'] . "/details.php?id=</strong><input type='text' size='10' name='torrentid' value='' /> <input type='submit' value='Fill Offer' class='btn' /><br>
+    <strong>" . $site_config['baseurl'] . "/details.php?id=</strong><input type='text' size='10' name='torrentid' value='' /> <input type='submit' value='Fill Offer' class='button' /><br>
     Enter the <b>ID</b>  of the torrent. (copy/paste the <strong>ID</strong> from another window/tab the correct ID number)<br></form></td>
     </tr>\n";
 } else {

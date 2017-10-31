@@ -74,7 +74,7 @@ if (!isset($_FILES['file'])) {
         </h3>";
     }
     $HTMLOUT .= "
-        <div class='container-fluid portlet text-center'>
+        <div class='container is-fluid portlet has-text-centered'>
             <form action='{$_SERVER['PHP_SELF']}' method='post' enctype='multipart/form-data'>
                 <div>
                     <b>{$lang['bitbucket_invalid_extension']}" . join(', ', $formats) . "</b>
@@ -92,7 +92,7 @@ if (!isset($_FILES['file'])) {
                     <input type='checkbox' name='avy' value='1' />{$lang['bitbucket_tick']}
                 </div>
                 <div>
-                    <input class='btn' type='submit' value='{$lang['bitbucket_upload']}' />
+                    <input class='button' type='submit' value='{$lang['bitbucket_upload']}' />
                 </div>
             </form>
             <script>
@@ -238,7 +238,7 @@ if (isset($_POST['from']) && $_POST['from'] == 'upload') {
     exit();
 }
 $HTMLOUT .= "
-        <div class='bitbucket text-center'>
+        <div class='bitbucket has-text-centered'>
             <div>
                 <a href='{$_SERVER['PHP_SELF']}'><strong>{$lang['bitbucket_up_another']}</strong></a>
             </div>

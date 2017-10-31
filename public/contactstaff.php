@@ -3,56 +3,88 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
+require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('contactstaff'));
 $stdhead = [
-    /* include css **/
     'css' => [
         get_file('contactstaff_css')
     ],
 ];
+$stdfoot = [
+    'js' => [
+        get_file('upload_js')
+    ],
+];
+
+$msg = '';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $msg = isset($_POST['msg']) ? htmlsafechars($_POST['msg']) : '';
+    $msg = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
     $subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : '';
     $returnto = isset($_POST['returnto']) ? htmlsafechars($_POST['returnto']) : $_SERVER['PHP_SELF'];
+    $fail = false;
     if (empty($msg)) {
-        stderr($lang['contactstaff_error'], $lang['contactstaff_no_msg']);
+        setSessionVar('error', $lang['contactstaff_no_msg']);
+        $fail = true;
     }
     if (empty($subject)) {
-        stderr($lang['contactstaff_error'], $lang['contactstaff_no_sub']);
+        setSessionVar('error', $lang['contactstaff_no_sub']);
+        $fail = true;
     }
-    if (sql_query('INSERT INTO staffmessages (sender, added, msg, subject) VALUES(' . sqlesc($CURUSER['id']) . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')')) {
-        $mc1->delete_value('staff_mess_');
-        header('Refresh: 3; url=' . urldecode($returnto)); //redirect but wait 3 seconds
-        stderr($lang['contactstaff_success'], $lang['contactstaff_success_msg']);
-    } else {
-        stderr($lang['contactstaff_error'], sprintf($lang['contactstaff_mysql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+
+    if (!$fail) {
+        $sql = 'INSERT INTO staffmessages (sender, added, msg, subject) VALUES(' . sqlesc($CURUSER['id']) . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+        if (sql_query($sql)) {
+            $mc1->delete_value('staff_mess_');
+            header('Refresh: 3; url=' . urldecode($returnto)); //redirect but wait 3 seconds
+            setSessionVar('success', $lang['contactstaff_success_msg']);
+        } else {
+            setSessionVar('error', sprintf($lang['contactstaff_mysql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+        }
     }
 } else {
     $HTMLOUT = "
-    <!--<div ><img src='images/global.design/support.png' alt='' title='Support' class='global_image' width='25'/></div>
-        <div >Contact Staff</div><br>-->
-        <div ><br>
-    <form method='post' name='message' action='" . $_SERVER['PHP_SELF'] . "'>
-				 <table class='table table-bordered table-striped'>
-				  <tr><td colspan='2'>
-					<h1>{$lang['contactstaff_title']}</h1>
-					<p class='small'>{$lang['contactstaff_info']}</p>
-				  </td></tr>
-				  <tr><td>
-					{$lang['contactstaff_subject']}
-				  </td><td>
-					<input type='text' name='subject' />
-				  </td></tr>
-		<tr><td colspan='2'>";
-    if (isset($_GET['returnto'])) {
-        $HTMLOUT .= "<input type='hidden' name='returnto' value='" . urlencode($_GET['returnto']) . "' />";
-    }
-    $HTMLOUT .= "<textarea name='msg' cols='80' rows='15'></textarea>
+            <form method='post' name='message' action='" . $_SERVER['PHP_SELF'] . "'>";
+    $header = "
+				    <tr>
+				        <th colspan='2'>
+				            <div class='has-text-centered'>
+					            <h1>{$lang['contactstaff_title']}</h1>
+					            <p class='small'>{$lang['contactstaff_info']}</p>
+					        </div>
+				        </th>
+				    </tr>
+				    <tr>
+				        <th class='w-10'>
+					        {$lang['contactstaff_subject']}
+				        </th>
+				        <th>
+				    	    <input type='text' name='subject' class='w-100'/>
+				    	</th>
+		            </tr>";
+
+    $body = "
+                    <tr>
+                        <td colspan='2'>" .
+                            BBcode($msg) . "
                        </td>
-                     </tr>
-                    <tr><td colspan='2'><input type='submit' value='{$lang['contactstaff_sendit']}' class='btn' /></td></tr>
-                    </table>
-        </form></div>";
-    echo stdhead($lang['contactstaff_header'], true, $stdhead) . $HTMLOUT . stdfoot();
+                    </tr>
+                    <tr>
+                        <td colspan='2'>
+                            <div class='has-text-centered'>
+                                <input type='submit' value='{$lang['contactstaff_sendit']}' class='button' />
+                            </div>
+                        </td>
+                    </tr>";
+    if (isset($_GET['returnto'])) {
+        $body .= "
+                    <input type='hidden' name='returnto' value='" . urlencode($_GET['returnto']) . "' />";
+    }
+
+    $HTMLOUT .= main_table($body, $header);
+
+    $HTMLOUT .= "
+            </form>";
+
+    echo stdhead($lang['contactstaff_header'], true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
 }

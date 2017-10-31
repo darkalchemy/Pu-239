@@ -148,7 +148,7 @@ if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
 }
 //=== mini menu
 $mini_menu = '
-    <div class="answers-container">
+    <div class="level-center">
         <a class="altlink bordered" href="./forums.php?action=subscriptions">' . $lang['fm_my_subscriptions'] . '</a>
         <a class="altlink bordered" href="./forums.php?action=search">' . $lang['fe_search'] . '</a>
         <a class="altlink bordered" href="./forums.php?action=view_unread_posts">' . $lang['fm_unread_posts'] . '</a>
@@ -158,7 +158,7 @@ $mini_menu = '
         <a class="altlink bordered" href="./forums.php?action=member_post_history">' . $lang['fm_member_post_history'] . '</a>' : '
     </div>');
 $location_bar = $mini_menu . (isset($_GET['m']) ? '
-    <h1 class="text-center">' . $lang['fm_all_forums_up_to_date'] . '.</h1>' : '');
+    <h1 class="has-text-centered">' . $lang['fm_all_forums_up_to_date'] . '.</h1>' : '');
 $legend = '
     <table class="table table-bordered table-striped top20 bottom20 first">
         <thead>

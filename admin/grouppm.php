@@ -187,7 +187,7 @@ $HTMLOUT .= "<fieldset style='border:1px solid #333333; padding:5px;'>
           <td nowrap='nowrap'><b>{$lang['grouppm_groups']}</b></td>
           </tr>
         <tr>
-          <td width='100%'>" . BBcode(false) . "</td>
+          <td width='100%'>" . BBcode() . "</td>
           <td width='100%' >" . dropdown() . "</td>
         </tr>
         <tr>

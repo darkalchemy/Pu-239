@@ -780,7 +780,7 @@ $HTMLOUT .= '
 
 
     <div class="span7 offset1">
-    <input class="btn btn-primary" type="submit" name="submit" value="Submit" tabindex="2" accesskey="s" /></div><br><br>
+    <input class="button is-primary" type="submit" name="submit" value="Submit" tabindex="2" accesskey="s" /></div><br><br>
     <div class="container">
     <fieldset><legend>Site Alert Settings</legend></fieldset>
         <div class="row-fluid">
@@ -931,7 +931,7 @@ $HTMLOUT .= '
 
 $HTMLOUT .= '
         <div class="span7 offset1">
-        <input class="btn btn-primary" type="submit" name="submit" value="Submit" tabindex="2" accesskey="s" /></div><br><br>
+        <input class="button is-primary" type="submit" name="submit" value="Submit" tabindex="2" accesskey="s" /></div><br><br>
         <div class="container">
         <fieldset><legend>Userdetails Settings</legend></fieldset>
 
@@ -1364,5 +1364,5 @@ if ($CURUSER['class'] >= UC_STAFF) {
 ';
 }
 $HTMLOUT .= '<div class="span7 offset1">
-<input class="btn btn-primary" type="submit" name="submit" value="Submit" tabindex="2" accesskey="s" /></div></div></div></form></div>';
+<input class="button is-primary" type="submit" name="submit" value="Submit" tabindex="2" accesskey="s" /></div></div></div></form></div>';
 echo stdhead('User Blocks Config', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);

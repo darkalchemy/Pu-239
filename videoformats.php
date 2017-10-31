@@ -6,7 +6,7 @@ $lang = array_merge(load_language('global'), load_language('videoformats'));
 $HTMLOUT = '';
 $HTMLOUT .= "
 <fieldset class='header'><legend>{$lang['videoformats_body']}</legend>
-	<div class='container-fluid cite text-center'>
+	<div class='container cite has-text-centered'>
 		<table class='table table-bordered  table-striped'>
 			<tbody>
 				<tr>

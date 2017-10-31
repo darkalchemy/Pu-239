@@ -179,13 +179,13 @@ if (mysqli_num_rows($res) == 0) {
             $title = get_user_class_name($friendp['class']);
         }
         $linktouser = "<a href='userdetails.php?id=" . (int)$friendp['id'] . "'><b>" . format_username($friendp) . "</b></a>[$title]<br>{$lang['friends_last_seen']} " . ($friendp['perms'] < bt_options::PERMS_STEALTH ? get_date($friendp['last_access'], '') : 'Never');
-        $confirm = "<br><span class='btn'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=friend&amp;targetid=" . (int)$friendp['id'] . "'>Confirm</a></span>";
-        $block = " <span class='btn'><a href='{$site_config['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=" . (int)$friendp['id'] . "'>Block</a></span>";
+        $confirm = "<br><span class='button'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=confirm&amp;type=friend&amp;targetid=" . (int)$friendp['id'] . "'>Confirm</a></span>";
+        $block = " <span class='button'><a href='{$site_config['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=" . (int)$friendp['id'] . "'>Block</a></span>";
         $avatar = ($CURUSER['avatars'] == 'yes' ? htmlsafechars($friendp['avatar']) : '');
         if (!$avatar) {
             $avatar = "{$site_config['pic_base_url']}forumicons/default_avatar.gif";
         }
-        $reject = " <span class='btn'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=friend&amp;targetid=" . (int)$friendp['id'] . "'>{$lang['friends_reject']}</a></span>";
+        $reject = " <span class='button'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=friend&amp;targetid=" . (int)$friendp['id'] . "'>{$lang['friends_reject']}</a></span>";
         $friendsp .= "<div>" . ($avatar ? "<img width='50px' src='$avatar' alt='Avatar' />" : '') . "<p >{$linktouser}<br><br>{$confirm}{$block}{$reject}</p></div><br>";
     }
 }
@@ -227,8 +227,8 @@ if (mysqli_num_rows($res) == 0) {
         }
         $ratio = member_ratio($friend['uploaded'], $site_config['ratio_free'] ? '0' : $friend['downloaded']);
         $linktouser = "<a href='userdetails.php?id=" . (int)$friend['id'] . "'><b>" . format_username($friend) . "</b></a>[$title] [$ratio]<br>{$lang['friends_last_seen']} " . ($friend['perms'] < bt_options::PERMS_STEALTH ? get_date($friend['last_access'], '') : 'Never');
-        $delete = "<span class='btn'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . (int)$friend['id'] . "'>{$lang['friends_remove']}</a></span>";
-        $pm_link = " <span class='btn'><a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . (int)$friend['id'] . "'>{$lang['friends_pm']}</a></span>";
+        $delete = "<span class='button'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . (int)$friend['id'] . "'>{$lang['friends_remove']}</a></span>";
+        $pm_link = " <span class='button'><a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . (int)$friend['id'] . "'>{$lang['friends_pm']}</a></span>";
         $avatar = ($CURUSER['avatars'] == 'yes' ? htmlsafechars($friend['avatar']) : '');
         if (!$avatar) {
             $avatar = "{$site_config['pic_base_url']}forumicons/default_avatar.gif";
@@ -236,8 +236,7 @@ if (mysqli_num_rows($res) == 0) {
         $friends .= "<div>" . ($avatar ? "<img width='50px' src='$avatar' alt='' />" : '') . "<p >{$linktouser} {$online}<br><br>{$delete}{$pm_link}</p></div><br>";
     }
 }
-//== Friends block end
-//== Enemies block
+
 $res = sql_query('SELECT b.blockid as id, u.username, u.donor, u.class, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM blocks AS b LEFT JOIN users as u ON b.blockid = u.id WHERE userid=' . sqlesc($userid) . ' ORDER BY username') or sqlerr(__FILE__, __LINE__);
 $blocks = '';
 if (mysqli_num_rows($res) == 0) {
@@ -245,25 +244,9 @@ if (mysqli_num_rows($res) == 0) {
 } else {
     while ($block = mysqli_fetch_assoc($res)) {
         $blocks .= "<div>";
-        $blocks .= "<span class='btn'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=block&amp;targetid=" . (int)$block['id'] . "'>{$lang['friends_delete']}</a></span><br>";
+        $blocks .= "<span class='button'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=block&amp;targetid=" . (int)$block['id'] . "'>{$lang['friends_delete']}</a></span><br>";
         $blocks .= "<p><a href='userdetails.php?id=" . (int)$block['id'] . "'><b>" . format_username($block) . '</b></a></p></div><br>';
     }
-}
-// Enemies block end
-//== OUput the shits \0/
-//==country by pdq
-function countries()
-{
-    global $mc1, $site_config;
-    if (($ret = $mc1->get_value('countries::arr')) === false) {
-        $res = sql_query('SELECT id, name, flagpic FROM countries ORDER BY name ASC') or sqlerr(__FILE__, __LINE__);
-        while ($row = mysqli_fetch_assoc($res)) {
-            $ret[] = $row;
-        }
-        $mc1->cache_value('countries::arr', $ret, $site_config['expires']['user_flag']);
-    }
-
-    return $ret;
 }
 
 $country = '';
@@ -275,7 +258,7 @@ foreach ($countries as $cntry) {
     }
 }
 $HTMLOUT .= "
-    <div class='container-fluid portlet'>
+    <div class='container is-fluid portlet'>
         <h1>{$lang['friends_personal']} " . htmlsafechars($user['username'], ENT_QUOTES) . " $country</h1>
         <table class='table table-bordered table-striped top20 bottom20'>
             <thead>
@@ -309,7 +292,7 @@ $HTMLOUT .= "
                 </tr>
             </tbody>
         </table>
-        <div class='text-center bottom20'>
+        <div class='has-text-centered bottom20'>
             <a href='./users.php'>
                 {$lang['friends_user_list']}
             </a>

@@ -75,12 +75,12 @@ if (isset($_GET['edited'])) {
 }
 
 $HTMLOUT .= "
-    <div class='container-fluid portlet'>
+    <div class='container is-fluid portlet'>
         <h1>Welcome " . format_username((int)$CURUSER['id']) . "!</h1>
         <div>
             <div class='w-100'>
                 <form method='post' action='takeeditcp.php'>
-                    <ul id='navlinks' class='answers-container'>
+                    <ul id='navlinks' class='level-center'>
                         <li><a class='altlink bordered padding10' href='./usercp.php?action=avatar'>Avatar</a></li>
                         <li><a class='altlink bordered padding10' href='./usercp.php?action=signature'>Signature</a></li>
                         <li><a class='altlink bordered padding10' href='./usercp.php?action=default'>PM's</a></li>
@@ -91,7 +91,7 @@ $HTMLOUT .= "
                         <li><a class='altlink bordered padding10' href='./usercp.php?action=location'>Location</a></li>
                         <li><a class='altlink bordered padding10' href='./usercp.php?action=links'>Links</a></li>
                     </ul>
-                    <div class='flex-container flex-top'>
+                    <div class='level-center flex-top'>
                         <span class='margin20'>";
 if (!empty($CURUSER['avatar']) && $CURUSER['av_w'] > 5 && $CURUSER['av_h'] > 5) {
     $HTMLOUT .= "
@@ -156,8 +156,8 @@ if ($action == 'avatar') {
     $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>
-                                            <div class='text-center'>
-                                                <input class='btn btn-primary' type='submit' value='Submit changes!' />
+                                            <div class='has-text-centered'>
+                                                <input class='button is-primary' type='submit' value='Submit changes!' />
                                             </div>
                                         </td>
                                     </tr>
@@ -187,8 +187,8 @@ elseif ($action == 'signature') {
     $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>
-                                            <div class='text-center'>
-                                                <input class='btn btn-primary' type='submit' value='Submit changes!' />
+                                            <div class='has-text-centered'>
+                                                <input class='button is-primary' type='submit' value='Submit changes!' />
                                             </div>
                                         </td>
                                     </tr>
@@ -223,8 +223,8 @@ elseif ($action == 'social') {
     $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>
-                                            <div class='text-center'>
-                                                <input class='btn btn-primary' type='submit' value='Submit changes!' />
+                                            <div class='has-text-centered'>
+                                                <input class='button is-primary' type='submit' value='Submit changes!' />
                                             </div>
                                         </td>
                                     </tr>
@@ -267,8 +267,8 @@ elseif ($action == 'location') {
     $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>
-                                            <div class='text-center'>
-                                                <input class='btn btn-primary' type='submit' value='Submit changes!' />
+                                            <div class='has-text-centered'>
+                                                <input class='button is-primary' type='submit' value='Submit changes!' />
                                             </div>
                                         </td>
                                     </tr>
@@ -405,7 +405,7 @@ elseif ($action == 'security') {
                                             <option value='3'" . ($CURUSER['paranoia'] == 3 ? " selected" : '') . ">I wear a tin-foil hat</option>
                                         </select>
                                         <div class='mw-100'>
-                                            <span class='flipper'>
+                                            <span class='flipper has-text-primary'>
                                                 <a id='paranoia_open'>Paranoia Levels explained! <i class='fa fa-angle-down fa-2x' aria-hidden='true'></i></a>
                                             </span>
                                             <div id='paranoia_info' class='is_hidden wrap'>
@@ -489,8 +489,8 @@ elseif ($action == 'security') {
     $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>
-                                            <div class='text-center'>
-                                                <input class='btn btn-primary' type='submit' value='Submit changes!' />
+                                            <div class='has-text-centered'>
+                                                <input class='button is-primary' type='submit' value='Submit changes!' />
                                             </div>
                                         </td>
                                     </tr>
@@ -514,7 +514,7 @@ elseif ($action == 'torrents') {
     $r = sql_query('SELECT id, image, name FROM categories ORDER BY name') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($r) > 0) {
         $categories .= "
-                                            <div id='cat-container' class='answers-container'>";
+                                            <div id='cat-container' class='level-center'>";
         while ($a = mysqli_fetch_assoc($r)) {
             $categories .= "
                                                 <span class='margin10 bordered tooltipper' title='" . htmlsafechars($a['name']) . "'>
@@ -554,8 +554,8 @@ elseif ($action == 'torrents') {
     $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>
-                                            <div class='text-center'>
-                                                <input class='btn btn-primary' type='submit' value='Submit changes!' />
+                                            <div class='has-text-centered'>
+                                                <input class='button is-primary' type='submit' value='Submit changes!' />
                                             </div>
                                         </td>
                                     </tr>
@@ -642,7 +642,7 @@ elseif ($action == 'personal') {
     $HTMLOUT .= tr($lang['usercp_ajaxchat_height'], "
                                             <input type='text' class='w-100' name='ajaxchat_height' value='$CURUSER[ajaxchat_height]' /> {$lang['usercp_default']}", 1);
     $HTMLOUT .= tr($lang['usercp_gender'], "
-                                            <div class='answers-container'>
+                                            <div class='level-center'>
                                                 <span>
                                                     <input type='radio' name='gender'" . ($CURUSER['gender'] == 'Male' ? " checked" : '') . " value='Male' /> {$lang['usercp_male']}
                                                 </span>
@@ -711,7 +711,7 @@ elseif ($action == 'personal') {
         $day .= "
                                             </select>";
         $HTMLOUT .= tr('Birthday', "
-                                            <div class='answers-container'>
+                                            <div class='level-center'>
                                                 {$year}{$month}{$day}
                                             </div>", 1);
     }
@@ -719,8 +719,8 @@ elseif ($action == 'personal') {
     $HTMLOUT .= "
                     <tr>
                         <td colspan='2'>
-                            <div class='text-center'>
-                                <input class='btn btn-primary' type='submit' value='Submit changes!' />
+                            <div class='has-text-centered'>
+                                <input class='button is-primary' type='submit' value='Submit changes!' />
                             </div>
                         </td>
                     </tr>
@@ -741,7 +741,7 @@ elseif ($action == 'personal') {
                                 </thead>
                                 <tbody>";
     $HTMLOUT .= tr($lang['usercp_accept_pm'], "
-                                            <div class='answers-container'>
+                                            <div class='level-center'>
                                                 <span>
                                                     <input type='radio' name='acceptpms'" . ($CURUSER['acceptpms'] == 'yes' ? " checked" : '') . " value='yes' /> {$lang['usercp_except_blocks']}
                                                 </span>
@@ -768,8 +768,8 @@ elseif ($action == 'personal') {
     $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>
-                                            <div class='text-center'>
-                                                <input class='btn btn-primary' type='submit' value='Submit changes!' />
+                                            <div class='has-text-centered'>
+                                                <input class='button is-primary' type='submit' value='Submit changes!' />
                                             </div>
                                         </td>
                                     </tr>

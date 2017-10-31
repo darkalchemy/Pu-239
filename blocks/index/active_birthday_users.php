@@ -22,9 +22,9 @@ if (!$birthday_users_cache['birthdayusers']) {
 $HTMLOUT .= "
     <a id='birthday-hash'></a>
     <fieldset id='birthday' class='header'>
-        <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_birthday']} ({$birthday_users_cache['actcount']})</legend>
-        <div class='bordered padleft10 padright10'>
-            <div class='alt_bordered transparent text-center'>
+        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_birthday']} ({$birthday_users_cache['actcount']})</legend>
+        <div class='bordered'>
+            <div class='alt_bordered bg-00 has-text-centered'>
                 {$birthday_users_cache['birthdayusers']}
             </div>
         </div>

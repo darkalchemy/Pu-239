@@ -55,18 +55,18 @@ $value = [
 $value[random_int(1, count($value) - 1)] = 'X';
 
 $HTMLOUT .= "
-    <div class='login-container container-fluid portlet'>
+    <div class='half-container has-text-centered portlet'>
     <p class='left10 top10'>{$lang['signup_cookies']}</p>
     <form method='post' action='{$site_config['baseurl']}/take_invite_signup.php'>
     <table class='table table-bordered bottom20'>
-    <tr><td class='heading'>{$lang['signup_uname']}</td><td><input type='text' class='w-100' name='wantusername' id='wantusername' onblur='checkit();' /><div id='namecheck'></div></td></tr>
-    <tr><td class='heading'>{$lang['signup_pass']}</td><td><input class='password w-100' type='password' name='wantpassword' /></td></tr>
-    <tr><td class='heading'>{$lang['signup_passa']}</td><td><input type='password' class='w-100' name='passagain' /></td></tr>
-    <tr><td class='heading'>{$lang['signup_invcode']}</td><td><input type='text' class='w-100' name='invite' /></td></tr>
-    <tr><td class='heading'>{$lang['signup_email']}</td><td><input type='text' class='w-100' name='email' />
+    <tr><td class='rowhead'>{$lang['signup_uname']}</td><td><input type='text' class='w-100' name='wantusername' id='wantusername' onblur='checkit();' /><div id='namecheck'></div></td></tr>
+    <tr><td class='rowhead'>{$lang['signup_pass']}</td><td><input class='password w-100' type='password' name='wantpassword' /></td></tr>
+    <tr><td class='rowhead'>{$lang['signup_passa']}</td><td><input type='password' class='w-100' name='passagain' /></td></tr>
+    <tr><td class='rowhead'>{$lang['signup_invcode']}</td><td><input type='text' class='w-100' name='invite' /></td></tr>
+    <tr><td class='rowhead'>{$lang['signup_email']}</td><td><input type='text' class='w-100' name='email' />
         <div class='alt_bordered top10'>{$lang['signup_valemail']}</div>
     </td></tr>
-    <tr><td class='heading'>{$lang['signup_timez']}</td><td>{$time_select}</td></tr>";
+    <tr><td class='rowhead'>{$lang['signup_timez']}</td><td>{$time_select}</td></tr>";
 //==09 Birthday mod
 $year .= '<select name="year" class="w-25 right10 bottom10">';
 $year .= "<option value='0000'>{$lang['signup_year']}</option>";
@@ -103,7 +103,7 @@ while ($i <= 31) {
     ++$i;
 }
 $day .= '</select>';
-$HTMLOUT .= "<tr><td class='heading'>{$lang['signup_birth']}<span>*</span></td><td>" . $year . $month . $day . '</td></tr>';
+$HTMLOUT .= "<tr><td class='rowhead'>{$lang['signup_birth']}<span>*</span></td><td>" . $year . $month . $day . '</td></tr>';
 //==End
 //==Passhint
 $passhint = '';
@@ -136,27 +136,27 @@ $questions = [
 foreach ($questions as $sph) {
     $passhint .= "<option value='" . $sph['id'] . "'>" . $sph['question'] . "</option>\n";
 }
-$HTMLOUT .= "<tr><td class='heading'>{$lang['signup_select']}</td><td><select name='passhint' class='w-100'>\n$passhint\n</select></td></tr>
-        <tr><td class='heading'>{$lang['signup_enter']}</td><td><input type='text' class='w-100'  name='hintanswer' /><br><div class='alt_bordered top10'>{$lang['signup_this_answer']}<br>{$lang['signup_this_answer1']}</div></td></tr>
+$HTMLOUT .= "<tr><td class='rowhead'>{$lang['signup_select']}</td><td><select name='passhint' class='w-100'>\n$passhint\n</select></td></tr>
+        <tr><td class='rowhead'>{$lang['signup_enter']}</td><td><input type='text' class='w-100'  name='hintanswer' /><br><div class='alt_bordered top10'>{$lang['signup_this_answer']}<br>{$lang['signup_this_answer1']}</div></td></tr>
             <tr>
-                <td class='heading'>{$lang['signup_country']}</td>
+                <td class='rowhead'>{$lang['signup_country']}</td>
                 <td><select name='country' class='w-100'>\n$country\n</select></td>
             </tr>
             <tr>
-                <td class='heading'>{$lang['signup_gender']}</td>
+                <td class='rowhead'>{$lang['signup_gender']}</td>
                 <td>$gender</td>
             </tr>
 
-      <tr><td class='heading'></td>
+      <tr><td class='rowhead'></td>
       <td>
       <input type='checkbox' name='rulesverify' value='yes' /> {$lang['signup_rules']}<br>
       <input type='checkbox' name='faqverify' value='yes' /> {$lang['signup_faq']}<br>
       <input type='checkbox' name='ageverify' value='yes' /> {$lang['signup_age']}</td></tr>
-      " . ($site_config['captcha_on'] ? "<tr><td class='rowhead' colspan='2' id='captcha_show'></td></tr>" : '') . "
+      " . ($site_config['captcha_on'] ? "<tr><td colspan='2' id='captcha_show'></td></tr>" : '') . "
       <tr><td colspan='2'>{$lang['signup_click']} <strong>{$lang['signup_x']}</strong> {$lang['signup_click1']}</td></tr><tr>
-      <td colspan='2'><span class='answers-container'>";
+      <td colspan='2'><span class='tabs is-marginless'>";
 for ($i = 0; $i < count($value); ++$i) {
-    $HTMLOUT .= '<input name="submitme" type="submit" value="' . $value[$i] . '" class="btn" />';
+    $HTMLOUT .= '<input name="submitme" type="submit" value="' . $value[$i] . '" class="button" />';
 }
 $HTMLOUT .= '</span></td></tr></table></form></div>';
 echo stdhead('Invites') . $HTMLOUT . stdfoot($stdfoot);

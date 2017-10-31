@@ -44,7 +44,7 @@ for ($i = 0; ; ++$i) {
     }
 }
 $HTMLOUT .= "</select>\n";
-$HTMLOUT .= "<input type='submit' value='{$lang['form_btn']}' class='btn' />\n";
+$HTMLOUT .= "<input type='submit' value='{$lang['form_btn']}' class='button' />\n";
 $HTMLOUT .= "</form>\n";
 $HTMLOUT .= "<br>\n";
 $aa = range('0', '9');
@@ -56,9 +56,9 @@ $count = 0;
 foreach ($cc as $L) {
     $HTMLOUT .= ($count == 10) ? '<br><br>' : '';
     if (!strcmp($L, $letter)) {
-        $HTMLOUT .= "<span class='btn'>" . strtoupper($L) . "</span>\n";
+        $HTMLOUT .= "<span class='button'>" . strtoupper($L) . "</span>\n";
     } else {
-        $HTMLOUT .= "<a href='users.php?letter=$L'><span class='btn'>" . strtoupper($L) . "</span></a>\n";
+        $HTMLOUT .= "<a href='users.php?letter=$L'><span class='button'>" . strtoupper($L) . "</span></a>\n";
     }
     ++$count;
 }
@@ -86,29 +86,29 @@ if ($arr[0] > $perpage) {
             continue;
         }
         if ($i == $page) {
-            $pagemenu .= "&#160;<span class='btn'>$i</span>\n";
+            $pagemenu .= "&#160;<span class='button'>$i</span>\n";
         } else {
-            $pagemenu .= "&#160;<a href='users.php?$q1&amp;page=$i'><span class='btn'>$i</span></a>\n";
+            $pagemenu .= "&#160;<a href='users.php?$q1&amp;page=$i'><span class='button'>$i</span></a>\n";
         }
         if ($PageNo > ($page + 3)) {
             break;
         }
     }
     if ($page == 1) {
-        $browsemenu .= "<span class='btn'>&lsaquo;</span>$pagemenu";
+        $browsemenu .= "<span class='button'>&lsaquo;</span>$pagemenu";
     } else {
-        $browsemenu .= "<a href='users.php?$q1&amp;page=1' title='{$lang['pager_first']}(1)'><span class='btn'>&laquo;</span></a>&#160;<a href='users.php?$q1&amp;page=" . ($page - 1) . "'><span class='btn'>&lsaquo;</span></a>$pagemenu";
+        $browsemenu .= "<a href='users.php?$q1&amp;page=1' title='{$lang['pager_first']}(1)'><span class='button'>&laquo;</span></a>&#160;<a href='users.php?$q1&amp;page=" . ($page - 1) . "'><span class='button'>&lsaquo;</span></a>$pagemenu";
     }
     if ($page == $pages) {
-        $browsemenu .= "<span class='btn'>&rsaquo;</span>";
+        $browsemenu .= "<span class='button'>&rsaquo;</span>";
     } else {
-        $browsemenu .= "<a href='users.php?$q1&amp;page=" . ($page + 1) . "'><span class='btn'>&rsaquo;</span></a>&#160;<a href='users.php?$q1&amp;page=" . $pages . "' title='{$lang['pager_last']}($pages)'><span class='btn'>&raquo;</span></a>";
+        $browsemenu .= "<a href='users.php?$q1&amp;page=" . ($page + 1) . "'><span class='button'>&rsaquo;</span></a>&#160;<a href='users.php?$q1&amp;page=" . $pages . "' title='{$lang['pager_last']}($pages)'><span class='button'>&raquo;</span></a>";
     }
 }
 $offset = ($page * $perpage) - $perpage;
 if ($arr[0] > 0) {
     $res = sql_query("SELECT users.*, countries.name, countries.flagpic FROM users FORCE INDEX ( username ) LEFT JOIN countries ON country = countries.id WHERE $query1 ORDER BY username LIMIT $offset,$perpage") or sqlerr(__FILE__, __LINE__);
-    $HTMLOUT .= "<div class='container-fluid text-center'>";
+    $HTMLOUT .= "<div class='container has-text-centered'>";
     $HTMLOUT .= "<table class='table table-bordered table-striped'>\n";
     $HTMLOUT .= "<tr><td class='colhead'>{$lang['users_username']}</td><td class='colhead'>{$lang['users_regd']}</td><td class='colhead'>{$lang['users_la']}</td><td class='colhead'>{$lang['users_class']}</td><td class='colhead'>{$lang['users_country']}</td></tr>\n";
     while ($row = mysqli_fetch_assoc($res)) {

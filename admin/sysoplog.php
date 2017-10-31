@@ -33,7 +33,7 @@ $HTMLOUT .= "<table border='1' cellspacing='0' width='115' cellpadding='5'>\n
 			 <td class='table'>\n
 			 <form method='post' action='staffpanel.php?tool=sysoplog&amp;action=sysoplog'>\n
 			 <input type='text' name='search' size='40' value='' />\n
-			 <input type='submit' value='{$lang['sysoplog_search']}' class='btn' />\n
+			 <input type='submit' value='{$lang['sysoplog_search']}' class='button' />\n
 			 </form></td></tr></table>";
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];

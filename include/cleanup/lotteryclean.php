@@ -66,6 +66,7 @@ function lotteryclean($data)
                     VALUES ' . join(',', $lconfig_update) . '
                     ON DUPLICATE KEY UPDATE value=VALUES(value)') or sqlerr(__FILE__, __LINE__);
         sql_query('DELETE FROM tickets') or sqlerr(__FILE__, __LINE__);
+        $mc1->delete_value('lottery_info_');
     }
 
     if ($data['clean_log'] && $queries > 0) {

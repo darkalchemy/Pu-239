@@ -39,7 +39,7 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
     /* search first **/
     $HTMLOUT .= "<form method='get' action='browse.php'><table width='750px' border='1' cellspacing='0' cellpadding='5'><tr><td class='colhead'>
 Please search torrents before adding an offer!</td></tr><tr><td>
-<input type='text' name='search' size='40' value='' class='btn' /> in <select name='cat'> <option value='0'>(all types)</option>
+<input type='text' name='search' size='40' value='' class='button' /> in <select name='cat'> <option value='0'>(all types)</option>
 ";
     $catdropdown = '';
     foreach ($cats as $cat) {
@@ -55,7 +55,7 @@ Please search torrents before adding an offer!</td></tr><tr><td>
     }
     $deadchkbox .= " /> including dead torrents\n";
     $HTMLOUT .= ' ' . $catdropdown . ' </select> ' . $deadchkbox . " 
-<input type='submit' value='Search!' class='btn' /></td></tr></table></form>
+<input type='submit' value='Search!' class='button' /></td></tr></table></form>
 <br>\n";
     $HTMLOUT .= "<form method='post' name='compose' action='viewoffers.php?new_offer'><a name='add' id='add'></a>
 <table border='1' cellspacing='0' width='750px' cellpadding='5'><tr><td class='colhead' colspan='2'>
@@ -89,7 +89,7 @@ Offers are for Users with a good ratio who have uploaded at least " . $site_conf
     }
     $HTMLOUT .= "</td></tr>
 <tr><td colspan='2'>
-<input type='submit' value='Okay' class='btn' /></td></tr></table>
+<input type='submit' value='Okay' class='button' /></td></tr></table>
 </form>
 <br><br>\n";
 }
@@ -123,7 +123,7 @@ if (mysqli_num_rows($rescount) > 0) {
     }
     $HTMLOUT .= "<tr><td colspan='4'>
 <form method='get' action='viewoffers.php'>
-<input type='submit' value='Show All' class='btn' />
+<input type='submit' value='Show All' class='button' />
 </form>
 </td></tr>
 </table>\n";

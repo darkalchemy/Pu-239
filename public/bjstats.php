@@ -17,11 +17,11 @@ function bjtable($res, $frame_caption)
     $htmlout .= "<tr>
     <td class='colhead'>Rank</td>
     <td class='colhead'>{$lang['bj_user']}</td>
-    <td class='colhead text-right'>{$lang['bj_wins']}</td>
-    <td class='colhead text-right'>{$lang['bj_losses']}</td>
-    <td class='colhead text-right'>{$lang['bj_games']}</td>
-    <td class='colhead text-right'>{$lang['bj_percentage']}</td>
-    <td class='colhead text-right'>{$lang['bj_win_loss']}</td>
+    <td class='colhead has-text-right'>{$lang['bj_wins']}</td>
+    <td class='colhead has-text-right'>{$lang['bj_losses']}</td>
+    <td class='colhead has-text-right'>{$lang['bj_games']}</td>
+    <td class='colhead has-text-right'>{$lang['bj_percentage']}</td>
+    <td class='colhead has-text-right'>{$lang['bj_win_loss']}</td>
     </tr>";
     $num = 0;
     while ($a = mysqli_fetch_assoc($res)) {
@@ -36,7 +36,7 @@ function bjtable($res, $frame_caption)
             $plus_minus = '-';
             $plus_minus .= mksize(($a['losses'] - $a['wins']) * 100 * 1024 * 1024);
         }
-        $htmlout .= "<tr><td>$num</td><td>" . format_username($a['id']) . "</td>" . "<td class='text-right'>" . number_format($a['wins'], 0) . '</td>' . "<td class='text-right'>" . number_format($a['losses'], 0) . '</td>' . "<td class='text-right'>" . number_format($a['games'], 0) . '</td>' . "<td class='text-right'>$win_perc</td>" . "<td class='text-right'>$plus_minus</td>" . "</tr>\n";
+        $htmlout .= "<tr><td>$num</td><td>" . format_username($a['id']) . "</td>" . "<td class='has-text-right'>" . number_format($a['wins'], 0) . '</td>' . "<td class='has-text-right'>" . number_format($a['losses'], 0) . '</td>' . "<td class='has-text-right'>" . number_format($a['games'], 0) . '</td>' . "<td class='has-text-right'>$win_perc</td>" . "<td class='has-text-right'>$plus_minus</td>" . "</tr>\n";
     }
     $htmlout .= end_table();
     $htmlout .= end_frame();

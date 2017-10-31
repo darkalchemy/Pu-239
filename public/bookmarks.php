@@ -18,32 +18,32 @@ function bookmarktable($res, $variant = 'index')
         <img src='{$site_config['pic_base_url']}public.gif' alt='{$lang['bookmarks_public']}' border='none'  />{$lang['bookmarks_public1']}
     </span>
     <div class='table-wrapper'>
-        <div class='container-fluid portlet'>
+        <div class='container is-fluid portlet'>
             <table class='table table-bordered table-striped top20 bottom20''>
                 <thead>
                     <tr>
-                        <th class='text-center'>{$lang['torrenttable_type']}</th>
-                        <th class='text-left'>{$lang['torrenttable_name']}</th>";
+                        <th class='has-text-centered'>{$lang['torrenttable_type']}</th>
+                        <th class='has-text-left'>{$lang['torrenttable_name']}</th>";
     $htmlout .= ($variant == 'index' ? '
-                        <th class="text-center">' . $lang['bookmarks_del2'] . '</th>
-                        <th class="text-right">' : '') . '' . $lang['bookmarks_down2'] . '</th>
-                        <th class="text-right">' . $lang['bookmarks_share'] . '</th>';
+                        <th class="has-text-centered">' . $lang['bookmarks_del2'] . '</th>
+                        <th class="has-text-right">' : '') . '' . $lang['bookmarks_down2'] . '</th>
+                        <th class="has-text-right">' . $lang['bookmarks_share'] . '</th>';
     if ($variant == 'mytorrents') {
         $htmlout .= "
-                        <th class='text-center'>{$lang['torrenttable_edit']}</th>
-                        <th class='text-center'>{$lang['torrenttable_visible']}</th>";
+                        <th class='has-text-centered'>{$lang['torrenttable_edit']}</th>
+                        <th class='has-text-centered'>{$lang['torrenttable_visible']}</th>";
     }
     $htmlout .= "
-                        <th class='text-right'>{$lang['torrenttable_files']}</th>
-                        <th class='text-right'>{$lang['torrenttable_comments']}</th>
-                        <th class='text-center'>{$lang['torrenttable_added']}</th>
-                        <th class='text-center'>{$lang['torrenttable_size']}</th>
-                        <th class='text-center'>{$lang['torrenttable_snatched']}</th>
-                        <th class='text-right'>{$lang['torrenttable_seeders']}</th>
-                        <th class='text-right'>{$lang['torrenttable_leechers']}</th>";
+                        <th class='has-text-right'>{$lang['torrenttable_files']}</th>
+                        <th class='has-text-right'>{$lang['torrenttable_comments']}</th>
+                        <th class='has-text-centered'>{$lang['torrenttable_added']}</th>
+                        <th class='has-text-centered'>{$lang['torrenttable_size']}</th>
+                        <th class='has-text-centered'>{$lang['torrenttable_snatched']}</th>
+                        <th class='has-text-right'>{$lang['torrenttable_seeders']}</th>
+                        <th class='has-text-right'>{$lang['torrenttable_leechers']}</th>";
     if ($variant == 'index') {
         $htmlout .= "
-                        <th class='text-center'>{$lang['torrenttable_uppedby']}</th>";
+                        <th class='has-text-centered'>{$lang['torrenttable_uppedby']}</th>";
     }
     $htmlout .= "
                     </tr>
@@ -63,7 +63,7 @@ function bookmarktable($res, $variant = 'index')
         $id = (int)$row['id'];
         $htmlout .= "
                     <tr>
-                        <td class='text-center'>";
+                        <td class='has-text-centered'>";
         if (isset($row['cat_name'])) {
             $htmlout .= '<a href="./browse.php?cat=' . (int)$row['category'] . '">';
             if (isset($row['cat_pic']) && $row['cat_pic'] != '') {
@@ -79,7 +79,7 @@ function bookmarktable($res, $variant = 'index')
                         </td>";
         $dispname = htmlsafechars($row['name']);
         $htmlout .= "
-                        <td class='text-left'>
+                        <td class='has-text-left'>
                             <a href='./details.php?";
         if ($variant == 'mytorrents') {
             $htmlout .= 'returnto=' . urlencode($_SERVER['REQUEST_URI']) . '&amp;';
@@ -91,13 +91,13 @@ function bookmarktable($res, $variant = 'index')
         $htmlout .= "'><b>$dispname</b></a>&#160;
                         </td>";
         $htmlout .= ($variant == 'index' ? "
-                        <td class='text-center'>
+                        <td class='has-text-centered'>
                             <a href='./bookmark.php?torrent={$id}&amp;action=delete'>
                                 <img src='{$site_config['pic_base_url']}aff_cross.gif' border='0' alt='{$lang['bookmarks_del3']}' class='tooltipper' title='{$lang['bookmarks_del3']}' />
                             </a>
                         </td>" : '');
         $htmlout .= ($variant == 'index' ? "
-                        <td class='text-center'>
+                        <td class='has-text-centered'>
                             <a href='./download.php?torrent={$id}'>
                                 <img src='{$site_config['pic_base_url']}zip.gif' border='0' alt='{$lang['bookmarks_down3']}' class='tooltipper' title='{$lang['bookmarks_down3']}' />
                             </a>
@@ -109,7 +109,7 @@ function bookmarktable($res, $variant = 'index')
                                 <img src='{$site_config['pic_base_url']}key.gif' alt='{$lang['bookmarks_public2']}' class='tooltipper' title='{$lang['bookmarks_public2']}' />
                             </a>";
             $htmlout .= '' . ($variant == 'index' ? "
-                        <td class='text-center'>
+                        <td class='has-text-centered'>
                             {$makepriv}
                         </td>" : '');
         } elseif ($bms['private'] == 'no' && $bms['userid'] == $CURUSER['id']) {
@@ -117,19 +117,19 @@ function bookmarktable($res, $variant = 'index')
                                 <img src='{$site_config['pic_base_url']}public.gif' border='0' alt='{$lang['bookmarks_private2']}' class='tooltipper' title='{$lang['bookmarks_private2']}' />
                             </a>";
             $htmlout .= '' . ($variant == 'index' ? "
-                        <td class='text-center'>
+                        <td class='has-text-centered'>
                             {$makepriv}
                         </td>" : '');
         }
         if ($variant == 'mytorrents') {
             $htmlout .= "
                         </td>
-                        <td class='text-center'>
+                        <td class='has-text-centered'>
                             <a href='./edit.php?returnto=" . urlencode($_SERVER['REQUEST_URI']) . '&amp;id=' . (int)$row['id'] . "'>{$lang['torrenttable_edit']}</a>";
         }
         if ($variant == 'mytorrents') {
             $htmlout .= "
-                        <td class='text-right'>";
+                        <td class='has-text-right'>";
             if ($row['visible'] == 'no') {
                 $htmlout .= '<b>' . $lang['torrenttable_not_visible'] . '</b>';
             } else {
@@ -140,33 +140,33 @@ function bookmarktable($res, $variant = 'index')
         }
         if ($variant == 'index') {
             $htmlout .= "
-                        <td class='text-right'><b><a href='./filelist.php?id=$id'>" . (int)$row['numfiles'] . "</a></b></td>";
+                        <td class='has-text-right'><b><a href='./filelist.php?id=$id'>" . (int)$row['numfiles'] . "</a></b></td>";
         } else {
             $htmlout .= "
-                        <td class='text-right'><b><a href='./filelist.php?id=$id'>" . (int)$row['numfiles'] . "</a></b></td>";
+                        <td class='has-text-right'><b><a href='./filelist.php?id=$id'>" . (int)$row['numfiles'] . "</a></b></td>";
         }
         if (!$row['comments']) {
             $htmlout .= "
-                        <td class='text-right'>" . (int)$row['comments'] . "</td>";
+                        <td class='has-text-right'>" . (int)$row['comments'] . "</td>";
         } else {
             if ($variant == 'index') {
                 $htmlout .= "
-                        <td class='text-right'><b><a href='./details.php?id=$id&amp;hit=1&amp;tocomm=1'>" . (int)$row['comments'] . "</a></b></td>";
+                        <td class='has-text-right'><b><a href='./details.php?id=$id&amp;hit=1&amp;tocomm=1'>" . (int)$row['comments'] . "</a></b></td>";
             } else {
                 $htmlout .= "
-                        <td class='text-right'><b><a href='./details.php?id=$id&amp;page=0#startcomments'>" . (int)$row['comments'] . "</a></b></td>";
+                        <td class='has-text-right'><b><a href='./details.php?id=$id&amp;page=0#startcomments'>" . (int)$row['comments'] . "</a></b></td>";
             }
         }
         $htmlout .= "
-                        <td class='text-center'><span>" . str_replace(',', '<br>', get_date($row['added'], '')) . "</span></td>
-                        <td class='text-center'>" . str_replace(' ', '<br>', mksize($row['size'])) . "</td>";
+                        <td class='has-text-centered'><span>" . str_replace(',', '<br>', get_date($row['added'], '')) . "</span></td>
+                        <td class='has-text-centered'>" . str_replace(' ', '<br>', mksize($row['size'])) . "</td>";
         if ($row['times_completed'] != 1) {
             $_s = '' . $lang['torrenttable_time_plural'] . '';
         } else {
             $_s = '' . $lang['torrenttable_time_singular'] . '';
         }
         $htmlout .= "
-                        <td class='text-center'><a href='./snatches.php?id=$id'>" . number_format($row['times_completed']) . "<br>$_s</a></td>";
+                        <td class='has-text-centered'><a href='./snatches.php?id=$id'>" . number_format($row['times_completed']) . "<br>$_s</a></td>";
         if ((int)$row['seeders']) {
             if ($variant == 'index') {
                 if ($row['leechers']) {
@@ -175,30 +175,30 @@ function bookmarktable($res, $variant = 'index')
                     $ratio = 1;
                 }
                 $htmlout .= "
-                        <td class='text-right'><b><a href='./peerlist.php?id=$id#seeders'><font color='" . get_slr_color($ratio) . "'>" . (int)$row['seeders'] . "</font></a></b></td>";
+                        <td class='has-text-right'><b><a href='./peerlist.php?id=$id#seeders'><font color='" . get_slr_color($ratio) . "'>" . (int)$row['seeders'] . "</font></a></b></td>";
             } else {
                 $htmlout .= "
-                        <td class='text-right'><b><a class='" . linkcolor($row['seeders']) . "' href='./peerlist.php?id=$id#seeders'>" . (int)$row['seeders'] . "</a></b></td>";
+                        <td class='has-text-right'><b><a class='" . linkcolor($row['seeders']) . "' href='./peerlist.php?id=$id#seeders'>" . (int)$row['seeders'] . "</a></b></td>";
             }
         } else {
             $htmlout .= "
-                        <td class='text-right'><span class='" . linkcolor($row['seeders']) . "'>" . (int)$row['seeders'] . "</span></td>";
+                        <td class='has-text-right'><span class='" . linkcolor($row['seeders']) . "'>" . (int)$row['seeders'] . "</span></td>";
         }
         if ((int)$row['leechers']) {
             if ($variant == 'index') {
                 $htmlout .= "
-                        <td class='text-right'><b><a href='./peerlist.php?id=$id#leechers'>" . number_format($row['leechers']) . "</a></b></td>";
+                        <td class='has-text-right'><b><a href='./peerlist.php?id=$id#leechers'>" . number_format($row['leechers']) . "</a></b></td>";
             } else {
                 $htmlout .= "
-                        <td class='text-right'><b><a class='" . linkcolor($row['leechers']) . "' href='./peerlist.php?id=$id#leechers'>" . (int)$row['leechers'] . "</a></b></td>";
+                        <td class='has-text-right'><b><a class='" . linkcolor($row['leechers']) . "' href='./peerlist.php?id=$id#leechers'>" . (int)$row['leechers'] . "</a></b></td>";
             }
         } else {
             $htmlout .= "
-                        <td class='text-right'>0</td>";
+                        <td class='has-text-right'>0</td>";
         }
         if ($variant == 'index') {
             $htmlout .= "
-                        <td class='text-center'>" . (isset($row['owner']) ? format_username($row['owner']) : '<i>(' . $lang['torrenttable_unknown_uploader'] . ')</i>') . "</td>";
+                        <td class='has-text-centered'>" . (isset($row['owner']) ? format_username($row['owner']) : '<i>(' . $lang['torrenttable_unknown_uploader'] . ')</i>') . "</td>";
         }
         $htmlout .= "
                     </tr>";
@@ -223,8 +223,8 @@ if ($userid != $CURUSER['id']) {
 $res = sql_query('SELECT id, username FROM users WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_array($res);
 $htmlout .= "
-        <h1 class='text-center'>{$lang['bookmarks_my']}</h1>
-        <div class='text-center'>
+        <h1 class='has-text-centered'>{$lang['bookmarks_my']}</h1>
+        <div class='has-text-centered'>
             <b><a href='./sharemarks.php?id=" . $CURUSER['id'] . "'>{$lang['bookmarks_my_share']}</a></b>
         </div>";
 $res = sql_query('SELECT COUNT(id) FROM bookmarks WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);

@@ -70,7 +70,11 @@ var page_config = {
         14: {
             name: 'Background 15',
             className: 'background-15'
-        }
+        },
+        15: {
+            name: 'Default',
+            className: 'background-16'
+        },
     },
     styles: {
         headerStyle: {
@@ -116,7 +120,12 @@ var page_config = {
                     name: 'Acme',
                     className: 'h-style-8',
                     class: 'text-8'
-                }
+                },
+                8: {
+                    name: 'Default',
+                    className: 'h-style-9',
+                    class: 'text-9'
+                },
             }
         },
         textStyle: {
@@ -162,7 +171,12 @@ var page_config = {
                     name: 'Acme',
                     className: 'text-8',
                     class: 'text-8'
-                }
+                },
+                8: {
+                    name: 'Default',
+                    className: 'text-9',
+                    class: 'text-9'
+                },
             }
         }
     }
@@ -174,7 +188,6 @@ $(function () {
 
     /* Theme controller --> Begin */
 
-    //localStorage.clear();
     var $body = $('body');
     var $nav = $('.navigation li a');
     var $theme_control_panel = $('#control_panel');
@@ -215,7 +228,7 @@ $(function () {
             var bg_change_html = '<span>Menu Skin:</span>';
             bg_change_html += '<ul>';
             $.each(page_config.nav, function (idx, val) {
-                bg_change_html += '<li><a href="' + val.className + '" title="' + val.name + '" class="' + val.className + '"></a></li>';
+                bg_change_html += '<li><a href="' + val.className + '" title="' + val.name + '" class="tooltipper ' + val.className + '"></a></li>';
                 nav.push(val.className);
             });
             bg_change_html += '</ul>';
@@ -240,9 +253,9 @@ $(function () {
         if (page_config.backgrounds) {
             var $bg_block = $('<div/>').attr('id', 'backgrounds').addClass('style_block');
             var bg_change_html = '<span>Backgrounds:</span>';
-            bg_change_html += '<ul>';
+            bg_change_html += '<ul class="limited">';
             $.each(page_config.backgrounds, function (idx, val) {
-                bg_change_html += '<li><a href="' + val.className + '" title="' + val.name + '" class="' + val.className + '"></a></li>';
+                bg_change_html += '<li><a href="' + val.className + '" title="' + val.name + '" class="tooltipper ' + val.className + '"></a></li>';
                 pattern_classes.push(val.className);
             });
             bg_change_html += '</ul>';
@@ -344,11 +357,11 @@ $(function () {
 
             var setDefaultsSettings = function () {
                 changeBodyClass(page_config.nav[1].className, nav);
-                changeBodyClass(page_config.backgrounds[14].className, pattern_classes);
+                changeBodyClass(page_config.backgrounds[15].className, pattern_classes);
                 $theme_control_panel.find('select').val(1);
-                changeBodyClass(page_config.styles.headerStyle.list[0].className, header_style_classes);
-                changeBodyClass(page_config.styles.textStyle.list[0].className, text_style_classes);
-                $('iframe').contents().find('body').removeClass('text-2 text-3 text-4 text-5 text-6 text-7 text-8').addClass('text-1');
+                changeBodyClass(page_config.styles.headerStyle.list[8].className, header_style_classes);
+                changeBodyClass(page_config.styles.textStyle.list[8].className, text_style_classes);
+                $('iframe').contents().find('body').removeClass('text-1 text-2 text-3 text-4 text-5 text-6 text-7 text-8').addClass('text-9');
                 links_picker.css({'background-color': '#008a05'}).ColorPickerSetColor('#008a05');
                 $('body').get(0).style.setProperty('--main-color', '#9193de');
                 $('iframe').contents().find('body').css('--main-color', '#9193de');

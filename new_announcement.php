@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $HTMLOUT = '';
     $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>
  	<tr>
- 	<td class='embedded'><div class='text-center'>
+ 	<td class='embedded'><div class='has-text-centered'>
  	<h1>Create Announcement for " . ($n_pms) . ' user' . ($n_pms > 1 ? 's' : '') . '&#160;!</h1>';
     $HTMLOUT .= "<form name='compose' method='post' action='{$site_config['baseurl']}/new_announcement.php'>
  	<table border='1' cellspacing='0' cellpadding='5'>
@@ -91,10 +91,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
  	<td colspan='2'><b>Subject: </b>
  	<input name='subject' type='text' size='76' value='" . htmlsafechars($subject) . "' /></td>
  	</tr>
- 	<tr><td colspan='2'><div class='text-center'>
-                       " . BBcode(false) . '
+ 	<tr><td colspan='2'><div class='has-text-centered'>
+                       " . BBcode() . '
   </div></td></tr>';
-    $HTMLOUT .= "<tr><td colspan='2' class='text-center'>";
+    $HTMLOUT .= "<tr><td colspan='2' class='has-text-centered'>";
     $HTMLOUT .= "<select name='expiry'>";
     reset($days);
     foreach ($days as $x) {
@@ -102,8 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     $HTMLOUT .= "</select>
 
- 	<input type='submit' name='buttonval' value='Preview' class='btn' />
- 	<input type='submit' name='buttonval' value='Submit' class='btn' />
+ 	<input type='submit' name='buttonval' value='Preview' class='button' />
+ 	<input type='submit' name='buttonval' value='Submit' class='button' />
  	</td></tr></table>
  	<input type='hidden' name='n_pms' value='" . $n_pms . "' />
     <input type='hidden' name='ann_query' value='" . rawurlencode($ann_query) . "' />
@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($body) {
         $newtime = TIME_NOW + (86400 * $expiry);
         $HTMLOUT .= "<table width='700' class='main' border='0' cellspacing='1' cellpadding='1'>
- 	<tr><td class='text-center'><h2><font class='text-white'>Announcement: 
+ 	<tr><td class='has-text-centered'><h2><font class='has-text-white'>Announcement: 
  	" . htmlsafechars($subject) . "</font></h2></td></tr>
  	<tr><td class='text'>
  	" . format_comment($body) . '<br><hr>Expires: ' . get_date($newtime, 'DATE') . '';

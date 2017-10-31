@@ -2965,7 +2965,7 @@ $(document).ready(function() {
         $("#bbcode_editor").markItUp(myBbcodeSettings);
     }
     $(".emoticons a").click(function() {
-        emoticon = $(this).attr("title");
+        emoticon = $(this).attr("alt");
         $.markItUp({
             openWith: emoticon
         });

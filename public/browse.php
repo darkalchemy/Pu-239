@@ -236,29 +236,31 @@ if (isset($cleansearchstr)) {
 }
 
 $HTMLOUT .= "
-            <div class='container-fluid portlet'>
+            <div class='container is-fluid portlet'>
                 <div class='top20 bottom20'>";
 if ($CURUSER['opt1'] & user_options::VIEWSCLOUD) {
     $HTMLOUT .= "
-                            <div id='wrapper' class='cloud bg-window text-center bottom10'>" . cloud() . "
+                            <div id='wrapper' class='cloud has-text-centered bottom10'>" . cloud() . "
                             </div>";
 }
 
 // create the category table
 $HTMLOUT .= "
-                            <div class='table-responsive text-center'>
+                            <div class='table-responsive has-text-centered'>
                                 <form id='catsids' method='get' action='./browse.php'>
-                                    <div class='bg-window padding20 round5 top20 bottom20'>
-                                        <div id='checkbox_container' class='answers-container'>";
+                                    <div class='bg-02 padding20 round5 top20 bottom20'>
+                                        <div id='checkbox_container' class='level-center'>";
 if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
     foreach ($catids as $cat) {
         $HTMLOUT .= "
-                                            <span class='margin10 bordered'>
-                                                <input name='c" . (int)$cat['id'] . "' class='styled' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? " checked" : '') . " value='1' />
-                                                <span class='cat-image left10'>
-                                                    <a href='./browse.php?c" . (int)$cat['id'] . "'>
-                                                        <img class='radius-sm tooltipper' src='{$INSTALLER09['pic_base_url']}images/caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' title='" . htmlsafechars($cat['name']) . "' />
-                                                    </a>
+                                            <span class='margin10 mw-50 is-flex'>
+                                                <span class='bordered level-center bg-02'>
+                                                    <input name='c" . (int)$cat['id'] . "' class='styled' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? " checked" : '') . " value='1' />
+                                                    <span class='cat-image left10'>
+                                                        <a href='./browse.php?c" . (int)$cat['id'] . "'>
+                                                            <img class='radius-sm tooltipper' src='{$INSTALLER09['pic_base_url']}images/caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' title='" . htmlsafechars($cat['name']) . "' />
+                                                        </a>
+                                                    </span>
                                                 </span>
                                             </span>";
     }
@@ -275,7 +277,7 @@ if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
 }
 $HTMLOUT .= "
                                         </div>
-                                        <div class='text-center'>
+                                        <div class='has-text-centered'>
                                             <label for='checkAll'>
                                                 <input type='checkbox' id='checkAll' /><span> Select All Categories</span>
                                             </label>
@@ -301,33 +303,31 @@ if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     $mc1->commit_transaction($site_config['expires']['user_cache']);
 }
 
-
-$only_free = ((isset($_GET['only_free'])) ? intval($_GET['only_free']) : '');
-$only_free_box = '
-                    <label for="only_free" class="bottom10">
-                        <input type="checkbox" class="right5" name="only_free" value="1"' . (isset($_GET['only_free']) ? ' checked' : '') . ' />
-                        Only Free Torrents
-                    </label>';
-
 $vip = ((isset($_GET['vip'])) ? intval($_GET['vip']) : '');
 $vip_box = "
-                    <select name='vip'>
+                    <select name='vip' class='w-100'>
                         <option value='0'>VIP Torrents Included</option>
                         <option value='1'" . ($vip == 1 ? " selected" : '') . ">VIP Torrents Not Included</option>
                         <option value='2'" . ($vip == 2 ? " selected" : '') . ">VIP Torrents Only</option>
                     </select>";
 
-
 $selected = (isset($_GET['incldead'])) ? (int)$_GET['incldead'] : '';
-$deadcheck = '';
-$deadcheck .= "
-                    <select name='incldead'>
+$deadcheck = "
+                    <select name='incldead' class='w-100'>
                         <option value='0'>{$lang['browse_active']}</option>
                         <option value='1'" . ($selected == 1 ? " selected" : '') . ">{$lang['browse_inc_dead']}</option>
                         <option value='2'" . ($selected == 2 ? " selected" : '') . ">{$lang['browse_dead']}</option>
                     </select>";
+
+$only_free = ((isset($_GET['only_free'])) ? intval($_GET['only_free']) : '');
+$only_free_box = "
+                    <select name='only_free' class='w-100'>
+                        <option value='0'>Include Non Free Torrents</option>
+                        <option value='1'" . ($only_free == 1 ? " selected" : '') . ">Include Only Free Torrents</option>
+                    </select>";
+
 $searchin = '
-                    <select name="searchin">';
+                    <select name="searchin" class="w-100">';
 foreach ([
              'title' => 'Name',
              'descr' => 'Description',
@@ -340,26 +340,26 @@ foreach ([
 $searchin .= '
                     </select>';
 $HTMLOUT .= "
-                <div class='bg-window padding20 round5'>
-                    <div class='padding10'>
-                        <input type='text' name='search' placeholder='{$lang['search_search']}' class='search w-50' value='" . (!empty($_GET['search']) ? $_GET['search'] : '') . "' />
+                <div class='bg-02 padding20 round5'>
+                    <div class='padding10' class='w-100'>
+                        <input type='text' name='search' placeholder='{$lang['search_search']}' class='search w-100' value='" . (!empty($_GET['search']) ? $_GET['search'] : '') . "' />
                     </div>
-                    <div class='flex-container'>
-                        <div class='padding10'>
+                    <div class='level-center'>
+                        <div class='padding10 w-25 mw-50'>
                             $searchin
                         </div>
-                        <div class='padding10'>
+                        <div class='padding10 w-25 mw-50'>
                             $deadcheck
                         </div>
-                        <div class='padding10'>
+                        <div class='padding10 w-25 mw-50'>
                             $vip_box
                         </div>
+                        <div class='padding10 w-25 mw-50'>
+                            $only_free_box
+                        </div>
                     </div>
-                    <div class='flex-container'>
-                        $only_free_box
-                    </div>
-                    <div class='text-center'>
-                        <input type='submit' value='{$lang['search_search_btn']}' class='btn' />
+                    <div class='top10'>
+                        <input type='submit' value='{$lang['search_search_btn']}' class='button' />
                     </div>
                 </div>
             </form>";
@@ -368,11 +368,14 @@ if (isset($cleansearchstr)) {
     $HTMLOUT .= "<h2>{$lang['browse_search']} " . htmlsafechars($searchstr, ENT_QUOTES) . "</h2>";
 }
 if ($count) {
-    $HTMLOUT .= $pager['pagertop'];
-    $HTMLOUT .= '<br>';
     $HTMLOUT .= "
-                <div class='table-wrapper'>" . torrenttable($res) . "</div>";
-    $HTMLOUT .= $pager['pagerbottom'];
+                <div class='top20 bottom20'>
+                    {$pager['pagertop']}
+                </div>
+                <div class='table-wrapper'>" . torrenttable($res) . "</div>
+                <div class='top20'>
+                    {$pager['pagerbottom']}
+                </div>";
 } else {
     if (isset($cleansearchstr)) {
         $HTMLOUT .= "<h2>{$lang['browse_not_found']}</h2>";

@@ -86,18 +86,18 @@ function cleanup_show_main()
     $perpage = 15;
     $pager = pager($perpage, $count1, 'staffpanel.php?tool=cleanup_manager&amp;');
     $htmlout = "
-    <div class='container-fluid portlet'>
-        <h2 class='text-center top20'>{$lang['cleanup_head']}</h2>
+    <div class='container is-fluid portlet'>
+        <h2 class='has-text-centered top20'>{$lang['cleanup_head']}</h2>
         <table class='table table-bordered table-striped bottom20'>
             <thead>
                 <tr>
-                    <th class='colhead'>{$lang['cleanup_title']}</th>
-                    <th class='colhead' width='150px'>{$lang['cleanup_run']}</th>
-                    <th class='colhead' width='150px'>{$lang['cleanup_next']}</th>
-                    <th class='colhead' width='40px'>{$lang['cleanup_edit']}</th>
-                    <th class='colhead' width='40px'>{$lang['cleanup_delete']}</th>
-                    <th class='colhead' width='40px'>{$lang['cleanup_on']}</th>
-                    <th class='colhead' style='width: 40px;'>{$lang['cleanup_run_now']}</th>
+                    <th>{$lang['cleanup_title']}</th>
+                    <th width='150px'>{$lang['cleanup_run']}</th>
+                    <th width='150px'>{$lang['cleanup_next']}</th>
+                    <th width='40px'>{$lang['cleanup_edit']}</th>
+                    <th width='40px'>{$lang['cleanup_delete']}</th>
+                    <th width='40px'>{$lang['cleanup_on']}</th>
+                    <th style='width: 40px;'>{$lang['cleanup_run_now']}</th>
                 </tr>
             </thead>
             <tbody>";
@@ -130,7 +130,7 @@ function cleanup_show_main()
         $htmlout .= $pager['pagerbottom'];
     }
     $htmlout .= "<br>
-                <span class='btn'><a href='./staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=new'>{$lang['cleanup_add_new']}</a></span>";
+                <span class='button'><a href='./staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=new'>{$lang['cleanup_add_new']}</a></span>";
     echo stdhead($lang['cleanup_stdhead']) . $htmlout . stdfoot();
 }
 
@@ -195,7 +195,7 @@ function cleanup_show_edit()
     {$lang['cleanup_show_yes']} <input name='clean_on' value='1' $cleanon type='radio' />&#160;&#160;&#160;<input name='clean_on' value='0' $cleanoff type='radio' /> {$lang['cleanup_show_no']}
     </div>
 
-    <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_show_edit']}' class='btn' />&#160;<input type='button' value='{$lang['cleanup_show_cancel']}' onclick='javascript: history.back()' /></div>
+    <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_show_edit']}' class='button' />&#160;<input type='button' value='{$lang['cleanup_show_cancel']}' onclick='javascript: history.back()' /></div>
     </form>
     </div>";
     echo stdhead($lang['cleanup_show_stdhead']) . $htmlout . stdfoot();
@@ -306,7 +306,7 @@ function cleanup_show_new()
     {$lang['cleanup_show_yes']} <input name='clean_on' value='1' type='radio' />&#160;&#160;&#160;<input name='clean_on' value='0' checked='checked' type='radio' /> {$lang['cleanup_show_no']}
     </div>
 
-    <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_new_add']}' class='btn' />&#160;<input type='button' value='{$lang['cleanup_new_cancel']}' onclick='javascript: history.back()' /></div>
+    <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_new_add']}' class='button' />&#160;<input type='button' value='{$lang['cleanup_new_cancel']}' onclick='javascript: history.back()' /></div>
     </form>
     </div>";
     echo stdhead($lang['cleanup_new_stdhead']) . $htmlout . stdfoot();

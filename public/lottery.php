@@ -19,7 +19,7 @@ $valid = [
         'file'     => $lottery_root . 'tickets.php',
     ],
 ];
-$do = isset($_GET['do']) && in_array($_GET['do'], array_keys($valid)) ? $_GET['do'] : '';
+$do = isset($_GET['action']) && in_array($_GET['action'], array_keys($valid)) ? $_GET['action'] : '';
 if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['suspended'] == 'yes') {
     stderr('Error', 'Your gaming rights have been disabled.');
     exit();
@@ -39,8 +39,8 @@ switch (true) {
 
     default:
         $html = "
-                <div class='container-fluid portlet'>
-                    <h1 class='text-center'>{$site_config['site_name']} Lottery</h1>";
+                <div class='container is-fluid portlet'>
+                    <h1 class='has-text-centered'>{$site_config['site_name']} Lottery</h1>";
 
         $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
         while ($ac = mysqli_fetch_assoc($lconf)) {
@@ -50,27 +50,27 @@ switch (true) {
             $html .= stdmsg('Sorry', 'Lottery is closed at the moment');
         } elseif ($lottery_config['end_date'] > TIME_NOW) {
             $html .= stdmsg('Lottery in progress', 'Lottery started on <b>' . get_date($lottery_config['start_date'], 'LONG') . '</b> and ends on <b>' . get_date($lottery_config['end_date'], 'LONG') . "</b> remaining <span>" . mkprettytime($lottery_config['end_date'] - TIME_NOW) . "</span><br>
-       <p>" . ($CURUSER['class'] >= $valid['viewtickets']['minclass'] ? "<a href='lottery.php?do=viewtickets'>[View bought tickets]</a>&#160;&#160;" : '') . "<a href='lottery.php?do=tickets'>[Buy tickets]</a></p>");
+       <p class='top10'>" . ($CURUSER['class'] >= $valid['viewtickets']['minclass'] ? "<a href='./lottery.php?action=viewtickets' class='button right5'>View bought tickets</a>" : '') . "<a href='./lottery.php?action=tickets' class='button'>Buy tickets</a></p>");
         }
         //get last lottery data
         if (!empty($lottery_config['lottery_winners'])) {
             $html .= stdmsg('Last lottery', '' . get_date($lottery_config['lottery_winners_time'], 'LONG') . '');
             $uids = (strpos($lottery_config['lottery_winners'], '|') ? explode('|', $lottery_config['lottery_winners']) : $lottery_config['lottery_winners']);
             $last_winners = [];
-            $qus = sql_query('SELECT id, username FROM users WHERE id ' . (is_array($uids) ? 'IN (' . join(',', $uids) . ')' : '=' . $uids)) or sqlerr(__FILE__, __LINE__);
+            $qus = sql_query('SELECT id, username FROM users WHERE ' . (is_array($uids) ? 'id IN (' . join(',', $uids) . ')' : 'id = ' . $uids)) or sqlerr(__FILE__, __LINE__);
             while ($aus = mysqli_fetch_assoc($qus)) {
                 $last_winners[] = format_username($aus['id']);
             }
             $html .= stdmsg('Lottery Winners Info', "<ul><li>Last winners: " . join(', ', $last_winners) . '</li><li>Amount won	(each): ' . $lottery_config['lottery_winners_amount'] . "</li></ul><br>
-        <p>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "<a href='lottery.php?do=config'>[Lottery configuration]</a>&#160;&#160;" : 'Nothing Configured Atm Sorry') . '</p>');
+        <p>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "<a href='./lottery.php?action=config' class='button'>Lottery configuration</a>" : 'Nothing Configured Atm Sorry') . '</p>');
         } else {
             $html .= "
-                    <div class='bordered padleft10 padright10 top20 bottom20'>
-                        <div class='alt_bordered transparent'>
+                    <div class='bordered top20 bottom20'>
+                        <div class='alt_bordered bg-00'>
                             <ul>
                                 <li>Nobody has won, because nobody has played yet :)</li>
                             </ul>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "
-                            <a class='altlink' href='./lottery.php?do=config'>Lottery configuration</a>" : "
+                            <a href='./lottery.php?action=config' class='button'>Lottery configuration</a>" : "
                             <span>Nothing Configured Atm Sorry.</span>") . "
                         </div>
                     </div>";

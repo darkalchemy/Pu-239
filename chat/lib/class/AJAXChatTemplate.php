@@ -302,7 +302,7 @@ class AJAXChatTemplate
     {
         $errorMessages = '';
         foreach ($this->ajaxChat->getInfoMessages('error') as $error) {
-            $errorMessages .= '<div class="text-center">' . $this->ajaxChat->htmlEncode($this->ajaxChat->getLang($error)) . '</div>';
+            $errorMessages .= '<div class="has-text-centered">' . $this->ajaxChat->htmlEncode($this->ajaxChat->getLang($error)) . '</div>';
         }
 
         return $errorMessages;

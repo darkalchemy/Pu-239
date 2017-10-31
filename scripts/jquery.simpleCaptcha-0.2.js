@@ -41,7 +41,7 @@
             .html('')  // clear out the container
             .append(
                 "<div class='" + o.introClass + "'>" + o.introText + "</div>" +
-                "<div class='" + o.imageBoxClass + "'></div>" +
+                "<div class='" + o.imageBoxClass + " " + o.imageBoxClassExtra + "'></div>" +
                 "<input class='simpleCaptchaInput' id='" + inputId + "' name='" + o.inputName + "' type='hidden' value='' />"
             );
 
@@ -131,9 +131,10 @@
         // String Text to place above captcha images (can contain html). IMPORTANT: You should probably include a tag with the textClass name on it, for example: <span id='captchaText'></span>
         inputName: 'captchaSelection',    // String Name to use for the captcha hidden input, this is what you will need to check on the receiving end of the form submission.
         scriptPath: 'simpleCaptcha.php',  // String Relative path to the script file to use (usually simpleCaptcha.php).
-        introClass: 'captchaIntro',       // String Class to use for the captcha introduction text container.
+        introClass: 'captchaIntro bottom10',       // String Class to use for the captcha introduction text container.
         textClass: 'captchaText',         // String Class to look for to place the text for the correct captcha image.
-        imageBoxClass: 'flex-justify-center',   // String Class to use for the captchas images container.
+        imageBoxClass: 'tabs',   // String Class to use for the captchas images container.
+        imageBoxClassExtra: 'is-marginless',   // String Class to add for the captchas images container.
         imageClass: 'captchaImage'        // String Class to use for each captcha image.
     };
 

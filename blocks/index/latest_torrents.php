@@ -2,8 +2,8 @@
 $HTMLOUT .= "
     <a id='latesttorrents-hash'></a>
     <fieldset id='latesttorrents' class='header'>
-        <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_latest']}</legend>
-        <div class='text-center'>";
+        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_latest']}</legend>
+        <div class='has-text-centered'>";
 if (($top5torrents = $mc1->get_value('top5_tor_')) === false) {
     $res = sql_query("SELECT t.id, t.seeders, t.poster, t.leechers, t.name, t.times_completed, t.category, c.image AS cat_pic, c.name AS cat_name, t.times_completed, t.added, t.size
                         FROM torrents AS t
@@ -19,15 +19,15 @@ if (count($top5torrents) > 0) {
     $HTMLOUT .= "
             <div class='module table-wrapper'>
                 <div class='badge badge-top'></div>
-                <table class='table table-bordered table-striped bottom10'>";
+                <table class='table table-bordered table-striped'>";
     $HTMLOUT .= "
                     <thead>
                         <tr>
-                            <th class='span1 text-center'>{$lang['index_mow_type']}</th>
-                            <th class='span8'>{$lang['top5torrents_title']}</th>
-                            <th class='span1 text-center'>{$lang['index_mow_snatched']}</th>
-                            <th class='span1 text-center'>{$lang['top5torrents_seeders']}</th>
-                            <th class='span1 text-center'>{$lang['top5torrents_leechers']}</th>
+                            <th class='has-text-centered'>{$lang['index_mow_type']}</th>
+                            <th class='w-25'>{$lang['top5torrents_title']}</th>
+                            <th class='has-text-centered'>{$lang['index_mow_snatched']}</th>
+                            <th class='has-text-centered'>{$lang['top5torrents_seeders']}</th>
+                            <th class='has-text-centered'>{$lang['top5torrents_leechers']}</th>
                         </tr>
                     </thead>
                     <tbody>";
@@ -37,29 +37,29 @@ if (count($top5torrents) > 0) {
             if (strlen($torrname) > 50) {
                 $torrname = substr($torrname, 0, 50) . '...';
             }
-            $poster = empty($top5torrentarr['poster']) ? "<img src='{$site_config['pic_base_url']}noposter.png' width='150' height='220' />" : "<img src='" . htmlsafechars($top5torrentarr['poster']) . "' width='150' height='220' />";
+            $poster = empty($top5torrentarr['poster']) ? "<img src='{$site_config['pic_base_url']}noposter.png' class='tooltip-poster' />" : "<img src='" . htmlsafechars($top5torrentarr['poster']) . "' class='tooltip-poster' />";
 
             $HTMLOUT .= "
                         <tr>
-                            <td class='span1 text-center'>
+                            <td class='has-text-centered'>
                                 <img src='./images/caticons/" . get_categorie_icons() . "/" . htmlsafechars($top5torrentarr['cat_pic']) . "' class='tooltipper' alt='" . htmlsafechars($top5torrentarr['cat_name']) . "' title='" . htmlsafechars($top5torrentarr['cat_name']) . "' />
                             </td>
-                            <td class='span8'>
+                            <td>
                                 <a href='{$site_config['baseurl']}/details.php?id=" . (int)$top5torrentarr['id'] . "&amp;hit=1'>
                                     <span class='dt-tooltipper-large' data-tooltip-content='#id_{$top5torrentarr['id']}_tooltip'>
                                         {$torrname}
                                         <div class='tooltip_templates'>
                                             <span id='id_{$top5torrentarr['id']}_tooltip'>
-                                                <div class='flex'>
+                                                <div class='is-flex tooltip-torrent'>
                                                     <span class='margin10'>
                                                         $poster
                                                     </span>
                                                     <span class='margin10'>
-                                                        <b>{$lang['index_ltst_name']} " . htmlsafechars($top5torrentarr['name']) . "</b><br>
-                                                        <b>Added: " . get_date($top5torrentarr['added'], 'DATE', 0, 1) . "</b><br>
-                                                        <b>Size: " . mksize(htmlsafechars($top5torrentarr['size'])) . "</b><br>
-                                                        <b>{$lang['index_ltst_seeder']} " . (int)$top5torrentarr['seeders'] . "</b><br>
-                                                        <b>{$lang['index_ltst_leecher']} " . (int)$top5torrentarr['leechers'] . "</b><br>
+                                                        <b class='size_4 has-text-primary'>Name:</b> " . htmlsafechars($top5torrentarr['name']) . "<br>
+                                                        <b class='size_4 has-text-primary'>Added:</b> " . get_date($top5torrentarr['added'], 'DATE', 0, 1) . "<br>
+                                                        <b class='size_4 has-text-primary'>Size:</b> " . mksize(htmlsafechars($top5torrentarr['size'])) . "<br>
+                                                        <b class='size_4 has-text-primary'>Seeders:</b> " . (int)$top5torrentarr['seeders'] . "<br>
+                                                        <b class='size_4 has-text-primary'>Leechers:</b> " . (int)$top5torrentarr['leechers'] . "<br>
                                                     </span>
                                                 </div>
                                             </span>
@@ -67,9 +67,9 @@ if (count($top5torrents) > 0) {
                                     </span>
                                 </a>
                             </td>
-                            <td class='span1 text-center'>" . (int)$top5torrentarr['times_completed'] . "</td>
-                            <td class='span1 text-center'>" . (int)$top5torrentarr['seeders'] . "</td>
-                            <td class='span1 text-center'>" . (int)$top5torrentarr['leechers'] . "</td>
+                            <td class='has-text-centered'>" . (int)$top5torrentarr['times_completed'] . "</td>
+                            <td class='has-text-centered'>" . (int)$top5torrentarr['seeders'] . "</td>
+                            <td class='has-text-centered'>" . (int)$top5torrentarr['leechers'] . "</td>
                         </tr>";
         }
         $HTMLOUT .= '
@@ -108,11 +108,11 @@ if (count($last5torrents) > 0) {
                 <table class='table table-bordered table-striped'>
                     <thead>
                         <tr>
-                            <th class='span1 text-center'>{$lang['index_mow_type']}</th>
-                            <th class='span8'>{$lang['last5torrents_title']}</th>
-                            <th class='span1 text-center'>{$lang['index_mow_snatched']}</th>
-                            <th class='span1 text-center'>{$lang['last5torrents_seeders']}</th>
-                            <th class='span1 text-center'>{$lang['last5torrents_leechers']}</th>
+                            <th class='has-text-centered'>{$lang['index_mow_type']}</th>
+                            <th>{$lang['last5torrents_title']}</th>
+                            <th class='has-text-centered'>{$lang['index_mow_snatched']}</th>
+                            <th class='has-text-centered'>{$lang['last5torrents_seeders']}</th>
+                            <th class='has-text-centered'>{$lang['last5torrents_leechers']}</th>
                         </tr>
                     </thead>
                     <tbody>";
@@ -122,29 +122,29 @@ if (count($last5torrents) > 0) {
             if (strlen($torrname) > 50) {
                 $torrname = substr($torrname, 0, 50) . '...';
             }
-            $poster = empty($last5torrentarr['poster']) ? "<img src='{$site_config['pic_base_url']}noposter.png' width='150' height='220' />" : "<img src='" . htmlsafechars($last5torrentarr['poster']) . "' width='150' height='220' />";
+            $poster = empty($last5torrentarr['poster']) ? "<img src='{$site_config['pic_base_url']}noposter.png' class='tooltip-poster' />" : "<img src='" . htmlsafechars($last5torrentarr['poster']) . "' class='tooltip-poster' />";
 
             $HTMLOUT .= "
                         <tr id='id_{$last5torrentarr['id']}_tooltip'>
-                            <td class='span1 text-center'>
+                            <td class='has-text-centered'>
                                 <img src='./images/caticons/" . get_categorie_icons() . "/" . htmlsafechars($last5torrentarr['cat_pic']) . "' class='tooltipper' alt='" . htmlsafechars($last5torrentarr['cat_name']) . "' title='" . htmlsafechars($last5torrentarr['cat_name']) . "' />
                             </td>
-                            <td class='span8'>
+                            <td>
                                 <a href='{$site_config['baseurl']}/details.php?id=" . (int)$last5torrentarr['id'] . "&amp;hit=1'>
                                     <span class='dt-tooltipper-large' data-tooltip-content='#id_{$last5torrentarr['id']}_tooltip'>
                                         {$torrname}
                                         <div class='tooltip_templates'>
                                             <span id='id_{$last5torrentarr['id']}_tooltip'>
-                                                <div class='flex'>
+                                                <div class='is-flex tooltip-torrent'>
                                                     <span class='margin10'>
                                                         $poster
                                                     </span>
                                                     <span class='margin10'>
-                                                        <b>{$lang['index_ltst_name']} " . htmlsafechars($last5torrentarr['name']) . "</b><br>
-                                                        <b>Added: " . get_date($last5torrentarr['added'], 'DATE', 0, 1) . "</b><br>
-                                                        <b>Size: " . mksize(htmlsafechars($last5torrentarr['size'])) . "</b><br>
-                                                        <b>{$lang['index_ltst_seeder']} " . (int)$last5torrentarr['seeders'] . "</b><br>
-                                                        <b>{$lang['index_ltst_leecher']} " . (int)$last5torrentarr['leechers'] . "</b><br>
+                                                        <b class='size_4 has-text-primary'>Name:</b> " . htmlsafechars($last5torrentarr['name']) . "<br>
+                                                        <b class='size_4 has-text-primary'>Added:</b> " . get_date($last5torrentarr['added'], 'DATE', 0, 1) . "<br>
+                                                        <b class='size_4 has-text-primary'>Size:</b> " . mksize(htmlsafechars($last5torrentarr['size'])) . "<br>
+                                                        <b class='size_4 has-text-primary'>Seeders:</b> " . (int)$last5torrentarr['seeders'] . "<br>
+                                                        <b class='size_4 has-text-primary'>Leechers:</b> " . (int)$last5torrentarr['leechers'] . "<br>
                                                     </span>
                                                 </div>
                                             </span>
@@ -153,9 +153,9 @@ if (count($last5torrents) > 0) {
                                 </a>
                             </td>
                             </td>
-                            <td class='span1 text-center'>" . (int)$last5torrentarr['times_completed'] . "</td>
-                            <td class='span1 text-center'>" . (int)$last5torrentarr['seeders'] . "</td>
-                            <td class='span1 text-center'>" . (int)$last5torrentarr['leechers'] . "</td>
+                            <td class='has-text-centered'>" . (int)$last5torrentarr['times_completed'] . "</td>
+                            <td class='has-text-centered'>" . (int)$last5torrentarr['seeders'] . "</td>
+                            <td class='has-text-centered'>" . (int)$last5torrentarr['leechers'] . "</td>
                         </tr>";
         }
         $HTMLOUT .= '

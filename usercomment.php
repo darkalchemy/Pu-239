@@ -47,7 +47,7 @@ function usercommenttable($rows)
         $htmlout .= begin_table(false);
         $htmlout .= "
                     <tr>
-                        <td class='text-center' width='150'>
+                        <td class='has-text-centered' width='150'>
                             <img src='{$avatar}' alt='Avatar' class='avatar' />
                         </td>
                         <td class='text'>{$text}</td>
@@ -93,9 +93,9 @@ if ($action == 'add') {
     $HTMLOUT .= "<h1>Add a comment for '" . htmlsafechars($arr['username']) . "'</h1>
     <form method='post' action='usercomment.php?action=add'>
     <input type='hidden' name='userid' value='$userid' />
-    <div>" . BBcode(false) . "</div>
+    <div>" . BBcode() . "</div>
     <br><br>
-    <input type='submit' class='btn' value='Do it!' /></form>\n";
+    <input type='submit' class='button' value='Do it!' /></form>\n";
     $res = sql_query('SELECT c.id, c.text, c.editedby, c.editedat, c.added, c.username, users.id as user, u.avatar, u.title, u.anonymous, u.class, u.donor, u.warned, u.leechwarn, u.chatpost
                         FROM usercomments AS c
                         LEFT JOIN users AS u ON c.user = u.id
@@ -145,7 +145,7 @@ if ($action == 'add') {
     <input type='hidden' name='returnto' value='{$_SERVER['HTTP_REFERER']}' />
     <input type=\"hidden\" name=\"cid\" value='" . (int)$commentid . "' />
     <textarea name='body' rows='10' cols='60'>" . htmlsafechars($arr['text']) . "</textarea>
-    <input type='submit' class='btn' value='Do it!' /></form>";
+    <input type='submit' class='button' value='Do it!' /></form>";
     echo stdhead('Edit comment for "' . htmlsafechars($arr['username']) . '"', true, $stdhead) . $HTMLOUT . stdfoot();
     stdfoot();
     die;

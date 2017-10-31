@@ -402,7 +402,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
         }
         $betsp = sql_query('SELECT id, amount FROM casino_bets WHERE userid = ' . sqlesc($CURUSER['id']) . ' ORDER BY time ASC') or sqlerr(__FILE__, __LINE__);
         $tbet2 = mysqli_fetch_row($betsp);
-        $dummy = "<h2 class='text-center'>{$lang['casino_bet_added_you_will_receive_a_pm_notify']}</h2>";
+        $dummy = "<h2 class='has-text-centered'>{$lang['casino_bet_added_you_will_receive_a_pm_notify']}</h2>";
         $user = $CURUSER['username'];
         $bet = mksize($nobits);
         $classColor = get_user_class_color($CURUSER['class']);
@@ -436,7 +436,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     $totbets = mysqli_num_rows($loca);
     $HTMLOUT = "
     <div class='table-wrapper bottom20'>
-        <div class='container-fluid portlet'>";
+        <div class='container is-fluid portlet'>";
     $HTMLOUT .= $dummy;
     //== Place bet table
     if ($openbet < $maxusrbet) {
@@ -445,16 +445,16 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
         } else {
             $HTMLOUT .= "
             <form name='p2p' method='post' action='{$casino}'>
-                <h1 class='text-center'>{$site_config['site_name']} {$lang['casino_stdhead']} - {$lang['casino_bet_p2p_with_other_users']}:</h1>
+                <h1 class='has-text-centered'>{$site_config['site_name']} {$lang['casino_stdhead']} - {$lang['casino_bet_p2p_with_other_users']}:</h1>
                 <table class='table table-bordered table-striped top20 bottom20'>
                     <thead>
                         <tr>
-                            <td class='text-center' colspan='2'>{$lang['casino_place_bet']}</td>
+                            <td class='has-text-centered' colspan='2'>{$lang['casino_place_bet']}</td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td class='text-center'><b>{$lang['casino_amount_to_bet']}</b>
+                            <td class='has-text-centered'><b>{$lang['casino_amount_to_bet']}</b>
                                 <input type='text' name='amnt' size='5' value='1' />
                                 <select name='unit'>
                                     <option value='1'>MB</option>
@@ -463,8 +463,8 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
                             </td>
                         </tr>
                         <tr>
-                            <td class='text-center' colspan='2'>
-                                <input type='submit' class='btn' value='{$lang['casino_gamble']}!' />
+                            <td class='has-text-centered' colspan='2'>
+                                <input type='submit' class='button' value='{$lang['casino_gamble']}!' />
                             </td>
                         </tr>
                     </tbody>
@@ -480,23 +480,23 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
                 <table class='table table-bordered table-striped top20 bottom20'>
                     <thead>
                         <tr>
-                            <th class='text-center' colspan='4'>{$lang['casino_open_bets']} - Max Bet {$maxbetShow} - Limit {$maxusrbet} Active Bets</th>
+                            <th class='has-text-centered' colspan='4'>{$lang['casino_open_bets']} - Max Bet {$maxbetShow} - Limit {$maxusrbet} Active Bets</th>
                         </tr>
                         <tr>
-                            <td class='text-center'><b>{$lang['casino_name']}</b></td>
-                            <td class='text-center'><b>{$lang['casino_amount']}</b></td>
-                            <td class='text-center'><b>{$lang['casino_time']}</b></td>
-                            <td class='text-center'><b>{$lang['casino_take_bet']}</b></td>
+                            <td class='has-text-centered'><b>{$lang['casino_name']}</b></td>
+                            <td class='has-text-centered'><b>{$lang['casino_amount']}</b></td>
+                            <td class='has-text-centered'><b>{$lang['casino_time']}</b></td>
+                            <td class='has-text-centered'><b>{$lang['casino_take_bet']}</b></td>
                         </tr>
                     </thead>
                     <tbody>";
     while ($res = mysqli_fetch_assoc($loca)) {
         $HTMLOUT .= "
                         <tr>
-                            <td class='text-center'>" . format_username($res['userid']) . "</td>
-                            <td class='text-center'>" . htmlsafechars(mksize($res['amount'])) . "</td>
-                            <td class='text-center'>" . get_date($res['time'], 'LONG', 0, 1) . "</td>
-                            <td class='text-center'>
+                            <td class='has-text-centered'>" . format_username($res['userid']) . "</td>
+                            <td class='has-text-centered'>" . htmlsafechars(mksize($res['amount'])) . "</td>
+                            <td class='has-text-centered'>" . get_date($res['time'], 'LONG', 0, 1) . "</td>
+                            <td class='has-text-centered'>
                                 <b><a href='{$casino}?takebet=" . (int)$res['id'] . "'>{$lang['casino_take_bet']}</a></b>
                             </td>
                         </tr>";
@@ -505,7 +505,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     if ($abcdefgh == false) {
         $HTMLOUT .= "
                         <tr>
-                            <td class='text-center' colspan='4'>{$lang['casino_sorry_no_bets_currently']}.</td>
+                            <td class='has-text-centered' colspan='4'>{$lang['casino_sorry_no_bets_currently']}.</td>
                         </tr>";
     }
     $HTMLOUT .= "
@@ -517,7 +517,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
                 <table class='table table-bordered table-striped top20 bottom20'>
                     <thead>
                         <tr>
-                            <td class='text-center' class='colhead' colspan='2'>{$lang['casino_bet_on_a_colour']}</td>
+                            <td class='has-text-centered' class='colhead' colspan='2'>{$lang['casino_bet_on_a_colour']}</td>
                         </tr>
                     </thead>
                     <tbody>";
@@ -540,7 +540,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     }
     $HTMLOUT .= tr($lang['casino_your_chance'], '1 : ' . $real_chance, 1);
     $HTMLOUT .= tr($lang['casino_you_can_win'], $win_amount . ' * stake', 1);
-    $HTMLOUT .= tr($lang['casino_bet_on_color'], "<input type='submit' class='btn' value='{$lang['casino_do_it']}!' />", 1);
+    $HTMLOUT .= tr($lang['casino_bet_on_color'], "<input type='submit' class='button' value='{$lang['casino_do_it']}!' />", 1);
     $HTMLOUT .= "
                     </tbody>
                 </table>
@@ -551,7 +551,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
                 <table class='table table-bordered table-striped top20 bottom20'>
                     <thead>
                         <tr>
-                            <td class='text-center' class='colhead' colspan='2'>{$lang['casino_bet_on_a_number']}</td>
+                            <td class='has-text-centered' class='colhead' colspan='2'>{$lang['casino_bet_on_a_number']}</td>
                         </tr>
                     </thead>
                     <tbody>";
@@ -574,7 +574,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     }
     $HTMLOUT .= tr($lang['casino_your_chance'], '1 : ' . $real_chance, 1);
     $HTMLOUT .= tr($lang['casino_you_can_win'], $win_amount_on_number . ' * stake', 1);
-    $HTMLOUT .= tr($lang['casino_bet_on_a_number'], "<input type='submit' class='btn' value='{$lang['casino_do_it']}!' />", 1);
+    $HTMLOUT .= tr($lang['casino_bet_on_a_number'], "<input type='submit' class='button' value='{$lang['casino_do_it']}!' />", 1);
     $HTMLOUT .= "
                     </tbody>
                 </table>
@@ -582,11 +582,11 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     //== User stats table
     $HTMLOUT .= "
             <div class='bordered top20 bottom20'>
-                <div class='text-center top20'>
+                <div class='has-text-centered top20'>
                     <span class='size_7'>{$CURUSER['username']}'s {$lang['casino_details']}</span>
                 </div>
-                <div class='flex-container flex-top'>
-                    <div class='text-center w-25 top20'>
+                <div class='level-center flex-top'>
+                    <div class='has-text-centered w-25 top20'>
                         <span class='size_6'>User @ {$site_config['site_name']} {$lang['casino_stdhead']}</span>
                         <table class='table table-bordered table-striped'>";
     $HTMLOUT .= tr($lang['casino_you_can_win'], mksize($max_download_user), 1);
@@ -597,7 +597,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     $HTMLOUT .= "
                         </table>
                     </div>
-                    <div class='text-center w-25 top20'>
+                    <div class='has-text-centered w-25 top20'>
                         <span class='size_6'>{$lang['casino_global_stats']}</span>
                         <table class='table table-bordered table-striped'>";
     $HTMLOUT .= tr($lang['casino_users_can_win'], mksize($max_download_global), 1);
@@ -608,7 +608,7 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     $HTMLOUT .= "
                         </table>
                     </div>
-                    <div class='text-center w-25 top20'>
+                    <div class='has-text-centered w-25 top20'>
                         <span class='size_6'>{$lang['casino_user_stats']}</span>
                         <table class='table table-bordered table-striped'>";
     $HTMLOUT .= tr($lang['casino_uploaded'], mksize($User['uploaded'] - $nobits));

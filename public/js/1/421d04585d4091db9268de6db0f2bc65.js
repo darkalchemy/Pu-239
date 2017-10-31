@@ -7,7 +7,7 @@
         o = o ? o : {};
         o = auditOptions($.extend({}, $.fn.simpleCaptcha.defaults, o));
         var inputId = "simpleCaptcha_" + $.fn.simpleCaptcha.uid++;
-        n.addClass("simpleCaptcha").html("").append("<div class='" + o.introClass + "'>" + o.introText + "</div>" + "<div class='" + o.imageBoxClass + "'></div>" + "<input class='simpleCaptchaInput' id='" + inputId + "' name='" + o.inputName + "' type='hidden' value='' />");
+        n.addClass("simpleCaptcha").html("").append("<div class='" + o.introClass + "'>" + o.introText + "</div>" + "<div class='" + o.imageBoxClass + " " + o.imageBoxClassExtra + "'></div>" + "<input class='simpleCaptchaInput' id='" + inputId + "' name='" + o.inputName + "' type='hidden' value='' />");
         $.ajax({
             url: o.scriptPath,
             data: {
@@ -81,9 +81,10 @@
         introText: "<p align='center'>To make sure you are a human, we need you to click on the <span class='captchaText'></span>.</p>",
         inputName: "captchaSelection",
         scriptPath: "simpleCaptcha.php",
-        introClass: "captchaIntro",
+        introClass: "captchaIntro bottom10",
         textClass: "captchaText",
-        imageBoxClass: "flex-justify-center",
+        imageBoxClass: "tabs",
+        imageBoxClassExtra: "is-marginless",
         imageClass: "captchaImage"
     };
 })(jQuery);

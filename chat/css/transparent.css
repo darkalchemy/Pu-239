@@ -20,8 +20,8 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #content #inputFieldContainer #inputField {
     border: 0;
-    padding: 3px 12px;
-    width: calc(100% - 27px);
+    padding: 8px 12px;
+    width: calc(100% - 24px);
     background: transparent;
 }
 
@@ -30,7 +30,6 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #loginContent #loginButton {
-    color: #b0b8a8;
     border-radius: 3px;
 }
 
@@ -40,7 +39,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #errorContainer {
     font-size: 2em;
-    text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;    
+    text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
 }
 
 .ajax-chat {
@@ -59,23 +58,10 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #loginContent input, #loginContent select {
     background: #171717;
+}
+
+#content textarea {
     color: #b0b8a8;
-}
-
-#content input, #content select, #content textarea {
-    background-color: rgba(0, 0, 0, .1);
-    color: #000;
-}
-
-.ajax-chat .popup, #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer,
-#content #inputFieldContainer, #loginContent input[type=text], #loginContent input[type=password] {
-    box-shadow: 0px 0px 8px 1px #495a49;
-    -webkit-box-shadow: 0px 0px 8px 1px #495a49;
-}
-
-.logoutChannelInner .popup {
-    box-shadow: 0;
-    -webkit-box-shadow: 0; 
 }
 
 #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer {
@@ -146,19 +132,6 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 #content #bbCodeContainer input:hover {
 }
 
-#content #bbCodeContainer input:active, #content #logoutButton:active, #content #submitButton:active, #loginContent #loginButton:active {
-    box-shadow: 0px 0px 8px 1px #38ff56;
-}
-
-#content #logoutButton, #content #submitButton, #loginContent #loginButton {
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 0px 0px 5px #000;
-}
-
-#content #logoutButton:hover, #content #submitButton:hover, #loginContent #loginButton:hover {
-}
-
 .ajax-chat .popup, .ajax-chat #content .popup#colorCodesContainer {
     border: 0;
     padding: 5px;
@@ -166,7 +139,6 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #content #colorCodesContainer a {
     border-radius: 10px;
-    box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.3);
     margin: 5px;
     border: 0;
 }
@@ -183,11 +155,31 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #content .rowEven, #helpList dl:nth-child(even), #settingsList dl:nth-child(even) {
     background-color: rgba(0, 0, 0, .1);
+    border: 1px solid rgba(0, 0, 0, .1);
+}
+
+#content .rowOdd, #helpList dl:nth-child(odd), #settingsList dl:nth-child(odd) {
+    border: 1px solid transparent;
+}
+
+#content .rowEven:hover, #helpList dl:nth-child(even):hover, #settingsList dl:nth-child(even):hover {
+    border: 1px solid rgba(255, 255, 255, .1);
+    -webkit-transition: all 0.35s ease-in-out;
+    -moz-transition: all 0.35s ease-in-out;
+    -o-transition: all 0.35s ease-in-out;
+    transition: all 0.35s ease-in-out;
+}
+
+#content .rowOdd:hover, #helpList dl:nth-child(odd):hover, #settingsList dl:nth-child(odd):hover {
+    border: 1px solid rgba(255, 255, 255, .1);
+    -webkit-transition: all 0.35s ease-in-out;
+    -moz-transition: all 0.35s ease-in-out;
+    -o-transition: all 0.35s ease-in-out;
+    transition: all 0.35s ease-in-out;
 }
 
 #content #chatList .rowOdd.private, #content #chatList .rowEven.private {
-    background-color: #0C3A00;
-    background-image: linear-gradient(to bottom, #1C5417, #05410E);
+    background: #0C3A00 linear-gradient(to bottom, #1C5417, #05410E);
 }
 
 #content #chatList .chatBotErrorMessage {
@@ -200,60 +192,53 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #content #chatList span.dateTime {
     font-family: "Lucida Console", Monaco, monospace;
+    font-size: .7em;
 }
 
 input[type=button] {
-   border-top: 1px solid #96d1f8;
-   background: #4f5e4f;
-   background: -webkit-gradient(linear, left top, left bottom, from(#a5c3a5), to(#4f5e4f));
-   background: -webkit-linear-gradient(top, #a5c3a5, #4f5e4f);
-   background: -moz-linear-gradient(top, #a5c3a5, #4f5e4f);
-   background: -ms-linear-gradient(top, #a5c3a5, #4f5e4f);
-   background: -o-linear-gradient(top, #a5c3a5, #4f5e4f);
-   padding: 6px 14px;
-   -webkit-border-radius: 8px;
-   -moz-border-radius: 8px;
-   border-radius: 8px;
-   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
-   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
-   box-shadow: rgba(0,0,0,1) 0 1px 0;
-   text-shadow: rgba(0,0,0,.4) 0 1px 0;
-   color: white;
-   font-size: 14px;
-   text-decoration: none;
-   vertical-align: middle;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border: 1px solid white;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    height: 2.25em;
+    line-height: 1.5;
+    padding: calc(0.375em - 1px) calc(0.625em - 1px);
+    position: relative;
+    vertical-align: top;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: #363636;
+    cursor: pointer;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
+    border-radius: 2px;
+    font-size: 0.75rem;
 }
 
 input[type=button]:hover {
-   border-top-color: #28597a;
-   background: -webkit-gradient(linear, left top, left bottom, from(#4f5e4f), to(#a5c3a5));
-   background: -webkit-linear-gradient(top, #4f5e4f, #a5c3a5);
-   background: -moz-linear-gradient(top, #4f5e4f, #a5c3a5);
-   background: -ms-linear-gradient(top, #4f5e4f, #a5c3a5);
-   background: -o-linear-gradient(top, #4f5e4f, #a5c3a5);
-   color: #ccc;
+    border-color: #b5b5b5;
 }
 
 input[type=button]:active {
-   border-top-color: #1b435e;
-   background: #1b435e;
+    outline: none;
+    border-color: #4a4a4a;
 }
 
 .text-center {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-}
-
-@media (min-width: 701px) {
-    .ajax-chat .popup, 
-    #content #chatList, 
-    #content #onlineListContainer, 
-    #content #helpContainer, 
-    #content #settingsContainer, 
-    #content #inputFieldContainer, 
-    #loginContent input[type=text], 
-    #loginContent input[type=password] {
-        background: rgba(0, 0, 0, .1);
-    }
 }

@@ -24,13 +24,13 @@ $pager = pager($perpage, $count, 'staffpanel.php?tool=sitelog&amp;action=sitelog
 $HTMLOUT = '';
 $res = sql_query("SELECT added, txt FROM sitelog $where ORDER BY added DESC {$pager['limit']} ") or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= "
-    <h1 class='text-center'>{$lang['text_sitelog']}</h1>
-    <div class='container-fluid portlet'>
-        <div class='text-center bordered top20'>
+    <h1 class='has-text-centered'>{$lang['text_sitelog']}</h1>
+    <div class='container is-fluid portlet'>
+        <div class='has-text-centered bordered top20'>
             <h2>{$lang['log_search']}</h2>
             <form method='post' action='./staffpanel.php?tool=sitelog&amp;action=sitelog'>
                 <input type='text' name='search' class='w-50' value='' />
-                <input type='submit' class='btn' value='{$lang['log_search_btn']}' />
+                <input type='submit' class='button' value='{$lang['log_search_btn']}' />
             </form>
         </div>";
 if ($count > $perpage) {

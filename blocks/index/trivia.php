@@ -2,9 +2,9 @@
 $HTMLOUT .= "
     <a id='trivia-hash'></a>
     <fieldset id='trivia' class='header'>
-        <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_trivia']}</legend>
-        <div class='bordered padleft10 padright10 bottom10'>
-            <div class='alt_bordered transparent text-center'>
+        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_trivia']}</legend>
+        <div class='bordered'>
+            <div class='alt_bordered iframe-container bg-none has-text-centered'>
                 <iframe src='./trivia.php' id='triviabox' name='triviabox'></iframe>
             </div>
         </div>

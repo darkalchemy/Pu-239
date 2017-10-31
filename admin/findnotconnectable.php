@@ -71,7 +71,7 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) == 'sendpm') {
 </tr>
 <tr><td><textarea name='msg' cols='120' rows='15'>$body</textarea></td></tr>
 
-<tr><td colspan='2'><input type='submit' value='Send' class='btn'/></td></tr>
+<tr><td colspan='2'><input type='submit' value='Send' class='button'/></td></tr>
 </table>
 <input type='hidden' name='receiver' value='$receiver'/>
 </form>

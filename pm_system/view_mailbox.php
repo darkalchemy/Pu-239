@@ -35,11 +35,11 @@ $res = sql_query('SELECT m.id AS message_id, m.sender, m.receiver, m.added, m.su
 //echo stdhead(htmlsafechars($mailbox_name));
 //=== let's make the table
 $HTMLOUT .= "
-    <div class='container-fluid portlet'>
+    <div class='container is-fluid portlet'>
     $h1_thingie
     $top_links
     <a name='pm'></a>
-        <h3 class='text-center top20'>
+        <h3 class='has-text-centered top20'>
             <span class='size_1'>{$messages} / {$maxbox}</span>
             <span class='size_5'> {$mailbox_name} </span>
             <span class='size_1'>{$lang['pm_mailbox_full']}{$num_messages}{$lang['pm_mailbox_full1']}</span>
@@ -56,18 +56,18 @@ $HTMLOUT .= "
                             Mailbox
                         </th>
                         <th>
-                            <a class='altlink bordered padding10' href='././pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
-                                ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . "&amp;order_by=subject{$desc_asc}#pm' title='{$lang['pm_mailbox_sorder']}{$desc_asc_2}'>{$lang['pm_mailbox_subject']}
+                            <a href='./pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
+                                ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . "&amp;order_by=subject{$desc_asc}#pm' class='tooltipper' title='{$lang['pm_mailbox_sorder']}{$desc_asc_2}'>{$lang['pm_mailbox_subject']}
                             </a>
                         </th>
                         <th>
-                            <a class='altlink bordered padding10' href='./pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
-                                ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . "&amp;order_by=username{$desc_asc}#pm' title='{$lang['pm_mailbox_morder']}{$desc_asc_2}'>" . ($mailbox === PM_SENTBOX ? $lang['pm_search_sent_to'] : $lang['pm_search_sender']) . "
+                            <a href='./pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
+                                ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . "&amp;order_by=username{$desc_asc}#pm' class='tooltipper' title='{$lang['pm_mailbox_morder']}{$desc_asc_2}'>" . ($mailbox === PM_SENTBOX ? $lang['pm_search_sent_to'] : $lang['pm_search_sender']) . "
                             </a>
                         </th>
                         <th>
-                            <a class='altlink bordered padding10' href='./pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
-                                ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . "&amp;order_by=added{$desc_asc}#pm' title='{$lang['pm_mailbox_dorder']}{$desc_asc_2}'>{$lang['pm_mailbox_date']}
+                            <a href='./pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
+                                ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . "&amp;order_by=added{$desc_asc}#pm' class='tooltipper' title='{$lang['pm_mailbox_dorder']} {$desc_asc_2}'>{$lang['pm_mailbox_date']}
                             </a>
                         </th>
                         <th>Select</td>
@@ -77,7 +77,7 @@ $HTMLOUT .= "
 if (mysqli_num_rows($res) === 0) {
     $HTMLOUT .= "
         <tr>
-            <td colspan='5' class='text-center'>
+            <td colspan='5' class='has-text-centered'>
                 <div>{$lang['pm_mailbox_nomsg']}{$mailbox_name}</div>
             </td>
         </tr>";

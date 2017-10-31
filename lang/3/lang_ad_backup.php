@@ -9,7 +9,7 @@ $lang = [
     'backup_unknow'            => 'Actiune necunoscuta!',
     'backup_succes'            => 'Succes',
     'backup_nofound'           => 'Nu s-a gasit nimic',
-    'backup_welcome'           => "<h1 class='text-center'>Bine ai venit {$CURUSER['username']}, Administrare copii de rezerva a bazei de date.</h1>",
+    'backup_welcome'           => "<h1 class='has-text-centered'>Bine ai venit {$CURUSER['username']}, Administrare copii de rezerva a bazei de date.</h1>",
     'backup_name'              => 'Nume',
     'backup_addedon'           => 'Adaugat la',
     'backup_addedby'           => 'Adaugat de',

@@ -1433,8 +1433,8 @@ if (isset($_GET['exchange'])) {
 
 //==== This is the default page
 $HTMLOUT .= "
-    <div class='container-fluid portlet'>
-        <div class='text-center size_6 top20 bottom20'>Karma Bonus Point's System</div>";
+    <div class='container is-fluid portlet'>
+        <div class='has-text-centered size_6 top20 bottom20'>Karma Bonus Point's System</div>";
 $fpoints = $dpoints = $hpoints = $freeleech_enabled = $double_upload_enabled = $half_down_enabled = $top_donators = $top_donators2 = $top_donators3 = $count1 = '';
 // eZER0's mod for bonus contribution
 // Limited this to 3 because of performance reasons and i wanted to go through last 3 events, anyway the most we can have
@@ -1492,30 +1492,31 @@ if (XBT_TRACKER == false) {
     } else {
         $percent_fl = $freeleech_counter;
     }
+
     switch ($percent_fl) {
         case $percent_fl >= 90:
-            $font_color_fl = '<strong><font color="green">' . number_format($percent_fl) . ' %</font></strong>';
+            $font_color_fl = '<span style="color: green">' . number_format($percent_fl) . ' %</span>';
             break;
         case $percent_fl >= 80:
-            $font_color_fl = '<strong><font color="lightgreen">' . number_format($percent_fl) . ' %</font></strong>';
+            $font_color_fl = '<span style="color: lightgreen">' . number_format($percent_fl) . ' %</span>';
             break;
         case $percent_fl >= 70:
-            $font_color_fl = '<strong><font color="jade">' . number_format($percent_fl) . ' %</font></strong>';
+            $font_color_fl = '<span style="color: jade">' . number_format($percent_fl) . ' %</span>';
             break;
         case $percent_fl >= 50:
-            $font_color_fl = '<strong><font color="turquoise">' . number_format($percent_fl) . ' %</font></strong>';
+            $font_color_fl = '<span style="color: turquoise">' . number_format($percent_fl) . ' %</span>';
             break;
         case $percent_fl >= 40:
-            $font_color_fl = '<strong><font color="lightblue">' . number_format($percent_fl) . ' %</font></strong>';
+            $font_color_fl = '<span style="color: lightblue">' . number_format($percent_fl) . ' %</span>';
             break;
         case $percent_fl >= 30:
-            $font_color_fl = '<strong><font color="yellow">' . number_format($percent_fl) . ' %</font></strong>';
+            $font_color_fl = '<span style="color: yellow">' . number_format($percent_fl) . ' %</span>';
             break;
         case $percent_fl >= 20:
-            $font_color_fl = '<strong><font color="orange">' . number_format($percent_fl) . ' %</font></strong>';
+            $font_color_fl = '<span style="color: orange">' . number_format($percent_fl) . ' %</span>';
             break;
         case $percent_fl < 20:
-            $font_color_fl = '<strong><font color="red">' . number_format($percent_fl) . ' %</font></strong>';
+            $font_color_fl = '<span style="color: red">' . number_format($percent_fl) . ' %</span>';
             break;
     }
     //$mc1->delete_value('freeleech_counter');
@@ -1533,28 +1534,28 @@ if (XBT_TRACKER == false) {
     }
     switch ($percent_du) {
         case $percent_du >= 90:
-            $font_color_du = '<strong><font color="green">' . number_format($percent_du) . ' %</font></strong>';
+            $font_color_du = '<span style="color: green">' . number_format($percent_du) . ' %</span>';
             break;
         case $percent_du >= 80:
-            $font_color_du = '<strong><font color="lightgreen">' . number_format($percent_du) . ' %</font></strong>';
+            $font_color_du = '<span style="color: lightgreen">' . number_format($percent_du) . ' %</span>';
             break;
         case $percent_du >= 70:
-            $font_color_du = '<strong><font color="jade">' . number_format($percent_du) . ' %</font></strong>';
+            $font_color_du = '<span style="color: jade">' . number_format($percent_du) . ' %</span>';
             break;
         case $percent_du >= 50:
-            $font_color_du = '<strong><font color="turquoise">' . number_format($percent_du) . ' %</font></strong>';
+            $font_color_du = '<span style="color: turquoise">' . number_format($percent_du) . ' %</span>';
             break;
         case $percent_du >= 40:
-            $font_color_du = '<strong><font color="lightblue">' . number_format($percent_du) . ' %</font></strong>';
+            $font_color_du = '<span style="color: lightblue">' . number_format($percent_du) . ' %</span>';
             break;
         case $percent_du >= 30:
-            $font_color_du = '<strong><font color="yellow">' . number_format($percent_du) . ' %</font></strong>';
+            $font_color_du = '<span style="color: yellow">' . number_format($percent_du) . ' %</span>';
             break;
         case $percent_du >= 20:
-            $font_color_du = '<strong><font color="orange">' . number_format($percent_du) . ' %</font></strong>';
+            $font_color_du = '<span style="color: orange">' . number_format($percent_du) . ' %</span>';
             break;
         case $percent_du < 20:
-            $font_color_du = '<strong><font color="red">' . number_format($percent_du) . ' %</font></strong>';
+            $font_color_du = '<span style="color: red">' . number_format($percent_du) . ' %</span>';
             break;
     }
     //=== get total points
@@ -1571,43 +1572,43 @@ if (XBT_TRACKER == false) {
     }
     switch ($percent_hd) {
         case $percent_hd >= 90:
-            $font_color_hd = '<strong><font color="green">' . number_format($percent_hd) . ' %</font></strong>';
+            $font_color_hd = '<span style="color: green">' . number_format($percent_hd) . ' %</span>';
             break;
         case $percent_hd >= 80:
-            $font_color_hd = '<strong><font color="lightgreen">' . number_format($percent_hd) . ' %</font></strong>';
+            $font_color_hd = '<span style="color: lightgreen">' . number_format($percent_hd) . ' %</span>';
             break;
         case $percent_hd >= 70:
-            $font_color_hd = '<strong><font color="jade">' . number_format($percent_hd) . ' %</font></strong>';
+            $font_color_hd = '<span style="color: jade">' . number_format($percent_hd) . ' %</span>';
             break;
         case $percent_hd >= 50:
-            $font_color_hd = '<strong><font color="turquoise">' . number_format($percent_hd) . ' %</font></strong>';
+            $font_color_hd = '<span style="color: turquoise">' . number_format($percent_hd) . ' %</span>';
             break;
         case $percent_hd >= 40:
-            $font_color_hd = '<strong><font color="lightblue">' . number_format($percent_hd) . ' %</font></strong>';
+            $font_color_hd = '<span style="color: lightblue">' . number_format($percent_hd) . ' %</span>';
             break;
         case $percent_hd >= 30:
-            $font_color_hd = '<strong><font color="yellow">' . number_format($percent_hd) . ' %</font></strong>';
+            $font_color_hd = '<span style="color: yellow">' . number_format($percent_hd) . ' %</span>';
             break;
         case $percent_hd >= 20:
-            $font_color_hd = '<strong><font color="orange">' . number_format($percent_hd) . ' %</font></strong>';
+            $font_color_hd = '<span style="color: orange">' . number_format($percent_hd) . ' %</span>';
             break;
         case $percent_hd < 20:
-            $font_color_hd = '<strong><font color="red">' . number_format($percent_hd) . ' %</font></strong>';
+            $font_color_hd = '<span style="color: red">' . number_format($percent_hd) . ' %</span>';
             break;
     }
 
     if ($freeleech_enabled) {
-        $fstatus = "<strong><font color='green'> ON </font></strong>";
+        $fstatus = "<span style='color: green'> ON </span>";
     } else {
         $fstatus = $font_color_fl . '';
     }
     if ($double_upload_enabled) {
-        $dstatus = "<strong><font color='green'> ON </font></strong>";
+        $dstatus = "<span style='color: green'> ON </span>";
     } else {
         $dstatus = $font_color_du . '';
     }
     if ($half_down_enabled) {
-        $hstatus = "<strong><font color='green'> ON </font></strong>";
+        $hstatus = "<span style='color: green'> ON </span>";
     } else {
         $hstatus = $font_color_hd . '';
     }
@@ -1693,9 +1694,9 @@ if (count($top_donators3) > 0) {
 //==End
 if (XBT_TRACKER == false) {
     //== Show the percentages
-    $HTMLOUT .= "<div class='text-center size_5'> FreeLeech [ ";
+    $HTMLOUT .= "<div class='has-text-centered size_5'> FreeLeech [ ";
     if ($freeleech_enabled) {
-        $HTMLOUT .= '<font color="green"><strong> ON</strong></font> ' . get_date($freeleech_start_time, 'DATE') . ' - ' . get_date($freeleech_end_time, 'wDATE');
+        $HTMLOUT .= '<span style="color: green;"><strong> ON</strong></span> ' . get_date($freeleech_start_time, 'DATE') . ' - ' . get_date($freeleech_end_time, 'wDATE');
     } else {
         $HTMLOUT .= "<strong>{$fstatus}</strong>";
     }
@@ -1703,7 +1704,7 @@ if (XBT_TRACKER == false) {
 
     $HTMLOUT .= ' DoubleUpload [ ';
     if ($double_upload_enabled) {
-        $HTMLOUT .= '<font color="green"><strong> ON</strong></font> ' . get_date($double_upload_start_time, 'DATE') . ' - ' . get_date($double_upload_end_time, 'DATE');
+        $HTMLOUT .= '<span style="color: green"><strong> ON</strong></span> ' . get_date($double_upload_start_time, 'DATE') . ' - ' . get_date($double_upload_end_time, 'DATE');
     } else {
         $HTMLOUT .= "<strong>{$dstatus}</strong>";
     }
@@ -1711,7 +1712,7 @@ if (XBT_TRACKER == false) {
 
     $HTMLOUT .= ' Half Download [ ';
     if ($half_down_enabled) {
-        $HTMLOUT .= '<font color="green"><strong> ON</strong></font> ' . get_date($half_down_start_time, 'DATE') . ' - ' . get_date($half_down_end_time, 'DATE');
+        $HTMLOUT .= '<span style="color: green"><strong> ON</strong></span> ' . get_date($half_down_start_time, 'DATE') . ' - ' . get_date($half_down_end_time, 'DATE');
     } else {
         $HTMLOUT .= "<strong>{$hstatus}</strong>";
     }
@@ -1720,8 +1721,8 @@ if (XBT_TRACKER == false) {
 }
 $bonus = (float)$CURUSER['seedbonus'];
 $HTMLOUT .= "
-            <div class='bordered text-center top20'>
-                <span class='size_5'>Exchange your <span class='text-main'>" . number_format($bonus) . "</span> Karma Bonus Points for goodies!</span>
+            <div class='bordered has-text-centered top20'>
+                <span class='size_5'>Exchange your <span class='has-text-primary'>" . number_format($bonus) . "</span> Karma Bonus Points for goodies!</span>
                 <br>
                 <span class='size_2'>
                     [ If no buttons appear, you have not earned enough bonus points to trade. ]
@@ -1761,49 +1762,49 @@ while ($gets = mysqli_fetch_assoc($res)) {
 
     switch (true) {
         case $gets['id'] == 5:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>Special Title</b> you would like to have <input type='text' name='title' size='30' maxlength='30' /> click Exchange! </td><td>" . (float)$gets['points'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>Special Title</b> you would like to have <input type='text' name='title' size='30' maxlength='30' /> click Exchange! </td><td>" . (float)$gets['points'] . '</td>';
             break;
         case $gets['id'] == 7:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br><br>Enter the <b>username</b> of the person you would like to send karma to, and select how many points you want to send and click Exchange!<br>' . $otheroption . "</td><td>min.<br>" . (float)$gets['points'] . '<br>max.<br>100000</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '<br><br>Enter the <b>username</b> of the person you would like to send karma to, and select how many points you want to send and click Exchange!<br>' . $otheroption . "</td><td>min.<br>" . (float)$gets['points'] . '<br>max.<br>100000</td>';
             break;
         case $gets['id'] == 9:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "</td><td>min.<br>" . (float)$gets['points'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . "</td><td>min.<br>" . (float)$gets['points'] . '</td>';
             break;
         case $gets['id'] == 10:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='text' name='torrent_id' size='4' maxlength='8' /> you would like to buy a 1 to 1 ratio on.</td><td>min.<br>" . (float)$gets['points'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='text' name='torrent_id' size='4' maxlength='8' /> you would like to buy a 1 to 1 ratio on.</td><td>min.<br>" . (float)$gets['points'] . '</td>';
             break;
         case $gets['id'] == 11:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color=\"#000000\">" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator . "<br>Enter the <b>amount to contribute</b><input type='text' name='donate' size='10' maxlength='10' /></td><td>" . (float)$gets['minpoints'] . ' <br></td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator . "<br>Enter the <b>amount to contribute</b><input type='text' name='donate' size='10' maxlength='10' /></td><td>" . (float)$gets['minpoints'] . ' <br></td>';
             break;
         case $gets['id'] == 12:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color=\"#000000\">" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator2 . "<br>Enter the <b>amount to contribute</b><input type='text' name='donate' size='10' maxlength='10' /></td><td>" . (float)$gets['minpoints'] . ' <br></td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /> <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator2 . "<br>Enter the <b>amount to contribute</b><input type='text' name='donate' size='10' maxlength='10' /></td><td>" . (float)$gets['minpoints'] . ' <br></td>';
             break;
         case $gets['id'] == 13:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color=\"#000000\">" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator3 . "<br>Enter the <b>amount to contribute</b><input type='text' name='donate' size='10' maxlength='10' /></td><td>" . (float)$gets['minpoints'] . ' <br></td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . '<br>' . $top_donator3 . "<br>Enter the <b>amount to contribute</b><input type='text' name='donate' size='10' maxlength='10' /></td><td>" . (float)$gets['minpoints'] . ' <br></td>';
             break;
         case $gets['id'] == 34:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='text' name='torrent_id' size='4' maxlength='8' /> you would like to bump.</td><td>min.<br>" . (float)$gets['points'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . "<br><br>Enter the <b>ID number of the Torrent:</b> <input type='text' name='torrent_id' size='4' maxlength='8' /> you would like to bump.</td><td>min.<br>" . (float)$gets['points'] . '</td>';
             break;
         default:
-            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1><font color='#000000'>" . htmlsafechars($gets['bonusname']) . '</font></h1>' . htmlsafechars($gets['description']) . "</td><td>" . (float)$gets['points'] . '</td>';
+            $HTMLOUT .= "<tr><td><form action='{$site_config['baseurl']}/mybonus.php?exchange=1' method='post'><input type='hidden' name='option' value='" . (int)$gets['id'] . "' /><input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "' /><h1>" . htmlsafechars($gets['bonusname']) . '</h1>' . htmlsafechars($gets['description']) . "</td><td>" . (float)$gets['points'] . '</td>';
     }
 
     if ($bonus >= $gets['points'] or $bonus >= $gets['minpoints']) {
         switch (true) {
             case $gets['id'] == 7:
-                $HTMLOUT .= "<td><input class='btn' type='submit' name='submit' value='Karma Gift!' /></td></form>";
+                $HTMLOUT .= "<td><input class='button' type='submit' name='submit' value='Karma Gift!' /></td></form>";
                 break;
             case $gets['id'] == 11:
-                $HTMLOUT .= "<td>" . ((float)$gets['points'] - (float)$gets['pointspool']) . " <br>Points needed! <br><input class='btn' type='submit' name='submit' value='Contribute!' /></td></form>";
+                $HTMLOUT .= "<td>" . ((float)$gets['points'] - (float)$gets['pointspool']) . " <br>Points needed! <br><input class='button' type='submit' name='submit' value='Contribute!' /></td></form>";
                 break;
             case $gets['id'] == 12:
-                $HTMLOUT .= "<td>" . ((float)$gets['points'] - (float)$gets['pointspool']) . " <br>Points needed! <br><input class='btn' type='submit' name='submit' value='Contribute!' /></td></form>";
+                $HTMLOUT .= "<td>" . ((float)$gets['points'] - (float)$gets['pointspool']) . " <br>Points needed! <br><input class='button' type='submit' name='submit' value='Contribute!' /></td></form>";
                 break;
             case $gets['id'] == 13:
-                $HTMLOUT .= "<td>" . ((float)$gets['points'] - (float)$gets['pointspool']) . " <br>Points needed! <br><input class='btn' type='submit' name='submit' value='Contribute!' /></td></form>";
+                $HTMLOUT .= "<td>" . ((float)$gets['points'] - (float)$gets['pointspool']) . " <br>Points needed! <br><input class='button' type='submit' name='submit' value='Contribute!' /></td></form>";
                 break;
             default:
-                $HTMLOUT .= "<td><input class='btn' type='submit' name='submit' value='Exchange!' /></td></form>";
+                $HTMLOUT .= "<td><input class='button' type='submit' name='submit' value='Exchange!' /></td></form>";
         }
     } else {
         $HTMLOUT .= "<td><b>Not Enough Karma</b></td>";
@@ -1824,12 +1825,12 @@ $atform = number_format($at);
 $activet = number_format($at * $bpt * 2, 2);
 //crap
 $HTMLOUT .= "</tr></table></div>
-    <div class='container-fluid portlet'>
+    <div class='container is-fluid portlet'>
         <h2 class='top20'>What the hell are these Karma Bonus points, and how do I get them?</h2>
-        <div class='bordered padleft10 padright10 bottom10'>
-            <div class='alt_bordered transparent'>
+        <div class='bordered bottom10'>
+            <div class='alt_bordered bg-00'>
                 <h4>
-                    For every hour that you seed a torrent, you are awarded with " . number_format($bpt * 2) . " Karma Bonus Point...
+                    For every hour that you seed a torrent, you are awarded with " . number_format($bpt * 2, 2) . " Karma Bonus Point...
                 </h4>
                 <p>
                     If you save up enough of them, you can trade them in for goodies like bonus GB(s) to increase your upload stats, also to get more invites, or doing the real Karma booster... give them to another user!<br>
@@ -1845,8 +1846,8 @@ $HTMLOUT .= "</tr></table></div>
             </div>
         </div>
 
-        <div class='bordered padleft10 padright10 bottom10'>
-            <div class='alt_bordered transparent'>
+        <div class='bordered bottom10'>
+            <div class='alt_bordered bg-00'>
                 <h4>Other things that will get you karma points:</h4>
                 <p>
                     Uploading a new torrent = 15 points<br>
@@ -1860,8 +1861,8 @@ $HTMLOUT .= "</tr></table></div>
             </div>
         </div>
 
-        <div class='bordered padleft10 padright10 bottom10'>
-            <div class='alt_bordered transparent'>
+        <div class='bordered bottom10'>
+            <div class='alt_bordered bg-00'>
                 <h4>Some things that will cost you karma points:</h4>
                 <p>
                     Upload credit<br>

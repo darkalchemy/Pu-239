@@ -255,23 +255,23 @@ if ($CURUSER['class'] >= UC_STAFF) {
         header("Location: details.php?id=$id&clearchecked=done#Success");
     }
     if (isset($_GET['checked']) && $_GET['checked'] == 'done') {
-        $HTMLOUT .= "<div class='alert alert-success span11'><h2 class='text-center'><a name='Success'>Successfully checked {$CURUSER['username']}!</a></h2></div>";
+        $HTMLOUT .= "<div class='alert alert-success span11'><h2 class='has-text-centered'><a name='Success'>Successfully checked {$CURUSER['username']}!</a></h2></div>";
     }
     if (isset($_GET['rechecked']) && $_GET['rechecked'] == 'done') {
-        $HTMLOUT .= "<div class='alert alert-success span11'><h2 class='text-center'><a name='Success'>Successfully re-checked {$CURUSER['username']}!</a></h2></div>";
+        $HTMLOUT .= "<div class='alert alert-success span11'><h2 class='has-text-centered'><a name='Success'>Successfully re-checked {$CURUSER['username']}!</a></h2></div>";
     }
     if (isset($_GET['clearchecked']) && $_GET['clearchecked'] == 'done') {
-        $HTMLOUT .= "<div class='alert alert-success span11'><h2 class='text-center'><a name='Success'>Successfully un-checked {$CURUSER['username']}!</a></h2></div>";
+        $HTMLOUT .= "<div class='alert alert-success span11'><h2 class='has-text-centered'><a name='Success'>Successfully un-checked {$CURUSER['username']}!</a></h2></div>";
     }
 }
 // end
 $s = htmlsafechars($torrents['name'], ENT_QUOTES);
 $HTMLOUT .= "
-    <div class='container-fluid portlet bottom20'>
-        <div class='container-fluid portlet top20'>
+    <div class='container is-fluid portlet bottom20'>
+        <div class='container is-fluid portlet top20'>
         <div class='pull-left'>
             <h1>$s</h1>
-            <h2 class='text-center'>
+            <h2 class='has-text-centered'>
                 <a href='random.php'>" . (!isset($_GET['random']) ? '[Random Any]' : '<span>[Random Any]</span>') . '</a>
             </h2>';
 
@@ -282,7 +282,7 @@ if (($thumbs = $mc1->get_value('thumbs_up_' . $id)) === false) {
 }
 $HTMLOUT .= "
         </div>
-        <div class='pull-right text-center top20'>
+        <div class='pull-right has-text-centered top20'>
             {$lang['details_thumbs']}
             <div id='thumbsup'>
                 <a href=\"javascript:ThumbsUp('" . (int)$torrents['id'] . "')\">
@@ -379,7 +379,7 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
             <div class='span7'>
                 <table class='table table-bordered bottom10'>
                     <tr>
-                        <td class='heading' width='3%'>{$lang['details_download']}</td>
+                        <td class='rowhead' width='3%'>{$lang['details_download']}</td>
                         <td>
                             <a class='index' href='./download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "'><u>" . htmlsafechars($torrents['filename']) . "</u></a><br>{$Free_Slot}
                         </td>
@@ -466,7 +466,7 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
     if ($torrents['free'] >= 1 || $torrents['freetorrent'] >= 1 || $isfree['yep'] || $free_slot or $double_slot != 0 || $CURUSER['free_switch'] != 0) {
         $HTMLOUT .= "
                     <tr>
-                        <td class='heading'>Ratio After Download</td>
+                        <td class='rowhead'>Ratio After Download</td>
                         <td>
                             <del>{$sr}Your new ratio if you download this torrent.</del> <b><font color='#FF0000'>[FREE]</font></b>(Only upload stats are recorded)
                         </td>
@@ -474,7 +474,7 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
     } else {
         $HTMLOUT .= "
                     <tr>
-                        <td class='heading'>Ratio After Download</td>
+                        <td class='rowhead'>Ratio After Download</td>
                         <td>{$sr}Your new ratio if you download this torrent.</td>
                     </tr>";
     }
@@ -491,7 +491,7 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
         <div class=''>
             <table class='table table-bordered bottom10'>
                 <tr>
-                    <td class='heading'>Download Disabled!!</td>
+                    <td class='rowhead'>Download Disabled!!</td>
                     <td>Your not allowed to download presently !!</td>
                 </tr>";
 }
@@ -557,8 +557,8 @@ if (count($sim_torrents) > 0) {
         $HTMLOUT .= "
             <table class='table table-bordered bottom10'>
                 <tr class='no_hover'>
-                    <td class='heading'>{$lang['details_similiar']}
-                        <span class='flipper'>
+                    <td class='rowhead'>{$lang['details_similiar']}
+                        <span class='flipper has-text-primary'>
                             <i class='fa fa-angle-down fa-2x' aria-hidden='true'></i>
                         </span>
                         <div class='is_hidden'>$sim_torrent</div>
@@ -646,7 +646,7 @@ $HTMLOUT .= "
         </table>
         <table class='table table-bordered bottom10'>";
 //==Report Torrent Link
-$HTMLOUT .= tr('Report Torrent', "<form action='report.php?type=Torrent&amp;id=$id' method='post'><input class='btn btn-primary' type='submit' name='submit' value='Report This Torrent' /><strong><em class='label label-primary'>For breaking the<a href='rules.php'>rules</a></em></strong></form>", 1);
+$HTMLOUT .= tr('Report Torrent', "<form action='report.php?type=Torrent&amp;id=$id' method='post'><input class='button is-primary' type='submit' name='submit' value='Report This Torrent' /><strong><em class='label label-primary'>For breaking the<a href='rules.php'>rules</a></em></strong></form>", 1);
 //== Tor Reputation by pdq
 if ($torrent_cache['rep']) {
     $torrents = array_merge($torrents, $torrent_cache['rep']);
@@ -758,7 +758,7 @@ if (!empty($torrents_txt['descr'])) {
     $HTMLOUT .= "
     <table class='table table-bordered bottom10'>
             <tr>
-                <td class='heading'>{$lang['details_description']}</td>
+                <td class='rowhead'>{$lang['details_description']}</td>
                 <td>
                     <div>" . str_replace([
             "\n",
@@ -928,7 +928,7 @@ $HTMLOUT .= "
                     <a href=\"javascript:SmileIT(':blink:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/blink.gif' alt='Blink' class='tooltipper' title='Blink' /></a>
                     <a href=\"javascript:SmileIT(':baby:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/baby.gif' alt='Baby' class='tooltipper' title='Baby' /></a>
                     <br>
-                    <input class='btn btn-primary' type='submit' value='Submit' />
+                    <input class='button is-primary' type='submit' value='Submit' />
                     </td>
                 </tr>
         </table>
@@ -948,14 +948,14 @@ if ($torrents['allow_comments'] == 'yes' || $CURUSER['class'] >= UC_STAFF && $CU
     exit();
 }
 $commentbar = "
-        <div class='text-center margin20'>
-            <span class='h1 btn btn-primary'>Comments Open/Close</span>
+        <div class='has-text-centered margin20'>
+            <span class='h1 button is-primary'>Comments Open/Close</span>
         </div>
         <div class='content'>";
 $count = (int)$torrents['comments'];
 if (!$count) {
     $HTMLOUT .= "
-            <h2 class='text-center'>{$lang['details_no_comment']}</h2>";
+            <h2 class='has-text-centered'>{$lang['details_no_comment']}</h2>";
 } else {
     $perpage = 15;
     $pager = pager($perpage, $count, "details.php?id=$id&amp;", [

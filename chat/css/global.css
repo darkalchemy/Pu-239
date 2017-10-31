@@ -7,6 +7,15 @@
  * @link https://blueimp.net/ajax/
  */
 
+body {
+    font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    font-size: 80%;
+    line-height: 110%;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+
 /* Positioning */
 body.ajax-chat {
     padding: 0;
@@ -40,7 +49,21 @@ body.ajax-chat {
     position: absolute;
     width: 100%;
     height: 100%;
+    -webkit-border-radius: .625em;
+    -moz-border-radius: .625em;
+    border-radius: .625em;
+    background: rgba(255, 255, 255, .1);
 }
+
+
+#content #chatList,
+#content #helpContainer,
+#content #settingsContainer,
+#content #onlineListContainer,
+#content #inputFieldContainer {
+    background-color: rgba(0, 0, 0, .1);
+}
+
 
 #content #copyright {
     position: absolute;
@@ -61,7 +84,7 @@ body.ajax-chat {
 #content #logoutChannelContainer {
     position: absolute;
     z-index: 2;
-    left: 0;
+    left: 5px;
     top: 10px;
 }
 
@@ -72,7 +95,7 @@ body.ajax-chat {
 
 #content #statusIconContainer {
     position: absolute;
-    right: 0;
+    right: 5px;
     top: 10px;
     width: 22px;
     height: 22px;
@@ -88,14 +111,14 @@ body.ajax-chat {
     left: 0;
     right: 0;
     top: 45px;
-    bottom: 130px;
+    bottom: 120px;
 }
 
 #content #onlineListContainer, #content #helpContainer, #content #settingsContainer {
     float: right;
     height: 100%;
     overflow: auto;
-    margin-left: 10px;
+    margin-left: 5px;
     position: relative;
 }
 
@@ -148,26 +171,26 @@ body.ajax-chat {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 70px;
+    bottom: 65px;
     padding-right: 2px;
 }
 
 #content #inputFieldContainer #inputField {
     width: 100%;
-    height: 40px;
+    height: 30px;
     padding: 0;
 }
 
 #content #submitButtonContainer {
     position: absolute;
-    right: 0;
+    right: 5px;
     bottom: 35px;
 }
 
 #content #bbCodeContainer {
     position: absolute;
-    left: 0;
-    bottom: 0;
+    left: 5px;
+    bottom: 5px;
     padding: 3px;
 }
 
@@ -183,10 +206,19 @@ body.ajax-chat {
 
 #content #colorCodesContainer, #content #emoticonsContainer {
     position: absolute;
-    left: 0;
+    left: 5px;
     bottom: 30px;
     padding: 3px;
     z-index: 1;
+}
+
+#content #colorCodesContainer {
+    background-color: rgba(0, 0, 0, .9);
+    bottom: 40px;
+    padding: 10px;
+    -webkit-border-radius: .625em;
+    -moz-border-radius: .625em;
+    border-radius: .625em;
 }
 
 #content #emoticonsContainer a {
@@ -209,8 +241,8 @@ body.ajax-chat {
 
 #content #optionsContainer {
     position: absolute;
-    right: 0px;
-    bottom: 0px;
+    right: 5px;
+    bottom: 5px;
 }
 
 #content #optionsContainer input {
@@ -228,7 +260,7 @@ body.ajax-chat {
 }
 
 #content #chatList div {
-    padding: 2px 10px;
+    padding: 2px 5px;
 }
 
 #content #chatList img {
@@ -257,7 +289,7 @@ body.ajax-chat {
 }
 
 #content #onlineListContainer #onlineList div {
-    padding: 2px 10px;
+    padding: 2px 5px;
 }
 
 #content #onlineListContainer #onlineList a {
@@ -345,11 +377,22 @@ body.ajax-chat {
 }
 
 @media (max-width: 700px) {
+    #inputFieldContainer {
+        background-color: rgba(0, 0, 0, .1);
+    }
+
+    #onlineListContainer,
+    #settingsContainer,
+    #helpContainer {
+        background-color: rgba(0, 0, 0, .9);
+        z-index: 5;
+    }
     #content #mainPanelContainer {
         top: 35px;
         left: 5px;
         right: 5px;
         bottom: 105px;
+        background-color: rgba(0, 0, 0, .1);
     }
 
     #content #headline {
@@ -411,6 +454,7 @@ body.ajax-chat {
 
     #content #inputFieldContainer #inputField {
         height: 20px;
+        background-color: rgba(0, 0, 0, .1);
     }
 
     #content #inputFieldContainer {
@@ -427,7 +471,6 @@ body.ajax-chat {
     #content #onlineListContainer, #content #helpContainer, #content #settingsContainer {
         margin-left: 0;
         border-left-width: 0;
-        background: rgba(0, 0, 0, .85);
         display: none;
     }
 }

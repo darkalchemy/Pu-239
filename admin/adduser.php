@@ -60,11 +60,11 @@ $HTMLOUT = '
   <h1>' . $lang['std_adduser'] . '</h1><br>
   <form method="post" action="staffpanel.php?tool=adduser&amp;action=adduser">
   <table border="1" cellspacing="0" cellpadding="5">
-  <tr><td class="rowhead">' . $lang['text_username'] . '</td><td><input type="text" name="username" size="40" /></td></tr>
-  <tr><td class="rowhead">' . $lang['text_password'] . '</td><td><input type="password" name="password" size="40" /></td></tr>
-  <tr><td class="rowhead">' . $lang['text_password2'] . '</td><td><input type="password" name="password2" size="40" /></td></tr>
-  <tr><td class="rowhead">' . $lang['text_email'] . '</td><td><input type="text" name="email" size="40" /></td></tr>
-  <tr><td colspan="2"><input type="submit" value="' . $lang['btn_okay'] . '" class="btn" /></td></tr>
+  <tr><td class="heading">' . $lang['text_username'] . '</td><td><input type="text" name="username" size="40" /></td></tr>
+  <tr><td class="heading">' . $lang['text_password'] . '</td><td><input type="password" name="password" size="40" /></td></tr>
+  <tr><td class="heading">' . $lang['text_password2'] . '</td><td><input type="password" name="password2" size="40" /></td></tr>
+  <tr><td class="heading">' . $lang['text_email'] . '</td><td><input type="text" name="email" size="40" /></td></tr>
+  <tr><td colspan="2"><input type="submit" value="' . $lang['btn_okay'] . '" class="button" /></td></tr>
   </table>
   </form>';
 echo stdhead($lang['std_adduser']) . $HTMLOUT . stdfoot();

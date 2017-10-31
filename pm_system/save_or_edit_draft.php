@@ -37,8 +37,8 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == 'preview') {
         <td colspan="2" class="colhead"><span style="font-weight: bold;">' . $lang['pm_draft_subject'] . '</span>' . htmlsafechars($subject) . '</td>
     </tr>
     <tr>
-        <td class="one" width="80px" id="photocol">' . avatar_stuff($CURUSER) . '</td>
-        <td class="two" style="min-width:400px;padding:10px;vertical-align: top;text-align: left;">' . format_comment($draft) . '</td>
+        <td width="80px" id="photocol">' . avatar_stuff($CURUSER) . '</td>
+        <td style="min-width:400px;padding:10px;vertical-align: top;text-align: left;">' . format_comment($draft) . '</td>
     </tr>
     </table><br>';
 } else {
@@ -60,16 +60,16 @@ $HTMLOUT .= '<legend>' . $lang['pm_draft_save_edit'] . '' . $subject . '</legend
         <td class="colhead" colspan="2">' . $lang['pm_edmail_edit'] . '</td>
     </tr>
     <tr>
-        <td class="one"><span style="font-weight: bold;">' . $lang['pm_draft_subject'] . '</span></td>
-        <td class="one"><input type="text" class="text_default" name="subject" value="' . $subject . '" /></td>
+        <td><span style="font-weight: bold;">' . $lang['pm_draft_subject'] . '</span></td>
+        <td><input type="text" class="text_default" name="subject" value="' . $subject . '" /></td>
     </tr>
     <tr>
-        <td class="one"><span style="font-weight: bold;">' . $lang['pm_draft_body'] . '</span></td>
-        <td class="one">' . BBcode($draft, false) . '</td>
+        <td><span style="font-weight: bold;">' . $lang['pm_draft_body'] . '</span></td>
+        <td>' . BBcode($draft) . '</td>
     </tr>
     <tr>
-        <td colspan="2" class="one">
-        <input type="submit" class="btn btn-primary" name="buttonval" value="' . $lang['pm_draft_preview'] . '"/>
-        <input type="submit" class="btn btn-primary" name="buttonval" value="' . $lang['pm_draft_save_as'] . '" /></td>
+        <td colspan="2">
+        <input type="submit" class="button is-primary" name="buttonval" value="' . $lang['pm_draft_preview'] . '"/>
+        <input type="submit" class="button is-primary" name="buttonval" value="' . $lang['pm_draft_save_as'] . '" /></td>
     </tr>
     </table></form>';

@@ -24,17 +24,17 @@ if (count($motw_cached) > 0) {
     $HTMLOUT .= "
     <a id='mow-hash'></a>
     <fieldset id='mow' class='header'>
-        <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_mow_title']}</legend>
-        <div class='text-center'>
+        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_mow_title']}</legend>
+        <div class='has-text-centered'>
             <div class='table-wrapper module'><div class='badge badge-hot'></div>
                 <table class='table table-bordered table-striped'>
                     <thead>
                         <tr>
-                            <th class='span1 text-center'>{$lang['index_mow_type']}</th>
-                            <th class='span8'>{$lang['index_mow_name']}</th>
-                            <th class='span1 text-center'>{$lang['index_mow_snatched']}</th>
-                            <th class='span1 text-center'>{$lang['index_mow_seeder']}</th>
-                            <th class='span1 text-center'>{$lang['index_mow_leecher']}</th>
+                            <th class='has-text-centered'>{$lang['index_mow_type']}</th>
+                            <th class='w-25'>{$lang['index_mow_name']}</th>
+                            <th class='has-text-centered'>{$lang['index_mow_snatched']}</th>
+                            <th class='has-text-centered'>{$lang['index_mow_seeder']}</th>
+                            <th class='has-text-centered'>{$lang['index_mow_leecher']}</th>
                         </tr>
                     </thead>
                     <tbody>";
@@ -44,20 +44,20 @@ if (count($motw_cached) > 0) {
             if (strlen($torrname) > 50) {
                 $torrname = substr($torrname, 0, 50) . '...';
             }
-            $poster = empty($m_w['poster']) ? "<img src='{$site_config['pic_base_url']}noposter.png' width='150' height='220' />" : "<img src='" . htmlsafechars($m_w['poster']) . "' width='150' height='220' />";
+            $poster = empty($m_w['poster']) ? "<img src='{$site_config['pic_base_url']}noposter.png' class='tooltip-poster' />" : "<img src='" . htmlsafechars($m_w['poster']) . "' class='tooltip-poster' />";
             $mw['cat_name'] = htmlsafechars($change[$m_w['category']]['name']);
             $mw['cat_pic'] = htmlsafechars($change[$m_w['category']]['image']);
 
             $HTMLOUT .= "
                         <tr>
-                            <td class='span1 text-center'><img src='./images/caticons/" . get_categorie_icons() . "/" . $mw['cat_pic'] . "' class='tooltipper' alt='" . $mw['cat_name'] . "' title='" . $mw['cat_name'] . "' /></td>
-                            <td class='span8'>
+                            <td class='has-text-centered'><img src='./images/caticons/" . get_categorie_icons() . "/" . $mw['cat_pic'] . "' class='tooltipper' alt='" . $mw['cat_name'] . "' title='" . $mw['cat_name'] . "' /></td>
+                            <td>
                                 <a href='{$site_config['baseurl']}/details.php?id=" . (int)$m_w['id'] . "&amp;hit=1'>
                                     <span class='dt-tooltipper-large' data-tooltip-content='#id_{$m_w['id']}_tooltip'>
                                         {$torrname}
                                         <div class='tooltip_templates'>
                                             <span id='id_{$m_w['id']}_tooltip'>
-                                                <div class='flex'>
+                                                <div class='is-flex tooltip-torrent'>
                                                     <span class='margin10'>
                                                         $poster
                                                     </span>
@@ -75,9 +75,9 @@ if (count($motw_cached) > 0) {
                                 </a>
                             </td>
                             </td>
-                            <td class='span1 text-center'>" . (int)$m_w['times_completed'] . "</td>
-                            <td class='span1 text-center'>" . (int)$m_w['seeders'] . "</td>
-                            <td class='span1 text-center'>" . (int)$m_w['leechers'] . "</td>
+                            <td class='has-text-centered'>" . (int)$m_w['times_completed'] . "</td>
+                            <td class='has-text-centered'>" . (int)$m_w['seeders'] . "</td>
+                            <td class='has-text-centered'>" . (int)$m_w['leechers'] . "</td>
                         </tr>";
         }
         $HTMLOUT .= "

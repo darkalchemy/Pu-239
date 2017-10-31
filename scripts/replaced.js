@@ -14,6 +14,13 @@ function radio() {
     PopUp('radio_popup.php','My Radio', 800, 700, 1, 0);
 }
 
+$('.delete').on('click', function(){
+    //$(this).parent().remove();
+    $(this).parent().slideUp(animate_duration, function() {
+        $(this).remove();
+    });
+});
+
 function refrClock() {
     var d=new Date();
     var s=d.getSeconds();
@@ -258,9 +265,9 @@ $(function() {
         });
     };
 
-    if ($('.alert').length) {
+    if ($('.notification').length) {
         setTimeout(function(){
-            $('.alert').slideUp(animate_duration, function() { $('.alert').remove();});
+            $('.notification').slideUp(animate_duration, function() { $('.notification').remove();});
         }, 15000);
     };
 

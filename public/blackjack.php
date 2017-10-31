@@ -45,13 +45,13 @@ if ($CURUSER['uploaded'] < 1073741824 * $blackjack['quan']) {
 $debugout .= '
             <tr class="no_hover">
                 <td>_POST</td>
-                <td>Line #' . __LINE__ . '</td>
+                <td>blackjack.php:' . __LINE__ . '</td>
                 <td>' . json_encode($_POST, JSON_PRETTY_PRINT) . '</td>
             </tr>';
 $debugout .= '
             <tr class="no_hover">
                 <td>blackjack</td>
-                <td>Line #' . __LINE__ . '</td>
+                <td>blackjack.php:' . __LINE__ . '</td>
                 <td>' . json_encode($blackjack, JSON_PRETTY_PRINT) . '</td>
             </tr>';
 
@@ -82,11 +82,11 @@ $doubleddown = $nick['ddown'] === 'yes' ? true : false;
 if ($CURUSER['id'] == $nick['userid'] && $nick['status'] == 'waiting') {
     stderr('Sorry ' . format_username($CURUSER['id']) . ',', "You'll have to wait until another player plays your last game before you can play a new one.<br>
     You have {$nick['points']}.<br><br>
-    <a href='./games.php' class='btn top20'>{$lang['bj_back']}</a><br><br>");
+    <a href='./games.php' class='button'>{$lang['bj_back']}</a><br><br>");
 }
 if ($CURUSER['id'] != $nick['userid'] && $nick['gameover'] == 'no') {
     stderr('Sorry ' . format_username($CURUSER['id']) . ',', "You'll have to wait until " . format_username($nick['id']) . " finishes $gender game before you can play a new one.<br><br>
-    <a href='./games.php' class='btn top20'>{$lang['bj_back']}</a><br><br>");
+    <a href='./games.php' class='button'>{$lang['bj_back']}</a><br><br>");
 }
 $opponent = isset($nick['username']) ? '<h3>Your Opponent is: ' . format_username($nick['id']) . '</h3>' : '';
 $required_ratio = 1.0;
@@ -136,7 +136,7 @@ if (count($list) > 0) {
 }
 
 $HTMLOUT .= "
-            <div class='top10 text-center'>";
+            <div class='top10 has-text-centered'>";
 
 if ($game) {
     function cheater_check($arg)
@@ -208,8 +208,8 @@ if ($game) {
                     <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
                         <input type='hidden' name='game' value='hit' readonly='readonly' />
                         <input type='hidden' name='continue' value='yes' readonly='readonly' />
-                        <div class='text-center'>
-                            <input class='btn top20' type='submit' value='{$lang['bj_continue_old_game']}' />
+                        <div class='has-text-centered'>
+                            <input class='button' type='submit' value='{$lang['bj_continue_old_game']}' />
                         </div>
                     </form>");
             }
@@ -287,19 +287,19 @@ if ($game) {
                     <table class='table table-bordered table-striped top20 bottom20'>
                         <tr class='no_hover'>
                             <td class='card-background w-50'>
-                                <div class='text-center'>
+                                <div class='has-text-centered'>
                                     " . trim($player_showcards) . "
                                 </div>
                             </td>
                             <td class='card-background w-50'>
-                                <div class='text-center'>
+                                <div class='has-text-centered'>
                                     " . trim($showcards) . "
                                 </div>
                             </td>
                         </tr>
                         <tr class='no_hover'>
                             <td>
-                                <div class='text-center'>
+                                <div class='has-text-centered'>
                                     {$userName}
                                 </div>
                             </td>
@@ -311,8 +311,8 @@ if ($game) {
                             <td colspan='2'>
                                 <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
                                     <input type='hidden' name='game' value='hit' readonly='readonly' />
-                                    <div class='text-center'>
-                                        <input class='btn top20' type='submit' value='{$lang['bj_hitme']}' />
+                                    <div class='has-text-centered'>
+                                        <input class='button' type='submit' value='{$lang['bj_hitme']}' />
                                     </div>
                                 </form>
                             </td>
@@ -324,8 +324,8 @@ if ($game) {
                             <td colspan='2'>
                                 <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
                                     <input type='hidden' name='game' value='stop' readonly='readonly' />
-                                    <div class='text-center'>
-                                        <input class='btn top20' type='submit' value='{$lang['bj_stay']}' />
+                                    <div class='has-text-centered'>
+                                        <input class='button' type='submit' value='{$lang['bj_stay']}' />
                                     </div>
                                 </form>
                             </td>
@@ -338,8 +338,8 @@ if ($game) {
                                 <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
                                     <input type='hidden' name='ddown' value='ddown' readonly='readonly' />
                                     <input type='hidden' name='game' value='hit' readonly='readonly' />
-                                    <div class='text-center'>
-                                        <input class='btn top20' type='submit' value='Double Down' />
+                                    <div class='has-text-centered'>
+                                        <input class='button' type='submit' value='Double Down' />
                                     </div>
                                 </form>
                             </td>
@@ -383,24 +383,24 @@ if ($game) {
                 <table class='table table-bordered table-striped top20 bottom20'>
                     <tr class='no_hover'>
                         <td class='card-background w-50'>
-                            <div class='text-center'>
+                            <div class='has-text-centered'>
                                 {$player_showcards_end}
                             </div>
                         </td>
                         <td class='card-background w-50'>
-                            <div class='text-center'>
+                            <div class='has-text-centered'>
                                 {$showcards}
                             </div>
                         </td>
                     </tr>
                     <tr class='no_hover'>
                         <td>
-                            <div class='text-center'>
+                            <div class='has-text-centered'>
                                 {$userName}
                             </div>
                         </td>
                         <td>
-                            <div class='text-center'>
+                            <div class='has-text-centered'>
                                 " . format_username($CURUSER['id']) . "<br>{$lang['bj_points']} = {$points}<br>{$user_warning}
                             </div>
                         </td>
@@ -517,12 +517,12 @@ if ($game) {
                 $mc1->delete_value('inbox_new_' . $a['userid']);
                 sql_query("DELETE FROM blackjack WHERE game_id = " . sqlesc($blackjack['gameid']) . " AND userid IN (" . sqlesc($CURUSER['id']) . ', ' . sqlesc($a['userid']) . ')') or sqlerr(__FILE__, __LINE__);
                 $HTMLOUT .= "
-                        <p class='text-center'>
+                        <p class='has-text-centered'>
                             {$lang['bj_your_opp_was']} " . format_username($a['id']) . ", $gender had $points_text, $winorlose.
                         </p><br>
-                        <p class='text-center'>
-                            <a href='./blackjack.php?id=$id' class='btn top20'>{$lang['bj_play_again']}</a>
-                            <a href='./games.php' class='btn top20'>Games</a>
+                        <p class='has-text-centered'>
+                            <a href='./blackjack.php?id=$id' class='button'>{$lang['bj_play_again']}</a>
+                            <a href='./games.php' class='button'>Games</a>
                         </p>";
             } else {
                 sql_query("UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $now . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . " AND userid = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -532,9 +532,9 @@ if ($game) {
                     autoshout($msg);
                 }
                 $HTMLOUT .= "
-                        <div class='text-center'>
+                        <div class='has-text-centered'>
                             {$lang['bj_there_are_no_other_players']}<br>
-                            <a href='./games.php' class='btn top20'>{$lang['bj_back']}</a>
+                            <a href='./games.php' class='button'>{$lang['bj_back']}</a>
                         </div>";
             }
             $HTMLOUT .= '
@@ -652,12 +652,12 @@ if ($game) {
                 $mc1->delete_value('inbox_new_' . $a['userid']);
                 sql_query("DELETE FROM blackjack WHERE gameid = " . sqlesc($blackjack['gameid']) . " AND userid IN (" . sqlesc($CURUSER['id']) . ', ' . sqlesc($a['userid']) . ')') or sqlerr(__FILE__, __LINE__);
                 $HTMLOUT .= "
-                        <p class='text-center'>
+                        <p class='has-text-centered'>
                             {$lang['bj_your_opp_was']} " . format_username($a['id']) . ", $gender had $points_text, $winorlose.
                         </p><br>
-                        <p class='text-center'>
-                            <a href='./blackjack.php?id=$id' class='btn top20'>{$lang['bj_play_again']}</a>
-                            <a href='./games.php' class='btn top20'>Games</a>
+                        <p class='has-text-centered'>
+                            <a href='./blackjack.php?id=$id' class='button'>{$lang['bj_play_again']}</a>
+                            <a href='./games.php' class='button'>Games</a>
                         </p>";
             } else {
                 sql_query("UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $now . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . " AND userid = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -667,9 +667,9 @@ if ($game) {
                     autoshout($msg);
                 }
                 $HTMLOUT .= "
-                        <div class='text-center'>
+                        <div class='has-text-centered'>
                             {$lang['bj_there_are_no_other_players']}<br>
-                            <a href='./games.php' class='btn top20'>{$lang['bj_back']}</a>
+                            <a href='./games.php' class='button'>{$lang['bj_back']}</a>
                         </div>";
             }
             $HTMLOUT .= '
@@ -686,24 +686,24 @@ if ($game) {
                 <table class='table table-bordered table-striped top20 bottom20'>
                     <tr class='no_hover'>
                         <td class='card-background w-50'>
-                            <div class='text-center'>
+                            <div class='has-text-centered'>
                                 {$player_showcards}
                             </div>
                         </td>
                         <td class='card-background w-50'>
-                            <div class='text-center'>
+                            <div class='has-text-centered'>
                                 {$showcards}
                             </div>
                         </td>
                     </tr>
                     <tr class='no_hover'>
                         <td>
-                            <div class='text-center'>
+                            <div class='has-text-centered'>
                                 {$userName}
                             </div>
                         </td>
                         <td>
-                            <div class='text-center'>
+                            <div class='has-text-centered'>
                                 " . format_username($CURUSER['id']) . "<br>{$lang['bj_points']} = {$points}<br>{$user_warning}
                             </div>
                         </td>
@@ -714,8 +714,8 @@ if ($game) {
                         <td colspan='2'>
                             <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
                                 <input type='hidden' name='game' value='hit' readonly='readonly' />
-                                <div class='text-center'>
-                                    <input class='btn top20' type='submit' value='{$lang['bj_hitme']}' />
+                                <div class='has-text-centered'>
+                                    <input class='button' type='submit' value='{$lang['bj_hitme']}' />
                                 </div>
                             </form>
                         </td>
@@ -727,8 +727,8 @@ if ($game) {
                         <td colspan='2'>
                             <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
                                 <input type='hidden' name='game' value='stop' readonly='readonly' />
-                                <div class='text-center'>
-                                    <input class='btn top20' type='submit' value='{$lang['bj_stay']}' />
+                                <div class='has-text-centered'>
+                                    <input class='button' type='submit' value='{$lang['bj_stay']}' />
                                 </div>
                             </form>
                         </td>
@@ -741,8 +741,8 @@ if ($game) {
                             <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
                                 <input type='hidden' name='ddown' value='ddown' readonly='readonly' />
                                 <input type='hidden' name='game' value='hit' readonly='readonly' />
-                                <div class='text-center'>
-                                    <input class='btn top20' type='submit' value='Double Down' />
+                                <div class='has-text-centered'>
+                                    <input class='button' type='submit' value='Double Down' />
                                 </div>
                             </form>
                         </td>
@@ -763,24 +763,24 @@ if ($game) {
                 <table class='table table-bordered table-striped top20 bottom20'>
                     <tr class='no_hover'>
                         <td class='card-background w-50'>
-                            <div class='text-center'>
+                            <div class='has-text-centered'>
                                 {$player_showcards_end}
                             </div>
                         </td>
                         <td class='card-background w-50'>
-                            <div class='text-center'>
+                            <div class='has-text-centered'>
                                 {$showcards}
                             </div>
                         </td>
                     </tr>
                     <tr class='no_hover'>
                         <td>
-                            <div class='text-center'>
+                            <div class='has-text-centered'>
                                 {$userName}
                             </div>
                         </td>
                         <td>
-                            <div class='text-center'>
+                            <div class='has-text-centered'>
                                 " . format_username($CURUSER['id']) . "<br>{$lang['bj_points']} = {$playerarr['points']}
                             </div>
                         </td>
@@ -912,12 +912,12 @@ if ($game) {
             $mc1->delete_value('inbox_new_' . $a['userid']);
             sql_query("DELETE FROM blackjack WHERE gameid = " . sqlesc($blackjack['gameid']) . " AND userid IN (" . sqlesc($CURUSER['id']) . ', ' . sqlesc($a['userid']) . ')') or sqlerr(__FILE__, __LINE__);
             $HTMLOUT .= "
-                        <p class='text-center'>
+                        <p class='has-text-centered'>
                             {$lang['bj_your_opp_was']} " . format_username($a['id']) . ", $gender had $points_text, $winorlose.
                         </p><br>
-                        <p class='text-center'>
-                            <a href='./blackjack.php?id=$id' class='btn top20'>{$lang['bj_play_again']}</a>
-                            <a href='./games.php' class='btn top20'>Games</a>
+                        <p class='has-text-centered'>
+                            <a href='./blackjack.php?id=$id' class='button'>{$lang['bj_play_again']}</a>
+                            <a href='./games.php' class='button'>Games</a>
                         </p>";
         } else {
             sql_query("UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $now . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . " AND userid = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -927,9 +927,9 @@ if ($game) {
                 autoshout($msg);
             }
             $HTMLOUT .= "
-                        <div class='text-center'>
+                        <div class='has-text-centered'>
                             {$lang['bj_there_are_no_other_players']}<br>
-                            <a href='./games.php' class='btn top20'>{$lang['bj_back']}</a>
+                            <a href='./games.php' class='button'>{$lang['bj_back']}</a>
                         </div>";
         }
         $HTMLOUT .= '
@@ -957,7 +957,7 @@ if ($game) {
         $doubled = "
             <tr class='no_hover'>
                 <td>
-                    <div class='text-center'>" . format_username($nick['id']) . ' has Doubled Down, thereby doubling the bet to ' . mksize($blackjack['mb'], 0) . '.</div>
+                    <div class='has-text-centered'>" . format_username($nick['id']) . ' has Doubled Down, thereby doubling the bet to ' . mksize($blackjack['mb'], 0) . '.</div>
                 </td>
             </tr>';
     }
@@ -970,7 +970,7 @@ if ($game) {
                 <table class='table table-bordered table-striped top20 bottom20'>
                     <tr class='no_hover'>
                         <td class='card-background w-50'>
-                            <div class='text-center'>
+                            <div class='has-text-centered'>
                                 <div class='card ace_spades'></div>
                                 <div class='card jack_spades'></div>
                             </div>
@@ -979,9 +979,9 @@ if ($game) {
                     $doubled
                     <tr class='no_hover'>
                         <td>
-                            <p class='text-center'>{$lang['bj_you_most_collect_21']}</p>
-                            <p class='text-center'>{$lang['bj_note']} {$game_str}</p>
-                            <p class='text-center'>You can lose 1.5 times your bet if you lose to a Natural Blackjack and a winning Natural Blackjack pays out at 1.5 times the bet.<br>The first player is considered the player and the second is considered the dealer. Only the player can double down on 9, 10, 11 and receive 1 card only. The dealer can see the upcards of the player but must draw a card for anything less than 17. No one wins a tie.</p>
+                            <p class='has-text-centered'>{$lang['bj_you_most_collect_21']}</p>
+                            <p class='has-text-centered'>{$lang['bj_note']} {$game_str}</p>
+                            <p class='has-text-centered'>You can lose 1.5 times your bet if you lose to a Natural Blackjack and a winning Natural Blackjack pays out at 1.5 times the bet.<br>The first player is considered the player and the second is considered the dealer. Only the player can double down on 9, 10, 11 and receive 1 card only. The dealer can see the upcards of the player but must draw a card for anything less than 17. No one wins a tie.</p>
                         </td>
                     </tr>
                     <tr class='no_hover'>
@@ -989,8 +989,8 @@ if ($game) {
                             <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
                                 <input type='hidden' name='game' value='hit' readonly='readonly' />
                                 <input type='hidden' name='start_' value='yes' readonly='readonly' />
-                                <div class='text-center'>
-                                    <input class='btn top20' type='submit' value='Start!' />
+                                <div class='has-text-centered'>
+                                    <input class='button' type='submit' value='Start!' />
                                 </div>
                             </form>
                         </td>
@@ -1001,7 +1001,7 @@ if ($game) {
                     <thead>
                         <tr class='no_hover'>
                             <th colspan='2'>
-                                <div class='text-center'>
+                                <div class='has-text-centered'>
                                     <h3>{$lang['bj_personal_stats']}</h3>
                                 </div>
                             </th>
@@ -1040,7 +1040,7 @@ if ($game) {
                     <thead>
                         <tr class='no_hover'>
                             <th colspan='4'>
-                                <div class='text-center'>
+                                <div class='has-text-centered'>
                                     <h3>Site Statistics</h3>
                                 </div>
                             </th>
@@ -1097,7 +1097,7 @@ if ($game) {
                     <thead>
                         <tr class='no_hover'>
                             <th colspan='2'>
-                                <div class='text-center'>
+                                <div class='has-text-centered'>
                                     <h3>Last " . count($bjgames) . " Games of {$blackjack['title']}</h3>
                                 </div>
                             </th>
@@ -1142,12 +1142,12 @@ if ($game) {
                         </tr>
                         <tr class='no_hover'>
                             <td>
-                                <div class='text-center'>
+                                <div class='has-text-centered'>
                                     " . format_username($bjgame['player1_userid']) . ': ' . $bjgame['player1_points'] . "
                                 </div>div>
                             </td>
                             <td>
-                                <div class='text-center'>
+                                <div class='has-text-centered'>
                                     " . format_username($bjgame['player2_userid']) . ': ' . ${'points_' . $g} . '
                                 </div>
                             </td>
@@ -1181,7 +1181,7 @@ function getCard($cardcount, $gameid, $deal = false)
     $debugout .= "
             <tr class='no_hover'>
                 <td>deal</td>
-                <td>Line #" . __LINE__ . "</td>
+                <td>blackjack.php:" . __LINE__ . "</td>
                 <td>$deal</td>
             </tr>";
     $cards = [];
@@ -1189,7 +1189,7 @@ function getCard($cardcount, $gameid, $deal = false)
     $debugout .= "
             <tr class='no_hover'>
                 <td>sql</td>
-                <td>Line #" . __LINE__ . "</td>
+                <td>blackjack.php:" . __LINE__ . "</td>
                 <td>$sql</td>
             </tr>";
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -1198,7 +1198,7 @@ function getCard($cardcount, $gameid, $deal = false)
     $debugout .= "
             <tr class='no_hover'>
                 <td>cards string</td>
-                <td>Line #" . __LINE__ . "</td>
+                <td>blackjack.php:" . __LINE__ . "</td>
                 <td>$card_str</td>
             </tr>";
     if (!empty($card_str)) {
@@ -1208,7 +1208,7 @@ function getCard($cardcount, $gameid, $deal = false)
     $debugout .= "
             <tr class='no_hover'>
                 <td>card count</td>
-                <td>Line #" . __LINE__ . "</td>
+                <td>blackjack.php:" . __LINE__ . "</td>
                 <td>$cardcount</td>
             </tr>";
     if (empty($cards) || ($cardcount <= $blackjack['dead_cards'] && $deal)) {
@@ -1218,7 +1218,7 @@ function getCard($cardcount, $gameid, $deal = false)
     $debugout .= '
             <tr class="no_hover">
                 <td>cards - ready</td>
-                <td>Line #' . __LINE__ . '</td>
+                <td>blackjack.php:' . __LINE__ . '</td>
                 <td>' . json_encode($cards, JSON_PRETTY_PRINT) . '</td>
             </tr>';
     $cardid = $cards[0];
@@ -1226,26 +1226,26 @@ function getCard($cardcount, $gameid, $deal = false)
     $debugout .= '
             <tr class="no_hover">
                 <td>cards - given</td>
-                <td>Line #' . __LINE__ . '</td>
+                <td>blackjack.php:' . __LINE__ . '</td>
                 <td>' . $cardid . '</td>
             </tr>
             <tr class="no_hover">
                 <td>cards - card removed</td>
-                <td>Line #' . __LINE__ . '</td>
+                <td>blackjack.php:' . __LINE__ . '</td>
                 <td>' . json_encode($cards, JSON_PRETTY_PRINT) . '</td>
             </tr>';
     $card_str = implode(', ', $cards);
     $debugout .= '
             <tr class="no_hover">
                 <td>cards string</td>
-                <td>Line #' . __LINE__ . '</td>
+                <td>blackjack.php:' . __LINE__ . '</td>
                 <td>' . $card_str . '</td>
             </tr>';
     $sql = 'INSERT INTO decks (gameid, cards) VALUES (' . sqlesc($gameid) . ', ' . sqlesc($card_str) . ') ON DUPLICATE KEY UPDATE cards = VALUES(cards)';
     $debugout .= '
             <tr class="no_hover">
                 <td>sql</td>
-                <td>Line #' . __LINE__ . '</td>
+                <td>blackjack.php:' . __LINE__ . '</td>
                 <td>' . $sql . '</td>
             </tr>';
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -1267,7 +1267,7 @@ function output($blackjack, $HTMLOUT, $debugout)
                     <thead>
                         <tr class='no_hover'>
                             <th colspan='3'>
-                                <div class='text-center'>
+                                <div class='has-text-centered'>
                                     <h3>Debug Info</h3>
                                 </div>
                             </th>
@@ -1282,7 +1282,7 @@ function output($blackjack, $HTMLOUT, $debugout)
         $HTMLOUT = $HTMLOUT . $debugout;
     }
     $HTMLOUT = "
-    <div class='container-fluid portlet text-center'>
+    <div class='container is-fluid portlet has-text-centered'>
         $HTMLOUT
     </div>";
 
@@ -1299,7 +1299,7 @@ function shuffle_decks()
     $debugout .= "
             <tr class='no_hover'>
                 <td>sql</td>
-                <td>Line #' . __LINE__ . '</td>
+                <td>blackjack.php:' . __LINE__ . '</td>
                 <td>$sql</td>
             </tr>";
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -1311,7 +1311,7 @@ function shuffle_decks()
     $debugout .= '
             <tr class="no_hover">
                 <td>deck - created</td>
-                <td>Line #' . __LINE__ . '</td>
+                <td>blackjack.php:' . __LINE__ . '</td>
                 <td>' . json_encode($cards, JSON_PRETTY_PRINT) . '</td>
             </tr>';
     // shuffle the decks x number of times
@@ -1321,7 +1321,7 @@ function shuffle_decks()
     $debugout .= '
             <tr class="no_hover">
                 <td>deck - shuffled</td>
-                <td>Line #' . __LINE__ . '</td>
+                <td>blackjack.php:' . __LINE__ . '</td>
                 <td>' . json_encode($cards, JSON_PRETTY_PRINT) . '</td>
             </tr>';
     // cut the decks
@@ -1334,7 +1334,7 @@ function shuffle_decks()
         $debugout .= '
             <tr class="no_hover">
                 <td>deck - recombining</td>
-                <td>Line #' . __LINE__ . '</td>
+                <td>blackjack.php:' . __LINE__ . '</td>
                 <td>' . json_encode($temp_deck, JSON_PRETTY_PRINT) . '</td>
             </tr>';
     }
@@ -1342,7 +1342,7 @@ function shuffle_decks()
     $debugout .= '
             <tr class="no_hover">
                 <td>deck - cut</td>
-                <td>Line #' . __LINE__ . '</td>
+                <td>blackjack.php:' . __LINE__ . '</td>
                 <td>' . json_encode($cards, JSON_PRETTY_PRINT) . '</td>
             </tr>';
     // burn the first card
@@ -1350,7 +1350,7 @@ function shuffle_decks()
     $debugout .= '
             <tr class="no_hover">
                 <td>deck - first card burned</td>
-                <td>Line #' . __LINE__ . '</td>
+                <td>blackjack.php:' . __LINE__ . '</td>
                 <td>' . json_encode($cards, JSON_PRETTY_PRINT) . '</td>
             </tr>';
 

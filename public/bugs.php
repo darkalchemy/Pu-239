@@ -120,7 +120,7 @@ if ($action == 'viewbug') {
       <tr><td class='rowhead'>{$lang['problem_bug']}</td><td><textarea cols='60' rows='10' readonly='readonly'>{$problem}</textarea></td></tr>
       <tr><td class='rowhead'>{$lang['status']} / {$lang['by']}</td><td>{$status} - {$by}</td></tr>";
         if ($a['status'] == 'na') {
-            $HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['submit_btn_fix']}' class='btn'/></td></tr>\n";
+            $HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['submit_btn_fix']}' class='button'/></td></tr>\n";
         }
     }
     $HTMLOUT .= "</table></form><a href='bugs.php?action=bugs'>{$lang['go_back']}</a>\n";
@@ -222,7 +222,7 @@ if ($action == 'viewbug') {
                   <option value='veryhigh'>{$lang['veryhigh']}</option>
                   </select>
                   <br>{$lang['only_veryhigh_when']}</td></tr>
-                  <tr><td colspan='2'><input type='submit' value='{$lang['submit_btn_send']}' class='btn'/></td></tr>
+                  <tr><td colspan='2'><input type='submit' value='{$lang['submit_btn_send']}' class='button'/></td></tr>
                   </table></form>";
 }
 echo stdhead("{$lang['header']}") . $HTMLOUT . stdfoot();

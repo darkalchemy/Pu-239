@@ -289,7 +289,7 @@ else {
         $rep_points = sprintf('' . $lang['info_you_have'] . ' %d ' . $lang['info_reputation_points'] . '', $CURUSER['reputation']);
         $html = "
                         <tr>
-                            <td class='text-center'>{$rep_info}</td>
+                            <td class='has-text-centered'>{$rep_info}</td>
                         </tr>
 						<tr>
 							<td class='row2'>
@@ -319,7 +319,7 @@ else {
         $closewindow = false;
         $html = "
                         <tr>
-                            <td class='text-center'>{$lang['info_add_rep']} <b>" . htmlsafechars($res['username']) . "</b></td>
+                            <td class='has-text-centered'>{$lang['info_add_rep']} <b>" . htmlsafechars($res['username']) . "</b></td>
                         </tr>
 						<tr>
 							<td class='row2'>
@@ -376,7 +376,7 @@ else {
 function rep_output($msg = '', $html = '')
 {
     global $closewindow, $lang, $CURUSER;
-    $body_class = 'background-15 h-style-1 text-1 skin-2';
+    $body_class = 'background-16 h-style-9 text-9 skin-2';
     if ($msg && empty($html)) {
     $html = "
         <tr>
@@ -400,14 +400,14 @@ $htmlout = "
             document.body.className = theme;
         }
     </script>
-    <div class='text-center'>
-        <div class='text-lime'>Reputation System</div>
+    <div class='has-text-centered'>
+        <div class='has-text-success'>Reputation System</div>
             <table class='table table-bordered table-striped'>
                 $html";
 if ($closewindow) {
     $htmlout .= "
                 <tr>
-                    <td class='text-center'>
+                    <td class='has-text-centered'>
                         <a href='javascript:self.close();'><b>{$lang['info_close_rep']}</b></a>
                     </td>
                 </tr>";

@@ -15,14 +15,14 @@ $stdhead = [
 ];
 
 $HTMLOUT .= "
-    <div class='container-fluid portlet'>
+    <div class='container is-fluid portlet'>
         <fieldset id='rules'>
             <legend>
                 <img src='./images/info.png' alt='' class='tooltipper right5' title='Guidelines' width='25' />Guidelines
             </legend>
     
-            <div class='bordered padleft10 padright10'>
-                <div class='alt_bordered transparent'>
+            <div class='bordered'>
+                <div class='alt_bordered bg-00'>
                     <div id='accordion'>
                         <p class='menu_head'>
                             {$lang['rules_general_header']}<span class='text-blue'>{$lang['rules_general_header_sub']}</span>

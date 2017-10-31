@@ -7,7 +7,7 @@ $html = '';
 $lang = load_language('global');
 $use_limit = true;
 $limit = 15;
-$html .= "<div class='container-fluid'><div class='row-fluid'>";
+$html .= "<div class='container'><div class='row-fluid'>";
 $xml = file_get_contents('http://feed.torrentfreak.com/Torrentfreak/');
 $icount = 1;
 $doc = new DOMDocument();

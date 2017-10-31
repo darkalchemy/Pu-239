@@ -8,7 +8,7 @@ $sql = "SELECT gamenum, IFNULL(unix_timestamp(finished), 0) AS ended, IFNULL(uni
 //$sql = "SELECT gamenum, unix_timestamp(finished) AS ended, unix_timestamp(started) AS started FROM triviasettings GROUP BY gamenum ORDER BY gamenum DESC LIMIT 10";
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $table = "
-            <div class='container-fluid portlet'>";
+            <div class='container is-fluid portlet'>";
 while ($result = mysqli_fetch_assoc($res)) {
     $gamenum = (int)$result['gamenum'];
     $ended = $result['ended'] >= 1 ? get_date($result['ended'], 'LONG') : 0;
@@ -28,7 +28,7 @@ while ($result = mysqli_fetch_assoc($res)) {
         $i = 0;
         $date = $result['ended'] >= 1 ? "Ended: $ended" : "Started: $started";
         $table .= "
-                <div class='bg-window text-center top20 round5'>
+                <div class='bg-02 has-text-centered top20 round5'>
                     <div class='padtop20'>
                         <h3>Game #{$gamenum} $date</h3>
                     </div>

@@ -18,7 +18,7 @@
     color: #fff;
     font-size: 0.917em;
     text-transform: uppercase;
-    font-family: Arial;
+    font-family: Arial, serif;
 }
 
 #control_panel ul {
@@ -72,19 +72,15 @@
     box-shadow: inset 0 0 10px #686868;
 }
 
-#control_panel #backgrounds a {
+#control_panel #backgrounds a:not(.background-16) {
     background-image: url('../1/themeChanger/images/patterns_sprite.png');
     background-repeat: no-repeat;
     border: 1px solid #000;
-    width: 29px;
-    height: 29px;
 }
 
 #control_panel #backgrounds .active a {
     border-color: #434343;
 }
-
-/* Menu Skin --> Begin */
 
 #nav > span {
     float: left;
@@ -96,8 +92,7 @@
 }
 
 #nav ul li a {
-    background-image: url(../1/themeChanger/images/nav_sprite.png);
-    background-repeat: no-repeat;
+    background: url(../1/themeChanger/images/nav_sprite.png) no-repeat;
     height: 32px;
     width: 32px;
 }
@@ -109,10 +104,6 @@
 #nav ul li a.skin-2 {
     background-position: right;
 }
-
-/* Menu Skin --> End */
-
-/* Backgrounds --> Begin */
 
 #backgrounds .background-1 {
     background-position: 0 0;
@@ -174,47 +165,12 @@
     background-position: -120px -60px;
 }
 
-#backgrounds .background-16 {
-    background-position: 0 -90px;
+.limited.background-16 {
+    background-image: '';
+    background: radial-gradient(black 15%, transparent 16%), radial-gradient(black 15%, transparent 16%) 8px 8px, radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 8px 9px;
+    background-color: #282828;
+    background-size: 16px 16px;
 }
-
-#backgrounds .background-17 {
-    background-position: -30px -90px;
-}
-
-#backgrounds .background-18 {
-    background-position: -60px -90px;
-}
-
-#backgrounds .background-19 {
-    background-position: -90px -90px;
-}
-
-#backgrounds .background-20 {
-    background-position: -120px -90px;
-}
-
-#backgrounds .background-21 {
-    background-position: 0 -120px;
-}
-
-#backgrounds .background-22 {
-    background-position: -30px -120px;
-}
-
-#backgrounds .background-23 {
-    background-position: -60px -120px;
-}
-
-#backgrounds .background-24 {
-    background-position: -90px -120px;
-}
-
-#backgrounds .background-25 {
-    background-position: -120px -120px;
-}
-
-/* Backgrounds --> End */
 
 .style_block {
     padding: 1em 0;
@@ -264,4 +220,101 @@
     content: "";
 }
 
-/* -- Theme controll panel --> End -- */
+body.background-2,
+body.background-3,
+body.background-4,
+body.background-5,
+body.background-6,
+body.background-7,
+body.background-8,
+body.background-9,
+body.background-10,
+body.background-11,
+body.background-12,
+body.background-13,
+body.background-14,
+body.background-15 {
+    background-attachment: fixed;
+}
+
+body.background-1 {
+    background: url(themeChanger/images/bgs/bg-1.png);
+    background-size: contain;
+    background-attachment: fixed;
+}
+
+body.background-2 {
+    background-image: url(themeChanger/images/bgs/bg-2.jpg);
+}
+
+body.background-3 {
+    background-image: url(themeChanger/images/bgs/bg-3.jpg);
+    background-size:cover;
+}
+
+body.background-4 {
+    background-image: url(themeChanger/images/bgs/bg-4.jpg);
+    background-size:cover;
+}
+
+body.background-5 {
+    background-image: url(themeChanger/images/bgs/bg-5.jpg);
+    background-size:cover;
+}
+
+body.background-6 {
+    background-image: url(themeChanger/images/bgs/bg-6.jpg);
+    background-size:cover;
+}
+
+body.background-7 {
+    background-image: url(themeChanger/images/bgs/bg-7.jpg);
+    background-size:cover;
+}
+
+body.background-8 {
+    background-image: url(themeChanger/images/bgs/bg-8.jpg);
+    background-size:cover;
+}
+
+body.background-9 {
+    background-image: url(themeChanger/images/bgs/bg-9.jpg);
+    background-size:cover;
+}
+
+body.background-10 {
+    background-image: url(themeChanger/images/bgs/bg-10.jpg);
+    background-size:cover;
+}
+
+body.background-11 {
+    background-image: url(themeChanger/images/bgs/bg-11.jpg);
+    background-size:cover;
+}
+
+body.background-12 {
+    background-image: url(themeChanger/images/bgs/bg-12.jpg);
+    background-size:cover;
+}
+
+body.background-13 {
+    background-image: url(themeChanger/images/bgs/bg-13.jpg);
+    background-size:cover;
+}
+
+body.background-14 {
+    background-image: url(themeChanger/images/bgs/bg-14.jpg);
+    background-size:cover;
+}
+
+body.background-15 {
+    background-image: url(themeChanger/images/bgs/bg-15.jpg);
+    background-size:cover;
+}
+
+body.background-16 {
+    background: radial-gradient(black 15%, transparent 16%), radial-gradient(black 15%, transparent 16%) 8px 8px, radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 8px 9px;
+    background-color: #282828;
+    background-size: 16px 16px;
+    background-attachment: fixed;
+}

@@ -15,6 +15,8 @@ This is a fork of U-232 V4.
 
 PHP 7.0+ is required, PHP 7.1 recommended.
 
+Memcached and Redis are rquired
+
 Be aware that the users table is deleted every few days. This is still a WIP and many pages may not be functional in there current location. Do not use the xbt install, as it's update has not been started and is likely broken.
 
 ```
@@ -24,9 +26,11 @@ git clone https://github.com/darkalchemy/Pu-239.git
 set ownership
 chown -R www-data:www-data Pu-239
 
+set webroot to path Pu-239/public
+
 goto website and complete install
 
-delete /install folder once directed to
+delete public/install folder once directed to
 
 create your first user and login
 

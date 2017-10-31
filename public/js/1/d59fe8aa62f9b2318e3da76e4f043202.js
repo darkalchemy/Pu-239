@@ -1,387 +1,136 @@
-(function($) {
-    $.fn.lightBox = function(settings) {
-        settings = jQuery.extend({
-            overlayBgColor: "#000",
-            overlayOpacity: .8,
-            fixedNavigation: false,
-            imageLoading: "images/lightbox-ico-loading.gif",
-            imageBtnPrev: "images/lightbox-btn-prev.gif",
-            imageBtnNext: "images/lightbox-btn-next.gif",
-            imageBtnClose: "images/lightbox-btn-close.gif",
-            imageBlank: "images/lightbox-blank.gif",
-            containerBorderSize: 10,
-            containerResizeSpeed: 400,
-            txtImage: "Image",
-            txtOf: "of",
-            keyToClose: "c",
-            keyToPrev: "p",
-            keyToNext: "n",
-            imageArray: [],
-            activeImage: 0
-        }, settings);
-        var jQueryMatchedObj = this;
-        function _initialize() {
-            _start(this, jQueryMatchedObj);
-            return false;
-        }
-        function _start(objClicked, jQueryMatchedObj) {
-            $("embed, object, select").css({
-                visibility: "hidden"
-            });
-            _set_interface();
-            settings.imageArray.length = 0;
-            settings.activeImage = 0;
-            if (jQueryMatchedObj.length == 1) {
-                settings.imageArray.push(new Array(objClicked.getAttribute("href"), objClicked.getAttribute("title")));
-            } else {
-                for (var i = 0; i < jQueryMatchedObj.length; i++) {
-                    settings.imageArray.push(new Array(jQueryMatchedObj[i].getAttribute("href"), jQueryMatchedObj[i].getAttribute("title")));
-                }
-            }
-            while (settings.imageArray[settings.activeImage][0] != objClicked.getAttribute("href")) {
-                settings.activeImage++;
-            }
-            _set_image_to_view();
-        }
-        function _set_interface() {
-            $("body").append('<div id="jquery-overlay"></div><div id="jquery-lightbox"><div id="lightbox-container-image-box"><div id="lightbox-container-image"><img id="lightbox-image"><div style="" id="lightbox-nav"><a href="#" id="lightbox-nav-btnPrev"></a><a href="#" id="lightbox-nav-btnNext"></a></div><div id="lightbox-loading"><a href="#" id="lightbox-loading-link"><img src="' + settings.imageLoading + '"></a></div></div></div><div id="lightbox-container-image-data-box"><div id="lightbox-container-image-data"><div id="lightbox-image-details"><span id="lightbox-image-details-caption"></span><span id="lightbox-image-details-currentNumber"></span></div><div id="lightbox-secNav"><a href="#" id="lightbox-secNav-btnClose"><img src="' + settings.imageBtnClose + '"></a></div></div></div></div>');
-            var arrPageSizes = ___getPageSize();
-            $("#jquery-overlay").css({
-                backgroundColor: settings.overlayBgColor,
-                opacity: settings.overlayOpacity,
-                width: arrPageSizes[0],
-                height: arrPageSizes[1]
-            }).fadeIn();
-            var arrPageScroll = ___getPageScroll();
-            $("#jquery-lightbox").css({
-                top: arrPageScroll[1] + arrPageSizes[3] / 10,
-                left: arrPageScroll[0]
-            }).show();
-            $("#jquery-overlay,#jquery-lightbox").click(function() {
-                _finish();
-            });
-            $("#lightbox-loading-link,#lightbox-secNav-btnClose").click(function() {
-                _finish();
-                return false;
-            });
-            $(window).resize(function() {
-                var arrPageSizes = ___getPageSize();
-                $("#jquery-overlay").css({
-                    width: arrPageSizes[0],
-                    height: arrPageSizes[1]
-                });
-                var arrPageScroll = ___getPageScroll();
-                $("#jquery-lightbox").css({
-                    top: arrPageScroll[1] + arrPageSizes[3] / 10,
-                    left: arrPageScroll[0]
-                });
-            });
-        }
-        function _set_image_to_view() {
-            $("#lightbox-loading").show();
-            if (settings.fixedNavigation) {
-                $("#lightbox-image,#lightbox-container-image-data-box,#lightbox-image-details-currentNumber").hide();
-            } else {
-                $("#lightbox-image,#lightbox-nav,#lightbox-nav-btnPrev,#lightbox-nav-btnNext,#lightbox-container-image-data-box,#lightbox-image-details-currentNumber").hide();
-            }
-            var objImagePreloader = new Image();
-            objImagePreloader.onload = function() {
-                $("#lightbox-image").attr("src", settings.imageArray[settings.activeImage][0]);
-                _resize_container_image_box(objImagePreloader.width, objImagePreloader.height);
-                objImagePreloader.onload = function() {};
-            };
-            objImagePreloader.src = settings.imageArray[settings.activeImage][0];
-        }
-        function _resize_container_image_box(intImageWidth, intImageHeight) {
-            var intCurrentWidth = $("#lightbox-container-image-box").width();
-            var intCurrentHeight = $("#lightbox-container-image-box").height();
-            var intWidth = intImageWidth + settings.containerBorderSize * 2;
-            var intHeight = intImageHeight + settings.containerBorderSize * 2;
-            var intDiffW = intCurrentWidth - intWidth;
-            var intDiffH = intCurrentHeight - intHeight;
-            $("#lightbox-container-image-box").animate({
-                width: intWidth,
-                height: intHeight
-            }, settings.containerResizeSpeed, function() {
-                _show_image();
-            });
-            if (intDiffW == 0 && intDiffH == 0) {
-                var uA = navigator.userAgent.toLowerCase();
-                if (uA.indexOf("msie") != -1) {
-                    ___pause(250);
-                } else {
-                    ___pause(100);
-                }
-            }
-            $("#lightbox-container-image-data-box").css({
-                width: intImageWidth
-            });
-            $("#lightbox-nav-btnPrev,#lightbox-nav-btnNext").css({
-                height: intImageHeight + settings.containerBorderSize * 2
-            });
-        }
-        function _show_image() {
-            $("#lightbox-loading").hide();
-            $("#lightbox-image").fadeIn(function() {
-                _show_image_data();
-                _set_navigation();
-            });
-            _preload_neighbor_images();
-        }
-        function _show_image_data() {
-            $("#lightbox-container-image-data-box").slideDown("fast");
-            $("#lightbox-image-details-caption").hide();
-            if (settings.imageArray[settings.activeImage][1]) {
-                $("#lightbox-image-details-caption").html(settings.imageArray[settings.activeImage][1]).show();
-            }
-            if (settings.imageArray.length > 1) {
-                $("#lightbox-image-details-currentNumber").html(settings.txtImage + " " + (settings.activeImage + 1) + " " + settings.txtOf + " " + settings.imageArray.length).show();
-            }
-        }
-        function _set_navigation() {
-            $("#lightbox-nav").show();
-            $("#lightbox-nav-btnPrev,#lightbox-nav-btnNext").css({
-                background: "transparent url(" + settings.imageBlank + ") no-repeat"
-            });
-            if (settings.activeImage != 0) {
-                if (settings.fixedNavigation) {
-                    $("#lightbox-nav-btnPrev").css({
-                        background: "url(" + settings.imageBtnPrev + ") left 15% no-repeat"
-                    }).unbind().bind("click", function() {
-                        settings.activeImage = settings.activeImage - 1;
-                        _set_image_to_view();
-                        return false;
-                    });
-                } else {
-                    $("#lightbox-nav-btnPrev").unbind().hover(function() {
-                        $(this).css({
-                            background: "url(" + settings.imageBtnPrev + ") left 15% no-repeat"
-                        });
-                    }, function() {
-                        $(this).css({
-                            background: "transparent url(" + settings.imageBlank + ") no-repeat"
-                        });
-                    }).show().bind("click", function() {
-                        settings.activeImage = settings.activeImage - 1;
-                        _set_image_to_view();
-                        return false;
-                    });
-                }
-            }
-            if (settings.activeImage != settings.imageArray.length - 1) {
-                if (settings.fixedNavigation) {
-                    $("#lightbox-nav-btnNext").css({
-                        background: "url(" + settings.imageBtnNext + ") right 15% no-repeat"
-                    }).unbind().bind("click", function() {
-                        settings.activeImage = settings.activeImage + 1;
-                        _set_image_to_view();
-                        return false;
-                    });
-                } else {
-                    $("#lightbox-nav-btnNext").unbind().hover(function() {
-                        $(this).css({
-                            background: "url(" + settings.imageBtnNext + ") right 15% no-repeat"
-                        });
-                    }, function() {
-                        $(this).css({
-                            background: "transparent url(" + settings.imageBlank + ") no-repeat"
-                        });
-                    }).show().bind("click", function() {
-                        settings.activeImage = settings.activeImage + 1;
-                        _set_image_to_view();
-                        return false;
-                    });
-                }
-            }
-            _enable_keyboard_navigation();
-        }
-        function _enable_keyboard_navigation() {
-            $(document).keydown(function(objEvent) {
-                _keyboard_action(objEvent);
-            });
-        }
-        function _disable_keyboard_navigation() {
-            $(document).unbind();
-        }
-        function _keyboard_action(objEvent) {
-            if (objEvent == null) {
-                keycode = event.keyCode;
-                escapeKey = 27;
-            } else {
-                keycode = objEvent.keyCode;
-                escapeKey = objEvent.DOM_VK_ESCAPE;
-            }
-            key = String.fromCharCode(keycode).toLowerCase();
-            if (key == settings.keyToClose || key == "x" || keycode == escapeKey) {
-                _finish();
-            }
-            if (key == settings.keyToPrev || keycode == 37) {
-                if (settings.activeImage != 0) {
-                    settings.activeImage = settings.activeImage - 1;
-                    _set_image_to_view();
-                    _disable_keyboard_navigation();
-                }
-            }
-            if (key == settings.keyToNext || keycode == 39) {
-                if (settings.activeImage != settings.imageArray.length - 1) {
-                    settings.activeImage = settings.activeImage + 1;
-                    _set_image_to_view();
-                    _disable_keyboard_navigation();
-                }
-            }
-        }
-        function _preload_neighbor_images() {
-            if (settings.imageArray.length - 1 > settings.activeImage) {
-                objNext = new Image();
-                objNext.src = settings.imageArray[settings.activeImage + 1][0];
-            }
-            if (settings.activeImage > 0) {
-                objPrev = new Image();
-                objPrev.src = settings.imageArray[settings.activeImage - 1][0];
-            }
-        }
-        function _finish() {
-            $("#jquery-lightbox").remove();
-            $("#jquery-overlay").fadeOut(function() {
-                $("#jquery-overlay").remove();
-            });
-            $("embed, object, select").css({
-                visibility: "visible"
-            });
-        }
-        function ___getPageSize() {
-            var xScroll, yScroll;
-            if (window.innerHeight && window.scrollMaxY) {
-                xScroll = window.innerWidth + window.scrollMaxX;
-                yScroll = window.innerHeight + window.scrollMaxY;
-            } else if (document.body.scrollHeight > document.body.offsetHeight) {
-                xScroll = document.body.scrollWidth;
-                yScroll = document.body.scrollHeight;
-            } else {
-                xScroll = document.body.offsetWidth;
-                yScroll = document.body.offsetHeight;
-            }
-            var windowWidth, windowHeight;
-            if (self.innerHeight) {
-                if (document.documentElement.clientWidth) {
-                    windowWidth = document.documentElement.clientWidth;
-                } else {
-                    windowWidth = self.innerWidth;
-                }
-                windowHeight = self.innerHeight;
-            } else if (document.documentElement && document.documentElement.clientHeight) {
-                windowWidth = document.documentElement.clientWidth;
-                windowHeight = document.documentElement.clientHeight;
-            } else if (document.body) {
-                windowWidth = document.body.clientWidth;
-                windowHeight = document.body.clientHeight;
-            }
-            if (yScroll < windowHeight) {
-                pageHeight = windowHeight;
-            } else {
-                pageHeight = yScroll;
-            }
-            if (xScroll < windowWidth) {
-                pageWidth = xScroll;
-            } else {
-                pageWidth = windowWidth;
-            }
-            arrayPageSize = new Array(pageWidth, pageHeight, windowWidth, windowHeight);
-            return arrayPageSize;
-        }
-        function ___getPageScroll() {
-            var xScroll, yScroll;
-            if (self.pageYOffset) {
-                yScroll = self.pageYOffset;
-                xScroll = self.pageXOffset;
-            } else if (document.documentElement && document.documentElement.scrollTop) {
-                yScroll = document.documentElement.scrollTop;
-                xScroll = document.documentElement.scrollLeft;
-            } else if (document.body) {
-                yScroll = document.body.scrollTop;
-                xScroll = document.body.scrollLeft;
-            }
-            arrayPageScroll = new Array(xScroll, yScroll);
-            return arrayPageScroll;
-        }
-        function ___pause(ms) {
-            var date = new Date();
-            curDate = null;
-            do {
-                var curDate = new Date();
-            } while (curDate - date < ms);
-        }
-        return this.unbind("click").click(_initialize);
-    };
-})(jQuery);
+var FORM_MANAGER_CONDITION_SEPARATOR = " AND ";
 
-$("document").ready(function() {
-    $("a[rel='lightbox']").lightBox();
+var FORM_MANAGER_POSSIBILITY_SEPARATOR = " OR ";
+
+var FORM_MANAGER_NAME_VALUE_SEPARATOR = " BEING ";
+
+var FORM_MANAGER_DEPENDS = "DEPENDS ON ";
+
+var FORM_MANAGER_CONFLICTS = "CONFLICTS WITH ";
+
+var FORM_MANAGER_EMPTY = "EMPTY";
+
+function addEvent(el, ev, f) {
+    if (el.addEventListener) el.addEventListener(ev, f, false); else if (el.attachEvent) {
+        var t = function() {
+            f.apply(el);
+        };
+        addEvent.events.push({
+            element: el,
+            event: ev,
+            handler: f
+        });
+        el.attachEvent("on" + ev, t);
+    } else el["on" + ev] = f;
+}
+
+function addEvents(els, evs, f) {
+    for (var i = 0; i < els.length; ++i) for (var j = 0; j < evs.length; ++j) addEvent(els[i], evs[j], f);
+}
+
+addEvent.events = [];
+
+if (typeof window.event !== "undefined") addEvent(window, "unload", function() {
+    for (var i = 0, e = addEvent.events; i < e.length; ++i) e[i].element.detachEvent("on" + e[i].event, e[i].handler);
 });
 
-var form = "checkme";
+function getRadioValue(el) {
+    if (!el.length) return null;
+    for (var i = 0; i < el.length; ++i) if (el[i].checked) return el[i].value;
+    return null;
+}
 
-function SetChecked(val, chkName) {
-    dml = document.forms[form];
-    len = dml.elements.length;
-    var i = 0;
-    for (i = 0; i < len; i++) {
-        if (dml.elements[i].name == chkName) {
-            dml.elements[i].checked = val;
+function getSelectValue(el) {
+    if (!el.tagName || el.tagName.toLowerCase() !== "select") return null;
+    return el.options[el.selectedIndex].value;
+}
+
+function isElementValue(el, v) {
+    if (v === FORM_MANAGER_EMPTY) v = "";
+    return getRadioValue(el) == v || getSelectValue(el) == v || el.tagName && el.tagName.toLowerCase() !== "select" && el.value == v;
+}
+
+function setupDependencies() {
+    var showEl = function() {
+        this.style.display = "";
+        if (this.parentNode.tagName.toLowerCase() == "label") {
+            this.parentNode.style.display = "";
         }
+    };
+    var hideEl = function() {
+        this.style.display = "none";
+        if (typeof this.checked !== "undefined") this.checked = false; else this.value = "";
+        if (this.parentNode.tagName.toLowerCase() == "label") {
+            this.parentNode.style.display = "none";
+        }
+        this.hidden = true;
+    };
+    var calcDeps = function() {
+        for (var i = 0, e = this.elements; i < e.length; ++i) {
+            e[i].hidden = false;
+            for (var j = 0, f = e[i].className.split(FORM_MANAGER_CONDITION_SEPARATOR); j < f.length; ++j) if (f[j].indexOf(FORM_MANAGER_DEPENDS) === 0) {
+                for (var k = 0, g = f[j].substr(FORM_MANAGER_DEPENDS.length).split(FORM_MANAGER_POSSIBILITY_SEPARATOR); k < g.length; ++k) if (g[k].indexOf(FORM_MANAGER_NAME_VALUE_SEPARATOR) === -1) {
+                    if (e[g[k]] && e[g[k]].checked) break; else if (k + 1 == g.length) e[i].hide();
+                } else {
+                    var n = g[k].split(FORM_MANAGER_NAME_VALUE_SEPARATOR), v = n[1];
+                    n = n[0];
+                    if (e[n]) if (isElementValue(e[n], v)) break; else if (k + 1 == g.length) e[i].hide();
+                }
+            } else if (f[j].indexOf(FORM_MANAGER_CONFLICTS) === 0) {
+                if (f[j].indexOf(FORM_MANAGER_NAME_VALUE_SEPARATOR) === -1) {
+                    if (e[f[j].substr(FORM_MANAGER_CONFLICTS.length)] && e[f[j].substr(FORM_MANAGER_CONFLICTS.length)].checked) {
+                        e[i].hide();
+                        break;
+                    }
+                } else {
+                    var n = f[j].substr(FORM_MANAGER_CONFLICTS.length).split(FORM_MANAGER_NAME_VALUE_SEPARATOR), v = n[1];
+                    n = n[0];
+                    if (e[n]) {
+                        if (isElementValue(e[n], v)) {
+                            e[i].hide();
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!e[i].hidden) e[i].show();
+        }
+    };
+    var changeHandler = function() {
+        this.form.calculateDependencies();
+        return true;
+    };
+    for (var i = 0; i < arguments.length; ++i) {
+        for (var j = 0, e = window.document.forms[arguments[i]].elements; j < e.length; ++j) {
+            addEvents([ e[j] ], [ "change", "keyup", "focus", "click", "keydown" ], changeHandler);
+            e[j].hide = hideEl;
+            e[j].show = showEl;
+        }
+        (e = window.document.forms[arguments[i]]).calculateDependencies = calcDeps;
+        e.calculateDependencies();
     }
 }
 
-jQuery.fn.trilemma = function(options) {
-    var options = options || {};
-    var cbfs = this;
-    var cbs = this.find("input:checkbox");
-    var maxnum = options.max ? options.max : 2;
-    cbs.each(function() {
-        $(this).bind("click", function() {
-            if ($(this).is(":checked")) {
-                if (cbs.filter(":checked").length == maxnum) {
-                    cbs.not(":checked").each(function() {
-                        $(this).attr("disabled", "true");
-                        if (options.disablelabels) {
-                            var thisid = $(this).attr("id");
-                            $('label[for="' + thisid + '"]').addClass("disabled");
-                        }
-                    });
-                }
-            } else {
-                cbs.removeAttr("disabled");
-                if (options.disablelabels) {
-                    cbfs.find("label.disabled").removeClass("disabled");
-                }
-            }
-        });
-    });
-    return this;
-};
-
-$(function() {
-    $(".poll_select").trilemma({
-        max: " . $multi_options . ",
-        disablelabels: true
-    });
-});
-
-$(document).ready(function() {
-    $("#tool_open").click(function() {
-        $("#tools").slideToggle("slow", function() {});
-    });
-    $("#toggle_voters").click(function() {
-        $("#voters").slideToggle("slow", function() {});
-    });
-    $("#toggle_voters").click(function() {
-        $("#voters").slideToggle("slow", function() {});
-    });
-});
-
-$("#pm_open").click(function() {
-    $("#pm").slideToggle("slow", function() {});
-});
+function getname() {
+    var filename = document.getElementById("torrent").value;
+    var filename = filename.toString();
+    var lowcase = filename.toLowerCase();
+    var start = lowcase.lastIndexOf("\\");
+    if (start == -1) {
+        start = lowcase.lastIndexOf("/");
+        if (start == -1) start == 0; else start = start + 1;
+    } else start = start + 1;
+    var end = lowcase.lastIndexOf("torrent");
+    var noext = filename.substring(start, end - 1);
+    noext = noext.replace(/H\.264/gi, "H_264");
+    noext = noext.replace(/5\.1/g, "5_1");
+    noext = noext.replace(/2\.1/g, "2_1");
+    noext = noext.replace(/\./g, " ");
+    noext = noext.replace(/H_264/g, "H.264");
+    noext = noext.replace(/5_1/g, "5.1");
+    noext = noext.replace(/2_1/g, "2.1");
+    document.getElementById("name").value = noext;
+}
 
 (function($) {
     $.fn.markItUp = function(settings, extraSettings) {
@@ -2550,7 +2299,7 @@ $(document).ready(function() {
         $("#bbcode_editor").markItUp(myBbcodeSettings);
     }
     $(".emoticons a").click(function() {
-        emoticon = $(this).attr("title");
+        emoticon = $(this).attr("alt");
         $.markItUp({
             openWith: emoticon
         });

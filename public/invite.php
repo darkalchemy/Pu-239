@@ -23,7 +23,7 @@ if ($do == 'view_page') {
     $rows = mysqli_num_rows($query);
     $HTMLOUT = '';
     $HTMLOUT .= "
-        <div class='container-fluid portlet'>
+        <div class='container is-fluid portlet'>
             <table class='table table-bordered table-striped top20 bottom20'>
                 <thead>    
                     <tr>
@@ -51,7 +51,7 @@ if ($do == 'view_page') {
             $arr = mysqli_fetch_assoc($query);
             $ratio = member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']);
             if ($arr['status'] == 'confirmed') {
-                $status = "<span class='text-lime'>{$lang['invites_confirm1']}</span>";
+                $status = "<span class='has-text-success'>{$lang['invites_confirm1']}</span>";
             } else {
                 $status = "<span class='text-red'>{$lang['invites_pend']}</span>";
             }
@@ -127,8 +127,8 @@ if ($do == 'view_page') {
                 </tbody>
             </table>
             <form action='?do=create_invite' method='post'>
-                <div class='text-center bottom20'>
-                    <input type='submit' class='btn' value='{$lang['invites_create']}' />
+                <div class='has-text-centered bottom20'>
+                    <input type='submit' class='button' value='{$lang['invites_create']}' />
                 </div>
             </form>
         </div>";
@@ -218,7 +218,7 @@ EOD;
     $query = sql_query('SELECT * FROM invite_codes WHERE id = ' . sqlesc($id) . ' AND sender = ' . sqlesc($CURUSER['id']) . ' AND status = "Pending"') or sqlerr(__FILE__, __LINE__);
     $fetch = mysqli_fetch_assoc($query) or stderr($lang['invites_error'], $lang['invites_noexsist']);
     $HTMLOUT .= "
-        <div class='container-fluid portlet'>
+        <div class='container is-fluid portlet'>
             <form method='post' action='?do=send_email'>
                 <table class='table table-bordered top20 bottom20'>
                     <thead>
@@ -230,9 +230,9 @@ EOD;
                         </tr>
                     </thead>
                 </table>
-                <div class='text-center bottom20'>
+                <div class='has-text-centered bottom20'>
                     <input type='hidden' name='code' value='" . htmlsafechars($fetch['code']) . "' />
-                    <input type='submit' value='Send e-mail' class='btn' />
+                    <input type='submit' value='Send e-mail' class='button' />
                 </div>
             </form>
         </div>";

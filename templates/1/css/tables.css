@@ -1,0 +1,138 @@
+table {
+    width: 100%;
+    background-color: rgba(255, 255, 255, .1);
+    max-width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.heading {
+    width: 150px;
+    max-width: 25%;
+}
+
+.table {
+    width: calc(100% - 2px);
+    background-color: rgba(255, 255, 255, .1);
+    color: white;
+    margin-bottom: 0;
+}
+
+.table td,
+.table th,
+.table-bordered {
+    -webkit-padding-before: 0.75em;
+    -webkit-padding-start: 0.75em;
+    -webkit-padding-end: 0.75em;
+    -webkit-padding-after: 0.75em;
+    -webkit-margin-start: .125em;
+    -webkit-margin-end: .125em;
+}
+
+.table tr th {
+    font-weight: 700;
+    color: white;
+}
+
+.table td,
+.table th,
+.table tr th {
+    line-height: 18px;
+    text-align: left;
+    vertical-align: top;
+    border: 1px solid red;
+    border-bottom: 0;
+    border-right: 0;
+}
+
+.table td:last-child,
+.table th:last-child {
+    border-right: 1px solid red;
+}
+
+.table thead th {
+    vertical-align: bottom;
+}
+
+.table thead:first-child tr:first-child td,
+.table thead:first-child tr:first-child th,
+.table-bordered tbody:first-child tr:first-child td,
+.table-bordered tbody:first-child tr:first-child th,
+.table-bordered thead:first-child tr:first-child th {
+    border-top: 0;
+}
+
+.table thead:last-child tr:last-child td,
+.table thead:last-child tr:last-child th,
+.table-bordered tbody:last-child tr:last-child td,
+.table-bordered tbody:last-child tr:last-child th,
+.table-bordered thead:last-child tr:last-child th {
+    border-bottom: 0;
+}
+
+.table-bordered {
+    border: 2px groove red;
+    border-collapse: separate;
+    border-left: 0;
+    border-right: 0;
+    -webkit-border-radius: .625em;
+    -moz-border-radius: .625em;
+    border-radius: .625em;
+    -webkit-padding-before: 0.75em;
+    -webkit-padding-start: 0.75em;
+    -webkit-padding-end: 0.75em;
+    -webkit-padding-after: 0.75em;
+}
+
+.table-bordered td,
+.table-bordered th {
+    border-left: 1px solid red;
+}
+
+.table-bordered tbody:first-child tr:first-child td:first-child,
+.table-bordered thead:first-child tr:first-child th:first-child {
+    -webkit-border-top-left-radius: .625em;
+    -moz-border-top-left-radius: .625em;
+    border-top-left-radius: .625em;
+}
+
+.table-bordered tbody:first-child tr:first-child td:last-child,
+.table-bordered thead:first-child tr:first-child th:last-child {
+    -webkit-border-top-right-radius: .625em;
+    -moz-border-top-right-radius: .625em;
+    border-top-right-radius: .625em;
+}
+
+.table-bordered tbody:last-child tr:last-child td:first-child,
+.table-bordered thead:last-child tr:last-child th:first-child {
+    -webkit-border-bottom-left-radius: .625em;
+    -moz-border-bottom-left-radius: .625em;
+    border-bottom-left-radius: .625em;
+}
+.table-bordered tbody:last-child tr:last-child td:last-child,
+.table-bordered thead:last-child tr:last-child th:last-child {
+    -webkit-border-bottom-right-radius: .625em;
+    -moz-border-bottom-right-radius: .625em;
+    border-bottom-right-radius: .625em;
+}
+
+.table-striped tbody tr:nth-child(odd) td,
+.table-striped tbody tr:nth-child(odd) th {
+    background-color: rgba(0, 0, 0, .3);
+}
+
+.table tbody tr:not(.no_hover):hover td {
+    background-color: rgba(0, 0, 0, .5);
+    -webkit-transition: all 0.35s ease-in-out;
+    -moz-transition: all 0.35s ease-in-out;
+    -o-transition: all 0.35s ease-in-out;
+    transition: all 0.35s ease-in-out;
+}
+
+.table-wrapper {
+    overflow: auto;
+}
+
+.table-wrapper + .table-wrapper {
+    margin-top: 20px;
+}

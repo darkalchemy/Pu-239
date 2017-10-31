@@ -66,12 +66,12 @@ unset($last);
 unset($data);
 unset($fetch_set);
 $HTMLOUT .= "
-    <div class='container-fluid portlet'>
-        <h2 class='text-center top20'>Coder's Log</h2>
+    <div class='container is-fluid portlet'>
+        <h2 class='has-text-centered top20'>Coder's Log</h2>
         <div class='bordered bottom20'>
-            <div class='alt_bordered transparent'>
-                <div class='text-center'>Tracking " . str_replace(' ', ', ', $site_config['coders_log_allowed_ext']) . " files only!</div>
-                <div class='text-center'>" . number_format(count($current)) . " files have been added, modifed or deleted since your last update of the " . number_format($i) . " files being tracked.</div>
+            <div class='alt_bordered bg-00'>
+                <div class='has-text-centered'>Tracking " . str_replace(' ', ', ', $site_config['coders_log_allowed_ext']) . " files only!</div>
+                <div class='has-text-centered'>" . number_format(count($current)) . " files have been added, modifed or deleted since your last update of the " . number_format($i) . " files being tracked.</div>
             </div>
         </div>
 
@@ -102,7 +102,7 @@ foreach ($current as $x) {
 if (!$count) {
     $HTMLOUT .= "
                 <tr>
-                    <td colspan='2' class='text-white'>{$lang['editlog_no_new']}</td>
+                    <td colspan='2' class='has-text-white'>{$lang['editlog_no_new']}</td>
                 </tr>";
 }
 $HTMLOUT .= "
@@ -133,7 +133,7 @@ foreach ($current as $x) {
 if (!$count) {
     $HTMLOUT .= "
                 <tr>
-                    <td colspan='2' class='text-white'>{$lang['editlog_no_modified']}</td>
+                    <td colspan='2' class='has-text-white'>{$lang['editlog_no_modified']}</td>
                 </tr>";
 }
 $HTMLOUT .= "
@@ -164,14 +164,14 @@ foreach ($current as $x) {
 if (!$count) {
     $HTMLOUT .= "
                 <tr>
-                    <td colspan='2' class='text-white'>{$lang['editlog_no_deleted']}</td>
+                    <td colspan='2' class='has-text-white'>{$lang['editlog_no_deleted']}</td>
                 </tr>";
 }
 $HTMLOUT .= "
         </table>
         <form method='post' action='staffpanel.php?tool=editlog&amp;action=editlog'>
-            <div class='text-center top20 bottom20'>
-                <input name='update' type='submit' value='{$lang['editlog_update']}' class='btn' />
+            <div class='has-text-centered top20 bottom20'>
+                <input name='update' type='submit' value='{$lang['editlog_update']}' class='button' />
             </div>
         </form>
     </div>";

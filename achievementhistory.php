@@ -27,13 +27,13 @@ $pager = pager($perpage, $count, "?id=$id&amp;");
 if ($id == $CURUSER['id']) {
     $HTMLOUT .= "
 	<div class='row-fluid'>
-		<span class='btn btn-small'>
+		<span class='button is-small'>
 		<a href='/achievementlist.php'>{$lang['achievement_history_al']}</a></span>
-		<span class='btn btn-small'>
+		<span class='button is-small'>
 		<a href='/postcounter.php'>{$lang['achievement_history_fpc']}</a></span>
-		<span class='btn btn-small'>
+		<span class='button is-small'>
 		<a href='/topiccounter.php'>{$lang['achievement_history_ftc']}</a></span>
-		<span class='btn btn-small'>
+		<span class='button is-small'>
 		<a href='/invitecounter.php'>{$lang['achievement_history_ic']}</a></span>
 	</div>
 	";

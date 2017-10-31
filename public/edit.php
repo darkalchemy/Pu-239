@@ -72,7 +72,7 @@ if ((strpos($row['ori_descr'], '<') === false) || (strpos($row['ori_descr'], '&l
 } else {
     $c = ' checked';
 }
-$HTMLOUT .= tr($lang['edit_description'], '' . BBcode(htmlsafechars($row['ori_descr']), false) . "<br>({$lang['edit_tags']})", 1);
+$HTMLOUT .= tr($lang['edit_description'], '' . BBcode($row['ori_descr']) . "<br>({$lang['edit_tags']})", 1);
 $s = "<select name='type'>\n";
 $cats = genrelist();
 foreach ($cats as $subrow) {
@@ -174,7 +174,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
 //==09 Genre mod no sql
 $HTMLOUT .= "
     <tr>
-    <td class='heading'><b>Genre</b>&#160;&#160;&#160;<br>Optional&#160;&#160;&#160;
+    <td class='rowhead'><b>Genre</b>&#160;&#160;&#160;<br>Optional&#160;&#160;&#160;
     </td>
     <td>
     <table class='table table-bordered table-striped'>
@@ -239,7 +239,7 @@ for ($x = 0; $x < count($apps); ++$x) {
     $HTMLOUT .= "<label><input type=\"checkbox\" value=\"$apps[$x]\" name=\"apps[]\" class=\"DEPENDS ON genre BEING apps\" />$apps[$x]</label>";
 }
 $HTMLOUT .= '</td></tr></table></td></tr>';
-$HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['edit_submit']}' class='btn' /> <input type='reset' value='{$lang['edit_revert']}' class='btn' /></td></tr>
+$HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['edit_submit']}' class='button' /> <input type='reset' value='{$lang['edit_revert']}' class='button' /></td></tr>
     </table>
     </form>
     <br>
@@ -266,7 +266,7 @@ $HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['edit_submit
 if (isset($_GET['returnto'])) {
     $HTMLOUT .= "<input type='hidden' name='returnto' value='" . htmlsafechars($_GET['returnto']) . "' />\n";
 }
-$HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['edit_delete']}' class='btn' /></td>
+$HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['edit_delete']}' class='button' /></td>
     </tr>
     </table>
     </form>";

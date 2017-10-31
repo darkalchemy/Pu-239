@@ -59,17 +59,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     unsetSessionVar('simpleCaptchaTimestamp');
 } else {
     $HTMLOUT .= "
-    <div class='login-container container-fluid portlet'>
+    <div class='half-container has-text-centered portlet'>
         <form method='post' action='{$_SERVER['PHP_SELF']}'>
             <table class='table table-bordered top20 bottom20'>" . ($site_config['captcha_on'] ? "
                 <tr class='no_hover'>
                     <td colspan='2'>
-                        <h2 class='text-center'>{$lang['recover_unamepass']}</h2>
+                        <h2 class='has-text-centered'>{$lang['recover_unamepass']}</h2>
                         <p>{$lang['recover_form']}</p>
                     </td>
                 </tr>
                 <tr class='no_hover'>
-                    <td class='rowhead' colspan='2' id='captcha_show'></td>
+                    <td colspan='2' id='captcha_show'></td>
                 </tr>" : '') . "
                 <tr class='no_hover'>
                     <td class='rowhead'>{$lang['recover_regdemail']}</td>
@@ -77,8 +77,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </tr>
                 <tr class='no_hover'>
                     <td colspan='2'>
-                        <div class='text-center'>
-                            <input type='submit' value='{$lang['recover_btn']}' class='btn' />
+                        <div class='has-text-centered'>
+                            <input type='submit' value='{$lang['recover_btn']}' class='button' />
                         </div>
                     </td>
                 </tr>

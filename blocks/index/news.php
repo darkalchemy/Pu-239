@@ -8,7 +8,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
 $HTMLOUT .= "
     <a id='news-hash'></a>
     <fieldset id='news' class='header'>
-        <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['news_title']}
+        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['news_title']}
             <span class='news'>{$adminbutton}</span>
         </legend>
         <div>";
@@ -41,16 +41,15 @@ if ($news) {
                     </a>
                 </div>";
         }
-        $top = $i++ >= 1 ? ' top20' : '';
         $HTMLOUT .= "
-            <div class='bordered padleft10 padright10{$top}'>
-                <div id='{$array['nid']}' class='header alt_bordered transparent text-left'>
-                    <legend class='flipper'>
+            <div class='bordered'>
+                <div id='{$array['nid']}' class='header alt_bordered bg-00 has-text-left'>
+                    <legend class='flipper has-text-primary'>
                         <i class='fa fa-angle-up right10' aria-hidden='true'></i><small>" . htmlsafechars($array['title']) . "</small>
                     </legend>
-                    <div class='bg-window round5 padding10'>
+                    <div class='bg-02 round5 padding10'>
                         <div class='bottom20 size_2'>" . get_date($array['added'], 'DATE') . "{$lang['index_news_added']}" . (($array['anonymous'] === 'yes' && $CURUSER['class'] < UC_STAFF && $array['userid'] != $CURUSER['id']) ? "<i>{$lang['index_news_anon']}</i>" : format_username($array['userid'])) . "{$button}</div>
-                        <div class='text-white'>
+                        <div class='has-text-white'>
                             " . format_comment($array['body'], 0) . "
                         </div>
                     </div>

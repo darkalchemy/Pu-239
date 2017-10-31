@@ -70,7 +70,7 @@ $lang = [
     'usersearch_no'           => 'No',
     'usersearch_create_ann'   => 'Create New Announcement',
     //instructions
-    'usersearch_instructions' => "<table class='text-center'><tr><td class='embedded'><div>\n
+    'usersearch_instructions' => "<table class='has-text-centered'><tr><td class='embedded'><div>\n
 	    Fields left blank will be ignored;\n
 	    Wildcards * and ? may be used in Name, Email and Comments, as well as multiple values\n
 	    separated by spaces (e.g. 'wyz Max*' in Name will list both users named\n

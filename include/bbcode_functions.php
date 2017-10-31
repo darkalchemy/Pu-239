@@ -8,8 +8,8 @@ function smilies_frame($smilies_set)
     foreach ($smilies_set as $code => $url) {
         $list .= "
             <div class='container-flex'>
-                <a href='#' class='tooltipper' title='{$code}'>
-                    <img border='0' src='./images/smilies/" . $url . "' alt='' />
+                <a href='#' class='tooltipper' alt='{$code}' title='{$code}'>
+                    <img border='0' src='./images/smilies/" . $url . "' alt='{$code}' />
                 </a>
             </div>";
     }
@@ -22,7 +22,7 @@ function smilies_frame($smilies_set)
     return $emoticons;
 }
 
-function BBcode($body)
+function BBcode($body = '')
 {
     global $CURUSER, $smilies, $customsmilies, $staff_smilies, $site_config;
     $emoticons_normal = smilies_frame($smilies, 3, ':hslocked:');
@@ -289,9 +289,9 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<span style="text-decoration: underline;">\1</span>',
         '<a class="altlink" href="mailto:\1">\1</a>',
         '<div style="text-align: \1;">\2</div>',
-        '<div class="text-center">\1</div>',
-        '<div class="text-left">\1</div>',
-        '<div class="text-right">\1</div>',
+        '<div class="has-text-centered">\1</div>',
+        '<div class="has-text-left">\1</div>',
+        '<div class="has-text-right">\1</div>',
         '<div class="text-justify">\1</div>',
         '<blockquote class="style"><span>\1</span></blockquote>',
         '<span style="text-decoration: line-through;">\1</span>',
@@ -311,10 +311,10 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<span class="text-6">\1</span>',
         '<span class="text-7">\1</span>',
         '<span class="text-8">\1</span>',
-        "<div style='margin-bottom: 5px;'><span class='flip btn'>Show Spoiler!</span><div class='panel spoiler' style='display:none;'>\\1</div></div><br>",
-        "<div style='margin-bottom: 5px;'><span class='flip btn'>Show Hide!</span><div class='panel spoiler' style='display:none;'>\\1</div></div><br>",
-        "<div style='width: 500px; height: 281px;' class='text-center'><div class='youtube-embed rndcorners text-center' style='height: 100%; width: 100%;'><iframe width='1920px' height='1080px' src='//www.youtube.com/embed/\\1?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen ></iframe></div></div>",
-        "<div style='width: 500px; height: 281px;' class='text-center'><div class='youtube-embed rndcorners text-center' style='height: 100%; width: 100%;'><iframe width='1920px' height='1080px' src='//www.youtube.com/embed/\\1?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen ></iframe></div></div>",
+        "<div style='margin-bottom: 5px;'><span class='flip button'>Show Spoiler!</span><div class='panel spoiler' style='display:none;'>\\1</div></div><br>",
+        "<div style='margin-bottom: 5px;'><span class='flip button'>Show Hide!</span><div class='panel spoiler' style='display:none;'>\\1</div></div><br>",
+        "<div style='width: 500px; height: 281px;' class='has-text-centered'><div class='youtube-embed rndcorners has-text-centered' style='height: 100%; width: 100%;'><iframe width='1920px' height='1080px' src='//www.youtube.com/embed/\\1?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen ></iframe></div></div>",
+        "<div style='width: 500px; height: 281px;' class='has-text-centered'><div class='youtube-embed rndcorners has-text-centered' style='height: 100%; width: 100%;'><iframe width='1920px' height='1080px' src='//www.youtube.com/embed/\\1?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen ></iframe></div></div>",
         '<embed style="width:500px; height:410px;" id="VideoPlayback" align="middle" type="application/x-shockwave-flash" src="//video.google.com/googleplayer.swf?docId=\\1" allowScriptAccess="sameDomain" quality="best" bgcolor="#ffffff" scale="noScale" wmode="window" salign="TL"  FlashVars="playerMode=embedded"> </embed>',
         '<span><video width="500" loop muted autoplay><source src="//i.imgur.com/\1.webm" type="video/webm" /><source src="//i.imgur.com/\1.mp4" type="video/mp4" />Your browser does not support the video tag.</video></span>',
         '<span><video width="500" controls><source src="\1" /><source src="\1" type="video/mp4" />Your browser does not support the video tag.</video></span>',
@@ -323,7 +323,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<span><video width="500" loop muted autoplay><source src="\1" /><source src="\1" type="video/mp4" />Your browser does not support the video tag.</video></span>',
         '<span><video width="500" loop muted autoplay><source src="\1" /><source src="\1" type="video/webm" />Your browser does not support the video tag.</video></span>',
         '<span><video width="500" loop muted autoplay><source src="\1" /><source src="\1" type="video/ogv" />Your browser does not support the video tag.</video></span>',
-        '<span class="text-center"><p>Audio From: \1</p><embed type="application/x-shockwave-flash" src="http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=\\1" width="400" height="27" allowscriptaccess="never" quality="best" bgcolor="#ffffff" wmode="window" flashvars="playerMode=embedded" /></span>',
+        '<span class="has-text-centered"><p>Audio From: \1</p><embed type="application/x-shockwave-flash" src="http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=\\1" width="400" height="27" allowscriptaccess="never" quality="best" bgcolor="#ffffff" wmode="window" flashvars="playerMode=embedded" /></span>',
         '<ol class="style" start="\1">\2</ol>',
         '<ul class="style">\1</ul>',
         '<li>\1</li>',

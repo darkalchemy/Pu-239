@@ -144,11 +144,6 @@ function parse_poll()
     return $htmlout;
 }
 
-///////////////////////////////////////////////
-///////////////////////////////////////////////
-//AUX FUNCTIONS
-///////////////////////////////////////////////
-///////////////////////////////////////////////
 function poll_header($pid = '', $poll_q = '')
 {
     global $site_config;
@@ -168,7 +163,7 @@ function poll_header($pid = '', $poll_q = '')
             <form action='{$site_config['baseurl']}/polls_take_vote.php?pollid={$pid}&amp;st=main&amp;addpoll=1' method='post'>
                 <a id='poll-hash'></a>
                 <fieldset id='poll' class='header'>
-                    <legend class='flipper'><i class='fa fa-angle-up' aria-hidden='true'></i>{$poll_q}</legend>
+                    <legend class='flipper has-text-primary'><i class='fa fa-angle-up' aria-hidden='true'></i>{$poll_q}</legend>
                     <div>";
 
     return $HTMLOUT;
@@ -178,8 +173,8 @@ function poll_footer()
 {
     $HTMLOUT = '';
     $HTMLOUT .= '
-                        <div class="text-center"><!--VOTE--><!--SHOW--></div>
-                        <div class="text-center"><!-- no content --></div>
+                        <div class="has-text-centered"><!--VOTE--><!--SHOW--></div>
+                        <div class="has-text-centered"><!-- no content --></div>
                     </div>
                 </fieldset>
             </form>';
@@ -207,7 +202,7 @@ function poll_show_rendered_question($id = '', $question = '', $choice_html = ''
 {
     $HTMLOUT = '';
     $HTMLOUT .= "
-     <div class='text-center'>
+     <div class='has-text-centered'>
     <div class='roundedCorners' style='text-align:center;padding:4px;'><span class='postdetails'><strong>{$question}</strong></span></div>
     <table cellpadding='4' cellspacing='0'>
     $choice_html
@@ -220,7 +215,7 @@ function poll_show_rendered_question($id = '', $question = '', $choice_html = ''
 function show_total_votes($total_votes = '')
 {
     $HTMLOUT = '';
-    $HTMLOUT .= "<div class='text-center'><b>Total Votes: $total_votes</b></div>";
+    $HTMLOUT .= "<div class='has-text-centered'><b>Total Votes: $total_votes</b></div>";
 
     return $HTMLOUT;
 }
@@ -248,7 +243,7 @@ function poll_show_form_question($id = '', $question = '', $choice_html = '')
 {
     $HTMLOUT = '';
     $HTMLOUT .= "
-    <div class='text-left'>
+    <div class='has-text-left'>
       <div style='padding:4px;'><span class='postdetails'><strong>{$question}</strong></span></div>
       $choice_html
     </div>";
@@ -259,7 +254,7 @@ function poll_show_form_question($id = '', $question = '', $choice_html = '')
 function button_show_voteable()
 {
     $HTMLOUT = '';
-    $HTMLOUT .= "<input class='btn' type='button' name='viewresult' value='Show Votes'  title='Goto poll voting' onclick=\"go_gadget_vote()\" />";
+    $HTMLOUT .= "<input class='button' type='button' name='viewresult' value='Show Votes'  title='Goto poll voting' onclick=\"go_gadget_vote()\" />";
 
     return $HTMLOUT;
 }
@@ -267,7 +262,7 @@ function button_show_voteable()
 function button_show_results()
 {
     $HTMLOUT = '';
-    $HTMLOUT .= "<input class='btn' type='button' value='Results' title='Show all poll rsults' onclick=\"go_gadget_show()\" />";
+    $HTMLOUT .= "<input class='button' type='button' value='Results' title='Show all poll rsults' onclick=\"go_gadget_show()\" />";
 
     return $HTMLOUT;
 }
@@ -275,7 +270,7 @@ function button_show_results()
 function button_vote()
 {
     $HTMLOUT = '';
-    $HTMLOUT .= "<input class='btn' type='submit' name='submit' value='Vote' title='Poll Vote' />";
+    $HTMLOUT .= "<input class='button' type='submit' name='submit' value='Vote' title='Poll Vote' />";
 
     return $HTMLOUT;
 }
@@ -283,7 +278,7 @@ function button_vote()
 function button_null_vote()
 {
     $HTMLOUT = '';
-    $HTMLOUT .= "<input class='btn' type='submit' name='nullvote' value='View Results (Null Vote)' title='View results, but forfeit your vote in this poll' />";
+    $HTMLOUT .= "<input class='button' type='submit' name='nullvote' value='View Results (Null Vote)' title='View results, but forfeit your vote in this poll' />";
 
     return $HTMLOUT;
 }

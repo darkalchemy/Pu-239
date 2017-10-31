@@ -35,7 +35,7 @@ if (empty($mode)) {
                         ORDER BY db.added DESC') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         $HTMLOUT .= "
-        <div class='container-fluid portlet'>
+        <div class='container is-fluid portlet'>
             <form method='post' action='./staffpanel.php?tool=backup&amp;mode=delete'>
                 <input type='hidden' name='action' value='delete' />
                 {$lang['backup_welcome']}
@@ -71,58 +71,58 @@ if (empty($mode)) {
         $HTMLOUT .= "
                     </tbody>
                 </table>
-                <div class='text-center top20 bottom20 answers-container flex-center'>
-                    <a class='btn right20' href='./staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
-                    <input type='submit' class='btn' value='{$lang['backup_delselected']}' onclick=\"return confirm(''{$lang['backup_confirm']}'');\" />
+                <div class='has-text-centered top20 bottom20 level-center flex-center'>
+                    <a class='button right20' href='./staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
+                    <input type='submit' class='button' value='{$lang['backup_delselected']}' onclick=\"return confirm(''{$lang['backup_confirm']}'');\" />
                 </div>
             </form>
-            <div class='text-center top20 bottom20'>
-                <span class='flipper pointer'>
-                    <i class='fa fa-angle-down fa-2x text-main' aria-hidden='true'></i>
-                    <span class='text-main size_4 left10'>{$lang['backup_settingschk']}</span>
+            <div class='has-text-centered top20 bottom20'>
+                <span class='flipper has-text-primary pointer'>
+                    <i class='fa fa-angle-down fa-2x has-text-primary' aria-hidden='true'></i>
+                    <span class='has-text-primary size_4 left10'>{$lang['backup_settingschk']}</span>
                 </span>
-                <div class='container-fluid portlet is_hidden top20 bottom20'>
+                <div class='container is-fluid portlet is_hidden top20 bottom20'>
                     <table class='table table-bordered table-striped top20 bottom20'>
                         <tbody>
                             <tr>
                                 <td>{$lang['backup_qzip']}</td>
                                 <td>{$lang['backup_optional']}</td>
-                                <td class='rowhead'>" . ($site_config['db_use_gzip'] ? "<div class='text-center text-center text-green'>{$lang['backup_yes']}</div>" : "<div class='text-center text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td class='rowhead'>" . ($site_config['db_use_gzip'] ? "<div class='has-text-centered has-text-centered text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td>{$lang['backup_qzippath']}</td>
                                 <td>{$site_config['db_backup_gzip_path']}</td>
-                                <td>" . (is_file($site_config['db_backup_gzip_path']) ? "<div class='text-center text-green'>{$lang['backup_yes']}</div>" : "<div class='text-center text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . (is_file($site_config['db_backup_gzip_path']) ? "<div class='has-text-centered text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td>{$lang['backup_pathfolder']}</td>
                                 <td>{$site_config['backup_dir']}</td>
-                                <td>" . (is_dir($site_config['backup_dir']) ? "<div class='text-center text-green'>{$lang['backup_yes']}</div>" : "<div class='text-center text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . (is_dir($site_config['backup_dir']) ? "<div class='has-text-centered text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td colspan='2'>{$lang['backup_readfolder']}</td>
-                                <td>" . (is_readable($site_config['backup_dir']) ? "<div class='text-center text-green'>{$lang['backup_yes']}</div>" : "<div class='text-center text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . (is_readable($site_config['backup_dir']) ? "<div class='has-text-centered text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td colspan='2'>{$lang['backup_writable']}</td>
-                                <td>" . (is_writable($site_config['backup_dir']) ? "<div class='text-center text-green'>{$lang['backup_yes']}</div>" : "<div class='text-center text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . (is_writable($site_config['backup_dir']) ? "<div class='has-text-centered text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td>{$lang['backup_mysqldump']}</td>
                                 <td>{$site_config['db_backup_mysqldump_path']}</td>
-                                <td>" . (preg_match('/mysqldump/i', exec($site_config['db_backup_mysqldump_path'])) ? "<div class='text-center text-green'>{$lang['backup_yes']}</div>" : "<div class='text-center text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . (preg_match('/mysqldump/i', exec($site_config['db_backup_mysqldump_path'])) ? "<div class='has-text-centered text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td colspan='2'>{$lang['backup_downafter']}</td>
-                                <td>" . ($site_config['db_backup_auto_download'] ? "<div class='text-center text-green'>{$lang['backup_yes']}</div>" : "<div class='text-center text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . ($site_config['db_backup_auto_download'] ? "<div class='has-text-centered text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td colspan='2'>{$lang['backup_delafter']}</td>
-                                <td>" . ($site_config['db_backup_auto_delete'] ? "<div class='text-center text-green'>{$lang['backup_yes']}</div>" : "<div class='text-center text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . ($site_config['db_backup_auto_delete'] ? "<div class='has-text-centered text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td colspan='2'>{$lang['backup_writeact']}</td>
-                                <td>" . ($site_config['db_backup_write_to_log'] ? "<div class='text-center text-green'>{$lang['backup_yes']}</div>" : "<div class='text-center text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . ($site_config['db_backup_write_to_log'] ? "<div class='has-text-centered text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                         </tbody>
                     </table>

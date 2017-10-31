@@ -46,59 +46,64 @@ if ($message['location'] > 1) {
 }
 //=== Display the message already!
 $HTMLOUT .= "
-    <div class='container-fluid portlet'>
+    <div class='container is-fluid portlet'>
         $h1_thingie" . ($message['draft'] === 'yes' ? "
         <h1>{$lang['pm_viewmsg_tdraft']}</h1>" : "
         <h1>{$lang['pm_viewmsg_mailbox']}{$mailbox_name}</h1>") . "
         $top_links
         <table class='table table-bordered top20 bottom20'>
-            <tr>
+            <tr class='no_hover'>
                 <td colspan='2'>
-                    <h1>{$lang['pm_send_subject']}" . ($message['subject'] !== '' ? htmlsafechars($message['subject']) : $lang['pm_search_nosubject']) . "</h1>
+                    <h2>{$lang['pm_send_subject']} " . ($message['subject'] !== '' ? htmlsafechars($message['subject']) : $lang['pm_search_nosubject']) . "</h2>
                 </td>
             </tr>
-            <tr>
+            <tr class='no_hover'>
                 <td colspan='2'>
                     <span>" . ($message['sender'] === $CURUSER['id'] ? $lang['pm_viewmsg_to'] : $lang['pm_viewmsg_from']) . ": </span>" .
                     ($arr_user_stuff['id'] == 0 ? $lang['pm_viewmsg_sys'] : format_username($arr_user_stuff['id'])) . "{$friends}
                     <br><span>{$lang['pm_viewmsg_sent']}: </span>" . get_date($message['added'], '') . (($message['sender'] === $CURUSER['id'] && $message['unread'] == 'yes') ? $lang['pm_mailbox_char1'] . "<span class='text-red'>{$lang['pm_mailbox_unread']}</span>{$lang['pm_mailbox_char2']}" : '') . ($message['urgent'] === 'yes' ? "<span class='text-red'>{$lang['pm_mailbox_urgent']}</span>" : '') . "
                 </td>
             </tr>
-            <tr>
+            <tr class='no_hover'>
                 <td id='photocol'>{$avatar}</td>
                 <td>" . format_comment($message['msg']) . "</td>
             </tr>
-            <tr>
+            <tr class='no_hover'>
                 <td colspan='2'>
-                    <div class='flex flex-justify-center'>
+                    <div class='has-text-centered flex flex-justify-center'>
                         <form action='./pm_system.php' method='post'>
                             <input type='hidden' name='id' value='{$pm_id}' />
                             <input type='hidden' name='action' value='{$lang['pm_viewmsg_to']}' />
-                            <span>{$lang['pm_search_move_to']} </span>" .
-                            get_all_boxes() . "
-                            <input type='submit' class='button_tiny' value='{$lang['pm_viewmsg_move']}' />
+                            <span class='right10'>{$lang['pm_search_move_to']}</span>
+                            " . get_all_boxes() . "
+                            <input type='submit' class='button left10' value='{$lang['pm_viewmsg_move']}' />
                         </form>
-                        <a class='buttlink' href='pm_system.php?action=delete&amp;id={$pm_id}'>
-                            <input type='submit' class='button_tiny' value='{$lang['pm_viewmsg_delete']}' />
+                    </div>
+                    <div class='has-text-centered flex flex-center'>
+                        <a href='./pm_system.php?action=delete&amp;id={$pm_id}'>
+                            <input type='submit' class='button' value='{$lang['pm_viewmsg_delete']}' />
                         </a>" . ($message['draft'] === 'no' ? "
-                        <a class='buttlink' href='pm_system.php?action=save_or_edit_draft&amp;id={$pm_id}'>
-                            <input type='submit' class='button' value='{$lang['pm_viewmsg_sdraft']}' />
+                        <a href='./pm_system.php?action=save_or_edit_draft&amp;id={$pm_id}'>
+                            <input type='submit' class='button left10' value='{$lang['pm_viewmsg_sdraft']}' />
                         </a>" . (($id < 1 || $message['sender'] === $CURUSER['id']) ? '' : "
-                        <a class='buttlink' href='pm_system.php?action=send_message&amp;receiver={$message['sender']}&amp;replyto={$pm_id}'>
-                            <input type='submit' class='button_tiny' value='{$lang['pm_viewmsg_reply']}' />
+                        <a href='./pm_system.php?action=send_message&amp;receiver={$message['sender']}&amp;replyto={$pm_id}'>
+                            <input type='submit' class='button left10' value='{$lang['pm_viewmsg_reply']}' />
                         </a>
-                        <a class='buttlink' href='pm_system.php?action=forward&amp;id={$pm_id}'>
-                            <input type='submit' class='button_tiny' value='{$lang['pm_viewmsg_fwd']}' />
+                        <a href='./pm_system.php?action=forward&amp;id={$pm_id}'>
+                            <input type='submit' class='button left10' value='{$lang['pm_viewmsg_fwd']}' />
                         </a>") : "
-                        <a class='buttlink' href='pm_system.php?action=save_or_edit_draft&amp;edit=1&amp;id={$pm_id}'>
-                            <input type='submit' class='button' value='{$lang['pm_viewmsg_dedit']}' />
+                        <a href='./pm_system.php?action=save_or_edit_draft&amp;edit=1&amp;id={$pm_id}'>
+                            <input type='submit' class='button left10' value='{$lang['pm_viewmsg_dedit']}' />
                         </a>
-                        <a class='buttlink' href='pm_system.php?action=use_draft&amp;send=1&amp;id={$pm_id}'>
-                            <input type='submit' class='button' value='{$lang['pm_viewmsg_duse']}' />
+                        <a href='./pm_system.php?action=use_draft&amp;send=1&amp;id={$pm_id}'>
+                            <input type='submit' class='button left10' value='{$lang['pm_viewmsg_duse']}' />
                         </a>"). "
                     </div>
                 </td>
             </tr>
-        </table>" . insertJumpTo(0) . "
+        </table>
+        <div class='has-text-centered bottom20'>
+            " . insertJumpTo(0) . "
+        </div>
     </div>";
 

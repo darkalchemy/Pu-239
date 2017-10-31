@@ -155,8 +155,8 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_preview'
         <td colspan="2" class="colhead"><span style="font-weight: bold;">subject: </span>' . htmlsafechars($subject) . '</td>
     </tr>
     <tr>
-        <td class="one" width="0px" id="photocol">' . $avatar . '</td>
-        <td class="two" style="min-width:400px;padding:10px;vertical-align: top;text-align: left;">' . format_comment($body) . '</td>
+        <td width="0px" id="photocol">' . $avatar . '</td>
+        <td style="min-width:400px;padding:10px;vertical-align: top;text-align: left;">' . format_comment($body) . '</td>
     </tr>
     </table><br>';
 }
@@ -171,20 +171,20 @@ $HTMLOUT .= '<form name="compose" method="post" action="pm_system.php">
         <td colspan="2" class="colhead">' . $lang['pm_send_sendmsg'] . '</td>
     </tr>
     <tr>
-        <td class="one"><span style="font-weight: bold;">' . $lang['pm_send_subject'] . '</span></td>
-        <td class="one"><input name="subject" type="text" class="text_default" value="' . $subject . '" /></td>
+        <td><span style="font-weight: bold;">' . $lang['pm_send_subject'] . '</span></td>
+        <td><input name="subject" type="text" class="text_default" value="' . $subject . '" /></td>
     </tr>
     <tr>
-        <td class="one"><span style="font-weight: bold;">' . $lang['pm_send_body'] . '</span></td>
-        <td class="one">' . BBcode($body, false) . '</td>
+        <td><span style="font-weight: bold;">' . $lang['pm_send_body'] . '</span></td>
+        <td>' . BBcode($body) . '</td>
     </tr>
     <tr>
-        <td colspan="2" class="one">' . ($CURUSER['class'] >= UC_STAFF ? '
+        <td colspan="2">' . ($CURUSER['class'] >= UC_STAFF ? '
         <input type="checkbox" name="urgent" value="yes" ' . ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? ' checked="checked"' : '') . ' /> 
         <span class="label label-danger">' . $lang['pm_send_mark'] . '</span>' : '') . '
         <input type="checkbox" name="delete" value="' . $replyto . '" ' . ((isset($_POST['delete']) && $_POST['delete'] > 0) ? ' checked="checked"' : ($CURUSER['deletepms'] == 'yes' ? ' checked="checked"' : '')) . ' />' . $lang['pm_send_delete'] . '
         <input type="checkbox" name="save" value="1" ' . ((isset($_POST['draft']) && $_POST['draft'] == 1) ? ' checked="checked"' : '') . ' />' . $lang['pm_send_savepm'] . '
-        <input type="submit" class="btn btn-primary" name="buttonval" value="' . $lang['pm_send_preview'] . '" />
-        <input type="submit" class="btn btn-primary" name="buttonval" value="' . ((isset($_POST['draft']) && $_POST['draft'] == 1) ? $lang['pm_send_save'] : $lang['pm_send_btn']) . '" /></td>
+        <input type="submit" class="button is-primary" name="buttonval" value="' . $lang['pm_send_preview'] . '" />
+        <input type="submit" class="button is-primary" name="buttonval" value="' . ((isset($_POST['draft']) && $_POST['draft'] == 1) ? $lang['pm_send_save'] : $lang['pm_send_btn']) . '" /></td>
     </tr>
     </table></form>';

@@ -379,36 +379,12 @@ function min_class($min = UC_MIN, $max = UC_MAX)
     return (bool)($CURUSER['class'] >= $minclass && $CURUSER['class'] <= $maxclass);
 }
 
-function format_username_array($user, $icons = true)
-{
-    global $site_config;
-    $user['id'] = (int)$user['id'];
-    $user['class'] = (int)$user['class'];
-    if ($user['id'] == 0) {
-        return 'System';
-    } elseif ($user['username'] == '') {
-        return 'unknown[' . $user['id'] . ']';
-    }
-    $username = '<span style="color:#' . get_user_class_color($user['class']) . ';"><b>' . htmlsafechars($user['username']) . '</b></span>';
-    $str = '<span style="white-space: nowrap;"><a class="user_' . $user['id'] . '" href="./userdetails.php?id=' . $user['id'] . '" target="_blank">' . $username . '</a>';
-    if ($icons != false) {
-        $str .= ($user['donor'] == 'yes' ? '<img src="' . $site_config['pic_base_url'] . 'star.png" alt="Donor" title="Donor" />' : '');
-        $str .= ($user['warned'] >= 1 ? '<img src="' . $site_config['pic_base_url'] . 'alertred.png" alt="Warned" title="Warned" />' : '');
-        $str .= ($user['leechwarn'] >= 1 ? '<img src="' . $site_config['pic_base_url'] . 'alertblue.png" alt="Leech Warned" title="Leech Warned" />' : '');
-        $str .= ($user['enabled'] != 'yes' ? '<img src="' . $site_config['pic_base_url'] . 'disabled.gif" alt="Disabled" title="Disabled" />' : '');
-        $str .= ($user['chatpost'] == 0 ? '<img src="' . $site_config['pic_base_url'] . 'warned.png" alt="No Chat" title="Shout disabled" />' : '');
-        $str .= ($user['pirate'] != 0 ? '<img src="' . $site_config['pic_base_url'] . 'pirate.png" alt="Pirate" title="Pirate" />' : '');
-        $str .= ($user['king'] != 0 ? '<img src="' . $site_config['pic_base_url'] . 'king.png" alt="King" title="King" />' : '');
-    }
-    $str .= '</span>';
-
-    return $str;
-}
-
 function format_username($user_id, $icons = true, $tooltipper = true)
 {
     global $site_config, $mc1;
+    $user_id = is_array($user_id) && !empty($user_id['id']) ? $user_id['id'] : $user_id;
     if (!is_array($user_id) && is_numeric($user_id)) {
+        $user['id'] = (int) $user['id'];
         if (($user = $mc1->get_value('user_icons_' . $user_id)) === false) {
             $res = sql_query("SELECT gotgift, gender, id, class, username, donor, title, suspended, warned, leechwarn, downloadpos, chatpost, pirate, king, enabled, perms, avatar
                                 FROM users
@@ -418,7 +394,7 @@ function format_username($user_id, $icons = true, $tooltipper = true)
         }
     } else {
         file_put_contents('/var/log/nginx/format_username.log', json_encode(debug_backtrace()) . PHP_EOL, FILE_APPEND);
-        return format_username_array($user_id);
+        return '';
     }
 
     $avatar = !empty($user['avatar']) ? "<img src='{$user['avatar']}' class='avatar' />" : "<img src='./images/forumicons/default_avatar.gif' class='avatar' />";
@@ -426,36 +402,30 @@ function format_username($user_id, $icons = true, $tooltipper = true)
     if ($tooltipper) {
         $tip = "
                         <div class='tooltip_templates'>
-                            <span id='id_{$user['id']}_tooltip' class='flex tooltip'>
+                            <span id='id_{$user['id']}_tooltip' class='is-flex tooltip'>
                                 <div class='right20'>
                                     {$avatar}
                                 </div>
                                 <div style='min-width: 150px; align: left;'>
-                                     <span style='color:#" . get_user_class_color($user['class']) . ";'>
-                                         " . htmlsafechars($user['username']) . "
-                                     </span>
+                                     <span style='color:#" . get_user_class_color($user['class']) . ";'>" . htmlsafechars($user['username']) . "</span>
                                 </div>
                             </span>
                         </div>";
-        $tooltip = "class='dt-tooltipper-large' data-tooltip-content='#id_{$user['id']}_tooltip'";
+        $tooltip = "class='dt-tooltipper-large' data-tooltip-content='#id_{$user['id']}_tooltip' ";
     }
-    $user['id'] = (int) $user['id'];
-    $user['class'] = (int) $user['class'];
+
+    $user['class'] = (int)$user['class'];
     if ($user['id'] == 0) {
         return 'System';
     } elseif ($user['username'] == '') {
         return 'unknown[' . $user['id'] . ']';
     }
 
-    $username = '
-                    <span ' . $tooltip . ' style="color:#' . get_user_class_color($user['class']) . ';">
-                        <b>' . htmlsafechars($user['username']) . '</b>' .
-                        $tip . '
-                    </span>';
-    $str = '
-            <span style="white-space: nowrap;">
-                <a class="user_' . $user['id'] . '" href="./userdetails.php?id=' . $user['id'] . '" target="_blank">' . $username . '
-            </a>';
+    $str = "
+            <span>
+                <a class='user_{$user['id']}' href='./userdetails.php?id={$user['id']}' target='_blank'>
+                    <span {$tooltip}style='color:#" . get_user_class_color($user['class']) . ";'>" . htmlsafechars($user['username']) . "$tip</span>
+                </a>";
 
     if ($icons != false) {
         $str .= (isset($user['king']) && $user['king'] >= TIME_NOW ? '<img class="tooltipper" src="'.$site_config['pic_base_url'].'king.png" alt="King" title="King" width="14px" height="14px" />' : '');
@@ -468,9 +438,10 @@ function format_username($user_id, $icons = true, $tooltipper = true)
         $str .= ($user['pirate'] != 0 ? '<img class="tooltipper" src="'.$site_config['pic_base_url'].'pirate.png" alt="Pirate" title="Pirate" width="14px" height="14px" />' : '');
         $str .= (isset($user['gotgift']) && $user['gotgift'] == 'yes' ? '<img class="tooltipper" height="16px" src="'.$site_config['pic_base_url'].'gift.png" alt="Christmas Gift" title="Has Claimed a Christmas Gift" />' : '');
     }
-    $str .= '</span>';
+    $str .= '
+            </span>';
 
-    return $str;
+    return trim($str);
 }
 
 function is_valid_id($id)

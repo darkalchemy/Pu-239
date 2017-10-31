@@ -326,7 +326,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>description:</td>
-    <td>' . BBcode($body, false) . '</td>
+    <td>' . BBcode($body) . '</td>
     </tr>
     <tr>
     <td colspan="2">
@@ -444,7 +444,7 @@ switch ($action) {
     <td><input type="text"  name="offer_name" value="' . htmlsafechars($offer_name, ENT_QUOTES) . '" class="required" /></td>
     </tr>
     <tr>
-    <td class="rowhead">image:</td>
+    <td class="heading">image:</td>
     <td><input type="text"  name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required" /></td>
     </tr>
     <tr>
@@ -457,7 +457,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>description:</td>
-    <td>' . BBcode($body, false) . '</td>
+    <td>' . BBcode($body) . '</td>
     </tr>
     <tr>
     <td colspan="2">
@@ -512,7 +512,7 @@ switch ($action) {
     </tr>
      <tr>
     <td><b>Comment:</b></td>
-    <td>' . BBcode($body, false) . '   </td>
+    <td>' . BBcode($body) . '   </td>
     </tr>
      <tr>
     <td colspan="2">
@@ -581,7 +581,7 @@ switch ($action) {
     </tr>
      <tr>
     <td><b>Comment:</b></td>
-    <td>' . BBcode($body, false) . '</td>
+    <td>' . BBcode($body) . '</td>
     </tr>
      <tr>
     <td colspan="2">

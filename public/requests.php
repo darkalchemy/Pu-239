@@ -273,7 +273,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
     </tr>
     <tr>
     <td>description:</td>
-    <td>' . BBcode($body, false) . '</td>
+    <td>' . BBcode($body) . '</td>
     </tr>
     <tr>
     <td colspan="2">
@@ -380,7 +380,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
    </tr>
    <tr>
    <td>description:</td>
-   <td>' . BBcode($body, false) . '</td>
+   <td>' . BBcode($body) . '</td>
    </tr>' . ($edit_arr['filled_by_user_id'] == 0 ? '' : '
    <tr>
    <td>filled:</td>
@@ -485,7 +485,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
     <td colspan="2"><h1>Edit comment to "' . htmlsafechars($arr['request_name'], ENT_QUOTES) . '"</h1></td>
     </tr>
      <tr>
-    <td><b>Comment:</b></td><td>' . BBcode($body, false) . '</td>
+    <td><b>Comment:</b></td><td>' . BBcode($body) . '</td>
     </tr>
      <tr>
     <td colspan="2">

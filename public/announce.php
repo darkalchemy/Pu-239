@@ -110,11 +110,11 @@ if (ANN_IP_LOGGING == 1) {
     if (!$no_log_ip) {
         $res = ann_sql_query('SELECT * FROM ips WHERE ip = ' . ann_sqlesc($ip) . ' AND userid =' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) == 0) {
-            ann_sql_query('INSERT LOW_PRIORITY INTO ips (userid, ip, lastannounce, type) VALUES (' . ann_sqlesc($userid) . ', ' . ann_sqlesc($ip) . ', ' . TIME_NOW . ",'announce')") or ann_sqlerr(__FILE__, __LINE__);
+            ann_sql_query('INSERT INTO ips (userid, ip, lastannounce, type) VALUES (' . ann_sqlesc($userid) . ', ' . ann_sqlesc($ip) . ', ' . TIME_NOW . ",'announce')") or ann_sqlerr(__FILE__, __LINE__);
             $mc1->delete_value('ip_history_' . $userid);
             //$mc1->delete_value('user::passkey:::' . $passkey);
         } else {
-            ann_sql_query('UPDATE LOW_PRIORITY ips SET lastannounce = ' . TIME_NOW . ' WHERE ip = ' . ann_sqlesc($ip) . ' AND userid =' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
+            ann_sql_query('UPDATE ips SET lastannounce = ' . TIME_NOW . ' WHERE ip = ' . ann_sqlesc($ip) . ' AND userid =' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
             $mc1->delete_value('ip_history_' . $userid);
             //$mc1->delete_value('user::passkey:::' . $passkey);
         }
@@ -373,7 +373,7 @@ if (mysqli_num_rows($res_snatch) > 0) {
     $a = mysqli_fetch_assoc($res_snatch);
 }
 if (!mysqli_affected_rows($GLOBALS['___mysqli_ston']) && $seeder == 'no') {
-    ann_sql_query('INSERT LOW_PRIORITY INTO snatched (torrentid, userid, peer_id, ip, port, connectable, uploaded, downloaded, to_go, start_date, last_action, seeder, agent) VALUES (' . ann_sqlesc($torrentid) . ', ' . ann_sqlesc($userid) . ', ' . ann_sqlesc($peer_id) . ', ' . ann_sqlesc($realip) . ', ' . ann_sqlesc($port) . ', ' . ann_sqlesc($connectable) . ', ' . ann_sqlesc($uploaded) . ', ' . ($site_config['ratio_free'] ? '0' : '' . ann_sqlesc($downloaded) . '') . ', ' . ann_sqlesc($left) . ', ' . TIME_NOW . ', ' . TIME_NOW . ', ' . ann_sqlesc($seeder) . ', ' . ann_sqlesc($agent) . ')') or ann_sqlerr(__FILE__, __LINE__);
+    ann_sql_query('INSERT INTO snatched (torrentid, userid, peer_id, ip, port, connectable, uploaded, downloaded, to_go, start_date, last_action, seeder, agent) VALUES (' . ann_sqlesc($torrentid) . ', ' . ann_sqlesc($userid) . ', ' . ann_sqlesc($peer_id) . ', ' . ann_sqlesc($realip) . ', ' . ann_sqlesc($port) . ', ' . ann_sqlesc($connectable) . ', ' . ann_sqlesc($uploaded) . ', ' . ($site_config['ratio_free'] ? '0' : '' . ann_sqlesc($downloaded) . '') . ', ' . ann_sqlesc($left) . ', ' . TIME_NOW . ', ' . TIME_NOW . ', ' . ann_sqlesc($seeder) . ', ' . ann_sqlesc($agent) . ')') or ann_sqlerr(__FILE__, __LINE__);
 }
 $torrent_updateset = $snatch_updateset = [];
 if (isset($self) && $event == 'stopped') {
@@ -450,7 +450,7 @@ if (isset($self) && $event == 'stopped') {
         adjust_torrent_peers($torrentid, 0, 0, 1);
     }
     $prev_action = ann_sqlesc($self['ts']);
-    ann_sql_query('UPDATE LOW_PRIORITY peers SET connectable = ' . ann_sqlesc($connectable) . ', uploaded = ' . ann_sqlesc($uploaded) . ', ' . ($site_config['ratio_free'] ? 'downloaded = 0' : 'downloaded = ' . ann_sqlesc($downloaded) . '') . ', to_go = ' . ann_sqlesc($left) . ', last_action = ' . TIME_NOW . ", prev_action = $prev_action, seeder = " . ann_sqlesc($seeder) . ', agent = ' . ann_sqlesc($agent) . " $finished WHERE $selfwhere") or ann_sqlerr(__FILE__, __LINE__);
+    ann_sql_query('UPDATE peers SET connectable = ' . ann_sqlesc($connectable) . ', uploaded = ' . ann_sqlesc($uploaded) . ', ' . ($site_config['ratio_free'] ? 'downloaded = 0' : 'downloaded = ' . ann_sqlesc($downloaded) . '') . ', to_go = ' . ann_sqlesc($left) . ', last_action = ' . TIME_NOW . ", prev_action = $prev_action, seeder = " . ann_sqlesc($seeder) . ', agent = ' . ann_sqlesc($agent) . " $finished WHERE $selfwhere") or ann_sqlerr(__FILE__, __LINE__);
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         if ($seeder != $self['seeder']) {
             if ($seeder == 'yes') {
@@ -470,23 +470,33 @@ if (isset($self) && $event == 'stopped') {
     } elseif ($user['downloadpos'] != 1 || $user['hnrwarn'] == 'yes' and $seeder != 'yes') {
         err('Your downloading privileges have been disabled! (Read the rules)');
     }
-    ann_sql_query('INSERT LOW_PRIORITY INTO peers'
+    ann_sql_query('INSERT INTO peers'
         . ' (torrent, userid, peer_id, ip, port, connectable, uploaded, downloaded, '
         . ' to_go, started, last_action, seeder, agent, downloadoffset, uploadoffset, torrent_pass'
         . ') VALUES ('
-        . ann_sqlesc($torrentid) . ', ' . ann_sqlesc($userid) . ', ' . ann_sqlesc($peer_id) . ', '
-        . ann_sqlesc($realip) . ', ' . ann_sqlesc($port) . ', ' . ann_sqlesc($connectable) . ', '
-        . ann_sqlesc($uploaded) . ', ' . ($site_config['ratio_free'] ? '0' : '' . ann_sqlesc($downloaded) . '') . ', '
-        . ann_sqlesc($left) . ', ' . TIME_NOW . ', ' . TIME_NOW . ', ' . ann_sqlesc($seeder) . ', '
-        . ann_sqlesc($agent) . ', ' . ($site_config['ratio_free'] ? '0' : '' . ann_sqlesc($downloaded) . '') . ', '
-        . ann_sqlesc($uploaded) . ', ' . ann_sqlesc($torrent_pass) . ')'
+        . ann_sqlesc($torrentid) . ', '
+        . ann_sqlesc($userid) . ', '
+        . ann_sqlesc($peer_id) . ', '
+        . ann_sqlesc($realip) . ', '
+        . ann_sqlesc($port) . ', '
+        . ann_sqlesc($connectable) . ', '
+        . ann_sqlesc($uploaded) . ', '
+        . ($site_config['ratio_free'] ? '0' : ann_sqlesc($downloaded)) . ', '
+        . ann_sqlesc($left) . ', '
+        . TIME_NOW . ', '
+        . TIME_NOW . ', '
+        . ann_sqlesc($seeder) . ', '
+        . ann_sqlesc($agent) . ', '
+        . ($site_config['ratio_free'] ? '0' : ann_sqlesc($downloaded)) . ', '
+        . ann_sqlesc($uploaded) . ', '
+        . ann_sqlesc($torrent_pass) . ')'
         . ' ON DUPLICATE KEY UPDATE '
         . ' userid = ' . ann_sqlesc($userid) . ', '
         . ' ip = ' . ann_sqlesc($realip) . ', '
         . ' port = ' . ann_sqlesc($port) . ', '
         . ' connectable = ' . ann_sqlesc($connectable) . ', '
         . ' uploaded = ' . ann_sqlesc($uploaded) . ', '
-        . ' downloaded = ' . ($site_config['ratio_free'] ? '0' : '' . ann_sqlesc($downloaded) . '') . ', '
+        . ' downloaded = ' . ($site_config['ratio_free'] ? '0' : ann_sqlesc($downloaded)) . ', '
         . ' to_go = ' . ann_sqlesc($left) . ', '
         . ' last_action = ' . TIME_NOW . ', '
         . ' seeder = ' . ann_sqlesc($seeder) . ', '
@@ -520,13 +530,13 @@ if ($seeder == 'yes') {
     $mc1->commit_transaction(1800);
 }
 if (count($torrent_updateset)) {
-    ann_sql_query('UPDATE LOW_PRIORITY torrents SET ' . join(',', $torrent_updateset) . ' WHERE id = ' . ann_sqlesc($torrentid)) or ann_sqlerr(__FILE__, __LINE__);
+    ann_sql_query('UPDATE torrents SET ' . join(',', $torrent_updateset) . ' WHERE id = ' . ann_sqlesc($torrentid)) or ann_sqlerr(__FILE__, __LINE__);
 }
 if (count($snatch_updateset)) {
-    ann_sql_query('UPDATE LOW_PRIORITY snatched SET ' . join(',', $snatch_updateset) . ' WHERE torrentid = ' . ann_sqlesc($torrentid) . ' AND userid = ' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
+    ann_sql_query('UPDATE snatched SET ' . join(',', $snatch_updateset) . ' WHERE torrentid = ' . ann_sqlesc($torrentid) . ' AND userid = ' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
 }
 if (count($user_updateset)) {
-    ann_sql_query('UPDATE LOW_PRIORITY users SET ' . join(',', $user_updateset) . ' WHERE id = ' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
+    ann_sql_query('UPDATE users SET ' . join(',', $user_updateset) . ' WHERE id = ' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
     $mc1->delete_value('userstats_' . $userid);
     $mc1->delete_value('user_stats_' . $userid);
 }

@@ -318,6 +318,6 @@ $HTMLOUT .= '
     </tr>
     <tr>
         <td class="one" colspan="3">
-        <input type="submit" class="btn btn-default" value="' . $lang['pm_edmail_change'] . '" /></form></td>
+        <input type="submit" class="button btn-default" value="' . $lang['pm_edmail_change'] . '" /></form></td>
     </tr>
     </table></form>';

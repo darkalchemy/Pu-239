@@ -2,8 +2,8 @@
 $HTMLOUT .= "
     <a id='latestforum-hash'></a>
     <fieldset id='latestforum' class='header'>
-        <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['latestposts_title']}</legend>
-        <div class='table-wrapper text-center'>";
+        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['latestposts_title']}</legend>
+        <div class='table-wrapper has-text-centered'>";
 $page = 1;
 $num = 0;
 if (($topics = $mc1->get_value('last_posts_' . $CURUSER['class'])) === false) {
@@ -26,10 +26,10 @@ if (count($topics) > 0) {
             <table class='table table-bordered table-striped'>
                 <thead>
                     <tr>
-                        <th class='row-fluid span5'>{$lang['latestposts_topic_title']}</th>
-                        <th class='row-fluid span1'>{$lang['latestposts_replies']}</th>
-                        <th class='row-fluid span1'>{$lang['latestposts_views']}</th>
-                        <th class='row-fluid span1'>{$lang['latestposts_last_post']}</th>
+                        <th>{$lang['latestposts_topic_title']}</th>
+                        <th>{$lang['latestposts_replies']}</th>
+                        <th>{$lang['latestposts_views']}</th>
+                        <th>{$lang['latestposts_last_post']}</th>
                     </tr>
                 </thead>
                 <tbody>";

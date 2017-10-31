@@ -60,7 +60,7 @@ function crazyhour_announce()
         } else {
             $cz['crazyhour']['var'] = random_int(TIME_NOW, (TIME_NOW + 86400));
             $cz['crazyhour']['amount'] = 0;
-            ann_sql_query('UPDATE LOW_PRIORITY freeleech SET var = ' . $cz['crazyhour']['var'] . ', amount = ' . $cz['crazyhour']['amount'] . ' 
+            ann_sql_query('UPDATE freeleech SET var = ' . $cz['crazyhour']['var'] . ', amount = ' . $cz['crazyhour']['amount'] . ' 
          WHERE type = "crazyhour"') or ann_sqlerr(__FILE__, __LINE__);
         }
         $mc1->cache_value('crazyhour', $cz['crazyhour'], 0);
@@ -71,14 +71,14 @@ function crazyhour_announce()
             $cz['crazyhour']['var'] = random_int($cz['crazyhour_new'], ($cz['crazyhour_new'] + 86400));
             $cz['crazyhour']['amount'] = 0;
             $cz['remaining'] = ($cz['crazyhour']['var'] - TIME_NOW);
-            ann_sql_query('UPDATE LOW_PRIORITY freeleech SET var = ' . $cz['crazyhour']['var'] . ', amount = ' . $cz['crazyhour']['amount'] . ' ' . 'WHERE type = "crazyhour"') or ann_sqlerr(__FILE__, __LINE__);
+            ann_sql_query('UPDATE freeleech SET var = ' . $cz['crazyhour']['var'] . ', amount = ' . $cz['crazyhour']['amount'] . ' ' . 'WHERE type = "crazyhour"') or ann_sqlerr(__FILE__, __LINE__);
             $mc1->cache_value('crazyhour', $cz['crazyhour'], 0);
 
             $msg = 'Next [color=orange][b]Crazyhour[/b][/color] is at ' . date('F j, g:i a', $cz['crazyhour']['var']);
             autoshout($msg);
 
             $text = 'Next <span style="font-weight:bold;color:orange;">Crazyhour</span> is at ' . date('F j, g:i a', $cz['crazyhour']['var']);
-            ann_sql_query('INSERT LOW_PRIORITY INTO sitelog (added, txt) ' . 'VALUES(' . TIME_NOW . ', ' . ann_sqlesc($text) . ')') or ann_sqlerr(__FILE__, __LINE__);
+            ann_sql_query('INSERT INTO sitelog (added, txt) ' . 'VALUES(' . TIME_NOW . ', ' . ann_sqlesc($text) . ')') or ann_sqlerr(__FILE__, __LINE__);
         }
 
         return false;
@@ -86,14 +86,14 @@ function crazyhour_announce()
         if ($cz['crazyhour']['amount'] !== 1) {
             $cz['crazyhour']['amount'] = 1;
             if (($cz_lock = $mc1->add_value('crazyhour_lock', 1, 10)) !== false) {
-                ann_sql_query('UPDATE LOW_PRIORITY freeleech SET amount = ' . $cz['crazyhour']['amount'] . ' WHERE type = "crazyhour"') or ann_sqlerr(__FILE__, __LINE__);
+                ann_sql_query('UPDATE freeleech SET amount = ' . $cz['crazyhour']['amount'] . ' WHERE type = "crazyhour"') or ann_sqlerr(__FILE__, __LINE__);
                 $mc1->cache_value('crazyhour', $cz['crazyhour'], 0);
 
                 $msg = 'w00t! It\'s [color=orange][b]Crazyhour[/b][/color] :w00t:';
                 autoshout($msg);
 
                 $text = 'w00t! It\'s <span style="font-weight:bold;color:orange;">Crazyhour</span> <img src="./images/smilies/w00t.gif" alt=":w00t:" />';
-                ann_sql_query('INSERT LOW_PRIORITY INTO sitelog (added, txt) VALUES(' . TIME_NOW . ', ' . ann_sqlesc($text) . ')') or ann_sqlerr(__FILE__, __LINE__);
+                ann_sql_query('INSERT INTO sitelog (added, txt) VALUES(' . TIME_NOW . ', ' . ann_sqlesc($text) . ')') or ann_sqlerr(__FILE__, __LINE__);
             }
         }
 
@@ -286,7 +286,7 @@ function get_slots($torrentid, $userid)
 
 function auto_enter_abnormal_upload($userid, $rate, $upthis, $diff, $torrentid, $client, $realip, $last_up)
 {
-    ann_sql_query('INSERT LOW_PRIORITY INTO cheaters (added, userid, client, rate, beforeup, upthis, timediff, userip, torrentid) VALUES(' . ann_sqlesc(TIME_NOW) . ', ' . ann_sqlesc($userid) . ', ' . ann_sqlesc($client) . ', ' . ann_sqlesc($rate) . ', ' . ann_sqlesc($last_up) . ', ' . ann_sqlesc($upthis) . ', ' . ann_sqlesc($diff) . ', ' . ann_sqlesc($realip) . ', ' . ann_sqlesc($torrentid) . ')') or ann_sqlerr(__FILE__, __LINE__);
+    ann_sql_query('INSERT INTO cheaters (added, userid, client, rate, beforeup, upthis, timediff, userip, torrentid) VALUES(' . ann_sqlesc(TIME_NOW) . ', ' . ann_sqlesc($userid) . ', ' . ann_sqlesc($client) . ', ' . ann_sqlesc($rate) . ', ' . ann_sqlesc($last_up) . ', ' . ann_sqlesc($upthis) . ', ' . ann_sqlesc($diff) . ', ' . ann_sqlesc($realip) . ', ' . ann_sqlesc($torrentid) . ')') or ann_sqlerr(__FILE__, __LINE__);
 }
 
 function err($msg)

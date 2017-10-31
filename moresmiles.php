@@ -27,7 +27,7 @@ while ((list($code, $url) = each($smilies))) {
         <tr>";
     }
     $htmlout .= "
-            <td class='list text-center'>
+            <td class='list has-text-centered'>
                 <a href=\"javascript: SmileIT('" . str_replace("'", "\'", $code) . "','" . htmlsafechars($_GET['form']) . "','" . htmlsafechars($_GET['text']) . "')\">
                     <img border='0' src='./images/smilies/" . $url . "' alt='' />
                 </a>
@@ -40,7 +40,7 @@ while ((list($code, $url) = each($smilies))) {
 }
 $htmlout .= "
     </table>
-    <div class='text-center'>
+    <div class='has-text-centered'>
         <a href='javascript: window.close()'>[ Close Window ]</a>
     </div>
 </body>

@@ -152,7 +152,7 @@ $res = sql_query('SELECT name FROM forums WHERE id=' . sqlesc($forum_id));
 $arr = mysqli_fetch_assoc($res);
 $section_name = htmlsafechars($arr['name'], ENT_QUOTES);
 $HTMLOUT .= '
-    <h1 class="text-center">' . $lang['nt_new_topic_in'] . ' "<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . $section_name . '</a>"</h1>
+    <h1 class="has-text-centered">' . $lang['nt_new_topic_in'] . ' "<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . $section_name . '</a>"</h1>
     <form method="post" action="' . $site_config['baseurl'] . '/forums.php?action=new_topic&amp;forum_id=' . $forum_id . '" enctype="multipart/form-data">
     <table class="table table-bordered table-striped">
         <tr>

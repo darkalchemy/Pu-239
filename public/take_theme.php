@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         self.close();
       </script>";
 }
-$body_class = 'background-15 h-style-1 text-1 skin-2';
+$body_class = 'background-16 h-style-9 text-9 skin-2';
 $HTMLOUT .= "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
@@ -39,12 +39,12 @@ $HTMLOUT .= "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'htt
             document.body.className = theme;
         }
     </script>
-    <div class='text-center'>
+    <div class='has-text-centered'>
         <fieldset>
-            <legend class='text-lime'>Change theme</legend>
+            <legend class='has-text-success'>Change theme</legend>
             </script>
             <form action='take_theme.php' method='post'>
-                <p class='text-center'>
+                <p class='has-text-centered'>
                     <select name='stylesheet' onchange='this.form.submit();' size='1'>";
 $ss_r = sql_query('SELECT id, name from stylesheets ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
 while ($ar = mysqli_fetch_assoc($ss_r)) {

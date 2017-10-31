@@ -43,7 +43,7 @@ if (isset($_GET['id'])) {
         die($lang['user_mood_hmm']);
     }
 }
-$body_class = 'background-15 h-style-1 text-1 skin-2';
+$body_class = 'background-16 h-style-9 text-9 skin-2';
 $HTMLOUT .= '<!DOCTYPE html>
 <html>
 <head>
@@ -60,13 +60,13 @@ $HTMLOUT .= '<!DOCTYPE html>
             document.body.className = theme;
         }
     </script>
-    <h3 class="text-center text-white top20">' . $CURUSER['username'] . '\'' . $lang['user_mood_s'] . '</h3>
-    <div class="answers-container bottom20">';
+    <h3 class="has-text-centered has-text-white top20">' . $CURUSER['username'] . '\'' . $lang['user_mood_s'] . '</h3>
+    <div class="level-center bottom20">';
 $res = sql_query('SELECT * FROM moods WHERE bonus < ' . sqlesc($more) . ' ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
 $count = 0;
 while ($arr = mysqli_fetch_assoc($res)) {
     $HTMLOUT .= '
-        <span class="margin10 bordered w-25 text-center">
+        <span class="margin10 bordered w-25 has-text-centered">
             <a href="?id=' . (int)$arr['id'] . '">
                 <img src="' . $site_config['pic_base_url'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt="" class="bottom10" />
                 <br>' . htmlsafechars($arr['name']) . '
@@ -75,9 +75,9 @@ while ($arr = mysqli_fetch_assoc($res)) {
 }
 $HTMLOUT .= '
     </div>
-    <div class="w-100 text-center margin20">
+    <div class="w-100 has-text-centered margin20">
         <a href="javascript:self.close();">
-            <span class="btn bottom20">' . $lang['user_mood_close'] . '</span>
+            <span class="button bottom20">' . $lang['user_mood_close'] . '</span>
         </a>
     </div>
     <noscript>

@@ -16,18 +16,16 @@ if ($progress >= 100) {
 $HTMLOUT .= "
         <a id='donations-hash'></a>
         <fieldset id='donations' class='header'>
-            <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_donations']}</legend>
-            <div class='bordered padleft10 padright10'>
-                <div class='alt_bordered transparent text-center'>
+            <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_donations']}</legend>
+            <div class='bordered'>
+                <div class='alt_bordered bg-00 has-text-centered'>
                     <div>
                         <a href='{$site_config['baseurl']}/donate.php'>
                             <img border='0' style='width: 92px; height: 42px;' src='{$site_config['pic_base_url']}makedonation.gif' alt='{$lang['index_donations']}' title='{$lang['index_donations']}' class='tooltipper' />
                         </a>
                     </div>
-                    <div class='progress text-center top20 w-25'>
-                        <div class='progress-bar progress-bar-success' role='progressbar' aria-valuenow='{$progress}' aria-valuemin='0' aria-valuemax='100' style='width:{$progress}%'>
-                            $progress% Complete
-                        </div>
+                    <div class='container top20 w-25'>
+                        <progress class='progress is-success tooltipper' value='{$progress}' max='100' title='{$progress}% Complete'>{$progress}% Complete</progress>
                     </div>
                 </div>
             </div>

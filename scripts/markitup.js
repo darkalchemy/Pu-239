@@ -36,7 +36,7 @@ $(document).ready(function()    {
 
     // add smilies
     $('.emoticons a').click(function() {
-        emoticon = $(this).attr("title");
+        emoticon = $(this).attr('alt');
         $.markItUp( { openWith:emoticon } );
         return false;
     });

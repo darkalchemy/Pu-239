@@ -404,7 +404,7 @@ function main_screen($mode = 'reg')
             ],
         ], 'desc') . '</fieldset>';
     $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_submit']}</strong></legend>
-				<input value='{$lang['stats_ex_show']}' class='btn' accesskey='s' type='submit' />
+				<input value='{$lang['stats_ex_show']}' class='button' accesskey='s' type='submit' />
 			</fieldset>
 
 		</div>

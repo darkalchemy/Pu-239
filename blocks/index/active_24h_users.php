@@ -1,6 +1,6 @@
 <?php
 $keys['last24'] = 'last24';
-if (($last24_cache = $mc1->get_value($keys['last24'])) === false) {
+//if (($last24_cache = $mc1->get_value($keys['last24'])) === false) {
     $last24_cache = [];
     $time24 = $_SERVER['REQUEST_TIME'] - 86400;
     $activeusers24 = '';
@@ -16,7 +16,7 @@ if (($last24_cache = $mc1->get_value($keys['last24'])) === false) {
         sql_query('UPDATE avps SET value_s = 0, value_i = ' . sqlesc($last24) . ', value_u = ' . sqlesc($period) . ' WHERE arg = "last24"') or sqlerr(__FILE__, __LINE__);
     }
     while ($arr = mysqli_fetch_assoc($res)) {
-        $list[] = format_username($arr['id'], true, true);
+        $list[] = format_username($arr['id']);
     }
     $activeusers24 = implode(', ', $list);
     $last24_cache['activeusers24'] = $activeusers24;
@@ -25,7 +25,7 @@ if (($last24_cache = $mc1->get_value($keys['last24'])) === false) {
     $last24_cache['last24'] = number_format($last24);
     $last24_cache['ss24'] = $_ss24;
     $mc1->cache_value($keys['last24'], $last24_cache, $site_config['expires']['last24']);
-}
+//}
 if (!$last24_cache['activeusers24']) {
     $last24_cache['activeusers24'] = $lang['index_last24_nousers'];
 }
@@ -37,11 +37,11 @@ if ($last24_cache['totalonline24'] != 1) {
 $HTMLOUT .= "
         <a id='active24-hash'></a>
         <fieldset id='active24' class='header'>
-            <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_active24']} <small>{$lang['index_last24_list']}</small></legend>
-            <div class='bordered padleft10 padright10'>
-                <div class='alt_bordered transparent text-center'>
+            <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_active24']} <small>{$lang['index_last24_list']}</small></legend>
+            <div class='bordered'>
+                <div class='alt_bordered bg-00 has-text-centered'>
                     <div><b>{$last24_cache['totalonline24']}{$last24_cache['ss24']}{$lang['index_last24_during']}</b></div>
-                    <div>{$last24_cache['activeusers24']}</div>
+                    <div class='top20 bottom20'>{$last24_cache['activeusers24']}</div>
                     <div><b>{$lang['index_last24_most']}{$last24_cache['last24']}{$last24_cache['ss24']}{$lang['index_last24_on']}{$last24_cache['last24record']}</b></div>
                 </div>
             </div>

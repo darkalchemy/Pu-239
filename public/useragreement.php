@@ -11,9 +11,11 @@ if (!getSessionVar('LoggedIn')) {
 $lang = array_merge(load_language('global'), load_language('useragreement'));
 
 $HTMLOUT = "
-    <div class='container-fluid portlet padbottom20 text-center'>
+    <div class='container is-fluid portlet padbottom20 has-text-centered'>
         <h1>{$site_config['site_name']} {$lang['frame_usragrmnt']}</h1>
-        {$lang['text_usragrmnt']}
+        <div class='text-justify'>
+            {$lang['text_usragrmnt']}
+        </div>
     </div>";
 
 echo stdhead($lang['stdhead_usragrmnt']) . $HTMLOUT . stdfoot();

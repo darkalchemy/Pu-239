@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         self.close();
       </script>";
 }
-$body_class = 'background-15 h-style-1 text-1 skin-2';
+$body_class = 'background-16 h-style-9 text-9 skin-2';
 $HTMLOUT .= "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
 <head>
@@ -40,11 +40,11 @@ $HTMLOUT .= "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'htt
             document.body.className = theme;
         }
     </script>
-    <div class='text-center'>
+    <div class='has-text-centered'>
         <fieldset>
-            <legend class='text-lime'>Change language</legend>
+            <legend class='has-text-success'>Change language</legend>
             <form action='take_lang.php' method='post'>
-                <p class='text-center'>
+                <p class='has-text-centered'>
                     <select name='language' onchange='this.form.submit();' size='1'>
                         <option value='1'" . (get_language() == '1' ? " selected='selected'" : '') . ">En</option>
                         <option value='2'" . (get_language() == '2' ? " selected='selected'" : '') . ">Dk</option>

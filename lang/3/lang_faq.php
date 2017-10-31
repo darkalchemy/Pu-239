@@ -3,7 +3,7 @@
 $lang = [
     //FAQ
     'faq_welcome'             => "
-    <div class='text-center'>
+    <div class='has-text-centered'>
         <h1>Welcome to {$site_config['site_name']}!</h1>
     </div>
     <p>

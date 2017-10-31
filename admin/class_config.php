@@ -299,18 +299,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 $HTMLOUT .= "
-    <div class='container-fluid portlet bordered'>
-        <h3 class='text-center top20'>{$lang['classcfg_class_settings']}</h3>
+    <div class='container is-fluid portlet bordered'>
+        <h3 class='has-text-centered top20'>{$lang['classcfg_class_settings']}</h3>
         <form name='edit' action='staffpanel.php?tool=class_config&amp;mode=edit' method='post'>
             <table class='table table-bordered table-stiped bottom20'>
                 <thead>
                     <tr>
                         <th>{$lang['classcfg_class_name']}</th>
-                        <th class='text-center'>{$lang['classcfg_class_value']}</th>
-                        <th class='text-center'>{$lang['classcfg_class_refname']}</th>
-                        <th class='text-center'>{$lang['classcfg_class_color']}</th>
-                        <th class='text-center'>{$lang['classcfg_class_pic']}</th>
-                        <th class='text-center'>{$lang['classcfg_class_del']}</th>
+                        <th class='has-text-centered'>{$lang['classcfg_class_value']}</th>
+                        <th class='has-text-centered'>{$lang['classcfg_class_refname']}</th>
+                        <th class='has-text-centered'>{$lang['classcfg_class_color']}</th>
+                        <th class='has-text-centered'>{$lang['classcfg_class_pic']}</th>
+                        <th class='has-text-centered'>{$lang['classcfg_class_del']}</th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -319,23 +319,23 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $cname = str_replace(' ', '_', strtolower($arr['classname'])) . '_bk';
     $HTMLOUT .= "
                     <tr class='{$cname}'>
-                        <td class='text-white'>" . htmlsafechars($arr['name']) . "</td>
-                        <td class='text-center'>
+                        <td class='has-text-white'>" . htmlsafechars($arr['name']) . "</td>
+                        <td class='has-text-centered'>
                             <input type='text' name='" . htmlsafechars($arr['name']) . "[]' size='2' value='" . (int)$arr['value'] . " 'readonly='readonly' />
                         </td>
-                        <td class='text-center'>
+                        <td class='has-text-centered'>
                             <input class='w-100' type='text' name='" . htmlsafechars($arr['name']) . "[]' value='" . htmlsafechars($arr['classname']) . "' />
                         </td>
-                        <td class='text-center'>
+                        <td class='has-text-centered'>
                             <input class='w-100' type='text' name='" . htmlsafechars($arr['name']) . "[]' value='#" . htmlsafechars($arr['classcolor']) . "' />
                         </td>
-                        <td class='text-center'>
+                        <td class='has-text-centered'>
                             <input class='w-100' type='text' name='" . htmlsafechars($arr['name']) . "[]' value='" . htmlsafechars($arr['classpic']) . "' />
                         </td>
-                        <td class='text-center'>
+                        <td class='has-text-centered'>
                             <form name='remove' action='staffpanel.php?tool=class_config&amp;mode=remove' method='post'>
                                 <input type='hidden' name='remove' value='" . htmlsafechars($arr['name']) . "' />
-                                <input type='submit' class='btn' value='{$lang['classcfg_class_remove']}' />
+                                <input type='submit' class='button' value='{$lang['classcfg_class_remove']}' />
                             </form>
                         </td>
                     </tr>";
@@ -345,7 +345,7 @@ $HTMLOUT .= '
             </table>';
 
 $HTMLOUT .= "
-            <h3 class='text-center top20'>{$lang['classcfg_class_security']}</h3>
+            <h3 class='has-text-centered top20'>{$lang['classcfg_class_security']}</h3>
             <table class='table table-bordered table-stiped bottom20'>
                 <thead>
                     <tr>
@@ -367,8 +367,8 @@ while ($arr1 = mysqli_fetch_assoc($res1)) {
 $HTMLOUT .= "
                     <tr>
                         <td colspan='2'>
-                            <div class='text-center'>
-                                <input type='submit' class='btn' value='{$lang['classcfg_class_apply']}' />
+                            <div class='has-text-centered'>
+                                <input type='submit' class='button' value='{$lang['classcfg_class_apply']}' />
                             </div>
                         </td>
                     </tr>
@@ -377,7 +377,7 @@ $HTMLOUT .= "
         </form>";
 
 $HTMLOUT .= "
-        <h3 class='text-center top20'>{$lang['classcfg_class_add']}</h3>
+        <h3 class='has-text-centered top20'>{$lang['classcfg_class_add']}</h3>
         <form name='add' action='staffpanel.php?tool=class_config&amp;mode=add' method='post'>
             <table class='table table-bordered table-stiped bottom20'>
                 <thead>
@@ -399,8 +399,8 @@ $HTMLOUT .= "
                     </tr>
                     <tr>
                         <td colspan='5'>
-                            <div class='text-center'>
-                                <input type='submit' class='btn' value='{$lang['classcfg_add_new']}' />
+                            <div class='has-text-centered'>
+                                <input type='submit' class='button' value='{$lang['classcfg_add_new']}' />
                             </div>
                         </td>
                     </tr>

@@ -201,7 +201,7 @@ $highlight = " bgcolor='lightgrey'";
                     <input name="ul2" type="text" id="ul2" size="8" maxlength="7" value=""<?php
                     echo isset($_POST['ul2']) ? $_POST['ul2'] : '' ?>" />
                 </td>
-                <td class="rowhead"><?php
+                <td class="heading"><?php
                     echo $lang['usersearch_donor'] ?></td>
 
                 <td <?php
@@ -288,7 +288,7 @@ $highlight = " bgcolor='lightgrey'";
             </tr>
 
             <tr>
-                <td class="rowhead"></td>
+                <td class="heading"></td>
                 <td></td>
                 <td class='rowhead'><?php
                     echo $lang['usersearch_active'] ?></td>
@@ -305,7 +305,7 @@ $highlight = " bgcolor='lightgrey'";
                     echo (isset($_POST['dip'])) ? "checked='checked'" : '' ?> /></td>
             </tr>
             <tr>
-                <td colspan="6"><input name="submit" type='submit' class='btn'/></td>
+                <td colspan="6"><input name="submit" type='submit' class='button'/></td>
             </tr>
         </table>
         <br><br>
@@ -888,7 +888,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
 <input name='n_pms' type='hidden' value='" . $count . "' />
 <input name='ann_query' type='hidden' value='" . rawurlencode($announcement_query) . "' />
 <input name='ann_hash' type='hidden' value ='" . (hashit($announcement_query, $count)) . "' />
-<button type='submit' class='btn'>{$lang['usersearch_create_ann']}</button>
+<button type='submit' class='button'>{$lang['usersearch_create_ann']}</button>
 </div></td>
 </tr>
 </table>

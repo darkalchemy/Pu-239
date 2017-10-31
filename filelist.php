@@ -19,7 +19,7 @@ if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
 $HTMLOUT .= "
-    <div class='container-fluid portlet'>
+    <div class='container is-fluid portlet'>
         <a name='top'></a>
         <table class='table table-bordered' border='1' cellspacing='0' cellpadding='5'>";
 
@@ -28,7 +28,7 @@ $HTMLOUT .= "
             <tr>
                 <td class='colhead'>{$lang['filelist_type']}</td>
                 <td class='colhead'>{$lang['filelist_path']}</td>
-                <td class='colhead text-right'>{$lang['filelist_size']}</td>
+                <td class='colhead has-text-right'>{$lang['filelist_size']}</td>
             </tr>";
 $counter = 0;
 while ($subrow = mysqli_fetch_assoc($subres)) {
@@ -42,14 +42,14 @@ while ($subrow = mysqli_fetch_assoc($subres)) {
     if ($counter !== 0 && $counter % 10 == 0) {
         $HTMLOUT .= "
             <tr>
-                <td colspan='2' class='text-right'><a href='#top'><img src='{$site_config['pic_base_url']}/top.gif' alt='' /></a></td>
+                <td colspan='2' class='has-text-right'><a href='#top'><img src='{$site_config['pic_base_url']}/top.gif' alt='' /></a></td>
             </tr>";
     }
     $HTMLOUT .= "
             <tr>
                 <td><img src="{$site_config['pic_base_url']}icons/' . htmlsafechars($ext) . ".png' alt='" . htmlsafechars($ext) . " file' title='" . htmlsafechars($ext) . " file' /></td>
                 <td>" . htmlsafechars($subrow['filename']) . "</td>
-                <td class='text-right'>" . mksize($subrow['size']) . "</td>
+                <td class='has-text-right'>" . mksize($subrow['size']) . "</td>
             </tr>";
     ++$counter;
 }

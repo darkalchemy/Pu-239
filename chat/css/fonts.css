@@ -1,5 +1,5 @@
 #loginContent {
-    font-size: 0.9em;
+    font-size: 1em;
 }
 
 #loginContent h1 {
@@ -16,15 +16,15 @@
 }
 
 #loginContent #loginRegisteredUsers {
-    font-size: 0.9em;
+    font-size: 1em;
 }
 
 #loginContent #copyright {
-    font-size: 0.9em;
+    font-size: 1em;
 }
 
 #content {
-    font-size: 0.9em;
+    font-size: 1em;
 }
 
 #content h1 {
@@ -45,11 +45,11 @@
 }
 
 #content #copyright {
-    font-size: 0.9em;
+    font-size: 1em;
 }
 
 #content #chatList span.dateTime {
-    font-size: 0.7em;
+    font-size: .85em;
 }
 
 #content #chatList .chatBotMessage {
@@ -77,11 +77,11 @@
 }
 
 #content #onlineListContainer #onlineList div {
-    font-size: 0.9em;
+    font-size: 1em;
 }
 
 #content #helpContainer #helpList, #content #settingsContainer #settingsList {
-    font-size: 0.9em;
+    font-size: 1em;
 }
 
 #content #helpContainer #helpList dd {

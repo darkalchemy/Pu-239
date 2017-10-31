@@ -5,9 +5,9 @@ if (($CURUSER['opt1'] & user_options::GOTGIFT) && $today != $Christmasday) {
     $HTMLOUT .= "
     <a id='gift-hash'></a>
     <fieldset id='gift' class='header'>
-        <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_christmas_gift']}</legend>
-        <div class='bordered padleft10 padright10'>
-            <div class='alt_bordered transparent text-center'>
+        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_christmas_gift']}</legend>
+        <div class='bordered'>
+            <div class='alt_bordered bg-00 has-text-centered'>
                 <a href='{$site_config['baseurl']}/gift.php?open=1'>
                     <img src='{$site_config['pic_base_url']}gift.png' class='tooltipper image_48' alt='{$lang['index_christmas_gift']}' title='{$lang['index_christmas_gift']}' />
                 </a>

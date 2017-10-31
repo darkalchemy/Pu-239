@@ -115,8 +115,8 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == 'preview') {
         <td colspan="2" class="colhead"><span style="font-weight: bold;">' . $lang['pm_draft_subject'] . '</span>' . htmlsafechars($subject) . '</td>
     </tr>
     <tr>
-        <td class="one" width="80px" id="photocol">' . avatar_stuff($CURUSER) . '</td>
-        <td class="two" style="min-width:400px;padding:10px;vertical-align: top;text-align: left;">' . format_comment($draft) . '</td>
+        <td width="80px" id="photocol">' . avatar_stuff($CURUSER) . '</td>
+        <td style="min-width:400px;padding:10px;vertical-align: top;text-align: left;">' . format_comment($draft) . '</td>
     </tr>
     </table><br>';
 } else {
@@ -138,20 +138,20 @@ $HTMLOUT .= '<h1>' . $lang['pm_usedraft'] . '' . $subject . '</h1>' . $top_links
         <td class="colhead" colspan="2">' . $lang['pm_usedraft1'] . '</td>
     </tr>
     <tr>
-        <td class="one"><span style="font-weight: bold;">' . $lang['pm_forward_to'] . '</span></td>
-        <td class="one"><input type="text" name="to" value="' . ((isset($_POST['to']) && validusername($_POST['to'], false)) ? htmlsafechars($_POST['to']) : $lang['pm_forward_user']) . '" class="member" onfocus="this.value=\'\';" />
+        <td><span style="font-weight: bold;">' . $lang['pm_forward_to'] . '</span></td>
+        <td><input type="text" name="to" value="' . ((isset($_POST['to']) && validusername($_POST['to'], false)) ? htmlsafechars($_POST['to']) : $lang['pm_forward_user']) . '" class="member" onfocus="this.value=\'\';" />
          ' . $lang['pm_usedraft_usr'] . '</td>
     </tr>
     <tr>
-        <td class="one"><span style="font-weight: bold;">' . $lang['pm_send_subject'] . '</span></td>
-        <td class="one"><input type="text" class="text_default" name="subject" value="' . $subject . '" /></td>
+        <td><span style="font-weight: bold;">' . $lang['pm_send_subject'] . '</span></td>
+        <td><input type="text" class="text_default" name="subject" value="' . $subject . '" /></td>
     </tr>
     <tr>
-        <td class="one"><span style="font-weight: bold;">' . $lang['pm_send_body'] . '</span></td>
-        <td class="one">' . BBcode($draft, false) . '</td>
+        <td><span style="font-weight: bold;">' . $lang['pm_send_body'] . '</span></td>
+        <td>' . BBcode($draft) . '</td>
     </tr>
     <tr>
-        <td colspan="2" class="one">' . ($CURUSER['class'] >= UC_STAFF ? '
+        <td colspan="2">' . ($CURUSER['class'] >= UC_STAFF ? '
         <input type="checkbox" name="urgent" value="yes" ' . ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? ' checked="checked"' : '') . ' /> 
         <span style="font-weight: bold;color:red;">' . $lang['pm_send_mark'] . '</span>' : '') . '
         <input type="submit" class="button" name="buttonval" value="' . $lang['pm_send_preview'] . '" />

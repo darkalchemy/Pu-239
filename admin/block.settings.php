@@ -561,7 +561,7 @@ $HTMLOUT .= '
     <div>' . $lang['block_user_comments_set'] . '</div></td>
     <td width="40%"><div style="width: auto;"><#userdetails_user_comments_on#></div></td>
     </tr></table>
-    <input type="submit" name="submit" value=" ' . $lang['block_submit'] . ' " class="btn" tabindex="2" accesskey="s" />
+    <input type="submit" name="submit" value=" ' . $lang['block_submit'] . ' " class="button" tabindex="2" accesskey="s" />
     </form>
     </div>';
 $HTMLOUT = preg_replace_callback('|<#(.*?)#>|', 'template_out', $HTMLOUT);

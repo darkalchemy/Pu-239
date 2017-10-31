@@ -20,7 +20,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         }
     }
 
-    $body_class = 'background-15 h-style-1 text-1 skin-2';
+    $body_class = 'background-16 h-style-9 text-9 skin-2';
     $htmlout ="<!DOCTYPE html>
 <html>
 <head>
@@ -50,19 +50,22 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         }
     </script>
     <div class='container'>
+        <div class='spacer'></div>
         <div class='page-wrapper'>";
     $htmlout .= navbar();
     if ($CURUSER) {
         $htmlout .= "
-            <div id='logo'>
-                <h1>" . $site_config['variant'] . " Code</h1>
-                <p class='description left20'><i>Making progress, 1 day at a time...</i></p>
+            <div id='logo' class='logo columns level'>
+                <div class='column'>
+                    <h1>" . $site_config['variant'] . " Code</h1>
+                    <p class='description left20'><i>Making progress, 1 day at a time...</i></p>
+                </div>
             </div>";
         $htmlout .= platform_menu();
         $htmlout .= "
             <div id='base_globelmessage'>
-                <div id='gm_taps'>
-                    <ul class='gm_taps level-right'>";
+                <div>
+                    <ul class='level-right is-flex is-wrapped top5 bottom5'>";
 
         if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_REPORTS && $BLOCKS['global_staff_report_on']) {
             require_once BLOCK_DIR . 'global/report.php';
@@ -103,24 +106,28 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     }
 
     $htmlout .= "
-        <div id='base_content'>
-            <div class='inner-wrapper'>";
+        <div id='base_content' class='bg-05'>
+            <div class='inner-wrapper bg-04'>";
 
     $index_array = ['/', '/index.php', '/login.php'];
     if ($CURUSER && !in_array($_SERVER['REQUEST_URI'], $index_array)) {
         $htmlout .= "
-                <div class='text-center size_6 text-main bottom10 text-shadow padding10'>
+                <div class='has-text-centered size_6 has-text-primary bottom10 text-shadow padding10'>
                     " . breadcrumbs() . "
                 </div>";
     }
 
     if (getSessionVar('error')) {
         $htmlout .= "
-                <div class='alert alert-error text-center'>" . getSessionVar('error') . "</div>";
+                <div class='notification is-danger has-text-centered size_6'>
+                    <button class='delete'></button>" . getSessionVar('error') . "
+                </div>";
         unsetSessionVar('error');
     } elseif (getSessionVar('success')) {
         $htmlout .= "
-                <div class='alert alert-success text-center'>" . getSessionVar('success') . "</div>";
+                <div class='notification is-success has-text-centered size_6'>
+                    <button class='delete'></button>" . getSessionVar('success') . "
+                </div>";
         unsetSessionVar('success');
     }
 
@@ -129,7 +136,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
 function stdfoot($stdfoot = false)
 {
     global $CURUSER, $site_config, $start, $query_stat, $queries, $mc1, $querytime, $lang;
-    $debug = (SQL_DEBUG && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
+    $debug = (SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
     $cachetime = ($mc1->Time / 1000);
     $seconds = microtime(true) - $start;
     $r_seconds = round($seconds, 5);
@@ -156,11 +163,11 @@ function stdfoot($stdfoot = false)
     $querytime = 0;
     if ($CURUSER && $query_stat && $debug) {
         $htmlfoot .= "
-                <div class='container-fluid portlet'>
+                <div class='container is-fluid portlet'>
                     <a id='queries-hash'></a>
                     <fieldset id='queries' class='header'>
-                        <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['gl_stdfoot_querys']}</legend>
-                        <div class='text-center'>
+                        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['gl_stdfoot_querys']}</legend>
+                        <div class='has-text-centered'>
                             <table class='table table-bordered table-striped bottom10'>
                                 <thead>
                                     <tr>
@@ -175,7 +182,7 @@ function stdfoot($stdfoot = false)
             $htmlfoot .= '
                                     <tr>
                                         <td>' . ($key + 1) . "</td>
-                                        <td><b>" . ($value['seconds'] > 0.01 ? "<font color='red' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</font>' : "<font color='green' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</font>') . "</b></td>
+                                        <td><b>" . ($value['seconds'] > 0.01 ? "<span class='is-danger' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='is-success' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</b></td>
                                         <td>" . htmlsafechars($value['query']) . '<br></td>
                                     </tr>';
         }
@@ -192,21 +199,21 @@ function stdfoot($stdfoot = false)
         //</div>";
     if ($CURUSER) {
         $htmlfoot .= "
-        <div class='nav-collapse collapse'>
-            <div class='container padding10' >
-                <div class='pull-left'>
-                " . $site_config['site_name'] . " {$lang['gl_stdfoot_querys_page']}" . $r_seconds . " {$lang['gl_stdfoot_querys_seconds']}<br>" . "
-                {$lang['gl_stdfoot_querys_server']}" . $queries . " {$lang['gl_stdfoot_querys_time']} " . ($queries != 1 ? "{$lang['gl_stdfoot_querys_times']}" : '') . '
-                ' . ($debug ? '<br><b>' . $header . "</b><br><b>{$lang['gl_stdfoot_uptime']}</b> " . $uptime . '' : ' ') . "
-                </div>
-                <div class='pull-right'>
-                {$lang['gl_stdfoot_powered']}" . $site_config['variant'] . "<br>
-                {$lang['gl_stdfoot_using']}<b>{$lang['gl_stdfoot_using1']}</b><br>
-                " . ($debug ? "<a title='{$lang['gl_stdfoot_logview']}' rel='external' href='{$site_config['baseurl']}/staffpanel.php?tool=log_viewer'>{$lang['gl_stdfoot_logview']}</a> | " . "<a title='{$lang['gl_stdfoot_sview']}' rel='external' href='/staffpanel.php?tool=system_view'>{$lang['gl_stdfoot_sview']}</a> | " . "<a rel='external' title='OPCache' href='/staffpanel.php?tool=op'>{$lang['gl_stdfoot_opc']}</a> | " . "<a rel='external' title='Memcache' href='/staffpanel.php?tool=memcache'>{$lang['gl_stdfoot_memcache']}</a>" : '') . '';
+            <div class='container site-debug bg-05 round10 top20 bottom20'>
+                <div class='level bordered bg-04'>
+                    <div class='size_4 top10 bottom10'>
+                        <p class='is-marginless'>" . $site_config['site_name'] . " {$lang['gl_stdfoot_querys_page']}" . $r_seconds . " {$lang['gl_stdfoot_querys_seconds']}</p>
+                        <p class='is-marginless'>{$lang['gl_stdfoot_querys_server']}" . $queries . " {$lang['gl_stdfoot_querys_time']} " . ($queries != 1 ? "{$lang['gl_stdfoot_querys_times']}" : '') . '</p>
+                        ' . ($debug ? '<p class="is-marginless"><b>' . $header . "</b></p><p class='is-marginless'><b>{$lang['gl_stdfoot_uptime']}</b> " . $uptime . '</p>' : '') . "
+                    </div>
+                    <div class='size_4 top10 bottom10'>
+                        <p class='is-marginless'>{$lang['gl_stdfoot_powered']}" . $site_config['variant'] . "</p>
+                        <p class='is-marginless'>{$lang['gl_stdfoot_using']}<b>{$lang['gl_stdfoot_using1']}</b></p>
+                        " . ($debug ? "<p class='is-marginless'><a title='{$lang['gl_stdfoot_logview']}' class='tooltipper' rel='external' href='{$site_config['baseurl']}/staffpanel.php?tool=log_viewer'>{$lang['gl_stdfoot_logview']}</a> | <a title='{$lang['gl_stdfoot_sview']}' class='tooltipper' rel='external' href='/staffpanel.php?tool=system_view'>{$lang['gl_stdfoot_sview']}</a> | <a rel='external' title='OPCache' href='/staffpanel.php?tool=op' class='tooltipper'>{$lang['gl_stdfoot_opc']}</a> | <a rel='external' title='Memcache' href='/staffpanel.php?tool=memcache' class='tooltipper'>{$lang['gl_stdfoot_memcache']}</a></p>" : '');
         $htmlfoot .= "
+                    </div>
                 </div>
             </div>
-        </div>
             <div id='control_panel'>
                 <a href='#' id='control_label'></a>
             </div>
@@ -215,7 +222,7 @@ function stdfoot($stdfoot = false)
     $htmlfoot .= "
     </div>
     <a href='#' class='back-to-top'>
-        <i class='fa fa-arrow-circle-up right10' style='font-size:48px'></i>
+        <i class='fa fa-arrow-circle-up' style='font-size:48px'></i>
     </a>
     <script>
         var cookie_prefix   = '{$site_config['cookie_prefix']}';
@@ -224,7 +231,7 @@ function stdfoot($stdfoot = false)
         var cookie_domain   = '{$site_config['cookie_domain']}';
         var cookie_secure   = '{$site_config['sessionCookieSecure']}';
         var csrf_token      = '" . getSessionVar('csrf_token') . "';
-        var x = document.getElementsByClassName('flipper');
+        var x = document.getElementsByClassName('flipper has-text-primary');
         var i;
         for (i = 0; i < x.length; i++) {
             var id = x[i].parentNode.id;
@@ -278,8 +285,8 @@ function stdfoot($stdfoot = false)
 function stdmsg($heading, $text)
 {
     $htmlout = "
-        <div class='bordered padleft10 padright10 top20 bottom20'>
-            <div class='alt_bordered transparent'>";
+        <div class='bordered top20 bottom20'>
+            <div class='alt_bordered bg-00'>";
     if ($heading) {
         $htmlout .= "
                 <h2>$heading</h2>";
@@ -300,8 +307,8 @@ function StatusBar()
     }
     $StatusBar = $clock = '';
     $StatusBar .= "
-                    <div id='base_usermenu' class='tooltipper-ajax'>
-                        <span id='clock' class='text-white right20'>{$clock}</span>
+                    <div id='base_usermenu' class='tooltipper-ajax right10'>
+                        <span id='clock' class='has-text-white right10'>{$clock}</span>
                         " . format_username($CURUSER['id'], true, false) . "
                     </div>";
 
@@ -404,12 +411,12 @@ function navbar()
         <header id='navbar' class='container'>
             <div class='contained'>
                 <div class='nav_container'>
-                    <div id='hamburger'><i class='fa fa-bars text-white fa-2x' aria-hidden='true'></i></div>
-                    <div id='close'><i class='fa fa-times text-white fa-2x' aria-hidden='true'></i></div>
+                    <div id='hamburger'><i class='fa fa-bars has-text-white fa-2x' aria-hidden='true'></i></div>
+                    <div id='close'><i class='fa fa-times has-text-white fa-2x' aria-hidden='true'></i></div>
                     <div id='menuWrapper'>
-                        <ul class='level-left'>
+                        <ul class='level'>
                             <li>
-                                <a href='{$site_config['baseurl']}' class='flex'>
+                                <a href='{$site_config['baseurl']}' class='is-flex'>
                                     <i class='fa fa-home fa-2x'></i>
                                     <span class='home'>Pu-239</span>
                                 </a>
@@ -420,7 +427,8 @@ function navbar()
                                     <li><a href='{$site_config['baseurl']}/browse.php'>{$lang['gl_torrents']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/requests.php'>{$lang['gl_requests']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/offers.php'>{$lang['gl_offers']}</a></li>
-                                    <li><a href='{$site_config['baseurl']}/needseed.php?needed=seeders'>{$lang['gl_nseeds']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/needseed.php?needed=seeders'><span class='is-danger'>{$lang['gl_nseeds']}</span></a></li>
+                                    <li><a href='{$site_config['baseurl']}/torrents-today.php'>{$lang['index_stats_newtor']}</a></li>
                                     " . ($CURUSER['class'] <= UC_VIP ? "<li><a href='{$site_config['baseurl']}/uploadapp.php'>{$lang['gl_uapp']}</a></li>" : "<li><a href='{$site_config['baseurl']}/upload.php'>{$lang['gl_upload']}</a></li>") . "
                                     <li><a href='{$site_config['baseurl']}/bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
                                 </ul>
@@ -433,6 +441,7 @@ function navbar()
                                     <li><a href='{$site_config['baseurl']}/bitbucket.php'>{$lang['gl_bitbucket']}</a></li>";
                     }
                     $navbar .= "
+                                    <li><a href='{$site_config['baseurl']}/getrss.php'>RSS</a></li>
                                     <li><a href='{$site_config['baseurl']}/announcement.php'>{$lang['gl_announcements']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/topten.php'>{$lang['gl_stats']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/faq.php'>{$lang['gl_faq']}</a></li>
@@ -473,10 +482,8 @@ function navbar()
                             <li>" . ($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/bugs.php?action=add'>{$lang['gl_breport']}</a>" : "<a href='{$site_config['baseurl']}/bugs.php?action=bugs'>[Bugs]</a>") . "</li>
                             <li>" . ($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/contactstaff.php'>{$lang['gl_cstaff']}</a>" : "<a href='{$site_config['baseurl']}/staffbox.php'>[Messages]</a>") . "</li>
                             $panel
-                        </ul>
-                        <ul class='level-right'>
                             <li>
-                                <a href='{$site_config['baseurl']}/logout.php?hash_please={$salty}' class='flex'>
+                                <a href='{$site_config['baseurl']}/logout.php?hash_please={$salty}' class='is-flex'>
                                     <i class='fa fa-sign-out fa-2x' aria-hidden='true'></i>
                                 </a>
                             </li>
@@ -492,7 +499,9 @@ function navbar()
 function platform_menu() {
     $menu = "
         <div id='platform-menu' class='container platform-menu'>
-            <div class='platform-wrapper'>
+            <div class='platform-wrapper level'>
+                <ul class='level-left'>
+                </ul>
                 <ul class='level-right'>" .
                     StatusBar() . "
                 </ul>

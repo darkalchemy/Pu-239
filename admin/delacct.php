@@ -57,7 +57,7 @@ function deleteConfirm(){
         <td><input type='password' size='40' name='password' /></td>
       </tr>
       <tr>
-        <td colspan='2'><input type='submit' class='btn btn-default' value='{$lang['btn_delete']}' /></td>
+        <td colspan='2'><input type='submit' class='button btn-default' value='{$lang['btn_delete']}' /></td>
       </tr>
     </table>
     </form></div></div><br>";

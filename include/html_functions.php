@@ -67,7 +67,7 @@ function tr($x, $y, $noesc = 0)
 
     return "
         <tr>
-            <td class='heading rowhead'>
+            <td class='heading heading'>
                 $x
             </td>
             <td class='break_word'>
@@ -91,4 +91,48 @@ function insert_smilies_frame()
     $htmlout .= end_frame();
 
     return $htmlout;
+}
+
+function main_table($body, $header = null)
+{
+    $thead = $header != null ? "
+                        <thead>
+                            $header
+                        </thead>" : '';
+    return "
+                <div class='table-wrapper'>
+                    <table class='table table-bordered table-striped top20 bottom20'>
+                        $thead
+                        <tbody>
+                            $body
+                        </tbody>
+                    </table>
+                </div>";
+}
+
+function main_div($text)
+{
+    if ($text === '') {
+        return;
+    } else {
+        return "
+                <div class='bordered top20 bottom20'>
+                    <div class='alt_bordered bg-00'>
+                        $text
+                    </div>
+                </div>";
+    }
+
+}
+
+function wrapper($text, $align = 'has-text-centered', $top = 'top20', $bottom = 'bottom20', $padding = 'padding20')
+{
+    if ($text === '') {
+        return;
+    } else {
+        return "
+            <div class='container is-fluid portlet $align $top $bottom $padding'>
+                $text
+            </div>";
+    }
 }

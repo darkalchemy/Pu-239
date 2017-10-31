@@ -35,9 +35,9 @@ if (!$active_irc_users_cache['activeircusers']) {
 $HTMLOUT .= "
     <a id='irc-hash'></a>
     <fieldset id='irc' class='header'>
-        <legend class='flipper'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_active_irc']} ({$active_irc_users_cache['actcount']})</legend>
-        <div class='bordered padleft10 padright10'>
-            <div class='alt_bordered transparent text-center'>
+        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_active_irc']} ({$active_irc_users_cache['actcount']})</legend>
+        <div class='bordered'>
+            <div class='alt_bordered bg-00 has-text-centered'>
                 {$active_irc_users_cache['activeircusers']}
             </div>
         </div>

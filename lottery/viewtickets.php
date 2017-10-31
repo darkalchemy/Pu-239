@@ -6,26 +6,37 @@ while ($ac = mysqli_fetch_assoc($lconf)) {
 if (!$lottery_config['enable']) {
     stderr('Sorry', 'Lottery is closed');
 }
-$html = begin_main_frame() . begin_frame('Lottery stats');
-$html .= '<h2>Lottery started on <b>' . get_date($lottery_config['start_date'], 'LONG') . '</b> and ends on <b>' . get_date($lottery_config['end_date'], 'LONG') . "</b> remaining <span style='color:#ff0000;'>" . mkprettytime($lottery_config['end_date'] - TIME_NOW) . '</span></h2>';
-$qs = sql_query('SELECT count(t.id) as tickets , u.username, u.id, u.seedbonus FROM tickets as t LEFT JOIN users as u ON u.id = t.user GROUP BY u.id ORDER BY tickets DESC, username ASC') or sqlerr(__FILE__, __LINE__);
+$html .= '
+    <div class="top20">
+        <h2>' . $site_config['site_name'] . ' Lottery</h2>
+        <span class="size_4">
+            Started: <b>' . get_date($lottery_config['start_date'], 'LONG') . '</b><br>
+            Ends: <b>' . get_date($lottery_config['end_date'], 'LONG') . "</b><br>
+            Time Remaining: <span class='text-red'>" . mkprettytime($lottery_config['end_date'] - TIME_NOW) . '</span>
+        </span>
+    </div>';
+$qs = sql_query('SELECT count(t.id) as tickets , u.id, u.seedbonus FROM tickets as t LEFT JOIN users as u ON u.id = t.user GROUP BY u.id ORDER BY tickets DESC, username ASC') or sqlerr(__FILE__, __LINE__);
+$header = $body = '';
+
 if (!mysqli_num_rows($qs)) {
-    $html .= '<h2>Not tickets were bought</h2>';
+    $html .= '<h2>No tickets have been purchased!</h2>';
 } else {
-    $html .= "<table width='80%' cellpadding='5' cellspacing='0' border='1'>
+    $header = "
     <tr>
-      <td width='100%'>Username</td>
-      <td style='white-space:nowrap;'>tickets</td>
-      <td style='white-space:nowrap;'>seedbonus</td>
+      <th>Username</th>
+      <th>tickets</th>
+      <th>seedbonus</th>
     </tr>";
     while ($ar = mysqli_fetch_assoc($qs)) {
-        $html .= "<tr>
-                  <td><a href='userdetails.php?id=" . (int)$ar['id'] . "'>" . htmlsafechars($ar['username']) . "</a></td>
-                  <td>" . (int)$ar['tickets'] . "</td>
-                  <td>" . (float)$ar['seedbonus'] . '</td>
-        </tr>';
+        $body .= "
+    <tr>
+        <td>" . format_username($ar['id']) . "</a></td>
+        <td>" . number_format($ar['tickets']) . "</td>
+        <td>" . number_format($ar['seedbonus']) . '</td>
+    </tr>';
     }
-    $html .= '</table>';
+    $html .= main_table($body, $header);
 }
-$html .= end_frame() . end_main_frame();
+
+$html = wrapper($html);
 echo stdhead('Lottery tickets') . $html . stdfoot();
