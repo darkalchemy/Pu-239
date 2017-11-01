@@ -16,6 +16,27 @@ function checkpreviousstep()
         header('Location: index.php?step=' . $step);
     }
 }
+function return_bytes($val)
+{
+    $val = strtolower(trim($val));
+    $last = $val[strlen($val)-1];
+    $val = rtrim($val, $last);
+
+    switch($last) {
+        case 'g':
+            $val *= (1024 * 1024 * 1024);
+            break;
+        case 'm':
+            $val *= (1024 * 1024);
+            break;
+        case 'k':
+            $val *= 1024;
+            break;
+    }
+
+    return $val;
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -59,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         break;
 
     case 1:
+        checkpreviousstep();
         require_once 'functions/permissioncheck.php';
         echo permissioncheck();
         break;

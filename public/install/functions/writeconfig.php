@@ -215,7 +215,7 @@ function saveconfig()
         }
         $out .= '
         </fieldset>
-        <div style="text-align:center"><input type="button" value="Next step" onclick="window.location.href=\'index.php?step=2&xbt='.$xbt.'\'"/></div>';
+        <div style="text-align:center"><input type="button" value="Next step" onclick="window.location.href=\'index.php?step=3&xbt='.$xbt.'\'"/></div>';
         file_put_contents('step2.lock', 1);
     } else {
         $out .= '

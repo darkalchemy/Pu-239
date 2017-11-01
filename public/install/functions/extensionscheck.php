@@ -1,5 +1,4 @@
 <?php
-
 function is_installed($ext)
 {
     if (extension_loaded($ext)) {
@@ -12,8 +11,8 @@ function extensionscheck()
     global $root, $public;
     $php_min_vers = '7.0';
 
-    if (file_exists('step1.lock')) {
-        header('Location: index.php?step=2');
+    if (file_exists('step0.lock')) {
+        header('Location: index.php?step=1');
     }
     $extensions = [
         'memcache',
@@ -69,15 +68,16 @@ function extensionscheck()
                 <input type="button" value="Reload" onclick="window.location.reload()"/>
             </div>';
     }
+    $out .= '
+        </fieldset>';
+
     if (empty($missing) && $php) {
         $out .= '
             <div style="text-align:center">
                 <input type="button" onclick="window.location.href=\'index.php?step=1\'" value="Next step" />
             </div>';
-        file_put_contents('step1.lock', '1');
+        file_put_contents('step0.lock', '1');
     }
-    $out .= '
-        </fieldset>';
 
     return $out;
 }
