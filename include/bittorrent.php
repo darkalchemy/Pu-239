@@ -632,9 +632,9 @@ function autoclean()
             if (user_exists($site_config['chatBotID'])) {
                 $mc1->cache_value('tfreak_cron_', TIME_NOW, 60);
                 require_once INCL_DIR . 'newsrss.php';
-                $github = github_shout($tfreak_news);
-                $fox = foxnews_shout($tfreak_news);
-                $tfreak = tfreak_shout($tfreak_news);
+                github_shout($tfreak_news);
+                foxnews_shout($tfreak_news);
+                tfreak_shout($tfreak_news);
             }
         }
     }
@@ -1627,13 +1627,13 @@ function make_torrentpass()
             $passes[] = $row['torrent_pass'];
         }
         $mc1->cache_value('torrent_passes_', $passes, 86400);
-    } else {
-        $passes = [];
     }
 
     $tpass = make_password(16);
-    while (in_array($tpass, $passes)) {
-        $tpass = make_password(16);
+    if (!empty($passes)) {
+        while (in_array($tpass, $passes)) {
+            $tpass = make_password(16);
+        }
     }
     $passes[] = $tpass;
     $mc1->cache_value('torrent_passes_', $passes, 86400);

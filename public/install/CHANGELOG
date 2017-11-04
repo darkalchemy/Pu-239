@@ -1,4 +1,6 @@
 4 Nov 2017
+remove: check for array index after changing to string
+fix: compare array when array does not exist
 fix: unset blocks not getting cached
 fix: compare array where array is string
 fix: error with newsfeeds before bot user created

@@ -382,9 +382,11 @@ function min_class($min = UC_MIN, $max = UC_MAX)
 function format_username($user_id, $icons = true, $tooltipper = true)
 {
     global $site_config, $mc1;
-    $user_id = is_array($user_id) && !empty($user_id['id']) ? $user_id['id'] : $user_id;
+    if (empty($user_id)) {
+        return;
+    }
+    $user_id = is_array($user_id) && !empty($user_id['id']) ? (int)$user_id['id'] : (int)$user_id;
     if (!is_array($user_id) && is_numeric($user_id)) {
-        $user['id'] = (int)$user_id['id'];
         if (($user = $mc1->get_value('user_icons_' . $user_id)) === false) {
             $res = sql_query("SELECT gotgift, gender, id, class, username, donor, title, suspended, warned, leechwarn, downloadpos, chatpost, pirate, king, enabled, perms, avatar
                                 FROM users
