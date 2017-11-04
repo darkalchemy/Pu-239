@@ -1,6 +1,6 @@
 <?php
 
-function foxnews_shout($links)
+function foxnews_shout($links = [])
 {
     global $site_config, $mc1;
     if ($site_config['autoshout_on'] == 1) {
@@ -50,7 +50,7 @@ function foxnews_shout($links)
     return true;
 }
 
-function tfreak_shout($links)
+function tfreak_shout($links = [])
 {
     global $site_config, $mc1;
     if ($site_config['autoshout_on'] == 1) {
@@ -100,7 +100,7 @@ function tfreak_shout($links)
     return true;
 }
 
-function github_shout($links)
+function github_shout($links = [])
 {
     global $site_config, $mc1;
     if ($site_config['autoshout_on'] == 1) {

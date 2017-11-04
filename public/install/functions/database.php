@@ -20,13 +20,13 @@ function db_test()
         } else {
             $out .= '<div class="notreadable">There was an error while selecting the database<br>'.$mysqli_test->error.'</div>
                     </fieldset>
-                    <div style="text-align:center"><input type="button" value="Reload" onclick="window.location.reload()"/></div>';
+                    <div style="text-align:center"><input type="button" value="Reload" onclick="window.location.reload()" /></div>';
         }
     } else {
         $out .= '<div class="notreadable">There was an error while connection to the database<br>'.$mysqli_test->connect_error.'</div>
                 </fieldset>
                 <div class="info" style="text-align:center">
-                <input type="button" value="Reload" onclick="window.location.reload()"/></div>';
+                <input type="button" value="Reload" onclick="window.location.reload()" /></div>';
     }
     echo $out;
 }
@@ -57,7 +57,7 @@ function db_insert()
     if (!count($o) && !count($oo)) {
         $out .= '<div class="readable">Database was imported</div>
                 </fieldset>
-                <div style="text-align:center"><input type="button" value="Finish" onclick="window.location.href=\'?step=4\'"/></div>';
+                <div style="text-align:center"><input type="button" value="Finish" onclick="window.location.href=\'?step=4\'" /></div>';
         file_put_contents('step3.lock', 1);
     } else {
         $out .= '<div class="notreadable">There was an error while importing the database<br>'.$o.'</div></fieldset>';

@@ -5,7 +5,7 @@ function inactive_update($data)
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    //$users = [4, 17, 18];
+    $users = [];
 
     $secs = 2 * 86400;
     $dt = (TIME_NOW - $secs);

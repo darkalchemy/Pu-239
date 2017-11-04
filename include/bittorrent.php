@@ -626,15 +626,20 @@ function autoclean()
                     $tfreak_news[] = $tfreak_new['link'];
                 }
                 $mc1->cache_value('tfreak_news_links_', $tfreak_news, 86400);
-            } else {
-                $tfreak_news = [];
             }
+
             if (user_exists($site_config['chatBotID'])) {
                 $mc1->cache_value('tfreak_cron_', TIME_NOW, 60);
                 require_once INCL_DIR . 'newsrss.php';
-                github_shout($tfreak_news);
-                foxnews_shout($tfreak_news);
-                tfreak_shout($tfreak_news);
+                if (empty($tfreak_news)) {
+                    github_shout();
+                    foxnews_shout();
+                    tfreak_shout();
+                } else {
+                    github_shout($tfreak_news);
+                    foxnews_shout($tfreak_news);
+                    tfreak_shout($tfreak_news);
+                }
             }
         }
     }
@@ -1690,7 +1695,7 @@ function breadcrumbs($separator = ' &raquo; ', $home = 'Home')
 {
     $path = array_filter(explode('/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)));
     $query = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
-    $base = ($_SERVER['HTTPS'] ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
+    $base = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
     $breadcrumbs = ["<a href='$base'>$home</a>"];
     $last = end(array_keys($path));
     $action = [];

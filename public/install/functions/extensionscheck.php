@@ -58,14 +58,14 @@ function extensionscheck()
                 It looks like you need to install some php extensions:<br>
                 <span style="color: red;">' . implode(', ', $missing) . '</span>.<br>
                 Once you have installed the extensions marked in red, you can continue.<br>
-                <input type="button" value="Reload" onclick="window.location.reload()"/>
+                <input type="button" value="Reload" onclick="window.location.reload()" />
             </div>';
     }
     if (!$php) {
         $out .= '
             <div class="info" style="text-align:center">
                 Please update PHP to at least version ' . $php_min_vers . '.<br>
-                <input type="button" value="Reload" onclick="window.location.reload()"/>
+                <input type="button" value="Reload" onclick="window.location.reload()" />
             </div>';
     }
     $out .= '
