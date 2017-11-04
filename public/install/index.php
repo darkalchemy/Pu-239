@@ -9,6 +9,7 @@ $root = realpath($public . '..') . DIRECTORY_SEPARATOR;
 if (file_exists($public . 'include/install.lock')) {
     die('This was already installed, huh ? how this happened');
 }
+
 function checkpreviousstep()
 {
     $step = isset($_GET['step']) ? (int) $_GET['step'] - 1 : 0;
@@ -16,6 +17,7 @@ function checkpreviousstep()
         header('Location: index.php?step=' . $step);
     }
 }
+
 function return_bytes($val)
 {
     $val = strtolower(trim($val));
@@ -35,6 +37,14 @@ function return_bytes($val)
     }
 
     return $val;
+}
+
+function get_scheme()
+{
+    if (isset($_SERVER['REQUEST_SCHEME'])) {
+        $scheme = $_SERVER['REQUEST_SCHEME'];
+    }
+    return $scheme;
 }
 
 ?>
