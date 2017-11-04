@@ -1698,13 +1698,14 @@ function breadcrumbs($separator = ' &raquo; ', $home = 'Home')
     $query = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
     $base = $site_config['baseurl'] . '/';
     $breadcrumbs = ["<a href='$base'>$home</a>"];
-    $last = end(array_keys($path));
+    $keys = array_keys($path);
+    $last = end($keys);
     $action = [];
 
     if (!empty($query)) {
         $action = explode('=', $query);
     }
-    if ($action[0] === 'action') {
+    if (!empty($action[0]) && $action[0] === 'action') {
         $last = '';
     }
 
@@ -1717,7 +1718,7 @@ function breadcrumbs($separator = ' &raquo; ', $home = 'Home')
         }
     }
 
-    if ($action[0] === 'action') {
+    if (!empty($action[0]) && $action[0] === 'action') {
         $type = explode('&', str_replace(['-', '_'], ' ', $action[1]));
         $breadcrumbs[] = ucwords($type[0]);
     }
