@@ -1,4 +1,6 @@
 4 Nov 2017
+move: iframe resize to template
+remove: checkbox for XBT install
 add: missing function
 update: config files
 remove: unused javascript files

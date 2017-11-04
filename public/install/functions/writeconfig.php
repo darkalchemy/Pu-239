@@ -70,11 +70,13 @@ $foo = [
             'input' => 'config[site_name]',
             'info' => 'Your site name.',
         ],
+/*
         [
             'text' => 'Using XBT Tracker',
             'input' => 'config[xbt_tracker]',
             'info' => 'Check if yes.',
         ],
+*/
     ],
     'Cookies' => [
         [

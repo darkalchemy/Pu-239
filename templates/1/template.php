@@ -41,6 +41,12 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Acme|Baloo+Bhaijaan|Encode+Sans+Condensed|Lobster|Nova+Square|Open+Sans|Oswald|PT+Sans+Narrow' />
     {$css_incl}
     <style>#mlike{cursor:pointer;}</style>
+    <script>
+        function resizeIframe(obj) {
+            obj.style.height = 0;
+            obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+        }
+    </script>
 </head>
 <body class='{$body_class}'>
     <script>

@@ -14,11 +14,6 @@ function radio() {
     PopUp('radio_popup.php','My Radio', 800, 700, 1, 0);
 }
 
-function resizeIframe(obj) {
-    obj.style.height = 0;
-    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-}
-
 $('.delete').on('click', function(){
     //$(this).parent().remove();
     $(this).parent().slideUp(animate_duration, function() {
