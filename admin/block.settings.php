@@ -13,13 +13,85 @@ $stdhead = [
     'css' => [
     ],
 ];
+
+$list = [
+    'ie_user_alert',
+    'news_on',
+    'ajaxchat_on',
+    'trivia_on',
+    'active_users_on',
+    'active_24h_users_on',
+    'active_irc_users_on',
+    'active_birthday_users_on',
+    'stats_on',
+    'disclaimer_on',
+    'latest_user_on',
+    'forum_posts_on',
+    'latest_torrents_on',
+    'latest_torrents_scroll_on',
+    'announcement_on',
+    'donation_progress_on',
+    'ads_on',
+    'radio_on',
+    'torrentfreak_on',
+    'christmas_gift_on',
+    'active_poll_on',
+    'movie_ofthe_week_on',
+    'global_freeleech_on',
+    'global_demotion_on',
+    'global_message_on',
+    'global_staff_warn_on',
+    'global_staff_report_on',
+    'global_staff_uploadapp_on',
+    'global_happyhour_on',
+    'global_crazyhour_on',
+    'global_bug_message_on',
+    'global_freeleech_contribution_on',
+    'userdetails_flush_on',
+    'userdetails_joined_on',
+    'userdetails_online_time_on',
+    'userdetails_browser_on',
+    'userdetails_reputation_on',
+    'userdetails_profile_hits_on',
+    'userdetails_birthday_on',
+    'userdetails_contact_info_on',
+    'userdetails_iphistory_on',
+    'userdetails_traffic_on',
+    'userdetails_share_ratio_on',
+    'userdetails_seedtime_ratio_on',
+    'userdetails_seedbonus_on',
+    'userdetails_irc_stats_on',
+    'userdetails_connectable_port_on',
+    'userdetails_avatar_on',
+    'userdetails_userclass_on',
+    'userdetails_gender_on',
+    'userdetails_freestuffs_on',
+    'userdetails_comments_on',
+    'userdetails_forumposts_on',
+    'userdetails_invitedby_on',
+    'userdetails_torrents_block_on',
+    'userdetails_completed_on',
+    'userdetails_snatched_staff_on',
+    'userdetails_userinfo_on',
+    'userdetails_showpm_on',
+    'userdetails_report_user_on',
+    'userdetails_user_status_on',
+    'userdetails_user_comments_on',
+];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     global $lang;
     unset($_POST['submit']);
+    $updated = [];
     $block_set_cache = CACHE_DIR . 'block_settings_cache.php';
     $block_out = '<' . "?php\n\n\$BLOCKS = [\n";
     foreach ($_POST as $k => $v) {
+        $updated[] = $k;
         $block_out .= ($k == 'block_undefined') ? "\t'{$k}' => '" . htmlsafechars($v) . "',\n" : "\t'{$k}' => " . intval($v) . ",\n";
+    }
+    $missed = array_diff($list, $updated);
+    foreach ($missed as $k) {
+        $block_out .= ($k == 'block_undefined') ? "\t'{$k}' => '" . htmlsafechars($v) . "',\n" : "\t'{$k}' => 0,\n";
     }
     $block_out .= "];";
     file_put_contents(CACHE_DIR . 'block_settings_cache.php', $block_out);
@@ -581,7 +653,6 @@ echo stdhead($lang['block_stdhead'], true, $stdhead), $HTMLOUT, stdfoot($stdfoot
 function template_out($matches)
 {
     global $BLOCKS, $lang;
-
     return "
     <input type='checkbox' id='{$matches[1]}' name='{$matches[1]}' value='1'" . ($BLOCKS[$matches[1]] == 1 ? ' checked' : '') . " />
     <label for='{$matches[1]}'></label>";

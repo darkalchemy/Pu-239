@@ -1,4 +1,7 @@
 4 Nov 2017
+fix: unset blocks not getting cached
+fix: compare array where array is string
+fix: error with newsfeeds before bot user created
 fix: error with autoshout before bot user created
 move: iframe resize to template
 remove: checkbox for XBT install

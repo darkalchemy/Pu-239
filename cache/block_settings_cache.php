@@ -10,6 +10,7 @@ $BLOCKS = [
 	'active_birthday_users_on' => 1,
 	'stats_on' => 1,
 	'disclaimer_on' => 1,
+	'latest_user_on' => 1,
 	'forum_posts_on' => 1,
 	'latest_torrents_on' => 1,
 	'latest_torrents_scroll_on' => 1,
@@ -57,4 +58,9 @@ $BLOCKS = [
 	'userdetails_report_user_on' => 1,
 	'userdetails_user_status_on' => 1,
 	'userdetails_user_comments_on' => 1,
+	'active_irc_users_on' => 0,
+	'donation_progress_on' => 0,
+	'radio_on' => 0,
+	'torrentfreak_on' => 0,
+	'christmas_gift_on' => 0,
 ];

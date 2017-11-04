@@ -383,8 +383,8 @@ function format_username($user_id, $icons = true, $tooltipper = true)
 {
     global $site_config, $mc1;
     $user_id = is_array($user_id) && !empty($user_id['id']) ? $user_id['id'] : $user_id;
-    if (!is_array($user_id) && is_numeric($user_id) && !empty($user_id)) {
-        $user['id'] = (int) $user['id'];
+    if (!is_array($user_id) && is_numeric($user_id)) {
+        $user['id'] = (int)$user_id['id'];
         if (($user = $mc1->get_value('user_icons_' . $user_id)) === false) {
             $res = sql_query("SELECT gotgift, gender, id, class, username, donor, title, suspended, warned, leechwarn, downloadpos, chatpost, pirate, king, enabled, perms, avatar
                                 FROM users
@@ -428,15 +428,15 @@ function format_username($user_id, $icons = true, $tooltipper = true)
                 </a>";
 
     if ($icons != false) {
-        $str .= (isset($user['king']) && $user['king'] >= TIME_NOW ? '<img class="tooltipper" src="'.$site_config['pic_base_url'].'king.png" alt="King" title="King" width="14px" height="14px" />' : '');
-        $str .= ($user['donor'] == 'yes' ? '<img class="tooltipper" src="'.$site_config['pic_base_url'].'star.png" alt="Donor" title="Donor" width="14px" height="14px" />' : '');
-        $str .= ($user['warned'] >= 1 ? '<img class="tooltipper" src="'.$site_config['pic_base_url'].'alertred.png" alt="Warned" title="Warned" width="14px" height="14px" />' : '');
-        $str .= ($user['leechwarn'] >= 1 ? '<img class="tooltipper" src="'.$site_config['pic_base_url'].'alertblue.png" alt="Leech Warned" title="Leech Warned" width="14px" height="14px" />' : '');
-        $str .= ($user['enabled'] != 'yes' ? '<img class="tooltipper" src="'.$site_config['pic_base_url'].'disabled.gif" alt="Disabled" title="Disabled" width="14px" height="14px" />' : '');
-        $str .= (isset($user['downloadpos']) && $user['downloadpos'] != 1 ? '<img class="tooltipper" src="'.$site_config['pic_base_url'].'downloadpos.gif" alt="Download Disabled" title="Download Disabled" width="14px" height="14px" />' : '');
-        $str .= ($user['chatpost'] == 0 ? '<img class="tooltipper" src="'.$site_config['pic_base_url'].'warned.png" alt="No Chat" title="Shout disabled" width="14px" height="14px" />' : '');
-        $str .= ($user['pirate'] != 0 ? '<img class="tooltipper" src="'.$site_config['pic_base_url'].'pirate.png" alt="Pirate" title="Pirate" width="14px" height="14px" />' : '');
-        $str .= (isset($user['gotgift']) && $user['gotgift'] == 'yes' ? '<img class="tooltipper" height="16px" src="'.$site_config['pic_base_url'].'gift.png" alt="Christmas Gift" title="Has Claimed a Christmas Gift" />' : '');
+        $str .= (isset($user['king']) && $user['king'] >= TIME_NOW ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'king.png" alt="King" title="King" width="14px" height="14px" />' : '');
+        $str .= ($user['donor'] == 'yes' ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'star.png" alt="Donor" title="Donor" width="14px" height="14px" />' : '');
+        $str .= ($user['warned'] >= 1 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'alertred.png" alt="Warned" title="Warned" width="14px" height="14px" />' : '');
+        $str .= ($user['leechwarn'] >= 1 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'alertblue.png" alt="Leech Warned" title="Leech Warned" width="14px" height="14px" />' : '');
+        $str .= ($user['enabled'] != 'yes' ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'disabled.gif" alt="Disabled" title="Disabled" width="14px" height="14px" />' : '');
+        $str .= (isset($user['downloadpos']) && $user['downloadpos'] != 1 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'downloadpos.gif" alt="Download Disabled" title="Download Disabled" width="14px" height="14px" />' : '');
+        $str .= ($user['chatpost'] == 0 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'warned.png" alt="No Chat" title="Shout disabled" width="14px" height="14px" />' : '');
+        $str .= ($user['pirate'] != 0 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'pirate.png" alt="Pirate" title="Pirate" width="14px" height="14px" />' : '');
+        $str .= (isset($user['gotgift']) && $user['gotgift'] == 'yes' ? '<img class="tooltipper" height="16px" src="' . $site_config['pic_base_url'] . 'gift.png" alt="Christmas Gift" title="Has Claimed a Christmas Gift" />' : '');
     }
     $str .= '
             </span>';
