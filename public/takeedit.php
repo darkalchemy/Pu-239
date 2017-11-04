@@ -12,13 +12,13 @@ $possible_extensions = [
     'txt',
 ];
 if (!mkglobal('id:name:body:type')) {
-    setSessionVar('error', 'Id, descr, name or type is missing');
+    setSessionVar('is-warning', 'Id, descr, name or type is missing');
     header("Location: {$_SERVER['HTTP_REFERER']}");
     exit();
 }
 $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
 if (!is_valid_id($id)) {
-    setSessionVar('error', $lang['takedit_no_data']);
+    setSessionVar('is-warning', $lang['takedit_no_data']);
     header("Location: {$_SERVER['HTTP_REFERER']}");
     exit();
 }
@@ -59,7 +59,7 @@ $select_torrent = sql_query('SELECT name, descr, category, visible, vip, release
 $fetch_assoc = mysqli_fetch_assoc($select_torrent) or stderr('Error', 'No torrent with this ID!');
 $infohash = $fetch_assoc['info_hash'];
 if ($CURUSER['id'] != $fetch_assoc['owner'] && $CURUSER['class'] < MIN_CLASS) {
-    setSessionVar('error', "You're not the owner!', 'How did that happen?");
+    setSessionVar('is-danger', "You're not the owner of this torrent.");
     header("Location: {$_SERVER['HTTP_REFERER']}");
     exit();
 }
@@ -70,22 +70,22 @@ $shortfname = $matches[1];
 $dname = $fetch_assoc['save_as'];
 if ((isset($_POST['nfoaction'])) && ($_POST['nfoaction'] == 'update')) {
     if (empty($_FILES['nfo']['name'])) {
-        setSessionVar('error', 'No NFO!');
+        setSessionVar('is-warning', 'No NFO!');
         header("Location: {$_SERVER['HTTP_REFERER']}");
         exit();
     }
     if ($_FILES['nfo']['size'] == 0) {
-        setSessionVar('error', '0-byte NFO!');
+        setSessionVar('is-warning', '0-byte NFO!');
         header("Location: {$_SERVER['HTTP_REFERER']}");
         exit();
     }
     if (!preg_match('/^(.+)\.[' . join(']|[', $possible_extensions) . ']$/si', $_FILES['nfo']['name'])) {
-        setSessionVar('error', 'Invalid extension. <b>' . join(', ', $possible_extensions) . '</b> only!');
+        setSessionVar('is-warning', 'Invalid extension. <b>' . join(', ', $possible_extensions) . '</b> only!');
         header("Location: {$_SERVER['HTTP_REFERER']}");
         exit();
     }
     if (!empty($_FILES['nfo']['name']) && $_FILES['nfo']['size'] > NFO_SIZE) {
-        setSessionVar('error', 'NFO is too big! Max ' . number_format(NFO_SIZE) . ' bytes!');
+        setSessionVar('is-warning', 'NFO is too big! Max ' . number_format(NFO_SIZE) . ' bytes!');
         header("Location: {$_SERVER['HTTP_REFERER']}");
         exit();
     }
@@ -104,7 +104,7 @@ foreach ([
              $name,
          ] as $x) {
     if (empty($x)) {
-        setSessionVar('error', $lang['takedit_no_data']);
+        setSessionVar('is-warning', $lang['takedit_no_data']);
         header("Location: {$_SERVER['HTTP_REFERER']}");
         exit();
     }
@@ -185,7 +185,7 @@ if (isset($_POST['nukereason']) && ($nukereason = $_POST['nukereason']) != $fetc
 // ==09 Poster Mod
 if (isset($_POST['poster']) && (($poster = $_POST['poster']) != $fetch_assoc['poster'] && !empty($poster))) {
     if (!preg_match("/^(http|https):\/\/[^\s'\"<>]+\.(jpg|gif|png)$/i", $poster)) {
-        setSessionVar('error', 'Poster MUST be in jpg, gif or png format. Make sure you include http:// in the URL.');
+        setSessionVar('is-warning', 'Poster MUST be in jpg, gif or png format. Make sure you include http:// in the URL.');
         header("Location: {$_SERVER['HTTP_REFERER']}");
         exit();
     }
@@ -247,7 +247,7 @@ if (($freetorrent = (isset($_POST['freetorrent']) != '' ? '1' : '0')) != $fetch_
 if (isset($_POST['url']) && (($url = $_POST['url']) != $fetch_assoc['url'] && !empty($url))) {
     if (!preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url)) {
         //if (!preg_match("/^(http|https):\/\/[^\s'\"<>]+\.(jpg|gif|png)$/i", $url))
-        setSessionVar('error', 'Make sure you include http:// in the URL.');
+        setSessionVar('is-warning', 'Make sure you include http:// in the URL.');
         header("Location: {$_SERVER['HTTP_REFERER']}");
         exit();
     }
@@ -316,6 +316,6 @@ write_log('torrent edited - ' . htmlsafechars($name) . ' was edited by ' . (($fe
 $mc1->delete_value('editedby_' . $id);
 //$returl = (isset($_POST['returnto']) ? '&returnto=' . urlencode($_POST['returnto']) : 'details.php?id=' . $id);
 
-setSessionVar('success', $lang['details_success_edit']);
+setSessionVar('is-success', $lang['details_success_edit']);
 header("Location: {$site_config['baseurl']}/details.php?id=$id");
 exit();

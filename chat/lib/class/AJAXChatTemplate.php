@@ -41,7 +41,7 @@ class AJAXChatTemplate
 
         // Remove the XML declaration if the content-type is not xml:
         if ($this->_contentType && (strpos($this->_contentType, 'xml') === false)) {
-            $doctypeStart = strpos($this->_parsedContent, '<!DOCTYPE ');
+            $doctypeStart = strpos($this->_parsedContent, '<!doctype ');
             if ($doctypeStart !== false) {
                 // Removing the XML declaration (in front of the document type) prevents IE<7 to go into "Quirks mode":
                 $this->_parsedContent = substr($this->_parsedContent, $doctypeStart);

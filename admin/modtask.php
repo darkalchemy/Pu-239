@@ -14,6 +14,7 @@ $postkey = PostKey([
 ]);
 function remove_torrent_pass($torrent_pass)
 {
+    global $mc1;
     if (strlen($torrent_pass) != 32 || !bin2hex($torrent_pass)) {
         return false;
     }
@@ -30,6 +31,7 @@ function write_info($text)
 
 function resize_image($in)
 {
+    global $mc1;
     $out = [
         'img_width'  => $in['cur_width'],
         'img_height' => $in['cur_height'],
@@ -104,6 +106,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
         $useredit['update'][] = '' . $what . $lang['modtask_to'] . get_user_class_name($class);
         $curuser_cache['class'] = $class;
         $user_cache['class'] = $class;
+        $mc1->delete_value('user_icons_' . $userid);
         $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - $what {$lang['modtask_to']} '" . get_user_class_name($class) . "'{$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
     }
     // === add donated amount to user and to funds table

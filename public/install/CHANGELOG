@@ -1,3 +1,14 @@
+4 Nov 2017
+remove: unused javascript files
+update: admin/block.settings.php
+update: user_blocks.php
+remove: jquery-ui, can't find any place its being used
+replace: iframeResizer.js with one-liner
+replace: css/js files are now served pre-gzipped
+add: admin view queries page
+fix: tooltips on index page last/top/mow torrents
+add: style to scrollbar
+
 31 Oct 2017
 fix: various typos
 add: button to remove alerts

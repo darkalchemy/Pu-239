@@ -7,6 +7,12 @@ header('Content-Type: application/json');
 global $site_config, $mc1;
 $lang = array_merge(load_language('global'), load_language('index'));
 
+if (empty($_POST)) {
+    setSessionVar('is-danger', 'Access Not Allowed');
+    header("Location: {$site_config['baseurl']}/index.php");
+    die();
+}
+
 if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
     $upped = mksize($CURUSER['uploaded']);
     $downed = mksize($CURUSER['downloaded']);

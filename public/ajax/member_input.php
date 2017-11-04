@@ -9,8 +9,15 @@ $valid_actions = [
     'staff_notes',
     'watched_user',
 ];
+if (empty($_POST)) {
+    setSessionVar('is-danger', 'Access Not Allowed');
+    header("Location: {$site_config['baseurl']}/index.php");
+    die();
+}
+
 $action = (in_array($posted_action, $valid_actions) ? $posted_action : '');
 if ($action == '') {
+    setSessionVar('is-danger', 'Access Not Allowed');
     header('Location: index.php');
 } else {
     switch ($action) {

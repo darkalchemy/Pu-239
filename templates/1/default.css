@@ -1,5 +1,5 @@
 html {
-    background: black;
+    background: transparent;
     min-height:100%;
     width: 100%;
     margin: 0;
@@ -13,12 +13,45 @@ body {
     line-height: 110%;
     margin: auto;
     padding: 0;
-    height: max-content;
+    height: 100%;
     width: auto;
     min-height: 100%;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     position: relative;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 .5em rgba(0, 0, 0, .1);
+    -webkit-border-radius: .3125em;
+    -moz-border-radius: .3125em;
+    border-radius: .3125em;
+    background-color: rgba(0, 0, 0, .1);
+}
+
+::-webkit-scrollbar {
+    width: 1em;
+    background-color: rgba(255, 255, 255, .1);
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+    border-top: 1px solid red;
+    border-bottom: 1px solid red;
+    -webkit-border-radius: .3125em;
+    -moz-border-radius: .3125em;
+    border-radius: .3125em;
+    background-color: rgba(0, 0, 0, .1);
+    background-image: -webkit-linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent)
+}
+
+::-webkit-scrollbar-thumb:vertical {
+    border-left: 1px solid red;
+    border-right: 1px solid red;
+    -webkit-border-radius: .625em;
+    -moz-border-radius: .625em;
+    border-radius: .625em;
+    background-color: rgba(0, 0, 0, .1);
+    background-image: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent)
 }
 
 a,
@@ -48,7 +81,8 @@ a:hover {
 iframe {
     padding: 0;
     margin: 0;
-    width: 100%;
+    width: 1px;
+    min-width: 100%;
 }
 
 fieldset {
@@ -340,6 +374,10 @@ textarea {
     margin-right: 0 !important;
 }
 
+.has-text-centered {
+    margin: auto;
+}
+
 .is-wrapped {
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
@@ -466,6 +504,10 @@ textarea {
 
 .padding20 {
     padding: 1.25em;
+}
+
+.padtop10 {
+    padding-top: .625em;
 }
 
 .platform-wrapper {
@@ -607,10 +649,10 @@ textarea {
     color: white;
     background-color: rgba(255, 255, 255, 0.3);
     position: fixed;
-    bottom: 10px;
-    right: 10px;
+    bottom: .625em;
+    right: .625em;
     font-size: .875em;
-    padding: 5px;
+    padding: .3125em;
     display: none;
     -webkit-border-radius: .3125em;
     -moz-border-radius: .3125em;
@@ -620,13 +662,89 @@ textarea {
 }
 
 .back-to-top:hover {
-    background-color: #c3dcc4;
-    color: black;
-    border: 1px solid black;
+    background-color: rgba(0, 0, 0, .8);
+    color: white;
+    border: 1px solid red;
 }
 
 .bordered + .bordered {
     margin-top: 20px;
+}
+
+.slideThree {
+    position: relative;
+    width: 80px;
+    height: 26px;
+    background: #333;
+    margin: 20px auto;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.2);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.2);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.slideThree::after,
+.slideThree::before {
+    font: 700 12px/26px 'Open Sans', sans-serif;
+    z-index: 0;
+    position: absolute;
+}
+
+.slideThree label {
+    -webkit-transition: all 0.35s ease-in-out;
+    -moz-transition: all 0.35s ease-in-out;
+    -o-transition: all 0.35s ease-in-out;
+    transition: all 0.35s ease-in-out;
+    cursor: pointer;
+}
+
+.slideThree::after {
+    content: 'OFF';
+    color: #c00;
+    right: 10px;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.slideThree::before {
+    content: 'ON';
+    margin-left: 5px;
+    color: #00bf00;
+    left: 10px;
+}
+
+.slideThree input[type=checkbox]:checked + label {
+    left: 43px;
+}
+
+.slideThree label {
+    display: block;
+    width: 34px;
+    height: 20px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    z-index: 1;
+    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+    background: #fcfff4; /* Old browsers */
+    background: -moz-linear-gradient(top, #fcfff4 0, #dfe5d7 40%, #b3bead 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #fcfff4 0, #dfe5d7 40%, #b3bead 100%); /* Chrome10-25, Safari5.1-6 */
+    background: linear-gradient(to bottom, #fcfff4 0, #dfe5d7 40%, #b3bead 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#fcfff4', endColorstr='#b3bead', GradientType=0); /* IE6-9 */
+}
+
+.slideThree [type=checkbox] {
+    display: none;
+}
+
+:checked + div {
+    display: block !important;
 }
 
 .mw-50 {
@@ -641,6 +759,10 @@ textarea {
     width: 15%;
 }
 
+.w-20 {
+    width: 20%;
+}
+
 .w-25 {
     width: 25%;
 }
@@ -649,11 +771,26 @@ textarea {
     width: 50%;
 }
 
+.w-75 {
+    width: 75%;
+}
+
 .w-100 {
     width: 100%;
 }
 
+@media (max-width: 1200px) {
+    .w-20 {
+        width: 45%;
+    }
+}
+
 @media (max-width: 767px) {
+    p {
+        text-align: justify;
+        text-justify: kashida;
+    }
+
     #base_content {
         padding: 0;
         -webkit-border-radius: 0;
@@ -707,7 +844,7 @@ textarea {
         width: 25%;
     }
 
-    .w-25, .w-50 {
+    .w-20, .w-25, .w-50, .w-75 {
         width: 100%;
     }
 }

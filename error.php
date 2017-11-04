@@ -22,19 +22,16 @@ if ($string == '400') {
     $text = 'There has been an error with the page you are trying to view. Please try again later.';
 }
 $domain = htmlsafechars($_SERVER['HTTP_HOST']);
-$htmlout = '';
-$htmlout = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
-		\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
-		<html xmlns='http://www.w3.org/1999/xhtml'>
-		<head>
-    <meta http-equiv='refresh' content='5; url=http://" . $domain . "' />
-    <meta name='generator' content='TBDev.net' />
-	  <meta name='MSSmartTagsPreventParsing' content='TRUE' />
+$htmlout = "<!doctype html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
 		<title>{$page}</title>
     <style>
     <!--
-    body
-    {
+    body     {
     margin: 4;
     background-color: white;
     }

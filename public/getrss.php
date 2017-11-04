@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $cats = isset($_POST['cats']) ? array_map('mkint', $_POST['cats']) : [];
     if (count($cats) == 0) {
-        setSessionVar('error', $lang['getrss_nocat']);
+        setSessionVar('is-warning', $lang['getrss_nocat']);
     } else {
         $feed = isset($_POST['feed']) && $_POST['feed'] == 'dl' ? 'dl' : 'web';
         $bm = isset($_POST['bm']) && is_int($_POST['bm']) ? $_POST['bm'] : 0;
@@ -43,7 +43,7 @@ if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
                         <span class='bordered level-center'>
                             <input type='checkbox' name='cats[]' id='cat_" . (int)$cat['id'] . "' value='" . (int)$cat['id'] . "' />
                             <span class='cat-image left10'>
-                                <img class='radius-sm' src='{$INSTALLER09['pic_base_url']}images/caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' />
+                                <img class='radius-sm' src='{$site_config['pic_base_url']}images/caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' />
                             </span>
                         </span>
                     </span>";

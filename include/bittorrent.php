@@ -399,13 +399,20 @@ function userlogin()
         }
         if ($banned) {
             header('Content-Type: text/html; charset=utf-8');
-            echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-      <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
-      <title>Forbidden</title>
-      </head><body>
-      <h1>403 Forbidden</h1>Unauthorized IP address!
-      <p>Reason: <strong>' . htmlsafechars($reason) . '</strong></p>
-      </body></html>';
+            echo "<!doctype html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>Forbidden</title>
+</head>
+<body>
+    <h1>403 Forbidden</h1>
+    <h1>Unauthorized IP address!</h1>h1>
+    <p>Reason: <strong>' . htmlsafechars($reason) . '</strong></p>
+</body>
+</html>";
             die;
         }
     }
@@ -1811,6 +1818,13 @@ function return_bytes($val)
     return $val;
 }
 
+function plural($int)
+{
+    if ($int != 1) {
+        return 's';
+    }
+}
+
 if (file_exists('install')) {
-    setSessionVar('error', "Delete the install directory<br><p>" . ROOT_DIR . "public" . DIRECTORY_SEPARATOR . "install" . DIRECTORY_SEPARATOR . "</p>");
+    setSessionVar('error', "<h1>This site is vulnerable until you delete the install directory</h1><p>rm -r " . ROOT_DIR . "public" . DIRECTORY_SEPARATOR . "install" . DIRECTORY_SEPARATOR . "</p>");
 }

@@ -35,7 +35,7 @@ foreach ($directories as $path) {
 if (!$exist or (isset($_POST['update']) and ($_POST['update'] == 'Update'))) {
     $data = serialize($fetch_set);
     file_put_contents($file_data, $data);
-    setSessionVar('success', "Coder's Log updated for {$CURUSER['username']}");
+    setSessionVar('is-success', "Coder's Log updated for {$CURUSER['username']}");
     $data = $fetch_set;
     unset($_POST);
 }
@@ -74,12 +74,12 @@ $HTMLOUT .= "
                 <div class='has-text-centered'>" . number_format(count($current)) . " files have been added, modifed or deleted since your last update of the " . number_format($i) . " files being tracked.</div>
             </div>
         </div>
-
+        <div class='table-wrapper'>
         <table class='table table-bordered table-striped'>
             <thead>
                 <tr>
                     <th>{$lang['editlog_new']}</th>
-                    <th class='rowhead'>{$lang['editlog_added']}</th>
+                    <th class='w-15'>{$lang['editlog_added']}</th>
                 </tr>
             </thead>";
 reset($current);
@@ -107,11 +107,13 @@ if (!$count) {
 }
 $HTMLOUT .= "
         </table>
+        </div>
+        <div class='table-wrapper'>
         <table class='table table-bordered table-striped top20'>
             <thead>
                 <tr>
                     <th>{$lang['editlog_modified']}</th>
-                    <th class='rowhead'>{$lang['editlog_modified1']}</th>
+                    <th class='w-15'>{$lang['editlog_modified1']}</th>
                 </tr>
             </thead>";
 reset($current);
@@ -138,11 +140,13 @@ if (!$count) {
 }
 $HTMLOUT .= "
         </table>
+        </div>
+        <div class='table-wrapper'>
         <table class='table table-bordered table-striped top20'>
             <thead>
                 <tr>
                     <th>{$lang['editlog_deleted']}</th>
-                    <th class='rowhead'>{$lang['editlog_deleted1']}</th>
+                    <th class='w-15'>{$lang['editlog_deleted1']}</th>
                 </tr>
             </thead>";
 reset($current);
@@ -169,6 +173,7 @@ if (!$count) {
 }
 $HTMLOUT .= "
         </table>
+        </div>
         <form method='post' action='staffpanel.php?tool=editlog&amp;action=editlog'>
             <div class='has-text-centered top20 bottom20'>
                 <input name='update' type='submit' value='{$lang['editlog_update']}' class='button' />

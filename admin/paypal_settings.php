@@ -13,9 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (sql_query('INSERT INTO paypal_config(name,value) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY update value=values(value)')) {
         $mc1->delete_value('paypal_settings_');
-        setSessionVar('success', 'Update Successful');
+        setSessionVar('is-success', 'Update Successful');
     } else {
-        setSessionVar('error', $lang['paypal_saved']);
+        setSessionVar('is-warning', $lang['paypal_saved']);
     }
 }
 

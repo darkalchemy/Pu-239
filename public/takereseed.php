@@ -19,9 +19,9 @@ if ($pm_what == 'last10') {
 }
 if (count($pms) > 0) {
     sql_query('INSERT INTO messages (sender, receiver, added, msg ' . ($use_subject ? ', subject' : '') . ' ) VALUES ' . join(',', $pms)) or sqlerr(__FILE__, __LINE__);
-    setSessionVar('success', 'PM was sent! Now wait for a seeder!');
+    setSessionVar('is-success', 'PM was sent! Now wait for a seeder!');
 } else {
-    setSessionVar('error', 'There were no users to PM!');
+    setSessionVar('is-warning', 'There were no users to PM!');
 }
 sql_query('UPDATE torrents set last_reseed = ' . TIME_NOW . ' WHERE id = ' . sqlesc($reseedid)) or sqlerr(__FILE__, __LINE__);
 $mc1->begin_transaction('torrent_details_' . $reseedid);

@@ -2,9 +2,18 @@
 sleep(1);
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 check_user_status();
-if (!isset($CURUSER)) {
-    stderr('Error', "Sorry but you can't add a thank you on your own torrent");
+if (empty($_POST)) {
+    setSessionVar('is-danger', 'Access Not Allowed');
+    header("Location: {$site_config['baseurl']}/index.php");
+    die();
 }
+
+if (!isset($CURUSER)) {
+    setSessionVar('is-warning', "You can't add a thank you on your own torrent");
+    header("Location: {$site_config['baseurl']}/index.php");
+    die();
+}
+
 $uid = (int)$CURUSER['id'];
 $tid = isset($_POST['torrentid']) ? (int)$_POST['torrentid'] : (isset($_GET['torrentid']) ? (int)$_GET['torrentid'] : 0);
 $do = isset($_POST['action']) ? htmlsafechars($_POST['action']) : (isset($_GET['action']) ? htmlsafechars($_GET['action']) : 'list');
@@ -34,9 +43,12 @@ function print_list()
         $out = (count($list) > 0 ? join(', ', $list) : 'Not yet');
 
         return <<<IFRAME
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!doctype html>
+<html>
 <head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
 <style>
 body { margin:0;padding:0; 
 	   font-size:12px;

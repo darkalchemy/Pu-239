@@ -507,7 +507,7 @@ function redirect($url, $text, $time = 2)
     global $site_config, $lang;
     $page_title = $lang['rep_ad_redirect_title'];
     $page_detail = "<em>{$lang['rep_ad_redirect_redirect']}</em>";
-    $html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
+    $html = "<!doctype html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
 		\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
 		<html xmlns='http://www.w3.org/1999/xhtml'>
 		<head>

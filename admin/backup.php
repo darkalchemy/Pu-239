@@ -35,7 +35,7 @@ if (empty($mode)) {
                         ORDER BY db.added DESC') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         $HTMLOUT .= "
-        <div class='container is-fluid portlet'>
+        <div class='container is-fluid portlet has-text-centered top20 bottom20 padding20'>
             <form method='post' action='./staffpanel.php?tool=backup&amp;mode=delete'>
                 <input type='hidden' name='action' value='delete' />
                 {$lang['backup_welcome']}

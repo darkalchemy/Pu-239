@@ -276,3 +276,4 @@ $site_config['arcade_games_names'] = array('Asteroids', 'Breakout', 'Frogger', '
 $site_config['top_score_points'] = 1000;
 
 $site_config['bad_words'] = ['fuck', 'shit', 'Moderator', 'Administrator', 'Admin', 'pussy', 'Sysop', 'cunt', 'nigger', 'VIP', 'Super User', 'Power User', 'ADMIN', 'SYSOP', 'MODERATOR', 'ADMINISTRATOR'];
+$site_config['notifications'] = ['is-danger', 'is-warning', 'is-success', 'is-info'];

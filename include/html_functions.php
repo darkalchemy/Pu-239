@@ -67,7 +67,7 @@ function tr($x, $y, $noesc = 0)
 
     return "
         <tr>
-            <td class='heading heading'>
+            <td class='rowhead'>
                 $x
             </td>
             <td class='break_word'>

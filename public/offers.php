@@ -444,7 +444,7 @@ switch ($action) {
     <td><input type="text"  name="offer_name" value="' . htmlsafechars($offer_name, ENT_QUOTES) . '" class="required" /></td>
     </tr>
     <tr>
-    <td class="heading">image:</td>
+    <td class="rowhead">image:</td>
     <td><input type="text"  name="image" value="' . htmlsafechars($image, ENT_QUOTES) . '" class="required" /></td>
     </tr>
     <tr>

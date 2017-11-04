@@ -1,26 +1,20 @@
 <?php
 
-$BLOCKS = array(
+$BLOCKS = [
 	'ie_user_alert' => 1,
 	'news_on' => 1,
 	'ajaxchat_on' => 1,
 	'trivia_on' => 1,
 	'active_users_on' => 1,
 	'active_24h_users_on' => 1,
-	'active_irc_users_on' => 1,
 	'active_birthday_users_on' => 1,
 	'stats_on' => 1,
 	'disclaimer_on' => 1,
-	'latest_user_on' => 1,
 	'forum_posts_on' => 1,
 	'latest_torrents_on' => 1,
 	'latest_torrents_scroll_on' => 1,
 	'announcement_on' => 1,
-	'donation_progress_on' => 1,
 	'ads_on' => 1,
-	'radio_on' => 1,
-	'torrentfreak_on' => 1,
-	'christmas_gift_on' => 1,
 	'active_poll_on' => 1,
 	'movie_ofthe_week_on' => 1,
 	'global_freeleech_on' => 1,
@@ -33,7 +27,6 @@ $BLOCKS = array(
 	'global_crazyhour_on' => 1,
 	'global_bug_message_on' => 1,
 	'global_freeleech_contribution_on' => 1,
-	'userdetails_login_link_on' => 1,
 	'userdetails_flush_on' => 1,
 	'userdetails_joined_on' => 1,
 	'userdetails_online_time_on' => 1,
@@ -64,7 +57,4 @@ $BLOCKS = array(
 	'userdetails_report_user_on' => 1,
 	'userdetails_user_status_on' => 1,
 	'userdetails_user_comments_on' => 1,
-
-);
-
-?>
+];

@@ -7,18 +7,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fail = false;
     $tickets = isset($_POST['tickets']) ? (int)$_POST['tickets'] : '';
     if (!$tickets) {
-        setSessionVar('error', "How many tickets you wanna buy? [{$_POST['tickets']}]");
+        setSessionVar('is-warning', "How many tickets you wanna buy? [{$_POST['tickets']}]");
         $fail = true;
     } elseif ($tickets <= 0) {
-        setSessionVar('error', "you can't buy a negative quantity? [{$_POST['tickets']}]");
+        setSessionVar('is-warning', "You can't buy a negative quantity? [{$_POST['tickets']}]");
         $fail = true;
     }
     $user_tickets = get_row_count('tickets', 'WHERE user = ' . $CURUSER['id']);
     if ($user_tickets + $tickets > $lottery_config['user_tickets']) {
-        setSessionVar('error', 'You reached your limit max is ' . $lottery_config['user_tickets'] . ' ticket(s)');
+        setSessionVar('is-warning', 'You reached your limit max is ' . $lottery_config['user_tickets'] . ' ticket(s)');
         $fail = true;
     } elseif ($CURUSER['seedbonus'] < $tickets * $lottery_config['ticket_amount']) {
-        setSessionVar('error', 'You need more points to buy the amount of tickets you want');
+        setSessionVar('is-warning', 'You need more points to buy the amount of tickets you want');
         $fail = true;
     }
     for ($i = 1; $i <= $tickets; ++$i) {
@@ -42,16 +42,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'seedbonus' => $seedbonus_new,
             ]);
             $mc1->commit_transaction($What_Expire);
-            setSessionVar('success', 'You bought <b class="has-text-primary">' . number_format($tickets) . '</b>. You now have <b class="has-text-primary">' . number_format($tickets + $user_tickets) . '</b> tickets!
+            setSessionVar('is-success', 'You bought <b class="has-text-primary">' . number_format($tickets) . '</b>. You now have <b class="has-text-primary">' . number_format($tickets + $user_tickets) . '</b> tickets!
 ');
         } else {
-            setSessionVar('error', 'There was an error with the update query, mysql error: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            setSessionVar('is-warning', 'There was an error with the update query, mysql error: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         }
     }
 }
 $classes_allowed = (strpos($lottery_config['class_allowed'], '|') ? explode('|', $lottery_config['class_allowed']) : $lottery_config['class_allowed']);
 if (!(is_array($classes_allowed) ? in_array($CURUSER['class'], $classes_allowed) : $CURUSER['class'] == $classes_allowed)) {
-    setSessionVar('error', 'Your class is not allowed to play in this lottery');
+    setSessionVar('is-danger', 'Your class is not allowed to play in this lottery');
 }
 //some default values
 $lottery['total_pot'] = 0;

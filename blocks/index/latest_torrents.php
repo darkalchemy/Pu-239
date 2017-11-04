@@ -24,7 +24,7 @@ if (count($top5torrents) > 0) {
                     <thead>
                         <tr>
                             <th class='has-text-centered'>{$lang['index_mow_type']}</th>
-                            <th class='w-25'>{$lang['top5torrents_title']}</th>
+                            <th class='w-50'>{$lang['top5torrents_title']}</th>
                             <th class='has-text-centered'>{$lang['index_mow_snatched']}</th>
                             <th class='has-text-centered'>{$lang['top5torrents_seeders']}</th>
                             <th class='has-text-centered'>{$lang['top5torrents_leechers']}</th>
@@ -46,10 +46,10 @@ if (count($top5torrents) > 0) {
                             </td>
                             <td>
                                 <a href='{$site_config['baseurl']}/details.php?id=" . (int)$top5torrentarr['id'] . "&amp;hit=1'>
-                                    <span class='dt-tooltipper-large' data-tooltip-content='#id_{$top5torrentarr['id']}_tooltip'>
+                                    <span class='dt-tooltipper-large' data-tooltip-content='#top_id_{$top5torrentarr['id']}_tooltip'>
                                         {$torrname}
                                         <div class='tooltip_templates'>
-                                            <span id='id_{$top5torrentarr['id']}_tooltip'>
+                                            <span id='top_id_{$top5torrentarr['id']}_tooltip'>
                                                 <div class='is-flex tooltip-torrent'>
                                                     <span class='margin10'>
                                                         $poster
@@ -109,7 +109,7 @@ if (count($last5torrents) > 0) {
                     <thead>
                         <tr>
                             <th class='has-text-centered'>{$lang['index_mow_type']}</th>
-                            <th>{$lang['last5torrents_title']}</th>
+                            <th class='w-50'>{$lang['last5torrents_title']}</th>
                             <th class='has-text-centered'>{$lang['index_mow_snatched']}</th>
                             <th class='has-text-centered'>{$lang['last5torrents_seeders']}</th>
                             <th class='has-text-centered'>{$lang['last5torrents_leechers']}</th>
@@ -131,10 +131,10 @@ if (count($last5torrents) > 0) {
                             </td>
                             <td>
                                 <a href='{$site_config['baseurl']}/details.php?id=" . (int)$last5torrentarr['id'] . "&amp;hit=1'>
-                                    <span class='dt-tooltipper-large' data-tooltip-content='#id_{$last5torrentarr['id']}_tooltip'>
+                                    <span class='dt-tooltipper-large' data-tooltip-content='#last_id_{$last5torrentarr['id']}_tooltip'>
                                         {$torrname}
                                         <div class='tooltip_templates'>
-                                            <span id='id_{$last5torrentarr['id']}_tooltip'>
+                                            <span id='last_id_{$last5torrentarr['id']}_tooltip'>
                                                 <div class='is-flex tooltip-torrent'>
                                                     <span class='margin10'>
                                                         $poster

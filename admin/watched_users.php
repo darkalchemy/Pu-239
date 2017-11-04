@@ -96,21 +96,17 @@ if (isset($_GET['add'])) {
         }
         //== ok they are not watched yet let's add the info part 1
         if ($_GET['add'] && $_GET['add'] == 1) {
-            $naughty_box = '
- <form method="post" action="staffpanel.php?tool=watched_users&amp;action=watched_users&amp;add=2&amp;id=' . $member_whos_been_bad . '">
- <table width="600">
- <tr>
- <td class="colhead">' . $lang['watched_add'] . ' ' . $user['username'] . '' . $lang['watched_towu'] . '</td>
- </tr>
- <tr>
- <td class="has-text-centered"><b>' . $lang['watched_pleasefil'] . '' . htmlsafechars($user['username']) . ' ' . $lang['watched_userlist'] . '</b><br>
- <textarea cols="60" rows="6" name="reason">' . htmlsafechars($user['watched_user_reason']) . '</textarea><br></td>
- </tr>
- <tr>
- <td class="colhead">
- <input type="submit" class="button_big" value="' . $lang['watched_addtowu'] . '!"" /><form><td>
-    </tr>
-    </table>';
+            $text = "
+                <form method='post' action='./staffpanel.php?tool=watched_users&amp;action=watched_users&amp;add=2&amp;id={$member_whos_been_bad}'>
+                    <h2>{$lang['watched_add']}{$user['username']}{$lang['watched_towu']}</h2>
+                    <div class='has-text-centered'>
+                        <span><b>{$lang['watched_pleasefil']}" . format_username(member_whos_been_bad) . " {$lang['watched_userlist']}</b></span>
+                    </div>
+                    <textarea class='w-100' rows='6' name='reason'>" . htmlsafechars($user['watched_user_reason']) . "</textarea>
+                    <input type='submit' class='button_big' value='{$lang['watched_addtowu']}!' />
+                </form>";
+            $naughty_box = main_div($text);
+
             stderr('watched Users', $naughty_box);
         }
         //=== all is good, let's enter them \o/
@@ -181,7 +177,7 @@ if ($how_many > 0) {
         $HTMLOUT .= '
     <tr>
         <td class="has-text-centered">' . get_date($arr['watched_user'], '') . '</td>
-        <td class="has-text-left">' . format_username($arr) . '</td>
+        <td class="has-text-left">' . format_username($arr['id']) . '</td>
         <td class="has-text-left">' . $the_flip_box . '</td>
         <td class="has-text-centered">' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . '</td>
         <td class="has-text-centered">' . ($invitor_arr['username'] == '' ? '' . $lang['watched_open_sign-ups'] . '' : format_username($invitor_arr)) . '</td>

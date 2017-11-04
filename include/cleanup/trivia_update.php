@@ -20,7 +20,9 @@ function trivia_update($data)
             }
             $mc1->cache_value('triviaquestions_', $qids, 0);
         }
-        shuffle($qids);
+        for ($x = 0; $x <= 10; $x++) {
+            shuffle($qids);
+        }
         $qid = array_pop($qids);
         $mc1->replace_value('triviaquestions_', $qids, 0);
         if (count($qids) <= 1) {
@@ -30,17 +32,14 @@ function trivia_update($data)
         // cache for current question
         $mc1->cache_value('trivia_current_qid_', (int)$qid, 360);
         $mc1->delete_value('trivia_gamenum_');
-        $mc1->delete_value('trivia_round_remaining_');
-        $mc1->delete_value('trivia_game_remaining_');
+        $mc1->delete_value('trivia_remaining_');
         $mc1->delete_value('trivia_current_question_');
         $mc1->delete_value('trivia_correct_answer_');
 
         // clear previous question
-        $sql = 'UPDATE triviaq SET current = 0 WHERE current = 1';
-        sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE triviaq SET current = 0 WHERE current = 1') or sqlerr(__FILE__, __LINE__);
         // set current question
-        $sql = 'UPDATE triviaq SET asked = 1, current = 1 WHERE qid = ' . sqlesc($qid);
-        sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE triviaq SET asked = 1, current = 1 WHERE qid = ' . sqlesc($qid)) or sqlerr(__FILE__, __LINE__);
     }
 
     if ($data['clean_log'] && $queries > 0) {

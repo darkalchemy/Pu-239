@@ -21,7 +21,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     }
 
     $body_class = 'background-16 h-style-9 text-9 skin-2';
-    $htmlout ="<!DOCTYPE html>
+    $htmlout ="<!doctype html>
 <html>
 <head>
     <meta charset='utf-8'>
@@ -117,22 +117,19 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
                 </div>";
     }
 
-    if (getSessionVar('error')) {
-        $htmlout .= "
-                <div class='notification is-danger has-text-centered size_6'>
-                    <button class='delete'></button>" . getSessionVar('error') . "
+    foreach ($site_config['notifications'] as $notif) {
+        if (($message = getSessionVar($notif)) != false) {
+            $htmlout .= "
+                <div class='notification $notif has-text-centered size_6'>
+                    <button class='delete'></button>$message
                 </div>";
-        unsetSessionVar('error');
-    } elseif (getSessionVar('success')) {
-        $htmlout .= "
-                <div class='notification is-success has-text-centered size_6'>
-                    <button class='delete'></button>" . getSessionVar('success') . "
-                </div>";
-        unsetSessionVar('success');
+        }
+        unsetSessionVar($notif);
     }
 
     return $htmlout;
-} // stdhead
+}
+
 function stdfoot($stdfoot = false)
 {
     global $CURUSER, $site_config, $start, $query_stat, $queries, $mc1, $querytime, $lang;
@@ -270,12 +267,6 @@ function stdfoot($stdfoot = false)
 
     $htmlfoot .= "
     <script src='" . get_file('js') . "'></script>
-    <!--[if lt IE 9]>
-        <script src='./templates/" . get_stylesheet() . "/js/modernizr.custom.js'></script>
-        <script src='http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE8.js'></script>
-        <script src='./templates/" . get_stylesheet() . "/js/ie.js'></script>
-    <![endif]-->
-
 </body>
 </html>";
 
@@ -301,7 +292,7 @@ function stdmsg($heading, $text)
 
 function StatusBar()
 {
-    global $CURUSER, $site_config, $lang, $rep_is_on, $mc1, $msgalert;
+    global $CURUSER;
     if (!$CURUSER) {
         return '';
     }

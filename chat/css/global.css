@@ -60,8 +60,8 @@ body.ajax-chat {
 #content #helpContainer,
 #content #settingsContainer,
 #content #onlineListContainer,
-#content #inputFieldContainer {
-    background-color: rgba(0, 0, 0, .1);
+#content #inputFieldContainer #inputField {
+    background-color: rgba(0, 0, 0, .2);
 }
 
 
@@ -108,8 +108,8 @@ body.ajax-chat {
 
 #content #mainPanelContainer {
     position: absolute;
-    left: 0;
-    right: 0;
+    left: 5px;
+    right: 5px;
     top: 45px;
     bottom: 120px;
 }
@@ -169,8 +169,8 @@ body.ajax-chat {
 
 #content #inputFieldContainer {
     position: absolute;
-    left: 0;
-    right: 0;
+    left: 5px;
+    right: 5px;
     bottom: 65px;
     padding-right: 2px;
 }
@@ -377,13 +377,9 @@ body.ajax-chat {
 }
 
 @media (max-width: 700px) {
-    #inputFieldContainer {
-        background-color: rgba(0, 0, 0, .1);
-    }
-
-    #onlineListContainer,
-    #settingsContainer,
-    #helpContainer {
+    #mainPanelContainer #onlineListContainer,
+    #mainPanelContainer #settingsContainer,
+    #mainPanelContainer #helpContainer {
         background-color: rgba(0, 0, 0, .9);
         z-index: 5;
     }
@@ -454,7 +450,6 @@ body.ajax-chat {
 
     #content #inputFieldContainer #inputField {
         height: 20px;
-        background-color: rgba(0, 0, 0, .1);
     }
 
     #content #inputFieldContainer {

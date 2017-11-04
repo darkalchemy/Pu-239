@@ -201,7 +201,7 @@ $highlight = " bgcolor='lightgrey'";
                     <input name="ul2" type="text" id="ul2" size="8" maxlength="7" value=""<?php
                     echo isset($_POST['ul2']) ? $_POST['ul2'] : '' ?>" />
                 </td>
-                <td class="heading"><?php
+                <td class="rowhead"><?php
                     echo $lang['usersearch_donor'] ?></td>
 
                 <td <?php
@@ -288,7 +288,7 @@ $highlight = " bgcolor='lightgrey'";
             </tr>
 
             <tr>
-                <td class="heading"></td>
+                <td class="rowhead"></td>
                 <td></td>
                 <td class='rowhead'><?php
                     echo $lang['usersearch_active'] ?></td>

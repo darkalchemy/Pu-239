@@ -83,7 +83,7 @@ if ($round_remaining >= 1) {
     $refresh = $round_remaining;
 }
 
-$HTMLOUT = "<!DOCTYPE html>
+$HTMLOUT = "<!doctype html>
 <html>
 <head>
     <meta charset='utf-8'>
@@ -273,8 +273,6 @@ $HTMLOUT .= "
 
 if ($round_remaining >= 1) {
     $HTMLOUT .= "
-<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
-<script src='" . get_file('trivia_js') ."'></script>
 <script>
     <!-- https://www.sitepoint.com/build-javascript-countdown-timer-no-dependencies/ -->
     function getTimeRemaining(endtime){

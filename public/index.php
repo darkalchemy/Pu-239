@@ -9,6 +9,7 @@ require_once ROOT_DIR . 'polls.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
+global $CURUSER;
 $stdhead = [
     'css' => [
         get_file('index_css')
@@ -17,12 +18,17 @@ $stdhead = [
 
 $stdfoot = [
     'js' => [
-        get_file('index_js')
+        get_file('index_js'),
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('index'), load_language('trivia'));
 if (isset($_GET['act']) && $_GET['act'] == 'Arcade' && isset($_POST['gname'])) {
     require_once INCL_DIR . 'arcade.php';
+}
+
+$unread = getPmCount($CURUSER['id']);
+if ($unread >= 1) {
+    setSessionVar('is-info', "You have $unread message" . plural($unread) . " in your Inbox");
 }
 
 $HTMLOUT = '';

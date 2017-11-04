@@ -105,7 +105,7 @@ if (!empty($CURUSER['avatar']) && $CURUSER['av_w'] > 5 && $CURUSER['av_h'] > 5) 
 //== Avatar
 if ($action == 'avatar') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75'>
+                        <div class='table-wrapper w-75 top20 bottom20'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -165,7 +165,7 @@ if ($action == 'avatar') {
 } //== Signature
 elseif ($action == 'signature') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75'>
+                        <div class='table-wrapper w-75 top20 bottom20'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -196,7 +196,7 @@ elseif ($action == 'signature') {
 } //== Social
 elseif ($action == 'social') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75'>
+                        <div class='table-wrapper w-75 top20 bottom20'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -233,7 +233,7 @@ elseif ($action == 'social') {
 elseif ($action == 'location') {
     $datetime = unixstamp_to_human(TIME_NOW);
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75'>
+                        <div class='table-wrapper w-75 top20 bottom20'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -276,7 +276,7 @@ elseif ($action == 'location') {
 } //== Links
 elseif ($action == 'links') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-25'>
+                        <div class='table-wrapper w-25 top20 bottom20'>
                             <table class='table table-bordered table-striped top20 bottom20 w-100'>
                                 <thead>
                                     <tr>
@@ -315,7 +315,7 @@ elseif ($action == 'links') {
                                 </tbody>
                             </table>
                         </div>
-                        <div class='table-wrapper w-25'>
+                        <div class='table-wrapper w-25 top20 bottom20'>
                             <table class='table table-bordered table-striped top20 bottom20 w-100'>
                                 <thead>
                                     <tr>
@@ -358,7 +358,7 @@ elseif ($action == 'links') {
 } //== Security
 elseif ($action == 'security') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75'>
+                        <div class='table-wrapper w-75 top20 bottom20'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -434,7 +434,7 @@ elseif ($action == 'security') {
     }
     $HTMLOUT .= tr($lang['usercp_email'], "
                                         <input type='text' name='email' class='w-100' value='" . htmlsafechars($CURUSER['email']) . "' />
-                                        <p>{$lang['usercp_email_pass']}</p>
+                                        <p class='margin10'>{$lang['usercp_email_pass']}</p>
                                         <input type='password' name='chmailpass' class='keyboardInput w-100' onkeypress='showkwmessage();return false;' />", 1);
     $HTMLOUT .= "
                                 <tr>
@@ -498,7 +498,7 @@ elseif ($action == 'security') {
 } //== Torrents
 elseif ($action == 'torrents') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75'>
+                        <div class='table-wrapper w-75 top20 bottom20'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -521,7 +521,7 @@ elseif ($action == 'torrents') {
                                                     <input name='cat{$a['id']}' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? " checked" : '') . " value='yes' />
                                                     <span class='cat-image left10'>
                                                         <a href='./browse.php?c".(int) $a['id']."'>
-                                                            <img class='radius-sm' src='{$INSTALLER09['pic_base_url']}images/caticons/{$CURUSER['categorie_icon']}/".htmlsafechars($a['image'])."'alt='".htmlsafechars($a['name'])."' />
+                                                            <img class='radius-sm' src='{$site_config['pic_base_url']}images/caticons/{$CURUSER['categorie_icon']}/".htmlsafechars($a['image'])."'alt='".htmlsafechars($a['name'])."' />
                                                         </a>
                                                     </span>
                                                 </span>";
@@ -563,7 +563,7 @@ elseif ($action == 'torrents') {
 } //== Personal
 elseif ($action == 'personal') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75'>
+                        <div class='table-wrapper w-75 top20 bottom20'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -729,7 +729,7 @@ elseif ($action == 'personal') {
     //== Default PMs
     if ($action == 'default') {
         $HTMLOUT .= "
-                        <div class='table-wrapper w-75'>
+                        <div class='table-wrapper w-75 top20 bottom20'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>

@@ -3,6 +3,12 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATO
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'));
+if (empty($_GET)) {
+    setSessionVar('is-danger', 'Access Not Allowed');
+    header("Location: {$site_config['baseurl']}/index.php");
+    die();
+}
+
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $rate = isset($_GET['rate']) ? (int)$_GET['rate'] : 0;
 $uid = $CURUSER['id'];
@@ -12,7 +18,7 @@ $ref = isset($_GET['ref']) ? $_GET['ref'] : ($what == 'torrent' ? 'details.php' 
 $completeres = sql_query('SELECT * FROM ' . (XBT_TRACKER == true ? 'xbt_files_users' : 'snatched') . ' WHERE ' . (XBT_TRACKER == true ? 'completedtime !=0' : 'complete_date !=0') . ' AND ' . (XBT_TRACKER == true ? 'uid' : 'userid') . ' = ' . $CURUSER['id'] . ' AND ' . (XBT_TRACKER == true ? 'fid' : 'torrentid') . ' = ' . $id);
 $completecount = mysqli_num_rows($completeres);
 if ($what == 'torrent' && $completecount == 0) {
-    stderr('Failed', 'You must have downloaded this torrent in order to rate it.');
+    setSessionVar('is-warning', 'You must have downloaded this torrent in order to rate it.');
 }
 if ($id > 0 && $rate >= 1 && $rate <= 5) {
     if (sql_query('INSERT INTO rating(' . $what . ',rating,user) VALUES (' . sqlesc($id) . ',' . sqlesc($rate) . ',' . sqlesc($uid) . ')')) {
@@ -54,7 +60,7 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
             echo '<ul class="star-rating tooltipper" title="Your rated this ' . $what . ' ' . htmlsafechars($a['rate']) . ' star' . (htmlsafechars($a['rate']) > 1 ? 's' : '') . '"  ><li class="current-rating" />.</ul>';
         } else {
             header('Refresh: 2; url=' . $ref);
-            stderr('Success', 'Your rate has been added, wait while redirecting! ');
+            setSessionVar('is-success', 'Your rating has been added!');
         }
     } else {
         if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062 && $ajax) {
@@ -62,7 +68,7 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
         } elseif (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) && $ajax) {
             echo "You can't rate twice, Err - " . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
         } else {
-            stderr('Err', "You can't rate twice, Err - " . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            setSessionVar('is-warning', "You can't rate twice, Err - " . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         }
     }
 }

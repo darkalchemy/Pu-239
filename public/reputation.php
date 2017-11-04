@@ -5,37 +5,24 @@ require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 $lang = load_language('reputation');
-// mod or not?
+
 $is_mod = ($CURUSER['class'] >= UC_STAFF) ? true : false;
-//$CURUSER['class'] = 2;
-//$rep_maxperday = 10;
-//$rep_repeat = 20;
+
 $closewindow = true;
 require_once CACHE_DIR . 'rep_settings_cache.php';
-//print_r($GVARS);
+
 if (!$GVARS['rep_is_online']) {
     exit($lang['info_reputation_offline']);
 }
-///////////////////////////////////////////////
-//	Need only deal with one input value
-///////////////////////////////////////////////
+
 if (isset($_POST) || isset($_GET)) {
     $input = array_merge($_GET, $_POST);
-    //print_r($input);
-    //die;
 }
-//$input['reputation'] = 'pos';
-//$input['reason'] = 'la di da di di la';
-///////////////////////////////////////////////
-//	Just added to Reputation?
-///////////////////////////////////////////////
+
 if (isset($input['done'])) {
     rep_output($lang['info_reputation_added']);
 }
-///////////////////////////////////////////////
-//	Nope, so do something different, like check stuff
-///////////////////////////////////////////////
-/// weeeeeeeeee =]
+
 $check = isset($input['pid']) ? is_valid_id($input['pid']) : false;
 $locales = [
     'posts',
@@ -48,9 +35,6 @@ if (!$check) {
     rep_output('Incorrect Access');
 }
 if ($rep_locale == 'posts') {
-    ///////////////////////////////////////////////
-    // check the post actually exists!
-    ///////////////////////////////////////////////
     $forum = sql_query("SELECT posts.topic_id AS locale, posts.user_id AS userid, forums.min_class_read,
 users.username, users.reputation
 FROM posts
@@ -59,10 +43,6 @@ LEFT JOIN forums ON topics.forum_id = forums.id
 LEFT JOIN users ON posts.user_id = users.id
 WHERE posts.id ={$input['pid']}");
 } elseif ($rep_locale == 'comments') {
-    ///////////////////////////////////////////////
-    // check the comment actually exists!
-    ///////////////////////////////////////////////
-    //uncomment the following  if use comments.anonymous field
     $forum = sql_query("SELECT comments.id, comments.user AS userid, comments.anonymous AS anon,
      comments.torrent AS locale,
      users.username, users.reputation
@@ -70,20 +50,14 @@ WHERE posts.id ={$input['pid']}");
      LEFT JOIN users ON comments.user = users.id
      WHERE comments.id = {$input['pid']}");
 } elseif ($rep_locale == 'torrents') {
-    ///////////////////////////////////////////////
-    // check the uploader actually exists!
-    ///////////////////////////////////////////////
     $forum = sql_query("SELECT torrents.id as locale, torrents.owner AS userid, torrents.anonymous AS anon,
     users.username, users.reputation
     FROM torrents
     LEFT JOIN users ON torrents.owner = users.id
     WHERE torrents.id ={$input['pid']}");
 } elseif ($rep_locale == 'users') {
-    ///////////////////////////////////////////////
-    // check the user actually exists!
-    ///////////////////////////////////////////////
     $forum = sql_query("SELECT id AS userid, username, reputation, opt1, opt2 FROM users WHERE id ={$input['pid']}");
-} // end
+}
 switch ($rep_locale) {
     case 'comments':
         $this_rep = 'Comment';
@@ -100,13 +74,11 @@ switch ($rep_locale) {
     default:
         $this_rep = 'Post';
 }
-// does it or don't it?
+
 if (!mysqli_num_rows($forum)) {
     rep_output($this_rep . ' Does Not Exist - Incorrect Access');
 }
-///////////////////////////////////////////////
-// ok, lets proceed
-///////////////////////////////////////////////
+
 $res = mysqli_fetch_assoc($forum) or sqlerr(__LINE__, __FILE__);
 if (isset($res['minclassread'])) { // 'posts'
     if ($CURUSER['class'] < $res['minclassread']) {
@@ -114,26 +86,19 @@ if (isset($res['minclassread'])) { // 'posts'
         rep_output('Wrong Permissions');
     }
 }
-///////////////////////////////////////////////
-//	Does the user have memory loss? Have they already rep'd?
-///////////////////////////////////////////////
+
 $repeat = sql_query("SELECT postid FROM reputation WHERE postid ={$input['pid']} AND whoadded={$CURUSER['id']}");
-//$repres = mysql_fetch_assoc( $forum ) or sqlerr(__LINE__,__FILE__);
 if (mysqli_num_rows($repeat) > 0 && $rep_locale != 'users') { // blOOdy eedjit check!
     rep_output('You have already added Rep to this ' . $this_rep . '!'); // Is insane!
 }
-///////////////////////////////////////////////
-// 	Is a mod or gone over the limit?
-///////////////////////////////////////////////
+
 if (!$is_mod) {
     if ($GVARS['rep_maxperday'] >= $GVARS['rep_repeat']) {
         $klimit = intval($GVARS['rep_maxperday'] + 1);
     } else {
         $klimit = intval($GVARS['rep_repeat'] + 1);
     }
-    ///////////////////////////////////////////////
-    //	Some trivial flood checking
-    ///////////////////////////////////////////////
+
     $flood = sql_query("SELECT dateadd, userid FROM reputation 
 									WHERE whoadded = {$CURUSER['id']} 
 									ORDER BY dateadd DESC
@@ -151,17 +116,10 @@ if (!$is_mod) {
         }
     }
 }
-///////////////////////////////////////////////
-//	Passed flood checkin, what to do now?
-///////////////////////////////////////////////
-// Note: if you use another forum type, you may already have this GLOBAL available
-// So you can save a query here, else...
 $r = sql_query("SELECT COUNT(*) FROM posts WHERE user_id = {$CURUSER['id']}") or sqlerr();
 $a = mysqli_fetch_row($r) or sqlerr();
 $CURUSER['posts'] = $a[0];
-///////////////////////////////////////////////
-// What's the reason for bothering me?
-///////////////////////////////////////////////
+
 $reason = '';
 if (isset($input['reason']) && !empty($input['reason'])) {
     $reason = trim($input['reason']);
@@ -173,12 +131,7 @@ if (isset($input['reason']) && !empty($input['reason'])) {
         rep_output($lang['info_reason_too_long']);
     }
 }
-//$input['do'] = 'addrep';
-//$input['reputation'] = 1;
-//$site_config['baseurl'] ='';
-///////////////////////////////////////////////
-//	Are we adding a rep or what?
-///////////////////////////////////////////////
+
 if (isset($input['do']) && $input['do'] == 'addrep') {
     if ($res['userid'] == $CURUSER['id']) { // sneaky bastiges!
         rep_output($lang['info_cannot_rate_own']);
@@ -206,11 +159,10 @@ if (isset($input['do']) && $input['do'] == 'addrep') {
         'postid'     => (int)$input['pid'],
         'userid'     => $res['userid'],
     ];
-    //print( join( ',', $save) );
-    //print( join(',', array_keys($save)));
+
     sql_query('INSERT INTO reputation (' . join(',', array_keys($save)) . ') VALUES (' . join(',', $save) . ')');
     header("Location: {$site_config['baseurl']}/reputation.php?pid={$input['pid']}&done=1");
-} // Move along, nothing to see here!
+}
 else {
     if ($res['userid'] == $CURUSER['id']) { // same as him!
         // check for fish!
@@ -240,9 +192,7 @@ else {
 	<td class='row2'>{$postrep['reason']}</td>
 </tr>";
             }
-            ///////////////////////////////////////////////
-            //	The negativity...oh such negativity
-            ///////////////////////////////////////////////
+
             if ($total == 0) {
                 $rep = $lang['rep_even'];
             } elseif ($total > 0 && $total <= 5) {
@@ -281,11 +231,6 @@ else {
             default:
                 $rep_info = sprintf("Your reputation on <a href='{$site_config['baseurl']}/forums.php?action=viewtopic&amp;topicid=%d&amp;page=p%d#%d' target='_blank'>this Post</a> is %s<br>Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
         }
-        ///////////////////////////////////////////////
-        //	Compile some HTML for the 'own post'/ 'user view' reputation
-        //	Feel free to do ya own html/css here
-        ///////////////////////////////////////////////
-        //$rep_info = sprintf("".$lang["info_your_rep_on"]." <a href='{$site_config['baseurl']}/forums.php?action=viewtopic&amp;topicid=%d&amp;page=p%d#%d' target='_blank'>".$lang["info_this_post"]."</a> ".$lang["info_is"]." %s.", $res['topicid'], $input['pid'], $input['pid'], $rep );
         $rep_points = sprintf('' . $lang['info_you_have'] . ' %d ' . $lang['info_reputation_points'] . '', $CURUSER['reputation']);
         $html = "
                         <tr>
@@ -309,10 +254,6 @@ else {
 						    </td>
 					    </tr>";
     } else {
-        ///////////////////////////////////////////////
-        //	HTML/CSS for 'add reputaion'
-        //	Feel free to alter HTML/CSS here
-        ///////////////////////////////////////////////
         $res['anon'] = (isset($res['anon']) ? $res['anon'] : 'no');
         $rep_text = sprintf("What do you think of %s's " . $this_rep . '?', ($res['anon'] == 'yes' ? 'Anonymous' : htmlsafechars($res['username'])));
         $negativerep = ($is_mod || $GVARS['g_rep_negative']) ? true : false;
@@ -366,13 +307,8 @@ else {
         					</td>
 		        		</tr>";
     }
-    rep_output('', $html); // send to spewer-outer function
-} // END
-///////////////////////////////////////////////
-//	Reputation output function
-//	$msg -> string
-//	$html -> string
-///////////////////////////////////////////////
+    rep_output('', $html);
+}
 function rep_output($msg = '', $html = '')
 {
     global $closewindow, $lang, $CURUSER;
@@ -385,11 +321,12 @@ function rep_output($msg = '', $html = '')
             </td>
         </tr>";
 }
-$htmlout = "
-<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
-<html xmlns='http://www.w3.org/1999/xhtml'>
+$htmlout = "<!doctype html>
+<html>
 <head>
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
     <title>Reputation System</title>
     <link rel='stylesheet' href='" . get_file('css') . "' />
 </head>
@@ -421,23 +358,18 @@ $htmlout .= "
 echo $htmlout;
 exit();
 }
-///////////////////////////////////////////////
-//	Fetch Reputation function
-//	$user -> array all about the user
-//	$rep -> string what kind of rep this user has
-///////////////////////////////////////////////
+
 function fetch_reppower($user = [], $rep = 'pos')
 {
     global $GVARS, $is_mod;
     $reppower = '';
-    // is the user allowed to do negative reps?
+
     if (!$GVARS['g_rep_negative']) {
         $rep = 'pos';
     }
     if (!$GVARS['g_rep_use']) { // allowed to rep at all?
         $rep = 0;
     } elseif ($is_mod && $GVARS['rep_adminpower']) { // is a mod and has loadsa power?
-        //work out positive or negative admin power
         $reppower = ($rep != 'pos') ? intval($GVARS['rep_adminpower'] * -1) : intval($GVARS['rep_adminpower']);
     } elseif (($user['posts'] < $GVARS['rep_minpost']) || ($user['reputation'] < $GVARS['rep_minrep'])) { // not an admin, then work out postal based power
         $reppower = 0;
@@ -453,7 +385,6 @@ function fetch_reppower($user = [], $rep = 'pos')
             $reppower += intval((TIME_NOW - $user['added']) / 86400 / $GVARS['rep_rdpower']);
         }
         if ($rep != 'pos') {
-            // Negative rep is worth half that of positive, but must be atleast 1, else it gets messy
             $reppower = intval($reppower / 2);
             $reppower = ($reppower < 1) ? 1 : $reppower;
             $reppower *= -1;
@@ -462,7 +393,3 @@ function fetch_reppower($user = [], $rep = 'pos')
 
     return $reppower;
 }
-
-// erm, FIN
-
-?>

@@ -320,15 +320,18 @@ elseif ($mode == 'details') {
         }
         $file = $site_config['sub_up_dir'] . '/' . $arr['filename'];
         $fileContent = file_get_contents($file);
-        $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
-		\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
-		<html xmlns='http://www.w3.org/1999/xhtml'>
-		<head>
-		<title>Preview for - " . htmlsafechars($arr['name']) . "</title>
-		</head>
-		<body>
-	<div style='font-size:12px;color:black;background-color:#CCCCCC;'>Subtitle preview<br>" . htmlsafechars($fileContent) . '</div>
-	</body></html>';
+        $HTMLOUT .= "<!doctype html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Preview for - " . htmlsafechars($arr['name']) . "</title>
+</head>
+<body>
+    <div style='font-size:12px;color:black;background-color:#CCCCCC;'>Subtitle preview<br>" . htmlsafechars($fileContent) . '</div>
+</body>
+</html>';
         echo $HTMLOUT;
     }
 } else {

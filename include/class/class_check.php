@@ -23,17 +23,19 @@ function class_check($class = 0, $staff = true, $pin = false)
             if (!$passed) {
                 header('WWW-Authenticate: Basic realm="Administration"');
                 header('HTTP/1.0 401 Unauthorized');
-                $HTMLOUT = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+                $HTMLOUT = "<!doctype html>
+<html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
     <title>ERROR</title>
 </head>
 <body>
 <h1>ERROR</h1>
 <p>Sorry! Access denied!</p>
 </body>
-</html>';
+</html>";
                 echo $HTMLOUT;
                 exit();
             }
@@ -95,18 +97,21 @@ function class_check($class = 0, $staff = true, $pin = false)
                     //require_once(INCL_DIR.'user_functions.php');
                     //autoshout($body2);
                     $HTMLOUT = '';
-                    $HTMLOUT .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
-                        \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
-                        <html xmlns='http://www.w3.org/1999/xhtml'>
-                        <head>
-                        <title>Error!</title>
-                        </head>
-                        <body>
-                      <div style='font-size:18px;color:black;background-color:red;text-align:center;'>Incorrect access<br>Silly Rabbit - Trix are for kids.. You dont have the correct credentials to be here !</div>
-                      </body></html>";
+                    $HTMLOUT .= "
+<!doctype html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Error!</title>
+</head>
+<body>
+    <div style='font-size:18px;color:black;background-color:red;text-align:center;'>Incorrect access<br>Silly Rabbit - Trix are for kids.. You dont have the correct credentials to be here !</div>
+</body>
+</html>";
                     echo $HTMLOUT;
                     exit();
-                    //die('No access!'); // give em some Output
                 }
             }
         }

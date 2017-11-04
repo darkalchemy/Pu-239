@@ -3,7 +3,7 @@
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     if ($user_stats['downloaded'] > 0) {
         $HTMLOUT .= '<tr>
-			<td class="heading" style="vertical-align: middle">' . $lang['userdetails_share_ratio'] . '</td>
+			<td class="rowhead" style="vertical-align: middle">' . $lang['userdetails_share_ratio'] . '</td>
 			<td style="padding-top: 1px; padding-bottom: 0px">
 	<table border="0"cellspacing="0" cellpadding="0">
 		<tr>

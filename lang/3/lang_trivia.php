@@ -4,7 +4,7 @@ $lang = [
     'trivia_sorry'               => 'Sorry...',
     'trivia_you_must_be_pu'      => 'You must be a Power User or above to play Trivia.',
     'trivia_next_question'       => 'Next Question in',
-    'trivia_next_game'           => 'Game Ends in',
+    'trivia_next_game'           => 'Game Ends',
     'trivia_question'            => 'Question',
     'trivia_questions_remaining' => 'Questions Remaining',
     'trivia_game_stopped'        => 'Trivia is currently closed, please check back later',
@@ -16,4 +16,5 @@ $lang = [
     'trivia_correct_wait'        => 'Your answer was correct. Please wait for the next question.',
     'trivia_incorrect_wait'      => 'Your answer was not correct. Please wait for the next question.',
     'trivia_checking'            => 'checking your answer...',
+    'trivia_invalid_token'       => 'Invalid CSRF Token',
 ];

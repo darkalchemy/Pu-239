@@ -59,7 +59,7 @@ function pager($rpp, $count, $href, $opts = [])
             $text = $i + 1;
             if ($i != $page) {
                 $pagerarr[] = "
-                            <li><a title='View Torrents $start - $end' href='{$href}page=$i' class='pagination-link button is-dark tooltipper' aria-label='Goto page $text'>$text</a></li>";
+                            <li><a href='{$href}page=$i' class='pagination-link button is-dark' aria-label='Goto page $text'>$text</a></li>";
             } else {
                 $pagerarr[] = "
                             <li><a class='pagination-link is-current' aria-label='Page $text' aria-current='page'>$text</a></li>";

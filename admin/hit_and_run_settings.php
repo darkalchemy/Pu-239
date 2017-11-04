@@ -11,9 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (sql_query('INSERT INTO hit_and_run_settings(name,value) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY update value=values(value)')) {
         $mc1->delete_value('hnr_settings_');
-        setSessionVar('success', 'Update Successful');
+        setSessionVar('is-success', 'Update Successful');
     } else {
-        setSessionVar('error', $lang['hnr_settings_err_query']);
+        setSessionVar('is-warning', $lang['hnr_settings_err_query']);
     }
 }
 

@@ -31,7 +31,7 @@ if (count($motw_cached) > 0) {
                     <thead>
                         <tr>
                             <th class='has-text-centered'>{$lang['index_mow_type']}</th>
-                            <th class='w-25'>{$lang['index_mow_name']}</th>
+                            <th class='w-50'>{$lang['index_mow_name']}</th>
                             <th class='has-text-centered'>{$lang['index_mow_snatched']}</th>
                             <th class='has-text-centered'>{$lang['index_mow_seeder']}</th>
                             <th class='has-text-centered'>{$lang['index_mow_leecher']}</th>
@@ -53,10 +53,10 @@ if (count($motw_cached) > 0) {
                             <td class='has-text-centered'><img src='./images/caticons/" . get_categorie_icons() . "/" . $mw['cat_pic'] . "' class='tooltipper' alt='" . $mw['cat_name'] . "' title='" . $mw['cat_name'] . "' /></td>
                             <td>
                                 <a href='{$site_config['baseurl']}/details.php?id=" . (int)$m_w['id'] . "&amp;hit=1'>
-                                    <span class='dt-tooltipper-large' data-tooltip-content='#id_{$m_w['id']}_tooltip'>
+                                    <span class='dt-tooltipper-large' data-tooltip-content='#mow_id_{$m_w['id']}_tooltip'>
                                         {$torrname}
                                         <div class='tooltip_templates'>
-                                            <span id='id_{$m_w['id']}_tooltip'>
+                                            <span id='mow_id_{$m_w['id']}_tooltip'>
                                                 <div class='is-flex tooltip-torrent'>
                                                     <span class='margin10'>
                                                         $poster

@@ -7,6 +7,6 @@ class_check($class);
 global $mc1, $site_config;
 $mc1->delete_value('staff_settings_');
 
-setSessionVar('success', 'Staff List Updated');
+setSessionVar('is-success', 'Staff List Updated');
 header("Location: {$site_config['baseurl']}/staffpanel.php");
 

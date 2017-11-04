@@ -24,11 +24,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $returnto = isset($_POST['returnto']) ? htmlsafechars($_POST['returnto']) : $_SERVER['PHP_SELF'];
     $fail = false;
     if (empty($msg)) {
-        setSessionVar('error', $lang['contactstaff_no_msg']);
+        setSessionVar('is-warning', $lang['contactstaff_no_msg']);
         $fail = true;
     }
     if (empty($subject)) {
-        setSessionVar('error', $lang['contactstaff_no_sub']);
+        setSessionVar('is-warning', $lang['contactstaff_no_sub']);
         $fail = true;
     }
 
@@ -37,9 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (sql_query($sql)) {
             $mc1->delete_value('staff_mess_');
             header('Refresh: 3; url=' . urldecode($returnto)); //redirect but wait 3 seconds
-            setSessionVar('success', $lang['contactstaff_success_msg']);
+            setSessionVar('is-success', $lang['contactstaff_success_msg']);
         } else {
-            setSessionVar('error', sprintf($lang['contactstaff_mysql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+            setSessionVar('is-warning', sprintf($lang['contactstaff_mysql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
         }
     }
 } else {

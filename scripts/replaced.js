@@ -1,6 +1,6 @@
 var offset = 250;
 var animate_duration = 1250;
-var easing = 'swing';
+var easing = 'linear';
 
 function themes() {
     PopUp('take_theme.php','My themes',300, 150, 1, 0);
@@ -12,6 +12,11 @@ function language_select() {
 
 function radio() {
     PopUp('radio_popup.php','My Radio', 800, 700, 1, 0);
+}
+
+function resizeIframe(obj) {
+    obj.style.height = 0;
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
 }
 
 $('.delete').on('click', function(){
@@ -62,12 +67,6 @@ function togglepic(bu, picid, formid) {
 $(function() {
     if ($('#clock').length) {
         refrClock();
-    };
-
-    if ($('#triviabox').length) {
-        $('#triviabox').iFrameResize({
-            enablePublicMethods: true,
-        });
     };
 
     if ($('.password').length) {
@@ -278,7 +277,7 @@ $(function() {
             if (target.length) {
                 event.preventDefault();
                 $('html, body').animate({
-                    scrollTop: target.offset().top - 50
+                    scrollTop: target.offset().top
                 }, animate_duration, function() {
                     var $target = $(target);
                     $target.focus();

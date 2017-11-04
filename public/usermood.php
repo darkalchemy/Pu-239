@@ -26,7 +26,7 @@ if (isset($_GET['id'])) {
         $mc1->commit_transaction($site_config['expires']['user_cache']);
         $mc1->delete_value('topmoods');
         write_log('<b>' . $lang['user_mood_change'] . '</b> ' . $CURUSER['username'] . ' ' . htmlsafechars($rmood['name']) . '<img src="' . $site_config['pic_base_url'] . 'smilies/' . htmlsafechars($rmood['image']) . '" alt="" />');
-        $HTMLOUT .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        $HTMLOUT .= '<!doctype html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
       <html xmlns="http://www.w3.org/1999/xhtml">
       <head>
@@ -44,7 +44,7 @@ if (isset($_GET['id'])) {
     }
 }
 $body_class = 'background-16 h-style-9 text-9 skin-2';
-$HTMLOUT .= '<!DOCTYPE html>
+$HTMLOUT .= '<!doctype html>
 <html>
 <head>
     <meta charset="utf-8">

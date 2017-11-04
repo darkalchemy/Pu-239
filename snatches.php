@@ -6,7 +6,7 @@ check_user_status();
 $lang = array_merge(load_language('global'), load_language('snatches'));
 $HTMLOUT = '';
 if (empty($_GET['id'])) {
-    setSessionVar('error', 'Invalid Information');
+    setSessionVar('is-warning', 'Invalid Information');
     header("Location: {$site_config['baseurl']}/index.php");
     exit();
 }

@@ -3,6 +3,7 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
+global $mc1, $site_config, $CURUSER;
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('staff_panel'));
 
@@ -161,7 +162,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
                     if ($CURUSER['class'] <= UC_MAX) {
                         write_log($lang['spanel_page'] . ' "' . $page_name . '"(' . ($class_color ? '[color="#' . get_user_class_color($av_class) . '"]' : '') . get_user_class_name($av_class) . ($class_color ? '[/color]' : '') . ') ' . $lang['spanel_in_the_sp_was'] . ' ' . ($action == 'add' ? 'added' : 'edited') . ' by [url="' . $site_config['baseurl'] . '/userdetails.php?id=' . $CURUSER['id'] . '">' . $CURUSER['username'] . '[/url](' . ($class_color ? '[color="#' . get_user_class_color($CURUSER['class']) . '"]' : '') . get_user_class_name($CURUSER['class']) . ($class_color ? '[/color]' : '') . ')');
                     }
-                    setSessionVar('success', "'{$page_name}' " . ucwords($action) . "ed Successfully");
+                    setSessionVar('is-success', "'{$page_name}' " . ucwords($action) . "ed Successfully");
                     header('Location: ' . $_SERVER['PHP_SELF']);
                     exit();
                 }
@@ -216,7 +217,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
                         Show in Navbar
                     </td>
                     <td>
-                        <input name='navbar' value='1' type='radio'" . ($navbar == '1s' ? " checked" : '') . " /><span class='left5'>Yes</span><br>
+                        <input name='navbar' value='1' type='radio'" . ($navbar == '1' ? " checked" : '') . " /><span class='left5'>Yes</span><br>
                         <input name='navbar' value='0' type='radio'" . ($navbar == '0' ? " checked" : '') . " /><span class='left5'>No</span>
                     </td>
                 </tr>";

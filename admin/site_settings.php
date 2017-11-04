@@ -20,9 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
     }
     if (!empty($update) && sql_query('INSERT INTO site_config(name, value, description) VALUES ' . join(', ', $update) . ' ON DUPLICATE KEY update value = VALUES(value), description = VALUES(description)')) {
         $mc1->delete_value('site_settings_');
-        setSessionVar('success', 'Update Successful');
+        setSessionVar('is-success', 'Update Successful');
     } else {
-        setSessionVar('error', $lang['sitesettings_stderr3']);
+        setSessionVar('is-warning', $lang['sitesettings_stderr3']);
     }
 }
 unset($_POST);
