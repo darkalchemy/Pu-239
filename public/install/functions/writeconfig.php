@@ -115,6 +115,13 @@ $foo = [
             'info' => 'true/false/null. Enabled, this requires that session cookies can only be passed using SSL/HTTPS protocals.',
         ],
     ],
+    'System - Site BOT' => [
+        [
+            'text' => 'Username',
+            'input' => 'config[bot_username]',
+            'info' => "The name for your 'System' user/Site BOT. You will still need to create this user after creating your user.",
+        ],
+    ],
 ];
 function foo($x)
 {

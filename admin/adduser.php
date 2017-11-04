@@ -4,6 +4,8 @@ require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $mc1, $site_config;
+$mc1->delete_value('userlist_' . $site_config['chatBotID']);
 $lang = array_merge($lang, load_language('ad_adduser'));
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $insert = [
@@ -32,11 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (sql_query(sprintf('INSERT INTO users (username, email, passhash, status, added, last_access, torrent_pass) VALUES (%s)', join(', ', array_map('sqlesc', $insert))))) {
         $user_id = 0;
-        while ($user_id === 0) {
+        while ($user_id == 0) {
             usleep(500);
             $user_id = get_one_row('users', 'id', 'WHERE username = ' . sqlesc($insert['username']));
         }
-        //$user_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
+
         sql_query('INSERT INTO usersachiev (userid) VALUES (' . sqlesc($user_id) . ')') or sqlerr(__FILE__, __LINE__);
         $message = "Welcome New {$site_config['site_name']} Member : - [user]" . htmlsafechars($insert['username']) . '[/user]';
         if ($user_id > 2 && $site_config['autoshout_on'] == 1) {

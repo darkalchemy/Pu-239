@@ -87,8 +87,8 @@ $HTMLOUT .= "
 //==09 Birthday mod
 $year .= '<select name="year" class="w-100 bottom10">';
 $year .= "<option value='0000'>{$lang['signup_year']}</option>";
-$i = '2020';
-while ($i >= 1950) {
+$i = date("Y");
+while ($i >= 1920) {
     $year .= '<option value="' . $i . '">' . $i . '</option>';
     --$i;
 }

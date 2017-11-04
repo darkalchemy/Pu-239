@@ -5,11 +5,12 @@ require_once INCL_DIR . 'password_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'function_bemail.php';
 dbconn();
-global $CURUSER, $site_config;
+global $CURUSER, $site_config, $mc1;
 if (!$CURUSER) {
     get_template();
 }
 
+$mc1->delete_value('userlist_' . $site_config['chatBotID']);
 $ip = getip();
 if (!$site_config['openreg']) {
     stderr('Sorry', 'Invite only - Signups are closed presently if you have an invite code click <a href="' . $site_config['baseurl'] . '/invite_signup.php"><b> Here</b></a>');
@@ -151,7 +152,7 @@ if (!$ret) {
     }
 }
 $id = 0;
-while ($id === 0) {
+while ($id == 0) {
     usleep(500);
     $id = get_one_row('users', 'id', 'WHERE username = ' . sqlesc($wantusername));
 }

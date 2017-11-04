@@ -148,7 +148,7 @@ $site_config['max_dead_torrent_time'] = 6 * 3600;
 $site_config['language'] = 1;
 // Site Bot
 $site_config['chatBotID'] = 2;
-$site_config['chatBotName'] = 'CraftyBOT'; // Change to your Bot's Name
+$site_config['chatBotName'] = '#bot_username';
 $site_config['chatBotRole'] = 100;
 $site_config['staffpanel_online'] = 1;
 $site_config['irc_autoshout_on'] = 1;

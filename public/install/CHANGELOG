@@ -1,4 +1,5 @@
 4 Nov 2017
+update: installer set bot name in config.php
 fix: breadcrumbs
 add: missing lnag index
 remove: check for array index after changing to string
