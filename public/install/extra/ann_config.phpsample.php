@@ -10,12 +10,12 @@ define('ROOT_DIR', realpath(INCL_DIR.'..'.DIRECTORY_SEPARATOR).DIRECTORY_SEPARAT
 define('CACHE_DIR', ROOT_DIR.'cache'.DIRECTORY_SEPARATOR);
 define('CLASS_DIR', INCL_DIR.'class'.DIRECTORY_SEPARATOR);
 define('XBT_TRACKER', false);
-$site_config['cache'] = ROOT_DIR.'cache';
+$site_config['cache'] = ROOT_DIR . 'cache';
 require_once CLASS_DIR.'class_cache.php';
 require_once CLASS_DIR.'class_bt_options.php';
 $site_config['pic_base_url'] = './pic/';
 require_once CACHE_DIR.'class_config.php';
-require_once CACHE_DIR.'hit_and_run_settings.php';
+
 if (version_compare(PHP_VERSION, '5.1.0RC1', '>=')) {
     date_default_timezone_set('Europe/London');
 }
@@ -46,3 +46,4 @@ $site_config['expires']['happyhour'] = 43200; // 43200 1/2 day
 $site_config['expires']['sitepot'] = 86400; // 86400 1 day
 $site_config['expires']['torrent_announce'] = 86400; // 86400 1 day
 $site_config['expires']['torrent_details'] = 30 * 86400; // = 30 days
+require_once INCL_DIR . 'site_config.php';

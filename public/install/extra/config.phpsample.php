@@ -36,10 +36,10 @@ define('TIME_NOW', time());
 $site_config['time_adjust'] = 0;
 $site_config['time_offset'] = '0';
 $site_config['time_use_relative'] = 1;
-$site_config['time_use_relative_format'] = '{--}, h:i A';
+$site_config['time_use_relative_format'] = '{--}, h:i:s A';
 $site_config['time_joined'] = 'j-F y';
-$site_config['time_short'] = 'jS F Y - h:i A';
-$site_config['time_long'] = 'M j Y, h:i A';
+$site_config['time_short'] = 'jS F Y - h:i:s A';
+$site_config['time_long'] = 'M j Y, h:i:s A';
 $site_config['time_tiny'] = '';
 $site_config['time_date'] = '';
 //== DB setup
@@ -186,7 +186,7 @@ define('BLOCK_DIR', ROOT_DIR . 'blocks' . DIRECTORY_SEPARATOR);
 define('IMDB_DIR', ROOT_DIR . 'imdb' . DIRECTORY_SEPARATOR);
 define('CLASS_DIR', INCL_DIR . 'class' . DIRECTORY_SEPARATOR);
 define('CLEAN_DIR', INCL_DIR . 'cleanup' . DIRECTORY_SEPARATOR);
-define('LOGVIEW_DIR', ADMIN_DIR . 'Log_Viewer' . DIRECTORY_SEPARATOR);
+define('LOGVIEW_DIR', ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'Log_Viewer' . DIRECTORY_SEPARATOR);
 $site_config['cache'] = ROOT_DIR . 'cache';
 $site_config['backup_dir'] = INCL_DIR . 'backup';
 $site_config['dictbreaker'] = ROOT_DIR . 'dictbreaker';
@@ -209,7 +209,8 @@ if (XBT_TRACKER == true) {
 if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] == '') {
     $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
 }
-$site_config['baseurl'] = 'http'.(isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] == true ? 's' : '').'://'.$_SERVER['HTTP_HOST'];
+
+$site_config['baseurl'] = get_scheme() . '://'.$_SERVER['HTTP_HOST'];
 //== Email for sender/return path.
 $site_config['site_email'] = '#site_email';
 $site_config['site_name'] = '#site_name';

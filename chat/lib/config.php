@@ -19,8 +19,7 @@ $config = [];
 // javascript file
 $config['js'] = get_file('chatjs');
 $config['jslog'] = get_file('chat_log_js');
-echo $config['jslog'];
-die();
+
 // Database connection values:
 $config['dbConnection'] = [];
 // Database hostname:
@@ -158,7 +157,7 @@ $config['chatBotRole'] = $site_config['chatBotRole'];
 // Minutes until a user is declared inactive (last status update) - the minimum is 2 minutes:
 $config['inactiveTimeout'] = 5;
 // Interval in minutes to check for inactive users:
-$config['inactiveCheckInterval'] = 6;
+$config['inactiveCheckInterval'] = 1;
 
 // Defines if messages are shown which have been sent before the user entered the channel:
 $config['requestMessagesPriorChannelEnter'] = true;
@@ -217,3 +216,7 @@ $config['socketServerIP'] = '127.0.0.1';
 $config['socketServerPort'] = 1935;
 // This ID can be used to distinguish between different chat installations using the same socket server:
 $config['socketServerChatID'] = 0;
+
+// This is used to anonymize the external urls
+$config['anonymous_link'] = $site_config['anonymizer_url'];
+
