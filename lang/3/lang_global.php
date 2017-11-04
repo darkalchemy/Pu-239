@@ -12,6 +12,7 @@ $lang = [
     'gl_help'                   => 'Ajutor',
     'gl_torrent'                => 'Torent',
     'gl_torrents'               => 'Torente',
+    'gl_newtor'                 => 'New Torrents Today',
     'gl_nseeds'                 => 'Need Seeds',
     'gl_home'                   => 'Acas&#259;',
     'gl_browse'                 => 'R&#259;sfoieste',

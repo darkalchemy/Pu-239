@@ -1693,9 +1693,10 @@ function countries()
 
 function breadcrumbs($separator = ' &raquo; ', $home = 'Home')
 {
+    global $site_config;
     $path = array_filter(explode('/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)));
     $query = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
-    $base = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
+    $base = $site_config['baseurl'] . '/';
     $breadcrumbs = ["<a href='$base'>$home</a>"];
     $last = end(array_keys($path));
     $action = [];
