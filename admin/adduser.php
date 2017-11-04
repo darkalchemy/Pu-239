@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //$user_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
         sql_query('INSERT INTO usersachiev (userid) VALUES (' . sqlesc($user_id) . ')') or sqlerr(__FILE__, __LINE__);
         $message = "Welcome New {$site_config['site_name']} Member : - [user]" . htmlsafechars($insert['username']) . '[/user]';
-        if ($site_config['autoshout_on'] == 1) {
+        if ($user_id > 2 && $site_config['autoshout_on'] == 1) {
             autoshout($message);
         }
         stderr($lang['std_success'], sprintf($lang['text_user_added'], $user_id));

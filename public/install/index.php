@@ -20,6 +20,9 @@ function checkpreviousstep()
 
 function return_bytes($val)
 {
+    if ($val == '') {
+        return 0;
+    }
     $val = strtolower(trim($val));
     $last = $val[strlen($val)-1];
     $val = rtrim($val, $last);

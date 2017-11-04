@@ -146,15 +146,20 @@ $new_user = sql_query('INSERT INTO users (username, passhash, torrent_pass, pass
         $user_frees,
         $ip,
     ])) . ')');
+$id = 0;
+while ($id === 0) {
+    usleep(500);
+    $id = get_one_row('users', 'id', 'WHERE username = ' . sqlesc($wantusername));
+}
 sql_query('INSERT INTO usersachiev (userid) VALUES (' . sqlesc($id) . ')') or sqlerr(__FILE__, __LINE__);
-sql_query('UPDATE usersachiev SET invited = invited+1 WHERE userid =' . sqlesc($assoc['sender'])) or sqlerr(__FILE__, __LINE__);
+sql_query('UPDATE usersachiev SET invited = invited + 1 WHERE userid = ' . sqlesc($assoc['sender'])) or sqlerr(__FILE__, __LINE__);
 $msg = "Welcome New {$site_config['site_name']} Member : - [user]" . htmlsafechars($wantusername) . '[/user]';
 if (!$new_user) {
     if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
         stderr('Error', 'Username already exists!');
     }
 }
-//===send PM to inviter
+
 $sender = (int)$assoc['sender'];
 $added = TIME_NOW;
 $msg = sqlesc("Hey there [you] ! :wave:\nIt seems that someone you invited to {$site_config['site_name']} has arrived ! :clap2: \n\n Please go to your [url={$site_config['baseurl']}/invite.php]Invite page[/url] to confirm them so they can log in.\n\ncheers\n");
@@ -162,8 +167,7 @@ $subject = sqlesc('Someone you invited has arrived!');
 sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($sender) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
 $mc1->delete_value('inbox_new_' . $sender);
 $mc1->delete_value('inbox_new_sb_' . $sender);
-//////////////end/////////////////////
-$id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
+
 sql_query('UPDATE invite_codes SET receiver = ' . sqlesc($id) . ', status = "Confirmed" WHERE sender = ' . sqlesc((int)$assoc['sender']) . ' AND code = ' . sqlesc($invite)) or sqlerr(__FILE__, __LINE__);
 $latestuser_cache['id'] = (int)$id;
 $latestuser_cache['username'] = $wantusername;

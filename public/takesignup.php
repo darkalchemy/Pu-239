@@ -175,7 +175,7 @@ $latestuser_cache['king'] = '0';
 /* OOP **/
 $mc1->cache_value('latestuser', $latestuser_cache, $site_config['expires']['latestuser']);
 write_log('User account ' . (int)$id . ' (' . htmlsafechars($wantusername) . ') was created');
-if ($site_config['autoshout_on'] == 1) {
+if ($id > 2 && $site_config['autoshout_on'] == 1) {
     autoshout($message);
 }
 $body = str_replace([

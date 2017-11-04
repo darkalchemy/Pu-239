@@ -1,4 +1,5 @@
 4 Nov 2017
+fix: error with autoshout before bot user created
 move: iframe resize to template
 remove: checkbox for XBT install
 add: missing function

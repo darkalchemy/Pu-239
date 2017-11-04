@@ -10,8 +10,8 @@ function mow_update($data)
                             WHERE times_completed > 0 AND category IN (' . join(', ', $site_config['movie_cats']) . ')
                             ORDER BY times_completed DESC
                             LIMIT 1') or sqlerr(__FILE__, __LINE__);
-    if (mysqli_num_rows($res_tor) > 0) {
-        $arr = mysqli_fetch_assoc($res_tor);
+    $arr = mysqli_fetch_assoc($res_tor);
+    if (!empty($arr)) {
         sql_query('UPDATE avps SET value_u = ' . sqlesc($arr['id']) . ', value_i = ' . sqlesc(TIME_NOW) . " WHERE avps.arg = 'bestfilmofweek'") or sqlerr(__FILE__, __LINE__);
         $mc1->delete_value('top_movie_2');
     }
