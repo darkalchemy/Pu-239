@@ -75,6 +75,12 @@ if (curuser::$blocks['index_page'] & block_index::FORUMPOSTS && $BLOCKS['forum_p
     $HTMLOUT .= '</div>';
 }
 
+if (curuser::$blocks['index_page'] & block_index::LATESTCOMMENTS && $BLOCKS['latest_comments_on']) {
+    $HTMLOUT .= "<div class='container is-fluid portlet' id='LATESTCOMMENTS'>";
+    require_once BLOCK_DIR . 'index/comments.php';
+    $HTMLOUT .= '</div>';
+}
+
 if (curuser::$blocks['index_page'] & block_index::MOVIEOFWEEK && $BLOCKS['movie_ofthe_week_on']) {
     $HTMLOUT .= "<div class='container is-fluid portlet' id='MOVIEOFWEEK'>";
     require_once BLOCK_DIR . 'index/mow.php';

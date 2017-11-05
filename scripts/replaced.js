@@ -1,6 +1,6 @@
 var offset = 250;
 var animate_duration = 1250;
-var easing = 'linear';
+var easing = 'swing';
 
 function themes() {
     PopUp('take_theme.php','My themes',300, 150, 1, 0);
@@ -14,8 +14,35 @@ function radio() {
     PopUp('radio_popup.php','My Radio', 800, 700, 1, 0);
 }
 
+function openCity(evt, cityName) {
+    event.preventDefault();
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName('tabcontent');
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = 'none';
+    }
+    tablinks = document.getElementsByClassName('tablinks');
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(' active', '');
+    }
+    document.getElementById(cityName).style.display = 'block';
+    evt.currentTarget.className += ' active';
+    $('html, body').animate({scrollTop: 0}, animate_duration, easing);
+}
+
+function togglepic(bu, picid, formid) {
+    var pic = document.getElementById(picid);
+    var form = document.getElementById(formid);
+    if (pic.src == bu + '/images/plus.gif')   {
+        pic.src = bu + '/images/minus.gif';
+        form.value = 'minus';
+    } else {
+        pic.src = bu + '/images/plus.gif';
+        form.value = 'plus';
+    }
+}
+
 $('.delete').on('click', function(){
-    //$(this).parent().remove();
     $(this).parent().slideUp(animate_duration, function() {
         $(this).remove();
     });
@@ -264,26 +291,4 @@ $(function() {
             $('.notification').slideUp(animate_duration, function() { $('.notification').remove();});
         }, 15000);
     };
-
-    $('a[href*="#"]').not('[href="#"]').not('[href="#0"]').click(function(event) {
-        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
-            var target = $(this.hash);
-            target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-            if (target.length) {
-                event.preventDefault();
-                $('html, body').animate({
-                    scrollTop: target.offset().top
-                }, animate_duration, function() {
-                    var $target = $(target);
-                    $target.focus();
-                    if ($target.is(':focus')) {
-                        return false;
-                    } else {
-                        $target.attr('tabindex','-1');
-                        $target.focus();
-                    };
-                });
-            }
-        }
-    });
 });

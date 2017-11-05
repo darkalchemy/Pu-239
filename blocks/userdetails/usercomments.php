@@ -41,15 +41,18 @@ function usercommenttable($rows)
     return $htmlout;
 }
 
-//==Usercomments - pdq
-$HTMLOUT .= "<h1>{$lang['userdetails_comm_left']}<a href='userdetails.php?id=$id'>" . htmlsafechars($user['username']) . "</a></h1>
-    <a name='startcomments'></a>";
-$commentbar = "<a href='usercomment.php?action=add&amp;userid={$id}'>Add a comment</a>\n";
+$text .= "
+    <a name='startcomments'></a>
+    <div class='has-text-centered'>
+        <h1>{$lang['userdetails_comm_left']}" . format_username($id) . "</a></h1>";
+$commentbar = "
+        <a href='./usercomment.php?action=add&amp;userid={$id}'>Add a comment</a>";
 $subres = sql_query('SELECT COUNT(id) FROM usercomments WHERE userid = ' . sqlesc($id));
 $subrow = mysqli_fetch_array($subres, MYSQLI_NUM);
 $count = $subrow[0];
 if (!$count) {
-    $HTMLOUT .= "<h2>{$lang['userdetails_comm_yet']}</h2>\n";
+    $text .= "
+        <h2>{$lang['userdetails_comm_yet']}</h2>\n";
 } else {
     require_once INCL_DIR . 'pager_functions.php';
     $pager = pager(5, $count, "userdetails.php?id=$id&amp;", [
@@ -60,12 +63,12 @@ if (!$count) {
     while ($subrow = mysqli_fetch_assoc($subres)) {
         $allrows[] = $subrow;
     }
-    $HTMLOUT .= ($commentbar);
-    $HTMLOUT .= ($pager['pagertop']);
-    $HTMLOUT .= usercommenttable($allrows);
-    $HTMLOUT .= ($pager['pagerbottom']);
+    $text .= ($commentbar);
+    $text .= ($pager['pagertop']);
+    $text .= usercommenttable($allrows);
+    $text .= ($pager['pagerbottom']);
 }
-$HTMLOUT .= ($commentbar);
-//==end
-// End Class
-// End File
+$text .= ($commentbar);
+$text .= "</div>";
+
+$HTMLOUT .= main_div($text);

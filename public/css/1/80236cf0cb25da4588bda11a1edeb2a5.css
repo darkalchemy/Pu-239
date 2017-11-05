@@ -9126,6 +9126,7 @@ body {
   background-image: -webkit-linear-gradient(90deg,rgba(0,0,0,1) 0,rgba(0,0,0,1) 25%,transparent 100%,rgba(0,0,0,1) 75%,transparent)
 }
 .header,
+.tablinks,
 a,
 input,
 select {
@@ -9210,7 +9211,7 @@ p + p {
   margin-top: 1.25em
 }
 .site-debug {
-  padding: 20px
+  padding: 1.25em
 }
 .size_1 {
   font-size: .5em
@@ -9243,7 +9244,7 @@ h1 {
   -webkit-border-radius: .625em;
   -moz-border-radius: .625em;
   border-radius: .625em;
-  padding: 20px
+  padding: 1.25em
 }
 #IE_ALERT {
   display: none
@@ -9311,6 +9312,14 @@ h1 {
   border-left: 1px solid red;
   border-right: 1px solid red
 }
+li.active {
+  border-top: 2px groove #0f0;
+  border-bottom: 2px groove #0f0;
+  background: rgba(0,0,0,.3)
+}
+.tabcontent {
+  display: none
+}
 .bottom5 {
   margin-bottom: .3125em
 }
@@ -9350,7 +9359,7 @@ h1 {
   white-space: nowrap
 }
 .inner-wrapper {
-  padding: 20px;
+  padding: 1.25em;
   -webkit-border-radius: .625em;
   -moz-border-radius: .625em;
   border-radius: .625em
@@ -9492,7 +9501,7 @@ textarea {
   overflow-x: auto
 }
 .portlet:not(:last-child) {
-  margin-bottom: 20px
+  margin-bottom: 1.25em
 }
 .right10 {
   margin-right: .625em
@@ -9607,15 +9616,12 @@ textarea {
   color: #fff;
   border: 1px solid red
 }
-.bordered + .bordered {
-  margin-top: 20px
-}
 .slideThree {
   position: relative;
   width: 80px;
   height: 26px;
   background: #333;
-  margin: 20px auto;
+  margin: 1.25em auto;
   -webkit-border-radius: 50px;
   -moz-border-radius: 50px;
   border-radius: 50px;
@@ -9637,7 +9643,7 @@ textarea {
   cursor: pointer;
   display: block;
   width: 34px;
-  height: 20px;
+  height: 1.25em;
   -webkit-border-radius: 50px;
   -moz-border-radius: 50px;
   border-radius: 50px;
@@ -10193,7 +10199,7 @@ header#navbar .nav_container ul > li > ul a:hover {
   overflow: auto
 }
 .table-wrapper + .table-wrapper {
-  margin-top: 20px
+  margin-top: 1.25em
 }
 .ace_clubs,
 .ace_diamonds,
@@ -10741,11 +10747,6 @@ header#navbar .nav_container ul > li > ul a:hover {
 }
 .tooltipster-sidetip.tooltipster-borderless.tooltipster-right .tooltipster-arrow-uncropped {
   left: -8px
-}
-.tooltipper {
-  -webkit-border-radius: .3125em;
-  -moz-border-radius: .3125em;
-  border-radius: .3125em
 }
 .tooltipper_img {
   vertical-align: unset;

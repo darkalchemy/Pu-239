@@ -1,4 +1,5 @@
 <?php
+global $mc1, $lang, $site_config;
 $categorie = genrelist();
 foreach ($categorie as $key => $value) {
     $change[$value['id']] = [
@@ -8,10 +9,9 @@ foreach ($categorie as $key => $value) {
     ];
 }
 if (($motw_cached = $mc1->get_value('top_movie_2')) === false) {
-    $motw = sql_query("SELECT t.added, t.checked_by, t.id, t.seeders, t.poster, t.leechers, t.name, t.size, u.username, t.category, c.name AS cat, c.image, t.free, t.silver, t.subs, t.times_completed, t.added, t.size
+    $motw = sql_query("SELECT t.added, t.checked_by, t.id, t.seeders, t.poster, t.leechers, t.name, t.size, t.category, c.name AS cat, c.image, t.free, t.silver, t.subs, t.times_completed, t.added, t.size
                         FROM torrents AS t
-                        INNER JOIN users AS u ON t.owner = u.id
-                        INNER JOIN categories AS c ON t.category = c.id
+                        LEFT JOIN categories AS c ON t.category = c.id
                         INNER JOIN avps AS a ON t.id = a.value_u WHERE a.arg = 'bestfilmofweek'
                         LIMIT 1") or sqlerr(__FILE__, __LINE__);
     while ($motw_cache = mysqli_fetch_assoc($motw)) {
@@ -30,7 +30,7 @@ if (count($motw_cached) > 0) {
                 <table class='table table-bordered table-striped'>
                     <thead>
                         <tr>
-                            <th class='has-text-centered'>{$lang['index_mow_type']}</th>
+                            <th class='has-text-centered w-10'>{$lang['index_mow_type']}</th>
                             <th class='w-50'>{$lang['index_mow_name']}</th>
                             <th class='has-text-centered'>{$lang['index_mow_snatched']}</th>
                             <th class='has-text-centered'>{$lang['index_mow_seeder']}</th>
@@ -62,11 +62,11 @@ if (count($motw_cached) > 0) {
                                                         $poster
                                                     </span>
                                                     <span class='margin10'>
-                                                        <b>{$lang['index_ltst_name']} " . htmlsafechars($m_w['name']) . "</b><br>
-                                                        <b>Added: " . get_date($m_w['added'], 'DATE', 0, 1) . "</b><br>
-                                                        <b>Size: " . mksize(htmlsafechars($m_w['size'])) . "</b><br>
-                                                        <b>{$lang['index_ltst_seeder']} " . (int)$m_w['seeders'] . "</b><br>
-                                                        <b>{$lang['index_ltst_leecher']} " . (int)$m_w['leechers'] . "</b><br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>" . htmlsafechars($m_w['name']) . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>" . get_date($m_w['added'], 'DATE', 0, 1) . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>" . mksize(htmlsafechars($m_w['size'])) . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_seeder']}</b>" . (int)$m_w['seeders'] . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_leecher']}</b>" . (int)$m_w['leechers'] . "<br>
                                                     </span>
                                                 </div>
                                             </span>

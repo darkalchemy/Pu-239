@@ -5,9 +5,9 @@ $HTMLOUT .= "
         <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_latest']}</legend>
         <div class='has-text-centered'>";
 if (($top5torrents = $mc1->get_value('top5_tor_')) === false) {
-    $res = sql_query("SELECT t.id, t.seeders, t.poster, t.leechers, t.name, t.times_completed, t.category, c.image AS cat_pic, c.name AS cat_name, t.times_completed, t.added, t.size
+    $res = sql_query("SELECT t.id, t.seeders, t.poster, t.leechers, t.name, t.times_completed, t.category, c.image AS cat_pic, c.name AS cat_name, t.added, t.size
                         FROM torrents AS t
-                        INNER JOIN categories AS c ON t.category = c.id
+                        LEFT JOIN categories AS c ON t.category = c.id
                         ORDER BY seeders + leechers DESC
                         LIMIT {$site_config['latest_torrents_limit']}") or sqlerr(__FILE__, __LINE__);
     while ($top5torrent = mysqli_fetch_assoc($res)) {
@@ -23,7 +23,7 @@ if (count($top5torrents) > 0) {
     $HTMLOUT .= "
                     <thead>
                         <tr>
-                            <th class='has-text-centered'>{$lang['index_mow_type']}</th>
+                            <th class='has-text-centered w-10'>{$lang['index_mow_type']}</th>
                             <th class='w-50'>{$lang['top5torrents_title']}</th>
                             <th class='has-text-centered'>{$lang['index_mow_snatched']}</th>
                             <th class='has-text-centered'>{$lang['top5torrents_seeders']}</th>
@@ -55,11 +55,11 @@ if (count($top5torrents) > 0) {
                                                         $poster
                                                     </span>
                                                     <span class='margin10'>
-                                                        <b class='size_4 has-text-primary'>Name:</b> " . htmlsafechars($top5torrentarr['name']) . "<br>
-                                                        <b class='size_4 has-text-primary'>Added:</b> " . get_date($top5torrentarr['added'], 'DATE', 0, 1) . "<br>
-                                                        <b class='size_4 has-text-primary'>Size:</b> " . mksize(htmlsafechars($top5torrentarr['size'])) . "<br>
-                                                        <b class='size_4 has-text-primary'>Seeders:</b> " . (int)$top5torrentarr['seeders'] . "<br>
-                                                        <b class='size_4 has-text-primary'>Leechers:</b> " . (int)$top5torrentarr['leechers'] . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>" . htmlsafechars($top5torrentarr['name']) . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>" . get_date($top5torrentarr['added'], 'DATE', 0, 1) . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>" . mksize(htmlsafechars($top5torrentarr['size'])) . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_seeder']}</b>" . (int)$top5torrentarr['seeders'] . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_leecher']}</b>" . (int)$top5torrentarr['leechers'] . "<br>
                                                     </span>
                                                 </div>
                                             </span>
@@ -89,9 +89,9 @@ if (count($top5torrents) > 0) {
     }
 }
 if (($last5torrents = $mc1->get_value('last5_tor_')) === false) {
-    $sql = "SELECT t.id, t.seeders, t.poster, t.leechers, t.name, t.times_completed, t.category, c.image AS cat_pic, c.name AS cat_name, t.times_completed, t.added, t.size
+    $sql = "SELECT t.id, t.seeders, t.poster, t.leechers, t.name, t.times_completed, t.category, c.image AS cat_pic, c.name AS cat_name, t.added, t.size
                 FROM torrents AS t
-                INNER JOIN categories AS c ON t.category = c.id
+                LEFT JOIN categories AS c ON t.category = c.id
                 WHERE visible='yes'
                 ORDER BY added DESC
                 LIMIT {$site_config['latest_torrents_limit']}";
@@ -108,7 +108,7 @@ if (count($last5torrents) > 0) {
                 <table class='table table-bordered table-striped'>
                     <thead>
                         <tr>
-                            <th class='has-text-centered'>{$lang['index_mow_type']}</th>
+                            <th class='has-text-centered w-10'>{$lang['index_mow_type']}</th>
                             <th class='w-50'>{$lang['last5torrents_title']}</th>
                             <th class='has-text-centered'>{$lang['index_mow_snatched']}</th>
                             <th class='has-text-centered'>{$lang['last5torrents_seeders']}</th>
@@ -140,11 +140,11 @@ if (count($last5torrents) > 0) {
                                                         $poster
                                                     </span>
                                                     <span class='margin10'>
-                                                        <b class='size_4 has-text-primary'>Name:</b> " . htmlsafechars($last5torrentarr['name']) . "<br>
-                                                        <b class='size_4 has-text-primary'>Added:</b> " . get_date($last5torrentarr['added'], 'DATE', 0, 1) . "<br>
-                                                        <b class='size_4 has-text-primary'>Size:</b> " . mksize(htmlsafechars($last5torrentarr['size'])) . "<br>
-                                                        <b class='size_4 has-text-primary'>Seeders:</b> " . (int)$last5torrentarr['seeders'] . "<br>
-                                                        <b class='size_4 has-text-primary'>Leechers:</b> " . (int)$last5torrentarr['leechers'] . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>" . htmlsafechars($last5torrentarr['name']) . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>" . get_date($last5torrentarr['added'], 'DATE', 0, 1) . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>" . mksize(htmlsafechars($last5torrentarr['size'])) . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_seeder']}</b>" . (int)$last5torrentarr['seeders'] . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_leecher']}</b>" . (int)$last5torrentarr['leechers'] . "<br>
                                                     </span>
                                                 </div>
                                             </span>

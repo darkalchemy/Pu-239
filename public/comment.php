@@ -4,6 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'comment_functions.php';
 check_user_status();
+global $mc1, $site_config;
 $lang = array_merge(load_language('global'), load_language('comment'), load_language('capprove'));
 flood_limit('comments');
 $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : 0);
@@ -78,6 +79,7 @@ if ($action == 'add') {
         sql_query("INSERT INTO comments (user, $locale, added, text, ori_text, anonymous) VALUES (" . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . TIME_NOW . ', ' . sqlesc($body) . ', ' . sqlesc($body) . ", $anon)");
         $newid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
         sql_query("UPDATE $table_type SET comments = comments + 1 WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $mc1->delete_value('latest_comments_');
         if ($site_config['seedbonus_on'] == 1) {
             if ($site_config['karma'] && isset($CURUSER['seedbonus'])) {
                 sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($site_config['bonus_per_comment']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);

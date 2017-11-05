@@ -134,5 +134,5 @@ table {
 }
 
 .table-wrapper + .table-wrapper {
-    margin-top: 20px;
+    margin-top: 1.25em;
 }

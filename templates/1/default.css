@@ -57,11 +57,12 @@ body {
 a,
 input,
 select,
-.header {
-    -webkit-transition: all 0.35s ease-in-out;
-    -moz-transition: all 0.35s ease-in-out;
-    -o-transition: all 0.35s ease-in-out;
-    transition: all 0.35s ease-in-out;
+.header,
+.tablinks {
+    -webkit-transition: all .35s ease-in-out;
+    -moz-transition: all .35s ease-in-out;
+    -o-transition: all .35s ease-in-out;
+    transition: all .35s ease-in-out;
 }
 
 .level-center ul {
@@ -166,7 +167,7 @@ p + p {
 }
 
 .site-debug {
-    padding: 20px;
+    padding: 1.25em;
 }
 
 .size_1 {
@@ -207,7 +208,7 @@ h1 {
     -webkit-border-radius: .625em;
     -moz-border-radius: .625em;
     border-radius: .625em;
-    padding: 20px;
+    padding: 1.25em;
 }
 
 #IE_ALERT {
@@ -296,6 +297,16 @@ h1 {
     -webkit-margin-end: .125em;
 }
 
+li.active {
+    border-top: 2px groove lime;
+    border-bottom: 2px groove lime;
+    background: rgba(0, 0, 0, .3);
+}
+
+.tabcontent {
+    display: none;
+}
+
 .bottom5 {
     margin-bottom: .3125em;
 }
@@ -348,7 +359,7 @@ h1 {
 }
 
 .inner-wrapper {
-    padding: 20px;
+    padding: 1.25em;
     -webkit-border-radius: .625em;
     -moz-border-radius: .625em;
     border-radius: .625em;
@@ -525,7 +536,7 @@ textarea {
 }
 
 .portlet:not(:last-child) {
-    margin-bottom: 20px;
+    margin-bottom: 1.25em;
 }
 
 .right10 {
@@ -666,17 +677,17 @@ textarea {
     color: white;
     border: 1px solid red;
 }
-
+/*
 .bordered + .bordered {
-    margin-top: 20px;
+    margin-top: 1.25em;
 }
-
+*/
 .slideThree {
     position: relative;
     width: 80px;
     height: 26px;
     background: #333;
-    margin: 20px auto;
+    margin: 1.25em auto;
     -webkit-border-radius: 50px;
     -moz-border-radius: 50px;
     border-radius: 50px;

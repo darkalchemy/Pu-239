@@ -82,6 +82,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         $clrbits_index_page |= block_index::LATEST_USER;
     }
+    if (isset($_POST['latestcomments'])) {
+        $setbits_index_page |= block_index::LATESTCOMMENTS;
+    } else {
+        $clrbits_index_page |= block_index::LATESTCOMMENTS;
+    }
+
     if (isset($_POST['forumposts'])) {
         $setbits_index_page |= block_index::FORUMPOSTS;
     } else {
@@ -390,6 +396,7 @@ $checkbox_index_active_birthday_users = ((curuser::$blocks['index_page'] & block
 $checkbox_index_stats = ((curuser::$blocks['index_page'] & block_index::STATS) ? ' checked' : '');
 $checkbox_index_disclaimer = ((curuser::$blocks['index_page'] & block_index::DISCLAIMER) ? ' checked' : '');
 $checkbox_index_latest_user = ((curuser::$blocks['index_page'] & block_index::LATEST_USER) ? ' checked' : '');
+$checkbox_index_latest_comments = ((curuser::$blocks['index_page'] & block_index::LATESTCOMMENTS) ? ' checked' : '');
 $checkbox_index_latest_forumposts = ((curuser::$blocks['index_page'] & block_index::FORUMPOSTS) ? ' checked' : '');
 $checkbox_index_latest_torrents = ((curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS) ? ' checked' : '');
 $checkbox_index_latest_torrents_scroll = ((curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SCROLL) ? ' checked' : '');
@@ -543,6 +550,14 @@ $contents[] = "
                     <label for='latest_user'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable Latest User.</div>";
+
+$contents[] = "
+                <div class='w-100'>Enable Latest Comments?</div>
+                <div class='slideThree'> 
+                    <input type='checkbox' id='latestcomments' name='latestcomments' value='yes' $checkbox_index_latest_comments /> 
+                    <label for='latestcomments'></label>
+                </div>
+                <div class='w-100'>Check this option if you want to enable latest Comments.</div>";
 
 $contents[] = "
                 <div class='w-100'>Enable Latest Forum Posts?</div>

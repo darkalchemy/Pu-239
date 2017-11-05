@@ -4,6 +4,7 @@ $lang = [
     //index
     'index_announce'             => 'Anun&#355;uri',
     'index_latest'               => 'Ultimele torente',
+    'index_latest_comments'      => 'Latest Comments',
     'index_active_irc'           => 'Utilizatori activi pe irc',
     'index_active'               => 'Utilizatori activi',
     'index_active24'             => 'Cei mai multi utilizatori &#238;n 24h',
@@ -134,6 +135,8 @@ Este obliga&#355;ia dumneavoastra s&#259; v&#259; conforma&#355;i acestor termen
     'index_ie_get'               => 'Ob&#355;ine un browser mai sigur !',
     ///Latest Torrents
     'index_ltst_name'            => 'Nume:',
+    'index_ltst_added'           => 'Added:',
+    'index_ltst_size'            => 'Size:',
     'index_ltst_seeder'          => 'Seederi:',
     'index_ltst_leecher'         => 'Leecheri:',
     //Latest Member

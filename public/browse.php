@@ -253,12 +253,12 @@ $HTMLOUT .= "
 if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
     foreach ($catids as $cat) {
         $HTMLOUT .= "
-                                            <span class='margin10 mw-50 is-flex'>
+                                            <span class='margin10 mw-50 is-flex tooltipper' title='" . htmlsafechars($cat['name']) . "'>
                                                 <span class='bordered level-center bg-02'>
                                                     <input name='c" . (int)$cat['id'] . "' class='styled' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? " checked" : '') . " value='1' />
                                                     <span class='cat-image left10'>
                                                         <a href='./browse.php?c" . (int)$cat['id'] . "'>
-                                                            <img class='radius-sm tooltipper' src='{$site_config['pic_base_url']}images/caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' title='" . htmlsafechars($cat['name']) . "' />
+                                                            <img class='radius-sm' src='{$site_config['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' />
                                                         </a>
                                                     </span>
                                                 </span>

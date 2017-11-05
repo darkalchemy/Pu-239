@@ -429,14 +429,14 @@ if (!$enabled) {
         $mc1->cache_value('Blocks_' . $id, $blocks, $site_config['expires']['user_blocks']);
     }
     if ($friends > 0) {
-        $friend_links .= "<a class='bordered margin10' href='{$site_config['baseurl']}/friends.php?action=delete&amp;type=friend&amp;targetid=$id'>{$lang['userdetails_remove_friends']}</a>";
+        $friend_links .= "<a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/friends.php?action=delete&amp;type=friend&amp;targetid=$id'>{$lang['userdetails_remove_friends']}</a>";
     } else {
-        $friend_links .= "<a class='bordered margin10' href='{$site_config['baseurl']}/friends.php?action=add&amp;type=friend&amp;targetid=$id'>{$lang['userdetails_add_friends']}</a>";
+        $friend_links .= "<a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/friends.php?action=add&amp;type=friend&amp;targetid=$id'>{$lang['userdetails_add_friends']}</a>";
     }
     if ($blocks > 0) {
-        $friend_links .= "<a class='bordered margin10' href='{$site_config['baseurl']}/friends.php?action=delete&amp;type=block&amp;targetid=$id'>{$lang['userdetails_remove_blocks']}</a>";
+        $friend_links .= "<a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/friends.php?action=delete&amp;type=block&amp;targetid=$id'>{$lang['userdetails_remove_blocks']}</a>";
     } else {
-        $friend_links .= "<a class='bordered margin10' href='{$site_config['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=$id'>{$lang['userdetails_add_blocks']}</a>";
+        $friend_links .= "<a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=$id'>{$lang['userdetails_add_blocks']}</a>";
     }
 }
 
@@ -449,13 +449,13 @@ if ($CURUSER['class'] >= UC_STAFF) {
     }
     if ($shit_list > 0) {
         $shitty_link = "
-            <a class='bordered margin10' href='{$site_config['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list'>
+            <a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list'>
                 Remove from your
                 <img class='tooltipper right5' src='./images/smilies/shit.gif' alt='Shit' title='Shit' />
             </a>";
     } elseif ($CURUSER['id'] != $user['id']) {
         $shitty_link .= "
-            <a class='bordered margin10' href='{$site_config['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=new&amp;shit_list_id={$id}&amp;return_to=userdetails.php?id={$id}'>
+            <a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=new&amp;shit_list_id={$id}&amp;return_to=userdetails.php?id={$id}'>
                 {$lang['userdetails_shit3']}
             </a>";
     }
@@ -472,12 +472,12 @@ if ($user['donor'] && $CURUSER['id'] == $user['id'] || $CURUSER['class'] == UC_S
 }
 if ($CURUSER['id'] == $user['id']) {
     $edit_profile = "
-        <a class='bordered margin10 tooltipper' href='{$site_config['baseurl']}/usercp.php?action=default'>{$lang['userdetails_editself']}</a>
-        <a class='bordered margin10 tooltipper' href='{$site_config['baseurl']}/view_announce_history.php'>{$lang['userdetails_announcements']}</a>";
+        <a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=default'>{$lang['userdetails_editself']}</a>
+        <a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/view_announce_history.php'>{$lang['userdetails_announcements']}</a>";
 }
 if ($CURUSER['id'] != $user['id']) {
     $sharemark_link .= "
-        <a class='bordered margin10 tooltipper' href='{$site_config['baseurl']}/sharemarks.php?id=$id'>{$lang['userdetails_sharemarks']}</a>";
+        <a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/sharemarks.php?id=$id'>{$lang['userdetails_sharemarks']}</a>";
 }
 
 $invincible = $mc1->get_value('display_' . $CURUSER['id']);
@@ -491,10 +491,10 @@ $HTMLOUT .= "
         $shitty_link
         $friend_links
         $edit_profile" . ($CURUSER['class'] === UC_MAX ? $user['perms'] & bt_options::PERMS_NO_IP ? "
-        <a class='bordered margin10 tooltipper' title='{$lang['userdetails_invincible_def1']}<br>{$lang['userdetails_invincible_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=no'>{$lang['userdetails_invincible_remove']}</a>" . ($user['perms'] & bt_options::PERMS_BYPASS_BAN) ? "
-        <a class='bordered margin10 tooltipper' title='{$lang['userdetails_invincible_def3']}<br>{$lang['userdetails_invincible_def4']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=remove_bypass'>{$lang['userdetails_remove_bypass']}</a>" : "
-        <a class='bordered margin10 tooltipper' title='{$lang['userdetails_invincible_def5']}<br>{$lang['userdetails_invincible_def6']}<br>{$lang['userdetails_invincible_def7']}<br>{$lang['userdetails_invincible_def8']} href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_add_bypass']}</a>" : "
-        <a class='bordered margin10 tooltipper' title='{$lang['userdetails_invincible_def9']}<br>{$lang['userdetails_invincible_def0']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_make_invincible']}</a>" : '');
+        <a class='bordered margin10 bg-02 tooltipper' title='{$lang['userdetails_invincible_def1']}<br>{$lang['userdetails_invincible_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=no'>{$lang['userdetails_invincible_remove']}</a>" . ($user['perms'] & bt_options::PERMS_BYPASS_BAN) ? "
+        <a class='bordered margin10 bg-02 tooltipper' title='{$lang['userdetails_invincible_def3']}<br>{$lang['userdetails_invincible_def4']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=remove_bypass'>{$lang['userdetails_remove_bypass']}</a>" : "
+        <a class='bordered margin10 bg-02 tooltipper' title='{$lang['userdetails_invincible_def5']}<br>{$lang['userdetails_invincible_def6']}<br>{$lang['userdetails_invincible_def7']}<br>{$lang['userdetails_invincible_def8']} href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_add_bypass']}</a>" : "
+        <a class='bordered margin10 bg-02 tooltipper' title='{$lang['userdetails_invincible_def9']}<br>{$lang['userdetails_invincible_def0']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_make_invincible']}</a>" : '');
 
 $stealth = $mc1->get_value('display_stealth' . $CURUSER['id']);
 if ($stealth) {
@@ -502,26 +502,26 @@ if ($stealth) {
 }
 
 $HTMLOUT .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? "
-        <a class='bordered margin10 tooltipper' title='{$lang['userdetails_stelth_def1']}<br>{$lang['userdetails_stelth_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;stealth=no'>{$lang['userdetails_stelth_disable']}</a>" : "
-        <a class='bordered margin10 tooltipper' title='{$lang['userdetails_stelth_def1']}<br>{$lang['userdetails_stelth_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;stealth=yes'>{$lang['userdetails_stelth_enable']}</a>") : '') . "
+        <a class='bordered margin10 bg-02 tooltipper' title='{$lang['userdetails_stelth_def1']}<br>{$lang['userdetails_stelth_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;stealth=no'>{$lang['userdetails_stelth_disable']}</a>" : "
+        <a class='bordered margin10 bg-02 tooltipper' title='{$lang['userdetails_stelth_def1']}<br>{$lang['userdetails_stelth_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;stealth=yes'>{$lang['userdetails_stelth_enable']}</a>") : '') . "
     </div>";
 
 $HTMLOUT .= "
         <div id='tabs' class='widget'>
             <ul class='level-center'>
-                <li class='bordered margin10'><a href='#torrents'>{$lang['userdetails_torrents']}</a></li>
-                <li class='bordered margin10'><a href='#general'>{$lang['userdetails_general']}</a></li>
-                <li class='bordered margin10'><a href='#activity'>{$lang['userdetails_activity']}</a></li>
-                <li class='bordered margin10'><a href='#comments'>{$lang['userdetails_usercomments']}</a></li>";
+                <li class='bordered margin10 bg-02 tablinks' onclick=\"openCity(event, 'torrents')\"><a href='#torrents'>{$lang['userdetails_torrents']}</a></li>
+                <li class='bordered margin10 bg-02 tablinks' onclick=\"openCity(event, 'general')\"><a href='#general'>{$lang['userdetails_general']}</a></li>
+                <li class='bordered margin10 bg-02 tablinks' onclick=\"openCity(event, 'activity')\"><a href='#activity'>{$lang['userdetails_activity']}</a></li>
+                <li class='bordered margin10 bg-02 tablinks' onclick=\"openCity(event, 'comments')\"><a href='#comments'>{$lang['userdetails_usercomments']}</a></li>";
 if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CURUSER['class'] === UC_MAX) {
     $HTMLOUT .= "
-                <li class='bordered margin10'><a href='#edit'>{$lang['userdetails_edit_user']}</a></li>";
+                <li class='bordered margin10 bg-02 tablinks' onclick=\"openCity(event, 'edit')\"><a href='#edit'>{$lang['userdetails_edit_user']}</a></li>";
 }
 $HTMLOUT .= '
             </ul>';
 $HTMLOUT .= "
             <div class='tabdiv'>
-                <div id='torrents' class='table-wrapper'>
+                <div id='torrents' class='table-wrapper tabcontent top20'>
                     <table class='table table-bordered table-striped bottom20 four'>";
 if (curuser::$blocks['userdetails_page'] & block_userdetails::FLUSH && $BLOCKS['userdetails_flush_on']) {
     require_once BLOCK_DIR . 'userdetails/flush.php';
@@ -549,8 +549,8 @@ if (curuser::$blocks['userdetails_page'] & block_userdetails::CONNECTABLE_PORT &
 }
 $HTMLOUT .= "
                     </table>
-                </div>';
-                <div id='general' class='table-wrapper'>
+                </div>
+                <div id='general' class='table-wrapper tabcontent'>
                     <table class='table table-bordered table-striped bottom20 five'>";
 
 if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
@@ -644,7 +644,7 @@ if (curuser::$blocks['userdetails_page'] & block_userdetails::SHOWPM && $BLOCKS[
     require_once BLOCK_DIR . 'userdetails/showpm.php';
 }
 $HTMLOUT .= '</table></div>';
-$HTMLOUT .= "<div id='activity' class='table-wrapper'>";
+$HTMLOUT .= "<div id='activity' class='table-wrapper tabcontent'>";
 $HTMLOUT .= "<table class='table table-bordered table-striped bottom20 six'>";
 //==where is user now
 if (!empty($user['where_is'])) {
@@ -682,30 +682,15 @@ if (curuser::$blocks['userdetails_page'] & block_userdetails::INVITEDBY && $BLOC
     require_once BLOCK_DIR . 'userdetails/invitedby.php';
 }
 $HTMLOUT .= '</table></div>';
-$HTMLOUT .= "<div id='comments'>";
+$HTMLOUT .= "<div id='comments' class='table-wrapper tabcontent'>";
 if (curuser::$blocks['userdetails_page'] & block_userdetails::USERCOMMENTS && $BLOCKS['userdetails_user_comments_on']) {
     require_once BLOCK_DIR . 'userdetails/usercomments.php';
 }
 $HTMLOUT .= '</div>';
-$HTMLOUT .= "<div id='edit' class='table-wrapper'>";
+$HTMLOUT .= "<div id='edit' class='table-wrapper tabcontent'>";
 //==end blocks
 
-$HTMLOUT .= "<script>
-       /*<![CDATA[*/
-       function togglepic(bu, picid, formid){
-              var pic = document.getElementById(picid);
-              var form = document.getElementById(formid);
 
-              if(pic.src == bu + '/images/plus.gif')   {
-                    pic.src = bu + '/images/minus.gif';
-                    form.value = 'minus';
-              }else{
-                    pic.src = bu + '/images/plus.gif';
-                    form.value = 'plus';
-              }
-       }
-       /*]]>*/
-       </script>";
 if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CURUSER['class'] === UC_MAX) {
     $HTMLOUT .= "<form method='post' action='staffpanel.php?tool=modtask'>";
     require_once CLASS_DIR . 'validator.php';

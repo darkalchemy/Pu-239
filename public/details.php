@@ -878,7 +878,7 @@ if (empty($tvmaze_info) && empty($imdb_html)) {
         </tr>";
 }
 $HTMLOUT .= "</table></div><div>";
-$HTMLOUT .= "<h1>{$lang['details_comments']}<a href='details.php?id=$id'>" . htmlsafechars($torrents['name'], ENT_QUOTES) . "</a></h1>\n";
+$HTMLOUT .= "<h1>{$lang['details_comments']}<a href='./details.php?id=$id'>" . htmlsafechars($torrents['name'], ENT_QUOTES) . "</a></h1>\n";
 
 $HTMLOUT .= "
     <p>

@@ -9485,11 +9485,6 @@ h3 {
 .tooltipster-sidetip.tooltipster-borderless.tooltipster-right .tooltipster-arrow-uncropped {
   left: -8px
 }
-.tooltipper {
-  -webkit-border-radius: .3125em;
-  -moz-border-radius: .3125em;
-  border-radius: .3125em
-}
 .tooltipper_img {
   vertical-align: unset;
   margin: 5px
@@ -9609,5 +9604,5 @@ h3 {
   overflow: auto
 }
 .table-wrapper + .table-wrapper {
-  margin-top: 20px
+  margin-top: 1.25em
 }

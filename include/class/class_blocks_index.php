@@ -24,4 +24,5 @@ class block_index
     const ACTIVE_POLL = 0x80000; // 524288
     const TRIVIA = 0x100000; // 1048576
     const MOVIEOFWEEK = 0x200000; // 2097152
+    const LATESTCOMMENTS = 0x400000; // 4194304
 }

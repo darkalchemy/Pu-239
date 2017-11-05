@@ -4,6 +4,7 @@ $lang = [
     //index
     'index_announce'             => 'Announcements',
     'index_latest'               => 'Latest Torrents',
+    'index_latest_comments'      => 'Latest Comments',
     'index_ajaxchat'             => 'AJAX Chat',
     'index_active_irc'           => 'Active Irc users',
     'index_active'               => 'Active users',
@@ -135,6 +136,8 @@ It is your own responsibility to adhere to these terms.",
     'index_ie_get'               => 'Get a SAFER browser !',
     ///Latest Torrents
     'index_ltst_name'            => 'Name:',
+    'index_ltst_added'           => 'Added:',
+    'index_ltst_size'            => 'Size:',
     'index_ltst_seeder'          => 'Seeders:',
     'index_ltst_leecher'         => 'Leechers:',
     //Latest Member

@@ -11,6 +11,7 @@ $BLOCKS = [
 	'stats_on' => 1,
 	'disclaimer_on' => 1,
 	'latest_user_on' => 1,
+	'latest_comments_on' => 1,
 	'forum_posts_on' => 1,
 	'latest_torrents_on' => 1,
 	'latest_torrents_scroll_on' => 1,

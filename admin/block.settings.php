@@ -26,6 +26,7 @@ $list = [
     'stats_on',
     'disclaimer_on',
     'latest_user_on',
+    'latest_comments_on',
     'forum_posts_on',
     'latest_torrents_on',
     'latest_torrents_scroll_on',
@@ -200,6 +201,13 @@ $contents[] = "
                                 <#latest_user_on#>
                             </div>
                             <div class='w-100'>{$lang['block_latest_users_set']}</div>";
+
+$contents[] = "
+                            <div class='w-100'>{$lang['block_latest_comments']}</div>
+                            <div class='slideThree'>
+                                <#latest_comments_on#>
+                            </div>
+                            <div class='w-100'>{$lang['block_latest_comments_set']}</div>";
 
 $contents[] = "
                             <div class='w-100'>{$lang['block_forum_post']}</div>

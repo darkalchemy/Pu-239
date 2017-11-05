@@ -2,6 +2,7 @@
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
+global $mc1, $site_config;
 $lang = array_merge(load_language('global'), load_language('takerate'));
 if (!mkglobal('id')) {
     exit();
@@ -36,6 +37,7 @@ $mc1->update_row(false, [
     'comments' => $update['comments'],
 ]);
 $mc1->commit_transaction($site_config['expires']['torrent_details']);
+$mc1->delete_value('latest_comments_');
 if ($site_config['seedbonus_on'] == 1) {
     //===add karma
     sql_query('UPDATE users SET seedbonus = seedbonus+5.0 WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
