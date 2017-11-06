@@ -1,0 +1,95 @@
+.h-style-1 #logo h1,
+.h-style-1 h1,
+.h-style-1 h2,
+.h-style-1 h3,
+.h-style-1 h4,
+.h-style-1 h5,
+.h-style-1 h6,
+.markItUp .text-1,
+.text-1 {
+    font-family: Oswald, sans-serif;
+}
+
+.h-style-2 #logo h1,
+.h-style-2 h1,
+.h-style-2 h2,
+.h-style-2 h3,
+.h-style-2 h4,
+.h-style-2 h5,
+.h-style-2 h6,
+.markItUp .text-2,
+.text-2 {
+    font-family: 'PT Sans Narrow', sans-serif;
+}
+
+.h-style-3 #logo h1,
+.h-style-3 h1,
+.h-style-3 h2,
+.h-style-3 h3,
+.h-style-3 h4,
+.h-style-3 h5,
+.h-style-3 h6,
+.markItUp .text-3,
+.text-3 {
+    font-family: 'Nova Square', cursive;
+}
+
+.h-style-4 #logo h1,
+.h-style-4 h1,
+.h-style-4 h2,
+.h-style-4 h3,
+.h-style-4 h4,
+.h-style-4 h5,
+.h-style-4 h6,
+.markItUp .text-4,
+.text-4 {
+    font-family: Lobster, cursive;
+}
+
+.h-style-5 #logo h1,
+.h-style-5 h1,
+.h-style-5 h2,
+.h-style-5 h3,
+.h-style-5 h4,
+.h-style-5 h5,
+.h-style-5 h6,
+.markItUp .text-5,
+.text-5 {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.h-style-6 #logo h1,
+.h-style-6 h1,
+.h-style-6 h2,
+.h-style-6 h3,
+.h-style-6 h4,
+.h-style-6 h5,
+.h-style-6 h6,
+.markItUp .text-6,
+.text-6 {
+    font-family: 'Encode Sans Condensed', sans-serif;
+}
+
+.h-style-7 #logo h1,
+.h-style-7 h1,
+.h-style-7 h2,
+.h-style-7 h3,
+.h-style-7 h4,
+.h-style-7 h5,
+.h-style-7 h6,
+.markItUp .text-7,
+.text-7 {
+    font-family: 'Baloo Bhaijaan', cursive;
+}
+
+.h-style-8 #logo h1,
+.h-style-8 h1,
+.h-style-8 h2,
+.h-style-8 h3,
+.h-style-8 h4,
+.h-style-8 h5,
+.h-style-8 h6,
+.markItUp .text-8,
+.text-8 {
+    font-family: Acme, sans-serif;
+}

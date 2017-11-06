@@ -1,6 +1,7 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'bbcode_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 
 $lang = array_merge(load_language('global'));
@@ -29,11 +30,11 @@ $htmlout = "<!doctype html>
     </script>";
 
 $count = 0;
-$list = '';
+$list1 = $list2 = $list3 = '';
 foreach ($smilies as $code => $url) {
-    $list .= "
+    $list1 .= "
         <span class='margin10 mw-50 is-flex'>
-            <span class='bordered'>
+            <span class='bordered bg-04'>
                 <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
                     <img src='./images/smilies/" . $url . "' alt='' />
                 </a>
@@ -41,9 +42,9 @@ foreach ($smilies as $code => $url) {
         </span>";
 }
 foreach ($customsmilies as $code => $url) {
-    $list .= "
+    $list2 .= "
         <span class='margin10 mw-50 is-flex'>
-            <span class='bordered'>
+            <span class='bordered bg-04'>
                 <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
                     <img src='./images/smilies/" . $url . "' alt='' />
                 </a>
@@ -52,9 +53,9 @@ foreach ($customsmilies as $code => $url) {
 }
 if ($CURUSER['class'] >= UC_STAFF) {
     foreach ($staff_smilies as $code => $url) {
-        $list .= "
+        $list3 .= "
         <span class='margin10 mw-50 is-flex'>
-            <span class='bordered'>
+            <span class='bordered bg-04'>
                 <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
                     <img src='./images/smilies/" . $url . "' alt='' />
                 </a>
@@ -62,10 +63,33 @@ if ($CURUSER['class'] >= UC_STAFF) {
         </span>";
     }
 }
+$list = "
+    <div class='has-text-centered'>
+        <h1>Smilies</h1>
+        <div class='level-center bg-04 round10 margin20'>
+            $list1
+        </div>";
+
+if ($CURUSER['smile_until'] != '0') {
+    $list .= "
+        <h1>Custom Smilies</h1>
+        <div class='level-center bg-04 round10 margin20'>
+            $list2
+        </div>";
+}
+
+if ($CURUSER['class'] >= UC_STAFF) {
+    $list .= "
+        <h1>Staff Smilies</h1>
+        <div class='level-center bg-04 round10 margin20'>
+            $list3
+        </div>";
+}
+
 $htmlout .= "
-    <div class='level-center'>
-        $list
-    </div>
+    </div>";
+$htmlout .= main_div($list);
+$htmlout .= "
 </body>
 </html>";
 

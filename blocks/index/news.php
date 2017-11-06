@@ -58,7 +58,16 @@ if ($news) {
     }
 }
 if (empty($news)) {
-    $HTMLOUT .= format_comment($lang['index_news_not']);
+        $HTMLOUT .= "
+            <div class='bordered'>
+                <div class='header alt_bordered bg-00 has-text-left'>
+                    <div class='bg-02 round5 padding10'>
+                        <div class='has-text-white'>
+                            " . format_comment($lang['index_news_not'], 0) . "
+                        </div>
+                    </div>
+                </div>
+            </div>";
 }
 
 $HTMLOUT .= "

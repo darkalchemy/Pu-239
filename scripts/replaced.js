@@ -277,18 +277,16 @@ $(function() {
         });
     };
 
-    if ($('#accordion').length) {
-        $('#accordion').accordion({
-            collapsible: true,
-            active: false,
-            animate: animate_duration,
-            heightStyle: 'content',
-        });
-    };
-
     if ($('.notification').length) {
         setTimeout(function(){
             $('.notification').slideUp(animate_duration, function() { $('.notification').remove();});
         }, 15000);
+    };
+
+    if ($('#accordion').length) {
+        $('#accordion').find('.accordion-toggle').click(function(){
+            $(this).next().slideToggle(animate_duration);
+            $(".accordion-content").not($(this).next()).slideUp(animate_duration);
+        });
     };
 });

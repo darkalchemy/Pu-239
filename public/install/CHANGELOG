@@ -1,3 +1,8 @@
+6 Nov 2017
+replace: jquery-ui accordion with smaller alternative
+add: missing markItUp css 
+optimize: gif images using gifsicle
+
 5 Nov 2017
 add: index page latest comments block(request)
 

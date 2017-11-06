@@ -27,58 +27,58 @@ $HTMLOUT = "
                 <div class='bordered'>
                     <div class='alt_bordered bg-00 has-text-left'>
                         <div id='accordion'>
-                            <p class='menu_head'>
+                            <p class='has-text-black accordion-toggle round5-top'>
                                 {$lang['faq_siteinfo_header']}
                             </p>
-                            <div class='menu_body bg-02 round5 padding10'>
+                            <div class='accordion-content bg-02 round5 padding10'>
                                 {$lang['faq_siteinfo']}
                             </div>
-                            <p class='menu_head'>
+                            <p class='has-text-black accordion-toggle'>
                                 {$lang['faq_userinfo_header']}
                             </p>
-                            <div class='menu_body bg-02 round5 padding10'>
+                            <div class='accordion-content bg-02 round5 padding10'>
                                 {$lang['faq_userinfo']}
                             </div>
-                            <p class='menu_head'>
+                            <p class='has-text-black accordion-toggle'>
                                 {$lang['faq_stats_header']}
                             </p>
-                            <div class='menu_body bg-02 round5 padding10'>
+                            <div class='accordion-content bg-02 round5 padding10'>
                                 {$lang['faq_stats']}
                             </div>
-                            <p class='menu_head'>
+                            <p class='has-text-black accordion-toggle'>
                                 {$lang['faq_uploading_header']}
                             </p>
-                            <div class='menu_body bg-02 round5 padding10'>
+                            <div class='accordion-content bg-02 round5 padding10'>
                                 {$lang['faq_uploading']}
                             </div>
-                            <p class='menu_head'>
+                            <p class='has-text-black accordion-toggle'>
                                 {$lang['faq_downloading_header']}
                             </p>
-                            <div class='menu_body bg-02 round5 padding10'>
+                            <div class='accordion-content bg-02 round5 padding10'>
                                 {$lang['faq_downloading']}
                             </div>
-                            <p class='menu_head'>
+                            <p class='has-text-black accordion-toggle'>
                                 {$lang['faq_improve_header']}
                             </p>
-                            <div class='menu_body bg-02 round5 padding10'>
+                            <div class='accordion-content bg-02 round5 padding10'>
                                 {$lang['faq_improve']}
                             </div>
-                            <p class='menu_head'>
+                            <p class='has-text-black accordion-toggle'>
                                 {$lang['faq_isp_header']}
                             </p>
-                            <div class='menu_body bg-02 round5 padding10'>
+                            <div class='accordion-content bg-02 round5 padding10'>
                                 {$lang['faq_isp']}
                             </div>
-                            <p class='menu_head'>
+                            <p class='has-text-black accordion-toggle'>
                                 {$lang['faq_connect_header']}
                             </p>
-                            <div class='menu_body bg-02 round5 padding10'>
+                            <div class='accordion-content bg-02 round5 padding10'>
                                 {$lang['faq_connect']}
                             </div>
-                            <p class='menu_head'>
+                            <p class='has-text-black accordion-toggle round5-bottom'>
                                 {$lang['faq_problem']}
                             </p>
-                            <div class='menu_body bg-02 round5 padding10'>
+                            <div class='accordion-content bg-02 round5 padding10'>
                                 <a href='#answer_9'>{$lang['faq_problem']}</a>
                             </div>
                         </div>

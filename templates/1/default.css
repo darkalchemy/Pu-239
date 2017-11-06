@@ -204,6 +204,10 @@ h1 {
     font-size: 2em;
 }
 
+span {
+    word-break: normal;
+}
+
 #base_content {
     -webkit-border-radius: .625em;
     -moz-border-radius: .625em;
@@ -217,7 +221,7 @@ h1 {
 
 #logo {
     /*margin-top: 40px;*/
-    height: 150px;
+    height: 100px;
     /*padding: 20px 10px 30px;*/
 }
 
@@ -239,6 +243,28 @@ h1 {
     height: 40px;
     background: transparent;
 }
+
+.accordion-toggle {
+    background: white;
+    font-weight: 700;
+    padding-left: 1em;
+    line-height: 2em;
+    cursor: pointer;
+    margin-bottom: 1px;
+}
+
+.accordion-content {
+    display: none;
+}
+
+.accordion-content ul li {
+    line-height: 1.75em;
+}
+
+.accordion-content.default {
+    display: block;
+}
+
 .alt_bordered,
 .bordered {
     -webkit-border-radius: .625em;
@@ -378,6 +404,10 @@ textarea {
     -webkit-border-radius: .3125em;
     -moz-border-radius: .3125em;
     border-radius: .3125em;
+}
+
+textarea {
+    overflow: auto;
 }
 
 .portlet.is-fluid {
@@ -545,6 +575,16 @@ textarea {
 
 .right20 {
     margin-right: 1.25em;
+}
+
+.round5-top {
+    border-top-left-radius: .3125em;
+    border-top-right-radius: .3125em;
+}
+
+.round5-bottom {
+    border-bottom-left-radius: .3125em;
+    border-bottom-right-radius: .3125em;
 }
 
 .round5 {

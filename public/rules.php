@@ -20,33 +20,33 @@ $HTMLOUT .= "
             <legend>
                 <img src='./images/info.png' alt='' class='tooltipper right5' title='Guidelines' width='25' />Guidelines
             </legend>
-    
+
             <div class='bordered'>
                 <div class='alt_bordered bg-00'>
                     <div id='accordion'>
-                        <p class='menu_head'>
+                        <p class='accordion-toggle has-text-black round5-top'>
                             {$lang['rules_general_header']}<span class='text-blue'>{$lang['rules_general_header_sub']}</span>
                         </p>
-                        <div class='menu_body padding20'>
+                        <div class='accordion-content padding20'>
                             <ul>
                                 <li>{$lang['rules_general_body']}</li>
                                 <li>{$lang['rules_general_body1']}</li>
                                 <li><a name='warning'></a>{$lang['rules_general_body2']}</li>
                             </ul>
                         </div>
-                        <p class='menu_head'>
+                        <p class='accordion-toggle has-text-black'>
                             {$lang['rules_downloading_header']}<span class='text-blue'>{$lang['rules_downloading_header_sub']}</span>
                         </p>
-                        <div class='menu_body padding20'>
+                        <div class='accordion-content padding20'>
                             <ul>
                                 <li>{$lang['rules_downloading_body']}</li>
                                 <li>{$lang['rules_downloading_body1']}</li>
                             </ul>
                         </div>
-                        <p class='menu_head'>
+                        <p class='accordion-toggle has-text-black'>
                             {$lang['rules_forum_header']}<span class='text-blue'>{$lang['rules_forum_header_sub']}</span>
                         </p>
-                        <div class='menu_body padding20'>
+                        <div class='accordion-content padding20'>
                             <ul>
                                 <li>{$lang['rules_forum_body']}</li>
                                 <li>{$lang['rules_forum_body1']}</li>
@@ -62,10 +62,10 @@ $HTMLOUT .= "
                                 <li>{$lang['rules_forum_body11']}</li>
                             </ul>
                         </div>
-                        <p class='menu_head'>
+                        <p class='accordion-toggle has-text-black" . ($CURUSER['class'] < UC_UPLOADER ? ' round5-bottom' : '') . "'>
                             {$lang['rules_avatar_header']}<span class='text-blue'>{$lang['rules_avatar_header_sub']}</span>
                         </p>
-                        <div class='menu_body padding20'>
+                        <div class='accordion-content padding20'>
                             <ul>
                                 <li>{$lang['rules_avatar_body']}</li>
                                 <li>{$lang['rules_avatar_body1']}</li>
@@ -75,10 +75,10 @@ $HTMLOUT .= "
 
 if (isset($CURUSER) and $CURUSER['class'] >= UC_UPLOADER) {
     $HTMLOUT .= "
-                        <p class='menu_head'>
+                        <p class='accordion-toggle has-text-black" . ($CURUSER['class'] < UC_STAFF ? ' round5-bottom' : '') . "'>
                             {$lang['rules_uploading_header']}<span class='text-blue'>{$lang['rules_uploading_header_sub']}</span>
                         </p>
-                        <div class='menu_body padding20'>
+                        <div class='accordion-content padding20'>
                             <ul>
                                 <li>{$lang['rules_uploading_body']}</li>
                                 <li>{$lang['rules_uploading_body1']}</li>
@@ -95,10 +95,10 @@ if (isset($CURUSER) and $CURUSER['class'] >= UC_UPLOADER) {
 }
 if (isset($CURUSER) and $CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= "
-                        <p class='menu_head'>
+                        <p class='accordion-toggle has-text-black'>
                             {$lang['rules_moderating_header']}<span class='text-blue'>{$lang['rules_moderating_header_sub']}</span>
                         </p>
-                        <div class='menu_body padding20'>
+                        <div class='accordion-content padding20'>
                             <table class='table table-bordered table-striped'>
                                 <tr>
                                     <td class='w-15'>
@@ -129,14 +129,11 @@ if (isset($CURUSER) and $CURUSER['class'] >= UC_STAFF) {
                                     <td>{$lang['rules_moderating_body5']}</td>
                                 </tr>
                             </table>
-                        </div>";
-}
-
-$HTMLOUT .= "
-                        <p class='menu_head'>
+                        </div>
+                        <p class='accordion-toggle has-text-black'>
                             {$lang['rules_mod_rules_header']}<span class='text-blue'>{$lang['rules_mod_rules_header_sub']}</span>
                         </p>
-                        <div class='menu_body padding20'>
+                        <div class='accordion-content padding20'>
                             <ul>
                                 <li>{$lang['rules_mod_rules_body']}</li>
                                 <li>{$lang['rules_mod_rules_body1']}</li>
@@ -152,10 +149,10 @@ $HTMLOUT .= "
                                 <li>{$lang['rules_mod_rules_body11']}</li>
                             </ul>
                         </div>
-                        <p class='menu_head'>
+                        <p class='accordion-toggle has-text-black round5-bottom'>
                             {$lang['rules_mod_options_header']}<span class='text-blue'>{$lang['rules_mod_options_header_sub']}</span>
                         </p>
-                        <div class='menu_body padding20'>
+                        <div class='accordion-content padding20'>
                             <ul>
                                 <li>{$lang['rules_mod_options_body']}</li>
                                 <li>{$lang['rules_mod_options_body1']}</li>
@@ -167,7 +164,10 @@ $HTMLOUT .= "
                                 <li>{$lang['rules_mod_options_body7']}</li>
                                 <li>{$lang['rules_mod_options_body8']}</li>
                             </ul>
-                        </div>
+                        </div>";
+}
+
+$HTMLOUT .= "
                     </div>
                 </div>
             </div>

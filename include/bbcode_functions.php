@@ -5,17 +5,20 @@ function smilies_frame($smilies_set)
 {
     $list = $emoticons = '';
 
+
     foreach ($smilies_set as $code => $url) {
         $list .= "
-            <div class='container-flex'>
-                <a href='#' class='tooltipper' alt='{$code}' title='{$code}'>
-                    <img border='0' src='./images/smilies/" . $url . "' alt='{$code}' />
-                </a>
-            </div>";
+            <span class='margin10 mw-50 is-flex tooltipper' title='{$code}'>
+                <span class='bordered bg-03'>
+                    <a href='#' alt='{$code}'>
+                        <img border='0' src='./images/smilies/" . $url . "' alt='{$code}' />
+                    </a>
+                </span>
+            </span>";
     }
 
     $emoticons = "
-        <div class='flex-grid emoticons'>
+        <div class='level-center emoticons'>
             $list
         </div>";
 
@@ -30,32 +33,36 @@ function BBcode($body = '')
     $emoticons_staff = smilies_frame($staff_smilies, 1, ':dabunnies:');
 
     $bbcode = '
-            <div class="flex-justify-center">
-                <div class="emos">
-                    <ul class="flex-row">
-                        <li>
-                            <a href="#BBcode" id="smilies" class="altlink">Smilies</a>
-                        </li>' . ($CURUSER['smile_until'] > 0 ? '
-                        <li>
-                            <a href="#BBcode" id="custom" class="altlink">Custom</a>
-                        </li>' : '') . ($CURUSER['class'] < UC_STAFF ? '' : '
-                        <li>
-                            <a href="#BBcode" id="staff" class="altlink">Staff</a>
-                        </li>') . '
-                    </ul>
-                    <div class="scroll" id="box_0" style="display:none">
-                        <div class="smilies_frame">
-                            <img src="./images/forums/updating.gif" alt="Loading..." />
+            <div>
+                <div class="emos_wrapper">
+                    <div class="emos">
+                        <ul class="level-center">
+                            <li>
+                                <a href="#BBcode" id="smilies" class="button is-link">Smilies</a>
+                            </li>' . ($CURUSER['smile_until'] > 0 ? '
+                            <li>
+                                <a href="#BBcode" id="custom" class="button is-link">Custom</a>
+                            </li>' : '') . ($CURUSER['class'] < UC_STAFF ? '' : '
+                            <li>
+                                <a href="#BBcode" id="staff" class="button is-link">Staff</a>
+                            </li>') . '
+                        </ul>
+                        <div class="scroll_wrapper">
+                            <div class="scroll" id="box_0" style="display:none">
+                                <div class="smilies_frame">
+                                    <img src="./images/forums/updating.gif" alt="Loading..." />
+                                </div>
+                            </div>
+                            <div class="scroll" id="box_1" style="display:none">
+                                ' . $emoticons_normal . '
+                            </div>
+                            ' . ($CURUSER['smile_until'] > 0 ? '<div class="scroll" id="box_2" style="display:none">
+                                ' . $emoticons_custom . '
+                            </div>' : '') . ($CURUSER['class'] < UC_STAFF ? '' : '<div class="scroll" id="box_3" style="display:none">
+                                ' . $emoticons_staff . '
+                            </div>') . '
                         </div>
                     </div>
-                    <div class="scroll" id="box_1" style="display:none">
-                        ' . $emoticons_normal . '
-                    </div>
-                    ' . ($CURUSER['smile_until'] > 0 ? '<div class="scroll" id="box_2" style="display:none">
-                        ' . $emoticons_custom . '
-                    </div>' : '') . ($CURUSER['class'] < UC_STAFF ? '' : '<div class="scroll" id="box_3" style="display:none">
-                        ' . $emoticons_staff . '
-                    </div>') . '
                 </div>
                 <div id="tblDefects" class="w-100">
                     <div class="table-wrapper">
