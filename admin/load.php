@@ -5,10 +5,27 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_index'));
 $HTMLOUT = '';
+/**
+ *
+ */
 define('INTERVAL_1_MIN', 0); // load average for last 1 minute
+/**
+ *
+ */
 define('INTERVAL_5_MIN', 1); // load average for last 5 minute
+/**
+ *
+ */
 define('INTERVAL_15_MIN', 2); //  load average for last 15 minute
+/**
+ *
+ */
 define('DEFAULT_AVG', INTERVAL_15_MIN); // selects which load average to return by default if no parameters are passed
+/**
+ * @param $n
+ *
+ * @return string
+ */
 function is_s($n)
 {
     global $lang;
@@ -19,6 +36,9 @@ function is_s($n)
     }
 }
 
+/**
+ * @return string
+ */
 function uptime()
 {
     global $lang;
@@ -62,6 +82,11 @@ function uptime()
     return $res;
 }
 
+/**
+ * @param bool $return_all
+ *
+ * @return string
+ */
 function loadavg($return_all = false)
 {
     global $lang;

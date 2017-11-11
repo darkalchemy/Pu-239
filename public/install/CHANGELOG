@@ -1,3 +1,12 @@
+11 Nov 2017
+add: doc blocks(a start)
+update: filelist.php
+update: torrents-today.php
+update: notifications can accept arrays
+update: ip storage(probably missed something)
+update: lightbox v2.9.0, group every image on page, using lightbox, to create slideshow
+update: raphael.js 2.2.7
+
 6 Nov 2017
 replace: jquery-ui accordion with smaller alternative
 add: missing markItUp css 

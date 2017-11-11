@@ -105,6 +105,11 @@ $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=forum
             <input type="submit" name="button" class="button_big" value="' . $lang['forum_config_save'] . '" /></td>
         </tr>
         </table></form>';
+/**
+ * @param $member_class
+ *
+ * @return string
+ */
 function member_class_drop_down($member_class)
 {
     $member_class_drop_down = '';

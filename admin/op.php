@@ -55,6 +55,13 @@ if (!empty($opcache_status['scripts'])) {
     });
 }
 
+/**
+ * @param      $size
+ * @param int  $precision
+ * @param bool $space
+ *
+ * @return string
+ */
 function memsize($size, $precision = 3, $space = false)
 {
     $i = 0;
@@ -72,6 +79,9 @@ function memsize($size, $precision = 3, $space = false)
     );
 }
 
+/**
+ * @param null $at
+ */
 function rc($at = null)
 {
     static $i = 0;

@@ -7,6 +7,11 @@ $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $lang = array_merge($lang, load_language('ad_viewpeers'));
 $HTMLOUT = $count = '';
+/**
+ * @param $ip
+ *
+ * @return array|bool|string
+ */
 function my_inet_ntop($ip)
 {
     if (strlen($ip) == 4) {
@@ -42,6 +47,11 @@ function my_inet_ntop($ip)
     return $ip;
 }
 
+/**
+ * @param $a
+ *
+ * @return string
+ */
 function XBT_IP_CONVERT($a)
 {
     $b = [

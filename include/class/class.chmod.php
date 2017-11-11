@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * Class Chmod
+ */
 class Chmod
 {
     private $_dir;
@@ -8,6 +12,14 @@ class Chmod
         'public' => 0,
     ];
 
+    /**
+     * Chmod constructor.
+     *
+     * @param       $dir
+     * @param array $OwnerModes
+     * @param array $GroupModes
+     * @param array $PublicModes
+     */
     public function Chmod($dir, $OwnerModes = [], $GroupModes = [], $PublicModes = [])
     {
         $this->_dir = $dir;
@@ -16,11 +28,23 @@ class Chmod
         $this->setPublicModes($PublicModes[0], $PublicModes[1], $PublicModes[2]);
     }
 
+    /**
+     * @param $read
+     * @param $write
+     * @param $execute
+     */
     private function setOwnerModes($read, $write, $execute)
     {
         $this->_modes['owner'] = $this->setMode($read, $write, $execute);
     }
 
+    /**
+     * @param $read
+     * @param $write
+     * @param $execute
+     *
+     * @return int
+     */
     private function setMode($read, $write, $execute)
     {
         $mode = 0;
@@ -37,16 +61,29 @@ class Chmod
         return $mode;
     }
 
+    /**
+     * @param $read
+     * @param $write
+     * @param $execute
+     */
     private function setGroupModes($read, $write, $execute)
     {
         $this->_modes['group'] = $this->setMode($read, $write, $execute);
     }
 
+    /**
+     * @param $read
+     * @param $write
+     * @param $execute
+     */
     private function setPublicModes($read, $write, $execute)
     {
         $this->_modes['public'] = $this->setMode($read, $write, $execute);
     }
 
+    /**
+     * @return array
+     */
     public function setChmod()
     {
         if (is_array($this->_dir)) {
@@ -61,6 +98,11 @@ class Chmod
         }
     }
 
+    /**
+     * @param $dir
+     *
+     * @return array
+     */
     private function returnValue($dir)
     {
         return is_dir($dir) ? [
@@ -76,6 +118,9 @@ class Chmod
         ];
     }
 
+    /**
+     * @return string
+     */
     private function getMode()
     {
         return $this->_modes['owner'] . $this->_modes['group'] . $this->_modes['public'];

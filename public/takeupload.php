@@ -361,6 +361,12 @@ if (isset($_POST['uplver']) && $_POST['uplver'] == 'yes') {
 }
 $messages = "{$site_config['site_name']} New Torrent: $torrent Uploaded By: $anon " . mksize($totallen) . " {$site_config['baseurl']}/details.php?id=$id";
 sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+/**
+ * @param $arr
+ * @param $id
+ *
+ * @return string
+ */
 function file_list($arr, $id)
 {
     foreach ($arr as $v) {

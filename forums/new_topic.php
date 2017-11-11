@@ -16,7 +16,7 @@ $topic_desc = strip_tags(isset($_POST['topic_desc']) ? $_POST['topic_desc'] : ''
 $post_title = strip_tags(isset($_POST['post_title']) ? $_POST['post_title'] : '');
 $icon = htmlsafechars(isset($_POST['icon']) ? $_POST['icon'] : '');
 $body = (isset($_POST['body']) ? $_POST['body'] : '');
-$ip = htmlsafechars($CURUSER['ip'] == '' ? $_SERVER['REMOTE_ADDR'] : $CURUSER['ip']);
+$ip = getip();
 $bb_code = (isset($_POST['bb_code']) && $_POST['bb_code'] == 'no' ? 'no' : 'yes');
 $anonymous = (isset($_POST['anonymous']) && $_POST['anonymous'] != '' ? 'yes' : 'no');
 //=== poll stuff
@@ -60,7 +60,7 @@ if (isset($_POST['button']) && $_POST['button'] == 'Post') {
     sql_query('INSERT INTO topics (`id`, `user_id`, `topic_name`, `last_post`, `forum_id`, `topic_desc`, `poll_id`, `anonymous`) VALUES (NULL, ' . $CURUSER['id'] . ', ' . sqlesc($topic_name) . ', ' . $CURUSER['id'] . ', ' . $forum_id . ', ' . sqlesc($topic_desc) . ', ' . $poll_id . ', ' . sqlesc($anonymous) . ')');
     $topic_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
     sql_query('INSERT INTO `posts` ( `topic_id` , `user_id` , `added` , `body` , `icon` , `post_title` , `bbcode` , `ip` , `anonymous`) VALUES
-            (' . sqlesc($topic_id) . ', ' . $CURUSER['id'] . ', ' . TIME_NOW . ', ' . sqlesc($body) . ', ' . sqlesc($icon) . ',  ' . sqlesc($post_title) . ', ' . sqlesc($bb_code) . ', ' . sqlesc($ip) . ', ' . sqlesc($anonymous) . ')');
+            (' . sqlesc($topic_id) . ', ' . $CURUSER['id'] . ', ' . TIME_NOW . ', ' . sqlesc($body) . ', ' . sqlesc($icon) . ',  ' . sqlesc($post_title) . ', ' . sqlesc($bb_code) . ', ' . ipToStorageFormat($ip) . ', ' . sqlesc($anonymous) . ')');
     $post_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
     sql_query('UPDATE usersachiev SET forumtopics = forumtopics+1 WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     clr_forums_cache($post_id);

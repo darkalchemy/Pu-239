@@ -1,5 +1,8 @@
 <?php
 if (XBT_TRACKER == false and $site_config['crazy_hour'] == true) {
+    /**
+     * @return string
+     */
     function crazyhour()
     {
         global $CURUSER, $site_config, $mc1, $lang;

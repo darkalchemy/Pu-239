@@ -1,4 +1,9 @@
 <?php
+/**
+ * @param $st
+ *
+ * @return string
+ */
 function get_pretime($st)
 {
     $secs = $st;

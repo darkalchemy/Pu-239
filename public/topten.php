@@ -5,6 +5,12 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('topten'));
 $HTMLOUT = '';
+/**
+ * @param     $result
+ * @param int $numass
+ *
+ * @return mixed
+ */
 function mysql_fetch_rowsarr($result, $numass = MYSQLI_BOTH)
 {
     $i = 0;

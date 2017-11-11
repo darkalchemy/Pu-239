@@ -26,6 +26,9 @@ if (!in_array($mode, $possible_modes)) {
     stderr($lang['classcfg_error'], $lang['classcfg_error1']);
 }
 
+/**
+ * @param $data
+ */
 function write_css($data) {
     $classdata = "";
     foreach ($data as $class) {

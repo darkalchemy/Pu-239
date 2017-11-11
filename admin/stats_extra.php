@@ -173,6 +173,9 @@ function show_views()
     echo stdhead($page_title) . $htmlout . stdfoot();
 }
 
+/**
+ * @param string $mode
+ */
 function result_screen($mode = 'reg')
 {
     global $site_config, $inbound, $month_names, $lang;
@@ -319,6 +322,9 @@ function result_screen($mode = 'reg')
     echo stdhead($page_title) . $htmlout . stdfoot();
 }
 
+/**
+ * @param string $mode
+ */
 function main_screen($mode = 'reg')
 {
     global $site_config, $lang;
@@ -413,6 +419,9 @@ function main_screen($mode = 'reg')
     echo stdhead($page_title) . $htmlout . stdfoot();
 }
 
+/**
+ * @return array
+ */
 function make_year()
 {
     $time_now = getdate();
@@ -432,6 +441,9 @@ function make_year()
     return $return;
 }
 
+/**
+ * @return array
+ */
 function make_month()
 {
     global $month_names;
@@ -446,6 +458,9 @@ function make_month()
     return $return;
 }
 
+/**
+ * @return array
+ */
 function make_day()
 {
     $return = [];
@@ -459,6 +474,13 @@ function make_day()
     return $return;
 }
 
+/**
+ * @param        $name
+ * @param array  $in
+ * @param string $default
+ *
+ * @return string
+ */
 function make_select($name, $in = [], $default = '')
 {
     $html = "<select name='$name' class='dropdown'>\n";
@@ -474,6 +496,9 @@ function make_select($name, $in = [], $default = '')
     return $html;
 }
 
+/**
+ * @return string
+ */
 function make_side_menu()
 {
     global $site_config, $lang;

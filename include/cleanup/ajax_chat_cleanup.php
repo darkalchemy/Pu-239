@@ -1,4 +1,7 @@
 <?php
+/**
+ * @param $data
+ */
 function ajax_chat_cleanup($data)
 {
     global $site_config, $queries, $mc1;

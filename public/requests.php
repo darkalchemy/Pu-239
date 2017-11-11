@@ -95,7 +95,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
             //=======change colors
             $HTMLOUT .= '
     <tr>
-        <td><img src="./images/caticons/' . get_categorie_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '" /></td>
+        <td><img src="{$site_config['pic_base_url']}caticons/' . get_categorie_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '" /></td>
         <td><a class="altlink" href="requests.php?action=request_details&amp;id=' . (int)$main_query_arr['request_id'] . '">' . htmlsafechars($main_query_arr['request_name'], ENT_QUOTES) . '</a></td>
         <td>' . get_date($main_query_arr['added'], 'LONG') . '</td>
         <td>' . number_format($main_query_arr['comments']) . '</td>
@@ -168,7 +168,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
   </tr>
   <tr>
   <td>category:</td>
-  <td><img src="./images/caticons/' . get_categorie_icons() . '/' . htmlsafechars($arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($arr['cat_name'], ENT_QUOTES) . '" /></td>
+  <td><img src="{$site_config['pic_base_url']}caticons/' . get_categorie_icons() . '/' . htmlsafechars($arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($arr['cat_name'], ENT_QUOTES) . '" /></td>
   </tr>
   <tr>
   <td>link:</td>
@@ -521,6 +521,11 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
         break;
 } //=== end all actions / switch
 //=== functions n' stuff \o/
+/**
+ * @param $rows
+ *
+ * @return string
+ */
 function comment_table($rows)
 {
     $count2 = '';

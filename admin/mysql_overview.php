@@ -31,6 +31,13 @@ $GLOBALS['byteUnits'] = [
     'PB',
     'EB',
 ];
+/**
+ * @param     $value
+ * @param int $limes
+ * @param int $comma
+ *
+ * @return array
+ */
 function byteformat($value, $limes = 2, $comma = 0)
 {
     $dh = pow(10, $comma);

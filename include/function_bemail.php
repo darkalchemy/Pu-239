@@ -1,4 +1,7 @@
 <?php
+/**
+ * @param $email
+ */
 function check_banned_emails($email)
 {
     global $lang;

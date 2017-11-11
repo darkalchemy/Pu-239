@@ -1,5 +1,11 @@
 <?php
 $site_config['tvrage_api'] = 'NxDOrw2uadOgyLuDtmaR';
+/**
+ * @param $tvrage_data
+ * @param $tvrage_type
+ *
+ * @return string
+ */
 function tvrage_format($tvrage_data, $tvrage_type)
 {
     $tvrage_display['show'] = [
@@ -31,6 +37,11 @@ function tvrage_format($tvrage_data, $tvrage_type)
     return join('<br><br>', $tvrage_display[$tvrage_type]);
 }
 
+/**
+ * @param $torrents
+ *
+ * @return string
+ */
 function tvrage(&$torrents)
 {
     global $mc1, $site_config;

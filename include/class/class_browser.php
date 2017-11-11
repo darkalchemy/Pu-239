@@ -1,4 +1,7 @@
 <?php
+/**
+ * @return array
+ */
 function getBrowser()
 {
     $u_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';

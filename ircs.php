@@ -5,6 +5,11 @@ require_once INCL_DIR . 'function_onlinetime.php';
 $password = 'adlsadladadll'; // same as in staff.tcl;
 $hash = 'adlsadladadll'; // same as in staff.tcl;
 $modclass = '4'; // minumum staff class;
+/**
+ * @param $val
+ *
+ * @return string
+ */
 function calctime($val)
 {
     $days = intval($val / 86400);

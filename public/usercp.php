@@ -81,15 +81,15 @@ $HTMLOUT .= "
             <div class='w-100'>
                 <form method='post' action='takeeditcp.php'>
                     <ul id='navlinks' class='level-center'>
-                        <li><a class='altlink bordered padding10' href='./usercp.php?action=avatar'>Avatar</a></li>
-                        <li><a class='altlink bordered padding10' href='./usercp.php?action=signature'>Signature</a></li>
-                        <li><a class='altlink bordered padding10' href='./usercp.php?action=default'>PM's</a></li>
-                        <li><a class='altlink bordered padding10' href='./usercp.php?action=security'>Security</a></li>
-                        <li><a class='altlink bordered padding10' href='./usercp.php?action=torrents'>Torrents</a></li>
-                        <li><a class='altlink bordered padding10' href='./usercp.php?action=personal'>Personal</a></li>
-                        <li><a class='altlink bordered padding10' href='./usercp.php?action=social'>Social</a></li>
-                        <li><a class='altlink bordered padding10' href='./usercp.php?action=location'>Location</a></li>
-                        <li><a class='altlink bordered padding10' href='./usercp.php?action=links'>Links</a></li>
+                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=avatar'>Avatar</a></li>
+                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=signature'>Signature</a></li>
+                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=default'>PM's</a></li>
+                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=security'>Security</a></li>
+                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=torrents'>Torrents</a></li>
+                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=personal'>Personal</a></li>
+                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=social'>Social</a></li>
+                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=location'>Location</a></li>
+                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=links'>Links</a></li>
                     </ul>
                     <div class='level-center flex-top'>
                         <span class='margin20'>";
@@ -127,8 +127,8 @@ if ($action == 'avatar') {
                                                 Width should be 150px. (Will be resized if necessary)
                                             </p>
                                             <p class='small'>
-                                                If you need a avatar, try our  <a href='./avatar/index.php'>Avatar creator</a>.<br>
-                                                If you need a host for your image, try our  <a href='./bitbucket.php'>Bitbucket</a>.
+                                                If you need a avatar, try our  <a href='{$site_config['baseurl']}/avatar/index.php'>Avatar creator</a>.<br>
+                                                If you need a host for your image, try our  <a href='{$site_config['baseurl']}/bitbucket.php'>Bitbucket</a>.
                                             </p>
                                         </td>
                                     </tr>";
@@ -208,17 +208,17 @@ elseif ($action == 'social') {
                                 </thead>
                                 <tbody>";
     //=== social stuff
-    $HTMLOUT .= tr('<img src="./images/forums/google_talk.gif" alt="Google Talk" class="tooltipper right10" title="Google Talk" />Google Talk', '
+    $HTMLOUT .= tr('<img src="' . $site_config['pic_base_url'] . 'forums/google_talk.gif" alt="Google Talk" class="tooltipper right10" title="Google Talk" />Google Talk', '
                                             <input type="text" class="w-100" name="google_talk"  value="' . htmlsafechars($CURUSER['google_talk']) . '" />', 1);
-    $HTMLOUT .= tr('<img src="./images/forums/msn.gif" alt="Msn" class="tooltipper right10" title="Msn" />MSN ', '
+    $HTMLOUT .= tr('<img src="' . $site_config['pic_base_url'] . 'forums/msn.gif" alt="Msn" class="tooltipper right10" title="Msn" />MSN ', '
                                             <input type="text" class="w-100" name="msn"  value="' . htmlsafechars($CURUSER['msn']) . '" />', 1);
-    $HTMLOUT .= tr('<img src="./images/forums/aim.gif" alt="Aim" class="tooltipper right10" title="Aim" />AIM', '
+    $HTMLOUT .= tr('<img src="' . $site_config['pic_base_url'] . 'forums/aim.gif" alt="Aim" class="tooltipper right10" title="Aim" />AIM', '
                                             <input type="text" class="w-100" name="aim"  value="' . htmlsafechars($CURUSER['aim']) . '" />', 1);
-    $HTMLOUT .= tr('<img src="./images/forums/yahoo.gif" alt="Yahoo" class="tooltipper right10" title="Yahoo" />Yahoo ', '
+    $HTMLOUT .= tr('<img src="' . $site_config['pic_base_url'] . 'forums/yahoo.gif" alt="Yahoo" class="tooltipper right10" title="Yahoo" />Yahoo ', '
                                             <input type="text" class="w-100" name="yahoo"  value="' . htmlsafechars($CURUSER['yahoo']) . '" />', 1);
-    $HTMLOUT .= tr('<img src="./images/forums/icq.gif" alt="Icq" class="tooltipper right10" title="Icq" />icq ', '
+    $HTMLOUT .= tr('<img src="' . $site_config['pic_base_url'] . 'forums/icq.gif" alt="Icq" class="tooltipper right10" title="Icq" />icq ', '
                                             <input type="text" class="w-100" name="icq"  value="' . htmlsafechars($CURUSER['icq']) . '" />', 1);
-    $HTMLOUT .= tr('<img src="./images/forums/www.gif" alt="www" class="tooltipper right10" title="www" width="16px" height="16px" />Website ', '
+    $HTMLOUT .= tr('<img src="' . $site_config['pic_base_url'] . 'forums/www.gif" alt="www" class="tooltipper right10" title="www" width="16px" height="16px" />Website ', '
                                             <input type="text" class="w-100" name="website"  value="' . htmlsafechars($CURUSER['website']) . '" />', 1);
     $HTMLOUT .= "
                                     <tr>
@@ -289,27 +289,27 @@ elseif ($action == 'links') {
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <a href='./mytorrents.php'>{$lang['usercp_edit_torrents']}</a>
+                                            <a href='{$site_config['baseurl']}/mytorrents.php'>{$lang['usercp_edit_torrents']}</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <a href='./friends.php'>{$lang['usercp_edit_friends']}</a>
+                                            <a href='{$site_config['baseurl']}/friends.php'>{$lang['usercp_edit_friends']}</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <a href='./users.php'>{$lang['usercp_search']}</a>
+                                            <a href='{$site_config['baseurl']}/users.php'>{$lang['usercp_search']}</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <a href='./invite.php'>Invites</a>
+                                            <a href='{$site_config['baseurl']}/invite.php'>Invites</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <a href='./tenpercent.php'>Lifesaver</a>
+                                            <a href='{$site_config['baseurl']}/tenpercent.php'>Lifesaver</a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -324,33 +324,33 @@ elseif ($action == 'links') {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><a href='./topmoods.php'>Top Member Mood's</a></td>
+                                        <td><a href='{$site_config['baseurl']}/topmoods.php'>Top Member Mood's</a></td>
                                     </tr>";
     if ($CURUSER['class'] >= UC_POWER_USER) {
         $HTMLOUT .= "
                                     <tr>
                                         <td>
-                                            <a href='./games.php'>{$site_config['site_name']} Games</a>
+                                            <a href='{$site_config['baseurl']}/games.php'>{$site_config['site_name']} Games</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <a href='./blackjack.php'>{$site_config['site_name']} Blackjack</a>
+                                            <a href='{$site_config['baseurl']}/blackjack.php'>{$site_config['site_name']} Blackjack</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <a href='./casino.php'>{$site_config['site_name']} Casino</a>
+                                            <a href='{$site_config['baseurl']}/casino.php'>{$site_config['site_name']} Casino</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <a href='./arcade.php'>{$site_config['site_name']} Arcade</a>
+                                            <a href='{$site_config['baseurl']}/arcade.php'>{$site_config['site_name']} Arcade</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <a href='./lottery.php'>{$site_config['site_name']} Lottery</a>
+                                            <a href='{$site_config['baseurl']}/lottery.php'>{$site_config['site_name']} Lottery</a>
                                         </td>
                                     </tr>
                                 </tbody>";
@@ -520,8 +520,8 @@ elseif ($action == 'torrents') {
                                                 <span class='margin10 bordered tooltipper' title='" . htmlsafechars($a['name']) . "'>
                                                     <input name='cat{$a['id']}' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? " checked" : '') . " value='yes' />
                                                     <span class='cat-image left10'>
-                                                        <a href='./browse.php?c".(int) $a['id']."'>
-                                                            <img class='radius-sm' src='{$site_config['pic_base_url']}images/caticons/{$CURUSER['categorie_icon']}/".htmlsafechars($a['image'])."'alt='".htmlsafechars($a['name'])."' />
+                                                        <a href='{$site_config['baseurl']}/browse.php?c".(int) $a['id']."'>
+                                                            <img class='radius-sm' src='{$site_config['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/".htmlsafechars($a['image'])."'alt='".htmlsafechars($a['name'])."' />
                                                         </a>
                                                     </span>
                                                 </span>";

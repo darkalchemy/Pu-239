@@ -8,9 +8,19 @@
  */
 
 // Class to provide static encoding methods
+
+/**
+ * Class AJAXChatEncoding
+ */
 class AJAXChatEncoding
 {
     // Helper function to store special chars as we cannot use static class members in PHP4:
+    /**
+     * @param        $str
+     * @param string $contentCharset
+     *
+     * @return mixed|string
+     */
     public static function htmlEncode($str, $contentCharset = 'UTF-8')
     {
         switch ($contentCharset) {
@@ -45,11 +55,19 @@ class AJAXChatEncoding
 
     // Helper function to store Regular expression for NO-WS-CTL as we cannot use static class members in PHP4:
 
+    /**
+     * @param $str
+     *
+     * @return string
+     */
     public static function encodeSpecialChars($str)
     {
         return strtr($str, self::getSpecialChars());
     }
 
+    /**
+     * @return array
+     */
     public static function getSpecialChars()
     {
         static $specialChars;
@@ -61,6 +79,13 @@ class AJAXChatEncoding
         return $specialChars;
     }
 
+    /**
+     * @param $str
+     * @param $charsetFrom
+     * @param $charsetTo
+     *
+     * @return mixed|string
+     */
     public static function convertEncoding($str, $charsetFrom, $charsetTo)
     {
         if (function_exists('mb_convert_encoding')) {
@@ -79,6 +104,13 @@ class AJAXChatEncoding
         return $str;
     }
 
+    /**
+     * @param        $str
+     * @param string $encoding
+     * @param null   $convmap
+     *
+     * @return string
+     */
     public static function encodeEntities($str, $encoding = 'UTF-8', $convmap = null)
     {
         if ($convmap && function_exists('mb_encode_numericentity')) {
@@ -88,11 +120,23 @@ class AJAXChatEncoding
         return htmlentities($str, ENT_QUOTES, $encoding);
     }
 
+    /**
+     * @param $str
+     *
+     * @return string
+     */
     public static function decodeSpecialChars($str)
     {
         return strtr($str, array_flip(self::getSpecialChars()));
     }
 
+    /**
+     * @param        $str
+     * @param string $encoding
+     * @param null   $htmlEntitiesMap
+     *
+     * @return mixed|string
+     */
     public static function decodeEntities($str, $encoding = 'UTF-8', $htmlEntitiesMap = null)
     {
         // Due to PHP bug #25670, html_entity_decode does not work with UTF-8 for PHP versions < 5:
@@ -115,6 +159,11 @@ class AJAXChatEncoding
         return $str;
     }
 
+    /**
+     * @param $c
+     *
+     * @return null|string
+     */
     public static function unicodeChar($c)
     {
         if ($c <= 0x7F) {
@@ -133,12 +182,20 @@ class AJAXChatEncoding
         }
     }
 
+    /**
+     * @param $str
+     *
+     * @return mixed
+     */
     public static function removeUnsafeCharacters($str)
     {
         // Remove NO-WS-CTL, non-whitespace control characters (RFC 2822), decimal 1–8, 11–12, 14–31, and 127:
         return preg_replace(self::getRegExp_NO_WS_CTL(), '', $str);
     }
 
+    /**
+     * @return string
+     */
     public static function getRegExp_NO_WS_CTL()
     {
         static $regExp_NO_WS_CTL;

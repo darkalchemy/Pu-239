@@ -42,7 +42,7 @@ if (count($top5torrents) > 0) {
             $HTMLOUT .= "
                         <tr>
                             <td class='has-text-centered'>
-                                <img src='./images/caticons/" . get_categorie_icons() . "/" . htmlsafechars($top5torrentarr['cat_pic']) . "' class='tooltipper' alt='" . htmlsafechars($top5torrentarr['cat_name']) . "' title='" . htmlsafechars($top5torrentarr['cat_name']) . "' />
+                                <img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($top5torrentarr['cat_pic']) . "' class='tooltipper' alt='" . htmlsafechars($top5torrentarr['cat_name']) . "' title='" . htmlsafechars($top5torrentarr['cat_name']) . "' />
                             </td>
                             <td>
                                 <a href='{$site_config['baseurl']}/details.php?id=" . (int)$top5torrentarr['id'] . "&amp;hit=1'>
@@ -127,7 +127,7 @@ if (count($last5torrents) > 0) {
             $HTMLOUT .= "
                         <tr id='id_{$last5torrentarr['id']}_tooltip'>
                             <td class='has-text-centered'>
-                                <img src='./images/caticons/" . get_categorie_icons() . "/" . htmlsafechars($last5torrentarr['cat_pic']) . "' class='tooltipper' alt='" . htmlsafechars($last5torrentarr['cat_name']) . "' title='" . htmlsafechars($last5torrentarr['cat_name']) . "' />
+                                <img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($last5torrentarr['cat_pic']) . "' class='tooltipper' alt='" . htmlsafechars($last5torrentarr['cat_name']) . "' title='" . htmlsafechars($last5torrentarr['cat_name']) . "' />
                             </td>
                             <td>
                                 <a href='{$site_config['baseurl']}/details.php?id=" . (int)$last5torrentarr['id'] . "&amp;hit=1'>

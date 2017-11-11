@@ -18,12 +18,15 @@ $stdfoot = [
 $lang = array_merge(load_language('global'), load_language('login'));
 $left = $total = '';
 
+/**
+ * @return string
+ */
 function left()
 {
     global $site_config;
     $total = 0;
     $ip = getip();
-    $fail = sql_query('SELECT SUM(attempts) FROM failedlogins WHERE ip = ' . sqlesc($ip)) or sqlerr(__FILE__, __LINE__);
+    $fail = sql_query('SELECT SUM(attempts) FROM failedlogins WHERE ip = ' . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
     list($total) = mysqli_fetch_row($fail);
     $left = $site_config['failedlogins'] - $total;
     if ($left <= 2) {

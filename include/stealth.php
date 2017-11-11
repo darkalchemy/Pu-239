@@ -1,4 +1,8 @@
 <?php
+/**
+ * @param      $id
+ * @param bool $stealth
+ */
 function stealth($id, $stealth = true)
 {
     global $CURUSER, $mc1, $site_config;

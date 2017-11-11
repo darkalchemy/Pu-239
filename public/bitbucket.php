@@ -201,6 +201,11 @@ if (false === stristr($allow, ',' . substr($file, -4))) {
     stderr($lang['bitbucket_err'], $lang['bitbucket_invalid']);
 }
 if (!function_exists('exif_imagetype')) {
+    /**
+     * @param $filename
+     *
+     * @return bool
+     */
     function exif_imagetype($filename)
     {
         if ((list($width, $height, $type, $attr) = getimagesize($filename)) !== false) {
@@ -269,6 +274,11 @@ $HTMLOUT .= "
         </div>";
 echo stdhead($lang['bitbucket_bitbucket']) . $HTMLOUT . stdfoot();
 
+/**
+ * @param $text
+ *
+ * @return string
+ */
 function encrypt($text)
 {
     global $PICSALT;
@@ -276,6 +286,11 @@ function encrypt($text)
     return trim(base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, str_pad($PICSALT, 32), $text, MCRYPT_MODE_ECB, mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND))));
 }
 
+/**
+ * @param $text
+ *
+ * @return string
+ */
 function decrypt($text)
 {
     global $PICSALT;
@@ -283,6 +298,12 @@ function decrypt($text)
     return trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, str_pad($PICSALT, 32), base64_decode($text), MCRYPT_MODE_ECB, mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND)));
 }
 
+/**
+ * @param $root
+ * @param $input
+ *
+ * @return bool|null|string
+ */
 function valid_path($root, $input)
 {
     $fullpath = $root . $input;
@@ -293,6 +314,9 @@ function valid_path($root, $input)
     return ($root != substr($fullpath, 0, $rl)) ? null : $fullpath;
 }
 
+/**
+ * @param $path
+ */
 function make_year($path)
 {
     $dir = $path . '/' . date('Y');
@@ -301,6 +325,9 @@ function make_year($path)
     }
 }
 
+/**
+ * @param $path
+ */
 function make_month($path)
 {
     $dir = $path . '/' . date('Y/m');

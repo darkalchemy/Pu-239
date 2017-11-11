@@ -1,4 +1,9 @@
 <?php
+/**
+ * @param $pass
+ *
+ * @return bool|string
+ */
 function make_passhash($pass)
 {
     $options = [
@@ -7,6 +12,11 @@ function make_passhash($pass)
     return password_hash($pass, PASSWORD_BCRYPT, $options);
 }
 
+/**
+ * @param int $bytes
+ *
+ * @return string
+ */
 function make_password($bytes = 12)
 {
     return bin2hex(random_bytes($bytes));

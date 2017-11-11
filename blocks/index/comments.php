@@ -1,6 +1,6 @@
 <?php
 require_once INCL_DIR . 'html_functions.php';
-global $mc1, $lang;
+global $mc1, $lang, $site_config;
 
 if (($comments = $mc1->get_value('latest_comments_')) === false) {
     $sql = sql_query("SELECT c.id, c.user AS user_id, c.torrent, c.added, c.text, c.anonymous, c.user_likes, t.name, t.category, cat.name AS cat, cat.image,
@@ -33,7 +33,7 @@ foreach ($comments as $comment) {
     $body .= "
                         <tr>
                             <td class='has-text-centered'>
-                                <img src='./images/caticons/" . get_categorie_icons() . "/$image' class='tooltipper' alt='$cat' title='$cat' />
+                                <img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/$image' class='tooltipper' alt='$cat' title='$cat' />
                             </td>
                             <td>
                                 <a href='{$site_config['baseurl']}/details.php?id=$torrent&amp;hit=1'>
@@ -60,7 +60,7 @@ foreach ($comments as $comment) {
                             </td>
                             <td class='has-text-centered'>$user</td>
                             <td class='has-text-centered'>" . get_date($added, 'LONG') . "</td>
-                            <td class='has-text-centered'>" . number_format($likes) . "</td>
+                            <td class='has-text-centered'>" . number_format($user_likes) . "</td>
                         </tr>";
 }
 

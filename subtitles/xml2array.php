@@ -29,11 +29,19 @@ class Xml2Array
      */
     private $xml;
 
+    /**
+     * Xml2Array constructor.
+     *
+     * @param string $xml
+     */
     public function __construct($xml = '')
     {
         $this->xml = $xml;
     }
 
+    /**
+     * @param $xml
+     */
     public function setXml($xml)
     {
         if (!empty($xml)) {
@@ -80,6 +88,11 @@ class Xml2Array
         exit;
     }
 
+    /**
+     * @param $dom_element
+     *
+     * @return array|bool
+     */
     private function node_2_array($dom_element)
     {
         if ($dom_element->nodeType != XML_ELEMENT_NODE) {

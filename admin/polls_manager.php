@@ -120,6 +120,9 @@ function show_poll_form()
     echo stdhead($lang['poll_spf_stdhead']) . $poll_box . stdfoot();
 }
 
+/**
+ * @return mixed
+ */
 function edit_poll_form()
 {
     global $site_config, $lang;
@@ -194,6 +197,19 @@ function show_poll_archive()
     echo stdhead($lang['poll_spa_stdhead']) . $HTMLOUT . stdfoot();
 }
 
+/**
+ * @param string $max_poll_questions
+ * @param string $max_poll_choices
+ * @param string $form_type
+ * @param string $poll_questions
+ * @param string $poll_choices
+ * @param string $poll_votes
+ * @param string $show_open
+ * @param string $poll_question
+ * @param string $poll_multi
+ *
+ * @return string
+ */
 function poll_box($max_poll_questions = '', $max_poll_choices = '', $form_type = '', $poll_questions = '', $poll_choices = '', $poll_votes = '', $show_open = '', $poll_question = '', $poll_multi = '')
 {
     global $site_config, $lang;
@@ -279,6 +295,9 @@ function poll_box($max_poll_questions = '', $max_poll_choices = '', $form_type =
     return $HTMLOUT;
 }
 
+/**
+ * @return array
+ */
 function makepoll()
 {
     global $site_config, $CURUSER;

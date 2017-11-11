@@ -10,10 +10,16 @@
 */
 
 /* Absolute local path to your server 'log' directory */
-define('LOG_PATH', '/var/log/nginx');
+/**
+ *
+ */define('LOG_PATH', '/var/log/nginx');
 
-define('DISPLAY_REVERSE', true); // true = displays log entries starting with the most recent
-define('DIRECTORY_SEPARATOR', '/');
+/**
+ *
+ */define('DISPLAY_REVERSE', true); // true = displays log entries starting with the most recent
+/**
+ *
+ */define('DIRECTORY_SEPARATOR', '/');
 
 $log = (!isset($_GET['p'])) ? $default : urldecode($_GET['p']);
 $lines = (!isset($_GET['lines'])) ? 50 : $_GET['lines'];
@@ -414,6 +420,12 @@ if ($output){
 </html>
 <?php
 
+/**
+ * @param       $dir
+ * @param array $results
+ *
+ * @return array|bool
+ */
 function get_log_files($dir, &$results = array()) {
 
     $files = scandir($dir);
@@ -444,6 +456,13 @@ function get_log_files($dir, &$results = array()) {
     return false;
 }
 
+/**
+ * @param     $filename
+ * @param int $lines
+ * @param int $buffer
+ *
+ * @return bool|string
+ */
 function tail($filename, $lines = 50, $buffer = 4096){
     // Open the file
     if(!is_file($filename)){
@@ -497,6 +516,12 @@ function tail($filename, $lines = 50, $buffer = 4096){
     return $output;
 }
 
+/**
+ * @param     $files
+ * @param int $lines
+ *
+ * @return bool
+ */
 function show_list_of_files($files, $lines  = 50){
     if(empty($files)){
         return false;

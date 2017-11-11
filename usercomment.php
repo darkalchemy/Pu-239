@@ -15,6 +15,11 @@ $stdhead = [
         'bbcode',
     ],
 ];
+/**
+ * @param $rows
+ *
+ * @return string
+ */
 function usercommenttable($rows)
 {
     $htmlout = '';

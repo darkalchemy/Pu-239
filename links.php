@@ -3,6 +3,13 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('links'));
+/**
+ * @param        $url
+ * @param        $title
+ * @param string $description
+ *
+ * @return string
+ */
 function add_link($url, $title, $description = '')
 {
     $text = "<a class='altlink' href=$url>$title</a>";

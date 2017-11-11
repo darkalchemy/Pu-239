@@ -27,6 +27,13 @@ while ($arr2 = mysqli_fetch_assoc($query)) {
         $sysop[] = $arr2;
     }
 }
+/**
+ * @param     $staff
+ * @param     $staffclass
+ * @param int $cols
+ *
+ * @return string
+ */
 function DoStaff($staff, $staffclass, $cols = 2)
 {
     global $site_config;

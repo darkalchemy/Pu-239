@@ -1,4 +1,9 @@
 <?php
+/**
+ * @param $id
+ *
+ * @return bool
+ */
 function remove_torrent_peers($id)
 {
     global $mc1;
@@ -16,6 +21,11 @@ function remove_torrent_peers($id)
     return (bool)$delete;
 }
 
+/**
+ * @param $infohash
+ *
+ * @return bool
+ */
 function remove_torrent($infohash)
 {
     global $mc1;

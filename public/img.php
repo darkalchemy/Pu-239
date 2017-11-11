@@ -1,6 +1,12 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 
+/**
+ * @param $root
+ * @param $input
+ *
+ * @return bool|null|string
+ */
 function valid_path($root, $input)
 {
     $fullpath = $root . $input;

@@ -1,4 +1,7 @@
 <?php
+/**
+ * @param $data
+ */
 function peer_update_xbt($data)
 {
     global $site_config, $queries, $mc1;

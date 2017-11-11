@@ -1,4 +1,9 @@
 <?php
+/**
+ * @param $action
+ *
+ * @return false|float|int|string
+ */
 function happyHour($action)
 {
     global $site_config;
@@ -59,6 +64,12 @@ function happyHour($action)
     }
 }
 
+/**
+ * @param      $action
+ * @param null $id
+ *
+ * @return bool
+ */
 function happyCheck($action, $id = null)
 {
     global $site_config;
@@ -73,6 +84,9 @@ function happyCheck($action, $id = null)
     }
 }
 
+/**
+ * @param $act
+ */
 function happyFile($act)
 {
     global $site_config;
@@ -99,6 +113,11 @@ function happyFile($act)
     fclose($file);
 }
 
+/**
+ * @param $userid
+ * @param $torrentid
+ * @param $multi
+ */
 function happyLog($userid, $torrentid, $multi)
 {
     $time = sqlesc(TIME_NOW);

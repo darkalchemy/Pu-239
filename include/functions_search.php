@@ -1,4 +1,9 @@
 <?php
+/**
+ * @param $entry
+ *
+ * @return mixed|string
+ */
 function searchfield($entry)
 {
     static $drop_char_match = [
@@ -87,11 +92,26 @@ function searchfield($entry)
     return $entry;
 }
 
+/**
+ * @param        $entry
+ * @param string $mode
+ *
+ * @return array
+ */
 function split_words($entry, $mode = 'post')
 {
     return explode(' ', trim(preg_replace('#\s+#', ' ', $entry)));
 }
 
+/**
+ * @param       $searchstr
+ * @param       $base_sql
+ * @param       $where_search
+ * @param array $add_where
+ * @param bool  $strict
+ *
+ * @return array
+ */
 function search_text_in_db($searchstr, $base_sql, $where_search, $add_where = [], $strict = false)
 {
     global $db, $config;

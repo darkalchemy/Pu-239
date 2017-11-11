@@ -1,4 +1,9 @@
 <?php
+/**
+ * @param      $id
+ * @param bool $invincible
+ * @param bool $bypass_bans
+ */
 function invincible($id, $invincible = true, $bypass_bans = true)
 {
     global $CURUSER, $mc1, $site_config;
@@ -36,8 +41,8 @@ function invincible($id, $invincible = true, $bypass_bans = true)
     $mc1->delete_value('u_passkey_' . $row['torrent_pass']);
     // update ip in db
     $modcomment = get_date(TIME_NOW, '', 1) . ' - ' . $display . ' invincible thanks to ' . $CURUSER['username'] . "\n" . $row['modcomment'];
-    //ipf = '.sqlesc($ip).',
-    sql_query('UPDATE users SET ip = ' . sqlesc($ip) . ', modcomment = ' . sqlesc($modcomment) . '
+    //ipf = '.ipToStorageFormat($ip).',
+    sql_query('UPDATE users SET ip = ' . ipToStorageFormat($ip) . ', modcomment = ' . sqlesc($modcomment) . '
               WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     //'ipf'   => $ip,
     // update ip in caches

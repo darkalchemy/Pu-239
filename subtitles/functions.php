@@ -5,6 +5,17 @@
 //|--------------------------------------------------------|\\
 require_once 'xml2array.php';
 
+/**
+ * @param $name
+ * @param $searchby
+ * @param $lang
+ * @param $cds
+ * @param $format
+ * @param $fps
+ * @param $offset
+ *
+ * @return bool|string
+ */
 function requestXML($name, $searchby, $lang, $cds, $format, $fps, $offset)
 {
     $optional = '';
@@ -37,6 +48,11 @@ function requestXML($name, $searchby, $lang, $cds, $format, $fps, $offset)
     return $xml;
 }
 
+/**
+ * @param $source
+ *
+ * @return array
+ */
 function xmlconvert($source)
 {
     $xml = new Xml2Array();
@@ -46,6 +62,11 @@ function xmlconvert($source)
     return $array;
 }
 
+/**
+ * @param $array
+ *
+ * @return mixed
+ */
 function get_details($array)
 {
     //check the array
@@ -61,16 +82,32 @@ function get_details($array)
     return $details;
 }
 
+/**
+ * @param $array
+ *
+ * @return mixed
+ */
 function get_base($array)
 {
     return $array['#text'];
 }
 
+/**
+ * @param $array
+ *
+ * @return array
+ */
 function get_results($array)
 {
     return ['items' => $array['@items'], 'itemsfound' => $array['@itemsfound'], 'searchtime' => $array['@searchtime']];
 }
 
+/**
+ * @param $itemsfound
+ * @param $href
+ *
+ * @return string
+ */
 function pager($itemsfound, $href)
 {
     $pager = '';
@@ -96,6 +133,10 @@ function pager($itemsfound, $href)
     return $pager;
 }
 
+/**
+ * @param $array
+ * @param $pager
+ */
 function build_result($array, $pager)
 {
     //define some vars

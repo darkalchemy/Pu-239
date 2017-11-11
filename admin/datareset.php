@@ -8,6 +8,9 @@ class_check($class);
 $lang = array_merge($lang, load_language('ad_datareset'));
 $HTMLOUT = '';
 //==delete torrents by putyn
+/**
+ * @param $tid
+ */
 function deletetorrent($tid)
 {
     global $site_config, $mc1, $CURUSER, $lang;
@@ -25,6 +28,9 @@ function deletetorrent($tid)
     $mc1->delete_value('MyPeers_' . $CURUSER['id']);
 }
 
+/**
+ * @param $tid
+ */
 function deletetorrent_xbt($tid)
 {
     global $site_config, $mc1, $CURUSER, $lang;

@@ -12,6 +12,11 @@ $postkey = PostKey([
     $_POST['userid'],
     $CURUSER['id'],
 ]);
+/**
+ * @param $torrent_pass
+ *
+ * @return bool
+ */
 function remove_torrent_pass($torrent_pass)
 {
     global $mc1;
@@ -22,6 +27,9 @@ function remove_torrent_pass($torrent_pass)
     $mc1->delete_value($key);
 }
 
+/**
+ * @param $text
+ */
 function write_info($text)
 {
     $text = sqlesc($text);
@@ -29,6 +37,11 @@ function write_info($text)
     sql_query("INSERT INTO infolog (added, txt) VALUES($added, $text)") or sqlerr(__FILE__, __LINE__);
 }
 
+/**
+ * @param $in
+ *
+ * @return array
+ */
 function resize_image($in)
 {
     global $mc1;

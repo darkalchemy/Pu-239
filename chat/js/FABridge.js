@@ -202,8 +202,7 @@ FABridge.prototype =
             return false;
         }
         else {
-            var ret = this.target.releaseNamedASObject(value.fb_instance_id);
-            return ret;
+            return this.target.releaseNamedASObject(value.fb_instance_id);
         }
     },
 //create a new AS Object
@@ -299,8 +298,7 @@ FABridge.prototype =
     },
     //create an AS proxy for the given object ID and type
     createProxy: function (objID, typeName) {
-        var objType = this.getTypeFromName(typeName);
-        instanceFactory.prototype = objType;
+        instanceFactory.prototype = this.getTypeFromName(typeName);
         var instance = new instanceFactory(objID);
         this.remoteInstanceCache[objID] = instance;
         return instance;

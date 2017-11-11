@@ -23,6 +23,11 @@ $_fromCache = true;
 if ((time() - filemtime($_settings . strtolower($user) . '.set')) > 84600 || !file_exists($_settings . strtolower($user) . '.png')) {
     $_fromCache = false;
 }
+/**
+ * @param $color
+ *
+ * @return array
+ */
 function hex2rgb($color)
 {
     return [

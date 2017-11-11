@@ -12,6 +12,9 @@ if (!is_valid_id($id)) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_missing_data']}");
 }
 //==delete torrents by putyn
+/**
+ * @param $id
+ */
 function deletetorrent($id)
 {
     global $site_config, $mc1, $CURUSER, $lang;
@@ -30,6 +33,9 @@ function deletetorrent($id)
     $mc1->delete_value('MyPeers_' . $CURUSER['id']);
 }
 
+/**
+ * @param $id
+ */
 function deletetorrent_xbt($id)
 {
     global $site_config, $mc1, $CURUSER, $lang;

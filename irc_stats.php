@@ -13,6 +13,11 @@ $valid_do = [
     'top_torrents',
 ];
 $_do = isset($_GET['do']) && in_array($_GET['do'], $valid_do) ? $_GET['do'] : '';
+/**
+ * @param $val
+ *
+ * @return string
+ */
 function calctime($val)
 {
     $days = intval($val / 86400);

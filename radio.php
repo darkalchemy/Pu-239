@@ -17,6 +17,11 @@ $langs = [
     'BITRATE'          => 'Bitrate: <b>%s kb</b>',
     'PEAKLISTENERS'    => 'Peak listeners: <b>%d</b>',
 ];
+/**
+ * @param $radio
+ *
+ * @return string
+ */
 function radioinfo($radio)
 {
     global $langs, $site_config, $mc1, $CURUSER;

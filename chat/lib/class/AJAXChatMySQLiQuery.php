@@ -8,6 +8,10 @@
  */
 
 // Class to perform SQL (MySQLi) queries:
+
+/**
+ * Class AJAXChatMySQLiQuery
+ */
 class AJAXChatMySQLiQuery
 {
     protected $_connectionID;
@@ -17,6 +21,13 @@ class AJAXChatMySQLiQuery
     protected $_error = '';
 
     // Constructor:
+
+    /**
+     * AJAXChatMySQLiQuery constructor.
+     *
+     * @param $sql
+     * @param $connectionID
+     */
     public function __construct($sql, $connectionID)
     {
         $this->_sql = trim($sql);
@@ -30,6 +41,9 @@ class AJAXChatMySQLiQuery
 
     // Returns true if an error occured:
 
+    /**
+     * @return string
+     */
     public function getError()
     {
         if ($this->error()) {
@@ -45,6 +59,9 @@ class AJAXChatMySQLiQuery
 
     // Returns an Error-String:
 
+    /**
+     * @return bool
+     */
     public function error()
     {
         // Returns true if the Result-ID is valid:
@@ -53,6 +70,9 @@ class AJAXChatMySQLiQuery
 
     // Returns the content:
 
+    /**
+     * @return null
+     */
     public function fetch()
     {
         if ($this->error()) {
@@ -63,6 +83,10 @@ class AJAXChatMySQLiQuery
     }
 
     // Returns the number of rows (SELECT or SHOW):
+
+    /**
+     * @return null
+     */
     public function numRows()
     {
         if ($this->error()) {
@@ -73,6 +97,10 @@ class AJAXChatMySQLiQuery
     }
 
     // Returns the number of affected rows (INSERT, UPDATE, REPLACE or DELETE):
+
+    /**
+     * @return null
+     */
     public function affectedRows()
     {
         if ($this->error()) {

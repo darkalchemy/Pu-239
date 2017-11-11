@@ -26,6 +26,9 @@ $md5 = md5($key);
         }
 */
 
+/**
+ * Class CACHE
+ */
 class CACHE extends Memcache
 {
     public static $connected = false;
@@ -39,6 +42,9 @@ class CACHE extends Memcache
     protected $Row = 1;
     protected $Part = 0;
 
+    /**
+     * CACHE constructor.
+     */
     public function __construct()
     {
         $this->connect('127.0.0.1', 11211);
@@ -47,6 +53,9 @@ class CACHE extends Memcache
     //---------- Caching functions ----------//
     // Wrapper for Memcache::set, with the zlib option removed and default duration of 1 hour
 
+    /**
+     * @return bool
+     */
     public static function clean()
     {
         if (!self::$this) {
@@ -63,6 +72,12 @@ class CACHE extends Memcache
         return $clean;
     }
 
+    /**
+     * @param     $key
+     * @param int $howmuch
+     *
+     * @return bool
+     */
     public static function inc($key, $howmuch = 1)
     {
         if (!self::$this) {
@@ -81,6 +96,12 @@ class CACHE extends Memcache
         return $inc;
     }
 
+    /**
+     * @param     $key
+     * @param int $howmuch
+     *
+     * @return bool
+     */
     public static function dec($key, $howmuch = 1)
     {
         if (!self::$this) {
@@ -99,6 +120,13 @@ class CACHE extends Memcache
         return $dec;
     }
 
+    /**
+     * @param     $Key
+     * @param     $Value
+     * @param int $Duration
+     *
+     * @return bool
+     */
     public function add_value($Key, $Value, $Duration = 2592000)
     {
         $StartTime = microtime(true);
@@ -113,6 +141,12 @@ class CACHE extends Memcache
 
     // Wrapper for Memcache::delete. For a reason, see above.
 
+    /**
+     * @param      $Key
+     * @param bool $NoCache
+     *
+     * @return array|string
+     */
     public function get_value($Key, $NoCache = false)
     {
         $StartTime = microtime(true);
@@ -127,6 +161,11 @@ class CACHE extends Memcache
 
     //---------- memcachedb functions ----------//
 
+    /**
+     * @param     $Key
+     * @param     $Value
+     * @param int $Duration
+     */
     public function replace_value($Key, $Value, $Duration = 2592000)
     {
         $StartTime = microtime(true);
@@ -134,6 +173,9 @@ class CACHE extends Memcache
         $this->Time += (microtime(true) - $StartTime) * 1000;
     }
 
+    /**
+     * @param $Key
+     */
     public function delete_value($Key)
     {
         $StartTime = microtime(true);
@@ -145,6 +187,11 @@ class CACHE extends Memcache
         $this->Time += (microtime(true) - $StartTime) * 1000;
     }
 
+    /**
+     * @param $Key
+     *
+     * @return bool
+     */
     public function begin_transaction($Key)
     {
         $Value = $this->get($Key);
@@ -174,6 +221,11 @@ class CACHE extends Memcache
     // Updates multiple values in a single row in an array
     // $Values must be an associative array with key:value pairs like in the array we're updating
 
+    /**
+     * @param int $Time
+     *
+     * @return bool
+     */
     public function commit_transaction($Time = 2592000)
     {
         if (!$this->InTransaction) {
@@ -183,6 +235,11 @@ class CACHE extends Memcache
         $this->InTransaction = false;
     }
 
+    /**
+     * @param     $Key
+     * @param     $Value
+     * @param int $Duration
+     */
     public function cache_value($Key, $Value, $Duration = 2592000)
     {
         $StartTime = microtime(true);
@@ -195,6 +252,12 @@ class CACHE extends Memcache
         $this->Time += (microtime(true) - $StartTime) * 1000;
     }
 
+    /**
+     * @param $Rows
+     * @param $Values
+     *
+     * @return bool
+     */
     public function update_transaction($Rows, $Values)
     {
         if (!$this->InTransaction) {
@@ -215,6 +278,12 @@ class CACHE extends Memcache
         $this->MemcacheDBArray = $Array;
     }
 
+    /**
+     * @param $Row
+     * @param $Values
+     *
+     * @return bool
+     */
     public function update_row($Row, $Values)
     {
         if (!$this->InTransaction) {

@@ -10,6 +10,12 @@ $modes = [
     'unmodded',
 ];
 $HTMLOUT = '';
+/**
+ * @param      $arr
+ * @param bool $empty
+ *
+ * @return array|bool|string
+ */
 function do_sort($arr, $empty = false)
 {
     global $CURUSER, $lang;

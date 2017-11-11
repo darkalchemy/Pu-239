@@ -1,4 +1,7 @@
 <?php
+/**
+ * @return string
+ */
 function parse_poll()
 {
     global $CURUSER, $site_config, $mc1;
@@ -144,6 +147,12 @@ function parse_poll()
     return $htmlout;
 }
 
+/**
+ * @param string $pid
+ * @param string $poll_q
+ *
+ * @return string
+ */
 function poll_header($pid = '', $poll_q = '')
 {
     global $site_config;
@@ -169,6 +178,9 @@ function poll_header($pid = '', $poll_q = '')
     return $HTMLOUT;
 }
 
+/**
+ * @return string
+ */
 function poll_footer()
 {
     $HTMLOUT = '';
@@ -182,6 +194,16 @@ function poll_footer()
     return $HTMLOUT;
 }
 
+/**
+ * @param string $choice_id
+ * @param string $votes
+ * @param string $id
+ * @param string $answer
+ * @param string $percentage
+ * @param string $width
+ *
+ * @return string
+ */
 function poll_show_rendered_choice($choice_id = '', $votes = '', $id = '', $answer = '', $percentage = '', $width = '')
 {
     global $site_config;
@@ -198,6 +220,13 @@ function poll_show_rendered_choice($choice_id = '', $votes = '', $id = '', $answ
     return $HTMLOUT;
 }
 
+/**
+ * @param string $id
+ * @param string $question
+ * @param string $choice_html
+ *
+ * @return string
+ */
 function poll_show_rendered_question($id = '', $question = '', $choice_html = '')
 {
     $HTMLOUT = '';
@@ -212,6 +241,11 @@ function poll_show_rendered_question($id = '', $question = '', $choice_html = ''
     return $HTMLOUT;
 }
 
+/**
+ * @param string $total_votes
+ *
+ * @return string
+ */
 function show_total_votes($total_votes = '')
 {
     $HTMLOUT = '';
@@ -220,6 +254,14 @@ function show_total_votes($total_votes = '')
     return $HTMLOUT;
 }
 
+/**
+ * @param string $choice_id
+ * @param string $votes
+ * @param string $id
+ * @param string $answer
+ *
+ * @return string
+ */
 function poll_show_form_choice_multi($choice_id = '', $votes = '', $id = '', $answer = '')
 {
     $HTMLOUT = '';
@@ -230,6 +272,14 @@ function poll_show_form_choice_multi($choice_id = '', $votes = '', $id = '', $an
     return $HTMLOUT;
 }
 
+/**
+ * @param string $choice_id
+ * @param string $votes
+ * @param string $id
+ * @param string $answer
+ *
+ * @return string
+ */
 function poll_show_form_choice($choice_id = '', $votes = '', $id = '', $answer = '')
 {
     $HTMLOUT = '';
@@ -239,6 +289,13 @@ function poll_show_form_choice($choice_id = '', $votes = '', $id = '', $answer =
     return $HTMLOUT;
 }
 
+/**
+ * @param string $id
+ * @param string $question
+ * @param string $choice_html
+ *
+ * @return string
+ */
 function poll_show_form_question($id = '', $question = '', $choice_html = '')
 {
     $HTMLOUT = '';
@@ -251,6 +308,9 @@ function poll_show_form_question($id = '', $question = '', $choice_html = '')
     return $HTMLOUT;
 }
 
+/**
+ * @return string
+ */
 function button_show_voteable()
 {
     $HTMLOUT = '';
@@ -259,6 +319,9 @@ function button_show_voteable()
     return $HTMLOUT;
 }
 
+/**
+ * @return string
+ */
 function button_show_results()
 {
     $HTMLOUT = '';
@@ -267,6 +330,9 @@ function button_show_results()
     return $HTMLOUT;
 }
 
+/**
+ * @return string
+ */
 function button_vote()
 {
     $HTMLOUT = '';
@@ -275,6 +341,9 @@ function button_vote()
     return $HTMLOUT;
 }
 
+/**
+ * @return string
+ */
 function button_null_vote()
 {
     $HTMLOUT = '';

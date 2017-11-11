@@ -40,6 +40,13 @@ $month = [
 $datefmt = '%B %d, %Y at %I:%M %p';
 $timespanfmt = '%s days, %s hours, %s minutes and %s seconds';
 ////////////////// FUNCTION LIST /////////////////////////
+/**
+ * @param     $value
+ * @param int $limes
+ * @param int $comma
+ *
+ * @return array
+ */
 function byteformat($value, $limes = 2, $comma = 0)
 {
     $dh = pow(10, $comma);
@@ -64,6 +71,11 @@ function byteformat($value, $limes = 2, $comma = 0)
         $unit,
     ];
 } // end of the 'formatByteDown' function
+/**
+ * @param $seconds
+ *
+ * @return string
+ */
 function timespanFormat($seconds)
 {
     global $lang;
@@ -84,6 +96,12 @@ function timespanFormat($seconds)
     return (string)$days . $lang['mysql_stats_days'] . (string)$hours . $lang['mysql_stats_hours'] . (string)$minutes . $lang['mysql_stats_minutes'] . (string)$seconds . $lang['mysql_stats_seconds'];
 }
 
+/**
+ * @param int    $timestamp
+ * @param string $format
+ *
+ * @return string
+ */
 function localisedDate($timestamp = -1, $format = '')
 {
     global $datefmt, $month, $day_of_week;

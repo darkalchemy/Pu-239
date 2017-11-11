@@ -658,6 +658,11 @@ $HTMLOUT = wrapper($HTMLOUT);
 $HTMLOUT = preg_replace_callback('|<#(.*?)#>|', 'template_out', $HTMLOUT);
 echo stdhead($lang['block_stdhead'], true, $stdhead), $HTMLOUT, stdfoot($stdfoot);
 
+/**
+ * @param $matches
+ *
+ * @return string
+ */
 function template_out($matches)
 {
     global $BLOCKS, $lang;

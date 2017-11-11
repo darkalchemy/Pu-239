@@ -50,7 +50,7 @@ if (count($motw_cached) > 0) {
 
             $HTMLOUT .= "
                         <tr>
-                            <td class='has-text-centered'><img src='./images/caticons/" . get_categorie_icons() . "/" . $mw['cat_pic'] . "' class='tooltipper' alt='" . $mw['cat_name'] . "' title='" . $mw['cat_name'] . "' /></td>
+                            <td class='has-text-centered'><img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . $mw['cat_pic'] . "' class='tooltipper' alt='" . $mw['cat_name'] . "' title='" . $mw['cat_name'] . "' /></td>
                             <td>
                                 <a href='{$site_config['baseurl']}/details.php?id=" . (int)$m_w['id'] . "&amp;hit=1'>
                                     <span class='dt-tooltipper-large' data-tooltip-content='#mow_id_{$m_w['id']}_tooltip'>

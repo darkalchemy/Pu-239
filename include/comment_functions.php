@@ -1,4 +1,10 @@
 <?php
+/**
+ * @param        $rows
+ * @param string $variant
+ *
+ * @return string
+ */
 function commenttable($rows, $variant = 'torrent')
 {
     require_once INCL_DIR . 'html_functions.php';

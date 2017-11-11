@@ -14,6 +14,14 @@ $stdhead = [
 ];
 $HTMLOUT = '';
 global $CURUSER;
+/**
+ * @param string $heading
+ * @param string $text
+ * @param string $div
+ * @param bool   $htmlstrip
+ *
+ * @return string
+ */
 function newmsg($heading = '', $text = '', $div = 'success', $htmlstrip = false)
 {
     if ($htmlstrip) {
@@ -27,6 +35,13 @@ function newmsg($heading = '', $text = '', $div = 'success', $htmlstrip = false)
     return $htmlout;
 }
 
+/**
+ * @param string $heading
+ * @param string $text
+ * @param bool   $die
+ * @param string $div
+ * @param bool   $htmlstrip
+ */
 function newerr($heading = '', $text = '', $die = true, $div = 'error', $htmlstrip = false)
 {
     $htmlout = '';
@@ -37,6 +52,11 @@ function newerr($heading = '', $text = '', $die = true, $div = 'error', $htmlstr
     }
 }
 
+/**
+ * @param $input
+ *
+ * @return string
+ */
 function datetimetransform($input)
 {
     $todayh = getdate($input);
@@ -66,6 +86,9 @@ function datetimetransform($input)
     return $input;
 }
 
+/**
+ * @return string
+ */
 function navmenu()
 {
     global $lang;
@@ -79,6 +102,11 @@ function navmenu()
     return $ret;
 }
 
+/**
+ * @param $input
+ *
+ * @return mixed
+ */
 function articlereplace($input)
 {
     $input = str_replace(' ', '+', $input);
@@ -86,6 +114,11 @@ function articlereplace($input)
     return $input;
 }
 
+/**
+ * @param $input
+ *
+ * @return mixed
+ */
 function wikisearch($input)
 {
     global $lang;
@@ -99,6 +132,11 @@ function wikisearch($input)
     ], ((isset($GLOBALS['___mysqli_ston']) && is_object($GLOBALS['___mysqli_ston'])) ? mysqli_real_escape_string($GLOBALS['___mysqli_ston'], $input) : ((trigger_error($lang['wiki_error'], E_USER_ERROR)) ? '' : '')));
 }
 
+/**
+ * @param $input
+ *
+ * @return mixed
+ */
 function wikireplace($input)
 {
     return preg_replace([
@@ -110,6 +148,9 @@ function wikireplace($input)
     ], $input);
 }
 
+/**
+ * @return string
+ */
 function wikimenu()
 {
     global $lang;

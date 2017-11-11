@@ -1,4 +1,13 @@
 <?php
+/**
+ * @param      $count
+ * @param      $perpage
+ * @param      $page
+ * @param      $url
+ * @param bool $page_link
+ *
+ * @return array
+ */
 function pager_new($count, $perpage, $page, $url, $page_link = false)
 {
     $pages = floor($count / $perpage);

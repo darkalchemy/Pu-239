@@ -210,6 +210,9 @@ returning false
 
 */
 
+/**
+ * Class bencdec
+ */
 class bencdec
 {
     const MAX_DEPTH = 16; // To prevent deep recursion which could potentially cause a very high ammount of memory
@@ -229,6 +232,13 @@ class bencdec
     private static $bdata_depth = 0;
     private static $ext_valid = false;
 
+    /**
+     * @param     $fn
+     * @param int $maxsize
+     * @param int $options
+     *
+     * @return bool|string
+     */
     public static function decode_file($fn, $maxsize = 1048576, $options = 0)
     {
         if (!is_string($fn) || !is_int($maxsize)) {
@@ -246,6 +256,12 @@ class bencdec
     // Decoding Functions //
     //////////////////////////////////////////////////////////
 
+    /**
+     * @param     $str
+     * @param int $options
+     *
+     * @return bool|string
+     */
     public static function decode($str, $options = 0)
     {
         if (!is_string($str)) {
@@ -278,6 +294,11 @@ class bencdec
         return $data;
     }
 
+    /**
+     * @param string $msg
+     *
+     * @return bool
+     */
     private static function decode_error($msg = '')
     {
         trigger_error('Badly B-Encoded data at position ' . self::$bdata_position . ($msg != '' ? ': ' . $msg : ''), E_USER_WARNING);
@@ -290,6 +311,9 @@ class bencdec
         return false;
     }
 
+    /**
+     * @return bool|string
+     */
     private static function bdecode()
     {
         $char = self::char();
@@ -335,6 +359,9 @@ class bencdec
 
     // Internal decoding function
 
+    /**
+     * @return bool
+     */
     private static function char()
     {
         if (self::$bdata_position >= self::$bdata_length) {
@@ -344,6 +371,9 @@ class bencdec
         return self::$bdata[self::$bdata_position];
     }
 
+    /**
+     * @return bool|int
+     */
     private static function dec_int()
     {
         $epos = @strpos(self::$bdata, 'e', ++self::$bdata_position);
@@ -371,6 +401,9 @@ class bencdec
         return $int;
     }
 
+    /**
+     * @return array|bool|null
+     */
     private static function dec_dict()
     {
         $dict = [];
@@ -415,6 +448,11 @@ class bencdec
         return empty($dict) ? null : $dict;
     }
 
+    /**
+     * @param bool $atleastone
+     *
+     * @return bool|string
+     */
     private static function dec_str($atleastone = false)
     {
         $colpos = @strpos(self::$bdata, ':', self::$bdata_position);
@@ -448,6 +486,9 @@ class bencdec
         return $string === false ? '' : $string;
     }
 
+    /**
+     * @return array|bool
+     */
     private static function dec_list()
     {
         if (self::$bdata_depth >= self::MAX_DEPTH) {
@@ -482,6 +523,12 @@ class bencdec
     // Encoding Functions //
     //////////////////////////////////////////////////////////
 
+    /**
+     * @param $fn
+     * @param $array
+     *
+     * @return bool
+     */
     public static function encode_file($fn, $array)
     {
         if (!is_array($array) || !is_string($fn)) {
@@ -497,6 +544,11 @@ class bencdec
         return $d == strlen($data);
     }
 
+    /**
+     * @param $val
+     *
+     * @return bool|string
+     */
     public static function encode($val)
     {
         $type = self::benc_type($val);
@@ -514,6 +566,11 @@ class bencdec
         }
     }
 
+    /**
+     * @param $val
+     *
+     * @return bool|int
+     */
     private static function benc_type(&$val)
     {
         if (is_array($val)) {
@@ -554,16 +611,31 @@ class bencdec
         return false;
     }
 
+    /**
+     * @param $val
+     *
+     * @return string
+     */
     private static function enc_int($val)
     {
         return 'i' . $val . 'e';
     }
 
+    /**
+     * @param $val
+     *
+     * @return string
+     */
     private static function enc_str($val)
     {
         return strlen($val) . ':' . $val;
     }
 
+    /**
+     * @param $val
+     *
+     * @return bool|string
+     */
     private static function enc_list($val)
     {
         ksort($val, SORT_NUMERIC);
@@ -583,6 +655,11 @@ class bencdec
 
     // internal function to determine type of encoding to use
 
+    /**
+     * @param $val
+     *
+     * @return bool|string
+     */
     private static function enc_dict($val)
     {
         ksort($val, SORT_STRING);
@@ -600,6 +677,11 @@ class bencdec
         return $dict;
     }
 
+    /**
+     * @param $val
+     *
+     * @return bool|string
+     */
     public static function get_type($val)
     {
         $type = self::benc_type($val);

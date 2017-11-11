@@ -48,6 +48,11 @@ $('.delete').on('click', function(){
     });
 });
 
+function SmileIT(smile,form,text){
+    document.forms[form].elements[text].value = document.forms[form].elements[text].value+" "+smile+" ";
+    document.forms[form].elements[text].focus();
+}
+
 function refrClock() {
     var d=new Date();
     var s=d.getSeconds();

@@ -12,10 +12,10 @@ $over_forums_arr = mysqli_fetch_assoc($over_forums_res);
 if ($CURUSER['class'] < $over_forums_arr['min_class_view']) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
-$location_bar = '<h1><a class="altlink" href="' . $site_config['baseurl'] . '/index.php">' . $site_config['site_name'] . '</a>  <img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
-	<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums'] . '</a> <img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
-	<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=section_view&amp;forum_id=' . $forum_id . '">' . htmlsafechars($over_forums_arr['name'], ENT_QUOTES) . '</a></h1>' . $mini_menu . '<br><br>';
-$HTMLOUT .= $location_bar;
+//$location_bar = '<h1><a class="altlink" href="' . $site_config['baseurl'] . '/index.php">' . $site_config['site_name'] . '</a>  <img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
+//	<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums'] . '</a> <img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
+//	<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=section_view&amp;forum_id=' . $forum_id . '">' . htmlsafechars($over_forums_arr['name'], ENT_QUOTES) . '</a></h1>' . $mini_menu . '<br><br>';
+//$HTMLOUT .= $location_bar;
 //=== top and bottom stuff
 $HTMLOUT .= '<br><table class="table table-bordered table-striped">
 	<tr>
@@ -114,4 +114,4 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
 		</td>
 		</tr>';
 }
-$HTMLOUT .= '</table><br>' . $location_bar;
+$HTMLOUT .= '</table><br>'/* . $location_bar*/;

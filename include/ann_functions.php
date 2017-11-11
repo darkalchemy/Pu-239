@@ -1,5 +1,9 @@
 <?php
 //== Announce mysql error
+/**
+ * @param string $file
+ * @param string $line
+ */
 function ann_sqlerr($file = '', $line = '')
 {
     global $site_config, $CURUSER;
@@ -21,6 +25,11 @@ function ann_sqlerr($file = '', $line = '')
 }
 
 //==Announce Sql query logging
+/**
+ * @param $a_query
+ *
+ * @return bool|mysqli_result
+ */
 function ann_sql_query($a_query)
 {
     global $a_query_stat, $site_config;
@@ -48,6 +57,9 @@ function ann_sql_query($a_query)
     return $result;
 }
 
+/**
+ * @return bool
+ */
 function crazyhour_announce()
 {
     global $mc1, $site_config;
@@ -103,6 +115,11 @@ function crazyhour_announce()
     }
 }
 
+/**
+ * @param $torrent_pass
+ *
+ * @return array|bool|null|string
+ */
 function get_user_from_torrent_pass($torrent_pass)
 {
     global $mc1, $site_config;
@@ -144,6 +161,11 @@ function get_user_from_torrent_pass($torrent_pass)
     return $user;
 }
 
+/**
+ * @param $info_hash
+ *
+ * @return array|bool|null|string
+ */
 function get_torrent_from_hash($info_hash)
 {
     global $mc1, $site_config;
@@ -204,6 +226,14 @@ function get_torrent_from_hash($info_hash)
     return $torrent;
 }
 
+/**
+ * @param     $id
+ * @param int $seeds
+ * @param int $leechers
+ * @param int $completed
+ *
+ * @return bool
+ */
 function adjust_torrent_peers($id, $seeds = 0, $leechers = 0, $completed = 0)
 {
     global $mc1;
@@ -234,6 +264,12 @@ function adjust_torrent_peers($id, $seeds = 0, $leechers = 0, $completed = 0)
     return (bool)$adjust;
 }
 
+/**
+ * @param $torrentid
+ * @param $userid
+ *
+ * @return int|mixed
+ */
 function get_happy($torrentid, $userid)
 {
     global $mc1;
@@ -255,6 +291,12 @@ function get_happy($torrentid, $userid)
     return 0;
 }
 
+/**
+ * @param $torrentid
+ * @param $userid
+ *
+ * @return mixed
+ */
 function get_slots($torrentid, $userid)
 {
     global $mc1;
@@ -284,11 +326,24 @@ function get_slots($torrentid, $userid)
     return $torrent;
 }
 
+/**
+ * @param $userid
+ * @param $rate
+ * @param $upthis
+ * @param $diff
+ * @param $torrentid
+ * @param $client
+ * @param $realip
+ * @param $last_up
+ */
 function auto_enter_abnormal_upload($userid, $rate, $upthis, $diff, $torrentid, $client, $realip, $last_up)
 {
     ann_sql_query('INSERT INTO cheaters (added, userid, client, rate, beforeup, upthis, timediff, userip, torrentid) VALUES(' . ann_sqlesc(TIME_NOW) . ', ' . ann_sqlesc($userid) . ', ' . ann_sqlesc($client) . ', ' . ann_sqlesc($rate) . ', ' . ann_sqlesc($last_up) . ', ' . ann_sqlesc($upthis) . ', ' . ann_sqlesc($diff) . ', ' . ann_sqlesc($realip) . ', ' . ann_sqlesc($torrentid) . ')') or ann_sqlerr(__FILE__, __LINE__);
 }
 
+/**
+ * @param $msg
+ */
 function err($msg)
 {
     benc_resp([
@@ -300,6 +355,9 @@ function err($msg)
     exit();
 }
 
+/**
+ * @param $d
+ */
 function benc_resp($d)
 {
     benc_resp_raw(benc([
@@ -315,6 +373,9 @@ function gzip()
     }
 }
 
+/**
+ * @param $x
+ */
 function benc_resp_raw($x)
 {
     header('Content-Type: text/plain');
@@ -322,6 +383,11 @@ function benc_resp_raw($x)
     echo $x;
 }
 
+/**
+ * @param $obj
+ *
+ * @return string|void
+ */
 function benc($obj)
 {
     if (!is_array($obj) || !isset($obj['type']) || !isset($obj['value'])) {
@@ -342,16 +408,31 @@ function benc($obj)
     }
 }
 
+/**
+ * @param $s
+ *
+ * @return string
+ */
 function benc_str($s)
 {
     return strlen($s) . ":$s";
 }
 
+/**
+ * @param $i
+ *
+ * @return string
+ */
 function benc_int($i)
 {
     return 'i' . $i . 'e';
 }
 
+/**
+ * @param $a
+ *
+ * @return string
+ */
 function benc_list($a)
 {
     $s = 'l';
@@ -363,6 +444,11 @@ function benc_list($a)
     return $s;
 }
 
+/**
+ * @param $d
+ *
+ * @return string
+ */
 function benc_dict($d)
 {
     $s = 'd';
@@ -378,6 +464,12 @@ function benc_dict($d)
     return $s;
 }
 
+/**
+ * @param $name
+ * @param $hash
+ *
+ * @return string
+ */
 function hash_where($name, $hash)
 {
     $shhash = preg_replace('/ *$/s', '', $hash);
@@ -385,6 +477,11 @@ function hash_where($name, $hash)
     return "($name = " . ann_sqlesc($hash) . " OR $name = " . ann_sqlesc($shhash) . ')';
 }
 
+/**
+ * @param $port
+ *
+ * @return bool
+ */
 function portblacklisted($port)
 {
     //=== new portblacklisted ....... ==> direct connect 411 ot 413,  bittorrent 6881 to 6889, kazaa 1214, gnutella 6346 to 6347, emule 4662, winmx 6699, IRC bot based trojans 65535
@@ -414,6 +511,11 @@ function portblacklisted($port)
     return false;
 }
 
+/**
+ * @param $x
+ *
+ * @return int|string
+ */
 function ann_sqlesc($x)
 {
     if (is_integer($x)) {
@@ -422,3 +524,15 @@ function ann_sqlesc($x)
 
     return sprintf('\'%s\'', mysqli_real_escape_string($GLOBALS['___mysqli_ston'], $x));
 }
+
+/**
+ * @param $ip
+ *
+ * @return string
+ */
+function ipToStorageFormat($ip)
+{
+    $ip = empty($ip) ? '254.254.254.254' : $ip;
+    return '0x' . bin2hex(inet_pton($ip));
+}
+

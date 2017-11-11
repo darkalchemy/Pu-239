@@ -1,4 +1,9 @@
 <?php
+/**
+ * @param $userid
+ *
+ * @return string
+ */
 function account_delete($userid)
 {
     $secs = 350 * 86400;

@@ -20,11 +20,17 @@
  */
 
 
+/**
+ *
+ */
 define("FULL_RECORD_LENGTH", 50);
 
 require_once 'geoip.inc';
 require_once 'geoipregionvars.php';
 
+/**
+ * Class geoiprecord
+ */
 class geoiprecord
 {
     public $country_code;
@@ -41,6 +47,12 @@ class geoiprecord
     public $continent_code;
 }
 
+/**
+ * @param $gi
+ * @param $ipnum
+ *
+ * @return geoiprecord|null
+ */
 function _get_record_v6($gi, $ipnum)
 {
     $seek_country = _geoip_seek_country_v6($gi, $ipnum);
@@ -51,6 +63,12 @@ function _get_record_v6($gi, $ipnum)
     return _common_get_record($gi, $seek_country);
 }
 
+/**
+ * @param $gi
+ * @param $seek_country
+ *
+ * @return geoiprecord
+ */
 function _common_get_record($gi, $seek_country)
 {
     // workaround php's broken substr, strpos, etc handling with
@@ -145,6 +163,12 @@ function _common_get_record($gi, $seek_country)
     return $record;
 }
 
+/**
+ * @param $gi
+ * @param $addr
+ *
+ * @return geoiprecord|int|null
+ */
 function GeoIP_record_by_addr_v6($gi, $addr)
 {
     if ($addr == null) {
@@ -155,6 +179,12 @@ function GeoIP_record_by_addr_v6($gi, $addr)
     return _get_record_v6($gi, $ipnum);
 }
 
+/**
+ * @param $gi
+ * @param $ipnum
+ *
+ * @return geoiprecord|null
+ */
 function _get_record($gi, $ipnum)
 {
     $seek_country = _geoip_seek_country($gi, $ipnum);
@@ -165,6 +195,12 @@ function _get_record($gi, $ipnum)
     return _common_get_record($gi, $seek_country);
 }
 
+/**
+ * @param $gi
+ * @param $addr
+ *
+ * @return geoiprecord|int|null
+ */
 function GeoIP_record_by_addr($gi, $addr)
 {
     if ($addr == null) {

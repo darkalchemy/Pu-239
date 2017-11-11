@@ -1,4 +1,7 @@
 <?php
+/**
+ * @param $data
+ */
 function avatarpos_update($data)
 {
     global $site_config, $queries, $mc1;

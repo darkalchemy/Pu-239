@@ -62,7 +62,7 @@ foreach ($site_settings as $site_setting) {
                         <td class='w-10'>
                             " . htmlsafechars(ucwords(str_replace('_', ' ', $name))) . "
                         </td>
-                        <td>
+                        <td class='w-15'>
                             $input
                         </td>
                         <td>

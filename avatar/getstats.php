@@ -3,6 +3,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/include/bittorrent.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/cache/country.php';
 dbconn();
 $_settings = $_SERVER['DOCUMENT_ROOT'] . '/avatar/settings/';
+/**
+ * @param $val
+ *
+ * @return string
+ */
 function calctime($val)
 {
     $days = intval($val / 86400);
@@ -15,6 +20,11 @@ function calctime($val)
     return "$days days,$hours hrs,$mins minutes";
 }
 
+/**
+ * @param $stamp
+ *
+ * @return string
+ */
 function time_return($stamp)
 {
     $ysecs = 365 * 24 * 60 * 60;
@@ -78,6 +88,12 @@ function time_return($stamp)
     }
 }
 
+/**
+ * @param      $user
+ * @param bool $forced
+ *
+ * @return bool|mixed
+ */
 function getStats($user, $forced = false)
 {
     global $_settings, $countries;

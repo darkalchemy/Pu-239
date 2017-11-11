@@ -15,11 +15,11 @@ function failedloginscheck()
     global $site_config;
     $total = 0;
     $ip = getip();
-    $res = sql_query('SELECT SUM(attempts) FROM failedlogins WHERE ip=' . sqlesc($ip)) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT SUM(attempts) FROM failedlogins WHERE ip = ' . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
     list($total) = mysqli_fetch_row($res);
     if ($total >= $site_config['failedlogins']) {
-        sql_query("UPDATE failedlogins SET banned = 'yes' WHERE ip=" . sqlesc($ip)) or sqlerr(__FILE__, __LINE__);
-        stderr('Login Locked!', 'You have been <b>Exceeded</b> the allowed maximum login attempts without successful login, therefore your ip address <b>(' . htmlsafechars($ip) . ')</b> has been locked for 24 hours.');
+        sql_query("UPDATE failedlogins SET banned = 'yes' WHERE ip = " . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
+        stderr('Login Locked!', 'You have <b>Exceeded</b> the allowed maximum login attempts without successful login, therefore your ip address <b>(' . htmlsafechars($ip) . ')</b> has been locked for 24 hours.');
     }
 }
 if (!mkglobal('username:password' . ($site_config['captcha_on'] ? ':captchaSelection:' : ':') . 'submitme')) {
@@ -39,6 +39,9 @@ if ($site_config['captcha_on']) {
         exit();
     }
 }
+/**
+ * @param string $text
+ */
 function bark($text = 'Username or password incorrect')
 {
     global $lang, $site_config, $mc1;
@@ -56,15 +59,15 @@ function bark($text = 'Username or password incorrect')
 failedloginscheck();
 $res = sql_query('SELECT id, ip, passhash, perms, ssluse, enabled FROM users WHERE username = ' . sqlesc($username) . " AND status = 'confirmed'");
 $row = mysqli_fetch_assoc($res);
-$ip_escaped = sqlesc(getip());
+$ip_escaped = ipToStorageFormat(getip());
 $ip = getip();
 $added = TIME_NOW;
 if (!$row) {
-    $fail = (@mysqli_fetch_row(sql_query("SELECT COUNT(id) from failedlogins where ip=$ip_escaped"))) or sqlerr(__FILE__, __LINE__);
+    $fail = (@mysqli_fetch_row(sql_query("SELECT COUNT(id) from failedlogins where ip = $ip_escaped"))) or sqlerr(__FILE__, __LINE__);
     if ($fail[0] == 0) {
         sql_query("INSERT INTO failedlogins (ip, added, attempts) VALUES ($ip_escaped, $added, 1)") or sqlerr(__FILE__, __LINE__);
     } else {
-        sql_query("UPDATE failedlogins SET attempts = attempts + 1 where ip=$ip_escaped") or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE failedlogins SET attempts = attempts + 1 where ip = $ip_escaped") or sqlerr(__FILE__, __LINE__);
     }
     bark();
 }
@@ -94,15 +97,15 @@ $row['perms'] = (int)$row['perms'];
 $no_log_ip = ($row['perms'] & bt_options::PERMS_NO_IP);
 if ($no_log_ip) {
     $ip = '127.0.0.1';
-    $ip_escaped = sqlesc($ip);
+    $ip_escaped = ipToStorageFormat($ip);
 }
 if (!$no_log_ip) {
-    $res = sql_query("SELECT * FROM ips WHERE ip=$ip_escaped AND userid =" . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query("SELECT * FROM ips WHERE ip = $ip_escaped AND userid = " . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 0) {
         sql_query('INSERT INTO ips (userid, ip, lastlogin, type) VALUES (' . sqlesc($userid) . ", $ip_escaped , $added, 'Login')") or sqlerr(__FILE__, __LINE__);
         $mc1->delete_value('ip_history_' . $userid);
     } else {
-        sql_query("UPDATE ips SET lastlogin=$added WHERE ip=$ip_escaped AND userid=" . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE ips SET lastlogin=$added WHERE ip = $ip_escaped AND userid = " . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
         $mc1->delete_value('ip_history_' . $userid);
     }
 } // End Ip logger
@@ -114,7 +117,7 @@ $ssluse = ($row['ssluse'] == 2 ? 2 : 1);
 // output browser
 $ua = getBrowser();
 $browser = 'Browser: ' . $ua['name'] . ' ' . $ua['version'] . '. Os: ' . $ua['platform'] . '. Agent : ' . $ua['userAgent'];
-sql_query('UPDATE users SET browser=' . sqlesc($browser) . ', ' . $ssl_value . ', ip = ' . $ip_escaped . ', last_access=' . TIME_NOW . ', last_login=' . TIME_NOW . ' WHERE id=' . sqlesc($row['id'])) or sqlerr(__FILE__, __LINE__);
+sql_query('UPDATE users SET browser = ' . sqlesc($browser) . ', ' . $ssl_value . ', ip = ' . $ip_escaped . ', last_access = ' . TIME_NOW . ', last_login = ' . TIME_NOW . ' WHERE id = ' . sqlesc($row['id'])) or sqlerr(__FILE__, __LINE__);
 $mc1->begin_transaction('MyUser_' . $row['id']);
 $mc1->update_row(false, [
     'browser'     => $browser,

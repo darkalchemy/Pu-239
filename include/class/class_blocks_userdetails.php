@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * Class block_userdetails
+ */
 class block_userdetails
 {
     const USERCOMMENTS      =        0x1; //          1

@@ -3,6 +3,11 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('ajax_status'));
+/**
+ * @param $x
+ *
+ * @return mixed
+ */
 function url2short($x)
 {
     preg_match_all('/((http|https)\:\/\/[^()<>\s]+)/i', $x, $t);
@@ -22,6 +27,11 @@ function url2short($x)
     return $x;
 }
 
+/**
+ * @param $arr
+ *
+ * @return string
+ */
 function jsonmsg($arr)
 {
     global $mc1, $CURUSER;

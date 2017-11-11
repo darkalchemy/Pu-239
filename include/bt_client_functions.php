@@ -1,4 +1,10 @@
 <?php
+/**
+ * @param $id_data
+ * @param $id_name
+ *
+ * @return string
+ */
 function StdDecodePeerId($id_data, $id_name)
 {
     $version_str = '';
@@ -35,6 +41,12 @@ function StdDecodePeerId($id_data, $id_name)
     return "$id_name $version_str";
 }
 
+/**
+ * @param $id_data
+ * @param $id_name
+ *
+ * @return string
+ */
 function MainlineDecodePeerId($id_data, $id_name)
 {
     $version_str = '';
@@ -49,6 +61,12 @@ function MainlineDecodePeerId($id_data, $id_name)
     return "$id_name $version_str";
 }
 
+/**
+ * @param $ver_data
+ * @param $id_name
+ *
+ * @return string
+ */
 function DecodeVersionString($ver_data, $id_name)
 {
     $version_str = '';
@@ -59,6 +77,12 @@ function DecodeVersionString($ver_data, $id_name)
     return "$id_name $version_str";
 }
 
+/**
+ * @param        $httpagent
+ * @param string $peer_id
+ *
+ * @return string
+ */
 function getagent($httpagent, $peer_id = '')
 {
     // if($peer_id!="") $peer_id=hex2bin($peer_id);
@@ -384,6 +408,12 @@ function getagent($httpagent, $peer_id = '')
 //========================================
 //getAgent function by deliopoulos
 //========================================
+/**
+ * @param $httpagent
+ * @param $peer_id
+ *
+ * @return mixed|string
+ */
 function getclient($httpagent, $peer_id)
 {
     if (preg_match('/^-U([TM])([0-9]{3})([0-9B])-(..)/s', $peer_id, $matches)) {

@@ -7,11 +7,23 @@ require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('catalogue'));
 $htmlout = '';
+/**
+ * @param $text
+ * @param $char
+ * @param $link
+ *
+ * @return mixed|string
+ */
 function readMore($text, $char, $link)
 {
     return strlen($text) > $char ? substr(htmlsafechars($text), 0, $char - 1) . "...<br><a href='$link'>{$lang['catol_read_more']}</a>" : htmlsafechars($text);
 }
 
+/**
+ * @param $array
+ *
+ * @return string
+ */
 function peer_list($array)
 {
     global $site_config, $lang;

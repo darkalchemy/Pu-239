@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @param $country
+ * @param $region
+ *
+ * @return string
+ */
 function get_time_zone($country, $region)
 {
     switch ($country) {

@@ -1,4 +1,11 @@
 <?php
+/**
+ * @param string $title
+ * @param bool   $msgalert
+ * @param bool   $stdhead
+ *
+ * @return string
+ */
 function stdhead($title = '', $msgalert = true, $stdhead = false)
 {
     global $CURUSER, $site_config, $lang, $free, $query_stat, $querytime, $mc1, $BLOCKS, $CURBLOCK, $mood;
@@ -118,13 +125,18 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     $index_array = ['/', '/index.php', '/login.php'];
     if ($CURUSER && !in_array($_SERVER['REQUEST_URI'], $index_array)) {
         $htmlout .= "
-                <div class='has-text-centered size_6 has-text-primary bottom10 text-shadow padding10'>
-                    " . breadcrumbs() . "
+                <div class='padding20 bg-00 round10'>
+                    <nav class='breadcrumb' aria-label='breadcrumbs'>
+                        <ul>
+                            " . breadcrumbs() . "
+                        </ul>
+                    </nav>
                 </div>";
     }
 
     foreach ($site_config['notifications'] as $notif) {
         if (($message = getSessionVar($notif)) != false) {
+            $message = !is_array($message) ? $message : "<a href='{$message['link']}'>{$message['message']}</a>";
             $htmlout .= "
                 <div class='notification $notif has-text-centered size_6'>
                     <button class='delete'></button>$message
@@ -136,6 +148,11 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     return $htmlout;
 }
 
+/**
+ * @param bool $stdfoot
+ *
+ * @return string
+ */
 function stdfoot($stdfoot = false)
 {
     global $CURUSER, $site_config, $start, $query_stat, $queries, $mc1, $querytime, $lang;
@@ -186,7 +203,7 @@ function stdfoot($stdfoot = false)
                                     <tr>
                                         <td>' . ($key + 1) . "</td>
                                         <td><b>" . ($value['seconds'] > 0.01 ? "<span class='is-danger' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='is-success' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</b></td>
-                                        <td>" . htmlsafechars($value['query']) . '<br></td>
+                                        <td><div class='text-justify'>" . htmlsafechars($value['query']) . '</div></td>
                                     </tr>';
         }
         $htmlfoot .= '
@@ -279,6 +296,12 @@ function stdfoot($stdfoot = false)
     return $htmlfoot;
 }
 
+/**
+ * @param $heading
+ * @param $text
+ *
+ * @return string
+ */
 function stdmsg($heading, $text)
 {
     $htmlout = "
@@ -296,6 +319,9 @@ function stdmsg($heading, $text)
     return $htmlout;
 }
 
+/**
+ * @return string
+ */
 function StatusBar()
 {
     global $CURUSER;
@@ -312,6 +338,9 @@ function StatusBar()
     return $StatusBar;
 }
 
+/**
+ * @return string
+ */
 function navbar()
 {
     global $site_config, $CURUSER, $lang, $mc1;
@@ -493,6 +522,9 @@ function navbar()
     return $navbar;
 }
 
+/**
+ * @return string
+ */
 function platform_menu() {
     $menu = "
         <div id='platform-menu' class='container platform-menu'>

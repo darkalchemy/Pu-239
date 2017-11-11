@@ -106,6 +106,9 @@ function show_level()
     html_out($html, $title);
 }
 
+/**
+ * @param string $type
+ */
 function show_form($type = 'edit')
 {
     global $input, $lang;
@@ -149,6 +152,9 @@ function show_form($type = 'edit')
 /////////////////////////////////////
 //	Update rep function
 /////////////////////////////////////
+/**
+ * @param string $type
+ */
 function do_update($type = '')
 {
     global $input, $lang;
@@ -492,6 +498,10 @@ function do_edit_rep()
 //	$msg -> string
 //	$html -> string
 ///////////////////////////////////////////////
+/**
+ * @param string $html
+ * @param string $title
+ */
 function html_out($html = '', $title = '')
 {
     global $lang;
@@ -502,6 +512,11 @@ function html_out($html = '', $title = '')
     exit();
 }
 
+/**
+ * @param     $url
+ * @param     $text
+ * @param int $time
+ */
 function redirect($url, $text, $time = 2)
 {
     global $site_config, $lang;
@@ -533,6 +548,11 @@ function redirect($url, $text, $time = 2)
 /////////////////////////////
 //	get_month worker function
 /////////////////////////////
+/**
+ * @param int $i
+ *
+ * @return string
+ */
 function get_month_dropdown($i = 0)
 {
     global $now_date, $lang;

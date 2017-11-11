@@ -5,6 +5,11 @@ class_check(UC_MAX);
 $lang = array_merge($lang, load_language('ad_themes'));
 $HTML = '';
 if (!function_exists('html')) {
+    /**
+     * @param $VAL
+     *
+     * @return mixed|string
+     */
     function html($VAL)
     {
         return htmlsafechars($VAL, ENT_QUOTES);

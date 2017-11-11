@@ -1,4 +1,10 @@
 <?php
+/**
+ * @param $tvmaze_data
+ * @param $tvmaze_type
+ *
+ * @return string
+ */
 function tvmaze_format($tvmaze_data, $tvmaze_type)
 {
     $tvmaze_display['show'] = [
@@ -23,6 +29,11 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
     return join('<br><br>', $tvmaze_display[$tvmaze_type]);
 }
 
+/**
+ * @param $torrents
+ *
+ * @return string
+ */
 function tvmaze(&$torrents)
 {
     global $mc1, $site_config;

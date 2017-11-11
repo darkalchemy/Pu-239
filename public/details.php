@@ -267,13 +267,9 @@ if ($CURUSER['class'] >= UC_STAFF) {
 // end
 $s = htmlsafechars($torrents['name'], ENT_QUOTES);
 $HTMLOUT .= "
-    <div class='container is-fluid portlet bottom20'>
-        <div class='container is-fluid portlet top20'>
-        <div class='pull-left'>
-            <h1>$s</h1>
-            <h2 class='has-text-centered'>
-                <a href='random.php'>" . (!isset($_GET['random']) ? '[Random Any]' : '<span>[Random Any]</span>') . '</a>
-            </h2>';
+        <div class='container is-fluid portlet'>
+            <div class='has-text-centered margin20'>
+                <span class='size_7'>$s</span>";
 
 if (($thumbs = $mc1->get_value('thumbs_up_' . $id)) === false) {
     $thumbs = mysqli_num_rows(sql_query('SELECT id, type, torrentid, userid FROM thumbsup WHERE torrentid = ' . sqlesc($torrents['id'])));
@@ -281,16 +277,14 @@ if (($thumbs = $mc1->get_value('thumbs_up_' . $id)) === false) {
     $mc1->add_value('thumbs_up_' . $id, $thumbs, 0);
 }
 $HTMLOUT .= "
+                <div class='top20'>{$lang['details_thumbs']}</div>
+                <div id='thumbsup'>
+                    <a href=\"javascript:ThumbsUp('" . (int)$torrents['id'] . "')\">
+                        <img src='{$site_config['pic_base_url']}thumb_up.png' alt='Thumbs Up' class='tooltipper' title='Thumbs Up' width='12' height='12' class='right10' />
+                    </a>(" . $thumbs . ")
+                </div>
+           </div>
         </div>
-        <div class='pull-right has-text-centered top20'>
-            {$lang['details_thumbs']}
-            <div id='thumbsup'>
-                <a href=\"javascript:ThumbsUp('" . (int)$torrents['id'] . "')\">
-                    <img src='{$site_config['pic_base_url']}thumb_up.png' alt='Thumbs Up' class='tooltipper' title='Thumbs Up' width='12' height='12' class='right10' />
-                </a>(" . $thumbs . ")
-            </div>
-       </div>
-    </div>
     <div class='tooltip_templates'>
         <span id='balloon1'>
             Once chosen this torrent will be Freeleech {$torrent['freeimg']} until " . get_date($torrent['idk'], 'DATE') . " and can be resumed or started over using the regular download link. Doing so will result in one Freeleech Slot being taken away from your total.
@@ -305,8 +299,7 @@ $HTMLOUT .= "
         <span id='balloon3'>
             Remember to show your gratitude and Thank the Uploader. <img src='{$site_config['pic_base_url']}smilies/smile1.gif' alt='' />
         </span>
-    </div>
-    <div class=''>";
+    </div>";
 $url = 'edit.php?id=' . (int)$torrents['id'];
 if (isset($_GET['returnto'])) {
     $addthis = '&amp;returnto=' . urlencode($_GET['returnto']);
@@ -354,19 +347,18 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
     }
     $freeslot_zip = ($CURUSER['freeslots'] >= 1 ? "<b>Use: </b><a class='index dt-tooltipper-small' href='./download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;zip=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><font color='" . $torrent['free_color'] . "'><b>Freeleech Slot</b></font></a> <b>Use: </b><a class='index dt-tooltipper-small' href='download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;zip=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><font color='" . $torrent['free_color'] . "'><b>Doubleseed Slot</b></font></a>- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
     $freeslot_text = ($CURUSER['freeslots'] >= 1 ? "<b>Use: </b><a class='index dt-tooltipper-small' href='./download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=free&amp;text=1' data-tooltip-content='#balloon1' rel='balloon1' onclick=\"return confirm('Are you sure you want to use a freeleech slot?')\"><font color='" . $torrent['free_color'] . "'><b>Freeleech Slot</b></font></a> <b>Use: </b><a class='index dt-tooltipper-small' href='download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "&amp;slot=double&amp;text=1' data-tooltip-content='#balloon2' rel='balloon2' onclick=\"return confirm('Are you sure you want to use a doubleseed slot?')\"><font color='" . $torrent['free_color'] . "'><b>Doubleseed Slot</b></font></a>- " . htmlsafechars($CURUSER['freeslots']) . ' Slots Remaining. ' : '');
-    //==
+
     $HTMLOUT .= "
-        <div class='top10 bottom10'>";
+        <div class='top10 bottom10 has-text-centered'>";
 
     require_once MODS_DIR . 'free_details.php';
     $HTMLOUT .= "
         </div>
-    <div class=''>
-        <div class='row-fluid'>
-            <div class='pull-left img-polaroid img-rounded span5'>";
-    //==09 Poster mod
+        <div class='level has-text-centered bottom20'>
+            <div class='img-polaroid round10'>";
+
     if (!empty($torrents['poster'])) {
-        $HTMLOUT .= "<img src='" . htmlsafechars($torrents['poster']) . "' alt='Poster' />";
+        $HTMLOUT .= "<img src='" . htmlsafechars($torrents['poster']) . "' class='round10' alt='Poster' />";
     }
     if (empty($torrents['poster'])) {
         $HTMLOUT .= 'No Poster Found.';
@@ -376,8 +368,8 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
     $Free_Slot_Text = (XBT_TRACKER == true ? '' : $freeslot_text);
     $HTMLOUT .= "
             </div>
-            <div class='span7'>
-                <table class='table table-bordered bottom10'>
+            <div class='w-100 table-wrapper'>
+                <table class='table table-bordered crap'>
                     <tr>
                         <td class='rowhead' width='3%'>{$lang['details_download']}</td>
                         <td>
@@ -397,7 +389,10 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
                         </td>
                     </tr>
                 </table>
-                <table class='table table-bordered bottom10'>
+            </div>
+            </div>
+            <div class='table-wrapper'>
+                <table class='table table-bordered'>
                     <tr>
                         <td>{$lang['details_tags']}</td>
                         <td>{$keywords}</td>
@@ -462,7 +457,7 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
             break;
     }
     $sr = floor($sr * 1000) / 1000;
-    $sr = "<img src='./images/smilies/{$s}.gif' alt='' class='right10' /><font color='" . get_ratio_color($sr) . "'>" . number_format($sr, 3) . "</font>";
+    $sr = "<img src='{$site_config['pic_base_url']}smilies/{$s}.gif' alt='' class='right10' /><font color='" . get_ratio_color($sr) . "'>" . number_format($sr, 3) . "</font>";
     if ($torrents['free'] >= 1 || $torrents['freetorrent'] >= 1 || $isfree['yep'] || $free_slot or $double_slot != 0 || $CURUSER['free_switch'] != 0) {
         $HTMLOUT .= "
                     <tr>
@@ -478,7 +473,11 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
                         <td>{$sr}Your new ratio if you download this torrent.</td>
                     </tr>";
     }
-    //==End
+    /**
+     * @param $matches
+     *
+     * @return string
+     */
     function hex_esc($matches)
     {
         return sprintf('%02x', ord($matches[0]));
@@ -496,6 +495,8 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
                 </tr>";
 }
 $HTMLOUT .= "</table>
+        </div>
+        <div class='table-wrapper'>
             <table class='table table-bordered bottom10'>";
 if (!empty($torrents['description'])) {
     $HTMLOUT .= tr("{$lang['details_small_descr']}", '<i>' . htmlsafechars($torrents['description']) . '</i>', 1);
@@ -506,7 +507,9 @@ if (!empty($torrents['description'])) {
                 </tr>';
 }
 $HTMLOUT .= "
-            </table>";
+            </table>
+        </div>";
+
 
 $searchname = substr($torrents['name'], 0, 6);
 $query1 = str_replace(' ', '.', sqlesc('%' . $searchname . '%'));
@@ -520,6 +523,7 @@ if (($sim_torrents = $mc1->get_value('similiar_tor_' . $id)) === false) {
 }
 if (count($sim_torrents) > 0) {
     $sim_torrent = "
+        <div class='table-wrapper'>
             <table class='table table-bordered table-striped'>
                 <thead>
                     <tr>
@@ -536,7 +540,7 @@ if (count($sim_torrents) > 0) {
         foreach ($sim_torrents as $a) {
             $sim_tor['cat_name'] = htmlsafechars($change[$a['category']]['name']);
             $sim_tor['cat_pic'] = htmlsafechars($change[$a['category']]['image']);
-            $cat = "<img src='./images/caticons/" . get_categorie_icons() . "/{$sim_tor['cat_pic']}' alt='{$sim_tor['cat_name']}' class='tooltipper' title='{$sim_tor['cat_name']}' />";
+            $cat = "<img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/{$sim_tor['cat_pic']}' alt='{$sim_tor['cat_name']}' class='tooltipper' title='{$sim_tor['cat_name']}' />";
             $name = htmlsafechars(CutName($a['name']));
             $seeders = (int)$a['seeders'];
             $leechers = (int)$a['leechers'];
@@ -553,9 +557,12 @@ if (count($sim_torrents) > 0) {
         }
         $sim_torrent .= '
                 </tbody>
-            </table>';
+            </table>
+        </div>';
+
         $HTMLOUT .= "
-            <table class='table table-bordered bottom10'>
+        <div class='table-wrapper'>
+            <table class='table table-bordered'>
                 <tr class='no_hover'>
                     <td class='rowhead'>{$lang['details_similiar']}
                         <span class='flipper has-text-primary'>
@@ -565,24 +572,23 @@ if (count($sim_torrents) > 0) {
                     </td>
                 </tr>
             </table>
-        </div>
-    </div>";
+        </div>";
     } else {
         if (empty($sim_torrents)) {
             $HTMLOUT .= "
-            <table class='table table-bordered bottom10'>
+        <div class='table-wrapper'>
+            <table class='table table-bordered'>
                 <tr>
                     <td colspan='2'>Nothing similiar to " . htmlsafechars($torrents['name']) . " found.</td>
                 </tr>
             </table>
-        </div>
-    </div>";
+        </div>";
         }
     }
 }
 $HTMLOUT .= "
-    <div class='row-fluid'>
-        <table class='table table-bordered bottom10'>";
+    <div class='table-wrapper'>
+        <table class='table table-bordered'>";
 
 if (in_array($torrents['category'], $site_config['movie_cats']) && !empty($torrents['subs'])) {
     $HTMLOUT .= "
@@ -644,7 +650,9 @@ $XBT_Or_Default = (XBT_TRACKER == true ? 'snatches_xbt.php?id=' : 'snatches.php?
 $HTMLOUT .= tr("{$lang['details_snatched']}", ($torrents['times_completed'] > 0 ? "<a href='{$XBT_Or_Default}{$id}'>{$torrents['times_completed']} {$lang['details_times']}</a>" : "0 {$lang['details_times']}"), 1);
 $HTMLOUT .= "
         </table>
-        <table class='table table-bordered bottom10'>";
+    </div>
+    <div class='table-wrapper'>
+        <table class='table table-bordered'>";
 //==Report Torrent Link
 $HTMLOUT .= tr('Report Torrent', "<form action='report.php?type=Torrent&amp;id=$id' method='post'><input class='button is-primary' type='submit' name='submit' value='Report This Torrent' /><strong><em class='label label-primary'>For breaking the<a href='rules.php'>rules</a></em></strong></form>", 1);
 //== Tor Reputation by pdq
@@ -695,13 +703,13 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 <td class='rowhead'>Checked by</td>
                 <td>
                     <div class='flex level-left'>
-                        <em class='alert alert-error right10 bottom10'><strong>NOT CHECKED!</strong></em>
-                        <em class='alert alert-warning right10 bottom10'>
+                        <em class='alert alert-error right10'><strong>NOT CHECKED!</strong></em>
+                        <em class='alert alert-warning right10'>
                             <a href='details.php?id=" . (int)$torrents['id'] . "&amp;checked=1'>
                                 <strong>[Check this torrent]</strong>
                             </a>
                         </em>
-                        <em class='alert alert-info right10 bottom10'><strong>* STAFF Eyes Only *</strong></em>
+                        <em class='alert alert-info right10'><strong>* STAFF Eyes Only *</strong></em>
                     </div>
                 </td>
             </tr>";
@@ -752,40 +760,25 @@ $HTMLOUT .= tr('Request reseed', $reseed, 1);
 
 $HTMLOUT .= '
 </table>
-</div>
-';
+</div>';
 if (!empty($torrents_txt['descr'])) {
-    $HTMLOUT .= "
-    <table class='table table-bordered bottom10'>
-            <tr>
-                <td class='rowhead'>{$lang['details_description']}</td>
-                <td>
-                    <div>" . str_replace([
-            "\n",
-            "\r",
-            '  ',
-        ], [
-            '<br>',
-            '<br>',
-            ' ',
-        ], format_comment($torrents_txt['descr'])) . '
-                    </div>
-                </td>
-            </tr>
-    </table>
-';
+    $HTMLOUT .= main_div(format_comment($torrents_txt['descr']), 'has-text-left');
 }
-$HTMLOUT .= "<table class='table table-bordered bottom10'>\n";
+$HTMLOUT .= "
+        <div class='table-wrapper'>
+            <table class='table table-bordered'>";
 if (!empty($torrents['youtube'])) {
     $HTMLOUT .= tr($lang['details_youtube'], '<object type="application/x-shockwave-flash" data="' . str_replace('watch?v=', 'v/', $torrents['youtube']) . '"><param name="movie" value="' . str_replace('watch?v=', 'v/', $torrents['youtube']) . '" /></object><br><a
 href=\'' . htmlsafechars($torrents['youtube']) . '\' target=\'_blank\'>' . $lang['details_youtube_link'] . '</a>', 1);
 } else {
     $HTMLOUT .= '<tr><td>No youtube data found</td></tr>';
 }
-$HTMLOUT .= "</table>
-<div>\n";
 $HTMLOUT .= "
-<table class='table table-bordered bottom10'>\n";
+            </table>
+        <div>";
+$HTMLOUT .= "
+        <div class='table-wrapper'>
+            <table class='table table-bordered'>";
 $torrents['tvcats'] = [
     5,
 ]; // change these to match your TV categories
@@ -852,7 +845,7 @@ if (preg_match('/^http\:\/\/(.*?)imdb\.com\/title\/tt([\d]{7})/i', $torrents['ur
                     ])) {
                     foreach ($imdb_data[$foo] as $pp) {
                         if ($foo == 'cast') {
-                            $imdb_tmp[] = "<a href='http://www.imdb.com/name/nm" . $pp['imdb'] . "' target='_blank' class='tooltipper' title='" . (!empty($pp['name']) ? $pp['name'] : 'unknown') . "'>" . (isset($pp['thumb']) ? "<img src='" . $pp['thumb'] . "' alt='" . $pp['name'] . "' border='0' width='20' height='30' />" : $pp['name']) . "</a> as <span>" . (!empty($pp['role']) ? $pp['role'] : 'unknown') . '</span>';
+                            $imdb_tmp[] = "<a href='http://www.imdb.com/name/nm" . $pp['imdb'] . "' target='_blank' class='tooltipper' title='" . (!empty($pp['name']) ? $pp['name'] : 'unknown') . "'>" . (isset($pp['thumb']) ? "<img src='" . $pp['thumb'] . "' alt='" . $pp['name'] . "' width='20' height='30' />" : $pp['name']) . "</a> as <span>" . (!empty($pp['role']) ? $pp['role'] : 'unknown') . '</span>';
                         } elseif ($foo == 'trailers') {
                             $imdb_tmp[] = "<a href='" . $pp . "' target='_blank'>" . $pp . '</a>';
                         } else {
@@ -877,61 +870,57 @@ if (empty($tvmaze_info) && empty($imdb_html)) {
             <td colspan='2'>No Imdb or TVMaze info.</td>
         </tr>";
 }
-$HTMLOUT .= "</table></div><div>";
-$HTMLOUT .= "<h1>{$lang['details_comments']}<a href='./details.php?id=$id'>" . htmlsafechars($torrents['name'], ENT_QUOTES) . "</a></h1>\n";
+$HTMLOUT .= "</table></div></div><div>";
 
 $HTMLOUT .= "
-    <p>
-        <a name='startcomments'></a>
-    </p>
-    <form name='comment' method='post' action='comment.php?action=add&amp;tid=$id'>
-        <table class='table table-bordered bottom10'>
-            <thead>
-                <tr>
-                    <th>
-                        <div>
-                            <a class='index' href='./comment.php?action=add&amp;tid=$id'>Use the BBcode Editor</a><br><br>
-                            <a class='index' href='./takethankyou.php?id=" . $id . "'>
-                                <img src='{$site_config['pic_base_url']}smilies/thankyou.gif' class='tooltipper' alt='Thank You' title='Thank You' />
-                            </a>
-                        </div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                    <textarea name='body' cols='280' rows='4'></textarea>
+    <a name='startcomments'></a>
+    <form name='comment' method='post' action='{$site_config['baseurl']}/comment.php?action=add&amp;tid=$id'>
+        <div class='bordered top20 bottom20'>
+            <div class='alt_bordered bg-00'>
+                <div class='has-text-centered'>
+                    <div class='size_6'>{$lang['details_comments']}:</div>
+                    <h1><a href='{$site_config['baseurl']}/details.php?id=$id'>" . htmlsafechars($torrents['name'], ENT_QUOTES) . "</a></h1>
+                </div>
+                <div class='bg-02 round10'>
+                    <div class='level-center'>
+                        <a class='index' href='{$site_config['baseurl']}/comment.php?action=add&amp;tid=$id'><span class='has-text-primary size_6'>Use the BBcode Editor</span></a>
+                        <a class='index' href='{$site_config['baseurl']}/takethankyou.php?id=" . $id . "'>
+                            <img src='{$site_config['pic_base_url']}smilies/thankyou.gif' class='tooltipper' alt='Thank You' title='Give a quick \"Thank You\"' />
+                        </a>
+                    </div>
+                    <textarea name='body' class='w-100' rows='6'></textarea>
                     <input type='hidden' name='tid' value='" . htmlsafechars($id) . "' />
-                    <br>
-                    <a href=\"javascript:SmileIT(':-)','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/smile1.gif' alt='Smile' class='tooltipper' title='Smile' /></a>
-                    <a href=\"javascript:SmileIT(':smile:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/smile2.gif' alt='Smiling' class='tooltipper' title='Smiling' /></a>
-                    <a href=\"javascript:SmileIT(':-D','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/grin.gif' alt='Grin' class='tooltipper' title='Grin' /></a>
-                    <a href=\"javascript:SmileIT(':lol:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/laugh.gif' alt='Laughing' class='tooltipper' title='Laughing' /></a>
-                    <a href=\"javascript:SmileIT(':w00t:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='W00t' class='tooltipper' title='W00t' /></a>
-                    <a href=\"javascript:SmileIT(':blum:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/blum.gif' alt='Rasp' class='tooltipper' title='Rasp' /></a>
-                    <a href=\"javascript:SmileIT(';-)','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/wink.gif' alt='Wink' class='tooltipper' title='Wink' /></a>
-                    <a href=\"javascript:SmileIT(':devil:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/devil.gif' alt='Devil' class='tooltipper' title='Devil' /></a>
-                    <a href=\"javascript:SmileIT(':yawn:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/yawn.gif' alt='Yawn' class='tooltipper' title='Yawn' /></a>
-                    <a href=\"javascript:SmileIT(':-/','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/confused.gif' alt='Confused' class='tooltipper' title='Confused' /></a>
-                    <a href=\"javascript:SmileIT(':o)','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/clown.gif' alt='Clown' class='tooltipper' title='Clown' /></a>
-                    <a href=\"javascript:SmileIT(':innocent:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/innocent.gif' alt='Innocent' class='tooltipper' title='innocent' /></a>
-                    <a href=\"javascript:SmileIT(':whistle:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/whistle.gif' alt='Whistle' class='tooltipper' title='Whistle' /></a>
-                    <a href=\"javascript:SmileIT(':unsure:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/unsure.gif' alt='Unsure' class='tooltipper' title='Unsure' /></a>
-                    <a href=\"javascript:SmileIT(':blush:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/blush.gif' alt='Blush' class='tooltipper' title='Blush' /></a>
-                    <a href=\"javascript:SmileIT(':hmm:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/hmm.gif' alt='Hmm' class='tooltipper' title='Hmm' /></a>
-                    <a href=\"javascript:SmileIT(':hmmm:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/hmmm.gif' alt='Hmmm' class='tooltipper' title='Hmmm' /></a>
-                    <a href=\"javascript:SmileIT(':huh:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/huh.gif' alt='Huh' class='tooltipper' title='Huh' /></a>
-                    <a href=\"javascript:SmileIT(':look:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/look.gif' alt='Look' class='tooltipper' title='Look' /></a>
-                    <a href=\"javascript:SmileIT(':rolleyes:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/rolleyes.gif' alt='Roll Eyes' class='tooltipper' title='Roll Eyes' /></a>
-                    <a href=\"javascript:SmileIT(':kiss:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/kiss.gif' alt='Kiss' class='tooltipper' title='Kiss' /></a>
-                    <a href=\"javascript:SmileIT(':blink:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/blink.gif' alt='Blink' class='tooltipper' title='Blink' /></a>
-                    <a href=\"javascript:SmileIT(':baby:','comment','body')\"><img border='0' src='{$site_config['pic_base_url']}smilies/baby.gif' alt='Baby' class='tooltipper' title='Baby' /></a>
-                    <br>
-                    <input class='button is-primary' type='submit' value='Submit' />
-                    </td>
-                </tr>
-        </table>
+                    <div class='has-text-centered'>
+                        <a href=\"javascript:SmileIT(':-)','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/smile1.gif' alt='Smile' class='tooltipper' title='Smile' /></a>
+                        <a href=\"javascript:SmileIT(':smile:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/smile2.gif' alt='Smiling' class='tooltipper' title='Smiling' /></a>
+                        <a href=\"javascript:SmileIT(':-D','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/grin.gif' alt='Grin' class='tooltipper' title='Grin' /></a>
+                        <a href=\"javascript:SmileIT(':lol:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/laugh.gif' alt='Laughing' class='tooltipper' title='Laughing' /></a>
+                        <a href=\"javascript:SmileIT(':w00t:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='W00t' class='tooltipper' title='W00t' /></a>
+                        <a href=\"javascript:SmileIT(':blum:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/blum.gif' alt='Rasp' class='tooltipper' title='Rasp' /></a>
+                        <a href=\"javascript:SmileIT(';-)','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/wink.gif' alt='Wink' class='tooltipper' title='Wink' /></a>
+                        <a href=\"javascript:SmileIT(':devil:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/devil.gif' alt='Devil' class='tooltipper' title='Devil' /></a>
+                        <a href=\"javascript:SmileIT(':yawn:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/yawn.gif' alt='Yawn' class='tooltipper' title='Yawn' /></a>
+                        <a href=\"javascript:SmileIT(':-/','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/confused.gif' alt='Confused' class='tooltipper' title='Confused' /></a>
+                        <a href=\"javascript:SmileIT(':o)','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/clown.gif' alt='Clown' class='tooltipper' title='Clown' /></a>
+                        <a href=\"javascript:SmileIT(':innocent:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/innocent.gif' alt='Innocent' class='tooltipper' title='innocent' /></a>
+                        <a href=\"javascript:SmileIT(':whistle:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/whistle.gif' alt='Whistle' class='tooltipper' title='Whistle' /></a>
+                        <a href=\"javascript:SmileIT(':unsure:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/unsure.gif' alt='Unsure' class='tooltipper' title='Unsure' /></a>
+                        <a href=\"javascript:SmileIT(':blush:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/blush.gif' alt='Blush' class='tooltipper' title='Blush' /></a>
+                        <a href=\"javascript:SmileIT(':hmm:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/hmm.gif' alt='Hmm' class='tooltipper' title='Hmm' /></a>
+                        <a href=\"javascript:SmileIT(':hmmm:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/hmmm.gif' alt='Hmmm' class='tooltipper' title='Hmmm' /></a>
+                        <a href=\"javascript:SmileIT(':huh:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/huh.gif' alt='Huh' class='tooltipper' title='Huh' /></a>
+                        <a href=\"javascript:SmileIT(':look:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/look.gif' alt='Look' class='tooltipper' title='Look' /></a>
+                        <a href=\"javascript:SmileIT(':rolleyes:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/rolleyes.gif' alt='Roll Eyes' class='tooltipper' title='Roll Eyes' /></a>
+                        <a href=\"javascript:SmileIT(':kiss:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/kiss.gif' alt='Kiss' class='tooltipper' title='Kiss' /></a>
+                        <a href=\"javascript:SmileIT(':blink:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/blink.gif' alt='Blink' class='tooltipper' title='Blink' /></a>
+                        <a href=\"javascript:SmileIT(':baby:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/baby.gif' alt='Baby' class='tooltipper' title='Baby' /></a>
+                    </div>
+                    <div class='has-text-centered'>
+                        <input class='button is-primary' type='submit' value='Submit' />
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>";
 
 if ($torrents['allow_comments'] == 'yes' || $CURUSER['class'] >= UC_STAFF && $CURUSER['class'] <= UC_MAX) {
@@ -939,11 +928,13 @@ if ($torrents['allow_comments'] == 'yes' || $CURUSER['class'] >= UC_STAFF && $CU
             <p><a name='startcomments'></a></p>";
 } else {
     $HTMLOUT .= "
-        <table class='table table-bordered bottom10'>
-            <tr>
-                <td><a name='startcomments'> </a><b>{$lang['details_com_disabled']}</b></td>
-            </tr>
-        </table>";
+        <div class='table-wrapper'>
+            <table class='table table-bordered'>
+                <tr>
+                    <td><a name='startcomments'> </a><b>{$lang['details_com_disabled']}</b></td>
+                </tr>
+            </table>
+        </div>";
     echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
     exit();
 }
@@ -976,9 +967,6 @@ if (!$count) {
 }
 $HTMLOUT .= "
         </div>
-    </div>
-</div>
-</div>
-</div>";
+    </div>";
 
-echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

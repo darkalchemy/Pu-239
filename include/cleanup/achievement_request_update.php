@@ -1,4 +1,7 @@
 <?php
+/**
+ * @param $data
+ */
 function achievement_request_update($data)
 {
     global $site_config, $queries, $mc1;

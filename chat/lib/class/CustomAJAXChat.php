@@ -7,6 +7,9 @@
  * @link https://blueimp.net/ajax/
  */
 
+/**
+ * Class CustomAJAXChat
+ */
 class CustomAJAXChat extends AJAXChat
 {
     // Initialize custom request variables:
@@ -22,6 +25,9 @@ class CustomAJAXChat extends AJAXChat
 
     // Returns an associative array containing userName, userID and userRole
     // Returns null if login is invalid
+    /**
+     * @return mixed
+     */
     public function getValidLoginUserData()
     {
         global $CURUSER;
@@ -47,6 +53,9 @@ class CustomAJAXChat extends AJAXChat
 
     // Store the channels the current user has access to
     // Make sure channel names don't contain any whitespace
+    /**
+     * @return array|null
+     */
     public function &getChannels()
     {
         $validChannels = [];
@@ -81,6 +90,9 @@ class CustomAJAXChat extends AJAXChat
     // Store all existing channels
     // Make sure channel names don't contain any whitespace
 
+    /**
+     * @return null
+     */
     public function &getCustomUsers()
     {
         // List containing the registered chat users:
@@ -90,6 +102,9 @@ class CustomAJAXChat extends AJAXChat
         return $users;
     }
 
+    /**
+     * @return array|null
+     */
     public function &getAllChannels()
     {
         if ($this->_allChannels === null) {
@@ -121,6 +136,9 @@ class CustomAJAXChat extends AJAXChat
         return $this->_allChannels;
     }
 
+    /**
+     * @return array|null
+     */
     public function getCustomChannels()
     {
         // List containing the custom channels:

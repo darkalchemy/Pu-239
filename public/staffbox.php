@@ -5,6 +5,11 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
+/**
+ * @param $x
+ *
+ * @return int
+ */
 function mkint($x)
 {
     return (int)$x;
@@ -13,16 +18,16 @@ function mkint($x)
 $lang = array_merge(load_language('global'), load_language('staffbox'));
 $stdfoot = [
     'js' => [
-        'staffcontact',
     ],
 ];
 $stdhead = [
     'css' => [
-        'staffbox',
     ],
 ];
 if ($CURUSER['class'] < UC_STAFF) {
-    stderr($lang['staffbox_err'], $lang['staffbox_class']);
+    setSessionVar('is-danger', $lang['staffbox_class']);
+    header("Location: index.php");
+    die();
 }
 $valid_do = [
     'view',
@@ -41,20 +46,27 @@ switch ($do) {
             if (sql_query('DELETE FROM staffmessages WHERE id IN (' . join(',', $id) . ')')) {
                 $mc1->delete_value('staff_mess_');
                 header('Refresh: 2; url=' . $_SERVER['PHP_SELF']);
-                stderr($lang['staffbox_success'], $lang['staffbox_delete_ids']);
+                setSessionVar('is-success', $lang['staffbox_delete_ids']);
+                header("Location: {$_SERVER['PHP_SELF']}");
+                die();
             } else {
-                stderr($lang['staffbox_err'], sprintf($lang['staffbox_sql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+                setSessionVar('is-warning', sprintf($lang['staffbox_sql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+                header("Location: {$_SERVER['PHP_SELF']}");
+                die();
             }
         } else {
-            stderr($lang['staffbox_err'], $lang['staffbox_odd_err']);
+            setSessionVar('is-warning', $lang['staffbox_odd_err']);
+            header("Location: {$_SERVER['PHP_SELF']}");
+            die();
         }
         break;
 
     case 'setanswered':
         if ($id > 0) {
             if ($reply && empty($message)) {
-                stderr($lang['staffbox_err'], $lang['staffbox_no_message']);
-                exit;
+                setSessionVar('is-warning', $lang['staffbox_no_message']);
+                header("Location: {$_SERVER['PHP_SELF']}");
+                die();
             }
             $q1 = sql_query('SELECT s.msg,s.sender,s.subject,u.username FROM staffmessages as s LEFT JOIN users as u ON s.sender=u.id WHERE s.id IN (' . join(',', $id) . ')') or sqlerr(__FILE__, __LINE__);
             $a = mysqli_fetch_assoc($q1);
@@ -65,13 +77,18 @@ switch ($do) {
             $message = ', answer=' . sqlesc($message);
             if (sql_query('UPDATE staffmessages SET answered=\'1\', answeredby=' . sqlesc($CURUSER['id']) . ' ' . $message . ' WHERE id IN (' . join(',', $id) . ')')) {
                 $mc1->delete_value('staff_mess_');
-                header('Refresh: 2; url=' . $_SERVER['PHP_SELF']);
-                stderr($lang['staffbox_success'], $lang['staffbox_setanswered_ids']);
+                setSessionVar('is-success', $lang['staffbox_setanswered_ids']);
+                header("Location: {$_SERVER['PHP_SELF']}");
+                die();
             } else {
-                stderr($lang['staffbox_err'], sprintf($lang['staffbox_sql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+                setSessionVar('is-warning', sprintf($lang['staffbox_sql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+                header("Location: {$_SERVER['PHP_SELF']}");
+                die();
             }
         } else {
-            stderr($lang['staffbox_err'], $lang['staffbox_odd_err']);
+            setSessionVar('is-warning', $lang['staffbox_odd_err']);
+            header("Location: {$_SERVER['PHP_SELF']}");
+            die();
         }
         break;
 
@@ -80,96 +97,117 @@ switch ($do) {
             $q2 = sql_query('SELECT s.id, s.added, s.msg, s.subject, s.answered, s.answer, s.answeredby, s.sender, s.answer, u.username, u2.username as username2 FROM staffmessages as s LEFT JOIN users as u ON s.sender = u.id LEFT JOIN users as u2 ON s.answeredby = u2.id  WHERE s.id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             if (mysqli_num_rows($q2) == 1) {
                 $a = mysqli_fetch_assoc($q2);
-                $HTMLOUT = begin_main_frame() . begin_frame($lang['staffbox_pm_view']);
-                $HTMLOUT .= "<form action='" . $_SERVER['PHP_SELF'] . "' method='post'>
-					      <div class='global_icon_sb'><img src='images/global.design/helpdesk.png' alt='' title='Helpdesk' class='global_image' width='25'/></div>
-                <div class='global_head_sb'>Helpdesk</div><br>
-                <div class='global_text_sb'><br><br>
-								<table class='table table-bordered table-striped'>
-								 <tr><td>{$lang['staffbox_pm_from']}&#160;<a href='userdetails.php?id=" . (int)$a['sender'] . "'>" . htmlsafechars($a['username']) . '</a> at ' . get_date($a['added'], 'DATE', 1) . "<br>
-								 {$lang['staffbox_pm_subject']} : <b>" . htmlsafechars($a['subject']) . "</b><br>
-								 {$lang['staffbox_pm_answered']} : <b>" . ($a['answeredby'] > 0 ? "<a href='userdetails.php?id=" . (int)$a['answeredby'] . "'>" . htmlsafechars($a['username2']) . '</a>' : "<span>No</span>") . '</b>
-								</td></tr>
-								<tr><td>' . format_comment($a['msg']) . "
-								</td></tr>
-								<tr><td>{$lang['staffbox_pm_answer']}<br>
-									" . ($a['answeredby'] == 0 ? "<textarea rows='5' cols='75' name='message' ></textarea>" : ($a['answer'] ? format_comment($a['answer']) : "<b>{$lang['staffbox_pm_noanswer']}</b>")) . "
-								</td></tr>
-								<tr><td>
-									<select name='do'>
-										<option value='setanswered' " . ($a['answeredby'] > 0 ? 'disabled=\'disabled\'' : '') . ">{$lang['staffbox_pm_reply']}</option>
-										<option value='restart' " . ($a['answeredby'] != $CURUSER['id'] ? 'disabled=\'disabled\'' : '') . ">{$lang['staffbox_pm_restart']}</option>
-										<option value='delete'>{$lang['staffbox_pm_delete']}</option>
-									</select>
-									<input type='hidden' name='reply' value='1'/>
-									<input type='hidden' name='id[]' value='" . (int)$a['id'] . "'/><input type='submit' value='{$lang['staffbox_confirm']}' />
-									</td></tr>
-								</table>
-								</div></form>";
-                $HTMLOUT .= end_frame() . end_main_frame();
+                $HTMLOUT .= wrapper("
+                    <div class='has-text-centered'>
+                        <h1>{$lang['staffbox_pm_view']}</h1>
+                    </div>" . main_div("
+                    <form action='{$_SERVER['PHP_SELF']}' method='post'>
+                        <div class='bordered top20 bottom20 bg-00'>
+                            <div>{$lang['staffbox_pm_from']}: " . format_username($a['sender']) . " at " . get_date($a['added'], 'DATE', 1) . "</div>
+                            <div>{$lang['staffbox_pm_subject']}: " . htmlsafechars($a['subject']) . "</div>
+                            <div>{$lang['staffbox_pm_answered']}: " . ($a['answeredby'] > 0 ? format_username($a['answeredby']) : "<span>No</span>") . "</div>
+                        </div>
+                        <div class='bordered top20 bottom20 bg-00'>" .
+                        format_comment($a['msg']) . "
+                        </div>
+                        <div class='bordered top20 bottom20 bg-00'>
+                            {$lang['staffbox_pm_answer']} " . ($a['answeredby'] == 0 ? "
+                            <textarea rows='5' class='w-100' name='message' ></textarea>" : ($a['answer'] ? format_comment($a['answer']) : "<b>{$lang['staffbox_pm_noanswer']}</b>")) . "
+                        </div>
+                        <div class='has-text-centered top20'>
+                            <select name='do'>
+                                <option value='setanswered' " . ($a['answeredby'] > 0 ? 'disabled' : '') . ">{$lang['staffbox_pm_reply']}</option>
+                                <option value='restart' " . ($a['answeredby'] != $CURUSER['id'] ? 'disabled' : '') . ">{$lang['staffbox_pm_restart']}</option>
+                                <option value='delete'>{$lang['staffbox_pm_delete']}</option>
+                            </select>
+                            <input type='hidden' name='reply' value='1' />
+                            <input type='hidden' name='id[]' value='" . (int)$a['id'] . "' />
+                            <input type='submit' class='button is-small' value='{$lang['staffbox_confirm']}' />
+                        </div>
+                    </form>"), 'has-text-left');
                 echo stdhead('StaffBox', true, $stdhead) . $HTMLOUT . stdfoot();
             } else {
-                stderr($lang['staffbox_err'], $lang['staffbox_msg_noid']);
+                setSessionVar('is-warning', $lang['staffbox_msg_noid']);
+                header("Location: {$_SERVER['PHP_SELF']}");
+                die();
             }
         } else {
-            stderr($lang['staffbox_err'], $lang['staffbox_odd_err']);
+            setSessionVar('is-warning', $lang['staffbox_odd_err']);
+            header("Location: {$_SERVER['PHP_SELF']}");
+            die();
         }
         break;
 
     case 'restart':
         if ($id > 0) {
-            if (sql_query('UPDATE staffmessages SET answered=\'0\', answeredby=\'0\' WHERE id IN (' . join(',', $id) . ')')) {
+            if (sql_query("UPDATE staffmessages SET answered='0', answeredby='0' WHERE id IN (" . join(',', $id) . ')')) {
                 $mc1->delete_value('staff_mess_');
                 header('Refresh: 2; url=' . $_SERVER['PHP_SELF']);
-                stderr($lang['staffbox_success'], $lang['staffbox_restart_ids']);
+                setSessionVar('is-success', $lang['staffbox_restart_ids']);
+                header("Location: {$_SERVER['PHP_SELF']}");
+                die();
             } else {
-                stderr($lang['staffbox_err'], sprintf($lang['staffbox_sql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+                setSessionVar('is-warning', sprintf($lang['staffbox_sql_err'], ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+                header("Location: {$_SERVER['PHP_SELF']}");
+                die();
             }
         } else {
-            stderr($lang['staffbox_err'], $lang['staffbox_odd_err']);
+            setSessionVar('is-warning', $lang['staffbox_odd_err']);
+            header("Location: {$_SERVER['PHP_SELF']}");
+            die();
         }
         break;
 
     default:
         $count_msgs = get_row_count('staffmessages');
-        $perpage = 4;
+        $perpage = 15;
         $pager = pager($perpage, $count_msgs, 'staffbox.php?');
         if (!$count_msgs) {
-            stderr($lang['staffbox_err'], $lang['staffbox_no_msgs']);
+            setSessionVar('is-warning', $lang['staffbox_no_msgs']);
+            header("Location: {$_SERVER['PHP_SELF']}");
+            die();
         } else {
-            $HTMLOUT = begin_main_frame() . begin_frame($lang['staffbox_info']);
-            $HTMLOUT .= "<form method='post' name='staffbox' action='" . $_SERVER['PHP_SELF'] . "'>
-	<div class='global_icon_sb'><img src='images/global.design/helpdesk.png' alt='' title='Helpdesk' class='global_image' width='25'/></div>
-  <div class='global_head_sb'>Helpdesk</div>
-  <div class='global_text_sb'><br>";
+            $HTMLOUT .= "
+                    <div class='has-text-centered'>
+                        <h1>{$lang['staffbox_info']}</h1>
+                    </div>
+                    <form method='post' name='staffbox' action='{$_SERVER['PHP_SELF']}'>";
             $HTMLOUT .= $pager['pagertop'];
-            $HTMLOUT .= "<table class='table table-bordered table-striped'>";
-            $HTMLOUT .= "<tr>
-                 <td class='colhead'>{$lang['staffbox_subject']}</td>
-                 <td class='colhead'>{$lang['staffbox_sender']}</td>
-                 <td class='colhead'>{$lang['staffbox_added']}</td>
-                 <td class='colhead'>{$lang['staffbox_answered']}</td>
-                 <td class='colhead'><input type='checkbox' name='t' onclick=\"checkbox('staffbox')\" /></td>
-                </tr>";
+            $head = "
+                        <tr>
+                            <th>{$lang['staffbox_subject']}</th>
+                            <th>{$lang['staffbox_sender']}</th>
+                            <th>{$lang['staffbox_added']}</th>
+                            <th>{$lang['staffbox_answered']}</th>
+                            <th><input type='checkbox' id='checkThemAll' /></th>
+                        </tr>";
             $r = sql_query('SELECT s.id, s.added, s.subject, s.answered, s.answeredby, s.sender, s.answer, u.username, u2.username as username2 FROM staffmessages as s LEFT JOIN users as u ON s.sender = u.id LEFT JOIN users as u2 ON s.answeredby = u2.id ORDER BY id desc ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
+            $body = "
+                    <tbody>";
             while ($a = mysqli_fetch_assoc($r)) {
-                $HTMLOUT .= "<tr>
-                   <td><a href='" . $_SERVER['PHP_SELF'] . '?do=view&amp;id=' . (int)$a['id'] . "'>" . htmlsafechars($a['subject']) . "</a></td>
-                   <td><b>" . ($a['username'] ? "<a href='userdetails.php?id=" . (int)$a['sender'] . "'>" . htmlsafechars($a['username']) . '</a>' : 'Unknown[' . (int)$a['sender'] . ']') . "</b></td>
-                   <td nowrap='nowrap'>" . get_date($a['added'], 'DATE', 1) . "<br><span class='small'>" . get_date($a['added'], 0, 1) . "</span></td>
-				   <td><b>" . ($a['answeredby'] > 0 ? "by <a href='userdetails.php?id=" . (int)$a['answeredby'] . "'>" . htmlsafechars($a['username2']) . '</a>' : "<span>No</span>") . "</b></td>
-                   <td><input type='checkbox' name='id[]' value='" . (int)$a['id'] . "' /></td>
-                  </tr>\n";
+                $body .= "
+                        <tr>
+                            <td><a href='" . $_SERVER['PHP_SELF'] . '?do=view&amp;id=' . (int)$a['id'] . "'>" . htmlsafechars($a['subject']) . "</a></td>
+                            <td><b>" . ($a['username'] ? "<a href='userdetails.php?id=" . (int)$a['sender'] . "'>" . htmlsafechars($a['username']) . '</a>' : 'Unknown[' . (int)$a['sender'] . ']') . "</b></td>
+                            <td>" . get_date($a['added'], 'DATE', 1) . "<br><span class='small'>" . get_date($a['added'], 0, 1) . "</span></td>
+                            <td><b>" . ($a['answeredby'] > 0 ? "by <a href='userdetails.php?id=" . (int)$a['answeredby'] . "'>" . htmlsafechars($a['username2']) . '</a>' : "<span>No</span>") . "</b></td>
+                            <td><input type='checkbox' name='id[]' value='" . (int)$a['id'] . "' /></td>
+                        </tr>";
             }
-            $HTMLOUT .= "<tr><td colspan='5'>
-					<select name='do'>
-						<option value='delete'>{$lang['staffbox_do_delete']}</option>
-						<option value='setanswered'>{$lang['staffbox_do_set']}</option>
-					</select>
-					<input type='submit' value='{$lang['staffbox_confirm']}' /></td></tr>
-				</table></div></form>";
+            $body .= "
+                    </tbody>";
+            $HTMLOUT .= main_table($body, $head);
+            $HTMLOUT .= "
+                <div class='has-text-centered top20 bottom20'>
+                    <select name='do'>
+                        <option value='delete'>{$lang['staffbox_do_delete']}</option>
+                        <option value='setanswered'>{$lang['staffbox_do_set']}</option>
+                    </select>
+                    <input type='submit' class='button is-small' value='{$lang['staffbox_confirm']}' />
+                </div>
+            </form>";
             $HTMLOUT .= $pager['pagerbottom'];
-            $HTMLOUT .= end_frame() . end_main_frame();
+            $HTMLOUT = wrapper($HTMLOUT, null, null, null, null);
         }
         echo stdhead($lang['staffbox_head'], true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
 }

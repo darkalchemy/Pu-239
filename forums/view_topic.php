@@ -324,9 +324,9 @@ if ($arr['parent_forum'] > 0) {
     $parent_forum_arr = mysqli_fetch_row($parent_forum_res);
     $child = ($arr['parent_forum'] > 0 ? '
         <span> [ ' . $lang['fe_child_board'] . ' ]</span>' : '');
-    $parent_forum_name = '
-        <img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" class="tooltipper" title="&#9658;" />
-        <a class="altlink bordered" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . htmlsafechars($parent_forum_arr[0], ENT_QUOTES) . '</a>';
+    //$parent_forum_name = '
+    //    <img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" class="tooltipper" title="&#9658;" />
+    //    <a class="altlink bordered" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . htmlsafechars($parent_forum_arr[0], ENT_QUOTES) . '</a>';
 }
 
 $the_top_and_bottom = "
@@ -511,10 +511,10 @@ while ($arr = mysqli_fetch_assoc($res)) {
             ' . $lang['fe_karma'] . ': ' . number_format($arr['seedbonus']) . '' . $member_reputation . '' . ($arr['google_talk'] !== '' ? ' <a href="http://talkgadget.google.com/talkgadget/popout?member=' . htmlsafechars($arr['google_talk']) . '" class="tooltipper" title="' . $lang['fe_click_for_google_talk_gadget'] . '"  target="_blank"><img src="' . $site_config['pic_base_url'] . 'forums/google_talk.gif" alt="' . $lang['fe_google_talk'] . '" /></a> ' : '') . ($arr['icq'] !== '' ? ' <a href="http://people.icq.com/people/&amp;uin=' . htmlsafechars($arr['icq']) . '" class="tooltipper" title="' . $lang['fe_click_to_open_icq_page'] . '" target="_blank"><img src="' . $site_config['pic_base_url'] . 'forums/icq.gif" alt="icq" /></a> ' : '') . ($arr['msn'] !== '' ? ' <a href="http://members.msn.com/' . htmlsafechars($arr['msn']) . '" target="_blank" class="tooltipper" title="' . $lang['fe_click_to_see_msn_details'] . '"><img src="' . $site_config['pic_base_url'] . 'forums/msn.gif" alt="msn" /></a> ' : '') . ($arr['aim'] !== '' ? ' <a href="http://aim.search.aol.com/aol/search?s_it=searchbox.webhome&amp;q=' . htmlsafechars($arr['aim']) . '" target="_blank" class="tooltipper" title="' . $lang['fe_click_to_search_on_aim'] . '"><img src="' . $site_config['pic_base_url'] . 'forums/aim.gif" alt="AIM" /></a> ' : '') . ($arr['yahoo'] !== '' ? ' <a href="http://webmessenger.yahoo.com/?im=' . htmlsafechars($arr['yahoo']) . '" target="_blank" class="tooltipper" title="' . $lang['fe_click_to_open_yahoo'] . '"><img src="' . $site_config['pic_base_url'] . 'forums/yahoo.gif" alt="yahoo" /></a> ' : '') . '' . ($arr['website'] !== '' ? ' <a href="' . htmlsafechars($arr['website']) . '" target="_blank" class="tooltipper" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $site_config['pic_base_url'] . 'forums/website.gif" alt="website" /></a> ' : '') . ($arr['show_email'] == 'yes' ? ' <a href="mailto:' . htmlsafechars($arr['email']) . '" class="tooltipper" title="' . $lang['fe_click_to_email'] . '" target="_blank"><img src="' . $site_config['pic_base_url'] . 'email.gif" alt="email" width="25" /> </a>' : '') . '
             ' . ($CURUSER['class'] >= UC_STAFF ? '
             <ul class="makeMenu">
-                <li>' . htmlsafechars($arr['ip']) . '
+                <li>' . htmlsafechars(ipFromStorageFormat($arr['ip'])) . '
                     <ul>
-                    <li><a href="https://ws.arin.net/?queryinput=' . htmlsafechars($arr['ip']) . '" class="tooltipper" title="' . $lang['vt_whois_to_find_isp_info'] . '" target="_blank">' . $lang['vt_ip_whois'] . '</a></li>
-                    <li><a href="http://www.infosniper.net/index.php?ip_address=' . htmlsafechars($arr['ip']) . '" class="tooltipper" title="' . $lang['vt_ip_to_map_using_infosniper'] . '!" target="_blank">' . $lang['vt_ip_to_map'] . '</a></li>
+                    <li><a href="https://ws.arin.net/?queryinput=' . htmlsafechars(ipFromStorageFormat($arr['ip'])) . '" class="tooltipper" title="' . $lang['vt_whois_to_find_isp_info'] . '" target="_blank">' . $lang['vt_ip_whois'] . '</a></li>
+                    <li><a href="http://www.infosniper.net/index.php?ip_address=' . htmlsafechars(ipFromStorageFormat($arr['ip'])) . '" class="tooltipper" title="' . $lang['vt_ip_to_map_using_infosniper'] . '!" target="_blank">' . $lang['vt_ip_to_map'] . '</a></li>
                 </ul>
                 </li>
             </ul>' : '') . '

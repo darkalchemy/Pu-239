@@ -3,6 +3,9 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 
+/**
+ * @return mixed|string
+ */
 function rsstfreakinfo()
 {
     require_once INCL_DIR . 'html_functions.php';

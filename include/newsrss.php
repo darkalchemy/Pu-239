@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @param array $links
+ *
+ * @return bool
+ */
 function foxnews_shout($links = [])
 {
     global $site_config, $mc1;
@@ -50,6 +55,11 @@ function foxnews_shout($links = [])
     return true;
 }
 
+/**
+ * @param array $links
+ *
+ * @return bool
+ */
 function tfreak_shout($links = [])
 {
     global $site_config, $mc1;
@@ -100,6 +110,11 @@ function tfreak_shout($links = [])
     return true;
 }
 
+/**
+ * @param array $links
+ *
+ * @return bool
+ */
 function github_shout($links = [])
 {
     global $site_config, $mc1;

@@ -5,6 +5,15 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('tags'));
+/**
+ * @param $name
+ * @param $description
+ * @param $syntax
+ * @param $example
+ * @param $remarks
+ *
+ * @return string
+ */
 function insert_tag($name, $description, $syntax, $example, $remarks)
 {
     global $lang;

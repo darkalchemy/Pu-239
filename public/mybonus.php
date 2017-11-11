@@ -16,6 +16,9 @@ if ($site_config['seedbonus_on'] == 0) {
 
 $HTMLOUT = '';
 
+/**
+ * @param $var
+ */
 function I_smell_a_rat($var)
 {
     if (((int) $var) == 1) {

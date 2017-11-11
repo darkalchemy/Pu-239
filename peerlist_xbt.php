@@ -10,6 +10,11 @@ if (!isset($id) || !is_valid_id($id)) {
     stderr($lang['peerslist_user_error'], $lang['peerslist_invalid_id']);
 }
 $HTMLOUT = '';
+/**
+ * @param $a
+ *
+ * @return string
+ */
 function XBT_IP_CONVERT($a)
 {
     $b = [
@@ -31,6 +36,13 @@ function XBT_IP_CONVERT($a)
     return $d;
 }
 
+/**
+ * @param $name
+ * @param $arr
+ * @param $torrent
+ *
+ * @return string
+ */
 function dltable($name, $arr, $torrent)
 {
     global $CURUSER, $lang, $site_config;
@@ -93,6 +105,12 @@ while ($subrow = mysqli_fetch_assoc($subres)) {
         $downloaders[] = $subrow;
     }
 }
+/**
+ * @param $a
+ * @param $b
+ *
+ * @return int
+ */
 function leech_sort($a, $b)
 {
     if (isset($_GET['usort'])) {
@@ -110,6 +128,12 @@ function leech_sort($a, $b)
     return 1;
 }
 
+/**
+ * @param $a
+ * @param $b
+ *
+ * @return int
+ */
 function seed_sort($a, $b)
 {
     $x = $a['uploaded'];

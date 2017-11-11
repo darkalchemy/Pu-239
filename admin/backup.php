@@ -36,7 +36,7 @@ if (empty($mode)) {
     if (mysqli_num_rows($res) > 0) {
         $HTMLOUT .= "
         <div class='container is-fluid portlet has-text-centered top20 bottom20 padding20'>
-            <form method='post' action='./staffpanel.php?tool=backup&amp;mode=delete'>
+            <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=backup&amp;mode=delete'>
                 <input type='hidden' name='action' value='delete' />
                 {$lang['backup_welcome']}
                 <table id='checkbox_container' class='table table-bordered table-striped top20 bottom20'>
@@ -68,7 +68,13 @@ if (empty($mode)) {
                             </td>
                         </tr>";
         }
-        $HTMLOUT .= " />
+
+        $HTMLOUT .= "
+                    </tbody>
+                </table>
+                <div class='has-text-centered top20 bottom20 level-center flex-center'>
+                    <a class='button right20' href='./staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
+                    <input type='submit' class='button' value='{$lang['backup_delselected']}' onclick=\"return confirm(''{$lang['backup_confirm']}'');\" />
                 </div>
             </form>
             <div class='has-text-centered top20 bottom20'>

@@ -1,12 +1,15 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'torrenttable_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'searchcloud_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
+global $CURUSER, $site_config, $mc1;
+
 if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
     sql_query('UPDATE users SET last_browse=' . TIME_NOW . ' WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
@@ -28,7 +31,7 @@ $stdhead = [
 ];
 $lang = array_merge(load_language('global'), load_language('browse'), load_language('torrenttable_functions'));
 $HTMLOUT = $searchin = $select_searchin = $where = $addparam = $new_button = '';
-$cats = genrelist();
+$catids = genrelist();
 if (isset($_GET['search'])) {
     $searchstr = sqlesc($_GET['search']);
     $cleansearchstr = searchfield($searchstr);
@@ -248,7 +251,7 @@ if ($count) {
     $mc1->cache_value('torrent_browse_' . $CURUSER['class'], $torrents, $site_config['expires']['torrent_browse']);
     }
     */
-    $query = "SELECT id, search_text, category, leechers, seeders, bump, release_group, subs, name, times_completed, size, added, poster, descr, type, free, silver, comments, numfiles, filename, anonymous, sticky, nuked, vip, nukereason, newgenre, description, owner, username, youtube, checked_by, IF(nfo <> '', 1, 0) as nfoav," . "IF(num_ratings < {$site_config['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating " . "FROM torrents {$where} {$orderby} {$pager['limit']}";
+    $query = "SELECT id, search_text, category, leechers, seeders, bump, release_group, subs, name, times_completed, size, added, poster, descr, free, silver, comments, numfiles, filename, anonymous, sticky, nuked, vip, nukereason, newgenre, description, owner, youtube, checked_by, IF(nfo <> '', 1, 0) as nfoav," . "IF(num_ratings < {$site_config['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating " . "FROM torrents {$where} {$orderby} {$pager['limit']}";
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
 } else {
     unset($query);
@@ -260,58 +263,51 @@ if (isset($cleansearchstr)) {
 } else {
     $title = '';
 }
-$HTMLOUT .= "<div class='article'>";
 if ($CURUSER['opt1'] & user_options::VIEWSCLOUD) {
-    $HTMLOUT .= "<div id='wrapper' style='width:80%;border:1px solid black;background-color:pink;'>";
+    $HTMLOUT .= main_div("<div class='cloud'>" . cloud() . "</div>");
+}
 
-    //print out the tag cloud
-    $HTMLOUT .= cloud() . '
-    </div>';
-}
-$HTMLOUT .= "<br><br>
-    <form method='get' action='torrents-today.php'>
-    <table class='bottom'>
-    <tr>
-    <td class='bottom'>
-    <table class='bottom'>
-    <tr>";
-$i = 0;
-foreach ($cats as $cat) {
-    $HTMLOUT .= ($i && $i % $site_config['catsperrow'] == 0) ? '</tr><tr>' : '';
-    $HTMLOUT .= "<td class='bottom' style=\"padding-bottom: 2px;padding-left: 7px\">
-      <input name='c" . (int)$cat['id'] . "' class=\"styled\" type=\"checkbox\" " . (in_array($cat['id'], $wherecatina) ? "checked='checked' " : '') . "value='1' /><a class='catlink' href='torrents-today.php?cat=" . (int)$cat['id'] . "'> " . (($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) ? "<img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($cat['image']) . "' alt='" . htmlsafechars($cat['name']) . "' title='" . htmlsafechars($cat['name']) . "' />" : '' . htmlsafechars($cat['name']) . '') . "</a></td>\n";
-    ++$i;
-}
-$alllink = "<div>&#160;</div>";
-$ncats = count($cats);
-$nrows = ceil($ncats / $site_config['catsperrow']);
-$lastrowcols = $ncats % $site_config['catsperrow'];
-if ($lastrowcols != 0) {
-    if ($site_config['catsperrow'] - $lastrowcols != 1) {
-        $HTMLOUT .= "<td class='bottom' rowspan='" . ($site_config['catsperrow'] - $lastrowcols - 1) . "'>&#160;</td>";
+$HTMLOUT .= "
+                                    <form id='catsids' method='get' action='{$site_config['baseurl']}/torrents-today.php'>";
+$main_div = "
+                                        <div id='checkbox_container' class='level-center'>";
+if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
+    foreach ($catids as $cat) {
+        $main_div .= "
+                                            <span class='margin10 mw-50 is-flex tooltipper' title='" . htmlsafechars($cat['name']) . "'>
+                                                <span class='bordered level-center bg-02'>
+                                                    <input name='c" . (int)$cat['id'] . "' class='styled' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? " checked" : '') . " value='1' />
+                                                    <span class='cat-image left10'>
+                                                        <a href='{$site_config['baseurl']}/torrents-today.php?c" . (int)$cat['id'] . "'>
+                                                            <img class='radius-sm' src='{$site_config['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' />
+                                                        </a>
+                                                    </span>
+                                                </span>
+                                            </span>";
     }
-    $HTMLOUT .= "<td class='bottom' style=\"padding-left: 5px\">$alllink</td>\n";
+} else {
+    foreach ($catids as $cat) {
+        $main_div .= "
+                                            <span class='margin10 bordered tooltipper' title='" . htmlsafechars($cat['name']) . "'>
+                                                <label for='c" . (int)$cat['id'] . "'>
+                                                    <input name='c" . (int)$cat['id'] . "' class='styled1' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? " checked" : '') . "value='1' />
+                                                    <a class='catlink' href='{$site_config['baseurl']}/torrents-today.php?cat=" . (int)$cat['id'] . "'>" . htmlsafechars($cat['name']) . "</a>
+                                                </label>
+                                            </span>";
+    }
 }
-$HTMLOUT .= "</tr>
-    </table>
-    </td>
-    <td class='bottom'>
-    <table class='main'>
-    <tr><td>&#160;</td>";
-if ($ncats % $site_config['catsperrow'] == 0) {
-    $HTMLOUT .= "<td class='bottom' style='padding-left: 15px' rowspan='$nrows'>$alllink</td>\n";
-}
-$HTMLOUT .= '</tr>
-    </table>
-    </td>
-    </tr>
-    </table><br>';
+$main_div .= "
+                                        </div>
+                                        <div class='has-text-centered'>
+                                            <label for='checkAll'>
+                                                <input type='checkbox' id='checkAll' /><span> Select All Categories</span>
+                                            </label>
+                                        </div>";
+$HTMLOUT .= main_div($main_div);
 
-//== clear new tag manually
 if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     $HTMLOUT .= "<a href='?clear_new=1'><input type='submit' value='clear new tag' class='button' /></a><br>";
 } else {
-    //== clear new tag automatically
     sql_query('UPDATE users SET last_browse=' . TIME_NOW . ' where id=' . $CURUSER['id']);
     $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
     $mc1->update_row(false, ['last_browse' => TIME_NOW]);
@@ -320,30 +316,65 @@ if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     $mc1->update_row(false, ['last_browse' => TIME_NOW]);
     $mc1->commit_transaction($site_config['expires']['user_cache']);
 }
-$HTMLOUT .= "<br>
-    <table width='1000' class='main' border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>
-    <input type='text' name='search' size='40' value='' />";
+$vip = ((isset($_GET['vip'])) ? intval($_GET['vip']) : '');
+$vip_box = "
+                    <select name='vip' class='w-100'>
+                        <option value='0'>VIP Torrents Included</option>
+                        <option value='1'" . ($vip == 1 ? " selected" : '') . ">VIP Torrents Not Included</option>
+                        <option value='2'" . ($vip == 2 ? " selected" : '') . ">VIP Torrents Only</option>
+                    </select>";
 
-//=== only free option :o)
-$only_free = ((isset($_GET['only_free'])) ? intval($_GET['only_free']) : '');
-
-//=== checkbox for only free torrents
-$only_free_box = '<input type="checkbox" name="only_free" value="1"' . (isset($_GET['only_free']) ? ' checked="checked"' : '') . ' /> Only Free Torrents ';
 $selected = (isset($_GET['incldead'])) ? (int)$_GET['incldead'] : '';
-$deadcheck = '';
-$deadcheck .= " in: <select name='incldead'>
-    <option value='0'>{$lang['browse_active']}</option>
-    <option value='1'" . ($selected == 1 ? " selected='selected'" : '') . ">{$lang['browse_inc_dead']}</option>
-    <option value='2'" . ($selected == 2 ? " selected='selected'" : '') . ">{$lang['browse_dead']}</option>
-    </select>";
-$searchin = ' by: <select name="searchin">';
-foreach (['title' => 'Name', 'descr' => 'Description', 'genre' => 'Genre', 'all' => 'All'] as $k => $v) {
-    $searchin .= '<option value="' . $k . '" ' . ($select_searchin == $k ? 'selected=\'selected\'' : '') . '>' . $v . '</option>';
+$deadcheck = "
+                    <select name='incldead' class='w-100'>
+                        <option value='0'>{$lang['browse_active']}</option>
+                        <option value='1'" . ($selected == 1 ? " selected" : '') . ">{$lang['browse_inc_dead']}</option>
+                        <option value='2'" . ($selected == 2 ? " selected" : '') . ">{$lang['browse_dead']}</option>
+                    </select>";
+
+$only_free = ((isset($_GET['only_free'])) ? intval($_GET['only_free']) : '');
+$only_free_box = "
+                    <select name='only_free' class='w-100'>
+                        <option value='0'>Include Non Free Torrents</option>
+                        <option value='1'" . ($only_free == 1 ? " selected" : '') . ">Include Only Free Torrents</option>
+                    </select>";
+
+$searchin = '
+                    <select name="searchin" class="w-100">';
+foreach ([
+             'title' => 'Name',
+             'descr' => 'Description',
+             'genre' => 'Genre',
+             'all' => 'All',
+         ] as $k => $v) {
+    $searchin .= '
+                        <option value="' . $k . '"' . ($select_searchin == $k ? ' selected' : '') . '>' . $v . '</option>';
 }
-$searchin .= '</select>';
-$HTMLOUT .= $searchin . '&#160;' . $deadcheck . '&#160;' . $only_free_box;
-$HTMLOUT .= "<input type='submit' value='{$lang['search_search_btn']}' class='button' />
-            </td></tr></table></form><br>";
+$searchin .= '
+                    </select>';
+$HTMLOUT .= main_div("
+                    <div class='padding10' class='w-100'>
+                        <input type='text' name='search' placeholder='{$lang['search_search']}' class='search w-100' value='" . (!empty($_GET['search']) ? $_GET['search'] : '') . "' />
+                    </div>
+                    <div class='level-center'>
+                        <div class='padding10 w-25 mw-50'>
+                            $searchin
+                        </div>
+                        <div class='padding10 w-25 mw-50'>
+                            $deadcheck
+                        </div>
+                        <div class='padding10 w-25 mw-50'>
+                            $vip_box
+                        </div>
+                        <div class='padding10 w-25 mw-50'>
+                            $only_free_box
+                        </div>
+                    </div>
+                    <div class='top10'>
+                        <input type='submit' value='{$lang['search_search_btn']}' class='button' />
+                    </div>");
+$HTMLOUT .= "
+            </form>";
 $HTMLOUT .= "{$new_button}";
 if (isset($cleansearchstr)) {
     $HTMLOUT .= "<h2>{$lang['browse_search']} " . htmlsafechars($searchstr, ENT_QUOTES) . "</h2>\n";
@@ -362,10 +393,7 @@ if ($count) {
         $HTMLOUT .= "<p>{$lang['browse_sorry']}(</p>\n";
     }
 }
-$HTMLOUT .= '</div>';
 $ip = getip();
-
-//== Start ip logger - Melvinmeow, Mindless, pdq
 $no_log_ip = ($CURUSER['perms'] & bt_options::PERMS_NO_IP);
 if ($no_log_ip) {
     $ip = '127.0.0.1';
@@ -373,15 +401,15 @@ if ($no_log_ip) {
 if (!$no_log_ip) {
     $userid = (int)$CURUSER['id'];
     $added = TIME_NOW;
-    $res = sql_query('SELECT * FROM ips WHERE ip = ' . sqlesc($ip) . ' AND userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT * FROM ips WHERE ip = ' . ipToStorageFormat($ip) . ' AND userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 0) {
-        sql_query('INSERT INTO ips (userid, ip, lastbrowse, type) VALUES (' . sqlesc($userid) . ', ' . sqlesc($ip) . ", $added, 'Browse')") or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO ips (userid, ip, lastbrowse, type) VALUES (' . sqlesc($userid) . ', ' . ipToStorageFormat($ip) . ", $added, 'Browse')") or sqlerr(__FILE__, __LINE__);
         $mc1->delete_value('ip_history_' . $userid);
     } else {
-        sql_query("UPDATE ips SET lastbrowse = $added WHERE ip=" . sqlesc($ip) . ' AND userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE ips SET lastbrowse = $added WHERE ip = " . ipToStorageFormat($ip) . ' AND userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
         $mc1->delete_value('ip_history_' . $userid);
     }
 }
 
-//== End Ip logger
-echo stdhead($title, true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+
+echo stdhead($title, true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

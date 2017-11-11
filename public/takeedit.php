@@ -2,7 +2,13 @@
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_memcache.php';
+/**
+ *
+ */
 define('MIN_CLASS', UC_STAFF);
+/**
+ *
+ */
 define('NFO_SIZE', 65535);
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('takeedit'), load_language('details'));
@@ -24,8 +30,12 @@ if (!is_valid_id($id)) {
 }
 /**
  * @Function valid_torrent_name
- * @Notes only safe characters are allowed..
+ * @Notes    only safe characters are allowed..
  * @Begin
+ *
+ * @param $torrent_name
+ *
+ * @return bool
  */
 function valid_torrent_name($torrent_name)
 {
@@ -45,6 +55,11 @@ function valid_torrent_name($torrent_name)
  * @Begin
  */
 if (!function_exists('is_valid_url')) {
+    /**
+     * @param $link
+     *
+     * @return int
+     */
     function is_valid_url($link)
     {
         return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $link);

@@ -1,6 +1,7 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'torrenttable_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'searchcloud_functions.php';
@@ -217,7 +218,7 @@ if ($count) {
     } else {
         $addparam = $pagerlink;
     }
-    $pager = pager($torrentsperpage, $count, './browse.php?' . $addparam);
+    $pager = pager($torrentsperpage, $count, "{$site_config['baseurl']}/browse.php?" . $addparam);
     $query = "SELECT t.id, t.search_text, t.category, t.leechers, t.seeders, t.bump, t.release_group, t.subs, t.name, t.times_completed, t.size, t.added, t.poster, t.descr, t.free, t.freetorrent, t.silver, t.comments, t.numfiles, t.filename, t.anonymous, t.sticky, t.nuked, t.vip, t.nukereason, t.newgenre, t.description, t.owner, t.youtube, t.checked_by, IF(t.nfo <> '', 1, 0) as nfoav," . "IF(t.num_ratings < {$site_config['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS rating, t.checked_when, c.username AS checked_by_username
                 FROM torrents AS t
                 LEFT JOIN users AS c ON t.checked_by = c.id
@@ -235,29 +236,22 @@ if (isset($cleansearchstr)) {
     $title = '';
 }
 
-$HTMLOUT .= "
-            <div class='container is-fluid portlet'>
-                <div class='top20 bottom20'>";
 if ($CURUSER['opt1'] & user_options::VIEWSCLOUD) {
-    $HTMLOUT .= "
-                            <div id='wrapper' class='cloud has-text-centered bottom10'>" . cloud() . "
-                            </div>";
+    $HTMLOUT .= main_div("<div class='cloud'>" . cloud() . "</div>");
 }
 
-// create the category table
 $HTMLOUT .= "
-                            <div class='table-responsive has-text-centered'>
-                                <form id='catsids' method='get' action='./browse.php'>
-                                    <div class='bg-02 padding20 round5 top20 bottom20'>
+                                <form id='catsids' method='get' action='{$site_config['baseurl']}/browse.php'>";
+$main_div = "
                                         <div id='checkbox_container' class='level-center'>";
 if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
     foreach ($catids as $cat) {
-        $HTMLOUT .= "
+        $main_div .= "
                                             <span class='margin10 mw-50 is-flex tooltipper' title='" . htmlsafechars($cat['name']) . "'>
                                                 <span class='bordered level-center bg-02'>
                                                     <input name='c" . (int)$cat['id'] . "' class='styled' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? " checked" : '') . " value='1' />
                                                     <span class='cat-image left10'>
-                                                        <a href='./browse.php?c" . (int)$cat['id'] . "'>
+                                                        <a href='{$site_config['baseurl']}/browse.php?c" . (int)$cat['id'] . "'>
                                                             <img class='radius-sm' src='{$site_config['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' />
                                                         </a>
                                                     </span>
@@ -266,27 +260,27 @@ if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
     }
 } else {
     foreach ($catids as $cat) {
-        $HTMLOUT .= "
+        $main_div .= "
                                             <span class='margin10 bordered tooltipper' title='" . htmlsafechars($cat['name']) . "'>
                                                 <label for='c" . (int)$cat['id'] . "'>
                                                     <input name='c" . (int)$cat['id'] . "' class='styled1' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? " checked" : '') . "value='1' />
-                                                    <a class='catlink' href='./browse.php?cat=" . (int)$cat['id'] . "'>" . htmlsafechars($cat['name']) . "</a>
+                                                    <a class='catlink' href='{$site_config['baseurl']}/browse.php?cat=" . (int)$cat['id'] . "'>" . htmlsafechars($cat['name']) . "</a>
                                                 </label>
                                             </span>";
     }
 }
-$HTMLOUT .= "
+$main_div .= "
                                         </div>
                                         <div class='has-text-centered'>
                                             <label for='checkAll'>
                                                 <input type='checkbox' id='checkAll' /><span> Select All Categories</span>
                                             </label>
-                                        </div>
-                                    </div>";
+                                        </div>";
+$HTMLOUT .= main_div($main_div);
 
 if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     $new_button = "
-        <a href='?clear_new=1'><input type='submit' value='clear new tag' class='button' /></a>
+        <a href='{$site_config['baseurl']}/browse.php?clear_new=1'><input type='submit' value='clear new tag' class='button' /></a>
         <br>";
 } else {
     //== clear new tag automatically
@@ -339,8 +333,7 @@ foreach ([
 }
 $searchin .= '
                     </select>';
-$HTMLOUT .= "
-                <div class='bg-02 padding20 round5'>
+$HTMLOUT .= main_div("
                     <div class='padding10' class='w-100'>
                         <input type='text' name='search' placeholder='{$lang['search_search']}' class='search w-100' value='" . (!empty($_GET['search']) ? $_GET['search'] : '') . "' />
                     </div>
@@ -360,8 +353,8 @@ $HTMLOUT .= "
                     </div>
                     <div class='top10'>
                         <input type='submit' value='{$lang['search_search_btn']}' class='button' />
-                    </div>
-                </div>
+                    </div>");
+$HTMLOUT .= "
             </form>";
 $HTMLOUT .= "{$new_button}";
 if (isset($cleansearchstr)) {
@@ -385,7 +378,6 @@ if ($count) {
         $HTMLOUT .= "<p>{$lang['browse_sorry']}(</p>";
     }
 }
-$HTMLOUT .= '</div>';
 $ip = getip();
 $no_log_ip = ($CURUSER['perms'] & bt_options::PERMS_NO_IP);
 if ($no_log_ip) {
@@ -394,16 +386,13 @@ if ($no_log_ip) {
 if (!$no_log_ip) {
     $userid = (int)$CURUSER['id'];
     $added = TIME_NOW;
-    $res = sql_query('SELECT * FROM ips WHERE ip = ' . sqlesc($ip) . ' AND userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT * FROM ips WHERE ip = ' . ipToStorageFormat($ip) . ' AND userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 0) {
-        sql_query('INSERT INTO ips (userid, ip, lastbrowse, type) VALUES (' . sqlesc($userid) . ', ' . sqlesc($ip) . ", $added, 'Browse')") or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO ips (userid, ip, lastbrowse, type) VALUES (' . sqlesc($userid) . ', ' . ipToStorageFormat($ip) . ", $added, 'Browse')") or sqlerr(__FILE__, __LINE__);
         $mc1->delete_value('ip_history_' . $userid);
     } else {
-        sql_query("UPDATE ips SET lastbrowse = $added WHERE ip = " . sqlesc($ip) . ' AND userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE ips SET lastbrowse = $added WHERE ip = " . ipToStorageFormat($ip) . ' AND userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
         $mc1->delete_value('ip_history_' . $userid);
     }
 }
-$HTMLOUT .= "
-                    </div>
-                </div>";
-echo stdhead($title, true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead($title, true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

@@ -8,6 +8,10 @@
  */
 
 // Class to initialize the MySQL DataBase connection:
+
+/**
+ * Class AJAXChatDataBaseMySQL
+ */
 class AJAXChatDataBaseMySQL
 {
     protected $_connectionID;
@@ -15,6 +19,11 @@ class AJAXChatDataBaseMySQL
     protected $_error = '';
     protected $_dbName;
 
+    /**
+     * AJAXChatDataBaseMySQL constructor.
+     *
+     * @param $dbConnectionConfig
+     */
     public function __construct(&$dbConnectionConfig)
     {
         $this->_connectionID = $dbConnectionConfig['link'];
@@ -22,6 +31,12 @@ class AJAXChatDataBaseMySQL
     }
 
     // Method to connect to the DataBase server:
+
+    /**
+     * @param $dbConnectionConfig
+     *
+     * @return bool
+     */
     public function connect(&$dbConnectionConfig)
     {
         $this->_connectionID = @mysql_connect(
@@ -41,6 +56,12 @@ class AJAXChatDataBaseMySQL
     }
 
     // Method to select the DataBase:
+
+    /**
+     * @param $dbName
+     *
+     * @return bool
+     */
     public function select($dbName)
     {
         if (!@mysql_select_db($dbName, $this->_connectionID)) {
@@ -56,6 +77,9 @@ class AJAXChatDataBaseMySQL
 
     // Method to determine if an error has occured:
 
+    /**
+     * @return string
+     */
     public function getError()
     {
         if ($this->error()) {
@@ -70,6 +94,9 @@ class AJAXChatDataBaseMySQL
 
     // Method to return the error report:
 
+    /**
+     * @return bool
+     */
     public function error()
     {
         return (bool)$this->_error;
@@ -83,12 +110,24 @@ class AJAXChatDataBaseMySQL
     }
 
     // Method to prevent SQL injections:
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
     public function makeSafe($value)
     {
         return "'" . mysql_real_escape_string($value, $this->_connectionID) . "'";
     }
 
     // Method to perform SQL queries:
+
+    /**
+     * @param $sql
+     *
+     * @return AJAXChatMySQLQuery
+     */
     public function sqlQuery($sql)
     {
         return new AJAXChatMySQLQuery($sql, $this->_connectionID);
@@ -101,6 +140,10 @@ class AJAXChatDataBaseMySQL
     }
 
     // Method to retrieve the last inserted ID:
+
+    /**
+     * @return int
+     */
     public function getLastInsertedID()
     {
         return mysql_insert_id($this->_connectionID);

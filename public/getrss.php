@@ -5,6 +5,11 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('getrss'));
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    /**
+     * @param $x
+     *
+     * @return int
+     */
     function mkint($x)
     {
         return (int)$x;
@@ -43,7 +48,7 @@ if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
                         <span class='bordered level-center'>
                             <input type='checkbox' name='cats[]' id='cat_" . (int)$cat['id'] . "' value='" . (int)$cat['id'] . "' />
                             <span class='cat-image left10'>
-                                <img class='radius-sm' src='{$site_config['pic_base_url']}images/caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' />
+                                <img class='radius-sm' src='{$site_config['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' />
                             </span>
                         </span>
                     </span>";

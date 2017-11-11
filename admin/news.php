@@ -43,6 +43,9 @@ if ($mode == 'delete') {
     if ($_GET['h'] != $hash) {
         stderr($lang['news_error'], $lang['news_del_what']);
     }
+    /**
+     * @param $newsid
+     */
     function deletenewsid($newsid)
     {
         global $CURUSER, $mc1;

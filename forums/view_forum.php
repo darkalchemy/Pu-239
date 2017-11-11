@@ -114,8 +114,8 @@ if ($res_sub_forums) {
     $parent_forum_arr = mysqli_fetch_assoc($parent_forum_res);
     if ($arr['parent_forum'] > 0) {
         $child = '<span> [ ' . $lang['fe_child_board'] . ' ]</span>';
-        $parent_forum_name = '<img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
-			<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $parent_forum_id . '">' . htmlsafechars($parent_forum_arr['parent_forum_name'], ENT_QUOTES) . '</a>';
+        //$parent_forum_name = '<img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
+		//	<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $parent_forum_id . '">' . htmlsafechars($parent_forum_arr['parent_forum_name'], ENT_QUOTES) . '</a>';
     }
 }
 //=== Get topic count
@@ -218,7 +218,7 @@ if ($count > 0) {
         }
         //==
         $icon = ($first_post_arr['icon'] == '' ? '<img src="' . $site_config['pic_base_url'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="' . $site_config['pic_base_url'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '" />');
-        $first_post_text = tool_tip('<img src="' . $site_config['pic_base_url'] . 'forums/mg.gif" height="14" alt="' . $lang['fe_preview'] . '" title="' . $lang['fe_preview'] . '" />', format_comment($first_post_arr['body'], true, false, false), '' . $lang['fe_first_post'] . ' ' . $lang['fe_preview'] . '');
+        $first_post_text = tool_tip('<img src="' . $site_config['pic_base_url'] . 'forums/mg.gif" class="icon" alt="' . $lang['fe_preview'] . '" title="' . $lang['fe_preview'] . '" />', format_comment($first_post_arr['body'], true, false, false), '' . $lang['fe_first_post'] . ' ' . $lang['fe_preview'] . '');
         //=== last post read in topic
         $last_unread_post_res = sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($topic_id));
         $last_unread_post_arr = mysqli_fetch_row($last_unread_post_res);

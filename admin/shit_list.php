@@ -42,13 +42,13 @@ switch ($action2) {
             ++$i;
         }
         $level_of_shittyness .= '</select>';
-        $HTMLOUT .= '<h1><img src="./images/smilies/shit.gif" alt="*" />' . $lang['shitlist_add1'] . '' . htmlsafechars($arr_name['username']) . '' . $lang['shitlist_add2'] . '<img src="./images/smilies/shit.gif" alt="*" /></h1>
+        $HTMLOUT .= '<h1><img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" />' . $lang['shitlist_add1'] . '' . htmlsafechars($arr_name['username']) . '' . $lang['shitlist_add2'] . '<img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /></h1>
       <form method="post" action="staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=add">
    <table border="0" cellspacing="0" cellpadding="5">
    <tr>
-      <td class="colhead" colspan="2">new <img src="./images/smilies/shit.gif" alt="*" /><img src="./images/smilies/shit.gif" alt="*" /><img src="./images/smilies/shit.gif" alt="*" />
-      <img src="./images/smilies/shit.gif" alt="*" /><img src="./images/smilies/shit.gif" alt="*" /><img src="./images/smilies/shit.gif" alt="*" />
-      <img src="./images/smilies/shit.gif" alt="*" /><img src="./images/smilies/shit.gif" alt="*" /><img src="./images/smilies/shit.gif" alt="*" /><img src="./images/smilies/shit.gif" alt="*" />' . $lang['shitlist_outof2'] . '</td>
+      <td class="colhead" colspan="2">new <img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" />
+      <img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" />
+      <img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" />' . $lang['shitlist_outof2'] . '</td>
    </tr>
    <tr>
       <td><b>' . $lang['shitlist_shittyness'] . '</b></td>
@@ -119,20 +119,20 @@ $HTMLOUT .= $message . '
    <table width="950" class="table table-bordered" cellpadding="5">
    <tr>
      <td class="colhead" colspan="4">
-     <img src="./images/smilies/shit.gif" alt="*" />' . $lang['shitlist_message2'] . '<img src="./images/smilies/shit.gif" alt="*" /></td>
+     <img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" />' . $lang['shitlist_message2'] . '<img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /></td>
    </tr>';
 $i = 1;
 if (mysqli_num_rows($res) == 0) {
     $HTMLOUT .= '
    <tr>
       <td class="one" colspan="4">
-      <img src="./images/smilies/shit.gif" alt="*" />' . $lang['shitlist_empty'] . '<img src="./images/smilies/shit.gif" alt="*" /></td>
+      <img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" />' . $lang['shitlist_empty'] . '<img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /></td>
    </tr>';
 } else {
     while ($shit_list = mysqli_fetch_array($res)) {
         $shit = '';
         for ($poop = 1; $poop <= $shit_list['shittyness']; ++$poop) {
-            $shit .= ' <img src="./images/smilies/shit.gif" title="' . (int)$shit_list['shittyness'] . '' . $lang['shitlist_scale'] . '" alt="*" />';
+            $shit .= ' <img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" title="' . (int)$shit_list['shittyness'] . '' . $lang['shitlist_scale'] . '" alt="*" />';
         }
         $HTMLOUT .= (($i % 2 == 1) ? '<tr>' : '') . '
       <td class="' . (($i % 2 == 0) ? 'one' : 'two') . '" width="80">' . avatar_stuff($shit_list) . '<br>

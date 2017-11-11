@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * Class bt_options
+ */
 class bt_options
 {
     const PERMS_NO_IP = 0x1; // 1

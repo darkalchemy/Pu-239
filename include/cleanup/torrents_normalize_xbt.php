@@ -1,4 +1,7 @@
 <?php
+/**
+ * @param $data
+ */
 function torrents_normalize_xbt($data)
 {
     global $site_config, $queries, $mc1;

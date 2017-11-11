@@ -1,5 +1,8 @@
 <?php
 //=== Anonymous function
+/**
+ * @return mixed
+ */
 function get_anonymous()
 {
     global $CURUSER;
@@ -8,6 +11,9 @@ function get_anonymous()
 }
 
 //== + Parked function
+/**
+ * @return mixed
+ */
 function get_parked()
 {
     global $CURUSER;
@@ -15,6 +21,11 @@ function get_parked()
     return $CURUSER['parked_until'];
 }
 
+/**
+ * @param     $msg
+ * @param int $channel
+ * @param int $ttl
+ */
 function autoshout($msg, $channel = 0, $ttl = 7200)
 {
     global $site_config;
@@ -25,6 +36,14 @@ function autoshout($msg, $channel = 0, $ttl = 7200)
 }
 
 //== Get rep by CF
+/**
+ * @param        $user
+ * @param string $mode
+ * @param bool   $rep_is_on
+ * @param int    $post_id
+ *
+ * @return string
+ */
 function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
 {
     global $site_config, $CURUSER;
@@ -121,6 +140,11 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
     return '<span title="Set offline by admin setting">Rep System Offline</span>';
 }
 
+/**
+ * @param $ratio
+ *
+ * @return string
+ */
 function get_ratio_color($ratio)
 {
     if ($ratio < 0.1) {
@@ -187,6 +211,11 @@ function get_ratio_color($ratio)
     return '#777777';
 }
 
+/**
+ * @param $ratio
+ *
+ * @return string
+ */
 function get_slr_color($ratio)
 {
     if ($ratio < 0.025) {
@@ -268,6 +297,11 @@ function get_slr_color($ratio)
     return '#777777';
 }
 
+/**
+ * @param $ratio_to_check
+ *
+ * @return string
+ */
 function ratio_image_machine($ratio_to_check)
 {
     global $site_config;
@@ -310,6 +344,12 @@ function ratio_image_machine($ratio_to_check)
     }
 }
 
+/**
+ * @param      $class
+ * @param bool $to_lower
+ *
+ * @return string
+ */
 function get_user_class_name($class, $to_lower = false)
 {
     global $class_names;
@@ -326,6 +366,11 @@ function get_user_class_name($class, $to_lower = false)
     }
 }
 
+/**
+ * @param $class
+ *
+ * @return string
+ */
 function get_user_class_color($class)
 {
     global $class_colors;
@@ -340,6 +385,11 @@ function get_user_class_color($class)
     }
 }
 
+/**
+ * @param $class
+ *
+ * @return string
+ */
 function get_user_class_image($class)
 {
     global $class_images;
@@ -354,6 +404,11 @@ function get_user_class_image($class)
     }
 }
 
+/**
+ * @param $class
+ *
+ * @return bool
+ */
 function valid_class($class)
 {
     $class = (int)$class;
@@ -361,6 +416,12 @@ function valid_class($class)
     return (bool)($class >= UC_MIN && $class <= UC_MAX);
 }
 
+/**
+ * @param int $min
+ * @param int $max
+ *
+ * @return bool
+ */
 function min_class($min = UC_MIN, $max = UC_MAX)
 {
     global $CURUSER;
@@ -379,6 +440,13 @@ function min_class($min = UC_MIN, $max = UC_MAX)
     return (bool)($CURUSER['class'] >= $minclass && $CURUSER['class'] <= $maxclass);
 }
 
+/**
+ * @param      $user_id
+ * @param bool $icons
+ * @param bool $tooltipper
+ *
+ * @return string|void
+ */
 function format_username($user_id, $icons = true, $tooltipper = true)
 {
     global $site_config, $mc1;
@@ -446,11 +514,22 @@ function format_username($user_id, $icons = true, $tooltipper = true)
     return trim($str);
 }
 
+/**
+ * @param $id
+ *
+ * @return bool
+ */
 function is_valid_id($id)
 {
     return is_numeric($id) && ($id > 0) && (floor($id) == $id);
 }
 
+/**
+ * @param $up
+ * @param $down
+ *
+ * @return string
+ */
 function member_ratio($up, $down)
 {
     switch (true) {
@@ -473,6 +552,11 @@ function member_ratio($up, $down)
     return $ratio;
 }
 
+/**
+ * @param $ratio
+ *
+ * @return string|void
+ */
 function get_user_ratio_image($ratio)
 {
     global $site_config;
@@ -517,6 +601,12 @@ function get_user_ratio_image($ratio)
     return '';
 }
 
+/**
+ * @param     $avatar
+ * @param int $width
+ *
+ * @return string
+ */
 function avatar_stuff($avatar, $width = 80)
 {
     global $CURUSER, $site_config;
@@ -525,6 +615,11 @@ function avatar_stuff($avatar, $width = 80)
     return $avatar_show;
 }
 
+/**
+ * @param $fo
+ *
+ * @return bool
+ */
 function blacklist($fo)
 {
     global $site_config;
@@ -536,6 +631,11 @@ function blacklist($fo)
     return true;
 }
 
+/**
+ * @param int $windows
+ *
+ * @return float
+ */
 function get_server_load($windows = 0)
 {
     if (class_exists('COM')) {
@@ -554,6 +654,13 @@ function get_server_load($windows = 0)
     }
 }
 
+/**
+ * @param $the_names
+ * @param $the_colors
+ * @param $the_images
+ *
+ * @return string
+ */
 function get_cache_config_data($the_names, $the_colors, $the_images)
 {
     $configfile = '';
@@ -575,6 +682,9 @@ function get_cache_config_data($the_names, $the_colors, $the_images)
     return $configfile;
 }
 
+/**
+ * @param $post_id
+ */
 function clr_forums_cache($post_id)
 {
     global $mc1, $site_config;

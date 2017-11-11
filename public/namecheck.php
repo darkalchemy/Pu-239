@@ -7,6 +7,11 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 dbconn();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('takesignup'));
+/**
+ * @param $username
+ *
+ * @return bool
+ */
 function validusername($username)
 {
     global $lang;

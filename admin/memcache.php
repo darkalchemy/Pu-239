@@ -23,8 +23,17 @@ class_check($class);
 $VERSION = '$Id: memcache.php,v 1.1.2.3 2008/08/28 18:07:54 mikl Exp $';
 //define('ADMIN_USERNAME','memcache_stats'); 	// Admin Username
 //define('ADMIN_PASSWORD','richmond1');  	// Admin Password
+/**
+ *
+ */
 define('DATE_FORMAT', 'Y/m/d H:i:s');
+/**
+ *
+ */
 define('GRAPH_SIZE', 200);
+/**
+ *
+ */
 define('MAX_ITEM_DUMP', 50);
 $MEMCACHE_SERVERS[] = '127.0.0.1:11211'; // add more as an array
 //$MEMCACHE_SERVERS[] = 'mymemcache-server2:11211'; // add more as an array
@@ -46,6 +55,11 @@ EOB;
 }
 */
 ///////////MEMCACHE FUNCTIONS /////////////////////////////////////////////////////////////////////
+/**
+ * @param $command
+ *
+ * @return array
+ */
 function sendMemcacheCommands($command)
 {
     global $MEMCACHE_SERVERS;
@@ -60,6 +74,13 @@ function sendMemcacheCommands($command)
     return $result;
 }
 
+/**
+ * @param $server
+ * @param $port
+ * @param $command
+ *
+ * @return array
+ */
 function sendMemcacheCommand($server, $port, $command)
 {
     $s = @fsockopen($server, $port);
@@ -85,6 +106,11 @@ function sendMemcacheCommand($server, $port, $command)
     return parseMemcacheResults($buf);
 }
 
+/**
+ * @param $str
+ *
+ * @return array
+ */
 function parseMemcacheResults($str)
 {
     $res = [];
@@ -112,6 +138,13 @@ function parseMemcacheResults($str)
     return $res;
 }
 
+/**
+ * @param $server
+ * @param $slabId
+ * @param $limit
+ *
+ * @return array
+ */
 function dumpCacheSlab($server, $slabId, $limit)
 {
     list($host, $port) = explode(':', $server);
@@ -120,6 +153,11 @@ function dumpCacheSlab($server, $slabId, $limit)
     return $resp;
 }
 
+/**
+ * @param $server
+ *
+ * @return array
+ */
 function flushServer($server)
 {
     list($host, $port) = explode(':', $server);
@@ -128,6 +166,9 @@ function flushServer($server)
     return $resp;
 }
 
+/**
+ * @return array
+ */
 function getCacheItems()
 {
     $items = sendMemcacheCommands('stats items');
@@ -156,6 +197,11 @@ function getCacheItems()
     ];
 }
 
+/**
+ * @param bool $total
+ *
+ * @return array
+ */
 function getMemcacheStats($total = true)
 {
     $resp = sendMemcacheCommands('stats');
@@ -271,6 +317,11 @@ function getMemcacheStats($total = true)
 header('Cache-Control: no-store, no-cache, must-revalidate'); // HTTP/1.1
 header('Cache-Control: post-check=0, pre-check=0', false);
 header('Pragma: no-cache'); // HTTP/1.0
+/**
+ * @param $ts
+ *
+ * @return string
+ */
 function duration($ts)
 {
     global $time;
@@ -316,11 +367,19 @@ function duration($ts)
 
 // create graphics
 //
+/**
+ * @return bool
+ */
 function graphics_avail()
 {
     return extension_loaded('gd');
 }
 
+/**
+ * @param $s
+ *
+ * @return string
+ */
 function bsize($s)
 {
     foreach ([
@@ -340,6 +399,12 @@ function bsize($s)
 }
 
 // create menu entry
+/**
+ * @param $ob
+ * @param $title
+ *
+ * @return string
+ */
 function menu_entry($ob, $title)
 {
     global $PHP_SELF, $site_config;
@@ -350,6 +415,9 @@ function menu_entry($ob, $title)
     return "<li><a class=\"active\" href=\"{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op=$ob\">$title</a></li>";
 }
 
+/**
+ * @return string
+ */
 function getHeader()
 {
     global $site_config;
@@ -554,6 +622,9 @@ EOB;
     return $header;
 }
 
+/**
+ * @return string
+ */
 function getFooter()
 {
     global $VERSION;
@@ -607,6 +678,17 @@ if (isset($_GET['IMG'])) {
     if (!graphics_avail()) {
         exit(0);
     }
+    /**
+     * @param        $im
+     * @param        $x
+     * @param        $y
+     * @param        $w
+     * @param        $h
+     * @param        $color1
+     * @param        $color2
+     * @param string $text
+     * @param string $placeindex
+     */
     function fill_box($im, $x, $y, $w, $h, $color1, $color2, $text = '', $placeindex = '')
     {
         global $col_black;
@@ -645,6 +727,18 @@ if (isset($_GET['IMG'])) {
         }
     }
 
+    /**
+     * @param        $im
+     * @param        $centerX
+     * @param        $centerY
+     * @param        $diameter
+     * @param        $start
+     * @param        $end
+     * @param        $color1
+     * @param        $color2
+     * @param string $text
+     * @param int    $placeindex
+     */
     function fill_arc($im, $centerX, $centerY, $diameter, $start, $end, $color1, $color2, $text = '', $placeindex = 0)
     {
         $r = $diameter / 2;

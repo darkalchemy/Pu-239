@@ -139,6 +139,9 @@ $HTMLOUT .= "
             <div class='top10 has-text-centered'>";
 
 if ($game) {
+    /**
+     * @param $arg
+     */
     function cheater_check($arg)
     {
         if ($arg) {
@@ -1163,6 +1166,11 @@ if ($game) {
     output($blackjack, $HTMLOUT, $debugout);
 }
 
+/**
+ * @param $cardid
+ *
+ * @return array|null|string
+ */
 function getCardData($cardid)
 {
     global $mc1;
@@ -1175,6 +1183,13 @@ function getCardData($cardid)
     return $card;
 }
 
+/**
+ * @param      $cardcount
+ * @param      $gameid
+ * @param bool $deal
+ *
+ * @return mixed
+ */
 function getCard($cardcount, $gameid, $deal = false)
 {
     global $debugout, $blackjack;
@@ -1253,6 +1268,11 @@ function getCard($cardcount, $gameid, $deal = false)
     return $cardid;
 }
 
+/**
+ * @param $blackjack
+ * @param $HTMLOUT
+ * @param $debugout
+ */
 function output($blackjack, $HTMLOUT, $debugout)
 {
     global $CURUSER;
@@ -1290,6 +1310,9 @@ function output($blackjack, $HTMLOUT, $debugout)
     exit();
 }
 
+/**
+ * @return array
+ */
 function shuffle_decks()
 {
     global $debugout, $blackjack;

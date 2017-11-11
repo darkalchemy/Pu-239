@@ -17,8 +17,8 @@ $lang = [
     'staffbox_do_set'          => 'Set answered',
     'staffbox_answered'        => 'Answered',
     'staffbox_sql_err'         => 'There was an error with the query please contact the staff! Mysql Error : %s',
-    'staffbox_delete_ids'      => 'The messege(s) you selected were deleted! Wait while redirecting...',
-    'staffbox_setanswered_ids' => 'The messege(s) you selected were set as answered! Wait while redirecting...',
+    'staffbox_delete_ids'      => 'The messege(s) you selected were deleted!',
+    'staffbox_setanswered_ids' => 'The messege(s) you selected were set as answered!',
     'staffbox_msg_noid'        => 'There is message with this id',
     'staffbox_pm_view'         => 'Message to staff',
     'staffbox_pm_subject'      => 'Subject',
@@ -30,5 +30,5 @@ $lang = [
     'staffbox_pm_noanswer'     => 'No answer from the staff',
     'staffbox_no_message'      => "You didn't write any message for the user!",
     'staffbox_pm_restart'      => 'Reset',
-    'staffbox_restart_ids'     => 'The messege(s) you selected were Reset for someone else to deal with! Wait while redirecting...',
+    'staffbox_restart_ids'     => 'The messege(s) you selected were Reset for someone else to deal with!',
 ];

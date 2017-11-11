@@ -7,6 +7,11 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 $curuser_cache = $user_cache = $urladd = $changedemail = $birthday = '';
 $lang = array_merge(load_language('global'), load_language('takeeditcp'));
+/**
+ * @param $in
+ *
+ * @return array
+ */
 function resize_image($in)
 {
     $out = [

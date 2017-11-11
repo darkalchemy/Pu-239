@@ -18,6 +18,9 @@ $uid = (int)$CURUSER['id'];
 $tid = isset($_POST['torrentid']) ? (int)$_POST['torrentid'] : (isset($_GET['torrentid']) ? (int)$_GET['torrentid'] : 0);
 $do = isset($_POST['action']) ? htmlsafechars($_POST['action']) : (isset($_GET['action']) ? htmlsafechars($_GET['action']) : 'list');
 $ajax = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
+/**
+ * @return string
+ */
 function print_list()
 {
     global $uid, $tid, $ajax;

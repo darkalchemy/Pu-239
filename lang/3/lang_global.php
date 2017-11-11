@@ -60,7 +60,6 @@ $lang = [
     'gl_faq'                    => 'Faq',
     'gl_links'                  => 'Linkuri',
     'gl_staff'                  => 'Personal',
-    'gl_sorry'                  => 'Ne pare r&#259;u',
     'gl_flood_msg'              => 'Anti-Flood limit in effect - Trebuie s&#259; a&#351;tep&#355;i - ',
     'gl_catalogue'              => 'Catalog',
     'gl_alerts'                 => 'Alerte site in prezent:',
@@ -166,7 +165,6 @@ $lang = [
     'gl_tstats'                 => ':: Statistici Torent',
     'gl_shareratio'             => 'Ra&#355;ie',
     'gl_connectable'            => 'Conectabil',
-    'gl_userblocks'             => ':: Configurare blocuri utilizator',
     'gl_myblocks'               => 'Blocurile mele',
     'gl_click'                  => 'Clic aici',
     'gl_myunlocks'              => 'My Unlocks',
@@ -201,8 +199,6 @@ $lang = [
     'gl_stdfoot_support'        => 'Forum suport clic ',
     'gl_stdfoot_here'           => 'aici',
     'gl_stdfoot_opc'            => 'OpCache',
-    //conectable statusbar
-    'gl_connectable'            => 'Conectabil',
     'gl_not_connectable'        => 'Neconectabil',
     'gl_na_connectable'         => 'N/A',
 ];

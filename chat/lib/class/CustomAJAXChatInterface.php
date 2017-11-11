@@ -7,6 +7,9 @@
  * @link https://blueimp.net/ajax/
  */
 
+/**
+ * Class CustomAJAXChatInterface
+ */
 class CustomAJAXChatInterface extends CustomAJAXChat
 {
     public function initialize()

@@ -1,4 +1,10 @@
 <?php
+/**
+ * @param $id
+ * @param $what
+ *
+ * @return string|void
+ */
 function getRate($id, $what)
 {
     global $CURUSER, $mc1;
@@ -50,6 +56,12 @@ function getRate($id, $what)
     return $return;
 }
 
+/**
+ * @param $rate_sum
+ * @param $rate_count
+ *
+ * @return string
+ */
 function showRate($rate_sum, $rate_count)
 {
     return '<ul class="star-rating"><li class="current-rating" >.</li></ul>';

@@ -3,6 +3,9 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once INCL_DIR . 'ann_functions.php';
 require_once CLASS_DIR . 'class_bt_options.php';
 
+/**
+ * @param $err
+ */
 function error($err)
 {
     header('Content-Type: text/plain; charset=UTF-8');
@@ -10,6 +13,9 @@ function error($err)
     exit('d14:failure reason' . strlen($err) . ":{$err}ed5:flagsd20:min_request_intervali1800eeee");
 }
 
+/**
+ * @return mixed
+ */
 function getip()
 {
     foreach ([
@@ -31,6 +37,12 @@ function getip()
     }
 }
 
+/**
+ * @param        $ip
+ * @param string $reason
+ *
+ * @return bool
+ */
 function check_bans($ip, &$reason = '')
 {
     global $site_config, $mc1;

@@ -1,4 +1,7 @@
 <?php
+/**
+ * @param $data
+ */
 function delete_torrents_xbt_update($data)
 {
     global $site_config, $queries, $mc1;

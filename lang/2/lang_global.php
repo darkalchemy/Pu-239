@@ -166,7 +166,6 @@ $lang = [
     'gl_tstats'                 => ':: Torrent Stats',
     'gl_shareratio'             => 'Share Ratio',
     'gl_connectable'            => 'Connectable',
-    'gl_userblocks'             => ':: User Blocks Config',
     'gl_myblocks'               => 'My Blocks',
     'gl_click'                  => 'Click here',
     'gl_myunlocks'              => 'My Unlocks',
@@ -202,9 +201,6 @@ $lang = [
     //stdfoot
     'gl_stdfoot_support'        => 'Support Forum Click ',
     'gl_stdfoot_here'           => 'here',
-    'gl_stdfoot_opc'            => 'OpCache',
-    //conectable statusbar
-    'gl_connectable'            => 'Connectable',
     'gl_not_connectable'        => 'Not Connectable',
     'gl_na_connectable'         => 'N/A',
 ];

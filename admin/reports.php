@@ -8,6 +8,11 @@ class_check($class);
 $lang = array_merge($lang, load_language('ad_report'));
 $HTMLOUT = $delt_link = $type = $count2 = '';
 // === cute solved in thing taked from helpdesk mod
+/**
+ * @param $ts
+ *
+ * @return string
+ */
 function round_time($ts)
 {
     $mins = floor($ts / 60);

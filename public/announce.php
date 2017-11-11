@@ -108,13 +108,13 @@ if (ANN_IP_LOGGING == 1) {
         $userid = (int)$user['id'];
     }
     if (!$no_log_ip) {
-        $res = ann_sql_query('SELECT * FROM ips WHERE ip = ' . ann_sqlesc($ip) . ' AND userid =' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
+        $res = ann_sql_query('SELECT * FROM ips WHERE ip = ' . ipToStorageFormat($ip) . ' AND userid =' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) == 0) {
-            ann_sql_query('INSERT INTO ips (userid, ip, lastannounce, type) VALUES (' . ann_sqlesc($userid) . ', ' . ann_sqlesc($ip) . ', ' . TIME_NOW . ",'announce')") or ann_sqlerr(__FILE__, __LINE__);
+            ann_sql_query('INSERT INTO ips (userid, ip, lastannounce, type) VALUES (' . ann_sqlesc($userid) . ', ' . ipToStorageFormat($ip) . ', ' . TIME_NOW . ",'announce')") or ann_sqlerr(__FILE__, __LINE__);
             $mc1->delete_value('ip_history_' . $userid);
             //$mc1->delete_value('user::passkey:::' . $passkey);
         } else {
-            ann_sql_query('UPDATE ips SET lastannounce = ' . TIME_NOW . ' WHERE ip = ' . ann_sqlesc($ip) . ' AND userid =' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
+            ann_sql_query('UPDATE ips SET lastannounce = ' . TIME_NOW . ' WHERE ip = ' . ipToStorageFormat($ip) . ' AND userid =' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
             $mc1->delete_value('ip_history_' . $userid);
             //$mc1->delete_value('user::passkey:::' . $passkey);
         }

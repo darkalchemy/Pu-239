@@ -13,6 +13,11 @@ $display = $answered = '';
 global $site_config;
 $csrf = $site_config['session_csrf'];
 
+/**
+ * @param $data
+ *
+ * @return mixed
+ */
 function clean_data($data) {
     foreach ($data as $key => $value) {
         $data[$key] = html_entity_decode(replace_unicode_strings(trim($value)));
@@ -28,7 +33,7 @@ if (!empty($_POST) && (int)$_POST['qid'] === $qid) {
         $answer = $_POST['ans'];
         $gamenum = $_POST['gamenum'];
         $date = date('Y-m-d H:i:s');
-        $ip = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'No IP';
+        $ip = getip();
 
         if (empty($_POST['token']) || !validateToken($_POST['token'])) {
             $username = get_one_row('users', 'username', 'WHERE id = ' . sqlesc($user_id));

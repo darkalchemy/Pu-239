@@ -1,4 +1,7 @@
 <?php
+/**
+ * @param $data
+ */
 function inactive_update($data)
 {
     global $site_config, $queries, $mc1;
@@ -44,6 +47,10 @@ function inactive_update($data)
     }
 }
 
+/**
+ * @param      $users
+ * @param bool $using_foreign_keys
+ */
 function delete_cleanup($users, $using_foreign_keys = true)
 {
     if (empty($users)) {

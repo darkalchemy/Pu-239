@@ -771,8 +771,7 @@ var ajaxChat = {
             } else {
                 try {
                     this.sounds[soundID].currentTime = 0;
-                    var playPromise = this.sounds[soundID].play();
-                    return playPromise;
+                    return this.sounds[soundID].play();
                 } catch (e) {
                     this.debugMessage('playSound', e);
                 }
@@ -2973,8 +2972,7 @@ var ajaxChat = {
 
     getActiveStyle: function () {
         var cookie = this.readCookie(this.sessionKeyPrefix + 'style');
-        var style = cookie ? cookie : this.getPreferredStyleSheet();
-        return style;
+        return cookie ? cookie : this.getPreferredStyleSheet();
     },
 
     initStyle: function () {

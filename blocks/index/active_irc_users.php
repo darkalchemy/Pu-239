@@ -1,4 +1,9 @@
 <?php
+/**
+ * @param $val
+ *
+ * @return string
+ */
 function calctime($val)
 {
     global $lang;

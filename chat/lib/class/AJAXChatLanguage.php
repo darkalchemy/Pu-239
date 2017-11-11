@@ -7,6 +7,9 @@
  * @link https://blueimp.net/ajax/
  */
 
+/**
+ * Class AJAXChatLanguage
+ */
 class AJAXChatLanguage
 {
     protected $_regExpAcceptLangCode;
@@ -15,6 +18,14 @@ class AJAXChatLanguage
     protected $_strictMode;
     protected $_langCode;
 
+    /**
+     * AJAXChatLanguage constructor.
+     *
+     * @param      $availableLangCodes
+     * @param      $defaultLangCode
+     * @param null $langCode
+     * @param bool $strictMode
+     */
     public function __construct($availableLangCodes, $defaultLangCode, $langCode = null, $strictMode = false)
     {
         $this->_regExpAcceptLangCode = '/^([a-z]{1,8}(?:-[a-z]{1,8})*)(?:;\s*q=(0(?:\.[0-9]{1,3})?|1(?:\.0{1,3})?))?$/i';
@@ -28,6 +39,9 @@ class AJAXChatLanguage
 
     // Method to detect the language code from the HTTP_ACCEPT_LANGUAGE header:
 
+    /**
+     * @return null
+     */
     public function getLangCode()
     {
         if (!$this->_langCode) {
@@ -37,6 +51,9 @@ class AJAXChatLanguage
         return $this->_langCode;
     }
 
+    /**
+     * @param $langCode
+     */
     public function setLangCode($langCode)
     {
         $this->_langCode = $langCode;

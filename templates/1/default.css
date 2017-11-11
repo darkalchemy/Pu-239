@@ -238,6 +238,25 @@ span {
     margin-top: 5px;
 }
 
+.text-shadow {
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.no-shadow {
+    text-shadow: none;
+}
+
+.icon {
+    width: auto;
+    height: 16px;
+    padding: 0;
+    font-size: 16px !important;
+}
+
+.icon + .icon {
+    margin-right: .3125em;
+}
+
 .spacer {
     width: 100%;
     height: 40px;
@@ -377,7 +396,7 @@ li.active {
 
 .torrent-name {
     display: inline-block;
-    max-width: 250px;
+    max-width: 350px;
     overflow: hidden;
     text-align: left;
     text-overflow: ellipsis;
@@ -410,13 +429,34 @@ textarea {
     overflow: auto;
 }
 
+.img-polaroid {
+    padding: 4px;
+    background-color: transparent;
+    border: 1px solid rgba(0, 0, 0, 1);
+    -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    display: inline-block;
+    margin-right: .625em;
+    max-width: 100%;
+}
+
+.img-responsive {
+    max-width: 100%;
+    height: auto;
+    -webkit-border-radius: .3125em;
+    -moz-border-radius: .3125em;
+    border-radius: .3125em;
+}
+
 .portlet.is-fluid {
     margin-left: 0 !important;
     margin-right: 0 !important;
 }
 
 .has-text-centered {
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .is-wrapped {
@@ -517,6 +557,10 @@ textarea {
     max-width: 100%;
     margin: 0 auto;
     position: relative;
+}
+
+.notification a:link {
+    text-decoration: none;
 }
 
 .has-no-border {
@@ -652,7 +696,11 @@ textarea {
 
 .text-justify {
     text-align: justify;
-    text-justify: inter-word;
+    text-justify: kashida;
+}
+
+.tooltipper {
+    list-style: none;
 }
 
 .tooltip-template {
@@ -802,6 +850,10 @@ textarea {
     max-width: 50%;
 }
 
+.w-1 {
+    width: 1%;
+}
+
 .w-10 {
     width: 10%;
 }
@@ -897,5 +949,14 @@ textarea {
 
     .w-20, .w-25, .w-50, .w-75 {
         width: 100%;
+    }
+
+    .page-wrapper {
+        margin-left: .625em;
+        margin-right: .625em;
+    }
+
+    .img-polaroid {
+        margin-right: 0;
     }
 }

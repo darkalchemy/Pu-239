@@ -32,6 +32,11 @@ if ($site_config['captcha_on']) {
         exit();
     }
 }
+/**
+ * @param $username
+ *
+ * @return bool
+ */
 function validusername($username)
 {
     if ($username == '') {
@@ -102,7 +107,7 @@ if ($a[0] != 0) {
 }
 //=== check if ip addy is already in use
 if ($site_config['dupeip_check_on']) {
-    $c = (mysqli_fetch_row(sql_query('SELECT COUNT(id) FROM users WHERE ip = ' . sqlesc($ip)))) or sqlerr(__FILE__, __LINE__);
+    $c = (mysqli_fetch_row(sql_query('SELECT COUNT(id) FROM users WHERE ip = ' . ipToStorageFormat($ip)))) or sqlerr(__FILE__, __LINE__);
     if ($c[0] != 0) {
         stderr('Error', 'The ip ' . htmlsafechars($ip) . ' is already in use. We only allow one account per ip address.');
     }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * @param $data
+ */
 function happyhour_update($data)
 {
     global $site_config, $queries, $mc1;

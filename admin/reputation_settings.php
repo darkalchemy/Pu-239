@@ -30,6 +30,9 @@ function rep_cache()
     redirect('staffpanel.php?tool=reputation_settings', $lang['repset_updated'], 3);
 }
 
+/**
+ * @return array
+ */
 function get_cache_array()
 {
     global $lang;
@@ -197,6 +200,11 @@ $HTMLOUT = '<div>
 </div>';
 $HTMLOUT = preg_replace_callback('|<#(.*?)#>|', 'template_out', $HTMLOUT);
 echo stdhead($lang['repset_stdhead']) . $HTMLOUT . stdfoot();
+/**
+ * @param $matches
+ *
+ * @return string
+ */
 function template_out($matches)
 {
     global $GVARS, $site_config, $lang;
@@ -207,6 +215,11 @@ function template_out($matches)
     }
 }
 
+/**
+ * @param     $url
+ * @param     $text
+ * @param int $time
+ */
 function redirect($url, $text, $time = 2)
 {
     global $site_config, $lang;

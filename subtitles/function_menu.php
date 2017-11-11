@@ -7,6 +7,13 @@
 
 //function to build the menu
 
+/**
+ * @param        $name
+ * @param        $arr
+ * @param string $val
+ *
+ * @return string
+ */
 function build_menu($name, $arr, $val = '')
 {
     $menu = '';

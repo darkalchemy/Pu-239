@@ -24,6 +24,10 @@ $LSCLASS = UC_MAX; //== Last staff class;
 $FUCLASS = UC_MIN; //== First users class;
 $LUCLASS = UC_STAFF - 1; //== Last users class;
 $sent2classes = [];
+/**
+ * @param $min
+ * @param $max
+ */
 function classes2name($min, $max)
 {
     global $sent2classes;
@@ -32,6 +36,11 @@ function classes2name($min, $max)
     }
 }
 
+/**
+ * @param $x
+ *
+ * @return int
+ */
 function mkint($x)
 {
     return (int)$x;
@@ -147,6 +156,9 @@ $groups['friends'] = ['opname'   => $lang['grouppm_related'],
                       'minclass' => UC_USER,
                       'ops'      => ['all_friends' => $lang['grouppm_friends']],];
 
+/**
+ * @return string
+ */
 function dropdown()
 {
     global $CURUSER, $groups;

@@ -7,6 +7,11 @@ class_check($class);
 // 0 - No debug; 1 - Show and run SQL query; 2 - Show SQL query only
 $DEBUG_MODE = 0;
 $lang = array_merge($lang, load_language('ad_usersearch'));
+/**
+ * @param $param
+ *
+ * @return bool
+ */
 function is_set_not_empty($param)
 {
     if (isset($_POST[$param]) && !empty($_POST[$param])) {
@@ -314,6 +319,11 @@ $highlight = " bgcolor='lightgrey'";
 <?php
 // Validates date in the form [yy]yy-mm-dd;
 // Returns date if valid, 0 otherwise.
+/**
+ * @param $date
+ *
+ * @return false|int|string
+ */
 function mkdate($date)
 {
     if (strpos($date, '-')) {
@@ -336,6 +346,13 @@ function mkdate($date)
 }
 
 // ratio as a string
+/**
+ * @param      $up
+ * @param      $down
+ * @param bool $color
+ *
+ * @return string
+ */
 function ratios($up, $down, $color = true)
 {
     if ($down > 0) {
@@ -353,6 +370,11 @@ function ratios($up, $down, $color = true)
 }
 
 // checks for the usual wildcards *, ? plus mySQL ones
+/**
+ * @param $text
+ *
+ * @return bool
+ */
 function haswildcard($text)
 {
     if (strpos($text, '*') === false && strpos($text, '?') === false && strpos($text, '%') === false && strpos($text, '_') === false) {

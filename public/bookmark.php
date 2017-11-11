@@ -45,6 +45,9 @@ if ($action == 'add') {
     if ($_GET['h'] != $hash) {
         stderr($lang['bookmark_err'], $lang['bookmark_waydoing']);
     }
+    /**
+     * @param $torrentid
+     */
     function addbookmark($torrentid)
     {
         global $CURUSER, $mc1, $site_config, $lang;
@@ -72,6 +75,9 @@ if ($action == 'delete') {
     if ($_GET['h'] != $hash) {
         stderr($lang['bookmark_err'], $lang['bookmark_waydoing']);
     }
+    /**
+     * @param $torrentid
+     */
     function deletebookmark($torrentid)
     {
         global $CURUSER, $mc1, $site_config;
@@ -95,6 +101,9 @@ if ($action == 'delete') {
     if ($_GET['h'] != $hash) {
         stderr($lang['bookmark_err'], $lang['bookmark_waydoing']);
     }
+    /**
+     * @param $torrentid
+     */
     function publickbookmark($torrentid)
     {
         global $CURUSER, $mc1, $site_config;
@@ -121,6 +130,9 @@ if ($action == 'delete') {
     if (!is_valid_id($torrentid)) {
         stderr($lang['bookmark_err'], $lang['bookmark_invalidid']);
     }
+    /**
+     * @param $torrentid
+     */
     function privatebookmark($torrentid)
     {
         global $CURUSER, $mc1, $site_config;

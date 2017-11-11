@@ -18,11 +18,25 @@ function initAll() {
     $('.dt-tooltipper.tooltipstered').tooltipster('destroy');
     $('.dt-tooltipper-large').tooltipster({
         theme: 'tooltipster-borderless',
+        interactive: true,
         animation: animation,
         animationDuration: animate_duration,
         arrow: true,
         contentAsHTML: true,
         maxWidth: 500,
+        trigger: 'custom',
+        triggerOpen: {
+            mouseenter: true,
+            touchstart: true
+        },
+        triggerClose: {
+            mouseleave: true,
+            originClick: true,
+            click: true,
+            scroll: true,
+            tap: true,
+            touchLeave: true
+        },
     });
 
     $('.dt-tooltipper-small').tooltipster({

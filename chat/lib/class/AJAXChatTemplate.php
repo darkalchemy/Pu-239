@@ -8,6 +8,10 @@
  */
 
 // Class to handle HTML templates
+
+/**
+ * Class AJAXChatTemplate
+ */
 class AJAXChatTemplate
 {
     public $ajaxChat;
@@ -18,6 +22,13 @@ class AJAXChatTemplate
     protected $_content;
     protected $_parsedContent;
 
+    /**
+     * AJAXChatTemplate constructor.
+     *
+     * @param      $ajaxChat
+     * @param      $templateFile
+     * @param null $contentType
+     */
     public function __construct(&$ajaxChat, $templateFile, $contentType = null)
     {
         $this->ajaxChat = $ajaxChat;
@@ -52,6 +63,9 @@ class AJAXChatTemplate
         $this->_parsedContent = preg_replace_callback($this->_regExpTemplateTags, [$this, 'replaceTemplateTags'], $this->_parsedContent);
     }
 
+    /**
+     * @return bool|string
+     */
     public function getContent()
     {
         if (!$this->_content) {
@@ -61,6 +75,11 @@ class AJAXChatTemplate
         return $this->_content;
     }
 
+    /**
+     * @param $tagData
+     *
+     * @return string
+     */
     public function replaceTemplateTags($tagData)
     {
         global $site_config;
@@ -205,6 +224,10 @@ class AJAXChatTemplate
     }
 
     // Function to display alternating table row colors:
+
+    /**
+     * @return string
+     */
     public function getBaseDirectionAttribute()
     {
         $langCodeParts = explode('-', $this->ajaxChat->getLangCode());
@@ -218,6 +241,9 @@ class AJAXChatTemplate
         }
     }
 
+    /**
+     * @return string
+     */
     public function getStyleSheetLinkTags()
     {
         global $site_config;
@@ -235,6 +261,9 @@ class AJAXChatTemplate
         return $styleSheets;
     }
 
+    /**
+     * @return string
+     */
     public function getChannelOptionTags()
     {
         $channelOptions = '';
@@ -275,6 +304,9 @@ class AJAXChatTemplate
         return $channelOptions;
     }
 
+    /**
+     * @return string
+     */
     public function getStyleOptionTags()
     {
         $styleOptions = '';
@@ -286,6 +318,9 @@ class AJAXChatTemplate
         return $styleOptions;
     }
 
+    /**
+     * @return string
+     */
     public function getLanguageOptionTags()
     {
         $languageOptions = '';
@@ -298,6 +333,9 @@ class AJAXChatTemplate
         return $languageOptions;
     }
 
+    /**
+     * @return string
+     */
     public function getErrorMessageTags()
     {
         $errorMessages = '';
@@ -308,6 +346,9 @@ class AJAXChatTemplate
         return $errorMessages;
     }
 
+    /**
+     * @return string
+     */
     public function getLogsChannelOptionTags()
     {
         $channelOptions = '';
@@ -324,6 +365,9 @@ class AJAXChatTemplate
         return $channelOptions;
     }
 
+    /**
+     * @return string
+     */
     public function getLogsYearOptionTags()
     {
         $yearOptions = '';
@@ -335,6 +379,9 @@ class AJAXChatTemplate
         return $yearOptions;
     }
 
+    /**
+     * @return string
+     */
     public function getLogsMonthOptionTags()
     {
         $monthOptions = '';
@@ -346,6 +393,9 @@ class AJAXChatTemplate
         return $monthOptions;
     }
 
+    /**
+     * @return string
+     */
     public function getLogsDayOptionTags()
     {
         $dayOptions = '';
@@ -357,6 +407,9 @@ class AJAXChatTemplate
         return $dayOptions;
     }
 
+    /**
+     * @return string
+     */
     public function getLogsHourOptionTags()
     {
         $hourOptions = '';
@@ -368,6 +421,12 @@ class AJAXChatTemplate
         return $hourOptions;
     }
 
+    /**
+     * @param string $rowOdd
+     * @param string $rowEven
+     *
+     * @return string
+     */
     public function alternateRow($rowOdd = 'rowOdd', $rowEven = 'rowEven')
     {
         static $i;

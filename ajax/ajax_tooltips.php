@@ -32,10 +32,10 @@ if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
         if (($MyPeersXbtCache = $mc1->get_value('MyPeers_XBT_' . $user['id'])) === false) {
             $seed['yes'] = $seed['no'] = 0;
             $seed['conn'] = 3;
-            $r = sql_query('SELECT COUNT(uid) AS count, left, active, connectable
+            $r = sql_query('SELECT COUNT(uid) AS count, `left`, active, connectable
                                 FROM xbt_files_users
                                 WHERE uid = ' . sqlesc($user['id']) . '
-                                GROUP BY left') or sqlerr(__LINE__, __FILE__);
+                                GROUP BY `left`') or sqlerr(__LINE__, __FILE__);
             while ($a = mysqli_fetch_assoc($r)) {
                 $key = $a['left'] == 0 ? 'yes' : 'no';
                 $seed[$key] = number_format((int)$a['count']);

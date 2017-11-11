@@ -1,4 +1,9 @@
 <?php
+/**
+ * @param int  $class
+ * @param bool $staff
+ * @param bool $pin
+ */
 function class_check($class = 0, $staff = true, $pin = false)
 {
     global $CURUSER, $site_config, $mc1;
@@ -125,6 +130,11 @@ function class_check($class = 0, $staff = true, $pin = false)
     }
 }
 
+/**
+ * @param $script
+ *
+ * @return array|int|string
+ */
 function get_access($script)
 {
     global $CURUSER, $site_config, $mc1;

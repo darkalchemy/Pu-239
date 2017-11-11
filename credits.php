@@ -21,6 +21,12 @@ if (!in_array($action, $act_validation)) {
 /*Check if CutName function exists, if not declare it */
 
 if (!function_exists('CutName')) {
+    /**
+     * @param $txt
+     * @param $len
+     *
+     * @return string
+     */
     function CutName($txt, $len)
     {
         return strlen($txt) > $len ? substr($txt, 0, $len - 4) . '[...]' : $txt;

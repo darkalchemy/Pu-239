@@ -1,4 +1,7 @@
 <?php
+/**
+ * @return string
+ */
 function getips()
 {
     if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER) && !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -14,6 +17,11 @@ function getips()
     }
 }
 
+/**
+ * @param $data
+ *
+ * @return string
+ */
 function jq($data)
 {
     return "<span class='chg'>$data</span>";

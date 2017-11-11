@@ -6,6 +6,12 @@ require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('torrenttable_functions'), load_language('bookmark'));
 $htmlout = '';
+/**
+ * @param        $res
+ * @param string $variant
+ *
+ * @return string
+ */
 function bookmarktable($res, $variant = 'index')
 {
     global $site_config, $CURUSER, $lang;

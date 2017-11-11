@@ -20,7 +20,7 @@ if (!empty($_POST['picture'])) {
     //    $picture2 = trim(urldecode($_POST['picture']));
     //    $headers  = get_headers($picture2);
     //    if (strpos($headers[0], '200') === false)
-    //        $picture = $site_config['baseurl'].'/images/notfound.png';
+    //        $picture = "{$site_config['pic_base_url']}notfound.png";
     $pic = '[img]' . $picture . "[/img]\n";
 }
 $descr = "$pic";

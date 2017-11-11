@@ -8,9 +8,21 @@ require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 // Define constants
+/**
+ *
+ */
 define('PM_DELETED', 0); // Message was deleted
+/**
+ *
+ */
 define('PM_INBOX', 1); // Message located in Inbox for reciever
+/**
+ *
+ */
 define('PM_SENTBOX', -1); // GET value for sent box
+/**
+ *
+ */
 define('PM_DRAFTS', -2); //  new drafts folder
 $lang = array_merge(load_language('global'), load_language('takesignup'), load_language('pm'));
 $stdhead = [
@@ -25,6 +37,11 @@ $stdfoot = [
 ];
 $HTMLOUT = $count2 = $other_box_info = $maxpic = $maxbox = '';
 //== validusername
+/**
+ * @param $username
+ *
+ * @return bool
+ */
 function validusername($username)
 {
     global $lang;
@@ -235,6 +252,9 @@ switch ($action) {
         break;
 }
 //=== get all PM boxes
+/**
+ * @return array|string
+ */
 function get_all_boxes()
 {
     global $CURUSER, $mc1, $site_config, $lang;
@@ -255,6 +275,11 @@ function get_all_boxes()
 }
 
 //=== insert jump to box
+/**
+ * @param $mailbox
+ *
+ * @return array|string
+ */
 function insertJumpTo($mailbox)
 {
     global $CURUSER, $mc1, $site_config, $lang;

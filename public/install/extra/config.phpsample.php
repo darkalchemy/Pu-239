@@ -50,13 +50,13 @@ $site_config['mysql_db'] = '#mysql_db';
 //== Cookie setup
 $site_config['sessionName'] = '#sessionName'; // A single word that identifies this install.
 $site_config['cookie_prefix'] = '#cookie_prefix_'; // This allows you to have multiple trackers, eg for demos, testing etc.
-$site_config['cookie_path'] = '#cookie_path'; // ATTENTION: You should never need this unless the above applies eg: /tbdev
+$site_config['cookie_path'] = '#cookie_path'; // generally '/' is good
 $site_config['cookie_domain'] = '.#cookie_domain'; // set to eg: .somedomain.com or is subdomain set to: .sub.somedomain.com
 $site_config['cookie_lifetime'] = #cookie_lifetime; // length of time cookies will be valid
 $site_config['domain'] = '#domain';
 $site_config['sessionCookieSecure'] = #sessionCookieSecure; // using HTTPS only? then set this
-$site_config['sessionKeyPrefix'] = '#cookie_prefix_'; // usefull if serving multiple sites
-$site_config['session_csrf'] = 'csrf_token'; // usefull if serving multiple sites
+$site_config['sessionKeyPrefix'] = '#cookie_prefix_'; // useful if serving multiple sites
+$site_config['session_csrf'] = 'csrf_token'; // useful if serving multiple sites
 //== Memcache expires
 $site_config['expires']['latestuser'] = 0; // 0 = infinite
 $site_config['expires']['MyPeers_'] = 120; // 60 = 60 seconds
@@ -186,7 +186,8 @@ define('BLOCK_DIR', ROOT_DIR . 'blocks' . DIRECTORY_SEPARATOR);
 define('IMDB_DIR', ROOT_DIR . 'imdb' . DIRECTORY_SEPARATOR);
 define('CLASS_DIR', INCL_DIR . 'class' . DIRECTORY_SEPARATOR);
 define('CLEAN_DIR', INCL_DIR . 'cleanup' . DIRECTORY_SEPARATOR);
-define('LOGVIEW_DIR', ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'Log_Viewer' . DIRECTORY_SEPARATOR);
+define('PUBLIC_DIR', ROOT_DIR . 'public' . DIRECTORY_SEPARATOR);
+define('IMAGES_DIR', PUBLIC_DIR . 'images' . DIRECTORY_SEPARATOR);
 $site_config['cache'] = ROOT_DIR . 'cache';
 $site_config['backup_dir'] = INCL_DIR . 'backup';
 $site_config['dictbreaker'] = ROOT_DIR . 'dictbreaker';
@@ -219,7 +220,7 @@ $site_config['report_alert'] = 1; // saves a query when off
 $site_config['staffmsg_alert'] = 1; // saves a query when off
 $site_config['uploadapp_alert'] = 1; // saves a query when off
 $site_config['bug_alert'] = 1; // saves a query when off
-$site_config['pic_base_url'] = './images/';
+$site_config['pic_base_url'] = $site_config['baseurl'] . '/images/';
 $site_config['stylesheet'] = 1;
 $site_config['categorie_icon'] = 1;
 $site_config['comment_min_class'] = 4; //minim class to be checked when posting comments
@@ -277,4 +278,4 @@ $site_config['arcade_games_names'] = array('Asteroids', 'Breakout', 'Frogger', '
 $site_config['top_score_points'] = 1000;
 
 $site_config['bad_words'] = ['fuck', 'shit', 'Moderator', 'Administrator', 'Admin', 'pussy', 'Sysop', 'cunt', 'nigger', 'VIP', 'Super User', 'Power User', 'ADMIN', 'SYSOP', 'MODERATOR', 'ADMINISTRATOR'];
-$site_config['notifications'] = ['is-danger', 'is-warning', 'is-success', 'is-info'];
+$site_config['notifications'] = ['is-danger', 'is-warning', 'is-success', 'is-info', 'is-link'];

@@ -154,6 +154,12 @@ $donate_goods = [
         ],
     ],
 ];
+/**
+ * @param $amount
+ * @param $user_id
+ *
+ * @return string
+ */
 function mk_update_query($amount, $user_id)
 {
     global $donate_goods;
@@ -168,6 +174,9 @@ function mk_update_query($amount, $user_id)
     return sprintf('update users set %s where id = %d', join(', ', $query), $user_id);
 }
 
+/**
+ * @param $txt
+ */
 function paypallog($txt)
 {
     file_put_contents(ROOT_DIR . '/logs/paypal.txt', "\n[" . date('h:m D-M-Y') . "]\n" . $txt, FILE_APPEND);

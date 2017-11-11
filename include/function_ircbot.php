@@ -1,4 +1,7 @@
 <?php
+/**
+ * @param $messages
+ */
 function ircbot($messages)
 {
     $bot = [

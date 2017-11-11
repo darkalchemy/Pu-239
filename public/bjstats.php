@@ -8,6 +8,12 @@ if ($CURUSER['class'] < UC_POWER_USER) {
     stderr($lang['bj_sorry'], $lang['bj_you_must_be_pu']);
     exit;
 }
+/**
+ * @param $res
+ * @param $frame_caption
+ *
+ * @return string
+ */
 function bjtable($res, $frame_caption)
 {
     global $lang, $CURUSER;

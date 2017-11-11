@@ -22,8 +22,7 @@ function ThumbsUp(id) {
 function gom() {
     if (request.readyState == 4) {
         if (request.status == 200) {
-            var response = request.responseText;
-            document.getElementById('thumbsup').innerHTML = response;
+            document.getElementById('thumbsup').innerHTML = request.responseText;
         }
     }
 }

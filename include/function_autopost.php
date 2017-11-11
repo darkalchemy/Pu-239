@@ -1,4 +1,8 @@
 <?php
+/**
+ * @param string $subject
+ * @param string $body
+ */
 function auto_post($subject = 'Error - Subject Missing', $body = 'Error - No Body') // Function to use the special system message forum
 {
     global $CURUSER, $site_config, $mc1;

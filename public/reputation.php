@@ -309,6 +309,10 @@ else {
     }
     rep_output('', $html);
 }
+/**
+ * @param string $msg
+ * @param string $html
+ */
 function rep_output($msg = '', $html = '')
 {
     global $closewindow, $lang, $CURUSER;
@@ -359,6 +363,12 @@ echo $htmlout;
 exit();
 }
 
+/**
+ * @param array  $user
+ * @param string $rep
+ *
+ * @return int|string
+ */
 function fetch_reppower($user = [], $rep = 'pos')
 {
     global $GVARS, $is_mod;

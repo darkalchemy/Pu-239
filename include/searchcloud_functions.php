@@ -1,4 +1,9 @@
 <?php
+/**
+ * @param int $limit
+ *
+ * @return array|string
+ */
 function searchcloud($limit = 50)
 {
     global $mc1, $site_config;
@@ -23,6 +28,9 @@ function searchcloud($limit = 50)
     return $return;
 }
 
+/**
+ * @param $word
+ */
 function searchcloud_insert($word)
 {
     global $mc1;
@@ -39,9 +47,12 @@ function searchcloud_insert($word)
         ]);
         $mc1->commit_transaction(0);
     }
-    sql_query('INSERT INTO searchcloud(searchedfor,howmuch,ip) VALUES (' . sqlesc($word) . ',1,' . sqlesc($ip) . ') ON DUPLICATE KEY UPDATE howmuch = howmuch + 1') or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO searchcloud(searchedfor,howmuch,ip) VALUES (' . sqlesc($word) . ',1,' . ipToStorageFormat($ip) . ') ON DUPLICATE KEY UPDATE howmuch = howmuch + 1') or sqlerr(__FILE__, __LINE__);
 }
 
+/**
+ * @return string
+ */
 function cloud()
 {
     $small = 14;

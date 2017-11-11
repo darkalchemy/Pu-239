@@ -42,6 +42,9 @@ h2 {font-size: 125%;}
     exit();
 }
 $html = [];
+/**
+ * @return string
+ */
 function sql_get_version()
 {
     $query = sql_query('SELECT VERSION() AS version');

@@ -1,6 +1,11 @@
 <?php
 require_once 'emoticons.php';
 
+/**
+ * @param $smilies_set
+ *
+ * @return string
+ */
 function smilies_frame($smilies_set)
 {
     $list = $emoticons = '';
@@ -25,6 +30,11 @@ function smilies_frame($smilies_set)
     return $emoticons;
 }
 
+/**
+ * @param string $body
+ *
+ * @return string
+ */
 function BBcode($body = '')
 {
     global $CURUSER, $smilies, $customsmilies, $staff_smilies, $site_config;
@@ -81,6 +91,11 @@ function BBcode($body = '')
     return $bbcode;
 }
 
+/**
+ * @param $s
+ *
+ * @return mixed
+ */
 function validate_imgs($s)
 {
     $start = '(http|https)://';
@@ -98,6 +113,11 @@ function validate_imgs($s)
     return $s;
 }
 
+/**
+ * @param $html
+ *
+ * @return string
+ */
 function check_BBcode($html)
 {
     preg_match_all('#<(?!img|br|hr\b)\b([a-z]+)(?: .*)?(?<![/|/ ])>#iU', $html, $result);
@@ -120,6 +140,11 @@ function check_BBcode($html)
     return $html;
 }
 
+/**
+ * @param $s
+ *
+ * @return mixed
+ */
 function format_quotes($s)
 {
     preg_match_all('/\\[quote.*?\\]/', $s, $result, PREG_PATTERN_ORDER);
@@ -153,6 +178,11 @@ function format_quotes($s)
     return $s;
 }
 
+/**
+ * @param $link
+ *
+ * @return string
+ */
 function islocal($link)
 {
     global $site_config;
@@ -189,11 +219,24 @@ function islocal($link)
     return '<a href="' . ((stristr($url, $site_config['url']) !== false) ? '' : $site_config['anonymizer_url']) . $url . '" target="_blank">' . $lshort . '</a>';
 }
 
+/**
+ * @param $s
+ *
+ * @return mixed
+ */
 function format_urls($s)
 {
     return preg_replace_callback("/(\A|[^=\]'\"a-zA-Z0-9])((http|ftp|https|ftps|irc):\/\/[^<>\s]+)/i", 'islocal', $s);
 }
 
+/**
+ * @param      $text
+ * @param bool $strip_html
+ * @param bool $urls
+ * @param bool $images
+ *
+ * @return mixed|string
+ */
 function format_comment($text, $strip_html = true, $urls = true, $images = true)
 {
     global $smilies, $staff_smilies, $customsmilies, $site_config, $CURUSER;
@@ -372,10 +415,14 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         $s = preg_replace("#\[media=(youtube|liveleak|GameTrailers|vimeo|imdb)\](.+?)\[/media\]#ies", "_MediaTag('\\2','\\1')", $s);
     }
     if (stripos($s, '[img') !== false && $images) {
+        // [img]http://www/image.gif[/img]
+        $s = preg_replace("/\[img\]((http|https):\/\/[^\s'\"<>]+(\.(jpeg|jpg|gif|png|bmp)))\[\/img\]/i", '<a href="\\1" data-lightbox="details"><img src="\\1" alt="" class="img-responsive" /></a>', $s);
         // [img=http://www/image.gif]
-        $s = preg_replace("/\[img\]((http|https):\/\/[^\s'\"<>]+(\.(jpeg|jpg|gif|png|bmp)))\[\/img\]/i", '<a href="\\1" rel="lightbox"><img src="\\1" border="0" alt="" class="img-responsive" /></a>', $s);
-        // [img=http://www/image.gif]
-        $s = preg_replace("/\[img=((http|https):\/\/[^\s'\"<>]+(\.(gif|jpeg|jpg|png|bmp)))\]/i", '<a href="\\1" rel="lightbox"><img src="\\1" border="0" alt="" class="img-responsive" /></a>', $s);
+        $s = preg_replace("/\[img=((http|https):\/\/[^\s'\"<>]+(\.(gif|jpeg|jpg|png|bmp)))\]/i", '<a href="\\1" data-lightbox="details"><img src="\\1" alt="" class="img-responsive" /></a>', $s);
+        // [img=image services without extension
+        $s = preg_replace("/\[img=((http|https):\/\/[^\s'\"<>]*\?\d{5})\]/i", '<a href="\\1" data-lightbox="details" /><img src="\\1" alt="" class="img-responsive" /></a>', $s);
+        // [img=image services without extension
+        $s = preg_replace("/\[img\]((http|https):\/\/[^\s'\"<>]*\?\d{5})\[\/img\]/i", '<a href="\\1" data-lightbox="details" /><img src="\\1" alt="" class="img-responsive" /></a>', $s);
     }
     // [mcom]Text[/mcom]
     if (stripos($s, '[mcom]') !== false) {
@@ -417,6 +464,11 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     return $s;
 }
 
+/**
+ * @param $s
+ *
+ * @return mixed
+ */
 function format_code($s)
 {
     if (preg_match('/\[code\]/', $s)) {
@@ -462,6 +514,12 @@ function format_code($s)
 }
 
 //=== no bb code in post
+/**
+ * @param      $text
+ * @param bool $strip_html
+ *
+ * @return mixed|string
+ */
 function format_comment_no_bbcode($text, $strip_html = true)
 {
     global $site_config;
@@ -565,6 +623,12 @@ function format_comment_no_bbcode($text, $strip_html = true)
     return $s;
 }
 
+/**
+ * @param $content
+ * @param $type
+ *
+ * @return mixed|string|void
+ */
 function _MediaTag($content, $type)
 {
     global $site_config;
@@ -606,6 +670,9 @@ function _MediaTag($content, $type)
 }
 
 //=== smilie function
+/**
+ * @return mixed
+ */
 function get_smile()
 {
     global $CURUSER;
@@ -613,11 +680,21 @@ function get_smile()
     return $CURUSER['smile_until'];
 }
 
+/**
+ * @param $key
+ *
+ * @return string
+ */
 function user_key_codes($key)
 {
     return "/\[$key\]/i";
 }
 
+/**
+ * @param $text
+ *
+ * @return mixed|void
+ */
 function dynamic_user_vars($text)
 {
     global $CURUSER, $site_config;

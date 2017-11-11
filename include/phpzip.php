@@ -9,6 +9,10 @@
 //
 // Examples in sample1.php, sample2.php and sample3.php
 //
+
+/**
+ * Class PHPZip
+ */
 class PHPZip
 {
     public $datasec = [];
@@ -16,6 +20,12 @@ class PHPZip
     public $eof_ctrl_dir = "\x50\x4b\x05\x06\x00\x00\x00\x00";
     public $old_offset = 0;
 
+    /**
+     * @param $dir
+     * @param $zipfilename
+     *
+     * @return int
+     */
     public function Zip($dir, $zipfilename)
     {
         if (@function_exists('gzcompress')) {
@@ -55,6 +65,11 @@ class PHPZip
         }
     }
 
+    /**
+     * @param $dir
+     *
+     * @return array
+     */
     public function GetFileList($dir)
     {
         if (file_exists($dir)) {
@@ -190,6 +205,9 @@ class PHPZip
 
     // end of the 'file()' method
 
+    /**
+     * @param $archiveName
+     */
     public function forceDownload($archiveName)
     {
         $headerInfo = '';

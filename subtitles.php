@@ -7,6 +7,11 @@ check_user_status();
 $lang = array_merge(load_language('global'));
 $HTMLOUT = '';
 if (!function_exists('htmlsafechars')) {
+    /**
+     * @param $var
+     *
+     * @return mixed
+     */
     function htmlsafechars($var)
     {
         return str_replace([
