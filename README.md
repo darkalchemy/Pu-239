@@ -1,7 +1,16 @@
 # Pu-239
 
-There is a temporary site at http://pu-239.pw:8080 where you can view the code in action.
+## Goals:
+1. Updated to PHP7 - default settings
+2. Error free with MySQL 5.7 strict mode - default settings
+3. Remove merged bootstrap
+4. Update jquery
+5. Update all javascript files
+6. Merge, mininify and gzip css/js files to reduce the number of requests
+6. Optimize all images for web
+7. Remove js from head and relocate to body
 
+There is a temporary site at http://pu-239.pw:8080 where you can view the code in action.
 ```
 Running on:
 Linux Aspire-XC-603G 4.10.0-27-generic #30~16.04.2-Ubuntu SMP Thu Jun 29 16:07:46 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
