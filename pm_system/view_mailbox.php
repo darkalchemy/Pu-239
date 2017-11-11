@@ -35,7 +35,6 @@ $res = sql_query('SELECT m.id AS message_id, m.sender, m.receiver, m.added, m.su
 //echo stdhead(htmlsafechars($mailbox_name));
 //=== let's make the table
 $HTMLOUT .= "
-    <div class='container is-fluid portlet'>
     $h1_thingie
     $top_links
     <a name='pm'></a>
@@ -153,5 +152,4 @@ $HTMLOUT .= (mysqli_num_rows($res) > 0 ? "
     </tr>" : '') . '
     </table>
         ' . ($perpage < $messages ? '' . $menu . '<br>' : '') . "
-    </form>
-    </div>";
+    </form>";

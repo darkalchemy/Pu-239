@@ -14,7 +14,7 @@ function get_file($file) {
         if ($site_config['in_production']) {
             switch($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/ee87c2800c373143f4449d62227596f2.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/89ab6bb8f9fb7f4cd6655505b304255d.min.css";
                 case 'js':
                     return "{$site_config['baseurl']}/js/{$style}/7a17c878ab17c6ecd0044290542477e7.min.js";
                 case 'trivia_css':
@@ -57,7 +57,7 @@ function get_file($file) {
         } else {
             switch($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/821393ea4d28ca873c6bed81e21f49d9.css";
+                    return "{$site_config['baseurl']}/css/{$style}/2c9fdef5eca363911c69a404210cc0cc.css";
                 case 'js':
                     return "{$site_config['baseurl']}/js/{$style}/6de8c0e711d4bbefb270ce62cb3e8f8a.js";
                 case 'trivia_css':

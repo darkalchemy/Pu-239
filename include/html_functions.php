@@ -164,7 +164,7 @@ function main_div($text, $align = null)
         return;
     } else {
         return "
-                <div class='bordered top20 bottom20 $align'>
+                <div class='bordered top20 $align'>
                     <div class='alt_bordered bg-00'>
                         $text
                     </div>

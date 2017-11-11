@@ -473,7 +473,7 @@ class AJAXChat
         // 1 = channel messages (e.g. login/logout, channel enter/leave, kick)
         // 2 = messages with online user updates (nick)
 
-        $ip = $ip ? $ip : $_SERVER['REMOTE_ADDR'];
+        $ip = $ip ? $ip : getip();
 
         $sql = 'INSERT INTO ' . $this->getDataBaseTable('messages') . '(
                                 userID,
@@ -501,8 +501,8 @@ class AJAXChat
 
         // increment userachiev
         $sql = 'UPDATE usersachiev
-                    SET dailyshouts = dailyshouts + 1, weeklyshouts = weeklyshouts + 1, monthlyshouts = monthlyshouts + 1, totalshouts = totalshouts + 1
-                    WHERE userid = ' . sqlesc($userID);
+                SET dailyshouts = dailyshouts + 1, weeklyshouts = weeklyshouts + 1, monthlyshouts = monthlyshouts + 1, totalshouts = totalshouts + 1
+                WHERE userid = ' . sqlesc($userID);
 
         // Create a new SQL query:
         sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -1521,9 +1521,6 @@ class AJAXChat
         $pipe->zAdd('online_active', TIME_NOW + $this->getConfig('inactiveTimeout') * 60, $this->getUserID());
         $pipe->hMSet("user:{$this->getUserID()}", ['userName' => $this->getUserName(), 'userRole' => $this->getUserRole(), 'channel' => $this->getChannel(), 'dateTime' => TIME_NOW, 'ip' => $_SERVER['REMOTE_ADDR']]);
         $pipe->exec();
-//        $redis->zAdd("user:username:{$this->getUserName()}", $this->getUserID());
-//        $redis->zAdd("user:id:{$this->getUserID()}", $this->getUserName());
-//        $redis->zAdd("users:online", TIME_NOW + $this->getConfig('inactiveTimeout') * 60, $this->getUserID());
     }
 
     /**
@@ -3264,7 +3261,7 @@ class AJAXChat
                 LIMIT ' . $this->getConfig('requestMessagesLimit') . ';';
 
         // Create a new SQL query:
-        sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
         $messages = '';
 

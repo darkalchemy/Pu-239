@@ -1,7 +1,9 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
+global $site_config;
 $lang = array_merge(load_language('global'), load_language('report'));
 $stdhead = [
     'css' => [
@@ -38,6 +40,7 @@ if ((isset($_GET['id_2'])) || (isset($_POST['id_2']))) {
     $id_2b = "&amp;id_2=$id_2";
 }
 if ((isset($_GET['do_it'])) || (isset($_POST['do_it']))) {
+    $id_2 = ($_GET['id_2b'] ? (int)$_GET['id_2b'] : (int)$_POST['id_2']);
     $do_it = ($_GET['do_it'] ? (int)$_GET['do_it'] : (int)$_POST['do_it']);
     if (!is_valid_id($do_it)) {
         stderr("{$lang['report_error']}", "{$lang['report_error3']}");
@@ -47,6 +50,7 @@ if ((isset($_GET['do_it'])) || (isset($_POST['do_it']))) {
     if (!$reason) {
         stderr("{$lang['report_error']}", "{$lang['report_error4']}");
     }
+
     // === check if it's been reported already
     $res = sql_query('SELECT id FROM reports WHERE reported_by =' . sqlesc($CURUSER['id']) . ' AND reporting_what =' . sqlesc($id) . ' AND reporting_type = ' . sqlesc($type)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) != 0) {
@@ -54,21 +58,23 @@ if ((isset($_GET['do_it'])) || (isset($_POST['do_it']))) {
     }
     // === ok it's not been reported yet let's go on
     $dt = TIME_NOW;
-    sql_query('INSERT into reports (reported_by, reporting_what, reporting_type, reason, added, 2nd_value) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . sqlesc($type) . ', ' . sqlesc($reason) . ", $dt, " . sqlesc($id_2) . ')') or sqlerr(__FILE__, __LINE__);
+    sql_query(
+        'INSERT into reports (reported_by, reporting_what, reporting_type, reason, added, 2nd_value) 
+        VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . sqlesc($type) . ', ' . sqlesc($reason) . ", $dt, " . sqlesc($id_2) . ')'
+    ) or sqlerr(__FILE__, __LINE__);
     $mc1->delete_value('new_report_');
-    $HTMLOUT .= "<table width='650'><tr><td class='colhead'><h1>{$lang['report_success']}</h1></td></tr>" . "<tr><td class='two'>{$lang['report_success1']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>{$id}</b>!<br><b>{$lang['report_reason']}</b> {$reason}</td></tr></table>";
-    echo stdhead('Reports', true, $stdhead) . $HTMLOUT . stdfoot();
-    exit();
-} //=== end do_it
-// === starting main page for reporting all...
-$HTMLOUT .= "<form method='post' action='report.php?type=$type$id_2b&amp;id=$id&amp;do_it=1'>
-    <table width='650'>
-    <tr><td class='colhead' colspan='2'>
-    <h1>Report: " . str_replace('_', ' ', $type) . '</h1></td></tr>' . "
-    <tr><td class='one' colspan='2'>
-    <img src='{$site_config['pic_base_url']}warned.png' alt='warned' title='Warned' border='0' /> {$lang['report_report']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>$id</b>" . "
-    <img src='{$site_config['pic_base_url']}warned.png' alt='warned' title='Warned' border='0' /><br>{$lang['report_report1']} <a class='altlink' href='rules.php' target='_blank'>{$lang['report_rules']}</a>?</td></tr>" . "
-    <tr><td class='two'><b>{$lang['report_reason']}</b></td><td class='two'><textarea name='reason' cols='70' rows='5'></textarea><br> [ {$lang['report_req']} ]<br></td></tr>" . "
-    <tr><td class='one' colspan='2'><input type='submit' class='button' value='{$lang['report_confirm']}' /></td></tr></table></form>";
-echo stdhead('Report', true, $stdhead) . $HTMLOUT . stdfoot();
+    setSessionVar('is-success', str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>{$id}</b>!<br><b>{$lang['report_reason']}</b> {$reason}");
+}
+
+
+$HTMLOUT .= main_div("
+    <form method='post' action='{$site_config['baseurl']}/report.php?type=$type$id_2b&amp;id=$id&amp;do_it=1'>
+    <h1>Report: " . str_replace('_', ' ', $type) . "</h1>
+        <img src='{$site_config['pic_base_url']}warned.png' alt='warned' title='Warned' /> {$lang['report_report']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>$id</b>
+        <img src='{$site_config['pic_base_url']}warned.png' alt='warned' title='Warned' /><br>{$lang['report_report1']} <a class='altlink' href='{$site_config['baseurl']}/rules.php' target='_blank'>{$lang['report_rules']}</a>?</td></tr>
+        <b>{$lang['report_reason']}</b>
+        <textarea name='reason' class='w-100' rows='5'></textarea> [ {$lang['report_req']} ]<br>
+        <input type='submit' class='button margin20' value='{$lang['report_confirm']}' />
+    </form>");
+echo stdhead('Report', true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
 die;

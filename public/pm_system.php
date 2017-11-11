@@ -132,7 +132,7 @@ if (!in_array($order_by, $good_order_by)) {
 }
 //=== top of page:
 $top_links = '
-    <div class="has-text-centered top20">
+    <div class="has-text-centered top20 padding20">
         <ul class="level-center">
             <li><a class="altlink bordered padding10" href="./pm_system.php?action=search">' . $lang['pm_search'] . '</a></li>
             <li><a class="altlink bordered padding10" href="./pm_system.php?action=edit_mailboxes">' . $lang['pm_manager'] . '</a></li>
@@ -302,4 +302,4 @@ function insertJumpTo($mailbox)
     return $insertJumpTo;
 }
 
-echo stdhead($lang['pm_stdhead'], true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead($lang['pm_stdhead'], true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

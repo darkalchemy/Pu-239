@@ -16,7 +16,7 @@ if ($site_config['msg_alert'] && $CURUSER) {
                 </span>
                 <div class='tooltip_templates'>
                     <span id='message_tooltip'>
-                        <div class='size_4 has-text-centered has-text-success has-text-weight-bold bottom10'>" . ($unread > 1 ? "{$lang['gl_newprivs']}{$lang['gl_newmesss']}" : "{$lang['gl_newpriv']}{$lang['gl_newmess']}") . "</div>" .
+                        <div class='size_4 has-text-centered has-text-info has-text-weight-bold bottom10'>" . ($unread > 1 ? "{$lang['gl_newprivs']}{$lang['gl_newmesss']}" : "{$lang['gl_newpriv']}{$lang['gl_newmess']}") . "</div>" .
                         sprintf($lang['gl_msg_alert'], $unread) . ($unread > 1 ? $lang['gl_msg_alerts'] : '') . "
                     </span>
                 </div>

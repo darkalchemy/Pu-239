@@ -430,7 +430,10 @@ pre {
   overflow-x: auto;
   padding: 1.25rem 1.5rem;
   white-space: pre;
-  word-wrap: normal
+  word-wrap: normal;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4
 }
 pre code {
   background-color: transparent;
@@ -9700,6 +9703,14 @@ input[type=submit],
 label,
 select {
   cursor: pointer
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none
 }
 h1,
 h2,

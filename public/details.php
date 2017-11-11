@@ -564,9 +564,9 @@ if (count($sim_torrents) > 0) {
         <div class='table-wrapper'>
             <table class='table table-bordered'>
                 <tr class='no_hover'>
-                    <td class='rowhead'>{$lang['details_similiar']}
+                    <td class='rowhead'>
                         <span class='flipper has-text-primary'>
-                            <i class='fa fa-angle-down fa-2x' aria-hidden='true'></i>
+                            <i class='fa fa-angle-down right10' aria-hidden='true'></i>{$lang['details_similiar']}
                         </span>
                         <div class='is_hidden'>$sim_torrent</div>
                     </td>

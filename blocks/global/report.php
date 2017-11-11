@@ -1,4 +1,6 @@
 <?php
+
+global $site_config, $CURUSER;
 if ($site_config['report_alert'] && $CURUSER['class'] >= UC_STAFF) {
     if (($delt_with = $mc1->get_value('new_report_')) === false) {
         $res_reports = sql_query("SELECT COUNT(id) FROM reports WHERE delt_with = '0'");
@@ -8,13 +10,19 @@ if ($site_config['report_alert'] && $CURUSER['class'] >= UC_STAFF) {
     if ($delt_with > 0) {
         $htmlout .= "
     <li>
-    <a class='tooltip' href='staffpanel.php?tool=reports&amp;action=reports'><b class='button btn-warning is-small'>" . ($delt_with > 1 ? $lang['gl_reportss'] . $lang['gl_reports_news'] : $lang['gl_reports'] . $lang['gl_reports_new']) . "</b>
-	<span class='custom info alert alert-warning'><em>" . ($delt_with > 1 ? $lang['gl_reportss'] . $lang['gl_reports_news'] : $lang['gl_reports'] . $lang['gl_reports_new']) . '</em>
-    ' . $lang['gl_hey'] . " {$CURUSER['username']}!<br> $delt_with " . ($delt_with > 1 ? $lang['gl_reportss'] . $lang['gl_reports_news'] : $lang['gl_reports'] . $lang['gl_reports_new']) . '' . $lang['gl_reports_dealt'] . '<br>
-    ' . $lang['gl_reports_click'] . '
-    </span></a></li>';
+        <a href='{$site_config['baseurl']}/staffpanel.php?tool=reports&amp;action=reports'>
+            <span class='button tag is-danger dt-tooltipper-small' data-tooltip-content='#reportmessage_tooltip'>
+                " . ($delt_with > 1 ? $lang['gl_reportss'] . $lang['gl_reports_news'] : $lang['gl_reports'] . $lang['gl_reports_new']) . "
+            </span>
+            <div class='tooltip_templates'>
+                <span id='reportmessage_tooltip'>
+                    <div class='size_4 has-text-centered has-text-danger has-text-weight-bold bottom10'>
+	                    " . ($delt_with > 1 ? $lang['gl_reportss'] . $lang['gl_reports_news'] : $lang['gl_reports'] . $lang['gl_reports_new']) . "
+	                </div>
+                    {$lang['gl_hey']} {$CURUSER['username']}!<br> $delt_with " . ($delt_with > 1 ? $lang['gl_reportss'] . $lang['gl_reports_news'] : $lang['gl_reports'] . $lang['gl_reports_new']) . "{$lang['gl_reports_dealt']}
+                </span>
+            </div>
+        </a>
+    </li>";
     }
 }
-//==End
-// End Class
-// End File

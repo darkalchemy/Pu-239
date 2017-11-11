@@ -121,7 +121,7 @@ function github_shout($links = [])
     if ($site_config['autoshout_on'] == 1) {
         require_once INCL_DIR . 'user_functions.php';
         if (($rss = $mc1->get_value('githubcommitrss_')) === false) {
-            $rss = file_get_contents('https://github.com/darkalchemy/Pu-239/commits/master.atom');
+            $rss = file_get_contents('https://github.com/darkalchemy/Pu-239/commits/dev.atom');
             $mc1->cache_value('githubcommitrss_', $rss, 300);
         }
         $xml = simplexml_load_string($rss);
