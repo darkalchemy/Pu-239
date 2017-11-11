@@ -1,6 +1,7 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('chat'));
 $nick = ($CURUSER ? $CURUSER['username'] : ('Guest' . random_int(1000, 9999)));
@@ -32,4 +33,4 @@ $HTMLOUT .= "<p>{$lang['chat_channel']}<a href='irc://{$irc_url}'>{$irc_channel}
     </div>
     </div>";
 ///////////////////// HTML OUTPUT ////////////////////////////
-echo stdhead("{$lang['chat_chat']}") . $HTMLOUT . stdfoot();
+echo stdhead("{$lang['chat_chat']}") . wrapper($HTMLOUT) . stdfoot();

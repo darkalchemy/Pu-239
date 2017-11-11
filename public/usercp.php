@@ -75,7 +75,6 @@ if (isset($_GET['edited'])) {
 }
 
 $HTMLOUT .= "
-    <div class='container is-fluid portlet'>
         <h1>Welcome " . format_username((int)$CURUSER['id']) . "!</h1>
         <div>
             <div class='w-100'>
@@ -520,8 +519,8 @@ elseif ($action == 'torrents') {
                                                 <span class='margin10 bordered tooltipper' title='" . htmlsafechars($a['name']) . "'>
                                                     <input name='cat{$a['id']}' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? " checked" : '') . " value='yes' />
                                                     <span class='cat-image left10'>
-                                                        <a href='{$site_config['baseurl']}/browse.php?c".(int) $a['id']."'>
-                                                            <img class='radius-sm' src='{$site_config['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/".htmlsafechars($a['image'])."'alt='".htmlsafechars($a['name'])."' />
+                                                        <a href='{$site_config['baseurl']}/browse.php?c" . (int)$a['id'] . "'>
+                                                            <img class='radius-sm' src='{$site_config['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($a['image']) . "'alt='" . htmlsafechars($a['name']) . "' />
                                                         </a>
                                                     </span>
                                                 </span>";
@@ -740,7 +739,7 @@ elseif ($action == 'personal') {
                                     </tr>
                                 </thead>
                                 <tbody>";
-    $HTMLOUT .= tr($lang['usercp_accept_pm'], "
+        $HTMLOUT .= tr($lang['usercp_accept_pm'], "
                                             <div class='level-center'>
                                                 <span>
                                                     <input type='radio' name='acceptpms'" . ($CURUSER['acceptpms'] == 'yes' ? " checked" : '') . " value='yes' /> {$lang['usercp_except_blocks']}
@@ -752,20 +751,20 @@ elseif ($action == 'personal') {
                                                     <input type='radio' name='acceptpms'" . ($CURUSER['acceptpms'] == 'no' ? " checked" : '') . " value='no' /> {$lang['usercp_only_staff']}
                                                 </span>
                                             </div>", 1);
-    $HTMLOUT .= tr($lang['usercp_delete_pms'], "
+        $HTMLOUT .= tr($lang['usercp_delete_pms'], "
                                             <input type='checkbox' name='deletepms'" . ($CURUSER['deletepms'] == 'yes' ? " checked" : '') . " /> {$lang['usercp_default_delete']}", 1);
-    $HTMLOUT .= tr($lang['usercp_save_pms'], "
+        $HTMLOUT .= tr($lang['usercp_save_pms'], "
                                             <input type='checkbox' name='savepms'" . ($CURUSER['savepms'] == 'yes' ? " checked" : '') . " /> {$lang['usercp_default_save']}", 1);
-    $HTMLOUT .= tr('Forum Subscribe PM', "
+        $HTMLOUT .= tr('Forum Subscribe PM', "
                                             <input type='radio' name='subscription_pm' " . ($CURUSER['subscription_pm'] == 'yes' ? " checked" : '') . " value='yes' /> Yes
                                             <input type='radio' name='subscription_pm' " . ($CURUSER['subscription_pm'] == 'no' ? " checked" : '') . " value='no' /> No<br>When someone posts in a subscribed thread, you will be PMed.", 1);
-    $HTMLOUT .= tr('Torrent deletion PM', "
+        $HTMLOUT .= tr('Torrent deletion PM', "
                                             <input type='radio' name='pm_on_delete' " . ($CURUSER['pm_on_delete'] == 'yes' ? " checked" : '') . " value='yes' /> Yes
                                             <input type='radio' name='pm_on_delete' " . ($CURUSER['pm_on_delete'] == 'no' ? " checked" : '') . " value='no' /> No<br>When any of your uploaded torrents are deleted, you will be PMed.", 1);
-    $HTMLOUT .= tr('Torrent comment PM', "
+        $HTMLOUT .= tr('Torrent comment PM', "
                                             <input type='radio' name='commentpm' " . ($CURUSER['commentpm'] == 'yes' ? " checked" : '') . " value='yes' /> Yes
                                             <input type='radio' name='commentpm' " . ($CURUSER['commentpm'] == 'no' ? " checked" : '') . " value='no' /> No<br>When any of your uploaded torrents are commented on, you will be PMed.", 1);
-    $HTMLOUT .= "
+        $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>
                                             <div class='has-text-centered'>
@@ -782,7 +781,6 @@ $HTMLOUT .= '
                     </form>
                 </div>
             </div>
-        </div>
-    </div>';
+        </div>';
 
-echo stdhead(htmlsafechars($CURUSER['username'], ENT_QUOTES) . "{$lang['usercp_stdhead']} ", true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead(htmlsafechars($CURUSER['username'], ENT_QUOTES) . "{$lang['usercp_stdhead']} ", true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

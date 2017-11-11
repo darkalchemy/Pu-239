@@ -41,7 +41,7 @@ require_once INCL_DIR . 'site_config.php';
 $load = sys_getloadavg();
 if ($load[0] > 20) {
     die(
-        "Load is too high. 
+    "Load is too high. 
         Don't continuously refresh, or you will just make the problem last longer"
     );
 }

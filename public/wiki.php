@@ -7,9 +7,7 @@ check_user_status();
 $lang = array_merge(load_language('global'), load_language('wiki'));
 //$stdhead = array(/** include js **/'js' => array(''));
 $stdhead = [
-    /* include css **/
     'css' => [
-        'wiki',
     ],
 ];
 $HTMLOUT = '';
@@ -22,17 +20,13 @@ global $CURUSER;
  *
  * @return string
  */
-function newmsg($heading = '', $text = '', $div = 'success', $htmlstrip = false)
+function newmsg($heading = '', $text = '', $div = 'is-success', $htmlstrip = false)
 {
     if ($htmlstrip) {
         $heading = htmlsafechars(trim($heading));
         $text = htmlsafechars(trim($text));
     }
-    $htmlout = '';
-    $htmlout .= "<table class='table table-bordered table-striped'><tr><td class='embedded'>\n";
-    $htmlout .= "<div class='$div'>" . ($heading ? "<b>$heading</b><br>" : '') . "$text</div></td></tr></table>\n";
-
-    return $htmlout;
+    return main_div("<div class='$div'>" . ($heading ? "<b>$heading</b><br>" : '') . "$text</div>");
 }
 
 /**
@@ -44,9 +38,8 @@ function newmsg($heading = '', $text = '', $div = 'success', $htmlstrip = false)
  */
 function newerr($heading = '', $text = '', $die = true, $div = 'error', $htmlstrip = false)
 {
-    $htmlout = '';
-    $htmlout .= newmsg($heading, $text, $div, $htmlstrip);
-    echo stdhead() . $htmlout . stdfoot();
+    $htmlout = newmsg($heading, $text, $div, $htmlstrip);
+    echo stdhead() . wrapper($htmlout) . stdfoot();
     if ($die) {
         die;
     }
@@ -322,4 +315,4 @@ if ($action == 'sort') {
 }
 $HTMLOUT .= '</div>';
 $HTMLOUT .= end_main_frame();
-echo stdhead($lang['wiki_title'], true, $stdhead) . $HTMLOUT . stdfoot();
+echo stdhead($lang['wiki_title'], true, $stdhead) . wrapper($HTMLOUT) . stdfoot();

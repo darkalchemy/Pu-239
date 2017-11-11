@@ -87,4 +87,4 @@ if (!empty($support)) {
         </tr>" . $firstline . '';
     $htmlout .= '</table></div>';
 }
-echo stdhead('Staff', true, $stdhead) . $htmlout . stdfoot();
+echo stdhead('Staff', true, $stdhead) . wrapper($htmlout) . stdfoot();

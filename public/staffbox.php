@@ -68,7 +68,7 @@ switch ($do) {
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             }
-            $q1 = sql_query('SELECT s.msg,s.sender,s.subject,u.username FROM staffmessages as s LEFT JOIN users as u ON s.sender=u.id WHERE s.id IN (' . join(',', $id) . ')') or sqlerr(__FILE__, __LINE__);
+            $q1 = sql_query('SELECT s.msg,s.sender,s.subject,u.username FROM staffmessages AS s LEFT JOIN users AS u ON s.sender=u.id WHERE s.id IN (' . join(',', $id) . ')') or sqlerr(__FILE__, __LINE__);
             $a = mysqli_fetch_assoc($q1);
             $response = htmlsafechars($message) . "\n---" . htmlsafechars($a['username']) . " wrote ---\n" . htmlsafechars($a['msg']);
             sql_query('INSERT INTO messages(sender,receiver,added,subject,msg) VALUES(' . sqlesc($CURUSER['id']) . ',' . sqlesc($a['sender']) . ',' . TIME_NOW . ',' . sqlesc('RE: ' . $a['subject']) . ',' . sqlesc($response) . ')') or sqlerr(__FILE__, __LINE__);
@@ -94,10 +94,10 @@ switch ($do) {
 
     case 'view':
         if ($id > 0) {
-            $q2 = sql_query('SELECT s.id, s.added, s.msg, s.subject, s.answered, s.answer, s.answeredby, s.sender, s.answer, u.username, u2.username as username2 FROM staffmessages as s LEFT JOIN users as u ON s.sender = u.id LEFT JOIN users as u2 ON s.answeredby = u2.id  WHERE s.id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+            $q2 = sql_query('SELECT s.id, s.added, s.msg, s.subject, s.answered, s.answer, s.answeredby, s.sender, s.answer, u.username, u2.username AS username2 FROM staffmessages AS s LEFT JOIN users AS u ON s.sender = u.id LEFT JOIN users AS u2 ON s.answeredby = u2.id  WHERE s.id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             if (mysqli_num_rows($q2) == 1) {
                 $a = mysqli_fetch_assoc($q2);
-                $HTMLOUT .= wrapper("
+                $HTMLOUT .= "
                     <div class='has-text-centered'>
                         <h1>{$lang['staffbox_pm_view']}</h1>
                     </div>" . main_div("
@@ -124,8 +124,8 @@ switch ($do) {
                             <input type='hidden' name='id[]' value='" . (int)$a['id'] . "' />
                             <input type='submit' class='button is-small' value='{$lang['staffbox_confirm']}' />
                         </div>
-                    </form>"), 'has-text-left');
-                echo stdhead('StaffBox', true, $stdhead) . $HTMLOUT . stdfoot();
+                    </form>");
+                echo stdhead('StaffBox', true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
             } else {
                 setSessionVar('is-warning', $lang['staffbox_msg_noid']);
                 header("Location: {$_SERVER['PHP_SELF']}");
@@ -181,7 +181,7 @@ switch ($do) {
                             <th>{$lang['staffbox_answered']}</th>
                             <th><input type='checkbox' id='checkThemAll' /></th>
                         </tr>";
-            $r = sql_query('SELECT s.id, s.added, s.subject, s.answered, s.answeredby, s.sender, s.answer, u.username, u2.username as username2 FROM staffmessages as s LEFT JOIN users as u ON s.sender = u.id LEFT JOIN users as u2 ON s.answeredby = u2.id ORDER BY id desc ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
+            $r = sql_query('SELECT s.id, s.added, s.subject, s.answered, s.answeredby, s.sender, s.answer, u.username, u2.username AS username2 FROM staffmessages AS s LEFT JOIN users AS u ON s.sender = u.id LEFT JOIN users AS u2 ON s.answeredby = u2.id ORDER BY id DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
             $body = "
                     <tbody>";
             while ($a = mysqli_fetch_assoc($r)) {
@@ -209,5 +209,5 @@ switch ($do) {
             $HTMLOUT .= $pager['pagerbottom'];
             $HTMLOUT = wrapper($HTMLOUT, null, null, null, null);
         }
-        echo stdhead($lang['staffbox_head'], true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+        echo stdhead($lang['staffbox_head'], true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
 }

@@ -1,6 +1,7 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('getrss'));
@@ -35,15 +36,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 $HTMLOUT = "
-    <div class='container is-fluid portlet'>
-        <form action='{$_SERVER['PHP_SELF']}' method='post'>
+        <form action='{$_SERVER['PHP_SELF']}' method='post'>";
+$text = "
             <div class='padding20 round10 top20 bottom20 bg-02'>
                 <div id='checkbox_container' class='level-center'>";
 
 $catids = genrelist();
 if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
     foreach ($catids as $cat) {
-        $HTMLOUT .= "
+        $text .= "
                     <span class='margin10 mw-50 is-flex bg-02 round10 tooltipper' title='" . htmlsafechars($cat['name']) . "'>
                         <span class='bordered level-center'>
                             <input type='checkbox' name='cats[]' id='cat_" . (int)$cat['id'] . "' value='" . (int)$cat['id'] . "' />
@@ -55,7 +56,7 @@ if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
     }
 } else {
     foreach ($catids as $cat) {
-        $HTMLOUT .= "
+        $text .= "
                     <span class='margin10 bordered tooltipper' title='" . htmlsafechars($cat['name']) . "'>
                         <label for='c" . (int)$cat['id'] . "'>
                             <input name='c" . (int)$cat['id'] . "' class='styled1' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? " checked" : '') . "value='1' />
@@ -63,14 +64,16 @@ if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
                     </span>";
     }
 }
-$HTMLOUT .= "
+$text .= "
                 </div>
                 <div class='level-center top20'>
                     <label for='checkAll'>
                         <input type='checkbox' id='checkAll' /><span> Select All Categories</span>
                     </label>
                 </div>
-            </div>
+            </div>";
+$HTMLOUT .= main_div($text);
+$HTMLOUT .= main_div("
             <div class='level-center'>
                 <li class='has-text-centered w-25 tooltipper' title='Returns only Bookmarked Torrents'>
                     <label for='bm' >Bookmarked Torrents<br>
@@ -101,7 +104,7 @@ $HTMLOUT .= "
             </div>
             <div class='level-center top20 bottom20'>
                 <input type='submit' class='button' value='{$lang['getrss_btn']}' />
-            </div>
-        </form>
-    </div>";
-echo stdhead($lang['getrss_head2']) . $HTMLOUT . stdfoot();
+            </div>");
+$HTMLOUT .= "
+        </form>";
+echo stdhead($lang['getrss_head2']) . wrapper($HTMLOUT) . stdfoot();

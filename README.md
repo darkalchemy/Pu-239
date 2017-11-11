@@ -9,6 +9,7 @@
 6. Merge, mininify and gzip css/js files to reduce the number of requests
 6. Optimize all images for web
 7. Remove js from head and relocate to body
+8. Fully responsive and mobile ready
 
 There is a temporary site at http://pu-239.pw:8080 where you can view the code in action.
 ```

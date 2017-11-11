@@ -434,9 +434,6 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
     }
     $loca = sql_query("SELECT * FROM casino_bets WHERE challenged ='empty'");
     $totbets = mysqli_num_rows($loca);
-    $HTMLOUT = "
-    <div class='table-wrapper bottom20'>
-        <div class='container is-fluid portlet'>";
     $HTMLOUT .= $dummy;
     //== Place bet table
     if ($openbet < $maxusrbet) {
@@ -620,7 +617,4 @@ if (isset($color_options[$post_color]) && isset($number_options[$post_number]) |
                 </div>
             </div>";
 }
-$HTMLOUT .= "
-        </div>
-    </div>";
-echo stdhead("{$lang['casino_stdhead']}") . $HTMLOUT . stdfoot();
+echo stdhead("{$lang['casino_stdhead']}") . wrapper($HTMLOUT) . stdfoot();

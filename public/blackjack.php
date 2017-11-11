@@ -1,6 +1,7 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('blackjack'));
 global $site_config, $CURUSER;
@@ -109,7 +110,7 @@ if (count($list) > 0) {
         if ($card != $player_cards[0]) {
             $player_showcards .= "<div class='card {$arr['pic']}'></div>";
         } else {
-            $player_showcards .= "<img src='{$site_config['pic_base_url']}back.png' width='71' height='97' border='0' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
+            $player_showcards .= "<img src='{$site_config['pic_base_url']}back.png' width='71' height='97' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
         }
         $player_showcards_end .= "<div class='card {$arr['pic']}'></div>";;
     }
@@ -126,7 +127,7 @@ if (count($list) > 0) {
             if ($card != $dealer_cards[0]) {
                 $player_showcards .= "<div class='card {$arr['pic']}'></div>";
             } else {
-                $player_showcards .= "<img src='{$site_config['pic_base_url']}back.png' width='71' height='97' border='0' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
+                $player_showcards .= "<img src='{$site_config['pic_base_url']}back.png' width='71' height='97' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
             }
         }
         $player_showcards_end = $player_showcards;
@@ -228,7 +229,7 @@ if ($game) {
                 $dealer_card = getCard($cardcount, $blackjack['gameid'], false);
                 $dealer_cardids[] = $dealer_card;
                 $player_showcards .= "
-                    <img src='{$site_config['pic_base_url']}back.png' width='71' height='97' border='0' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
+                    <img src='{$site_config['pic_base_url']}back.png' width='71' height='97' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
                 // player card 2
                 $card = getCard($cardcount, $blackjack['gameid'], false);
                 $cardids[] = $card;
@@ -1039,35 +1040,18 @@ if ($game) {
     }
 
     $HTMLOUT .= "
-                <table class='table table-bordered table-striped top20 bottom20'>
-                    <thead>
+            <h3>Site Statistics</h3>";
+    $header = "
                         <tr class='no_hover'>
-                            <th colspan='4'>
-                                <div class='has-text-centered'>
-                                    <h3>Site Statistics</h3>
-                                </div>
-                            </th>
-                        </tr>
-                        <tr class='no_hover'>
-                            <td>
-                                Username
-                            </td>
-                            <td>
-                                Total
-                            </td>
-                            <td>
-                                Wins
-                            </td>
-                            <td>
-                                Losses
-                            </td>
-                        </tr>
-                    </thead>
-                    <tbody>
-";
+                            <th>Username</th>
+                            <th>Total</th>
+                            <th>Wins</th>
+                            <th>Losses</th>
+                        </tr>";
 
+    $body = '';
     foreach ($bjusers as $bjuser) {
-        $HTMLOUT .= "
+        $body .= "
                         <tr class='no_hover'>
                             <td>
                                 " . format_username($bjuser['id']) . "
@@ -1083,9 +1067,7 @@ if ($game) {
                             </td>
                         </tr>";
     }
-    $HTMLOUT .= '
-                    </tbody>
-                </table>';
+    $HTMLOUT .= main_table($body, $header);
 
     $last10 = 'SELECT * FROM blackjack_history WHERE game = ' . sqlesc($blackjack['gameid']) . ' ORDER BY id DESC LIMIT 10';
     $sql = sql_query($last10) or sqlerr(__FILE__, __LINE__);
@@ -1301,12 +1283,8 @@ function output($blackjack, $HTMLOUT, $debugout)
     if (($CURUSER['class'] >= UC_SYSOP) && $blackjack['debug']) {
         $HTMLOUT = $HTMLOUT . $debugout;
     }
-    $HTMLOUT = "
-    <div class='container is-fluid portlet has-text-centered'>
-        $HTMLOUT
-    </div>";
 
-    echo stdhead($blackjack['title'], true, $stdhead) . $HTMLOUT . stdfoot();
+    echo stdhead($blackjack['title'], true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
     exit();
 }
 

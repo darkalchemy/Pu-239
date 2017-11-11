@@ -1,6 +1,7 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
 $HTMLOUT = '';
@@ -123,4 +124,4 @@ if ((empty($ann_subject)) and (empty($ann_body))) {
     <font color='blue'>{$lang['annouce_cur_no_new_ann']}</font>
     </div></div></div>\n";
 }
-echo stdhead($lang['annouce_std_head']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['annouce_std_head']) . wrapper($HTMLOUT) . stdfoot();

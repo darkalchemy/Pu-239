@@ -1,6 +1,7 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
 $HTMLOUT = '';
@@ -225,4 +226,4 @@ if ($action == 'viewbug') {
                   <tr><td colspan='2'><input type='submit' value='{$lang['submit_btn_send']}' class='button'/></td></tr>
                   </table></form>";
 }
-echo stdhead("{$lang['header']}") . $HTMLOUT . stdfoot();
+echo stdhead("{$lang['header']}") . wrapper($HTMLOUT) . stdfoot();

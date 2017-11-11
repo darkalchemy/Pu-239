@@ -1,4 +1,7 @@
 <?php
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'html_functions.php';
+
 $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($lconf)) {
     $lottery_config[$ac['name']] = $ac['value'];
@@ -87,7 +90,6 @@ if (time() > $lottery_config['end_date'] || $lottery_config['user_tickets'] <= $
     $lottery['current_user']['can_buy'] = 0;
 }
 $html .= "
-    <div class='container is-fluid portlet'>
         <h1 class='has-text-centered'>{$site_config['site_name']} Lottery</h1>
         <div class='bordered bottom10 top20'>
             <div class='alt_bordered bg-00 has-text-centered'>
@@ -139,6 +141,5 @@ if ($lottery['current_user']['can_buy'] > 0) {
             </div>
         </form>";
 }
-$html .= '
-    </div>';
-echo stdhead('Buy tickets for lottery') . $html . stdfoot();
+
+echo stdhead('Buy tickets for lottery') . wrapper($html) . stdfoot();

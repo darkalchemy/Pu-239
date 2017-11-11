@@ -1,6 +1,7 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..'). DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'));
 global $site_config;
@@ -103,8 +104,8 @@ switch ($action) {
             $status = ($main_query_arr['status'] == 'approved' ? '<span>Approved!</span>' : ($main_query_arr['status'] == 'pending' ? '<span>Pending...</span>' : '<span>denied</span>'));
             $HTMLOUT .= '
     <tr>
-        <td><img border="0" src="{$site_config['pic_base_url']}caticons/' . get_categorie_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '" /></td>
-        <td><a class="altlink" href="offers.php?action=offer_details&amp;id=' . $main_query_arr['offer_id'] . '">' . htmlsafechars($main_query_arr['offer_name'], ENT_QUOTES) . '</a></td>
+        <td><img border="0" src="' . $site_config['pic_base_url'] . 'caticons/' . get_categorie_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '" /></td>
+        <td><a class="altlink" href="' . $site_config['baseurl'] . '/offers.php?action=offer_details&amp;id=' . $main_query_arr['offer_id'] . '">' . htmlsafechars($main_query_arr['offer_name'], ENT_QUOTES) . '</a></td>
         <td>' . get_date($main_query_arr['added'], 'LONG') . '</td>
         <td>' . number_format($main_query_arr['comments']) . '</td>
         <td>yes: ' . number_format($main_query_arr['vote_yes_count']) . '<br>
@@ -115,7 +116,7 @@ switch ($action) {
         }
         $HTMLOUT .= '</table>';
         $HTMLOUT .= '' . $menu . '<br></div>';
-        echo stdhead('Offers', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+        echo stdhead('Offers', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
     //===========================================================================================//
     //==============================the details page for the offer! ========================================//
@@ -186,7 +187,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>category:</td>
-    <td><img border="0" src="{$site_config['pic_base_url']}caticons/' . get_categorie_icons() . '/' . htmlsafechars($arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($arr['cat_name'], ENT_QUOTES) . '" /></td>
+    <td><img border="0" src="' . $site_config['pic_base_url'] . 'caticons/' . get_categorie_icons() . '/' . htmlsafechars($arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($arr['cat_name'], ENT_QUOTES) . '" /></td>
     </tr>
     <tr>
     <td>link:</td>
@@ -232,7 +233,7 @@ switch ($action) {
             $HTMLOUT .= ($count > $perpage) ? '<p>' . $menu . '<br></p>' : '<br>';
         }
         $HTMLOUT .= $commentbar;
-        echo stdhead('Offer details for: ' . htmlsafechars($arr['offer_name'], ENT_QUOTES), true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+        echo stdhead('Offer details for: ' . htmlsafechars($arr['offer_name'], ENT_QUOTES), true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
     //===========================================================================================//
     //====================================    add new offer      ========================================//
@@ -286,7 +287,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>category:</td>
-    <td><img border="0" src="{$site_config['pic_base_url']}caticons/' . get_categorie_icons() . '/' . htmlsafechars($cat_image, ENT_QUOTES) . '" alt="' . htmlsafechars($cat_name, ENT_QUOTES) . '" /></td>
+    <td><img border="0" src="' . $site_config['pic_base_url'] . '   caticons/' . get_categorie_icons() . '/' . htmlsafechars($cat_image, ENT_QUOTES) . '" alt="' . htmlsafechars($cat_name, ENT_QUOTES) . '" /></td>
     </tr>
     <tr>
     <td>link:</td>
@@ -335,7 +336,7 @@ switch ($action) {
     </tr>
     </table></form>
      </td></tr></table><br>';
-        echo stdhead('Add new offer.', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+        echo stdhead('Add new offer.', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
     //===========================================================================================//
     //====================================      delete  offer      ========================================//
@@ -363,7 +364,7 @@ switch ($action) {
             header('Location: /offers.php?offer_deleted=1');
             exit();
         }
-        echo stdhead('Delete Offer.', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+        echo stdhead('Delete Offer.', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
     //===========================================================================================//
     //====================================          edit offer      ========================================//
@@ -424,7 +425,7 @@ switch ($action) {
     </tr>
     <tr>
     <td>category:</td>
-    <td><img border="0" src="{$site_config['pic_base_url']}caticons/' . get_categorie_icons() . '/' . htmlsafechars($cat_image, ENT_QUOTES) . '" alt="' . htmlsafechars($cat_name, ENT_QUOTES) . '" /></td>
+    <td><img border="0" src="' . $site_config['pic_base_url'] . 'caticons/' . get_categorie_icons() . '/' . htmlsafechars($cat_image, ENT_QUOTES) . '" alt="' . htmlsafechars($cat_name, ENT_QUOTES) . '" /></td>
     </tr>
     <tr>
     <td>link:</td>
@@ -466,7 +467,7 @@ switch ($action) {
     </tr>
     </table></form>
      </td></tr></table><br>';
-        echo stdhead('Edit Offer.', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+        echo stdhead('Edit Offer.', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
     //===========================================================================================//
     //====================================    add comment          ========================================//
@@ -529,7 +530,7 @@ switch ($action) {
             $HTMLOUT .= '<h2>Most recent comments, in reverse order</h2>';
             $HTMLOUT .= comment_table($allrows);
         }
-        echo stdhead('Add a comment to "' . htmlsafechars($arr['offer_name']) . '"', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+        echo stdhead('Add a comment to "' . htmlsafechars($arr['offer_name']) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
     //===========================================================================================//
     //==================================    edit comment    =============================================//
@@ -589,7 +590,7 @@ switch ($action) {
     <input name="button" type="submit" class="button" value="Edit" /></td>
     </tr>
      </table></form>';
-        echo stdhead('Edit comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+        echo stdhead('Edit comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
     //===========================================================================================//
     //==================================    delete comment    =============================================//

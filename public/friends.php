@@ -1,6 +1,7 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $site_config;
 
@@ -166,7 +167,7 @@ $user = mysqli_fetch_assoc($res) or stderr($lang['friends_error'], $lang['friend
 $HTMLOUT = '';
 //== Pending
 $i = 0;
-$res = sql_query('SELECT f.userid as id, u.username, u.class, u.avatar, u.title, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.perms FROM friends AS f LEFT JOIN users as u ON f.userid = u.id WHERE friendid=' . sqlesc($CURUSER['id']) . " AND f.confirmed='no' AND NOT f.userid IN (SELECT blockid FROM blocks WHERE blockid=f.userid) ORDER BY username") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT f.userid AS id, u.username, u.class, u.avatar, u.title, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.perms FROM friends AS f LEFT JOIN users AS u ON f.userid = u.id WHERE friendid=' . sqlesc($CURUSER['id']) . " AND f.confirmed='no' AND NOT f.userid IN (SELECT blockid FROM blocks WHERE blockid=f.userid) ORDER BY username") or sqlerr(__FILE__, __LINE__);
 $friendsp = '';
 if (mysqli_num_rows($res) == 0) {
     $friendsp = "<em>{$lang['friends_pending_empty']}.</em>";
@@ -191,7 +192,7 @@ if (mysqli_num_rows($res) == 0) {
 }
 //== Pending ends
 //== Awaiting start
-$res = sql_query('SELECT f.friendid as id, u.username, u.donor, u.class, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM friends AS f LEFT JOIN users as u ON f.friendid = u.id WHERE userid=' . sqlesc($userid) . " AND f.confirmed='no' ORDER BY username") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT f.friendid AS id, u.username, u.donor, u.class, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM friends AS f LEFT JOIN users AS u ON f.friendid = u.id WHERE userid=' . sqlesc($userid) . " AND f.confirmed='no' ORDER BY username") or sqlerr(__FILE__, __LINE__);
 $friendreqs = '';
 if (mysqli_num_rows($res) == 0) {
     $friendreqs = '<em>Your requests list is empty.</em>';
@@ -213,7 +214,7 @@ if (mysqli_num_rows($res) == 0) {
 //== Awaiting ends
 //== Friends block
 $i = 0;
-$res = sql_query('SELECT f.friendid as id, u.username, u.class, u.avatar, u.title, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.uploaded, u.downloaded, u.country, u.perms FROM friends AS f LEFT JOIN users as u ON f.friendid = u.id WHERE userid=' . sqlesc($userid) . " AND f.confirmed='yes' ORDER BY username") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT f.friendid AS id, u.username, u.class, u.avatar, u.title, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.uploaded, u.downloaded, u.country, u.perms FROM friends AS f LEFT JOIN users AS u ON f.friendid = u.id WHERE userid=' . sqlesc($userid) . " AND f.confirmed='yes' ORDER BY username") or sqlerr(__FILE__, __LINE__);
 $friends = '';
 if (mysqli_num_rows($res) == 0) {
     $friends = '<em>Your friends list is empty.</em>';
@@ -237,7 +238,7 @@ if (mysqli_num_rows($res) == 0) {
     }
 }
 
-$res = sql_query('SELECT b.blockid as id, u.username, u.donor, u.class, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM blocks AS b LEFT JOIN users as u ON b.blockid = u.id WHERE userid=' . sqlesc($userid) . ' ORDER BY username') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT b.blockid AS id, u.username, u.donor, u.class, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM blocks AS b LEFT JOIN users AS u ON b.blockid = u.id WHERE userid=' . sqlesc($userid) . ' ORDER BY username') or sqlerr(__FILE__, __LINE__);
 $blocks = '';
 if (mysqli_num_rows($res) == 0) {
     $blocks = "{$lang['friends_blocks_empty']}<em>.</em>";
@@ -258,7 +259,6 @@ foreach ($countries as $cntry) {
     }
 }
 $HTMLOUT .= "
-    <div class='container is-fluid portlet'>
         <h1>{$lang['friends_personal']} " . htmlsafechars($user['username'], ENT_QUOTES) . " $country</h1>
         <table class='table table-bordered table-striped top20 bottom20'>
             <thead>
@@ -296,6 +296,5 @@ $HTMLOUT .= "
             <a href='./users.php'>
                 {$lang['friends_user_list']}
             </a>
-        </div>
-    </div>";
-echo stdhead("{$lang['friends_stdhead']} " . htmlsafechars($user['username'])) . $HTMLOUT . stdfoot();
+        </div>";
+echo stdhead("{$lang['friends_stdhead']} " . htmlsafechars($user['username'])) . wrapper($HTMLOUT) . stdfoot();

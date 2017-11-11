@@ -95,7 +95,7 @@ if (isset($_GET['view']) && $_GET['view'] == 't') {
     } else {
         $HTMLOUT .= '<h4>Insufficient Torrents (' . $counted . ')</h4></div>';
     }
-    echo stdhead($lang['head_title']) . $HTMLOUT . stdfoot();
+    echo stdhead($lang['head_title']) . wrapper($HTMLOUT) . stdfoot();
     exit();
 }
 if (isset($_GET['view']) && $_GET['view'] == 'c') {
@@ -159,7 +159,7 @@ if (isset($_GET['view']) && $_GET['view'] == 'c') {
     } else {
         $HTMLOUT .= '<h4>Insufficient Countries (' . $counted . ')</h4></div>';
     }
-    echo stdhead($lang['head_title']) . $HTMLOUT . stdfoot();
+    echo stdhead($lang['head_title']) . wrapper($HTMLOUT) . stdfoot();
     exit();
 }
 // Default display / Top Users
@@ -279,4 +279,4 @@ if ($counted == '10') {
 } else {
     $HTMLOUT .= '<h4>Insufficient Downloaders (' . $counted . ')</h4></div>';
 }
-echo stdhead($lang['head_title']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['head_title']) . wrapper($HTMLOUT) . stdfoot();

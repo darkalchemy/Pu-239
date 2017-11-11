@@ -1,6 +1,7 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $site_config;
 
@@ -28,7 +29,6 @@ if ($casino_count > 0) {
 
 $HTMLOUT = '';
 $HTMLOUT .= "
-        <div class='container is-fluid portlet'>
             <div class='has-text-centered'>
                 <h1>{$site_config['site_name']} Games!</h1>
                 <h3>Welcome To The Casino, Please Select A Game Below To Play.</h3>
@@ -36,54 +36,53 @@ $HTMLOUT .= "
             <div class='columns'>
                 <div class='column'>
                     <a href='./blackjack.php?id=1'><div class='has-text-centered $color1'>BlackJack 1GB</div>
-                        <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper' title='BlackJack 1GB' />
+                        <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper round10' title='BlackJack 1GB' />
                     </a>
                 </div>
                 <div class='column'>
                     <a href='./blackjack.php?id=10'><div class='has-text-centered $color2'>BlackJack 10GB</div>
-                        <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper' title='BlackJack 10GB' />
+                        <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper round10' title='BlackJack 10GB' />
                     </a>
                 </div>
                 <div class='column'>
                     <a href='./blackjack.php?id=20'><div class='has-text-centered $color3'>BlackJack 20GB</div>
-                        <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper' title='BlackJack 20GB' />
+                        <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper round10' title='BlackJack 20GB' />
                     </a>
                 </div>
             </div>
             <div class='columns'>
                 <div class='column'>
                     <a href='./blackjack.php?id=50'><div class='has-text-centered $color4'>BlackJack 50GB</div>
-                        <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper' title='BlackJack 50GB' />
+                        <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper round10' title='BlackJack 50GB' />
                     </a>
                 </div>
                 <div class='column'>
                     <a href='./casino.php'><div class='has-text-centered $color9'>Casino</div>
-                        <img src='{$site_config['pic_base_url']}casino.jpg' alt='casino' class='tooltipper' title='Casino' />
+                        <img src='{$site_config['pic_base_url']}casino.jpg' alt='casino' class='tooltipper round10' title='Casino' />
                     </a>
                 </div>
                 <div class='column'>
                     <a href='./blackjack.php?id=100'><div class='has-text-centered $color5'>BlackJack 100GB</div>
-                        <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper' title='BlackJack 100GB' />
+                        <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper round10' title='BlackJack 100GB' />
                     </a>
                 </div>
             </div>
             <div class='columns'>
                 <div class='column'>
                     <a href='./blackjack.php?id=250'><div class='has-text-centered $color6'>BlackJack 250GB</div>
-                        <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper' title='BlackJack 250GB' />
+                        <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper round10' title='BlackJack 250GB' />
                     </a>
                 </div>
                 <div class='column'>
                     <a href='./blackjack.php?id=500'><div class='has-text-centered $color7'>BlackJack 500GB</div>
-                        <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper' title='BlackJack 500GB' />
+                        <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper round10' title='BlackJack 500GB' />
                     </a>
                 </div>
                 <div class='column'>
                     <a href='./blackjack.php?id=1024'><div class='has-text-centered $color8'>BlackJack 1TB</div>
-                        <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper' title='BlackJack 1TB' />
+                        <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper round10' title='BlackJack 1TB' />
                     </a>
                 </div>
-            </div>
-        </div>";
+            </div>";
 
-echo stdhead('Games') . $HTMLOUT . stdfoot();
+echo stdhead('Games') . wrapper($HTMLOUT) . stdfoot();

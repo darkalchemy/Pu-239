@@ -40,12 +40,12 @@ $staff_tools['shit_list'] = 'shit_list';
 
 $sql = sql_query('SELECT file_name FROM staffpanel') or sqlerr(__FILE__, __LINE__);
 while ($list = mysqli_fetch_assoc($sql)) {
-    $item = str_replace(array('staffpanel.php?tool=', '.php', '&mode=news', '&action=app'), '', $list['file_name']);
-    $staff_tools[$item] = $item;
+    $item = str_replace(['staffpanel.php?tool=', '.php', '&mode=news', '&action=app'], '', $list['file_name']);
+    $staff_tools[ $item ] = $item;
 }
 
-if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool] . '.php')) {
-    require_once ADMIN_DIR . $staff_tools[$tool] . '.php';
+if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[ $tool ] . '.php')) {
+    require_once ADMIN_DIR . $staff_tools[ $tool ] . '.php';
 } else {
     if ($action == 'delete' && is_valid_id($id) && $CURUSER['class'] == UC_MAX) {
         $sure = ((isset($_GET['sure']) ? $_GET['sure'] : '') == 'yes');
@@ -86,7 +86,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
             $arr = mysqli_fetch_assoc($res);
         }
         foreach ($names as $name) {
-            $$name = (isset($_POST[$name]) ? $_POST[$name] : ($action == 'edit' ? $arr[$name] : ''));
+            $$name = (isset($_POST[ $name ]) ? $_POST[ $name ] : ($action == 'edit' ? $arr[ $name ] : ''));
         }
         if ($action == 'edit' && $CURUSER['class'] < $av_class) {
             stderr($lang['spanel_error'], $lang['spanel_cant_edit_this_pg']);
@@ -178,7 +178,6 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
             $HTMLOUT .= "<input type='hidden' name='id' value='{$id}' />";
         }
         $HTMLOUT .= "
-    <div class='container is-fluid portlet'>
         <table class='table table-bordered table-striped top20'>
             <thead>
                 <tr>
@@ -289,7 +288,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
                 $mysql_data[] = $arr;
             }
             foreach ($mysql_data as $key => $value) {
-                $db_classes[$value['av_class']][] = $value['av_class'];
+                $db_classes[ $value['av_class'] ][] = $value['av_class'];
             }
             $i = 1;
             $HTMLOUT .= "
@@ -297,7 +296,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
             <h1 class='text-center'>{$lang['spanel_welcome']} {$CURUSER['username']} {$lang['spanel_to_the']} {$lang['spanel_header']}!</h1>";
 
             foreach ($mysql_data as $key => $arr) {
-                $end_table = (count($db_classes[$arr['av_class']]) == $i ? true : false);
+                $end_table = (count($db_classes[ $arr['av_class'] ]) == $i ? true : false);
                 if (!in_array($arr['av_class'], $unique_classes)) {
                     $unique_classes[] = $arr['av_class'];
                     $HTMLOUT .= "
@@ -311,11 +310,11 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
                         <th><div class='text-center'>Show in Navbar</div></th>
                         <th><div class='text-center'>{$lang['spanel_added_by']}</div></th>
                         <th><div class='text-center'>{$lang['spanel_date_added']}</div></th>";
-                        if ($CURUSER['class'] == UC_MAX) {
-                            $HTMLOUT .= "
+                    if ($CURUSER['class'] == UC_MAX) {
+                        $HTMLOUT .= "
                         <th><div class='text-center'>{$lang['spanel_links']}</div></th>";
-                        }
-                        $HTMLOUT .= '
+                    }
+                    $HTMLOUT .= '
                     </tr>
                 </thead>
                 <tbody>';
@@ -362,15 +361,14 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool
                     $i = 1;
                     $HTMLOUT .= '
                 </tbody>
-            </table>
-        </div>';
+            </table>';
                 }
             }
-        $HTMLOUT .= '
+            $HTMLOUT .= '
         </div>';
         } else {
             $HTMLOUT .= stdmsg($lang['spanel_sorry'], $lang['spanel_nothing_found']);
         }
-        echo stdhead($lang['spanel_header']) . $HTMLOUT . stdfoot();
+        echo stdhead($lang['spanel_header']) . wrapper($HTMLOUT) . stdfoot();
     }
 }

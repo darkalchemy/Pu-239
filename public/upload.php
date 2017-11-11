@@ -56,7 +56,6 @@ if (mysqli_num_rows($res_offer) > 0) {
     </tr>';
 }
 $HTMLOUT .= "
-    <div class='container is-fluid portlet'>
     <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='./takeupload.php' method='post'>
     <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['max_torrent_size']}' />
     <h1 class='has-text-centered'>Upload a Torrent</h1>
@@ -284,7 +283,6 @@ $HTMLOUT .= "
             </td>
         </tr>
         </table>
-        </form>
-        </div>";
+        </form>";
 
-echo stdhead($lang['upload_stdhead'], true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead($lang['upload_stdhead'], true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

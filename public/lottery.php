@@ -39,12 +39,11 @@ switch (true) {
 
     default:
         $html = "
-                <div class='container is-fluid portlet'>
                     <h1 class='has-text-centered'>{$site_config['site_name']} Lottery</h1>";
 
         $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
         while ($ac = mysqli_fetch_assoc($lconf)) {
-            $lottery_config[$ac['name']] = $ac['value'];
+            $lottery_config[ $ac['name'] ] = $ac['value'];
         }
         if (!$lottery_config['enable']) {
             $html .= stdmsg('Sorry', 'Lottery is closed at the moment');
@@ -65,7 +64,7 @@ switch (true) {
         <p>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "<a href='./lottery.php?action=config' class='button'>Lottery configuration</a>" : 'Nothing Configured Atm Sorry') . '</p>');
         } else {
             $html .= "
-                    <div class='bordered top20 bottom20'>
+                    <div class='bordered top20'>
                         <div class='alt_bordered bg-00'>
                             <ul>
                                 <li>Nobody has won, because nobody has played yet :)</li>
@@ -75,8 +74,6 @@ switch (true) {
                         </div>
                     </div>";
         }
-        $html .= "
-                </div>
-            </div>";
-        echo stdhead('Lottery') . $html . stdfoot();
+
+        echo stdhead('Lottery') . wrapper($html) . stdfoot();
 }

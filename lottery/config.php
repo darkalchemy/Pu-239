@@ -1,6 +1,7 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once CLASS_DIR . 'class_check.php';
+require_once INCL_DIR . 'html_functions.php';
 class_check(UC_STAFF);
 global $mc1;
 $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
@@ -127,4 +128,4 @@ if ($lottery_config['enable']) {
         </div>
     </form>";
 }
-echo stdhead('Lottery configuration') . $html . stdfoot();
+echo stdhead('Lottery configuration') . wrapper($html) . stdfoot();

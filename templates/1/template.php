@@ -28,7 +28,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     }
 
     $body_class = 'background-16 h-style-9 text-9 skin-2';
-    $htmlout ="<!doctype html>
+    $htmlout = "<!doctype html>
 <html>
 <head>
     <meta charset='utf-8'>
@@ -216,7 +216,6 @@ function stdfoot($stdfoot = false)
     $htmlfoot .= "
                 </div>
             </div>";
-        //</div>";
     if ($CURUSER) {
         $htmlfoot .= "
             <div class='container site-debug bg-05 round10 top20 bottom20'>
@@ -304,19 +303,15 @@ function stdfoot($stdfoot = false)
  */
 function stdmsg($heading, $text)
 {
-    $htmlout = "
-        <div class='bordered top20 bottom20'>
-            <div class='alt_bordered bg-00'>";
+    $htmlout = '';
     if ($heading) {
         $htmlout .= "
                 <h2>$heading</h2>";
     }
     $htmlout .= "
-                <span>$text</span>
-            </div>
-        </div>";
+                <span>$text</span>";
 
-    return $htmlout;
+    return main_div($htmlout);
 }
 
 /**
@@ -462,11 +457,11 @@ function navbar()
                             <li>
                                 <a href='#'>{$lang['gl_general']}</a>
                                 <ul class='ddFade ddFadeSlow'>";
-                    if ($site_config['bucket_allowed'] === 1) {
-                        $navbar .= "
+        if ($site_config['bucket_allowed'] === 1) {
+            $navbar .= "
                                     <li><a href='{$site_config['baseurl']}/bitbucket.php'>{$lang['gl_bitbucket']}</a></li>";
-                    }
-                    $navbar .= "
+        }
+        $navbar .= "
                                     <li><a href='{$site_config['baseurl']}/getrss.php'>RSS</a></li>
                                     <li><a href='{$site_config['baseurl']}/announcement.php'>{$lang['gl_announcements']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/topten.php'>{$lang['gl_stats']}</a></li>
@@ -525,14 +520,15 @@ function navbar()
 /**
  * @return string
  */
-function platform_menu() {
+function platform_menu()
+{
     $menu = "
         <div id='platform-menu' class='container platform-menu'>
             <div class='platform-wrapper level'>
                 <ul class='level-left'>
                 </ul>
                 <ul class='level-right'>" .
-                    StatusBar() . "
+        StatusBar() . "
                 </ul>
             </div>
         </div>";

@@ -1,6 +1,7 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'torrenttable_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
@@ -254,4 +255,4 @@ if ($count) {
     $htmlout .= bookmarktable($res, 'index', true);
     $htmlout .= $pager['pagerbottom'];
 }
-echo stdhead($lang['bookmarks_stdhead']) . $htmlout . stdfoot();
+echo stdhead($lang['bookmarks_stdhead']) . wrapper($htmlout) . stdfoot();

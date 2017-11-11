@@ -1,6 +1,7 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 global $site_config;
 if (!getSessionVar('LoggedIn')) {
     dbconn();
@@ -15,13 +16,12 @@ $stdhead = [
 ];
 
 $HTMLOUT .= "
-    <div class='container is-fluid portlet'>
         <fieldset id='rules'>
             <legend>
                 <img src='./images/info.png' alt='' class='tooltipper right5' title='Guidelines' width='25' />Guidelines
             </legend>
 
-            <div class='bordered'>
+            <div class='bordered has-text-left'>
                 <div class='alt_bordered bg-00'>
                     <div id='accordion'>
                         <p class='accordion-toggle has-text-black round5-top'>
@@ -174,4 +174,4 @@ $HTMLOUT .= "
         </div>
     </fieldset>";
 
-echo stdhead('Rules', true, $stdhead) . $HTMLOUT . stdfoot();
+echo stdhead('Rules', true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
