@@ -1021,7 +1021,7 @@ DROP TABLE IF EXISTS `failedlogins`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `failedlogins` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `ip` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varbinary(16) NOT NULL,
   `added` int(11) NOT NULL,
   `banned` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `attempts` int(10) NOT NULL DEFAULT '0',
@@ -1173,8 +1173,8 @@ CREATE TABLE `forum_poll_votes` (
   `poll_id` int(10) unsigned NOT NULL DEFAULT '0',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
   `option` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `ip` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `added` int(11) NOT NULL DEFAULT '0',
+  `ip` varbinary(16) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `poll_id` (`poll_id`),
   KEY `user_id` (`user_id`),
@@ -1517,7 +1517,7 @@ DROP TABLE IF EXISTS `ips`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ips` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `ip` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varbinary(16) NOT NULL,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `type` enum('login','announce','browse','like') COLLATE utf8mb4_unicode_ci NOT NULL,
   `seedbox` tinyint(1) NOT NULL DEFAULT '0',
@@ -1949,7 +1949,7 @@ CREATE TABLE `peers` (
   `torrent` int(10) unsigned NOT NULL DEFAULT '0',
   `torrent_pass` varchar(32) CHARACTER SET utf8 DEFAULT NULL,
   `peer_id` binary(20) NOT NULL,
-  `ip` varchar(64) CHARACTER SET utf8 DEFAULT NULL,
+  `ip` varbinary(16) NOT NULL,
   `port` smallint(5) unsigned NOT NULL DEFAULT '0',
   `uploaded` bigint(20) unsigned NOT NULL DEFAULT '0',
   `downloaded` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -2118,7 +2118,7 @@ CREATE TABLE `posts` (
   `bbcode` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `post_history` mediumtext COLLATE utf8mb4_unicode_ci,
   `edit_reason` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ip` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varbinary(16) NOT NULL,
   `status` enum('deleted','recycled','postlocked','ok') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ok',
   `staff_lock` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `anonymous` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
@@ -2265,7 +2265,7 @@ DROP TABLE IF EXISTS `referrers`;
 CREATE TABLE `referrers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `browser` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ip` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varbinary(16) NOT NULL,
   `referer` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `page` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date` int(11) NOT NULL DEFAULT '0',
@@ -2456,7 +2456,7 @@ CREATE TABLE `searchcloud` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `searchedfor` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `howmuch` int(10) NOT NULL,
-  `ip` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varbinary(16) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `searchedfor` (`searchedfor`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -2560,7 +2560,7 @@ CREATE TABLE `snatched` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `torrentid` int(10) unsigned NOT NULL DEFAULT '0',
-  `ip` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varbinary(16) NOT NULL,
   `port` smallint(5) unsigned NOT NULL DEFAULT '0',
   `connectable` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `agent` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -3326,7 +3326,7 @@ CREATE TABLE `users` (
   `stylesheet` int(10) NOT NULL DEFAULT '1',
   `info` mediumtext COLLATE utf8mb4_unicode_ci,
   `acceptpms` enum('yes','friends','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
-  `ip` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varbinary(16) NOT NULL,
   `class` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `override_class` tinyint(3) unsigned NOT NULL DEFAULT '255',
   `language` int(11) NOT NULL DEFAULT '1',
@@ -3616,4 +3616,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-05  5:29:43
+-- Dump completed on 2017-11-11 15:35:50
