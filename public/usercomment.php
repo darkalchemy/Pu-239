@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
@@ -115,7 +115,7 @@ if ($action == 'add') {
         $HTMLOUT .= "<h2>Most recent comments, in reverse order</h2>\n";
         $HTMLOUT .= usercommenttable($allrows);
     }
-    echo stdhead('Add a comment for "' . htmlsafechars($arr['username']) . '"', true, $stdhead) . $HTMLOUT . stdfoot();
+    echo stdhead('Add a comment for "' . htmlsafechars($arr['username']) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
     die;
 } elseif ($action == 'edit') {
     $commentid = (int)$_GET['cid'];
@@ -137,7 +137,7 @@ if ($action == 'add') {
             stderr('Error', 'Comment body cannot be empty!');
         }
         $editedat = sqlesc(TIME_NOW);
-        sql_query('UPDATE usercomments SET text = ' . sqlesc($body) . ", editedat = {$editedat}, editedby = ' . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE usercomments SET text = ' . sqlesc($body) . ', editedat = {$editedat}, editedby = ' . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
         if ($returnto) {
             header("Location: $returnto");
         } else {
@@ -151,7 +151,7 @@ if ($action == 'add') {
     <input type=\"hidden\" name=\"cid\" value='" . (int)$commentid . "' />
     <textarea name='body' rows='10' cols='60'>" . htmlsafechars($arr['text']) . "</textarea>
     <input type='submit' class='button' value='Do it!' /></form>";
-    echo stdhead('Edit comment for "' . htmlsafechars($arr['username']) . '"', true, $stdhead) . $HTMLOUT . stdfoot();
+    echo stdhead('Edit comment for "' . htmlsafechars($arr['username']) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
     stdfoot();
     die;
 } elseif ($action == 'delete') {
@@ -208,7 +208,7 @@ if ($action == 'add') {
     if ($returnto) {
         $HTMLOUT .= "<font size='small'>(<a href='{$returnto}'>back</a>)</font>\n";
     }
-    echo stdhead('User Comments') . $HTMLOUT . stdfoot();
+    echo stdhead('User Comments') . wrapper($HTMLOUT) . stdfoot();
     die;
 } else {
     stderr('Error', 'Unknown action');

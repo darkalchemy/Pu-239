@@ -86,7 +86,7 @@ function invincible($id, $invincible = true, $bypass_bans = true)
     }
     write_log('Member [b][url=userdetails.php?id=' . $id . ']' . (htmlsafechars($row['username'])) . '[/url][/b] is ' . $display . ' invincible thanks to [b]' . $CURUSER['username'] . '[/b]');
     // header ouput
-    $mc1->cache_value('display_' . $CURUSER['id'], $display, 5);
+    setSessionVar('is-info', "{$CURUSER['username']} is $display Invincible");
     header('Location: userdetails.php?id=' . $id);
     exit();
 }

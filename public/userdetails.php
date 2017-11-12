@@ -8,7 +8,6 @@ require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $mc1, $CURUSER, $site_config;
-
 $lang = array_merge(load_language('global'), load_language('userdetails'));
 $edit_profile = $friend_links = $shitty_link = $sharemark_link = '';
 
@@ -226,8 +225,8 @@ if (($user_status = $mc1->get_value('user_status_' . $id)) === false) {
 }
 
 if ($user['paranoia'] == 3 && $CURUSER['class'] < UC_STAFF && $CURUSER['id'] != $id) {
-    stderr($lang['userdetails_error'], '<span><img src=".images/smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" title="' . $lang['userdetails_tinfoil'] . '" />
-       ' . $lang['userdetails_tinfoil2'] . ' <img src="./images/smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" title="' . $lang['userdetails_tinfoil'] . '" /></span>');
+    stderr($lang['userdetails_error'], '<span><img src=".images/smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '" />
+       ' . $lang['userdetails_tinfoil2'] . ' <img src="./images/smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '" /></span>');
     exit();
 }
 
@@ -259,7 +258,7 @@ if (mysqli_num_rows($r) > 0) {
                 <td class='colhead'>{$lang['userdetails_leechers']}</td>
             </tr>";
     while ($a = mysqli_fetch_assoc($r)) {
-        $cat = !empty($a['image']) ? "<img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($a['image']) . '" title="' . htmlsafechars($a['cname']) . '" alt="' . htmlsafechars($a['cname']) . '" />' : '';
+        $cat = !empty($a['image']) ? "<img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($a['image']) . '" class="tooltipper" title="' . htmlsafechars($a['cname']) . '" alt="' . htmlsafechars($a['cname']) . '" />' : '';
         $torrents .= "
             <tr>
                 <td>$cat</td>
@@ -293,11 +292,11 @@ if ($lastseen == 0 or $user['perms'] & bt_options::PERMS_STEALTH) {
 if ((($user['class'] == UC_MAX or $user['id'] == $CURUSER['id']) || ($user['class'] < UC_MAX) && $CURUSER['class'] == UC_MAX) && isset($_GET['invincible'])) {
     require_once INCL_DIR . 'invincible.php';
     if ($_GET['invincible'] == 'yes') {
-        $HTMLOUT .= invincible($id);
+        $HTMLOUT .= invincible($id, true, true);
     } elseif ($_GET['invincible'] == 'remove_bypass') {
-        $HTMLOUT .= invincible($id, true, false);
+        $HTMLOUT .= invincible($id, false, false);
     } else {
-        $HTMLOUT .= invincible($id, false);
+        $HTMLOUT .= invincible($id, false, false);
     }
 }
 
@@ -400,20 +399,19 @@ if (($user['opt1'] & user_options::ANONYMOUS) && ($CURUSER['class'] < UC_STAFF &
 }
 $h1_thingie = ((isset($_GET['sn']) || isset($_GET['wu'])) ? '<h1>' . $lang['userdetails_updated'] . '</h1>' : '');
 if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
-    $suspended .= ($user['suspended'] == 'yes' ? '  <img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" title="' . $lang['userdetails_suspended'] . '" /> <b>' . $lang['userdetails_usersuspended'] . '</b> <img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" title="' . $lang['userdetails_suspended'] . '" />' : '');
+    $suspended .= ($user['suspended'] == 'yes' ? '  <img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '" /> <b>' . $lang['userdetails_usersuspended'] . '</b> <img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '" />' : '');
 }
 if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
-    $watched_user .= ($user['watched_user'] == 0 ? '' : '  <img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" title="' . $lang['userdetails_watched'] . '" /> <b>' . $lang['userdetails_watchlist1'] . ' <a href="staffpanel.php?tool=watched_users" >' . $lang['userdetails_watchlist2'] . '</a></b> <img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" title="' . $lang['userdetails_watched'] . '" />');
+    $watched_user .= ($user['watched_user'] == 0 ? '' : '  <img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '" /> <b>' . $lang['userdetails_watchlist1'] . ' <a href="staffpanel.php?tool=watched_users" >' . $lang['userdetails_watchlist2'] . '</a></b> <img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '" />');
 }
-$perms .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_NO_IP) ? '  <img src="' . $site_config['pic_base_url'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  title="' . $lang['userdetails_invincible'] . '" />' : '') : '');
-$stealth .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? '  <img src="' . $site_config['pic_base_url'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stelth'] . '"  title="' . $lang['userdetails_stelth'] . '" />' : '') : '');
+$perms .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_NO_IP) ? '  <img src="' . $site_config['pic_base_url'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  class="tooltipper" title="' . $lang['userdetails_invincible'] . '" />' : '') : '');
+$stealth .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? '  <img src="' . $site_config['pic_base_url'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stelth'] . '"  class="tooltipper" title="' . $lang['userdetails_stelth'] . '" />' : '') : '');
 $enabled = $user['enabled'] == 'yes';
 $parked = $user['opt1'] & user_options::PARKED ? $lang['userdetails_parked'] : '';
 
 $HTMLOUT .= "
-            <div class='container is-fluid portlet'>
                 <div class='has-text-centered'>
-                    <h1>" . format_username($user['id']) . "$country$perms$stealth$watched_user$suspended$h1_thingie$parked</h1>
+                    <h1>" . format_username($user['id']) . "$country$stealth$watched_user$suspended$h1_thingie$perms$parked</h1>
                 </div>";
 if (!$enabled) {
     $HTMLOUT .= $lang['userdetails_disabled'];
@@ -451,7 +449,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
         $shitty_link = "
             <a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list'>
                 Remove from your
-                <img class='tooltipper right5' src='./images/smilies/shit.gif' alt='Shit' title='Shit' />
+                <img class='tooltipper right5' src='./images/smilies/shit.gif' alt='Shit' class='tooltipper' title='Shit' />
             </a>";
     } elseif ($CURUSER['id'] != $user['id']) {
         $shitty_link .= "
@@ -480,11 +478,6 @@ if ($CURUSER['id'] != $user['id']) {
         <a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/sharemarks.php?id=$id'>{$lang['userdetails_sharemarks']}</a>";
 }
 
-$invincible = $mc1->get_value('display_' . $CURUSER['id']);
-if ($invincible) {
-    $HTMLOUT .= '<h1>' . htmlsafechars($user['username']) . ' ' . $lang['userdetails_is'] . ' ' . $invincible . ' ' . $lang['userdetails_invincible'] . '</h1>';
-}
-
 $HTMLOUT .= "
     <div class='level-center'>
         $sharemark_link
@@ -498,7 +491,7 @@ $HTMLOUT .= "
 
 $stealth = $mc1->get_value('display_stealth' . $CURUSER['id']);
 if ($stealth) {
-    $HTMLOUT .= '<h1>' . htmlsafechars($user['username']) . ' ' . $stealth . ' ' . $lang['userdetails_in_stelth'] . '</h1>';
+    setSessionVar('is-info', htmlsafechars($user['username']) . " $stealth {$lang['userdetails_in_stelth']}");
 }
 
 $HTMLOUT .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? "
@@ -1216,6 +1209,4 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
 }
 $HTMLOUT .= '</div></div></div>';
 
-$HTMLOUT .= "
-        </div>";
-echo stdhead("{$lang['userdetails_details']} " . $user['username'], true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead("{$lang['userdetails_details']} " . $user['username'], true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
