@@ -102,10 +102,10 @@ function validate_imgs($s)
     preg_match_all('!' . $start . '(.*)' . $end . '!Ui', $s, $result);
     $array = $result[0];
     for ($i = 0; $i < count($array); ++$i) {
-        $headers = @get_headers($array[$i]);
+        $headers = @get_headers($array[ $i ]);
         if (strpos($headers[0], '200') === false) {
-            $s = str_replace('[img]' . $array[$i] . '[/img]', '', $s);
-            $s = str_replace('[img=' . $array[$i] . ']', '', $s);
+            $s = str_replace('[img]' . $array[ $i ] . '[/img]', '', $s);
+            $s = str_replace('[img=' . $array[ $i ] . ']', '', $s);
         }
     }
 
@@ -129,10 +129,10 @@ function check_BBcode($html)
     }
     $openedtags = array_reverse($openedtags);
     for ($i = 0; $i < $len_opened; ++$i) {
-        if (!in_array($openedtags[$i], $closedtags)) {
-            $html .= '</' . $openedtags[$i] . '>';
+        if (!in_array($openedtags[ $i ], $closedtags)) {
+            $html .= '</' . $openedtags[ $i ] . '>';
         } else {
-            unset($closedtags[array_search($openedtags[$i], $closedtags)]);
+            unset($closedtags[ array_search($openedtags[ $i ], $closedtags) ]);
         }
     }
 
@@ -166,7 +166,7 @@ function format_quotes($s)
         $closeval[] = $pos = strpos($s, $val, $pos + 1);
     }
     for ($i = 0; $i < count($openval); ++$i) {
-        if ($openval[$i] > $closeval[$i]) {
+        if ($openval[ $i ] > $closeval[ $i ]) {
             return $s;
         }
     } // Cannot close before opening. Return raw string...
@@ -479,19 +479,19 @@ function format_code($s)
             return $s;
         } // quote mismatch. Return raw string...
         // Get position of opening quotes
-        $openval = array();
+        $openval = [];
         $pos = -1;
         foreach ($openquote as $val) {
             $openval[] = $pos = strpos($s, $val, $pos + 1);
         }
         // Get position of closing quotes
-        $closeval = array();
+        $closeval = [];
         $pos = -1;
         foreach ($closequote as $val) {
             $closeval[] = $pos = strpos($s, $val, $pos + 1);
         }
         for ($i = 0; $i < count($openval); ++$i) {
-            if ($openval[$i] > $closeval[$i]) {
+            if ($openval[ $i ] > $closeval[ $i ]) {
                 return $s;
             }
         } // Cannot close before opening. Return raw string...

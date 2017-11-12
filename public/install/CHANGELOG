@@ -1,3 +1,11 @@
+12 Nov 2017
+add: user stats and gifts in AJAX Chat
+add: torrent search by uploader
+add: port_check.php to assist in opening ports
+add: hnrs.php so users can keep up with them
+update: AJAX Chat channels, restrict messages origins
+update: newsrss.php can accept arrays for feeds
+
 11 Nov 2017
 update: page uniformity
 update: snatches.php, peerlist.php, viewnfo.php, report.php

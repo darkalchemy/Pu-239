@@ -13,12 +13,12 @@ $edit_profile = $friend_links = $shitty_link = $sharemark_link = '';
 
 $stdhead = [
     'css' => [
-        get_file('userdetails_css')
+        get_file('userdetails_css'),
     ],
 ];
 $stdfoot = [
     'js' => [
-        get_file('userdetails_js')
+        get_file('userdetails_js'),
     ],
 ];
 $id = (int)$_GET['id'];
@@ -172,10 +172,10 @@ if (($user = $mc1->get_value('user' . $id)) === false) {
     $r1 = sql_query('SELECT ' . $user_fields . ' FROM users WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $user = mysqli_fetch_assoc($r1) or stderr($lang['userdetails_error'], "{$lang['userdetails_no_user']}");
     foreach ($user_fields_ar_int as $i) {
-        $user[$i] = (int)$user[$i];
+        $user[ $i ] = (int)$user[ $i ];
     }
     foreach ($user_fields_ar_float as $i) {
-        $user[$i] = (float)$user[$i];
+        $user[ $i ] = (float)$user[ $i ];
     }
 
     $mc1->cache_value('user' . $id, $user, $site_config['expires']['user_cache']);
@@ -202,10 +202,10 @@ if (($user_stats = $mc1->get_value($What_Cache . $id)) === false) {
     $sql_1 = sql_query('SELECT ' . $stats_fields . ' FROM users WHERE id= ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $user_stats = mysqli_fetch_assoc($sql_1);
     foreach ($stats_fields_ar_int as $i) {
-        $user_stats[$i] = (int)$user_stats[$i];
+        $user_stats[ $i ] = (int)$user_stats[ $i ];
     }
     foreach ($stats_fields_ar_float as $i) {
-        $user_stats[$i] = (float)$user_stats[$i];
+        $user_stats[ $i ] = (float)$user_stats[ $i ];
     }
 
     $mc1->cache_value($What_Cache . $id, $user_stats, $What_Expire);
@@ -318,7 +318,7 @@ foreach ($countries as $cntry) {
     }
 }
 if (XBT_TRACKER == true) {
-    $res = sql_query('SELECT x.fid, x.uploaded, x.downloaded, x.active, x.left, t.added, t.name as torrentname, t.size, t.category, t.seeders, t.leechers, c.name as catname, c.image FROM xbt_files_users x LEFT JOIN torrents t ON x.fid = t.id LEFT JOIN categories c ON t.category = c.id WHERE x.uid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT x.fid, x.uploaded, x.downloaded, x.active, x.left, t.added, t.name AS torrentname, t.size, t.category, t.seeders, t.leechers, c.name AS catname, c.image FROM xbt_files_users x LEFT JOIN torrents t ON x.fid = t.id LEFT JOIN categories c ON t.category = c.id WHERE x.uid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     while ($arr = mysqli_fetch_assoc($res)) {
         if ($arr['left'] == '0') {
             $seeding[] = $arr;
@@ -327,7 +327,7 @@ if (XBT_TRACKER == true) {
         }
     }
 } else {
-    $res = sql_query('SELECT p.torrent, p.uploaded, p.downloaded, p.seeder, t.added, t.name as torrentname, t.size, t.category, t.seeders, t.leechers, c.name as catname, c.image FROM peers p LEFT JOIN torrents t ON p.torrent = t.id LEFT JOIN categories c ON t.category = c.id WHERE p.userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT p.torrent, p.uploaded, p.downloaded, p.seeder, t.added, t.name AS torrentname, t.size, t.category, t.seeders, t.leechers, c.name AS catname, c.image FROM peers p LEFT JOIN torrents t ON p.torrent = t.id LEFT JOIN categories c ON t.category = c.id WHERE p.userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     while ($arr = mysqli_fetch_assoc($res)) {
         if ($arr['seeder'] == 'yes') {
             $seeding[] = $arr;
@@ -555,7 +555,7 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
                             <td class='rowhead w-10'>{$lang['userdetails_watched']}</td>
                             <td class='has-text-left'>" . ($user['watched_user'] > 0 ? "
                                 {$lang['userdetails_watched_since']} " . get_date($user['watched_user'], '') :
-                                $lang['userdetails_not_watched']) . "
+            $lang['userdetails_not_watched']) . "
                                 $the_flip_box
                                 <div class='has-text-left' id='box_3'>
                                     <form method='post' action='ajax/member_input.php' name='notes_for_staff'>
@@ -594,7 +594,7 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
         $HTMLOUT .= "<tr><td class='rowhead w-10'>{$lang['userdetails_system']}</td><td class='has-text-left'>" . ($user_stats['modcomment'] != '' ? $the_flip_box_7 . '<div class="has-text-left" id="box_7"><hr>' . format_comment($user_stats['modcomment']) . '</div>' : '') . "</td></tr>";
     }
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::SHOWFRIENDS && $BLOCKS['userdetails_showfriends_on']){
+if (curuser::$blocks['userdetails_page'] & block_userdetails::SHOWFRIENDS && $BLOCKS['userdetails_showfriends_on']) {
     require_once BLOCK_DIR . 'userdetails/showfriends.php';
 }
 if (curuser::$blocks['userdetails_page'] & block_userdetails::JOINED && $BLOCKS['userdetails_joined_on']) {
@@ -644,8 +644,8 @@ if (!empty($user['where_is'])) {
     $HTMLOUT .= "<tr><td class='rowhead w-10' width='1%'>{$lang['userdetails_location']}</td><td class='has-text-left' width='99%'>" . format_urls($user['where_is']) . "</td></tr>";
 }
 //==
-$moodname = (isset($mood['name'][$user['mood']]) ? htmlsafechars($mood['name'][$user['mood']]) : $lang['userdetails_neutral']);
-$moodpic = (isset($mood['image'][$user['mood']]) ? htmlsafechars($mood['image'][$user['mood']]) : 'noexpression.gif');
+$moodname = (isset($mood['name'][ $user['mood'] ]) ? htmlsafechars($mood['name'][ $user['mood'] ]) : $lang['userdetails_neutral']);
+$moodpic = (isset($mood['image'][ $user['mood'] ]) ? htmlsafechars($mood['image'][ $user['mood'] ]) : 'noexpression.gif');
 $HTMLOUT .= '<tr><td class="rowhead w-10">' . $lang['userdetails_currentmood'] . '</td><td class="has-text-left"><span class="tool">
        <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'' . $lang['userdetails_mood'] . '\',530,500,1,1);">
        <img src="' . $site_config['pic_base_url'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" border="0" />

@@ -36,11 +36,11 @@ class CustomAJAXChat extends AJAXChat
             $userData['userName'] = $this->trimUserName($CURUSER['username']);
             $userData['userClass'] = get_user_class_name($CURUSER['class']);
             $userData['userRole'] = $CURUSER['class'];
-            $userData['channels'] = [0];
+            $userData['channels'] = [0, 1, 2, 3, 4];
             if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
-                $userData['channels'] = [0, 1, 2];
+                $userData['channels'] = [0, 1, 2, 3, 4, 5, 6];
             } elseif ($CURUSER['class'] >= UC_MODERATOR) {
-                $userData['channels'] = [0, 1];
+                $userData['channels'] = [0, 1, 2, 3, 4, 5];
             }
             return $userData;
         }

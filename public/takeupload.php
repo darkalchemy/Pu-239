@@ -15,7 +15,7 @@ if ($CURUSER['class'] < UC_UPLOADER or $CURUSER['uploadpos'] == 0 || $CURUSER['u
     exit();
 }
 foreach (explode(':', 'body:type:name') as $v) {
-    if (!isset($_POST[$v])) {
+    if (!isset($_POST[ $v ])) {
         setSessionVar('is-warning', $lang['takeupload_no_formdata']);
         header("Location: {$site_config['baseurl']}/upload.php");
         exit();
@@ -145,7 +145,7 @@ $release_group_array = [
     'p2p'   => 1,
     'none'  => 1,
 ];
-$release_group = isset($_POST['release_group']) && isset($release_group_array[$_POST['release_group']]) ? $_POST['release_group'] : 'none';
+$release_group = isset($_POST['release_group']) && isset($release_group_array[ $_POST['release_group'] ]) ? $_POST['release_group'] : 'none';
 $youtube = '';
 if (isset($_POST['youtube']) && preg_match($youtube_pattern, $_POST['youtube'], $temp_youtube)) {
     $youtube = $temp_youtube[0];
@@ -405,6 +405,7 @@ if ($site_config['seedbonus_on'] == 1) {
 }
 if ($site_config['autoshout_on'] == 1) {
     autoshout($message);
+    autoshout($message, 2, 0);
     //ircbot($messages);
 }
 //=== if it was an offer notify the folks who liked it :D
@@ -478,7 +479,8 @@ if (($fd1 = @fopen('rss.xml', 'w')) && ($fd2 = fopen('rssdd.xml', 'w'))) {
  * $res = sql_query("SELECT name FROM categories WHERE id=".sqlesc($catid)) or sqlerr(__FILE__, __LINE__);
  * $arr = mysqli_fetch_assoc($res);
  * $cat = htmlsafechars($arr["name"]);
- * $res = sql_query("SELECT email FROM users WHERE enabled='yes' AND notifs LIKE '%[cat$catid]%'") or sqlerr(__FILE__, __LINE__);
+ * $res = sql_query("SELECT email FROM users WHERE enabled='yes' AND notifs LIKE '%[cat$catid]%'") or sqlerr(__FILE__,
+ * __LINE__);
  * $uploader = $CURUSER['username'];
  *
  * $size = mksize($totallen);

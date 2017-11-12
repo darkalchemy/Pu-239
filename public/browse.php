@@ -30,7 +30,7 @@ $stdfoot = [
 ];
 $stdhead = [
     'css' => [
-        get_file('browse_css')
+        get_file('browse_css'),
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('browse'), load_language('torrenttable_functions'));
@@ -52,17 +52,21 @@ $valid_searchin = [
     'descr' => [
         'descr',
     ],
+    'owner' => [
+        'owner',
+    ],
     'genre' => [
         'newgenre',
     ],
-    'all' => [
+    'all'   => [
         'name',
         'newgenre',
         'descr',
+        'owner',
     ],
 ];
-if (isset($_GET['searchin']) && isset($valid_searchin[$_GET['searchin']])) {
-    $searchin = $valid_searchin[$_GET['searchin']];
+if (isset($_GET['searchin']) && isset($valid_searchin[ $_GET['searchin'] ])) {
+    $searchin = $valid_searchin[ $_GET['searchin'] ];
     $select_searchin = $_GET['searchin'];
     $addparam .= sprintf('search=%s&amp;searchin=%s&amp;', $searchstr, $select_searchin);
 }
@@ -80,7 +84,7 @@ if (isset($_GET['sort']) && isset($_GET['type'])) {
         'leechers',
         'owner',
     ];
-    $column = isset($_GET['sort']) && isset($_valid_sort[(int)$_GET['sort']]) ? $_valid_sort[(int)$_GET['sort']] : $_valid_sort[0];
+    $column = isset($_GET['sort']) && isset($_valid_sort[ (int)$_GET['sort'] ]) ? $_valid_sort[ (int)$_GET['sort'] ] : $_valid_sort[0];
     switch (htmlsafechars($_GET['type'])) {
         case 'asc':
             $ascdesc = 'ASC';
@@ -158,7 +162,6 @@ if (count($wherecatina) > 1) {
     $wherea[] = 'category =' . $wherecatina[0];
 }
 if (isset($cleansearchstr)) {
-    //== boolean search by djgrr
     if ($searchstr != '') {
         $addparam .= 'search=' . rawurlencode($searchstr) . '&amp;searchin=' . htmlsafechars($_GET['searchin']) . '&amp;incldead=' . intval($_GET['incldead']) . '&amp;';
         $searchstring = str_replace([
@@ -181,23 +184,36 @@ if (isset($cleansearchstr)) {
             '_',
         ];
 
-        $wherea[] = 'MATCH (`search_text`, `descr`) AGAINST (' . sqlesc($searchstr) . ' IN NATURAL LANGUAGE MODE)';
-
         $searcha = explode(' ', $cleansearchstr);
         searchcloud_insert($cleansearchstr);
+        $join = '';
         foreach ($searcha as $foo) {
             foreach ($searchin as $boo) {
-                $searchincrt[] = 'MATCH (`name`) AGAINST (' . sqlesc($searchstr) . ' IN NATURAL LANGUAGE MODE)';
+                if ($boo === 'owner') {
+                    $wherea[] = 'u.username = ' . sqlesc($searchstr);
+                    $join = 'LEFT JOIN users AS u ON u.id = t.owner';
+                } elseif ($boo === 'newgenre') {
+                    $wherea[] = 'newgenre = ' . sqlesc($searchstr);
+                } elseif ($boo === 'descr') {
+                    $searchincrt[] = 'MATCH (`search_text`, `descr`) AGAINST (' . sqlesc($searchstr) . ' IN NATURAL LANGUAGE MODE)';
+                } elseif ($boo === 'name') {
+                    $searchincrt[] = 'MATCH (`name`) AGAINST (' . sqlesc($searchstr) . ' IN NATURAL LANGUAGE MODE)';
+                } else {
+                    $searchincrt[] = 'MATCH (`search_text`, `descr`) AGAINST (' . sqlesc($searchstr) . ' IN NATURAL LANGUAGE MODE)';
+                }
             }
         }
-        $wherea[] = '( ' . join(' OR ', $searchincrt) . ' )';
+        if (count($searchincrt) > 1) {
+            $wherea[] = '(' . join(' OR ', $searchincrt) . ')';
+        } elseif (count($searchincrt) === 1) {
+            $wherea[] = join(' OR ', $searchincrt);
+        }
     }
 }
 $where = count($wherea) ? 'WHERE ' . join(' AND ', $wherea) : '';
 $where_key = 'where::' . sha1($where);
 if (($count = $mc1->get_value($where_key)) === false) {
-    file_put_contents('/var/log/nginx/browse.log', "SELECT COUNT(id) FROM torrents $where" . PHP_EOL, FILE_APPEND);
-    $res = sql_query("SELECT COUNT(id) FROM torrents $where") or sqlerr(__FILE__, __LINE__);
+    $res = sql_query("SELECT COUNT(*) FROM torrents AS t $join $where") or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_row($res);
     $count = (int)$row[0];
     $mc1->cache_value($where_key, $count, $site_config['expires']['browse_where']);
@@ -209,7 +225,7 @@ if (!$torrentsperpage) {
 if ($count) {
     if ($addparam != '') {
         if ($pagerlink != '') {
-            if ($addparam[strlen($addparam) - 1] != ';') { // & = &amp;
+            if ($addparam[ strlen($addparam) - 1 ] != ';') { // & = &amp;
                 $addparam = $addparam . '&' . $pagerlink;
             } else {
                 $addparam = $addparam . $pagerlink;
@@ -222,6 +238,7 @@ if ($count) {
     $query = "SELECT t.id, t.search_text, t.category, t.leechers, t.seeders, t.bump, t.release_group, t.subs, t.name, t.times_completed, t.size, t.added, t.poster, t.descr, t.free, t.freetorrent, t.silver, t.comments, t.numfiles, t.filename, t.anonymous, t.sticky, t.nuked, t.vip, t.nukereason, t.newgenre, t.description, t.owner, t.youtube, t.checked_by, IF(t.nfo <> '', 1, 0) as nfoav," . "IF(t.num_ratings < {$site_config['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS rating, t.checked_when, c.username AS checked_by_username
                 FROM torrents AS t
                 LEFT JOIN users AS c ON t.checked_by = c.id
+                {$join}
                 {$where}
                 {$orderby}
                 {$pager['limit']}";
@@ -326,7 +343,8 @@ foreach ([
              'title' => 'Name',
              'descr' => 'Description',
              'genre' => 'Genre',
-             'all' => 'All',
+             'owner' => 'Uploader',
+             'all'   => 'All',
          ] as $k => $v) {
     $searchin .= '
                         <option value="' . $k . '"' . ($select_searchin == $k ? ' selected' : '') . '>' . $v . '</option>';

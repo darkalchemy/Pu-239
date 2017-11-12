@@ -9664,10 +9664,10 @@ body {
 a,
 input,
 select {
-  -webkit-transition: all .35s ease-in-out;
-  -moz-transition: all .35s ease-in-out;
-  -o-transition: all .35s ease-in-out;
-  transition: all .35s ease-in-out
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+  -o-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out
 }
 .level-center ul {
   list-style: none
@@ -10205,6 +10205,9 @@ textarea {
 .top20 {
   margin-top: 1.25em
 }
+.top50 {
+  margin-top: 3.125em
+}
 .back-to-top {
   text-decoration: none;
   color: #fff;
@@ -10246,10 +10249,10 @@ textarea {
   position: absolute
 }
 .slideThree label {
-  -webkit-transition: all .35s ease-in-out;
-  -moz-transition: all .35s ease-in-out;
-  -o-transition: all .35s ease-in-out;
-  transition: all .35s ease-in-out;
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+  -o-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
   cursor: pointer;
   display: block;
   width: 34px;
@@ -10379,6 +10382,81 @@ textarea {
   .img-polaroid {
     margin-right: 0
   }
+}
+.tabbed {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 15em;
+  margin: 2em auto
+}
+.tabbed ul li {
+  position: absolute;
+  display: block;
+  width: 100%;
+  top: 1.8em;
+  left: 0;
+  height: 12em;
+  padding: 10px 20px;
+  background-color: #ddd;
+  border-radius: 5px;
+  box-shadow: 0 3px 3px rgba(0,0,0,.1);
+  z-index: 0
+}
+.tabbed ul li:first-child {
+  z-index: 1
+}
+.tabbed ul li span {
+  position: absolute;
+  font-size: 1em;
+  font-weight: 400;
+  width: 120px;
+  height: 1.8em;
+  top: -1.8em;
+  left: 10px;
+  padding: 0;
+  margin: 0;
+  color: #999;
+  background-color: #ddd;
+  border-radius: 5px 5px 0 0
+}
+.tabbed ul li:nth-child(2) span {
+  left: 132px
+}
+.tabbed ul li:nth-child(3) span {
+  left: 254px
+}
+.tabbed ul li:nth-child(4) span {
+  left: 376px
+}
+.tabbed ul li:nth-child(5) span {
+  left: 498px
+}
+.tabbed ul li:nth-child(6) span {
+  left: 620px
+}
+.tabbed ul li span a {
+  display: block;
+  width: 100%;
+  line-height: 1.8em;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  outline: 0
+}
+.tabbed ul li:target,
+.tabbed ul li:target span {
+  color: #333;
+  background-color: #fff;
+  z-index: 2
+}
+.tabbed ul li,
+.tabbed ul li span {
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+  -ms-transition: all .5s ease-in-out;
+  -o-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out
 }
 header#navbar {
   position: fixed;

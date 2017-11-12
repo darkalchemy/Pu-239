@@ -101,7 +101,7 @@ if ($action == 'add') {
     <div>" . BBcode() . "</div>
     <br><br>
     <input type='submit' class='button' value='Do it!' /></form>\n";
-    $res = sql_query('SELECT c.id, c.text, c.editedby, c.editedat, c.added, c.username, users.id as user, u.avatar, u.title, u.anonymous, u.class, u.donor, u.warned, u.leechwarn, u.chatpost
+    $res = sql_query('SELECT c.id, c.text, c.editedby, c.editedat, c.added, c.username, users.id AS user, u.avatar, u.title, u.anonymous, u.class, u.donor, u.warned, u.leechwarn, u.chatpost
                         FROM usercomments AS c
                         LEFT JOIN users AS u ON c.user = u.id
                         WHERE user = ' . sqlesc($userid) . "

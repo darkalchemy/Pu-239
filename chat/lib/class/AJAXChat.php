@@ -125,13 +125,13 @@ class AJAXChat
         $this->_requestVars['delete'] = isset($_REQUEST['delete']) ? (int)$_REQUEST['delete'] : null;
         $this->_requestVars['token'] = isset($_REQUEST['token']) ? $_REQUEST['token'] : null;
 
-        if (isset($_COOKIE[$this->getConfig('sessionKeyPrefix') . 'settings'])) {
-            $cookies = explode('&', $_COOKIE[$this->getConfig('sessionKeyPrefix') . 'settings']);
+        if (isset($_COOKIE[ $this->getConfig('sessionKeyPrefix') . 'settings' ])) {
+            $cookies = explode('&', $_COOKIE[ $this->getConfig('sessionKeyPrefix') . 'settings' ]);
             foreach ($cookies as $cookie) {
                 $split = explode('=', $cookie);
                 if ($split[0] === 'postDirection') {
                     $this->postDirection = $split[1] == 'true' ? true : false;
-                   break;
+                    break;
                 }
             }
         }
@@ -159,7 +159,7 @@ class AJAXChat
 
                 return;
             }
-        // Login if auto-login enabled or a login, userName parameter is given:
+            // Login if auto-login enabled or a login, userName parameter is given:
         } elseif ($this->getConfig('forceAutoLogin') || $this->getRequestVar('login') || $this->getRequestVar('userName')) {
             $this->login();
         }
@@ -203,9 +203,9 @@ class AJAXChat
     public function getConfig($key, $subkey = null)
     {
         if ($subkey) {
-            return $this->_config[$key][$subkey];
+            return $this->_config[ $key ][ $subkey ];
         } else {
-            return $this->_config[$key];
+            return $this->_config[ $key ];
         }
     }
 
@@ -217,12 +217,12 @@ class AJAXChat
     public function setConfig($key, $subkey, $value)
     {
         if ($subkey) {
-            if (!isset($this->_config[$key])) {
-                $this->_config[$key] = [];
+            if (!isset($this->_config[ $key ])) {
+                $this->_config[ $key ] = [];
             }
-            $this->_config[$key][$subkey] = $value;
+            $this->_config[ $key ][ $subkey ] = $value;
         } else {
-            $this->_config[$key] = $value;
+            $this->_config[ $key ] = $value;
         }
     }
 
@@ -351,17 +351,17 @@ class AJAXChat
                     continue;
                 }
                 if ($key) {
-                    if (!isset($userData[$key])) {
+                    if (!isset($userData[ $key ])) {
                         return $onlineUsersData;
                     }
                     if ($value !== null) {
-                        if ($userData[$key] == $value) {
+                        if ($userData[ $key ] == $value) {
                             array_push($onlineUsersData, $userData);
                         } else {
                             continue;
                         }
                     } else {
-                        array_push($onlineUsersData, $userData[$key]);
+                        array_push($onlineUsersData, $userData[ $key ]);
                     }
                 } else {
                     array_push($onlineUsersData, $userData);
@@ -420,7 +420,7 @@ class AJAXChat
         }
         $userID = ($userID === null) ? $this->getUserID() : $userID;
         for ($i = 0; $i < count($this->_onlineUsersData); ++$i) {
-            if ($this->_onlineUsersData[$i]['userID'] == $userID) {
+            if ($this->_onlineUsersData[ $i ]['userID'] == $userID) {
                 array_splice($this->_onlineUsersData, $i, 1);
                 break;
             }
@@ -474,6 +474,10 @@ class AJAXChat
         // 2 = messages with online user updates (nick)
 
         $ip = $ip ? $ip : getip();
+        $bot_only = [2, 3]; // Announce, News
+        if (in_array($channelID, $bot_only) && $userRole != 100) {
+            return;
+        }
 
         $sql = 'INSERT INTO ' . $this->getDataBaseTable('messages') . '(
                                 userID,
@@ -590,7 +594,7 @@ class AJAXChat
             $xml .= ' userID="' . $onlineUserData['userID'] . '"';
             $xml .= ' userRole="' . $onlineUserData['userRole'] . '"';
             $xml .= ' channelID="' . $onlineUserData['channel'] . '"';
-            $xml .= ' pmCount="'.$onlineUserData['pmCount'].'"';
+            $xml .= ' pmCount="' . $onlineUserData['pmCount'] . '"';
             $xml .= '>';
             $xml .= '<![CDATA[' . $this->encodeSpecialChars($onlineUserData['userName']) . ']]>';
             $xml .= '</user>';
@@ -678,8 +682,8 @@ class AJAXChat
      */
     public function getRequestVar($key)
     {
-        if ($this->_requestVars && isset($this->_requestVars[$key])) {
-            return $this->_requestVars[$key];
+        if ($this->_requestVars && isset($this->_requestVars[ $key ])) {
+            return $this->_requestVars[ $key ];
         }
 
         return null;
@@ -986,11 +990,11 @@ class AJAXChat
         if (!isset($this->_infoMessages)) {
             $this->_infoMessages = [];
         }
-        if (!isset($this->_infoMessages[$type])) {
-            $this->_infoMessages[$type] = [];
+        if (!isset($this->_infoMessages[ $type ])) {
+            $this->_infoMessages[ $type ] = [];
         }
-        if (!in_array($info, $this->_infoMessages[$type])) {
-            array_push($this->_infoMessages[$type], $info);
+        if (!in_array($info, $this->_infoMessages[ $type ])) {
+            array_push($this->_infoMessages[ $type ], $info);
         }
     }
 
@@ -1091,17 +1095,17 @@ class AJAXChat
         if ($key) {
             $bannedUsersData = [];
             foreach ($this->_bannedUsersData as $bannedUserData) {
-                if (!isset($bannedUserData[$key])) {
+                if (!isset($bannedUserData[ $key ])) {
                     return $bannedUsersData;
                 }
                 if ($value) {
-                    if ($bannedUserData[$key] == $value) {
+                    if ($bannedUserData[ $key ] == $value) {
                         array_push($bannedUsersData, $bannedUserData);
                     } else {
                         continue;
                     }
                 } else {
-                    array_push($bannedUsersData, $bannedUserData[$key]);
+                    array_push($bannedUsersData, $bannedUserData[ $key ]);
                 }
             }
 
@@ -1184,7 +1188,7 @@ class AJAXChat
         $sql = 'DELETE FROM
                     ' . $this->getDataBaseTable('messages') . '
                 WHERE
-                    dateTime < DATE_SUB(NOW(), interval ' . $this->getConfig('logsPurgeTimeDiff') . ' DAY);';
+                    dateTime < DATE_SUB(NOW(), INTERVAL ' . $this->getConfig('logsPurgeTimeDiff') . ' DAY);';
 
         // Create a new SQL query:
         sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -1279,7 +1283,7 @@ class AJAXChat
         }
         $channels = $this->getAllChannels();
         if (array_key_exists($channelName, $channels)) {
-            return $channels[$channelName];
+            return $channels[ $channelName ];
         }
         $channelID = null;
         // Check if the requested channel is the own private channel:
@@ -1315,7 +1319,7 @@ class AJAXChat
             $this->_allChannels = [];
 
             // Default channel, public to everyone:
-            $this->_allChannels[$this->trimChannelName($this->getConfig('defaultChannelName'))] = $this->getConfig('defaultChannelID');
+            $this->_allChannels[ $this->trimChannelName($this->getConfig('defaultChannelName')) ] = $this->getConfig('defaultChannelID');
         }
 
         return $this->_allChannels;
@@ -1445,7 +1449,7 @@ class AJAXChat
                     WHERE
                         userID = ' . sqlesc($this->getUserID()) . '
                         AND
-                        DATE_SUB(NOW(), interval 1 DAY) < dateTime;';
+                        DATE_SUB(NOW(), INTERVAL 1 DAY) < dateTime;';
 
             // Create a new SQL query:
             $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -1727,7 +1731,7 @@ class AJAXChat
     public function getLangCode()
     {
         // Get the langCode from request or cookie:
-        $langCodeCookie = isset($_COOKIE[$this->getConfig('sessionKeyPrefix') . 'lang']) ? $_COOKIE[$this->getConfig('sessionKeyPrefix') . 'lang'] : null;
+        $langCodeCookie = isset($_COOKIE[ $this->getConfig('sessionKeyPrefix') . 'lang' ]) ? $_COOKIE[ $this->getConfig('sessionKeyPrefix') . 'lang' ] : null;
         $langCode = $this->getRequestVar('lang') ? $this->getRequestVar('lang') : $langCodeCookie;
         // Check if the langCode is valid:
         if (!in_array($langCode, $this->getConfig('langAvailable'))) {
@@ -2138,6 +2142,36 @@ class AJAXChat
                     $this->insertParsedMessageNick($textParts);
                     break;
 
+                // Retrieving Stats for User
+                case '/stats':
+                    $this->insertParsedMessageStats($textParts);
+                    break;
+
+                // Give user a gift of karma
+                case '/gift':
+                    $this->insertParsedMessageGift($textParts);
+                    break;
+
+                // Give user a gift of reputaion
+                case '/rep':
+                    $this->insertParsedMessageRep($textParts);
+                    break;
+
+                // Retrieving Stats for Casino
+                case '/casino':
+                    $this->insertParsedMessageCasino($textParts);
+                    break;
+
+                // Last seen user:
+                case '/seen':
+                    $this->insertParsedMessageSeen($textParts);
+                    break;
+
+                // Last 10 posts with users nick:
+                case '/mentions':
+                    $this->insertParsedMessageMentions($textParts);
+                    break;
+
                 // Custom or unknown command:
                 default:
                     if (!$this->parseCustomCommands($text, $textParts)) {
@@ -2170,10 +2204,11 @@ class AJAXChat
     /**
      * @param $textParts
      */
-    function insertParsedMessageJoin($textParts) {
-        if(count($textParts) == 1) {
+    function insertParsedMessageJoin($textParts)
+    {
+        if (count($textParts) == 1) {
             // join with no arguments is the own private channel, if allowed:
-            if($this->isAllowedToCreatePrivateChannel()) {
+            if ($this->isAllowedToCreatePrivateChannel()) {
                 // Private channels are identified by square brackets:
                 $this->switchChannel($this->getChannelNameFromChannelID($this->getPrivateChannelID()));
             } else {
@@ -2331,7 +2366,7 @@ class AJAXChat
         $sql = 'DELETE FROM
                     ' . $this->getDataBaseTable('invitations') . '
                 WHERE
-                    DATE_SUB(NOW(), interval 1 DAY) > dateTime;';
+                    DATE_SUB(NOW(), INTERVAL 1 DAY) > dateTime;';
 
         // Create a new SQL query:
         $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -3023,6 +3058,424 @@ class AJAXChat
         }
     }
 
+    public function insertParsedMessageCasino($textParts)
+    {
+        global $site_config;
+        // blackjack
+        $res = sql_query("SELECT COUNT(*) AS count FROM blackjack WHERE status = 'waiting'") or sqlerr(__FILE__, __LINE__);
+        $row = mysqli_fetch_row($res);
+        $msg = '[color=#00FF00]' . $row[0] . ' game' . plural($row[0]) . ' of [url=' . $site_config['baseurl'] . '/games.php]BlackJack[/url] waiting to be played.[/color] ';
+
+        // casino
+        $res = sql_query("SELECT COUNT(*) AS count, SUM(amount) AS amount FROM casino_bets WHERE winner = ''") or sqlerr(__FILE__, __LINE__);
+        $row = mysqli_fetch_row($res);
+
+        if (!$row) {
+            $msg .= '[color=#00FF00]There are no Casino bets in play. [/color]';
+        } else {
+            $msg .= '[color=#00FF00]' . $row[0] . ' bet' . plural(count($row[0])) . ' in the [url=' . $site_config['baseurl'] . '/casino.php]Casino[/url] for ' . mksize($row[1]) . '. [/color]';
+        }
+
+        // biggest winner
+        unset($row);
+        $res = sql_query('SELECT u.username, c.win + (u.bjwins * 1024 * 1024 * 1024) AS wins, c.lost + (u.bjlosses * 1024 * 1024 * 1024) AS losses, (c.win + (u.bjwins * 1024 * 1024 * 1024)) - (c.lost + (u.bjlosses * 1024 * 1024 * 1024)) AS won FROM casino AS c INNER JOIN users AS u ON c.userid = u.id ORDER BY won DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        $row = mysqli_fetch_row($res);
+        if ($row) {
+            $whereisRoleClass = get_user_class_name($row[0], true);
+            $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . ']' . $row[0] . '[/' . $whereisRoleClass . ']' : $row[1];
+            $msg .= $userNameClass . ' [color=#00FF00]is the biggest winner with ' . mksize($row[3]) . '. [/color]';
+        }
+
+        // biggest loser
+        unset($row);
+        $res = sql_query('SELECT u.username, c.win + (u.bjwins * 1024 * 1024 * 1024) AS wins, c.lost + (u.bjlosses * 1024 * 1024 * 1024) AS losses, (c.win + (u.bjwins * 1024 * 1024 * 1024)) - (c.lost + (u.bjlosses * 1024 * 1024 * 1024)) AS won FROM casino AS c INNER JOIN users AS u ON c.userid = u.id ORDER BY won ASC LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        $row = mysqli_fetch_row($res);
+        if ($row) {
+            $whereisRoleClass = get_user_class_name($row[0], true);
+            $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . ']' . $row[0] . '[/' . $whereisRoleClass . ']' : $row[1];
+            $msg .= $userNameClass . ' [color=#00FF00]is the biggest loser with ' . mksize($row[3]) . '. [/color]';
+        }
+
+        unset($row);
+        $res = sql_query('SELECT SUM(win) FROM casino') or sqlerr(__FILE__, __LINE__);
+        $row = mysqli_fetch_row($res);
+        if ($row) {
+            $msg .= '[color=#00FF00]' . mksize($row[0]) . ' have been won (and lost) in the [url=' . $site_config['baseurl'] . '/casino.php]Casino[/url].[/color] ';
+        }
+
+        $resbj = sql_query('SELECT SUM(bjwins) FROM users') or sqlerr(__FILE__, __LINE__);
+        $bjsum = mysqli_fetch_row($resbj);
+        if ($bjsum) {
+            $msg .= '[color=#00FF00]' . mksize($bjsum[0] * 1024 * 1024 * 1024) . ' have been won (and lost) at the [url=' . $site_config['baseurl'] . '/games.php]BlackJack[/url] tables.[/color]';
+        }
+
+        $type = null;
+        $text = $msg . $type;
+        $this->insertChatBotMessage(
+            $this->getChannel(),
+            $text,
+            null,
+            1,
+            600
+        );
+    }
+
+    public function insertParsedMessageStats($textParts)
+    {
+        if (count($textParts) == 1) {
+            $this->insertChatBotMessage(
+                $this->getPrivateMessageID(),
+                '/error MissingUserName'
+            );
+        } else {
+            // Get UserID from UserName:
+            $whereisUserID = $this->getIDFromName($textParts[1]);
+            if ($whereisUserID === null) {
+                $this->insertChatBotMessage(
+                    $this->getPrivateMessageID(),
+                    '/error UserNameNotFound ' . $textParts[1]
+                );
+            } else {
+                global $site_config;
+                $sql = 'SELECT u.onirc, u.irctotal, u.donor, u.warned, u.leechwarn, u.pirate, u.king, u.enabled, 
+                            u.downloadpos, u.last_access, u.username, u.reputation, u.class, u.bjwins - u.bjlosses AS bj,
+                            u.uploaded, u.downloaded, u.seedbonus, u.freeslots, u.free_switch, u.added, u.invite_rights,
+                            u.invites, c.win - c.lost AS casino
+						FROM users AS u 
+						LEFT JOIN casino AS c ON c.userid = u.id
+						WHERE id = ' . $whereisUserID;
+
+                $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+                $stats = mysqli_fetch_assoc($result);
+                $stats['bj'] = $stats['bj'] * 1024 * 1024 * 1024;
+                $bj = $stats['bj'] > 0 ? '[color=#00FF00]' . mksize($stats['bj']) . '[/color]' : '[color=#CC0000]' . mksize($stats['bj']) . '[/color]';
+                $uploaded = '[color=#00FF00]' . human_filesize($stats['uploaded']) . '[/color]';
+                $downloaded = '[color=#00FF00]' . human_filesize($stats['downloaded']) . '[/color]';
+                $userClass = get_user_class_name($stats['class']);
+                $enabled = $stats['enabled'] === 'yes' && $stats['downloadpos'] == 1 ? '[color=#00FF00](Enabled)[/color]' : '[color=#CC0000](Disabled)[/color]';
+                $invites = $stats['invites'] > 0 && $stats['invite_rights'] === 'yes' ? '[color=#00FF00]' . number_format($stats['invites']) . '[/color]' : '[color=#CC0000]0[/color]';
+                switch (true) {
+                    case $stats['downloaded'] > 0 && $stats['uploaded'] > 0:
+                        $ratio = '[color=#00FF00]' . number_format($stats['uploaded'] / $stats['downloaded'], 3) . '[/color]';
+                        break;
+                    case $stats['downloaded'] > 0 && $stats['uploaded'] == 0:
+                        $ratio = '[color=#CC0000]' . number_format(1 / $stats['downloaded'], 3) . '[/color]';
+                        break;
+                    case $stats['downloaded'] == 0 && $stats['uploaded'] >= 0:
+                        $ratio = '[color=#00FF00]INF[/color]';
+                        break;
+                    default:
+                        $ratio = '---';
+                }
+
+                $casino = $stats['casino'] > 0 ? '[color=#00FF00]' . mksize($stats['casino']) . '[/color]' : '[color=#CC0000]' . mksize($stats['casino']) . '[/color]';
+                $seedbonus = '[color=#00FF00]' . number_format($stats['seedbonus']) . '[/color]';
+                $freeslots = '[color=#00FF00]' . number_format($stats['freeslots']) . '[/color]';
+                $ircidle = $stats['irctotal'] > 0 ? '[color=#00FF00]' . get_date($stats['irctotal'], 'LONG', false, false, true) . '[/color]' : '[color=#CC0000]' . get_date($stats['irctotal'], 'LONG', false, false, true) . '[/color]';
+                $reputation = '[color=#00FF00]' . number_format($stats['reputation']) . '[/color]';
+                $free = get_date($stats['free_switch'], 'LONG') > date('Y-m-d H:i:s') ? '[color=#00FF00]' . get_date($stats['free_switch'], 'LONG') . '[/color]' : '[color=#CC0000]Expired[/color]';
+                $double = get_date($stats['double_switch'], 'LONG') > date('Y-m-d H:i:s') ? '[color=#00FF00]' . get_date($stats['double_switch'], 'LONG') . '[/color]' : '[color=#CC0000]Expired[/color]';
+                $joined = '[color=#00FF00]' . get_date($stats['added'], 'LONG') . '[/color]';
+                $seen = '[color=#00FF00]' . get_date($stats['last_access'], 'LONG') . '[/color]';
+                $seeder = (int)get_row_count('peers', 'WHERE seeder = "yes" and userid = ' . sqlesc($whereisUserID));
+                $seeding = '[color=#00FF00]' . number_format($seeder) . '[/color]';
+                $leeching = '[color=#00FF00]' . number_format((int)get_row_count('peers', 'WHERE seeder != "yes" and userid = ' . sqlesc($whereisUserID))) . '[/color]';
+                $uploads = '[color=#00FF00]' . number_format((int)get_row_count('torrents', 'WHERE owner = ' . sqlesc($whereisUserID))) . '[/color]';
+                $snatched = '[color=#00FF00]' . number_format((int)get_row_count('snatched', 'WHERE userid = ' . sqlesc($whereisUserID))) . '[/color]';
+                $hnrs = (int)get_row_count('snatched', 'WHERE mark_of_cain = "yes" AND userid = ' . sqlesc($whereisUserID));
+                $hnrs = $hnrs == 0 ? '[color=#00FF00]' . '0[/color]' : '[color=#CC0000]' . number_format($hnrs) . '[/color]';
+                $connectyes = (int)get_row_count('peers', 'WHERE seeder = "yes" and connectable = "yes" and userid = ' . sqlesc($whereisUserID));
+                $connectno = (int)get_row_count('peers', 'WHERE seeder = "yes" and connectable = "no" and userid = ' . sqlesc($whereisUserID));
+                if ($connectyes === 0 && $connectno === 0 || $connectno === $seeder) {
+                    $connectable = '[color=#CC0000]no[/color]';
+                } elseif ($connectyes != 0 && $connectno === 0) {
+                    $connectable = '[color=#00FF00]yes[/color]';
+                } else {
+                    $connectable = '[color=#CC0000]' . number_format($connectyes / $seeder * 100) . '%[/color]';
+                }
+                $bpt = $site_config['bonus_per_duration'];
+                $sql = 'SELECT COUNT(*)
+                        FROM snatched AS s INNER JOIN users AS u ON u.id = s.userid
+                        INNER JOIN torrents t ON s.torrentid = t.id
+                        INNER JOIN categories c ON t.category = c.id
+                        WHERE t.owner != ' . sqlesc($whereisUserID) . " AND s.downloaded > 0 AND s.seedtime < 259200 AND s.userid = " . sqlesc($whereisUserID);
+                $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+                $row = mysqli_fetch_row($res);
+                $count_incomplete = $row[0] > 0 ? "[color=#CC0000]{$row[0]}[/color]" : "[color=#00FF00]{$row[0]}[/color]";
+
+                $ircbonus = $stats['onirc'] == 'yes' ? .45 : 0;
+                $allbonus = number_format(($connectyes * $bpt * 2) + $ircbonus, 2);
+                $earns = $connectyes > 0 ? '[color=#00FF00]' . $allbonus . 'bph[/color]' : '[color=#CC0000]' . $allbonus . 'bph[/color]';
+                $seedsize = get_one_row('peers AS p INNER JOIN torrents AS t ON t.id = p.torrent', 'SUM(t.size)', "WHERE p.seeder = 'yes' AND p.connectable = 'yes' AND p.userid = " . $whereisUserID);
+                $volume = '[color=#00FF00]' . human_filesize($seedsize) . '[/color]';
+                $whereisRoleClass = get_user_class_name($stats['class'], true);
+                $userNameClass = $whereisRoleClass != null ? '[' . $whereisRoleClass . '][url=' . $site_config['baseurl'] . '/userdetails.php?id=' . $whereisUserID . '&hit=1]' . $stats['username'] . '[/url][/' . $whereisRoleClass . ']' : '@' . $textParts[1];
+                $str = '';
+                $str .= (isset($stats['donor']) && $stats['donor'] === 'yes' && isset($stats['show_donor']) && $stats['show_donor'] === 'yes' ? '[img]' . $site_config['baseurl'] . '/pic/star.png[/img]' : '');
+                $str .= (isset($stats['warned']) && $stats['warned'] >= 1 ? '[img]' . $site_config['baseurl'] . '/pic/alertred.png[/img]' : '');
+                $str .= (isset($stats['leechwarn']) && $stats['leechwarn'] >= 1 ? '[img]' . $site_config['baseurl'] . '/pic/alertblue.png[/img]' : '');
+                $str .= (isset($stats['enabled']) && $stats['enabled'] != 'yes' ? '[img]' . $site_config['baseurl'] . '/pic/disabled.gif[/img]' : '');
+                $str .= (isset($stats['chatpost']) && $stats['chatpost'] == 0 ? '[img]' . $site_config['baseurl'] . '/pic/warned.png[/img]' : '');
+                $str .= (isset($stats['pirate']) && $stats['pirate'] >= TIME_NOW ? '[img]' . $site_config['baseurl'] . '/pic/pirate.png[/img]' : '');
+
+                // List user information:
+                $text = "$userNameClass{$str}: [color=#fff]User Class:[/color] [$whereisRoleClass]{$userClass}[/$whereisRoleClass]$enabled
+[color=#fff]idling in irc for:[/color]  {$ircidle}, [color=#fff]Member Since:[/color]  $joined, [color=#fff]Last Seen:[/color]  $seen, [color=#fff]Downloaded:[/color]  $downloaded, [color=#fff]Uploaded:[/color]  $uploaded, [color=#fff]Ratio:[/color]  $ratio, [color=#fff]Seedbonus:[/color]  $seedbonus, [color=#fff]Invites:[/color]  $invites, [color=#fff]Reputation:[/color]  $reputation, [color=#fff]HnRs:[/color]  $hnrs, [color=#fff]Snatched:[/color]  $snatched, [color=#fff]Seeding:[/color]  $seeding, [color=#fff]Seeding Size:[/color]  $volume, [color=#fff]Leeching:[/color]  $leeching, [color=#fff]Requirements Not Met:[/color]  $count_incomplete, [color=#fff]Connectable:[/color]  $connectable, [color=#fff]Uploads:[/color]  $uploads, [color=#fff]Earning Bonus:[/color]  $earns, [color=#fff]Casino:[/color]  $casino, [color=#fff]Blackjack:[/color]  $bj, [color=#fff]Freeleech Until:[/color]  $free, [color=#fff]DoubleUp Until:[/color]  $double, [color=#fff]Free/Double Slots:[/color]  $freeslots";
+                $this->insertChatBotMessage(
+                    $this->getPrivateMessageID(),
+                    $text,
+                    null,
+                    1,
+                    600
+                );
+            }
+        }
+    }
+
+    public function insertParsedMessageSeen($textParts)
+    {
+        if (count($textParts) == 1) {
+            $this->insertChatBotMessage(
+                $this->getPrivateMessageID(),
+                '/error MissingUserName'
+            );
+
+            return false;
+        } else {
+            $userName = $textParts[1];
+            $res = sql_query('SELECT username FROM users WHERE username = ' . sqlesc($userName)) or sqlerr(__FILE__, __LINE__);
+            $quick = mysqli_fetch_array($res);
+            if (empty($quick['username'])) {
+                $this->insertChatBotMessage(
+                    $this->getPrivateMessageID(),
+                    '/error InvalidUserName'
+                );
+
+                return false;
+            }
+            $userName = $quick['username'];
+            $whereisUserID = $this->getIDFromName($textParts[1]);
+            $whereisRoleClass = get_user_class_name($this->getRoleFromID($whereisUserID), true);
+            $user = '[' . $whereisRoleClass . ']' . $userName . '[/' . $whereisRoleClass . ']';
+            $res = sql_query('SELECT dateTime, text FROM ajax_chat_messages WHERE userName = ' . sqlesc($userName) . ' AND channel = 0 ORDER BY id DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
+            $seen = mysqli_fetch_array($res);
+            if ($seen) {
+                $gender = get_one_row('users', 'gender', 'WHERE id = ' . sqlesc($whereisUserID));
+                if ($gender === 'Male') {
+                    $it = 'he';
+                } elseif ($gender === 'Female') {
+                    $it = 'she';
+                } else {
+                    $it = 'it';
+                }
+                $msg = "$user was last seen " . $seen['dateTime'] . ", where $it said: [quote]" . $seen['text'] . '[/quote]';
+            } else {
+                $msg = "$user has not been seen in many days.";
+            }
+            $type = null;
+            $text = $msg . $type;
+            $this->insertChatBotMessage(
+                $this->getChannel(),
+                $text,
+                null,
+                1,
+                300
+            );
+        }
+    }
+
+    public function insertParsedMessageMentions($textParts)
+    {
+        global $CURUSER;
+        $userName = $CURUSER['username'];
+        $whereisUserID = $CURUSER['id'];
+        $whereisRoleClass = get_user_class_name($this->getRoleFromID($whereisUserID), true);
+        $user = '[' . $whereisRoleClass . ']' . $userName . '[/' . $whereisRoleClass . ']';
+
+        $sql = "SELECT dateTime, userName, userID, text
+					FROM ajax_chat_messages
+					WHERE MATCH(text) AGAINST ('\"/privmsgto $userName\"  $userName' IN BOOLEAN MODE)
+						AND NOT MATCH(text) AGAINST ('/privmsg /announce /login /logout /roll /takeover /channelEnter /channelLeave /kick /me /nick' IN NATURAL LANGUAGE MODE)
+						AND userName != " . sqlesc($userName) . "
+						AND userID != " . $this->getConfig('chatBotID') . "
+					ORDER BY id DESC LIMIT 25";
+        $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        $messages = [];
+        while ($mentions = mysqli_fetch_array($res)) {
+            $posterClass = get_user_class_name($mentions['userID'], true);
+            $posterName = '[' . $posterClass . ']' . $mentions['userName'] . '[/' . $posterClass . ']';
+            $mention = str_replace('/privmsgto ', '[PM] ', $mentions['text']);
+            $messages[] = "{$mentions['dateTime']}: " . $posterName . " => {$mention}";
+        }
+
+        if (count($messages) === 0) {
+            $msg = "$user has not been mentioned.";
+        } else {
+            $msg = "\n[code]" . implode("\n", $messages) . '[/code]';
+        }
+        $type = null;
+        $text = $msg . $type;
+        $this->insertChatBotMessage(
+            $this->getPrivateMessageID(),
+            $text,
+            null,
+            1,
+            600
+        );
+    }
+
+    public function insertParsedMessageRep($textParts)
+    {
+        global $INSTALLER09, $mc1;
+        if (count($textParts) == 1) {
+            $this->insertChatBotMessage(
+                $this->getPrivateMessageID(),
+                '/error MissingUserName'
+            );
+
+            return false;
+        } elseif (count($textParts) == 2 || !is_numeric($textParts[2]) || $textParts[2] <= 0) {
+            $this->insertChatBotMessage(
+                $this->getPrivateMessageID(),
+                '/error NotInteger'
+            );
+
+            return false;
+        }
+        global $CURUSER, $mc1;
+        $gift = number_format($textParts[2]);
+        $sql = sql_query('SELECT reputation FROM users WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+        $res = mysqli_fetch_row($sql);
+        $fromrep = $res[0];
+        if ((int)$textParts[2] > (int)$fromrep) {
+            $this->insertChatBotMessage(
+                $this->getPrivateMessageID(),
+                '/error NotEnoughRep'
+            );
+
+            return false;
+        }
+        $userName = $textParts[1];
+        $whereisUserID = $this->getIDFromName($textParts[1]);
+        $whereisRoleClass = get_user_class_name($this->getRoleFromID($whereisUserID), true);
+        $user = '[' . $whereisRoleClass . ']' . $userName . '[/' . $whereisRoleClass . ']';
+        $gift = $textParts[2];
+        $text = $user . ' has been given ' . number_format($gift) . ' Reputation Points from ' . $CURUSER['username'] . '.';
+        $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . " - given reputation gift of $gift by " . $CURUSER['username'] . '.';
+        $recbonus = get_one_row('users', 'reputation', 'WHERE username = ' . sqlesc($userName));
+        if (sql_query("UPDATE users SET reputation = reputation - $gift WHERE id = " . sqlesc($CURUSER['id']))) {
+            sql_query("UPDATE users SET reputation = reputation + $gift, bonuscomment = CONCAT(" . sqlesc($bonuscomment) . ",'\n',IFNULL(bonuscomment,'')) WHERE username = " . sqlesc($userName)) or sqlerr(__FILE__, __LINE__);
+            // receiver
+            if (($user_cache = $mc1->get_value('MyUser_' . $whereisUserID)) != false) {
+                $mc1->begin_transaction('MyUser_' . $whereisUserID);
+                $mc1->update_row(false, [
+                    'reputation' => $recbonus + $gift,
+                ]);
+                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            }
+            // giver
+            if (($user_cache = $mc1->get_value('MyUser_' . $CURUSER['id'])) != false) {
+                $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
+                $mc1->update_row(false, [
+                    'reputation' => $fromrep - $gift,
+                ]);
+                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
+            }
+
+            $mc1->delete_value('user_rep_' . $whereisUserID);
+            $save = [
+                'reputation' => sqlesc($gift),
+                'whoadded'   => sqlesc($CURUSER['id']),
+                'reason'     => sqlesc('AJAX Chat'),
+                'dateadd'    => time(),
+                'locale'     => sqlesc('torrents'),
+                'postid'     => 0,
+                'userid'     => sqlesc($whereisUserID),
+            ];
+            $sql = 'INSERT INTO reputation (' . implode(', ', array_keys($save)) . ') VALUES (' . implode(', ', $save) . ')';
+            sql_query($sql) or sqlerr(__FILE__, __LINE__);
+            $this->insertChatBotMessage(
+                $this->getChannel(),
+                $text,
+                null,
+                1,
+                600
+            );
+        } else {
+            $this->insertChatBotMessage(
+                $this->getPrivateMessageID(),
+                '/error Unknown'
+            );
+        }
+    }
+
+    public function insertParsedMessageGift($textParts)
+    {
+        global $CURUSER, $mc1;
+        if (count($textParts) == 1) {
+            $this->insertChatBotMessage(
+                $this->getPrivateMessageID(),
+                '/error MissingUserName'
+            );
+
+            return false;
+        } elseif (count($textParts) == 2 || !is_numeric($textParts[2]) || $textParts[2] <= 0) {
+            $this->insertChatBotMessage(
+                $this->getPrivateMessageID(),
+                '/error NotInteger'
+            );
+
+            return false;
+        }
+        $gift = number_format($textParts[2]);
+        $sql = sql_query('SELECT seedbonus FROM users WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+        $res = mysqli_fetch_row($sql);
+        $frombonus = $res[0];
+        if ((int)$textParts[2] > (int)$frombonus) {
+            $this->insertChatBotMessage(
+                $this->getPrivateMessageID(),
+                '/error NotEnoughKarma'
+            );
+
+            return false;
+        }
+        $userName = $textParts[1];
+        $whereisUserID = $this->getIDFromName($textParts[1]);
+        $whereisRoleClass = get_user_class_name($this->getRoleFromID($whereisUserID), true);
+        $user = '[' . $whereisRoleClass . ']' . $userName . '[/' . $whereisRoleClass . ']';
+        $text = $user . ' has been given a Karma gift of ' . number_format($gift) . ' points from ' . $CURUSER['username'] . '.';
+        $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . " - given karma gift of $gift by " . $CURUSER['username'] . '.';
+        $recbonus = get_one_row('users', 'seedbonus', 'WHERE username = ' . sqlesc($userName));
+        if (sql_query("UPDATE users SET seedbonus = seedbonus - $gift WHERE id = " . sqlesc($CURUSER['id']))) {
+            sql_query("UPDATE users SET seedbonus = seedbonus + $gift, bonuscomment = CONCAT(" . sqlesc($bonuscomment) . ",'\n',IFNULL(bonuscomment,'')) WHERE username = " . sqlesc($userName)) or sqlerr(__FILE__, __LINE__);
+            // receiver
+            $mc1->begin_transaction('userstats_' . $whereisUserID);
+            $mc1->update_row(false, [
+                'seedbonus' => $recbonus + $gift,
+            ]);
+            $mc1->commit_transaction(0);
+            // giver
+            $mc1->begin_transaction('userstats_' . $CURUSER['id']);
+            $mc1->update_row(false, [
+                'seedbonus' => $frombonus - $gift,
+            ]);
+            $mc1->commit_transaction(0);
+
+            $this->insertChatBotMessage(
+                $this->getChannel(),
+                $text,
+                null,
+                1
+            );
+        } else {
+            $this->insertChatBotMessage(
+                $this->getPrivateMessageID(),
+                '/error Unknown'
+            );
+        }
+    }
+
+
     /**
      * @return null
      */
@@ -3115,11 +3568,11 @@ class AJAXChat
             $this->_infoMessages = [];
         }
         if ($type) {
-            if (!isset($this->_infoMessages[$type])) {
-                $this->_infoMessages[$type] = [];
+            if (!isset($this->_infoMessages[ $type ])) {
+                $this->_infoMessages[ $type ] = [];
             }
 
-            return $this->_infoMessages[$type];
+            return $this->_infoMessages[ $type ];
         } else {
             return $this->_infoMessages;
         }
@@ -3155,7 +3608,7 @@ class AJAXChat
         $messages = '';
 
         // Add the messages in reverse order so it is ascending again:
-        while($row = mysqli_fetch_array($result)) {
+        while ($row = mysqli_fetch_array($result)) {
             $message = $this->getChatViewMessageXML(
                 $row['id'],
                 $row['timeStamp'],
@@ -3547,7 +4000,7 @@ class AJAXChat
         if (!$this->_requestVars) {
             $this->_requestVars = [];
         }
-        $this->_requestVars[$key] = $value;
+        $this->_requestVars[ $key ] = $value;
     }
 
     // Override to initialize custom configuration settings:
@@ -3667,8 +4120,8 @@ class AJAXChat
         if ($key === null) {
             return $this->_lang;
         }
-        if (isset($this->_lang[$key])) {
-            return $this->_lang[$key];
+        if (isset($this->_lang[ $key ])) {
+            return $this->_lang[ $key ];
         }
 
         return null;
@@ -3709,11 +4162,11 @@ class AJAXChat
         if (!isset($this->_customVars)) {
             $this->_customVars = [];
         }
-        if (!isset($this->_customVars[$key])) {
+        if (!isset($this->_customVars[ $key ])) {
             return null;
         }
 
-        return $this->_customVars[$key];
+        return $this->_customVars[ $key ];
     }
 
     // Override:
@@ -3729,7 +4182,7 @@ class AJAXChat
         if (!isset($this->_customVars)) {
             $this->_customVars = [];
         }
-        $this->_customVars[$key] = $value;
+        $this->_customVars[ $key ] = $value;
     }
 
     // Override:

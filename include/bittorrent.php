@@ -675,7 +675,7 @@ function autoclean()
             }
 
             if (user_exists($site_config['chatBotID'])) {
-                $mc1->cache_value('tfreak_cron_', TIME_NOW, 60);
+                $mc1->cache_value('tfreak_cron_', TIME_NOW, 30);
                 require_once INCL_DIR . 'newsrss.php';
                 if (empty($tfreak_news)) {
                     github_shout();
@@ -918,7 +918,6 @@ function unesc($x)
     return $x;
 }
 
-//Extended mksize Function
 /**
  * @param     $bytes
  * @param int $dec
@@ -927,31 +926,37 @@ function unesc($x)
  */
 function mksize($bytes, $dec = 2)
 {
+    $neg = 1;
+    if ($bytes < 0) {
+        $neg = -1;
+    }
+
+    $bytes = abs($bytes);
     $bytes = max(0, (int)$bytes);
 
     if ($bytes < 1024000) {
-        return number_format($bytes / 1024, $dec) . ' KB';
+        return number_format($neg * $bytes / 1024, $dec) . ' KB';
     } //Kilobyte
     elseif ($bytes < 1048576000) {
-        return number_format($bytes / 1048576, $dec) . ' MB';
+        return number_format($neg * $bytes / 1048576, $dec) . ' MB';
     } //Megabyte
     elseif ($bytes < 1073741824000) {
-        return number_format($bytes / 1073741824, $dec) . ' GB';
+        return number_format($neg * $bytes / 1073741824, $dec) . ' GB';
     } //Gigebyte
     elseif ($bytes < 1099511627776000) {
-        return number_format($bytes / 1099511627776, $dec) . ' TB';
+        return number_format($neg * $bytes / 1099511627776, $dec) . ' TB';
     } //Terabyte
     elseif ($bytes < 1125899906842624000) {
-        return number_format($bytes / 1125899906842624, $dec) . ' PB';
+        return number_format($neg * $bytes / 1125899906842624, $dec) . ' PB';
     } //Petabyte
     elseif ($bytes < 1152921504606846976000) {
-        return number_format($bytes / 1152921504606846976, $dec) . ' EB';
+        return number_format($neg * $bytes / 1152921504606846976, $dec) . ' EB';
     } //Exabyte
     elseif ($bytes < 1180591620717411303424000) {
-        return number_format($bytes / 1180591620717411303424, $dec) . ' ZB';
+        return number_format($neg * $bytes / 1180591620717411303424, $dec) . ' ZB';
     } //Zettabyte
     else {
-        return number_format($bytes / 1208925819614629174706176, $dec) . ' YB';
+        return number_format($neg * $bytes / 1208925819614629174706176, $dec) . ' YB';
     } //Yottabyte
 }
 
@@ -1130,7 +1135,8 @@ function get_row_count($table, $suffix = '')
  */
 function get_one_row($table, $suffix, $where)
 {
-    $r = sql_query("SELECT $suffix FROM $table $where") or sqlerr(__FILE__, __LINE__);
+    $sql = "SELECT $suffix FROM $table $where";
+    $r = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     $a = mysqli_fetch_row($r);
     if (isset($a[0])) {
         return $a[0];
@@ -1272,7 +1278,7 @@ function get_time_offset()
  *
  * @return false|mixed|string
  */
-function get_date($date, $method, $norelative = 0, $full_relative = 0)
+function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = false)
 {
     global $site_config;
     static $offset_set = 0;
@@ -1302,7 +1308,7 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0)
     if ($site_config['time_use_relative'] == 3) {
         $full_relative = 1;
     }
-    if ($full_relative && ($norelative != 1)) {
+    if ($full_relative && ($norelative != 1) && !$calc) {
         $diff = TIME_NOW - $date;
         if ($diff < 3600) {
             if ($diff < 120) {
@@ -1325,7 +1331,7 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0)
         } else {
             return gmdate($time_options[ $method ], ($date + $GLOBALS['offset']));
         }
-    } elseif ($site_config['time_use_relative'] && ($norelative != 1)) {
+    } elseif ($site_config['time_use_relative'] && ($norelative != 1) && !$calc) {
         $this_time = gmdate('d,m,Y', ($date + $GLOBALS['offset']));
         if ($site_config['time_use_relative'] == 2) {
             $diff = TIME_NOW - $date;
@@ -1343,6 +1349,31 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0)
             return str_replace('{--}', 'Yesterday', gmdate($site_config['time_use_relative_format'], ($date + $GLOBALS['offset'])));
         } else {
             return gmdate($time_options[ $method ], ($date + $GLOBALS['offset']));
+        }
+    } elseif ($calc) {
+        $years = intval($date / 31536000);
+        $date -= $years * 31536000;
+        $days = intval($date / 86400);
+        $date -= $days * 86400;
+        $hours = intval($date / 3600);
+        $date -= $hours * 3600;
+        $mins = intval($date / 60);
+        $secs = $date - ($mins * 60);
+        $text = [];
+        if ($years > 0) {
+            $text[] = number_format($years) . " years";
+        }
+        if ($days > 0) {
+            $text[] = number_format($days) . " days";
+        }
+        if ($hours > 0) {
+            $text[] = number_format($hours) . " hours";
+        }
+        if ($mins > 0) {
+            $text[] = number_format($mins) . " min";
+        }
+        if (!empty($text)) {
+            return implode(', ', $text);
         }
     } else {
         return gmdate($time_options[ $method ], ($date + $GLOBALS['offset']));

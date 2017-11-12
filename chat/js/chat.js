@@ -174,7 +174,7 @@ var ajaxChat = {
     initDirectories: function () {
         this.dirs = {};
         //alert(this.baseURL);
-        this.dirs['emoticons']  = './images/smilies/';
+        this.dirs['emoticons'] = './images/smilies/';
         this.dirs['sounds'] = './media/sounds/';
         this.dirs['flash'] = './media/flash/';
 
@@ -360,17 +360,17 @@ var ajaxChat = {
         }
     },
 
-    updateDOM: function(id, str, prepend, overwrite) {
+    updateDOM: function (id, str, prepend, overwrite) {
         var domNode = this.dom[id] ? this.dom[id] : document.getElementById(id);
-        if(!domNode) {
+        if (!domNode) {
             return;
         }
         try {
             // Test for validity before adding the string to the DOM:
             domNode.cloneNode(false).innerHTML = str;
-            if(overwrite) {
+            if (overwrite) {
                 domNode.innerHTML = str;
-            } else if(prepend) {
+            } else if (prepend) {
                 if (id == 'chatList') {
                     domNode.insertAdjacentHTML('afterbegin', str);
                 } else {
@@ -383,9 +383,9 @@ var ajaxChat = {
                     domNode.innerHTML += str;
                 }
             }
-        } catch(e) {
+        } catch (e) {
             this.DOMbuffer = '';
-            this.addChatBotMessageToChatList('/error DOMSyntax '+id);
+            this.addChatBotMessageToChatList('/error DOMSyntax ' + id);
             this.updateChatlistView();
         }
     },
@@ -402,7 +402,7 @@ var ajaxChat = {
         for (var i = 0; i < this.emoticonCodes.length; i++) {
             // Replace specials characters in emoticon codes:
             this.emoticonCodes[i] = this.encodeSpecialChars(this.emoticonCodes[i]);
-            if(this.emoticonDisplay[i] == 2 || this.emoticonDisplay[i] == 3) {
+            if (this.emoticonDisplay[i] == 2 || this.emoticonDisplay[i] == 3) {
                 if (this.dom['emoticonsContainer']) {
                     this.DOMbuffer = this.DOMbuffer
                         + '<a href="javascript:ajaxChat.insertText(\''
@@ -460,8 +460,8 @@ var ajaxChat = {
 
     updateChat: function (paramString) {
         var requestUrl = this.ajaxURL
-                        + '&lastID='
-                        + this.lastID;
+            + '&lastID='
+            + this.lastID;
 
         if (paramString) {
             requestUrl += paramString;
@@ -1088,8 +1088,8 @@ var ajaxChat = {
                         document.title = this.siteName + ' :(' + pmCount + '): Chat';
                     }
                     var span = document.getElementById('pmcount');
-                    while(span.firstChild) {
-                        span.removeChild( span.firstChild );
+                    while (span.firstChild) {
+                        span.removeChild(span.firstChild);
                     }
                     span.appendChild(document.createTextNode(pmCount));
                     this.pmCount = pmCount;
@@ -1254,7 +1254,7 @@ var ajaxChat = {
                 + ' \');" title="Private Message this user in AJAX Chat.">'
                 + this.lang['userMenuSendPrivateMessage']
                 + '</a></li>'
-                + '<li><a target="_blank" href="../pm_system.php?action=send_message&amp;receiver='
+                + '<li class="disc"><a target="_blank" href="../pm_system.php?action=send_message&amp;receiver='
                 + userID
                 + '" title="Private Message this user using site messages.">'
                 + 'PM User '
@@ -1281,6 +1281,35 @@ var ajaxChat = {
                 + encodedUserName
                 + '\');" title="Revoke an Invitation to this user to your private channel.">'
                 + this.lang['userMenuUninvite']
+                + '</a></li>'
+                + '<li class="disc"><a target="_blank" href="../userdetails.php?id='
+                + userID
+                + '&amp;hit=1" title="Open this users profile.">'
+                + 'Users Profile '
+                + '</a></li>'
+                + '<li class="disc"><a target="_blank" href="../browse.php?search='
+                + encodedUserName
+                + '&amp;searchin=owner&amp;incldead=1&amp;vip=0" title="View this users uploads.">'
+                + 'Users Uploads '
+                + '</a></li>'
+                + '<li class="disc"><a href="javascript:ajaxChat.sendMessageWrapper(\'/stats '
+                + encodedUserName
+                + '\');" title="Display users site stats in chat.">Users Stats'
+                + '</a></li>'
+                + '<li class="disc"><a href="javascript:ajaxChat.insertMessageWrapper(\'/gift '
+                + encodedUserName
+                + ' \');" title="Give the user a gift of Karma.">'
+                + 'Karma Gift'
+                + '</a></li>'
+                + '<li class="disc"><a href="javascript:ajaxChat.insertMessageWrapper(\'/rep '
+                + encodedUserName
+                + ' \');" title="Give the user som Rep+.">'
+                + 'Reputation Gift'
+                + '</a></li>'
+                + '<li class="disc"><a href="javascript:ajaxChat.sendMessageWrapper(\'/seen '
+                + encodedUserName
+                + ' \');" title="When did this user last talk?">'
+                + 'Last Seen'
                 + '</a></li>';
             if (this.userRole >= UC_STAFF) {
                 menu += '<li><a href="javascript:ajaxChat.insertMessageWrapper(\'/kick '
@@ -1300,14 +1329,25 @@ var ajaxChat = {
                 + '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/who\');">'
                 + this.lang['userMenuWho']
                 + '</a></li>'
+                + '<li class="circle"><a href="#" onclick="return ajaxChat.showHide(\'statslist\');" title="Click here to toggle visibility of stats list">Stats</a><ul style="display: none;" id="statslist">'
+                + '<li class="disc"><a href="javascript:ajaxChat.sendMessageWrapper(\'/stats '
+                + encodedUserName
+                + '\');" title="Display your stats in chat. [Private Message]">Your Stats'
+                + '</a></li>'
+                + '<li class="disc"><a href="javascript:ajaxChat.sendMessageWrapper(\'/casino \');" title="Show Casino and BlackJack Stats.">'
+                + 'Game Stats'
+                + '</a></li>'
+                + '<li class="disc"><a href="' + window.location.protocol + '//' + window.location.host + '/hnrs.php" target="_blank">Hit and Runs</a></li>'
+                + '<li class="disc"><a href="' + window.location.protocol + '//' + window.location.host + '/port_check.php" target="_blank">Port Check</a></li>'
+                + '<li class="disc"><a href="javascript:ajaxChat.sendMessageWrapper(\'/mentions \');" title="Show last 25 posts that mention you by name.">'
+                + 'Mentions'
+                + '</a></li>'
+                + '</ul></li>'
                 + '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/ignore\');">'
                 + this.lang['userMenuIgnoreList']
                 + '</a></li>'
                 + '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/list\');">'
                 + this.lang['userMenuList']
-                + '</a></li>'
-                + '<li><a href="javascript:ajaxChat.insertMessageWrapper(\'/action \');">'
-                + this.lang['userMenuAction']
                 + '</a></li>'
                 + '<li><a href="javascript:ajaxChat.insertMessageWrapper(\'/roll \');">'
                 + this.lang['userMenuRoll']
@@ -1326,8 +1366,8 @@ var ajaxChat = {
                 }
                 if (this.userRole >= UC_ADMINISTRATOR) {
                     menu += '<li><a href="../ajaxchat.php?view=logs" title="View AJAX Chat Logs.">'
-                         + 'View Logs'
-                         + '</a></li>'
+                        + 'View Logs'
+                        + '</a></li>'
                 }
             }
         }
@@ -1387,8 +1427,34 @@ var ajaxChat = {
         if (this.getMessageNode(messageID)) {
             return;
         }
+
+        // Don't show any private messages messages in staff,support, announce and news channels
+        if ((this.channelName === 'Staff' && parseInt(channelID) !== parseInt(this.channelID)) ||
+            (this.channelName === 'Sysop' && parseInt(channelID) !== parseInt(this.channelID)) ||
+            (this.channelName === 'Support' && parseInt(channelID) !== parseInt(this.channelID)) ||
+            (this.channelName === 'Announce' && parseInt(channelID) !== parseInt(this.channelID)) ||
+            (this.channelName === 'News' && parseInt(channelID) !== parseInt(this.channelID)) ||
+            (this.channelName === 'Git' && parseInt(channelID) !== parseInt(this.channelID))) {
+            if (!this.DOMbuffering) {
+                this.updateDOM('chatList', this.DOMbuffer, this.settings['postDirection']);
+                this.DOMbuffer = "";
+            }
+            return;
+        }
+
+        // Don't show any message in announce or news channels from users
+        if ((this.channelName === 'Announce' && parseInt(userRole) !== 100) ||
+            (this.channelName === 'News' && parseInt(userRole) !== 100) ||
+            (this.channelName === 'Git' && parseInt(userRole) !== 100)) {
+            if (!this.DOMbuffering) {
+                this.updateDOM('chatList', this.DOMbuffer, this.settings['postDirection']);
+                this.DOMbuffer = "";
+            }
+            return;
+        }
+
         if (!this.onNewMessage(dateObject, userID, userName, userRole, messageID, messageText, channelID, ip)) {
-            if(!this.DOMbuffering) {
+            if (!this.DOMbuffering) {
                 this.updateDOM('chatList', this.DOMbuffer, this.settings['postDirection']);
                 this.DOMbuffer = "";
             }
@@ -1409,6 +1475,9 @@ var ajaxChat = {
         var rowClass = this.DOMbufferRowClass,
             userClass = this.getRoleClass(userRole),
             colon = ': ';
+        if (userRole == 100 && ~messageText.indexOf('Member Since')) {
+            rowClass += ' monospace';
+        }
         if (messageText.indexOf('/action') === 0 || messageText.indexOf('/me') === 0 || messageText.indexOf('/privaction') === 0) {
             userClass += ' action';
             colon = ' ';
@@ -1427,7 +1496,7 @@ var ajaxChat = {
             + dateTime
             + '<span class="'
             + userClass
-            + '"'
+            + '" title="Click to use@' + userName + ':"'
             + this.getChatListUserNameTitle(userID, userName, userRole, ip)
             + ' dir="'
             + this.baseDirection
@@ -1476,7 +1545,7 @@ var ajaxChat = {
                 + arguments.callee.deleteMessage
                 + '" href="javascript:ajaxChat.deleteMessage('
                 + messageID
-                    + ', false);"> </a>'; // Adding a space - without any content Opera messes up the chatlist display
+                + ', false);"> </a>'; // Adding a space - without any content Opera messes up the chatlist display
         }
         return '';
     },
@@ -1485,7 +1554,7 @@ var ajaxChat = {
         if (this.userRole >= UC_USER && this.allowUserMessageDelete && (userID === this.userID || parseInt(channelID) === parseInt(this.userID) + this.privateMessageDiff || parseInt(channelID) === parseInt(this.userID) + this.privateChannelDiff) ||
             (this.userRole >= UC_STAFF && this.allowUserMessageDelete && this.userRole > userRole) ||
             (this.userRole >= UC_ADMINISTRATOR && (this.userRole > userRole || userRole === ChatBot))
-            ) {
+        ) {
             return true;
         }
         return false;
@@ -2163,6 +2232,7 @@ var ajaxChat = {
                 }
             }
         }
+        return false;
     },
 
     setPersistFontColor: function (bool) {
@@ -2345,6 +2415,18 @@ var ajaxChat = {
                     return this.replaceCommandWhois(textParts);
                 case '/whereis':
                     return this.replaceCommandWhereis(textParts);
+                case '/gift':
+                    return this.replaceCommandGift(textParts);
+                case '/rep':
+                    return this.replaceCommandRep(textParts);
+                case '/seen':
+                    return this.replaceCommandSeen(textParts);
+                case '/mentions':
+                    return this.replaceCommandMentions(textParts);
+                case '/stats':
+                    return this.replaceCommandStats(textParts);
+                case '/casino':
+                    return this.replaceCommandCasino(textParts);
                 case '/roll':
                     return this.replaceCommandRoll(textParts);
                 case '/nick':
@@ -2587,6 +2669,30 @@ var ajaxChat = {
             + '</span>';
     },
 
+    replaceCommandStats: function (textParts) {
+        return this.replaceBBCode(textParts);
+    },
+
+    replaceCommandGift: function (textParts) {
+        return this.replaceBBCode(textParts);
+    },
+
+    replaceCommandRep: function (textParts) {
+        return this.replaceBBCode(textParts);
+    },
+
+    replaceCommandSeen: function (textParts) {
+        return this.replaceBBCode(textParts);
+    },
+
+    replaceCommandMentions: function (textParts) {
+        return this.replaceBBCode(textParts);
+    },
+
+    replaceCommandCasino: function (textParts) {
+        return this.replaceBBCode(textParts);
+    },
+
     replaceCommandWhereis: function (textParts) {
         return '<span class="chatBotMessage">'
             + this.lang['whereis'].replace(/%s/, textParts[1]).replace(
@@ -2607,11 +2713,11 @@ var ajaxChat = {
         rollText = rollText.replace(/%s/, textParts[2]);
         rollText = rollText.replace(/%s/, textParts[3]);
         return '<span class="chatBotMessage">'
-                + '<img src="'
-                + ajaxChat.dirs['emoticons']
-                + 'dice.gif" alt="dice" />'
-                + rollText
-                + '</span>';
+            + '<img src="'
+            + ajaxChat.dirs['emoticons']
+            + 'dice.gif" alt="dice" />'
+            + rollText
+            + '</span>';
     },
 
     replaceCommandNick: function (textParts) {
@@ -2784,7 +2890,7 @@ var ajaxChat = {
         return content;
     },
 
-    replaceBBCodeUrl: function(content, attribute) {
+    replaceBBCodeUrl: function (content, attribute) {
         var url, regExpUrl, link;
         if (attribute) {
             url = attribute.replace(/\s/gm, this.encodeText(' '));
@@ -2807,10 +2913,10 @@ var ajaxChat = {
         }
 
         link = '<a href="'
-                + url
-                + '" onclick="window.open(this.href); return false;">'
-                + this.replaceBBCode(content)
-                + '</a>';
+            + url
+            + '" onclick="window.open(this.href); return false;">'
+            + this.replaceBBCode(content)
+            + '</a>';
         this.inUrlBBCode = false;
         return link;
     },
@@ -2872,21 +2978,21 @@ var ajaxChat = {
             + '</span>';
     },
 
-    replaceBBCodeBold: function(content) {
-        return  '<span style="font-weight:bold;">'
-                + this.replaceBBCode(content)
-                + '</span>';
+    replaceBBCodeBold: function (content) {
+        return '<span style="font-weight:bold;">'
+            + this.replaceBBCode(content)
+            + '</span>';
     },
 
-    replaceBBCodeItalic: function(content) {
-        return  '<span style="font-style: italic;">'
-                + this.replaceBBCode(content)
-                + '</span>';
+    replaceBBCodeItalic: function (content) {
+        return '<span style="font-style: italic;">'
+            + this.replaceBBCode(content)
+            + '</span>';
     },
 
-    replaceHyperLinks: function(text) {
+    replaceHyperLinks: function (text) {
         var regExp;
-        if(!this.settings['hyperLinks']) {
+        if (!this.settings['hyperLinks']) {
             return text;
         }
         regExp = new RegExp(
@@ -2896,9 +3002,9 @@ var ajaxChat = {
         return text.replace(
             regExp,
             // Specifying an anonymous function as second parameter:
-            function(str, p1, p2, p3) {
+            function (str, p1, p2, p3) {
                 // Do not replace URL's inside URL's:
-                if(p3) {
+                if (p3) {
                     return str;
                 }
                 var hostname = new RegExp(window.location.hostname, 'g');
@@ -2908,12 +3014,12 @@ var ajaxChat = {
                 } else {
                     url = 'https://privatelink.de/en/?' + p2;
                 }
-                return  p1
-                        + '<a href="'
-                        + url
-                        + '" onclick="window.open(this.href); return false;">'
-                        + p2
-                        + '</a>';
+                return p1
+                    + '<a href="'
+                    + url
+                    + '" onclick="window.open(this.href); return false;">'
+                    + p2
+                    + '</a>';
             }
         );
     },
@@ -3173,7 +3279,7 @@ var ajaxChat = {
     // Return replaced text and call replaceBBCode recursively for the content text
     // tag contains the BBCode tag, attribute the BBCode attribute and content the content text
     // This method is only called for BBCode tags which are in the bbCodeTags list
-    replaceCustomBBCode: function(tag, attribute, content) {
+    replaceCustomBBCode: function (tag, attribute, content) {
         return '<span class="' + tag + '">' + this.replaceBBCode(content) + '</span>';
     },
 

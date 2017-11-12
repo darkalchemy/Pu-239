@@ -156,6 +156,7 @@ CREATE TABLE `ajax_chat_messages` (
   KEY `ttl` (`ttl`),
   KEY `userID` (`userID`),
   KEY `userName` (`userName`),
+  FULLTEXT KEY `ft_text` (`text`),
   CONSTRAINT `ajax_chat_messages_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ajax_chat_messages_ibfk_2` FOREIGN KEY (`userName`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -3616,4 +3617,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-11 23:50:52
+-- Dump completed on 2017-11-12 22:47:13

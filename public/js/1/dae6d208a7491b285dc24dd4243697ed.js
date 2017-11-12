@@ -1033,12 +1033,12 @@ var ajaxChat = {
     getUserNodeStringItems: function(encodedUserName, userID, isInline) {
         var menu;
         if (encodedUserName !== this.encodedUserName) {
-            menu = "<li><a href=\"javascript:ajaxChat.insertMessageWrapper('/msg " + encodedUserName + ' \');" title="Private Message this user in AJAX Chat.">' + this.lang["userMenuSendPrivateMessage"] + "</a></li>" + '<li><a target="_blank" href="../pm_system.php?action=send_message&amp;receiver=' + userID + '" title="Private Message this user using site messages.">' + "PM User " + "</a></li>" + "<li><a href=\"javascript:ajaxChat.sendMessageWrapper('/query " + encodedUserName + '\');" title="Open a private channel between you and this user.">' + this.lang["userMenuOpenPrivateChannel"] + "</a></li>" + '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/query\');" title="Close a private channel between you and this user.">' + this.lang["userMenuClosePrivateChannel"] + "</a></li>" + "<li><a href=\"javascript:ajaxChat.sendMessageWrapper('/ignore " + encodedUserName + '\');" title="(un)Ignore this user.">' + this.lang["userMenuIgnore"] + "</a></li>" + "<li><a href=\"javascript:ajaxChat.sendMessageWrapper('/invite " + encodedUserName + '\');" title="Invite this user to your private channel.">' + this.lang["userMenuInvite"] + "</a></li>" + "<li><a href=\"javascript:ajaxChat.sendMessageWrapper('/uninvite " + encodedUserName + '\');" title="Revoke an Invitation to this user to your private channel.">' + this.lang["userMenuUninvite"] + "</a></li>";
+            menu = "<li><a href=\"javascript:ajaxChat.insertMessageWrapper('/msg " + encodedUserName + ' \');" title="Private Message this user in AJAX Chat.">' + this.lang["userMenuSendPrivateMessage"] + "</a></li>" + '<li class="disc"><a target="_blank" href="../pm_system.php?action=send_message&amp;receiver=' + userID + '" title="Private Message this user using site messages.">' + "PM User " + "</a></li>" + "<li><a href=\"javascript:ajaxChat.sendMessageWrapper('/query " + encodedUserName + '\');" title="Open a private channel between you and this user.">' + this.lang["userMenuOpenPrivateChannel"] + "</a></li>" + '<li><a href="javascript:ajaxChat.sendMessageWrapper(\'/query\');" title="Close a private channel between you and this user.">' + this.lang["userMenuClosePrivateChannel"] + "</a></li>" + "<li><a href=\"javascript:ajaxChat.sendMessageWrapper('/ignore " + encodedUserName + '\');" title="(un)Ignore this user.">' + this.lang["userMenuIgnore"] + "</a></li>" + "<li><a href=\"javascript:ajaxChat.sendMessageWrapper('/invite " + encodedUserName + '\');" title="Invite this user to your private channel.">' + this.lang["userMenuInvite"] + "</a></li>" + "<li><a href=\"javascript:ajaxChat.sendMessageWrapper('/uninvite " + encodedUserName + '\');" title="Revoke an Invitation to this user to your private channel.">' + this.lang["userMenuUninvite"] + "</a></li>" + '<li class="disc"><a target="_blank" href="../userdetails.php?id=' + userID + '&amp;hit=1" title="Open this users profile.">' + "Users Profile " + "</a></li>" + '<li class="disc"><a target="_blank" href="../browse.php?search=' + encodedUserName + '&amp;searchin=owner&amp;incldead=1&amp;vip=0" title="View this users uploads.">' + "Users Uploads " + "</a></li>" + '<li class="disc"><a href="javascript:ajaxChat.sendMessageWrapper(\'/stats ' + encodedUserName + '\');" title="Display users site stats in chat.">Users Stats' + "</a></li>" + '<li class="disc"><a href="javascript:ajaxChat.insertMessageWrapper(\'/gift ' + encodedUserName + ' \');" title="Give the user a gift of Karma.">' + "Karma Gift" + "</a></li>" + '<li class="disc"><a href="javascript:ajaxChat.insertMessageWrapper(\'/rep ' + encodedUserName + ' \');" title="Give the user som Rep+.">' + "Reputation Gift" + "</a></li>" + '<li class="disc"><a href="javascript:ajaxChat.sendMessageWrapper(\'/seen ' + encodedUserName + ' \');" title="When did this user last talk?">' + "Last Seen" + "</a></li>";
             if (this.userRole >= UC_STAFF) {
                 menu += "<li><a href=\"javascript:ajaxChat.insertMessageWrapper('/kick " + encodedUserName + " ');\">" + this.lang["userMenuKick"] + "</a></li>" + "<li><a href=\"javascript:ajaxChat.sendMessageWrapper('/whois " + encodedUserName + "');\">" + this.lang["userMenuWhois"] + "</a></li>";
             }
         } else {
-            menu = '<li class="disc"><a target="_blank" href="../pm_system.php" title="How many unread site PMs you have.">' + 'Unread PM (<span id="pmcount">0</span>)</a></li>' + "<li><a href=\"javascript:ajaxChat.sendMessageWrapper('/who');\">" + this.lang["userMenuWho"] + "</a></li>" + "<li><a href=\"javascript:ajaxChat.sendMessageWrapper('/ignore');\">" + this.lang["userMenuIgnoreList"] + "</a></li>" + "<li><a href=\"javascript:ajaxChat.sendMessageWrapper('/list');\">" + this.lang["userMenuList"] + "</a></li>" + "<li><a href=\"javascript:ajaxChat.insertMessageWrapper('/action ');\">" + this.lang["userMenuAction"] + "</a></li>" + "<li><a href=\"javascript:ajaxChat.insertMessageWrapper('/roll ');\">" + this.lang["userMenuRoll"] + "</a></li>" + "<li><a href=\"javascript:ajaxChat.insertMessageWrapper('/nick ');\">" + this.lang["userMenuNick"] + "</a></li>";
+            menu = '<li class="disc"><a target="_blank" href="../pm_system.php" title="How many unread site PMs you have.">' + 'Unread PM (<span id="pmcount">0</span>)</a></li>' + "<li><a href=\"javascript:ajaxChat.sendMessageWrapper('/who');\">" + this.lang["userMenuWho"] + "</a></li>" + '<li class="circle"><a href="#" onclick="return ajaxChat.showHide(\'statslist\');" title="Click here to toggle visibility of stats list">Stats</a><ul style="display: none;" id="statslist">' + '<li class="disc"><a href="javascript:ajaxChat.sendMessageWrapper(\'/stats ' + encodedUserName + '\');" title="Display your stats in chat. [Private Message]">Your Stats' + "</a></li>" + '<li class="disc"><a href="javascript:ajaxChat.sendMessageWrapper(\'/casino \');" title="Show Casino and BlackJack Stats.">' + "Game Stats" + "</a></li>" + '<li class="disc"><a href="' + window.location.protocol + "//" + window.location.host + '/hnrs.php" target="_blank">Hit and Runs</a></li>' + '<li class="disc"><a href="' + window.location.protocol + "//" + window.location.host + '/port_check.php" target="_blank">Port Check</a></li>' + '<li class="disc"><a href="javascript:ajaxChat.sendMessageWrapper(\'/mentions \');" title="Show last 25 posts that mention you by name.">' + "Mentions" + "</a></li>" + "</ul></li>" + "<li><a href=\"javascript:ajaxChat.sendMessageWrapper('/ignore');\">" + this.lang["userMenuIgnoreList"] + "</a></li>" + "<li><a href=\"javascript:ajaxChat.sendMessageWrapper('/list');\">" + this.lang["userMenuList"] + "</a></li>" + "<li><a href=\"javascript:ajaxChat.insertMessageWrapper('/roll ');\">" + this.lang["userMenuRoll"] + "</a></li>" + "<li><a href=\"javascript:ajaxChat.insertMessageWrapper('/nick ');\">" + this.lang["userMenuNick"] + "</a></li>";
             if (this.userRole >= UC_POWER_USER) {
                 menu += "<li><a href=\"javascript:ajaxChat.sendMessageWrapper('/join');\">" + this.lang["userMenuEnterPrivateRoom"] + "</a></li>";
                 if (this.userRole >= UC_STAFF) {
@@ -1090,6 +1090,20 @@ var ajaxChat = {
         if (this.getMessageNode(messageID)) {
             return;
         }
+        if (this.channelName === "Staff" && parseInt(channelID) !== parseInt(this.channelID) || this.channelName === "Sysop" && parseInt(channelID) !== parseInt(this.channelID) || this.channelName === "Support" && parseInt(channelID) !== parseInt(this.channelID) || this.channelName === "Announce" && parseInt(channelID) !== parseInt(this.channelID) || this.channelName === "News" && parseInt(channelID) !== parseInt(this.channelID) || this.channelName === "Git" && parseInt(channelID) !== parseInt(this.channelID)) {
+            if (!this.DOMbuffering) {
+                this.updateDOM("chatList", this.DOMbuffer, this.settings["postDirection"]);
+                this.DOMbuffer = "";
+            }
+            return;
+        }
+        if (this.channelName === "Announce" && parseInt(userRole) !== 100 || this.channelName === "News" && parseInt(userRole) !== 100 || this.channelName === "Git" && parseInt(userRole) !== 100) {
+            if (!this.DOMbuffering) {
+                this.updateDOM("chatList", this.DOMbuffer, this.settings["postDirection"]);
+                this.DOMbuffer = "";
+            }
+            return;
+        }
         if (!this.onNewMessage(dateObject, userID, userName, userRole, messageID, messageText, channelID, ip)) {
             if (!this.DOMbuffering) {
                 this.updateDOM("chatList", this.DOMbuffer, this.settings["postDirection"]);
@@ -1106,6 +1120,9 @@ var ajaxChat = {
     },
     getChatListMessageString: function(dateObject, userID, userName, userRole, messageID, messageText, channelID, ip) {
         var rowClass = this.DOMbufferRowClass, userClass = this.getRoleClass(userRole), colon = ": ";
+        if (userRole == 100 && ~messageText.indexOf("Member Since")) {
+            rowClass += " monospace";
+        }
         if (messageText.indexOf("/action") === 0 || messageText.indexOf("/me") === 0 || messageText.indexOf("/privaction") === 0) {
             userClass += " action";
             colon = " ";
@@ -1114,7 +1131,7 @@ var ajaxChat = {
             rowClass += " private";
         }
         var dateTime = this.settings["dateFormat"] ? '<span class="dateTime" title="' + this.formatDate(this.settings["dateFormatTooltip"], dateObject) + '">' + this.formatDate(this.settings["dateFormat"], dateObject) + "</span> " : "";
-        return '<div id="' + this.getMessageDocumentID(messageID) + '" class="' + rowClass + '">' + this.getDeletionLink(messageID, userID, userRole, channelID) + dateTime + '<span class="' + userClass + '"' + this.getChatListUserNameTitle(userID, userName, userRole, ip) + ' dir="' + this.baseDirection + '" onclick="ajaxChat.insertText(\'[' + this.getRoleClass(userRole) + "]@' + this.firstChild.nodeValue + '[/" + this.getRoleClass(userRole) + "] ');\">" + userName + "</span>" + colon + this.replaceText(messageText) + "</div>";
+        return '<div id="' + this.getMessageDocumentID(messageID) + '" class="' + rowClass + '">' + this.getDeletionLink(messageID, userID, userRole, channelID) + dateTime + '<span class="' + userClass + '" title="Click to use@' + userName + ':"' + this.getChatListUserNameTitle(userID, userName, userRole, ip) + ' dir="' + this.baseDirection + '" onclick="ajaxChat.insertText(\'[' + this.getRoleClass(userRole) + "]@' + this.firstChild.nodeValue + '[/" + this.getRoleClass(userRole) + "] ');\">" + userName + "</span>" + colon + this.replaceText(messageText) + "</div>";
     },
     getChatListUserNameTitle: function(userID, userName, userRole, ip) {
         return ip !== null ? ' title="IP: ' + ip + '"' : "";
@@ -1737,6 +1754,7 @@ var ajaxChat = {
                 }
             }
         }
+        return false;
     },
     setPersistFontColor: function(bool) {
         this.settings["persistFontColor"] = bool;
@@ -1918,6 +1936,24 @@ var ajaxChat = {
               case "/whereis":
                 return this.replaceCommandWhereis(textParts);
 
+              case "/gift":
+                return this.replaceCommandGift(textParts);
+
+              case "/rep":
+                return this.replaceCommandRep(textParts);
+
+              case "/seen":
+                return this.replaceCommandSeen(textParts);
+
+              case "/mentions":
+                return this.replaceCommandMentions(textParts);
+
+              case "/stats":
+                return this.replaceCommandStats(textParts);
+
+              case "/casino":
+                return this.replaceCommandCasino(textParts);
+
               case "/roll":
                 return this.replaceCommandRoll(textParts);
 
@@ -2042,6 +2078,24 @@ var ajaxChat = {
     },
     replaceCommandWhois: function(textParts) {
         return '<span class="chatBotMessage">' + this.lang["whois"].replace(/%s/, textParts[1]) + " " + '<a title="Geolocation" target="_blank" href="http://www.infosniper.net/index.php?ip_address=' + textParts[2] + '">' + textParts[2] + "</a>" + "</span>";
+    },
+    replaceCommandStats: function(textParts) {
+        return this.replaceBBCode(textParts);
+    },
+    replaceCommandGift: function(textParts) {
+        return this.replaceBBCode(textParts);
+    },
+    replaceCommandRep: function(textParts) {
+        return this.replaceBBCode(textParts);
+    },
+    replaceCommandSeen: function(textParts) {
+        return this.replaceBBCode(textParts);
+    },
+    replaceCommandMentions: function(textParts) {
+        return this.replaceBBCode(textParts);
+    },
+    replaceCommandCasino: function(textParts) {
+        return this.replaceBBCode(textParts);
     },
     replaceCommandWhereis: function(textParts) {
         return '<span class="chatBotMessage">' + this.lang["whereis"].replace(/%s/, textParts[1]).replace(/%s/, "<a href=\"javascript:ajaxChat.sendMessageWrapper('/join " + this.scriptLinkEncode(textParts[2]) + '\');" title="' + this.lang["joinChannel"].replace(/%s/, textParts[2]) + '">' + textParts[2] + "</a>") + "</span>";
@@ -2436,104 +2490,6 @@ var ajaxChat = {
             console.log(msg, e);
             if (this.debug === 2) {
                 alert(msg + e);
-            }
-        }
-    }
-};
-
-ajaxChat.logsMonitorMode = null;
-
-ajaxChat.logsLastID = null;
-
-ajaxChat.logsCommand = null;
-
-ajaxChat.startChatUpdate = function() {
-    var infos = "userID,userName,userRole";
-    if (this.socketServerEnabled) {
-        infos += ",socketRegistrationID";
-    }
-    this.updateChat("&getInfos=" + this.encodeText(infos));
-};
-
-ajaxChat.updateChat = function(paramString) {
-    if (paramString || this.logsMonitorMode || !this.logsLastID || this.lastID != this.logsLastID) {
-        this.logsLastID = this.lastID;
-        var requestUrl = this.ajaxURL + "&lastID=" + this.lastID;
-        if (paramString) {
-            requestUrl += paramString;
-        }
-        requestUrl += "&" + this.getLogsCommand();
-        this.makeRequest(requestUrl, "GET", null);
-    } else {
-        this.logsLastID = null;
-    }
-};
-
-ajaxChat.sendMessage = function() {
-    this.getLogs();
-};
-
-ajaxChat.getLogs = function() {
-    clearTimeout(this.timer);
-    this.clearChatList();
-    this.lastID = 0;
-    this.logsCommand = null;
-    this.makeRequest(this.ajaxURL, "POST", this.getLogsCommand());
-};
-
-ajaxChat.getLogsCommand = function() {
-    if (!this.logsCommand) {
-        if (!this.dom["inputField"].value && parseInt(this.dom["yearSelection"].value) <= 0 && parseInt(this.dom["hourSelection"].value) <= 0) {
-            this.logsMonitorMode = true;
-        } else {
-            this.logsMonitorMode = false;
-        }
-        this.logsCommand = "command=getLogs" + "&channelID=" + this.dom["channelSelection"].value + "&year=" + this.dom["yearSelection"].value + "&month=" + this.dom["monthSelection"].value + "&day=" + this.dom["daySelection"].value + "&hour=" + this.dom["hourSelection"].value + "&search=" + this.encodeText(this.dom["inputField"].value);
-    }
-    return this.logsCommand;
-};
-
-ajaxChat.onNewMessage = function(dateObject, userID, userName, userRoleClass, messageID, messageText, channelID, ip) {
-    if (messageText.indexOf("/delete") == 0) {
-        return false;
-    }
-    if (this.logsMonitorMode) {
-        this.blinkOnNewMessage(dateObject, userID, userName, userRoleClass, messageID, messageText, channelID, ip);
-        this.playSoundOnNewMessage(dateObject, userID, userName, userRoleClass, messageID, messageText, channelID, ip);
-    }
-    return true;
-};
-
-ajaxChat.logout = function() {
-    clearTimeout(this.timer);
-};
-
-ajaxChat.switchLanguage = function(langCode) {
-    window.location.search = "?view=logs&lang=" + langCode;
-};
-
-ajaxChat.setChatUpdateTimer = function() {
-    clearTimeout(this.timer);
-    var timeout;
-    if (this.socketIsConnected && this.logsLastID && this.lastID == this.logsLastID) {
-        timeout = this.socketTimerRate;
-    } else {
-        timeout = this.timerRate;
-        if (this.socketServerEnabled && !this.socketReconnectTimer) {
-            this.socketReconnectTimer = setTimeout("ajaxChat.socketConnect();", 6e4);
-        }
-    }
-    this.timer = setTimeout("ajaxChat.updateChat(null);", timeout);
-};
-
-ajaxChat.socketUpdate = function(data) {
-    if (this.logsMonitorMode) {
-        var xmlDoc = this.loadXML(data);
-        if (xmlDoc) {
-            var selectedChannelID = parseInt(this.dom["channelSelection"].value);
-            var channelID = parseInt(xmlDoc.firstChild.getAttribute("channelID"));
-            if (selectedChannelID == -3 || channelID == selectedChannelID || selectedChannelID == -2 && channelID >= this.privateMessageDiff || selectedChannelID == -1 && channelID >= this.privateChannelDiff && channelID < this.privateMessageDiff) {
-                this.handleChatMessages(xmlDoc.getElementsByTagName("message"));
             }
         }
     }
@@ -3088,3 +3044,166 @@ ASProxy.prototype = {
         this.bridge.release(this);
     }
 };
+
+ajaxChat.view = {
+    debounce: false,
+    mobileDetectElement: "submitButtonContainer",
+    tinyScreenDetectElement: "bbCodeContainer",
+    bindPopups: function() {
+        this.bindButtonToPopup("showChannelsButton", "logoutChannelInner");
+        this.bindButtonToPopup("bbCodeColor", "colorCodesContainer");
+    },
+    bindButtonToPopup: function(buttonID, popupID) {
+        var buttonElement = document.getElementById(buttonID), popupElement = document.getElementById(popupID);
+        if (!buttonElement || !popupElement) {
+            return;
+        }
+        if (this.isVisible(buttonElement) || this.isTinyScreen()) {
+            popupElement.style.display = "none";
+            ajaxChat.addClass(popupElement, "popup");
+        } else {
+            popupElement.style.display = "block";
+            ajaxChat.removeClass(popupElement, "popup");
+        }
+        if (!buttonElement.linkedPopupID) {
+            buttonElement.linkedPopupID = popupID;
+            ajaxChat.addEvent(buttonElement, "click", this.toggleButton);
+        }
+    },
+    toggleButton: function(e) {
+        e = e || window.event;
+        var target = e.target || e.srcElement;
+        target.className = target.className === "button" ? "button off" : "button";
+        ajaxChat.showHide(target.linkedPopupID);
+    },
+    renderResize: function() {
+        var self = this;
+        self.useDebounce(function() {
+            if (typeof isIElt8 !== "undefined") {
+                var cont = document.getElementById("mainPanelContainer");
+                cont.removeAttribute("style");
+                cont.style.height = cont.clientHeight;
+            }
+            self.bindPopups();
+            if (self.isMobile()) {
+                ajaxChat.updateChatlistView();
+            }
+            if (self.isTinyScreen()) {
+                ajaxChat.showHide("onlineListContainer", "none");
+                ajaxChat.showHide("settingsContainer", "none");
+                ajaxChat.showHide("helpContainer", "none");
+            }
+        });
+    },
+    useDebounce: function(callback) {
+        var self = this;
+        if (self.debounce === false) {
+            self.debounce = true;
+            setTimeout(function() {
+                callback();
+                self.debounce = false;
+            }, 100);
+        }
+    },
+    isVisible: function(element) {
+        return element.offsetWidth > 0 || element.offsetHeight > 0;
+    },
+    isMobile: function() {
+        return !this.isVisible(document.getElementById(this.mobileDetectElement));
+    },
+    isTinyScreen: function() {
+        return !this.isVisible(document.getElementById(this.tinyScreenDetectElement));
+    },
+    toggleContainer: function(containerID, hideContainerIDs) {
+        if (hideContainerIDs) {
+            for (var i = 0; i < hideContainerIDs.length; i++) {
+                ajaxChat.showHide(hideContainerIDs[i], "none");
+            }
+        }
+        ajaxChat.showHide(containerID);
+    }
+};
+
+function initialize() {
+    if (ajaxChat.view.isMobile()) {
+        ajaxChat.setSetting("blink", false);
+        ajaxChat.view.toggleContainer("onlineListContainer", [ "settingsContainer", "helpContainer" ]);
+    }
+    ajaxChat.view.bindPopups();
+    ajaxChat.addEvent(window, "resize", function() {
+        ajaxChat.view.renderResize();
+    });
+    ajaxChat.updateButton("audio", "audioButton");
+    ajaxChat.updateButton("autoScroll", "autoScrollButton");
+    document.getElementById("postDirectionSetting").checked = ajaxChat.getSetting("postDirection");
+    document.getElementById("bbCodeSetting").checked = ajaxChat.getSetting("bbCode");
+    document.getElementById("bbCodeImagesSetting").checked = ajaxChat.getSetting("bbCodeImages");
+    document.getElementById("bbCodeColorsSetting").checked = ajaxChat.getSetting("bbCodeColors");
+    document.getElementById("hyperLinksSetting").checked = ajaxChat.getSetting("hyperLinks");
+    document.getElementById("lineBreaksSetting").checked = ajaxChat.getSetting("lineBreaks");
+    document.getElementById("emoticonsSetting").checked = ajaxChat.getSetting("emoticons");
+    document.getElementById("autoFocusSetting").checked = ajaxChat.getSetting("autoFocus");
+    document.getElementById("maxMessagesSetting").value = ajaxChat.getSetting("maxMessages");
+    document.getElementById("wordWrapSetting").checked = ajaxChat.getSetting("wordWrap");
+    document.getElementById("maxWordLengthSetting").value = ajaxChat.getSetting("maxWordLength");
+    document.getElementById("dateFormatSetting").value = ajaxChat.getSetting("dateFormat");
+    document.getElementById("persistFontColorSetting").checked = ajaxChat.getSetting("persistFontColor");
+    for (var i = 0; i < document.getElementById("audioBackendSetting").options.length; i++) {
+        if (document.getElementById("audioBackendSetting").options[i].value == ajaxChat.getSetting("audioBackend")) {
+            document.getElementById("audioBackendSetting").options[i].selected = true;
+            break;
+        }
+    }
+    for (var i = 0; i < document.getElementById("audioVolumeSetting").options.length; i++) {
+        if (document.getElementById("audioVolumeSetting").options[i].value == ajaxChat.getSetting("audioVolume")) {
+            document.getElementById("audioVolumeSetting").options[i].selected = true;
+            break;
+        }
+    }
+    ajaxChat.fillSoundSelection("soundReceiveSetting", ajaxChat.getSetting("soundReceive"));
+    ajaxChat.fillSoundSelection("soundSendSetting", ajaxChat.getSetting("soundSend"));
+    ajaxChat.fillSoundSelection("soundEnterSetting", ajaxChat.getSetting("soundEnter"));
+    ajaxChat.fillSoundSelection("soundLeaveSetting", ajaxChat.getSetting("soundLeave"));
+    ajaxChat.fillSoundSelection("soundChatBotSetting", ajaxChat.getSetting("soundChatBot"));
+    ajaxChat.fillSoundSelection("soundErrorSetting", ajaxChat.getSetting("soundError"));
+    ajaxChat.fillSoundSelection("soundPrivateSetting", ajaxChat.getSetting("soundPrivate"));
+    document.getElementById("blinkSetting").checked = ajaxChat.getSetting("blink");
+    document.getElementById("blinkIntervalSetting").value = ajaxChat.getSetting("blinkInterval");
+    document.getElementById("blinkIntervalNumberSetting").value = ajaxChat.getSetting("blinkIntervalNumber");
+}
+
+function PopMoreSmiles() {
+    PopUp("../allsmiles.php", "More Emoticons", 600, 500, 1, 0);
+}
+
+function PopUp(url, name, width, height, center, resize, scroll, posleft, postop) {
+    showx = "";
+    showy = "";
+    if (posleft != 0) {
+        X = posleft;
+    }
+    if (postop != 0) {
+        Y = postop;
+    }
+    if (!scroll) {
+        scroll = 1;
+    }
+    if (!resize) {
+        resize = 1;
+    }
+    if (parseInt(navigator.appVersion) >= 4 && center) {
+        X = (screen.width - width) / 2;
+        Y = (screen.height - height) / 2;
+    }
+    if (X > 0) {
+        showx = ",left=" + X;
+    }
+    if (Y > 0) {
+        showy = ",top=" + Y;
+    }
+    if (scroll != 0) {
+        scroll = 1;
+    }
+    var Win = window.open(url, name, "width=" + width + ",height=" + height + showx + showy + ",resizable=" + resize + ",scrollbars=" + scroll + ",location=no,directories=no,status=no,menubar=no,toolbar=no");
+    event.preventDefault();
+}
