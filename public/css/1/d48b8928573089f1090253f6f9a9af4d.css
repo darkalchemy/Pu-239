@@ -9655,6 +9655,7 @@ body {
   background-color: rgba(0,0,0,.1);
   background-image: -webkit-linear-gradient(90deg,rgba(0,0,0,1) 0,rgba(0,0,0,1) 25%,transparent 100%,rgba(0,0,0,1) 75%,transparent)
 }
+.button,
 .header,
 .tablinks,
 a,
