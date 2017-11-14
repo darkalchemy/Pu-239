@@ -11444,7 +11444,7 @@ header#navbar .nav_container ul > li > ul a:hover {
   float: left;
   margin: 2px
 }
-#control_panel li.active {
+#control_panel li.is-active {
   border-color: #000
 }
 #control_panel li a {
@@ -11485,7 +11485,7 @@ header#navbar .nav_container ul > li > ul a:hover {
   background-repeat: no-repeat;
   border: 1px solid #000
 }
-#control_panel #backgrounds .active a {
+#control_panel #backgrounds .is-active a {
   border-color: #434343
 }
 #nav > span {

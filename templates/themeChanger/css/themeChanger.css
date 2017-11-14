@@ -31,7 +31,7 @@
     margin: 2px;
 }
 
-#control_panel li.active {
+#control_panel li.is-active {
     border-color: #000;
 }
 
@@ -78,7 +78,7 @@
     border: 1px solid #000;
 }
 
-#control_panel #backgrounds .active a {
+#control_panel #backgrounds .is-active a {
     border-color: #434343;
 }
 

@@ -657,8 +657,8 @@ $(function() {
                 var nextClassName = $(this).attr("href");
                 if (!$body.hasClass(nextClassName)) {
                     changeBodyClass(nextClassName, nav);
-                    $bg_block.find(".active").removeClass("active");
-                    $(this).parent().addClass("active");
+                    $bg_block.find(".is-active").removeClass("is-active");
+                    $(this).parent().addClass("is-active");
                 }
                 return false;
             });
@@ -678,8 +678,8 @@ $(function() {
                 var nextClassName = $(this).attr("href");
                 if (!$body.hasClass(nextClassName)) {
                     changeBodyClass(nextClassName, pattern_classes);
-                    $bg_block.find(".active").removeClass("active");
-                    $(this).parent().addClass("active");
+                    $bg_block.find(".is-active").removeClass("is-active");
+                    $(this).parent().addClass("is-active");
                 }
                 return false;
             });
@@ -760,7 +760,7 @@ $(function() {
                 }).ColorPickerSetColor("#008a05");
                 $("body").get(0).style.setProperty("--main-color", "#9193de");
                 $("iframe").contents().find("body").css("--main-color", "#9193de");
-                $theme_control_panel.find(".active").removeClass();
+                $theme_control_panel.find(".is-active").removeClass();
                 localStorage.removeItem("a_color");
                 return false;
             };
