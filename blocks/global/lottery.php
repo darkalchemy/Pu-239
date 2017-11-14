@@ -12,20 +12,20 @@ if ($CURUSER) {
         $htmlout .= "
     <li>
         <a href='./lottery.php'>
-            <b class='button is-success is-small dt-tooltipper-small' data-tooltip-content='#lottery_tooltip'>
+            <b class='button tag is-success is-small dt-tooltipper-small' data-tooltip-content='#lottery_tooltip'>
                 Lottery in Progress
             </b>
             <div class='tooltip_templates'>
                 <span id='lottery_tooltip'>
                     <div>
                         <div class='size_4 has-text-centered has-text-success bottom10'>Lottery Info</div>
-                        <div class='level-center'>
+                        <div class='level is-marginless'>
                             <span>Started at: </span><span>" . get_date($lottery_info['start_date'], 'LONG') . "</span>
                         </div>
-                        <div class='level-center'>
+                        <div class='level is-marginless'>
                             <span>Ends at:&#160;&#160;&#160;&#160;&#160;&#160;</span><span>" . get_date($lottery_info['end_date'], 'LONG') . "</span>
                         </div>
-                        <div class='level-center'>
+                        <div class='level is-marginless'>
                             <span>Remaining: </span><span>" . mkprettytime($lottery_info['end_date'] - TIME_NOW) . "</span>
                         </div>
                     </div>

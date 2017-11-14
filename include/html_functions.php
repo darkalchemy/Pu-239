@@ -136,7 +136,7 @@ function insert_smilies_frame()
  *
  * @return string
  */
-function main_table($body, $header = null)
+function main_table($body, $header = null, $class = null)
 {
     $thead = $header != null ? "
                         <thead>
@@ -144,7 +144,7 @@ function main_table($body, $header = null)
                         </thead>" : '';
     return "
                 <div class='table-wrapper'>
-                    <table class='table table-bordered table-striped top20 bottom20'>
+                    <table class='table table-bordered table-striped'>
                         $thead
                         <tbody>
                             $body
@@ -158,13 +158,13 @@ function main_table($body, $header = null)
  *
  * @return string|void
  */
-function main_div($text, $align = null)
+function main_div($text, $class = null)
 {
     if ($text === '') {
         return;
     } else {
         return "
-                <div class='bordered top20 $align'>
+                <div class='bordered $class'>
                     <div class='alt_bordered bg-00'>
                         $text
                     </div>
@@ -182,13 +182,13 @@ function main_div($text, $align = null)
  *
  * @return string|void
  */
-function wrapper($text, $align = 'has-text-centered', $top = 'top20', $bottom = 'bottom20', $padding = '')
+function wrapper($text, $class = '')
 {
     if ($text === '') {
         return;
     } else {
         return "
-            <div class='container is-fluid portlet $align $top $bottom $padding'>
+            <div class='container is-fluid portlet $class'>
                 $text
             </div>";
     }

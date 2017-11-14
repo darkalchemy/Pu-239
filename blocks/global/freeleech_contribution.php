@@ -180,11 +180,11 @@ if (XBT_TRACKER == true) {
     $htmlout .= "
                 <li>
                     <a href='./mybonus.php'>
-                        <span class='btn tag is-success dt-tooltipper-small' data-tooltip-content='#karma_tooltip'>Karma Contribution's</span>
+                        <span class='button tag is-success dt-tooltipper-large' data-tooltip-content='#karma_tooltip'>Karma Contribution's</span>
                         <div class='tooltip_templates'>
                             <span id='karma_tooltip'>
                                 <div class='size_4 has-text-centered has-text-success .has-text-weight-bold bottom10'>Karma Contribution's</div>
-                                <div class='level-center'>
+                                <div class='level is-marginless'>
                                     <span>Freeleech</span><span> [ ";
     if ($freeleech_enabled) {
         $htmlout .= '<span class="has-text-success"> ON </span>' . get_date($freeleech_start_time, 'DATE') . ' - ' . get_date($freeleech_end_time, 'DATE');
@@ -196,7 +196,7 @@ if (XBT_TRACKER == true) {
                                 </div>';
 
     $htmlout .= "
-                                <div class='level-center'>
+                                <div class='level is-marginless'>
                                     <span>DoubleUpload</span><span> [ ";
     if ($double_upload_enabled) {
         $htmlout .= '<span class="has-text-success"> ON </span>' . get_date($double_upload_start_time, 'DATE') . ' - ' . get_date($double_upload_end_time, 'DATE');
@@ -208,7 +208,7 @@ if (XBT_TRACKER == true) {
                                 </div>';
 
     $htmlout .= "
-                                <div class='level-center'>
+                                <div class='level is-marginless'>
                                     <span>Half Download</span><span> [ ";
     if ($half_down_enabled) {
         $htmlout .= '<span class="has-text-success"> ON</span> ' . get_date($half_down_start_time, 'DATE') . ' - ' . get_date($half_down_end_time, 'DATE');

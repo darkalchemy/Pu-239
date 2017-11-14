@@ -1,3 +1,10 @@
+fix: lottery config
+fix: userdetails.php tabs and anchors
+update: faq
+fix: scroll to anchor
+merge: torrents-today.php into browse.php
+fix: userdetails.php tabcontrol
+
 12 Nov 2017
 add: user stats and gifts in AJAX Chat
 add: torrent search by uploader

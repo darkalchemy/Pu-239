@@ -132,7 +132,3 @@ table {
 .table-wrapper {
     overflow: auto;
 }
-
-.table-wrapper + .table-wrapper {
-    margin-top: 1.25em;
-}

@@ -429,19 +429,19 @@ function torrenttable($res, $variant = 'index')
 
             $edit_link = "
                 <span>
-                    <a href='{$site_config['baseurl']}/edit.php?id=" . (int)$row['id'] . "{$returnto}' class='flex-item'>
-                        <i class='fa fa-edit icon tooltipper' title='Fast Edit'></i>
+                    <a href='{$site_config['baseurl']}/edit.php?id=" . (int)$row['id'] . "{$returnto}' class='tooltipper' title='Fast Edit'>
+                        <i class='fa fa-edit icon'></i>
                     </a>
                 </span>";
             $del_link = ($CURUSER['class'] === UC_MAX ? "
                 <span>
-                    <a href='{$site_config['baseurl']}/fastdelete.php?id=" . (int)$row['id'] . "{$returnto}' class='flex-item'>
-                        <i class='fa fa-remove icon tooltipper' title='Fast Delete'></i>
+                    <a href='{$site_config['baseurl']}/fastdelete.php?id=" . (int)$row['id'] . "{$returnto}' class='tooltipper' title='Fast Delete'>
+                        <i class='fa fa-remove icon'></i>
                     </a>
                 </span>" : '');
             $htmlout .= "
                         <td>
-                            <div class='flex flex-justify-center'>
+                            <div class='level-center'>
                                 {$edit_link}
                                 {$del_link}
                             </div>

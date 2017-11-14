@@ -72,7 +72,7 @@ $text .= "
                     </label>
                 </div>
             </div>";
-$HTMLOUT .= main_div($text);
+$HTMLOUT .= main_div($text, 'bottom20');
 $HTMLOUT .= main_div("
             <div class='level-center'>
                 <li class='has-text-centered w-25 tooltipper' title='Returns only Bookmarked Torrents'>

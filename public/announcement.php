@@ -7,9 +7,13 @@ check_user_status();
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('index'), load_language('announcement'));
 $dt = TIME_NOW;
-$res = sql_query('SELECT u.id, u.curr_ann_id, u.curr_ann_last_check, u.last_access, ann_main.subject AS curr_ann_subject, ann_main.body AS curr_ann_body ' . ' FROM users AS u ' . ' LEFT JOIN announcement_main AS ann_main ' . ' ON ann_main.main_id = u.curr_ann_id ' . ' WHERE u.id = ' . sqlesc($CURUSER['id']) . " AND u.enabled='yes' AND u.status = 'confirmed'") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('
+        SELECT u.id, u.curr_ann_id, u.curr_ann_last_check, u.last_access, ann_main.subject AS curr_ann_subject, ann_main.body AS curr_ann_body
+        FROM users AS u
+        LEFT JOIN announcement_main AS ann_main ON ann_main.main_id = u.curr_ann_id
+        WHERE u.id = ' . sqlesc($CURUSER['id']) . ' AND u.enabled="yes" AND u.status = "confirmed"') or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res);
-//If curr_ann_id > 0 but curr_ann_body IS NULL, then force a refresh
+
 if (($row['curr_ann_id'] > 0) and ($row['curr_ann_body'] == null)) {
     $row['curr_ann_id'] == 0;
     $row['curr_ann_last_check'] == 0;
@@ -19,7 +23,13 @@ if (($row['curr_ann_last_check'] != 0) and (($row['curr_ann_last_check']) < ($dt
     $row['curr_ann_last_check'] == 0;
 }
 if (($row['curr_ann_id'] == 0) and ($row['curr_ann_last_check'] == 0)) { // Force an immediate check...
-    $query = sprintf('SELECT m.*,p.process_id FROM announcement_main AS m ' . 'LEFT JOIN announcement_process AS p ON m.main_id = p.main_id ' . 'AND p.user_id = %s ' . 'WHERE p.process_id IS NULL ' . 'OR p.status = 0 ' . 'ORDER BY m.main_id ASC ' . 'LIMIT 1', sqlesc($row['id']));
+    $query = sprintf('
+                SELECT m.*,p.process_id
+                FROM announcement_main AS m
+                LEFT JOIN announcement_process AS p ON m.main_id = p.main_id AND p.user_id = %s
+                WHERE p.process_id IS NULL OR p.status = 0
+                ORDER BY m.main_id ASC
+                LIMIT 1', sqlesc($row['id']));
     $result = sql_query($query);
     if (mysqli_num_rows($result)) { // Main Result set exists
         $ann_row = mysqli_fetch_assoc($result);
@@ -100,28 +110,23 @@ if ((!empty($add_set))) {
 // Announcement Code...
 $ann_subject = trim($row['curr_ann_subject']);
 $ann_body = trim($row['curr_ann_body']);
-if ((!empty($ann_subject)) and (!empty($ann_body))) {
-    $HTMLOUT .= "<div class='article'>
-      <div class='article_header'>{$lang['index_announce']}</div>
-    
-    <div class='tabular'>
-        <div class='tabular-row'>
-        <div class='tabular-cell'><b><font color='red'>{$lang['annouce_announcement']}&#160;: 
-    " . htmlsafechars($ann_subject) . "</font></b></div></div>
-   <font color='blue'>
-    " . format_comment($ann_body) . "
-    </font><br><br>
-    {$lang['annouce_click']} <a href='{$site_config['baseurl']}/clear_announcement.php'>
-    <i><b>{$lang['annouce_here']}</b></i></a> {$lang['annouce_to_clr_annouce']}.</div></div>\n";
-}
-if ((empty($ann_subject)) and (empty($ann_body))) {
-    $HTMLOUT .= "<div class='article'>
-      <div class='article_header'>{$lang['index_announce']}</div>
-    <div class='headbody'>
-    <div class='tabular'>
-        <div class='tabular-row'>
-        <div class='tabular-cell'><b>{$lang['annouce_announcement']}&#160;:{$lang['annouce_nothing_here']}</b></div></div>
-    <font color='blue'>{$lang['annouce_cur_no_new_ann']}</font>
-    </div></div></div>\n";
+if ((!empty($ann_subject)) && (!empty($ann_body))) {
+    $HTMLOUT .= "
+    <div class='article'>
+        <div class='article_header'>{$lang['index_announce']}</div>
+        <div class='tabular'>
+            <div class='tabular-row'>
+                <div class='tabular-cell'><b><font color='red'>{$lang['annouce_announcement']}: " . htmlsafechars($ann_subject) . "</font></b></div>
+            </div>
+            <font color='blue'>" . format_comment($ann_body) . "</font>
+            {$lang['annouce_click']} <a href='{$site_config['baseurl']}/clear_announcement.php'>
+            <i><b>{$lang['annouce_here']}</b></i></a> {$lang['annouce_to_clr_annouce']}.
+        </div>
+    </div>";
+} else {
+    $HTMLOUT .= main_div("
+        <h1>{$lang['index_announce']}</h1>
+        <p>{$lang['annouce_announcement']}: {$lang['annouce_nothing_here']}</p>
+        <p class='has-text-blue'>{$lang['annouce_cur_no_new_ann']}</p>", 'has-text-centered');
 }
 echo stdhead($lang['annouce_std_head']) . wrapper($HTMLOUT) . stdfoot();

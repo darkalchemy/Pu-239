@@ -107,7 +107,14 @@ if (isset($_GET['sort']) && isset($_GET['type'])) {
     $orderby = 'ORDER BY sticky ASC, id DESC';
     $pagerlink = '';
 }
+
 $wherea = $wherecatina = [];
+if (!empty($_GET['today']) && $_GET['today']) {
+    $wherea[] = 't.added >= ' . strtotime('today midnight');
+    $addparam .= 'today=1&amp;';
+    $today = 1;
+}
+
 if (isset($_GET['incldead']) && $_GET['incldead'] == 1) {
     $addparam .= 'incldead=1&amp;';
     if (!isset($CURUSER) || $CURUSER['class'] < UC_ADMINISTRATOR) {
@@ -121,6 +128,7 @@ if (isset($_GET['incldead']) && $_GET['incldead'] == 1) {
         $wherea[] = "visible = 'yes'";
     }
 }
+
 if (isset($_GET['only_free']) && $_GET['only_free'] == 1) {
     $wherea[] = XBT_TRACKER == true ? $wherea[] = "freetorrent >= '1'" : $wherea[] = "free >= '1'";
     $addparam .= 'only_free=1&amp;';
@@ -133,6 +141,7 @@ if (isset($_GET['vip'])) {
     }
     $addparam .= "vip={$_GET['vip']}&amp;";
 }
+
 $category = (isset($_GET['cat'])) ? (int)$_GET['cat'] : false;
 if (!$_GET && $CURUSER['notifs']) {
     foreach ($catids as $cat) {
@@ -210,6 +219,7 @@ if (isset($cleansearchstr)) {
         }
     }
 }
+
 $where = count($wherea) ? 'WHERE ' . join(' AND ', $wherea) : '';
 $where_key = 'where::' . sha1($where);
 if (($count = $mc1->get_value($where_key)) === false) {
@@ -235,6 +245,7 @@ if ($count) {
         $addparam = $pagerlink;
     }
     $pager = pager($torrentsperpage, $count, "{$site_config['baseurl']}/browse.php?" . $addparam);
+
     $query = "SELECT t.id, t.search_text, t.category, t.leechers, t.seeders, t.bump, t.release_group, t.subs, t.name, t.times_completed, t.size, t.added, t.poster, t.descr, t.free, t.freetorrent, t.silver, t.comments, t.numfiles, t.filename, t.anonymous, t.sticky, t.nuked, t.vip, t.nukereason, t.newgenre, t.description, t.owner, t.youtube, t.checked_by, IF(t.nfo <> '', 1, 0) as nfoav," . "IF(t.num_ratings < {$site_config['minvotes']}, NULL, ROUND(t.rating_sum / t.num_ratings, 1)) AS rating, t.checked_when, c.username AS checked_by_username
                 FROM torrents AS t
                 LEFT JOIN users AS c ON t.checked_by = c.id
@@ -254,11 +265,15 @@ if (isset($cleansearchstr)) {
 }
 
 if ($CURUSER['opt1'] & user_options::VIEWSCLOUD) {
-    $HTMLOUT .= main_div("<div class='cloud'>" . cloud() . "</div>");
+    $HTMLOUT .= main_div("<div class='cloud'>" . cloud() . "</div>", 'bottom20');
 }
 
 $HTMLOUT .= "
                                 <form id='catsids' method='get' action='{$site_config['baseurl']}/browse.php'>";
+if ($today) {
+    $HTMLOUT .= "
+                                    <input type='hidden' name='today' value='$today' />";
+}
 $main_div = "
                                         <div id='checkbox_container' class='level-center'>";
 if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
@@ -293,7 +308,7 @@ $main_div .= "
                                                 <input type='checkbox' id='checkAll' /><span> Select All Categories</span>
                                             </label>
                                         </div>";
-$HTMLOUT .= main_div($main_div);
+$HTMLOUT .= main_div($main_div, 'bottom20');
 
 if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     $new_button = "
@@ -369,7 +384,7 @@ $HTMLOUT .= main_div("
                             $only_free_box
                         </div>
                     </div>
-                    <div class='top10'>
+                    <div class='margin10 has-text-centered'>
                         <input type='submit' value='{$lang['search_search_btn']}' class='button' />
                     </div>");
 $HTMLOUT .= "
@@ -389,11 +404,11 @@ if ($count) {
                 </div>";
 } else {
     if (isset($cleansearchstr)) {
-        $HTMLOUT .= "<h2>{$lang['browse_not_found']}</h2>";
-        $HTMLOUT .= "<p>{$lang['browse_tryagain']}</p>";
+        $HTMLOUT .= main_div("<h2>{$lang['browse_not_found']}</h2>
+                                <p>{$lang['browse_tryagain']}</p>", 'top20 has-text-centered');
     } else {
-        $HTMLOUT .= "<h2>{$lang['browse_nothing']}</h2>";
-        $HTMLOUT .= "<p>{$lang['browse_sorry']}(</p>";
+        $HTMLOUT .= main_div("<h2>{$lang['browse_nothing']}</h2>
+                                <p>{$lang['browse_sorry']}(</p>", 'top20 has-text-centered');
     }
 }
 $ip = getip();

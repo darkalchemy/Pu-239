@@ -5433,9 +5433,9 @@ $(document).ready(function() {
     return new Lightbox();
 });
 
-var offset = 250;
+var v_offset = 250;
 
-var animate_duration = 1250;
+var animate_duration = 1e3;
 
 var easing = "swing";
 
@@ -5449,24 +5449,6 @@ function language_select() {
 
 function radio() {
     PopUp("radio_popup.php", "My Radio", 800, 700, 1, 0);
-}
-
-function openCity(evt, cityName) {
-    event.preventDefault();
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(cityName).style.display = "block";
-    evt.currentTarget.className += " active";
-    $("html, body").animate({
-        scrollTop: 0
-    }, animate_duration, easing);
 }
 
 function togglepic(bu, picid, formid) {
@@ -5558,7 +5540,7 @@ $(function() {
         });
     }
     $(window).scroll(function() {
-        if ($(this).scrollTop() > offset) {
+        if ($(this).scrollTop() > v_offset) {
             $(".back-to-top").fadeIn(animate_duration);
         } else {
             $(".back-to-top").fadeOut(animate_duration);
@@ -5705,5 +5687,29 @@ $(function() {
             $(this).next().slideToggle(animate_duration);
             $(".accordion-content").not($(this).next()).slideUp(animate_duration);
         });
+    }
+    $("a[href*=\\#]:not([href=\\#])").click(function(e) {
+        if (location.pathname.replace(/^\//, "") == this.pathname.replace(/^\//, "") || location.hostname == this.hostname) {
+            e.preventDefault();
+            var headerHeight = $("#navbar").outerHeight() + 10;
+            var target = $(this).attr("href");
+            var scrollToPosition = $(target).offset().top - headerHeight;
+            $("html, body").animate({
+                scrollTop: scrollToPosition
+            }, animate_duration, function() {
+                window.location.hash = "" + target;
+                $("html, body").animate({
+                    scrollTop: scrollToPosition
+                }, 0);
+            });
+        }
+    });
+    if (window.location.hash) {
+        var headerHeight = $("#navbar").outerHeight() + 10;
+        var target = $(window.location.hash);
+        var scrollToPosition = $(target).offset().top - headerHeight;
+        $("html, body").animate({
+            scrollTop: scrollToPosition
+        }, animate_duration, "swing");
     }
 });

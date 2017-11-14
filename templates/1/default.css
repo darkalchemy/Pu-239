@@ -117,6 +117,18 @@ select {
     cursor: pointer;
 }
 
+ul.disc {
+    list-style-type: disc;
+}
+
+ul.circle {
+    list-style-type: circle;
+}
+
+ol.decimal {
+    list-style-type: decimal;
+}
+
 pre {
     -moz-tab-size: 4;
     -o-tab-size: 4;
@@ -178,10 +190,6 @@ p {
     line-height: 1.1em;
 }
 
-p + p {
-    margin-top: 1.25em;
-}
-
 .site-debug {
     padding: 1.25em;
 }
@@ -237,7 +245,7 @@ span {
 
 #logo {
     /*margin-top: 40px;*/
-    height: 100px;
+    /*height: 100px;*/
     /*padding: 20px 10px 30px;*/
 }
 
@@ -298,6 +306,20 @@ span {
 
 .accordion-content.default {
     display: block;
+}
+
+.button.tag {
+    border: 1px solid #fff;
+    width: 150px;
+}
+
+.button.tag:hover {
+    border: 1px solid #000;
+}
+
+.rowhead {
+    width: 125px;
+    min-width: 125px;
 }
 
 .alt_bordered,
@@ -362,10 +384,6 @@ li.active {
     border-top: 2px groove lime;
     border-bottom: 2px groove lime;
     background: rgba(0, 0, 0, .3);
-}
-
-.tabcontent {
-    display: none;
 }
 
 .bottom5 {
@@ -693,7 +711,7 @@ textarea {
     color: #40e0d0;
 }
 
-.text-blue {
+.has-text-blue {
     color: #0000ff;
 }
 
@@ -759,6 +777,10 @@ textarea {
     margin-top: 1.25em;
 }
 
+.neg-top20 {
+    margin-top: -1.25em;
+}
+
 .top50 {
     margin-top: 3.125em;
 }
@@ -785,11 +807,7 @@ textarea {
     color: white;
     border: 1px solid red;
 }
-/*
-.bordered + .bordered {
-    margin-top: 1.25em;
-}
-*/
+
 .slideThree {
     position: relative;
     width: 80px;
@@ -902,6 +920,46 @@ textarea {
     width: 100%;
 }
 
+.tabs {
+    -webkit-border-radius: .3125em;
+    -moz-border-radius: .3125em;
+    border-radius: .3125em;
+    flex-wrap: wrap;
+}
+
+.tabs a
+{
+    color: white;
+    -webkit-border-radius: .3125em;
+    -moz-border-radius: .3125em;
+    border-radius: .3125em;
+    border-bottom: 1px solid transparent;
+    margin-bottom: 0;
+}
+
+.tabs a.active, .tabs a:focus, .tabs a:active
+{
+    color: #222;
+    background-color: rgba(255, 255, 255, .5);
+    -webkit-border-radius: .3125em;
+    -moz-border-radius: .3125em;
+    border-radius: .3125em;
+}
+
+.tabs a:hover
+{
+    color: #000;
+    background-color: rgba(255, 255, 255, .9);
+    -webkit-border-radius: .3125em;
+    -moz-border-radius: .3125em;
+    border-radius: .3125em;
+}
+
+.tabcontent.active
+{
+    overflow: hidden;
+}
+
 @media (max-width: 1200px) {
     .w-20 {
         width: 45%;
@@ -979,103 +1037,4 @@ textarea {
     .img-polaroid {
         margin-right: 0;
     }
-}
-
-.tabbed
-{
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 15em;
-    margin: 2em auto;
-}
-
-.tabbed ul li
-{
-    position: absolute;
-    display: block;
-    width: 100%;
-    top: 1.8em;
-    left: 0;
-    height: 12em;
-    padding: 10px 20px;
-    background-color: #ddd;
-    border-radius: 5px;
-    box-shadow: 0 3px 3px rgba(0,0,0,0.1);
-    z-index: 0;
-}
-
-.tabbed ul li:first-child
-{
-    z-index: 1;
-}
-
-.tabbed ul li span
-{
-    position: absolute;
-    font-size: 1em;
-    font-weight: normal;
-    width: 120px;
-    height: 1.8em;
-    top: -1.8em;
-    left: 10px;
-    padding: 0;
-    margin: 0;
-    color: #999;
-    background-color: #ddd;
-    border-radius: 5px 5px 0 0;
-}
-
-.tabbed ul li:nth-child(2) span
-{
-    left: 132px;
-}
-
-.tabbed ul li:nth-child(3) span
-{
-    left: 254px;
-}
-
-.tabbed ul li:nth-child(4) span
-{
-    left: 376px;
-}
-
-.tabbed ul li:nth-child(5) span
-{
-    left: 498px;
-}
-
-.tabbed ul li:nth-child(6) span
-{
-    left: 620px;
-}
-
-.tabbed ul li span a
-{
-    display: block;
-    width: 100%;
-    line-height: 1.8em;
-    text-align: center;
-    text-decoration: none;
-    color: inherit;
-    outline: 0 none;
-}
-
-.tabbed ul li:target,
-.tabbed ul li:target span
-{
-    color: #333;
-    background-color: #fff;
-    z-index: 2;
-}
-
-.tabbed ul li,
-.tabbed ul li span
-{
-    -webkit-transition: all 500ms ease-in-out;
-    -moz-transition: all 500ms ease-in-out;
-    -ms-transition: all 500ms ease-in-out;
-    -o-transition: all 500ms ease-in-out;
-    transition: all 500ms ease-in-out;
 }

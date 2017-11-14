@@ -1,5 +1,5 @@
-var offset = 250;
-var animate_duration = 1250;
+var v_offset = 250;
+var animate_duration = 1000;
 var easing = 'swing';
 
 function themes() {
@@ -12,22 +12,6 @@ function language_select() {
 
 function radio() {
     PopUp('radio_popup.php', 'My Radio', 800, 700, 1, 0);
-}
-
-function openCity(evt, cityName) {
-    event.preventDefault();
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName('tabcontent');
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = 'none';
-    }
-    tablinks = document.getElementsByClassName('tablinks');
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(' active', '');
-    }
-    document.getElementById(cityName).style.display = 'block';
-    evt.currentTarget.className += ' active';
-    $('html, body').animate({scrollTop: 0}, animate_duration, easing);
 }
 
 function togglepic(bu, picid, formid) {
@@ -128,7 +112,7 @@ $(function () {
     }
 
     $(window).scroll(function () {
-        if ($(this).scrollTop() > offset) {
+        if ($(this).scrollTop() > v_offset) {
             $('.back-to-top').fadeIn(animate_duration);
         } else {
             $('.back-to-top').fadeOut(animate_duration);
@@ -314,4 +298,84 @@ $(function () {
         });
     }
     ;
+
+//    $("a").on('click', function(event) {
+//        if (this.hash !== "") {
+//            if ($('.accordion-content').length) {
+//                var offset = $(this).closest('.accordion-content').outerHeight();
+//            } else {
+//                var offset = -5;
+//            }
+//            offset = 0;
+//            console.log(offset);
+//            event.preventDefault();
+//            var hash = this.hash;
+//            console.log(hash);
+//            $('html, body').animate({
+//                scrollTop: $(hash).position().top + offset
+//            }, animate_duration, function(){
+//                //window.location.hash = hash;
+//            });
+//        }
+//    });
+//    $("ba").on('click', function(event) {
+//        if (this.hash !== "") {
+//            event.preventDefault();
+//            var hash = this.hash;
+
+//            $('html, body').animate({
+//                scrollTop: $(hash).position().top
+//            }, animate_duration, function() {
+//                window.location.hash = hash;
+//            });
+//        }
+//    });
+//    $('a[href*=\\#]:not([href=\\#])').click(function() {
+///        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') || location.hostname == this.hostname) {
+//            var target = $(this.hash)
+//            var headerHeight = $('#navbar').height() + 5;
+//            target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+//            console.log(headerHeight);
+//            if (target.length) {
+//                $('html,body').animate({
+//                    scrollTop: target.offset().top - headerHeight
+//                }, 500);
+//                return false;
+//            }
+//        }
+//    });
+
+
+    $('a[href*=\\#]:not([href=\\#])').click(function(e) {
+        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') || location.hostname == this.hostname) {
+            e.preventDefault();
+
+            var headerHeight = $("#navbar").outerHeight() + 10;
+            var target = $(this).attr("href"); //Get the target
+            var scrollToPosition = $(target).offset().top - headerHeight;
+
+            $('html, body').animate({ 'scrollTop': scrollToPosition }, animate_duration, function(){
+                window.location.hash = "" + target;
+                $('html, body').animate({ 'scrollTop': scrollToPosition }, 0);
+            });
+        }
+    });
+
+
+    if(window.location.hash) {
+        var headerHeight = $("#navbar").outerHeight() + 10;
+        var target = $(window.location.hash);
+        var scrollToPosition = $(target).offset().top - headerHeight;
+        $('html, body').animate({
+            scrollTop: scrollToPosition
+        }, animate_duration, 'swing');
+    }
+
 });
+
+
+//            var html = $('html,body');
+//            var lt = $(this.List).offset().top, lh = $(this.List).height();
+//            var st = Math.max(html.scrollTop(), $('body').scrollTop()), wh = $(window).height();
+//            if (lt < st || lt+lh > st+wh) html.animate({scrollTop: lt}, 1250);
+

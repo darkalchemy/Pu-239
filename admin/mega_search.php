@@ -70,7 +70,7 @@ if (isset($_POST['user_names'])) {
                 <td>' . format_username($arr['id']) . '</td>
                 <td>' . htmlsafechars($arr['email']) . '</td>
                 <td>
-                    <span class="tooltipper text-blue" title="added">' . get_date($arr['added'], '') . '</span><br>
+                    <span class="tooltipper has-text-blue" title="added">' . get_date($arr['added'], '') . '</span><br>
                     <span class="tooltipper has-text-success" title="last access">' . get_date($arr['last_access'], '') . '</span>
                 </td>
                 <td>
@@ -117,7 +117,7 @@ if (isset($_POST['msg_to_analyze'])) {
     foreach ($email_to_test[0] as $tested_email) {
         $res_search_others = sql_query('SELECT id, email, ip, added, last_access, invitedby FROM users WHERE email LIKE \'' . $tested_email . '\'') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res_search_others) == 0) {
-            $no_matches_for_this_email .= '<span class="text-blue">' . $lang['mega_no_exact'] . ' ' . $tested_email . '</span>';
+            $no_matches_for_this_email .= '<span class="has-text-blue">' . $lang['mega_no_exact'] . ' ' . $tested_email . '</span>';
         } else {
             $number = 1;
             while ($arr = mysqli_fetch_array($res_search_others)) {
@@ -132,7 +132,7 @@ if (isset($_POST['msg_to_analyze'])) {
                 <td>' . format_username($arr['id']) . '</td>
                 <td>' . htmlsafechars($arr['email']) . '</td>
                 <td>
-                    <span class="tooltipper text-blue" title="added">' . get_date($arr['added'], '') . '</span><br>
+                    <span class="tooltipper has-text-blue" title="added">' . get_date($arr['added'], '') . '</span><br>
                     <span class="tooltipper has-text-success" title="last access">' . get_date($arr['last_access'], '') . '</span>
                 </td>
                 <td>

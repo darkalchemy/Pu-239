@@ -993,9 +993,9 @@ CREATE TABLE `events` (
   `endTime` int(11) NOT NULL,
   `overlayText` mediumtext COLLATE utf8mb4_unicode_ci,
   `displayDates` tinyint(1) NOT NULL,
-  `freeleechEnabled` tinyint(1) NOT NULL,
-  `duploadEnabled` tinyint(1) NOT NULL,
-  `hdownEnabled` tinyint(1) NOT NULL,
+  `freeleechEnabled` tinyint(1) NOT NULL DEFAULT '0',
+  `duploadEnabled` tinyint(1) NOT NULL DEFAULT '0',
+  `hdownEnabled` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `startTime` (`startTime`),
   KEY `userid` (`userid`),
@@ -3617,4 +3617,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-12 22:47:13
+-- Dump completed on 2017-11-14 21:56:10

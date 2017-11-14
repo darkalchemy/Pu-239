@@ -55,6 +55,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $classes_allowed = (strpos($lottery_config['class_allowed'], '|') ? explode('|', $lottery_config['class_allowed']) : $lottery_config['class_allowed']);
 if (!(is_array($classes_allowed) ? in_array($CURUSER['class'], $classes_allowed) : $CURUSER['class'] == $classes_allowed)) {
     setSessionVar('is-danger', 'Your class is not allowed to play in this lottery');
+    header('Location: index.php');
+    die();
 }
 //some default values
 $lottery['total_pot'] = 0;
@@ -137,7 +139,7 @@ if ($lottery['current_user']['can_buy'] > 0) {
         <form action='lottery.php?action=tickets' method='post'>
             <div class='has-text-centered bottom20'>
                 <input type='text' size='10' name='tickets' />
-                <input type='submit' value='Buy tickets' class='button' />
+                <input type='submit' value='Buy tickets' class='button is-small' />
             </div>
         </form>";
 }

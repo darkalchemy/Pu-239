@@ -63,12 +63,14 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         }
     </script>
     <div class='container'>
-        <div class='spacer'></div>
-        <div class='page-wrapper'>";
+        <div class='page-wrapper'>
+            <div class='spacer'>";
     $htmlout .= navbar();
+    $htmlout .= "
+            </div>";
     if ($CURUSER) {
         $htmlout .= "
-            <div id='logo' class='logo columns level'>
+            <div id='logo' class='logo columns level is-marginless'>
                 <div class='column'>
                     <h1>" . $site_config['variant'] . " Code</h1>
                     <p class='description left20'><i>Making progress, 1 day at a time...</i></p>
@@ -125,7 +127,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     $index_array = ['/', '/index.php', '/login.php'];
     if ($CURUSER && !in_array($_SERVER['REQUEST_URI'], $index_array)) {
         $htmlout .= "
-                <div class='padding20 bg-00 round10'>
+                <div class='container is-fluid portlet padding20 bg-00 round10'>
                     <nav class='breadcrumb' aria-label='breadcrumbs'>
                         <ul>
                             " . breadcrumbs() . "
@@ -311,7 +313,10 @@ function stdmsg($heading, $text)
     $htmlout .= "
                 <span>$text</span>";
 
-    return main_div($htmlout);
+    if (function_exists(main_div)) {
+        return main_div($htmlout);
+    }
+    return $htmlout;
 }
 
 /**
@@ -449,7 +454,7 @@ function navbar()
                                     <li><a href='{$site_config['baseurl']}/requests.php'>{$lang['gl_requests']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/offers.php'>{$lang['gl_offers']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/needseed.php?needed=seeders'><span class='is-danger'>{$lang['gl_nseeds']}</span></a></li>
-                                    <li><a href='{$site_config['baseurl']}/torrents-today.php'>{$lang['gl_newtor']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/browse.php?today=1'>{$lang['gl_newtor']}</a></li>
                                     " . ($CURUSER['class'] <= UC_VIP ? "<li><a href='{$site_config['baseurl']}/uploadapp.php'>{$lang['gl_uapp']}</a></li>" : "<li><a href='{$site_config['baseurl']}/upload.php'>{$lang['gl_upload']}</a></li>") . "
                                     <li><a href='{$site_config['baseurl']}/bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
                                 </ul>

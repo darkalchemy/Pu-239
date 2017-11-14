@@ -62,9 +62,9 @@ if (is_array($scheduled_events)) {
                     $hdownEnabled = true;
                 }
                 if ($displayDates) {
-                    $overlay_text = "<span style=\"font-size: 90%\">$overlayText</span><br><span style=\"font-size: 60%\">" . get_date($startTime, 'DATE') . ' - ' . get_date($endTime, 'DATE') . "</span>\n";
+                    $overlay_text = "<span style='font-size: 90%'>$overlayText</span><br><span style='font-size: 60%'>" . get_date($startTime, 'DATE') . ' - ' . get_date($endTime, 'DATE') . "</span>\n";
                 } else {
-                    $overlay_text = "<span style=\"font-size: 90%\">$overlayText</span>\n";
+                    $overlay_text = "<span style='font-size: 90%'>$overlayText</span>\n";
                 }
             }
         }
@@ -74,7 +74,7 @@ $HTMLOUT .= "
 <script>
 /*<![CDATA[*/
 function checkAllGood(event){
-var result = confirm(\"Are you sure you want to remove '\" + event + \"' Event ?\");
+var result = confirm('Are you sure you want to remove '' + event + '' Event ?');
 if(result)
 return true;
 else
@@ -162,7 +162,7 @@ if (!is_array($scheduled_events)) {
     if ($count1 > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
     }
-    $HTMLOUT .= "<p><strong>{$lang['events_schedular']}</strong>{$lang['events_zero']}<strong> <font color='red'>{$lang['events_beta']}</font> </strong> </p>
+    $HTMLOUT .= "<p><strong>{$lang['events_schedular']}</strong><strong> <font color='red'>{$lang['events_beta']}</font> </strong> </p>
 <form action='' method='post'>
 <table width='80%' cellpadding='6'>
 <tr><th>{$lang['events_user']}</th><th>{$lang['events_text']}</th><th>{$lang['events_start']}</th><th>{$lang['events_end']}</th><th>{$lang['events_freelech']}</th><th>{$lang['events_dupload']}</th><th>{$lang['events_hdown']}</th><th>{$lang['events_sdate']}</th><th>&#160;</th></tr>";
@@ -178,29 +178,29 @@ if (!is_array($scheduled_events)) {
         $doubleUpload = (bool)(int)$scheduled_event['duploadEnabled'];
         $halfdownload = (bool)(int)$scheduled_event['hdownEnabled'];
         if ($freeleech) {
-            $freeleech = "<img src=\"{$site_config['pic_base_url']}on.gif\" alt=\"{$lang['events_fenable']}\" title=\"{$lang['events_enable']}\" />";
+            $freeleech = "<img src='{$site_config['pic_base_url']}on.gif' alt='{$lang['events_fenable']}' title='{$lang['events_enable']}' />";
         } else {
-            $freeleech = "<img src=\"{$site_config['pic_base_url']}off.gif\" alt=\"{$lang['events_fdisable']}\" title=\"{$lang['events_disable']}\" />";
+            $freeleech = "<img src='{$site_config['pic_base_url']}off.gif' alt='{$lang['events_fdisable']}' title='{$lang['events_disable']}' />";
         }
         if ($doubleUpload) {
-            $doubleUpload = "<img src=\"{$site_config['pic_base_url']}on.gif\" alt=\"{$lang['events_duenable']}\" title=\"{$lang['events_enable']}\" />";
+            $doubleUpload = "<img src='{$site_config['pic_base_url']}on.gif' alt='{$lang['events_duenable']}' title='{$lang['events_enable']}' />";
         } else {
-            $doubleUpload = "<img src=\"{$site_config['pic_base_url']}off.gif\" alt=\"{$lang['events_dudisable']}\" title=\"{$lang['events_disable']}\" />";
+            $doubleUpload = "<img src='{$site_config['pic_base_url']}off.gif' alt='{$lang['events_dudisable']}' title='{$lang['events_disable']}' />";
         }
         if ($halfdownload) {
-            $halfdownload = "<img src=\"{$site_config['pic_base_url']}on.gif\" alt=\"{$lang['events_henable']}\" title=\"{$lang['events_enable']}\" />";
+            $halfdownload = "<img src='{$site_config['pic_base_url']}on.gif' alt='{$lang['events_henable']}' title='{$lang['events_enable']}' />";
         } else {
-            $halfdownload = "<img src=\"{$site_config['pic_base_url']}off.gif\" alt=\"{$lang['events_hdisable']}\" title=\"{$lang['events_disable']}\" />";
+            $halfdownload = "<img src='{$site_config['pic_base_url']}off.gif' alt='{$lang['events_hdisable']}' title='{$lang['events_disable']}' />";
         }
         $showdates = (bool)(int)$scheduled_event['displayDates'];
         if ($showdates) {
-            $showdates = "<img src=\"{$site_config['pic_base_url']}on.gif\" alt=\"{$lang['events_daenable']}\" title=\"{$lang['events_enable']}\" />";
+            $showdates = "<img src='{$site_config['pic_base_url']}on.gif' alt='{$lang['events_daenable']}' title='{$lang['events_enable']}' />";
         } else {
-            $showdates = "<img src=\"{$site_config['pic_base_url']}off.gif\" alt=\"{$lang['events_dadisable']}\" title=\"{$lang['events_disable']}\" />";
+            $showdates = "<img src='{$site_config['pic_base_url']}off.gif' alt='{$lang['events_dadisable']}' title='{$lang['events_disable']}' />";
         }
-        $HTMLOUT .= "<tr><td align=\"center\">{$username}</td><td align=\"center\">{$text}</td><td align=\"center\">{$start}</td><td align=\"center\">{$end}</td><td align=\"center\">{$freeleech}</td><td align=\"center\">{$doubleUpload}</td><td align=\"center\">{$halfdownload}</td><td align=\"center\">{$showdates}</td><td align=\"center\"><input type=\"submit\" name=\"editEvent_$id\" value=\"{$lang['events_edit']}\" /> <input type=\"submit\" onclick=\"return checkAllGood('$text')\" name=\"removeEvent_$id\" value=\"{$lang['events_remove']}\" /></td></tr>";
+        $HTMLOUT .= "<tr><td align='center'>{$username}</td><td align='center'>{$text}</td><td align='center'>{$start}</td><td align='center'>{$end}</td><td align='center'>{$freeleech}</td><td align='center'>{$doubleUpload}</td><td align='center'>{$halfdownload}</td><td align='center'>{$showdates}</td><td align='center'><input type='submit' class='button' name='editEvent_$id' value='{$lang['events_edit']}' /> <input type='submit' class='button' onclick='return checkAllGood('$text')' name='removeEvent_$id' value='{$lang['events_remove']}' /></td></tr>";
     }
-    $HTMLOUT .= "<tr><td colspan='9'><input type='submit' name='editEvent_-1' value='{$lang['events_add']}'' /></td></tr></table>";
+    $HTMLOUT .= "<tr><td colspan='9'><input type='submit' class='button' name='editEvent_-1' value='{$lang['events_add']}'' /></td></tr></table>";
     foreach ($_POST as $key => $value) {
         if (gettype($pos = strpos($key, '_')) != 'boolean') {
             $id = (int)substr($key, $pos + 1);
@@ -215,7 +215,7 @@ if (!is_array($scheduled_events)) {
 <tr><th>{$lang['events_double']}</th><td><input type='checkbox' name='editDoubleupload' /></td></tr>
 <tr><th>{$lang['events_half']}</th><td><input type='checkbox' name='editHalfdownload' /></td></tr>
 <tr><th>{$lang['events_showd']}</th><td><input type='checkbox' name='editShowDates' /></td></tr>
-<tr><td colspan='2'><input type='submit' name='saveEvent_-1' value='{$lang['events_save']}' /></td></tr>
+<tr><td colspan='2'><input type='submit' class='button' name='saveEvent_-1' value='{$lang['events_save']}' /></td></tr>
 </table>";
                 } else {
                     foreach ($scheduled_events as $scheduled_event) {
@@ -256,7 +256,7 @@ if (!is_array($scheduled_events)) {
 <tr><th>{$lang['events_double']}</th><td><input type='checkbox' name='editDoubleupload' value='{$doubleUpload}' /></td></tr>
 <tr><th>{$lang['events_half']}</th><td><input type='checkbox' name='editHalfdownload' value='{$halfdownload}' /></td></tr>
 <tr><th>{$lang['events_showd']}</th><td><input type='checkbox' name='editShowDates' value='{$showdates}' /></td></tr>
-<tr><td colspan='2'><input type='submit' name='saveEvent_{$id}' value='{$lang['events_save']}' /></td></tr>
+<tr><td colspan='2'><input type='submit' class='button' name='saveEvent_{$id}' value='{$lang['events_save']}' /></td></tr>
 </table>";
                             break;
                         }
