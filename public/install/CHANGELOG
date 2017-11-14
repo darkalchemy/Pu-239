@@ -1,4 +1,5 @@
 14 Nov 2017
+fix: userdetails.php view ip
 add: transition to notification buttons
 fix: themeChanger active border
 fix: lottery config

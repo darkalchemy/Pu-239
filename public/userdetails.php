@@ -177,7 +177,7 @@ if (($user = $mc1->get_value('user' . $id)) === false) {
     foreach ($user_fields_ar_float as $i) {
         $user[ $i ] = (float)$user[ $i ];
     }
-
+    $user['ip'] = ipFromStorageFormat($user['ip']);
     $mc1->cache_value('user' . $id, $user, $site_config['expires']['user_cache']);
 }
 if ($user['status'] == 'pending') {
