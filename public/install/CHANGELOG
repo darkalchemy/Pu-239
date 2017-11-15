@@ -1,4 +1,6 @@
 14 Nov 2017
+update: GeoIP files 
+fix: iphistory.php view ip
 fix: userdetails.php view ip
 add: transition to notification buttons
 fix: themeChanger active border

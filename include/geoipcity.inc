@@ -20,17 +20,11 @@
  */
 
 
-/**
- *
- */
 define("FULL_RECORD_LENGTH", 50);
 
 require_once 'geoip.inc';
 require_once 'geoipregionvars.php';
 
-/**
- * Class geoiprecord
- */
 class geoiprecord
 {
     public $country_code;
@@ -47,28 +41,15 @@ class geoiprecord
     public $continent_code;
 }
 
-/**
- * @param $gi
- * @param $ipnum
- *
- * @return geoiprecord|null
- */
 function _get_record_v6($gi, $ipnum)
 {
     $seek_country = _geoip_seek_country_v6($gi, $ipnum);
     if ($seek_country == $gi->databaseSegments) {
         return null;
     }
-
     return _common_get_record($gi, $seek_country);
 }
 
-/**
- * @param $gi
- * @param $seek_country
- *
- * @return geoiprecord
- */
 function _common_get_record($gi, $seek_country)
 {
     // workaround php's broken substr, strpos, etc handling with
@@ -84,7 +65,7 @@ function _common_get_record($gi, $seek_country)
     if ($gi->flags & GEOIP_MEMORY_CACHE) {
         $record_buf = substr($gi->memory_buffer, $record_pointer, FULL_RECORD_LENGTH);
     } elseif ($gi->flags & GEOIP_SHARED_MEMORY) {
-        $record_buf = @shmop_read($gi->shmid, $record_pointer, FULL_RECORD_LENGTH);
+        $record_buf = _sharedMemRead($gi, $record_pointer, FULL_RECORD_LENGTH);
     } else {
         fseek($gi->filehandle, $record_pointer, SEEK_SET);
         $record_buf = fread($gi->filehandle, FULL_RECORD_LENGTH);
@@ -131,7 +112,7 @@ function _common_get_record($gi, $seek_country)
         $record->postal_code = substr($record_buf, $record_buf_pos, $str_length);
     }
     $record_buf_pos += $str_length + 1;
-    $str_length = 0;
+
     // Get latitude and longitude
     $latitude = 0;
     $longitude = 0;
@@ -159,54 +140,32 @@ function _common_get_record($gi, $seek_country)
     if ($mbExists) {
         mb_internal_encoding($enc);
     }
-
     return $record;
 }
 
-/**
- * @param $gi
- * @param $addr
- *
- * @return geoiprecord|int|null
- */
 function GeoIP_record_by_addr_v6($gi, $addr)
 {
     if ($addr == null) {
         return 0;
     }
     $ipnum = inet_pton($addr);
-
     return _get_record_v6($gi, $ipnum);
 }
 
-/**
- * @param $gi
- * @param $ipnum
- *
- * @return geoiprecord|null
- */
 function _get_record($gi, $ipnum)
 {
     $seek_country = _geoip_seek_country($gi, $ipnum);
     if ($seek_country == $gi->databaseSegments) {
         return null;
     }
-
     return _common_get_record($gi, $seek_country);
 }
 
-/**
- * @param $gi
- * @param $addr
- *
- * @return geoiprecord|int|null
- */
 function GeoIP_record_by_addr($gi, $addr)
 {
     if ($addr == null) {
         return 0;
     }
     $ipnum = ip2long($addr);
-
     return _get_record($gi, $ipnum);
 }
