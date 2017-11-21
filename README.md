@@ -11,15 +11,7 @@
 7. Remove js from head and relocate to body
 8. Fully responsive and mobile ready
 
-There is a temporary site at http://pu-239.pw:8080 where you can view the code in action.
-```
-Running on:
-Linux Aspire-XC-603G 4.10.0-27-generic #30~16.04.2-Ubuntu SMP Thu Jun 29 16:07:46 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
-4 x Intel(R) Pentium(R) CPU  J2900  @ 2.41GHz
-MemTotal:        7989868 kB
-MemFree:          190100 kB
-MemAvailable:    2103024 kB
-```
+There is a temporary site at http://dev.pu-239.pw where you can view the code in action.
 
 This is a fork of U-232 V4.
 
