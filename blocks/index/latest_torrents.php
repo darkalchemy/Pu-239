@@ -19,7 +19,7 @@ if (($top5torrents = $cache->get('top5_tor_')) === false) {
 }
 if (count($top5torrents) > 0) {
     $HTMLOUT .= "
-            <div class='module table-wrapper'>
+            <div class='module table-wrapper bottom20'>
                 <div class='badge badge-top'></div>
                 <table class='table table-bordered table-striped'>";
     $HTMLOUT .= "
