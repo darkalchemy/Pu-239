@@ -3,6 +3,8 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $lang;
+
 $lang = array_merge($lang, load_language('ad_forum_config'));
 $HTMLOUT = $time_drop_down = $accepted_file_extension = $accepted_file_types = $member_class_drop_down = '';
 $settings_saved = false;
@@ -53,8 +55,8 @@ $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=forum
         <tr>
             <td><span style="font-weight: bold;">' . $lang['forum_config_delete'] . '</span></td>
             <td>
-            <input type="radio" name="delete_for_real" value="1" ' . ($arr['delete_for_real'] == 1 ? 'checked="checked"' : '') . ' />' . $lang['forum_config_yes'] . '
-            <input type="radio" name="delete_for_real" value="0" ' . ($arr['delete_for_real'] == 0 ? 'checked="checked"' : '') . ' />' . $lang['forum_config_no'] . '<br>
+            <input type="radio" name="delete_for_real" value="1" ' . ($arr['delete_for_real'] == 1 ? 'checked' : '') . ' />' . $lang['forum_config_yes'] . '
+            <input type="radio" name="delete_for_real" value="0" ' . ($arr['delete_for_real'] == 0 ? 'checked' : '') . ' />' . $lang['forum_config_no'] . '<br>
             ' . $lang['forum_config_no_desc'] . '</td>
         </tr>
         <tr>

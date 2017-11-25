@@ -6,6 +6,8 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $site_config, $lang;
+
 $lang = array_merge($lang, load_language('ad_hit_and_run'));
 if (XBT_TRACKER === false) {
     $query = (isset($_GET['really_bad']) ? 'SELECT COUNT(*) FROM snatched LEFT JOIN users ON users.id = snatched.userid WHERE snatched.finished = \'yes\' AND snatched.hit_and_run > 0 AND users.hit_and_run_total > 2' : 'SELECT COUNT(*) FROM `snatched` WHERE `finished` = \'yes\' AND `hit_and_run` > 0');
@@ -21,16 +23,16 @@ $arr_count = mysqli_fetch_row($res_count);
 $count = ($arr_count[0] > 0 ? $arr_count[0] : 0);
 list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'staffpanel.php?tool=hit_and_run');
 if (XBT_TRACKER === false) {
-    $query_2 = (isset($_GET['really_bad']) ? 'SELECT s.torrentid, s.userid, s.hit_and_run, s.downloaded AS dload, s.uploaded AS uload, s.seedtime, s.start_date, s.complete_date, p.id, p.torrent, p.seeder, u.id, u.avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM snatched AS s LEFT JOIN users AS u ON u.id = s.userid LEFT JOIN peers AS p ON p.torrent=s.torrentid AND p.userid=s.userid LEFT JOIN torrents AS t ON t.id=s.torrentid WHERE finished = \'yes\' AND hit_and_run > 0 AND u.hit_and_run_total > 2 ORDER BY userid ' . $LIMIT : 'SELECT s.torrentid, s.userid, s.hit_and_run, s.downloaded AS dload, s.uploaded AS uload, s.seedtime, s.start_date, s.complete_date, p.id, p.torrent, p.seeder, u.id, u.avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM snatched AS s LEFT JOIN users AS u ON u.id = s.userid LEFT JOIN peers AS p ON p.torrent=s.torrentid AND p.userid=s.userid LEFT JOIN torrents AS t ON t.id=s.torrentid WHERE `finished` = \'yes\' AND `hit_and_run` > 0 ORDER BY `userid` ' . $LIMIT);
+    $query_2 = (isset($_GET['really_bad']) ? "SELECT s.torrentid, s.userid, s.hit_and_run, s.downloaded AS dload, s.uploaded AS uload, s.seedtime, s.start_date, s.complete_date, p.id, p.torrent, p.seeder, u.id, u.avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM snatched AS s LEFT JOIN users AS u ON u.id = s.userid LEFT JOIN peers AS p ON p.torrent=s.torrentid AND p.userid=s.userid LEFT JOIN torrents AS t ON t.id = s.torrentid WHERE finished = 'yes' AND hit_and_run > 0 AND u.hit_and_run_total > 2 ORDER BY userid $LIMIT" : "SELECT s.torrentid, s.userid, s.hit_and_run, s.downloaded AS dload, s.uploaded AS uload, s.seedtime, s.start_date, s.complete_date, p.id, p.torrent, p.seeder, u.id, u.avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM snatched AS s LEFT JOIN users AS u ON u.id = s.userid LEFT JOIN peers AS p ON p.torrent=s.torrentid AND p.userid=s.userid LEFT JOIN torrents AS t ON t.id=s.torrentid WHERE `finished` = 'yes' AND `hit_and_run` > 0 ORDER BY `userid` $LIMIT");
 } else {
-    $query_2 = (isset($_GET['really_bad']) ? 'SELECT x.fid, x.uid, x.hit_and_run, x.downloaded AS dload, x.uploaded AS uload, x.seedtime, x.started, x.completedtime, x.active, u.id, u.avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM xbt_files_users AS x LEFT JOIN users AS u ON u.id = x.uid LEFT JOIN torrents AS t ON t.id=x.fid WHERE completed >= \'1\' AND hit_and_run > 0 AND u.hit_and_run_total > 2 ORDER BY uid ' . $LIMIT : 'SELECT x.fid, x.uid, x.hit_and_run, x.downloaded AS dload, x.uploaded AS uload, x.seedtime, x.started, x.completedtime, x.active, u.id, u.avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM xbt_files_users AS x LEFT JOIN users AS u ON u.id = x.uid LEFT JOIN torrents AS t ON t.id=x.fid WHERE `completed` >= \'1\' AND `hit_and_run` > 0 ORDER BY `uid` ' . $LIMIT);
+    $query_2 = (isset($_GET['really_bad']) ? "SELECT x.fid, x.uid, x.hit_and_run, x.downloaded AS dload, x.uploaded AS uload, x.seedtime, x.started, x.completedtime, x.active, u.id, u.avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM xbt_files_users AS x LEFT JOIN users AS u ON u.id = x.uid LEFT JOIN torrents AS t ON t.id=x.fid WHERE completed >= '1' AND hit_and_run > 0 AND u.hit_and_run_total > 2 ORDER BY uid $LIMIT" : "SELECT x.fid, x.uid, x.hit_and_run, x.downloaded AS dload, x.uploaded AS uload, x.seedtime, x.started, x.completedtime, x.active, u.id, u.avatar, u.username, u.uploaded AS up, u.downloaded AS down, u.class, u.hit_and_run_total, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.suspended, t.owner, t.name, t.added AS torrent_added, t.seeders AS numseeding, t.leechers AS numleeching FROM xbt_files_users AS x LEFT JOIN users AS u ON u.id = x.uid LEFT JOIN torrents AS t ON t.id=x.fid WHERE `completed` >= '1' AND `hit_and_run` > 0 ORDER BY `uid` $LIMIT");
 }
 $hit_and_run_rez = sql_query($query_2) or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= '<h2>' . (!isset($_GET['really_bad']) ? $lang['hitnrun_chance'] : $lang['hitnrun_nochance']) . '</h2><br> 
 		<a class="altlink" href="staffpanel.php?tool=hit_and_run">' . $lang['hitnrun_show_current'] . '</a> || <a class="altlink" href="staffpanel.php?tool=hit_and_run&amp;really_bad=show_them">' . $lang['hitnrun_show_disabled'] . '</a><br><br>
 		' . ($arr_count[0] > $perpage ? '<p>' . $menu . '</p>' : '') . '
 		<table>' . (mysqli_num_rows($hit_and_run_rez) > 0 ? '<tr><td  class="colhead">' . $lang['hitnrun_avatar'] . '</td>
-		<td  class="colhead"><b>' . $lang['hitnrun_member'] . '</b></td>
+		<td class="colhead"><b>' . $lang['hitnrun_member'] . '</b></td>
 		<td class="colhead"><b>' . $lang['hitnrun_torrent'] . '</b></td>
 		<td class="colhead"><b>' . $lang['hitnrun_times'] . '</b></td>
 		<td class="colhead"><b>' . $lang['hitnrun_stats'] . '</b></td>
@@ -51,42 +53,44 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
             $torrent_needed_seed_time = $hit_and_run_arr['seedtime'];
             //=== get times per class
             switch (true) {
-                case $hit_and_run_arr['class'] < UC_POWER_USER:
-                    $days_3 = 3 * 86400; //== 3 days
-                    $days_14 = 2 * 86400; //== 2 days
-                    $days_over_14 = 86400; //== 1 day
+                case $hit_and_run_arr['class'] <= $site_config['firstclass']:
+                    $days_3 = $site_config['_3day_first'] * 3600;
+                    $days_14 = $site_config['_14day_first'] * 3600;
+                    $days_over_14 = $site_config['_14day_over_first'] * 3600;
                     break;
 
-                case $hit_and_run_arr['class'] < UC_STAFF:
-                    $days_3 = 2 * 86400; //== 2 days
-                    $days_14 = 129600; //== 36 hours
-                    $days_over_14 = 64800; //== 18 hours
+                case $hit_and_run_arr['class'] < $site_config['secondclass']:
+                    $days_3 = $site_config['_3day_second'] * 3600;
+                    $days_14 = $site_config['_14day_second'] * 3600;
+                    $days_over_14 = $site_config['_14day_over_second'] * 3600;
                     break;
 
-                case $hit_and_run_arr['class'] >= UC_STAFF:
-                    $days_3 = 86400; //== 24 hours
-                    $days_14 = 43200; //== 12 hours
-                    $days_over_14 = 21600; //== 6 hours
+                case $hit_and_run_arr['class'] >= $site_config['thirdclass']:
+                    $days_3 = $site_config['_3day_third'] * 3600;
+                    $days_14 = $site_config['_14day_third'] * 3600;
+                    $days_over_14 = $site_config['_14day_over_third'] * 3600;
                     break;
+
+                default:
+                    $days_3 = $site_config['_3day_first'] * 3600; //== 1 days
+                    $days_14 = $site_config['_14day_first'] * 3600; //== 1 days
+                    $days_over_14 = $site_config['_14day_over_first'] * 3600; //== 1 day
             }
             switch (true) {
-                case ($S_date - $hit_and_run_arr['torrent_added']) < 7 * 86400:
+                case ($S_date - $hit_and_run_arr['torrent_added']) < $site_config['torrentage1'] * 86400:
                     $minus_ratio = ($days_3 - $torrent_needed_seed_time);
-                    // or using ratio
-                    //$minus_ratio = ($days_3 - $torrent_needed_seed_time) - ($hit_and_run_arr['uload'] / $hit_and_run_arr['dload'] * 3 * 86400);
                     break;
 
-                case ($S_date - $hit_and_run_arr['torrent_added']) < 21 * 86400:
+                case ($S_date - $hit_and_run_arr['torrent_added']) < $site_config['torrentage2'] * 86400:
                     $minus_ratio = ($days_14 - $torrent_needed_seed_time);
-                    // or using ratio
-                    //$minus_ratio = ($days_14 - $torrent_needed_seed_time) - ($hit_and_run_arr['uload'] / $hit_and_run_arr['dload'] * 2 * 86400);
                     break;
 
-                case ($S_date - $hit_and_run_arr['torrent_added']) >= 21 * 86400:
+                case ($S_date - $hit_and_run_arr['torrent_added']) >= $site_config['torrentage3'] * 86400:
                     $minus_ratio = ($days_over_14 - $torrent_needed_seed_time);
-                    // or using ratio
-                    //$minus_ratio = ($days_over_14 - $torrent_needed_seed_time) - ($hit_and_run_arr['uload'] / $hit_and_run_arr['dload'] * 86400);
                     break;
+
+                default:
+                    $minus_ratio = ($days_over_14 - $torrent_needed_seed_time);
             }
             $minus_ratio = (preg_match('/-/i', $minus_ratio) ? 0 : $minus_ratio);
             $color = ($minus_ratio > 0 ? get_ratio_color($minus_ratio) : 'limegreen');

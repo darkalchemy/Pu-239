@@ -5,11 +5,9 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'torrenttable_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
+global $CURUSER, $site_config;
+
 $lang = array_merge(load_language('global'), load_language('mytorrents'), load_language('torrenttable_functions'));
-$stdfoot = [
-    'js' => [
-    ],
-];
 $HTMLOUT = '';
 if (isset($_GET['sort']) && isset($_GET['type'])) {
     $column = '';
@@ -26,7 +24,7 @@ if (isset($_GET['sort']) && isset($_GET['type'])) {
         'leechers',
         'owner',
     ];
-    $column = isset($_GET['sort']) && isset($_valid_sort[(int)$_GET['sort']]) ? $_valid_sort[(int)$_GET['sort']] : $_valid_sort[0];
+    $column = isset($_GET['sort']) && isset($_valid_sort[ (int)$_GET['sort'] ]) ? $_valid_sort[ (int)$_GET['sort'] ] : $_valid_sort[0];
     switch (htmlsafechars($_GET['type'])) {
         case 'asc':
             $ascdesc = 'ASC';

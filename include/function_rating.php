@@ -7,7 +7,7 @@
  */
 function getRate($id, $what)
 {
-    global $CURUSER, $mc1;
+    global $CURUSER, $cache;
     if ($id == 0 || !in_array($what, [
             'topic',
             'torrent',
@@ -16,10 +16,10 @@ function getRate($id, $what)
     }
     //== lets memcache $what
     $keys['rating'] = 'rating_' . $what . '_' . $id . '_' . $CURUSER['id'];
-    if (($rating_cache = $mc1->get_value($keys['rating'])) === false) {
-        $qy = sql_query('SELECT sum(r.rating) as sum, count(r.rating) as count, r2.id as rated, r2.rating  FROM rating as r LEFT JOIN rating as r2 ON (r2.' . $what . ' = ' . sqlesc($id) . ' AND r2.user = ' . sqlesc($CURUSER['id']) . ') WHERE r.' . $what . ' = ' . sqlesc($id) . ' GROUP BY r.' . $what) or sqlerr(__FILE__, __LINE__);
+    if (($rating_cache = $cache->get($keys['rating'])) === false) {
+        $qy = sql_query('SELECT sum(r.rating) AS sum, count(r.rating) AS count, r2.id AS rated, r2.rating  FROM rating AS r LEFT JOIN rating AS r2 ON (r2.' . $what . ' = ' . sqlesc($id) . ' AND r2.user = ' . sqlesc($CURUSER['id']) . ') WHERE r.' . $what . ' = ' . sqlesc($id) . ' GROUP BY r.' . $what) or sqlerr(__FILE__, __LINE__);
         $rating_cache = mysqli_fetch_assoc($qy);
-        $mc1->cache_value($keys['rating'], $rating_cache, 0);
+        $cache->set($keys['rating'], $rating_cache, 0);
     }
     $completeres = sql_query('SELECT * FROM ' . (XBT_TRACKER == true ? 'xbt_files_users' : 'snatched') . ' WHERE ' . (XBT_TRACKER == true ? 'completedtime !=0' : 'complete_date !=0') . ' AND ' . (XBT_TRACKER == true ? 'uid' : 'userid') . ' = ' . $CURUSER['id'] . ' AND ' . (XBT_TRACKER == true ? 'fid' : 'torrentid') . ' = ' . $id);
     $completecount = mysqli_num_rows($completeres);

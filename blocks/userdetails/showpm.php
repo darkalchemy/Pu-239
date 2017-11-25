@@ -1,4 +1,6 @@
 <?php
+global $CURUSER, $user, $site_config, $lang;
+
 if ($CURUSER['id'] != $user['id']) {
     if ($CURUSER['class'] >= UC_STAFF) {
         $showpmbutton = 1;
@@ -21,6 +23,3 @@ if (isset($showpmbutton)) {
       </form>
       </td></tr>";
 }
-//==end
-// End Class
-// End File

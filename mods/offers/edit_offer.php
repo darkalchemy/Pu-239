@@ -1,4 +1,6 @@
 <?php
+global $CURUSER, $site_config;
+
 $rs = sql_query("SELECT o.*, c.id AS catid, c.name AS catname FROM offers AS o LEFT JOIN categories AS c ON (c.id=o.cat) WHERE o.id = $id") or sqlerr(__FILE__, __LINE__);
 $numz = mysqli_fetch_assoc($rs);
 if ($CURUSER['id'] != $numz['userid'] && $CURUSER['class'] < UC_MODERATOR) {
@@ -36,7 +38,7 @@ $HTMLOUT .= '</td></tr>';
 if ($CURUSER['class'] >= UC_MODERATOR) {
     $HTMLOUT .= "<tr><td colspan='2'>Staff Only</td></tr>
     <tr><td><b>Filled</b></td>
-    <td><input type='checkbox' name='filled'" . ($numz['torrentid'] != 0 ? " checked='checked'" : '') . " /></td></tr>
+    <td><input type='checkbox' name='filled'" . ($numz['torrentid'] != 0 ? " checked" : '') . " /></td></tr>
     <tr><td><b>Accepted by ID</b></td><td>
     <input type='text' size='10' value='$numz[acceptedby]' name='acceptedby' /></td></tr>
     <tr><td>

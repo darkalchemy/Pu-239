@@ -75,7 +75,7 @@ function get_details($array)
     }
     foreach ($array as $key => $value) {
         foreach ($value as $key2 => $value2) {
-            $details[$key] = $value2;
+            $details[ $key ] = $value2;
         }
     }
 
@@ -160,37 +160,37 @@ function build_result($array, $pager)
                 <td colspan="4" width="100%">Movie name</td>
                 <td nowrap="nowrap">Added</td>
                 <td nowrap="nowrap"><img src="imgs/icon-files.gif" width="12" height="12" alt=" "
-                                                        title="CDs"/></td>
+                                         title="CDs"/></td>
                 <td nowrap="nowrap"><img src="imgs/icon-format.gif" width="12" height="13" alt=" "
-                                                        title="Format"/></td>
+                                         title="Format"/></td>
                 <td nowrap="nowrap"><img src="imgs/icon-upper.gif" width="15" height="17" alt=" "
-                                                        title="Uploader"/></td>
+                                         title="Uploader"/></td>
             </tr>
             <?php
             $count = ($time['itemsfound'] == 1 ? 1 : count($result));
             for ($i = 0; $i < $count; ++$i) {
-                $movie = ($count == 1 ? get_details($result) : get_details($result[$i])); ?>
+                $movie = ($count == 1 ? get_details($result) : get_details($result[ $i ])); ?>
                 <tr>
                     <td nowrap="nowrap"><img src="flag/<?php echo $movie['iso639'] ?>.gif" width="18"
-                                                            height="12" border="0"
-                                                            alt="<?php echo $movie['language'] ?>"
-                                                            title="<?php echo $movie['language'] ?>"/></td>
+                                             height="12" border="0"
+                                             alt="<?php echo $movie['language'] ?>"
+                                             title="<?php echo $movie['language'] ?>"/></td>
                     <td colspan="2" width="100%"><a href="<?php echo $base . $movie['detail'] ?>"
-                                                                 target="_blank">
+                                                    target="_blank">
                             <?php echo $movie['movie'] ?>
                         </a>
                         <?php echo $movie['releasename'] ? '<br><font class="releasename">' . $movie['releasename'] . '</font>' : '' ?>
                     </td>
                     <td nowrap="nowrap"><a href="<?php echo $base . $movie['download'] ?>"
-                                                          target="blank"><img src="imgs/icon-download.gif" width="12"
-                                                                              height="12" border="0" alt=" "
-                                                                              title="download"/></a></td>
+                                           target="blank"><img src="imgs/icon-download.gif" width="12"
+                                                               height="12" border="0" alt=" "
+                                                               title="download"/></a></td>
                     <td nowrap="nowrap"
-                       ><?php echo str_replace(' ', '<br>', $movie['subadddate']) ?></td>
+                    ><?php echo str_replace(' ', '<br>', $movie['subadddate']) ?></td>
                     <td nowrap="nowrap"><?php echo $movie['files'] ?></td>
                     <td nowrap="nowrap"><?php echo $movie['format'] ?></td>
                     <td nowrap="nowrap"
-                       ><?php echo $movie['user'] == '' ? 'Unknown' : $movie['user'] ?></td>
+                    ><?php echo $movie['user'] == '' ? 'Unknown' : $movie['user'] ?></td>
                 </tr>
                 <?php
             } ?>

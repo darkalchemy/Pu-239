@@ -9,7 +9,6 @@ define('CACHE_DIR', ROOT_DIR.'cache'.DIRECTORY_SEPARATOR);
 define('CLASS_DIR', INCL_DIR.'class'.DIRECTORY_SEPARATOR);
 define('XBT_TRACKER', false);
 $site_config['cache'] = ROOT_DIR . 'cache';
-require_once CLASS_DIR.'class_cache.php';
 require_once CLASS_DIR.'class_bt_options.php';
 $site_config['pic_base_url'] = './pic/';
 require_once CACHE_DIR.'class_config.php';
@@ -17,7 +16,6 @@ require_once CACHE_DIR.'class_config.php';
 if (version_compare(PHP_VERSION, '5.1.0RC1', '>=')) {
     date_default_timezone_set('Europe/London');
 }
-$mc1 = new CACHE();
 define('TIME_NOW', time());
 define('ANN_SQL_DEBUG', 1);
 define('ANN_SQL_LOGGING', 0);

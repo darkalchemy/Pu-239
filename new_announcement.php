@@ -3,14 +3,12 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
+global $CURUSER, $site_config;
+
 $lang = array_merge(load_language('global'));
 if ($CURUSER['class'] < UC_ADMINISTRATOR) {
     stderr('Error', 'Your not authorised');
 }
-$stdfoot = [
-    'js' => [
-    ],
-];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //== The expiry days.
     $days = [
@@ -72,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         $expires = TIME_NOW + (86400 * $expiry); // 86400 seconds in one day.
         $created = TIME_NOW;
-        $query = sprintf('INSERT INTO announcement_main ' . '(owner_id, created, expires, sql_query, subject, body) ' . 'VALUES (%s, %s, %s, %s, %s, %s)', sqlesc($CURUSER['id']), sqlesc($created), sqlesc($expires), sqlesc($ann_query), sqlesc($subject), sqlesc($body));
+        $query = sprintf('INSERT INTO announcement_main (owner_id, created, expires, sql_query, subject, body) VALUES (%s, %s, %s, %s, %s, %s)', sqlesc($CURUSER['id']), sqlesc($created), sqlesc($expires), sqlesc($ann_query), sqlesc($subject), sqlesc($body));
         sql_query($query);
         if (mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
             stderr('Success', 'Announcement was successfully created');
@@ -128,4 +126,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo $HTMLOUT;
     exit();
 }
-echo $HTMLOUT . stdfoot($stdfoot);
+echo $HTMLOUT . stdfoot();

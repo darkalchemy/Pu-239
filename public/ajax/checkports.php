@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'bittorrent.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 //require_once (dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php');
 dbconn(false);
 
@@ -9,7 +9,7 @@ if (empty($_POST['uid'])) {
 }
 
 $uid = intval($_POST['uid']);
-$sql = 'SELECT ip, port, agent FROM peers WHERE userid = '.sqlesc($uid).' GROUP BY ip, port';
+$sql = 'SELECT ip, port, agent FROM peers WHERE userid = ' . sqlesc($uid) . ' GROUP BY ip, port';
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
 $out = '';
@@ -32,6 +32,6 @@ while ($curip = mysqli_fetch_assoc($res)) {
 									<span>$msg</span>
 								</section>";
 }
-$status = array('data' => $out);
+$status = ['data' => $out];
 header('content-type: application/json');
 echo json_encode($status);

@@ -29,6 +29,3 @@ $HTMLOUT .= (($CURUSER['class'] >= UC_STAFF || $user['show_email'] === 'yes') ? 
 			<td class="rowhead">' . $lang['userdetails_website'] . '</td>
 			<td><a class="altlink" href="' . htmlsafechars($user['website']) . '" target="_blank" title="' . $lang['userdetails_website_click'] . '"><img src="' . $site_config['pic_base_url'] . 'forums/www.gif" width="18" alt="website" /> ' . htmlsafechars($user['website']) . '</a></td>
 		</tr>' : '');
-//==end
-// End Class
-// End File

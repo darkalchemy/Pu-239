@@ -1,5 +1,7 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+global $site_config;
+
 $string = $_SERVER['QUERY_STRING'];
 if ($string == '404') {
     $page = 'Page Not Found - 404';

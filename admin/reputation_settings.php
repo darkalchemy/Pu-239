@@ -4,6 +4,8 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $lang;
+
 $lang = array_merge($lang, load_language('ad_repsettings'));
 $rep_set_cache = './cache/rep_settings_cache.php';
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
@@ -209,9 +211,9 @@ function template_out($matches)
 {
     global $GVARS, $site_config, $lang;
     if ($matches[1] == 'rep_is_online') {
-        return '' . $lang['repset_yes'] . '<input name="rep_is_online" value="1" ' . ($GVARS['rep_is_online'] == 1 ? 'checked="checked"' : '') . ' type="radio">&#160;&#160;&#160;<input name="rep_is_online" value="0" ' . ($GVARS['rep_is_online'] == 1 ? '' : 'checked="checked"') . ' type="radio">' . $lang['repset_no'] . '';
+        return '' . $lang['repset_yes'] . '<input name="rep_is_online" value="1" ' . ($GVARS['rep_is_online'] == 1 ? 'checked' : '') . ' type="radio">&#160;&#160;&#160;<input name="rep_is_online" value="0" ' . ($GVARS['rep_is_online'] == 1 ? '' : 'checked') . ' type="radio">' . $lang['repset_no'] . '';
     } else {
-        return $GVARS[$matches[1]];
+        return $GVARS[ $matches[1] ];
     }
 }
 

@@ -3,9 +3,11 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
-$lang = array_merge($lang, load_language('ad_donations'));
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $site_config, $lang;
+
+$lang = array_merge($lang, load_language('ad_donations'));
 $HTMLOUT = '';
 if (isset($_GET['total_donors'])) {
     $total_donors = (int)$_GET['total_donors'];

@@ -1,4 +1,6 @@
 <?php
+global $CURUSER, $site_config;
+
 $offer = (isset($_POST['offertitle']) ? $_POST['offertitle'] : '');
 if ($offer == '') {
     stderr('Error', 'You must enter a title!');
@@ -29,7 +31,7 @@ $offer2 = sqlesc($offer);
 $descr = sqlesc($descr);
 sql_query("INSERT INTO offers (hits, userid, cat, offer, descr, added) VALUES(1,$CURUSER[id], $cat, $offer2, $descr, " . TIME_NOW . ')') or sqlerr(__FILE__, __LINE__);
 $id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
-sql_query("INSERT INTO voted_offers VALUES(0, $id, $CURUSER[id])") or sqlerr();
+sql_query("INSERT INTO voted_offers VALUES(0, $id, $CURUSER[id])") or sqlerr(__FILE__, __LINE__);
 if ($site_config['karma'] && isset($CURUSER['seedbonus'])) {
     mysqli_query($GLOBALS['___mysqli_ston'], 'UPDATE users SET seedbonus = seedbonus-' . $site_config['offer_cost_bonus'] . " WHERE id = $CURUSER[id]") or sqlerr(__FILE__, __LINE__);
 }

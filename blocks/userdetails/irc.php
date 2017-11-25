@@ -1,4 +1,6 @@
 <?php
+global $site_config, $lang, $user;
+
 /**
  * @param $val
  *
@@ -12,7 +14,7 @@ function calctime($val)
     $hours = intval($val / 3600);
     $val -= $hours * 3600;
     $mins = intval($val / 60);
-    $secs = $val - ($mins * 60);
+    //$secs = $val - ($mins * 60);
 
     return "&#160;$days {$lang['userdetails_irc_days']}, $hours {$lang['userdetails_irc_hrs']}, $mins {$lang['userdetails_irc_min']}";
 }
@@ -24,6 +26,3 @@ if ($user['onirc'] == 'yes') {
     $irctotal = (!empty($user['irctotal']) ? calctime($user['irctotal']) : htmlsafechars($user['username']) . $lang['userdetails_irc_never']);
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_irc_idle']}</td><td>{$irctotal}</td></tr>";
 }
-//==end
-// End Class
-// End File

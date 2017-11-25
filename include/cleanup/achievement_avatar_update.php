@@ -4,7 +4,7 @@
  */
 function achievement_avatar_update($data)
 {
-    global $site_config, $queries, $mc1;
+    global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
     // Updated Avatar Setter Achievement
@@ -16,18 +16,17 @@ function achievement_avatar_update($data)
         while ($arr = mysqli_fetch_assoc($res)) {
             $dt = TIME_NOW;
             $points = random_int(1, 3);
-            $msgs_buffer[] = '(0,' . $arr['userid'] . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
-            $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'Avatar Setter\', \'piratesheep.png\' , \'User has successfully set an avatar on profile settings.\')';
+            $msgs_buffer[] = '(0,' . $arr['userid'] . ', ' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+            $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Avatar Setter\', \'piratesheep.png\' , \'User has successfully set an avatar on profile settings.\')';
             $usersachiev_buffer[] = '(' . $arr['userid'] . ',1, ' . $points . ')';
-            $mc1->delete_value('inbox_new_' . $arr['userid']);
-            $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
-            $mc1->delete_value('user_achievement_points_' . $arr['userid']);
+            $cache->increment('inbox_' . $arr['userid']);
+            $cache->delete('user_achievement_points_' . $arr['userid']);
         }
         $count = count($achievements_buffer);
         if ($count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
-            sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE key UPDATE date=values(date),achievement=values(achievement),icon=values(icon),description=values(description)') or sqlerr(__FILE__, __LINE__);
-            sql_query('INSERT INTO usersachiev (userid, avatarach, achpoints) VALUES ' . implode(', ', $usersachiev_buffer) . ' ON DUPLICATE key UPDATE avatarach=values(avatarach), achpoints=achpoints+values(achpoints)') or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE KEY UPDATE date = VALUES(date),achievement = VALUES(achievement),icon = VALUES(icon),description = VALUES(description)') or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO usersachiev (userid, avatarach, achpoints) VALUES ' . implode(', ', $usersachiev_buffer) . ' ON DUPLICATE KEY UPDATE avatarach = VALUES(avatarach), achpoints=achpoints + VALUES(achpoints)') or sqlerr(__FILE__, __LINE__);
         }
         if ($data['clean_log'] && $queries > 0) {
             write_log("Achievements Cleanup: Avatar Setter Completed using $queries queries. Avatar Achievements awarded to - " . $count . ' Member(s)');

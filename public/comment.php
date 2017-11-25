@@ -4,19 +4,16 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'comment_functions.php';
 check_user_status();
-global $mc1, $site_config;
+global $CURUSER, $site_config, $cache;
+
 $lang = array_merge(load_language('global'), load_language('comment'), load_language('capprove'));
 flood_limit('comments');
 $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : 0);
 //$vaction = array('add','delete','edit','approve','disapprove','vieworiginal','');
 //$action = (isset($_POST['action']) && in_array($_POST['action'],$vaction) ? htmlsafechars($_POST['action']) : (isset($_GET['action']) && in_array($_GET['action'],$vaction) ? htmlsafechars($_GET['action']) : ''));
-$stdhead = [
-    'css' => [
-    ],
-];
 $stdfoot = [
     'js' => [
-        get_file('upload_js')
+        get_file('upload_js'),
     ],
 ];
 $locale = 'torrent';
@@ -31,8 +28,8 @@ if (isset($_GET['type'])) {
         'torrent' => 'details',
         'request' => 'viewrequests',
     ];
-    if (isset($type_options[$_GET['type']])) {
-        $locale_link = $type_options[$_GET['type']];
+    if (isset($type_options[ $_GET['type'] ])) {
+        $locale_link = $type_options[ $_GET['type'] ];
         $locale = $_GET['type'];
     }
     switch ($_GET['type']) {
@@ -79,28 +76,22 @@ if ($action == 'add') {
         sql_query("INSERT INTO comments (user, $locale, added, text, ori_text, anonymous) VALUES (" . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . TIME_NOW . ', ' . sqlesc($body) . ', ' . sqlesc($body) . ", $anon)");
         $newid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
         sql_query("UPDATE $table_type SET comments = comments + 1 WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $mc1->delete_value('latest_comments_');
+        $cache->delete('latest_comments_');
         if ($site_config['seedbonus_on'] == 1) {
             if ($site_config['karma'] && isset($CURUSER['seedbonus'])) {
                 sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($site_config['bonus_per_comment']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
             }
             $update['comments'] = ($arr['comments'] + 1);
-            $mc1->begin_transaction('torrent_details_' . $id);
-            $mc1->update_row(false, [
+            $cache->update_row('torrent_details_' . $id, [
                 'comments' => $update['comments'],
-            ]);
-            $mc1->commit_transaction(0);
+            ], 0);
             $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus_per_comment']);
-            $mc1->begin_transaction('userstats_' . $CURUSER['id']);
-            $mc1->update_row(false, [
+            $cache->update_row('userstats_' . $CURUSER['id'], [
                 'seedbonus' => $update['seedbonus'],
-            ]);
-            $mc1->commit_transaction($site_config['expires']['u_stats']);
-            $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
-            $mc1->update_row(false, [
+            ], $site_config['expires']['u_stats']);
+            $cache->update_row('user_stats_' . $CURUSER['id'], [
                 'seedbonus' => $update['seedbonus'],
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            ], $site_config['expires']['user_stats']);
             //===end
         }
         // --- pm if new comment mod---//
@@ -127,7 +118,7 @@ if ($action == 'add') {
     }
     $HTMLOUT = '';
     $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
-    $HTMLOUT .= "<h1>{$lang['comment_add']}'" . htmlsafechars($arr[$name]) . "'</h1>
+    $HTMLOUT .= "<h1>{$lang['comment_add']}'" . htmlsafechars($arr[ $name ]) . "'</h1>
       <br><form name='compose' method='post' action='comment.php?action=add'>
       <input type='hidden' name='tid' value='{$id}'/>
       <input type='hidden' name='locale' value='$name' />";
@@ -158,7 +149,7 @@ if ($action == 'add') {
         $HTMLOUT .= "<h2>{$lang['comment_recent']}</h2>\n";
         $HTMLOUT .= commenttable($allrows, $locale);
     }
-    echo stdhead("{$lang['comment_add']}'" . $arr[$name] . "'", true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+    echo stdhead("{$lang['comment_add']}'" . $arr[ $name ] . "'", true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
     die;
 } elseif ($action == 'edit') {
     $commentid = (isset($_GET['cid']) ? (int)$_GET['cid'] : 0);
@@ -189,7 +180,7 @@ if ($action == 'add') {
         die;
     }
     $HTMLOUT = '';
-    $HTMLOUT .= "<h1>{$lang['comment_edit']}'" . htmlsafechars($arr[$name]) . "'</h1>
+    $HTMLOUT .= "<h1>{$lang['comment_edit']}'" . htmlsafechars($arr[ $name ]) . "'</h1>
       <form method='post' action='comment.php?action=edit&amp;cid=$commentid'>
       <input type='hidden' name='locale' value='$name' />
        <input type='hidden' name='tid' value='" . (int)$arr['tid'] . "' />
@@ -200,8 +191,8 @@ if ($action == 'add') {
         $HTMLOUT .= "<textarea name='text' rows='10' cols='60'>" . htmlsafechars($arr['text']) . '</textarea>';
     }
     $HTMLOUT .= '
-      <br>' . ($CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" value="lasteditedby" checked="checked" name="lasteditedby" id="lasteditedby" /> Show Last Edited By<br><br>' : '') . ' <input type="submit" class="button" value="' . $lang['comment_doit'] . '" /></form>';
-    echo stdhead("{$lang['comment_edit']}'" . $arr[$name] . "'", true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+      <br>' . ($CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" value="lasteditedby" checked name="lasteditedby" id="lasteditedby" /> Show Last Edited By<br><br>' : '') . ' <input type="submit" class="button" value="' . $lang['comment_doit'] . '" /></form>';
+    echo stdhead("{$lang['comment_edit']}'" . $arr[ $name ] . "'", true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
     die;
 } elseif ($action == 'delete') {
     if ($CURUSER['class'] < UC_STAFF) {
@@ -221,7 +212,7 @@ if ($action == 'add') {
     $arr = mysqli_fetch_assoc($res);
     $id = 0;
     if ($arr) {
-        $id = $arr[$locale];
+        $id = $arr[ $locale ];
     }
     sql_query('DELETE FROM comments WHERE id=' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
     if ($id && mysqli_affected_rows($GLOBALS['___mysqli_ston']) > 0) {
@@ -233,22 +224,16 @@ if ($action == 'add') {
         }
         $arr['comments'] = (isset($arr['comments']) ? $arr['comments'] : 0);
         $update['comments'] = ($arr['comments'] - 1);
-        $mc1->begin_transaction('torrent_details_' . $id);
-        $mc1->update_row(false, [
+        $cache->update_row('torrent_details_' . $id, [
             'comments' => $update['comments'],
-        ]);
-        $mc1->commit_transaction(0);
+        ], 0);
         $update['seedbonus'] = ($CURUSER['seedbonus'] - 3);
-        $mc1->begin_transaction('userstats_' . $CURUSER['id']);
-        $mc1->update_row(false, [
+        $cache->update_row('userstats_' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus'],
-        ]);
-        $mc1->commit_transaction($site_config['expires']['u_stats']);
-        $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
-        $mc1->update_row(false, [
+        ], $site_config['expires']['u_stats']);
+        $cache->update_row('user_stats_' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus'],
-        ]);
-        $mc1->commit_transaction($site_config['expires']['user_stats']);
+        ], $site_config['expires']['user_stats']);
         //===end
     }
     header("Refresh: 0; url=$locale_link.php?id=$tid$extra_link");

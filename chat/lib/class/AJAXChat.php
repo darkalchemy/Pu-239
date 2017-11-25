@@ -332,14 +332,27 @@ class AJAXChat
      */
     public function getOnlineUsersData($channelIDs = null, $key = null, $value = null)
     {
-        global $redis;
         if ($this->_onlineUsersData === null) {
             $this->_onlineUsersData = [];
 
-            $online_ids = $redis->zRange($this->getDataBaseTable('online'), 0, -1);
-            foreach ($online_ids as $online_id) {
-                $row = $redis->hMGet("user:{$online_id}", ['userName', 'dateTime', 'channel', 'userID', 'userRole', 'ip']);
-                $row['pmCount'] = getPmCount($online_id);
+            $sql = 'SELECT
+                        userID,
+                        userName,
+                        userRole,
+                        channel,
+                        UNIX_TIMESTAMP(dateTime) AS timeStamp,
+                        ip
+                    FROM
+                        ' . $this->getDataBaseTable('online') . '
+                    ORDER BY
+                        userRole DESC, LOWER(userName);';
+
+            // Create a new SQL query:
+            $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+
+            while ($row = mysqli_fetch_array($res)) {
+                $row['ip'] = ipFromStorageFormat($row['ip']);
+                $row['pmCount'] = getPMCount($row['userID']);
                 array_push($this->_onlineUsersData, $row);
             }
         }
@@ -400,8 +413,13 @@ class AJAXChat
      */
     public function removeFromOnlineList($userID)
     {
-        global $redis;
-        $redis->zRem($this->getDataBaseTable('online'), $userID);
+        $sql = 'DELETE FROM
+                    ' . $this->getDataBaseTable('online') . '
+                WHERE
+                    userID = ' . sqlesc($this->getUserID()) . ';';
+
+        // Create a new SQL query:
+        sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
         if ($this->getConfig('socketServerEnabled')) {
             $this->updateSocketAuthentication($userID);
@@ -474,7 +492,7 @@ class AJAXChat
         // 2 = messages with online user updates (nick)
 
         $ip = $ip ? $ip : getip();
-        $bot_only = [2, 3]; // Announce, News
+        $bot_only = [2, 3, 4]; // Announce, News, Git
         if (in_array($channelID, $bot_only) && $userRole != 100) {
             return;
         }
@@ -505,8 +523,8 @@ class AJAXChat
 
         // increment userachiev
         $sql = 'UPDATE usersachiev
-                SET dailyshouts = dailyshouts + 1, weeklyshouts = weeklyshouts + 1, monthlyshouts = monthlyshouts + 1, totalshouts = totalshouts + 1
-                WHERE userid = ' . sqlesc($userID);
+                    SET dailyshouts = dailyshouts + 1, weeklyshouts = weeklyshouts + 1, monthlyshouts = monthlyshouts + 1, totalshouts = totalshouts + 1
+                    WHERE userid = ' . sqlesc($userID);
 
         // Create a new SQL query:
         sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -801,7 +819,7 @@ class AJAXChat
         if ($this->isUserOnline($userData['userID']) || $this->isUserNameInUse($userData['userName'])) {
             if ($userData['userRole'] >= UC_USER) {
                 // Set the registered user inactive and remove the inactive users so the user can be logged in again:
-                $this->setInactive($userData['userID']);
+                $this->setInactive($userData['userID'], $userData['userName']);
                 $this->removeInactive();
             } else {
                 unsetSessionVar('Channel');
@@ -1017,10 +1035,22 @@ class AJAXChat
     /**
      * @param $userID
      */
-    public function setInactive($userID)
+    public function setInactive($userID, $userName = null)
     {
-        global $redis;
-        $redis->hSet('online_active', $userID, 0);
+        $condition = 'userID=' . sqlesc($userID);
+        if ($userName !== null) {
+            $condition .= ' OR userName=' . sqlesc($userName);
+        }
+        $sql = 'UPDATE
+                    ' . $this->getDataBaseTable('online') . '
+                SET
+                    dateTime = DATE_SUB(NOW(), interval ' . (intval($this->getConfig('inactiveTimeout')) + 1) . ' MINUTE)
+                WHERE
+                    ' . $condition . ';';
+
+        // Create a new SQL query:
+        sql_query($sql) or sqlerr(__FILE__, __LINE__);
+
         $this->resetOnlineUsersData();
     }
 
@@ -1031,12 +1061,44 @@ class AJAXChat
 
     public function removeInactive()
     {
-        global $redis;
-        $online_ids = $redis->zRangeByScore('online_active', 0, TIME_NOW);
+        $sql = 'SELECT
+                    userID,
+                    userName,
+                    channel
+                FROM
+                    ' . $this->getDataBaseTable('online') . '
+                WHERE
+                    NOW() > DATE_ADD(dateTime, INTERVAL ' . $this->getConfig('inactiveTimeout') . ' MINUTE);';
 
-        foreach ($online_ids as $online_id) {
-            $this->removeFromOnlineList($online_id);
-            $redis->zRem('online_active', $online_id);
+        // Create a new SQL query:
+        $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+
+        if (mysqli_num_rows($result) > 0) {
+            $condition = '';
+
+            while ($row = mysqli_fetch_array($result)) {
+                if (!empty($condition)) {
+                    $condition .= ' OR ';
+                }
+                // Add userID to condition for removal:
+                $condition .= 'userID=' . sqlesc($row['userID']);
+
+                // Update the socket server authentication for the kicked user:
+                if ($this->getConfig('socketServerEnabled')) {
+                    $this->updateSocketAuthentication($row['userID']);
+                }
+
+                $this->removeUserFromOnlineUsersData($row['userID']);
+            }
+
+            $sql = 'DELETE FROM
+                        ' . $this->getDataBaseTable('online') . '
+                    WHERE
+                        ' . $condition . ';';
+
+            // Create a new SQL query:
+            sql_query($sql) or sqlerr(__FILE__, __LINE__);
+
         }
     }
 
@@ -1077,17 +1139,23 @@ class AJAXChat
      */
     public function getBannedUsersData($key = null, $value = null)
     {
-        global $redis;
         if ($this->_bannedUsersData === null) {
             $this->_bannedUsersData = [];
 
-            // Remove expired bans:
-            $this->removeExpiredBans();
+            $sql = 'SELECT
+                        userID,
+                        userName,
+                        ip
+                    FROM
+                        ' . $this->getDataBaseTable('bans') . '
+                    WHERE
+                        NOW() < dateTime;';
 
-            $banned_ids = $redis->zRange($this->getDataBaseTable('bans'), 0, -1);
+            // Create a new SQL query:
+            $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
-            foreach ($banned_ids as $banned_id) {
-                $row = $redis->hMGet("user:{$banned_id}", ['userName', 'userID', 'ip']);
+            while ($row = mysqli_fetch_array($result)) {
+                $row['ip'] = ipFromStorageFormat($row['ip']);
                 array_push($this->_bannedUsersData, $row);
             }
         }
@@ -1519,12 +1587,20 @@ class AJAXChat
 
     public function updateOnlineList()
     {
-        global $redis;
+        $sql = 'UPDATE
+                    ' . $this->getDataBaseTable('online') . '
+                SET
+                    userName    = ' . sqlesc($this->getUserName()) . ',
+                    channel     = ' . sqlesc($this->getChannel()) . ',
+                    dateTime    = NOW(),
+                    ip          = ' . ipToStorageFormat($_SERVER['REMOTE_ADDR']) . '
+                WHERE
+                    userID = ' . sqlesc($this->getUserID()) . ';';
+
+        // Create a new SQL query:
+        sql_query($sql) or sqlerr(__FILE__, __LINE__);
+
         $this->resetOnlineUsersData();
-        $pipe = $redis->multi(Redis::PIPELINE);
-        $pipe->zAdd('online_active', TIME_NOW + $this->getConfig('inactiveTimeout') * 60, $this->getUserID());
-        $pipe->hMSet("user:{$this->getUserID()}", ['userName' => $this->getUserName(), 'userRole' => $this->getUserRole(), 'channel' => $this->getChannel(), 'dateTime' => TIME_NOW, 'ip' => $_SERVER['REMOTE_ADDR']]);
-        $pipe->exec();
     }
 
     /**
@@ -1659,12 +1735,31 @@ class AJAXChat
 
     public function addToOnlineList()
     {
-        global $redis;
-        $pipe = $redis->multi(Redis::PIPELINE);
-        $pipe->zAdd($this->getDataBaseTable('online'), sprintf('%04d', 999 - $this->getUserRole()), $this->getUserID());
-        $pipe->zAdd('online_active', TIME_NOW + $this->getConfig('inactiveTimeout') * 60, $this->getUserID());
-        $pipe->hMSet("user:{$this->getUserID()}", ['userName' => $this->getUserName(), 'userID' => $this->getUserID(), 'userRole' => $this->getUserRole(), 'channel' => $this->getChannel(), 'dateTime' => TIME_NOW, 'ip' => $_SERVER['REMOTE_ADDR']]);
-        $pipe->exec();
+        $sql = 'INSERT INTO ' . $this->getDataBaseTable('online') . '(
+                    userID,
+                    userName,
+                    userRole,
+                    channel,
+                    dateTime,
+                    ip
+                )
+                VALUES (
+                    ' . sqlesc($this->getUserID()) . ',
+                    ' . sqlesc($this->getUserName()) . ',
+                    ' . sqlesc($this->getUserRole()) . ',
+                    ' . sqlesc($this->getChannel()) . ',
+                    NOW(),
+                    ' . ipToStorageFormat($_SERVER['REMOTE_ADDR']) . '
+                ) ON DUPLICATE KEY UPDATE
+                    userName = VALUES(userName),
+                    userRole = VALUES(userRole),
+                    channel = VALUES(channel),
+                    dateTime = VALUES(dateTime),
+                    ip = VALUES(ip);';
+
+        // Create a new SQL query:
+        sql_query($sql) or sqlerr(__FILE__, __LINE__);
+
         $this->resetOnlineUsersData();
     }
 
@@ -2342,7 +2437,6 @@ class AJAXChat
      */
     public function addInvitation($userID, $channelID = null)
     {
-        global $redis;
         $this->removeExpiredInvitations();
 
         $channelID = ($channelID === null) ? $this->getChannel() : $channelID;
@@ -2612,7 +2706,6 @@ class AJAXChat
      */
     public function banUser($userName, $banMinutes = null, $userID = null)
     {
-        global $redis;
         if ($userID === null) {
             $userID = $this->getIDFromName($userName);
         }
@@ -2630,7 +2723,21 @@ class AJAXChat
             $banMinutes = $this->getConfig('defaultBanTime');
         }
 
-        $redis->zAdd($this->getDataBaseTable('bans'), TIME_NOW + $banMinutes * 60, $userID);
+        $sql = 'INSERT INTO ' . $this->getDataBaseTable('bans') . '(
+                    userID,
+                    userName,
+                    dateTime,
+                    ip
+                )
+                VALUES (
+                    ' . sqlesc($userID) . ',
+                    ' . sqlesc($userName) . ',
+                    DATE_ADD(NOW(), INTERVAL ' . sqlesc($banMinutes) . ' MINUTE),
+                    ' . ipToStorageFormat($ip) . '
+                );';
+
+        // Create a new SQL query:
+        sql_query($sql) or sqlerr(__FILE__, __LINE__);
     }
 
     /**
@@ -2650,8 +2757,13 @@ class AJAXChat
 
     public function removeExpiredBans()
     {
-        global $redis;
-        $redis->zRemRangeByScore($this->getDataBaseTable('bans'), 0, TIME_NOW);
+        $sql = 'DELETE FROM
+                    ' . $this->getDataBaseTable('bans') . '
+                WHERE
+                    dateTime < NOW();';
+
+        // Create a new SQL query:
+        sql_query($sql) or sqlerr(__FILE__, __LINE__);
     }
 
     /**
@@ -2731,11 +2843,13 @@ class AJAXChat
      */
     public function unbanUser($userName)
     {
-        global $redis;
-        $userID = $this->getIDFromName($userName);
-        if (!empty($userID)) {
-            $redis->zRem($this->getDataBaseTable('bans'), $userID);
-        }
+        $sql = 'DELETE FROM
+                    ' . $this->getDataBaseTable('bans') . '
+                WHERE
+                    userName = ' . sqlesc($userName) . ';';
+
+        // Create a new SQL query:
+        sql_query($sql) or sqlerr(__FILE__, __LINE__);
     }
 
     /**
@@ -3122,6 +3236,7 @@ class AJAXChat
 
     public function insertParsedMessageStats($textParts)
     {
+        global $site_config;
         if (count($textParts) == 1) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
@@ -3136,7 +3251,6 @@ class AJAXChat
                     '/error UserNameNotFound ' . $textParts[1]
                 );
             } else {
-                global $site_config;
                 $sql = 'SELECT u.onirc, u.irctotal, u.donor, u.warned, u.leechwarn, u.pirate, u.king, u.enabled, 
                             u.downloadpos, u.last_access, u.username, u.reputation, u.class, u.bjwins - u.bjlosses AS bj,
                             u.uploaded, u.downloaded, u.seedbonus, u.freeslots, u.free_switch, u.added, u.invite_rights,
@@ -3326,7 +3440,7 @@ class AJAXChat
 
     public function insertParsedMessageRep($textParts)
     {
-        global $INSTALLER09, $mc1;
+        global $CURUSER, $site_config, $cache;
         if (count($textParts) == 1) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
@@ -3342,7 +3456,6 @@ class AJAXChat
 
             return false;
         }
-        global $CURUSER, $mc1;
         $gift = number_format($textParts[2]);
         $sql = sql_query('SELECT reputation FROM users WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $res = mysqli_fetch_row($sql);
@@ -3366,23 +3479,21 @@ class AJAXChat
         if (sql_query("UPDATE users SET reputation = reputation - $gift WHERE id = " . sqlesc($CURUSER['id']))) {
             sql_query("UPDATE users SET reputation = reputation + $gift, bonuscomment = CONCAT(" . sqlesc($bonuscomment) . ",'\n',IFNULL(bonuscomment,'')) WHERE username = " . sqlesc($userName)) or sqlerr(__FILE__, __LINE__);
             // receiver
-            if (($user_cache = $mc1->get_value('MyUser_' . $whereisUserID)) != false) {
-                $mc1->begin_transaction('MyUser_' . $whereisUserID);
-                $mc1->update_row(false, [
-                    'reputation' => $recbonus + $gift,
-                ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
-            }
+            $cache->update_row('MyUser_' . $whereisUserID, [
+                'reputation' => $recbonus + $gift,
+            ], $site_config['expires']['user_cache']);
+            $cache->update_row('user' . $whereisUserID, [
+                'reputation' => $recbonus + $gift,
+            ], $site_config['expires']['user_cache']);
             // giver
-            if (($user_cache = $mc1->get_value('MyUser_' . $CURUSER['id'])) != false) {
-                $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
-                $mc1->update_row(false, [
-                    'reputation' => $fromrep - $gift,
-                ]);
-                $mc1->commit_transaction($INSTALLER09['expires']['user_cache']);
-            }
+            $cache->update_row('MyUser_' . $CURUSER['id'], [
+                'reputation' => $fromrep - $gift,
+            ], $site_config['expires']['user_cache']);
+            $cache->update_row('user' . $CURUSER['id'], [
+                'reputation' => $fromrep - $gift,
+            ], $site_config['expires']['user_cache']);
 
-            $mc1->delete_value('user_rep_' . $whereisUserID);
+            $cache->delete('user_rep_' . $whereisUserID);
             $save = [
                 'reputation' => sqlesc($gift),
                 'whoadded'   => sqlesc($CURUSER['id']),
@@ -3411,7 +3522,7 @@ class AJAXChat
 
     public function insertParsedMessageGift($textParts)
     {
-        global $CURUSER, $mc1;
+        global $CURUSER, $cache;
         if (count($textParts) == 1) {
             $this->insertChatBotMessage(
                 $this->getPrivateMessageID(),
@@ -3449,17 +3560,19 @@ class AJAXChat
         if (sql_query("UPDATE users SET seedbonus = seedbonus - $gift WHERE id = " . sqlesc($CURUSER['id']))) {
             sql_query("UPDATE users SET seedbonus = seedbonus + $gift, bonuscomment = CONCAT(" . sqlesc($bonuscomment) . ",'\n',IFNULL(bonuscomment,'')) WHERE username = " . sqlesc($userName)) or sqlerr(__FILE__, __LINE__);
             // receiver
-            $mc1->begin_transaction('userstats_' . $whereisUserID);
-            $mc1->update_row(false, [
+            $cache->update_row('userstats_' . $whereisUserID, [
                 'seedbonus' => $recbonus + $gift,
-            ]);
-            $mc1->commit_transaction(0);
+            ], 0);
+            $cache->update_row('user_stats_' . $whereisUserID, [
+                'seedbonus' => $recbonus + $gift,
+            ], 0);
             // giver
-            $mc1->begin_transaction('userstats_' . $CURUSER['id']);
-            $mc1->update_row(false, [
+            $cache->update_row('userstats_' . $CURUSER['id'], [
                 'seedbonus' => $frombonus - $gift,
-            ]);
-            $mc1->commit_transaction(0);
+            ], 0);
+            $cache->update_row('user_stats_' . $CURUSER['id'], [
+                'seedbonus' => $frombonus - $gift,
+            ], 0);
 
             $this->insertChatBotMessage(
                 $this->getChannel(),
@@ -3474,7 +3587,6 @@ class AJAXChat
             );
         }
     }
-
 
     /**
      * @return null
@@ -3860,7 +3972,7 @@ class AJAXChat
                 }
                 break;
             default:
-                if (($this->getUserRole() >= UC_ADMINISTARTOR || !$this->getConfig('logsUserAccessChannelList') || in_array($this->getRequestVar('channelID'), $this->getConfig('logsUserAccessChannelList')))
+                if (($this->getUserRole() >= UC_ADMINISTRATOR || !$this->getConfig('logsUserAccessChannelList') || in_array($this->getRequestVar('channelID'), $this->getConfig('logsUserAccessChannelList')))
                     && $this->validateChannel($this->getRequestVar('channelID'))) {
                     $condition .= ' AND channel = ' . sqlesc($this->getRequestVar('channelID'));
                 } else {

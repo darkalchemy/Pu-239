@@ -7,9 +7,9 @@
  */
 function foxnews_shout($links = [])
 {
-    global $site_config, $mc1;
+    global $site_config, $cache;
     $feeds = [
-        'Tech'          => 'http://feeds.foxnews.com/foxnews/tech',
+        'Tech' => 'http://feeds.foxnews.com/foxnews/tech',
         //'World'         => 'http://feeds.foxnews.com/foxnews/world',
         //'Entertainment' => 'http://feeds.foxnews.com/foxnews/entertainment',
     ];
@@ -18,9 +18,9 @@ function foxnews_shout($links = [])
         include_once INCL_DIR . 'user_functions.php';
         foreach ($feeds as $key => $feed) {
             $hash = md5($feed);
-            if (($xml = $mc1->get_value('foxnewsrss_' . $hash)) === false) {
+            if (($xml = $cache->get('foxnewsrss_' . $hash)) === false) {
                 $xml = file_get_contents($feed);
-                $mc1->cache_value('foxnewsrss_' . $hash, $xml, 300);
+                $cache->set('foxnewsrss_' . $hash, $xml, 300);
             }
             $doc = new DOMDocument();
             @$doc->loadXML($xml);
@@ -42,7 +42,7 @@ function foxnews_shout($links = [])
                 }
                 $links[] = $link;
                 $link = sqlesc($link);
-                $mc1->cache_value('tfreak_news_links_', $links, 86400);
+                $cache->set('tfreak_news_links_', $links, 86400);
                 sql_query(
                     "INSERT INTO newsrss (link)
                         SELECT $link
@@ -73,12 +73,12 @@ function foxnews_shout($links = [])
  */
 function tfreak_shout($links = [])
 {
-    global $site_config, $mc1;
+    global $site_config, $cache;
     if ($site_config['autoshout_on'] == 1) {
         include_once INCL_DIR . 'user_functions.php';
-        if (($xml = $mc1->get_value('tfreaknewsrss_')) === false) {
+        if (($xml = $cache->get('tfreaknewsrss_')) === false) {
             $xml = file_get_contents('http://feed.torrentfreak.com/Torrentfreak/');
-            $mc1->cache_value('tfreaknewsrss_', $xml, 300);
+            $cache->set('tfreaknewsrss_', $xml, 300);
         }
         $doc = new DOMDocument();
         @$doc->loadXML($xml);
@@ -100,7 +100,7 @@ function tfreak_shout($links = [])
             }
             $links[] = $link;
             $link = sqlesc($link);
-            $mc1->cache_value('tfreak_news_links_', $links, 86400);
+            $cache->set('tfreak_news_links_', $links, 86400);
             sql_query(
                 "INSERT INTO newsrss (link)
                         SELECT $link
@@ -130,7 +130,7 @@ function tfreak_shout($links = [])
  */
 function github_shout($links = [])
 {
-    global $site_config, $mc1;
+    global $site_config, $cache;
     $feeds = [
         'dev'    => 'https://github.com/darkalchemy/Pu-239/commits/dev.atom',
         'master' => 'https://github.com/darkalchemy/Pu-239/commits/master.atom',
@@ -139,9 +139,9 @@ function github_shout($links = [])
         include_once INCL_DIR . 'user_functions.php';
         foreach ($feeds as $key => $feed) {
             $hash = md5($feed);
-            if (($rss = $mc1->get_value('githubcommitrss_' . $hash)) === false) {
+            if (($rss = $cache->get('githubcommitrss_' . $hash)) === false) {
                 $rss = file_get_contents($feed);
-                $mc1->cache_value('githubcommitrss_' . $hash, $rss, 300);
+                $cache->set('githubcommitrss_' . $hash, $rss, 300);
             }
             $xml = simplexml_load_string($rss);
             $items = $xml->entry;
@@ -169,7 +169,7 @@ function github_shout($links = [])
                 }
                 $links[] = $link;
                 $link = sqlesc($link);
-                $mc1->cache_value('tfreak_news_links_', $links, 86400);
+                $cache->set('tfreak_news_links_', $links, 86400);
                 sql_query(
                     "INSERT INTO newsrss (link)
                         SELECT $link

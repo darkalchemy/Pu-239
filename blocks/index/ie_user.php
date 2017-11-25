@@ -1,4 +1,6 @@
 <?php
+global $site_config, $lang;
+
 $browser = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
 if (preg_match('/MSIE/i', $browser)) { //browser is IE
     $HTMLOUT .= "

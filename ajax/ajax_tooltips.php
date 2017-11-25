@@ -10,7 +10,7 @@ file_put_contents('/var/log/nginx/ajax.log', json_encode($_SESSION) . PHP_EOL, F
 return;
 
 header('Content-Type: application/json');
-global $site_config, $mc1;
+global $site_config, $cache;
 $lang = array_merge(load_language('global'), load_language('index'));
 
 //file_put_contents('/var/log/nginx/ajax.log', json_encode($_SESSION) . PHP_EOL, FILE_APPEND);
@@ -20,7 +20,7 @@ $lang = array_merge(load_language('global'), load_language('index'));
 //echo json_encode($_POST['csrf_token']);
 //die();
 if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
-    $user = $mc1->get_value('MyUser_' . $id);
+    $user = $cache->get('MyUser_' . $id);
     if (empty($user)) {
         echo json_encode('failed...');
     }
@@ -29,7 +29,7 @@ if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
     $downed = mksize($user['downloaded']);
 
     if (XBT_TRACKER == true) {
-        if (($MyPeersXbtCache = $mc1->get_value('MyPeers_XBT_' . $user['id'])) === false) {
+        if (($MyPeersXbtCache = $cache->get('MyPeers_XBT_' . $user['id'])) === false) {
             $seed['yes'] = $seed['no'] = 0;
             $seed['conn'] = 3;
             $r = sql_query('SELECT COUNT(uid) AS count, `left`, active, connectable
@@ -38,16 +38,16 @@ if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
                                 GROUP BY `left`') or sqlerr(__LINE__, __FILE__);
             while ($a = mysqli_fetch_assoc($r)) {
                 $key = $a['left'] == 0 ? 'yes' : 'no';
-                $seed[$key] = number_format((int)$a['count']);
+                $seed[ $key ] = number_format((int)$a['count']);
                 $seed['conn'] = $a['connectable'] == 0 ? 1 : 2;
             }
-            $mc1->cache_value('MyPeers_XBT_' . $user['id'], $seed, $site_config['expires']['MyPeers_xbt_']);
+            $cache->set('MyPeers_XBT_' . $user['id'], $seed, $site_config['expires']['MyPeers_xbt_']);
             unset($r, $a);
         } else {
             $seed = $MyPeersXbtCache;
         }
     } else {
-        if (($MyPeersCache = $mc1->get_value('MyPeers_' . $user['id'])) === false) {
+        if (($MyPeersCache = $cache->get('MyPeers_' . $user['id'])) === false) {
             $seed['yes'] = $seed['no'] = 0;
             $seed['conn'] = 3;
             $r = sql_query('SELECT COUNT(id) AS count, seeder, connectable
@@ -56,10 +56,10 @@ if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
                                 GROUP BY seeder');
             while ($a = mysqli_fetch_assoc($r)) {
                 $key = $a['seeder'] == 'yes' ? 'yes' : 'no';
-                $seed[$key] = number_format((int)$a['count']);
+                $seed[ $key ] = number_format((int)$a['count']);
                 $seed['conn'] = $a['connectable'] == 'no' ? 1 : 2;
             }
-            $mc1->cache_value('MyPeers_' . $user['id'], $seed, $site_config['expires']['MyPeers_']);
+            $cache->set('MyPeers_' . $user['id'], $seed, $site_config['expires']['MyPeers_']);
             unset($r, $a);
         } else {
             $seed = $MyPeersCache;
@@ -83,7 +83,7 @@ if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
         $connectable = $lang['gl_na_connectable'];
     }
 
-    if (($Achievement_Points = $mc1->get_value('user_achievement_points_' . $user['id'])) === false) {
+    if (($Achievement_Points = $cache->get('user_achievement_points_' . $user['id'])) === false) {
         $Sql = sql_query('SELECT u.id, u.username, a.achpoints, a.spentpoints
                             FROM users AS u
                             LEFT JOIN usersachiev AS a ON u.id = a.userid
@@ -92,7 +92,7 @@ if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
         $Achievement_Points['id'] = (int)$Achievement_Points['id'];
         $Achievement_Points['achpoints'] = (int)$Achievement_Points['achpoints'];
         $Achievement_Points['spentpoints'] = (int)$Achievement_Points['spentpoints'];
-        $mc1->cache_value('user_achievement_points_' . $user['id'], $Achievement_Points, 0);
+        $cache->set('user_achievement_points_' . $user['id'], $Achievement_Points, 0);
     }
 
     if ($user['override_class'] != 255) {
@@ -112,7 +112,6 @@ if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
         <div class='left'>{$lang['gl_rep']}</div>
         <div>$member_reputation</div>
     </div>
-
 
     <div class='flex-user-stats'>
         <div class='left'>{$lang['gl_invites']}</div>
@@ -176,7 +175,6 @@ if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
         <div class='left'>{$lang['gl_myunlocks']}</div>
         <div><a href='./user_unlocks.php'>{$lang['gl_click']}</a></div>" : '') . "
     </div>";
-
 
     echo json_encode($StatusBar);
 } else {

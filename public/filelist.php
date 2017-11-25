@@ -4,6 +4,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
+global $CURUSER, $site_config;
+
 $lang = array_merge(load_language('global'), load_language('filelist'));
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if (!is_valid_id($id)) {

@@ -10,7 +10,6 @@ function smilies_frame($smilies_set)
 {
     $list = $emoticons = '';
 
-
     foreach ($smilies_set as $code => $url) {
         $list .= "
             <span class='margin10 mw-50 is-flex tooltipper' title='{$code}'>

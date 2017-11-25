@@ -63,8 +63,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     //=== ok all is well... post the message :D
     sql_query('INSERT INTO messages (poster, sender, receiver, added, msg, subject, saved, location, urgent) VALUES 
                             (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($receiver) . ', ' . TIME_NOW . ', ' . $body . ', ' . $subject . ', ' . $save . ', 1,' . $urgent . ')') or sqlerr(__FILE__, __LINE__);
-    $mc1->delete_value('inbox_new_' . $receiver);
-    $mc1->delete_value('inbox_new_sb_' . $receiver);
+    $cache->increment('inbox_' . $receiver);
     //=== make sure it worked then...
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
         stderr($lang['pm_error'], $lang['pm_send_wasnt']);
@@ -180,10 +179,10 @@ $HTMLOUT .= '<form name="compose" method="post" action="pm_system.php">
     </tr>
     <tr>
         <td colspan="2">' . ($CURUSER['class'] >= UC_STAFF ? '
-        <input type="checkbox" name="urgent" value="yes" ' . ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? ' checked="checked"' : '') . ' /> 
+        <input type="checkbox" name="urgent" value="yes" ' . ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? ' checked' : '') . ' /> 
         <span class="label label-danger">' . $lang['pm_send_mark'] . '</span>' : '') . '
-        <input type="checkbox" name="delete" value="' . $replyto . '" ' . ((isset($_POST['delete']) && $_POST['delete'] > 0) ? ' checked="checked"' : ($CURUSER['deletepms'] == 'yes' ? ' checked="checked"' : '')) . ' />' . $lang['pm_send_delete'] . '
-        <input type="checkbox" name="save" value="1" ' . ((isset($_POST['draft']) && $_POST['draft'] == 1) ? ' checked="checked"' : '') . ' />' . $lang['pm_send_savepm'] . '
+        <input type="checkbox" name="delete" value="' . $replyto . '" ' . ((isset($_POST['delete']) && $_POST['delete'] > 0) ? ' checked' : ($CURUSER['deletepms'] == 'yes' ? ' checked' : '')) . ' />' . $lang['pm_send_delete'] . '
+        <input type="checkbox" name="save" value="1" ' . ((isset($_POST['draft']) && $_POST['draft'] == 1) ? ' checked' : '') . ' />' . $lang['pm_send_savepm'] . '
         <input type="submit" class="button is-primary" name="buttonval" value="' . $lang['pm_send_preview'] . '" />
         <input type="submit" class="button is-primary" name="buttonval" value="' . ((isset($_POST['draft']) && $_POST['draft'] == 1) ? $lang['pm_send_save'] : $lang['pm_send_btn']) . '" /></td>
     </tr>

@@ -1,11 +1,11 @@
 <?php
 if ($CURUSER) {
-    if (($lottery_info = $mc1->get_value('lottery_info_')) === false) {
+    if (($lottery_info = $cache->get('lottery_info_')) === false) {
         $res = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
         while ($ac = mysqli_fetch_assoc($res)) {
-            $lottery_info[$ac['name']] = $ac['value'];
+            $lottery_info[ $ac['name'] ] = $ac['value'];
         }
-        $mc1->cache_value('lottery_info_', $lottery_info, 86400);
+        $cache->set('lottery_info_', $lottery_info, 86400);
     }
 
     if ($lottery_info['enable']) {

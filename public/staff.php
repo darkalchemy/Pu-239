@@ -3,10 +3,12 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
+global $site_config;
+
 $lang = array_merge(load_language('global'), load_language('staff'));
 $stdhead = [
     'css' => [
-        get_file('staff_css')
+        get_file('staff_css'),
     ],
 ];
 $support = $mods = $admin = $sysop = [];
@@ -47,11 +49,11 @@ function DoStaff($staff, $staffclass, $cols = 2)
     for ($ia = 0; $ia < $rows; ++$ia) {
         $htmlout .= '<tr>';
         for ($i = 0; $i < $cols; ++$i) {
-            if (isset($staff[$r])) {
-                $htmlout .= "<td class='staff_username'><a href='userdetails.php?id=" . (int)$staff[$r]['id'] . "'><font color='#" . get_user_class_color($staff[$r]['class']) . "'><b>" . htmlsafechars($staff[$r]['username']) . '</b></font></a></td>' . "
-            <td class='staff_online'><img src='images/staff" . ($staff[$r]['last_access'] > $dt && $staff[$r]['perms'] < bt_options::PERMS_STEALTH ? '/online.png' : '/offline.png') . "' border='0' height='16' alt='' /></td>" . "
-            <td class='staff_online'><a href='pm_system.php?action=send_message&amp;receiver=" . (int)$staff[$r]['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . "'><img src='{$site_config['pic_base_url']}mailicon.png' border='0' title=\"Personal Message\" alt='' /></a></td>" . "
-            <td class='staff_online'><img height='16' src='{$site_config['pic_base_url']}flag/" . htmlsafechars($staff[$r]['flagpic']) . "' border='0' alt='" . htmlsafechars($staff[$r]['name']) . "' /></td>";
+            if (isset($staff[ $r ])) {
+                $htmlout .= "<td class='staff_username'><a href='userdetails.php?id=" . (int)$staff[ $r ]['id'] . "'><font color='#" . get_user_class_color($staff[ $r ]['class']) . "'><b>" . htmlsafechars($staff[ $r ]['username']) . '</b></font></a></td>' . "
+            <td class='staff_online'><img src='images/staff" . ($staff[ $r ]['last_access'] > $dt && $staff[ $r ]['perms'] < bt_options::PERMS_STEALTH ? '/online.png' : '/offline.png') . "' border='0' height='16' alt='' /></td>" . "
+            <td class='staff_online'><a href='pm_system.php?action=send_message&amp;receiver=" . (int)$staff[ $r ]['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . "'><img src='{$site_config['pic_base_url']}mailicon.png' border='0' title=\"Personal Message\" alt='' /></a></td>" . "
+            <td class='staff_online'><img height='16' src='{$site_config['pic_base_url']}flag/" . htmlsafechars($staff[ $r ]['flagpic']) . "' border='0' alt='" . htmlsafechars($staff[ $r ]['name']) . "' /></td>";
                 ++$r;
             } else {
                 $htmlout .= '<td>&#160;</td>';

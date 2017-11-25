@@ -5,7 +5,8 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config, $mc1, $lang;
+global $CURUSER, $site_config, $cache, $lang;
+
 $lang = array_merge($lang, load_language('ad_report'));
 $HTMLOUT = $delt_link = $type = $count2 = '';
 
@@ -71,14 +72,14 @@ if ((isset($_GET['deal_with_report'])) || (isset($_POST['deal_with_report']))) {
     $how_delt_with = 'how_delt_with = ' . sqlesc($_POST['how_delt_with']);
     $when_delt_with = 'when_delt_with = ' . sqlesc(TIME_NOW);
     sql_query("UPDATE reports SET delt_with = 1, $how_delt_with, $when_delt_with , who_delt_with_it =" . sqlesc($CURUSER['id']) . ' WHERE delt_with!=1 AND id =' . sqlesc($_POST['id'])) or sqlerr(__FILE__, __LINE__);
-    $mc1->delete_value('new_report_');
+    $cache->delete('new_report_');
 }
 
 $HTMLOUT .= "<h1>{$lang['reports_active']}</h1>";
 
 if ((isset($_GET['delete'])) && ($CURUSER['class'] == UC_MAX)) {
     $res = sql_query('DELETE FROM reports WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $mc1->delete_value('new_report_');
+    $cache->delete('new_report_');
     setSessionVar('is-success', $lang['reports_deleted']);
 }
 

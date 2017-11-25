@@ -3,6 +3,8 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $lang;
+
 $lang = array_merge($lang, load_language('ad_forum_manage'));
 $HTMLOUT = $options = $options_2 = $options_3 = $options_4 = $options_5 = $options_6 = $option_7 = $option_8 = $option_9 = $option_10 = $option_11 = $count = $forums_stuff = '';
 $row = 0;
@@ -39,11 +41,11 @@ switch ($action) {
             header('Location: staffpanel.php?tool=forum_manage&action=forum_manage');
             exit();
         }
-        $res = sql_query('SELECT * FROM topics where forum_id = ' . sqlesc($id));
+        $res = sql_query('SELECT * FROM topics WHERE forum_id = ' . sqlesc($id));
         $row = mysqli_fetch_array($res);
-        sql_query('DELETE FROM posts where topic_id =' . sqlesc($row['id']));
-        sql_query('DELETE FROM topics where forum_id = ' . sqlesc($id));
-        sql_query('DELETE FROM forums where id = ' . sqlesc($id));
+        sql_query('DELETE FROM posts WHERE topic_id =' . sqlesc($row['id']));
+        sql_query('DELETE FROM topics WHERE forum_id = ' . sqlesc($id));
+        sql_query('DELETE FROM forums WHERE id = ' . sqlesc($id));
         header('Location: staffpanel.php?tool=forum_manage&action=forum_manage');
         exit();
         break;
@@ -54,7 +56,7 @@ switch ($action) {
             header('Location: staffpanel.php?tool=forum_manage&action=forum_manage');
             exit();
         }
-        sql_query('UPDATE forums SET sort = ' . sqlesc($sort) . ', name = ' . sqlesc($name) . ', parent_forum = ' . sqlesc($parent_forum) . ', description = ' . sqlesc($desc) . ', forum_id = ' . sqlesc($over_forums) . ', min_class_read = ' . sqlesc($min_class_read) . ', min_class_write = ' . sqlesc($min_class_write) . ', min_class_create = ' . sqlesc($min_class_create) . ' where id = ' . sqlesc($id));
+        sql_query('UPDATE forums SET sort = ' . sqlesc($sort) . ', name = ' . sqlesc($name) . ', parent_forum = ' . sqlesc($parent_forum) . ', description = ' . sqlesc($desc) . ', forum_id = ' . sqlesc($over_forums) . ', min_class_read = ' . sqlesc($min_class_read) . ', min_class_write = ' . sqlesc($min_class_write) . ', min_class_create = ' . sqlesc($min_class_create) . ' WHERE id = ' . sqlesc($id));
         header('Location: staffpanel.php?tool=forum_manage&action=forum_manage');
         exit();
         break;
@@ -72,7 +74,7 @@ switch ($action) {
     //=== edit forum stuff
 
     case 'edit_forum_page':
-        $res = sql_query('SELECT * FROM forums where id = ' . sqlesc($id));
+        $res = sql_query('SELECT * FROM forums WHERE id = ' . sqlesc($id));
         if (mysqli_num_rows($res) > 0) {
             $row = mysqli_fetch_array($res);
             $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=forum_manage&amp;action=forum_manage">

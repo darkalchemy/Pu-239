@@ -1,20 +1,16 @@
 <?php
-
-if (!extension_loaded('memcache')) {
-    die('PHP Memcache Extension not loaded.');
-}
-require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') .
-    DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once ROOT_DIR . 'polls.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $CURUSER;
+global $CURUSER, $site_config, $cache, $BLOCKS;
+
 $stdhead = [
     'css' => [
-        get_file('index_css')
+        get_file('index_css'),
     ],
 ];
 
@@ -38,7 +34,7 @@ if ($unread >= 1) {
         'is-link',
         [
             'message' => "You have $unread new message" . plural($unread) . " in your Inbox",
-            'link' => "{$site_config['baseurl']}/pm_system.php"
+            'link'    => "{$site_config['baseurl']}/pm_system.php",
         ]
     );
 }
@@ -128,10 +124,10 @@ if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS
 if (curuser::$blocks['index_page'] & block_index::LATEST_TORRENTS_SCROLL
     && $BLOCKS['latest_torrents_scroll_on']
 ) {
-    $HTMLOUT .="<div class='container is-fluid portlet' 
+    $HTMLOUT .= "<div class='container is-fluid portlet' 
 id='LATEST_TORRENTS_SCROLL'>";
     include_once BLOCK_DIR . 'index/latest_torrents_scroll.php';
-    $HTMLOUT .="</div>";
+    $HTMLOUT .= "</div>";
 }
 
 if (curuser::$blocks['index_page'] & block_index::STATS

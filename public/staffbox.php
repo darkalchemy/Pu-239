@@ -5,6 +5,8 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
+global $CURUSER, $cache;
+
 /**
  * @param $x
  *
@@ -16,14 +18,6 @@ function mkint($x)
 }
 
 $lang = array_merge(load_language('global'), load_language('staffbox'));
-$stdfoot = [
-    'js' => [
-    ],
-];
-$stdhead = [
-    'css' => [
-    ],
-];
 if ($CURUSER['class'] < UC_STAFF) {
     setSessionVar('is-danger', $lang['staffbox_class']);
     header("Location: index.php");
@@ -44,7 +38,7 @@ switch ($do) {
     case 'delete':
         if ($id > 0) {
             if (sql_query('DELETE FROM staffmessages WHERE id IN (' . join(',', $id) . ')')) {
-                $mc1->delete_value('staff_mess_');
+                $cache->delete('staff_mess_');
                 header('Refresh: 2; url=' . $_SERVER['PHP_SELF']);
                 setSessionVar('is-success', $lang['staffbox_delete_ids']);
                 header("Location: {$_SERVER['PHP_SELF']}");
@@ -72,11 +66,10 @@ switch ($do) {
             $a = mysqli_fetch_assoc($q1);
             $response = htmlsafechars($message) . "\n---" . htmlsafechars($a['username']) . " wrote ---\n" . htmlsafechars($a['msg']);
             sql_query('INSERT INTO messages(sender,receiver,added,subject,msg) VALUES(' . sqlesc($CURUSER['id']) . ',' . sqlesc($a['sender']) . ',' . TIME_NOW . ',' . sqlesc('RE: ' . $a['subject']) . ',' . sqlesc($response) . ')') or sqlerr(__FILE__, __LINE__);
-            $mc1->delete_value('inbox_new_' . $a['sender']);
-            $mc1->delete_value('inbox_new_sb_' . $a['sender']);
+            $cache->increment('inbox_' . $a['sender']);
             $message = ', answer=' . sqlesc($message);
             if (sql_query('UPDATE staffmessages SET answered=\'1\', answeredby=' . sqlesc($CURUSER['id']) . ' ' . $message . ' WHERE id IN (' . join(',', $id) . ')')) {
-                $mc1->delete_value('staff_mess_');
+                $cache->delete('staff_mess_');
                 setSessionVar('is-success', $lang['staffbox_setanswered_ids']);
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
@@ -141,7 +134,7 @@ switch ($do) {
     case 'restart':
         if ($id > 0) {
             if (sql_query("UPDATE staffmessages SET answered='0', answeredby='0' WHERE id IN (" . join(',', $id) . ')')) {
-                $mc1->delete_value('staff_mess_');
+                $cache->delete('staff_mess_');
                 header('Refresh: 2; url=' . $_SERVER['PHP_SELF']);
                 setSessionVar('is-success', $lang['staffbox_restart_ids']);
                 header("Location: {$_SERVER['PHP_SELF']}");

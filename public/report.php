@@ -62,10 +62,9 @@ if ((isset($_GET['do_it'])) || (isset($_POST['do_it']))) {
         'INSERT into reports (reported_by, reporting_what, reporting_type, reason, added, 2nd_value) 
         VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . sqlesc($type) . ', ' . sqlesc($reason) . ", $dt, " . sqlesc($id_2) . ')'
     ) or sqlerr(__FILE__, __LINE__);
-    $mc1->delete_value('new_report_');
+    $cache->delete('new_report_');
     setSessionVar('is-success', str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>{$id}</b>!<br><b>{$lang['report_reason']}</b> {$reason}");
 }
-
 
 $HTMLOUT .= main_div("
     <form method='post' action='{$site_config['baseurl']}/report.php?type=$type$id_2b&amp;id=$id&amp;do_it=1'>

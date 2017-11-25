@@ -1,4 +1,6 @@
 <?php
+global $CURUSER, $site_config;
+
 $is = $fl = '';
 $isfree['yep'] = $isfree['expires'] = 0;
 $freeimg = '<img src="' . $site_config['pic_base_url'] . 'freedownload.gif" alt="Free download" class="tooltipper" title="Free download" />';

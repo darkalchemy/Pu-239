@@ -4,7 +4,7 @@
  */
 function achievement_seedtime_update($data)
 {
-    global $site_config, $queries, $mc1;
+    global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
     // *Updated* Seedtime Achievements Mod by MelvinMeow
@@ -18,7 +18,7 @@ function achievement_seedtime_update($data)
     $seedtime8 = 10368000; // 120days
     $seedtime9 = 12960000; // 200days
     $seedtime10 = 31536000; //1year
-    $res = sql_query('SELECT distinct s.userid, s.seedtime, a.dayseed FROM snatched AS s LEFT JOIN usersachiev AS a ON s.userid = a.userid WHERE seedtime >= ' . sqlesc($seedtime)) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT DISTINCT s.userid, s.seedtime, a.dayseed FROM snatched AS s LEFT JOIN usersachiev AS a ON s.userid = a.userid WHERE seedtime >= ' . sqlesc($seedtime)) or sqlerr(__FILE__, __LINE__);
     $msg_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $dt = TIME_NOW;
@@ -33,9 +33,8 @@ function achievement_seedtime_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'7 Day Seeder\', \'7dayseed.png\' , \'Seeded a snatched torrent for a total of at least 7 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',7, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
-                $mc1->delete_value('user_achievement_points_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
+                $cache->delete('user_achievement_points_' . $arr['userid']);
                 $var1 = 'dayseed';
             }
             if ($dayseed == 7 && $timeseeded >= $seedtime2) {
@@ -43,9 +42,8 @@ function achievement_seedtime_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'14 Day Seeder\', \'14dayseed.png\' , \'Seeded a snatched torrent for a total of at least 14 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',14, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
-                $mc1->delete_value('user_achievement_points_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
+                $cache->delete('user_achievement_points_' . $arr['userid']);
                 $var1 = 'dayseed';
             }
             if ($dayseed == 14 && $timeseeded >= $seedtime3) {
@@ -53,9 +51,8 @@ function achievement_seedtime_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'21 Day Seeder\', \'21dayseed.png\' , \'Seeded a snatched torrent for a total of at least 21 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',21, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
-                $mc1->delete_value('user_achievement_points_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
+                $cache->delete('user_achievement_points_' . $arr['userid']);
                 $var1 = 'dayseed';
             }
             if ($dayseed == 21 && $timeseeded >= $seedtime4) {
@@ -63,9 +60,8 @@ function achievement_seedtime_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'28 Day Seeder\', \'28dayseed.png\' , \'Seeded a snatched torrent for a total of at least 28 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',28, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
-                $mc1->delete_value('user_achievement_points_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
+                $cache->delete('user_achievement_points_' . $arr['userid']);
                 $var1 = 'dayseed';
             }
             if ($dayseed == 28 && $timeseeded >= $seedtime5) {
@@ -73,9 +69,8 @@ function achievement_seedtime_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'45 Day Seeder\', \'45dayseed.png\' , \'Seeded a snatched torrent for a total of at least 45 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',45, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
-                $mc1->delete_value('user_achievement_points_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
+                $cache->delete('user_achievement_points_' . $arr['userid']);
                 $var1 = 'dayseed';
             }
             if ($dayseed == 45 && $timeseeded >= $seedtime6) {
@@ -83,9 +78,8 @@ function achievement_seedtime_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'60 Day Seeder\', \'60dayseed.png\' , \'Seeded a snatched torrent for a total of at least 60 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',60, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
-                $mc1->delete_value('user_achievement_points_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
+                $cache->delete('user_achievement_points_' . $arr['userid']);
                 $var1 = 'dayseed';
             }
             if ($dayseed == 60 && $timeseeded >= $seedtime7) {
@@ -93,9 +87,8 @@ function achievement_seedtime_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'90 Day Seeder\', \'90dayseed.png\' , \'Seeded a snatched torrent for a total of at least 90 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',90, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
-                $mc1->delete_value('user_achievement_points_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
+                $cache->delete('user_achievement_points_' . $arr['userid']);
                 $var1 = 'dayseed';
             }
             if ($dayseed == 90 && $timeseeded >= $seedtime8) {
@@ -103,9 +96,8 @@ function achievement_seedtime_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'120 Day Seeder\', \'120dayseed.png\' , \'Seeded a snatched torrent for a total of at least 120 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',120, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
-                $mc1->delete_value('user_achievement_points_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
+                $cache->delete('user_achievement_points_' . $arr['userid']);
                 $var1 = 'dayseed';
             }
             if ($dayseed == 120 && $timeseeded >= $seedtime9) {
@@ -113,9 +105,8 @@ function achievement_seedtime_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'200 Day Seeder\', \'200dayseed.png\' , \'Seeded a snatched torrent for a total of at least 200 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',200, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
-                $mc1->delete_value('user_achievement_points_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
+                $cache->delete('user_achievement_points_' . $arr['userid']);
                 $var1 = 'dayseed';
             }
             if ($dayseed == 200 && $timeseeded >= $seedtime10) {
@@ -123,17 +114,16 @@ function achievement_seedtime_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'365 Day Seeder\', \'365dayseed.png\' , \'Seeded a snatched torrent for a total of at least 1 Year.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',365, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
-                $mc1->delete_value('user_achievement_points_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
+                $cache->delete('user_achievement_points_' . $arr['userid']);
                 $var1 = 'dayseed';
             }
         }
         $count = count($achievements_buffer);
         if ($count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
-            sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE key UPDATE date=values(date),achievement=values(achievement),icon=values(icon),description=values(description)') or sqlerr(__FILE__, __LINE__);
-            sql_query("INSERT INTO usersachiev (userid, $var1, achpoints) VALUES " . implode(', ', $usersachiev_buffer) . " ON DUPLICATE key UPDATE $var1=values($var1), achpoints=achpoints+values(achpoints)") or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE KEY UPDATE date = VALUES(date),achievement = VALUES(achievement),icon = VALUES(icon),description = VALUES(description)') or sqlerr(__FILE__, __LINE__);
+            sql_query("INSERT INTO usersachiev (userid, $var1, achpoints) VALUES " . implode(', ', $usersachiev_buffer) . " ON DUPLICATE KEY UPDATE $var1 = VALUES($var1), achpoints=achpoints + VALUES(achpoints)") or sqlerr(__FILE__, __LINE__);
         }
         if ($data['clean_log'] && $queries > 0) {
             write_log("Achievements Cleanup: Seedtime Completed using $queries queries. Seedtime Achievements awarded to - " . $count . ' Member(s)');

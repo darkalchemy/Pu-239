@@ -34,7 +34,6 @@ foreach ($list as $gamename) {
                     </a>
                 </div>";
 
-
 }
 $HTMLOUT .= '
             </div>';

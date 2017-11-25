@@ -1,9 +1,11 @@
 <?php
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
-$lang = array_merge($lang, load_language('ad_freelech'));
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $site_config, $lang;
+
+$lang = array_merge($lang, load_language('ad_freelech'));
 $HTMLOUT = '';
 if (isset($_GET['remove'])) {
     $configfile = '<' . $lang['freelech_thisfile'] . date('M d Y H:i:s') . $lang['freelech_modby'];

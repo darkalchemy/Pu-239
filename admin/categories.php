@@ -3,6 +3,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $lang;
+
 $lang = array_merge($lang, load_language('ad_categories'));
 $params = array_merge($_GET, $_POST);
 $params['mode'] = isset($params['mode']) ? $params['mode'] : '';
@@ -45,7 +47,7 @@ switch ($params['mode']) {
 }
 function move_cat()
 {
-    global $site_config, $params, $mc1, $lang;
+    global $site_config, $params, $cache, $lang;
     if ((!isset($params['id']) or !is_valid_id($params['id'])) or (!isset($params['new_cat_id']) or !is_valid_id($params['new_cat_id']))) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
@@ -61,8 +63,8 @@ function move_cat()
     }
     //all go
     sql_query('UPDATE torrents SET category = ' . sqlesc($new_cat_id) . ' WHERE category = ' . sqlesc($old_cat_id));
-    $mc1->delete_value('genrelist');
-    $mc1->delete_value('categories');
+    $cache->delete('genrelist');
+    $cache->delete('categories');
     if (-1 != mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories&action=categories");
     } else {
@@ -120,13 +122,13 @@ function move_cat_form()
 
 function add_cat()
 {
-    global $site_config, $params, $mc1, $lang;
+    global $site_config, $params, $cache, $lang;
     foreach ([
                  'new_cat_name',
                  'new_cat_desc',
                  'new_cat_image',
              ] as $x) {
-        if (!isset($params[$x]) or empty($params[$x])) {
+        if (!isset($params[ $x ]) or empty($params[ $x ])) {
             stderr($lang['categories_error'], $lang['categories_add_error1']);
         }
     }
@@ -138,8 +140,8 @@ function add_cat()
     $cat_image = sqlesc($params['new_cat_image']);
     sql_query("INSERT INTO categories (name, cat_desc, image)
                   VALUES($cat_name, $cat_desc, $cat_image)");
-    $mc1->delete_value('genrelist');
-    $mc1->delete_value('categories');
+    $cache->delete('genrelist');
+    $cache->delete('categories');
     if (-1 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     } else {
@@ -149,7 +151,7 @@ function add_cat()
 
 function delete_cat()
 {
-    global $site_config, $params, $mc1, $lang;
+    global $site_config, $params, $cache, $lang;
     if (!isset($params['id']) or !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
@@ -174,8 +176,8 @@ function delete_cat()
         sql_query('UPDATE torrents SET category = ' . sqlesc($new_cat_id) . ' WHERE category = ' . sqlesc($old_cat_id));
     }
     sql_query('DELETE FROM categories WHERE id = ' . sqlesc($old_cat_id));
-    $mc1->delete_value('genrelist');
-    $mc1->delete_value('categories');
+    $cache->delete('genrelist');
+    $cache->delete('categories');
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=categories&action=categories");
     } else {
@@ -242,7 +244,7 @@ function delete_cat_form()
 
 function edit_cat()
 {
-    global $site_config, $params, $mc1, $lang;
+    global $site_config, $params, $cache, $lang;
     if (!isset($params['id']) or !is_valid_id($params['id'])) {
         stderr($lang['categories_error'], $lang['categories_no_id']);
     }
@@ -251,7 +253,7 @@ function edit_cat()
                  'cat_desc',
                  'cat_image',
              ] as $x) {
-        if (!isset($params[$x]) or empty($params[$x])) {
+        if (!isset($params[ $x ]) or empty($params[ $x ])) {
             stderr($lang['categories_error'], $lang['categories_edit_error1'] . $x . '');
         }
     }
@@ -263,8 +265,8 @@ function edit_cat()
     $cat_image = sqlesc($params['cat_image']);
     $cat_id = intval($params['id']);
     sql_query("UPDATE categories SET name = $cat_name, cat_desc = $cat_desc, image = $cat_image WHERE id = $cat_id");
-    $mc1->delete_value('genrelist');
-    $mc1->delete_value('categories');
+    $cache->delete('genrelist');
+    $cache->delete('categories');
     if (-1 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     } else {
@@ -396,7 +398,6 @@ function show_categories()
     </tr>
     </table>
     </form>
-
 
     <h2>{$lang['categories_show_head']}</h2>
     <table class='torrenttable' border='1' width='80%' bgcolor='#333333' cellpadding='5px'>

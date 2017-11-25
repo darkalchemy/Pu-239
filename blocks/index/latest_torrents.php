@@ -1,10 +1,12 @@
 <?php
+global $site_config, $cache, $lang;
+
 $HTMLOUT .= "
     <a id='latesttorrents-hash'></a>
     <fieldset id='latesttorrents' class='header'>
         <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_latest']}</legend>
         <div class='has-text-centered'>";
-if (($top5torrents = $mc1->get_value('top5_tor_')) === false) {
+if (($top5torrents = $cache->get('top5_tor_')) === false) {
     $res = sql_query("SELECT t.id, t.seeders, t.poster, t.leechers, t.name, t.times_completed, t.category, c.image AS cat_pic, c.name AS cat_name, t.added, t.size
                         FROM torrents AS t
                         LEFT JOIN categories AS c ON t.category = c.id
@@ -13,7 +15,7 @@ if (($top5torrents = $mc1->get_value('top5_tor_')) === false) {
     while ($top5torrent = mysqli_fetch_assoc($res)) {
         $top5torrents[] = $top5torrent;
     }
-    $mc1->cache_value('top5_tor_', $top5torrents, $site_config['expires']['top5_torrents']);
+    $cache->set('top5_tor_', $top5torrents, $site_config['expires']['top5_torrents']);
 }
 if (count($top5torrents) > 0) {
     $HTMLOUT .= "
@@ -88,7 +90,7 @@ if (count($top5torrents) > 0) {
         }
     }
 }
-if (($last5torrents = $mc1->get_value('last5_tor_')) === false) {
+if (($last5torrents = $cache->get('last5_tor_')) === false) {
     $sql = "SELECT t.id, t.seeders, t.poster, t.leechers, t.name, t.times_completed, t.category, c.image AS cat_pic, c.name AS cat_name, t.added, t.size
                 FROM torrents AS t
                 LEFT JOIN categories AS c ON t.category = c.id
@@ -99,7 +101,7 @@ if (($last5torrents = $mc1->get_value('last5_tor_')) === false) {
     while ($last5torrent = mysqli_fetch_assoc($result)) {
         $last5torrents[] = $last5torrent;
     }
-    $mc1->cache_value('last5_tor_', $last5torrents, $site_config['expires']['last5_torrents']);
+    $cache->set('last5_tor_', $last5torrents, $site_config['expires']['last5_torrents']);
 }
 if (count($last5torrents) > 0) {
     $HTMLOUT .= "

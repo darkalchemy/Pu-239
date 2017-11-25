@@ -5,6 +5,8 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'html_functions.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $site_config, $cache, $lang;
+
 $lang = array_merge($lang, load_language('ad_bans'));
 $remove = isset($_GET['remove']) ? (int)$_GET['remove'] : 0;
 if ($remove > 0) {
@@ -17,7 +19,7 @@ if ($remove > 0) {
     $last = ipFromStorageFormat($ban['last']);
     for ($i = $first; $i <= $last; ++$i) {
         $ip = long2ip($i);
-        $mc1->delete_value('bans:::' . $ip);
+        $cache->delete('bans:::' . $ip);
     }
     if (is_valid_id($remove)) {
         sql_query('DELETE FROM bans WHERE id=' . sqlesc($remove)) or sqlerr(__FILE__, __LINE__);
@@ -42,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $CURUSER['class'] == UC_MAX) {
     $added = TIME_NOW;
     for ($i = $first; $i <= $last; ++$i) {
         $key = 'bans:::' . long2ip($i);
-        $mc1->delete_value($key);
+        $cache->delete($key);
     }
     sql_query("INSERT INTO bans (added, addedby, first, last, comment) VALUES($added, " . sqlesc($CURUSER['id']) . ', ' . ipToStorageFormat($first) . ', ' . ipToStorageFormat($last) . ', ' . sqlesc($comment) . ')') or sqlerr(__FILE__, __LINE__);
     setSessionVar('is-success', "IPs: $first to $last added to Bans");

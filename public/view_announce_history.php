@@ -4,6 +4,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
+global $CURUSER;
+
 $lang = array_merge(load_language('global'), load_language('announce_history'));
 $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : '');
 $HTMLOUT = "<h2><span class='size_6'>{$lang['annhistory_ann']}</span></h2>";
@@ -21,6 +23,7 @@ while ($x = mysqli_fetch_array($result)) {
 unset($x);
 unset($result);
 reset($ann_list);
+$body = '';
 if ($action == 'read_announce') {
     $id = (isset($_GET['id']) ? (int)$_GET['id'] : 0);
     if (!is_int($id)) {

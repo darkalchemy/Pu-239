@@ -2,6 +2,8 @@
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'phpzip.php';
 check_user_status();
+global $site_config;
+
 $lang = array_merge(load_language('global'));
 
 $action = (isset($_POST['action']) ? htmlsafechars($_POST['action']) : '');
@@ -35,7 +37,7 @@ if ($action == 'download') {
         $zip->forceDownload($fName);
         @unlink($fName);
         @unlink("{$site_config['sub_up_dir']}/$fileName");
-        sql_query('UPDATE subtitles SET hits=hits+1 where id=' . sqlesc($id));
+        sql_query('UPDATE subtitles SET hits=hits+1 WHERE id=' . sqlesc($id));
     }
 } else {
     stderr($lang['gl_error'], $lang['gl_no_way']);

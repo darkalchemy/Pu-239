@@ -1,4 +1,6 @@
 <?php
+global $CURUSER, $site_config, $lang;
+
 if ($CURUSER['class'] < $site_config['req_min_class']) {
     $HTMLOUT .= "<h1>Oops!</h1>
     <div class='some class'>{$lang['add_must_be']}" . get_user_class_name($site_config['req_min_class']) . "{$lang['add_ratio_above']}" . $site_config['req_min_ratio'] . "{$lang['add_make_req']}
@@ -50,7 +52,7 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
     }
     $deadchkbox = "<input type='checkbox' name='incldead' value='1'";
     if (isset($_GET['incldead'])) {
-        $deadchkbox .= " checked='checked'";
+        $deadchkbox .= " checked";
     }
     $deadchkbox .= " />{$lang['add_incl_dead']}\n";
     $HTMLOUT .= ' ' . $catdropdown . ' </select> ' . $deadchkbox . " 
@@ -61,7 +63,7 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
 {$lang['add_good_ratio']}" . $site_config['req_gigs_upped'] . "{$lang['add_share']}</td></tr>
 <tr><td><b>{$lang['add_title']}</b></td><td><input type='text' size='40' name='requesttitle' />
 <select name='category'><option value='0'>{$lang['add_select_cat']}</option>\n";
-    $res2 = sql_query('SELECT id, name FROM categories order by name');
+    $res2 = sql_query('SELECT id, name FROM categories ORDER BY name');
     $num = mysqli_num_rows($res2);
     $catdropdown2 = '';
     for ($i = 0; $i < $num; ++$i) {
@@ -94,14 +96,14 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
 }
 $rescount = sql_query('SELECT id FROM requests LIMIT 1') or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($rescount) > 0) {
-    $res = sql_query('SELECT users.username, requests.id, requests.userid, requests.cat, requests.request, requests.added, categories.name, categories.image, uploaded, downloaded FROM users inner join requests ON requests.userid = users.id left join categories ON requests.cat = categories.id order by requests.id desc LIMIT 10') or sqlerr();
+    $res = sql_query('SELECT users.username, requests.id, requests.userid, requests.cat, requests.request, requests.added, categories.name, categories.image, uploaded, downloaded FROM users INNER JOIN requests ON requests.userid = users.id LEFT JOIN categories ON requests.cat = categories.id ORDER BY requests.id DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
     $num = mysqli_num_rows($res);
     $HTMLOUT .= "<table border='1' cellspacing='0' width='750px' cellpadding='5'>
     <tr><td width='50px' class='colhead'>{$lang['add_cat']}</td>
     <td class='colhead'>{$lang['add_request']}</td><td class='colhead'>{$lang['req_added']}</td>
     <td class='colhead'>{$lang['req_req_by']}</td></tr>\n";
     foreach ($cats as $key => $value) {
-        $change[$value['id']] = [
+        $change[ $value['id'] ] = [
             'id'    => $value['id'],
             'name'  => $value['name'],
             'image' => $value['image'],
@@ -109,8 +111,8 @@ if (mysqli_num_rows($rescount) > 0) {
     }
     while ($arr = mysqli_fetch_assoc($res)) {
         $addedby = "<td style='padding: 0px'><b><a href='userdetails.php?id=$arr[userid]'>$arr[username]</a></b></td>";
-        $catname = htmlspecialchars($change[$arr['cat']]['name']);
-        $catpic = htmlspecialchars($change[$arr['cat']]['image']);
+        $catname = htmlspecialchars($change[ $arr['cat'] ]['name']);
+        $catpic = htmlspecialchars($change[ $arr['cat'] ]['image']);
         $catimage = "<img src='{$site_config['pic_base_url']}caticons/" . $catpic . "' title='$catname' alt='$catname' />";
         $HTMLOUT .= "<tr>
     <td>" . $catimage . "</td>

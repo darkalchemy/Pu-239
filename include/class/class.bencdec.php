@@ -20,7 +20,6 @@ I borrowed a few ideas from the File_Bittorrent pear php package in order to
 speedup the b-decoding process, but for the most part the code is completly
 mine :)
 
-
 Description of the functions:
 
 string bencdec::encode(mixed $data);
@@ -46,7 +45,6 @@ bencdec::encode([]); returns 'le'
 bencdec::encode(NULL); returns 'de'
 
 
-
 mixed bencdec::decode(string $string [, int $options = 0 ]);
 
 Returns an array, integer, string or NULL that results from bdecoding the given
@@ -69,7 +67,6 @@ array (
 )
 
 
-
 mixed bencdec::decode_file(string $filename [, int $maxsize = 1048576 [, int $options = 0 ]]);
 
 Opens the specified file, reads its contents (up to the specified length $maxsize),
@@ -77,13 +74,11 @@ and returns whatever bencdec::decode() returns for those contents. $options is t
 same as above in bencdec::decode(). Returns false on error.
 
 
-
 bool bencdec::encode_file(string $filename, mixed $data);
 
 Creates the specified file, and writes the b-encoded version of $data returned
 from bencdec::encode($data); to the file.
 Returns false on error, true on sucess.
-
 
 string bencdec::get_type(mixed $val);
 
@@ -97,7 +92,6 @@ bencdec::get_type([
     'spam' => 'apples',
     'pears' => 'oranges'
 ]); returns 'dictionary'
-
 
 
 Last but not least, here are some speed tests:
@@ -143,7 +137,6 @@ files.
 
 Another thing to note is that the new functions use a lot less ram than the old
 ones, especially when dealing with large files :D
-
 
 ---------------------------------- Changelog ----------------------------------
 0.9.0 - First completely working version, never released, decoding was actually
@@ -368,7 +361,7 @@ class bencdec
             return false;
         }
 
-        return self::$bdata[self::$bdata_position];
+        return self::$bdata[ self::$bdata_position ];
     }
 
     /**
@@ -427,7 +420,7 @@ class bencdec
                 return false;
             }
             if (self::$ext_valid) {
-                if (isset($dict[$name])) {
+                if (isset($dict[ $name ])) {
                     return self::decode_error('Duplicate key "' . $name . '" in dictionary');
                 }
                 if (strcmp($name, $last_name) < 1) {
@@ -438,7 +431,7 @@ class bencdec
             if ($data === false) {
                 return false;
             }
-            $dict[$name] = $data;
+            $dict[ $name ] = $data;
             $last_key = $name;
             unset($name, $data);
         }

@@ -5,8 +5,9 @@ require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $mc1, $site_config;
-$mc1->delete_value('userlist_' . $site_config['chatBotID']);
+global $cache, $site_config, $lang;
+
+$cache->delete('userlist_' . $site_config['chatBotID']);
 $lang = array_merge($lang, load_language('ad_adduser'));
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $insert = [

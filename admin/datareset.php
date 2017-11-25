@@ -5,6 +5,8 @@ require_once INCL_DIR . 'function_memcache.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $site_config, $cache, $lang;
+
 $lang = array_merge($lang, load_language('ad_datareset'));
 $HTMLOUT = '';
 //==delete torrents by putyn
@@ -13,7 +15,7 @@ $HTMLOUT = '';
  */
 function deletetorrent($tid)
 {
-    global $site_config, $mc1, $CURUSER, $lang;
+    global $site_config, $cache, $CURUSER;
     sql_query('DELETE peers.*, files.*, comments.*, snatched.*, thanks.*, bookmarks.*, coins.*, rating.*, torrents.* FROM torrents 
 				 LEFT JOIN peers ON peers.torrent = torrents.id
 				 LEFT JOIN files ON files.torrent = torrents.id
@@ -24,8 +26,8 @@ function deletetorrent($tid)
 				 LEFT JOIN rating ON rating.torrent = torrents.id
 				 LEFT JOIN snatched ON snatched.torrentid = torrents.id
 				 WHERE torrents.id =' . sqlesc($tid)) or sqlerr(__FILE__, __LINE__);
-    unlink("{$site_config['torrent_dir']}/$id.torrent");
-    $mc1->delete_value('MyPeers_' . $CURUSER['id']);
+    unlink("{$site_config['torrent_dir']}/$tid.torrent");
+    $cache->delete('MyPeers_' . $CURUSER['id']);
 }
 
 /**
@@ -33,8 +35,8 @@ function deletetorrent($tid)
  */
 function deletetorrent_xbt($tid)
 {
-    global $site_config, $mc1, $CURUSER, $lang;
-    sql_query('UPDATE torrents SET flags = 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    global $site_config, $cache, $CURUSER;
+    sql_query('UPDATE torrents SET flags = 1 WHERE id = ' . sqlesc($tid)) or sqlerr(__FILE__, __LINE__);
     sql_query('DELETE files.*, comments.*, xbt_files_users.*, thanks.*, bookmarks.*, coins.*, rating.*, torrents.* FROM torrents 
 				 LEFT JOIN files ON files.torrent = torrents.id
 				 LEFT JOIN comments ON comments.torrent = torrents.id
@@ -44,8 +46,8 @@ function deletetorrent_xbt($tid)
 				 LEFT JOIN rating ON rating.torrent = torrents.id
 				 LEFT JOIN xbt_files_users ON xbt_files_users.fid = torrents.id
 				 WHERE torrents.id =' . sqlesc($tid) . ' AND flags=1') or sqlerr(__FILE__, __LINE__);
-    unlink("{$site_config['torrent_dir']}/$id.torrent");
-    $mc1->delete_value('MyPeers_XBT_' . $CURUSER['id']);
+    unlink("{$site_config['torrent_dir']}/$tid.torrent");
+    $cache->delete('MyPeers_XBT_' . $CURUSER['id']);
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -56,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (get_row_count('torrents', 'where id=' . sqlesc($tid)) != 1) {
         stderr($lang['datareset_stderr'], $lang['datareset_stderr2']);
     }
-    $q1 = sql_query('SELECT s.downloaded as sd , t.id as tid, t.name,t.size, u.username,u.id as uid,u.downloaded as ud FROM torrents as t LEFT JOIN snatched as s ON s.torrentid = t.id LEFT JOIN users as u ON u.id = s.userid WHERE t.id =' . sqlesc($tid)) or sqlerr(__FILE__, __LINE__);
+    $q1 = sql_query('SELECT s.downloaded AS sd , t.id AS tid, t.name,t.size, u.username,u.id AS uid,u.downloaded AS ud FROM torrents AS t LEFT JOIN snatched AS s ON s.torrentid = t.id LEFT JOIN users AS u ON u.id = s.userid WHERE t.id =' . sqlesc($tid)) or sqlerr(__FILE__, __LINE__);
     while ($a = mysqli_fetch_assoc($q1)) {
         $newd = ($a['ud'] > 0 ? $a['ud'] - $a['sd'] : 0);
         $new_download[] = '(' . $a['uid'] . ',' . $newd . ')';
@@ -65,21 +67,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $msg .= $lang['datareset_looks'] . htmlsafechars($a['name']) . $lang['datareset_nuked'];
         $msg .= $lang['datareset_down'] . mksize($a['sd']) . $lang['datareset_downbe'] . mksize($newd) . "\n";
         $pms[] = '(0,' . sqlesc($a['uid']) . ',' . TIME_NOW . ',' . sqlesc($msg) . ')';
-        $mc1->begin_transaction('userstats_' . $a['uid']);
-        $mc1->update_row(false, [
+        $cache->update_row('userstats_' . $a['uid'], [
             'downloaded' => $new_download,
-        ]);
-        $mc1->commit_transaction($site_config['expires']['u_status']);
-        $mc1->begin_transaction('user' . $a['uid']);
-        $mc1->update_row(false, [
+        ], $site_config['expires']['u_status']);
+        $cache->update_row('user' . $a['uid'], [
             'downloaded' => $new_download,
-        ]);
-        $mc1->commit_transaction($site_config['expires']['curuser']);
+        ], $site_config['expires']['curuser']);
     }
     //==Send the pm !!
-    sql_query('INSERT into messages (sender, receiver, added, msg) VALUES ' . join(',', array_map('sqlesc', $pms))) or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES ' . join(',', array_map('sqlesc', $pms))) or sqlerr(__FILE__, __LINE__);
     //==Update user download amount
-    sql_query('INSERT INTO users (id,downloaded) VALUES ' . join(',', array_map('sqlesc', $new_download)) . ' ON DUPLICATE key UPDATE downloaded=values(downloaded)') or sqlerr(__FILE__, __LINE__);
+    sql_query('INSERT INTO users (id,downloaded) VALUES ' . join(',', array_map('sqlesc', $new_download)) . ' ON DUPLICATE KEY UPDATE downloaded = VALUES(downloaded)') or sqlerr(__FILE__, __LINE__);
     if (XBT_TRACKER == true) {
         deletetorrent_xbt($tid);
     } else {

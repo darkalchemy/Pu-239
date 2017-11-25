@@ -1,5 +1,6 @@
 <?php
-//=== share ratio
+global $CURUSER, $site_config, $lang, $user, $user_stats, $id;
+
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     if ($user_stats['downloaded'] > 0) {
         $HTMLOUT .= '<tr>
@@ -15,6 +16,3 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_ST
 		</tr>';
     }
 }
-//==end
-// End Class
-// End File

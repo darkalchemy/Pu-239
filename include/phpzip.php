@@ -96,11 +96,9 @@ class PHPZip
     }
 
     /**
-     * Adds "file" to archive.
-     *
-     * @param  string   file contents
-     * @param  string   name of the file in the archive (may contains the path)
-     * @param  int  the current timestamp
+     * @param     $data
+     * @param     $name
+     * @param int $time
      */
     public function addFile($data, $name, $time = 0)
     {
@@ -162,12 +160,9 @@ class PHPZip
     // end of the 'unix2DosTime()' method
 
     /**
-     * Converts an Unix timestamp to a four byte DOS date and time format (date
-     * in high two bytes, time in low two bytes allowing magnitude comparison).
+     * @param int $unixtime
      *
-     * @param  int  the current Unix timestamp
-     *
-     * @return int the current date in a four byte DOS format
+     * @return int
      */
     public function unix2DosTime($unixtime = 0)
     {

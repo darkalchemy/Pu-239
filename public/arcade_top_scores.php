@@ -7,11 +7,6 @@ check_user_status();
 $lang = load_language('global');
 global $site_config, $CURUSER;
 
-$stdfoot = [
-    'js' => [
-    ],
-];
-
 $HTMLOUT = "
         <h1>{$site_config['site_name']} Arcade Top Scores!</h1>
         <div class='bottom10'>

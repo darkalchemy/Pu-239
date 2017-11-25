@@ -12,11 +12,6 @@ $player = $CURUSER['id'];
 
 $all_our_games = $site_config['arcade_games'];
 
-$stdfoot = [
-    'js' => [
-    ],
-];
-
 //=== make sure that the gamename is what it is supposed to be... add or subtract games you have...
 if (isset($_GET['gamename'])) {
     $gamename = strip_tags($_GET['gamename']);
@@ -107,7 +102,6 @@ if (mysqli_num_rows($res) > 0) {
         $ranking = sql_query('SELECT COUNT(id) FROM flashscores WHERE game = ' . sqlesc($gamename) . ' AND score > ' . sqlesc($row['score'])) or sqlerr(__FILE__, __LINE__);
         $rankrow = mysqli_fetch_row($ranking);
 
-
         $HTMLOUT .= '
                 <tr' . ($row['user_id'] == $player ? ' class="has-text-primary text-shadow"' : '') . '>
                     <td>' . number_format($rankrow[0] + 1) . '</td>
@@ -165,6 +159,5 @@ else {
             </tbody>
         </table>";
 }
-
 
 echo stdhead('Old School Arcade') . wrapper($HTMLOUT) . stdfoot($stdfoot);

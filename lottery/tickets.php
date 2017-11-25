@@ -4,7 +4,7 @@ require_once INCL_DIR . 'html_functions.php';
 
 $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($lconf)) {
-    $lottery_config[$ac['name']] = $ac['value'];
+    $lottery_config[ $ac['name'] ] = $ac['value'];
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fail = false;
@@ -33,18 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $seedbonus_new = $CURUSER['seedbonus'] - ($tickets * $lottery_config['ticket_amount']);
             $What_Cache = (XBT_TRACKER == true ? 'userstats_xbt_' : 'userstats_');
             $What_Expire = (XBT_TRACKER == true ? $site_config['expires']['u_stats_xbt'] : $site_config['expires']['u_stats']);
-            $mc1->begin_transaction($What_Cache . $CURUSER['id']);
-            $mc1->update_row(false, [
+            $cache->update_row($What_Cache . $CURUSER['id'], [
                 'seedbonus' => $seedbonus_new,
-            ]);
-            $mc1->commit_transaction($What_Expire);
+            ], $What_Expire);
             $What_Cache = (XBT_TRACKER == true ? 'user_stats_xbt_' : 'user_stats_');
             $What_Expire = (XBT_TRACKER == true ? $site_config['expires']['user_stats_xbt'] : $site_config['expires']['user_stats']);
-            $mc1->begin_transaction($What_Cache . $CURUSER['id']);
-            $mc1->update_row(false, [
+            $cache->update_row($What_Cache . $CURUSER['id'], [
                 'seedbonus' => $seedbonus_new,
-            ]);
-            $mc1->commit_transaction($What_Expire);
+            ], $What_Expire);
             setSessionVar('is-success', 'You bought <b class="has-text-primary">' . number_format($tickets) . '</b>. You now have <b class="has-text-primary">' . number_format($tickets + $user_tickets) . '</b> tickets!
 ');
         } else {

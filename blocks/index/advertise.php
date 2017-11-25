@@ -1,4 +1,6 @@
 <?php
+global $site_config, $lang;
+
 $HTMLOUT .= "
     <a id='advertise-hash'></a>
     <fieldset id='advertise' class='header'>

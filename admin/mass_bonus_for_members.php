@@ -4,21 +4,20 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-//=== all the defaults
+global $CURUSER, $site_config, $cache, $lang;
+
 $lang = array_merge($lang, load_language('ad_bonus_for_members'));
 $stdhead = [
-    /* include css **/
     'css' => [
-        get_file('upload_css')
+        get_file('upload_css'),
     ],
 ];
 $stdfoot = [
-    /* include css **/
     'js' => [
-        'browse',
-        'jquery.lightbox-0.5.min',
-        'lightbox',
-        'check_selected',
+//        'browse',
+//        'jquery.lightbox-0.5.min',
+//        'lightbox',
+//        'check_selected',
     ],
 ];
 $h1_thingie = $HTMLOUT = '';
@@ -61,24 +60,19 @@ switch ($action) {
                     $modcom = sqlesc($modcomment);
                     $pm_buffer[] = '(0, ' . $arr_GB['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                     $users_buffer[] = '(' . $arr_GB['id'] . ', ' . $GB_new . ', ' . $modcom . ')';
-                    $mc1->begin_transaction('user_stats_' . $arr_GB['id']);
-                    $mc1->update_row(false, [
+                    $cache->update_row('user_stats_' . $arr_GB['id'], [
                         'uploaded'   => $GB_new,
                         'modcomment' => $modcomment,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_stats']);
-                    $mc1->begin_transaction('userstats_' . $arr_GB['id']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['user_stats']);
+                    $cache->update_row('userstats_' . $arr_GB['id'], [
                         'uploaded' => $GB_new,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['u_stats']);
-                    $mc1->delete_value('inbox_new_' . $arr_GB['id']);
-                    $mc1->delete_value('inbox_new_sb_' . $arr_GB['id']);
+                    ], $site_config['expires']['u_stats']);
+                    $cache->increment('inbox_' . $arr_GB['id']);
                 }
                 $count = count($users_buffer);
                 if ($count > 0) {
                     sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer)) or sqlerr(__FILE__, __LINE__);
-                    sql_query('INSERT INTO users (id, uploaded, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE uploaded=values(uploaded),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+                    sql_query('INSERT INTO users (id, uploaded, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE uploaded = VALUES(uploaded),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
                     write_log($lang['bonusmanager_up_writelog'] . $count . $lang['bonusmanager_up_writelog1'] . $CURUSER['username']);
                 }
                 unset($users_buffer, $pm_buffer, $count);
@@ -100,24 +94,19 @@ switch ($action) {
                             $modcom = sqlesc($modcomment);
                             $pm_buffer[] = '(0, ' . $arr_GB['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                             $users_buffer[] = '(' . $arr_GB['id'] . ', ' . $GB_new . ', ' . $modcom . ')';
-                            $mc1->begin_transaction('user_stats_' . $arr_GB['id']);
-                            $mc1->update_row(false, [
+                            $cache->update_row('user_stats_' . $arr_GB['id'], [
                                 'uploaded'   => $GB_new,
                                 'modcomment' => $modcomment,
-                            ]);
-                            $mc1->commit_transaction($site_config['expires']['user_stats']);
-                            $mc1->begin_transaction('userstats_' . $arr_GB['id']);
-                            $mc1->update_row(false, [
+                            ], $site_config['expires']['user_stats']);
+                            $cache->update_row('userstats_' . $arr_GB['id'], [
                                 'uploaded' => $GB_new,
-                            ]);
-                            $mc1->commit_transaction($site_config['expires']['u_stats']);
-                            $mc1->delete_value('inbox_new_' . $arr_GB['id']);
-                            $mc1->delete_value('inbox_new_sb_' . $arr_GB['id']);
+                            ], $site_config['expires']['u_stats']);
+                            $cache->increment('inbox_' . $arr_GB['id']);
                         }
                         $count = count($users_buffer);
                         if ($count > 0) {
                             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer)) or sqlerr(__FILE__, __LINE__);
-                            sql_query('INSERT INTO users (id, uploaded, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE uploaded=values(uploaded),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+                            sql_query('INSERT INTO users (id, uploaded, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE uploaded = VALUES(uploaded),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
                             write_log($lang['bonusmanager_up_writelog'] . $count . $lang['bonusmanager_up_writelog2'] . $CURUSER['username']);
                         }
                         unset($users_buffer, $pm_buffer, $count);
@@ -148,24 +137,19 @@ switch ($action) {
                     $modcom = sqlesc($modcomment);
                     $pm_buffer[] = '(0, ' . $arr_karma['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                     $users_buffer[] = '(' . $arr_karma['id'] . ', ' . $karma_new . ', ' . $modcom . ')';
-                    $mc1->begin_transaction('user_stats_' . $arr_karma['id']);
-                    $mc1->update_row(false, [
+                    $cache->update_row('user_stats_' . $arr_karma['id'], [
                         'seedbonus'  => $karma_new,
                         'modcomment' => $modcomment,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_stats']);
-                    $mc1->begin_transaction('userstats_' . $arr_karma['id']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['user_stats']);
+                    $cache->update_row('userstats_' . $arr_karma['id'], [
                         'seedbonus' => $karma_new,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['u_stats']);
-                    $mc1->delete_value('inbox_new_' . $arr_karma['id']);
-                    $mc1->delete_value('inbox_new_sb_' . $arr_karma['id']);
+                    ], $site_config['expires']['u_stats']);
+                    $cache->increment('inbox_' . $arr_karma['id']);
                 }
                 $count = count($users_buffer);
                 if ($count > 0) {
                     sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer)) or sqlerr(__FILE__, __LINE__);
-                    sql_query('INSERT INTO users (id, seedbonus, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE seedbonus=values(seedbonus),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+                    sql_query('INSERT INTO users (id, seedbonus, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE seedbonus = VALUES(seedbonus),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
                     write_log($lang['bonusmanager_karma_writelog'] . $count . $lang['bonusmanager_karma_writelog1'] . $CURUSER['username']);
                 }
                 unset($users_buffer, $pm_buffer, $count);
@@ -187,24 +171,19 @@ switch ($action) {
                             $modcom = sqlesc($modcomment);
                             $pm_buffer[] = '(0, ' . $arr_karma['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                             $users_buffer[] = '(' . $arr_karma['id'] . ', ' . $karma_new . ', ' . $modcom . ')';
-                            $mc1->begin_transaction('user_stats_' . $arr_karma['id']);
-                            $mc1->update_row(false, [
+                            $cache->update_row('user_stats_' . $arr_karma['id'], [
                                 'seedbonus'  => $karma_new,
                                 'modcomment' => $modcomment,
-                            ]);
-                            $mc1->commit_transaction($site_config['expires']['user_stats']);
-                            $mc1->begin_transaction('userstats_' . $arr_karma['id']);
-                            $mc1->update_row(false, [
+                            ], $site_config['expires']['user_stats']);
+                            $cache->update_row('userstats_' . $arr_karma['id'], [
                                 'seedbonus' => $karma_new,
-                            ]);
-                            $mc1->commit_transaction($site_config['expires']['u_stats']);
-                            $mc1->delete_value('inbox_new_' . $arr_karma['id']);
-                            $mc1->delete_value('inbox_new_sb_' . $arr_karma['id']);
+                            ], $site_config['expires']['u_stats']);
+                            $cache->increment('inbox_' . $arr_karma['id']);
                         }
                         $count = count($users_buffer);
                         if ($count > 0) {
                             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer)) or sqlerr(__FILE__, __LINE__);
-                            sql_query('INSERT INTO users (id, seedbonus, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE seedbonus=values(seedbonus),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+                            sql_query('INSERT INTO users (id, seedbonus, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE seedbonus = VALUES(seedbonus),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
                             write_log($lang['bonusmanager_karma_writelog'] . $count . $lang['bonusmanager_karma_writelog2'] . $CURUSER['username']);
                         }
                         unset($users_buffer, $pm_buffer, $count);
@@ -235,28 +214,21 @@ switch ($action) {
                     $modcom = sqlesc($modcomment);
                     $pm_buffer[] = '(0, ' . $arr_freeslots['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                     $users_buffer[] = '(' . $arr_freeslots['id'] . ', ' . $freeslots_new . ', ' . $modcom . ')';
-                    $mc1->begin_transaction('MyUser_' . $arr_freeslots['id']);
-                    $mc1->update_row(false, [
+                    $cache->update_row('MyUser_' . $arr_freeslots['id'], [
                         'freeslots' => $freeslots_new,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['curuser']);
-                    $mc1->begin_transaction('user' . $arr_freeslots['id']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['curuser']);
+                    $cache->update_row('user' . $arr_freeslots['id'], [
                         'freeslots' => $freeslots_new,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_cache']);
-                    $mc1->begin_transaction('user_stats_' . $arr_freeslots['id']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['user_cache']);
+                    $cache->update_row('user_stats_' . $arr_freeslots['id'], [
                         'modcomment' => $modcomment,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_stats']);
-                    $mc1->delete_value('inbox_new_' . $arr_freeslots['id']);
-                    $mc1->delete_value('inbox_new_sb_' . $arr_freeslots['id']);
+                    ], $site_config['expires']['user_stats']);
+                    $cache->increment('inbox_' . $arr_freeslots['id']);
                 }
                 $count = count($users_buffer);
                 if ($count > 0) {
                     sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer)) or sqlerr(__FILE__, __LINE__);
-                    sql_query('INSERT INTO users (id, freeslots, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE freeslots=values(freeslots),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+                    sql_query('INSERT INTO users (id, freeslots, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE freeslots = VALUES(freeslots),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
                     write_log($lang['bonusmanager_freeslots_writelog'] . $count . $lang['bonusmanager_freeslots_writelog1'] . $CURUSER['username']);
                 }
                 unset($users_buffer, $pm_buffer, $count);
@@ -278,28 +250,21 @@ switch ($action) {
                             $modcom = sqlesc($modcomment);
                             $pm_buffer[] = '(0, ' . $arr_freeslots['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                             $users_buffer[] = '(' . $arr_freeslots['id'] . ', ' . $freeslots_new . ', ' . $modcom . ')';
-                            $mc1->begin_transaction('MyUser_' . $arr_freeslots['id']);
-                            $mc1->update_row(false, [
+                            $cache->update_row('MyUser_' . $arr_freeslots['id'], [
                                 'freeslots' => $freeslots_new,
-                            ]);
-                            $mc1->commit_transaction($site_config['expires']['curuser']);
-                            $mc1->begin_transaction('user' . $arr_freeslots['id']);
-                            $mc1->update_row(false, [
+                            ], $site_config['expires']['curuser']);
+                            $cache->update_row('user' . $arr_freeslots['id'], [
                                 'freeslots' => $freeslots_new,
-                            ]);
-                            $mc1->commit_transaction($site_config['expires']['user_cache']);
-                            $mc1->begin_transaction('user_stats_' . $arr_freeslots['id']);
-                            $mc1->update_row(false, [
+                            ], $site_config['expires']['user_cache']);
+                            $cache->update_row('user_stats_' . $arr_freeslots['id'], [
                                 'modcomment' => $modcomment,
-                            ]);
-                            $mc1->commit_transaction($site_config['expires']['user_stats']);
-                            $mc1->delete_value('inbox_new_' . $arr_freeslots['id']);
-                            $mc1->delete_value('inbox_new_sb_' . $arr_freeslots['id']);
+                            ], $site_config['expires']['user_stats']);
+                            $cache->increment('inbox_' . $arr_freeslots['id']);
                         }
                         $count = count($users_buffer);
                         if ($count > 0) {
                             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer)) or sqlerr(__FILE__, __LINE__);
-                            sql_query('INSERT INTO users (id, freeslots, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE freeslots=values(freeslots),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+                            sql_query('INSERT INTO users (id, freeslots, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE freeslots = VALUES(freeslots),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
                             write_log($lang['bonusmanager_freeslots_writelog'] . $count . $lang['bonusmanager_freeslots_writelog2'] . $CURUSER['username']);
                         }
                         unset($users_buffer, $pm_buffer, $count);
@@ -330,28 +295,21 @@ switch ($action) {
                     $modcom = sqlesc($modcomment);
                     $pm_buffer[] = '(0, ' . $arr_invites['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                     $users_buffer[] = '(' . $arr_invites['id'] . ', ' . $invites_new . ', ' . $modcom . ')';
-                    $mc1->begin_transaction('MyUser_' . $arr_invites['id']);
-                    $mc1->update_row(false, [
+                    $cache->update_row('MyUser_' . $arr_invites['id'], [
                         'invites' => $invites_new,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['curuser']);
-                    $mc1->begin_transaction('user' . $arr_invites['id']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['curuser']);
+                    $cache->update_row('user' . $arr_invites['id'], [
                         'invites' => $invites_new,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_cache']);
-                    $mc1->begin_transaction('user_stats_' . $arr_invites['id']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['user_cache']);
+                    $cache->update_row('user_stats_' . $arr_invites['id'], [
                         'modcomment' => $modcomment,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_stats']);
-                    $mc1->delete_value('inbox_new_' . $arr_invites['id']);
-                    $mc1->delete_value('inbox_new_sb_' . $arr_invites['id']);
+                    ], $site_config['expires']['user_stats']);
+                    $cache->increment('inbox_' . $arr_invites['id']);
                 }
                 $count = count($users_buffer);
                 if ($count > 0) {
                     sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer)) or sqlerr(__FILE__, __LINE__);
-                    sql_query('INSERT INTO users (id, invites, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE invites=values(invites),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+                    sql_query('INSERT INTO users (id, invites, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE invites = VALUES(invites),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
                     write_log($lang['bonusmanager_invite_writelog'] . $count . $lang['bonusmanager_invite_writelog1'] . $CURUSER['username']);
                 }
                 unset($users_buffer, $pm_buffer, $count);
@@ -373,28 +331,21 @@ switch ($action) {
                             $modcom = sqlesc($modcomment);
                             $pm_buffer[] = '(0, ' . $arr_invites['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                             $users_buffer[] = '(' . $arr_invites['id'] . ', ' . $invites_new . ', ' . $modcom . ')';
-                            $mc1->begin_transaction('MyUser_' . $arr_invites['id']);
-                            $mc1->update_row(false, [
+                            $cache->update_row('MyUser_' . $arr_invites['id'], [
                                 'invites' => $invites_new,
-                            ]);
-                            $mc1->commit_transaction($site_config['expires']['curuser']);
-                            $mc1->begin_transaction('user' . $arr_invites['id']);
-                            $mc1->update_row(false, [
+                            ], $site_config['expires']['curuser']);
+                            $cache->update_row('user' . $arr_invites['id'], [
                                 'invites' => $invites_new,
-                            ]);
-                            $mc1->commit_transaction($site_config['expires']['user_cache']);
-                            $mc1->begin_transaction('user_stats_' . $arr_invites['id']);
-                            $mc1->update_row(false, [
+                            ], $site_config['expires']['user_cache']);
+                            $cache->update_row('user_stats_' . $arr_invites['id'], [
                                 'modcomment' => $modcomment,
-                            ]);
-                            $mc1->commit_transaction($site_config['expires']['user_stats']);
-                            $mc1->delete_value('inbox_new_' . $arr_invites['id']);
-                            $mc1->delete_value('inbox_new_sb_' . $arr_invites['id']);
+                            ], $site_config['expires']['user_stats']);
+                            $cache->increment('inbox_' . $arr_invites['id']);
                         }
                         $count = count($users_buffer);
                         if ($count > 0) {
                             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $pm_buffer)) or sqlerr(__FILE__, __LINE__);
-                            sql_query('INSERT INTO users (id, invites, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE invites=values(invites),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+                            sql_query('INSERT INTO users (id, invites, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE invites = VALUES(invites),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
                             write_log($lang['bonusmanager_invite_writelog'] . $count . $lang['bonusmanager_invite_writelog2'] . $CURUSER['username']);
                         }
                         unset($users_buffer, $pm_buffer, $count);
@@ -421,8 +372,7 @@ switch ($action) {
                 $body = sqlesc(htmlsafechars($_POST['body']));
                 while ($arr_pms = mysqli_fetch_assoc($res_pms)) {
                     $pm_buffer[] = '(0, ' . $arr_pms['id'] . ', ' . TIME_NOW . ', ' . $body . ', ' . $subject . ')';
-                    $mc1->delete_value('inbox_new_' . $arr_pms['id']);
-                    $mc1->delete_value('inbox_new_sb_' . $arr_pms['id']);
+                    $cache->increment('inbox_' . $arr_pms['id']);
                 }
                 $count = count($pm_buffer);
                 if ($count > 0) {
@@ -443,8 +393,7 @@ switch ($action) {
                         $body = sqlesc(htmlsafechars($_POST['body']));
                         while ($arr_pms = mysqli_fetch_assoc($res_pms)) {
                             $pm_buffer[] = '(0, ' . $arr_pms['id'] . ', ' . TIME_NOW . ', ' . $body . ', ' . $subject . ')';
-                            $mc1->delete_value('inbox_new_' . $arr_pms['id']);
-                            $mc1->delete_value('inbox_new_sb_' . $arr_pms['id']);
+                            $cache->increment('inbox_' . $arr_pms['id']);
                         }
                         $count = count($pm_buffer);
                         if ($count > 0) {
@@ -465,7 +414,7 @@ $count = 1;
 $all_classes_check_boxes = '<table border="0" cellspacing="5" cellpadding="5"><tr>';
 for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
     $all_classes_check_boxes .= '<td class="one">
-        <input type="checkbox" name="free_for_classes[]" value="' . $i . '" checked="checked" /> <span style="font-weight: bold;color:#' . get_user_class_color($i) . ';">' . get_user_class_name($i) . '</span></td>';
+        <input type="checkbox" name="free_for_classes[]" value="' . $i . '" checked /> <span style="font-weight: bold;color:#' . get_user_class_color($i) . ';">' . get_user_class_name($i) . '</span></td>';
     if ($count == 6) {
         $all_classes_check_boxes .= '</tr>' . ($i < UC_MAX ? '<tr>' : '');
         $count = 0;
@@ -572,7 +521,7 @@ $HTMLOUT .= '<form name="inputform" method="post" action="staffpanel.php?tool=ma
     <tr>
         <td class="one"><span style="font-weight: bold;">' . $lang['bonusmanager_apply_bonus'] . '</span></td>
         <td class="one">
-        <input type="checkbox" id="all_or_selected_classes" name="all_or_selected_classes" value="1"  checked="checked" />
+        <input type="checkbox" id="all_or_selected_classes" name="all_or_selected_classes" value="1"  checked />
         <span style="font-weight: bold;">' . $lang['bonusmanager_all_classes'] . '</span>' . $lang['bonusmanager_uncheck'] . '
         <div id="classes_open" style="display:none;"><br>' . $all_classes_check_boxes . '</div></td>
     </tr>

@@ -6,15 +6,17 @@ require_once INCL_DIR . 'function_rating.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 check_user_status();
+global $CURUSER, $site_config, $cache;
+
 $lang = array_merge(load_language('global'), load_language('forums'), load_language('forums_global'));
 $stdhead = [
     'css' => [
-        get_file('forums_css')
+        get_file('forums_css'),
     ],
 ];
 $stdfoot = [
     'js' => [
-        get_file('forums_js')
+        get_file('forums_js'),
     ],
 ];
 $over_forum_id = $count = $now_viewing = $child_boards = '';
@@ -328,8 +330,8 @@ $body = ($CURUSER['class'] < $min_upload_class ? '' : '
                 <td></td>
                 <td><span>' . $lang['poll_change_vote'] . ':</span></td>
                 <td>
-                    <input name="change_vote" value="yes" type="radio"' . ($change_vote === 'yes' ? ' checked="checked"' : '') . ' />' . $lang['fm_yes'] . '
-                    <input name="change_vote" value="no" type="radio"' . ($change_vote === 'no' ? ' checked="checked"' : '') . ' />' . $lang['fm_no'] . ' ' . $lang['fm_allow_members_to_change_their_vote'] . ' "no"
+                    <input name="change_vote" value="yes" type="radio"' . ($change_vote === 'yes' ? ' checked' : '') . ' />' . $lang['fm_yes'] . '
+                    <input name="change_vote" value="no" type="radio"' . ($change_vote === 'no' ? ' checked' : '') . ' />' . $lang['fm_no'] . ' ' . $lang['fm_allow_members_to_change_their_vote'] . ' "no"
                 </td>
             </tr>');
 $more_options .= main_table($body, $header) . '
@@ -515,18 +517,18 @@ switch ($action) {
                 $topic_count = number_format($arr_forums['topic_count']);
                 $post_count = number_format($arr_forums['post_count']);
                 //=== Find last post ID - cached \0/
-                if (($last_post_arr = $mc1->get_value('last_post_' . $forum_id . '_' . $CURUSER['class'])) === false) {
+                if (($last_post_arr = $cache->get('last_post_' . $forum_id . '_' . $CURUSER['class'])) === false) {
                     $last_post_arr = mysqli_fetch_assoc(sql_query('SELECT t.id AS topic_id, t.topic_name, t.last_post, t.anonymous AS tan, p.added, p.anonymous AS pan, p.user_id, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.avatar_rights FROM topics AS t LEFT JOIN posts AS p ON p.topic_id = t.id RIGHT JOIN users AS u ON u.id = p.user_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? ' t.status != \'deleted\' AND p.status != \'deleted\' AND' : '')) . ' t.forum_id = ' . sqlesc($forum_id) . ' ORDER BY p.id DESC LIMIT 1'));
                     //==
-                    $mc1->cache_value('last_post_' . $forum_id . '_' . $CURUSER['class'], $last_post_arr, $site_config['expires']['last_post']);
+                    $cache->set('last_post_' . $forum_id . '_' . $CURUSER['class'], $last_post_arr, $site_config['expires']['last_post']);
                 }
                 //=== only do more if there is a post there...
                 if ($last_post_arr['last_post'] > 0) {
                     $last_post_id = (int)$last_post_arr['last_post'];
                     //=== get the last post read by CURUSER (with Retro's $readpost_expiry thingie) - cached \0/
-                    if (($last_read_post_arr = $mc1->get_value('last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'])) === false) {
+                    if (($last_read_post_arr = $cache->get('last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'])) === false) {
                         $last_read_post_arr = mysqli_fetch_row(sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($last_post_arr['topic_id'])));
-                        $mc1->cache_value('last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'], $last_read_post_arr, $site_config['expires']['last_read_post']);
+                        $cache->set('last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'], $last_read_post_arr, $site_config['expires']['last_read_post']);
                     }
                     $image_to_use = ($last_post_arr['added'] > (TIME_NOW - $readpost_expiry)) ? (!$last_read_post_arr or $last_post_id > $last_read_post_arr[0]) : 0;
                     $img = ($image_to_use ? 'unlockednew' : 'unlocked');
@@ -543,7 +545,7 @@ switch ($action) {
                     //==
                     //=== get child boards if any - cached \0/
                     $keys['child_boards'] = 'child_boards_' . $last_post_id . '_' . $CURUSER['class'];
-                    if (($child_boards_cache = $mc1->get_value($keys['child_boards'])) === false) {
+                    if (($child_boards_cache = $cache->get($keys['child_boards'])) === false) {
                         $child_boards = '';
                         $child_boards_cache = [];
                         $res = sql_query('SELECT name, id FROM forums WHERE parent_forum = ' . sqlesc($arr_forums['real_forum_id']) . ' AND min_class_read <= ' . sqlesc($CURUSER['class']) . ' ORDER BY sort ASC') or sqlerr(__FILE__, __LINE__);
@@ -554,7 +556,7 @@ switch ($action) {
                             $child_boards .= '<a href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int)$arr['id'] . '" title="' . $lang['fm_click_to_view'] . '!" class="bordered margin10 bg-02">' . htmlsafechars($arr['name'], ENT_QUOTES) . '</a>';
                         }
                         $child_boards_cache['child_boards'] = $child_boards;
-                        $mc1->cache_value($keys['child_boards'], $child_boards_cache, $site_config['expires']['child_boards']);
+                        $cache->set($keys['child_boards'], $child_boards_cache, $site_config['expires']['child_boards']);
                     }
                     $child_boards = $child_boards_cache['child_boards'];
                     if ($child_boards != '') {
@@ -596,7 +598,7 @@ switch ($action) {
         $HTMLOUT .= '</table>' . $location_bar . '' . insert_quick_jump_menu() . '';
         //== whos looking - cached \0/
         $keys['now_viewing'] = 'now_viewing';
-        if (($forum_users_cache = $mc1->get_value($keys['now_viewing'])) === false) {
+        if (($forum_users_cache = $cache->get($keys['now_viewing'])) === false) {
             $forumusers = '';
             $forum_users_cache = [];
             $res = sql_query('SELECT n_v.user_id, u.id, u.username, u.class, u.donor, u.suspended, u.perms, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.avatar_rights, u.perms FROM now_viewing AS n_v LEFT JOIN users AS u ON n_v.user_id = u.id') or sqlerr(__FILE__, __LINE__);
@@ -609,7 +611,7 @@ switch ($action) {
             }
             $forum_users_cache['forum_users'] = $forumusers;
             $forum_users_cache['actcount'] = $actcount;
-            $mc1->cache_value($keys['now_viewing'], $forum_users_cache, $site_config['expires']['forum_users']);
+            $cache->set($keys['now_viewing'], $forum_users_cache, $site_config['expires']['forum_users']);
         }
         if (!$forum_users_cache['forum_users']) {
             $forum_users_cache['forum_users'] = '' . $lang['fm_there_have_been_no_active_users_in_the_last_15_minutes'] . '.';
@@ -670,9 +672,9 @@ function ratingpic_forums($num)
  */
 function insert_quick_jump_menu($current_forum = 0, $staff = false)
 {
-    global $CURUSER, $site_config, $mc1, $lang;
+    global $CURUSER, $site_config, $cache, $lang;
     $cachename = 'f_insertJumpTo' . $CURUSER['id'] . ($staff === false ? '' : '_staff');
-    if (($quick_jump_menu = $mc1->get_value($cachename)) === false) {
+    if (($quick_jump_menu = $cache->get($cachename)) === false) {
         $res = sql_query('SELECT f.id, f.name, f.parent_forum, f.min_class_read, of.name AS over_forum_name FROM forums AS f LEFT JOIN over_forums AS of ON f.forum_id = of.id ORDER BY of.sort, f.parent_forum, f.sort ASC');
         $switch = '';
         $quick_jump_menu = ($staff === false ? '
@@ -694,7 +696,7 @@ function insert_quick_jump_menu($current_forum = 0, $staff = false)
             }
         }
         $quick_jump_menu .= ($staff === false ? '</select></span></form></td></tr></table>' : '');
-        $mc1->cache_value($cachename, $quick_jump_menu, $site_config['expires']['forum_insertJumpTo']);
+        $cache->set($cachename, $quick_jump_menu, $site_config['expires']['forum_insertJumpTo']);
     }
 
     return $quick_jump_menu;

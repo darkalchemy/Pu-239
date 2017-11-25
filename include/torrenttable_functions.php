@@ -45,21 +45,21 @@ function torrenttable($res, $variant = 'index')
 
     foreach ($free as $fl) {
         switch ($fl['modifier']) {
-        case 1:
-            $free_display = '[Free]';
-            break;
+            case 1:
+                $free_display = '[Free]';
+                break;
 
-        case 2:
-            $free_display = '[Double]';
-            break;
+            case 2:
+                $free_display = '[Double]';
+                break;
 
-        case 3:
-            $free_display = '[Free and Double]';
-            break;
+            case 3:
+                $free_display = '[Free and Double]';
+                break;
 
-        case 4:
-            $free_display = '[Silver]';
-            break;
+            case 4:
+                $free_display = '[Silver]';
+                break;
         }
         $slot = make_freeslots($CURUSER['id'], 'fllslot_');
         $book = make_bookmarks($CURUSER['id'], 'bookmm_');
@@ -146,7 +146,7 @@ function torrenttable($res, $variant = 'index')
         <tbody>";
     $categories = genrelist();
     foreach ($categories as $key => $value) {
-        $change[$value['id']] = [
+        $change[ $value['id'] ] = [
             'id'    => $value['id'],
             'name'  => $value['name'],
             'image' => $value['image'],
@@ -164,8 +164,8 @@ function torrenttable($res, $variant = 'index')
             }
             $prevdate = get_date($row['added'], 'DATE');
         }
-        $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);
-        $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
+        $row['cat_name'] = htmlsafechars($change[ $row['category'] ]['name']);
+        $row['cat_pic'] = htmlsafechars($change[ $row['category'] ]['image']);
         /** Freeslot/doubleslot in Use **/
         $id = (int)$row['id'];
         foreach ($slot as $sl) {
@@ -256,7 +256,7 @@ function torrenttable($res, $variant = 'index')
             }
         }
 
-        if (in_array($row['category'], $site_config['movie_cats']) &&!empty($row['subs'])) {
+        if (in_array($row['category'], $site_config['movie_cats']) && !empty($row['subs'])) {
             $subs_array = explode(',', $row['subs']);
             require_once CACHE_DIR . 'subs.php';
             foreach ($subs_array as $k => $sid) {
@@ -270,7 +270,7 @@ function torrenttable($res, $variant = 'index')
             $Subs = '---';
         }
 
-        $icon_string = implode(' ', array_diff($icons, array('')));
+        $icon_string = implode(' ', array_diff($icons, ['']));
         $htmlout .= "'><span class='dt-tooltipper-large' data-tooltip-content='#torrent_{$row['id']}_tooltip'>
                             <span class='torrent-name'>{$dispname}</span>
                             <div class='tooltip_templates'>

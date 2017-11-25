@@ -6,7 +6,7 @@
  */
 function class_check($class = 0, $staff = true, $pin = false)
 {
-    global $CURUSER, $site_config, $mc1;
+    global $CURUSER, $site_config, $cache;
     if (!$CURUSER) {
         header("Location: {$site_config['baseurl']}/404.html");
         exit();
@@ -84,16 +84,12 @@ function class_check($class = 0, $staff = true, $pin = false)
                     //sql_query("UPDATE users SET enabled = 'no', class = 1 WHERE id = {$CURUSER['id']}") or sqlerr(__file__, __line__);
                     sql_query("UPDATE users SET class = 1 WHERE id = {$CURUSER['id']}") or sqlerr(__FILE__, __LINE__);
                     /* remove caches **/
-                    $mc1->begin_transaction('user' . $CURUSER['id']);
-                    $mc1->update_row(false, [
+                    $cache->update_row('user' . $CURUSER['id'], [
                         'class' => 1,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_cache']);
-                    $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['user_cache']);
+                    $cache->update_row('MyUser_' . $CURUSER['id'], [
                         'class' => 1,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['curuser']);
+                    ], $site_config['expires']['curuser']);
                     //==
 
                     /* log **/
@@ -137,7 +133,7 @@ function class_check($class = 0, $staff = true, $pin = false)
  */
 function get_access($script)
 {
-    global $CURUSER, $site_config, $mc1;
+    global $CURUSER, $site_config, $cache;
     $ending = parse_url($script, PHP_URL_QUERY);
     $count = substr_count($ending, '&');
     $i = 0;
@@ -147,11 +143,11 @@ function get_access($script)
         }
         ++$i;
     }
-    if (($class = $mc1->get_value('av_class_' . $ending)) == false) {
+    if (($class = $cache->get('av_class_' . $ending)) == false) {
         $classid = sql_query("SELECT av_class FROM staffpanel WHERE file_name LIKE '%$ending%'") or sqlerr(__FILE__, __LINE__);
         $classid = mysqli_fetch_assoc($classid);
         $class = (int)$classid['av_class'];
-        $mc1->cache_value('av_class_' . $ending, $class, 0);
+        $cache->set('av_class_' . $ending, $class, 0);
     }
 
     return $class;

@@ -4,7 +4,7 @@
  */
 function achievement_invite_update($data)
 {
-    global $site_config, $queries, $mc1;
+    global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
     // *Updated* Invites Achievements Mod by MelvinMeow
@@ -22,9 +22,8 @@ function achievement_invite_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'Inviter LVL1\', \'invite1.png\' , \'Invited at least 1 new user to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',1, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
-                $mc1->delete_value('user_achievement_points_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
+                $cache->delete('user_achievement_points_' . $arr['userid']);
                 $var1 = 'inviterach';
             }
             if ($invited >= 2 && $lvl == 1) {
@@ -32,8 +31,7 @@ function achievement_invite_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'Inviter LVL2\', \'invite2.png\' , \'Invited at least 2 new users to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',2, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
                 $var1 = 'inviterach';
             }
             if ($invited >= 3 && $lvl == 2) {
@@ -41,9 +39,8 @@ function achievement_invite_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'Inviter LVL3\', \'invite3.png\' , \'Invited at least 3 new users to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',3, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
-                $mc1->delete_value('user_achievement_points_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
+                $cache->delete('user_achievement_points_' . $arr['userid']);
                 $var1 = 'inviterach';
             }
             if ($invited >= 5 && $lvl == 3) {
@@ -51,9 +48,8 @@ function achievement_invite_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'Inviter LVL4\', \'invite4.png\' , \'Invited at least 5 new users to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',4, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
-                $mc1->delete_value('user_achievement_points_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
+                $cache->delete('user_achievement_points_' . $arr['userid']);
                 $var1 = 'inviterach';
             }
             if ($invited >= 10 && $lvl == 4) {
@@ -61,17 +57,16 @@ function achievement_invite_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'Inviter LVL5\', \'invite5.png\' , \'Invited at least 10 new users to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',5, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
-                $mc1->delete_value('user_achievement_points_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
+                $cache->delete('user_achievement_points_' . $arr['userid']);
                 $var1 = 'inviterach';
             }
         }
         $count = count($achievements_buffer);
         if ($count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
-            sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE key UPDATE date=values(date),achievement=values(achievement),icon=values(icon),description=values(description)') or sqlerr(__FILE__, __LINE__);
-            sql_query("INSERT INTO usersachiev (userid, $var1, achpoints) VALUES " . implode(', ', $usersachiev_buffer) . " ON DUPLICATE key UPDATE $var1=values($var1), achpoints=achpoints+values(achpoints)") or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE KEY UPDATE date = VALUES(date),achievement = VALUES(achievement),icon = VALUES(icon),description = VALUES(description)') or sqlerr(__FILE__, __LINE__);
+            sql_query("INSERT INTO usersachiev (userid, $var1, achpoints) VALUES " . implode(', ', $usersachiev_buffer) . " ON DUPLICATE KEY UPDATE $var1 = VALUES($var1), achpoints=achpoints + VALUES(achpoints)") or sqlerr(__FILE__, __LINE__);
         }
         if ($data['clean_log'] && $queries > 0) {
             write_log("Achievements Cleanup: Inviter Completed using $queries queries. Inviter Achievements awarded to - " . $count . ' Member(s)');

@@ -9,7 +9,7 @@ function commenttable($rows, $variant = 'torrent')
 {
     require_once INCL_DIR . 'html_functions.php';
     require_once INCL_DIR . 'add_functions.php';
-    global $CURUSER, $site_config, $mood, $mc1;
+    global $CURUSER, $site_config, $mood, $cache;
     $lang = load_language('torrenttable_functions');
     $htmlout = '';
     $count = 0;
@@ -17,15 +17,15 @@ function commenttable($rows, $variant = 'torrent')
         'torrent' => 'details',
         'request' => 'viewrequests',
     ];
-    if (isset($variant_options[$variant])) {
-        $locale_link = $variant_options[$variant];
+    if (isset($variant_options[ $variant ])) {
+        $locale_link = $variant_options[ $variant ];
     } else {
         return;
     }
     $extra_link = ($variant == 'request' ? '&type=request' : ($variant == 'offer' ? '&type=offer' : ''));
     foreach ($rows as $row) {
-        $moodname = (isset($mood['name'][$row['mood']]) ? htmlsafechars($mood['name'][$row['mood']]) : 'is feeling neutral');
-        $moodpic = (isset($mood['image'][$row['mood']]) ? htmlsafechars($mood['image'][$row['mood']]) : 'noexpression.gif');
+        $moodname = (isset($mood['name'][ $row['mood'] ]) ? htmlsafechars($mood['name'][ $row['mood'] ]) : 'is feeling neutral');
+        $moodpic = (isset($mood['image'][ $row['mood'] ]) ? htmlsafechars($mood['image'][ $row['mood'] ]) : 'noexpression.gif');
         $htmlout .= "<div class='top20'><span>#{$row['id']} {$lang['commenttable_by']} ";
         // --------------- likes start------
         $att_str = '';
@@ -76,7 +76,7 @@ function commenttable($rows, $variant = 'torrent')
             $htmlout .= "<a name='comm" . (int)$row['id'] . "'><i>(" . $lang['commenttable_orphaned'] . ")</i></a>\n";
         }
         $htmlout .= get_date($row['added'], '');
-        $htmlout .= ($row['user'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? "- [<a href='comment.php?action=edit&amp;cid=" . (int)$row['id'] . $extra_link . '&amp;tid=' . $row[$variant] . "'>" . $lang['commenttable_edit'] . '</a>]' : '') . ($CURUSER['class'] >= UC_VIP ? " - [<a href='report.php?type=Comment&amp;id=" . (int)$row['id'] . "'>Report this Comment</a>]" : '') . ($CURUSER['class'] >= UC_STAFF ? " - [<a href='comment.php?action=delete&amp;cid=" . (int)$row['id'] . $extra_link . '&amp;tid=' . $row[$variant] . "'>" . $lang['commenttable_delete'] . '</a>]' : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? "- [<a href='comment.php?action=vieworiginal&amp;cid=" . (int)$row['id'] . $extra_link . '&amp;tid=' . $row[$variant] . "'>" . $lang['commenttable_view_original'] . '</a>]' : '') . "
+        $htmlout .= ($row['user'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? "- [<a href='comment.php?action=edit&amp;cid=" . (int)$row['id'] . $extra_link . '&amp;tid=' . $row[ $variant ] . "'>" . $lang['commenttable_edit'] . '</a>]' : '') . ($CURUSER['class'] >= UC_VIP ? " - [<a href='report.php?type=Comment&amp;id=" . (int)$row['id'] . "'>Report this Comment</a>]" : '') . ($CURUSER['class'] >= UC_STAFF ? " - [<a href='comment.php?action=delete&amp;cid=" . (int)$row['id'] . $extra_link . '&amp;tid=' . $row[ $variant ] . "'>" . $lang['commenttable_delete'] . '</a>]' : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? "- [<a href='comment.php?action=vieworiginal&amp;cid=" . (int)$row['id'] . $extra_link . '&amp;tid=' . $row[ $variant ] . "'>" . $lang['commenttable_view_original'] . '</a>]' : '') . "
 
           <span id='mlike' data-com='" . (int)$row['id'] . "' class='comment {$wht}'>[" . ucfirst($wht) . "]</span><span class='tot-" . (int)$row['id'] . "' data-tot='" . (!empty($likes) && count(array_unique($likes)) > 0 ? count(array_unique($likes)) : '') . "'>&#160;{$att_str}</span></span></div>\n";
         $avatar = ($row['anonymous'] == 'yes' ? "{$site_config['pic_base_url']}anonymous_1.jpg" : htmlsafechars($row['avatar']));

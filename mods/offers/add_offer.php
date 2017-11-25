@@ -1,4 +1,6 @@
 <?php
+global $CURUSER, $site_config;
+
 if ($CURUSER['class'] < $site_config['offer_min_class']) {
     $HTMLOUT .= "<h1>Oops!</h1>
     <div class='some class'>You must be " . get_user_class_name($site_config['offer_min_class']) . ' or above <b>AND</b> have a ratio above <b>' . $site_config['offer_min_ratio'] . "</b> to make an offer.
@@ -51,7 +53,7 @@ Please search torrents before adding an offer!</td></tr><tr><td>
     }
     $deadchkbox = "<input type='checkbox' name='incldead' value='1'";
     if (isset($_GET['incldead'])) {
-        $deadchkbox .= " checked='checked'";
+        $deadchkbox .= " checked";
     }
     $deadchkbox .= " /> including dead torrents\n";
     $HTMLOUT .= ' ' . $catdropdown . ' </select> ' . $deadchkbox . " 
@@ -95,14 +97,14 @@ Offers are for Users with a good ratio who have uploaded at least " . $site_conf
 }
 $rescount = sql_query('SELECT id FROM offers LIMIT 1') or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($rescount) > 0) {
-    $res = sql_query('SELECT users.username, offers.id, offers.userid, offers.cat, offers.offer, offers.added, categories.name, categories.image, uploaded, downloaded FROM users inner join offers ON offers.userid = users.id left join categories ON offers.cat = categories.id order by offers.id desc LIMIT 10') or sqlerr();
+    $res = sql_query('SELECT users.username, offers.id, offers.userid, offers.cat, offers.offer, offers.added, categories.name, categories.image, uploaded, downloaded FROM users inner join offers ON offers.userid = users.id left join categories ON offers.cat = categories.id order by offers.id desc LIMIT 10') or sqlerr(__FILE__, __LINE__);
     $num = mysqli_num_rows($res);
     $HTMLOUT .= "<table border='1' cellspacing='0' width='750px' cellpadding='5'>
     <tr><td width='50px' class='colhead'>Category</td>
     <td class='colhead'>Offer</td><td class='colhead'>Added</td>
     <td class='colhead'>Offered By</td></tr>\n";
     foreach ($cats as $key => $value) {
-        $change[$value['id']] = [
+        $change[ $value['id'] ] = [
             'id'    => $value['id'],
             'name'  => $value['name'],
             'image' => $value['image'],
@@ -110,8 +112,8 @@ if (mysqli_num_rows($rescount) > 0) {
     }
     while ($arr = mysqli_fetch_assoc($res)) {
         $addedby = "<td style='padding: 0px'><b><a href='userdetails.php?id=$arr[userid]'>$arr[username]</a></b></td>";
-        $catname = htmlspecialchars($change[$arr['cat']]['name']);
-        $catpic = htmlspecialchars($change[$arr['cat']]['image']);
+        $catname = htmlspecialchars($change[ $arr['cat'] ]['name']);
+        $catpic = htmlspecialchars($change[ $arr['cat'] ]['image']);
         $catimage = "<img src='{$site_config['pic_base_url']}caticons/" . $catpic . "' title='$catname' alt='$catname' />";
         $HTMLOUT .= "<tr>
     <td>" . $catimage . "</td>

@@ -4,7 +4,7 @@
  */
 function backup_update($data)
 {
-    global $site_config, $queries, $mc1;
+    global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
     //== Delete old backup's

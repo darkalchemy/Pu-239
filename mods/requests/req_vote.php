@@ -1,5 +1,7 @@
 <?php
-$res = sql_query('SELECT * FROM voted_requests WHERE requestid = ' . $id . ' and userid = ' . $CURUSER['id']) or sqlerr(__FILE__, __LINE__);
+global $CURUSER, $lang;
+
+$res = sql_query('SELECT * FROM voted_requests WHERE requestid = ' . $id . ' AND userid = ' . $CURUSER['id']) or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_assoc($res);
 if ($arr) {
     $HTMLOUT .= "

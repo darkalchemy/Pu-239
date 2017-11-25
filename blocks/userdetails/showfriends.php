@@ -1,13 +1,14 @@
 <?php
-//== Users friends list
+global $CURUSER, $site_config, $cache, $lang;
+
 $dt = TIME_NOW - 180;
 $keys['user_friends'] = 'user_friends_' . $id;
-if (($users_friends = $mc1->get_value($keys['user_friends'])) === false) {
-    $fr = sql_query('SELECT f.friendid as uid, f.userid AS userid, u.last_access, u.id, u.ip, u.avatar, u.username, u.class, u.donor, u.title, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.downloaded, u.uploaded, u.perms FROM friends AS f LEFT JOIN users as u ON f.friendid = u.id WHERE userid=' . sqlesc($id) . ' ORDER BY username ASC LIMIT 100') or sqlerr(__FILE__, __LINE__);
+if (($users_friends = $cache->get($keys['user_friends'])) === false) {
+    $fr = sql_query('SELECT f.friendid AS uid, f.userid AS userid, u.last_access, u.id, u.ip, u.avatar, u.username, u.class, u.donor, u.title, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.downloaded, u.uploaded, u.perms FROM friends AS f LEFT JOIN users AS u ON f.friendid = u.id WHERE userid=' . sqlesc($id) . ' ORDER BY username ASC LIMIT 100') or sqlerr(__FILE__, __LINE__);
     while ($user_friends = mysqli_fetch_assoc($fr)) {
         $users_friends[] = $user_friends;
     }
-    $mc1->cache_value($keys['user_friends'], $users_friends, 0);
+    $cache->set($keys['user_friends'], $users_friends, 0);
 }
 if (count($users_friends) > 0) {
     $user_friends = "<table width='100%' class='main' border='1' cellspacing='0' cellpadding='5'>\n" . "<tr><td class='colhead' width='20'>{$lang['userdetails_avatar']}</td><td class='colhead'>{$lang['userdetails_username']}" . ($CURUSER['class'] >= UC_STAFF ? $lang['userdetails_fip'] : '') . "</td><td class='colhead'>{$lang['userdetails_uploaded']}</td>" . ($site_config['ratio_free'] ? '' : "<td class='colhead'>{$lang['userdetails_downloaded']}</td>") . "<td class='colhead'>{$lang['userdetails_ratio']}</td><td class='colhead'>{$lang['userdetails_status']}</td></tr>\n";
@@ -28,6 +29,3 @@ if (count($users_friends) > 0) {
     }
 }
 //== thee end
-//==end
-// End Class
-// End File

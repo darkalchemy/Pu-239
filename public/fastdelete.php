@@ -3,9 +3,9 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_memcache.php';
 check_user_status();
-$lang = array_merge(load_language('global'), load_language('fastdelete'));
-global $site_config;
+global $CURUSER, $site_config, $cache;
 
+$lang = array_merge(load_language('global'), load_language('fastdelete'));
 if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'])) {
     stderr($lang['fastdelete_error'], $lang['fastdelete_no_acc']);
 }
@@ -21,10 +21,10 @@ $id = (int)$_GET['id'];
  */
 function deletetorrent($id)
 {
-    global $site_config, $mc1, $CURUSER, $lang;
+    global $site_config, $cache, $CURUSER;
     sql_query('DELETE torrents.* FROM torrents WHERE torrents.id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     unlink("{$site_config['torrent_dir']}/$id.torrent");
-    $mc1->delete_value('MyPeers_' . $CURUSER['id']);
+    $cache->delete('MyPeers_' . $CURUSER['id']);
 }
 
 /**
@@ -32,7 +32,7 @@ function deletetorrent($id)
  */
 function deletetorrent_xbt($id)
 {
-    global $site_config, $mc1, $CURUSER, $lang;
+    global $site_config, $cache, $CURUSER, $lang;
     sql_query('UPDATE torrents SET flags = 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     sql_query('DELETE files.*, comments.*, thankyou.*, thanks.*, thumbsup.*, bookmarks.*, coins.*, rating.*, xbt_files_users.* FROM xbt_files_users
                                      LEFT JOIN files ON files.torrent = xbt_files_users.fid
@@ -45,7 +45,7 @@ function deletetorrent_xbt($id)
                                      LEFT JOIN thumbsup ON thumbsup.torrentid = xbt_files_users.fid
                                      WHERE xbt_files_users.fid =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     unlink("{$site_config['torrent_dir']}/$id.torrent");
-    $mc1->delete_value('MyPeers_XBT_' . $CURUSER['id']);
+    $cache->delete('MyPeers_XBT_' . $CURUSER['id']);
 }
 
 $q = mysqli_fetch_assoc(sql_query('SELECT name, owner FROM torrents WHERE id = ' . sqlesc($id))) or sqlerr(__FILE__, __LINE__);
@@ -65,11 +65,11 @@ if (XBT_TRACKER == true) {
     deletetorrent($id);
     remove_torrent_peers($id);
 }
-$mc1->delete_value('top5_tor_');
-$mc1->delete_value('last5_tor_');
-$mc1->delete_value('scroll_tor_');
-$mc1->delete_value('torrent_details_' . $id);
-$mc1->delete_value('torrent_details_text' . $id);
+$cache->delete('top5_tor_');
+$cache->delete('last5_tor_');
+$cache->delete('scroll_tor_');
+$cache->delete('torrent_details_' . $id);
+$cache->delete('torrent_details_text' . $id);
 if ($CURUSER['id'] != $q['owner']) {
     $msg = sqlesc("{$lang['fastdelete_msg_first']} [b]{$q['name']}[/b] {$lang['fastdelete_msg_last']} {$CURUSER['username']}");
     sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES (0, ' . sqlesc($q['owner']) . ', ' . TIME_NOW . ", {$msg})") or sqlerr(__FILE__, __LINE__);
@@ -79,16 +79,12 @@ if ($site_config['seedbonus_on'] == 1) {
     //===remove karma
     sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($site_config['bonus_per_delete']) . ' WHERE id = ' . sqlesc($q['owner'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($CURUSER['seedbonus'] - $site_config['bonus_per_delete']);
-    $mc1->begin_transaction('userstats_' . $q['owner']);
-    $mc1->update_row(false, [
+    $cache->update_row('userstats_' . $q['owner'], [
         'seedbonus' => $update['seedbonus'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['u_stats']);
-    $mc1->begin_transaction('user_stats_' . $q['owner']);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['u_stats']);
+    $cache->update_row('user_stats_' . $q['owner'], [
         'seedbonus' => $update['seedbonus'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_stats']);
+    ], $site_config['expires']['user_stats']);
     //===end
 }
 

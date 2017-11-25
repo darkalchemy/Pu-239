@@ -2,6 +2,8 @@
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
+global $CURUSER, $site_config, $cache;
+
 $lang = array_merge(load_language('global'), load_language('coins'));
 
 // / Mod by dokty - tbdev.net
@@ -59,37 +61,26 @@ $update['points'] = ($row['points'] + $points);
 $update['seedbonus_uploader'] = ($User['seedbonus'] + $points);
 $update['seedbonus_donator'] = ($CURUSER['seedbonus'] - $points);
 //==The torrent
-$mc1->begin_transaction('torrent_details_' . $id);
-$mc1->update_row(false, [
+$cache->update_row('torrent_details_' . $id, [
     'points' => $update['points'],
-]);
-$mc1->commit_transaction($site_config['expires']['torrent_details']);
+], $site_config['expires']['torrent_details']);
 //==The uploader
-$mc1->begin_transaction('userstats_' . $userid);
-$mc1->update_row(false, [
+$cache->update_row('userstats_' . $userid, [
     'seedbonus' => $update['seedbonus_uploader'],
-]);
-$mc1->commit_transaction($site_config['expires']['u_stats']);
-$mc1->begin_transaction('user_stats_' . $userid);
-$mc1->update_row(false, [
+], $site_config['expires']['u_stats']);
+$cache->update_row('user_stats_' . $userid, [
     'seedbonus' => $update['seedbonus_uploader'],
-]);
-$mc1->commit_transaction($site_config['expires']['user_stats']);
+], $site_config['expires']['user_stats']);
 //==The donator
-$mc1->begin_transaction('userstats_' . $CURUSER['id']);
-$mc1->update_row(false, [
+$cache->update_row('userstats_' . $CURUSER['id'], [
     'seedbonus' => $update['seedbonus_donator'],
-]);
-$mc1->commit_transaction($site_config['expires']['u_stats']);
-$mc1->begin_transaction('user_stats_' . $CURUSER['id']);
-$mc1->update_row(false, [
+], $site_config['expires']['u_stats']);
+$cache->update_row('user_stats_' . $CURUSER['id'], [
     'seedbonus' => $update['seedbonus_donator'],
-]);
-$mc1->commit_transaction($site_config['expires']['user_stats']);
+], $site_config['expires']['user_stats']);
 //== delete the pm keys
-$mc1->delete_value('inbox_new_' . $userid);
-$mc1->delete_value('inbox_new_sb_' . $userid);
-$mc1->delete_value('coin_points_' . $id);
+$cache->increment('inbox_' . $userid);
+$cache->delete('coin_points_' . $id);
 
 setSessionVar('is-success', $lang['coins_successfully_gave_points_to_this_torrent']);
 header("Location: $returnto");

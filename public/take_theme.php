@@ -2,6 +2,8 @@
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
+global $CURUSER, $site_config, $cache;
+
 $lang = array_merge(load_language('global'));
 $HTMLOUT = $out = '';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -9,16 +11,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($sid > 0 && $sid != $CURUSER['id']) {
         sql_query('UPDATE users SET stylesheet=' . sqlesc($sid) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     }
-    $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    $cache->update_row('MyUser_' . $CURUSER['id'], [
         'stylesheet' => $sid,
-    ]);
-    $mc1->commit_transaction($site_config['expires']['curuser']);
-    $mc1->begin_transaction('user' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['curuser']);
+    $cache->update_row('user' . $CURUSER['id'], [
         'stylesheet' => $sid,
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_cache']);
+    ], $site_config['expires']['user_cache']);
     $HTMLOUT .= "<script>
         opener.location.reload(true);
         self.close();
@@ -48,7 +46,7 @@ $HTMLOUT .= "<!doctype html>
             <form action='take_theme.php' method='post'>
                 <p class='has-text-centered'>
                     <select name='stylesheet' onchange='this.form.submit();' size='1'>";
-$ss_r = sql_query('SELECT id, name from stylesheets ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
+$ss_r = sql_query('SELECT id, name FROM stylesheets ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
 while ($ar = mysqli_fetch_assoc($ss_r)) {
     $out .= '
                         <option value="' . (int)$ar['id'] . '" ' . ($ar['id'] == $CURUSER['stylesheet'] ? 'selected=\'selected\'' : '') . '>' . htmlsafechars($ar['name']) . '</option>';

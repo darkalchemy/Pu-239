@@ -4,7 +4,7 @@
  */
 function achievement_bday_update($data)
 {
-    global $site_config, $queries, $mc1;
+    global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
     $maxdt = (TIME_NOW - 86400 * 365); // 1year
@@ -27,9 +27,8 @@ function achievement_bday_update($data)
                 $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'First Birthday\', \'birthday1.png\' , \'Been a member for at least 1 year.\')';
                 $usersachiev_buffer[] = '(' . $arr['id'] . ',1, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['id']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['id']);
-                $mc1->delete_value('user_achievement_points_' . $arr['id']);
+                $cache->increment('inbox_' . $arr['id']);
+                $cache->delete('user_achievement_points_' . $arr['id']);
                 $var1 = 'bday';
             }
             if ($bday == 1 && $added < $maxdt2) {
@@ -37,8 +36,7 @@ function achievement_bday_update($data)
                 $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'Second Birthday\', \'birthday2.png\' , \'Been a member for a period of at least 2 years.\')';
                 $usersachiev_buffer[] = '(' . $arr['id'] . ',2, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['id']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['id']);
+                $cache->increment('inbox_' . $arr['id']);
                 $var1 = 'bday';
             }
             if ($bday == 2 && $added < $maxdt3) {
@@ -46,8 +44,7 @@ function achievement_bday_update($data)
                 $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'Third Birthday\', \'birthday3.png\' , \'Been a member for a period of at least 3 years.\')';
                 $usersachiev_buffer[] = '(' . $arr['id'] . ',3, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['id']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['id']);
+                $cache->increment('inbox_' . $arr['id']);
                 $var1 = 'bday';
             }
             if ($bday == 3 && $added < $maxdt4) {
@@ -55,8 +52,7 @@ function achievement_bday_update($data)
                 $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'Fourth Birthday\', \'birthday4.png\' , \'Been a member for a period of at least 4 years.\')';
                 $usersachiev_buffer[] = '(' . $arr['id'] . ',4, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['id']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['id']);
+                $cache->increment('inbox_' . $arr['id']);
                 $var1 = 'bday';
             }
             if ($bday == 4 && $added < $maxdt5) {
@@ -64,8 +60,7 @@ function achievement_bday_update($data)
                 $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'Fifth Birthday\', \'birthday5.png\' , \'Been a member for a period of at least 5 years.\')';
                 $usersachiev_buffer[] = '(' . $arr['id'] . ',5, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['id']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['id']);
+                $cache->increment('inbox_' . $arr['id']);
                 $var1 = 'bday';
             }
             if ($bday == 5 && $added < $maxdt6) {
@@ -73,16 +68,15 @@ function achievement_bday_update($data)
                 $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . TIME_NOW . ', \'Sixth Birthday\', \'birthday6.png\' , \'Been a member for a period of at least 6 years.\')';
                 $usersachiev_buffer[] = '(' . $arr['id'] . ',6, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['id']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['id']);
+                $cache->increment('inbox_' . $arr['id']);
                 $var1 = 'bday';
             }
         }
         $count = count($achievements_buffer);
         if ($count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
-            sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE key UPDATE date=values(date),achievement=values(achievement),icon=values(icon),description=values(description)') or sqlerr(__FILE__, __LINE__);
-            sql_query("INSERT INTO usersachiev (userid, $var1, achpoints) VALUES " . implode(', ', $usersachiev_buffer) . " ON DUPLICATE key UPDATE $var1=values($var1), achpoints=achpoints+values(achpoints)") or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE KEY UPDATE date = VALUES(date),achievement = VALUES(achievement),icon = VALUES(icon),description = VALUES(description)') or sqlerr(__FILE__, __LINE__);
+            sql_query("INSERT INTO usersachiev (userid, $var1, achpoints) VALUES " . implode(', ', $usersachiev_buffer) . " ON DUPLICATE KEY UPDATE $var1 = VALUES($var1), achpoints=achpoints + VALUES(achpoints)") or sqlerr(__FILE__, __LINE__);
         }
         if ($data['clean_log'] && $queries > 0) {
             write_log("Achievements Cleanup: Birthdays Completed using $queries queries. Birthday Achievements awarded to - " . $count . ' Member(s)');

@@ -6,6 +6,8 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $site_config, $lang;
+
 $lang = array_merge($lang, load_language('ad_events'));
 $HTMLOUT = '';
 $count1 = get_row_count('events');
@@ -225,25 +227,25 @@ if (!is_array($scheduled_events)) {
                             $end = get_date((int)$scheduled_event['endTime'], 'DATE');
                             $freeleech = (bool)(int)$scheduled_event['freeleechEnabled'];
                             if ($freeleech) {
-                                $freeleech = 'checked="checked"';
+                                $freeleech = 'checked';
                             } else {
                                 $freeleech = '';
                             }
                             $doubleupload = (bool)(int)$scheduled_event['duploadEnabled'];
                             if ($doubleupload) {
-                                $doubleupload = 'checked="checked"';
+                                $doubleupload = 'checked';
                             } else {
                                 $doubleupload = '';
                             }
                             $halfdownload = (bool)(int)$scheduled_event['hdownEnabled'];
                             if ($halfdownload) {
-                                $halfdownload = 'checked="checked"';
+                                $halfdownload = 'checked';
                             } else {
                                 $halfdownload = '';
                             }
                             $showdates = (bool)(int)$scheduled_event['displayDates'];
                             if ($showdates) {
-                                $showdates = 'checked="checked"';
+                                $showdates = 'checked';
                             } else {
                                 $showdates = '';
                             }

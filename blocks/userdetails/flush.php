@@ -1,6 +1,6 @@
 <?php
-/* Flush all torrents mod */
-//=== flush torrents staff or members own torrents
+global $CURUSER, $lang;
+
 if ($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $user['id']) {
     $HTMLOUT .= '<tr><td class="rowhead"><a name="flush"></a>' . $lang['userdetails_flush_title'] . '</td>
 			<td>
@@ -17,6 +17,3 @@ if ($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $user['id']) {
 			</form>
 			</td></tr>';
 }
-//==end
-// End Class
-// End File

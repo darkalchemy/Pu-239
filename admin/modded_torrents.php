@@ -3,6 +3,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $lang;
+
 $lang = array_merge($lang, load_language('ad_modded_torrents'));
 $modes = [
     'today',
@@ -18,7 +20,7 @@ $HTMLOUT = '';
  */
 function do_sort($arr, $empty = false)
 {
-    global $CURUSER, $lang;
+    global $lang;
     $count = $arr->num_rows;
     $ret_html = '';
     if ($empty) {
@@ -42,7 +44,7 @@ function do_sort($arr, $empty = false)
     }
     if ($count == 1) {
         $res = mysqli_fetch_assoc($arr);
-        $users[$res['checked_by']] = ((isset($users[$res['checked_by']]) && $users[$res['checked_by']] > 0) ? $users[$res['checked_by']] + 1 : 1);
+        $users[ $res['checked_by'] ] = ((isset($users[ $res['checked_by'] ]) && $users[ $res['checked_by'] ] > 0) ? $users[ $res['checked_by'] ] + 1 : 1);
         $ret_html .= "
                 <tr>
                     <td>
@@ -58,7 +60,7 @@ function do_sort($arr, $empty = false)
         ];
     } elseif ($count > 1) {
         while ($res = mysqli_fetch_assoc($arr)) {
-            $users[$res['checked_by']] = ((isset($users[$res['checked_by']]) && $users[$res['checked_by']] > 0) ? $users[$res['checked_by']] + 1 : 1);
+            $users[ $res['checked_by'] ] = ((isset($users[ $res['checked_by'] ]) && $users[ $res['checked_by'] ] > 0) ? $users[ $res['checked_by'] ] + 1 : 1);
             $ret_html .= "
                 <tr>
                     <td>
@@ -267,7 +269,6 @@ $HTMLOUT .= "
 
     </div>
   </div>
-
 
    </form>
   </div>

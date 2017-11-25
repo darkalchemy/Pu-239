@@ -1,7 +1,9 @@
 <?php
+global $site_config, $cache, $lang;
+
 $current_date = getdate();
 $keys['birthdayusers'] = 'birthdayusers';
-if (($birthday_users_cache = $mc1->get_value($keys['birthdayusers'])) === false) {
+if (($birthday_users_cache = $cache->get($keys['birthdayusers'])) === false) {
     $birthdayusers = '';
     $birthday_users_cache = [];
     $res = sql_query('SELECT id, username, perms FROM users WHERE MONTH(birthday) = ' . sqlesc($current_date['mon']) . ' AND DAYOFMONTH(birthday) = ' . sqlesc($current_date['mday']) . ' AND perms < ' . bt_options::PERMS_STEALTH . ' ORDER BY username ASC') or sqlerr(__FILE__, __LINE__);
@@ -14,7 +16,7 @@ if (($birthday_users_cache = $mc1->get_value($keys['birthdayusers'])) === false)
     }
     $birthday_users_cache['birthdayusers'] = $birthdayusers;
     $birthday_users_cache['actcount'] = $actcount;
-    $mc1->cache_value($keys['birthdayusers'], $birthday_users_cache, $site_config['expires']['birthdayusers']);
+    $cache->set($keys['birthdayusers'], $birthday_users_cache, $site_config['expires']['birthdayusers']);
 }
 if (!$birthday_users_cache['birthdayusers']) {
     $birthday_users_cache['birthdayusers'] = $lang['index_birthday_no'];

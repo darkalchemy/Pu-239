@@ -4,7 +4,7 @@
  */
 function parse_poll()
 {
-    global $CURUSER, $site_config, $mc1;
+    global $CURUSER, $site_config, $cache;
     $htmlout = '';
     $check = 0;
     $poll_footer = '';
@@ -69,13 +69,13 @@ function parse_poll()
             $choice_html = '';
             $tv_poll = 0;
             //get total votes for each choice
-            foreach ($poll_answers[$id]['votes'] as $number) {
+            foreach ($poll_answers[ $id ]['votes'] as $number) {
                 $tv_poll += intval($number);
             }
             // Get the choises from the unserialised array
             foreach ($data['choice'] as $choice_id => $text) {
                 $choice = htmlsafechars($text, ENT_QUOTES);
-                $votes = intval($data['votes'][$choice_id]);
+                $votes = intval($data['votes'][ $choice_id ]);
                 if (strlen($choice) < 1) {
                     continue;
                 }
@@ -107,7 +107,7 @@ function parse_poll()
             // get choices for this question
             foreach ($data['choice'] as $choice_id => $text) {
                 $choice = htmlsafechars($text, ENT_QUOTES);
-                $votes = intval($data['votes'][$choice_id]);
+                $votes = intval($data['votes'][ $choice_id ]);
                 if (strlen($choice) < 1) {
                     continue;
                 }

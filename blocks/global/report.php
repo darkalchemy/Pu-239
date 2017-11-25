@@ -1,11 +1,11 @@
 <?php
+global $site_config, $CURUSER, $cache, $lang;
 
-global $site_config, $CURUSER;
 if ($site_config['report_alert'] && $CURUSER['class'] >= UC_STAFF) {
-    if (($delt_with = $mc1->get_value('new_report_')) === false) {
+    if (($delt_with = $cache->get('new_report_')) === false) {
         $res_reports = sql_query("SELECT COUNT(id) FROM reports WHERE delt_with = '0'");
         list($delt_with) = mysqli_fetch_row($res_reports);
-        $mc1->cache_value('new_report_', $delt_with, $site_config['expires']['alerts']);
+        $cache->set('new_report_', $delt_with, $site_config['expires']['alerts']);
     }
     if ($delt_with > 0) {
         $htmlout .= "

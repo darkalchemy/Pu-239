@@ -2,7 +2,8 @@
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-global $mc1, $site_config;
+global $CURUSER, $site_config, $cache;
+
 $lang = array_merge(load_language('global'), load_language('takerate'));
 if (!mkglobal('id')) {
     exit();
@@ -31,27 +32,19 @@ sql_query('INSERT INTO comments (user, torrent, added, text, ori_text) VALUES ('
 sql_query('UPDATE torrents SET thanks = thanks + 1, comments = comments + 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $update['thanks'] = ($arr['thanks'] + 1);
 $update['comments'] = ($arr['comments'] + 1);
-$mc1->begin_transaction('torrent_details_' . $id);
-$mc1->update_row(false, [
+$cache->update_row('torrent_details_' . $id, [
     'thanks'   => $update['thanks'],
     'comments' => $update['comments'],
-]);
-$mc1->commit_transaction($site_config['expires']['torrent_details']);
-$mc1->delete_value('latest_comments_');
+], $site_config['expires']['torrent_details']);
+$cache->delete('latest_comments_');
 if ($site_config['seedbonus_on'] == 1) {
-    //===add karma
     sql_query('UPDATE users SET seedbonus = seedbonus+5.0 WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($CURUSER['seedbonus'] + 5);
-    $mc1->begin_transaction('userstats_' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    $cache->update_row('userstats_' . $CURUSER['id'], [
         'seedbonus' => $update['seedbonus'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['u_stats']);
-    $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['u_stats']);
+    $cache->update_row('user_stats_' . $CURUSER['id'], [
         'seedbonus' => $update['seedbonus'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_stats']);
-    //===end
+    ], $site_config['expires']['user_stats']);
 }
 header("Refresh: 0; url=details.php?id=$id");

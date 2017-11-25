@@ -1,6 +1,6 @@
 <?php
 
-global $mc1, $site_config, $lang;
+global $cache, $site_config, $lang;
 $HTMLOUT .= "
     <a id='scroller-hash'></a>
     <fieldset id='scroller' class='header'>
@@ -12,7 +12,7 @@ $HTMLOUT .= "
             <div id='carousel-container' class='alt_bordered bg-00 carousel-container'>
                 <div id='icarousel' class='icarousel'>";
 
-if (($scroll_torrents = $mc1->get_value('scroll_tor_')) === false) {
+if (($scroll_torrents = $cache->get('scroll_tor_')) === false) {
     $scroll = sql_query("SELECT id, seeders, leechers, name, poster
                             FROM torrents
                             WHERE seeders >= 0
@@ -21,7 +21,7 @@ if (($scroll_torrents = $mc1->get_value('scroll_tor_')) === false) {
     while ($scroll_torrent = mysqli_fetch_assoc($scroll)) {
         $scroll_torrents[] = $scroll_torrent;
     }
-    $mc1->cache_value('scroll_tor_', $scroll_torrents, $site_config['expires']['scroll_torrents']);
+    $cache->set('scroll_tor_', $scroll_torrents, $site_config['expires']['scroll_torrents']);
 }
 
 if ($scroll_torrents) {

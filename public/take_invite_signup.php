@@ -4,11 +4,11 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 require_once INCL_DIR . 'function_bemail.php';
 dbconn();
-global $CURUSER, $site_config, $mc1;
+global $CURUSER, $site_config, $cache;
 if (!$CURUSER) {
     get_template();
 }
-$mc1->delete_value('userlist_' . $site_config['chatBotID']);
+$cache->delete('userlist_' . $site_config['chatBotID']);
 $lang = array_merge(load_language('global'), load_language('takesignup'));
 $ip = getip();
 $res = sql_query('SELECT COUNT(id) FROM users') or sqlerr(__FILE__, __LINE__);
@@ -45,7 +45,7 @@ function validusername($username)
     // The following characters are allowed in user names
     $allowedchars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     for ($i = 0; $i < strlen($username); ++$i) {
-        if (strpos($allowedchars, $username[$i]) === false) {
+        if (strpos($allowedchars, $username[ $i ]) === false) {
             return false;
         }
     }
@@ -171,8 +171,7 @@ $added = TIME_NOW;
 $msg = sqlesc("Hey there [you] ! :wave:\nIt seems that someone you invited to {$site_config['site_name']} has arrived ! :clap2: \n\n Please go to your [url={$site_config['baseurl']}/invite.php]Invite page[/url] to confirm them so they can log in.\n\ncheers\n");
 $subject = sqlesc('Someone you invited has arrived!');
 sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (0, $subject, " . sqlesc($sender) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
-$mc1->delete_value('inbox_new_' . $sender);
-$mc1->delete_value('inbox_new_sb_' . $sender);
+$cache->increment('inbox_' . $sender);
 
 sql_query('UPDATE invite_codes SET receiver = ' . sqlesc($id) . ', status = "Confirmed" WHERE sender = ' . sqlesc((int)$assoc['sender']) . ' AND code = ' . sqlesc($invite)) or sqlerr(__FILE__, __LINE__);
 $latestuser_cache['id'] = (int)$id;
@@ -188,9 +187,9 @@ $latestuser_cache['king'] = '0';
 //$latestuser_cache['perms'] =  (int)$arr['perms'];
 
 /* OOPs **/
-$mc1->cache_value('latestuser', $latestuser_cache, 0, $site_config['expires']['latestuser']);
-$mc1->delete_value('birthdayusers');
-$mc1->delete_value('chat_users_list');
+$cache->set('latestuser', $latestuser_cache, 0, $site_config['expires']['latestuser']);
+$cache->delete('birthdayusers');
+$cache->delete('chat_users_list');
 write_log('User account ' . htmlsafechars($wantusername) . ' was created!');
 if ($id > 2 && $site_config['autoshout_on'] == 1) {
     autoshout($msg);

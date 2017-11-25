@@ -1,4 +1,6 @@
 <?php
+global $CURUSER, $lang;
+
 $height = 600;
 if (!empty($CURUSER['ajaxchat_height'])) {
     $height = $CURUSER['ajaxchat_height'];

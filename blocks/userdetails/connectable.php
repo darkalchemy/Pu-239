@@ -1,15 +1,16 @@
 <?php
-//==Connectable and port shit
+global $CURUSER, $site_config, $cache, $lang, $user, $id;
+
 if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     $What_Cache = (XBT_TRACKER == true ? 'port_data_xbt_' : 'port_data_');
-    if (($port_data = $mc1->get_value($What_Cache . $id)) === false) {
+    if (($port_data = $cache->get($What_Cache . $id)) === false) {
         if (XBT_TRACKER == true) {
             $q1 = sql_query('SELECT `connectable`, `peer_id` FROM `xbt_files_users` WHERE uid = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
         } else {
             $q1 = sql_query('SELECT connectable, port,agent FROM peers WHERE userid = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
         }
         $port_data = mysqli_fetch_row($q1);
-        $mc1->cache_value('port_data_' . $id, $port_data, $site_config['expires']['port_data']);
+        $cache->set('port_data_' . $id, $port_data, $site_config['expires']['port_data']);
     }
     if ($port_data > 0) {
         $connect = $port_data[0];

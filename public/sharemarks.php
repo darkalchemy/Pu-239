@@ -5,6 +5,8 @@ require_once INCL_DIR . 'torrenttable_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
+global $CURUSER;
+
 $lang = array_merge(load_language('global'), load_language('torrenttable_functions'));
 $htmlout = '';
 /**
@@ -50,15 +52,15 @@ function sharetable($res, $variant = 'index')
     $htmlout .= "</tr>\n";
     $categories = genrelist();
     foreach ($categories as $key => $value) {
-        $change[$value['id']] = [
+        $change[ $value['id'] ] = [
             'id'    => $value['id'],
             'name'  => $value['name'],
             'image' => $value['image'],
         ];
     }
     while ($row = mysqli_fetch_assoc($res)) {
-        $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);
-        $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
+        $row['cat_name'] = htmlsafechars($change[ $row['category'] ]['name']);
+        $row['cat_pic'] = htmlsafechars($change[ $row['category'] ]['image']);
         $id = (int)$row['id'];
         $htmlout .= "<tr>\n";
         $htmlout .= "<td>";

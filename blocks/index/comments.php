@@ -1,8 +1,8 @@
 <?php
 require_once INCL_DIR . 'html_functions.php';
-global $mc1, $lang, $site_config;
+global $cache, $lang, $site_config;
 
-if (($comments = $mc1->get_value('latest_comments_')) === false) {
+if (($comments = $cache->get('latest_comments_')) === false) {
     $sql = sql_query("SELECT c.id, c.user AS user_id, c.torrent, c.added, c.text, c.anonymous, c.user_likes, t.name, t.category, cat.name AS cat, cat.image,
                             t.seeders, t.poster, t.leechers, t.times_completed, t.added AS toradd, t.size
                             FROM comments AS c 
@@ -13,7 +13,7 @@ if (($comments = $mc1->get_value('latest_comments_')) === false) {
     while ($comment = mysqli_fetch_assoc($sql)) {
         $comments[] = $comment;
     }
-    $mc1->cache_value('latest_comments_', $comments, 3600);
+    $cache->set('latest_comments_', $comments, 3600);
 }
 $header = "
                         <tr>
@@ -66,7 +66,7 @@ foreach ($comments as $comment) {
 
 $text = main_table($body, $header);
 
-    $HTMLOUT .= "
+$HTMLOUT .= "
     <a id='latest_comment-hash'></a>
     <fieldset id='latest_comment' class='header'>
         <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_latest_comments']}</legend>

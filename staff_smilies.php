@@ -3,6 +3,8 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
+global $CURUSER, $site_config;
+
 if ($CURUSER['class'] < UC_STAFF) {
     stderr('Error', 'Yer no tall enough');
     exit();

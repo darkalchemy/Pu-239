@@ -6,10 +6,12 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $site_config, $cache, $lang;
+
 $lang = array_merge($lang, load_language('ad_watchedusers'));
 $stdfoot = [
     'js' => [
-        get_file('warn_js')
+        get_file('warn_js'),
     ],
 ];
 
@@ -30,21 +32,15 @@ if (isset($_GET['remove'])) {
             $user = mysqli_fetch_assoc($res);
             $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - {$lang['watched_removed']} $CURUSER[username].\n" . $user['modcomment'];
             sql_query('UPDATE users SET watched_user = \'0\', modcomment=' . sqlesc($modcomment) . ' WHERE id=' . sqlesc($remove_me_Ive_been_good)) or sqlerr(__FILE__, __LINE__);
-            $mc1->begin_transaction('MyUser_' . $remove_me_Ive_been_good);
-            $mc1->update_row(false, [
+            $cache->update_row('MyUser_' . $remove_me_Ive_been_good, [
                 'watched_user' => 0,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['curuser']);
-            $mc1->begin_transaction('user' . $remove_me_Ive_been_good);
-            $mc1->update_row(false, [
+            ], $site_config['expires']['curuser']);
+            $cache->update_row('user' . $remove_me_Ive_been_good, [
                 'watched_user' => 0,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_cache']);
-            $mc1->begin_transaction('user_stats_' . $remove_me_Ive_been_good);
-            $mc1->update_row(false, [
+            ], $site_config['expires']['user_cache']);
+            $cache->update_row('user_stats_' . $remove_me_Ive_been_good, [
                 'modcomment' => $modcomment,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            ], $site_config['expires']['user_stats']);
             $count = 1;
             $removed_log = '<a href="userdetails.php?id=' . $remove_me_Ive_been_good . '" class="altlink">' . htmlsafechars($user['username']) . '</a>';
         }
@@ -56,21 +52,15 @@ if (isset($_GET['remove'])) {
                 $user = mysqli_fetch_assoc($res);
                 $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - {$lang['watched_removed']} $CURUSER[username].\n" . $user['modcomment'];
                 sql_query('UPDATE users SET watched_user = \'0\', modcomment=' . sqlesc($modcomment) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-                $mc1->begin_transaction('MyUser_' . $id);
-                $mc1->update_row(false, [
+                $cache->update_row('MyUser_' . $id, [
                     'watched_user' => 0,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['curuser']);
-                $mc1->begin_transaction('user' . $id);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['curuser']);
+                $cache->update_row('user' . $id, [
                     'watched_user' => 0,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_cache']);
-                $mc1->begin_transaction('user_stats_' . $id);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['user_cache']);
+                $cache->update_row('user_stats_' . $id, [
                     'modcomment' => $modcomment,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_stats']);
                 $count = (++$count);
                 $removed_log .= '<a href="userdetails.php?id=' . $id . '" class="altlink">' . htmlsafechars($user['username']) . '</a> ';
             }
@@ -100,7 +90,7 @@ if (isset($_GET['add'])) {
                 <form method='post' action='./staffpanel.php?tool=watched_users&amp;action=watched_users&amp;add=2&amp;id={$member_whos_been_bad}'>
                     <h2>{$lang['watched_add']}{$user['username']}{$lang['watched_towu']}</h2>
                     <div class='has-text-centered'>
-                        <span><b>{$lang['watched_pleasefil']}" . format_username(member_whos_been_bad) . " {$lang['watched_userlist']}</b></span>
+                        <span><b>{$lang['watched_pleasefil']}" . format_username($member_whos_been_bad) . " {$lang['watched_userlist']}</b></span>
                     </div>
                     <textarea class='w-100' rows='6' name='reason'>" . htmlsafechars($user['watched_user_reason']) . "</textarea>
                     <input type='submit' class='button_big' value='{$lang['watched_addtowu']}!' />
@@ -113,22 +103,16 @@ if (isset($_GET['add'])) {
         $watched_user_reason = htmlsafechars($_POST['reason']);
         $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $lang['watched_addedwu'] . " $CURUSER[username].\n" . $user['modcomment'];
         sql_query('UPDATE users SET watched_user = ' . TIME_NOW . ', modcomment=' . sqlesc($modcomment) . ', watched_user_reason = ' . sqlesc($watched_user_reason) . ' WHERE id=' . sqlesc($member_whos_been_bad)) or sqlerr(__FILE__, __LINE__);
-        $mc1->begin_transaction('MyUser_' . $member_whos_been_bad);
-        $mc1->update_row(false, [
+        $cache->update_row('MyUser_' . $member_whos_been_bad, [
             'watched_user' => TIME_NOW,
-        ]);
-        $mc1->commit_transaction($site_config['expires']['curuser']);
-        $mc1->begin_transaction('user' . $member_whos_been_bad);
-        $mc1->update_row(false, [
+        ], $site_config['expires']['curuser']);
+        $cache->update_row('user' . $member_whos_been_bad, [
             'watched_user'        => TIME_NOW,
             'watched_user_reason' => $watched_user_reason,
-        ]);
-        $mc1->commit_transaction($site_config['expires']['user_cache']);
-        $mc1->begin_transaction('user_stats_' . $member_whos_been_bad);
-        $mc1->update_row(false, [
+        ], $site_config['expires']['user_cache']);
+        $cache->update_row('user_stats_' . $member_whos_been_bad, [
             'modcomment' => $modcomment,
-        ]);
-        $mc1->commit_transaction($site_config['expires']['user_stats']);
+        ], $site_config['expires']['user_stats']);
     }
     //=== Check if member was added
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) > 0) {
@@ -196,6 +180,5 @@ $HTMLOUT .= '
 <td class="has-text-centered" colspan="6" class="colhead"><a class="altlink" href="javascript:SetChecked(1,\'wu[]\')"> ' . $lang['watched_selall'] . '</a> - <a class="altlink" href="javascript:SetChecked(0,\'wu[]\')">un-' . $lang['watched_selall'] . '</a>
         <input type="submit" class="button_big" value="remove selected' . $lang['watched_removedfrom'] . '" /></td></tr></table>
         </form>';
-
 
 echo stdhead('' . $lang['watched_users'] . '') . $HTMLOUT . stdfoot($stdfoot);

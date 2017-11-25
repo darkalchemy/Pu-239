@@ -3,15 +3,17 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
+global $CURUSER, $site_config;
+
 $lang = array_merge(load_language('global'));
 $stdhead = [
     'css' => [
-        get_file(upload_css)
+        get_file('upload_css'),
     ],
 ];
 $stdfoot = [
     'js' => [
-        get_file(requests_js)
+        get_file('requests_js'),
     ],
 ];
 $HTMLOUT = $count2 = '';

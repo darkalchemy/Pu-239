@@ -7,7 +7,7 @@ $vars = [
     'do'       => '',
 ];
 foreach ($vars as $k => $v) {
-    $vars[$k] = isset($_GET[$k]) ? $_GET[$k] : '';
+    $vars[ $k ] = isset($_GET[ $k ]) ? $_GET[ $k ] : '';
 }
 if ($key !== $vars['key'] || empty($vars['username'])) {
     die('hmm something looks odd');
@@ -21,7 +21,7 @@ switch ($vars['do']) {
         break;
 
     case 'idle':
-        sql_query('UPDATE users SET onirc = ' . sqlesc(!$vars['ircidle'] ? 'no' : 'yes') . ' where username = ' . sqlesc($vars['username']));
+        sql_query('UPDATE users SET onirc = ' . sqlesc(!$vars['ircidle'] ? 'no' : 'yes') . ' WHERE username = ' . sqlesc($vars['username']));
         echo mysqli_affected_rows($GLOBALS['___mysqli_ston']);
         break;
 

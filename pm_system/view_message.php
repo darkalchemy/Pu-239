@@ -14,8 +14,7 @@ $arr_user_stuff = mysqli_fetch_assoc($res_user_stuff);
 $id = (int)$arr_user_stuff['id'];
 //=== Mark message read
 sql_query('UPDATE messages SET unread=\'no\' WHERE id = ' . sqlesc($pm_id) . ' AND receiver = ' . sqlesc($CURUSER['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
-$mc1->delete_value('inbox_new_' . $CURUSER['id']);
-$mc1->delete_value('inbox_new_sb_' . $CURUSER['id']);
+$cache->increment('inbox_' . $CURUSER['id']);
 if ($message['friend'] > 0) {
     $friends = '' . $lang['pm_mailbox_char1'] . '<span class="size_1"><a href="friends.php?action=delete&amp;type=friend&amp;targetid=' . $id . '">' . $lang['pm_mailbox_removef'] . '</a></span>' . $lang['pm_mailbox_char2'] . '';
 } elseif ($message['blocked'] > 0) {
@@ -60,7 +59,7 @@ $HTMLOUT .= "
             <tr class='no_hover'>
                 <td colspan='2'>
                     <span>" . ($message['sender'] === $CURUSER['id'] ? $lang['pm_viewmsg_to'] : $lang['pm_viewmsg_from']) . ": </span>" .
-                    ($arr_user_stuff['id'] == 0 ? $lang['pm_viewmsg_sys'] : format_username($arr_user_stuff['id'])) . "{$friends}
+    ($arr_user_stuff['id'] == 0 ? $lang['pm_viewmsg_sys'] : format_username($arr_user_stuff['id'])) . "{$friends}
                     <br><span>{$lang['pm_viewmsg_sent']}: </span>" . get_date($message['added'], '') . (($message['sender'] === $CURUSER['id'] && $message['unread'] == 'yes') ? $lang['pm_mailbox_char1'] . "<span class='text-red'>{$lang['pm_mailbox_unread']}</span>{$lang['pm_mailbox_char2']}" : '') . ($message['urgent'] === 'yes' ? "<span class='text-red'>{$lang['pm_mailbox_urgent']}</span>" : '') . "
                 </td>
             </tr>
@@ -97,7 +96,7 @@ $HTMLOUT .= "
                         </a>
                         <a href='./pm_system.php?action=use_draft&amp;send=1&amp;id={$pm_id}'>
                             <input type='submit' class='button left10' value='{$lang['pm_viewmsg_duse']}' />
-                        </a>"). "
+                        </a>") . "
                     </div>
                 </td>
             </tr>

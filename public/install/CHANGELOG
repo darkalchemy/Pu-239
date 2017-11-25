@@ -1,3 +1,8 @@
+25 Nov 2017
+add: caching environment 'Scrapbook'
+remove: redis requirement
+remove: memcached and php-memcache requirement
+
 14 Nov 2017
 update: GeoIP files 
 fix: iphistory.php view ip

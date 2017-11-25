@@ -2,6 +2,8 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
+global $CURUSER;
+
 $lang = array_merge(load_language('global'), load_language('ajax_status'));
 /**
  * @param $x
@@ -34,9 +36,9 @@ function url2short($x)
  */
 function jsonmsg($arr)
 {
-    global $mc1, $CURUSER;
-    $mc1->delete_value('userstatus_' . $CURUSER['id']);
-    $mc1->delete_value('user_status_' . $CURUSER['id']);
+    global $cache, $CURUSER;
+    $cache->delete('userstatus_' . $CURUSER['id']);
+    $cache->delete('user_status_' . $CURUSER['id']);
 
     return json_encode([
         'msg'    => $arr[0],
@@ -49,7 +51,7 @@ $vdo = [
     'delete' => 1,
     'new'    => 1,
 ];
-$do = isset($_POST['action']) && isset($vdo[$_POST['action']]) ? $_POST['action'] : '';
+$do = isset($_POST['action']) && isset($vdo[ $_POST['action'] ]) ? $_POST['action'] : '';
 $id = isset($_POST['id']) ? (int)$_POST['id'] : '';
 $ss = isset($_POST['ss']) && !empty($_POST['ss']) ? $_POST['ss'] : '';
 switch ($do) {
@@ -76,8 +78,8 @@ switch ($do) {
 
     case 'delete':
         $status_history = unserialize($CURUSER['archive']);
-        if (isset($status_history[$id])) {
-            unset($status_history[$id]);
+        if (isset($status_history[ $id ])) {
+            unset($status_history[ $id ]);
             if (sql_query('UPDATE ustatus SET archive = ' . sqlesc(serialize($status_history)) . ' WHERE userid = ' . sqlesc($CURUSER['id']))) {
                 $return = jsonmsg([
                     'ok',
@@ -105,7 +107,7 @@ switch ($do) {
                 'date'   => $CURUSER['last_update'],
             ];
         }
-        if (sql_query('INSERT INTO ustatus(userid,last_status,last_update,archive) VALUES(' . sqlesc($CURUSER['id']) . ',' . sqlesc(url2short($ss)) . ',' . TIME_NOW . ',' . sqlesc(serialize($status_archive)) . ') ON DUPLICATE KEY UPDATE last_status=values(last_status),last_update=values(last_update),archive=values(archive)')) {
+        if (sql_query('INSERT INTO ustatus(userid,last_status,last_update,archive) VALUES(' . sqlesc($CURUSER['id']) . ',' . sqlesc(url2short($ss)) . ',' . TIME_NOW . ',' . sqlesc(serialize($status_archive)) . ') ON DUPLICATE KEY UPDATE last_status = VALUES(last_status),last_update = VALUES(last_update),archive = VALUES(archive)')) {
             $return = jsonmsg([
                 '<h2>' . $lang['ajaxstatus_successfully'] . '</h2>',
                 true,

@@ -1,4 +1,6 @@
 <?php
+global $CURUSER, $site_config, $cache, $lang, $user, $id;
+
 /**
  * @param $res
  *
@@ -6,8 +8,7 @@
  */
 function snatchtable($res)
 {
-    global $site_config, $lang, $CURUSER;
-    $htmlout = '';
+    global $site_config, $lang;
     $htmlout = "<table class='main' border='1' cellspacing='0' cellpadding='5'>
  <tr>
 <td class='colhead'>{$lang['userdetails_s_cat']}</td>
@@ -50,10 +51,9 @@ function snatchtable($res)
  */
 function maketable($res)
 {
-    global $site_config, $lang, $CURUSER;
+    global $site_config, $lang;
 
-    $htmlout = '';
-    $htmlout .= "<table class='main' border='1' cellspacing='0' cellpadding='5'>" . "<tr><td class='colhead'>{$lang['userdetails_type']}</td>
+    $htmlout = "<table class='main' border='1' cellspacing='0' cellpadding='5'>" . "<tr><td class='colhead'>{$lang['userdetails_type']}</td>
          <td class='colhead'>{$lang['userdetails_name']}</td>
          <td class='colhead'>{$lang['userdetails_size']}</td>
          <td class='colhead'>{$lang['userdetails_se']}</td>
@@ -136,14 +136,14 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
     }
     //==Snatched
 
-    if (($user_snatches_data = $mc1->get_value('user_snatches_data_' . $id)) === false) {
+    if (($user_snatches_data = $cache->get('user_snatches_data_' . $id)) === false) {
         if (XBT_TRACKER === false) {
             $ressnatch = sql_query('SELECT s.*, t.name AS name, c.name AS catname, c.image AS catimg FROM snatched AS s INNER JOIN torrents AS t ON s.torrentid = t.id LEFT JOIN categories AS c ON t.category = c.id WHERE s.userid =' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
         } else {
             $ressnatch = sql_query('SELECT x.*, t.name AS name, c.name AS catname, c.image AS catimg FROM xbt_files_users AS x INNER JOIN torrents AS t ON x.fid = t.id LEFT JOIN categories AS c ON t.category = c.id WHERE x.uid =' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
         }
         $user_snatches_data = snatchtable($ressnatch);
-        $mc1->cache_value('user_snatches_data_' . $id, $user_snatches_data, $site_config['expires']['user_snatches_data']);
+        $cache->set('user_snatches_data_' . $id, $user_snatches_data, $site_config['expires']['user_snatches_data']);
     }
     /*
     if (isset($user_snatches_data))

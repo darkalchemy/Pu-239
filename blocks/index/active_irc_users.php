@@ -1,4 +1,6 @@
 <?php
+global $site_config, $cache, $lang;
+
 /**
  * @param $val
  *
@@ -18,7 +20,7 @@ function calctime($val)
 }
 
 $keys['activeircusers'] = 'activeircusers';
-if (($active_irc_users_cache = $mc1->get_value($keys['activeircusers'])) === false) {
+if (($active_irc_users_cache = $cache->get($keys['activeircusers'])) === false) {
     $dt = $_SERVER['REQUEST_TIME'] - 180;
     $activeircusers = '';
     $active_irc_users_cache = [];
@@ -32,7 +34,7 @@ if (($active_irc_users_cache = $mc1->get_value($keys['activeircusers'])) === fal
     }
     $active_irc_users_cache['activeircusers'] = $activeircusers;
     $active_irc_users_cache['actcount'] = $actcount;
-    $mc1->cache_value($keys['activeircusers'], $active_irc_users_cache, $site_config['expires']['activeircusers']);
+    $cache->set($keys['activeircusers'], $active_irc_users_cache, $site_config['expires']['activeircusers']);
 }
 if (!$active_irc_users_cache['activeircusers']) {
     $active_irc_users_cache['activeircusers'] = $lang['index_irc_nousers'];

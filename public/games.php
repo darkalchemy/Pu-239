@@ -3,7 +3,7 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $site_config;
+global $CURUSER, $site_config;
 
 $lang = array_merge(load_language('global'), load_language('blackjack'));
 $HTMLOUT = '';

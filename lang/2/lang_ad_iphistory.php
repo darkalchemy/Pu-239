@@ -1,4 +1,5 @@
 <?php
+global $username, $username2, $id;
 
 $lang = [
     //Errors

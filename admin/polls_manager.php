@@ -3,6 +3,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $lang;
+
 $lang = array_merge($lang, load_language('ad_poll_manager'));
 $params = array_merge($_GET, $_POST);
 $params['mode'] = isset($params['mode']) ? $params['mode'] : '';
@@ -35,7 +37,7 @@ switch ($params['mode']) {
 }
 function delete_poll()
 {
-    global $site_config, $CURUSER, $mc1, $lang;
+    global $site_config, $CURUSER, $cache, $lang;
     $total_votes = 0;
     if (!isset($_GET['pid']) or !is_valid_id($_GET['pid'])) {
         stderr($lang['poll_dp_usr_err'], $lang['poll_dp_no_poll']);
@@ -47,13 +49,13 @@ function delete_poll()
     }
     sql_query('DELETE FROM polls WHERE pid = ' . sqlesc($pid));
     sql_query('DELETE FROM poll_voters WHERE poll_id = ' . sqlesc($pid));
-    $mc1->delete_value('poll_data_' . $CURUSER['id']);
+    $cache->delete('poll_data_' . $CURUSER['id']);
     show_poll_archive();
 }
 
 function update_poll()
 {
-    global $site_config, $CURUSER, $mc1, $lang;
+    global $site_config, $CURUSER, $cache, $lang;
     $total_votes = 0;
     if (!isset($_POST['pid']) or !is_valid_id($_POST['pid'])) {
         stderr($lang['poll_up_usr_err'], $lang['poll_up_no_poll']);
@@ -74,7 +76,7 @@ function update_poll()
     $poll_data = sqlesc(serialize($poll_data));
     $username = sqlesc($CURUSER['username']);
     sql_query("UPDATE polls SET choices=$poll_data, starter_id={$CURUSER['id']}, starter_name=$username, votes=$total_votes, poll_question=$poll_title WHERE pid=" . sqlesc($pid)) or sqlerr(__FILE__, __LINE__);
-    $mc1->delete_value('poll_data_' . $CURUSER['id']);
+    $cache->delete('poll_data_' . $CURUSER['id']);
     if (-1 == mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         $msg = "<h2>{$lang['poll_up_error']}</h2>
       <a href='javascript:history.back()' title='{$lang['poll_up_fix_it']}' style='color:green;font-weight:bold'><span class='button' style='padding:3px;'><img style='vertical-align:middle;' src='{$site_config['pic_base_url']}/polls/p_delete.gif' alt='{$lang['poll_up_back']}' />{$lang['poll_up_back']}</span></a>";
@@ -87,7 +89,7 @@ function update_poll()
 
 function insert_new_poll()
 {
-    global $site_config, $CURUSER, $mc1, $lang;
+    global $site_config, $CURUSER, $cache, $lang;
     if (!isset($_POST['poll_question']) or empty($_POST['poll_question'])) {
         stderr($lang['poll_inp_usr_err'], $lang['poll_inp_no_title']);
     }
@@ -102,7 +104,7 @@ function insert_new_poll()
     $username = sqlesc($CURUSER['username']);
     $time = TIME_NOW;
     sql_query("INSERT INTO polls (start_date, choices, starter_id, starter_name, votes, poll_question)VALUES($time, $poll_data, {$CURUSER['id']}, $username, 0, $poll_title)") or sqlerr(__FILE__, __LINE__);
-    $mc1->delete_value('poll_data_' . $CURUSER['id']);
+    $cache->delete('poll_data_' . $CURUSER['id']);
     if (false == ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res)) {
         $msg = "<h2>{$lang['poll_inp_error']}</h2>
       <a href='javascript:history.back()' title='{$lang['poll_inp_fix_it']}' style='color:green;font-weight:bold'><span class='button' style='padding:3px;'><img style='vertical-align:middle;' src='{$site_config['pic_base_url']}/polls/p_delete.gif' alt='{$lang['poll_inp_back']}' />{$lang['poll_inp_back']}</span></a>";
@@ -142,7 +144,7 @@ function edit_poll_form()
         $poll_multi .= "\t{$question_id} : '" . $data['multi'] . "',\n";
         foreach ($data['choice'] as $choice_id => $text) {
             $choice = $text;
-            $votes = intval($data['votes'][$choice_id]);
+            $votes = intval($data['votes'][ $choice_id ]);
             $poll_choices .= "\t'{$question_id}_{$choice_id}' : '" . str_replace("'", '&#39;', $choice) . "',\n";
             $poll_votes .= "\t'{$question_id}_{$choice_id}' : '" . $votes . "',\n";
         }
@@ -309,7 +311,7 @@ function makepoll()
             if (!$q or !$id) {
                 continue;
             }
-            $questions[$id]['question'] = htmlsafechars(strip_tags($q), ENT_QUOTES);
+            $questions[ $id ]['question'] = htmlsafechars(strip_tags($q), ENT_QUOTES);
         }
     }
     if (isset($_POST['multi']) and is_array($_POST['multi']) and count($_POST['multi'])) {
@@ -317,7 +319,7 @@ function makepoll()
             if (!$q or !$id) {
                 continue;
             }
-            $questions[$id]['multi'] = intval($q);
+            $questions[ $id ]['multi'] = intval($q);
         }
     }
     if (isset($_POST['choice']) and is_array($_POST['choice']) and count($_POST['choice'])) {
@@ -328,18 +330,18 @@ function makepoll()
             if (!$question_id or !isset($choice_id)) {
                 continue;
             }
-            if (!$questions[$question_id]['question']) {
+            if (!$questions[ $question_id ]['question']) {
                 continue;
             }
-            $questions[$question_id]['choice'][$choice_id] = htmlsafechars(strip_tags($choice), ENT_QUOTES);
+            $questions[ $question_id ]['choice'][ $choice_id ] = htmlsafechars(strip_tags($choice), ENT_QUOTES);
             $_POST['votes'] = isset($_POST['votes']) ? $_POST['votes'] : 0;
-            $questions[$question_id]['votes'][$choice_id] = intval($_POST['votes'][$question_id . '_' . $choice_id]);
-            $poll_total_votes += $questions[$question_id]['votes'][$choice_id];
+            $questions[ $question_id ]['votes'][ $choice_id ] = intval($_POST['votes'][ $question_id . '_' . $choice_id ]);
+            $poll_total_votes += $questions[ $question_id ]['votes'][ $choice_id ];
         }
     }
     foreach ($questions as $id => $data) {
         if (!is_array($data['choice']) or !count($data['choice'])) {
-            unset($questions[$id]);
+            unset($questions[ $id ]);
         } else {
             $choices_count += intval(count($data['choice']));
         }

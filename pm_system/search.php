@@ -73,7 +73,7 @@ $HTMLOUT .= '<h1>' . $lang['pm_search_title'] . '</h1>' . $top_links . '
     </tr>
     <tr>
         <td class="one"><span style="font-weight: bold;">' . $lang['pm_search_allbox'] . '</span></td>
-        <td class="one"><input name="all_boxes" type="checkbox" value="1" ' . ($all_boxes == 1 ? ' checked="checked"' : '') . ' />' . $lang['pm_search_ignored'] . '</td>
+        <td class="one"><input name="all_boxes" type="checkbox" value="1" ' . ($all_boxes == 1 ? ' checked' : '') . ' />' . $lang['pm_search_ignored'] . '</td>
     </tr>
     <tr>
         <td class="one"><span style="font-weight: bold;">' . $lang['pm_search_member_by'] . '</span></td>
@@ -81,12 +81,12 @@ $HTMLOUT .= '<h1>' . $lang['pm_search_title'] . '</h1>' . $top_links . '
     </tr>
     <tr>
         <td class="one"><span style="font-weight: bold;">' . $lang['pm_search_system'] . '</span></td>
-        <td class="one"><input name="system" type="checkbox" value="system" ' . ($member_sys == 'system' ? ' checked="checked"' : '') . ' />' . $lang['pm_search_system_only'] . '</td>
+        <td class="one"><input name="system" type="checkbox" value="system" ' . ($member_sys == 'system' ? ' checked' : '') . ' />' . $lang['pm_search_system_only'] . '</td>
     </tr>
     <tr>
         <td class="one"><span style="font-weight: bold;">' . $lang['pm_search_in'] . '</span></td>
-        <td class="one"><input name="subject" type="checkbox" value="1" ' . ($subject == 1 ? ' checked="checked"' : '') . ' />' . $lang['pm_search_subject'] . ' 
-        <input name="text" type="checkbox" value="1" ' . ($text === 1 ? ' checked="checked"' : '') . ' />' . $lang['pm_search_msgtext'] . '</td>
+        <td class="one"><input name="subject" type="checkbox" value="1" ' . ($subject == 1 ? ' checked' : '') . ' />' . $lang['pm_search_subject'] . ' 
+        <input name="text" type="checkbox" value="1" ' . ($text === 1 ? ' checked' : '') . ' />' . $lang['pm_search_msgtext'] . '</td>
     </tr>
     <tr>
         <td class="one"><span style="font-weight: bold;">' . $lang['pm_search_sortby'] . '</span></td>
@@ -97,8 +97,8 @@ $HTMLOUT .= '<h1>' . $lang['pm_search_title'] . '</h1>' . $top_links . '
             <option value="added" ' . ($sort === 'added' ? ' selected="selected"' : '') . '>' . $lang['pm_search_added'] . '</option>
             <option value="' . $sender_reciever . '" ' . ($sort === $sender_reciever ? ' selected="selected' : '') . '>' . $lang['pm_search_member'] . '</option>
         </select>
-            <input name="ASC" type="radio" value="1" ' . ((isset($_POST['ASC']) && $_POST['ASC'] == 1) ? ' checked="checked"' : '') . ' />' . $lang['pm_search_asc'] . '
-            <input name="ASC" type="radio" value="2" ' . ((isset($_POST['ASC']) && $_POST['ASC'] == 2 || !isset($_POST['ASC'])) ? ' checked="checked"' : '') . ' />' . $lang['pm_search_desc'] . '</td>
+            <input name="ASC" type="radio" value="1" ' . ((isset($_POST['ASC']) && $_POST['ASC'] == 1) ? ' checked' : '') . ' />' . $lang['pm_search_asc'] . '
+            <input name="ASC" type="radio" value="2" ' . ((isset($_POST['ASC']) && $_POST['ASC'] == 2 || !isset($_POST['ASC'])) ? ' checked' : '') . ' />' . $lang['pm_search_desc'] . '</td>
     </tr>
     <tr>
         <td class="one"><span style="font-weight: bold;">' . $lang['pm_search_show'] . '</span></td>
@@ -115,8 +115,8 @@ $HTMLOUT .= '<h1>' . $lang['pm_search_title'] . '</h1>' . $top_links . '
     </tr>' . ($limit < 100 ? '
     <tr>
         <td class="one"><span style="font-weight: bold;">' . $lang['pm_search_display'] . '</span></td>
-        <td class="one"><input name="as_list_post" type="radio" value="1" ' . ($as_list_post == 1 ? ' checked="checked"' : '') . ' /> <span style="font-weight: bold;">' . $lang['pm_search_list'] . '</span> 
-        <input name="as_list_post" type="radio" value="2" ' . ($as_list_post == 2 ? ' checked="checked"' : '') . ' /> <span style="font-weight: bold;"> ' . $lang['pm_search_message'] . '</span></td>
+        <td class="one"><input name="as_list_post" type="radio" value="1" ' . ($as_list_post == 1 ? ' checked' : '') . ' /> <span style="font-weight: bold;">' . $lang['pm_search_list'] . '</span> 
+        <input name="as_list_post" type="radio" value="2" ' . ($as_list_post == 2 ? ' checked' : '') . ' /> <span style="font-weight: bold;"> ' . $lang['pm_search_message'] . '</span></td>
     </tr>' : '') . '
     <tr>
         <td colspan="2" class="one">
@@ -191,7 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $class2 = ($count2 == 0 ? 'two' : 'one');
         //=== if not searching one member...
         if (!$member) {
-            $res_username = sql_query('SELECT id, username, warned, suspended, enabled, donor, leechwarn, chatpost, pirate, king, class FROM users WHERE id = ' . sqlesc($row[$sender_reciever]) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+            $res_username = sql_query('SELECT id, username, warned, suspended, enabled, donor, leechwarn, chatpost, pirate, king, class FROM users WHERE id = ' . sqlesc($row[ $sender_reciever ]) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
             $arr_username = mysqli_fetch_assoc($res_username);
             $the_username = format_username($arr_username);
         }
@@ -208,7 +208,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         //=== print the damn thing ... if it's as a list or as posts...
         $HTMLOUT .= ($as_list_post == 2 ? '
     <tr>
-        <td class="colhead" colspan="4">' . $lang['pm_search_msgfrom'] . '' . ($row[$sender_reciever] == 0 ? $lang['pm_search_sysbot'] : $the_username) . '</td>
+        <td class="colhead" colspan="4">' . $lang['pm_search_msgfrom'] . '' . ($row[ $sender_reciever ] == 0 ? $lang['pm_search_sysbot'] : $the_username) . '</td>
     </tr>
     <tr>
         <td class="' . $class2 . '" colspan="4"><span style="font-weight: bold;">' . $lang['pm_search_subject'] . '</span> 
@@ -221,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <tr>
         <td class="' . $class . '"><img src="./images/readpm.gif" title="' . $lang['pm_search_messg'] . '" alt="' . $lang['pm_search_read'] . '" /></td>
         <td class="' . $class . '"><a class="altlink" href="pm_system.php?action=view_message&amp;id=' . $row['id'] . '">' . ($row['subject'] !== '' ? $subject : $lang['pm_search_nosubject']) . '</a> ' . ($all_boxes ? $lang['pm_search_foundin'] . $arr_box . $lang['pm_search_sign'] : '') . '</td>
-        <td class="' . $class . '">' . ($row[$sender_reciever] == 0 ? $lang['pm_search_sysbot'] : $the_username) . '</td>
+        <td class="' . $class . '">' . ($row[ $sender_reciever ] == 0 ? $lang['pm_search_sysbot'] : $the_username) . '</td>
         <td class="' . $class . '">' . get_date($row['added'], '') . $lang['pm_search_gmt'] . get_date($row['added'], '', 0, 1) . '] </td>
         <td class="' . $class . '"><input type="checkbox" name="pm[]" value="' . (int)$row['id'] . '" /></td>
     </tr>');

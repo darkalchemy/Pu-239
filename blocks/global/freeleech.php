@@ -1,11 +1,13 @@
 <?php
+global $CURUSER, $lang;
+
 /** freeleech countdown **/
 function freeleech_countdown()
 {
-    global $CURUSER, $mc1, $lang, $site_config;
+    global $CURUSER, $cache, $lang, $site_config;
     $htmlout = $freetitle = '';
     $cimg = '<img src="' . $site_config['pic_base_url'] . 'cat_free.gif" alt="FREE!" />';
-    $freeleech['freeleech_countdown'] = $mc1->get_value('freeleech_countdown');
+    $freeleech['freeleech_countdown'] = $cache->get('freeleech_countdown');
     if ($freeleech['freeleech_countdown'] === false) {
         $freeleech['freeleech_sql'] = sql_query('SELECT var, amount FROM freeleech WHERE type = "countdown"') or sqlerr(__FILE__, __LINE__);
         $freeleech['freeleech_countdown'] = [];
@@ -18,19 +20,17 @@ function freeleech_countdown()
             sql_query('UPDATE freeleech SET var = ' . $freeleech['freeleech']['var'] . ', amount = ' . $freeleech['freeleech_countdown']['amount'] . '
                        WHERE type = "countdown"') or sqlerr(__FILE__, __LINE__);
         }
-        $mc1->cache_value('freeleech_countdown', $freeleech['freeleech_countdown'], 0);
+        $cache->set('freeleech_countdown', $freeleech['freeleech_countdown'], 0);
     }
     if (($freeleech['freeleech_countdown']['var'] !== 0) && (TIME_NOW > ($freeleech['freeleech_countdown']['var']))) { // end of freeleech sunday
         $freeleech['freeleech_countdown']['var'] = 0;
         $freeleech['freeleech_countdown']['amount'] = strtotime('next Monday'); // timestamp sunday
         sql_query('UPDATE freeleech SET var = ' . $freeleech['freeleech_countdown']['var'] . ', amount = ' . $freeleech['freeleech_countdown']['amount'] . ' 
                        WHERE type = "countdown"') or sqlerr(__FILE__, __LINE__);
-        $mc1->begin_transaction('freeleech_countdown');
-        $mc1->update_row(false, [
+        $cache->update_row('freeleech_countdown', [
             'var'    => $freeleech['freeleech_countdown']['var'],
             'amount' => $freeleech['freeleech_countdown']['amount'],
-        ]);
-        $mc1->commit_transaction(0);
+        ], 0);
     } elseif (TIME_NOW > ($freeleech['freeleech_countdown']['amount'])) { // freeleech sunday!
         if ($freeleech['freeleech_countdown']['var'] == 0) {
             $freeleech['freeleech_countdown']['var'] = strtotime('next Monday');
@@ -38,11 +38,9 @@ function freeleech_countdown()
             //'.$ahead_by.'
             sql_query('UPDATE freeleech SET var = ' . $freeleech['freeleech_countdown']['var'] . ' 
                        WHERE type = "countdown"') or sqlerr(__FILE__, __LINE__);
-            $mc1->begin_transaction('freeleech_countdown');
-            $mc1->update_row(false, [
+            $cache->update_row('freeleech_countdown', [
                 'var' => $freeleech['freeleech_countdown']['var'],
-            ]);
-            $mc1->commit_transaction(0);
+            ], 0);
             $free_message = 'Freeleech is now active! Making for ' . $ahead_by . ' of Freeleech! Thanks to all ' . $site_config['site_name'] . ' Members!' . 'It will end at Monday 12:00 am UTC';
             //== log shoutbot ircbot
             require_once INCL_DIR . 'bbcode_functions.php';

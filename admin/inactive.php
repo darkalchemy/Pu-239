@@ -5,6 +5,8 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_account_delete.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $site_config, $cache, $lang;
+
 $HTMLOUT = '';
 $lang = array_merge($lang, load_language('inactive'));
 // made by putyn tbdev.net
@@ -27,8 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $username = htmlsafechars($arr['username']);
             $res_del = sql_query(account_delete($userid)) or sqlerr(__FILE__, __LINE__);
             if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) !== false) {
-                $mc1->delete_value('MyUser_' . $userid);
-                $mc1->delete_value('user' . $userid);
+                $cache->delete('MyUser_' . $userid);
+                $cache->delete('user' . $userid);
                 write_log("User: $username Was deleted by {$CURUSER['username']}");
             }
         }

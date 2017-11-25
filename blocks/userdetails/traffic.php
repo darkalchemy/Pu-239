@@ -1,5 +1,6 @@
 <?php
-//==Uploaded/downloaded
+global $site_config, $lang, $user_stats, $id;
+
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     $days = round((TIME_NOW - $user['added']) / 86400);
     if ($site_config['ratio_free']) {
@@ -10,6 +11,3 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_ST
     <tr><td class='rowhead'>{$lang['userdetails_uploaded']}</td><td>" . mksize($user_stats['uploaded']) . " {$lang['userdetails_daily']}" . ($days > 1 ? mksize($user_stats['uploaded'] / $days) : mksize($user_stats['uploaded'])) . "</td></tr>\n";
     }
 }
-//==end
-// End Class
-// End File

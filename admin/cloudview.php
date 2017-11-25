@@ -6,12 +6,14 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $cache, $lang;
+
 $lang = array_merge($lang, load_language('ad_cloudview'));
 $HTMLOUT = '';
 if (isset($_POST['delcloud'])) {
     $do = 'DELETE FROM searchcloud WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['delcloud'])) . ')';
     $res = sql_query($do);
-    $mc1->delete_value('searchcloud');
+    $cache->delete('searchcloud');
     header('Refresh: 3; url=staffpanel.php?tool=cloudview&action=cloudview');
     stderr("{$lang['cloudview_success']}", "{$lang['cloudview_success_del']}");
 }

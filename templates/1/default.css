@@ -499,6 +499,10 @@ textarea {
     flex-wrap: wrap;
 }
 
+li {
+    list-style: none;
+}
+
 .left10 {
     margin-left: .625em;
 }
@@ -999,10 +1003,6 @@ textarea {
         -webkit-border-radius: 0;
         -moz-border-radius: 0;
         border-radius: 0;
-    }
-
-    .level-center li:not(:last-child) {
-        margin-bottom: 15px;
     }
 
     .level-right {

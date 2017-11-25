@@ -4,6 +4,8 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $lang;
+
 $lang = array_merge($lang, load_language('ad_flush'));
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if (!is_valid_id($id)) {

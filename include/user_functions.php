@@ -456,18 +456,18 @@ function min_class($min = UC_MIN, $max = UC_MAX)
  */
 function format_username($user_id, $icons = true, $tooltipper = true)
 {
-    global $site_config, $mc1;
+    global $site_config, $cache;
     if (empty($user_id)) {
         return;
     }
     $user_id = is_array($user_id) && !empty($user_id['id']) ? (int)$user_id['id'] : (int)$user_id;
     if (!is_array($user_id) && is_numeric($user_id)) {
-        if (($user = $mc1->get_value('user_icons_' . $user_id)) === false) {
+        if (($user = $cache->get('user_icons_' . $user_id)) === false) {
             $res = sql_query("SELECT gotgift, gender, id, class, username, donor, title, suspended, warned, leechwarn, downloadpos, chatpost, pirate, king, enabled, perms, avatar
                                 FROM users
                                 WHERE id = " . sqlesc($user_id)) or sqlerr(__FILE__, __LINE__);
             $user = mysqli_fetch_assoc($res);
-            $mc1->cache_value('user_icons_' . $user_id, $user, 60);
+            $cache->set('user_icons_' . $user_id, $user, 60);
         }
     } else {
         file_put_contents('/var/log/nginx/format_username.log', json_encode(debug_backtrace()) . PHP_EOL, FILE_APPEND);
@@ -694,12 +694,12 @@ function get_cache_config_data($the_names, $the_colors, $the_images)
  */
 function clr_forums_cache($post_id)
 {
-    global $mc1, $site_config;
+    global $cache, $site_config;
     $uclass = UC_MIN;
     while ($uclass <= UC_MAX) {
-        $mc1->delete_value('last_post_' . $post_id . '_' . $uclass);
-        $mc1->delete_value('sv_last_post_' . $post_id . '_' . $uclass);
-        $mc1->delete_value('last_posts_' . $uclass);
+        $cache->delete('last_post_' . $post_id . '_' . $uclass);
+        $cache->delete('sv_last_post_' . $post_id . '_' . $uclass);
+        $cache->delete('last_posts_' . $uclass);
         ++$uclass;
     }
 }

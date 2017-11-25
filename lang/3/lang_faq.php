@@ -1,4 +1,5 @@
 <?php
+global $site_config;
 
 $lang = [
     'faq_welcome'            => "
@@ -104,7 +105,6 @@ $lang = [
         <ul>
             <li><a href='#answer_9'>Some useful tips.</a></li>
         </ul>",
-
 
     'faq_siteinfo_body' => "
     <div class='top20 bg-02 padding20 round10'>

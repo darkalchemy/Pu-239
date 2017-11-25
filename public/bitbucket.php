@@ -4,6 +4,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 check_user_status();
+global $CURUSER, $site_config, $cache;
+
 $lang = array_merge(load_language('global'), load_language('bitbucket'));
 $HTMLOUT = '';
 
@@ -55,16 +57,12 @@ if (!isset($_FILES['file'])) {
         }
         $avatar = sqlesc($_GET['avatar']);
         sql_query("UPDATE users SET avatar = $avatar WHERE id = {$CURUSER['id']}") or sqlerr(__FILE__, __LINE__);
-        $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
-        $mc1->update_row(false, [
+        $cache->update_row('MyUser_' . $CURUSER['id'], [
             'avatar' => $_GET['avatar'],
-        ]);
-        $mc1->commit_transaction($site_config['expires']['curuser']);
-        $mc1->begin_transaction('user' . $CURUSER['id']);
-        $mc1->update_row(false, [
+        ], $site_config['expires']['curuser']);
+        $cache->update_row('user' . $CURUSER['id'], [
             'avatar' => $_GET['avatar'],
-        ]);
-        $mc1->commit_transaction($site_config['expires']['user_cache']);
+        ], $site_config['expires']['user_cache']);
         header("Refresh: 0; url={$site_config['baseurl']}/bitbucket.php?images=$type&updated=avatar");
     }
     if (isset($_GET['updated']) && $_GET['updated'] == 'avatar') {

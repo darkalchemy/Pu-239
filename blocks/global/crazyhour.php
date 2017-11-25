@@ -1,14 +1,16 @@
 <?php
+global $site_config;
+
 if (XBT_TRACKER == false and $site_config['crazy_hour'] == true) {
     /**
      * @return string
      */
     function crazyhour()
     {
-        global $CURUSER, $site_config, $mc1, $lang;
+        global $CURUSER, $site_config, $cache, $lang;
         $htmlout = $cz = '';
         $crazy_hour = (TIME_NOW + 3600);
-        if (($crazyhour['crazyhour'] = $mc1->get_value('crazyhour')) === false) {
+        if (($crazyhour['crazyhour'] = $cache->get('crazyhour')) === false) {
             $crazyhour['crazyhour_sql'] = sql_query('SELECT var, amount FROM freeleech WHERE type = "crazyhour"') or sqlerr(__FILE__, __LINE__);
             $crazyhour['crazyhour'] = [];
             if (mysqli_num_rows($crazyhour['crazyhour_sql']) !== 0) {
@@ -16,32 +18,31 @@ if (XBT_TRACKER == false and $site_config['crazy_hour'] == true) {
             } else {
                 $crazyhour['crazyhour']['var'] = random_int(TIME_NOW, (TIME_NOW + 86400));
                 $crazyhour['crazyhour']['amount'] = 0;
-                sql_query('UPDATE freeleech SET var = ' . $crazyhour['crazyhour']['var'] . ', amount = ' . $crazyhour['crazyhour']['amount'] . '
-WHERE type = "crazyhour"') or sqlerr(__FILE__, __LINE__);
+                sql_query('UPDATE freeleech SET var = ' . $crazyhour['crazyhour']['var'] . ', amount = ' . $crazyhour['crazyhour']['amount'] . ' WHERE type = "crazyhour"') or sqlerr(__FILE__, __LINE__);
             }
-            $mc1->cache_value('crazyhour', $crazyhour['crazyhour'], 0);
+            $cache->set('crazyhour', $crazyhour['crazyhour'], 0);
         }
         $cimg = '<img src="' . $site_config['pic_base_url'] . 'cat_free.gif" alt="FREE!" />';
         if ($crazyhour['crazyhour']['var'] < TIME_NOW) { // if crazyhour over
-            $cz_lock = $mc1->add_value('crazyhour_lock', 1, 10);
+            $cz_lock = $cache->add('crazyhour_lock', 1, 10);
             if ($cz_lock !== false) {
                 $crazyhour['crazyhour_new'] = mktime(23, 59, 59, date('m'), date('d'), date('y'));
                 $crazyhour['crazyhour']['var'] = random_int($crazyhour['crazyhour_new'], ($crazyhour['crazyhour_new'] + 86400));
                 $crazyhour['crazyhour']['amount'] = 0;
                 $crazyhour['remaining'] = ($crazyhour['crazyhour']['var'] - TIME_NOW);
                 sql_query('UPDATE freeleech SET var = ' . $crazyhour['crazyhour']['var'] . ', amount = ' . $crazyhour['crazyhour']['amount'] . ' WHERE type = "crazyhour"') or sqlerr(__FILE__, __LINE__);
-                $mc1->cache_value('crazyhour', $crazyhour['crazyhour'], 0);
+                $cache->set('crazyhour', $crazyhour['crazyhour'], 0);
                 write_log('Next [color=#FFCC00][b]Crazyhour[/b][/color] is at ' . get_date($crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'LONG') . '');
-                $text = 'Next [color=orange][b]Crazyhour[/b][/color] is at ' . get_date($crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'LONG');
+                $msg = 'Next [color=orange][b]Crazyhour[/b][/color] is at ' . get_date($crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'LONG');
                 autoshout($msg);
             }
         } elseif (($crazyhour['crazyhour']['var'] < $crazy_hour) && ($crazyhour['crazyhour']['var'] >= TIME_NOW)) { // if crazyhour
             if ($crazyhour['crazyhour']['amount'] !== 1) {
                 $crazyhour['crazyhour']['amount'] = 1;
-                $cz_lock = $mc1->add_value('crazyhour_lock', 1, 10);
+                $cz_lock = $cache->add('crazyhour_lock', 1, 10);
                 if ($cz_lock !== false) {
                     sql_query('UPDATE freeleech SET amount = ' . $crazyhour['crazyhour']['amount'] . ' WHERE type = "crazyhour"') or sqlerr(__FILE__, __LINE__);
-                    $mc1->cache_value('crazyhour', $crazyhour['crazyhour'], 0);
+                    $cache->set('crazyhour', $crazyhour['crazyhour'], 0);
                     write_log('w00t! It\'s [color=#FFCC00][b]Crazyhour[/b][/color]!');
                     $msg = 'w00t! It\'s [color=orange][b]Crazyhour[/b][/color] :w00t:';
                     autoshout($msg);
@@ -66,5 +67,3 @@ WHERE type = "crazyhour"') or sqlerr(__FILE__, __LINE__);
 
     $htmlout .= crazyhour();
 }
-// End Class
-// End File

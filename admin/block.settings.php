@@ -2,17 +2,9 @@
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_block_settings'));
-global $site_config;
+global $site_config, $lang, $BLOCKS;
 
-$stdfoot = [
-    'js' => [
-    ],
-];
-$stdhead = [
-    'css' => [
-    ],
-];
+$lang = array_merge($lang, load_language('ad_block_settings'));
 
 $list = [
     'ie_user_alert',
@@ -289,7 +281,6 @@ $contents[] = "
 $level1 = "
                 <div class='level-center is-inline-flex'>";
 
-
 foreach ($contents as $content) {
     $level1 .= "
                     <div class='margin10 w-20'>
@@ -388,7 +379,6 @@ $contents[] = "
                             <div class='w-100'>{$lang['block_karma_contributions_set']}</div>";
 $level2 = "
                 <div class='level-center is-inline-flex'>";
-
 
 foreach ($contents as $content) {
     $level2 .= "
@@ -631,7 +621,6 @@ $contents[] = "
 $level3 = "
                 <div class='level-center is-inline-flex'>";
 
-
 foreach ($contents as $content) {
     $level3 .= "
                     <div class='margin10 w-20'>
@@ -656,7 +645,7 @@ $HTMLOUT .= "
 
 $HTMLOUT = wrapper($HTMLOUT);
 $HTMLOUT = preg_replace_callback('|<#(.*?)#>|', 'template_out', $HTMLOUT);
-echo stdhead($lang['block_stdhead'], true, $stdhead), $HTMLOUT, stdfoot($stdfoot);
+echo stdhead($lang['block_stdhead']), $HTMLOUT, stdfoot();
 
 /**
  * @param $matches
@@ -665,8 +654,8 @@ echo stdhead($lang['block_stdhead'], true, $stdhead), $HTMLOUT, stdfoot($stdfoot
  */
 function template_out($matches)
 {
-    global $BLOCKS, $lang;
+    global $BLOCKS;
     return "
-    <input type='checkbox' id='{$matches[1]}' name='{$matches[1]}' value='1'" . ($BLOCKS[$matches[1]] == 1 ? ' checked' : '') . " />
+    <input type='checkbox' id='{$matches[1]}' name='{$matches[1]}' value='1'" . ($BLOCKS[ $matches[1] ] == 1 ? ' checked' : '') . " /> 
     <label for='{$matches[1]}'></label>";
 }

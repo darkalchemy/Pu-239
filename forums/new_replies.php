@@ -6,7 +6,7 @@ $colour = $topicpoll = '';
 $links = '<span><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';
 $HTMLOUT .= '<h1>' . $lang['nr_new_replys_to_treads'] . ' ' . $lang['nr_youve_posted_in'] . '</h1>' . $links;
 //$time = $readpost_expiry;
-$res_count = sql_query('SELECT t.id, t.last_post FROM topics AS t LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN forums as f ON f.id = t.forum_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' f.min_class_read <= ' . $CURUSER['class']);
+$res_count = sql_query('SELECT t.id, t.last_post FROM topics AS t LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN forums AS f ON f.id = t.forum_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' f.min_class_read <= ' . $CURUSER['class']);
 //=== lets do the loop / Check if post is read / get count there must be a beter way to do this lol
 $count = 0;
 while ($arr_count = mysqli_fetch_assoc($res_count)) {
@@ -41,8 +41,8 @@ if ($count == 0) {
    u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king
    FROM topics AS t
    LEFT JOIN posts AS p ON t.last_post = p.id
-   LEFT JOIN forums as f ON f.id = t.forum_id
-   LEFT JOIN users AS u on u.id = t.user_id
+   LEFT JOIN forums AS f ON f.id = t.forum_id
+   LEFT JOIN users AS u ON u.id = t.user_id
    WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' f.min_class_read <= ' . $CURUSER['class'] . ' 
    ORDER BY t.last_post DESC ' . $LIMIT);
     $HTMLOUT .= $the_top_and_bottom . '<table class="table table-bordered table-striped">

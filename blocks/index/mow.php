@@ -1,14 +1,15 @@
 <?php
-global $mc1, $lang, $site_config;
+global $cache, $lang, $site_config;
+
 $categorie = genrelist();
 foreach ($categorie as $key => $value) {
-    $change[$value['id']] = [
+    $change[ $value['id'] ] = [
         'id'    => $value['id'],
         'name'  => $value['name'],
         'image' => $value['image'],
     ];
 }
-if (($motw_cached = $mc1->get_value('top_movie_2')) === false) {
+if (($motw_cached = $cache->get('top_movie_2')) === false) {
     $motw = sql_query("SELECT t.added, t.checked_by, t.id, t.seeders, t.poster, t.leechers, t.name, t.size, t.category, c.name AS cat, c.image, t.free, t.silver, t.subs, t.times_completed, t.added, t.size
                         FROM torrents AS t
                         LEFT JOIN categories AS c ON t.category = c.id
@@ -17,7 +18,7 @@ if (($motw_cached = $mc1->get_value('top_movie_2')) === false) {
     while ($motw_cache = mysqli_fetch_assoc($motw)) {
         $motw_cached[] = $motw_cache;
     }
-    $mc1->cache_value('top_movie_2', $motw_cached, 0);
+    $cache->set('top_movie_2', $motw_cached, 0);
 }
 
 if (count($motw_cached) > 0) {
@@ -45,8 +46,8 @@ if (count($motw_cached) > 0) {
                 $torrname = substr($torrname, 0, 50) . '...';
             }
             $poster = empty($m_w['poster']) ? "<img src='{$site_config['pic_base_url']}noposter.png' class='tooltip-poster' />" : "<img src='" . htmlsafechars($m_w['poster']) . "' class='tooltip-poster' />";
-            $mw['cat_name'] = htmlsafechars($change[$m_w['category']]['name']);
-            $mw['cat_pic'] = htmlsafechars($change[$m_w['category']]['image']);
+            $mw['cat_name'] = htmlsafechars($change[ $m_w['category'] ]['name']);
+            $mw['cat_pic'] = htmlsafechars($change[ $m_w['category'] ]['image']);
 
             $HTMLOUT .= "
                         <tr>

@@ -21,7 +21,6 @@ $HTMLOUT = main_div("
     <span class='text-turquoise'>event=started</span>
 </p>
 
-
 Let's dissect this:
 <ul class='disc left20'>
     <li class='text-lightblue'>

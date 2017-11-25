@@ -3,6 +3,8 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
+global $site_config;
+
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('needseed'));
 $possible_actions = [
@@ -16,7 +18,7 @@ if (!in_array($needed, $possible_actions)) {
 //$needed = isset($_GET["needed"]) ? htmlsafechars($_GET["needed"]) : '';
 $categorie = genrelist();
 foreach ($categorie as $key => $value) {
-    $change[$value['id']] = [
+    $change[ $value['id'] ] = [
         'id'    => $value['id'],
         'name'  => $value['name'],
         'image' => $value['image'],
@@ -67,8 +69,8 @@ if ($needed == 'leechers') {
         while ($arr = mysqli_fetch_assoc($res)) {
             $What_ID = (XBT_TRACKER === true ? $arr['fid'] : $arr['torrent']);
             $What_User_ID = (XBT_TRACKER === true ? $arr['uid'] : $arr['userid']);
-            $needseed['cat_name'] = htmlsafechars($change[$arr['category']]['name']);
-            $needseed['cat_pic'] = htmlsafechars($change[$arr['category']]['image']);
+            $needseed['cat_name'] = htmlsafechars($change[ $arr['category'] ]['name']);
+            $needseed['cat_pic'] = htmlsafechars($change[ $arr['category'] ]['image']);
             $cat = "<img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/{$needseed['cat_pic']}' alt='{$needseed['cat_name']}' title='{$needseed['cat_name']}' />";
             $torrname = htmlsafechars(CutName($arr['name'], 80));
             $peers = (int)$arr['seeders'] . ' seeder' . ((int)$arr['seeders'] > 1 ? 's' : '') . ', ' . (int)$arr['leechers'] . ' leecher' . ((int)$arr['leechers'] > 1 ? 's' : '');
@@ -108,8 +110,8 @@ if ($needed == 'leechers') {
                 </tr>";
         $body = '';
         while ($arr = mysqli_fetch_assoc($res)) {
-            $needseed['cat_name'] = htmlsafechars($change[$arr['category']]['name']);
-            $needseed['cat_pic'] = htmlsafechars($change[$arr['category']]['image']);
+            $needseed['cat_name'] = htmlsafechars($change[ $arr['category'] ]['name']);
+            $needseed['cat_pic'] = htmlsafechars($change[ $arr['category'] ]['image']);
             $cat = "<img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/{$needseed['cat_pic']}' alt='{$needseed['cat_name']}' title='{$needseed['cat_name']}' />";
             $torrname = htmlsafechars(CutName($arr['name'], 80));
             $body .= "

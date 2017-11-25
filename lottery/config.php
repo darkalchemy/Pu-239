@@ -3,10 +3,10 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'html_functions.php';
 class_check(UC_STAFF);
-global $mc1, $site_config;
+global $cache, $site_config;
 $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($lconf)) {
-    $lottery_config[$ac['name']] = $ac['value'];
+    $lottery_config[ $ac['name'] ] = $ac['value'];
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ([
@@ -15,17 +15,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                  'user_tickets'  => 0,
                  'end_date'      => 0,
              ] as $key => $type) {
-        if (isset($_POST[$key]) && ($type == 0 && $_POST[$key] == 0 || $type == 1 && count($_POST[$key]) == 0)) {
+        if (isset($_POST[ $key ]) && ($type == 0 && $_POST[ $key ] == 0 || $type == 1 && count($_POST[ $key ]) == 0)) {
             setSessionVar('is-warning', 'You forgot to fill some data');
         }
     }
     foreach ($lottery_config as $c_name => $c_value) {
-        if (isset($_POST[$c_name]) && $_POST[$c_name] != $c_value) {
-            $update[] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($_POST[$c_name]) ? join('|', $_POST[$c_name]) : $_POST[$c_name]) . ')';
+        if (isset($_POST[ $c_name ]) && $_POST[ $c_name ] != $c_value) {
+            $update[] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($_POST[ $c_name ]) ? join('|', $_POST[ $c_name ]) : $_POST[ $c_name ]) . ')';
         }
     }
-    if (sql_query('INSERT INTO lottery_config(name,value) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY update value=values(value)')) {
-        $mc1->delete_value('lottery_info_');
+    if (sql_query('INSERT INTO lottery_config(name,value) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value)')) {
+        $cache->delete('lottery_info_');
         setSessionVar('is-success', 'Lottery configuration was saved!');
     } else {
         setSessionVar('is-warning', 'There was an error while executing the update query. Mysql error: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));

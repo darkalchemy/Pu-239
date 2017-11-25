@@ -4,6 +4,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bt_client_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
+global $site_config;
+
 $lang = array_merge(load_language('global'), load_language('peerlist'));
 $id = (int)$_GET['id'];
 if (!isset($id) || !is_valid_id($id)) {

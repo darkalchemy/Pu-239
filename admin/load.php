@@ -3,6 +3,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $site_config, $lang;
+
 $lang = array_merge($lang, load_language('ad_index'));
 $HTMLOUT = '';
 /**
@@ -100,15 +102,15 @@ function loadavg($return_all = false)
         fclose($fd);
         $loadavg = explode(' ', $loadavg);
         if ($return_all) {
-            $res['last1'] = $loadavg[INTERVAL_1_MIN];
-            $res['last5'] = $loadavg[INTERVAL_5_MIN];
-            $res['last15'] = $loadavg[INTERVAL_15_MIN];
+            $res['last1'] = $loadavg[ INTERVAL_1_MIN ];
+            $res['last5'] = $loadavg[ INTERVAL_5_MIN ];
+            $res['last15'] = $loadavg[ INTERVAL_15_MIN ];
             $active = explode('/', $loadavg[3]);
             $res['tasks'] = $active[0];
             $res['processes'] = $active[1];
             $res['lastpid'] = $loadavg[4];
         } else {
-            $res = $loadavg[DEFAULT_AVG];
+            $res = $loadavg[ DEFAULT_AVG ];
         }
     }
 

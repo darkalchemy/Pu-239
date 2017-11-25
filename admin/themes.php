@@ -2,6 +2,8 @@
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 class_check(UC_MAX);
+global $site_config, $lang;
+
 $lang = array_merge($lang, load_language('ad_themes'));
 $HTML = '';
 if (!function_exists('html')) {
@@ -42,7 +44,7 @@ if (isset($_GET['act'])) {
             <tr><td class='rowhead'>{$lang['themes_name']}</td>
          <td><input type='text' value='" . htmlsafechars($TEM['name']) . "' name='title' /></td></tr>
             <tr><td class='rowhead'>{$lang['themes_is_folder']}</td><td>
-            <b>" . (file_exists(TEMPLATE_DIR .  (int)$TEM['id'] . '/template.php') ? "{$lang['themes_file_exists']}" : "{$lang['themes_not_exists']}") . "</b>
+            <b>" . (file_exists(TEMPLATE_DIR . (int)$TEM['id'] . '/template.php') ? "{$lang['themes_file_exists']}" : "{$lang['themes_not_exists']}") . "</b>
             </td></tr>
             <tr><td class='colhead' colspan='2'><input type='submit' value='{$lang['themes_save']}' /></td></tr></table></form>
             ";

@@ -1,7 +1,9 @@
 <?php
+global $CURUSER, $site_config;
+
 $stdfoot = [
     'js' => [
-        'popup',
+//        'popup',
     ],
 ];
 $res = sql_query('SELECT o.*, o.added as utadded, u.username 

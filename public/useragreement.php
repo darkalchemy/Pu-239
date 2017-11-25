@@ -8,6 +8,8 @@ if (!getSessionVar('LoggedIn')) {
 } else {
     check_user_status();
 }
+global $site_config;
+
 $lang = array_merge(load_language('global'), load_language('useragreement'));
 
 $HTMLOUT = "

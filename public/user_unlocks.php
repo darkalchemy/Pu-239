@@ -3,16 +3,18 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
+global $CURUSER, $site_config, $cache;
+
 $stdfoot = [
     'js' => [
-        'custom-form-elements',
+//        'custom-form-elements',
     ],
 ];
 $stdhead = [
     'css' => [
-        'user_blocks',
-        'checkbox',
-        'hide',
+//        'user_blocks',
+//        'checkbox',
+//        'hide',
     ],
 ];
 
@@ -50,21 +52,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                      WHERE id = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_assoc($res);
     $row['perms'] = (int)$row['perms'];
-    $mc1->begin_transaction('MyUser_' . $id);
-    $mc1->update_row(false, [
+    $cache->update_row('MyUser_' . $id, [
         'perms' => $row['perms'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['curuser']);
-    $mc1->begin_transaction('user_' . $id);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['curuser']);
+    $cache->update_row('user_' . $id, [
         'perms' => $row['perms'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_cache']);
+    ], $site_config['expires']['user_cache']);
     header('Location: ' . $site_config['baseurl'] . '/user_unlocks.php');
     exit();
 }
-$checkbox_unlock_moods = (($CURUSER['perms'] & bt_options::UNLOCK_MORE_MOODS) ? ' checked="checked"' : '');
-$checkbox_unlock_stealth = (($CURUSER['perms'] & bt_options::PERMS_STEALTH) ? ' checked="checked"' : '');
+$checkbox_unlock_moods = (($CURUSER['perms'] & bt_options::UNLOCK_MORE_MOODS) ? ' checked' : '');
+$checkbox_unlock_stealth = (($CURUSER['perms'] & bt_options::PERMS_STEALTH) ? ' checked' : '');
 $HTMLOUT = '';
 $HTMLOUT .= '
 <div class="container">

@@ -6,7 +6,7 @@
  */
 function remove_torrent_peers($id)
 {
-    global $mc1;
+    global $cache;
     if (!is_int($id) || $id < 1) {
         return false;
     }
@@ -14,9 +14,9 @@ function remove_torrent_peers($id)
     $seed_key = 'torrents::seeds:::' . $id;
     $leech_key = 'torrents::leechs:::' . $id;
     $comp_key = 'torrents::comps:::' . $id;
-    $delete += $mc1->delete_value($seed_key);
-    $delete += $mc1->delete_value($leech_key);
-    $delete += $mc1->delete_value($comp_key);
+    $delete += $cache->delete($seed_key);
+    $delete += $cache->delete($leech_key);
+    $delete += $cache->delete($comp_key);
 
     return (bool)$delete;
 }
@@ -28,16 +28,16 @@ function remove_torrent_peers($id)
  */
 function remove_torrent($infohash)
 {
-    global $mc1;
+    global $cache;
     if (strlen($infohash) != 20 || !bin2hex($infohash)) {
         return false;
     }
     $key = 'torrent::hash:::' . md5($infohash);
-    $torrent = $mc1->get_value($key);
+    $torrent = $cache->get($key);
     if ($torrent === false) {
         return false;
     }
-    $mc1->delete_value($key);
+    $cache->delete($key);
     if (is_array($torrent)) {
         remove_torrent_peers($torrent['id']);
     }

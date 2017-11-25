@@ -7,14 +7,8 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once CACHE_DIR . 'timezones.php';
 check_user_status();
-$stdfoot = [
-    'js' => [
-    ],
-];
-$stdhead = [
-    'css' => [
-    ],
-];
+global $CURUSER, $site_config;
+
 $lang = array_merge(load_language('global'), load_language('usercp'));
 $HTMLOUT = $stylesheets = $wherecatina = '';
 $templates = sql_query('SELECT id, name FROM stylesheets ORDER BY id');
@@ -783,4 +777,4 @@ $HTMLOUT .= '
             </div>
         </div>';
 
-echo stdhead(htmlsafechars($CURUSER['username'], ENT_QUOTES) . "{$lang['usercp_stdhead']} ", true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead(htmlsafechars($CURUSER['username'], ENT_QUOTES) . "{$lang['usercp_stdhead']} ") . wrapper($HTMLOUT) . stdfoot();

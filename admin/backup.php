@@ -4,6 +4,8 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $site_config, $lang;
+
 /* add your ids and uncomment this check*/
 $allowed_ids = [
     1,
@@ -11,7 +13,6 @@ $allowed_ids = [
 if (!in_array($CURUSER['id'], $allowed_ids)) {
     stderr($lang['backup_stderr'], $lang['backup_stderr1']);
 }
-global $site_config, $CURUSER, $lang;
 
 $lang = array_merge($lang, load_language('ad_backup'));
 

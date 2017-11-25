@@ -185,7 +185,7 @@ switch ($action) {
             $break_down_poll_options = explode("\n", $poll_answers);
             //=== be sure there are no blank options
             for ($i = 0; $i < count($break_down_poll_options); ++$i) {
-                if (strlen($break_down_poll_options[$i]) < 2) {
+                if (strlen($break_down_poll_options[ $i ]) < 2) {
                     stderr($lang['gl_error'], $lang['fe_no_blank_lines_in_poll']);
                 }
             }
@@ -280,8 +280,8 @@ switch ($action) {
 	<tr>		
 		<td></td>
 		<td><span>' . $lang['poll_change_vote'] . ':</span></td>
-		<td><input name="change_vote" value="yes" type="radio"' . ($change_vote === 'yes' ? ' checked="checked"' : '') . ' />Yes 
-													<input name="change_vote" value="no" type="radio"' . ($change_vote === 'no' ? ' checked="checked"' : '') . ' />No   <br> ' . $lang['poll_allow_members_to_change_their_vote'] . '? ' . $lang['poll_default_is'] . ' "no"
+		<td><input name="change_vote" value="yes" type="radio"' . ($change_vote === 'yes' ? ' checked' : '') . ' />Yes 
+													<input name="change_vote" value="no" type="radio"' . ($change_vote === 'no' ? ' checked' : '') . ' />No   <br> ' . $lang['poll_allow_members_to_change_their_vote'] . '? ' . $lang['poll_default_is'] . ' "no"
 	</td>
 	</tr>
 	<tr>
@@ -426,7 +426,7 @@ switch ($action) {
             $break_down_poll_options = explode("\n", $poll_answers);
             //=== be sure there are no blank options
             for ($i = 0; $i < count($break_down_poll_options); ++$i) {
-                if (strlen($break_down_poll_options[$i]) < 2) {
+                if (strlen($break_down_poll_options[ $i ]) < 2) {
                     stderr($lang['gl_error'], $lang['fe_no_blank_lines_in_poll']);
                 }
             }
@@ -533,8 +533,8 @@ switch ($action) {
 	<tr>		
 		<td></td>
 		<td><span>' . $lang['poll_change_vote'] . ':</span></td>
-		<td><input name="change_vote" value="yes" type="radio"' . ($change_vote === 'yes' ? ' checked="checked"' : '') . ' />Yes 
-													<input name="change_vote" value="no" type="radio"' . ($change_vote == 'no' ? ' checked="checked"' : '') . ' />No   <br> ' . $lang['poll_allow_members_to_change_their_vote'] . '? ' . $lang['poll_default_is'] . ' "no"</td>
+		<td><input name="change_vote" value="yes" type="radio"' . ($change_vote === 'yes' ? ' checked' : '') . ' />Yes 
+													<input name="change_vote" value="no" type="radio"' . ($change_vote == 'no' ? ' checked' : '') . ' />No   <br> ' . $lang['poll_allow_members_to_change_their_vote'] . '? ' . $lang['poll_default_is'] . ' "no"</td>
 	</tr>
 	<tr>
 	<td class="forum_head_dark" colspan="3">

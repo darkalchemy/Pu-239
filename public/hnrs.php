@@ -8,7 +8,7 @@ require_once INCL_DIR . 'function_onlinetime.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $site_config, $CURUSER, $lang;
+global $site_config, $CURUSER, $cache, $lang;
 
 $HTMLOUT = '';
 
@@ -39,7 +39,6 @@ if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
 }
 $cost = get_one_row('bonus', 'points', "WHERE bonusname = 'Ratio Fix'");
 
-// disable buyout by bytes
 unset($_GET['bytes']);
 
 if (isset($_GET['torrentid'])) {
@@ -51,7 +50,7 @@ if (isset($_GET['torrentid'])) {
     $download = $result['downloaded'];
     $diff = $upload - $download;
     $bonuscomment = $result['bonuscomment'];
-    if ($CURUSER['id'] === $userid || hasAccess($CURUSER, UC_ADMINISTRATOR)) {
+    if ($CURUSER['id'] === $userid || $CURUSER['class'] >= UC_ADMINISTRATOR) {
         $bp = (int)$result['seedbonus'];
     } else {
         $bp = 0;
@@ -61,36 +60,26 @@ if (isset($_GET['torrentid'])) {
     if ($cost > $bp) {
         stderr('Error', "You do not have enough bonus points!<br><br>Back to your <a class='altlink' href='hnrs.php'>Hit and Runs</a> page.");
     }
-    //=== trade for one torrent 1:1 ratio
     $torrent_number = (int)$_GET['torrentid'];
     $res_snatched = sql_query('SELECT s.uploaded, s.downloaded, t.name, t.size FROM snatched AS s LEFT JOIN torrents AS t ON t.id = s.torrentid WHERE s.userid = ' . sqlesc($userid) . ' AND torrentid = ' . sqlesc($torrent_number) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $arr_snatched = mysqli_fetch_assoc($res_snatched);
-    //if ($arr_snatched['size'] > 6442450944)
     $downloaded = $site_config['ratio_free'] ? (int)$arr_snatched['size'] : (int)$arr_snatched['downloaded'];
-//	if (($downloaded - $arr_snatched['uploaded']) > 6442450944)
-//		stderr("Error", mksize($downloaded - $arr_snatched['uploaded']) . " - 1:1 ratio only works on torrents with download - upload smaller then 6GB!<br><br>Back to your <a class='altlink' href='hnrs.php'>Hit and Runs</a> page.");
     if ($arr_snatched['name'] == '') {
         stderr('Error', "No torrent with that ID!<br>Back to your <a class='altlink' href='hnrs.php'>Hit and Runs</a> page.");
     }
-//	if ($arr_snatched['uploaded'] >= $downloaded)
-//		stderr("Error", "Your ratio on that torrent is fine, you must have selected the wrong torrent ID.<br>Back to your <a class='altlink' href='hnrs.php'>Hit and Runs</a> page.");
     $download_amt = $site_config['ratio_free'] ? ', downloaded = ".sqlesc($downloaded)."' : '';
-//	sql_query("UPDATE snatched SET hit_and_run = 0, mark_of_cain = 'no', uploaded = ".sqlesc($downloaded)." $download_amt WHERE userid = ".sqlesc($userid)." AND torrentid = ".sqlesc($torrent_number)) or sqlerr(__FILE__, __LINE__);
     sql_query("UPDATE snatched SET hit_and_run = 0, bought_out_hnr = 'yes', mark_of_cain = 'no' WHERE userid = " . sqlesc($userid) . ' AND torrentid = ' . sqlesc($torrent_number)) or sqlerr(__FILE__, __LINE__);
-//	$difference = $downloaded - $arr_snatched['uploaded'];
     $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $cost . ' Points for 1 to 1 ratio on torrent: ' . htmlsafechars($arr_snatched['name']) . ' ' . $torrent_number . ".\n " . $bonuscomment;
-//	sql_query("UPDATE users SET uploaded = ".sqlesc($upload + $difference).", bonuscomment = ".sqlesc($bonuscomment).", seedbonus = ".sqlesc($seedbonus)." WHERE id = ".sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE users SET bonuscomment = ' . sqlesc($bonuscomment) . ', seedbonus = ' . sqlesc($seedbonus) . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 
-    $mc1->begin_transaction('userstats_' . $userid);
-//	$mc1->update_row(false, array('uploaded' => $upload + $difference, 'seedbonus' => $seedbonus));
-    $mc1->update_row(false, ['seedbonus' => $seedbonus]);
-    $mc1->commit_transaction($site_config['expires']['u_stats']);
-    $mc1->begin_transaction('user_stats_' . $userid);
-//	$mc1->update_row(false, array('uploaded' => $upload + $difference, 'seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment));
-    $mc1->update_row(false, ['seedbonus' => $seedbonus, 'bonuscomment' => $bonuscomment]);
-    $mc1->commit_transaction($site_config['expires']['user_stats']);
-    $mc1->delete_value('userhnrs_' . $userid);
+    $cache->update_row('userstats_' . $userid, [
+        'seedbonus' => $seedbonus,
+    ], $site_config['expires']['u_stats']);
+    $cache->update_row('user_stats_' . $userid, [
+        'seedbonus'    => $seedbonus,
+        'bonuscomment' => $bonuscomment,
+    ], $site_config['expires']['user_stats']);
+    $cache->delete('userhnrs_' . $userid);
     header('Refresh: 0; url=hnrs.php?userid=' . $userid . '&ratio_success=1');
     exit();
 }
@@ -256,7 +245,6 @@ if (mysqli_num_rows($r) > 0) {
 			<td style='padding: 5px'><img height='42px' class='tnyrad' src='{$site_config['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
 			<td align='left'><a class='altlink' href='details.php?id=" . (int)$a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
 				<br><font color='.$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $userid == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00') ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['seeder'] == 'yes' ? "&#160;<font color='limegreen'> [<b>{$lang['userdetails_c_seeding']}</b>]</font>" : $hit_n_run . '&#160;' . $mark_of_cain . $needs_seed) : '') . "
-				<br>$staff_removed $user_bought
 			</td>
 			<td class='has-text-center'>" . (int)$a['seeders'] . "</td>
 			<td class='has-text-center'>" . (int)$a['leechers'] . "</td>

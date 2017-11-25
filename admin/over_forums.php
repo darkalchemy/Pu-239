@@ -3,6 +3,8 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $lang;
+
 $lang = array_merge($lang, load_language('ad_over_forums'));
 $HTMLOUT = $over_forums = $count = $min_class_viewer = $sorted = '';
 $main_links = '<p><span style="font-weight: bold;">' . $lang['ad_over_forum'] . '</span> :: 
@@ -32,7 +34,7 @@ switch ($action) {
         if (!$id) {
             stderr($lang['std_err'], $lang['std_err_id']);
         }
-        sql_query('DELETE FROM over_forums where id = ' . sqlesc($id));
+        sql_query('DELETE FROM over_forums WHERE id = ' . sqlesc($id));
         header('Location: staffpanel.php?tool=over_forums');
         exit();
         break;
@@ -67,7 +69,7 @@ switch ($action) {
     //=== edit over forum stuff
 
     case 'edit_forum_page':
-        $res = sql_query('SELECT * FROM over_forums where id =' . sqlesc($id));
+        $res = sql_query('SELECT * FROM over_forums WHERE id =' . sqlesc($id));
         if (mysqli_num_rows($res) > 0) {
             $row = mysqli_fetch_array($res);
             $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=over_forums&amp;action=over_forums">

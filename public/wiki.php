@@ -5,11 +5,6 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('wiki'));
-//$stdhead = array(/** include js **/'js' => array(''));
-$stdhead = [
-    'css' => [
-    ],
-];
 $HTMLOUT = '';
 global $CURUSER;
 /**

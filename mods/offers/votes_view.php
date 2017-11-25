@@ -8,7 +8,7 @@ $row = mysqli_fetch_assoc($res2);
 $count = (int)$row['c'];
 if ($count > 0) {
     $pager = pager(25, $count, 'viewoffers.php?');
-    $res = sql_query('SELECT select u.id as userid, o.id as offerid, o.offer, o.added
+    $res = sql_query('SELECT SELECT u.id AS userid, o.id AS offerid, o.offer, o.added
                         FROM voted_offers AS v
                         INNER JOIN users AS u ON v.userid = u.id
                         INNER JOIN offers AS o ON v.offerid = o.id

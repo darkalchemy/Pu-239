@@ -5,15 +5,17 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
+global $CURUSER, $cache;
+
 $lang = array_merge(load_language('global'), load_language('contactstaff'));
 $stdhead = [
     'css' => [
-        get_file('contactstaff_css')
+        get_file('contactstaff_css'),
     ],
 ];
 $stdfoot = [
     'js' => [
-        get_file('upload_js')
+        get_file('upload_js'),
     ],
 ];
 
@@ -35,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!$fail) {
         $sql = 'INSERT INTO staffmessages (sender, added, msg, subject) VALUES(' . sqlesc($CURUSER['id']) . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
         if (sql_query($sql)) {
-            $mc1->delete_value('staff_mess_');
+            $cache->delete('staff_mess_');
             header('Refresh: 3; url=' . urldecode($returnto)); //redirect but wait 3 seconds
             setSessionVar('is-success', $lang['contactstaff_success_msg']);
         } else {
@@ -66,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $body = "
                     <tr>
                         <td colspan='2'>" .
-                            BBcode($msg) . "
+        BBcode($msg) . "
                        </td>
                     </tr>
                     <tr>

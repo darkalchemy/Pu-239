@@ -1,5 +1,6 @@
 <?php
-//=== invite stuff - who invited this member by snuggles
+global $CURUSER, $site_config, $lang;
+
 if ($user['invitedby'] > 0) {
     //=== Fetch inviter info
     $res_get_invitor = sql_query('SELECT id, class, username, warned, suspended, enabled, donor, chatpost, leechwarn, pirate, king FROM users WHERE id=' . sqlesc($user['invitedby'])) or sqlerr(__FILE__, __LINE__);

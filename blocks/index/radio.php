@@ -6,7 +6,7 @@ $HTMLOUT .= "
         <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>Radio</legend>
         <div class='bordered'>
             <div class='alt_bordered bg-00 has-text-centered'>" .
-                radioinfo($radio) . "
+    radioinfo($radio) . "
             </div>
         </div>
     </fieldset>";

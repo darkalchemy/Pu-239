@@ -7,7 +7,7 @@
  * @link https://blueimp.net/ajax/
  */
 
-global $site_config, $mc1;
+global $site_config, $cache;
 
 // List containing the custom channels:
 $channels = [

@@ -5,7 +5,9 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-$lang = array_merge(load_language('global'));
+global $CURUSER, $site_config, $userid;
+
+$lang = load_language('global');
 $HTMLOUT = $user = '';
 $action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : '';
 $stdhead = [
@@ -23,7 +25,7 @@ $stdhead = [
 function usercommenttable($rows)
 {
     $htmlout = '';
-    global $CURUSER, $site_config, $userid, $lang;
+    global $CURUSER, $site_config, $userid;
     $htmlout .= begin_main_frame();
     $htmlout .= begin_frame();
     $count = 0;

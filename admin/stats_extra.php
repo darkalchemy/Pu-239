@@ -4,6 +4,8 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $site_config, $lang;
+
 $lang = array_merge($lang, load_language('ad_stats_extra'));
 $inbound = array_merge($_GET, $_POST);
 if (!isset($inbound['mode'])) {
@@ -451,7 +453,7 @@ function make_month()
     for ($m = 1; $m <= 12; ++$m) {
         $return[] = [
             $m,
-            $month_names[$m],
+            $month_names[ $m ],
         ];
     }
 

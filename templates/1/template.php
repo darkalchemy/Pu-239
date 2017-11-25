@@ -6,9 +6,9 @@
  *
  * @return string
  */
-function stdhead($title = '', $msgalert = true, $stdhead = false)
+function stdhead($title = '', $stdhead = null)
 {
-    global $CURUSER, $site_config, $lang, $free, $query_stat, $querytime, $mc1, $BLOCKS, $CURBLOCK, $mood;
+    global $CURUSER, $site_config, $lang, $free, $query_stat, $querytime, $cache, $BLOCKS, $CURBLOCK, $mood;
 
     unsetSessionVar('Channel');
     if (!$site_config['site_online']) {
@@ -157,23 +157,23 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
  */
 function stdfoot($stdfoot = false)
 {
-    global $CURUSER, $site_config, $start, $query_stat, $queries, $mc1, $querytime, $lang;
+    global $CURUSER, $site_config, $start, $query_stat, $queries, $cache, $querytime, $lang;
     $debug = (SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
-    $cachetime = ($mc1->Time / 1000);
+    $cachetime = ''; //($cache->Time / 1000);
     $seconds = microtime(true) - $start;
     $r_seconds = round($seconds, 5);
     $phptime = $seconds - $querytime - $cachetime;
     $percentphp = number_format(($phptime / $seconds) * 100, 2);
     $percentmc = number_format(($cachetime / $seconds) * 100, 2);
-    if (($MemStats = $mc1->get_value('mc_hits')) === false) {
-        $MemStats = $mc1->getStats();
+    if (($MemStats = $cache->get('mc_hits')) === false) {
+        $MemStats = ''; //$cache->getStats();
         $MemStats['Hits'] = (($MemStats['get_hits'] / $MemStats['cmd_get'] < 0.7) ? '' : number_format(($MemStats['get_hits'] / $MemStats['cmd_get']) * 100, 3));
-        $mc1->cache_value('mc_hits', $MemStats, 10);
+        $cache->set('mc_hits', $MemStats, 10);
     }
     if ($debug) {
-        if (($uptime = $mc1->get_value('uptime')) === false) {
+        if (($uptime = $cache->get('uptime')) === false) {
             $uptime = `uptime`;
-            $mc1->cache_value('uptime', $uptime, 25);
+            $cache->set('uptime', $uptime, 25);
         }
         preg_match('/load average: (.*)$/i', $uptime, $load);
     }
@@ -313,7 +313,7 @@ function stdmsg($heading, $text)
     $htmlout .= "
                 <span>$text</span>";
 
-    if (function_exists(main_div)) {
+    if (function_exists('main_div')) {
         return main_div($htmlout);
     }
     return $htmlout;
@@ -343,16 +343,16 @@ function StatusBar()
  */
 function navbar()
 {
-    global $site_config, $CURUSER, $lang, $mc1;
+    global $site_config, $CURUSER, $lang, $cache;
     $navbar = $panel = $user_panel = $settings_panel = $stats_panel = $other_panel = '';
 
     if ($CURUSER['class'] >= UC_STAFF) {
-        if (($staff_panel = $mc1->get_value('staff_panels_' . $CURUSER['class'])) === false) {
+        if (($staff_panel = $cache->get('staff_panels_' . $CURUSER['class'])) === false) {
             $res = sql_query('SELECT * FROM staffpanel
                             WHERE navbar = 1 AND av_class <= ' . sqlesc($CURUSER['class']) . '
                             ORDER BY page_name ASC') or sqlerr(__FILE__, __LINE__);
             while ($arr = mysqli_fetch_assoc($res)) $staff_panel[] = $arr;
-            $mc1->cache_value('staff_panels_' . $CURUSER['class'], $staff_panel, 0);
+            $cache->set('staff_panels_' . $CURUSER['class'], $staff_panel, 0);
         }
 
         if ($staff_panel) {

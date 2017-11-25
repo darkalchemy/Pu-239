@@ -3,6 +3,8 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_memcache.php';
 check_user_status();
+global $CURUSER, $site_config, $cache;
+
 $lang = array_merge(load_language('global'), load_language('delete'));
 if (!mkglobal('id')) {
     stderr("{$lang['delete_failed']}", "{$lang['delete_missing_data']}");
@@ -17,7 +19,7 @@ if (!is_valid_id($id)) {
  */
 function deletetorrent($id)
 {
-    global $site_config, $mc1, $CURUSER, $lang;
+    global $site_config, $cache, $CURUSER;
     sql_query('DELETE peers.*, files.*, comments.*, snatched.*, thanks.*, bookmarks.*, coins.*, rating.*, torrents.* FROM torrents 
 				 LEFT JOIN peers ON peers.torrent = torrents.id
 				 LEFT JOIN files ON files.torrent = torrents.id
@@ -30,7 +32,7 @@ function deletetorrent($id)
                                  LEFT JOIN thumbsup ON thumbsup.torrentid = torrents.id
 				 WHERE torrents.id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     unlink("{$site_config['torrent_dir']}/$id.torrent");
-    $mc1->delete_value('MyPeers_' . $CURUSER['id']);
+    $cache->delete('MyPeers_' . $CURUSER['id']);
 }
 
 /**
@@ -38,7 +40,7 @@ function deletetorrent($id)
  */
 function deletetorrent_xbt($id)
 {
-    global $site_config, $mc1, $CURUSER, $lang;
+    global $site_config, $cache, $CURUSER, $lang;
     sql_query('UPDATE torrents SET flags = 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     sql_query('DELETE files.*, comments.*, thankyou.*, thanks.*, thumbsup.*, bookmarks.*, coins.*, rating.*, xbt_files_users.* FROM xbt_files_users
                                  LEFT JOIN files ON files.torrent = xbt_files_users.fid
@@ -51,7 +53,7 @@ function deletetorrent_xbt($id)
                                  LEFT JOIN thumbsup ON thumbsup.torrentid = xbt_files_users.fid
                                  WHERE xbt_files_users.fid =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     unlink("{$site_config['torrent_dir']}/$id.torrent");
-    $mc1->delete_value('MyPeers_XBT_' . $CURUSER['id']);
+    $cache->delete('MyPeers_XBT_' . $CURUSER['id']);
 }
 
 $res = sql_query('SELECT name, owner, seeders FROM torrents WHERE id =' . sqlesc($id));
@@ -90,27 +92,18 @@ if (XBT_TRACKER == true) {
     deletetorrent($id);
     remove_torrent_peers($id);
 }
-//$mc1->delete_value('lastest_tor_');
-$mc1->delete_value('top5_tor_');
-$mc1->delete_value('last5_tor_');
-$mc1->delete_value('scroll_tor_');
-$mc1->delete_value('torrent_details_' . $id);
-$mc1->delete_value('torrent_details_text' . $id);
+$cache->deleteMulti(['lastest_tor_', 'top5_tor_', 'last5_tor_', 'scroll_tor_', 'torrent_details_' . $id, 'torrent_details_text' . $id]);
 write_log("{$lang['delete_torrent']} $id ({$row['name']}){$lang['delete_deleted_by']}{$CURUSER['username']} ($reasonstr)\n");
 if ($site_config['seedbonus_on'] == 1) {
     //===remove karma
     sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($site_config['bonus_per_delete']) . ' WHERE id = ' . sqlesc($row['owner'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($CURUSER['seedbonus'] - $site_config['bonus_per_delete']);
-    $mc1->begin_transaction('userstats_' . $row['owner']);
-    $mc1->update_row(false, [
+    $cache->update_row('userstats_' . $row['owner'], [
         'seedbonus' => $update['seedbonus'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['u_stats']);
-    $mc1->begin_transaction('user_stats_' . $row['owner']);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['u_stats']);
+    $cache->update_row('user_stats_' . $row['owner'], [
         'seedbonus' => $update['seedbonus'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_stats']);
+    ], $site_config['expires']['user_stats']);
     //===end
 }
 if ($CURUSER['id'] != $row['owner'] and $CURUSER['pm_on_delete'] == 'yes') {
@@ -119,8 +112,7 @@ if ($CURUSER['id'] != $row['owner'] and $CURUSER['pm_on_delete'] == 'yes') {
     $subject = 'Torrent Deleted';
     $message = "Torrent $id (" . htmlsafechars($row['name']) . ") has been deleted.\n  Reason: $reasonstr";
     sql_query('INSERT INTO messages (subject, sender, receiver, msg, added) VALUES(' . sqlesc($subject) . ', 0, ' . sqlesc($pm_on) . ',' . sqlesc($message) . ", $added)") or sqlerr(__FILE__, __LINE__);
-    $mc1->delete_value('inbox_new_' . $pm_on);
-    $mc1->delete_value('inbox_new_sb_' . $pm_on);
+    $cache->increment('inbox_' . $pm_on);
 }
 if (isset($_POST['returnto'])) {
     $ret = "<a href='" . htmlsafechars($_POST['returnto']) . "'>{$lang['delete_go_back']}</a>";

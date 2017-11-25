@@ -52,13 +52,13 @@ $header = "
             <th class='has-text-centered'>{$lang['snatches_announced']}</th>
         </tr>";
 $res = sql_query('
-            SELECT s.*, u.paranoia, t.anonymous as anonymous1, u.anonymous as anonymous2, size, timesann, owner 
+            SELECT s.*, u.paranoia, t.anonymous AS anonymous1, u.anonymous AS anonymous2, size, timesann, owner 
             FROM snatched AS s
             INNER JOIN users AS u ON s.userid = u.id
             INNER JOIN torrents AS t ON s.torrentid = t.id 
             WHERE s.complete_date !=0 AND s.torrentid = ' . sqlesc($id) . '
             ORDER BY complete_date DESC ' .
-            $pager['limit']) or sqlerr(__FILE__, __LINE__);
+    $pager['limit']) or sqlerr(__FILE__, __LINE__);
 $body = '';
 while ($arr = mysqli_fetch_assoc($res)) {
     $upspeed = ($arr['upspeed'] > 0 ? mksize($arr['upspeed']) : ($arr['seedtime'] > 0 ? mksize($arr['uploaded'] / ($arr['seedtime'] + $arr['leechtime'])) : mksize(0)));

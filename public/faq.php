@@ -8,12 +8,9 @@ if (!getSessionVar('LoggedIn')) {
 } else {
     check_user_status();
 }
+global $CURUSER;
 
 $lang = array_merge(load_language('global'), load_language('faq'));
-$stdfoot = [
-    'js' => [
-    ],
-];
 $HTMLOUT = "
             <div class='bordered'>
                 <div class='alt_bordered bg-00'>

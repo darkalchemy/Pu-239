@@ -1,7 +1,8 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
-global $mc1, $site_config;
+global $cache, $site_config;
+
 $lang = array_merge(load_language('global'), load_language('confirmemail'));
 if (!isset($_GET['uid']) or !isset($_GET['key']) or !isset($_GET['email'])) {
     stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_idiot']}");
@@ -19,7 +20,7 @@ if (!validemail($email)) {
     stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_false_email']}");
 }
 dbconn();
-$res = sql_query('SELECT editsecret FROM users WHERE id =' . sqlesc($id));
+$res = sql_query('SELECT editsecret FROM users WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res);
 if (!$row) {
     stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_not_complete']}");
@@ -31,19 +32,15 @@ if (preg_match('/^ *$/s', $sec)) {
 if ($md5 != md5($sec . $email . $sec)) {
     stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_not_complete']}");
 }
-sql_query("UPDATE users SET editsecret = '', email = " . sqlesc($email) . ' WHERE id = ' . sqlesc($id) . ' AND editsecret = ' . sqlesc($row['editsecret']));
-$mc1->begin_transaction('MyUser_' . $id);
-$mc1->update_row(false, [
+sql_query("UPDATE users SET editsecret = '', email = " . sqlesc($email) . ' WHERE id = ' . sqlesc($id) . ' AND editsecret = ' . sqlesc($row['editsecret'])) or sqlerr(__FILE__, __LINE__);
+$cache->update_row('MyUser_' . $id, [
     'editsecret' => '',
     'email'      => $email,
-]);
-$mc1->commit_transaction($site_config['expires']['curuser']);
-$mc1->begin_transaction('user' . $id);
-$mc1->update_row(false, [
+], $site_config['expires']['curuser']);
+$cache->update_row('user' . $id, [
     'editsecret' => '',
     'email'      => $email,
-]);
-$mc1->commit_transaction($site_config['expires']['user_cache']);
+], $site_config['expires']['user_cache']);
 if (!mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
     stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_not_complete']}");
 }

@@ -8,26 +8,18 @@ require_once INCL_DIR . 'searchcloud_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $CURUSER, $site_config, $mc1;
+global $CURUSER, $site_config, $cache;
 
 if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
     sql_query('UPDATE users SET last_browse = ' . TIME_NOW . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    $cache->update_row('MyUser_' . $CURUSER['id'], [
         'last_browse' => TIME_NOW,
-    ]);
-    $mc1->commit_transaction($site_config['expires']['curuser']);
-    $mc1->begin_transaction('user' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['curuser']);
+    $cache->update_row('user' . $CURUSER['id'], [
         'last_browse' => TIME_NOW,
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_cache']);
+    ], $site_config['expires']['user_cache']);
     header("Location: {$site_config['baseurl']}/browse.php");
 }
-$stdfoot = [
-    'js' => [
-    ],
-];
 $stdhead = [
     'css' => [
         get_file('browse_css'),
@@ -222,11 +214,11 @@ if (isset($cleansearchstr)) {
 
 $where = count($wherea) ? 'WHERE ' . join(' AND ', $wherea) : '';
 $where_key = 'where::' . sha1($where);
-if (($count = $mc1->get_value($where_key)) === false) {
+if (($count = $cache->get($where_key)) === false) {
     $res = sql_query("SELECT COUNT(*) FROM torrents AS t $join $where") or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_row($res);
     $count = (int)$row[0];
-    $mc1->cache_value($where_key, $count, $site_config['expires']['browse_where']);
+    $cache->set($where_key, $count, $site_config['expires']['browse_where']);
 }
 $torrentsperpage = $CURUSER['torrentsperpage'];
 if (!$torrentsperpage) {
@@ -317,16 +309,12 @@ if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
 } else {
     //== clear new tag automatically
     sql_query('UPDATE users SET last_browse = ' . TIME_NOW . ' WHERE id = ' . $CURUSER['id']);
-    $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    $cache->update_row('MyUser_' . $CURUSER['id'], [
         'last_browse' => TIME_NOW,
-    ]);
-    $mc1->commit_transaction($site_config['expires']['curuser']);
-    $mc1->begin_transaction('user' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['curuser']);
+    $cache->update_row('user' . $CURUSER['id'], [
         'last_browse' => TIME_NOW,
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_cache']);
+    ], $site_config['expires']['user_cache']);
 }
 
 $vip = ((isset($_GET['vip'])) ? intval($_GET['vip']) : '');
@@ -422,10 +410,10 @@ if (!$no_log_ip) {
     $res = sql_query('SELECT * FROM ips WHERE ip = ' . ipToStorageFormat($ip) . ' AND userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 0) {
         sql_query('INSERT INTO ips (userid, ip, lastbrowse, type) VALUES (' . sqlesc($userid) . ', ' . ipToStorageFormat($ip) . ", $added, 'Browse')") or sqlerr(__FILE__, __LINE__);
-        $mc1->delete_value('ip_history_' . $userid);
+        $cache->delete('ip_history_' . $userid);
     } else {
         sql_query("UPDATE ips SET lastbrowse = $added WHERE ip = " . ipToStorageFormat($ip) . ' AND userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-        $mc1->delete_value('ip_history_' . $userid);
+        $cache->delete('ip_history_' . $userid);
     }
 }
 echo stdhead($title, true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

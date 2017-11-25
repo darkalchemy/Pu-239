@@ -4,6 +4,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
+global $CURUSER, $site_config;
+
 $lang = array_merge(load_language('global'), load_language('getrss'));
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     /**
@@ -23,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $feed = isset($_POST['feed']) && $_POST['feed'] == 'dl' ? 'dl' : 'web';
         $bm = isset($_POST['bm']) && is_int($_POST['bm']) ? $_POST['bm'] : 0;
         $counts = [15, 30, 50, 100];
-        $count = isset($_POST['count']) && is_int($_POST['count']) && in_array($count, $_POST['count']) ? $_POST['count'] : 15;
+        $count = isset($_POST['count']) && is_int($_POST['count']) && in_array($counts, $_POST['count']) ? $_POST['count'] : 15;
         $rsslink = "{$site_config['baseurl']}/rss.php?cats=" . join(',', $cats) . "&amp;type={$feed}&amp;torrent_pass={$CURUSER['torrent_pass']}&amp;count=$count&amp;bm=$bm";
         $HTMLOUT = "
         <div class='container is-fluid portlet has-text-centered'>
@@ -59,7 +61,7 @@ if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
         $text .= "
                     <span class='margin10 bordered tooltipper' title='" . htmlsafechars($cat['name']) . "'>
                         <label for='c" . (int)$cat['id'] . "'>
-                            <input name='c" . (int)$cat['id'] . "' class='styled1' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? " checked" : '') . "value='1' />
+                            <input name='c" . (int)$cat['id'] . "' class='styled1' type='checkbox' value='1' />
                         </label>
                     </span>";
     }

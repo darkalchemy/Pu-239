@@ -4,17 +4,13 @@
  */
 function funds_update($data)
 {
-    global $site_config, $queries, $mc1;
+    global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
-    // ===Clear funds after one month
     $secs = 30 * 86400;
     $dt = sqlesc(TIME_NOW - $secs);
     sql_query("DELETE FROM funds WHERE added < $dt");
-    //if (mysqli_affected_rows() > 0)
-    $mc1->delete_value('totalfunds_');
-    // ===End
-    //== Donation Progress Mod Updated For Tbdev 2009/2010 by Bigjoos/pdq
+    $cache->delete('totalfunds_');
     $res = sql_query("SELECT id, modcomment, vipclass_before FROM users WHERE donor='yes' AND donoruntil < " . TIME_NOW . " AND donoruntil <> '0'") or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $users_buffer = [];
     if (mysqli_num_rows($res) > 0) {
@@ -27,40 +23,32 @@ function funds_update($data)
             $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ',' . sqlesc($subject) . ')';
             $users_buffer[] = '(' . $arr['id'] . ',' . $arr['vipclass_before'] . ',\'no\',\'0\', ' . $modcom . ')';
             $update['class'] = ($arr['vipclass_before']);
-            $mc1->begin_transaction('user' . $arr['id']);
-            $mc1->update_row(false, [
+            $cache->update_row('user' . $arr['id'], [
                 'class'      => $update['class'],
                 'donor'      => 'no',
                 'donoruntil' => 0,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_cache']);
-            $mc1->begin_transaction('user_stats_' . $arr['id']);
-            $mc1->update_row(false, [
+            ], $site_config['expires']['user_cache']);
+            $cache->update_row('user_stats_' . $arr['id'], [
                 'modcomment' => $modcomment,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_stats']);
-            $mc1->begin_transaction('MyUser_' . $arr['id']);
-            $mc1->update_row(false, [
+            ], $site_config['expires']['user_stats']);
+            $cache->update_row('MyUser_' . $arr['id'], [
                 'class'      => $update['class'],
                 'donor'      => 'no',
                 'donoruntil' => 0,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['curuser']);
-            $mc1->delete_value('inbox_new_' . $arr['id']);
-            $mc1->delete_value('inbox_new_sb_' . $arr['id']);
+            ], $site_config['expires']['curuser']);
+            $cache->increment('inbox_' . $arr['id']);
         }
         $count = count($users_buffer);
         if ($data['clean_log'] && $count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
-            sql_query('INSERT INTO users (id, class, donor, donoruntil, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE class=values(class),
-            donor=values(donor),donoruntil=values(donoruntil),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO users (id, class, donor, donoruntil, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE class = VALUES(class),
+            donor = VALUES(donor),donoruntil = VALUES(donoruntil),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
         }
         if ($data['clean_log']) {
             write_log('Cleanup: Donation status expired - ' . $count . ' Member(s)');
         }
         unset($users_buffer, $msgs_buffer, $update, $count);
     }
-    //===End===//
     if ($data['clean_log'] && $queries > 0) {
         write_log("Delete Old Funds Cleanup: Completed using $queries queries");
     }

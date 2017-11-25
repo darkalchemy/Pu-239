@@ -1,4 +1,5 @@
 <?php
+global $site_config;
 
 $lang = [
     //RULES

@@ -5,15 +5,13 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $cache, $lang;
+
 $lang = array_merge($lang, load_language('ad_grouppm'));
 
 $stdhead = [
     'css' => [
-        get_file('upload_css')
-    ],
-];
-$stdfoot = [
-    'js' => [
+        get_file('upload_css'),
     ],
 ];
 
@@ -126,8 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $r = sql_query('INSERT INTO messages(sender,receiver,added,msg,subject) VALUES ' . join(',', $pms)) or sqlerr(__FILE__, __LINE__);
             }
             foreach ($ids as $rid) {
-                $mc1->delete_value('inbox_new_' . $rid);
-                $mc1->delete_value('inbox_new_sb_' . $rid);
+                $cache->increment('inbox_' . $rid);
             }
             $err[] = ($r ? $lang['grouppm_sent'] : $lang['grouppm_again']);
         } else {
@@ -140,7 +137,7 @@ $groups = [];
 $groups['staff'] = ['opname'   => $lang['grouppm_staff'],
                     'minclass' => UC_USER,];
 for ($i = $FSCLASS; $i <= $LSCLASS; ++$i) {
-    $groups['staff']['ops'][$i] = get_user_class_name($i);
+    $groups['staff']['ops'][ $i ] = get_user_class_name($i);
 }
 $groups['staff']['ops']['fls'] = $lang['grouppm_fls'];
 $groups['staff']['ops']['all_staff'] = $lang['grouppm_allstaff'];
@@ -148,7 +145,7 @@ $groups['members'] = [];
 $groups['members'] = ['opname'   => $lang['grouppm_mem'],
                       'minclass' => UC_STAFF,];
 for ($i = $FUCLASS; $i <= $LUCLASS; ++$i) {
-    $groups['members']['ops'][$i] = get_user_class_name($i);
+    $groups['members']['ops'][ $i ] = get_user_class_name($i);
 }
 $groups['members']['ops']['donor'] = $lang['grouppm_donor'];
 $groups['members']['ops']['all_users'] = $lang['grouppm_allusers'];
@@ -209,4 +206,4 @@ $HTMLOUT .= "<fieldset style='border:1px solid #333333; padding:5px;'>
     </form>
     </fieldset>";
 $HTMLOUT .= end_main_frame();
-echo stdhead($lang['grouppm_stdhead'], true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead($lang['grouppm_stdhead'], true, $stdhead) . $HTMLOUT . stdfoot();
