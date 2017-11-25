@@ -1,5 +1,6 @@
 <?php
 global $CURUSER, $cache, $site_config, $lang;
+
 $adminbutton = '';
 if ($CURUSER['class'] >= UC_STAFF) {
     $adminbutton = "
@@ -28,6 +29,7 @@ if (($news = $cache->get('latest_news_')) === false) {
 $i = 0;
 if ($news) {
     foreach ($news as $array) {
+        $padding = $i++ >= count($news) ? '' : ' bottom20';
         $button = '';
         if ($CURUSER['class'] >= UC_STAFF) {
             $hash = md5('the@@saltto66??' . $array['nid'] . 'add' . '@##mu55y==');
@@ -42,7 +44,7 @@ if ($news) {
                 </div>";
         }
         $HTMLOUT .= "
-            <div class='bordered'>
+            <div class='bordered{$padding}'>
                 <div id='{$array['nid']}' class='header alt_bordered bg-00 has-text-left'>
                     <legend class='flipper has-text-primary'>
                         <i class='fa fa-angle-up right10' aria-hidden='true'></i><small>" . htmlsafechars($array['title']) . "</small>
