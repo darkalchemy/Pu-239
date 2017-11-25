@@ -1,4 +1,5 @@
 25 Nov 2017
+fix: global messages positioning
 add: caching environment 'Scrapbook'
 remove: redis requirement
 remove: memcached and php-memcache requirement

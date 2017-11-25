@@ -63,12 +63,9 @@ function stdhead($title = '', $stdhead = null)
         }
     </script>
     <div class='container'>
-        <div class='page-wrapper'>
-            <div class='spacer'>";
-    $htmlout .= navbar();
-    $htmlout .= "
-            </div>";
+        <div class='page-wrapper'>";
     if ($CURUSER) {
+        $htmlout .= navbar();
         $htmlout .= "
             <div id='logo' class='logo columns level is-marginless'>
                 <div class='column'>
@@ -79,8 +76,8 @@ function stdhead($title = '', $stdhead = null)
         $htmlout .= platform_menu();
         $htmlout .= "
             <div id='base_globelmessage'>
-                <div>
-                    <ul class='level-right is-flex is-wrapped top5 bottom5'>";
+                <div class='top5 bottom5'>
+                    <ul class='level-center tags'>";
 
         if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_REPORTS && $BLOCKS['global_staff_report_on']) {
             require_once BLOCK_DIR . 'global/report.php';
@@ -170,6 +167,7 @@ function stdfoot($stdfoot = false)
         $MemStats['Hits'] = (($MemStats['get_hits'] / $MemStats['cmd_get'] < 0.7) ? '' : number_format(($MemStats['get_hits'] / $MemStats['cmd_get']) * 100, 3));
         $cache->set('mc_hits', $MemStats, 10);
     }
+    $uptime = '';
     if ($debug) {
         if (($uptime = $cache->get('uptime')) === false) {
             $uptime = `uptime`;
@@ -434,6 +432,7 @@ function navbar()
     if ($CURUSER) {
         $salty = salty($CURUSER['username']);
         $navbar .= "
+    <div class='spacer'>
         <header id='navbar' class='container'>
             <div class='contained'>
                 <div class='nav_container'>
@@ -517,7 +516,8 @@ function navbar()
                     </div>
                 </div>
             </div>
-        </header>";
+        </header>
+    </div>";
     }
     return $navbar;
 }
