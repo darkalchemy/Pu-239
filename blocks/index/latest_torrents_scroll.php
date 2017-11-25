@@ -1,16 +1,5 @@
 <?php
-
-global $cache, $site_config, $lang;
-$HTMLOUT .= "
-    <a id='scroller-hash'></a>
-    <fieldset id='scroller' class='header'>
-        <legend class='flipper has-text-primary'>
-            <i class='fa fa-angle-up right10' aria-hidden='true'></i>
-            {$lang['index_latest']}
-        </legend>
-        <div class='bordered'>
-            <div id='carousel-container' class='alt_bordered bg-00 carousel-container'>
-                <div id='icarousel' class='icarousel'>";
+global $site_config, $cache, $lang;
 
 if (($scroll_torrents = $cache->get('scroll_tor_')) === false) {
     $scroll = sql_query("SELECT id, seeders, leechers, name, poster
@@ -25,6 +14,17 @@ if (($scroll_torrents = $cache->get('scroll_tor_')) === false) {
 }
 
 if ($scroll_torrents) {
+    $HTMLOUT .= "
+    <a id='scroller-hash'></a>
+    <fieldset id='scroller' class='header'>
+        <legend class='flipper has-text-primary'>
+            <i class='fa fa-angle-up right10' aria-hidden='true'></i>
+            {$lang['index_latest']} Scroller
+        </legend>
+        <div class='bordered'>
+            <div id='carousel-container' class='alt_bordered bg-00 carousel-container'>
+                <div id='icarousel' class='icarousel'>";
+
     foreach ($scroll_torrents as $s_t) {
         $i = $site_config['latest_torrents_limit_scroll'];
         $id = (int)$s_t['id'];
@@ -43,10 +43,26 @@ if ($scroll_torrents) {
                         </a>
                     </div>";
     }
-}
 
-$HTMLOUT .= '
+
+    $HTMLOUT .= '
                 </div>
             </div>
         </div>
     </fieldset>';
+} else {
+    $HTMLOUT .= "
+    <a id='scroller-hash'></a>
+    <fieldset id='scroller' class='header'>
+        <legend class='flipper has-text-primary'>
+            <i class='fa fa-angle-up right10' aria-hidden='true'></i>
+            {$lang['index_latest']} Scroller
+        </legend>
+        <div class='bordered'>
+            <div class='alt_bordered bg-00'>
+                No torrents found.
+            </div>
+        </div>
+    </fieldset>";
+}
+
