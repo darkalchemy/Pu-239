@@ -15,11 +15,8 @@ sessionStart();
 require_once VENDOR_DIR . 'autoload.php';
 require_once CACHE_DIR . 'free_cache.php';
 require_once CACHE_DIR . 'class_config.php';
-//==Start memcache
 require_once CLASS_DIR . 'class_cache.php';
 $cache = new CACHE();
-$redis = new Redis();
-$redis->pconnect('127.0.0.1', 6379);
 
 /**
  * Class curuser
@@ -41,7 +38,7 @@ require_once INCL_DIR . 'site_config.php';
 $load = sys_getloadavg();
 if ($load[0] > 20) {
     die(
-    "Load is too high. 
+    "Load is too high.
         Don't continuously refresh, or you will just make the problem last longer"
     );
 }
