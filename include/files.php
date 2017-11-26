@@ -15,9 +15,9 @@ function get_file($file)
         if ($site_config['in_production']) {
             switch ($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/9dc4637640c676ef84cf251771c6d50e.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/57def898d4b996a9f83c867e43d0efa1.min.css";
                 case 'js':
-                    return "{$site_config['baseurl']}/js/{$style}/644613fc4b663f60c88c0710f486b689.min.js";
+                    return "{$site_config['baseurl']}/js/{$style}/b91d81103dfbe8d588924bcb1e7bb5e4.min.js";
                 case 'checkport_js':
                     return "{$site_config['baseurl']}/js/{$style}/4ba42503ffca4c65167590b15a03b842.min.js";
                 case 'trivia_css':
@@ -60,9 +60,9 @@ function get_file($file)
         } else {
             switch ($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/f76cfc112fea4bf2fc9064993fb808fe.css";
+                    return "{$site_config['baseurl']}/css/{$style}/766b0800579bcbe4ae5f417e0c4d1dcd.css";
                 case 'js':
-                    return "{$site_config['baseurl']}/js/{$style}/0723fc5c39aeafde6a3d73cfac242a22.js";
+                    return "{$site_config['baseurl']}/js/{$style}/e5d1604f7f621ff3db3d2e90ae8e85d4.js";
                 case 'checkport_js':
                     return "{$site_config['baseurl']}/js/{$style}/4a99c7d4e3c8639af2775ef05d500598.js";
                 case 'trivia_css':

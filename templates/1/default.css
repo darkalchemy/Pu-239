@@ -18,7 +18,6 @@ body {
     min-height: 100%;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    position: relative;
 }
 
 ::-webkit-scrollbar-track {

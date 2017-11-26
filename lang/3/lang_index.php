@@ -140,6 +140,7 @@ Este obliga&#355;ia dumneavoastra s&#259; v&#259; conforma&#355;i acestor termen
     'index_ltst_size'            => 'Size:',
     'index_ltst_seeder'          => 'Seederi:',
     'index_ltst_leecher'         => 'Leecheri:',
+    'index_ltst_uploader'        => 'Uploader:',
     //Latest Member
     'index_lmember'              => 'Ultimul membru',
     'index_wmember'              => 'Bun venit noului nostru membru ',

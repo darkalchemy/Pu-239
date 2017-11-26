@@ -1,5 +1,5 @@
 <?php
-global $cache, $lang, $site_config;
+global $cache, $lang, $site_config, $db;
 
 $categorie = genrelist();
 foreach ($categorie as $key => $value) {
@@ -9,20 +9,24 @@ foreach ($categorie as $key => $value) {
         'image' => $value['image'],
     ];
 }
-$motw_cached = $cache->get('top_movie_2');
-if ($motw_cached === false || is_null($motw_cached)) {
-    $motw = sql_query("SELECT t.added, t.checked_by, t.id, t.seeders, t.poster, t.leechers, t.name, t.size, t.category, c.name AS cat, c.image, t.free, t.silver, t.subs, t.times_completed, t.added, t.size
-                        FROM torrents AS t
-                        LEFT JOIN categories AS c ON t.category = c.id
-                        INNER JOIN avps AS a ON t.id = a.value_u WHERE a.arg = 'bestfilmofweek'
-                        LIMIT 1") or sqlerr(__FILE__, __LINE__);
-    while ($motw_cache = mysqli_fetch_assoc($motw)) {
-        $motw_cached[] = $motw_cache;
+$motw = $cache->get('motw_');
+if ($motw === false || is_null($motw)) {
+    $query = $db->from('torrents')
+        ->leftJoin('users ON torrents.owner = users.id')
+        ->select('users.username')
+        ->select('users.class')
+        ->leftJoin('categories ON torrents.category = categories.id')
+        ->select('categories.name AS cat')
+        ->select('categories.image')
+        ->leftJoin('avps ON torrents.id = avps.value_u')
+        ->where('avps.arg', 'bestfilmofweek');
+    foreach ($query as $row) {
+        $motw[] = $row;
     }
-    $cache->set('top_movie_2', $motw_cached, 0);
+    $cache->set('motw_', $motw, 0);
 }
 
-if (count($motw_cached) > 0) {
+if (count($motw) > 0) {
     $HTMLOUT .= "
     <a id='mow-hash'></a>
     <fieldset id='mow' class='header'>
@@ -40,8 +44,8 @@ if (count($motw_cached) > 0) {
                         </tr>
                     </thead>
                     <tbody>";
-    if ($motw_cached) {
-        foreach ($motw_cached as $m_w) {
+    if ($motw) {
+        foreach ($motw as $m_w) {
             $torrname = htmlsafechars($m_w['name']);
             if (strlen($torrname) > 50) {
                 $torrname = substr($torrname, 0, 50) . '...';
@@ -58,20 +62,21 @@ if (count($motw_cached) > 0) {
                                     <span class='dt-tooltipper-large' data-tooltip-content='#mow_id_{$m_w['id']}_tooltip'>
                                         {$torrname}
                                         <div class='tooltip_templates'>
-                                            <span id='mow_id_{$m_w['id']}_tooltip'>
+                                            <div id='mow_id_{$m_w['id']}_tooltip'>
                                                 <div class='is-flex tooltip-torrent'>
                                                     <span class='margin10'>
                                                         $poster
                                                     </span>
                                                     <span class='margin10'>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>" . htmlsafechars($m_w['name']) . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_uploader']}</b><span class='" . get_user_class_name($m_w['class'], true) . "'>" . htmlsafechars($m_w['username']) . "</span><br>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>" . get_date($m_w['added'], 'DATE', 0, 1) . "<br>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>" . mksize(htmlsafechars($m_w['size'])) . "<br>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_seeder']}</b>" . (int)$m_w['seeders'] . "<br>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_leecher']}</b>" . (int)$m_w['leechers'] . "<br>
                                                     </span>
                                                 </div>
-                                            </span>
+                                            </div>
                                         </div>
                                     </span>
                                 </a>
@@ -89,7 +94,7 @@ if (count($motw_cached) > 0) {
         </div>
     </fieldset>";
     } else {
-        if (empty($motw_cached)) {
+        if (empty($motw)) {
             $HTMLOUT .= "
                         <tr>
                             <td colspan='5'>{$lang['index_mow_no']}!</td>

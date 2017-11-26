@@ -1,4 +1,6 @@
 26 Nov 2017
+add: pdo class, just beginning to move from mysqli to pdo
+fix: tooltipster position
 update: browse.php search function
 update: details.php comments
 update: cache->get
