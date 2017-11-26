@@ -1,4 +1,6 @@
 26 Nov 2017
+update: browse.php search function
+update: details.php comments
 update: cache->get
 update: details.php
 remove: new up redis

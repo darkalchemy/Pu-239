@@ -101,7 +101,7 @@ function torrenttable($res, $variant = 'index')
         if (isset($_GET['sort']) && $_GET['sort'] == $i) {
             $$link = (isset($_GET['type']) && $_GET['type'] == 'desc') ? 'asc' : 'desc';
         } else {
-            $$link = 'desc';
+            $$link = 'asc';
         }
         ++$i;
     }

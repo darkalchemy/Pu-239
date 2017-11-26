@@ -212,7 +212,7 @@ if (isset($cleansearchstr)) {
     }
 }
 
-$where = count($wherea) ? 'WHERE ' . join(' AND ', $wherea) : '';
+$where = count($wherea) ? 'WHERE ' . join(' OR ', $wherea) : '';
 $where_key = 'where::' . sha1($where);
 $count = $cache->get($where_key);
 if ($count === false || is_null($count)) {
@@ -305,7 +305,7 @@ $HTMLOUT .= main_div($main_div, 'bottom20');
 
 if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     $new_button = "
-        <a href='{$site_config['baseurl']}/browse.php?clear_new=1'><input type='submit' value='clear new tag' class='button' /></a>
+        <a href='{$site_config['baseurl']}/browse.php?clear_new=1'><input type='submit' value='clear new tag' class='button is-small is-primary' /></a>
         <br>";
 } else {
     //== clear new tag automatically
@@ -374,14 +374,12 @@ $HTMLOUT .= main_div("
                         </div>
                     </div>
                     <div class='margin10 has-text-centered'>
-                        <input type='submit' value='{$lang['search_search_btn']}' class='button' />
+                        <input type='submit' value='{$lang['search_search_btn']}' class='button is-small is-primary' />
                     </div>");
 $HTMLOUT .= "
             </form>";
 $HTMLOUT .= "{$new_button}";
-if (isset($cleansearchstr)) {
-    $HTMLOUT .= "<h2>{$lang['browse_search']} " . htmlsafechars($searchstr, ENT_QUOTES) . "</h2>";
-}
+
 if ($count) {
     $HTMLOUT .= "
                 <div class='top20 bottom20'>

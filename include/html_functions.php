@@ -133,6 +133,7 @@ function insert_smilies_frame()
 /**
  * @param      $body
  * @param null $header
+ * @param null $class
  *
  * @return string
  */
@@ -144,7 +145,7 @@ function main_table($body, $header = null, $class = null)
                         </thead>" : '';
     return "
                 <div class='table-wrapper'>
-                    <table class='table table-bordered table-striped'>
+                    <table class='table table-bordered table-striped $class'>
                         $thead
                         <tbody>
                             $body

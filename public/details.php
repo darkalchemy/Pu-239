@@ -721,7 +721,7 @@ $reseed = "
             </select>
             <input type='hidden' name='uploader' value='" . (int)$torrents['owner'] . "' />
             <input type='hidden' name='reseedid' value='$id' />
-            <input type='submit' class='button is-small is-primary'" . (($next_reseed > $dt) ? ' disabled' : '') . " value='SendPM' />
+            <input type='submit' class='button is-small is-primary left10'" . (($next_reseed > $dt) ? ' disabled' : '') . " value='SendPM' />
         </form>";
 $HTMLOUT .= tr('Request reseed', $reseed, 1);
 
@@ -888,7 +888,7 @@ $HTMLOUT .= "
                         <a href=\"javascript:SmileIT(':baby:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/baby.gif' alt='Baby' class='tooltipper' title='Baby' /></a>
                     </div>
                     <div class='has-text-centered'>
-                        <input class='button is-primary' type='submit' value='Submit' />
+                        <input class='button is-small is-primary margin20' type='submit' value='Submit' />
                     </div>
                 </div>
             </div>
@@ -910,11 +910,6 @@ if ($torrents['allow_comments'] == 'yes' || $CURUSER['class'] >= UC_STAFF && $CU
     echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
     exit();
 }
-$commentbar = "
-        <div class='has-text-centered margin20'>
-            <span class='h1 button is-primary'>Comments Open/Close</span>
-        </div>
-        <div class='content'>";
 $count = (int)$torrents['comments'];
 if (!$count) {
     $HTMLOUT .= "
@@ -932,10 +927,24 @@ if (!$count) {
     while ($subrow = mysqli_fetch_assoc($subres)) {
         $allrows[] = $subrow;
     }
-    $HTMLOUT .= $commentbar;
-    $HTMLOUT .= $pager['pagertop'];
+    $HTMLOUT .= "
+                <div class='container is-fluid portlet'>
+                    <a id='comments-hash'></a>
+                    <fieldset id='comments' class='header'>
+                        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>Comments</legend>
+                        <div>";
+
+    if (count($allrows) > $perpage) {
+        $HTMLOUT .= $pager['pagertop'];
+    }
     $HTMLOUT .= commenttable($allrows);
-    $HTMLOUT .= $pager['pagerbottom'];
+    if (count($allrows) > $perpage) {
+        $HTMLOUT .= $pager['pagerbottom'];
+    }
+    $HTMLOUT .= "
+                        </div>
+                    </fieldset>
+                </div>";
 }
 
 echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
