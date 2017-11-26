@@ -14,44 +14,28 @@ function parse_poll()
         'allow_poll_tags'    => 1,
     ]; // move this elsewhere later!
     $poll_data = get_poll();
+
     if (empty($poll_data)) {
         return '';
     }
-    //return $poll_data;
+
     $member_voted = 0;
     $total_votes = 0;
-    //Has they ever posticated before?
+
     if ($poll_data['user_id']) {
         $member_voted = 1;
-        //return "true";
     }
-    // Make sure they can't post again
+
     if ($member_voted) {
         $check = 1;
         $poll_footer = 'You have already voted';
     }
-    //Does we want the creator to vote on their own poll?
-    if (($poll_data['starter_id'] == $CURUSER['id']) and ($GVARS['allow_creator_vote'] != 1)) {
+
+    if (($poll_data['starter_id'] == $CURUSER['id']) && ($GVARS['allow_creator_vote'] != 1)) {
         $check = 1;
         $poll_footer = 'poll_you_created';
     }
-    //The following can be setup for guest ie; no loggedinorreturn() on index
-    /*
-        if ( ! $CURUSER['id'] ) //$poll_data['user_id'] )
-        {
-         if ( !$GVARS['allow_result_view'] )
-         {
-          $check        = 2;
-         }
-         else
-         {
-                $check      = 1;
-          }
-             return $check.$poll_footer;
-            $poll_footer = 'Guests can\'t view polls!';
-        }
-    */
-    //allow viewing of poll results before voting?
+
     if ($GVARS['allow_result_view'] == 1) {
         if (isset($_GET['mode']) && $_GET['mode'] == 'show') {
             $check = 1;
@@ -59,7 +43,6 @@ function parse_poll()
         }
     }
     if ($check == 1) {
-        //ok, lets get this show on the road!
         $htmlout = poll_header($poll_data['pid'], htmlsafechars($poll_data['poll_question'], ENT_QUOTES));
         $poll_answers = unserialize(stripslashes($poll_data['choices']));
         reset($poll_answers);
@@ -169,11 +152,12 @@ function poll_header($pid = '', $poll_q = '')
     }
     /*]]>*/
     </script>
-            <form action='{$site_config['baseurl']}/polls_take_vote.php?pollid={$pid}&amp;st=main&amp;addpoll=1' method='post'>
-                <a id='poll-hash'></a>
-                <fieldset id='poll' class='header'>
-                    <legend class='flipper has-text-primary'><i class='fa fa-angle-up' aria-hidden='true'></i>{$poll_q}</legend>
-                    <div>";
+    <a id='poll-hash'></a>
+    <fieldset id='poll' class='header'>
+        <legend class='flipper has-text-primary has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$poll_q}</legend>
+        <div class='bordered'>
+            <div class='alt_bordered bg-00'>
+                <form action='{$site_config['baseurl']}/polls_take_vote.php?pollid={$pid}&amp;st=main&amp;addpoll=1' method='post'>";
 
     return $HTMLOUT;
 }
@@ -183,15 +167,13 @@ function poll_header($pid = '', $poll_q = '')
  */
 function poll_footer()
 {
-    $HTMLOUT = '';
-    $HTMLOUT .= '
-                        <div class="has-text-centered"><!--VOTE--><!--SHOW--></div>
-                        <div class="has-text-centered"><!-- no content --></div>
-                    </div>
-                </fieldset>
-            </form>';
-
-    return $HTMLOUT;
+    return '
+                    <div class="has-text-centered"><!--VOTE--><!--SHOW--></div>
+                    <div class="has-text-centered"><!-- no content --></div>
+                </form>
+            </div>
+        </div>
+    </fieldset>';
 }
 
 /**
@@ -207,17 +189,18 @@ function poll_footer()
 function poll_show_rendered_choice($choice_id = '', $votes = '', $id = '', $answer = '', $percentage = '', $width = '')
 {
     global $site_config;
-    $HTMLOUT = '';
-    $HTMLOUT .= "<tr>
-      <td width='25%' colspan='2'>$answer</td>
-      <td width='10%' nowrap='nowrap'> [ <b>$votes</b> ] </td>
-      <td width='70%' nowrap='nowrap'>
-      <img src='{$site_config['pic_base_url']}polls/bar.gif' width='$width' height='11' align='middle' alt='' />
-      &#160;[$percentage%]
-      </td>
-      </tr>";
 
-    return $HTMLOUT;
+    return "
+        <div class='bg-02 round5 padding10'>
+            $answer
+        </div>
+        <div class='has-text-centered top10'>
+            <b>Total Votes: $votes</b>
+        </div>
+        <div>
+            <img src='{$site_config['pic_base_url']}polls/bar.gif' style='width: {$width}px; height: 11px;' align='middle' alt='' />
+            [$percentage%]
+        </div>";
 }
 
 /**
@@ -229,16 +212,15 @@ function poll_show_rendered_choice($choice_id = '', $votes = '', $id = '', $answ
  */
 function poll_show_rendered_question($id = '', $question = '', $choice_html = '')
 {
-    $HTMLOUT = '';
-    $HTMLOUT .= "
-     <div class='has-text-centered'>
-    <div class='roundedCorners' style='text-align:center;padding:4px;'><span class='postdetails'><strong>{$question}</strong></span></div>
-    <table cellpadding='4' cellspacing='0'>
-    $choice_html
-    </table>
-    </div><br>";
-
-    return $HTMLOUT;
+    return "
+        <div class='has-text-centered'>
+            <div class='round10'>
+                <div class='has-text-white'>
+                    $question
+                </div>
+            </div>
+            $choice_html
+        </div>";
 }
 
 /**
@@ -248,10 +230,10 @@ function poll_show_rendered_question($id = '', $question = '', $choice_html = ''
  */
 function show_total_votes($total_votes = '')
 {
-    $HTMLOUT = '';
-    $HTMLOUT .= "<div class='has-text-centered'><b>Total Votes: $total_votes</b></div>";
-
-    return $HTMLOUT;
+    return "
+        <div class='has-text-centered top10'>
+            <b>Total Votes: $total_votes</b>
+        </div>";
 }
 
 /**
@@ -264,12 +246,10 @@ function show_total_votes($total_votes = '')
  */
 function poll_show_form_choice_multi($choice_id = '', $votes = '', $id = '', $answer = '')
 {
-    $HTMLOUT = '';
-    $HTMLOUT .= "<tr>
+    return "
+    <tr>
         <td colspan='3'><input type='checkbox' name='choice_{$id}_{$choice_id}' value='1'  />&#160;<b>$answer</b></td>
     </tr>";
-
-    return $HTMLOUT;
 }
 
 /**
@@ -282,11 +262,10 @@ function poll_show_form_choice_multi($choice_id = '', $votes = '', $id = '', $an
  */
 function poll_show_form_choice($choice_id = '', $votes = '', $id = '', $answer = '')
 {
-    $HTMLOUT = '';
-    $HTMLOUT .= "
-    <tr><td nowrap='nowrap'><input type='radio' name='choice[{$id}]' value='$choice_id'  />&#160;<strong>$answer</strong></td></tr>";
-
-    return $HTMLOUT;
+    return "
+        <div class='padding10'>
+            <input type='radio' name='choice[{$id}]' value='$choice_id' class='right10' /> $answer
+        </div>";
 }
 
 /**
@@ -298,14 +277,15 @@ function poll_show_form_choice($choice_id = '', $votes = '', $id = '', $answer =
  */
 function poll_show_form_question($id = '', $question = '', $choice_html = '')
 {
-    $HTMLOUT = '';
-    $HTMLOUT .= "
-    <div class='has-text-left'>
-      <div style='padding:4px;'><span class='postdetails'><strong>{$question}</strong></span></div>
-      $choice_html
+    return "
+    <div class='bg-02 round5 padding10'>
+        <div>
+            <div class='has-text-white size_6 padding10'>
+                {$question}
+            </div>
+        </div>
+        $choice_html
     </div>";
-
-    return $HTMLOUT;
 }
 
 /**
@@ -313,10 +293,7 @@ function poll_show_form_question($id = '', $question = '', $choice_html = '')
  */
 function button_show_voteable()
 {
-    $HTMLOUT = '';
-    $HTMLOUT .= "<input class='button' type='button' name='viewresult' value='Show Votes'  title='Goto poll voting' onclick=\"go_gadget_vote()\" />";
-
-    return $HTMLOUT;
+    return "<input class='button tooltipper margin10' type='button' name='viewresult' value='Show Votes'  title='Goto poll voting' onclick=\"go_gadget_vote()\" />";
 }
 
 /**
@@ -324,10 +301,7 @@ function button_show_voteable()
  */
 function button_show_results()
 {
-    $HTMLOUT = '';
-    $HTMLOUT .= "<input class='button' type='button' value='Results' title='Show all poll rsults' onclick=\"go_gadget_show()\" />";
-
-    return $HTMLOUT;
+    return "<input class='button tooltipper margin10' type='button' value='Results' title='Show all poll results' onclick=\"go_gadget_show()\" />";
 }
 
 /**
@@ -335,10 +309,7 @@ function button_show_results()
  */
 function button_vote()
 {
-    $HTMLOUT = '';
-    $HTMLOUT .= "<input class='button' type='submit' name='submit' value='Vote' title='Poll Vote' />";
-
-    return $HTMLOUT;
+    return "<input class='button tooltipper margin10' type='submit' name='submit' value='Vote' title='Cast Your Vote' />";
 }
 
 /**
@@ -346,8 +317,5 @@ function button_vote()
  */
 function button_null_vote()
 {
-    $HTMLOUT = '';
-    $HTMLOUT .= "<input class='button' type='submit' name='nullvote' value='View Results (Null Vote)' title='View results, but forfeit your vote in this poll' />";
-
-    return $HTMLOUT;
+    return "<input class='button tooltipper margin10' type='submit' name='nullvote' value='View Results (Null Vote)' title='View results, but forfeit your vote in this poll' />";
 }

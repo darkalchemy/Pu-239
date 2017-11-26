@@ -12,15 +12,16 @@ if (!is_valid_id($poll_id)) {
 $vote_cast = [];
 $_POST['choice'] = isset($_POST['choice']) ? $_POST['choice'] : [];
 
-$query = sql_query("SELECT * FROM polls
-                            LEFT JOIN poll_voters ON polls.pid = poll_voters.poll_id
-                            AND poll_voters.user_id = {$CURUSER['id']} 
-                            WHERE pid = " . sqlesc($poll_id)) or sqlerr(__FILE__, __LINE__);
+$sql = "SELECT * FROM polls
+            LEFT JOIN poll_voters ON polls.pid = poll_voters.poll_id
+            AND poll_voters.user_id = {$CURUSER['id']}
+            WHERE pid = " . sqlesc($poll_id);
+$query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 if (!mysqli_num_rows($query) == 1) {
     stderr('ERROR', 'No poll with that ID');
 }
 $poll_data = mysqli_fetch_assoc($query);
-if ($poll_data['user_id']) {
+if (!empty($poll_data['user_id'])) {
     stderr('ERROR', 'You have already voted!');
 }
 $_POST['nullvote'] = isset($_POST['nullvote']) ? $_POST['nullvote'] : 0;
@@ -45,8 +46,8 @@ if (!$_POST['nullvote']) {
     if (count($vote_cast) < count($poll_answers)) {
         stderr('ERROR', 'No vote');
     }
-    sql_query("INSERT INTO poll_voters (user_id, ip_address, poll_id, vote_date)
-                        VALUES ({$CURUSER['id']}, " . sqlesc($CURUSER['ip']) . ", {$poll_data['pid']}, " . TIME_NOW . ')') or sqlerr(__FILE__, __LINE__);
+    $sql = "INSERT INTO poll_voters (user_id, ip, poll_id, vote_date) VALUES ({$CURUSER['id']}, " . ipToStorageFormat($CURUSER['ip']) . ", {$poll_data['pid']}, " . TIME_NOW . ')';
+    sql_query($sql) or sqlerr(__FILE__, __LINE__);
     $update['votes'] = $poll_data['votes'] + 1;
     $cache->update_row('poll_data_' . $CURUSER['id'], [
         'votes' => $update['votes'],
@@ -68,9 +69,9 @@ if (!$_POST['nullvote']) {
         stderr('DBERROR', 'Could not update records');
     }
 } else {
-    sql_query("INSERT INTO poll_voters (user_id, ip_address, poll_id, vote_date)
+    sql_query("INSERT INTO poll_voters (user_id, ip, poll_id, vote_date)
                 VALUES
-                ({$CURUSER['id']}, " . sqlesc($CURUSER['ip']) . ", {$poll_data['pid']}, " . TIME_NOW . ')') or sqlerr(__FILE__, __LINE__);
+                ({$CURUSER['id']}, " . ipToStorageFormat($CURUSER['ip']) . ", {$poll_data['pid']}, " . TIME_NOW . ')') or sqlerr(__FILE__, __LINE__);
     $update['votes'] = $poll_data['votes'] + 1;
     $cache->update_row('poll_data_' . $CURUSER['id'], [
         'votes' => $update['votes'],
@@ -79,4 +80,4 @@ if (!$_POST['nullvote']) {
         stderr('DBERROR', 'Could not update records');
     }
 }
-header("location: {$site_config['baseurl']}/index.php");
+header("location: {$site_config['baseurl']}/index.php#poll");

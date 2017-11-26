@@ -2134,7 +2134,7 @@ DROP TABLE IF EXISTS `poll_voters`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `poll_voters` (
   `vid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `ip_address` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varbinary(16) NOT NULL,
   `vote_date` int(10) NOT NULL DEFAULT '0',
   `poll_id` int(10) NOT NULL DEFAULT '0',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
@@ -3700,4 +3700,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-25 23:01:20
+-- Dump completed on 2017-11-26  1:30:47

@@ -1708,7 +1708,10 @@ function validateToken($token, $key = null, $regen = false)
  */
 function ipToStorageFormat($ip)
 {
-    $ip = empty($ip) ? '255.255.255.255' : $ip;
+    $ip = empty($ip) ? '10.10.10.10' : $ip;
+    if (!filter_var($ip, FILTER_VALIDATE_IP)) {
+        $ip = '10.10.10.10';
+    }
     return '0x' . bin2hex(inet_pton($ip));
 }
 
@@ -1904,12 +1907,15 @@ function user_exists($user_id)
 function get_poll()
 {
     global $CURUSER, $cache, $site_config;
+
     if (($poll_data = $cache->get('poll_data_' . $CURUSER['id'])) === false) {
-        $query = sql_query('SELECT * FROM polls
-                            LEFT JOIN poll_voters ON polls.pid = poll_voters.poll_id
-                            AND poll_voters.user_id = ' . sqlesc($CURUSER['id']) . '
-                            ORDER BY polls.start_date DESC
-                            LIMIT 1');
+    $sql = 'SELECT p.*, INET6_NTOA(v.ip) AS ip, v.vote_date, v.user_id
+            FROM polls AS p
+            LEFT JOIN poll_voters AS v ON p.pid = v.poll_id AND v.user_id = ' . sqlesc($CURUSER['id']) . '
+            ORDER BY p.start_date
+            DESC LIMIT 1';
+
+        $query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         if (!mysqli_num_rows($query)) {
             return '';
         }
