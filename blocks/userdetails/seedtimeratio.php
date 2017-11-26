@@ -6,7 +6,8 @@ $What_Table = (XBT_TRACKER == true ? 'xbt_files_users' : 'snatched');
 $What_String = (XBT_TRACKER == true ? 'fid' : 'id');
 $What_User_String = (XBT_TRACKER == true ? 'uid' : 'userid');
 $What_Expire = (XBT_TRACKER == true ? $site_config['expires']['share_ratio_xbt'] : $site_config['expires']['share_ratio']);
-if (($cache_share_ratio = $cache->get($What_Cache . $id)) === false) {
+$cache_share_ratio = $cache->get($What_Cache . $id);
+if ($cache_share_ratio === false || is_null($cache_share_ratio)) {
     $cache_share_ratio = mysqli_fetch_assoc(sql_query("SELECT SUM(seedtime) AS seed_time_total, COUNT($What_String) AS total_number FROM $What_Table WHERE seedtime > '0' AND $What_User_String =" . sqlesc($user['id'])));
     $cache_share_ratio['total_number'] = (int)$cache_share_ratio['total_number'];
     $cache_share_ratio['seed_time_total'] = (int)$cache_share_ratio['seed_time_total'];

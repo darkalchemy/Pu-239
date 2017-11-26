@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
 
-$lang = array_merge(load_language('global'));
+$lang = load_language('global');
 $Christmasday = mktime(0, 0, 0, 12, 25, date('Y'));
 $today = mktime(date('G'), date('i'), date('s'), date('m'), date('d'), date('Y'));
 $gifts = [

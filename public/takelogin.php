@@ -50,7 +50,7 @@ function bark($text = 'Username or password incorrect')
     $sha = sha1($_SERVER['REMOTE_ADDR']);
     $dict_key = 'dictbreaker:::' . $sha;
     $flood = $cache->get($dict_key);
-    if ($flood === false) {
+    if ($flood === false || is_null($flood)) {
         $cache->set($dict_key, 'flood_check', 20);
     } else {
         die('Minimum 8 seconds between login attempts :)');

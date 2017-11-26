@@ -1,7 +1,8 @@
 <?php
 global $site_config, $cache, $lang;
 
-if (($stats_cache = $cache->get('site_stats_')) === false) {
+$stats_cache = $cache->get('site_stats_');
+if ($stats_cache === false || is_null($stats_cache)) {
     $stats_cache = mysqli_fetch_assoc(sql_query("SELECT *, seeders + leechers AS peers, seeders / leechers AS ratio, unconnectables / (seeders + leechers) AS ratiounconn FROM stats WHERE id = '1' LIMIT 1"));
     $stats_cache['seeders'] = (int)$stats_cache['seeders'];
     $stats_cache['leechers'] = (int)$stats_cache['leechers'];

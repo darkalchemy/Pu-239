@@ -196,6 +196,7 @@ $(function () {
         $('body').get(0).style.setProperty('--main-color', '#' + a_color);
         $('iframe').contents().find('body').css('--main-color', '#' + a_color);
     }
+
     function changeBodyClass(className, classesArray) {
         $.each(classesArray, function (idx, val) {
             $body.removeClass(val);
@@ -299,9 +300,9 @@ $(function () {
                         var classes = ' class="' + list_val.class + '"';
                     }
                     if ($body.hasClass(list_val.className)) {
-                        select_html += '<option value="' + list_val.className + '" ' + (classes||'') + ' selected="selected">' + list_val.name + '</option>';
+                        select_html += '<option value="' + list_val.className + '" ' + (classes || '') + ' selected="selected">' + list_val.name + '</option>';
                     } else {
-                        select_html += '<option value="' + list_val.className + '"' + (classes||'') + '>' + list_val.name + '</option>';
+                        select_html += '<option value="' + list_val.className + '"' + (classes || '') + '>' + list_val.name + '</option>';
                     }
                 });
                 $select_element.html(select_html);

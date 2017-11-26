@@ -42,7 +42,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #errorContainer {
     font-size: 2em;
-    text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;    
+    text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
 }
 
 .ajax-chat {
@@ -82,7 +82,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 .logoutChannelInner .popup {
     box-shadow: 0;
-    -webkit-box-shadow: 0; 
+    -webkit-box-shadow: 0;
 }
 
 #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer {

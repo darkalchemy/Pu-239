@@ -21,7 +21,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == 'save as draft') {
     }
     //=== Check if messages was saved as draft
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
-        stderr($lang[ 'pm_error' ], $lang['pm_draft_wasnt']);
+        stderr($lang['pm_error'], $lang['pm_draft_wasnt']);
     }
     header('Location: /pm_system.php?action=view_mailbox&box=-2&new_draft=1');
     exit();

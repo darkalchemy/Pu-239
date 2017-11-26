@@ -6,7 +6,7 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER, $site_config;
 
-$lang = array_merge(load_language('global'));
+$lang = load_language('global');
 $nick = ($CURUSER ? $CURUSER['username'] : ('Guest' . random_int(1000, 9999)));
 $form_template = <<<PAYPAL
 <form action='https://www.{$site_config['paypal_config']['sandbox']}paypal.com/cgi-bin/webscr' method='post'>

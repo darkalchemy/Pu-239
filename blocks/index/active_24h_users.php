@@ -2,7 +2,8 @@
 global $site_config, $cache, $lang;
 
 $keys['last24'] = 'last24';
-if (($last24_cache = $cache->get($keys['last24'])) === false) {
+$last24_cache = $cache->get($keys['last24']);
+if ($last24_cache === false || is_null($last24_cache)) {
     $last24_cache = [];
     $time24 = $_SERVER['REQUEST_TIME'] - 86400;
     $activeusers24 = '';

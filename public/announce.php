@@ -251,7 +251,8 @@ if (!isset($self)) {
     $upthis = max(0, $uploaded - $self['uploaded']);
     $downthis = max(0, $downloaded - $self['downloaded']);
     //==sitepot
-    if (($Pot_query = $cache->get('Sitepot_')) === false) {
+    $Pot_query = $cache->get('Sitepot_');
+    if ($Pot_query === false || is_null($Pot_query)) {
         $Pot_query_fields_ar_int = [
             'value_s',
             'value_i',
@@ -273,7 +274,8 @@ if (!isset($self)) {
         $downthis = 0;
     }
     //== Karma contribution system by ezero updated by putyn/Mindless
-    if (($contribution = $cache->get('freecontribution_')) === false) {
+    $contribution = $cache->get('freecontribution_');
+    if ($contribution === false || is_null($contribution)) {
         $contribution_fields_ar_int = [
             'startTime',
             'endTime',
@@ -355,7 +357,8 @@ if (portblacklisted($port)) {
 } elseif ($site_config['connectable_check']) {
     //== connectable checking - pdq
     $connkey = 'conn:' . md5($realip . ':' . $port);
-    if (($connectable = $cache->get($connkey)) === false) {
+    $connectable = $cache->get($connkey);
+    if ($connectable === false || is_null($connectable)) {
         $sockres = @fsockopen($ip, $port, $errno, $errstr, 5);
         if (!$sockres) {
             $connectable = 'no';

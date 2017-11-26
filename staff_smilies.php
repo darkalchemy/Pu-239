@@ -9,7 +9,7 @@ if ($CURUSER['class'] < UC_STAFF) {
     stderr('Error', 'Yer no tall enough');
     exit();
 }
-$lang = array_merge(load_language('global'));
+$lang = load_language('global');
 $htmlout = '';
 $htmlout = "<!doctype html>
 <html>

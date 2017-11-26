@@ -11,8 +11,9 @@
 $users = [];
 
 global $cache;
-$sql = "SELECT id, class FROM users";
-if (($users = $cache->get('chat_users_list')) === false) {
+$users = $cache->get('chat_users_list');
+if ($users === false || is_null($users)) {
+    $sql = "SELECT id, class FROM users";
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     while ($user = mysqli_fetch_assoc($res)) {
         $id = $class = '';

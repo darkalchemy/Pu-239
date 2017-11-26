@@ -46,7 +46,8 @@ if (!isset($CURUSER) || ($CURUSER['id'] != $row['owner'] && $CURUSER['class'] < 
 $HTMLOUT = $mod_cache_name = $subs_list = '';
 
 if ($CURUSER['class'] >= UC_STAFF) {
-    if (($mod_cache_name = $cache->get('editedby_' . $id)) === false) {
+    $mod_cache_name = $cache->get('editedby_' . $id);
+    if ($mod_cache_name === false || is_null($mod_cache_name)) {
         $mod_cache_name = $CURUSER['username'];
         $cache->add('editedby_' . $id, $mod_cache_name, $site_config['expires']['ismoddin']);
     }

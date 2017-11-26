@@ -9,7 +9,8 @@ $lang = array_merge(load_language('global'), load_language('staff_panel'));
 
 $staff_classes1['name'] = '';
 $staff = sqlesc(UC_STAFF);
-if (($staff_classes = $cache->get('is_staffs_')) === false) {
+$staff_classes = $cache->get('is_staffs_');
+if ($staff_classes === false || is_null($staff_classes)) {
     $res = sql_query("SELECT value FROM class_config WHERE name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX') AND value >= '$staff' ORDER BY value ASC");
     $staff_classes = [];
     while (($row = mysqli_fetch_assoc($res))) {

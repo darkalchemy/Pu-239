@@ -1,4 +1,6 @@
 26 Nov 2017
+update: cache->get
+update: details.php
 remove: new up redis
 
 25 Nov 2017

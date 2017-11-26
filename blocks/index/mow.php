@@ -9,7 +9,8 @@ foreach ($categorie as $key => $value) {
         'image' => $value['image'],
     ];
 }
-if (($motw_cached = $cache->get('top_movie_2')) === false) {
+$motw_cached = $cache->get('top_movie_2');
+if ($motw_cached === false || is_null($motw_cached)) {
     $motw = sql_query("SELECT t.added, t.checked_by, t.id, t.seeders, t.poster, t.leechers, t.name, t.size, t.category, c.name AS cat, c.image, t.free, t.silver, t.subs, t.times_completed, t.added, t.size
                         FROM torrents AS t
                         LEFT JOIN categories AS c ON t.category = c.id

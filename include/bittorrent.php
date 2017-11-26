@@ -157,6 +157,7 @@ function getip()
 function dbconn($autoclean = true)
 {
     global $site_config;
+
     if (!@($GLOBALS['___mysqli_ston'] = mysqli_connect($site_config['mysql_host'], $site_config['mysql_user'], $site_config['mysql_pass']))) {
         switch (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))) {
             case 1040:
@@ -209,7 +210,8 @@ function check_bans($ip, &$reason = '')
         return false;
     }
     $key = 'bans:::' . $ip;
-    if (($ban = $cache->get($key)) === false) {
+    $ban = $cache->get($key);
+    if ($ban === false || is_null($ban)) {
         $nip = ipToStorageFormat($ip);
         $ban_sql = sql_query('SELECT comment FROM bans WHERE (first <= ' . $nip . ' AND last >= ' . $nip . ') LIMIT 1') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($ban_sql)) {
@@ -220,7 +222,7 @@ function check_bans($ip, &$reason = '')
             return true;
         }
         ((mysqli_free_result($ban_sql) || (is_object($ban_sql) && (get_class($ban_sql) == 'mysqli_result'))) ? true : false);
-        $cache->set($key, 0, 86400); // 86400 // not banned
+        $cache->set($key, 0, 86400);
 
         return false;
     } elseif (!$ban) {
@@ -259,7 +261,8 @@ function userlogin()
     if (!$id) {
         return;
     }
-    if (($row = $cache->get('MyUser_' . $id)) === false) {
+    $row = $cache->get('MyUser_' . $id);
+    if ($row === false || is_null($row)) {
         $user_fields_ar_int = [
             'id',
             'added',
@@ -287,7 +290,6 @@ function userlogin()
             'vip_until',
             'freeslots',
             'free_switch',
-            'reputation',
             'invites',
             'invitedby',
             'uploadpos',
@@ -418,10 +420,9 @@ function userlogin()
         foreach ($user_fields_ar_float as $i) {
             $row[ $i ] = (float)$row[ $i ];
         }
-        foreach ($user_fields_ar_str as $i) {
-            $row[ $i ] = $row[ $i ];
-        }
+        $row['ip'] = ipFromStorageFormat($row['ip']);
         $cache->set('MyUser_' . $id, $row, $site_config['expires']['curuser']);
+        $cache->set('user' . $id, $row, $site_config['expires']['user_cache']);
         unset($res);
     }
     if (!isset($row['perms']) || (!($row['perms'] & bt_options::PERMS_BYPASS_BAN))) {
@@ -448,6 +449,7 @@ function userlogin()
             die;
         }
     }
+
     if ($row['class'] >= UC_STAFF) {
         $allowed_ID = $site_config['is_staff']['allowed'];
         if (!in_array(((int)$row['id']), $allowed_ID, true)) {
@@ -468,8 +470,10 @@ function userlogin()
             die;
         }
     }
+
     $What_Cache = (XBT_TRACKER == true ? 'userstats_xbt_' : 'userstats_');
-    if (($stats = $cache->get($What_Cache . $id)) === false) {
+    $stats = $cache->get($What_Cache . $id);
+    if ($stats === false || is_null($stats)) {
         $What_Expire = (XBT_TRACKER == true ? $site_config['expires']['u_stats_xbt'] : $site_config['expires']['u_stats']);
         $stats_fields_ar_int = [
             'uploaded',
@@ -499,7 +503,8 @@ function userlogin()
     $row['seedbonus'] = $stats['seedbonus'];
     $row['uploaded'] = $stats['uploaded'];
     $row['downloaded'] = $stats['downloaded'];
-    if (($ustatus = $cache->get('userstatus_' . $id)) === false) {
+    $ustatus = $cache->get('userstatus_' . $id);
+    if ($ustatus === false || is_null($ustatus)) {
         $sql2 = sql_query('SELECT * FROM ustatus WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($sql2)) {
             $ustatus = mysqli_fetch_assoc($sql2);
@@ -521,7 +526,9 @@ function userlogin()
         exit();
     }
     $blocks_key = 'blocks::' . $row['id'];
-    if (($CURBLOCK = $cache->get($blocks_key)) === false) {
+
+    $CURBLOCK = $cache->get($blocks_key);
+    if ($CURBLOCK === false || is_null($CURBLOCK)) {
         $c_sql = sql_query('SELECT * FROM user_blocks WHERE userid = ' . sqlesc($row['id'])) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($c_sql) == 0) {
             sql_query('INSERT INTO user_blocks(userid) VALUES (' . sqlesc($row['id']) . ')') or sqlerr(__FILE__, __LINE__);
@@ -625,7 +632,8 @@ function charset()
 function autoclean()
 {
     global $site_config, $cache;
-    if (($cleanup_timer = $cache->get('cleanup_timer_')) === false) {
+    $cleanup_timer = $cache->get('cleanup_timer_');
+    if ($cleanup_timer === false || is_null($cleanup_timer)) {
         $cache->set('cleanup_timer_', 5, 1); // runs only every 1 second
 
         $now = TIME_NOW;
@@ -645,8 +653,10 @@ function autoclean()
             }
         }
 
-        if (($tfreak_cron = $cache->get('tfreak_cron_')) === false) {
-            if (($tfreak_news = $cache->get('tfreak_news_links_')) === false) {
+        $tfreak_cron = $cache->get('tfreak_cron_');
+        if ($tfreak_cron === false || is_null($tfreak_cron)) {
+            $tfreak_news = $cache->get('tfreak_news_links_');
+            if ($tfreak_news === false || is_null($tfreak_news)) {
                 $sql = sql_query("SELECT link FROM newsrss") or sqlerr(__FILE__, __LINE__);
                 while ($tfreak_new = mysqli_fetch_assoc($sql)) {
                     $tfreak_news[] = $tfreak_new['link'];
@@ -785,7 +795,8 @@ function get_template()
 function make_freeslots($userid, $key)
 {
     global $cache, $site_config;
-    if (($slot = $cache->get($key . $userid)) === false) {
+    $slot = $cache->get($key . $userid);
+    if ($slot === false || is_null($slot)) {
         $res_slots = sql_query('SELECT * FROM freeslots WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
         $slot = [];
         if (mysqli_num_rows($res_slots)) {
@@ -808,7 +819,8 @@ function make_freeslots($userid, $key)
 function make_bookmarks($userid, $key)
 {
     global $cache, $site_config;
-    if (($book = $cache->get($key . $userid)) === false) {
+    $book = $cache->get($key . $userid);
+    if ($book === false || is_null($book)) {
         $res_books = sql_query('SELECT * FROM bookmarks WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
         $book = [];
         if (mysqli_num_rows($res_books)) {
@@ -1422,8 +1434,7 @@ function load_language($file = '')
             stderr('System Error', "Can't find language files");
         }
         include_once LANG_DIR . "{$site_config['language']}/lang_{$file}.php";
-    }
-    if (!file_exists(LANG_DIR . "{$CURUSER['language']}/lang_{$file}.php")) {
+    } elseif (!file_exists(LANG_DIR . "{$CURUSER['language']}/lang_{$file}.php")) {
         stderr('System Error', "Can't find language files");
     } else {
         include_once LANG_DIR . "{$CURUSER['language']}/lang_{$file}.php";
@@ -1815,7 +1826,8 @@ function replace_unicode_strings($text)
 function getPmCount($userid)
 {
     global $cache, $site_config;
-    if (($pmCount = $cache->get('inbox_' . $userid)) === false) {
+    $pmCount = $cache->get('inbox_' . $userid);
+    if ($pmCount === false || is_null($pmCount)) {
         $res = sql_query('SELECT COUNT(id) FROM messages WHERE receiver = ' . sqlesc($userid) . " AND unread = 'yes' AND location = 1") or sqlerr(__LINE__, __FILE__);
         $result = mysqli_fetch_row($res);
         $pmCount = (int)$result[0];
@@ -1886,7 +1898,8 @@ function random_color($minVal = 0, $maxVal = 255)
 function user_exists($user_id)
 {
     global $cache;
-    if (($userlist = $cache->get('userlist_' . $user_id)) === false) {
+    $userlist = $cache->get('userlist_' . $user_id);
+    if ($userlist === false || is_null($userlist)) {
         $query = "SELECT id FROM users WHERE id = " . sqlesc($user_id);
         $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
         $res = mysqli_fetch_assoc($res);
@@ -1905,8 +1918,9 @@ function get_poll()
 {
     global $CURUSER, $cache, $site_config;
 
-    if (($poll_data = $cache->get('poll_data_' . $CURUSER['id'])) === false) {
-    $sql = 'SELECT p.*, INET6_NTOA(v.ip) AS ip, v.vote_date, v.user_id
+    $poll_data = $cache->get('poll_data_' . $CURUSER['id']);
+    if ($poll_data === false || is_null($poll_data)) {
+        $sql = 'SELECT p.*, INET6_NTOA(v.ip) AS ip, v.vote_date, v.user_id
             FROM polls AS p
             LEFT JOIN poll_voters AS v ON p.pid = v.poll_id AND v.user_id = ' . sqlesc($CURUSER['id']) . '
             ORDER BY p.start_date
@@ -1953,7 +1967,8 @@ function shuffle_assoc($list, $times = 1)
 function make_torrentpass()
 {
     global $cache;
-    if (($passes = $cache->get('torrent_passes_')) === false) {
+    $passes = $cache->get('torrent_passes_');
+    if ($passes === false || is_null($passes)) {
         $sql = "SELECT torrent_pass FROM users";
         $query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         while ($row = mysqli_fetch_assoc($query)) {
@@ -2029,7 +2044,8 @@ function array_msort($array, $cols)
 function countries()
 {
     global $cache, $site_config;
-    if (($ret = $cache->get('countries::arr')) === false) {
+    $ret = $cache->get('countries::arr');
+    if ($ret === false || is_null($ret)) {
         $res = sql_query('SELECT id, name, flagpic FROM countries ORDER BY name ASC') or sqlerr(__FILE__, __LINE__);
         while ($row = mysqli_fetch_assoc($res)) {
             $ret[] = $row;

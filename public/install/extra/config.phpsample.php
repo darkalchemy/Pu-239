@@ -26,7 +26,6 @@ if (!function_exists('sys_getloadavg')) {
     }
 }
 
-/* Compare php version for date/time stuff etc! */
 if (version_compare(PHP_VERSION, REQUIRED_PHP_VERSION, '>=')) {
     date_default_timezone_set('UTC');
 }
@@ -277,8 +276,8 @@ $site_config['staff_forums'] = [
 $site_config['variant'] = 'Pu-239';
 
 // Arcade Games
-$site_config['arcade_games'] = array('asteroids', 'breakout', 'frogger', 'galaga', 'hexxagon', 'invaders', 'moonlander', 'pacman', 'psol', 'simon', 'snake', 'tetris', 'autobahn', 'ghosts-and-goblins', 'joust', 'ms-pac-man');
-$site_config['arcade_games_names'] = array('Asteroids', 'Breakout', 'Frogger', 'Galaga', 'Hexxagon', 'Space Invaders', 'Moonlander', 'Pacman', 'Pyramid Solitaire', 'Simon', 'Snake', 'Tetris', 'Autobahn', 'Ghosts\'n Goblins', 'Joust', 'Ms. Pac-Man');
+$site_config['arcade_games'] = ['asteroids', 'breakout', 'frogger', 'galaga', 'hexxagon', 'invaders', 'moonlander', 'pacman', 'psol', 'simon', 'snake', 'tetris', 'autobahn', 'ghosts-and-goblins', 'joust', 'ms-pac-man'];
+$site_config['arcade_games_names'] = ['Asteroids', 'Breakout', 'Frogger', 'Galaga', 'Hexxagon', 'Space Invaders', 'Moonlander', 'Pacman', 'Pyramid Solitaire', 'Simon', 'Snake', 'Tetris', 'Autobahn', 'Ghosts\'n Goblins', 'Joust', 'Ms. Pac-Man'];
 $site_config['top_score_points'] = 1000;
 
 $site_config['bad_words'] = ['fuck', 'shit', 'Moderator', 'Administrator', 'Admin', 'pussy', 'Sysop', 'cunt', 'nigger', 'VIP', 'Super User', 'Power User', 'ADMIN', 'SYSOP', 'MODERATOR', 'ADMINISTRATOR'];

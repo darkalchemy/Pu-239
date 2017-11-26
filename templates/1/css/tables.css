@@ -109,6 +109,7 @@ table {
     -moz-border-bottom-left-radius: .625em;
     border-bottom-left-radius: .625em;
 }
+
 .table-bordered tbody:last-child tr:last-child td:last-child,
 .table-bordered thead:last-child tr:last-child th:last-child {
     -webkit-border-bottom-right-radius: .625em;

@@ -6,7 +6,7 @@ require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
 global $CURUSER, $site_config;
 
-$lang = array_merge(load_language('global'));
+$lang = load_language('global');
 $HTMLOUT = '';
 if (!function_exists('htmlsafechars')) {
     /**

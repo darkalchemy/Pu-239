@@ -5,7 +5,7 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER, $site_config;
 
-$lang = array_merge(load_language('global'));
+$lang = load_language('global');
 $stdhead = [
     'css' => [
         get_file('upload_css'),

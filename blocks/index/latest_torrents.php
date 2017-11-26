@@ -6,7 +6,8 @@ $HTMLOUT .= "
     <fieldset id='latesttorrents' class='header'>
         <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_latest']}</legend>
         <div class='has-text-centered'>";
-if (($top5torrents = $cache->get('top5_tor_')) === false) {
+$top5torrents = $cache->get('top5_tor_');
+if ($top5torrents === false || is_null($top5torrents)) {
     $res = sql_query("SELECT t.id, t.seeders, t.poster, t.leechers, t.name, t.times_completed, t.category, c.image AS cat_pic, c.name AS cat_name, t.added, t.size
                         FROM torrents AS t
                         LEFT JOIN categories AS c ON t.category = c.id
@@ -90,7 +91,8 @@ if (count($top5torrents) > 0) {
         }
     }
 }
-if (($last5torrents = $cache->get('last5_tor_')) === false) {
+$last5torrents = $cache->get('last5_tor_');
+if ($last5torrents === false || is_null($last5torrents)) {
     $sql = "SELECT t.id, t.seeders, t.poster, t.leechers, t.name, t.times_completed, t.category, c.image AS cat_pic, c.name AS cat_name, t.added, t.size
                 FROM torrents AS t
                 LEFT JOIN categories AS c ON t.category = c.id

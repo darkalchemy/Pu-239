@@ -3,7 +3,7 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once INCL_DIR . 'user_functions.php';
 //require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-$lang = array_merge(load_language('global'));
+$lang = load_language('global');
 require_once ROOT_DIR . 'radio.php';
 global $CURUSER, $site_config;
 

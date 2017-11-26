@@ -2,7 +2,8 @@
 global $site_config, $CURUSER, $cache, $lang;
 
 if ($site_config['report_alert'] && $CURUSER['class'] >= UC_STAFF) {
-    if (($delt_with = $cache->get('new_report_')) === false) {
+    $delt_with = $cache->get('new_report_');
+    if ($delt_with === false || is_null($delt_with)) {
         $res_reports = sql_query("SELECT COUNT(id) FROM reports WHERE delt_with = '0'");
         list($delt_with) = mysqli_fetch_row($res_reports);
         $cache->set('new_report_', $delt_with, $site_config['expires']['alerts']);

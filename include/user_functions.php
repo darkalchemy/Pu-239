@@ -462,7 +462,8 @@ function format_username($user_id, $icons = true, $tooltipper = true)
     }
     $user_id = is_array($user_id) && !empty($user_id['id']) ? (int)$user_id['id'] : (int)$user_id;
     if (!is_array($user_id) && is_numeric($user_id)) {
-        if (($user = $cache->get('user_icons_' . $user_id)) === false) {
+        $user = $cache->get('user_icons_' . $user_id);
+        if ($user === false || is_null($user)) {
             $res = sql_query("SELECT gotgift, gender, id, class, username, donor, title, suspended, warned, leechwarn, downloadpos, chatpost, pirate, king, enabled, perms, avatar
                                 FROM users
                                 WHERE id = " . sqlesc($user_id)) or sqlerr(__FILE__, __LINE__);

@@ -1,7 +1,8 @@
 <?php
 global $site_config, $cache, $lang;
 
-if (($latestuser = $cache->get('latestuser')) === false) {
+$latestuser = $cache->get('latestuser');
+if ($latestuser === false || is_null($latestuser)) {
     $latestuser = mysqli_fetch_assoc(sql_query('SELECT id FROM users WHERE status = "confirmed" ORDER BY id DESC LIMIT 1'));
     $cache->set('latestuser', $latestuser, $site_config['expires']['latestuser']);
 }

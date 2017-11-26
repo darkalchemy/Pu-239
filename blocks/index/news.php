@@ -14,7 +14,8 @@ $HTMLOUT .= "
         </legend>
         <div>";
 
-if (($news = $cache->get('latest_news_')) === false) {
+$news = $cache->get('latest_news_');
+if ($news === false || is_null($news)) {
     $news = [];
     $res = sql_query('SELECT n.id AS nid, n.userid, n.added, n.title, n.body, n.sticky, n.anonymous
         FROM news AS n

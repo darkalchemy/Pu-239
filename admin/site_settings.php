@@ -9,7 +9,7 @@ $site_settings = $current_site_settings = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
     $pconf = sql_query('SELECT * FROM site_config') or sqlerr(__FILE__, __LINE__);
     while ($ac = mysqli_fetch_assoc($pconf)) {
-        $current_site_settings[ $ac[ 'name' ] ] = ['value' => $ac[ 'value' ], 'description' => $ac[ 'description' ]];
+        $current_site_settings[ $ac['name'] ] = ['value' => $ac['value'], 'description' => $ac['description']];
     }
     $update = [];
     foreach ($_POST as $key => $value) {

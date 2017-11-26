@@ -15,7 +15,8 @@ function trivia_update($data)
     $gamenum = $result['gamenum'];
 
     if (!empty($gamenum)) {
-        if (($qids = $cache->get('triviaquestions_')) === false) {
+        $qids = $cache->get('triviaquestions_');
+        if ($qids === false || is_null($qids)) {
             $sql = 'SELECT qid FROM triviaq WHERE asked = 0 AND current = 0';
             $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
             while ($qidarray = mysqli_fetch_assoc($res)) {

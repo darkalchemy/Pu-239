@@ -1467,7 +1467,8 @@ $fpoints = $dpoints = $hpoints = $freeleech_enabled = $double_upload_enabled = $
 // Limited this to 3 because of performance reasons and i wanted to go through last 3 events, anyway the most we can have
 // is that halfdownload is enabled, double upload is enabled as well as freeleech!
 if (XBT_TRACKER == false) {
-    if (($scheduled_events = $cache->get('freecontribution_datas_')) === false) {
+    $scheduled_events = $cache->get('freecontribution_datas_');
+    if ($scheduled_events === false || is_null($scheduled_events)) {
         $scheduled_events = mysql_fetch_all('SELECT * FROM `events` ORDER BY `startTime` DESC LIMIT 3;', []);
         $cache->set('freecontribution_datas_', $scheduled_events, 3 * 86400);
     }
@@ -1509,7 +1510,8 @@ if (XBT_TRACKER == false) {
             }
         }
     }
-    if (($freeleech_counter = $cache->get('freeleech_counter')) === false) {
+    $freeleech_counter = $cache->get('freeleech_counter');
+    if ($freeleech_counter === false || is_null($freeleech_counter)) {
         $total_fl = sql_query('SELECT SUM(pointspool) AS pointspool, points
                                 FROM bonus
                                 WHERE id = 11') or sqlerr(__FILE__, __LINE__);
@@ -1549,7 +1551,8 @@ if (XBT_TRACKER == false) {
     //$cache->delete('freeleech_counter');
     //=== get total points
     //$target_du = 30000;
-    if (($doubleupload_counter = $cache->get('doubleupload_counter')) === false) {
+    $doubleupload_counter = $cache->get('doubleupload_counter');
+    if ($doubleupload_counter === false || is_null($doubleupload_counter)) {
         $total_du = sql_query('SELECT SUM(pointspool) AS pointspool, points
                                 FROM bonus
                                 WHERE id = 12') or sqlerr(__FILE__, __LINE__);
@@ -1587,7 +1590,8 @@ if (XBT_TRACKER == false) {
     }
     //=== get total points
     //$target_hd = 30000;
-    if (($halfdownload_counter = $cache->get('halfdownload_counter')) === false) {
+    $halfdownload_counter = $cache->get('halfdownload_counter');
+    if ($halfdownload_counter === false || is_null($halfdownload_counter)) {
         $total_hd = sql_query('SELECT SUM(pointspool) AS pointspool, points
                                 FROM bonus
                                 WHERE id = 13') or sqlerr(__FILE__, __LINE__);
@@ -1641,7 +1645,8 @@ if (XBT_TRACKER == false) {
     }
 }
 //==09 Ezeros freeleech contribution top 10 - pdq.Bigjoos
-if (($top_donators = $cache->get('top_donators_')) === false) {
+$top_donators = $cache->get('top_donators_');
+if ($top_donators === false || is_null($top_donators)) {
     $a = sql_query("SELECT b.id, SUM(b.donation) AS total, u.username, u.id AS userid, u.pirate, u.king, u.class, u.donor, u.warned, u.leechwarn, u.enabled, u.chatpost
                         FROM bonuslog AS b
                         LEFT JOIN users AS u ON b.id = u.id
@@ -1667,7 +1672,8 @@ if (count($top_donators) > 0) {
 }
 //$cache->delete('top_donators_');
 //==
-if (($top_donators2 = $cache->get('top_donators2_')) === false) {
+$top_donators2 = $cache->get('top_donators2_');
+if ($top_donators2 === false || is_null($top_donators2)) {
     $b = sql_query("SELECT b.id, SUM(b.donation) AS total, u.username, u.id AS userid, u.pirate, u.king, u.class, u.donor, u.warned, u.leechwarn, u.enabled, u.chatpost
                         FROM bonuslog AS b
                         LEFT JOIN users AS u ON b.id = u.id
@@ -1693,7 +1699,8 @@ if (count($top_donators2) > 0) {
 }
 //$cache->delete('top_donators2_');
 //==
-if (($top_donators3 = $cache->get('top_donators3_')) === false) {
+$top_donators3 = $cache->get('top_donators3_');
+if ($top_donators3 === false || is_null($top_donators3)) {
     $c = sql_query("SELECT b.id, SUM(b.donation) AS total, u.username, u.id AS userid, u.pirate, u.king, u.class, u.donor, u.warned, u.leechwarn, u.enabled, u.chatpost
                         FROM bonuslog AS b
                         LEFT JOIN users AS u ON b.id = u.id

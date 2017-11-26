@@ -26,167 +26,173 @@ $id = (int)$_GET['id'];
 if (!is_valid_id($id)) {
     stderr($lang['userdetails_error'], "{$lang['userdetails_bad_id']}");
 }
-if (($user = $cache->get('user' . $id)) === false) {
-    $user_fields_ar_int = [
-        'id',
-        'added',
-        'last_login',
-        'last_access',
-        'curr_ann_last_check',
-        'curr_ann_id',
-        'stylesheet',
-        'class',
-        'override_class',
-        'language',
-        'av_w',
-        'av_h',
-        'country',
-        'warned',
-        'torrentsperpage',
-        'topicsperpage',
-        'postsperpage',
-        'reputation',
-        'dst_in_use',
-        'auto_correct_dst',
-        'chatpost',
-        'smile_until',
-        'vip_until',
-        'freeslots',
-        'free_switch',
-        'invites',
-        'invitedby',
-        'uploadpos',
-        'forumpost',
-        'downloadpos',
-        'immunity',
-        'leechwarn',
-        'last_browse',
-        'sig_w',
-        'sig_h',
-        'forum_access',
-        'hit_and_run_total',
-        'donoruntil',
-        'donated',
-        'vipclass_before',
-        'passhint',
-        'avatarpos',
-        'sendpmpos',
-        'invitedate',
-        'anonymous_until',
-        'pirate',
-        'king',
-        'ssluse',
-        'paranoia',
-        'parked_until',
-        'bjwins',
-        'bjlosses',
-        'irctotal',
-        'last_access_numb',
-        'onlinetime',
-        'hits',
-        'comments',
-        'categorie_icon',
-        'perms',
-        'mood',
-        'pms_per_page',
-        'watched_user',
-        'game_access',
-        'reputation',
-        'opt1',
-        'opt2',
-        'can_leech',
-        'wait_time',
-        'torrents_limit',
-        'peers_limit',
-    ];
-    $user_fields_ar_float = [
-        'time_offset',
-        'total_donated',
-    ];
-    $user_fields_ar_str = [
-        'username',
-        'torrent_pass',
-        'email',
-        'status',
-        'privacy',
-        'info',
-        'acceptpms',
-        'ip',
-        'avatar',
-        'title',
-        'notifs',
-        'enabled',
-        'donor',
-        'deletepms',
-        'savepms',
-        'vip_added',
-        'invite_rights',
-        'anonymous',
-        'disable_reason',
-        'clear_new_tag_manually',
-        'signatures',
-        'signature',
-        'highspeed',
-        'hnrwarn',
-        'parked',
-        'support',
-        'supportfor',
-        'invitees',
-        'invite_on',
-        'subscription_pm',
-        'gender',
-        'viewscloud',
-        'tenpercent',
-        'avatars',
-        'offavatar',
-        'hidecur',
-        'signature_post',
-        'forum_post',
-        'avatar_rights',
-        'offensive_avatar',
-        'view_offensive_avatar',
-        'google_talk',
-        'msn',
-        'aim',
-        'yahoo',
-        'website',
-        'icq',
-        'show_email',
-        'gotgift',
-        'suspended',
-        'warn_reason',
-        'onirc',
-        'birthday',
-        'got_blocks',
-        'pm_on_delete',
-        'commentpm',
-        'split',
-        'browser',
-        'got_moods',
-        'show_pm_avatar',
-        'watched_user_reason',
-        'staff_notes',
-        'where_is',
-        'browse_icons',
-    ];
-    $user_fields = implode(', ', array_merge($user_fields_ar_int, $user_fields_ar_float, $user_fields_ar_str));
-    $r1 = sql_query('SELECT ' . $user_fields . ' FROM users WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $user = mysqli_fetch_assoc($r1) or stderr($lang['userdetails_error'], "{$lang['userdetails_no_user']}");
-    foreach ($user_fields_ar_int as $i) {
-        $user[ $i ] = (int)$user[ $i ];
+$user = $cache->get('user' . $id);
+if ($user === false || is_null($user)) {
+    $user = $cache->get('MyUser' . $id);
+    if ($user === false || is_null($user)) {
+        $user_fields_ar_int = [
+            'id',
+            'added',
+            'last_login',
+            'last_access',
+            'curr_ann_last_check',
+            'curr_ann_id',
+            'stylesheet',
+            'class',
+            'override_class',
+            'language',
+            'av_w',
+            'av_h',
+            'country',
+            'warned',
+            'torrentsperpage',
+            'topicsperpage',
+            'postsperpage',
+            'ajaxchat_height',
+            'reputation',
+            'dst_in_use',
+            'auto_correct_dst',
+            'chatpost',
+            'smile_until',
+            'vip_until',
+            'freeslots',
+            'free_switch',
+            'invites',
+            'invitedby',
+            'uploadpos',
+            'forumpost',
+            'downloadpos',
+            'immunity',
+            'leechwarn',
+            'last_browse',
+            'sig_w',
+            'sig_h',
+            'forum_access',
+            'hit_and_run_total',
+            'donoruntil',
+            'donated',
+            'vipclass_before',
+            'passhint',
+            'avatarpos',
+            'sendpmpos',
+            'invitedate',
+            'anonymous_until',
+            'pirate',
+            'king',
+            'ssluse',
+            'paranoia',
+            'parked_until',
+            'bjwins',
+            'bjlosses',
+            'irctotal',
+            'last_access_numb',
+            'onlinetime',
+            'hits',
+            'comments',
+            'categorie_icon',
+            'perms',
+            'mood',
+            'pms_per_page',
+            'watched_user',
+            'game_access',
+            'opt1',
+            'opt2',
+            'can_leech',
+            'wait_time',
+            'torrents_limit',
+            'peers_limit',
+        ];
+        $user_fields_ar_float = [
+            'time_offset',
+            'total_donated',
+        ];
+        $user_fields_ar_str = [
+            'username',
+            'torrent_pass',
+            'email',
+            'status',
+            'privacy',
+            'info',
+            'acceptpms',
+            'ip',
+            'avatar',
+            'title',
+            'notifs',
+            'enabled',
+            'donor',
+            'deletepms',
+            'savepms',
+            'vip_added',
+            'invite_rights',
+            'anonymous',
+            'disable_reason',
+            'clear_new_tag_manually',
+            'signatures',
+            'signature',
+            'highspeed',
+            'hnrwarn',
+            'parked',
+            'support',
+            'supportfor',
+            'invitees',
+            'invite_on',
+            'subscription_pm',
+            'gender',
+            'viewscloud',
+            'tenpercent',
+            'avatars',
+            'offavatar',
+            'hidecur',
+            'signature_post',
+            'forum_post',
+            'avatar_rights',
+            'offensive_avatar',
+            'view_offensive_avatar',
+            'google_talk',
+            'msn',
+            'aim',
+            'yahoo',
+            'website',
+            'icq',
+            'show_email',
+            'gotgift',
+            'suspended',
+            'warn_reason',
+            'onirc',
+            'birthday',
+            'got_blocks',
+            'pm_on_delete',
+            'commentpm',
+            'split',
+            'browser',
+            'got_moods',
+            'show_pm_avatar',
+            'watched_user_reason',
+            'staff_notes',
+            'where_is',
+            'forum_sort',
+            'browse_icons',
+        ];
+        $user_fields = implode(', ', array_merge($user_fields_ar_int, $user_fields_ar_float, $user_fields_ar_str));
+        $r1 = sql_query('SELECT ' . $user_fields . ' FROM users WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+        $user = mysqli_fetch_assoc($r1) or stderr($lang['userdetails_error'], "{$lang['userdetails_no_user']}");
+        foreach ($user_fields_ar_int as $i) {
+            $user[ $i ] = (int)$user[ $i ];
+        }
+        foreach ($user_fields_ar_float as $i) {
+            $user[ $i ] = (float)$user[ $i ];
+        }
+        $user['ip'] = ipFromStorageFormat($user['ip']);
+        $cache->set('user' . $id, $user, $site_config['expires']['user_cache']);
     }
-    foreach ($user_fields_ar_float as $i) {
-        $user[ $i ] = (float)$user[ $i ];
-    }
-    $user['ip'] = ipFromStorageFormat($user['ip']);
-    $cache->set('user' . $id, $user, $site_config['expires']['user_cache']);
 }
 if ($user['status'] == 'pending') {
     stderr($lang['userdetails_error'], $lang['userdetails_pending']);
 }
 // user stats
 $What_Cache = (XBT_TRACKER == true ? 'user_stats_xbt_' : 'user_stats_');
-if (($user_stats = $cache->get($What_Cache . $id)) === false) {
+$user_stats = $cache->get($What_Cache . $id);
+if ($user_stats === false || is_null($user_stats)) {
     $What_Expire = (XBT_TRACKER == true ? $site_config['expires']['user_stats_xbt'] : $site_config['expires']['user_stats']);
     $stats_fields_ar_int = [
         'uploaded',
@@ -211,7 +217,8 @@ if (($user_stats = $cache->get($What_Cache . $id)) === false) {
 
     $cache->set($What_Cache . $id, $user_stats, $What_Expire);
 }
-if (($user_status = $cache->get('user_status_' . $id)) === false) {
+$user_status = $cache->get('user_status_' . $id);
+if ($user_status === false || is_null($user_status)) {
     $sql_2 = sql_query('SELECT * FROM ustatus WHERE userid = ' . sqlesc($id));
     if (mysqli_num_rows($sql_2)) {
         $user_status = mysqli_fetch_assoc($sql_2);
@@ -414,12 +421,14 @@ $HTMLOUT .= "
 if (!$enabled) {
     $HTMLOUT .= $lang['userdetails_disabled'];
 } elseif ($CURUSER['id'] != $user['id']) {
-    if (($friends = $cache->get('Friends_' . $id)) === false) {
+    $friends = $cache->get('Friends_' . $id);
+    if ($friends === false || is_null($friends)) {
         $r3 = sql_query('SELECT id FROM friends WHERE userid=' . sqlesc($CURUSER['id']) . ' AND friendid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $friends = mysqli_num_rows($r3);
         $cache->set('Friends_' . $id, $friends, $site_config['expires']['user_friends']);
     }
-    if (($blocks = $cache->get('Blocks_' . $id)) === false) {
+    $blocks = $cache->get('Blocks_' . $id);
+    if ($blocks === false || is_null($blocks)) {
         $r4 = sql_query('SELECT id FROM blocks WHERE userid=' . sqlesc($CURUSER['id']) . ' AND blockid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $blocks = mysqli_num_rows($r4);
         $cache->set('Blocks_' . $id, $blocks, $site_config['expires']['user_blocks']);
@@ -438,7 +447,8 @@ if (!$enabled) {
 
 if ($CURUSER['class'] >= UC_STAFF) {
     $shitty = '';
-    if (($shit_list = $cache->get('shit_list_' . $id)) === false) {
+    $shit_list = $cache->get('shit_list_' . $id);
+    if ($shit_list === false || is_null($shit_list)) {
         $check_if_theyre_shitty = sql_query('SELECT suspect FROM shit_list WHERE userid=' . sqlesc($CURUSER['id']) . ' AND suspect=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         list($shit_list) = mysqli_fetch_row($check_if_theyre_shitty);
         $cache->set('shit_list_' . $id, $shit_list, $site_config['expires']['shit_list']);

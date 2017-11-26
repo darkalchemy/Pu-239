@@ -9,7 +9,7 @@ if (!getSessionVar('LoggedIn')) {
     check_user_status();
 }
 
-$lang = array_merge(load_language('global'));
+$lang = load_language('global');
 
 $HTMLOUT = main_div("
 <p>

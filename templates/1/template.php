@@ -162,14 +162,16 @@ function stdfoot($stdfoot = false)
     $phptime = $seconds - $querytime - $cachetime;
     $percentphp = number_format(($phptime / $seconds) * 100, 2);
     $percentmc = number_format(($cachetime / $seconds) * 100, 2);
-    if (($MemStats = $cache->get('mc_hits')) === false) {
+    $MemStats = $cache->get('mc_hits');
+    if ($MemStats === false || is_null($MemStats)) {
         $MemStats = ''; //$cache->getStats();
         $MemStats['Hits'] = (($MemStats['get_hits'] / $MemStats['cmd_get'] < 0.7) ? '' : number_format(($MemStats['get_hits'] / $MemStats['cmd_get']) * 100, 3));
         $cache->set('mc_hits', $MemStats, 10);
     }
     $uptime = '';
     if ($debug) {
-        if (($uptime = $cache->get('uptime')) === false) {
+        $uptime = $cache->get('uptime');
+        if ($uptime === false || is_null($uptime)) {
             $uptime = `uptime`;
             $cache->set('uptime', $uptime, 25);
         }
@@ -345,7 +347,8 @@ function navbar()
     $navbar = $panel = $user_panel = $settings_panel = $stats_panel = $other_panel = '';
 
     if ($CURUSER['class'] >= UC_STAFF) {
-        if (($staff_panel = $cache->get('staff_panels_' . $CURUSER['class'])) === false) {
+        $staff_panel = $cache->get('staff_panels_' . $CURUSER['class']);
+        if ($staff_panel === false || is_null($staff_panel)) {
             $res = sql_query('SELECT * FROM staffpanel
                             WHERE navbar = 1 AND av_class <= ' . sqlesc($CURUSER['class']) . '
                             ORDER BY page_name ASC') or sqlerr(__FILE__, __LINE__);

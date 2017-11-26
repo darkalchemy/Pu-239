@@ -64,7 +64,7 @@ Please search torrents before adding an offer!</td></tr><tr><td>
 Offers are for Users with a good ratio who have uploaded at least " . $site_config['offer_gigs_upped'] . " gigs Only... Share and you shall recieve!</td></tr>
 <tr><td><b>Title</b></td><td><input type='text' size='40' name='offertitle' />
 <select name='category'><option value='0'>(Select a Category)</option>\n";
-    $res2 = sql_query('SELECT id, name FROM categories order by name');
+    $res2 = sql_query('SELECT id, name FROM categories ORDER BY name');
     $num = mysqli_num_rows($res2);
     $catdropdown2 = '';
     for ($i = 0; $i < $num; ++$i) {
@@ -97,7 +97,7 @@ Offers are for Users with a good ratio who have uploaded at least " . $site_conf
 }
 $rescount = sql_query('SELECT id FROM offers LIMIT 1') or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($rescount) > 0) {
-    $res = sql_query('SELECT users.username, offers.id, offers.userid, offers.cat, offers.offer, offers.added, categories.name, categories.image, uploaded, downloaded FROM users inner join offers ON offers.userid = users.id left join categories ON offers.cat = categories.id order by offers.id desc LIMIT 10') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT users.username, offers.id, offers.userid, offers.cat, offers.offer, offers.added, categories.name, categories.image, uploaded, downloaded FROM users INNER JOIN offers ON offers.userid = users.id LEFT JOIN categories ON offers.cat = categories.id ORDER BY offers.id DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
     $num = mysqli_num_rows($res);
     $HTMLOUT .= "<table border='1' cellspacing='0' width='750px' cellpadding='5'>
     <tr><td width='50px' class='colhead'>Category</td>

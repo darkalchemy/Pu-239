@@ -2,7 +2,8 @@
 require_once INCL_DIR . 'html_functions.php';
 global $cache, $lang, $site_config;
 
-if (($comments = $cache->get('latest_comments_')) === false) {
+$comments = $cache->get('latest_comments_');
+if ($comments === false || is_null($comments)) {
     $sql = sql_query("SELECT c.id, c.user AS user_id, c.torrent, c.added, c.text, c.anonymous, c.user_likes, t.name, t.category, cat.name AS cat, cat.image,
                             t.seeders, t.poster, t.leechers, t.times_completed, t.added AS toradd, t.size
                             FROM comments AS c 

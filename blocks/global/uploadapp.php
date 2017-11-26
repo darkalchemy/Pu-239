@@ -2,7 +2,8 @@
 global $CURUSER, $site_config, $cache, $lang;
 
 if ($site_config['uploadapp_alert'] && $CURUSER['class'] >= UC_STAFF) {
-    if (($newapp = $cache->get('new_uploadapp_')) === false) {
+    $newapp = $cache->get('new_uploadapp_');
+    if ($newapp === false || is_null($newapp)) {
         $res_newapps = sql_query("SELECT count(id) FROM uploadapp WHERE status = 'pending'");
         list($newapp) = mysqli_fetch_row($res_newapps);
         $cache->set('new_uploadapp_', $newapp, $site_config['expires']['alerts']);

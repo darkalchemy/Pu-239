@@ -238,11 +238,6 @@ if (isset($color_options[ $post_color ]) && isset($number_options[ $post_number 
     //== Take Bet
     if (isset($_GET['takebet'])) {
         $betid = (int)$_GET['takebet'];
-        //      if (($casino_times = $cache->get('casinotimes_' . $betid)) === false) {
-        //          $cache->set('casinotimes_' . $betid, 600);
-        //      } else {
-        //          stderr($lang['gl_sorry'], "{$lang['casino_someone_has_already_taken_that_bet']}!&#160;&#160;&#160;$goback");
-        //      }
         $rand = 0;
         for ($x = 1; $x <= 100000; ++$x) {
             $random = (random_int(1, 10000));

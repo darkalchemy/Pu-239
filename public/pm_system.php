@@ -252,7 +252,8 @@ switch ($action) {
 function get_all_boxes()
 {
     global $CURUSER, $cache, $site_config, $lang;
-    if (($get_all_boxes = $cache->get('get_all_boxes' . $CURUSER['id'])) === false) {
+    $get_all_boxes = $cache->get('get_all_boxes' . $CURUSER['id']);
+    if ($get_all_boxes === false || is_null($get_all_boxes)) {
         $res = sql_query('SELECT boxnumber, name FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
         $get_all_boxes = '<select name="box">
                                             <option class="body" value="1">' . $lang['pm_inbox'] . '</option>
@@ -277,7 +278,8 @@ function get_all_boxes()
 function insertJumpTo($mailbox)
 {
     global $CURUSER, $cache, $site_config, $lang;
-    if (($insertJumpTo = $cache->get('insertJumpTo' . $CURUSER['id'])) === false) {
+    $insertJumpTo = $cache->get('insertJumpTo' . $CURUSER['id']);
+    if ($insertJumpTo === false || is_null($insertJumpTo)) {
         $res = sql_query('SELECT boxnumber,name FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
         $insertJumpTo = '<form action="pm_system.php" method="get">
                                     <input type="hidden" name="action" value="view_mailbox" />

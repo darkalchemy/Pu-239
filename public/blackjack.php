@@ -1108,7 +1108,8 @@ if ($game) {
 function getCardData($cardid)
 {
     global $cache;
-    if (($card = $cache->get('card_data_' . $cardid)) === false) {
+    $card = $cache->get('card_data_' . $cardid);
+    if ($card === false || is_null($card)) {
         $sql = 'SELECT * FROM cards WHERE id = ' . sqlesc($cardid);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $card = mysqli_fetch_assoc($res);

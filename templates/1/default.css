@@ -1,6 +1,6 @@
 html {
     background: transparent;
-    min-height:100%;
+    min-height: 100%;
     width: 100%;
     margin: 0;
     padding: 0;
@@ -137,13 +137,14 @@ pre {
 }
 
 .noselect {
-  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+                                     supported by Chrome and Opera */
 }
 
 h1,
@@ -421,11 +422,11 @@ li.active {
     margin-right: 0;
 }
 
-.column:last-child{
+.column:last-child {
     padding-right: 0;
 }
 
-.column:first-child{
+.column:first-child {
     padding-left: 0;
 }
 
@@ -932,8 +933,7 @@ li {
     flex-wrap: wrap;
 }
 
-.tabs a
-{
+.tabs a {
     color: white;
     -webkit-border-radius: .3125em;
     -moz-border-radius: .3125em;
@@ -942,8 +942,7 @@ li {
     margin-bottom: 0;
 }
 
-.tabs a.active, .tabs a:focus, .tabs a:active
-{
+.tabs a.active, .tabs a:focus, .tabs a:active {
     color: #222;
     background-color: rgba(255, 255, 255, .5);
     -webkit-border-radius: .3125em;
@@ -951,8 +950,7 @@ li {
     border-radius: .3125em;
 }
 
-.tabs a:hover
-{
+.tabs a:hover {
     color: #000;
     background-color: rgba(255, 255, 255, .9);
     -webkit-border-radius: .3125em;
@@ -960,8 +958,7 @@ li {
     border-radius: .3125em;
 }
 
-.tabcontent.active
-{
+.tabcontent.active {
     overflow: hidden;
 }
 

@@ -164,8 +164,8 @@ function main_div($text, $class = null)
         return;
     } else {
         return "
-                <div class='bordered $class'>
-                    <div class='alt_bordered bg-00'>
+                <div class='bordered bg-00 $class'>
+                    <div class='alt_bordered'>
                         $text
                     </div>
                 </div>";
@@ -175,10 +175,7 @@ function main_div($text, $class = null)
 
 /**
  * @param        $text
- * @param string $align
- * @param string $top
- * @param string $bottom
- * @param string $padding
+ * @param string $class
  *
  * @return string|void
  */

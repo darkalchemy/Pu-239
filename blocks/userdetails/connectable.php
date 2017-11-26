@@ -3,7 +3,8 @@ global $CURUSER, $site_config, $cache, $lang, $user, $id;
 
 if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     $What_Cache = (XBT_TRACKER == true ? 'port_data_xbt_' : 'port_data_');
-    if (($port_data = $cache->get($What_Cache . $id)) === false) {
+    $port_data = $cache->get($What_Cache . $id);
+    if ($port_data === false || is_null($port_data)) {
         if (XBT_TRACKER == true) {
             $q1 = sql_query('SELECT `connectable`, `peer_id` FROM `xbt_files_users` WHERE uid = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
         } else {

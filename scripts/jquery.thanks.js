@@ -6,7 +6,7 @@ function show_thanks(tid) {
 
         if (r.status) {
             if (!r.hadTh)
-                r.list += "<br><input type='button' value='Say thanks' onclick=\"say_thanks(" + tid + ")\" id='thanks_button' />";
+                r.list += "<br><input type='button' class='button is-primary is-small' value='Say thanks' onclick=\"say_thanks(" + tid + ")\" id='thanks_button' />";
             holder.empty().html(r.list);
         }
     }, 'json');

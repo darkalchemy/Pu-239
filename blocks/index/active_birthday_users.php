@@ -3,7 +3,8 @@ global $site_config, $cache, $lang;
 
 $current_date = getdate();
 $keys['birthdayusers'] = 'birthdayusers';
-if (($birthday_users_cache = $cache->get($keys['birthdayusers'])) === false) {
+$birthday_users_cache = $cache->get($keys['birthdayusers']);
+if ($birthday_users_cache === false || is_null($birthday_users_cache)) {
     $birthdayusers = '';
     $birthday_users_cache = [];
     $res = sql_query('SELECT id, username, perms FROM users WHERE MONTH(birthday) = ' . sqlesc($current_date['mon']) . ' AND DAYOFMONTH(birthday) = ' . sqlesc($current_date['mday']) . ' AND perms < ' . bt_options::PERMS_STEALTH . ' ORDER BY username ASC') or sqlerr(__FILE__, __LINE__);

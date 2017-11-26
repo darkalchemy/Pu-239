@@ -5,7 +5,7 @@ check_user_status();
 global $CURUSER, $site_config, $cache;
 
 $HTMLOUT = '';
-$lang = array_merge(load_language('global'));
+$lang = load_language('global');
 
 $uploaded = (int)$CURUSER['uploaded'];
 $downloaded = (int)$CURUSER['downloaded'];

@@ -8,7 +8,8 @@ $HTMLOUT .= "
         <div class='table-wrapper has-text-centered'>";
 $page = 1;
 $num = 0;
-if (($topics = $cache->get('last_posts_' . $CURUSER['class'])) === false) {
+$topics = $cache->get('last_posts_' . $CURUSER['class']);
+if ($topics === false || is_null($topics)) {
     $topicres = sql_query('SELECT t.id, t.user_id AS tuser_id, t.topic_name, t.locked, t.forum_id, t.last_post, t.sticky, t.views, t.anonymous AS tan,
                             f.min_class_read, f.name,
                             (SELECT COUNT(id) FROM posts WHERE topic_id = t.id) AS p_count, p.user_id AS puser_id, p.added, p.anonymous AS pan

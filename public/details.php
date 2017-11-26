@@ -23,11 +23,13 @@ $stdfoot = [
     ],
 ];
 $HTMLOUT = $torrent_cache = '';
+$dt = TIME_NOW;
+
 if (!isset($_GET['id']) || !is_valid_id($_GET['id'])) {
     stderr("{$lang['details_user_error']}", "{$lang['details_bad_id']}");
 }
 $id = (int)$_GET['id'];
-//==pdq memcache slots
+
 $slot = make_freeslots($CURUSER['id'], 'fllslot_');
 $torrent['addedfree'] = $torrent['addedup'] = $free_slot = $double_slot = '';
 if (!empty($slot)) {
@@ -54,7 +56,8 @@ foreach ($categorie as $key => $value) {
     ];
 }
 
-if (($torrents = $cache->get('torrent_details_' . $id)) === false) {
+$torrents = $cache->get('torrent_details_' . $id);
+if ($torrents === false || is_null($torrents)) {
     $tor_fields_ar_int = [
         'id',
         'leechers',
@@ -120,7 +123,8 @@ if (($torrents_xbt = $cache->get('torrent_xbt_data_' . $id)) === false && XBT_TR
     $cache->set('torrent_xbt_data_' . $id, $torrents_xbt, $site_config['expires']['torrent_xbt_data']);
 }
 //==
-if (($torrents_txt = $cache->get('torrent_details_txt' . $id)) === false) {
+$torrents_txt = $cache->get('torrent_details_txt' . $id);
+if ($torrents_txt === false || is_null($torrents_txt)) {
     $torrents_txt = mysqli_fetch_assoc(sql_query('SELECT descr FROM torrents WHERE id =' . sqlesc($id))) or sqlerr(__FILE__, __LINE__);
     $cache->set('torrent_details_txt' . $id, $torrents_txt, $site_config['expires']['torrent_details_text']);
 }
@@ -136,28 +140,29 @@ if (isset($_GET['hit'])) {
 }
 $What_String = (XBT_TRACKER == true ? 'mtime' : 'last_action');
 $What_String_Key = (XBT_TRACKER == true ? 'last_action_xbt_' : 'last_action_');
-if (($l_a = $cache->get($What_String_Key . $id)) === false) {
+$l_a = $cache->get($What_String_Key . $id);
+if ($l_a === false || is_null($l_a)) {
     $l_a = mysqli_fetch_assoc(sql_query('SELECT ' . $What_String . ' AS lastseed ' . 'FROM torrents ' . 'WHERE id = ' . sqlesc($id))) or sqlerr(__FILE__, __LINE__);
     $l_a['lastseed'] = (int)$l_a['lastseed'];
     $cache->add('last_action_' . $id, $l_a, 1800);
 }
-/* seeders/leechers/completed caches pdq**/
+
 $torrent_cache['seeders'] = $cache->get('torrents::seeds:::' . $id);
 $torrent_cache['leechers'] = $cache->get('torrents::leechs:::' . $id);
 $torrent_cache['times_completed'] = $cache->get('torrents::comps:::' . $id);
 $torrents['seeders'] = ((XBT_TRACKER === false || $torrent_cache['seeders'] === false || $torrent_cache['seeders'] === 0 || $torrent_cache['seeders'] === false) ? $torrents['seeders'] : $torrent_cache['seeders']);
 $torrents['leechers'] = ((XBT_TRACKER === false || $torrent_cache['leechers'] === false || $torrent_cache['leechers'] === 0 || $torrent_cache['leechers'] === false) ? $torrents['leechers'] : $torrent_cache['leechers']);
 $torrents['times_completed'] = ((XBT_TRACKER === false || $torrent_cache['times_completed'] === false || $torrent_cache['times_completed'] === 0 || $torrent_cache['times_completed'] === false) ? $torrents['times_completed'] : $torrent_cache['times_completed']);
-//==slots by pdq
+
 $torrent['addup'] = get_date($torrent['addedup'], 'DATE');
 $torrent['addfree'] = get_date($torrent['addedfree'], 'DATE');
-$torrent['idk'] = (TIME_NOW + 14 * 86400);
+$torrent['idk'] = ($dt + 14 * 86400);
 $torrent['freeimg'] = '<img src="' . $site_config['pic_base_url'] . 'freedownload.gif" alt="" />';
 $torrent['doubleimg'] = '<img src="' . $site_config['pic_base_url'] . 'doubleseed.gif" alt="" />';
 $torrent['free_color'] = '#FF0000';
 $torrent['silver_color'] = 'silver';
-//==rep user query by pdq
-if (($torrent_cache['rep'] = $cache->get('user_rep_' . $torrents['owner'])) === false) {
+$torrent_cache['rep'] = $cache->get('user_rep_' . $torrents['owner']);
+if ($torrent_cache['rep'] === false || is_null($torrent_cache['rep'])) {
     $torrent_cache['rep'] = [];
     $us = sql_query('SELECT reputation FROM users WHERE id =' . sqlesc($torrents['owner'])) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($us)) {
@@ -165,32 +170,6 @@ if (($torrent_cache['rep'] = $cache->get('user_rep_' . $torrents['owner'])) === 
         $cache->add('user_rep_' . $torrents['owner'], $torrent_cache['rep'], 14 * 86400);
     }
 }
-/*
-$HTMLOUT .= "<script>
-    var e = new sack();
-function do_rate(rate,id,what) {
-        var box = document.getElementById('rate_'+id);
-        e.setVar('rate',rate);
-        e.setVar('id',id);
-        e.setVar('ajax','1');
-        e.setVar('what',what);
-        e.requestFile = './ajax/rating.php';
-        e.method = 'GET';
-        e.element = 'rate_'+id;
-        e.onloading = function () {
-            box.innerHTML = 'Loading ...'
-        }
-        e.onCompletion = function() {
-            if(e.responseStatus)
-                box.innerHTML = e.response();
-        }
-        e.onerror = function () {
-            alert('That was something wrong with the request!');
-        }
-        e.runAJAX();
-}
-</script>";
-*/
 $owned = $moderator = 0;
 if ($CURUSER['class'] >= UC_STAFF) {
     $owned = $moderator = 1;
@@ -218,54 +197,52 @@ if (empty($torrents['tags'])) {
     }
     $keywords = substr($keywords, 0, (strlen($keywords) - 1));
 }
-//==pdq's Torrent Moderation
+
 if ($CURUSER['class'] >= UC_STAFF) {
-    if (isset($_GET['checked']) && $_GET['checked'] == 1) {
-        sql_query('UPDATE torrents SET checked_by = ' . sqlesc($CURUSER['id']) . ', checked_when = ' . TIME_NOW . ' WHERE id =' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+    if (isset($_POST['checked']) && $_POST['checked'] === $_GET['id']) {
+        sql_query('UPDATE torrents SET checked_by = ' . sqlesc($CURUSER['id']) . ', checked_when = ' . $dt . ' WHERE id =' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $cache->update_row('torrent_details_' . $id, [
             'checked_by'   => $CURUSER['id'],
-            'checked_when' => TIME_NOW,
+            'checked_when' => $dt,
         ], $site_config['expires']['torrent_details']);
-        $cache->delete('checked_by_' . $id);
+        $torrents['checked_by'] = $CURUSER['id'];
+        $torrents['checked_when'] = $dt;
+        $cache->set('checked_by_' . $id, $CURUSER['id'], 0);
         write_log("Torrent <a href=details.php?id=$id>(" . htmlsafechars($torrents['name']) . ")</a> was checked by {$CURUSER['username']}");
-        header("Location: details.php?id=$id&checked=done#Success");
-    } elseif (isset($_GET['rechecked']) && $_GET['rechecked'] == 1) {
-        sql_query('UPDATE torrents SET checked_by = ' . sqlesc($CURUSER['id']) . ', checked_when = ' . TIME_NOW . ' WHERE id =' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        setSessionVar('is-success', "Torrents has been 'Checked'");
+    } elseif (isset($_POST['rechecked']) && $_POST['rechecked'] === $_GET['id']) {
+        sql_query('UPDATE torrents SET checked_by = ' . sqlesc($CURUSER['id']) . ', checked_when = ' . $dt . ' WHERE id =' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $cache->update_row('torrent_details_' . $id, [
             'checked_by'   => $CURUSER['id'],
-            'checked_when' => TIME_NOW,
+            'checked_when' => $dt,
         ], $site_config['expires']['torrent_details']);
-        $cache->delete('checked_by_' . $id);
+        $torrents['checked_by'] = $CURUSER['id'];
+        $torrents['checked_when'] = $dt;
+        $cache->set('checked_by_' . $id, $CURUSER['id'], 0);
         write_log("Torrent <a href=details.php?id=$id>(" . htmlsafechars($torrents['name']) . ")</a> was re-checked by {$CURUSER['username']}");
-        header("Location: details.php?id=$id&rechecked=done#Success");
-    } elseif (isset($_GET['clearchecked']) && $_GET['clearchecked'] == 1) {
-        sql_query("UPDATE torrents SET checked_by = 0, checked_when = '' WHERE id = " . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        setSessionVar('is-success', "Torrents has been 'Re-Checked'");
+    } elseif (isset($_POST['clearchecked']) && $_POST['clearchecked'] === $_GET['id']) {
+        sql_query("UPDATE torrents SET checked_by = 0, checked_when = 0 WHERE id = " . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
         $cache->update_row('torrent_details_' . $id, [
             'checked_by'   => 0,
             'checked_when' => 0,
         ], $site_config['expires']['torrent_details']);
+        $torrents['checked_by'] = 0;
+        $torrents['checked_when'] = 0;
         $cache->delete('checked_by_' . $id);
         write_log("Torrent <a href=details.php?id=$id>(" . htmlsafechars($torrents['name']) . ")</a> was un-checked by {$CURUSER['username']}");
-        header("Location: details.php?id=$id&clearchecked=done#Success");
-    }
-    if (isset($_GET['checked']) && $_GET['checked'] == 'done') {
-        $HTMLOUT .= "<div class='alert alert-success span11'><h2 class='has-text-centered'><a name='Success'>Successfully checked {$CURUSER['username']}!</a></h2></div>";
-    }
-    if (isset($_GET['rechecked']) && $_GET['rechecked'] == 'done') {
-        $HTMLOUT .= "<div class='alert alert-success span11'><h2 class='has-text-centered'><a name='Success'>Successfully re-checked {$CURUSER['username']}!</a></h2></div>";
-    }
-    if (isset($_GET['clearchecked']) && $_GET['clearchecked'] == 'done') {
-        $HTMLOUT .= "<div class='alert alert-success span11'><h2 class='has-text-centered'><a name='Success'>Successfully un-checked {$CURUSER['username']}!</a></h2></div>";
+        setSessionVar('is-success', "Torrents has been 'Un-Checked'");
     }
 }
-// end
+
 $s = htmlsafechars($torrents['name'], ENT_QUOTES);
 $HTMLOUT .= "
         <div class='container is-fluid portlet'>
             <div class='has-text-centered margin20'>
                 <span class='size_7'>$s</span>";
 
-if (($thumbs = $cache->get('thumbs_up_' . $id)) === false) {
+$thumbs = $cache->get('thumbs_up_' . $id);
+if ($thumbs === false || is_null($thumbs)) {
     $thumbs = mysqli_num_rows(sql_query('SELECT id, type, torrentid, userid FROM thumbsup WHERE torrentid = ' . sqlesc($torrents['id'])));
     $thumbs = (int)$thumbs;
     $cache->add('thumbs_up_' . $id, $thumbs, 0);
@@ -300,7 +277,7 @@ if (isset($_GET['returnto'])) {
     $url .= $addthis;
     $keepget = $addthis;
 }
-$editlink = "a href='$url' class='sublink'";
+$editlink = "a href='$url' class='button is-primary is-small bottom10'";
 if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $CURUSER['downloadpos'] > 1)) {
     if ($free_slot && !$double_slot) {
         $HTMLOUT .= '
@@ -384,16 +361,17 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
                     </tr>
                 </table>
             </div>
-            </div>
-            <div class='table-wrapper'>
-                <table class='table table-bordered'>
-                    <tr>
-                        <td>{$lang['details_tags']}</td>
-                        <td>{$keywords}</td>
-                    </tr>";
+        </div>
+        <div class='table-wrapper bottom20'>
+            <table class='table table-bordered'>
+                <tr>
+                    <td>{$lang['details_tags']}</td>
+                    <td>{$keywords}</td>
+                </tr>";
 
     $my_points = 0;
-    if (($torrent['torrent_points_'] = $cache->get('coin_points_' . $id)) === false) {
+    $torrent['torrent_points_'] = $cache->get('coin_points_' . $id);
+    if ($torrent['torrent_points_'] === false || is_null($torrent['torrent_points_'])) {
         $sql_points = sql_query('SELECT userid, points FROM coins WHERE torrentid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $torrent['torrent_points_'] = [];
         if (mysqli_num_rows($sql_points) !== 0) {
@@ -405,19 +383,19 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
     }
     $my_points = (isset($torrent['torrent_points_'][ $CURUSER['id'] ]) ? (int)$torrent['torrent_points_'][ $CURUSER['id'] ] : 0);
     $HTMLOUT .= '
-                    <tr>
-                        <td class="rowhead">Karma Points</td>
-                        <td><b>In total ' . (int)$torrents['points'] . ' Karma Points given to this torrent of which ' . $my_points . ' from you.<br><br>
-                            <a href="coins.php?id=' . $id . '&amp;points=10"><img src="' . $site_config['pic_base_url'] . '10coin.png" alt="10" class="tooltipper" title="10 Points" /></a>
-                            <a href="coins.php?id=' . $id . '&amp;points=20"><img src="' . $site_config['pic_base_url'] . '20coin.png" alt="20" class="tooltipper" title="20 Points" /></a>
-                            <a href="coins.php?id=' . $id . '&amp;points=50"><img src="' . $site_config['pic_base_url'] . '50coin.png" alt="50" class="tooltipper" title="50 Points" /></a>
-                            <a href="coins.php?id=' . $id . '&amp;points=100"><img src="' . $site_config['pic_base_url'] . '100coin.png" alt="100" class="tooltipper" title="100 Points" /></a>
-                            <a href="coins.php?id=' . $id . '&amp;points=200"><img src="' . $site_config['pic_base_url'] . '200coin.png" alt="200" class="tooltipper" title="200 Points" /></a>
-                            <a href="coins.php?id=' . $id . '&amp;points=500"><img src="' . $site_config['pic_base_url'] . '500coin.png" alt="500" class="tooltipper" title="500 Points" /></a>
-                            <a href="coins.php?id=' . $id . '&amp;points=1000"><img src="' . $site_config['pic_base_url'] . '1000coin.png" alt="1000" class="tooltipper" title="1000 Points" /></a></b>
-                            <br>By clicking on the coins you can give Karma Points to the uploader of this torrent.
-                        </td>
-                    </tr>';
+                <tr>
+                    <td class="rowhead">Karma Points</td>
+                    <td><b>In total ' . (int)$torrents['points'] . ' Karma Points given to this torrent of which ' . $my_points . ' from you.<br><br>
+                        <a href="coins.php?id=' . $id . '&amp;points=10"><img src="' . $site_config['pic_base_url'] . '10coin.png" alt="10" class="tooltipper" title="10 Points" /></a>
+                        <a href="coins.php?id=' . $id . '&amp;points=20"><img src="' . $site_config['pic_base_url'] . '20coin.png" alt="20" class="tooltipper" title="20 Points" /></a>
+                        <a href="coins.php?id=' . $id . '&amp;points=50"><img src="' . $site_config['pic_base_url'] . '50coin.png" alt="50" class="tooltipper" title="50 Points" /></a>
+                        <a href="coins.php?id=' . $id . '&amp;points=100"><img src="' . $site_config['pic_base_url'] . '100coin.png" alt="100" class="tooltipper" title="100 Points" /></a>
+                        <a href="coins.php?id=' . $id . '&amp;points=200"><img src="' . $site_config['pic_base_url'] . '200coin.png" alt="200" class="tooltipper" title="200 Points" /></a>
+                        <a href="coins.php?id=' . $id . '&amp;points=500"><img src="' . $site_config['pic_base_url'] . '500coin.png" alt="500" class="tooltipper" title="500 Points" /></a>
+                        <a href="coins.php?id=' . $id . '&amp;points=1000"><img src="' . $site_config['pic_base_url'] . '1000coin.png" alt="1000" class="tooltipper" title="1000 Points" /></a></b>
+                        <br>By clicking on the coins you can give Karma Points to the uploader of this torrent.
+                    </td>
+                </tr>';
 
     $downl = ($CURUSER['downloaded'] + $torrents['size']);
     $sr = $CURUSER['uploaded'] / $downl;
@@ -454,18 +432,18 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
     $sr = "<img src='{$site_config['pic_base_url']}smilies/{$s}.gif' alt='' class='right10' /><font color='" . get_ratio_color($sr) . "'>" . number_format($sr, 3) . "</font>";
     if ($torrents['free'] >= 1 || $torrents['freetorrent'] >= 1 || $isfree['yep'] || $free_slot or $double_slot != 0 || $CURUSER['free_switch'] != 0) {
         $HTMLOUT .= "
-                    <tr>
-                        <td class='rowhead'>Ratio After Download</td>
-                        <td>
-                            <del>{$sr}Your new ratio if you download this torrent.</del> <b><font color='#FF0000'>[FREE]</font></b>(Only upload stats are recorded)
-                        </td>
-                    </tr>";
+                <tr>
+                    <td class='rowhead'>Ratio After Download</td>
+                    <td>
+                        <del>{$sr}Your new ratio if you download this torrent.</del> <b><font color='#FF0000'>[FREE]</font></b>(Only upload stats are recorded)
+                    </td>
+                </tr>";
     } else {
         $HTMLOUT .= "
-                    <tr>
-                        <td class='rowhead'>Ratio After Download</td>
-                        <td>{$sr}Your new ratio if you download this torrent.</td>
-                    </tr>";
+                <tr>
+                    <td class='rowhead'>Ratio After Download</td>
+                    <td>{$sr}Your new ratio if you download this torrent.</td>
+                </tr>";
     }
     /**
      * @param $matches
@@ -480,7 +458,6 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
     $HTMLOUT .= tr("{$lang['details_info_hash']}", preg_replace_callback('/./s', 'hex_esc', hash_pad($torrents['info_hash'])));
 } else {
     $HTMLOUT .= "
-    <div>
         <div class=''>
             <table class='table table-bordered bottom10'>
                 <tr>
@@ -490,7 +467,7 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
 }
 $HTMLOUT .= "</table>
         </div>
-        <div class='table-wrapper'>
+        <div class='table-wrapper bottom20'>
             <table class='table table-bordered bottom10'>";
 if (!empty($torrents['description'])) {
     $HTMLOUT .= tr("{$lang['details_small_descr']}", '<i>' . htmlsafechars($torrents['description']) . '</i>', 1);
@@ -507,7 +484,8 @@ $HTMLOUT .= "
 $searchname = substr($torrents['name'], 0, 6);
 $query1 = str_replace(' ', '.', sqlesc('%' . $searchname . '%'));
 $query2 = str_replace('.', ' ', sqlesc('%' . $searchname . '%'));
-if (($sim_torrents = $cache->get('similiar_tor_' . $id)) === false) {
+$sim_torrents = $cache->get('similiar_tor_' . $id);
+if ($sim_torrents === false || is_null($sim_torrents)) {
     $r = sql_query("SELECT id, name, size, added, seeders, leechers, category FROM torrents WHERE name LIKE {$query1} AND id <> " . sqlesc($id) . " OR name LIKE {$query2} AND id <> " . sqlesc($id) . ' ORDER BY name') or sqlerr(__FILE__, __LINE__);
     while ($sim_torrent = mysqli_fetch_assoc($r)) {
         $sim_torrents[] = $sim_torrent;
@@ -516,7 +494,7 @@ if (($sim_torrents = $cache->get('similiar_tor_' . $id)) === false) {
 }
 if (count($sim_torrents) > 0) {
     $sim_torrent = "
-        <div class='table-wrapper'>
+        <div class='table-wrapper bottom20'>
             <table class='table table-bordered table-striped'>
                 <thead>
                     <tr>
@@ -554,7 +532,7 @@ if (count($sim_torrents) > 0) {
         </div>';
 
         $HTMLOUT .= "
-        <div class='table-wrapper'>
+        <div class='table-wrapper bottom20'>
             <table class='table table-bordered'>
                 <tr class='no_hover'>
                     <td class='rowhead'>
@@ -569,7 +547,7 @@ if (count($sim_torrents) > 0) {
     } else {
         if (empty($sim_torrents)) {
             $HTMLOUT .= "
-        <div class='table-wrapper'>
+        <div class='table-wrapper bottom20'>
             <table class='table table-bordered'>
                 <tr>
                     <td colspan='2'>Nothing similiar to " . htmlsafechars($torrents['name']) . " found.</td>
@@ -580,7 +558,7 @@ if (count($sim_torrents) > 0) {
     }
 }
 $HTMLOUT .= "
-    <div class='table-wrapper'>
+    <div class='table-wrapper bottom20'>
         <table class='table table-bordered'>";
 
 if (in_array($torrents['category'], $site_config['movie_cats']) && !empty($torrents['subs'])) {
@@ -644,11 +622,11 @@ $HTMLOUT .= tr("{$lang['details_snatched']}", ($torrents['times_completed'] > 0 
 $HTMLOUT .= "
         </table>
     </div>
-    <div class='table-wrapper'>
+    <div class='table-wrapper bottom20'>
         <table class='table table-bordered'>";
-//==Report Torrent Link
-$HTMLOUT .= tr('Report Torrent', "<form action='report.php?type=Torrent&amp;id=$id' method='post'><input class='button is-primary' type='submit' name='submit' value='Report This Torrent' /><strong><em class='label label-primary'>For breaking the<a href='rules.php'>rules</a></em></strong></form>", 1);
-//== Tor Reputation by pdq
+
+$HTMLOUT .= tr('Report Torrent', "<form action='report.php?type=Torrent&amp;id=$id' method='post'><input class='button is-primary is-small bottom10' type='submit' name='submit' value='Report This Torrent' /><strong><em class='label label-primary'>For breaking the <a href='rules.php'>rules</a></em></strong></form>", 1);
+
 if ($torrent_cache['rep']) {
     $torrents = array_merge($torrents, $torrent_cache['rep']);
     $member_reputation = get_reputation($torrents, 'torrents', $torrents['anonymous'], $id);
@@ -658,52 +636,48 @@ if ($torrent_cache['rep']) {
                 <td>' . $member_reputation . ' (counts towards uploaders Reputation)<br></td>
             </tr>';
 }
-//==Anonymous
+
 $rowuser = isset($torrents['owner']) ? format_username($torrents['owner']) : $lang['details_unknown'];
 $uprow = (($torrents['anonymous'] == 'yes') ? ($CURUSER['class'] < UC_STAFF && $torrents['owner'] != $CURUSER['id'] ? '' : $rowuser . ' - ') . "<i>{$lang['details_anon']}</i>" : $rowuser);
 if ($owned) {
-    $uprow .= " <$editlink><b>{$lang['details_edit']}</b></a>";
+    $uprow .= "<br><$editlink>{$lang['details_edit']}</a>";
 }
 $HTMLOUT .= tr('Upped by', $uprow, 1);
-//==pdq's Torrent Moderation
+
 if ($CURUSER['class'] >= UC_STAFF) {
     if (!empty($torrents['checked_by'])) {
-        if (($checked_by = $cache->get('checked_by_' . $id)) === false) {
+        $checked_by = $cache->get('checked_by_' . $id);
+        if ($checked_by === false || is_null($checked_by)) {
             $checked_by = $torrents['checked_by'];
-            $cache->add('checked_by_' . $id, $checked_by, 0);
+            $cache->set('checked_by_' . $id, $checked_by, 0);
         }
         $HTMLOUT .= "<tr>
                 <td class='rowhead'>Checked by</td>
                 <td>
-                    <div class='bottom10'>" . format_username($torrents['checked_by']) . "</div>
+                    <div class='bottom10'>" .
+                        format_username($torrents['checked_by']) . (isset($torrents['checked_when']) && $torrents['checked_when'] > 0 ? ' checked: ' . get_date($torrents['checked_when'], 'DATE', 0, 1) : '') . "
+                    </div>
                     <div class='bottom10'>
-                        <a href='./details.php?id=" . (int)$torrents['id'] . "&amp;rechecked=1'>
-                            <em class='label label-primary right10'>
-                                [Re-Check this torrent]
-                            </em>
-                        </a>
-                        <a href='./details.php?id=" . (int)$torrents['id'] . "&amp;clearchecked=1'>
-                            <em class='label label-primary right10'>[Un-Check this torrent]</em>
-                        </a>
-                        <em class='alert alert-info'>* STAFF Eyes Only *</em>
-                        " . (isset($torrents['checked_when']) && $torrents['checked_when'] > 0 ? '<strong>Checked When : ' . get_date($torrents['checked_when'], 'DATE', 0, 1) . '</strong>' : '') . '
+                        <form method='post' action='./details.php?id={$torrents['id']}'>
+                            <input type='hidden' name='rechecked' value={$torrents['id']}>
+                            <input type='submit' class='button is-small is-primary bottom10' value='Re-Check this torrent' />
+                        </form>
+                        <form method='post' action='./details.php?id={$torrents['id']}'>
+                            <input type='hidden' name='clearchecked' value={$torrents['id']}>
+                            <input type='submit' class='button is-small is-primary' value='Un-Check this torrent' />
+                        </form>
                     </div>
                 </td>
-            </tr>';
+            </tr>";
     } else {
         $HTMLOUT .= "
             <tr>
                 <td class='rowhead'>Checked by</td>
                 <td>
-                    <div class='flex level-left'>
-                        <em class='alert alert-error right10'><strong>NOT CHECKED!</strong></em>
-                        <em class='alert alert-warning right10'>
-                            <a href='details.php?id=" . (int)$torrents['id'] . "&amp;checked=1'>
-                                <strong>[Check this torrent]</strong>
-                            </a>
-                        </em>
-                        <em class='alert alert-info right10'><strong>* STAFF Eyes Only *</strong></em>
-                    </div>
+                    <form method='post' action='./details.php?id={$torrents['id']}'>
+                        <input type='hidden' name='checked' value={$torrents['id']}>
+                        <input type='submit' class='button is-small is-primary' value='Check this torrent' />
+                    </form>
                 </td>
             </tr>";
     }
@@ -719,9 +693,9 @@ if ($torrents['type'] == 'multi') {
 }
 
 if (XBT_TRACKER == true) {
-    $HTMLOUT .= tr("{$lang['details_peers']}<br><a href='./peerlist_xbt.php?id=$id#seeders' class='sublink'>{$lang['details_list']}</a>", (int)$torrents_xbt['seeders'] . ' seeder(s), ' . (int)$torrents_xbt['leechers'] . ' leecher(s) = ' . ((int)$torrents_xbt['seeders'] + (int)$torrents_xbt['leechers']) . "{$lang['details_peer_total']}", 1);
+    $HTMLOUT .= tr("{$lang['details_peers']}", (int)$torrents_xbt['seeders'] . ' seeder(s), ' . (int)$torrents_xbt['leechers'] . ' leecher(s) = ' . ((int)$torrents_xbt['seeders'] + (int)$torrents_xbt['leechers']) . "{$lang['details_peer_total']}<br><a href='./peerlist.php?id=$id#seeders' class='button is-small is-primary'>{$lang['details_list']}</a>", 1);
 } else {
-    $HTMLOUT .= tr("{$lang['details_peers']}<br><a href='./peerlist.php?id=$id#seeders' class='sublink'>{$lang['details_list']}</a>", (int)$torrents['seeders'] . ' seeder(s), ' . (int)$torrents['leechers'] . ' leecher(s) = ' . ((int)$torrents['seeders'] + (int)$torrents['leechers']) . "{$lang['details_peer_total']}", 1);
+    $HTMLOUT .= tr("{$lang['details_peers']}", (int)$torrents['seeders'] . ' seeder(s), ' . (int)$torrents['leechers'] . ' leecher(s) = ' . ((int)$torrents['seeders'] + (int)$torrents['leechers']) . "{$lang['details_peer_total']}<br><a href='./peerlist.php?id=$id#seeders' class='button is-small is-primary'>{$lang['details_list']}</a>", 1);
 }
 
 $HTMLOUT .= tr($lang['details_thanks'], '
@@ -747,7 +721,7 @@ $reseed = "
             </select>
             <input type='hidden' name='uploader' value='" . (int)$torrents['owner'] . "' />
             <input type='hidden' name='reseedid' value='$id' />
-            <input type='submit'" . (($next_reseed > TIME_NOW) ? ' disabled' : '') . " value='SendPM' />
+            <input type='submit' class='button is-small is-primary'" . (($next_reseed > $dt) ? ' disabled' : '') . " value='SendPM' />
         </form>";
 $HTMLOUT .= tr('Request reseed', $reseed, 1);
 
@@ -755,22 +729,25 @@ $HTMLOUT .= '
 </table>
 </div>';
 if (!empty($torrents_txt['descr'])) {
-    $HTMLOUT .= main_div(format_comment($torrents_txt['descr']), 'has-text-left');
+    $HTMLOUT .= main_div(format_comment($torrents_txt['descr']), 'has-text-left bottom20');
 }
 $HTMLOUT .= "
-        <div class='table-wrapper'>
+        <div class='table-wrapper bottom20'>
             <table class='table table-bordered'>";
 if (!empty($torrents['youtube'])) {
     $HTMLOUT .= tr($lang['details_youtube'], '<object type="application/x-shockwave-flash" data="' . str_replace('watch?v=', 'v/', $torrents['youtube']) . '"><param name="movie" value="' . str_replace('watch?v=', 'v/', $torrents['youtube']) . '" /></object><br><a
 href=\'' . htmlsafechars($torrents['youtube']) . '\' target=\'_blank\'>' . $lang['details_youtube_link'] . '</a>', 1);
 } else {
-    $HTMLOUT .= '<tr><td>No youtube data found</td></tr>';
+    $HTMLOUT .= '
+                <tr>
+                    <td>No youtube data found</td>
+                </tr>';
 }
 $HTMLOUT .= "
             </table>
-        <div>";
+        </div>";
 $HTMLOUT .= "
-        <div class='table-wrapper'>
+        <div class='table-wrapper bottom20'>
             <table class='table table-bordered'>";
 $torrents['tvcats'] = [
     5,
@@ -859,11 +836,13 @@ if (preg_match('/^http\:\/\/(.*?)imdb\.com\/title\/tt([\d]{7})/i', $torrents['ur
 }
 if (empty($tvmaze_info) && empty($imdb_html)) {
     $HTMLOUT .= "
-        <tr>
-            <td colspan='2'>No Imdb or TVMaze info.</td>
-        </tr>";
+                <tr>
+                    <td colspan='2'>No Imdb or TVMaze info.</td>
+                </tr>";
 }
-$HTMLOUT .= "</table></div></div><div>";
+$HTMLOUT .= "
+            </table>
+        </div>";
 
 $HTMLOUT .= "
     <a name='startcomments'></a>
@@ -921,7 +900,7 @@ if ($torrents['allow_comments'] == 'yes' || $CURUSER['class'] >= UC_STAFF && $CU
             <p><a name='startcomments'></a></p>";
 } else {
     $HTMLOUT .= "
-        <div class='table-wrapper'>
+        <div class='table-wrapper bottom20'>
             <table class='table table-bordered'>
                 <tr>
                     <td><a name='startcomments'> </a><b>{$lang['details_com_disabled']}</b></td>
@@ -958,8 +937,5 @@ if (!$count) {
     $HTMLOUT .= commenttable($allrows);
     $HTMLOUT .= $pager['pagerbottom'];
 }
-$HTMLOUT .= "
-        </div>
-    </div>";
 
 echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

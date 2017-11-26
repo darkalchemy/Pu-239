@@ -64,7 +64,8 @@ function crazyhour_announce()
 {
     global $cache, $site_config;
     $crazy_hour = (TIME_NOW + 3600);
-    if (($cz['crazyhour'] = $cache->get('crazyhour')) === false) {
+    $cz['crazyhour'] = $cache->get('crazyhour');
+    if ($cz['crazyhour'] === false || is_null($cz['crazyhour'])) {
         $cz['sql'] = ann_sql_query('SELECT var, amount FROM freeleech WHERE type = "crazyhour"') or ann_sqlerr(__FILE__, __LINE__);
         $cz['crazyhour'] = [];
         if (mysqli_num_rows($cz['sql']) !== 0) {
@@ -127,7 +128,8 @@ function get_user_from_torrent_pass($torrent_pass)
         return false;
     }
     $key = 'user::torrent_pass:::' . $torrent_pass;
-    if (($user = $cache->get($key)) === false) {
+    $user = $cache->get($key);
+    if ($user === false || is_null($user)) {
         $user_fields_ar_int = [
             'id',
             'uploaded',
@@ -171,7 +173,8 @@ function get_torrent_from_hash($info_hash)
     global $cache, $site_config;
     $key = 'torrent::hash:::' . md5($info_hash);
     $ttll = 21600; // 21600;
-    if (($torrent = $cache->get($key)) === false) {
+    $torrent = $cache->get($key);
+    if ($torrent === false || is_null($torrent)) {
         $res = ann_sql_query('SELECT id, category, banned, free, silver, vip, seeders, leechers, times_completed, seeders + leechers AS numpeers, added AS ts, visible FROM torrents WHERE info_hash = ' . ann_sqlesc($info_hash)) or ann_sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res)) {
             $torrent = mysqli_fetch_assoc($res);
@@ -205,7 +208,7 @@ function get_torrent_from_hash($info_hash)
         $torrent['seeders'] = $cache->get($seed_key);
         $torrent['leechers'] = $cache->get($leech_key);
         $torrent['times_completed'] = $cache->get($comp_key);
-        if ($torrent['seeders'] === false || $torrent['leechers'] === false || $torrent['times_completed'] === false) {
+        if ($torrent['seeders'] === false || $torrent['leechers'] === false || $torrent['times_completed'] === false || is_null($torrent['seeders'] === false || $torrent['leechers'] === false || $torrent['times_completed'])) {
             $res = ann_sql_query('SELECT seeders, leechers, times_completed FROM torrents WHERE id = ' . ann_sqlesc($torrent['id'])) or ann_sqlerr(__FILE__, __LINE__);
             if (mysqli_num_rows($res)) {
                 $torrentq = mysqli_fetch_assoc($res);
@@ -274,7 +277,8 @@ function get_happy($torrentid, $userid)
 {
     global $cache;
     $keys['happyhour'] = $userid . '_happy';
-    if (($happy = $cache->get($keys['happyhour'])) === false) {
+    $happy = $cache->get($keys['happyhour']);
+    if ($happy === false || is_null($happy)) {
         $res_happy = ann_sql_query('SELECT id, userid, torrentid, multiplier FROM happyhour WHERE userid=' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
         $happy = [];
         if (mysqli_num_rows($res_happy)) {
@@ -302,7 +306,8 @@ function get_slots($torrentid, $userid)
     global $cache;
     $ttl_slot = 86400;
     $torrent['freeslot'] = $torrent['doubleslot'] = 0;
-    if (($slot = $cache->get('fllslot_' . $userid)) === false) {
+    $slot = $cache->get('fllslot_' . $userid);
+    if ($slot === false || is_null($slot)) {
         $res_slots = ann_sql_query('SELECT * FROM freeslots WHERE userid = ' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
         $slot = [];
         if (mysqli_num_rows($res_slots)) {

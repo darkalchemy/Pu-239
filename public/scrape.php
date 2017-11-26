@@ -48,7 +48,8 @@ function check_bans($ip, &$reason = '')
 {
     global $site_config, $cache;
     $key = 'bans:::' . $ip;
-    if (($ban = $cache->get($key)) === false) {
+    $ban = $cache->get($key);
+    if ($ban === false || is_null($ban)) {
         $nip = ip2long($ip);
         $ban_sql = sql_query('SELECT comment FROM bans WHERE (first <= ' . $nip . ' AND last >= ' . $nip . ') LIMIT 1');
         if (mysqli_num_rows($ban_sql)) {

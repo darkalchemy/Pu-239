@@ -517,7 +517,8 @@ switch ($action) {
                 $topic_count = number_format($arr_forums['topic_count']);
                 $post_count = number_format($arr_forums['post_count']);
                 //=== Find last post ID - cached \0/
-                if (($last_post_arr = $cache->get('last_post_' . $forum_id . '_' . $CURUSER['class'])) === false) {
+                $last_post_arr = $cache->get('last_post_' . $forum_id . '_' . $CURUSER['class']);
+                if ($last_post_arr === false || is_null($last_post_arr)) {
                     $last_post_arr = mysqli_fetch_assoc(sql_query('SELECT t.id AS topic_id, t.topic_name, t.last_post, t.anonymous AS tan, p.added, p.anonymous AS pan, p.user_id, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.avatar_rights FROM topics AS t LEFT JOIN posts AS p ON p.topic_id = t.id RIGHT JOIN users AS u ON u.id = p.user_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? ' t.status != \'deleted\' AND p.status != \'deleted\' AND' : '')) . ' t.forum_id = ' . sqlesc($forum_id) . ' ORDER BY p.id DESC LIMIT 1'));
                     //==
                     $cache->set('last_post_' . $forum_id . '_' . $CURUSER['class'], $last_post_arr, $site_config['expires']['last_post']);
@@ -526,7 +527,8 @@ switch ($action) {
                 if ($last_post_arr['last_post'] > 0) {
                     $last_post_id = (int)$last_post_arr['last_post'];
                     //=== get the last post read by CURUSER (with Retro's $readpost_expiry thingie) - cached \0/
-                    if (($last_read_post_arr = $cache->get('last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'])) === false) {
+                    $last_read_post_arr = $cache->get('last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id']);
+                    if ($last_read_post_arr === false || is_null($last_read_post_arr)) {
                         $last_read_post_arr = mysqli_fetch_row(sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($last_post_arr['topic_id'])));
                         $cache->set('last_read_post_' . $last_post_arr['topic_id'] . '_' . $CURUSER['id'], $last_read_post_arr, $site_config['expires']['last_read_post']);
                     }
@@ -545,7 +547,8 @@ switch ($action) {
                     //==
                     //=== get child boards if any - cached \0/
                     $keys['child_boards'] = 'child_boards_' . $last_post_id . '_' . $CURUSER['class'];
-                    if (($child_boards_cache = $cache->get($keys['child_boards'])) === false) {
+                    $child_boards_cache = $cache->get($keys['child_boards']);
+                    if ($child_boards_cache === false || is_null($child_boards_cache)) {
                         $child_boards = '';
                         $child_boards_cache = [];
                         $res = sql_query('SELECT name, id FROM forums WHERE parent_forum = ' . sqlesc($arr_forums['real_forum_id']) . ' AND min_class_read <= ' . sqlesc($CURUSER['class']) . ' ORDER BY sort ASC') or sqlerr(__FILE__, __LINE__);
@@ -598,7 +601,8 @@ switch ($action) {
         $HTMLOUT .= '</table>' . $location_bar . '' . insert_quick_jump_menu() . '';
         //== whos looking - cached \0/
         $keys['now_viewing'] = 'now_viewing';
-        if (($forum_users_cache = $cache->get($keys['now_viewing'])) === false) {
+        $forum_users_cache = $cache->get($keys['now_viewing']);
+        if ($forum_users_cache === false || is_null($forum_users_cache)) {
             $forumusers = '';
             $forum_users_cache = [];
             $res = sql_query('SELECT n_v.user_id, u.id, u.username, u.class, u.donor, u.suspended, u.perms, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.avatar_rights, u.perms FROM now_viewing AS n_v LEFT JOIN users AS u ON n_v.user_id = u.id') or sqlerr(__FILE__, __LINE__);
@@ -674,7 +678,8 @@ function insert_quick_jump_menu($current_forum = 0, $staff = false)
 {
     global $CURUSER, $site_config, $cache, $lang;
     $cachename = 'f_insertJumpTo' . $CURUSER['id'] . ($staff === false ? '' : '_staff');
-    if (($quick_jump_menu = $cache->get($cachename)) === false) {
+    $quick_jump_menu = $cache->get($cachename);
+    if ($quick_jump_menu === false || is_null($quick_jump_menu)) {
         $res = sql_query('SELECT f.id, f.name, f.parent_forum, f.min_class_read, of.name AS over_forum_name FROM forums AS f LEFT JOIN over_forums AS of ON f.forum_id = of.id ORDER BY of.sort, f.parent_forum, f.sort ASC');
         $switch = '';
         $quick_jump_menu = ($staff === false ? '

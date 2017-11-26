@@ -18,7 +18,8 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
     $downed = mksize($CURUSER['downloaded']);
 
     if (XBT_TRACKER == true) {
-        if (($MyPeersXbtCache = $cache->get('MyPeers_XBT_' . $CURUSER['id'])) === false) {
+        $MyPeersXbtCache = $cache->get('MyPeers_XBT_' . $CURUSER['id']);
+        if ($MyPeersXbtCache === false || is_null($MyPeersXbtCache)) {
             $seed['yes'] = $seed['no'] = 0;
             $seed['conn'] = 3;
             $r = sql_query('SELECT COUNT(uid) AS count, left, active, connectable
@@ -36,7 +37,8 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
             $seed = $MyPeersXbtCache;
         }
     } else {
-        if (($MyPeersCache = $cache->get('MyPeers_' . $CURUSER['id'])) === false) {
+        $MyPeersCache = $cache->get('MyPeers_' . $CURUSER['id']);
+        if ($MyPeersCache === false || is_null($MyPeersCache)) {
             $seed['yes'] = $seed['no'] = 0;
             $seed['conn'] = 3;
             $r = sql_query('SELECT COUNT(id) AS count, seeder, connectable
@@ -72,7 +74,8 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
         $connectable = $lang['gl_na_connectable'];
     }
 
-    if (($Achievement_Points = $cache->get('user_achievement_points_' . $CURUSER['id'])) === false) {
+    $Achievement_Points = $cache->get('user_achievement_points_' . $CURUSER['id']);
+    if ($Achievement_Points === false || is_null($Achievement_Points)) {
         $Sql = sql_query('SELECT u.id, u.username, a.achpoints, a.spentpoints
                             FROM users AS u
                             LEFT JOIN usersachiev AS a ON u.id = a.userid

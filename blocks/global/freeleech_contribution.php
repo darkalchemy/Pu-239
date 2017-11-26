@@ -10,7 +10,8 @@ if (XBT_TRACKER == true) {
 } else {
     /** karma contribution alert hack **/
     $fpoints = $dpoints = $hpoints = $freeleech_enabled = $double_upload_enabled = $half_down_enabled = '';
-    if (($scheduled_events = $cache->get('freecontribution_datas_alerts_')) === false) {
+    $scheduled_events = $cache->get('freecontribution_datas_alerts_');
+    if ($scheduled_events === false || is_null($scheduled_events)) {
         $scheduled_events = mysql_fetch_all('SELECT * FROM `events` ORDER BY `startTime` DESC LIMIT 3;', []);
         $cache->set('freecontribution_datas_alerts_', $scheduled_events, 3 * 86400);
     }
@@ -54,7 +55,8 @@ if (XBT_TRACKER == true) {
     }
     //=== get total points
     //$target_fl = 30000;
-    if (($freeleech_counter = $cache->get('freeleech_counter_alerts_')) === false) {
+    $freeleech_counter = $cache->get('freeleech_counter_alerts_');
+    if ($freeleech_counter === false || is_null($freeleech_counter)) {
         $total_fl = sql_query('SELECT SUM(pointspool) AS pointspool, points FROM bonus WHERE id =11');
         $fl_total_row = mysqli_fetch_assoc($total_fl);
         $percent_fl = number_format($fl_total_row['pointspool'] / $fl_total_row['points'] * 100, 2);
@@ -91,7 +93,8 @@ if (XBT_TRACKER == true) {
     }
     //=== get total points
     //$target_du = 30000;
-    if (($doubleupload_counter = $cache->get('doubleupload_counter_alerts_')) === false) {
+    $doubleupload_counter = $cache->get('doubleupload_counter_alerts_');
+    if ($doubleupload_counter === false || is_null($doubleupload_counter)) {
         $total_du = sql_query('SELECT SUM(pointspool) AS pointspool, points FROM bonus WHERE id =12');
         $du_total_row = mysqli_fetch_assoc($total_du);
         $percent_du = number_format($du_total_row['pointspool'] / $du_total_row['points'] * 100, 2);
@@ -128,7 +131,8 @@ if (XBT_TRACKER == true) {
     }
     //=== get total points
     //$target_hd = 30000;
-    if (($halfdownload_counter = $cache->get('halfdownload_counter_alerts_')) === false) {
+    $halfdownload_counter = $cache->get('halfdownload_counter_alerts_');
+    if ($halfdownload_counter === false || is_null($halfdownload_counter)) {
         $total_hd = sql_query('SELECT SUM(pointspool) AS pointspool, points FROM bonus WHERE id =13');
         $hd_total_row = mysqli_fetch_assoc($total_hd);
         $percent_hd = number_format($hd_total_row['pointspool'] / $hd_total_row['points'] * 100, 2);

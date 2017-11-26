@@ -214,7 +214,8 @@ if (isset($cleansearchstr)) {
 
 $where = count($wherea) ? 'WHERE ' . join(' AND ', $wherea) : '';
 $where_key = 'where::' . sha1($where);
-if (($count = $cache->get($where_key)) === false) {
+$count = $cache->get($where_key);
+if ($count === false || is_null($count)) {
     $res = sql_query("SELECT COUNT(*) FROM torrents AS t $join $where") or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_row($res);
     $count = (int)$row[0];

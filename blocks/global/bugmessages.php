@@ -2,7 +2,8 @@
 global $CURUSER, $site_config, $cache, $lang;
 
 if ($site_config['bug_alert'] && $CURUSER['class'] >= UC_STAFF) {
-    if (($bugs = $cache->get('bug_mess_')) === false) {
+    $bugs = $cache->get('bug_mess_');
+    if ($bugs === false || is_null($bugs)) {
         $res1 = sql_query("SELECT COUNT(id) FROM bugs WHERE status = 'na'");
         list($bugs) = mysqli_fetch_row($res1);
         $cache->set('bug_mess_', $bugs, $site_config['expires']['alerts']);

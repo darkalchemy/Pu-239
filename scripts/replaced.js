@@ -346,23 +346,23 @@ $(function () {
 //    });
 
 
-    $('a[href*=\\#]:not([href=\\#])').click(function(e) {
-        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') || location.hostname == this.hostname) {
+    $('a[href*=\\#]:not([href=\\#])').click(function (e) {
+        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
             e.preventDefault();
 
             var headerHeight = $("#navbar").outerHeight() + 10;
             var target = $(this).attr("href"); //Get the target
             var scrollToPosition = $(target).offset().top - headerHeight;
 
-            $('html, body').animate({ 'scrollTop': scrollToPosition }, animate_duration, function(){
+            $('html, body').animate({'scrollTop': scrollToPosition}, animate_duration, function () {
                 window.location.hash = "" + target;
-                $('html, body').animate({ 'scrollTop': scrollToPosition }, 0);
+                $('html, body').animate({'scrollTop': scrollToPosition}, 0);
             });
         }
     });
 
 
-    if(window.location.hash) {
+    if (window.location.hash) {
         var headerHeight = $("#navbar").outerHeight() + 10;
         var target = $(window.location.hash);
         var scrollToPosition = $(target).offset().top - headerHeight;

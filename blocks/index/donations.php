@@ -2,7 +2,8 @@
 global $site_config, $cache, $lang;
 
 $progress = '';
-if (($totalfunds_cache = $cache->get('totalfunds_')) === false) {
+$totalfunds_cache = $cache->get('totalfunds_');
+if ($totalfunds_cache === false || is_null($totalfunds_cache)) {
     $totalfunds_cache = mysqli_fetch_assoc(sql_query('SELECT sum(cash) AS total_funds FROM funds'));
     $totalfunds_cache['total_funds'] = (int)$totalfunds_cache['total_funds'];
     $cache->set('totalfunds_', $totalfunds_cache, $site_config['expires']['total_funds']);

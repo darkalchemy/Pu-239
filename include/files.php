@@ -51,7 +51,7 @@ function get_file($file)
                 case 'userdetails_js':
                     return "{$site_config['baseurl']}/js/{$style}/4901c8acf2dbd75b2325da553afb7c12.min.js";
                 case 'details_js':
-                    return "{$site_config['baseurl']}/js/{$style}/ba6290f6c00d0999ef9c2f0bed8fbd3b.min.js";
+                    return "{$site_config['baseurl']}/js/{$style}/26c3b79967b1fad03c4f21e9880b8410.min.js";
                 case 'forums_js':
                     return "{$site_config['baseurl']}/js/{$style}/d61dfbf2351bba26fe8a769392423113.min.js";
                 default:
@@ -96,7 +96,7 @@ function get_file($file)
                 case 'userdetails_js':
                     return "{$site_config['baseurl']}/js/{$style}/2032e11580aaee0e87464cbfbacfc277.js";
                 case 'details_js':
-                    return "{$site_config['baseurl']}/js/{$style}/875dbeb9ab8e1be3e26af08c672ed2b7.js";
+                    return "{$site_config['baseurl']}/js/{$style}/a069dd4b72e2605512d75dc6b1d8bb0a.js";
                 case 'forums_js':
                     return "{$site_config['baseurl']}/js/{$style}/44d555c268081133f47a9ab247ed95ca.js";
                 default:

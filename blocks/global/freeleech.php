@@ -8,7 +8,7 @@ function freeleech_countdown()
     $htmlout = $freetitle = '';
     $cimg = '<img src="' . $site_config['pic_base_url'] . 'cat_free.gif" alt="FREE!" />';
     $freeleech['freeleech_countdown'] = $cache->get('freeleech_countdown');
-    if ($freeleech['freeleech_countdown'] === false) {
+    if ($freeleech['freeleech_countdown'] === false || is_null($freeleech['freeleech_countdown'])) {
         $freeleech['freeleech_sql'] = sql_query('SELECT var, amount FROM freeleech WHERE type = "countdown"') or sqlerr(__FILE__, __LINE__);
         $freeleech['freeleech_countdown'] = [];
         if (mysqli_num_rows($freeleech['freeleech_sql']) !== 0) {

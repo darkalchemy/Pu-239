@@ -17,11 +17,11 @@
 */
 
 :root {
-  --main-color: #0f0;
+    --main-color: #0f0;
 }
 
 .mentioned {
-    color:#5EFF00;
+    color: #5EFF00;
     text-shadow: 1px 1px #2C6609;
 }
 

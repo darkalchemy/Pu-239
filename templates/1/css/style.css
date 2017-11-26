@@ -1,1069 +1,1390 @@
 .markItUp * {
-  margin: 0;
-  padding: 0;
-  outline: 0;
-  box-sizing: unset
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    box-sizing: unset
 }
+
 .markItUp a: link,
 .markItUp a: visited {
-  color: #000;
-  text-decoration: none
+    color: #000;
+    text-decoration: none
 }
+
 .markItUp {
-  margin: 5px 0;
-  border: 5px solid #f5f5f5
+    margin: 5px 0;
+    border: 5px solid #f5f5f5
 }
+
 .markItUpContainer {
-  border: 1px solid #3c769d;
-  background: url(../../images/bg-container.png) top left repeat-x #fff;
-  padding: 5px 5px 2px
+    border: 1px solid #3c769d;
+    background: url(../../images/bg-container.png) top left repeat-x #fff;
+    padding: 5px 5px 2px
 }
+
 .markItUpEditor {
-  font: 12px/18px 'Courier New',Courier,monospace;
-  padding: 5px 5px 5px 35px;
-  border: 3px solid #3c769d;
-  width: 100%;
-  height: 320px;
-  clear: both;
-  display: block;
-  overflow: auto;
-  box-sizing: border-box
+    font: 12px/18px 'Courier New', Courier, monospace;
+    padding: 5px 5px 5px 35px;
+    border: 3px solid #3c769d;
+    width: 100%;
+    height: 320px;
+    clear: both;
+    display: block;
+    overflow: auto;
+    box-sizing: border-box
 }
+
 .markItUpPreviewFrame {
-  overflow: auto;
-  background-color: #fff;
-  border: 1px solid #3c769d;
-  width: 99.9%;
-  height: 300px;
-  margin: 5px 0
+    overflow: auto;
+    background-color: #fff;
+    border: 1px solid #3c769d;
+    width: 99.9%;
+    height: 300px;
+    margin: 5px 0
 }
+
 .markItUpFooter {
-  width: 100%;
-  cursor: n-resize
+    width: 100%;
+    cursor: n-resize
 }
+
 .markItUpResizeHandle {
-  overflow: hidden;
-  width: 22px;
-  height: 5px;
-  margin-left: auto;
-  margin-right: auto;
-  background-image: url(../../images/handle.png);
-  cursor: n-resize
+    overflow: hidden;
+    width: 22px;
+    height: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    background-image: url(../../images/handle.png);
+    cursor: n-resize
 }
+
 .markItUpHeader ul li {
-  list-style: none;
-  float: left;
-  position: relative
+    list-style: none;
+    float: left;
+    position: relative
 }
+
 .bbcode .subscriptbutton a,
 .bbcode .superscriptbutton a,
 .bbcode .tablegenerator a,
 .markItUpHeader ul li ul {
-  display: none
+    display: none
 }
+
 .markItUpHeader ul li: hover > ul {
-  display: block
+    display: block
 }
+
 .markItUpHeader ul .markItUpDropMenu {
-  background: url(../../images/menu.png) 115% 50% no-repeat;
-  margin-right: 5px
+    background: url(../../images/menu.png) 115% 50% no-repeat;
+    margin-right: 5px
 }
+
 .markItUpHeader ul .markItUpDropMenu li {
-  margin-right: 0;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0
+    margin-right: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0
 }
+
 .markItUpHeader ul .markItUpSeparator {
-  margin: 0 10px;
-  width: 1px;
-  height: 16px;
-  overflow: hidden;
-  background-color: #ccc
+    margin: 0 10px;
+    width: 1px;
+    height: 16px;
+    overflow: hidden;
+    background-color: #ccc
 }
+
 .markItUpHeader ul ul .markItUpSeparator {
-  width: auto;
-  height: 1px;
-  margin: 0
+    width: auto;
+    height: 1px;
+    margin: 0
 }
+
 .markItUpHeader ul ul {
-  display: none;
-  position: absolute;
-  top: 18px;
-  left: 0;
-  background: #f5f5f5;
-  border: 1px solid #3c769d;
-  height: inherit
+    display: none;
+    position: absolute;
+    top: 18px;
+    left: 0;
+    background: #f5f5f5;
+    border: 1px solid #3c769d;
+    height: inherit
 }
+
 .markItUpHeader ul ul li {
-  float: none;
-  border-bottom: 1px solid #3c769d
+    float: none;
+    border-bottom: 1px solid #3c769d
 }
+
 .markItUpHeader ul ul .markItUpDropMenu {
-  background: url(../../images/submenu.png) 100% 50% no-repeat #f5f5f5
+    background: url(../../images/submenu.png) 100% 50% no-repeat #f5f5f5
 }
+
 .markItUpHeader ul ul ul {
-  position: absolute;
-  top: -1px;
-  left: 150px
+    position: absolute;
+    top: -1px;
+    left: 150px
 }
+
 .markItUpHeader ul ul ul li {
-  float: none
+    float: none
 }
+
 .markItUpHeader ul a {
-  display: block;
-  width: 16px;
-  height: 16px;
-  text-indent: -10000px;
-  background-repeat: no-repeat;
-  padding: 3px;
-  margin: 0
+    display: block;
+    width: 16px;
+    height: 16px;
+    text-indent: -10000px;
+    background-repeat: no-repeat;
+    padding: 3px;
+    margin: 0
 }
+
 .markItUpHeader ul ul a {
-  display: block;
-  text-indent: 0;
-  width: 130px;
-  padding: 5px 5px 5px 25px;
-  background-position: 2px 50%
+    display: block;
+    text-indent: 0;
+    width: 130px;
+    padding: 5px 5px 5px 25px;
+    background-position: 2px 50%
 }
+
 .markItUpHeader ul ul a: hover {
-  color: #fff;
-  background-color: #3c769d
+    color: #fff;
+    background-color: #3c769d
 }
+
 .html .markItUpEditor {
-  background-image: url(../../images/bg-editor-html.png)
+    background-image: url(../../images/bg-editor-html.png)
 }
+
 .markdown .markItUpEditor {
-  background-image: url(../../images/bg-editor-markdown.png)
+    background-image: url(../../images/bg-editor-markdown.png)
 }
+
 .textile .markItUpEditor {
-  background-image: url(../../images/bg-editor-textile.png)
+    background-image: url(../../images/bg-editor-textile.png)
 }
+
 .dotclear .markItUpEditor,
 .wiki .markItUpEditor {
-  background-image: url(../../images/bg-editor-wiki.png)
+    background-image: url(../../images/bg-editor-wiki.png)
 }
+
 .markItUp .boldbutton a {
-  background-image: url(../../images/bold.png)
+    background-image: url(../../images/bold.png)
 }
+
 .markItUp .italicbutton a {
-  background-image: url(../../images/italic.png)
+    background-image: url(../../images/italic.png)
 }
+
 .markItUp .underlinebutton a {
-  background-image: url(../../images/underline.png)
+    background-image: url(../../images/underline.png)
 }
+
 .markItUp .strikebutton a,
 .markItUp .strokebutton a {
-  background-image: url(../../images/stroke.png)
+    background-image: url(../../images/stroke.png)
 }
+
 .markItUp .align-left a {
-  background-image: url(../../images/text_align_left.png)
+    background-image: url(../../images/text_align_left.png)
 }
+
 .markItUp .align-center a {
-  background-image: url(../../images/text_align_center.png)
+    background-image: url(../../images/text_align_center.png)
 }
+
 .markItUp .align-right a {
-  background-image: url(../../images/text_align_right.png)
+    background-image: url(../../images/text_align_right.png)
 }
+
 .markItUp .align-justify a {
-  background-image: url(../../images/text_align_justify.png)
+    background-image: url(../../images/text_align_justify.png)
 }
+
 .markItUp .blockquotebutton a {
-  background-image: url(../../images/blockquote.png)
+    background-image: url(../../images/blockquote.png)
 }
+
 .markItUp .audiobutton a {
-  background-image: url(../../images/audio.png)
+    background-image: url(../../images/audio.png)
 }
+
 .markItUp .picture a {
-  background-image: url(../../images/image.png)
+    background-image: url(../../images/image.png)
 }
+
 .markItUp .linkbutton a {
-  background-image: url(../../images/link.png)
+    background-image: url(../../images/link.png)
 }
+
 .markItUp .fontbutton a,
 .markItUp .fontsbutton a {
-  background-image: url(../../images/fonts.png)
+    background-image: url(../../images/fonts.png)
 }
+
 .markItUp .list_bullet a {
-  background-image: url(../../images/list-bullet.png)
+    background-image: url(../../images/list-bullet.png)
 }
+
 .markItUp .list_numeric a {
-  background-image: url(../../images/list-numeric.png)
+    background-image: url(../../images/list-numeric.png)
 }
+
 .markItUp .list_item a {
-  background-image: url(../../images/list-item.png)
+    background-image: url(../../images/list-item.png)
 }
+
 .markItUp .Horizontal_line a {
-  background-image: url(../../images/hr.png)
+    background-image: url(../../images/hr.png)
 }
+
 .markItUp .quotebutton a {
-  background-image: url(../../images/quotes.png)
+    background-image: url(../../images/quotes.png)
 }
+
 .markItUp .codebutton a {
-  background-image: url(../../images/code.png)
+    background-image: url(../../images/code.png)
 }
+
 .markItUp .clean a {
-  background-image: url(../../images/clean.png)
+    background-image: url(../../images/clean.png)
 }
+
 .markItUp .preview a {
-  background-image: url(../../images/preview.png)
+    background-image: url(../../images/preview.png)
 }
+
 .markItUp .colorwheelbutton a {
-  background-image: url(../../images/color_wheel.png)
+    background-image: url(../../images/color_wheel.png)
 }
+
 .markItUp .youtubebutton a {
-  background-image: url(../../images/youtube.png)
+    background-image: url(../../images/youtube.png)
 }
+
 .markItUp .spoilerbutton a {
-  background-image: url(../../images/spoiler.png)
+    background-image: url(../../images/spoiler.png)
 }
+
 .markItUp .marqueebutton a {
-  background-image: url(../../images/marquee.png)
+    background-image: url(../../images/marquee.png)
 }
+
 .markItUp .emailbutton a {
-  background-image: url(../../images/email.png)
+    background-image: url(../../images/email.png)
 }
+
 .markItUp .sizebutton a {
-  background-image: url(../../images/size.png)
+    background-image: url(../../images/size.png)
 }
+
 .markItUp .size_1 a {
-  font-size: xx-small;
-  height: 15px;
-  width: 130px
+    font-size: xx-small;
+    height: 15px;
+    width: 130px
 }
+
 .markItUp .palette a {
-  background-image: url(../../images/colors.png)
+    background-image: url(../../images/colors.png)
 }
+
 .markItUp .palette ul {
-  width: 306px;
-  padding: 0
+    width: 306px;
+    padding: 0
 }
+
 .markItUp .palette li {
-  border: 1px solid #000;
-  width: 15px;
-  height: 10px;
-  overflow: hidden;
-  padding: 0;
-  margin: 0;
-  float: left
+    border: 1px solid #000;
+    width: 15px;
+    height: 10px;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    float: left
 }
+
 .markItUp .palette ul a {
-  width: 10px;
-  height: 10px
+    width: 10px;
+    height: 10px
 }
+
 .markItUp .palette ul a: hover {
-  background-color: none
+    background-color: none
 }
+
 .markItUp .palette .col1-1 a {
-  background: #300
+    background: #300
 }
+
 .markItUp .palette .col1-2 a {
-  background: #330
+    background: #330
 }
+
 .markItUp .palette .col1-3 a {
-  background: #360
+    background: #360
 }
+
 .markItUp .palette .col1-4 a {
-  background: #390
+    background: #390
 }
+
 .markItUp .palette .col1-5 a {
-  background: #3c0
+    background: #3c0
 }
+
 .markItUp .palette .col1-6 a {
-  background: #3f0
+    background: #3f0
 }
+
 .markItUp .palette .col1-7 a {
-  background: #6f0
+    background: #6f0
 }
+
 .markItUp .palette .col1-8 a {
-  background: #6c0
+    background: #6c0
 }
+
 .markItUp .palette .col1-9 a {
-  background: #690
+    background: #690
 }
+
 .markItUp .palette .col1-10 a {
-  background: #660
+    background: #660
 }
+
 .markItUp .palette .col1-11 a {
-  background: #630
+    background: #630
 }
+
 .markItUp .palette .col1-12 a {
-  background: #600
+    background: #600
 }
+
 .markItUp .palette .col1-13 a {
-  background: red
+    background: red
 }
+
 .markItUp .palette .col1-14 a {
-  background: #f30
+    background: #f30
 }
+
 .markItUp .palette .col1-15 a {
-  background: #f60
+    background: #f60
 }
+
 .markItUp .palette .col1-16 a {
-  background: #f90
+    background: #f90
 }
+
 .markItUp .palette .col1-17 a {
-  background: #fc0
+    background: #fc0
 }
+
 .markItUp .palette .col1-18 a {
-  background: #ff0
+    background: #ff0
 }
+
 .markItUp .palette .col2-1 a {
-  background: #303
+    background: #303
 }
+
 .markItUp .palette .col13-4 a,
 .markItUp .palette .col2-2 a {
-  background: #333
+    background: #333
 }
+
 .markItUp .palette .col2-3 a {
-  background: #363
+    background: #363
 }
+
 .markItUp .palette .col2-4 a {
-  background: #393
+    background: #393
 }
+
 .markItUp .palette .col2-5 a {
-  background: #3c3
+    background: #3c3
 }
+
 .markItUp .palette .col2-6 a {
-  background: #3f3
+    background: #3f3
 }
+
 .markItUp .palette .col2-7 a {
-  background: #6f3
+    background: #6f3
 }
+
 .markItUp .palette .col2-8 a {
-  background: #6c3
+    background: #6c3
 }
+
 .markItUp .palette .col2-9 a {
-  background: #693
+    background: #693
 }
+
 .markItUp .palette .col2-10 a {
-  background: #663
+    background: #663
 }
+
 .markItUp .palette .col2-11 a {
-  background: #633
+    background: #633
 }
+
 .markItUp .palette .col2-12 a {
-  background: #603
+    background: #603
 }
+
 .markItUp .palette .col2-13 a {
-  background: #f03
+    background: #f03
 }
+
 .markItUp .palette .col2-14 a {
-  background: #f33
+    background: #f33
 }
+
 .markItUp .palette .col2-15 a {
-  background: #f63
+    background: #f63
 }
+
 .markItUp .palette .col2-16 a {
-  background: #f93
+    background: #f93
 }
+
 .markItUp .palette .col2-17 a {
-  background: #fc3
+    background: #fc3
 }
+
 .markItUp .palette .col2-18 a {
-  background: #ff3
+    background: #ff3
 }
+
 .markItUp .palette .col3-1 a {
-  background: #306
+    background: #306
 }
+
 .markItUp .palette .col3-2 a {
-  background: #336
+    background: #336
 }
+
 .markItUp .palette .col3-3 a {
-  background: #366
+    background: #366
 }
+
 .markItUp .palette .col3-4 a {
-  background: #396
+    background: #396
 }
+
 .markItUp .palette .col3-5 a {
-  background: #3c6
+    background: #3c6
 }
+
 .markItUp .palette .col3-6 a {
-  background: #3f6
+    background: #3f6
 }
+
 .markItUp .palette .col3-7 a {
-  background: #6f6
+    background: #6f6
 }
+
 .markItUp .palette .col3-8 a {
-  background: #6c6
+    background: #6c6
 }
+
 .markItUp .palette .col3-9 a {
-  background: #696
+    background: #696
 }
+
 .markItUp .palette .col13-7 a,
 .markItUp .palette .col3-10 a {
-  background: #666
+    background: #666
 }
+
 .markItUp .palette .col3-11 a {
-  background: #636
+    background: #636
 }
+
 .markItUp .palette .col3-12 a {
-  background: #606
+    background: #606
 }
+
 .markItUp .palette .col3-13 a {
-  background: #f06
+    background: #f06
 }
+
 .markItUp .palette .col3-14 a {
-  background: #f36
+    background: #f36
 }
+
 .markItUp .palette .col3-15 a {
-  background: #f66
+    background: #f66
 }
+
 .markItUp .palette .col3-16 a {
-  background: #f96
+    background: #f96
 }
+
 .markItUp .palette .col3-17 a {
-  background: #fc6
+    background: #fc6
 }
+
 .markItUp .palette .col3-18 a {
-  background: #ff6
+    background: #ff6
 }
+
 .markItUp .palette .col4-1 a {
-  background: #309
+    background: #309
 }
+
 .markItUp .palette .col4-2 a {
-  background: #339
+    background: #339
 }
+
 .markItUp .palette .col4-3 a {
-  background: #369
+    background: #369
 }
+
 .markItUp .palette .col4-4 a {
-  background: #399
+    background: #399
 }
+
 .markItUp .palette .col4-5 a {
-  background: #3c9
+    background: #3c9
 }
+
 .markItUp .palette .col4-6 a {
-  background: #3f9
+    background: #3f9
 }
+
 .markItUp .palette .col4-7 a {
-  background: #6f9
+    background: #6f9
 }
+
 .markItUp .palette .col4-8 a {
-  background: #6c9
+    background: #6c9
 }
+
 .markItUp .palette .col4-9 a {
-  background: #699
+    background: #699
 }
+
 .markItUp .palette .col4-10 a {
-  background: #669
+    background: #669
 }
+
 .markItUp .palette .col4-11 a {
-  background: #639
+    background: #639
 }
+
 .markItUp .palette .col4-12 a {
-  background: #609
+    background: #609
 }
+
 .markItUp .palette .col4-13 a {
-  background: #f09
+    background: #f09
 }
+
 .markItUp .palette .col4-14 a {
-  background: #f39
+    background: #f39
 }
+
 .markItUp .palette .col4-15 a {
-  background: #f69
+    background: #f69
 }
+
 .markItUp .palette .col4-16 a {
-  background: #f99
+    background: #f99
 }
+
 .markItUp .palette .col4-17 a {
-  background: #fc9
+    background: #fc9
 }
+
 .markItUp .palette .col4-18 a {
-  background: #ff9
+    background: #ff9
 }
+
 .markItUp .palette .col5-1 a {
-  background: #30c
+    background: #30c
 }
+
 .markItUp .palette .col5-2 a {
-  background: #33c
+    background: #33c
 }
+
 .markItUp .palette .col5-3 a {
-  background: #36c
+    background: #36c
 }
+
 .markItUp .palette .col5-4 a {
-  background: #39c
+    background: #39c
 }
+
 .markItUp .palette .col5-5 a {
-  background: #3cc
+    background: #3cc
 }
+
 .markItUp .palette .col5-6 a {
-  background: #3fc
+    background: #3fc
 }
+
 .markItUp .palette .col5-7 a {
-  background: #6fc
+    background: #6fc
 }
+
 .markItUp .palette .col5-8 a {
-  background: #6cc
+    background: #6cc
 }
+
 .markItUp .palette .col5-9 a {
-  background: #69c
+    background: #69c
 }
+
 .markItUp .palette .col5-10 a {
-  background: #66c
+    background: #66c
 }
+
 .markItUp .palette .col5-11 a {
-  background: #63c
+    background: #63c
 }
+
 .markItUp .palette .col5-12 a {
-  background: #60c
+    background: #60c
 }
+
 .markItUp .palette .col5-13 a {
-  background: #f0c
+    background: #f0c
 }
+
 .markItUp .palette .col5-14 a {
-  background: #f3c
+    background: #f3c
 }
+
 .markItUp .palette .col5-15 a {
-  background: #f6c
+    background: #f6c
 }
+
 .markItUp .palette .col5-16 a {
-  background: #f9c
+    background: #f9c
 }
+
 .markItUp .palette .col5-17 a {
-  background: #fcc
+    background: #fcc
 }
+
 .markItUp .palette .col5-18 a {
-  background: #ffc
+    background: #ffc
 }
+
 .markItUp .palette .col6-1 a {
-  background: #30f
+    background: #30f
 }
+
 .markItUp .palette .col6-2 a {
-  background: #33f
+    background: #33f
 }
+
 .markItUp .palette .col6-3 a {
-  background: #36f
+    background: #36f
 }
+
 .markItUp .palette .col6-4 a {
-  background: #39f
+    background: #39f
 }
+
 .markItUp .palette .col6-5 a {
-  background: #3cf
+    background: #3cf
 }
+
 .markItUp .palette .col6-6 a {
-  background: #3ff
+    background: #3ff
 }
+
 .markItUp .palette .col6-7 a {
-  background: #6ff
+    background: #6ff
 }
+
 .markItUp .palette .col6-8 a {
-  background: #6cf
+    background: #6cf
 }
+
 .markItUp .palette .col6-9 a {
-  background: #69f
+    background: #69f
 }
+
 .markItUp .palette .col6-10 a {
-  background: #66f
+    background: #66f
 }
+
 .markItUp .palette .col6-11 a {
-  background: #63f
+    background: #63f
 }
+
 .markItUp .palette .col6-12 a {
-  background: #60f
+    background: #60f
 }
+
 .markItUp .palette .col6-13 a {
-  background: #f0f
+    background: #f0f
 }
+
 .markItUp .palette .col6-14 a {
-  background: #f3f
+    background: #f3f
 }
+
 .markItUp .palette .col6-15 a {
-  background: #f6f
+    background: #f6f
 }
+
 .markItUp .palette .col6-16 a {
-  background: #f9f
+    background: #f9f
 }
+
 .markItUp .palette .col6-17 a {
-  background: #fcf
+    background: #fcf
 }
+
 .markItUp .palette .col13-16 a,
 .markItUp .palette .col6-18 a {
-  background: #fff
+    background: #fff
 }
+
 .markItUp .palette .col7-1 a {
-  background: #00f
+    background: #00f
 }
+
 .markItUp .palette .col7-2 a {
-  background: #03f
+    background: #03f
 }
+
 .markItUp .palette .col7-3 a {
-  background: #06f
+    background: #06f
 }
+
 .markItUp .palette .col7-4 a {
-  background: #09f
+    background: #09f
 }
+
 .markItUp .palette .col7-5 a {
-  background: #0cf
+    background: #0cf
 }
+
 .markItUp .palette .col7-6 a {
-  background: #0ff
+    background: #0ff
 }
+
 .markItUp .palette .col7-7 a {
-  background: #9ff
+    background: #9ff
 }
+
 .markItUp .palette .col7-8 a {
-  background: #9cf
+    background: #9cf
 }
+
 .markItUp .palette .col7-9 a {
-  background: #99f
+    background: #99f
 }
+
 .markItUp .palette .col7-10 a {
-  background: #96f
+    background: #96f
 }
+
 .markItUp .palette .col7-11 a {
-  background: #93f
+    background: #93f
 }
+
 .markItUp .palette .col7-12 a {
-  background: #90f
+    background: #90f
 }
+
 .markItUp .palette .col7-13 a {
-  background: #c0f
+    background: #c0f
 }
+
 .markItUp .palette .col7-14 a {
-  background: #c3f
+    background: #c3f
 }
+
 .markItUp .palette .col7-15 a {
-  background: #c6f
+    background: #c6f
 }
+
 .markItUp .palette .col7-16 a {
-  background: #c9f
+    background: #c9f
 }
+
 .markItUp .palette .col7-17 a {
-  background: #ccf
+    background: #ccf
 }
+
 .markItUp .palette .col7-18 a {
-  background: #cff
+    background: #cff
 }
+
 .markItUp .palette .col8-1 a {
-  background: #00c
+    background: #00c
 }
+
 .markItUp .palette .col8-2 a {
-  background: #03c
+    background: #03c
 }
+
 .markItUp .palette .col8-3 a {
-  background: #06c
+    background: #06c
 }
+
 .markItUp .palette .col8-4 a {
-  background: #09c
+    background: #09c
 }
+
 .markItUp .palette .col8-5 a {
-  background: #0cc
+    background: #0cc
 }
+
 .markItUp .palette .col8-6 a {
-  background: #0fc
+    background: #0fc
 }
+
 .markItUp .palette .col8-7 a {
-  background: #9fc
+    background: #9fc
 }
+
 .markItUp .palette .col8-8 a {
-  background: #9cc
+    background: #9cc
 }
+
 .markItUp .palette .col8-9 a {
-  background: #99c
+    background: #99c
 }
+
 .markItUp .palette .col8-10 a {
-  background: #96c
+    background: #96c
 }
+
 .markItUp .palette .col8-11 a {
-  background: #93c
+    background: #93c
 }
+
 .markItUp .palette .col8-12 a {
-  background: #90c
+    background: #90c
 }
+
 .markItUp .palette .col8-13 a {
-  background: #c0c
+    background: #c0c
 }
+
 .markItUp .palette .col8-14 a {
-  background: #c3c
+    background: #c3c
 }
+
 .markItUp .palette .col8-15 a {
-  background: #c6c
+    background: #c6c
 }
+
 .markItUp .palette .col8-16 a {
-  background: #c9c
+    background: #c9c
 }
+
 .markItUp .palette .col13-13 a,
 .markItUp .palette .col8-17 a {
-  background: #ccc
+    background: #ccc
 }
+
 .markItUp .palette .col8-18 a {
-  background: #cfc
+    background: #cfc
 }
+
 .markItUp .palette .col9-1 a {
-  background: #009
+    background: #009
 }
+
 .markItUp .palette .col9-2 a {
-  background: #039
+    background: #039
 }
+
 .markItUp .palette .col9-3 a {
-  background: #069
+    background: #069
 }
+
 .markItUp .palette .col9-4 a {
-  background: #099
+    background: #099
 }
+
 .markItUp .palette .col9-5 a {
-  background: #0c9
+    background: #0c9
 }
+
 .markItUp .palette .col9-6 a {
-  background: #0f9
+    background: #0f9
 }
+
 .markItUp .palette .col9-7 a {
-  background: #9f9
+    background: #9f9
 }
+
 .markItUp .palette .col9-8 a {
-  background: #9c9
+    background: #9c9
 }
+
 .markItUp .palette .col13-10 a,
 .markItUp .palette .col9-9 a {
-  background: #999
+    background: #999
 }
+
 .markItUp .palette .col9-10 a {
-  background: #969
+    background: #969
 }
+
 .markItUp .palette .col9-11 a {
-  background: #939
+    background: #939
 }
+
 .markItUp .palette .col9-12 a {
-  background: #909
+    background: #909
 }
+
 .markItUp .palette .col9-13 a {
-  background: #c09
+    background: #c09
 }
+
 .markItUp .palette .col9-14 a {
-  background: #c39
+    background: #c39
 }
+
 .markItUp .palette .col9-15 a {
-  background: #c69
+    background: #c69
 }
+
 .markItUp .palette .col9-16 a {
-  background: #c99
+    background: #c99
 }
+
 .markItUp .palette .col9-17 a {
-  background: #cc9
+    background: #cc9
 }
+
 .markItUp .palette .col9-18 a {
-  background: #cf9
+    background: #cf9
 }
+
 .markItUp .palette .col10-1 a {
-  background: #006
+    background: #006
 }
+
 .markItUp .palette .col10-2 a {
-  background: #036
+    background: #036
 }
+
 .markItUp .palette .col10-3 a {
-  background: #066
+    background: #066
 }
+
 .markItUp .palette .col10-4 a {
-  background: #096
+    background: #096
 }
+
 .markItUp .palette .col10-5 a {
-  background: #0c6
+    background: #0c6
 }
+
 .markItUp .palette .col10-6 a {
-  background: #0f6
+    background: #0f6
 }
+
 .markItUp .palette .col10-7 a {
-  background: #9f6
+    background: #9f6
 }
+
 .markItUp .palette .col10-8 a {
-  background: #9c6
+    background: #9c6
 }
+
 .markItUp .palette .col10-9 a {
-  background: #996
+    background: #996
 }
+
 .markItUp .palette .col10-10 a {
-  background: #966
+    background: #966
 }
+
 .markItUp .palette .col10-11 a {
-  background: #936
+    background: #936
 }
+
 .markItUp .palette .col10-12 a {
-  background: #906
+    background: #906
 }
+
 .markItUp .palette .col10-13 a {
-  background: #c06
+    background: #c06
 }
+
 .markItUp .palette .col10-14 a {
-  background: #c36
+    background: #c36
 }
+
 .markItUp .palette .col10-15 a {
-  background: #c66
+    background: #c66
 }
+
 .markItUp .palette .col10-16 a {
-  background: #c96
+    background: #c96
 }
+
 .markItUp .palette .col10-17 a {
-  background: #cc6
+    background: #cc6
 }
+
 .markItUp .palette .col10-18 a {
-  background: #cf6
+    background: #cf6
 }
+
 .markItUp .palette .col11-1 a {
-  background: #003
+    background: #003
 }
+
 .markItUp .palette .col11-2 a {
-  background: #033
+    background: #033
 }
+
 .markItUp .palette .col11-3 a {
-  background: #063
+    background: #063
 }
+
 .markItUp .palette .col11-4 a {
-  background: #093
+    background: #093
 }
+
 .markItUp .palette .col11-5 a {
-  background: #0c3
+    background: #0c3
 }
+
 .markItUp .palette .col11-6 a {
-  background: #0f3
+    background: #0f3
 }
+
 .markItUp .palette .col11-7 a {
-  background: #9f3
+    background: #9f3
 }
+
 .markItUp .palette .col11-8 a {
-  background: #9c3
+    background: #9c3
 }
+
 .markItUp .palette .col11-9 a {
-  background: #993
+    background: #993
 }
+
 .markItUp .palette .col11-10 a {
-  background: #963
+    background: #963
 }
+
 .markItUp .palette .col11-11 a {
-  background: #933
+    background: #933
 }
+
 .markItUp .palette .col11-12 a {
-  background: #903
+    background: #903
 }
+
 .markItUp .palette .col11-13 a {
-  background: #c03
+    background: #c03
 }
+
 .markItUp .palette .col11-14 a {
-  background: #c33
+    background: #c33
 }
+
 .markItUp .palette .col11-15 a {
-  background: #c63
+    background: #c63
 }
+
 .markItUp .palette .col11-16 a {
-  background: #c93
+    background: #c93
 }
+
 .markItUp .palette .col11-17 a {
-  background: #cc3
+    background: #cc3
 }
+
 .markItUp .palette .col11-18 a {
-  background: #cf3
+    background: #cf3
 }
+
 .markItUp .palette .col12-1 a,
 .markItUp .palette .col13-1 a {
-  background: #000
+    background: #000
 }
+
 .markItUp .palette .col12-2 a {
-  background: #030
+    background: #030
 }
+
 .markItUp .palette .col12-3 a {
-  background: #060
+    background: #060
 }
+
 .markItUp .palette .col12-4 a {
-  background: #090
+    background: #090
 }
+
 .markItUp .palette .col12-5 a {
-  background: #0c0
+    background: #0c0
 }
+
 .markItUp .palette .col12-6 a {
-  background: #0f0
+    background: #0f0
 }
+
 .markItUp .palette .col12-7 a {
-  background: #9f0
+    background: #9f0
 }
+
 .markItUp .palette .col12-8 a {
-  background: #9c0
+    background: #9c0
 }
+
 .markItUp .palette .col12-9 a {
-  background: #990
+    background: #990
 }
+
 .markItUp .palette .col12-10 a {
-  background: #960
+    background: #960
 }
+
 .markItUp .palette .col12-11 a {
-  background: #930
+    background: #930
 }
+
 .markItUp .palette .col12-12 a {
-  background: #900
+    background: #900
 }
+
 .markItUp .palette .col12-13 a {
-  background: #c00
+    background: #c00
 }
+
 .markItUp .palette .col12-14 a {
-  background: #c30
+    background: #c30
 }
+
 .markItUp .palette .col12-15 a {
-  background: #c60
+    background: #c60
 }
+
 .markItUp .palette .col12-16 a {
-  background: #c90
+    background: #c90
 }
+
 .markItUp .palette .col12-17 a {
-  background: #cc0
+    background: #cc0
 }
+
 .markItUp .palette .col12-18 a {
-  background: #cf0
+    background: #cf0
 }
+
 .markItUp .palette .col13-2 a {
-  background: #111
+    background: #111
 }
+
 .markItUp .palette .col13-3 a {
-  background: #222
+    background: #222
 }
+
 .markItUp .palette .col13-5 a {
-  background: #444
+    background: #444
 }
+
 .markItUp .palette .col13-6 a {
-  background: #555
+    background: #555
 }
+
 .markItUp .palette .col13-8 a {
-  background: #777
+    background: #777
 }
+
 .markItUp .palette .col13-9 a {
-  background: #888
+    background: #888
 }
+
 .markItUp .palette .col13-11 a {
-  background: #aaa
+    background: #aaa
 }
+
 .markItUp .palette .col13-12 a {
-  background: #bbb
+    background: #bbb
 }
+
 .markItUp .palette .col13-14 a {
-  background: #ddd
+    background: #ddd
 }
+
 .markItUp .palette .col13-15 a {
-  background: #eee
+    background: #eee
 }
+
 .markItUpButton {
-  font-family: FontAwesome;
-  padding: 0;
-  font-size: 18px;
-  cursor: pointer
+    font-family: FontAwesome;
+    padding: 0;
+    font-size: 18px;
+    cursor: pointer
 }
+
 .bbcode .markItUpEditor {
-  background: #ffdead
+    background: #ffdead
 }
+
 .bbcode .subscriptbutton:before {
-  content: "\f12c";
-  padding-right: 5px
+    content: "\f12c";
+    padding-right: 5px
 }
+
 .bbcode .superscriptbutton:before {
-  content: "\f12b";
-  padding-right: 5px
+    content: "\f12b";
+    padding-right: 5px
 }
+
 .bbcode .tablegenerator:before {
-  content: "\f0ce";
-  padding-right: 5px
+    content: "\f0ce";
+    padding-right: 5px
 }
+
 .bbcode .fontsbutton ul,
 .bbcode .fontsbutton ul li a {
-  width: 215px
+    width: 215px
 }
+
 .bbcode .fontsbutton ul {
-  height: 250px;
-  overflow-x: hidden;
-  overflow-y: auto
+    height: 250px;
+    overflow-x: hidden;
+    overflow-y: auto
 }
+
 .markItUp .text-1 {
-  font-family: Oswald,sans-serif
+    font-family: Oswald, sans-serif
 }
+
 .markItUp .text-2 {
-  font-family: 'PT Sans Narrow',sans-serif
+    font-family: 'PT Sans Narrow', sans-serif
 }
+
 .markItUp .text-3 {
-  font-family: 'Nova Square',cursive
+    font-family: 'Nova Square', cursive
 }
+
 .markItUp .text-4 {
-  font-family: Lobster,cursive
+    font-family: Lobster, cursive
 }
+
 .markItUp .text-5 {
-  font-family: 'Open Sans',sans-serif
+    font-family: 'Open Sans', sans-serif
 }
+
 .markItUp .text-6 {
-  font-family: 'Encode Sans Condensed',sans-serif
+    font-family: 'Encode Sans Condensed', sans-serif
 }
+
 .markItUp .text-7 {
-  font-family: 'Baloo Bhaijaan',cursive
+    font-family: 'Baloo Bhaijaan', cursive
 }
+
 .markItUp .text-8 {
-  font-family: Acme,sans-serif
+    font-family: Acme, sans-serif
 }
+
 .markItUp .font_Arial a {
-  font-family: Arial
+    font-family: Arial
 }
+
 .markItUp .font_Arial_Black a {
-  font-family: "Arial Black"
+    font-family: "Arial Black"
 }
+
 .markItUp .font_Comic_Sans_MS a {
-  font-family: "Comic Sans MS"
+    font-family: "Comic Sans MS"
 }
+
 .markItUp .font_Courier_New a {
-  font-family: "Courier New"
+    font-family: "Courier New"
 }
+
 .markItUp .font_Georgia a {
-  font-family: Georgia
+    font-family: Georgia
 }
+
 .markItUp .font_Impact a {
-  font-family: Impact
+    font-family: Impact
 }
+
 .markItUp .font_Times_New_Roman a {
-  font-family: "Times New Roman"
+    font-family: "Times New Roman"
 }
+
 .markItUp .font_Trebuchet_MS a {
-  font-family: "Trebuchet MS"
+    font-family: "Trebuchet MS"
 }
+
 .markItUp .font_Verdana a {
-  font-family: Verdana
+    font-family: Verdana
 }
+
 .markItUp .font_Courier a {
-  font-family: Courier
+    font-family: Courier
 }
+
 .markItUp .font_Helvetica a {
-  font-family: Helvetica
+    font-family: Helvetica
 }
+
 .markItUp .font_Times a {
-  font-family: Times
+    font-family: Times
 }
+
 .markItUp .font_Andale_Mono a {
-  font-family: "Andale Mono"
+    font-family: "Andale Mono"
 }
+
 .markItUp .font_Bitstream_Vera_Sans a {
-  font-family: "Bitstream Vera Sans"
+    font-family: "Bitstream Vera Sans"
 }
+
 .markItUp .font_Mono a {
-  font-family: Mono
+    font-family: Mono
 }
+
 .markItUp .size_7 a {
-  font-size: xx-large;
-  height: 40px;
-  width: 130px
+    font-size: xx-large;
+    height: 40px;
+    width: 130px
 }
+
 .markItUp .size_6 a {
-  font-size: x-large;
-  height: 40px;
-  width: 130px
+    font-size: x-large;
+    height: 40px;
+    width: 130px
 }
+
 .markItUp .size_5 a {
-  font-size: large;
-  height: 30px;
-  width: 130px
+    font-size: large;
+    height: 30px;
+    width: 130px
 }
+
 .markItUp .size_4 a {
-  font-size: medium;
-  height: 25px;
-  width: 130px
+    font-size: medium;
+    height: 25px;
+    width: 130px
 }
+
 .markItUp .size_3 a {
-  font-size: small;
-  height: 20px;
-  width: 130px
+    font-size: small;
+    height: 20px;
+    width: 130px
 }
+
 .markItUp .size_2 a {
-  font-size: x-small;
-  height: 15px;
-  width: 130px
+    font-size: x-small;
+    height: 15px;
+    width: 130px
 }

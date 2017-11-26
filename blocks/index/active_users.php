@@ -2,7 +2,8 @@
 global $site_config, $cache, $lang;
 
 $keys['activeusers'] = 'activeusers';
-if (($active_users_cache = $cache->get($keys['activeusers'])) === false) {
+$active_users_cache = $cache->get($keys['activeusers']);
+if ($active_users_cache === false || is_null($active_users_cache)) {
     $dt = $_SERVER['REQUEST_TIME'] - 180;
     $activeusers = '';
     $active_users_cache = [];

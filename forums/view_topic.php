@@ -254,7 +254,8 @@ sql_query('INSERT INTO now_viewing (user_id, forum_id, topic_id, added)
         VALUES(' . sqlesc($CURUSER['id']) . ', ' . sqlesc($forum_id) . ', ' . sqlesc($topic_id) . ', ' . TIME_NOW . ')') or sqlerr(__FILE__, __LINE__);
 
 $keys['now_viewing'] = 'now_viewing_topic';
-if (($topic_users_cache = $cache->get($keys['now_viewing'])) === false) {
+$topic_users_cache = $cache->get($keys['now_viewing']);
+if ($topic_users_cache === false || is_null($topic_users_cache)) {
     $topicusers = '';
     $topic_users_cache = [];
     $res = sql_query('SELECT user_id

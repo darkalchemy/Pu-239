@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
 
-$lang = array_merge(load_language('global'));
+$lang = load_language('global');
 if (empty($_GET)) {
     setSessionVar('is-danger', 'Access Not Allowed');
     header("Location: {$site_config['baseurl']}/index.php");

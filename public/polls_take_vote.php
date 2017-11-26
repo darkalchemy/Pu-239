@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
 
-$lang = array_merge(load_language('global'));
+$lang = load_language('global');
 $poll_id = isset($_GET['pollid']) ? intval($_GET['pollid']) : false;
 if (!is_valid_id($poll_id)) {
     stderr('ERROR', 'No poll with that ID');

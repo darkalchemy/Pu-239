@@ -6,7 +6,7 @@ $stdfoot = [
 //        'popup',
     ],
 ];
-$res = sql_query('SELECT o.*, o.added as utadded, u.username 
+$res = sql_query('SELECT o.*, o.added AS utadded, u.username 
                   FROM offers AS o LEFT JOIN users AS u ON (u.id=o.userid) 
                   WHERE o.id = ' . $id) or sqlerr(__FILE__, __LINE__);
 if (!mysqli_num_rows($res)) {

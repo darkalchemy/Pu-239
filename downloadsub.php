@@ -4,7 +4,7 @@ require_once INCL_DIR . 'phpzip.php';
 check_user_status();
 global $site_config;
 
-$lang = array_merge(load_language('global'));
+$lang = load_language('global');
 
 $action = (isset($_POST['action']) ? htmlsafechars($_POST['action']) : '');
 if ($action == 'download') {

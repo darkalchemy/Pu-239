@@ -1,7 +1,8 @@
 <?php
 global $CURUSER, $site_config, $cache, $lang, $user, $id;
 
-if (($forumposts = $cache->get('forum_posts_' . $id)) === false) {
+$forumposts = $cache->get('forum_posts_' . $id);
+if ($forumposts === false || is_null($forumposts)) {
     $res = sql_query('SELECT COUNT(id) FROM posts WHERE user_id=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
     list($forumposts) = mysqli_fetch_row($res);
     $cache->set('forum_posts_' . $id, $forumposts, $site_config['expires']['forum_posts']);

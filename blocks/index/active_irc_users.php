@@ -20,7 +20,8 @@ function calctime($val)
 }
 
 $keys['activeircusers'] = 'activeircusers';
-if (($active_irc_users_cache = $cache->get($keys['activeircusers'])) === false) {
+$active_irc_users_cache = $cache->get($keys['activeircusers']);
+if ($active_irc_users_cache === false || is_null($active_irc_users_cache)) {
     $dt = $_SERVER['REQUEST_TIME'] - 180;
     $activeircusers = '';
     $active_irc_users_cache = [];

@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 //dbconn();
 
-file_put_contents('/var/log/nginx/ajax.log', json_encode($_SESSION) . PHP_EOL, FILE_APPEND);
+//file_put_contents('/var/log/nginx/ajax.log', json_encode($_SESSION) . PHP_EOL, FILE_APPEND);
 //file_put_contents('/var/log/nginx/ajax.log', json_encode($_POST) . PHP_EOL, FILE_APPEND);
 //file_put_contents('/var/log/nginx/ajax.log', json_encode($user) . PHP_EOL, FILE_APPEND);
 return;
@@ -21,7 +21,7 @@ $lang = array_merge(load_language('global'), load_language('index'));
 //die();
 if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
     $user = $cache->get('MyUser_' . $id);
-    if (empty($user)) {
+    if ($user === false || is_null($user)) {
         echo json_encode('failed...');
     }
 
@@ -29,7 +29,8 @@ if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
     $downed = mksize($user['downloaded']);
 
     if (XBT_TRACKER == true) {
-        if (($MyPeersXbtCache = $cache->get('MyPeers_XBT_' . $user['id'])) === false) {
+        $MyPeersXbtCache = $cache->get('MyPeers_XBT_' . $user['id']);
+        if ($MyPeersXbtCache === false || is_null($MyPeersXbtCache)) {
             $seed['yes'] = $seed['no'] = 0;
             $seed['conn'] = 3;
             $r = sql_query('SELECT COUNT(uid) AS count, `left`, active, connectable
@@ -47,7 +48,8 @@ if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
             $seed = $MyPeersXbtCache;
         }
     } else {
-        if (($MyPeersCache = $cache->get('MyPeers_' . $user['id'])) === false) {
+        $MyPeersCache = $cache->get('MyPeers_' . $user['id']);
+        if ($MyPeersCache === false || is_null($MyPeersCache)) {
             $seed['yes'] = $seed['no'] = 0;
             $seed['conn'] = 3;
             $r = sql_query('SELECT COUNT(id) AS count, seeder, connectable
@@ -83,7 +85,8 @@ if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
         $connectable = $lang['gl_na_connectable'];
     }
 
-    if (($Achievement_Points = $cache->get('user_achievement_points_' . $user['id'])) === false) {
+    $Achievement_Points = $cache->get('user_achievement_points_' . $user['id']);
+    if ($Achievement_Points === false || is_null($Achievement_Points)) {
         $Sql = sql_query('SELECT u.id, u.username, a.achpoints, a.spentpoints
                             FROM users AS u
                             LEFT JOIN usersachiev AS a ON u.id = a.userid

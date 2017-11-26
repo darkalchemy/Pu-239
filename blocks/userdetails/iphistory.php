@@ -1,7 +1,8 @@
 <?php
 //== iphistory
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
-    if (($iphistory = $cache->get('ip_history_' . $id)) === false) {
+    $iphistory = $cache->get('ip_history_' . $id);
+    if ($iphistory === false || is_null($iphistory)) {
         $ipto = sql_query("SELECT COUNT(id),enabled FROM `users` AS iplist WHERE `ip` = '" . $user['ip'] . "' GROUP BY enabled") or sqlerr(__FILE__, __LINE__);
         $row12 = mysqli_fetch_row($ipto);
         $row13 = mysqli_fetch_row($ipto);

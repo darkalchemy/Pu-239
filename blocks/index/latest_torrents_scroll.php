@@ -1,7 +1,8 @@
 <?php
 global $site_config, $cache, $lang;
 
-if (($scroll_torrents = $cache->get('scroll_tor_')) === false) {
+$scroll_torrents = $cache->get('scroll_tor_');
+if ($scroll_torrents === false || is_null($scroll_torrents)) {
     $scroll = sql_query("SELECT id, seeders, leechers, name, poster
                             FROM torrents
                             WHERE seeders >= 0

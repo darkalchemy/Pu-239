@@ -17,19 +17,37 @@ class CACHE extends \MatthiasMullie\Scrapbook\Buffered\TransactionalStore
                 $bucket = $cluster->openBucket('default');
                 $cache = new \MatthiasMullie\Scrapbook\Adapters\Couchbase($bucket);
                 break;
+
             case 'apcu':
-                $cache = new \MatthiasMullie\Scrapbook\Adapters\Apc();
+                if (extension_loaded('apcu')) {
+                    $cache = new \MatthiasMullie\Scrapbook\Adapters\Apc();
+                } else {
+                    die('<h1>Error</h1><p>php-apcu is not available</p>');
+                }
+
                 break;
+
             case 'memcached':
-                $client = new \Memcached();
-                $client->addServer($site_config['memcached_host'], $site_config['memcached_port']);
-                $cache = new \MatthiasMullie\Scrapbook\Adapters\Memcached($client);
+                if (extension_loaded('memcached')) {
+                    $client = new \Memcached();
+                    $client->addServer($site_config['memcached_host'], $site_config['memcached_port']);
+                    $cache = new \MatthiasMullie\Scrapbook\Adapters\Memcached($client);
+                } else {
+                    die('<h1>Error</h1><p>php-memcached is not available</p>');
+                }
+
                 break;
+
             case 'redis':
-                $client = new \Redis();
-                $client->connect($site_config['redis_host']);
-                $cache = new \MatthiasMullie\Scrapbook\Adapters\Redis($client);
+                if (extension_loaded('redis')) {
+                    $client = new \Redis();
+                    $client->connect($site_config['redis_host']);
+                    $cache = new \MatthiasMullie\Scrapbook\Adapters\Redis($client);
+                } else {
+                    die('<h1>Error</h1><p>php-redis is not available</p>');
+                }
                 break;
+
             default:
                 $adapter = new \League\Flysystem\Adapter\Local($site_config['filesystem_path'], LOCK_EX);
                 $filesystem = new \League\Flysystem\Filesystem($adapter);
@@ -38,7 +56,6 @@ class CACHE extends \MatthiasMullie\Scrapbook\Buffered\TransactionalStore
         $cache = new \MatthiasMullie\Scrapbook\Adapters\Collections\Utils\PrefixKeys($cache, $site_config['cookie_prefix']);
         $cache = new \MatthiasMullie\Scrapbook\Buffered\BufferedStore($cache);
         $cache = new \MatthiasMullie\Scrapbook\Buffered\TransactionalStore($cache);
-        $cache = new \MatthiasMullie\Scrapbook\Scale\StampedeProtector($cache);
 
         parent::__construct($cache);
     }

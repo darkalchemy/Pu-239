@@ -1,6 +1,6 @@
 {
-    "require": {
-        "matthiasmullie/scrapbook": "^1.4",
-        "league/flysystem": "^1.0"
-    }
+  "require": {
+    "matthiasmullie/scrapbook": "^1.4",
+    "league/flysystem": "^1.0"
+  }
 }

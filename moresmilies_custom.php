@@ -5,7 +5,7 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER;
 
-$lang = array_merge(load_language('global'));
+$lang = load_language('global');
 if ($CURUSER['smile_until'] == '0') {
     stderr('Error', 'you do not have access!');
 }

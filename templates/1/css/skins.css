@@ -8,7 +8,7 @@
 }
 
 .skin-1 .ddFade {
-    background: #82725e; 
+    background: #82725e;
     background: -moz-linear-gradient(top, #82725e -1%, #64627a 0%, #82725e 0%, #aeafa9 0%, #aeafa9 0%, #d3dad0 100%);
     background: -webkit-linear-gradient(top, #82725e -1%, #64627a 0%, #82725e 0%, #aeafa9 0%, #aeafa9 0%, #d3dad0 100%);
     background: linear-gradient(to bottom, #82725e -1%, #64627a 0%, #82725e 0%, #aeafa9 0%, #aeafa9 0%, #d3dad0 100%);
@@ -17,7 +17,7 @@
 
 .skin-2 header#navbar,
 .skin-2 #platform-menu {
-    background: #7d7e7d; 
+    background: #7d7e7d;
     background: -moz-linear-gradient(top, #7d7e7d 0, #0e0e0e 100%);
     background: -webkit-linear-gradient(top, #7d7e7d 0, #0e0e0e 100%);
     background: linear-gradient(to bottom, #7d7e7d 0, #0e0e0e 100%);
@@ -25,7 +25,7 @@
 }
 
 .skin-2 .ddFade {
-    background: #0e0e0e; 
+    background: #0e0e0e;
     background: -moz-linear-gradient(top, #0e0e0e 0%, #7d7e7d 100%);
     background: -webkit-linear-gradient(top, #0e0e0e 0%, #7d7e7d 100%);
     background: linear-gradient(to bottom, #0e0e0e 0%, #7d7e7d 100%);

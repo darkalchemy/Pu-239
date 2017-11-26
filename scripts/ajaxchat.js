@@ -156,8 +156,8 @@ function initialize() {
     document.getElementById('blinkIntervalNumberSetting').value = ajaxChat.getSetting('blinkIntervalNumber');
 }
 
-function PopMoreSmiles(){
-    PopUp('../allsmiles.php','More Emoticons',600, 500, 1, 0);
+function PopMoreSmiles() {
+    PopUp('../allsmiles.php', 'More Emoticons', 600, 500, 1, 0);
 }
 
 function PopUp(url, name, width, height, center, resize, scroll, posleft, postop) {

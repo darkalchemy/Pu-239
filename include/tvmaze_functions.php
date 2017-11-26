@@ -49,7 +49,8 @@ function tvmaze(&$torrents)
         ];
     }
     $memkey = 'tvmaze::' . strtolower($tvmaze['name']);
-    if (($tvmaze_id = $cache->get($memkey)) === false) {
+    $tvmaze_id = $cache->get($memkey);
+    if ($tvmaze_id === false || is_null($tvmaze_id)) {
         //get tvrage id
         $tvmaze_link = sprintf('http://api.tvmaze.com/singlesearch/shows?q=%s', urlencode($tvmaze['name']));
         $tvmaze_array = json_decode(file_get_contents($tvmaze_link), true);

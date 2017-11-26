@@ -2,7 +2,8 @@
 global $CURUSER, $site_config, $cache, $lang;
 
 if ($site_config['staffmsg_alert'] && $CURUSER['class'] >= UC_STAFF) {
-    if (($answeredby = $cache->get('staff_mess_')) === false) {
+    $answeredby = $cache->get('staff_mess_');
+    if ($answeredby === false || is_null($answeredby)) {
         $res1 = sql_query('SELECT count(id) FROM staffmessages WHERE answeredby = 0');
         list($answeredby) = mysqli_fetch_row($res1);
         $cache->set('staff_mess_', $answeredby, $site_config['expires']['alerts']);

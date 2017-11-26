@@ -61,7 +61,8 @@ function tvrage(&$torrents)
         ];
     }
     $memkey = 'tvrage::' . strtolower($tvrage['name']);
-    if (($tvrage_id = $cache->get($memkey)) === false) {
+    $tvrage_id = $cache->get($memkey);
+    if ($tvrage_id === false || is_null($tvrage_id)) {
         //get tvrage id
         $tvrage_link = sprintf('http://services.tvrage.com/myfeeds/search.php?key=%s&show=%s', $site_config['tvrage_api'], urlencode($tvrage['name']));
         $tvrage_xml = file_get_contents($tvrage_link);
@@ -120,7 +121,8 @@ function tvrage(&$torrents)
     //check to see if its a show its an episode
     if ($tvrage['season'] > 0 && $tvrage['episode'] > 0) {
         $memkey = 'tvrage::' . $tvrage_id . '::' . $tvrage['season'] . 'x' . $tvrage['episode'];
-        if (($tvrage_epinfo = $cache->get($memkey)) === false) {
+        $tvrage_epinfo = $cache->get($memkey);
+        if ($tvrage_epinfo === false || is_null($tvrage_epinfo)) {
             //var_dump('Ep from tvrage'); //debug
             //get episode info
             $tvrage_link = sprintf('http://services.tvrage.com/myfeeds/episodeinfo.php?key=%s&sid=%d&ep=%dx%d', $site_config['tvrage_api'], $tvrage_id, $tvrage['season'], $tvrage['episode']);
