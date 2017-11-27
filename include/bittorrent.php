@@ -18,7 +18,7 @@ require_once CACHE_DIR . 'class_config.php';
 require_once CLASS_DIR . 'class_cache.php';
 $cache = new CACHE();
 
-$pdo = new PDO("mysql:dbname=pu239", "root", "Criss24Cross");
+$pdo = new PDO("mysql:dbname={$site_config['mysql_db']}", "{$site_config['mysql_user']}", "{$site_config['mysql_pass']}");
 $db = new FluentPDO($pdo);
 
 /**

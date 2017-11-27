@@ -1,4 +1,5 @@
 26 Nov 2017
+remove: hardcoded user:pass
 add: pdo class, just beginning to move from mysqli to pdo
 fix: tooltipster position
 update: browse.php search function
