@@ -1,9 +1,11 @@
 <?php
-//==comments
-if (($torrentcomments = $mc1->get_value('torrent_comments_' . $id)) === false) {
+global $CURUSER, $site_config, $cache, $lang;
+
+$torrentcomments = $cache->get('torrent_comments_' . $id);
+if ($torrentcomments === false || is_null($torrentcomments)) {
     $res = sql_query('SELECT COUNT(id) FROM comments WHERE user=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
     list($torrentcomments) = mysqli_fetch_row($res);
-    $mc1->cache_value('torrent_comments_' . $id, $torrentcomments, $site_config['expires']['torrent_comments']);
+    $cache->set('torrent_comments_' . $id, $torrentcomments, $site_config['expires']['torrent_comments']);
 }
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_comments']}</td>";
@@ -13,6 +15,3 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_ST
         $HTMLOUT .= "<td>" . (int)$torrentcomments . "</td></tr>\n";
     }
 }
-//==end
-// End Class
-// End File

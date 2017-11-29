@@ -1,7 +1,10 @@
 <?php
+/**
+ * @param $data
+ */
 function karma_update($data)
 {
-    global $site_config, $queries, $mc1;
+    global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
     if ($site_config['seedbonus_on'] == 1) {
@@ -20,21 +23,17 @@ function karma_update($data)
                 if ($arr['users_id'] == $Buffer_User && $arr['users_id'] != null) {
                     $users_buffer[] = '(' . $Buffer_User . ', ' . $site_config['bonus_per_duration'] . ' * ' . $arr['tcount'] . ')';
                     $update['seedbonus'] = ($arr['seedbonus'] + $site_config['bonus_per_duration'] * $arr['tcount']);
-                    $mc1->begin_transaction('userstats_' . $Buffer_User);
-                    $mc1->update_row(false, [
+                    $cache->update_row('userstats_' . $Buffer_User, [
                         'seedbonus' => $update['seedbonus'],
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['u_stats']);
-                    $mc1->begin_transaction('user_stats_' . $Buffer_User);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['u_stats']);
+                    $cache->update_row('user_stats_' . $Buffer_User, [
                         'seedbonus' => $update['seedbonus'],
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_stats']);
+                    ], $site_config['expires']['user_stats']);
                 }
             }
             $count = count($users_buffer);
             if ($count > 0) {
-                sql_query('INSERT INTO users (id,seedbonus) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE seedbonus=seedbonus+values(seedbonus)') or sqlerr(__FILE__, __LINE__);
+                sql_query('INSERT INTO users (id,seedbonus) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE seedbonus=seedbonus + VALUES(seedbonus)') or sqlerr(__FILE__, __LINE__);
             }
             if ($data['clean_log']) {
                 write_log('Cleanup - ' . $count . ' users received seedbonus');
@@ -42,7 +41,6 @@ function karma_update($data)
             unset($users_buffer, $update, $count);
         }
     }
-    //== End
     if ($data['clean_log'] && $queries > 0) {
         write_log("Karma Cleanup: Completed using $queries queries");
     }

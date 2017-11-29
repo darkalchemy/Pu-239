@@ -4,6 +4,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 check_user_status();
+global $CURUSER, $site_config, $cache;
+
 $lang = array_merge(load_language('global'), load_language('bitbucket'));
 $HTMLOUT = '';
 
@@ -55,16 +57,12 @@ if (!isset($_FILES['file'])) {
         }
         $avatar = sqlesc($_GET['avatar']);
         sql_query("UPDATE users SET avatar = $avatar WHERE id = {$CURUSER['id']}") or sqlerr(__FILE__, __LINE__);
-        $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
-        $mc1->update_row(false, [
+        $cache->update_row('MyUser_' . $CURUSER['id'], [
             'avatar' => $_GET['avatar'],
-        ]);
-        $mc1->commit_transaction($site_config['expires']['curuser']);
-        $mc1->begin_transaction('user' . $CURUSER['id']);
-        $mc1->update_row(false, [
+        ], $site_config['expires']['curuser']);
+        $cache->update_row('user' . $CURUSER['id'], [
             'avatar' => $_GET['avatar'],
-        ]);
-        $mc1->commit_transaction($site_config['expires']['user_cache']);
+        ], $site_config['expires']['user_cache']);
         header("Refresh: 0; url={$site_config['baseurl']}/bitbucket.php?images=$type&updated=avatar");
     }
     if (isset($_GET['updated']) && $_GET['updated'] == 'avatar') {
@@ -201,6 +199,11 @@ if (false === stristr($allow, ',' . substr($file, -4))) {
     stderr($lang['bitbucket_err'], $lang['bitbucket_invalid']);
 }
 if (!function_exists('exif_imagetype')) {
+    /**
+     * @param $filename
+     *
+     * @return bool
+     */
     function exif_imagetype($filename)
     {
         if ((list($width, $height, $type, $attr) = getimagesize($filename)) !== false) {
@@ -269,6 +272,11 @@ $HTMLOUT .= "
         </div>";
 echo stdhead($lang['bitbucket_bitbucket']) . $HTMLOUT . stdfoot();
 
+/**
+ * @param $text
+ *
+ * @return string
+ */
 function encrypt($text)
 {
     global $PICSALT;
@@ -276,6 +284,11 @@ function encrypt($text)
     return trim(base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, str_pad($PICSALT, 32), $text, MCRYPT_MODE_ECB, mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND))));
 }
 
+/**
+ * @param $text
+ *
+ * @return string
+ */
 function decrypt($text)
 {
     global $PICSALT;
@@ -283,6 +296,12 @@ function decrypt($text)
     return trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, str_pad($PICSALT, 32), base64_decode($text), MCRYPT_MODE_ECB, mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND)));
 }
 
+/**
+ * @param $root
+ * @param $input
+ *
+ * @return bool|null|string
+ */
 function valid_path($root, $input)
 {
     $fullpath = $root . $input;
@@ -293,6 +312,9 @@ function valid_path($root, $input)
     return ($root != substr($fullpath, 0, $rl)) ? null : $fullpath;
 }
 
+/**
+ * @param $path
+ */
 function make_year($path)
 {
     $dir = $path . '/' . date('Y');
@@ -301,6 +323,9 @@ function make_year($path)
     }
 }
 
+/**
+ * @param $path
+ */
 function make_month($path)
 {
     $dir = $path . '/' . date('Y/m');

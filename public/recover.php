@@ -10,7 +10,7 @@ if (!$CURUSER) {
 $lang = array_merge(load_language('global'), load_language('recover'));
 $stdfoot = [
     'js' => [
-        get_file('captcha1_js')
+        get_file('captcha1_js'),
     ],
 ];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $arr['email'];
     $newpassword = make_password();
     $newpasshash = make_passhash($newpassword);
-    sql_query('UPDATE users SET passhash = ' . sqlesc($newpasshash) . ' WHERE id = ' . sqlesc($id) ) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE users SET passhash = ' . sqlesc($newpasshash) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     if (!mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
         stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_noupdate']}");
     }

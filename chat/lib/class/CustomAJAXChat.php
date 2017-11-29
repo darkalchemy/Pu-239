@@ -7,6 +7,9 @@
  * @link https://blueimp.net/ajax/
  */
 
+/**
+ * Class CustomAJAXChat
+ */
 class CustomAJAXChat extends AJAXChat
 {
     // Initialize custom request variables:
@@ -22,6 +25,9 @@ class CustomAJAXChat extends AJAXChat
 
     // Returns an associative array containing userName, userID and userRole
     // Returns null if login is invalid
+    /**
+     * @return mixed
+     */
     public function getValidLoginUserData()
     {
         global $CURUSER;
@@ -30,11 +36,11 @@ class CustomAJAXChat extends AJAXChat
             $userData['userName'] = $this->trimUserName($CURUSER['username']);
             $userData['userClass'] = get_user_class_name($CURUSER['class']);
             $userData['userRole'] = $CURUSER['class'];
-            $userData['channels'] = [0];
+            $userData['channels'] = [0, 1, 2, 3, 4];
             if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
-                $userData['channels'] = [0, 1, 2];
+                $userData['channels'] = [0, 1, 2, 3, 4, 5, 6];
             } elseif ($CURUSER['class'] >= UC_MODERATOR) {
-                $userData['channels'] = [0, 1];
+                $userData['channels'] = [0, 1, 2, 3, 4, 5];
             }
             return $userData;
         }
@@ -47,6 +53,9 @@ class CustomAJAXChat extends AJAXChat
 
     // Store the channels the current user has access to
     // Make sure channel names don't contain any whitespace
+    /**
+     * @return array|null
+     */
     public function &getChannels()
     {
         $validChannels = [];
@@ -57,13 +66,13 @@ class CustomAJAXChat extends AJAXChat
 
             if (!empty($this->getUserID())) {
                 // Get the channels, the user has access to:
-                $validChannels = $customUsers[$this->getUserID()]['channels'];
+                $validChannels = $customUsers[ $this->getUserID() ]['channels'];
             }
 
             // Add the valid channels to the channel list (the defaultChannelID is always valid):
             foreach ($this->getAllChannels() as $key => $value) {
                 if ($value == $this->getConfig('defaultChannelID')) {
-                    $this->_channels[$key] = $value;
+                    $this->_channels[ $key ] = $value;
                     continue;
                 }
                 // Check if we have to limit the available channels:
@@ -71,7 +80,7 @@ class CustomAJAXChat extends AJAXChat
                     continue;
                 }
                 if (in_array($value, $validChannels)) {
-                    $this->_channels[$key] = $value;
+                    $this->_channels[ $key ] = $value;
                 }
             }
         }
@@ -81,6 +90,9 @@ class CustomAJAXChat extends AJAXChat
     // Store all existing channels
     // Make sure channel names don't contain any whitespace
 
+    /**
+     * @return null
+     */
     public function &getCustomUsers()
     {
         // List containing the registered chat users:
@@ -90,6 +102,9 @@ class CustomAJAXChat extends AJAXChat
         return $users;
     }
 
+    /**
+     * @return array|null
+     */
     public function &getAllChannels()
     {
         if ($this->_allChannels === null) {
@@ -99,7 +114,7 @@ class CustomAJAXChat extends AJAXChat
             $defaultChannelFound = false;
 
             foreach ($customChannels as $name => $id) {
-                $this->_allChannels[$this->trimChannelName($name)] = $id;
+                $this->_allChannels[ $this->trimChannelName($name) ] = $id;
                 if ($id == $this->getConfig('defaultChannelID')) {
                     $defaultChannelFound = true;
                 }
@@ -108,7 +123,7 @@ class CustomAJAXChat extends AJAXChat
             if (!$defaultChannelFound) {
                 // Add the default channel as first array element to the channel list
                 // First remove it in case it appeard under a different ID
-                unset($this->_allChannels[$this->getConfig('defaultChannelName')]);
+                unset($this->_allChannels[ $this->getConfig('defaultChannelName') ]);
                 $this->_allChannels = array_merge(
                     [
                         $this->trimChannelName($this->getConfig('defaultChannelName')) => $this->getConfig('defaultChannelID'),
@@ -121,6 +136,9 @@ class CustomAJAXChat extends AJAXChat
         return $this->_allChannels;
     }
 
+    /**
+     * @return array|null
+     */
     public function getCustomChannels()
     {
         // List containing the custom channels:

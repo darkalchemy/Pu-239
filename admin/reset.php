@@ -4,8 +4,9 @@ require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $lang;
+
 $lang = array_merge($lang, load_language('ad_reset'));
-//== Reset Lost Password
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = trim(htmlsafechars($_POST['username']));
     $uid = (int)$_POST['uid'];

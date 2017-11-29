@@ -5,6 +5,12 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('topten'));
 $HTMLOUT = '';
+/**
+ * @param     $result
+ * @param int $numass
+ *
+ * @return mixed
+ */
 function mysql_fetch_rowsarr($result, $numass = MYSQLI_BOTH)
 {
     $i = 0;
@@ -12,7 +18,7 @@ function mysql_fetch_rowsarr($result, $numass = MYSQLI_BOTH)
     mysqli_data_seek($result, 0);
     while ($row = mysqli_fetch_array($result, $numass)) {
         foreach ($keys as $speckey) {
-            $got[$i][$speckey] = $row[$speckey];
+            $got[ $i ][ $speckey ] = $row[ $speckey ];
         }
         ++$i;
     }
@@ -89,14 +95,14 @@ if (isset($_GET['view']) && $_GET['view'] == 't') {
     } else {
         $HTMLOUT .= '<h4>Insufficient Torrents (' . $counted . ')</h4></div>';
     }
-    echo stdhead($lang['head_title']) . $HTMLOUT . stdfoot();
+    echo stdhead($lang['head_title']) . wrapper($HTMLOUT, 'has-text-centered') . stdfoot();
     exit();
 }
 if (isset($_GET['view']) && $_GET['view'] == 'c') {
     $view = strip_tags(isset($_GET['c']));
     // Top Countries
     $HTMLOUT .= "<div class='article'><div class='article_header'><h2>Top 10 Countries (users)</h2></div>";
-    $result = sql_query('SELECT name, flagpic, COUNT(users.country) as num FROM countries LEFT JOIN users ON users.country = countries.id GROUP BY name ORDER BY num DESC LIMIT 10');
+    $result = sql_query('SELECT name, flagpic, COUNT(users.country) AS num FROM countries LEFT JOIN users ON users.country = countries.id GROUP BY name ORDER BY num DESC LIMIT 10');
     $counted = mysqli_num_rows($result);
     if ($counted == '10') {
         $arr = mysql_fetch_rowsarr($result);
@@ -153,7 +159,7 @@ if (isset($_GET['view']) && $_GET['view'] == 'c') {
     } else {
         $HTMLOUT .= '<h4>Insufficient Countries (' . $counted . ')</h4></div>';
     }
-    echo stdhead($lang['head_title']) . $HTMLOUT . stdfoot();
+    echo stdhead($lang['head_title']) . wrapper($HTMLOUT, 'has-text-centered') . stdfoot();
     exit();
 }
 // Default display / Top Users
@@ -273,4 +279,4 @@ if ($counted == '10') {
 } else {
     $HTMLOUT .= '<h4>Insufficient Downloaders (' . $counted . ')</h4></div>';
 }
-echo stdhead($lang['head_title']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['head_title']) . wrapper($HTMLOUT, 'has-text-centered') . stdfoot();

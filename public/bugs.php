@@ -1,8 +1,11 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
+global $CURUSER, $site_config, $cache;
+
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('bugs'));
 $possible_actions = [
@@ -32,18 +35,14 @@ if ($action == 'viewbug') {
             switch ($status) {
                 case 'fixed':
                     $msg = sqlesc('Hello ' . htmlsafechars($q1['username']) . ".\nYour bug: [b]" . htmlsafechars($q1['title']) . "[/b] has been treated by one of our coder, and is done.\n\nWe would to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {$site_config['site_name']}'s coders.\n");
-                    $uq = 'UPDATE users SET uploaded = uploaded +' . 1024 * 1024 * 1024 * 2 . ' WHERE id = ' . sqlesc($q1['sender']) . '';
+                    $uq = 'UPDATE users SET uploaded = uploaded +' . 1024 * 1024 * 1024 * 2 . ' WHERE id = ' . sqlesc($q1['sender']);
                     $update['uploaded'] = ($q1['uploaded'] + 1024 * 1024 * 1024 * 2);
-                    $mc1->begin_transaction('userstats_' . $q1['sender']);
-                    $mc1->update_row(false, [
+                    $cache->update_row('userstats_' . $q1['sender'], [
                         'uploaded' => $update['uploaded'],
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['u_stats']);
-                    $mc1->begin_transaction('user_stats_' . $q1['sender']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['u_stats']);
+                    $cache->update_row('user_stats_' . $q1['sender'], [
                         'uploaded' => $update['uploaded'],
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_stats']);
+                    ], $site_config['expires']['user_stats']);
                     break;
 
                 case 'ignored':
@@ -51,12 +50,11 @@ if ($action == 'viewbug') {
                     $uq = '';
                     break;
             }
-            sql_query($uq);
-            sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES (0, ' . sqlesc($q1['sender']) . ', ' . TIME_NOW . ", {$msg})");
-            sql_query('UPDATE bugs SET status=' . sqlesc($status) . ', staff=' . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($id));
-            $mc1->delete_value('inbox_new_' . $q1['sender']);
-            $mc1->delete_value('inbox_new_sb_' . $q1['sender']);
-            $mc1->delete_value('bug_mess_');
+            sql_query($uq) or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES (0, ' . sqlesc($q1['sender']) . ', ' . TIME_NOW . ", {$msg})") or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE bugs SET status=' . sqlesc($status) . ', staff=' . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+            $cache->increment('inbox_' . $q1['sender']);
+            $cache->delete('bug_mess_');
         }
         header("location: bugs.php?action=viewbug&id={$id}");
     }
@@ -134,7 +132,7 @@ if ($action == 'viewbug') {
     $perpage = 10;
     $pager = pager($perpage, $count, 'bugs.php?action=bugs&amp;');
     $res = sql_query("SELECT b.*, u.username, staff.username AS staffusername FROM bugs AS b LEFT JOIN users AS u ON b.sender = u.id LEFT JOIN users AS staff ON b.staff = staff.id ORDER BY b.id DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
-    $r = sql_query("SELECT * FROM bugs WHERE status = 'na'");
+    $r = sql_query("SELECT * FROM bugs WHERE status = 'na'") or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         $count = mysqli_num_rows($r);
         $HTMLOUT .= $pager['pagertop'];
@@ -204,7 +202,7 @@ if ($action == 'viewbug') {
             stderr("{$lang['stderr_error']}", "{$lang['stderr_title_10']}");
         }
         $q1 = sql_query('INSERT INTO bugs (title, priority, problem, sender, added) VALUES (' . sqlesc($title) . ', ' . sqlesc($priority) . ', ' . sqlesc($problem) . ', ' . sqlesc($CURUSER['id']) . ', ' . TIME_NOW . ')') or sqlerr(__FILE__, __LINE__);
-        $mc1->delete_value('bug_mess_');
+        $cache->delete('bug_mess_');
         if ($q1) {
             stderr("{$lang['stderr_sucess']}", sprintf($lang['stderr_sucess_2'], $priority));
         } else {
@@ -225,4 +223,4 @@ if ($action == 'viewbug') {
                   <tr><td colspan='2'><input type='submit' value='{$lang['submit_btn_send']}' class='button'/></td></tr>
                   </table></form>";
 }
-echo stdhead("{$lang['header']}") . $HTMLOUT . stdfoot();
+echo stdhead("{$lang['header']}") . wrapper($HTMLOUT) . stdfoot();

@@ -5,10 +5,12 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $cache, $lang;
+
 $HTMLOUT = '';
 $stdhead = [
     'css' => [
-        get_file('upload_css')
+        get_file('upload_css'),
     ],
 ];
 $stdfoot = [
@@ -43,11 +45,14 @@ if ($mode == 'delete') {
     if ($_GET['h'] != $hash) {
         stderr($lang['news_error'], $lang['news_del_what']);
     }
+    /**
+     * @param $newsid
+     */
     function deletenewsid($newsid)
     {
-        global $CURUSER, $mc1;
+        global $CURUSER, $cache;
         sql_query('DELETE FROM news WHERE id = ' . sqlesc($newsid) . ' AND userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-        $mc1->delete_value('latest_news_');
+        $cache->delete('latest_news_');
     }
 
     $HTMLOUT .= deletenewsid($newsid);
@@ -73,7 +78,7 @@ if ($mode == 'add') {
         $added = TIME_NOW;
     }
     sql_query('INSERT INTO news (userid, added, body, title, sticky, anonymous) VALUES (' . sqlesc($CURUSER['id']) . ',' . sqlesc($added) . ', ' . sqlesc($body) . ', ' . sqlesc($title) . ', ' . sqlesc($sticky) . ', ' . sqlesc($anonymous) . ')') or sqlerr(__FILE__, __LINE__);
-    $mc1->delete_value('latest_news_');
+    $cache->delete('latest_news_');
     header('Refresh: 3; url=staffpanel.php?tool=news&mode=news');
     mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 1 ? stderr($lang['news_success'], $lang['news_add_success']) : stderr($lang['news_add_oopss'], $lang['news_add_something']);
 }
@@ -100,7 +105,7 @@ if ($mode == 'edit') {
             stderr($lang['news_error'], $lang['news_edit_title']);
         }
         sql_query('UPDATE news SET body=' . sqlesc($body) . ', sticky=' . sqlesc($sticky) . ', anonymous=' . sqlesc($anonymous) . ', title=' . sqlesc($title) . ' WHERE id=' . sqlesc($newsid)) or sqlerr(__FILE__, __LINE__);
-        $mc1->delete_value('latest_news_');
+        $cache->delete('latest_news_');
         header('Refresh: 3; url=staffpanel.php?tool=news&mode=news');
         stderr($lang['news_success'], $lang['news_edit_success']);
     } else {

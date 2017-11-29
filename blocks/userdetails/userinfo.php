@@ -5,6 +5,3 @@ if ($user['info']) {
 if ($user['signature']) {
     $HTMLOUT .= "<tr><td colspan='2' class='text' bgcolor='#F4F4F0'>" . format_comment($user['signature']) . "</td></tr>\n";
 }
-//==end
-// End Class
-// End File

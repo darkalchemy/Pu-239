@@ -3,13 +3,14 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once INCL_DIR . 'user_functions.php';
 require_once CACHE_DIR . 'timezones.php';
 dbconn();
-global $CURUSER;
+global $CURUSER, $site_config;
+
 if (!$CURUSER) {
     get_template();
 }
 $stdfoot = [
     'js' => [
-        get_file('captcha2_js')
+        get_file('captcha2_js'),
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('signup'));
@@ -52,7 +53,7 @@ $value = [
     '...',
     '...',
 ];
-$value[random_int(1, count($value) - 1)] = 'X';
+$value[ random_int(1, count($value) - 1) ] = 'X';
 
 $HTMLOUT .= "
     <div class='half-container has-text-centered portlet'>
@@ -156,7 +157,7 @@ $HTMLOUT .= "<tr><td class='rowhead'>{$lang['signup_select']}</td><td><select na
       <tr><td colspan='2'>{$lang['signup_click']} <strong>{$lang['signup_x']}</strong> {$lang['signup_click1']}</td></tr><tr>
       <td colspan='2'><span class='tabs is-marginless'>";
 for ($i = 0; $i < count($value); ++$i) {
-    $HTMLOUT .= '<input name="submitme" type="submit" value="' . $value[$i] . '" class="button" />';
+    $HTMLOUT .= '<input name="submitme" type="submit" value="' . $value[ $i ] . '" class="button" />';
 }
 $HTMLOUT .= '</span></td></tr></table></form></div>';
 echo stdhead('Invites') . $HTMLOUT . stdfoot($stdfoot);

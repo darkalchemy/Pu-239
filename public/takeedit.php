@@ -2,7 +2,15 @@
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_memcache.php';
+global $CURUSER, $site_config, $cache;
+
+/**
+ *
+ */
 define('MIN_CLASS', UC_STAFF);
+/**
+ *
+ */
 define('NFO_SIZE', 65535);
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('takeedit'), load_language('details'));
@@ -24,14 +32,18 @@ if (!is_valid_id($id)) {
 }
 /**
  * @Function valid_torrent_name
- * @Notes only safe characters are allowed..
+ * @Notes    only safe characters are allowed..
  * @Begin
+ *
+ * @param $torrent_name
+ *
+ * @return bool
  */
 function valid_torrent_name($torrent_name)
 {
     $allowedchars = 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-_[]*()';
     for ($i = 0; $i < strlen($torrent_name); ++$i) {
-        if (strpos($allowedchars, $torrent_name[$i]) === false) {
+        if (strpos($allowedchars, $torrent_name[ $i ]) === false) {
             return false;
         }
     }
@@ -45,6 +57,11 @@ function valid_torrent_name($torrent_name)
  * @Begin
  */
 if (!function_exists('is_valid_url')) {
+    /**
+     * @param $link
+     *
+     * @return int
+     */
     function is_valid_url($link)
     {
         return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $link);
@@ -272,7 +289,7 @@ $release_group_choices = [
 ];
 {
     $release_group = (isset($_POST['release_group']) ? $_POST['release_group'] : 'none');
-    if (isset($release_group_choices[$release_group])) {
+    if (isset($release_group_choices[ $release_group ])) {
         $updateset[] = 'release_group = ' . sqlesc($release_group);
     }
     $torrent_cache['release_group'] = $release_group;
@@ -300,20 +317,16 @@ if (sizeof($updateset) > 0) {
     sql_query('UPDATE torrents SET ' . implode(',', $updateset) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 }
 if ($torrent_cache) {
-    $mc1->begin_transaction('torrent_details_' . $id);
-    $mc1->update_row(false, $torrent_cache);
-    $mc1->commit_transaction($site_config['expires']['torrent_details']);
-    $mc1->delete_value('top5_tor_');
-    $mc1->delete_value('last5_tor_');
+    $cache->update_row('torrent_details_' . $id, $torrent_cache, $site_config['expires']['torrent_details']);
+    $cache->delete('top5_tor_');
+    $cache->delete('last5_tor_');
 }
 if ($torrent_txt_cache) {
-    $mc1->begin_transaction('torrent_details_txt' . $id);
-    $mc1->update_row(false, $torrent_txt_cache);
-    $mc1->commit_transaction($site_config['expires']['torrent_details_text']);
+    $cache->update_row('torrent_details_txt' . $id, $torrent_txt_cache, $site_config['expires']['torrent_details_text']);
 }
 remove_torrent($infohash);
 write_log('torrent edited - ' . htmlsafechars($name) . ' was edited by ' . (($fetch_assoc['anonymous'] == 'yes') ? 'Anonymous' : htmlsafechars($CURUSER['username'])) . '');
-$mc1->delete_value('editedby_' . $id);
+$cache->delete('editedby_' . $id);
 //$returl = (isset($_POST['returnto']) ? '&returnto=' . urlencode($_POST['returnto']) : 'details.php?id=' . $id);
 
 setSessionVar('is-success', $lang['details_success_edit']);

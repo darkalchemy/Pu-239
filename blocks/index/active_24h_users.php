@@ -1,6 +1,9 @@
 <?php
+global $site_config, $cache, $lang;
+
 $keys['last24'] = 'last24';
-//if (($last24_cache = $mc1->get_value($keys['last24'])) === false) {
+$last24_cache = $cache->get($keys['last24']);
+if ($last24_cache === false || is_null($last24_cache)) {
     $last24_cache = [];
     $time24 = $_SERVER['REQUEST_TIME'] - 86400;
     $activeusers24 = '';
@@ -24,8 +27,8 @@ $keys['last24'] = 'last24';
     $last24_cache['last24record'] = $last24record;
     $last24_cache['last24'] = number_format($last24);
     $last24_cache['ss24'] = $_ss24;
-    $mc1->cache_value($keys['last24'], $last24_cache, $site_config['expires']['last24']);
-//}
+    $cache->set($keys['last24'], $last24_cache, $site_config['expires']['last24']);
+}
 if (!$last24_cache['activeusers24']) {
     $last24_cache['activeusers24'] = $lang['index_last24_nousers'];
 }

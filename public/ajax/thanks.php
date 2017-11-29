@@ -1,7 +1,8 @@
 <?php
-sleep(1);
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 check_user_status();
+global $site_config, $cache;
+
 if (empty($_POST)) {
     setSessionVar('is-danger', 'Access Not Allowed');
     header("Location: {$site_config['baseurl']}/index.php");
@@ -18,11 +19,14 @@ $uid = (int)$CURUSER['id'];
 $tid = isset($_POST['torrentid']) ? (int)$_POST['torrentid'] : (isset($_GET['torrentid']) ? (int)$_GET['torrentid'] : 0);
 $do = isset($_POST['action']) ? htmlsafechars($_POST['action']) : (isset($_GET['action']) ? htmlsafechars($_GET['action']) : 'list');
 $ajax = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
+/**
+ * @return string
+ */
 function print_list()
 {
     global $uid, $tid, $ajax;
     $target = $ajax ? '_self' : '_parent';
-    $qt = sql_query('SELECT th.userid, u.username, u.seedbonus FROM thanks as th INNER JOIN users as u ON u.id=th.userid WHERE th.torrentid=' . sqlesc($tid) . ' ORDER BY u.class DESC') or sqlerr(__FILE__, __LINE__);
+    $qt = sql_query('SELECT th.userid, u.username, u.seedbonus FROM thanks AS th INNER JOIN users AS u ON u.id=th.userid WHERE th.torrentid=' . sqlesc($tid) . ' ORDER BY u.class DESC') or sqlerr(__FILE__, __LINE__);
     $list = [];
     $hadTh = false;
     if (mysqli_num_rows($qt) > 0) {
@@ -39,7 +43,7 @@ function print_list()
             'status' => true,
         ]);
     } else {
-        $form = !$hadTh ? "<br><form action='./ajax/thanks.php' method='post'><input type='submit' class='button' name='submit' value='Say thanks' /><input type='hidden' name='torrentid' value='{$tid}' /><input type='hidden' name='action' value='add' /></form>" : '';
+        $form = !$hadTh ? "<br><form action='./ajax/thanks.php' method='post'><input type='submit' class='button is-small is-primary' name='submit' value='Say thanks' /><input type='hidden' name='torrentid' value='{$tid}' /><input type='hidden' name='action' value='add' /></form>" : '';
         $out = (count($list) > 0 ? join(', ', $list) : 'Not yet');
 
         return <<<IFRAME
@@ -112,16 +116,12 @@ switch ($do) {
             $sql = sql_query('SELECT seedbonus ' . 'FROM users ' . 'WHERE id = ' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
             $User = mysqli_fetch_assoc($sql);
             $update['seedbonus'] = ($User['seedbonus'] + $site_config['bonus_per_thanks']);
-            $mc1->begin_transaction('userstats_' . $uid);
-            $mc1->update_row(false, [
+            $cache->update_row('userstats_' . $uid, [
                 'seedbonus' => $update['seedbonus'],
-            ]);
-            $mc1->commit_transaction($site_config['expires']['u_stats']);
-            $mc1->begin_transaction('user_stats_' . $uid);
-            $mc1->update_row(false, [
+            ], $site_config['expires']['u_stats']);
+            $cache->update_row('user_stats_' . $uid, [
                 'seedbonus' => $update['seedbonus'],
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            ], $site_config['expires']['user_stats']);
             // ===end
         }
         break;

@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('uploadapp'));
-global $site_config;
+global $CURUSER, $site_config, $cache;
 
 $HTMLOUT = '';
 // Fill in application
@@ -63,14 +63,14 @@ if (isset($_POST['form']) != 1) {
         </tr>
         <tr>
         <td class='rowhead'>{$lang['uploadapp_uploader']}</td><td><input type='radio' name='sites' value='yes' />{$lang['uploadapp_yes']}
-        <input name='sites' type='radio' value='no' checked='checked' />{$lang['uploadapp_no']}</td>
+        <input name='sites' type='radio' value='no' checked />{$lang['uploadapp_no']}</td>
         </tr>
         <tr>
         <td class='rowhead'>{$lang['uploadapp_sites']}</td><td><textarea name='sitenames' cols='80' rows='1'></textarea></td>
         </tr>
         <tr>
         <td class='rowhead'>{$lang['uploadapp_scene']}</td><td><input type='radio' name='scene' value='yes' />{$lang['uploadapp_yes']}
-	     <input name='scene' type='radio' value='no' checked='checked' />{$lang['uploadapp_no']}</td>
+	     <input name='scene' type='radio' value='no' checked />{$lang['uploadapp_no']}</td>
         </tr>
         <tr>
         <td colspan='2'>
@@ -78,12 +78,12 @@ if (isset($_POST['form']) != 1) {
         &#160;&#160;{$lang['uploadapp_create']}
         <br>
         <input type='radio' name='creating' value='yes' />{$lang['uploadapp_yes']}
-    	  <input name='creating' type='radio' value='no' checked='checked' />{$lang['uploadapp_no']}
+    	  <input name='creating' type='radio' value='no' checked />{$lang['uploadapp_no']}
         <br><br>
         &#160;&#160;{$lang['uploadapp_seeding']}
         <br>
         <input type='radio' name='seeding' value='yes' />{$lang['uploadapp_yes']}
-     	  <input name='seeding' type='radio' value='no' checked='checked' />{$lang['uploadapp_no']}
+     	  <input name='seeding' type='radio' value='no' checked />{$lang['uploadapp_no']}
         <br><br>
         <input name='form' type='hidden' value='1' />
         <div><input type='submit' name='Submit' value='{$lang['uploadapp_send']}' /></div></td>
@@ -130,7 +130,7 @@ if (isset($_POST['form']) != 1) {
             $app['creating'],
             $app['seeding'],
         ])) . ')');
-    $mc1->delete_value('new_uploadapp_');
+    $cache->delete('new_uploadapp_');
     if (!$res) {
         if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
             stderr($lang['uploadapp_error'], $lang['uploadapp_twice']);
@@ -145,8 +145,7 @@ if (isset($_POST['form']) != 1) {
         while ($arr = mysqli_fetch_assoc($subres)) {
             sql_query('INSERT INTO messages(sender, receiver, added, msg, subject, poster) VALUES(0, ' . sqlesc($arr['id']) . ", $dt, $msg, $subject, 0)") or sqlerr(__FILE__, __LINE__);
         }
-        $mc1->delete_value('inbox_new_' . $arr['id']);
-        $mc1->delete_value('inbox_new_sb_' . $arr['id']);
+        $cache->increment('inbox_' . $arr['id']);
         stderr($lang['uploadapp_appsent'], $lang['uploadapp_success']);
     }
 }

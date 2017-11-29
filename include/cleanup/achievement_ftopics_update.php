@@ -1,7 +1,10 @@
 <?php
+/**
+ * @param $data
+ */
 function achievement_ftopics_update($data)
 {
-    global $site_config, $queries, $mc1;
+    global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
     // *Updated* Forum Topic Achievements Mod by MelvinMeow
@@ -19,9 +22,8 @@ function achievement_ftopics_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'Forum Topic Starter LVL1\', \'ftopic1.png\' , \'Started at least 1 topic in the forums.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',1, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
-                $mc1->delete_value('user_achievement_points_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
+                $cache->delete('user_achievement_points_' . $arr['userid']);
                 $var1 = 'topicachiev';
             }
             if ($topics >= 10 && $lvl == 1) {
@@ -29,9 +31,8 @@ function achievement_ftopics_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'Forum Topic Starter LVL2\', \'ftopic2.png\' , \'Started at least 10 topics in the forums.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',2, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
-                $mc1->delete_value('user_achievement_points_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
+                $cache->delete('user_achievement_points_' . $arr['userid']);
                 $var1 = 'topicachiev';
             }
             if ($topics >= 25 && $lvl == 2) {
@@ -39,9 +40,8 @@ function achievement_ftopics_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'Forum Topic Starter LVL3\', \'ftopic3.png\' , \'Started at least 25 topics in the forums.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',3, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
-                $mc1->delete_value('user_achievement_points_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
+                $cache->delete('user_achievement_points_' . $arr['userid']);
                 $var1 = 'topicachiev';
             }
             if ($topics >= 50 && $lvl == 3) {
@@ -49,8 +49,7 @@ function achievement_ftopics_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'Forum Topic Starter LVL4\', \'ftopic4.png\' , \'Started at least 50 topics in the forums.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',4, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
                 $var1 = 'topicachiev';
             }
             if ($topics >= 75 && $lvl == 4) {
@@ -58,17 +57,16 @@ function achievement_ftopics_update($data)
                 $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'Forum Topic Starter LVL5\', \'ftopic5.png\' , \'Started at least 75 topics in the forums.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',5, ' . $points . ')';
-                $mc1->delete_value('inbox_new_' . $arr['userid']);
-                $mc1->delete_value('inbox_new_sb_' . $arr['userid']);
-                $mc1->delete_value('user_achievement_points_' . $arr['userid']);
+                $cache->increment('inbox_' . $arr['userid']);
+                $cache->delete('user_achievement_points_' . $arr['userid']);
                 $var1 = 'topicachiev';
             }
         }
         $count = count($achievements_buffer);
         if ($count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
-            sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE key UPDATE date=values(date),achievement=values(achievement),icon=values(icon),description=values(description)') or sqlerr(__FILE__, __LINE__);
-            sql_query("INSERT INTO usersachiev (userid, $var1, achpoints) VALUES " . implode(', ', $usersachiev_buffer) . " ON DUPLICATE key UPDATE $var1=values($var1), achpoints=achpoints+values(achpoints)") or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO achievements (userid, date, achievement, icon, description) VALUES ' . implode(', ', $achievements_buffer) . ' ON DUPLICATE KEY UPDATE date = VALUES(date),achievement = VALUES(achievement),icon = VALUES(icon),description = VALUES(description)') or sqlerr(__FILE__, __LINE__);
+            sql_query("INSERT INTO usersachiev (userid, $var1, achpoints) VALUES " . implode(', ', $usersachiev_buffer) . " ON DUPLICATE KEY UPDATE $var1 = VALUES($var1), achpoints=achpoints + VALUES(achpoints)") or sqlerr(__FILE__, __LINE__);
         }
         if ($data['clean_log'] && $queries > 0) {
             write_log("Achievements Cleanup: Forum Topics Completed using $queries queries. Forum Topics Achievements awarded to - " . $count . ' Member(s)');

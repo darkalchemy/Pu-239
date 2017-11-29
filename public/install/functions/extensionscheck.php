@@ -15,13 +15,13 @@ function extensionscheck()
         header('Location: index.php?step=1');
     }
     $extensions = [
-        'memcache',
+//        'memcache',
         'zip',
         'xml',
         'simplexml',
         'json',
         'mysqli',
-        'redis',
+//        'redis',
         'curl',
         'exif',
         'mbstring',

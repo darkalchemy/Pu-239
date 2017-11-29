@@ -31,7 +31,7 @@
     margin: 2px;
 }
 
-#control_panel li.active {
+#control_panel li.is-active {
     border-color: #000;
 }
 
@@ -78,7 +78,7 @@
     border: 1px solid #000;
 }
 
-#control_panel #backgrounds .active a {
+#control_panel #backgrounds .is-active a {
     border-color: #434343;
 }
 
@@ -249,67 +249,67 @@ body.background-2 {
 
 body.background-3 {
     background-image: url(themeChanger/images/bgs/bg-3.jpg);
-    background-size:cover;
+    background-size: cover;
 }
 
 body.background-4 {
     background-image: url(themeChanger/images/bgs/bg-4.jpg);
-    background-size:cover;
+    background-size: cover;
 }
 
 body.background-5 {
     background-image: url(themeChanger/images/bgs/bg-5.jpg);
-    background-size:cover;
+    background-size: cover;
 }
 
 body.background-6 {
     background-image: url(themeChanger/images/bgs/bg-6.jpg);
-    background-size:cover;
+    background-size: cover;
 }
 
 body.background-7 {
     background-image: url(themeChanger/images/bgs/bg-7.jpg);
-    background-size:cover;
+    background-size: cover;
 }
 
 body.background-8 {
     background-image: url(themeChanger/images/bgs/bg-8.jpg);
-    background-size:cover;
+    background-size: cover;
 }
 
 body.background-9 {
     background-image: url(themeChanger/images/bgs/bg-9.jpg);
-    background-size:cover;
+    background-size: cover;
 }
 
 body.background-10 {
     background-image: url(themeChanger/images/bgs/bg-10.jpg);
-    background-size:cover;
+    background-size: cover;
 }
 
 body.background-11 {
     background-image: url(themeChanger/images/bgs/bg-11.jpg);
-    background-size:cover;
+    background-size: cover;
 }
 
 body.background-12 {
     background-image: url(themeChanger/images/bgs/bg-12.jpg);
-    background-size:cover;
+    background-size: cover;
 }
 
 body.background-13 {
     background-image: url(themeChanger/images/bgs/bg-13.jpg);
-    background-size:cover;
+    background-size: cover;
 }
 
 body.background-14 {
     background-image: url(themeChanger/images/bgs/bg-14.jpg);
-    background-size:cover;
+    background-size: cover;
 }
 
 body.background-15 {
     background-image: url(themeChanger/images/bgs/bg-15.jpg);
-    background-size:cover;
+    background-size: cover;
 }
 
 body.background-16 {

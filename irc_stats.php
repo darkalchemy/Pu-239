@@ -1,4 +1,6 @@
 <?php
+global $site_config;
+
 $hash = 'YXBwemZhbg';
 $_hash = isset($_GET['hash']) ? $_GET['hash'] : '';
 $_user = isset($_GET['u']) ? htmlspecialchars($_GET['u']) : '';
@@ -13,6 +15,11 @@ $valid_do = [
     'top_torrents',
 ];
 $_do = isset($_GET['do']) && in_array($_GET['do'], $valid_do) ? $_GET['do'] : '';
+/**
+ * @param $val
+ *
+ * @return string
+ */
 function calctime($val)
 {
     $days = intval($val / 86400);
@@ -56,14 +63,14 @@ if ($_hash === $hash) {
         unset($a);
         unset($q);
     } elseif ($_do == 'torrents') {
-        $q = sql_query('SELECT count(p.id) as count, p.seeder,p.agent,p.port,p.connectable, u.username FROM peers as p LEFT JOIN users as u ON u.id = p.userid WHERE u.username=' . sqlesc($_user) . ' GROUP BY p.seeder') or exit(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+        $q = sql_query('SELECT count(p.id) AS count, p.seeder,p.agent,p.port,p.connectable, u.username FROM peers AS p LEFT JOIN users AS u ON u.id = p.userid WHERE u.username=' . sqlesc($_user) . ' GROUP BY p.seeder') or exit(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         if (mysqli_num_rows($q) == 0) {
             exit('User "' . $_user . '"  has no torrent active');
         }
         $act['seed'] = $act['leech'] = 0;
         while ($a = mysqli_fetch_assoc($q)) {
             $key = ($a['seeder'] == 'yes' ? 'seed' : 'leech');
-            $act[$key] = $a['count'];
+            $act[ $key ] = $a['count'];
             $agent = $a['agent'];
             $port = $a['port'];
             $con = $a['connectable'];
@@ -75,7 +82,7 @@ if ($_hash === $hash) {
         unset($a);
         unset($q);
     } elseif ($_do == 'fls') {
-        $q = sql_query("SELECT id,username,last_access ,supportfor FROM users WHERE support = 'yes' ORDER BY added desc") or exit(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+        $q = sql_query("SELECT id,username,last_access ,supportfor FROM users WHERE support = 'yes' ORDER BY added DESC") or exit(((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         $txt = '';
         while ($a = mysqli_fetch_assoc($q)) {
             $txt .= $a['username'] . ' - status ' . ((TIME_NOW - $a['last_access']) < 300 ? 'online' : 'offline') . ' | Support for ' . $a['supportfor'] . "\n";
@@ -100,22 +107,22 @@ if ($_hash === $hash) {
     } elseif ($_do == 'top') {
         switch ($_type) {
             case 'idle':
-                $_q = 'select username,irctotal FROM users ORDER BY irctotal DESC LIMIT 10';
+                $_q = 'SELECT username,irctotal FROM users ORDER BY irctotal DESC LIMIT 10';
                 $txt = "Top 10 idle\n";
                 break;
 
             case 'uploaders':
-                $_q = "select username, uploaded FROM users WHERE status = 'confirmed' ORDER BY uploaded DESC LIMIT 10";
+                $_q = "SELECT username, uploaded FROM users WHERE status = 'confirmed' ORDER BY uploaded DESC LIMIT 10";
                 $txt = "Best uploaders (selected after uploaded amount)\n";
                 break;
 
             case 'torrents':
-                $_q = "select count(t.id) as c, u.username FROM torrents as t LEFT JOIN users as u ON t.owner = u.id WHERE u.username <> '' GROUP  BY u.id ORDER BY c DESC LIMIT 10";
+                $_q = "SELECT count(t.id) AS c, u.username FROM torrents AS t LEFT JOIN users AS u ON t.owner = u.id WHERE u.username <> '' GROUP  BY u.id ORDER BY c DESC LIMIT 10";
                 $txt = "Best uploaders (selected after the torrents uploaded)\n";
                 break;
 
             case 'posters':
-                $_q = "select count(p.id) as c, u.username FROM posts as p LEFT JOIN users as u ON p.user_id = u.id WHERE u.username <> '' GROUP  BY u.id ORDER BY c DESC LIMIT 10";
+                $_q = "SELECT count(p.id) AS c, u.username FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE u.username <> '' GROUP  BY u.id ORDER BY c DESC LIMIT 10";
                 $txt = "Best posters (selected after number of posts)\n";
                 break;
         }

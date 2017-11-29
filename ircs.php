@@ -2,9 +2,16 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'function_onlinetime.php';
+global $site_config, $cache;
+
 $password = 'adlsadladadll'; // same as in staff.tcl;
 $hash = 'adlsadladadll'; // same as in staff.tcl;
 $modclass = '4'; // minumum staff class;
+/**
+ * @param $val
+ *
+ * @return string
+ */
 function calctime($val)
 {
     $days = intval($val / 86400);
@@ -12,7 +19,7 @@ function calctime($val)
     $hours = intval($val / 3600);
     $val -= $hours * 3600;
     $mins = intval($val / 60);
-    $secs = $val - ($mins * 60);
+    //$secs = $val - ($mins * 60);
 
     return "$days days, $hours hrs, $mins minutes";
 }
@@ -67,8 +74,8 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 }
                 echo $seen;
             } elseif (isset($_GET['func']) && $_GET['func'] == 'flushtorrents') {
-                sql_query('DELETE FROM peers WHERE userid = ' . $id);
-                $mc1->delete_value('MyPeers_' . $id);
+                sql_query('DELETE FROM peers WHERE userid = ' . $id) or sqlerr(__FILE__, __LINE__);
+                $cache->delete('MyPeers_' . $id);
                 echo $username . 's torrents have been flushed';
             }
         }
@@ -91,26 +98,18 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $newusername = (isset($_GET['newname']) ? htmlsafechars($_GET['newname']) : '');
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's name was changed from: ' . $who . ' to ' . $newusername . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET username = $newname, modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $mc1->begin_transaction('user' . $nsetusername['id']);
-                $mc1->update_row(false, [
+                $cache->update_row('user' . $nsetusername['id'], [
                     'username' => $newname,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_cache']);
-                $mc1->begin_transaction('MyUser_' . $nsetusername['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['user_cache']);
+                $cache->update_row('MyUser_' . $nsetusername['id'], [
                     'username' => $newname,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['curuser']);
-                $mc1->begin_transaction('userstats_' . $nsetusername['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['curuser']);
+                $cache->update_row('userstats_' . $nsetusername['id'], [
                     'modcomment' => $modcomment,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['u_stats']);
-                $mc1->begin_transaction('user_stats_' . $nsetusername['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['u_stats']);
+                $cache->update_row('user_stats_' . $nsetusername['id'], [
                     'modcomment' => $modcomment,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_stats']);
                 echo $who . 's name was changed from: ' . $who . ' to ' . $newusername . ' by ' . $modd;
             }
         }
@@ -163,16 +162,12 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $oldbonus = $nbonus['seedbonus'];
                 $amount = (isset($_GET['amount']) ? (int)($_GET['amount']) : '');
                 sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $mc1->begin_transaction('userstats_' . $nbonus['id']);
-                $mc1->update_row(false, [
+                $cache->update_row('userstats_' . $nbonus['id'], [
                     'seedbonus' => $nbonus['seedbonus'] + $amount,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['u_stats']);
-                $mc1->begin_transaction('user_stats_' . $nbonus['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['u_stats']);
+                $cache->update_row('user_stats_' . $nbonus['id'], [
                     'seedbonus' => $nbonus['seedbonus'] + $amount,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_stats']);
                 $res1 = sql_query("SELECT seedbonus FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $obonus = mysqli_fetch_assoc($res1);
                 $newbonus = $obonus['seedbonus'];
@@ -189,16 +184,12 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $oldinvites = (int)$ninvites['invites'];
                 $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? (int)$_GET['amount'] : '');
                 sql_query('UPDATE users SET invites = invites+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $mc1->begin_transaction('user' . $ninvites['id']);
-                $mc1->update_row(false, [
+                $cache->update_row('user' . $ninvites['id'], [
                     'invites' => $ninvites['invites'] + $amount,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_cache']);
-                $mc1->begin_transaction('MyUser_' . $ninvites['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['user_cache']);
+                $cache->update_row('MyUser_' . $ninvites['id'], [
                     'invites' => $ninvites['invites'] + $amount,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['curuser']);
+                ], $site_config['expires']['curuser']);
                 $res4 = sql_query("SELECT invites FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $oinvites = mysqli_fetch_assoc($res4);
                 $newinvites = (int)$oinvites['invites'];
@@ -215,16 +206,12 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $oldfreeslots = (int)$nfreeslots['freeslots'];
                 $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? (int)$_GET['amount'] : '');
                 sql_query('UPDATE users SET freeslots = freeslots+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $mc1->begin_transaction('user' . $nfreeslots['id']);
-                $mc1->update_row(false, [
+                $cache->update_row('user' . $nfreeslots['id'], [
                     'freeslots' => $nfreeslots['freeslots'] + $amount,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_cache']);
-                $mc1->begin_transaction('MyUser_' . $nfreeslots['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['user_cache']);
+                $cache->update_row('MyUser_' . $nfreeslots['id'], [
                     'freeslots' => $nfreeslots['freeslots'] + $amount,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['curuser']);
+                ], $site_config['expires']['curuser']);
                 $res6 = sql_query("SELECT freeslots FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $ofreeslots = mysqli_fetch_assoc($res6);
                 $newfreeslots = (int)$ofreeslots['freeslots'];
@@ -241,16 +228,12 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $oldreputation = (int)$nreputation['reputation'];
                 $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? (int)$_GET['amount'] : '');
                 sql_query('UPDATE users SET reputation = reputation+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $mc1->begin_transaction('user' . $nreputation['id']);
-                $mc1->update_row(false, [
+                $cache->update_row('user' . $nreputation['id'], [
                     'reputation' => $nreputation['reputation'] + $amount,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_cache']);
-                $mc1->begin_transaction('MyUser_' . $nreputation['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['user_cache']);
+                $cache->update_row('MyUser_' . $nreputation['id'], [
                     'reputation' => $nreputation['reputation'] + $amount,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['curuser']);
+                ], $site_config['expires']['curuser']);
                 $res4 = sql_query("SELECT reputation FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $oreputation = mysqli_fetch_assoc($res4);
                 $newreputation = (int)$oreputation['reputation'];
@@ -269,16 +252,12 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $oldbonus = $nbonus['seedbonus'];
                 $amount = (isset($_GET['amount']) ? number_format($_GET['amount']) : '');
                 sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $mc1->begin_transaction('userstats_' . $nbonus['id']);
-                $mc1->update_row(false, [
+                $cache->update_row('userstats_' . $nbonus['id'], [
                     'seedbonus' => $nbonus['seedbonus'] - $amount,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['u_stats']);
-                $mc1->begin_transaction('user_stats_' . $nbonus['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['u_stats']);
+                $cache->update_row('user_stats_' . $nbonus['id'], [
                     'seedbonus' => $nbonus['seedbonus'] - $amount,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_stats']);
                 $res1 = sql_query("SELECT seedbonus FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $obonus = mysqli_fetch_assoc($res1);
                 $newbonus = $obonus['seedbonus'];
@@ -295,16 +274,12 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $oldinvites = (int)$ninvites['invites'];
                 $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? (int)$_GET['amount'] : '');
                 sql_query('UPDATE users SET invites = invites-' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $mc1->begin_transaction('user' . $ninvites['id']);
-                $mc1->update_row(false, [
+                $cache->update_row('user' . $ninvites['id'], [
                     'invites' => $ninvites['invites'] - $amount,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_cache']);
-                $mc1->begin_transaction('MyUser_' . $ninvites['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['user_cache']);
+                $cache->update_row('MyUser_' . $ninvites['id'], [
                     'invites' => $ninvites['invites'] - $amount,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['curuser']);
+                ], $site_config['expires']['curuser']);
                 $res4 = sql_query("SELECT invites FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $oinvites = mysqli_fetch_assoc($res4);
                 $newinvites = (int)$oinvites['invites'];
@@ -321,16 +296,12 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $oldfreeslots = (int)$nfreeslots['freeslots'];
                 $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? (int)$_GET['amount'] : '');
                 sql_query('UPDATE users SET freeslots = freeslots-' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $mc1->begin_transaction('user' . $nfreeslots['id']);
-                $mc1->update_row(false, [
+                $cache->update_row('user' . $nfreeslots['id'], [
                     'freeslots' => $nfreeslots['freeslots'] - $amount,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_cache']);
-                $mc1->begin_transaction('MyUser_' . $nfreeslots['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['user_cache']);
+                $cache->update_row('MyUser_' . $nfreeslots['id'], [
                     'freeslots' => $nfreeslots['freeslots'] - $amount,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['curuser']);
+                ], $site_config['expires']['curuser']);
                 $res6 = sql_query("SELECT freeslots FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $ofreeslots = mysqli_fetch_assoc($res6);
                 $newfreeslots = (int)$ofreeslots['freeslots'];
@@ -347,16 +318,12 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $oldreputation = (int)$nreputation['reputation'];
                 $amount = (isset($_GET['amount']) && $_GET['amount'] > 0 ? (int)$_GET['amount'] : '');
                 sql_query('UPDATE users SET reputation = reputation-' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $mc1->begin_transaction('user' . $nreputation['id']);
-                $mc1->update_row(false, [
+                $cache->update_row('user' . $nreputation['id'], [
                     'reputation' => $nreputation['reputation'] - $amount,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_cache']);
-                $mc1->begin_transaction('MyUser_' . $nreputation['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['user_cache']);
+                $cache->update_row('MyUser_' . $nreputation['id'], [
                     'reputation' => $nreputation['reputation'] - $amount,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['curuser']);
+                ], $site_config['expires']['curuser']);
                 $res6 = sql_query("SELECT reputation FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $oreputation = mysqli_fetch_assoc($res6);
                 $newreputation = (int)$oreputation['reputation'];
@@ -384,26 +351,18 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 if ($amount <= $meoldbonus) {
                     sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($amount) . " WHERE username = $me") or sqlerr(__FILE__, __LINE__);
                     sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                    $mc1->begin_transaction('userstats_' . $mebonus['id']);
-                    $mc1->update_row(false, [
+                    $cache->update_row('userstats_' . $mebonus['id'], [
                         'seedbonus' => $mebonus['seedbonus'] - $amount,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['u_stats']);
-                    $mc1->begin_transaction('user_stats_' . $mebonus['id']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['u_stats']);
+                    $cache->update_row('user_stats_' . $mebonus['id'], [
                         'seedbonus' => $mebonus['seedbonus'] - $amount,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_stats']);
-                    $mc1->begin_transaction('userstats_' . $whombonus['id']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['user_stats']);
+                    $cache->update_row('userstats_' . $whombonus['id'], [
                         'seedbonus' => $whombonus['seedbonus'] + $amount,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['u_stats']);
-                    $mc1->begin_transaction('user_stats_' . $whombonus['id']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['u_stats']);
+                    $cache->update_row('user_stats_' . $whombonus['id'], [
                         'seedbonus' => $whombonus['seedbonus'] + $amount,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_stats']);
+                    ], $site_config['expires']['user_stats']);
                     $res1 = sql_query("SELECT seedbonus FROM users WHERE username = $me LIMIT 1") or sqlerr(__FILE__, __LINE__);
                     $meobonus = mysqli_fetch_assoc($res1);
                     $res2 = sql_query("SELECT seedbonus FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -433,26 +392,18 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 if ($amount <= $meoldfreeslots) {
                     sql_query('UPDATE users SET freeslots = freeslots-' . sqlesc($amount) . " WHERE username = $me") or sqlerr(__FILE__, __LINE__);
                     sql_query('UPDATE users SET freeslots = freeslots+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                    $mc1->begin_transaction('user' . $mefreeslots['id']);
-                    $mc1->update_row(false, [
+                    $cache->update_row('user' . $mefreeslots['id'], [
                         'freeslots' => $mefreeslots['freeslots'] - $amount,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_cache']);
-                    $mc1->begin_transaction('MyUser_' . $mefreeslots['id']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['user_cache']);
+                    $cache->update_row('MyUser_' . $mefreeslots['id'], [
                         'freeslots' => $mefreeslots['freeslots'] - $amount,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['curuser']);
-                    $mc1->begin_transaction('user' . $whomfreeslots['id']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['curuser']);
+                    $cache->update_row('user' . $whomfreeslots['id'], [
                         'freeslots' => $whomfreeslots['freeslots'] + $amount,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_cache']);
-                    $mc1->begin_transaction('MyUser_' . $whomfreeslots['id']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['user_cache']);
+                    $cache->update_row('MyUser_' . $whomfreeslots['id'], [
                         'freeslots' => $whomfreeslots['freeslots'] + $amount,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['curuser']);
+                    ], $site_config['expires']['curuser']);
                     $res1 = sql_query("SELECT freeslots FROM users WHERE username = $me LIMIT 1") or sqlerr(__FILE__, __LINE__);
                     $meofreeslots = mysqli_fetch_assoc($res1);
                     $res2 = sql_query("SELECT freeslots FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -482,26 +433,18 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 if ($amount <= $meoldreputation) {
                     sql_query('UPDATE users SET reputation = reputation-' . sqlesc($amount) . " WHERE username = $me") or sqlerr(__FILE__, __LINE__);
                     sql_query('UPDATE users SET reputation = reputation+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                    $mc1->begin_transaction('user' . $mereputation['id']);
-                    $mc1->update_row(false, [
+                    $cache->update_row('user' . $mereputation['id'], [
                         'reputation' => $mereputation['reputation'] - $amount,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_cache']);
-                    $mc1->begin_transaction('MyUser_' . $mereputation['id']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['user_cache']);
+                    $cache->update_row('MyUser_' . $mereputation['id'], [
                         'reputation' => $mereputation['reputation'] - $amount,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['curuser']);
-                    $mc1->begin_transaction('user' . $whomreputation['id']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['curuser']);
+                    $cache->update_row('user' . $whomreputation['id'], [
                         'reputation' => $whomreputation['reputation'] + $amount,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_cache']);
-                    $mc1->begin_transaction('MyUser_' . $whomreputation['id']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['user_cache']);
+                    $cache->update_row('MyUser_' . $whomreputation['id'], [
                         'reputation' => $whomreputation['reputation'] + $amount,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['curuser']);
+                    ], $site_config['expires']['curuser']);
                     $res1 = sql_query("SELECT reputation FROM users WHERE username = $me LIMIT 1") or sqlerr(__FILE__, __LINE__);
                     $meoreputation = mysqli_fetch_assoc($res1);
                     $res2 = sql_query("SELECT reputation FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -531,26 +474,18 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 if ($amount <= $meoldinvites) {
                     sql_query('UPDATE users SET invites = invites-' . sqlesc($amount) . " WHERE username = $me") or sqlerr(__FILE__, __LINE__);
                     sql_query('UPDATE users SET invites = invites+' . sqlesc($amount) . " WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                    $mc1->begin_transaction('user' . $meinvite['id']);
-                    $mc1->update_row(false, [
+                    $cache->update_row('user' . $meinvite['id'], [
                         'invite' => $meinvite['invite'] - $amount,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_cache']);
-                    $mc1->begin_transaction('MyUser_' . $meinvite['id']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['user_cache']);
+                    $cache->update_row('MyUser_' . $meinvite['id'], [
                         'invite' => $meinvite['invite'] - $amount,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['curuser']);
-                    $mc1->begin_transaction('user' . $whominvite['id']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['curuser']);
+                    $cache->update_row('user' . $whominvite['id'], [
                         'invite' => $whominvite['invite'] + $amount,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_cache']);
-                    $mc1->begin_transaction('MyUser_' . $whominvite['id']);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['user_cache']);
+                    $cache->update_row('MyUser_' . $whominvite['id'], [
                         'invite' => $whominvite['invite'] + $amount,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['curuser']);
+                    ], $site_config['expires']['curuser']);
                     $res1 = sql_query("SELECT invites FROM users WHERE username = $me LIMIT 1") or sqlerr(__FILE__, __LINE__);
                     $meoinvites = mysqli_fetch_assoc($res1);
                     $res2 = sql_query("SELECT invites FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -577,26 +512,18 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's uploadpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET uploadpos = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $mc1->begin_transaction('user' . $upos['id']);
-                $mc1->update_row(false, [
+                $cache->update_row('user' . $upos['id'], [
                     'uploadpos' => $toggle,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_cache']);
-                $mc1->begin_transaction('MyUser_' . $upos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['user_cache']);
+                $cache->update_row('MyUser_' . $upos['id'], [
                     'uploadpos' => $toggle,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['curuser']);
-                $mc1->begin_transaction('userstats_' . $upos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['curuser']);
+                $cache->update_row('userstats_' . $upos['id'], [
                     'modcomment' => $modcomment,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['u_stats']);
-                $mc1->begin_transaction('user_stats_' . $upos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['u_stats']);
+                $cache->update_row('user_stats_' . $upos['id'], [
                     'modcomment' => $modcomment,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_stats']);
                 echo $who . 's uploadpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -614,26 +541,18 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's downloadpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET downloadpos = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $mc1->begin_transaction('user' . $dpos['id']);
-                $mc1->update_row(false, [
+                $cache->update_row('user' . $dpos['id'], [
                     'downloadpos' => $toggle,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_cache']);
-                $mc1->begin_transaction('MyUser_' . $dpos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['user_cache']);
+                $cache->update_row('MyUser_' . $dpos['id'], [
                     'downloadpos' => $toggle,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['curuser']);
-                $mc1->begin_transaction('userstats_' . $dpos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['curuser']);
+                $cache->update_row('userstats_' . $dpos['id'], [
                     'modcomment' => $modcomment,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['u_stats']);
-                $mc1->begin_transaction('user_stats_' . $dpos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['u_stats']);
+                $cache->update_row('user_stats_' . $dpos['id'], [
                     'modcomment' => $modcomment,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_stats']);
                 echo $who . 's downloadpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -651,26 +570,18 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's forumpost changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET forum_post = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $mc1->begin_transaction('user' . $fpos['id']);
-                $mc1->update_row(false, [
+                $cache->update_row('user' . $fpos['id'], [
                     'forum_post' => $toggle,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_cache']);
-                $mc1->begin_transaction('MyUser_' . $fpos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['user_cache']);
+                $cache->update_row('MyUser_' . $fpos['id'], [
                     'forum_post' => $toggle,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['curuser']);
-                $mc1->begin_transaction('userstats_' . $fpos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['curuser']);
+                $cache->update_row('userstats_' . $fpos['id'], [
                     'modcomment' => $modcomment,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['u_stats']);
-                $mc1->begin_transaction('user_stats_' . $fpos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['u_stats']);
+                $cache->update_row('user_stats_' . $fpos['id'], [
                     'modcomment' => $modcomment,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_stats']);
                 echo $who . 's forumpost changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -688,26 +599,18 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's chatpost changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET chatpost = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $mc1->begin_transaction('user' . $cpos['id']);
-                $mc1->update_row(false, [
+                $cache->update_row('user' . $cpos['id'], [
                     'chatpost' => $toggle,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_cache']);
-                $mc1->begin_transaction('MyUser_' . $cpos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['user_cache']);
+                $cache->update_row('MyUser_' . $cpos['id'], [
                     'chatpost' => $toggle,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['curuser']);
-                $mc1->begin_transaction('userstats_' . $cpos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['curuser']);
+                $cache->update_row('userstats_' . $cpos['id'], [
                     'modcomment' => $modcomment,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['u_stats']);
-                $mc1->begin_transaction('user_stats_' . $cpos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['u_stats']);
+                $cache->update_row('user_stats_' . $cpos['id'], [
                     'modcomment' => $modcomment,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_stats']);
                 echo $who . 's chatpost changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -725,26 +628,18 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's avatarpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET avatarpos = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $mc1->begin_transaction('user' . $apos['id']);
-                $mc1->update_row(false, [
+                $cache->update_row('user' . $apos['id'], [
                     'avatarpos' => $toggle,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_cache']);
-                $mc1->begin_transaction('MyUser_' . $apos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['user_cache']);
+                $cache->update_row('MyUser_' . $apos['id'], [
                     'avatarpos' => $toggle,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['curuser']);
-                $mc1->begin_transaction('userstats_' . $apos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['curuser']);
+                $cache->update_row('userstats_' . $apos['id'], [
                     'modcomment' => $modcomment,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['u_stats']);
-                $mc1->begin_transaction('user_stats_' . $apos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['u_stats']);
+                $cache->update_row('user_stats_' . $apos['id'], [
                     'modcomment' => $modcomment,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_stats']);
                 echo $who . 's avatarpos changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -762,26 +657,18 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's invite rights changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET invite_rights = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $mc1->begin_transaction('user' . $ipos['id']);
-                $mc1->update_row(false, [
+                $cache->update_row('user' . $ipos['id'], [
                     'invite_rights' => $toggle,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_cache']);
-                $mc1->begin_transaction('MyUser_' . $ipos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['user_cache']);
+                $cache->update_row('MyUser_' . $ipos['id'], [
                     'invite_rights' => $toggle,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['curuser']);
-                $mc1->begin_transaction('userstats_' . $ipos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['curuser']);
+                $cache->update_row('userstats_' . $ipos['id'], [
                     'modcomment' => $modcomment,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['u_stats']);
-                $mc1->begin_transaction('user_stats_' . $ipos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['u_stats']);
+                $cache->update_row('user_stats_' . $ipos['id'], [
                     'modcomment' => $modcomment,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_stats']);
                 echo $who . 's invite rights changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -799,26 +686,18 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
                 $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's enabled changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd . "\n");
                 sql_query("UPDATE users SET enabled = '$toggle', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $mc1->begin_transaction('user' . $epos['id']);
-                $mc1->update_row(false, [
+                $cache->update_row('user' . $epos['id'], [
                     'enabled' => $toggle,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_cache']);
-                $mc1->begin_transaction('MyUser_' . $epos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['user_cache']);
+                $cache->update_row('MyUser_' . $epos['id'], [
                     'enabled' => $toggle,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['curuser']);
-                $mc1->begin_transaction('userstats_' . $epos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['curuser']);
+                $cache->update_row('userstats_' . $epos['id'], [
                     'modcomment' => $modcomment,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['u_stats']);
-                $mc1->begin_transaction('user_stats_' . $epos['id']);
-                $mc1->update_row(false, [
+                ], $site_config['expires']['u_stats']);
+                $cache->update_row('user_stats_' . $epos['id'], [
                     'modcomment' => $modcomment,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_stats']);
+                ], $site_config['expires']['user_stats']);
                 echo $who . 's enabled changed from: ' . $newpos . ' to ' . $toggle . ' by ' . $modd;
             }
         }
@@ -837,29 +716,21 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             $toggle = (isset($_GET['toggle']) ? htmlsafechars($_GET['toggle']) : '');
             $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's support changed by ' . $modd . "\n");
             sql_query("UPDATE users SET support = 'yes', supportfor ='$supportfors', modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-            $mc1->begin_transaction('user' . $support['id']);
-            $mc1->update_row(false, [
+            $cache->update_row('user' . $support['id'], [
                 'support'    => 'yes',
                 'supportfor' => $supportfors,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_cache']);
-            $mc1->begin_transaction('MyUser_' . $support['id']);
-            $mc1->update_row(false, [
+            ], $site_config['expires']['user_cache']);
+            $cache->update_row('MyUser_' . $support['id'], [
                 'support'    => 'yes',
                 'supportfor' => $supportfors,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['curuser']);
-            $mc1->begin_transaction('userstats_' . $support['id']);
-            $mc1->update_row(false, [
+            ], $site_config['expires']['curuser']);
+            $cache->update_row('userstats_' . $support['id'], [
                 'modcomment' => $modcomment,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['u_stats']);
-            $mc1->begin_transaction('user_stats_' . $support['id']);
-            $mc1->update_row(false, [
+            ], $site_config['expires']['u_stats']);
+            $cache->update_row('user_stats_' . $support['id'], [
                 'modcomment' => $modcomment,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_stats']);
-            $mc1->delete_value('MyUser_' . $whom);
+            ], $site_config['expires']['user_stats']);
+            $cache->delete('MyUser_' . $whom);
             echo $who . 's support changed added to First line support to cover ' . $supportfors . ' by ' . $modd;
         }
     }

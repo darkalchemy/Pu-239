@@ -1,5 +1,6 @@
 <?php
 
+global $site_config;
 $lang = [
     //edit errors
     'edit_user_error'          => 'USER ERROR',

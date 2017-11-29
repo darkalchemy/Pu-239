@@ -3,6 +3,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $lang;
+
 $lang = array_merge($lang, load_language('ad_allagents'));
 $HTMLOUT = '';
 $res = sql_query('SELECT agent, peer_id FROM peers GROUP BY agent') or sqlerr(__FILE__, __LINE__);

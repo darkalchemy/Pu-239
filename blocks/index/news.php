@@ -1,9 +1,10 @@
 <?php
-global $CURUSER, $mc1, $site_config, $lang;
+global $CURUSER, $cache, $site_config, $lang;
+
 $adminbutton = '';
 if ($CURUSER['class'] >= UC_STAFF) {
     $adminbutton = "
-        <a class='pull-right size_3' href='./staffpanel.php?tool=news&amp;mode=news'>{$lang['index_news_title']}</a>";
+        <a class='pull-right size_3' href='{$site_config['baseurl']}staffpanel.php?tool=news&amp;mode=news'>{$lang['index_news_title']}</a>";
 }
 $HTMLOUT .= "
     <a id='news-hash'></a>
@@ -13,7 +14,8 @@ $HTMLOUT .= "
         </legend>
         <div>";
 
-if (($news = $mc1->get_value('latest_news_')) === false) {
+$news = $cache->get('latest_news_');
+if ($news === false || is_null($news)) {
     $news = [];
     $res = sql_query('SELECT n.id AS nid, n.userid, n.added, n.title, n.body, n.sticky, n.anonymous
         FROM news AS n
@@ -23,26 +25,27 @@ if (($news = $mc1->get_value('latest_news_')) === false) {
     while ($array = mysqli_fetch_assoc($res)) {
         $news[] = $array;
     }
-    $mc1->cache_value('latest_news_', $news, $site_config['expires']['latest_news']);
+    $cache->set('latest_news_', $news, $site_config['expires']['latest_news']);
 }
 $i = 0;
 if ($news) {
     foreach ($news as $array) {
+        $padding = $i++ >= count($news) ? '' : ' bottom20';
         $button = '';
         if ($CURUSER['class'] >= UC_STAFF) {
             $hash = md5('the@@saltto66??' . $array['nid'] . 'add' . '@##mu55y==');
             $button = "
                 <div class='pull-right'>
-                    <a href='./staffpanel.php?tool=news&amp;mode=edit&amp;newsid=" . (int)$array['nid'] . "'>
+                    <a href='{$site_config['baseurl']}staffpanel.php?tool=news&amp;mode=edit&amp;newsid=" . (int)$array['nid'] . "'>
                         <i class='fa fa-edit fa-2x tooltipper' aria-hidden='true' title='{$lang['index_news_ed']}'></i>
                     </a>
-                    <a href='./staffpanel.php?tool=news&amp;mode=delete&amp;newsid=" . (int)$array['nid'] . "&amp;h={$hash}'>
+                    <a href='{$site_config['baseurl']}staffpanel.php?tool=news&amp;mode=delete&amp;newsid=" . (int)$array['nid'] . "&amp;h={$hash}'>
                         <i class='fa fa-remove fa-2x tooltipper' aria-hidden='true' title='{$lang['index_news_del']}'></i>
                     </a>
                 </div>";
         }
         $HTMLOUT .= "
-            <div class='bordered'>
+            <div class='bordered{$padding}'>
                 <div id='{$array['nid']}' class='header alt_bordered bg-00 has-text-left'>
                     <legend class='flipper has-text-primary'>
                         <i class='fa fa-angle-up right10' aria-hidden='true'></i><small>" . htmlsafechars($array['title']) . "</small>
@@ -58,7 +61,7 @@ if ($news) {
     }
 }
 if (empty($news)) {
-        $HTMLOUT .= "
+    $HTMLOUT .= "
             <div class='bordered'>
                 <div class='header alt_bordered bg-00 has-text-left'>
                     <div class='bg-02 round5 padding10'>

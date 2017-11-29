@@ -4,6 +4,8 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $lang;
+
 $lang = array_merge($lang, load_language('ad_log'));
 $txt = $where = '';
 $search = isset($_POST['search']) ? strip_tags($_POST['search']) : '';
@@ -62,7 +64,7 @@ if (mysqli_num_rows($res) == 0) {
             $colors[] = $color;
         }
         $key = array_search($txt, $log_events);
-        $color = $colors[$key];
+        $color = $colors[ $key ];
 
         $date = explode(',', get_date($arr['added'], 'LONG'));
         $HTMLOUT .= "

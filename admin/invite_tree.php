@@ -3,10 +3,11 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'pager_new.php';
 require_once CLASS_DIR . 'class_check.php';
-$lang = array_merge($lang, load_language('ad_invite_tree'));
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang);
+global $CURUSER, $site_config, $lang;
+
+$lang = array_merge($lang, load_language('ad_invite_tree'));
 $HTMLOUT = '';
 //=== if we got here from a members page, get their info... if not, ask for a username to get the info...
 $id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));

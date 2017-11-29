@@ -1,6 +1,6 @@
 <?php
-/* Flush all torrents mod */
-//=== flush torrents staff or members own torrents
+global $CURUSER, $lang;
+
 if ($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $user['id']) {
     $HTMLOUT .= '<tr><td class="rowhead"><a name="flush"></a>' . $lang['userdetails_flush_title'] . '</td>
 			<td>
@@ -12,11 +12,8 @@ if ($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $user['id']) {
 			<span id="flush_error" style="display:none;color:red;font-weight: bold;">' . $lang['userdetails_flush_error'] . '<br>
 			' . $lang['userdetails_flush_try'] . '</span>
 			<span id="flush">' . $lang['userdetails_flush_ensure'] . '
-			<br><input id="flush_button" type="submit" value="' . $lang['userdetails_flush_btn'] . '" class="btn" name="flush_button"/>
+			<br><input id="flush_button" type="submit" value="' . $lang['userdetails_flush_btn'] . '" class="button" name="flush_button"/>
 			<br><span style="font-size: x-small;color:red;">' . $lang['userdetails_flush_all'] . '</span></span>
 			</form>
 			</td></tr>';
 }
-//==end
-// End Class
-// End File

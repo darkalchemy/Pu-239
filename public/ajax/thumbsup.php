@@ -2,6 +2,8 @@
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
+global $CURUSER, $site_config, $cache;
+
 $lang = array_merge(load_language('global'), load_language('ajax_thumbsup'));
 if (empty($_POST)) {
     setSessionVar('is-danger', 'Access Not Allowed');
@@ -16,7 +18,7 @@ $res = sql_query('SELECT id, type, torrentid, userid FROM thumbsup WHERE userid 
 $thumbsup = mysqli_num_rows($res);
 if ($thumbsup == 0) {
     sql_query('INSERT INTO thumbsup (userid, torrentid) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ')') or sqlerr(__FILE__, __LINE__);
-    $mc1->delete_value('thumbs_up_' . $id);
+    $cache->delete('thumbs_up_' . $id);
     $HTML .= "<img src='{$site_config['pic_base_url']}thumb_up.png' alt='{$lang['ajaxthumbs_up']}' class='tooltipper' title='{$lang['ajaxthumbs_up']}' width='12' height='12' /> (" . ($wtf + 1) . ')';
 } else {
     $HTML .= "<img src='{$site_config['pic_base_url']}thumb_up.png' alt='{$lang['ajaxthumbs_up']}' class='tooltipper' title='{$lang['ajaxthumbs_up']}' width='12' height='12' /> ({$wtf})";

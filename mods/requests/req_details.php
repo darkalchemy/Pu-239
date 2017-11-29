@@ -1,10 +1,12 @@
 <?php
+global $CURUSER, $site_config, $lang;
+
 $stdfoot = [
     'js' => [
-        'popup',
+//        'popup',
     ],
 ];
-$res = sql_query('SELECT r.*, r.added as utadded, u.username 
+$res = sql_query('SELECT r.*, r.added AS utadded, u.username 
                   FROM requests AS r LEFT JOIN users AS u ON (u.id=r.userid) 
                   WHERE r.id = ' . $id) or sqlerr(__FILE__, __LINE__);
 if (!mysqli_num_rows($res)) {

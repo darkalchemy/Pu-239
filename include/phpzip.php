@@ -9,6 +9,10 @@
 //
 // Examples in sample1.php, sample2.php and sample3.php
 //
+
+/**
+ * Class PHPZip
+ */
 class PHPZip
 {
     public $datasec = [];
@@ -16,6 +20,12 @@ class PHPZip
     public $eof_ctrl_dir = "\x50\x4b\x05\x06\x00\x00\x00\x00";
     public $old_offset = 0;
 
+    /**
+     * @param $dir
+     * @param $zipfilename
+     *
+     * @return int
+     */
     public function Zip($dir, $zipfilename)
     {
         if (@function_exists('gzcompress')) {
@@ -55,6 +65,11 @@ class PHPZip
         }
     }
 
+    /**
+     * @param $dir
+     *
+     * @return array
+     */
     public function GetFileList($dir)
     {
         if (file_exists($dir)) {
@@ -81,11 +96,9 @@ class PHPZip
     }
 
     /**
-     * Adds "file" to archive.
-     *
-     * @param  string   file contents
-     * @param  string   name of the file in the archive (may contains the path)
-     * @param  int  the current timestamp
+     * @param     $data
+     * @param     $name
+     * @param int $time
      */
     public function addFile($data, $name, $time = 0)
     {
@@ -147,12 +160,9 @@ class PHPZip
     // end of the 'unix2DosTime()' method
 
     /**
-     * Converts an Unix timestamp to a four byte DOS date and time format (date
-     * in high two bytes, time in low two bytes allowing magnitude comparison).
+     * @param int $unixtime
      *
-     * @param  int  the current Unix timestamp
-     *
-     * @return int the current date in a four byte DOS format
+     * @return int
      */
     public function unix2DosTime($unixtime = 0)
     {
@@ -190,6 +200,9 @@ class PHPZip
 
     // end of the 'file()' method
 
+    /**
+     * @param $archiveName
+     */
     public function forceDownload($archiveName)
     {
         $headerInfo = '';

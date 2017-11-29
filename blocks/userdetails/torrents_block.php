@@ -1,8 +1,14 @@
 <?php
+global $CURUSER, $site_config, $cache, $lang, $user, $id;
+
+/**
+ * @param $res
+ *
+ * @return string
+ */
 function snatchtable($res)
 {
-    global $site_config, $lang, $CURUSER;
-    $htmlout = '';
+    global $site_config, $lang;
     $htmlout = "<table class='main' border='1' cellspacing='0' cellpadding='5'>
  <tr>
 <td class='colhead'>{$lang['userdetails_s_cat']}</td>
@@ -38,12 +44,16 @@ function snatchtable($res)
     return $htmlout;
 }
 
+/**
+ * @param $res
+ *
+ * @return string
+ */
 function maketable($res)
 {
-    global $site_config, $lang, $CURUSER;
+    global $site_config, $lang;
 
-    $htmlout = '';
-    $htmlout .= "<table class='main' border='1' cellspacing='0' cellpadding='5'>" . "<tr><td class='colhead'>{$lang['userdetails_type']}</td>
+    $htmlout = "<table class='main' border='1' cellspacing='0' cellpadding='5'>" . "<tr><td class='colhead'>{$lang['userdetails_type']}</td>
          <td class='colhead'>{$lang['userdetails_name']}</td>
          <td class='colhead'>{$lang['userdetails_size']}</td>
          <td class='colhead'>{$lang['userdetails_se']}</td>
@@ -77,12 +87,12 @@ function maketable($res)
 
 if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     if (isset($torrents)) {
-        $HTMLOUT .= "<tr><td class='rowhead' width='10%'>{$lang['userdetails_uploaded_t']}</td><td align='left' width='90%'><a href=\"javascript: klappe_news('a')\"><img border='0' src='./images/plus.png' id='pica' alt='Show/Hide' /></a><div id='ka' style='display: none;'>$torrents</div></td></tr>\n";
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_uploaded_t']}</td><td align='left' width='90%'><a href=\"javascript: klappe_news('a')\"><img src='{$site_config['pic_base_url']}plus.png' id='pica' alt='Show/Hide' /></a><div id='ka' style='display: none;'>$torrents</div></td></tr>\n";
     }
     /*
     if (isset($torrents)) {
        $HTMLOUT .= "   <tr>
-                        <td class="rowhead" width='10%'>
+                        <td class='rowhead'>
                          {$lang['userdetails_uploaded_t']}
                       </td>
                       <td align='left' width='90%'>
@@ -95,7 +105,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
     /*
     if (isset($seeding)) {
        $HTMLOUT .= "   <tr>
-                        <td class="rowhead" width='10%'>
+                        <td class='rowhead'>
                          {$lang['userdetails_cur_seed']}
                       </td>
                       <td align='left' width='90%'>
@@ -106,12 +116,12 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
     }
     */
     if (isset($seeding)) {
-        $HTMLOUT .= "<tr><td class='rowhead' width='10%'>{$lang['userdetails_cur_seed']}</td><td align='left' width='90%'><a href=\"javascript: klappe_news('a1')\"><img border='0' src='./images/plus.png' id='pica1' alt='Show/Hide' /></a><div id='ka1' style='display: none;'>" . maketable($seeding) . "</div></td></tr>\n";
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_cur_seed']}</td><td align='left' width='90%'><a href=\"javascript: klappe_news('a1')\"><img src='{$site_config['pic_base_url']}plus.png' id='pica1' alt='Show/Hide' /></a><div id='ka1' style='display: none;'>" . maketable($seeding) . "</div></td></tr>\n";
     }
     /*
     if (isset($leeching)) {
        $HTMLOUT .= "   <tr>
-                        <td class="rowhead" width='10%'>
+                        <td class='rowhead'>
                          {$lang['userdetails_cur_leech']}
                       </td>
                       <td align='left' width='90%'>
@@ -122,23 +132,24 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
     }
     */
     if (isset($leeching)) {
-        $HTMLOUT .= "<tr><td class='rowhead' width='10%'>{$lang['userdetails_cur_leech']}</td><td align='left' width='90%'><a href=\"javascript: klappe_news('a2')\"><img border='0' src='./images/plus.png' id='pica2' alt='Show/Hide' /></a><div id='ka2' style='display: none;'>" . maketable($leeching) . "</div></td></tr>\n";
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_cur_leech']}</td><td align='left' width='90%'><a href=\"javascript: klappe_news('a2')\"><img src='{$site_config['pic_base_url']}plus.png' id='pica2' alt='Show/Hide' /></a><div id='ka2' style='display: none;'>" . maketable($leeching) . "</div></td></tr>\n";
     }
     //==Snatched
 
-    if (($user_snatches_data = $mc1->get_value('user_snatches_data_' . $id)) === false) {
+    $user_snatches_data = $cache->get('user_snatches_data_' . $id);
+    if ($user_snatches_data === false || is_null($user_snatches_data)) {
         if (XBT_TRACKER === false) {
             $ressnatch = sql_query('SELECT s.*, t.name AS name, c.name AS catname, c.image AS catimg FROM snatched AS s INNER JOIN torrents AS t ON s.torrentid = t.id LEFT JOIN categories AS c ON t.category = c.id WHERE s.userid =' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
         } else {
             $ressnatch = sql_query('SELECT x.*, t.name AS name, c.name AS catname, c.image AS catimg FROM xbt_files_users AS x INNER JOIN torrents AS t ON x.fid = t.id LEFT JOIN categories AS c ON t.category = c.id WHERE x.uid =' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
         }
         $user_snatches_data = snatchtable($ressnatch);
-        $mc1->cache_value('user_snatches_data_' . $id, $user_snatches_data, $site_config['expires']['user_snatches_data']);
+        $cache->set('user_snatches_data_' . $id, $user_snatches_data, $site_config['expires']['user_snatches_data']);
     }
     /*
     if (isset($user_snatches_data))
        $HTMLOUT .= "   <tr>
-                        <td class="rowhead" width='10%'>
+                        <td class='rowhead'>
                          {$lang['userdetails_cur_snatched']}
                       </td>
                       <td align='left' width='90%'>
@@ -149,7 +160,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
     //}
     */
     if (isset($user_snatches_data)) {
-        $HTMLOUT .= "<tr><td class='rowhead' width='10%'>{$lang['userdetails_cur_snatched']}</td><td align='left' width='90%'><a href=\"javascript: klappe_news('a3')\"><img border='0' src='./images/plus.png' id='pica3' alt='Show/Hide' /></a><div id='ka3' style='display: none;'>$user_snatches_data</div></td></tr>\n";
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_cur_snatched']}</td><td align='left' width='90%'><a href=\"javascript: klappe_news('a3')\"><img src='{$site_config['pic_base_url']}plus.png' id='pica3' alt='Show/Hide' /></a><div id='ka3' style='display: none;'>$user_snatches_data</div></td></tr>\n";
     }
 }
 //==End

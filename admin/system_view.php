@@ -2,6 +2,8 @@
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 class_check(UC_MAX, true, true);
+global $site_config, $lang;
+
 $lang = array_merge($lang, load_language('ad_systemview'));
 $htmlout = '';
 if (isset($_GET['phpinfo']) and $_GET['phpinfo']) {
@@ -42,6 +44,9 @@ h2 {font-size: 125%;}
     exit();
 }
 $html = [];
+/**
+ * @return string
+ */
 function sql_get_version()
 {
     $query = sql_query('SELECT VERSION() AS version');

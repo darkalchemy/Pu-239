@@ -162,8 +162,8 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #content .rowEven, #helpList dl:nth-child(even), #settingsList dl:nth-child(even) {
-    background-color: rgba(0, 0, 0, .1);
-    border: 1px solid rgba(0, 0, 0, .1);
+    background-color: rgba(0, 0, 0, .3);
+    border: 1px solid rgba(255, 255, 255, .1);
 }
 
 #content .rowOdd, #helpList dl:nth-child(odd), #settingsList dl:nth-child(odd) {
@@ -201,6 +201,16 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 #content #chatList span.dateTime {
     font-family: "Lucida Console", Monaco, monospace;
     font-size: .7em;
+}
+
+#content #chatList div.monospace {
+    font-family: "Lucida Console", Monaco, monospace;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    -moz-osx-font-smoothing: auto;
+    -webkit-font-smoothing: auto;
+    white-space: pre-wrap;
 }
 
 input[type=button] {

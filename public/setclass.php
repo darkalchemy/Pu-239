@@ -2,6 +2,7 @@
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
+global $CURUSER, $site_config, $cache;
 $lang = array_merge(load_language('global'), load_language('setclass'));
 $HTMLOUT = '';
 if ($CURUSER['class'] < UC_STAFF or $CURUSER['override_class'] != 255) {
@@ -12,16 +13,12 @@ if (isset($_GET['action']) && htmlsafechars($_GET['action']) == 'editclass') { /
     $newclass = (int)$_GET['class'];
     $returnto = htmlsafechars($_GET['returnto']);
     sql_query('UPDATE users SET override_class = ' . sqlesc($newclass) . ' WHERE id = ' . sqlesc($CURUSER['id'])); // Set temporary class
-    $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    $cache->update_row('MyUser_' . $CURUSER['id'], [
         'override_class' => $newclass,
-    ]);
-    $mc1->commit_transaction($site_config['expires']['curuser']);
-    $mc1->begin_transaction('user' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['curuser']);
+    $cache->update_row('user' . $CURUSER['id'], [
         'override_class' => $newclass,
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_cache']);
+    ], $site_config['expires']['user_cache']);
     header("Location: {$site_config['baseurl']}/" . $returnto);
     exit();
 }

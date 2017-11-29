@@ -5,8 +5,15 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $site_config, $lang;
+
 $lang = array_merge($lang, load_language('ad_snatched_torrents'));
 $HTMLOUT = '';
+/**
+ * @param $st
+ *
+ * @return string
+ */
 function get_snatched_color($st)
 {
     global $lang;
@@ -19,9 +26,9 @@ function get_snatched_color($st)
     if ($month > 0) {
         $week_elapsed = floor(($st - ($month * 4 * 7 * 24 * 60 * 60)) / (7 * 24 * 60 * 60));
         $days_elapsed = floor(($st - ($week * 7 * 24 * 60 * 60)) / (24 * 60 * 60));
-        $hours_elapsed = floor(($st - ($days * 24 * 60 * 60)) / (60 * 60));
-        $mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
-        $secs_elapsed = floor($st - $mins * 60);
+        //$hours_elapsed = floor(($st - ($days * 24 * 60 * 60)) / (60 * 60));
+        //$mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
+        //$secs_elapsed = floor($st - $mins * 60);
 
         return "<font color='lime'><b>$month months.<br>$week_elapsed W. $days_elapsed D.</b></font>";
     }

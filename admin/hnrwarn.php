@@ -4,17 +4,20 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $site_config, $cache, $lang;
+
 $lang = array_merge($lang, load_language('ad_hnrwarn'));
 $HTMLOUT = '';
+/**
+ * @param $x
+ *
+ * @return int
+ */
 function mkint($x)
 {
     return (int)$x;
 }
 
-$stdfoot = [
-    'js' => [
-    ],
-];
 $this_url = $_SERVER['SCRIPT_NAME'];
 $do = isset($_GET['do']) && $_GET['do'] == 'disabled' ? 'disabled' : 'hnrwarn';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -39,8 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             while ($arr_del = mysqli_fetch_assoc($res_del)) {
                 $userid = $arr_del['id'];
                 $res = sql_query('DELETE FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-                $mc1->delete_value('MyUser_' . $userid);
-                $mc1->delete_value('user' . $userid);
+                $cache->delete('MyUser_' . $userid);
+                $cache->delete('user' . $userid);
                 write_log("User: {$arr_del['username']} Was deleted by " . $CURUSER['username'] . ' Via Hit And Run Page');
             }
         } else {
@@ -48,19 +51,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     if ($act == 'disable') {
-        if (sql_query("UPDATE users set enabled='no', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['hnrwarn_disabled'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . join(',', $_uids) . ')')) {
+        if (sql_query("UPDATE users SET enabled='no', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['hnrwarn_disabled'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . join(',', $_uids) . ')')) {
             foreach ($_uids as $uid) {
-                $mc1->begin_transaction('MyUser_' . $uid);
+                $cache->update_row('MyUser_' . $uid, [
+                    'enabled' => 'no',
+                ], $site_config['expires']['curuser']);
+                $cache->update_row('user' . $uid, [
+                    'enabled' => 'no',
+                ], $site_config['expires']['user_cache']);
             }
-            $mc1->update_row(false, [
-                'enabled' => 'no',
-            ]);
-            $mc1->commit_transaction($site_config['expires']['curuser']);
-            $mc1->begin_transaction('user' . $uid);
-            $mc1->update_row(false, [
-                'enabled' => 'no',
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_cache']);
             $d = mysqli_affected_rows($GLOBALS['___mysqli_ston']);
             header('Refresh: 2; url=' . $r);
             stderr($lang['hnrwarn_success'], $d . $lang['hnrwarn_user'] . ($d > 1 ? $lang['hnrwarn_s'] : '') . ' disabled!');
@@ -74,19 +73,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         foreach ($_uids as $id) {
             $pms[] = '(0,' . $id . ',' . sqlesc($sub) . ',' . sqlesc($body) . ',' . sqlesc(TIME_NOW) . ')';
         }
-        $mc1->begin_transaction('MyUser_' . $id);
-        $mc1->update_row(false, [
+        $cache->update_row('MyUser_' . $id, [
             'hnrwarn' => 'no',
-        ]);
-        $mc1->commit_transaction($site_config['expires']['curuser']);
-        $mc1->begin_transaction('user' . $id);
-        $mc1->update_row(false, [
+        ], $site_config['expires']['curuser']);
+        $cache->update_row('user' . $id, [
             'hnrwarn' => 'no',
-        ]);
-        $mc1->commit_transaction($site_config['expires']['user_cache']);
+        ], $site_config['expires']['user_cache']);
         if (count($pms)) {
             $g = sql_query('INSERT INTO messages(sender,receiver,subject,msg,added) VALUE ' . join(',', $pms)) or sqlerr(__FILE__, __LINE__);
-            $q1 = sql_query("UPDATE users set hnrwarn='no', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['hnrwarn_rem_log'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . join(',', $_uids) . ')') or sqlerr(__FILE__, __LINE__);
+            $q1 = sql_query("UPDATE users SET hnrwarn='no', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['hnrwarn_rem_log'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . join(',', $_uids) . ')') or sqlerr(__FILE__, __LINE__);
             if ($g && $q1) {
                 header('Refresh: 2; url=' . $r);
                 stderr($lang['hnrwarn_success'], count($pms) . $lang['hnrwarn_user'] . (count($pms) > 1 ? 's' : '') . $lang['hnrwarn_rem_suc']);
@@ -99,13 +94,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 switch ($do) {
     case 'disabled':
-        $query = "SELECT id,username, class, downloaded, uploaded, IF(downloaded>0, round((uploaded/downloaded),2), '---') as ratio, disable_reason, added, last_access FROM users WHERE enabled='no' ORDER BY last_access DESC ";
+        $query = "SELECT id,username, class, downloaded, uploaded, IF(downloaded>0, round((uploaded/downloaded),2), '---') AS ratio, disable_reason, added, last_access FROM users WHERE enabled='no' ORDER BY last_access DESC ";
         $title = $lang['hnrwarn_disabled_title'];
         $link = "<a href=\"staffpanel.php?tool=hnrwarn&amp;action=hnrwarn&amp;?do=warned\">{$lang['hnrwarn_users']}</a>";
         break;
 
     case 'hnrwarn':
-        $query = "SELECT id, username, class, downloaded, uploaded, IF(downloaded>0, round((uploaded/downloaded),2), '---') as ratio, warn_reason, hnrwarn, added, last_access FROM users WHERE hnrwarn='yes' ORDER BY last_access DESC, hnrwarn DESC ";
+        $query = "SELECT id, username, class, downloaded, uploaded, IF(downloaded>0, round((uploaded/downloaded),2), '---') AS ratio, warn_reason, hnrwarn, added, last_access FROM users WHERE hnrwarn='yes' ORDER BY last_access DESC, hnrwarn DESC ";
         $title = $lang['hnrwarn_warned_title'];
         $link = "<a href=\"staffpanel.php?tool=hnrwarn&amp;action=hnrwarn&amp;do=disabled\">{$lang['hnrwarn_disabled_users']}</a>";
         break;
@@ -157,4 +152,4 @@ if ($count == 0) {
 }
 $HTMLOUT .= end_frame();
 $HTMLOUT .= end_main_frame();
-echo stdhead($title) . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead($title) . $HTMLOUT . stdfoot();

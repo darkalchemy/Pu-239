@@ -1,5 +1,8 @@
 <?php
 //-------- Begins a main frame
+/**
+ * @return string
+ */
 function begin_main_frame()
 {
     return "
@@ -9,6 +12,9 @@ function begin_main_frame()
 }
 
 //-------- Ends a main frame
+/**
+ * @return string
+ */
 function end_main_frame()
 {
     return "
@@ -17,6 +23,13 @@ function end_main_frame()
             </table>";
 }
 
+/**
+ * @param string $caption
+ * @param bool   $center
+ * @param int    $padding
+ *
+ * @return string
+ */
 function begin_frame($caption = '', $center = false, $padding = 10)
 {
     $tdextra = '';
@@ -32,16 +45,27 @@ function begin_frame($caption = '', $center = false, $padding = 10)
     return $htmlout;
 }
 
+/**
+ * @param int $padding
+ */
 function attach_frame($padding = 10)
 {
     echo "</td></tr><tr><td style='border-top: 0px'>\n";
 }
 
+/**
+ * @return string
+ */
 function end_frame()
 {
     return "</td></tr></table>\n";
 }
 
+/**
+ * @param bool $striped
+ *
+ * @return string
+ */
 function begin_table($striped = false)
 {
     $htmlout = '';
@@ -51,11 +75,21 @@ function begin_table($striped = false)
     return $htmlout;
 }
 
+/**
+ * @return string
+ */
 function end_table()
 {
     return "</table>\n";
 }
 
+/**
+ * @param     $x
+ * @param     $y
+ * @param int $noesc
+ *
+ * @return string
+ */
 function tr($x, $y, $noesc = 0)
 {
     if ($noesc) {
@@ -77,6 +111,9 @@ function tr($x, $y, $noesc = 0)
 }
 
 //-------- Inserts a smilies frame
+/**
+ * @return string
+ */
 function insert_smilies_frame()
 {
     global $smilies, $site_config;
@@ -93,7 +130,14 @@ function insert_smilies_frame()
     return $htmlout;
 }
 
-function main_table($body, $header = null)
+/**
+ * @param      $body
+ * @param null $header
+ * @param null $class
+ *
+ * @return string
+ */
+function main_table($body, $header = null, $class = null)
 {
     $thead = $header != null ? "
                         <thead>
@@ -101,7 +145,7 @@ function main_table($body, $header = null)
                         </thead>" : '';
     return "
                 <div class='table-wrapper'>
-                    <table class='table table-bordered table-striped top20 bottom20'>
+                    <table class='table table-bordered table-striped $class'>
                         $thead
                         <tbody>
                             $body
@@ -110,14 +154,19 @@ function main_table($body, $header = null)
                 </div>";
 }
 
-function main_div($text)
+/**
+ * @param $text
+ *
+ * @return string|void
+ */
+function main_div($text, $class = null)
 {
     if ($text === '') {
         return;
     } else {
         return "
-                <div class='bordered top20 bottom20'>
-                    <div class='alt_bordered bg-00'>
+                <div class='bordered bg-00 $class'>
+                    <div class='alt_bordered'>
                         $text
                     </div>
                 </div>";
@@ -125,13 +174,19 @@ function main_div($text)
 
 }
 
-function wrapper($text, $align = 'has-text-centered', $top = 'top20', $bottom = 'bottom20', $padding = 'padding20')
+/**
+ * @param        $text
+ * @param string $class
+ *
+ * @return string|void
+ */
+function wrapper($text, $class = '')
 {
     if ($text === '') {
         return;
     } else {
         return "
-            <div class='container is-fluid portlet $align $top $bottom $padding'>
+            <div class='container is-fluid portlet $class'>
                 $text
             </div>";
     }

@@ -4,6 +4,8 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $lang;
+
 $lang = array_merge($lang, load_language('ad_repsettings'));
 $rep_set_cache = './cache/rep_settings_cache.php';
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
@@ -30,6 +32,9 @@ function rep_cache()
     redirect('staffpanel.php?tool=reputation_settings', $lang['repset_updated'], 3);
 }
 
+/**
+ * @return array
+ */
 function get_cache_array()
 {
     global $lang;
@@ -197,16 +202,26 @@ $HTMLOUT = '<div>
 </div>';
 $HTMLOUT = preg_replace_callback('|<#(.*?)#>|', 'template_out', $HTMLOUT);
 echo stdhead($lang['repset_stdhead']) . $HTMLOUT . stdfoot();
+/**
+ * @param $matches
+ *
+ * @return string
+ */
 function template_out($matches)
 {
     global $GVARS, $site_config, $lang;
     if ($matches[1] == 'rep_is_online') {
-        return '' . $lang['repset_yes'] . '<input name="rep_is_online" value="1" ' . ($GVARS['rep_is_online'] == 1 ? 'checked="checked"' : '') . ' type="radio">&#160;&#160;&#160;<input name="rep_is_online" value="0" ' . ($GVARS['rep_is_online'] == 1 ? '' : 'checked="checked"') . ' type="radio">' . $lang['repset_no'] . '';
+        return '' . $lang['repset_yes'] . '<input name="rep_is_online" value="1" ' . ($GVARS['rep_is_online'] == 1 ? 'checked' : '') . ' type="radio">&#160;&#160;&#160;<input name="rep_is_online" value="0" ' . ($GVARS['rep_is_online'] == 1 ? '' : 'checked') . ' type="radio">' . $lang['repset_no'] . '';
     } else {
-        return $GVARS[$matches[1]];
+        return $GVARS[ $matches[1] ];
     }
 }
 
+/**
+ * @param     $url
+ * @param     $text
+ * @param int $time
+ */
 function redirect($url, $text, $time = 2)
 {
     global $site_config, $lang;

@@ -2,7 +2,9 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-$lang = array_merge(load_language('global'));
+global $CURUSER, $site_config, $cache;
+
+$lang = load_language('global');
 /** Size of Pot**/
 $potsize = 10000;
 /** Site Pot **/
@@ -32,7 +34,7 @@ $pot_options = [
     10000 => 10000,
     50000 => 50000,
 ];
-if ($want_pot && (isset($pot_options[$want_pot]))) {
+if ($want_pot && (isset($pot_options[ $want_pot ]))) {
     if ($CURUSER['seedbonus'] < $want_pot) {
         stderr('Error', 'Not enough karma.');
     }
@@ -46,17 +48,13 @@ if ($want_pot && (isset($pot_options[$want_pot]))) {
                      WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $update['seedbonus_donator'] = ($CURUSER['seedbonus'] - $want_pot);
         //====Update the caches
-        $mc1->begin_transaction('userstats_' . $CURUSER['id']);
-        $mc1->update_row(false, [
+        $cache->update_row('userstats_' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus_donator'],
-        ]);
-        $mc1->commit_transaction($site_config['expires']['u_stats']);
-        $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
-        $mc1->update_row(false, [
+        ], $site_config['expires']['u_stats']);
+        $cache->update_row('user_stats_' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus_donator'],
-        ]);
-        $mc1->commit_transaction($site_config['expires']['curuser']);
-        $mc1->delete_value('Sitepot_');
+        ], $site_config['expires']['curuser']);
+        $cache->delete('Sitepot_');
         write_log('Site Pot ' . $CURUSER['username'] . ' has donated ' . $want_pot . " karma points to the site pot. {$Remaining} karma points remaining.");
         sql_query('UPDATE avps SET value_i = value_i + ' . sqlesc($want_pot) . " 
                      WHERE arg = 'sitepot'") or sqlerr(__FILE__, __LINE__);
@@ -72,17 +70,13 @@ if ($want_pot && (isset($pot_options[$want_pot]))) {
                      WHERE id = ' . sqlesc($CURUSER['id']) . '') or sqlerr(__FILE__, __LINE__);
         $update['seedbonus_donator'] = ($CURUSER['seedbonus'] - $want_pot);
         //====Update the caches
-        $mc1->begin_transaction('userstats_' . $CURUSER['id']);
-        $mc1->update_row(false, [
+        $cache->update_row('userstats_' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus_donator'],
-        ]);
-        $mc1->commit_transaction($site_config['expires']['u_stats']);
-        $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
-        $mc1->update_row(false, [
+        ], $site_config['expires']['u_stats']);
+        $cache->update_row('user_stats_' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus_donator'],
-        ]);
-        $mc1->commit_transaction($site_config['expires']['curuser']);
-        $mc1->delete_value('Sitepot_');
+        ], $site_config['expires']['curuser']);
+        $cache->delete('Sitepot_');
         write_log('Site Pot ' . $CURUSER['username'] . ' has donated ' . $want_pot . ' karma points to the site pot.');
         sql_query('UPDATE avps SET value_i = value_i + ' . sqlesc($want_pot) . ", 
                      value_u = '" . (86400 + TIME_NOW) . "', 

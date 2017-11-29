@@ -1,7 +1,10 @@
 <?php
-if (($latestuser = $mc1->get_value('latestuser')) === false) {
+global $site_config, $cache, $lang;
+
+$latestuser = $cache->get('latestuser');
+if ($latestuser === false || is_null($latestuser)) {
     $latestuser = mysqli_fetch_assoc(sql_query('SELECT id FROM users WHERE status = "confirmed" ORDER BY id DESC LIMIT 1'));
-    $mc1->cache_value('latestuser', $latestuser, $site_config['expires']['latestuser']);
+    $cache->set('latestuser', $latestuser, $site_config['expires']['latestuser']);
 }
 $HTMLOUT .= "
         <a id='latestuser-hash'></a>

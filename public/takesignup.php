@@ -5,12 +5,13 @@ require_once INCL_DIR . 'password_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'function_bemail.php';
 dbconn();
-global $CURUSER, $site_config, $mc1;
+global $CURUSER, $site_config, $cache, $lang;
+
 if (!$CURUSER) {
     get_template();
 }
 
-$mc1->delete_value('userlist_' . $site_config['chatBotID']);
+$cache->delete('userlist_' . $site_config['chatBotID']);
 $ip = getip();
 if (!$site_config['openreg']) {
     stderr('Sorry', 'Invite only - Signups are closed presently if you have an invite code click <a href="' . $site_config['baseurl'] . '/invite_signup.php"><b> Here</b></a>');
@@ -33,6 +34,11 @@ if ($site_config['captcha_on']) {
         exit();
     }
 }
+/**
+ * @param $username
+ *
+ * @return bool
+ */
 function validusername($username)
 {
     global $lang;
@@ -46,7 +52,7 @@ function validusername($username)
     // The following characters are allowed in user names
     $allowedchars = $lang['takesignup_allowed_chars'];
     for ($i = 0; $i < $namelength; ++$i) {
-        if (strpos($allowedchars, $username[$i]) === false) {
+        if (strpos($allowedchars, $username[ $i ]) === false) {
             return false;
         }
     }
@@ -99,13 +105,13 @@ if ($_POST['rulesverify'] != 'yes' || $_POST['faqverify'] != 'yes' || $_POST['ag
     stderr($lang['takesignup_failed'], $lang['takesignup_qualify']);
 }
 // check if email addy is already in use
-$a = (mysqli_fetch_row(sql_query('SELECT COUNT(id) FROM users WHERE email=' . sqlesc($email)))) or sqlerr(__FILE__, __LINE__);
+$a = (mysqli_fetch_row(sql_query('SELECT COUNT(id) FROM users WHERE email = ' . sqlesc($email)))) or sqlerr(__FILE__, __LINE__);
 if ($a[0] != 0) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_email_used']);
 }
 //=== check if ip addy is already in use
 if ($site_config['dupeip_check_on']) {
-    $c = (mysqli_fetch_row(sql_query('SELECT COUNT(id) FROM users WHERE ip=' . sqlesc($ip)))) or sqlerr(__FILE__, __LINE__);
+    $c = (mysqli_fetch_row(sql_query('SELECT COUNT(id) FROM users WHERE ip = ' . ipToStorageFormat($ip)))) or sqlerr(__FILE__, __LINE__);
     if ($c[0] != 0) {
         stderr('Error', 'The ip ' . htmlsafechars($ip) . ' is already in use. We only allow one account per ip address.');
     }
@@ -140,11 +146,11 @@ $ret = sql_query('INSERT INTO users (username, torrent_pass, passhash, birthday,
         (!$arr[0] || (!$site_config['email_confirm'] || $site_config['auto_confirm']) ? 'confirmed' : 'pending'),
         $ip,
     ])) . ', ' . (!$arr[0] ? UC_SYSOP . ', ' : '') . '' . TIME_NOW . ',' . TIME_NOW . " , " . sqlesc($time_offset) . ", {$dst_in_use['tm_isdst']}, $user_frees)");
-$mc1->delete_value('birthdayusers');
-$mc1->delete_value('chat_users_list');
+$cache->delete('birthdayusers');
+$cache->delete('chat_users_list');
 $message = "Welcome New {$site_config['site_name']} Member : - [user]" . htmlsafechars($wantusername) . '[/user]';
 if (!$arr[0]) {
-    $mc1->delete_value('staff_settings_');
+    $cache->delete('staff_settings_');
 }
 if (!$ret) {
     if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
@@ -174,7 +180,7 @@ $latestuser_cache['leechwarn'] = '0';
 $latestuser_cache['pirate'] = '0';
 $latestuser_cache['king'] = '0';
 /* OOP **/
-$mc1->cache_value('latestuser', $latestuser_cache, $site_config['expires']['latestuser']);
+$cache->set('latestuser', $latestuser_cache, $site_config['expires']['latestuser']);
 write_log('User account ' . (int)$id . ' (' . htmlsafechars($wantusername) . ') was created');
 if ($id > 2 && $site_config['autoshout_on'] == 1) {
     autoshout($message);

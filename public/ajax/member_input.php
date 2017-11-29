@@ -2,6 +2,7 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
+global $CURUSER, $site_config, $cache;
 
 $posted_action = (isset($_POST['action']) ? htmlsafechars($_POST['action']) : (isset($_GET['action']) ? htmlsafechars($_GET['action']) : ''));
 $valid_actions = [
@@ -26,24 +27,24 @@ if ($action == '') {
             //== if it's the member flushing
             if ($id == $CURUSER['id']) {
                 //=== catch any missed snatched stuff thingies to stop ghost leechers from getting peers (if the peers they have drop off)
-                sql_query('UPDATE snatched SET seeder=\'no\' WHERE userid = ' . sqlesc($CURUSER['id']));
+                sql_query('UPDATE snatched SET seeder=\'no\' WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                 //=== flush dem torrents!!! \o/
-                sql_query('DELETE FROM peers WHERE userid = ' . sqlesc($CURUSER['id']));
+                sql_query('DELETE FROM peers WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                 $number_of_torrents_flushed = mysqli_affected_rows();
                 //=== add it to the log
-                sql_query('INSERT INTO `sitelog` (`id`, `added`, `txt`) VALUES (NULL , ' . TIME_NOW . ', ' . sqlesc('<a class="altlink" href="userdetails.php?id=' . $CURUSER['id'] . '">' . $CURUSER['username'] . '</a> flushed <b>' . $number_of_torrents_flushed . '</b> torrents.') . ')');
+                sql_query('INSERT INTO `sitelog` (`id`, `added`, `txt`) VALUES (NULL , ' . TIME_NOW . ', ' . sqlesc('<a class="altlink" href="userdetails.php?id=' . $CURUSER['id'] . '">' . $CURUSER['username'] . '</a> flushed <b>' . $number_of_torrents_flushed . '</b> torrents.') . ')') or sqlerr(__FILE__, __LINE__);
             } //=== if it's staff flushing for a member
             elseif ($id !== $CURUSER['id'] && $CURUSER['class'] >= UC_STAFF) {
                 //=== it's a staff...
                 $res_get_info = sql_query('SELECT username FROM users WHERE id=' . sqlesc($id));
                 $user_get_info = mysqli_fetch_assoc($res_get_info);
                 //=== catch any missed snatched stuff thingies to stop ghost leechers from getting peers (if the peers they have drop off)
-                sql_query('UPDATE snatched SET seeder=\'no\' WHERE userid = ' . sqlesc($id));
+                sql_query('UPDATE snatched SET seeder=\'no\' WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
                 //=== flush dem torrents!!! \o/
-                sql_query('DELETE FROM peers WHERE userid = ' . sqlesc($id));
+                sql_query('DELETE FROM peers WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
                 $number_of_torrents_flushed = mysqli_affected_rows();
                 //=== add it to the log
-                sql_query('INSERT INTO `sitelog` (`id`, `added`, `txt`) VALUES (NULL , ' . TIME_NOW . ', ' . sqlesc('<b>Staff Flush</b> <a class="altlink" href="userdetails.php?id=' . $CURUSER['id'] . '">' . $CURUSER['username'] . '</a> flushed <b>' . $number_of_torrents_flushed . '</b> torrents for <a class="altlink" href="userdetails.php?id=' . $id . '">' . $user_get_info['username'] . '</a>.') . ')');
+                sql_query('INSERT INTO `sitelog` (`id`, `added`, `txt`) VALUES (NULL , ' . TIME_NOW . ', ' . sqlesc('<b>Staff Flush</b> <a class="altlink" href="userdetails.php?id=' . $CURUSER['id'] . '">' . $CURUSER['username'] . '</a> flushed <b>' . $number_of_torrents_flushed . '</b> torrents for <a class="altlink" href="userdetails.php?id=' . $id . '">' . $user_get_info['username'] . '</a>.') . ')') or sqlerr(__FILE__, __LINE__);
             }
             break;
 
@@ -59,11 +60,9 @@ if ($action == '') {
             if ($id !== $CURUSER['id'] && $CURUSER['class'] > $staff_notes_arr['class']) {
                 //=== add / edit staff_notes
                 sql_query('UPDATE users SET staff_notes = ' . sqlesc($posted_notes) . ' WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-                $mc1->begin_transaction('user' . $id);
-                $mc1->update_row(false, [
+                $cache->update_row('user' . $id, [
                     'staff_notes' => $posted_notes,
-                ]);
-                $mc1->commit_transaction($site_config['expires']['user_cache']);
+                ], $site_config['expires']['user_cache']);
                 //=== add it to the log
                 write_log('<b>' . $CURUSER['username'] . '</b> edited member <a href="userdetails.php?id=' . $id . '" title="go to ' . htmlsafechars($staff_notes_arr['username']) . (substr($staff_notes_arr['username'], -1) == 's' ? '\'' : '\'s') . ' staff notes"><b>' . htmlsafechars($staff_notes_arr['username']) . (substr($staff_notes_arr['username'], -1) == 's' ? '\'' : '\'s') . '</b></a> staff notes. Changes made:<br>Was:<br>' . htmlsafechars($staff_notes_arr['staff_notes']) . '<br>is now:<br>' . htmlsafechars($_POST['new_staff_note']) . '');
             }
@@ -84,32 +83,24 @@ if ($action == '') {
                 if (isset($_POST['add_to_watched_users']) && $_POST['add_to_watched_users'] == 'yes' && $watched_arr['watched_user'] == 0) {
                     //=== set them to watched user
                     sql_query('UPDATE users SET watched_user = ' . TIME_NOW . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-                    $mc1->begin_transaction('MyUser_' . $id);
-                    $mc1->update_row(false, [
+                    $cache->update_row('MyUser_' . $id, [
                         'watched_user' => TIME_NOW,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['curuser']);
-                    $mc1->begin_transaction('user' . $id);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['curuser']);
+                    $cache->update_row('user' . $id, [
                         'watched_user' => TIME_NOW,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_cache']);
+                    ], $site_config['expires']['user_cache']);
                     //=== add it to the log
                     write_log('<b>' . $CURUSER['username'] . '</b> added member <a href="userdetails.php?id=' . $id . '" title="go to ' . htmlsafechars($watched_arr['username']) . (substr($watched_arr['username'], -1) == 's' ? '\'' : '\'s') . ' page">' . htmlsafechars($watched_arr['username']) . '</a> to watched users.');
                 }
                 if (isset($_POST['add_to_watched_users']) && $_POST['add_to_watched_users'] == 'no' && $watched_arr['watched_user'] > 0) {
                     //=== remove them from watched users
                     sql_query('UPDATE users SET watched_user = 0 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-                    $mc1->begin_transaction('MyUser_' . $id);
-                    $mc1->update_row(false, [
+                    $cache->update_row('MyUser_' . $id, [
                         'watched_user' => 0,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['curuser']);
-                    $mc1->begin_transaction('user' . $id);
-                    $mc1->update_row(false, [
+                    ], $site_config['expires']['curuser']);
+                    $cache->update_row('user' . $id, [
                         'watched_user' => 0,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_cache']);
+                    ], $site_config['expires']['user_cache']);
                     //=== add it to the log
                     write_log('<b>' . $CURUSER['username'] . '</b> removed member <a href="userdetails.php?id=' . $id . '" title="go to ' . htmlsafechars($watched_arr['username']) . (substr($watched_arr['username'], -1) == 's' ? '\'' : '\'s') . ' page">' . htmlsafechars($watched_arr['username']) . '</a> from watched users. <br>' . htmlsafechars($watched_arr['username']) . ' had been on the list since ' . get_date($watched_arr['watched_user'], '') . '.', $CURUSER['id']);
                 }
@@ -117,16 +108,14 @@ if ($action == '') {
                 if ($_POST['watched_reason'] !== $watched_arr['watched_user_reason']) {
                     //=== edit watched users text
                     sql_query('UPDATE users SET watched_user_reason = ' . sqlesc($posted) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-                    $mc1->begin_transaction('user' . $id);
-                    $mc1->update_row(false, [
+                    $cache->update_row('user' . $id, [
                         'watched_user_reason' => $posted,
-                    ]);
-                    $mc1->commit_transaction($site_config['expires']['user_cache']);
+                    ], $site_config['expires']['user_cache']);
                     //=== add it to the log
                     write_log('<b>' . $CURUSER['username'] . '</b> changed watched user text for: <a href="userdetails.php?id=' . $id . '" title="go to ' . htmlsafechars($watched_arr['username']) . (substr($watched_arr['username'], -1) == 's' ? '\'' : '\'s') . ' page">' . htmlsafechars($watched_arr['username']) . '</a>  Changes made:<br>Text was:<br>' . htmlsafechars($watched_arr['watched_user_reason']) . '<br>Is now:<br>' . htmlsafechars($_POST['watched_reason']) . '');
                 }
             }
             header('Location: userdetails.php?id=' . $id . '&wu=1');
             break;
-    } //=== end switch
-} //=== end of else (no action)
+    }
+}

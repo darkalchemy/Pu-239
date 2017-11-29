@@ -5,6 +5,8 @@ require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
+global $CURUSER, $site_config;
+
 $lang = array_merge(load_language('global'), load_language('userhistory'));
 $userid = (int)$_GET['id'];
 if (!is_valid_id($userid)) {

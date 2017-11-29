@@ -1,4 +1,6 @@
 <?php
+global $CURUSER;
+
 if ($CURUSER['class'] >= UC_MODERATOR) {
     if (empty($_POST['deloff'])) {
         stderr('ERROR', "Don't leave any fields blank.");

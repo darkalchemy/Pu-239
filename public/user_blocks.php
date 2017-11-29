@@ -3,15 +3,8 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-global $CURUSER, $mc1;
-$stdfoot = [
-    'js' => [
-    ],
-];
-$stdhead = [
-    'css' => [
-    ],
-];
+global $CURUSER, $site_config, $cache;
+
 $lang = load_language('global');
 $id = (isset($_GET['id']) ? $_GET['id'] : $CURUSER['id']);
 if (!is_valid_id($id) || $CURUSER['class'] < UC_STAFF) {
@@ -376,7 +369,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (count($updateset)) {
         sql_query('UPDATE user_blocks SET ' . implode(',', $updateset) . ' WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $mc1->delete_value('blocks::' . $id);
+        $cache->delete('blocks::' . $id);
         setSessionVar('is-success', 'User Blocks Successfully Updated');
         unset($_POST);
         header('Location: ' . $site_config['baseurl'] . '/user_blocks.php');
@@ -646,7 +639,6 @@ $contents[] = "
                     <label for='movie_ofthe_week'></label>
                 </div>
                 <div class='w-100'>Check this option if you want to enable the MOvie of the week.</div>";
-
 
 foreach ($contents as $content) {
     $level1 .= "
@@ -994,7 +986,6 @@ $form .= "
 
 $form .= "
     </form>";
-
 
 $HTMLOUT = wrapper($form);
 echo stdhead('User Blocks Config', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);

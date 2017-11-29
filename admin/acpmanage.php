@@ -5,11 +5,12 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $site_config, $cache, $lang;
+
 $lang = array_merge($lang, load_language('ad_acp'));
 $stdfoot = [
-    /* include js **/
     'js' => [
-        get_file('acp_js')
+        get_file('acp_js'),
     ],
 ];
 $HTMLOUT = '';
@@ -24,30 +25,22 @@ if (isset($_POST['ids'])) {
     if ($do == 'enabled') {
         sql_query("UPDATE users SET enabled = 'yes' WHERE ID IN(" . join(', ', array_map('sqlesc', $ids)) . ") AND enabled = 'no'") or sqlerr(__FILE__, __LINE__);
     }
-    $mc1->begin_transaction('MyUser_' . $id);
-    $mc1->update_row(false, [
+    $cache->update_row('MyUser_' . $id, [
         'enabled' => 'yes',
-    ]);
-    $mc1->commit_transaction($site_config['expires']['curuser']);
-    $mc1->begin_transaction('user' . $id);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['curuser']);
+    $cache->update_row('user' . $id, [
         'enabled' => 'yes',
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_cache']);
+    ], $site_config['expires']['user_cache']);
     //else
     if ($do == 'confirm') {
         sql_query("UPDATE users SET status = 'confirmed' WHERE ID IN(" . join(', ', array_map('sqlesc', $ids)) . ") AND status = 'pending'") or sqlerr(__FILE__, __LINE__);
     }
-    $mc1->begin_transaction('MyUser_' . $id);
-    $mc1->update_row(false, [
+    $cache->update_row('MyUser_' . $id, [
         'status' => 'confirmed',
-    ]);
-    $mc1->commit_transaction($site_config['expires']['curuser']);
-    $mc1->begin_transaction('user' . $id);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['curuser']);
+    $cache->update_row('user' . $id, [
         'status' => 'confirmed',
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_cache']);
+    ], $site_config['expires']['user_cache']);
     //else
     if ($do == 'delete' && ($CURUSER['class'] >= UC_SYSOP)) {
         $res_del = sql_query('SELECT id, username, added, downloaded, uploaded, last_access, class, donor, warned, enabled, status FROM users WHERE ID IN(' . join(', ', array_map('sqlesc', $ids)) . ') AND class < 3 ORDER BY username DESC');
@@ -55,8 +48,8 @@ if (isset($_POST['ids'])) {
             while ($arr_del = mysqli_fetch_assoc($res_del)) {
                 $userid = $arr_del['id'];
                 $res = sql_query('DELETE FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-                $mc1->delete_value('MyUser_' . $userid);
-                $mc1->delete_value('user' . $userid);
+                $cache->delete('MyUser_' . $userid);
+                $cache->delete('user' . $userid);
                 write_log("User: {$arr_del['username']} Was deleted by " . $CURUSER['username']);
             }
         } else {

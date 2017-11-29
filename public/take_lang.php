@@ -2,7 +2,9 @@
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-$lang = array_merge(load_language('global'));
+global $CURUSER, $site_config, $cache;
+
+$lang = load_language('global');
 $HTMLOUT = $out = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -10,16 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($lid > 0 && $lid != $CURUSER['id']) {
         sql_query('UPDATE users SET language = ' . sqlesc($lid) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     }
-    $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    $cache->update_row('MyUser_' . $CURUSER['id'], [
         'language' => $lid,
-    ]);
-    $mc1->commit_transaction($site_config['expires']['curuser']);
-    $mc1->begin_transaction('user' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['curuser']);
+    $cache->update_row('user' . $CURUSER['id'], [
         'language' => $lid,
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_cache']);
+    ], $site_config['expires']['user_cache']);
     $HTMLOUT .= "<script>
         opener.location.reload(true);
         self.close();

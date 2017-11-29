@@ -1,4 +1,6 @@
 <?php
+global $cache;
+
 if (XBT_TRACKER == true) {
     $htmlout .= "
         <li>
@@ -8,9 +10,10 @@ if (XBT_TRACKER == true) {
 } else {
     /** karma contribution alert hack **/
     $fpoints = $dpoints = $hpoints = $freeleech_enabled = $double_upload_enabled = $half_down_enabled = '';
-    if (($scheduled_events = $mc1->get_value('freecontribution_datas_alerts_')) === false) {
-        $scheduled_events = mysql_fetch_all('SELECT * from `events` ORDER BY `startTime` DESC LIMIT 3;', []);
-        $mc1->cache_value('freecontribution_datas_alerts_', $scheduled_events, 3 * 86400);
+    $scheduled_events = $cache->get('freecontribution_datas_alerts_');
+    if ($scheduled_events === false || is_null($scheduled_events)) {
+        $scheduled_events = mysql_fetch_all('SELECT * FROM `events` ORDER BY `startTime` DESC LIMIT 3;', []);
+        $cache->set('freecontribution_datas_alerts_', $scheduled_events, 3 * 86400);
     }
 
     if (is_array($scheduled_events)) {
@@ -52,11 +55,12 @@ if (XBT_TRACKER == true) {
     }
     //=== get total points
     //$target_fl = 30000;
-    if (($freeleech_counter = $mc1->get_value('freeleech_counter_alerts_')) === false) {
+    $freeleech_counter = $cache->get('freeleech_counter_alerts_');
+    if ($freeleech_counter === false || is_null($freeleech_counter)) {
         $total_fl = sql_query('SELECT SUM(pointspool) AS pointspool, points FROM bonus WHERE id =11');
         $fl_total_row = mysqli_fetch_assoc($total_fl);
         $percent_fl = number_format($fl_total_row['pointspool'] / $fl_total_row['points'] * 100, 2);
-        $mc1->cache_value('freeleech_counter_alerts_', $percent_fl, 0);
+        $cache->set('freeleech_counter_alerts_', $percent_fl, 0);
     } else {
         $percent_fl = $freeleech_counter;
     }
@@ -89,11 +93,12 @@ if (XBT_TRACKER == true) {
     }
     //=== get total points
     //$target_du = 30000;
-    if (($doubleupload_counter = $mc1->get_value('doubleupload_counter_alerts_')) === false) {
+    $doubleupload_counter = $cache->get('doubleupload_counter_alerts_');
+    if ($doubleupload_counter === false || is_null($doubleupload_counter)) {
         $total_du = sql_query('SELECT SUM(pointspool) AS pointspool, points FROM bonus WHERE id =12');
         $du_total_row = mysqli_fetch_assoc($total_du);
         $percent_du = number_format($du_total_row['pointspool'] / $du_total_row['points'] * 100, 2);
-        $mc1->cache_value('doubleupload_counter_alerts_', $percent_du, 0);
+        $cache->set('doubleupload_counter_alerts_', $percent_du, 0);
     } else {
         $percent_du = $doubleupload_counter;
     }
@@ -126,11 +131,12 @@ if (XBT_TRACKER == true) {
     }
     //=== get total points
     //$target_hd = 30000;
-    if (($halfdownload_counter = $mc1->get_value('halfdownload_counter_alerts_')) === false) {
+    $halfdownload_counter = $cache->get('halfdownload_counter_alerts_');
+    if ($halfdownload_counter === false || is_null($halfdownload_counter)) {
         $total_hd = sql_query('SELECT SUM(pointspool) AS pointspool, points FROM bonus WHERE id =13');
         $hd_total_row = mysqli_fetch_assoc($total_hd);
         $percent_hd = number_format($hd_total_row['pointspool'] / $hd_total_row['points'] * 100, 2);
-        $mc1->cache_value('halfdownload_counter_alerts_', $percent_hd, 0);
+        $cache->set('halfdownload_counter_alerts_', $percent_hd, 0);
     } else {
         $percent_hd = $halfdownload_counter;
     }
@@ -180,11 +186,11 @@ if (XBT_TRACKER == true) {
     $htmlout .= "
                 <li>
                     <a href='./mybonus.php'>
-                        <span class='btn tag is-success dt-tooltipper-small' data-tooltip-content='#karma_tooltip'>Karma Contribution's</span>
+                        <span class='button tag is-success dt-tooltipper-large' data-tooltip-content='#karma_tooltip'>Karma Contribution's</span>
                         <div class='tooltip_templates'>
                             <span id='karma_tooltip'>
                                 <div class='size_4 has-text-centered has-text-success .has-text-weight-bold bottom10'>Karma Contribution's</div>
-                                <div class='level-center'>
+                                <div class='level is-marginless'>
                                     <span>Freeleech</span><span> [ ";
     if ($freeleech_enabled) {
         $htmlout .= '<span class="has-text-success"> ON </span>' . get_date($freeleech_start_time, 'DATE') . ' - ' . get_date($freeleech_end_time, 'DATE');
@@ -196,7 +202,7 @@ if (XBT_TRACKER == true) {
                                 </div>';
 
     $htmlout .= "
-                                <div class='level-center'>
+                                <div class='level is-marginless'>
                                     <span>DoubleUpload</span><span> [ ";
     if ($double_upload_enabled) {
         $htmlout .= '<span class="has-text-success"> ON </span>' . get_date($double_upload_start_time, 'DATE') . ' - ' . get_date($double_upload_end_time, 'DATE');
@@ -208,7 +214,7 @@ if (XBT_TRACKER == true) {
                                 </div>';
 
     $htmlout .= "
-                                <div class='level-center'>
+                                <div class='level is-marginless'>
                                     <span>Half Download</span><span> [ ";
     if ($half_down_enabled) {
         $htmlout .= '<span class="has-text-success"> ON</span> ' . get_date($half_down_start_time, 'DATE') . ' - ' . get_date($half_down_end_time, 'DATE');

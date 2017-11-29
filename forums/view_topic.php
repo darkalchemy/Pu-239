@@ -154,7 +154,7 @@ if ($arr['poll_id'] > 0) {
         if ($voted === 1) {
             $math_res = sql_query('SELECT COUNT(id)
                         FROM forum_poll_votes
-                        WHERE poll_id = ' . sqlesc($arr['poll_id']) . ' AND option = ' . sqlesc($i)) or sqlerr(__FILE__, __LINE__);
+                        WHERE poll_id = ' . sqlesc($arr['poll_id']) . ' AND OPTION = ' . sqlesc($i)) or sqlerr(__FILE__, __LINE__);
             $math_row = mysqli_fetch_row($math_res);
             $vote_count = $math_row[0];
             $math = $vote_count > 0 ? round(($vote_count / $total_votes) * 100) : 0;
@@ -175,7 +175,7 @@ if ($arr['poll_id'] > 0) {
                         <input type="radio" name="vote" value="' . $i . '" />' : '
                         <input type="checkbox" name="vote[]" id="vote[]" value="' . $i . '" />')) . '
                     </td>
-                    <td>' . format_comment($poll_options[$i]) . '</td>
+                    <td>' . format_comment($poll_options[ $i ]) . '</td>
                     <td>' . $math_image . '</td>
                     <td><span>' . $math_text . '</span></td>
                     <td>' . (in_array($i, $members_votes) ? '
@@ -254,7 +254,8 @@ sql_query('INSERT INTO now_viewing (user_id, forum_id, topic_id, added)
         VALUES(' . sqlesc($CURUSER['id']) . ', ' . sqlesc($forum_id) . ', ' . sqlesc($topic_id) . ', ' . TIME_NOW . ')') or sqlerr(__FILE__, __LINE__);
 
 $keys['now_viewing'] = 'now_viewing_topic';
-if (($topic_users_cache = $mc1->get_value($keys['now_viewing'])) === false) {
+$topic_users_cache = $cache->get($keys['now_viewing']);
+if ($topic_users_cache === false || is_null($topic_users_cache)) {
     $topicusers = '';
     $topic_users_cache = [];
     $res = sql_query('SELECT user_id
@@ -269,7 +270,7 @@ if (($topic_users_cache = $mc1->get_value($keys['now_viewing'])) === false) {
     }
     $topic_users_cache['topic_users'] = $topicusers;
     $topic_users_cache['actcount'] = $actcount;
-    $mc1->cache_value($keys['now_viewing'], $topic_users_cache, $site_config['expires']['forum_users']);
+    $cache->set($keys['now_viewing'], $topic_users_cache, $site_config['expires']['forum_users']);
 }
 if (!$topic_users_cache['topic_users']) {
     $topic_users_cache['topic_users'] = $lang['fe_there_not_been_active_visit_15'];
@@ -324,9 +325,9 @@ if ($arr['parent_forum'] > 0) {
     $parent_forum_arr = mysqli_fetch_row($parent_forum_res);
     $child = ($arr['parent_forum'] > 0 ? '
         <span> [ ' . $lang['fe_child_board'] . ' ]</span>' : '');
-    $parent_forum_name = '
-        <img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" class="tooltipper" title="&#9658;" />
-        <a class="altlink bordered" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . htmlsafechars($parent_forum_arr[0], ENT_QUOTES) . '</a>';
+    //$parent_forum_name = '
+    //    <img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" class="tooltipper" title="&#9658;" />
+    //    <a class="altlink bordered" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . htmlsafechars($parent_forum_arr[0], ENT_QUOTES) . '</a>';
 }
 
 $the_top_and_bottom = "
@@ -358,7 +359,7 @@ $HTMLOUT .= "
         <div>One file was not uploaded. The maximum file size allowed is: ' . mksize($max_file_size) . '.</div>' : '
         <div>' . $upload_errors_size . ' file were not uploaded. The maximum file size allowed is: ' . mksize($max_file_size) . '.</div>') : '') . ($upload_errors_type > 0 ? ($upload_errors_type === 1 ? '
         <div>One file was not uploaded. The accepted formats are zip and rar.</div>' : '
-        <div>' . $upload_errors_type . ' files were not uploaded. The accepted formats are zip and rar.</div>') : '') . $location_bar . $topic_poll . $subscription_on_off .($CURUSER['class'] < UC_STAFF ? '' : '
+        <div>' . $upload_errors_type . ' files were not uploaded. The accepted formats are zip and rar.</div>') : '') . $location_bar . $topic_poll . $subscription_on_off . ($CURUSER['class'] < UC_STAFF ? '' : '
         <form action="' . $site_config['baseurl'] . '/forums.php?action=staff_actions" method="post" name="checkme" onsubmit="return SetChecked(this,\'post_to_mess_with\')" enctype="multipart/form-data">') . (isset($_GET['count']) ? '
             <div>' . intval($_GET['count']) . ' PMs Sent</div>' : '') . '
             <table class="table table-bordered no_hover third">
@@ -385,8 +386,8 @@ $HTMLOUT .= "
                 </thead>';
 //=== lets start the loop \o/
 while ($arr = mysqli_fetch_assoc($res)) {
-    $moodname = (isset($mood['name'][$arr['mood']]) ? htmlsafechars($mood['name'][$arr['mood']]) : 'is feeling neutral');
-    $moodpic = (isset($mood['image'][$arr['mood']]) ? htmlsafechars($mood['image'][$arr['mood']]) : 'noexpression.gif');
+    $moodname = (isset($mood['name'][ $arr['mood'] ]) ? htmlsafechars($mood['name'][ $arr['mood'] ]) : 'is feeling neutral');
+    $moodpic = (isset($mood['image'][ $arr['mood'] ]) ? htmlsafechars($mood['image'][ $arr['mood'] ]) : 'noexpression.gif');
     $post_icon = ($arr['icon'] !== '' ? '<img src="' . $site_config['pic_base_url'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" class="tooltipper" title="icon" /> ' : '<img src="' . $site_config['pic_base_url'] . 'forums/topic_normal.gif" alt="icon" class="tooltipper" title="icon" /> ');
     $post_title = ($arr['post_title'] !== '' ? ' <span>' . htmlsafechars($arr['post_title'], ENT_QUOTES) . '</span>' : '');
     $stafflocked = ( /*$CURUSER['class'] == UC_SYSOP && */
@@ -511,10 +512,10 @@ while ($arr = mysqli_fetch_assoc($res)) {
             ' . $lang['fe_karma'] . ': ' . number_format($arr['seedbonus']) . '' . $member_reputation . '' . ($arr['google_talk'] !== '' ? ' <a href="http://talkgadget.google.com/talkgadget/popout?member=' . htmlsafechars($arr['google_talk']) . '" class="tooltipper" title="' . $lang['fe_click_for_google_talk_gadget'] . '"  target="_blank"><img src="' . $site_config['pic_base_url'] . 'forums/google_talk.gif" alt="' . $lang['fe_google_talk'] . '" /></a> ' : '') . ($arr['icq'] !== '' ? ' <a href="http://people.icq.com/people/&amp;uin=' . htmlsafechars($arr['icq']) . '" class="tooltipper" title="' . $lang['fe_click_to_open_icq_page'] . '" target="_blank"><img src="' . $site_config['pic_base_url'] . 'forums/icq.gif" alt="icq" /></a> ' : '') . ($arr['msn'] !== '' ? ' <a href="http://members.msn.com/' . htmlsafechars($arr['msn']) . '" target="_blank" class="tooltipper" title="' . $lang['fe_click_to_see_msn_details'] . '"><img src="' . $site_config['pic_base_url'] . 'forums/msn.gif" alt="msn" /></a> ' : '') . ($arr['aim'] !== '' ? ' <a href="http://aim.search.aol.com/aol/search?s_it=searchbox.webhome&amp;q=' . htmlsafechars($arr['aim']) . '" target="_blank" class="tooltipper" title="' . $lang['fe_click_to_search_on_aim'] . '"><img src="' . $site_config['pic_base_url'] . 'forums/aim.gif" alt="AIM" /></a> ' : '') . ($arr['yahoo'] !== '' ? ' <a href="http://webmessenger.yahoo.com/?im=' . htmlsafechars($arr['yahoo']) . '" target="_blank" class="tooltipper" title="' . $lang['fe_click_to_open_yahoo'] . '"><img src="' . $site_config['pic_base_url'] . 'forums/yahoo.gif" alt="yahoo" /></a> ' : '') . '' . ($arr['website'] !== '' ? ' <a href="' . htmlsafechars($arr['website']) . '" target="_blank" class="tooltipper" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $site_config['pic_base_url'] . 'forums/website.gif" alt="website" /></a> ' : '') . ($arr['show_email'] == 'yes' ? ' <a href="mailto:' . htmlsafechars($arr['email']) . '" class="tooltipper" title="' . $lang['fe_click_to_email'] . '" target="_blank"><img src="' . $site_config['pic_base_url'] . 'email.gif" alt="email" width="25" /> </a>' : '') . '
             ' . ($CURUSER['class'] >= UC_STAFF ? '
             <ul class="makeMenu">
-                <li>' . htmlsafechars($arr['ip']) . '
+                <li>' . htmlsafechars(ipFromStorageFormat($arr['ip'])) . '
                     <ul>
-                    <li><a href="https://ws.arin.net/?queryinput=' . htmlsafechars($arr['ip']) . '" class="tooltipper" title="' . $lang['vt_whois_to_find_isp_info'] . '" target="_blank">' . $lang['vt_ip_whois'] . '</a></li>
-                    <li><a href="http://www.infosniper.net/index.php?ip_address=' . htmlsafechars($arr['ip']) . '" class="tooltipper" title="' . $lang['vt_ip_to_map_using_infosniper'] . '!" target="_blank">' . $lang['vt_ip_to_map'] . '</a></li>
+                    <li><a href="https://ws.arin.net/?queryinput=' . htmlsafechars(ipFromStorageFormat($arr['ip'])) . '" class="tooltipper" title="' . $lang['vt_whois_to_find_isp_info'] . '" target="_blank">' . $lang['vt_ip_whois'] . '</a></li>
+                    <li><a href="http://www.infosniper.net/index.php?ip_address=' . htmlsafechars(ipFromStorageFormat($arr['ip'])) . '" class="tooltipper" title="' . $lang['vt_ip_to_map_using_infosniper'] . '!" target="_blank">' . $lang['vt_ip_to_map'] . '</a></li>
                 </ul>
                 </li>
             </ul>' : '') . '
@@ -533,8 +534,8 @@ while ($arr = mysqli_fetch_assoc($res)) {
 //=== update the last post read by CURUSER
 sql_query('DELETE FROM `read_posts` WHERE user_id =' . sqlesc($CURUSER['id']) . ' AND `topic_id` = ' . sqlesc($topic_id));
 sql_query('INSERT INTO `read_posts` (`user_id` ,`topic_id` ,`last_post_read`) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($topic_id) . ', ' . sqlesc($post_id) . ')');
-$mc1->delete_value('last_read_post_' . $topic_id . '_' . $CURUSER['id']);
-$mc1->delete_value('sv_last_read_post_' . $topic_id . '_' . $CURUSER['id']);
+$cache->delete('last_read_post_' . $topic_id . '_' . $CURUSER['id']);
+$cache->delete('sv_last_read_post_' . $topic_id . '_' . $CURUSER['id']);
 
 $HTMLOUT .= $the_top_and_bottom . '</table>
     <span>' . $location_bar . '</span><a name="bottom"></a>
@@ -619,7 +620,7 @@ $HTMLOUT .= $the_top_and_bottom . '</table>
             <span>' . $lang['vt_from'] . ':</span>
             </td>
             <td>
-            <input type="radio" name="pm_from" value="0" checked="checked" /> ' . $lang['vt_system'] . '
+            <input type="radio" name="pm_from" value="0" checked /> ' . $lang['vt_system'] . '
             <input type="radio" name="pm_from" value="1" /> ' . format_username($CURUSER) . '
             </td>
       </tr>
@@ -641,8 +642,8 @@ $HTMLOUT .= $the_top_and_bottom . '</table>
             <form action="' . $site_config['baseurl'] . '/forums.php?action=staff_actions" method="post">
             <input type="hidden" name="action_2" value="set_pinned" />
             <input type="hidden" name="topic_id" value="' . $topic_id . '" />
-            <input type="radio" name="pinned" value="yes" ' . ($sticky === 'yes' ? 'checked="checked"' : '') . ' /> Yes
-            <input type="radio" name="pinned" value="no" ' . ($sticky === 'no' ? 'checked="checked"' : '') . ' /> No</td>
+            <input type="radio" name="pinned" value="yes" ' . ($sticky === 'yes' ? 'checked' : '') . ' /> Yes
+            <input type="radio" name="pinned" value="no" ' . ($sticky === 'no' ? 'checked' : '') . ' /> No</td>
             <td>
             <input type="submit" name="button" class="button" value="Set ' . $lang['fe_pinned'] . '" />
             </form></td>
@@ -656,8 +657,8 @@ $HTMLOUT .= $the_top_and_bottom . '</table>
             <form action="' . $site_config['baseurl'] . '/forums.php?action=staff_actions" method="post">
             <input type="hidden" name="action_2" value="set_locked" />
             <input type="hidden" name="topic_id" value="' . $topic_id . '" />
-            <input type="radio" name="locked" value="yes" ' . ($locked === 'yes' ? 'checked="checked"' : '') . ' /> Yes
-            <input type="radio" name="locked" value="no" ' . ($locked === 'no' ? 'checked="checked"' : '') . ' /> No</td>
+            <input type="radio" name="locked" value="yes" ' . ($locked === 'yes' ? 'checked' : '') . ' /> Yes
+            <input type="radio" name="locked" value="no" ' . ($locked === 'no' ? 'checked' : '') . ' /> No</td>
             <td>
             <input type="submit" name="button" class="button" value="' . $lang['vt_lock_topic'] . '" />
             </form></td>
@@ -755,8 +756,8 @@ $HTMLOUT .= $the_top_and_bottom . '</table>
             <input type="hidden" name="action_2" value="move_to_recycle_bin" />
             <input type="hidden" name="topic_id" value="' . $topic_id . '" />
             <input type="hidden" name="forum_id" value="' . $forum_id . '" />
-            <input type="radio" name="status" value="yes" ' . ($status === 'recycled' ? 'checked="checked"' : '') . ' /> Yes
-            <input type="radio" name="status" value="no" ' . ($status !== 'recycled' ? 'checked="checked"' : '') . ' /> No
+            <input type="radio" name="status" value="yes" ' . ($status === 'recycled' ? 'checked' : '') . ' /> Yes
+            <input type="radio" name="status" value="no" ' . ($status !== 'recycled' ? 'checked' : '') . ' /> No
             ' . $lang['vt_this_option_will_send_this_thread_to_the_hidden_recycle_bin'] . '
             ' . $lang['vt_all_subscriptions_to_this_thread_will_be_deleted'] . '</td>
             <td>

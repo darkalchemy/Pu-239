@@ -2,6 +2,8 @@
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
+global $site_config;
+
 $lang = array_merge(load_language('global'), load_language('users'));
 $search = isset($_GET['search']) ? strip_tags(trim($_GET['search'])) : '';
 $class = isset($_GET['class']) ? $_GET['class'] : '-';

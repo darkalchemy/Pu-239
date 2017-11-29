@@ -4,18 +4,18 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-$lang = array_merge(load_language('global'));
+$lang = load_language('global');
 $HTMLOUT = '';
 $id = (isset($_GET['id']) ? (int)$_GET['id'] : '0');
 if ($id == '0') {
     stderr('Err', 'I dont think so!');
 }
-$ur = sql_query('SELECT username from users WHERE id=' . sqlesc($id));
+$ur = sql_query('SELECT username FROM users WHERE id=' . sqlesc($id));
 $user = mysqli_fetch_array($ur) or stderr('Error', 'No user found');
 $count = get_row_count('happylog', 'WHERE userid=' . sqlesc($id));
 $perpage = 30;
 $pager = pager($perpage, $count, "happylog.php?id=$id&amp;");
-$res = sql_query('SELECT h.userid, h.torrentid, h.date, h.multi, t.name FROM happylog as h LEFT JOIN torrents AS t on t.id=h.torrentid WHERE h.userid=' . sqlesc($id) . ' ORDER BY h.date DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT h.userid, h.torrentid, h.date, h.multi, t.name FROM happylog AS h LEFT JOIN torrents AS t ON t.id=h.torrentid WHERE h.userid=' . sqlesc($id) . ' ORDER BY h.date DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= begin_main_frame();
 $HTMLOUT .= begin_frame('Happy hour log for ' . htmlsafechars($user['username']) . '');
 if (mysqli_num_rows($res) > 0) {

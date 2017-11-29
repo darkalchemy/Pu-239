@@ -1,4 +1,5 @@
 <?php
+global $site_config;
 
 $lang = [
     //index
@@ -139,6 +140,7 @@ It is your own responsibility to adhere to these terms.",
     'index_ltst_size'            => 'Size:',
     'index_ltst_seeder'          => 'Seeders:',
     'index_ltst_leecher'         => 'Leechers:',
+    'index_ltst_uploader'        => 'Uploader:',
     //Latest Member
     'index_lmember'              => 'Latest Member',
     'index_wmember'              => 'Welcome to our newest member ',

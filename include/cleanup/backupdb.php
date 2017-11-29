@@ -1,4 +1,9 @@
 <?php
+/**
+ * @param string $no_data
+ *
+ * @return string
+ */
 function tables($no_data = '')
 {
     global $site_config;
@@ -19,6 +24,9 @@ function tables($no_data = '')
     return join(' ', $tables);
 }
 
+/**
+ * @param $data
+ */
 function backupdb($data)
 {
     global $site_config, $queries;

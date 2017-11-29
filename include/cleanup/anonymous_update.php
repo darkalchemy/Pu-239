@@ -1,10 +1,12 @@
 <?php
+/**
+ * @param $data
+ */
 function anonymous_update($data)
 {
-    global $site_config, $queries, $mc1;
+    global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
-    //=== Anonymous profile by Bigjoos/pdq:)
     $res = sql_query('SELECT id, modcomment FROM users WHERE anonymous_until < ' . TIME_NOW . " AND anonymous_until <> '0'") or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $users_buffer = [];
     if (mysqli_num_rows($res) > 0) {
@@ -16,30 +18,23 @@ function anonymous_update($data)
             $modcom = sqlesc($modcomment);
             $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ' )';
             $users_buffer[] = '(' . $arr['id'] . ', \'0\', \'no\', ' . $modcom . ')';
-            $mc1->begin_transaction('user' . $arr['id']);
-            $mc1->update_row(false, [
+            $cache->update_row('user' . $arr['id'], [
                 'anonymous_until' => 0,
                 'anonymous'       => 'no',
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_cache']);
-            $mc1->begin_transaction('user_stats_' . $arr['id']);
-            $mc1->update_row(false, [
+            ], $site_config['expires']['user_cache']);
+            $cache->update_row('user_stats_' . $arr['id'], [
                 'modcomment' => $modcomment,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_stats']);
-            $mc1->begin_transaction('MyUser_' . $arr['id']);
-            $mc1->update_row(false, [
+            ], $site_config['expires']['user_stats']);
+            $cache->update_row('MyUser_' . $arr['id'], [
                 'anonymous_until' => 0,
                 'anonymous'       => 'no',
-            ]);
-            $mc1->commit_transaction($site_config['expires']['curuser']);
-            $mc1->delete_value('inbox_new_' . $arr['id']);
-            $mc1->delete_value('inbox_new_sb_' . $arr['id']);
+            ], $site_config['expires']['curuser']);
+            $cache->increment('inbox_' . $arr['id']);
         }
         $count = count($users_buffer);
         if ($count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
-            sql_query('INSERT INTO users (id, anonymous_until, anonymous, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE anonymous_until=values(anonymous_until),anonymous=values(anonymous), modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO users (id, anonymous_until, anonymous, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE anonymous_until = VALUES(anonymous_until),anonymous = VALUES(anonymous), modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
         }
         if ($data['clean_log']) {
             write_log('Cleanup - Removed Anonymous profile from ' . $count . ' members');

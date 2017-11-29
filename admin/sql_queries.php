@@ -14,7 +14,7 @@ if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'])) {
 
 if (!empty($_POST['ids']) && $_POST['delete'] === 'delete') {
     $cnt = count($_POST['ids']);
-    $count = $cnt  == 1 ? 'query' : 'queries';
+    $count = $cnt == 1 ? 'query' : 'queries';
     $sql = "DELETE FROM queries WHERE id IN (" . implode(', ', $_POST['ids']) . ")";
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
     unset($_POST);
@@ -41,6 +41,7 @@ $header = "
 
 if ($count >= 1) {
     foreach ($list as $details) {
+        $id = $query = $dateTime = '';
         extract($details);
         $body .= "
             <tr>

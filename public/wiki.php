@@ -5,38 +5,46 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('wiki'));
-//$stdhead = array(/** include js **/'js' => array(''));
-$stdhead = [
-    /* include css **/
-    'css' => [
-        'wiki',
-    ],
-];
 $HTMLOUT = '';
 global $CURUSER;
-function newmsg($heading = '', $text = '', $div = 'success', $htmlstrip = false)
+/**
+ * @param string $heading
+ * @param string $text
+ * @param string $div
+ * @param bool   $htmlstrip
+ *
+ * @return string
+ */
+function newmsg($heading = '', $text = '', $div = 'is-success', $htmlstrip = false)
 {
     if ($htmlstrip) {
         $heading = htmlsafechars(trim($heading));
         $text = htmlsafechars(trim($text));
     }
-    $htmlout = '';
-    $htmlout .= "<table class='table table-bordered table-striped'><tr><td class='embedded'>\n";
-    $htmlout .= "<div class='$div'>" . ($heading ? "<b>$heading</b><br>" : '') . "$text</div></td></tr></table>\n";
-
-    return $htmlout;
+    return main_div("<div class='$div'>" . ($heading ? "<b>$heading</b><br>" : '') . "$text</div>");
 }
 
+/**
+ * @param string $heading
+ * @param string $text
+ * @param bool   $die
+ * @param string $div
+ * @param bool   $htmlstrip
+ */
 function newerr($heading = '', $text = '', $die = true, $div = 'error', $htmlstrip = false)
 {
-    $htmlout = '';
-    $htmlout .= newmsg($heading, $text, $div, $htmlstrip);
-    echo stdhead() . $htmlout . stdfoot();
+    $htmlout = newmsg($heading, $text, $div, $htmlstrip);
+    echo stdhead() . wrapper($htmlout) . stdfoot();
     if ($die) {
         die;
     }
 }
 
+/**
+ * @param $input
+ *
+ * @return string
+ */
 function datetimetransform($input)
 {
     $todayh = getdate($input);
@@ -66,6 +74,9 @@ function datetimetransform($input)
     return $input;
 }
 
+/**
+ * @return string
+ */
 function navmenu()
 {
     global $lang;
@@ -79,6 +90,11 @@ function navmenu()
     return $ret;
 }
 
+/**
+ * @param $input
+ *
+ * @return mixed
+ */
 function articlereplace($input)
 {
     $input = str_replace(' ', '+', $input);
@@ -86,6 +102,11 @@ function articlereplace($input)
     return $input;
 }
 
+/**
+ * @param $input
+ *
+ * @return mixed
+ */
 function wikisearch($input)
 {
     global $lang;
@@ -99,6 +120,11 @@ function wikisearch($input)
     ], ((isset($GLOBALS['___mysqli_ston']) && is_object($GLOBALS['___mysqli_ston'])) ? mysqli_real_escape_string($GLOBALS['___mysqli_ston'], $input) : ((trigger_error($lang['wiki_error'], E_USER_ERROR)) ? '' : '')));
 }
 
+/**
+ * @param $input
+ *
+ * @return mixed
+ */
 function wikireplace($input)
 {
     return preg_replace([
@@ -110,6 +136,9 @@ function wikireplace($input)
     ], $input);
 }
 
+/**
+ * @return string
+ */
 function wikimenu()
 {
     global $lang;
@@ -281,4 +310,4 @@ if ($action == 'sort') {
 }
 $HTMLOUT .= '</div>';
 $HTMLOUT .= end_main_frame();
-echo stdhead($lang['wiki_title'], true, $stdhead) . $HTMLOUT . stdfoot();
+echo stdhead($lang['wiki_title'], true, $stdhead) . wrapper($HTMLOUT) . stdfoot();

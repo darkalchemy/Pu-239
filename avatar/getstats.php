@@ -3,6 +3,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/include/bittorrent.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/cache/country.php';
 dbconn();
 $_settings = $_SERVER['DOCUMENT_ROOT'] . '/avatar/settings/';
+/**
+ * @param $val
+ *
+ * @return string
+ */
 function calctime($val)
 {
     $days = intval($val / 86400);
@@ -15,6 +20,11 @@ function calctime($val)
     return "$days days,$hours hrs,$mins minutes";
 }
 
+/**
+ * @param $stamp
+ *
+ * @return string
+ */
 function time_return($stamp)
 {
     $ysecs = 365 * 24 * 60 * 60;
@@ -78,13 +88,19 @@ function time_return($stamp)
     }
 }
 
+/**
+ * @param      $user
+ * @param bool $forced
+ *
+ * @return bool|mixed
+ */
 function getStats($user, $forced = false)
 {
     global $_settings, $countries;
     if (!file_exists($_settings . $user . '.set') || !is_array($var = unserialize(file_get_contents($_settings . $user . '.set')))) {
         return false;
     }
-    $query = mysqli_query($GLOBALS['___mysqli_ston'], 'SELECT u.id, u.irctotal, u.last_login, u.onlinetime, u.reputation, u.hits, u.uploaded, u.downloaded, u.country, u.browser, count(p.id) as posts ,count(c.id) as comments FROM users as u LEFT JOIN posts as p ON u.id = p.user_id LEFT JOIN comments as c ON c.user = u.id WHERE u.username = ' . sqlesc($user) . ' GROUP BY u.id') or sqlerr(__FILE__, __LINE__); //or die('Error Error Error! 1');
+    $query = mysqli_query($GLOBALS['___mysqli_ston'], 'SELECT u.id, u.irctotal, u.last_login, u.onlinetime, u.reputation, u.hits, u.uploaded, u.downloaded, u.country, u.browser, count(p.id) AS posts ,count(c.id) AS comments FROM users AS u LEFT JOIN posts AS p ON u.id = p.user_id LEFT JOIN comments AS c ON c.user = u.id WHERE u.username = ' . sqlesc($user) . ' GROUP BY u.id') or sqlerr(__FILE__, __LINE__); //or die('Error Error Error! 1');
     if (mysqli_num_rows($query) != 1) {
         die('Error Error Error! 2');
     }
@@ -98,42 +114,42 @@ function getStats($user, $forced = false)
     foreach ($ops as $op) {
         switch ($op) {
             case 1:
-                $var['line' . $i]['value_p'] = $a['posts'] . ' post' . ($a['posts'] > 1 ? 's' : '');
+                $var[ 'line' . $i ]['value_p'] = $a['posts'] . ' post' . ($a['posts'] > 1 ? 's' : '');
                 break;
 
             case 2:
                 //$var['line'.$i]['value_p'] = mksize($a['downloaded']) . " - " . mksize($a['uploaded']);
-                $var['line' . $i]['value_p'] = mksize($a['downloaded']) . ' - ' . mksize($a['uploaded']);
+                $var[ 'line' . $i ]['value_p'] = mksize($a['downloaded']) . ' - ' . mksize($a['uploaded']);
                 break;
 
             case 3:
                 list($days, $hours, $mins) = explode(',', calctime($a['irctotal']));
-                $var['line' . $i]['value_p'] = "$days - $hours";
+                $var[ 'line' . $i ]['value_p'] = "$days - $hours";
                 //$var['line'.$i]['value_p'] = "not yet";
                 break;
 
             case 4:
-                $var['line' . $i]['value_p'] = $a['reputation'] . ' point' . ($a['reputation'] > 1 ? 's' : '');
+                $var[ 'line' . $i ]['value_p'] = $a['reputation'] . ' point' . ($a['reputation'] > 1 ? 's' : '');
                 break;
 
             case 5:
                 foreach ($countries as $c) {
                     if ($c['id'] == $a['country']) {
-                        $var['line' . $i]['value_p'] = $c;
+                        $var[ 'line' . $i ]['value_p'] = $c;
                     }
                 }
                 break;
 
             case 6:
-                $var['line' . $i]['value_p'] = $a['comments'] . ' comment' . ($a['comments'] > 1 ? 's' : '');
+                $var[ 'line' . $i ]['value_p'] = $a['comments'] . ' comment' . ($a['comments'] > 1 ? 's' : '');
                 break;
 
             case 7:
-                $var['line' . $i]['value_p'] = $a['browser'];
+                $var[ 'line' . $i ]['value_p'] = $a['browser'];
                 break;
 
             case 8:
-                $var['line' . $i]['value_p'] = $a['hits'] . ' hit' . ($a['hits'] > 1 ? 's' : '');
+                $var[ 'line' . $i ]['value_p'] = $a['hits'] . ' hit' . ($a['hits'] > 1 ? 's' : '');
                 break;
             /*
                   case 9:
@@ -142,7 +158,7 @@ function getStats($user, $forced = false)
                       break;
             */
             case 9:
-                $var['line' . $i]['value_p'] = time_return($a['onlinetime']);
+                $var[ 'line' . $i ]['value_p'] = time_return($a['onlinetime']);
                 break;
         }
         ++$i;

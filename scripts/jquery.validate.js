@@ -10,22 +10,22 @@
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
  */
-(function(c) {
+(function (c) {
     c.extend(c.fn, {
-        validate: function(a) {
+        validate: function (a) {
             if (this.length) {
                 var b = c.data(this[0], "validator");
                 if (b) return b;
                 b = new c.validator(a, this[0]);
                 c.data(this[0], "validator", b);
                 if (b.settings.onsubmit) {
-                    this.find("input, button").filter(".cancel").click(function() {
+                    this.find("input, button").filter(".cancel").click(function () {
                         b.cancelSubmit = true
                     });
-                    b.settings.submitHandler && this.find("input, button").filter(":submit").click(function() {
+                    b.settings.submitHandler && this.find("input, button").filter(":submit").click(function () {
                         b.submitButton = this
                     });
-                    this.submit(function(d) {
+                    this.submit(function (d) {
                         function e() {
                             if (b.settings.submitHandler) {
                                 if (b.submitButton) var f = c("<input type='hidden'/>").attr("name",
@@ -36,6 +36,7 @@
                             }
                             return true
                         }
+
                         b.settings.debug && d.preventDefault();
                         if (b.cancelSubmit) {
                             b.cancelSubmit = false;
@@ -56,27 +57,27 @@
                 return b
             } else a && a.debug && window.console && console.warn("nothing selected, can't validate, returning nothing")
         },
-        valid: function() {
+        valid: function () {
             if (c(this[0]).is("form")) return this.validate().form();
             else {
                 var a = true,
                     b = c(this[0].form).validate();
-                this.each(function() {
+                this.each(function () {
                     a &= b.element(this)
                 });
                 return a
             }
         },
-        removeAttrs: function(a) {
+        removeAttrs: function (a) {
             var b = {},
                 d = this;
-            c.each(a.split(/\s/), function(e, f) {
+            c.each(a.split(/\s/), function (e, f) {
                 b[f] = d.attr(f);
                 d.removeAttr(f)
             });
             return b
         },
-        rules: function(a, b) {
+        rules: function (a, b) {
             var d = this[0];
             if (a) {
                 var e = c.data(d.form, "validator").settings,
@@ -94,7 +95,7 @@
                             return g
                         }
                         var h = {};
-                        c.each(b.split(/\s/), function(j, i) {
+                        c.each(b.split(/\s/), function (j, i) {
                             h[i] = g[i];
                             delete g[i]
                         });
@@ -113,31 +114,31 @@
         }
     });
     c.extend(c.expr[":"], {
-        blank: function(a) {
+        blank: function (a) {
             return !c.trim("" + a.value)
         },
-        filled: function(a) {
+        filled: function (a) {
             return !!c.trim("" + a.value)
         },
-        unchecked: function(a) {
+        unchecked: function (a) {
             return !a.checked
         }
     });
-    c.validator = function(a,
-        b) {
+    c.validator = function (a,
+                            b) {
         this.settings = c.extend(true, {}, c.validator.defaults, a);
         this.currentForm = b;
         this.init()
     };
-    c.validator.format = function(a, b) {
-        if (arguments.length == 1) return function() {
+    c.validator.format = function (a, b) {
+        if (arguments.length == 1) return function () {
             var d = c.makeArray(arguments);
             d.unshift(a);
             return c.validator.format.apply(this, d)
         };
         if (arguments.length > 2 && b.constructor != Array) b = c.makeArray(arguments).slice(1);
         if (b.constructor != Array) b = [b];
-        c.each(b, function(d, e) {
+        c.each(b, function (d, e) {
             a = a.replace(RegExp("\\{" + d + "\\}", "g"), e)
         });
         return a
@@ -156,31 +157,31 @@
             onsubmit: true,
             ignore: [],
             ignoreTitle: false,
-            onfocusin: function(a) {
+            onfocusin: function (a) {
                 this.lastActive = a;
                 if (this.settings.focusCleanup && !this.blockFocusCleanup) {
                     this.settings.unhighlight && this.settings.unhighlight.call(this, a, this.settings.errorClass, this.settings.validClass);
                     this.addWrapper(this.errorsFor(a)).hide()
                 }
             },
-            onfocusout: function(a) {
+            onfocusout: function (a) {
                 if (!this.checkable(a) && (a.name in this.submitted || !this.optional(a))) this.element(a)
             },
-            onkeyup: function(a) {
+            onkeyup: function (a) {
                 if (a.name in this.submitted || a == this.lastElement) this.element(a)
             },
-            onclick: function(a) {
+            onclick: function (a) {
                 if (a.name in this.submitted) this.element(a);
                 else a.parentNode.name in this.submitted && this.element(a.parentNode)
             },
-            highlight: function(a, b, d) {
+            highlight: function (a, b, d) {
                 c(a).addClass(b).removeClass(d)
             },
-            unhighlight: function(a, b, d) {
+            unhighlight: function (a, b, d) {
                 c(a).removeClass(b).addClass(d)
             }
         },
-        setDefaults: function(a) {
+        setDefaults: function (a) {
             c.extend(c.validator.defaults, a)
         },
         messages: {
@@ -204,12 +205,13 @@
         },
         autoCreateRanges: false,
         prototype: {
-            init: function() {
+            init: function () {
                 function a(e) {
                     var f = c.data(this[0].form, "validator");
                     e = "on" + e.type.replace(/^validate/, "");
                     f.settings[e] && f.settings[e].call(f, this[0])
                 }
+
                 this.labelContainer = c(this.settings.errorLabelContainer);
                 this.errorContext = this.labelContainer.length &&
                     this.labelContainer || c(this.currentForm);
@@ -221,20 +223,20 @@
                 this.invalid = {};
                 this.reset();
                 var b = this.groups = {};
-                c.each(this.settings.groups, function(e, f) {
-                    c.each(f.split(/\s/), function(g, h) {
+                c.each(this.settings.groups, function (e, f) {
+                    c.each(f.split(/\s/), function (g, h) {
                         b[h] = e
                     })
                 });
                 var d = this.settings.rules;
-                c.each(d, function(e, f) {
+                c.each(d, function (e, f) {
                     d[e] = c.validator.normalizeRule(f)
                 });
                 c(this.currentForm).validateDelegate(":text, :password, :file, select, textarea",
                     "focusin focusout keyup", a).validateDelegate(":radio, :checkbox, select, option", "click", a);
                 this.settings.invalidHandler && c(this.currentForm).bind("invalid-form.validate", this.settings.invalidHandler)
             },
-            form: function() {
+            form: function () {
                 this.checkForm();
                 c.extend(this.submitted, this.errorMap);
                 this.invalid = c.extend({}, this.errorMap);
@@ -242,12 +244,12 @@
                 this.showErrors();
                 return this.valid()
             },
-            checkForm: function() {
+            checkForm: function () {
                 this.prepareForm();
                 for (var a = 0, b = this.currentElements = this.elements(); b[a]; a++) this.check(b[a]);
                 return this.valid()
             },
-            element: function(a) {
+            element: function (a) {
                 this.lastElement = a = this.clean(a);
                 this.prepareElement(a);
                 this.currentElements = c(a);
@@ -258,7 +260,7 @@
                 this.showErrors();
                 return b
             },
-            showErrors: function(a) {
+            showErrors: function (a) {
                 if (a) {
                     c.extend(this.errorMap, a);
                     this.errorList = [];
@@ -267,65 +269,66 @@
                         element: this.findByName(b)[0]
                     });
                     this.successList = c.grep(this.successList,
-                        function(d) {
+                        function (d) {
                             return !(d.name in a)
                         })
                 }
                 this.settings.showErrors ? this.settings.showErrors.call(this, this.errorMap, this.errorList) : this.defaultShowErrors()
             },
-            resetForm: function() {
+            resetForm: function () {
                 c.fn.resetForm && c(this.currentForm).resetForm();
                 this.submitted = {};
                 this.prepareForm();
                 this.hideErrors();
                 this.elements().removeClass(this.settings.errorClass)
             },
-            numberOfInvalids: function() {
+            numberOfInvalids: function () {
                 return this.objectLength(this.invalid)
             },
-            objectLength: function(a) {
+            objectLength: function (a) {
                 var b = 0,
                     d;
                 for (d in a) b++;
                 return b
             },
-            hideErrors: function() {
+            hideErrors: function () {
                 this.addWrapper(this.toHide).hide()
             },
-            valid: function() {
+            valid: function () {
                 return this.size() == 0
             },
-            size: function() {
+            size: function () {
                 return this.errorList.length
             },
-            focusInvalid: function() {
+            focusInvalid: function () {
                 if (this.settings.focusInvalid) try {
                     c(this.findLastActive() || this.errorList.length && this.errorList[0].element || []).filter(":visible").focus().trigger("focusin")
-                } catch (a) {}
+                } catch (a) {
+                }
             },
-            findLastActive: function() {
+            findLastActive: function () {
                 var a = this.lastActive;
-                return a && c.grep(this.errorList, function(b) {
+                return a && c.grep(this.errorList, function (b) {
                     return b.element.name == a.name
                 }).length == 1 && a
             },
-            elements: function() {
+            elements: function () {
                 var a = this,
                     b = {};
-                return c([]).add(this.currentForm.elements).filter(":input").not(":submit, :reset, :image, [disabled]").not(this.settings.ignore).filter(function() {
+                return c([]).add(this.currentForm.elements).filter(":input").not(":submit, :reset, :image, [disabled]").not(this.settings.ignore).filter(function () {
                     !this.name &&
-                        a.settings.debug && window.console && console.error("%o has no name assigned", this);
+                    a.settings.debug && window.console && console.error("%o has no name assigned", this);
                     if (this.name in b || !a.objectLength(c(this).rules())) return false;
                     return b[this.name] = true
                 })
             },
-            clean: function(a) {
+            clean: function (a) {
                 return c(a)[0]
             },
-            errors: function() {
+            errors: function () {
                 return c(this.settings.errorElement + "." + this.settings.errorClass, this.errorContext)
             },
-            reset: function() {
+            reset: function () {
                 this.successList = [];
                 this.errorList = [];
                 this.errorMap = {};
@@ -333,15 +336,15 @@
                 this.toHide = c([]);
                 this.currentElements = c([])
             },
-            prepareForm: function() {
+            prepareForm: function () {
                 this.reset();
                 this.toHide = this.errors().add(this.containers)
             },
-            prepareElement: function(a) {
+            prepareElement: function (a) {
                 this.reset();
                 this.toHide = this.errorsFor(a)
             },
-            check: function(a) {
+            check: function (a) {
                 a = this.clean(a);
                 if (this.checkable(a)) a = this.findByName(a.name).not(this.settings.ignore)[0];
                 var b = c(a).rules(),
@@ -368,7 +371,7 @@
                         }
                     } catch (h) {
                         this.settings.debug &&
-                            window.console && console.log("exception occured when checking element " + a.id + ", check the '" + f.method + "' method", h);
+                        window.console && console.log("exception occured when checking element " + a.id + ", check the '" + f.method + "' method", h);
                         throw h;
                     }
                 }
@@ -377,25 +380,25 @@
                     return true
                 }
             },
-            customMetaMessage: function(a, b) {
+            customMetaMessage: function (a, b) {
                 if (c.metadata) {
                     var d = this.settings.meta ? c(a).metadata()[this.settings.meta] : c(a).metadata();
                     return d && d.messages && d.messages[b]
                 }
             },
-            customMessage: function(a, b) {
+            customMessage: function (a, b) {
                 var d = this.settings.messages[a];
                 return d && (d.constructor == String ? d : d[b])
             },
-            findDefined: function() {
+            findDefined: function () {
                 for (var a = 0; a < arguments.length; a++)
                     if (arguments[a] !==
                         undefined) return arguments[a]
             },
-            defaultMessage: function(a, b) {
+            defaultMessage: function (a, b) {
                 return this.findDefined(this.customMessage(a.name, b), this.customMetaMessage(a, b), !this.settings.ignoreTitle && a.title || undefined, c.validator.messages[b], "<strong>Warning: No message defined for " + a.name + "</strong>")
             },
-            formatAndAdd: function(a, b) {
+            formatAndAdd: function (a, b) {
                 var d = this.defaultMessage(a, b.method),
                     e = /\$?\{(\d+)\}/g;
                 if (typeof d == "function") d = d.call(this, b.parameters, a);
@@ -407,11 +410,11 @@
                 this.errorMap[a.name] = d;
                 this.submitted[a.name] = d
             },
-            addWrapper: function(a) {
+            addWrapper: function (a) {
                 if (this.settings.wrapper) a = a.add(a.parent(this.settings.wrapper));
                 return a
             },
-            defaultShowErrors: function() {
+            defaultShowErrors: function () {
                 for (var a = 0; this.errorList[a]; a++) {
                     var b = this.errorList[a];
                     this.settings.highlight && this.settings.highlight.call(this, b.element, this.settings.errorClass, this.settings.validClass);
@@ -420,7 +423,7 @@
                 if (this.errorList.length) this.toShow = this.toShow.add(this.containers);
                 if (this.settings.success)
                     for (a =
-                        0; this.successList[a]; a++) this.showLabel(this.successList[a]);
+                             0; this.successList[a]; a++) this.showLabel(this.successList[a]);
                 if (this.settings.unhighlight) {
                     a = 0;
                     for (b = this.validElements(); b[a]; a++) this.settings.unhighlight.call(this, b[a], this.settings.errorClass, this.settings.validClass)
@@ -429,16 +432,16 @@
                 this.hideErrors();
                 this.addWrapper(this.toShow).show()
             },
-            validElements: function() {
+            validElements: function () {
                 return this.currentElements.not(this.invalidElements())
             },
-            invalidElements: function() {
-                return c(this.errorList).map(function() {
+            invalidElements: function () {
+                return c(this.errorList).map(function () {
                     return this.element
                 })
             },
-            showLabel: function(a,
-                b) {
+            showLabel: function (a,
+                                 b) {
                 var d = this.errorsFor(a);
                 if (d.length) {
                     d.removeClass().addClass(this.settings.errorClass);
@@ -457,26 +460,26 @@
                 }
                 this.toShow = this.toShow.add(d)
             },
-            errorsFor: function(a) {
+            errorsFor: function (a) {
                 var b = this.idOrName(a);
-                return this.errors().filter(function() {
+                return this.errors().filter(function () {
                     return c(this).attr("for") == b
                 })
             },
-            idOrName: function(a) {
+            idOrName: function (a) {
                 return this.groups[a.name] || (this.checkable(a) ? a.name : a.id || a.name)
             },
-            checkable: function(a) {
+            checkable: function (a) {
                 return /radio|checkbox/i.test(a.type)
             },
-            findByName: function(a) {
+            findByName: function (a) {
                 var b = this.currentForm;
-                return c(document.getElementsByName(a)).map(function(d, e) {
+                return c(document.getElementsByName(a)).map(function (d, e) {
                     return e.form ==
                         b && e.name == a && e || null
                 })
             },
-            getLength: function(a, b) {
+            getLength: function (a, b) {
                 switch (b.nodeName.toLowerCase()) {
                     case "select":
                         return c("option:selected", b).length;
@@ -485,31 +488,31 @@
                 }
                 return a.length
             },
-            depend: function(a, b) {
+            depend: function (a, b) {
                 return this.dependTypes[typeof a] ? this.dependTypes[typeof a](a, b) : true
             },
             dependTypes: {
-                "boolean": function(a) {
+                "boolean": function (a) {
                     return a
                 },
-                string: function(a, b) {
+                string: function (a, b) {
                     return !!c(a, b.form).length
                 },
-                "function": function(a, b) {
+                "function": function (a, b) {
                     return a(b)
                 }
             },
-            optional: function(a) {
+            optional: function (a) {
                 return !c.validator.methods.required.call(this,
                     c.trim(a.value), a) && "dependency-mismatch"
             },
-            startRequest: function(a) {
+            startRequest: function (a) {
                 if (!this.pending[a.name]) {
                     this.pendingRequest++;
                     this.pending[a.name] = true
                 }
             },
-            stopRequest: function(a, b) {
+            stopRequest: function (a, b) {
                 this.pendingRequest--;
                 if (this.pendingRequest < 0) this.pendingRequest = 0;
                 delete this.pending[a.name];
@@ -522,7 +525,7 @@
                         false
                 }
             },
-            previousValue: function(a) {
+            previousValue: function (a) {
                 return c.data(a, "previousValue") || c.data(a, "previousValue", {
                     old: null,
                     valid: true,
@@ -562,18 +565,18 @@
                 creditcard: true
             }
         },
-        addClassRules: function(a, b) {
+        addClassRules: function (a, b) {
             a.constructor == String ? this.classRuleSettings[a] = b : c.extend(this.classRuleSettings,
                 a)
         },
-        classRules: function(a) {
+        classRules: function (a) {
             var b = {};
-            (a = c(a).attr("class")) && c.each(a.split(" "), function() {
+            (a = c(a).attr("class")) && c.each(a.split(" "), function () {
                 this in c.validator.classRuleSettings && c.extend(b, c.validator.classRuleSettings[this])
             });
             return b
         },
-        attributeRules: function(a) {
+        attributeRules: function (a) {
             var b = {};
             a = c(a);
             for (var d in c.validator.methods) {
@@ -583,20 +586,20 @@
             b.maxlength && /-1|2147483647|524288/.test(b.maxlength) && delete b.maxlength;
             return b
         },
-        metadataRules: function(a) {
+        metadataRules: function (a) {
             if (!c.metadata) return {};
             var b = c.data(a.form, "validator").settings.meta;
             return b ? c(a).metadata()[b] :
                 c(a).metadata()
         },
-        staticRules: function(a) {
+        staticRules: function (a) {
             var b = {},
                 d = c.data(a.form, "validator");
             if (d.settings.rules) b = c.validator.normalizeRule(d.settings.rules[a.name]) || {};
             return b
         },
-        normalizeRules: function(a, b) {
-            c.each(a, function(d, e) {
+        normalizeRules: function (a, b) {
+            c.each(a, function (d, e) {
                 if (e === false) delete a[d];
                 else if (e.param || e.depends) {
                     var f = true;
@@ -611,14 +614,14 @@
                     else delete a[d]
                 }
             });
-            c.each(a, function(d, e) {
+            c.each(a, function (d, e) {
                 a[d] = c.isFunction(e) ?
                     e(b) : e
             });
-            c.each(["minlength", "maxlength", "min", "max"], function() {
+            c.each(["minlength", "maxlength", "min", "max"], function () {
                 if (a[this]) a[this] = Number(a[this])
             });
-            c.each(["rangelength", "range"], function() {
+            c.each(["rangelength", "range"], function () {
                 if (a[this]) a[this] = [Number(a[this][0]), Number(a[this][1])]
             });
             if (c.validator.autoCreateRanges) {
@@ -636,23 +639,23 @@
             a.messages && delete a.messages;
             return a
         },
-        normalizeRule: function(a) {
+        normalizeRule: function (a) {
             if (typeof a == "string") {
                 var b = {};
-                c.each(a.split(/\s/), function() {
+                c.each(a.split(/\s/), function () {
                     b[this] = true
                 });
                 a = b
             }
             return a
         },
-        addMethod: function(a, b, d) {
+        addMethod: function (a, b, d) {
             c.validator.methods[a] = b;
             c.validator.messages[a] = d != undefined ? d : c.validator.messages[a];
             b.length < 3 && c.validator.addClassRules(a, c.validator.normalizeRule(a))
         },
         methods: {
-            required: function(a, b, d) {
+            required: function (a, b, d) {
                 if (!this.depend(d, b)) return "dependency-mismatch";
                 switch (b.nodeName.toLowerCase()) {
                     case "select":
@@ -664,7 +667,7 @@
                             0
                 }
             },
-            remote: function(a, b, d) {
+            remote: function (a, b, d) {
                 if (this.optional(b)) return "dependency-mismatch";
                 var e = this.previousValue(b);
                 this.settings.messages[b.name] || (this.settings.messages[b.name] = {});
@@ -686,7 +689,7 @@
                     port: "validate" + b.name,
                     dataType: "json",
                     data: g,
-                    success: function(h) {
+                    success: function (h) {
                         f.settings.messages[b.name].remote = e.originalMessage;
                         var j = h === true;
                         if (j) {
@@ -707,45 +710,45 @@
                 }, d));
                 return "pending"
             },
-            minlength: function(a, b, d) {
+            minlength: function (a, b, d) {
                 return this.optional(b) || this.getLength(c.trim(a), b) >= d
             },
-            maxlength: function(a, b, d) {
+            maxlength: function (a, b, d) {
                 return this.optional(b) ||
                     this.getLength(c.trim(a), b) <= d
             },
-            rangelength: function(a, b, d) {
+            rangelength: function (a, b, d) {
                 a = this.getLength(c.trim(a), b);
                 return this.optional(b) || a >= d[0] && a <= d[1]
             },
-            min: function(a, b, d) {
+            min: function (a, b, d) {
                 return this.optional(b) || a >= d
             },
-            max: function(a, b, d) {
+            max: function (a, b, d) {
                 return this.optional(b) || a <= d
             },
-            range: function(a, b, d) {
+            range: function (a, b, d) {
                 return this.optional(b) || a >= d[0] && a <= d[1]
             },
-            email: function(a, b) {
+            email: function (a, b) {
                 return this.optional(b) || /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test(a)
             },
-            url: function(a, b) {
+            url: function (a, b) {
                 return this.optional(b) || /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(a)
             },
-            date: function(a, b) {
+            date: function (a, b) {
                 return this.optional(b) || !/Invalid|NaN/.test(new Date(a))
             },
-            dateISO: function(a, b) {
+            dateISO: function (a, b) {
                 return this.optional(b) || /^\d{4}[\/-]\d{1,2}[\/-]\d{1,2}$/.test(a)
             },
-            number: function(a, b) {
+            number: function (a, b) {
                 return this.optional(b) || /^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(a)
             },
-            digits: function(a, b) {
+            digits: function (a, b) {
                 return this.optional(b) || /^\d+$/.test(a)
             },
-            creditcard: function(a, b) {
+            creditcard: function (a, b) {
                 if (this.optional(b)) return "dependency-mismatch";
                 if (/[^0-9-]+/.test(a)) return false;
                 var d = 0,
@@ -753,7 +756,7 @@
                     f = false;
                 a = a.replace(/\D/g, "");
                 for (var g = a.length - 1; g >=
-                    0; g--) {
+                0; g--) {
                     e = a.charAt(g);
                     e = parseInt(e, 10);
                     if (f)
@@ -763,12 +766,12 @@
                 }
                 return d % 10 == 0
             },
-            accept: function(a, b, d) {
+            accept: function (a, b, d) {
                 d = typeof d == "string" ? d.replace(/,/g, "|") : "png|jpe?g|gif";
                 return this.optional(b) || a.match(RegExp(".(" + d + ")$", "i"))
             },
-            equalTo: function(a, b, d) {
-                d = c(d).unbind(".validate-equalTo").bind("blur.validate-equalTo", function() {
+            equalTo: function (a, b, d) {
+                d = c(d).unbind(".validate-equalTo").bind("blur.validate-equalTo", function () {
                     c(b).valid()
                 });
                 return a == d.val()
@@ -777,9 +780,9 @@
     });
     c.format = c.validator.format
 })(jQuery);
-(function(c) {
+(function (c) {
     var a = {};
-    if (c.ajaxPrefilter) c.ajaxPrefilter(function(d, e, f) {
+    if (c.ajaxPrefilter) c.ajaxPrefilter(function (d, e, f) {
         e = d.port;
         if (d.mode == "abort") {
             a[e] && a[e].abort();
@@ -788,7 +791,7 @@
     });
     else {
         var b = c.ajax;
-        c.ajax = function(d) {
+        c.ajax = function (d) {
             var e = ("port" in d ? d : c.ajaxSettings).port;
             if (("mode" in d ? d : c.ajaxSettings).mode == "abort") {
                 a[e] && a[e].abort();
@@ -798,24 +801,25 @@
         }
     }
 })(jQuery);
-(function(c) {
+(function (c) {
     !jQuery.event.special.focusin && !jQuery.event.special.focusout && document.addEventListener && c.each({
         focus: "focusin",
         blur: "focusout"
-    }, function(a, b) {
+    }, function (a, b) {
         function d(e) {
             e = c.event.fix(e);
             e.type = b;
             return c.event.handle.call(this, e)
         }
+
         c.event.special[b] = {
-            setup: function() {
+            setup: function () {
                 this.addEventListener(a, d, true)
             },
-            teardown: function() {
+            teardown: function () {
                 this.removeEventListener(a, d, true)
             },
-            handler: function(e) {
+            handler: function (e) {
                 arguments[0] = c.event.fix(e);
                 arguments[0].type = b;
                 return c.event.handle.apply(this, arguments)
@@ -823,9 +827,9 @@
         }
     });
     c.extend(c.fn, {
-        validateDelegate: function(a,
-            b, d) {
-            return this.bind(b, function(e) {
+        validateDelegate: function (a,
+                                    b, d) {
+            return this.bind(b, function (e) {
                 var f = c(e.target);
                 if (f.is(a)) return d.apply(f, arguments)
             })

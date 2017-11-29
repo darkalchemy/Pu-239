@@ -66,7 +66,7 @@ switch ($staff_action) {
                     sql_query('DELETE FROM posts WHERE id IN (' . implode(', ', $post_to_mess_with) . ') AND topic_id = ' . sqlesc($topic_id));
                     clr_forums_cache($topic_id);
                     //=== re-do that last post thing ;)
-                    $res = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics as t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 1');
+                    $res = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 1');
                     $arr = mysqli_fetch_assoc($res);
                     sql_query('UPDATE topics SET last_post = ' . sqlesc($arr['id']) . ', post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($topic_id));
                     sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($arr['forum_id']));
@@ -125,14 +125,14 @@ switch ($staff_action) {
                 clr_forums_cache($topic_id);
 
                 //=== update post counts... topic split FROM
-                $res_split_from = sql_query('SELECT p.id FROM posts AS p LEFT JOIN topics as t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 1');
+                $res_split_from = sql_query('SELECT p.id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 1');
                 $arr_split_from = mysqli_fetch_row($res_split_from);
                 sql_query('UPDATE topics SET last_post = ' . sqlesc($arr_split_from[0]) . ', post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($topic_id));
                 //=== update post counts... new topic from split
-                $res_split_to = sql_query('SELECT p.id FROM posts AS p LEFT JOIN topics as t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($new_topic_id) . ' ORDER BY p.id DESC LIMIT 1');
+                $res_split_to = sql_query('SELECT p.id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($new_topic_id) . ' ORDER BY p.id DESC LIMIT 1');
                 $arr_split_to = mysqli_fetch_row($res_split_to);
                 //=== get topic owner for new split topic based on first poster in new topic
-                $res_owner = sql_query('SELECT p.user_id FROM posts AS p LEFT JOIN topics as t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($new_topic_id) . ' ORDER BY p.id ASC LIMIT 1');
+                $res_owner = sql_query('SELECT p.user_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($new_topic_id) . ' ORDER BY p.id ASC LIMIT 1');
                 $arr_owner = mysqli_fetch_row($res_owner);
                 sql_query('UPDATE topics SET last_post = ' . sqlesc($arr_split_to[0]) . ', post_count = ' . sqlesc($posts_count) . ', user_id = ' . sqlesc($arr_owner[0]) . ' WHERE id = ' . sqlesc($new_topic_id));
             } else {
@@ -164,12 +164,12 @@ switch ($staff_action) {
                 clr_forums_cache($topic_id);
 
                 //=== update post counts... topic merged FROM
-                $res_from = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics as t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 1');
+                $res_from = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 1');
                 $arr_from = mysqli_fetch_assoc($res_from);
                 sql_query('UPDATE topics SET last_post = ' . sqlesc($arr_from['id']) . ', post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($topic_id));
                 sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($arr_from['forum_id']));
                 //=== update post counts... topic merged INTO
-                $res_to = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics as t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_to_merge_with) . ' ORDER BY p.id DESC LIMIT 1');
+                $res_to = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_to_merge_with) . ' ORDER BY p.id DESC LIMIT 1');
                 $arr_to = mysqli_fetch_assoc($res_to);
                 sql_query('UPDATE topics SET last_post = ' . sqlesc($arr_to['id']) . ', post_count = post_count + ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($topic_to_merge_with));
                 sql_query('UPDATE forums SET post_count = post_count + ' . sqlesc($posts_count) . ' WHERE id = ' . sqlesc($arr_to['forum_id']));
@@ -209,12 +209,12 @@ switch ($staff_action) {
             //=== and delete post and update counts and boum! done \o/
             if ($count > 0) {
                 //=== update post counts... topic apended from
-                $res_from = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics as t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 1');
+                $res_from = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT 1');
                 $arr_from = mysqli_fetch_assoc($res_from);
                 sql_query('UPDATE topics SET last_post = ' . sqlesc($arr_from['id']) . ', post_count = post_count - ' . sqlesc($count) . ' WHERE id = ' . sqlesc($topic_id));
                 sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($count) . ' WHERE id = ' . sqlesc($arr_from['forum_id']));
                 //=== update post counts... topic apended to
-                $res_to = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics as t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_to_append_to) . ' ORDER BY p.id DESC LIMIT 1');
+                $res_to = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_to_append_to) . ' ORDER BY p.id DESC LIMIT 1');
                 $arr_to = mysqli_fetch_assoc($res_to);
                 sql_query('UPDATE topics SET last_post = ' . sqlesc($arr_to['id']) . ', post_count = post_count + ' . sqlesc($count) . ' WHERE id = ' . sqlesc($topic_to_append_to));
                 sql_query('UPDATE forums SET post_count = post_count + ' . sqlesc($count) . ' WHERE id = ' . sqlesc($arr_to['forum_id']));
@@ -365,7 +365,7 @@ switch ($staff_action) {
         //=== change any subscriptions to the new topic
         sql_query('UPDATE subscriptions SET topic_id = ' . sqlesc($topic_to_merge_with) . ' WHERE topic_id = ' . sqlesc($topic_id));
         //=== update post counts / last post
-        $res = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics as t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_to_merge_with) . ' ORDER BY p.id DESC LIMIT 1');
+        $res = sql_query('SELECT p.id, t.forum_id FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id WHERE p.topic_id = ' . sqlesc($topic_to_merge_with) . ' ORDER BY p.id DESC LIMIT 1');
         $arr = mysqli_fetch_assoc($res);
         sql_query('UPDATE topics SET last_post = ' . sqlesc($arr['id']) . ', post_count = post_count + ' . sqlesc($count) . ' WHERE id = ' . sqlesc($topic_to_merge_with));
         //=== if topic merged with a topic in another forum

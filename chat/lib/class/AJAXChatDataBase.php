@@ -8,10 +8,19 @@
  */
 
 // Class to initialize the DataBase connection:
+
+/**
+ * Class AJAXChatDataBase
+ */
 class AJAXChatDataBase
 {
     protected $_db;
 
+    /**
+     * AJAXChatDataBase constructor.
+     *
+     * @param $dbConnectionConfig
+     */
     public function __construct(&$dbConnectionConfig)
     {
         switch ($dbConnectionConfig['type']) {
@@ -32,24 +41,44 @@ class AJAXChatDataBase
     }
 
     // Method to connect to the DataBase server:
+
+    /**
+     * @param $dbConnectionConfig
+     *
+     * @return bool
+     */
     public function connect(&$dbConnectionConfig)
     {
         return $this->_db->connect($dbConnectionConfig);
     }
 
     // Method to select the DataBase:
+
+    /**
+     * @param $dbName
+     *
+     * @return bool
+     */
     public function select($dbName)
     {
         return $this->_db->select($dbName);
     }
 
     // Method to determine if an error has occured:
+
+    /**
+     * @return bool
+     */
     public function error()
     {
         return $this->_db->error();
     }
 
     // Method to return the error report:
+
+    /**
+     * @return string
+     */
     public function getError()
     {
         return $this->_db->getError();
@@ -62,12 +91,24 @@ class AJAXChatDataBase
     }
 
     // Method to prevent SQL injections:
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
     public function makeSafe($value)
     {
         return $this->_db->makeSafe($value);
     }
 
     // Method to perform SQL queries:
+
+    /**
+     * @param $sql
+     *
+     * @return AJAXChatMySQLQuery
+     */
     public function sqlQuery($sql)
     {
         return $this->_db->sqlQuery($sql);
@@ -82,6 +123,10 @@ class AJAXChatDataBase
     }
 
     // Method to retrieve the last inserted ID:
+
+    /**
+     * @return int
+     */
     public function getLastInsertedID()
     {
         return $this->_db->getLastInsertedID();

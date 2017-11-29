@@ -5,10 +5,17 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $site_config, $lang;
+
 $HTMLOUT = '';
 $lang = array_merge($lang, load_language('failedlogins'));
 $mode = (isset($_GET['mode']) ? $_GET['mode'] : '');
 $id = isset($_GET['id']) ? (int)$_GET['id'] : '';
+/**
+ * @param $id
+ *
+ * @return bool
+ */
 function validate($id)
 {
     global $lang;
@@ -22,14 +29,14 @@ function validate($id)
 //==Actions
 if ($mode == 'ban') {
     validate($id);
-    sql_query("UPDATE failedlogins SET banned = 'yes' WHERE id=" . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    sql_query("UPDATE failedlogins SET banned = 'yes' WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     header('Refresh: 2; url=' . $site_config['baseurl'] . '/staffpanel.php?tool=failedlogins');
     stderr($lang['failed_success'], "{$lang['failed_message_ban']}");
     exit();
 }
 if ($mode == 'removeban') {
     validate($id);
-    sql_query("UPDATE failedlogins SET banned = 'no' WHERE id=" . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    sql_query("UPDATE failedlogins SET banned = 'no' WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     header('Refresh: 2; url=' . $site_config['baseurl'] . '/staffpanel.php?tool=failedlogins');
     stderr($lang['failed_success'], "{$lang['failed_message_unban']}");
     exit();
@@ -76,7 +83,7 @@ if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
 $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5' width='80%'>\n";
-$res = sql_query("SELECT f.*,u.id as uid, u.username FROM failedlogins as f LEFT JOIN users as u ON u.ip = f.ip $where ORDER BY f.added DESC " . $pager['limit'] . '') or sqlerr(__FILE__, __LINE__);
+$res = sql_query("SELECT f.*,u.id as uid, u.username FROM failedlogins as f LEFT JOIN users as u ON u.ip = f.ip $where ORDER BY f.added DESC " . $pager['limit']) or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($res) == 0) {
     $HTMLOUT .= "<tr><td colspan='2'><b>{$lang['failed_message_nothing']}</b></td></tr>\n";
 } else {

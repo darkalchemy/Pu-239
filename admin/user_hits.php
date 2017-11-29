@@ -4,6 +4,8 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $lang;
+
 $lang = array_merge($lang, load_language('ad_userhits'));
 $HTMLOUT = '';
 $id = (int)$_GET['id'];
@@ -32,7 +34,7 @@ $HTMLOUT .= "
 <td class='colhead'>{$lang['userhits_username']}</td>
 <td class='colhead'>{$lang['userhits_viewed']}</td>
 </tr>\n";
-$res = sql_query('SELECT uh.*, username, users.id as uid FROM userhits uh LEFT JOIN users ON uh.userid = users.id WHERE hitid =' . sqlesc($id) . ' ORDER BY uh.id DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT uh.*, username, users.id AS uid FROM userhits uh LEFT JOIN users ON uh.userid = users.id WHERE hitid =' . sqlesc($id) . ' ORDER BY uh.id DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
 while ($arr = mysqli_fetch_assoc($res)) {
     $HTMLOUT .= '
 <tr><td>' . number_format($arr['number']) . '</td>

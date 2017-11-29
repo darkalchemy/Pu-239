@@ -173,7 +173,7 @@ var ajaxChatConfig = {
     ],
 
     // Defines the list of allowed emoticon codes:
-    emoticonCodes:[
+    emoticonCodes: [
         ":)",
         ":smile:",
         ":-D",
@@ -606,7 +606,7 @@ var ajaxChatConfig = {
     ],
 
     // Defines the list of emoticon files associated with the emoticon codes:
-    emoticonFiles:[
+    emoticonFiles: [
         "smile1.gif",
         "smile2.gif",
         "grin.gif",
@@ -1038,7 +1038,7 @@ var ajaxChatConfig = {
         "bunnies3.gif"
     ],
 
-    emoticonDisplay:[
+    emoticonDisplay: [
         2,
         2,
         2,

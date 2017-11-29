@@ -4,6 +4,8 @@ require_once INCL_DIR . 'torrenttable_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $lang;
+
 $lang = array_merge($lang, load_language('non_con'));
 $HTMLOUT = '';
 if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) == 'list') {
@@ -12,7 +14,7 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) == 'list') {
 	<h3><a href='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable'>{$lang['non_con_view']}</a></h3>
 	<h1>{$lang['non_con_peers']}</h1>
 	{$lang['non_con_this']}<br><p><font color='red'>*</font> {$lang['non_con_means']}<br>";
-    $result = sql_query("select distinct userid from peers where connectable = 'no'");
+    $result = sql_query("SELECT DISTINCT userid FROM peers WHERE connectable = 'no'");
     $count = mysqli_num_rows($result);
     $HTMLOUT .= "$count {$lang['non_con_unique']}</p>";
     @((mysqli_free_result($result) || (is_object($result) && (get_class($result) == 'mysqli_result'))) ? true : false);
@@ -39,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!$msg) {
         stderr('Error', 'Please Type In Some Text');
     }
-    $query = sql_query("SELECT distinct userid FROM peers WHERE connectable='no'");
+    $query = sql_query("SELECT DISTINCT userid FROM peers WHERE connectable='no'");
     while ($dat = mysqli_fetch_assoc($query)) {
         $subject = 'Connectability';
         sql_query('INSERT INTO messages (sender, receiver, added, msg, subject) VALUES (0, ' . sqlesc($dat['userid']) . ', ' . sqlesc(TIME_NOW) . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')') or sqlerr(__FILE__, __LINE__);

@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class block_index
+ */
 class block_index
 {
     const ACTIVE_USERS = 0x1; // 1

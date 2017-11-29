@@ -5,11 +5,17 @@ require_once INCL_DIR . 'function_memcache.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $lang;
 
 $lang = array_merge($lang, load_language('ad_deathrow'));
 
 $HTMLOUT = '';
 
+/**
+ * @param $val
+ *
+ * @return string
+ */
 function calctime($val)
 {
     global $lang;
@@ -18,14 +24,20 @@ function calctime($val)
     $hours = intval($val / 3600);
     $val -= $hours * 3600;
     $mins = intval($val / 60);
-    $secs = $val - ($mins * 60);
+    //$secs = $val - ($mins * 60);
 
     return "$days {$lang['deathrow_days']}, $hours {$lang['deathrow_hrs']}, $mins {$lang['deathrow_minutes']}";
 }
 
+/**
+ * @param $delete_array
+ * @param $page
+ *
+ * @return bool|int
+ */
 function delete_torrent($delete_array, $page)
 {
-    global $site_config, $CURUSER, $mc1, $lang;
+    global $site_config, $CURUSER, $cache, $lang;
     if (empty($delete_array)) {
         return false;
     }
@@ -55,16 +67,16 @@ function delete_torrent($delete_array, $page)
         remove_torrent_peers($id);
         remove_torrent($row['info_hash']);
         // index_last5_posters
-        $mc1->delete_value('last5_tor_');
-        $mc1->delete_value('top5_tor_');
-        $mc1->delete_value('scroll_tor_');
+        $cache->delete('last5_tor_');
+        $cache->delete('top5_tor_');
+        $cache->delete('scroll_tor_');
         // torrent_details
-        $mc1->delete_value('torrent_details_' . $id);
-        $mc1->delete_value('torrent_xbt_data_' . $id);
-        $mc1->delete_value('torrent_details_txt' . $id);
-        $mc1->delete_value('coin_points_' . $id);
+        $cache->delete('torrent_details_' . $id);
+        $cache->delete('torrent_xbt_data_' . $id);
+        $cache->delete('torrent_details_txt' . $id);
+        $cache->delete('coin_points_' . $id);
 
-        $mc1->delete_value('similiar_tor_' . $id);
+        $cache->delete('similiar_tor_' . $id);
         $dt = sqlesc(TIME_NOW - (14 * 86400)); // lose karma if deleted within 2 weeks
         if ($row['added'] < $dt) {
             sql_query('UPDATE users SET seedbonus = seedbonus-15.0 WHERE id = ' . sqlesc($row['owner'])) or sqlerr(__FILE__, __LINE__);
@@ -113,7 +125,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     $query = 'SELECT t.id AS tid, t.name, t.owner, (t.seeders + t.leechers) AS peers, t.last_action, u.username, u.id AS uid FROM torrents AS t INNER JOIN users AS u ON t.owner = u.id LEFT JOIN peers AS p ON t.id = p.torrent WHERE t.last_action < ' . $dx_time . ' HAVING peers = 0';
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
     while ($arr = mysqli_fetch_assoc($res)) {
-        $uploaders[$arr['uid'] . '|' . $arr['username']][] = [
+        $uploaders[ $arr['uid'] . '|' . $arr['username'] ][] = [
             'tid'          => $arr['tid'],
             'torrent_name' => $arr['name'],
             'reason'       => 1,
@@ -132,7 +144,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     $query = 'SELECT t.id, t.name, t.owner, t.added, t.last_action, u.id AS uid, u.username FROM torrents AS t INNER JOIN users AS u ON t.owner = u.id LEFT JOIN peers AS p ON t.id = p.torrent WHERE t.last_action < ' . (TIME_NOW - 1 * 86400) . ' AND t.added < ' . $dz_time . ' GROUP BY t.id HAVING(SUM(p.seeder) = 0)';
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
     while ($arr = mysqli_fetch_assoc($res)) {
-        $uploaders[$arr['uid'] . '|' . $arr['username']][] = [
+        $uploaders[ $arr['uid'] . '|' . $arr['username'] ][] = [
             'tid'          => $arr['id'],
             'torrent_name' => $arr['name'],
             'reason'       => 3,

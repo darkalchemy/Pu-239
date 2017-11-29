@@ -1,7 +1,10 @@
 <?php
+/**
+ * @param $data
+ */
 function delete_torrents_update($data)
 {
-    global $site_config, $queries, $mc1;
+    global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
     //==delete torrents by putyn
@@ -24,9 +27,8 @@ function delete_torrents_update($data)
         @unlink("{$site_config['torrent_dir']}/{$arr['id']}.torrent");
         $msg = 'Torrent ' . (int)$arr['id'] . ' (' . htmlsafechars($arr['name']) . ") was deleted by system (older than $days days and no seeders)";
         sql_query("INSERT INTO messages (sender, receiver, added, msg, subject, saved, location) VALUES (0, " . (int)$arr['owner'] . ", " .
-                    TIME_NOW . ", " . sqlesc($msg) . ", 'Torrent Deleted', 'yes', 1)") or sqlerr(__FILE__, __LINE__);
-        $mc1->delete_value('inbox_new_' . (int)$arr['owner']);
-        $mc1->delete_value('inbox_new_sb_' . (int)$arr['owner']);
+            TIME_NOW . ", " . sqlesc($msg) . ", 'Torrent Deleted', 'yes', 1)") or sqlerr(__FILE__, __LINE__);
+        $cache->increment('inbox_' . (int)$arr['owner']);
         if ($data['clean_log']) {
             write_log($msg);
         }

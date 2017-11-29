@@ -3,6 +3,8 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEP
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
+global $CURUSER, $site_config;
+
 $lang = array_merge(load_language('global'), load_language('snatches'));
 $HTMLOUT = '';
 if (empty($_GET['id'])) {
@@ -45,7 +47,7 @@ $HTMLOUT .= "<table width='78%'border='0' cellspacing='0' cellpadding='5'>
 <td class='colhead'>Active</td>
 <td class='colhead'>{$lang['snatches_completed']}</td>
 </tr>\n";
-$res = sql_query('SELECT x.*, x.uid AS xu, torrents.username as username1, users.username as username2, users.paranoia, torrents.anonymous as anonymous1, users.anonymous as anonymous2, size, parked, warned, enabled, class, chatpost, leechwarn, donor, uid FROM xbt_files_users AS x INNER JOIN users ON x.uid = users.id INNER JOIN torrents ON x.fid = torrents.id WHERE fid = ' . sqlesc($id) . ' AND completedtime !=0 ORDER BY fid DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT x.*, x.uid AS xu, torrents.username AS username1, users.username AS username2, users.paranoia, torrents.anonymous AS anonymous1, users.anonymous AS anonymous2, size, parked, warned, enabled, class, chatpost, leechwarn, donor, uid FROM xbt_files_users AS x INNER JOIN users ON x.uid = users.id INNER JOIN torrents ON x.fid = torrents.id WHERE fid = ' . sqlesc($id) . ' AND completedtime !=0 ORDER BY fid DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
 while ($arr = mysqli_fetch_assoc($res)) {
     $ratio = ($arr['downloaded'] > 0 ? number_format($arr['uploaded'] / $arr['downloaded'], 3) : ($arr['uploaded'] > 0 ? 'Inf.' : '---'));
     $upspeed = ($arr['upspeed'] > 0 ? mksize($arr['upspeed']) : ($arr['seedtime'] > 0 ? mksize($arr['uploaded'] / ($arr['seedtime'] + $arr['leechtime'])) : mksize(0)));

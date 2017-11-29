@@ -4,6 +4,8 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $lang;
+
 $lang = array_merge($lang, load_language('ad_rep_ad'));
 $input = array_merge($_GET, $_POST);
 $input['mode'] = isset($input['mode']) ? $input['mode'] : '';
@@ -106,6 +108,9 @@ function show_level()
     html_out($html, $title);
 }
 
+/**
+ * @param string $type
+ */
 function show_form($type = 'edit')
 {
     global $input, $lang;
@@ -149,6 +154,9 @@ function show_form($type = 'edit')
 /////////////////////////////////////
 //	Update rep function
 /////////////////////////////////////
+/**
+ * @param string $type
+ */
 function do_update($type = '')
 {
     global $input, $lang;
@@ -228,13 +236,13 @@ function show_form_rep()
         stderr('', $lang['rep_ad_rep_form_nothing']);
     }
     $title = $lang['rep_ad_rep_form_title'];
-    $query = sql_query('SELECT r.*, p.topic_id, t.topic_name, leftfor.username as leftfor_name, 
-					leftby.username as leftby_name
+    $query = sql_query('SELECT r.*, p.topic_id, t.topic_name, leftfor.username AS leftfor_name, 
+					leftby.username AS leftby_name
 					FROM reputation r
-					left join posts p on p.id=r.postid
-					left join topics t on p.topic_id=t.id
-					left join users leftfor on leftfor.id=r.userid
-					left join users leftby on leftby.id=r.whoadded
+					LEFT JOIN posts p ON p.id=r.postid
+					LEFT JOIN topics t ON p.topic_id=t.id
+					LEFT JOIN users leftfor ON leftfor.id=r.userid
+					LEFT JOIN users leftby ON leftby.id=r.whoadded
 					WHERE reputationid = ' . intval($input['reputationid']));
     if (!$res = mysqli_fetch_assoc($query)) {
         stderr('', $lang['rep_ad_rep_form_erm']);
@@ -411,7 +419,7 @@ function view_list()
 ///////////////////////////////////////////////
 function do_delete_rep()
 {
-    global $input, $lang;
+    global $input, $lang, $cache, $site_config;
     if (!is_valid_id($input['reputationid'])) {
         stderr($lang['rep_ad_delete_rep_err1'], $lang['rep_ad_delete_rep_err2']);
     }
@@ -426,16 +434,12 @@ function do_delete_rep()
     sql_query('DELETE FROM reputation WHERE reputationid=' . intval($r['reputationid']));
     sql_query("UPDATE users SET reputation = (reputation-{$r['reputation']} ) WHERE id=" . intval($r['userid']));
     $update['rep'] = ($User['reputation'] - $r['reputation']);
-    $mc1->begin_transaction('MyUser_' . $r['userid']);
-    $mc1->update_row(false, [
+    $cache->update_row('MyUser_' . $r['userid'], [
         'reputation' => $update['rep'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['curuser']);
-    $mc1->begin_transaction('user' . $r['userid']);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['curuser']);
+    $cache->update_row('user' . $r['userid'], [
         'reputation' => $update['rep'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_cache']);
+    ], $site_config['expires']['user_cache']);
     redirect('staffpanel.php?tool=reputation_ad&amp;mode=list', $lang['rep_ad_delete_rep_success'], 5);
 }
 
@@ -444,7 +448,7 @@ function do_delete_rep()
 ///////////////////////////////////////////////
 function do_edit_rep()
 {
-    global $input, $lang;
+    global $input, $lang, $cache, $site_config;
     if (isset($input['reason']) && !empty($input['reason'])) {
         $reason = str_replace('<br>', '', $input['reason']);
         $reason = trim($reason);
@@ -471,18 +475,14 @@ function do_edit_rep()
         $diff = $oldrep - $newrep;
         @sql_query("UPDATE users SET reputation = (reputation-{$diff}) WHERE id=" . intval($r['userid']));
         $update['rep'] = ($User['reputation'] - $diff);
-        $mc1->begin_transaction('MyUser_' . $r['userid']);
-        $mc1->update_row(false, [
+        $cache->update_row('MyUser_' . $r['userid'], [
             'reputation' => $update['rep'],
-        ]);
-        $mc1->commit_transaction($site_config['expires']['curuser']);
-        $mc1->begin_transaction('user' . $r['userid']);
-        $mc1->update_row(false, [
+        ], $site_config['expires']['curuser']);
+        $cache->update_row('user' . $r['userid'], [
             'reputation' => $update['rep'],
-        ]);
-        $mc1->commit_transaction($site_config['expires']['user_cache']);
-        $mc1->delete_value('MyUser_' . $r['userid']);
-        $mc1->delete_value('user' . $r['userid']);
+        ], $site_config['expires']['user_cache']);
+        $cache->delete('MyUser_' . $r['userid']);
+        $cache->delete('user' . $r['userid']);
     }
     redirect('staffpanel.php?tool=reputation_ad&amp;mode=list', "{$lang['rep_ad_edit_saved']} {$r['reputationid']} {$lang['rep_ad_edit_success']}", 5);
 }
@@ -492,6 +492,10 @@ function do_edit_rep()
 //	$msg -> string
 //	$html -> string
 ///////////////////////////////////////////////
+/**
+ * @param string $html
+ * @param string $title
+ */
 function html_out($html = '', $title = '')
 {
     global $lang;
@@ -502,6 +506,11 @@ function html_out($html = '', $title = '')
     exit();
 }
 
+/**
+ * @param     $url
+ * @param     $text
+ * @param int $time
+ */
 function redirect($url, $text, $time = 2)
 {
     global $site_config, $lang;
@@ -533,6 +542,11 @@ function redirect($url, $text, $time = 2)
 /////////////////////////////
 //	get_month worker function
 /////////////////////////////
+/**
+ * @param int $i
+ *
+ * @return string
+ */
 function get_month_dropdown($i = 0)
 {
     global $now_date, $lang;
@@ -566,6 +580,7 @@ function get_month_dropdown($i = 0)
 /////////////////////////////
 function rep_cache()
 {
+    global $lang;
     $query = @sql_query('SELECT * FROM reputationlevel');
     if (!mysqli_num_rows($query)) {
         stderr($lang['rep_ad_cache_cache'], $lang['rep_ad_cache_none']);

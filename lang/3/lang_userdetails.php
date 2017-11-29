@@ -283,6 +283,7 @@ $lang = [
     'userdetails_offensive'         => 'Offensive Avatar',
     'userdetails_view_offensive'    => 'View Offensive Avatars',
     'userdetails_hnr'               => 'Hit and Runs',
+    'userdetails_no_hnrs'           => 'has no Hit and Runs!!',
     'userdetails_suspended_reason'  => 'Please enter the reason, it will be PMed to them',
     'userdetails_paranoia'          => 'Paranoia',
     'userdetails_paranoia_0'        => 'Totally relaxed',

@@ -4,12 +4,19 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $site_config, $lang;
+
 // 0 - No debug; 1 - Show and run SQL query; 2 - Show SQL query only
 $DEBUG_MODE = 0;
 $lang = array_merge($lang, load_language('ad_usersearch'));
+/**
+ * @param $param
+ *
+ * @return bool
+ */
 function is_set_not_empty($param)
 {
-    if (isset($_POST[$param]) && !empty($_POST[$param])) {
+    if (isset($_POST[ $param ]) && !empty($_POST[ $param ])) {
         return true;
     } else {
         return false;
@@ -56,7 +63,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_between'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['rt']) ? $_POST['rt'] : '3') == "$i") ? "selected='selected'" : '') . '>' . $options[$i] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['rt']) ? $_POST['rt'] : '3') == "$i") ? "selected='selected'" : '') . '>' . $options[ $i ] . "</option>\n";
                         }
                         ?>
                     </select>
@@ -77,7 +84,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_pending'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['st']) ? $_POST['st'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[$i] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['st']) ? $_POST['st'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[ $i ] . "</option>\n";
                         }
                         ?>
                     </select></td>
@@ -109,7 +116,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_disabled'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['as']) ? $_POST['as'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[$i] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['as']) ? $_POST['as'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[ $i ] . "</option>\n";
                         }
                         ?>
                     </select></td>
@@ -164,7 +171,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_between'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['dt']) ? $_POST['dt'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[$i] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['dt']) ? $_POST['dt'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[ $i ] . "</option>\n";
                         }
                         ?>
                     </select>
@@ -175,7 +182,6 @@ $highlight = " bgcolor='lightgrey'";
                     <input name="d2" type="text" value=""<?php
                     echo isset($_POST['d2']) ? $_POST['d2'] : '' ?>" size="12" maxlength="10" />
                 </td>
-
 
                 <td class='rowhead'><?php
                     echo $lang['usersearch_uploaded'] ?></td>
@@ -190,7 +196,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_between'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['ult']) ? $_POST['ult'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[$i] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['ult']) ? $_POST['ult'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[ $i ] . "</option>\n";
                         }
                         ?>
                     </select>
@@ -213,7 +219,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_no'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['do']) ? $_POST['do'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[$i] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['do']) ? $_POST['do'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[ $i ] . "</option>\n";
                         }
                         ?>
                     </select></td>
@@ -233,7 +239,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_between'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['lst']) ? $_POST['lst'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[$i] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['lst']) ? $_POST['lst'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[ $i ] . "</option>\n";
                         }
                         ?>
                     </select>
@@ -257,7 +263,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_between'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['dlt']) ? $_POST['dlt'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[$i] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['dlt']) ? $_POST['dlt'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[ $i ] . "</option>\n";
                         }
                         ?>
                     </select>
@@ -281,7 +287,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_no'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['w']) ? $_POST['w'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[$i] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['w']) ? $_POST['w'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[ $i ] . "</option>\n";
                         }
                         ?>
                     </select></td>
@@ -295,14 +301,14 @@ $highlight = " bgcolor='lightgrey'";
                 <td <?php
                 echo (isset($_POST['ac']) && !empty($_POST['ac'])) ? $highlight : '' ?>><input name="ac" type="checkbox"
                                                                                                value="1" <?php
-                    echo (isset($_POST['ac'])) ? "checked='checked'" : '' ?> /></td>
+                    echo (isset($_POST['ac'])) ? "checked" : '' ?> /></td>
                 <td class='rowhead'><?php
                     echo $lang['usersearch_banned'] ?></td>
                 <td <?php
                 echo (isset($_POST['dip']) && !empty($_POST['dip'])) ? $highlight : '' ?>><input name="dip"
                                                                                                  type="checkbox"
                                                                                                  value="1" <?php
-                    echo (isset($_POST['dip'])) ? "checked='checked'" : '' ?> /></td>
+                    echo (isset($_POST['dip'])) ? "checked" : '' ?> /></td>
             </tr>
             <tr>
                 <td colspan="6"><input name="submit" type='submit' class='button'/></td>
@@ -314,6 +320,11 @@ $highlight = " bgcolor='lightgrey'";
 <?php
 // Validates date in the form [yy]yy-mm-dd;
 // Returns date if valid, 0 otherwise.
+/**
+ * @param $date
+ *
+ * @return false|int|string
+ */
 function mkdate($date)
 {
     if (strpos($date, '-')) {
@@ -324,7 +335,7 @@ function mkdate($date)
         return 0;
     }
     for ($i = 0; $i < 3; ++$i) {
-        if (!is_numeric($a[$i])) {
+        if (!is_numeric($a[ $i ])) {
             return 0;
         }
     }
@@ -336,6 +347,13 @@ function mkdate($date)
 }
 
 // ratio as a string
+/**
+ * @param      $up
+ * @param      $down
+ * @param bool $color
+ *
+ * @return string
+ */
 function ratios($up, $down, $color = true)
 {
     if ($down > 0) {
@@ -353,6 +371,11 @@ function ratios($up, $down, $color = true)
 }
 
 // checks for the usual wildcards *, ? plus mySQL ones
+/**
+ * @param $text
+ *
+ * @return bool
+ */
 function haswildcard($text)
 {
     if (strpos($text, '*') === false && strpos($text, '?') === false && strpos($text, '%') === false && strpos($text, '_') === false) {
@@ -853,7 +876,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
                 $partial = '---';
             }
             $auxres = sql_query('SELECT COUNT(DISTINCT p.id)
-      FROM posts AS p LEFT JOIN topics as t ON p.topic_id = t.id
+      FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id
       LEFT JOIN forums AS f ON t.forum_id = f.id
       WHERE p.user_id = ' . sqlesc($user['id']) . ' AND f.min_class_read <= ' . sqlesc($CURUSER['class'])) or sqlerr(__FILE__, __LINE__);
             $n = mysqli_fetch_row($auxres);

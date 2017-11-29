@@ -3,6 +3,8 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 check_user_status();
+global $CURUSER, $site_config, $cache;
+
 $HTMLOUT = $sure = '';
 $lang = array_merge(load_language('global'), load_language('invite_code'));
 $do = (isset($_GET['do']) ? htmlsafechars($_GET['do']) : (isset($_POST['do']) ? htmlsafechars($_POST['do']) : ''));
@@ -150,16 +152,12 @@ if ($do == 'view_page') {
     sql_query('INSERT INTO invite_codes (sender, invite_added, code) VALUES (' . sqlesc((int)$CURUSER['id']) . ', ' . TIME_NOW . ', ' . sqlesc($invite) . ')') or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE users SET invites = invites - 1 WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['invites'] = ($CURUSER['invites'] - 1);
-    $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    $cache->update_row('MyUser_' . $CURUSER['id'], [
         'invites' => $update['invites'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['curuser']); // 15 mins
-    $mc1->begin_transaction('user' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['curuser']); // 15 mins
+    $cache->update_row('user' . $CURUSER['id'], [
         'invites' => $update['invites'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_cache']); // 15 mins
+    ], $site_config['expires']['user_cache']); // 15 mins
     header('Location: ?do=view_page');
 } elseif ($do == 'send_email') {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -179,7 +177,7 @@ if ($do == 'view_page') {
         $body = <<<EOD
 You have been invited to {$site_config['site_name']} by $inviter.
 
-$invoter has specified this address ($email) as your email.
+$inviter has specified this address ($email) as your email.
 
 If you do not know this person, please ignore this email. Please do not reply.
 
@@ -251,16 +249,12 @@ EOD;
     sql_query('DELETE FROM invite_codes WHERE id = ' . sqlesc($id) . ' AND sender = ' . sqlesc($CURUSER['id']) . ' AND status = "Pending"') or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE users SET invites = invites + 1 WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['invites'] = ($CURUSER['invites'] + 1);
-    $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    $cache->update_row('MyUser_' . $CURUSER['id'], [
         'invites' => $update['invites'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['curuser']); // 15 mins
-    $mc1->begin_transaction('user' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['curuser']); // 15 mins
+    $cache->update_row('user' . $CURUSER['id'], [
         'invites' => $update['invites'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_cache']); // 15 mins
+    ], $site_config['expires']['user_cache']); // 15 mins
     header('Location: ?do=view_page');
 } elseif ($do = 'confirm_account') {
     $userid = (isset($_GET['userid']) ? (int)$_GET['userid'] : (isset($_POST['userid']) ? (int)$_POST['userid'] : ''));
@@ -278,16 +272,12 @@ EOD;
     }
     sql_query('UPDATE users SET status = "confirmed" WHERE id = ' . sqlesc($userid) . ' AND invitedby = ' . sqlesc($CURUSER['id']) . ' AND status="pending"') or sqlerr(__FILE__, __LINE__);
 
-    $mc1->begin_transaction('MyUser_' . $userid);
-    $mc1->update_row(false, [
+    $cache->update_row('MyUser_' . $userid, [
         'status' => 'confirmed',
-    ]);
-    $mc1->commit_transaction($site_config['expires']['curuser']); // 15 mins
-    $mc1->begin_transaction('user' . $userid);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['curuser']); // 15 mins
+    $cache->update_row('user' . $userid, [
         'status' => 'confirmed',
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_cache']); // 15 mins
+    ], $site_config['expires']['user_cache']); // 15 mins
 
     //==pm to new invitee/////
     $msg = sqlesc("Hey there :wave:

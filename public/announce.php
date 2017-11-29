@@ -1,6 +1,8 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'ann_config.php';
 require_once INCL_DIR . 'ann_functions.php';
+global $site_config, $cache;
+
 if (isset($_SERVER['HTTP_COOKIE']) || isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {
     exit("It takes 46 muscles to frown but only 4 to flip 'em the bird.");
 }
@@ -22,7 +24,7 @@ foreach ([
              'localip',
          ] as $x) {
     if (isset($_GET["$x"])) {
-        $GLOBALS[$x] = '' . $_GET[$x];
+        $GLOBALS[ $x ] = '' . $_GET[ $x ];
     }
 }
 foreach ([
@@ -31,7 +33,7 @@ foreach ([
              'uploaded',
              'left',
          ] as $x) {
-    $GLOBALS[$x] = (int) $_GET[$x];
+    $GLOBALS[ $x ] = (int)$_GET[ $x ];
 }
 foreach ([
              'torrent_pass',
@@ -50,25 +52,25 @@ foreach ([
              'info_hash',
              'peer_id',
          ] as $x) {
-    if (strlen($GLOBALS[$x]) != 20) {
-        err("Invalid $x (" . strlen($GLOBALS[$x]) . ' - ' . urlencode($GLOBALS[$x]) . ')');
+    if (strlen($GLOBALS[ $x ]) != 20) {
+        err("Invalid $x (" . strlen($GLOBALS[ $x ]) . ' - ' . urlencode($GLOBALS[ $x ]) . ')');
     }
 }
 unset($x);
 $info_hash = $info_hash;
 $ip = $_SERVER['REMOTE_ADDR'];
-$port = (int) $port;
-$downloaded = (int) $downloaded;
-$uploaded = (int) $uploaded;
-$left = (int) $left;
+$port = (int)$port;
+$downloaded = (int)$downloaded;
+$uploaded = (int)$uploaded;
+$left = (int)$left;
 $rsize = 30;
 foreach ([
              'num want',
              'numwant',
              'num_want',
          ] as $k) {
-    if (isset($_GET[$k])) {
-        $rsize = (int)$_GET[$k];
+    if (isset($_GET[ $k ])) {
+        $rsize = (int)$_GET[ $k ];
         break;
     }
 }
@@ -108,15 +110,15 @@ if (ANN_IP_LOGGING == 1) {
         $userid = (int)$user['id'];
     }
     if (!$no_log_ip) {
-        $res = ann_sql_query('SELECT * FROM ips WHERE ip = ' . ann_sqlesc($ip) . ' AND userid =' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
+        $res = ann_sql_query('SELECT * FROM ips WHERE ip = ' . ipToStorageFormat($ip) . ' AND userid =' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) == 0) {
-            ann_sql_query('INSERT INTO ips (userid, ip, lastannounce, type) VALUES (' . ann_sqlesc($userid) . ', ' . ann_sqlesc($ip) . ', ' . TIME_NOW . ",'announce')") or ann_sqlerr(__FILE__, __LINE__);
-            $mc1->delete_value('ip_history_' . $userid);
-            //$mc1->delete_value('user::passkey:::' . $passkey);
+            ann_sql_query('INSERT INTO ips (userid, ip, lastannounce, type) VALUES (' . ann_sqlesc($userid) . ', ' . ipToStorageFormat($ip) . ', ' . TIME_NOW . ",'announce')") or ann_sqlerr(__FILE__, __LINE__);
+            $cache->delete('ip_history_' . $userid);
+            //$cache->delete('user::passkey:::' . $passkey);
         } else {
-            ann_sql_query('UPDATE ips SET lastannounce = ' . TIME_NOW . ' WHERE ip = ' . ann_sqlesc($ip) . ' AND userid =' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
-            $mc1->delete_value('ip_history_' . $userid);
-            //$mc1->delete_value('user::passkey:::' . $passkey);
+            ann_sql_query('UPDATE ips SET lastannounce = ' . TIME_NOW . ' WHERE ip = ' . ipToStorageFormat($ip) . ' AND userid =' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
+            $cache->delete('ip_history_' . $userid);
+            //$cache->delete('user::passkey:::' . $passkey);
         }
     }
 }
@@ -182,7 +184,7 @@ if ($_GET['compact'] != 1) {
 } else {
     $o = '';
     for ($i = 0; $i < $peer_num; ++$i) {
-        $o .= substr($peer[$i], 1, 6);
+        $o .= substr($peer[ $i ], 1, 6);
     }
     $resp .= strlen($o) . ':' . $o . 'e';
 }
@@ -249,7 +251,8 @@ if (!isset($self)) {
     $upthis = max(0, $uploaded - $self['uploaded']);
     $downthis = max(0, $downloaded - $self['downloaded']);
     //==sitepot
-    if (($Pot_query = $mc1->get_value('Sitepot_')) === false) {
+    $Pot_query = $cache->get('Sitepot_');
+    if ($Pot_query === false || is_null($Pot_query)) {
         $Pot_query_fields_ar_int = [
             'value_s',
             'value_i',
@@ -258,9 +261,9 @@ if (!isset($self)) {
         $Pq = ann_sql_query('SELECT  ' . $Pot_query_fields . " FROM avps WHERE arg = 'sitepot'") or ann_sqlerr(__FILE__, __LINE__);
         $Pot_query = mysqli_fetch_assoc($Pq);
         foreach ($Pot_query_fields_ar_int as $i) {
-            $Pot_query[$i] = (int)$Pot_query[$i];
+            $Pot_query[ $i ] = (int)$Pot_query[ $i ];
         }
-        $mc1->cache_value('Sitepot_', $Pot_query, $site_config['expires']['sitepot']);
+        $cache->set('Sitepot_', $Pot_query, $site_config['expires']['sitepot']);
     }
     if ($Pot_query['value_s'] == 1 && $Pot_query['value_i'] >= 10000) {
         $downthis = 0;
@@ -271,7 +274,8 @@ if (!isset($self)) {
         $downthis = 0;
     }
     //== Karma contribution system by ezero updated by putyn/Mindless
-    if (($contribution = $mc1->get_value('freecontribution_')) === false) {
+    $contribution = $cache->get('freecontribution_');
+    if ($contribution === false || is_null($contribution)) {
         $contribution_fields_ar_int = [
             'startTime',
             'endTime',
@@ -285,12 +289,12 @@ if (!isset($self)) {
         $fc = ann_sql_query('SELECT ' . $contribution_fields . ' FROM events ORDER BY startTime DESC LIMIT 1') or ann_sqlerr(__FILE__, __LINE__);
         $contribution = mysqli_fetch_assoc($fc);
         foreach ($contribution_fields_ar_int as $i) {
-            $contribution[$i] = (int)$contribution[$i];
+            $contribution[ $i ] = (int)$contribution[ $i ];
         }
         foreach ($contribution_fields_ar_str as $i) {
-            $contribution[$i] = $contribution[$i];
+            $contribution[ $i ] = $contribution[ $i ];
         }
-        $mc1->cache_value('freecontribution_', $contribution, $site_config['expires']['contribution']);
+        $cache->set('freecontribution_', $contribution, $site_config['expires']['contribution']);
     }
     if ($contribution['startTime'] < TIME_NOW && $contribution['endTime'] > TIME_NOW) {
         if ($contribution['freeleechEnabled'] == 1) {
@@ -353,7 +357,8 @@ if (portblacklisted($port)) {
 } elseif ($site_config['connectable_check']) {
     //== connectable checking - pdq
     $connkey = 'conn:' . md5($realip . ':' . $port);
-    if (($connectable = $mc1->get_value($connkey)) === false) {
+    $connectable = $cache->get($connkey);
+    if ($connectable === false || is_null($connectable)) {
         $sockres = @fsockopen($ip, $port, $errno, $errstr, 5);
         if (!$sockres) {
             $connectable = 'no';
@@ -363,7 +368,7 @@ if (portblacklisted($port)) {
             $conn_ttl = 900;
             @fclose($sockres);
         }
-        $mc1->cache_value($connkey, $connectable, $conn_ttl);
+        $cache->set($connkey, $connectable, $conn_ttl);
     }
 }
 //==
@@ -518,16 +523,12 @@ if ($seeder == 'yes') {
         $torrent_updateset[] = 'visible = \'yes\'';
     }
     $torrent_updateset[] = 'last_action = ' . TIME_NOW;
-    $mc1->begin_transaction('torrent_details_' . $torrentid);
-    $mc1->update_row(false, [
+    $cache->update_row('torrent_details_' . $torrentid, [
         'visible' => 'yes',
-    ]);
-    $mc1->commit_transaction($site_config['expires']['torrent_details']);
-    $mc1->begin_transaction('last_action_' . $torrentid);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['torrent_details']);
+    $cache->update_row('last_action_' . $torrentid, [
         'lastseed' => TIME_NOW,
-    ]);
-    $mc1->commit_transaction(1800);
+    ], 1800);
 }
 if (count($torrent_updateset)) {
     ann_sql_query('UPDATE torrents SET ' . join(',', $torrent_updateset) . ' WHERE id = ' . ann_sqlesc($torrentid)) or ann_sqlerr(__FILE__, __LINE__);
@@ -537,8 +538,8 @@ if (count($snatch_updateset)) {
 }
 if (count($user_updateset)) {
     ann_sql_query('UPDATE users SET ' . join(',', $user_updateset) . ' WHERE id = ' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
-    $mc1->delete_value('userstats_' . $userid);
-    $mc1->delete_value('user_stats_' . $userid);
+    $cache->delete('userstats_' . $userid);
+    $cache->delete('user_stats_' . $userid);
 }
 if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && $_SERVER['HTTP_ACCEPT_ENCODING'] == 'gzip') {
     header('Content-Encoding: gzip');

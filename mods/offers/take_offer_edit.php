@@ -1,4 +1,6 @@
 <?php
+global $CURUSER;
+
 $res = sql_query("SELECT userid, cat FROM offers WHERE id = $id") or sqlerr(__FILE__, __LINE__);
 $num = mysqli_fetch_assoc($res);
 if ($CURUSER['id'] != $num['userid'] && $CURUSER['class'] < UC_MODERATOR) {
@@ -14,7 +16,7 @@ if (!empty($_POST['picture'])) {
     //    $picture2 = trim(urldecode($picture));
     //    $headers  = get_headers($picture2);
     //    if (strpos($headers[0], '200') === false)
-    //        $picture = $TBDEV['baseurl'].'/images/notfound.png';
+    //        $picture = "{$site_config['pic_base_url']}notfound.png";
     $pic = '[img]' . $picture . "[/img]\n";
 }
 $descr = "$pic";

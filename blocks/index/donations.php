@@ -1,13 +1,14 @@
 <?php
+global $site_config, $cache, $lang;
 
-//== 09 Donation progress
 $progress = '';
-if (($totalfunds_cache = $mc1->get_value('totalfunds_')) === false) {
-    $totalfunds_cache = mysqli_fetch_assoc(sql_query('SELECT sum(cash) as total_funds FROM funds'));
-    $totalfunds_cache['total_funds'] = (int) $totalfunds_cache['total_funds'];
-    $mc1->cache_value('totalfunds_', $totalfunds_cache, $site_config['expires']['total_funds']);
+$totalfunds_cache = $cache->get('totalfunds_');
+if ($totalfunds_cache === false || is_null($totalfunds_cache)) {
+    $totalfunds_cache = mysqli_fetch_assoc(sql_query('SELECT sum(cash) AS total_funds FROM funds'));
+    $totalfunds_cache['total_funds'] = (int)$totalfunds_cache['total_funds'];
+    $cache->set('totalfunds_', $totalfunds_cache, $site_config['expires']['total_funds']);
 }
-$funds_so_far = (int) $totalfunds_cache['total_funds'];
+$funds_so_far = (int)$totalfunds_cache['total_funds'];
 $funds_difference = $site_config['totalneeded'] - $funds_so_far;
 $progress = number_format($funds_so_far / $site_config['totalneeded'] * 100, 1);
 if ($progress >= 100) {

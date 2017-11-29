@@ -8,9 +8,9 @@ check_user_status();
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Avatar maker</title>
-    <link rel="stylesheet" href="css/colorpicker.css" />
-    <link rel="stylesheet" href="css/fancycheckbox.css" />
-    <link rel="stylesheet" href="css/avatarmaker.css" />
+    <link rel="stylesheet" href="css/colorpicker.css"/>
+    <link rel="stylesheet" href="css/fancycheckbox.css"/>
+    <link rel="stylesheet" href="css/avatarmaker.css"/>
     <script src="js/fancycheckbox.js"></script>
     <script src="js/jquery.js"></script>
     <script src="js/colorpicker.js"></script>
@@ -57,8 +57,10 @@ check_user_status();
                 <legend>Preview</legend>
                 <div class="has-text-centered">
                     <input type="hidden" value="<?php
+                    global $CURUSER;
                     echo $CURUSER['username'] ?>" id="user"/>
                     <img id="preview" src="avatar.php?user=<?php
+                    global $CURUSER;
                     echo $CURUSER['username'] ?>" width="150" height="190" alt="Avatar"/></div>
             </fieldset>
         </td>
@@ -69,19 +71,22 @@ check_user_status();
                     <tr>
                         <td nowrap="nowrap" class="info">Background color</td>
                         <td width="100%"><input type="text" id="bgColor" readonly="readonly" size="25"/>
-                            <img id="colorSelector" title="Select color" src="{$site_config['pic_base_url']}color_wheel.png" width="16"
+                            <img id="colorSelector" title="Select color"
+                                 src="{$site_config['pic_base_url']}color_wheel.png" width="16"
                                  height="16" alt="Color Wheel"/></td>
                     </tr>
                     <tr>
                         <td nowrap="nowrap" class="info">Font color</td>
                         <td width="100%"><input type="text" id="fColor" readonly="readonly" size="25"/>
-                            <img id="colorSelector1" title="Select color" src="{$site_config['pic_base_url']}color_wheel.png" width="16"
+                            <img id="colorSelector1" title="Select color"
+                                 src="{$site_config['pic_base_url']}color_wheel.png" width="16"
                                  height="16" alt="Color Wheel"/></td>
                     </tr>
                     <tr>
                         <td nowrap="nowrap" class="info">Border color</td>
                         <td width="100%"><input type="text" id="bColor" readonly="readonly" size="25"/>
-                            <img id="colorSelector2" title="Select color" src="{$site_config['pic_base_url']}color_wheel.png" width="16"
+                            <img id="colorSelector2" title="Select color"
+                                 src="{$site_config['pic_base_url']}color_wheel.png" width="16"
                                  height="16" alt="Color Wheel"/></td>
                     </tr>
                     <tr>
@@ -139,6 +144,7 @@ check_user_status();
                     <tr>
                         <td nowrap="nowrap" class="info"><input style="width:150px;" type="text" onclick="select();"
                                                                 value="<?php
+                                                                global $CURUSER, $site_config;
                                                                 echo $site_config['baseurl'] ?>/avatar/settings/<?php
                                                                 echo strtolower($CURUSER['username']) ?>.png"
                                                                 readonly="readonly"/>

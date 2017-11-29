@@ -1,8 +1,9 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $site_config;
+global $CURUSER, $site_config, $cache;
 
 $lang = array_merge(load_language('global'), load_language('friends'));
 $userid = isset($_GET['id']) ? (int)$_GET['id'] : $CURUSER['id'];
@@ -39,8 +40,7 @@ if ($action == 'add') {
         $subject = sqlesc('New Friend Request!');
         $body = sqlesc("[url={$site_config['baseurl']}/userdetails.php?id=$userid][b]This person[/b][/url] has added you to their Friends List. See all Friend Requests [url={$site_config['baseurl']}/friends.php#pending][b]Here[/b][/url]\n ");
         sql_query('INSERT INTO messages (sender, receiver, added, subject, msg) VALUES (0, ' . sqlesc($targetid) . ", '" . TIME_NOW . "', $subject, $body)") or sqlerr(__FILE__, __LINE__);
-        $mc1->delete_value('inbox_new_' . $targetid);
-        $mc1->delete_value('inbox_new_sb_' . $targetid);
+        $cache->increment('inbox_' . $targetid);
         if (mysqli_num_rows($r) == 1) {
             stderr('Error', 'User ID is already in your ' . htmlsafechars($table_is) . ' list.');
         }
@@ -54,12 +54,12 @@ if ($action == 'add') {
             stderr('Error', 'User ID is already in your ' . htmlsafechars($table_is) . ' list.');
         }
         sql_query("INSERT INTO $table_is VALUES (0, " . sqlesc($userid) . ', ' . sqlesc($targetid) . ')') or sqlerr(__FILE__, __LINE__);
-        $mc1->delete_value('Blocks_' . $userid);
-        $mc1->delete_value('Friends_' . $userid);
-        $mc1->delete_value('Blocks_' . $targetid);
-        $mc1->delete_value('Friends_' . $targetid);
-        $mc1->delete_value('user_friends_' . $targetid);
-        $mc1->delete_value('user_friends_' . $userid);
+        $cache->delete('Blocks_' . $userid);
+        $cache->delete('Friends_' . $userid);
+        $cache->delete('Blocks_' . $targetid);
+        $cache->delete('Friends_' . $targetid);
+        $cache->delete('user_friends_' . $targetid);
+        $cache->delete('user_friends_' . $userid);
         header("Location: {$site_config['baseurl']}/friends.php?id=$userid#$frag");
         die;
     }
@@ -82,17 +82,16 @@ if ($action == 'confirm') {
     if ($type == 'friend') {
         sql_query('INSERT INTO friends VALUES (0, ' . sqlesc($userid) . ', ' . sqlesc($targetid) . ", 'yes') ON DUPLICATE KEY UPDATE userid=" . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
         sql_query("UPDATE friends SET confirmed = 'yes' WHERE userid=" . sqlesc($targetid) . ' AND friendid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-        $mc1->delete_value('Blocks_' . $userid);
-        $mc1->delete_value('Friends_' . $userid);
-        $mc1->delete_value('Blocks_' . $targetid);
-        $mc1->delete_value('Friends_' . $targetid);
-        $mc1->delete_value('user_friends_' . $targetid);
-        $mc1->delete_value('user_friends_' . $userid);
+        $cache->delete('Blocks_' . $userid);
+        $cache->delete('Friends_' . $userid);
+        $cache->delete('Blocks_' . $targetid);
+        $cache->delete('Friends_' . $targetid);
+        $cache->delete('user_friends_' . $targetid);
+        $cache->delete('user_friends_' . $userid);
         $subject = sqlesc('You have a new friend!');
         $body = sqlesc("[url={$site_config['baseurl']}/userdetails.php?id=$userid][b]This person[/b][/url] has just confirmed your Friendship Request. See your Friends  [url={$site_config['baseurl']}/friends.php][b]Here[/b][/url]\n ");
         sql_query('INSERT INTO messages (sender, receiver, added, subject, msg) VALUES (0, ' . sqlesc($targetid) . ", '" . TIME_NOW . "', $subject, $body)") or sqlerr(__FILE__, __LINE__);
-        $mc1->delete_value('inbox_new_' . $targetid);
-        $mc1->delete_value('inbox_new_sb_' . $targetid);
+        $cache->increment('inbox_' . $targetid);
         $frag = 'friends';
         header("Refresh: 3; url=friends.php?id=$userid#$frag");
         mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 1 ? stderr('Success', 'Friend was added successfully.') : stderr('oopss', 'That friend is already confirmed !! .');
@@ -114,10 +113,10 @@ elseif ($action == 'delpending') {
     }
     if ($type == 'friend') {
         sql_query('DELETE FROM friends WHERE userid=' . sqlesc($targetid) . ' AND friendid=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-        $mc1->delete_value('Friends_' . $userid);
-        $mc1->delete_value('Friends_' . $targetid);
-        $mc1->delete_value('user_friends_' . $userid);
-        $mc1->delete_value('user_friends_' . $targetid);
+        $cache->delete('Friends_' . $userid);
+        $cache->delete('Friends_' . $targetid);
+        $cache->delete('user_friends_' . $userid);
+        $cache->delete('user_friends_' . $targetid);
         $frag = 'friends';
         header("Refresh: 3; url=friends.php?id=$userid#$frag");
         mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 1 ? stderr('Success', 'Friend was deleted successfully.') : stderr('oopss', 'No friend request found with ID !! .');
@@ -140,17 +139,17 @@ elseif ($action == 'delete') {
     if ($type == 'friend') {
         sql_query('DELETE FROM friends WHERE userid=' . sqlesc($userid) . ' AND friendid=' . sqlesc($targetid)) or sqlerr(__FILE__, __LINE__);
         sql_query('DELETE FROM friends WHERE userid=' . sqlesc($targetid) . ' AND friendid=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-        $mc1->delete_value('Friends_' . $userid);
-        $mc1->delete_value('Friends_' . $targetid);
-        $mc1->delete_value('user_friends_' . $userid);
-        $mc1->delete_value('user_friends_' . $targetid);
+        $cache->delete('Friends_' . $userid);
+        $cache->delete('Friends_' . $targetid);
+        $cache->delete('user_friends_' . $userid);
+        $cache->delete('user_friends_' . $targetid);
         $frag = 'friends';
         header("Refresh: 3; url=friends.php?id=$userid#$frag");
         mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 1 ? stderr('Success', 'Friend was deleted successfully.') : stderr('oopss', 'No friend request found with ID !! .');
     } elseif ($type == 'block') {
         sql_query('DELETE FROM blocks WHERE userid=' . sqlesc($userid) . ' AND blockid=' . sqlesc($targetid)) or sqlerr(__FILE__, __LINE__);
-        $mc1->delete_value('Blocks_' . $userid);
-        $mc1->delete_value('Blocks_' . $targetid);
+        $cache->delete('Blocks_' . $userid);
+        $cache->delete('Blocks_' . $targetid);
         $frag = 'blocks';
         header("Refresh: 3; url=friends.php?id=$userid#$frag");
         mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 1 ? stderr('Success', 'Block was deleted successfully.') : stderr('oopss', 'No Block found with ID !! .');
@@ -166,7 +165,7 @@ $user = mysqli_fetch_assoc($res) or stderr($lang['friends_error'], $lang['friend
 $HTMLOUT = '';
 //== Pending
 $i = 0;
-$res = sql_query('SELECT f.userid as id, u.username, u.class, u.avatar, u.title, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.perms FROM friends AS f LEFT JOIN users as u ON f.userid = u.id WHERE friendid=' . sqlesc($CURUSER['id']) . " AND f.confirmed='no' AND NOT f.userid IN (SELECT blockid FROM blocks WHERE blockid=f.userid) ORDER BY username") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT f.userid AS id, u.username, u.class, u.avatar, u.title, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.perms FROM friends AS f LEFT JOIN users AS u ON f.userid = u.id WHERE friendid=' . sqlesc($CURUSER['id']) . " AND f.confirmed='no' AND NOT f.userid IN (SELECT blockid FROM blocks WHERE blockid=f.userid) ORDER BY username") or sqlerr(__FILE__, __LINE__);
 $friendsp = '';
 if (mysqli_num_rows($res) == 0) {
     $friendsp = "<em>{$lang['friends_pending_empty']}.</em>";
@@ -191,7 +190,7 @@ if (mysqli_num_rows($res) == 0) {
 }
 //== Pending ends
 //== Awaiting start
-$res = sql_query('SELECT f.friendid as id, u.username, u.donor, u.class, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM friends AS f LEFT JOIN users as u ON f.friendid = u.id WHERE userid=' . sqlesc($userid) . " AND f.confirmed='no' ORDER BY username") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT f.friendid AS id, u.username, u.donor, u.class, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM friends AS f LEFT JOIN users AS u ON f.friendid = u.id WHERE userid=' . sqlesc($userid) . " AND f.confirmed='no' ORDER BY username") or sqlerr(__FILE__, __LINE__);
 $friendreqs = '';
 if (mysqli_num_rows($res) == 0) {
     $friendreqs = '<em>Your requests list is empty.</em>';
@@ -213,7 +212,7 @@ if (mysqli_num_rows($res) == 0) {
 //== Awaiting ends
 //== Friends block
 $i = 0;
-$res = sql_query('SELECT f.friendid as id, u.username, u.class, u.avatar, u.title, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.uploaded, u.downloaded, u.country, u.perms FROM friends AS f LEFT JOIN users as u ON f.friendid = u.id WHERE userid=' . sqlesc($userid) . " AND f.confirmed='yes' ORDER BY username") or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT f.friendid AS id, u.username, u.class, u.avatar, u.title, u.donor, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.uploaded, u.downloaded, u.country, u.perms FROM friends AS f LEFT JOIN users AS u ON f.friendid = u.id WHERE userid=' . sqlesc($userid) . " AND f.confirmed='yes' ORDER BY username") or sqlerr(__FILE__, __LINE__);
 $friends = '';
 if (mysqli_num_rows($res) == 0) {
     $friends = '<em>Your friends list is empty.</em>';
@@ -237,7 +236,7 @@ if (mysqli_num_rows($res) == 0) {
     }
 }
 
-$res = sql_query('SELECT b.blockid as id, u.username, u.donor, u.class, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM blocks AS b LEFT JOIN users as u ON b.blockid = u.id WHERE userid=' . sqlesc($userid) . ' ORDER BY username') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT b.blockid AS id, u.username, u.donor, u.class, u.warned, u.enabled, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM blocks AS b LEFT JOIN users AS u ON b.blockid = u.id WHERE userid=' . sqlesc($userid) . ' ORDER BY username') or sqlerr(__FILE__, __LINE__);
 $blocks = '';
 if (mysqli_num_rows($res) == 0) {
     $blocks = "{$lang['friends_blocks_empty']}<em>.</em>";
@@ -258,7 +257,6 @@ foreach ($countries as $cntry) {
     }
 }
 $HTMLOUT .= "
-    <div class='container is-fluid portlet'>
         <h1>{$lang['friends_personal']} " . htmlsafechars($user['username'], ENT_QUOTES) . " $country</h1>
         <table class='table table-bordered table-striped top20 bottom20'>
             <thead>
@@ -296,6 +294,5 @@ $HTMLOUT .= "
             <a href='./users.php'>
                 {$lang['friends_user_list']}
             </a>
-        </div>
-    </div>";
-echo stdhead("{$lang['friends_stdhead']} " . htmlsafechars($user['username'])) . $HTMLOUT . stdfoot();
+        </div>";
+echo stdhead("{$lang['friends_stdhead']} " . htmlsafechars($user['username'])) . wrapper($HTMLOUT) . stdfoot();

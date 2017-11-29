@@ -1,23 +1,31 @@
 <?php
+global $site_config, $cache, $lang, $db;
+
 $HTMLOUT .= "
     <a id='latesttorrents-hash'></a>
     <fieldset id='latesttorrents' class='header'>
         <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_latest']}</legend>
         <div class='has-text-centered'>";
-if (($top5torrents = $mc1->get_value('top5_tor_')) === false) {
-    $res = sql_query("SELECT t.id, t.seeders, t.poster, t.leechers, t.name, t.times_completed, t.category, c.image AS cat_pic, c.name AS cat_name, t.added, t.size
-                        FROM torrents AS t
-                        LEFT JOIN categories AS c ON t.category = c.id
-                        ORDER BY seeders + leechers DESC
-                        LIMIT {$site_config['latest_torrents_limit']}") or sqlerr(__FILE__, __LINE__);
-    while ($top5torrent = mysqli_fetch_assoc($res)) {
-        $top5torrents[] = $top5torrent;
+$top5torrents = $cache->get('top5_tor_');
+if ($top5torrents === false || is_null($top5torrents)) {
+    $query = $db->from('torrents')
+        ->leftJoin('users ON torrents.owner = users.id')
+        ->select('users.username')
+        ->select('users.class')
+        ->leftJoin('categories ON torrents.category = categories.id')
+        ->select('categories.name AS cat')
+        ->select('categories.image')
+        ->orderBy('seeders + leechers DESC')
+        ->limit(5);
+    foreach ($query as $row) {
+        $top5torrents[] = $row;
     }
-    $mc1->cache_value('top5_tor_', $top5torrents, $site_config['expires']['top5_torrents']);
+
+    $cache->set('top5_tor_', $top5torrents, $site_config['expires']['top5_torrents']);
 }
 if (count($top5torrents) > 0) {
     $HTMLOUT .= "
-            <div class='module table-wrapper'>
+            <div class='module table-wrapper bottom20'>
                 <div class='badge badge-top'></div>
                 <table class='table table-bordered table-striped'>";
     $HTMLOUT .= "
@@ -42,27 +50,28 @@ if (count($top5torrents) > 0) {
             $HTMLOUT .= "
                         <tr>
                             <td class='has-text-centered'>
-                                <img src='./images/caticons/" . get_categorie_icons() . "/" . htmlsafechars($top5torrentarr['cat_pic']) . "' class='tooltipper' alt='" . htmlsafechars($top5torrentarr['cat_name']) . "' title='" . htmlsafechars($top5torrentarr['cat_name']) . "' />
+                                <img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($top5torrentarr['image']) . "' class='tooltipper' alt='" . htmlsafechars($top5torrentarr['cat']) . "' title='" . htmlsafechars($top5torrentarr['cat']) . "' />
                             </td>
                             <td>
                                 <a href='{$site_config['baseurl']}/details.php?id=" . (int)$top5torrentarr['id'] . "&amp;hit=1'>
                                     <span class='dt-tooltipper-large' data-tooltip-content='#top_id_{$top5torrentarr['id']}_tooltip'>
                                         {$torrname}
                                         <div class='tooltip_templates'>
-                                            <span id='top_id_{$top5torrentarr['id']}_tooltip'>
+                                            <div id='top_id_{$top5torrentarr['id']}_tooltip'>
                                                 <div class='is-flex tooltip-torrent'>
                                                     <span class='margin10'>
                                                         $poster
                                                     </span>
                                                     <span class='margin10'>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>" . htmlsafechars($top5torrentarr['name']) . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_uploader']}</b><span class='" . get_user_class_name($top5torrentarr['class'], true) . "'>" . htmlsafechars($top5torrentarr['username']) . "</span><br>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>" . get_date($top5torrentarr['added'], 'DATE', 0, 1) . "<br>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>" . mksize(htmlsafechars($top5torrentarr['size'])) . "<br>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_seeder']}</b>" . (int)$top5torrentarr['seeders'] . "<br>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_leecher']}</b>" . (int)$top5torrentarr['leechers'] . "<br>
                                                     </span>
                                                 </div>
-                                            </span>
+                                            </div>
                                         </div>
                                     </span>
                                 </a>
@@ -88,18 +97,21 @@ if (count($top5torrents) > 0) {
         }
     }
 }
-if (($last5torrents = $mc1->get_value('last5_tor_')) === false) {
-    $sql = "SELECT t.id, t.seeders, t.poster, t.leechers, t.name, t.times_completed, t.category, c.image AS cat_pic, c.name AS cat_name, t.added, t.size
-                FROM torrents AS t
-                LEFT JOIN categories AS c ON t.category = c.id
-                WHERE visible='yes'
-                ORDER BY added DESC
-                LIMIT {$site_config['latest_torrents_limit']}";
-    $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    while ($last5torrent = mysqli_fetch_assoc($result)) {
-        $last5torrents[] = $last5torrent;
+$last5torrents = $cache->get('last5_tor_');
+if ($last5torrents === false || is_null($last5torrents)) {
+    $query = $db->from('torrents')
+        ->leftJoin('users ON torrents.owner = users.id')
+        ->select('users.username')
+        ->select('users.class')
+        ->leftJoin('categories ON torrents.category = categories.id')
+        ->select('categories.name AS cat')
+        ->select('categories.image')
+        ->orderBy('added DESC')
+        ->limit(5);
+    foreach ($query as $row) {
+        $last5torrents[] = $row;
     }
-    $mc1->cache_value('last5_tor_', $last5torrents, $site_config['expires']['last5_torrents']);
+    $cache->set('last5_tor_', $last5torrents, $site_config['expires']['last5_torrents']);
 }
 if (count($last5torrents) > 0) {
     $HTMLOUT .= "
@@ -127,27 +139,28 @@ if (count($last5torrents) > 0) {
             $HTMLOUT .= "
                         <tr id='id_{$last5torrentarr['id']}_tooltip'>
                             <td class='has-text-centered'>
-                                <img src='./images/caticons/" . get_categorie_icons() . "/" . htmlsafechars($last5torrentarr['cat_pic']) . "' class='tooltipper' alt='" . htmlsafechars($last5torrentarr['cat_name']) . "' title='" . htmlsafechars($last5torrentarr['cat_name']) . "' />
+                                <img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($last5torrentarr['image']) . "' class='tooltipper' alt='" . htmlsafechars($last5torrentarr['cat']) . "' title='" . htmlsafechars($last5torrentarr['cat']) . "' />
                             </td>
                             <td>
                                 <a href='{$site_config['baseurl']}/details.php?id=" . (int)$last5torrentarr['id'] . "&amp;hit=1'>
                                     <span class='dt-tooltipper-large' data-tooltip-content='#last_id_{$last5torrentarr['id']}_tooltip'>
                                         {$torrname}
                                         <div class='tooltip_templates'>
-                                            <span id='last_id_{$last5torrentarr['id']}_tooltip'>
+                                            <div id='last_id_{$last5torrentarr['id']}_tooltip'>
                                                 <div class='is-flex tooltip-torrent'>
                                                     <span class='margin10'>
                                                         $poster
                                                     </span>
                                                     <span class='margin10'>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>" . htmlsafechars($last5torrentarr['name']) . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_uploader']}</b><span class='" . get_user_class_name($last5torrentarr['class'], true) . "'>" . htmlsafechars($last5torrentarr['username']) . "</span><br>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>" . get_date($last5torrentarr['added'], 'DATE', 0, 1) . "<br>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>" . mksize(htmlsafechars($last5torrentarr['size'])) . "<br>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_seeder']}</b>" . (int)$last5torrentarr['seeders'] . "<br>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_leecher']}</b>" . (int)$last5torrentarr['leechers'] . "<br>
                                                     </span>
                                                 </div>
-                                            </span>
+                                            </div>
                                         </div>
                                     </span>
                                 </a>

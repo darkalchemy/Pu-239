@@ -4,7 +4,9 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-$lang = array_merge(load_language('global'));
+global $CURUSER, $site_config;
+
+$lang = load_language('global');
 $nick = ($CURUSER ? $CURUSER['username'] : ('Guest' . random_int(1000, 9999)));
 $form_template = <<<PAYPAL
 <form action='https://www.{$site_config['paypal_config']['sandbox']}paypal.com/cgi-bin/webscr' method='post'>
@@ -19,7 +21,7 @@ $form_template = <<<PAYPAL
 <input type='hidden' name='rm' value='2' />
 <input type='hidden' name='custom' value='#id' />
 <input type='hidden' name='return' value='{$site_config['baseurl']}/donate.php?done=1' />
-<input type='submit' value='Donate #amount {$site_config['paypal_config']['currency']}' />
+<input type='submit' class='button is-small' value='Donate $#amount {$site_config['paypal_config']['currency']}' />
 </form>
 PAYPAL;
 //this shows what they get
@@ -89,15 +91,34 @@ $done = isset($_GET['done']) && $_GET['done'] == 1 ? true : false;
 if ($site_config['paypal_config']['enable'] == 0) {
     $out = stdmsg('Sorry', 'Donation system is currently offline.');
 } else {
-    $out = begin_main_frame() . ($done ? stdmsg('Success', 'Your donations was sent to paypal wait for processing, this should be immediately! If any errors appear youll be contacted by someone from staff') : '') . begin_frame('Donate') . '<table class="table table-bordered table-striped"><tr>';
+    $out = '';
+    if ($done) {
+        setSessionVar('is-uccess', 'Your donations was sent to paypal wait for processing, this should be immediately! If any errors appear youll be contacted by someone from staff');
+    }
+    $out .= '
+            <h1>Donate</h1>
+            <div class="level">';
     foreach ($donate as $amount => $ops) {
-        $out .= '<td><table class="table table-bordered table-striped">
-			  <tr><td class="colhead">Donate ' . $amount . ' ' . $site_config['paypal_config']['currency'] . '</td></tr>
-			  <tr><td><ul>';
+        $out .= '
+            <div class="w-15">';
+        $header = '
+			    <tr>
+			        <th class="has-text-centered">Donate $' . $amount . ' ' . $site_config['paypal_config']['currency'] . '</th>
+			    </tr>';
+        $body = '
+			    <tr>
+			        <td>
+			            <ul>';
         foreach ($ops as $op) {
-            $out .= '<li>' . $op . '</li>';
+            $body .= '
+                            <li>' . $op . '</li>';
         }
-        $out .= '</ul></td></tr><tr><td>' . str_replace([
+        $body .= '
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="has-text-centered">' . str_replace([
                 '#amount',
                 '#item_name',
                 '#item_number',
@@ -108,8 +129,13 @@ if ($site_config['paypal_config']['enable'] == 0) {
                 $amount,
                 $CURUSER['id'],
             ], $form_template);
-        $out .= '</td></tr></table></td>';
+        $body .= '
+                    </td>
+                </tr>';
+        $out .= main_table($body, $header);
+        $out .= '        
+            </div>';
     }
-    $out .= '</tr></table>' . end_frame() . stdmsg('Note', 'If you want to say something to ' . $site_config['site_name'] . ' staff, click on <b>Add special instructions to seller</b> link as soon as you are on paypal.com page' . '      Please note donating will reset Hit and Runs, any warnings and download bans.') . end_main_frame();
+    $out .= '</div>' . stdmsg('Note', '<p>If you want to say something to ' . $site_config['site_name'] . ' staff, click on <b>Add special instructions to seller</b> link as soon as you are on paypal.com page.</p><p>Please note donating will reset Hit and Runs, any warnings and download bans.</p>');
 }
-echo stdhead('Donate') . $out . stdfoot();
+echo stdhead('Donate') . wrapper($out) . stdfoot();

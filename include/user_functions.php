@@ -1,5 +1,8 @@
 <?php
 //=== Anonymous function
+/**
+ * @return mixed
+ */
 function get_anonymous()
 {
     global $CURUSER;
@@ -8,6 +11,9 @@ function get_anonymous()
 }
 
 //== + Parked function
+/**
+ * @return mixed
+ */
 function get_parked()
 {
     global $CURUSER;
@@ -15,16 +21,36 @@ function get_parked()
     return $CURUSER['parked_until'];
 }
 
+/**
+ * @param     $msg
+ * @param int $channel
+ * @param int $ttl
+ */
 function autoshout($msg, $channel = 0, $ttl = 7200)
 {
     global $site_config;
-    require_once INCL_DIR . 'bbcode_functions.php';
+    include_once INCL_DIR . 'bbcode_functions.php';
     if (user_exists($site_config['chatBotID'])) {
-        sql_query('INSERT INTO ajax_chat_messages (userID, userName, userRole, channel, dateTime, ip, text, ttl) VALUES (' . sqlesc($site_config['chatBotID']) . ', ' . sqlesc($site_config['chatBotName']) . ', 100, ' . sqlesc($channel) . ', NOW(), ' . sqlesc(ipToStorageFormat('127.0.0.1')) . ', ' . sqlesc($msg) . ', ' . sqlesc($ttl) . ')') or sqlerr(__FILE__, __LINE__);
+        sql_query(
+            'INSERT INTO ajax_chat_messages 
+            (userID, userName, userRole, channel, dateTime, ip, text, ttl) 
+            VALUES (' . sqlesc($site_config['chatBotID']) . '
+            , ' . sqlesc($site_config['chatBotName']) . '
+            , 100, ' . sqlesc($channel) . ', NOW(), ' . ipToStorageFormat('127.0.0.1') . '
+            , ' . sqlesc($msg) . ', ' . sqlesc($ttl) . ')'
+        ) or sqlerr(__FILE__, __LINE__);
     }
 }
 
 //== Get rep by CF
+/**
+ * @param        $user
+ * @param string $mode
+ * @param bool   $rep_is_on
+ * @param int    $post_id
+ *
+ * @return string
+ */
 function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
 {
     global $site_config, $CURUSER;
@@ -42,7 +68,7 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
         // Hmmm...bit of jiggery-pokery here, couldn't think of a better way.
         $max_rep = max(array_keys($reputations));
         if ($user['reputation'] >= $max_rep) {
-            $user_reputation = $reputations[$max_rep];
+            $user_reputation = $reputations[ $max_rep ];
         } else {
             foreach ($reputations as $y => $x) {
                 if ($y > $user['reputation']) {
@@ -121,6 +147,11 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
     return '<span title="Set offline by admin setting">Rep System Offline</span>';
 }
 
+/**
+ * @param $ratio
+ *
+ * @return string
+ */
 function get_ratio_color($ratio)
 {
     if ($ratio < 0.1) {
@@ -187,6 +218,11 @@ function get_ratio_color($ratio)
     return '#777777';
 }
 
+/**
+ * @param $ratio
+ *
+ * @return string
+ */
 function get_slr_color($ratio)
 {
     if ($ratio < 0.025) {
@@ -268,6 +304,11 @@ function get_slr_color($ratio)
     return '#777777';
 }
 
+/**
+ * @param $ratio_to_check
+ *
+ * @return string
+ */
 function ratio_image_machine($ratio_to_check)
 {
     global $site_config;
@@ -310,6 +351,12 @@ function ratio_image_machine($ratio_to_check)
     }
 }
 
+/**
+ * @param      $class
+ * @param bool $to_lower
+ *
+ * @return string
+ */
 function get_user_class_name($class, $to_lower = false)
 {
     global $class_names;
@@ -317,15 +364,20 @@ function get_user_class_name($class, $to_lower = false)
     if (!valid_class($class)) {
         return '';
     }
-    if (isset($class_names[$class]) && $to_lower) {
-        return strtolower(str_replace(' ', '_', $class_names[$class]));
-    } elseif (isset($class_names[$class])) {
-        return $class_names[$class];
+    if (isset($class_names[ $class ]) && $to_lower) {
+        return strtolower(str_replace(' ', '_', $class_names[ $class ]));
+    } elseif (isset($class_names[ $class ])) {
+        return $class_names[ $class ];
     } else {
         return '';
     }
 }
 
+/**
+ * @param $class
+ *
+ * @return string
+ */
 function get_user_class_color($class)
 {
     global $class_colors;
@@ -333,13 +385,18 @@ function get_user_class_color($class)
     if (!valid_class($class)) {
         return '';
     }
-    if (isset($class_colors[$class])) {
-        return $class_colors[$class];
+    if (isset($class_colors[ $class ])) {
+        return $class_colors[ $class ];
     } else {
         return '';
     }
 }
 
+/**
+ * @param $class
+ *
+ * @return string
+ */
 function get_user_class_image($class)
 {
     global $class_images;
@@ -347,13 +404,18 @@ function get_user_class_image($class)
     if (!valid_class($class)) {
         return '';
     }
-    if (isset($class_images[$class])) {
-        return $class_images[$class];
+    if (isset($class_images[ $class ])) {
+        return $class_images[ $class ];
     } else {
         return '';
     }
 }
 
+/**
+ * @param $class
+ *
+ * @return bool
+ */
 function valid_class($class)
 {
     $class = (int)$class;
@@ -361,6 +423,12 @@ function valid_class($class)
     return (bool)($class >= UC_MIN && $class <= UC_MAX);
 }
 
+/**
+ * @param int $min
+ * @param int $max
+ *
+ * @return bool
+ */
 function min_class($min = UC_MIN, $max = UC_MAX)
 {
     global $CURUSER;
@@ -379,20 +447,28 @@ function min_class($min = UC_MIN, $max = UC_MAX)
     return (bool)($CURUSER['class'] >= $minclass && $CURUSER['class'] <= $maxclass);
 }
 
+/**
+ * @param      $user_id
+ * @param bool $icons
+ * @param bool $tooltipper
+ *
+ * @return string|void
+ */
 function format_username($user_id, $icons = true, $tooltipper = true)
 {
-    global $site_config, $mc1;
+    global $site_config, $cache;
     if (empty($user_id)) {
         return;
     }
     $user_id = is_array($user_id) && !empty($user_id['id']) ? (int)$user_id['id'] : (int)$user_id;
     if (!is_array($user_id) && is_numeric($user_id)) {
-        if (($user = $mc1->get_value('user_icons_' . $user_id)) === false) {
+        $user = $cache->get('user_icons_' . $user_id);
+        if ($user === false || is_null($user)) {
             $res = sql_query("SELECT gotgift, gender, id, class, username, donor, title, suspended, warned, leechwarn, downloadpos, chatpost, pirate, king, enabled, perms, avatar
                                 FROM users
                                 WHERE id = " . sqlesc($user_id)) or sqlerr(__FILE__, __LINE__);
             $user = mysqli_fetch_assoc($res);
-            $mc1->cache_value('user_icons_' . $user_id, $user, 60);
+            $cache->set('user_icons_' . $user_id, $user, 60);
         }
     } else {
         file_put_contents('/var/log/nginx/format_username.log', json_encode(debug_backtrace()) . PHP_EOL, FILE_APPEND);
@@ -446,11 +522,22 @@ function format_username($user_id, $icons = true, $tooltipper = true)
     return trim($str);
 }
 
+/**
+ * @param $id
+ *
+ * @return bool
+ */
 function is_valid_id($id)
 {
     return is_numeric($id) && ($id > 0) && (floor($id) == $id);
 }
 
+/**
+ * @param $up
+ * @param $down
+ *
+ * @return string
+ */
 function member_ratio($up, $down)
 {
     switch (true) {
@@ -473,6 +560,11 @@ function member_ratio($up, $down)
     return $ratio;
 }
 
+/**
+ * @param $ratio
+ *
+ * @return string|void
+ */
 function get_user_ratio_image($ratio)
 {
     global $site_config;
@@ -517,6 +609,12 @@ function get_user_ratio_image($ratio)
     return '';
 }
 
+/**
+ * @param     $avatar
+ * @param int $width
+ *
+ * @return string
+ */
 function avatar_stuff($avatar, $width = 80)
 {
     global $CURUSER, $site_config;
@@ -525,17 +623,27 @@ function avatar_stuff($avatar, $width = 80)
     return $avatar_show;
 }
 
+/**
+ * @param $fo
+ *
+ * @return bool
+ */
 function blacklist($fo)
 {
     global $site_config;
     $blacklist = file_exists($site_config['nameblacklist']) && is_array(unserialize(file_get_contents($site_config['nameblacklist']))) ? unserialize(file_get_contents($site_config['nameblacklist'])) : [];
-    if (isset($blacklist[$fo]) && $blacklist[$fo] == 1) {
+    if (isset($blacklist[ $fo ]) && $blacklist[ $fo ] == 1) {
         return false;
     }
 
     return true;
 }
 
+/**
+ * @param int $windows
+ *
+ * @return float
+ */
 function get_server_load($windows = 0)
 {
     if (class_exists('COM')) {
@@ -554,6 +662,13 @@ function get_server_load($windows = 0)
     }
 }
 
+/**
+ * @param $the_names
+ * @param $the_colors
+ * @param $the_images
+ *
+ * @return string
+ */
 function get_cache_config_data($the_names, $the_colors, $the_images)
 {
     $configfile = '';
@@ -575,14 +690,17 @@ function get_cache_config_data($the_names, $the_colors, $the_images)
     return $configfile;
 }
 
+/**
+ * @param $post_id
+ */
 function clr_forums_cache($post_id)
 {
-    global $mc1, $site_config;
+    global $cache, $site_config;
     $uclass = UC_MIN;
     while ($uclass <= UC_MAX) {
-        $mc1->delete_value('last_post_' . $post_id . '_' . $uclass);
-        $mc1->delete_value('sv_last_post_' . $post_id . '_' . $uclass);
-        $mc1->delete_value('last_posts_' . $uclass);
+        $cache->delete('last_post_' . $post_id . '_' . $uclass);
+        $cache->delete('sv_last_post_' . $post_id . '_' . $uclass);
+        $cache->delete('last_posts_' . $uclass);
         ++$uclass;
     }
 }

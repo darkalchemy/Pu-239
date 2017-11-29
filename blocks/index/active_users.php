@@ -1,6 +1,9 @@
 <?php
+global $site_config, $cache, $lang;
+
 $keys['activeusers'] = 'activeusers';
-//if (($active_users_cache = $mc1->get_value($keys['activeusers'])) === false) {
+$active_users_cache = $cache->get($keys['activeusers']);
+if ($active_users_cache === false || is_null($active_users_cache)) {
     $dt = $_SERVER['REQUEST_TIME'] - 180;
     $activeusers = '';
     $active_users_cache = [];
@@ -17,8 +20,8 @@ $keys['activeusers'] = 'activeusers';
     $active_users_cache['actcount'] = $actcount;
     $active_users_cache['au'] = number_format($actcount);
     $last24_cache['v'] = $v;
-    $mc1->cache_value($keys['activeusers'], $active_users_cache, $site_config['expires']['activeusers']);
-//}
+    $cache->set($keys['activeusers'], $active_users_cache, $site_config['expires']['activeusers']);
+}
 if (!$active_users_cache['activeusers']) {
     $active_users_cache['activeusers'] = $lang['index_active_users_no'];
 }

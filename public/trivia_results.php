@@ -45,7 +45,7 @@ while ($result = mysqli_fetch_assoc($res)) {
 
         while ($player = mysqli_fetch_assoc($query)) {
             extract($player);
-                $table .= "
+            $table .= "
                         <tr>
                             <td>" . format_username((int)$user_id) . "</td>
                             <td>" . sprintf('%.2f%%', $correct / ($correct + $incorrect) * 100) . "</td>

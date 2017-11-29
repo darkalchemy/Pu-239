@@ -4,6 +4,8 @@ require_once CLASS_DIR . 'class_check.php';
 check_user_status();
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $lang;
+
 $lang = array_merge($lang, load_language('editlog'));
 $HTMLOUT = '';
 $file_data = ROOT_DIR . 'dir_list' . DIRECTORY_SEPARATOR . 'data_' . $CURUSER['username'] . '.txt';
@@ -20,14 +22,14 @@ global $site_config;
 $included_extentions = explode(' ', $site_config['coders_log_allowed_ext']);
 foreach ($directories as $path) {
     $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
-    foreach($objects as $name => $object) {
+    foreach ($objects as $name => $object) {
         $ext = pathinfo($name, PATHINFO_EXTENSION);
         if (in_array($ext, $included_extentions)) {
-            $fetch_set[$i]['modify'] = filemtime($name);
-            $fetch_set[$i]['size'] = filesize($name);
-            $fetch_set[$i]['hash'] = hash_file('sha256', $name);
-            $fetch_set[$i]['name'] = $name;
-            $fetch_set[$i]['key'] = $i;
+            $fetch_set[ $i ]['modify'] = filemtime($name);
+            $fetch_set[ $i ]['size'] = filesize($name);
+            $fetch_set[ $i ]['hash'] = hash_file('sha256', $name);
+            $fetch_set[ $i ]['name'] = $name;
+            $fetch_set[ $i ]['key'] = $i;
             $i++;
         }
     }
@@ -47,18 +49,18 @@ foreach ($current as $x) {
     foreach ($last as $y) {
         if ($x['name'] == $y['name']) {
             if (($x['hash'] === $y['hash'])) {
-                unset($current[$x['key']]);
-                unset($last[$y['key']]);
+                unset($current[ $x['key'] ]);
+                unset($last[ $y['key'] ]);
             } else {
-                $current[$x['key']]['status'] = 'modified';
+                $current[ $x['key'] ]['status'] = 'modified';
             }
         }
-        if (isset($last[$y['key']])) {
-            $last[$y['key']]['status'] = 'deleted';
+        if (isset($last[ $y['key'] ])) {
+            $last[ $y['key'] ]['status'] = 'deleted';
         }
     }
-    if (isset($current[$x['key']]['name']) and !isset($current[$x['key']]['status'])) {
-        $current[$x['key']]['status'] = 'new';
+    if (isset($current[ $x['key'] ]['name']) and !isset($current[ $x['key'] ]['status'])) {
+        $current[ $x['key'] ]['status'] = 'new';
     }
 }
 $current += $last;
@@ -84,16 +86,16 @@ $HTMLOUT .= "
             </thead>";
 reset($current);
 $count = 0;
-$current = array_msort($current, array('name'=>SORT_ASC));
+$current = array_msort($current, ['name' => SORT_ASC]);
 foreach ($current as $x) {
     if ($x['status'] == 'new') {
         $HTMLOUT .= "
                 <tr>
                     <td>" .
-                        htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . "
+            htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . "
                     </td>
                     <td>" .
-                        get_date($x['modify'], 'DATE', 0, 1) . "
+            get_date($x['modify'], 'DATE', 0, 1) . "
                     </td>
                 </tr>";
         ++$count;
@@ -123,10 +125,10 @@ foreach ($current as $x) {
         $HTMLOUT .= "
                 <tr>
                     <td>" .
-                        htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . "
+            htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . "
                     </td>
                     <td>" .
-                        get_date($x['modify'], 'DATE', 0, 1) . "
+            get_date($x['modify'], 'DATE', 0, 1) . "
                     </td>
                 </tr>";
         ++$count;
@@ -156,10 +158,10 @@ foreach ($current as $x) {
         $HTMLOUT .= "
                 <tr>
                     <td>" .
-                        htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . "
+            htmlsafechars(str_replace(ROOT_DIR, '', $x['name'])) . "
                     </td>
                     <td>" .
-                        get_date($x['modify'], 'DATE', 0, 1) . "
+            get_date($x['modify'], 'DATE', 0, 1) . "
                     </td>
                 </tr>";
         ++$count;

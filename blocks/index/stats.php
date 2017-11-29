@@ -1,5 +1,8 @@
 <?php
-if (($stats_cache = $mc1->get_value('site_stats_')) === false) {
+global $site_config, $cache, $lang;
+
+$stats_cache = $cache->get('site_stats_');
+if ($stats_cache === false || is_null($stats_cache)) {
     $stats_cache = mysqli_fetch_assoc(sql_query("SELECT *, seeders + leechers AS peers, seeders / leechers AS ratio, unconnectables / (seeders + leechers) AS ratiounconn FROM stats WHERE id = '1' LIMIT 1"));
     $stats_cache['seeders'] = (int)$stats_cache['seeders'];
     $stats_cache['leechers'] = (int)$stats_cache['leechers'];
@@ -25,7 +28,7 @@ if (($stats_cache = $mc1->get_value('site_stats_')) === false) {
     $stats_cache['moderators'] = (int)$stats_cache['moderators'];
     $stats_cache['administrators'] = (int)$stats_cache['administrators'];
     $stats_cache['sysops'] = (int)$stats_cache['sysops'];
-    $mc1->cache_value('site_stats_', $stats_cache, $site_config['expires']['site_stats']);
+    $cache->set('site_stats_', $stats_cache, $site_config['expires']['site_stats']);
 }
 $HTMLOUT .= "
     <a id='stats-hash'></a>

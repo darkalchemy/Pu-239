@@ -1,4 +1,7 @@
 <?php
+/**
+ * @param $data
+ */
 function sitestats_update($data)
 {
     global $site_config, $queries;

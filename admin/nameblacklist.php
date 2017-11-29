@@ -4,6 +4,8 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $site_config, $lang;
+
 $lang = array_merge($lang, load_language('ad_nameblacklist'));
 $blacklist = file_exists($site_config['nameblacklist']) && is_array(unserialize(file_get_contents($site_config['nameblacklist']))) ? unserialize(file_get_contents($site_config['nameblacklist'])) : [];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -13,10 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (strpos($badnames, ',')) {
         foreach (explode(',', $badnames) as $badname) {
-            $blacklist[$badname] = (int)1;
+            $blacklist[ $badname ] = (int)1;
         }
     } else {
-        $blacklist[$badnames] = (int)1;
+        $blacklist[ $badnames ] = (int)1;
     }
     if (file_put_contents($site_config['nameblacklist'], serialize($blacklist))) {
         header('Refresh:2; url=staffpanel.php?tool=nameblacklist');

@@ -4,9 +4,16 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
-$lang = array_merge(load_language('global'));
+global $CURUSER, $site_config;
+
+$lang = load_language('global');
 $HTMLOUT = '';
 if (!function_exists('htmlsafechars')) {
+    /**
+     * @param $var
+     *
+     * @return mixed
+     */
     function htmlsafechars($var)
     {
         return str_replace([

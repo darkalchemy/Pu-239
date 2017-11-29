@@ -113,7 +113,7 @@ if ($search) {
                 $search_post = str_replace(' ', '+', $search);
                 $post_id = (int)$arr['post_id'];
                 $posts = (int)$arr['post_count'];
-                $post_text = tool_tip('<img src="./images/forums/mg.gif" height="14" alt="' . $lang['fe_preview'] . '" title="' . $lang['fe_preview'] . '" />', $body, '' . $lang['fe_post_preview'] . '');
+                $post_text = tool_tip('<img src="./images/forums/mg.gif" class="icon" alt="' . $lang['fe_preview'] . '" title="' . $lang['fe_preview'] . '" />', $body, '' . $lang['fe_post_preview'] . '');
                 $rpic = ($arr['num_ratings'] != 0 ? ratingpic_forums(round($arr['rating_sum'] / $arr['num_ratings'], 1)) : '');
                 $content .= '<tr>
 		<td><img src="./images/forums/' . ($posts < 30 ? ($arr['locked'] == 'yes' ? 'locked' : 'topic') : 'hot_topic') . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
@@ -251,7 +251,7 @@ while ($arr_forums = mysqli_fetch_assoc($res_forums)) {
         $row_count = ($row_count == 3 ? 0 : $row_count);
         $search_in_forums .= ($row_count == 0 ? '' : '');
         ++$row_count;
-        $search_in_forums .= '<tr><td class="one"><input name="f' . $arr_forums['real_forum_id'] . '" type="checkbox" ' . ($selected_forums ? 'checked="checked"' : '') . ' value="1" /><a href="forums.php?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '" class="altlink" title="' . htmlsafechars($arr_forums['description'], ENT_QUOTES) . '">' . htmlsafechars($arr_forums['name'], ENT_QUOTES) . '</a></td></tr> ' . ($row_count == 3 ? '</td></tr>' : '');
+        $search_in_forums .= '<tr><td class="one"><input name="f' . $arr_forums['real_forum_id'] . '" type="checkbox" ' . ($selected_forums ? 'checked' : '') . ' value="1" /><a href="forums.php?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '" class="altlink" title="' . htmlsafechars($arr_forums['description'], ENT_QUOTES) . '">' . htmlsafechars($arr_forums['name'], ENT_QUOTES) . '</a></td></tr> ' . ($row_count == 3 ? '</td></tr>' : '');
     }
     $over_forum_id = $arr_forums['over_forum_id'];
 }
@@ -280,7 +280,7 @@ $search_in_forums .= '<tr><td class="two" colspan="3"><span>' . $lang['sea_if_no
     $row_count = ($row_count == 3 ? 0 : $row_count);
     $search_in_forums .= ($row_count == 0 ? '<tr>' : '');
     ++$row_count;
-    $search_in_forums .= '<td class="one"><input name="f'.$arr_forums['real_forum_id'].'" type="checkbox" '.(in_array($arr_forums['real_forum_id'], $selected_forums) ? 'checked="checked"' : '').' value="1" />
+    $search_in_forums .= '<td class="one"><input name="f'.$arr_forums['real_forum_id'].'" type="checkbox" '.(in_array($arr_forums['real_forum_id'], $selected_forums) ? 'checked' : '').' value="1" />
     <a href="forums.php?action=view_forum&amp;forum_id='.$arr_forums['real_forum_id'].'" class="altlink" title="'.htmlsafechars($arr_forums['description'], ENT_QUOTES).'">'.htmlsafechars($arr_forums['name'], ENT_QUOTES).'</a> '.($row_count == 3 ? '</tr>' : '');
     }
     $over_forum_id = $arr_forums['over_forum_id'];
@@ -328,9 +328,9 @@ $HTMLOUT .= '<h1>' . $lang['sea_forums'] . '</h1>' . $links . ($count > 0 ? '<h1
 	<span>' . $lang['sea_search_in'] . ':</span>
 	</td>
 	<td class="three">
-	<input type="radio" name="search_what" value="title" ' . ($search_what === 'title' ? 'checked="checked"' : '') . ' /> <span>Title(s)</span> 
-	<input type="radio" name="search_what" value="body" ' . ($search_what === 'body' ? 'checked="checked"' : '') . ' /> <span>Body text</span>  
-	<input type="radio" name="search_what" value="all" ' . ($search_what === 'all' ? 'checked="checked"' : '') . ' /> <span>All</span> [ default ]</td>
+	<input type="radio" name="search_what" value="title" ' . ($search_what === 'title' ? 'checked' : '') . ' /> <span>Title(s)</span> 
+	<input type="radio" name="search_what" value="body" ' . ($search_what === 'body' ? 'checked' : '') . ' /> <span>Body text</span>  
+	<input type="radio" name="search_what" value="all" ' . ($search_what === 'all' ? 'checked' : '') . ' /> <span>All</span> [ default ]</td>
 	</tr>
 	<tr>
 	<td class="three" width="60px">
@@ -361,8 +361,8 @@ $HTMLOUT .= '<h1>' . $lang['sea_forums'] . '</h1>' . $links . ($count > 0 ? '<h1
 	<span>' . $lang['sea_sort_by'] . ':</span> 
 	</td>
 	<td class="three">' . $sort_by_drop_down . '		
-	<input type="radio" name="asc_desc" value="ASC" ' . ($asc_desc === 'ASC' ? 'checked="checked"' : '') . ' /> <span>' . $lang['sea_ascending'] . '</span>  
-	<input type="radio" name="asc_desc" value="DESC" ' . ($asc_desc === 'DESC' ? 'checked="checked"' : '') . ' /> <span>' . $lang['sea_descending'] . '</span> 
+	<input type="radio" name="asc_desc" value="ASC" ' . ($asc_desc === 'ASC' ? 'checked' : '') . ' /> <span>' . $lang['sea_ascending'] . '</span>  
+	<input type="radio" name="asc_desc" value="DESC" ' . ($asc_desc === 'DESC' ? 'checked' : '') . ' /> <span>' . $lang['sea_descending'] . '</span> 
 	</td>
 	</tr>
 	<tr><td class="three" width="60px">
@@ -373,8 +373,8 @@ $HTMLOUT .= '<h1>' . $lang['sea_forums'] . '</h1>' . $links . ($count > 0 ? '<h1
 	</tr>
 	<tr>
 	<td class="three" width="30px" colspan="2">
-	<input type="radio" name="show_as" value="list" ' . ($show_as === 'list' ? 'checked="checked"' : '') . ' /> <span>' . $lang['sea_results_as_list'] . '</span>  
-	<input type="radio" name="show_as" value="posts" ' . ($show_as === 'posts' ? 'checked="checked"' : '') . ' /> <span>' . $lang['sea_results_as_posts'] . '</span>  
+	<input type="radio" name="show_as" value="list" ' . ($show_as === 'list' ? 'checked' : '') . ' /> <span>' . $lang['sea_results_as_list'] . '</span>  
+	<input type="radio" name="show_as" value="posts" ' . ($show_as === 'posts' ? 'checked' : '') . ' /> <span>' . $lang['sea_results_as_posts'] . '</span>  
 	<input type="submit" name="button" class="button" value="' . $lang['gl_search'] . '" />
 	</td>
 	</tr>

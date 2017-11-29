@@ -2,6 +2,8 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 dbconn();
+global $CURUSER, $site_config;
+
 $lang = array_merge(load_language('global'), load_language('achievementlist'));
 //$doUpdate = false;
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $CURUSER['class'] >= UC_MAX) {
@@ -15,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $CURUSER['class'] >= UC_MAX) {
     //autoshout($message);
     //$doUpdate = true;
 }
-$res = sql_query('SELECT a1.*, (SELECT COUNT(a2.id) FROM achievements AS a2 WHERE a2.achievement = a1.achievname) as count FROM achievementist AS a1 ORDER BY a1.id ') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT a1.*, (SELECT COUNT(a2.id) FROM achievements AS a2 WHERE a2.achievement = a1.achievname) AS count FROM achievementist AS a1 ORDER BY a1.id ') or sqlerr(__FILE__, __LINE__);
 $HTMLOUT = '';
 $HTMLOUT .= "<h1>{$lang['achlst_std_head']}</h1>\n";
 if (mysqli_num_rows($res) == 0) {

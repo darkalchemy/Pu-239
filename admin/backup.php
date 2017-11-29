@@ -4,6 +4,8 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $site_config, $lang;
+
 /* add your ids and uncomment this check*/
 $allowed_ids = [
     1,
@@ -11,7 +13,6 @@ $allowed_ids = [
 if (!in_array($CURUSER['id'], $allowed_ids)) {
     stderr($lang['backup_stderr'], $lang['backup_stderr1']);
 }
-global $site_config, $CURUSER, $lang;
 
 $lang = array_merge($lang, load_language('ad_backup'));
 
@@ -36,7 +37,7 @@ if (empty($mode)) {
     if (mysqli_num_rows($res) > 0) {
         $HTMLOUT .= "
         <div class='container is-fluid portlet has-text-centered top20 bottom20 padding20'>
-            <form method='post' action='./staffpanel.php?tool=backup&amp;mode=delete'>
+            <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=backup&amp;mode=delete'>
                 <input type='hidden' name='action' value='delete' />
                 {$lang['backup_welcome']}
                 <table id='checkbox_container' class='table table-bordered table-striped top20 bottom20'>
@@ -68,7 +69,13 @@ if (empty($mode)) {
                             </td>
                         </tr>";
         }
-        $HTMLOUT .= " />
+
+        $HTMLOUT .= "
+                    </tbody>
+                </table>
+                <div class='has-text-centered top20 bottom20 level-center flex-center'>
+                    <a class='button right20' href='./staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
+                    <input type='submit' class='button' value='{$lang['backup_delselected']}' onclick=\"return confirm(''{$lang['backup_confirm']}'');\" />
                 </div>
             </form>
             <div class='has-text-centered top20 bottom20'>

@@ -9,7 +9,7 @@ if (!getSessionVar('LoggedIn')) {
     check_user_status();
 }
 
-$lang = array_merge(load_language('global'));
+$lang = load_language('global');
 
 $HTMLOUT = main_div("
 <p>
@@ -20,7 +20,6 @@ $HTMLOUT = main_div("
     <span class='has-text-success'>port=6882</span>&amp;<span class='text-yellow'>uploaded=0</span>&amp;<span class='text-lightgreen'>downloaded=0</span>&amp;<span class='text-jade'>left=753690875</span>&amp;
     <span class='text-turquoise'>event=started</span>
 </p>
-
 
 Let's dissect this:
 <ul class='disc left20'>

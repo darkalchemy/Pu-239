@@ -9,16 +9,13 @@ if ($message['receiver'] == $CURUSER['id'] && $message['urgent'] == 'yes' && $me
 //=== make sure message isn't saved before deleting it, or just update location
 if ($message['receiver'] == $CURUSER['id'] /* && $message['saved'] == 'no'*/ || $message['sender'] == $CURUSER['id'] && $message['location'] == PM_DELETED) {
     sql_query('DELETE FROM messages WHERE id=' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);
-    $mc1->delete_value('inbox_new_' . $CURUSER['id']);
-    $mc1->delete_value('inbox_new_sb_' . $CURUSER['id']);
+    $cache->delete('inbox_' . $CURUSER['id']);
 } elseif ($message['receiver'] == $CURUSER['id'] /* && $message['saved'] == 'yes'*/) {
     sql_query('UPDATE messages SET location=0, unread=\'no\' WHERE id=' . sqlesc($pm_id)) or sqlerr(__FILE__, __LINE__);
-    $mc1->delete_value('inbox_new_' . $CURUSER['id']);
-    $mc1->delete_value('inbox_new_sb_' . $CURUSER['id']);
+    $cache->delete('inbox_' . $CURUSER['id']);
 } elseif ($message['sender'] == $CURUSER['id'] && $message['location'] != PM_DELETED) {
     sql_query('UPDATE messages SET saved=\'no\' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $mc1->delete_value('inbox_new_' . $CURUSER['id']);
-    $mc1->delete_value('inbox_new_sb_' . $CURUSER['id']);
+    $cache->delete('inbox_' . $CURUSER['id']);
 }
 //=== see if it worked :D
 if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {

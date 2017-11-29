@@ -5,8 +5,15 @@ if (empty($_GET['wantusername'])) {
 sleep(1);
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 dbconn();
+global $site_config;
+
 $HTMLOUT = '';
 $lang = array_merge(load_language('global'), load_language('takesignup'));
+/**
+ * @param $username
+ *
+ * @return bool
+ */
 function validusername($username)
 {
     global $lang;
@@ -23,7 +30,7 @@ function validusername($username)
     // The following characters are allowed in user names
     $allowedchars = $lang['takesignup_allowed_chars'];
     for ($i = 0; $i < $namelength; ++$i) {
-        if (strpos($allowedchars, $username[$i]) === false) {
+        if (strpos($allowedchars, $username[ $i ]) === false) {
             return false;
         }
     }

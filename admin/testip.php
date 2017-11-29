@@ -3,6 +3,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $site_config, $lang;
+
 $lang = array_merge($lang, load_language('ad_testip'));
 $HTMLOUT = '';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -11,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $ip = isset($_GET['ip']) ? $_GET['ip'] : false;
 }
 if ($ip) {
-    $nip = ip2long($ip);
+    $nip = ipToStorageFormat($ip);
     if ($nip == -1) {
         stderr($lang['testip_error'], $lang['testip_error1']);
     }
@@ -26,8 +28,8 @@ if ($ip) {
           <td class='colhead'>{$lang['testip_comment']}</td>
         </tr>\n";
         while ($arr = mysqli_fetch_assoc($res)) {
-            $first = long2ip($arr['first']);
-            $last = long2ip($arr['last']);
+            $first = ipFromStorageFormat($arr['first']);
+            $last = ipfromStorageFormat($arr['last']);
             $comment = htmlsafechars($arr['comment']);
             $HTMLOUT .= "<tr><td>$first</td><td>$last</td><td>$comment</td></tr>\n";
         }

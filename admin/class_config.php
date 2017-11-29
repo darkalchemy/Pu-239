@@ -2,6 +2,8 @@
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $site_config, $cache, $lang;
+
 $lang = array_merge($lang, load_language('ad_class_config'));
 
 if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'])) {
@@ -10,10 +12,10 @@ if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'])) {
 //get the config from db - stoner/pdq
 $pconf = sql_query('SELECT * FROM class_config ORDER BY value ASC') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($pconf)) {
-    $class_config[$ac['name']]['value'] = $ac['value'];
-    $class_config[$ac['name']]['classname'] = $ac['classname'];
-    $class_config[$ac['name']]['classcolor'] = $ac['classcolor'];
-    $class_config[$ac['name']]['classpic'] = $ac['classpic'];
+    $class_config[ $ac['name'] ]['value'] = $ac['value'];
+    $class_config[ $ac['name'] ]['classname'] = $ac['classname'];
+    $class_config[ $ac['name'] ]['classcolor'] = $ac['classcolor'];
+    $class_config[ $ac['name'] ]['classpic'] = $ac['classpic'];
 }
 $possible_modes = [
     'add',
@@ -26,7 +28,11 @@ if (!in_array($mode, $possible_modes)) {
     stderr($lang['classcfg_error'], $lang['classcfg_error1']);
 }
 
-function write_css($data) {
+/**
+ * @param $data
+ */
+function write_css($data)
+{
     $classdata = "";
     foreach ($data as $class) {
         $cname = str_replace(' ', '_', strtolower($class['className']));
@@ -76,7 +82,7 @@ function write_css($data) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $data = [];
-    $mc1->delete_value('is_staffs_');
+    $cache->delete('is_staffs_');
     if ($mode == 'edit') {
         foreach ($class_config as $c_name => $value) {
             // handing from database
@@ -86,28 +92,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $c_classcolor = str_replace('#', '', "$c_classcolor");
             $c_classpic = $value['classpic'];
             // handling from posting of contents
-            $post_data = $_POST[$c_name]; //    0=> value,1=>classname,2=>classcolor,3=>classpic
+            $post_data = $_POST[ $c_name ]; //    0=> value,1=>classname,2=>classcolor,3=>classpic
             $value = $post_data[0];
             $classname = !empty($post_data[1]) ? strtoupper($post_data[1]) : '';
             $classcolor = !empty($post_data[2]) ? $post_data[2] : '';
             $data[] = ['className' => $classname, 'classColor' => $classcolor];
             $classcolor = str_replace('#', '', "$classcolor");
             $classpic = !empty($post_data[3]) ? $post_data[3] : '';
-            if (isset($_POST[$c_name][0]) && (($value != $c_value) || ($classname != $c_classname) || ($classcolor != $c_classcolor) || ($classpic != $c_classpic))) {
-                $update[$c_name] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($value) ? join('|', $value) : $value) . ',' . sqlesc(is_array($classname) ? join('|', $classname) : $classname) . ',' . sqlesc(is_array($classcolor) ? join('|', $classcolor) : $classcolor) . ',' . sqlesc(is_array($classpic) ? join('|', $classpic) : $classpic) . ')';
+            if (isset($_POST[ $c_name ][0]) && (($value != $c_value) || ($classname != $c_classname) || ($classcolor != $c_classcolor) || ($classpic != $c_classpic))) {
+                $update[ $c_name ] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($value) ? join('|', $value) : $value) . ',' . sqlesc(is_array($classname) ? join('|', $classname) : $classname) . ',' . sqlesc(is_array($classcolor) ? join('|', $classcolor) : $classcolor) . ',' . sqlesc(is_array($classpic) ? join('|', $classpic) : $classpic) . ')';
             }
         }
         write_css($data);
-        if (sql_query('INSERT INTO class_config(name,value,classname,classcolor,classpic) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY update value=values(value),classname=values(classname),classcolor=values(classcolor),classpic=values(classpic)')) { // need to change strut
+        if (sql_query('INSERT INTO class_config(name,value,classname,classcolor,classpic) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value),classname = VALUES(classname),classcolor = VALUES(classcolor),classpic = VALUES(classpic)')) { // need to change strut
             $t = 'define(';
             $configfile = '<' . $lang['classcfg_file_created'] . date('M d Y H:i:s') . $lang['classcfg_user_cfg'];
-            $res = sql_query('SELECT * from class_config ORDER BY value  ASC');
+            $res = sql_query('SELECT * FROM class_config ORDER BY value  ASC');
             $the_names = $the_colors = $the_images = '';
             while ($arr = mysqli_fetch_assoc($res)) {
                 $configfile .= '' . $t . "'$arr[name]', $arr[value]);\n";
             }
             unset($arr);
-            $res = sql_query("SELECT * from class_config WHERE name NOT IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
+            $res = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
             $the_names = $the_colors = $the_images = '';
             while ($arr = mysqli_fetch_assoc($res)) {
                 $the_names .= "$arr[name] => '$arr[classname]',";
@@ -134,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             //FIND UC_MAX;
             //FROM HERE
             // CAN REMOVE THE QUERY I THINK.   $old_max = UC_MAX;  OR EVEN  $new_max = UC_MAX +1;  << BOTH WORK
-            $res = sql_query("SELECT * from class_config WHERE name IN ('UC_MAX') ");
+            $res = sql_query("SELECT * FROM class_config WHERE name IN ('UC_MAX') ");
             while ($arr = mysqli_fetch_array($res)) {
                 $old_max = $arr['value'];
                 $new_max = $arr['value'] + 1;
@@ -144,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             //FIND AND UPDATE UC_STAFF
             //FROM HERE
             //SAME AS ABOVE $new_staff = UC_STAFF +1; THEN UPDATE DB WITH THAT
-            $res = sql_query("SELECT * from class_config WHERE name = 'UC_STAFF'");
+            $res = sql_query("SELECT * FROM class_config WHERE name = 'UC_STAFF'");
             while ($arr = mysqli_fetch_array($res)) {
                 if ($value <= $arr['value']) {
                     $new_staff = $arr['value'] + 1;
@@ -167,12 +173,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $row1 = [];
                     $row1[] = $row;
                     foreach ($row1 as $row2) {
-                        $mc1->begin_transaction('MyUser_' . $row2['id']);
-                        $mc1->update_row(false, ['class' => $row2['class']]);
-                        $mc1->commit_transaction($site_config['expires']['curuser']);
-                        $mc1->begin_transaction('user' . $row2['id']);
-                        $mc1->update_row(false, ['class' => $row2['class']]);
-                        $mc1->commit_transaction($site_config['expires']['user_cache']);
+                        $cache->update_row('MyUser_' . $row2['id'], [
+                            'class' => $row2['class'],
+                        ], $site_config['expires']['curuser']);
+                        $cache->update_row('user' . $row2['id'], [
+                            'class' => $row2['class'],
+                        ], $site_config['expires']['user_cache']);
                     }
                 }
             }
@@ -191,25 +197,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $row1 = [];
                     $row1[] = $row;
                     foreach ($row1 as $row2) {
-                        $mc1->begin_transaction('MyUser_' . $row2['id']);
-                        $mc1->update_row(false, ['class' => $row2['class']]);
-                        $mc1->commit_transaction($site_config['expires']['curuser']);
-                        $mc1->begin_transaction('user' . $row2['id']);
-                        $mc1->update_row(false, ['class' => $row2['class']]);
-                        $mc1->commit_transaction($site_config['expires']['user_cache']);
+                        $cache->update_row('MyUser_' . $row2['id'], [
+                            'class' => $row2['class'],
+                        ], $site_config['expires']['curuser']);
+                        $cache->update_row('user' . $row2['id'], [
+                            'class' => $row2['class'],
+                        ], $site_config['expires']['user_cache']);
                     }
                 }
             }
             if (sql_query('INSERT INTO class_config (name, value,classname,classcolor,classpic) VALUES(' . sqlesc($name) . ',' . sqlesc($value) . ',' . sqlesc($r_name) . ',' . sqlesc($color) . ',' . sqlesc($pic) . ')')) {
                 $t = 'define(';
                 $configfile = '<' . $lang['classcfg_file_created'] . date('M d Y H:i:s') . $lang['classcfg_user_cfg'];
-                $res = sql_query('SELECT * from class_config ORDER BY value  ASC');
+                $res = sql_query('SELECT * FROM class_config ORDER BY value  ASC');
                 $the_names = $the_colors = $the_images = '';
                 while ($arr = mysqli_fetch_assoc($res)) {
                     $configfile .= '' . $t . "'$arr[name]', $arr[value]);\n";
                 }
                 unset($arr);
-                $res = sql_query("SELECT * from class_config WHERE name NOT IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
+                $res = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
                 $the_names = $the_colors = $the_images = '';
                 while ($arr = mysqli_fetch_assoc($res)) {
                     $the_names .= "$arr[name] => '$arr[classname]',";
@@ -233,14 +239,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $value = $arr['value'];
         }
         //FIND UC_MAX;
-        $res = sql_query("SELECT * from class_config WHERE name IN ('UC_MAX') ");
+        $res = sql_query("SELECT * FROM class_config WHERE name IN ('UC_MAX') ");
         while ($arr = mysqli_fetch_array($res)) {
             $old_max = $arr['value'];
             $new_max = $arr['value'] - 1;
             sql_query("UPDATE class_config SET value = '$new_max' WHERE name = 'UC_MAX'");
         }
         //FIND AND UPDATE UC_STAFF
-        $res = sql_query("SELECT * from class_config WHERE name = 'UC_STAFF'");
+        $res = sql_query("SELECT * FROM class_config WHERE name = 'UC_STAFF'");
         while ($arr = mysqli_fetch_array($res)) {
             if ($value <= $arr['value']) {
                 $new_staff = $arr['value'] - 1;
@@ -265,24 +271,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $row1 = [];
             $row1[] = $row;
             foreach ($row1 as $row2) {
-                $mc1->begin_transaction('MyUser_' . $row2['id']);
-                $mc1->update_row(false, ['class' => $row2['class']]);
-                $mc1->commit_transaction($site_config['expires']['curuser']);
-                $mc1->begin_transaction('user' . $row2['id']);
-                $mc1->update_row(false, ['class' => $row2['class']]);
-                $mc1->commit_transaction($site_config['expires']['user_cache']);
+                $cache->update_row('MyUser_' . $row2['id'], [
+                    'class' => $row2['class'],
+                ], $site_config['expires']['curuser']);
+                $cache->update_row('user' . $row2['id'], [
+                    'class' => $row2['class'],
+                ], $site_config['expires']['user_cache']);
             }
         }
-        if (sql_query('DELETE FROM class_config WHERE name = ' . sqlesc($name) . '')) {
+        if (sql_query('DELETE FROM class_config WHERE name = ' . sqlesc($name))) {
             $t = 'define(';
             $configfile = '<' . $lang['classcfg_file_created'] . date('M d Y H:i:s') . $lang['classcfg_user_cfg'];
-            $res = sql_query('SELECT * from class_config ORDER BY value  ASC');
+            $res = sql_query('SELECT * FROM class_config ORDER BY value  ASC');
             $the_names = $the_colors = $the_images = '';
             while ($arr = mysqli_fetch_assoc($res)) {
                 $configfile .= '' . $t . "'$arr[name]', $arr[value]);\n";
             }
             unset($arr);
-            $res = sql_query("SELECT * from class_config WHERE name NOT IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
+            $res = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
             $the_names = $the_colors = $the_images = '';
             while ($arr = mysqli_fetch_assoc($res)) {
                 $the_names .= "$arr[name] => '$arr[classname]',";
@@ -314,7 +320,7 @@ $HTMLOUT .= "
                     </tr>
                 </thead>
                 <tbody>";
-$res = sql_query("SELECT * from class_config WHERE name NOT IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
+$res = sql_query("SELECT * FROM class_config WHERE name NOT IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
 while ($arr = mysqli_fetch_assoc($res)) {
     $cname = str_replace(' ', '_', strtolower($arr['classname'])) . '_bk';
     $HTMLOUT .= "
@@ -354,7 +360,7 @@ $HTMLOUT .= "
                     </tr>
                 </thead>
                 <tbody>";
-$res1 = sql_query("SELECT * from class_config WHERE name IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
+$res1 = sql_query("SELECT * FROM class_config WHERE name IN ('UC_MIN','UC_MAX','UC_STAFF') ORDER BY value  ASC");
 while ($arr1 = mysqli_fetch_assoc($res1)) {
     $HTMLOUT .= "
                     <tr>

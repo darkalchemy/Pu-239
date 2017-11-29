@@ -3,6 +3,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $site_config, $cache, $lang;
+
 $lang = array_merge($lang, load_language('ad_namechanger'));
 $HTMLOUT = '';
 $mode = (isset($_GET['mode']) && htmlsafechars($_GET['mode']));
@@ -18,17 +20,13 @@ if (isset($mode) && $mode == 'change') {
         if ($classuser['class'] >= UC_STAFF) {
             stderr($lang['namechanger_err'], $lang['namechanger_cannot']);
         }
-        $change = sql_query('UPDATE users SET username=' . sqlesc($uname) . ' WHERE id=' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
-        $mc1->begin_transaction('MyUser_' . $uid);
-        $mc1->update_row(false, [
+        $change = sql_query('UPDATE users SET username=' . sqlesc($uname) . ' WHERE id = ' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
+        $cache->update_row('MyUser_' . $uid, [
             'username' => $uname,
-        ]);
-        $mc1->commit_transaction($site_config['expires']['curuser']);
-        $mc1->begin_transaction('user' . $uid);
-        $mc1->update_row(false, [
+        ], $site_config['expires']['curuser']);
+        $cache->update_row('user' . $uid, [
             'username' => $uname,
-        ]);
-        $mc1->commit_transaction($site_config['expires']['user_cache']);
+        ], $site_config['expires']['user_cache']);
         $added = TIME_NOW;
         $changed = sqlesc("{$lang['namechanger_changed_to']} $uname");
         $subject = sqlesc($lang['namechanger_changed']);

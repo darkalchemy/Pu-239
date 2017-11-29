@@ -12,18 +12,21 @@ if (!$CURUSER) {
 }
 $stdfoot = [
     'js' => [
-        get_file('captcha1_js')
+        get_file('captcha1_js'),
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('login'));
 $left = $total = '';
 
+/**
+ * @return string
+ */
 function left()
 {
     global $site_config;
     $total = 0;
     $ip = getip();
-    $fail = sql_query('SELECT SUM(attempts) FROM failedlogins WHERE ip = ' . sqlesc($ip)) or sqlerr(__FILE__, __LINE__);
+    $fail = sql_query('SELECT SUM(attempts) FROM failedlogins WHERE ip = ' . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
     list($total) = mysqli_fetch_row($fail);
     $left = $site_config['failedlogins'] - $total;
     if ($left <= 2) {
@@ -62,8 +65,8 @@ $value = [
     '...',
     '...',
 ];
-$value[random_int(1, count($value) - 1)] = 'X';
-$HTMLOUT.= "
+$value[ random_int(1, count($value) - 1) ] = 'X';
+$HTMLOUT .= "
             <form class='form-inline table-wrapper' method='post' action='takelogin.php'>
                 <table class='table table-bordered'>
                     <tr class='no_hover'>
@@ -80,7 +83,7 @@ if ($got_ssl) {
                         <td class='rowhead'>{$lang['login_use_ssl']}</td>
                         <td>
                             <label class='label label-inverse' for='ssl'>{$lang['login_ssl1']}
-                                <input type='checkbox' name='use_ssl' " . ($got_ssl ? "checked='checked'" : "disabled='disabled' title='SSL connection not available'") . " value='1' id='ssl'/>
+                                <input type='checkbox' name='use_ssl' " . ($got_ssl ? "checked" : "disabled='disabled' title='SSL connection not available'") . " value='1' id='ssl'/>
                             </label><br>
                             <label class='label label-inverse' for='ssl2'>{$lang['login_ssl2']}
                                 <input type='checkbox' name='perm_ssl' " . ($got_ssl ? '' : "disabled='disabled' title='SSL connection not available'") . " value='1' id='ssl2'/>
@@ -89,7 +92,7 @@ if ($got_ssl) {
                     </tr>";
 }
 $HTMLOUT .=
-                    ($site_config['captcha_on'] ? "
+    ($site_config['captcha_on'] ? "
                     <tr class='no_hover'>
                         <td colspan='2' id='captcha_show'></td>
                     </tr>" : '') . "

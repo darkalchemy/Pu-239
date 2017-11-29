@@ -4,7 +4,7 @@
  *
  * A simple but effective single-file GUI for the OPcache PHP extension.
  *
- * @author Andrew Collington, andy@amnuts.com
+ * @author  Andrew Collington, andy@amnuts.com
  * @license MIT, http://acollington.mit-license.org/
  */
 require_once INCL_DIR . 'user_functions.php';
@@ -55,6 +55,13 @@ if (!empty($opcache_status['scripts'])) {
     });
 }
 
+/**
+ * @param      $size
+ * @param int  $precision
+ * @param bool $space
+ *
+ * @return string
+ */
 function memsize($size, $precision = 3, $space = false)
 {
     $i = 0;
@@ -68,10 +75,13 @@ function memsize($size, $precision = 3, $space = false)
         "%.{$precision}f%s%s",
         $size,
         (($space && $i) ? ' ' : ''),
-        $val[$i]
+        $val[ $i ]
     );
 }
 
+/**
+ * @param null $at
+ */
 function rc($at = null)
 {
     static $i = 0;
@@ -124,7 +134,7 @@ function_exists('gethostname')
     ? gethostname()
     : (
 php_uname('n')
-    ?: (
+    ? : (
 empty($_SERVER['SERVER_NAME'])
     ? $_SERVER['HOST_NAME']
     : $_SERVER['SERVER_NAME']
@@ -489,7 +499,7 @@ empty($_SERVER['SERVER_NAME'])
 <?php if ($page == 'files'): ?>
     <h2>File usage</h2>
     <p><label>Start typing to filter on script path<br><input type="text" style="width:40em;" name="filter"
-                                                               id="frmFilter"/><label></p>
+                                                              id="frmFilter"/><label></p>
     <div class="container">
         <h3><?php echo $data['files_cached']; ?> file<?php echo $data['files_cached'] == 1 ? '' : 's'; ?> cached <span
                     id="filterShowing"></span></h3>
@@ -571,7 +581,6 @@ empty($_SERVER['SERVER_NAME'])
         });
     </script>
 <?php endif; ?>
-
 
 </body>
 </html>

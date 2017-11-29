@@ -1,0 +1,12 @@
+{
+  "require": {
+    "matthiasmullie/scrapbook": "^1.4",
+    "league/flysystem": "^1.0",
+    "lichtner/fluentpdo": "^1.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "": "classes"
+    }
+  }
+}

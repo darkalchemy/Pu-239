@@ -3,6 +3,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $site_config, $cache, $lang;
+
 $lang = array_merge($lang, load_language('ad_freeusers'));
 $HTMLOUT = '';
 $remove = (isset($_GET['remove']) ? (int)$_GET['remove'] : 0);
@@ -18,19 +20,19 @@ if ($remove) {
             $modcomment = sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['freeusers_mod1'] . $CURUSER['username'] . " \n");
             $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', \'' . $lang['freeusers_msg_buffer'] . '\')';
             $users_buffer[] = '(' . $arr['id'] . ',0,' . $modcomment . ')';
-            $username = $arr['username'];
+            $msgs_ids[] = $arr['id'];
+            $usernames[] = $arr['username'];
         }
         if (sizeof($msgs_buffer) > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
-            sql_query('INSERT INTO users (id, free_switch, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key 
-			UPDATE free_switch=values(free_switch), 
-			modcomment=concat(values(modcomment),modcomment)') or sqlerr(__FILE__, __LINE__);
-            write_log("{$lang['freeusers_log1']} $remove ($username) 
-			{$lang['freeusers_log2']} $CURUSER[username]");
-            $mc1->delete_value('MyUser_' . $arr['id']);
-            $mc1->delete_value('inbox_new_' . $arr['id']);
-            $mc1->delete_value('inbox_new_sb_' . $arr['id']);
-            $mc1->delete_value('user' . $arr['id']);
+            sql_query('INSERT INTO users (id, free_switch, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE free_switch = VALUES(free_switch), modcomment=concat(VALUES(modcomment),modcomment)') or sqlerr(__FILE__, __LINE__);
+            foreach ($usernames as $username) {
+                write_log("{$lang['freeusers_log1']} $remove ($username) {$lang['freeusers_log2']} $CURUSER[username]");
+            }
+            foreach ($msgs_ids as $msg_id) {
+                $cache->deleteMulti(['MyUser_' . $msg_id['id'], 'user' . $msg_id['id']]);
+                $cache->increment('inbox_' . $msg_id['id']);
+            }
         }
     } else {
         die($lang['freeusers_fail']);

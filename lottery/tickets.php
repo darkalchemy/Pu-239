@@ -1,7 +1,10 @@
 <?php
+require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'html_functions.php';
+
 $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($lconf)) {
-    $lottery_config[$ac['name']] = $ac['value'];
+    $lottery_config[ $ac['name'] ] = $ac['value'];
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fail = false;
@@ -30,18 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $seedbonus_new = $CURUSER['seedbonus'] - ($tickets * $lottery_config['ticket_amount']);
             $What_Cache = (XBT_TRACKER == true ? 'userstats_xbt_' : 'userstats_');
             $What_Expire = (XBT_TRACKER == true ? $site_config['expires']['u_stats_xbt'] : $site_config['expires']['u_stats']);
-            $mc1->begin_transaction($What_Cache . $CURUSER['id']);
-            $mc1->update_row(false, [
+            $cache->update_row($What_Cache . $CURUSER['id'], [
                 'seedbonus' => $seedbonus_new,
-            ]);
-            $mc1->commit_transaction($What_Expire);
+            ], $What_Expire);
             $What_Cache = (XBT_TRACKER == true ? 'user_stats_xbt_' : 'user_stats_');
             $What_Expire = (XBT_TRACKER == true ? $site_config['expires']['user_stats_xbt'] : $site_config['expires']['user_stats']);
-            $mc1->begin_transaction($What_Cache . $CURUSER['id']);
-            $mc1->update_row(false, [
+            $cache->update_row($What_Cache . $CURUSER['id'], [
                 'seedbonus' => $seedbonus_new,
-            ]);
-            $mc1->commit_transaction($What_Expire);
+            ], $What_Expire);
             setSessionVar('is-success', 'You bought <b class="has-text-primary">' . number_format($tickets) . '</b>. You now have <b class="has-text-primary">' . number_format($tickets + $user_tickets) . '</b> tickets!
 ');
         } else {
@@ -52,6 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $classes_allowed = (strpos($lottery_config['class_allowed'], '|') ? explode('|', $lottery_config['class_allowed']) : $lottery_config['class_allowed']);
 if (!(is_array($classes_allowed) ? in_array($CURUSER['class'], $classes_allowed) : $CURUSER['class'] == $classes_allowed)) {
     setSessionVar('is-danger', 'Your class is not allowed to play in this lottery');
+    header('Location: index.php');
+    die();
 }
 //some default values
 $lottery['total_pot'] = 0;
@@ -87,7 +88,6 @@ if (time() > $lottery_config['end_date'] || $lottery_config['user_tickets'] <= $
     $lottery['current_user']['can_buy'] = 0;
 }
 $html .= "
-    <div class='container is-fluid portlet'>
         <h1 class='has-text-centered'>{$site_config['site_name']} Lottery</h1>
         <div class='bordered bottom10 top20'>
             <div class='alt_bordered bg-00 has-text-centered'>
@@ -135,10 +135,9 @@ if ($lottery['current_user']['can_buy'] > 0) {
         <form action='lottery.php?action=tickets' method='post'>
             <div class='has-text-centered bottom20'>
                 <input type='text' size='10' name='tickets' />
-                <input type='submit' value='Buy tickets' class='button' />
+                <input type='submit' value='Buy tickets' class='button is-small' />
             </div>
         </form>";
 }
-$html .= '
-    </div>';
-echo stdhead('Buy tickets for lottery') . $html . stdfoot();
+
+echo stdhead('Buy tickets for lottery') . wrapper($html) . stdfoot();

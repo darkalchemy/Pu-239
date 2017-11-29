@@ -1,4 +1,6 @@
 <?php
+global $CURUSER, $lang;
+
 if ($CURUSER['override_class'] != 255 && $CURUSER) {
     $htmlout .= "
     <li>

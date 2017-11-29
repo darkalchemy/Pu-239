@@ -8,7 +8,7 @@ if (!is_valid_id($post_id) || !is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
 //=== get the post info
-$res_post = sql_query('SELECT p.added, p.user_id AS puser_id, p.body, p.icon, p.post_title, p.bbcode, p.post_history, p.edited_by, p.edit_date, p.edit_reason, p.staff_lock, a.file, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, t.topic_name, t.locked, t.user_id, t.topic_desc, f.min_class_read, f.min_class_write, f.id AS forum_id FROM posts AS p LEFT JOIN attachments as a ON p.id = a.post_id LEFT JOIN users AS u ON p.user_id = u.id LEFT JOIN topics AS t ON t.id = p.topic_id LEFT JOIN forums AS f ON t.forum_id = f.id WHERE p.id=' . sqlesc($post_id));
+$res_post = sql_query('SELECT p.added, p.user_id AS puser_id, p.body, p.icon, p.post_title, p.bbcode, p.post_history, p.edited_by, p.edit_date, p.edit_reason, p.staff_lock, a.file, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, t.topic_name, t.locked, t.user_id, t.topic_desc, f.min_class_read, f.min_class_write, f.id AS forum_id FROM posts AS p LEFT JOIN attachments AS a ON p.id = a.post_id LEFT JOIN users AS u ON p.user_id = u.id LEFT JOIN topics AS t ON t.id = p.topic_id LEFT JOIN forums AS f ON t.forum_id = f.id WHERE p.id=' . sqlesc($post_id));
 $arr_post = mysqli_fetch_assoc($res_post);
 //=== get any attachments
 $attachments = $extension_error = $size_error = '';
@@ -87,7 +87,7 @@ if (isset($_POST['button']) && $_POST['button'] == 'Edit') {
     }
     sql_query('UPDATE posts SET body = ' . sqlesc($body) . ', icon = ' . sqlesc($icon) . ', post_title = ' . sqlesc($post_title) . ', bbcode = ' . sqlesc($show_bbcode) . ', edit_reason = ' . sqlesc($edit_reason) . ', edited_by = ' . sqlesc($edited_by) . ', edit_date = ' . sqlesc($edit_date) . ', post_history = ' . sqlesc($post_history) . ' WHERE id = ' . sqlesc($post_id));
     clr_forums_cache($post_id);
-    $mc1->delete_value('forum_posts_' . $CURUSER['id']);
+    $cache->delete('forum_posts_' . $CURUSER['id']);
     //=== update topic stuff
     if ($can_edit) {
         sql_query('UPDATE topics SET topic_name = ' . sqlesc($topic_name) . ', topic_desc = ' . sqlesc($topic_desc) . ' WHERE id = ' . sqlesc($topic_id));
@@ -96,8 +96,8 @@ if (isset($_POST['button']) && $_POST['button'] == 'Edit') {
     if ($CURUSER['class'] >= $min_upload_class) {
         while (list($key, $name) = each($_FILES['attachment']['name'])) {
             if (!empty($name)) {
-                $size = intval($_FILES['attachment']['size'][$key]);
-                $type = $_FILES['attachment']['type'][$key];
+                $size = intval($_FILES['attachment']['size'][ $key ]);
+                $type = $_FILES['attachment']['type'][ $key ];
                 //=== make sure file is kosher
                 $accepted_file_types = [
                     'application/zip',
@@ -135,7 +135,7 @@ if (isset($_POST['button']) && $_POST['button'] == 'Edit') {
                         //===plop it into the DB all safe and snuggly
                         sql_query('INSERT INTO `attachments` (`post_id`, `user_id`, `file`, `file_name`, `added`, `extension`, `size`) VALUES
 ( ' . sqlesc($post_id) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($name . '(id-' . $post_id . ')' . $file_extension) . ', ' . sqlesc($name) . ', ' . TIME_NOW . ', ' . ($file_extension === '.zip' ? '\'zip\'' : '\'rar\'') . ', ' . $size . ')');
-                        copy($_FILES['attachment']['tmp_name'][$key], $upload_to);
+                        copy($_FILES['attachment']['tmp_name'][ $key ], $upload_to);
                         chmod($upload_to, 0777);
                 }
             }
@@ -200,28 +200,28 @@ $HTMLOUT .= '<table class="table table-bordered table-striped">
     <td><img src="' . $site_config['pic_base_url'] . 'smilies/question.gif" alt="' . $lang['fe_smilee_question'] . '" title="' . $lang['fe_smilee_question'] . '" /></td>
     </tr>
     <tr>
-    <td><input type="radio" name="icon" value="smile1"' . ($icon == 'smile1' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="grin"' . ($icon == 'grin' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="tongue"' . ($icon == 'tongue' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="cry"' . ($icon == 'cry' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="wink"' . ($icon == 'wink' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="rolleyes"' . ($icon == 'rolleyes' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="blink"' . ($icon == 'blink' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="bow"' . ($icon == 'bow' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="clap2"' . ($icon == 'clap2' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="hmmm"' . ($icon == 'hmmm' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="devil"' . ($icon == 'devil' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="angry"' . ($icon == 'angry' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="shit"' . ($icon == 'shit' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="sick"' . ($icon == 'sick' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="tease"' . ($icon == 'tease' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="love"' . ($icon == 'love' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="ohmy"' . ($icon == 'ohmy' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="yikes"' . ($icon == 'yikes' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="spider"' . ($icon == 'spider' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="wall"' . ($icon == 'wall' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="idea"' . ($icon == 'idea' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="question"' . ($icon == 'question' ? ' checked="checked"' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="smile1"' . ($icon == 'smile1' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="grin"' . ($icon == 'grin' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="tongue"' . ($icon == 'tongue' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="cry"' . ($icon == 'cry' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="wink"' . ($icon == 'wink' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="rolleyes"' . ($icon == 'rolleyes' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="blink"' . ($icon == 'blink' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="bow"' . ($icon == 'bow' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="clap2"' . ($icon == 'clap2' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="hmmm"' . ($icon == 'hmmm' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="devil"' . ($icon == 'devil' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="angry"' . ($icon == 'angry' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="shit"' . ($icon == 'shit' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="sick"' . ($icon == 'sick' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="tease"' . ($icon == 'tease' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="love"' . ($icon == 'love' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="ohmy"' . ($icon == 'ohmy' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="yikes"' . ($icon == 'yikes' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="spider"' . ($icon == 'spider' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="wall"' . ($icon == 'wall' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="idea"' . ($icon == 'idea' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="question"' . ($icon == 'question' ? ' checked' : '') . ' /></td>
     </tr>
     </table>
     </td></tr>
@@ -233,8 +233,8 @@ $HTMLOUT .= '<table class="table table-bordered table-striped">
     <td><input type="text" maxlength="120" name="post_title" value="' . trim(strip_tags($post_title)) . '" class="text_default" /> [ optional ]</td></tr>
     <tr><td><span>' . $lang['fe_bbcode'] . '</span></td>
     <td>
-    <input type="radio" name="show_bbcode" value="yes" ' . ($show_bbcode == 'yes' ? 'checked="checked"' : '') . ' /> ' . $lang['fe_yes_enable'] . ' ' . $lang['fe_bbcode_in_post'] . '
-    <input type="radio" name="show_bbcode" value="no" ' . ($show_bbcode == 'no' ? 'checked="checked"' : '') . ' /> ' . $lang['fe_no_disable'] . ' ' . $lang['fe_bbcode_in_post'] . '
+    <input type="radio" name="show_bbcode" value="yes" ' . ($show_bbcode == 'yes' ? 'checked' : '') . ' /> ' . $lang['fe_yes_enable'] . ' ' . $lang['fe_bbcode_in_post'] . '
+    <input type="radio" name="show_bbcode" value="no" ' . ($show_bbcode == 'no' ? 'checked' : '') . ' /> ' . $lang['fe_no_disable'] . ' ' . $lang['fe_bbcode_in_post'] . '
     </td></tr>
     <tr><td><span>' . $lang['fe_reason'] . '</span></td>
     <td><input type="text" maxlength="20" name="edit_reason" value="' . trim(strip_tags($edit_reason)) . '" class="text_default" /> [ optional ]
@@ -242,8 +242,8 @@ $HTMLOUT .= '<table class="table table-bordered table-striped">
     </td></tr>
     ' . (($CURUSER['class'] == UC_MAX or $CURUSER['id'] == $arr_post['id']) ? '<tr><td><span>Edit By</span></td>
     <td>
-    <input type="radio" name="show_edited_by" value="yes"' . ($show_edited_by == 'yes' ? ' checked="checked"' : '') . ' /> yes
-    <input type="radio" name="show_edited_by" value="no"' . ($show_edited_by == 'no' ? ' checked="checked"' : '') . ' /> no
+    <input type="radio" name="show_edited_by" value="yes"' . ($show_edited_by == 'yes' ? ' checked' : '') . ' /> yes
+    <input type="radio" name="show_edited_by" value="no"' . ($show_edited_by == 'no' ? ' checked' : '') . ' /> no
     </td></tr>' : '') . $attachments . '
     <tr><td><span>' . $lang['fe_body'] . '</span></td>
     <td>' . BBcode($body) . $more_options . '

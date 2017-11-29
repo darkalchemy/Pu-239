@@ -4,6 +4,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
+global $CURUSER, $site_config, $cache;
+
 $lang = load_language('reputation');
 
 $is_mod = ($CURUSER['class'] >= UC_STAFF) ? true : false;
@@ -116,8 +118,8 @@ if (!$is_mod) {
         }
     }
 }
-$r = sql_query("SELECT COUNT(*) FROM posts WHERE user_id = {$CURUSER['id']}") or sqlerr();
-$a = mysqli_fetch_row($r) or sqlerr();
+$r = sql_query("SELECT COUNT(*) FROM posts WHERE user_id = {$CURUSER['id']}") or sqlerr(__FILE__, __LINE__);
+$a = mysqli_fetch_row($r);
 $CURUSER['posts'] = $a[0];
 
 $reason = '';
@@ -138,18 +140,14 @@ if (isset($input['do']) && $input['do'] == 'addrep') {
     }
     $score = fetch_reppower($CURUSER, $input['reputation']);
     $res['reputation'] += $score;
-    sql_query('UPDATE users set reputation=' . intval($res['reputation']) . ' WHERE id=' . $res['userid']);
-    $mc1->begin_transaction('MyUser_' . $res['userid']);
-    $mc1->update_row(false, [
+    sql_query('UPDATE users SET reputation=' . intval($res['reputation']) . ' WHERE id=' . $res['userid']);
+    $cache->update_row('MyUser_' . $res['userid'], [
         'reputation' => $res['reputation'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['curuser']);
-    $mc1->begin_transaction('user' . $res['userid']);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['curuser']);
+    $cache->update_row('user' . $res['userid'], [
         'reputation' => $res['reputation'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_cache']);
-    $mc1->delete_value('user_rep_' . $res['userid']);
+    ], $site_config['expires']['user_cache']);
+    $cache->delete('user_rep_' . $res['userid']);
     $save = [
         'reputation' => $score,
         'whoadded'   => $CURUSER['id'],
@@ -162,8 +160,7 @@ if (isset($input['do']) && $input['do'] == 'addrep') {
 
     sql_query('INSERT INTO reputation (' . join(',', array_keys($save)) . ') VALUES (' . join(',', $save) . ')');
     header("Location: {$site_config['baseurl']}/reputation.php?pid={$input['pid']}&done=1");
-}
-else {
+} else {
     if ($res['userid'] == $CURUSER['id']) { // same as him!
         // check for fish!
         $query1 = sql_query("select r.*, leftby.id as leftby_id, leftby.username as leftby_name
@@ -273,7 +270,7 @@ else {
 										            <td>
             											<div>
                                                             <label for='rb_reputation_pos'>
-                											    <input type='radio' name='reputation' value='pos' id='rb_reputation_pos' checked='checked' class='radiobutton' /> &#160;{$lang['rep_i_approve']}
+                											    <input type='radio' name='reputation' value='pos' id='rb_reputation_pos' checked class='radiobutton' /> &#160;{$lang['rep_i_approve']}
                                                             </label>
                                                         </div>";
         if ($negativerep) {
@@ -309,19 +306,23 @@ else {
     }
     rep_output('', $html);
 }
+/**
+ * @param string $msg
+ * @param string $html
+ */
 function rep_output($msg = '', $html = '')
 {
     global $closewindow, $lang, $CURUSER;
     $body_class = 'background-16 h-style-9 text-9 skin-2';
     if ($msg && empty($html)) {
-    $html = "
+        $html = "
         <tr>
             <td class='row2'>
                 $msg
             </td>
         </tr>";
-}
-$htmlout = "<!doctype html>
+    }
+    $htmlout = "<!doctype html>
 <html>
 <head>
     <meta charset='utf-8'>
@@ -341,24 +342,30 @@ $htmlout = "<!doctype html>
         <div class='has-text-success'>Reputation System</div>
             <table class='table table-bordered table-striped'>
                 $html";
-if ($closewindow) {
-    $htmlout .= "
+    if ($closewindow) {
+        $htmlout .= "
                 <tr>
                     <td class='has-text-centered'>
                         <a href='javascript:self.close();'><b>{$lang['info_close_rep']}</b></a>
                     </td>
                 </tr>";
-}
-$htmlout .= "
+    }
+    $htmlout .= "
             </table>
         </div>
     </div>
 </body>
 </html>";
-echo $htmlout;
-exit();
+    echo $htmlout;
+    exit();
 }
 
+/**
+ * @param array  $user
+ * @param string $rep
+ *
+ * @return int|string
+ */
 function fetch_reppower($user = [], $rep = 'pos')
 {
     global $GVARS, $is_mod;

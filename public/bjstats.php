@@ -3,14 +3,22 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
+global $CURUSER;
+
 $lang = array_merge(load_language('global'), load_language('blackjack'));
 if ($CURUSER['class'] < UC_POWER_USER) {
     stderr($lang['bj_sorry'], $lang['bj_you_must_be_pu']);
     exit;
 }
+/**
+ * @param $res
+ * @param $frame_caption
+ *
+ * @return string
+ */
 function bjtable($res, $frame_caption)
 {
-    global $lang, $CURUSER;
+    global $lang;
     $htmlout = '';
     $htmlout .= begin_frame($frame_caption, true);
     $htmlout .= begin_table();

@@ -1,5 +1,7 @@
 <?php
-$res2 = sql_query('select count(voted_requests.id) AS c from voted_requests inner join users on voted_requests.userid = users.id inner join requests on voted_requests.requestid = requests.id WHERE voted_requests.requestid =' . $id) or sqlerr(__FILE__, __LINE__);
+global $lang;
+
+$res2 = sql_query('SELECT count(voted_requests.id) AS c FROM voted_requests INNER JOIN users ON voted_requests.userid = users.id INNER JOIN requests ON voted_requests.requestid = requests.id WHERE voted_requests.requestid =' . $id) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_assoc($res2);
 $count = (int)$row['c'];
 if ($count > 0) {

@@ -17,9 +17,14 @@ $langs = [
     'BITRATE'          => 'Bitrate: <b>%s kb</b>',
     'PEAKLISTENERS'    => 'Peak listeners: <b>%d</b>',
 ];
+/**
+ * @param $radio
+ *
+ * @return string
+ */
 function radioinfo($radio)
 {
-    global $langs, $site_config, $mc1, $CURUSER;
+    global $langs, $site_config, $cache, $CURUSER;
     $xml = $html = $history = '';
     if ($hand = @fsockopen($radio['host'], $radio['port'], $errno, $errstr, 30)) {
         fputs($hand, 'GET /admin.cgi?pass=' . $radio['password'] . "&mode=viewxml HTTP/1.1\nUser-Agent:Mozilla/5.0 " . "(Windows; U; Windows NT 6.1; en-GB; rv:1.9.2.6) Gecko/20100625 Firefox/3.6.6\n\n");
@@ -28,7 +33,7 @@ function radioinfo($radio)
         }
         preg_match_all('/\<(SERVERTITLE|SERVERURL|SONGTITLE|STREAMSTATUS|BITRATE|CURRENTLISTENERS|PEAKLISTENERS)\>(.*?)<\/\\1\>/iU', $xml, $tempdata, PREG_SET_ORDER);
         foreach ($tempdata as $t2) {
-            $data[$t2[1]] = isset($langs[$t2[1]]) ? sprintf($langs[$t2[1]], $t2[2]) : $t2[2];
+            $data[ $t2[1] ] = isset($langs[ $t2[1] ]) ? sprintf($langs[ $t2[1] ], $t2[2]) : $t2[2];
         }
         unset($tempdata);
         preg_match_all('/\<SONG>(.*?)<\/SONG\>/', $xml, $temph);
@@ -47,10 +52,10 @@ function radioinfo($radio)
         } else {
             unset($data['STREAMSTATUS']);
             $md5_current_song = md5($data['SONGTITLE']);
-            $current_song = $mc1->get('current_radio_song');
+            $current_song = $cache->get('current_radio_song');
             if ($current_song === false || $current_song != $md5_current_song) {
                 //autoshout(str_replace(array('<','>'),array('[',']'),$data['SONGTITLE'].' playing on '.strtolower($data['SERVERTITLE']).' - '.strtolower($data['SERVERURL'])));
-                $mc1->cache_value('current_radio_song', $md5_current_song, 0);
+                $cache->set('current_radio_song', $md5_current_song, 0);
             }
             $html = '<fieldset>
                 <legend>' . $site_config['site_name'] . ' Radio</legend><ul>';

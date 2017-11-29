@@ -1,5 +1,6 @@
 <?php
-//=== start snatched
+global $CURUSER, $site_config, $lang;
+
 $count_snatched = $count2 = $dlc = '';
 if ($CURUSER['class'] >= UC_STAFF) {
     if (isset($_GET['snatched_table'])) {
@@ -62,7 +63,3 @@ if ($CURUSER['class'] >= UC_STAFF) {
         $HTMLOUT .= tr("<b>{$lang['userdetails_snatched']}</b><br>", "[ <a href=\"userdetails.php?id=$id&amp;snatched_table=1#snatched_table\" class=\"sublink\">{$lang['userdetails_s_show']}</a> ]  - $count_snatched <font color='red'><b>{$lang['userdetails_s_staff']}</b></font>", 1);
     }
 }
-
-//=== end snatched
-// End Class
-// End File

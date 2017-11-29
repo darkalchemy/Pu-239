@@ -1,4 +1,9 @@
 <?php
+/**
+ * @param $entry
+ *
+ * @return mixed|string
+ */
 function searchfield($entry)
 {
     static $drop_char_match = [
@@ -81,17 +86,32 @@ function searchfield($entry)
     // Filter out strange characters like ^, $, &, change "it's" to "its"
     //
     for ($i = 0; $i < sizeof($drop_char_match); ++$i) {
-        $entry = str_replace($drop_char_match[$i], $drop_char_replace[$i], $entry);
+        $entry = str_replace($drop_char_match[ $i ], $drop_char_replace[ $i ], $entry);
     }
 
     return $entry;
 }
 
+/**
+ * @param        $entry
+ * @param string $mode
+ *
+ * @return array
+ */
 function split_words($entry, $mode = 'post')
 {
     return explode(' ', trim(preg_replace('#\s+#', ' ', $entry)));
 }
 
+/**
+ * @param       $searchstr
+ * @param       $base_sql
+ * @param       $where_search
+ * @param array $add_where
+ * @param bool  $strict
+ *
+ * @return array
+ */
 function search_text_in_db($searchstr, $base_sql, $where_search, $add_where = [], $strict = false)
 {
     global $db, $config;
@@ -131,11 +151,11 @@ function search_text_in_db($searchstr, $base_sql, $where_search, $add_where = []
         if (utf_strlen(str_replace([
                 '*',
                 '%',
-            ], '', trim($split_search[$i]))) < $config['search_min_chars'] && !in_array($split_search[$i], $match_types)) {
-            $split_search[$i] = '';
+            ], '', trim($split_search[ $i ]))) < $config['search_min_chars'] && !in_array($split_search[ $i ], $match_types)) {
+            $split_search[ $i ] = '';
             continue;
         }
-        switch ($split_search[$i]) {
+        switch ($split_search[ $i ]) {
             case 'and':
                 $current_match_type = 'and';
                 break;
@@ -153,9 +173,9 @@ function search_text_in_db($searchstr, $base_sql, $where_search, $add_where = []
                     $current_match_type = 'and';
                 }
                 if ($strict) {
-                    $search = $where_search . ' = \'' . sqlesc($split_search[$i]) . '\'' . $add_where;
+                    $search = $where_search . ' = \'' . sqlesc($split_search[ $i ]) . '\'' . $add_where;
                 } else {
-                    $match_word = str_replace('*', '%', $split_search[$i]);
+                    $match_word = str_replace('*', '%', $split_search[ $i ]);
                     $search = $where_search . ' LIKE \'%' . sqlesc($match_word) . '%\'' . $add_where;
                     //$search = $where_search . ' REGEXP \'[[:<:]]' . $db->sql_escape($match_word) . '[[:>:]]\'' . $add_where;
                 }
@@ -163,23 +183,23 @@ function search_text_in_db($searchstr, $base_sql, $where_search, $add_where = []
                 $result = sql_query($sql);
                 $row = [];
                 while ($temp_row = mysqli_fetch_row($result)) {
-                    $row[$temp_row['id']] = 1;
+                    $row[ $temp_row['id'] ] = 1;
                     if (!$word_count) {
-                        $result_list[$temp_row['id']] = 1;
+                        $result_list[ $temp_row['id'] ] = 1;
                     } elseif ($current_match_type == 'or') {
-                        $result_list[$temp_row['id']] = 1;
+                        $result_list[ $temp_row['id'] ] = 1;
                     } elseif ($current_match_type == 'not') {
-                        $result_list[$temp_row['id']] = 0;
+                        $result_list[ $temp_row['id'] ] = 0;
                     }
                 }
                 if ($current_match_type == 'and' && $word_count) {
                     @reset($result_list);
                     foreach ($result_list as $id => $match_count) {
-                        if (!isset($row[$id]) || !$row[$id]) {
+                        if (!isset($row[ $id ]) || !$row[ $id ]) {
                             //$result_list[$id] = 0;
-                            @$result_list[$id] -= 1;
+                            @$result_list[ $id ] -= 1;
                         } else {
-                            @$result_list[$id] += 1;
+                            @$result_list[ $id ] += 1;
                         }
                     }
                 }

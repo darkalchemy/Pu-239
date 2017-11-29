@@ -5,10 +5,12 @@ require_once INCL_DIR . 'function_happyhour.php';
 require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'class.bencdec.php';
 dbconn();
+global $CURUSER, $site_config, $cache;
+
 $lang = array_merge(load_language('global'), load_language('download'));
 $T_Pass = isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) == 32 ? $_GET['torrent_pass'] : '';
 if (!empty($T_Pass)) {
-    $q0 = sql_query('SELECT * FROM users where torrent_pass = ' . sqlesc($T_Pass)) or sqlerr(__FILE__, __LINE__);
+    $q0 = sql_query('SELECT * FROM users WHERE torrent_pass = ' . sqlesc($T_Pass)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($q0) == 0) {
         die($lang['download_passkey']);
     } else {
@@ -44,30 +46,26 @@ if (happyHour('check') && happyCheck('checkid', $row['category']) && XBT_TRACKER
     $multiplier = happyHour('multiplier');
     happyLog($CURUSER['id'], $id, $multiplier);
     sql_query('INSERT INTO happyhour (userid, torrentid, multiplier ) VALUES (' . sqlesc($CURUSER['id']) . ',' . sqlesc($id) . ',' . sqlesc($multiplier) . ')') or sqlerr(__FILE__, __LINE__);
-    $mc1->delete_value($CURUSER['id'] . '_happy');
+    $cache->delete($CURUSER['id'] . '_happy');
 }
 if ($site_config['seedbonus_on'] == 1 && $row['owner'] != $CURUSER['id']) {
     //===remove karma
     sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($site_config['bonus_per_download']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($CURUSER['seedbonus'] - $site_config['bonus_per_download']);
-    $mc1->begin_transaction('userstats_' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    $cache->update_row('userstats_' . $CURUSER['id'], [
         'seedbonus' => $update['seedbonus'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['u_stats']);
-    $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['u_stats']);
+    $cache->update_row('user_stats_' . $CURUSER['id'], [
         'seedbonus' => $update['seedbonus'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_stats']);
+    ], $site_config['expires']['user_stats']);
     //===end
 }
-sql_query('UPDATE torrents SET hits = hits + 1 WHERE id = ' . sqlesc($id));
+sql_query('UPDATE torrents SET hits = hits + 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 /* free mod by pdq **/
 /* freeslots/doubleseed by pdq **/
 if (isset($_GET['slot'])) {
     $added = (TIME_NOW + 14 * 86400);
-    $slots_sql = sql_query('SELECT * FROM freeslots WHERE torrentid = ' . sqlesc($id) . ' AND userid = ' . sqlesc($CURUSER['id']));
+    $slots_sql = sql_query('SELECT * FROM freeslots WHERE torrentid = ' . sqlesc($id) . ' AND userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $slot = mysqli_fetch_assoc($slots_sql);
     $used_slot = $slot['torrentid'] == $id && $slot['userid'] == $CURUSER['id'];
     /* freeslot **/
@@ -107,46 +105,38 @@ if (isset($_GET['slot'])) {
     } else {
         stderr('ERROR', 'What\'s up doc?');
     }
-    $mc1->delete_value('fllslot_' . $CURUSER['id']);
+    $cache->delete('fllslot_' . $CURUSER['id']);
     make_freeslots($CURUSER['id'], 'fllslot_');
     $user['freeslots'] = ($CURUSER['freeslots'] - 1);
-    $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    $cache->update_row('MyUser_' . $CURUSER['id'], [
         'freeslots' => $CURUSER['freeslots'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['curuser']);
-    $mc1->begin_transaction('user' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['curuser']);
+    $cache->update_row('user' . $CURUSER['id'], [
         'freeslots' => $user['freeslots'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_cache']);
+    ], $site_config['expires']['user_cache']);
 }
 /* end **/
-$mc1->delete_value('MyPeers_' . $CURUSER['id']);
-$mc1->delete_value('top5_tor_');
-$mc1->delete_value('last5_tor_');
-$mc1->delete_value('scroll_tor_');
+$cache->delete('MyPeers_' . $CURUSER['id']);
+$cache->delete('top5_tor_');
+$cache->delete('last5_tor_');
+$cache->delete('scroll_tor_');
 if (!isset($CURUSER['torrent_pass']) || strlen($CURUSER['torrent_pass']) != 32) {
     $passkey = make_torrentpass();
     $uid = $CURUSER['id'];
     $CURUSER['torrent_pass'] = $passkey;
     sql_query('UPDATE users SET torrent_pass = ' . sqlesc($CURUSER['torrent_pass']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    $cache->update_row('MyUser_' . $CURUSER['id'], [
         'torrent_pass' => $CURUSER['torrent_pass'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['curuser']);
-    $mc1->begin_transaction('user' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['curuser']);
+    $cache->update_row('user' . $CURUSER['id'], [
         'torrent_pass' => $CURUSER['torrent_pass'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_cache']);
+    ], $site_config['expires']['user_cache']);
 }
 $dict = bencdec::decode_file($fn, $site_config['max_torrent_size']);
 if (XBT_TRACKER == true) {
     $dict['announce'] = $site_config['xbt_prefix'] . $CURUSER['torrent_pass'] . $site_config['xbt_suffix'];
 } else {
-    $dict['announce'] = $site_config['announce_urls'][$ssluse] . '?torrent_pass=' . $CURUSER['torrent_pass'];
+    $dict['announce'] = $site_config['announce_urls'][ $ssluse ] . '?torrent_pass=' . $CURUSER['torrent_pass'];
 }
 $dict['uid'] = (int)$CURUSER['id'];
 $tor = bencdec::encode($dict);

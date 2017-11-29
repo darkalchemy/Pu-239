@@ -1,7 +1,10 @@
 <?php
+/**
+ * @param $data
+ */
 function mow_update($data)
 {
-    global $site_config, $queries, $mc1;
+    global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
     //== Movie of the week
@@ -13,7 +16,7 @@ function mow_update($data)
     $arr = mysqli_fetch_assoc($res_tor);
     if (!empty($arr)) {
         sql_query('UPDATE avps SET value_u = ' . sqlesc($arr['id']) . ', value_i = ' . sqlesc(TIME_NOW) . " WHERE avps.arg = 'bestfilmofweek'") or sqlerr(__FILE__, __LINE__);
-        $mc1->delete_value('top_movie_2');
+        $cache->delete('top_movie_2');
     }
     if ($data['clean_log']) {
         write_log('Torrent [' . (int)$arr['id'] . '] [' . htmlentities($arr['name']) . "] was set 'Best Film of the Week' by system");

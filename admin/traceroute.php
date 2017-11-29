@@ -4,6 +4,8 @@ require_once INCL_DIR . 'html_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $lang;
+
 $lang = array_merge($lang, load_language('ad_traceroute'));
 $HTMLOUT = '';
 if (strtoupper(substr(PHP_OS, 0, 3) == 'WIN')) {
@@ -18,7 +20,7 @@ $system = ini_get('system');
 $unix = (bool)$unix;
 $win = (bool)$windows;
 if ($register_globals) {
-    $ip = getenv(REMOTE_ADDR);
+    $ip = getenv($_SERVER['REMOTE_ADDR']);
     $self = $PHP_SELF;
 } else {
     $action = isset($_POST['action']) ? $_POST['action'] : '';

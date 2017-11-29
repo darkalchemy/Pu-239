@@ -44,8 +44,7 @@ if (isset($_POST['delete'])) {
         } elseif ($message['sender'] == $CURUSER['id'] && $message['location'] != PM_DELETED) {
             sql_query('UPDATE messages SET saved=\'no\' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         }
-        $mc1->delete_value('inbox_new_' . $CURUSER['id']);
-        $mc1->delete_value('inbox_new_sb_' . $CURUSER['id']);
+        $cache->delete('inbox_' . $CURUSER['id']);
     }
     //=== Check if messages were deleted
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {

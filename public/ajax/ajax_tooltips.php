@@ -4,7 +4,7 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 
 header('Content-Type: application/json');
-global $site_config, $mc1;
+global $site_config, $cache;
 $lang = array_merge(load_language('global'), load_language('index'));
 
 if (empty($_POST)) {
@@ -18,7 +18,8 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
     $downed = mksize($CURUSER['downloaded']);
 
     if (XBT_TRACKER == true) {
-        if (($MyPeersXbtCache = $mc1->get_value('MyPeers_XBT_' . $CURUSER['id'])) === false) {
+        $MyPeersXbtCache = $cache->get('MyPeers_XBT_' . $CURUSER['id']);
+        if ($MyPeersXbtCache === false || is_null($MyPeersXbtCache)) {
             $seed['yes'] = $seed['no'] = 0;
             $seed['conn'] = 3;
             $r = sql_query('SELECT COUNT(uid) AS count, left, active, connectable
@@ -27,16 +28,17 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
                                 GROUP BY left') or sqlerr(__LINE__, __FILE__);
             while ($a = mysqli_fetch_assoc($r)) {
                 $key = $a['left'] == 0 ? 'yes' : 'no';
-                $seed[$key] = number_format((int)$a['count']);
+                $seed[ $key ] = number_format((int)$a['count']);
                 $seed['conn'] = $a['connectable'] == 0 ? 1 : 2;
             }
-            $mc1->cache_value('MyPeers_XBT_' . $CURUSER['id'], $seed, $site_config['expires']['MyPeers_xbt_']);
+            $cache->set('MyPeers_XBT_' . $CURUSER['id'], $seed, $site_config['expires']['MyPeers_xbt_']);
             unset($r, $a);
         } else {
             $seed = $MyPeersXbtCache;
         }
     } else {
-        if (($MyPeersCache = $mc1->get_value('MyPeers_' . $CURUSER['id'])) === false) {
+        $MyPeersCache = $cache->get('MyPeers_' . $CURUSER['id']);
+        if ($MyPeersCache === false || is_null($MyPeersCache)) {
             $seed['yes'] = $seed['no'] = 0;
             $seed['conn'] = 3;
             $r = sql_query('SELECT COUNT(id) AS count, seeder, connectable
@@ -45,10 +47,10 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
                                 GROUP BY seeder');
             while ($a = mysqli_fetch_assoc($r)) {
                 $key = $a['seeder'] == 'yes' ? 'yes' : 'no';
-                $seed[$key] = number_format((int)$a['count']);
+                $seed[ $key ] = number_format((int)$a['count']);
                 $seed['conn'] = $a['connectable'] == 'no' ? 1 : 2;
             }
-            $mc1->cache_value('MyPeers_' . $CURUSER['id'], $seed, $site_config['expires']['MyPeers_']);
+            $cache->set('MyPeers_' . $CURUSER['id'], $seed, $site_config['expires']['MyPeers_']);
             unset($r, $a);
         } else {
             $seed = $MyPeersCache;
@@ -72,18 +74,19 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
         $connectable = $lang['gl_na_connectable'];
     }
 
-    if (($Achievement_Points = $mc1->get_value('user_achievement_points_' . $CURUSER['id'])) === false) {
+    $Achievement_Points = $cache->get('user_achievement_points_' . $CURUSER['id']);
+    if ($Achievement_Points === false || is_null($Achievement_Points)) {
         $Sql = sql_query('SELECT u.id, u.username, a.achpoints, a.spentpoints
                             FROM users AS u
-                            left JOIN usersachiev AS a ON u.id = a.userid
+                            LEFT JOIN usersachiev AS a ON u.id = a.userid
                             WHERE u.id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $Achievement_Points = mysqli_fetch_assoc($Sql);
         $Achievement_Points['id'] = (int)$Achievement_Points['id'];
         $Achievement_Points['achpoints'] = (int)$Achievement_Points['achpoints'];
         $Achievement_Points['spentpoints'] = (int)$Achievement_Points['spentpoints'];
-        $mc1->cache_value('user_achievement_points_' . $CURUSER['id'], $Achievement_Points, 0);
+        $cache->set('user_achievement_points_' . $CURUSER['id'], $Achievement_Points, 0);
     }
-
+    $usrclass = '';
     if ($CURUSER['override_class'] != 255) {
         $usrclass = ' <b>(' . get_user_class_name($CURUSER['class']) . ')</b> ';
     } elseif ($CURUSER['class'] >= UC_STAFF) {
@@ -101,7 +104,6 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
         <div class='navbar-start'>{$lang['gl_rep']}</div>
         <div>$member_reputation</div>
     </div>
-
 
     <div class='is-flex'>
         <div class='navbar-start'>{$lang['gl_invites']}</div>

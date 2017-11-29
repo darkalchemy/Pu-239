@@ -1,7 +1,10 @@
 <?php
+/**
+ * @param $data
+ */
 function peer_update($data)
 {
-    global $site_config, $queries, $mc1;
+    global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
     require_once INCL_DIR . 'ann_functions.php';
@@ -13,23 +16,23 @@ function peer_update($data)
         $userid = (int)$dead_peer['userid'];
         $seed = $dead_peer['seeder'] === 'yes'; // you use 'yes' i thinks :P
         sql_query('DELETE FROM peers WHERE torrent = ' . $torrentid . ' AND peer_id = ' . sqlesc($dead_peer['peer_id']));
-        if (!isset($torrent_seeds[$torrentid])) {
-            $torrent_seeds[$torrentid] = $torrent_leeches[$torrentid] = 0;
+        if (!isset($torrent_seeds[ $torrentid ])) {
+            $torrent_seeds[ $torrentid ] = $torrent_leeches[ $torrentid ] = 0;
         }
         if ($seed) {
-            ++$torrent_seeds[$torrentid];
+            ++$torrent_seeds[ $torrentid ];
         } else {
-            ++$torrent_leeches[$torrentid];
+            ++$torrent_leeches[ $torrentid ];
         }
     }
     foreach (array_keys($torrent_seeds) as $tid) {
         $update = [];
-        adjust_torrent_peers($tid, -$torrent_seeds[$tid], -$torrent_leeches[$tid], 0);
-        if ($torrent_seeds[$tid]) {
-            $update[] = 'seeders = (seeders - ' . $torrent_seeds[$tid] . ')';
+        adjust_torrent_peers($tid, -$torrent_seeds[ $tid ], -$torrent_leeches[ $tid ], 0);
+        if ($torrent_seeds[ $tid ]) {
+            $update[] = 'seeders = (seeders - ' . $torrent_seeds[ $tid ] . ')';
         }
-        if ($torrent_leeches[$tid]) {
-            $update[] = 'leechers = (leechers - ' . $torrent_leeches[$tid] . ')';
+        if ($torrent_leeches[ $tid ]) {
+            $update[] = 'leechers = (leechers - ' . $torrent_leeches[ $tid ] . ')';
         }
         sql_query('UPDATE torrents SET ' . implode(', ', $update) . ' WHERE id = ' . $tid);
     }

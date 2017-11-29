@@ -4,6 +4,8 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $site_config, $lang;
+
 $lang = array_merge($lang, load_language('referrers'));
 $HTMLOUT = '';
 if (!isset($_GET['page']) ? $_GET['page'] = 0 : (int)$_GET['page']) ;

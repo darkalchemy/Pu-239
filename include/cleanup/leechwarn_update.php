@@ -1,11 +1,12 @@
 <?php
+/**
+ * @param $data
+ */
 function leechwarn_update($data)
 {
-    global $site_config, $queries, $mc1;
+    global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
-    //== 09 Auto leech warn by Bigjoos/pdq
-    //== Updated/modified autoleech warning script
     $minratio = 0.3; // ratio < 0.4
     $base_ratio = 0.0;
     $downloaded = 10 * 1024 * 1024 * 1024; // + 10 GB
@@ -24,37 +25,27 @@ function leechwarn_update($data)
             $msgs_buffer[] = '(0,' . $arr['id'] . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
             $users_buffer[] = '(' . $arr['id'] . ',' . $leechwarn . ',\'0\', ' . $modcom . ')';
             $update['leechwarn'] = ($leechwarn);
-            $mc1->begin_transaction('user' . $arr['id']);
-            $mc1->update_row(false, [
+            $cache->update_row('user' . $arr['id'], [
                 'leechwarn'   => $update['leechwarn'],
                 'downloadpos' => 0,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_cache']);
-            $mc1->begin_transaction('MyUser_' . $arr['id']);
-            $mc1->update_row(false, [
+            ], $site_config['expires']['user_cache']);
+            $cache->update_row('MyUser_' . $arr['id'], [
                 'leechwarn'   => $update['leechwarn'],
                 'downloadpos' => 0,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['curuser']);
-            $mc1->begin_transaction('user_stats_' . $arr['id']);
-            $mc1->update_row(false, [
+            ], $site_config['expires']['curuser']);
+            $cache->update_row('user_stats_' . $arr['id'], [
                 'modcomment' => $modcomment,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_stats']);
-            $mc1->delete_value('inbox_new_' . $arr['id']);
-            $mc1->delete_value('inbox_new_sb_' . $arr['id']);
+            ], $site_config['expires']['user_stats']);
+            $cache->increment('inbox_' . $arr['id']);
         }
         $count = count($users_buffer);
         if ($count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
-            sql_query('INSERT INTO users (id, leechwarn, downloadpos, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE leechwarn=values(leechwarn),downloadpos=values(downloadpos),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO users (id, leechwarn, downloadpos, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE leechwarn = VALUES(leechwarn),downloadpos = VALUES(downloadpos),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
             write_log('Cleanup: System applied auto leech Warning(s) to  ' . $count . ' Member(s)');
         }
         unset($users_buffer, $msgs_buffer, $update, $count);
     }
-    //End
-    //== 09 Auto leech warn by Bigjoos/pdq
-    //== Updated/Modified autoleech warn system - Remove warning and enable downloads
     $minratio = 0.5; // ratio > 0.5
     $res = sql_query("SELECT id, modcomment FROM users WHERE downloadpos = '0' AND leechwarn > '1' AND uploaded / downloaded >= $minratio") or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $users_buffer = [];
@@ -67,30 +58,23 @@ function leechwarn_update($data)
             $modcom = sqlesc($modcomment);
             $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ',  ' . sqlesc($subject) . ')';
             $users_buffer[] = '(' . $arr['id'] . ', \'0\', \'1\', ' . $modcom . ')';
-            $mc1->begin_transaction('user' . $arr['id']);
-            $mc1->update_row(false, [
+            $cache->update_row('user' . $arr['id'], [
                 'leechwarn'   => 0,
                 'downloadpos' => 1,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_cache']);
-            $mc1->begin_transaction('MyUser_' . $arr['id']);
-            $mc1->update_row(false, [
+            ], $site_config['expires']['user_cache']);
+            $cache->update_row('MyUser_' . $arr['id'], [
                 'leechwarn'   => 0,
                 'downloadpos' => 1,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['curuser']);
-            $mc1->begin_transaction('user_stats_' . $arr['id']);
-            $mc1->update_row(false, [
+            ], $site_config['expires']['curuser']);
+            $cache->update_row('user_stats_' . $arr['id'], [
                 'modcomment' => $modcomment,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_stats']);
-            $mc1->delete_value('inbox_new_' . $arr['id']);
-            $mc1->delete_value('inbox_new_sb_' . $arr['id']);
+            ], $site_config['expires']['user_stats']);
+            $cache->increment('inbox_' . $arr['id']);
         }
         $count = count($users_buffer);
         if ($count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
-            sql_query('INSERT INTO users (id, leechwarn, downloadpos, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE leechwarn=values(leechwarn),downloadpos=values(downloadpos),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO users (id, leechwarn, downloadpos, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE leechwarn = VALUES(leechwarn),downloadpos = VALUES(downloadpos),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
         }
         if ($data['clean_log']) {
             write_log('Cleanup: System removed auto leech Warning(s) and renabled download(s) - ' . $count . ' Member(s)');
@@ -105,34 +89,27 @@ function leechwarn_update($data)
             $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - User disabled - Low ratio.\n" . $modcomment;
             $modcom = sqlesc($modcomment);
             $users_buffer[] = '(' . $arr['id'] . ' , \'0\', \'no\', ' . $modcom . ')';
-            $mc1->begin_transaction('user' . $arr['id']);
-            $mc1->update_row(false, [
+            $cache->update_row('user' . $arr['id'], [
                 'leechwarn' => 0,
                 'enabled'   => 'no',
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_cache']);
-            $mc1->begin_transaction('user_stats_' . $arr['id']);
-            $mc1->update_row(false, [
+            ], $site_config['expires']['user_cache']);
+            $cache->update_row('user_stats_' . $arr['id'], [
                 'modcomment' => $modcomment,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_stats']);
-            $mc1->begin_transaction('MyUser_' . $arr['id']);
-            $mc1->update_row(false, [
+            ], $site_config['expires']['user_stats']);
+            $cache->update_row('MyUser_' . $arr['id'], [
                 'leechwarn' => 0,
                 'enabled'   => 'no',
-            ]);
-            $mc1->commit_transaction($site_config['expires']['curuser']);
+            ], $site_config['expires']['curuser']);
         }
         $count = count($users_buffer);
         if ($count > 0) {
-            sql_query('INSERT INTO users (id, leechwarn, enabled, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE class=values(class),leechwarn=values(leechwarn),enabled=values(enabled),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO users (id, leechwarn, enabled, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE class = VALUES(class),leechwarn = VALUES(leechwarn),enabled = VALUES(enabled),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
         }
         if ($data['clean_log']) {
             write_log('Cleanup: Disabled ' . $count . ' Member(s) - Leechwarns expired');
         }
         unset($users_buffer, $count);
     }
-    //==End
     if ($data['clean_log'] && $queries > 0) {
         write_log("Leechwarn Cleanup: Completed using $queries queries");
     }

@@ -2,7 +2,8 @@
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once CACHE_DIR . 'timezones.php';
 dbconn();
-global $CURUSER;
+global $CURUSER, $site_config;
+
 if (!$CURUSER) {
     get_template();
 }
@@ -12,7 +13,7 @@ if (isset($CURUSER)) {
 }
 $stdfoot = [
     'js' => [
-        get_file('captcha2_js')
+        get_file('captcha2_js'),
     ],
 ];
 if (!$site_config['openreg']) {
@@ -53,7 +54,7 @@ $value = [
     '...',
     '...',
 ];
-$value[random_int(1, count($value) - 1)] = 'X';
+$value[ random_int(1, count($value) - 1) ] = 'X';
 
 $HTMLOUT .= "
     <div class='half-container has-text-centered portlet'>
@@ -197,7 +198,7 @@ $HTMLOUT .= "
                     <span class='tabs is-marginless'>";
 for ($i = 0; $i < count($value); ++$i) {
     $HTMLOUT .= '
-                        <input name="submitme" type="submit" value="' . $value[$i] . '" class="button" />';
+                        <input name="submitme" type="submit" value="' . $value[ $i ] . '" class="button" />';
 }
 $HTMLOUT .= '
                     </span>

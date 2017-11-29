@@ -16,7 +16,7 @@ $topic_desc = strip_tags(isset($_POST['topic_desc']) ? $_POST['topic_desc'] : ''
 $post_title = strip_tags(isset($_POST['post_title']) ? $_POST['post_title'] : '');
 $icon = htmlsafechars(isset($_POST['icon']) ? $_POST['icon'] : '');
 $body = (isset($_POST['body']) ? $_POST['body'] : '');
-$ip = htmlsafechars($CURUSER['ip'] == '' ? $_SERVER['REMOTE_ADDR'] : $CURUSER['ip']);
+$ip = getip();
 $bb_code = (isset($_POST['bb_code']) && $_POST['bb_code'] == 'no' ? 'no' : 'yes');
 $anonymous = (isset($_POST['anonymous']) && $_POST['anonymous'] != '' ? 'yes' : 'no');
 //=== poll stuff
@@ -43,7 +43,7 @@ if (isset($_POST['button']) && $_POST['button'] == 'Post') {
         $break_down_poll_options = explode("\n", $poll_answers);
         //=== be sure there are no blank options
         for ($i = 0; $i < count($break_down_poll_options); ++$i) {
-            if (strlen($break_down_poll_options[$i]) < 2) {
+            if (strlen($break_down_poll_options[ $i ]) < 2) {
                 stderr($lang['gl_error'], $lang['fe_no_blank_lines_in_poll']);
             }
         }
@@ -60,12 +60,12 @@ if (isset($_POST['button']) && $_POST['button'] == 'Post') {
     sql_query('INSERT INTO topics (`id`, `user_id`, `topic_name`, `last_post`, `forum_id`, `topic_desc`, `poll_id`, `anonymous`) VALUES (NULL, ' . $CURUSER['id'] . ', ' . sqlesc($topic_name) . ', ' . $CURUSER['id'] . ', ' . $forum_id . ', ' . sqlesc($topic_desc) . ', ' . $poll_id . ', ' . sqlesc($anonymous) . ')');
     $topic_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
     sql_query('INSERT INTO `posts` ( `topic_id` , `user_id` , `added` , `body` , `icon` , `post_title` , `bbcode` , `ip` , `anonymous`) VALUES
-            (' . sqlesc($topic_id) . ', ' . $CURUSER['id'] . ', ' . TIME_NOW . ', ' . sqlesc($body) . ', ' . sqlesc($icon) . ',  ' . sqlesc($post_title) . ', ' . sqlesc($bb_code) . ', ' . sqlesc($ip) . ', ' . sqlesc($anonymous) . ')');
+            (' . sqlesc($topic_id) . ', ' . $CURUSER['id'] . ', ' . TIME_NOW . ', ' . sqlesc($body) . ', ' . sqlesc($icon) . ',  ' . sqlesc($post_title) . ', ' . sqlesc($bb_code) . ', ' . ipToStorageFormat($ip) . ', ' . sqlesc($anonymous) . ')');
     $post_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
     sql_query('UPDATE usersachiev SET forumtopics = forumtopics+1 WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     clr_forums_cache($post_id);
     clr_forums_cache($forum_id);
-    $mc1->delete_value('forum_posts_' . $CURUSER['id']);
+    $cache->delete('forum_posts_' . $CURUSER['id']);
     sql_query('UPDATE `topics` SET first_post =  ' . sqlesc($post_id) . ', last_post = ' . sqlesc($post_id) . ', post_count = 1 WHERE id=' . sqlesc($topic_id));
     sql_query('UPDATE `forums` SET post_count = post_count +1, topic_count = topic_count + 1 WHERE id =' . sqlesc($forum_id));
     if ($site_config['autoshout_on'] == 1) {
@@ -78,24 +78,20 @@ if (isset($_POST['button']) && $_POST['button'] == 'Post') {
     if ($site_config['seedbonus_on'] == 1) {
         sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($site_config['bonus_per_topic']) . ' WHERE id =  ' . sqlesc($CURUSER['id'] . '')) or sqlerr(__FILE__, __LINE__);
         $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus_per_topic']);
-        $mc1->begin_transaction('userstats_' . $CURUSER['id']);
-        $mc1->update_row(false, [
+        $cache->update_row('userstats_' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus'],
-        ]);
-        $mc1->commit_transaction($site_config['expires']['u_stats']);
-        $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
-        $mc1->update_row(false, [
+        ], $site_config['expires']['u_stats']);
+        $cache->update_row('user_stats_' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus'],
-        ]);
-        $mc1->commit_transaction($site_config['expires']['user_stats']);
+        ], $site_config['expires']['user_stats']);
     }
     //=== stuff for file uploads
     if ($CURUSER['class'] >= $min_upload_class) {
         //=== make sure file is kosher
         while (list($key, $name) = each($_FILES['attachment']['name'])) {
             if (!empty($name)) {
-                $size = intval($_FILES['attachment']['size'][$key]);
-                $type = $_FILES['attachment']['type'][$key];
+                $size = intval($_FILES['attachment']['size'][ $key ]);
+                $type = $_FILES['attachment']['type'][ $key ];
                 //=== make sure file is kosher
                 $extension_error = $size_error = 0;
                 //=== get rid of spaces
@@ -136,7 +132,7 @@ if (isset($_POST['button']) && $_POST['button'] == 'Post') {
                         //===plop it into the DB all safe and snuggly
                         sql_query('INSERT INTO `attachments` (`post_id`, `user_id`, `file`, `file_name`, `added`, `extension`, `size`) VALUES
 ( ' . $post_id . ', ' . $CURUSER['id'] . ', ' . sqlesc($name . '(id-' . $post_id . ')' . $file_extension) . ', ' . sqlesc($name) . ', ' . TIME_NOW . ', ' . ($file_extension === '.zip' ? '\'zip\'' : '\'rar\'') . ', ' . $size . ')');
-                        copy($_FILES['attachment']['tmp_name'][$key], $upload_to);
+                        copy($_FILES['attachment']['tmp_name'][ $key ], $upload_to);
                         chmod($upload_to, 0777);
                 }
             }
@@ -166,91 +162,91 @@ $HTMLOUT .= '
                 <div class="flex flex-grid">
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/smile1.gif" alt="' . $lang['fe_smile'] . '" class="bottom10" title="' . $lang['fe_smile'] . '" />
-                        <input type="radio" name="icon" value="smile1"' . ($icon === 'smile1' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="smile1"' . ($icon === 'smile1' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/grin.gif" alt="' . $lang['fe_smilee_grin'] . '" class="bottom10" title="' . $lang['fe_smilee_grin'] . '" />
-                        <input type="radio" name="icon" value="grin"' . ($icon === 'grin' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="grin"' . ($icon === 'grin' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/tongue.gif" alt="' . $lang['fe_smilee_tongue'] . '" class="bottom10" title="' . $lang['fe_smilee_tongue'] . '" />
-                        <input type="radio" name="icon" value="tongue"' . ($icon === 'tongue' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="tongue"' . ($icon === 'tongue' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/cry.gif" alt="' . $lang['fe_smilee_cry'] . '" class="bottom10" title="' . $lang['fe_smilee_cry'] . '" />
-                        <input type="radio" name="icon" value="cry"' . ($icon === 'cry' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="cry"' . ($icon === 'cry' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/wink.gif" alt="' . $lang['fe_smilee_wink'] . '" class="bottom10" title="' . $lang['fe_smilee_wink'] . '" />
-                        <input type="radio" name="icon" value="wink"' . ($icon === 'wink' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="wink"' . ($icon === 'wink' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/rolleyes.gif" alt="' . $lang['fe_smilee_roll_eyes'] . '" class="bottom10" title="' . $lang['fe_smilee_roll_eyes'] . '" />
-                        <input type="radio" name="icon" value="rolleyes"' . ($icon === 'rolleyes' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="rolleyes"' . ($icon === 'rolleyes' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/blink.gif" alt="' . $lang['fe_smilee_blink'] . '" class="bottom10" title="' . $lang['fe_smilee_blink'] . '" />
-                        <input type="radio" name="icon" value="blink"' . ($icon === 'blink' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="blink"' . ($icon === 'blink' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/bow.gif" alt="' . $lang['fe_smilee_bow'] . '" class="bottom10" title="' . $lang['fe_smilee_bow'] . '" />
-                        <input type="radio" name="icon" value="bow"' . ($icon === 'bow' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="bow"' . ($icon === 'bow' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/clap2.gif" alt="' . $lang['fe_smilee_clap'] . '" class="bottom10" title="' . $lang['fe_smilee_clap'] . '" />
-                        <input type="radio" name="icon" value="clap2"' . ($icon === 'clap2' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="clap2"' . ($icon === 'clap2' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/hmmm.gif" alt="' . $lang['fe_smilee_hmm'] . '" class="bottom10" title="' . $lang['fe_smilee_hmm'] . '" />
-                        <input type="radio" name="icon" value="hmmm"' . ($icon === 'hmmm' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="hmmm"' . ($icon === 'hmmm' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/devil.gif" alt="' . $lang['fe_smilee_devil'] . '" class="bottom10" title="' . $lang['fe_smilee_devil'] . '" />
-                        <input type="radio" name="icon" value="devil"' . ($icon === 'devil' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="devil"' . ($icon === 'devil' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/angry.gif" alt="' . $lang['fe_smilee_angry'] . '" class="bottom10" title="' . $lang['fe_smilee_angry'] . '" />
-                        <input type="radio" name="icon" value="angry"' . ($icon === 'angry' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="angry"' . ($icon === 'angry' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="' . $lang['fe_smilee_shit'] . '" class="bottom10" title="' . $lang['fe_smilee_shit'] . '" />
-                        <input type="radio" name="icon" value="shit"' . ($icon === 'shit' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="shit"' . ($icon === 'shit' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/sick.gif" alt="' . $lang['fe_smilee_sick'] . '" class="bottom10" title="' . $lang['fe_smilee_sick'] . '" />
-                        <input type="radio" name="icon" value="sick"' . ($icon === 'sick' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="sick"' . ($icon === 'sick' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/tease.gif" alt="' . $lang['fe_smilee_tease'] . '" class="bottom10" title="' . $lang['fe_smilee_tease'] . '" />
-                        <input type="radio" name="icon" value="tease"' . ($icon === 'tease' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="tease"' . ($icon === 'tease' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/love.gif" alt="' . $lang['fe_smilee_love'] . '" class="bottom10" title="' . $lang['fe_smilee_love'] . '" />
-                        <input type="radio" name="icon" value="love"' . ($icon === 'love' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="love"' . ($icon === 'love' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/ohmy.gif" alt="' . $lang['fe_smilee_oh_my'] . '" class="bottom10" title="' . $lang['fe_smilee_oh_my'] . '" />
-                        <input type="radio" name="icon" value="ohmy"' . ($icon === 'ohmy' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="ohmy"' . ($icon === 'ohmy' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/yikes.gif" alt="' . $lang['fe_smilee_yikes'] . '" class="bottom10" title="' . $lang['fe_smilee_yikes'] . '" />
-                        <input type="radio" name="icon" value="yikes"' . ($icon === 'yikes' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="yikes"' . ($icon === 'yikes' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/spider.gif" alt="' . $lang['fe_smilee_spider'] . '" class="bottom10" title="' . $lang['fe_smilee_spider'] . '" />
-                        <input type="radio" name="icon" value="spider"' . ($icon === 'spider' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="spider"' . ($icon === 'spider' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/wall.gif" alt="' . $lang['fe_smilee_wall'] . '" class="bottom10" title="' . $lang['fe_smilee_wall'] . '" />
-                        <input type="radio" name="icon" value="wall"' . ($icon === 'wall' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="wall"' . ($icon === 'wall' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/idea.gif" alt="' . $lang['fe_smilee_idea'] . '" class="bottom10" title="' . $lang['fe_smilee_idea'] . '" />
-                        <input type="radio" name="icon" value="idea"' . ($icon === 'idea' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="idea"' . ($icon === 'idea' ? ' checked' : '') . ' />
                     </span>
                     <span class="flex flex-column flex-center">
                         <img src="' . $site_config['pic_base_url'] . 'smilies/question.gif" alt="' . $lang['fe_smilee_question'] . '" class="bottom10" title="' . $lang['fe_smilee_question'] . '" />
-                        <input type="radio" name="icon" value="question"' . ($icon === 'question' ? ' checked="checked"' : '') . ' />
+                        <input type="radio" name="icon" value="question"' . ($icon === 'question' ? ' checked' : '') . ' />
                     </span>
                 </div>
             </td>
@@ -263,8 +259,8 @@ $HTMLOUT .= '
     <td><input type="text" size="80" maxlength="120" name="post_title" value="' . trim(strip_tags($post_title)) . '" class="text_default" /> [ optional ]</td></tr>
     <tr><td><span>' . $lang['fe_bbcode'] . '</span></td>
     <td>
-    <input type="radio" name="bb_code" value="yes"' . ($bb_code === 'yes' ? ' checked="checked"' : '') . ' /> ' . $lang['fe_yes_enable'] . ' ' . $lang['fe_bbcode_in_post'] . '
-    <input type="radio" name="bb_code" value="no"' . ($bb_code === 'no' ? ' checked="checked"' : '') . ' /> ' . $lang['fe_no_disable'] . ' ' . $lang['fe_bbcode_in_post'] . '
+    <input type="radio" name="bb_code" value="yes"' . ($bb_code === 'yes' ? ' checked' : '') . ' /> ' . $lang['fe_yes_enable'] . ' ' . $lang['fe_bbcode_in_post'] . '
+    <input type="radio" name="bb_code" value="no"' . ($bb_code === 'no' ? ' checked' : '') . ' /> ' . $lang['fe_no_disable'] . ' ' . $lang['fe_bbcode_in_post'] . '
     </td></tr>
     <tr><td><span>' . $lang['fe_body'] . '</span></td>
     <td>' . BBcode($body) . $more_options . '</td></tr>
@@ -272,8 +268,8 @@ $HTMLOUT .= '
    <!- Anonymous  ->
    ' . $lang['fe_anonymous_topic'] . ' : <input type="checkbox" name="anonymous" value="yes" /><br>
    <img src="' . $site_config['pic_base_url'] . 'forums/subscribe.gif" alt="+" title="+" /> ' . $lang['fe_subscrib_to_tread'] . '
-    <input type="radio" name="subscribe" value="yes"' . ($subscribe === 'yes' ? ' checked="checked"' : '') . ' />yes
-    <input type="radio" name="subscribe" value="no"' . ($subscribe === 'no' ? ' checked="checked"' : '') . ' />no <br>
+    <input type="radio" name="subscribe" value="yes"' . ($subscribe === 'yes' ? ' checked' : '') . ' />yes
+    <input type="radio" name="subscribe" value="no"' . ($subscribe === 'no' ? ' checked' : '') . ' />no <br>
     <input type="submit" name="button" class="button_tiny" value="' . $lang['fe_post'] . '" in/>
    </td></tr>
     </table></form>';

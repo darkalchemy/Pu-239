@@ -1,4 +1,12 @@
 <?php
+/**
+ * @param       $rpp
+ * @param       $count
+ * @param       $href
+ * @param array $opts
+ *
+ * @return array
+ */
 function pager($rpp, $count, $href, $opts = [])
 {
     // $rpp = results per page
@@ -89,6 +97,11 @@ function pager($rpp, $count, $href, $opts = [])
     ];
 }
 
+/**
+ * @param $data
+ *
+ * @return string
+ */
 function pager_rep($data)
 {
     $pager = [

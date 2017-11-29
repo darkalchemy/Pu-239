@@ -1,4 +1,6 @@
 <?php
+global $CURUSER, $site_config, $cache, $lang;
+
 $torrentid = (isset($_POST['torrentid']) ? (int)$_POST['torrentid'] : 0);
 if ($torrentid < 1) {
     stderr("{$lang['error_error']}", "{$lang['error_funky']}");
@@ -16,7 +18,7 @@ if ($CURUSER['id'] == $arr['userid']) {
 $msg = "{$lang['filled_your']}[b]" . htmlspecialchars($arr['request']) . "[/b]{$lang['filled_by']}[b]" . $CURUSER['username'] . "[/b]{$lang['filled_dl']}[b][url=details.php?id=" . $torrentid . ']' . $site_config['baseurl'] . '/details.php?id=' . $torrentid . "[/url][/b]{$lang['filled_thx']}{$lang['filled_wrong']}[b][url=" . $site_config['baseurl'] . "/viewrequests.php?id=$id&req_reset]{$lang['filled_this']}[/url][/b]{$lang['filled_link']}";
 sql_query('UPDATE requests SET torrentid = ' . $torrentid . ", filledby = $CURUSER[id] WHERE id = $id") or sqlerr(__FILE__, __LINE__);
 sql_query("INSERT INTO messages (poster, sender, receiver, added, msg, subject, location) VALUES(0, 0, $arr[userid], " . TIME_NOW . ', ' . sqlesc($msg) . ", 'Request Filled', 1)") or sqlerr(__FILE__, __LINE__);
-//$Cache->delete_value('inbox_new_'.$arr['userid'].'');
+$cache->increment('inbox_' . $arr['userid']);
 if ($site_config['karma'] && isset($CURUSER['seedbonus'])) {
     sql_query('UPDATE users SET seedbonus = seedbonus+' . $site_config['req_comment_bonus'] . " WHERE id = $CURUSER[id]") or sqlerr(__FILE__, __LINE__);
 }
@@ -29,6 +31,7 @@ if (mysqli_num_rows($res) > 0) {
       {$lang['filled_thx']}");
     while ($row = mysqli_fetch_assoc($res)) {
         $msgs_buffer[] = '(0, ' . $row['userid'] . ', ' . TIME_NOW . ', ' . $pn_msg . ', ' . $pn_subject . ')';
+        $cache->increment('inbox_' . $row['userid']);
     }
     $pn_count = count($msgs_buffer);
     if ($pn_count > 0) {

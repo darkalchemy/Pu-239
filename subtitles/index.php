@@ -123,12 +123,12 @@ if ($searchby == 'name') {
         <legend>Search for subtitle</legend>
         <form action=" " method="get">
             <table width="40%" cellpadding="10" border="1" cellspacing="0" style="border-collapse:collapse"
-                  >
+            >
                 <tr>
                     <td nowrap="nowrap">Search</td>
                     <td colspan="7" nowrap="nowrap"><input type="text" name="sub_name"
-                                                                        value="<?php echo $name ? $name : '' ?>"
-                                                                        size="80"/>
+                                                           value="<?php echo $name ? $name : '' ?>"
+                                                           size="80"/>
                         &#160;by&#160;
                         <select name="searchby">
                             <option value="name" <?php echo $searchby == 'name' ? 'selected="selected"' : '' ?>>Name

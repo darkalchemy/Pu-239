@@ -1,7 +1,10 @@
 <?php
+/**
+ * @param $data
+ */
 function trivia_points_update($data)
 {
-    global $site_config, $queries, $mc1;
+    global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
     $count = 0;
@@ -20,6 +23,7 @@ function trivia_points_update($data)
     if (mysqli_num_rows($res) > 0) {
         $subject = 'Trivia Bonus Points Award.';
         while ($winners = mysqli_fetch_assoc($res)) {
+            $correct = $incorrect = $modcomment = $user_id = '';
             extract($winners);
             switch ($i) {
                 case 1:
@@ -59,11 +63,9 @@ function trivia_points_update($data)
             $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - Awarded Bonus Points for Trivia.\n" . $modcomment;
             $msgs_buffer[] = '(0,' . sqlesc($user_id) . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
             $users[] = $user_id;
-            $mc1->begin_transaction('user_stats' . $user_id);
-            $mc1->update_row(false, [
+            $cache->update_row('user_stats' . $user_id, [
                 'modcomment' => $modcomment,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_stats']);
+            ], $site_config['expires']['user_stats']);
             sql_query('UPDATE users SET modcomment = ' . sqlesc($modcomment) . ", seedbonus = seedbonus + $points WHERE id = " . sqlesc($user_id)) or sqlerr(__FILE__, __LINE__);
             $count = $i++;
         }
@@ -74,12 +76,8 @@ function trivia_points_update($data)
     }
     write_log('Cleanup - Trivia Bonus Points awarded to - ' . $count . ' Member(s)');
     foreach ($users as $user_id) {
-        $mc1->delete_value('inbox_new_' . $user_id);
-        $mc1->delete_value('inbox_new_sb_' . $user_id);
-        $mc1->delete_value('userstats_' . $user_id);
-        $mc1->delete_value('user_stats_' . $user_id);
-        $mc1->delete_value('MyUser_' . $user_id);
-        $mc1->delete_value('user' . $user_id);
+        $cache->increment('inbox_' . $user_id);
+        $cache->deleteMulti(['userstats_' . $user_id, 'user_stats_' . $user_id, 'MyUser_' . $user_id, 'user' . $user_id]);
     }
 
     sql_query('UPDATE triviaq SET asked = 0, current = 0') or sqlerr(__FILE__, __LINE__);

@@ -1,4 +1,7 @@
 <?php
+/**
+ * @param $data
+ */
 function optimizedb($data)
 {
     global $site_config, $queries;

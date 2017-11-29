@@ -288,7 +288,7 @@ header#navbar .nav_container ul > li:hover ul {
         width: 100%;
         margin: 0 auto;
         border-bottom: none;
-        font-size: 1.2em;
+        font-size: 3em;
     }
 
     header#navbar .nav_container ul > li > ul {

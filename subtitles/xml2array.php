@@ -29,11 +29,19 @@ class Xml2Array
      */
     private $xml;
 
+    /**
+     * Xml2Array constructor.
+     *
+     * @param string $xml
+     */
     public function __construct($xml = '')
     {
         $this->xml = $xml;
     }
 
+    /**
+     * @param $xml
+     */
     public function setXml($xml)
     {
         if (!empty($xml)) {
@@ -54,7 +62,7 @@ class Xml2Array
 
         $this->xml_array = [];
         $root_element = $this->xml_dom->firstChild;
-        $this->xml_array[$root_element->tagName] = $this->node_2_array($root_element);
+        $this->xml_array[ $root_element->tagName ] = $this->node_2_array($root_element);
 
         return $this->xml_array;
     }
@@ -80,6 +88,11 @@ class Xml2Array
         exit;
     }
 
+    /**
+     * @param $dom_element
+     *
+     * @return array|bool
+     */
     private function node_2_array($dom_element)
     {
         if ($dom_element->nodeType != XML_ELEMENT_NODE) {
@@ -95,7 +108,7 @@ class Xml2Array
 
             $prefix = ($child->prefix) ? $child->prefix . ':' : '';
 
-            if (!is_array($result[$prefix . $child->nodeName])) {
+            if (!is_array($result[ $prefix . $child->nodeName ])) {
                 $subnode = false;
 
                 foreach ($children as $test_node) {
@@ -109,9 +122,9 @@ class Xml2Array
             }
 
             if ($subnode) {
-                $result[$prefix . $child->nodeName][] = $this->node_2_array($child);
+                $result[ $prefix . $child->nodeName ][] = $this->node_2_array($child);
             } else {
-                $result[$prefix . $child->nodeName] = $this->node_2_array($child);
+                $result[ $prefix . $child->nodeName ] = $this->node_2_array($child);
             }
         }
 
@@ -122,7 +135,7 @@ class Xml2Array
         if ($dom_element->hasAttributes()) {
             foreach ($dom_element->attributes as $attrib) {
                 $prefix = ($attrib->prefix) ? $attrib->prefix . ':' : '';
-                $result['@' . $prefix . $attrib->nodeName] = $attrib->nodeValue;
+                $result[ '@' . $prefix . $attrib->nodeName ] = $attrib->nodeValue;
             }
         }
 

@@ -5,8 +5,15 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $site_config, $lang;
+
 $lang = array_merge($lang, load_language('ad_viewpeers'));
 $HTMLOUT = $count = '';
+/**
+ * @param $ip
+ *
+ * @return array|bool|string
+ */
 function my_inet_ntop($ip)
 {
     if (strlen($ip) == 4) {
@@ -42,6 +49,11 @@ function my_inet_ntop($ip)
     return $ip;
 }
 
+/**
+ * @param $a
+ *
+ * @return string
+ */
 function XBT_IP_CONVERT($a)
 {
     $b = [
@@ -55,7 +67,7 @@ function XBT_IP_CONVERT($a)
     for ($i = 0; $i < 4; ++$i) {
         $k = (int)($a / $c);
         $a -= $c * $k;
-        $b[$i] = $k;
+        $b[ $i ] = $k;
         $c /= 256.0;
     }
     $d = join('.', $b);

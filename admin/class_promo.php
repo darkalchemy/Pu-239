@@ -2,6 +2,8 @@
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $site_config, $lang;
+
 $lang = array_merge($lang, load_language('ad_class_promo'));
 //== ID list - Add individual user IDs to this list for access to this script
 /*$allowed_ids = array(
@@ -13,12 +15,12 @@ if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'] /*$allowed_ids
 //get the config from db - stoner/pdq
 $pconf = sql_query('SELECT * FROM class_promo ORDER BY id ASC ') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($pconf)) {
-    $class_config[$ac['name']]['id'] = $ac['id'];
-    $class_config[$ac['name']]['name'] = $ac['name'];
-    $class_config[$ac['name']]['min_ratio'] = $ac['min_ratio'];
-    $class_config[$ac['name']]['uploaded'] = $ac['uploaded'];
-    $class_config[$ac['name']]['time'] = $ac['time'];
-    $class_config[$ac['name']]['low_ratio'] = $ac['low_ratio'];
+    $class_config[ $ac['name'] ]['id'] = $ac['id'];
+    $class_config[ $ac['name'] ]['name'] = $ac['name'];
+    $class_config[ $ac['name'] ]['min_ratio'] = $ac['min_ratio'];
+    $class_config[ $ac['name'] ]['uploaded'] = $ac['uploaded'];
+    $class_config[ $ac['name'] ]['time'] = $ac['time'];
+    $class_config[ $ac['name'] ]['low_ratio'] = $ac['low_ratio'];
 }
 $possible_modes = [
     'add',
@@ -41,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $c_time = $value['time'];
             $c_low_ratio = $value['low_ratio'];
             // handling from posting of contents
-            $post_data = $_POST[$c_name]; //    0=> name,1=>min_ratio,2=>uploaded,3=>time,4=>low_ratio
+            $post_data = $_POST[ $c_name ]; //    0=> name,1=>min_ratio,2=>uploaded,3=>time,4=>low_ratio
             $value = $post_data[0];
             $name = $post_data[1];
             $min_ratio = strtoupper($post_data[2]);
@@ -49,11 +51,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $time = $post_data[4];
             $low_ratio = $post_data[5];
 
-            if (isset($_POST[$c_name][0]) && (($value != $c_value) || ($name != $c_name) || ($min_ratio != $c_min_ratio) || ($uploaded != $c_uploaded) || ($time != $c_time) || ($low_ratio != $c_low_ratio))) {
-                $update[$c_name] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($min_ratio) ? join('|', $min_ratio) : $min_ratio) . ',' . sqlesc(is_array($uploaded) ? join('|', $uploaded) : $uploaded) . ',' . sqlesc(is_array($time) ? join('|', $time) : $time) . ',' . sqlesc(is_array($low_ratio) ? join('|', $low_ratio) : $low_ratio) . ')';
+            if (isset($_POST[ $c_name ][0]) && (($value != $c_value) || ($name != $c_name) || ($min_ratio != $c_min_ratio) || ($uploaded != $c_uploaded) || ($time != $c_time) || ($low_ratio != $c_low_ratio))) {
+                $update[ $c_name ] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($min_ratio) ? join('|', $min_ratio) : $min_ratio) . ',' . sqlesc(is_array($uploaded) ? join('|', $uploaded) : $uploaded) . ',' . sqlesc(is_array($time) ? join('|', $time) : $time) . ',' . sqlesc(is_array($low_ratio) ? join('|', $low_ratio) : $low_ratio) . ')';
             }
         }
-        if (sql_query('INSERT INTO class_promo(name,min_ratio,uploaded,time,low_ratio) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY update name=values(name),min_ratio=values(min_ratio),uploaded=values(uploaded),time=values(time),low_ratio=values(low_ratio)')) { // need to change strut
+        if (sql_query('INSERT INTO class_promo(name,min_ratio,uploaded,time,low_ratio) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY UPDATE name = VALUES(name),min_ratio = VALUES(min_ratio),uploaded = VALUES(uploaded),time = VALUES(time),low_ratio = VALUES(low_ratio)')) { // need to change strut
             stderr($lang['classpromo_success'], $lang['classpromo_success_saved']);
         } else {
             stderr($lang['classpromo_error'], $lang['classpromo_err_query1']);
@@ -102,7 +104,7 @@ $HTMLOUT .= "<h3>{$lang['classpromo_user_sett']}</h3>
 <td>{$lang['classpromo_lowratio']}</td>
 <td>{$lang['classpromo_remove']}</td>
 </tr>";
-$res = sql_query('SELECT * from class_promo ORDER BY id  ASC');
+$res = sql_query('SELECT * FROM class_promo ORDER BY id  ASC');
 while ($arr = mysqli_fetch_assoc($res)) {
     $HTMLOUT .= "
 <tr>

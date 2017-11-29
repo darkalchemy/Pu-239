@@ -1,11 +1,20 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'torrenttable_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
+global $CURUSER;
+
 $lang = array_merge(load_language('global'), load_language('torrenttable_functions'), load_language('bookmark'));
 $htmlout = '';
+/**
+ * @param        $res
+ * @param string $variant
+ *
+ * @return string
+ */
 function bookmarktable($res, $variant = 'index')
 {
     global $site_config, $CURUSER, $lang;
@@ -51,15 +60,15 @@ function bookmarktable($res, $variant = 'index')
                 <tbody>";
     $categories = genrelist();
     foreach ($categories as $key => $value) {
-        $change[$value['id']] = [
+        $change[ $value['id'] ] = [
             'id'    => $value['id'],
             'name'  => $value['name'],
             'image' => $value['image'],
         ];
     }
     while ($row = mysqli_fetch_assoc($res)) {
-        $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);
-        $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
+        $row['cat_name'] = htmlsafechars($change[ $row['category'] ]['name']);
+        $row['cat_pic'] = htmlsafechars($change[ $row['category'] ]['image']);
         $id = (int)$row['id'];
         $htmlout .= "
                     <tr>
@@ -67,7 +76,7 @@ function bookmarktable($res, $variant = 'index')
         if (isset($row['cat_name'])) {
             $htmlout .= '<a href="./browse.php?cat=' . (int)$row['category'] . '">';
             if (isset($row['cat_pic']) && $row['cat_pic'] != '') {
-                $htmlout .= "<img src='{$site_config['pic_base_url']}caticons/". get_categorie_icons() . "/" . htmlsafechars($row['cat_pic']) . "' alt='" . htmlsafechars($row['cat_name']) . "' class='tooltipper' title='" . htmlsafechars($row['cat_name']) . "' />";
+                $htmlout .= "<img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($row['cat_pic']) . "' alt='" . htmlsafechars($row['cat_name']) . "' class='tooltipper' title='" . htmlsafechars($row['cat_name']) . "' />";
             } else {
                 $htmlout .= htmlsafechars($row['cat_name']);
             }
@@ -248,4 +257,4 @@ if ($count) {
     $htmlout .= bookmarktable($res, 'index', true);
     $htmlout .= $pager['pagerbottom'];
 }
-echo stdhead($lang['bookmarks_stdhead']) . $htmlout . stdfoot();
+echo stdhead($lang['bookmarks_stdhead']) . wrapper($htmlout) . stdfoot();

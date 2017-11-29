@@ -3,7 +3,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-//==== Load Languages
+global $lang;
+
 $lang = array_merge($lang, load_language('ad_comments'));
 $view = isset($_GET['view']) ? htmlsafechars($_GET['view']) : '';
 switch ($view) {

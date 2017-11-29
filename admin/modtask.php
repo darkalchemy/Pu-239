@@ -5,6 +5,8 @@ require_once INCL_DIR . 'function_autopost.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 class_check(UC_STAFF);
+global $CURUSER, $site_config, $cache, $lang;
+
 $lang = array_merge($lang, load_language('modtask'));
 
 $curuser_cache = $user_cache = $stats_cache = $user_stats_cache = '';
@@ -12,16 +14,24 @@ $postkey = PostKey([
     $_POST['userid'],
     $CURUSER['id'],
 ]);
+/**
+ * @param $torrent_pass
+ *
+ * @return bool
+ */
 function remove_torrent_pass($torrent_pass)
 {
-    global $mc1;
+    global $cache;
     if (strlen($torrent_pass) != 32 || !bin2hex($torrent_pass)) {
         return false;
     }
     $key = 'user::torrent_pass:::' . $torrent_pass;
-    $mc1->delete_value($key);
+    $cache->delete($key);
 }
 
+/**
+ * @param $text
+ */
 function write_info($text)
 {
     $text = sqlesc($text);
@@ -29,9 +39,14 @@ function write_info($text)
     sql_query("INSERT INTO infolog (added, txt) VALUES($added, $text)") or sqlerr(__FILE__, __LINE__);
 }
 
+/**
+ * @param $in
+ *
+ * @return array
+ */
 function resize_image($in)
 {
-    global $mc1;
+    global $cache;
     $out = [
         'img_width'  => $in['cur_width'],
         'img_height' => $in['cur_height'],
@@ -106,7 +121,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
         $useredit['update'][] = '' . $what . $lang['modtask_to'] . get_user_class_name($class);
         $curuser_cache['class'] = $class;
         $user_cache['class'] = $class;
-        $mc1->delete_value('user_icons_' . $userid);
+        $cache->delete('user_icons_' . $userid);
         $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - $what {$lang['modtask_to']} '" . get_user_class_name($class) . "'{$lang['modtask_gl_by']} {$CURUSER['username']}.\n" . $modcomment;
     }
     // === add donated amount to user and to funds table
@@ -115,7 +130,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
         sql_query('INSERT INTO funds (cash, user, added) VALUES (' . sqlesc($donated) . ', ' . sqlesc($userid) . ", $added)") or sqlerr(__FILE__, __LINE__);
         $updateset[] = 'donated = ' . sqlesc($donated);
         $updateset[] = 'total_donated = ' . $user['total_donated'] . ' + ' . sqlesc($donated);
-        $mc1->delete_value('totalfunds_');
+        $cache->delete('totalfunds_');
         $curuser_cache['donated'] = $donated;
         $user_cache['donated'] = $donated;
         $curuser_cache['total_donated'] = ($user['total_donated'] + $donated);
@@ -1023,34 +1038,25 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
     $user_stats_cache['modcomment'] = $modcomment;
     $stats_cache['modcomment'] = $modcomment;
     //== Memcache - delete the keys
-    $mc1->delete_value('inbox_new_' . $userid);
-    $mc1->delete_value('inbox_new_sb_' . $userid);
+    $cache->increment('inbox_' . $userid);
     if ($curuser_cache) {
-        $mc1->begin_transaction('MyUser_' . $userid);
-        $mc1->update_row(false, $curuser_cache);
-        $mc1->commit_transaction($site_config['expires']['curuser']);
+        $cache->update_row('MyUser_' . $userid, $curuser_cache, $site_config['expires']['curuser']);
     }
     if ($user_cache) {
-        $mc1->begin_transaction('user' . $userid);
-        $mc1->update_row(false, $user_cache);
-        $mc1->commit_transaction($site_config['expires']['user_cache']);
+        $cache->update_row('user' . $userid, $user_cache, $site_config['expires']['user_cache']);
     }
     if ($stats_cache) {
-        $mc1->begin_transaction('userstats_' . $userid);
-        $mc1->update_row(false, $stats_cache);
-        $mc1->commit_transaction($site_config['expires']['u_stats']);
+        $cache->update_row('userstats_' . $userid, $stats_cache, $site_config['expires']['u_stats']);
     }
     if ($user_stats_cache) {
-        $mc1->begin_transaction('user_stats_' . $userid);
-        $mc1->update_row(false, $user_stats_cache);
-        $mc1->commit_transaction($site_config['expires']['user_stats']);
+        $cache->update_row('user_stats_' . $userid, $user_stats_cache, $site_config['expires']['user_stats']);
     }
     if (sizeof($updateset) > 0) {
-        sql_query('UPDATE users SET ' . implode(', ', $updateset) . ' WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE users SET ' . implode(', ', $updateset) . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     }
     status_change($userid);
     if ((isset($_POST['class'])) && (($class = $_POST['class']) != $user['class'])) {
-        $mc1->delete_value('staff_settings_');
+        $cache->delete('staff_settings_');
     }
     if (sizeof($setbits) > 0 || sizeof($clrbits) > 0) {
         sql_query('UPDATE users SET opt1 = ((opt1 | ' . $setbits . ') & ~' . $clrbits . '), opt2 = ((opt2 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
@@ -1060,19 +1066,14 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
     $row = mysqli_fetch_assoc($res);
     $row['opt1'] = $row['opt1'];
     $row['opt2'] = $row['opt2'];
-    $mc1->begin_transaction('MyUser_' . $userid);
-    $mc1->update_row(false, [
+    $cache->update_row('MyUser_' . $userid, [
         'opt1' => $row['opt1'],
         'opt2' => $row['opt2'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['curuser']);
-    $mc1->begin_transaction('user_' . $userid);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['curuser']);
+    $cache->update_row('user_' . $userid, [
         'opt1' => $row['opt1'],
         'opt2' => $row['opt2'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_cache']);
-    //== 09 Updated Sysop log - thanks to pdq
+    ], $site_config['expires']['user_cache']);
     write_info("{$lang['modtask_sysop_user_acc']} $userid (<a href='userdetails.php?id=$userid'>" . htmlsafechars($user['username']) . "</a>)\n{$lang['modtask_sysop_thing']}" . join(', ', $useredit['update']) . "{$lang['modtask_gl_by']}<a href='userdetails.php?id={$CURUSER['id']}'>{$CURUSER['username']}</a>");
     $returnto = htmlsafechars($_POST['returnto']);
     header("Location: {$site_config['baseurl']}/$returnto");

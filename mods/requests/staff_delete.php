@@ -1,4 +1,6 @@
 <?php
+global $CURUSER, $lang;
+
 if ($CURUSER['class'] >= UC_MODERATOR) {
     if (empty($_POST['delreq'])) {
         stderr("{$lang['error_error']}", "{$lang['error_empty']}");

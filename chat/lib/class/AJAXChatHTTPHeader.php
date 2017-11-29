@@ -8,12 +8,23 @@
  */
 
 // Class to manage HTTP header
+
+/**
+ * Class AJAXChatHTTPHeader
+ */
 class AJAXChatHTTPHeader
 {
     protected $_contentType;
     protected $_constant;
     protected $_noCache;
 
+    /**
+     * AJAXChatHTTPHeader constructor.
+     *
+     * @param string $encoding
+     * @param null   $contentType
+     * @param bool   $noCache
+     */
     public function __construct($encoding = 'UTF-8', $contentType = null, $noCache = true)
     {
         if ($contentType) {
@@ -49,6 +60,10 @@ class AJAXChatHTTPHeader
     }
 
     // Method to return the content-type string:
+
+    /**
+     * @return string
+     */
     public function getContentType()
     {
         // Return the content-type string:

@@ -1,4 +1,6 @@
 <?php
+global $lang;
+
 $HTMLOUT .= "
     <a id='trivia-hash'></a>
     <fieldset id='trivia' class='header'>

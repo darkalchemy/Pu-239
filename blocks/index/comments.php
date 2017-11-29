@@ -1,8 +1,9 @@
 <?php
 require_once INCL_DIR . 'html_functions.php';
-global $mc1, $lang;
+global $cache, $lang, $site_config;
 
-if (($comments = $mc1->get_value('latest_comments_')) === false) {
+$comments = $cache->get('latest_comments_');
+if ($comments === false || is_null($comments)) {
     $sql = sql_query("SELECT c.id, c.user AS user_id, c.torrent, c.added, c.text, c.anonymous, c.user_likes, t.name, t.category, cat.name AS cat, cat.image,
                             t.seeders, t.poster, t.leechers, t.times_completed, t.added AS toradd, t.size
                             FROM comments AS c 
@@ -13,7 +14,7 @@ if (($comments = $mc1->get_value('latest_comments_')) === false) {
     while ($comment = mysqli_fetch_assoc($sql)) {
         $comments[] = $comment;
     }
-    $mc1->cache_value('latest_comments_', $comments, 3600);
+    $cache->set('latest_comments_', $comments, 3600);
 }
 $header = "
                         <tr>
@@ -33,7 +34,7 @@ foreach ($comments as $comment) {
     $body .= "
                         <tr>
                             <td class='has-text-centered'>
-                                <img src='./images/caticons/" . get_categorie_icons() . "/$image' class='tooltipper' alt='$cat' title='$cat' />
+                                <img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/$image' class='tooltipper' alt='$cat' title='$cat' />
                             </td>
                             <td>
                                 <a href='{$site_config['baseurl']}/details.php?id=$torrent&amp;hit=1'>
@@ -60,13 +61,13 @@ foreach ($comments as $comment) {
                             </td>
                             <td class='has-text-centered'>$user</td>
                             <td class='has-text-centered'>" . get_date($added, 'LONG') . "</td>
-                            <td class='has-text-centered'>" . number_format($likes) . "</td>
+                            <td class='has-text-centered'>" . number_format($user_likes) . "</td>
                         </tr>";
 }
 
 $text = main_table($body, $header);
 
-    $HTMLOUT .= "
+$HTMLOUT .= "
     <a id='latest_comment-hash'></a>
     <fieldset id='latest_comment' class='header'>
         <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_latest_comments']}</legend>

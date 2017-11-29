@@ -2,6 +2,7 @@
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
+global $CURUSER, $site_config;
 
 $lang = array_merge(load_language('global'), load_language('trivia'));
 
@@ -10,12 +11,17 @@ $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $result = mysqli_fetch_assoc($res);
 $qid = (int)$result['qid'];
 $display = $answered = '';
-global $site_config;
 $csrf = $site_config['session_csrf'];
 
-function clean_data($data) {
+/**
+ * @param $data
+ *
+ * @return mixed
+ */
+function clean_data($data)
+{
     foreach ($data as $key => $value) {
-        $data[$key] = html_entity_decode(replace_unicode_strings(trim($value)));
+        $data[ $key ] = html_entity_decode(replace_unicode_strings(trim($value)));
     }
     return $data;
 }
@@ -28,7 +34,7 @@ if (!empty($_POST) && (int)$_POST['qid'] === $qid) {
         $answer = $_POST['ans'];
         $gamenum = $_POST['gamenum'];
         $date = date('Y-m-d H:i:s');
-        $ip = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'No IP';
+        $ip = getip();
 
         if (empty($_POST['token']) || !validateToken($_POST['token'])) {
             $username = get_one_row('users', 'username', 'WHERE id = ' . sqlesc($user_id));
@@ -47,7 +53,7 @@ if (!empty($_POST) && (int)$_POST['qid'] === $qid) {
                     }
                 } else {
                     $is_correct = $answer == $canswer ? 1 : 0;
-                    $sql = 'INSERT INTO triviausers (user_id, gamenum, qid, correct, date) VALUES (' . sqlesc($user_id) . ', ' . sqlesc($gamenum). ', ' . sqlesc($qid) . ', ' . sqlesc($is_correct) . ', ' . sqlesc($date) . ')';
+                    $sql = 'INSERT INTO triviausers (user_id, gamenum, qid, correct, date) VALUES (' . sqlesc($user_id) . ', ' . sqlesc($gamenum) . ', ' . sqlesc($qid) . ', ' . sqlesc($is_correct) . ', ' . sqlesc($date) . ')';
                     sql_query($sql) or sqlerr(__FILE__, __LINE__);
                 }
             }
@@ -182,7 +188,7 @@ if (empty($gamenum) || empty($qid)) {
                 <div>$table";
             } else {
                 $answered = "<h2 class='has-text-danger'>{$lang['trivia_incorrect']}</h2>";
-            $HTMLOUT .= "
+                $HTMLOUT .= "
                 </div>
                 <div>$table";
             }

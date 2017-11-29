@@ -1,7 +1,10 @@
 <?php
+/**
+ * @param $data
+ */
 function forum_update($data)
 {
-    global $site_config, $queries, $mc1;
+    global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
     //=== delete from now viewing after 15 minutes
@@ -14,7 +17,7 @@ function forum_update($data)
                           GROUP BY f.id');
     while ($forum = mysqli_fetch_assoc($forums)) {
         $forum['posts'] = $forum['topics'] > 0 ? $forum['posts'] : 0;
-        sql_query('update forums set post_count = ' . sqlesc($forum['posts']) . ', topic_count = ' . sqlesc($forum['topics']) . ' where id=' . sqlesc($forum['id']));
+        sql_query('UPDATE forums SET post_count = ' . sqlesc($forum['posts']) . ', topic_count = ' . sqlesc($forum['topics']) . ' WHERE id=' . sqlesc($forum['id']));
     }
     if ($data['clean_log'] && $queries > 0) {
         write_log("Forum Cleanup: Completed using $queries queries");

@@ -3,15 +3,15 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 dbconn();
+global $CURUSER, $site_config, $cache;
 
-global $CURUSER, $site_config;
 if (!$CURUSER) {
     get_template();
 }
 $lang = array_merge(load_language('global'), load_language('passhint'));
 $stdfoot = [
     'js' => [
-        get_file('captcha1_js')
+        get_file('captcha1_js'),
     ],
 ];
 $HTMLOUT = '';
@@ -154,16 +154,12 @@ if ($step == '1') {
     }
     $newpassword = make_passhash($newpass);
     sql_query('UPDATE users SET passhash = ' . sqlesc($newpassword) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $mc1->begin_transaction('MyUser_' . $id);
-    $mc1->update_row(false, [
-        'passhash'   => $newpassword,
-    ]);
-    $mc1->commit_transaction($site_config['expires']['curuser']);
-    $mc1->begin_transaction('user' . $id);
-    $mc1->update_row(false, [
-        'passhash'   => $newpassword,
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_cache']);
+    $cache->update_row('MyUser_' . $id, [
+        'passhash' => $newpassword,
+    ], $site_config['expires']['curuser']);
+    $cache->update_row('user' . $id, [
+        'passhash' => $newpassword,
+    ], $site_config['expires']['user_cache']);
     unsetSessionVar('simpleCaptchaAnswer');
     unsetSessionVar('simpleCaptchaTimestamp');
     if (!mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
@@ -172,7 +168,7 @@ if ($step == '1') {
         stderr("{$lang['stderr_successhead']}", "{$lang['stderr_error14']} <a href='{$site_config['baseurl']}/login.php' class='altlink'><b>{$lang['stderr_error15']}</b></a> {$lang['stderr_error16']}", false);
     }
 } else {
-    $HTMLOUT.= "
+    $HTMLOUT .= "
     <div class='half-container has-text-centered portlet'>
         <form method='post' action='" . $_SERVER['PHP_SELF'] . "?step=1'>
             <table class='table table-bordered top20 bottom20'>

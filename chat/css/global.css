@@ -15,7 +15,6 @@ body {
     text-rendering: optimizeLegibility;
 }
 
-
 /* Positioning */
 body.ajax-chat {
     padding: 0;
@@ -55,7 +54,6 @@ body.ajax-chat {
     background: rgba(255, 255, 255, .1);
 }
 
-
 #content #chatList,
 #content #helpContainer,
 #content #settingsContainer,
@@ -63,7 +61,6 @@ body.ajax-chat {
 #content #inputFieldContainer #inputField {
     background-color: rgba(0, 0, 0, .2);
 }
-
 
 #content #copyright {
     position: absolute;
@@ -383,6 +380,7 @@ body.ajax-chat {
         background-color: rgba(0, 0, 0, .9);
         z-index: 5;
     }
+
     #content #mainPanelContainer {
         top: 35px;
         left: 5px;
@@ -472,9 +470,9 @@ body.ajax-chat {
 
 @media (max-width: 480px) {
     #content #logoutChannelContainer select {
-      left: 40px;
-      position: absolute;
-      top: 0px;
+        left: 40px;
+        position: absolute;
+        top: 0px;
     }
 
     #content #mainPanelContainer {

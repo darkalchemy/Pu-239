@@ -3,7 +3,9 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-$lang = array_merge(load_language('global'));
+global $CURUSER, $site_config;
+
+$lang = load_language('global');
 $lottery_root = ROOT_DIR . 'lottery' . DIRECTORY_SEPARATOR;
 $valid = [
     'config'      => [
@@ -39,18 +41,17 @@ switch (true) {
 
     default:
         $html = "
-                <div class='container is-fluid portlet'>
                     <h1 class='has-text-centered'>{$site_config['site_name']} Lottery</h1>";
 
         $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
         while ($ac = mysqli_fetch_assoc($lconf)) {
-            $lottery_config[$ac['name']] = $ac['value'];
+            $lottery_config[ $ac['name'] ] = $ac['value'];
         }
         if (!$lottery_config['enable']) {
             $html .= stdmsg('Sorry', 'Lottery is closed at the moment');
         } elseif ($lottery_config['end_date'] > TIME_NOW) {
             $html .= stdmsg('Lottery in progress', 'Lottery started on <b>' . get_date($lottery_config['start_date'], 'LONG') . '</b> and ends on <b>' . get_date($lottery_config['end_date'], 'LONG') . "</b> remaining <span>" . mkprettytime($lottery_config['end_date'] - TIME_NOW) . "</span><br>
-       <p class='top10'>" . ($CURUSER['class'] >= $valid['viewtickets']['minclass'] ? "<a href='./lottery.php?action=viewtickets' class='button right5'>View bought tickets</a>" : '') . "<a href='./lottery.php?action=tickets' class='button'>Buy tickets</a></p>");
+       <p class='top10'>" . ($CURUSER['class'] >= $valid['viewtickets']['minclass'] ? "<a href='./lottery.php?action=viewtickets' class='button margin10'>View bought tickets</a>" : '') . "<a href='./lottery.php?action=tickets' class='button margin10'>Buy tickets</a></p>");
         }
         //get last lottery data
         if (!empty($lottery_config['lottery_winners'])) {
@@ -62,21 +63,19 @@ switch (true) {
                 $last_winners[] = format_username($aus['id']);
             }
             $html .= stdmsg('Lottery Winners Info', "<ul><li>Last winners: " . join(', ', $last_winners) . '</li><li>Amount won	(each): ' . $lottery_config['lottery_winners_amount'] . "</li></ul><br>
-        <p>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "<a href='./lottery.php?action=config' class='button'>Lottery configuration</a>" : 'Nothing Configured Atm Sorry') . '</p>');
+        <p>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "<a href='./lottery.php?action=config' class='button margin10'>Lottery configuration</a>" : 'Nothing Configured Atm Sorry') . '</p>');
         } else {
             $html .= "
-                    <div class='bordered top20 bottom20'>
+                    <div class='bordered top20'>
                         <div class='alt_bordered bg-00'>
                             <ul>
                                 <li>Nobody has won, because nobody has played yet :)</li>
                             </ul>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "
-                            <a href='./lottery.php?action=config' class='button'>Lottery configuration</a>" : "
+                            <a href='./lottery.php?action=config' class='button margin10'>Lottery configuration</a>" : "
                             <span>Nothing Configured Atm Sorry.</span>") . "
                         </div>
                     </div>";
         }
-        $html .= "
-                </div>
-            </div>";
-        echo stdhead('Lottery') . $html . stdfoot();
+
+        echo stdhead('Lottery') . wrapper($html) . stdfoot();
 }

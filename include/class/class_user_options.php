@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * Class user_options
+ */
 class user_options
 {
     const ENABLED = 0x1; // 1

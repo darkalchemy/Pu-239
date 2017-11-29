@@ -4,6 +4,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'comment_functions.php';
 check_user_status();
+global $CURUSER, $site_config;
+
 $lang = array_merge(load_language('global'), load_language('credits'));
 
 $HTMLOUT = '';
@@ -21,6 +23,12 @@ if (!in_array($action, $act_validation)) {
 /*Check if CutName function exists, if not declare it */
 
 if (!function_exists('CutName')) {
+    /**
+     * @param $txt
+     * @param $len
+     *
+     * @return string
+     */
     function CutName($txt, $len)
     {
         return strlen($txt) > $len ? substr($txt, 0, $len - 4) . '[...]' : $txt;

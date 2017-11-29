@@ -7,13 +7,9 @@ require_once CACHE_DIR . 'subs.php';
 check_user_status();
 global $CURUSER, $site_config;
 $lang = array_merge(load_language('global'), load_language('upload'));
-$stdhead = [
-    'css' => [
-    ],
-];
 $stdfoot = [
     'js' => [
-        get_file('upload_js')
+        get_file('upload_js'),
     ],
 ];
 $HTMLOUT = $offers = $subs_list = $request = $descr = '';
@@ -56,7 +52,6 @@ if (mysqli_num_rows($res_offer) > 0) {
     </tr>';
 }
 $HTMLOUT .= "
-    <div class='container is-fluid portlet'>
     <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='./takeupload.php' method='post'>
     <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['max_torrent_size']}' />
     <h1 class='has-text-centered'>Upload a Torrent</h1>
@@ -142,7 +137,7 @@ $HTMLOUT .= tr("{$lang['upload_anonymous']}", "<div class='flex'><input type='ch
 if ($CURUSER['class'] == UC_MAX) {
     $HTMLOUT .= tr("{$lang['upload_comment']}", "<div class='flex'><input type='checkbox' name='allow_commentd' value='yes' /><span>{$lang['upload_discom1']}</span></div>", 1);
 }
-$HTMLOUT .= tr('Strip ASCII', "<div class='flex'><input type='checkbox' name='strip' value='strip' checked='checked' /><span><a href='http://en.wikipedia.org/wiki/ASCII_art' target='_blank'>What is this ?</a></span></div>", 1);
+$HTMLOUT .= tr('Strip ASCII', "<div class='flex'><input type='checkbox' name='strip' value='strip' checked /><span><a href='http://en.wikipedia.org/wiki/ASCII_art' target='_blank'>What is this ?</a></span></div>", 1);
 if ($CURUSER['class'] >= UC_UPLOADER and XBT_TRACKER == false) {
     $HTMLOUT .= "<tr>
     <td class='rowhead'>Free Leech</td>
@@ -176,11 +171,11 @@ if (XBT_TRACKER == true) {
 }
 
 $genres = [
-            'Movie',
-            'Music',
-            'Game',
-            'Apps',
-        ];
+    'Movie',
+    'Music',
+    'Game',
+    'Apps',
+];
 
 $HTMLOUT .= "
     <tr>
@@ -191,14 +186,14 @@ $HTMLOUT .= "
 for ($x = 0; $x < count($genres); ++$x) {
     $HTMLOUT .= "
                 <div class='flex_cell_5'>
-                    <input type='radio' value='" . strtolower($genres[$x]) . "' name='genre' />
+                    <input type='radio' value='" . strtolower($genres[ $x ]) . "' name='genre' />
                     <span>{$genres[$x]}</span>
                 </div>";
 }
 
 $HTMLOUT .= "
                 <div class='flex_cell_5'>
-                    <input type='radio' name='genre' value='' checked='checked' />
+                    <input type='radio' name='genre' value='' checked />
                     <span>None</span>
                 </div>
             </div>
@@ -213,10 +208,10 @@ $movie = [
     'Adventure',
     'Family',
     'Adult',
-    'Sci-fi'
+    'Sci-fi',
 ];
 for ($x = 0; $x < count($movie); $x++) {
-    $HTMLOUT.= "
+    $HTMLOUT .= "
                 <label>
                     <input type='checkbox' value='{$movie[$x]}' name='{movie[]}' class='DEPENDS ON genre BEING movie' />
                     <span>{$movie[$x]}</span>
@@ -228,10 +223,10 @@ $music = [
     'Pop',
     'House',
     'Techno',
-    'Commercial'
+    'Commercial',
 ];
 for ($x = 0; $x < count($music); $x++) {
-    $HTMLOUT.= "
+    $HTMLOUT .= "
                 <label>
                     <input type='checkbox' value='{$music[$x]}' name='{music[]}' class='DEPENDS ON genre BEING music' />
                     <span>{$music[$x]}</span>
@@ -242,10 +237,10 @@ $game = [
     'Strategy',
     'Adventure',
     '3rd Person',
-    'Acton'
+    'Acton',
 ];
 for ($x = 0; $x < count($game); $x++) {
-    $HTMLOUT.= "
+    $HTMLOUT .= "
                 <label>
                     <input type='checkbox' value='{$game[$x]}' name='{game[]}' class='DEPENDS ON genre BEING game' />
                     <span>{$game[$x]}</span>
@@ -258,19 +253,18 @@ $apps = [
     'Office',
     'Os',
     'Misc',
-    'Image'
+    'Image',
 ];
 for ($x = 0; $x < count($apps); $x++) {
-    $HTMLOUT.= "
+    $HTMLOUT .= "
                 <label>
                     <input type='checkbox' value='{$apps[$x]}' name='{apps[]}' class='DEPENDS ON genre BEING apps' />
                     <span>{$apps[$x]}</span>
                 </label>";
 }
-$HTMLOUT.= "
+$HTMLOUT .= "
             </td>
         </tr>";
-
 
 if ($CURUSER['class'] >= UC_UPLOADER and XBT_TRACKER == false) {
     $HTMLOUT .= tr('Vip Torrent', "<div class='flex'><input type='checkbox' name='vip' value='1' /><span>If this one is checked, only Vip's can download this torrent</span></div>", 1);
@@ -284,7 +278,6 @@ $HTMLOUT .= "
             </td>
         </tr>
         </table>
-        </form>
-        </div>";
+        </form>";
 
-echo stdhead($lang['upload_stdhead'], true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead($lang['upload_stdhead'], true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

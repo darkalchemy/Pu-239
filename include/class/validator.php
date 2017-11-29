@@ -1,4 +1,9 @@
 <?php
+/**
+ * @param $context
+ *
+ * @return string
+ */
 function validator($context)
 {
     global $CURUSER;
@@ -8,11 +13,23 @@ function validator($context)
     return substr($hash, 0, 20) . dechex($timestamp);
 }
 
+/**
+ * @param $context
+ *
+ * @return string
+ */
 function validatorForm($context)
 {
     return '<input type="hidden" name="validator" value="' . validator($context) . '"/>';
 }
 
+/**
+ * @param     $validator
+ * @param     $context
+ * @param int $seconds
+ *
+ * @return bool
+ */
 function validate($validator, $context, $seconds = 0)
 {
     global $CURUSER;

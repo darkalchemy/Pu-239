@@ -114,8 +114,8 @@ if ($res_sub_forums) {
     $parent_forum_arr = mysqli_fetch_assoc($parent_forum_res);
     if ($arr['parent_forum'] > 0) {
         $child = '<span> [ ' . $lang['fe_child_board'] . ' ]</span>';
-        $parent_forum_name = '<img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
-			<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $parent_forum_id . '">' . htmlsafechars($parent_forum_arr['parent_forum_name'], ENT_QUOTES) . '</a>';
+        //$parent_forum_name = '<img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
+        //	<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $parent_forum_id . '">' . htmlsafechars($parent_forum_arr['parent_forum_name'], ENT_QUOTES) . '</a>';
     }
 }
 //=== Get topic count
@@ -128,11 +128,11 @@ $perpage = $CURUSER['topicsperpage'] !== 0 ? $CURUSER['topicsperpage'] : (isset(
 //$perpage = max(($CURUSER['topicsperpage'] !== 0 ? $CURUSER['topicsperpage'] :  (isset($_GET['perpage']) ? (int)$_GET['perpage'] : 15)), 15);
 list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'forums.php?action=view_forum&amp;forum_id=' . $forum_id . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
 //=== Get topics data
-$topic_res = sql_query('SELECT t.id as id, t.user_id as user_id, t.topic_name as topic_name, t.locked as locked, t.forum_id as forum_id, 
-			t.last_post as last_post,t.sticky as sticky, t.views as views,t.poll_id as poll_id,t.num_ratings as num_ratings,
-			t.rating_sum as rating_sum,t.topic_desc as topic_desc,t.post_count as post_count, t.first_post as first_post, 
-			t.status as status,t.main_forum_id as main_forum_id,t.anonymous as anonymous, p.id as post_id, p.added as post_added, 
-			p.topic_id as post_topic_id
+$topic_res = sql_query('SELECT t.id AS id, t.user_id AS user_id, t.topic_name AS topic_name, t.locked AS locked, t.forum_id AS forum_id, 
+			t.last_post AS last_post,t.sticky AS sticky, t.views AS views,t.poll_id AS poll_id,t.num_ratings AS num_ratings,
+			t.rating_sum AS rating_sum,t.topic_desc AS topic_desc,t.post_count AS post_count, t.first_post AS first_post, 
+			t.status AS status,t.main_forum_id AS main_forum_id,t.anonymous AS anonymous, p.id AS post_id, p.added AS post_added, 
+			p.topic_id AS post_topic_id
 				FROM topics AS t 
 				LEFT JOIN posts AS p ON t.id = p.topic_id 
 				WHERE  ' . ($CURUSER['class'] < UC_STAFF ? ' status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? ' status != \'deleted\'  AND' : '')) . '  forum_id=' . $forum_id . ' GROUP BY p.topic_id ORDER BY sticky, post_added DESC ' . $LIMIT);
@@ -218,7 +218,7 @@ if ($count > 0) {
         }
         //==
         $icon = ($first_post_arr['icon'] == '' ? '<img src="' . $site_config['pic_base_url'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="' . $site_config['pic_base_url'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" alt="' . htmlsafechars($first_post_arr['icon']) . '" />');
-        $first_post_text = tool_tip('<img src="' . $site_config['pic_base_url'] . 'forums/mg.gif" height="14" alt="' . $lang['fe_preview'] . '" title="' . $lang['fe_preview'] . '" />', format_comment($first_post_arr['body'], true, false, false), '' . $lang['fe_first_post'] . ' ' . $lang['fe_preview'] . '');
+        $first_post_text = tool_tip('<img src="' . $site_config['pic_base_url'] . 'forums/mg.gif" class="icon" alt="' . $lang['fe_preview'] . '" title="' . $lang['fe_preview'] . '" />', format_comment($first_post_arr['body'], true, false, false), '' . $lang['fe_first_post'] . ' ' . $lang['fe_preview'] . '');
         //=== last post read in topic
         $last_unread_post_res = sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($topic_id));
         $last_unread_post_arr = mysqli_fetch_row($last_unread_post_res);

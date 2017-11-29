@@ -1,16 +1,19 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-$lang = array_merge(load_language('global'));
+global $CURUSER, $site_config;
+
+$lang = load_language('global');
 $stdhead = [
     'css' => [
-        get_file(upload_css)
+        get_file('upload_css'),
     ],
 ];
 $stdfoot = [
     'js' => [
-        get_file(requests_js)
+        get_file('requests_js'),
     ],
 ];
 $HTMLOUT = $count2 = '';
@@ -95,7 +98,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
             //=======change colors
             $HTMLOUT .= '
     <tr>
-        <td><img src="./images/caticons/' . get_categorie_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '" /></td>
+        <td><img src="' . $site_config['pic_base_url'] . 'caticons/' . get_categorie_icons() . '/' . htmlsafechars($main_query_arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($main_query_arr['cat_name'], ENT_QUOTES) . '" /></td>
         <td><a class="altlink" href="requests.php?action=request_details&amp;id=' . (int)$main_query_arr['request_id'] . '">' . htmlsafechars($main_query_arr['request_name'], ENT_QUOTES) . '</a></td>
         <td>' . get_date($main_query_arr['added'], 'LONG') . '</td>
         <td>' . number_format($main_query_arr['comments']) . '</td>
@@ -107,7 +110,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
         }
         $HTMLOUT .= '</table>';
         $HTMLOUT .= '' . $menu . '<br>';
-        echo stdhead('Requests', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+        echo stdhead('Requests', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
     //===========================================================================================//
     //==============================the details page for the request! ========================================//
@@ -168,7 +171,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
   </tr>
   <tr>
   <td>category:</td>
-  <td><img src="./images/caticons/' . get_categorie_icons() . '/' . htmlsafechars($arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($arr['cat_name'], ENT_QUOTES) . '" /></td>
+  <td><img src="' . $site_config['pic_base_url'] . 'caticons/' . get_categorie_icons() . '/' . htmlsafechars($arr['cat_image'], ENT_QUOTES) . '" alt="' . htmlsafechars($arr['cat_name'], ENT_QUOTES) . '" /></td>
   </tr>
   <tr>
   <td>link:</td>
@@ -216,7 +219,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
             $HTMLOUT .= ($count > $perpage) ? '' . $menu . '<br>' : '<br>';
         }
         $HTMLOUT .= $commentbar;
-        echo stdhead('Request details for: ' . htmlsafechars($arr['request_name'], ENT_QUOTES), true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+        echo stdhead('Request details for: ' . htmlsafechars($arr['request_name'], ENT_QUOTES), true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
     //===========================================================================================//
     //====================================    add new request      ========================================//
@@ -282,7 +285,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
     </tbody>
     </table></form>
      </td></tr></table><br>';
-        echo stdhead('Add new request.', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+        echo stdhead('Add new request.', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
     //===========================================================================================//
     //====================================      delete  request      ========================================//
@@ -310,7 +313,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
             header('Location: /requests.php?request_deleted=1');
             exit();
         }
-        echo stdhead('Delete Request.', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+        echo stdhead('Delete Request.', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
     //===========================================================================================//
     //====================================          edit request      ========================================//
@@ -392,7 +395,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
    </tr>
    </table></form>
     </td></tr></table><br>';
-        echo stdhead('Edit request.', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+        echo stdhead('Edit request.', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
     //===========================================================================================//
     //====================================    add comment          ========================================//
@@ -434,7 +437,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
             $HTMLOUT .= '<h2>Most recent comments, in reverse order</h2>';
             $HTMLOUT .= comment_table($allrows);
         }
-        echo stdhead('Add a comment to "' . $arr['request_name'] . '"', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+        echo stdhead('Add a comment to "' . $arr['request_name'] . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
     //===========================================================================================//
     //==================================    edit comment    =============================================//
@@ -492,7 +495,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
     <input name="button" type="submit" class="button" value="Edit" /></td>
     </tr>
      </table></form>';
-        echo stdhead('Edit comment to "' . $arr['request_name'] . '"', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+        echo stdhead('Edit comment to "' . $arr['request_name'] . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
     //===========================================================================================//
     //==================================    delete comment    =============================================//
@@ -521,6 +524,11 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
         break;
 } //=== end all actions / switch
 //=== functions n' stuff \o/
+/**
+ * @param $rows
+ *
+ * @return string
+ */
 function comment_table($rows)
 {
     $count2 = '';

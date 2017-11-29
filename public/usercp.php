@@ -7,14 +7,8 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once CACHE_DIR . 'timezones.php';
 check_user_status();
-$stdfoot = [
-    'js' => [
-    ],
-];
-$stdhead = [
-    'css' => [
-    ],
-];
+global $CURUSER, $site_config;
+
 $lang = array_merge(load_language('global'), load_language('usercp'));
 $HTMLOUT = $stylesheets = $wherecatina = '';
 $templates = sql_query('SELECT id, name FROM stylesheets ORDER BY id');
@@ -75,21 +69,20 @@ if (isset($_GET['edited'])) {
 }
 
 $HTMLOUT .= "
-    <div class='container is-fluid portlet'>
         <h1>Welcome " . format_username((int)$CURUSER['id']) . "!</h1>
         <div>
             <div class='w-100'>
                 <form method='post' action='takeeditcp.php'>
                     <ul id='navlinks' class='level-center'>
-                        <li><a class='altlink bordered padding10' href='./usercp.php?action=avatar'>Avatar</a></li>
-                        <li><a class='altlink bordered padding10' href='./usercp.php?action=signature'>Signature</a></li>
-                        <li><a class='altlink bordered padding10' href='./usercp.php?action=default'>PM's</a></li>
-                        <li><a class='altlink bordered padding10' href='./usercp.php?action=security'>Security</a></li>
-                        <li><a class='altlink bordered padding10' href='./usercp.php?action=torrents'>Torrents</a></li>
-                        <li><a class='altlink bordered padding10' href='./usercp.php?action=personal'>Personal</a></li>
-                        <li><a class='altlink bordered padding10' href='./usercp.php?action=social'>Social</a></li>
-                        <li><a class='altlink bordered padding10' href='./usercp.php?action=location'>Location</a></li>
-                        <li><a class='altlink bordered padding10' href='./usercp.php?action=links'>Links</a></li>
+                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=avatar'>Avatar</a></li>
+                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=signature'>Signature</a></li>
+                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=default'>PM's</a></li>
+                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=security'>Security</a></li>
+                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=torrents'>Torrents</a></li>
+                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=personal'>Personal</a></li>
+                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=social'>Social</a></li>
+                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=location'>Location</a></li>
+                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=links'>Links</a></li>
                     </ul>
                     <div class='level-center flex-top'>
                         <span class='margin20'>";
@@ -127,8 +120,8 @@ if ($action == 'avatar') {
                                                 Width should be 150px. (Will be resized if necessary)
                                             </p>
                                             <p class='small'>
-                                                If you need a avatar, try our  <a href='./avatar/index.php'>Avatar creator</a>.<br>
-                                                If you need a host for your image, try our  <a href='./bitbucket.php'>Bitbucket</a>.
+                                                If you need a avatar, try our  <a href='{$site_config['baseurl']}/avatar/index.php'>Avatar creator</a>.<br>
+                                                If you need a host for your image, try our  <a href='{$site_config['baseurl']}/bitbucket.php'>Bitbucket</a>.
                                             </p>
                                         </td>
                                     </tr>";
@@ -208,17 +201,17 @@ elseif ($action == 'social') {
                                 </thead>
                                 <tbody>";
     //=== social stuff
-    $HTMLOUT .= tr('<img src="./images/forums/google_talk.gif" alt="Google Talk" class="tooltipper right10" title="Google Talk" />Google Talk', '
+    $HTMLOUT .= tr('<img src="' . $site_config['pic_base_url'] . 'forums/google_talk.gif" alt="Google Talk" class="tooltipper right10" title="Google Talk" />Google Talk', '
                                             <input type="text" class="w-100" name="google_talk"  value="' . htmlsafechars($CURUSER['google_talk']) . '" />', 1);
-    $HTMLOUT .= tr('<img src="./images/forums/msn.gif" alt="Msn" class="tooltipper right10" title="Msn" />MSN ', '
+    $HTMLOUT .= tr('<img src="' . $site_config['pic_base_url'] . 'forums/msn.gif" alt="Msn" class="tooltipper right10" title="Msn" />MSN ', '
                                             <input type="text" class="w-100" name="msn"  value="' . htmlsafechars($CURUSER['msn']) . '" />', 1);
-    $HTMLOUT .= tr('<img src="./images/forums/aim.gif" alt="Aim" class="tooltipper right10" title="Aim" />AIM', '
+    $HTMLOUT .= tr('<img src="' . $site_config['pic_base_url'] . 'forums/aim.gif" alt="Aim" class="tooltipper right10" title="Aim" />AIM', '
                                             <input type="text" class="w-100" name="aim"  value="' . htmlsafechars($CURUSER['aim']) . '" />', 1);
-    $HTMLOUT .= tr('<img src="./images/forums/yahoo.gif" alt="Yahoo" class="tooltipper right10" title="Yahoo" />Yahoo ', '
+    $HTMLOUT .= tr('<img src="' . $site_config['pic_base_url'] . 'forums/yahoo.gif" alt="Yahoo" class="tooltipper right10" title="Yahoo" />Yahoo ', '
                                             <input type="text" class="w-100" name="yahoo"  value="' . htmlsafechars($CURUSER['yahoo']) . '" />', 1);
-    $HTMLOUT .= tr('<img src="./images/forums/icq.gif" alt="Icq" class="tooltipper right10" title="Icq" />icq ', '
+    $HTMLOUT .= tr('<img src="' . $site_config['pic_base_url'] . 'forums/icq.gif" alt="Icq" class="tooltipper right10" title="Icq" />icq ', '
                                             <input type="text" class="w-100" name="icq"  value="' . htmlsafechars($CURUSER['icq']) . '" />', 1);
-    $HTMLOUT .= tr('<img src="./images/forums/www.gif" alt="www" class="tooltipper right10" title="www" width="16px" height="16px" />Website ', '
+    $HTMLOUT .= tr('<img src="' . $site_config['pic_base_url'] . 'forums/www.gif" alt="www" class="tooltipper right10" title="www" width="16px" height="16px" />Website ', '
                                             <input type="text" class="w-100" name="website"  value="' . htmlsafechars($CURUSER['website']) . '" />', 1);
     $HTMLOUT .= "
                                     <tr>
@@ -289,27 +282,27 @@ elseif ($action == 'links') {
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <a href='./mytorrents.php'>{$lang['usercp_edit_torrents']}</a>
+                                            <a href='{$site_config['baseurl']}/mytorrents.php'>{$lang['usercp_edit_torrents']}</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <a href='./friends.php'>{$lang['usercp_edit_friends']}</a>
+                                            <a href='{$site_config['baseurl']}/friends.php'>{$lang['usercp_edit_friends']}</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <a href='./users.php'>{$lang['usercp_search']}</a>
+                                            <a href='{$site_config['baseurl']}/users.php'>{$lang['usercp_search']}</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <a href='./invite.php'>Invites</a>
+                                            <a href='{$site_config['baseurl']}/invite.php'>Invites</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <a href='./tenpercent.php'>Lifesaver</a>
+                                            <a href='{$site_config['baseurl']}/tenpercent.php'>Lifesaver</a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -324,33 +317,33 @@ elseif ($action == 'links') {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><a href='./topmoods.php'>Top Member Mood's</a></td>
+                                        <td><a href='{$site_config['baseurl']}/topmoods.php'>Top Member Mood's</a></td>
                                     </tr>";
     if ($CURUSER['class'] >= UC_POWER_USER) {
         $HTMLOUT .= "
                                     <tr>
                                         <td>
-                                            <a href='./games.php'>{$site_config['site_name']} Games</a>
+                                            <a href='{$site_config['baseurl']}/games.php'>{$site_config['site_name']} Games</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <a href='./blackjack.php'>{$site_config['site_name']} Blackjack</a>
+                                            <a href='{$site_config['baseurl']}/blackjack.php'>{$site_config['site_name']} Blackjack</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <a href='./casino.php'>{$site_config['site_name']} Casino</a>
+                                            <a href='{$site_config['baseurl']}/casino.php'>{$site_config['site_name']} Casino</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <a href='./arcade.php'>{$site_config['site_name']} Arcade</a>
+                                            <a href='{$site_config['baseurl']}/arcade.php'>{$site_config['site_name']} Arcade</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <a href='./lottery.php'>{$site_config['site_name']} Lottery</a>
+                                            <a href='{$site_config['baseurl']}/lottery.php'>{$site_config['site_name']} Lottery</a>
                                         </td>
                                     </tr>
                                 </tbody>";
@@ -520,8 +513,8 @@ elseif ($action == 'torrents') {
                                                 <span class='margin10 bordered tooltipper' title='" . htmlsafechars($a['name']) . "'>
                                                     <input name='cat{$a['id']}' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? " checked" : '') . " value='yes' />
                                                     <span class='cat-image left10'>
-                                                        <a href='./browse.php?c".(int) $a['id']."'>
-                                                            <img class='radius-sm' src='{$site_config['pic_base_url']}images/caticons/{$CURUSER['categorie_icon']}/".htmlsafechars($a['image'])."'alt='".htmlsafechars($a['name'])."' />
+                                                        <a href='{$site_config['baseurl']}/browse.php?c" . (int)$a['id'] . "'>
+                                                            <img class='radius-sm' src='{$site_config['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($a['image']) . "'alt='" . htmlsafechars($a['name']) . "' />
                                                         </a>
                                                     </span>
                                                 </span>";
@@ -740,7 +733,7 @@ elseif ($action == 'personal') {
                                     </tr>
                                 </thead>
                                 <tbody>";
-    $HTMLOUT .= tr($lang['usercp_accept_pm'], "
+        $HTMLOUT .= tr($lang['usercp_accept_pm'], "
                                             <div class='level-center'>
                                                 <span>
                                                     <input type='radio' name='acceptpms'" . ($CURUSER['acceptpms'] == 'yes' ? " checked" : '') . " value='yes' /> {$lang['usercp_except_blocks']}
@@ -752,20 +745,20 @@ elseif ($action == 'personal') {
                                                     <input type='radio' name='acceptpms'" . ($CURUSER['acceptpms'] == 'no' ? " checked" : '') . " value='no' /> {$lang['usercp_only_staff']}
                                                 </span>
                                             </div>", 1);
-    $HTMLOUT .= tr($lang['usercp_delete_pms'], "
+        $HTMLOUT .= tr($lang['usercp_delete_pms'], "
                                             <input type='checkbox' name='deletepms'" . ($CURUSER['deletepms'] == 'yes' ? " checked" : '') . " /> {$lang['usercp_default_delete']}", 1);
-    $HTMLOUT .= tr($lang['usercp_save_pms'], "
+        $HTMLOUT .= tr($lang['usercp_save_pms'], "
                                             <input type='checkbox' name='savepms'" . ($CURUSER['savepms'] == 'yes' ? " checked" : '') . " /> {$lang['usercp_default_save']}", 1);
-    $HTMLOUT .= tr('Forum Subscribe PM', "
+        $HTMLOUT .= tr('Forum Subscribe PM', "
                                             <input type='radio' name='subscription_pm' " . ($CURUSER['subscription_pm'] == 'yes' ? " checked" : '') . " value='yes' /> Yes
                                             <input type='radio' name='subscription_pm' " . ($CURUSER['subscription_pm'] == 'no' ? " checked" : '') . " value='no' /> No<br>When someone posts in a subscribed thread, you will be PMed.", 1);
-    $HTMLOUT .= tr('Torrent deletion PM', "
+        $HTMLOUT .= tr('Torrent deletion PM', "
                                             <input type='radio' name='pm_on_delete' " . ($CURUSER['pm_on_delete'] == 'yes' ? " checked" : '') . " value='yes' /> Yes
                                             <input type='radio' name='pm_on_delete' " . ($CURUSER['pm_on_delete'] == 'no' ? " checked" : '') . " value='no' /> No<br>When any of your uploaded torrents are deleted, you will be PMed.", 1);
-    $HTMLOUT .= tr('Torrent comment PM', "
+        $HTMLOUT .= tr('Torrent comment PM', "
                                             <input type='radio' name='commentpm' " . ($CURUSER['commentpm'] == 'yes' ? " checked" : '') . " value='yes' /> Yes
                                             <input type='radio' name='commentpm' " . ($CURUSER['commentpm'] == 'no' ? " checked" : '') . " value='no' /> No<br>When any of your uploaded torrents are commented on, you will be PMed.", 1);
-    $HTMLOUT .= "
+        $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>
                                             <div class='has-text-centered'>
@@ -782,7 +775,6 @@ $HTMLOUT .= '
                     </form>
                 </div>
             </div>
-        </div>
-    </div>';
+        </div>';
 
-echo stdhead(htmlsafechars($CURUSER['username'], ENT_QUOTES) . "{$lang['usercp_stdhead']} ", true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead(htmlsafechars($CURUSER['username'], ENT_QUOTES) . "{$lang['usercp_stdhead']} ") . wrapper($HTMLOUT) . stdfoot();

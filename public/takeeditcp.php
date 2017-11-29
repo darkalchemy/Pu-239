@@ -5,8 +5,15 @@ require_once INCL_DIR . 'password_functions.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
+global $CURUSER, $site_config, $cache;
+
 $curuser_cache = $user_cache = $urladd = $changedemail = $birthday = '';
 $lang = array_merge(load_language('global'), load_language('takeeditcp'));
+/**
+ * @param $in
+ *
+ * @return array
+ */
 function resize_image($in)
 {
     $out = [
@@ -249,8 +256,7 @@ elseif ($action == 'security') {
         while ($arr = mysqli_fetch_assoc($pmstaff)) {
             sql_query('INSERT INTO messages(sender, receiver, added, msg, subject) VALUES(0, ' . sqlesc($arr['id']) . ", $dt, $msg, $subject)") or sqlerr(__FILE__, __LINE__);
         }
-        $mc1->delete_value('inbox_new_' . $arr['id']);
-        $mc1->delete_value('inbox_new_sb_' . $arr['id']);
+        $cache->increment('inbox_' . $arr['id']);
         $urladd .= '&mailsent=1';
     }
     $action = 'security';
@@ -273,7 +279,7 @@ elseif ($action == 'torrents') {
     $curuser_cache['notifs'] = $notifs;
     $user_cache['notifs'] = $notifs;
     //==
-    if (isset($_POST['torrentsperpage']) && (($torrentspp = min(100, (int) $_POST['torrentsperpage'])) != $CURUSER['torrentsperpage'])) {
+    if (isset($_POST['torrentsperpage']) && (($torrentspp = min(100, (int)$_POST['torrentsperpage'])) != $CURUSER['torrentsperpage'])) {
         $updateset[] = "torrentsperpage = $torrentspp";
     }
     $curuser_cache['torrentsperpage'] = $torrentspp;
@@ -362,9 +368,9 @@ elseif ($action == 'personal') {
                 'date'   => $CURUSER['last_update'],
             ];
         }
-        sql_query('INSERT INTO ustatus(userid,last_status,last_update,archive) VALUES(' . sqlesc($CURUSER['id']) . ',' . sqlesc($status) . ',' . TIME_NOW . ',' . sqlesc(serialize($status_archive)) . ') ON DUPLICATE KEY UPDATE last_status=values(last_status),last_update=values(last_update),archive=values(archive)') or sqlerr(__FILE__, __LINE__);
-        $mc1->delete_value('userstatus_' . $CURUSER['id']);
-        $mc1->delete_value('user_status_' . $CURUSER['id']);
+        sql_query('INSERT INTO ustatus(userid,last_status,last_update,archive) VALUES(' . sqlesc($CURUSER['id']) . ',' . sqlesc($status) . ',' . TIME_NOW . ',' . sqlesc(serialize($status_archive)) . ') ON DUPLICATE KEY UPDATE last_status = VALUES(last_status),last_update = VALUES(last_update),archive = VALUES(archive)') or sqlerr(__FILE__, __LINE__);
+        $cache->delete('userstatus_' . $CURUSER['id']);
+        $cache->delete('user_status_' . $CURUSER['id']);
     }
     //end status update;
     if (isset($_POST['stylesheet']) && (($stylesheet = (int)$_POST['stylesheet']) != $CURUSER['stylesheet']) && is_valid_id($stylesheet)) {
@@ -372,12 +378,12 @@ elseif ($action == 'personal') {
         $curuser_cache['stylesheet'] = $stylesheet;
         $user_cache['stylesheet'] = $stylesheet;
     }
-    if (isset($_POST['topicsperpage']) && (($topicspp = min(100, (int) $_POST['topicsperpage'])) != $CURUSER['topicsperpage'])) {
+    if (isset($_POST['topicsperpage']) && (($topicspp = min(100, (int)$_POST['topicsperpage'])) != $CURUSER['topicsperpage'])) {
         $updateset[] = "topicsperpage = $topicspp";
         $curuser_cache['topicsperpage'] = $topicspp;
         $user_cache['topicsperpage'] = $topicspp;
     }
-    if (isset($_POST['postsperpage']) && (($postspp = min(100, (int) $_POST['postsperpage'])) != $CURUSER['postsperpage'])) {
+    if (isset($_POST['postsperpage']) && (($postspp = min(100, (int)$_POST['postsperpage'])) != $CURUSER['postsperpage'])) {
         $updateset[] = "postsperpage = $postspp";
         $curuser_cache['postsperpage'] = $postspp;
         $user_cache['postsperpage'] = $postspp;
@@ -399,9 +405,9 @@ elseif ($action == 'personal') {
     }
 
     if ($CURUSER['birthday'] == '0000-00-00') {
-        $year = isset($_POST['year']) ? (int) $_POST['year'] : 0;
-        $month = isset($_POST['month']) ? (int) $_POST['month'] : 0;
-        $day = isset($_POST['day']) ? (int) $_POST['day'] : 0;
+        $year = isset($_POST['year']) ? (int)$_POST['year'] : 0;
+        $month = isset($_POST['month']) ? (int)$_POST['month'] : 0;
+        $day = isset($_POST['day']) ? (int)$_POST['day'] : 0;
         $birthday = date("$year.$month.$day");
         if ($year == '0000') {
             stderr($lang['takeeditcp_err'], $lang['takeeditcp_birth_year']);
@@ -418,7 +424,7 @@ elseif ($action == 'personal') {
         $updateset[] = 'birthday = ' . sqlesc($birthday);
         $curuser_cache['birthday'] = $birthday;
         $user_cache['birthday'] = $birthday;
-        $mc1->delete_value('birthdayusers');
+        $cache->delete('birthdayusers');
     }
     $action = 'personal';
 } elseif ($action == 'social') {
@@ -485,7 +491,7 @@ elseif ($action == 'default') {
         'no'      => 3,
     ];
     $acceptpms = (isset($_POST['acceptpms']) ? $_POST['acceptpms'] : 'all');
-    if (isset($acceptpms_choices[$acceptpms])) {
+    if (isset($acceptpms_choices[ $acceptpms ])) {
         $updateset[] = 'acceptpms = ' . sqlesc($acceptpms);
     }
     $curuser_cache['acceptpms'] = $acceptpms;
@@ -527,14 +533,10 @@ elseif ($action == 'default') {
 }
 //== End == then update the sets :)
 if ($curuser_cache) {
-    $mc1->begin_transaction('MyUser_' . $CURUSER['id']);
-    $mc1->update_row(false, $curuser_cache);
-    $mc1->commit_transaction($site_config['expires']['curuser']);
+    $cache->update_row('MyUser_' . $CURUSER['id'], $curuser_cache, $site_config['expires']['curuser']);
 }
 if ($user_cache) {
-    $mc1->begin_transaction('user' . $CURUSER['id']);
-    $mc1->update_row(false, $user_cache);
-    $mc1->commit_transaction($site_config['expires']['user_cache']);
+    $cache->update_row('user' . $CURUSER['id'], $user_cache, $site_config['expires']['user_cache']);
 }
 if (sizeof($updateset) > 0) {
     sql_query('UPDATE users SET ' . implode(',', $updateset) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -548,16 +550,12 @@ $res = sql_query('SELECT opt1, opt2 FROM users
 $row = mysqli_fetch_assoc($res);
 $row['opt1'] = (int)$row['opt1'];
 $row['opt2'] = (int)$row['opt2'];
-$mc1->begin_transaction('MyUser_' . $CURUSER['id']);
-$mc1->update_row(false, [
+$cache->update_row('MyUser_' . $CURUSER['id'], [
     'opt1' => $row['opt1'],
     'opt2' => $row['opt2'],
-]);
-$mc1->commit_transaction($site_config['expires']['curuser']);
-$mc1->begin_transaction('user_' . $CURUSER['id']);
-$mc1->update_row(false, [
+], $site_config['expires']['curuser']);
+$cache->update_row('user_' . $CURUSER['id'], [
     'opt1' => $row['opt1'],
     'opt2' => $row['opt2'],
-]);
-$mc1->commit_transaction($site_config['expires']['user_cache']);
+], $site_config['expires']['user_cache']);
 header("Location: {$site_config['baseurl']}/usercp.php?edited=1&action=$action" . $urladd);

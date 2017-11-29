@@ -1,6 +1,7 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
-require_once INCL_DIR.'user_functions.php';
+require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 $lang = load_language('global');
 
@@ -10,7 +11,6 @@ if ($CURUSER['class'] < UC_USER) {
 }
 
 $HTMLOUT = "
-        <div class='container is-fluid portlet top10'>
             <div class='has-text-centered'>
                 <h1>{$site_config['site_name']} Old School Arcade!</h1>
                 <span>Top Scores Earn {$site_config['top_score_points']} Karma Points</span>
@@ -18,26 +18,24 @@ $HTMLOUT = "
                     <a class='altlink' href='./arcade_top_scores.php'>Top Scores</a>
                 </div>
             </div>
-            <div class='flex-grid'>";
+            <div class='level-center'>";
 
 $list = $site_config['arcade_games_names'];
 sort($list);
 foreach ($list as $gamename) {
     $id = $i + 1;
     $game_id = array_search($gamename, $site_config['arcade_games_names']);
-    $game = $site_config['arcade_games'][$game_id];
-    $fullgamename = $site_config['arcade_games_names'][$game_id];
+    $game = $site_config['arcade_games'][ $game_id ];
+    $fullgamename = $site_config['arcade_games_names'][ $game_id ];
     $HTMLOUT .= "
-                <div class='flex_cell_3'>
+                <div class='w-25'>
                     <a href='./flash.php?gameURI={$game}.swf&amp;gamename={$game}&amp;game_id={$id}' class='tooltipper' title='{$fullgamename}'>
-                        <img src='{$site_config['pic_base_url']}games/{$game}.png' alt='{$game}' />
+                        <img src='{$site_config['pic_base_url']}games/{$game}.png' alt='{$game}' class='round10' />
                     </a>
                 </div>";
 
-
 }
 $HTMLOUT .= '
-            </div>
-        </div>';
+            </div>';
 
-echo stdhead('Arcade').$HTMLOUT.stdfoot();
+echo stdhead('Arcade') . wrapper($HTMLOUT) . stdfoot();

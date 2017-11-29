@@ -1,11 +1,12 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once CLASS_DIR . 'class_check.php';
+require_once INCL_DIR . 'html_functions.php';
 class_check(UC_STAFF);
-global $mc1;
+global $cache, $site_config;
 $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($lconf)) {
-    $lottery_config[$ac['name']] = $ac['value'];
+    $lottery_config[ $ac['name'] ] = $ac['value'];
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ([
@@ -14,30 +15,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                  'user_tickets'  => 0,
                  'end_date'      => 0,
              ] as $key => $type) {
-        if (isset($_POST[$key]) && ($type == 0 && $_POST[$key] == 0 || $type == 1 && count($_POST[$key]) == 0)) {
-            stderr('Err', 'You forgot to fill some data');
+        if (isset($_POST[ $key ]) && ($type == 0 && $_POST[ $key ] == 0 || $type == 1 && count($_POST[ $key ]) == 0)) {
+            setSessionVar('is-warning', 'You forgot to fill some data');
         }
     }
     foreach ($lottery_config as $c_name => $c_value) {
-        if (isset($_POST[$c_name]) && $_POST[$c_name] != $c_value) {
-            $update[] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($_POST[$c_name]) ? join('|', $_POST[$c_name]) : $_POST[$c_name]) . ')';
+        if (isset($_POST[ $c_name ]) && $_POST[ $c_name ] != $c_value) {
+            $update[] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($_POST[ $c_name ]) ? join('|', $_POST[ $c_name ]) : $_POST[ $c_name ]) . ')';
         }
     }
-    if (sql_query('INSERT INTO lottery_config(name,value) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY update value=values(value)')) {
-        $mc1->delete_value('lottery_info_');
-        stderr('Success', 'Lottery configuration was saved! Click <a href=\'lottery.php\'>here to get back</a>');
+    if (sql_query('INSERT INTO lottery_config(name,value) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value)')) {
+        $cache->delete('lottery_info_');
+        setSessionVar('is-success', 'Lottery configuration was saved!');
     } else {
-        stderr('Error', 'There was an error while executing the update query. Mysql error: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+        setSessionVar('is-warning', 'There was an error while executing the update query. Mysql error: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
     }
-    exit;
 }
-//$html = begin_main_frame();
 if ($lottery_config['enable']) {
     $classes = join(', ', array_map('get_user_class_name', explode('|', $lottery_config['class_allowed'])));
     $html .= stdmsg('Lottery configuration closed', 'Classes playing in this lottery are : <b>' . $classes . '</b>');
 } else {
     $html .= "
-    <form action='lottery.php?do=config' method='post'>
+    <form action='{$site_config['baseurl']}/lottery.php?action=config' method='post'>
         <div class='container is-fluid portlet'>
             <table class='table table-bordered table-striped top20 bottom20'>
                 <tr>
@@ -119,7 +118,7 @@ if ($lottery_config['enable']) {
                 <tr>
                     <td colspan='2'>
                         <div class='has-text-centered'>
-                            <input type='submit' value='Apply changes' />
+                            <input type='submit' class='button' value='Apply changes' />
                         </div>
                     </td>
                 </tr>
@@ -127,4 +126,4 @@ if ($lottery_config['enable']) {
         </div>
     </form>";
 }
-echo stdhead('Lottery configuration') . $html . stdfoot();
+echo stdhead('Lottery configuration') . wrapper($html) . stdfoot();

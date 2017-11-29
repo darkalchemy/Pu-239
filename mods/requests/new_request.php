@@ -1,4 +1,6 @@
 <?php
+global $CURUSER, $site_config, $lang;
+
 $request = (isset($_POST['requesttitle']) ? $_POST['requesttitle'] : '');
 if ($request == '') {
     stderr("{$lang['error_error']}", "{$lang['error_title']}");
@@ -20,7 +22,7 @@ if (!empty($_POST['picture'])) {
     //    $picture2 = trim(urldecode($_POST['picture']));
     //    $headers  = get_headers($picture2);
     //    if (strpos($headers[0], '200') === false)
-    //        $picture = $site_config['baseurl'].'/images/notfound.png';
+    //        $picture = "{$site_config['pic_base_url']}notfound.png";
     $pic = '[img]' . $picture . "[/img]\n";
 }
 $descr = "$pic";
@@ -29,7 +31,7 @@ $request2 = sqlesc($request);
 $descr = sqlesc($descr);
 sql_query("INSERT INTO requests (hits, userid, cat, request, descr, added) VALUES(1,$CURUSER[id], $cat, $request2, $descr, " . TIME_NOW . ')') or sqlerr(__FILE__, __LINE__);
 $id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
-sql_query("INSERT INTO voted_requests VALUES(0, $id, $CURUSER[id])") or sqlerr();
+sql_query("INSERT INTO voted_requests VALUES(0, $id, $CURUSER[id])") or sqlerr(__FILE__, __LINE__);
 if ($site_config['karma'] && isset($CURUSER['seedbonus'])) {
     sql_query('UPDATE users SET seedbonus = seedbonus-' . $site_config['req_cost_bonus'] . " WHERE id = $CURUSER[id]") or sqlerr(__FILE__, __LINE__);
 }

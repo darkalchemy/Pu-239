@@ -1,6 +1,7 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 global $site_config;
 if (!getSessionVar('LoggedIn')) {
     dbconn();
@@ -9,23 +10,18 @@ if (!getSessionVar('LoggedIn')) {
     check_user_status();
 }
 $lang = array_merge(load_language('global'), load_language('rules'));
-$stdhead = [
-    'css' => [
-    ],
-];
 
 $HTMLOUT .= "
-    <div class='container is-fluid portlet'>
         <fieldset id='rules'>
             <legend>
                 <img src='./images/info.png' alt='' class='tooltipper right5' title='Guidelines' width='25' />Guidelines
             </legend>
 
-            <div class='bordered'>
+            <div class='bordered has-text-left'>
                 <div class='alt_bordered bg-00'>
                     <div id='accordion'>
                         <p class='accordion-toggle has-text-black round5-top'>
-                            {$lang['rules_general_header']}<span class='text-blue'>{$lang['rules_general_header_sub']}</span>
+                            {$lang['rules_general_header']}<span class='has-text-blue'>{$lang['rules_general_header_sub']}</span>
                         </p>
                         <div class='accordion-content padding20'>
                             <ul>
@@ -35,7 +31,7 @@ $HTMLOUT .= "
                             </ul>
                         </div>
                         <p class='accordion-toggle has-text-black'>
-                            {$lang['rules_downloading_header']}<span class='text-blue'>{$lang['rules_downloading_header_sub']}</span>
+                            {$lang['rules_downloading_header']}<span class='has-text-blue'>{$lang['rules_downloading_header_sub']}</span>
                         </p>
                         <div class='accordion-content padding20'>
                             <ul>
@@ -44,7 +40,7 @@ $HTMLOUT .= "
                             </ul>
                         </div>
                         <p class='accordion-toggle has-text-black'>
-                            {$lang['rules_forum_header']}<span class='text-blue'>{$lang['rules_forum_header_sub']}</span>
+                            {$lang['rules_forum_header']}<span class='has-text-blue'>{$lang['rules_forum_header_sub']}</span>
                         </p>
                         <div class='accordion-content padding20'>
                             <ul>
@@ -63,7 +59,7 @@ $HTMLOUT .= "
                             </ul>
                         </div>
                         <p class='accordion-toggle has-text-black" . ($CURUSER['class'] < UC_UPLOADER ? ' round5-bottom' : '') . "'>
-                            {$lang['rules_avatar_header']}<span class='text-blue'>{$lang['rules_avatar_header_sub']}</span>
+                            {$lang['rules_avatar_header']}<span class='has-text-blue'>{$lang['rules_avatar_header_sub']}</span>
                         </p>
                         <div class='accordion-content padding20'>
                             <ul>
@@ -76,7 +72,7 @@ $HTMLOUT .= "
 if (isset($CURUSER) and $CURUSER['class'] >= UC_UPLOADER) {
     $HTMLOUT .= "
                         <p class='accordion-toggle has-text-black" . ($CURUSER['class'] < UC_STAFF ? ' round5-bottom' : '') . "'>
-                            {$lang['rules_uploading_header']}<span class='text-blue'>{$lang['rules_uploading_header_sub']}</span>
+                            {$lang['rules_uploading_header']}<span class='has-text-blue'>{$lang['rules_uploading_header_sub']}</span>
                         </p>
                         <div class='accordion-content padding20'>
                             <ul>
@@ -96,7 +92,7 @@ if (isset($CURUSER) and $CURUSER['class'] >= UC_UPLOADER) {
 if (isset($CURUSER) and $CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= "
                         <p class='accordion-toggle has-text-black'>
-                            {$lang['rules_moderating_header']}<span class='text-blue'>{$lang['rules_moderating_header_sub']}</span>
+                            {$lang['rules_moderating_header']}<span class='has-text-blue'>{$lang['rules_moderating_header_sub']}</span>
                         </p>
                         <div class='accordion-content padding20'>
                             <table class='table table-bordered table-striped'>
@@ -131,7 +127,7 @@ if (isset($CURUSER) and $CURUSER['class'] >= UC_STAFF) {
                             </table>
                         </div>
                         <p class='accordion-toggle has-text-black'>
-                            {$lang['rules_mod_rules_header']}<span class='text-blue'>{$lang['rules_mod_rules_header_sub']}</span>
+                            {$lang['rules_mod_rules_header']}<span class='has-text-blue'>{$lang['rules_mod_rules_header_sub']}</span>
                         </p>
                         <div class='accordion-content padding20'>
                             <ul>
@@ -150,7 +146,7 @@ if (isset($CURUSER) and $CURUSER['class'] >= UC_STAFF) {
                             </ul>
                         </div>
                         <p class='accordion-toggle has-text-black round5-bottom'>
-                            {$lang['rules_mod_options_header']}<span class='text-blue'>{$lang['rules_mod_options_header_sub']}</span>
+                            {$lang['rules_mod_options_header']}<span class='has-text-blue'>{$lang['rules_mod_options_header_sub']}</span>
                         </p>
                         <div class='accordion-content padding20'>
                             <ul>
@@ -174,4 +170,4 @@ $HTMLOUT .= "
         </div>
     </fieldset>";
 
-echo stdhead('Rules', true, $stdhead) . $HTMLOUT . stdfoot();
+echo stdhead('Rules', true, $stdhead) . wrapper($HTMLOUT) . stdfoot();

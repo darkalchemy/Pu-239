@@ -1,7 +1,10 @@
 <?php
+/**
+ * @param $data
+ */
 function karmavip_update($data)
 {
-    global $site_config, $queries, $mc1;
+    global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
     $res = sql_query("SELECT id, modcomment FROM users WHERE vip_added='yes' AND donoruntil < " . TIME_NOW . " AND vip_until < " . TIME_NOW . '') or sqlerr(__FILE__, __LINE__);
@@ -15,32 +18,25 @@ function karmavip_update($data)
             $modcom = sqlesc($modcomment);
             $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
             $users_buffer[] = '(' . $arr['id'] . ',1, \'no\', \'0\' , ' . $modcom . ')';
-            $mc1->begin_transaction('user' . $arr['id']);
-            $mc1->update_row(false, [
+            $cache->update_row('user' . $arr['id'], [
                 'class'     => 1,
                 'vip_added' => 'no',
                 'vip_until' => 0,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_cache']);
-            $mc1->begin_transaction('user_stats' . $arr['id']);
-            $mc1->update_row(false, [
+            ], $site_config['expires']['user_cache']);
+            $cache->update_row('user_stats' . $arr['id'], [
                 'modcomment' => $modcomment,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['user_stats']);
-            $mc1->begin_transaction('MyUser_' . $arr['id']);
-            $mc1->update_row(false, [
+            ], $site_config['expires']['user_stats']);
+            $cache->update_row('MyUser_' . $arr['id'], [
                 'class'     => 1,
                 'vip_added' => 'no',
                 'vip_until' => 0,
-            ]);
-            $mc1->commit_transaction($site_config['expires']['curuser']);
-            $mc1->delete_value('inbox_new_' . $arr['id']);
-            $mc1->delete_value('inbox_new_sb_' . $arr['id']);
+            ], $site_config['expires']['curuser']);
+            $cache->increment('inbox_' . $arr['id']);
         }
         $count = count($users_buffer);
         if ($count > 0) {
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
-            sql_query('INSERT INTO users (id, class, vip_added, vip_until, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE key UPDATE class=values(class),vip_added=values(vip_added),vip_until=values(vip_until),modcomment=values(modcomment)') or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO users (id, class, vip_added, vip_until, modcomment) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE class = VALUES(class),vip_added = VALUES(vip_added),vip_until = VALUES(vip_until),modcomment = VALUES(modcomment)') or sqlerr(__FILE__, __LINE__);
         }
         if ($data['clean_log']) {
             write_log('Cleanup - Karma Vip status expired on - ' . $count . ' Member(s)');

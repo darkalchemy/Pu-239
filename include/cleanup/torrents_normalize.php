@@ -1,7 +1,10 @@
 <?php
+/**
+ * @param $data
+ */
 function torrents_normalize($data)
 {
-    global $site_config, $queries, $mc1;
+    global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
     do {
@@ -9,7 +12,7 @@ function torrents_normalize($data)
         $ar = [];
         while ($row = mysqli_fetch_array($res, MYSQLI_NUM)) {
             $id = $row[0];
-            $ar[$id] = 1;
+            $ar[ $id ] = 1;
         }
         if (!count($ar)) {
             break;
@@ -26,8 +29,8 @@ function torrents_normalize($data)
                 continue;
             }
             $id = $m[1];
-            $ar2[$id] = 1;
-            if (isset($ar[$id]) && $ar[$id]) {
+            $ar2[ $id ] = 1;
+            if (isset($ar[ $id ]) && $ar[ $id ]) {
                 continue;
             }
             $ff = $site_config['torrent_dir'] . "/$file";
@@ -40,11 +43,11 @@ function torrents_normalize($data)
 
         $delids = [];
         foreach (array_keys($ar) as $k) {
-            if (isset($ar2[$k]) && $ar2[$k]) {
+            if (isset($ar2[ $k ]) && $ar2[ $k ]) {
                 continue;
             }
             $delids[] = $k;
-            unset($ar[$k]);
+            unset($ar[ $k ]);
         }
         if (count($delids)) {
             $ids = join(',', $delids);

@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="[LANG_CODE/]" lang="[LANG_CODE/]" dir="[BASE_DIRECTION/]">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="Content-Type" content="[CONTENT_TYPE/]" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="Content-Type" content="[CONTENT_TYPE/]"/>
     <title>[LANG]title[/LANG]</title>
     [STYLE_SHEETS/]
 </head>
@@ -22,7 +22,8 @@
             <label for="channelSelection">[LANG]channel[/LANG]:</label>
             <select id="channelSelection" onchange="ajaxChat.switchChannel(this.options[this.selectedIndex].value);">[CHANNEL_OPTIONS/]</select>
         </div>
-        <input type="image" src="../images/pixel.gif" class="button" id="showChannelsButton" alt="[LANG]toggleHelp[/LANG]"/>
+        <input type="image" src="../images/pixel.gif" class="button" id="showChannelsButton"
+               alt="[LANG]toggleHelp[/LANG]"/>
     </div>
     <div id="statusIconContainer" class="waiting"></div>
 
@@ -125,8 +126,11 @@
             <h3>[LANG]settings[/LANG]</h3>
             <div id="settingsList">
                 <dl>
-                    <dt><label title="Change the direction of messages, Select for new messages on top. You will need to refresh after changing this." for="postDirectionSetting">Enable Top Down</label></dt>
-                    <dd><input type="checkbox" id="postDirectionSetting" onclick="ajaxChat.setSetting('postDirection', this.checked);"/></dd>
+                    <dt><label
+                            title="Change the direction of messages, Select for new messages on top. You will need to refresh after changing this."
+                            for="postDirectionSetting">Enable Top Down</label></dt>
+                    <dd><input type="checkbox" id="postDirectionSetting"
+                               onclick="ajaxChat.setSetting('postDirection', this.checked);"/></dd>
                 </dl>
                 <dl>
                     <dt><label for="bbCodeSetting">[LANG]settingsBBCode[/LANG]</label></dt>
@@ -335,22 +339,26 @@
                onclick="ajaxChat.insertBBCode('img');"/>
         <input id="bbCodeColor" type="button" value="[LANG]bbCodeLabelColor[/LANG]"
                title="[LANG]bbCodeTitleColor[/LANG]"/>
-        <input id="bbCodeSmilies" type="button" value="Smilies" onclick="PopMoreSmiles();" title="[LANG]bbCodeTitleEmoticon[/LANG]" />
+        <input id="bbCodeSmilies" type="button" value="Smilies" onclick="PopMoreSmiles();"
+               title="[LANG]bbCodeTitleEmoticon[/LANG]"/>
     </div>
     <div id="colorCodesContainer" style="display:none;" dir="ltr"></div>
     <div id="optionsContainer">
         <input type="image" src="../images/pixel.gif" class="button" id="helpButton" alt="[LANG]toggleHelp[/LANG]"
                title="[LANG]toggleHelp[/LANG]"
                onclick="ajaxChat.view.toggleContainer('helpContainer', ['onlineListContainer','settingsContainer']);"/>
-        <input type="image" src="../images/pixel.gif" class="button" id="settingsButton" alt="[LANG]toggleSettings[/LANG]"
+        <input type="image" src="../images/pixel.gif" class="button" id="settingsButton"
+               alt="[LANG]toggleSettings[/LANG]"
                title="[LANG]toggleSettings[/LANG]"
                onclick="ajaxChat.view.toggleContainer('settingsContainer', ['onlineListContainer','helpContainer']);"/>
-        <input type="image" src="../images/pixel.gif" class="button" id="onlineListButton" alt="[LANG]toggleOnlineList[/LANG]"
+        <input type="image" src="../images/pixel.gif" class="button" id="onlineListButton"
+               alt="[LANG]toggleOnlineList[/LANG]"
                title="[LANG]toggleOnlineList[/LANG]"
                onclick="ajaxChat.view.toggleContainer('onlineListContainer', ['settingsContainer','helpContainer']);"/>
         <input type="image" src="../images/pixel.gif" class="button" id="audioButton" alt="[LANG]toggleAudio[/LANG]"
                title="[LANG]toggleAudio[/LANG]" onclick="ajaxChat.toggleSetting('audio', 'audioButton');"/>
-        <input type="image" src="../images/pixel.gif" class="button" id="autoScrollButton" alt="[LANG]toggleAutoScroll[/LANG]"
+        <input type="image" src="../images/pixel.gif" class="button" id="autoScrollButton"
+               alt="[LANG]toggleAutoScroll[/LANG]"
                title="[LANG]toggleAutoScroll[/LANG]"
                onclick="ajaxChat.toggleSetting('autoScroll', 'autoScrollButton');"/>
     </div>
@@ -366,7 +374,7 @@
 </div>
 <div id="flashInterfaceContainer"></div>
 <!--[if lt IE 8]>
-    <script>var isIElt8 = true;</script>
+<script>var isIElt8 = true;</script>
 <![endif]-->
 <script src="[JS/]" charset="UTF-8"></script>
 <script>

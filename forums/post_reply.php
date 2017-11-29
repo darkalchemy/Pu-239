@@ -50,10 +50,10 @@ if (isset($_POST['button']) && $_POST['button'] == 'Post') {
     if ($body === '') {
         stderr($lang['gl_error'], $lang['fe_no_body_txt']);
     }
-    $ip = ($CURUSER['ip'] == '' ? htmlsafechars($_SERVER['REMOTE_ADDR']) : $CURUSER['ip']);
-    sql_query('INSERT INTO `posts` (`topic_id`, `user_id`, `added`, `body`, `icon`, `post_title`, `bbcode`, `ip` , `anonymous`) VALUES (' . sqlesc($topic_id) . ', ' . sqlesc($CURUSER['id']) . ', ' . TIME_NOW . ', ' . sqlesc($body) . ', ' . sqlesc($icon) . ', ' . sqlesc($post_title) . ', ' . sqlesc($bb_code) . ', ' . sqlesc($ip) . ', ' . sqlesc($anonymous) . ')');
+    $ip = getip();
+    sql_query('INSERT INTO `posts` (`topic_id`, `user_id`, `added`, `body`, `icon`, `post_title`, `bbcode`, `ip` , `anonymous`) VALUES (' . sqlesc($topic_id) . ', ' . sqlesc($CURUSER['id']) . ', ' . TIME_NOW . ', ' . sqlesc($body) . ', ' . sqlesc($icon) . ', ' . sqlesc($post_title) . ', ' . sqlesc($bb_code) . ', ' . ipToStorageFormat($ip) . ', ' . sqlesc($anonymous) . ')');
     clr_forums_cache($arr['real_forum_id']);
-    $mc1->delete_value('forum_posts_' . $CURUSER['id']);
+    $cache->delete('forum_posts_' . $CURUSER['id']);
     $post_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
     sql_query('UPDATE topics SET last_post=' . sqlesc($post_id) . ', post_count = post_count + 1 WHERE id=' . sqlesc($topic_id));
     sql_query('UPDATE `forums` SET post_count = post_count +1 WHERE id =' . sqlesc($arr['real_forum_id']));
@@ -67,16 +67,12 @@ if (isset($_POST['button']) && $_POST['button'] == 'Post') {
     if ($site_config['seedbonus_on'] == 1) {
         sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($site_config['bonus_per_post']) . ' WHERE id = ' . sqlesc($CURUSER['id']) . '') or sqlerr(__FILE__, __LINE__);
         $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus_per_post']);
-        $mc1->begin_transaction('userstats_' . $CURUSER['id']);
-        $mc1->update_row(false, [
+        $cache->update_row('userstats_' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus'],
-        ]);
-        $mc1->commit_transaction($site_config['expires']['u_stats']);
-        $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
-        $mc1->update_row(false, [
+        ], $site_config['expires']['u_stats']);
+        $cache->update_row('user_stats_' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus'],
-        ]);
-        $mc1->commit_transaction($site_config['expires']['user_stats']);
+        ], $site_config['expires']['user_stats']);
     }
     if ($subscribe == 'yes' && $arr['subscribed_id'] < 1) {
         sql_query('INSERT INTO `subscriptions` (`user_id`, `topic_id`) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($topic_id) . ')');
@@ -99,8 +95,8 @@ if (isset($_POST['button']) && $_POST['button'] == 'Post') {
         //=== make sure file is kosher
         while (list($key, $name) = each($_FILES['attachment']['name'])) {
             if (!empty($name)) {
-                $size = intval($_FILES['attachment']['size'][$key]);
-                $type = $_FILES['attachment']['type'][$key];
+                $size = intval($_FILES['attachment']['size'][ $key ]);
+                $type = $_FILES['attachment']['type'][ $key ];
                 //=== make sure file is kosher
                 $extension_error = $size_error = 0;
                 //=== get rid of spaces
@@ -141,7 +137,7 @@ if (isset($_POST['button']) && $_POST['button'] == 'Post') {
                         //===plop it into the DB all safe and snuggly
                         sql_query('INSERT INTO `attachments` (`post_id`, `user_id`, `file`, `file_name`, `added`, `extension`, `size`) VALUES
 ( ' . sqlesc($post_id) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($name . '(id-' . $post_id . ')' . $file_extension) . ', ' . sqlesc($name) . ', ' . TIME_NOW . ', ' . ($file_extension === '.zip' ? '\'zip\'' : '\'rar\'') . ', ' . $size . ')');
-                        copy($_FILES['attachment']['tmp_name'][$key], $upload_to);
+                        copy($_FILES['attachment']['tmp_name'][ $key ], $upload_to);
                         chmod($upload_to, 0777);
                 }
             }
@@ -185,28 +181,28 @@ $HTMLOUT .= '<table class="table table-bordered table-striped">
     </tr>
 
     <tr>
-    <td><input type="radio" name="icon" value="smile1"' . ($icon == 'smile1' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="grin"' . ($icon == 'grin' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="tongue"' . ($icon == 'tongue' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="cry"' . ($icon == 'cry' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="wink"' . ($icon == 'wink' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="rolleyes"' . ($icon == 'rolleyes' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="blink"' . ($icon == 'blink' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="bow"' . ($icon == 'bow' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="clap2"' . ($icon == 'clap2' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="hmmm"' . ($icon == 'hmmm' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="devil"' . ($icon == 'devil' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="angry"' . ($icon == 'angry' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="shit"' . ($icon == 'shit' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="sick"' . ($icon == 'sick' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="tease"' . ($icon == 'tease' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="love"' . ($icon == 'love' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="ohmy"' . ($icon == 'ohmy' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="yikes"' . ($icon == 'yikes' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="spider"' . ($icon == 'spider' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="wall"' . ($icon == 'wall' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="idea"' . ($icon == 'idea' ? ' checked="checked"' : '') . ' /></td>
-    <td><input type="radio" name="icon" value="question"' . ($icon == 'question' ? ' checked="checked"' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="smile1"' . ($icon == 'smile1' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="grin"' . ($icon == 'grin' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="tongue"' . ($icon == 'tongue' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="cry"' . ($icon == 'cry' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="wink"' . ($icon == 'wink' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="rolleyes"' . ($icon == 'rolleyes' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="blink"' . ($icon == 'blink' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="bow"' . ($icon == 'bow' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="clap2"' . ($icon == 'clap2' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="hmmm"' . ($icon == 'hmmm' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="devil"' . ($icon == 'devil' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="angry"' . ($icon == 'angry' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="shit"' . ($icon == 'shit' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="sick"' . ($icon == 'sick' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="tease"' . ($icon == 'tease' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="love"' . ($icon == 'love' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="ohmy"' . ($icon == 'ohmy' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="yikes"' . ($icon == 'yikes' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="spider"' . ($icon == 'spider' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="wall"' . ($icon == 'wall' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="idea"' . ($icon == 'idea' ? ' checked' : '') . ' /></td>
+    <td><input type="radio" name="icon" value="question"' . ($icon == 'question' ? ' checked' : '') . ' /></td>
     </tr>
     </table>
     </td></tr>
@@ -214,8 +210,8 @@ $HTMLOUT .= '<table class="table table-bordered table-striped">
     <td><input type="text" maxlength="120" name="post_title" value="' . $post_title . '" class="text_default" /> [ optional ]</td></tr>
     <tr><td><span>' . $lang['fe_bbcode'] . '</span></td>
     <td>
-    <input type="radio" name="bb_code" value="yes"' . ($bb_code == 'yes' ? ' checked="checked"' : '') . ' /> ' . $lang['fe_yes_enable'] . ' ' . $lang['fe_bbcode_in_post'] . '
-    <input type="radio" name="bb_code" value="no"' . ($bb_code == 'no' ? ' checked="checked"' : '') . ' /> ' . $lang['fe_no_disable'] . ' ' . $lang['fe_bbcode_in_post'] . '
+    <input type="radio" name="bb_code" value="yes"' . ($bb_code == 'yes' ? ' checked' : '') . ' /> ' . $lang['fe_yes_enable'] . ' ' . $lang['fe_bbcode_in_post'] . '
+    <input type="radio" name="bb_code" value="no"' . ($bb_code == 'no' ? ' checked' : '') . ' /> ' . $lang['fe_no_disable'] . ' ' . $lang['fe_bbcode_in_post'] . '
     </td></tr>
     <tr><td><span>' . $lang['fe_body'] . '</span></td>
     <td>' . BBcode($body) . $more_options . '
@@ -223,8 +219,8 @@ $HTMLOUT .= '<table class="table table-bordered table-striped">
     <tr><td colspan="2">
    Anonymous post : <input type="checkbox" name="anonymous" value="yes" /><br>
    <img src="' . $site_config['pic_base_url'] . 'forums/subscribe.gif" alt="+" title="+" /> ' . $lang['fe_subscrib_to_tread'] . '
-    <input type="radio" name="subscribe" value="yes"' . ($subscribe == 'yes' ? ' checked="checked"' : '') . ' />yes
-    <input type="radio" name="subscribe" value="no"' . ($subscribe == 'no' ? ' checked="checked"' : '') . ' />no<br>
+    <input type="radio" name="subscribe" value="yes"' . ($subscribe == 'yes' ? ' checked' : '') . ' />yes
+    <input type="radio" name="subscribe" value="no"' . ($subscribe == 'no' ? ' checked' : '') . ' />no<br>
     <input type="submit" name="button" class="button_tiny" value="' . $lang['fe_post'] . '" />
     </td></tr>
     </table></form>';

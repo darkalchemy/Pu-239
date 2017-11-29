@@ -108,6 +108,34 @@ LOCK TABLES `achievements` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `ajax_chat_bans`
+--
+
+DROP TABLE IF EXISTS `ajax_chat_bans`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ajax_chat_bans` (
+  `userID` int(10) unsigned NOT NULL DEFAULT '0',
+  `userName` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dateTime` datetime NOT NULL,
+  `ip` varbinary(16) NOT NULL,
+  PRIMARY KEY (`userID`),
+  KEY `userName` (`userName`),
+  KEY `dateTime` (`dateTime`),
+  CONSTRAINT `ajax_chat_bans_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ajax_chat_bans`
+--
+
+LOCK TABLES `ajax_chat_bans` WRITE;
+/*!40000 ALTER TABLE `ajax_chat_bans` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ajax_chat_bans` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `ajax_chat_invitations`
 --
 
@@ -156,6 +184,7 @@ CREATE TABLE `ajax_chat_messages` (
   KEY `ttl` (`ttl`),
   KEY `userID` (`userID`),
   KEY `userName` (`userName`),
+  FULLTEXT KEY `ft_text` (`text`),
   CONSTRAINT `ajax_chat_messages_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ajax_chat_messages_ibfk_2` FOREIGN KEY (`userName`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -168,6 +197,36 @@ CREATE TABLE `ajax_chat_messages` (
 LOCK TABLES `ajax_chat_messages` WRITE;
 /*!40000 ALTER TABLE `ajax_chat_messages` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ajax_chat_messages` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ajax_chat_online`
+--
+
+DROP TABLE IF EXISTS `ajax_chat_online`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ajax_chat_online` (
+  `userID` int(10) unsigned NOT NULL DEFAULT '0',
+  `userName` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `userRole` int(1) NOT NULL,
+  `channel` int(10) unsigned NOT NULL,
+  `dateTime` datetime NOT NULL,
+  `ip` varbinary(16) NOT NULL,
+  PRIMARY KEY (`userID`),
+  KEY `userName` (`userName`),
+  CONSTRAINT `ajax_chat_online_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `ajax_chat_online_ibfk_2` FOREIGN KEY (`userName`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ajax_chat_online`
+--
+
+LOCK TABLES `ajax_chat_online` WRITE;
+/*!40000 ALTER TABLE `ajax_chat_online` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ajax_chat_online` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -992,9 +1051,9 @@ CREATE TABLE `events` (
   `endTime` int(11) NOT NULL,
   `overlayText` mediumtext COLLATE utf8mb4_unicode_ci,
   `displayDates` tinyint(1) NOT NULL,
-  `freeleechEnabled` tinyint(1) NOT NULL,
-  `duploadEnabled` tinyint(1) NOT NULL,
-  `hdownEnabled` tinyint(1) NOT NULL,
+  `freeleechEnabled` tinyint(1) NOT NULL DEFAULT '0',
+  `duploadEnabled` tinyint(1) NOT NULL DEFAULT '0',
+  `hdownEnabled` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `startTime` (`startTime`),
   KEY `userid` (`userid`),
@@ -1021,7 +1080,7 @@ DROP TABLE IF EXISTS `failedlogins`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `failedlogins` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `ip` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varbinary(16) NOT NULL,
   `added` int(11) NOT NULL,
   `banned` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `attempts` int(10) NOT NULL DEFAULT '0',
@@ -1173,8 +1232,8 @@ CREATE TABLE `forum_poll_votes` (
   `poll_id` int(10) unsigned NOT NULL DEFAULT '0',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
   `option` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `ip` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `added` int(11) NOT NULL DEFAULT '0',
+  `ip` varbinary(16) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `poll_id` (`poll_id`),
   KEY `user_id` (`user_id`),
@@ -1517,7 +1576,7 @@ DROP TABLE IF EXISTS `ips`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ips` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `ip` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varbinary(16) NOT NULL,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `type` enum('login','announce','browse','like') COLLATE utf8mb4_unicode_ci NOT NULL,
   `seedbox` tinyint(1) NOT NULL DEFAULT '0',
@@ -1914,6 +1973,31 @@ INSERT INTO `over_forums` VALUES (3,'General','Anything goes....',0,0);
 UNLOCK TABLES;
 
 --
+-- Table structure for table `password_resets`
+--
+
+DROP TABLE IF EXISTS `password_resets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `password_resets` (
+  `id` char(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  KEY `password_resets_email_index` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `password_resets`
+--
+
+LOCK TABLES `password_resets` WRITE;
+/*!40000 ALTER TABLE `password_resets` DISABLE KEYS */;
+/*!40000 ALTER TABLE `password_resets` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `paypal_config`
 --
 
@@ -1949,7 +2033,7 @@ CREATE TABLE `peers` (
   `torrent` int(10) unsigned NOT NULL DEFAULT '0',
   `torrent_pass` varchar(32) CHARACTER SET utf8 DEFAULT NULL,
   `peer_id` binary(20) NOT NULL,
-  `ip` varchar(64) CHARACTER SET utf8 DEFAULT NULL,
+  `ip` varbinary(16) NOT NULL,
   `port` smallint(5) unsigned NOT NULL DEFAULT '0',
   `uploaded` bigint(20) unsigned NOT NULL DEFAULT '0',
   `downloaded` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -2050,7 +2134,7 @@ DROP TABLE IF EXISTS `poll_voters`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `poll_voters` (
   `vid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `ip_address` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varbinary(16) NOT NULL,
   `vote_date` int(10) NOT NULL DEFAULT '0',
   `poll_id` int(10) NOT NULL DEFAULT '0',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0',
@@ -2118,7 +2202,7 @@ CREATE TABLE `posts` (
   `bbcode` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `post_history` mediumtext COLLATE utf8mb4_unicode_ci,
   `edit_reason` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ip` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varbinary(16) NOT NULL,
   `status` enum('deleted','recycled','postlocked','ok') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ok',
   `staff_lock` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `anonymous` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
@@ -2265,7 +2349,7 @@ DROP TABLE IF EXISTS `referrers`;
 CREATE TABLE `referrers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `browser` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ip` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varbinary(16) NOT NULL,
   `referer` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `page` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date` int(11) NOT NULL DEFAULT '0',
@@ -2456,7 +2540,7 @@ CREATE TABLE `searchcloud` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `searchedfor` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `howmuch` int(10) NOT NULL,
-  `ip` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varbinary(16) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `searchedfor` (`searchedfor`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -2520,7 +2604,7 @@ CREATE TABLE `site_config` (
 
 LOCK TABLES `site_config` WRITE;
 /*!40000 ALTER TABLE `site_config` DISABLE KEYS */;
-INSERT INTO `site_config` VALUES ('site_online','1','Is the site online and available to users?'),('autoshout_on','1','Should the bot make announcements in AJAX Chat?'),('seedbonus_on','1','Do the users receive karma for seeding?'),('openreg','1','Is the site open for registration, without an invite?'),('forums_online','1','Are the site forums online?'),('maxusers','10000','The maximum number of users allowed to register.'),('invites','5000','The maximum number of unclaimed/open invites allowed at any time.'),('openreg_invites','1','Is the site open for registration with an invite'),('failedlogins','5','The number of times a user can submit a failed login attemp before banning the IP for up to 24 hours?'),('ratio_free','0','Is the site ratio free?'),('captcha_on','1','Require users to answer a Captcha question when authenticating?'),('dupeip_check_on','0','Restrict user accounts to one per IP?'),('totalneeded','60','Don\'t know?'),('bonus_per_duration','0.25','The amount of karma per torrent per period a user earns for seeding a torrent.'),('bonus_per_download','20','The amount of karma per torrent the user is charged when downloading a torrent.'),('bonus_per_comment','3','The amount of karma per comment the user receives when posting a comment in the forums.'),('bonus_per_upload','15','The amount of karma the user receives for each new torrent uploaded.'),('bonus_per_rating','5','The amount of karma the user receives for each new rating given.'),('bonus_per_topic','8','The amount of karma the user receives for each new forum topic.'),('bonus_per_post','5','The amount of karma the user receives for each new forum post.'),('bonus_per_delete','15','The amount of karma per torrent that is removed from the user when a torrent of theirs is deleted.'),('bonus_per_thanks','5','The amount of karma the user receives for each new thanks given.'),('auto_confirm','1','Should new user accounts be auto confirmed? Without the need for a reply from email or manually by the staff.'),('email_confirm','0','Send an email to new users and require them to reply in order to confirm their account?'),('bonux_max_torrents','100','The maximum number of torrents that a user is seeding that will receive karma for.'),('log_queries','0','Log all queries to the database?'),('anonymizer_url','https://nullrefer.com/?','The URL used to anonymize links to other sites.'),('db_backup_use_gzip','1','Should we compress the backed up database using gzip?'),('db_use_gzip','1','Should we compress the backed up database using gzip?'),('db_backup_gzip_path','/bin/gzip','What is the full path to gzip.'),('db_backup_auto_download','0','Do you want to automatically download the backup file once completed?'),('db_backup_auto_delete','0','Do you want to automatically delete the backup file after you have downloaded it?'),('db_backup_mysqldump_path','/usr/bin/mysqldump','What is the full path to mysqldump?'),('db_backup_write_to_log','1','Should db backup record activity in the site log?'),('in_production','0','Is this site \'Production\' or \'Development\'?'),('coders_log_allowed_ext','php css js','The file extensions to track in the Coders Log.');
+INSERT INTO `site_config` VALUES ('site_online','1','Is the site online and available to users?'),('autoshout_on','1','Should the bot make announcements in AJAX Chat?'),('seedbonus_on','1','Do the users receive karma for seeding?'),('openreg','1','Is the site open for registration, without an invite?'),('forums_online','1','Are the site forums online?'),('maxusers','10000','The maximum number of users allowed to register.'),('invites','5000','The maximum number of unclaimed/open invites allowed at any time.'),('openreg_invites','1','Is the site open for registration with an invite'),('failedlogins','5','The number of times a user can submit a failed login attemp before banning the IP for up to 24 hours?'),('ratio_free','0','Is the site ratio free?'),('captcha_on','1','Require users to answer a Captcha question when authenticating?'),('dupeip_check_on','0','Restrict user accounts to one per IP?'),('totalneeded','60','Don\'t know?'),('bonus_per_duration','0.25','The amount of karma per torrent per period a user earns for seeding a torrent.'),('bonus_per_download','20','The amount of karma per torrent the user is charged when downloading a torrent.'),('bonus_per_comment','3','The amount of karma per comment the user receives when posting a comment in the forums.'),('bonus_per_upload','15','The amount of karma the user receives for each new torrent uploaded.'),('bonus_per_rating','5','The amount of karma the user receives for each new rating given.'),('bonus_per_topic','8','The amount of karma the user receives for each new forum topic.'),('bonus_per_post','5','The amount of karma the user receives for each new forum post.'),('bonus_per_delete','15','The amount of karma per torrent that is removed from the user when a torrent of theirs is deleted.'),('bonus_per_thanks','5','The amount of karma the user receives for each new thanks given.'),('email_confirm','0','Send an email to new users and require them to reply in order to confirm their account?'),('bonux_max_torrents','100','The maximum number of torrents that a user is seeding that will receive karma for.'),('log_queries','0','Log all queries to the database?'),('anonymizer_url','https://nullrefer.com/?','The URL used to anonymize links to other sites.'),('db_backup_use_gzip','1','Should we compress the backed up database using gzip?'),('db_use_gzip','1','Should we compress the backed up database using gzip?'),('db_backup_gzip_path','/bin/gzip','What is the full path to gzip.'),('db_backup_auto_download','0','Do you want to automatically download the backup file once completed?'),('db_backup_auto_delete','0','Do you want to automatically delete the backup file after you have downloaded it?'),('db_backup_mysqldump_path','/usr/bin/mysqldump','What is the full path to mysqldump?'),('db_backup_write_to_log','1','Should db backup record activity in the site log?'),('in_production','0','Is this site \'Production\' or \'Development\'?'),('coders_log_allowed_ext','php css js','The file extensions to track in the Coders Log.'),('auto_confirm','0','If \'email_confirm\' is false, should new users be auto confirmed (Yes) or manually confirmed by the staff or inviter(No)?'),('bonus_irc_per_duration','0.225',NULL);
 /*!40000 ALTER TABLE `site_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2560,7 +2644,7 @@ CREATE TABLE `snatched` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `torrentid` int(10) unsigned NOT NULL DEFAULT '0',
-  `ip` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varbinary(16) NOT NULL,
   `port` smallint(5) unsigned NOT NULL DEFAULT '0',
   `connectable` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `agent` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -3326,7 +3410,7 @@ CREATE TABLE `users` (
   `stylesheet` int(10) NOT NULL DEFAULT '1',
   `info` mediumtext COLLATE utf8mb4_unicode_ci,
   `acceptpms` enum('yes','friends','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
-  `ip` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varbinary(16) NOT NULL,
   `class` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `override_class` tinyint(3) unsigned NOT NULL DEFAULT '255',
   `language` int(11) NOT NULL DEFAULT '1',
@@ -3616,4 +3700,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-05  5:29:43
+-- Dump completed on 2017-11-26  1:30:47

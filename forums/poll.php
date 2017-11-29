@@ -5,6 +5,11 @@ if (!is_valid_id($topic_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
 //=== sue me I got lazy :P but I still think  is_numeric is crappy
+/**
+ * @param $vote
+ *
+ * @return bool
+ */
 function is_valid_poll_vote($vote)
 {
     return is_numeric($vote) && ($vote >= 0) && (floor($vote) == $vote);
@@ -72,24 +77,24 @@ switch ($action) {
                 break;
         }
         //=== ok, all is good, lets enter the vote(s) into the DB
-        $ip = sqlesc(($CURUSER['ip'] == '' ? htmlsafechars($_SERVER['REMOTE_ADDR']) : $CURUSER['ip']));
+        $ip = getip();
         $added = TIME_NOW;
         //=== if they selected "I just want to see the results!" only enter that one... 666 is reserved for that :)
         if (in_array('666', $post_vote)) {
-            sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `option`, `ip`, `added`) VALUES (' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', 666, ' . sqlesc($ip) . ', ' . $added . ')');
+            sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `option`, `ip`, `added`) VALUES (' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', 666, ' . ipToStorageFormat($ip) . ', ' . $added . ')');
             //=== all went well, send them back!
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
             exit();
         } else {
             //=== if single vote (not array)
             if (is_valid_poll_vote($post_vote)) {
-                sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `option`, `ip`, `added`) VALUES(' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($post_vote) . ', ' . sqlesc($ip) . ', ' . $added . ')');
+                sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `option`, `ip`, `added`) VALUES(' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($post_vote) . ', ' . ipToStorageFormat($ip) . ', ' . $added . ')');
                 $success = 1;
             } else {
                 foreach ($post_vote as $votes) {
                     $vote = (int)$votes;
                     if (is_valid_poll_vote($vote)) {
-                        sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `option`, `ip`, `added`) VALUES(' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($vote) . ', ' . sqlesc($ip) . ', ' . $added . ')');
+                        sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `option`, `ip`, `added`) VALUES(' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($vote) . ', ' . ipToStorageFormat($ip) . ', ' . $added . ')');
                         $success = 1;
                     }
                 }
@@ -180,7 +185,7 @@ switch ($action) {
             $break_down_poll_options = explode("\n", $poll_answers);
             //=== be sure there are no blank options
             for ($i = 0; $i < count($break_down_poll_options); ++$i) {
-                if (strlen($break_down_poll_options[$i]) < 2) {
+                if (strlen($break_down_poll_options[ $i ]) < 2) {
                     stderr($lang['gl_error'], $lang['fe_no_blank_lines_in_poll']);
                 }
             }
@@ -275,8 +280,8 @@ switch ($action) {
 	<tr>		
 		<td></td>
 		<td><span>' . $lang['poll_change_vote'] . ':</span></td>
-		<td><input name="change_vote" value="yes" type="radio"' . ($change_vote === 'yes' ? ' checked="checked"' : '') . ' />Yes 
-													<input name="change_vote" value="no" type="radio"' . ($change_vote === 'no' ? ' checked="checked"' : '') . ' />No   <br> ' . $lang['poll_allow_members_to_change_their_vote'] . '? ' . $lang['poll_default_is'] . ' "no"
+		<td><input name="change_vote" value="yes" type="radio"' . ($change_vote === 'yes' ? ' checked' : '') . ' />Yes 
+													<input name="change_vote" value="no" type="radio"' . ($change_vote === 'no' ? ' checked' : '') . ' />No   <br> ' . $lang['poll_allow_members_to_change_their_vote'] . '? ' . $lang['poll_default_is'] . ' "no"
 	</td>
 	</tr>
 	<tr>
@@ -421,7 +426,7 @@ switch ($action) {
             $break_down_poll_options = explode("\n", $poll_answers);
             //=== be sure there are no blank options
             for ($i = 0; $i < count($break_down_poll_options); ++$i) {
-                if (strlen($break_down_poll_options[$i]) < 2) {
+                if (strlen($break_down_poll_options[ $i ]) < 2) {
                     stderr($lang['gl_error'], $lang['fe_no_blank_lines_in_poll']);
                 }
             }
@@ -528,8 +533,8 @@ switch ($action) {
 	<tr>		
 		<td></td>
 		<td><span>' . $lang['poll_change_vote'] . ':</span></td>
-		<td><input name="change_vote" value="yes" type="radio"' . ($change_vote === 'yes' ? ' checked="checked"' : '') . ' />Yes 
-													<input name="change_vote" value="no" type="radio"' . ($change_vote == 'no' ? ' checked="checked"' : '') . ' />No   <br> ' . $lang['poll_allow_members_to_change_their_vote'] . '? ' . $lang['poll_default_is'] . ' "no"</td>
+		<td><input name="change_vote" value="yes" type="radio"' . ($change_vote === 'yes' ? ' checked' : '') . ' />Yes 
+													<input name="change_vote" value="no" type="radio"' . ($change_vote == 'no' ? ' checked' : '') . ' />No   <br> ' . $lang['poll_allow_members_to_change_their_vote'] . '? ' . $lang['poll_default_is'] . ' "no"</td>
 	</tr>
 	<tr>
 	<td class="forum_head_dark" colspan="3">

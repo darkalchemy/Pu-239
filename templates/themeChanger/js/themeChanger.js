@@ -196,6 +196,7 @@ $(function () {
         $('body').get(0).style.setProperty('--main-color', '#' + a_color);
         $('iframe').contents().find('body').css('--main-color', '#' + a_color);
     }
+
     function changeBodyClass(className, classesArray) {
         $.each(classesArray, function (idx, val) {
             $body.removeClass(val);
@@ -239,8 +240,8 @@ $(function () {
                 var nextClassName = $(this).attr('href');
                 if (!$body.hasClass(nextClassName)) {
                     changeBodyClass(nextClassName, nav);
-                    $bg_block.find('.active').removeClass('active');
-                    $(this).parent().addClass('active');
+                    $bg_block.find('.is-active').removeClass('is-active');
+                    $(this).parent().addClass('is-active');
                 }
                 return false;
             });
@@ -266,8 +267,8 @@ $(function () {
                 var nextClassName = $(this).attr('href');
                 if (!$body.hasClass(nextClassName)) {
                     changeBodyClass(nextClassName, pattern_classes);
-                    $bg_block.find('.active').removeClass('active');
-                    $(this).parent().addClass('active');
+                    $bg_block.find('.is-active').removeClass('is-active');
+                    $(this).parent().addClass('is-active');
                 }
                 return false;
             });
@@ -299,9 +300,9 @@ $(function () {
                         var classes = ' class="' + list_val.class + '"';
                     }
                     if ($body.hasClass(list_val.className)) {
-                        select_html += '<option value="' + list_val.className + '" ' + (classes||'') + ' selected="selected">' + list_val.name + '</option>';
+                        select_html += '<option value="' + list_val.className + '" ' + (classes || '') + ' selected="selected">' + list_val.name + '</option>';
                     } else {
-                        select_html += '<option value="' + list_val.className + '"' + (classes||'') + '>' + list_val.name + '</option>';
+                        select_html += '<option value="' + list_val.className + '"' + (classes || '') + '>' + list_val.name + '</option>';
                     }
                 });
                 $select_element.html(select_html);
@@ -365,7 +366,7 @@ $(function () {
                 links_picker.css({'background-color': '#008a05'}).ColorPickerSetColor('#008a05');
                 $('body').get(0).style.setProperty('--main-color', '#9193de');
                 $('iframe').contents().find('body').css('--main-color', '#9193de');
-                $theme_control_panel.find('.active').removeClass();
+                $theme_control_panel.find('.is-active').removeClass();
                 localStorage.removeItem('a_color');
                 return false;
             };

@@ -4,12 +4,19 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'bt_client_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
+global $site_config;
+
 $lang = array_merge(load_language('global'), load_language('peerlist'));
 $id = (int)$_GET['id'];
 if (!isset($id) || !is_valid_id($id)) {
     stderr($lang['peerslist_user_error'], $lang['peerslist_invalid_id']);
 }
 $HTMLOUT = '';
+/**
+ * @param $a
+ *
+ * @return string
+ */
 function XBT_IP_CONVERT($a)
 {
     $b = [
@@ -23,7 +30,7 @@ function XBT_IP_CONVERT($a)
     for ($i = 0; $i < 4; ++$i) {
         $k = (int)($a / $c);
         $a -= $c * $k;
-        $b[$i] = $k;
+        $b[ $i ] = $k;
         $c /= 256.0;
     }
     $d = join('.', $b);
@@ -31,6 +38,13 @@ function XBT_IP_CONVERT($a)
     return $d;
 }
 
+/**
+ * @param $name
+ * @param $arr
+ * @param $torrent
+ *
+ * @return string
+ */
 function dltable($name, $arr, $torrent)
 {
     global $CURUSER, $lang, $site_config;
@@ -78,10 +92,10 @@ if (mysqli_num_rows($res) == 0) {
 $row = mysqli_fetch_assoc($res);
 $downloaders = [];
 $seeders = [];
-$subres = sql_query("SELECT u.username, u.anonymous, u.paranoia, t.owner, t.anonymous as tanonymous, t.seeders, t.leechers, x.fid, x.uploaded, x.downloaded, x.left, x.active, x.mtime AS la, x.uid, x.leechtime, x.seedtime, x.peer_id, x.upspeed, x.downspeed, x.ipa
+$subres = sql_query("SELECT u.username, u.anonymous, u.paranoia, t.owner, t.anonymous AS tanonymous, t.seeders, t.leechers, x.fid, x.uploaded, x.downloaded, x.left, x.active, x.mtime AS la, x.uid, x.leechtime, x.seedtime, x.peer_id, x.upspeed, x.downspeed, x.ipa
     FROM xbt_files_users x
     LEFT JOIN users u ON x.uid = u.id
-	LEFT JOIN torrents as t on t.id = x.fid
+	LEFT JOIN torrents AS t ON t.id = x.fid
     WHERE active='1' AND x.fid = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($subres) == 0) {
     stderr("{$lang['peerslist_warning']}", "{$lang['peerslist_no_data']}");
@@ -93,6 +107,12 @@ while ($subrow = mysqli_fetch_assoc($subres)) {
         $downloaders[] = $subrow;
     }
 }
+/**
+ * @param $a
+ * @param $b
+ *
+ * @return int
+ */
 function leech_sort($a, $b)
 {
     if (isset($_GET['usort'])) {
@@ -110,6 +130,12 @@ function leech_sort($a, $b)
     return 1;
 }
 
+/**
+ * @param $a
+ * @param $b
+ *
+ * @return int
+ */
 function seed_sort($a, $b)
 {
     $x = $a['uploaded'];

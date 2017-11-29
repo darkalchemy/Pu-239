@@ -1,7 +1,8 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 check_user_status();
-global $site_config;
+global $CURUSER, $site_config, $cache;
+
 $pm_what = isset($_POST['pm_what']) && $_POST['pm_what'] == 'last10' ? 'last10' : 'owner';
 $reseedid = (int)$_POST['reseedid'];
 $uploader = (int)$_POST['uploader'];
@@ -23,25 +24,19 @@ if (count($pms) > 0) {
 } else {
     setSessionVar('is-warning', 'There were no users to PM!');
 }
-sql_query('UPDATE torrents set last_reseed = ' . TIME_NOW . ' WHERE id = ' . sqlesc($reseedid)) or sqlerr(__FILE__, __LINE__);
-$mc1->begin_transaction('torrent_details_' . $reseedid);
-$mc1->update_row(false, [
+sql_query('UPDATE torrents SET last_reseed = ' . TIME_NOW . ' WHERE id = ' . sqlesc($reseedid)) or sqlerr(__FILE__, __LINE__);
+$cache->update_row('torrent_details_' . $reseedid, [
     'last_reseed' => TIME_NOW,
-]);
-$mc1->commit_transaction($site_config['expires']['torrent_details']);
+], $site_config['expires']['torrent_details']);
 if ($site_config['seedbonus_on'] == 1) {
     sql_query('UPDATE users SET seedbonus = seedbonus-10.0 WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($CURUSER['seedbonus'] - 10);
-    $mc1->begin_transaction('userstats_' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    $cache->update_row('userstats_' . $CURUSER['id'], [
         'seedbonus' => $update['seedbonus'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['u_stats']);
-    $mc1->begin_transaction('user_stats_' . $CURUSER['id']);
-    $mc1->update_row(false, [
+    ], $site_config['expires']['u_stats']);
+    $cache->update_row('user_stats_' . $CURUSER['id'], [
         'seedbonus' => $update['seedbonus'],
-    ]);
-    $mc1->commit_transaction($site_config['expires']['user_stats']);
+    ], $site_config['expires']['user_stats']);
 }
 
 header("Refresh: 0; url=./details.php?id=$reseedid");

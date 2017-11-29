@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * Class block_stdhead
+ */
 class block_stdhead
 {
     const STDHEAD_DEMOTION = 0x1; // 1

@@ -8,8 +8,17 @@
  */
 
 // Class to provide methods for file system access:
+
+/**
+ * Class AJAXChatFileSystem
+ */
 class AJAXChatFileSystem
 {
+    /**
+     * @param $file
+     *
+     * @return bool|string
+     */
     public static function getFileContents($file)
     {
         if (function_exists('file_get_contents')) {

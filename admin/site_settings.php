@@ -2,24 +2,26 @@
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $cache, $lang;
+
 $lang = array_merge($lang, load_language('ad_sitesettings'));
 $site_settings = $current_site_settings = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
     $pconf = sql_query('SELECT * FROM site_config') or sqlerr(__FILE__, __LINE__);
     while ($ac = mysqli_fetch_assoc($pconf)) {
-        $current_site_settings[$ac[name]] = [value => $ac[value], description => $ac[description]];
+        $current_site_settings[ $ac['name'] ] = ['value' => $ac['value'], 'description' => $ac['description']];
     }
     $update = [];
     foreach ($_POST as $key => $value) {
-        if ($key != 'new' && ($value["description"] != $current_site_settings[$key]["description"] || $value["value"] != $current_site_settings[$key]["value"])) {
+        if ($key != 'new' && ($value["description"] != $current_site_settings[ $key ]["description"] || $value["value"] != $current_site_settings[ $key ]["value"])) {
             $update[] = '(' . sqlesc($key) . ', ' . sqlesc(trim($value["value"])) . ', ' . sqlesc(trim($value["description"])) . ')';
         } elseif ($key === 'new' && isset($value["value"]) && $value["value"] != '') {
             extract($value);
             $update[] = '(' . sqlesc(strtolower(str_replace(' ', '_', trim($setting)))) . ', ' . sqlesc(trim($value)) . ', ' . sqlesc(trim($description)) . ')';
         }
     }
-    if (!empty($update) && sql_query('INSERT INTO site_config(name, value, description) VALUES ' . join(', ', $update) . ' ON DUPLICATE KEY update value = VALUES(value), description = VALUES(description)')) {
-        $mc1->delete_value('site_settings_');
+    if (!empty($update) && sql_query('INSERT INTO site_config(name, value, description) VALUES ' . join(', ', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value), description = VALUES(description)')) {
+        $cache->delete('site_settings_');
         setSessionVar('is-success', 'Update Successful');
     } else {
         setSessionVar('is-warning', $lang['sitesettings_stderr3']);
@@ -62,7 +64,7 @@ foreach ($site_settings as $site_setting) {
                         <td class='w-10'>
                             " . htmlsafechars(ucwords(str_replace('_', ' ', $name))) . "
                         </td>
-                        <td>
+                        <td class='w-15'>
                             $input
                         </td>
                         <td>

@@ -1,7 +1,14 @@
 <?php
-function stdhead($title = '', $msgalert = true, $stdhead = false)
+/**
+ * @param string $title
+ * @param bool   $msgalert
+ * @param bool   $stdhead
+ *
+ * @return string
+ */
+function stdhead($title = '', $stdhead = null)
 {
-    global $CURUSER, $site_config, $lang, $free, $query_stat, $querytime, $mc1, $BLOCKS, $CURBLOCK, $mood;
+    global $CURUSER, $site_config, $lang, $free, $query_stat, $querytime, $cache, $BLOCKS, $CURBLOCK, $mood;
 
     unsetSessionVar('Channel');
     if (!$site_config['site_online']) {
@@ -21,7 +28,7 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     }
 
     $body_class = 'background-16 h-style-9 text-9 skin-2';
-    $htmlout ="<!doctype html>
+    $htmlout = "<!doctype html>
 <html>
 <head>
     <meta charset='utf-8'>
@@ -56,12 +63,11 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         }
     </script>
     <div class='container'>
-        <div class='spacer'></div>
         <div class='page-wrapper'>";
-    $htmlout .= navbar();
     if ($CURUSER) {
+        $htmlout .= navbar();
         $htmlout .= "
-            <div id='logo' class='logo columns level'>
+            <div id='logo' class='logo columns level is-marginless'>
                 <div class='column'>
                     <h1>" . $site_config['variant'] . " Code</h1>
                     <p class='description left20'><i>Making progress, 1 day at a time...</i></p>
@@ -70,8 +76,8 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
         $htmlout .= platform_menu();
         $htmlout .= "
             <div id='base_globelmessage'>
-                <div>
-                    <ul class='level-right is-flex is-wrapped top5 bottom5'>";
+                <div class='top5 bottom5'>
+                    <ul class='level-center tags'>";
 
         if (curuser::$blocks['global_stdhead'] & block_stdhead::STDHEAD_REPORTS && $BLOCKS['global_staff_report_on']) {
             require_once BLOCK_DIR . 'global/report.php';
@@ -118,13 +124,18 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     $index_array = ['/', '/index.php', '/login.php'];
     if ($CURUSER && !in_array($_SERVER['REQUEST_URI'], $index_array)) {
         $htmlout .= "
-                <div class='has-text-centered size_6 has-text-primary bottom10 text-shadow padding10'>
-                    " . breadcrumbs() . "
+                <div class='container is-fluid portlet padding20 bg-00 round10'>
+                    <nav class='breadcrumb' aria-label='breadcrumbs'>
+                        <ul>
+                            " . breadcrumbs() . "
+                        </ul>
+                    </nav>
                 </div>";
     }
 
     foreach ($site_config['notifications'] as $notif) {
         if (($message = getSessionVar($notif)) != false) {
+            $message = !is_array($message) ? $message : "<a href='{$message['link']}'>{$message['message']}</a>";
             $htmlout .= "
                 <div class='notification $notif has-text-centered size_6'>
                     <button class='delete'></button>$message
@@ -136,25 +147,33 @@ function stdhead($title = '', $msgalert = true, $stdhead = false)
     return $htmlout;
 }
 
+/**
+ * @param bool $stdfoot
+ *
+ * @return string
+ */
 function stdfoot($stdfoot = false)
 {
-    global $CURUSER, $site_config, $start, $query_stat, $queries, $mc1, $querytime, $lang;
+    global $CURUSER, $site_config, $start, $query_stat, $queries, $cache, $querytime, $lang;
     $debug = (SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
-    $cachetime = ($mc1->Time / 1000);
+    $cachetime = ''; //($cache->Time / 1000);
     $seconds = microtime(true) - $start;
     $r_seconds = round($seconds, 5);
     $phptime = $seconds - $querytime - $cachetime;
     $percentphp = number_format(($phptime / $seconds) * 100, 2);
     $percentmc = number_format(($cachetime / $seconds) * 100, 2);
-    if (($MemStats = $mc1->get_value('mc_hits')) === false) {
-        $MemStats = $mc1->getStats();
+    $MemStats = $cache->get('mc_hits');
+    if ($MemStats === false || is_null($MemStats)) {
+        $MemStats = ''; //$cache->getStats();
         $MemStats['Hits'] = (($MemStats['get_hits'] / $MemStats['cmd_get'] < 0.7) ? '' : number_format(($MemStats['get_hits'] / $MemStats['cmd_get']) * 100, 3));
-        $mc1->cache_value('mc_hits', $MemStats, 10);
+        $cache->set('mc_hits', $MemStats, 10);
     }
+    $uptime = '';
     if ($debug) {
-        if (($uptime = $mc1->get_value('uptime')) === false) {
+        $uptime = $cache->get('uptime');
+        if ($uptime === false || is_null($uptime)) {
             $uptime = `uptime`;
-            $mc1->cache_value('uptime', $uptime, 25);
+            $cache->set('uptime', $uptime, 25);
         }
         preg_match('/load average: (.*)$/i', $uptime, $load);
     }
@@ -186,7 +205,7 @@ function stdfoot($stdfoot = false)
                                     <tr>
                                         <td>' . ($key + 1) . "</td>
                                         <td><b>" . ($value['seconds'] > 0.01 ? "<span class='is-danger' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='is-success' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</b></td>
-                                        <td>" . htmlsafechars($value['query']) . '<br></td>
+                                        <td><div class='text-justify'>" . htmlsafechars($value['query']) . '</div></td>
                                     </tr>';
         }
         $htmlfoot .= '
@@ -199,7 +218,6 @@ function stdfoot($stdfoot = false)
     $htmlfoot .= "
                 </div>
             </div>";
-        //</div>";
     if ($CURUSER) {
         $htmlfoot .= "
             <div class='container site-debug bg-05 round10 top20 bottom20'>
@@ -279,23 +297,31 @@ function stdfoot($stdfoot = false)
     return $htmlfoot;
 }
 
+/**
+ * @param $heading
+ * @param $text
+ *
+ * @return string
+ */
 function stdmsg($heading, $text)
 {
-    $htmlout = "
-        <div class='bordered top20 bottom20'>
-            <div class='alt_bordered bg-00'>";
+    $htmlout = '';
     if ($heading) {
         $htmlout .= "
                 <h2>$heading</h2>";
     }
     $htmlout .= "
-                <span>$text</span>
-            </div>
-        </div>";
+                <span>$text</span>";
 
+    if (function_exists('main_div')) {
+        return main_div($htmlout);
+    }
     return $htmlout;
 }
 
+/**
+ * @return string
+ */
 function StatusBar()
 {
     global $CURUSER;
@@ -312,18 +338,22 @@ function StatusBar()
     return $StatusBar;
 }
 
+/**
+ * @return string
+ */
 function navbar()
 {
-    global $site_config, $CURUSER, $lang, $mc1;
+    global $site_config, $CURUSER, $lang, $cache;
     $navbar = $panel = $user_panel = $settings_panel = $stats_panel = $other_panel = '';
 
     if ($CURUSER['class'] >= UC_STAFF) {
-        if (($staff_panel = $mc1->get_value('staff_panels_' . $CURUSER['class'])) === false) {
+        $staff_panel = $cache->get('staff_panels_' . $CURUSER['class']);
+        if ($staff_panel === false || is_null($staff_panel)) {
             $res = sql_query('SELECT * FROM staffpanel
                             WHERE navbar = 1 AND av_class <= ' . sqlesc($CURUSER['class']) . '
                             ORDER BY page_name ASC') or sqlerr(__FILE__, __LINE__);
             while ($arr = mysqli_fetch_assoc($res)) $staff_panel[] = $arr;
-            $mc1->cache_value('staff_panels_' . $CURUSER['class'], $staff_panel, 0);
+            $cache->set('staff_panels_' . $CURUSER['class'], $staff_panel, 0);
         }
 
         if ($staff_panel) {
@@ -405,6 +435,7 @@ function navbar()
     if ($CURUSER) {
         $salty = salty($CURUSER['username']);
         $navbar .= "
+    <div class='spacer'>
         <header id='navbar' class='container'>
             <div class='contained'>
                 <div class='nav_container'>
@@ -425,7 +456,7 @@ function navbar()
                                     <li><a href='{$site_config['baseurl']}/requests.php'>{$lang['gl_requests']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/offers.php'>{$lang['gl_offers']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/needseed.php?needed=seeders'><span class='is-danger'>{$lang['gl_nseeds']}</span></a></li>
-                                    <li><a href='{$site_config['baseurl']}/torrents-today.php'>{$lang['gl_newtor']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/browse.php?today=1'>{$lang['gl_newtor']}</a></li>
                                     " . ($CURUSER['class'] <= UC_VIP ? "<li><a href='{$site_config['baseurl']}/uploadapp.php'>{$lang['gl_uapp']}</a></li>" : "<li><a href='{$site_config['baseurl']}/upload.php'>{$lang['gl_upload']}</a></li>") . "
                                     <li><a href='{$site_config['baseurl']}/bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
                                 </ul>
@@ -433,11 +464,11 @@ function navbar()
                             <li>
                                 <a href='#'>{$lang['gl_general']}</a>
                                 <ul class='ddFade ddFadeSlow'>";
-                    if ($site_config['bucket_allowed'] === 1) {
-                        $navbar .= "
+        if ($site_config['bucket_allowed'] === 1) {
+            $navbar .= "
                                     <li><a href='{$site_config['baseurl']}/bitbucket.php'>{$lang['gl_bitbucket']}</a></li>";
-                    }
-                    $navbar .= "
+        }
+        $navbar .= "
                                     <li><a href='{$site_config['baseurl']}/getrss.php'>RSS</a></li>
                                     <li><a href='{$site_config['baseurl']}/announcement.php'>{$lang['gl_announcements']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/topten.php'>{$lang['gl_stats']}</a></li>
@@ -488,19 +519,24 @@ function navbar()
                     </div>
                 </div>
             </div>
-        </header>";
+        </header>
+    </div>";
     }
     return $navbar;
 }
 
-function platform_menu() {
+/**
+ * @return string
+ */
+function platform_menu()
+{
     $menu = "
         <div id='platform-menu' class='container platform-menu'>
             <div class='platform-wrapper level'>
                 <ul class='level-left'>
                 </ul>
                 <ul class='level-right'>" .
-                    StatusBar() . "
+        StatusBar() . "
                 </ul>
             </div>
         </div>";

@@ -1,5 +1,4 @@
 #staff.tcl
-# ultimate tbdev eggdrop commands script by pdq 02-10-09
 
 ## REQUIRE PACKAGES  ##
 package require http
@@ -13,7 +12,7 @@ package require http
 
 ## SETTINGS ##
 
-set sitename "09Source"
+set sitename "pu239"
 set siteurl "ircs.php" ## add site url
 set botpass "adlsadladadll"
 set bothash  "adlsadladadll"

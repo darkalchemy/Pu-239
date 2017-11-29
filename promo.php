@@ -4,8 +4,8 @@ require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'password_functions.php';
 check_user_status();
+global $CURUSER, $site_config;
 
-global $CURUSER;
 if (!$CURUSER) {
     get_template();
 }
@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
             stderr('Error', "That dosen't look like an email adress");
         }
         //==Check if username or password already exists
-        $var_check = sql_query('SELECT id FROM users where username=' . sqlesc($username) . ' OR email=' . sqlesc($email)) or sqlerr(__FILE__, __LINE__);
+        $var_check = sql_query('SELECT id FROM users WHERE username = ' . sqlesc($username) . ' OR email = ' . sqlesc($email)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($var_check) == 1) {
             stderr('Error', 'Username or password already exists');
         }
@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
             //==Updating promo table
             $userid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
             $users = (empty($ar_check['users']) ? $userid : $ar_check['users'] . ',' . $userid);
-            sql_query('update promo set accounts_made=accounts_made+1 , users=' . sqlesc($users) . ' WHERE id=' . sqlesc($ar_check['id'])) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE promo SET accounts_made = accounts_made + 1 , users = ' . sqlesc($users) . ' WHERE id = ' . sqlesc($ar_check['id'])) or sqlerr(__FILE__, __LINE__);
             //==Email part :)
             $subject = $site_config['site_name'] . ' user registration confirmation';
             $message = 'Hi!
@@ -160,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
         $a = mysqli_fetch_assoc($r);
         stderr('Sanity check...', 'You are about to delete promo <b>' . htmlsafechars($a['name']) . '</b>, if you are sure click <a href="' . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . $id . '&amp;sure=yes">here</a>');
     } elseif ($sure == 'yes') {
-        if (sql_query('DELETE FROM promo where id=' . $id) or sqlerr(__FILE__, __LINE__)) {
+        if (sql_query('DELETE FROM promo WHERE id=' . $id) or sqlerr(__FILE__, __LINE__)) {
             header('Refresh: 2; url=' . $_SERVER['PHP_SELF']);
             stderr('Success', 'Promo was deleted!');
         } else {
@@ -206,7 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
     if (empty($link)) {
         stderr('Error', 'There is no link found! Please check the link');
     } else {
-        $r_promo = sql_query('SELECT * from promo where link=' . sqlesc($link)) or sqlerr(__FILE__, __LINE__);
+        $r_promo = sql_query('SELECT * FROM promo WHERE link=' . sqlesc($link)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($r_promo) == 0) {
             stderr('Error', 'There is no promo with that link ');
         } else {
@@ -279,7 +279,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
     if ($id == 0) {
         die("Can't find id");
     } else {
-        $q1 = sql_query('SELECT name, users FROM promo WHERE id=' . $id . '') or sqlerr(__FILE__, __LINE__);
+        $q1 = sql_query('SELECT name, users FROM promo WHERE id = ' . $id) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($q1) == 1) {
             $a1 = mysqli_fetch_assoc($q1);
             if (!empty($a1['users'])) {
@@ -330,7 +330,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
     if ($CURUSER['class'] < UC_STAFF) {
         stderr('Error', 'There is nothing for you here! Go play somewere else');
     }
-    $r = sql_query('SELECT p.*,u.username from promo as p LEFT JOIN users as u on p.creator=u.id ORDER by p.added,p.days_valid DESC') or sqlerr(__FILE__, __LINE__);
+    $r = sql_query('SELECT p.*,u.username FROM promo AS p LEFT JOIN users AS u ON p.creator=u.id ORDER BY p.added,p.days_valid DESC') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($r) == 0) {
         stderr('Error', 'There is no promo if you want to make one click <a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo">here</a>');
     } else {

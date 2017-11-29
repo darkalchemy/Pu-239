@@ -5,8 +5,10 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+global $CURUSER, $site_config, $lang;
+
 $lang = array_merge($lang, load_language('ad_banemail'));
-/* Ban emails by x0r @tbdev.net */
+
 $HTMLOUT = '';
 $remove = isset($_GET['remove']) ? (int)$_GET['remove'] : 0;
 if (is_valid_id($remove)) {

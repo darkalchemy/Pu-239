@@ -1,4 +1,9 @@
 <?php
+/**
+ * @param $stamp
+ *
+ * @return string
+ */
 function time_return($stamp)
 {
     $ysecs = 365 * 24 * 60 * 60;

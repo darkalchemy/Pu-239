@@ -3,8 +3,9 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
+global $CURUSER;
 
-$lang = array_merge(load_language('global'));
+$lang = load_language('global');
 $body_class = 'background-16 h-style-9 text-9 skin-2';
 $htmlout = "<!doctype html>
 <html>
