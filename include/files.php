@@ -17,7 +17,7 @@ function get_file($file)
                 case 'css':
                     return "{$site_config['baseurl']}/css/{$style}/57def898d4b996a9f83c867e43d0efa1.min.css";
                 case 'js':
-                    return "{$site_config['baseurl']}/js/{$style}/b91d81103dfbe8d588924bcb1e7bb5e4.min.js";
+                    return "{$site_config['baseurl']}/js/{$style}/5ab3515050239a13db7401d81488631e.min.js";
                 case 'checkport_js':
                     return "{$site_config['baseurl']}/js/{$style}/4ba42503ffca4c65167590b15a03b842.min.js";
                 case 'trivia_css':

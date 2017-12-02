@@ -52,10 +52,6 @@ function pu_update($data)
                 $cache->update_row('user_stats_' . $arr['id'], [
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_stats']);
-                $cache->update_row('MyUser_' . $arr['id'], [
-                    'class'   => $class_value,
-                    'invites' => $update['invites'],
-                ], $site_config['expires']['curuser']);
                 $cache->increment('inbox_' . $arr['id']);
             }
             $count = count($users_buffer);

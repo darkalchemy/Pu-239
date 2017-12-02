@@ -29,10 +29,6 @@ function leechwarn_update($data)
                 'leechwarn'   => $update['leechwarn'],
                 'downloadpos' => 0,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $arr['id'], [
-                'leechwarn'   => $update['leechwarn'],
-                'downloadpos' => 0,
-            ], $site_config['expires']['curuser']);
             $cache->update_row('user_stats_' . $arr['id'], [
                 'modcomment' => $modcomment,
             ], $site_config['expires']['user_stats']);
@@ -62,10 +58,6 @@ function leechwarn_update($data)
                 'leechwarn'   => 0,
                 'downloadpos' => 1,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $arr['id'], [
-                'leechwarn'   => 0,
-                'downloadpos' => 1,
-            ], $site_config['expires']['curuser']);
             $cache->update_row('user_stats_' . $arr['id'], [
                 'modcomment' => $modcomment,
             ], $site_config['expires']['user_stats']);
@@ -96,10 +88,6 @@ function leechwarn_update($data)
             $cache->update_row('user_stats_' . $arr['id'], [
                 'modcomment' => $modcomment,
             ], $site_config['expires']['user_stats']);
-            $cache->update_row('MyUser_' . $arr['id'], [
-                'leechwarn' => 0,
-                'enabled'   => 'no',
-            ], $site_config['expires']['curuser']);
         }
         $count = count($users_buffer);
         if ($count > 0) {

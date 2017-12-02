@@ -1,5 +1,5 @@
 <?php
-global $lang;
+global $CURUSER, $ste_config, $lang;
 
 $attachments = $members_votes = $status = $topic_poll = $stafflocked = $child = $parent_forum_name = $math_image = '';
 $math_text = $staff_tools = $staff_link = $now_viewing = '';

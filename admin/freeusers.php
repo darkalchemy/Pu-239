@@ -30,7 +30,7 @@ if ($remove) {
                 write_log("{$lang['freeusers_log1']} $remove ($username) {$lang['freeusers_log2']} $CURUSER[username]");
             }
             foreach ($msgs_ids as $msg_id) {
-                $cache->deleteMulti(['MyUser_' . $msg_id['id'], 'user' . $msg_id['id']]);
+                $cache->delete('user' . $msg_id['id']);
                 $cache->increment('inbox_' . $msg_id['id']);
             }
         }

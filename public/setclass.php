@@ -13,9 +13,6 @@ if (isset($_GET['action']) && htmlsafechars($_GET['action']) == 'editclass') { /
     $newclass = (int)$_GET['class'];
     $returnto = htmlsafechars($_GET['returnto']);
     sql_query('UPDATE users SET override_class = ' . sqlesc($newclass) . ' WHERE id = ' . sqlesc($CURUSER['id'])); // Set temporary class
-    $cache->update_row('MyUser_' . $CURUSER['id'], [
-        'override_class' => $newclass,
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user' . $CURUSER['id'], [
         'override_class' => $newclass,
     ], $site_config['expires']['user_cache']);

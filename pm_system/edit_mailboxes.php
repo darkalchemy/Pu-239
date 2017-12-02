@@ -22,9 +22,6 @@ if (isset($_POST['action2'])) {
             $cache->update_row('user' . $CURUSER['id'], [
                 'pms_per_page' => $change_pm_number,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $CURUSER['id'], [
-                'pms_per_page' => $change_pm_number,
-            ], $site_config['expires']['curuser']);
             header('Location: pm_system.php?action=edit_mailboxes&pm=1');
             exit();
             break;
@@ -131,9 +128,6 @@ if (isset($_POST['action2'])) {
             $updateset[] = 'notifs = ' . sqlesc($notifs) . '';
             $curuser_cache['notifs'] = $notifs;
             $user_cache['notifs'] = $notifs;
-            if ($curuser_cache) {
-                $cache->update_row('MyUser_' . $CURUSER['id'], $curuser_cache, $site_config['expires']['curuser']);
-            }
             if ($user_cache) {
                 $cache->update_row('user' . $CURUSER['id'], $user_cache, $site_config['expires']['user_cache']);
             }

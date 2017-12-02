@@ -64,7 +64,11 @@ function lotteryclean($data)
         foreach ($uids as $user_id) {
             $cache->increment('inbox_' . $user_id);
             $cache->increment('inbox_sb_' . $user_id);
-            $cache->deleteMulti(['userstats_' . $user_id, 'user_stats_' . $user_id, 'MyUser_' . $user_id, 'user' . $user_id]);
+            $cache->deleteMulti([
+                'userstats_' . $user_id,
+                'user_stats_' . $user_id,
+                'user' . $user_id
+            ]);
         }
         sql_query('INSERT INTO lottery_config(name,value)
                     VALUES ' . join(',', $lconfig_update) . '

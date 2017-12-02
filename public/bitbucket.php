@@ -57,9 +57,6 @@ if (!isset($_FILES['file'])) {
         }
         $avatar = sqlesc($_GET['avatar']);
         sql_query("UPDATE users SET avatar = $avatar WHERE id = {$CURUSER['id']}") or sqlerr(__FILE__, __LINE__);
-        $cache->update_row('MyUser_' . $CURUSER['id'], [
-            'avatar' => $_GET['avatar'],
-        ], $site_config['expires']['curuser']);
         $cache->update_row('user' . $CURUSER['id'], [
             'avatar' => $_GET['avatar'],
         ], $site_config['expires']['user_cache']);

@@ -16,6 +16,7 @@ $stdfoot = [
         get_file('captcha2_js'),
     ],
 ];
+
 if (!$site_config['openreg']) {
     stderr('Sorry', 'Invite only - Signups are closed presently if you have an invite code click <a href="' . $site_config['baseurl'] . '/invite_signup.php"><b> Here</b></a>');
 }

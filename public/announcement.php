@@ -54,9 +54,6 @@ if (($row['curr_ann_id'] == 0) and ($row['curr_ann_last_check'] == 0)) { // Forc
             $cache->update_row('user' . $CURUSER['id'], [
                 'curr_ann_id' => $ann_row['main_id'],
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $CURUSER['id'], [
-                'curr_ann_id' => $ann_row['main_id'],
-            ], $site_config['expires']['curuser']);
             $status = 2;
         } else {
             // Announcement not valid for member...
@@ -64,9 +61,6 @@ if (($row['curr_ann_id'] == 0) and ($row['curr_ann_last_check'] == 0)) { // Forc
             $cache->update_row('user' . $CURUSER['id'], [
                 'curr_ann_last_check' => $dt,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $CURUSER['id'], [
-                'curr_ann_last_check' => $dt,
-            ], $site_config['expires']['curuser']);
             $status = 1;
         }
         // Create or set status of process
@@ -84,9 +78,6 @@ if (($row['curr_ann_id'] == 0) and ($row['curr_ann_last_check'] == 0)) { // Forc
         $cache->update_row('user' . $CURUSER['id'], [
             'curr_ann_last_check' => $dt,
         ], $site_config['expires']['user_cache']);
-        $cache->update_row('MyUser_' . $CURUSER['id'], [
-            'curr_ann_last_check' => $dt,
-        ], $site_config['expires']['curuser']);
     }
     unset($result);
     unset($ann_row);

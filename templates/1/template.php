@@ -8,7 +8,7 @@
  */
 function stdhead($title = '', $stdhead = null)
 {
-    global $CURUSER, $site_config, $lang, $free, $query_stat, $querytime, $cache, $BLOCKS, $CURBLOCK, $mood;
+    global $CURUSER, $site_config, $lang, $free, $querytime, $cache, $BLOCKS, $CURBLOCK, $mood;
 
     unsetSessionVar('Channel');
     if (!$site_config['site_online']) {
@@ -154,8 +154,11 @@ function stdhead($title = '', $stdhead = null)
  */
 function stdfoot($stdfoot = false)
 {
-    global $CURUSER, $site_config, $start, $query_stat, $queries, $cache, $querytime, $lang;
+    require_once INCL_DIR . 'bbcode_functions.php';
+    global $CURUSER, $site_config, $start, $query_stat, $cache, $querytime, $lang;
+
     $debug = (SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
+    $queries = count($query_stat);
     $cachetime = ''; //($cache->Time / 1000);
     $seconds = microtime(true) - $start;
     $r_seconds = round($seconds, 5);
@@ -183,6 +186,7 @@ function stdfoot($stdfoot = false)
     }
     $htmlfoot = '';
     $querytime = 0;
+
     if ($CURUSER && $query_stat && $debug) {
         $htmlfoot .= "
                 <div class='container is-fluid portlet'>
@@ -200,12 +204,12 @@ function stdfoot($stdfoot = false)
                                 </thead>
                                 <tbody>";
         foreach ($query_stat as $key => $value) {
-            $querytime += $value['seconds']; // query execution time
+            $querytime += $value['seconds'];
             $htmlfoot .= '
                                     <tr>
                                         <td>' . ($key + 1) . "</td>
                                         <td><b>" . ($value['seconds'] > 0.01 ? "<span class='is-danger' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='is-success' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</b></td>
-                                        <td><div class='text-justify'>" . htmlsafechars($value['query']) . '</div></td>
+                                        <td><div class='text-justify'>" . format_comment($value['query']) . '</div></td>
                                     </tr>';
         }
         $htmlfoot .= '
@@ -224,7 +228,7 @@ function stdfoot($stdfoot = false)
                 <div class='level bordered bg-04'>
                     <div class='size_4 top10 bottom10'>
                         <p class='is-marginless'>" . $site_config['site_name'] . " {$lang['gl_stdfoot_querys_page']}" . $r_seconds . " {$lang['gl_stdfoot_querys_seconds']}</p>
-                        <p class='is-marginless'>{$lang['gl_stdfoot_querys_server']}" . $queries . " {$lang['gl_stdfoot_querys_time']} " . ($queries != 1 ? "{$lang['gl_stdfoot_querys_times']}" : '') . '</p>
+                        <p class='is-marginless'>{$lang['gl_stdfoot_querys_server']}" . $queries . " {$lang['gl_stdfoot_querys_time']}" . plural($queries) . '</p>
                         ' . ($debug ? '<p class="is-marginless"><b>' . $header . "</b></p><p class='is-marginless'><b>{$lang['gl_stdfoot_uptime']}</b> " . $uptime . '</p>' : '') . "
                     </div>
                     <div class='size_4 top10 bottom10'>

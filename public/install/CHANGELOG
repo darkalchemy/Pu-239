@@ -1,3 +1,6 @@
+1 Dec 2017
+remove: duplicate caches Myuser_ and user
+
 26 Nov 2017
 remove: hardcoded user:pass
 add: pdo class, just beginning to move from mysqli to pdo

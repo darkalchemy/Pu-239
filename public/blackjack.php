@@ -462,17 +462,9 @@ if ($game) {
 
                     //== curuser values
                     // winner $CURUSER
-                    $cache->update_row('MyUser_' . $CURUSER['id'], [
-                        'bjwins' => $update['bjwins'],
-                    ], $site_config['expires']['curuser']);
-                    // winner $CURUSER
                     $cache->update_row('user' . $CURUSER['id'], [
                         'bjwins' => $update['bjwins'],
                     ], $site_config['expires']['user_cache']);
-                    // loser $a
-                    $cache->update_row('MyUser_' . $a['userid'], [
-                        'bjlosses' => $update['bjlosses'],
-                    ], $site_config['expires']['curuser']);
                     // loser $a
                     $cache->update_row('user' . $a['userid'], [
                         'bjlosses' => $update['bjlosses'],
@@ -587,17 +579,9 @@ if ($game) {
                     ], $site_config['expires']['user_stats']);
                     //== curuser values
                     // winner $a
-                    $cache->update_row('MyUser_' . $a['userid'], [
-                        'bjwins' => $update['bjwins'],
-                    ], $site_config['expires']['curuser']);
-                    // winner $a
                     $cache->update_row('user' . $a['userid'], [
                         'bjwins' => $update['bjwins'],
                     ], $site_config['expires']['user_cache']);
-                    // loser $CURUSER
-                    $cache->update_row('MyUser_' . $CURUSER['id'], [
-                        'bjlosses' => $update['bjlosses'],
-                    ], $site_config['expires']['curuser']);
                     // loser $CURUSER
                     $cache->update_row('user' . $CURUSER['id'], [
                         'bjlosses' => $update['bjlosses'],
@@ -834,16 +818,9 @@ if ($game) {
                     'uploaded' => $update['uploaded_loser'],
                 ], $site_config['expires']['user_stats']);
                 //== curuser values
-                $cache->update_row('MyUser_' . $update['winnerid'], [
-                    'bjwins' => $update['bjwins'],
-                ], $site_config['expires']['curuser']);
                 $cache->update_row('user' . $update['winnerid'], [
                     'bjwins' => $update['bjwins'],
                 ], $site_config['expires']['user_cache']);
-                // loser $CURUSER
-                $cache->update_row('MyUser_' . $update['loserid'], [
-                    'bjlosses' => $update['bjlosses'],
-                ], $site_config['expires']['curuser']);
                 // loser $CURUSER
                 $cache->update_row('user' . $update['loserid'], [
                     'bjlosses' => $update['bjlosses'],

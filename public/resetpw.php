@@ -154,9 +154,6 @@ if ($step == '1') {
     }
     $newpassword = make_passhash($newpass);
     sql_query('UPDATE users SET passhash = ' . sqlesc($newpassword) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $cache->update_row('MyUser_' . $id, [
-        'passhash' => $newpassword,
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user' . $id, [
         'passhash' => $newpassword,
     ], $site_config['expires']['user_cache']);

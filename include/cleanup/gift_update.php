@@ -15,9 +15,6 @@ function gift_update($data)
             $cache->update_row('user' . $arr['id'], [
                 'gotgift' => 'no',
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $arr['id'], [
-                'gotgift' => 'no',
-            ], $site_config['expires']['curuser']);
         }
         $count = count($users_buffer);
         if ($count > 0) {

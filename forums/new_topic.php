@@ -1,5 +1,6 @@
 <?php
-global $lang;
+global $CURUSER, $site_config, $cache, $lang;
+
 $forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));
 if (!is_valid_id($forum_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);

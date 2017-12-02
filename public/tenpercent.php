@@ -41,9 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $cache->update_row('user' . $CURUSER['id'], [
         'tenpercent' => 'yes',
     ], $site_config['expires']['user_cache']);
-    $cache->update_row('MyUser_' . $CURUSER['id'], [
-        'tenpercent' => 'yes',
-    ], $site_config['expires']['user_cache']);
     $res1 = sql_query('INSERT INTO messages (sender, poster, receiver, subject, msg, added) VALUES (0, 0, ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($subject) . ', ' . sqlesc($msg) . ", '" . TIME_NOW . "')") or sqlerr(__FILE__, __LINE__);
     $cache->increment('inbox_' . $CURUSER['id']);
     if (!$res) {

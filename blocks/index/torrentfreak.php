@@ -1,6 +1,7 @@
 <?php
 require_once ROOT_DIR . 'tfreak.php';
 global $lang;
+
 $HTMLOUT .= "
     <a id='tfreak-hash'></a>
     <fieldset id='tfreak' class='header'>

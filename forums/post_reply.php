@@ -1,5 +1,5 @@
 <?php
-global $lang;
+global $CURUSER, $site_config, $cache, $lang;
 $page = $colour = $arr_quote = $extension_error = $size_error = '';
 $topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
 if (!is_valid_id($topic_id)) {

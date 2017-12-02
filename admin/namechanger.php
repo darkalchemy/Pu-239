@@ -21,9 +21,6 @@ if (isset($mode) && $mode == 'change') {
             stderr($lang['namechanger_err'], $lang['namechanger_cannot']);
         }
         $change = sql_query('UPDATE users SET username=' . sqlesc($uname) . ' WHERE id = ' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
-        $cache->update_row('MyUser_' . $uid, [
-            'username' => $uname,
-        ], $site_config['expires']['curuser']);
         $cache->update_row('user' . $uid, [
             'username' => $uname,
         ], $site_config['expires']['user_cache']);

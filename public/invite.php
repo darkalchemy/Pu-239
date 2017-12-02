@@ -152,12 +152,9 @@ if ($do == 'view_page') {
     sql_query('INSERT INTO invite_codes (sender, invite_added, code) VALUES (' . sqlesc((int)$CURUSER['id']) . ', ' . TIME_NOW . ', ' . sqlesc($invite) . ')') or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE users SET invites = invites - 1 WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['invites'] = ($CURUSER['invites'] - 1);
-    $cache->update_row('MyUser_' . $CURUSER['id'], [
-        'invites' => $update['invites'],
-    ], $site_config['expires']['curuser']); // 15 mins
     $cache->update_row('user' . $CURUSER['id'], [
         'invites' => $update['invites'],
-    ], $site_config['expires']['user_cache']); // 15 mins
+    ], $site_config['expires']['user_cache']);
     header('Location: ?do=view_page');
 } elseif ($do == 'send_email') {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -249,12 +246,9 @@ EOD;
     sql_query('DELETE FROM invite_codes WHERE id = ' . sqlesc($id) . ' AND sender = ' . sqlesc($CURUSER['id']) . ' AND status = "Pending"') or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE users SET invites = invites + 1 WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $update['invites'] = ($CURUSER['invites'] + 1);
-    $cache->update_row('MyUser_' . $CURUSER['id'], [
-        'invites' => $update['invites'],
-    ], $site_config['expires']['curuser']); // 15 mins
     $cache->update_row('user' . $CURUSER['id'], [
         'invites' => $update['invites'],
-    ], $site_config['expires']['user_cache']); // 15 mins
+    ], $site_config['expires']['user_cache']);
     header('Location: ?do=view_page');
 } elseif ($do = 'confirm_account') {
     $userid = (isset($_GET['userid']) ? (int)$_GET['userid'] : (isset($_POST['userid']) ? (int)$_POST['userid'] : ''));
@@ -272,12 +266,9 @@ EOD;
     }
     sql_query('UPDATE users SET status = "confirmed" WHERE id = ' . sqlesc($userid) . ' AND invitedby = ' . sqlesc($CURUSER['id']) . ' AND status="pending"') or sqlerr(__FILE__, __LINE__);
 
-    $cache->update_row('MyUser_' . $userid, [
-        'status' => 'confirmed',
-    ], $site_config['expires']['curuser']); // 15 mins
     $cache->update_row('user' . $userid, [
         'status' => 'confirmed',
-    ], $site_config['expires']['user_cache']); // 15 mins
+    ], $site_config['expires']['user_cache']);
 
     //==pm to new invitee/////
     $msg = sqlesc("Hey there :wave:

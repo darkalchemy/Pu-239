@@ -1,5 +1,5 @@
 <?php
-global $cache;
+global $cache, $fpdo, $site_config;
 
 if (XBT_TRACKER == true) {
     $htmlout .= "
@@ -8,11 +8,13 @@ if (XBT_TRACKER == true) {
         <span class='custom info alert alert-success'><em>XBT TRACKER</em>
       <br>XBT TRACKER running - No crazyhours, happyhours, freeslots active :-(<br><br></span></a></li>";
 } else {
-    /** karma contribution alert hack **/
     $fpoints = $dpoints = $hpoints = $freeleech_enabled = $double_upload_enabled = $half_down_enabled = '';
     $scheduled_events = $cache->get('freecontribution_datas_alerts_');
     if ($scheduled_events === false || is_null($scheduled_events)) {
-        $scheduled_events = mysql_fetch_all('SELECT * FROM `events` ORDER BY `startTime` DESC LIMIT 3;', []);
+        $scheduled_events = $fpdo->from('events')
+            ->orderBy('startTime DESC')
+            ->limit(3)
+            ->fetchAll();
         $cache->set('freecontribution_datas_alerts_', $scheduled_events, 3 * 86400);
     }
 
@@ -53,118 +55,121 @@ if (XBT_TRACKER == true) {
             }
         }
     }
-    //=== get total points
-    //$target_fl = 30000;
-    $freeleech_counter = $cache->get('freeleech_counter_alerts_');
-    if ($freeleech_counter === false || is_null($freeleech_counter)) {
-        $total_fl = sql_query('SELECT SUM(pointspool) AS pointspool, points FROM bonus WHERE id =11');
-        $fl_total_row = mysqli_fetch_assoc($total_fl);
-        $percent_fl = number_format($fl_total_row['pointspool'] / $fl_total_row['points'] * 100, 2);
+
+    $percent_fl = $cache->get('freeleech_counter_alerts_');
+    if ($percent_fl === false || is_null($percent_fl)) {
+        $res = $fpdo->from('bonus')
+            ->select(null)
+            ->select('pointspool / points * 100 AS percent')
+            ->where('id = 11')
+            ->fetch();
+
+        $percent_fl = number_format($res['percent'], 2);
         $cache->set('freeleech_counter_alerts_', $percent_fl, 0);
-    } else {
-        $percent_fl = $freeleech_counter;
     }
 
     switch ($percent_fl) {
         case $percent_fl >= 90:
-            $font_color_fl = '<span class="text-green">' . number_format($percent_fl) . ' %</span>';
+            $font_color_fl = "<span class='text-green'> {$percent_fl}%</span>";
             break;
         case $percent_fl >= 80:
-            $font_color_fl = '<span class="text-lightgreen">' . number_format($percent_fl) . ' %</span>';
+            $font_color_fl = "<span class='text-lightgreen'> {$percent_fl}%</span>";
             break;
         case $percent_fl >= 70:
-            $font_color_fl = '<span class="text-jade">' . number_format($percent_fl) . ' %</span>';
+            $font_color_fl = "<span class='text-jade'> {$percent_fl}%</span>";
             break;
         case $percent_fl >= 50:
-            $font_color_fl = '<span class="text-turquoise">' . number_format($percent_fl) . ' %</span>';
+            $font_color_fl = "<span class='text-turquoise'> {$percent_fl}%</span>";
             break;
         case $percent_fl >= 40:
-            $font_color_fl = '<span class="text-lightblue">' . number_format($percent_fl) . ' %</span>';
+            $font_color_fl = "<span class='text-lightblue'> {$percent_fl}%</span>";
             break;
         case $percent_fl >= 30:
-            $font_color_fl = '<span class="text-gold">' . number_format($percent_fl) . ' %</span>';
+            $font_color_fl = "<span class='text-gold'> {$percent_fl}%</span>";
             break;
         case $percent_fl >= 20:
-            $font_color_fl = '<span class="text-orange">' . number_format($percent_fl) . ' %</span>';
+            $font_color_fl = "<span class='text-orange'> {$percent_fl}%</span>";
             break;
         case $percent_fl < 20:
-            $font_color_fl = '<span class="text-red">' . number_format($percent_fl) . ' %</span>';
+            $font_color_fl = "<span class='text-red'> {$percent_fl}%</span>";
             break;
     }
-    //=== get total points
-    //$target_du = 30000;
-    $doubleupload_counter = $cache->get('doubleupload_counter_alerts_');
-    if ($doubleupload_counter === false || is_null($doubleupload_counter)) {
-        $total_du = sql_query('SELECT SUM(pointspool) AS pointspool, points FROM bonus WHERE id =12');
-        $du_total_row = mysqli_fetch_assoc($total_du);
-        $percent_du = number_format($du_total_row['pointspool'] / $du_total_row['points'] * 100, 2);
+
+    $percent_du = $cache->get('doubleupload_counter_alerts_');
+    if ($percent_du === false || is_null($percent_du)) {
+        $res = $fpdo->from('bonus')
+            ->select(null)
+            ->select('pointspool / points * 100 AS percent')
+            ->where('id = 12')
+            ->fetch();
+
+        $percent_du = number_format($res['percent'], 2);
         $cache->set('doubleupload_counter_alerts_', $percent_du, 0);
-    } else {
-        $percent_du = $doubleupload_counter;
     }
 
     switch ($percent_du) {
         case $percent_du >= 90:
-            $font_color_du = '<span class="text-green">' . number_format($percent_du) . ' %</span>';
+            $font_color_du = "<span class='text-green'> {$percent_du}%</span>";
             break;
         case $percent_du >= 80:
-            $font_color_du = '<span class="text-lightgreen">' . number_format($percent_du) . ' %</span>';
+            $font_color_du = "<span class='text-lightgreen'> {$percent_du}%</span>";
             break;
         case $percent_du >= 70:
-            $font_color_du = '<span class="text-jade">' . number_format($percent_du) . ' %</span>';
+            $font_color_du = "<span class='text-jade'> {$percent_du}%</span>";
             break;
         case $percent_du >= 50:
-            $font_color_du = '<span class="text-turquoise">' . number_format($percent_du) . ' %</span>';
+            $font_color_du = "<span class='text-turquoise'> {$percent_du}%</span>";
             break;
         case $percent_du >= 40:
-            $font_color_du = '<span class="text-lightblue">' . number_format($percent_du) . ' %</span>';
+            $font_color_du = "<span class='text-lightblue'> {$percent_du}%</span>";
             break;
         case $percent_du >= 30:
-            $font_color_du = '<span class="text-gold">' . number_format($percent_du) . ' %</span>';
+            $font_color_du = "<span class='text-gold'> {$percent_du}%</span>";
             break;
         case $percent_du >= 20:
-            $font_color_du = '<span class="text-orange">' . number_format($percent_du) . ' %</span>';
+            $font_color_du = "<span class='text-orange'> {$percent_du}%</span>";
             break;
         case $percent_du < 20:
-            $font_color_du = '<span class="text-red">' . number_format($percent_du) . ' %</span>';
+            $font_color_du = "<span class='text-red'> {$percent_du}%</span>";
             break;
     }
-    //=== get total points
-    //$target_hd = 30000;
-    $halfdownload_counter = $cache->get('halfdownload_counter_alerts_');
-    if ($halfdownload_counter === false || is_null($halfdownload_counter)) {
-        $total_hd = sql_query('SELECT SUM(pointspool) AS pointspool, points FROM bonus WHERE id =13');
-        $hd_total_row = mysqli_fetch_assoc($total_hd);
-        $percent_hd = number_format($hd_total_row['pointspool'] / $hd_total_row['points'] * 100, 2);
+
+    $percent_hd = $cache->get('halfdownload_counter_alerts_');
+    if ($percent_hd === false || is_null($percent_hd)) {
+        $res = $fpdo->from('bonus')
+            ->select(null)
+            ->select('pointspool / points * 100 AS percent')
+            ->where('id = 13')
+            ->fetch();
+
+        $percent_hd = number_format($res['percent'], 2);
         $cache->set('halfdownload_counter_alerts_', $percent_hd, 0);
-    } else {
-        $percent_hd = $halfdownload_counter;
     }
 
     switch ($percent_hd) {
         case $percent_hd >= 90:
-            $font_color_hd = '<span class="text-green">' . number_format($percent_hd) . ' %</span>';
+            $font_color_hd = "<span class='text-green'> {$percent_hd}%</span>";
             break;
         case $percent_hd >= 80:
-            $font_color_hd = '<span class="text-lightgreen">' . number_format($percent_hd) . ' %</span>';
+            $font_color_hd = "<span class='text-lightgreen'> {$percent_hd}%</span>";
             break;
         case $percent_hd >= 70:
-            $font_color_hd = '<span class="text-jade">' . number_format($percent_hd) . ' %</span>';
+            $font_color_hd = "<span class='text-jade'> {$percent_hd}%</span>";
             break;
         case $percent_hd >= 50:
-            $font_color_hd = '<span class="text-turquoise">' . number_format($percent_hd) . ' %</span>';
+            $font_color_hd = "<span class='text-turquoise'> {$percent_hd}%</span>";
             break;
         case $percent_hd >= 40:
-            $font_color_hd = '<span class="text-lightblue">' . number_format($percent_hd) . ' %</span>';
+            $font_color_hd = "<span class='text-lightblue'> {$percent_hd}%</span>";
             break;
         case $percent_hd >= 30:
-            $font_color_hd = '<span class="text-gold">' . number_format($percent_hd) . ' %</span>';
+            $font_color_hd = "<span class='text-gold'> {$percent_hd}%</span>";
             break;
         case $percent_hd >= 20:
-            $font_color_hd = '<span class="text-orange">' . number_format($percent_hd) . ' %</span>';
+            $font_color_hd = "<span class='text-orange'> {$percent_hd}%</span>";
             break;
         case $percent_hd < 20:
-            $font_color_hd = '<span class="text-red">' . number_format($percent_hd) . ' %</span>';
+            $font_color_hd = "<span class='text-red'> {$percent_hd}%</span>";
             break;
     }
 
@@ -193,7 +198,7 @@ if (XBT_TRACKER == true) {
                                 <div class='level is-marginless'>
                                     <span>Freeleech</span><span> [ ";
     if ($freeleech_enabled) {
-        $htmlout .= '<span class="has-text-success"> ON </span>' . get_date($freeleech_start_time, 'DATE') . ' - ' . get_date($freeleech_end_time, 'DATE');
+        $htmlout .= "<span class='has-text-success'> ON </span>" . get_date($freeleech_start_time, 'DATE') . ' - ' . get_date($freeleech_end_time, 'DATE');
     } else {
         $htmlout .= $fstatus;
     }
@@ -205,7 +210,7 @@ if (XBT_TRACKER == true) {
                                 <div class='level is-marginless'>
                                     <span>DoubleUpload</span><span> [ ";
     if ($double_upload_enabled) {
-        $htmlout .= '<span class="has-text-success"> ON </span>' . get_date($double_upload_start_time, 'DATE') . ' - ' . get_date($double_upload_end_time, 'DATE');
+        $htmlout .= "<span class='has-text-success'> ON </span>" . get_date($double_upload_start_time, 'DATE') . ' - ' . get_date($double_upload_end_time, 'DATE');
     } else {
         $htmlout .= $dstatus;
     }

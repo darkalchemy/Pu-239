@@ -1,5 +1,5 @@
 <?php
-global $cache, $lang, $site_config, $db;
+global $cache, $lang, $site_config, $fpdo;
 
 $categorie = genrelist();
 foreach ($categorie as $key => $value) {
@@ -11,7 +11,7 @@ foreach ($categorie as $key => $value) {
 }
 $motw = $cache->get('motw_');
 if ($motw === false || is_null($motw)) {
-    $query = $db->from('torrents')
+    $query = $fpdo->from('torrents')
         ->leftJoin('users ON torrents.owner = users.id')
         ->select('users.username')
         ->select('users.class')

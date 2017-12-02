@@ -30,9 +30,6 @@ function stealth($id, $stealth = true)
     $cache->update_row('user' . $id, [
         'perms' => $row['perms'],
     ], $site_config['expires']['user_cache']);
-    $cache->update_row('MyUser_' . $id, [
-        'perms' => $row['perms'],
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user_stats_' . $id, [
         'modcomment' => $modcomment,
     ], $site_config['expires']['user_stats']);
@@ -40,9 +37,6 @@ function stealth($id, $stealth = true)
         $cache->update_row('user' . $CURUSER['id'], [
             'perms' => $row['perms'],
         ], $site_config['expires']['user_cache']);
-        $cache->update_row('MyUser_' . $CURUSER['id'], [
-            'perms' => $row['perms'],
-        ], $site_config['expires']['curuser']);
         $cache->update_row('user_stats_' . $CURUSER['id'], [
             'modcomment' => $modcomment,
         ], $site_config['expires']['user_stats']);

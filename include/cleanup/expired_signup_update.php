@@ -13,7 +13,6 @@ function expired_signup_update($data)
         while ($arr = mysqli_fetch_assoc($res)) {
             $userid = $arr['id'];
             $res_del = sql_query('DELETE FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-            $cache->delete('MyUser_' . $userid);
             $cache->delete('user' . $userid);
             if ($data['clean_log']) {
                 write_log("Expired Signup Cleanup: User: {$arr['username']} was deleted");

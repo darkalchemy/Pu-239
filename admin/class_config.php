@@ -173,9 +173,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $row1 = [];
                     $row1[] = $row;
                     foreach ($row1 as $row2) {
-                        $cache->update_row('MyUser_' . $row2['id'], [
-                            'class' => $row2['class'],
-                        ], $site_config['expires']['curuser']);
                         $cache->update_row('user' . $row2['id'], [
                             'class' => $row2['class'],
                         ], $site_config['expires']['user_cache']);
@@ -197,9 +194,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $row1 = [];
                     $row1[] = $row;
                     foreach ($row1 as $row2) {
-                        $cache->update_row('MyUser_' . $row2['id'], [
-                            'class' => $row2['class'],
-                        ], $site_config['expires']['curuser']);
                         $cache->update_row('user' . $row2['id'], [
                             'class' => $row2['class'],
                         ], $site_config['expires']['user_cache']);
@@ -271,9 +265,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $row1 = [];
             $row1[] = $row;
             foreach ($row1 as $row2) {
-                $cache->update_row('MyUser_' . $row2['id'], [
-                    'class' => $row2['class'],
-                ], $site_config['expires']['curuser']);
                 $cache->update_row('user' . $row2['id'], [
                     'class' => $row2['class'],
                 ], $site_config['expires']['user_cache']);

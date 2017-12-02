@@ -46,12 +46,6 @@ function hitrun_xbt_update($data)
                 $cache->update_row('user_stats_xbt' . $arr_fuckers['uid'], [
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_stats_xbt']);
-                $cache->update_row('MyUser_' . $arr_fuckers['uid'], [
-                    'hit_and_run_total' => $update['hit_and_run_total'],
-                    'downloadpos'       => 0,
-                    'can_leech'         => 0,
-                    'hnrwarn'           => 'yes',
-                ], $site_config['expires']['curuser']);
                 $cache->increment('inbox_' . $arr_fuckers['uid']);
             }
         }
@@ -87,11 +81,6 @@ function hitrun_xbt_update($data)
                 $cache->update_row('userstats_xbt_' . $arr_good_boy['id'], [
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['u_stats_xbt']);
-                $cache->update_row('MyUser_' . $arr_good_boy['id'], [
-                    'downloadpos' => 1,
-                    'can_leech'   => 1,
-                    'hnrwarn'     => 'no',
-                ], $site_config['expires']['curuser']);
                 $cache->increment('inbox_' . $arr_good_boy['id']);
             }
         }

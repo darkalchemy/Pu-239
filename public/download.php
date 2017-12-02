@@ -108,9 +108,6 @@ if (isset($_GET['slot'])) {
     $cache->delete('fllslot_' . $CURUSER['id']);
     make_freeslots($CURUSER['id'], 'fllslot_');
     $user['freeslots'] = ($CURUSER['freeslots'] - 1);
-    $cache->update_row('MyUser_' . $CURUSER['id'], [
-        'freeslots' => $CURUSER['freeslots'],
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user' . $CURUSER['id'], [
         'freeslots' => $user['freeslots'],
     ], $site_config['expires']['user_cache']);
@@ -125,9 +122,6 @@ if (!isset($CURUSER['torrent_pass']) || strlen($CURUSER['torrent_pass']) != 32) 
     $uid = $CURUSER['id'];
     $CURUSER['torrent_pass'] = $passkey;
     sql_query('UPDATE users SET torrent_pass = ' . sqlesc($CURUSER['torrent_pass']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    $cache->update_row('MyUser_' . $CURUSER['id'], [
-        'torrent_pass' => $CURUSER['torrent_pass'],
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user' . $CURUSER['id'], [
         'torrent_pass' => $CURUSER['torrent_pass'],
     ], $site_config['expires']['user_cache']);

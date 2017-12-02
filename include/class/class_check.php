@@ -87,9 +87,6 @@ function class_check($class = 0, $staff = true, $pin = false)
                     $cache->update_row('user' . $CURUSER['id'], [
                         'class' => 1,
                     ], $site_config['expires']['user_cache']);
-                    $cache->update_row('MyUser_' . $CURUSER['id'], [
-                        'class' => 1,
-                    ], $site_config['expires']['curuser']);
                     //==
 
                     /* log **/

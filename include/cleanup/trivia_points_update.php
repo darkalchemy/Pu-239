@@ -77,7 +77,7 @@ function trivia_points_update($data)
     write_log('Cleanup - Trivia Bonus Points awarded to - ' . $count . ' Member(s)');
     foreach ($users as $user_id) {
         $cache->increment('inbox_' . $user_id);
-        $cache->deleteMulti(['userstats_' . $user_id, 'user_stats_' . $user_id, 'MyUser_' . $user_id, 'user' . $user_id]);
+        $cache->deleteMulti(['userstats_' . $user_id, 'user_stats_' . $user_id, 'user' . $user_id]);
     }
 
     sql_query('UPDATE triviaq SET asked = 0, current = 0') or sqlerr(__FILE__, __LINE__);

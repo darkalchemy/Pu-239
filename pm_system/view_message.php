@@ -16,12 +16,12 @@ $id = (int)$arr_user_stuff['id'];
 sql_query('UPDATE messages SET unread=\'no\' WHERE id = ' . sqlesc($pm_id) . ' AND receiver = ' . sqlesc($CURUSER['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
 $cache->increment('inbox_' . $CURUSER['id']);
 if ($message['friend'] > 0) {
-    $friends = '' . $lang['pm_mailbox_char1'] . '<span class="size_1"><a href="friends.php?action=delete&amp;type=friend&amp;targetid=' . $id . '">' . $lang['pm_mailbox_removef'] . '</a></span>' . $lang['pm_mailbox_char2'] . '';
+    $friends = '' . $lang['pm_mailbox_char1'] . '<span class="size_2"><a href="friends.php?action=delete&amp;type=friend&amp;targetid=' . $id . '">' . $lang['pm_mailbox_removef'] . '</a></span>' . $lang['pm_mailbox_char2'] . '';
 } elseif ($message['blocked'] > 0) {
-    $friends = '' . $lang['pm_mailbox_char1'] . '<span class="size_1"><a href="friends.php?action=delete&amp;type=block&amp;targetid=' . $id . '">' . $lang['pm_mailbox_removeb'] . '</a></span>' . $lang['pm_mailbox_char2'] . '';
+    $friends = '' . $lang['pm_mailbox_char1'] . '<span class="size_2"><a href="friends.php?action=delete&amp;type=block&amp;targetid=' . $id . '">' . $lang['pm_mailbox_removeb'] . '</a></span>' . $lang['pm_mailbox_char2'] . '';
 } elseif ($id > 0) {
-    $friends = '' . $lang['pm_mailbox_char1'] . '<span class="size_1"><a href="friends.php?action=add&amp;type=friend&amp;targetid=' . $id . '">' . $lang['pm_mailbox_addf'] . '</a></span>' . $lang['pm_mailbox_char2'] . '
-                               ' . $lang['pm_mailbox_char1'] . '<span class="size_1"><a href="friends.php?action=add&amp;type=block&amp;targetid=' . $id . '">' . $lang['pm_mailbox_addb'] . '</a></span>' . $lang['pm_mailbox_char2'] . '';
+    $friends = '' . $lang['pm_mailbox_char1'] . '<span class="size_2"><a href="friends.php?action=add&amp;type=friend&amp;targetid=' . $id . '">' . $lang['pm_mailbox_addf'] . '</a></span>' . $lang['pm_mailbox_char2'] . '
+                               ' . $lang['pm_mailbox_char1'] . '<span class="size_2"><a href="friends.php?action=add&amp;type=block&amp;targetid=' . $id . '">' . $lang['pm_mailbox_addb'] . '</a></span>' . $lang['pm_mailbox_char2'] . '';
 }
 /*
     $avatar = ($CURUSER['avatars'] === 'no' ? '' : (empty($arr_user_stuff['avatar']) ? '

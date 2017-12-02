@@ -141,9 +141,6 @@ if (isset($input['do']) && $input['do'] == 'addrep') {
     $score = fetch_reppower($CURUSER, $input['reputation']);
     $res['reputation'] += $score;
     sql_query('UPDATE users SET reputation=' . intval($res['reputation']) . ' WHERE id=' . $res['userid']);
-    $cache->update_row('MyUser_' . $res['userid'], [
-        'reputation' => $res['reputation'],
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user' . $res['userid'], [
         'reputation' => $res['reputation'],
     ], $site_config['expires']['user_cache']);

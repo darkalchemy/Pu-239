@@ -1,5 +1,5 @@
 <?php
-global $site_config, $cache, $lang, $db;
+global $site_config, $cache, $lang, $fpdo;
 
 $HTMLOUT .= "
     <a id='latesttorrents-hash'></a>
@@ -8,7 +8,7 @@ $HTMLOUT .= "
         <div class='has-text-centered'>";
 $top5torrents = $cache->get('top5_tor_');
 if ($top5torrents === false || is_null($top5torrents)) {
-    $query = $db->from('torrents')
+    $query = $fpdo->from('torrents')
         ->leftJoin('users ON torrents.owner = users.id')
         ->select('users.username')
         ->select('users.class')
@@ -99,7 +99,7 @@ if (count($top5torrents) > 0) {
 }
 $last5torrents = $cache->get('last5_tor_');
 if ($last5torrents === false || is_null($last5torrents)) {
-    $query = $db->from('torrents')
+    $query = $fpdo->from('torrents')
         ->leftJoin('users ON torrents.owner = users.id')
         ->select('users.username')
         ->select('users.class')

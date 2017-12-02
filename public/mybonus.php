@@ -525,9 +525,6 @@ if (isset($_GET['exchange'])) {
             $cache->update_row('user' . $userid, [
                 'reputation' => $rep,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $userid, [
-                'reputation' => $rep,
-            ], $site_config['expires']['curuser']);
             $cache->update_row('userstats_' . $userid, [
                 'seedbonus' => $seedbonus,
             ], $site_config['expires']['u_stats']);
@@ -552,9 +549,6 @@ if (isset($_GET['exchange'])) {
             $cache->update_row('user' . $userid, [
                 'immunity' => $immunity,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $userid, [
-                'immunity' => $immunity,
-            ], $site_config['expires']['curuser']);
             $cache->update_row('userstats_' . $userid, [
                 'seedbonus' => $seedbonus,
             ], $site_config['expires']['u_stats']);
@@ -579,9 +573,6 @@ if (isset($_GET['exchange'])) {
             $cache->update_row('user' . $userid, [
                 'got_blocks' => 'yes',
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $userid, [
-                'got_blocks' => 'yes',
-            ], $site_config['expires']['curuser']);
             $cache->update_row('userstats_' . $userid, [
                 'seedbonus' => $seedbonus,
             ], $site_config['expires']['u_stats']);
@@ -606,9 +597,6 @@ if (isset($_GET['exchange'])) {
             $cache->update_row('user' . $userid, [
                 'got_moods' => 'yes',
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $userid, [
-                'got_moods' => 'yes',
-            ], $site_config['expires']['curuser']);
             $cache->update_row('userstats_' . $userid, [
                 'seedbonus' => $seedbonus,
             ], $site_config['expires']['u_stats']);
@@ -633,9 +621,6 @@ if (isset($_GET['exchange'])) {
             $cache->update_row('user' . $userid, [
                 'anonymous_until' => $anonymous_until,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $userid, [
-                'anonymous_until' => $anonymous_until,
-            ], $site_config['expires']['curuser']);
             $cache->update_row('userstats_' . $userid, [
                 'seedbonus' => $seedbonus,
             ], $site_config['expires']['u_stats']);
@@ -660,9 +645,6 @@ if (isset($_GET['exchange'])) {
             $cache->update_row('user' . $userid, [
                 'parked_until' => $parked_until,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $userid, [
-                'parked_until' => $parked_until,
-            ], $site_config['expires']['curuser']);
             $cache->update_row('userstats_' . $userid, [
                 'seedbonus' => $seedbonus,
             ], $site_config['expires']['u_stats']);
@@ -710,9 +692,6 @@ if (isset($_GET['exchange'])) {
             $cache->update_row('user' . $userid, [
                 'free_switch' => $free_switch,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $userid, [
-                'free_switch' => $free_switch,
-            ], $site_config['expires']['curuser']);
             $cache->update_row('userstats_' . $userid, [
                 'seedbonus' => $seedbonus,
             ], $site_config['expires']['u_stats']);
@@ -735,9 +714,6 @@ if (isset($_GET['exchange'])) {
             $cache->update_row('user' . $userid, [
                 'freeslots' => $slots,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $userid, [
-                'freeslots' => $slots,
-            ], $site_config['expires']['curuser']);
             $cache->update_row('userstats_' . $userid, [
                 'seedbonus' => $seedbonus,
             ], $site_config['expires']['u_stats']);
@@ -764,9 +740,6 @@ if (isset($_GET['exchange'])) {
             $cache->update_row('user' . $userid, [
                 'invites' => $inv,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $userid, [
-                'invites' => $inv,
-            ], $site_config['expires']['curuser']);
             $cache->update_row('userstats_' . $userid, [
                 'seedbonus' => $karma,
             ], $site_config['expires']['u_stats']);
@@ -795,10 +768,6 @@ if (isset($_GET['exchange'])) {
                 'invites'   => $inv,
                 'freeslots' => $fslot,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $userid, [
-                'invites'   => $inv,
-                'freeslots' => $fslot,
-            ], $site_config['expires']['curuser']);
             $cache->update_row('userstats_' . $userid, [
                 'seedbonus' => $seedbonus,
             ], $site_config['expires']['u_stats']);
@@ -825,10 +794,6 @@ if (isset($_GET['exchange'])) {
                 'free_switch' => $free_switch,
                 'pirate'      => $pirate,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $userid, [
-                'free_switch' => $free_switch,
-                'pirate'      => $pirate,
-            ], $site_config['expires']['curuser']);
             $cache->update_row('userstats_' . $userid, [
                 'seedbonus' => $seedbonus,
             ], $site_config['expires']['u_stats']);
@@ -867,9 +832,6 @@ if (isset($_GET['exchange'])) {
                 $pms[] = '(' . $site_config['chatBotID'] . ',' . $ar['id'] . ',' . TIME_NOW . ',' . sprintf($pm['subject'], $thief_name) . ',' . sprintf($pm['message'], $thief_id, $thief_name, $new_rep) . ')';
                 $robbed_users[] = sprintf('[url=' . $site_config['baseurl'] . '/userdetails.php?id=%d]%s[/url]', $ar['id'], $ar['username']);
                 //== cache updates ???
-                $cache->update_row('MyUser_' . $ar['id'], [
-                    'reputation' => $ar['reputation'] - $rep_to_steal,
-                ], $site_config['expires']['curuser']);
                 $cache->update_row('user' . $ar['id'], [
                     'reputation' => $ar['reputation'] - $rep_to_steal,
                 ], $site_config['expires']['user_cache']);
@@ -894,9 +856,6 @@ if (isset($_GET['exchange'])) {
                 sql_query('INSERT INTO messages(sender,receiver,added,subject,msg)
                             VALUES ' . join(',', $pms)) or sqlerr(__FILE__, __LINE__);
                 //== cache updates ???
-                $cache->update_row('MyUser_' . $thief_id, [
-                    'reputation' => $new_rep,
-                ], $site_config['expires']['curuser']);
                 $cache->update_row('user' . $thief_id, [
                     'reputation' => $new_rep,
                 ], $site_config['expires']['user_cache']);
@@ -928,10 +887,6 @@ if (isset($_GET['exchange'])) {
                 'free_switch' => $free_switch,
                 'king'        => $king,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $userid, [
-                'free_switch' => $free_switch,
-                'king'        => $king,
-            ], $site_config['expires']['curuser']);
             $cache->update_row('userstats_' . $userid, [
                 'seedbonus' => $seedbonus,
             ], $site_config['expires']['u_stats']);
@@ -1253,11 +1208,6 @@ if (isset($_GET['exchange'])) {
                 'vip_added' => 'yes',
                 'vip_until' => $vip_until,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $userid, [
-                'class'     => 2,
-                'vip_added' => 'yes',
-                'vip_until' => $vip_until,
-            ], $site_config['expires']['curuser']);
             $cache->update_row('userstats_' . $userid, [
                 'seedbonus' => $seedbonus,
             ], $site_config['expires']['u_stats']);
@@ -1293,9 +1243,6 @@ if (isset($_GET['exchange'])) {
             $cache->update_row('user' . $userid, [
                 'warned' => 0,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $userid, [
-                'warned' => 0,
-            ], $site_config['expires']['curuser']);
             $cache->update_row('userstats_' . $userid, [
                 'seedbonus' => $seedbonus,
             ], $site_config['expires']['u_stats']);
@@ -1319,9 +1266,6 @@ if (isset($_GET['exchange'])) {
             $cache->update_row('user' . $userid, [
                 'smile_until' => $smile_until,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $userid, [
-                'smile_until' => $smile_until,
-            ], $site_config['expires']['curuser']);
             $cache->update_row('userstats_' . $userid, [
                 'seedbonus' => $seedbonus,
             ], $site_config['expires']['u_stats']);
@@ -1344,9 +1288,6 @@ if (isset($_GET['exchange'])) {
             $cache->update_row('user' . $userid, [
                 'invites' => $inv,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $userid, [
-                'invites' => $inv,
-            ], $site_config['expires']['curuser']);
             $cache->update_row('userstats_' . $userid, [
                 'seedbonus' => $seedbonus,
             ], $site_config['expires']['u_stats']);
@@ -1372,9 +1313,6 @@ if (isset($_GET['exchange'])) {
             $cache->update_row('user' . $userid, [
                 'title' => $title,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $userid, [
-                'title' => $title,
-            ], $site_config['expires']['curuser']);
             $cache->update_row('userstats_' . $userid, [
                 'seedbonus' => $seedbonus,
             ], $site_config['expires']['u_stats']);

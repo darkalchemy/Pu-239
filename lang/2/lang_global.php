@@ -2,7 +2,7 @@
 
 $lang = [
     //Mod admin link
-    'gl_admin'                  => 'Admincp',
+    'gl_admin'                  => 'AdminCP',
     'gl_userblocks'             => 'User Blocks',
     'gl_profile'                => 'Profile',
     'gl_logout'                 => 'Logout',
@@ -142,9 +142,8 @@ $lang = [
     'gl_stdfoot_querys_mstat5'  => ' % Items: ',
     'gl_stdfoot_querys_page'    => 'page was generated in ',
     'gl_stdfoot_querys_seconds' => 'seconds.',
-    'gl_stdfoot_querys_server'  => 'Server was hit ',
-    'gl_stdfoot_querys_time'    => 'time',                    //singular
-    'gl_stdfoot_querys_times'   => "'s",                    //plural
+    'gl_stdfoot_querys_server'  => 'Database was hit ',
+    'gl_stdfoot_querys_time'    => 'time',
     'gl_stdfoot_querys_hits'    => 'hits were handled.',
     'gl_stdfoot_uptime'         => 'Uptime:',
     'gl_stdfoot_powered'        => 'Powered by ',
@@ -201,6 +200,7 @@ $lang = [
     //stdfoot
     'gl_stdfoot_support'        => 'Support Forum Click ',
     'gl_stdfoot_here'           => 'here',
+    'gl_connectable'            => 'Connectable',
     'gl_not_connectable'        => 'Not Connectable',
     'gl_na_connectable'         => 'N/A',
 ];

@@ -7,7 +7,6 @@ function achievement_sheep_update($data)
     global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
-    // Updated Sheep Fondler
     $res = sql_query("SELECT userid, sheepyset FROM usersachiev WHERE sheepyset = 1 AND sheepyach = 0") or sqlerr(__FILE__, __LINE__);
     $msg_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {

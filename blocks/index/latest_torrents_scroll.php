@@ -1,9 +1,9 @@
 <?php
-global $site_config, $cache, $lang, $db;
+global $site_config, $cache, $lang, $fpdo;
 
 $scroll_torrents = $cache->get('scroll_tor_');
 if ($scroll_torrents === false || is_null($scroll_torrents)) {
-    $query = $db->from('torrents')
+    $query = $fpdo->from('torrents')
         ->leftJoin('users ON torrents.owner = users.id')
         ->select('users.username')
         ->select('users.class')

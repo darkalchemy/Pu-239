@@ -30,9 +30,6 @@ if ($md5 != $sec) {
     stderr("{$lang['confirm_user_error']}", "{$lang['confirm_cannot_confirm']}");
 }
 sql_query("UPDATE users SET status = 'confirmed', editsecret = '' WHERE id = " . sqlesc($id) . " AND status = 'pending'") or sqlerr(__FILE__, __LINE__);
-$cache->update_row('MyUser_' . $id, [
-    'status' => 'confirmed',
-], $site_config['expires']['curuser']);
 $cache->update_row('user' . $id, [
     'status' => 'confirmed',
 ], $site_config['expires']['user_cache']);

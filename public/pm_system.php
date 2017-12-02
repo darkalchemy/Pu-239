@@ -149,9 +149,6 @@ if (isset($_GET['change_pm_number'])) {
     $cache->update_row('user' . $CURUSER['id'], [
         'pms_per_page' => $change_pm_number,
     ], $site_config['expires']['user_cache']);
-    $cache->update_row('MyUser_' . $CURUSER['id'], [
-        'pms_per_page' => $change_pm_number,
-    ], $site_config['expires']['curuser']);
     if (isset($_GET['edit_mail_boxes'])) {
         header('Location: pm_system.php?action=edit_mailboxes&pm=1');
     } else {
@@ -166,9 +163,6 @@ if (isset($_GET['show_pm_avatar'])) {
     $cache->update_row('user' . $CURUSER['id'], [
         'show_pm_avatar' => $show_pm_avatar,
     ], $site_config['expires']['user_cache']);
-    $cache->update_row('MyUser_' . $CURUSER['id'], [
-        'show_pm_avatar' => $show_pm_avatar,
-    ], $site_config['expires']['curuser']);
     if (isset($_GET['edit_mail_boxes'])) {
         header('Location: pm_system.php?action=edit_mailboxes&avatar=1');
     } else {

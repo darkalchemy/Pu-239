@@ -434,9 +434,6 @@ function do_delete_rep()
     sql_query('DELETE FROM reputation WHERE reputationid=' . intval($r['reputationid']));
     sql_query("UPDATE users SET reputation = (reputation-{$r['reputation']} ) WHERE id=" . intval($r['userid']));
     $update['rep'] = ($User['reputation'] - $r['reputation']);
-    $cache->update_row('MyUser_' . $r['userid'], [
-        'reputation' => $update['rep'],
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user' . $r['userid'], [
         'reputation' => $update['rep'],
     ], $site_config['expires']['user_cache']);
@@ -475,13 +472,9 @@ function do_edit_rep()
         $diff = $oldrep - $newrep;
         @sql_query("UPDATE users SET reputation = (reputation-{$diff}) WHERE id=" . intval($r['userid']));
         $update['rep'] = ($User['reputation'] - $diff);
-        $cache->update_row('MyUser_' . $r['userid'], [
-            'reputation' => $update['rep'],
-        ], $site_config['expires']['curuser']);
         $cache->update_row('user' . $r['userid'], [
             'reputation' => $update['rep'],
         ], $site_config['expires']['user_cache']);
-        $cache->delete('MyUser_' . $r['userid']);
         $cache->delete('user' . $r['userid']);
     }
     redirect('staffpanel.php?tool=reputation_ad&amp;mode=list', "{$lang['rep_ad_edit_saved']} {$r['reputationid']} {$lang['rep_ad_edit_success']}", 5);

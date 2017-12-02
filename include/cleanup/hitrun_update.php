@@ -43,11 +43,6 @@ function hitrun_update($data)
                 $cache->update_row('userstats_' . $arr_fuckers['userid'], [
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_stats']);
-                $cache->update_row('MyUser_' . $arr_fuckers['userid'], [
-                    'hit_and_run_total' => $update['hit_and_run_total'],
-                    'downloadpos'       => 0,
-                    'hnrwarn'           => 'yes',
-                ], $site_config['expires']['curuser']);
                 $cache->increment('inbox_' . $arr_fuckers['userid']);
             }
         }
@@ -80,10 +75,6 @@ function hitrun_update($data)
                 $cache->update_row('userstats_' . $arr_good_boy['id'], [
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_stats']);
-                $cache->update_row('MyUser_' . $arr_good_boy['id'], [
-                    'downloadpos' => 1,
-                    'hnrwarn'     => 'no',
-                ], $site_config['expires']['curuser']);
                 $cache->increment('inbox_' . $arr_good_boy['id']);
             }
         }
