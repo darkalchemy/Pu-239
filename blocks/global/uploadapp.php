@@ -1,11 +1,16 @@
 <?php
-global $CURUSER, $site_config, $cache, $lang;
+global $CURUSER, $site_config, $cache, $lang, $fpdo;
 
 if ($site_config['uploadapp_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $newapp = $cache->get('new_uploadapp_');
     if ($newapp === false || is_null($newapp)) {
-        $res_newapps = sql_query("SELECT count(id) FROM uploadapp WHERE status = 'pending'");
-        list($newapp) = mysqli_fetch_row($res_newapps);
+        $res = $fpdo->from('uploadapp')
+            ->select(null)
+            ->select('COUNT(id) AS count')
+            ->where('status = ?', 'pending')
+            ->fetch();
+
+        $newapp= $res['count'];
         $cache->set('new_uploadapp_', $newapp, $site_config['expires']['alerts']);
     }
     if ($newapp > 0) {

@@ -130,7 +130,7 @@ function class_check($class = 0, $staff = true, $pin = false)
  */
 function get_access($script)
 {
-    global $CURUSER, $site_config, $cache;
+    global $cache;
     $ending = parse_url($script, PHP_URL_QUERY);
     $count = substr_count($ending, '&');
     $i = 0;

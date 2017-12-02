@@ -7,12 +7,14 @@ function achievement_sticky_update($data)
     global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
+
     $res = sql_query("SELECT userid, stickyup, stickyachiev FROM usersachiev WHERE stickyup >= 1") or sqlerr(__FILE__, __LINE__);
-    $msg_buffer = $usersachiev_buffer = $achievements_buffer = [];
+    $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $dt = TIME_NOW;
         $subject = sqlesc('New Achievement Earned!');
         $points = random_int(1, 3);
+        $var1 = 'stickyachiev';
         while ($arr = mysqli_fetch_assoc($res)) {
             $stickyup = (int)$arr['stickyup'];
             $lvl = (int)$arr['stickyachiev'];
@@ -23,7 +25,6 @@ function achievement_sticky_update($data)
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',1, ' . $points . ')';
                 $cache->increment('inbox_' . $arr['userid']);
                 $cache->delete('user_achievement_points_' . $arr['userid']);
-                $var1 = 'stickyachiev';
             }
             if ($stickyup >= 5 && $lvl == 1) {
                 $msg = sqlesc('Congratulations, you have just earned the [b]Stick Em Up LVL2[/b] achievement. :) [img]' . $site_config['baseurl'] . '/images/achievements/sticky2.png[/img]');
@@ -32,7 +33,6 @@ function achievement_sticky_update($data)
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',2, ' . $points . ')';
                 $cache->increment('inbox_' . $arr['userid']);
                 $cache->delete('user_achievement_points_' . $arr['userid']);
-                $var1 = 'stickyachiev';
             }
             if ($stickyup >= 10 && $lvl == 2) {
                 $msg = sqlesc('Congratulations, you have just earned the [b]Stick Em Up LVL3[/b] achievement. :) [img]' . $site_config['baseurl'] . '/images/achievements/sticky3.png[/img]');
@@ -41,7 +41,6 @@ function achievement_sticky_update($data)
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',3, ' . $points . ')';
                 $cache->increment('inbox_' . $arr['userid']);
                 $cache->delete('user_achievement_points_' . $arr['userid']);
-                $var1 = 'stickyachiev';
             }
             if ($stickyup >= 25 && $lvl == 3) {
                 $msg = sqlesc('Congratulations, you have just earned the [b]Stick Em Up LVL4[/b] achievement. :) [img]' . $site_config['baseurl'] . '/images/achievements/sticky4.png[/img]');
@@ -50,7 +49,6 @@ function achievement_sticky_update($data)
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',4, ' . $points . ')';
                 $cache->increment('inbox_' . $arr['userid']);
                 $cache->delete('user_achievement_points_' . $arr['userid']);
-                $var1 = 'stickyachiev';
             }
             if ($stickyup >= 50 && $lvl == 4) {
                 $msg = sqlesc('Congratulations, you have just earned the [b]Stick Em Up LVL5[/b] achievement. :) [img]' . $site_config['baseurl'] . '/images/achievements/sticky5.png[/img]');
@@ -59,7 +57,6 @@ function achievement_sticky_update($data)
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',5, ' . $points . ')';
                 $cache->increment('inbox_' . $arr['userid']);
                 $cache->delete('user_achievement_points_' . $arr['userid']);
-                $var1 = 'stickyachiev';
             }
         }
         $count = count($achievements_buffer);

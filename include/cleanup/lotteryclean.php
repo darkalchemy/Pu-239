@@ -4,15 +4,18 @@
  */
 function lotteryclean($data)
 {
-    global $site_config, $queries, $cache;
+    global $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
+
+    $dt = TIME_NOW;
     $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
     $lottery_config = $_pms = $_userq = $uids = [];
     while ($aconf = mysqli_fetch_assoc($lconf)) {
         $lottery_config[ $aconf['name'] ] = $aconf['value'];
     }
-    if ($lottery_config['enable'] && TIME_NOW > $lottery_config['end_date']) {
+    if ($lottery_config['enable'] && $dt > $lottery_config['end_date']) {
+        $tickets = [];
         $q = sql_query('SELECT t.user AS uid, u.seedbonus, u.modcomment
                             FROM tickets AS t
                             LEFT JOIN users AS u ON u.id = t.user
@@ -20,9 +23,9 @@ function lotteryclean($data)
         while ($a = mysqli_fetch_assoc($q)) {
             $tickets[] = $a;
         }
-        shuffle($tickets);
-        shuffle($tickets);
-        shuffle($tickets);
+        for ($x = 0; $x <= 1000; $x++) {
+            shuffle($tickets);
+        }
         $lottery['winners'] = [];
         $lottery['total_tickets'] = count($tickets);
         for ($i = 0; $i < $lottery['total_tickets']; ++$i) {
@@ -42,14 +45,14 @@ function lotteryclean($data)
         $msg['subject'] = sqlesc('You have won the lottery');
         $msg['body'] = sqlesc('Congratulations, You have won : ' . number_format($lottery['user_pot']) . '. This has been added to your seedbonus total amount. Thanks for playing Lottery.');
         foreach ($lottery['winners'] as $winner) {
-            $mod_comment = sqlesc("User won the lottery: {$lottery['user_pot']} at " . get_date(TIME_NOW, 'LONG') . (!empty($winner['modcomment']) ? "\n" . $winner['modcomment'] : ''));
+            $mod_comment = sqlesc("User won the lottery: {$lottery['user_pot']} at " . get_date($dt, 'LONG') . (!empty($winner['modcomment']) ? "\n" . $winner['modcomment'] : ''));
             $_userq[] = ['id' => (int)$winner['uid'], 'seedbonus' => (float)$winner['seedbonus'] + $lottery['user_pot'], 'modcomment' => $mod_comment];
-            $_pms[] = '(0,' . $winner['uid'] . ',' . $msg['subject'] . ',' . $msg['body'] . ',' . TIME_NOW . ')';
+            $_pms[] = '(0,' . $winner['uid'] . ',' . $msg['subject'] . ',' . $msg['body'] . ',' . $dt . ')';
             $uids[] = $winner['uid'];
         }
         $lconfig_update = [
             '(\'enable\',0)',
-            '(\'lottery_winners_time\',' . TIME_NOW . ')',
+            '(\'lottery_winners_time\',' . $dt . ')',
             '(\'lottery_winners_amount\',' . $lottery['user_pot'] . ')',
             '(\'lottery_winners\',\'' . join('|', array_keys($lottery['winners'])) . '\')',
         ];

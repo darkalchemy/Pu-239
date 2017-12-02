@@ -1,11 +1,16 @@
 <?php
-global $CURUSER, $site_config, $cache, $lang;
+global $CURUSER, $site_config, $cache, $lang, $fpdo;
 
 if ($site_config['bug_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $bugs = $cache->get('bug_mess_');
     if ($bugs === false || is_null($bugs)) {
-        $res1 = sql_query("SELECT COUNT(id) FROM bugs WHERE status = 'na'");
-        list($bugs) = mysqli_fetch_row($res1);
+        $res = $fpdo->from('bugs')
+            ->select(null)
+            ->select('COUNT(id) AS count')
+            ->where('status = ?', 'na')
+            ->fetch();
+
+        $bugs= $res['count'];
         $cache->set('bug_mess_', $bugs, $site_config['expires']['alerts']);
     }
     if ($bugs > 0) {

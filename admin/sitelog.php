@@ -1,6 +1,7 @@
 <?php
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
+require_once INCL_DIR . 'bbcode_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
@@ -73,7 +74,7 @@ if (mysqli_num_rows($res) == 0) {
                         <span class='tex-black'>{$date[0]}{$date[1]}</span>
                     </td>
                     <td style='background-color:$color'>
-                        <span class='text-black'>" . $arr['txt'] . "</span>
+                        <span class='text-black'>" . format_comment($arr['txt']) . "</span>
                     </td>
                 </tr>";
     }

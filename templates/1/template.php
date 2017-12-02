@@ -347,16 +347,17 @@ function StatusBar()
  */
 function navbar()
 {
-    global $site_config, $CURUSER, $lang, $cache;
+    global $site_config, $CURUSER, $lang, $cache, $fpdo;
     $navbar = $panel = $user_panel = $settings_panel = $stats_panel = $other_panel = '';
 
     if ($CURUSER['class'] >= UC_STAFF) {
         $staff_panel = $cache->get('staff_panels_' . $CURUSER['class']);
         if ($staff_panel === false || is_null($staff_panel)) {
-            $res = sql_query('SELECT * FROM staffpanel
-                            WHERE navbar = 1 AND av_class <= ' . sqlesc($CURUSER['class']) . '
-                            ORDER BY page_name ASC') or sqlerr(__FILE__, __LINE__);
-            while ($arr = mysqli_fetch_assoc($res)) $staff_panel[] = $arr;
+            $staff_panel = $fpdo->from('staffpanel')
+                ->where('navbar = 1')
+                ->where('av_class <= ?', $CURUSER['class'])
+                ->orderBy('page_name')
+                ->fetchAll();
             $cache->set('staff_panels_' . $CURUSER['class'], $staff_panel, 0);
         }
 

@@ -1,11 +1,16 @@
 <?php
-global $CURUSER, $site_config, $cache, $lang;
+global $CURUSER, $site_config, $cache, $lang, $fpdo;
 
 if ($site_config['staffmsg_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $answeredby = $cache->get('staff_mess_');
     if ($answeredby === false || is_null($answeredby)) {
-        $res1 = sql_query('SELECT count(id) FROM staffmessages WHERE answeredby = 0');
-        list($answeredby) = mysqli_fetch_row($res1);
+        $res = $fpdo->from('staffmessages')
+            ->select(null)
+            ->select('COUNT(id) AS count')
+            ->where('answeredby = 0')
+            ->fetch();
+
+        $answeredby= $res['count'];
         $cache->set('staff_mess_', $answeredby, $site_config['expires']['alerts']);
     }
     if ($answeredby > 0) {

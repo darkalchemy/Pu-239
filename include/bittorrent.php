@@ -35,35 +35,38 @@ require_once INCL_DIR . 'password_functions.php';
 require_once INCL_DIR . 'site_config.php';
 
 global $site_config;
-try {
-    $pdo = new PDO("mysql:dbname={$site_config['mysql_db']}", "{$site_config['mysql_user']}", "{$site_config['mysql_pass']}");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-    $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-    $fpdo = new FluentPDO($pdo);
-} catch (PDOException $e) {
-    die("Error!: " . $e->getMessage() . "<br>");
+$pdo = new PDO("mysql:dbname={$site_config['mysql_db']}", "{$site_config['mysql_user']}", "{$site_config['mysql_pass']}");
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+$fpdo = new FluentPDO($pdo);
+$error = $pdo->errorInfo();
+if (!empty($error[1])) {
+    file_put_contents($site_config['sql_error_log'], json_encode($error) . PHP_EOL, FILE_APPEND);
+    die('Error occurred:'.implode(":", $error));
 }
 
-$fpdo->debug = function ($BaseQuery) {
-    global $pdo, $query_stat;
-    $query = str_replace('?', '%s', $BaseQuery->getQuery(true));
-    $paramaters = $BaseQuery->getParameters();
-    if (!empty($paramaters) && count($paramaters) >= 1) {
-        foreach ($paramaters as $param) {
-            $params[] = $pdo->quote($param);
+if (SQL_DEBUG) {
+    $fpdo->debug = function ($BaseQuery) {
+        global $pdo, $query_stat;
+        $params = [];
+        $query = str_replace('?', '%s', $BaseQuery->getQuery(true));
+        $paramaters = $BaseQuery->getParameters();
+        if (!empty($paramaters) && count($paramaters) >= 1) {
+            foreach ($paramaters as $param) {
+                $params[] = $pdo->quote($param);
+            }
+            $params = implode(', ', $params);
+            $query = sprintf($query, $params);
         }
-        $params = implode(', ', $params);
-        $query = sprintf($query, $params);
-    }
-    if (!empty($query)) {
-        $query_stat[] = [
-            'seconds' => 'PDO',
-            'query'   => $query,
-        ];
-    }
-};
-
+        if (!empty($query)) {
+            $query_stat[] = [
+                'seconds' => 'PDO',
+                'query'   => $query,
+            ];
+        }
+    };
+}
 
 $load = sys_getloadavg();
 if ($load[0] > 20) {
@@ -1782,23 +1785,19 @@ function user_exists($user_id)
  */
 function get_poll()
 {
-    global $CURUSER, $cache, $site_config;
+    global $CURUSER, $cache, $site_config, $fpdo;
 
     $poll_data = $cache->get('poll_data_' . $CURUSER['id']);
     if ($poll_data === false || is_null($poll_data)) {
-        $sql = 'SELECT p.*, INET6_NTOA(v.ip) AS ip, v.vote_date, v.user_id
-            FROM polls AS p
-            LEFT JOIN poll_voters AS v ON p.pid = v.poll_id AND v.user_id = ' . sqlesc($CURUSER['id']) . '
-            ORDER BY p.start_date
-            DESC LIMIT 1';
-
-        $query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        if (!mysqli_num_rows($query)) {
-            return '';
-        }
-        while ($row = mysqli_fetch_assoc($query)) {
-            $poll_data = $row;
-        }
+        $poll_data = $fpdo->from('polls')
+            ->select('INET6_NTOA(poll_voters.ip) AS ip')
+            ->select('poll_voters.user_id')
+            ->select('poll_voters.vote_date')
+            ->leftJoin('poll_voters ON poll_voters.poll_id = polls.pid')
+            ->where('poll_voters.user_id = ?', $CURUSER['id'])
+            ->orderBy('polls.start_date DESC')
+            ->limit(1)
+            ->fetch();
         $cache->set('poll_data_' . $CURUSER['id'], $poll_data, $site_config['expires']['poll_data']);
     }
     return $poll_data;

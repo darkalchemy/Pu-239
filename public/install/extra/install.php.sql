@@ -2166,7 +2166,6 @@ CREATE TABLE `polls` (
   `start_date` int(10) DEFAULT NULL,
   `choices` longtext COLLATE utf8mb4_unicode_ci,
   `starter_id` mediumint(8) NOT NULL DEFAULT '0',
-  `starter_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `votes` smallint(5) NOT NULL DEFAULT '0',
   `poll_question` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`pid`)
@@ -3700,4 +3699,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-26  1:30:47
+-- Dump completed on 2017-12-02 22:14:49

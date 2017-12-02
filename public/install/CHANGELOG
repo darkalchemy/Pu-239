@@ -1,3 +1,7 @@
+2 Dec 2017
+replace: more mysqli queries with pdo
+general code cleanup
+
 1 Dec 2017
 remove: duplicate caches Myuser_ and user
 

@@ -7,6 +7,7 @@ function gift_update($data)
     global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
+
     $res = sql_query("SELECT id, modcomment FROM users WHERE gotgift='yes'") or sqlerr(__FILE__, __LINE__);
     $users_buffer = [];
     if (mysqli_num_rows($res) > 0) {

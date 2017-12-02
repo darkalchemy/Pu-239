@@ -1,11 +1,21 @@
 <?php
-global $site_config, $cache, $lang;
+global $site_config, $cache, $lang, $fpdo;
 
 $latestuser = $cache->get('latestuser');
 if ($latestuser === false || is_null($latestuser)) {
-    $latestuser = mysqli_fetch_assoc(sql_query('SELECT id FROM users WHERE status = "confirmed" ORDER BY id DESC LIMIT 1'));
+    $latestuser = $fpdo->from('users')
+        ->select(null)
+        ->select('id')
+        ->where('status = ?', 'confirmed')
+        ->where('perms < ?', bt_options::PERMS_STEALTH)
+        ->orderBy('id DESC')
+        ->limit(1)
+        ->fetchAll();
+
+    $latestuser = format_username($latestuser['id']);
     $cache->set('latestuser', $latestuser, $site_config['expires']['latestuser']);
 }
+
 $HTMLOUT .= "
         <a id='latestuser-hash'></a>
         <fieldset id='latestuser' class='header'>

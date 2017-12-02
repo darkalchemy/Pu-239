@@ -4,12 +4,12 @@
  */
 function failedlogin_update($data)
 {
-    global $site_config, $queries, $cache;
+    global $queries;
     set_time_limit(1200);
     ignore_user_abort(true);
-    //== Failed logins
-    $secs = 1 * 86400; // Delete failed login attempts per one day.
-    $dt = (TIME_NOW - $secs); // calculate date.
+
+    $secs = 86400;
+    $dt = (TIME_NOW - $secs);
     sql_query("DELETE FROM failedlogins WHERE added < $dt") or sqlerr(__FILE__, __LINE__);
     if ($data['clean_log'] && $queries > 0) {
         write_log("Expired Failed Login Cleanup: Completed using $queries queries");

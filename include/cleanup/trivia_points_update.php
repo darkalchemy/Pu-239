@@ -7,8 +7,8 @@ function trivia_points_update($data)
     global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
-    $count = 0;
 
+    $count = 0;
     $msgs_buffer = $users_buffer = $users = [];
     $i = 1;
     $gamenum = get_one_row('triviasettings', 'gamenum', 'WHERE gameon = 1');
@@ -25,6 +25,7 @@ function trivia_points_update($data)
         while ($winners = mysqli_fetch_assoc($res)) {
             $correct = $incorrect = $modcomment = $user_id = '';
             extract($winners);
+            $points = 0;
             switch ($i) {
                 case 1:
                     $points = 10 * $correct;
@@ -59,7 +60,6 @@ function trivia_points_update($data)
             }
 
             $msg = 'You answered ' . number_format($correct) . " trivia question correctly and were awarded $points Bonus Points!!\n";
-            $modcomment = $modcomment;
             $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - Awarded Bonus Points for Trivia.\n" . $modcomment;
             $msgs_buffer[] = '(0,' . sqlesc($user_id) . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
             $users[] = $user_id;

@@ -8,6 +8,9 @@ function pu_demote_update($data)
     set_time_limit(1200);
     ignore_user_abort(true);
 
+    $prev_class = 0;
+    $class_name = $prev_class_name = 'user';
+
     $pconf = sql_query('SELECT * FROM class_promo ORDER BY id ASC ') or sqlerr(__FILE__, __LINE__);
     while ($ac = mysqli_fetch_assoc($pconf)) {
         $class_config[ $ac['name'] ]['id'] = $ac['id'];
@@ -20,18 +23,18 @@ function pu_demote_update($data)
         $minratio = $class_config[ $ac['name'] ]['low_ratio'];
 
         $class_value = $class_config[ $ac['name'] ]['name'];
-        $res1 = sql_query("SELECT * from class_config WHERE value = '$class_value' ");
+        $res1 = sql_query("SELECT * from class_config WHERE value = " . sqlesc($class_value));
         while ($arr1 = mysqli_fetch_assoc($res1)) {
             $class_name = $arr1['classname'];
             $prev_class = $class_value - 1;
         }
 
-        $res2 = sql_query("SELECT * from class_config WHERE value = '$prev_class' ");
+        $res2 = sql_query("SELECT * from class_config WHERE value = " . sqlesc($prev_class));
         while ($arr2 = mysqli_fetch_assoc($res2)) {
             $prev_class_name = $arr2['classname'];
         }
 
-        $res = sql_query("SELECT id, uploaded, downloaded, modcomment FROM users WHERE class = $class_value AND uploaded / downloaded < $minratio") or sqlerr(__FILE__, __LINE__);
+        $res = sql_query("SELECT id, uploaded, downloaded, modcomment FROM users WHERE class = " . sqlesc($class_value) . " AND uploaded / downloaded < $minratio") or sqlerr(__FILE__, __LINE__);
         $subject = 'Auto Demotion';
         $msgs_buffer = $users_buffer = [];
         if (mysqli_num_rows($res) > 0) {

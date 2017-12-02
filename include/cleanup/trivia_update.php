@@ -4,7 +4,7 @@
  */
 function trivia_update($data)
 {
-    global $site_config, $queries, $cache;
+    global $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
 
@@ -14,7 +14,7 @@ function trivia_update($data)
     $result = mysqli_fetch_assoc($res);
     $gamenum = $result['gamenum'];
 
-    if (!empty($gamenum)) {
+    if ($gamenum >= 1) {
         $qids = $cache->get('triviaquestions_');
         if ($qids === false || is_null($qids)) {
             $sql = 'SELECT qid FROM triviaq WHERE asked = 0 AND current = 0';

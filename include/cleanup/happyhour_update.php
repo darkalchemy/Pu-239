@@ -4,11 +4,11 @@
  */
 function happyhour_update($data)
 {
-    global $site_config, $queries, $cache;
+    global $site_config, $queries;
     set_time_limit(1200);
     ignore_user_abort(true);
+
     require_once INCL_DIR . 'function_happyhour.php';
-    //==Putyns HappyHour
     $f = $site_config['happyhour'];
     $happy = unserialize(file_get_contents($f));
     $happyHour = strtotime($happy['time']);
@@ -22,7 +22,6 @@ function happyhour_update($data)
     } elseif (($curDate > $happyEnd) && $happy['status'] == 1) {
         happyFile('reset');
     }
-    //== End
     if ($data['clean_log'] && $queries > 0) {
         write_log("Happyhour Cleanup: Completed using $queries queries");
     }

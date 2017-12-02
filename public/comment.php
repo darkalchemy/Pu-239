@@ -79,7 +79,7 @@ if ($action == 'add') {
         $cache->delete('latest_comments_');
         if ($site_config['seedbonus_on'] == 1) {
             if ($site_config['karma'] && isset($CURUSER['seedbonus'])) {
-                sql_query('UPDATE users SET seedbonus = seedbonus+' . sqlesc($site_config['bonus_per_comment']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+                sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus_per_comment']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
             }
             $update['comments'] = ($arr['comments'] + 1);
             $cache->update_row('torrent_details_' . $id, [
@@ -102,8 +102,10 @@ if ($action == 'add') {
             $subby = sqlesc('Someone has left a comment');
             $notifs = sqlesc("You have received a comment on your torrent [url={$site_config['baseurl']}/details.php?id={$id}] " . htmlsafechars($arr['name']) . '[/url].');
             sql_query('INSERT INTO messages (sender, receiver, subject, msg, added) VALUES(0, ' . sqlesc($arr['owner']) . ", $subby, $notifs, $added)") or sqlerr(__FILE__, __LINE__);
+            $cache->increment('inbox_' . $arr['owner']);
         }
         // ---end---//
+        setSessionVar('is-success', 'Your comment has been posted');
         header("Refresh: 0; url=$locale_link.php?id=$id$extra_link&viewcomm=$newid#comm$newid");
         die;
     }
@@ -173,9 +175,12 @@ if ($action == 'add') {
         $editedat = TIME_NOW;
         if (isset($_POST['lasteditedby']) || $CURUSER['class'] < UC_STAFF) {
             sql_query('UPDATE comments SET text = ' . sqlesc($text) . ", editedat = $editedat, editedby = " . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
+            $cache->delete('latest_comments_');
         } else {
             sql_query('UPDATE comments SET text = ' . sqlesc($text) . ", editedat = $editedat, editedby = 0 WHERE id = " . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
+            $cache->delete('latest_comments_');
         }
+        setSessionVar('is-success', 'The comment has been updated');
         header("Refresh: 0; url=$locale_link.php?id=" . (int)$arr['tid'] . "$extra_link&viewcomm=$commentid#comm$commentid");
         die;
     }
@@ -208,26 +213,27 @@ if ($action == 'add') {
         stderr("{$lang['comment_delete']}", "{$lang['comment_about_delete']}\n" . "<a href='comment.php?action=delete&amp;cid=$commentid&amp;tid=$tid&amp;sure=1" . ($locale == 'request' ? '&amp;type=request' : '') . "'>
           here</a> {$lang['comment_delete_sure']}");
     }
-    $res = sql_query("SELECT $locale FROM comments WHERE id=" . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query("SELECT $locale FROM comments WHERE id = " . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
     $id = 0;
     if ($arr) {
         $id = $arr[ $locale ];
     }
-    sql_query('DELETE FROM comments WHERE id=' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
+    sql_query('DELETE FROM comments WHERE id = ' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
+    $cache->delete('latest_comments_');
     if ($id && mysqli_affected_rows($GLOBALS['___mysqli_ston']) > 0) {
         sql_query("UPDATE $table_type SET comments = comments - 1 WHERE id = " . sqlesc($id));
     }
     if ($site_config['seedbonus_on'] == 1) {
         if ($site_config['karma'] && isset($CURUSER['seedbonus'])) {
-            sql_query('UPDATE users SET seedbonus = seedbonus-3.0 WHERE id =' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+            sql_query('UPDATE users SET seedbonus = seedbonus - ' . sqlesc($site_config['bonus_per_comment']) . ' WHERE id =' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         }
         $arr['comments'] = (isset($arr['comments']) ? $arr['comments'] : 0);
         $update['comments'] = ($arr['comments'] - 1);
         $cache->update_row('torrent_details_' . $id, [
             'comments' => $update['comments'],
         ], 0);
-        $update['seedbonus'] = ($CURUSER['seedbonus'] - 3);
+        $update['seedbonus'] = ($CURUSER['seedbonus'] - $site_config['bonus_per_comment']);
         $cache->update_row('userstats_' . $CURUSER['id'], [
             'seedbonus' => $update['seedbonus'],
         ], $site_config['expires']['u_stats']);
@@ -236,6 +242,7 @@ if ($action == 'add') {
         ], $site_config['expires']['user_stats']);
         //===end
     }
+    setSessionVar('is-success', 'The comment has been deleted');
     header("Refresh: 0; url=$locale_link.php?id=$tid$extra_link");
     die;
 } elseif ($action == 'vieworiginal') {

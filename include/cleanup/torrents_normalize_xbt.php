@@ -4,9 +4,10 @@
  */
 function torrents_normalize_xbt($data)
 {
-    global $site_config, $queries, $cache;
+    global $site_config, $queries;
     set_time_limit(1200);
     ignore_user_abort(true);
+
     do {
         $res = sql_query('SELECT id FROM torrents');
         $ar = [];
