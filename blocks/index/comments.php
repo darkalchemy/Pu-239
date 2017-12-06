@@ -40,11 +40,14 @@ $header = "
                             <th class='has-text-centered'>When</th>
                             <th class='has-text-centered'>Likes</th>
                         </tr>";
-
-$body = '
+$body = '';
+if (!$comments) {
+    $body = '
                         <tr>
                             <td colspan="5">No Comments Found</td>
                         </tr>';
+}
+
 foreach ($comments as $comment) {
     $user = $torrent = $id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = '';
     extract($comment);

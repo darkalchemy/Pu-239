@@ -958,6 +958,32 @@ INSERT INTO `countries` VALUES (1,'Sweden','sweden.gif'),(2,'United States of Am
 UNLOCK TABLES;
 
 --
+-- Table structure for table `database_updates`
+--
+
+DROP TABLE IF EXISTS `database_updates`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `database_updates` (
+  `id` int(10) unsigned NOT NULL DEFAULT '0',
+  `info` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `query` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `added` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `database_updates`
+--
+
+LOCK TABLES `database_updates` WRITE;
+/*!40000 ALTER TABLE `database_updates` DISABLE KEYS */;
+INSERT INTO `database_updates` VALUES (1,'Drop Column<br>will fail if column already dropped','ALTER TABLE polls DROP `starter_name`','2017-12-06 19:29:55');
+/*!40000 ALTER TABLE `database_updates` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `dbbackup`
 --
 
@@ -3699,4 +3725,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-02 22:14:49
+-- Dump completed on 2017-12-06 19:44:43

@@ -190,6 +190,7 @@ define('CLEAN_DIR', INCL_DIR . 'cleanup' . DIRECTORY_SEPARATOR);
 define('PUBLIC_DIR', ROOT_DIR . 'public' . DIRECTORY_SEPARATOR);
 define('IMAGES_DIR', PUBLIC_DIR . 'images' . DIRECTORY_SEPARATOR);
 define('VENDOR_DIR', ROOT_DIR . 'vendor' . DIRECTORY_SEPARATOR);
+define('DATABASE_DIR', ROOT_DIR . 'database' . DIRECTORY_SEPARATOR);
 
 $site_config['cache'] = ROOT_DIR . 'cache';
 $site_config['backup_dir'] = INCL_DIR . 'backup';

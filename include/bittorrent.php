@@ -442,6 +442,7 @@ function userlogin()
         'arcade'           => '%s is viewing the <a href="%s">arcade page</a>',
         'flash'            => '%s is playing a <a href="%s">flash game</a>',
         'arcade_top_score' => '%s is viewing the <a href="%s">arcade top scores page</a>',
+        'staffpanel'        => '%s is viewing the <a href="%s">Staff Panel</a>',
         'unknown'          => '%s location is unknown',
     ];
     if (preg_match('/\/(.*?)\.php/is', $_SERVER['REQUEST_URI'], $whereis_temp)) {

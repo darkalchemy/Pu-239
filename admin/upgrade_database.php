@@ -1,0 +1,140 @@
+<?php
+require_once INCL_DIR . 'user_functions.php';
+require_once CLASS_DIR . 'class_check.php';
+require_once INCL_DIR . 'pager_functions.php';
+require_once DATABASE_DIR . 'sql_updates.php';
+$class = get_access(basename($_SERVER['REQUEST_URI']));
+class_check($class);
+global $CURUSER, $cache, $lang, $fpdo;
+
+$lang = array_merge($lang);
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    extract($_POST);
+    unset($_POST);
+    if ($id >= 1 && $submit === 'Run Query') {
+        $sql = $sql_updates[$id - 1]['query'];
+        if (sql_query($sql)) {
+            $sql = "INSERT INTO database_updates (id, info, query) VALUES (" . sqlesc($id). ", " . sqlesc($sql_updates[$id - 1]['info']) . ", " . sqlesc($sql) . ")";
+            sql_query($sql) or sqlerr(__FILE__, __LINE__);
+            setSessionVar('is-success', "Query #$id ran without error");
+        } else {
+            setSessionVar('is-danger', "Query #$id failed to run, try to run manually");
+        }
+    }
+}
+
+
+$table_exists = $cache->get('table_exists_database_updates');
+if ($table_exists === false || is_null($table_exists)) {
+    $sql = "SHOW tables LIKE 'database_updates'";
+    $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+    if (mysqli_num_rows($result) != 1) {
+        sql_query(
+            "CREATE TABLE `database_updates` (
+              `id` int(10) unsigned NOT NULL DEFAULT '0',
+              `info` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+              `query` text COLLATE utf8mb4_unicode_ci NOT NULL,
+              `added` datetime DEFAULT CURRENT_TIMESTAMP,
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;"
+        ) or sqlerr(__FILE__, __LINE__);
+    }
+
+    $cache->set('table_exists_database_updates', 1, 0);
+}
+
+$heading = "
+        <tr>
+            <th class='has-text-centered w-10'>
+                ID
+            </th>
+            <th class='has-text-centered'>
+                Info
+            </th>
+            <th class='has-text-centered'>
+                Date
+            </th>
+            <th class='has-text-centered'>
+                Query
+            </th>
+            <th class='has-text-centered w-10'>
+                Status
+            </th>
+        </tr>";
+if (!defined('DATABASE_DIR')) {
+    $body = "
+        <tr>
+            <td class='has-text-centered'>
+                1
+            </td>
+            <td>
+                Add define 'Database' path
+            </td>
+            <td>
+                " . get_date(TIME_NOW, 'LONG') . "
+            </td>
+            <td>
+                add \"define('DATABASE_DIR', ROOT_DIR . 'database' . DIRECTORY_SEPARATOR);\" to config.php
+            </td>
+            <td class='has-text-centered'>
+                button
+            </td>
+        </tr>";
+} elseif (file_exists(DATABASE_DIR)) {
+    $results = $fpdo->from('database_updates')
+        ->select(null)
+        ->select('id')
+        ->select('added')
+        ->fetchPairs('id', 'added');
+
+    $results = !empty($results) ? $results : [0 => '2017-12-06 14:43:22'];
+
+    $count = count($sql_updates);
+    $per_page = 15;
+    $pager = pager($per_page, $count, "{$site_config['baseurl']}/staffpanel.php?tool=upgrade_database&amp;");
+    preg_match('/LIMIT (\d*),(\d*)/i', $pager['limit'], $match);
+    $first = isset($match[1]) ? $match[1] : 0;
+    $last = isset($match[2]) ? $match[1] + $per_page : end($sql_updates)['id'];
+    foreach ($sql_updates as $update) {
+        if ($update['id'] > $first && $update['id'] <= $last) {
+            $button = "
+                <form action='{$site_config['baseurl']}/staffpanel.php?tool=upgrade_database' method='post'>
+                    <input type='hidden' name='id' value={$update['id']}>
+                    <input class='button is-primary is-small' type='submit' name='submit' value='Run Query' />
+                </form>";
+            $body .= "
+        <tr>
+            <td class='has-text-centered'>
+                {$update['id']}
+            </td>
+            <td>
+                {$update['info']}
+            </td>
+            <td class='has-text-centered'>
+                " . (array_key_exists($update['id'], $results) ? $results[$update['id']] : $update['date']) . "
+            </td>
+            <td>
+                {$update['query']}
+            </td>
+            <td class='has-text-centered'>
+                " . (array_key_exists($update['id'], $results) ? 'Installed' : $button) . "
+            </td>
+        </tr>";
+        }
+    }
+
+} else {
+    $body = "
+        <tr>
+            <td colspan='5'>
+                'Path Missing: => " . DATABASE_DIR . "
+            </td>
+        </tr>";
+}
+
+
+$HTMLOUT = wrapper($pager['pagertop'] . main_table($body, $heading, null, 'bottom20') . $pager['pagerbottom']);
+
+echo stdhead('Update Database') . $HTMLOUT . stdfoot();
+
