@@ -2,12 +2,18 @@
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'pager_functions.php';
-require_once DATABASE_DIR . 'sql_updates.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 global $CURUSER, $cache, $lang, $fpdo;
 
 $lang = array_merge($lang);
+if (!defined('DATABASE_DIR')) {
+    stderr('Error', "add \"define('DATABASE_DIR', ROOT_DIR . 'database' . DIRECTORY_SEPARATOR);\" to config.php");
+    die();
+} else {
+    require_once DATABASE_DIR . 'sql_updates.php';
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
@@ -62,26 +68,8 @@ $heading = "
                 Status
             </th>
         </tr>";
-if (!defined('DATABASE_DIR')) {
-    $body = "
-        <tr>
-            <td class='has-text-centered'>
-                1
-            </td>
-            <td>
-                Add define 'Database' path
-            </td>
-            <td>
-                " . get_date(TIME_NOW, 'LONG') . "
-            </td>
-            <td>
-                add \"define('DATABASE_DIR', ROOT_DIR . 'database' . DIRECTORY_SEPARATOR);\" to config.php
-            </td>
-            <td class='has-text-centered'>
-                button
-            </td>
-        </tr>";
-} elseif (file_exists(DATABASE_DIR)) {
+
+if (file_exists(DATABASE_DIR)) {
     $results = $fpdo->from('database_updates')
         ->select(null)
         ->select('id')
