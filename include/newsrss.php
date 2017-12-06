@@ -155,12 +155,10 @@ function github_shout($links = [])
                 $commit = trim($match[1]);
                 $title = trim($devices['title']);
                 $link = trim($devices['link']["@attributes"]['href']);
-                $author = trim($devices['author']['name']);
 
                 $pubs[] = [
                     'title'  => replace_unicode_strings($title),
                     'link'   => replace_unicode_strings($link),
-                    'author' => replace_unicode_strings($author),
                     'commit' => replace_unicode_strings($commit),
                 ];
             }
