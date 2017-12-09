@@ -19,8 +19,13 @@ $the_top_and_bottom = '<tr><td class="three" colspan="3">' . (($count > $perpage
 $HTMLOUT .= $mini_menu . '
     <div class="has-text-centered bottom20">
         <h1>' . $count . ' ' . $lang['fe_posts_by'] . ' ' . format_username($CURUSER) . '</h1>
-        <a class="altlink tooltipper right20" href="forums.php?action=view_my_posts" title="' . $lang['vmp_view_posts_new_to_old'] . '">' . $lang['vmp_sort_by_newest_posts_1st'] . '</a> 
-	    <a class="altlink tooltipper left20" href="forums.php?action=view_my_posts&amp;ASC_DESC=ASC" title="' . $lang['vmp_view_posts_old_to_new'] . '">' . $lang['vmp_sort_by_oldest_posts_1st'] . '</a>
+        <ul class="tabs">
+        <li>
+            <a class="altlink tooltipper' . (empty($_GET['ASC_DESC']) ? ' active' : '') . '" href="forums.php?action=view_my_posts" title="' . $lang['vmp_view_posts_new_to_old'] . '">' . $lang['vmp_sort_by_newest_posts_1st'] . '</a>
+        </li> 
+	    <li>
+	        <a class="altlink tooltipper' . (!empty($_GET['ASC_DESC']) ? ' active' : '') . '" href="forums.php?action=view_my_posts&amp;ASC_DESC=ASC" title="' . $lang['vmp_view_posts_old_to_new'] . '">' . $lang['vmp_sort_by_oldest_posts_1st'] . '</a>
+	    </li>
 	</div>
     <a name="top"></a>
     <table class="table table-bordered table-striped">' . $the_top_and_bottom;

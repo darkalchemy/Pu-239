@@ -1,4 +1,5 @@
 9 Dec 2017
+update: forums sort links to tabs
 fix: navbar username class color
 add: mini navbar for links in usercp.php, userdetails.php forums.php
 remove: text shadow from user classes
