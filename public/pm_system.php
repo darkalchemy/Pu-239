@@ -9,7 +9,6 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
 
-// Define constants
 /**
  *
  */
@@ -83,8 +82,7 @@ if ($CURUSER['class'] <= UC_USER) {
     $maxboxes = 5;
 }
 
-//=== get action and check to see if it's ok...
-$returnto = isset($_GET['returnto']) ? $_GET['returnto'] : '/index.php';
+$returnto = isset($_GET['returnto']) ? $_GET['returnto'] : isset($_POST['returnto']) ? $_POST['returnto'] : '/index.php';
 $possible_actions = [
     'view_mailbox',
     'use_draft',
@@ -104,7 +102,7 @@ $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_PO
 if (!in_array($action, $possible_actions)) {
     stderr($lang['pm_error'], $lang['pm_error_ruffian']);
 }
-//=== possible stuff to be $_GETting lol
+
 $change_pm_number = (isset($_GET['change_pm_number']) ? intval($_GET['change_pm_number']) : (isset($_POST['change_pm_number']) ? intval($_POST['change_pm_number']) : 0));
 $page = (isset($_GET['page']) ? intval($_GET['page']) : 0);
 $perpage = (isset($_GET['perpage']) ? intval($_GET['perpage']) : ($CURUSER['pms_per_page'] > 0 ? $CURUSER['pms_per_page'] : 20));
@@ -112,11 +110,9 @@ $mailbox = (isset($_GET['box']) ? intval($_GET['box']) : (isset($_POST['box']) ?
 $pm_id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
 $save = ((isset($_POST['save']) && $_POST['save'] === 1) ? '1' : '0');
 $urgent = ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? 'yes' : 'no');
-//=== change ASC to DESC and back for sort by
 $desc_asc = (isset($_GET['ASC']) ? '&amp;DESC=1' : (isset($_GET['DESC']) ? '&amp;ASC=1' : ''));
 $desc_asc_2 = (isset($_GET['DESC']) ? 'ascending' : 'descending');
 $spacer = '&#160;&#160;&#160;&#160;';
-//=== get orderby and check to see if it's ok...
 $good_order_by = [
     'username',
     'added',
@@ -127,7 +123,7 @@ $order_by = (isset($_GET['order_by']) ? htmlsafechars($_GET['order_by']) : 'adde
 if (!in_array($order_by, $good_order_by)) {
     stderr($lang['pm_error'], $lang['pm_error_temp']);
 }
-//=== top of page:
+
 $top_links = '
     <div class="bottom20">
         <ul class="level-center bg-06">
@@ -138,7 +134,7 @@ $top_links = '
             <li class="altlink margin20"><a href="' . $site_config['baseurl'] . '/pm_system.php?action=view_mailbox">' . $lang['pm_in_box'] . '</a></li>
         </ul>
     </div>';
-//=== change  number of PMs per page on the fly
+
 if (isset($_GET['change_pm_number'])) {
     $change_pm_number = (isset($_GET['change_pm_number']) ? intval($_GET['change_pm_number']) : 20);
     sql_query('UPDATE users SET pms_per_page = ' . sqlesc($change_pm_number) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -167,18 +163,18 @@ if (isset($_GET['show_pm_avatar'])) {
     exit();
 }
 
-isset($_GET['deleted']) ? setSessionVar('is-success', $lang['pm_deleted']) : '';
-isset($_GET['avatar']) ? setSessionVar('is-success', $lang['pm_avatar']) : '';
-isset($_GET['pm']) ? setSessionVar('is-success', $lang['pm_changed']) : '';
-isset($_GET['singlemove']) ? setSessionVar('is-success', $lang['pm_moved']) : '';
-isset($_GET['multi_move']) ? setSessionVar('is-success', $lang['pm_moved_s']) : '';
-isset($_GET['multi_delete']) ? setSessionVar('is-success', $lang['pm_deleted_s']) : '';
-isset($_GET['forwarded']) ? setSessionVar('is-success', $lang['pm_forwarded']) : '';
-isset($_GET['boxes']) ? setSessionVar('is-success', $lang['pm_box_added']) : '';
-isset($_GET['name']) ? setSessionVar('is-success', $lang['pm_box_updated']) : '';
-isset($_GET['new_draft']) ? setSessionVar('is-success', $lang['pm_draft_saved']) : '';
-isset($_GET['sent']) ? setSessionVar('is-success', $lang['pm_msg_sent']) : '';
-isset($_GET['pms']) ? setSessionVar('is-success', $lang['pm_msg_sett']) : '';
+isset($_GET['deleted']) ? setSessionVar('is-success', $lang['pm_deleted']) : null;
+isset($_GET['avatar']) ? setSessionVar('is-success', $lang['pm_avatar']) : null;
+isset($_GET['pm']) ? setSessionVar('is-success', $lang['pm_changed']) : null;
+isset($_GET['singlemove']) ? setSessionVar('is-success', $lang['pm_moved']) : null;
+isset($_GET['multi_move']) ? setSessionVar('is-success', $lang['pm_moved_s']) : null;
+isset($_GET['multi_delete']) ? setSessionVar('is-success', $lang['pm_deleted_s']) : null;
+isset($_GET['forwarded']) ? setSessionVar('is-success', $lang['pm_forwarded']) : null;
+isset($_GET['boxes']) ? setSessionVar('is-success', $lang['pm_box_added']) : null;
+isset($_GET['name']) ? setSessionVar('is-success', $lang['pm_box_updated']) : null;
+isset($_GET['new_draft']) ? setSessionVar('is-success', $lang['pm_draft_saved']) : null;
+isset($_GET['sent']) ? setSessionVar('is-success', $lang['pm_msg_sent']) : null;
+isset($_GET['pms']) ? setSessionVar('is-success', $lang['pm_msg_sett']) : null;
 
 $mailbox_name = ($mailbox === PM_INBOX ? $lang['pm_inbox'] : ($mailbox === PM_SENTBOX ? $lang['pm_sentbox'] : $lang['pm_drafts']));
 switch ($action) {
@@ -234,8 +230,10 @@ switch ($action) {
         require_once PM_DIR . 'edit_mailboxes.php';
         break;
 }
-//=== get all PM boxes
+
 /**
+ * @param int $box
+ *
  * @return array|string
  */
 function get_all_boxes($box = 1)
@@ -245,7 +243,7 @@ function get_all_boxes($box = 1)
     if ($get_all_boxes === false || is_null($get_all_boxes)) {
         $res = sql_query('SELECT boxnumber, name FROM pmboxes WHERE userid = ' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
         while ($row = mysqli_fetch_assoc($res)) {
-            $get_all_boxes[] =$row;
+            $get_all_boxes[] = $row;
         }
         $cache->set('get_all_boxes_' . $CURUSER['id'], $get_all_boxes, $site_config['expires']['get_all_boxes']);
     }
@@ -265,7 +263,6 @@ function get_all_boxes($box = 1)
     return $boxes;
 }
 
-//=== insert jump to box
 /**
  * @param $mailbox
  *

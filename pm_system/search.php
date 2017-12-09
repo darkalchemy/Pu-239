@@ -2,22 +2,18 @@
 global $CURUSER, $lang, $site_config;
 
 $num_result = $and_member = '';
-//=== get post / get stuff
 $keywords = (isset($_POST['keywords']) ? htmlsafechars($_POST['keywords']) : '');
 $member = (isset($_POST['member']) ? htmlsafechars($_POST['member']) : '');
 $all_boxes = (isset($_POST['all_boxes']) ? intval($_POST['all_boxes']) : '');
 $sender_reciever = ($mailbox >= 1 ? 'sender' : 'receiver');
-//== query stuff
 $what_in_out = ($mailbox >= 1 ? 'AND receiver = ' . sqlesc($CURUSER['id']) : 'AND sender = ' . sqlesc($CURUSER['id']));
 $location = (isset($_POST['all_boxes']) ? 'AND location != 0' : 'AND location = ' . $mailbox);
 $limit = (isset($_POST['limit']) ? intval($_POST['limit']) : 25);
 $as_list_post = (isset($_POST['as_list_post']) ? intval($_POST['as_list_post']) : 2);
 $desc_asc = (isset($_POST['ASC']) == 1 ? 'ASC' : 'DESC');
-//=== search in
 $subject = (isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : '');
 $text = (isset($_POST['text']) ? htmlsafechars($_POST['text']) : '');
 $member_sys = (isset($_POST['system']) ? 'system' : '');
-//=== get sort and check to see if it's ok...
 $possible_sort = [
     'added',
     'subject',
@@ -33,7 +29,6 @@ if (!in_array($sort, $possible_sort)) {
     $sort = htmlsafechars($_POST['sort']);
 }
 
-//=== Try finding a user with specified name
 if ($member) {
     $res_username = sql_query('SELECT id FROM users WHERE LOWER(username) = LOWER(' . sqlesc($member) . ') LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $arr_userid = mysqli_fetch_assoc($res_username);
@@ -48,7 +43,7 @@ if ($member_sys) {
     $and_member = ' AND sender = 0 ';
     $the_username = '<span>System</span>';
 }
-//=== get all boxes
+
 $res = sql_query('SELECT boxnumber, name FROM pmboxes WHERE userid = ' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
 
 $HTMLOUT .= $top_links . '
@@ -124,7 +119,6 @@ $HTMLOUT .= '
             </form>';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //=== remove common words first. add more if you like...
     $remove_me = [
         'a',
         'the',
@@ -134,19 +128,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'by',
     ];
     $search = preg_replace('/\b(' . implode('|', $remove_me) . ')\b/', '', $keywords);
-    //=== do the search!
     switch (true) {
-        //=== if only member name is entered and no search string... get all messages by that member
-
         case !$keywords && $member:
             $res_search = sql_query('SELECT * FROM messages WHERE sender = ' . sqlesc($arr_userid['id']) . " $location AND receiver = " . sqlesc($CURUSER['id']) . ' ORDER BY ' . sqlesc($sort) . " $desc_asc LIMIT " . $limit) or sqlerr(__FILE__, __LINE__);
             break;
-        //=== if system entered default both ...
 
         case !$keywords && $member_sys:
             $res_search = sql_query("SELECT * FROM messages WHERE sender = 0 $location AND receiver = " . sqlesc($CURUSER['id']) . ' ORDER BY ' . sqlesc($sort) . " $desc_asc LIMIT " . $limit) or sqlerr(__FILE__, __LINE__);
             break;
-        //=== if just subject
 
         case $subject && !$text:
             $res_search = sql_query(
@@ -156,7 +145,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $and_member $location $what_in_out
                     ORDER BY " . sqlesc($sort) . " $desc_asc LIMIT $limit") or sqlerr(__FILE__, __LINE__);
             break;
-        //=== if just message
 
         case !$subject && $text:
             $res_search = sql_query(
@@ -166,7 +154,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $and_member $location $what_in_out
                     ORDER BY " . sqlesc($sort) . " $desc_asc LIMIT $limit") or sqlerr(__FILE__, __LINE__);
             break;
-        //=== if subject and message
 
         case $subject && $text || !$subject && !$text:
             $res_search = sql_query(
@@ -200,13 +187,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <td><a href='{$site_config['baseurl']}/pm_system.php?id={$row['id']}'>{$subject}</a></td>
                 <td class='w-10 has-text-centered'>$sender</td>
                 <td class='has-text-centered'>$date</td>
-                <td class='w-1 has-text-centered'><input type='checkbox' name='pm[]' value='" . (int)$row['message_id'] . "' /></td>
+                <td class='w-1 has-text-centered'><input type='checkbox' name='pm[]' value='" . (int)$row['id'] . "' /></td>
             </tr>";
         }
         $table = main_table($table_body, $table_header);
 
     } else {
-
         while ($row = mysqli_fetch_assoc($res_search)) {
             $sender = $row['sender'] > 0 ? format_username($row['sender']) : 'System';
             $date = get_date($row['added'], 'LONG');
@@ -216,7 +202,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <tr>
                 <td class='w-10'>{$lang['pm_search_subject']}</td>
                 <td><a href='{$site_config['baseurl']}/pm_system.php?id={$row['id']}'>$subject</a></td>
-                <td class='w-1'><input type='checkbox' name='pm[]' value='" . (int)$row['message_id'] . "' /></td>
+                <td class='w-1'><input type='checkbox' name='pm[]' value='" . (int)$row['id'] . "' /></td>
             </tr>
             <tr>
                 <td class='w-10'></td>
@@ -240,11 +226,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </h3>';
     if ($num_result > 0) {
         $results .= "
-    <form action='pm_system.php?action=search' method='post' name='messages' onsubmit='return ValidateForm(this,\'pm\')'>
-        $table
+    <form action='pm_system.php' method='post' name='messages'>
         <input type='hidden' name='action' value='move_or_delete_multi' />
-        <div class='has-text-centered top20'>
-            <input type='checkbox' id='checkThemAll' class='tooltipper' title='Select All' /><span class='left10 right10'>Select All</span>
+        <input type='hidden' name='returnto' value='search' />
+        $table
+        <div class='has-text-centered top20'>";
+        if ($as_list_post === 2) {
+            $results .= "
+            <input type='checkbox' id='checkThemAll' class='tooltipper' title='Select All' /><span class='left10 right10'>Select All</span>";
+        }
+        $results .= "
             <input type='submit' class='button is-small right10' name='move' value='{$lang['pm_search_move_to']}' />" . get_all_boxes($box) . " or
             <input type='submit' class='button is-small left10 right10' name='delete' value='{$lang['pm_search_delete']}' />{$lang['pm_search_selected']}
         </div>

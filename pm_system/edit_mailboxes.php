@@ -41,7 +41,7 @@ if (isset($_POST['action2'])) {
                 if (validusername($add_it) && $add_it !== '') {
                     $name = htmlsafechars($add_it);
                     sql_query('INSERT INTO pmboxes (userid, name, boxnumber) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($name) . ', ' . sqlesc($box) . ')') or sqlerr(__FILE__, __LINE__);
-                    $cache->delete('get_all_boxes' . $CURUSER['id']);
+                    $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo' . $CURUSER['id']);
                 }
                 ++$box;
@@ -64,7 +64,7 @@ if (isset($_POST['action2'])) {
                 if (validusername($_POST[ 'edit' . $row['id'] ]) && $_POST[ 'edit' . $row['id'] ] !== '' && $_POST[ 'edit' . $row['id'] ] !== $row['name']) {
                     $name = htmlsafechars($_POST[ 'edit' . $row['id'] ]);
                     sql_query('UPDATE pmboxes SET name=' . sqlesc($name) . ' WHERE id=' . sqlesc($row['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
-                    $cache->delete('get_all_boxes' . $CURUSER['id']);
+                    $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo' . $CURUSER['id']);
                     $worked = '&name=1';
                 }
@@ -78,7 +78,7 @@ if (isset($_POST['action2'])) {
                     }
                     //== delete the box
                     sql_query('DELETE FROM pmboxes WHERE id=' . sqlesc($row['id']) . '  LIMIT 1') or sqlerr(__FILE__, __LINE__);
-                    $cache->delete('get_all_boxes' . $CURUSER['id']);
+                    $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo' . $CURUSER['id']);
                     $deleted = '&box_delete=1';
                 }
