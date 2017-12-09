@@ -1,4 +1,7 @@
 9 Dec 2017
+remove: text shadow from user classes
+remove: webpack dependancy
+fix: extra space between username and comma
 add: package.json
 add: bulma css requirement
 add: notification of which cache adapter is in use

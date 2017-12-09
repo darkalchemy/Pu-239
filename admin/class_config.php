@@ -41,7 +41,6 @@ function write_css($data)
             //$classdata .= "#content .{$cname} {
             $classdata .= ".{$cname} {
     color: $ccolor;
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 ";
         }
