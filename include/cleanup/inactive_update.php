@@ -50,9 +50,11 @@ function inactive_update($data)
  */
 function delete_cleanup($users, $using_foreign_keys = true)
 {
+    global $cache;
     if (empty($users)) {
         return;
     }
+    $cache->delete('all_users_');
     sql_query("DELETE FROM users WHERE id IN ({$users})") or sqlerr(__FILE__, __LINE__);
     sql_query("DELETE FROM staffmessages WHERE sender IN ({$users})") or sqlerr(__FILE__, __LINE__);
     sql_query("DELETE FROM staffmessages_answers WHERE sender IN ({$users})") or sqlerr(__FILE__, __LINE__);

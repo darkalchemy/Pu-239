@@ -53,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'INSERT INTO usersachiev (userid) 
                   VALUES (' . sqlesc($user_id) . ')'
         ) or sqlerr(__FILE__, __LINE__);
+        $cache->delete('all_users_');
         $message = "Welcome New {$site_config['site_name']} Member: [user]" . htmlsafechars($insert['username']) . '[/user]';
         if ($user_id > 2 && $site_config['autoshout_on'] == 1) {
             autoshout($message);

@@ -1,5 +1,5 @@
 <?php
-global $CURUSER, $site_config, $lang;
+global $CURUSER, $site_config, $lang, $cache;
 $subject = $body = '';
 flood_limit('messages');
 
@@ -113,11 +113,15 @@ $receiver = (isset($_GET['receiver']) ? intval($_GET['receiver']) : (isset($_POS
 $replyto = (isset($_GET['replyto']) ? intval($_GET['replyto']) : (isset($_POST['replyto']) ? intval($_POST['replyto']) : 0));
 $returnto = htmlsafechars(isset($_POST['returnto']) ? $_POST['returnto'] : '');
 if (!$receiver) {
-    $sql = "SELECT id, username, class FROM users WHERE acceptpms != 'no' ORDER BY LOWER(username)";
-    $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    $ids = [];
-    while ($all_user = mysqli_fetch_assoc($res)) {
-        $all_users[] = $all_user;
+    $all_users = $cache->get('all_users_');
+    if ($all_users === false || is_null($all_users)) {
+        $sql = "SELECT id, username, class FROM users WHERE acceptpms != 'no' ORDER BY LOWER(username)";
+        $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        $ids = [];
+        while ($all_user = mysqli_fetch_assoc($res)) {
+            $all_users[] = $all_user;
+        }
+        $cache->set('all_users_', $all_users, 86400);
     }
 }
 if ($receiver && !is_valid_id($receiver)) {
