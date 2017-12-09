@@ -38,6 +38,9 @@ if ($unread >= 1) {
         ]
     );
 }
+if ($CURUSER['class'] === UC_MAX) {
+    setSessionVar('is-info', "The Current Cache Adapter is: {$site_config['cache_adapter']}");
+}
 
 $HTMLOUT = '';
 //Start Portals Div
