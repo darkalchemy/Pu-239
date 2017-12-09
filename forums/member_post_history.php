@@ -31,7 +31,9 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
         $query .= ' AND class=' . sqlesc($class);
         $q .= ($q ? '&amp;' : '') . 'class=' . $class;
     }
-    $HTMLOUT .= '<h1>' . $lang['fmp_search_members'] . '</h1>
+    $HTMLOUT .= $mini_menu . '
+        <div class="has-text-centered bottom20">
+            <h1>' . $lang['fmp_search_members'] . '</h1>
 			<form method="get" action="forums.php?">
 			<input type="hidden" value="member_post_history" name="action" />
 			<input type="text" size="30" name="search" value="' . $search . '" />
@@ -45,9 +47,8 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
         }
     }
     $HTMLOUT .= $option . '</select>
-	 <input type="submit" class="button is-small" value="' . $lang['gl_search'] . '" />
-	 </form>
-	 <br><br>';
+	 <input type="submit" class="button is-small bottom20" value="' . $lang['gl_search'] . '" />
+	 </form>';
     $aa = range('0', '9');
     $bb = range('a', 'z');
     $cc = array_merge($aa, $bb);
@@ -63,7 +64,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
         }
         ++$count;
     }
-    $HTMLOUT .= $next . '</div>';
+    $HTMLOUT .= $next . '</div></div>';
     //=== get stuff for the pager
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 0;
     $perpage = isset($_GET['perpage']) ? (int)$_GET['perpage'] : 20;

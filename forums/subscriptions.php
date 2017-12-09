@@ -1,32 +1,33 @@
 <?php
 global $lang;
 $posts = $lppostid = $topicpoll = $colour = $rpic = $content = '';
-$links = '<span><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';
-$HTMLOUT .= '<h1>Subscribed Forums for ' . format_username($CURUSER) . '</h1>' . $links;
+$HTMLOUT .= $mini_menu . '
+    <div class="has-text-centered bottom20">
+        <h1>Subscribed Forums for ' . format_username($CURUSER) . '</h1>
+    </div>';
 //=== Get count
 $res = sql_query('SELECT COUNT(id) FROM subscriptions WHERE user_id=' . sqlesc($CURUSER['id']));
 $row = mysqli_fetch_row($res);
 $count = $row[0];
-//=== nothing here? kill the page
+
 if ($count == 0) {
-    $HTMLOUT .= '<br><br><table class="table table-bordered table-striped">
+    $HTMLOUT .= '
+        <table class="table table-bordered table-striped">
 		<tr><td>
 		<h1>' . $lang['sub_no_subscript_found'] . '!</h1>' . $lang['sub_you_have_yet_sub_forums'] . ' 
 		<span>' . $lang['sub_subscrib_to_forum'] . '</span> ' . $lang['sub_no_subscript_found_msg1'] . '.<br><br>
 		' . $lang['sub_to_be_notified_via_pm'] . ' <a class="altlink" href="my.php">' . $lang['sub_profile'] . '</a> 
 		' . $lang['sub_page_and_set'] . ' <span>' . $lang['sub_pm_on_subcript'] . '</span> ' . $lang['sub_to_yes'] . '.<br><br>
 		</td></tr></table><br><br>';
-    $HTMLOUT .= $links . '<br>';
 }
-//=== get stuff for the pager
+
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 0;
 $perpage = (isset($_GET['perpage']) ? (int)$_GET['perpage'] : 20);
 list($menu, $LIMIT) = pager_new($count, $perpage, $page, $site_config['baseurl'] . '/forums.php?action=subscriptions' . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
-//=== top and bottom stuff
 $the_top_and_bottom = '<table border="0" cellspacing="0" cellpadding="0" width="90%">
 	<tr><td>' . (($count > $perpage) ? $menu : '') . '</td>
 	</tr></table>';
-//=== get the info
+
 $res = sql_query('SELECT s.id AS subscribed_id, t.id AS topic_id, t.topic_name, t.topic_desc, t.last_post, t.views, t.post_count, t.locked, t.sticky, t.poll_id, t.user_id, t.anonymous AS tan, p.id AS post_id, p.added, p.user_id, p.anonymous AS pan, u.username, u.id, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king, u.perms, u.offensive_avatar FROM subscriptions AS s LEFT JOIN topics AS t ON s.topic_id = t.id LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN forums AS f ON f.id = t.forum_id LEFT JOIN users AS u ON u.id = p.user_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' s.user_id = ' . $CURUSER['id'] . ' AND f.min_class_read < ' . sqlesc($CURUSER['class']) . ' AND s.user_id = ' . sqlesc($CURUSER['id']) . '  ORDER BY t.id DESC ' . $LIMIT);
 while ($topic_arr = mysqli_fetch_assoc($res)) {
     $topic_id = (int)$topic_arr['topic_id'];
@@ -35,7 +36,6 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
     $topic_poll = $topic_arr['poll_id'] > 0;
     $last_post_username = ($topic_arr['pan'] == 'no' && $topic_arr['username'] !== '' ? format_username($topic_arr) : '[<i>' . $lang['fe_anonymous'] . '</i>]');
     $last_post_id = (int)$topic_arr['last_post'];
-    //=== Get author / first post info
     $first_post_res = sql_query('SELECT p.added, p.icon, p.body, p.user_id, p.anonymous, u.id, u.username, u.class, u.donor, u.suspended, u.warned, u.enabled, u.chatpost, u.leechwarn, u.pirate, u.king FROM posts AS p LEFT JOIN users AS u ON p.user_id = u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND' : '')) . ' topic_id=' . sqlesc($topic_id) . ' ORDER BY id DESC LIMIT 1');
     $first_post_arr = mysqli_fetch_assoc($first_post_res);
     if ($topic_arr['tan'] == 'yes') {
@@ -123,4 +123,4 @@ $HTMLOUT .= $the_top_and_bottom . '<form action="' . $site_config['baseurl'] . '
 		<a class="altlink" href="javascript:SetChecked(0,\'remove[]\')"><span>' . $lang['sub_un_select_all'] . '</span></a>  
 		<input type="submit" name="button" class="button is-small" value="' . $lang['fe_remove'] . ' Selected" /></td>
 		</tr></table></form><script src="' . $site_config['baseurl'] . '/scripts/check_selected.js"></script>
-		' . $the_top_and_bottom . '<br><br>' . $links . '<br>';
+		' . $the_top_and_bottom;

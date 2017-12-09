@@ -1,4 +1,6 @@
 9 Dec 2017
+fix: navbar username class color
+add: mini navbar for links in usercp.php, userdetails.php forums.php
 remove: text shadow from user classes
 remove: webpack dependancy
 fix: extra space between username and comma

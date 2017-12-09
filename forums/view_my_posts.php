@@ -9,19 +9,22 @@ $res_count = sql_query('SELECT COUNT(p.id) FROM posts AS p
 								p.user_id = ' . $CURUSER['id'] . ' AND f.min_class_read <= ' . $CURUSER['class']);
 $arr_count = mysqli_fetch_row($res_count);
 $count = $arr_count[0];
-//=== get stuff for the pager
+
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 0;
 $perpage = isset($_GET['perpage']) ? (int)$_GET['perpage'] : 20;
-$subscription_on_off = (isset($_GET['s']) ? ($_GET['s'] == 1 ? '<br><div>' . $lang['fe_sub_to_topic'] . ' <img src="./images/forums/subscribe.gif" alt=" " width="25"></div>' : '<br><div>' . $lang['fe_unsub_to_topic'] . ' <img src="./images/forums/unsubscribe.gif" alt=" " width="25"></div>') : '');
+$subscription_on_off = (isset($_GET['s']) ? ($_GET['s'] == 1 ? '<div>' . $lang['fe_sub_to_topic'] . ' <img src="./images/forums/subscribe.gif" alt=" " width="25"></div>' : '<div>' . $lang['fe_unsub_to_topic'] . ' <img src="./images/forums/unsubscribe.gif" alt=" " width="25"></div>') : '');
 list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'forums.php?action=view_my_posts' . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
 $res = sql_query('SELECT p.id AS post_id, p.topic_id, p.user_id, p.added, p.body, p.edited_by, p.edit_date, p.icon, p.post_title, p.bbcode, p.post_history, p.edit_reason, p.ip, p.status AS post_status, p.anonymous, t.id AS topic_id, t.topic_name, t.forum_id, t.sticky, t.locked, t.poll_id, t.status AS topic_status, f.name AS forum_name, f.description FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON f.id = t.forum_id WHERE  ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' p.user_id = ' . $CURUSER['id'] . ' AND f.min_class_read <= ' . $CURUSER['class'] . ' ORDER BY p.id ' . $ASC_DESC . $LIMIT);
-$links = '<span><a class="altlink" href="forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';
 $the_top_and_bottom = '<tr><td class="three" colspan="3">' . (($count > $perpage) ? $menu : '') . '</td></tr>';
-$HTMLOUT .= '<h1>' . $count . ' ' . $lang['fe_posts_by'] . ' ' . format_username($CURUSER) . '</h1>' . $links . '
-			  <div><a class="altlink" href="forums.php?action=view_my_posts" title="' . $lang['vmp_view_posts_new_to_old'] . '">' . $lang['vmp_sort_by_newest_posts_1st'] . '</a> || 
-			  <a class="altlink" href="forums.php?action=view_my_posts&amp;ASC_DESC=ASC" title="' . $lang['vmp_view_posts_old_to_new'] . '">' . $lang['vmp_sort_by_oldest_posts_1st'] . '</a></div><br>';
-$HTMLOUT .= '<a name="top"></a><table class="table table-bordered table-striped">' . $the_top_and_bottom;
-//=== lets start the loop \o/
+$HTMLOUT .= $mini_menu . '
+    <div class="has-text-centered bottom20">
+        <h1>' . $count . ' ' . $lang['fe_posts_by'] . ' ' . format_username($CURUSER) . '</h1>
+        <a class="altlink tooltipper right20" href="forums.php?action=view_my_posts" title="' . $lang['vmp_view_posts_new_to_old'] . '">' . $lang['vmp_sort_by_newest_posts_1st'] . '</a> 
+	    <a class="altlink tooltipper left20" href="forums.php?action=view_my_posts&amp;ASC_DESC=ASC" title="' . $lang['vmp_view_posts_old_to_new'] . '">' . $lang['vmp_sort_by_oldest_posts_1st'] . '</a>
+	</div>
+    <a name="top"></a>
+    <table class="table table-bordered table-striped">' . $the_top_and_bottom;
+
 while ($arr = mysqli_fetch_assoc($res)) {
     //=== topic status
     $topic_status = htmlsafechars($arr['topic_status']);
@@ -69,12 +72,12 @@ while ($arr = mysqli_fetch_assoc($res)) {
         $arr_edited = mysqli_fetch_assoc($res_edited);
         if ($arr['anonymous'] == 'yes') {
             if ($CURUSER['class'] < UC_STAFF && $arr['user_id'] != $CURUSER['id']) {
-                $edited_by = '<br><br><br><span>' . $lang['fe_last_edited_by'] . ' <i>' . $lang['fe_anonymous'] . '</i> at ' . get_date($arr['edit_date'], '') . ' UTC ' . ($arr['edit_reason'] !== '' ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '' . (($CURUSER['class'] >= UC_STAFF && $arr['post_history'] !== '') ? ' <a class="altlink" href="forums.php?action=view_post_history&amp;post_id=' . (int)$arr['post_id'] . '&amp;forum_id=' . (int)$arr['forum_id'] . '&amp;topic_id=' . (int)$arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '');
+                $edited_by = '<span>' . $lang['fe_last_edited_by'] . ' <i>' . $lang['fe_anonymous'] . '</i> at ' . get_date($arr['edit_date'], '') . ' UTC ' . ($arr['edit_reason'] !== '' ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '' . (($CURUSER['class'] >= UC_STAFF && $arr['post_history'] !== '') ? ' <a class="altlink" href="forums.php?action=view_post_history&amp;post_id=' . (int)$arr['post_id'] . '&amp;forum_id=' . (int)$arr['forum_id'] . '&amp;topic_id=' . (int)$arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span>' : '');
             } else {
-                $edited_by = '<br><br><br><span>' . $lang['fe_last_edited_by'] . ' <i>' . $lang['fe_anonymous'] . '</i>[<a class="altlink" href="userdetails.php?id=' . (int)$arr['edited_by'] . '">' . htmlsafechars($arr_edited['username']) . '</a>] at ' . get_date($arr['edit_date'], '') . ' UTC ' . ($arr['edit_reason'] !== '' ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '' . (($CURUSER['class'] >= UC_STAFF && $arr['post_history'] !== '') ? ' <a class="altlink" href="forums.php?action=view_post_history&amp;post_id=' . (int)$arr['post_id'] . '&amp;forum_id=' . (int)$arr['forum_id'] . '&amp;topic_id=' . (int)$arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '');
+                $edited_by = '<span>' . $lang['fe_last_edited_by'] . ' <i>' . $lang['fe_anonymous'] . '</i>[<a class="altlink" href="userdetails.php?id=' . (int)$arr['edited_by'] . '">' . htmlsafechars($arr_edited['username']) . '</a>] at ' . get_date($arr['edit_date'], '') . ' UTC ' . ($arr['edit_reason'] !== '' ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '' . (($CURUSER['class'] >= UC_STAFF && $arr['post_history'] !== '') ? ' <a class="altlink" href="forums.php?action=view_post_history&amp;post_id=' . (int)$arr['post_id'] . '&amp;forum_id=' . (int)$arr['forum_id'] . '&amp;topic_id=' . (int)$arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span>' : '');
             }
         } else {
-            $edited_by = '<br><br><br><span>' . $lang['fe_last_edited_by'] . ' <a class="altlink" href="userdetails.php?id=' . (int)$arr['edited_by'] . '">' . htmlsafechars($arr_edited['username']) . '</a> at ' . get_date($arr['edit_date'], '') . ' UTC ' . ($arr['edit_reason'] !== '' ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '' . (($CURUSER['class'] >= UC_STAFF && $arr['post_history'] !== '') ? ' <a class="altlink" href="forums.php?action=view_post_history&amp;post_id=' . (int)$arr['post_id'] . '&amp;forum_id=' . (int)$arr['forum_id'] . '&amp;topic_id=' . (int)$arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '');
+            $edited_by = '<span>' . $lang['fe_last_edited_by'] . ' <a class="altlink" href="userdetails.php?id=' . (int)$arr['edited_by'] . '">' . htmlsafechars($arr_edited['username']) . '</a> at ' . get_date($arr['edit_date'], '') . ' UTC ' . ($arr['edit_reason'] !== '' ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '' . (($CURUSER['class'] >= UC_STAFF && $arr['post_history'] !== '') ? ' <a class="altlink" href="forums.php?action=view_post_history&amp;post_id=' . (int)$arr['post_id'] . '&amp;forum_id=' . (int)$arr['forum_id'] . '&amp;topic_id=' . (int)$arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span>' : '');
         }
     }
     $body = ($arr['bbcode'] == 'yes' ? format_comment($arr['body']) : format_comment_no_bbcode($arr['body']));
@@ -97,9 +100,9 @@ while ($arr = mysqli_fetch_assoc($res)) {
 			</span></td>
 			</tr>
 			<tr>
-		   <td>' . ($arr['anonymous'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($CURUSER)) . '<br>' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : format_username($CURUSER)) . ($arr['anonymous'] == 'yes' || $CURUSER['title'] == '' ? '' : '<br><span>[' . htmlsafechars($CURUSER['title']) . ']</span>') . '<br><span>' . ($arr['anonymous'] == 'yes' ? '' : get_user_class_name($CURUSER['class'])) . '</span><br></td>
+		   <td>' . ($arr['anonymous'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($CURUSER)) . '' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : format_username($CURUSER)) . ($arr['anonymous'] == 'yes' || $CURUSER['title'] == '' ? '' : '<span>[' . htmlsafechars($CURUSER['title']) . ']</span>') . '<span>' . ($arr['anonymous'] == 'yes' ? '' : get_user_class_name($CURUSER['class'])) . '</span></td>
 		<td class="' . $post_status . '" colspan="2">' . $body . $edited_by . '</td>
 		</tr>
 			<tr><td colspan="3"></td></tr>';
 } //=== end while loop
-$HTMLOUT .= $the_top_and_bottom . '</table><a name="bottom"></a><br>' . $links . '<br>';
+$HTMLOUT .= $the_top_and_bottom . '</table><a name="bottom"></a>' . $links . '';

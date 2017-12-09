@@ -166,16 +166,21 @@ if ($CURUSER['class'] >= UC_ADMINISTRATOR) {
 }
 //=== mini menu
 $mini_menu = '
-    <div class="level-center">
-        <a class="margin20" href="' . $site_config['baseurl'] . '/forums.php?action=subscriptions">' . $lang['fm_my_subscriptions'] . '</a>
-        <a class="margin20" href="' . $site_config['baseurl'] . '/forums.php?action=search">' . $lang['fe_search'] . '</a>
-        <a class="margin20" href="' . $site_config['baseurl'] . '/forums.php?action=view_unread_posts">' . $lang['fm_unread_posts'] . '</a>
-        <a class="margin20" href="' . $site_config['baseurl'] . '/forums.php?action=new_replies">' . $lang['fm_new_replies'] . '</a>
-        <a class="margin20" href="' . $site_config['baseurl'] . '/forums.php?action=view_my_posts">' . $lang['fm_my_posts'] . '</a>
-        <a class="margin20" href="' . $site_config['baseurl'] . '/forums.php?action=mark_all_as_read">' . $lang['fm_mark_all_as_read'] . '</a>' . ($CURUSER['class'] === UC_MAX ? '
-        <a class="margin20" href="' . $site_config['baseurl'] . '/forums.php?action=member_post_history">' . $lang['fm_member_post_history'] . '</a>' : '' ) . '
+    <div class="level-center bg-06">';
+if (!empty($_SERVER['QUERY_STRING'])) {
+    $mini_menu .= '
+        <a class="altlink margin20" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums_main'] . '</a>';
+}
+$mini_menu .= '
+        <a class="altlink margin20" href="' . $site_config['baseurl'] . '/forums.php?action=subscriptions">' . $lang['fm_my_subscriptions'] . '</a>
+        <a class="altlink margin20" href="' . $site_config['baseurl'] . '/forums.php?action=search">' . $lang['fe_search'] . '</a>
+        <a class="altlink margin20" href="' . $site_config['baseurl'] . '/forums.php?action=view_unread_posts">' . $lang['fm_unread_posts'] . '</a>
+        <a class="altlink margin20" href="' . $site_config['baseurl'] . '/forums.php?action=new_replies">' . $lang['fm_new_replies'] . '</a>
+        <a class="altlink margin20" href="' . $site_config['baseurl'] . '/forums.php?action=view_my_posts">' . $lang['fm_my_posts'] . '</a>
+        <a class="altlink margin20" href="' . $site_config['baseurl'] . '/forums.php?action=mark_all_as_read">' . $lang['fm_mark_all_as_read'] . '</a>' . ($CURUSER['class'] === UC_MAX ? '
+        <a class="altlink margin20" href="' . $site_config['baseurl'] . '/forums.php?action=member_post_history">' . $lang['fm_member_post_history'] . '</a>' : '' ) . '
     </div>';
-$location_bar = $mini_menu . (isset($_GET['m']) ? '
+$location_bar = (isset($_GET['m']) ? '
     <h1 class="has-text-centered">' . $lang['fm_all_forums_up_to_date'] . '.</h1>' : '');
 $header = '
         <tr>
@@ -237,7 +242,7 @@ $options = '';
 for ($i = 2; $i < 21; ++$i) {
     $options .= '<option class="body" value="' . $i . '" ' . ($multi_options === $i ? 'selected' : '') . '>' . $i . ' options</option>';
 }
-$header = '   
+$header = '
             <tr>
                 <th colspan="3">' . $lang['fm_additional_options'] . '...</th>
             </tr>';
@@ -315,7 +320,7 @@ $body = ($CURUSER['class'] < $min_upload_class ? '' : '
                     </select> How long should this poll run? Default is "run forever"
                 </td>
             </tr>
-            <tr>        
+            <tr>
                 <td><img src="' . $site_config['pic_base_url'] . 'forums/multi.gif" class="icon" alt="' . $lang['poll_multi_options'] . '" /></td>
                 <td><span>' . $lang['poll_multi_options'] . ':</span></td>
                 <td>
@@ -491,7 +496,7 @@ switch ($action) {
 
     case 'forum':
         $res_forums = sql_query('SELECT o_f.id AS over_forum_id, o_f.name AS over_forum_name, o_f.description AS over_forum_description, o_f.min_class_view AS over_forum_min_class_view, f.id AS real_forum_id, f.name, f.description, f.post_count, f.topic_count,  f.forum_id FROM over_forums AS o_f JOIN forums AS f WHERE o_f.min_class_view <= ' . $CURUSER['class'] . ' AND f.min_class_read <= ' . $CURUSER['class'] . ' AND parent_forum = 0 ORDER BY o_f.sort, f.sort ASC');
-        $table1 .= $location_bar . '<table class="table table-bordered table-striped top20 bottom20 third">';
+        $table1 .= $location_bar . $mini_menu . '<table class="table table-bordered table-striped top20 bottom20 third">';
 
         $i = 0;
         while ($arr_forums = mysqli_fetch_assoc($res_forums)) {
