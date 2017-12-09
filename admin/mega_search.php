@@ -30,7 +30,7 @@ $HTMLOUT .= main_div('
                 ' . bubble($lang['mega_text'], $lang['mega_text_1']) . '
                 <textarea name="msg_to_analyze" rows="20" class="w-100">' . $msg_to_analyze . '</textarea>
                 <div class="has-text-centered top20">
-                    <input type="submit" class="button" value="' . $lang['mega_search_btn'] . '" />
+                    <input type="submit" class="button is-small" value="' . $lang['mega_search_btn'] . '" />
                 </div>
             </form>
         </div>');
@@ -40,7 +40,7 @@ $HTMLOUT .= main_div('
                 ' . bubble('<b>' . $lang['mega_invite'] . '</b>', $lang['mega_invite_1']) . '
                 <input type="text" name="invite_code" class="w-100" value="' . $invite_code . '" />
                 <div class="has-text-centered top20">
-                    <input type="submit" class="button" value="' . $lang['mega_search_btn'] . '" />
+                    <input type="submit" class="button is-small" value="' . $lang['mega_search_btn'] . '" />
                 </div>
             </form>
         </div>');
@@ -50,7 +50,7 @@ $HTMLOUT .= main_div('
                 ' . bubble('<b>' . $lang['mega_names'] . '</b>', $lang['mega_names_1']) . '
                 <textarea name="user_names" rows="4" class="w-100">' . $user_names . '</textarea>
                 <div class="has-text-centered top20">
-                    <input type="submit" class="button" value="' . $lang['mega_search_btn'] . '" />
+                    <input type="submit" class="button is-small" value="' . $lang['mega_search_btn'] . '" />
                 </div>
             </form>
         </div>');

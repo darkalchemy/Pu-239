@@ -311,7 +311,7 @@ $highlight = " bgcolor='lightgrey'";
                     echo (isset($_POST['dip'])) ? "checked" : '' ?> /></td>
             </tr>
             <tr>
-                <td colspan="6"><input name="submit" type='submit' class='button'/></td>
+                <td colspan="6"><input name="submit" type='submit' class='button is-small'/></td>
             </tr>
         </table>
         <br><br>
@@ -911,7 +911,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
 <input name='n_pms' type='hidden' value='" . $count . "' />
 <input name='ann_query' type='hidden' value='" . rawurlencode($announcement_query) . "' />
 <input name='ann_hash' type='hidden' value ='" . (hashit($announcement_query, $count)) . "' />
-<button type='submit' class='button'>{$lang['usersearch_create_ann']}</button>
+<button type='submit' class='button is-small'>{$lang['usersearch_create_ann']}</button>
 </div></td>
 </tr>
 </table>

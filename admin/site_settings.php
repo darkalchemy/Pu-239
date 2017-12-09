@@ -91,7 +91,7 @@ $HTMLOUT .= "
                 </table>
                 </div>
                 <div class='has-text-centered top20 bottom20'>
-                    <input type='submit' value='{$lang['sitesettings_apply']}' class='button' />
+                    <input type='submit' value='{$lang['sitesettings_apply']}' class='button is-small' />
                 </div>
             </form>
         </div>";

@@ -45,7 +45,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
         }
     }
     $HTMLOUT .= $option . '</select>
-	 <input type="submit" class="button" value="' . $lang['gl_search'] . '" />
+	 <input type="submit" class="button is-small" value="' . $lang['gl_search'] . '" />
 	 </form>
 	 <br><br>';
     $aa = range('0', '9');

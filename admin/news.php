@@ -156,7 +156,7 @@ if ($mode == 'edit') {
                     <tr>
                         <td colspan='2'>
                             <div class='has-text-centered'>
-                                <input type='submit' value='{$lang['news_okay']}' class='button' />
+                                <input type='submit' value='{$lang['news_okay']}' class='button is-small' />
                             </div>
                         </td>
                     </tr>
@@ -215,7 +215,7 @@ if ($mode == 'news') {
                     <tr class='no_hover'>
                         <td colspan='2'>
                             <div class='has-text-centered'>
-                                <input type='submit' value='{$lang['news_okay']}' class='button' />
+                                <input type='submit' value='{$lang['news_okay']}' class='button is-small' />
                             </div>
                         </td>
                     </tr>

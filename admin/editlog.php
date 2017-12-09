@@ -178,7 +178,7 @@ $HTMLOUT .= "
         </div>
         <form method='post' action='staffpanel.php?tool=editlog&amp;action=editlog'>
             <div class='has-text-centered top20 bottom20'>
-                <input name='update' type='submit' value='{$lang['editlog_update']}' class='button' />
+                <input name='update' type='submit' value='{$lang['editlog_update']}' class='button is-small' />
             </div>
         </form>
     </div>";

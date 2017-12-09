@@ -6,27 +6,21 @@ function is_installed($ext)
     }
     return false;
 }
+
 function extensionscheck()
 {
-    global $root, $public;
     $php_min_vers = '7.0';
 
-    if (file_exists('step0.lock')) {
-        header('Location: index.php?step=1');
-    }
     $extensions = [
-//        'memcache',
         'zip',
         'xml',
         'simplexml',
         'json',
         'mysqli',
-//        'redis',
         'curl',
         'exif',
         'mbstring',
     ];
-
 
     $missing = [];
     $php = true;
@@ -72,11 +66,15 @@ function extensionscheck()
         </fieldset>';
 
     if (empty($missing) && $php) {
+        if (file_exists('step0.lock')) {
+            header('Location: index.php?step=1');
+        } else {
+            file_put_contents('step0.lock', '1');
+        }
         $out .= '
             <div style="text-align:center">
                 <input type="button" onclick="window.location.href=\'index.php?step=1\'" value="Next step" />
             </div>';
-        file_put_contents('step0.lock', '1');
     }
 
     return $out;

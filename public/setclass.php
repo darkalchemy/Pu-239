@@ -38,7 +38,7 @@ for ($i = 0; $i <= $maxclass; ++$i) {
     }
 }
 $HTMLOUT .= "</select></td></tr>
-		<tr><td colspan='3'><input type='submit' class='button' value='{$lang['set_class_ok']}' /></td></tr>
+		<tr><td colspan='3'><input type='submit' class='button is-small' value='{$lang['set_class_ok']}' /></td></tr>
 	</table>
 </form>
 <br>";

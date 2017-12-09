@@ -140,13 +140,13 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
                     <input type="hidden" name="action" value="vote" />
                     <input type="hidden" name="id" value="' . $id . '" />
                     <input type="hidden" name="vote" value="1" />
-                    <input type="submit" class="button" value="vote yes!" />
+                    <input type="submit" class="button is-small" value="vote yes!" />
                     </form> ~ you will be notified when this request is filled.';
             $vote_no = '<form method="post" action="requests.php">
                     <input type="hidden" name="action" value="vote" />
                     <input type="hidden" name="id" value="' . $id . '" />
                     <input type="hidden" name="vote" value="2" />
-                    <input type="submit" class="button" value="vote no!" />
+                    <input type="submit" class="button is-small" value="vote no!" />
                     </form> ~ you are being a stick in the mud.';
             $your_vote_was = '';
         } else {
@@ -280,7 +280,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
     </tr>
     <tr>
     <td colspan="2">
-    <input type="submit" name="button" class="button" value="Submit" /></td>
+    <input type="submit" name="button" class="button is-small" value="Submit" /></td>
     </tr>
     </tbody>
     </table></form>
@@ -391,7 +391,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
    </tr>') . '
    <tr>
    <td colspan="2">
-   <input type="submit" name="button" class="button" value="Edit" /></td>
+   <input type="submit" name="button" class="button is-small" value="Edit" /></td>
    </tr>
    </table></form>
     </td></tr></table><br>';
@@ -492,7 +492,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
     </tr>
      <tr>
     <td colspan="2">
-    <input name="button" type="submit" class="button" value="Edit" /></td>
+    <input name="button" type="submit" class="button is-small" value="Edit" /></td>
     </tr>
      </table></form>';
         echo stdhead('Edit comment to "' . $arr['request_name'] . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

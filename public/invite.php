@@ -130,7 +130,7 @@ if ($do == 'view_page') {
             </table>
             <form action='?do=create_invite' method='post'>
                 <div class='has-text-centered bottom20'>
-                    <input type='submit' class='button' value='{$lang['invites_create']}' />
+                    <input type='submit' class='button is-small' value='{$lang['invites_create']}' />
                 </div>
             </form>
         </div>";
@@ -227,7 +227,7 @@ EOD;
                 </table>
                 <div class='has-text-centered bottom20'>
                     <input type='hidden' name='code' value='" . htmlsafechars($fetch['code']) . "' />
-                    <input type='submit' value='Send e-mail' class='button' />
+                    <input type='submit' value='Send e-mail' class='button is-small' />
                 </div>
             </form>
         </div>";

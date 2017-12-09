@@ -74,7 +74,7 @@ if ($step == '1') {
                         <tr class='no_hover'>
                             <td colspan='2'>
                                 <div class='has-text-centered'>
-                                    <input type='submit' value='{$lang['main_next']}' class='button' />
+                                    <input type='submit' value='{$lang['main_next']}' class='button is-small' />
                                 </div>
                             </td>
                         </tr>
@@ -119,7 +119,7 @@ if ($step == '1') {
                     <tr class='no_hover'>
                         <td colspan='2'>
                             <div class='has-text-centered'>
-                                <input type='submit' value='{$lang['main_changeit']}' class='button' />
+                                <input type='submit' value='{$lang['main_changeit']}' class='button is-small' />
                                 <input type='hidden' name='id' value='" . (int)$fetch['id'] . "' />
                                 <input type='hidden' name='hash' value='" . $sechash . "' />
                             </div>
@@ -182,7 +182,7 @@ if ($step == '1') {
                 <tr class='no_hover'>
                     <td colspan='2'>
                         <div class='has-text-centered'>
-                            <input type='submit' value='{$lang['main_recover']}' class='button' />
+                            <input type='submit' value='{$lang['main_recover']}' class='button is-small' />
                         </div>
                     </td>
                 </tr>

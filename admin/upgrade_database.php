@@ -106,7 +106,7 @@ if (file_exists(DATABASE_DIR)) {
                 {$update['query']}
             </td>
             <td class='has-text-centered'>
-                " . (array_key_exists($update['id'], $results) ? 'Installed' : $button) . "
+                " . (array_key_exists($update['id'], $results) ? 'Completed' : $button) . "
             </td>
         </tr>";
         }

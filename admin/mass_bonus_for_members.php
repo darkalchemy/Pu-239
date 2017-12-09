@@ -519,7 +519,7 @@ $HTMLOUT .= '<form name="inputform" method="post" action="staffpanel.php?tool=ma
     </tr>
     <tr>
         <td class="one" colspan="2">
-        <input type="submit" class="button" name="button" value="' . $lang['bonusmanager_doit'] . '"  /></td>
+        <input type="submit" class="button is-small" name="button" value="' . $lang['bonusmanager_doit'] . '"  /></td>
     </tr>
     </table></form>';
 echo stdhead($lang['bonusmanager_h1_upload'], true, $stdhead) . $HTMLOUT . stdfoot();

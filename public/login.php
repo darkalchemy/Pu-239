@@ -108,7 +108,7 @@ $HTMLOUT .=
                             <span class='tabs is-marginless'>";
 for ($i = 0; $i < count($value); ++$i) {
     $HTMLOUT .= "
-                                <input name='submitme' type='submit' value='{$value[$i]}' class='button' />";
+                                <input name='submitme' type='submit' value='{$value[$i]}' class='button is-small' />";
 }
 $HTMLOUT .= "
                             </span>";

@@ -87,7 +87,7 @@ if (!isset($_FILES['file'])) {
                     <input type='checkbox' name='avy' value='1' />{$lang['bitbucket_tick']}
                 </div>
                 <div>
-                    <input class='button' type='submit' value='{$lang['bitbucket_upload']}' />
+                    <input class='button is-small' type='submit' value='{$lang['bitbucket_upload']}' />
                 </div>
             </form>
             <script>

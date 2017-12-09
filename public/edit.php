@@ -235,7 +235,7 @@ for ($x = 0; $x < count($apps); ++$x) {
     $HTMLOUT .= "<label><input type=\"checkbox\" value=\"$apps[$x]\" name=\"apps[]\" class=\"DEPENDS ON genre BEING apps\" />$apps[$x]</label>";
 }
 $HTMLOUT .= '</td></tr></table></td></tr>';
-$HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['edit_submit']}' class='button' /> <input type='reset' value='{$lang['edit_revert']}' class='button' /></td></tr>
+$HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['edit_submit']}' class='button is-small' /> <input type='reset' value='{$lang['edit_revert']}' class='button is-small' /></td></tr>
     </table>
     </form>
     <br>
@@ -262,7 +262,7 @@ $HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['edit_submit
 if (isset($_GET['returnto'])) {
     $HTMLOUT .= "<input type='hidden' name='returnto' value='" . htmlsafechars($_GET['returnto']) . "' />\n";
 }
-$HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['edit_delete']}' class='button' /></td>
+$HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['edit_delete']}' class='button is-small' /></td>
     </tr>
     </table>
     </form>";

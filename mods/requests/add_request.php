@@ -40,7 +40,7 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
     /* search first **/
     $HTMLOUT .= "<form method='get' action='browse.php'><table width='750px' border='1' cellspacing='0' cellpadding='5'><tr><td class='colhead'>
 {$lang['add_search_before']}</td></tr><tr><td>
-<input type='text' name='search' size='40' value='' class='button' />{$lang['add_in']}<select name='cat'> <option value='0'>{$lang['add_all_types']}</option>
+<input type='text' name='search' size='40' value='' class='button is-small' />{$lang['add_in']}<select name='cat'> <option value='0'>{$lang['add_all_types']}</option>
 ";
     $catdropdown = '';
     foreach ($cats as $cat) {
@@ -56,7 +56,7 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
     }
     $deadchkbox .= " />{$lang['add_incl_dead']}\n";
     $HTMLOUT .= ' ' . $catdropdown . ' </select> ' . $deadchkbox . " 
-<input type='submit' value='{$lang['req_search']}' class='button' /></td></tr></table></form>
+<input type='submit' value='{$lang['req_search']}' class='button is-small' /></td></tr></table></form>
 <br>\n";
     $HTMLOUT .= "<form method='post' name='compose' action='viewrequests.php?new_request'><a name='add' id='add'></a>
 <table border='1' cellspacing='0' width='750px' cellpadding='5'><tr><td class='colhead' colspan='2'>
@@ -90,7 +90,7 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
     }
     $HTMLOUT .= "</td></tr>
 <tr><td colspan='2'>
-<input type='submit' value='{$lang['add_ok']}' class='button' /></td></tr></table>
+<input type='submit' value='{$lang['add_ok']}' class='button is-small' /></td></tr></table>
 </form>
 <br><br>\n";
 }
@@ -124,7 +124,7 @@ if (mysqli_num_rows($rescount) > 0) {
     }
     $HTMLOUT .= "<tr><td colspan='4'>
 <form method='get' action='viewrequests.php'>
-<input type='submit' value='{$lang['req_show_all']}' class='button' />
+<input type='submit' value='{$lang['req_show_all']}' class='button is-small' />
 </form>
 </td></tr>
 </table>\n";

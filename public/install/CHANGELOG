@@ -1,3 +1,10 @@
+8 Dec 2017
+change: most buttons smaller
+fix: pm search
+add: missing full text indexes
+add: select/send message to any user
+update: pm pages
+
 6 Dec 2017
 fix: remove author from newsrss.php
 fix: check for defined

@@ -83,7 +83,7 @@ $HTMLOUT = '
   <tr><td class="rowhead">' . $lang['text_password'] . '</td><td><input type="password" name="password" size="40" /></td></tr>
   <tr><td class="rowhead">' . $lang['text_password2'] . '</td><td><input type="password" name="password2" size="40" /></td></tr>
   <tr><td class="rowhead">' . $lang['text_email'] . '</td><td><input type="text" name="email" size="40" /></td></tr>
-  <tr><td colspan="2"><input type="submit" value="' . $lang['btn_okay'] . '" class="button" /></td></tr>
+  <tr><td colspan="2"><input type="submit" value="' . $lang['btn_okay'] . '" class="button is-small" /></td></tr>
   </table>
   </form>';
 echo stdhead($lang['std_adduser']) . $HTMLOUT . stdfoot();

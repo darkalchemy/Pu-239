@@ -113,7 +113,7 @@ function move_cat_form()
       {$check}
       <tr>
         <td colspan='2'>
-         <input type='submit' class='button' value='{$lang['categories_move']}' /><input type='button' class='button' value={$lang['categories_cancel']}' onclick=\"history.go(-1)\" /></td>
+         <input type='submit' class='button is-small' value='{$lang['categories_move']}' /><input type='button' class='button is-small' value={$lang['categories_cancel']}' onclick=\"history.go(-1)\" /></td>
       </tr>
       </table>
       </form>";
@@ -235,7 +235,7 @@ function delete_cat_form()
       {$check}
       <tr>
         <td colspan='2'>
-         <input type='submit' class='button' value='{$lang['categories_del_delete']}' /><input type='button' class='button' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\" /></td>
+         <input type='submit' class='button is-small' value='{$lang['categories_del_delete']}' /><input type='button' class='button is-small' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\" /></td>
       </tr>
       </table>
       </form>";
@@ -329,7 +329,7 @@ function edit_cat_form()
       {$check}
       <tr>
         <td colspan='2'>
-         <input type='submit' class='button' value='{$lang['categories_edit_edit']}' /><input type='button' class='button' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\" /></td>
+         <input type='submit' class='button is-small' value='{$lang['categories_edit_edit']}' /><input type='button' class='button is-small' value='{$lang['categories_cancel']}' onclick=\"history.go(-1)\" /></td>
       </tr>
       </table>
       </form>";
@@ -392,8 +392,8 @@ function show_categories()
     {$check}
     <tr>
       <td colspan='2'>
-        <input type='submit' value='{$lang['categories_show_add']}' class='button' />
-        <input type='reset' value='{$lang['categories_show_reset']}' class='button' />
+        <input type='submit' value='{$lang['categories_show_add']}' class='button is-small' />
+        <input type='reset' value='{$lang['categories_show_reset']}' class='button is-small' />
       </td>
     </tr>
     </table>

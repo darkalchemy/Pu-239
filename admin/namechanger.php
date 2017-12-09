@@ -43,7 +43,7 @@ $HTMLOUT .= "
     <table border='1' cellspacing='0' cellpadding='3'>
     <tr><td class='rowhead'>{$lang['namechanger_id']}</td><td><input type='text' name='uid' size='10' /></td></tr>
     <tr><td class='rowhead'>{$lang['namechanger_new_user']}</td><td><input type='text' name='uname' size='20' /></td></tr>
-    <tr><td colspan='2'>{$lang['namechanger_if']}<input type='submit' value='{$lang['namechanger_change_name']}' class='button' /></td></tr>
+    <tr><td colspan='2'>{$lang['namechanger_if']}<input type='submit' value='{$lang['namechanger_change_name']}' class='button is-small' /></td></tr>
     </table>
     </form>";
 echo stdhead($lang['namechanger_stdhead']) . $HTMLOUT . stdfoot();

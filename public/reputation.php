@@ -294,8 +294,8 @@ if (isset($input['do']) && $input['do'] == 'addrep') {
 				                		<input type='hidden' name='do' value='addrep' />
                 						<input type='hidden' name='pid' value='{$input['pid']}' />
 				                		<input type='hidden' name='locale' value='{$input['locale']}' />
-                						<input type='submit' value='" . $lang['info_add_rep'] . "' class='button' accesskey='s' />
-				                		<input type='button' value='Close Window' class='button' accesskey='c' onclick='self.close()' />
+                						<input type='submit' value='" . $lang['info_add_rep'] . "' class='button is-small' accesskey='s' />
+				                		<input type='button' value='Close Window' class='button is-small' accesskey='c' onclick='self.close()' />
                 					</div>
 				            	</form>
         					</td>

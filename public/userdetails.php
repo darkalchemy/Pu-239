@@ -283,14 +283,14 @@ if (!$enabled) {
         $cache->set('Blocks_' . $id, $blocks, $site_config['expires']['user_blocks']);
     }
     if ($friends > 0) {
-        $friend_links .= "<a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/friends.php?action=delete&amp;type=friend&amp;targetid=$id'>{$lang['userdetails_remove_friends']}</a>";
+        $friend_links .= "<a class='margin10' href='{$site_config['baseurl']}/friends.php?action=delete&amp;type=friend&amp;targetid=$id'>{$lang['userdetails_remove_friends']}</a>";
     } else {
-        $friend_links .= "<a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/friends.php?action=add&amp;type=friend&amp;targetid=$id'>{$lang['userdetails_add_friends']}</a>";
+        $friend_links .= "<a class='margin10' href='{$site_config['baseurl']}/friends.php?action=add&amp;type=friend&amp;targetid=$id'>{$lang['userdetails_add_friends']}</a>";
     }
     if ($blocks > 0) {
-        $friend_links .= "<a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/friends.php?action=delete&amp;type=block&amp;targetid=$id'>{$lang['userdetails_remove_blocks']}</a>";
+        $friend_links .= "<a class='margin10' href='{$site_config['baseurl']}/friends.php?action=delete&amp;type=block&amp;targetid=$id'>{$lang['userdetails_remove_blocks']}</a>";
     } else {
-        $friend_links .= "<a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=$id'>{$lang['userdetails_add_blocks']}</a>";
+        $friend_links .= "<a class='margin10' href='{$site_config['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=$id'>{$lang['userdetails_add_blocks']}</a>";
     }
 }
 
@@ -304,13 +304,13 @@ if ($CURUSER['class'] >= UC_STAFF) {
     }
     if ($shit_list > 0) {
         $shitty_link = "
-            <a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list'>
+            <a class='margin10' href='{$site_config['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list'>
                 Remove from your
                 <img class='tooltipper right5' src='./images/smilies/shit.gif' alt='Shit' class='tooltipper' title='Shit' />
             </a>";
     } elseif ($CURUSER['id'] != $user['id']) {
         $shitty_link .= "
-            <a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=new&amp;shit_list_id={$id}&amp;return_to=userdetails.php?id={$id}'>
+            <a class='margin10' href='{$site_config['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=new&amp;shit_list_id={$id}&amp;return_to=userdetails.php?id={$id}'>
                 {$lang['userdetails_shit3']}
             </a>";
     }
@@ -327,12 +327,12 @@ if ($user['donor'] && $CURUSER['id'] == $user['id'] || $CURUSER['class'] == UC_S
 }
 if ($CURUSER['id'] == $user['id']) {
     $edit_profile = "
-        <a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=default'>{$lang['userdetails_editself']}</a>
-        <a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/view_announce_history.php'>{$lang['userdetails_announcements']}</a>";
+        <a class='margin10' href='{$site_config['baseurl']}/usercp.php?action=default'>{$lang['userdetails_editself']}</a>
+        <a class='margin10' href='{$site_config['baseurl']}/view_announce_history.php'>{$lang['userdetails_announcements']}</a>";
 }
 if ($CURUSER['id'] != $user['id']) {
     $sharemark_link .= "
-        <a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/sharemarks.php?id=$id'>{$lang['userdetails_sharemarks']}</a>";
+        <a class='margin10' href='{$site_config['baseurl']}/sharemarks.php?id=$id'>{$lang['userdetails_sharemarks']}</a>";
 }
 
 $HTMLOUT .= "
@@ -341,10 +341,10 @@ $HTMLOUT .= "
         $shitty_link
         $friend_links
         $edit_profile" . ($CURUSER['class'] === UC_MAX ? $user['perms'] & bt_options::PERMS_NO_IP ? "
-        <a class='bordered margin10 bg-02 tooltipper' title='{$lang['userdetails_invincible_def1']}<br>{$lang['userdetails_invincible_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=no'>{$lang['userdetails_invincible_remove']}</a>" . ($user['perms'] & bt_options::PERMS_BYPASS_BAN) ? "
-        <a class='bordered margin10 bg-02 tooltipper' title='{$lang['userdetails_invincible_def3']}<br>{$lang['userdetails_invincible_def4']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=remove_bypass'>{$lang['userdetails_remove_bypass']}</a>" : "
-        <a class='bordered margin10 bg-02 tooltipper' title='{$lang['userdetails_invincible_def5']}<br>{$lang['userdetails_invincible_def6']}<br>{$lang['userdetails_invincible_def7']}<br>{$lang['userdetails_invincible_def8']} href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_add_bypass']}</a>" : "
-        <a class='bordered margin10 bg-02 tooltipper' title='{$lang['userdetails_invincible_def9']}<br>{$lang['userdetails_invincible_def0']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_make_invincible']}</a>" : '');
+        <a class='margin10 tooltipper' title='{$lang['userdetails_invincible_def1']}<br>{$lang['userdetails_invincible_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=no'>{$lang['userdetails_invincible_remove']}</a>" . ($user['perms'] & bt_options::PERMS_BYPASS_BAN) ? "
+        <a class='margin10 tooltipper' title='{$lang['userdetails_invincible_def3']}<br>{$lang['userdetails_invincible_def4']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=remove_bypass'>{$lang['userdetails_remove_bypass']}</a>" : "
+        <a class='margin10 tooltipper' title='{$lang['userdetails_invincible_def5']}<br>{$lang['userdetails_invincible_def6']}<br>{$lang['userdetails_invincible_def7']}<br>{$lang['userdetails_invincible_def8']} href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_add_bypass']}</a>" : "
+        <a class='margin10 tooltipper' title='{$lang['userdetails_invincible_def9']}<br>{$lang['userdetails_invincible_def0']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_make_invincible']}</a>" : '');
 
 $stealth = $cache->get('display_stealth' . $CURUSER['id']);
 if ($stealth) {
@@ -352,8 +352,8 @@ if ($stealth) {
 }
 
 $HTMLOUT .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? "
-        <a class='bordered margin10 bg-02 tooltipper' title='{$lang['userdetails_stelth_def1']}<br>{$lang['userdetails_stelth_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;stealth=no'>{$lang['userdetails_stelth_disable']}</a>" : "
-        <a class='bordered margin10 bg-02 tooltipper' title='{$lang['userdetails_stelth_def1']}<br>{$lang['userdetails_stelth_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;stealth=yes'>{$lang['userdetails_stelth_enable']}</a>") : '') . "
+        <a class='margin10 tooltipper' title='{$lang['userdetails_stelth_def1']}<br>{$lang['userdetails_stelth_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;stealth=no'>{$lang['userdetails_stelth_disable']}</a>" : "
+        <a class='margin10 tooltipper' title='{$lang['userdetails_stelth_def1']}<br>{$lang['userdetails_stelth_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;stealth=yes'>{$lang['userdetails_stelth_enable']}</a>") : '') . "
     </div>";
 
 $HTMLOUT .= "
@@ -427,7 +427,7 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
                                         </div>
                                         <textarea id='watched_reason' class='w-100' rows='6' name='watched_reason'>" . htmlsafechars($user['watched_user_reason']) . "</textarea>
                                         <div class='has-text-centered'>
-                                            <input id='watched_user_button' type='submit' value='{$lang['userdetails_submit']}' class='button' name='watched_user_button' />
+                                            <input id='watched_user_button' type='submit' value='{$lang['userdetails_submit']}' class='button is-small' name='watched_user_button' />
                                         </div>
                                     </form>
                                 </div>
@@ -442,7 +442,7 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
                             <input name="id" type="hidden" value="' . (int)$user['id'] . '" />
                             <input type="hidden" value="staff_notes" name="action" id="action" />
                             <textarea id="new_staff_note" class="w-100" rows="6" name="new_staff_note">' . htmlsafechars($user['staff_notes']) . '</textarea>
-                            <br><input id="staff_notes_button" type="submit" value="' . $lang['userdetails_submit'] . '" class="button" name="staff_notes_button"/>
+                            <br><input id="staff_notes_button" type="submit" value="' . $lang['userdetails_submit'] . '" class="button is-small" name="staff_notes_button"/>
                             </form>
                             </div> </td></tr>';
     //=== system comments
@@ -1059,7 +1059,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
          <input type='hidden' id='downchange' name='downchange' value='plus' />
          </td></tr>";
     }
-    $HTMLOUT .= "<tr><td colspan='3' class='has-text-centered'><input type='submit' class='button' value='{$lang['userdetails_okay']}' /></td></tr>";
+    $HTMLOUT .= "<tr><td colspan='3' class='has-text-centered'><input type='submit' class='button is-small' value='{$lang['userdetails_okay']}' /></td></tr>";
     $HTMLOUT .= "</table>";
     $HTMLOUT .= "</form>";
 }

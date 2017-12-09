@@ -1661,19 +1661,19 @@ while ($gets = mysqli_fetch_assoc($res)) {
     if ($bonus >= $gets['points'] or $bonus >= $gets['minpoints']) {
         switch (true) {
             case $gets['id'] == 7:
-                $HTMLOUT .= "<td><input class='button' type='submit' name='submit' value='Karma Gift!' /></td></form>";
+                $HTMLOUT .= "<td><input class='button is-small' type='submit' name='submit' value='Karma Gift!' /></td></form>";
                 break;
             case $gets['id'] == 11:
-                $HTMLOUT .= "<td>" . ((float)$gets['points'] - (float)$gets['pointspool']) . " <br>Points needed! <br><input class='button' type='submit' name='submit' value='Contribute!' /></td></form>";
+                $HTMLOUT .= "<td>" . ((float)$gets['points'] - (float)$gets['pointspool']) . " <br>Points needed! <br><input class='button is-small' type='submit' name='submit' value='Contribute!' /></td></form>";
                 break;
             case $gets['id'] == 12:
-                $HTMLOUT .= "<td>" . ((float)$gets['points'] - (float)$gets['pointspool']) . " <br>Points needed! <br><input class='button' type='submit' name='submit' value='Contribute!' /></td></form>";
+                $HTMLOUT .= "<td>" . ((float)$gets['points'] - (float)$gets['pointspool']) . " <br>Points needed! <br><input class='button is-small' type='submit' name='submit' value='Contribute!' /></td></form>";
                 break;
             case $gets['id'] == 13:
-                $HTMLOUT .= "<td>" . ((float)$gets['points'] - (float)$gets['pointspool']) . " <br>Points needed! <br><input class='button' type='submit' name='submit' value='Contribute!' /></td></form>";
+                $HTMLOUT .= "<td>" . ((float)$gets['points'] - (float)$gets['pointspool']) . " <br>Points needed! <br><input class='button is-small' type='submit' name='submit' value='Contribute!' /></td></form>";
                 break;
             default:
-                $HTMLOUT .= "<td><input class='button' type='submit' name='submit' value='Exchange!' /></td></form>";
+                $HTMLOUT .= "<td><input class='button is-small' type='submit' name='submit' value='Exchange!' /></td></form>";
         }
     } else {
         $HTMLOUT .= "<td><b>Not Enough Karma</b></td>";

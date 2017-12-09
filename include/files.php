@@ -15,9 +15,9 @@ function get_file($file)
         if ($site_config['in_production']) {
             switch ($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/57def898d4b996a9f83c867e43d0efa1.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/fffe2f2fbd113a42c87686bda646b39c.min.css";
                 case 'js':
-                    return "{$site_config['baseurl']}/js/{$style}/5ab3515050239a13db7401d81488631e.min.js";
+                    return "{$site_config['baseurl']}/js/{$style}/ed60e7cc875b105033df67ce982079b8.min.js";
                 case 'checkport_js':
                     return "{$site_config['baseurl']}/js/{$style}/4ba42503ffca4c65167590b15a03b842.min.js";
                 case 'trivia_css':
@@ -38,8 +38,6 @@ function get_file($file)
                     return "{$site_config['baseurl']}/js/{$style}/bca31b72a1d2cc4b193cbeda516078aa.min.js";
                 case 'captcha2_js':
                     return "{$site_config['baseurl']}/js/{$style}/8068bfa6d6adcaea9fa103c1183a9c4e.min.js";
-                case 'pm_js':
-                    return "{$site_config['baseurl']}/js/{$style}/7ac1fbcb7a786fe260eccbfecf8743d8.min.js";
                 case 'warn_js':
                     return "{$site_config['baseurl']}/js/{$style}/7ac1fbcb7a786fe260eccbfecf8743d8.min.js";
                 case 'upload_js':
@@ -60,9 +58,9 @@ function get_file($file)
         } else {
             switch ($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/766b0800579bcbe4ae5f417e0c4d1dcd.css";
+                    return "{$site_config['baseurl']}/css/{$style}/a5d788f0c3dba46edd61b4bf4698cf3b.css";
                 case 'js':
-                    return "{$site_config['baseurl']}/js/{$style}/e5d1604f7f621ff3db3d2e90ae8e85d4.js";
+                    return "{$site_config['baseurl']}/js/{$style}/e0653c3c2af1463d75e34d34d48197f5.js";
                 case 'checkport_js':
                     return "{$site_config['baseurl']}/js/{$style}/4a99c7d4e3c8639af2775ef05d500598.js";
                 case 'trivia_css':
@@ -83,8 +81,6 @@ function get_file($file)
                     return "{$site_config['baseurl']}/js/{$style}/421d04585d4091db9268de6db0f2bc65.js";
                 case 'captcha2_js':
                     return "{$site_config['baseurl']}/js/{$style}/029d354c993a8b46d85d9cde58bb2f28.js";
-                case 'pm_js':
-                    return "{$site_config['baseurl']}/js/{$style}/31840d666e0737044502f628d404d1df.js";
                 case 'warn_js':
                     return "{$site_config['baseurl']}/js/{$style}/31840d666e0737044502f628d404d1df.js";
                 case 'upload_js':

@@ -979,7 +979,7 @@ CREATE TABLE `database_updates` (
 
 LOCK TABLES `database_updates` WRITE;
 /*!40000 ALTER TABLE `database_updates` DISABLE KEYS */;
-INSERT INTO `database_updates` VALUES (1,'Drop Column<br>will fail if column already dropped','ALTER TABLE polls DROP `starter_name`','2017-12-06 19:29:55');
+INSERT INTO `database_updates` VALUES (1,'Drop Column<br>will fail if column already dropped','ALTER TABLE polls DROP `starter_name`','2017-12-06 19:29:55'),(2,'Add missing FULLTEXT index for pm messages search','ALTER TABLE `messages` ADD FULLTEXT INDEX `ft_subject` (`subject`);','2017-12-07 14:25:49'),(3,'Add missing FULLTEXT index for pm messages search','ALTER TABLE `messages` ADD FULLTEXT INDEX `ft_msg` (`msg`);','2017-12-07 14:25:56'),(4,'Add missing FULLTEXT index for pm messages search','ALTER TABLE `messages` ADD FULLTEXT INDEX `ft_subject_msg` (`subject`, `msg`);','2017-12-07 14:26:15');
 /*!40000 ALTER TABLE `database_updates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1727,7 +1727,10 @@ CREATE TABLE `messages` (
   `staff_id` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `receiver` (`receiver`),
-  KEY `sender` (`sender`)
+  KEY `sender` (`sender`),
+  FULLTEXT KEY `ft_subject` (`subject`),
+  FULLTEXT KEY `ft_msg` (`msg`),
+  FULLTEXT KEY `ft_subject_msg` (`subject`,`msg`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3725,4 +3728,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-06 19:49:54
+-- Dump completed on 2017-12-09  1:38:39

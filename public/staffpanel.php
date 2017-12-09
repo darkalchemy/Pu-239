@@ -265,10 +265,10 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[ $too
         $HTMLOUT .= main_table($body, $header);
         $HTMLOUT .= "
     <div class='level-center margin20'>
-            <input type='submit' class='button' value='{$lang['spanel_submit']}' />
+            <input type='submit' class='button is-small' value='{$lang['spanel_submit']}' />
         </form>
         <form method='post' action='{$_SERVER['PHP_SELF']}'>
-            <input type='submit' class='button' value='{$lang['spanel_cancel']}' />
+            <input type='submit' class='button is-small' value='{$lang['spanel_cancel']}' />
         </form>
     </div>";
         echo stdhead($lang['spanel_header'] . ' :: ' . ($action == 'edit' ? '' . $lang['spanel_edit'] . ' "' . $page_name . '"' : $lang['spanel_add_a_new']) . ' page') . $HTMLOUT . stdfoot();

@@ -83,11 +83,11 @@ $doubleddown = $nick['ddown'] === 'yes' ? true : false;
 if ($CURUSER['id'] == $nick['userid'] && $nick['status'] == 'waiting') {
     stderr('Sorry ' . format_username($CURUSER['id']) . ',', "You'll have to wait until another player plays your last game before you can play a new one.<br>
     You have {$nick['points']}.<br><br>
-    <a href='./games.php' class='button'>{$lang['bj_back']}</a><br><br>");
+    <a href='./games.php' class='button is-small'>{$lang['bj_back']}</a><br><br>");
 }
 if ($CURUSER['id'] != $nick['userid'] && $nick['gameover'] == 'no') {
     stderr('Sorry ' . format_username($CURUSER['id']) . ',', "You'll have to wait until " . format_username($nick['id']) . " finishes $gender game before you can play a new one.<br><br>
-    <a href='./games.php' class='button'>{$lang['bj_back']}</a><br><br>");
+    <a href='./games.php' class='button is-small'>{$lang['bj_back']}</a><br><br>");
 }
 $opponent = isset($nick['username']) ? '<h3>Your Opponent is: ' . format_username($nick['id']) . '</h3>' : '';
 $required_ratio = 1.0;
@@ -213,7 +213,7 @@ if ($game) {
                         <input type='hidden' name='game' value='hit' readonly='readonly' />
                         <input type='hidden' name='continue' value='yes' readonly='readonly' />
                         <div class='has-text-centered'>
-                            <input class='button' type='submit' value='{$lang['bj_continue_old_game']}' />
+                            <input class='button is-small' type='submit' value='{$lang['bj_continue_old_game']}' />
                         </div>
                     </form>");
             }
@@ -316,7 +316,7 @@ if ($game) {
                                 <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
                                     <input type='hidden' name='game' value='hit' readonly='readonly' />
                                     <div class='has-text-centered'>
-                                        <input class='button' type='submit' value='{$lang['bj_hitme']}' />
+                                        <input class='button is-small' type='submit' value='{$lang['bj_hitme']}' />
                                     </div>
                                 </form>
                             </td>
@@ -329,7 +329,7 @@ if ($game) {
                                 <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
                                     <input type='hidden' name='game' value='stop' readonly='readonly' />
                                     <div class='has-text-centered'>
-                                        <input class='button' type='submit' value='{$lang['bj_stay']}' />
+                                        <input class='button is-small' type='submit' value='{$lang['bj_stay']}' />
                                     </div>
                                 </form>
                             </td>
@@ -343,7 +343,7 @@ if ($game) {
                                     <input type='hidden' name='ddown' value='ddown' readonly='readonly' />
                                     <input type='hidden' name='game' value='hit' readonly='readonly' />
                                     <div class='has-text-centered'>
-                                        <input class='button' type='submit' value='Double Down' />
+                                        <input class='button is-small' type='submit' value='Double Down' />
                                     </div>
                                 </form>
                             </td>
@@ -501,8 +501,8 @@ if ($game) {
                             {$lang['bj_your_opp_was']} " . format_username($a['id']) . ", $gender had $points_text, $winorlose.
                         </p><br>
                         <p class='has-text-centered'>
-                            <a href='./blackjack.php?id=$id' class='button'>{$lang['bj_play_again']}</a>
-                            <a href='./games.php' class='button'>Games</a>
+                            <a href='./blackjack.php?id=$id' class='button is-small'>{$lang['bj_play_again']}</a>
+                            <a href='./games.php' class='button is-small'>Games</a>
                         </p>";
             } else {
                 sql_query("UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $now . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . " AND userid = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -514,7 +514,7 @@ if ($game) {
                 $HTMLOUT .= "
                         <div class='has-text-centered'>
                             {$lang['bj_there_are_no_other_players']}<br>
-                            <a href='./games.php' class='button'>{$lang['bj_back']}</a>
+                            <a href='./games.php' class='button is-small'>{$lang['bj_back']}</a>
                         </div>";
             }
             $HTMLOUT .= '
@@ -612,8 +612,8 @@ if ($game) {
                             {$lang['bj_your_opp_was']} " . format_username($a['id']) . ", $gender had $points_text, $winorlose.
                         </p><br>
                         <p class='has-text-centered'>
-                            <a href='./blackjack.php?id=$id' class='button'>{$lang['bj_play_again']}</a>
-                            <a href='./games.php' class='button'>Games</a>
+                            <a href='./blackjack.php?id=$id' class='button is-small'>{$lang['bj_play_again']}</a>
+                            <a href='./games.php' class='button is-small'>Games</a>
                         </p>";
             } else {
                 sql_query("UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $now . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . " AND userid = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -625,7 +625,7 @@ if ($game) {
                 $HTMLOUT .= "
                         <div class='has-text-centered'>
                             {$lang['bj_there_are_no_other_players']}<br>
-                            <a href='./games.php' class='button'>{$lang['bj_back']}</a>
+                            <a href='./games.php' class='button is-small'>{$lang['bj_back']}</a>
                         </div>";
             }
             $HTMLOUT .= '
@@ -671,7 +671,7 @@ if ($game) {
                             <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
                                 <input type='hidden' name='game' value='hit' readonly='readonly' />
                                 <div class='has-text-centered'>
-                                    <input class='button' type='submit' value='{$lang['bj_hitme']}' />
+                                    <input class='button is-small' type='submit' value='{$lang['bj_hitme']}' />
                                 </div>
                             </form>
                         </td>
@@ -684,7 +684,7 @@ if ($game) {
                             <form method='post' action='" . $_SERVER['PHP_SELF'] . "?id=$id'>
                                 <input type='hidden' name='game' value='stop' readonly='readonly' />
                                 <div class='has-text-centered'>
-                                    <input class='button' type='submit' value='{$lang['bj_stay']}' />
+                                    <input class='button is-small' type='submit' value='{$lang['bj_stay']}' />
                                 </div>
                             </form>
                         </td>
@@ -698,7 +698,7 @@ if ($game) {
                                 <input type='hidden' name='ddown' value='ddown' readonly='readonly' />
                                 <input type='hidden' name='game' value='hit' readonly='readonly' />
                                 <div class='has-text-centered'>
-                                    <input class='button' type='submit' value='Double Down' />
+                                    <input class='button is-small' type='submit' value='Double Down' />
                                 </div>
                             </form>
                         </td>
@@ -849,8 +849,8 @@ if ($game) {
                             {$lang['bj_your_opp_was']} " . format_username($a['id']) . ", $gender had $points_text, $winorlose.
                         </p><br>
                         <p class='has-text-centered'>
-                            <a href='./blackjack.php?id=$id' class='button'>{$lang['bj_play_again']}</a>
-                            <a href='./games.php' class='button'>Games</a>
+                            <a href='./blackjack.php?id=$id' class='button is-small'>{$lang['bj_play_again']}</a>
+                            <a href='./games.php' class='button is-small'>Games</a>
                         </p>";
         } else {
             sql_query("UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $now . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . " AND userid = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -862,7 +862,7 @@ if ($game) {
             $HTMLOUT .= "
                         <div class='has-text-centered'>
                             {$lang['bj_there_are_no_other_players']}<br>
-                            <a href='./games.php' class='button'>{$lang['bj_back']}</a>
+                            <a href='./games.php' class='button is-small'>{$lang['bj_back']}</a>
                         </div>";
         }
         $HTMLOUT .= '
@@ -923,7 +923,7 @@ if ($game) {
                                 <input type='hidden' name='game' value='hit' readonly='readonly' />
                                 <input type='hidden' name='start_' value='yes' readonly='readonly' />
                                 <div class='has-text-centered'>
-                                    <input class='button' type='submit' value='Start!' />
+                                    <input class='button is-small' type='submit' value='Start!' />
                                 </div>
                             </form>
                         </td>

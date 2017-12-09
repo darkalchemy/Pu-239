@@ -80,7 +80,7 @@ $HTMLOUT .= "
                     </div>
                     <div class='has-text-centered flex flex-center'>
                         <a href='./pm_system.php?action=delete&amp;id={$pm_id}'>
-                            <input type='submit' class='button' value='{$lang['pm_viewmsg_delete']}' />
+                            <input type='submit' class='button is-small' value='{$lang['pm_viewmsg_delete']}' />
                         </a>" . ($message['draft'] === 'no' ? "
                         <a href='./pm_system.php?action=save_or_edit_draft&amp;id={$pm_id}'>
                             <input type='submit' class='button left10' value='{$lang['pm_viewmsg_sdraft']}' />

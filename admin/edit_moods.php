@@ -49,7 +49,7 @@ if ($edit_mood['action'] == 'edit' && $edit_mood['id']) {
             <td><input type='checkbox' name='bonus'" . ($edit_mood['arr']['bonus'] ? ' checked' : '') . " /></td></tr>
             <tr><td colspan='2'>
             <input type='hidden' name='id' value='" . (int)$edit_mood['id'] . "' />
-            <input type='submit' name='okay' value='{$lang['moods_add']}' class='button' />
+            <input type='submit' name='okay' value='{$lang['moods_add']}' class='button is-small' />
             </td></tr>
             </table></form>";
     }
@@ -64,7 +64,7 @@ if ($edit_mood['action'] == 'edit' && $edit_mood['id']) {
          <tr><td class='colhead'>{$lang['moods_bonus']}</td>
          <td><input type='checkbox' name='bonus' /></td></tr>
          <tr><td colspan='2'>
-         <input type='submit' name='okay' value='{$lang['moods_add']}' class='button' />
+         <input type='submit' name='okay' value='{$lang['moods_add']}' class='button is-small' />
          </td></tr>
          </table></form>";
 }

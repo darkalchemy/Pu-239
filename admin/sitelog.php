@@ -33,7 +33,7 @@ $HTMLOUT .= "
             <h2>{$lang['log_search']}</h2>
             <form method='post' action='./staffpanel.php?tool=sitelog&amp;action=sitelog'>
                 <input type='text' name='search' class='w-50' value='' />
-                <input type='submit' class='button' value='{$lang['log_search_btn']}' />
+                <input type='submit' class='button is-small' value='{$lang['log_search_btn']}' />
             </form>
         </div>";
 if ($count > $perpage) {

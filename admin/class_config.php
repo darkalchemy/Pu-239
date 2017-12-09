@@ -332,7 +332,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
                         <td class='has-text-centered'>
                             <form name='remove' action='staffpanel.php?tool=class_config&amp;mode=remove' method='post'>
                                 <input type='hidden' name='remove' value='" . htmlsafechars($arr['name']) . "' />
-                                <input type='submit' class='button' value='{$lang['classcfg_class_remove']}' />
+                                <input type='submit' class='button is-small' value='{$lang['classcfg_class_remove']}' />
                             </form>
                         </td>
                     </tr>";
@@ -365,7 +365,7 @@ $HTMLOUT .= "
                     <tr>
                         <td colspan='2'>
                             <div class='has-text-centered'>
-                                <input type='submit' class='button' value='{$lang['classcfg_class_apply']}' />
+                                <input type='submit' class='button is-small' value='{$lang['classcfg_class_apply']}' />
                             </div>
                         </td>
                     </tr>
@@ -397,7 +397,7 @@ $HTMLOUT .= "
                     <tr>
                         <td colspan='5'>
                             <div class='has-text-centered'>
-                                <input type='submit' class='button' value='{$lang['classcfg_add_new']}' />
+                                <input type='submit' class='button is-small' value='{$lang['classcfg_add_new']}' />
                             </div>
                         </td>
                     </tr>

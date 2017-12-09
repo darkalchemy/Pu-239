@@ -84,6 +84,6 @@ $HTMLOUT .= "<h1>10&#37;</h1>
 <form name='tenpercent' method='post' action='tenpercent.php'>
 <table class='table table-bordered table-striped'>
 <tr><td><b>Yes please </b><input type='checkbox' name='sure' value='1' onclick='if (this.checked) enablesubmit(); else disablesubmit();' /></td></tr>
-<tr><td><input type='submit' name='submit' value='Add 10%' class='button' disabled='disabled' /></td></tr>
+<tr><td><input type='submit' name='submit' value='Add 10%' class='button is-small' disabled='disabled' /></td></tr>
 </table></form>\n";
 echo stdhead('Ten Percent') . $HTMLOUT . stdfoot();

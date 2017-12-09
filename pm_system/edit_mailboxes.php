@@ -171,7 +171,7 @@ if (mysqli_num_rows($res) > 0) {
                     </tr>
                     <tr>
                         <td class="one" colspan="3">
-                        <input type="submit" class="button" value="' . $lang['pm_edmail_edit'] . '" /></form></td>
+                        <input type="submit" class="button is-small" value="' . $lang['pm_edmail_edit'] . '" /></form></td>
                     </tr>';
 } else {
     $all_my_boxes .= '
@@ -214,7 +214,7 @@ $("#cat_open").click(function() {
 });
 /*]]>*/
 </script>';
-$HTMLOUT .= '<h1>' . $lang['pm_edmail_title'] . '</h1>' . $h1_thingie . $top_links . '
+$HTMLOUT .= $top_links . '<h1>' . $lang['pm_edmail_title'] . '</h1>' . $h1_thingie . '
         <form action="pm_system.php" method="post">
         <input type="hidden" name="action" value="edit_mailboxes" />
         <input type="hidden" name="action2" value="add" />
@@ -241,7 +241,7 @@ $HTMLOUT .= '
         <td class="one"></td>
         <td class="one">' . $lang['pm_edmail_only_fill'] . '<br>
 		' . $lang['pm_edmail_blank'] . '</td>
-        <td class="one"><input type="submit" class="button_tiny" name="move" value="' . $lang['pm_edmail_add'] . '" /></form></td>
+        <td class="one"><input type="submit" class="button is-small" name="move" value="' . $lang['pm_edmail_add'] . '" /></form></td>
     </tr>
     <tr>
         <td class="colhead" colspan="3"><h1>' . $lang['pm_edmail_ed_del'] . '</h1></td>
@@ -304,6 +304,6 @@ $HTMLOUT .= '
     </tr>
     <tr>
         <td class="one" colspan="3">
-        <input type="submit" class="button btn-default" value="' . $lang['pm_edmail_change'] . '" /></form></td>
+        <input type="submit" class="button is-small" value="' . $lang['pm_edmail_change'] . '" /></form></td>
     </tr>
     </table></form>';
