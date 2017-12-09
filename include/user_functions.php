@@ -474,35 +474,23 @@ function format_username($user_id, $icons = true, $tooltipper = true)
             $cache->set('user' . $user_id, $users_data, $site_config['expires']['user_cache']);
         }
     }
-
-    $avatar = !empty($users_data['avatar']) ? "<img src='{$users_data['avatar']}' class='avatar' />" : "<img src='./images/forumicons/default_avatar.gif' class='avatar' />";
-    $tip = $tooltip = '';
-    if ($tooltipper) {
-        $tip = "
-                        <div class='tooltip_templates'>
-                            <span id='id_{$users_data['id']}_tooltip' class='is-flex tooltip'>
-                                <div class='right20'>
-                                    {$avatar}
-                                </div>
-                                <div style='min-width: 150px; align: left;'>
-                                     <span class='" . get_user_class_name($users_data['class'], true) . "'>" . htmlsafechars($users_data['username']) . "</span>
-                                </div>
-                            </span>
-                        </div>";
-        $tooltip = "class='dt-tooltipper-large' data-tooltip-content='#id_{$users_data['id']}_tooltip' ";
-    }
-
     if ($users_data['id'] === 0) {
         return 'System';
-    } elseif ($users_data['username'] == '') {
+    } elseif (empty($users_data['username'])) {
         return 'unknown[' . $users_data['id'] . ']';
     }
 
+    $avatar = !empty($users_data['avatar']) ? "<img src='{$users_data['avatar']}' class='avatar' />" : "<img src='{$site_config['baseurl']}/images/forumicons/default_avatar.gif' class='avatar' />";
+    $tip = $tooltip = '';
+    if ($tooltipper) {
+        $tip = "<div class='tooltip_templates'><div id='userid_{$users_data['id']}_tooltip' class='is-flex tooltip'><div class='right20'>{$avatar}</div><div style='min-width: 150px; align: left;'><span class='" . get_user_class_name($users_data['class'], true) . "'>" . htmlsafechars($users_data['username']) . "</span></div></div></div>";
+        $tooltip = "class='" . get_user_class_name($users_data['class'], true). " dt-tooltipper-large' data-tooltip-content='#userid_{$users_data['id']}_tooltip'";
+    } else {
+        $tooltip = "class='" . get_user_class_name($users_data['class'], true). "'";
+    }
     $str = "
-            <span>
-                <a class='user_{$users_data['id']}' href='./userdetails.php?id={$users_data['id']}' target='_blank'>
-                    <span {$tooltip}style='color:#" . get_user_class_color($users_data['class']) . ";'>" . htmlsafechars($users_data['username']) . "$tip</span>
-                </a>";
+                $tip
+                <a href='{$site_config['baseurl']}/userdetails.php?id={$users_data['id']}' target='_blank'><span {$tooltip}>" . htmlsafechars($users_data['username']) . "</span></a>";
 
     if ($icons != false) {
         $str .= (isset($users_data['king']) && $users_data['king'] >= TIME_NOW ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'king.png" alt="King" title="King" width="14px" height="14px" />' : '');
@@ -515,10 +503,8 @@ function format_username($user_id, $icons = true, $tooltipper = true)
         $str .= ($users_data['pirate'] != 0 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'pirate.png" alt="Pirate" title="Pirate" width="14px" height="14px" />' : '');
         $str .= (isset($users_data['gotgift']) && $users_data['gotgift'] == 'yes' ? '<img class="tooltipper" height="16px" src="' . $site_config['pic_base_url'] . 'gift.png" alt="Christmas Gift" title="Has Claimed a Christmas Gift" />' : '');
     }
-    $str .= '
-            </span>';
 
-    return trim($str);
+    return $str;
 }
 
 /**

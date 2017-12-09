@@ -309,18 +309,17 @@ function stdfoot($stdfoot = false)
  */
 function stdmsg($heading, $text)
 {
+    require_once INCL_DIR . 'html_functions.php';
+
     $htmlout = '';
     if ($heading) {
         $htmlout .= "
                 <h2>$heading</h2>";
     }
     $htmlout .= "
-                <span>$text</span>";
+                <p>$text</p>";
 
-    if (function_exists('main_div')) {
-        return main_div($htmlout);
-    }
-    return $htmlout;
+    return main_div($htmlout, 'bottom20');
 }
 
 /**

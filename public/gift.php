@@ -114,6 +114,7 @@ Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry 
             stderr('Sorry...', 'You already got your gift !');
         }
     } else {
-        stderr('Doh...', "Be patient!  You can't open your present until Christmas Day! <b>" . date('z', ($Christmasday - $today)) . "</b> day(s) to go. <br> Today : <b><span>" . date('l dS \of F Y h:i:s A', $today) . "</span></b><br>Christmas Day : <b><span>" . date('l dS \of F Y h:i:s A', $Christmasday) . '</span></b>');
+        $days = date('z', ($Christmasday - $today));
+        stderr('Be patient!', "You can't open your present until Christmas Day! <b>$days</b> day" . plural($days) . " to go. <br> Today : <b><span>" . date('l dS \of F Y h:i:s A', $today) . "</span></b><br>Christmas Day : <b><span>" . date('l dS \of F Y h:i:s A', $Christmasday) . '</span></b>');
     }
 }

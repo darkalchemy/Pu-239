@@ -10,7 +10,7 @@ body {
     background: black;
     color: white;
     font-size: 75%;
-    line-height: 110%;
+    line-height: 125%;
     margin: auto;
     padding: 0;
     height: 100%;
@@ -188,7 +188,7 @@ h6 {
 }
 
 p {
-    line-height: 1.1em;
+    line-height: 1.25em;
 }
 
 .site-debug {
@@ -476,16 +476,19 @@ textarea {
     -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     display: inline-block;
-    margin-right: .625em;
     max-width: 100%;
+    height: auto;
+    -webkit-border-radius: .625em;
+    -moz-border-radius: .625em;
+    border-radius: .625em;
 }
 
 .img-responsive {
     max-width: 100%;
     height: auto;
-    -webkit-border-radius: .3125em;
-    -moz-border-radius: .3125em;
-    border-radius: .3125em;
+    -webkit-border-radius: .625em;
+    -moz-border-radius: .625em;
+    border-radius: .625em;
 }
 
 .portlet.is-fluid {
@@ -1034,4 +1037,16 @@ textarea {
     .img-polaroid {
         margin-right: 0;
     }
+}
+
+@media (min-width: 768px) {
+    .flex-top {
+        -webkit-box-align: start;
+        -ms-flex-align: start;
+        align-items: flex-start;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+    }
+
 }

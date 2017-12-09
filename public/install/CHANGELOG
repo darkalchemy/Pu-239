@@ -1,4 +1,12 @@
 9 Dec 2017
+update: forums sort links to tabs
+fix: navbar username class color
+add: mini navbar for links in usercp.php, userdetails.php forums.php
+remove: text shadow from user classes
+remove: webpack dependancy
+fix: extra space between username and comma
+add: package.json
+add: bulma css requirement
 add: notification of which cache adapter is in use
 fix: pm search delete
 add: cache all_users search for send message
