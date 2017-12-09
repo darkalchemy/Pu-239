@@ -15,7 +15,7 @@ function get_file($file)
         if ($site_config['in_production']) {
             switch ($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/fffe2f2fbd113a42c87686bda646b39c.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/7d54b8d8b45dc5c13339ad173394c5ed.min.css";
                 case 'js':
                     return "{$site_config['baseurl']}/js/{$style}/ed60e7cc875b105033df67ce982079b8.min.js";
                 case 'checkport_js':
@@ -58,7 +58,7 @@ function get_file($file)
         } else {
             switch ($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/a5d788f0c3dba46edd61b4bf4698cf3b.css";
+                    return "{$site_config['baseurl']}/css/{$style}/25fc77d4066c360ddf5448aef711615c.css";
                 case 'js':
                     return "{$site_config['baseurl']}/js/{$style}/e0653c3c2af1463d75e34d34d48197f5.js";
                 case 'checkport_js':

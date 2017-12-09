@@ -10,7 +10,7 @@ body {
     background: black;
     color: white;
     font-size: 75%;
-    line-height: 110%;
+    line-height: 125%;
     margin: auto;
     padding: 0;
     height: 100%;
@@ -188,7 +188,7 @@ h6 {
 }
 
 p {
-    line-height: 1.1em;
+    line-height: 1.25em;
 }
 
 .site-debug {

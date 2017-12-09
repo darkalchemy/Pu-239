@@ -32,6 +32,7 @@ chown -R www-data:www-data Pu-239
 # install dependancies
 cd Pu-239
 composer install
+npm install bulma
 
 # set webroot to path Pu-239/public
 
@@ -57,6 +58,7 @@ git pull
 
 # update dependancies:
 composer update
+npm update
 
 # update database:
 goto admin/upgrade_database to check/update the database
