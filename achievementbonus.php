@@ -80,9 +80,6 @@ if ($bonus_type == 3) {
     $cache->update_row('user' . $id, [
         'invites' => $invite + $bonus_do,
     ], $site_config['expires']['user_cache']);
-    $cache->update_row('MyUser_' . $id, [
-        'invites' => $invite + $bonus_do,
-    ], $site_config['expires']['curuser']);
 }
 if ($bonus_type == 4) {
     $msg = "{$lang['achbon_congratulations']}, {$lang['achbon_you_hv_just_won']} $bonus_desc";

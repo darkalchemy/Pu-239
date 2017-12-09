@@ -4,10 +4,11 @@
  */
 function ajax_chat_cleanup($data)
 {
-    global $site_config, $queries, $cache;
+    global $site_config, $queries;
     require_once INCL_DIR . 'user_functions.php';
     set_time_limit(1200);
     ignore_user_abort(true);
+
     $res = sql_query("SELECT id, channel, ttl, text FROM ajax_chat_messages
         				WHERE ttl > 0 AND UNIX_TIMESTAMP(dateTime) + ttl <= UNIX_TIMESTAMP(NOW())") or sqlerr(__FILE__, __LINE__);
 

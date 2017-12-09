@@ -1,11 +1,16 @@
 <?php
-global $site_config, $CURUSER, $cache, $lang;
+global $site_config, $CURUSER, $cache, $lang, $fpdo;
 
 if ($site_config['report_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $delt_with = $cache->get('new_report_');
     if ($delt_with === false || is_null($delt_with)) {
-        $res_reports = sql_query("SELECT COUNT(id) FROM reports WHERE delt_with = '0'");
-        list($delt_with) = mysqli_fetch_row($res_reports);
+        $res_reports = $fpdo->from('reports')
+            ->select(null)
+            ->select('COUNT(id) AS count')
+            ->where('delt_with = 0')
+            ->fetch();
+
+        $delt_with= $res_reports['count'];
         $cache->set('new_report_', $delt_with, $site_config['expires']['alerts']);
     }
     if ($delt_with > 0) {

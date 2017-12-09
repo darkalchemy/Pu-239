@@ -4,10 +4,10 @@
  */
 function snatchclean_update($data)
 {
-    global $site_config, $queries, $cache;
+    global $queries;
     set_time_limit(1200);
     ignore_user_abort(true);
-    //== Delete snatched
+
     $days = 30;
     $dt = (TIME_NOW - ($days * 86400));
     sql_query('DELETE FROM snatched WHERE complete_date < ' . sqlesc($dt)) or sqlerr(__FILE__, __LINE__);

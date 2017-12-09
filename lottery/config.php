@@ -118,7 +118,7 @@ if ($lottery_config['enable']) {
                 <tr>
                     <td colspan='2'>
                         <div class='has-text-centered'>
-                            <input type='submit' class='button' value='Apply changes' />
+                            <input type='submit' class='button is-small' value='Apply changes' />
                         </div>
                     </td>
                 </tr>

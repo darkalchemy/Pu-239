@@ -7,6 +7,11 @@ function pu_update($data)
     global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
+
+    $prev_class_name = $class_name = 'user';
+    $prev_class = 0;
+    $dt = TIME_NOW;
+
     $pconf = sql_query('SELECT * FROM class_promo ORDER BY id ASC ') or sqlerr(__FILE__, __LINE__);
     while ($ac = mysqli_fetch_assoc($pconf)) {
         $class_config[ $ac['name'] ]['id'] = $ac['id'];
@@ -18,21 +23,21 @@ function pu_update($data)
 
         $limit = $class_config[ $ac['name'] ]['uploaded'] * 1024 * 1024 * 1024;
         $minratio = $class_config[ $ac['name'] ]['min_ratio'];
-        $maxdt = (TIME_NOW - 86400 * $class_config[ $ac['name'] ]['time']);
+        $maxdt = ($dt - 86400 * $class_config[ $ac['name'] ]['time']);
 
         $class_value = $class_config[ $ac['name'] ]['name'];
-        $res1 = sql_query("SELECT * from class_config WHERE value = '$class_value' ");
+        $res1 = sql_query("SELECT * from class_config WHERE value = " . sqlesc($class_value));
         while ($arr1 = mysqli_fetch_assoc($res1)) {
             $class_name = $arr1['classname'];
             $prev_class = $class_value - 1;
         }
 
-        $res2 = sql_query("SELECT * from class_config WHERE value = '$prev_class' ");
+        $res2 = sql_query("SELECT * from class_config WHERE value = " . sqlesc($prev_class));
         while ($arr2 = mysqli_fetch_assoc($res2)) {
             $prev_class_name = $arr2['classname'];
         }
 
-        $res = sql_query("SELECT id, uploaded, downloaded, invites, modcomment FROM users WHERE class = '$prev_class'  AND uploaded >= $limit AND uploaded / downloaded >= $minratio AND enabled='yes' AND added < $maxdt") or sqlerr(__FILE__, __LINE__);
+        $res = sql_query("SELECT id, uploaded, downloaded, invites, modcomment FROM users WHERE class = " . sqlesc($prev_class) . "  AND uploaded >= $limit AND uploaded / downloaded >= $minratio AND enabled='yes' AND added < $maxdt") or sqlerr(__FILE__, __LINE__);
         $msgs_buffer = $users_buffer = [];
         if (mysqli_num_rows($res) > 0) {
             $subject = 'Class Promotion';
@@ -40,9 +45,9 @@ function pu_update($data)
             while ($arr = mysqli_fetch_assoc($res)) {
                 $ratio = number_format($arr['uploaded'] / $arr['downloaded'], 3);
                 $modcomment = $arr['modcomment'];
-                $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - Promoted to ' . $class_name . ' by System (UL=' . mksize($arr['uploaded']) . ', DL=' . mksize($arr['downloaded']) . ', R=' . $ratio . ").\n" . $modcomment;
+                $modcomment = get_date($dt, 'DATE', 1) . ' - Promoted to ' . $class_name . ' by System (UL=' . mksize($arr['uploaded']) . ', DL=' . mksize($arr['downloaded']) . ', R=' . $ratio . ").\n" . $modcomment;
                 $modcom = sqlesc($modcomment);
-                $msgs_buffer[] = '(0,' . $arr['id'] . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+                $msgs_buffer[] = '(0,' . $arr['id'] . ', ' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
                 $users_buffer[] = '(' . $arr['id'] . ', ' . $class_value . ', 1, ' . $modcom . ')';
                 $update['invites'] = ($arr['invites'] + 1);
                 $cache->update_row('user' . $arr['id'], [
@@ -52,10 +57,6 @@ function pu_update($data)
                 $cache->update_row('user_stats_' . $arr['id'], [
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_stats']);
-                $cache->update_row('MyUser_' . $arr['id'], [
-                    'class'   => $class_value,
-                    'invites' => $update['invites'],
-                ], $site_config['expires']['curuser']);
                 $cache->increment('inbox_' . $arr['id']);
             }
             $count = count($users_buffer);

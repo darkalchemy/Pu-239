@@ -176,7 +176,7 @@ if (isset($_GET['msg'])) {
 }
 if (!isset($_GET['act'])) {
     $HTML .= "<table width='80%'>
-        <tr><td colspan='5'><a href='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=3'><span class='button'>{$lang['themes_addnew']}</span></a></td></tr>
+        <tr><td colspan='5'><a href='{$site_config['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=3'><span class='button is-small'>{$lang['themes_addnew']}</span></a></td></tr>
         <tr>
         <td class='colhead'>{$lang['themes_id']}</td>
         <td class='colhead'>{$lang['themes_uri']}</td>

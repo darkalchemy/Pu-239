@@ -7,12 +7,13 @@ function irc_update($data)
     global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
+    $users_buffer = [];
+
     $res = sql_query("SELECT id, seedbonus, irctotal FROM users WHERE onirc = 'yes'") or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) > 0) {
         while ($arr = mysqli_fetch_assoc($res)) {
-            $users_buffer[] = '(' . $arr['id'] . ',0.225,' . $site_config['autoclean_interval'] . ')'; // .250 karma
-            //$users_buffer[] = '('.$arr['id'].',15728640,'.$site_config['autoclean_interval'].')'; // 15 mb
-            $update['seedbonus'] = ($arr['seedbonus'] + 0.225);
+            $users_buffer[] = '(' . $arr['id'] . ', ' . $site_config['bonus_irc_per_duration'] . ', ' . $site_config['autoclean_interval'] . ')';
+            $update['seedbonus'] = ($arr['seedbonus'] + $site_config['bonus_irc_per_duration']);
             $update['irctotal'] = ($arr['irctotal'] + $site_config['autoclean_interval']);
             $cache->update_row('user' . $arr['id'], [
                 'irctotal' => $update['irctotal'],

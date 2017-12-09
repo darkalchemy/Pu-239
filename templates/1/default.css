@@ -117,15 +117,15 @@ select {
     cursor: pointer;
 }
 
-ul.disc {
+.disc {
     list-style-type: disc;
 }
 
-ul.circle {
+.circle {
     list-style-type: circle;
 }
 
-ol.decimal {
+.decimal {
     list-style-type: decimal;
 }
 
@@ -366,6 +366,10 @@ span {
     background-color: rgba(50, 50, 50, .85);
 }
 
+.bg-06 {
+    background: linear-gradient(to bottom, #7d7e7d 0, #0e0e0e 100%);
+}
+
 .bordered {
     border-top: 2px groove red;
     border-bottom: 2px groove red;
@@ -497,10 +501,6 @@ textarea {
 .is-wrapped {
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-}
-
-li {
-    list-style: none;
 }
 
 .left10 {

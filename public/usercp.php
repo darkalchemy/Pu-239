@@ -74,15 +74,15 @@ $HTMLOUT .= "
             <div class='w-100'>
                 <form method='post' action='takeeditcp.php'>
                     <ul id='navlinks' class='level-center'>
-                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=avatar'>Avatar</a></li>
-                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=signature'>Signature</a></li>
-                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=default'>PM's</a></li>
-                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=security'>Security</a></li>
-                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=torrents'>Torrents</a></li>
-                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=personal'>Personal</a></li>
-                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=social'>Social</a></li>
-                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=location'>Location</a></li>
-                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=links'>Links</a></li>
+                        <li><a class='margin10' href='{$site_config['baseurl']}/usercp.php?action=avatar'>Avatar</a></li>
+                        <li><a class='margin10' href='{$site_config['baseurl']}/usercp.php?action=signature'>Signature</a></li>
+                        <li><a class='margin10' href='{$site_config['baseurl']}/usercp.php?action=default'>PM's</a></li>
+                        <li><a class='margin10' href='{$site_config['baseurl']}/usercp.php?action=security'>Security</a></li>
+                        <li><a class='margin10' href='{$site_config['baseurl']}/usercp.php?action=torrents'>Torrents</a></li>
+                        <li><a class='margin10' href='{$site_config['baseurl']}/usercp.php?action=personal'>Personal</a></li>
+                        <li><a class='margin10' href='{$site_config['baseurl']}/usercp.php?action=social'>Social</a></li>
+                        <li><a class='margin10' href='{$site_config['baseurl']}/usercp.php?action=location'>Location</a></li>
+                        <li><a class='margin10' href='{$site_config['baseurl']}/usercp.php?action=links'>Links</a></li>
                     </ul>
                     <div class='level-center flex-top'>
                         <span class='margin20'>";

@@ -52,10 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                      WHERE id = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_assoc($res);
     $row['perms'] = (int)$row['perms'];
-    $cache->update_row('MyUser_' . $id, [
-        'perms' => $row['perms'],
-    ], $site_config['expires']['curuser']);
-    $cache->update_row('user_' . $id, [
+    $cache->update_row('user' . $id, [
         'perms' => $row['perms'],
     ], $site_config['expires']['user_cache']);
     header('Location: ' . $site_config['baseurl'] . '/user_unlocks.php');

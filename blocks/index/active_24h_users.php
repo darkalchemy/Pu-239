@@ -1,51 +1,52 @@
 <?php
-global $site_config, $cache, $lang;
+global $site_config, $cache, $lang, $fpdo;
 
-$keys['last24'] = 'last24';
-$last24_cache = $cache->get($keys['last24']);
-if ($last24_cache === false || is_null($last24_cache)) {
-    $last24_cache = [];
-    $time24 = $_SERVER['REQUEST_TIME'] - 86400;
-    $activeusers24 = '';
-    $arr = mysqli_fetch_assoc(sql_query('SELECT * FROM avps WHERE arg = "last24"'));
-    $res = sql_query('SELECT id, username, perms FROM users WHERE last_access >= ' . $time24 . ' AND perms < ' . bt_options::PERMS_STEALTH . ' ORDER BY username ASC') or sqlerr(__FILE__, __LINE__);
-    $totalonline24 = mysqli_num_rows($res);
-    $_ss24 = $totalonline24;
-    $last24record = get_date($arr['value_u'], '');
-    $last24 = $arr['value_i'];
-    if ($totalonline24 > $last24) {
-        $last24 = $totalonline24;
-        $period = $_SERVER['REQUEST_TIME'];
-        sql_query('UPDATE avps SET value_s = 0, value_i = ' . sqlesc($last24) . ', value_u = ' . sqlesc($period) . ' WHERE arg = "last24"') or sqlerr(__FILE__, __LINE__);
+$active24 = $cache->get('last24_users_');
+if ($active24 === false || is_null($active24)) {
+    $list = [];
+    $record = $fpdo->from('avps')
+        ->where('arg = ?', 'last24')
+        ->fetch();
+
+    $dt = TIME_NOW - 86400;
+    $query = $fpdo->from('users')
+        ->select(null)
+        ->select('id')
+        ->where('last_access > ?', $dt)
+        ->where('perms < ?', bt_options::PERMS_STEALTH)
+        ->orderBy('username ASC');
+
+    foreach ($query as $row) {
+        $list[] = format_username($row['id']);
     }
-    while ($arr = mysqli_fetch_assoc($res)) {
-        $list[] = format_username($arr['id']);
+    $list[] = format_username(2);
+    $count = count($list);
+    $active24['activeusers24'] = implode(', ', $list);
+    if ($count === 0) {
+        $active24['activeusers24'] = $lang['index_last24_nousers'];
     }
-    $activeusers24 = implode(', ', $list);
-    $last24_cache['activeusers24'] = $activeusers24;
-    $last24_cache['totalonline24'] = number_format($totalonline24);
-    $last24_cache['last24record'] = $last24record;
-    $last24_cache['last24'] = number_format($last24);
-    $last24_cache['ss24'] = $_ss24;
-    $cache->set($keys['last24'], $last24_cache, $site_config['expires']['last24']);
+    $active24['totalonline24'] = number_format($count);
+    $active24['last24'] = number_format($record['value_i']);
+    $active24['ss24'] = $lang['gl_member'] . plural($count);
+    $active24['record'] = get_date($record['value_u'], '');
+    if ($count > $record['value_i']) {
+        $set = ['value_s' => 0, 'value_i' => $count, 'value_u' => TIME_NOW];
+        $query = $fpdo->update('avps')
+            ->set($set)
+            ->where('arg', 'last24')->execute();
+    }
+    $cache->set('last24_users_', $active24, $site_config['expires']['last24']);
 }
-if (!$last24_cache['activeusers24']) {
-    $last24_cache['activeusers24'] = $lang['index_last24_nousers'];
-}
-if ($last24_cache['totalonline24'] != 1) {
-    $last24_cache['ss24'] = $lang['gl_members'];
-} else {
-    $last24_cache['ss24'] = $lang['gl_member'];
-}
+
 $HTMLOUT .= "
         <a id='active24-hash'></a>
         <fieldset id='active24' class='header'>
             <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_active24']} <small>{$lang['index_last24_list']}</small></legend>
             <div class='bordered'>
                 <div class='alt_bordered bg-00 has-text-centered'>
-                    <div><b>{$last24_cache['totalonline24']}{$last24_cache['ss24']}{$lang['index_last24_during']}</b></div>
-                    <div class='top20 bottom20'>{$last24_cache['activeusers24']}</div>
-                    <div><b>{$lang['index_last24_most']}{$last24_cache['last24']}{$last24_cache['ss24']}{$lang['index_last24_on']}{$last24_cache['last24record']}</b></div>
+                    <div><b>{$active24['totalonline24']}{$active24['ss24']}{$lang['index_last24_during']}</b></div>
+                    <div class='top20 bottom20'>{$active24['activeusers24']}</div>
+                    <div><b>{$lang['index_last24_most']}{$active24['last24']}{$active24['ss24']}{$lang['index_last24_on']}{$active24['record']}</b></div>
                 </div>
             </div>
         </fieldset>";

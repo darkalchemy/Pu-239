@@ -1,5 +1,6 @@
 <?php
-global $lang;
+global $CURUSER, $site_config, $lang;
+
 $post_id = (isset($_GET['post_id']) ? intval($_GET['post_id']) : (isset($_POST['post_id']) ? intval($_POST['post_id']) : 0));
 $topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
 $sanity_check = (isset($_GET['sanity_check']) ? intval($_GET['sanity_check']) : 0);

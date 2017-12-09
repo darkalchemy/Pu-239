@@ -42,7 +42,7 @@ $HTMLOUT .= "
     <form method='post' action='staffpanel.php?tool=testip&amp;action=testip'>
     <table border='1' cellspacing='0' cellpadding='5'>
     <tr><td class='rowhead'>{$lang['testip_address']}</td><td><input type='text' name='ip' /></td></tr>
-    <tr><td colspan='2'><input type='submit' class='button' value='{$lang['testip_ok']}' /></td></tr>
+    <tr><td colspan='2'><input type='submit' class='button is-small' value='{$lang['testip_ok']}' /></td></tr>
     </table>
     </form>";
 echo stdhead($lang['testip_windows_title']) . $HTMLOUT . stdfoot();

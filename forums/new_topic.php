@@ -1,5 +1,6 @@
 <?php
-global $lang;
+global $CURUSER, $site_config, $cache, $lang;
+
 $forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0));
 if (!is_valid_id($forum_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
@@ -270,6 +271,6 @@ $HTMLOUT .= '
    <img src="' . $site_config['pic_base_url'] . 'forums/subscribe.gif" alt="+" title="+" /> ' . $lang['fe_subscrib_to_tread'] . '
     <input type="radio" name="subscribe" value="yes"' . ($subscribe === 'yes' ? ' checked' : '') . ' />yes
     <input type="radio" name="subscribe" value="no"' . ($subscribe === 'no' ? ' checked' : '') . ' />no <br>
-    <input type="submit" name="button" class="button_tiny" value="' . $lang['fe_post'] . '" in/>
+    <input type="submit" name="button" class="button is-small" value="' . $lang['fe_post'] . '" in/>
    </td></tr>
     </table></form>';

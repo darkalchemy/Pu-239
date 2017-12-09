@@ -12,9 +12,6 @@ global $CURUSER, $site_config, $cache;
 
 if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
     sql_query('UPDATE users SET last_browse = ' . TIME_NOW . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    $cache->update_row('MyUser_' . $CURUSER['id'], [
-        'last_browse' => TIME_NOW,
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user' . $CURUSER['id'], [
         'last_browse' => TIME_NOW,
     ], $site_config['expires']['user_cache']);
@@ -310,9 +307,6 @@ if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
 } else {
     //== clear new tag automatically
     sql_query('UPDATE users SET last_browse = ' . TIME_NOW . ' WHERE id = ' . $CURUSER['id']);
-    $cache->update_row('MyUser_' . $CURUSER['id'], [
-        'last_browse' => TIME_NOW,
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user' . $CURUSER['id'], [
         'last_browse' => TIME_NOW,
     ], $site_config['expires']['user_cache']);

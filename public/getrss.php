@@ -105,7 +105,7 @@ $HTMLOUT .= main_div("
                 </li>
             </div>
             <div class='level-center top20 bottom20'>
-                <input type='submit' class='button' value='{$lang['getrss_btn']}' />
+                <input type='submit' class='button is-small' value='{$lang['getrss_btn']}' />
             </div>");
 $HTMLOUT .= "
         </form>";

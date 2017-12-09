@@ -21,9 +21,6 @@ if (isset($mode) && $mode == 'change') {
             stderr($lang['namechanger_err'], $lang['namechanger_cannot']);
         }
         $change = sql_query('UPDATE users SET username=' . sqlesc($uname) . ' WHERE id = ' . sqlesc($uid)) or sqlerr(__FILE__, __LINE__);
-        $cache->update_row('MyUser_' . $uid, [
-            'username' => $uname,
-        ], $site_config['expires']['curuser']);
         $cache->update_row('user' . $uid, [
             'username' => $uname,
         ], $site_config['expires']['user_cache']);
@@ -46,7 +43,7 @@ $HTMLOUT .= "
     <table border='1' cellspacing='0' cellpadding='3'>
     <tr><td class='rowhead'>{$lang['namechanger_id']}</td><td><input type='text' name='uid' size='10' /></td></tr>
     <tr><td class='rowhead'>{$lang['namechanger_new_user']}</td><td><input type='text' name='uname' size='20' /></td></tr>
-    <tr><td colspan='2'>{$lang['namechanger_if']}<input type='submit' value='{$lang['namechanger_change_name']}' class='button' /></td></tr>
+    <tr><td colspan='2'>{$lang['namechanger_if']}<input type='submit' value='{$lang['namechanger_change_name']}' class='button is-small' /></td></tr>
     </table>
     </form>";
 echo stdhead($lang['namechanger_stdhead']) . $HTMLOUT . stdfoot();

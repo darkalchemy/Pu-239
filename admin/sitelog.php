@@ -1,6 +1,7 @@
 <?php
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
+require_once INCL_DIR . 'bbcode_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
@@ -32,7 +33,7 @@ $HTMLOUT .= "
             <h2>{$lang['log_search']}</h2>
             <form method='post' action='./staffpanel.php?tool=sitelog&amp;action=sitelog'>
                 <input type='text' name='search' class='w-50' value='' />
-                <input type='submit' class='button' value='{$lang['log_search_btn']}' />
+                <input type='submit' class='button is-small' value='{$lang['log_search_btn']}' />
             </form>
         </div>";
 if ($count > $perpage) {
@@ -73,7 +74,7 @@ if (mysqli_num_rows($res) == 0) {
                         <span class='tex-black'>{$date[0]}{$date[1]}</span>
                     </td>
                     <td style='background-color:$color'>
-                        <span class='text-black'>" . $arr['txt'] . "</span>
+                        <span class='text-black'>" . format_comment($arr['txt']) . "</span>
                     </td>
                 </tr>";
     }

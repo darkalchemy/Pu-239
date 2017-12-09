@@ -101,9 +101,6 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $cache->update_row('user' . $nsetusername['id'], [
                     'username' => $newname,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('MyUser_' . $nsetusername['id'], [
-                    'username' => $newname,
-                ], $site_config['expires']['curuser']);
                 $cache->update_row('userstats_' . $nsetusername['id'], [
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['u_stats']);
@@ -187,9 +184,6 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $cache->update_row('user' . $ninvites['id'], [
                     'invites' => $ninvites['invites'] + $amount,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('MyUser_' . $ninvites['id'], [
-                    'invites' => $ninvites['invites'] + $amount,
-                ], $site_config['expires']['curuser']);
                 $res4 = sql_query("SELECT invites FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $oinvites = mysqli_fetch_assoc($res4);
                 $newinvites = (int)$oinvites['invites'];
@@ -209,9 +203,6 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $cache->update_row('user' . $nfreeslots['id'], [
                     'freeslots' => $nfreeslots['freeslots'] + $amount,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('MyUser_' . $nfreeslots['id'], [
-                    'freeslots' => $nfreeslots['freeslots'] + $amount,
-                ], $site_config['expires']['curuser']);
                 $res6 = sql_query("SELECT freeslots FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $ofreeslots = mysqli_fetch_assoc($res6);
                 $newfreeslots = (int)$ofreeslots['freeslots'];
@@ -231,9 +222,6 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $cache->update_row('user' . $nreputation['id'], [
                     'reputation' => $nreputation['reputation'] + $amount,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('MyUser_' . $nreputation['id'], [
-                    'reputation' => $nreputation['reputation'] + $amount,
-                ], $site_config['expires']['curuser']);
                 $res4 = sql_query("SELECT reputation FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $oreputation = mysqli_fetch_assoc($res4);
                 $newreputation = (int)$oreputation['reputation'];
@@ -277,9 +265,6 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $cache->update_row('user' . $ninvites['id'], [
                     'invites' => $ninvites['invites'] - $amount,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('MyUser_' . $ninvites['id'], [
-                    'invites' => $ninvites['invites'] - $amount,
-                ], $site_config['expires']['curuser']);
                 $res4 = sql_query("SELECT invites FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $oinvites = mysqli_fetch_assoc($res4);
                 $newinvites = (int)$oinvites['invites'];
@@ -299,9 +284,6 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $cache->update_row('user' . $nfreeslots['id'], [
                     'freeslots' => $nfreeslots['freeslots'] - $amount,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('MyUser_' . $nfreeslots['id'], [
-                    'freeslots' => $nfreeslots['freeslots'] - $amount,
-                ], $site_config['expires']['curuser']);
                 $res6 = sql_query("SELECT freeslots FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $ofreeslots = mysqli_fetch_assoc($res6);
                 $newfreeslots = (int)$ofreeslots['freeslots'];
@@ -321,9 +303,6 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $cache->update_row('user' . $nreputation['id'], [
                     'reputation' => $nreputation['reputation'] - $amount,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('MyUser_' . $nreputation['id'], [
-                    'reputation' => $nreputation['reputation'] - $amount,
-                ], $site_config['expires']['curuser']);
                 $res6 = sql_query("SELECT reputation FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $oreputation = mysqli_fetch_assoc($res6);
                 $newreputation = (int)$oreputation['reputation'];
@@ -395,15 +374,9 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                     $cache->update_row('user' . $mefreeslots['id'], [
                         'freeslots' => $mefreeslots['freeslots'] - $amount,
                     ], $site_config['expires']['user_cache']);
-                    $cache->update_row('MyUser_' . $mefreeslots['id'], [
-                        'freeslots' => $mefreeslots['freeslots'] - $amount,
-                    ], $site_config['expires']['curuser']);
                     $cache->update_row('user' . $whomfreeslots['id'], [
                         'freeslots' => $whomfreeslots['freeslots'] + $amount,
                     ], $site_config['expires']['user_cache']);
-                    $cache->update_row('MyUser_' . $whomfreeslots['id'], [
-                        'freeslots' => $whomfreeslots['freeslots'] + $amount,
-                    ], $site_config['expires']['curuser']);
                     $res1 = sql_query("SELECT freeslots FROM users WHERE username = $me LIMIT 1") or sqlerr(__FILE__, __LINE__);
                     $meofreeslots = mysqli_fetch_assoc($res1);
                     $res2 = sql_query("SELECT freeslots FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -436,15 +409,9 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                     $cache->update_row('user' . $mereputation['id'], [
                         'reputation' => $mereputation['reputation'] - $amount,
                     ], $site_config['expires']['user_cache']);
-                    $cache->update_row('MyUser_' . $mereputation['id'], [
-                        'reputation' => $mereputation['reputation'] - $amount,
-                    ], $site_config['expires']['curuser']);
                     $cache->update_row('user' . $whomreputation['id'], [
                         'reputation' => $whomreputation['reputation'] + $amount,
                     ], $site_config['expires']['user_cache']);
-                    $cache->update_row('MyUser_' . $whomreputation['id'], [
-                        'reputation' => $whomreputation['reputation'] + $amount,
-                    ], $site_config['expires']['curuser']);
                     $res1 = sql_query("SELECT reputation FROM users WHERE username = $me LIMIT 1") or sqlerr(__FILE__, __LINE__);
                     $meoreputation = mysqli_fetch_assoc($res1);
                     $res2 = sql_query("SELECT reputation FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -477,15 +444,9 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                     $cache->update_row('user' . $meinvite['id'], [
                         'invite' => $meinvite['invite'] - $amount,
                     ], $site_config['expires']['user_cache']);
-                    $cache->update_row('MyUser_' . $meinvite['id'], [
-                        'invite' => $meinvite['invite'] - $amount,
-                    ], $site_config['expires']['curuser']);
                     $cache->update_row('user' . $whominvite['id'], [
                         'invite' => $whominvite['invite'] + $amount,
                     ], $site_config['expires']['user_cache']);
-                    $cache->update_row('MyUser_' . $whominvite['id'], [
-                        'invite' => $whominvite['invite'] + $amount,
-                    ], $site_config['expires']['curuser']);
                     $res1 = sql_query("SELECT invites FROM users WHERE username = $me LIMIT 1") or sqlerr(__FILE__, __LINE__);
                     $meoinvites = mysqli_fetch_assoc($res1);
                     $res2 = sql_query("SELECT invites FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -515,9 +476,6 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $cache->update_row('user' . $upos['id'], [
                     'uploadpos' => $toggle,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('MyUser_' . $upos['id'], [
-                    'uploadpos' => $toggle,
-                ], $site_config['expires']['curuser']);
                 $cache->update_row('userstats_' . $upos['id'], [
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['u_stats']);
@@ -544,9 +502,6 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $cache->update_row('user' . $dpos['id'], [
                     'downloadpos' => $toggle,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('MyUser_' . $dpos['id'], [
-                    'downloadpos' => $toggle,
-                ], $site_config['expires']['curuser']);
                 $cache->update_row('userstats_' . $dpos['id'], [
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['u_stats']);
@@ -573,9 +528,6 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $cache->update_row('user' . $fpos['id'], [
                     'forum_post' => $toggle,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('MyUser_' . $fpos['id'], [
-                    'forum_post' => $toggle,
-                ], $site_config['expires']['curuser']);
                 $cache->update_row('userstats_' . $fpos['id'], [
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['u_stats']);
@@ -602,9 +554,6 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $cache->update_row('user' . $cpos['id'], [
                     'chatpost' => $toggle,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('MyUser_' . $cpos['id'], [
-                    'chatpost' => $toggle,
-                ], $site_config['expires']['curuser']);
                 $cache->update_row('userstats_' . $cpos['id'], [
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['u_stats']);
@@ -631,9 +580,6 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $cache->update_row('user' . $apos['id'], [
                     'avatarpos' => $toggle,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('MyUser_' . $apos['id'], [
-                    'avatarpos' => $toggle,
-                ], $site_config['expires']['curuser']);
                 $cache->update_row('userstats_' . $apos['id'], [
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['u_stats']);
@@ -660,9 +606,6 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $cache->update_row('user' . $ipos['id'], [
                     'invite_rights' => $toggle,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('MyUser_' . $ipos['id'], [
-                    'invite_rights' => $toggle,
-                ], $site_config['expires']['curuser']);
                 $cache->update_row('userstats_' . $ipos['id'], [
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['u_stats']);
@@ -689,9 +632,6 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 $cache->update_row('user' . $epos['id'], [
                     'enabled' => $toggle,
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('MyUser_' . $epos['id'], [
-                    'enabled' => $toggle,
-                ], $site_config['expires']['curuser']);
                 $cache->update_row('userstats_' . $epos['id'], [
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['u_stats']);
@@ -720,17 +660,12 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
                 'support'    => 'yes',
                 'supportfor' => $supportfors,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $support['id'], [
-                'support'    => 'yes',
-                'supportfor' => $supportfors,
-            ], $site_config['expires']['curuser']);
             $cache->update_row('userstats_' . $support['id'], [
                 'modcomment' => $modcomment,
             ], $site_config['expires']['u_stats']);
             $cache->update_row('user_stats_' . $support['id'], [
                 'modcomment' => $modcomment,
             ], $site_config['expires']['user_stats']);
-            $cache->delete('MyUser_' . $whom);
             echo $who . 's support changed added to First line support to cover ' . $supportfors . ' by ' . $modd;
         }
     }

@@ -7,16 +7,18 @@ function karmavip_update($data)
     global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
-    $res = sql_query("SELECT id, modcomment FROM users WHERE vip_added='yes' AND donoruntil < " . TIME_NOW . " AND vip_until < " . TIME_NOW . '') or sqlerr(__FILE__, __LINE__);
+
+    $dt = TIME_NOW;
+    $res = sql_query("SELECT id, modcomment FROM users WHERE vip_added='yes' AND donoruntil < " . $dt . " AND vip_until < " . $dt) or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $users_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $subject = 'VIP status expired.';
         $msg = "Your VIP status has timed out and has been auto-removed by the system. Become a VIP again by donating to {$site_config['site_name']} , or exchanging some Karma Bonus Points. Cheers !\n";
         while ($arr = mysqli_fetch_assoc($res)) {
             $modcomment = $arr['modcomment'];
-            $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - Vip status Automatically Removed By System.\n" . $modcomment;
+            $modcomment = get_date($dt, 'DATE', 1) . " - Vip status Automatically Removed By System.\n" . $modcomment;
             $modcom = sqlesc($modcomment);
-            $msgs_buffer[] = '(0,' . $arr['id'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+            $msgs_buffer[] = '(0,' . $arr['id'] . ',' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
             $users_buffer[] = '(' . $arr['id'] . ',1, \'no\', \'0\' , ' . $modcom . ')';
             $cache->update_row('user' . $arr['id'], [
                 'class'     => 1,
@@ -26,11 +28,6 @@ function karmavip_update($data)
             $cache->update_row('user_stats' . $arr['id'], [
                 'modcomment' => $modcomment,
             ], $site_config['expires']['user_stats']);
-            $cache->update_row('MyUser_' . $arr['id'], [
-                'class'     => 1,
-                'vip_added' => 'no',
-                'vip_until' => 0,
-            ], $site_config['expires']['curuser']);
             $cache->increment('inbox_' . $arr['id']);
         }
         $count = count($users_buffer);

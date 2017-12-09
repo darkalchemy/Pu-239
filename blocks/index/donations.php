@@ -1,19 +1,24 @@
 <?php
-global $site_config, $cache, $lang;
+global $site_config, $cache, $lang, $fpdo;
 
 $progress = '';
-$totalfunds_cache = $cache->get('totalfunds_');
-if ($totalfunds_cache === false || is_null($totalfunds_cache)) {
-    $totalfunds_cache = mysqli_fetch_assoc(sql_query('SELECT sum(cash) AS total_funds FROM funds'));
-    $totalfunds_cache['total_funds'] = (int)$totalfunds_cache['total_funds'];
-    $cache->set('totalfunds_', $totalfunds_cache, $site_config['expires']['total_funds']);
+$funds = $cache->get('totalfunds_');
+if ($funds === false || is_null($funds)) {
+    $funds = $fpdo->from('funds')
+        ->select(null)
+        ->select('cash AS total_funds')
+        ->fetch();
+
+    $funds = $funds['total_funds'] <= 0 ? 0 : $funds['total_funds'];
+    $cache->set('totalfunds_', $funds, $site_config['expires']['total_funds']);
 }
-$funds_so_far = (int)$totalfunds_cache['total_funds'];
-$funds_difference = $site_config['totalneeded'] - $funds_so_far;
-$progress = number_format($funds_so_far / $site_config['totalneeded'] * 100, 1);
+
+$funds_difference = $site_config['totalneeded'] - $funds;
+$progress = number_format($funds / $site_config['totalneeded'] * 100, 1);
 if ($progress >= 100) {
     $progress = 100;
 }
+
 $HTMLOUT .= "
         <a id='donations-hash'></a>
         <fieldset id='donations' class='header'>

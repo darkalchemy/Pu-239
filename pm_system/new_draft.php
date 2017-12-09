@@ -1,5 +1,5 @@
 <?php
-$preview = $subject = $draft = '';
+$subject = $draft = '';
 if (isset($_POST['buttonval']) && $_POST['buttonval'] == 'save draft') {
     //=== make sure they wrote something :P
     if (empty($_POST['subject'])) {
@@ -20,24 +20,9 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == 'save draft') {
     }
     header('Location: pm_system.php?action=view_message&new_draft=1&id=' . $new_draft_id);
     exit();
-} //=== end save draft
-//=== Code for preview Retros code
-if (isset($_POST['buttonval']) && $_POST['buttonval'] == 'preview') {
-    $subject = htmlsafechars(trim($_POST['subject']));
-    $draft = trim($_POST['body']);
-    $preview = '
-    <table class="table table-bordered">
-    <tr>
-        <td colspan="2" class="colhead"><span style="font-weight: bold;">subject: </span>' . htmlsafechars($subject) . '</td>
-    </tr>
-    <tr>
-        <td width="80px" id="photocol">' . avatar_stuff($CURUSER) . '</td>
-        <td style="min-width:400px;padding:10px;vertical-align: top;text-align: left;">' . format_comment($draft) . '</td>
-    </tr>
-    </table><br>';
 }
-//=== print out the page
-$HTMLOUT .= '<h1>' . $lang['pm_draft_new'] . '</h1>' . $top_links . $preview . '
+
+$HTMLOUT .= $top_links . '<h1>' . $lang['pm_draft_new'] . '</h1>' . '
         <form name="compose" action="pm_system.php" method="post">
         <input type="hidden" name="id" value="' . $pm_id . '" />
         <input type="hidden" name="action" value="new_draft" />
@@ -55,8 +40,9 @@ $HTMLOUT .= '<h1>' . $lang['pm_draft_new'] . '</h1>' . $top_links . $preview . '
     </tr>
     <tr>
         <td colspan="2">
-            <input type="submit" class="button is-primary" name="buttonval" value="' . $lang['pm_draft_preview'] . '"/>
-            <input type="submit" class="button is-primary" name="buttonval" value="' . $lang['pm_draft_save'] . '"/>
+            <div class="has-text-centered">
+                <input type="submit" class="button is-small" name="buttonval" value="' . $lang['pm_draft_save'] . '"/>
+            </div>
         </td>
     </tr>
     </table></form>';

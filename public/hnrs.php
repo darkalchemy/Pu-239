@@ -68,7 +68,7 @@ if (isset($_GET['torrentid'])) {
         stderr('Error', "No torrent with that ID!<br>Back to your <a class='altlink' href='hnrs.php'>Hit and Runs</a> page.");
     }
     $download_amt = $site_config['ratio_free'] ? ', downloaded = ".sqlesc($downloaded)."' : '';
-    sql_query("UPDATE snatched SET hit_and_run = 0, bought_out_hnr = 'yes', mark_of_cain = 'no' WHERE userid = " . sqlesc($userid) . ' AND torrentid = ' . sqlesc($torrent_number)) or sqlerr(__FILE__, __LINE__);
+    sql_query("UPDATE snatched SET hit_and_run = 0, mark_of_cain = 'no' WHERE userid = " . sqlesc($userid) . ' AND torrentid = ' . sqlesc($torrent_number)) or sqlerr(__FILE__, __LINE__);
     $bonuscomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $cost . ' Points for 1 to 1 ratio on torrent: ' . htmlsafechars($arr_snatched['name']) . ' ' . $torrent_number . ".\n " . $bonuscomment;
     sql_query('UPDATE users SET bonuscomment = ' . sqlesc($bonuscomment) . ', seedbonus = ' . sqlesc($seedbonus) . ' WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 

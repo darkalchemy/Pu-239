@@ -74,7 +74,7 @@ if ($step == '1') {
                         <tr class='no_hover'>
                             <td colspan='2'>
                                 <div class='has-text-centered'>
-                                    <input type='submit' value='{$lang['main_next']}' class='button' />
+                                    <input type='submit' value='{$lang['main_next']}' class='button is-small' />
                                 </div>
                             </td>
                         </tr>
@@ -119,7 +119,7 @@ if ($step == '1') {
                     <tr class='no_hover'>
                         <td colspan='2'>
                             <div class='has-text-centered'>
-                                <input type='submit' value='{$lang['main_changeit']}' class='button' />
+                                <input type='submit' value='{$lang['main_changeit']}' class='button is-small' />
                                 <input type='hidden' name='id' value='" . (int)$fetch['id'] . "' />
                                 <input type='hidden' name='hash' value='" . $sechash . "' />
                             </div>
@@ -154,9 +154,6 @@ if ($step == '1') {
     }
     $newpassword = make_passhash($newpass);
     sql_query('UPDATE users SET passhash = ' . sqlesc($newpassword) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $cache->update_row('MyUser_' . $id, [
-        'passhash' => $newpassword,
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user' . $id, [
         'passhash' => $newpassword,
     ], $site_config['expires']['user_cache']);
@@ -185,7 +182,7 @@ if ($step == '1') {
                 <tr class='no_hover'>
                     <td colspan='2'>
                         <div class='has-text-centered'>
-                            <input type='submit' value='{$lang['main_recover']}' class='button' />
+                            <input type='submit' value='{$lang['main_recover']}' class='button is-small' />
                         </div>
                     </td>
                 </tr>

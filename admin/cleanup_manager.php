@@ -132,7 +132,7 @@ function cleanup_show_main()
         $htmlout .= $pager['pagerbottom'];
     }
     $htmlout .= "<br>
-                <span class='button'><a href='./staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=new'>{$lang['cleanup_add_new']}</a></span>";
+                <span class='button is-small'><a href='./staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=new'>{$lang['cleanup_add_new']}</a></span>";
     echo stdhead($lang['cleanup_stdhead']) . $htmlout . stdfoot();
 }
 
@@ -195,7 +195,7 @@ function cleanup_show_edit()
     {$lang['cleanup_show_yes']} <input name='clean_on' value='1' $cleanon type='radio' />&#160;&#160;&#160;<input name='clean_on' value='0' $cleanoff type='radio' /> {$lang['cleanup_show_no']}
     </div>
 
-    <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_show_edit']}' class='button' />&#160;<input type='button' value='{$lang['cleanup_show_cancel']}' onclick='javascript: history.back()' /></div>
+    <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_show_edit']}' class='button is-small' />&#160;<input type='button' value='{$lang['cleanup_show_cancel']}' onclick='javascript: history.back()' /></div>
     </form>
     </div>";
     echo stdhead($lang['cleanup_show_stdhead']) . $htmlout . stdfoot();
@@ -306,7 +306,7 @@ function cleanup_show_new()
     {$lang['cleanup_show_yes']} <input name='clean_on' value='1' type='radio' />&#160;&#160;&#160;<input name='clean_on' value='0' checked type='radio' /> {$lang['cleanup_show_no']}
     </div>
 
-    <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_new_add']}' class='button' />&#160;<input type='button' value='{$lang['cleanup_new_cancel']}' onclick='javascript: history.back()' /></div>
+    <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_new_add']}' class='button is-small' />&#160;<input type='button' value='{$lang['cleanup_new_cancel']}' onclick='javascript: history.back()' /></div>
     </form>
     </div>";
     echo stdhead($lang['cleanup_new_stdhead']) . $htmlout . stdfoot();

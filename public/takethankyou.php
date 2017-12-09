@@ -38,8 +38,8 @@ $cache->update_row('torrent_details_' . $id, [
 ], $site_config['expires']['torrent_details']);
 $cache->delete('latest_comments_');
 if ($site_config['seedbonus_on'] == 1) {
-    sql_query('UPDATE users SET seedbonus = seedbonus+5.0 WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    $update['seedbonus'] = ($CURUSER['seedbonus'] + 5);
+    sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus_per_comment']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+    $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus_per_comment']);
     $cache->update_row('userstats_' . $CURUSER['id'], [
         'seedbonus' => $update['seedbonus'],
     ], $site_config['expires']['u_stats']);
@@ -47,4 +47,5 @@ if ($site_config['seedbonus_on'] == 1) {
         'seedbonus' => $update['seedbonus'],
     ], $site_config['expires']['user_stats']);
 }
+setSessionVar('is-success', "Your 'Thank you' has been registered!");
 header("Refresh: 0; url=details.php?id=$id");

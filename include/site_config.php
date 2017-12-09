@@ -2,7 +2,7 @@
 
 global $cache, $site_config;
 dbconn();
-$site_setting = $paypal_settings = $hnr_settings = $staff_settings = [];
+$site_settings = $paypal_settings = $hnr_settings = $staff_settings = [];
 
 $site_settings = $cache->get('site_settings_');
 if ($site_settings === false || is_null($site_settings)) {

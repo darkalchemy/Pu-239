@@ -120,7 +120,7 @@ if ($CURUSER['class'] == UC_MAX) {
                 </tr>");
     $HTMLOUT .= "
                 <div class='has-text-centered padding20'>
-                    <input type='submit' name='okay' value='{$lang['btn_add']}' class='button' />
+                    <input type='submit' name='okay' value='{$lang['btn_add']}' class='button is-small' />
                 </div>
             </form>
         </div>";

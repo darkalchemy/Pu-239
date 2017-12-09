@@ -375,7 +375,7 @@ $HTMLOUT .= '<h1>' . $lang['sea_forums'] . '</h1>' . $links . ($count > 0 ? '<h1
 	<td class="three" width="30px" colspan="2">
 	<input type="radio" name="show_as" value="list" ' . ($show_as === 'list' ? 'checked' : '') . ' /> <span>' . $lang['sea_results_as_list'] . '</span>  
 	<input type="radio" name="show_as" value="posts" ' . ($show_as === 'posts' ? 'checked' : '') . ' /> <span>' . $lang['sea_results_as_posts'] . '</span>  
-	<input type="submit" name="button" class="button" value="' . $lang['gl_search'] . '" />
+	<input type="submit" name="button" class="button is-small" value="' . $lang['gl_search'] . '" />
 	</td>
 	</tr>
 	</table></form><br>' . $content . $links . '<br>';

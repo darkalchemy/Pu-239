@@ -7,7 +7,7 @@ require_once INCL_DIR . 'function_onlinetime.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $cache, $CURUSER, $site_config;
+global $cache, $CURUSER, $site_config, $fpdo;
 
 $lang = array_merge(load_language('global'), load_language('userdetails'));
 $edit_profile = $friend_links = $shitty_link = $sharemark_link = '';
@@ -28,164 +28,16 @@ if (!is_valid_id($id)) {
 }
 $user = $cache->get('user' . $id);
 if ($user === false || is_null($user)) {
-    $user = $cache->get('MyUser' . $id);
-    if ($user === false || is_null($user)) {
-        $user_fields_ar_int = [
-            'id',
-            'added',
-            'last_login',
-            'last_access',
-            'curr_ann_last_check',
-            'curr_ann_id',
-            'stylesheet',
-            'class',
-            'override_class',
-            'language',
-            'av_w',
-            'av_h',
-            'country',
-            'warned',
-            'torrentsperpage',
-            'topicsperpage',
-            'postsperpage',
-            'ajaxchat_height',
-            'reputation',
-            'dst_in_use',
-            'auto_correct_dst',
-            'chatpost',
-            'smile_until',
-            'vip_until',
-            'freeslots',
-            'free_switch',
-            'invites',
-            'invitedby',
-            'uploadpos',
-            'forumpost',
-            'downloadpos',
-            'immunity',
-            'leechwarn',
-            'last_browse',
-            'sig_w',
-            'sig_h',
-            'forum_access',
-            'hit_and_run_total',
-            'donoruntil',
-            'donated',
-            'vipclass_before',
-            'passhint',
-            'avatarpos',
-            'sendpmpos',
-            'invitedate',
-            'anonymous_until',
-            'pirate',
-            'king',
-            'ssluse',
-            'paranoia',
-            'parked_until',
-            'bjwins',
-            'bjlosses',
-            'irctotal',
-            'last_access_numb',
-            'onlinetime',
-            'hits',
-            'comments',
-            'categorie_icon',
-            'perms',
-            'mood',
-            'pms_per_page',
-            'watched_user',
-            'game_access',
-            'opt1',
-            'opt2',
-            'can_leech',
-            'wait_time',
-            'torrents_limit',
-            'peers_limit',
-        ];
-        $user_fields_ar_float = [
-            'time_offset',
-            'total_donated',
-        ];
-        $user_fields_ar_str = [
-            'username',
-            'torrent_pass',
-            'email',
-            'status',
-            'privacy',
-            'info',
-            'acceptpms',
-            'ip',
-            'avatar',
-            'title',
-            'notifs',
-            'enabled',
-            'donor',
-            'deletepms',
-            'savepms',
-            'vip_added',
-            'invite_rights',
-            'anonymous',
-            'disable_reason',
-            'clear_new_tag_manually',
-            'signatures',
-            'signature',
-            'highspeed',
-            'hnrwarn',
-            'parked',
-            'support',
-            'supportfor',
-            'invitees',
-            'invite_on',
-            'subscription_pm',
-            'gender',
-            'viewscloud',
-            'tenpercent',
-            'avatars',
-            'offavatar',
-            'hidecur',
-            'signature_post',
-            'forum_post',
-            'avatar_rights',
-            'offensive_avatar',
-            'view_offensive_avatar',
-            'google_talk',
-            'msn',
-            'aim',
-            'yahoo',
-            'website',
-            'icq',
-            'show_email',
-            'gotgift',
-            'suspended',
-            'warn_reason',
-            'onirc',
-            'birthday',
-            'got_blocks',
-            'pm_on_delete',
-            'commentpm',
-            'split',
-            'browser',
-            'got_moods',
-            'show_pm_avatar',
-            'watched_user_reason',
-            'staff_notes',
-            'where_is',
-            'forum_sort',
-            'browse_icons',
-        ];
-        $user_fields = implode(', ', array_merge($user_fields_ar_int, $user_fields_ar_float, $user_fields_ar_str));
-        $r1 = sql_query('SELECT ' . $user_fields . ' FROM users WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $user = mysqli_fetch_assoc($r1) or stderr($lang['userdetails_error'], "{$lang['userdetails_no_user']}");
-        foreach ($user_fields_ar_int as $i) {
-            $user[ $i ] = (int)$user[ $i ];
-        }
-        foreach ($user_fields_ar_float as $i) {
-            $user[ $i ] = (float)$user[ $i ];
-        }
-        $user['ip'] = ipFromStorageFormat($user['ip']);
-        $cache->set('user' . $id, $user, $site_config['expires']['user_cache']);
-    }
+    $user = $fpdo->from('users')
+        ->select('INET6_NTOA(ip) AS ip')
+        ->where('id = ?', $id)
+        ->fetch();
+    unset($users_data['hintanswer']);
+    unset($users_data['passhash']);
+
+    $cache->set('user' . $id, $user, $site_config['expires']['user_cache']);
 }
+
 if ($user['status'] == 'pending') {
     stderr($lang['userdetails_error'], $lang['userdetails_pending']);
 }
@@ -286,19 +138,19 @@ if ($user['ip'] && ($CURUSER['class'] >= UC_STAFF || $user['id'] == $CURUSER['id
     $dom = @gethostbyaddr($user['ip']);
     $addr = ($dom == $user['ip'] || @gethostbyname($dom) != $user['ip']) ? $user['ip'] : $user['ip'] . ' (' . $dom . ')';
 }
-if ($user['added'] == 0 or $user['perms'] & bt_options::PERMS_STEALTH) {
+if ($user['added'] == 0 || $user['perms'] & bt_options::PERMS_STEALTH) {
     $joindate = "{$lang['userdetails_na']}";
 } else {
     $joindate = get_date($user['added'], '');
 }
 $lastseen = $user['last_access'];
-if ($lastseen == 0 or $user['perms'] & bt_options::PERMS_STEALTH) {
+if ($lastseen == 0 || $user['perms'] & bt_options::PERMS_STEALTH) {
     $lastseen = "{$lang['userdetails_never']}";
 } else {
     $lastseen = get_date($user['last_access'], '', 0, 1);
 }
 
-if ((($user['class'] == UC_MAX or $user['id'] == $CURUSER['id']) || ($user['class'] < UC_MAX) && $CURUSER['class'] == UC_MAX) && isset($_GET['invincible'])) {
+if ((($user['class'] == UC_MAX || $user['id'] == $CURUSER['id']) || ($user['class'] < UC_MAX) && $CURUSER['class'] == UC_MAX) && isset($_GET['invincible'])) {
     require_once INCL_DIR . 'invincible.php';
     if ($_GET['invincible'] == 'yes') {
         $HTMLOUT .= invincible($id, true, true);
@@ -309,7 +161,7 @@ if ((($user['class'] == UC_MAX or $user['id'] == $CURUSER['id']) || ($user['clas
     }
 }
 
-if ((($user['class'] >= UC_STAFF or $user['id'] == $CURUSER['id']) || ($user['class'] < UC_STAFF) && $CURUSER['class'] >= UC_STAFF) && isset($_GET['stealth'])) {
+if ((($user['class'] >= UC_STAFF || $user['id'] == $CURUSER['id']) || ($user['class'] < UC_STAFF) && $CURUSER['class'] >= UC_STAFF) && isset($_GET['stealth'])) {
     require_once INCL_DIR . 'stealth.php';
     if ($_GET['stealth'] == 'yes') {
         $HTMLOUT .= stealth($id);
@@ -354,9 +206,6 @@ if (!(isset($_GET['hit'])) && $CURUSER['id'] != $user['id']) {
         sql_query('UPDATE users SET hits = hits + 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         // do update hits userdetails cache
         $update['user_hits'] = ($user['hits'] + 1);
-        $cache->update_row('MyUser_' . $id, [
-            'hits' => $update['user_hits'],
-        ], $site_config['expires']['curuser']);
         $cache->update_row('user' . $id, [
             'hits' => $update['user_hits'],
         ], $site_config['expires']['user_cache']);
@@ -434,14 +283,14 @@ if (!$enabled) {
         $cache->set('Blocks_' . $id, $blocks, $site_config['expires']['user_blocks']);
     }
     if ($friends > 0) {
-        $friend_links .= "<a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/friends.php?action=delete&amp;type=friend&amp;targetid=$id'>{$lang['userdetails_remove_friends']}</a>";
+        $friend_links .= "<a class='margin10' href='{$site_config['baseurl']}/friends.php?action=delete&amp;type=friend&amp;targetid=$id'>{$lang['userdetails_remove_friends']}</a>";
     } else {
-        $friend_links .= "<a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/friends.php?action=add&amp;type=friend&amp;targetid=$id'>{$lang['userdetails_add_friends']}</a>";
+        $friend_links .= "<a class='margin10' href='{$site_config['baseurl']}/friends.php?action=add&amp;type=friend&amp;targetid=$id'>{$lang['userdetails_add_friends']}</a>";
     }
     if ($blocks > 0) {
-        $friend_links .= "<a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/friends.php?action=delete&amp;type=block&amp;targetid=$id'>{$lang['userdetails_remove_blocks']}</a>";
+        $friend_links .= "<a class='margin10' href='{$site_config['baseurl']}/friends.php?action=delete&amp;type=block&amp;targetid=$id'>{$lang['userdetails_remove_blocks']}</a>";
     } else {
-        $friend_links .= "<a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=$id'>{$lang['userdetails_add_blocks']}</a>";
+        $friend_links .= "<a class='margin10' href='{$site_config['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=$id'>{$lang['userdetails_add_blocks']}</a>";
     }
 }
 
@@ -455,13 +304,13 @@ if ($CURUSER['class'] >= UC_STAFF) {
     }
     if ($shit_list > 0) {
         $shitty_link = "
-            <a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list'>
+            <a class='margin10' href='{$site_config['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list'>
                 Remove from your
                 <img class='tooltipper right5' src='./images/smilies/shit.gif' alt='Shit' class='tooltipper' title='Shit' />
             </a>";
     } elseif ($CURUSER['id'] != $user['id']) {
         $shitty_link .= "
-            <a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=new&amp;shit_list_id={$id}&amp;return_to=userdetails.php?id={$id}'>
+            <a class='margin10' href='{$site_config['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=new&amp;shit_list_id={$id}&amp;return_to=userdetails.php?id={$id}'>
                 {$lang['userdetails_shit3']}
             </a>";
     }
@@ -478,12 +327,12 @@ if ($user['donor'] && $CURUSER['id'] == $user['id'] || $CURUSER['class'] == UC_S
 }
 if ($CURUSER['id'] == $user['id']) {
     $edit_profile = "
-        <a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=default'>{$lang['userdetails_editself']}</a>
-        <a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/view_announce_history.php'>{$lang['userdetails_announcements']}</a>";
+        <a class='margin10' href='{$site_config['baseurl']}/usercp.php?action=default'>{$lang['userdetails_editself']}</a>
+        <a class='margin10' href='{$site_config['baseurl']}/view_announce_history.php'>{$lang['userdetails_announcements']}</a>";
 }
 if ($CURUSER['id'] != $user['id']) {
     $sharemark_link .= "
-        <a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/sharemarks.php?id=$id'>{$lang['userdetails_sharemarks']}</a>";
+        <a class='margin10' href='{$site_config['baseurl']}/sharemarks.php?id=$id'>{$lang['userdetails_sharemarks']}</a>";
 }
 
 $HTMLOUT .= "
@@ -492,10 +341,10 @@ $HTMLOUT .= "
         $shitty_link
         $friend_links
         $edit_profile" . ($CURUSER['class'] === UC_MAX ? $user['perms'] & bt_options::PERMS_NO_IP ? "
-        <a class='bordered margin10 bg-02 tooltipper' title='{$lang['userdetails_invincible_def1']}<br>{$lang['userdetails_invincible_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=no'>{$lang['userdetails_invincible_remove']}</a>" . ($user['perms'] & bt_options::PERMS_BYPASS_BAN) ? "
-        <a class='bordered margin10 bg-02 tooltipper' title='{$lang['userdetails_invincible_def3']}<br>{$lang['userdetails_invincible_def4']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=remove_bypass'>{$lang['userdetails_remove_bypass']}</a>" : "
-        <a class='bordered margin10 bg-02 tooltipper' title='{$lang['userdetails_invincible_def5']}<br>{$lang['userdetails_invincible_def6']}<br>{$lang['userdetails_invincible_def7']}<br>{$lang['userdetails_invincible_def8']} href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_add_bypass']}</a>" : "
-        <a class='bordered margin10 bg-02 tooltipper' title='{$lang['userdetails_invincible_def9']}<br>{$lang['userdetails_invincible_def0']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_make_invincible']}</a>" : '');
+        <a class='margin10 tooltipper' title='{$lang['userdetails_invincible_def1']}<br>{$lang['userdetails_invincible_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=no'>{$lang['userdetails_invincible_remove']}</a>" . ($user['perms'] & bt_options::PERMS_BYPASS_BAN) ? "
+        <a class='margin10 tooltipper' title='{$lang['userdetails_invincible_def3']}<br>{$lang['userdetails_invincible_def4']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=remove_bypass'>{$lang['userdetails_remove_bypass']}</a>" : "
+        <a class='margin10 tooltipper' title='{$lang['userdetails_invincible_def5']}<br>{$lang['userdetails_invincible_def6']}<br>{$lang['userdetails_invincible_def7']}<br>{$lang['userdetails_invincible_def8']} href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_add_bypass']}</a>" : "
+        <a class='margin10 tooltipper' title='{$lang['userdetails_invincible_def9']}<br>{$lang['userdetails_invincible_def0']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;invincible=yes'>{$lang['userdetails_make_invincible']}</a>" : '');
 
 $stealth = $cache->get('display_stealth' . $CURUSER['id']);
 if ($stealth) {
@@ -503,8 +352,8 @@ if ($stealth) {
 }
 
 $HTMLOUT .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? "
-        <a class='bordered margin10 bg-02 tooltipper' title='{$lang['userdetails_stelth_def1']}<br>{$lang['userdetails_stelth_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;stealth=no'>{$lang['userdetails_stelth_disable']}</a>" : "
-        <a class='bordered margin10 bg-02 tooltipper' title='{$lang['userdetails_stelth_def1']}<br>{$lang['userdetails_stelth_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;stealth=yes'>{$lang['userdetails_stelth_enable']}</a>") : '') . "
+        <a class='margin10 tooltipper' title='{$lang['userdetails_stelth_def1']}<br>{$lang['userdetails_stelth_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;stealth=no'>{$lang['userdetails_stelth_disable']}</a>" : "
+        <a class='margin10 tooltipper' title='{$lang['userdetails_stelth_def1']}<br>{$lang['userdetails_stelth_def2']}' href='{$site_config['baseurl']}/userdetails.php?id={$id}&amp;stealth=yes'>{$lang['userdetails_stelth_enable']}</a>") : '') . "
     </div>";
 
 $HTMLOUT .= "
@@ -578,7 +427,7 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
                                         </div>
                                         <textarea id='watched_reason' class='w-100' rows='6' name='watched_reason'>" . htmlsafechars($user['watched_user_reason']) . "</textarea>
                                         <div class='has-text-centered'>
-                                            <input id='watched_user_button' type='submit' value='{$lang['userdetails_submit']}' class='button' name='watched_user_button' />
+                                            <input id='watched_user_button' type='submit' value='{$lang['userdetails_submit']}' class='button is-small' name='watched_user_button' />
                                         </div>
                                     </form>
                                 </div>
@@ -593,7 +442,7 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
                             <input name="id" type="hidden" value="' . (int)$user['id'] . '" />
                             <input type="hidden" value="staff_notes" name="action" id="action" />
                             <textarea id="new_staff_note" class="w-100" rows="6" name="new_staff_note">' . htmlsafechars($user['staff_notes']) . '</textarea>
-                            <br><input id="staff_notes_button" type="submit" value="' . $lang['userdetails_submit'] . '" class="button" name="staff_notes_button"/>
+                            <br><input id="staff_notes_button" type="submit" value="' . $lang['userdetails_submit'] . '" class="button is-small" name="staff_notes_button"/>
                             </form>
                             </div> </td></tr>';
     //=== system comments
@@ -1210,7 +1059,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
          <input type='hidden' id='downchange' name='downchange' value='plus' />
          </td></tr>";
     }
-    $HTMLOUT .= "<tr><td colspan='3' class='has-text-centered'><input type='submit' class='button' value='{$lang['userdetails_okay']}' /></td></tr>";
+    $HTMLOUT .= "<tr><td colspan='3' class='has-text-centered'><input type='submit' class='button is-small' value='{$lang['userdetails_okay']}' /></td></tr>";
     $HTMLOUT .= "</table>";
     $HTMLOUT .= "</form>";
 }

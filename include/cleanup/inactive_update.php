@@ -4,7 +4,7 @@
  */
 function inactive_update($data)
 {
-    global $site_config, $queries, $cache;
+    global $queries;
     set_time_limit(1200);
     ignore_user_abort(true);
 
@@ -12,14 +12,12 @@ function inactive_update($data)
 
     $secs = 2 * 86400;
     $dt = (TIME_NOW - $secs);
-    // delete users never confirmed
     $res = sql_query("SELECT id FROM users
                         WHERE id != 2 AND status != 'confirmed' AND added < $dt") or sqlerr(__FILE__, __LINE__);
     while ($user = mysqli_fetch_assoc($res)) {
         $users[] = $user['id'];
     }
 
-    //== Delete inactive user accounts
     $secs = 180 * 86400;
     $dt = (TIME_NOW - $secs);
     $maxclass = UC_STAFF;
@@ -29,7 +27,6 @@ function inactive_update($data)
         $users[] = $user['id'];
     }
 
-    //== Delete parked user accounts
     $secs = 365 * 86400; // change the time to fit your needs
     $dt = (TIME_NOW - $secs);
     $maxclass = UC_STAFF;
@@ -53,16 +50,18 @@ function inactive_update($data)
  */
 function delete_cleanup($users, $using_foreign_keys = true)
 {
+    global $cache;
     if (empty($users)) {
         return;
     }
+    $cache->delete('all_users_');
     sql_query("DELETE FROM users WHERE id IN ({$users})") or sqlerr(__FILE__, __LINE__);
     sql_query("DELETE FROM staffmessages WHERE sender IN ({$users})") or sqlerr(__FILE__, __LINE__);
     sql_query("DELETE FROM staffmessages_answers WHERE sender IN ({$users})") or sqlerr(__FILE__, __LINE__);
     sql_query("DELETE FROM messages WHERE sender IN ({$users})") or sqlerr(__FILE__, __LINE__);
     sql_query("DELETE FROM messages WHERE receiver IN ({$users})") or sqlerr(__FILE__, __LINE__);
 
-    if (!$using_foriegn_keys) {
+    if (!$using_foreign_keys) {
         sql_query("DELETE FROM achievements WHERE userid IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM ajax_chat_invitations WHERE userID IN ({$users})") or sqlerr(__FILE__, __LINE__);
         sql_query("DELETE FROM ajax_chat_messages WHERE userID IN ({$users})") or sqlerr(__FILE__, __LINE__);

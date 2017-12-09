@@ -456,65 +456,64 @@ function min_class($min = UC_MIN, $max = UC_MAX)
  */
 function format_username($user_id, $icons = true, $tooltipper = true)
 {
-    global $site_config, $cache;
+    global $site_config, $cache, $fpdo;
     if (empty($user_id)) {
         return;
     }
     $user_id = is_array($user_id) && !empty($user_id['id']) ? (int)$user_id['id'] : (int)$user_id;
+    $users_data = $cache->get('user' . $user_id);
     if (!is_array($user_id) && is_numeric($user_id)) {
-        $user = $cache->get('user_icons_' . $user_id);
-        if ($user === false || is_null($user)) {
-            $res = sql_query("SELECT gotgift, gender, id, class, username, donor, title, suspended, warned, leechwarn, downloadpos, chatpost, pirate, king, enabled, perms, avatar
-                                FROM users
-                                WHERE id = " . sqlesc($user_id)) or sqlerr(__FILE__, __LINE__);
-            $user = mysqli_fetch_assoc($res);
-            $cache->set('user_icons_' . $user_id, $user, 60);
+        if ($users_data === false || is_null($users_data)) {
+            $users_data = $fpdo->from('users')
+                ->select('INET6_NTOA(ip) AS ip')
+                ->where('id = ?', $user_id)
+                ->fetch();
+                unset($users_data['hintanswer']);
+                unset($users_data['passhash']);
+
+            $cache->set('user' . $user_id, $users_data, $site_config['expires']['user_cache']);
         }
-    } else {
-        file_put_contents('/var/log/nginx/format_username.log', json_encode(debug_backtrace()) . PHP_EOL, FILE_APPEND);
-        return '';
     }
 
-    $avatar = !empty($user['avatar']) ? "<img src='{$user['avatar']}' class='avatar' />" : "<img src='./images/forumicons/default_avatar.gif' class='avatar' />";
+    $avatar = !empty($users_data['avatar']) ? "<img src='{$users_data['avatar']}' class='avatar' />" : "<img src='./images/forumicons/default_avatar.gif' class='avatar' />";
     $tip = $tooltip = '';
     if ($tooltipper) {
         $tip = "
                         <div class='tooltip_templates'>
-                            <span id='id_{$user['id']}_tooltip' class='is-flex tooltip'>
+                            <span id='id_{$users_data['id']}_tooltip' class='is-flex tooltip'>
                                 <div class='right20'>
                                     {$avatar}
                                 </div>
                                 <div style='min-width: 150px; align: left;'>
-                                     <span style='color:#" . get_user_class_color($user['class']) . ";'>" . htmlsafechars($user['username']) . "</span>
+                                     <span class='" . get_user_class_name($users_data['class'], true) . "'>" . htmlsafechars($users_data['username']) . "</span>
                                 </div>
                             </span>
                         </div>";
-        $tooltip = "class='dt-tooltipper-large' data-tooltip-content='#id_{$user['id']}_tooltip' ";
+        $tooltip = "class='dt-tooltipper-large' data-tooltip-content='#id_{$users_data['id']}_tooltip' ";
     }
 
-    $user['class'] = (int)$user['class'];
-    if ($user['id'] == 0) {
+    if ($users_data['id'] === 0) {
         return 'System';
-    } elseif ($user['username'] == '') {
-        return 'unknown[' . $user['id'] . ']';
+    } elseif ($users_data['username'] == '') {
+        return 'unknown[' . $users_data['id'] . ']';
     }
 
     $str = "
             <span>
-                <a class='user_{$user['id']}' href='./userdetails.php?id={$user['id']}' target='_blank'>
-                    <span {$tooltip}style='color:#" . get_user_class_color($user['class']) . ";'>" . htmlsafechars($user['username']) . "$tip</span>
+                <a class='user_{$users_data['id']}' href='./userdetails.php?id={$users_data['id']}' target='_blank'>
+                    <span {$tooltip}style='color:#" . get_user_class_color($users_data['class']) . ";'>" . htmlsafechars($users_data['username']) . "$tip</span>
                 </a>";
 
     if ($icons != false) {
-        $str .= (isset($user['king']) && $user['king'] >= TIME_NOW ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'king.png" alt="King" title="King" width="14px" height="14px" />' : '');
-        $str .= ($user['donor'] == 'yes' ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'star.png" alt="Donor" title="Donor" width="14px" height="14px" />' : '');
-        $str .= ($user['warned'] >= 1 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'alertred.png" alt="Warned" title="Warned" width="14px" height="14px" />' : '');
-        $str .= ($user['leechwarn'] >= 1 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'alertblue.png" alt="Leech Warned" title="Leech Warned" width="14px" height="14px" />' : '');
-        $str .= ($user['enabled'] != 'yes' ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'disabled.gif" alt="Disabled" title="Disabled" width="14px" height="14px" />' : '');
-        $str .= (isset($user['downloadpos']) && $user['downloadpos'] != 1 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'downloadpos.gif" alt="Download Disabled" title="Download Disabled" width="14px" height="14px" />' : '');
-        $str .= ($user['chatpost'] == 0 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'warned.png" alt="No Chat" title="Shout disabled" width="14px" height="14px" />' : '');
-        $str .= ($user['pirate'] != 0 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'pirate.png" alt="Pirate" title="Pirate" width="14px" height="14px" />' : '');
-        $str .= (isset($user['gotgift']) && $user['gotgift'] == 'yes' ? '<img class="tooltipper" height="16px" src="' . $site_config['pic_base_url'] . 'gift.png" alt="Christmas Gift" title="Has Claimed a Christmas Gift" />' : '');
+        $str .= (isset($users_data['king']) && $users_data['king'] >= TIME_NOW ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'king.png" alt="King" title="King" width="14px" height="14px" />' : '');
+        $str .= ($users_data['donor'] == 'yes' ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'star.png" alt="Donor" title="Donor" width="14px" height="14px" />' : '');
+        $str .= ($users_data['warned'] >= 1 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'alertred.png" alt="Warned" title="Warned" width="14px" height="14px" />' : '');
+        $str .= ($users_data['leechwarn'] >= 1 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'alertblue.png" alt="Leech Warned" title="Leech Warned" width="14px" height="14px" />' : '');
+        $str .= ($users_data['enabled'] != 'yes' ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'disabled.gif" alt="Disabled" title="Disabled" width="14px" height="14px" />' : '');
+        $str .= (isset($users_data['downloadpos']) && $users_data['downloadpos'] != 1 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'downloadpos.gif" alt="Download Disabled" title="Download Disabled" width="14px" height="14px" />' : '');
+        $str .= ($users_data['chatpost'] == 0 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'warned.png" alt="No Chat" title="Shout disabled" width="14px" height="14px" />' : '');
+        $str .= ($users_data['pirate'] != 0 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'pirate.png" alt="Pirate" title="Pirate" width="14px" height="14px" />' : '');
+        $str .= (isset($users_data['gotgift']) && $users_data['gotgift'] == 'yes' ? '<img class="tooltipper" height="16px" src="' . $site_config['pic_base_url'] . 'gift.png" alt="Christmas Gift" title="Has Claimed a Christmas Gift" />' : '');
     }
     $str .= '
             </span>';

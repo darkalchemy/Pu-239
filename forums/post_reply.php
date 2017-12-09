@@ -1,5 +1,5 @@
 <?php
-global $lang;
+global $CURUSER, $site_config, $cache, $lang;
 $page = $colour = $arr_quote = $extension_error = $size_error = '';
 $topic_id = (isset($_GET['topic_id']) ? intval($_GET['topic_id']) : (isset($_POST['topic_id']) ? intval($_POST['topic_id']) : 0));
 if (!is_valid_id($topic_id)) {
@@ -221,7 +221,7 @@ $HTMLOUT .= '<table class="table table-bordered table-striped">
    <img src="' . $site_config['pic_base_url'] . 'forums/subscribe.gif" alt="+" title="+" /> ' . $lang['fe_subscrib_to_tread'] . '
     <input type="radio" name="subscribe" value="yes"' . ($subscribe == 'yes' ? ' checked' : '') . ' />yes
     <input type="radio" name="subscribe" value="no"' . ($subscribe == 'no' ? ' checked' : '') . ' />no<br>
-    <input type="submit" name="button" class="button_tiny" value="' . $lang['fe_post'] . '" />
+    <input type="submit" name="button" class="button is-small" value="' . $lang['fe_post'] . '" />
     </td></tr>
     </table></form>';
 //=== get last ten posts

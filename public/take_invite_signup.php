@@ -184,7 +184,7 @@ $latestuser_cache['chatpost'] = '1';
 $latestuser_cache['leechwarn'] = '0';
 $latestuser_cache['pirate'] = '0';
 $latestuser_cache['king'] = '0';
-//$latestuser_cache['perms'] =  (int)$arr['perms'];
+$cache->delete('all_users_');
 
 /* OOPs **/
 $cache->set('latestuser', $latestuser_cache, 0, $site_config['expires']['latestuser']);

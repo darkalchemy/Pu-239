@@ -121,6 +121,6 @@ $HTMLOUT .= $the_top_and_bottom . '<form action="' . $site_config['baseurl'] . '
 		<td class="forum_head_dark" colspan="9">
 		<a class="altlink" href="javascript:SetChecked(1,\'remove[]\')"> <span>' . $lang['sub_select_all'] . '</span></a> - 
 		<a class="altlink" href="javascript:SetChecked(0,\'remove[]\')"><span>' . $lang['sub_un_select_all'] . '</span></a>  
-		<input type="submit" name="button" class="button" value="' . $lang['fe_remove'] . ' Selected" /></td>
+		<input type="submit" name="button" class="button is-small" value="' . $lang['fe_remove'] . ' Selected" /></td>
 		</tr></table></form><script src="' . $site_config['baseurl'] . '/scripts/check_selected.js"></script>
 		' . $the_top_and_bottom . '<br><br>' . $links . '<br>';

@@ -7,7 +7,7 @@ function delete_torrents_xbt_update($data)
     global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
-    //== delete torrents - ????
+
     $days = 30;
     $dt = (TIME_NOW - ($days * 86400));
     sql_query("UPDATE torrents SET flags='1' WHERE added < $dt AND seeders='0' AND leechers='0'") or sqlerr(__FILE__, __LINE__);

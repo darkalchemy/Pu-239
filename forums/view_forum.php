@@ -114,7 +114,7 @@ if ($res_sub_forums) {
     $parent_forum_arr = mysqli_fetch_assoc($parent_forum_res);
     if ($arr['parent_forum'] > 0) {
         $child = '<span> [ ' . $lang['fe_child_board'] . ' ]</span>';
-        //$parent_forum_name = '<img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" /> 
+        //$parent_forum_name = '<img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt="&#9658;" title="&#9658;" />
         //	<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $parent_forum_id . '">' . htmlsafechars($parent_forum_arr['parent_forum_name'], ENT_QUOTES) . '</a>';
     }
 }
@@ -290,7 +290,7 @@ if ($count > 0) {
 		' . $lang['fe_this_topic_is_locked'] . '... ' . $lang['fe_no_new_posts_are_allowed'] . '.</span>' : ($may_post ? '<form action="' . $site_config['baseurl'] . '/forums.php" method="post" name="new">
 		<input type="hidden" name="action" value="new_topic" />
 		<input type="hidden" name="forum_id" value="' . $forum_id . '" />
-		<input type="submit" name="button" class="button" value="' . $lang['fe_new_topic'] . '" />
+		<input type="submit" name="button" class="button is-small" value="' . $lang['fe_new_topic'] . '" />
 		</form>' : '<span>
 		' . $lang['fe_you_are_not_permitted_to_post_in_this_forum.'] . '</span>')) . '</td></tr></table>';
 } else {
@@ -299,7 +299,7 @@ if ($count > 0) {
 		' . ($may_post ? '<form action="' . $site_config['baseurl'] . '/forums.php" method="post" name="new">
 		<input type="hidden" name="action" value="new_topic" />
 		<input type="hidden" name="forum_id" value="' . $forum_id . '" />
-        <input type="submit" name="button" class="button" value="' . $lang['fe_start_new_topic'] . '" />
+        <input type="submit" name="button" class="button is-small" value="' . $lang['fe_start_new_topic'] . '" />
 		</form></td></tr>' : '<span>' . $lang['fe_you_are_not_permitted_to_post_in_this_forum.'] . '</span>');
     $the_top_and_bottom = '';
 }

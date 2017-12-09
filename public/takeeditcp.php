@@ -532,9 +532,6 @@ elseif ($action == 'default') {
     $action = 'default';
 }
 //== End == then update the sets :)
-if ($curuser_cache) {
-    $cache->update_row('MyUser_' . $CURUSER['id'], $curuser_cache, $site_config['expires']['curuser']);
-}
 if ($user_cache) {
     $cache->update_row('user' . $CURUSER['id'], $user_cache, $site_config['expires']['user_cache']);
 }
@@ -550,11 +547,7 @@ $res = sql_query('SELECT opt1, opt2 FROM users
 $row = mysqli_fetch_assoc($res);
 $row['opt1'] = (int)$row['opt1'];
 $row['opt2'] = (int)$row['opt2'];
-$cache->update_row('MyUser_' . $CURUSER['id'], [
-    'opt1' => $row['opt1'],
-    'opt2' => $row['opt2'],
-], $site_config['expires']['curuser']);
-$cache->update_row('user_' . $CURUSER['id'], [
+$cache->update_row('user' . $CURUSER['id'], [
     'opt1' => $row['opt1'],
     'opt2' => $row['opt2'],
 ], $site_config['expires']['user_cache']);

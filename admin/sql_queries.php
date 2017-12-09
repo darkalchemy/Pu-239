@@ -65,7 +65,7 @@ if ($count >= 1) {
     $HTMLOUT .= "
             <div class='has-text-centered top20 bottom20 level-center flex-center'>
                 <input type='hidden' name='delete' value='delete' />
-                <input type='submit' class='button' value='Delete Selected' />
+                <input type='submit' class='button is-small' value='Delete Selected' />
             </div>
         </form>" . $pager['pagerbottom'];
 }

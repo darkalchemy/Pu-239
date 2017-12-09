@@ -100,8 +100,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     $HTMLOUT .= "</select>
 
- 	<input type='submit' name='buttonval' value='Preview' class='button' />
- 	<input type='submit' name='buttonval' value='Submit' class='button' />
+ 	<input type='submit' name='buttonval' value='Preview' class='button is-small' />
+ 	<input type='submit' name='buttonval' value='Submit' class='button is-small' />
  	</td></tr></table>
  	<input type='hidden' name='n_pms' value='" . $n_pms . "' />
     <input type='hidden' name='ann_query' value='" . rawurlencode($ann_query) . "' />

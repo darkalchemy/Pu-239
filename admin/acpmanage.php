@@ -25,9 +25,6 @@ if (isset($_POST['ids'])) {
     if ($do == 'enabled') {
         sql_query("UPDATE users SET enabled = 'yes' WHERE ID IN(" . join(', ', array_map('sqlesc', $ids)) . ") AND enabled = 'no'") or sqlerr(__FILE__, __LINE__);
     }
-    $cache->update_row('MyUser_' . $id, [
-        'enabled' => 'yes',
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user' . $id, [
         'enabled' => 'yes',
     ], $site_config['expires']['user_cache']);
@@ -35,9 +32,6 @@ if (isset($_POST['ids'])) {
     if ($do == 'confirm') {
         sql_query("UPDATE users SET status = 'confirmed' WHERE ID IN(" . join(', ', array_map('sqlesc', $ids)) . ") AND status = 'pending'") or sqlerr(__FILE__, __LINE__);
     }
-    $cache->update_row('MyUser_' . $id, [
-        'status' => 'confirmed',
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user' . $id, [
         'status' => 'confirmed',
     ], $site_config['expires']['user_cache']);
@@ -48,7 +42,6 @@ if (isset($_POST['ids'])) {
             while ($arr_del = mysqli_fetch_assoc($res_del)) {
                 $userid = $arr_del['id'];
                 $res = sql_query('DELETE FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-                $cache->delete('MyUser_' . $userid);
                 $cache->delete('user' . $userid);
                 write_log("User: {$arr_del['username']} Was deleted by " . $CURUSER['username']);
             }

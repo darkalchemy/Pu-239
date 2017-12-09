@@ -28,10 +28,10 @@ if ($needed == 'leechers') {
     $HTMLOUT .= "
         <div class='has-text-centered padding20'>
             <ul class='level-center margin20'>
-                <li class='active bordered margin10 bg-02'>
+                <li class='active margin10'>
                     <span>{$lang['needseed_sin']}</span>
                 </li>
-                <li class='bordered margin10 bg-02'>
+                <li class='margin10'>
                     <a href='{$site_config['baseurl']}/needseed.php?needed=seeders'>{$lang['needseed_tns']}</a>
                 </li>
             </ul>
@@ -91,10 +91,10 @@ if ($needed == 'leechers') {
     $HTMLOUT .= "
         <div class='has-text-centered padding20'>
             <ul class='level-center margin20'>
-                <li class='bordered margin10 bg-02'>
+                <li class='margin10'>
                     <a href='{$site_config['baseurl']}/needseed.php?needed=leechers'>{$lang['needseed_sin']}</a>
                 </li>
-                <li class='active bordered margin10 bg-02'>
+                <li class='active margin10'>
                     <span>{$lang['needseed_tns']}</span>
                 </li>
             </ul>

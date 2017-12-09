@@ -1039,9 +1039,6 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
     $stats_cache['modcomment'] = $modcomment;
     //== Memcache - delete the keys
     $cache->increment('inbox_' . $userid);
-    if ($curuser_cache) {
-        $cache->update_row('MyUser_' . $userid, $curuser_cache, $site_config['expires']['curuser']);
-    }
     if ($user_cache) {
         $cache->update_row('user' . $userid, $user_cache, $site_config['expires']['user_cache']);
     }
@@ -1066,11 +1063,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
     $row = mysqli_fetch_assoc($res);
     $row['opt1'] = $row['opt1'];
     $row['opt2'] = $row['opt2'];
-    $cache->update_row('MyUser_' . $userid, [
-        'opt1' => $row['opt1'],
-        'opt2' => $row['opt2'],
-    ], $site_config['expires']['curuser']);
-    $cache->update_row('user_' . $userid, [
+    $cache->update_row('user' . $userid, [
         'opt1' => $row['opt1'],
         'opt2' => $row['opt2'],
     ], $site_config['expires']['user_cache']);

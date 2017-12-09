@@ -141,9 +141,6 @@ if (isset($input['do']) && $input['do'] == 'addrep') {
     $score = fetch_reppower($CURUSER, $input['reputation']);
     $res['reputation'] += $score;
     sql_query('UPDATE users SET reputation=' . intval($res['reputation']) . ' WHERE id=' . $res['userid']);
-    $cache->update_row('MyUser_' . $res['userid'], [
-        'reputation' => $res['reputation'],
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user' . $res['userid'], [
         'reputation' => $res['reputation'],
     ], $site_config['expires']['user_cache']);
@@ -297,8 +294,8 @@ if (isset($input['do']) && $input['do'] == 'addrep') {
 				                		<input type='hidden' name='do' value='addrep' />
                 						<input type='hidden' name='pid' value='{$input['pid']}' />
 				                		<input type='hidden' name='locale' value='{$input['locale']}' />
-                						<input type='submit' value='" . $lang['info_add_rep'] . "' class='button' accesskey='s' />
-				                		<input type='button' value='Close Window' class='button' accesskey='c' onclick='self.close()' />
+                						<input type='submit' value='" . $lang['info_add_rep'] . "' class='button is-small' accesskey='s' />
+				                		<input type='button' value='Close Window' class='button is-small' accesskey='c' onclick='self.close()' />
                 					</div>
 				            	</form>
         					</td>

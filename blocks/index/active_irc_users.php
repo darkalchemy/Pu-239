@@ -1,52 +1,35 @@
 <?php
-global $site_config, $cache, $lang;
+global $site_config, $cache, $lang, $fpdo;
 
-/**
- * @param $val
- *
- * @return string
- */
-function calctime($val)
-{
-    global $lang;
-    $days = intval($val / 86400);
-    $val -= $days * 86400;
-    $hours = intval($val / 3600);
-    $val -= $hours * 3600;
-    $mins = intval($val / 60);
-    $secs = $val - ($mins * 60);
+$irc = $cache->get('ircusers_');
+if ($irc === false || is_null($irc)) {
+    $irc = $list = [];
+    $query = $fpdo->from('users')
+        ->select(null)
+        ->select('id')
+        ->where('onirc = ?', 'yes')
+        ->where('perms < ?',  bt_options::PERMS_STEALTH)
+        ->orderBy('username ASC');
 
-    return "<br>&#160;&#160;&#160;$days {$lang['gl_irc_days']}, $hours {$lang['gl_irc_hrs']}, $mins {$lang['gl_irc_min']}";
-}
-
-$keys['activeircusers'] = 'activeircusers';
-$active_irc_users_cache = $cache->get($keys['activeircusers']);
-if ($active_irc_users_cache === false || is_null($active_irc_users_cache)) {
-    $dt = $_SERVER['REQUEST_TIME'] - 180;
-    $activeircusers = '';
-    $active_irc_users_cache = [];
-    $res = sql_query('SELECT id, username, perms FROM users WHERE onirc = "yes" AND perms < ' . bt_options::PERMS_STEALTH . ' ORDER BY username ASC') or sqlerr(__FILE__, __LINE__);
-    $actcount = mysqli_num_rows($res);
-    while ($arr = mysqli_fetch_assoc($res)) {
-        if ($activeircusers) {
-            $activeircusers .= ", ";
-        }
-        $activeircusers .= format_username($arr['id']);
+    foreach ($query as $row) {
+        $list[] = format_username($row['id']);
     }
-    $active_irc_users_cache['activeircusers'] = $activeircusers;
-    $active_irc_users_cache['actcount'] = $actcount;
-    $cache->set($keys['activeircusers'], $active_irc_users_cache, $site_config['expires']['activeircusers']);
+    $list[] = format_username(2);
+    $irc['ircusers'] = implode(', ', $list);
+    $irc['count'] = count($list);
+    if ($irc['count'] === 0) {
+        $irc['ircusers'] = $lang['index_irc_nousers'];
+    }
+    $cache->set('ircusers_', $irc, $site_config['expires']['activeircusers']);
 }
-if (!$active_irc_users_cache['activeircusers']) {
-    $active_irc_users_cache['activeircusers'] = $lang['index_irc_nousers'];
-}
+
 $HTMLOUT .= "
     <a id='irc-hash'></a>
     <fieldset id='irc' class='header'>
-        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_active_irc']} ({$active_irc_users_cache['actcount']})</legend>
+        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_active_irc']} ({$irc['count']})</legend>
         <div class='bordered'>
             <div class='alt_bordered bg-00 has-text-centered'>
-                {$active_irc_users_cache['activeircusers']}
+                {$irc['ircusers']}
             </div>
         </div>
     </fieldset>";

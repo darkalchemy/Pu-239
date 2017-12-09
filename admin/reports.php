@@ -220,7 +220,7 @@ if ($count == '0') {
 if ($count > '0') {
     $HTMLOUT .= main_div("{$lang['reports_how']} {$CURUSER['username']} {$lang['reports_dealt1']}<br>{$lang['reports_please']} [ {$lang['reports_req']} ]
     <textarea name='how_delt_with' class='w-100' rows='5'></textarea>
-    <input type='submit' class='button' value='{$lang['reports_confirm']}' />
+    <input type='submit' class='button is-small' value='{$lang['reports_confirm']}' />
     </form>");
 }
 echo stdhead($lang['reports_stdhead']) . wrapper($HTMLOUT) . stdfoot();

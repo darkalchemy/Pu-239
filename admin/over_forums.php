@@ -106,7 +106,7 @@ switch ($action) {
             $HTMLOUT .= $sorted . '</select></td></tr>
 			<tr>
 			    <td colspan="2" class="three">
-				<input type="submit" name="button" class="button" value="' . $lang['ad_over_editbut'] . '" />
+				<input type="submit" name="button" class="button is-small" value="' . $lang['ad_over_editbut'] . '" />
 			    </td>
 		  </tr>
 		</table></form>';
@@ -174,7 +174,7 @@ switch ($action) {
         $HTMLOUT .= $sorted . '</select></td></tr>
 			 <tr>
 			<td colspan="2" class="three">
-			<input type="submit" name="button" class="button" value="' . $lang['ad_over_makebutton'] . '" /></td>
+			<input type="submit" name="button" class="button is-small" value="' . $lang['ad_over_makebutton'] . '" /></td>
 			</tr>
 			</table></form>';
         break;

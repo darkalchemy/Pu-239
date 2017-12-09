@@ -147,7 +147,7 @@ switch ($action) {
 			<td colspan="2" class="three">
 			<input type="hidden" name="action2" value="edit_forum" />
 			<input type="hidden" name="id" value="' . htmlsafechars($id) . '" />
-			<input type="submit" name="button" class="button" value="' . $lang['fm_efp_btn'] . '" />
+			<input type="submit" name="button" class="button is-small" value="' . $lang['fm_efp_btn'] . '" />
 			</td>
 			</tr></table></form><br><br>';
         }
@@ -265,7 +265,7 @@ $HTMLOUT .= $option_11 . '</select></td></tr>
 			<tr>
 			<td colspan="2" class="three">
 			<input type="hidden" name="action2" value="add_forum" />
-			<input type="submit" name="button" class="button" value="' . $lang['fm_mp_btn'] . '" /></td>
+			<input type="submit" name="button" class="button is-small" value="' . $lang['fm_mp_btn'] . '" /></td>
 			</tr>
 			</table></form>
 	      <script>

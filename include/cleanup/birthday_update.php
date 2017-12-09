@@ -7,6 +7,7 @@ function birthday_update($data)
     global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
+
     $current_date = getdate();
     $res = sql_query('SELECT id, username, class, donor, title, warned, enabled, chatpost, leechwarn, pirate, king, uploaded, birthday FROM users WHERE MONTH(birthday) = ' . sqlesc($current_date['mon']) . ' AND DAYOFMONTH(birthday) = ' . sqlesc($current_date['mday']) . ' ORDER BY username ASC') or sqlerr(__FILE__, __LINE__);
     $msgs_buffer = $users_buffer = [];
@@ -29,7 +30,7 @@ function birthday_update($data)
             sql_query('INSERT INTO messages (sender,receiver,added,msg,subject) VALUES ' . implode(', ', $msgs_buffer)) or sqlerr(__FILE__, __LINE__);
             sql_query('INSERT INTO users (id, uploaded) VALUES ' . implode(', ', $users_buffer) . ' ON DUPLICATE KEY UPDATE uploaded=uploaded + VALUES(uploaded)') or sqlerr(__FILE__, __LINE__);
         }
-        if ($data['clean_log']) {
+        if ($data['clean_log'] && $queries > 0) {
             write_log("Birthday Cleanup: Pm'd' " . $count . ' member(s) and awarded a birthday prize');
         }
         unset($users_buffer, $msgs_buffer, $count);
