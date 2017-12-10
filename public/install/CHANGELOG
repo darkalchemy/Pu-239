@@ -1,4 +1,5 @@
 9 Dec 2017
+add: missing required file
 update: general code cleanup
 update: allow notifications to use bbcode
 fix: wiki.php

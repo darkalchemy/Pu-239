@@ -8,6 +8,7 @@
  */
 function stdhead($title = '', $stdhead = null)
 {
+    require_once INCL_DIR . 'bbcode_functions.php';
     global $CURUSER, $site_config, $lang, $free, $querytime, $cache, $BLOCKS, $CURBLOCK, $mood;
 
     unsetSessionVar('Channel');

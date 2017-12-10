@@ -197,7 +197,7 @@ if (empty($gamenum) || empty($qid)) {
                 </div>
                 <div>
                     <h2 class='has-text-centered has-text-primary'>" . htmlspecialchars_decode($row['question']) . "</h2>
-                    <ul class='tabs'>
+                    <ul class='level-center'>
                         <li>
                             <form id='happy' method='post' action='trivia.php'>
                                 <input type='hidden' name='qid' value='{$qid}'>
