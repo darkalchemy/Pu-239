@@ -135,7 +135,7 @@ function stdhead($title = '', $stdhead = null)
 
     foreach ($site_config['notifications'] as $notif) {
         if (($message = getSessionVar($notif)) != false) {
-            $message = !is_array($message) ? $message : "<a href='{$message['link']}'>{$message['message']}</a>";
+            $message = !is_array($message) ? format_comment($message) : "<a href='{$message['link']}'>" . format_comment($message['message']) . "</a>";
             $htmlout .= "
                 <div class='notification $notif has-text-centered size_6'>
                     <button class='delete'></button>$message
@@ -502,6 +502,7 @@ function navbar()
                                     <li><a href='#' onclick='themes();'>{$lang['gl_theme']}</a></li>
                                     <li><a href='#' onclick='language_select();'>{$lang['gl_language_select']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/friends.php'>{$lang['gl_friends']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/users.php'>Search Users</a></li>
                                 </ul>
                             </li>
                             <li>

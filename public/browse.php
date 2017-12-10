@@ -302,7 +302,7 @@ $HTMLOUT .= main_div($main_div, 'bottom20');
 
 if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     $new_button = "
-        <a href='{$site_config['baseurl']}/browse.php?clear_new=1'><input type='submit' value='clear new tag' class='button is-small is-primary' /></a>
+        <a href='{$site_config['baseurl']}/browse.php?clear_new=1'><input type='submit' value='clear new tag' class='button is-small' /></a>
         <br>";
 } else {
     //== clear new tag automatically
@@ -368,7 +368,7 @@ $HTMLOUT .= main_div("
                         </div>
                     </div>
                     <div class='margin10 has-text-centered'>
-                        <input type='submit' value='{$lang['search_search_btn']}' class='button is-small is-primary' />
+                        <input type='submit' value='{$lang['search_search_btn']}' class='button is-small' />
                     </div>");
 $HTMLOUT .= "
             </form>";

@@ -171,8 +171,15 @@ if (!is_valid_id($userid)) {
 }
 $res = sql_query('SELECT id, username FROM users WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_array($res);
-$htmlout .= '<h1>Sharemarks for <a href="userdetails.php?id=' . $userid . '">' . htmlsafechars($arr['username']) . '</a></h1>';
-$htmlout .= '<b><a href="bookmarks.php">My Bookmarks</a></b>';
+$htmlout .= '
+    <div class="has-text-centered bottom20">
+        <h1>Sharemarks for ' . format_username($arr['id']) . '</h1>
+        <div class="tabs is-centered">
+            <ul>
+                <li><a href="' . $site_config['baseurl']. '/bookmarks.php" class="altlink">My Bookmarks</a></li>
+            </ul>
+        </div>
+    </div>';
 $res = sql_query('SELECT COUNT(id) FROM bookmarks WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_array($res);
 $count = $row[0];
@@ -186,8 +193,6 @@ if ($count) {
     $res = sql_query($query1) or sqlerr(__FILE__, __LINE__);
 }
 if ($count) {
-    $htmlout .= $pager['pagertop'];
-    $htmlout .= sharetable($res, 'index', true);
-    $htmlout .= $pager['pagerbottom'];
+    $htmlout .= $pager['pagertop'] . sharetable($res, 'index', true) . $pager['pagerbottom'];
 }
-echo stdhead('Sharemarks for ' . htmlsafechars($arr['username'])) . $htmlout . stdfoot();
+echo stdhead('Sharemarks for ' . htmlsafechars($arr['username'])) . wrapper($htmlout) . stdfoot();

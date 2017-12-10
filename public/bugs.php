@@ -185,7 +185,9 @@ if ($action == 'viewbug') {
         $HTMLOUT .= '</table>';
         $HTMLOUT .= $pager['pagerbottom'];
     } else {
-        $HTMLOUT .= stdmsg('w00t', "{$lang['no_bugs']}");
+        setSessionVar('is-warning', $lang['no_bugs']);
+        header("Location: index.php");
+        die();
     }
 } elseif ($action == 'add') {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {

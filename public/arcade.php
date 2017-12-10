@@ -28,7 +28,7 @@ foreach ($list as $gamename) {
     $game = $site_config['arcade_games'][ $game_id ];
     $fullgamename = $site_config['arcade_games_names'][ $game_id ];
     $HTMLOUT .= "
-                <div class='w-25'>
+                <div class='margin10 w-20'>
                     <a href='./flash.php?gameURI={$game}.swf&amp;gamename={$game}&amp;game_id={$id}' class='tooltipper' title='{$fullgamename}'>
                         <img src='{$site_config['pic_base_url']}games/{$game}.png' alt='{$game}' class='round10' />
                     </a>

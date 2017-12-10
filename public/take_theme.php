@@ -52,7 +52,7 @@ $HTMLOUT .= $out;
 $HTMLOUT .= "
                     </select>
                     <br>
-                    <input type='button' value='Close' onclick='self.close()' />
+                    <input type='button' class='button is-small margin20' value='Close' onclick='self.close()' />
                 </p>
             </form>
         </fieldset>

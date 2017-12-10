@@ -385,12 +385,6 @@ span {
     -webkit-margin-end: .125em;
 }
 
-li.active {
-    border-top: 2px groove lime;
-    border-bottom: 2px groove lime;
-    background: rgba(0, 0, 0, .3);
-}
-
 .bottom5 {
     margin-bottom: .3125em;
 }
@@ -960,8 +954,16 @@ textarea {
     border-radius: .3125em;
 }
 
+.tabs ul {
+    border: none;
+}
 .tabcontent.active {
     overflow: hidden;
+}
+
+p + p {
+    margin-bottom: .85em;
+    margin-top: .85em;
 }
 
 @media (max-width: 1200px) {

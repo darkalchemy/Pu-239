@@ -133,7 +133,7 @@ $html .= "
 if ($lottery['current_user']['can_buy'] > 0) {
     $html .= "
         <form action='lottery.php?action=tickets' method='post'>
-            <div class='has-text-centered bottom20'>
+            <div class='has-text-centered margin20'>
                 <input type='text' size='10' name='tickets' />
                 <input type='submit' value='Buy tickets' class='button is-small' />
             </div>
