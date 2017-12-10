@@ -214,9 +214,6 @@ switch ($action) {
                     $modcom = sqlesc($modcomment);
                     $pm_buffer[] = '(0, ' . $arr_freeslots['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                     $users_buffer[] = '(' . $arr_freeslots['id'] . ', ' . $freeslots_new . ', ' . $modcom . ')';
-                    $cache->update_row('MyUser_' . $arr_freeslots['id'], [
-                        'freeslots' => $freeslots_new,
-                    ], $site_config['expires']['curuser']);
                     $cache->update_row('user' . $arr_freeslots['id'], [
                         'freeslots' => $freeslots_new,
                     ], $site_config['expires']['user_cache']);
@@ -250,9 +247,6 @@ switch ($action) {
                             $modcom = sqlesc($modcomment);
                             $pm_buffer[] = '(0, ' . $arr_freeslots['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                             $users_buffer[] = '(' . $arr_freeslots['id'] . ', ' . $freeslots_new . ', ' . $modcom . ')';
-                            $cache->update_row('MyUser_' . $arr_freeslots['id'], [
-                                'freeslots' => $freeslots_new,
-                            ], $site_config['expires']['curuser']);
                             $cache->update_row('user' . $arr_freeslots['id'], [
                                 'freeslots' => $freeslots_new,
                             ], $site_config['expires']['user_cache']);
@@ -295,9 +289,6 @@ switch ($action) {
                     $modcom = sqlesc($modcomment);
                     $pm_buffer[] = '(0, ' . $arr_invites['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                     $users_buffer[] = '(' . $arr_invites['id'] . ', ' . $invites_new . ', ' . $modcom . ')';
-                    $cache->update_row('MyUser_' . $arr_invites['id'], [
-                        'invites' => $invites_new,
-                    ], $site_config['expires']['curuser']);
                     $cache->update_row('user' . $arr_invites['id'], [
                         'invites' => $invites_new,
                     ], $site_config['expires']['user_cache']);
@@ -331,9 +322,6 @@ switch ($action) {
                             $modcom = sqlesc($modcomment);
                             $pm_buffer[] = '(0, ' . $arr_invites['id'] . ', ' . TIME_NOW . ', ' . $msg . ', ' . $subject . ')';
                             $users_buffer[] = '(' . $arr_invites['id'] . ', ' . $invites_new . ', ' . $modcom . ')';
-                            $cache->update_row('MyUser_' . $arr_invites['id'], [
-                                'invites' => $invites_new,
-                            ], $site_config['expires']['curuser']);
                             $cache->update_row('user' . $arr_invites['id'], [
                                 'invites' => $invites_new,
                             ], $site_config['expires']['user_cache']);
@@ -531,7 +519,7 @@ $HTMLOUT .= '<form name="inputform" method="post" action="staffpanel.php?tool=ma
     </tr>
     <tr>
         <td class="one" colspan="2">
-        <input type="submit" class="button" name="button" value="' . $lang['bonusmanager_doit'] . '"  /></td>
+        <input type="submit" class="button is-small" name="button" value="' . $lang['bonusmanager_doit'] . '"  /></td>
     </tr>
     </table></form>';
 echo stdhead($lang['bonusmanager_h1_upload'], true, $stdhead) . $HTMLOUT . stdfoot();

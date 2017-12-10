@@ -157,7 +157,7 @@ $HTMLOUT .= "<tr><td class='rowhead'>{$lang['signup_select']}</td><td><select na
       <tr><td colspan='2'>{$lang['signup_click']} <strong>{$lang['signup_x']}</strong> {$lang['signup_click1']}</td></tr><tr>
       <td colspan='2'><span class='tabs is-marginless'>";
 for ($i = 0; $i < count($value); ++$i) {
-    $HTMLOUT .= '<input name="submitme" type="submit" value="' . $value[ $i ] . '" class="button" />';
+    $HTMLOUT .= '<input name="submitme" type="submit" value="' . $value[ $i ] . '" class="button is-small" />';
 }
 $HTMLOUT .= '</span></td></tr></table></form></div>';
 echo stdhead('Invites') . $HTMLOUT . stdfoot($stdfoot);

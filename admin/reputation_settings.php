@@ -197,7 +197,7 @@ $HTMLOUT = '<div>
                   </table>
                   </div></div>
 
-<input type="submit" name="submit" value="' . $lang['repset_submit'] . '" class="button" tabindex="2" accesskey="s" />
+<input type="submit" name="submit" value="' . $lang['repset_submit'] . '" class="button is-small" tabindex="2" accesskey="s" />
 </form>
 </div>';
 $HTMLOUT = preg_replace_callback('|<#(.*?)#>|', 'template_out', $HTMLOUT);

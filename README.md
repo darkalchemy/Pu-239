@@ -21,34 +21,51 @@ PHP 7.0+ is required, PHP 7.1 recommended.
 
 This is still a WIP and many pages may not be functional in there current location. Do not use the xbt install, as it's update has not been started and is likely broken.
 
+### To Install:
 ```
-get the files
+# get the files
 git clone https://github.com/darkalchemy/Pu-239.git
 
-set ownership
+# set ownership
 chown -R www-data:www-data Pu-239
 
-install dependancies
+# install dependancies
 cd Pu-239
 composer install
+npm install bulma
 
-set webroot to path Pu-239/public
+# set webroot to path Pu-239/public
 
-goto website and complete install
+# goto website and complete install
 
-delete public/install folder once directed to
+# delete public/install folder once directed to
+rm -r Pu-239/public/install/
 
-create your first user and login
+# create your first user and login
 
-goto admin and create your bot/system user
+# goto admin and create your bot/system user
 
-goto admin cleanup and activate/deactivate scripts, they are initially set to yesterday midnight
+# goto admin cleanup and activate/deactivate scripts, they are initially set to yesterday midnight
 
-keeping AJAX Chat open after first installing will allow the cleanup to catchup
+# keeping AJAX Chat open after first installing will allow the cleanup to catchup
 ```
 
+### To Update:
+```
+# get the files
+# how you do this step will depend how you did it initially, I personally use rsync to overwrite files from git to my webpath, then remove the install folder
+git pull
 
-credits:
+# update dependancies:
+composer update
+npm update
 
-All Credit goes to the original code creators.
+# update database:
+goto admin/upgrade_database to check/update the database
+note: if that does exist, check the changelog for 6 Dec, 2017
+```
+
+# Credits:
+
+All Credit goes to the original code creators of U-232, tbdev, etc. Without them, this would not be possible.
 

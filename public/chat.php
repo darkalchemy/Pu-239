@@ -35,4 +35,4 @@ $HTMLOUT .= "<p>{$lang['chat_channel']}<a href='irc://{$irc_url}'>{$irc_channel}
     </div>
     </div>";
 ///////////////////// HTML OUTPUT ////////////////////////////
-echo stdhead("{$lang['chat_chat']}") . wrapper($HTMLOUT) . stdfoot();
+echo stdhead("{$lang['chat_chat']}") . wrapper($HTMLOUT, 'padding20 has-text-centered') . stdfoot();

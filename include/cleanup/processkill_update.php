@@ -7,6 +7,7 @@ function processkill_update($data)
     global $site_config, $queries;
     set_time_limit(1200);
     ignore_user_abort(true);
+
     $sql = sql_query('SHOW PROCESSLIST');
     $cnt = 0;
     while ($arr = mysqli_fetch_assoc($sql)) {

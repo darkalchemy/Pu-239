@@ -147,13 +147,13 @@ switch ($action) {
                     <input type="hidden" name="action" value="vote" />
                     <input type="hidden" name="id" value="' . $id . '" />
                     <input type="hidden" name="vote" value="1" />
-                    <input type="submit" class="button" value="vote yes!" />
+                    <input type="submit" class="button is-small" value="vote yes!" />
                     </form> ~ you will be notified when this offer is filled.';
             $vote_no = '<form method="post" action="offers.php">
                     <input type="hidden" name="action" value="vote" />
                     <input type="hidden" name="id" value="' . $id . '" />
                     <input type="hidden" name="vote" value="2" />
-                    <input type="submit" class="button" value="vote no!" />
+                    <input type="submit" class="button is-small" value="vote no!" />
                     </form> ~ you are being a stick in the mud.';
             $your_vote_was = '';
         } else {
@@ -169,7 +169,7 @@ switch ($action) {
                     <option class="body" value="approved"' . ($arr['status'] == 'approved' ? ' selected="selected"' : '') . '>Status: approved</option>
                     <option class="body" value="denied"' . ($arr['status'] == 'denied' ? ' selected="selected"' : '') . '>Status: denied</option>
                     </select>
-                    <input type="submit" class="button" value="change status!" />
+                    <input type="submit" class="button is-small" value="change status!" />
                     </form> ');
         //=== start page
         $HTMLOUT .= (isset($_GET['status_changed']) ? '<h1>Offer Status Updated!</h1>' : '') . (isset($_GET['voted']) ? '<h1>vote added</h1>' : '') . (isset($_GET['comment_deleted']) ? '<h1>comment deleted</h1>' : '') . $top_menu . ($arr['status'] == 'approved' ? '<span>status: approved!</span>' : ($arr['status'] == 'pending' ? '<span>status: pending...</span>' : '<span>status: denied</span>')) . $status_drop_down . '<br><br>
@@ -332,8 +332,8 @@ switch ($action) {
     </tr>
     <tr>
     <td colspan="2">
-    <input type="submit" name="button" class="button" value="Preview" />
-    <input type="submit" name="button" class="button" value="Submit" /></td>
+    <input type="submit" name="button" class="button is-small" value="Preview" />
+    <input type="submit" name="button" class="button is-small" value="Submit" /></td>
     </tr>
     </table></form>
      </td></tr></table><br>';
@@ -463,8 +463,8 @@ switch ($action) {
     </tr>
     <tr>
     <td colspan="2">
-    <input type="submit" name="button" class="button" value="Preview" />
-    <input type="submit" name="button" class="button" value="Edit" /></td>
+    <input type="submit" name="button" class="button is-small" value="Preview" />
+    <input type="submit" name="button" class="button is-small" value="Edit" /></td>
     </tr>
     </table></form>
      </td></tr></table><br>';
@@ -518,8 +518,8 @@ switch ($action) {
     </tr>
      <tr>
     <td colspan="2">
-    <input name="button" type="submit" class="button" value="Preview" />
-    <input name="button" type="submit" class="button" value="Save" /></td>
+    <input name="button" type="submit" class="button is-small" value="Preview" />
+    <input name="button" type="submit" class="button is-small" value="Save" /></td>
     </tr>
      </table></form>';
         $res = sql_query('SELECT c.offer, c.id AS comment_id, c.text, c.added, c.editedby, c.editedat, u.id, u.username, u.warned, u.suspended, u.enabled, u.donor, u.class, u.avatar, u.offensive_avatar, u.title, u.leechwarn, u.chatpost, u.pirate, u.king FROM comments AS c LEFT JOIN users AS u ON c.user = u.id WHERE offer = ' . sqlesc($id) . ' ORDER BY c.id DESC LIMIT 5') or sqlerr(__FILE__, __LINE__);
@@ -587,8 +587,8 @@ switch ($action) {
     </tr>
      <tr>
     <td colspan="2">
-    <input name="button" type="submit" class="button" value="Preview" />
-    <input name="button" type="submit" class="button" value="Edit" /></td>
+    <input name="button" type="submit" class="button is-small" value="Preview" />
+    <input name="button" type="submit" class="button is-small" value="Edit" /></td>
     </tr>
      </table></form>';
         echo stdhead('Edit comment to "' . htmlsafechars($arr['offer_name'], ENT_QUOTES) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

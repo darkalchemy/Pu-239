@@ -43,10 +43,10 @@ if (empty($mode)) {
                 <table id='checkbox_container' class='table table-bordered table-striped top20 bottom20'>
                     <thead>
                         <tr>
-                            <td>{$lang['backup_name']}</th>
-                            <td>{$lang['backup_addedon']}</th>
-                            <td>{$lang['backup_addedby']}</th>
-                            <td><input type='checkbox' id='checkThemAll' class='tooltipper' title='{$lang['backup_markall']}' /></th>
+                            <th>{$lang['backup_name']}</th>
+                            <th>{$lang['backup_addedon']}</th>
+                            <th>{$lang['backup_addedby']}</th>
+                            <th><input type='checkbox' id='checkThemAll' class='tooltipper' title='{$lang['backup_markall']}' /></th>
                         </tr>
                     </thead>
                     <tbody>";
@@ -75,7 +75,7 @@ if (empty($mode)) {
                 </table>
                 <div class='has-text-centered top20 bottom20 level-center flex-center'>
                     <a class='button right20' href='./staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
-                    <input type='submit' class='button' value='{$lang['backup_delselected']}' onclick=\"return confirm(''{$lang['backup_confirm']}'');\" />
+                    <input type='submit' class='button is-small' value='{$lang['backup_delselected']}' onclick=\"return confirm(''{$lang['backup_confirm']}'');\" />
                 </div>
             </form>
             <div class='has-text-centered top20 bottom20'>

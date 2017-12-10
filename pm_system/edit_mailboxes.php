@@ -22,9 +22,6 @@ if (isset($_POST['action2'])) {
             $cache->update_row('user' . $CURUSER['id'], [
                 'pms_per_page' => $change_pm_number,
             ], $site_config['expires']['user_cache']);
-            $cache->update_row('MyUser_' . $CURUSER['id'], [
-                'pms_per_page' => $change_pm_number,
-            ], $site_config['expires']['curuser']);
             header('Location: pm_system.php?action=edit_mailboxes&pm=1');
             exit();
             break;
@@ -44,7 +41,7 @@ if (isset($_POST['action2'])) {
                 if (validusername($add_it) && $add_it !== '') {
                     $name = htmlsafechars($add_it);
                     sql_query('INSERT INTO pmboxes (userid, name, boxnumber) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($name) . ', ' . sqlesc($box) . ')') or sqlerr(__FILE__, __LINE__);
-                    $cache->delete('get_all_boxes' . $CURUSER['id']);
+                    $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo' . $CURUSER['id']);
                 }
                 ++$box;
@@ -67,7 +64,7 @@ if (isset($_POST['action2'])) {
                 if (validusername($_POST[ 'edit' . $row['id'] ]) && $_POST[ 'edit' . $row['id'] ] !== '' && $_POST[ 'edit' . $row['id'] ] !== $row['name']) {
                     $name = htmlsafechars($_POST[ 'edit' . $row['id'] ]);
                     sql_query('UPDATE pmboxes SET name=' . sqlesc($name) . ' WHERE id=' . sqlesc($row['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
-                    $cache->delete('get_all_boxes' . $CURUSER['id']);
+                    $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo' . $CURUSER['id']);
                     $worked = '&name=1';
                 }
@@ -81,7 +78,7 @@ if (isset($_POST['action2'])) {
                     }
                     //== delete the box
                     sql_query('DELETE FROM pmboxes WHERE id=' . sqlesc($row['id']) . '  LIMIT 1') or sqlerr(__FILE__, __LINE__);
-                    $cache->delete('get_all_boxes' . $CURUSER['id']);
+                    $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo' . $CURUSER['id']);
                     $deleted = '&box_delete=1';
                 }
@@ -131,9 +128,6 @@ if (isset($_POST['action2'])) {
             $updateset[] = 'notifs = ' . sqlesc($notifs) . '';
             $curuser_cache['notifs'] = $notifs;
             $user_cache['notifs'] = $notifs;
-            if ($curuser_cache) {
-                $cache->update_row('MyUser_' . $CURUSER['id'], $curuser_cache, $site_config['expires']['curuser']);
-            }
             if ($user_cache) {
                 $cache->update_row('user' . $CURUSER['id'], $user_cache, $site_config['expires']['user_cache']);
             }
@@ -177,7 +171,7 @@ if (mysqli_num_rows($res) > 0) {
                     </tr>
                     <tr>
                         <td class="one" colspan="3">
-                        <input type="submit" class="button" value="' . $lang['pm_edmail_edit'] . '" /></form></td>
+                        <input type="submit" class="button is-small" value="' . $lang['pm_edmail_edit'] . '" /></form></td>
                     </tr>';
 } else {
     $all_my_boxes .= '
@@ -220,7 +214,7 @@ $("#cat_open").click(function() {
 });
 /*]]>*/
 </script>';
-$HTMLOUT .= '<h1>' . $lang['pm_edmail_title'] . '</h1>' . $h1_thingie . $top_links . '
+$HTMLOUT .= $top_links . '<h1>' . $lang['pm_edmail_title'] . '</h1>' . $h1_thingie . '
         <form action="pm_system.php" method="post">
         <input type="hidden" name="action" value="edit_mailboxes" />
         <input type="hidden" name="action2" value="add" />
@@ -247,7 +241,7 @@ $HTMLOUT .= '
         <td class="one"></td>
         <td class="one">' . $lang['pm_edmail_only_fill'] . '<br>
 		' . $lang['pm_edmail_blank'] . '</td>
-        <td class="one"><input type="submit" class="button_tiny" name="move" value="' . $lang['pm_edmail_add'] . '" /></form></td>
+        <td class="one"><input type="submit" class="button is-small" name="move" value="' . $lang['pm_edmail_add'] . '" /></form></td>
     </tr>
     <tr>
         <td class="colhead" colspan="3"><h1>' . $lang['pm_edmail_ed_del'] . '</h1></td>
@@ -310,6 +304,6 @@ $HTMLOUT .= '
     </tr>
     <tr>
         <td class="one" colspan="3">
-        <input type="submit" class="button btn-default" value="' . $lang['pm_edmail_change'] . '" /></form></td>
+        <input type="submit" class="button is-small" value="' . $lang['pm_edmail_change'] . '" /></form></td>
     </tr>
     </table></form>';

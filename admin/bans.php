@@ -58,9 +58,7 @@ $pager = pager($perpage, $count, 'staffpanel.php?tool=bans&amp;');
 $res = sql_query("SELECT b.*, u.username FROM bans b LEFT JOIN users u on b.addedby = u.id ORDER BY added DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
 $HTMLOUT = '';
 $HTMLOUT .= "
-        <div class='margin20'>
-            <h1>Bans</h1>
-        </div>
+        <h1 class='has-text-centered'>Bans</h1>
         <div class='top20 bg-00 round10'>
             <div class='padding20'>
                 <h2>{$lang['text_current']}</h2>
@@ -120,7 +118,7 @@ if ($CURUSER['class'] == UC_MAX) {
                 </tr>");
     $HTMLOUT .= "
                 <div class='has-text-centered padding20'>
-                    <input type='submit' name='okay' value='{$lang['btn_add']}' class='button' />
+                    <input type='submit' name='okay' value='{$lang['btn_add']}' class='button is-small' />
                 </div>
             </form>
         </div>";

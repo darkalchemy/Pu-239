@@ -101,8 +101,9 @@ if ($action == 'add') {
     <form method='post' action='usercomment.php?action=add'>
     <input type='hidden' name='userid' value='$userid' />
     <div>" . BBcode() . "</div>
-    <br><br>
-    <input type='submit' class='button' value='Do it!' /></form>\n";
+    <div class='has-text-centered margin20'>
+    <input type='submit' class='button is-small' value='Do it!' />
+    </div></form>";
     $res = sql_query('SELECT c.id, c.text, c.editedby, c.editedat, c.added, c.username, users.id AS user, u.avatar, u.title, u.anonymous, u.class, u.donor, u.warned, u.leechwarn, u.chatpost
                         FROM usercomments AS c
                         LEFT JOIN users AS u ON c.user = u.id
@@ -152,7 +153,9 @@ if ($action == 'add') {
     <input type='hidden' name='returnto' value='{$_SERVER['HTTP_REFERER']}' />
     <input type=\"hidden\" name=\"cid\" value='" . (int)$commentid . "' />
     <textarea name='body' rows='10' cols='60'>" . htmlsafechars($arr['text']) . "</textarea>
-    <input type='submit' class='button' value='Do it!' /></form>";
+    <div class='has-text-centered margin20'>
+        <input type='submit' class='button is-small' value='Do it!' />
+    </div></form>";
     echo stdhead('Edit comment for "' . htmlsafechars($arr['username']) . '"', true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
     stdfoot();
     die;

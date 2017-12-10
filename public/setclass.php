@@ -13,9 +13,6 @@ if (isset($_GET['action']) && htmlsafechars($_GET['action']) == 'editclass') { /
     $newclass = (int)$_GET['class'];
     $returnto = htmlsafechars($_GET['returnto']);
     sql_query('UPDATE users SET override_class = ' . sqlesc($newclass) . ' WHERE id = ' . sqlesc($CURUSER['id'])); // Set temporary class
-    $cache->update_row('MyUser_' . $CURUSER['id'], [
-        'override_class' => $newclass,
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user' . $CURUSER['id'], [
         'override_class' => $newclass,
     ], $site_config['expires']['user_cache']);
@@ -41,7 +38,7 @@ for ($i = 0; $i <= $maxclass; ++$i) {
     }
 }
 $HTMLOUT .= "</select></td></tr>
-		<tr><td colspan='3'><input type='submit' class='button' value='{$lang['set_class_ok']}' /></td></tr>
+		<tr><td colspan='3'><input type='submit' class='button is-small' value='{$lang['set_class_ok']}' /></td></tr>
 	</table>
 </form>
 <br>";

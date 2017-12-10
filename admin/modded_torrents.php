@@ -265,7 +265,7 @@ $HTMLOUT .= "
       <input type='text' placeholder='" . $lang['mtor_day'] . "' class='input-small' name='day' />
       <input type='text' class='input-small' placeholder='" . $lang['mtor_month'] . "' name='month' />
       <input type='text' class='input-small' placeholder='" . $lang['mtor_year'] . "' name='year' value='" . date('Y', time()) . "'/>
-        <button type='submit' class='button'>" . $lang['mtor_search'] . '</button>
+        <button type='submit' class='button is-small'>" . $lang['mtor_search'] . '</button>
 
     </div>
   </div>

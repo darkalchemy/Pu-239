@@ -126,10 +126,10 @@ $HTMLOUT .= "<h2>{$lang['freelech_set_free']}</h2>
 	<td><input type='text' size='40' value ='" . $CURUSER['username'] . "' name='setby' />
 	</td></tr>
 	<tr><td colspan='2'>
-	<input type='submit' name='okay' value='{$lang['freelech_doit']}' class='button' />
+	<input type='submit' name='okay' value='{$lang['freelech_doit']}' class='button is-small' />
 	</td></tr>
 	<tr><td colspan='2'>
-	<input type='hidden' name='cacheit' value='{$lang['freelech_cache']}' class='button' />
+	<input type='hidden' name='cacheit' value='{$lang['freelech_cache']}' class='button is-small' />
 	</td></tr>
 	</table></form>";
 echo stdhead($lang['freelech_stdhead']) . $HTMLOUT . stdfoot();

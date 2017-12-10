@@ -51,10 +51,6 @@ function invincible($id, $invincible = true, $bypass_bans = true)
         'ip'    => $ip,
         'perms' => $row['perms'],
     ], $site_config['expires']['user_cache']);
-    $cache->update_row('MyUser_' . $id, [
-        'ip'    => $ip,
-        'perms' => $row['perms'],
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user_stats_' . $id, [
         'modcomment' => $modcomment,
     ], $site_config['expires']['user_stats']);
@@ -64,10 +60,6 @@ function invincible($id, $invincible = true, $bypass_bans = true)
             'ip'    => $ip,
             'perms' => $row['perms'],
         ], $site_config['expires']['user_cache']);
-        $cache->update_row('MyUser_' . $CURUSER['id'], [
-            'ip'    => $ip,
-            'perms' => $row['perms'],
-        ], $site_config['expires']['curuser']);
         $cache->update_row('user_stats_' . $CURUSER['id'], [
             'modcomment' => $modcomment,
         ], $site_config['expires']['user_stats']);

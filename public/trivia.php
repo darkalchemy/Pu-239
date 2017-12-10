@@ -271,7 +271,7 @@ $HTMLOUT .= "
             <div class='has-text-centered'>
                 $answered
                 $display
-                <a href='./trivia_results.php' target='_top' class='button'>Trivia Results</a>
+                <a href='./trivia_results.php' target='_top' class='button is-small'>Trivia Results</a>
             </div>
         </div>
     </div>

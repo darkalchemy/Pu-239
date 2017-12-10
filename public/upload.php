@@ -273,7 +273,7 @@ $HTMLOUT .= "
         <tr>
             <td colspan='2'>
                 <div class='has-text-centered'>
-                    <input type='submit' class='button' value='{$lang['upload_submit']}' />
+                    <input type='submit' class='button is-small' value='{$lang['upload_submit']}' />
                 </div>
             </td>
         </tr>

@@ -7,7 +7,7 @@ function delete_torrents_update($data)
     global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
-    //==delete torrents by putyn
+
     $days = 30;
     $dt = (TIME_NOW - ($days * 86400));
     $res = sql_query("SELECT id, name, owner FROM torrents WHERE last_action < $dt AND seeders='0' AND leechers='0'");

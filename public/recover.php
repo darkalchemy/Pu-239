@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <tr class='no_hover'>
                     <td colspan='2'>
                         <div class='has-text-centered'>
-                            <input type='submit' value='{$lang['recover_btn']}' class='button' />
+                            <input type='submit' value='{$lang['recover_btn']}' class='button is-small' />
                         </div>
                     </td>
                 </tr>

@@ -1,21 +1,37 @@
 <?php
 require_once INCL_DIR . 'html_functions.php';
-global $cache, $lang, $site_config;
+global $cache, $lang, $site_config, $fpdo;
 
 $comments = $cache->get('latest_comments_');
 if ($comments === false || is_null($comments)) {
-    $sql = sql_query("SELECT c.id, c.user AS user_id, c.torrent, c.added, c.text, c.anonymous, c.user_likes, t.name, t.category, cat.name AS cat, cat.image,
-                            t.seeders, t.poster, t.leechers, t.times_completed, t.added AS toradd, t.size
-                            FROM comments AS c 
-                            LEFT JOIN torrents AS t ON t.id = c.torrent
-                            LEFT JOIN categories AS cat ON t.category = cat.id 
-                            ORDER BY c.id 
-                            DESC LIMIT 5") or sqlerr(__FILE__, __LINE__);
-    while ($comment = mysqli_fetch_assoc($sql)) {
-        $comments[] = $comment;
-    }
+    $comments = $fpdo->from('comments')
+        ->select(null)
+        ->select('comments.id')
+        ->select('comments.user')
+        ->select('comments.torrent')
+        ->select('comments.added')
+        ->select('comments.text')
+        ->select('comments.anonymous')
+        ->select('comments.user_likes')
+        ->select('torrents.name')
+        ->select('torrents.seeders')
+        ->select('torrents.leechers')
+        ->select('torrents.poster')
+        ->select('torrents.added AS toradd')
+        ->select('torrents.size')
+        ->select('users.username')
+        ->select('users.class')
+        ->select('torrents:categories.name AS cat')
+        ->select('torrents:categories.image')
+        ->leftJoin('torrents ON torrents.id = comments.torrent')
+        ->leftJoin('users ON users.id = comments.user')
+        ->leftJoin('categories ON categories.id = torrents.category')
+        ->orderBy('comments.id DESC')
+        ->limit(5)
+        ->fetchAll();
     $cache->set('latest_comments_', $comments, 3600);
 }
+
 $header = "
                         <tr>
                             <th class='has-text-centered w-10'>Type</th>
@@ -24,11 +40,18 @@ $header = "
                             <th class='has-text-centered'>When</th>
                             <th class='has-text-centered'>Likes</th>
                         </tr>";
-
 $body = '';
+if (!$comments) {
+    $body = '
+                        <tr>
+                            <td colspan="5">No Comments Found</td>
+                        </tr>';
+}
+
 foreach ($comments as $comment) {
+    $user = $torrent = $id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = '';
     extract($comment);
-    $user = $anonymous === 'yes' ? 'Anonymous' : format_username($user_id);
+    $user = $anonymous === 'yes' ? 'Anonymous' : format_username($user);
     $poster = empty($poster) ? "<img src='{$site_config['pic_base_url']}noposter.png' class='tooltip-poster' />" : "<img src='" . htmlsafechars($poster) . "' class='tooltip-poster' />";
 
     $body .= "
@@ -38,7 +61,7 @@ foreach ($comments as $comment) {
                             </td>
                             <td>
                                 <a href='{$site_config['baseurl']}/details.php?id=$torrent&amp;hit=1'>
-                                    <span class='dt-tooltipper-large' data-tooltip-content='#comment_id_{$id}_tooltip'>
+                                    <div class='dt-tooltipper-large' data-tooltip-content='#comment_id_{$id}_tooltip'>
                                         " . format_comment($text) . "
                                         <div class='tooltip_templates'>
                                             <span id='comment_id_{$id}_tooltip'>
@@ -48,6 +71,7 @@ foreach ($comments as $comment) {
                                                     </span>
                                                     <span class='margin10'>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_name']}</b>" . htmlsafechars($name) . "<br>
+                                                        <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_uploader']}</b><span class='" . get_user_class_name($class, true) . "'>" . htmlsafechars($username) . "</span><br>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_added']}</b>" . get_date($toradd, 'DATE', 0, 1) . "<br>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_size']}</b>" . mksize(htmlsafechars($size)) . "<br>
                                                         <b class='size_4 right10 has-text-primary'>{$lang['index_ltst_seeder']}</b>" . (int)$seeders . "<br>
@@ -56,7 +80,7 @@ foreach ($comments as $comment) {
                                                 </div>
                                             </span>
                                         </div>
-                                    </span>
+                                    </div>
                                 </a>
                             </td>
                             <td class='has-text-centered'>$user</td>

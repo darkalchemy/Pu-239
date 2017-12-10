@@ -7,17 +7,17 @@ function achievement_sheep_update($data)
     global $site_config, $queries, $cache;
     set_time_limit(1200);
     ignore_user_abort(true);
-    // Updated Sheep Fondler
+
     $res = sql_query("SELECT userid, sheepyset FROM usersachiev WHERE sheepyset = 1 AND sheepyach = 0") or sqlerr(__FILE__, __LINE__);
-    $msg_buffer = $usersachiev_buffer = $achievements_buffer = [];
+    $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $subject = sqlesc('New Achievement Earned!');
         $msg = sqlesc('Congratulations, you have just earned the [b]Sheep Fondler[/b] achievement. :) [img]' . $site_config['baseurl'] . '/images/achievements/sheepfondler.png[/img]');
         while ($arr = mysqli_fetch_assoc($res)) {
             $dt = TIME_NOW;
             $points = random_int(1, 3);
-            $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
-            $achievements_buffer[] = '(' . $arr['userid'] . ', ' . TIME_NOW . ', \'Sheep Fondler\', \'sheepfondler.png\' , \'User has been caught touching the sheep at least 1 time.\')';
+            $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+            $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Sheep Fondler\', \'sheepfondler.png\' , \'User has been caught touching the sheep at least 1 time.\')';
             $usersachiev_buffer[] = '(' . $arr['userid'] . ',1, ' . $points . ')';
             $cache->increment('inbox_' . $arr['userid']);
             $cache->delete('user_achievement_points_' . $arr['userid']);

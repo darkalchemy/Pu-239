@@ -39,13 +39,13 @@ $HTMLOUT .= "<tr>
 </td></tr>
 " . ($site_config['reports'] ? "<tr><td><b>{$lang['details_report']}</b></td><td>
 {$lang['details_break']} 
-<form action='report.php?type=Request&amp;id=$id' method='post'><input class='button' type='submit' name='submit' value='{$lang['details_report']}' /></form></td>
+<form action='report.php?type=Request&amp;id=$id' method='post'><input class='button is-small' type='submit' name='submit' value='{$lang['details_report']}' /></form></td>
 </tr>" : '');
 if ($num['torrentid'] == 0) {
     $HTMLOUT .= "<tr><td><b>{$lang['details_fill_this']}</b></td>
 <td>" . ($CURUSER['id'] != $num['userid'] ? "
 <form method='post' action='viewrequests.php?id=" . $id . "&amp;req_filled'>
-    <strong>" . $site_config['baseurl'] . "/details.php?id=</strong><input type='text' size='10' name='torrentid' value='' /> <input type='submit' value='{$lang['details_fill']}' class='button' /><br>
+    <strong>" . $site_config['baseurl'] . "/details.php?id=</strong><input type='text' size='10' name='torrentid' value='' /> <input type='submit' value='{$lang['details_fill']}' class='button is-small' /><br>
 {$lang['details_enter_id']}<br></form>" : "{$lang['details_yours']}") . "</td>
 </tr>\n";
 } else {

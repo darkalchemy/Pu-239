@@ -26,13 +26,13 @@ foreach ($categorie as $key => $value) {
 }
 if ($needed == 'leechers') {
     $HTMLOUT .= "
-        <div class='has-text-centered padding20'>
-            <ul class='level-center margin20'>
-                <li class='active bordered margin10 bg-02'>
-                    <span>{$lang['needseed_sin']}</span>
+        <div class='padding20'>
+            <ul class='tabs'>
+                <li>
+                    <a href='#' class='active altlink'>{$lang['needseed_sin']}</a>
                 </li>
-                <li class='bordered margin10 bg-02'>
-                    <a href='{$site_config['baseurl']}/needseed.php?needed=seeders'>{$lang['needseed_tns']}</a>
+                <li>
+                    <a href='{$site_config['baseurl']}/needseed.php?needed=seeders' class='altlink'>{$lang['needseed_tns']}</a>
                 </li>
             </ul>
         </div>";
@@ -89,13 +89,13 @@ if ($needed == 'leechers') {
     echo stdhead("{$lang['needseed_lin']}") . wrapper($HTMLOUT) . stdfoot();
 } else {
     $HTMLOUT .= "
-        <div class='has-text-centered padding20'>
-            <ul class='level-center margin20'>
-                <li class='bordered margin10 bg-02'>
-                    <a href='{$site_config['baseurl']}/needseed.php?needed=leechers'>{$lang['needseed_sin']}</a>
+        <div class='padding20'>
+            <ul class='tabs'>
+                <li>
+                    <a href='{$site_config['baseurl']}/needseed.php?needed=leechers'  class='altlink'>{$lang['needseed_sin']}</a>
                 </li>
-                <li class='active bordered margin10 bg-02'>
-                    <span>{$lang['needseed_tns']}</span>
+                <li>
+                    <a href='#' class='active altlink'>{$lang['needseed_tns']}</a>
                 </li>
             </ul>
         </div>";

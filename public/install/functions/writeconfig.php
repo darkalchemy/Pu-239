@@ -1,132 +1,133 @@
 <?php
 $foo = [
-    'Database - Site' => [
+    'Database - Site'     => [
         [
-            'text' => 'Host',
+            'text'  => 'Host',
             'input' => 'config[mysql_host]',
-            'info' => 'Usually this will be localhost unless your on a cluster server.',
+            'info'  => 'Usually this will be localhost unless your on a cluster server.',
         ],
         [
-            'text' => 'Username',
+            'text'  => 'Username',
             'input' => 'config[mysql_user]',
-            'info' => 'Your mysql username.',
+            'info'  => 'Your mysql username.',
         ],
         [
-            'text' => 'Password',
+            'text'  => 'Password',
             'input' => 'config[mysql_pass]',
-            'info' => 'Your mysql password.',
+            'info'  => 'Your mysql password.',
         ],
         [
-            'text' => 'Database',
+            'text'  => 'Database',
             'input' => 'config[mysql_db]',
-            'info' => 'Your mysql database name.',
+            'info'  => 'Your mysql database name.',
         ],
     ],
     'Database - Announce' => [
         [
-            'text' => 'Host',
+            'text'  => 'Host',
             'input' => 'announce[mysql_host]',
-            'info' => 'Usually this will be localhost unless your on a cluster server.',
+            'info'  => 'Usually this will be localhost unless your on a cluster server.',
         ],
         [
-            'text' => 'Username',
+            'text'  => 'Username',
             'input' => 'announce[mysql_user]',
-            'info' => 'Your mysql username.',
+            'info'  => 'Your mysql username.',
         ],
         [
-            'text' => 'Password',
+            'text'  => 'Password',
             'input' => 'announce[mysql_pass]',
-            'info' => 'Your mysql password.',
+            'info'  => 'Your mysql password.',
         ],
         [
-            'text' => 'Database',
+            'text'  => 'Database',
             'input' => 'announce[mysql_db]',
-            'info' => 'Your mysql database name.',
+            'info'  => 'Your mysql database name.',
         ],
         [
-            'text' => 'Domain',
+            'text'  => 'Domain',
             'input' => 'announce[baseurl]',
-            'info' => 'Your domain name - note include http and www.',
+            'info'  => 'Your domain name - note include http and www.',
         ],
     ],
-    'Tracker' => [
+    'Tracker'             => [
         [
-            'text' => 'Announce Url',
+            'text'  => 'Announce Url',
             'input' => 'config[announce_urls]',
-            'info' => 'Your announce url.',
+            'info'  => 'Your announce url.',
         ],
         [
-            'text' => 'HTTPS Announce Url',
+            'text'  => 'HTTPS Announce Url',
             'input' => 'config[announce_https]',
-            'info' => 'Your HTTPS announce url.',
+            'info'  => 'Your HTTPS announce url.',
         ],
         [
-            'text' => 'Site Email',
+            'text'  => 'Site Email',
             'input' => 'config[site_email]',
-            'info' => 'Your site email address.',
+            'info'  => 'Your site email address.',
         ],
         [
-            'text' => 'Site Name',
+            'text'  => 'Site Name',
             'input' => 'config[site_name]',
-            'info' => 'Your site name.',
+            'info'  => 'Your site name.',
         ],
-/*
-        [
-            'text' => 'Using XBT Tracker',
-            'input' => 'config[xbt_tracker]',
-            'info' => 'Check if yes.',
-        ],
-*/
+        /*
+                [
+                    'text' => 'Using XBT Tracker',
+                    'input' => 'config[xbt_tracker]',
+                    'info' => 'Check if yes.',
+                ],
+        */
     ],
-    'Cookies' => [
+    'Cookies'             => [
         [
-            'text' => 'Session Name',
+            'text'  => 'Session Name',
             'input' => 'config[sessionName]',
-            'info' => 'A single word that uniquely identifies this install.',
+            'info'  => 'A single word that uniquely identifies this install.',
         ],
         [
-            'text' => 'Prefix',
+            'text'  => 'Prefix',
             'input' => 'config[cookie_prefix]',
-            'info' => 'A single word that uniquely identifies this install. Can be the same as Session Name, but not required.',
+            'info'  => 'A single word that uniquely identifies this install. Can be the same as Session Name, but not required.',
         ],
         [
-            'text' => 'Path',
+            'text'  => 'Path',
             'input' => 'config[cookie_path]',
-            'info' => 'Required \'/\' or other path.',
+            'info'  => 'Required \'/\' or other path.',
         ],
         [
-            'text' => 'Cookie Lifetime',
+            'text'  => 'Cookie Lifetime',
             'input' => 'config[cookie_lifetime]',
-            'info' => 'The number of days that the cookie is alive.',
+            'info'  => 'The number of days that the cookie is alive.',
         ],
         [
-            'text' => 'Cookie Domain',
+            'text'  => 'Cookie Domain',
             'input' => 'config[cookie_domain]',
-            'info' => 'Your domain name - note exclude http and www.'
+            'info'  => 'Your domain name - note exclude http and www.',
         ],
         [
-            'text' => 'Domain',
+            'text'  => 'Domain',
             'input' => 'config[domain]',
-            'info' => 'Your site domain name - note exclude http or www.',
+            'info'  => 'Your site domain name - note exclude http or www.',
         ],
         [
-            'text' => 'Secure Session Cookies',
+            'text'  => 'Secure Session Cookies',
             'input' => 'config[sessionCookieSecure]',
-            'info' => 'true/false/null. Enabled, this requires that session cookies can only be passed using SSL/HTTPS protocals.',
+            'info'  => 'true/false/null. Enabled, this requires that session cookies can only be passed using SSL/HTTPS protocals.',
         ],
     ],
-    'System - Site BOT' => [
+    'System - Site BOT'   => [
         [
-            'text' => 'Username',
+            'text'  => 'Username',
             'input' => 'config[bot_username]',
-            'info' => "The name for your 'System' user/Site BOT. You will still need to create this user after creating your user.",
+            'info'  => "The name for your 'System' user/Site BOT. You will still need to create this user after creating your user.",
         ],
     ],
 ];
 function foo($x)
 {
-    return '/\#'.$x.'/';
+    return '/\#' . $x . '/';
 }
+
 function createblock($fo, $foo)
 {
     if (file_exists('step2.lock')) {
@@ -134,12 +135,12 @@ function createblock($fo, $foo)
     }
     $out = '
     <fieldset>
-        <legend>'.$fo.'</legend>
+        <legend>' . $fo . '</legend>
         <table align="left">';
     foreach ($foo as $bo) {
         $out .= '
             <tr>
-                <td class="input_text">'.$bo['text'].'</td>';
+                <td class="input_text">' . $bo['text'] . '</td>';
         if (strpos($bo['input'], 'pass') == true) {
             $type = 'password';
         } elseif ($bo['input'] == 'config[xbt_tracker]') {
@@ -159,6 +160,7 @@ function createblock($fo, $foo)
 
     return $out;
 }
+
 function saveconfig()
 {
     global $root;
@@ -178,7 +180,7 @@ function saveconfig()
         $keys = array_map('foo', array_keys($_POST['config']));
         $values = array_values($_POST['config']);
         $config = preg_replace($keys, $values, $config);
-        if (file_put_contents($root.'include/config.php', $config)) {
+        if (file_put_contents($root . 'include/config.php', $config)) {
             $out .= '
         <div class="readable">Config file was saved</div>';
             file_put_contents('config.lock', 1);
@@ -192,12 +194,11 @@ function saveconfig()
         <div class="readable">Config file was already written</div>';
     }
     if (!file_exists('announce.lock')) {
+        $file = 'extra/ann_config.phpsample.php';
+        $xbt = 0;
         if (isset($_POST['config']['xbt_tracker'])) {
             $file = 'extra/ann_config.xbtsample.php';
             $xbt = 1;
-        } else {
-            $file = 'extra/ann_config.phpsample.php';
-            $xbt = 0;
         }
         $announce = file_get_contents($file);
         $keys = array_map('foo', array_keys($_POST['announce']));
@@ -217,14 +218,13 @@ function saveconfig()
         <div class="readable">Announce file was already written</div>';
     }
     if ($continue) {
+        $xbt = 0;
         if (isset($_POST['config']['xbt_tracker'])) {
             $xbt = 1;
-        } else {
-            $xbt = 0;
         }
         $out .= '
         </fieldset>
-        <div style="text-align:center"><input type="button" value="Next step" onclick="window.location.href=\'index.php?step=3&xbt='.$xbt.'\'" /></div>';
+        <div style="text-align:center"><input type="button" value="Next step" onclick="window.location.href=\'index.php?step=3&xbt=' . $xbt . '\'" /></div>';
         file_put_contents('step2.lock', 1);
     } else {
         $out .= '

@@ -179,6 +179,7 @@ $latestuser_cache['chatpost'] = '1';
 $latestuser_cache['leechwarn'] = '0';
 $latestuser_cache['pirate'] = '0';
 $latestuser_cache['king'] = '0';
+$cache->delete('all_users_');
 /* OOP **/
 $cache->set('latestuser', $latestuser_cache, $site_config['expires']['latestuser']);
 write_log('User account ' . (int)$id . ' (' . htmlsafechars($wantusername) . ') was created');

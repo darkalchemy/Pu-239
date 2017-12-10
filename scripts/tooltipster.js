@@ -44,6 +44,7 @@ function initAll() {
     $('.dt-tooltipper-small').tooltipster({
         theme: 'tooltipster-borderless',
         side: 'top',
+        interactive: false,
         animation: animation,
         animationDuration: animate_duration,
         arrow: true,

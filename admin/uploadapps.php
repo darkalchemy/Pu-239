@@ -166,9 +166,6 @@ if ($action == 'acceptapp') {
     $dt = TIME_NOW;
     sql_query("UPDATE uploadapp SET status = 'accepted', comment = " . sqlesc($note) . ', moderator = ' . sqlesc($CURUSER['username']) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     sql_query('UPDATE users SET class = ' . UC_UPLOADER . ', modcomment = ' . sqlesc($modcomment) . ' WHERE id=' . sqlesc($arr['uid']) . ' AND class < ' . UC_STAFF) or sqlerr(__FILE__, __LINE__);
-    $cache->update_row('MyUser_' . $arr['uid'], [
-        'class' => 3,
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user_stats_' . $arr['uid'], [
         'modcomment' => $modcomment,
     ], $site_config['expires']['user_stats']);

@@ -2,7 +2,8 @@
   "require": {
     "matthiasmullie/scrapbook": "^1.4",
     "league/flysystem": "^1.0",
-    "lichtner/fluentpdo": "^1.1"
+    "lichtner/fluentpdo": "^1.1",
+    "ezimuel/php-secure-session": "^1.0"
   },
   "autoload": {
     "psr-4": {

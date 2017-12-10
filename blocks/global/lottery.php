@@ -1,11 +1,12 @@
 <?php
+global $CURUSER, $site_config, $cache, $fpdo;
+
 if ($CURUSER) {
     $lottery_info = $cache->get('lottery_info_');
     if ($lottery_info === false || is_null($lottery_info)) {
-        $res = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
-        while ($ac = mysqli_fetch_assoc($res)) {
-            $lottery_info[ $ac['name'] ] = $ac['value'];
-        }
+        $lottery_info = $fpdo->from('lottery_config')
+            ->fetchPairs('name', 'value');
+
         $cache->set('lottery_info_', $lottery_info, 86400);
     }
 

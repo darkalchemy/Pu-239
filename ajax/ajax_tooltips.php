@@ -20,7 +20,7 @@ $lang = array_merge(load_language('global'), load_language('index'));
 //echo json_encode($_POST['csrf_token']);
 //die();
 if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
-    $user = $cache->get('MyUser_' . $id);
+    $user = $cache->get('user' . $id);
     if ($user === false || is_null($user)) {
         echo json_encode('failed...');
     }

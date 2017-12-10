@@ -69,22 +69,24 @@ if (isset($_GET['edited'])) {
 }
 
 $HTMLOUT .= "
-        <h1>Welcome " . format_username((int)$CURUSER['id']) . "!</h1>
         <div>
             <div class='w-100'>
                 <form method='post' action='takeeditcp.php'>
-                    <ul id='navlinks' class='level-center'>
-                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=avatar'>Avatar</a></li>
-                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=signature'>Signature</a></li>
-                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=default'>PM's</a></li>
-                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=security'>Security</a></li>
-                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=torrents'>Torrents</a></li>
-                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=personal'>Personal</a></li>
-                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=social'>Social</a></li>
-                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=location'>Location</a></li>
-                        <li><a class='bordered margin10 bg-02' href='{$site_config['baseurl']}/usercp.php?action=links'>Links</a></li>
-                    </ul>
-                    <div class='level-center flex-top'>
+                    <div class='bottom20'>
+                        <ul class='level-center bg-06'>
+                            <li class='altlink margin20'><a href='{$site_config['baseurl']}/usercp.php?action=avatar'>Avatar</a></li>
+                            <li class='altlink margin20'><a href='{$site_config['baseurl']}/usercp.php?action=signature'>Signature</a></li>
+                            <li class='altlink margin20'><a href='{$site_config['baseurl']}/usercp.php?action=default'>PM's</a></li>
+                            <li class='altlink margin20'><a href='{$site_config['baseurl']}/usercp.php?action=security'>Security</a></li>
+                            <li class='altlink margin20'><a href='{$site_config['baseurl']}/usercp.php?action=torrents'>Torrents</a></li>
+                            <li class='altlink margin20'><a href='{$site_config['baseurl']}/usercp.php?action=personal'>Personal</a></li>
+                            <li class='altlink margin20'><a href='{$site_config['baseurl']}/usercp.php?action=social'>Social</a></li>
+                            <li class='altlink margin20'><a href='{$site_config['baseurl']}/usercp.php?action=location'>Location</a></li>
+                            <li class='altlink margin20'><a href='{$site_config['baseurl']}/usercp.php?action=links'>Links</a></li>
+                        </ul>
+                    </div>
+                    <h1 class='has-text-centered'>Welcome " . format_username((int)$CURUSER['id']) . "!</h1>
+                    <div class='level has-text-centered flex-top'>
                         <span class='margin20'>";
 if (!empty($CURUSER['avatar']) && $CURUSER['av_w'] > 5 && $CURUSER['av_h'] > 5) {
     $HTMLOUT .= "
@@ -98,7 +100,7 @@ if (!empty($CURUSER['avatar']) && $CURUSER['av_w'] > 5 && $CURUSER['av_h'] > 5) 
 //== Avatar
 if ($action == 'avatar') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75 top20 bottom20'>
+                        <div class='table-wrapper w-75'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -150,7 +152,7 @@ if ($action == 'avatar') {
                                     <tr>
                                         <td colspan='2'>
                                             <div class='has-text-centered'>
-                                                <input class='button is-primary' type='submit' value='Submit changes!' />
+                                                <input class='button is-small' type='submit' value='Submit changes!' />
                                             </div>
                                         </td>
                                     </tr>
@@ -158,7 +160,7 @@ if ($action == 'avatar') {
 } //== Signature
 elseif ($action == 'signature') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75 top20 bottom20'>
+                        <div class='table-wrapper w-75'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -181,7 +183,7 @@ elseif ($action == 'signature') {
                                     <tr>
                                         <td colspan='2'>
                                             <div class='has-text-centered'>
-                                                <input class='button is-primary' type='submit' value='Submit changes!' />
+                                                <input class='button is-small' type='submit' value='Submit changes!' />
                                             </div>
                                         </td>
                                     </tr>
@@ -189,7 +191,7 @@ elseif ($action == 'signature') {
 } //== Social
 elseif ($action == 'social') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75 top20 bottom20'>
+                        <div class='table-wrapper w-75'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -217,7 +219,7 @@ elseif ($action == 'social') {
                                     <tr>
                                         <td colspan='2'>
                                             <div class='has-text-centered'>
-                                                <input class='button is-primary' type='submit' value='Submit changes!' />
+                                                <input class='button is-small' type='submit' value='Submit changes!' />
                                             </div>
                                         </td>
                                     </tr>
@@ -226,7 +228,7 @@ elseif ($action == 'social') {
 elseif ($action == 'location') {
     $datetime = unixstamp_to_human(TIME_NOW);
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75 top20 bottom20'>
+                        <div class='table-wrapper w-75'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -261,7 +263,7 @@ elseif ($action == 'location') {
                                     <tr>
                                         <td colspan='2'>
                                             <div class='has-text-centered'>
-                                                <input class='button is-primary' type='submit' value='Submit changes!' />
+                                                <input class='button is-small' type='submit' value='Submit changes!' />
                                             </div>
                                         </td>
                                     </tr>
@@ -269,7 +271,7 @@ elseif ($action == 'location') {
 } //== Links
 elseif ($action == 'links') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-25 top20 bottom20'>
+                        <div class='table-wrapper w-25'>
                             <table class='table table-bordered table-striped top20 bottom20 w-100'>
                                 <thead>
                                     <tr>
@@ -308,7 +310,7 @@ elseif ($action == 'links') {
                                 </tbody>
                             </table>
                         </div>
-                        <div class='table-wrapper w-25 top20 bottom20'>
+                        <div class='table-wrapper w-25'>
                             <table class='table table-bordered table-striped top20 bottom20 w-100'>
                                 <thead>
                                     <tr>
@@ -351,7 +353,7 @@ elseif ($action == 'links') {
 } //== Security
 elseif ($action == 'security') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75 top20 bottom20'>
+                        <div class='table-wrapper w-75'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -427,7 +429,7 @@ elseif ($action == 'security') {
     }
     $HTMLOUT .= tr($lang['usercp_email'], "
                                         <input type='text' name='email' class='w-100' value='" . htmlsafechars($CURUSER['email']) . "' />
-                                        <p class='margin10'>{$lang['usercp_email_pass']}</p>
+                                        <p class='margin20'>{$lang['usercp_email_pass']}</p>
                                         <input type='password' name='chmailpass' class='keyboardInput w-100' onkeypress='showkwmessage();return false;' />", 1);
     $HTMLOUT .= "
                                 <tr>
@@ -483,7 +485,7 @@ elseif ($action == 'security') {
                                     <tr>
                                         <td colspan='2'>
                                             <div class='has-text-centered'>
-                                                <input class='button is-primary' type='submit' value='Submit changes!' />
+                                                <input class='button is-small' type='submit' value='Submit changes!' />
                                             </div>
                                         </td>
                                     </tr>
@@ -491,7 +493,7 @@ elseif ($action == 'security') {
 } //== Torrents
 elseif ($action == 'torrents') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75 top20 bottom20'>
+                        <div class='table-wrapper w-75'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -510,7 +512,7 @@ elseif ($action == 'torrents') {
                                             <div id='cat-container' class='level-center'>";
         while ($a = mysqli_fetch_assoc($r)) {
             $categories .= "
-                                                <span class='margin10 bordered tooltipper' title='" . htmlsafechars($a['name']) . "'>
+                                                <span class='margin20 bordered tooltipper' title='" . htmlsafechars($a['name']) . "'>
                                                     <input name='cat{$a['id']}' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? " checked" : '') . " value='yes' />
                                                     <span class='cat-image left10'>
                                                         <a href='{$site_config['baseurl']}/browse.php?c" . (int)$a['id'] . "'>
@@ -548,7 +550,7 @@ elseif ($action == 'torrents') {
                                     <tr>
                                         <td colspan='2'>
                                             <div class='has-text-centered'>
-                                                <input class='button is-primary' type='submit' value='Submit changes!' />
+                                                <input class='button is-small' type='submit' value='Submit changes!' />
                                             </div>
                                         </td>
                                     </tr>
@@ -556,7 +558,7 @@ elseif ($action == 'torrents') {
 } //== Personal
 elseif ($action == 'personal') {
     $HTMLOUT .= "
-                        <div class='table-wrapper w-75 top20 bottom20'>
+                        <div class='table-wrapper w-75'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -713,7 +715,7 @@ elseif ($action == 'personal') {
                     <tr>
                         <td colspan='2'>
                             <div class='has-text-centered'>
-                                <input class='button is-primary' type='submit' value='Submit changes!' />
+                                <input class='button is-small' type='submit' value='Submit changes!' />
                             </div>
                         </td>
                     </tr>
@@ -722,7 +724,7 @@ elseif ($action == 'personal') {
     //== Default PMs
     if ($action == 'default') {
         $HTMLOUT .= "
-                        <div class='table-wrapper w-75 top20 bottom20'>
+                        <div class='table-wrapper w-75'>
                             <table class='table table-bordered table-striped top20 bottom20'>
                                 <thead>
                                     <tr>
@@ -762,7 +764,7 @@ elseif ($action == 'personal') {
                                     <tr>
                                         <td colspan='2'>
                                             <div class='has-text-centered'>
-                                                <input class='button is-primary' type='submit' value='Submit changes!' />
+                                                <input class='button is-small' type='submit' value='Submit changes!' />
                                             </div>
                                         </td>
                                     </tr>

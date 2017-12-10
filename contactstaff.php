@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $HTMLOUT .= "<textarea name='msg' cols='80' rows='15'></textarea>
                        </td>
                      </tr>
-                    <tr><td colspan='2'><input type='submit' value='{$lang['contactstaff_sendit']}' class='button' /></td></tr>
+                    <tr><td colspan='2'><input type='submit' value='{$lang['contactstaff_sendit']}' class='button is-small' /></td></tr>
                     </table>
         </form></div>";
     echo stdhead($lang['contactstaff_header'], true, $stdhead) . $HTMLOUT . stdfoot();

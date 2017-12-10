@@ -1,5 +1,5 @@
 <?php
-global $lang;
+global $CURUSER, $ste_config, $lang;
 
 $attachments = $members_votes = $status = $topic_poll = $stafflocked = $child = $parent_forum_name = $math_image = '';
 $math_text = $staff_tools = $staff_link = $now_viewing = '';
@@ -211,7 +211,7 @@ if ($arr['poll_id'] > 0) {
             </table>' : '
                 <tr>
                     <td colspan="5">
-                        <input type="submit" name="button" class="button" value="' . $lang['fe_vote'] . '!" />
+                        <input type="submit" name="button" class="button is-small" value="' . $lang['fe_vote'] . '!" />
                     </td>
                 </tr>
             </table>
@@ -315,7 +315,7 @@ $locked_or_reply_button = ($locked === 'yes' ? '
             <span>' . $lang['fe_this_topic_is_locked'] . ', you may not post in this thread.</span>' : ($CURUSER['forum_post'] == 'no' ? '
             <span>Your posting rights have been removed. You may not post.</span>
         </span>' : '
-        <a href="' . $site_config['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '" class="button">
+        <a href="' . $site_config['baseurl'] . '/forums.php?action=post_reply&amp;topic_id=' . $topic_id . '" class="button is-small">
             Add Reply
         </a>'));
 
@@ -630,7 +630,7 @@ $HTMLOUT .= $the_top_and_bottom . '</table>
             <td>
             <a class="altlink bordered tooltipper" href="javascript:SetChecked(1,\'post_to_mess_with[]\')" title="' . $lang['vt_select_all_posts_and_use_the_following_options'] . '"> ' . $lang['vt_select_all'] . '</a>
             <a class="altlink bordered tooltipper" href="javascript:SetChecked(0,\'post_to_mess_with[]\')" title="' . $lang['vt_unselect_all_posts'] . '">' . $lang['vt_un_select_all'] . '</a>
-            <input type="submit" name="button" class="button" value="' . $lang['vt_with_selected'] . '" />
+            <input type="submit" name="button" class="button is-small" value="' . $lang['vt_with_selected'] . '" />
         </td>
       </tr>
       <tr>
@@ -645,7 +645,7 @@ $HTMLOUT .= $the_top_and_bottom . '</table>
             <input type="radio" name="pinned" value="yes" ' . ($sticky === 'yes' ? 'checked' : '') . ' /> Yes
             <input type="radio" name="pinned" value="no" ' . ($sticky === 'no' ? 'checked' : '') . ' /> No</td>
             <td>
-            <input type="submit" name="button" class="button" value="Set ' . $lang['fe_pinned'] . '" />
+            <input type="submit" name="button" class="button is-small" value="Set ' . $lang['fe_pinned'] . '" />
             </form></td>
       </tr>
       <tr>
@@ -660,7 +660,7 @@ $HTMLOUT .= $the_top_and_bottom . '</table>
             <input type="radio" name="locked" value="yes" ' . ($locked === 'yes' ? 'checked' : '') . ' /> Yes
             <input type="radio" name="locked" value="no" ' . ($locked === 'no' ? 'checked' : '') . ' /> No</td>
             <td>
-            <input type="submit" name="button" class="button" value="' . $lang['vt_lock_topic'] . '" />
+            <input type="submit" name="button" class="button is-small" value="' . $lang['vt_lock_topic'] . '" />
             </form></td>
       </tr>
        <tr>
@@ -676,7 +676,7 @@ $HTMLOUT .= $the_top_and_bottom . '</table>
             <select name="forum_id">
             ' . insert_quick_jump_menu($forum_id, $staff = true) . '</select></td>
             <td>
-            <input type="submit" name="button" class="button" value="' . $lang['vt_move_topic'] . '" />
+            <input type="submit" name="button" class="button is-small" value="' . $lang['vt_move_topic'] . '" />
             </form> <!--//-->
             </td>
       </tr>
@@ -691,7 +691,7 @@ $HTMLOUT .= $the_top_and_bottom . '</table>
             <input type="hidden" name="topic_id" value="' . $topic_id . '" />
             <input type="text" size="40" maxlength="120" name="new_topic_name" value="' . ($topic_name !== '' ? $topic_name : '') . '" /></td>
             <td>
-            <input type="submit" name="button" class="button" value="' . $lang['vt_rename_topic'] . '" />
+            <input type="submit" name="button" class="button is-small" value="' . $lang['vt_rename_topic'] . '" />
             </form>
             </td>
       </tr>
@@ -706,7 +706,7 @@ $HTMLOUT .= $the_top_and_bottom . '</table>
             <input type="hidden" name="topic_id" value="' . $topic_id . '" />
             <input type="text" size="40" maxlength="120" name="new_topic_desc" value="' . ($topic_desc1 !== '' ? $topic_desc1 : '') . '" /></td>
             <td>
-            <input type="submit" name="button" class="button" value="' . $lang['vt_change_desc'] . '" />
+            <input type="submit" name="button" class="button is-small" value="' . $lang['vt_change_desc'] . '" />
             </form>
             </td>
       </tr>
@@ -724,7 +724,7 @@ $HTMLOUT .= $the_top_and_bottom . '</table>
             ' . $lang['vt_topic_id_can_be_found_in_the_address_bar_above'] . ' ' . $topic_id . '
             [' . $lang['vt_this_option_will_mix_the_two_topics_together'] . ']</td>
             <td>
-            <input type="submit" name="button" class="button" value="' . $lang['vt_merge_topic'] . '" />
+            <input type="submit" name="button" class="button is-small" value="' . $lang['vt_merge_topic'] . '" />
             </form>
             </td>
       </tr>
@@ -742,7 +742,7 @@ $HTMLOUT .= $the_top_and_bottom . '</table>
             ' . $lang['vt_topic_id_can_be_found_in_the_address_bar_above'] . ' ' . $topic_id . '
             [' . $lang['vt_this_option_will_append_this_topic_to_the_end_of_the_new_topic'] . ']</td>
             <td>
-            <input type="submit" name="button" class="button" value="' . $lang['vt_append_topic'] . '" />
+            <input type="submit" name="button" class="button is-small" value="' . $lang['vt_append_topic'] . '" />
             </form>
             </td>
       </tr>
@@ -761,7 +761,7 @@ $HTMLOUT .= $the_top_and_bottom . '</table>
             ' . $lang['vt_this_option_will_send_this_thread_to_the_hidden_recycle_bin'] . '
             ' . $lang['vt_all_subscriptions_to_this_thread_will_be_deleted'] . '</td>
             <td>
-            <input type="submit" name="button" class="button" value="' . $lang['vt_recycle_it'] . '" />
+            <input type="submit" name="button" class="button is-small" value="' . $lang['vt_recycle_it'] . '" />
             </form>
             </td>
       </tr>
@@ -775,7 +775,7 @@ $HTMLOUT .= $the_top_and_bottom . '</table>
             <form action="' . $site_config['baseurl'] . '/forums.php?action=staff_actions" method="post">
             <input type="hidden" name="action_2" value="delete_topic" />
             <input type="hidden" name="topic_id" value="' . $topic_id . '" />
-            <input type="submit" name="button" class="button" value="' . $lang['fe_del_topic'] . '" />
+            <input type="submit" name="button" class="button is-small" value="' . $lang['fe_del_topic'] . '" />
             </form>
             </td>
       </tr>
@@ -790,7 +790,7 @@ $HTMLOUT .= $the_top_and_bottom . '</table>
             <form action="' . $site_config['baseurl'] . '/forums.php?action=staff_actions" method="post">
             <input type="hidden" name="action_2" value="un_delete_topic" />
             <input type="hidden" name="topic_id" value="' . $topic_id . '" />
-            <input type="submit" name="button" class="button" value="' . $lang['fe_undel_topic'] . '" />
+            <input type="submit" name="button" class="button is-small" value="' . $lang['fe_undel_topic'] . '" />
             </form>
             </td>
       </tr>

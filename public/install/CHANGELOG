@@ -1,3 +1,41 @@
+9 Dec 2017
+add: missing required file
+update: general code cleanup
+update: allow notifications to use bbcode
+fix: wiki.php
+fix: users.php
+update: forums sort links to tabs
+fix: navbar username class color
+add: mini navbar for links in usercp.php, userdetails.php forums.php
+remove: text shadow from user classes
+remove: webpack dependancy
+fix: extra space between username and comma
+add: package.json
+add: bulma css requirement
+add: notification of which cache adapter is in use
+fix: pm search delete
+add: cache all_users search for send message
+
+8 Dec 2017
+change: most buttons smaller
+fix: pm search
+add: missing full text indexes
+add: select/send message to any user
+update: pm pages
+
+6 Dec 2017
+fix: remove author from newsrss.php
+fix: check for defined
+run: "INSERT INTO staffpanel VALUES (75, 'Upgrade Database', 'staffpanel.php?tool=upgrade_database', 'upgrade database', 'other', 6, 1, 1512555394, 0);"
+add: admin/database_updates.php will show all queries that need run or things that need to be added to config.php
+
+2 Dec 2017
+replace: more mysqli queries with pdo
+general code cleanup
+
+1 Dec 2017
+remove: duplicate caches Myuser_ and user
+
 26 Nov 2017
 remove: hardcoded user:pass
 add: pdo class, just beginning to move from mysqli to pdo

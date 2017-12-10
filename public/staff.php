@@ -45,18 +45,23 @@ function DoStaff($staff, $staffclass, $cols = 2)
     $rows = ceil($counter / $cols);
     $cols = ($counter < $cols) ? $counter : $cols;
     $r = 0;
-    $htmlout .= "<div class='global_text'><div class='headline'>{$staffclass}</div><table class='table table-bordered table-striped'>";
+    $htmlout .= "
+            <div class='global_text'>
+                <h2 class='left10 top20'>{$staffclass}</h2>
+                <table class='table table-bordered table-striped'>";
     for ($ia = 0; $ia < $rows; ++$ia) {
-        $htmlout .= '<tr>';
+        $htmlout .= '
+                    <tr>';
         for ($i = 0; $i < $cols; ++$i) {
             if (isset($staff[ $r ])) {
-                $htmlout .= "<td class='staff_username'><a href='userdetails.php?id=" . (int)$staff[ $r ]['id'] . "'><font color='#" . get_user_class_color($staff[ $r ]['class']) . "'><b>" . htmlsafechars($staff[ $r ]['username']) . '</b></font></a></td>' . "
-            <td class='staff_online'><img src='images/staff" . ($staff[ $r ]['last_access'] > $dt && $staff[ $r ]['perms'] < bt_options::PERMS_STEALTH ? '/online.png' : '/offline.png') . "' border='0' height='16' alt='' /></td>" . "
-            <td class='staff_online'><a href='pm_system.php?action=send_message&amp;receiver=" . (int)$staff[ $r ]['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . "'><img src='{$site_config['pic_base_url']}mailicon.png' border='0' title=\"Personal Message\" alt='' /></a></td>" . "
-            <td class='staff_online'><img height='16' src='{$site_config['pic_base_url']}flag/" . htmlsafechars($staff[ $r ]['flagpic']) . "' border='0' alt='" . htmlsafechars($staff[ $r ]['name']) . "' /></td>";
+                $htmlout .= "
+                        <td class='staff_username'>" . format_username($staff[ $r ]['id']) . "</td>
+                        <td class='staff_online'><img src='{$site_config['pic_base_url']}/staff" . ($staff[ $r ]['last_access'] > $dt && $staff[ $r ]['perms'] < bt_options::PERMS_STEALTH ? '/online.png' : '/offline.png') . "' border='0' height='16' alt='' /></td>" . "
+                        <td class='staff_online'><a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . (int)$staff[ $r ]['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . "'><img src='{$site_config['pic_base_url']}mailicon.png' border='0' class='tooltipper' title='Personal Message' alt='' /></a></td>" . "
+                        <td class='staff_online'><img height='16' src='{$site_config['pic_base_url']}flag/" . htmlsafechars($staff[ $r ]['flagpic']) . "' border='0' alt='" . htmlsafechars($staff[ $r ]['name']) . "' /></td>";
                 ++$r;
             } else {
-                $htmlout .= '<td>&#160;</td>';
+                $htmlout .= '<td></td>';
             }
         }
         $htmlout .= '</tr>';
@@ -72,21 +77,35 @@ $htmlout .= isset($mods) ? DoStaff($mods, 'Moderators') : DoStaff($mods = false,
 $dt = TIME_NOW - 180;
 if (!empty($support)) {
     foreach ($support as $a) {
-        $firstline .= "<tr><td class='staff_username'><a href='userdetails.php?id=" . (int)$a['id'] . "'><font color='#" . get_user_class_color($a['class']) . "'><b>" . htmlsafechars($a['username']) . "</b></font></a></td>
-        <td class='staff_online'><img src='{$site_config['pic_base_url']}" . ($a['last_access'] > $dt ? 'online.png' : 'offline.png') . "' border='0' alt='' /></td>" . "<td class='staff_online'><a href='pm_system.php?action=send_message&amp;receiver=" . (int)$a['id'] . "'>" . "<img src='{$site_config['pic_base_url']}mailicon.png' border='0' title=\"{$lang['alt_pm']}\" alt='' /></a></td>" . "<td class='staff_online'><img src='{$site_config['pic_base_url']}flag/" . htmlsafechars($a['flagpic']) . "' border='0' alt='" . htmlsafechars($a['name']) . "' /></td>" . "<td class='staff_online'>" . htmlsafechars($a['supportfor']) . '</td></tr>';
+        $firstline .= "
+                <tr>
+                    <td class='staff_username'>" . format_username($a['id']) . "</td>
+                    <td class='staff_online'><img src='{$site_config['pic_base_url']}" . ($a['last_access'] > $dt ? 'online.png' : 'offline.png') . "' alt='' /></td>
+                    <td class='staff_online'><a href='{$site_config['baseurl']}pm_system.php?action=send_message&amp;receiver=" . (int)$a['id'] . "'><img src='{$site_config['pic_base_url']}mailicon.png' class='tooltipper' title='{$lang['alt_pm']}' alt='' /></a></td>
+                    <td class='staff_online'><img src='{$site_config['pic_base_url']}flag/" . htmlsafechars($a['flagpic']) . "' alt='" . htmlsafechars($a['name']) . "' /></td>
+                    <td class='staff_online'>" . htmlsafechars($a['supportfor']) . '</td>
+                </tr>';
     }
     $htmlout .= "
-        <div class='global_text'><div class='headline'>{$lang['header_fls']}</div><table class='table table-bordered table-striped'>
-        <tr>
-        <td class='staff_username' colspan='2'>{$lang['text_first']}<br><br></td>
-        </tr>
-        <tr>
-        <td class='staff_username'><b>{$lang['first_name']}&#160;</b></td>
-        <td class='staff_online'><b>{$lang['first_active']}&#160;&#160;&#160;</b></td>
-        <td class='staff_online'><b>{$lang['first_contact']}&#160;&#160;&#160;&#160;</b></td>
-        <td class='staff_online'><b>{$lang['first_lang']}</b></td>
-        <td class='staff_online'><b>{$lang['first_supportfor']}</b></td>
-        </tr>" . $firstline . '';
-    $htmlout .= '</table></div>';
+        <div class='global_text'>
+            <h2 class='left10 top20'>{$lang['header_fls']}</h2>
+            <table class='table table-bordered table-striped'>
+                <thead>
+                    <tr>
+                        <th class='staff_username' colspan='5'>{$lang['text_first']}<br><br></th>
+                    </tr>
+                    <tr>
+                        <th class='staff_username'>{$lang['first_name']}</th>
+                        <th class='staff_online'>{$lang['first_active']}</th>
+                        <th class='staff_online'>{$lang['first_contact']}</th>
+                        <th class='staff_online'>{$lang['first_lang']}</th>
+                        <th class='staff_online'>{$lang['first_supportfor']}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    $firstline
+                </tbody>
+            </table>
+        </div>";
 }
 echo stdhead('Staff', true, $stdhead) . wrapper($htmlout) . stdfoot();

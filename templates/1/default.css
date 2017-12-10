@@ -10,7 +10,7 @@ body {
     background: black;
     color: white;
     font-size: 75%;
-    line-height: 110%;
+    line-height: 125%;
     margin: auto;
     padding: 0;
     height: 100%;
@@ -117,15 +117,15 @@ select {
     cursor: pointer;
 }
 
-ul.disc {
+.disc {
     list-style-type: disc;
 }
 
-ul.circle {
+.circle {
     list-style-type: circle;
 }
 
-ol.decimal {
+.decimal {
     list-style-type: decimal;
 }
 
@@ -188,7 +188,7 @@ h6 {
 }
 
 p {
-    line-height: 1.1em;
+    line-height: 1.25em;
 }
 
 .site-debug {
@@ -366,6 +366,10 @@ span {
     background-color: rgba(50, 50, 50, .85);
 }
 
+.bg-06 {
+    background: linear-gradient(to bottom, #7d7e7d 0, #0e0e0e 100%);
+}
+
 .bordered {
     border-top: 2px groove red;
     border-bottom: 2px groove red;
@@ -379,12 +383,6 @@ span {
 .bordered {
     -webkit-margin-start: .125em;
     -webkit-margin-end: .125em;
-}
-
-li.active {
-    border-top: 2px groove lime;
-    border-bottom: 2px groove lime;
-    background: rgba(0, 0, 0, .3);
 }
 
 .bottom5 {
@@ -472,16 +470,19 @@ textarea {
     -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     display: inline-block;
-    margin-right: .625em;
     max-width: 100%;
+    height: auto;
+    -webkit-border-radius: .625em;
+    -moz-border-radius: .625em;
+    border-radius: .625em;
 }
 
 .img-responsive {
     max-width: 100%;
     height: auto;
-    -webkit-border-radius: .3125em;
-    -moz-border-radius: .3125em;
-    border-radius: .3125em;
+    -webkit-border-radius: .625em;
+    -moz-border-radius: .625em;
+    border-radius: .625em;
 }
 
 .portlet.is-fluid {
@@ -497,10 +498,6 @@ textarea {
 .is-wrapped {
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-}
-
-li {
-    list-style: none;
 }
 
 .left10 {
@@ -957,8 +954,16 @@ li {
     border-radius: .3125em;
 }
 
+.tabs ul {
+    border: none;
+}
 .tabcontent.active {
     overflow: hidden;
+}
+
+p + p {
+    margin-bottom: .85em;
+    margin-top: .85em;
 }
 
 @media (max-width: 1200px) {
@@ -1034,4 +1039,16 @@ li {
     .img-polaroid {
         margin-right: 0;
     }
+}
+
+@media (min-width: 768px) {
+    .flex-top {
+        -webkit-box-align: start;
+        -ms-flex-align: start;
+        align-items: flex-start;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+    }
+
 }

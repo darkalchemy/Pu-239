@@ -1,5 +1,18 @@
 <?php
-global $CURUSER, $cache, $site_config, $lang;
+global $CURUSER, $cache, $site_config, $lang, $fpdo;
+
+$news = $cache->get('latest_news_');
+if ($news === false || is_null($news)) {
+    $dt = TIME_NOW - (86400 * 45);
+    $news = $fpdo->from('news')
+        ->where('added > ?', $dt)
+        ->orderBy('sticky')
+        ->orderBy('added DESC')
+        ->limit(10)
+        ->fetchAll();
+
+    $cache->set('latest_news_', $news, $site_config['expires']['latest_news']);
+}
 
 $adminbutton = '';
 if ($CURUSER['class'] >= UC_STAFF) {
@@ -14,44 +27,31 @@ $HTMLOUT .= "
         </legend>
         <div>";
 
-$news = $cache->get('latest_news_');
-if ($news === false || is_null($news)) {
-    $news = [];
-    $res = sql_query('SELECT n.id AS nid, n.userid, n.added, n.title, n.body, n.sticky, n.anonymous
-        FROM news AS n
-        WHERE n.added + ( 3600 *24 *45 ) > ' . TIME_NOW . '
-        ORDER BY sticky, added DESC
-        LIMIT 10') or sqlerr(__FILE__, __LINE__);
-    while ($array = mysqli_fetch_assoc($res)) {
-        $news[] = $array;
-    }
-    $cache->set('latest_news_', $news, $site_config['expires']['latest_news']);
-}
 $i = 0;
 if ($news) {
     foreach ($news as $array) {
         $padding = $i++ >= count($news) ? '' : ' bottom20';
         $button = '';
         if ($CURUSER['class'] >= UC_STAFF) {
-            $hash = md5('the@@saltto66??' . $array['nid'] . 'add' . '@##mu55y==');
+            $hash = md5('the@@saltto66??' . $array['id'] . 'add' . '@##mu55y==');
             $button = "
                 <div class='pull-right'>
-                    <a href='{$site_config['baseurl']}staffpanel.php?tool=news&amp;mode=edit&amp;newsid=" . (int)$array['nid'] . "'>
+                    <a href='{$site_config['baseurl']}staffpanel.php?tool=news&amp;mode=edit&amp;newsid=" . (int)$array['id'] . "'>
                         <i class='fa fa-edit fa-2x tooltipper' aria-hidden='true' title='{$lang['index_news_ed']}'></i>
                     </a>
-                    <a href='{$site_config['baseurl']}staffpanel.php?tool=news&amp;mode=delete&amp;newsid=" . (int)$array['nid'] . "&amp;h={$hash}'>
+                    <a href='{$site_config['baseurl']}staffpanel.php?tool=news&amp;mode=delete&amp;newsid=" . (int)$array['id'] . "&amp;h={$hash}'>
                         <i class='fa fa-remove fa-2x tooltipper' aria-hidden='true' title='{$lang['index_news_del']}'></i>
                     </a>
                 </div>";
         }
         $HTMLOUT .= "
             <div class='bordered{$padding}'>
-                <div id='{$array['nid']}' class='header alt_bordered bg-00 has-text-left'>
+                <div id='{$array['id']}' class='header alt_bordered bg-00 has-text-left'>
                     <legend class='flipper has-text-primary'>
                         <i class='fa fa-angle-up right10' aria-hidden='true'></i><small>" . htmlsafechars($array['title']) . "</small>
                     </legend>
                     <div class='bg-02 round5 padding10'>
-                        <div class='bottom20 size_2'>" . get_date($array['added'], 'DATE') . "{$lang['index_news_added']}" . (($array['anonymous'] === 'yes' && $CURUSER['class'] < UC_STAFF && $array['userid'] != $CURUSER['id']) ? "<i>{$lang['index_news_anon']}</i>" : format_username($array['userid'])) . "{$button}</div>
+                        <div class='bottom20 size_3'>" . get_date($array['added'], 'DATE') . "{$lang['index_news_added']}" . (($array['anonymous'] === 'yes' && $CURUSER['class'] < UC_STAFF && $array['users_id'] != $CURUSER['id']) ? "<i>{$lang['index_news_anon']}</i>" : format_username($array['users_id'])) . "{$button}</div>
                         <div class='has-text-white'>
                             " . format_comment($array['body'], 0) . "
                         </div>
@@ -59,8 +59,7 @@ if ($news) {
                 </div>
             </div>";
     }
-}
-if (empty($news)) {
+} else {
     $HTMLOUT .= "
             <div class='bordered'>
                 <div class='header alt_bordered bg-00 has-text-left'>

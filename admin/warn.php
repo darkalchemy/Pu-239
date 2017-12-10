@@ -47,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             while ($arr_del = mysqli_fetch_assoc($res_del)) {
                 $userid = $arr_del['id'];
                 $res = sql_query('DELETE FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
-                $cache->delete('MyUser_' . $userid);
                 $cache->delete('user' . $userid);
                 write_log("User: {$arr_del['username']} Was deleted by " . $CURUSER['username'] . ' Via Warn Page');
             }
@@ -58,9 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($act == 'disable') {
         if (sql_query("UPDATE users SET enabled='no', modcomment=CONCAT(" . sqlesc(get_date(TIME_NOW, 'DATE', 1) . $lang['warn_disabled_by'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . join(',', $_uids) . ')')) {
             foreach ($_uids as $uid) {
-                $cache->update_row('MyUser_' . $uid, [
-                    'enabled' => 'no',
-                ], $site_config['expires']['curuser']);
                 $cache->update_row('user' . $uid, [
                     'enabled' => 'no',
                 ], $site_config['expires']['user_cache']);
@@ -76,9 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $body = $lang['warn_removed_msg'] . $CURUSER['username'] . $lang['warn_removed_msg1'];
         $pms = [];
         foreach ($_uids as $id) {
-            $cache->update_row('MyUser_' . $id, [
-                'warned' => 0,
-            ], $site_config['expires']['curuser']);
             $cache->update_row('user' . $id, [
                 'warned' => 0,
             ], $site_config['expires']['user_cache']);

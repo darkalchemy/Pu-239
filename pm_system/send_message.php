@@ -1,18 +1,18 @@
 <?php
-$draft = $subject = $body = '';
+global $CURUSER, $site_config, $lang, $cache;
+$subject = $body = '';
 flood_limit('messages');
-//=== check to see if it's a preview or a post
+
 if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
-    //=== check to see they have everything or...
     $receiver = sqlesc(isset($_POST['receiver']) ? intval($_POST['receiver']) : 0);
     $subject = sqlesc(htmlsafechars($_POST['subject']));
     $body = sqlesc(trim($_POST['body']));
-    $save = ((isset($_POST['save']) && $_POST['save'] === 1) ? '1' : '0');
+    $save = isset($_POST['save']) && $_POST['save'] === 1 ? 'yes' : 'no';
     $delete = sqlesc((isset($_POST['delete']) && $_POST['delete'] !== 0) ? intval($_POST['delete']) : 0);
-    $urgent = sqlesc((isset($_POST['urgent']) && $_POST['urgent'] == 'yes' && $CURUSER['class'] >= UC_STAFF) ? 'yes' : 'no');
+    $urgent = sqlesc((isset($_POST['urgent']) && $_POST['urgent'] === 'yes' && $CURUSER['class'] >= UC_STAFF) ? 'yes' : 'no');
     $returnto = htmlsafechars(isset($_POST['returnto']) ? $_POST['returnto'] : '');
     //$returnto = htmlsafechars($_POST['returnto']);
-    //=== get user info from DB
+
     $res_receiver = sql_query('SELECT id, acceptpms, notifs, email, class, username FROM users WHERE id=' . sqlesc($receiver)) or sqlerr(__FILE__, __LINE__);
     $arr_receiver = mysqli_fetch_assoc($res_receiver);
     if (!is_valid_id(intval($_POST['receiver'])) || !is_valid_id($arr_receiver['id'])) {
@@ -21,7 +21,6 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     if (!isset($_POST['body'])) {
         stderr($lang['pm_error'], $lang['pm_send_nobody']);
     }
-    //=== allow suspended users to PM / forward to staff only
     if ($CURUSER['suspended'] === 'yes') {
         $res = sql_query('SELECT class FROM users WHERE id = ' . sqlesc($receiver)) or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_assoc($res);
@@ -29,13 +28,12 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
             stderr($lang['pm_error'], $lang['pm_send_your_acc']);
         }
     }
-    //=== make sure they have space
     $res_count = sql_query('SELECT COUNT(*) FROM messages WHERE receiver = ' . sqlesc($receiver) . ' AND location = 1') or sqlerr(__FILE__, __LINE__);
     $arr_count = mysqli_fetch_row($res_count);
     if (mysqli_num_rows($res_count) > ($maxbox * 6) && $CURUSER['class'] < UC_STAFF) {
         stderr($lang['pm_forwardpm_srry'], $lang['pm_forwardpm_full']);
     }
-    //=== Make sure recipient wants this message
+
     if ($CURUSER['class'] < UC_STAFF) {
         $should_i_send_this = ($arr_receiver['acceptpms'] == 'yes' ? 'yes' : ($arr_receiver['acceptpms'] == 'no' ? 'no' : ($arr_receiver['acceptpms'] == 'friends' ? 'friends' : '')));
         switch ($should_i_send_this) {
@@ -60,15 +58,21 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
                 break;
         }
     }
-    //=== ok all is well... post the message :D
     sql_query('INSERT INTO messages (poster, sender, receiver, added, msg, subject, saved, location, urgent) VALUES 
-                            (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($receiver) . ', ' . TIME_NOW . ', ' . $body . ', ' . $subject . ', ' . $save . ', 1,' . $urgent . ')') or sqlerr(__FILE__, __LINE__);
+                            (' .
+        sqlesc($CURUSER['id']) . ', ' .
+        sqlesc($CURUSER['id']) . ', ' .
+        sqlesc($receiver) . ', ' .
+        TIME_NOW . ', ' .
+        $body . ', ' .
+        $subject . ', ' .
+        sqlesc($save) . ', 
+        1,' .
+        $urgent . ')') or sqlerr(__FILE__, __LINE__);
     $cache->increment('inbox_' . $receiver);
-    //=== make sure it worked then...
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
         stderr($lang['pm_error'], $lang['pm_send_wasnt']);
     }
-    //=== if they just have to know about it right away... send them an email (if selected if profile)
     if (strpos($arr_receiver['notifs'], '[pm]') !== false) {
         $username = htmlsafechars($CURUSER['username']);
         $body = <<<EOD
@@ -83,13 +87,10 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
 EOD;
         @mail($user['email'], $lang['pm_forwardpm_pmfrom'] . $username . '!', $body, "{$lang['pm_forwardpm_from']}{$site_config['site_email']}");
     }
-    //=== if they don't want to keep the message they are replying to then delete it!
     if ($delete != 0) {
-        //=== be sure they should be deleting this...
         $res = sql_query('SELECT saved, receiver FROM messages WHERE id=' . sqlesc($delete)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($res) > 0) {
             $arr = mysqli_fetch_assoc($res);
-            //if ($arr['receiver'] !== $CURUSER['id'])
             if ($arr['receiver'] != $CURUSER['id']) {
                 stderr($lang['pm_send_quote'], $lang['pm_send_thou']);
             }
@@ -100,36 +101,45 @@ EOD;
             }
         }
     }
-    //=== if returnto sent
     if ($returnto) {
         header('Location: ' . $returnto);
     } else {
         header('Location: pm_system.php?action=view_mailbox&sent=1');
     }
     exit();
-} //=== end of takesendmessage script
-//=== basic page :D
-$receiver = (isset($_GET['receiver']) ? intval($_GET['receiver']) : (isset($_POST['receiver']) ? intval($_POST['receiver']) : 0));
+}
+
+$receiver = (isset($_GET['receiver']) ? intval($_GET['receiver']) : (isset($_POST['receiver']) ? intval($_POST['receiver']) : null));
 $replyto = (isset($_GET['replyto']) ? intval($_GET['replyto']) : (isset($_POST['replyto']) ? intval($_POST['replyto']) : 0));
 $returnto = htmlsafechars(isset($_POST['returnto']) ? $_POST['returnto'] : '');
-if ($receiver === 0) {
-    stderr($lang['pm_error'], $lang['pm_send_sysbot']);
+if (!$receiver) {
+    $all_users = $cache->get('all_users_');
+    if ($all_users === false || is_null($all_users)) {
+        $sql = "SELECT id, username, class FROM users WHERE acceptpms != 'no' ORDER BY LOWER(username)";
+        $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        $ids = [];
+        while ($all_user = mysqli_fetch_assoc($res)) {
+            $all_users[] = $all_user;
+        }
+        $cache->set('all_users_', $all_users, 86400);
+    }
 }
-if (!is_valid_id($receiver)) {
+if ($receiver && !is_valid_id($receiver)) {
     stderr($lang['pm_error'], $lang['pm_send_mid']);
 }
-$res_member = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($receiver)) or sqlerr(__FILE__, __LINE__);
-$arr_member = mysqli_fetch_row($res_member);
-//=== if reply
+if ($receiver) {
+    $res_member = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($receiver)) or sqlerr(__FILE__, __LINE__);
+    $arr_member = mysqli_fetch_row($res_member);
+}
+
 if ($replyto != 0) {
     if (!validusername($arr_member[0])) {
         stderr($lang['pm_error'], $lang['pm_send_mid']);
     }
-    //=== make sure they should be replying to this PM...
+
     $res_old_message = sql_query('SELECT receiver, sender, subject, msg FROM messages WHERE id = ' . sqlesc($replyto)) or sqlerr(__FILE__, __LINE__);
     $arr_old_message = mysqli_fetch_assoc($res_old_message);
-    //print $arr_old_message['sender'];
-    //exit();
+
     if ($arr_old_message['sender'] == $CURUSER['id']) {
         stderr($lang['pm_error'], $lang['pm_send_slander']);
     }
@@ -138,52 +148,70 @@ if ($replyto != 0) {
         $subject = $lang['pm_send_re'] . htmlsafechars($arr_old_message['subject']);
     }
 }
-//=== if preview or not replying
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $subject = trim($_POST['subject']);
     $body = trim($_POST['body']);
 }
-//=== and finally print the basic page  :D
+
 $avatar = (($CURUSER['avatars'] === 'no') ? '' : (empty($CURUSER['avatar']) ? '
         <img width="80" src="./images/forumicons/default_avatar.gif" alt="no avatar" />' : (($CURUSER['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ? '<img width="80" src="./images/fuzzybunny.gif" alt="fuzzy!" />' : '<img width="80" src="' . htmlsafechars($CURUSER['avatar']) . '" alt="avatar" />')));
-//=== Code for preview Retros code
-if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_preview']) {
-    $HTMLOUT .= '<legend>' . $lang['pm_send_previewpm'] . '</legend>
-    <table class="table table-bordered">
-    <tr>
-        <td colspan="2" class="colhead"><span style="font-weight: bold;">subject: </span>' . htmlsafechars($subject) . '</td>
-    </tr>
-    <tr>
-        <td width="0px" id="photocol">' . $avatar . '</td>
-        <td style="min-width:400px;padding:10px;vertical-align: top;text-align: left;">' . format_comment($body) . '</td>
-    </tr>
-    </table><br>';
+
+$HTMLOUT .= $top_links . '
+    <form name="compose" method="post" action="pm_system.php">
+        <input type="hidden" name="action" value="send_message" />';
+if ($receiver) {
+    $HTMLOUT .= '
+        <input type="hidden" name="returnto" value="' . $returnto . '" />
+        <input type="hidden" name="replyto" value="' . $replyto . '" />
+        <input type="hidden" name="receiver" value="' . $receiver . '" />
+        <h1>' . $lang['pm_send_msgto'] . '<a class="altlink" href="userdetails.php?id=' . $receiver . '">' . $arr_member[0] . '</a></h1>';
+} else {
+    $HTMLOUT .= "
+        <input type='hidden' name='returnto' value='$returnto' />
+        <input type='hidden' name='replyto' value='$replyto' />
+        <h1>{$lang['pm_send_msgto']}<select name='receiver'>";
+    foreach ($all_users as $all_user) {
+        if ($CURUSER['id'] != $all_user['id']) {
+            $HTMLOUT .= "
+        <option value='{$all_user['id']}' class='" . get_user_class_name($all_user['class'], true) . "'>{$all_user['username']}</option>";
+        }
+    }
+
+    $HTMLOUT .= '
+        </select></h1>';
+
 }
-$HTMLOUT .= '<form name="compose" method="post" action="pm_system.php">
-            <input type="hidden" name="action" value="send_message" />
-            <input type="hidden" name="returnto" value="' . $returnto . '" />
-            <input type="hidden" name="replyto" value="' . $replyto . '" />
-            <input type="hidden" name="receiver" value="' . $receiver . '" />
-        <h1>' . $lang['pm_send_msgto'] . '<a class="altlink" href="userdetails.php?id=' . $receiver . '">' . $arr_member[0] . '</a></h1>
-    <table class="table table-bordered">
-    <tr>
-        <td colspan="2" class="colhead">' . $lang['pm_send_sendmsg'] . '</td>
-    </tr>
-    <tr>
-        <td><span style="font-weight: bold;">' . $lang['pm_send_subject'] . '</span></td>
-        <td><input name="subject" type="text" class="text_default" value="' . $subject . '" /></td>
-    </tr>
-    <tr>
-        <td><span style="font-weight: bold;">' . $lang['pm_send_body'] . '</span></td>
-        <td>' . BBcode($body) . '</td>
-    </tr>
-    <tr>
-        <td colspan="2">' . ($CURUSER['class'] >= UC_STAFF ? '
-        <input type="checkbox" name="urgent" value="yes" ' . ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? ' checked' : '') . ' /> 
-        <span class="label label-danger">' . $lang['pm_send_mark'] . '</span>' : '') . '
-        <input type="checkbox" name="delete" value="' . $replyto . '" ' . ((isset($_POST['delete']) && $_POST['delete'] > 0) ? ' checked' : ($CURUSER['deletepms'] == 'yes' ? ' checked' : '')) . ' />' . $lang['pm_send_delete'] . '
-        <input type="checkbox" name="save" value="1" ' . ((isset($_POST['draft']) && $_POST['draft'] == 1) ? ' checked' : '') . ' />' . $lang['pm_send_savepm'] . '
-        <input type="submit" class="button is-primary" name="buttonval" value="' . $lang['pm_send_preview'] . '" />
-        <input type="submit" class="button is-primary" name="buttonval" value="' . ((isset($_POST['draft']) && $_POST['draft'] == 1) ? $lang['pm_send_save'] : $lang['pm_send_btn']) . '" /></td>
-    </tr>
-    </table></form>';
+$HTMLOUT .= '
+        <table class="table table-bordered">
+            <tr class="no_hover">
+                <td colspan="2" class="colhead">' . $lang['pm_send_sendmsg'] . '</td>
+            </tr>
+            <tr class="no_hover">
+                <td><span style="font-weight: bold;">' . $lang['pm_send_subject'] . '</span></td>
+                <td><input name="subject" type="text" class="text_default" value="' . $subject . '" /></td>
+            </tr>
+            <tr class="no_hover">
+                <td><span style="font-weight: bold;">' . $lang['pm_send_body'] . '</span></td>
+                <td>' . BBcode($body) . '</td>
+            </tr>
+            <tr class="no_hover">
+                <td colspan="2">
+                    <div class="has-text-centered">
+                        ' . ($CURUSER['class'] >= UC_STAFF ? '
+                        <input type="checkbox" name="urgent" value="yes" ' . ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? ' checked' : '') . ' /> 
+                        <span class="right10">' . $lang['pm_send_mark'] . '</span>' : '');
+    if ($replyto) {
+        $HTMLOUT .= '
+                        <input type="checkbox" name="delete" value="' . $replyto . '"' . ($CURUSER['deletepms'] == 'yes' ? ' checked' : '') . ' />' . $lang['pm_send_delete'];
+    }
+$HTMLOUT .= '
+                        <input type="checkbox" name="save" value="1" checked />' . $lang['pm_send_savepm'] . '
+                    </div>
+                    <div class="has-text-centered">
+                        <input type="submit" class="button is-small" name="buttonval" value="' . ((isset($_POST['draft']) && $_POST['draft'] == 1) ? $lang['pm_send_save'] : $lang['pm_send_btn']) . '" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>';

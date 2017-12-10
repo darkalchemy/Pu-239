@@ -249,7 +249,7 @@ $HTMLOUT .= '<table class="table table-bordered table-striped">
     <td>' . BBcode($body) . $more_options . '
     </td></tr>
     <tr><td colspan="2">
-    <input type="submit" name="button" class="button_tiny" value="Save Changes" />
+    <input type="submit" name="button" class="button is-small" value="Save Changes" />
     </td></tr>
     </table></form>';
 //=== get last ten posts

@@ -12,9 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($lid > 0 && $lid != $CURUSER['id']) {
         sql_query('UPDATE users SET language = ' . sqlesc($lid) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     }
-    $cache->update_row('MyUser_' . $CURUSER['id'], [
-        'language' => $lid,
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user' . $CURUSER['id'], [
         'language' => $lid,
     ], $site_config['expires']['user_cache']);
@@ -49,7 +46,7 @@ $HTMLOUT .= "<!doctype html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'htt
                         <option value='3'" . (get_language() == '3' ? " selected='selected'" : '') . ">Rm</option>
                     </select>
                     <br>
-                    <input type='button' value='Close' onclick='self.close()' />
+                    <input type='button' class='button is-small margin20' value='Close' onclick='self.close()' />
                 </p>
             </form>
         </fieldset>

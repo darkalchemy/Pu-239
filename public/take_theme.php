@@ -11,9 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($sid > 0 && $sid != $CURUSER['id']) {
         sql_query('UPDATE users SET stylesheet=' . sqlesc($sid) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     }
-    $cache->update_row('MyUser_' . $CURUSER['id'], [
-        'stylesheet' => $sid,
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user' . $CURUSER['id'], [
         'stylesheet' => $sid,
     ], $site_config['expires']['user_cache']);
@@ -55,7 +52,7 @@ $HTMLOUT .= $out;
 $HTMLOUT .= "
                     </select>
                     <br>
-                    <input type='button' value='Close' onclick='self.close()' />
+                    <input type='button' class='button is-small margin20' value='Close' onclick='self.close()' />
                 </p>
             </form>
         </fieldset>

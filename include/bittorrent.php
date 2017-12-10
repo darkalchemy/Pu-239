@@ -15,11 +15,7 @@ sessionStart();
 require_once VENDOR_DIR . 'autoload.php';
 require_once CACHE_DIR . 'free_cache.php';
 require_once CACHE_DIR . 'class_config.php';
-require_once CLASS_DIR . 'class_cache.php';
 $cache = new CACHE();
-
-$pdo = new PDO("mysql:dbname={$site_config['mysql_db']}", "{$site_config['mysql_user']}", "{$site_config['mysql_pass']}");
-$db = new FluentPDO($pdo);
 
 /**
  * Class curuser
@@ -37,6 +33,40 @@ require_once CLASS_DIR . 'class_bt_options.php';
 require_once CACHE_DIR . 'block_settings_cache.php';
 require_once INCL_DIR . 'password_functions.php';
 require_once INCL_DIR . 'site_config.php';
+
+global $site_config;
+$pdo = new PDO("mysql:dbname={$site_config['mysql_db']}", "{$site_config['mysql_user']}", "{$site_config['mysql_pass']}");
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+$fpdo = new FluentPDO($pdo);
+$error = $pdo->errorInfo();
+if (!empty($error[1])) {
+    file_put_contents($site_config['sql_error_log'], json_encode($error) . PHP_EOL, FILE_APPEND);
+    die('Error occurred:'.implode(":", $error));
+}
+
+if (SQL_DEBUG) {
+    $fpdo->debug = function ($BaseQuery) {
+        global $pdo, $query_stat;
+        $params = [];
+        $query = str_replace('?', '%s', $BaseQuery->getQuery(true));
+        $paramaters = $BaseQuery->getParameters();
+        if (!empty($paramaters) && count($paramaters) >= 1) {
+            foreach ($paramaters as $param) {
+                $params[] = $pdo->quote($param);
+            }
+            $params = implode(', ', $params);
+            $query = sprintf($query, $params);
+        }
+        if (!empty($query)) {
+            $query_stat[] = [
+                'seconds' => 'PDO',
+                'query'   => $query,
+            ];
+        }
+    };
+}
 
 $load = sys_getloadavg();
 if ($load[0] > 20) {
@@ -250,10 +280,11 @@ function logincookie($id, $updatedb = true)
 
 function userlogin()
 {
-    global $site_config, $cache, $CURBLOCK, $mood, $whereis, $CURUSER;
+    global $site_config, $cache, $CURBLOCK, $mood, $whereis, $CURUSER, $fpdo;
     unset($GLOBALS['CURUSER']);
     $dt = TIME_NOW;
     $ip = getip();
+
     if (isset($CURUSER)) {
         return;
     }
@@ -264,171 +295,18 @@ function userlogin()
     if (!$id) {
         return;
     }
-    $row = $cache->get('MyUser_' . $id);
-    if ($row === false || is_null($row)) {
-        $user_fields_ar_int = [
-            'id',
-            'added',
-            'last_login',
-            'last_access',
-            'curr_ann_last_check',
-            'curr_ann_id',
-            'stylesheet',
-            'class',
-            'override_class',
-            'language',
-            'av_w',
-            'av_h',
-            'country',
-            'warned',
-            'torrentsperpage',
-            'topicsperpage',
-            'postsperpage',
-            'ajaxchat_height',
-            'reputation',
-            'dst_in_use',
-            'auto_correct_dst',
-            'chatpost',
-            'smile_until',
-            'vip_until',
-            'freeslots',
-            'free_switch',
-            'invites',
-            'invitedby',
-            'uploadpos',
-            'forumpost',
-            'downloadpos',
-            'immunity',
-            'leechwarn',
-            'last_browse',
-            'sig_w',
-            'sig_h',
-            'forum_access',
-            'hit_and_run_total',
-            'donoruntil',
-            'donated',
-            'vipclass_before',
-            'passhint',
-            'avatarpos',
-            'sendpmpos',
-            'invitedate',
-            'anonymous_until',
-            'pirate',
-            'king',
-            'ssluse',
-            'paranoia',
-            'parked_until',
-            'bjwins',
-            'bjlosses',
-            'irctotal',
-            'last_access_numb',
-            'onlinetime',
-            'hits',
-            'comments',
-            'categorie_icon',
-            'perms',
-            'mood',
-            'pms_per_page',
-            'watched_user',
-            'game_access',
-            'opt1',
-            'opt2',
-            'can_leech',
-            'wait_time',
-            'torrents_limit',
-            'peers_limit',
-        ];
-        $user_fields_ar_float = [
-            'time_offset',
-            'total_donated',
-        ];
-        $user_fields_ar_str = [
-            'username',
-            'torrent_pass',
-            'email',
-            'status',
-            'privacy',
-            'info',
-            'acceptpms',
-            'ip',
-            'avatar',
-            'title',
-            'notifs',
-            'enabled',
-            'donor',
-            'deletepms',
-            'savepms',
-            'vip_added',
-            'invite_rights',
-            'anonymous',
-            'disable_reason',
-            'clear_new_tag_manually',
-            'signatures',
-            'signature',
-            'highspeed',
-            'hnrwarn',
-            'parked',
-            'support',
-            'supportfor',
-            'invitees',
-            'invite_on',
-            'subscription_pm',
-            'gender',
-            'viewscloud',
-            'tenpercent',
-            'avatars',
-            'offavatar',
-            'hidecur',
-            'signature_post',
-            'forum_post',
-            'avatar_rights',
-            'offensive_avatar',
-            'view_offensive_avatar',
-            'google_talk',
-            'msn',
-            'aim',
-            'yahoo',
-            'website',
-            'icq',
-            'show_email',
-            'gotgift',
-            'suspended',
-            'warn_reason',
-            'onirc',
-            'birthday',
-            'got_blocks',
-            'pm_on_delete',
-            'commentpm',
-            'split',
-            'browser',
-            'got_moods',
-            'show_pm_avatar',
-            'watched_user_reason',
-            'staff_notes',
-            'where_is',
-            'forum_sort',
-            'browse_icons',
-        ];
-        $user_fields = implode(', ', array_merge($user_fields_ar_int, $user_fields_ar_float, $user_fields_ar_str));
-        $res = sql_query('SELECT ' . $user_fields . ' ' . 'FROM users ' . 'WHERE id = ' . sqlesc($id) . ' ' . "AND enabled = 'yes' " . "AND status = 'confirmed'") or sqlerr(__FILE__, __LINE__);
-        if (mysqli_num_rows($res) == 0) {
-            $salty = salty('i think you might be lost');
-            header("Location: {$site_config['baseurl']}/logout.php?hash_please={$salty}");
-            return;
-        }
-        $row = mysqli_fetch_assoc($res);
-        foreach ($user_fields_ar_int as $i) {
-            $row[ $i ] = (int)$row[ $i ];
-        }
-        foreach ($user_fields_ar_float as $i) {
-            $row[ $i ] = (float)$row[ $i ];
-        }
-        $row['ip'] = ipFromStorageFormat($row['ip']);
-        $cache->set('MyUser_' . $id, $row, $site_config['expires']['curuser']);
-        $cache->set('user' . $id, $row, $site_config['expires']['user_cache']);
-        unset($res);
+    $users_data = $cache->get('user' . $id);
+    if ($users_data === false || is_null($users_data)) {
+        $users_data = $fpdo->from('users')
+            ->select('INET6_NTOA(ip) AS ip')
+            ->where('id = ?', $id)
+            ->fetch();
+            unset($users_data['hintanswer']);
+            unset($users_data['passhash']);
+
+        $cache->set('user' . $id, $users_data, $site_config['expires']['user_cache']);
     }
-    if (!isset($row['perms']) || (!($row['perms'] & bt_options::PERMS_BYPASS_BAN))) {
+    if (!isset($users_data['perms']) || (!($users_data['perms'] & bt_options::PERMS_BYPASS_BAN))) {
         $banned = false;
         if (check_bans($ip, $reason)) {
             $banned = true;
@@ -453,17 +331,13 @@ function userlogin()
         }
     }
 
-    if ($row['class'] >= UC_STAFF) {
+    if ($users_data['class'] >= UC_STAFF) {
         $allowed_ID = $site_config['is_staff']['allowed'];
-        if (!in_array(((int)$row['id']), $allowed_ID, true)) {
-            $msg = 'Fake Account Detected: Username: ' . htmlsafechars($row['username']) . ' - userID: ' . (int)$row['id'] . ' - UserIP : ' . getip();
+        if (!in_array(((int)$users_data['id']), $allowed_ID, true)) {
+            $msg = 'Fake Account Detected: Username: ' . htmlsafechars($users_data['username']) . ' - userID: ' . (int)$users_data['id'] . ' - UserIP : ' . getip();
             // Demote and disable
-            sql_query("UPDATE users SET enabled = 'no', class = 0 WHERE id =" . sqlesc($row['id'])) or sqlerr(__FILE__, __LINE__);
-            $cache->update_row('MyUser_' . $row['id'], [
-                'enabled' => 'no',
-                'class'   => 0,
-            ], $site_config['expires']['curuser']);
-            $cache->update_row('user' . $row['id'], [
+            sql_query("UPDATE users SET enabled = 'no', class = 0 WHERE id =" . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
+            $cache->update_row('user' . $users_data['id'], [
                 'enabled' => 'no',
                 'class'   => 0,
             ], $site_config['expires']['user_cache']);
@@ -503,9 +377,9 @@ function userlogin()
         }
         $cache->set($What_Cache . $id, $stats, $What_Expire);
     }
-    $row['seedbonus'] = $stats['seedbonus'];
-    $row['uploaded'] = $stats['uploaded'];
-    $row['downloaded'] = $stats['downloaded'];
+    $users_data['seedbonus'] = $stats['seedbonus'];
+    $users_data['uploaded'] = $stats['uploaded'];
+    $users_data['downloaded'] = $stats['downloaded'];
     $ustatus = $cache->get('userstatus_' . $id);
     if ($ustatus === false || is_null($ustatus)) {
         $sql2 = sql_query('SELECT * FROM ustatus WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
@@ -520,22 +394,22 @@ function userlogin()
         }
         $cache->add('userstatus_' . $id, $ustatus, $site_config['expires']['u_status']); // 30 days
     }
-    $row['last_status'] = $ustatus['last_status'];
-    $row['last_update'] = $ustatus['last_update'];
-    $row['archive'] = $ustatus['archive'];
-    if ($row['ssluse'] > 1 && !isset($_SERVER['HTTPS']) && !defined('NO_FORCE_SSL')) {
+    $users_data['last_status'] = $ustatus['last_status'];
+    $users_data['last_update'] = $ustatus['last_update'];
+    $users_data['archive'] = $ustatus['archive'];
+    if ($users_data['ssluse'] > 1 && !isset($_SERVER['HTTPS']) && !defined('NO_FORCE_SSL')) {
         $site_config['baseurl'] = str_replace('http', 'https', $site_config['baseurl']);
         header('Location: ' . $site_config['baseurl'] . $_SERVER['REQUEST_URI']);
         exit();
     }
-    $blocks_key = 'blocks::' . $row['id'];
+    $blocks_key = 'blocks::' . $users_data['id'];
 
     $CURBLOCK = $cache->get($blocks_key);
     if ($CURBLOCK === false || is_null($CURBLOCK)) {
-        $c_sql = sql_query('SELECT * FROM user_blocks WHERE userid = ' . sqlesc($row['id'])) or sqlerr(__FILE__, __LINE__);
+        $c_sql = sql_query('SELECT * FROM user_blocks WHERE userid = ' . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($c_sql) == 0) {
-            sql_query('INSERT INTO user_blocks(userid) VALUES (' . sqlesc($row['id']) . ')') or sqlerr(__FILE__, __LINE__);
-            $c_sql = sql_query('SELECT * FROM user_blocks WHERE userid = ' . sqlesc($row['id'])) or sqlerr(__FILE__, __LINE__);
+            sql_query('INSERT INTO user_blocks(userid) VALUES (' . sqlesc($users_data['id']) . ')') or sqlerr(__FILE__, __LINE__);
+            $c_sql = sql_query('SELECT * FROM user_blocks WHERE userid = ' . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
         }
         $CURBLOCK = mysqli_fetch_assoc($c_sql);
         $CURBLOCK['index_page'] = (int)$CURBLOCK['index_page'];
@@ -543,7 +417,7 @@ function userlogin()
         $CURBLOCK['userdetails_page'] = (int)$CURBLOCK['userdetails_page'];
         $cache->set($blocks_key, $CURBLOCK, 0);
     }
-    $where_is['username'] = htmlsafechars($row['username']);
+    $where_is['username'] = htmlsafechars($users_data['username']);
     $whereis_array = [
         'index'            => '%s is viewing the <a href="%s">home page</a>',
         'browse'           => '%s is viewing the <a href="%s">torrents page</a>',
@@ -568,6 +442,7 @@ function userlogin()
         'arcade'           => '%s is viewing the <a href="%s">arcade page</a>',
         'flash'            => '%s is playing a <a href="%s">flash game</a>',
         'arcade_top_score' => '%s is viewing the <a href="%s">arcade top scores page</a>',
+        'staffpanel'        => '%s is viewing the <a href="%s">Staff Panel</a>',
         'unknown'          => '%s location is unknown',
     ];
     if (preg_match('/\/(.*?)\.php/is', $_SERVER['REQUEST_URI'], $whereis_temp)) {
@@ -580,35 +455,29 @@ function userlogin()
         $whereis = sprintf($whereis_array['unknown'], $where_is['username']);
     }
     $userupdate0 = 'onlinetime = onlinetime + 0';
-    $new_time = TIME_NOW - $row['last_access_numb'];
+    $new_time = TIME_NOW - $users_data['last_access_numb'];
     $update_time = 0;
     if ($new_time < 300) {
         $userupdate0 = 'onlinetime = onlinetime + ' . $new_time;
         $update_time = $new_time;
     }
     $userupdate1 = 'last_access_numb = ' . TIME_NOW;
-    $update_time = ($row['onlinetime'] + $update_time);
-    if (($row['last_access'] != '0') && (($row['last_access']) < (TIME_NOW - 180))) {
+    $update_time = ($users_data['onlinetime'] + $update_time);
+    if (($users_data['last_access'] != '0') && (($users_data['last_access']) < (TIME_NOW - 180))) {
         sql_query('UPDATE users
                     SET where_is =' . sqlesc($whereis) . ', last_access=' . TIME_NOW . ", $userupdate0, $userupdate1
-                    WHERE id = " . sqlesc($row['id'])) or sqlerr(__FILE__, __LINE__);
-        $cache->update_row('MyUser_' . $row['id'], [
-            'last_access'      => TIME_NOW,
-            'onlinetime'       => $update_time,
-            'last_access_numb' => TIME_NOW,
-            'where_is'         => $whereis,
-        ], $site_config['expires']['curuser']);
-        $cache->update_row('user' . $row['id'], [
+                    WHERE id = " . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
+        $cache->update_row('user' . $users_data['id'], [
             'last_access'      => TIME_NOW,
             'onlinetime'       => $update_time,
             'last_access_numb' => TIME_NOW,
             'where_is'         => $whereis,
         ], $site_config['expires']['user_cache']);
     }
-    if ($row['override_class'] < $row['class']) {
-        $row['class'] = $row['override_class'];
+    if ($users_data['override_class'] < $users_data['class']) {
+        $users_data['class'] = $users_data['override_class'];
     }
-    $GLOBALS['CURUSER'] = $row;
+    $GLOBALS['CURUSER'] = $users_data;
     get_template();
     $mood = create_moods();
 }
@@ -1074,8 +943,7 @@ function loggedinorreturn()
     global $CURUSER, $site_config, $cache;
     if (!$CURUSER) {
         if ($id = getSessionVar('userID')) {
-            $user = $cache->get('MyUser_' . $id);
-            $CURUSER = $user;
+            $CURUSER = $cache->get('user' . $id);
         } else {
             header("Location: {$site_config['baseurl']}/login.php?returnto=" . urlencode($_SERVER['REQUEST_URI']));
             exit();
@@ -1485,7 +1353,6 @@ function sql_query($query, $log = true)
     $query_start_time = microtime(true); // Start time
     $result = mysqli_query($GLOBALS['___mysqli_ston'], $query);
     $query_end_time = microtime(true); // End time
-    $querytime = ($query_end_time - $query_start_time);
     $query_stat[] = [
         'seconds' => number_format($query_end_time - $query_start_time, 6),
         'query'   => $query,
@@ -1919,23 +1786,19 @@ function user_exists($user_id)
  */
 function get_poll()
 {
-    global $CURUSER, $cache, $site_config;
+    global $CURUSER, $cache, $site_config, $fpdo;
 
     $poll_data = $cache->get('poll_data_' . $CURUSER['id']);
     if ($poll_data === false || is_null($poll_data)) {
-        $sql = 'SELECT p.*, INET6_NTOA(v.ip) AS ip, v.vote_date, v.user_id
-            FROM polls AS p
-            LEFT JOIN poll_voters AS v ON p.pid = v.poll_id AND v.user_id = ' . sqlesc($CURUSER['id']) . '
-            ORDER BY p.start_date
-            DESC LIMIT 1';
-
-        $query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        if (!mysqli_num_rows($query)) {
-            return '';
-        }
-        while ($row = mysqli_fetch_assoc($query)) {
-            $poll_data = $row;
-        }
+        $poll_data = $fpdo->from('polls')
+            ->select('INET6_NTOA(poll_voters.ip) AS ip')
+            ->select('poll_voters.user_id')
+            ->select('poll_voters.vote_date')
+            ->leftJoin('poll_voters ON poll_voters.poll_id = polls.pid')
+            ->where('poll_voters.user_id = ?', $CURUSER['id'])
+            ->orderBy('polls.start_date DESC')
+            ->limit(1)
+            ->fetch();
         $cache->set('poll_data_' . $CURUSER['id'], $poll_data, $site_config['expires']['poll_data']);
     }
     return $poll_data;

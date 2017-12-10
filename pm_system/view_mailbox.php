@@ -50,7 +50,7 @@ $HTMLOUT .= "
             <table class='table table-bordered table-striped top20 bottom20'>
                 <thead>
                     <tr>
-                        <th>
+                        <th class='has-text-centered w-1'>
                             <input type='hidden' name='action' value='move_or_delete_multi' />
                             Mailbox
                         </th>
@@ -59,17 +59,17 @@ $HTMLOUT .= "
     ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . "&amp;order_by=subject{$desc_asc}#pm' class='tooltipper' title='{$lang['pm_mailbox_sorder']}{$desc_asc_2}'>{$lang['pm_mailbox_subject']}
                             </a>
                         </th>
-                        <th>
+                        <th class='has-text-centered'>
                             <a href='./pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
     ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . "&amp;order_by=username{$desc_asc}#pm' class='tooltipper' title='{$lang['pm_mailbox_morder']}{$desc_asc_2}'>" . ($mailbox === PM_SENTBOX ? $lang['pm_search_sent_to'] : $lang['pm_search_sender']) . "
                             </a>
                         </th>
-                        <th>
+                        <th class='has-text-centered'>
                             <a href='./pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
     ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . "&amp;order_by=added{$desc_asc}#pm' class='tooltipper' title='{$lang['pm_mailbox_dorder']} {$desc_asc_2}'>{$lang['pm_mailbox_date']}
                             </a>
                         </th>
-                        <th>Select</td>
+                        <th class='has-text-centered w-1'><input type='checkbox' id='checkThemAll' class='tooltipper' title='Select All' /></th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -102,47 +102,45 @@ if (mysqli_num_rows($res) === 0) {
                 <img width="40" src="./images/forumicons/default_avatar.gif" alt="no avatar" />' : (($row['opt1'] & user_options::OFFENSIVE_AVATAR && !$CURUSER['opt1'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img width="40" src="./images/fuzzybunny.gif" alt="fuzzy!" />' : '<img width="40" src="' . htmlsafechars($row['avatar']) . '" alt="avatar" />')));
         $HTMLOUT .= '
                 <tr>
-                    <td>' . $read_unread . '</td>
-                    <td><a class="altlink"  href="./pm_system.php?action=view_message&amp;id=' . (int)$row['message_id'] . '">' . $subject . '</a>' . $extra . '</td>
-                    <td>' . $avatar . $who_sent_it . '</td>
-                    <td>' . get_date($row['added'], '') . '</td>
-                    <td><input type="checkbox" name="pm[]" value="' . (int)$row['message_id'] . '" /></td>
+                    <td class="has-text-centered">' . $read_unread . '</td>
+                    <td><a class="altlink"  href="./pm_system.php?action=view_message&amp;id=' . (int)$row['message_id'] . '">' . $subject . '</a> ' . $extra . '</td>
+                    <td class="has-text-centered">' . $avatar . $who_sent_it . '</td>
+                    <td class="has-text-centered">' . get_date($row['added'], '') . '</td>
+                    <td class="has-text-centered"><input type="checkbox" name="pm[]" value="' . (int)$row['message_id'] . '" /></td>
                 </tr>';
     }
 }
-//=== per page drop down
+
 $per_page_drop_down = '<form action="pm_system.php" method="post"><select name="amount_per_page" onchange="location = this.options[this.selectedIndex].value;">';
 $i = 20;
 while ($i <= ($maxbox > 200 ? 200 : $maxbox)) {
-    $per_page_drop_down .= '<option class="body" value="' . $link . '&amp;change_pm_number=' . $i . '"  ' . ($CURUSER['pms_per_page'] == $i ? ' selected="selected"' : '') . '>' . $i . '' . $lang['pm_edmail_perpage'] . '</option>';
+    $per_page_drop_down .= '<option class="body" value="' . $link . '&amp;change_pm_number=' . $i . '"  ' . ($CURUSER['pms_per_page'] == $i ? ' selected' : '') . '>' . $i . '' . $lang['pm_edmail_perpage'] . '</option>';
     $i = ($i < 100 ? $i = $i + 10 : $i = $i + 25);
 }
 $per_page_drop_down .= '</select><input type="hidden" name="box" value="' . $mailbox . '" /></form>';
-//=== avatars on off
+
 $show_pm_avatar_drop_down = '
     <form method="post" action="pm_system.php">
         <select name="show_pm_avatar" onchange="location = this.options[this.selectedIndex].value;">
-            <option value="' . $link . '&amp;show_pm_avatar=yes" ' . (($CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR) ? ' selected="selected"' : '') . '>show avatars on PM list</option>
-            <option value="' . $link . '&amp;show_pm_avatar=no" ' . (($CURUSER['opt2'] | user_options_2::SHOW_PM_AVATAR) ? ' selected="selected"' : '') . '>' . $lang['pm_mailbox_dontav'] . '</option>
+            <option value="' . $link . '&amp;show_pm_avatar=yes" ' . (($CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR) ? ' selected' : '') . '>show avatars on PM list</option>
+            <option value="' . $link . '&amp;show_pm_avatar=no" ' . (($CURUSER['opt2'] | user_options_2::SHOW_PM_AVATAR) ? ' selected' : '') . '>' . $lang['pm_mailbox_dontav'] . '</option>
         </select>
             <input type="hidden" name="box" value="' . $mailbox . '" /></form>';
-//=== the bottom
+
 $HTMLOUT .= (mysqli_num_rows($res) > 0 ? "
     <tr>
         <td colspan='5'>
-            <div class='flex flex-justify-center'>
-                <span>[<a class='altlink' href='javascript:SetChecked(1,\"pm[]\")'>{$lang['pm_search_selall']}</a>]</span>
-                <span>[<a class='altlink' href='javascript:SetChecked(0,\"pm[]\")'>{$lang['pm_search_unsellall']}</a>]</span>
+            <div class='level-center'>
                 <span>
-                    <input type='submit' class='button' name='move' value='{$lang['pm_search_move_to']}' /> " . get_all_boxes() . " or
-                    <input type='submit' class='button' name='delete' value='{$lang['pm_search_delete']}' />{$lang['pm_search_selected']}
+                    <input type='submit' class='button is-small right10' name='move' value='{$lang['pm_search_move_to']}' /> " . get_all_boxes() . " or
+                    <input type='submit' class='button is-small left10 right10' name='delete' value='{$lang['pm_search_delete']}' />{$lang['pm_search_selected']}
                 </span>
             </div>
         </td>
     </tr>
     <tr>
         <td colspan='5'>
-            <div class='flex flex-justify-center'>
+            <div class='level-center'>
                 <span><img src='./images/pn_inboxnew.gif' title='{$lang['pm_mailbox_unreadmsg']}' alt='{$lang['pm_mailbox_unread']}' />{$lang['pm_mailbox_unreadmsgs']}</span>
                 <span><img src='./images/pn_inbox.gif' title='{$lang['pm_mailbox_readmsg']}' alt='{$lang['pm_mailbox_read']}' />'{$lang['pm_mailbox_readmsgs']}</span>
                 {$per_page_drop_down}

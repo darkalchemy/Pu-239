@@ -57,7 +57,7 @@ if ($CURUSER['class'] == UC_MAX) {
 		<td class='colhead'>{$lang['achlst_description']}</td><td class='one'><textarea cols='60' rows='6' name='notes'></textarea></td>
 		</tr>
 		<tr>
-		<td colspan='2' class='two'><input type='submit' name='okay' value='{$lang['achlst_add_me']}!' class='button' /></td>
+		<td colspan='2' class='two'><input type='submit' name='okay' value='{$lang['achlst_add_me']}!' class='button is-small' /></td>
 		</tr>
 		</table>
 		</form>";

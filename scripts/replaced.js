@@ -299,54 +299,7 @@ $(function () {
     }
     ;
 
-//    $("a").on('click', function(event) {
-//        if (this.hash !== "") {
-//            if ($('.accordion-content').length) {
-//                var offset = $(this).closest('.accordion-content').outerHeight();
-//            } else {
-//                var offset = -5;
-//            }
-//            offset = 0;
-//            console.log(offset);
-//            event.preventDefault();
-//            var hash = this.hash;
-//            console.log(hash);
-//            $('html, body').animate({
-//                scrollTop: $(hash).position().top + offset
-//            }, animate_duration, function(){
-//                //window.location.hash = hash;
-//            });
-//        }
-//    });
-//    $("ba").on('click', function(event) {
-//        if (this.hash !== "") {
-//            event.preventDefault();
-//            var hash = this.hash;
-
-//            $('html, body').animate({
-//                scrollTop: $(hash).position().top
-//            }, animate_duration, function() {
-//                window.location.hash = hash;
-//            });
-//        }
-//    });
-//    $('a[href*=\\#]:not([href=\\#])').click(function() {
-///        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') || location.hostname == this.hostname) {
-//            var target = $(this.hash)
-//            var headerHeight = $('#navbar').height() + 5;
-//            target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-//            console.log(headerHeight);
-//            if (target.length) {
-//                $('html,body').animate({
-//                    scrollTop: target.offset().top - headerHeight
-//                }, 500);
-//                return false;
-//            }
-//        }
-//    });
-
-
-    $('a[href*=\\#]:not([href=\\#])').click(function (e) {
+    $('a[href^=\\#]:not([href=\\#])').click(function (e) {
         if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
             e.preventDefault();
 
@@ -372,10 +325,3 @@ $(function () {
     }
 
 });
-
-
-//            var html = $('html,body');
-//            var lt = $(this.List).offset().top, lh = $(this.List).height();
-//            var st = Math.max(html.scrollTop(), $('body').scrollTop()), wh = $(window).height();
-//            if (lt < st || lt+lh > st+wh) html.animate({scrollTop: lt}, 1250);
-

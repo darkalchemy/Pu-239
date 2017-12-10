@@ -33,10 +33,6 @@ if ($md5 != md5($sec . $email . $sec)) {
     stderr("{$lang['confirmmail_user_error']}", "{$lang['confirmmail_not_complete']}");
 }
 sql_query("UPDATE users SET editsecret = '', email = " . sqlesc($email) . ' WHERE id = ' . sqlesc($id) . ' AND editsecret = ' . sqlesc($row['editsecret'])) or sqlerr(__FILE__, __LINE__);
-$cache->update_row('MyUser_' . $id, [
-    'editsecret' => '',
-    'email'      => $email,
-], $site_config['expires']['curuser']);
 $cache->update_row('user' . $id, [
     'editsecret' => '',
     'email'      => $email,

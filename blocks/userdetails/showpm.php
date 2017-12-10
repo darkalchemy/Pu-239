@@ -19,7 +19,7 @@ if (isset($showpmbutton)) {
         <input type='hidden' name='action' value='send_message' />
         <input type='hidden' name='receiver' value='" . (int)$user['id'] . "' />
         <input type='hidden' name='returnto' value='" . urlencode($_SERVER['REQUEST_URI']) . "' />
-        <input type='submit' value='{$lang['userdetails_msg_btn']}' class='button' />
+        <input type='submit' value='{$lang['userdetails_msg_btn']}' class='button is-small' />
       </form>
       </td></tr>";
 }

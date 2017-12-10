@@ -12,9 +12,6 @@ global $CURUSER, $site_config, $cache;
 
 if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
     sql_query('UPDATE users SET last_browse = ' . TIME_NOW . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    $cache->update_row('MyUser_' . $CURUSER['id'], [
-        'last_browse' => TIME_NOW,
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user' . $CURUSER['id'], [
         'last_browse' => TIME_NOW,
     ], $site_config['expires']['user_cache']);
@@ -305,14 +302,11 @@ $HTMLOUT .= main_div($main_div, 'bottom20');
 
 if ($CURUSER['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     $new_button = "
-        <a href='{$site_config['baseurl']}/browse.php?clear_new=1'><input type='submit' value='clear new tag' class='button is-small is-primary' /></a>
+        <a href='{$site_config['baseurl']}/browse.php?clear_new=1'><input type='submit' value='clear new tag' class='button is-small' /></a>
         <br>";
 } else {
     //== clear new tag automatically
     sql_query('UPDATE users SET last_browse = ' . TIME_NOW . ' WHERE id = ' . $CURUSER['id']);
-    $cache->update_row('MyUser_' . $CURUSER['id'], [
-        'last_browse' => TIME_NOW,
-    ], $site_config['expires']['curuser']);
     $cache->update_row('user' . $CURUSER['id'], [
         'last_browse' => TIME_NOW,
     ], $site_config['expires']['user_cache']);
@@ -374,7 +368,7 @@ $HTMLOUT .= main_div("
                         </div>
                     </div>
                     <div class='margin10 has-text-centered'>
-                        <input type='submit' value='{$lang['search_search_btn']}' class='button is-small is-primary' />
+                        <input type='submit' value='{$lang['search_search_btn']}' class='button is-small' />
                     </div>");
 $HTMLOUT .= "
             </form>";

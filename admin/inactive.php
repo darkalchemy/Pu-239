@@ -29,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $username = htmlsafechars($arr['username']);
             $res_del = sql_query(account_delete($userid)) or sqlerr(__FILE__, __LINE__);
             if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) !== false) {
-                $cache->delete('MyUser_' . $userid);
                 $cache->delete('user' . $userid);
                 write_log("User: $username Was deleted by {$CURUSER['username']}");
             }

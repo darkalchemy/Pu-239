@@ -9,8 +9,4 @@ $cache->update_row('user' . $CURUSER['id'], [
     'curr_ann_id'         => 0,
     'curr_ann_last_check' => 0,
 ], $site_config['expires']['user_cache']);
-$cache->update_row('MyUser_' . $CURUSER['id'], [
-    'curr_ann_id'         => 0,
-    'curr_ann_last_check' => 0,
-], $site_config['expires']['curuser']);
 header("Location: {$site_config['baseurl']}/index.php");

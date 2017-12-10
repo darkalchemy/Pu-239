@@ -231,11 +231,16 @@ if ($userid != $CURUSER['id']) {
 }
 $res = sql_query('SELECT id, username FROM users WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_array($res);
-$htmlout .= "
-        <h1 class='has-text-centered'>{$lang['bookmarks_my']}</h1>
-        <div class='has-text-centered'>
-            <b><a href='./sharemarks.php?id=" . $CURUSER['id'] . "'>{$lang['bookmarks_my_share']}</a></b>
-        </div>";
+$htmlout .= '
+    <div class="has-text-centered bottom20">
+        <h1>' . $lang['bookmarks_my'] . '</h1>
+        <div class="tabs is-centered">
+            <ul>
+                <li><a href="' . $site_config['baseurl']. '/sharemarks.php?id=' . $CURUSER['id'] . '" class="altlink">' . $lang['bookmarks_my_share'] . '</a></li>
+            </ul>
+        </div>
+    </div>';
+
 $res = sql_query('SELECT COUNT(id) FROM bookmarks WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_array($res);
 $count = $row[0];

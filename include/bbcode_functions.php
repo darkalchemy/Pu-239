@@ -258,17 +258,6 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     if ($strip_html) {
         $s = htmlsafechars($s, ENT_QUOTES, charset());
     }
-    if (preg_match("#function\s*\((.*?)\|\|#is", $s)) {
-        $s = str_replace(':', '&#58;', $s);
-        $s = str_replace('[', '&#91;', $s);
-        $s = str_replace(']', '&#93;', $s);
-        $s = str_replace(')', '&#41;', $s);
-        $s = str_replace('(', '&#40;', $s);
-        $s = str_replace('{', '&#123;', $s);
-        $s = str_replace('}', '&#125;', $s);
-        $s = str_replace('$', '&#36;', $s);
-        $s = str_replace('&nbsp;', '&#160;', $s);
-    }
 
     // BBCode to find...
     $bb_code_in = [
@@ -295,7 +284,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '/\[collapse=(.*?)\](.*?)\[\/collapse\]/is',
         '/\[size=([1-7])\](.*?)\[\/size\]/is',
         '/\[color=([a-zA-Z]+)\](.*?)\[\/color\]/is',
-        '/\[color=(#[a-f0-9]{6})\](.*?)\[\/color\]/is',
+        '/\[color=(#[a-fA-F0-9]{6})\](.*?)\[\/color\]/is',
         '/\[font=([a-zA-Z ,]+)\](.*?)\[\/font\]/is',
         '/\[font01\](.*?)\[\/font01\]/is',
         '/\[font02\](.*?)\[\/font02\]/is',
@@ -320,6 +309,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '/\[audio\](http:\/\/[^\s\'"<>]+(\.(mp3|aiff|wav)))\[\/audio\]/is',
         '/\[list=([0-9]+)\](.*?)\[\/list\]/is',
         '/\[list\](.*?)\[\/list\]/is',
+        '/\[li\]\s?(.*?)\[\/li\]/is',
         '/\[\*\]\s?(.*?)\n/is',
         '/\[li\]\s?(.*?)\n/is',
         '/\[hr\]/',
@@ -348,8 +338,8 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<marquee class="style">\1</marquee>',
         '<div style="padding-top: 2px; white-space: nowrap"><span style="cursor: hand; cursor: pointer; border-bottom: 1px dotted" onclick="if (document.getElementById(\'collapseobj\1\').style.display==\'block\') {document.getElementById(\'collapseobj\1\').style.display=\'none\' } else { document.getElementById(\'collapseobj\1\').style.display=\'block\' }">\1</span></div><div id="collapseobj\1" style="display:none; padding-top: 2px; padding-left: 14px; margin-bottom:10px; padding-bottom: 2px; background-color: #FEFEF4;">\2</div>',
         '<span class="size\1">\2</span>',
-        '<span style="color:\1;">\2</span>',
-        '<span style="color:\1;">\2</span>',
+        '<span style="color: \1;">\2</span>',
+        '<span style="color: \1;">\2</span>',
         '<span style="font-family:\'\1\';">\2</span>',
         '<span class="text-1">\1</span>',
         '<span class="text-2">\1</span>',
@@ -376,9 +366,22 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<ul class="style">\1</ul>',
         '<li>\1</li>',
         '<li>\1</li>',
+        '<li>\1</li>',
         '<hr>',
     ];
     $s = preg_replace($bb_code_in, $bb_code_out, $s);
+
+    if (preg_match("#function\s*\((.*?)\|\|#is", $s)) {
+        $s = str_replace(':', '&#58;', $s);
+        $s = str_replace('[', '&#91;', $s);
+        $s = str_replace(']', '&#93;', $s);
+        $s = str_replace(')', '&#41;', $s);
+        $s = str_replace('(', '&#40;', $s);
+        $s = str_replace('{', '&#123;', $s);
+        $s = str_replace('}', '&#125;', $s);
+        $s = str_replace('$', '&#36;', $s);
+        $s = str_replace('&nbsp;', '&#160;', $s);
+    }
 
     // find timpstamps replace with dates
     preg_match_all('/key\s*=\s*(\d{10})/', $s, $match);
@@ -394,9 +397,6 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         // [url]http://www.example.com[/url]
         $s = preg_replace_callback("/\[url\]([^()<>\s]+?)\[\/url\]/is", 'islocal', $s);
     }
-
-    // Linebreaks
-    $s = str_replace(["\r\n", "\r", "\n"], "<br>", $s);
 
     // Dynamic Vars
     $s = dynamic_user_vars($s);
@@ -440,25 +440,26 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     }
 
     // Maintain spacing
-    $s = str_replace('  ', ' &#160;', $s);
+    $s = str_replace('  ', '&#160;&#160;', $s);
     if (isset($smilies)) {
         foreach ($smilies as $code => $url) {
-            $s = str_replace($code, "<img border='0' src='{$site_config['pic_base_url']}smilies/{$url}' alt='' />", $s);
+            $s = str_replace($code, "<img src='{$site_config['pic_base_url']}smilies/{$url}' alt='' />", $s);
         }
     }
     if (isset($staff_smilies)) {
         foreach ($staff_smilies as $code => $url) {
-            $s = str_replace($code, "<img border='0' src='{$site_config['pic_base_url']}smilies/{$url}' alt='' />", $s);
+            $s = str_replace($code, "<img src='{$site_config['pic_base_url']}smilies/{$url}' alt='' />", $s);
         }
     }
     if (isset($customsmilies)) {
         foreach ($customsmilies as $code => $url) {
-            $s = str_replace($code, "<img border='0' src='{$site_config['pic_base_url']}smilies/{$url}' alt='' />", $s);
+            $s = str_replace($code, "<img src='{$site_config['pic_base_url']}smilies/{$url}' alt='' />", $s);
         }
     }
     $s = format_quotes($s);
     $s = format_code($s);
     $s = check_BBcode($s);
+    $s = str_replace(["\r\n", "\r", "\n", '&lt;br&gt;'], "<br>", $s);
     return $s;
 }
 
@@ -494,18 +495,16 @@ function format_code($s)
                 return $s;
             }
         } // Cannot close before opening. Return raw string...
-        $s = str_replace("\t", '    ', $s);
         $s = str_replace('[code]', "
-            <div class='bordered bg-grey'>
-                <div>
+            <div class='round10'>
+                <div class='size_6 top10 bottom10'>
                     <b>code:</b>
                 </div>
-                <div class='quote'>
-                    <p class='code'>", $s);
+                <pre class='round10'>", $s);
         $s = str_replace('[/code]', "
-                    </p>
-                </div>
-        </div>", $s);
+                </pre>
+            </div>", $s);
+        $s = html_entity_decode($s);
     }
 
     return $s;

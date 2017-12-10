@@ -45,11 +45,6 @@ if (isset($open) && $open == 1) {
                     'freeslots' => $update['freeslots'],
                     'gotgift'   => 'yes',
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('MyUser_' . $userid, [
-                    'invites'   => $update['invites'],
-                    'freeslots' => $update['freeslots'],
-                    'gotgift'   => 'yes',
-                ], $site_config['expires']['curuser']);
                 header('Refresh: 5; url=' . $site_config['baseurl'] . '/index.php');
                 stderr('Congratulations!', "<img src=\"{$site_config['pic_base_url']}gift.png\" alt=\"Christmas Gift\" title=\"Christmas Gift\" /> <h2> You just got  1 invite 10 GB upload and bonus 1 freeslot !</h2>
 Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry Christmas and a happy New Year from {$site_config['site_name']}  Crew ! Redirecting in 5..4..3..2..1");
@@ -68,10 +63,6 @@ Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry 
                     'invites' => $update['invites'],
                     'gotgift' => 'yes',
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('MyUser_' . $userid, [
-                    'invites' => $update['invites'],
-                    'gotgift' => 'yes',
-                ], $site_config['expires']['curuser']);
                 header('Refresh: 5; url=' . $site_config['baseurl'] . '/index.php');
                 stderr('Congratulations!', "<img src=\"{$site_config['pic_base_url']}gift.png\" alt=\"Christmas Gift\" title=\"Christmas Gift\" /> <h2> You just got 3 invites 1750 karma bonus points !</h2>
 Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry Christmas and a happy New Year from {$site_config['site_name']}  Crew ! Redirecting in 5..4..3..2..1");
@@ -92,11 +83,6 @@ Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry 
                     'freeslots' => $update['freeslots'],
                     'gotgift'   => 'yes',
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('MyUser_' . $userid, [
-                    'invites'   => $update['invites'],
-                    'freeslots' => $update['freeslots'],
-                    'gotgift'   => 'yes',
-                ], $site_config['expires']['curuser']);
                 header('Refresh: 5; url=' . $site_config['baseurl'] . '/index.php');
                 stderr('Congratulations!', "<img src=\"{$site_config['pic_base_url']}gift.png\" alt=\"Christmas Gift\" title=\"Christmas Gift\" /> <h2> You just got 2 invites and 2000 bonus points and a bonus 3 freeslots !</h2>
 Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry Christmas and a happy New Year from {$site_config['site_name']} Crew ! Redirecting in 5..4..3..2..1");
@@ -120,11 +106,6 @@ Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry 
                     'freeslots' => $update['freeslots'],
                     'gotgift'   => 'yes',
                 ], $site_config['expires']['user_cache']);
-                $cache->update_row('MyUser_' . $userid, [
-                    'invites'   => $update['invites'],
-                    'freeslots' => $update['freeslots'],
-                    'gotgift'   => 'yes',
-                ], $site_config['expires']['curuser']);
                 header('Refresh: 5; url=' . $site_config['baseurl'] . '/index.php');
                 stderr('Congratulations!', "<img src=\"{$site_config['pic_base_url']}gift.png\" alt=\"Christmas Gift\" title=\"Christmas Gift\" /> <h2> You just got 3 invites 1750 karma bonus points !</h2>
 Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry Christmas and a happy New Year from {$site_config['site_name']} Crew ! Redirecting in 5..4..3..2..1");
@@ -133,6 +114,7 @@ Thanks for your support and sharing through year " . date('Y') . " ! <br> Merry 
             stderr('Sorry...', 'You already got your gift !');
         }
     } else {
-        stderr('Doh...', "Be patient!  You can't open your present until Christmas Day! <b>" . date('z', ($Christmasday - $today)) . "</b> day(s) to go. <br> Today : <b><span>" . date('l dS \of F Y h:i:s A', $today) . "</span></b><br>Christmas Day : <b><span>" . date('l dS \of F Y h:i:s A', $Christmasday) . '</span></b>');
+        $days = date('z', ($Christmasday - $today));
+        stderr('Be patient!', "You can't open your present until Christmas Day! <b>$days</b> day" . plural($days) . " to go. <br> Today : <b><span>" . date('l dS \of F Y h:i:s A', $today) . "</span></b><br>Christmas Day : <b><span>" . date('l dS \of F Y h:i:s A', $Christmasday) . '</span></b>');
     }
 }

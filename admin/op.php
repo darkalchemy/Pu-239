@@ -340,9 +340,9 @@ empty($_SERVER['SERVER_NAME'])
 
 <div style="text-align:center;margin-bottom:2em;">
     <p>
-        <a href="staffpanel.php?tool=op&page=overview" class="button">Overview</a>
-        <a href="staffpanel.php?tool=op&page=files" class="button">File usage</a>
-        <a href="staffpanel.php?tool=op&page=reset" class="button"
+        <a href="staffpanel.php?tool=op&page=overview" class="button is-small">Overview</a>
+        <a href="staffpanel.php?tool=op&page=files" class="button is-small">File usage</a>
+        <a href="staffpanel.php?tool=op&page=reset" class="button is-small"
            onclick="return confirm('Are you sure you want to reset the cache?');">Reset cache</a>
     </p>
 </div>
@@ -515,7 +515,7 @@ empty($_SERVER['SERVER_NAME'])
                             $base = basename($s['full_path']);
                             $parts = array_filter(explode(DIRECTORY_SEPARATOR, dirname($s['full_path'])));
                             if (!empty($settings['compress_path_threshold'])) {
-                                echo '<span class="showmore"><span class="button">…</span><span class="text" style="display:none;">' . DIRECTORY_SEPARATOR;
+                                echo '<span class="showmore"><span class="button is-small">…</span><span class="text" style="display:none;">' . DIRECTORY_SEPARATOR;
                                 echo join(DIRECTORY_SEPARATOR, array_slice($parts, 0, $settings['compress_path_threshold'])) . DIRECTORY_SEPARATOR;
                                 echo '</span>';
                                 echo join(DIRECTORY_SEPARATOR, array_slice($parts, $settings['compress_path_threshold']));

@@ -341,7 +341,7 @@ class AJAXChat
                         userRole,
                         channel,
                         UNIX_TIMESTAMP(dateTime) AS timeStamp,
-                        ip
+                        INET6_NTOA(ip)
                     FROM
                         ' . $this->getDataBaseTable('online') . '
                     ORDER BY
@@ -351,7 +351,6 @@ class AJAXChat
             $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
             while ($row = mysqli_fetch_array($res)) {
-                $row['ip'] = ipFromStorageFormat($row['ip']);
                 $row['pmCount'] = getPMCount($row['userID']);
                 array_push($this->_onlineUsersData, $row);
             }
@@ -1039,7 +1038,7 @@ class AJAXChat
     {
         $condition = 'userID=' . sqlesc($userID);
         if ($userName !== null) {
-            $condition .= ' OR userName=' . sqlesc($userName);
+            $condition .= ' OR userName = ' . sqlesc($userName);
         }
         $sql = 'UPDATE
                     ' . $this->getDataBaseTable('online') . '
@@ -3479,16 +3478,10 @@ class AJAXChat
         if (sql_query("UPDATE users SET reputation = reputation - $gift WHERE id = " . sqlesc($CURUSER['id']))) {
             sql_query("UPDATE users SET reputation = reputation + $gift, bonuscomment = CONCAT(" . sqlesc($bonuscomment) . ",'\n',IFNULL(bonuscomment,'')) WHERE username = " . sqlesc($userName)) or sqlerr(__FILE__, __LINE__);
             // receiver
-            $cache->update_row('MyUser_' . $whereisUserID, [
-                'reputation' => $recbonus + $gift,
-            ], $site_config['expires']['user_cache']);
             $cache->update_row('user' . $whereisUserID, [
                 'reputation' => $recbonus + $gift,
             ], $site_config['expires']['user_cache']);
             // giver
-            $cache->update_row('MyUser_' . $CURUSER['id'], [
-                'reputation' => $fromrep - $gift,
-            ], $site_config['expires']['user_cache']);
             $cache->update_row('user' . $CURUSER['id'], [
                 'reputation' => $fromrep - $gift,
             ], $site_config['expires']['user_cache']);
@@ -3900,7 +3893,7 @@ class AJAXChat
                     userRole,
                     channel AS channelID,
                     UNIX_TIMESTAMP(dateTime) AS timeStamp,
-                    ip,
+                    INET6_NTOA(ip),
                     text
                 FROM
                     ' . $this->getDataBaseTable('messages') . '
@@ -3921,7 +3914,7 @@ class AJAXChat
             $xml .= ' userRole="' . $row['userRole'] . '"';
             $xml .= ' channelID="' . $row['channelID'] . '"';
             if ($this->getUserRole() >= UC_STAFF) {
-                $xml .= ' ip="' . ipFromStorageFormat($row['ip']) . '"';
+                $xml .= ' ip="' . $row['ip'] . '"';
             }
             $xml .= '>';
             $xml .= '<username><![CDATA[' . $this->encodeSpecialChars($row['userName']) . ']]></username>';

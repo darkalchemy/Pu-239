@@ -1,13 +1,13 @@
 <?php
 global $lang;
 
-//=== start page
 $colour = $topicpoll = '';
-$links = '<span><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';
-$HTMLOUT .= '<h1>' . $lang['nr_new_replys_to_treads'] . ' ' . $lang['nr_youve_posted_in'] . '</h1>' . $links;
-//$time = $readpost_expiry;
+$HTMLOUT .= $mini_menu . '
+    <div class="has-text-centered bottom20">
+        <h1>' . $lang['nr_new_replys_to_treads'] . ' ' . $lang['nr_youve_posted_in'] . '</h1>
+    </div>';
+
 $res_count = sql_query('SELECT t.id, t.last_post FROM topics AS t LEFT JOIN posts AS p ON t.last_post = p.id LEFT JOIN forums AS f ON f.id = t.forum_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' f.min_class_read <= ' . $CURUSER['class']);
-//=== lets do the loop / Check if post is read / get count there must be a beter way to do this lol
 $count = 0;
 while ($arr_count = mysqli_fetch_assoc($res_count)) {
     $res_post_read = sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($arr_count['id']));
@@ -18,23 +18,18 @@ while ($arr_count = mysqli_fetch_assoc($res_count)) {
         ++$count;
     }
 }
-//=== nothing here? kill the page
 if ($count == 0) {
-    $HTMLOUT .= '<br><br><table class="table table-bordered table-striped">
+    $HTMLOUT .= '<table class="table table-bordered table-striped">
    <tr><td class="three"align="center">
-   <h1>' . $lang['fe_no_unread_posts'] . '!</h1>' . $lang['fe_you_are_uptodate_topics'] . ' ' . $lang['nr_youve_posted_in'] . '.<br><br>
-	</td></tr></table><br><br>';
-    $HTMLOUT .= $links . '<br>';
+   <h1>' . $lang['fe_no_unread_posts'] . '!</h1>' . $lang['fe_you_are_uptodate_topics'] . ' ' . $lang['nr_youve_posted_in'] . '.
+	</td></tr></table>';
 } else {
-    //=== get stuff for the pager
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 0;
     $perpage = isset($_GET['perpage']) ? (int)$_GET['perpage'] : 20;
     list($menu, $LIMIT) = pager_new($count, $perpage, $page, $site_config['baseurl'] . '/forums.php?action=view_unread_posts' . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
-    //=== top and bottom stuff
-    $the_top_and_bottom = '<br><table class="table table-bordered table-striped">
+    $the_top_and_bottom = '<table class="table table-bordered table-striped">
    <tr><td class="three">' . (($count > $perpage) ? $menu : '') . '</td>
 	</tr></table>';
-    //=== main huge query:
     $res_unread = sql_query('SELECT t.id AS topic_id, t.topic_name AS topic_name, t.last_post, t.post_count, 
    t.views, t.topic_desc, t.locked, t.sticky, t.poll_id, t.forum_id, t.rating_sum, t.num_ratings, t.anonymous AS tan,
    f.name AS forum_name, f.description AS forum_desc, p.post_title, p.body, p.icon, p.user_id, p.anonymous AS pan,
@@ -68,12 +63,12 @@ if ($count == 0) {
             $first_unread_poster_arr = mysqli_fetch_row($first_unread_poster);
             if ($arr_unread['tan'] == 'yes') {
                 if ($CURUSER['class'] < UC_STAFF && $arr_unread['user_id'] != $CURUSER['id']) {
-                    $thread_starter = ($arr_unread['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
+                    $thread_starter = ($arr_unread['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i>' : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '' . get_date($first_unread_poster_arr[0], '');
                 } else {
-                    $thread_starter = ($arr_unread['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . format_username($arr_unread) . ']' : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
+                    $thread_starter = ($arr_unread['username'] !== '' ? '<i>' . $lang['fe_anonymous'] . '</i> [' . format_username($arr_unread) . ']' : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '' . get_date($first_unread_poster_arr[0], '');
                 }
             } else {
-                $thread_starter = ($arr_unread['username'] !== '' ? format_username($arr_unread) : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '<br>' . get_date($first_unread_poster_arr[0], '');
+                $thread_starter = ($arr_unread['username'] !== '' ? format_username($arr_unread) : '' . $lang['fe_lost'] . ' [' . $arr_unread['id'] . ']') . '' . get_date($first_unread_poster_arr[0], '');
             }
             $topicpic = ($arr_unread['post_count'] < 30 ? ($locked ? 'lockednew' : 'topicnew') : ($locked ? 'lockednew' : 'hot_topic_new'));
             $rpic = ($arr_unread['num_ratings'] != 0 ? ratingpic_forums(round($arr_unread['rating_sum'] / $arr_unread['num_ratings'], 1)) : '');
@@ -102,5 +97,5 @@ if ($count == 0) {
 		</tr>';
         }
     }
-    $HTMLOUT .= '</table>' . $the_top_and_bottom . '<br><br>' . $links . '<br>';
+    $HTMLOUT .= '</table>' . $the_top_and_bottom;
 }

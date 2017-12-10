@@ -210,7 +210,6 @@ if ($hand = fsockopen('ssl://www.paypal.com', 443, $errno, $errstr, 30)) {
             //update the user and add the goodies
             sql_query(mk_update_query($vars['amount'], $vars['uid'])) or paypallog(mysqli_error($GLOBALS['___mysqli_ston']));
             //instead of updating the cache delete it :P
-            $cache->delete('MyUser_' . $vars['uid']);
             $cache->delete('user' . $vars['uid']);
             $cache->delete('userstats_' . $vars['uid']);
             $cache->delete('user_stats_' . $vars['uid']);

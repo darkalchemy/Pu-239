@@ -8,7 +8,8 @@
  */
 function stdhead($title = '', $stdhead = null)
 {
-    global $CURUSER, $site_config, $lang, $free, $query_stat, $querytime, $cache, $BLOCKS, $CURBLOCK, $mood;
+    require_once INCL_DIR . 'bbcode_functions.php';
+    global $CURUSER, $site_config, $lang, $free, $querytime, $cache, $BLOCKS, $CURBLOCK, $mood;
 
     unsetSessionVar('Channel');
     if (!$site_config['site_online']) {
@@ -135,7 +136,7 @@ function stdhead($title = '', $stdhead = null)
 
     foreach ($site_config['notifications'] as $notif) {
         if (($message = getSessionVar($notif)) != false) {
-            $message = !is_array($message) ? $message : "<a href='{$message['link']}'>{$message['message']}</a>";
+            $message = !is_array($message) ? format_comment($message) : "<a href='{$message['link']}'>" . format_comment($message['message']) . "</a>";
             $htmlout .= "
                 <div class='notification $notif has-text-centered size_6'>
                     <button class='delete'></button>$message
@@ -154,8 +155,11 @@ function stdhead($title = '', $stdhead = null)
  */
 function stdfoot($stdfoot = false)
 {
-    global $CURUSER, $site_config, $start, $query_stat, $queries, $cache, $querytime, $lang;
+    require_once INCL_DIR . 'bbcode_functions.php';
+    global $CURUSER, $site_config, $start, $query_stat, $cache, $querytime, $lang;
+
     $debug = (SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
+    $queries = count($query_stat);
     $cachetime = ''; //($cache->Time / 1000);
     $seconds = microtime(true) - $start;
     $r_seconds = round($seconds, 5);
@@ -183,6 +187,7 @@ function stdfoot($stdfoot = false)
     }
     $htmlfoot = '';
     $querytime = 0;
+
     if ($CURUSER && $query_stat && $debug) {
         $htmlfoot .= "
                 <div class='container is-fluid portlet'>
@@ -200,12 +205,12 @@ function stdfoot($stdfoot = false)
                                 </thead>
                                 <tbody>";
         foreach ($query_stat as $key => $value) {
-            $querytime += $value['seconds']; // query execution time
+            $querytime += $value['seconds'];
             $htmlfoot .= '
                                     <tr>
                                         <td>' . ($key + 1) . "</td>
                                         <td><b>" . ($value['seconds'] > 0.01 ? "<span class='is-danger' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='is-success' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</b></td>
-                                        <td><div class='text-justify'>" . htmlsafechars($value['query']) . '</div></td>
+                                        <td><div class='text-justify'>" . format_comment($value['query']) . '</div></td>
                                     </tr>';
         }
         $htmlfoot .= '
@@ -224,7 +229,7 @@ function stdfoot($stdfoot = false)
                 <div class='level bordered bg-04'>
                     <div class='size_4 top10 bottom10'>
                         <p class='is-marginless'>" . $site_config['site_name'] . " {$lang['gl_stdfoot_querys_page']}" . $r_seconds . " {$lang['gl_stdfoot_querys_seconds']}</p>
-                        <p class='is-marginless'>{$lang['gl_stdfoot_querys_server']}" . $queries . " {$lang['gl_stdfoot_querys_time']} " . ($queries != 1 ? "{$lang['gl_stdfoot_querys_times']}" : '') . '</p>
+                        <p class='is-marginless'>{$lang['gl_stdfoot_querys_server']}" . $queries . " {$lang['gl_stdfoot_querys_time']}" . plural($queries) . '</p>
                         ' . ($debug ? '<p class="is-marginless"><b>' . $header . "</b></p><p class='is-marginless'><b>{$lang['gl_stdfoot_uptime']}</b> " . $uptime . '</p>' : '') . "
                     </div>
                     <div class='size_4 top10 bottom10'>
@@ -305,18 +310,17 @@ function stdfoot($stdfoot = false)
  */
 function stdmsg($heading, $text)
 {
+    require_once INCL_DIR . 'html_functions.php';
+
     $htmlout = '';
     if ($heading) {
         $htmlout .= "
                 <h2>$heading</h2>";
     }
     $htmlout .= "
-                <span>$text</span>";
+                <p>$text</p>";
 
-    if (function_exists('main_div')) {
-        return main_div($htmlout);
-    }
-    return $htmlout;
+    return main_div($htmlout, 'bottom20');
 }
 
 /**
@@ -343,16 +347,17 @@ function StatusBar()
  */
 function navbar()
 {
-    global $site_config, $CURUSER, $lang, $cache;
+    global $site_config, $CURUSER, $lang, $cache, $fpdo;
     $navbar = $panel = $user_panel = $settings_panel = $stats_panel = $other_panel = '';
 
     if ($CURUSER['class'] >= UC_STAFF) {
         $staff_panel = $cache->get('staff_panels_' . $CURUSER['class']);
         if ($staff_panel === false || is_null($staff_panel)) {
-            $res = sql_query('SELECT * FROM staffpanel
-                            WHERE navbar = 1 AND av_class <= ' . sqlesc($CURUSER['class']) . '
-                            ORDER BY page_name ASC') or sqlerr(__FILE__, __LINE__);
-            while ($arr = mysqli_fetch_assoc($res)) $staff_panel[] = $arr;
+            $staff_panel = $fpdo->from('staffpanel')
+                ->where('navbar = 1')
+                ->where('av_class <= ?', $CURUSER['class'])
+                ->orderBy('page_name')
+                ->fetchAll();
             $cache->set('staff_panels_' . $CURUSER['class'], $staff_panel, 0);
         }
 
@@ -498,6 +503,7 @@ function navbar()
                                     <li><a href='#' onclick='themes();'>{$lang['gl_theme']}</a></li>
                                     <li><a href='#' onclick='language_select();'>{$lang['gl_language_select']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/friends.php'>{$lang['gl_friends']}</a></li>
+                                    <li><a href='{$site_config['baseurl']}/users.php'>Search Users</a></li>
                                 </ul>
                             </li>
                             <li>

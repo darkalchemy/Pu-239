@@ -66,7 +66,9 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[ $too
         $cache->delete('staff_panels_4');
         if (mysqli_affected_rows($GLOBALS['___mysqli_ston'])) {
             if ($CURUSER['class'] <= UC_MAX) {
-                write_log($lang['spanel_page'] . ' "' . htmlsafechars($arr['page_name']) . '"(' . ($class_color ? '[color="#' . get_user_class_color($arr['av_class']) . '"]' : '') . get_user_class_name($arr['av_class']) . ($class_color ? '[/color]' : '') . ') ' . $lang['spanel_was_del_sp_by'] . ' [url="' . $site_config['baseurl'] . '/userdetails.php?id=' . (int)$CURUSER['id'] . '"]' . $CURUSER['username'] . '[/url](' . ($class_color ? '[color="#' . get_user_class_color($CURUSER['class']) . '"]' : '') . get_user_class_name($CURUSER['class']) . ($class_color ? '[/color]' : '') . ')');
+                $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color($av_class) . "]{$page_name}[/color]'";
+                $user = "[url={$site_config['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=#" . get_user_class_color($CURUSER['class']) . "]{$CURUSER['username']}[/color][/url]";
+                write_log("$page {$lang['spanel_in_the_sp_was']} $action by $user");
             }
             header('Location: ' . $_SERVER['PHP_SELF']);
             exit();
@@ -161,7 +163,10 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[ $too
                 }
                 if (empty($errors)) {
                     if ($CURUSER['class'] <= UC_MAX) {
-                        write_log($lang['spanel_page'] . ' "' . $page_name . '"(' . ($class_color ? '[color="#' . get_user_class_color($av_class) . '"]' : '') . get_user_class_name($av_class) . ($class_color ? '[/color]' : '') . ') ' . $lang['spanel_in_the_sp_was'] . ' ' . ($action == 'add' ? 'added' : 'edited') . ' by [url="' . $site_config['baseurl'] . '/userdetails.php?id=' . $CURUSER['id'] . '">' . $CURUSER['username'] . '[/url](' . ($class_color ? '[color="#' . get_user_class_color($CURUSER['class']) . '"]' : '') . get_user_class_name($CURUSER['class']) . ($class_color ? '[/color]' : '') . ')');
+                        $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color($av_class) . "]{$page_name}[/color]'";
+                        $what = $action == 'add' ? 'added' : 'edited';
+                        $user = "[url={$site_config['baseurl']}/userdetails.php?id={$CURUSER['id']}][color=#" . get_user_class_color($CURUSER['class']) . "]{$CURUSER['username']}[/color][/url]";
+                        write_log("$page {$lang['spanel_in_the_sp_was']} $what by $user");
                     }
                     setSessionVar('is-success', "'{$page_name}' " . ucwords($action) . "ed Successfully");
                     header('Location: ' . $_SERVER['PHP_SELF']);
@@ -259,11 +264,11 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[ $too
 
         $HTMLOUT .= main_table($body, $header);
         $HTMLOUT .= "
-    <div class='has-text-centered margin20'>
-            <input type='submit' class='button' value='{$lang['spanel_submit']}' />
+    <div class='level-center margin20'>
+            <input type='submit' class='button is-small' value='{$lang['spanel_submit']}' />
         </form>
         <form method='post' action='{$_SERVER['PHP_SELF']}'>
-            <input type='submit' class='button' value='{$lang['spanel_cancel']}' />
+            <input type='submit' class='button is-small' value='{$lang['spanel_cancel']}' />
         </form>
     </div>";
         echo stdhead($lang['spanel_header'] . ' :: ' . ($action == 'edit' ? '' . $lang['spanel_edit'] . ' "' . $page_name . '"' : $lang['spanel_add_a_new']) . ' page') . $HTMLOUT . stdfoot();
@@ -311,7 +316,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[ $too
                 if (!in_array($arr['av_class'], $unique_classes)) {
                     $unique_classes[] = $arr['av_class'];
                     $table = "
-            <h2 class='has-text-centered top20 text-shadow'>" . ($class_color ? '<font color="#' . get_user_class_color($arr['av_class']) . '">' : '') . get_user_class_name($arr['av_class']) . '\'s Panel' . ($class_color ? '</font>' : '') . "</h2>
+            <h1 class='has-text-centered top20 text-shadow'>" . ($class_color ? '<font color="#' . get_user_class_color($arr['av_class']) . '">' : '') . get_user_class_name($arr['av_class']) . '\'s Panel' . ($class_color ? '</font>' : '') . "</h1>
             {$add_button}";
                 }
                 $body .= "
