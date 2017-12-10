@@ -264,9 +264,7 @@ $enabled = $user['enabled'] == 'yes';
 $parked = $user['opt1'] & user_options::PARKED ? $lang['userdetails_parked'] : '';
 
 $h1 .= "
-                <div class='has-text-centered'>
-                    <h1>" . format_username($user['id']) . "$country$stealth$watched_user$suspended$h1_thingie$perms$parked</h1>
-                </div>";
+                <h1 class='has-text-centered'>" . format_username($user['id']) . "$country$stealth$watched_user$suspended$h1_thingie$perms$parked</h1>";
 if (!$enabled) {
     $h1 .= $lang['userdetails_disabled'];
 } elseif ($CURUSER['id'] != $user['id']) {

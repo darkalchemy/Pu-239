@@ -398,9 +398,6 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         $s = preg_replace_callback("/\[url\]([^()<>\s]+?)\[\/url\]/is", 'islocal', $s);
     }
 
-    // Linebreaks
-    $s = str_replace(["\r\n", "\r", "\n"], "<br>", $s);
-
     // Dynamic Vars
     $s = dynamic_user_vars($s);
     // [pre]Preformatted[/pre]
@@ -462,7 +459,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     $s = format_quotes($s);
     $s = format_code($s);
     $s = check_BBcode($s);
-    $s = str_replace(['\n', '&lt;br&gt;'], '<br>', $s);
+    $s = str_replace(["\r\n", "\r", "\n", '&lt;br&gt;'], "<br>", $s);
     return $s;
 }
 
@@ -498,18 +495,16 @@ function format_code($s)
                 return $s;
             }
         } // Cannot close before opening. Return raw string...
-        $s = str_replace("\t", '    ', $s);
         $s = str_replace('[code]', "
-            <div class='bordered bg-grey'>
-                <div>
+            <div class='round10'>
+                <div class='size_6 top10 bottom10'>
                     <b>code:</b>
                 </div>
-                <div class='quote'>
-                    <p class='code'>", $s);
+                <pre class='round10'>", $s);
         $s = str_replace('[/code]', "
-                    </p>
-                </div>
-        </div>", $s);
+                </pre>
+            </div>", $s);
+        $s = html_entity_decode($s);
     }
 
     return $s;

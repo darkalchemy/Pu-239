@@ -46,7 +46,7 @@ $HTMLOUT .= "<!doctype html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'htt
                         <option value='3'" . (get_language() == '3' ? " selected='selected'" : '') . ">Rm</option>
                     </select>
                     <br>
-                    <input type='button' value='Close' onclick='self.close()' />
+                    <input type='button' class='button is-small margin20' value='Close' onclick='self.close()' />
                 </p>
             </form>
         </fieldset>

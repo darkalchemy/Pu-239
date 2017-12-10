@@ -1,4 +1,8 @@
 9 Dec 2017
+update: general code cleanup
+update: allow notifications to use bbcode
+fix: wiki.php
+fix: users.php
 update: forums sort links to tabs
 fix: navbar username class color
 add: mini navbar for links in usercp.php, userdetails.php forums.php

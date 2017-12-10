@@ -3,9 +3,7 @@ global $site_config;
 
 $lang = [
     'faq_welcome'            => "
-    <div class='has-text-centered'>
-        <h1>Welcome to {$site_config['site_name']}!</h1>
-    </div>
+    <h1 class='has-text-centered'>Welcome to {$site_config['site_name']}!</h1>
     <p>Our goal is not to become another Bytemonsoon or Suprnova (not dizzying either of them though). The goal is to provide the absolutely latest stuff. Therefore, only specially authorised users have permission to upload torrents. If you have access to 0-day stuff do not hesitate to <a href='{$site_config['baseurl']}/staff.php'>contact</a> us!</p>
     <p>This is a private tracker, and you have to register before you can get full access to the site. Before you do anything here at {$site_config['site_name']} we suggest you read the <a href='{$site_config['baseurl']}/rules.php'>rules</a>! There are only a few rules to abide by, but we do enforce them!</p>
     <p>Before you go any further you should read the {$site_config['site_name']} <a href='{$site_config['baseurl']}/useragreement.php'>user agreement</a>.</p>",

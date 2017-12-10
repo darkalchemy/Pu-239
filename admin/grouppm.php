@@ -200,7 +200,7 @@ $HTMLOUT .= "<fieldset style='border:1px solid #333333; padding:5px;'>
           <td width='100%' >" . dropdown() . "</td>
         </tr>
         <tr>
-         <td><label for='sys'>{$lang['grouppm_sendas']}</label><input id='sys' type='checkbox' name='system' value='yes' /></td><td ><input type='submit' value='{$lang['grouppm_send']}' /></td>
+         <td><label for='sys'>{$lang['grouppm_sendas']}</label><input id='sys' type='checkbox' name='system' value='yes' /></td><td ><input type='submit' value='{$lang['grouppm_send']}' class='button is-small' /></td>
         </tr>
       </table>
     </form>

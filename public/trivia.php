@@ -197,7 +197,7 @@ if (empty($gamenum) || empty($qid)) {
                 </div>
                 <div>
                     <h2 class='has-text-centered has-text-primary'>" . htmlspecialchars_decode($row['question']) . "</h2>
-                    <ul class='level-center'>
+                    <ul class='tabs'>
                         <li>
                             <form id='happy' method='post' action='trivia.php'>
                                 <input type='hidden' name='qid' value='{$qid}'>
@@ -205,7 +205,7 @@ if (empty($gamenum) || empty($qid)) {
                                 <input type='hidden' name='ans' value='answer1'>
                                 <input type='hidden' name='gamenum' value='{$gamenum}'>
                                 <input type='hidden' name='token' value='" . getSessionVar($csrf) . "'>
-                                <input type='submit' value='" . htmlspecialchars_decode($row['answer1']) . "' class='button is-small'>
+                                <input type='submit' value='" . htmlspecialchars_decode($row['answer1']) . "' class='button'>
                             </form>
                         </li>
                         <li>
@@ -215,7 +215,7 @@ if (empty($gamenum) || empty($qid)) {
                                 <input type='hidden' name='ans' value='answer2'>
                                 <input type='hidden' name='gamenum' value='{$gamenum}'>
                                 <input type='hidden' name='token' value='" . getSessionVar($csrf) . "'>
-                                <input type='submit' value='" . htmlspecialchars_decode($row['answer2']) . "' class='button is-small'>
+                                <input type='submit' value='" . htmlspecialchars_decode($row['answer2']) . "' class='button'>
                             </form>
                         </li>";
 
@@ -228,7 +228,7 @@ if (empty($gamenum) || empty($qid)) {
                                 <input type='hidden' name='ans' value='answer3'>
                                 <input type='hidden' name='gamenum' value='{$gamenum}'>
                                 <input type='hidden' name='token' value='" . getSessionVar($csrf) . "'>
-                                <input type='submit' value='" . htmlspecialchars_decode($row['answer3']) . "' class='button is-small'>
+                                <input type='submit' value='" . htmlspecialchars_decode($row['answer3']) . "' class='button'>
                             </form>
                         </li>";
             }
@@ -241,7 +241,7 @@ if (empty($gamenum) || empty($qid)) {
                                 <input type='hidden' name='ans' value='answer4'>
                                 <input type='hidden' name='gamenum' value='{$gamenum}'>
                                 <input type='hidden' name='token' value='" . getSessionVar($csrf) . "'>
-                                <input type='submit' value='" . htmlspecialchars_decode($row['answer4']) . "' class='button is-small'>
+                                <input type='submit' value='" . htmlspecialchars_decode($row['answer4']) . "' class='button'>
                             </form>
                         </li>";
             }
@@ -254,7 +254,7 @@ if (empty($gamenum) || empty($qid)) {
                                 <input type='hidden' name='ans' value='answer5'>
                                 <input type='hidden' name='gamenum' value='{$gamenum}'>
                                 <input type='hidden' name='token' value='" . getSessionVar($csrf) . "'>
-                                <input type='submit' value='" . htmlspecialchars_decode($row['answer5']) . "' class='button is-small'>
+                                <input type='submit' value='" . htmlspecialchars_decode($row['answer5']) . "' class='button'>
                             </form>
                         </li>";
             }

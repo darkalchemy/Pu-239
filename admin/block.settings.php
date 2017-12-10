@@ -108,9 +108,7 @@ if (!is_file(CACHE_DIR . 'block_settings_cache.php')) {
 
 $HTMLOUT = "
     <form action='./staffpanel.php?tool=block.settings' method='post'>
-        <div class='margin20'>
-            <h1>{$lang['block_global']}</h1>
-        </div>
+        <h1 class='has-text-centered'>{$lang['block_global']}</h1>
         <div class='bg-02'>
         <fieldset id='user_blocks_home' class='header'>
             <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-is_hidden='true'></i>{$lang['block_index']}</legend>

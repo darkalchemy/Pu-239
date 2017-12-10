@@ -91,9 +91,7 @@ switch ($do) {
             if (mysqli_num_rows($q2) == 1) {
                 $a = mysqli_fetch_assoc($q2);
                 $HTMLOUT .= "
-                    <div class='has-text-centered'>
-                        <h1>{$lang['staffbox_pm_view']}</h1>
-                    </div>" . main_div("
+                    <h1 class='has-text-centered'>{$lang['staffbox_pm_view']}</h1>" . main_div("
                     <form action='{$_SERVER['PHP_SELF']}' method='post'>
                         <div class='bordered top20 bottom20 bg-00'>
                             <div>{$lang['staffbox_pm_from']}: " . format_username($a['sender']) . " at " . get_date($a['added'], 'DATE', 1) . "</div>
@@ -118,7 +116,7 @@ switch ($do) {
                             <input type='submit' class='button is-small' value='{$lang['staffbox_confirm']}' />
                         </div>
                     </form>");
-                echo stdhead('StaffBox', true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
+                echo stdhead('StaffBox') . wrapper($HTMLOUT) . stdfoot();
             } else {
                 setSessionVar('is-warning', $lang['staffbox_msg_noid']);
                 header("Location: {$_SERVER['PHP_SELF']}");
@@ -157,13 +155,11 @@ switch ($do) {
         $pager = pager($perpage, $count_msgs, 'staffbox.php?');
         if (!$count_msgs) {
             setSessionVar('is-warning', $lang['staffbox_no_msgs']);
-            header("Location: {$_SERVER['PHP_SELF']}");
+            header("Location: index.php");
             die();
         } else {
             $HTMLOUT .= "
-                    <div class='has-text-centered'>
-                        <h1>{$lang['staffbox_info']}</h1>
-                    </div>
+                    <h1 class='has-text-centered'>{$lang['staffbox_info']}</h1>
                     <form method='post' name='staffbox' action='{$_SERVER['PHP_SELF']}'>";
             $HTMLOUT .= $pager['pagertop'];
             $head = "
@@ -200,7 +196,7 @@ switch ($do) {
                 </div>
             </form>";
             $HTMLOUT .= $pager['pagerbottom'];
-            $HTMLOUT = wrapper($HTMLOUT, null, null, null, null);
+            $HTMLOUT = wrapper($HTMLOUT);
         }
-        echo stdhead($lang['staffbox_head'], true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        echo stdhead($lang['staffbox_head']) . wrapper($HTMLOUT) . stdfoot();
 }

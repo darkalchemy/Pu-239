@@ -316,7 +316,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[ $too
                 if (!in_array($arr['av_class'], $unique_classes)) {
                     $unique_classes[] = $arr['av_class'];
                     $table = "
-            <h2 class='has-text-centered top20 text-shadow'>" . ($class_color ? '<font color="#' . get_user_class_color($arr['av_class']) . '">' : '') . get_user_class_name($arr['av_class']) . '\'s Panel' . ($class_color ? '</font>' : '') . "</h2>
+            <h1 class='has-text-centered top20 text-shadow'>" . ($class_color ? '<font color="#' . get_user_class_color($arr['av_class']) . '">' : '') . get_user_class_name($arr['av_class']) . '\'s Panel' . ($class_color ? '</font>' : '') . "</h1>
             {$add_button}";
                 }
                 $body .= "
