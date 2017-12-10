@@ -957,6 +957,7 @@ textarea {
 .tabs ul {
     border: none;
 }
+
 .tabcontent.active {
     overflow: hidden;
 }

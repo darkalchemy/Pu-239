@@ -43,7 +43,7 @@ if ($message['location'] > 1) {
                                            ' . $lang['pm_mailbox_max'] . '<span style="font-weight: bold;">' . $maxbox . '</span>' . $lang['pm_mailbox_either'] . '
                                             <span style="font-weight: bold;">' . $lang['pm_mailbox_inbox'] . '</span>' . $lang['pm_mailbox_or'] . '<span style="font-weight: bold;">' . $lang['pm_mailbox_sentbox'] . '</span>.</p>';
 }
-//=== Display the message already!
+
 $HTMLOUT .= "
     <div class='container is-fluid portlet'>
         $h1_thingie" . ($message['draft'] === 'yes' ? "
@@ -75,33 +75,33 @@ $HTMLOUT .= "
                             <input type='hidden' name='action' value='{$lang['pm_viewmsg_to']}' />
                             <span class='right10'>{$lang['pm_search_move_to']}</span>
                             " . get_all_boxes() . "
-                            <input type='submit' class='button left10' value='{$lang['pm_viewmsg_move']}' />
+                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_move']}' />
                         </form>
                     </div>
-                    <div class='has-text-centered flex flex-center'>
+                    <div class='has-text-centered flex flex-center top20'>
                         <a href='./pm_system.php?action=delete&amp;id={$pm_id}'>
                             <input type='submit' class='button is-small' value='{$lang['pm_viewmsg_delete']}' />
                         </a>" . ($message['draft'] === 'no' ? "
                         <a href='./pm_system.php?action=save_or_edit_draft&amp;id={$pm_id}'>
-                            <input type='submit' class='button left10' value='{$lang['pm_viewmsg_sdraft']}' />
+                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_sdraft']}' />
                         </a>" . (($id < 1 || $message['sender'] === $CURUSER['id']) ? '' : "
                         <a href='./pm_system.php?action=send_message&amp;receiver={$message['sender']}&amp;replyto={$pm_id}'>
-                            <input type='submit' class='button left10' value='{$lang['pm_viewmsg_reply']}' />
+                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_reply']}' />
                         </a>
                         <a href='./pm_system.php?action=forward&amp;id={$pm_id}'>
-                            <input type='submit' class='button left10' value='{$lang['pm_viewmsg_fwd']}' />
+                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_fwd']}' />
                         </a>") : "
                         <a href='./pm_system.php?action=save_or_edit_draft&amp;edit=1&amp;id={$pm_id}'>
-                            <input type='submit' class='button left10' value='{$lang['pm_viewmsg_dedit']}' />
+                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_dedit']}' />
                         </a>
                         <a href='./pm_system.php?action=use_draft&amp;send=1&amp;id={$pm_id}'>
-                            <input type='submit' class='button left10' value='{$lang['pm_viewmsg_duse']}' />
+                            <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_duse']}' />
                         </a>") . "
                     </div>
                 </td>
             </tr>
         </table>
-        <div class='has-text-centered bottom20'>
+        <div class='has-text-centered top20 bottom20'>
             " . insertJumpTo(0) . "
         </div>
     </div>";

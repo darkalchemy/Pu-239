@@ -20,8 +20,6 @@ function get_file($file)
                     return "{$site_config['baseurl']}/js/{$style}/ed60e7cc875b105033df67ce982079b8.min.js";
                 case 'checkport_js':
                     return "{$site_config['baseurl']}/js/{$style}/4ba42503ffca4c65167590b15a03b842.min.js";
-                case 'trivia_css':
-                    return "{$site_config['baseurl']}/css/{$style}/bbc3599653fa81862c08d7408f1e9e81.min.css";
                 case 'chatjs':
                     return "{$site_config['baseurl']}/js/{$style}/51861057fa874ff822221e34066eeb8f.min.js";
                 case 'chat_log_js':
@@ -63,8 +61,6 @@ function get_file($file)
                     return "{$site_config['baseurl']}/js/{$style}/e0653c3c2af1463d75e34d34d48197f5.js";
                 case 'checkport_js':
                     return "{$site_config['baseurl']}/js/{$style}/4a99c7d4e3c8639af2775ef05d500598.js";
-                case 'trivia_css':
-                    return "{$site_config['baseurl']}/css/{$style}/6d16ba1db74e9ad98caec53925edb143.css";
                 case 'chatjs':
                     return "{$site_config['baseurl']}/js/{$style}/dae6d208a7491b285dc24dd4243697ed.js";
                 case 'chat_log_js':
