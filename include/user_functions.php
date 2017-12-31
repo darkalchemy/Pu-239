@@ -48,6 +48,7 @@ function autoshout($msg, $channel = 0, $ttl = 7200)
                         (:userID, :userName, :userRole, :channel, :dateTime, INET6_ATON(:ip), :text, :ttl)'
         );
         $stmt->execute($values);
+        file_put_contents('/var/log/nginx/searchapi23.log', json_encode($values) . PHP_EOL, FILE_APPEND);
     }
 }
 
