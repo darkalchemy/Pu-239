@@ -27,27 +27,27 @@ $sql_updates = [
     ],
     [
         'id'    => 5,
+        'info'  => 'Remove unnecessary column',
+        'date'  => '31 Dec, 2017',
+        'query' => 'ALTER TABLE `database_updates` DROP COLUMN `info`;',
+    ],
+    [
+        'id'    => 6,
         'info'  => 'Update last_action default value',
         'date'  => '10 Dec, 2017',
         'query' => 'ALTER TABLE `peers` MODIFY `last_action` int(10) unsigned NOT NULL DEFAULT 0;',
     ],
     [
-        'id'    => 6,
+        'id'    => 7,
         'info'  => 'Update prev_action default value',
         'date'  => '10 Dec, 2017',
         'query' => 'ALTER TABLE `peers` MODIFY `prev_action` int(10) unsigned NOT NULL DEFAULT 0;',
     ],
     [
-        'id'    => 7,
+        'id'    => 8,
         'info'  => 'Add unique index on ips table',
         'date'  => '11 Dec, 2017',
         'query' => 'ALTER TABLE `ips` ADD UNIQUE INDEX `ip_userid`(`ip`, `userid`);',
-    ],
-    [
-        'id'    => 8,
-        'info'  => 'Remove unnecessary column',
-        'date'  => '31 Dec, 2017',
-        'query' => 'ALTER TABLE `database_updates` DROP COLUMN `info`;',
     ],
     [
         'id'    => 9,
