@@ -1,5 +1,5 @@
 31 Dec 2017
-add: datetaime for mysql
+add: datetime for mysql
 update: re-order sql updates
 update: database updates
 update: CACHE class
