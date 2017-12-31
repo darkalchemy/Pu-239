@@ -145,4 +145,22 @@ $sql_updates = [
         'date'  => '31 Dec, 2017',
         'query' => 'ALTER TABLE `users` MODIFY `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL',
     ],
+    [
+        'id'    => 25,
+        'info'  => 'Drop Index',
+        'date'  => '31 Dec, 2017',
+        'query' => 'ALTER TABLE `tokens` DROP INDEX `password_resets_email_index`',
+    ],
+    [
+        'id'    => 26,
+        'info'  => 'Create Index',
+        'date'  => '31 Dec, 2017',
+        'query' => 'ALTER TABLE `tokens` ADD INDEX `id`(`id`)',
+    ],
+    [
+        'id'    => 27,
+        'info'  => 'Create Index',
+        'date'  => '31 Dec, 2017',
+        'query' => 'ALTER TABLE `tokens` ADD INDEX `email`(`email`)',
+    ],
 ];

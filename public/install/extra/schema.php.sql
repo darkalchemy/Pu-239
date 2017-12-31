@@ -159,7 +159,8 @@ CREATE TABLE `ajax_chat_online` (
   `ip` varbinary(16) NOT NULL,
   PRIMARY KEY (`userID`),
   KEY `userName` (`userName`),
-  CONSTRAINT `ajax_chat_online_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `ajax_chat_online_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `ajax_chat_online_ibfk_2` FOREIGN KEY (`userName`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -415,7 +416,8 @@ CREATE TABLE `bookmarks` (
   KEY `userid` (`userid`),
   KEY `torrentid` (`torrentid`),
   CONSTRAINT `bookmarks_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `bookmarks_ibfk_2` FOREIGN KEY (`torrentid`) REFERENCES `torrents` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `bookmarks_ibfk_2` FOREIGN KEY (`torrentid`) REFERENCES `torrents` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `bookmarks_ibfk_3` FOREIGN KEY (`torrentid`) REFERENCES `torrents` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1197,7 +1199,8 @@ CREATE TABLE `messages` (
   KEY `sender` (`sender`),
   FULLTEXT KEY `ft_subject` (`subject`),
   FULLTEXT KEY `ft_msg` (`msg`),
-  FULLTEXT KEY `ft_subject_msg` (`subject`,`msg`)
+  FULLTEXT KEY `ft_subject_msg` (`subject`,`msg`),
+  CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`receiver`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1876,7 +1879,8 @@ CREATE TABLE `staffmessages` (
   PRIMARY KEY (`id`),
   KEY `answeredby` (`answeredby`),
   KEY `sender` (`sender`),
-  CONSTRAINT `staffmessages_ibfk_1` FOREIGN KEY (`sender`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `staffmessages_ibfk_1` FOREIGN KEY (`sender`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `staffmessages_ibfk_2` FOREIGN KEY (`answeredby`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2647,4 +2651,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-31 18:42:49
+-- Dump completed on 2017-12-31 19:48:04
