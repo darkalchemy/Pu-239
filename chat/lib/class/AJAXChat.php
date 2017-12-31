@@ -986,13 +986,15 @@ class AJAXChat
     /**
      * @param $userID
      * @param $userName
+     *
+     * @throws Exception
      */
     public function setInactive($userID, $userName)
     {
         global $fluent;
 
         $set = [
-            'dateTime' => get_date(TIME_NOW - ($this->getConfig('inactiveTimeout') * 60) - 60, 'MYSQL', 1),
+            'dateTime' => gmdate("Y-m-d H:i:s", TIME_NOW - ($this->getConfig('inactiveTimeout') * 60) - 60),
         ];
 
         $fluent->update($this->getDataBaseTable('online'))
@@ -1201,7 +1203,7 @@ class AJAXChat
         global $fluent;
 
         $fluent->deleteFrom($this->getDataBaseTable('messages'))
-            ->where('dateTime < ?', get_date(TIME_NOW - ($this->getConfig('logsPurgeTimeDiff') * 86400), 'MYSQL', 1))
+            ->where('dateTime < ?', gmdate("Y-m-d H:i:s", TIME_NOW - ($this->getConfig('logsPurgeTimeDiff') * 86400)))
             ->execute();
     }
 
@@ -1659,8 +1661,6 @@ class AJAXChat
                 userName = VALUES(userName), userRole = VALUES(userRole), channel = VALUES(channel), dateTime = VALUES(dateTime), ip = VALUES(ip)';
         $stmt = $pdo->prepare($sql);
         $stmt->execute($values);
-
-        $query = PdoDebugger::show($sql, $values);
 
         $this->resetOnlineUsersData();
     }

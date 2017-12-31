@@ -35,7 +35,7 @@ function autoshout($msg, $channel = 0, $ttl = 7200)
             'userName' => $site_config['chatBotName'],
             'userRole' => 100,
             'channel'  => $channel,
-            'dateTime' => get_date(TIME_NOW, 'MYSQL', 1),
+            'dateTime' => gmdate("Y-m-d H:i:s", TIME_NOW),
             'ip'       => '127.0.0.1',
             'text'     => $msg,
             'ttl'      => $ttl,

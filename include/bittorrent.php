@@ -1137,7 +1137,6 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
         'LONG'   => $site_config['time_long'],
         'TINY'   => $site_config['time_tiny'] ? $site_config['time_tiny'] : 'j M Y - G:i',
         'DATE'   => $site_config['time_date'] ? $site_config['time_date'] : 'j M Y',
-        'MYSQL'  => 'Y-m-d H:i:s',
     ];
     if (!$date) {
         return '--';

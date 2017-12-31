@@ -1,4 +1,5 @@
 31 Dec 2017
+fix: AJAX Chat dateTime insert
 add: datetime for mysql
 update: re-order sql updates
 update: database updates
