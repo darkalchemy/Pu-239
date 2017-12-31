@@ -111,21 +111,21 @@ $sql_updates = [
     ],
     [
         'id'    => 19,
-        'info'  => 'Drop Index',
-        'date'  => '31 Dec, 2017',
-        'query' => 'ALTER TABLE `invite_codes` DROP INDEX `sender_2`',
-    ],
-    [
-        'id'    => 20,
         'info'  => 'Add Index',
         'date'  => '31 Dec, 2017',
         'query' => 'ALTER TABLE `invite_codes` ADD INDEX `sender`(`sender`)',
     ],
     [
+        'id'    => 20,
+        'info'  => 'Drop Index',
+        'date'  => '31 Dec, 2017',
+        'query' => 'ALTER TABLE `invite_codes` DROP INDEX `sender_2`',
+    ],
+    [
         'id'    => 21,
         'info'  => 'Rename Table',
         'date'  => '31 Dec, 2017',
-        'query' => 'RENAME `password_resets` TO `tokens`' ,
+        'query' => 'RENAME TABLE `password_resets` TO `tokens`' ,
     ],
     [
         'id'    => 22,

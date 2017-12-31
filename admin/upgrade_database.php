@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
             setSessionVar('is-success', "Query #$id ran without error");
         } else {
-            setSessionVar('is-danger', "Query #$id failed to run, try to run manually<br>" . htmlsafechars($sql));
+            setSessionVar('is-danger', "[p]Query #$id failed to run, try to run manually[/p][p]" . htmlsafechars($sql) . "[/p]");
         }
     }
 }
