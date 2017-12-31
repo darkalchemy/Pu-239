@@ -84,12 +84,14 @@ if (file_exists(DATABASE_DIR)) {
     preg_match('/LIMIT (\d*),(\d*)/i', $pager['limit'], $match);
     $first = isset($match[1]) ? $match[1] : 0;
     $last = isset($match[2]) ? $match[1] + $per_page : end($sql_updates)['id'];
+    $page = !empty($_GET['page']) ? "&page={$_GET['page']}" : '';
+
     foreach ($sql_updates as $update) {
         if ($update['id'] > $first && $update['id'] <= $last) {
             $button = "
-                <form action='{$site_config['baseurl']}/staffpanel.php?tool=upgrade_database' method='post'>
+                <form action='{$site_config['baseurl']}/staffpanel.php?tool=upgrade_database{$page}' method='post'>
                     <input type='hidden' name='id' value={$update['id']}>
-                    <input class='button is-primary is-small' type='submit' name='submit' value='Run Query' />
+                    <input class='button is-small' type='submit' name='submit' value='Run Query' />
                 </form>";
             $body .= "
         <tr>

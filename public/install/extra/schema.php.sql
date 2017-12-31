@@ -1087,7 +1087,7 @@ CREATE TABLE `invite_codes` (
   `sender` int(10) unsigned NOT NULL DEFAULT '0',
   `receiver` int(10) unsigned NOT NULL DEFAULT '0',
   `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `added` int(10) NOT NULL,
+  `added` int(10) unsigned NOT NULL DEFAULT '0',
   `status` enum('Pending','Confirmed') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Pending',
   `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -2647,4 +2647,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-31 17:38:01
+-- Dump completed on 2017-12-31 18:42:49
