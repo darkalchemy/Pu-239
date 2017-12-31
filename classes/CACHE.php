@@ -64,13 +64,17 @@ class CACHE extends \MatthiasMullie\Scrapbook\Buffered\TransactionalStore
      * @param     $key
      * @param     $set
      * @param int $ttl
+     *
+     * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
      */
     public function update_row($key, $set, $ttl = 0)
     {
         $this->begin();
         $array = $this->get($key);
-        $array = array_replace($array, $set);
-        $this->set($key, $array, $ttl);
+        if (!empty($array)) {
+            $array = array_replace($array, $set);
+            $this->set($key, $array, $ttl);
+        }
         $this->commit();
     }
 }
