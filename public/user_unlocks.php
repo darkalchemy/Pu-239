@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'perms' => $row['perms'],
     ], $site_config['expires']['user_cache']);
     header('Location: ' . $site_config['baseurl'] . '/user_unlocks.php');
-    exit();
+    die();
 }
 $checkbox_unlock_moods = (($CURUSER['perms'] & bt_options::UNLOCK_MORE_MOODS) ? ' checked' : '');
 $checkbox_unlock_stealth = (($CURUSER['perms'] & bt_options::PERMS_STEALTH) ? ' checked' : '');

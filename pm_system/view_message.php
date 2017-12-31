@@ -13,8 +13,8 @@ $res_user_stuff = sql_query('SELECT id, username, uploaded, warned, suspended, e
 $arr_user_stuff = mysqli_fetch_assoc($res_user_stuff);
 $id = (int)$arr_user_stuff['id'];
 //=== Mark message read
-sql_query('UPDATE messages SET unread=\'no\' WHERE id = ' . sqlesc($pm_id) . ' AND receiver = ' . sqlesc($CURUSER['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
-$cache->increment('inbox_' . $CURUSER['id']);
+sql_query('UPDATE messages SET unread="no" WHERE id = ' . sqlesc($pm_id) . ' AND receiver = ' . sqlesc($CURUSER['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+$cache->decrement('inbox_' . $CURUSER['id']);
 if ($message['friend'] > 0) {
     $friends = '' . $lang['pm_mailbox_char1'] . '<span class="size_2"><a href="friends.php?action=delete&amp;type=friend&amp;targetid=' . $id . '">' . $lang['pm_mailbox_removef'] . '</a></span>' . $lang['pm_mailbox_char2'] . '';
 } elseif ($message['blocked'] > 0) {

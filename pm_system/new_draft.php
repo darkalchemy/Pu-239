@@ -19,7 +19,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == 'save draft') {
         stderr($lang['pm_error'], $lang['pm_draft_err2']);
     }
     header('Location: pm_system.php?action=view_message&new_draft=1&id=' . $new_draft_id);
-    exit();
+    die();
 }
 
 $HTMLOUT .= $top_links . '<h1>' . $lang['pm_draft_new'] . '</h1>' . '

@@ -9,7 +9,7 @@ $HTMLOUT = '';
 if (empty($_GET['id'])) {
     setSessionVar('is-warning', 'Invalid Information');
     header("Location: {$site_config['baseurl']}/index.php");
-    exit();
+    die();
 }
 $id = (int)$_GET['id'];
 if (!is_valid_id($id)) {

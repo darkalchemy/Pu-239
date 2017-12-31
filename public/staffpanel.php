@@ -71,7 +71,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[ $too
                 write_log("$page {$lang['spanel_in_the_sp_was']} $action by $user");
             }
             header('Location: ' . $_SERVER['PHP_SELF']);
-            exit();
+            die();
         } else {
             stderr($lang['spanel_error'], $lang['spanel_db_error_msg']);
         }
@@ -170,7 +170,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[ $too
                     }
                     setSessionVar('is-success', "'{$page_name}' " . ucwords($action) . "ed Successfully");
                     header('Location: ' . $_SERVER['PHP_SELF']);
-                    exit();
+                    die();
                 }
             }
         }

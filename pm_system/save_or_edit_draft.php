@@ -24,7 +24,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == 'save as draft') {
         stderr($lang['pm_error'], $lang['pm_draft_wasnt']);
     }
     header('Location: /pm_system.php?action=view_mailbox&box=-2&new_draft=1');
-    exit();
+    die();
 } //=== end save draft
 //=== Code for preview Retros code
 if (isset($_POST['buttonval']) && $_POST['buttonval'] == 'preview') {

@@ -1,3 +1,17 @@
+31 Dec 2017
+update: install scripts
+fix: invite signup
+fix: signup confirm
+update: many additional edits
+update: sql files
+
+16 Dec 2017
+add: read from .env file
+update: installer to check composer and npm
+update: split install.php.sql into schema.php.sql and data.php.sql
+update: pStrength.jquery.js
+fix: autologin on successful account creation
+
 10 Dec 2017
 fix: index trivia block display slightly different than all the others
 add: add bbcode for [p]
@@ -62,7 +76,7 @@ remove: redis requirement
 remove: memcached and php-memcache requirement
 
 14 Nov 2017
-update: GeoIP files 
+update: GeoIP files
 fix: iphistory.php view ip
 fix: userdetails.php view ip
 add: transition to notification buttons
@@ -96,7 +110,7 @@ update: raphael.js 2.2.7
 
 6 Nov 2017
 replace: jquery-ui accordion with smaller alternative
-add: missing markItUp css 
+add: missing markItUp css
 optimize: gif images using gifsicle
 
 5 Nov 2017

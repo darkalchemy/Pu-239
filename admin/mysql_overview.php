@@ -99,7 +99,7 @@ $HTMLOUT .= "<h2>{$lang['mysql_over_title']}</h2>
             
     <!-- End table headers -->";
 $count = 0;
-$res = @sql_query("SHOW TABLE STATUS FROM {$site_config['mysql_db']}") or stderr(__FILE__, __LINE__);
+$res = @sql_query("SHOW TABLE STATUS FROM {$_ENV['DB_DATABASE']}") or stderr(__FILE__, __LINE__);
 while ($row = mysqli_fetch_array($res)) {
     list($formatted_Avg, $formatted_Abytes) = byteformat($row['Avg_row_length']);
     list($formatted_Dlength, $formatted_Dbytes) = byteformat($row['Data_length']);

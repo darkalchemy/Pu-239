@@ -1,10 +1,10 @@
 <?php
-global $site_config, $CURUSER, $cache, $lang, $fpdo;
+global $site_config, $CURUSER, $cache, $lang, $fluent;
 
 if ($site_config['report_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $delt_with = $cache->get('new_report_');
     if ($delt_with === false || is_null($delt_with)) {
-        $res_reports = $fpdo->from('reports')
+        $res_reports = $fluent->from('reports')
             ->select(null)
             ->select('COUNT(id) AS count')
             ->where('delt_with = 0')

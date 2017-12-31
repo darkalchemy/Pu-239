@@ -33,11 +33,11 @@ if ($mode == 'lock') {
     sql_query('UPDATE posts SET status = \'postlocked\', staff_lock=1 WHERE id = ' . sqlesc($post_id));
     //=== ok, all done here, send them back! \o/
     header('Location: forums.php?action=view_topic&post_id=' . $post_id . '&topic_id=' . $topic_id);
-    exit();
+    die();
 }
 if ($mode == 'unlock') {
     sql_query('UPDATE posts SET status = \'ok\', staff_lock=0 WHERE id = ' . sqlesc($post_id));
     //=== ok, all done here, send them back! \o/
     header('Location: forums.php?action=view_topic&post_id=' . $post_id . '&topic_id=' . $topic_id);
-    exit();
+    die();
 }

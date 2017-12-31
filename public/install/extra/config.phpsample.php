@@ -12,8 +12,6 @@ if (get_magic_quotes_gpc() || get_magic_quotes_runtime() || ini_get('magic_quote
 if (ini_get('register_long_arrays') || ini_get('register_globals') || ini_get('safe_mode')) {
     die('PHP is configured incorrectly. Turn off safe_mode, register_globals and register_long_arrays.');
 }
-define('SQL_DEBUG', 1);
-define('XBT_TRACKER', false);
 
 //==charset
 $site_config['char_set'] = 'UTF-8'; //also to be used site wide in meta tags
@@ -30,7 +28,6 @@ if (version_compare(PHP_VERSION, REQUIRED_PHP_VERSION, '>=')) {
     date_default_timezone_set('UTC');
 }
 
-define('TIME_NOW', time());
 $site_config['time_adjust'] = 0;
 $site_config['time_offset'] = '0';
 $site_config['time_use_relative'] = 1;
@@ -40,11 +37,6 @@ $site_config['time_short'] = 'jS F Y - h:i:s A';
 $site_config['time_long'] = 'M j Y, h:i:s A';
 $site_config['time_tiny'] = '';
 $site_config['time_date'] = '';
-//== DB setup
-$site_config['mysql_host'] = '#mysql_host';
-$site_config['mysql_user'] = '#mysql_user';
-$site_config['mysql_pass'] = '#mysql_pass';
-$site_config['mysql_db'] = '#mysql_db';
 //== Cookie setup
 $site_config['sessionName'] = '#sessionName'; // A single word that identifies this install.
 $site_config['cookie_prefix'] = '#cookie_prefix_'; // This allows you to have multiple trackers, eg for demos, testing etc.
@@ -172,25 +164,6 @@ $site_config['BBcode'] = 1; // 1/0 on/off
 $site_config['inviteusers'] = 10000;
 $site_config['flood_time'] = 900; //comment/forum/pm flood limit
 $site_config['readpost_expiry'] = 14 * 86400; // 14 days
-/* define dirs **/
-define('INCL_DIR', dirname(__FILE__) . DIRECTORY_SEPARATOR);
-define('ROOT_DIR', realpath(INCL_DIR . '..' . DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR);
-define('ADMIN_DIR', ROOT_DIR . 'admin' . DIRECTORY_SEPARATOR);
-define('FORUM_DIR', ROOT_DIR . 'forums' . DIRECTORY_SEPARATOR);
-define('PM_DIR', ROOT_DIR . 'pm_system' . DIRECTORY_SEPARATOR);
-define('PIMP_DIR', ROOT_DIR . 'PimpMyLog' . DIRECTORY_SEPARATOR);
-define('CACHE_DIR', ROOT_DIR . 'cache' . DIRECTORY_SEPARATOR);
-define('MODS_DIR', ROOT_DIR . 'mods' . DIRECTORY_SEPARATOR);
-define('LANG_DIR', ROOT_DIR . 'lang' . DIRECTORY_SEPARATOR);
-define('TEMPLATE_DIR', ROOT_DIR . 'templates' . DIRECTORY_SEPARATOR);
-define('BLOCK_DIR', ROOT_DIR . 'blocks' . DIRECTORY_SEPARATOR);
-define('IMDB_DIR', ROOT_DIR . 'imdb' . DIRECTORY_SEPARATOR);
-define('CLASS_DIR', INCL_DIR . 'class' . DIRECTORY_SEPARATOR);
-define('CLEAN_DIR', INCL_DIR . 'cleanup' . DIRECTORY_SEPARATOR);
-define('PUBLIC_DIR', ROOT_DIR . 'public' . DIRECTORY_SEPARATOR);
-define('IMAGES_DIR', PUBLIC_DIR . 'images' . DIRECTORY_SEPARATOR);
-define('VENDOR_DIR', ROOT_DIR . 'vendor' . DIRECTORY_SEPARATOR);
-define('DATABASE_DIR', ROOT_DIR . 'database' . DIRECTORY_SEPARATOR);
 
 $site_config['cache'] = ROOT_DIR . 'cache';
 $site_config['backup_dir'] = INCL_DIR . 'backup';
@@ -200,7 +173,7 @@ $site_config['sub_up_dir'] = ROOT_DIR . 'uploadsub'; // must be writable for htt
 $site_config['flood_file'] = INCL_DIR . 'settings' . DIRECTORY_SEPARATOR . 'limitfile.txt';
 $site_config['nameblacklist'] = ROOT_DIR . 'cache' . DIRECTORY_SEPARATOR . 'nameblacklist.txt';
 $site_config['happyhour'] = CACHE_DIR . 'happyhour' . DIRECTORY_SEPARATOR . 'happyhour.txt';
-$site_config['sql_error_log'] = ROOT_DIR . 'sqlerr_logs' . DIRECTORY_SEPARATOR . 'sql_err_' . date('M_D_Y') . '.log';
+$site_config['sql_error_log'] = SQLERROR_LOGS_DIR . 'sql_err_' . date('M_D_Y') . '.log';
 //== XBT or PHP announce
 if (XBT_TRACKER == true) {
     $site_config['xbt_prefix'] = '#announce_urls:2710/';
@@ -249,8 +222,6 @@ $site_config['sig_img_height'] = 100;
 $site_config['sig_img_width'] = 500;
 
 //== Image uploads
-define('BITBUCKET_DIR', ROOT_DIR . 'bucket' . DIRECTORY_SEPARATOR);
-define('AVATAR_DIR', BITBUCKET_DIR . 'avatar' . DIRECTORY_SEPARATOR);
 $site_config['bucket_allowed'] = 0;
 $site_config['allowed_ext'] = [
     'image/gif',
@@ -260,20 +231,17 @@ $site_config['allowed_ext'] = [
 $upload_max_filesize = ini_get('upload_max_filesize') !== null ? return_bytes(ini_get('upload_max_filesize')) : 0;
 $post_max_filesize = ini_get('post_max_filesize') !== null ? return_bytes(ini_get('post_max_filesize')) : 0;
 $site_config['bucket_maxsize'] = $upload_max_filesize >= $post_max_filesize ? $upload_max_filesize : $post_max_filesize;
-//==Class check by pdq
 $site_config['site']['owner'] = 1;
-//== Salt - change this
 $site_config['site']['salt'] = 'jgutyxcjsak2';
-//= Change staff pin daily or weekly
-$site_config['staff']['staff_pin'] = 'uFie0y3Ihjkij8'; // should be mix of u/l case and min 12 chars length
-//= Change owner pin daily or weekly
-$site_config['staff']['owner_pin'] = 'jjko4kuogqhjj0'; // should be mix of u/l case and min 12 chars length
-//== Staff forum ID for autopost
-$site_config['staff']['forumid'] = 2; // this forum ID should exist and be a staff forum
+$site_config['staff']['staff_pin'] = 'uFie0y3Ihjkij8';
+$site_config['staff']['owner_pin'] = 'jjko4kuogqhjj0';
+
+$site_config['staff']['forumid'] = 2;
 $site_config['staff_forums'] = [
     1,
     2,
-]; // these forum ID's' should exist and be a staff forum's to stop autoshouts
+];
+
 $site_config['variant'] = 'Pu-239';
 
 // Arcade Games
@@ -283,16 +251,3 @@ $site_config['top_score_points'] = 1000;
 
 $site_config['bad_words'] = ['fuck', 'shit', 'Moderator', 'Administrator', 'Admin', 'pussy', 'Sysop', 'cunt', 'nigger', 'VIP', 'Super User', 'Power User', 'ADMIN', 'SYSOP', 'MODERATOR', 'ADMINISTRATOR'];
 $site_config['notifications'] = ['is-danger', 'is-warning', 'is-success', 'is-info', 'is-link'];
-
-// cache
-// file:         default - no dependancies
-// memcached:    memcached and php-memcached required
-// redis:        redis-server and php-redis required
-// apcu:         php-apcu required
-// couchbase:    couchbase pecl required
-$site_config['cache_adapter'] = 'file'; // file, redis, apcu, memcached, couchbase
-$site_config['redis_host'] = '127.0.0.1';
-$site_config['redis_port'] = '6379';
-$site_config['filesystem_path'] = '/dev/shm/' . str_replace(' ', '_', $site_config['site_name']);
-$site_config['memcached_host'] = '127.0.0.1';
-$site_config['memcached_port'] = '11211';

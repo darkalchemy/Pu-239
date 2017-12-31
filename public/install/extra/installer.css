@@ -1,73 +1,92 @@
 body {
-  background: #dadada;
-  font-family: "Trebuchet MS";
-  color: #666;
-  font-size: 12px;
-  margin: 0;
-  padding: 0
+    background: #dadada;
+    font-family: "Trebuchet MS";
+    color: #666;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
 }
+
 #wrapper {
-  margin: 50px auto;
-  width: 375px;
-  position: relative
+    margin: 50px auto;
+    width: 375px;
+    position: relative;
 }
+
 fieldset,
 legend {
-  border: 1px solid #222;
-  -moz-border-radius: 5px;
-  border-bottom-width: 2px
+    border: 1px solid #222;
+    -webkit-border-radius: .3125em;
+    -moz-border-radius: .3125em;
+    border-radius: .3125em;
+    border-bottom-width: 2px
 }
+
 fieldset {
-  margin-bottom: 10px
+    margin-bottom: 10px;
 }
+
 legend {
-  font-weight: 700;
-  font-size: 14px
+    font-weight: 700;
+    font-size: 14px;
+    padding: 5px;
 }
+
 .input_text {
-  white-space: nowrap;
-  text-align: right;
-  font-weight: 700;
-  width: 130px!important;
-  display: inline-block;
-  line-height: 18px;
+    white-space: nowrap;
+    text-align: right;
+    font-weight: 700;
+    width: 130px !important;
+    display: inline-block;
+    line-height: 18px;
 }
+
 td.input_input input {
-  -moz-border-radius: 3px;
-  padding: 2px;
-  border: 1px solid #000;
-  vertical-align: top
+    -webkit-border-radius: .3125em;
+    -moz-border-radius: .3125em;
+    border-radius: .3125em;
+    padding: 3px 10px;
+    border: 1px solid #000;
+    vertical-align: top;
 }
+
 .input_info,
 tr:hover .input_info {
-  width: 100%;
-  visibility: hidden
+    width: 100%;
+    visibility: hidden;
 }
+
 tr:hover .input_info {
-  visibility: visible
+    visibility: visible;
 }
+
 .info,
 .notreadable,
 .readable {
-  padding: 10px;
-  font-size: 12px;
-  -moz-border-radius: 3px;
-  font-weight: 700;
-  margin: 4px 2px;
-  border: 1px solid #222
+    padding: 10px;
+    font-size: 12px;
+    -webkit-border-radius: .3125em;
+    -moz-border-radius: .3125em;
+    border-radius: .3125em;
+    font-weight: 700;
+    margin: 4px 2px;
+    border: 1px solid #222;
 }
+
 .readable {
-  border: 1px solid #4aa02c;
-  color: #4aa02c;
-  background: url(check.png) right no-repeat
+    border: 1px solid #4aa02c;
+    color: #4aa02c;
+    background: url(check.png) right no-repeat;
 }
+
 .notreadable {
-  border: 1px solid #f62217;
-  color: #f62217;
-  background: url(cross.png) right no-repeat
+    border: 1px solid #f62217;
+    color: #f62217;
+    background: url(cross.png) right no-repeat;
 }
+
 #logo {
-  background: url(logo.png) center no-repeat;
-  height: 67px;
-  margin: 20px
+    background: url(logo.png) center no-repeat;
+    height: 67px;
+    margin: 20px;
 }

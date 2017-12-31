@@ -7,7 +7,7 @@ require_once INCL_DIR . 'function_onlinetime.php';
 require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 check_user_status();
-global $cache, $CURUSER, $site_config, $fpdo;
+global $cache, $CURUSER, $site_config, $fluent;
 
 $lang = array_merge(load_language('global'), load_language('userdetails'));
 $edit_profile = $friend_links = $shitty_link = $sharemark_link = '';
@@ -28,7 +28,7 @@ if (!is_valid_id($id)) {
 }
 $user = $cache->get('user' . $id);
 if ($user === false || is_null($user)) {
-    $user = $fpdo->from('users')
+    $user = $fluent->from('users')
         ->select('INET6_NTOA(ip) AS ip')
         ->where('id = ?', $id)
         ->fetch();
@@ -87,7 +87,7 @@ if ($user_status === false || is_null($user_status)) {
 if ($user['paranoia'] == 3 && $CURUSER['class'] < UC_STAFF && $CURUSER['id'] != $id) {
     stderr($lang['userdetails_error'], '<span><img src=".images/smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '" />
        ' . $lang['userdetails_tinfoil2'] . ' <img src="./images/smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '" /></span>');
-    exit();
+    die();
 }
 
 if (isset($_GET['delete_hit_and_run']) && $CURUSER['class'] >= UC_STAFF) {
@@ -104,7 +104,7 @@ if (isset($_GET['delete_hit_and_run']) && $CURUSER['class'] >= UC_STAFF) {
         stderr($lang['userdetails_error'], $lang['userdetails_notdeleted']);
     }
     header('Location: ?id=' . $id . '&completed=1');
-    exit();
+    die();
 }
 $r = sql_query('SELECT t.id, t.name, t.seeders, t.leechers, c.name AS cname, c.image FROM torrents t LEFT JOIN categories c ON t.category = c.id WHERE t.owner = ' . sqlesc($id) . ' ORDER BY t.name') or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($r) > 0) {
@@ -659,7 +659,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
             $maxclass = $CURUSER['class'] - 1;
         }
         for ($i = 0; $i <= $maxclass; ++$i) {
-            $HTMLOUT .= "<option value='$i'" . ($user['class'] == $i ? " selected='selected'" : '') . '>' . get_user_class_name($i) . "</option>";
+            $HTMLOUT .= "<option value='$i'" . ($user['class'] == $i ? " selected" : '') . '>' . get_user_class_name($i) . "</option>";
         }
         $HTMLOUT .= "</select></td></tr>";
     }
@@ -1000,10 +1000,10 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
                       <td class='rowhead'>{$lang['userdetails_paranoia']}</td>
                       <td colspan='3' class='has-text-left'>
                       <select name='paranoia' class='w-100'>
-                      <option value='0'" . ($user['paranoia'] == 0 ? " selected='selected'" : '') . ">{$lang['userdetails_paranoia_0']}</option>
-                      <option value='1'" . ($user['paranoia'] == 1 ? " selected='selected'" : '') . ">{$lang['userdetails_paranoia_1']}</option>
-                      <option value='2'" . ($user['paranoia'] == 2 ? " selected='selected'" : '') . ">{$lang['userdetails_paranoia_2']}</option>
-                      <option value='3'" . ($user['paranoia'] == 3 ? " selected='selected'" : '') . ">{$lang['userdetails_paranoia_3']}</option>
+                      <option value='0'" . ($user['paranoia'] == 0 ? " selected" : '') . ">{$lang['userdetails_paranoia_0']}</option>
+                      <option value='1'" . ($user['paranoia'] == 1 ? " selected" : '') . ">{$lang['userdetails_paranoia_1']}</option>
+                      <option value='2'" . ($user['paranoia'] == 2 ? " selected" : '') . ">{$lang['userdetails_paranoia_2']}</option>
+                      <option value='3'" . ($user['paranoia'] == 3 ? " selected" : '') . ">{$lang['userdetails_paranoia_3']}</option>
                       </select></td>
                 </tr>
                  <tr>

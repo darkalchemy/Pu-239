@@ -2,14 +2,13 @@
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once CACHE_DIR . 'timezones.php';
 dbconn();
-global $CURUSER, $site_config;
+global $CURUSER, $site_config, $fluent;
 
 if (!$CURUSER) {
     get_template();
-}
-if (isset($CURUSER)) {
+} else {
     header("Location: {$site_config['baseurl']}/index.php");
-    exit();
+    die();
 }
 $stdfoot = [
     'js' => [
@@ -18,28 +17,35 @@ $stdfoot = [
 ];
 
 if (!$site_config['openreg']) {
-    stderr('Sorry', 'Invite only - Signups are closed presently if you have an invite code click <a href="' . $site_config['baseurl'] . '/invite_signup.php"><b> Here</b></a>');
+    stderr('Sorry', 'Invite only - Signups are presently closed. If you have an invite code click <a href="' . $site_config['baseurl'] . '/invite_signup.php"><b>Here</b></a>');
 }
-$HTMLOUT = $year = $month = $day = $gender = '';
+$HTMLOUT = $year = $month = $day = $gender = $country = '';
 $lang = array_merge(load_language('global'), load_language('signup'));
-if (get_row_count('users') >= $site_config['maxusers']) {
+$count = $fluent->from('users')
+    ->select(null)
+    ->select('COUNT(*) AS count')
+    ->fetch('count');
+
+if ($count >= $site_config['maxusers']) {
     stderr($lang['stderr_errorhead'], sprintf($lang['stderr_ulimit'], $site_config['maxusers']));
 }
-//==timezone select
+
 $offset = (string)$site_config['time_offset'];
 $time_select = "<select name='user_timezone' class='w-100'>";
 foreach ($TZ as $off => $words) {
     if (preg_match("/^time_(-?[\d\.]+)$/", $off, $match)) {
-        $time_select .= $match[1] == $offset ? "<option value='{$match[1]}' selected='selected'>$words</option>\n" : "<option value='{$match[1]}'>$words</option>\n";
+        $time_select .= $match[1] == $offset ? "<option value='{$match[1]}' selected>$words</option>\n" : "<option value='{$match[1]}'>$words</option>\n";
     }
 }
 $time_select .= '</select>';
 
-$country = '';
 $countries = countries();
+$country .= "<option value='999999'" . ($CURUSER['country'] == $cntry['id'] ? " selected" : '') . ">Atlantis</option>\n";
+
 foreach ($countries as $cntry) {
-    $country .= "<option value='" . (int)$cntry['id'] . "'" . ($CURUSER['country'] == $cntry['id'] ? " selected='selected'" : '') . '>' . htmlsafechars($cntry['name']) . "</option>\n";
+    $country .= "<option value='" . (int)$cntry['id'] . "'" . ($CURUSER['country'] == $cntry['id'] ? " selected" : '') . '>' . htmlsafechars($cntry['name']) . "</option>\n";
 }
+
 $gender .= "<select name='gender' class='w-100'>
     <option value='Male'>{$lang['signup_male']}</option>
     <option value='Female'>{$lang['signup_female']}</option>
@@ -60,7 +66,7 @@ $value[ random_int(1, count($value) - 1) ] = 'X';
 $HTMLOUT .= "
     <div class='half-container has-text-centered portlet'>
     <p class='left10 top10'>{$lang['signup_cookies']}</p>
-    <form method='post' action='takesignup.php'>
+    <form id='signup' method='post' action='{$site_config['baseurl']}/takesignup.php'>
         <table class='table table-bordered bottom20'>
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_uname']}</td>
@@ -68,17 +74,21 @@ $HTMLOUT .= "
             </tr>
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_pass']}</td>
-                <td><input class='password w-100' type='password' name='wantpassword' /></td>
+                <td>
+                    <input type='password' name='wantpassword' id='myElement1' class='password w-100 left' data-display='myDisplayElement1' /> <div class='left' id='myDisplayElement1'></div>
+                    <div class='clear'></div>                
+                </td>
             </tr>
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_passa']}</td>
-                <td><input type='password' name='passagain' class='w-100' /></td>
+                <td>
+                    <input type='password' name='passagain' id='myElement2' class='password w-100 left' data-display='myDisplayElement2' /> <div class='left' id='myDisplayElement2'></div>
+                </td>
             </tr>
             <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_email']}</td>
                 <td><input type='text' name='email' class='w-100' />
-                    <div class='alt_bordered top10'>
-                        <span>{$lang['signup_valemail']}</span>
+                    <div class='alt_bordered top10'>{$lang['signup_valemail']}
                     </div>
                 </td>
             </tr>

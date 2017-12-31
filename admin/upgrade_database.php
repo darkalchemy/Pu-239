@@ -4,7 +4,7 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'pager_functions.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $cache, $lang, $fpdo;
+global $CURUSER, $cache, $lang, $fluent;
 
 $lang = array_merge($lang);
 if (!defined('DATABASE_DIR')) {
@@ -21,11 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($id >= 1 && $submit === 'Run Query') {
         $sql = $sql_updates[$id - 1]['query'];
         if (sql_query($sql)) {
-            $sql = "INSERT INTO database_updates (id, info, query) VALUES (" . sqlesc($id). ", " . sqlesc($sql_updates[$id - 1]['info']) . ", " . sqlesc($sql) . ")";
+            $sql = "INSERT INTO database_updates (id, query) VALUES (" . sqlesc($id). ", " . sqlesc($sql) . ")";
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
             setSessionVar('is-success', "Query #$id ran without error");
         } else {
-            setSessionVar('is-danger', "Query #$id failed to run, try to run manually");
+            setSessionVar('is-danger', "Query #$id failed to run, try to run manually<br>" . htmlsafechars($sql));
         }
     }
 }
@@ -70,7 +70,7 @@ $heading = "
         </tr>";
 
 if (file_exists(DATABASE_DIR)) {
-    $results = $fpdo->from('database_updates')
+    $results = $fluent->from('database_updates')
         ->select(null)
         ->select('id')
         ->select('added')
@@ -121,8 +121,7 @@ if (file_exists(DATABASE_DIR)) {
         </tr>";
 }
 
-
-$HTMLOUT = wrapper($pager['pagertop'] . main_table($body, $heading, null, 'bottom20') . $pager['pagerbottom']);
+$HTMLOUT = wrapper(($count > $per_page ? $pager['pagertop'] : '') . main_table($body, $heading) . ($count > $per_page ? $pager['pagerbottom'] : ''));
 
 echo stdhead('Update Database') . $HTMLOUT . stdfoot();
 

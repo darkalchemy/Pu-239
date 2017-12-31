@@ -147,7 +147,7 @@ var ajaxChatConfig = {
         'vip',
         'uploader',
         'moderator',
-        'administartor',
+        'administrator',
         'sysop',
     ],
 

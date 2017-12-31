@@ -37,12 +37,12 @@ $forum_id = (isset($_POST['forum_id']) ? intval($_POST['forum_id']) : 0);
 if ($topic_id > 0) {
     //print_r($_POST);
     //print_r($_GET);
-    //exit();
+    //die();
     $res_check = sql_query('SELECT f.min_class_read FROM forums AS f LEFT JOIN topics AS t ON t.forum_id = f.id WHERE f.id = t.forum_id AND t.id = ' . sqlesc($topic_id));
     $arr_check = mysqli_fetch_row($res_check);
     if ($CURUSER['class'] < $arr_check[0]) {
         stderr($lang['gl_error'], $lang['gl_bad_id']);
-        exit();
+        die();
     }
 }
 switch ($staff_action) {
@@ -75,7 +75,7 @@ switch ($staff_action) {
                 stderr($lang['gl_error'], $lang['fe_nothing_deleted']);
             }
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-            exit();
+            die();
         }
         break;
 
@@ -95,7 +95,7 @@ switch ($staff_action) {
                 stderr($lang['gl_error'], $lang['fe_nothing_removed_from_the_trash']);
             }
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-            exit();
+            die();
         }
         break;
 
@@ -139,7 +139,7 @@ switch ($staff_action) {
                 stderr($lang['gl_error'], $lang['fe_topic_not_split']);
             }
             header('Location: forums.php?action=view_topic&topic_id=' . $new_topic_id);
-            exit();
+            die();
         }
         break;
 
@@ -177,7 +177,7 @@ switch ($staff_action) {
                 stderr($lang['gl_error'], $lang['fe_posts_were_not_merged']);
             }
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_to_merge_with);
-            exit();
+            die();
         }
         break;
 
@@ -220,7 +220,7 @@ switch ($staff_action) {
                 sql_query('UPDATE forums SET post_count = post_count + ' . sqlesc($count) . ' WHERE id = ' . sqlesc($arr_to['forum_id']));
             }
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_to_append_to);
-            exit();
+            die();
         }
         break;
 
@@ -240,7 +240,7 @@ switch ($staff_action) {
                 stderr($lang['gl_error'], $lang['fe_nothing_sent_to_recy']);
             }
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-            exit();
+            die();
         }
         break;
 
@@ -260,7 +260,7 @@ switch ($staff_action) {
                 stderr($lang['gl_error'], $lang['fe_nothing_removed_from_the_recy']);
             }
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-            exit();
+            die();
         }
         break;
     //=== send_pm
@@ -289,7 +289,7 @@ switch ($staff_action) {
             }
         }
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id . '&count=' . $count);
-        exit();
+        die();
         break;
     //=== Set '.$lang['fe_pinned'].'
 
@@ -300,7 +300,7 @@ switch ($staff_action) {
         sql_query('UPDATE topics SET sticky = \'' . ($_POST['pinned'] === 'yes' ? 'yes' : 'no') . '\' WHERE id = ' . sqlesc($topic_id));
         clr_forums_cache($topic_id);
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-        exit();
+        die();
         break;
     //=== Set Locked
 
@@ -311,7 +311,7 @@ switch ($staff_action) {
         sql_query('UPDATE topics SET locked = \'' . ($_POST['locked'] === 'yes' ? 'yes' : 'no') . '\' WHERE id = ' . sqlesc($topic_id));
         clr_forums_cache($topic_id);
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-        exit();
+        die();
         break;
     //=== move topic
 
@@ -326,7 +326,7 @@ switch ($staff_action) {
         sql_query('UPDATE topics SET forum_id = ' . sqlesc($forum_id) . ' WHERE id = ' . sqlesc($topic_id));
         clr_forums_cache($topic_id);
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-        exit();
+        die();
         break;
     //=== rename topic
 
@@ -338,7 +338,7 @@ switch ($staff_action) {
         sql_query('UPDATE topics SET topic_name = ' . sqlesc($new_topic_name) . ' WHERE id = ' . sqlesc($topic_id));
         clr_forums_cache($topic_id);
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-        exit();
+        die();
         break;
     //===  change topic desc
 
@@ -347,7 +347,7 @@ switch ($staff_action) {
         sql_query('UPDATE topics SET topic_desc = ' . sqlesc($new_topic_desc) . ' WHERE id = ' . sqlesc($topic_id));
         clr_forums_cache($topic_id);
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-        exit();
+        die();
         break;
     //=== '.$lang['vt_merge'].' topic
 
@@ -378,7 +378,7 @@ switch ($staff_action) {
         //=== delete the old topic
         sql_query('DELETE FROM topics WHERE id = ' . sqlesc($topic_id));
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_to_merge_with);
-        exit();
+        die();
         break;
     //=== move to recylebin
 
@@ -389,7 +389,7 @@ switch ($staff_action) {
         clr_forums_cache($topic_id);
         //=== perhaps redirect to the bin lol
         header('Location: forums.php' . ($_POST['status'] == 'yes' ? '?action=view_forum&forum_id=' . $forum_id : '?action=view_topic&topic_id=' . $topic_id));
-        exit();
+        die();
         break;
     //=== delete topic
 
@@ -409,7 +409,7 @@ switch ($staff_action) {
         if ($delete_for_real < 1) {
             sql_query('UPDATE topics SET status = \'deleted\' WHERE id = ' . sqlesc($topic_id));
             header('Location: forums.php');
-            exit();
+            die();
         } else {
             //=== if you just want the damned things deleted
             //=== get post count of topic
@@ -425,7 +425,7 @@ switch ($staff_action) {
             //=== should I delete attachments? or let the members have a management page? or do it in cleanup?
             sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($arr_count['post_count']) . ', topic_count = topic_count - 1 WHERE id = ' . sqlesc($arr_count['forum_id']));
             header('Location: forums.php');
-            exit();
+            die();
         }
         break;
     //=== un_delete_topic
@@ -439,6 +439,6 @@ switch ($staff_action) {
         sql_query('UPDATE forums SET post_count = post_count + ' . sqlesc($arr_count[0]) . ', topic_count = topic_count + 1 WHERE id = ' . sqlesc($arr_count['forum_id']));
         clr_forums_cache($topic_id);
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-        exit();
+        die();
         break;
 } //=== ends switch

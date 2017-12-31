@@ -12,7 +12,7 @@ if (isset($_POST['move'])) {
         stderr($lang['pm_error'], $lang['pm_move_err']);
     }
     header('Location: ?action=view_mailbox&multi_move=1&box=' . $mailbox);
-    exit();
+    die();
 }
 if (isset($_POST['delete'])) {
     $pm_messages = $_POST['pm'];
@@ -42,5 +42,5 @@ if (isset($_POST['delete'])) {
     } else {
         header('Location: pm_system.php?action=view_mailbox&multi_delete=1&box=' . $mailbox);
     }
-    exit();
+    die();
 }

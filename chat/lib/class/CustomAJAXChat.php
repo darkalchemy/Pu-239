@@ -12,7 +12,6 @@
  */
 class CustomAJAXChat extends AJAXChat
 {
-    // Initialize custom request variables:
     public function initCustomRequestVars()
     {
         global $CURUSER;
@@ -23,8 +22,6 @@ class CustomAJAXChat extends AJAXChat
         }
     }
 
-    // Returns an associative array containing userName, userID and userRole
-    // Returns null if login is invalid
     /**
      * @return mixed
      */
@@ -51,8 +48,6 @@ class CustomAJAXChat extends AJAXChat
         }
     }
 
-    // Store the channels the current user has access to
-    // Make sure channel names don't contain any whitespace
     /**
      * @return array|null
      */
@@ -86,9 +81,6 @@ class CustomAJAXChat extends AJAXChat
         }
         return $this->_channels;
     }
-
-    // Store all existing channels
-    // Make sure channel names don't contain any whitespace
 
     /**
      * @return null

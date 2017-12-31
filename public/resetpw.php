@@ -28,7 +28,7 @@ if ($step == '1') {
         if ($site_config['captcha_on']) {
             if (empty($captchaSelection) || !hash_equals($captchaSelection, getSessionVar('simpleCaptchaAnswer'))) {
                 stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error2']}");
-                exit();
+                die();
             }
         }
         if (empty($email)) {
@@ -86,7 +86,7 @@ if ($step == '1') {
     }
 } elseif ($step == '2') {
     if (!mkglobal('id:answer')) {
-        exit();
+        die();
     }
     $select = sql_query('SELECT id, username, hintanswer FROM users WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $fetch = mysqli_fetch_assoc($select);
@@ -133,7 +133,7 @@ if ($step == '1') {
     }
 } elseif ($step == '3') {
     if (!mkglobal('id:newpass:newpassagain:hash')) {
-        exit();
+        die();
     }
     $select = sql_query('SELECT id, hintanswer FROM users WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $fetch = mysqli_fetch_assoc($select) or stderr("{$lang['stderr_errorhead']}", "{$lang['stderr_error8']}");

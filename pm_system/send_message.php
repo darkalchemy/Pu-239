@@ -106,7 +106,7 @@ EOD;
     } else {
         header('Location: pm_system.php?action=view_mailbox&sent=1');
     }
-    exit();
+    die();
 }
 
 $receiver = (isset($_GET['receiver']) ? intval($_GET['receiver']) : (isset($_POST['receiver']) ? intval($_POST['receiver']) : null));
@@ -133,7 +133,7 @@ if ($receiver) {
 }
 
 if ($replyto != 0) {
-    if (!validusername($arr_member[0])) {
+    if (!valid_username($arr_member[0])) {
         stderr($lang['pm_error'], $lang['pm_send_mid']);
     }
 

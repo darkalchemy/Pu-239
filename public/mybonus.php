@@ -3,7 +3,7 @@ require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTOR
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
-global $CURUSER, $site_config, $cache, $fpdo;
+global $CURUSER, $site_config, $cache, $fluent;
 
 
 $lang = array_merge(load_language('global'), load_language('mybonus'));
@@ -28,12 +28,14 @@ function I_smell_a_rat($var)
 /**
  * @param $userid
  * @param $set
+ *
+ * @throws Exception
  */
 function update_users_stats($userid, $set)
 {
-    global $fpdo, $cache, $site_config;
+    global $fluent, $cache, $site_config;
     if (!empty($set) && is_array($set)) {
-        $fpdo->update('users')
+        $fluent->update('users')
             ->set($set)
             ->where('id', $userid)
             ->execute();
@@ -43,7 +45,7 @@ function update_users_stats($userid, $set)
 
 $User = $cache->get('user' . $CURUSER['id']);
 if ($User === false || is_null($User)) {
-    $User = $fpdo->from('users')
+    $User = $fluent->from('users')
         ->select('INET6_NTOA(ip) AS ip')
         ->where('id = ?', $CURUSER['id'])
         ->fetch();
@@ -156,7 +158,7 @@ if (isset($_GET['halfdown_success']) && $_GET['halfdown_success']) {
 switch (true) {
     case isset($_GET['up_success']):
         I_smell_a_rat($_GET['up_success']);
-        $amounts = $fpdo->from('bonus')
+        $amounts = $fluent->from('bonus')
             ->select(null)
             ->select('points')
             ->select('bonusname')
@@ -474,7 +476,7 @@ if (isset($_GET['exchange'])) {
 
     $res_points = $cache->get('bonus_points_' . $option);
     if ($res_points === false || is_null($res_points)) {
-        $res_points = $fpdo->from('bonus')
+        $res_points = $fluent->from('bonus')
             ->where('id', $option)
             ->fetch();
         $cache->set('bonus_points_' . $option, $res_points, 0);
@@ -726,7 +728,7 @@ if (isset($_GET['exchange'])) {
             $foo = [50 => 3, 75 => 3, 100 => 3, 150 => 4, 200 => 5, 250 => 5, 300 => 6];
             $user_limit = isset($foo[ $rep_to_steal ]) ? $foo[ $rep_to_steal ] : 3;
 
-            $query = $fpdo->from('users')
+            $query = $fluent->from('users')
                 ->select(null)
                 ->select('id')
                 ->select('username')
@@ -752,7 +754,7 @@ if (isset($_GET['exchange'])) {
                     'subject'  => sprintf($pm['subject'], $thief_name),
                     'msg'      => sprintf($pm['message'], $thief_id, $thief_name, $new_rep),
                 ];
-                $fpdo->insertInto('messages')
+                $fluent->insertInto('messages')
                     ->values($values)
                     ->execute();
                 $cache->increment('inbox_' . $arr['id']);
@@ -767,7 +769,7 @@ if (isset($_GET['exchange'])) {
                     'subject'  => $pm['subject_thief'],
                     'msg'      => sprintf($pm['message_thief'], $thief_name, join("\n", $robbed_users), $new_rep, $points),
                 ];
-                $fpdo->insertInto('messages')
+                $fluent->insertInto('messages')
                     ->values($values)
                     ->execute();
                 $cache->increment('inbox_' . $thief_id);
@@ -1687,7 +1689,7 @@ $bonus_per_rating = $site_config['bonus_per_rating'];
 $bonus_per_post = $site_config['bonus_per_post'];
 $bonus_per_topic = $site_config['bonus_per_topic'];
 
-$at = $fpdo->from('peers')
+$at = $fluent->from('peers')
     ->select(null)
     ->select('COUNT(*) AS count')
     ->where('seeder = ?', 'yes')

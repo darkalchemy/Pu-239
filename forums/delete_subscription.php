@@ -7,7 +7,7 @@ if ($topic_id > 0) {
     sql_query('DELETE FROM subscriptions WHERE topic_id = ' . sqlesc($topic_id) . ' AND user_id = ' . sqlesc($CURUSER['id']));
     //=== ok, all done here, send them back! \o/
     header('Location: ' . $site_config['baseurl'] . '/forums.php?action=view_topic&topic_id=' . $topic_id . '&s=0');
-    exit();
+    die();
 }
 //=== delete stuff from subscriptions page stolen from pdq... thanks hun \o
 if (isset($_POST['remove'])) {
@@ -26,4 +26,4 @@ if (isset($_POST['remove'])) {
 }
 //=== ok, all done here, send them back! \o/
 header('Location: ' . $site_config['baseurl'] . '/forums.php?action=subscriptions');
-exit();
+die();

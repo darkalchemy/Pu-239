@@ -16,7 +16,7 @@ $count = $row['0'];
 if (!$count) {
     header("Refresh: 3; url=achievementhistory.php?id=$id");
     stderr($lang['achbon_no_ach_bon_pnts'], $lang['achbon_no_ach_bon_pnts_msg']);
-    exit();
+    die();
 }
 $HTMLOUT = '';
 $get_bonus = sql_query('SELECT * FROM ach_bonus WHERE bonus_id = ' . sqlesc($rand)) or sqlerr(__FILE__, __LINE__);

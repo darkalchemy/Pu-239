@@ -9,14 +9,14 @@ function class_check($class = 0, $staff = true, $pin = false)
     global $CURUSER, $site_config, $cache;
     if (!$CURUSER) {
         header("Location: {$site_config['baseurl']}/404.html");
-        exit();
+        die();
     }
 
     if ($CURUSER['class'] >= $class) {
         if ($pin) {
             if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'])) {
                 header("Location: {$site_config['baseurl']}/404.html");
-                exit();
+                die();
             }
             $passed = false;
             if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW']) && $_SERVER['PHP_AUTH_USER'] === ($CURUSER['username'])) {
@@ -42,7 +42,7 @@ function class_check($class = 0, $staff = true, $pin = false)
 </body>
 </html>";
                 echo $HTMLOUT;
-                exit();
+                die();
             }
         }
         if ($staff) {
@@ -109,7 +109,7 @@ function class_check($class = 0, $staff = true, $pin = false)
 </body>
 </html>";
                     echo $HTMLOUT;
-                    exit();
+                    die();
                 }
             }
         }
@@ -118,7 +118,7 @@ function class_check($class = 0, $staff = true, $pin = false)
             stderr('ERROR', 'No Permission. Page is for ' . get_user_class_name($class) . 's and above. Read FAQ.');
         } else {
             header("Location: {$site_config['baseurl']}/404.html");
-            exit();
+            die();
         }
     }
 }

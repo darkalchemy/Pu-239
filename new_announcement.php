@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $ann_query = (isset($_POST['ann_query']) ? rawurldecode(trim($_POST['ann_query'])) : '');
     $ann_hash = (isset($_POST['ann_hash']) ? trim($_POST['ann_hash']) : '');
     if (hashit($ann_query, $n_pms) != $ann_hash) {
-        exit();
+        die();
     } // Validate POST...
     if (!preg_match('/\\ASELECT.+?FROM.+?WHERE.+?\\z/', $ann_query)) {
         stderr('Error', 'Misformed Query');
@@ -124,6 +124,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <hr>
 <address>{$_SERVER['SERVER_SOFTWARE']} Server at {$site_config['baseurl']} Port 80</address></body></html>\n";
     echo $HTMLOUT;
-    exit();
+    die();
 }
 echo $HTMLOUT . stdfoot();

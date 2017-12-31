@@ -21,19 +21,19 @@ for ($i = 1; $i <= count($op); ++$i) {
     if ($_POST['drp2'] == $i || $_POST['drp3'] == $i || $var['line2']['value'] == $i || $var['line3']['value'] == $i) {
         continue;
     }
-    $drp['op1'][] = '<option value="' . $i . '" ' . ($_POST['drp1'] == $i || $var['line1']['value'] == $i ? 'selected="selected"' : '') . '>' . $op[ $i ] . '</option>';
+    $drp['op1'][] = '<option value="' . $i . '" ' . ($_POST['drp1'] == $i || $var['line1']['value'] == $i ? 'selected' : '') . '>' . $op[ $i ] . '</option>';
 }
 for ($i = 1; $i <= count($op); ++$i) {
     if ($_POST['drp1'] == $i || $_POST['drp3'] == $i || $var['line1']['value'] == $i || $var['line3']['value'] == $i) {
         continue;
     }
-    $drp['op2'][] = '<option value="' . $i . '" ' . ($_POST['drp2'] == $i || $var['line2']['value'] == $i ? 'selected="selected"' : '') . '>' . $op[ $i ] . '</option>';
+    $drp['op2'][] = '<option value="' . $i . '" ' . ($_POST['drp2'] == $i || $var['line2']['value'] == $i ? 'selected' : '') . '>' . $op[ $i ] . '</option>';
 }
 for ($i = 1; $i <= count($op); ++$i) {
     if ($_POST['drp1'] == $i || $_POST['drp2'] == $i || $var['line2']['value'] == $i || $var['line1']['value'] == $i) {
         continue;
     }
-    $drp['op3'][] = '<option value="' . $i . '" ' . ($_POST['drp3'] == $i || $var['line3']['value'] == $i ? 'selected="selected"' : '') . '>' . $op[ $i ] . '</option>';
+    $drp['op3'][] = '<option value="' . $i . '" ' . ($_POST['drp3'] == $i || $var['line3']['value'] == $i ? 'selected' : '') . '>' . $op[ $i ] . '</option>';
 }
 foreach ($drp as $key => $ops) {
     $temp[ $key ] = join('', $ops);

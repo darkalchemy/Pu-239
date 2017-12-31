@@ -1,10 +1,10 @@
 <?php
-global $site_config, $cache, $lang, $fpdo;
+global $site_config, $cache, $lang, $fluent;
 
 $irc = $cache->get('ircusers_');
 if ($irc === false || is_null($irc)) {
     $irc = $list = [];
-    $query = $fpdo->from('users')
+    $query = $fluent->from('users')
         ->select(null)
         ->select('id')
         ->where('onirc = ?', 'yes')
@@ -15,7 +15,7 @@ if ($irc === false || is_null($irc)) {
         $list[] = format_username($row['id']);
     }
     $list[] = format_username(2);
-    $irc['ircusers'] = implode(', ', $list);
+    $irc['ircusers'] = implode(',&nbsp;&nbsp;', $list);
     $irc['count'] = count($list);
     if ($irc['count'] === 0) {
         $irc['ircusers'] = $lang['index_irc_nousers'];
@@ -28,7 +28,7 @@ $HTMLOUT .= "
     <fieldset id='irc' class='header'>
         <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_active_irc']} ({$irc['count']})</legend>
         <div class='bordered'>
-            <div class='alt_bordered bg-00 has-text-centered'>
+            <div class='alt_bordered bg-00 level-item is-wrapped'>
                 {$irc['ircusers']}
             </div>
         </div>

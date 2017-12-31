@@ -78,7 +78,7 @@ function manualclean()
     }
 
     cleanup_show_main(); //instead of header() so can see queries in footer (using sql_query())
-    exit();
+    die();
 }
 
 function cleanup_show_main()
@@ -86,7 +86,7 @@ function cleanup_show_main()
     global $site_config, $lang;
     $count1 = get_row_count('cleanup');
     $perpage = 15;
-    $pager = pager($perpage, $count1, 'staffpanel.php?tool=cleanup_manager&amp;');
+    $pager = pager($perpage, $count1, $site_config['baseurl'] . '/staffpanel.php?tool=cleanup_manager&amp;');
     $htmlout = "
     <div class='container is-fluid portlet'>
         <h2 class='has-text-centered top20'>{$lang['cleanup_head']}</h2>
@@ -94,12 +94,12 @@ function cleanup_show_main()
             <thead>
                 <tr>
                     <th>{$lang['cleanup_title']}</th>
-                    <th width='150px'>{$lang['cleanup_run']}</th>
-                    <th width='150px'>{$lang['cleanup_next']}</th>
-                    <th width='40px'>{$lang['cleanup_edit']}</th>
-                    <th width='40px'>{$lang['cleanup_delete']}</th>
-                    <th width='40px'>{$lang['cleanup_on']}</th>
-                    <th style='width: 40px;'>{$lang['cleanup_run_now']}</th>
+                    <th class='has-text-centered'>{$lang['cleanup_run']}</th>
+                    <th class='has-text-centered'>{$lang['cleanup_next']}</th>
+                    <th class='has-text-centered'>{$lang['cleanup_edit']}</th>
+                    <th class='has-text-centered'>{$lang['cleanup_delete']}</th>
+                    <th class='has-text-centered'>{$lang['cleanup_on']}</th>
+                    <th class='has-text-centered'>{$lang['cleanup_run_now']}</th>
                 </tr>
             </thead>
             <tbody>";
@@ -113,33 +113,43 @@ function cleanup_show_main()
         $row['_class'] = $row['clean_on'] != 1 ? " style='color:red'" : '';
         $row['_title'] = $row['clean_on'] != 1 ? " {$lang['cleanup_lock']}" : '';
         $row['_clean_time'] = $row['clean_on'] != 1 ? "<span style='color:red'>{$row['_clean_time']}</span>" : $row['_clean_time'];
-        $htmlout .= "<tr>
-          <td{$row['_class']}><strong>{$row['clean_title']}{$row['_title']}</strong><br>{$row['clean_desc']}</td>
-          <td>" . mkprettytime($row['clean_increment']) . "</td>
-          <td>{$row['_clean_time']}</td>
-          <td><a href='./staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=edit&amp;cid={$row['clean_id']}'>
-            <img src='{$site_config['pic_base_url']}aff_tick.gif' alt='{$lang['cleanup_edit2']}' class='tooltipper' title='{$lang['cleanup_edit']}' height='12' width='12' /></a></td>
-
-          <td><a href='./staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=delete&amp;cid={$row['clean_id']}'>
-            <img src='{$site_config['pic_base_url']}aff_cross.gif' alt='{$lang['cleanup_delete2']}' class='tooltipper' title='{$lang['cleanup_delete1']}' height='12' width='12' /></a></td>
-          <td><a href='./staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=unlock&amp;cid={$row['clean_id']}&amp;clean_on={$row['clean_on']}'>
-            <img src='{$site_config['pic_base_url']}warned.png' alt='{$lang['cleanup_off_on2']}' class='tooltipper' title='{$lang['cleanup_off_on']}' height='12' width='12' /></a></td>
-<td><a href='./staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=run&amp;cid={$row['clean_id']}'>{$lang['cleanup_run_now2']}</a></td>
- </tr>";
+        $htmlout .= "
+        <tr>
+            <td{$row['_class']}>{$row['clean_title']}{$row['_title']}<br><span class='size_3'>{$row['clean_desc']}</span></td>
+            <td class='has-text-centered'>" . mkprettytime($row['clean_increment']) . "</td>
+            <td class='has-text-centered'>{$row['_clean_time']}</td>
+            <td class='has-text-centered'>
+                <a href='./staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=edit&amp;cid={$row['clean_id']}'>
+                <img src='{$site_config['pic_base_url']}aff_tick.gif' alt='{$lang['cleanup_edit2']}' class='tooltipper' title='{$lang['cleanup_edit']}' height='12' width='12' /></a>
+            </td>
+            <td class='has-text-centered'>
+                <a href='./staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=delete&amp;cid={$row['clean_id']}'>
+                <img src='{$site_config['pic_base_url']}aff_cross.gif' alt='{$lang['cleanup_delete2']}' class='tooltipper' title='{$lang['cleanup_delete1']}' height='12' width='12' /></a>
+            </td>
+            <td class='has-text-centered'>
+                <a href='./staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=unlock&amp;cid={$row['clean_id']}&amp;clean_on={$row['clean_on']}'>
+                <img src='{$site_config['pic_base_url']}warned.png' alt='{$lang['cleanup_off_on2']}' class='tooltipper' title='{$lang['cleanup_off_on']}' height='12' width='12' /></a>
+            </td>
+            <td class='has-text-centered'>
+                <a href='./staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=run&amp;cid={$row['clean_id']}'>{$lang['cleanup_run_now2']}</a>
+            </td>
+         </tr>";
     }
     $htmlout .= '</tbody></table></div>';
     if ($count1 > $perpage) {
         $htmlout .= $pager['pagerbottom'];
     }
-    $htmlout .= "<br>
-                <span class='button is-small'><a href='./staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=new'>{$lang['cleanup_add_new']}</a></span>";
-    echo stdhead($lang['cleanup_stdhead']) . $htmlout . stdfoot();
+    $htmlout .= "
+                <div class='has-text-centered top20'>
+                    <a href='./staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=new' class='margin20 button is-small'>{$lang['cleanup_add_new']}</a>
+                </div>";
+    echo stdhead($lang['cleanup_stdhead']) . wrapper($htmlout) . stdfoot();
 }
 
 function cleanup_show_edit()
 {
     global $params, $lang;
-    if (!isset($params['cid']) or empty($params['cid']) or !is_valid_id($params['cid'])) {
+    if (!isset($params['cid']) || empty($params['cid']) || !is_valid_id($params['cid'])) {
         cleanup_show_main();
         exit;
     }
@@ -198,7 +208,7 @@ function cleanup_show_edit()
     <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_show_edit']}' class='button is-small' />&#160;<input type='button' value='{$lang['cleanup_show_cancel']}' onclick='javascript: history.back()' /></div>
     </form>
     </div>";
-    echo stdhead($lang['cleanup_show_stdhead']) . $htmlout . stdfoot();
+    echo stdhead($lang['cleanup_show_stdhead']) . wrapper($htmlout) . stdfoot();
 }
 
 function cleanup_take_edit()
@@ -212,7 +222,7 @@ function cleanup_take_edit()
                  'clean_on',
              ] as $x) {
         unset($opts);
-        if ($x == 'cid' or $x == 'clean_increment') {
+        if ($x == 'cid' || $x == 'clean_increment') {
             $opts = [
                 'options' => [
                     'min_range' => 1,
@@ -260,7 +270,7 @@ function cleanup_take_edit()
     }
     sql_query("UPDATE cleanup SET function_name = {$params['function_name']}, clean_title = {$params['clean_title']}, clean_desc = {$params['clean_desc']}, clean_file = {$params['clean_file']}, clean_time = {$params['clean_time']}, clean_increment = {$params['clean_increment']}, clean_log = {$params['clean_log']}, clean_on = {$params['clean_on']} WHERE clean_id = {$params['cid']}");
     cleanup_show_main();
-    exit();
+    die();
 }
 
 function cleanup_show_new()
@@ -309,7 +319,7 @@ function cleanup_show_new()
     <div style='text-align:center;'><input type='submit' name='submit' value='{$lang['cleanup_new_add']}' class='button is-small' />&#160;<input type='button' value='{$lang['cleanup_new_cancel']}' onclick='javascript: history.back()' /></div>
     </form>
     </div>";
-    echo stdhead($lang['cleanup_new_stdhead']) . $htmlout . stdfoot();
+    echo stdhead($lang['cleanup_new_stdhead']) . wrapper($htmlout) . stdfoot();
 }
 
 function cleanup_take_new()
@@ -375,7 +385,7 @@ function cleanup_take_new()
     } else {
         stderr($lang['cleanup_new_error'], "{$lang['cleanup_new_error1']}");
     }
-    exit();
+    die();
 }
 
 function cleanup_take_delete()
@@ -397,7 +407,7 @@ function cleanup_take_delete()
     } else {
         stderr($lang['cleanup_del_error'], "{$lang['cleanup_del_error2']}");
     }
-    exit();
+    die();
 }
 
 function cleanup_take_unlock()
@@ -436,5 +446,5 @@ function cleanup_take_unlock()
     } else {
         stderr($lang['cleanup_unlock_error'], "{$lang['cleanup_unlock_error']}");
     }
-    exit();
+    die();
 }

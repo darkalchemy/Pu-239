@@ -32,32 +32,6 @@ $stdhead = [
     ],
 ];
 $HTMLOUT = $count2 = $other_box_info = $maxpic = $maxbox = '';
-//== validusername
-/**
- * @param $username
- *
- * @return bool
- */
-function validusername($username)
-{
-    global $lang;
-    if ($username == '') {
-        return false;
-    }
-    $namelength = strlen($username);
-    if (($namelength < 3) or ($namelength > 32)) {
-        stderr($lang['takesignup_user_error'], $lang['takesignup_username_length']);
-    }
-    // The following characters are allowed in user names
-    $allowedchars = $lang['takesignup_allowed_chars'];
-    for ($i = 0; $i < $namelength; ++$i) {
-        if (strpos($allowedchars, $username[ $i ]) === false) {
-            return false;
-        }
-    }
-
-    return true;
-}
 
 if ($CURUSER['class'] <= UC_USER) {
     $maxbox = 50;
@@ -146,7 +120,7 @@ if (isset($_GET['change_pm_number'])) {
     } else {
         header('Location: pm_system.php?action=view_mailbox&pm=1&box=' . $mailbox);
     }
-    exit();
+    die();
 }
 
 if (isset($_GET['show_pm_avatar'])) {
@@ -160,7 +134,7 @@ if (isset($_GET['show_pm_avatar'])) {
     } else {
         header('Location: pm_system.php?action=view_mailbox&avatar=1&box=' . $mailbox);
     }
-    exit();
+    die();
 }
 
 isset($_GET['deleted']) ? setSessionVar('is-success', $lang['pm_deleted']) : null;

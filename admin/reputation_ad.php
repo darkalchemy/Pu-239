@@ -496,7 +496,7 @@ function html_out($html = '', $title = '')
         stderr($lang['rep_ad_html_error'], $lang['rep_ad_html_nothing']);
     }
     echo stdhead($title) . $html . stdfoot();
-    exit();
+    die();
 }
 
 /**
@@ -561,7 +561,7 @@ function get_month_dropdown($i = 0)
     ];
     foreach ($month as $k => $m) {
         $return .= "\t<option value='" . $k . "'";
-        $return .= (($k + $i) == $now_date['mon']) ? " selected='selected'" : '';
+        $return .= (($k + $i) == $now_date['mon']) ? " selected" : '';
         $return .= '>' . $m . "</option>\n";
     }
 

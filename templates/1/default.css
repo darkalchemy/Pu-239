@@ -7,7 +7,7 @@ html {
 }
 
 body {
-    background: black;
+    background: transparent;
     color: white;
     font-size: 75%;
     line-height: 125%;
@@ -30,7 +30,7 @@ body {
 
 ::-webkit-scrollbar {
     width: 1em;
-    background-color: rgba(255, 255, 255, .1);
+    background-color: rgba(50, 50, 50, 1);
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
@@ -63,6 +63,10 @@ select,
     -moz-transition: all 500ms ease-in-out;
     -o-transition: all 500ms ease-in-out;
     transition: all 500ms ease-in-out;
+}
+
+.clear {
+    clear:both;
 }
 
 .level-center ul {
@@ -495,9 +499,8 @@ textarea {
     margin-right: auto;
 }
 
-.is-wrapped {
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
+.left5 {
+    margin-left: .3125em;
 }
 
 .left10 {
@@ -595,6 +598,12 @@ textarea {
     position: relative;
 }
 
+.notification {
+    -webkit-border-radius: .3125em;
+    -moz-border-radius: .3125em;
+    border-radius: .3125em;
+}
+
 .notification a:link {
     text-decoration: none;
 }
@@ -647,6 +656,10 @@ textarea {
 
 .portlet:not(:last-child) {
     margin-bottom: 1.25em;
+}
+
+.right5 {
+    margin-right: .3125em;
 }
 
 .right10 {
@@ -965,6 +978,11 @@ textarea {
 p + p {
     margin-bottom: .85em;
     margin-top: .85em;
+}
+
+.is-wrapped {
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
 }
 
 @media (max-width: 1200px) {

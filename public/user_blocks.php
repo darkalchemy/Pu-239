@@ -13,7 +13,7 @@ if (!is_valid_id($id) || $CURUSER['class'] < UC_STAFF) {
 if ($CURUSER['class'] < UC_STAFF && $CURUSER['got_blocks'] == 'no') {
     setSessionVar('is-danger', 'Go to your Karma bonus page and buy this unlock before trying to access it.');
     header('Location: ' . $site_config['baseurl'] . '/index.php');
-    exit();
+    die();
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -373,7 +373,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         setSessionVar('is-success', 'User Blocks Successfully Updated');
         unset($_POST);
         header('Location: ' . $site_config['baseurl'] . '/user_blocks.php');
-        exit();
+        die();
     }
 }
 

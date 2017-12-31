@@ -145,10 +145,10 @@ if (empty($mode)) {
     echo stdhead($lang['backup_stdhead']) . $HTMLOUT . stdfoot();
 } elseif ($mode == 'backup') {
     global $site_config;
-    $mysql_host = $site_config['mysql_host'];
-    $mysql_user = $site_config['mysql_user'];
-    $mysql_pass = $site_config['mysql_pass'];
-    $mysql_db = $site_config['mysql_db'];
+    $mysql_host = $_ENV['DB_HOST'];
+    $mysql_user = $_ENV['DB_USERNAME'];
+    $mysql_pass = $_ENV['DB_PASSWORD'];
+    $mysql_db = $_ENV['DB_DATABASE'];
     $ext = $mysql_db . '-' . date('d') . '-' . date('m') . '-' . date('Y') . '_' . date('H') . '-' . date('i') . '-' . date('s') . '_' . date('D') . '.sql';
     $filepath = $site_config['backup_dir'] . '/' . $ext;
     exec("{$site_config['db_backup_mysqldump_path']} -h $mysql_host -u $mysql_user -p$mysql_pass $mysql_db > $filepath");

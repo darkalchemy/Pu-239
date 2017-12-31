@@ -33,13 +33,10 @@ if ($unread >= 1) {
     setSessionVar(
         'is-link',
         [
-            'message' => "You have $unread new message" . plural($unread) . " in your Inbox",
+            'message' => "You have $unread unread message" . plural($unread) . " in your Inbox",
             'link'    => "{$site_config['baseurl']}/pm_system.php",
         ]
     );
-}
-if ($CURUSER['class'] === UC_MAX) {
-    setSessionVar('is-info', "The Current Cache Adapter is: {$site_config['cache_adapter']}");
 }
 
 $HTMLOUT = '';
@@ -168,8 +165,7 @@ if (curuser::$blocks['index_page'] & block_index::LAST_24_ACTIVE_USERS
 if (curuser::$blocks['index_page'] & block_index::BIRTHDAY_ACTIVE_USERS
     && $BLOCKS['active_birthday_users_on']
 ) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' 
-id='BIRTHDAY_ACTIVE_USERS'>";
+    $HTMLOUT .= "<div class='container is-fluid portlet' id='BIRTHDAY_ACTIVE_USERS'>";
     include_once BLOCK_DIR . 'index/active_birthday_users.php';
     $HTMLOUT .= '</div>';
 }

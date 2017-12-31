@@ -30,6 +30,6 @@ $res = sql_query('SELECT id FROM torrents ' . $where . ' ORDER BY RAND() LIMIT 1
 while (list($id) = mysqli_fetch_array($res)) {
     if ($id != null) {
         header('Location: details.php?id=' . $id . $cat_id . '&random'); //add &random to indicate on details.php random browsing
-        exit();
+        die();
     }
 }

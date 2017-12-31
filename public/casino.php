@@ -45,7 +45,7 @@ $casino = 'casino.php'; //== Name of file
 //== End of Config
 if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['suspended'] == 'yes') {
     stderr($lang['gl_error'], $lang['casino_your_gaming_rights_have_been_disabled']);
-    exit();
+    die();
 }
 
 $min_text = mksize(100 * 1073741824);
@@ -288,7 +288,7 @@ if (isset($color_options[ $post_color ]) && isset($number_options[ $post_number 
                 sql_query('DELETE FROM casino_bets WHERE id =' . sqlesc($tbet['id'])) or sqlerr(__FILE__, __LINE__);
             }
             stderr($lang['casino_you_got_it'], "<h2>{$lang['casino_you_won_the_bet']}, " . htmlsafechars($nogb) . " {$lang['casino_has_been_credited_to_your_account']}, at <a href='userdetails.php?id=" . (int)$tbet['userid'] . "'>" . htmlsafechars($tbet['proposed']) . "'s</a> {$lang['casino_expense']}!</h2>&#160;&#160;&#160;$goback");
-            exit();
+            die();
         } else {
             if (empty($newup)) {
                 $newup = $User['uploaded'] - $tbet['amount'];
@@ -339,7 +339,7 @@ if (isset($color_options[ $post_color ]) && isset($number_options[ $post_number 
             }
             stderr($lang['casino_damn_it'], "<h2>{$lang['casino_you_lost_the_bet']} <a href='userdetails.php?id=" . (int)$tbet['userid'] . "'>" . htmlsafechars($tbet['proposed']) . "</a> {$lang['casino_has_won']} " . htmlsafechars($nogb) . " {$lang['casino_of_your_hard_earnt_upload_credit']}!</h2> &#160;&#160;&#160;$goback");
         }
-        exit();
+        die();
     }
     //== Add a new bet
     $loca = sql_query("SELECT * FROM casino_bets WHERE challenged ='empty'") or sqlerr(__FILE__, __LINE__);

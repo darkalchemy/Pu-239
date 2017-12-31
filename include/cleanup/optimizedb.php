@@ -4,11 +4,11 @@
  */
 function optimizedb($data)
 {
-    global $site_config, $queries;
+    global $queries;
     set_time_limit(1200);
     ignore_user_abort(true);
 
-    $sql = sql_query("SHOW TABLE STATUS FROM {$site_config['mysql_db']} WHERE Data_free > 1000");
+    $sql = sql_query("SHOW TABLE STATUS FROM {$_ENV['DB_DATABASE']} WHERE Data_free > 1000");
     $oht = '';
     $tables = [];
 

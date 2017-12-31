@@ -24,7 +24,7 @@ $valid = [
 $do = isset($_GET['action']) && in_array($_GET['action'], array_keys($valid)) ? $_GET['action'] : '';
 if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['suspended'] == 'yes') {
     stderr('Error', 'Your gaming rights have been disabled.');
-    exit();
+    die();
 }
 switch (true) {
     case $do === 'config' && $CURUSER['class'] >= $valid['config']['minclass']:

@@ -14,7 +14,7 @@ $closewindow = true;
 require_once CACHE_DIR . 'rep_settings_cache.php';
 
 if (!$GVARS['rep_is_online']) {
-    exit($lang['info_reputation_offline']);
+    die($lang['info_reputation_offline']);
 }
 
 if (isset($_POST) || isset($_GET)) {
@@ -354,7 +354,7 @@ function rep_output($msg = '', $html = '')
 </body>
 </html>";
     echo $htmlout;
-    exit();
+    die();
 }
 
 /**

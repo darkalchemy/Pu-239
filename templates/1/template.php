@@ -135,16 +135,17 @@ function stdhead($title = '', $stdhead = null)
     }
 
     foreach ($site_config['notifications'] as $notif) {
-        if (($message = getSessionVar($notif)) != false) {
-            $message = !is_array($message) ? format_comment($message) : "<a href='{$message['link']}'>" . format_comment($message['message']) . "</a>";
-            $htmlout .= "
+        if (($messages = getSessionVar($notif)) != false) {
+            foreach ($messages as $message) {
+                $message = !is_array($message) ? format_comment($message) : "<a href='{$message['link']}'>" . format_comment($message['message']) . "</a>";
+                $htmlout .= "
                 <div class='notification $notif has-text-centered size_6'>
                     <button class='delete'></button>$message
                 </div>";
+            }
+            unsetSessionVar($notif);
         }
-        unsetSessionVar($notif);
     }
-
     return $htmlout;
 }
 
@@ -158,37 +159,40 @@ function stdfoot($stdfoot = false)
     require_once INCL_DIR . 'bbcode_functions.php';
     global $CURUSER, $site_config, $start, $query_stat, $cache, $querytime, $lang;
 
+    $header = $uptime = $htmlfoot = '';
     $debug = (SQL_DEBUG && !empty($CURUSER['id']) && in_array($CURUSER['id'], $site_config['is_staff']['allowed']) ? 1 : 0);
     $queries = count($query_stat);
-    $cachetime = ''; //($cache->Time / 1000);
+    $cachetime = 0; //($cache->Time / 1000);
     $seconds = microtime(true) - $start;
     $r_seconds = round($seconds, 5);
+    $querytime = $querytime === null ? 0 : $querytime;
     $phptime = $seconds - $querytime - $cachetime;
     $percentphp = number_format(($phptime / $seconds) * 100, 2);
     $percentmc = number_format(($cachetime / $seconds) * 100, 2);
-    $MemStats = $cache->get('mc_hits');
-    if ($MemStats === false || is_null($MemStats)) {
-        $MemStats = ''; //$cache->getStats();
-        $MemStats['Hits'] = (($MemStats['get_hits'] / $MemStats['cmd_get'] < 0.7) ? '' : number_format(($MemStats['get_hits'] / $MemStats['cmd_get']) * 100, 3));
-        $cache->set('mc_hits', $MemStats, 10);
-    }
-    $uptime = '';
-    if ($debug) {
-        $uptime = $cache->get('uptime');
-        if ($uptime === false || is_null($uptime)) {
-            $uptime = `uptime`;
-            $cache->set('uptime', $uptime, 25);
-        }
-        preg_match('/load average: (.*)$/i', $uptime, $load);
-    }
-    $header = '';
-    if (!empty($MemStats['Hits']) && !empty($MemStats['curr_items']) && !empty($phptime) && !empty($percentmc) && !empty($cachetime)) {
-        $header = '<b>' . $lang['gl_stdfoot_querys_mstat'] . '</b> ' . mksize(memory_get_peak_usage()) . ' ' . $lang['gl_stdfoot_querys_mstat1'] . ' ' . round($phptime, 2) . 's | ' . round($percentmc, 2) . '' . $lang['gl_stdfoot_querys_mstat2'] . '' . number_format($cachetime, 4) . 's ' . $lang['gl_stdfoot_querys_mstat3'] . '' . $MemStats['Hits'] . '' . $lang['gl_stdfoot_querys_mstat4'] . '' . number_format((100 - $MemStats['Hits']), 3) . '' . $lang['gl_stdfoot_querys_mstat5'] . '' . number_format($MemStats['curr_items']);
-    }
-    $htmlfoot = '';
-    $querytime = 0;
 
     if ($CURUSER && $query_stat && $debug) {
+        if (extension_loaded('memcached')) {
+            $MemStats = $cache->get('mc_hits');
+            if ($MemStats === false || is_null($MemStats)) {
+                $MemStats = ''; //$cache->getStats();
+                $MemStats['Hits'] = (($MemStats['get_hits'] / $MemStats['cmd_get'] < 0.7) ? '' : number_format(($MemStats['get_hits'] / $MemStats['cmd_get']) * 100, 3));
+                $cache->set('mc_hits', $MemStats, 10);
+            }
+        }
+        if ($debug) {
+            $uptime = $cache->get('uptime');
+            if ($uptime === false || is_null($uptime)) {
+                $uptime = `uptime`;
+                $cache->set('uptime', $uptime, 25);
+            }
+            preg_match('/load average: (.*)$/i', $uptime, $load);
+        }
+        if (!empty($MemStats['Hits']) && !empty($MemStats['curr_items']) && !empty($phptime) && !empty($percentmc) && !empty($cachetime)) {
+            $header = '<b>' . $lang['gl_stdfoot_querys_mstat'] . '</b> ' . mksize(memory_get_peak_usage()) . ' ' . $lang['gl_stdfoot_querys_mstat1'] . ' ' . round($phptime, 2) . 's | ' . round($percentmc, 2) . '' . $lang['gl_stdfoot_querys_mstat2'] . '' . number_format($cachetime, 4) . 's ' . $lang['gl_stdfoot_querys_mstat3'] . '' . $MemStats['Hits'] . '' . $lang['gl_stdfoot_querys_mstat4'] . '' . number_format((100 - $MemStats['Hits']), 3) . '' . $lang['gl_stdfoot_querys_mstat5'] . '' . number_format($MemStats['curr_items']);
+        }
+
+        $querytime = 0;
+
         $htmlfoot .= "
                 <div class='container is-fluid portlet'>
                     <a id='queries-hash'></a>
@@ -334,7 +338,7 @@ function StatusBar()
     }
     $StatusBar = $clock = '';
     $StatusBar .= "
-                    <div id='base_usermenu' class='tooltipper-ajax right10'>
+                    <div id='base_usermenu' class='tooltipper-ajax right10 level-item'>
                         <span id='clock' class='has-text-white right10'>{$clock}</span>
                         " . format_username($CURUSER['id'], true, false) . "
                     </div>";
@@ -347,13 +351,13 @@ function StatusBar()
  */
 function navbar()
 {
-    global $site_config, $CURUSER, $lang, $cache, $fpdo;
+    global $site_config, $CURUSER, $lang, $cache, $fluent;
     $navbar = $panel = $user_panel = $settings_panel = $stats_panel = $other_panel = '';
 
     if ($CURUSER['class'] >= UC_STAFF) {
         $staff_panel = $cache->get('staff_panels_' . $CURUSER['class']);
         if ($staff_panel === false || is_null($staff_panel)) {
-            $staff_panel = $fpdo->from('staffpanel')
+            $staff_panel = $fluent->from('staffpanel')
                 ->where('navbar = 1')
                 ->where('av_class <= ?', $CURUSER['class'])
                 ->orderBy('page_name')

@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($site_config['captcha_on']) {
         if (empty($captchaSelection) || getSessionVar('simpleCaptchaAnswer') != $captchaSelection) {
             header('Location: recover.php');
-            exit();
+            die();
         }
     }
     $email = trim($_POST['email']);
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 } elseif ($_GET) {
     $id = (int)$_GET['id'];
     if (!$id) {
-        exit();
+        die();
     }
     $res = sql_query('SELECT username, email, passhash FROM users WHERE id = ' . sqlesc($id));
     $arr = mysqli_fetch_assoc($res);

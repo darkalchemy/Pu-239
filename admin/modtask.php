@@ -779,7 +779,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
             $added = sqlesc(TIME_NOW);
             sql_query('INSERT INTO messages (sender, receiver, msg, subject, added) VALUES (0, ' . sqlesc($userid) . ", $msg, $subject, $added)") or sqlerr(__FILE__, __LINE__);
         } else {
-            exit();
+            die();
         } //== Error
         $updateset[] = 'highspeed = ' . sqlesc($highspeed);
         $useredit['update'][] = $lang['modtask_highs_enabled'] . $highspeed . '';
@@ -801,7 +801,7 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
             $added = sqlesc(TIME_NOW);
             sql_query('INSERT INTO messages (sender, receiver, msg, subject, added) VALUES (0, ' . sqlesc($userid) . ", $msg, $subject, $added)") or sqlerr(__FILE__, __LINE__);
         } else {
-            exit();
+            die();
         } //== Error
         $updateset[] = 'can_leech = ' . sqlesc($can_leech);
         $useredit['update'][] = $lang['modtask_canleech_edited'] . $can_leech . '';

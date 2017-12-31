@@ -32,21 +32,21 @@ if ($mode == 'ban') {
     sql_query("UPDATE failedlogins SET banned = 'yes' WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     header('Refresh: 2; url=' . $site_config['baseurl'] . '/staffpanel.php?tool=failedlogins');
     stderr($lang['failed_success'], "{$lang['failed_message_ban']}");
-    exit();
+    die();
 }
 if ($mode == 'removeban') {
     validate($id);
     sql_query("UPDATE failedlogins SET banned = 'no' WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     header('Refresh: 2; url=' . $site_config['baseurl'] . '/staffpanel.php?tool=failedlogins');
     stderr($lang['failed_success'], "{$lang['failed_message_unban']}");
-    exit();
+    die();
 }
 if ($mode == 'delete') {
     validate($id);
     sql_query('DELETE FROM failedlogins WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     header('Refresh: 2; url=' . $site_config['baseurl'] . '/staffpanel.php?tool=failedlogins');
     stderr($lang['failed_success'], "{$lang['failed_message_deleted']}");
-    exit();
+    die();
 }
 //==End
 //==Main output

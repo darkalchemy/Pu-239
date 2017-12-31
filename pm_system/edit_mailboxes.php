@@ -14,7 +14,7 @@ if (isset($_POST['action2'])) {
     if (!in_array($action2, $good_actions)) {
         stderr($lang['pm_error'], $lang['pm_edmail_error']);
     }
-    //=== add more boxes...
+
     switch ($action2) {
         case 'change_pm':
             $change_pm_number = (isset($_POST['change_pm_number']) ? intval($_POST['change_pm_number']) : 20);
@@ -23,22 +23,19 @@ if (isset($_POST['action2'])) {
                 'pms_per_page' => $change_pm_number,
             ], $site_config['expires']['user_cache']);
             header('Location: pm_system.php?action=edit_mailboxes&pm=1');
-            exit();
+            die();
             break;
 
         case 'add':
-            //=== make sure they posted something...
             if ($_POST['new'] === '') {
                 stderr($lang['pm_error'], $lang['pm_edmail_err']);
             }
-            //=== Get current highest box number
             $res = sql_query('SELECT boxnumber FROM pmboxes WHERE userid = ' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber  DESC LIMIT 1') or sqlerr(__FILE__, __LINE__);
             $box_arr = mysqli_fetch_row($res);
             $box = ($box_arr[0] < 2 ? 2 : ($box_arr[0] + 1));
-            //=== let's add the new boxes to the DB
             $new_box = $_POST['new'];
             foreach ($new_box as $key => $add_it) {
-                if (validusername($add_it) && $add_it !== '') {
+                if (valid_username($add_it) && $add_it !== '') {
                     $name = htmlsafechars($add_it);
                     sql_query('INSERT INTO pmboxes (userid, name, boxnumber) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($name) . ', ' . sqlesc($box) . ')') or sqlerr(__FILE__, __LINE__);
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
@@ -47,47 +44,37 @@ if (isset($_POST['action2'])) {
                 ++$box;
                 $worked = '&boxes=1';
             }
-            //=== redirect back with messages :P
             header('Location: pm_system.php?action=edit_mailboxes' . $worked);
-            exit();
+            die();
             break;
-        //=== edit boxes
 
         case 'edit_boxes':
-            //=== get info
             $res = sql_query('SELECT * FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
             if (mysqli_num_rows($res) === 0) {
                 stderr($lang['pm_error'], $lang['pm_edmail_err1']);
             }
             while ($row = mysqli_fetch_assoc($res)) {
-                //=== if name different AND safe, update it
-                if (validusername($_POST[ 'edit' . $row['id'] ]) && $_POST[ 'edit' . $row['id'] ] !== '' && $_POST[ 'edit' . $row['id'] ] !== $row['name']) {
+                if (valid_username($_POST[ 'edit' . $row['id'] ]) && $_POST[ 'edit' . $row['id'] ] !== '' && $_POST[ 'edit' . $row['id'] ] !== $row['name']) {
                     $name = htmlsafechars($_POST[ 'edit' . $row['id'] ]);
                     sql_query('UPDATE pmboxes SET name=' . sqlesc($name) . ' WHERE id=' . sqlesc($row['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo' . $CURUSER['id']);
                     $worked = '&name=1';
                 }
-                //=== if name is empty, delete the box(es) and send the PMs back to the inbox..
                 if ($_POST[ 'edit' . $row['id'] ] == '') {
-                    //=== get messages to move
                     $remove_messages_res = sql_query('SELECT id FROM messages WHERE location=' . sqlesc($row['boxnumber']) . '  AND receiver=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-                    //== move the messages to the inbox
                     while ($remove_messages_arr = mysqli_fetch_assoc($remove_messages_res)) {
                         sql_query('UPDATE messages SET location=1 WHERE id=' . sqlesc($remove_messages_arr['id'])) or sqlerr(__FILE__, __LINE__);
                     }
-                    //== delete the box
                     sql_query('DELETE FROM pmboxes WHERE id=' . sqlesc($row['id']) . '  LIMIT 1') or sqlerr(__FILE__, __LINE__);
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo' . $CURUSER['id']);
                     $deleted = '&box_delete=1';
                 }
             }
-            //=== redirect back with messages :P
             header('Location: pm_system.php?action=edit_mailboxes' . $deleted . $worked);
-            exit();
+            die();
             break;
-        //=== message settings     yes/no/friends
 
         case 'message_settings':
             $updateset = [];
@@ -116,7 +103,6 @@ if (isset($_POST['action2'])) {
             $notifs = ($pmnotif == 'yes' ? $lang['pm_edmail_pm_1'] : '');
             $notifs .= ($emailnotif == 'yes' ? $lang['pm_edmail_email_1'] : '');
             $cats = genrelist();
-            //==cats
             $r = sql_query('SELECT id FROM categories') or sqlerr(__FILE__, __LINE__);
             $rows = mysqli_num_rows($r);
             for ($i = 0; $i < $rows; ++$i) {
@@ -133,9 +119,8 @@ if (isset($_POST['action2'])) {
             }
             sql_query('UPDATE users SET ' . implode(', ', $updateset) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
             $worked = '&pms=1';
-            //=== redirect back with messages :P
             header('Location: pm_system.php?action=edit_mailboxes' . $worked);
-            exit();
+            die();
             break;
     }
 }
@@ -184,7 +169,7 @@ if (mysqli_num_rows($res) > 0) {
 $per_page_drop_down = '<select name="change_pm_number">';
 $i = 20;
 while ($i <= ($maxbox > 200 ? 200 : $maxbox)) {
-    $per_page_drop_down .= '<option class="body" value="' . $i . '" ' . ($CURUSER['pms_per_page'] == $i ? ' selected="selected"' : '') . '>' . $i . '' . $lang['pm_edmail_perpage'] . '</option>';
+    $per_page_drop_down .= '<option class="body" value="' . $i . '" ' . ($CURUSER['pms_per_page'] == $i ? ' selected' : '') . '>' . $i . '' . $lang['pm_edmail_perpage'] . '</option>';
     $i = ($i < 100 ? $i = $i + 10 : $i = $i + 25);
 }
 $per_page_drop_down .= '</select>';
@@ -263,8 +248,8 @@ $HTMLOUT .= '
         <td class="one"><span style="font-weight: bold;">' . $lang['pm_edmail_av'] . '</span></td>
         <td class="one">
         <select name="show_pm_avatar">
-        <option value="yes" ' . ($CURUSER['show_pm_avatar'] === 'yes' ? ' selected="selected"' : '') . '>' . $lang['pm_edmail_show_av'] . '</option>
-        <option value="no" ' . ($CURUSER['show_pm_avatar'] === 'no' ? ' selected="selected"' : '') . '>' . $lang['pm_edmail_dshow_av'] . '</option>
+        <option value="yes" ' . ($CURUSER['show_pm_avatar'] === 'yes' ? ' selected' : '') . '>' . $lang['pm_edmail_show_av'] . '</option>
+        <option value="no" ' . ($CURUSER['show_pm_avatar'] === 'no' ? ' selected' : '') . '>' . $lang['pm_edmail_dshow_av'] . '</option>
         </select>' . $lang['pm_edmail_show_av_box'] . '</td>
         <td class="one"></td>
     </tr>

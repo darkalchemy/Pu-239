@@ -143,7 +143,7 @@ if (isset($_POST['button']) && $_POST['button'] == 'Post') {
         sql_query('INSERT INTO `subscriptions` (`user_id`, `topic_id`) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($topic_id) . ')');
     }
     header('Location: forums.php?action=view_topic&topic_id=' . $topic_id . ($extension_error !== 0 ? '&ee=' . $extension_error : '') . ($size_error !== 0 ? '&se=' . $size_error : ''));
-    exit();
+    die();
 }
 $res = sql_query('SELECT name FROM forums WHERE id=' . sqlesc($forum_id));
 $arr = mysqli_fetch_assoc($res);

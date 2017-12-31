@@ -86,7 +86,7 @@ switch ($view) {
 
         //==== Display Everything
         echo stdhead("{$lang['text_all_comm']}") . $HTMLOUT . stdfoot();
-        exit();
+        die();
         break;
 
 //==== Page: Search
@@ -103,7 +103,7 @@ switch ($view) {
 
         //==== Display Everything
         echo stdhead("{$lang['text_search']}") . $HTMLOUT . stdfoot();
-        exit();
+        die();
         break;
 
 //==== Page: Search Results
@@ -168,7 +168,7 @@ switch ($view) {
 
         //==== Display Everything
         echo stdhead("{$lang['text_results']}{$_POST['keywords']}") . $HTMLOUT . stdfoot();
-        exit();
+        die();
         break;
 }
 

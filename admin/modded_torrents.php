@@ -109,7 +109,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
             $title = $put;
         }
         //echo stdhead("".$lang['mtor_no_torrents_modded']."") . $HTMLOUT . stdfoot();
-        //exit();
+        //die();
         // ENDS ALL UNMODDED TORRENTS
     } else {
         // IF ITS THE OTHER 2 CASES AS CHECKED BEFORE , NO NEED TO DO IT AGAIN
@@ -122,7 +122,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
             $HTMLOUT .= '<h3>' . $lang['mtor_no_torrents_have_been_modded'] . ' ' . $mode . '.</h3>';
             //echo stdhead("".$lang['mtor_no_torrents_modded']."") . $HTMLOUT . stdfoot();
             $title = '' . $lang['mtor_no_torrents_modded'] . " $mode";
-            //exit();
+            //die();
         } else {
             $perpage = 15;
             $pager = pager($perpage, $count, "{$_SERVER['PHP_SELF']}?tool=modded_torrents&type={$mode}&");
@@ -157,7 +157,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
         }
     }
     echo stdhead($title) . $HTMLOUT . stdfoot();
-    exit();
+    die();
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $where = false;
     $ts = strtotime(date('F', time()) . ' ' . date('Y', time()));
@@ -229,7 +229,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
         stderr($lang['mtor_error'], '' . $lang['mtor_empty_data_supplied'] . ' ! ' . $lang['mtor_please_try_again'] . '');
     }
     echo stdhead($title) . $HTMLOUT . stdfoot();
-    exit();
+    die();
 }
 $HTMLOUT = '';
 $HTMLOUT .= "

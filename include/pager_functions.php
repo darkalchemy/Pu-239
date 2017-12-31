@@ -7,7 +7,7 @@
  *
  * @return array
  */
-function pager($rpp, $count, $href, $opts = [])
+function pager($rpp, $count, $href, $opts = [], $class = null)
 {
     // $rpp = results per page
     // $count = total number to process
@@ -36,11 +36,11 @@ function pager($rpp, $count, $href, $opts = [])
     $pager = $pager2 = '';
     if ($page >= 1) {
         $pager = "
-                        <a href='{$href}page=" . ($page - 1) . "' class='pagination-previous button is-dark tooltipper is_hidden-mobile'  title='Goto Page $page'>Previous</a>";
+                        <a href='{$href}page=" . ($page - 1) . "' class='pagination-previous button $class tooltipper is_hidden-mobile'  title='Goto Page $page'>Previous</a>";
     }
     if ($page < $mp && $mp >= 0) {
         $pager2 = "
-                        <a href='{$href}page=" . ($page + 1) . "' class='pagination-next button is-dark tooltipper is_hidden-mobile' title='Goto Page " . ($page + 2) . "'>Next</a>";
+                        <a href='{$href}page=" . ($page + 1) . "' class='pagination-next button $class tooltipper is_hidden-mobile' title='Goto Page " . ($page + 2) . "'>Next</a>";
     }
     if ($count) {
         $pagerarr[] = "<ul class='pagination-list'>";
@@ -67,7 +67,7 @@ function pager($rpp, $count, $href, $opts = [])
             $text = $i + 1;
             if ($i != $page) {
                 $pagerarr[] = "
-                            <li><a href='{$href}page=$i' class='pagination-link button is-dark' aria-label='Goto page $text'>$text</a></li>";
+                            <li><a href='{$href}page=$i' class='pagination-link button $class' aria-label='Goto page $text'>$text</a></li>";
             } else {
                 $pagerarr[] = "
                             <li><a class='pagination-link is-current' aria-label='Page $text' aria-current='page'>$text</a></li>";

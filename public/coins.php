@@ -10,7 +10,7 @@ $lang = array_merge(load_language('global'), load_language('coins'));
 $id = (int)$_GET['id'];
 $points = (int)$_GET['points'];
 if (!is_valid_id($id) || !is_valid_id($points)) {
-    exit();
+    die();
 }
 $pointscangive = [
     '10',

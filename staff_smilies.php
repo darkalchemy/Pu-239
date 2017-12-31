@@ -7,7 +7,7 @@ global $CURUSER, $site_config;
 
 if ($CURUSER['class'] < UC_STAFF) {
     stderr('Error', 'Yer no tall enough');
-    exit();
+    die();
 }
 $lang = load_language('global');
 $htmlout = '';

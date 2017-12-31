@@ -38,7 +38,7 @@ if ($site_config['captcha_on']) {
         }
 
         header("Location: $url");
-        exit();
+        die();
     }
 }
 /**
@@ -94,12 +94,12 @@ if ($row['enabled'] == 'no') {
 sql_query("DELETE FROM failedlogins WHERE ip = $ip_escaped");
 $userid = (int)$row['id'];
 $row['perms'] = (int)$row['perms'];
-//== Start ip logger - Melvinmeow, Mindless, pdq
 $no_log_ip = ($row['perms'] & bt_options::PERMS_NO_IP);
 if ($no_log_ip) {
     $ip = '127.0.0.1';
-    $ip_escaped = ipToStorageFormat($ip);
 }
+$ip_escaped = ipToStorageFormat($ip);
+
 if (!$no_log_ip) {
     $res = sql_query("SELECT * FROM ips WHERE ip = $ip_escaped AND userid = " . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 0) {

@@ -42,17 +42,20 @@ function permissioncheck()
         $out .= '<div class="' . ($state ? 'readable' : 'notreadable') . '">' . $dir . '</div>';
     }
     if (!$continue) {
-        $out .= '<div class="info" style="text-align:center">It looks like you need to chmod some directories!<br>all directories marked in red should be chmoded 0777<br><input type="button" value="Reload" onclick="window.location.reload()" /></div>';
+        $out .= '<div class="info" style="text-align:center">It looks like you need to chmod some directories!<br>all directories marked in red should be chmoded 0777<br><br><input type="button" value="Reload" onclick="window.location.reload()" /></div>';
     }
     $out .= '</fieldset>';
     if ($continue) {
-        if (file_exists('step1.lock')) {
-            header('Location: index.php?step=2');
-        } else {
-            file_put_contents('step1.lock', '1');
-        }
-        $out .= '<div style="text-align:center"><input type="button" onclick="window.location.href=\'index.php?step=2\'" value="Next step" /></div>';
+        $out .= '
+                <div style="text-align:center">
+                    <input type="button" onclick="onClick(2)" value="Next step" />
+                </div>';
     }
+    $out .= '
+    <script>
+        var processing = 1;
+    </script>';
+
 
     return $out;
 }

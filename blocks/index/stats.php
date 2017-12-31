@@ -1,9 +1,9 @@
 <?php
-global $site_config, $cache, $lang, $fpdo;
+global $site_config, $cache, $lang, $fluent;
 
 $stats_cache = $cache->get('site_stats_');
 if ($stats_cache === false || is_null($stats_cache)) {
-    $stats_cache = $fpdo->from('stats')
+    $stats_cache = $fluent->from('stats')
         ->select('seeders + leechers AS peers')
         ->select('seeders / leechers AS ratio')
         ->select('unconnectables / (seeders + leechers) AS ratiounconn')

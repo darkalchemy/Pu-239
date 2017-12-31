@@ -36,7 +36,7 @@ switch ($action) {
         }
         sql_query('DELETE FROM over_forums WHERE id = ' . sqlesc($id));
         header('Location: staffpanel.php?tool=over_forums');
-        exit();
+        die();
         break;
     //=== edit forum
 
@@ -50,7 +50,7 @@ switch ($action) {
         }
         sql_query('UPDATE over_forums SET sort = ' . sqlesc($sort) . ', name = ' . sqlesc($name) . ', description = ' . sqlesc($desc) . ', min_class_view = ' . sqlesc($min_class_view) . ' WHERE id = ' . sqlesc($id));
         header('Location: staffpanel.php?tool=over_forums');
-        exit();
+        die();
         break;
     //=== add forum
 
@@ -64,7 +64,7 @@ switch ($action) {
         }
         sql_query('INSERT INTO over_forums (sort, name,  description,  min_class_view) VALUES (' . sqlesc($sort) . ', ' . sqlesc($name) . ', ' . sqlesc($desc) . ', ' . sqlesc($min_class_view) . ')');
         header('Location: staffpanel.php?tool=over_forums');
-        exit();
+        die();
         break;
     //=== edit over forum stuff
 
@@ -91,7 +91,7 @@ switch ($action) {
 		    <td class="three">
 		    <select name="min_class_view">';
             for ($i = 0; $i <= $maxclass; ++$i) {
-                $over_forums .= '<option class="body" value="' . $i . '"' . ($row['min_class_view'] == $i ? ' selected="selected"' : '') . '>' . get_user_class_name($i) . '</option>';
+                $over_forums .= '<option class="body" value="' . $i . '"' . ($row['min_class_view'] == $i ? ' selected' : '') . '>' . get_user_class_name($i) . '</option>';
             }
             $HTMLOUT .= $over_forums . '</select></td></tr><tr> 
 		    <td class="three"><span style="font-weight: bold;">' . $lang['ad_over_sort'] . '</span></td>
@@ -101,7 +101,7 @@ switch ($action) {
             $nr = mysqli_num_rows($res);
             $maxclass = $nr + 1;
             for ($i = 0; $i <= $maxclass; ++$i) {
-                $sorted .= '<option class="body" value="' . $i . '"' . ($row['sort'] == $i ? ' selected="selected"' : '') . '>' . $i . '</option>';
+                $sorted .= '<option class="body" value="' . $i . '"' . ($row['sort'] == $i ? ' selected' : '') . '>' . $i . '</option>';
             }
             $HTMLOUT .= $sorted . '</select></td></tr>
 			<tr>

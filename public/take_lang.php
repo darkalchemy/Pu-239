@@ -41,9 +41,9 @@ $HTMLOUT .= "<!doctype html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'htt
             <form action='take_lang.php' method='post'>
                 <p class='has-text-centered'>
                     <select name='language' onchange='this.form.submit();' size='1'>
-                        <option value='1'" . (get_language() == '1' ? " selected='selected'" : '') . ">En</option>
-                        <option value='2'" . (get_language() == '2' ? " selected='selected'" : '') . ">Dk</option>
-                        <option value='3'" . (get_language() == '3' ? " selected='selected'" : '') . ">Rm</option>
+                        <option value='1'" . (get_language() == '1' ? " selected" : '') . ">En</option>
+                        <option value='2'" . (get_language() == '2' ? " selected" : '') . ">Dk</option>
+                        <option value='3'" . (get_language() == '3' ? " selected" : '') . ">Rm</option>
                     </select>
                     <br>
                     <input type='button' class='button is-small margin20' value='Close' onclick='self.close()' />
@@ -54,4 +54,4 @@ $HTMLOUT .= "<!doctype html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'htt
 </body>
 </html>";
 echo $HTMLOUT;
-exit();
+die();

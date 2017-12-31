@@ -162,7 +162,7 @@ if (isset($_POST['button']) && $_POST['button'] == 'Edit') {
     }
     //header('Location: forums.php?action=view_topic&topic_id='.$topic_id.'&page='.$page.'#'.$post_id);
     header('Location: ' . $site_config['baseurl'] . '/forums.php?action=view_topic&topic_id=' . $topic_id . ($extension_error !== 0 ? '&ee=' . $extension_error : '') . ($size_error !== 0 ? '&se=' . $size_error : ''));
-    exit();
+    die();
 }
 $HTMLOUT .= '<table class="table table-bordered table-striped">
     <tr><td class="embedded">

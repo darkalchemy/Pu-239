@@ -9,7 +9,7 @@ if ($CURUSER['class'] < $site_config['offer_min_class']) {
     <b>" . $site_config['site_name'] . ' staff</b></div>';
     /////////////////////// HTML OUTPUT //////////////////////////////
     echo stdhead('Offers Page') . $HTMLOUT . stdfoot();
-    exit();
+    die();
 }
 $gigsneeded = ($site_config['offer_gigs_upped'] * 1024 * 1024 * 1024);
 $gigsupped = $CURUSER['uploaded'];
@@ -47,7 +47,7 @@ Please search torrents before adding an offer!</td></tr><tr><td>
     foreach ($cats as $cat) {
         $catdropdown .= "<option value='" . $cat['id'] . "'";
         if ($cat['id'] == (isset($_GET['cat']) ? $_GET['cat'] : '')) {
-            $catdropdown .= " selected='selected'";
+            $catdropdown .= " selected";
         }
         $catdropdown .= '>' . htmlspecialchars($cat['name']) . "</option>\n";
     }

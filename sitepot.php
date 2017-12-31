@@ -13,7 +13,7 @@ $SitePot = mysqli_fetch_assoc($Pot_query) or stderr('ERROR', 'db error.');
 if ($SitePot['value_u'] < TIME_NOW && $SitePot['value_s'] == '1') {
     mysqli_query($GLOBALS['___mysqli_ston'], "UPDATE avps SET value_i = 0, value_s = '0' WHERE arg = 'sitepot'") or sqlerr(__FILE__, __LINE__);
     header('Location: sitepot.php');
-    exit();
+    die();
 }
 if ($SitePot['value_i'] == $potsize) {
     stderr('Site Pot is Full', 'Freeleech ends at: ' . get_date($SitePot['value_u'], 'DATE') . ' (' . mkprettytime($SitePot['value_u'] - TIME_NOW) . ' to go).');
@@ -62,7 +62,7 @@ if ($want_pot && (isset($pot_options[ $want_pot ]))) {
         $msg = $CURUSER['username'] . ' put ' . $want_pot . ' karma point' . ($want_pot > 1 ? 's' : '') . ' into the site pot! * Only [b]' . $Remaining . '[/b] more karma point' . ($Remaining > 1 ? 's' : '') . " to go! * [color=green][b]Site Pot:[/b][/color] [url={$site_config['baseurl']}/sitepot.php]" . $give . '/' . $potsize . '[/url]';
         autoshout($msg);
         header('Location: sitepot.php');
-        exit();
+        die();
     } elseif (($SitePot['value_i'] + $want_pot) == $potsize) {
         //$bonuscomment = gmdate("Y-m-d") . " - User has donated ".$want_pot." to the site pot.\n" . $CURUSER["modcomment"];
         //mysql_query("UPDATE users SET seedbonus = seedbonus - ".sqlesc($want_pot).", bonuscomment = concat(".sqlesc($bonuscomment).", bonuscomment) WHERE id = ".sqlesc($CURUSER['id'])."") or sqlerr(__FILE__, __LINE__);
@@ -88,7 +88,7 @@ if ($want_pot && (isset($pot_options[ $want_pot ]))) {
         $msg = ' [color=green][b]24 HR FREELEECH[/b][/color] is now active! It will end at ' . get_date($arr['value_u'], 'DATE') . '.';
         autoshout($msg);
         header('Location: sitepot.php');
-        exit();
+        die();
     } else {
         stderr('Error', 'Something strange happened, reload the page and try again.');
     }
@@ -115,7 +115,7 @@ foreach ($pot_options as $Pot_option) {
     
    	      <div class=\"buttons\">
 	      <input name='want_pot' type='hidden' value='" . $Pot_option . "' />
-          <button value='Exchange!' " . ($disabled == 'true' ? "disabled='disabled'" : '') . ' type="submit" class="positive">
+          <button value='Exchange!' " . ($disabled == 'true' ? "disabled" : '') . ' type="submit" class="positive">
           <img src="./images/aff_tick.gif" alt="" /> Exchange!
           </button>
           </div>

@@ -17,7 +17,7 @@ if (isset($_GET['action']) && htmlsafechars($_GET['action']) == 'editclass') { /
         'override_class' => $newclass,
     ], $site_config['expires']['user_cache']);
     header("Location: {$site_config['baseurl']}/" . $returnto);
-    exit();
+    die();
 }
 // HTML Code to allow changes to current class
 $HTMLOUT .= "<br>

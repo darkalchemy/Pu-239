@@ -136,7 +136,7 @@ if (isset($_GET['hit'])) {
         'views' => $update['views'],
     ], $site_config['expires']['torrent_details']);
     header("Location: details.php?id=$id");
-    exit();
+    die();
 }
 $What_String = (XBT_TRACKER == true ? 'mtime' : 'last_action');
 $What_String_Key = (XBT_TRACKER == true ? 'last_action_xbt_' : 'last_action_');
@@ -908,7 +908,7 @@ if ($torrents['allow_comments'] == 'yes' || $CURUSER['class'] >= UC_STAFF && $CU
             </table>
         </div>";
     echo stdhead("{$lang['details_details']}'" . htmlsafechars($torrents['name'], ENT_QUOTES) . '"', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
-    exit();
+    die();
 }
 $count = (int)$torrents['comments'];
 if (!$count) {

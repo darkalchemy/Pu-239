@@ -1744,7 +1744,7 @@ class imdb extends movie_base
                 return $this->season_episodes;
             } // no such page
             if (preg_match('!<select id="bySeason"(.*?)</select!ims', $this->page['Episodes'], $match)) {
-                preg_match_all('!<option\s+(selected="selected" |)value="(\d+)">!i', $match[1], $matches);
+                preg_match_all('!<option\s+(selected |)value="(\d+)">!i', $match[1], $matches);
                 for ($i = 0; $i < count($matches[0]); ++$i) {
                     $s = $matches[2][$i];
                     if (empty($this->page["Episodes-$s"])) {

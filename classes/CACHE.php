@@ -11,7 +11,7 @@ class CACHE extends \MatthiasMullie\Scrapbook\Buffered\TransactionalStore
     public function __construct()
     {
         global $site_config;
-        switch ($site_config['cache_adapter']) {
+        switch ($_ENV['CACHE_DRIVER']) {
             case 'couchbase':
                 $cluster = new \CouchbaseCluster('couchbase://localhost');
                 $bucket = $cluster->openBucket('default');
@@ -49,7 +49,7 @@ class CACHE extends \MatthiasMullie\Scrapbook\Buffered\TransactionalStore
                 break;
 
             default:
-                $adapter = new \League\Flysystem\Adapter\Local($site_config['filesystem_path'], LOCK_EX);
+                $adapter = new \League\Flysystem\Adapter\Local($_ENV['FILES_PATH'], LOCK_EX);
                 $filesystem = new \League\Flysystem\Filesystem($adapter);
                 $cache = new \MatthiasMullie\Scrapbook\Adapters\Flysystem($filesystem);
         }

@@ -1,10 +1,10 @@
 <?php
-global $CURUSER, $site_config, $cache, $lang, $fpdo;
+global $CURUSER, $site_config, $cache, $lang, $fluent;
 
 if ($site_config['staffmsg_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $answeredby = $cache->get('staff_mess_');
     if ($answeredby === false || is_null($answeredby)) {
-        $res = $fpdo->from('staffmessages')
+        $res = $fluent->from('staffmessages')
             ->select(null)
             ->select('COUNT(id) AS count')
             ->where('answeredby = 0')

@@ -1,10 +1,10 @@
 <?php
-global $CURUSER, $site_config, $cache, $lang, $fpdo;
+global $CURUSER, $site_config, $cache, $lang, $fluent;
 
 if ($site_config['bug_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $bugs = $cache->get('bug_mess_');
     if ($bugs === false || is_null($bugs)) {
-        $res = $fpdo->from('bugs')
+        $res = $fluent->from('bugs')
             ->select(null)
             ->select('COUNT(id) AS count')
             ->where('status = ?', 'na')

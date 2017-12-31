@@ -51,14 +51,14 @@ function extensionscheck()
             <div class="info" style="text-align:center">
                 It looks like you need to install some php extensions:<br>
                 <span style="color: red;">' . implode(', ', $missing) . '</span>.<br>
-                Once you have installed the extensions marked in red, you can continue.<br>
+                Once you have installed the extensions marked in red, you can continue.<br><br>
                 <input type="button" value="Reload" onclick="window.location.reload()" />
             </div>';
     }
     if (!$php) {
         $out .= '
             <div class="info" style="text-align:center">
-                Please update PHP to at least version ' . $php_min_vers . '.<br>
+                Please update PHP to at least version ' . $php_min_vers . '.<br><br>
                 <input type="button" value="Reload" onclick="window.location.reload()" />
             </div>';
     }
@@ -66,16 +66,16 @@ function extensionscheck()
         </fieldset>';
 
     if (empty($missing) && $php) {
-        if (file_exists('step0.lock')) {
-            header('Location: index.php?step=1');
-        } else {
-            file_put_contents('step0.lock', '1');
-        }
         $out .= '
             <div style="text-align:center">
-                <input type="button" onclick="window.location.href=\'index.php?step=1\'" value="Next step" />
+                <input type="button" onclick="onClick(1)" value="Next step" />
             </div>';
     }
+
+    $out .= '
+    <script>
+        var processing = 0;
+    </script>';
 
     return $out;
 }

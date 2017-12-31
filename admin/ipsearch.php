@@ -17,7 +17,7 @@ if ($ip) {
         $HTMLOUT .= stdmsg($lang['ipsearch_error'], $lang['ipsearch_invalid']);
         $HTMLOUT .= end_main_frame();
         echo stdhead('IP Search') . $HTMLOUT . stdfoot();
-        exit();
+        die();
     }
     $mask = isset($_GET['mask']) ? htmlsafechars(trim($_GET['mask'])) : '';
     if ($mask == '' || $mask == '255.255.255.255') {
@@ -36,7 +36,7 @@ if ($ip) {
                 $HTMLOUT .= stdmsg($lang['ipsearch_error'], $lang['ipsearch_subnet']);
                 $HTMLOUT .= end_main_frame();
                 echo stdhead('IP Search') . $HTMLOUT . stdfoot();
-                exit();
+                die();
             } else {
                 $mask = long2ip(pow(2, 32) - pow(2, 32 - $n));
             }
@@ -44,7 +44,7 @@ if ($ip) {
             $HTMLOUT .= stdmsg($lang['ipsearch_error'], $lang['ipsearch_subnet']);
             $HTMLOUT .= end_main_frame();
             echo stdhead('IP Search') . $HTMLOUT . stdfoot();
-            exit();
+            die();
         }
         $where1 = "INET_ATON(u.ip) & INET_ATON('$mask') = INET_ATON('$ip') & INET_ATON('$mask')";
         $where2 = "INET_ATON(ips.ip) & INET_ATON('$mask') = INET_ATON('$ip') & INET_ATON('$mask')";

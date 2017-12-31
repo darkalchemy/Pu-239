@@ -677,7 +677,7 @@ if (isset($_GET['IMG'])) {
     $memcacheStats = getMemcacheStats();
     $memcacheStatsSingle = getMemcacheStats(false);
     if (!graphics_avail()) {
-        exit(0);
+        die();
     }
     /**
      * @param        $im

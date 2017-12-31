@@ -347,10 +347,10 @@ function makepoll()
         }
     }
     if (count($questions) > $site_config['max_poll_questions']) {
-        exit('poll_to_many');
+        die('poll_to_many');
     }
     if (count($choices_count) > ($site_config['max_poll_questions'] * $site_config['max_poll_choices_per_question'])) {
-        exit('poll_to_many');
+        die('poll_to_many');
     }
     if (isset($_POST['mode']) and $_POST['mode'] == 'poll_update') {
         $questions['total_votes'] = $poll_total_votes;

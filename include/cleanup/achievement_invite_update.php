@@ -1,10 +1,12 @@
 <?php
 /**
  * @param $data
+ *
+ * @throws Exception
  */
 function achievement_invite_update($data)
 {
-    global $site_config, $queries, $cache;
+    global $site_config, $queries, $cache, $lang;
     set_time_limit(1200);
     ignore_user_abort(true);
 
@@ -12,7 +14,7 @@ function achievement_invite_update($data)
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $dt = TIME_NOW;
-        $subject = sqlesc('New Achievement Earned!');
+        $subject = sqlesc($lang['doc_achiev_earned']);
         $points = random_int(1, 3);
         $var1 = 'inviterach';
         while ($arr = mysqli_fetch_assoc($res)) {
@@ -20,7 +22,7 @@ function achievement_invite_update($data)
             $lvl = (int)$arr['inviterach'];
             if ($invited >= 1 && $lvl == 0) {
                 $msg = sqlesc('Congratulations, you have just earned the [b]Inviter Level 1[/b] achievement. :) [img]' . $site_config['baseurl'] . '/images/achievements/invite1.png[/img]');
-                $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+                $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Inviter LVL1\', \'invite1.png\' , \'Invited at least 1 new user to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',1, ' . $points . ')';
                 $cache->increment('inbox_' . $arr['userid']);
@@ -28,14 +30,14 @@ function achievement_invite_update($data)
             }
             if ($invited >= 2 && $lvl == 1) {
                 $msg = sqlesc('Congratulations, you have just earned the [b]Inviter Level 2[/b] achievement. :) [img]' . $site_config['baseurl'] . '/images/achievements/invite2.png[/img]');
-                $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+                $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Inviter LVL2\', \'invite2.png\' , \'Invited at least 2 new users to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',2, ' . $points . ')';
                 $cache->increment('inbox_' . $arr['userid']);
             }
             if ($invited >= 3 && $lvl == 2) {
                 $msg = sqlesc('Congratulations, you have just earned the [b]Inviter Level 3[/b] achievement. :) [img]' . $site_config['baseurl'] . '/images/achievements/invite3.png[/img]');
-                $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+                $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Inviter LVL3\', \'invite3.png\' , \'Invited at least 3 new users to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',3, ' . $points . ')';
                 $cache->increment('inbox_' . $arr['userid']);
@@ -43,7 +45,7 @@ function achievement_invite_update($data)
             }
             if ($invited >= 5 && $lvl == 3) {
                 $msg = sqlesc('Congratulations, you have just earned the [b]Inviter Level 4[/b] achievement. :) [img]' . $site_config['baseurl'] . '/images/achievements/invite4.png[/img]');
-                $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+                $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Inviter LVL4\', \'invite4.png\' , \'Invited at least 5 new users to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',4, ' . $points . ')';
                 $cache->increment('inbox_' . $arr['userid']);
@@ -51,7 +53,7 @@ function achievement_invite_update($data)
             }
             if ($invited >= 10 && $lvl == 4) {
                 $msg = sqlesc('Congratulations, you have just earned the [b]Inviter Level 5[/b] achievement. :) [img]' . $site_config['baseurl'] . '/images/achievements/invite5.png[/img]');
-                $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+                $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Inviter LVL5\', \'invite5.png\' , \'Invited at least 10 new users to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',5, ' . $points . ')';
                 $cache->increment('inbox_' . $arr['userid']);

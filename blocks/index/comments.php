@@ -1,10 +1,10 @@
 <?php
 require_once INCL_DIR . 'html_functions.php';
-global $cache, $lang, $site_config, $fpdo;
+global $cache, $lang, $site_config, $fluent;
 
 $comments = $cache->get('latest_comments_');
 if ($comments === false || is_null($comments)) {
-    $comments = $fpdo->from('comments')
+    $comments = $fluent->from('comments')
         ->select(null)
         ->select('comments.id')
         ->select('comments.user')

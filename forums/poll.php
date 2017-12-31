@@ -84,7 +84,7 @@ switch ($action) {
             sql_query('INSERT INTO forum_poll_votes (`poll_id`, `user_id`, `option`, `ip`, `added`) VALUES (' . sqlesc($arr_poll['poll_id']) . ', ' . sqlesc($CURUSER['id']) . ', 666, ' . ipToStorageFormat($ip) . ', ' . $added . ')');
             //=== all went well, send them back!
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-            exit();
+            die();
         } else {
             //=== if single vote (not array)
             if (is_valid_poll_vote($post_vote)) {
@@ -105,7 +105,7 @@ switch ($action) {
             }
             //=== all went well, send them back!
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-            exit();
+            die();
         } //=== end of else
         break; //=== end casting a vote(s)
     //=== resetting vote ============================================================================================//
@@ -153,7 +153,7 @@ switch ($action) {
         sql_query('DELETE FROM forum_poll_votes WHERE poll_id = ' . sqlesc($arr_poll['poll_id']) . ' AND user_id = ' . sqlesc($CURUSER['id']));
         //=== all went well, send them back!
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-        exit();
+        die();
         break;
     //=== adding a poll ============================================================================================//
 
@@ -205,7 +205,7 @@ switch ($action) {
             }
             //=== all went well, send them back!
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-            exit();
+            die();
         } //=== end of posting poll to DB
         //=== ok looks like they can be here
         //=== options for amount of options lol
@@ -320,7 +320,7 @@ switch ($action) {
         }
         //=== all went well, send them back!
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-        exit();
+        die();
         break; //=== end delete poll
     //=== reseting a poll ============================================================================================//
 
@@ -345,7 +345,7 @@ switch ($action) {
         }
         //=== all went well, send them back!
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-        exit();
+        die();
         break; //=== end reset poll
     //=== closing a poll ============================================================================================//
 
@@ -370,7 +370,7 @@ switch ($action) {
         }
         //=== all went well, send them back!
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-        exit();
+        die();
         break; //=== end of poll close
     //=== opening a poll  (either after it was closed, or timed out) ===============================================================================//
 
@@ -395,7 +395,7 @@ switch ($action) {
         }
         //=== all went well, send them back!
         header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-        exit();
+        die();
         break; //=== end of open poll
     //=== edit a poll ============================================================================================//
 
@@ -441,7 +441,7 @@ switch ($action) {
             sql_query('DELETE FROM forum_poll_votes WHERE poll_id = ' . sqlesc($poll_id));
             //=== send them back!
             header('Location: forums.php?action=view_topic&topic_id=' . $topic_id);
-            exit();
+            die();
         } //=== end of posting poll to DB
         //=== get poll stuff to edit
         $res_edit = sql_query('SELECT * FROM forum_poll WHERE id = ' . sqlesc($poll_id));
@@ -457,7 +457,7 @@ switch ($action) {
         $poll_answers = implode("\n", $poll_answers);
         //=== options for amount of options lol
         for ($i = 2; $i < 21; ++$i) {
-            $options .= '<option class="body" value="' . $i . '" ' . ($multi_options == $i ? 'selected="selected"' : '') . '>' . $i . ' options</option>';
+            $options .= '<option class="body" value="' . $i . '" ' . ($multi_options == $i ? 'selected' : '') . '>' . $i . ' options</option>';
         }
         //=== ok looks like they can be here
         $HTMLOUT .= '
@@ -526,7 +526,7 @@ switch ($action) {
 		<td><img src="./images/forums/multi.gif" alt="' . $lang['poll_multi'] . '" title="' . $lang['poll_multi'] . '" width="20" /></td>
 		<td><span>' . $lang['poll_multi_options'] . ':</span></td>
 		<td><select name="multi_options">
-											<option class="body" value="1" ' . ($multi_options == 1 ? 'selected="selected"' : '') . '>' . $lang['poll_single_option'] . '!</option>
+											<option class="body" value="1" ' . ($multi_options == 1 ? 'selected' : '') . '>' . $lang['poll_single_option'] . '!</option>
 											' . $options . '
 											</select> ' . $lang['poll_allow_members_to_have_more_then_one_selection'] . '? ' . $lang['poll_default_is'] . ' "' . $lang['poll_single_option'] . '!"</td>
 	</tr>
@@ -549,5 +549,5 @@ switch ($action) {
     default:
         //=== at the end of the day, if they are messing about doing what they shouldn't, let's give then what for!
         stderr($lang['gl_error'], $lang['poll_epic_fail_last_msg']);
-        exit();
+        die();
 } //=== end switch all actions
