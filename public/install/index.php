@@ -1,21 +1,16 @@
 <?php
+
 $step = isset($_GET['step']) ? (int)$_GET['step'] : 0;
+
 $public = $_SERVER['DOCUMENT_ROOT'];
-if ($public[ strlen($public) - 1 ] != DIRECTORY_SEPARATOR) {
+if ($public[strlen($public) - 1] != DIRECTORY_SEPARATOR) {
     $public = $public . DIRECTORY_SEPARATOR;
 }
+
 $root = realpath($public . '..') . DIRECTORY_SEPARATOR;
 
 if (file_exists($public . 'include/install.lock')) {
     die('This was already installed, huh ? how this happened');
-}
-
-function checkpreviousstep($step)
-{
-    $step = isset($_GET['step']) ? (int)$_GET['step'] - 1 : $step - 1;
-    if (!file_exists('step' . $step . '.lock')) {
-        header('Location: index.php?step=' . $step);
-    }
 }
 
 function return_bytes($val)
@@ -24,7 +19,7 @@ function return_bytes($val)
         return 0;
     }
     $val = strtolower(trim($val));
-    $last = $val[ strlen($val) - 1 ];
+    $last = $val[strlen($val) - 1];
     $val = rtrim($val, $last);
 
     switch ($last) {
@@ -50,7 +45,6 @@ function get_scheme()
     }
     return $scheme;
 }
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -67,10 +61,10 @@ function get_scheme()
     <?php
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $valid_do = [
-            'write'     => 1,
+            'write' => 1,
             'db_insert' => 1,
         ];
-        $do = isset($_POST['do']) && isset($valid_do[ $_POST['do'] ]) ? $_POST['do'] : false;
+        $do = isset($_POST['do']) && isset($valid_do[$_POST['do']]) ? $_POST['do'] : false;
         switch ($do) {
             case 'write':
                 require_once 'functions/writeconfig.php';
@@ -93,37 +87,82 @@ function get_scheme()
                 break;
 
             case 1:
-                checkpreviousstep(1);
                 require_once 'functions/permissioncheck.php';
                 echo permissioncheck();
                 break;
 
             case 2:
-                checkpreviousstep(2);
-                $foo = [];
-                require_once 'functions/writeconfig.php';
-                $out = '<form action="index.php" method="post">';
-                foreach ($foo as $fo => $fooo) {
-                    $out .= createblock($fo, $fooo);
-                }
-                $out .= '<div style="text-align:center"><input type="submit" value="Submit data" /><input type="hidden" value="write" name="do" /></div></form>';
-                echo $out;
+                require_once 'functions/composercheck.php';
+                echo composercheck();
                 break;
 
             case 3:
-                checkpreviousstep(3);
+                require_once 'functions/nodecheck.php';
+                echo nodecheck();
+                break;
+
+            case 4:
+                $foo = [];
+                require_once 'functions/writeconfig.php';
+                $out = '
+                <form action="index.php" method="post">';
+                foreach ($foo as $fo => $fooo) {
+                    $out .= createblock($fo, $fooo);
+                }
+                $out .= '
+                    <div style="text-align:center">
+                        <input type="submit" value="Submit data" />
+                        <input type="hidden" value="write" name="do" />
+                    </div>
+                    <script>
+                        var processing = 4;
+                    </script>
+                </form>';
+                echo $out;
+                break;
+
+            case 5:
                 require_once 'functions/database.php';
                 db_test();
                 break;
 
-            case 4:
-                $out = '<fieldset><legend>All done</legend><div class="info">Installation complete</div><div class="info">goto <a href="./../signup.php">Signup</a> to create your first user.</div></fieldset>';
+            case 6:
+                $out = '
+                <fieldset>
+                    <legend>All done</legend>
+                    <div class="info">Installation complete</div>
+                    <div class="info">goto <a href="./../signup.php">Signup</a> to create your first user.</div>
+                    <script>
+                        var processing = 6;
+                    </script>
+                </fieldset>';
                 echo $out;
                 break;
-
         }
     }
     ?>
+    <script>
+        window.addEventListener("load", clear_storage());
+
+        function clear_storage() {
+            //localStorage.clear();
+            if (localStorage.getItem('in_process') == null) {
+                localStorage.setItem('in_process', 0);
+                localStorage.setItem('step', 0);
+            }
+            var step = parseInt(localStorage.getItem('step'));
+            if (processing !== step) {
+                localStorage.clear();
+                window.location.href = 'index.php?step=0';
+            }
+        }
+
+        function onClick(step) {
+            localStorage.setItem('step', step++);
+            var step = parseInt(localStorage.getItem('step'));
+            window.location.href = 'index.php?step=' + step + '&xbt=0'
+        }
+    </script>
 </div>
 </body>
 </html>

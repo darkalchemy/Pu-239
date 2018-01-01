@@ -63,7 +63,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_between'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['rt']) ? $_POST['rt'] : '3') == "$i") ? "selected='selected'" : '') . '>' . $options[ $i ] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['rt']) ? $_POST['rt'] : '3') == "$i") ? "selected" : '') . '>' . $options[ $i ] . "</option>\n";
                         }
                         ?>
                     </select>
@@ -84,7 +84,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_pending'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['st']) ? $_POST['st'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[ $i ] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['st']) ? $_POST['st'] : '0') == "$i") ? "selected" : '') . '>' . $options[ $i ] . "</option>\n";
                         }
                         ?>
                     </select></td>
@@ -116,7 +116,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_disabled'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['as']) ? $_POST['as'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[ $i ] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['as']) ? $_POST['as'] : '0') == "$i") ? "selected" : '') . '>' . $options[ $i ] . "</option>\n";
                         }
                         ?>
                     </select></td>
@@ -148,7 +148,7 @@ $highlight = " bgcolor='lightgrey'";
                         }
                         for ($i = 2; ; ++$i) {
                             if ($c = get_user_class_name($i - 2)) {
-                                echo "<option value='" . $i . "'" . ((isset($class) ? $class : 0) == $i ? " selected='selected'" : '') . ">$c</option>\n";
+                                echo "<option value='" . $i . "'" . ((isset($class) ? $class : 0) == $i ? " selected" : '') . ">$c</option>\n";
                             } else {
                                 break;
                             }
@@ -171,7 +171,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_between'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['dt']) ? $_POST['dt'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[ $i ] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['dt']) ? $_POST['dt'] : '0') == "$i") ? "selected" : '') . '>' . $options[ $i ] . "</option>\n";
                         }
                         ?>
                     </select>
@@ -196,7 +196,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_between'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['ult']) ? $_POST['ult'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[ $i ] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['ult']) ? $_POST['ult'] : '0') == "$i") ? "selected" : '') . '>' . $options[ $i ] . "</option>\n";
                         }
                         ?>
                     </select>
@@ -219,7 +219,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_no'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['do']) ? $_POST['do'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[ $i ] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['do']) ? $_POST['do'] : '0') == "$i") ? "selected" : '') . '>' . $options[ $i ] . "</option>\n";
                         }
                         ?>
                     </select></td>
@@ -239,7 +239,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_between'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['lst']) ? $_POST['lst'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[ $i ] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['lst']) ? $_POST['lst'] : '0') == "$i") ? "selected" : '') . '>' . $options[ $i ] . "</option>\n";
                         }
                         ?>
                     </select>
@@ -263,7 +263,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_between'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['dlt']) ? $_POST['dlt'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[ $i ] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['dlt']) ? $_POST['dlt'] : '0') == "$i") ? "selected" : '') . '>' . $options[ $i ] . "</option>\n";
                         }
                         ?>
                     </select>
@@ -287,7 +287,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_no'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['w']) ? $_POST['w'] : '0') == "$i") ? "selected='selected'" : '') . '>' . $options[ $i ] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['w']) ? $_POST['w'] : '0') == "$i") ? "selected" : '') . '>' . $options[ $i ] . "</option>\n";
                         }
                         ?>
                     </select></td>
@@ -443,7 +443,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
                     if (validemail($email) !== 1) {
                         stdmsg($lang['usersearch_error'], $lang['usersearch_bademail']);
                         stdfoot();
-                        exit();
+                        die();
                     }
                     $email_is .= (!empty($email_is) ? ' OR ' : '') . 'u.email =' . sqlesc($email);
                 } else {
@@ -475,7 +475,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
         if (!preg_match($regex, $ip)) {
             stdmsg($lang['usersearch_error'], $lang['usersearch_badip']);
             stdfoot();
-            exit();
+            die();
         }
         $mask = trim($_POST['ma']);
         if ($mask == '' || $mask == '255.255.255.255') {
@@ -486,14 +486,14 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
                 if (!is_numeric($n) or $n < 0 or $n > 32) {
                     stdmsg($lang['usersearch_error'], $lang['usersearch_badmask']);
                     stdfoot();
-                    exit();
+                    die();
                 } else {
                     $mask = long2ip(pow(2, 32) - pow(2, 32 - $n));
                 }
             } elseif (!preg_match($regex, $mask)) {
                 stdmsg($lang['usersearch_error'], $lang['usersearch_badmask']);
                 stdfoot();
-                exit();
+                die();
             }
             $where_is .= (!empty($where_is) ? ' AND ' : '') . "INET_ATON(u.ip) & INET_ATON('$mask') = INET_ATON('$ip') & INET_ATON('$mask')";
             $q1 .= ($q1 ? '&amp;' : '') . "ma=$mask";
@@ -515,7 +515,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
             if (!is_numeric($ratio) || $ratio < 0) {
                 stdmsg($lang['usersearch_error'], $lang['usersearch_badratio']);
                 stdfoot();
-                exit();
+                die();
             }
             $where_is .= !empty($where_is) ? ' AND ' : '';
             $where_is .= ' (u.uploaded/u.downloaded)';
@@ -526,12 +526,12 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
                 if (!$ratio2) {
                     stdmsg($lang['usersearch_error'], $lang['usersearch_badratio2']);
                     stdfoot();
-                    exit();
+                    die();
                 }
                 if (!is_numeric($ratio2) or $ratio2 < $ratio) {
                     stdmsg($lang['usersearch_error'], $lang['usersearch_badratio3']);
                     stdfoot();
-                    exit();
+                    die();
                 }
                 $where_is .= " BETWEEN $ratio and $ratio2";
                 $q1 .= ($q1 ? '&amp;' : '') . "r2=$ratio2";
@@ -607,7 +607,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
         if (!is_numeric($ul) || $ul < 0) {
             stdmsg($lang['usersearch_error'], $lang['usersearch_badup']);
             stdfoot();
-            exit();
+            die();
         }
         $where_is .= !empty($where_is) ? ' AND ' : '';
         $where_is .= ' u.uploaded ';
@@ -618,12 +618,12 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
             if (!$ul2) {
                 stdmsg($lang['usersearch_error'], $lang['usersearch_badup2']);
                 stdfoot();
-                exit();
+                die();
             }
             if (!is_numeric($ul2) or $ul2 < $ul) {
                 stdmsg($lang['usersearch_error'], $lang['usersearch_badup3']);
                 stdfoot();
-                exit();
+                die();
             }
             $where_is .= ' BETWEEN ' . $ul * $unit . ' and ' . $ul2 * $unit;
             $q1 .= ($q1 ? '&amp;' : '') . "ul2=$ul2";
@@ -642,7 +642,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
         if (!is_numeric($dl) || $dl < 0) {
             stdmsg($lang['usersearch_error'], $lang['usersearch_baddl']);
             stdfoot();
-            exit();
+            die();
         }
         $where_is .= !empty($where_is) ? ' AND ' : '';
         $where_is .= ' u.downloaded ';
@@ -653,12 +653,12 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
             if (!$dl2) {
                 stdmsg($lang['usersearch_error'], $lang['usersearch_baddl2']);
                 stdfoot();
-                exit();
+                die();
             }
             if (!is_numeric($dl2) or $dl2 < $dl) {
                 stdmsg($lang['usersearch_error'], $lang['usersearch_baddl3']);
                 stdfoot();
-                exit();
+                die();
             }
             $where_is .= ' BETWEEN ' . $dl * $unit . ' and ' . $dl2 * $unit;
             $q1 .= ($q1 ? '&amp;' : '') . "dl2=$dl2";
@@ -677,7 +677,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
         if (!$date = strtotime($date)) {
             stdmsg($lang['usersearch_error'], $lang['usersearch_baddate']);
             stdfoot();
-            exit();
+            die();
         }
         $q1 .= ($q1 ? '&amp;' : '') . "d=$date";
         $datetype = $_POST['dt'];
@@ -694,14 +694,14 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
                     if (!$date = strtotime($date)) {
                         stdmsg($lang['usersearch_error'], $lang['usersearch_baddate']);
                         stdfoot();
-                        exit();
+                        die();
                     }
                     $q1 .= ($q1 ? '&amp;' : '') . "d2=$date2";
                     $where_is .= " BETWEEN '$date' and '$date2'";
                 } else {
                     stdmsg($lang['usersearch_error'], $lang['usersearch_baddate']);
                     stdfoot();
-                    exit();
+                    die();
                 }
             } elseif ($datetype == '1') {
                 $where_is .= "< '$date'";
@@ -716,7 +716,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
         if (!$last = strtotime($last)) {
             stdmsg($lang['usersearch_error'], $lang['usersearch_baddate']);
             stdfoot();
-            exit();
+            die();
         }
         $q1 .= ($q1 ? '&amp;' : '') . "ls=$last";
         $lasttype = $_POST['lst'];
@@ -735,7 +735,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
                 } else {
                     stdmsg($lang['usersearch_error'], $lang['usersearch_baddate2']);
                     stdfoot();
-                    exit();
+                    die();
                 }
             } elseif ($lasttype == '1') {
                 $where_is .= "< '$last'";
@@ -824,7 +824,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
         if ($DEBUG_MODE == 2) {
             stdfoot();
         }
-        exit();
+        die();
     }
     //    </temporary>   /////////////////////////////////////////////////////
     $res = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
@@ -840,7 +840,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
 //    else if (mysqli_num_rows($res) == 1) {
 //        $usertt = mysqli_fetch_array($res);
 //        header('Location:userdetails.php?id=' . $usertt['id']);
-//        exit();
+//        die();
     } else {
         if ($count > $perpage) {
             $HTMLOUT .= $pager['pagertop'];
@@ -922,4 +922,4 @@ if (isset($pagemenu)) {
     $HTMLOUT .= ("<p>$pagemenu<br>$browsemenu</p>");
 }
 echo $HTMLOUT . stdfoot();
-exit();
+die();

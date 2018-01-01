@@ -19,4 +19,4 @@ while ($last_posts_read_arr = mysqli_fetch_assoc($last_posts_read_res)) {
 }
 //=== ok, all done here, send them back! \o/
 header('Location: forums.php?m=1');
-exit();
+die();

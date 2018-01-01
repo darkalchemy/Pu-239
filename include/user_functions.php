@@ -1,5 +1,5 @@
 <?php
-//=== Anonymous function
+
 /**
  * @return mixed
  */
@@ -10,7 +10,6 @@ function get_anonymous()
     return $CURUSER['anonymous_until'];
 }
 
-//== + Parked function
 /**
  * @return mixed
  */
@@ -28,21 +27,31 @@ function get_parked()
  */
 function autoshout($msg, $channel = 0, $ttl = 7200)
 {
-    global $site_config;
-    include_once INCL_DIR . 'bbcode_functions.php';
+    global $site_config, $pdo;
+
     if (user_exists($site_config['chatBotID'])) {
-        sql_query(
-            'INSERT INTO ajax_chat_messages 
-            (userID, userName, userRole, channel, dateTime, ip, text, ttl) 
-            VALUES (' . sqlesc($site_config['chatBotID']) . '
-            , ' . sqlesc($site_config['chatBotName']) . '
-            , 100, ' . sqlesc($channel) . ', NOW(), ' . ipToStorageFormat('127.0.0.1') . '
-            , ' . sqlesc($msg) . ', ' . sqlesc($ttl) . ')'
-        ) or sqlerr(__FILE__, __LINE__);
+        $values = [
+            'userID'   => $site_config['chatBotID'],
+            'userName' => $site_config['chatBotName'],
+            'userRole' => 100,
+            'channel'  => $channel,
+            'dateTime' => gmdate("Y-m-d H:i:s", TIME_NOW),
+            'ip'       => '127.0.0.1',
+            'text'     => $msg,
+            'ttl'      => $ttl,
+        ];
+
+        $stmt = $pdo->prepare(
+            'INSERT INTO ajax_chat_messages
+                        (userID, userName, userRole, channel, dateTime, ip, text, ttl)
+                      VALUES
+                        (:userID, :userName, :userRole, :channel, :dateTime, INET6_ATON(:ip), :text, :ttl)'
+        );
+        $stmt->execute($values);
+        file_put_contents('/var/log/nginx/searchapi23.log', json_encode($values) . PHP_EOL, FILE_APPEND);
     }
 }
 
-//== Get rep by CF
 /**
  * @param        $user
  * @param string $mode
@@ -136,14 +145,14 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
                 }
             }
         }
-        // now decide the locale
+
         if ($mode != '') {
             return 'Rep: ' . $posneg . "<br><br><a href='javascript:;' onclick=\"PopUp('{$site_config['baseurl']}/reputation.php?pid=" . ($post_id != 0 ? (int)$post_id : (int)$user['id']) . '&amp;locale=' . $mode . "','Reputation',400,300,1,1);\"><img src='{$site_config['pic_base_url']}forumicons/giverep.jpg' border='0' alt='Add reputation:: " . htmlsafechars($user['username']) . "' title='Add reputation:: " . htmlsafechars($user['username']) . "' /></a>";
         } else {
             return ' ' . $posneg;
         }
-    } // END IF ONLINE
-    // default
+    }
+
     return '<span title="Set offline by admin setting">Rep System Offline</span>';
 }
 
@@ -456,7 +465,7 @@ function min_class($min = UC_MIN, $max = UC_MAX)
  */
 function format_username($user_id, $icons = true, $tooltipper = true)
 {
-    global $site_config, $cache, $fpdo;
+    global $site_config, $cache, $fluent;
     if (empty($user_id)) {
         return;
     }
@@ -464,12 +473,12 @@ function format_username($user_id, $icons = true, $tooltipper = true)
     $users_data = $cache->get('user' . $user_id);
     if (!is_array($user_id) && is_numeric($user_id)) {
         if ($users_data === false || is_null($users_data)) {
-            $users_data = $fpdo->from('users')
+            $users_data = $fluent->from('users')
                 ->select('INET6_NTOA(ip) AS ip')
                 ->where('id = ?', $user_id)
                 ->fetch();
-                unset($users_data['hintanswer']);
-                unset($users_data['passhash']);
+            unset($users_data['hintanswer']);
+            unset($users_data['passhash']);
 
             $cache->set('user' . $user_id, $users_data, $site_config['expires']['user_cache']);
         }
@@ -484,25 +493,28 @@ function format_username($user_id, $icons = true, $tooltipper = true)
     $tip = $tooltip = '';
     if ($tooltipper) {
         $tip = "<div class='tooltip_templates'><div id='userid_{$users_data['id']}_tooltip' class='is-flex tooltip'><div class='right20'>{$avatar}</div><div style='min-width: 150px; align: left;'><span class='" . get_user_class_name($users_data['class'], true) . "'>" . htmlsafechars($users_data['username']) . "</span></div></div></div>";
-        $tooltip = "class='" . get_user_class_name($users_data['class'], true). " dt-tooltipper-large' data-tooltip-content='#userid_{$users_data['id']}_tooltip'";
+        $tooltip = "class='" . get_user_class_name($users_data['class'], true) . " dt-tooltipper-large' data-tooltip-content='#userid_{$users_data['id']}_tooltip'";
     } else {
-        $tooltip = "class='" . get_user_class_name($users_data['class'], true). "'";
+        $tooltip = "class='" . get_user_class_name($users_data['class'], true) . "'";
     }
     $str = "
+                <span class='level-item'>
                 $tip
                 <a href='{$site_config['baseurl']}/userdetails.php?id={$users_data['id']}' target='_blank'><span {$tooltip}>" . htmlsafechars($users_data['username']) . "</span></a>";
 
     if ($icons != false) {
-        $str .= (isset($users_data['king']) && $users_data['king'] >= TIME_NOW ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'king.png" alt="King" title="King" width="14px" height="14px" />' : '');
-        $str .= ($users_data['donor'] == 'yes' ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'star.png" alt="Donor" title="Donor" width="14px" height="14px" />' : '');
-        $str .= ($users_data['warned'] >= 1 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'alertred.png" alt="Warned" title="Warned" width="14px" height="14px" />' : '');
-        $str .= ($users_data['leechwarn'] >= 1 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'alertblue.png" alt="Leech Warned" title="Leech Warned" width="14px" height="14px" />' : '');
-        $str .= ($users_data['enabled'] != 'yes' ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'disabled.gif" alt="Disabled" title="Disabled" width="14px" height="14px" />' : '');
-        $str .= (isset($users_data['downloadpos']) && $users_data['downloadpos'] != 1 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'downloadpos.gif" alt="Download Disabled" title="Download Disabled" width="14px" height="14px" />' : '');
-        $str .= ($users_data['chatpost'] == 0 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'warned.png" alt="No Chat" title="Shout disabled" width="14px" height="14px" />' : '');
-        $str .= ($users_data['pirate'] != 0 ? '<img class="tooltipper" src="' . $site_config['pic_base_url'] . 'pirate.png" alt="Pirate" title="Pirate" width="14px" height="14px" />' : '');
-        $str .= (isset($users_data['gotgift']) && $users_data['gotgift'] == 'yes' ? '<img class="tooltipper" height="16px" src="' . $site_config['pic_base_url'] . 'gift.png" alt="Christmas Gift" title="Has Claimed a Christmas Gift" />' : '');
+        $str .= (isset($users_data['king']) && $users_data['king'] >= TIME_NOW ? '<img class="tooltipper icon left5" src="' . $site_config['pic_base_url'] . 'king.png" alt="King" title="King" />' : '');
+        $str .= ($users_data['donor'] == 'yes' ? '<img class="tooltipper icon left5" src="' . $site_config['pic_base_url'] . 'star.png" alt="Donor" title="Donor" />' : '');
+        $str .= ($users_data['warned'] >= 1 ? '<img class="tooltipper icon left5" src="' . $site_config['pic_base_url'] . 'alertred.png" alt="Warned" title="Warned" />' : '');
+        $str .= ($users_data['leechwarn'] >= 1 ? '<img class="tooltipper icon left5" src="' . $site_config['pic_base_url'] . 'alertblue.png" alt="Leech Warned" title="Leech Warned" />' : '');
+        $str .= ($users_data['enabled'] != 'yes' ? '<img class="tooltipper icon left5" src="' . $site_config['pic_base_url'] . 'disabled.gif" alt="Disabled" title="Disabled" />' : '');
+        $str .= (isset($users_data['downloadpos']) && $users_data['downloadpos'] != 1 ? '<img class="tooltipper icon left5" src="' . $site_config['pic_base_url'] . 'downloadpos.gif" alt="Download Disabled" title="Download Disabled" />' : '');
+        $str .= ($users_data['chatpost'] == 0 ? '<img class="tooltipper icon left5" src="' . $site_config['pic_base_url'] . 'warned.png" alt="No Chat" title="Shout disabled" />' : '');
+        $str .= ($users_data['pirate'] != 0 ? '<img class="tooltipper icon left5" src="' . $site_config['pic_base_url'] . 'pirate.png" alt="Pirate" title="Pirate" />' : '');
+        $str .= (isset($users_data['gotgift']) && $users_data['gotgift'] == 'yes' ? '<img class="tooltipper icon left5" src="' . $site_config['pic_base_url'] . 'gift.png" alt="Christmas Gift" title="Has Claimed a Christmas Gift" />' : '');
     }
+    $str .= '
+                </span>';
 
     return $str;
 }
@@ -687,5 +699,26 @@ function clr_forums_cache($post_id)
         $cache->delete('sv_last_post_' . $post_id . '_' . $uclass);
         $cache->delete('last_posts_' . $uclass);
         ++$uclass;
+    }
+}
+
+function clearUserCache($userid)
+{
+    global $cache;
+    $cache->delete('MyPeers_' . $userid);
+    $cache->delete('user' . $userid);
+    $cache->delete('useravatar_' . $userid);
+    $cache->delete('inbox_' . $userid);
+    $cache->delete('user_stats_' . $userid);
+    $cache->delete('userstats_' . $userid);
+    $cache->delete('userstatus_' . $userid);
+    $cache->delete('user_rep_' . $userid);
+    $cache->delete('poll_votes_' . $userid);
+    $cache->delete('userhnrs_' . $userid);
+    $cache->delete('get_all_boxes_' . $userid);
+    $cache->delete('insertJumpTo' . $userid);
+    if ($username = get_one_row('users', 'username', 'WHERE id = ' . sqlesc($userid))) {
+        $cache->delete('userclasses_' . $username);
+        $cache->delete('users_names_' . $username);
     }
 }

@@ -11,7 +11,7 @@ $HTMLOUT .= "
     <fieldset id='ajaxchat' class='header'>
         <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_ajaxchat']}</legend>
         <div class='bordered'>
-            <div class='alt_bordered iframe-container bg-none has-text-centered'>
+            <div class='alt_bordered iframe-container bg-none has-text-centered is-paddingless'>
                 <iframe src='./ajaxchat.php' height='$height' id='iframe_ajaxchat' name='iframe_ajaxchat'></iframe>
             </div>
         </div>

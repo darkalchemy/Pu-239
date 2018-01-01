@@ -1,9 +1,9 @@
 <?php
-global $cache, $lang, $site_config, $fpdo;
+global $cache, $lang, $site_config, $fluent;
 
 $motw = $cache->get('motw_');
 if ($motw === false || is_null($motw)) {
-    $motw = $fpdo->from('torrents')
+    $motw = $fluent->from('torrents')
         ->select(null)
         ->select('torrents.id')
         ->select('torrents.added')

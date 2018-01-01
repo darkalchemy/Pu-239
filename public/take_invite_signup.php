@@ -2,59 +2,47 @@
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'password_functions.php';
+require_once INCL_DIR . 'bbcode_functions.php';
 require_once INCL_DIR . 'function_bemail.php';
 dbconn();
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config, $cache, $lang, $fluent;
+
 if (!$CURUSER) {
     get_template();
 }
+
 $cache->delete('userlist_' . $site_config['chatBotID']);
-$lang = array_merge(load_language('global'), load_language('takesignup'));
 $ip = getip();
-$res = sql_query('SELECT COUNT(id) FROM users') or sqlerr(__FILE__, __LINE__);
-$arr = mysqli_fetch_row($res);
-if ($arr[0] >= $site_config['invites']) {
-    stderr($lang['stderr_errorhead'], sprintf($lang['stderr_ulimit'], $site_config['invites']));
-}
 if (!$site_config['openreg_invites']) {
     stderr('Sorry', 'Invite Signups are closed presently');
 }
+$users_count = $fluent->from('users')
+    ->select(null)
+    ->select('COUNT(id) AS count')
+    ->fetch('count');
+
+if ($users_count >= $site_config['maxusers']) {
+    stderr($lang['takesignup_error'], $lang['takesignup_limit']);
+}
+$lang = array_merge(load_language('global'), load_language('takesignup'));
 if (!mkglobal('wantusername:wantpassword:passagain:email:invite' . ($site_config['captcha_on'] ? ':captchaSelection:' : ':') . 'submitme:passhint:hintanswer:country')) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_form_data']);
 }
-
 if ($submitme != 'X') {
-    stderr('Ha Ha', 'You Missed, You plonker !');
+    stderr('Ha Ha', 'You Missed, You plonker!');
 }
 if ($site_config['captcha_on']) {
     if (empty($captchaSelection) || getSessionVar('simpleCaptchaAnswer') != $captchaSelection) {
         header('Location: invite_signup.php');
-        exit();
+        die();
     }
-}
-/**
- * @param $username
- *
- * @return bool
- */
-function validusername($username)
-{
-    if ($username == '') {
-        return false;
-    }
-    // The following characters are allowed in user names
-    $allowedchars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    for ($i = 0; $i < strlen($username); ++$i) {
-        if (strpos($allowedchars, $username[ $i ]) === false) {
-            return false;
-        }
-    }
-
-    return true;
 }
 
 if (empty($wantusername) || empty($wantpassword) || empty($email) || empty($invite) || empty($passhint) || empty($hintanswer) || empty($country)) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_blank']);
+}
+if ($country == 999999) {
+    stderr($lang['takesignup_user_error'], 'Please select your country');
 }
 if (!blacklist($wantusername)) {
     stderr($lang['takesignup_user_error'], sprintf($lang['takesignup_badusername'], htmlsafechars($wantusername)));
@@ -63,22 +51,22 @@ if (strlen($wantusername) > 64) {
     stderr('Error', 'Sorry, username is too long (max is 64 chars)');
 }
 if ($wantpassword != $passagain) {
-    stderr('Error', "The passwords didn't match! Must've typoed. Try again.");
+    stderr($lang['takesignup_user_error'], $lang['takesignup_nomatch']);
 }
 if (strlen($wantpassword) < 6) {
-    stderr('Error', 'Sorry, password is too short (min is 6 chars)');
+    stderr($lang['takesignup_user_error'], $lang['takesignup_pass_short']);
 }
 if (strlen($wantpassword) > 100) {
-    stderr('Error', 'Sorry, password is too long (max is 255 chars)');
+    stderr($lang['takesignup_user_error'], $lang['takesignup_pass_long']);
 }
 if ($wantpassword == $wantusername) {
-    stderr('Error', 'Sorry, password cannot be same as user name.');
+    stderr($lang['takesignup_user_error'], $lang['takesignup_same']);
 }
 if (!validemail($email)) {
-    stderr('Error', "That doesn't look like a valid email address.");
+    stderr($lang['takesignup_user_error'], $lang['takesignup_validemail']);
 }
-if (!validusername($wantusername)) {
-    stderr('Error', 'Invalid username.');
+if (!valid_username($wantusername)) {
+    stderr($lang['takesignup_user_error'], $lang['takesignup_invalidname']);
 }
 if (!(isset($_POST['day']) || isset($_POST['month']) || isset($_POST['year']))) {
     stderr('Error', 'You have to fill in your birthday.');
@@ -96,31 +84,39 @@ if (!(isset($_POST['country']))) {
 }
 $country = (((isset($_POST['country']) && is_valid_id($_POST['country'])) ? intval($_POST['country']) : 0));
 $gender = isset($_POST['gender']) && isset($_POST['gender']) ? htmlsafechars($_POST['gender']) : '';
-// make sure user agrees to everything...
 if ($_POST['rulesverify'] != 'yes' || $_POST['faqverify'] != 'yes' || $_POST['ageverify'] != 'yes') {
-    stderr('Error', "Sorry, you're not qualified to become a member of this site.");
+    stderr($lang['takesignup_failed'], $lang['takesignup_qualify']);
 }
-// check if email addy is already in use
-$a = (mysqli_fetch_row(sql_query('SELECT COUNT(id) FROM users WHERE email = ' . sqlesc($email)))) or sqlerr(__FILE__, __LINE__);
-if ($a[0] != 0) {
-    stderr('Error', 'The e-mail address <b>' . htmlsafechars($email) . '</b> is already in use.');
+
+$email_count = $fluent->from('users')
+    ->select(null)
+    ->select('COUNT(id) AS count')
+    ->where('email = ?', $email)
+    ->fetch('count');
+if ($email_count != 0) {
+    stderr($lang['takesignup_user_error'], $lang['takesignup_email_used']);
+    die();
 }
-//=== check if ip addy is already in use
+
 if ($site_config['dupeip_check_on']) {
-    $c = (mysqli_fetch_row(sql_query('SELECT COUNT(id) FROM users WHERE ip = ' . ipToStorageFormat($ip)))) or sqlerr(__FILE__, __LINE__);
-    if ($c[0] != 0) {
+    $ip_count = $fluent->from('users')
+        ->select(null)
+        ->select('COUNT(id) AS count')
+        ->where('ip = ?', inet_pton($ip))
+        ->fetch('count');
+    if ($ip_count != 0) {
         stderr('Error', 'The ip ' . htmlsafechars($ip) . ' is already in use. We only allow one account per ip address.');
+        die();
     }
 }
-// TIMEZONE STUFF
 if (isset($_POST['user_timezone']) && preg_match('#^\-?\d{1,2}(?:\.\d{1,2})?$#', $_POST['user_timezone'])) {
-    $time_offset = sqlesc($_POST['user_timezone']);
+    $time_offset = (int)$_POST['user_timezone'];
 } else {
-    $time_offset = isset($site_config['time_offset']) ? sqlesc($site_config['time_offset']) : '0';
+    $time_offset = isset($site_config['time_offset']) ? (int)$site_config['time_offset'] : 0;
 }
-// have a stab at getting dst parameter?
+
 $dst_in_use = localtime(TIME_NOW + ($time_offset * 3600), true);
-// TIMEZONE STUFF END
+
 $select_inv = sql_query('SELECT sender, receiver, status FROM invite_codes WHERE code = ' . sqlesc($invite)) or sqlerr(__FILE__, __LINE__);
 $rows = mysqli_num_rows($select_inv);
 $assoc = mysqli_fetch_assoc($select_inv);
@@ -131,10 +127,11 @@ if ($assoc['receiver'] != 0) {
     stderr('Error', "Invite already taken.\nPlease request a new one from your inviter.");
 }
 $wantpasshash = make_passhash($wantpassword);
-$wanthintanswer = md5($hintanswer);
-check_banned_emails($email);
-$user_frees = (TIME_NOW + 14 * 86400);
+$wanthintanswer = make_passhash($hintanswer);
+$user_frees = (XBT_TRACKER == true ? '0' : TIME_NOW + 14 * 86400);
 $torrent_pass = make_torrentpass();
+check_banned_emails($email);
+
 $new_user = sql_query('INSERT INTO users (username, passhash, torrent_pass, passhint, hintanswer, birthday, invitedby, email, added, last_access, last_login, time_offset, dst_in_use, free_switch, ip) VALUES (' . implode(',', array_map('sqlesc', [
         $wantusername,
         $wantpasshash,

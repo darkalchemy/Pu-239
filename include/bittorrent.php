@@ -4,15 +4,27 @@ $start = microtime(true);
 
 if (!file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php')) {
     header('Location: /install');
-    exit();
+    die();
 }
 
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php';
+if (!file_exists(realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . '.env')) {
+    echo 'missing .env file, please copy .env.example to .env and then edit .env';
+    die();
+}
+
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'define.php';
+require_once INCL_DIR . 'config.php';
+require_once VENDOR_DIR . 'autoload.php';
+
+$dotenv = new Dotenv\Dotenv(ROOT_DIR);
+$dotenv->load();
+
+require_once INCL_DIR . 'database.php';
 require_once INCL_DIR . 'files.php';
 
 // start session on every page request
 sessionStart();
-require_once VENDOR_DIR . 'autoload.php';
+
 require_once CACHE_DIR . 'free_cache.php';
 require_once CACHE_DIR . 'class_config.php';
 $cache = new CACHE();
@@ -33,40 +45,6 @@ require_once CLASS_DIR . 'class_bt_options.php';
 require_once CACHE_DIR . 'block_settings_cache.php';
 require_once INCL_DIR . 'password_functions.php';
 require_once INCL_DIR . 'site_config.php';
-
-global $site_config;
-$pdo = new PDO("mysql:dbname={$site_config['mysql_db']}", "{$site_config['mysql_user']}", "{$site_config['mysql_pass']}");
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
-$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-$fpdo = new FluentPDO($pdo);
-$error = $pdo->errorInfo();
-if (!empty($error[1])) {
-    file_put_contents($site_config['sql_error_log'], json_encode($error) . PHP_EOL, FILE_APPEND);
-    die('Error occurred:'.implode(":", $error));
-}
-
-if (SQL_DEBUG) {
-    $fpdo->debug = function ($BaseQuery) {
-        global $pdo, $query_stat;
-        $params = [];
-        $query = str_replace('?', '%s', $BaseQuery->getQuery(true));
-        $paramaters = $BaseQuery->getParameters();
-        if (!empty($paramaters) && count($paramaters) >= 1) {
-            foreach ($paramaters as $param) {
-                $params[] = $pdo->quote($param);
-            }
-            $params = implode(', ', $params);
-            $query = sprintf($query, $params);
-        }
-        if (!empty($query)) {
-            $query_stat[] = [
-                'seconds' => 'PDO',
-                'query'   => $query,
-            ];
-        }
-    };
-}
 
 $load = sys_getloadavg();
 if ($load[0] > 20) {
@@ -181,7 +159,10 @@ function validip($ip)
  */
 function getip()
 {
-    return $_SERVER['REMOTE_ADDR'];
+    if (IP_LOGGING) {
+        return $_SERVER['REMOTE_ADDR'];
+    }
+    return '127.0.0.1';
 }
 
 /**
@@ -191,7 +172,7 @@ function dbconn($autoclean = true)
 {
     global $site_config;
 
-    if (!@($GLOBALS['___mysqli_ston'] = mysqli_connect($site_config['mysql_host'], $site_config['mysql_user'], $site_config['mysql_pass']))) {
+    if (!@($GLOBALS['___mysqli_ston'] = mysqli_connect($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $_ENV['DB_PORT']))) {
         switch (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))) {
             case 1040:
             case 2002:
@@ -205,7 +186,6 @@ function dbconn($autoclean = true)
                 die('[' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) . '] dbconn: mysqli_connect: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         }
     }
-    ((bool)mysqli_query($GLOBALS['___mysqli_ston'], "USE {$site_config['mysql_db']}")) or die('dbconn: mysql_select_db: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
     if ($autoclean) {
         register_shutdown_function('autoclean');
     }
@@ -245,8 +225,8 @@ function check_bans($ip, &$reason = '')
     $key = 'bans:::' . $ip;
     $ban = $cache->get($key);
     if ($ban === false || is_null($ban)) {
-        $nip = ipToStorageFormat($ip);
-        $ban_sql = sql_query('SELECT comment FROM bans WHERE (first <= ' . $nip . ' AND last >= ' . $nip . ') LIMIT 1') or sqlerr(__FILE__, __LINE__);
+        $nip = sqlesc($ip);
+        $ban_sql = sql_query('SELECT comment FROM bans WHERE (INET6_NTOA(first) <= ' . $nip . ' AND INET6_NTOA(last) >= ' . $nip . ') LIMIT 1') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($ban_sql)) {
             $comment = mysqli_fetch_row($ban_sql);
             $reason = 'Manual Ban (' . $comment[0] . ')';
@@ -280,10 +260,8 @@ function logincookie($id, $updatedb = true)
 
 function userlogin()
 {
-    global $site_config, $cache, $CURBLOCK, $mood, $whereis, $CURUSER, $fpdo;
+    global $site_config, $cache, $CURBLOCK, $mood, $whereis, $CURUSER, $fluent;
     unset($GLOBALS['CURUSER']);
-    $dt = TIME_NOW;
-    $ip = getip();
 
     if (isset($CURUSER)) {
         return;
@@ -295,17 +273,21 @@ function userlogin()
     if (!$id) {
         return;
     }
+
+    $ip = getip();
+
     $users_data = $cache->get('user' . $id);
     if ($users_data === false || is_null($users_data)) {
-        $users_data = $fpdo->from('users')
+        $users_data = $fluent->from('users')
             ->select('INET6_NTOA(ip) AS ip')
             ->where('id = ?', $id)
             ->fetch();
-            unset($users_data['hintanswer']);
-            unset($users_data['passhash']);
+        unset($users_data['hintanswer']);
+        unset($users_data['passhash']);
 
         $cache->set('user' . $id, $users_data, $site_config['expires']['user_cache']);
     }
+
     if (!isset($users_data['perms']) || (!($users_data['perms'] & bt_options::PERMS_BYPASS_BAN))) {
         $banned = false;
         if (check_bans($ip, $reason)) {
@@ -400,7 +382,7 @@ function userlogin()
     if ($users_data['ssluse'] > 1 && !isset($_SERVER['HTTPS']) && !defined('NO_FORCE_SSL')) {
         $site_config['baseurl'] = str_replace('http', 'https', $site_config['baseurl']);
         header('Location: ' . $site_config['baseurl'] . $_SERVER['REQUEST_URI']);
-        exit();
+        die();
     }
     $blocks_key = 'blocks::' . $users_data['id'];
 
@@ -442,7 +424,7 @@ function userlogin()
         'arcade'           => '%s is viewing the <a href="%s">arcade page</a>',
         'flash'            => '%s is playing a <a href="%s">flash game</a>',
         'arcade_top_score' => '%s is viewing the <a href="%s">arcade top scores page</a>',
-        'staffpanel'        => '%s is viewing the <a href="%s">Staff Panel</a>',
+        'staffpanel'       => '%s is viewing the <a href="%s">Staff Panel</a>',
         'unknown'          => '%s location is unknown',
     ];
     if (preg_match('/\/(.*?)\.php/is', $_SERVER['REQUEST_URI'], $whereis_temp)) {
@@ -935,7 +917,7 @@ function httperr($code = 404)
     header('HTTP/1.0 404 Not found');
     echo '<h1>Not Found</h1>';
     echo '<p>Sorry pal :(</p>';
-    exit();
+    die();
 }
 
 function loggedinorreturn()
@@ -946,7 +928,7 @@ function loggedinorreturn()
             $CURUSER = $cache->get('user' . $id);
         } else {
             header("Location: {$site_config['baseurl']}/login.php?returnto=" . urlencode($_SERVER['REQUEST_URI']));
-            exit();
+            die();
         }
     }
 }
@@ -1017,7 +999,7 @@ function stderr($heading, $text)
     $htmlout .= stdmsg($heading, $text);
     $htmlout .= stdfoot();
     echo $htmlout;
-    exit();
+    die();
 }
 
 // Basic MySQL error handler
@@ -1031,7 +1013,7 @@ function sqlerr($file = '', $line = '')
     $the_error = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
     $the_error_no = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false));
     if (SQL_DEBUG == 0) {
-        exit();
+        die();
     } elseif ($site_config['sql_error_log'] && SQL_DEBUG == 1) {
         $_error_string = "\n===================================================";
         $_error_string .= "\n Date: " . date('r');
@@ -1062,7 +1044,7 @@ function sqlerr($file = '', $line = '')
                    <form name='mysql'><textarea rows=\"15\" cols=\"60\">" . htmlsafechars($the_error, ENT_QUOTES) . '</textarea></form><br>We apologise for any inconvenience</blockquote></body></html>';
         echo $out;
     }
-    exit();
+    die();
 }
 
 /**
@@ -1133,10 +1115,12 @@ function get_time_offset()
 }
 
 /**
- * @param     $date
- * @param     $method
- * @param int $norelative
- * @param int $full_relative
+ * @param      $date
+ * @param      $method
+ * @param int  $norelative
+ * @param int  $full_relative
+ *
+ * @param bool $calc
  *
  * @return false|mixed|string
  */
@@ -1428,7 +1412,7 @@ function referer()
             $http_page .= '?' . $_SERVER['QUERY_STRING'];
         }
         sql_query('INSERT INTO referrers (browser, ip, referer, page, date)
-            VALUES (' . sqlesc($http_agent) . ', ' . ipToStorageFormat($ip) . ', ' . sqlesc($http_referer) . ', ' . sqlesc($http_page) . ', ' . sqlesc(TIME_NOW) . ')') or sqlerr(__FILE__, __LINE__);
+            VALUES (' . sqlesc($http_agent) . ', ' . ipToStorageFormat($ip, true) . ', ' . sqlesc($http_referer) . ', ' . sqlesc($http_page) . ', ' . sqlesc(TIME_NOW) . ')') or sqlerr(__FILE__, __LINE__);
     }
 }
 
@@ -1487,6 +1471,7 @@ function human_filesize($bytes, $dec = 2)
 function sessionStart()
 {
     global $site_config;
+
     if (!session_id()) {
         // Set the session name:
         session_name($site_config['sessionName']);
@@ -1569,6 +1554,7 @@ function validateToken($token, $key = null, $regen = false)
     if (empty($token)) {
         return false;
     }
+
     if (hash_equals(getSessionVar($key), $token)) {
         if ($regen) {
             unsetSessionVar($key);
@@ -1577,30 +1563,6 @@ function validateToken($token, $key = null, $regen = false)
         return true;
     }
     return false;
-}
-
-/**
- * @param $ip
- *
- * @return string
- */
-function ipToStorageFormat($ip)
-{
-    $ip = empty($ip) ? '10.10.10.10' : $ip;
-    if (!filter_var($ip, FILTER_VALIDATE_IP)) {
-        $ip = '10.10.10.10';
-    }
-    return '0x' . bin2hex(inet_pton($ip));
-}
-
-/**
- * @param $ip
- *
- * @return bool|string
- */
-function ipFromStorageFormat($ip)
-{
-    return inet_ntop($ip);
 }
 
 /**
@@ -1614,12 +1576,19 @@ function setSessionVar($key, $value, $prefix = null)
     if ($prefix === null) {
         $prefix = $site_config['sessionKeyPrefix'];
     }
-
-    // Set the session value:
-    if (getSessionVar($key, $prefix)) {
+    if (in_array($key, $site_config['notifications'])) {
+        $current = getSessionVar($key);
+        if ($current) {
+            if (!in_array($value, $current)) {
+                $_SESSION[ $prefix . $key ] = array_merge($current, [$value]);
+            }
+        } else {
+            $_SESSION[ $prefix . $key ] = [$value];
+        }
+    } else {
         unsetSessionVar($key);
+        $_SESSION[ $prefix . $key ] = $value;
     }
-    $_SESSION[ $prefix . $key ] = $value;
 }
 
 /**
@@ -1696,6 +1665,7 @@ function replace_unicode_strings($text)
 function getPmCount($userid)
 {
     global $cache, $site_config;
+
     $pmCount = $cache->get('inbox_' . $userid);
     if ($pmCount === false || is_null($pmCount)) {
         $res = sql_query('SELECT COUNT(id) FROM messages WHERE receiver = ' . sqlesc($userid) . " AND unread = 'yes' AND location = 1") or sqlerr(__LINE__, __FILE__);
@@ -1727,12 +1697,11 @@ function check_user_status()
 {
     dbconn();
     userlogin();
-    global $CURUSER;
     referer();
     if (!validateToken(getSessionVar('auth'), 'auth')) {
         destroySession();
         header('Location: login.php');
-        exit();
+        die();
     }
     loggedinorreturn();
     parked();
@@ -1786,11 +1755,11 @@ function user_exists($user_id)
  */
 function get_poll()
 {
-    global $CURUSER, $cache, $site_config, $fpdo;
+    global $CURUSER, $cache, $site_config, $fluent;
 
     $poll_data = $cache->get('poll_data_' . $CURUSER['id']);
     if ($poll_data === false || is_null($poll_data)) {
-        $poll_data = $fpdo->from('polls')
+        $poll_data = $fluent->from('polls')
             ->select('INET6_NTOA(poll_voters.ip) AS ip')
             ->select('poll_voters.user_id')
             ->select('poll_voters.vote_date')
@@ -1832,31 +1801,7 @@ function shuffle_assoc($list, $times = 1)
  */
 function make_torrentpass()
 {
-    global $cache;
-    $passes = $cache->get('torrent_passes_');
-    if ($passes === false || is_null($passes)) {
-        $sql = "SELECT torrent_pass FROM users";
-        $query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        while ($row = mysqli_fetch_assoc($query)) {
-            $passes[] = $row['torrent_pass'];
-        }
-        $sql = "SELECT torrent_pass FROM torrent_pass";
-        $query = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        while ($row = mysqli_fetch_assoc($query)) {
-            $passes[] = $row['torrent_pass'];
-        }
-        $cache->set('torrent_passes_', $passes, 86400);
-    }
-
-    $tpass = make_password(16);
-    if (!empty($passes)) {
-        while (in_array($tpass, $passes)) {
-            $tpass = make_password(16);
-        }
-    }
-    $passes[] = $tpass;
-    $cache->set('torrent_passes_', $passes, 86400);
-    return $tpass;
+    return make_password(16);
 }
 
 /**
@@ -2095,6 +2040,65 @@ function plural($int)
     }
 }
 
+/**
+ * @param $ip
+ *
+ * @return string
+ */
+function ipToStorageFormat($ip)
+{
+    $ip = empty($ip) ? '10.10.10.10' : $ip;
+    if (!filter_var($ip, FILTER_VALIDATE_IP)) {
+        $ip = '10.10.10.10';
+    }
+    return '0x' . bin2hex(inet_pton($ip));
+}
+
+/**
+ * @param      $username
+ * @param bool $ajax
+ *
+ * @return bool
+ */
+function valid_username($username, $ajax = false)
+{
+    global $lang;
+
+    if ($username == '') {
+        return false;
+    }
+    $namelength = strlen($username);
+    if ($namelength < 3 || $namelength > 64) {
+        if ($ajax) {
+            return "<font color='#cc0000'>{$lang['takesignup_username_length']}</font> - $namelength characters";
+            die();
+        } else {
+            stderr($lang['takesignup_user_error'], $lang['takesignup_username_length']);
+        }
+    }
+
+    if (!ctype_alnum($username)) {
+        if ($ajax) {
+            echo "<font color='#cc0000'>{$lang['takesignup_allowed_chars']}</font>";
+            die();
+        }
+        return false;
+    }
+    return true;
+}
+
+function Christmas($celebrate = true)
+{
+    $upperBound = new DateTime("Dec 31");
+    $lowerBound = new DateTime("Dec 1");
+    $checkDate = new DateTime(date('M d', strtotime("Today")));
+
+    if ($celebrate && $checkDate >= $lowerBound && $checkDate <= $upperBound) {
+        return true;
+    }
+    return false;
+}
+
 if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {
-    setSessionVar('is-danger', "<h1>This site is vulnerable until you delete the install directory</h1><p>rm -r " . ROOT_DIR . "public" . DIRECTORY_SEPARATOR . "install" . DIRECTORY_SEPARATOR . "</p>");
+    setSessionVar('is-danger', "[h1]This site is vulnerable until you delete the install directory[/h1][p]rm -r " . ROOT_DIR . "public" . DIRECTORY_SEPARATOR . "install" . DIRECTORY_SEPARATOR . "[/p]");
 }

@@ -41,7 +41,7 @@ h2 {font-size: 125%;}
     $html = $php_style . $php_body;
     echo $html;
     stdfoot();
-    exit();
+    die();
 }
 $html = [];
 /**

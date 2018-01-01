@@ -9,7 +9,7 @@ if ($CURUSER['class'] >= UC_MODERATOR) {
     sql_query('DELETE FROM voted_requests WHERE requestid IN (' . implode(', ', array_map('sqlesc', $_POST['delreq'])) . ')');
     sql_query('DELETE FROM comments WHERE request IN (' . implode(', ', array_map('sqlesc', $_POST['delreq'])) . ')');
     header('Refresh: 0; url=viewrequests.php');
-    exit();
+    die();
 } else {
     stderr("{$lang['error_error']}", "{$lang['error_dee']}");
 }

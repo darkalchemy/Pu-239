@@ -38,10 +38,10 @@ if (isset($_SERVER['REQUEST_URI'])) {
     header('Expires: ' . $img['ex_date']);
     header('Cache-Control: private, max-age=604800');
     if ($img['stop']) {
-        exit();
+        die();
     }
     header('Last-Modified: ' . $img['lm_date']);
     header('Content-type: image/' . $pi['extension']);
     readfile($image);
-    exit();
+    die();
 }

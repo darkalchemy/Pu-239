@@ -1,22 +1,23 @@
 <?php
-global $site_config, $cache, $lang, $fpdo;
+global $site_config, $cache, $lang, $fluent;
 
 $active = $cache->get('activeusers_');
 if ($active === false || is_null($active)) {
     $list = [];
     $dt = TIME_NOW - 900;
-    $query = $fpdo->from('users')
+    $query = $fluent->from('users')
         ->select(null)
         ->select('id')
         ->where('last_access > ?', $dt)
         ->where('perms < ?',  bt_options::PERMS_STEALTH)
+        ->where('id != 2')
         ->orderBy('username ASC');
 
     foreach ($query as $row) {
         $list[] = format_username($row['id']);
     }
     $list[] = format_username(2);
-    $active['activeusers'] = implode(', ', $list);
+    $active['activeusers'] = implode(',&nbsp;&nbsp;', $list);
     $active['actcount'] = count($list);
     if ($active['actcount'] === 0) {
         $active['activeusers'] = $lang['index_active_users_no'];
@@ -30,7 +31,7 @@ $HTMLOUT .= "
         <fieldset id='activeusers' class='header'>
             <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_active']} ({$active['actcount']})</legend>
             <div class='bordered'>
-                <div class='alt_bordered bg-00 has-text-centered'>
+                <div class='alt_bordered bg-00 level-item is-wrapped'>
                     {$active['activeusers']}
                 </div>
             </div>

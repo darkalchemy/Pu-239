@@ -95,14 +95,14 @@ EOD;
         } else {
             header('Location: pm_system.php?action=view_mailbox&sent=1');
         }
-        exit();
+        die();
     }
     //=== Check if messages was saved as draft
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
         stderr($lang['pm_error'], $lang['pm_draft_wasnt']);
     }
     header('Location: /pm_system.php?action=view_mailbox&box=-2&new_draft=1');
-    exit();
+    die();
 } //=== end save draft
 //=== Code for preview Retros code
 if (isset($_POST['buttonval']) && $_POST['buttonval'] == 'preview') {
@@ -138,7 +138,7 @@ $HTMLOUT .= '<h1>' . $lang['pm_usedraft'] . '' . $subject . '</h1>' . $top_links
     </tr>
     <tr>
         <td><span style="font-weight: bold;">' . $lang['pm_forward_to'] . '</span></td>
-        <td><input type="text" name="to" value="' . ((isset($_POST['to']) && validusername($_POST['to'], false)) ? htmlsafechars($_POST['to']) : $lang['pm_forward_user']) . '" class="member" onfocus="this.value=\'\';" />
+        <td><input type="text" name="to" value="' . ((isset($_POST['to']) && valid_username($_POST['to'], false)) ? htmlsafechars($_POST['to']) : $lang['pm_forward_user']) . '" class="member" onfocus="this.value=\'\';" />
          ' . $lang['pm_usedraft_usr'] . '</td>
     </tr>
     <tr>

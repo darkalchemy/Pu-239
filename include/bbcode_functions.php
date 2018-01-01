@@ -314,6 +314,10 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '/\[\*\]\s?(.*?)\n/is',
         '/\[li\]\s?(.*?)\n/is',
         '/\[hr\]/',
+        '/\[h1\]\s?(.*?)\[\/h1\]/is',
+        '/\[h2\]\s?(.*?)\[\/h2\]/is',
+        '/\[h3\]\s?(.*?)\[\/h3\]/is',
+        '/\[h4\]\s?(.*?)\[\/h4\]/is',
     ];
     // And replace them by...
     $bb_code_out = [
@@ -370,6 +374,10 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<li>\1</li>',
         '<li>\1</li>',
         '<hr>',
+        '<h1>\1</h1>',
+        '<h2>\1</h2>',
+        '<h3>\1</h3>',
+        '<h4>\1</h4>',
     ];
     $s = preg_replace($bb_code_in, $bb_code_out, $s);
 
@@ -402,6 +410,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
 
     // Dynamic Vars
     $s = dynamic_user_vars($s);
+
     // [pre]Preformatted[/pre]
     if (stripos($s, '[pre]') !== false) {
         $s = preg_replace("/\[pre\]((\s|.)+?)\[\/pre\]/i", '<tt><span style="white-space: nowrap;">\\1</span></tt>', $s);
@@ -458,10 +467,11 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
             $s = str_replace($code, "<img src='{$site_config['pic_base_url']}smilies/{$url}' alt='' />", $s);
         }
     }
+
     $s = format_quotes($s);
     $s = format_code($s);
     $s = check_BBcode($s);
-    $s = str_replace(["\r\n", "\r", "\n", '&lt;br&gt;'], "<br>", $s);
+    //$s = str_replace(["\r\n", "\r", "\n", '&lt;br&gt;'], "<br>", $s);
     return $s;
 }
 
@@ -696,15 +706,14 @@ function user_key_codes($key)
  */
 function dynamic_user_vars($text)
 {
-    global $CURUSER, $site_config;
+    global $CURUSER;
     if (!isset($CURUSER)) {
-        return;
+        return $text;
     }
     $zone = 0; // UTC
     //$zone = 3600 * -5; // EST
     $tim = TIME_NOW + $zone;
     $cu = $CURUSER;
-    // unset any variables ya dun want to display, or can't display
     unset($cu['passhash'], $cu['torrent_pass'], $cu['modcomment']);
     $bbkeys = array_keys($cu);
     $bbkeys[] = 'curdate';

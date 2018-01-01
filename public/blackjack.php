@@ -147,7 +147,7 @@ if ($game) {
     {
         if ($arg) {
             header('Location: ' . $_SERVER['PHP_SELF']);
-            exit();
+            die();
         }
     }
 
@@ -1215,7 +1215,7 @@ function output($blackjack, $HTMLOUT, $debugout)
     }
 
     echo stdhead($blackjack['title'], true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
-    exit();
+    die();
 }
 
 /**

@@ -20,4 +20,4 @@ if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
     stderr($lang['pm_error'], '' . $lang['pm_error'] . '<a class="altlink" href="' . $site_config['baseurl']. '/pm_system.php?action=view_message&id=' . $pm_id . '>' . $lang['pm_delete_back'] . '</a>' . $lang['pm_delete_msg'] . '');
 }
 header('Location: pm_system.php?action=view_mailbox&deleted=1');
-exit();
+die();

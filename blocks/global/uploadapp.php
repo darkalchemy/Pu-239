@@ -1,10 +1,10 @@
 <?php
-global $CURUSER, $site_config, $cache, $lang, $fpdo;
+global $CURUSER, $site_config, $cache, $lang, $fluent;
 
 if ($site_config['uploadapp_alert'] && $CURUSER['class'] >= UC_STAFF) {
     $newapp = $cache->get('new_uploadapp_');
     if ($newapp === false || is_null($newapp)) {
-        $res = $fpdo->from('uploadapp')
+        $res = $fluent->from('uploadapp')
             ->select(null)
             ->select('COUNT(id) AS count')
             ->where('status = ?', 'pending')

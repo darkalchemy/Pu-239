@@ -13,19 +13,19 @@ $lang = array_merge(load_language('global'), load_language('takeupload'));
 
 if ($CURUSER['class'] < UC_UPLOADER or $CURUSER['uploadpos'] == 0 || $CURUSER['uploadpos'] > 1 || $CURUSER['suspended'] == 'yes') {
     header("Location: {$site_config['baseurl']}/upload.php");
-    exit();
+    die();
 }
 foreach (explode(':', 'body:type:name') as $v) {
     if (!isset($_POST[ $v ])) {
         setSessionVar('is-warning', $lang['takeupload_no_formdata']);
         header("Location: {$site_config['baseurl']}/upload.php");
-        exit();
+        die();
     }
 }
 if (!isset($_FILES['file'])) {
     setSessionVar('is-warning', $lang['takeupload_no_formdata']);
     header("Location: {$site_config['baseurl']}/upload.php");
-    exit();
+    die();
 }
 $url = strip_tags(isset($_POST['url']) ? trim($_POST['url']) : '');
 $poster = strip_tags(isset($_POST['poster']) ? trim($_POST['poster']) : '');
@@ -34,7 +34,7 @@ $fname = unesc($f['name']);
 if (empty($fname)) {
     setSessionVar('is-warning', $lang['takeupload_no_filename']);
     header("Location: {$site_config['baseurl']}/upload.php");
-    exit();
+    die();
 }
 if (isset($_POST['uplver']) && $_POST['uplver'] == 'yes') {
     $anonymous = 'yes';
@@ -68,23 +68,23 @@ if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
     if ($nfofile['name'] == '') {
         setSessionVar('is-warning', $lang['takeupload_no_nfo']);
         header("Location: {$site_config['baseurl']}/upload.php");
-        exit();
+        die();
     }
     if ($nfofile['size'] == 0) {
         setSessionVar('is-warning', $lang['takeupload_0_byte']);
         header("Location: {$site_config['baseurl']}/upload.php");
-        exit();
+        die();
     }
     if ($nfofile['size'] > 65535) {
         setSessionVar('is-warning', $lang['takeupload_nfo_big']);
         header("Location: {$site_config['baseurl']}/upload.php");
-        exit();
+        die();
     }
     $nfofilename = $nfofile['tmp_name'];
     if (@!is_uploaded_file($nfofilename)) {
         setSessionVar('is-warning', $lang['takeupload_nfo_failed']);
         header("Location: {$site_config['baseurl']}/upload.php");
-        exit();
+        die();
     }
     $nfo = sqlesc(str_replace("\x0d\x0d\x0a", "\x0d\x0a", @file_get_contents($nfofilename)));
 }
@@ -122,7 +122,7 @@ if (!$descr) {
     } else {
         setSessionVar('is-warning', $lang['takeupload_no_descr']);
         header("Location: {$site_config['baseurl']}/upload.php");
-        exit();
+        die();
     }
 }
 $description = strip_tags(isset($_POST['description']) ? trim($_POST['description']) : '');
@@ -136,7 +136,7 @@ $catid = ((int)$_POST['type']);
 if (!is_valid_id($catid)) {
     setSessionVar('is-warning', $lang['takeupload_no_cat']);
     header("Location: {$site_config['baseurl']}/upload.php");
-    exit();
+    die();
 }
 $request = (((isset($_POST['request']) && is_valid_id($_POST['request'])) ? intval($_POST['request']) : 0));
 $offer = (((isset($_POST['offer']) && is_valid_id($_POST['offer'])) ? intval($_POST['offer']) : 0));
@@ -155,12 +155,12 @@ $tags = strip_tags(isset($_POST['tags']) ? trim($_POST['tags']) : '');
 if (!validfilename($fname)) {
     setSessionVar('is-warning', $lang['takeupload_invalid']);
     header("Location: {$site_config['baseurl']}/upload.php");
-    exit();
+    die();
 }
 if (!preg_match('/^(.+)\.torrent$/si', $fname, $matches)) {
     setSessionVar('is-warning', $lang['takeupload_not_torrent']);
     header("Location: {$site_config['baseurl']}/upload.php");
-    exit();
+    die();
 }
 $shortfname = $torrent = $matches[1];
 if (!empty($_POST['name'])) {
@@ -170,19 +170,19 @@ $tmpname = $f['tmp_name'];
 if (!is_uploaded_file($tmpname)) {
     setSessionVar('is-warning', $lang['takeupload_eek']);
     header("Location: {$site_config['baseurl']}/upload.php");
-    exit();
+    die();
 }
 if (!filesize($tmpname)) {
     setSessionVar('is-warning', $lang['takeupload_no_file']);
     header("Location: {$site_config['baseurl']}/upload.php");
-    exit();
+    die();
 }
 // bencdec by djGrrr <3
 $dict = bencdec::decode_file($tmpname, $site_config['max_torrent_size'], bencdec::OPTION_EXTENDED_VALIDATION);
 if ($dict === false) {
     setSessionVar('is-warning', 'What did you upload? This is not a bencoded file!');
     header("Location: {$site_config['baseurl']}/upload.php");
-    exit();
+    die();
 }
 if (isset($dict['announce-list'])) {
     unset($dict['announce-list']);
@@ -191,29 +191,29 @@ $dict['info']['private'] = 1;
 if (!isset($dict['info'])) {
     setSessionVar('is-warning', 'invalid torrent, info dictionary does not exist');
     header("Location: {$site_config['baseurl']}/upload.php");
-    exit();
+    die();
 }
 $info = &$dict['info'];
 $infohash = pack('H*', sha1(bencdec::encode($info)));
 if (get_row_count('torrents', "WHERE info_hash = " . sqlesc($infohash)) > 0) {
     setSessionVar('is-warning', 'This torrent has already been uploaded! Please use the search function before uploading.');
     header("Location: {$site_config['baseurl']}/upload.php");
-    exit();
+    die();
 }
 if (bencdec::get_type($info) != 'dictionary') {
     setSessionVar('is-warning', 'invalid torrent, info is not a dictionary');
     header("Location: {$site_config['baseurl']}/upload.php");
-    exit();
+    die();
 }
 if (!isset($info['name']) || !isset($info['piece length']) || !isset($info['pieces'])) {
     setSessionVar('is-warning', 'invalid torrent, missing parts of the info dictionary');
     header("Location: {$site_config['baseurl']}/upload.php");
-    exit();
+    die();
 }
 if (bencdec::get_type($info['name']) != 'string' || bencdec::get_type($info['piece length']) != 'integer' || bencdec::get_type($info['pieces']) != 'string') {
     setSessionVar('is-warning', 'invalid torrent, invalid types in info dictionary');
     header("Location: {$site_config['baseurl']}/upload.php");
-    exit();
+    die();
 }
 $dname = $info['name'];
 $plen = $info['piece length'];
@@ -221,19 +221,19 @@ $pieces_len = strlen($info['pieces']);
 if ($pieces_len % 20 != 0) {
     setSessionVar('is-warning', 'invalid pieces');
     header("Location: {$site_config['baseurl']}/upload.php");
-    exit();
+    die();
 }
 if ($plen % 4096) {
     setSessionVar('is-warning', 'piece size is not mod(4096), invalid torrent.');
     header("Location: {$site_config['baseurl']}/upload.php");
-    exit();
+    die();
 }
 $filelist = [];
 if (isset($info['length'])) {
     if (bencdec::get_type($info['length']) != 'integer') {
         setSessionVar('is-warning', 'length must be an integer');
         header("Location: {$site_config['baseurl']}/upload.php");
-        exit();
+        die();
     }
     $totallen = $info['length'];
     $filelist[] = [
@@ -244,30 +244,30 @@ if (isset($info['length'])) {
     if (!isset($info['files'])) {
         setSessionVar('is-warning', 'missing both length and files');
         header("Location: {$site_config['baseurl']}/upload.php");
-        exit();
+        die();
     }
     if (bencdec::get_type($info['files']) != 'list') {
         setSessionVar('is-warning', 'invalid files, not a list');
         header("Location: {$site_config['baseurl']}/upload.php");
-        exit();
+        die();
     }
     $flist = &$info['files'];
     if (!count($flist)) {
         setSessionVar('is-warning', 'no files');
         header("Location: {$site_config['baseurl']}/upload.php");
-        exit();
+        die();
     }
     $totallen = 0;
     foreach ($flist as $fn) {
         if (!isset($fn['length']) || !isset($fn['path'])) {
             setSessionVar('is-warning', 'file info not found');
             header("Location: {$site_config['baseurl']}/upload.php");
-            exit();
+            die();
         }
         if (bencdec::get_type($fn['length']) != 'integer' || bencdec::get_type($fn['path']) != 'list') {
             setSessionVar('is-warning', 'invalid file info');
             header("Location: {$site_config['baseurl']}/upload.php");
-            exit();
+            die();
         }
         $ll = $fn['length'];
         $ff = $fn['path'];
@@ -277,14 +277,14 @@ if (isset($info['length'])) {
             if (bencdec::get_type($ffe) != 'string') {
                 setSessionVar('is-warning', 'filename type error');
                 header("Location: {$site_config['baseurl']}/upload.php");
-                exit();
+                die();
             }
             $ffa[] = $ffe;
         }
         if (!count($ffa)) {
             setSessionVar('is-warning', 'filename error');
             header("Location: {$site_config['baseurl']}/upload.php");
-            exit();
+            die();
         }
         $ffe = implode('/', $ffa);
         $filelist[] = [
@@ -298,7 +298,7 @@ $expected_pieces = (int)ceil($totallen / $plen);
 if ($num_pieces != $expected_pieces) {
     setSessionVar('is-warning', 'total file size and number of pieces do not match');
     header("Location: {$site_config['baseurl']}/upload.php");
-    exit();
+    die();
 }
 //==
 $tmaker = (isset($dict['created by']) && !empty($dict['created by'])) ? sqlesc($dict['created by']) : sqlesc($lang['takeupload_unkown']);
@@ -341,11 +341,11 @@ if (!$ret) {
     if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
         setSessionVar('is-warning', $lang['takeupload_already']);
         header("Location: {$site_config['baseurl']}/upload.php");
-        exit();
+        die();
     }
     setSessionVar('is-warning', 'mysql puked: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
     header("Location: {$site_config['baseurl']}/upload.php");
-    exit();
+    die();
 }
 if (XBT_TRACKER == false) {
     remove_torrent($infohash);
@@ -383,7 +383,7 @@ $dir = $site_config['torrent_dir'] . '/' . $id . '.torrent';
 if (!bencdec::encode_file($dir, $dict)) {
     setSessionVar('is-warning', 'Could not properly encode file');
     header("Location: {$site_config['baseurl']}/upload.php");
-    exit();
+    die();
 }
 @unlink($tmpname);
 chmod($dir, 0664);

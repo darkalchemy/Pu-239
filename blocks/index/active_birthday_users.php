@@ -1,11 +1,11 @@
 <?php
-global $site_config, $cache, $lang, $fpdo;
+global $site_config, $cache, $lang, $fluent;
 
 $birthday = $cache->get('birthdayusers_');
 if ($birthday === false || is_null($birthday)) {
     $birthday = $list = [];
     $current_date = getdate();
-    $query = $fpdo->from('users')
+    $query = $fluent->from('users')
         ->select(null)
         ->select('id')
         ->where('MONTH(birthday) = ?', $current_date['mon'])
@@ -16,7 +16,7 @@ if ($birthday === false || is_null($birthday)) {
     foreach ($query as $row) {
         $list[] = format_username($row['id']);
     }
-    $birthday['birthdayusers'] = implode(', ', $list);
+    $birthday['birthdayusers'] = implode(',&nbsp;&nbsp;', $list);
     $birthday['count'] = count($list);
     if ($birthday['count'] === 0) {
         $birthday['birthdayusers'] = $lang['index_birthday_no'];
@@ -29,7 +29,7 @@ $HTMLOUT .= "
     <fieldset id='birthday' class='header'>
         <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_birthday']} ({$birthday['count']})</legend>
         <div class='bordered'>
-            <div class='alt_bordered bg-00 has-text-centered'>
+            <div class='alt_bordered bg-00 level-item is-wrapped'>
                 {$birthday['birthdayusers']}
             </div>
         </div>

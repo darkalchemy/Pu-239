@@ -6,7 +6,7 @@ global $CURUSER, $site_config, $cache;
 
 $lang = array_merge(load_language('global'), load_language('takerate'));
 if (!mkglobal('id')) {
-    exit();
+    die();
 }
 $id = (int)$id;
 if (!is_valid_id($id)) {

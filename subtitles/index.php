@@ -131,9 +131,9 @@ if ($searchby == 'name') {
                                                            size="80"/>
                         &#160;by&#160;
                         <select name="searchby">
-                            <option value="name" <?php echo $searchby == 'name' ? 'selected="selected"' : '' ?>>Name
+                            <option value="name" <?php echo $searchby == 'name' ? 'selected' : '' ?>>Name
                             </option>
-                            <option value="imdb" <?php echo $searchby == 'imdb' ? 'selected="selected"' : '' ?>>IMDb
+                            <option value="imdb" <?php echo $searchby == 'imdb' ? 'selected' : '' ?>>IMDb
                                 id
                             </option>
                         </select></td>

@@ -8,11 +8,11 @@ check_user_status();
 global $CURUSER, $site_config, $cache;
 
 if (!mkglobal('id')) {
-    exit();
+    die();
 }
 $id = (int)$id;
 if (!$id) {
-    exit();
+    die();
 }
 /* who is modding by pdq **/
 if ((isset($_GET['unedit']) && $_GET['unedit'] == 1) && $CURUSER['class'] >= UC_STAFF) {
@@ -22,7 +22,7 @@ if ((isset($_GET['unedit']) && $_GET['unedit'] == 1) && $CURUSER['class'] >= UC_
         $returl .= '&returnto=' . urlencode($_POST['returnto']);
     }
     header("Refresh: 1; url=$returl");
-    exit();
+    die();
 }
 $lang = array_merge(load_language('global'), load_language('edit'));
 $stdfoot = [
@@ -79,7 +79,7 @@ $cats = genrelist();
 foreach ($cats as $subrow) {
     $s .= "<option value='" . (int)$subrow['id'] . "'";
     if ($subrow['id'] == $row['category']) {
-        $s .= " selected='selected'";
+        $s .= " selected";
     }
     $s .= '>' . htmlsafechars($subrow['name']) . "</option>\n";
 }
@@ -101,7 +101,7 @@ $subs_list .= "
 
 $HTMLOUT .= tr('Subtitiles', $subs_list, 1);
 
-$rg = "<select name='release_group'>\n<option value='scene'" . ($row['release_group'] == 'scene' ? " selected='selected'" : '') . ">Scene</option>\n<option value='p2p'" . ($row['release_group'] == 'p2p' ? " selected='selected'" : '') . ">p2p</option>\n<option value='none'" . ($row['release_group'] == 'none' ? " selected='selected'" : '') . ">None</option> \n</select>\n";
+$rg = "<select name='release_group'>\n<option value='scene'" . ($row['release_group'] == 'scene' ? " selected" : '') . ">Scene</option>\n<option value='p2p'" . ($row['release_group'] == 'p2p' ? " selected" : '') . ">p2p</option>\n<option value='none'" . ($row['release_group'] == 'none' ? " selected" : '') . ">None</option> \n</select>\n";
 $HTMLOUT .= tr('Release Group', $rg, 1);
 $HTMLOUT .= tr($lang['edit_visible'], "<input type='checkbox' name='visible'" . (($row['visible'] == 'yes') ? " checked" : '') . " value='1' /> {$lang['edit_visible_mainpage']}<br><table class='table table-bordered table-striped'><tr><td class='embedded'>{$lang['edit_visible_info']}</td></tr></table>", 1);
 if ($CURUSER['class'] >= UC_STAFF) {

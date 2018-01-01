@@ -1,7 +1,6 @@
 <?php
 
 $lang = [
-    //OK
     'ok_success'                   => 'Signup successful!',
     'ok_invsuccess'                => 'Invite Signup successful!',
     'ok_email_confirm'             => "A confirmation email has been sent to the address you specified (%s). You need to read and respond to this email before you can use your account. If you don't do this, the new account will be deleted automatically after a few days.",
@@ -9,7 +8,7 @@ $lang = [
     'ok_invsuccess'                => 'Invite Signup successful!',
     'ok_email2'                    => "A confirmation email has been sent to the address you specified (%s). Your invitee needs to read and respond to this email before he/she can use their account. If they don't do this, the new account will be deleted automatically after a few days.",
     'ok_sysop_account'             => 'Sysop Account activation',
-    'ok_sysop_activated'           => "<h1>Sysop Account successfully activated!</h1>\n",
+    'ok_sysop_activated'           => "Sysop Account successfully activated!",
     'ok_account_activated'         => "<p>Your account has been activated! You have been automatically logged in. You can now continue to the <a href='index.php'><b>main page</b></a> and start using your account.</p>\n",
     'ok_account_login'             => "<p>Your account has been activated! However, it appears that you could not be logged in automatically. A possible reason is that you disabled cookies in your browser. You have to enable cookies to use your account. Please do that and then <a href='login.php'>log in</a> and try again.</p>\n",
     'ok_confirmed'                 => 'Already confirmed',

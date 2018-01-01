@@ -78,7 +78,7 @@ switch ($action) {
                 unset($users_buffer, $pm_buffer, $count);
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&GB=1');
-            exit();
+            die();
         } elseif ($free_for_classes === 0) {
             foreach ($free_for as $class) {
                 if (ctype_digit($class)) {
@@ -114,7 +114,7 @@ switch ($action) {
                 }
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&GB=2');
-            exit();
+            die();
         }
         break;
 
@@ -155,7 +155,7 @@ switch ($action) {
                 unset($users_buffer, $pm_buffer, $count);
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&karma=1');
-            exit();
+            die();
         } elseif ($free_for_classes === 0) {
             foreach ($free_for as $class) {
                 if (ctype_digit($class)) {
@@ -191,7 +191,7 @@ switch ($action) {
                 }
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&karma=2');
-            exit();
+            die();
         }
         break;
 
@@ -231,7 +231,7 @@ switch ($action) {
                 unset($users_buffer, $pm_buffer, $count);
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&freeslots=1');
-            exit();
+            die();
         } elseif ($free_for_classes === 0) {
             foreach ($free_for as $class) {
                 if (ctype_digit($class)) {
@@ -266,7 +266,7 @@ switch ($action) {
                 }
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&freeslots=2');
-            exit();
+            die();
         }
         break;
 
@@ -306,7 +306,7 @@ switch ($action) {
                 unset($users_buffer, $pm_buffer, $count);
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&invites=1');
-            exit();
+            die();
         } elseif ($free_for_classes === 0) {
             foreach ($free_for as $class) {
                 if (ctype_digit($class)) {
@@ -341,7 +341,7 @@ switch ($action) {
                 }
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&invites=2');
-            exit();
+            die();
         }
     // no break
     case 'pm':
@@ -370,7 +370,7 @@ switch ($action) {
                 unset($pm_buffer, $count);
             }
             header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&pm=1');
-            exit();
+            die();
         } elseif ($free_for_classes === 0) {
             foreach ($free_for as $class) {
                 if (ctype_digit($class)) {
@@ -392,7 +392,7 @@ switch ($action) {
                     }
                 }
                 header('Location: staffpanel.php?tool=mass_bonus_for_members&action=mass_bonus_for_members&pm=2');
-                exit();
+                die();
             }
         }
         break;

@@ -45,5 +45,5 @@ function stealth($id, $stealth = true)
     // header ouput
     $cache->set('display_stealth' . $CURUSER['id'], $display, 5);
     header('Location: userdetails.php?id=' . $id);
-    exit();
+    die();
 }

@@ -41,7 +41,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 			<option value="-">(' . $lang['fmp_any_class'] . ')</option>';
     for ($i = 0; ; ++$i) {
         if ($c = get_user_class_name($i)) {
-            $option .= '<option value="' . $i . '"' . (ctype_digit($class) && $class == $i ? ' selected="selected"' : '') . '>' . $c . '</option>';
+            $option .= '<option value="' . $i . '"' . (ctype_digit($class) && $class == $i ? ' selected' : '') . '>' . $c . '</option>';
         } else {
             break;
         }
@@ -99,7 +99,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
     }
     $HTMLOUT .= ($arr_count[0] > $perpage) ? '<br>' . $menu . '' : '<br><br>';
     echo stdhead() . $HTMLOUT . stdfoot();
-    exit();
+    die();
 }
 $res_count = sql_query('SELECT COUNT(p.id) AS count FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON f.id = t.forum_id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' p.user_id = ' . sqlesc($member_id) . ' AND f.min_class_read <= ' . $CURUSER['class']);
 $arr_count = mysqli_fetch_row($res_count);

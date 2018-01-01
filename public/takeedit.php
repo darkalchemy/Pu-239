@@ -22,13 +22,13 @@ $possible_extensions = [
 if (!mkglobal('id:name:body:type')) {
     setSessionVar('is-warning', 'Id, descr, name or type is missing');
     header("Location: {$_SERVER['HTTP_REFERER']}");
-    exit();
+    die();
 }
 $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
 if (!is_valid_id($id)) {
     setSessionVar('is-warning', $lang['takedit_no_data']);
     header("Location: {$_SERVER['HTTP_REFERER']}");
-    exit();
+    die();
 }
 /**
  * @Function valid_torrent_name
@@ -78,7 +78,7 @@ $infohash = $fetch_assoc['info_hash'];
 if ($CURUSER['id'] != $fetch_assoc['owner'] && $CURUSER['class'] < MIN_CLASS) {
     setSessionVar('is-danger', "You're not the owner of this torrent.");
     header("Location: {$_SERVER['HTTP_REFERER']}");
-    exit();
+    die();
 }
 $updateset = $torrent_cache = $torrent_txt_cache = [];
 $fname = $fetch_assoc['filename'];
@@ -89,22 +89,22 @@ if ((isset($_POST['nfoaction'])) && ($_POST['nfoaction'] == 'update')) {
     if (empty($_FILES['nfo']['name'])) {
         setSessionVar('is-warning', 'No NFO!');
         header("Location: {$_SERVER['HTTP_REFERER']}");
-        exit();
+        die();
     }
     if ($_FILES['nfo']['size'] == 0) {
         setSessionVar('is-warning', '0-byte NFO!');
         header("Location: {$_SERVER['HTTP_REFERER']}");
-        exit();
+        die();
     }
     if (!preg_match('/^(.+)\.[' . join(']|[', $possible_extensions) . ']$/si', $_FILES['nfo']['name'])) {
         setSessionVar('is-warning', 'Invalid extension. <b>' . join(', ', $possible_extensions) . '</b> only!');
         header("Location: {$_SERVER['HTTP_REFERER']}");
-        exit();
+        die();
     }
     if (!empty($_FILES['nfo']['name']) && $_FILES['nfo']['size'] > NFO_SIZE) {
         setSessionVar('is-warning', 'NFO is too big! Max ' . number_format(NFO_SIZE) . ' bytes!');
         header("Location: {$_SERVER['HTTP_REFERER']}");
-        exit();
+        die();
     }
     if (@is_uploaded_file($_FILES['nfo']['tmp_name']) && @filesize($_FILES['nfo']['tmp_name']) > 0) {
         $updateset[] = 'nfo = ' . sqlesc(str_replace("\x0d\x0d\x0a", "\x0d\x0a", file_get_contents($_FILES['nfo']['tmp_name'])));
@@ -123,7 +123,7 @@ foreach ([
     if (empty($x)) {
         setSessionVar('is-warning', $lang['takedit_no_data']);
         header("Location: {$_SERVER['HTTP_REFERER']}");
-        exit();
+        die();
     }
 }
 if (isset($_POST['youtube']) && preg_match($youtube_pattern, $_POST['youtube'], $temp_youtube)) {
@@ -204,7 +204,7 @@ if (isset($_POST['poster']) && (($poster = $_POST['poster']) != $fetch_assoc['po
     if (!preg_match("/^(http|https):\/\/[^\s'\"<>]+\.(jpg|gif|png)$/i", $poster)) {
         setSessionVar('is-warning', 'Poster MUST be in jpg, gif or png format. Make sure you include http:// in the URL.');
         header("Location: {$_SERVER['HTTP_REFERER']}");
-        exit();
+        die();
     }
     $updateset[] = 'poster = ' . sqlesc($poster);
     $torrent_cache['poster'] = $poster;
@@ -266,7 +266,7 @@ if (isset($_POST['url']) && (($url = $_POST['url']) != $fetch_assoc['url'] && !e
         //if (!preg_match("/^(http|https):\/\/[^\s'\"<>]+\.(jpg|gif|png)$/i", $url))
         setSessionVar('is-warning', 'Make sure you include http:// in the URL.');
         header("Location: {$_SERVER['HTTP_REFERER']}");
-        exit();
+        die();
     }
     $updateset[] = 'url = ' . sqlesc($url);
     $torrent_cache['url'] = $url;
@@ -331,4 +331,4 @@ $cache->delete('editedby_' . $id);
 
 setSessionVar('is-success', $lang['details_success_edit']);
 header("Location: {$site_config['baseurl']}/details.php?id=$id");
-exit();
+die();

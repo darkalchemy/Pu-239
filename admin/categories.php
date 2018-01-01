@@ -299,7 +299,7 @@ function edit_cat_form()
     if (is_array($files) and count($files)) {
         $select = "<select name='cat_image'>\n<option value='0'>{$lang['categories_edit_select']}</option>\n";
         foreach ($files as $f) {
-            $selected = ($f == $r['image']) ? " selected='selected'" : '';
+            $selected = ($f == $r['image']) ? " selected" : '';
             $select .= "<option value='" . htmlsafechars($f, ENT_QUOTES) . "'$selected>" . htmlsafechars($f, ENT_QUOTES) . "</option>\n";
         }
         $select .= "</select>\n";

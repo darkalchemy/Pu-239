@@ -47,4 +47,4 @@ if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
 echo stdhead($lang['userhits_profile'] . htmlsafechars($user['username']) . '') . $HTMLOUT . stdfoot();
-exit();
+die();

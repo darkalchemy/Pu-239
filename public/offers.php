@@ -60,7 +60,7 @@ switch ($action) {
             sql_query('INSERT INTO offer_votes (offer_id, user_id, vote) VALUES (' . sqlesc($id) . ', ' . sqlesc($CURUSER['id']) . ', \'' . $yes_or_no . '\')') or sqlerr(__FILE__, __LINE__);
             sql_query('UPDATE offers SET ' . ($yes_or_no == 'yes' ? 'vote_yes_count = vote_yes_count + 1' : 'vote_no_count = vote_no_count + 1') . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             header('Location: /offers.php?action=offer_details&voted=1&id=' . $id);
-            exit();
+            die();
         } else {
             stderr('USER ERROR', 'You have voted on this offer before.');
         }
@@ -165,9 +165,9 @@ switch ($action) {
                     <input type="hidden" name="action" value="alter_status" />
                     <input type="hidden" name="id" value="' . $id . '" />
                     <select name="set_status">
-                    <option class="body" value="pending"' . ($arr['status'] == 'pending' ? ' selected="selected"' : '') . '>Status: pending</option>
-                    <option class="body" value="approved"' . ($arr['status'] == 'approved' ? ' selected="selected"' : '') . '>Status: approved</option>
-                    <option class="body" value="denied"' . ($arr['status'] == 'denied' ? ' selected="selected"' : '') . '>Status: denied</option>
+                    <option class="body" value="pending"' . ($arr['status'] == 'pending' ? ' selected' : '') . '>Status: pending</option>
+                    <option class="body" value="approved"' . ($arr['status'] == 'approved' ? ' selected' : '') . '>Status: approved</option>
+                    <option class="body" value="denied"' . ($arr['status'] == 'denied' ? ' selected' : '') . '>Status: denied</option>
                     </select>
                     <input type="submit" class="button is-small" value="change status!" />
                     </form> ');
@@ -250,7 +250,7 @@ switch ($action) {
         $category_drop_down = '<select name="category" class="required"><option class="body" value="">Select Offer Category</option>';
         $cats = genrelist();
         foreach ($cats as $row) {
-            $category_drop_down .= '<option class="body" value="' . (int)$row['id'] . '"' . ($category == $row['id'] ? ' selected="selected"' : '') . '>' . htmlsafechars($row['name'], ENT_QUOTES) . '</option>';
+            $category_drop_down .= '<option class="body" value="' . (int)$row['id'] . '"' . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($row['name'], ENT_QUOTES) . '</option>';
         }
         $category_drop_down .= '</select>';
         if (isset($_POST['category'])) {
@@ -265,7 +265,7 @@ switch ($action) {
                     (' . sqlesc($offer_name) . ', ' . sqlesc($image) . ', ' . sqlesc($body) . ', ' . sqlesc($category) . ', ' . TIME_NOW . ', ' . sqlesc($CURUSER['id']) . ',  ' . sqlesc($link) . ');') or sqlerr(__FILE__, __LINE__);
             $new_offer_id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
             header('Location: offers.php?action=offer_details&new=1&id=' . $new_offer_id);
-            exit();
+            die();
         }
         //=== start page
         $HTMLOUT .= '<table class="table table-bordered table-striped">
@@ -363,7 +363,7 @@ switch ($action) {
             sql_query('DELETE FROM offer_votes WHERE offer_id =' . $id) or sqlerr(__FILE__, __LINE__);
             sql_query('DELETE FROM comments WHERE offer =' . $id) or sqlerr(__FILE__, __LINE__);
             header('Location: /offers.php?offer_deleted=1');
-            exit();
+            die();
         }
         echo stdhead('Delete Offer.', true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
         break;
@@ -390,7 +390,7 @@ switch ($action) {
         $category_drop_down = '<select name="category" class="required"><option class="body" value="">Select Offer Category</option>';
         $cats = genrelist();
         foreach ($cats as $row) {
-            $category_drop_down .= '<option class="body" value="' . (int)$row['id'] . '"' . ($category == $row['id'] ? ' selected="selected"' : '') . '>' . htmlsafechars($row['name'], ENT_QUOTES) . '</option>';
+            $category_drop_down .= '<option class="body" value="' . (int)$row['id'] . '"' . ($category == $row['id'] ? ' selected' : '') . '>' . htmlsafechars($row['name'], ENT_QUOTES) . '</option>';
         }
         $category_drop_down .= '</select>';
         $cat_res = sql_query('SELECT id AS cat_id, name AS cat_name, image AS cat_image FROM categories WHERE id = ' . sqlesc($category)) or sqlerr(__FILE__, __LINE__);
@@ -402,7 +402,7 @@ switch ($action) {
             sql_query('UPDATE offers SET offer_name = ' . sqlesc($offer_name) . ', image = ' . sqlesc($image) . ', description = ' . sqlesc($body) . ',
                     category = ' . sqlesc($category) . ', link = ' . sqlesc($link) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             header('Location: offers.php?action=offer_details&edited=1&id=' . $id);
-            exit();
+            die();
         }
         //=== start page
         $HTMLOUT .= '<table class="table table-bordered table-striped">
@@ -495,7 +495,7 @@ switch ($action) {
             $newid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
             sql_query('UPDATE offers SET comments = comments + 1 WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             header('Location: /offers.php?action=offer_details&id=' . $id . '&viewcomm=' . $newid . '#comm' . $newid);
-            exit();
+            die();
         }
         $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
         $HTMLOUT .= $top_menu . '<form method="post" action="offers.php?action=add_comment">
@@ -557,7 +557,7 @@ switch ($action) {
             }
             sql_query('UPDATE comments SET text=' . sqlesc($body) . ', editedat=' . TIME_NOW . ', editedby=' . sqlesc($CURUSER['id']) . ' WHERE id=' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
             header('Location: /offers.php?action=offer_details&id=' . $id . '&viewcomm=' . $comment_id . '#comm' . $comment_id);
-            exit();
+            die();
         }
         if ($CURUSER['id'] == $arr['user']) {
             $avatar = avatar_stuff($CURUSER);
@@ -616,7 +616,7 @@ switch ($action) {
             sql_query('DELETE FROM comments WHERE id=' . sqlesc($comment_id)) or sqlerr(__FILE__, __LINE__);
             sql_query('UPDATE offers SET comments = comments - 1 WHERE id = ' . sqlesc($arr['offer'])) or sqlerr(__FILE__, __LINE__);
             header('Location: /offers.php?action=offer_details&id=' . $id . '&comment_deleted=1');
-            exit();
+            die();
         }
         break;
     //===========================================================================================//
@@ -657,7 +657,7 @@ switch ($action) {
         //=== ok, looks good :D let's set that status!
         sql_query('UPDATE offers SET status = ' . sqlesc($change_it) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         header('Location: /offers.php?action=offer_details&status_changed=1&id=' . $id);
-        exit();
+        die();
         break;
 } //=== end all actions / switch
 //=== functions n' stuff \o/

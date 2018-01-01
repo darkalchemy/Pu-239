@@ -18,7 +18,7 @@ function karmavip_update($data)
             $modcomment = $arr['modcomment'];
             $modcomment = get_date($dt, 'DATE', 1) . " - Vip status Automatically Removed By System.\n" . $modcomment;
             $modcom = sqlesc($modcomment);
-            $msgs_buffer[] = '(0,' . $arr['id'] . ',' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+            $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
             $users_buffer[] = '(' . $arr['id'] . ',1, \'no\', \'0\' , ' . $modcom . ')';
             $cache->update_row('user' . $arr['id'], [
                 'class'     => 1,

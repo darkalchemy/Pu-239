@@ -19,7 +19,7 @@ if ($userid != $CURUSER['id']) {
 }
 $torrentid = (int)$_GET['torrent'];
 if (!is_valid_id($torrentid)) {
-    exit();
+    die();
 }
 if (!isset($torrentid)) {
     stderr($lang['bookmark_err'], $lang['bookmark_failtorr']);

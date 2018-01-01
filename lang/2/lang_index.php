@@ -105,7 +105,7 @@ It is your own responsibility to adhere to these terms.",
     'index_irc_min'              => 'minutes',
     'index_irc_nousers'          => 'There have been no active irc users in the last 15 minutes.',
     //birthday users
-    'index_birthday_no'          => 'There is no members birthdays today.',
+    'index_birthday_no'          => 'There are no members with birthdays today.',
     //active users
     'index_active_users_no'      => 'There have been no active users in the last 15 minutes.',
     //advertise

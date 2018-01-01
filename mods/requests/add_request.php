@@ -8,7 +8,7 @@ if ($CURUSER['class'] < $site_config['req_min_class']) {
     <b>" . $site_config['site_name'] . ' staff</b></div>';
     /////////////////////// HTML OUTPUT //////////////////////////////
     echo stdhead('Requests Page') . $HTMLOUT . stdfoot();
-    exit();
+    die();
 }
 $gigsneeded = ($site_config['req_gigs_upped'] * 1024 * 1024 * 1024);
 $gigsupped = $CURUSER['uploaded'];
@@ -46,7 +46,7 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
     foreach ($cats as $cat) {
         $catdropdown .= "<option value='" . $cat['id'] . "'";
         if ($cat['id'] == (isset($_GET['cat']) ? $_GET['cat'] : '')) {
-            $catdropdown .= " selected='selected'";
+            $catdropdown .= " selected";
         }
         $catdropdown .= '>' . htmlspecialchars($cat['name']) . "</option>\n";
     }

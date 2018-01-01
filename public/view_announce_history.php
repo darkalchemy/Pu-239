@@ -29,7 +29,7 @@ if ($action == 'read_announce') {
     if (!is_int($id)) {
         $HTMLOUT .= stdmsg($lang['annhistory_error'], $lang['annhistory_invalid']);
         echo stdhead($lang['annhistory_ann']) . wrapper($HTMLOUT) . stdfoot();
-        exit();
+        die();
     }
     foreach ($ann_list as $x) {
         if ($x[0] == $id) {
@@ -39,7 +39,7 @@ if ($action == 'read_announce') {
     if (empty($subject) || empty($body)) {
         $HTMLOUT .= stdmsg($lang['annhistory_error'], $lang['annhistory_not']);
         echo stdhead($lang['annhistory_ann']) . wrapper($HTMLOUT) . stdfoot();
-        exit();
+        die();
     }
     $header = "
  	    <tr>

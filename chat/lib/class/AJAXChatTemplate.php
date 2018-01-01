@@ -272,7 +272,7 @@ class AJAXChatTemplate
             if ($this->ajaxChat->isLoggedIn() && $this->ajaxChat->getChannel()) {
                 $selected = ($id == $this->ajaxChat->getChannel()) ? ' selected="selected"' : '';
             } else {
-                $selected = ($id == $this->ajaxChat->getConfig('defaultChannelID')) ? ' selected="selected"' : '';
+                $selected= ($id == $this->ajaxChat->getConfig('defaultChannelID')) ? ' selected="selected"' : '';
             }
             if ($selected) {
                 $channelSelected = true;

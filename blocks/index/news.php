@@ -1,10 +1,10 @@
 <?php
-global $CURUSER, $cache, $site_config, $lang, $fpdo;
+global $CURUSER, $cache, $site_config, $lang, $fluent;
 
 $news = $cache->get('latest_news_');
 if ($news === false || is_null($news)) {
     $dt = TIME_NOW - (86400 * 45);
-    $news = $fpdo->from('news')
+    $news = $fluent->from('news')
         ->where('added > ?', $dt)
         ->orderBy('sticky')
         ->orderBy('added DESC')

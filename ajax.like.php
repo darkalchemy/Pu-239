@@ -14,7 +14,7 @@ $check = isset($_POST['type']) ? $_POST['type'] : '';
 $disabled_time = (isset($_POST['time']) && isset($check)) ? (int)$_POST['time'] : 0;
 if ($check == 'disabled') {
     $res = sql_query('INSERT INTO manage_likes (user_id,disabled_time) VALUES (' . $CURUSER['id'] . ',' . time() . "+$disabled_time) ON DUPLICATE KEY UPDATE disabled_time=" . time() . '') or sqlerr(__FILE__, __LINE__);
-    exit();
+    die();
 }
 $tb_fields = [
     'comment'   => 'comments', // name-supplied by js => user table to alter

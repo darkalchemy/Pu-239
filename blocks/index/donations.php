@@ -1,10 +1,10 @@
 <?php
-global $site_config, $cache, $lang, $fpdo;
+global $site_config, $cache, $lang, $fluent;
 
 $progress = '';
 $funds = $cache->get('totalfunds_');
 if ($funds === false || is_null($funds)) {
-    $funds = $fpdo->from('funds')
+    $funds = $fluent->from('funds')
         ->select(null)
         ->select('cash AS total_funds')
         ->fetch();

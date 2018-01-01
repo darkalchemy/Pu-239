@@ -68,5 +68,5 @@ function invincible($id, $invincible = true, $bypass_bans = true)
     // header ouput
     setSessionVar('is-info', "{$CURUSER['username']} is $display Invincible");
     header('Location: userdetails.php?id=' . $id);
-    exit();
+    die();
 }

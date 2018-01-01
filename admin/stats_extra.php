@@ -489,7 +489,7 @@ function make_select($name, $in = [], $default = '')
     foreach ($in as $v) {
         $selected = '';
         if (($default != '') and ($v[0] == $default)) {
-            $selected = " selected='selected'";
+            $selected = " selected";
         }
         $html .= "<option value='{$v[0]}'{$selected}>{$v[1]}</option>\n";
     }

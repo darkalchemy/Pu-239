@@ -48,7 +48,7 @@ if ($CURUSER['class'] < UC_STAFF) {
 }
 //=== ok... all is good... let's get the info and send it :D
 $subject = htmlsafechars($_POST['subject']);
-$first_from = (validusername($_POST['first_from']) ? htmlsafechars($_POST['first_from']) : '');
+$first_from = (valid_username($_POST['first_from']) ? htmlsafechars($_POST['first_from']) : '');
 $body = "\n\n" . $_POST['body'] . "\n\n{$lang['pm_forwardpm_0']}[b]" . $first_from . "{$lang['pm_forwardpm_1']}[/b] \"" . htmlsafechars($message['subject']) . "\"{$lang['pm_forwardpm_2']}" . $message['msg'] . "\n";
 sql_query('INSERT INTO `messages` (`sender`, `receiver`, `added`, `subject`, `msg`, `unread`, `location`, `saved`, `poster`, `urgent`) 
                         VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($to_username['id']) . ', ' . TIME_NOW . ', ' . sqlesc($subject) . ', ' . sqlesc($body) . ', \'yes\', 1, ' . sqlesc($save) . ', 0, ' . sqlesc($urgent) . ')') or sqlerr(__FILE__, __LINE__);
@@ -73,4 +73,4 @@ EOD;
     @mail($user['email'], $lang['pm_forwardpm_pmfrom'] . $username . $lang['pm_forwardpm_exc'], $body, "{$lang['pm_forwardpm_from']}{$site_config['site_email']}");
 }
 header('Location: pm_system.php?action=view_mailbox&forwarded=1');
-exit();
+die();

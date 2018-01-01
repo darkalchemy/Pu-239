@@ -6,7 +6,7 @@ $db = "database";
 $host = "localhost";
 
 if ($user === 'username' || $pass === 'secret') {
-    exit("please edit this file\n");
+    die("please edit this file\n");
 }
 $link = mysqli_connect("$host","$user","$pass","$db") or die("Error " . mysqli_error($link));
 

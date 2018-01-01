@@ -1,9 +1,9 @@
 table {
     width: 100%;
-    background-color: rgba(255, 255, 255, .1);
     max-width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
+    background-color: transparent;
 }
 
 .heading {
@@ -13,9 +13,16 @@ table {
 
 .table {
     width: calc(100% - 2px);
-    background-color: rgba(255, 255, 255, .1);
+    background-color: transparent;
     color: white;
     margin-bottom: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.table thead,
+.table tbody {
+    background-color: rgba(255, 255, 255, .1);
 }
 
 .table td,
@@ -119,7 +126,7 @@ table {
 
 .table-striped tbody tr:nth-child(odd) td,
 .table-striped tbody tr:nth-child(odd) th {
-    background-color: rgba(0, 0, 0, .3);
+    background-color: rgba(0, 0, 0, .4);
 }
 
 .table tbody tr:not(.no_hover):hover td {

@@ -48,7 +48,7 @@ if (!isset($_FILES['file'])) {
         } else {
             header("Refresh: 2; url={$site_config['baseurl']}/bitbucket.php?images=1" . $yea . $folder_m);
         }
-        exit($lang['bitbucket_deleting'] . $delfile . $lang['bitbucket_redir']);
+        die($lang['bitbucket_deleting'] . $delfile . $lang['bitbucket_redir']);
     }
     if (isset($_GET['avatar']) && $_GET['avatar'] != '' && (($_GET['avatar']) != $CURUSER['avatar'])) {
         $type = ((isset($_GET['type']) && $_GET['type'] == 1) ? 1 : 2);
@@ -182,7 +182,7 @@ if (!isset($_FILES['file'])) {
     $HTMLOUT .= "
         </div>";
     echo stdhead($lang['bitbucket_bitbucket']) . $HTMLOUT . stdfoot();
-    exit();
+    die();
 }
 if ($_FILES['file']['size'] == 0) {
     stderr($lang['bitbucket_error'], $lang['bitbucket_upfail']);
@@ -214,7 +214,7 @@ $it1 = exif_imagetype($_FILES['file']['tmp_name']);
 if ($it1 != IMAGETYPE_GIF && $it1 != IMAGETYPE_JPEG && $it1 != IMAGETYPE_PNG) {
     $HTMLOUT .= "
         <h1>{$lang['bitbucket_upfail']}{$lang['bitbucket_sorry']}</h1>";
-    exit();
+    die();
 }
 $file = strtolower($file);
 $randb = make_password();
@@ -235,7 +235,7 @@ if (isset($_POST['from']) && $_POST['from'] == 'upload') {
         <div>
             <b><strong>{$site_config['baseurl']}/img.php?{$pathlink}</strong></font></b>
         </div>";
-    exit();
+    die();
 }
 $HTMLOUT .= "
         <div class='bitbucket has-text-centered'>

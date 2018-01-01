@@ -5,4 +5,4 @@ check_user_status();
 
 setSessionVar('is-danger', 'Access Not Allowed');
 header("Location: {$site_config['baseurl']}/index.php");
-exit();
+die();

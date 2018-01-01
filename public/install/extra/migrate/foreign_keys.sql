@@ -23,7 +23,6 @@ ALTER TABLE ajax_chat_messages ADD FOREIGN KEY (userName) REFERENCES users(usern
 ALTER TABLE ajax_chat_online MODIFY `userID` int(10) UNSIGNED NOT NULL DEFAULT 0;
 ALTER TABLE ajax_chat_online MODIFY `userName` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE ajax_chat_online ADD FOREIGN KEY (userID) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE ajax_chat_online ADD FOREIGN KEY (userName) REFERENCES users(username) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ## announcement_main
 ALTER TABLE announcement_main ADD FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -54,7 +53,6 @@ ALTER TABLE blocks ADD FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCA
 
 ## bookmarks
 ALTER TABLE bookmarks ADD FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE bookmarks ADD FOREIGN KEY (torrentid) REFERENCES torrents(id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ## bugs
 ALTER TABLE bugs MODIFY `sender` int(10) UNSIGNED NOT NULL DEFAULT 0;
@@ -213,7 +211,6 @@ ALTER TABLE snatched ADD FOREIGN KEY (torrentid) REFERENCES torrents(id) ON DELE
 
 ## staffmessages
 ALTER TABLE staffmessages ADD FOREIGN KEY (sender) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE staffmessages ADD FOREIGN KEY (answeredby) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ## subscriptions
 ALTER TABLE subscriptions ADD FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;

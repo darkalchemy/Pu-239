@@ -82,11 +82,6 @@ $(function () {
     }
     ;
 
-    if ($('.password').length) {
-        $('.password').pstrength();
-    }
-    ;
-
     if ($('#help_open').length) {
         $('#help_open').click(function () {
             $('#help').slideToggle(animate_duration, easing, function () {

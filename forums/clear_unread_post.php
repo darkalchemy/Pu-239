@@ -17,4 +17,4 @@ if ($check_it_arr['last_post_read'] > 0) {
 }
 //=== ok, all done here, send them back! \o/
 header('Location: ' . $site_config['baseurl'] . '/forums.php?action=view_unread_posts');
-exit();
+die();

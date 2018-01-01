@@ -157,11 +157,11 @@ if ($search) {
 		<form action="#" method="get">
 		<span>' . $lang['sea_per_page'] . ':</span> <select name="box" onchange="location = this.options[this.selectedIndex].value;">
 		<option value=""> ' . $lang['sea_select'] . ' </option>
-		<option value="forums.php?action=search&amp;page=0&amp;perpage=5' . $pager_links . '"' . ($perpage == 5 ? ' selected="selected"' : '') . '>5</option>
-		<option value="forums.php?action=search&amp;page=0&amp;perpage=20' . $pager_links . '"' . ($perpage == 20 ? ' selected="selected"' : '') . '>20</option>
-		<option value="forums.php?action=search&amp;page=0&amp;perpage=50' . $pager_links . '"' . ($perpage == 50 ? ' selected="selected"' : '') . '>50</option>
-		<option value="forums.php?action=search&amp;page=0&amp;perpage=100' . $pager_links . '"' . ($perpage == 100 ? ' selected="selected"' : '') . '>100</option>
-		<option value="forums.php?action=search&amp;page=0&amp;perpage=200' . $pager_links . '"' . ($perpage == 200 ? ' selected="selected"' : '') . '>200</option>
+		<option value="forums.php?action=search&amp;page=0&amp;perpage=5' . $pager_links . '"' . ($perpage == 5 ? ' selected' : '') . '>5</option>
+		<option value="forums.php?action=search&amp;page=0&amp;perpage=20' . $pager_links . '"' . ($perpage == 20 ? ' selected' : '') . '>20</option>
+		<option value="forums.php?action=search&amp;page=0&amp;perpage=50' . $pager_links . '"' . ($perpage == 50 ? ' selected' : '') . '>50</option>
+		<option value="forums.php?action=search&amp;page=0&amp;perpage=100' . $pager_links . '"' . ($perpage == 100 ? ' selected' : '') . '>100</option>
+		<option value="forums.php?action=search&amp;page=0&amp;perpage=200' . $pager_links . '"' . ($perpage == 200 ? ' selected' : '') . '>200</option>
 		</select></form>';
         }
     } //=== end if searched
@@ -216,11 +216,11 @@ if ($show_as === 'posts') {
 	<form action="#" method="get">
 	<span>' . $lang['sea_per_page'] . ':</span> <select name="box" onchange="location = this.options[this.selectedIndex].value;">
 	<option value=""> ' . $lang['sea_select'] . ' </option>
-	<option value="forums.php?action=search&amp;page=0&amp;perpage=5' . $pager_links . '"' . ($perpage == 5 ? ' selected="selected"' : '') . '>5</option>
-	<option value="forums.php?action=search&amp;page=0&amp;perpage=20' . $pager_links . '"' . ($perpage == 20 ? ' selected="selected"' : '') . '>20</option>
-	<option value="forums.php?action=search&amp;page=0&amp;perpage=50' . $pager_links . '"' . ($perpage == 50 ? ' selected="selected"' : '') . '>50</option>
-	<option value="forums.php?action=search&amp;page=0&amp;perpage=100' . $pager_links . '"' . ($perpage == 100 ? ' selected="selected"' : '') . '>100</option>
-	<option value="forums.php?action=search&amp;page=0&amp;perpage=200' . $pager_links . '"' . ($perpage == 200 ? ' selected="selected"' : '') . '>200</option>
+	<option value="forums.php?action=search&amp;page=0&amp;perpage=5' . $pager_links . '"' . ($perpage == 5 ? ' selected' : '') . '>5</option>
+	<option value="forums.php?action=search&amp;page=0&amp;perpage=20' . $pager_links . '"' . ($perpage == 20 ? ' selected' : '') . '>20</option>
+	<option value="forums.php?action=search&amp;page=0&amp;perpage=50' . $pager_links . '"' . ($perpage == 50 ? ' selected' : '') . '>50</option>
+	<option value="forums.php?action=search&amp;page=0&amp;perpage=100' . $pager_links . '"' . ($perpage == 100 ? ' selected' : '') . '>100</option>
+	<option value="forums.php?action=search&amp;page=0&amp;perpage=200' . $pager_links . '"' . ($perpage == 200 ? ' selected' : '') . '>200</option>
 	</select></form>';
 }
 
@@ -292,30 +292,30 @@ $search_in_forums .= '<tr><td class="two" colspan="3"><span>' . $lang['sea_if_no
    $search_in_forums .= '<tr><td class="two" colspan="3"><span>'.$lang['sea_if_none_are_selected_all_are_searched.'].'</span></a></td></tr></table>';
 */
 //print $selected_forums;
-//exit();
+//die();
 //=== this is far to much code lol this should just be html... but it was fun to do \\0\0/0//
 $search_when_drop_down = '<select name="search_when">
-	<option class="body" value="0"' . ($search_when === 0 ? ' selected="selected"' : '') . '>' . $lang['sea_no_time_frame'] . '</option>
-	<option class="body" value="604800"' . ($search_when === 604800 ? ' selected="selected"' : '') . '>' . sprintf($lang['sea_x_week_ago'], '1') . '</option>
-	<option class="body" value="1209600"' . ($search_when === 1209600 ? ' selected="selected"' : '') . '>' . sprintf($lang['sea_x_weeks_ago'], '2') . '</option>
-	<option class="body" value="1814400"' . ($search_when === 1814400 ? ' selected="selected"' : '') . '>' . sprintf($lang['sea_x_weeks_ago'], '3') . '</option>
-	<option class="body" value="2419200"' . ($search_when === 2419200 ? ' selected="selected"' : '') . '>' . sprintf($lang['sea_x_month_ago'], '1') . '</option>
-	<option class="body" value="4838400"' . ($search_when === 4838400 ? ' selected="selected"' : '') . '>' . sprintf($lang['sea_x_months_ago'], '2') . '</option>
-	<option class="body" value="7257600"' . ($search_when === 7257600 ? ' selected="selected"' : '') . '>' . sprintf($lang['sea_x_months_ago'], '3') . '</option>
-	<option class="body" value="9676800"' . ($search_when === 9676800 ? ' selected="selected"' : '') . '>' . sprintf($lang['sea_x_months_ago'], '4') . '</option>
-	<option class="body" value="12096000"' . ($search_when === 12096000 ? ' selected="selected"' : '') . '>' . sprintf($lang['sea_x_months_ago'], '5') . '</option>
-	<option class="body" value="14515200"' . ($search_when === 14515200 ? ' selected="selected"' : '') . '>' . sprintf($lang['sea_x_months_ago'], '6') . '</option>
-	<option class="body" value="16934400"' . ($search_when === 16934400 ? ' selected="selected"' : '') . '>' . sprintf($lang['sea_x_months_ago'], '7') . '</option>
-	<option class="body" value="19353600"' . ($search_when === 19353600 ? ' selected="selected"' : '') . '>' . sprintf($lang['sea_x_months_ago'], '8') . '</option>
-	<option class="body" value="21772800"' . ($search_when === 21772800 ? ' selected="selected"' : '') . '>' . sprintf($lang['sea_x_months_ago'], '9') . '</option>
-	<option class="body" value="24192000"' . ($search_when === 24192000 ? ' selected="selected"' : '') . '>' . sprintf($lang['sea_x_months_ago'], '10') . '</option>
-	<option class="body" value="26611200"' . ($search_when === 26611200 ? ' selected="selected"' : '') . '>' . sprintf($lang['sea_x_months_ago'], '11') . '</option>
-	<option class="body" value="30800000"' . ($search_when === 30800000 ? ' selected="selected"' : '') . '>' . sprintf($lang['sea_x_year_ago'], '1') . '</option>
+	<option class="body" value="0"' . ($search_when === 0 ? ' selected' : '') . '>' . $lang['sea_no_time_frame'] . '</option>
+	<option class="body" value="604800"' . ($search_when === 604800 ? ' selected' : '') . '>' . sprintf($lang['sea_x_week_ago'], '1') . '</option>
+	<option class="body" value="1209600"' . ($search_when === 1209600 ? ' selected' : '') . '>' . sprintf($lang['sea_x_weeks_ago'], '2') . '</option>
+	<option class="body" value="1814400"' . ($search_when === 1814400 ? ' selected' : '') . '>' . sprintf($lang['sea_x_weeks_ago'], '3') . '</option>
+	<option class="body" value="2419200"' . ($search_when === 2419200 ? ' selected' : '') . '>' . sprintf($lang['sea_x_month_ago'], '1') . '</option>
+	<option class="body" value="4838400"' . ($search_when === 4838400 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '2') . '</option>
+	<option class="body" value="7257600"' . ($search_when === 7257600 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '3') . '</option>
+	<option class="body" value="9676800"' . ($search_when === 9676800 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '4') . '</option>
+	<option class="body" value="12096000"' . ($search_when === 12096000 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '5') . '</option>
+	<option class="body" value="14515200"' . ($search_when === 14515200 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '6') . '</option>
+	<option class="body" value="16934400"' . ($search_when === 16934400 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '7') . '</option>
+	<option class="body" value="19353600"' . ($search_when === 19353600 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '8') . '</option>
+	<option class="body" value="21772800"' . ($search_when === 21772800 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '9') . '</option>
+	<option class="body" value="24192000"' . ($search_when === 24192000 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '10') . '</option>
+	<option class="body" value="26611200"' . ($search_when === 26611200 ? ' selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '11') . '</option>
+	<option class="body" value="30800000"' . ($search_when === 30800000 ? ' selected' : '') . '>' . sprintf($lang['sea_x_year_ago'], '1') . '</option>
 	<option class="body" value="0">' . $lang['sea_13.73_billion_years_ago'] . '</option>
 	</select>';
 $sort_by_drop_down = '<select name="sort_by">
-	<option class="body" value="relevance"' . ($sort_by === 'relevance' ? ' selected="selected"' : '') . '>' . $lang['sea_relevance'] . ' [default]</option>
-	<option class="body" value="date"' . ($sort_by === 'date' ? ' selected="selected"' : '') . '>' . $lang['sea_post_date'] . '</option>
+	<option class="body" value="relevance"' . ($sort_by === 'relevance' ? ' selected' : '') . '>' . $lang['sea_relevance'] . ' [default]</option>
+	<option class="body" value="date"' . ($sort_by === 'date' ? ' selected' : '') . '>' . $lang['sea_post_date'] . '</option>
 	</select>';
 $HTMLOUT .= $mini_menu . '
     <div class="has-text-centered bottom20">

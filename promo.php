@@ -364,7 +364,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
         while ($ar = mysqli_fetch_assoc($r)) {
             $active = (($ar['max_users'] == $ar['accounts_made']) || (($ar['added'] + (86400 * $ar['days_valid'])) < TIME_NOW)) ? false : true;
             $HTMLOUT .= '<tr ' . (!$active ? 'title="This promo has ended"' : '') . ">
-				<td nowrap='nowrap' class='has-text-centered'>" . (htmlsafechars($ar['name'])) . "<br><input type='text' " . (!$active ? 'disabled="disabled"' : '') . " value='" . ($site_config['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $ar['link']) . "' size='60' name='" . (htmlsafechars($ar['name'])) . "' onclick='select();' /></td>
+				<td nowrap='nowrap' class='has-text-centered'>" . (htmlsafechars($ar['name'])) . "<br><input type='text' " . (!$active ? 'disabled' : '') . " value='" . ($site_config['baseurl'] . $_SERVER['PHP_SELF'] . '?do=signup&amp;link=' . $ar['link']) . "' size='60' name='" . (htmlsafechars($ar['name'])) . "' onclick='select();' /></td>
 				<td nowrap='nowrap' class='has-text-centered'>" . (date('d/M-Y', $ar['added'])) . "</td>
 				<td nowrap='nowrap' class='has-text-centered'>" . (date('d/M-Y', ($ar['added'] + (86400 * $ar['days_valid'])))) . "</td>
 				<td nowrap='nowrap' class='has-text-centered'>" . ((int)$ar['max_users']) . "</td>

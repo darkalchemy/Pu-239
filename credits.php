@@ -44,7 +44,7 @@ if (isset($_POST['action']) == 'add' && $CURUSER['class'] >= UC_SYSOP) {
     $credit = ($_POST['credit']);
     sql_query('INSERT INTO modscredits (name, description,  category,  pu239lnk,  status, credit) VALUES(' . sqlesc($name) . ', ' . sqlesc($description) . ', ' . sqlesc($category) . ', ' . sqlesc($link) . ', ' . sqlesc($status) . ', ' . sqlesc($credit) . ')') or sqlerr(__FILE__, __LINE__);
     header("Location: {$site_config['baseurl']}/credits.php");
-    exit();
+    die();
 }
 
 if ($action == 'delete' && $CURUSER['class'] >= UC_SYSOP) {
@@ -53,7 +53,7 @@ if ($action == 'delete' && $CURUSER['class'] >= UC_SYSOP) {
     }
     sql_query("DELETE FROM modscredits where id = '$id'") or sqlerr(__FILE__, __LINE__);
     header("Location: {$site_config['baseurl']}/credits.php");
-    exit();
+    die();
 }
 
 if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
@@ -107,7 +107,7 @@ if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
         $HTMLOUT .= '</table></form>';
     }
     echo stdhead($lang['credits_editmod']) . $HTMLOUT . stdfoot();
-    exit();
+    die();
 } elseif ($action == 'update' && $CURUSER['class'] >= UC_SYSOP) {
     $id = (int)$_GET['id'];
     if (!is_valid_id($id)) {
@@ -143,7 +143,7 @@ if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
 
     sql_query('UPDATE modscredits SET name = ' . sqlesc($name) . ', category = ' . sqlesc($category) . ', status = ' . sqlesc($modstatus) . ',  pu239lnk = ' . sqlesc($link) . ', credit = ' . sqlesc($credit) . ', description = ' . sqlesc($description) . ' WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     header("Location: {$_SERVER['PHP_SELF']}");
-    exit();
+    die();
 }
 
 $HTMLOUT .= "<script>

@@ -166,7 +166,7 @@ function getStats($user, $forced = false)
     if (is_writable($_settings . $user . '.set')) {
         file_put_contents($_settings . $user . '.set', serialize($var));
     } else {
-        exit("Can't write user setting");
+        die("Can't write user setting");
     }
     if (file_exists($_settings . $user . '.png')) {
         unlink($_settings . $user . '.png');

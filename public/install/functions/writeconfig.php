@@ -1,125 +1,121 @@
 <?php
 $foo = [
-    'Database - Site'     => [
+    'Database' => [
         [
-            'text'  => 'Host',
+            'text' => 'Host',
             'input' => 'config[mysql_host]',
-            'info'  => 'Usually this will be localhost unless your on a cluster server.',
+            'info' => 'Usually this will be localhost unless your on a cluster server.',
+            'placeholder' => 'localhost',
         ],
         [
-            'text'  => 'Username',
+            'text' => 'Username',
             'input' => 'config[mysql_user]',
-            'info'  => 'Your mysql username.',
+            'info' => 'Your mysql username.',
+            'placeholder' => 'mydbuser',
         ],
         [
-            'text'  => 'Password',
+            'text' => 'Password',
             'input' => 'config[mysql_pass]',
-            'info'  => 'Your mysql password.',
+            'info' => 'Your mysql password.',
+            'placeholder' => 'secret',
         ],
         [
-            'text'  => 'Database',
+            'text' => 'Database',
             'input' => 'config[mysql_db]',
-            'info'  => 'Your mysql database name.',
-        ],
-    ],
-    'Database - Announce' => [
-        [
-            'text'  => 'Host',
-            'input' => 'announce[mysql_host]',
-            'info'  => 'Usually this will be localhost unless your on a cluster server.',
+            'info' => 'Your mysql database name.',
+            'placeholder' => 'pu239',
         ],
         [
-            'text'  => 'Username',
-            'input' => 'announce[mysql_user]',
-            'info'  => 'Your mysql username.',
-        ],
-        [
-            'text'  => 'Password',
-            'input' => 'announce[mysql_pass]',
-            'info'  => 'Your mysql password.',
-        ],
-        [
-            'text'  => 'Database',
-            'input' => 'announce[mysql_db]',
-            'info'  => 'Your mysql database name.',
-        ],
-        [
-            'text'  => 'Domain',
+            'text' => 'Domain',
             'input' => 'announce[baseurl]',
-            'info'  => 'Your domain name - note include http and www.',
+            'info' => 'Your domain name - note include http and www.',
+            'placeholder' => 'http://Pu-239.pw',
         ],
     ],
-    'Tracker'             => [
+    'Tracker' => [
         [
-            'text'  => 'Announce Url',
+            'text' => 'Announce Url',
             'input' => 'config[announce_urls]',
-            'info'  => 'Your announce url.',
+            'info' => 'Your announce url. ie. http://pu-239.pw/announce.php',
+            'placeholder' => 'http://Pu-239.pw/announce.pw',
         ],
         [
-            'text'  => 'HTTPS Announce Url',
+            'text' => 'HTTPS Announce Url',
             'input' => 'config[announce_https]',
-            'info'  => 'Your HTTPS announce url.',
+            'info' => 'Your HTTPS announce url. ie. https://pu-239.pw/announce.php',
+            'placeholder' => 'https://Pu-239.pw/announce.pw',
         ],
         [
-            'text'  => 'Site Email',
+            'text' => 'Site Email',
             'input' => 'config[site_email]',
-            'info'  => 'Your site email address.',
+            'info' => 'Your site email address.',
+            'placeholder' => 'myuser@mymail.com',
         ],
         [
-            'text'  => 'Site Name',
+            'text' => 'Site Name',
             'input' => 'config[site_name]',
-            'info'  => 'Your site name.',
+            'info' => 'Your site name.',
+            'placeholder' => 'Crafty',
         ],
         /*
                 [
-                    'text' => 'Using XBT Tracker',
+                    'text'  => 'Using XBT Tracker',
                     'input' => 'config[xbt_tracker]',
-                    'info' => 'Check if yes.',
+                    'info'  => 'Check if yes.',
+                    'placeholder' => 'checked',
                 ],
         */
     ],
-    'Cookies'             => [
+    'Cookies' => [
         [
-            'text'  => 'Session Name',
+            'text' => 'Session Name',
             'input' => 'config[sessionName]',
-            'info'  => 'A single word that uniquely identifies this install.',
+            'info' => 'A single word that uniquely identifies this install.',
+            'placeholder' => 'pu239',
         ],
         [
-            'text'  => 'Prefix',
+            'text' => 'Prefix',
             'input' => 'config[cookie_prefix]',
-            'info'  => 'A single word that uniquely identifies this install. Can be the same as Session Name, but not required.',
+            'info' => 'A single word that uniquely identifies this install. Can be the same as Session Name, but not required.',
+            'placeholder' => 'pu239',
         ],
         [
-            'text'  => 'Path',
+            'text' => 'Path',
             'input' => 'config[cookie_path]',
-            'info'  => 'Required \'/\' or other path.',
+            'info' => 'Required \'/\' or any other path.',
+            'placeholder' => '/',
         ],
         [
-            'text'  => 'Cookie Lifetime',
+            'text' => 'Cookie Lifetime',
             'input' => 'config[cookie_lifetime]',
-            'info'  => 'The number of days that the cookie is alive.',
+            'info' => 'The number of days that the cookie is alive.',
+            'placeholder' => '365',
         ],
         [
-            'text'  => 'Cookie Domain',
+            'text' => 'Cookie Domain',
             'input' => 'config[cookie_domain]',
-            'info'  => 'Your domain name - note exclude http and www.',
+            'info' => 'Your domain name - note exclude http and www.',
+            'placeholder' => 'Pu-239.pw',
         ],
         [
-            'text'  => 'Domain',
+            'text' => 'Domain',
             'input' => 'config[domain]',
-            'info'  => 'Your site domain name - note exclude http or www.',
+            'info' => 'Your site domain name - note exclude http or www.',
+            'placeholder' => 'Pu-239.pw',
         ],
         [
-            'text'  => 'Secure Session Cookies',
+            'text' => 'Secure Session Cookies',
             'input' => 'config[sessionCookieSecure]',
-            'info'  => 'true/false/null. Enabled, this requires that session cookies can only be passed using SSL/HTTPS protocals.',
+            'info' => 'true/false/null. Enabled, this requires that session cookies can only be passed using SSL/HTTPS protocals.',
+            'placeholder' => 'null',
         ],
     ],
-    'System - Site BOT'   => [
+    'System - Site BOT' => [
         [
-            'text'  => 'Username',
+            'text' => 'Username',
             'input' => 'config[bot_username]',
-            'info'  => "The name for your 'System' user/Site BOT. You will still need to create this user after creating your user.",
+            'info' => "The name for your 'System' user/Site BOT.",
+            'placeholder' => 'CraftyBOT',
         ],
     ],
 ];
@@ -130,9 +126,6 @@ function foo($x)
 
 function createblock($fo, $foo)
 {
-    if (file_exists('step2.lock')) {
-        header('Location: index.php?step=3');
-    }
     $out = '
     <fieldset>
         <legend>' . $fo . '</legend>
@@ -148,11 +141,11 @@ function createblock($fo, $foo)
         } else {
             $type = 'text';
         }
-        $out .= '
-                <td class="input_input">
-                    <input type="' . $type . '" name="' . $bo['input'] . '" size="30" title="' . $bo['info'] . '" />
+        $out .= "
+                <td class='input_input'>
+                    <input type='{$type}' name='{$bo['input']}' size='30' placeholder='{$bo['placeholder']}' title='{$bo['info']}' />
                 </td>
-            </tr>';
+            </tr>";
     }
     $out .= '
         </table>
@@ -164,59 +157,68 @@ function createblock($fo, $foo)
 function saveconfig()
 {
     global $root;
+
     $continue = true;
     $out = '
     <fieldset>
         <legend>Write config</legend>';
-    if (!file_exists('config.lock')) {
-        if (isset($_POST['config']['xbt_tracker'])) {
-            $file = 'extra/config.xbtsample.php';
-            $xbt = 1;
-        } else {
-            $file = 'extra/config.phpsample.php';
-            $xbt = 0;
-        }
-        $config = file_get_contents($file);
+
+    $file = '../../.env.example';
+    if (file_exists($file)) {
+        $env = file_get_contents($file);
         $keys = array_map('foo', array_keys($_POST['config']));
         $values = array_values($_POST['config']);
-        $config = preg_replace($keys, $values, $config);
-        if (file_put_contents($root . 'include/config.php', $config)) {
+        $env = preg_replace($keys, $values, $env);
+        if (file_put_contents('../../.env', $env)) {
             $out .= '
-        <div class="readable">Config file was saved</div>';
-            file_put_contents('config.lock', 1);
+        <div class="readable">.env file was created</div>';
         } else {
             $out .= '
-        <div class="notreadable">Config file could not be saved</div>';
+        <div class="notreadable">.env file could not be saved</div>';
             $continue = false;
         }
-    } else {
-        $out .= '
-        <div class="readable">Config file was already written</div>';
     }
-    if (!file_exists('announce.lock')) {
-        $file = 'extra/ann_config.phpsample.php';
+
+    if (isset($_POST['config']['xbt_tracker'])) {
+        $file = 'extra/config.xbtsample.php';
+        $xbt = 1;
+    } else {
+        $file = 'extra/config.phpsample.php';
         $xbt = 0;
-        if (isset($_POST['config']['xbt_tracker'])) {
-            $file = 'extra/ann_config.xbtsample.php';
-            $xbt = 1;
-        }
-        $announce = file_get_contents($file);
-        $keys = array_map('foo', array_keys($_POST['announce']));
-        $values = array_values($_POST['announce']);
-        $announce = preg_replace($keys, $values, $announce);
-        if (file_put_contents($root . 'include/ann_config.php', $announce)) {
-            $out .= '
-        <div class="readable">Announce file was saved</div>';
-            file_put_contents('announce.lock', 1);
-        } else {
-            $out .= '
-        <div class="notreadable">announce file could not be saved</div>';
-            $continue = false;
-        }
+    }
+
+    $config = file_get_contents($file);
+    $keys = array_map('foo', array_keys($_POST['config']));
+    $values = array_values($_POST['config']);
+    $config = preg_replace($keys, $values, $config);
+    if (file_put_contents($root . 'include/config.php', $config)) {
+        $out .= '
+        <div class="readable">config.php file was created</div>';
     } else {
         $out .= '
-        <div class="readable">Announce file was already written</div>';
+        <div class="notreadable">config.php file could not be saved</div>';
+        $continue = false;
     }
+
+    $file = 'extra/ann_config.phpsample.php';
+    $xbt = 0;
+    if (isset($_POST['config']['xbt_tracker'])) {
+        $file = 'extra/ann_config.xbtsample.php';
+        $xbt = 1;
+    }
+    $announce = file_get_contents($file);
+    $keys = array_map('foo', array_keys($_POST['announce']));
+    $values = array_values($_POST['announce']);
+    $announce = preg_replace($keys, $values, $announce);
+    if (file_put_contents($root . 'include/ann_config.php', $announce)) {
+        $out .= '
+        <div class="readable">ann_config.php file was created</div>';
+    } else {
+        $out .= '
+        <div class="notreadable">ann_config.php file could not be saved</div>';
+        $continue = false;
+    }
+
     if ($continue) {
         $xbt = 0;
         if (isset($_POST['config']['xbt_tracker'])) {
@@ -224,12 +226,22 @@ function saveconfig()
         }
         $out .= '
         </fieldset>
-        <div style="text-align:center"><input type="button" value="Next step" onclick="window.location.href=\'index.php?step=3&xbt=' . $xbt . '\'" /></div>';
-        file_put_contents('step2.lock', 1);
+        <div style="text-align:center">
+            <input type="button" value="Next step" onclick="onClick(5)" />
+        </div>';
     } else {
         $out .= '
         </fieldset>
-        <div style="text-align:center" class="info"><input type="button" value="Go back" onclick="window.go(-1)"/></div>';
+        <div style="text-align:center" class="info">
+            <input type="button" value="Go back" onclick="window.go(-1)"/>
+        </div>';
     }
+
+    $out .= '
+    <script>
+        localStorage.setItem("step", 5);
+        var processing = 5;
+    </script>';
+
     echo $out;
 }

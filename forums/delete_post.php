@@ -53,7 +53,7 @@ if ($sanity_check > 0) {
     }
     //=== ok, all done here, send them back! \o/
     header('Location: ' . $site_config['baseurl'] . '/forums.php?action=view_topic&topic_id=' . $topic_id);
-    exit();
+    die();
 } else {
     stderr($lang['fe_sanity_check'], '' . $lang['fe_are_you_sure_del_post'] . ' 
 	<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=delete_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '&amp;sanity_check=1">Here</a>.');

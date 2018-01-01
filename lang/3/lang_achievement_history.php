@@ -9,9 +9,9 @@ $lang = [
     'achievement_history_err3'    => ' &#238;n prezent nu ai realiz&#259;ri.',
     // body
     'achievement_history_al'      => 'Lista cu realiz&#259;ri',
-    'achievement_history_fpc'     => 'Contor postari pe Forum',
-    'achievement_history_ftc'     => 'Contor Subiecte pe Forum',
-    'achievement_history_ic'      => 'Contor Invita&#355;ii',
+    'achievement_history_fpc'     => 'Update Forum Post Counter',
+    'achievement_history_ftc'     => 'Update Forum Topic Counter',
+    'achievement_history_ic'      => 'Update Invite Counter',
     'achievement_history_afu'     => 'Realiz&#259;ri pentru utilizatorul:',
     'achievement_history_c'       => '&#206;n prezent ai ',
     'achievement_history_a'       => ' Realiz&#259;ri',

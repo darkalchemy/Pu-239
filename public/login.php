@@ -4,11 +4,12 @@ require_once INCL_DIR . 'user_functions.php';
 dbconn();
 
 global $CURUSER, $site_config;
+
 if (!$CURUSER) {
     get_template();
 } else {
     header("Location: {$site_config['baseurl']}/index.php");
-    exit();
+    die();
 }
 $stdfoot = [
     'js' => [
@@ -23,12 +24,15 @@ $left = $total = '';
  */
 function left()
 {
-    global $site_config;
-    $total = 0;
+    global $site_config, $fluent;
+
     $ip = getip();
-    $fail = sql_query('SELECT SUM(attempts) FROM failedlogins WHERE ip = ' . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
-    list($total) = mysqli_fetch_row($fail);
-    $left = $site_config['failedlogins'] - $total;
+    $fail = $fluent->from('failedlogins')
+        ->select('COUNT(*) AS count')
+        ->where('INET6_NTOA(ip) = ?', $ip)
+        ->fetch();
+
+    $left = $site_config['failedlogins'] - $fail['count'];
     if ($left <= 2) {
         $left = "
         <span>{$left}</span>";
@@ -83,10 +87,10 @@ if ($got_ssl) {
                         <td class='rowhead'>{$lang['login_use_ssl']}</td>
                         <td>
                             <label class='label label-inverse' for='ssl'>{$lang['login_ssl1']}
-                                <input type='checkbox' name='use_ssl' " . ($got_ssl ? "checked" : "disabled='disabled' title='SSL connection not available'") . " value='1' id='ssl'/>
+                                <input type='checkbox' name='use_ssl' " . ($got_ssl ? "checked" : "disabled title='SSL connection not available'") . " value='1' id='ssl'/>
                             </label><br>
                             <label class='label label-inverse' for='ssl2'>{$lang['login_ssl2']}
-                                <input type='checkbox' name='perm_ssl' " . ($got_ssl ? '' : "disabled='disabled' title='SSL connection not available'") . " value='1' id='ssl2'/>
+                                <input type='checkbox' name='perm_ssl' " . ($got_ssl ? '' : "disabled title='SSL connection not available'") . " value='1' id='ssl2'/>
                             </label>
                         </td>
                     </tr>";

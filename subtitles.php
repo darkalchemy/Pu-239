@@ -183,13 +183,13 @@ function checkext(upload_field)
     }
     $HTMLOUT .= "<tr><td class='rowhead' style='border:none'>Language&#160;<font color='red'>*</font></td><td style='border:none'><select name='language' title='Select the subtitle language'>
 	<option value=''>- Select -</option>
-	<option value='eng' " . ($mode == 'edit' && $arr['lang'] == 'eng' ? 'selected="selected"' : '') . ">English</option>
-	<option value='swe' " . ($mode == 'edit' && $arr['lang'] == 'swe' ? 'selected="selected"' : '') . ">Swedish</option>
-	<option value='dan' " . ($mode == 'edit' && $arr['lang'] == 'dan' ? 'selected="selected"' : '') . ">Danish</option>
-	<option value='nor' " . ($mode == 'edit' && $arr['lang'] == 'nor' ? 'selected="selected"' : '') . ">Norwegian</option>
-	<option value='fin' " . ($mode == 'edit' && $arr['lang'] == 'fin' ? 'selected="selected"' : '') . ">Finnish</option>
-	<option value='spa' " . ($mode == 'edit' && $arr['lang'] == 'spa' ? 'selected="selected"' : '') . ">Spanish</option>
-	<option value='fre' " . ($mode == 'edit' && $arr['lang'] == 'fre' ? 'selected="selected"' : '') . ">French</option>
+	<option value='eng' " . ($mode == 'edit' && $arr['lang'] == 'eng' ? 'selected' : '') . ">English</option>
+	<option value='swe' " . ($mode == 'edit' && $arr['lang'] == 'swe' ? 'selected' : '') . ">Swedish</option>
+	<option value='dan' " . ($mode == 'edit' && $arr['lang'] == 'dan' ? 'selected' : '') . ">Danish</option>
+	<option value='nor' " . ($mode == 'edit' && $arr['lang'] == 'nor' ? 'selected' : '') . ">Norwegian</option>
+	<option value='fin' " . ($mode == 'edit' && $arr['lang'] == 'fin' ? 'selected' : '') . ">Finnish</option>
+	<option value='spa' " . ($mode == 'edit' && $arr['lang'] == 'spa' ? 'selected' : '') . ">Spanish</option>
+	<option value='fre' " . ($mode == 'edit' && $arr['lang'] == 'fre' ? 'selected' : '') . ">French</option>
 </select>
 </td></tr>
 <tr><td class='rowhead' style='border:none'>Release Name&#160;<font color='red'>*</font></td><td style='border:none'><input type='text' name='releasename' size='50' value='" . ($mode == 'edit' ? $arr['name'] : '') . "'  title='The releasename of the movie (Example:Disturbia.2007.DVDRip.XViD-aAF)'/></td></tr>
@@ -201,22 +201,22 @@ function checkext(upload_field)
 <tr><td class='rowhead' style='border:none'>Comments</td><td style='border:none'><textarea rows='5' cols='45' name='comment' title='Any specific details about this subtitle we need to know'>" . ($mode == 'edit' ? htmlsafechars($arr['comment']) : '') . "</textarea></td></tr>
 <tr><td class='rowhead' style='border:none'>FPS</td><td style='border:none'><select name='fps'>
 <option value='0'>- Select -</option>
-<option value='23.976' " . ($mode == 'edit' && $arr['fps'] == '23.976' ? 'selected="selected"' : '') . ">23.976</option>
-<option value='23.980' " . ($mode == 'edit' && $arr['fps'] == '23.980' ? 'selected="selected"' : '') . ">23.980</option>
-<option value='24.000' " . ($mode == 'edit' && $arr['fps'] == '24.000' ? 'selected="selected"' : '') . ">24.000</option>
-<option value='25.000' " . ($mode == 'edit' && $arr['fps'] == '25.000' ? 'selected="selected"' : '') . ">25.000</option>
-<option value='29.970' " . ($mode == 'edit' && $arr['fps'] == '29.970' ? 'selected="selected"' : '') . ">29.970</option>
-<option value='30.000' " . ($mode == 'edit' && $arr['fps'] == '30.000' ? 'selected="selected"' : '') . ">30.000</option>
+<option value='23.976' " . ($mode == 'edit' && $arr['fps'] == '23.976' ? 'selected' : '') . ">23.976</option>
+<option value='23.980' " . ($mode == 'edit' && $arr['fps'] == '23.980' ? 'selected' : '') . ">23.980</option>
+<option value='24.000' " . ($mode == 'edit' && $arr['fps'] == '24.000' ? 'selected' : '') . ">24.000</option>
+<option value='25.000' " . ($mode == 'edit' && $arr['fps'] == '25.000' ? 'selected' : '') . ">25.000</option>
+<option value='29.970' " . ($mode == 'edit' && $arr['fps'] == '29.970' ? 'selected' : '') . ">29.970</option>
+<option value='30.000' " . ($mode == 'edit' && $arr['fps'] == '30.000' ? 'selected' : '') . ">30.000</option>
 </select>
 </td></tr>
 <tr><td class='rowhead' style='border:none'>CD<br>number</td><td style='border:none'><select name='cd'>
 <option value='0'>- Select -</option>
-<option value='1' " . ($mode == 'edit' && $arr['cds'] == '1' ? 'selected="selected"' : '') . ">1CD</option>
-<option value='2' " . ($mode == 'edit' && $arr['cds'] == '2' ? 'selected="selected"' : '') . ">2CD</option>
-<option value='3' " . ($mode == 'edit' && $arr['cds'] == '3' ? 'selected="selected"' : '') . ">3CD</option>
-<option value='4' " . ($mode == 'edit' && $arr['cds'] == '4' ? 'selected="selected"' : '') . ">4CD</option>
-<option value='5' " . ($mode == 'edit' && $arr['cds'] == '5' ? 'selected="selected"' : '') . ">5CD</option>
-<option value='255' " . ($mode == 'edit' && $arr['cds'] == '255' ? 'selected="selected"' : '') . ">More</option>
+<option value='1' " . ($mode == 'edit' && $arr['cds'] == '1' ? 'selected' : '') . ">1CD</option>
+<option value='2' " . ($mode == 'edit' && $arr['cds'] == '2' ? 'selected' : '') . ">2CD</option>
+<option value='3' " . ($mode == 'edit' && $arr['cds'] == '3' ? 'selected' : '') . ">3CD</option>
+<option value='4' " . ($mode == 'edit' && $arr['cds'] == '4' ? 'selected' : '') . ">4CD</option>
+<option value='5' " . ($mode == 'edit' && $arr['cds'] == '5' ? 'selected' : '') . ">5CD</option>
+<option value='255' " . ($mode == 'edit' && $arr['cds'] == '255' ? 'selected' : '') . ">More</option>
 </select>
 </td></tr>
 <tr><td colspan='2' class='colhead'>";
@@ -369,9 +369,9 @@ elseif ($mode == 'details') {
 <form action='subtitles.php' method='get'>
 <input size='50' value='" . $s . "' name='s' type='text' />
 <select name='w'>
-<option value='name' " . ($w == 'name' ? "selected='selected'" : '') . ">Name</option>
-<option value='imdb' " . ($w == 'imdb' ? "selected='selected'" : '') . ">IMDb</option>
-<option value='comment' " . ($w == 'comment' ? "selected='selected'" : '') . ">Comments</option>
+<option value='name' " . ($w == 'name' ? "selected" : '') . ">Name</option>
+<option value='imdb' " . ($w == 'imdb' ? "selected" : '') . ">IMDb</option>
+<option value='comment' " . ($w == 'comment' ? "selected" : '') . ">Comments</option>
 </select>
 <input type='submit' value='Search' />&#160;<input type='button' onclick=\"window.location.href='subtitles.php?mode=upload'\" value='Upload' />
 </form></fieldset></td></tr>";

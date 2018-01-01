@@ -2,7 +2,6 @@
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'ann_config.php';
 require_once INCL_DIR . 'ann_functions.php';
 require_once CLASS_DIR . 'class_bt_options.php';
-global $site_config;
 
 /**
  * @param $err
@@ -11,7 +10,7 @@ function error($err)
 {
     header('Content-Type: text/plain; charset=UTF-8');
     header('Pragma: no-cache');
-    exit('d14:failure reason' . strlen($err) . ":{$err}ed5:flagsd20:min_request_intervali1800eeee");
+    die('d14:failure reason' . strlen($err) . ":{$err}ed5:flagsd20:min_request_intervali1800eeee");
 }
 
 /**
@@ -46,7 +45,7 @@ function getip()
  */
 function check_bans($ip, &$reason = '')
 {
-    global $site_config, $cache;
+    global $cache;
     $key = 'bans:::' . $ip;
     $ban = $cache->get($key);
     if ($ban === false || is_null($ban)) {
@@ -73,7 +72,7 @@ function check_bans($ip, &$reason = '')
 }
 
 if (empty($_SERVER['QUERY_STRING'])) {
-    exit("It takes 46 muscles to frown but only 4 to flip 'em the bird.");
+    die("It takes 46 muscles to frown but only 4 to flip 'em the bird.");
 }
 $q = explode('&', $_SERVER['QUERY_STRING']);
 $_GET = [];
@@ -124,10 +123,10 @@ if (!$torrent_pass) {
     die('scrape error');
 }
 
-if (!@($GLOBALS['___mysqli_ston'] = mysqli_connect($site_config['mysql_host'], $site_config['mysql_user'], $site_config['mysql_pass']))) {
-    exit();
+if (!@($GLOBALS['___mysqli_ston'] = mysqli_connect($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD']))) {
+    die();
 }
-@((bool)mysqli_query($GLOBALS['___mysqli_ston'], "USE {$site_config['mysql_db']}")) or exit();
+@((bool)mysqli_query($GLOBALS['___mysqli_ston'], "USE {$_ENV['DB_DATABASE']}")) or die();
 $numhash = count($_GET['info_hash']);
 $torrents = [];
 if ($numhash < 1) {
@@ -170,5 +169,5 @@ $r .= 'ee';
 header('Content-Type: text/plain; charset=UTF-8');
 header('Pragma: no-cache');
 echo $r;
-exit();
+die();
 //die($r);

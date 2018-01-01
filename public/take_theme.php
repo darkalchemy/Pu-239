@@ -60,4 +60,4 @@ $HTMLOUT .= "
 </body>
 </html>";
 echo $HTMLOUT;
-exit();
+die();

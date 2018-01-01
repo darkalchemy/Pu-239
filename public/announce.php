@@ -4,7 +4,7 @@ require_once INCL_DIR . 'ann_functions.php';
 global $site_config, $cache;
 
 if (isset($_SERVER['HTTP_COOKIE']) || isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {
-    exit("It takes 46 muscles to frown but only 4 to flip 'em the bird.");
+    die("It takes 46 muscles to frown but only 4 to flip 'em the bird.");
 }
 if (XBT_TRACKER == true) {
     err('Please redownload this torrent from the tracker');
@@ -90,7 +90,7 @@ if (!isset($event)) {
     $event = '';
 }
 $seeder = ($left == 0) ? 'yes' : 'no';
-if (!($db = @($GLOBALS['___mysqli_ston'] = mysqli_connect($site_config['mysql_host'], $site_config['mysql_user'], $site_config['mysql_pass'])) and $select = @((bool)mysqli_query($db, "USE {$site_config['mysql_db']}")))) {
+if (!($db = @($GLOBALS['___mysqli_ston'] = mysqli_connect($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'])) and $select = @((bool)mysqli_query($db, "USE {$_ENV['DB_DATABASE']}")))) {
     err('Please call back later');
 }
 $user = get_user_from_torrent_pass($torrent_pass);

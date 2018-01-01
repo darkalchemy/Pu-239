@@ -1,10 +1,14 @@
 <?php
 /**
  * @param $data
+ *
+ * @throws Exception
  */
 function achievement_request_update($data)
 {
     global $site_config, $queries, $cache;
+    $lang = load_language('ad_cleanup_manager');
+
     set_time_limit(1200);
     ignore_user_abort(true);
 
@@ -12,7 +16,7 @@ function achievement_request_update($data)
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $dt = TIME_NOW;
-        $subject = sqlesc('New Achievement Earned!');
+        $subject = sqlesc($lang['doc_achiev_earned']);
         $points = random_int(1, 3);
         $var1 = 'reqlvl';
         while ($arr = mysqli_fetch_assoc($res)) {
@@ -20,7 +24,7 @@ function achievement_request_update($data)
             $lvl = (int)$arr['reqlvl'];
             if ($reqfilled >= 1 && $lvl == 0) {
                 $msg = sqlesc('Congratulations, you have just earned the [b]Request Filler LVL1[/b] achievement. :) [img]' . $site_config['baseurl'] . '/images/achievements/reqfiller1.png[/img]');
-                $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+                $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Request Filler LVL1\', \'reqfiller1.png\' , \'Filled at least 1 request from the request page.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',1, ' . $points . ')';
                 $cache->increment('inbox_' . $arr['userid']);
@@ -28,14 +32,14 @@ function achievement_request_update($data)
             }
             if ($reqfilled >= 5 && $lvl == 1) {
                 $msg = sqlesc('Congratulations, you have just earned the [b]Request Filler LVL2[/b] achievement. :) [img]' . $site_config['baseurl'] . '/images/achievements/reqfiller2.png[/img]');
-                $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+                $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Request Filler LVL2\', \'reqfiller2.png\' , \'Filled at least 5 requests from the request page.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',2, ' . $points . ')';
                 $cache->increment('inbox_' . $arr['userid']);
             }
             if ($reqfilled >= 10 && $lvl == 2) {
                 $msg = sqlesc('Congratulations, you have just earned the [b]Request Filler LVL3[/b] achievement. :) [img]' . $site_config['baseurl'] . '/images/achievements/reqfiller3.png[/img]');
-                $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+                $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Request Filler LVL3\', \'reqfiller3.png\' , \'Filled at least 10 requests from the request page.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',3, ' . $points . ')';
                 $cache->increment('inbox_' . $arr['userid']);
@@ -43,7 +47,7 @@ function achievement_request_update($data)
             }
             if ($reqfilled >= 25 && $lvl == 3) {
                 $msg = sqlesc('Congratulations, you have just earned the [b]Request Filler LVL4[/b] achievement. :) [img]' . $site_config['baseurl'] . '/images/achievements/reqfiller4.png[/img]');
-                $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+                $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Request Filler LVL4\', \'reqfiller4.png\' , \'Filled at least 25 requests from the request page.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',4, ' . $points . ')';
                 $cache->increment('inbox_' . $arr['userid']);
@@ -51,7 +55,7 @@ function achievement_request_update($data)
             }
             if ($reqfilled >= 50 && $lvl == 4) {
                 $msg = sqlesc('Congratulations, you have just earned the [b]Request Filler LVL5[/b] achievement. :) [img]' . $site_config['baseurl'] . '/images/achievements/reqfiller5.png[/img]');
-                $msgs_buffer[] = '(0,' . $arr['userid'] . ',' . $dt . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
+                $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'Request Filler LVL5\', \'reqfiller5.png\' , \'Filled at least 50 requests from the request page.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',5, ' . $points . ')';
                 $cache->increment('inbox_' . $arr['userid']);

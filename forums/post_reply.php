@@ -144,7 +144,7 @@ if (isset($_POST['button']) && $_POST['button'] == 'Post') {
         }
     } //=== end attachment stuff
     header('Location: forums.php?action=view_topic&topic_id=' . $topic_id . ($extension_error === '' ? '' : '&ee=' . $extension_error) . ($size_error === '' ? '' : '&se=' . $size_error) . '&page=' . $post_id . '#' . $post_id);
-    exit();
+    die();
 }
 $HTMLOUT .= '<table class="table table-bordered table-striped">
      <tr><td class="embedded">

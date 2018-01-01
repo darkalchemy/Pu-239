@@ -1,6 +1,6 @@
 function checkit() {
     wantusername = document.getElementById('wantusername').value;
-    var url = '../namecheck.php?wantusername=' + escape(wantusername);
+    var url = '../ajax/namecheck.php?wantusername=' + escape(wantusername);
     try {
         request = new ActiveXObject("Msxml2.XMLHTTP");
     } catch (e) {
@@ -25,10 +25,11 @@ function check() {
         if (request.status == 200) {
             var response = request.responseText;
             document.getElementById("namecheck").innerHTML = response;
-            if (response.substring(0, 20) == "<font color='#cc0000'>")
+            if (response.substring(0, 20) == "<font color='#cc0000'>") {
                 document.reform.submitt.disabled = true;
-            else if (response.substring(0, 20) == "<font color='#33cc33'>")
+            } else if (response.substring(0, 20) == "<font color='#33cc33'>") {
                 document.reform.submitt.disabled = false;
+            }
         }
     }
 }

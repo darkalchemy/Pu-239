@@ -17,7 +17,7 @@ $flag_xy = [
 ];
 $user = isset($_GET['user']) ? $_GET['user'] : '';
 if (!file_exists($_settings . strtolower($user) . '.set') || !is_array($var = unserialize(file_get_contents($_settings . strtolower($user) . '.set')))) {
-    exit("Can't create avatar, settings file not found!");
+    die("Can't create avatar, settings file not found!");
 }
 $_fromCache = true;
 if ((time() - filemtime($_settings . strtolower($user) . '.set')) > 84600 || !file_exists($_settings . strtolower($user) . '.png')) {

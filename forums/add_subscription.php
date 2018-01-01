@@ -18,4 +18,4 @@ if ($arr[0] > 0) {
 //=== ok, that the hell, let's add it \o/
 sql_query('INSERT INTO `subscriptions` (`user_id`, `topic_id`) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($topic_id) . ')');
 header('Location: ' . $site_config['baseurl'] . '/forums.php?action=view_topic&topic_id=' . $topic_id . '&s=1');
-exit();
+die();

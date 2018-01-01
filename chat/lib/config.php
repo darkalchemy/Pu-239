@@ -26,13 +26,13 @@ $config['jslog'] = get_file('chat_log_js');
 // Database connection values:
 $config['dbConnection'] = [];
 // Database hostname:
-$config['dbConnection']['host'] = 'localhost';
+$config['dbConnection']['host'] = $_ENV['DB_HOST'];
 // Database username:
-$config['dbConnection']['user'] = $site_config['mysql_user'];
+$config['dbConnection']['user'] = $_ENV['DB_USERNAME'];
 // Database password:
-$config['dbConnection']['pass'] = $site_config['mysql_pass'];
+$config['dbConnection']['pass'] = $_ENV['DB_PASSWORD'];
 // Database name:
-$config['dbConnection']['name'] = $site_config['mysql_db'];
+$config['dbConnection']['name'] = $_ENV['DB_DATABASE'];
 // Database type:
 $config['dbConnection']['type'] = null;
 // Database link:

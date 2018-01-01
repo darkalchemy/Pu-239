@@ -81,7 +81,7 @@ if (isset($_GET['torrentid'])) {
     ], $site_config['expires']['user_stats']);
     $cache->delete('userhnrs_' . $userid);
     header('Refresh: 0; url=hnrs.php?userid=' . $userid . '&ratio_success=1');
-    exit();
+    die();
 }
 
 $completed = $count2 = $dlc = '';

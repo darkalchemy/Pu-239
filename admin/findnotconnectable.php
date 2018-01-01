@@ -100,4 +100,4 @@ if (isset($_GET['action1']) == '') {
     $HTMLOUT .= '</table>';
 }
 echo stdhead() . $HTMLOUT . stdfoot();
-exit();
+die();

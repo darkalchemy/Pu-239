@@ -1,0 +1,9 @@
+In no particular order
+
+replace mysqli commands with pdo/fluentpdo
+format tables using main_table function
+format divs using main_div function
+wrap all pages in wrapper function
+update/fix forums or replace
+verify announce working
+

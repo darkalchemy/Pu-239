@@ -1,9 +1,9 @@
 <?php
-global $site_config, $cache, $lang, $fpdo;
+global $site_config, $cache, $lang, $fluent;
 
 $top5torrents = $cache->get('top5_tor_');
 if ($top5torrents === false || is_null($top5torrents)) {
-    $top5torrents = $fpdo->from('torrents')
+    $top5torrents = $fluent->from('torrents')
         ->select(null)
         ->select('torrents.id')
         ->select('torrents.added')
@@ -28,7 +28,7 @@ if ($top5torrents === false || is_null($top5torrents)) {
 
 $last5torrents = $cache->get('last5_tor_');
 if ($last5torrents === false || is_null($last5torrents)) {
-    $last5torrents = $fpdo->from('torrents')
+    $last5torrents = $fluent->from('torrents')
         ->select(null)
         ->select('torrents.id')
         ->select('torrents.added')

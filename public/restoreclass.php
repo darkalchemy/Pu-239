@@ -9,4 +9,4 @@ $cache->update_row('user' . $CURUSER['id'], [
     'override_class' => 255,
 ], $site_config['expires']['user_cache']);
 header("Location: {$site_config['baseurl']}/index.php");
-exit();
+die();

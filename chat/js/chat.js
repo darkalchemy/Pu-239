@@ -2336,7 +2336,7 @@ var ajaxChat = {
             text = text.replace(/&amp;#039;/g, "'");
             text = text.replace(/&amp;amp;/g, "&amp;");
             text = this.replaceLineBreaks(text);
-            //text = this.replaceCustomText(text);
+            text = this.replaceCustomText(text);
             if (text.charAt(0) === '/') {
                 text = this.replaceCommands(text);
             } else {
@@ -2346,7 +2346,7 @@ var ajaxChat = {
                 text = this.replaceEmoticons(text);
             }
             text = this.breakLongWords(text);
-            text = this.replaceCustomText(text);
+            //text = this.replaceCustomText(text);
             if (text.toLowerCase().indexOf(this.userName.toLowerCase()) !== -1) {
                 this.playSound(this.settings['soundPrivate']);
                 text = '<span class="mentioned">' + text + '</span>';
@@ -3012,7 +3012,7 @@ var ajaxChat = {
                 if (res) {
                     url = p2;
                 } else {
-                    url = 'https://privatelink.de/en/?' + p2;
+                    url = this.anonymizer + p2;
                 }
                 return p1
                     + '<a href="'

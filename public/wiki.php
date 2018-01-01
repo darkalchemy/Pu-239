@@ -219,7 +219,7 @@ if (isset($_GET['action'])) {
         $mode = 'id';
         $id = (int)$_GET['id'];
         if (!is_valid_id($id)) {
-            exit();
+            die();
         }
     }
     if (isset($_GET['letter'])) {
