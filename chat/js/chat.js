@@ -1812,7 +1812,7 @@ var ajaxChat = {
     formatDate: function (format, date) {
         date = (date === null) ? new date() : date;
         var week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        var month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'];
+        var month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         return format
             .replace(/%Y/g, date.getFullYear())
             .replace(/%m/g, this.addLeadingZero(date.getMonth() + 1))

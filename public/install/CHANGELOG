@@ -1,4 +1,5 @@
 1 Jan 2018
+add: missing month in AJAX Chat
 fix: function call Christmas
 add: checkdate for Christmas Gift
 fix: lang not loaded in achievements cleanup
