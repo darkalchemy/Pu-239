@@ -500,7 +500,6 @@ function autoclean()
             }
             sql_query('UPDATE cleanup SET clean_time = ' . sqlesc($next_clean) . ' WHERE clean_id = ' . sqlesc($row['clean_id'])) or sqlerr(__FILE__, __LINE__);
             if (file_exists(CLEAN_DIR . $row['clean_file'])) {
-                $lang = array_merge($lang, load_language('ad_cleanup_manager'));
                 require_once CLEAN_DIR . $row['clean_file'];
                 if (function_exists($row['function_name'])) {
                     register_shutdown_function($row['function_name'], $row);
@@ -2086,6 +2085,18 @@ function valid_username($username, $ajax = false)
         return false;
     }
     return true;
+}
+
+function Christmas($celebrate = true)
+{
+    $upperBound = new DateTime("Dec 31");
+    $lowerBound = new DateTime("Dec 1");
+    $checkDate = new DateTime(date('M d', strtotime("Today")));
+
+    if ($celebrate && $checkDate >= $lowerBound && $checkDate <= $upperBound) {
+        return true;
+    }
+    return false;
 }
 
 if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {

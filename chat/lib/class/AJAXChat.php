@@ -1659,6 +1659,7 @@ class AJAXChat
                 (:userID, :userName, :userRole, :channel, :dateTime, INET6_ATON(:ip))
             ON DUPLICATE KEY UPDATE
                 userName = VALUES(userName), userRole = VALUES(userRole), channel = VALUES(channel), dateTime = VALUES(dateTime), ip = VALUES(ip)';
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute($values);
 

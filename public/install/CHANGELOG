@@ -1,3 +1,7 @@
+1 Jan 2018
+add: checkdate for Christmas Gift
+fix: lang not loaded in achievements cleanup
+
 31 Dec 2017
 fix: AJAX Chat dateTime insert
 add: datetime for mysql

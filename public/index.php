@@ -187,12 +187,14 @@ if (!empty($poll_data) && curuser::$blocks['index_page'] & block_index::ACTIVE_P
     $HTMLOUT .= '</div>';
 }
 
-if (curuser::$blocks['index_page'] & block_index::CHRISTMAS_GIFT
-    && $BLOCKS['christmas_gift_on']
-) {
-    $HTMLOUT .= "<div class='container is-fluid portlet' id='CHRISTMAS_GIFT'>";
-    include_once BLOCK_DIR . 'index/gift.php';
-    $HTMLOUT .= '</div>';
+if ($Christmas) {
+    if (curuser::$blocks['index_page'] & block_index::CHRISTMAS_GIFT
+        && $BLOCKS['christmas_gift_on']
+    ) {
+        $HTMLOUT .= "<div class='container is-fluid portlet' id='CHRISTMAS_GIFT'>";
+        include_once BLOCK_DIR . 'index/gift.php';
+        $HTMLOUT .= '</div>';
+    }
 }
 
 if (curuser::$blocks['index_page'] & block_index::RADIO

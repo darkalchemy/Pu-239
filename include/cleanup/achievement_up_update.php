@@ -5,7 +5,9 @@
  */
 function achievement_up_update($data)
 {
-    global $site_config, $queries, $cache, $lang;
+    global $site_config, $queries, $cache;
+    $lang = load_language('ad_cleanup_manager');
+
     set_time_limit(1200);
     ignore_user_abort(true);
 
