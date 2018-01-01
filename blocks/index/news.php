@@ -17,7 +17,7 @@ if ($news === false || is_null($news)) {
 $adminbutton = '';
 if ($CURUSER['class'] >= UC_STAFF) {
     $adminbutton = "
-        <a class='pull-right size_3' href='{$site_config['baseurl']}staffpanel.php?tool=news&amp;mode=news'>{$lang['index_news_title']}</a>";
+        <a class='pull-right size_3' href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=news'>{$lang['index_news_title']}</a>";
 }
 $HTMLOUT .= "
     <a id='news-hash'></a>
@@ -36,10 +36,10 @@ if ($news) {
             $hash = md5('the@@saltto66??' . $array['id'] . 'add' . '@##mu55y==');
             $button = "
                 <div class='pull-right'>
-                    <a href='{$site_config['baseurl']}staffpanel.php?tool=news&amp;mode=edit&amp;newsid=" . (int)$array['id'] . "'>
+                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=edit&amp;newsid=" . (int)$array['id'] . "'>
                         <i class='fa fa-edit fa-2x tooltipper' aria-hidden='true' title='{$lang['index_news_ed']}'></i>
                     </a>
-                    <a href='{$site_config['baseurl']}staffpanel.php?tool=news&amp;mode=delete&amp;newsid=" . (int)$array['id'] . "&amp;h={$hash}'>
+                    <a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;newsid=" . (int)$array['id'] . "&amp;h={$hash}'>
                         <i class='fa fa-remove fa-2x tooltipper' aria-hidden='true' title='{$lang['index_news_del']}'></i>
                     </a>
                 </div>";
