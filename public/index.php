@@ -187,7 +187,7 @@ if (!empty($poll_data) && curuser::$blocks['index_page'] & block_index::ACTIVE_P
     $HTMLOUT .= '</div>';
 }
 
-if ($Christmas) {
+if (Christmas()) {
     if (curuser::$blocks['index_page'] & block_index::CHRISTMAS_GIFT
         && $BLOCKS['christmas_gift_on']
     ) {

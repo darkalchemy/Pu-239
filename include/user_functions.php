@@ -511,12 +511,16 @@ function format_username($user_id, $icons = true, $tooltipper = true)
         $str .= (isset($users_data['downloadpos']) && $users_data['downloadpos'] != 1 ? '<img class="tooltipper icon left5" src="' . $site_config['pic_base_url'] . 'downloadpos.gif" alt="Download Disabled" title="Download Disabled" />' : '');
         $str .= ($users_data['chatpost'] == 0 ? '<img class="tooltipper icon left5" src="' . $site_config['pic_base_url'] . 'warned.png" alt="No Chat" title="Shout disabled" />' : '');
         $str .= ($users_data['pirate'] != 0 ? '<img class="tooltipper icon left5" src="' . $site_config['pic_base_url'] . 'pirate.png" alt="Pirate" title="Pirate" />' : '');
-        $str .= (isset($users_data['gotgift']) && $users_data['gotgift'] == 'yes' ? '<img class="tooltipper icon left5" src="' . $site_config['pic_base_url'] . 'gift.png" alt="Christmas Gift" title="Has Claimed a Christmas Gift" />' : '');
+        if (Christmas()) {
+            $str .= (isset($users_data['gotgift']) && $users_data['gotgift'] == 'yes' ? '<img class="tooltipper icon left5" src="' . $site_config['pic_base_url'] . 'gift.png" alt="Christmas Gift" title="Has Claimed a Christmas Gift" />' : '');
+        }
     }
-    $str .= '
+}
+
+$str .= '
                 </span>';
 
-    return $str;
+return $str;
 }
 
 /**
