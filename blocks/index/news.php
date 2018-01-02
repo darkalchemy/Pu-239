@@ -30,7 +30,7 @@ $HTMLOUT .= "
 $i = 0;
 if ($news) {
     foreach ($news as $array) {
-        $padding = $i++ >= count($news) ? '' : ' bottom20';
+        $padding = ++$i >= count($news) ? '' : ' bottom20';
         $button = '';
         if ($CURUSER['class'] >= UC_STAFF) {
             $hash = md5('the@@saltto66??' . $array['id'] . 'add' . '@##mu55y==');
@@ -60,16 +60,12 @@ if ($news) {
             </div>";
     }
 } else {
-    $HTMLOUT .= "
-            <div class='bordered'>
-                <div class='header alt_bordered bg-00 has-text-left'>
+    $HTMLOUT .= main_div("
                     <div class='bg-02 round5 padding10'>
                         <div class='has-text-white'>
                             " . format_comment($lang['index_news_not'], 0) . "
                         </div>
-                    </div>
-                </div>
-            </div>";
+                    </div>");
 }
 
 $HTMLOUT .= "
