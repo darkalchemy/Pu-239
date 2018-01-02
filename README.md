@@ -39,6 +39,8 @@ npm install bulma
 
 # set webroot to path Pu-239/public
 
+# create database
+
 # goto website and complete install
 
 # delete public/install folder once directed to
