@@ -1,4 +1,6 @@
 2 Jan 2018
+remove: trivia questions to separate sql install
+update: trivia to not refresh when game closed
 replace: getting server's webroot with getting root from script
 add: set the 3 passwords to random generated password in config during install
 remove: news delete \n

@@ -84,9 +84,13 @@ $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $result = mysqli_fetch_assoc($res);
 $gamenum = (int)$result['gamenum'];
 
-$refresh = 10;
-if ($round_remaining >= 1) {
-    $refresh = $round_remaining;
+$refresh = '';
+if (!empty($gamenum) && !empty($qid)) {
+    $time_refresh = 5;
+    if ($round_remaining >= 1) {
+        $time_refresh = $round_remaining;
+    }
+    $refresh = "<meta http-equiv='refresh' content={$time_refresh}; url={$site_config['baseurl']}/trivia.php'>";
 }
 
 $HTMLOUT = "<!doctype html>
@@ -95,7 +99,7 @@ $HTMLOUT = "<!doctype html>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <meta http-equiv='refresh' content={$refresh}; url=./trivia.php'>
+    $refresh
     <title>Trivia</title>
     <link rel='stylesheet' href='" . get_file('css') . "' />
     <link href='https://fonts.googleapis.com/css?family=Acme|Baloo+Bhaijaan|Encode+Sans+Condensed|Lobster|Nova+Square|Open+Sans|Oswald|PT+Sans+Narrow' rel='stylesheet' />
@@ -114,7 +118,7 @@ $HTMLOUT .= "
     <div class='bg-02 round10'>
         <div>";
 
-if ($round_remaining >= 1) {
+if (!empty($gamenum) && !empty($qid)) {
     $display = "
             <h3 class='has-text-info'>
                 <div id='clock_round'>
@@ -128,7 +132,7 @@ if ($round_remaining >= 1) {
 
 if (empty($gamenum) || empty($qid)) {
     $HTMLOUT .= "
-            <div class='has-text-centered'>
+            <div class='has-text-centered padding20'>
                 {$lang['trivia_game_stopped']}
             </div>";
 } else {
@@ -269,13 +273,13 @@ $HTMLOUT .= "
             <div class='has-text-centered'>
                 $answered
                 $display
-                <a href='./trivia_results.php' target='_top' class='button is-small margin20'>Trivia Results</a>
+                <a href='{$site_config['baseurl']}/trivia_results.php' target='_top' class='button is-small margin20'>Trivia Results</a>
             </div>
         </div>
     </div>
 </body>";
 
-if ($round_remaining >= 1) {
+if (!empty($gamenum) && !empty($qid)) {
     $HTMLOUT .= "
 <script>
     <!-- https://www.sitepoint.com/build-javascript-countdown-timer-no-dependencies/ -->

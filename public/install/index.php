@@ -2,7 +2,7 @@
 
 $step = isset($_GET['step']) ? (int)$_GET['step'] : 0;
 
-$root = realpath('..' . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR;
+$root = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR;
 $public = $root . DIRECTORY_SEPARATOR . 'public';
 
 if ($public[strlen($public) - 1] != DIRECTORY_SEPARATOR) {
