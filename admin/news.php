@@ -16,7 +16,6 @@ $stdhead = [
 $stdfoot = [
     'js' => [
         get_file('upload_js'),
-        get_file('warn_js'),
     ],
 ];
 $lang = array_merge($lang, load_language('ad_news'));

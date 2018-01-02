@@ -3015,7 +3015,7 @@ var ajaxChat = {
                 if (res) {
                     url = p2;
                 } else {
-                    url = anon + p2 + 'test';
+                    url = anon + p2;
                 }
                 return p1
                     + '<a href="'

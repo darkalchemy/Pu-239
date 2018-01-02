@@ -11,7 +11,6 @@ global $CURUSER, $site_config, $cache, $lang;
 $lang = array_merge($lang, load_language('ad_watchedusers'));
 $stdfoot = [
     'js' => [
-        get_file('warn_js'),
     ],
 ];
 
