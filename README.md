@@ -1,25 +1,28 @@
 # Pu-239
 
 ## Goals:
-1. Updated to PHP7 - default settings
-2. Error free with MySQL 5.7 strict mode - default settings
-3. Remove merged bootstrap
-4. Update jquery
+1. Updated to PHP7 - default settings - Done
+2. Error free with MySQL 5.7 strict mode - default settings - Done
+3. Remove merged bootstrap - Done
+4. Update jquery - Done
 5. Update all javascript files
-6. Merge, mininify and gzip css/js files to reduce the number of requests
-6. Optimize all images for web
-7. Remove js from head and relocate to body
-8. Fully responsive and mobile ready
+6. Merge, mininify and gzip css/js files to reduce the number of requests - Done
+7. Replace manual concat/gzip of css/js file with webpack
+8. Optimize all images for web - Done
+9. Remove js from head and relocate to body
+10. Fully responsive and mobile ready
 
-There is a temporary site at http://pu-239.pw where you can view the code [master branch] in action.
+A permanent site at http://pu-239.pw where you can view the code [master branch] in action, ask questions, etc.
 
-There is a temporary site at http://dev.pu-239.pw where you can view the code [dev branch] in action.
+There is a temporary site at http://dev.pu-239.pw where you can view the code [dev branch] in action, but may be re-installed without notice.
 
 This is a fork of U-232 V4.
 
 PHP 7.0+ is required, PHP 7.1 recommended.
 
-This is still a WIP and many pages may not be functional in there current location. Do not use the xbt install, as it's update has not been started and is likely broken.
+This is still a WIP and a few pages may not be functional in there current location.
+
+Do not use the xbt install, as it's update has not been started and is, therefore broken.
 
 ### To Install:
 ```
@@ -47,6 +50,9 @@ rm -r Pu-239/public/install/
 
 # goto admin cleanup and activate/deactivate scripts, they are initially set to yesterday midnight
 
+# insert trivia questions if desired
+mysql database < Pu-239/public/install/extras/trivia.php.sql
+
 # keeping AJAX Chat open after first installing will allow the cleanup to catchup
 ```
 
@@ -60,6 +66,9 @@ git pull
 composer update
 npm update
 
+# update trivia questions if desired
+mysql database < Pu-239/public/install/extras/trivia.php.sql
+
 # update database:
 goto admin/upgrade_database to check/update the database
 note: if that does exist, check the changelog for 6 Dec, 2017
@@ -68,4 +77,3 @@ note: if that does exist, check the changelog for 6 Dec, 2017
 # Credits:
 
 All Credit goes to the original code creators of U-232, tbdev, etc. Without them, this would not be possible.
-
