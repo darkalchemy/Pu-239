@@ -2999,6 +2999,9 @@ var ajaxChat = {
             '(^|\\s|>)((?:(?:http)|(?:https)|(?:ftp)|(?:irc)):\\/\\/[^\\s<>]+)(<\\/a>)?',
             'gm'
         );
+
+        var anon = this.anonymizer;
+
         return text.replace(
             regExp,
             // Specifying an anonymous function as second parameter:
@@ -3012,7 +3015,7 @@ var ajaxChat = {
                 if (res) {
                     url = p2;
                 } else {
-                    url = this.anonymizer + p2;
+                    url = anon + p2 + 'test';
                 }
                 return p1
                     + '<a href="'

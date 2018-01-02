@@ -2282,6 +2282,7 @@ var ajaxChat = {
             return text;
         }
         regExp = new RegExp("(^|\\s|>)((?:(?:http)|(?:https)|(?:ftp)|(?:irc)):\\/\\/[^\\s<>]+)(<\\/a>)?", "gm");
+        var anon = this.anonymizer;
         return text.replace(regExp, function(str, p1, p2, p3) {
             if (p3) {
                 return str;
@@ -2291,7 +2292,7 @@ var ajaxChat = {
             if (res) {
                 url = p2;
             } else {
-                url = this.anonymizer + p2;
+                url = anon + p2 + "test";
             }
             return p1 + '<a href="' + url + '" onclick="window.open(this.href); return false;">' + p2 + "</a>";
         });
