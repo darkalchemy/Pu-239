@@ -1,4 +1,5 @@
 2 Jan 2018
+remove: news delete \n
 fix: margin on index page last news item
 remove: unused js files
 fix: AJAX Chat anonimize url without bbcode

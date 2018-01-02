@@ -39,7 +39,7 @@ if ($mode == 'delete') {
     $sure = '';
     $sure = (isset($_GET['sure']) ? intval($_GET['sure']) : '');
     if (!$sure) {
-        stderr($lang['news_del_confirm'], $lang['news_del_click'] . "<a href='./staffpanel.php?tool=news&amp;mode=delete&amp;sure=1&amp;h=$hash&amp;newsid=$newsid'>{$lang['news_del_here']}</a> {$lang['news_del_if']}", false);
+        stderr($lang['news_del_confirm'], $lang['news_del_click'] . "<a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;sure=1&amp;h=$hash&amp;newsid=$newsid'> {$lang['news_del_here']}</a> {$lang['news_del_if']}", false);
     }
     if ($_GET['h'] != $hash) {
         stderr($lang['news_error'], $lang['news_del_what']);
