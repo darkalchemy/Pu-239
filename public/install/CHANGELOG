@@ -1,4 +1,6 @@
 2 Jan 2018
+replace: getting server's webroot with getting root from script
+add: set the 3 passwords to random generated password in config during install
 remove: news delete \n
 fix: margin on index page last news item
 remove: unused js files

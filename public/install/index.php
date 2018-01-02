@@ -2,12 +2,13 @@
 
 $step = isset($_GET['step']) ? (int)$_GET['step'] : 0;
 
-$public = $_SERVER['DOCUMENT_ROOT'];
+$root = realpath('..' . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR;
+$public = $root . DIRECTORY_SEPARATOR . 'public';
+
 if ($public[strlen($public) - 1] != DIRECTORY_SEPARATOR) {
     $public = $public . DIRECTORY_SEPARATOR;
 }
 
-$root = realpath($public . '..') . DIRECTORY_SEPARATOR;
 
 if (file_exists($public . 'include/install.lock')) {
     die('This was already installed, huh ? how this happened');

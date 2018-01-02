@@ -191,6 +191,11 @@ function saveconfig()
     $keys = array_map('foo', array_keys($_POST['config']));
     $values = array_values($_POST['config']);
     $config = preg_replace($keys, $values, $config);
+    $config = preg_replace('/#pass1/', bin2hex(random_bytes(16)), $config);
+    $config = preg_replace('/#pass2/', bin2hex(random_bytes(16)), $config);
+    $config = preg_replace('/#pass3/', bin2hex(random_bytes(16)), $config);
+
+
     if (file_put_contents($root . 'include/config.php', $config)) {
         $out .= '
         <div class="readable">config.php file was created</div>';

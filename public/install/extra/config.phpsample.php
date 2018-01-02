@@ -232,9 +232,9 @@ $upload_max_filesize = ini_get('upload_max_filesize') !== null ? return_bytes(in
 $post_max_filesize = ini_get('post_max_filesize') !== null ? return_bytes(ini_get('post_max_filesize')) : 0;
 $site_config['bucket_maxsize'] = $upload_max_filesize >= $post_max_filesize ? $upload_max_filesize : $post_max_filesize;
 $site_config['site']['owner'] = 1;
-$site_config['site']['salt'] = 'jgutyxcjsak2';
-$site_config['staff']['staff_pin'] = 'uFie0y3Ihjkij8';
-$site_config['staff']['owner_pin'] = 'jjko4kuogqhjj0';
+$site_config['site']['salt'] = '#pass1';
+$site_config['staff']['staff_pin'] = '#pass2';
+$site_config['staff']['owner_pin'] = '#pass3';
 
 $site_config['staff']['forumid'] = 2;
 $site_config['staff_forums'] = [
