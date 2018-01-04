@@ -123,7 +123,7 @@ function loadavg($return_all = false)
     <div class='roundedCorners' style='text-align:left;width:80%;border:1px solid black;padding:5px;'>
     <div style='background:transparent;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['index_serverload']}</span></div>
     <br>
-    <table width='100%' border='1' cellspacing='0' cellpadding='1'>
+    <table width='100%' >
         <tr><td>
         <table class='main' border='0' width='402'>
     <tr><td style='padding: 0px; background-image: url({$site_config['pic_base_url']}loadbarbg.gif); background-repeat: repeat-x'>";
@@ -141,7 +141,7 @@ $HTMLOUT .= "
     <div class='roundedCorners' style='text-align:left;width:80%;border:1px solid black;padding:5px;'>
     <div style='background:transparent;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['index_serverload']}</span></div>
     <br>
-    <table width='100%' border='1' cellspacing='0' cellpadding='1'>
+    <table width='100%' >
 			<tr><td>
 		    <table class='main' border='0' width='402'>
     			<tr><td style='padding: 0px; background-image: url({$site_config['pic_base_url']}loadbarbg.gif); background-repeat: repeat-x'>";

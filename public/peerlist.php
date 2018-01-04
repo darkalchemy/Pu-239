@@ -27,7 +27,7 @@ function dltable($name, $arr, $torrent)
         return $htmlout = "<div><b>{$lang['peerslist_no']} $name {$lang['peerslist_data_available']}</b></div>\n";
     }
     $htmlout = "\n";
-    $htmlout .= "<table width='100%' class='main' border='1' cellspacing='0' cellpadding='5'>\n";
+    $htmlout .= "<table width='100%' class='main' >\n";
     $htmlout .= "<tr><td colspan='11' class='colhead'>" . count($arr) . " $name</td></tr>" . "<tr><td class='colhead'>{$lang['peerslist_user_ip']}</td>" . "<td class='colhead'>{$lang['peerslist_connectable']}</td>" . "<td class='colhead'>{$lang['peerslist_uploaded']}</td>" . "<td class='colhead'>{$lang['peerslist_rate']}</td>" . '' . ($site_config['ratio_free'] ? '' : "<td class='colhead'>{$lang['peerslist_downloaded']}</td>") . '' . '' . ($site_config['ratio_free'] ? '' : "<td class='colhead'>{$lang['peerslist_rate']}</td>") . '' . "<td class='colhead'>{$lang['peerslist_ratio']}</td>" . "<td class='colhead'>{$lang['peerslist_complete']}</td>" . "<td class='colhead'>{$lang['peerslist_connected']}</td>" . "<td class='colhead'>{$lang['peerslist_idle']}</td>" . "<td class='colhead'>{$lang['peerslist_client']}</td></tr>\n";
     $now = TIME_NOW;
     $mod = $CURUSER['class'] >= UC_STAFF;

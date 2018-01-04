@@ -20,7 +20,7 @@ $HTMLOUT .= begin_main_frame();
 $HTMLOUT .= begin_frame('Happy hour log for ' . htmlsafechars($user['username']) . '');
 if (mysqli_num_rows($res) > 0) {
     $HTMLOUT .= $pager['pagertop'];
-    $HTMLOUT .= "<table class='main' border='1' cellspacing='0' cellpadding='5'>
+    $HTMLOUT .= "<table class='main' >
     <tr><td class='colhead' style='width:100%'>Torrent Name</td>
     <td class='colhead'>Multiplier</td>
     <td class='colhead' nowrap='nowrap'>Date started</td></tr>";

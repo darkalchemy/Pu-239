@@ -17,7 +17,7 @@ foreach ($cats as $row) {
 $s2 .= "</select>\n";
 $HTMLOUT .= "<br>
 <form method='post' name='compose' action='viewoffers.php?id=$id&amp;take_offer_edit'><a name='add' id='add'></a>
-<table border='1' cellspacing='0' cellpadding='5'><tr><td colspan='2'>
+<table ><tr><td colspan='2'>
 <h1>Edit Offer : $s</h1>
 </td></tr>
 <tr><td><b>Title</b></td>

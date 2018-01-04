@@ -41,7 +41,7 @@ if (mysqli_num_rows($res) > 0) {
     unset($msgs_buffer);
 }
 ((mysqli_free_result($res) || (is_object($res) && (get_class($res) == 'mysqli_result'))) ? true : false);
-$HTMLOUT .= "<table class='main' width='750px' border='0' cellspacing='0' cellpadding='0'>" . "<tr><td class='embedded'>\n";
+$HTMLOUT .= "<table class='main' width='750px' >" . "<tr><td class='embedded'>\n";
 $HTMLOUT .= "<h1>{$lang['reset_success']}</h1>
 <table cellspacing='10' cellpadding='10'>
 <tr><td>{$lang['filled_your']}$id (" . htmlspecialchars($arr['request']) . "){$lang['filled_success']}<a class='altlink' href='details.php?id=" . $torrentid . "'>" . $site_config['baseurl'] . '/details.php?id=' . $torrentid . "</a>.  

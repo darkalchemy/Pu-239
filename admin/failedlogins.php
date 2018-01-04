@@ -82,7 +82,7 @@ $HTMLOUT .= "<table border='1' cellspacing='0' width='115' cellpadding='5'>\n
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-$HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5' width='80%'>\n";
+$HTMLOUT .= "<table  width='80%'>\n";
 $res = sql_query("SELECT f.*,u.id as uid, u.username FROM failedlogins as f LEFT JOIN users as u ON u.ip = f.ip $where ORDER BY f.added DESC " . $pager['limit']) or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($res) == 0) {
     $HTMLOUT .= "<tr><td colspan='2'><b>{$lang['failed_message_nothing']}</b></td></tr>\n";

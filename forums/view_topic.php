@@ -1,5 +1,5 @@
 <?php
-global $CURUSER, $ste_config, $lang;
+global $CURUSER, $ste_config, $lang, $fluent, $pdo;
 
 $attachments = $members_votes = $status = $topic_poll = $stafflocked = $child = $parent_forum_name = $math_image = '';
 $math_text = $staff_tools = $staff_link = $now_viewing = '';
@@ -13,12 +13,33 @@ $upload_errors_type = isset($_GET['ee']) ? intval($_GET['ee']) : 0;
 
 $_forum_sort = isset($CURUSER['forum_sort']) ? $CURUSER['forum_sort'] : 'DESC';
 
-$res = sql_query('SELECT t.id AS topic_id, t.user_id, t.topic_name, t.locked, t.last_post, t.sticky, t.status, t.views, t.poll_id, t.num_ratings,
-                t.rating_sum, t.topic_desc, t.forum_id, t.anonymous, f.name AS forum_name, f.min_class_read, f.min_class_write, f.parent_forum
-                FROM topics AS t
-                LEFT JOIN forums AS f ON t.forum_id = f.id
-                WHERE  ' . ($CURUSER['class'] < UC_STAFF ? 't.status = "ok" AND' : ($CURUSER['class'] < $min_delete_view_class ? ' t.status != "deleted"  AND' : '')) . ' t.id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
-$arr = mysqli_fetch_assoc($res);
+$arr = $fluent->from('topics')
+    ->select(null)
+    ->select('topics.id AS topic_id')
+    ->select('topics.user_id')
+    ->select('topics.topic_name')
+    ->select('topics.locked')
+    ->select('topics.last_post')
+    ->select('topics.sticky')
+    ->select('topics.status')
+    ->select('topics.views')
+    ->select('topics.poll_id')
+    ->select('topics.num_ratings')
+    ->select('topics.rating_sum')
+    ->select('topics.topic_desc')
+    ->select('topics.forum_id')
+    ->select('topics.anonymous')
+    ->select('forums.name AS forum_name')
+    ->select('forums.min_class_read')
+    ->select('forums.min_class_write')
+    ->select('forums.parent_forum')
+    ->leftJoin('forums ON topics.forum_id = forums.id')
+    ->where('topics.id = ?', $topic_id)
+    ->fetch();
+
+if (($CURUSER['class'] < UC_STAFF && $arr['status'] != 'ok') || ($CURUSER['class'] < $min_delete_view_class && $arr['status'] === 'deleted')) {
+    $arr = false;
+}
 
 if ($CURUSER['class'] < $arr['min_class_read'] || !is_valid_id($arr['topic_id']) || $CURUSER['class'] < $min_delete_view_class && $status == 'deleted' || $CURUSER['class'] < UC_STAFF && $status == 'recycled') {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
@@ -42,16 +63,17 @@ switch ($status) {
         break;
 }
 
-$forum_id = (int)$arr['forum_id'];
-$topic_owner = (int)$arr['user_id'];
+$forum_id = $arr['forum_id'];
+$topic_owner = $arr['user_id'];
 $topic_name = htmlsafechars($arr['topic_name'], ENT_QUOTES);
 $topic_desc1 = htmlsafechars($arr['topic_desc'], ENT_QUOTES);
 
 $members_votes = [];
 if ($arr['poll_id'] > 0) {
-    $res_poll = sql_query('SELECT * FROM forum_poll WHERE id = ' . sqlesc($arr['poll_id'])) or sqlerr(__FILE__, __LINE__);
-    $arr_poll = mysqli_fetch_assoc($res_poll);
-    //=== get the stuff for just staff
+    $arr_poll = $fluent->from('forum_poll')
+        ->where('id = ?', $arr['poll_id'])
+        ->fetch();
+
     if ($CURUSER['class'] >= UC_STAFF) {
         $res_poll_voted = sql_query('SELECT DISTINCT user_id, ip, added
                     FROM forum_poll_votes
@@ -230,7 +252,7 @@ $views = number_format($arr['views']);
 $forum_name = htmlsafechars($arr['forum_name'], ENT_QUOTES);
 
 if ($CURUSER['class'] >= UC_STAFF) {
-    $staff_link = '<a class="altlink bordered"  class="tooltipper" title="' . $lang['fe_staff_tools'] . '" id="tool_open">' . $lang['fe_staff_tools'] . '</a>';
+    $staff_link = '<a class="altlink bordered" class="tooltipper" title="' . $lang['fe_staff_tools'] . '" id="tool_open">' . $lang['fe_staff_tools'] . '</a>';
 }
 
 if ($arr['num_ratings'] != 0) {
@@ -297,15 +319,31 @@ $subscription_on_off = (isset($_GET['s']) ? ($_GET['s'] == 1 ? '
             <img src="' . $site_config['pic_base_url'] . 'forums/unsubscribe.gif" alt="' . $lang['fe_unsubscribe'] . '" class="tooltipper" title="' . $lang['fe_unsubscribe'] . '" width="25" />
         </div>') : '');
 list($menu, $LIMIT) = pager_new($count, $perpage, $page, './forums.php?action=view_topic&amp;topic_id=' . $topic_id . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
-$res = sql_query('SELECT p.id AS post_id, p.topic_id, p.user_id, p.staff_lock, p.added, p.body, p.edited_by, p.edit_date, p.icon, p.post_title,
-            p.bbcode, p.post_history, p.edit_reason, p.ip, p.status AS post_status, p.anonymous, u.seedbonus, u.id, u.username, u.class,
-            u.donor, u.suspended, u.warned, u.chatpost, u.leechwarn, u.pirate, u.king, u.enabled, u.email, u.website, u.icq, u.msn, u.aim,
-            u.yahoo, u.last_access, u.show_email, u.paranoia, u.hit_and_run_total, u.avatar, u.title, u.uploaded, u.downloaded, u.signature,
-            u.google_talk, u.icq, u.msn, u.aim, u.yahoo, u.website, u.mood, u.perms, u.reputation, u.offensive_avatar
-            FROM posts AS p
-            LEFT JOIN users AS u ON p.user_id = u.id
-            WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = "ok" AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != "deleted" AND' : '')) . ' topic_id = ' . sqlesc($topic_id) . '
-            ORDER BY p.id ' . $_forum_sort . ' ' . $LIMIT) or sqlerr(__FILE__, __LINE__);
+
+$res = $fluent->from('posts')
+    ->select('posts.id AS post_id')
+    ->select('posts.topic_id')
+    ->select('posts.user_id')
+    ->select('posts.staff_lock')
+    ->select('posts.added')
+    ->select('posts.body')
+    ->select('posts.edited_by')
+    ->select('posts.edit_date')
+    ->select('posts.icon')
+    ->select('posts.post_title')
+    ->select('posts.bbcode')
+    ->select('posts.post_history')
+    ->select('posts.edit_reason')
+    ->select('INET6_NTOA(posts.ip) AS ip')
+    ->select('posts.status AS post_status')
+    ->select('posts.anonymous')
+    ->where('posts.topic_id = ?', $topic_id)
+    ->orderBy("posts.id $_forum_sort")
+    ->limit(str_replace('LIMIT ', $LIMIT));
+
+if (($CURUSER['class'] < UC_STAFF && $arr['status'] != 'ok') || ($CURUSER['class'] < $min_delete_view_class && $arr['status'] === 'deleted')) {
+    $arr = false;
+}
 
 $may_post = ($CURUSER['class'] >= $arr['min_class_write'] && $CURUSER['forum_post'] == 'yes' && $CURUSER['suspended'] == 'no');
 
@@ -384,8 +422,17 @@ $HTMLOUT .= "
                         <th colspan="3">' . $topic_users . '</th>
                     </tr>
                 </thead>';
-//=== lets start the loop \o/
-while ($arr = mysqli_fetch_assoc($res)) {
+
+foreach ($res as $arr) {
+    $post_user = get_user_data($arr['user_id']);
+    unset($post_user['bonuscomment']);
+    unset($post_user['modcomment']);
+    unset($post_user['where_is']);
+    unset($post_user['ip']);
+    $arr = array_merge($arr, $post_user);
+    echo json_encode($arr);
+    die();
+
     $moodname = (isset($mood['name'][ $arr['mood'] ]) ? htmlsafechars($mood['name'][ $arr['mood'] ]) : 'is feeling neutral');
     $moodpic = (isset($mood['image'][ $arr['mood'] ]) ? htmlsafechars($mood['image'][ $arr['mood'] ]) : 'noexpression.gif');
     $post_icon = ($arr['icon'] !== '' ? '<img src="' . $site_config['pic_base_url'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" class="tooltipper" title="icon" /> ' : '<img src="' . $site_config['pic_base_url'] . 'forums/topic_normal.gif" alt="icon" class="tooltipper" title="icon" /> ');
@@ -512,10 +559,10 @@ while ($arr = mysqli_fetch_assoc($res)) {
             ' . $lang['fe_karma'] . ': ' . number_format($arr['seedbonus']) . '' . $member_reputation . '' . ($arr['google_talk'] !== '' ? ' <a href="http://talkgadget.google.com/talkgadget/popout?member=' . htmlsafechars($arr['google_talk']) . '" class="tooltipper" title="' . $lang['fe_click_for_google_talk_gadget'] . '"  target="_blank"><img src="' . $site_config['pic_base_url'] . 'forums/google_talk.gif" alt="' . $lang['fe_google_talk'] . '" /></a> ' : '') . ($arr['icq'] !== '' ? ' <a href="http://people.icq.com/people/&amp;uin=' . htmlsafechars($arr['icq']) . '" class="tooltipper" title="' . $lang['fe_click_to_open_icq_page'] . '" target="_blank"><img src="' . $site_config['pic_base_url'] . 'forums/icq.gif" alt="icq" /></a> ' : '') . ($arr['msn'] !== '' ? ' <a href="http://members.msn.com/' . htmlsafechars($arr['msn']) . '" target="_blank" class="tooltipper" title="' . $lang['fe_click_to_see_msn_details'] . '"><img src="' . $site_config['pic_base_url'] . 'forums/msn.gif" alt="msn" /></a> ' : '') . ($arr['aim'] !== '' ? ' <a href="http://aim.search.aol.com/aol/search?s_it=searchbox.webhome&amp;q=' . htmlsafechars($arr['aim']) . '" target="_blank" class="tooltipper" title="' . $lang['fe_click_to_search_on_aim'] . '"><img src="' . $site_config['pic_base_url'] . 'forums/aim.gif" alt="AIM" /></a> ' : '') . ($arr['yahoo'] !== '' ? ' <a href="http://webmessenger.yahoo.com/?im=' . htmlsafechars($arr['yahoo']) . '" target="_blank" class="tooltipper" title="' . $lang['fe_click_to_open_yahoo'] . '"><img src="' . $site_config['pic_base_url'] . 'forums/yahoo.gif" alt="yahoo" /></a> ' : '') . '' . ($arr['website'] !== '' ? ' <a href="' . htmlsafechars($arr['website']) . '" target="_blank" class="tooltipper" title="' . $lang['fe_click_to_go_to_website'] . '"><img src="' . $site_config['pic_base_url'] . 'forums/website.gif" alt="website" /></a> ' : '') . ($arr['show_email'] == 'yes' ? ' <a href="mailto:' . htmlsafechars($arr['email']) . '" class="tooltipper" title="' . $lang['fe_click_to_email'] . '" target="_blank"><img src="' . $site_config['pic_base_url'] . 'email.gif" alt="email" width="25" /> </a>' : '') . '
             ' . ($CURUSER['class'] >= UC_STAFF ? '
             <ul class="makeMenu">
-                <li>' . htmlsafechars(ipFromStorageFormat($arr['ip'])) . '
+                <li>' . htmlsafechars($arr['ip']) . '
                     <ul>
-                    <li><a href="https://ws.arin.net/?queryinput=' . htmlsafechars(ipFromStorageFormat($arr['ip'])) . '" class="tooltipper" title="' . $lang['vt_whois_to_find_isp_info'] . '" target="_blank">' . $lang['vt_ip_whois'] . '</a></li>
-                    <li><a href="http://www.infosniper.net/index.php?ip_address=' . htmlsafechars(ipFromStorageFormat($arr['ip'])) . '" class="tooltipper" title="' . $lang['vt_ip_to_map_using_infosniper'] . '!" target="_blank">' . $lang['vt_ip_to_map'] . '</a></li>
+                    <li><a href="https://ws.arin.net/?queryinput=' . htmlsafechars($arr['ip']) . '" class="tooltipper" title="' . $lang['vt_whois_to_find_isp_info'] . '" target="_blank">' . $lang['vt_ip_whois'] . '</a></li>
+                    <li><a href="http://www.infosniper.net/index.php?ip_address=' . htmlsafechars($arr['ip']) . '" class="tooltipper" title="' . $lang['vt_ip_to_map_using_infosniper'] . '!" target="_blank">' . $lang['vt_ip_to_map'] . '</a></li>
                 </ul>
                 </li>
             </ul>' : '') . '

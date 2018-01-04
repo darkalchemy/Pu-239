@@ -18,7 +18,7 @@ if ($type == 'signup' && isset($_GET['email'])) {
 } elseif ($type == 'sysop') {
     check_user_status();
     if (isset($CURUSER)) {
-        setSessionVar('is-info', $lang['ok_sysop_activated']);
+        setSessionVar('is-info', "[p]{$lang['ok_sysop_activated']}[/p][p]Create your System BOT, be sure to use the same username as used during the install[/p]");
         header("Location: {$site_config['baseurl']}/staffpanel.php?tool=adduser");
         die();
     }

@@ -9,7 +9,7 @@ global $CURUSER, $site_config, $cache, $lang, $user, $id;
 function snatchtable($res)
 {
     global $site_config, $lang;
-    $htmlout = "<table class='main' border='1' cellspacing='0' cellpadding='5'>
+    $htmlout = "<table class='main' >
  <tr>
 <td class='colhead'>{$lang['userdetails_s_cat']}</td>
 <td class='colhead'>{$lang['userdetails_s_torr']}</td>
@@ -53,7 +53,7 @@ function maketable($res)
 {
     global $site_config, $lang;
 
-    $htmlout = "<table class='main' border='1' cellspacing='0' cellpadding='5'>" . "<tr><td class='colhead'>{$lang['userdetails_type']}</td>
+    $htmlout = "<table class='main' >" . "<tr><td class='colhead'>{$lang['userdetails_type']}</td>
          <td class='colhead'>{$lang['userdetails_name']}</td>
          <td class='colhead'>{$lang['userdetails_size']}</td>
          <td class='colhead'>{$lang['userdetails_se']}</td>

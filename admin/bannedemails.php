@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 $HTMLOUT .= begin_frame("{$lang['ad_banemail_add']}", true);
 $HTMLOUT .= "<form method=\"post\" action=\"staffpanel.php?tool=bannedemails\">
-<table border='1' cellspacing='0' cellpadding='5'>
+<table >
 <tr><td class='rowhead'>{$lang['ad_banemail_email']}</td>
 <td><input type=\"text\" name=\"email\" size=\"40\"/></td></tr>
 <tr><td class='rowhead'align='left'>{$lang['ad_banemail_comment']}</td>
@@ -48,7 +48,7 @@ if ($count1 > $perpage) {
 if (mysqli_num_rows($res) == 0) {
     $HTMLOUT .= "<p><b>{$lang['ad_banemail_nothing']}</b></p>\n";
 } else {
-    $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5'>\n";
+    $HTMLOUT .= "<table >\n";
     $HTMLOUT .= "<tr><td class='colhead'>{$lang['ad_banemail_add1']}</td><td class='colhead'>{$lang['ad_banemail_email']}</td>" . "<td class='colhead'>{$lang['ad_banemail_by']}</td><td class='colhead'>{$lang['ad_banemail_comment']}</td><td class='colhead'>{$lang['ad_banemail_remove']}</td></tr>\n";
     while ($arr = mysqli_fetch_assoc($res)) {
         $HTMLOUT .= "<tr><td>" . get_date($arr['added'], '') . "</td>

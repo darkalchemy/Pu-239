@@ -39,7 +39,7 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
     $HTMLOUT .= "you <b>can</b> make offers.<p>To view all offers, click 
     <a class='altlink' href='viewoffers.php'>here</a></p>\n";
     /* search first **/
-    $HTMLOUT .= "<form method='get' action='browse.php'><table width='750px' border='1' cellspacing='0' cellpadding='5'><tr><td class='colhead'>
+    $HTMLOUT .= "<form method='get' action='browse.php'><table width='750px' ><tr><td class='colhead'>
 Please search torrents before adding an offer!</td></tr><tr><td>
 <input type='text' name='search' size='40' value='' class='button is-small' /> in <select name='cat'> <option value='0'>(all types)</option>
 ";

@@ -461,28 +461,16 @@ function min_class($min = UC_MIN, $max = UC_MAX)
  * @param bool $icons
  * @param bool $tooltipper
  *
- * @return string|void
+ * @return bool|string
  */
 function format_username($user_id, $icons = true, $tooltipper = true)
 {
-    global $site_config, $cache, $fluent;
+    global $site_config;
     if (empty($user_id)) {
-        return;
+        return false;
     }
     $user_id = is_array($user_id) && !empty($user_id['id']) ? (int)$user_id['id'] : (int)$user_id;
-    $users_data = $cache->get('user' . $user_id);
-    if (!is_array($user_id) && is_numeric($user_id)) {
-        if ($users_data === false || is_null($users_data)) {
-            $users_data = $fluent->from('users')
-                ->select('INET6_NTOA(ip) AS ip')
-                ->where('id = ?', $user_id)
-                ->fetch();
-            unset($users_data['hintanswer']);
-            unset($users_data['passhash']);
-
-            $cache->set('user' . $user_id, $users_data, $site_config['expires']['user_cache']);
-        }
-    }
+    $users_data = get_user_data($user_id);
     if ($users_data['id'] === 0) {
         return 'System';
     } elseif (empty($users_data['username'])) {
@@ -497,8 +485,9 @@ function format_username($user_id, $icons = true, $tooltipper = true)
     } else {
         $tooltip = "class='" . get_user_class_name($users_data['class'], true) . "'";
     }
+
     $str = "
-                <span class='level-item'>
+                <span>
                 $tip
                 <a href='{$site_config['baseurl']}/userdetails.php?id={$users_data['id']}' target='_blank'><span {$tooltip}>" . htmlsafechars($users_data['username']) . "</span></a>";
 
@@ -514,12 +503,13 @@ function format_username($user_id, $icons = true, $tooltipper = true)
         if (Christmas()) {
             $str .= (isset($users_data['gotgift']) && $users_data['gotgift'] == 'yes' ? '<img class="tooltipper icon left5" src="' . $site_config['pic_base_url'] . 'gift.png" alt="Christmas Gift" title="Has Claimed a Christmas Gift" />' : '');
         }
+        $str .= '<img class="tooltipper icon left5" src="' . $site_config['pic_base_url'] . 'king.png" alt="King" title="King" />';
     }
 
-$str .= '
+    $str .= '
                 </span>';
 
-return $str;
+    return $str;
 }
 
 /**

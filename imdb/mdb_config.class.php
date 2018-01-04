@@ -127,12 +127,12 @@ class mdb_config
          *  This needs to be under documentroot to be able to display them on your pages.
          * @attribute string photodir
          */
-        $this->photodir = './images/';
+        $this->photodir = '{$site_config['pic_base_url']}';
         /* URL corresponding to photodir, i.e. the URL to the images, i.e. start at
          *  your servers DOCUMENT_ROOT when specifying absolute path
          * @attribute string photoroot
          */
-        $this->photoroot = './images/';
+        $this->photoroot = '{$site_config['pic_base_url']}';
         /* Where the local IMDB images reside (look for the "showtimes/" directory)
          *  This should be either a relative, an absolute, or an URL including the
          *  protocol (e.g. when a different server shall deliver them)

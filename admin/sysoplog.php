@@ -43,7 +43,7 @@ if ($count > $perpage) {
 if (mysqli_num_rows($res) == 0) {
     $HTMLOUT .= "<b>{$lang['sysoplog_norecord']}</b>";
 } else {
-    $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5'>
+    $HTMLOUT .= "<table >
       <tr>
         <td class='colhead'>{$lang['sysoplog_date']}</td>
         <td class='colhead'>{$lang['sysoplog_time']}</td>

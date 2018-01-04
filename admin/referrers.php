@@ -32,15 +32,15 @@ if ($count > 0) {
             ++$i;
             $http_agent = htmlsafechars($data['browser']);
             if (strstr($http_agent, 'Opera')) {
-                $browser = "<img src='./images/referrers/opera.png' alt='Opera' title='Opera' width='25' height='25' border='0' />&#160;&#160;Opera";
+                $browser = "<img src='{$site_config['pic_base_url']}referrers/opera.png' alt='Opera' title='Opera' width='25' height='25' border='0' />&#160;&#160;Opera";
             } elseif (strstr($http_agent, 'Konqueror')) {
-                $browser = "<img src='./images/referrers/konqueror.png' alt='konqueror' title='konqueror' width='25' height='25' border='0' />&#160;&#160;konqueror";
+                $browser = "<img src='{$site_config['pic_base_url']}referrers/konqueror.png' alt='konqueror' title='konqueror' width='25' height='25' border='0' />&#160;&#160;konqueror";
             } elseif (strstr($http_agent, 'MSIE')) {
-                $browser = "<img src='./images/referrers/ie.png' alt='IE' title='IE' width='25' height='25' border='0' />&#160;&#160;IE";
+                $browser = "<img src='{$site_config['pic_base_url']}referrers/ie.png' alt='IE' title='IE' width='25' height='25' border='0' />&#160;&#160;IE";
             } elseif (strstr($http_agent, 'Chrome')) {
-                $browser = "<img src='./images/referrers/chrome.png' alt='Chrome' title='Chrome' width='25' height='25' border='0' />&#160;&#160;Chrome";
+                $browser = "<img src='{$site_config['pic_base_url']}referrers/chrome.png' alt='Chrome' title='Chrome' width='25' height='25' border='0' />&#160;&#160;Chrome";
             } elseif ((strstr($http_agent, 'Nav')) || (strstr($http_agent, 'Gold')) || (strstr($http_agent, 'X11')) || (strstr($http_agent, 'Mozilla')) || (strstr($http_agent, 'Netscape'))) {
-                $browser = "<img src='./images/referrers/firefox.png' alt='FireFox' title='FireFox' width='25' height='25' border='0' />&#160;&#160;Mozilla";
+                $browser = "<img src='{$site_config['pic_base_url']}referrers/firefox.png' alt='FireFox' title='FireFox' width='25' height='25' border='0' />&#160;&#160;Mozilla";
             } else {
                 $browser = $lang['ref_unknow'];
             }

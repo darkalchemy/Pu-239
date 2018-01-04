@@ -91,6 +91,12 @@ if (!password_verify($password, $row['passhash'])) {
 if ($row['enabled'] == 'no') {
     bark($lang['tlogin_disabled']);
 }
+if ($row['status'] == 'pending') {
+    if ($site_config['email_confirm']) {
+        bark('You have not confirmed your amail address. Please use the link in the email that you should have received.');
+    }
+    bark('Your account has not been confirmed.');
+}
 sql_query("DELETE FROM failedlogins WHERE ip = $ip_escaped");
 $userid = (int)$row['id'];
 $row['perms'] = (int)$row['perms'];

@@ -34,7 +34,7 @@ $HTMLOUT .= "<h2>Currently {$row['0']} snatch" . ($row[0] == 1 ? '' : 'es') . "<
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-$HTMLOUT .= "<table width='78%'border='0' cellspacing='0' cellpadding='5'>
+$HTMLOUT .= "<table width='78%'>
 <tr>
 <td class='colhead'>{$lang['snatches_username']}</td>
 <td class='colhead'>{$lang['snatches_uploaded']}</td>

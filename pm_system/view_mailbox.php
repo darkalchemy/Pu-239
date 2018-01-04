@@ -141,8 +141,8 @@ $HTMLOUT .= (mysqli_num_rows($res) > 0 ? "
     <tr>
         <td colspan='5'>
             <div class='level-center'>
-                <span><img src='./images/pn_inboxnew.gif' title='{$lang['pm_mailbox_unreadmsg']}' alt='{$lang['pm_mailbox_unread']}' />{$lang['pm_mailbox_unreadmsgs']}</span>
-                <span><img src='./images/pn_inbox.gif' title='{$lang['pm_mailbox_readmsg']}' alt='{$lang['pm_mailbox_read']}' />'{$lang['pm_mailbox_readmsgs']}</span>
+                <span><img src='{$site_config['pic_base_url']}pn_inboxnew.gif' title='{$lang['pm_mailbox_unreadmsg']}' alt='{$lang['pm_mailbox_unread']}' />{$lang['pm_mailbox_unreadmsgs']}</span>
+                <span><img src='{$site_config['pic_base_url']}pn_inbox.gif' title='{$lang['pm_mailbox_readmsg']}' alt='{$lang['pm_mailbox_read']}' />'{$lang['pm_mailbox_readmsgs']}</span>
                 {$per_page_drop_down}
                 {$show_pm_avatar_drop_down}
             </div>

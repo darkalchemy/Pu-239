@@ -135,6 +135,7 @@ function insert_smilies_frame()
  * @param null $header
  * @param null $class
  *
+ * @param null $wrapper_class
  * @return string
  */
 function main_table($body, $header = null, $class = null, $wrapper_class= null)

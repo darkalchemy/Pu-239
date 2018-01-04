@@ -38,9 +38,9 @@ if ($action == 'app' || $action == 'show') {
     $pager = pager($perpage, $count, '.staffpanel.php?tool=uploadapps&amp;.');
     $HTMLOUT .= "<h1>{$lang['uploadapps_applications']}</h1>";
     if ($count == 0) {
-        $HTMLOUT .= "<table class='main' width='850' border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>
+        $HTMLOUT .= "<table class='main' width='850' ><tr><td class='embedded'>
         <div><font class='small'>{$hide}</font></div></td></tr></table>
-        <table width='100%' border='1' cellspacing='0' cellpadding='5'><tr><td>
+        <table width='100%' ><tr><td>
         <div>{$lang['uploadapps_noapps']}</div>
         </td></tr></table>";
     } else {
@@ -48,9 +48,9 @@ if ($action == 'app' || $action == 'show') {
         if ($count > $perpage) {
             $HTMLOUT .= $pager['pagertop'];
         }
-        $HTMLOUT .= "<table class='main' width='850' border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>
+        $HTMLOUT .= "<table class='main' width='850' ><tr><td class='embedded'>
         <div><font class='small'>{$hide}</font></div>
-        <table width='100%' border='1' cellspacing='0' cellpadding='5'>
+        <table width='100%' >
         <tr>
         <td class='colhead'>{$lang['uploadapps_applied']}</td>
         <td class='colhead'>{$lang['uploadapps_application']}</td>
@@ -101,7 +101,7 @@ if ($action == 'viewapp') {
     $membertime = get_date($arr['added'], '', 0, 1);
     $elapsed = get_date($arr['applied'], '', 0, 1);
     $HTMLOUT .= "<h1>Uploader application</h1>
-    <table width='750' border='1' cellspacing='0' cellpadding='5'>
+    <table width='750' >
     <tr>
     <td class='rowhead' width='25%'>{$lang['uploadapps_username1']} </td><td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$arr['uid'] . "'>" . htmlsafechars($arr['username']) . "</a></td>
     </tr>

@@ -40,7 +40,7 @@ if ($edit_mood['action'] == 'edit' && $edit_mood['id']) {
         $edit_mood['arr'] = mysqli_fetch_assoc($edit_mood['res']);
         $HTMLOUT .= "<h1>{$lang['moods_edit']}</h1>
             <form method='post' action='staffpanel.php?tool=edit_moods&amp;action=edited'>
-            <table border='1' cellspacing='0' cellpadding='5'>
+            <table >
             <tr><td class='colhead'>{$lang['moods_name']}</td>
             <td><input type='text' name='name' size='40' value ='" . htmlsafechars($edit_mood['arr']['name']) . "' /></td></tr>
             <tr><td class='colhead'>{$lang['moods_image']}</td>
@@ -56,7 +56,7 @@ if ($edit_mood['action'] == 'edit' && $edit_mood['id']) {
 } else {
     $HTMLOUT .= "<h1>{$lang['moods_add_new']}</h1>
          <form method='post' action='staffpanel.php?tool=edit_moods&amp;action=added'>
-         <table border='1' cellspacing='0' cellpadding='5'>
+         <table >
          <tr><td class='colhead'>{$lang['moods_name']}</td>
          <td><input type='text' name='name' size='40' value ='is example mood' /></td></tr>
          <tr><td class='colhead'>{$lang['moods_image']}</td>

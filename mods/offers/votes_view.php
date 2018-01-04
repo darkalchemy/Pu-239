@@ -21,7 +21,7 @@ if ($count > 0) {
     if (mysqli_num_rows($res) == 0) {
         $HTMLOUT .= "<p><b>Nothing found</b></p>\n";
     } else {
-        $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5'>
+        $HTMLOUT .= "<table >
 <tr><td class='colhead'>Username</td><td class='colhead'>Uploaded</td><td class='colhead'>Downloaded</td>
 <td class='colhead'>Share Ratio</td></tr>\n";
         while ($arr = mysqli_fetch_assoc($res)) {

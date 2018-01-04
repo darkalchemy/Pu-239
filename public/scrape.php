@@ -46,7 +46,7 @@ function getip()
 function check_bans($ip, &$reason = '')
 {
     global $cache;
-    $key = 'bans:::' . $ip;
+    $key = 'bans_' . $ip;
     $ban = $cache->get($key);
     if ($ban === false || is_null($ban)) {
         $nip = ip2long($ip);

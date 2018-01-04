@@ -19,12 +19,13 @@ $stdfoot = [
         get_file('forums_js'),
     ],
 ];
+
 $over_forum_id = $count = $now_viewing = $child_boards = '';
 if ($site_config['forums_online'] == 0 && $CURUSER['class'] < UC_STAFF) {
     stderr($lang['fm_information'], $lang['fm_the_forums_are_currently_offline']);
 }
 $HTMLOUT = '';
-//=== update members last forums access
+
 sql_query('UPDATE users SET forum_access = ' . TIME_NOW . ' WHERE id = ' . sqlesc($CURUSER['id']));
 /*==============================
 the following is 110% up to you...

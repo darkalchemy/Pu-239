@@ -118,7 +118,7 @@ if ($do == 'view_page') {
                         </td>
                         <td class='has-text-centered'>" . get_date($fetch_assoc['added'], '', 0, 1) . "</td>
                         <td class='has-text-centered'>
-                            <a {$site_config['baseurl']}/invite.php?do=delete_invite&amp;id=" . (int)$fetch_assoc['id'] . '&amp;sender=' . (int)$CURUSER['id'] . "' class='tooltipper' title='Delete'>
+                            <a href='{$site_config['baseurl']}/invite.php?do=delete_invite&amp;id=" . (int)$fetch_assoc['id'] . '&amp;sender=' . (int)$CURUSER['id'] . "' class='tooltipper' title='Delete'>
                                 <i class='fa fa-remove fa-2x'></i>
                             </a>
                         </td>
@@ -146,8 +146,7 @@ if ($do == 'view_page') {
     if ($arr[0] >= $site_config['invites']) {
         stderr($lang['invites_error'], $lang['invites_limit']);
     }
-    $secret = make_password(16);
-    $token = make_passhash($secret);
+    $token = make_password(32);
 
     $values = [
         'sender' => $CURUSER['id'],
@@ -192,6 +191,7 @@ if ($do == 'view_page') {
         }
         $fluent->update('invite_codes')
             ->set(['email' => $email])
+            ->where('code = ?', $_POST['code'])
             ->execute();
 
         $inviter = htmlsafechars($CURUSER['username']);
@@ -249,7 +249,7 @@ EOD;
     $HTMLOUT .= "
         <div class='container is-fluid portlet'>
             <form method='post' action='?do=send_email'>
-                <table class='table table-bordered top20 bottom20'>
+                <table class='table table-bordered bottom20'>
                     <thead>
                         <tr>
                             <th>E-Mail</th>

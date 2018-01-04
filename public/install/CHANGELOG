@@ -1,3 +1,9 @@
+4 Jan 2018
+remove: ipToStorageFormat function
+fix: admin/bans.php
+fix: first user status pending
+add: error message for pending users attempting to login
+
 2 Jan 2018
 update: README
 remove: trivia questions to separate sql install

@@ -307,12 +307,14 @@ function stdfoot($stdfoot = false)
 }
 
 /**
- * @param $heading
- * @param $text
+ * @param      $heading
+ * @param      $text
+ *
+ * @param null $class
  *
  * @return string
  */
-function stdmsg($heading, $text)
+function stdmsg($heading, $text, $class = null)
 {
     require_once INCL_DIR . 'html_functions.php';
 
@@ -324,7 +326,7 @@ function stdmsg($heading, $text)
     $htmlout .= "
                 <p>$text</p>";
 
-    return main_div($htmlout, 'bottom20');
+    return main_div($htmlout, "$class bottom20");
 }
 
 /**

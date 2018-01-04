@@ -30,11 +30,11 @@ $HTMLOUT = "<!doctype html>
     </script>
     <h2>{$site_config['site_name']} Site Radio</h2>
     <div>
-        <a href='http://{$radio['host']}:{$radio['port']}/listen.pls' onmouseover=\"roll_over('winamp', './images/winamp_over.png')\" onmouseout=\"roll_over('winamp', './images/winamp.png')\">
-            <img src='./images/winamp.png' name='winamp' alt='Click here to listen with Winamp' title='Click here to listen with Winamp' />
+        <a href='http://{$radio['host']}:{$radio['port']}/listen.pls' onmouseover=\"roll_over('winamp', '{$site_config['pic_base_url']}winamp_over.png')\" onmouseout=\"roll_over('winamp', '{$site_config['pic_base_url']}winamp.png')\">
+            <img src='{$site_config['pic_base_url']}winamp.png' name='winamp' alt='Click here to listen with Winamp' title='Click here to listen with Winamp' />
         </a>
-        <a href='http://{$radio['host']}:{$radio['port']}/listen.asx' onmouseover=\"roll_over('wmp', './images/wmp_over.png')\" onmouseout=\"roll_over('wmp', './images/wmp.png')\">
-            <img src='./images/wmp.png' name='wmp' alt='Click here to listen with Windows Media Player' title='Click here to listen with Windows Media Player' />
+        <a href='http://{$radio['host']}:{$radio['port']}/listen.asx' onmouseover=\"roll_over('wmp', '{$site_config['pic_base_url']}wmp_over.png')\" onmouseout=\"roll_over('wmp', '{$site_config['pic_base_url']}wmp.png')\">
+            <img src='{$site_config['pic_base_url']}wmp.png' name='wmp' alt='Click here to listen with Windows Media Player' title='Click here to listen with Windows Media Player' />
         </a>
     </div>
     {radioinfo($radio)}

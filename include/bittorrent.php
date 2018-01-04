@@ -222,7 +222,7 @@ function check_bans($ip, &$reason = '')
     if (empty($ip)) {
         return false;
     }
-    $key = 'bans:::' . $ip;
+    $key = 'bans_' . $ip;
     $ban = $cache->get($key);
     if ($ban === false || is_null($ban)) {
         $nip = sqlesc($ip);
@@ -276,18 +276,7 @@ function userlogin()
 
     $ip = getip();
 
-    $users_data = $cache->get('user' . $id);
-    if ($users_data === false || is_null($users_data)) {
-        $users_data = $fluent->from('users')
-            ->select('INET6_NTOA(ip) AS ip')
-            ->where('id = ?', $id)
-            ->fetch();
-        unset($users_data['hintanswer']);
-        unset($users_data['passhash']);
-
-        $cache->set('user' . $id, $users_data, $site_config['expires']['user_cache']);
-    }
-
+    $users_data = get_user_data($id);
     if (!isset($users_data['perms']) || (!($users_data['perms'] & bt_options::PERMS_BYPASS_BAN))) {
         $banned = false;
         if (check_bans($ip, $reason)) {
@@ -990,13 +979,14 @@ function get_one_row($table, $suffix, $where)
 }
 
 /**
- * @param $heading
- * @param $text
+ * @param      $heading
+ * @param      $text
+ * @param null $class
  */
-function stderr($heading, $text)
+function stderr($heading, $text, $class = null)
 {
     $htmlout = stdhead();
-    $htmlout .= stdmsg($heading, $text);
+    $htmlout .= stdmsg($heading, $text, $class);
     $htmlout .= stdfoot();
     echo $htmlout;
     die();
@@ -2071,7 +2061,6 @@ function valid_username($username, $ajax = false)
     if ($namelength < 3 || $namelength > 64) {
         if ($ajax) {
             return "<font color='#cc0000'>{$lang['takesignup_username_length']}</font> - $namelength characters";
-            die();
         } else {
             stderr($lang['takesignup_user_error'], $lang['takesignup_username_length']);
         }
@@ -2087,6 +2076,11 @@ function valid_username($username, $ajax = false)
     return true;
 }
 
+/**
+ * @param bool $celebrate
+ *
+ * @return bool
+ */
 function Christmas($celebrate = true)
 {
     $upperBound = new DateTime("Dec 31");
@@ -2097,6 +2091,32 @@ function Christmas($celebrate = true)
         return true;
     }
     return false;
+}
+
+/**
+ * @param $id
+ *
+ * @return bool|mixed
+ */
+function get_user_data($id)
+{
+    if (empty($id) || !is_valid_id($id)) {
+        return false;
+    }
+
+    global $cache, $fluent, $site_config;
+    $users_data = $cache->get('user' . $id);
+    if ($users_data === false || is_null($users_data)) {
+        $users_data = $fluent->from('users')
+            ->select('INET6_NTOA(ip) AS ip')
+            ->where('id = ?', $id)
+            ->fetch();
+        unset($users_data['hintanswer']);
+        unset($users_data['passhash']);
+
+        $cache->set('user' . $id, $users_data, $site_config['expires']['user_cache']);
+    }
+    return $users_data;
 }
 
 if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {

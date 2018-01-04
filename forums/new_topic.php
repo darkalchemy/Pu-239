@@ -5,15 +5,15 @@ $forum_id = (isset($_GET['forum_id']) ? intval($_GET['forum_id']) : (isset($_POS
 if (!is_valid_id($forum_id)) {
     stderr($lang['gl_error'], $lang['gl_bad_id']);
 }
-//=== stop suspended users from posting
+
 if ($CURUSER['forum_post'] == 'no' || $CURUSER['suspended'] == 'yes') {
     stderr($lang['gl_error'], $lang['fe_your_no_post_right']);
 }
 $extension_error = $size_error = '';
-//=== topic stuff
+
 $topic_name = strip_tags(isset($_POST['topic_name']) ? $_POST['topic_name'] : '');
 $topic_desc = strip_tags(isset($_POST['topic_desc']) ? $_POST['topic_desc'] : '');
-//=== post stuff
+
 $post_title = strip_tags(isset($_POST['post_title']) ? $_POST['post_title'] : '');
 $icon = htmlsafechars(isset($_POST['icon']) ? $_POST['icon'] : '');
 $body = (isset($_POST['body']) ? $_POST['body'] : '');

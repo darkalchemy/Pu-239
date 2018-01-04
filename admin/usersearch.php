@@ -845,7 +845,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
         if ($count > $perpage) {
             $HTMLOUT .= $pager['pagertop'];
         }
-        $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5'>\n
+        $HTMLOUT .= "<table >\n
         <tr><td class='colhead'>{$lang['usersearch_name']}</td>
     	  <td class='colhead'>{$lang['usersearch_ratio']}</td>
         <td class='colhead'>{$lang['usersearch_ip']}</td>
@@ -885,7 +885,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
             $n = mysqli_fetch_row($auxres);
             $n_comments = $n[0];
             $ids .= (int)$user['id'] . ':';
-            $HTMLOUT .= "<tr><td><b><a href='userdetails.php?id=" . (int)$user['id'] . "'>" . htmlsafechars($user['username']) . '</a></b>' . ($user['donor'] == 'yes' ? "<img src='./images/star.gif' alt=\"{$lang['usersearch_donor']}\" />" : '') . ($user['warned'] == 'yes' ? "<img src=\"./images/warned.gif\" alt=\"{$lang['usersearch_warned']}\" />" : '') . '</td>
+            $HTMLOUT .= "<tr><td><b><a href='userdetails.php?id=" . (int)$user['id'] . "'>" . htmlsafechars($user['username']) . '</a></b>' . ($user['donor'] == 'yes' ? "<img src='{$site_config['pic_base_url']}star.gif' alt=\"{$lang['usersearch_donor']}\" />" : '') . ($user['warned'] == 'yes' ? "<img src=\"./images/warned.gif\" alt=\"{$lang['usersearch_warned']}\" />" : '') . '</td>
           <td>' . ratios($user['uploaded'], $user['downloaded']) . '</td>
           <td>' . $ipstr . '</td><td>' . htmlsafechars($user['email']) . "</td>
           <td><div>" . get_date($user['added'], '') . "</div></td>

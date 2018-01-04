@@ -68,7 +68,7 @@ if ($action == 'viewposts') {
             $newposts = ($arr['last_post_read'] < $arr['last_post']) && $CURUSER['id'] == $userid;
         }
         $added = get_date($arr['added'], '');
-        $HTMLOUT .= "<div class='sub'><table border='0' cellspacing='0' cellpadding='0'>
+        $HTMLOUT .= "<div class='sub'><table >
           <tr><td class='embedded'>
           $added&#160;--&#160;<b>{$lang['posts_forum']}:&#160;</b>
           <a href='forums.php?action=view_forum&amp;forum_id=$forumid'>$forumname</a>
@@ -147,7 +147,7 @@ if ($action == 'viewcomments') {
         $comm_page = floor($count / 20);
         $page_url = $comm_page ? "&amp;page=$comm_page" : '';
         $added = get_date($arr['added'], '') . ' (' . get_date($arr['added'], '', 0, 1) . ')';
-        $HTMLOUT .= "<div class='sub'><table border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>" . "$added&#160;---&#160;<b>{$lang['posts_torrent']}:&#160;</b>" . ($torrent ? ("<a href='details.php?id=$torrentid&amp;tocomm=1'>$torrent</a>") : " [{$lang['posts_del']}] ") . "&#160;---&#160;<b>{$lang['posts_comment']}:&#160;</b>#<a href='details.php?id=$torrentid&amp;tocomm=1$page_url'>$commentid</a>
+        $HTMLOUT .= "<div class='sub'><table ><tr><td class='embedded'>" . "$added&#160;---&#160;<b>{$lang['posts_torrent']}:&#160;</b>" . ($torrent ? ("<a href='details.php?id=$torrentid&amp;tocomm=1'>$torrent</a>") : " [{$lang['posts_del']}] ") . "&#160;---&#160;<b>{$lang['posts_comment']}:&#160;</b>#<a href='details.php?id=$torrentid&amp;tocomm=1$page_url'>$commentid</a>
         </td></tr></table></div>\n";
         $HTMLOUT .= begin_table(true);
         $body = format_comment($arr['text']);

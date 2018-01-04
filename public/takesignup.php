@@ -141,7 +141,7 @@ $values = [
     'dst_in_use'   => $dst_in_use['tm_isdst'],
     'free_switch'  => $user_frees,
     'ip'           => inet_pton($ip),
-    'status'       => (!$site_config['email_confirm'] || $site_config['auto_confirm'] ? 'confirmed' : 'pending'),
+    'status'       => ($users_count === 0 || (!$site_config['email_confirm'] && $site_config['auto_confirm']) ? 'confirmed' : 'pending'),
     'class'        => ($users_count === 0 ? UC_SYSOP : UC_USER),
 ];
 
@@ -236,4 +236,5 @@ if ($users_count > 0 && $site_config['email_confirm']) {
     clearUserCache($user_id);
     setSessionVar('userID', $user_id);
 }
-header('Refresh: 0; url=ok.php?type=' . ($users_count === 0 ? 'sysop' : ($site_config['email_confirm'] ? 'signup&email=' . urlencode($email) : 'confirm')));
+
+header("Location: {$site_config['baseurl']}/ok.php?type=" . ($users_count === 0 ? 'sysop' : ($site_config['email_confirm'] ? 'signup&email=' . urlencode($email) : 'confirm')));

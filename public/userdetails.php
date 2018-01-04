@@ -303,7 +303,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     if ($shit_list > 0) {
         $shitty_link = "<li class='altlink margin20'><a href='{$site_config['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list'>
                 Remove from your
-                <img class='tooltipper right5' src='./images/smilies/shit.gif' alt='Shit' class='tooltipper' title='Shit' />
+                <img class='tooltipper right5' src='{$site_config['pic_base_url']}smilies/shit.gif' alt='Shit' class='tooltipper' title='Shit' />
             </a></li>";
     } elseif ($CURUSER['id'] != $user['id']) {
         $shitty_link .= "<li class='altlink margin20'><a href='{$site_config['baseurl']}/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=new&amp;shit_list_id={$id}&amp;return_to=userdetails.php?id={$id}'>
@@ -403,7 +403,7 @@ $HTMLOUT .= "
 if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
     $the_flip_box = "
         <a name='watched_user'></a>
-        <a class='altlink tooltipper' href='#watched_user' onclick=\"javascript:flipBox('3')\" title='{$lang['userdetails_flip1']}'>" . ($user['watched_user'] > 0 ? $lang['userdetails_flip2'] : $lang['userdetails_flip3']) . "<img onclick=\"javascript:flipBox('3')\" src='./images/panel_on.gif' name='b_3' width='8' height='8' alt='{$lang['userdetails_flip1']}' class='tooltipper' title='{$lang['userdetails_flip1']}' /></a>";
+        <a class='altlink tooltipper' href='#watched_user' onclick=\"javascript:flipBox('3')\" title='{$lang['userdetails_flip1']}'>" . ($user['watched_user'] > 0 ? $lang['userdetails_flip2'] : $lang['userdetails_flip3']) . "<img onclick=\"javascript:flipBox('3')\" src='{$site_config['pic_base_url']}panel_on.gif' name='b_3' width='8' height='8' alt='{$lang['userdetails_flip1']}' class='tooltipper' title='{$lang['userdetails_flip1']}' /></a>";
     $HTMLOUT .= "
                         <tr>
                             <td class='rowhead'>{$lang['userdetails_watched']}</td>

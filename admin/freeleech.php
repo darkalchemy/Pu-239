@@ -42,7 +42,7 @@ if (isset($free) && (count($free) < 1)) {
     $HTMLOUT .= '<h1>' . $lang['freelech_current'] . '</h1>
                  <p><b>' . $lang['freelech_nofound'] . '</b></p>';
 } else {
-    $HTMLOUT .= "<br><table border='1' cellspacing='0' cellpadding='5'>
+    $HTMLOUT .= "<br><table >
         <tr><td class='colhead'>{$lang['freelech_free_all']}</td>
 		<td class='colhead'>{$lang['freelech_expires']}</td>
         <td class='colhead'>{$lang['freelech_setby']}</td>
@@ -88,7 +88,7 @@ if (isset($free) && (count($free) < 1)) {
 $checked = 'checked=\'checked\'';
 $HTMLOUT .= "<h2>{$lang['freelech_set_free']}</h2>
 	<form method='post' action='staffpanel.php?tool=freeleech&amp;action=freeleech'>
-	<table border='1' cellspacing='0' cellpadding='5'>
+	<table >
 	<tr><td class='rowhead'>{$lang['freelech_mode']}</td>
 	<td> <table width='100%'>
  <tr>

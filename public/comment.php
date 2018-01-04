@@ -260,7 +260,7 @@ if ($action == 'add') {
     }
     $HTMLOUT = '';
     $HTMLOUT .= "<h1>{$lang['comment_original_content']}#$commentid</h1>
-      <table width='500' border='1' cellspacing='0' cellpadding='5'>
+      <table width='500' >
       <tr><td class='comment'>
       " . htmlsafechars($arr['ori_text']) . '
       </td></tr></table>';

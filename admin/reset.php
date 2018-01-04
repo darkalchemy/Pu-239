@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $HTMLOUT = '';
 $HTMLOUT .= "<h1>{$lang['reset_title']}</h1>
 <form method='post' action='staffpanel.php?tool=reset&amp;action=reset'>
-<table border='1' cellspacing='0' cellpadding='5'>
+<table >
 <tr>
 <td class='rowhead'>{$lang['reset_id']}</td><td>
 <input type='text' name='uid' size='10' /></td></tr>

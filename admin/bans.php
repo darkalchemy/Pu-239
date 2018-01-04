@@ -5,27 +5,31 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'html_functions.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $cache, $lang;
+global $CURUSER, $site_config, $cache, $lang, $pdo, $fluent;
 
 $lang = array_merge($lang, load_language('ad_bans'));
 $remove = isset($_GET['remove']) ? (int)$_GET['remove'] : 0;
 if ($remove > 0) {
-    $banned = sql_query('SELECT first, last FROM bans WHERE id = ' . sqlesc($remove)) or sqlerr(__FILE__, __LINE__);
-    if (!mysqli_num_rows($banned)) {
+    $res = $fluent->from('bans')
+        ->select(null)
+        ->select('INET6_NTOA(first) AS first')
+        ->select('INET6_NTOA(last) AS last')
+        ->where('id = ?', $remove)
+        ->fetch();
+
+    if (!$res) {
         stderr($lang['stderr_error'], $lang['stderr_error1']);
     }
-    $ban = mysqli_fetch_assoc($banned);
-    $first = ipFromStorageFormat($ban['first']);
-    $last = ipFromStorageFormat($ban['last']);
-    for ($i = $first; $i <= $last; ++$i) {
-        $ip = long2ip($i);
-        $cache->delete('bans:::' . $ip);
+    for ($i = $res['first']; $i <= $res['last']; ++$i) {
+        $cache->delete('bans_' . $i);
     }
     if (is_valid_id($remove)) {
-        sql_query('DELETE FROM bans WHERE id=' . sqlesc($remove)) or sqlerr(__FILE__, __LINE__);
+        $fluent->deleteFrom('bans')
+            ->where('id = ?', $remove)
+            ->execute();
         $removed = sprintf($lang['text_banremoved'], $remove);
         write_log("{$removed}" . $CURUSER['id'] . ' (' . $CURUSER['username'] . ')');
-        setSessionVar('is-success', "IPS: $first to $last removed");
+        setSessionVar('is-success', "IPS: {$res['first']} to {$res['last']} removed");
         unset($_GET);
     }
 }
@@ -43,27 +47,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $CURUSER['class'] == UC_MAX) {
     }
     $added = TIME_NOW;
     for ($i = $first; $i <= $last; ++$i) {
-        $key = 'bans:::' . long2ip($i);
-        $cache->delete($key);
+        $cache->delete('bans_' . $i);
     }
-    sql_query("INSERT INTO bans (added, addedby, first, last, comment) VALUES($added, " . sqlesc($CURUSER['id']) . ', ' . ipToStorageFormat($first) . ', ' . ipToStorageFormat($last) . ', ' . sqlesc($comment) . ')') or sqlerr(__FILE__, __LINE__);
+
+    $values = [
+        'added'   => $added,
+        'addedby' => $CURUSER['id'],
+        'first'   => $first,
+        'last'    => $last,
+        'comment' => $comment,
+    ];
+
+    $stmt = $pdo->prepare(
+        'INSERT INTO bans
+                        (added, addedby, first, last, comment)
+                      VALUES
+                        (:added, :addedby, INET6_ATON(:first), INET6_ATON(:last), :comment)'
+    );
+    $stmt->execute($values);
     setSessionVar('is-success', "IPs: $first to $last added to Bans");
     unset($_POST);
 }
-$bc = sql_query('SELECT COUNT(*) FROM bans') or sqlerr(__FILE__, __LINE__);
-$bcount = mysqli_fetch_row($bc);
-$count = $bcount[0];
+
 $perpage = 15;
 $pager = pager($perpage, $count, 'staffpanel.php?tool=bans&amp;');
-$res = sql_query("SELECT b.*, u.username FROM bans b LEFT JOIN users u on b.addedby = u.id ORDER BY added DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
-$HTMLOUT = '';
-$HTMLOUT .= "
+$res = $fluent->from('bans')
+    ->select('INET6_NTOA(first) AS first')
+    ->select('INET6_NTOA(last) AS last')
+    ->orderBy('added DESC');
+
+foreach ($res as $arr) {
+    $bans[] = $arr;
+}
+$count = count($bans);
+$HTMLOUT = "
         <h1 class='has-text-centered'>Bans</h1>
         <div class='top20 bg-00 round10'>
             <div class='padding20'>
                 <h2>{$lang['text_current']}</h2>
             </div>";
-if (mysqli_num_rows($res) == 0) {
+if ($count == 0) {
     $HTMLOUT .= main_div("<p><b>{$lang['text_nothing']}</b></p>");
 } else {
     if ($count > $perpage) {
@@ -79,15 +102,15 @@ if (mysqli_num_rows($res) == 0) {
                     <th>{$lang['header_remove']}</th>
                 </tr>";
     $body = '';
-    while ($arr = mysqli_fetch_assoc($res)) {
+    foreach ($bans as $banned) {
         $body .= '
                 <tr>
-                    <td>' . get_date($arr['added'], '') . "</td>
-                    <td>" . htmlsafechars(ipFromStorageFormat($arr['first'])) . "</td>
-                    <td>" . htmlsafechars(ipFromStorageFormat($arr['last'])) . "</td>
-                    <td><a href='userdetails.php?id=" . (int)$arr['addedby'] . "'>" . htmlsafechars($arr['username']) . "</a></td>
-                    <td>" . htmlsafechars($arr['comment'], ENT_QUOTES) . "</td>
-                    <td><a href='staffpanel.php?tool=bans&amp;remove=" . (int)$arr['id'] . "'>{$lang['text_remove']}</a></td>
+                    <td>' . get_date($banned['added'], '') . "</td>
+                    <td>" . htmlsafechars($banned['first']) . "</td>
+                    <td>" . htmlsafechars($banned['last']) . "</td>
+                    <td><a href='" . $site_config['baseurl'] . "/userdetails.php?id=" . $banned['addedby'] . "'>" . format_username($banned['addedby']) . "</a></td>
+                    <td>" . htmlsafechars($banned['comment'], ENT_QUOTES) . "</td>
+                    <td><a href='" . $site_config['baseurl'] . "/staffpanel.php?tool=bans&amp;remove=" . $banned['id'] . "'>{$lang['text_remove']}</a></td>
                </tr>";
     }
     $HTMLOUT .= main_table($body, $header);

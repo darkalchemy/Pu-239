@@ -19,6 +19,10 @@ $stdfoot = [
 if (!$site_config['openreg_invites']) {
     stderr('Sorry', 'Invite Signups are presently closed');
 }
+if (strlen($_GET['code']) != 64) {
+    stderr($lang['stderr_errorhead'], 'Invalid Invite Code!');
+}
+
 $HTMLOUT = $year = $month = $day = $gender = $country = '';
 $lang = array_merge(load_language('global'), load_language('signup'));
 $count = $fluent->from('users')
@@ -28,10 +32,6 @@ $count = $fluent->from('users')
 
 if ($count >= $site_config['maxusers']) {
     stderr($lang['stderr_errorhead'], sprintf($lang['stderr_ulimit'], $site_config['maxusers']));
-}
-
-if (!password_verify($_GET['secret'], $_GET['code'])) {
-    stderr($lang['stderr_errorhead'], 'Invalid Invite Code!');
 }
 
 $offset = (string)$site_config['time_offset'];
@@ -55,8 +55,7 @@ $gender .= "<select name='gender' class='w-100'>
     <option value='Female'>{$lang['signup_female']}</option>
     <option value='NA'>{$lang['signup_na']}</option>
     </select>";
-// Normal Entry Point...
-//== click X by Retro
+
 $value = [
     '...',
     '...',
@@ -94,17 +93,10 @@ $HTMLOUT .= "
                 <td><input type='text' class='w-100' name='invite' value='{$_GET['code']}' /></td>
             </tr>
             <tr class='no_hover'>
-                <td class='rowhead'>{$lang['signup_email']}</td>
-                <td><input type='text' name='email' class='w-100' />
-                    <div class='alt_bordered top10'>{$lang['signup_valemail']}
-                    </div>
-                </td>
-            </tr>
-            <tr class='no_hover'>
                 <td class='rowhead'>{$lang['signup_timez']}</td>
                 <td>{$time_select}</td>
             </tr>";
-//==09 Birthday mod
+
 $year .= '<select name="year" class="w-100 bottom10">';
 $year .= "<option value='0000'>{$lang['signup_year']}</option>";
 $i = date("Y");

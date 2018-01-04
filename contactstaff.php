@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div >Contact Staff</div><br>-->
         <div ><br>
     <form method='post' name='message' action='" . $_SERVER['PHP_SELF'] . "'>
-				 <table class='main' width='450' border='0' cellspacing='0' cellpadding='2'>
+				 <table class='main' width='450' >
 				  <tr><td colspan='2'>
 					<h1>{$lang['contactstaff_title']}</h1>
 					<p class='small'>{$lang['contactstaff_info']}</p>

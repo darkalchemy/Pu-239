@@ -38,7 +38,7 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
     $HTMLOUT .= "{$lang['add_rules5']} 
     <a class='altlink' href='viewrequests.php'>{$lang['add_rules6']}</a></p>\n";
     /* search first **/
-    $HTMLOUT .= "<form method='get' action='browse.php'><table width='750px' border='1' cellspacing='0' cellpadding='5'><tr><td class='colhead'>
+    $HTMLOUT .= "<form method='get' action='browse.php'><table width='750px' ><tr><td class='colhead'>
 {$lang['add_search_before']}</td></tr><tr><td>
 <input type='text' name='search' size='40' value='' class='button is-small' />{$lang['add_in']}<select name='cat'> <option value='0'>{$lang['add_all_types']}</option>
 ";

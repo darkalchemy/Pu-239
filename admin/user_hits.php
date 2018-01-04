@@ -28,7 +28,7 @@ if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
 $HTMLOUT .= "
-<table border='0' cellspacing='0' cellpadding='5'>
+<table >
 <tr>
 <td class='colhead'>{$lang['userhits_nr']}</td>
 <td class='colhead'>{$lang['userhits_username']}</td>

@@ -20,7 +20,7 @@ function insert_tag($name, $description, $syntax, $example, $remarks)
     $result = format_comment($example);
     $htmlout = '';
     $htmlout .= "<div class='sub'><b>$name</b></div>\n";
-    $htmlout .= "<table class='main' width='100%' border='1' cellspacing='0' cellpadding='5'>\n";
+    $htmlout .= "<table class='main' width='100%' >\n";
     $htmlout .= "<tr><td width='25%'>{$lang['tags_description']}</td><td>$description</td></tr>\n";
     $htmlout .= "<tr><td>{$lang['tags_systax']}</td><td><tt>$syntax</tt></td></tr>\n";
     $htmlout .= "<tr><td>{$lang['tags_example']}</td><td><tt>$example</tt></td></tr>\n";

@@ -18,7 +18,7 @@ if ($count > 0) {
     if (mysqli_num_rows($res) == 0) {
         $HTMLOUT .= "<p><b>{$lang['view_nothing']}</b></p>\n";
     } else {
-        $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5'>
+        $HTMLOUT .= "<table >
 <tr><td class='colhead'>{$lang['view_name']}</td><td class='colhead'>{$lang['view_upl']}</td><td class='colhead'>{$lang['view_dl']}</td>
 <td class='colhead'>{$lang['view_ratio']}</td></tr>\n";
         while ($arr = mysqli_fetch_assoc($res)) {

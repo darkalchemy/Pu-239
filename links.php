@@ -26,7 +26,7 @@ $HTMLOUT = '';
 if ($CURUSER) {
     $HTMLOUT .= "{$lang['links_dead']}";
 }
-$HTMLOUT .= "<table width='750' class='main' border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>";
+$HTMLOUT .= "<table width='750' class='main' ><tr><td class='embedded'>";
 $HTMLOUT .= "{$lang['links_other_pages_header']}
     <table width='100%' border='1' cellspacing='0' cellpadding='10'><tr><td class='text'><ul>
     {$lang['links_other_pages_body']}

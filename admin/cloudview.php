@@ -46,7 +46,7 @@ $search_q = sql_query('SELECT id, searchedfor, ip, howmuch FROM searchcloud ORDE
 $HTMLOUT .= begin_main_frame($lang['cloudview_overview']);
 $HTMLOUT .= "
 <form method='post' action='staffpanel.php?tool=cloudview&amp;action=cloudview'>
-<table border='1' cellspacing='0' cellpadding='5'>\n
+<table >\n
 <tr>
 <td class='colhead' width='1%'>{$lang['cloudview_phrase']}</td>
 <td class='colhead' width='1%'>{$lang['cloudview_hits']}</td>

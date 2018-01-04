@@ -163,4 +163,11 @@ $sql_updates = [
         'date'  => '31 Dec, 2017',
         'query' => 'ALTER TABLE `tokens` ADD INDEX `email`(`email`)',
     ],
+    [
+        'id'    => 28,
+        'info'  => 'Increase Column Length',
+        'date'  => '31 Dec, 2017',
+        'query' => 'ALTER TABLE `messages` MODIFY `subject` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL',
+    ],
 ];
+

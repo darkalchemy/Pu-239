@@ -8,7 +8,7 @@ function usercommenttable($rows)
 {
     $htmlout = '';
     global $CURUSER, $site_config, $userid, $lang;
-    $htmlout .= "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'>" . "<tr><td class='embedded'>";
+    $htmlout .= "<table class='main' width='750' >" . "<tr><td class='embedded'>";
     $htmlout .= begin_frame();
     $count = 0;
     foreach ($rows as $row) {
@@ -33,7 +33,7 @@ function usercommenttable($rows)
         if ($row['editedby']) {
             $text .= "<font size='1' class='small'><br><br>{$lang['userdetails_comm_ledited']}<a href='userdetails.php?id=" . (int)$row['editedby'] . "'><b>" . htmlsafechars($row['username']) . '</b></a> ' . get_date($row['editedat'], 'DATE', 0, 1) . "</font>\n";
         }
-        $htmlout .= "<table width='100%' border='1' cellspacing='0' cellpadding='5'>";
+        $htmlout .= "<table width='100%' >";
         $htmlout .= "<tr>\n";
         $htmlout .= "<td width='150' style='padding:0px'><img width='150' src=\"{$avatar}\" alt=\"Avatar\" /></td>\n";
         $htmlout .= "<td class='text'>$text</td>\n";

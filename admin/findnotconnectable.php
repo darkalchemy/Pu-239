@@ -21,7 +21,7 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) == 'list') {
     if (mysqli_num_rows($res2) == 0) {
         $HTMLOUT .= "<p><b>{$lang['non_con_all']}</b></p>\n";
     } else {
-        $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5'>\n";
+        $HTMLOUT .= "<table >\n";
         $HTMLOUT .= "<tr><td class='colhead'>{$lang['non_con_name']}</td><td class='colhead'>{$lang['non_con_tor']}</td><td class='colhead'>{$lang['non_con_client']}</td></tr>\n";
         while ($arr2 = mysqli_fetch_assoc($res2)) {
             $r2 = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr2['userid'])) or sqlerr(__FILE__, __LINE__);
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     header('Refresh: 0; url=staffpanel.php?tool=findnotconnectable');
 }
 if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) == 'sendpm') {
-    $HTMLOUT .= "<table class='main' width='750' border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>
+    $HTMLOUT .= "<table class='main' width='750' ><tr><td class='embedded'>
 <div>
 <h1>{$lang['non_con_mass']}</h1>
 <form method='post' action='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable'>";
@@ -88,7 +88,7 @@ if (isset($_GET['action1']) == '') {
 	<h3><a href='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=sendpm'>{$lang['non_con_sendall']}</a></h3>
 	<h3><a href='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=list'>{$lang['non_con_list']}</a></h3><p>
 	<br>{$lang['non_con_please1']}<br></p>
-	<table border='1' cellspacing='0' cellpadding='5'>\n
+	<table >\n
 	<tr><td class='colhead'>{$lang['non_con_by']}</td>
 	<td class='colhead'>{$lang['non_con_date']}</td><td class='colhead'>{$lang['non_con_elapsed']}</td></tr>";
     while ($arr2 = mysqli_fetch_assoc($getlog)) {

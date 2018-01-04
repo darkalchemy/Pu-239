@@ -25,7 +25,7 @@ if ($users_count >= $site_config['maxusers']) {
     stderr($lang['takesignup_error'], $lang['takesignup_limit']);
 }
 $lang = array_merge(load_language('global'), load_language('takesignup'));
-if (!mkglobal('wantusername:wantpassword:passagain:email:invite' . ($site_config['captcha_on'] ? ':captchaSelection:' : ':') . 'submitme:passhint:hintanswer:country')) {
+if (!mkglobal('wantusername:wantpassword:passagain:invite' . ($site_config['captcha_on'] ? ':captchaSelection:' : ':') . 'submitme:passhint:hintanswer:country')) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_form_data']);
 }
 if ($submitme != 'X') {
@@ -38,7 +38,7 @@ if ($site_config['captcha_on']) {
     }
 }
 
-if (empty($wantusername) || empty($wantpassword) || empty($email) || empty($invite) || empty($passhint) || empty($hintanswer) || empty($country)) {
+if (empty($wantusername) || empty($wantpassword) || empty($invite) || empty($passhint) || empty($hintanswer) || empty($country)) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_blank']);
 }
 if ($country == 999999) {
@@ -61,9 +61,6 @@ if (strlen($wantpassword) > 100) {
 }
 if ($wantpassword == $wantusername) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_same']);
-}
-if (!validemail($email)) {
-    stderr($lang['takesignup_user_error'], $lang['takesignup_validemail']);
 }
 if (!valid_username($wantusername)) {
     stderr($lang['takesignup_user_error'], $lang['takesignup_invalidname']);
@@ -88,16 +85,6 @@ if ($_POST['rulesverify'] != 'yes' || $_POST['faqverify'] != 'yes' || $_POST['ag
     stderr($lang['takesignup_failed'], $lang['takesignup_qualify']);
 }
 
-$email_count = $fluent->from('users')
-    ->select(null)
-    ->select('COUNT(id) AS count')
-    ->where('email = ?', $email)
-    ->fetch('count');
-if ($email_count != 0) {
-    stderr($lang['takesignup_user_error'], $lang['takesignup_email_used']);
-    die();
-}
-
 if ($site_config['dupeip_check_on']) {
     $ip_count = $fluent->from('users')
         ->select(null)
@@ -117,7 +104,7 @@ if (isset($_POST['user_timezone']) && preg_match('#^\-?\d{1,2}(?:\.\d{1,2})?$#',
 
 $dst_in_use = localtime(TIME_NOW + ($time_offset * 3600), true);
 
-$select_inv = sql_query('SELECT sender, receiver, status FROM invite_codes WHERE code = ' . sqlesc($invite)) or sqlerr(__FILE__, __LINE__);
+$select_inv = sql_query('SELECT sender, receiver, status, email FROM invite_codes WHERE code = ' . sqlesc($invite)) or sqlerr(__FILE__, __LINE__);
 $rows = mysqli_num_rows($select_inv);
 $assoc = mysqli_fetch_assoc($select_inv);
 if ($rows == 0) {
@@ -126,13 +113,23 @@ if ($rows == 0) {
 if ($assoc['receiver'] != 0) {
     stderr('Error', "Invite already taken.\nPlease request a new one from your inviter.");
 }
+$email = $assoc['email'];
+$email_count = $fluent->from('users')
+    ->select(null)
+    ->select('COUNT(id) AS count')
+    ->where('email = ?', $email)
+    ->fetch('count');
+if ($email_count != 0) {
+    stderr($lang['takesignup_user_error'], $lang['takesignup_email_used']);
+    die();
+}
 $wantpasshash = make_passhash($wantpassword);
 $wanthintanswer = make_passhash($hintanswer);
 $user_frees = (XBT_TRACKER == true ? '0' : TIME_NOW + 14 * 86400);
 $torrent_pass = make_torrentpass();
 check_banned_emails($email);
 
-$new_user = sql_query('INSERT INTO users (username, passhash, torrent_pass, passhint, hintanswer, birthday, invitedby, email, added, last_access, last_login, time_offset, dst_in_use, free_switch, ip) VALUES (' . implode(',', array_map('sqlesc', [
+$new_user = sql_query('INSERT INTO users (username, passhash, torrent_pass, passhint, hintanswer, birthday, invitedby, email, added, last_access, last_login, time_offset, dst_in_use, free_switch, ip, status) VALUES (' . implode(',', array_map('sqlesc', [
         $wantusername,
         $wantpasshash,
         $torrent_pass,
@@ -148,6 +145,7 @@ $new_user = sql_query('INSERT INTO users (username, passhash, torrent_pass, pass
         $dst_in_use['tm_isdst'],
         $user_frees,
         $ip,
+        'confirmed',
     ])) . ')');
 $id = 0;
 while ($id == 0) {
@@ -183,12 +181,14 @@ $latestuser_cache['pirate'] = '0';
 $latestuser_cache['king'] = '0';
 $cache->delete('all_users_');
 
-/* OOPs **/
 $cache->set('latestuser', $latestuser_cache, 0, $site_config['expires']['latestuser']);
 $cache->delete('birthdayusers');
 $cache->delete('chat_users_list');
 write_log('User account ' . htmlsafechars($wantusername) . ' was created!');
 if ($id > 2 && $site_config['autoshout_on'] == 1) {
+    $msg = "Welcome New {$site_config['site_name']} Member: [user]" . htmlsafechars($wantusername) . '[/user]';
     autoshout($msg);
 }
-stderr('Success', 'Signup successfull, Your inviter needs to confirm your account now before you can use your account!');
+
+header("Location: {$site_config['baseurl']}/ok.php?type=confirm");
+die();

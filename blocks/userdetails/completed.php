@@ -9,7 +9,7 @@ if ($site_config['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] =
     }
     //=== completed
     if (mysqli_num_rows($r) > 0) {
-        $completed .= "<table class='main' border='1' cellspacing='0' cellpadding='3'>
+        $completed .= "<table class='main' >
     <tr>
     <td class='colhead'>{$lang['userdetails_type']}</td>
     <td class='colhead'>{$lang['userdetails_name']}</td>

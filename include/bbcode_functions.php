@@ -8,14 +8,15 @@ require_once 'emoticons.php';
  */
 function smilies_frame($smilies_set)
 {
-    $list = $emoticons = '';
+    global $site_config;
 
+    $list = $emoticons = '';
     foreach ($smilies_set as $code => $url) {
         $list .= "
             <span class='margin10 mw-50 is-flex tooltipper' title='{$code}'>
                 <span class='bordered bg-03'>
                     <a href='#' alt='{$code}'>
-                        <img border='0' src='./images/smilies/" . $url . "' alt='{$code}' />
+                        <img border='0' src='{$site_config['pic_base_url']}smilies/" . $url . "' alt='{$code}' />
                     </a>
                 </span>
             </span>";
@@ -57,17 +58,17 @@ function BBcode($body = '')
                             </li>') . '
                         </ul>
                         <div class="scroll_wrapper">
-                            <div class="scroll" id="box_0" style="display:none">
+                            <div class="scroll" id="box_0" style="display: none;">
                                 <div class="smilies_frame">
-                                    <img src="./images/forums/updating.gif" alt="Loading..." />
+                                    <img src="' . $site_config['pic_base_url'] . 'forums/updating.gif" alt="Loading..." />
                                 </div>
                             </div>
-                            <div class="scroll" id="box_1" style="display:none">
+                            <div class="scroll" id="box_1" style="display: none;">
                                 ' . $emoticons_normal . '
                             </div>
                             ' . ($CURUSER['smile_until'] > 0 ? '<div class="scroll" id="box_2" style="display:none">
                                 ' . $emoticons_custom . '
-                            </div>' : '') . ($CURUSER['class'] < UC_STAFF ? '' : '<div class="scroll" id="box_3" style="display:none">
+                            </div>' : '') . ($CURUSER['class'] < UC_STAFF ? '' : '<div class="scroll" id="box_3" style="display: none;">
                                 ' . $emoticons_staff . '
                             </div>') . '
                         </div>

@@ -96,7 +96,7 @@ if (XBT_TRACKER == true) {
 $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($result) != 0) {
     if (XBT_TRACKER == true) {
-        $HTMLOUT .= "<table width='100%' border='1' cellspacing='0' cellpadding='5'>
+        $HTMLOUT .= "<table width='100%' >
 <tr>
 <td class='colhead' width='1%'>{$lang['wpeers_user']}</td>
 <td class='colhead' width='1%'>{$lang['wpeers_torrent']}</td>
@@ -111,7 +111,7 @@ if (mysqli_num_rows($result) != 0) {
 <td class='colhead' width='1%'>{$lang['wpeers_togo']}</td>
 </tr>";
     } else {
-        $HTMLOUT .= "<table width='100%' border='1' cellspacing='0' cellpadding='5'>
+        $HTMLOUT .= "<table width='100%' >
 <tr>
 <td class='colhead' width='1%'>{$lang['wpeers_user']}</td>
 <td class='colhead' width='1%'>{$lang['wpeers_torrent']}</td>

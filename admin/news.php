@@ -228,7 +228,7 @@ if ($mode == 'news') {
         $added = get_date($arr['added'], 'LONG', 0, 1);
         $by = '<b>' . format_username($arr) . '</b>';
         $hash = md5('the@@saltto66??' . $newsid . 'add' . '@##mu55y==');
-        $HTMLOUT .= "<table border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>
+        $HTMLOUT .= "<table ><tr><td class='embedded'>
         $added{$lang['news_created_by']}
         - [<a href='./staffpanel.php?tool=news&amp;mode=edit&amp;newsid=$newsid'><b>{$lang['news_edit']}</b></a>]
         - [<a href='./staffpanel.php?tool=news&amp;mode=delete&amp;newsid=$newsid&amp;sure=1&amp;h=$hash'><b>{$lang['news_delete']}</b></a>]

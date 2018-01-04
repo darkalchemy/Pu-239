@@ -240,7 +240,7 @@ $HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='{$lang['edit_submit
     </form>
     <br>
     <form name='delete_form' method='post' action='delete.php'>
-    <table border='1' cellspacing='0' cellpadding='5'>
+    <table >
     <tr>
       <td class='colhead' colspan='2'><b>{$lang['edit_delete_torrent']}.</b> {$lang['edit_reason']}</td>
     </tr>

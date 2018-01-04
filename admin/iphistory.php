@@ -41,7 +41,7 @@ $username = htmlsafechars($user['username']);
 $resip = sql_query('SELECT * FROM ips WHERE userid = ' . sqlesc($id) . ' GROUP BY ip ORDER BY id DESC') or sqlerr(__FILE__, __LINE__);
 $ipcount = mysqli_num_rows($resip);
 $HTMLOUT = '';
-$HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5'>
+$HTMLOUT .= "<table >
                 <tr><td class='colhead'>{$lang['iphistory_usedby']}<a class='altlink_white' href='{$site_config['baseurl']}/userdetails.php?id=$id'><b>$username</b></a></td></tr>
                 <tr>
                 <td class='heading2'>{$lang['iphistory_total_unique']} <b>$username</b> {$lang['iphistory_total_logged']} <b><u>$ipcount</u></b>.</td></tr>
@@ -50,7 +50,7 @@ $HTMLOUT .= "<table border='1' cellspacing='0' cellpadding='5'>
                 </tr>
                 </table><br>
 
-                <table border='1' cellspacing='0' cellpadding='5'>
+                <table >
                 <tr>
                 <td class='colhead'>{$lang['iphistory_last']}</td>
                 <td class='colhead'>{$lang['iphistory_address']}</td>
