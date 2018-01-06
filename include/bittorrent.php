@@ -2098,12 +2098,8 @@ function Christmas($celebrate = true)
  *
  * @return bool|mixed
  */
-function get_user_data($id)
+function get_user_data(int $id)
 {
-    if (empty($id) || !is_valid_id($id)) {
-        return false;
-    }
-
     global $cache, $fluent, $site_config;
     $users_data = $cache->get('user' . $id);
     if ($users_data === false || is_null($users_data)) {
