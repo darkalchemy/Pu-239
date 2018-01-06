@@ -59,18 +59,18 @@ switch ($view) {
 
             //==== HTML Output
             $HTMLOUT .= "<tr class='{$Row_Class}'>" .
-                "<td><a href='./details.php?id={$comment['torrent']}#comm{$comment['id']}'>{$comment['id']}</a>" .
-                " (<a href='./comment.php?action=vieworiginal&amp;cid={$comment['id']}'>{$lang['text_view_ori_comm']}</a>)</td>" .
+                "<td><a href='{$site_config['baseurl']}/details.php?id={$comment['torrent']}#comm{$comment['id']}'>{$comment['id']}</a>" .
+                " (<a href='{$site_config['baseurl']}/comment.php?action=vieworiginal&amp;cid={$comment['id']}'>{$lang['text_view_ori_comm']}</a>)</td>" .
                 "<td>{$comment['user']}</td>" .
                 "<td>{$comment['torrent']}</td>" .
                 "<td>{$comment['text']}</td>" .
                 "<td>{$comment['ori_text']}</td>" .
-                "<td><a href='./userdetails.php?id={$comment['user']}'>{$comment['username']}</a>" .
-                " [<a href='./pm_system.php?action=send_message&amp;receiver={$comment['user']}'>{$lang['text_msg']}</a>]</td>" .
-                "<td><a href='./details.php?id={$comment['torrent']}'>{$comment['name']}</a></td>" .
+                "<td><a href='{$site_config['baseurl']}/userdetails.php?id={$comment['user']}'>{$comment['username']}</a>" .
+                " [<a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver={$comment['user']}'>{$lang['text_msg']}</a>]</td>" .
+                "<td><a href='{$site_config['baseurl']}/details.php?id={$comment['torrent']}'>{$comment['name']}</a></td>" .
                 '<td>' . get_date($comment['added'], 'DATE') . '</td>' .
-                "<td><a href='./comment.php?action=edit&amp;cid={$comment['id']}'>{$lang['text_edit']}</a>" .
-                " - <a href='./comment.php?action=delete&amp;cid={$comment['id']}'>{$lang['text_delete']}</a></td>" .
+                "<td><a href='{$site_config['baseurl']}/comment.php?action=edit&amp;cid={$comment['id']}'>{$lang['text_edit']}</a>" .
+                " - <a href='{$site_config['baseurl']}/comment.php?action=delete&amp;cid={$comment['id']}'>{$lang['text_delete']}</a></td>" .
                 '</tr>';
 
             //==== Increase the count for every row generated
@@ -155,11 +155,11 @@ switch ($view) {
                 "<td>{$comment['user']}</td>" .
                 "<td>{$comment['torrent']}</td>" .
                 "<td>{$comment['text']}</td>" .
-                "<td><a href='./userdetails.php?id={$comment['user']}'>{$comment['username']}</a></td>" .
-                "<td><a href='./details.php?id={$comment['torrent']}'>{$comment['name']}</a></td>" .
+                "<td><a href='{$site_config['baseurl']}/userdetails.php?id={$comment['user']}'>{$comment['username']}</a></td>" .
+                "<td><a href='{$site_config['baseurl']}/details.php?id={$comment['torrent']}'>{$comment['name']}</a></td>" .
                 '<td>' . get_date($comment['added'], 'DATE') . '</td>' .
-                "<td><a href='./comment.php?action=edit&amp;cid={$comment['id']}'>{$lang['text_edit']}</a>" .
-                " - <a href='./comment.php?action=delete&amp;cid={$comment['id']}'>{$lang['text_delete']}</a>" .
+                "<td><a href='{$site_config['baseurl']}/comment.php?action=edit&amp;cid={$comment['id']}'>{$lang['text_edit']}</a>" .
+                " - <a href='{$site_config['baseurl']}/comment.php?action=delete&amp;cid={$comment['id']}'>{$lang['text_delete']}</a>" .
                 '</td></tr>';
             ++$Row_Count;
         }
@@ -222,18 +222,18 @@ while ($comment = mysqli_fetch_assoc($query)) {
 
     //==== HTML Output
     $HTMLOUT .= "<tr class='{$Row_Class}'>" .
-        "<td><a href='./details.php?id={$comment['torrent']}#comm{$comment['id']}'>{$comment['id']}</a>" .
-        " (<a href='./comment.php?action=vieworiginal&amp;cid={$comment['id']}'>{$lang['text_view_ori_comm']}</a>)</td>" .
+        "<td><a href='{$site_config['baseurl']}/details.php?id={$comment['torrent']}#comm{$comment['id']}'>{$comment['id']}</a>" .
+        " (<a href='{$site_config['baseurl']}/comment.php?action=vieworiginal&amp;cid={$comment['id']}'>{$lang['text_view_ori_comm']}</a>)</td>" .
         "<td>{$comment['user']}</td>" .
         "<td>{$comment['torrent']}</td>" .
         "<td>{$comment['text']}</td>" .
         "<td>{$comment['ori_text']}</td>" .
-        "<td><a href='./userdetails.php?id={$comment['user']}'>{$comment['username']}</a> " .
-        "[<a href='./pm_system.php?action=send_message&amp;receiver={$comment['user']}'>{$lang['text_msg']}</a>]</td>" .
-        "<td><a href='./details.php?id={$comment['torrent']}'>{$comment['name']}</a></td>" .
+        "<td><a href='{$site_config['baseurl']}/userdetails.php?id={$comment['user']}'>{$comment['username']}</a> " .
+        "[<a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver={$comment['user']}'>{$lang['text_msg']}</a>]</td>" .
+        "<td><a href='{$site_config['baseurl']}/details.php?id={$comment['torrent']}'>{$comment['name']}</a></td>" .
         '<td>' . get_date($comment['added'], 'DATE') . '</td>' .
-        "<td><a href='./comment.php?action=edit&amp;cid={$comment['id']}'>{$lang['text_edit']}</a>" .
-        " - <a href='./comment.php?action=delete&amp;cid={$comment['id']}'>{$lang['text_delete']}</a></td>" .
+        "<td><a href='{$site_config['baseurl']}/comment.php?action=edit&amp;cid={$comment['id']}'>{$lang['text_edit']}</a>" .
+        " - <a href='{$site_config['baseurl']}/comment.php?action=delete&amp;cid={$comment['id']}'>{$lang['text_delete']}</a></td>" .
         '</tr>';
 
     //==== Increase the count for every row generated

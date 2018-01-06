@@ -51,7 +51,7 @@ switch (true) {
             $html .= stdmsg('Sorry', 'Lottery is closed at the moment');
         } elseif ($lottery_config['end_date'] > TIME_NOW) {
             $html .= stdmsg('Lottery in progress', 'Lottery started on <b>' . get_date($lottery_config['start_date'], 'LONG') . '</b> and ends on <b>' . get_date($lottery_config['end_date'], 'LONG') . "</b> remaining <span>" . mkprettytime($lottery_config['end_date'] - TIME_NOW) . "</span><br>
-       <p class='top10'>" . ($CURUSER['class'] >= $valid['viewtickets']['minclass'] ? "<a href='./lottery.php?action=viewtickets' class='button margin10'>View bought tickets</a>" : '') . "<a href='./lottery.php?action=tickets' class='button margin10'>Buy tickets</a></p>");
+       <p class='top10'>" . ($CURUSER['class'] >= $valid['viewtickets']['minclass'] ? "<a href='{$site_config['baseurl']}/lottery.php?action=viewtickets' class='button margin10'>View bought tickets</a>" : '') . "<a href='{$site_config['baseurl']}/lottery.php?action=tickets' class='button margin10'>Buy tickets</a></p>");
         }
         //get last lottery data
         if (!empty($lottery_config['lottery_winners'])) {
@@ -63,7 +63,7 @@ switch (true) {
                 $last_winners[] = format_username($aus['id']);
             }
             $html .= stdmsg('Lottery Winners Info', "<ul><li>Last winners: " . join(', ', $last_winners) . '</li><li>Amount won	(each): ' . $lottery_config['lottery_winners_amount'] . "</li></ul><br>
-        <p>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "<a href='./lottery.php?action=config' class='button margin10'>Lottery configuration</a>" : 'Nothing Configured Atm Sorry') . '</p>');
+        <p>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "<a href='{$site_config['baseurl']}/lottery.php?action=config' class='button margin10'>Lottery configuration</a>" : 'Nothing Configured Atm Sorry') . '</p>');
         } else {
             $html .= "
                     <div class='bordered top20'>
@@ -71,7 +71,7 @@ switch (true) {
                             <ul>
                                 <li>Nobody has won, because nobody has played yet :)</li>
                             </ul>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "
-                            <a href='./lottery.php?action=config' class='button margin10'>Lottery configuration</a>" : "
+                            <a href='{$site_config['baseurl']}/lottery.php?action=config' class='button margin10'>Lottery configuration</a>" : "
                             <span>Nothing Configured Atm Sorry.</span>") . "
                         </div>
                     </div>";

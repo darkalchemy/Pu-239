@@ -30,7 +30,7 @@ function get_snatched_color($st)
         //$mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
         //$secs_elapsed = floor($st - $mins * 60);
 
-        return "<font color='lime'><b>$month months.<br>$week_elapsed W. $days_elapsed D.</b></font>";
+        return "<span style='color: lime;'><b>$month months.<br>$week_elapsed W. $days_elapsed D.</b></span>";
     }
     if ($week > 0) {
         $days_elapsed = floor(($st - ($week * 7 * 24 * 60 * 60)) / (24 * 60 * 60));
@@ -38,51 +38,51 @@ function get_snatched_color($st)
         $mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
         $secs_elapsed = floor($st - $mins * 60);
 
-        return "<font color='lime'><b>$week W. $days_elapsed D.<br>$hours_elapsed:$mins_elapsed:$secs_elapsed</b></font>";
+        return "<span style='color: lime;'><b>$week W. $days_elapsed D.<br>$hours_elapsed:$mins_elapsed:$secs_elapsed</b></span>";
     }
     if ($days > 2) {
         $hours_elapsed = floor(($st - ($days * 24 * 60 * 60)) / (60 * 60));
         $mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
         $secs_elapsed = floor($st - $mins * 60);
 
-        return "<font color='lime'><b>$days D.<br>$hours_elapsed:$mins_elapsed:$secs_elapsed</b></font>";
+        return "<span style='color: lime;'><b>$days D.<br>$hours_elapsed:$mins_elapsed:$secs_elapsed</b></span>";
     }
     if ($days > 1) {
         $hours_elapsed = floor(($st - ($days * 24 * 60 * 60)) / (60 * 60));
         $mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
         $secs_elapsed = floor($st - $mins * 60);
 
-        return "<font color='green'><b>$days D.<br>$hours_elapsed:$mins_elapsed:$secs_elapsed</b></font>";
+        return "<span style='color: green;'><b>$days D.<br>$hours_elapsed:$mins_elapsed:$secs_elapsed</b></span>";
     }
     if ($days > 0) {
         $hours_elapsed = floor(($st - ($days * 24 * 60 * 60)) / (60 * 60));
         $mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
         $secs_elapsed = floor($st - $mins * 60);
 
-        return "<font color='#CCFFCC'><b>$days D.<br>$hours_elapsed:$mins_elapsed:$secs_elapsed</b></font>";
+        return "<span style='color: #CCFFCC;'><b>$days D.<br>$hours_elapsed:$mins_elapsed:$secs_elapsed</b></span>";
     }
     if ($hours > 12) {
         $mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
         $secs_elapsed = floor($st - $mins * 60);
 
-        return "<font color='yellow'><b>$hours:$mins_elapsed:$secs_elapsed</b></font>";
+        return "<span style='color: yellow;'><b>$hours:$mins_elapsed:$secs_elapsed</b></span>";
     }
     if ($hours > 0) {
         $mins_elapsed = floor(($st - ($hours * 60 * 60)) / 60);
         $secs_elapsed = floor($st - $mins * 60);
 
-        return "<font color='red'><b>$hours:$mins_elapsed:$secs_elapsed</b></font>";
+        return "<span class='has-text-danger'><b>$hours:$mins_elapsed:$secs_elapsed</b></span>";
     }
     if ($mins > 0) {
         $secs_elapsed = floor($st - $mins * 60);
 
-        return "<font color='red'><b>0:$mins:$secs_elapsed</b></font>";
+        return "<span class='has-text-danger'><b>0:$mins:$secs_elapsed</b></span>";
     }
     if ($secs > 0) {
-        return "<font color='red'><b>0:0:$secs</b></font>";
+        return "<span class='has-text-danger'><b>0:0:$secs</b></span>";
     }
 
-    return "<font color='red'><b>{$lang['ad_snatched_torrents_none']}<br>{$lang['ad_snatched_torrents_reported']}</b></font>";
+    return "<span class='has-text-danger'><b>{$lang['ad_snatched_torrents_none']}<br>{$lang['ad_snatched_torrents_reported']}</b></span>";
 }
 
 $What_Table = (XBT_TRACKER == true ? 'xbt_files_users' : 'snatched');
@@ -145,8 +145,8 @@ if (mysqli_num_rows($result) != 0) {
             $smallname .= '...';
         }
         if (XBT_TRACKER == true) {
-            $HTMLOUT .= "<tr><td><a href='/userdetails.php?id=" . (int)$row['uid'] . "'><b>" . htmlsafechars($row['username']) . "</b></a></td>
-<td><a href='/details.php?id=" . (int)$row['fid'] . "'><b>" . $smallname . "</b></a></td>
+            $HTMLOUT .= "<tr><td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$row['uid'] . "'><b>" . htmlsafechars($row['username']) . "</b></a></td>
+<td><a href='{$site_config['baseurl']}/details.php?id=" . (int)$row['fid'] . "'><b>" . $smallname . "</b></a></td>
 <td><b>" . htmlsafechars($row['announced']) . "</b></td>
 <td><b>" . mksize($row['uploaded']) . '</b></td>
 ' . ($site_config['ratio_free'] ? '' : "<td><b>" . mksize($row['downloaded']) . '</b></td>') . "
@@ -155,12 +155,12 @@ if (mysqli_num_rows($result) != 0) {
             if ($row['completedtime'] > 0) {
                 $HTMLOUT .= "<td><b>" . get_date($row['completedtime'], 'LONG', 0, 1) . '</b></td>';
             } else {
-                $HTMLOUT .= "<td><b><font color='red'>{$lang['ad_snatched_torrents_ncomplete']}</font></b></td>";
+                $HTMLOUT .= "<td><b><span class='has-text-danger'>{$lang['ad_snatched_torrents_ncomplete']}</span></b></td>";
             }
             $HTMLOUT .= "<td>" . ($row['seeders'] >= 1 ? "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='{$lang['ad_snatched_torrents_yes']}' title='{$lang['ad_snatched_torrents_yes']}' />" : "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='{$lang['ad_snatched_torrents_no']}' title='{$lang['ad_snatched_torrents_no']}' />") . '</td></tr>';
         } else {
-            $HTMLOUT .= "<tr><td><a href='/userdetails.php?id=" . (int)$row['userid'] . "'><b>" . htmlsafechars($row['username']) . "</b></a></td>
-<td><a href='/details.php?id=" . (int)$row['torrentid'] . "'><b>" . $smallname . "</b></a></td>
+            $HTMLOUT .= "<tr><td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$row['userid'] . "'><b>" . htmlsafechars($row['username']) . "</b></a></td>
+<td><a href='{$site_config['baseurl']}/details.php?id=" . (int)$row['torrentid'] . "'><b>" . $smallname . "</b></a></td>
 <td><b>" . get_date($row['hit_and_run'], 'LONG', 0, 1) . "</b></td>
 <td><b>" . htmlsafechars($row['mark_of_cain']) . "</b></td>
 <td><b>" . htmlsafechars($row['timesann']) . "</b></td>
@@ -172,7 +172,7 @@ if (mysqli_num_rows($result) != 0) {
             if ($row['complete_date'] > 0) {
                 $HTMLOUT .= "<td><b>" . get_date($row['complete_date'], 'LONG', 0, 1) . '</b></td>';
             } else {
-                $HTMLOUT .= "<td><b><font color='red'>{$lang['ad_snatched_torrents_ncomplete']}</font></b></td></tr>";
+                $HTMLOUT .= "<td><b><span class='has-text-danger'>{$lang['ad_snatched_torrents_ncomplete']}</span></b></td></tr>";
             }
             $HTMLOUT .= "<td><b>" . ($row['seeder'] == 'yes' ? "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='{$lang['ad_snatched_torrents_yes']}' title='{$lang['ad_snatched_torrents_yes']}' />" : "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='{$lang['ad_snatched_torrents_no']}' title='{$lang['ad_snatched_torrents_no']}' />") . '</b></td></tr>';
         }

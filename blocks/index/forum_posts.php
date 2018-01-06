@@ -58,7 +58,7 @@ if (count($topics) > 0) {
                     $menu .= '[ ';
                 }
                 if ($pages > 1) {
-                    $menu .= "<a href='/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=$i'>$i</a>\n";
+                    $menu .= "<a href='{$site_config['baseurl']}/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=$i'>$i</a>\n";
                 }
                 if ($i < $pages) {
                     $menu .= "|\n";
@@ -89,7 +89,7 @@ if (count($topics) > 0) {
             $staffimg = ($topicarr['min_class_read'] >= UC_STAFF ? "<img src='" . $site_config['pic_base_url'] . "staff.png' border='0' alt='Staff forum' title='Staff Forum' />" : '');
             $stickyimg = ($topicarr['sticky'] == 'yes' ? "<img src='" . $site_config['pic_base_url'] . "sticky.gif' border='0' alt='{$lang['index_fposts_sticky']}' title='{$lang['index_fposts_stickyt']}' />&#160;&#160;" : '');
             $lockedimg = ($topicarr['locked'] == 'yes' ? "<img src='" . $site_config['pic_base_url'] . "forumicons/locked.gif' border='0' alt='{$lang['index_fposts_locked']}' title='{$lang['index_fposts_lockedt']}' />&#160;" : '');
-            $topic_name = $lockedimg . $stickyimg . "<a href='/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=last#" . (int)$topicarr['last_post'] . "'><b>" . htmlsafechars($topicarr['topic_name']) . "</b></a>&#160;&#160;$staffimg&#160;&#160;$menu<br><font class='small'>{$lang['index_fposts_in']}<a href='forums.php?action=view_forum&amp;forum_id=" . (int)$topicarr['forum_id'] . "'>" . htmlsafechars($topicarr['name']) . "</a>&#160;by&#160;$author&#160;&#160;($added)</font>";
+            $topic_name = $lockedimg . $stickyimg . "<a href='{$site_config['baseurl']}/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=last#" . (int)$topicarr['last_post'] . "'><b>" . htmlsafechars($topicarr['topic_name']) . "</b></a>&#160;&#160;$staffimg&#160;&#160;$menu<br><font class='small'>{$lang['index_fposts_in']}<a href='forums.php?action=view_forum&amp;forum_id=" . (int)$topicarr['forum_id'] . "'>" . htmlsafechars($topicarr['name']) . "</a>&#160;by&#160;$author&#160;&#160;($added)</font>";
             $HTMLOUT .= "
                     <tr>
                         <td>{$topic_name}</td>

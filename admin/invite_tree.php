@@ -16,9 +16,9 @@ if ($id !== 0) {
     $arr_user = mysqli_fetch_assoc($rez_user);
     //=== start the page
     $HTMLOUT .= '<h1>' . htmlsafechars($arr_user['username']) . (substr($arr_user['username'], -1) == 's' ? '\'' : '\'s') . ' ' . $lang['invite_head'] . '</h1>
-		<p>' . ($arr_user['invitedby'] == 0 ? '<a title="' . htmlsafechars($arr_user['username']) . ' ' . $lang['invite_open'] . '">' . $lang['invite_up'] . '</a>' : '<a href="staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;really_deep=1&amp;id=' . (int)$arr_user['invitedby'] . '" title="go up one level">' . $lang['invite_up'] . '</a>') . ' | 
-		| <a href="staffpanel.php?tool=invite_tree&amp;action=invite_tree' . (isset($_GET['deeper']) ? '' : '&amp;deeper=1') . '&amp;id=' . $id . '" title=" ' . $lang['invite_click'] . ' ' . (isset($_GET['deeper']) ? $lang['invite_shrink'] : $lang['invite_expand']) . ' ' . $lang['invite_this'] . ' ">' . $lang['invite_expand_tree'] . '</a> | 
-		| <a href="staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;really_deep=1&amp;id=' . $id . '" title="' . $lang['invite_click_more'] . '">' . $lang['invite_expand_more'] . '</a></p>';
+		<p>' . ($arr_user['invitedby'] == 0 ? '<a title="' . htmlsafechars($arr_user['username']) . ' ' . $lang['invite_open'] . '">' . $lang['invite_up'] . '</a>' : '<a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;really_deep=1&amp;id=' . (int)$arr_user['invitedby'] . '" title="go up one level">' . $lang['invite_up'] . '</a>') . ' | 
+		| <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;action=invite_tree' . (isset($_GET['deeper']) ? '' : '&amp;deeper=1') . '&amp;id=' . $id . '" title=" ' . $lang['invite_click'] . ' ' . (isset($_GET['deeper']) ? $lang['invite_shrink'] : $lang['invite_expand']) . ' ' . $lang['invite_this'] . ' ">' . $lang['invite_expand_tree'] . '</a> | 
+		| <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;really_deep=1&amp;id=' . $id . '" title="' . $lang['invite_click_more'] . '">' . $lang['invite_expand_more'] . '</a></p>';
     $HTMLOUT .= '<table class="main" width="750px" border="0" cellspacing="0" cellpadding="0">
 		<tr><td class="embedded">';
     //=== members invites
@@ -153,7 +153,7 @@ if ($id !== 0) {
         if (!strcmp($L, $letter)) {
             $HTMLOUT .= ' <span class="button is-small" style="background:orange;">' . strtoupper($L) . '</span>';
         } else {
-            $HTMLOUT .= ' <a href="staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;letter=' . $L . '"><span class="button is-small">' . strtoupper($L) . '</span></a>';
+            $HTMLOUT .= ' <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;letter=' . $L . '"><span class="button is-small">' . strtoupper($L) . '</span></a>';
         }
         ++$count;
     }
@@ -177,13 +177,13 @@ if ($id !== 0) {
 			<td class="colhead">' . $lang['invite_search_country'] . '</td>
 			<td class="colhead">' . $lang['invite_search_edit'] . '</td></tr>';
         while ($row = mysqli_fetch_assoc($res)) {
-            $country = ($row['name'] != null) ? '<td style="padding: 0px"><img src="' . $site_config['pic_base_url'] . 'flag/' . (int)$row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" /></td>' : '<td>---</td>';
+            $country = ($row['name'] != null) ? '<td style="padding: 0;"><img src="' . $site_config['pic_base_url'] . 'flag/' . (int)$row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" /></td>' : '<td>---</td>';
             $HTMLOUT .= '<tr><td>' . format_username($row) . '</td>
 		<td>' . get_date($row['added'], '') . '</td><td>' . get_date($row['last_access'], '') . '</td>
 		<td>' . get_user_class_name($row['class']) . '</td>
 		' . $country . '
 		<td>
-		<a href="staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;id=' . (int)$row['id'] . '" title="' . $lang['invite_search_look'] . '"><span class="button is-small">' . $lang['invite_search_view'] . '</span></a></td></tr>';
+		<a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;action=invite_tree&amp;id=' . (int)$row['id'] . '" title="' . $lang['invite_search_look'] . '"><span class="button is-small">' . $lang['invite_search_view'] . '</span></a></td></tr>';
         }
         $HTMLOUT .= '</table>';
     } else {

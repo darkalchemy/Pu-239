@@ -35,51 +35,51 @@ $HTMLOUT .= "
             </div>
             <div class='columns'>
                 <div class='column'>
-                    <a href='./blackjack.php?id=1'><div class='has-text-centered $color1'>BlackJack 1GB</div>
+                    <a href='{$site_config['baseurl']}/blackjack.php?id=1'><div class='has-text-centered $color1'>BlackJack 1GB</div>
                         <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper round10' title='BlackJack 1GB' />
                     </a>
                 </div>
                 <div class='column'>
-                    <a href='./blackjack.php?id=10'><div class='has-text-centered $color2'>BlackJack 10GB</div>
+                    <a href='{$site_config['baseurl']}/blackjack.php?id=10'><div class='has-text-centered $color2'>BlackJack 10GB</div>
                         <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper round10' title='BlackJack 10GB' />
                     </a>
                 </div>
                 <div class='column'>
-                    <a href='./blackjack.php?id=20'><div class='has-text-centered $color3'>BlackJack 20GB</div>
+                    <a href='{$site_config['baseurl']}/blackjack.php?id=20'><div class='has-text-centered $color3'>BlackJack 20GB</div>
                         <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper round10' title='BlackJack 20GB' />
                     </a>
                 </div>
             </div>
             <div class='columns'>
                 <div class='column'>
-                    <a href='./blackjack.php?id=50'><div class='has-text-centered $color4'>BlackJack 50GB</div>
+                    <a href='{$site_config['baseurl']}/blackjack.php?id=50'><div class='has-text-centered $color4'>BlackJack 50GB</div>
                         <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper round10' title='BlackJack 50GB' />
                     </a>
                 </div>
                 <div class='column'>
-                    <a href='./casino.php'><div class='has-text-centered $color9'>Casino</div>
+                    <a href='{$site_config['baseurl']}/casino.php'><div class='has-text-centered $color9'>Casino</div>
                         <img src='{$site_config['pic_base_url']}casino.jpg' alt='casino' class='tooltipper round10' title='Casino' />
                     </a>
                 </div>
                 <div class='column'>
-                    <a href='./blackjack.php?id=100'><div class='has-text-centered $color5'>BlackJack 100GB</div>
+                    <a href='{$site_config['baseurl']}/blackjack.php?id=100'><div class='has-text-centered $color5'>BlackJack 100GB</div>
                         <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper round10' title='BlackJack 100GB' />
                     </a>
                 </div>
             </div>
             <div class='columns'>
                 <div class='column'>
-                    <a href='./blackjack.php?id=250'><div class='has-text-centered $color6'>BlackJack 250GB</div>
+                    <a href='{$site_config['baseurl']}/blackjack.php?id=250'><div class='has-text-centered $color6'>BlackJack 250GB</div>
                         <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper round10' title='BlackJack 250GB' />
                     </a>
                 </div>
                 <div class='column'>
-                    <a href='./blackjack.php?id=500'><div class='has-text-centered $color7'>BlackJack 500GB</div>
+                    <a href='{$site_config['baseurl']}/blackjack.php?id=500'><div class='has-text-centered $color7'>BlackJack 500GB</div>
                         <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper round10' title='BlackJack 500GB' />
                     </a>
                 </div>
                 <div class='column'>
-                    <a href='./blackjack.php?id=1024'><div class='has-text-centered $color8'>BlackJack 1TB</div>
+                    <a href='{$site_config['baseurl']}/blackjack.php?id=1024'><div class='has-text-centered $color8'>BlackJack 1TB</div>
                         <img src='{$site_config['pic_base_url']}blackjack.jpg' alt='blackjack' class='tooltipper round10' title='BlackJack 1TB' />
                     </a>
                 </div>

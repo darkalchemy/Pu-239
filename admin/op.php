@@ -301,7 +301,7 @@ empty($_SERVER['SERVER_NAME'])
             -webkit-border-radius: 6px;
             border-radius: 6px;
             border: 1px solid #a1a1a1;
-            text-shadow: 0px -1px 0px rgba(000, 000, 000, 0), 0px 1px 0px rgba(255, 255, 255, 0.4);
+            text-shadow: 0 -1px 0 rgba(000, 000, 000, 0), 0 1px 0 rgba(255, 255, 255, 0.4);
             margin: 0 1em;
             white-space: nowrap;
         }
@@ -340,9 +340,9 @@ empty($_SERVER['SERVER_NAME'])
 
 <div style="text-align:center;margin-bottom:2em;">
     <p>
-        <a href="staffpanel.php?tool=op&page=overview" class="button is-small">Overview</a>
-        <a href="staffpanel.php?tool=op&page=files" class="button is-small">File usage</a>
-        <a href="staffpanel.php?tool=op&page=reset" class="button is-small"
+        <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=op&page=overview" class="button is-small">Overview</a>
+        <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=op&page=files" class="button is-small">File usage</a>
+        <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=op&page=reset" class="button is-small"
            onclick="return confirm('Are you sure you want to reset the cache?');">Reset cache</a>
     </p>
 </div>

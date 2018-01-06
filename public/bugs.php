@@ -72,25 +72,25 @@ if ($action == 'viewbug') {
         $addedby = "<a href='userdetails.php?id=" . (int)$a['sender'] . "'>" . htmlsafechars($a['username']) . '</a> <i>(' . get_user_class_name($a['class']) . ')</i>';
         switch ($a['priority']) {
             case 'low':
-                $priority = "<font color='green'>{$lang['low']}</font>";
+                $priority = "<span style='color: green;'>{$lang['low']}</span>";
                 break;
 
             case 'high':
-                $priority = "<font color='red'>{$lang['high']}</font>";
+                $priority = "<span class='has-text-danger'>{$lang['high']}</span>";
                 break;
 
             case 'veryhigh':
-                $priority = "<font color='red'><b><u>{$lang['veryhigh']}</u></b></font>";
+                $priority = "<span class='has-text-danger'><b><u>{$lang['veryhigh']}</u></b></span>";
                 break;
         }
         $problem = htmlsafechars($a['problem']);
         switch ($a['status']) {
             case 'fixed':
-                $status = "<font color='green'><b>{$lang['fixed']}</b></font>";
+                $status = "<span style='color: green;'><b>{$lang['fixed']}</b></span>";
                 break;
 
             case 'ignored':
-                $status = "<font color='#FF8C00'><b>{$lang['ignored']}</b></font>";
+                $status = "<span style='color: #FF8C00;'><b>{$lang['ignored']}</b></span>";
                 break;
 
             default:
@@ -137,7 +137,7 @@ if ($action == 'viewbug') {
         $count = mysqli_num_rows($r);
         $HTMLOUT .= $pager['pagertop'];
         $HTMLOUT .= "
-      <!--<h1>There is <font color='#FF0000'>{$count}</font> new bug" . ($count > 1 ? 's' : '') . ". Please check them.</h1>-->
+      <!--<h1>There is <span style='color: #FF0000;'>{$count}</span> new bug" . ($count > 1 ? 's' : '') . ". Please check them.</h1>-->
       <h1>" . sprintf($lang['h1_count_bugs'], $count, ($count > 1 ? 's' : '')) . "</h1>
       <font class='small'>{$lang['delete_when']}</font><br>
       <table class='table table-bordered table-striped'><tr>
@@ -150,28 +150,28 @@ if ($action == 'viewbug') {
         while ($q1 = mysqli_fetch_assoc($res)) {
             switch ($q1['priority']) {
                 case 'low':
-                    $priority = "<font color='green'>{$lang['low']}</font>";
+                    $priority = "<span style='color: green;'>{$lang['low']}</span>";
                     break;
 
                 case 'high':
-                    $priority = "<font color='red'>{$lang['high']}</font>";
+                    $priority = "<span class='has-text-danger'>{$lang['high']}</span>";
                     break;
 
                 case 'veryhigh':
-                    $priority = "<font color='red'><b><u>{$lang['veryhigh']}</u></b></font>";
+                    $priority = "<span class='has-text-danger'><b><u>{$lang['veryhigh']}</u></b></span>";
                     break;
             }
             switch ($q1['status']) {
                 case 'fixed':
-                    $status = "<font color='green'><b>{$lang['fixed']}</b></font>";
+                    $status = "<span style='color: green;'><b>{$lang['fixed']}</b></span>";
                     break;
 
                 case 'ignored':
-                    $status = "<font color='#FF8C00'><b>{$lang['ignored']}</b></font>";
+                    $status = "<span style='color: #FF8C00;'><b>{$lang['ignored']}</b></span>";
                     break;
 
                 default:
-                    $status = "<font color='black'><b>N/A</b></font>";
+                    $status = "<span style='color: black;'><b>N/A</b></span>";
                     break;
             }
             $HTMLOUT .= "<tr>

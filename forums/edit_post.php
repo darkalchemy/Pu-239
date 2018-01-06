@@ -155,12 +155,11 @@ if (isset($_POST['button']) && $_POST['button'] == 'Edit') {
             //=== delete them from the DB
             sql_query('DELETE FROM attachments WHERE id = ' . sqlesc($attachment_to_delete) . ' AND post_id = ' . sqlesc($post_id));
         }
-    } //=== end attachment stuff
-    //=== only write to staff actions if it's a staff editing and not their own post
-    if ($CURUSER['class'] >= UC_STAFF && $CURUSER['id'] !== $arr_post['user_id']) {
-        write_log('' . $CURUSER['username'] . ' ' . $lang['ep_edited_a_post_by'] . ' ' . htmlsafechars($arr_post['username']) . '. ' . $lang['ep_here_is_the'] . ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . $post_id . '&amp;forum_id=' . (int)$arr_post['forum_id'] . '&amp;topic_id=' . $topic_id . '">' . $lang['ep_link'] . '</a> ' . $lang['ep_to_the_post_history'] . '', $CURUSER['id']);
     }
-    //header('Location: forums.php?action=view_topic&topic_id='.$topic_id.'&page='.$page.'#'.$post_id);
+
+    if ($CURUSER['class'] >= UC_STAFF && $CURUSER['id'] !== $arr_post['user_id']) {
+        write_log($CURUSER['username'] . ' ' . $lang['ep_edited_a_post_by'] . ' ' . htmlsafechars($arr_post['username']) . '. ' . $lang['ep_here_is_the'] . ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . $post_id . '&amp;forum_id=' . (int)$arr_post['forum_id'] . '&amp;topic_id=' . $topic_id . '">' . $lang['ep_link'] . '</a> ' . $lang['ep_to_the_post_history']);
+    }
     header('Location: ' . $site_config['baseurl'] . '/forums.php?action=view_topic&topic_id=' . $topic_id . ($extension_error !== 0 ? '&ee=' . $extension_error : '') . ($size_error !== 0 ? '&se=' . $size_error : ''));
     die();
 }

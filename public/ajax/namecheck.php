@@ -27,10 +27,10 @@ $result = sql_query($sql);
 $numbers = mysqli_num_rows($result);
 if ($numbers > 0) {
     while ($namecheck = mysqli_fetch_assoc($result)) {
-        $HTMLOUT .= "<font color='#cc0000'><img src='{$site_config['pic_base_url']}cross.png' alt='Cross' title='Username Not Available' /><b>Sorry... Username - " . htmlsafechars($namecheck['username']) . ' is already in use.</b></font>';
+        $HTMLOUT .= "<span style='color: #cc0000;'><img src='{$site_config['pic_base_url']}cross.png' alt='Cross' title='Username Not Available' /><b>Sorry... Username - " . htmlsafechars($namecheck['username']) . ' is already in use.</b></span>';
     }
 } else {
-    $HTMLOUT .= "<font color='#33cc33'><img src='{$site_config['pic_base_url']}tick.png' alt='Tick' title='Username Available' /><b>Username Available</b></font>";
+    $HTMLOUT .= "<span style='color: #33cc33;'><img src='{$site_config['pic_base_url']}tick.png' alt='Tick' title='Username Available' /><b>Username Available</b></span>";
 }
 echo $HTMLOUT;
 die();

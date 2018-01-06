@@ -108,7 +108,7 @@ while ($row = mysqli_fetch_array($res)) {
     $tablesize = ($row['Data_length']) + ($row['Index_length']);
     list($formatted_Tsize, $formatted_Tbytes) = byteformat($tablesize, 3, ($tablesize > 0) ? 1 : 0);
     $thispage = '&amp;Do=T&amp;table=' . urlencode($row['Name']);
-    $overhead = ($formatted_Dfree > 0) ? "<a href='staffpanel.php?tool=mysql_overview&amp;action=mysql_overview$thispage'><font color='red'><b>$formatted_Dfree $formatted_Fbytes</b></font></a>" : "$formatted_Dfree $formatted_Fbytes";
+    $overhead = ($formatted_Dfree > 0) ? "<a href='staffpanel.php?tool=mysql_overview&amp;action=mysql_overview$thispage'><span class='has-text-danger'><b>$formatted_Dfree $formatted_Fbytes</b></span></a>" : "$formatted_Dfree $formatted_Fbytes";
     $HTMLOUT .= "<tr>
           <td><span style='font-weight:bold;'>" . strtoupper($row['Name']) . "</span></td>
           <td>{$formatted_Tsize} {$formatted_Tbytes}</td>

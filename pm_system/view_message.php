@@ -25,11 +25,11 @@ if ($message['friend'] > 0) {
 }
 /*
     $avatar = ($CURUSER['avatars'] === 'no' ? '' : (empty($arr_user_stuff['avatar']) ? '
-    <img width="80" src="./images/forumicons/default_avatar.gif" alt="no avatar" />' : (($arr_user_stuff['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ?
-    '<img width="80" src="./images/fuzzybunny.gif" alt="fuzzy!" />' : '<a href="'.htmlsafechars($arr_user_stuff['avatar']).'"><img width="80" src="'.htmlsafechars($arr_user_stuff['avatar']).'" alt="avatar" /></a>')));
+    <img width="80" src="' .$site_config['pic_base_url'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (($arr_user_stuff['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ?
+    '<img width="80" src="' .$site_config['pic_base_url'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<a href="'.htmlsafechars($arr_user_stuff['avatar']).'"><img width="80" src="'.htmlsafechars($arr_user_stuff['avatar']).'" alt="avatar" /></a>')));
 */
 $avatar = (!$CURUSER['opt1'] & user_options::AVATARS ? '' : (empty($arr_user_stuff['avatar']) ? '
-    <img width="80" src="./images/forumicons/default_avatar.gif" alt="no avatar" />' : (($arr_user_stuff['opt1'] & user_options::OFFENSIVE_AVATAR && !$CURUSER['opt1'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img width="80" src="./images/fuzzybunny.gif" alt="fuzzy!" />' : '<a href="' . htmlsafechars($arr_user_stuff['avatar']) . '"><img width="80" src="' . htmlsafechars($arr_user_stuff['avatar']) . '" alt="avatar" /></a>')));
+    <img width="80" src="' .$site_config['pic_base_url'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (($arr_user_stuff['opt1'] & user_options::OFFENSIVE_AVATAR && !$CURUSER['opt1'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img width="80" src="' .$site_config['pic_base_url'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<a href="' . htmlsafechars($arr_user_stuff['avatar']) . '"><img width="80" src="' . htmlsafechars($arr_user_stuff['avatar']) . '" alt="avatar" /></a>')));
 
 if ($message['location'] > 1) {
     //== get name of PM box if not in or out
@@ -79,22 +79,22 @@ $HTMLOUT .= "
                         </form>
                     </div>
                     <div class='has-text-centered flex flex-center top20'>
-                        <a href='./pm_system.php?action=delete&amp;id={$pm_id}'>
+                        <a href='{$site_config['baseurl']}/pm_system.php?action=delete&amp;id={$pm_id}'>
                             <input type='submit' class='button is-small' value='{$lang['pm_viewmsg_delete']}' />
                         </a>" . ($message['draft'] === 'no' ? "
-                        <a href='./pm_system.php?action=save_or_edit_draft&amp;id={$pm_id}'>
+                        <a href='{$site_config['baseurl']}/pm_system.php?action=save_or_edit_draft&amp;id={$pm_id}'>
                             <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_sdraft']}' />
                         </a>" . (($id < 1 || $message['sender'] === $CURUSER['id']) ? '' : "
-                        <a href='./pm_system.php?action=send_message&amp;receiver={$message['sender']}&amp;replyto={$pm_id}'>
+                        <a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver={$message['sender']}&amp;replyto={$pm_id}'>
                             <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_reply']}' />
                         </a>
-                        <a href='./pm_system.php?action=forward&amp;id={$pm_id}'>
+                        <a href='{$site_config['baseurl']}/pm_system.php?action=forward&amp;id={$pm_id}'>
                             <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_fwd']}' />
                         </a>") : "
-                        <a href='./pm_system.php?action=save_or_edit_draft&amp;edit=1&amp;id={$pm_id}'>
+                        <a href='{$site_config['baseurl']}/pm_system.php?action=save_or_edit_draft&amp;edit=1&amp;id={$pm_id}'>
                             <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_dedit']}' />
                         </a>
-                        <a href='./pm_system.php?action=use_draft&amp;send=1&amp;id={$pm_id}'>
+                        <a href='{$site_config['baseurl']}/pm_system.php?action=use_draft&amp;send=1&amp;id={$pm_id}'>
                             <input type='submit' class='button is-small left10' value='{$lang['pm_viewmsg_duse']}' />
                         </a>") . "
                     </div>

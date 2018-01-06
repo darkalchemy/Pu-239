@@ -51,7 +51,7 @@ if ($count == 0) {
         $HTMLOUT .= "<tr><td><a href='userdetails.php?id=" . (int)$arr2['id'] . "'>" . htmlsafechars($arr2['username']) . "</a></td><td>" . get_user_class_name($arr2['class']);
         if ($arr2['class'] > UC_ADMINISTRATOR && $arr2['id'] != $CURUSER['id']) {
             $HTMLOUT .= "</td><td>{$lang['freeusers_until']}" . get_date($arr2['free_switch'], 'DATE') . ' 
-(' . mkprettytime($arr2['free_switch'] - TIME_NOW) . "{$lang['freeusers_togo']})" . "</td><td><font color='red'>{$lang['freeusers_notallowed']}</font></td>
+(' . mkprettytime($arr2['free_switch'] - TIME_NOW) . "{$lang['freeusers_togo']})" . "</td><td><span class='has-text-danger'>{$lang['freeusers_notallowed']}</span></td>
 </tr>";
         } else {
             $HTMLOUT .= "</td><td>{$lang['freeusers_until']}" . get_date($arr2['free_switch'], 'DATE') . ' 

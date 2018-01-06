@@ -19,7 +19,7 @@ $HTMLOUT = '';
 function I_smell_a_rat($var)
 {
     if ((int)$var == 1) {
-        $var = (int)$var;
+        return (int)$var;
     } else {
         stderr('Error', 'I smell a rat!');
     }
@@ -68,7 +68,7 @@ if (isset($_GET['freeleech_success']) && $_GET['freeleech_success']) {
             $HTMLOUT .= main_table("
             <tr>
                 <td>
-                    <img src='{$site_config['pic_base_url']}/smilies/karma.gif' alt='good_karma' title='Good Karma' />
+                    <img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good Karma' />
                 </td>
                 <td>
                     <b>Congratulations! </b>{$CURUSER['username']}, you have set the tracker <b>Free Leech!</b> 
@@ -389,7 +389,8 @@ have gained a 1 to 1 ratio on the selected torrent, and the difference in MB has
                                 FROM torrents
                                 WHERE id = ' . sqlesc((int)$_GET['t_name'])) or sqlerr(__FILE__, __LINE__);
         $arr_free = mysqli_fetch_assoc($res_free);
-        stderr('Success!', '<img src="./images/smilies/karma.gif" alt="good karma" /> <b>Congratulations ' . $CURUSER['username'] . '!!!</b> <img src="./images/smilies/karma.gif" alt="good karma" /><br> you have ReAnimated the torrent <b><a class="altlink" href="details.php?id=' . $arr_free['id'] . '">' . htmlsafechars($arr_free['name']) . '</a></b>! Bringing it back to page one! <img src="./images/smilies/w00t.gif" alt="w00t" /><br><br>
+        stderr('Success!', '<img src="' . $site_config['pic_base_url'] . 'smilies/karma.gif" alt="good karma" /> <b>Congratulations ' . $CURUSER['username'] . '!!!</b> 
+<img src="' . $site_config['pic_base_url'] . 'smilies/karma.gif" alt="good karma" /><br> you have ReAnimated the torrent <b><a class="altlink" href="details.php?id=' . $arr_free['id'] . '">' . htmlsafechars($arr_free['name']) . '</a></b>! Bringing it back to page one! <img src="' . $site_config['pic_base_url'] . 'smilies/w00t.gif" alt="w00t" /><br><br>
 Click to go back to your <a class="altlink" href="mybonus.php">Karma Points</a> page.<br><br>');
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
         die;
@@ -807,7 +808,7 @@ if (isset($_GET['exchange'])) {
             $donation = (int)$_POST['donate'];
             $seedbonus = ($bonus - $donation);
             if ($bonus < $donation || $donation <= 0 || $donation > $points2) {
-                stderr('Error', ' <br>Points: ' . (float)$donation . ' <br> Bonus: ' . (float)$bonus . ' <br> Donation: ' . (float)$donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='altlink' href='./mybonus.php'>Karma Bonus Point</a> page.<br>");
+                stderr('Error', ' <br>Points: ' . (float)$donation . ' <br> Bonus: ' . (float)$bonus . ' <br> Donation: ' . (float)$donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br>");
                 die;
             }
             if (($pointspool + $donation) >= $res_points['points']) {
@@ -881,7 +882,7 @@ if (isset($_GET['exchange'])) {
             $donation = (int)$_POST['donate'];
             $seedbonus = ($bonus - $donation);
             if ($bonus < $donation || $donation <= 0 || $donation > $points2) {
-                stderr('Error', ' <br>Points: ' . (float)$donation . ' <br> Bonus: ' . (float)$bonus . ' <br> Donation: ' . (float)$donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='altlink' href='./mybonus.php'>Karma Bonus Point</a> page.<br>");
+                stderr('Error', ' <br>Points: ' . (float)$donation . ' <br> Bonus: ' . (float)$bonus . ' <br> Donation: ' . (float)$donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br>");
                 die;
             }
             if (($pointspool + $donation) >= $res_points['points']) {
@@ -955,7 +956,7 @@ if (isset($_GET['exchange'])) {
             $donation = (int)$_POST['donate'];
             $seedbonus = ($bonus - $donation);
             if ($bonus < $donation || $donation <= 0 || $donation > $points2) {
-                stderr('Error', ' <br>Points: ' . (float)$donation . ' <br> Bonus: ' . (float)$bonus . ' <br> Donation: ' . (float)$donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='altlink' href='./mybonus.php'>Karma Bonus Point</a> page.<br>");
+                stderr('Error', ' <br>Points: ' . (float)$donation . ' <br> Bonus: ' . (float)$bonus . ' <br> Donation: ' . (float)$donation . " <br>Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.<br> Click to go back to your <a class='altlink' href='{$site_config['baseurl']}/mybonus.php'>Karma Bonus Point</a> page.<br>");
                 die;
             }
             if (($pointspool + $donation) >= $res_points['points']) {
@@ -1704,7 +1705,7 @@ $activet = number_format($at * $bpt * 2, 2);
 
 $HTMLOUT .= "</tr></table></div>
     <div class='container is-fluid portlet'>
-        <h2 class='top20'>What the hell are these Karma Bonus points, and how do I get them?</h2>
+        <h2 class='top20 left10'>What the hell are these Karma Bonus points, and how do I get them?</h2>
         <div class='bordered bottom20'>
             <div class='alt_bordered bg-00'>
                 <h4>
@@ -1739,7 +1740,7 @@ $HTMLOUT .= "</tr></table></div>
             </div>
         </div>
 
-        <div class='bordered bottom20'>
+        <div class='bordered'>
             <div class='alt_bordered bg-00'>
                 <h4>Some things that will cost you karma points:</h4>
                 <p>

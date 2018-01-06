@@ -64,9 +64,9 @@ if (isset($_GET['act'])) {
         $IDS = sql_query('SELECT id FROM stylesheets');
         while ($ID = mysqli_fetch_array($IDS)) {
             if (file_exists(TEMPLATE_DIR . (int)$ID['id'] . '/template.php')) {
-                $TAKEN[] = "<font color='green'>$ID[id]</font>";
+                $TAKEN[] = "<span style='color: green;'>$ID[id]</span>";
             } else {
-                $TAKEN[] = "<font color='red'>$ID[id]</font>";
+                $TAKEN[] = "<span class='has-text-danger'>$ID[id]</span>";
             }
         }
         $HTML .= "

@@ -46,6 +46,7 @@ class CustomAJAXChat extends AJAXChat
             unsetSessionVar('Channel');
             $this->addInfoMessage('errorBanned');
         }
+        return false;
     }
 
     /**
@@ -106,7 +107,7 @@ class CustomAJAXChat extends AJAXChat
             $defaultChannelFound = false;
 
             foreach ($customChannels as $name => $id) {
-                $this->_allChannels[ $this->trimChannelName($name) ] = $id;
+                $this->_allChannels[ $this->trimChannelName($name, $this->getConfig('contentEncoding')) ] = $id;
                 if ($id == $this->getConfig('defaultChannelID')) {
                     $defaultChannelFound = true;
                 }

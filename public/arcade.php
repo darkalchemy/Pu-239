@@ -15,7 +15,7 @@ $HTMLOUT = "
                 <h1>{$site_config['site_name']} Old School Arcade!</h1>
                 <span>Top Scores Earn {$site_config['top_score_points']} Karma Points</span>
                 <div class='level-center top10'>
-                    <a class='altlink' href='./arcade_top_scores.php'>Top Scores</a>
+                    <a class='altlink' href='{$site_config['baseurl']}/arcade_top_scores.php'>Top Scores</a>
                 </div>
             </div>
             <div class='level-center'>";
@@ -29,7 +29,7 @@ foreach ($list as $gamename) {
     $fullgamename = $site_config['arcade_games_names'][ $game_id ];
     $HTMLOUT .= "
                 <div class='margin10 w-20'>
-                    <a href='./flash.php?gameURI={$game}.swf&amp;gamename={$game}&amp;game_id={$id}' class='tooltipper' title='{$fullgamename}'>
+                    <a href='{$site_config['baseurl']}/flash.php?gameURI={$game}.swf&amp;gamename={$game}&amp;game_id={$id}' class='tooltipper' title='{$fullgamename}'>
                         <img src='{$site_config['pic_base_url']}games/{$game}.png' alt='{$game}' class='round10' />
                     </a>
                 </div>";

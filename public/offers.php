@@ -203,7 +203,7 @@ switch ($action) {
     <tr>
     <td>offered by:</td>
     <td>' . format_username($arr) . ' [ ' . get_user_class_name($arr['class']) . ' ]
-    ratio: ' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . get_user_ratio_image($arr['uploaded'], ($site_config['ratio_free'] ? '1' : $arr['downloaded'])) . '</td>
+    ratio: ' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . get_user_ratio_image(($site_config['ratio_free'] ? 1 : $arr['uploaded'] / $arr['downloaded'])) . '</td>
     </tr>
     <tr>
     <td>Report Offer</td>
@@ -297,7 +297,7 @@ switch ($action) {
     <tr>
     <td>offered by:</td>
     <td>' . format_username($CURUSER) . ' [ ' . get_user_class_name($CURUSER['class']) . ' ]
-    ratio: ' . member_ratio($CURUSER['uploaded'], $site_config['ratio_free'] ? '0' : $CURUSER['downloaded']) . get_user_ratio_image($CURUSER['uploaded'], ($site_config['ratio_free'] ? '1' : $CURUSER['downloaded'])) . '</td>
+    ratio: ' . member_ratio($CURUSER['uploaded'], $site_config['ratio_free'] ? '0' : $CURUSER['downloaded']) . get_user_ratio_image(($site_config['ratio_free'] ? 1 : $CURUSER['uploaded'] / $CURUSER['downloaded'])) . '</td>
     </tr>
     </table>
     <br>' : '') . '
@@ -678,7 +678,7 @@ function comment_table($rows)
         if ($row['editedby']) {
             $res_user = sql_query('SELECT username FROM users WHERE id=' . sqlesc($row['editedby'])) or sqlerr(__FILE__, __LINE__);
             $arr_user = mysqli_fetch_assoc($res_user);
-            $text .= '<p>Last edited by <a href="userdetails.php?id=' . (int)$row['editedby'] . '">
+            $text .= '<p>Last edited by <a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . (int)$row['editedby'] . '">
         <b>' . htmlsafechars($arr_user['username']) . '</b></a> at ' . get_date($row['editedat'], 'DATE') . '</p>';
         }
         $top_comment_stuff = $row['comment_id'] . ' by ' . (isset($row['username']) ? format_username($row) . ($row['title'] !== '' ? ' [ ' . htmlsafechars($row['title']) . ' ] ' : ' [ ' . get_user_class_name($row['class']) . ' ]  ') : ' M.I.A. ') . get_date($row['added'], '') . ($row['id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? '

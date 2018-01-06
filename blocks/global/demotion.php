@@ -4,7 +4,7 @@ global $CURUSER, $lang;
 if ($CURUSER['override_class'] != 255 && $CURUSER) {
     $htmlout .= "
     <li>
-        <a href='./restoreclass.php'>
+        <a href='{$site_config['baseurl']}/restoreclass.php'>
             <b class='button btn-warning is-small dt-tooltipper-small' data-tooltip-content='#demotion_tooltip'>
                 {$lang['gl_temp_demotion']}
             </b>

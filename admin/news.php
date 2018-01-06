@@ -230,8 +230,8 @@ if ($mode == 'news') {
         $hash = md5('the@@saltto66??' . $newsid . 'add' . '@##mu55y==');
         $HTMLOUT .= "<table ><tr><td class='embedded'>
         $added{$lang['news_created_by']}
-        - [<a href='./staffpanel.php?tool=news&amp;mode=edit&amp;newsid=$newsid'><b>{$lang['news_edit']}</b></a>]
-        - [<a href='./staffpanel.php?tool=news&amp;mode=delete&amp;newsid=$newsid&amp;sure=1&amp;h=$hash'><b>{$lang['news_delete']}</b></a>]
+        - [<a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=edit&amp;newsid=$newsid'><b>{$lang['news_edit']}</b></a>]
+        - [<a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;newsid=$newsid&amp;sure=1&amp;h=$hash'><b>{$lang['news_delete']}</b></a>]
         </td></tr></table>\n";
         $HTMLOUT .= "<tr><td class='comment'><b>" . htmlsafechars($title) . '</b><br>' . format_comment($body) . "</td></tr>\n";
         $HTMLOUT .= '<br>';

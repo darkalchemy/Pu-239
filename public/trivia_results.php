@@ -1,11 +1,11 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('trivia'));
 
 $sql = "SELECT gamenum, IFNULL(unix_timestamp(finished), 0) AS ended, IFNULL(unix_timestamp(started), 0) AS started FROM triviasettings GROUP BY gamenum ORDER BY gamenum DESC LIMIT 10";
-//$sql = "SELECT gamenum, unix_timestamp(finished) AS ended, unix_timestamp(started) AS started FROM triviasettings GROUP BY gamenum ORDER BY gamenum DESC LIMIT 10";
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $table = "
             <div class='container is-fluid portlet'>";
@@ -61,4 +61,4 @@ while ($result = mysqli_fetch_assoc($res)) {
 }
 $table .= "
             </div>";
-echo stdhead('Trivia') . $table . stdfoot();
+echo stdhead('Trivia') . wrapper($table) . stdfoot();

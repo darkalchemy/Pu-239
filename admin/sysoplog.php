@@ -98,9 +98,9 @@ if (mysqli_num_rows($res) == 0) {
         }
         $date = get_date($arr['added'], 'DATE');
         $time = get_date($arr['added'], 'LONG', 0, 1);
-        $HTMLOUT .= "<tr class='tableb'><td style='background-color:$color'><font color='black'>{$date}</font></td>
-<td style='background-color:$color'><font color='black'>{$time}</font></td>
-<td style='background-color:$color'><font color='black'>{$arr['txt']}</font></td></tr>\n";
+        $HTMLOUT .= "<tr class='tableb'><td style='background-color:$color'><span style='color: black;'>{$date}</span></td>
+<td style='background-color:$color'><span style='color: black;'>{$time}</span></td>
+<td style='background-color:$color'><span style='color: black;'>{$arr['txt']}</span></td></tr>\n";
     }
     $HTMLOUT .= '</table>';
 }

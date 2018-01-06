@@ -37,9 +37,9 @@ switch ($params['mode']) {
         edit_cat_form();
         break;
 
-    case 'cat_form':
-        show_cat_form();
-        break;
+//    case 'cat_form':
+//        show_cat_form();
+//        break;
 
     default:
         show_categories();
@@ -201,7 +201,7 @@ function delete_cat_form()
     $check = '';
     if ($count[0]) {
         $select = "<select name='new_cat_id'>\n<option value='0'>{$lang['categories_select']}</option>\n";
-        $cats = genrelist2();
+        $cats = genrelist();
         foreach ($cats as $c) {
             $select .= ($c['id'] != $r['id']) ? "<option value='{$c['id']}'>" . htmlsafechars($c['name'], ENT_QUOTES) . "</option>\n" : '';
         }

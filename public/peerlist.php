@@ -43,7 +43,7 @@ function dltable($name, $arr, $torrent)
             $htmlout .= '<td>' . ($mod ? $e['ip'] : preg_replace('/\.\d+$/', '.xxx', $e['ip'])) . "</td>\n";
         }
         $secs = max(1, ($now - $e['st']) - ($now - $e['la']));
-        $htmlout .= "<td>" . ($e['connectable'] == 'yes' ? "{$lang['peerslist_yes']}" : "<font color='red'>{$lang['peerslist_no']}</font>") . "</td>\n";
+        $htmlout .= "<td>" . ($e['connectable'] == 'yes' ? "{$lang['peerslist_yes']}" : "<span class='has-text-danger'>{$lang['peerslist_no']}</span>") . "</td>\n";
         $htmlout .= "<td>" . mksize($e['uploaded']) . "</td>\n";
         $htmlout .= "<td><span style=\"white-space: nowrap;\">" . mksize(($e['uploaded'] - $e['uploadoffset']) / $secs) . "/s</span></td>\n";
         $htmlout .= '' . ($site_config['ratio_free'] ? '' : "<td>" . mksize($e['downloaded']) . '</td>') . "\n";

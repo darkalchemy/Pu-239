@@ -39,7 +39,7 @@ function getRate($id, $what)
                      'four-stars',
                      'five-stars',
                  ] as $star) {
-            $rate .= '<li><a href="./ajax/rating.php?id=' . (int)$id . '&amp;rate=' . $i . '&amp;ref=' . urlencode($_SERVER['REQUEST_URI']) . '&amp;what=' . $what . '" class="' . $star . ' tooltipper" onclick="do_rate(' . $i . ',' . $id . ",'" . $what . "'); return false\" title=\"" . $i . ' star' . ($i > 1 ? 's' : '') . " out of 5\" >$i</a></li>";
+            $rate .= '<li><a href="' . $site_config['baseurl'] . '/ajax/rating.php?id=' . (int)$id . '&amp;rate=' . $i . '&amp;ref=' . urlencode($_SERVER['REQUEST_URI']) . '&amp;what=' . $what . '" class="' . $star . ' tooltipper" onclick="do_rate(' . $i . ',' . $id . ",'" . $what . "'); return false\" title=\"" . $i . ' star' . ($i > 1 ? 's' : '') . " out of 5\" >$i</a></li>";
             ++$i;
         }
         $rate .= '</ul>';

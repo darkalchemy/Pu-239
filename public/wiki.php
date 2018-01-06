@@ -165,7 +165,7 @@ function wikireplace($input)
  */
 function wikimenu()
 {
-    global $lang, $site_config, $CURUSER;
+    global $lang, $site_config;
     $res2 = sql_query('SELECT name FROM wiki ORDER BY id DESC LIMIT 1');
     $latest = mysqli_fetch_assoc($res2);
     $latestarticle = articlereplace(htmlsafechars($latest['name']));

@@ -15,10 +15,19 @@ if ($site_config['uploadapp_alert'] && $CURUSER['class'] >= UC_STAFF) {
     }
     if ($newapp > 0) {
         $htmlout .= "
-   <li>
-   <a class='tooltip' href='staffpanel.php?tool=uploadapps&amp;action=app'><b class='button btn-warning is-small'>{$lang['gl_uploadapp_new']}</b>
-   <span class='custom info alert alert-warning'><em>{$lang['gl_uploadapp_new']}</em>
-   {$lang['gl_hey']} {$CURUSER['username']}!<br> $newapp {$lang['gl_uploadapp_ua']}" . ($newapp > 1 ? 's' : '') . " {$lang['gl_uploadapp_dealt']} 
-   {$lang['gl_uploadapp_click']}</span></a></li>";
+    <li>
+        <a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'>
+            <span class='button tag is-info dt-tooltipper-small' data-tooltip-content='#uploadapp_tooltip'>
+                {$lang['gl_uploadapp_new']}
+            </span>
+            <div class='tooltip_templates'>
+                <span id='uploadapp_tooltip'>
+                    <div class='size_4 has-text-centered has-text-danger has-text-weight-bold bottom10'>
+                        {$lang['gl_hey']} {$CURUSER['username']}!<br> $newapp {$lang['gl_uploadapp_ua']}" . ($newapp > 1 ? 's' : '') . " {$lang['gl_uploadapp_dealt']} 
+                    </div>
+                </span>
+            </div>
+        </a>
+    </li>";
     }
 }

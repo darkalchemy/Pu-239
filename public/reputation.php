@@ -309,7 +309,7 @@ if (isset($input['do']) && $input['do'] == 'addrep') {
  */
 function rep_output($msg = '', $html = '')
 {
-    global $closewindow, $lang, $CURUSER;
+    global $closewindow, $lang;
     $body_class = 'background-16 h-style-9 text-9 skin-2';
     if ($msg && empty($html)) {
         $html = "

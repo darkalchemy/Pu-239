@@ -70,9 +70,9 @@ body.ajax-chat {
 
 #content #headline {
     position: absolute;
-    left: 0px;
-    right: 0px;
-    top: 0px;
+    left: 0;
+    right: 0;
+    top: 0;
     padding: 0 0 0 20px;
     line-height: 45px;
     margin: 0;
@@ -136,10 +136,10 @@ body.ajax-chat {
 
 #content #onlineListContainer #onlineList, #content #helpContainer #helpList, #content #settingsContainer #settingsList {
     position: absolute;
-    left: 0px;
-    right: 0px;
+    left: 0;
+    right: 0;
     top: 25px;
-    bottom: 0px;
+    bottom: 0;
     overflow: auto;
 }
 
@@ -316,23 +316,23 @@ body.ajax-chat {
 }
 
 #content #optionsContainer #settingsButton {
-    background-position: -92px 0px;
+    background-position: -92px 0;
 }
 
 #content #optionsContainer #onlineListButton {
-    background-position: -69px 0px;
+    background-position: -69px 0;
 }
 
 #content #optionsContainer #audioButton {
-    background-position: 0px 0px;
+    background-position: 0 0;
 }
 
 #content #optionsContainer #audioButton.off {
-    background-position: 0px -22px;
+    background-position: 0 -22px;
 }
 
 #content #optionsContainer #autoScrollButton {
-    background-position: -23px 0px;
+    background-position: -23px 0;
 }
 
 #content #optionsContainer #autoScrollButton.off {
@@ -345,7 +345,7 @@ body.ajax-chat {
 }
 
 #content #logoutChannelContainer #showChannelsButton {
-    background-position: -46px 0px;
+    background-position: -46px 0;
     display: none;
 }
 
@@ -401,7 +401,7 @@ body.ajax-chat {
     }
 
     #content #copyright {
-        top: 0px;
+        top: 0;
         right: 30px;
         line-height: 25px;
     }
@@ -409,7 +409,7 @@ body.ajax-chat {
     #content #logoutChannelContainer {
         top: 5px;
         left: 5px;
-        right: 0px;
+        right: 0;
     }
 
     #content #logoutChannelContainer label {
@@ -472,7 +472,7 @@ body.ajax-chat {
     #content #logoutChannelContainer select {
         left: 40px;
         position: absolute;
-        top: 0px;
+        top: 0;
     }
 
     #content #mainPanelContainer {
@@ -486,10 +486,10 @@ body.ajax-chat {
         border-right-width: 0;
         position: absolute;
         width: auto;
-        top: 0px;
-        right: 0px;
-        bottom: 0px;
-        left: 0px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
     }
 
     #content #chatList {

@@ -38,7 +38,7 @@ $res = sql_query('SELECT uh.*, username, users.id AS uid FROM userhits uh LEFT J
 while ($arr = mysqli_fetch_assoc($res)) {
     $HTMLOUT .= '
 <tr><td>' . number_format($arr['number']) . '</td>
-<td><b><a href="userdetails.php?id=' . (int)$arr['uid'] . '">' . htmlsafechars($arr['username']) . '</a></b></td>
+<td><b><a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . (int)$arr['uid'] . '">' . htmlsafechars($arr['username']) . '</a></b></td>
 <td>' . get_date($arr['added'], 'DATE', 0, 1) . "</td>
 </tr>\n";
 }

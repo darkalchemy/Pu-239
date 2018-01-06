@@ -86,8 +86,8 @@ if (mysqli_num_rows($res)) {
       <td>' . htmlsafechars($arr['name']) . '</td>
       <td>' . htmlsafechars($arr['image']) . '</td>
       <td>' . ($arr['bonus'] != 0 ? '' . $lang['moods_yes'] . '' : '' . $lang['moods_no'] . '') . '</td>
-      <td><a style="color:#FF0000" href="staffpanel.php?tool=edit_moods&amp;id=' . (int)$arr['id'] . '&amp;action=edit">' . $lang['moods_edit1'] . '</a></td></tr>' .
-            //<td><a style="color:#FF0000" href="staffpanel.php?tool=edit_moods&amp;action=remove$amp;id='.$arr['id'].'&amp;hash='.$form_hash.'>'.$lang['moods_remove'].'</a></td></tr>
+      <td><a style="color:#FF0000" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=edit_moods&amp;id=' . (int)$arr['id'] . '&amp;action=edit">' . $lang['moods_edit1'] . '</a></td></tr>' .
+            //<td><a style="color:#FF0000" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=edit_moods&amp;action=remove$amp;id='.$arr['id'].'&amp;hash='.$form_hash.'>'.$lang['moods_remove'].'</a></td></tr>
             '';
     }
     $HTMLOUT .= '</table>';

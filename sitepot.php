@@ -108,21 +108,23 @@ foreach ($pot_options as $Pot_option) {
     } else {
         $disabled = 'false';
     }
-    $HTMLOUT .= '<tr><td><b>Contribute ' . $Pot_option . ' Karma Points</b><br></td>
-          <td><strong>' . $Pot_option . "</strong></td>
-          <td>
-          <form action='' method='post'>
-    
-   	      <div class=\"buttons\">
-	      <input name='want_pot' type='hidden' value='" . $Pot_option . "' />
-          <button value='Exchange!' " . ($disabled == 'true' ? "disabled" : '') . ' type="submit" class="positive">
-          <img src="./images/aff_tick.gif" alt="" /> Exchange!
-          </button>
-          </div>
-
-          </form>
-          </td>
-          </tr>';
+    $HTMLOUT .= "
+            <tr>
+                <td>
+                    <b>Contribute $Pot_option Karma Points</b><br>
+                </td>
+                <td><strong>$Pot_option</strong></td>
+                <td>
+                    <form action='' method='post'>
+                        <div class='buttons'>
+                            <input name='want_pot' type='hidden' value='" . $Pot_option . "' />
+                            <button value='Exchange!' " . ($disabled == 'true' ? "disabled" : '') . " type='submit' class='positive'>
+                                <img src='{$site_config['pic_base_url']}aff_tick.gif' alt='' /> Exchange!
+                            </button>
+                        </div>
+                    </form>
+                </td>
+             </tr>";
 }
 $HTMLOUT .= '</table>';
 echo stdhead('Site Pot') . $HTMLOUT . stdfoot();

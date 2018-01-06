@@ -140,7 +140,7 @@ if (mysqli_num_rows($result) != 0) {
         }
         if (XBT_TRACKER == true) {
             $HTMLOUT .= '<tr>
-<td><a href="userdetails.php?id=' . (int)($row['uid']) . '">' . htmlsafechars($row['username']) . '</a></td>
+<td><a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . (int)($row['uid']) . '">' . htmlsafechars($row['username']) . '</a></td>
 <td><a href="details.php?id=' . (int)($row['fid']) . '">' . $smallname . '</a></td>
 <td>' . htmlsafechars(XBT_IP_CONVERT($row['ipa'])) . '</td>
 <td>' . htmlsafechars(mksize($row['uploaded'])) . '</td>
@@ -154,7 +154,7 @@ if (mysqli_num_rows($result) != 0) {
 </tr>';
         } else {
             $HTMLOUT .= '<tr>
-<td><a href="userdetails.php?id=' . (int)($row['userid']) . '">' . htmlsafechars($row['username']) . '</a></td>
+<td><a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . (int)($row['userid']) . '">' . htmlsafechars($row['username']) . '</a></td>
 <td><a href="details.php?id=' . (int)($row['torrent']) . '">' . $smallname . '</a></td>
 <td>' . htmlsafechars($row['ip']) . '</td>
 <td>' . htmlsafechars($row['port']) . '</td>

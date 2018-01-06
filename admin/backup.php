@@ -53,7 +53,7 @@ if (empty($mode)) {
         while ($arr = mysqli_fetch_assoc($res)) {
             $HTMLOUT .= "
                         <tr>
-                            <td><a href='./staffpanel.php?tool=backup&amp;mode=download&amp;id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></td>
+                            <td><a href='{$site_config['baseurl']}/staffpanel.php?tool=backup&amp;mode=download&amp;id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></td>
                             <td>" . get_date($arr['added'], 'LONG', 1, 0) . "</td>
                             <td>";
             if (!empty($arr['uid'])) {
@@ -74,8 +74,8 @@ if (empty($mode)) {
                     </tbody>
                 </table>
                 <div class='has-text-centered top20 bottom20 level-center flex-center'>
-                    <a class='button right20' href='./staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
-                    <input type='submit' class='button is-small' value='{$lang['backup_delselected']}' onclick=\"return confirm(''{$lang['backup_confirm']}'');\" />
+                    <a class='button right20' href='{$site_config['baseurl']}/staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
+                    <input type='submit' class='button is-small' value='{$lang['backup_delselected']}' onclick=\"return confirm('{$lang['backup_confirm']}');\" />
                 </div>
             </form>
             <div class='has-text-centered top20 bottom20'>

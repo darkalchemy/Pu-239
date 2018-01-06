@@ -138,7 +138,7 @@ function sharetable($res, $variant = 'index')
                     $ratio = 1;
                 }
                 $htmlout .= "<td><b><a href='peerlist.php?id=$id#seeders'>
-               <font color='" . get_slr_color($ratio) . "'>" . (int)$row['seeders'] . "</font></a></b></td>\n";
+               <span style='color: " . get_slr_color($ratio) . ";'>" . (int)$row['seeders'] . "</span></a></b></td>\n";
             } else {
                 $htmlout .= "<td><b><a class='" . linkcolor($row['seeders']) . "' href='peerlist.php?id=$id#seeders'>" . (int)$row['seeders'] . "</a></b></td>\n";
             }
@@ -193,6 +193,6 @@ if ($count) {
     $res = sql_query($query1) or sqlerr(__FILE__, __LINE__);
 }
 if ($count) {
-    $htmlout .= $pager['pagertop'] . sharetable($res, 'index', true) . $pager['pagerbottom'];
+    $htmlout .= $pager['pagertop'] . sharetable($res, 'index') . $pager['pagerbottom'];
 }
 echo stdhead('Sharemarks for ' . htmlsafechars($arr['username'])) . wrapper($htmlout) . stdfoot();

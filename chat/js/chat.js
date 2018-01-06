@@ -1954,7 +1954,6 @@ var ajaxChat = {
                 case '/clear':
                     this.clearChatList();
                     return false;
-                    break;
                 default:
                     text = this.parseCustomInputCommand(text, textParts);
             }

@@ -27,6 +27,7 @@ function remove_torrent_pass($torrent_pass)
     }
     $key = 'user::torrent_pass:::' . $torrent_pass;
     $cache->delete($key);
+    return true;
 }
 
 /**
@@ -518,8 +519,6 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
     }
     //== Reset Torrent pass
     if ((isset($_POST['reset_torrent_pass'])) && ($_POST['reset_torrent_pass'])) {
-        $sql = "INSERT INTO torrent_pass (torrent_pass) VALUES (" . sqlesc($user['torrent_pass']) . ")";
-        sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $newpasskey = make_torrentpass();
         $modcomment = get_date(TIME_NOW, 'DATE', 1) . "{$lang['modtask_passkey']}" . sqlesc($user['torrent_pass']) . "{$lang['modtask_reset']}" . sqlesc($newpasskey) . "{$lang['modtask_by']}" . $CURUSER['username'] . ".\n" . $modcomment;
         $curuser_cache['torrent_pass'] = $newpasskey;
@@ -1058,11 +1057,9 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
     if (sizeof($setbits) > 0 || sizeof($clrbits) > 0) {
         sql_query('UPDATE users SET opt1 = ((opt1 | ' . $setbits . ') & ~' . $clrbits . '), opt2 = ((opt2 | ' . $setbits . ') & ~' . $clrbits . ') WHERE id = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
     }
-    // grab current data
+
     $res = sql_query('SELECT opt1, opt2 FROM users WHERE id = ' . sqlesc($userid) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_assoc($res);
-    $row['opt1'] = $row['opt1'];
-    $row['opt2'] = $row['opt2'];
     $cache->update_row('user' . $userid, [
         'opt1' => $row['opt1'],
         'opt2' => $row['opt2'],

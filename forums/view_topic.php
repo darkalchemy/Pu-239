@@ -451,12 +451,12 @@ foreach ($res as $arr) {
                  at ' . get_date($arr['edit_date'], '') . ' UTC ' . ($arr['edit_reason'] !== '' ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
                  ' . (($CURUSER['class'] >= UC_STAFF && $arr['post_history'] !== '') ? ' <a class="altlink bordered" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int)$arr['post_id'] . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span>' : '</span>');
             } else {
-                $edited_by = '<span>' . $lang['vmp_last_edit_by_anony'] . ' [<a class="altlink bordered" href="userdetails.php?id=' . (int)$arr['edited_by'] . '">' . htmlsafechars($arr_edited['username']) . '</a>]
+                $edited_by = '<span>' . $lang['vmp_last_edit_by_anony'] . ' [<a class="altlink bordered" href="' . $site_config['baseurl'] . '/userdetails.php?id=' . (int)$arr['edited_by'] . '">' . htmlsafechars($arr_edited['username']) . '</a>]
                  at ' . get_date($arr['edit_date'], '') . ' UTC ' . ($arr['edit_reason'] !== '' ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
                  ' . (($CURUSER['class'] >= UC_STAFF && $arr['post_history'] !== '') ? ' <a class="altlink bordered" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int)$arr['post_id'] . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span>' : '</span>');
             }
         } else {
-            $edited_by = '<span>' . $lang['fe_last_edited_by'] . ' <a class="altlink bordered" href="userdetails.php?id=' . (int)$arr['edited_by'] . '">' . htmlsafechars($arr_edited['username']) . '</a>
+            $edited_by = '<span>' . $lang['fe_last_edited_by'] . ' <a class="altlink bordered" href="' . $site_config['baseurl'] . '/userdetails.php?id=' . (int)$arr['edited_by'] . '">' . htmlsafechars($arr_edited['username']) . '</a>
                  at ' . get_date($arr['edit_date'], '') . ' UTC ' . ($arr['edit_reason'] !== '' ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
                  ' . (($CURUSER['class'] >= UC_STAFF && $arr['post_history'] !== '') ? ' <a class="altlink bordered" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int)$arr['post_id'] . '&amp;forum_id=' . $forum_id . '&amp;topic_id=' . $topic_id . '">' . $lang['fe_read_post_history'] . '</a></span>' : '</span>');
         }
@@ -530,7 +530,7 @@ foreach ($res as $arr) {
                                             </a>
                                         </span>
                                         ' . (($arr['paranoia'] >= 2 && $CURUSER['class'] < UC_STAFF) ? '
-                                        <img src="' . $site_config['pic_base_url'] . 'smilies/tinfoilhat.gif" alt="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" class="tooltipper" title="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" />' : get_user_ratio_image($arr['uploaded'], ($site_config['ratio_free'] ? '0' : $arr['downloaded']))) . '</span>
+                                        <img src="' . $site_config['pic_base_url'] . 'smilies/tinfoilhat.gif" alt="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" class="tooltipper" title="' . $lang['fe_i_wear_a_tinfoil_hat'] . '!" />' : get_user_ratio_image(($site_config['ratio_free'] ? 0 : $arr['uploaded'] / $arr['downloaded']))) . '</span>
                                         <span>' . $post_icon . $post_title . '&#160;&#160;&#160;&#160; ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span>
                                     </div>
                                     <div class="flex flex-right padding10">

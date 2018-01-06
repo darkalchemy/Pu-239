@@ -148,7 +148,7 @@ var ajaxChatConfig = {
         'uploader',
         'moderator',
         'administrator',
-        'sysop',
+        'sysop'
     ],
 
     // Defines the list of allowed color codes:

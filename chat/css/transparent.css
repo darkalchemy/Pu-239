@@ -81,16 +81,16 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #content #chatList:before {
     top: 17px;
-    left: 0px;
-    width: 0px;
+    left: 0;
+    width: 0;
     height: 98%;
 }
 
 #content #chatList:after {
-    top: 0px;
+    top: 0;
     left: 17px;
     width: 98%;
-    height: 0px;
+    height: 0;
 }
 
 #content #onlineListContainer #onlineList div {
@@ -120,15 +120,15 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 /* Status Icon */
 #content #statusIconContainer {
-    background: url('../../images/loading-sprite.png') no-repeat 0px 0px;
+    background: url('../../images/loading-sprite.png') no-repeat 0 0;
 }
 
 #content #statusIconContainer.waiting {
-    background-position: 0px -22px;
+    background-position: 0 -22px;
 }
 
 #content #statusIconContainer.retrying {
-    background-position: 0px -44px;
+    background-position: 0 -44px;
 }
 
 #content #bbCodeContainer input {

@@ -12,7 +12,7 @@ if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['sus
     stderr($lang['bj_error'], $lang['bj_gaming_rights_disabled']);
 }
 
-$blackjack['debug'] = false; // display debug info
+$blackjack['debug'] = true; // display debug info
 $blackjack['decks'] = 2; // number of decks in shoe
 $blackjack['dead_cards'] = 35; // number of cards remaining before shuffle
 $blackjack['shuffle'] = random_int(1000, 20000); // number of time to shuffle the deck
@@ -83,11 +83,11 @@ $doubleddown = $nick['ddown'] === 'yes' ? true : false;
 if ($CURUSER['id'] == $nick['userid'] && $nick['status'] == 'waiting') {
     stderr('Sorry ' . format_username($CURUSER['id']) . ',', "You'll have to wait until another player plays your last game before you can play a new one.<br>
     You have {$nick['points']}.<br><br>
-    <a href='./games.php' class='button is-small'>{$lang['bj_back']}</a><br><br>");
+    <a href='{$site_config['baseurl']}/games.php' class='button is-small'>{$lang['bj_back']}</a><br><br>");
 }
 if ($CURUSER['id'] != $nick['userid'] && $nick['gameover'] == 'no') {
     stderr('Sorry ' . format_username($CURUSER['id']) . ',', "You'll have to wait until " . format_username($nick['id']) . " finishes $gender game before you can play a new one.<br><br>
-    <a href='./games.php' class='button is-small'>{$lang['bj_back']}</a><br><br>");
+    <a href='{$site_config['baseurl']}/games.php' class='button is-small'>{$lang['bj_back']}</a><br><br>");
 }
 $opponent = isset($nick['username']) ? '<h3>Your Opponent is: ' . format_username($nick['id']) . '</h3>' : '';
 $required_ratio = 1.0;
@@ -501,8 +501,8 @@ if ($game) {
                             {$lang['bj_your_opp_was']} " . format_username($a['id']) . ", $gender had $points_text, $winorlose.
                         </p><br>
                         <p class='has-text-centered'>
-                            <a href='./blackjack.php?id=$id' class='button is-small'>{$lang['bj_play_again']}</a>
-                            <a href='./games.php' class='button is-small'>Games</a>
+                            <a href='{$site_config['baseurl']}/blackjack.php?id=$id' class='button is-small'>{$lang['bj_play_again']}</a>
+                            <a href='{$site_config['baseurl']}/games.php' class='button is-small'>Games</a>
                         </p>";
             } else {
                 sql_query("UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $now . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . " AND userid = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -514,7 +514,7 @@ if ($game) {
                 $HTMLOUT .= "
                         <div class='has-text-centered'>
                             {$lang['bj_there_are_no_other_players']}<br>
-                            <a href='./games.php' class='button is-small'>{$lang['bj_back']}</a>
+                            <a href='{$site_config['baseurl']}/games.php' class='button is-small'>{$lang['bj_back']}</a>
                         </div>";
             }
             $HTMLOUT .= '
@@ -612,8 +612,8 @@ if ($game) {
                             {$lang['bj_your_opp_was']} " . format_username($a['id']) . ", $gender had $points_text, $winorlose.
                         </p><br>
                         <p class='has-text-centered'>
-                            <a href='./blackjack.php?id=$id' class='button is-small'>{$lang['bj_play_again']}</a>
-                            <a href='./games.php' class='button is-small'>Games</a>
+                            <a href='{$site_config['baseurl']}/blackjack.php?id=$id' class='button is-small'>{$lang['bj_play_again']}</a>
+                            <a href='{$site_config['baseurl']}/games.php' class='button is-small'>Games</a>
                         </p>";
             } else {
                 sql_query("UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $now . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . " AND userid = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -625,7 +625,7 @@ if ($game) {
                 $HTMLOUT .= "
                         <div class='has-text-centered'>
                             {$lang['bj_there_are_no_other_players']}<br>
-                            <a href='./games.php' class='button is-small'>{$lang['bj_back']}</a>
+                            <a href='{$site_config['baseurl']}/games.php' class='button is-small'>{$lang['bj_back']}</a>
                         </div>";
             }
             $HTMLOUT .= '
@@ -849,8 +849,8 @@ if ($game) {
                             {$lang['bj_your_opp_was']} " . format_username($a['id']) . ", $gender had $points_text, $winorlose.
                         </p><br>
                         <p class='has-text-centered'>
-                            <a href='./blackjack.php?id=$id' class='button is-small'>{$lang['bj_play_again']}</a>
-                            <a href='./games.php' class='button is-small'>Games</a>
+                            <a href='{$site_config['baseurl']}/blackjack.php?id=$id' class='button is-small'>{$lang['bj_play_again']}</a>
+                            <a href='{$site_config['baseurl']}/games.php' class='button is-small'>Games</a>
                         </p>";
         } else {
             sql_query("UPDATE blackjack SET $update_ddown, status = 'waiting', date = " . $now . ", gameover = 'yes' WHERE game_id = " . sqlesc($blackjack['gameid']) . " AND userid = " . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
@@ -862,7 +862,7 @@ if ($game) {
             $HTMLOUT .= "
                         <div class='has-text-centered'>
                             {$lang['bj_there_are_no_other_players']}<br>
-                            <a href='./games.php' class='button is-small'>{$lang['bj_back']}</a>
+                            <a href='{$site_config['baseurl']}/games.php' class='button is-small'>{$lang['bj_back']}</a>
                         </div>";
         }
         $HTMLOUT .= '
@@ -898,7 +898,7 @@ if ($game) {
 
     $HTMLOUT .= "
                 <a id='blackjack-hash'></a>
-                <h2><a href='./games.php' title='Return to the Games' class='tooltipper'>{$blackjack['title']}</a></h2>
+                <h2><a href='{$site_config['baseurl']}/games.php' title='Return to the Games' class='tooltipper'>{$blackjack['title']}</a></h2>
                 $opponent
                 <table class='table table-bordered table-striped top20 bottom20'>
                     <tr class='no_hover'>
@@ -1218,8 +1218,10 @@ function output($blackjack, $HTMLOUT, $debugout)
     die();
 }
 
+
 /**
  * @return array
+ * @throws Exception
  */
 function shuffle_decks()
 {
@@ -1252,7 +1254,7 @@ function shuffle_decks()
     $debugout .= '
             <tr class="no_hover">
                 <td>deck - shuffled</td>
-                <td>blackjack.php:' . __LINE__ . '</td>
+                <td>blackjack.php: ' . __LINE__ . '</td>
                 <td>' . json_encode($cards, JSON_PRETTY_PRINT) . '</td>
             </tr>';
     // cut the decks
@@ -1265,7 +1267,7 @@ function shuffle_decks()
         $debugout .= '
             <tr class="no_hover">
                 <td>deck - recombining</td>
-                <td>blackjack.php:' . __LINE__ . '</td>
+                <td>blackjack.php: ' . __LINE__ . '</td>
                 <td>' . json_encode($temp_deck, JSON_PRETTY_PRINT) . '</td>
             </tr>';
     }

@@ -42,10 +42,10 @@ $HTMLOUT .= "
         <span>Top Scores Earn {$site_config['top_score_points']} Karma Points</span>
         <div class='level-center top10'>
             <span class='right10'>
-                <a class='altlink' href='./arcade.php'>Arcade</a>
+                <a class='altlink' href='{$site_config['baseurl']}/arcade.php'>Arcade</a>
             </span>
             <span>
-                <a class='altlink' href='./arcade_top_scores.php'>Top Scores</a>
+                <a class='altlink' href='{$site_config['baseurl']}/arcade_top_scores.php'>Top Scores</a>
             </span>
         </div>";
 

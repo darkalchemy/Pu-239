@@ -181,10 +181,10 @@ function saveconfig()
 
     if (isset($_POST['config']['xbt_tracker'])) {
         $file = 'extra/config.xbtsample.php';
-        $xbt = 1;
+        //$xbt = 1;
     } else {
         $file = 'extra/config.phpsample.php';
-        $xbt = 0;
+        //$xbt = 0;
     }
 
     $config = file_get_contents($file);
@@ -206,10 +206,10 @@ function saveconfig()
     }
 
     $file = 'extra/ann_config.phpsample.php';
-    $xbt = 0;
+    //$xbt = 0;
     if (isset($_POST['config']['xbt_tracker'])) {
         $file = 'extra/ann_config.xbtsample.php';
-        $xbt = 1;
+        //$xbt = 1;
     }
     $announce = file_get_contents($file);
     $keys = array_map('foo', array_keys($_POST['announce']));
@@ -225,9 +225,9 @@ function saveconfig()
     }
 
     if ($continue) {
-        $xbt = 0;
+        //$xbt = 0;
         if (isset($_POST['config']['xbt_tracker'])) {
-            $xbt = 1;
+            //$xbt = 1;
         }
         $out .= '
         </fieldset>

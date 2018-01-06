@@ -93,7 +93,7 @@ if ($res_sub_forums) {
 								<td><a class="altlink" href="?action=view_forum&amp;forum_id=' . (int)$sub_forums_arr['sub_forum_id'] . '">
 								' . htmlsafechars($sub_forums_arr['sub_form_name'], ENT_QUOTES) . '</a>
 								' . ($CURUSER['class'] >= UC_ADMINISTRATOR ? '<span>
-								[<a class="altlink" href="staffpanel.php?tool=forum_manage&amp;action=forum_manage&amp;action2=edit_forum_page&amp;id=' . (int)$sub_forums_arr['sub_forum_id'] . '">' . $lang['fe_edit'] . '</a>] 
+								[<a class="altlink" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=forum_manage&amp;action=forum_manage&amp;action2=edit_forum_page&amp;id=' . (int)$sub_forums_arr['sub_forum_id'] . '">' . $lang['fe_edit'] . '</a>] 
 								[<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=delete_forum&amp;forum_id=' . (int)$sub_forums_arr['sub_forum_id'] . '">' . $lang['fe_delete'] . '</a>]
 								</span>' : '') . '<br>
 								<span>' . htmlsafechars($sub_forums_arr['sub_form_description'], ENT_QUOTES) . '</span></td>

@@ -179,9 +179,9 @@ function checkext(upload_field)
 <form enctype='multipart/form-data' method='post' action='subtitles.php'>
 <table style='width:400px; border:solid 1px #000000;' cellpadding='5' cellspacing='0'>";
     if ($mode == 'upload') {
-        $HTMLOUT .= "<tr><td colspan='2' class='colhead'><font color='red'><b>Only .srt, .sub , .txt  file are accepted<br>Max file size " . mksize($site_config['sub_max_size']) . '</b></font></td></tr>';
+        $HTMLOUT .= "<tr><td colspan='2' class='colhead'><span class='has-text-danger'><b>Only .srt, .sub , .txt  file are accepted<br>Max file size " . mksize($site_config['sub_max_size']) . '</b></span></td></tr>';
     }
-    $HTMLOUT .= "<tr><td class='rowhead' style='border:none'>Language&#160;<font color='red'>*</font></td><td style='border:none'><select name='language' title='Select the subtitle language'>
+    $HTMLOUT .= "<tr><td class='rowhead' style='border:none'>Language&#160;<span class='has-text-danger'>*</span></td><td style='border:none'><select name='language' title='Select the subtitle language'>
 	<option value=''>- Select -</option>
 	<option value='eng' " . ($mode == 'edit' && $arr['lang'] == 'eng' ? 'selected' : '') . ">English</option>
 	<option value='swe' " . ($mode == 'edit' && $arr['lang'] == 'swe' ? 'selected' : '') . ">Swedish</option>
@@ -192,10 +192,10 @@ function checkext(upload_field)
 	<option value='fre' " . ($mode == 'edit' && $arr['lang'] == 'fre' ? 'selected' : '') . ">French</option>
 </select>
 </td></tr>
-<tr><td class='rowhead' style='border:none'>Release Name&#160;<font color='red'>*</font></td><td style='border:none'><input type='text' name='releasename' size='50' value='" . ($mode == 'edit' ? $arr['name'] : '') . "'  title='The releasename of the movie (Example:Disturbia.2007.DVDRip.XViD-aAF)'/></td></tr>
-<tr><td class='rowhead' style='border:none'>IMDB link&#160;<font color='red'>*</font></td><td style='border:none'><input type='text' name='imdb' size='50' value='" . ($mode == 'edit' ? $arr['imdb'] : '') . "' title='Copy&amp;Paste the link from IMDB for this movie'/></td></tr>";
+<tr><td class='rowhead' style='border:none'>Release Name&#160;<span class='has-text-danger'>*</span></td><td style='border:none'><input type='text' name='releasename' size='50' value='" . ($mode == 'edit' ? $arr['name'] : '') . "'  title='The releasename of the movie (Example:Disturbia.2007.DVDRip.XViD-aAF)'/></td></tr>
+<tr><td class='rowhead' style='border:none'>IMDB link&#160;<span class='has-text-danger'>*</span></td><td style='border:none'><input type='text' name='imdb' size='50' value='" . ($mode == 'edit' ? $arr['imdb'] : '') . "' title='Copy&amp;Paste the link from IMDB for this movie'/></td></tr>";
     if ($mode == 'upload') {
-        $HTMLOUT .= "<tr><td class='rowhead' style='border:none'>SubFile&#160;<font color='red'>*</font></td><td style='border:none'><input type='file' name='sub' size='36' onchange=\"checkext(this)\" title='Only .rar and .zip file allowed'/></td></tr>";
+        $HTMLOUT .= "<tr><td class='rowhead' style='border:none'>SubFile&#160;<span class='has-text-danger'>*</span></td><td style='border:none'><input type='file' name='sub' size='36' onchange=\"checkext(this)\" title='Only .rar and .zip file allowed'/></td></tr>";
     }
     $HTMLOUT .= "<tr><td class='rowhead' style='border:none'>Poster</td><td style='border:none'><input type='text' name='poster' size='50' value='" . ($mode == 'edit' ? $arr['poster'] : '') . "' title='Direct link to a picture'/></td></tr>
 <tr><td class='rowhead' style='border:none'>Comments</td><td style='border:none'><textarea rows='5' cols='45' name='comment' title='Any specific details about this subtitle we need to know'>" . ($mode == 'edit' ? htmlsafechars($arr['comment']) : '') . "</textarea></td></tr>
@@ -267,19 +267,19 @@ elseif ($mode == 'details') {
             stderr('Sorry', 'There is no subtitle with that id');
         }
         if ($arr['lang'] == 'eng') {
-            $langs = '<img src="./images/flag/england.gif" border="0" alt="English" title="English" />';
+            $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/england.gif" border="0" alt="English" title="English" />';
         } elseif ($arr['lang'] == 'swe') {
-            $langs = '<img src="./images/flag/sweden.gif" border="0" alt="Swedish" title="Swedish" />';
+            $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/sweden.gif" border="0" alt="Swedish" title="Swedish" />';
         } elseif ($arr['lang'] == 'dan') {
-            $langs = '<img src="./images/flag/denmark.gif" border="0" alt="Danish" title="Danish" />';
+            $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/denmark.gif" border="0" alt="Danish" title="Danish" />';
         } elseif ($arr['lang'] == 'nor') {
-            $langs = '<img src="./images/flag/norway.gih" border="0" alt="Norwegian" title="Norwegian" />';
+            $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/norway.gih" border="0" alt="Norwegian" title="Norwegian" />';
         } elseif ($arr['lang'] == 'fin') {
-            $langs = '<img src="./images/flag/finland.gif" border="0" alt="Finnish" title="Finnish" />';
+            $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/finland.gif" border="0" alt="Finnish" title="Finnish" />';
         } elseif ($arr['lang'] == 'spa') {
-            $langs = '<img src="./images/flag/spain.gif" border="0" alt="Spanish" title="Spanish" />';
+            $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/spain.gif" border="0" alt="Spanish" title="Spanish" />';
         } elseif ($arr['lang'] == 'fre') {
-            $langs = '<img src="./images/flag/france.gif" border="0" alt="French" title="French" />';
+            $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/france.gif" border="0" alt="French" title="French" />';
         } else {
             $langs = '<b>Unknown</b>';
         }
@@ -290,7 +290,7 @@ elseif ($mode == 'details') {
 <br><br>
 <form action='downloadsub.php' method='post'>
 <input type='hidden' name='sid' value='" . (int)$arr['id'] . "' />
-<input type='submit' value='' style='background:url(./images/down.png) no-repeat; width:124px;height:25px;border:none;' />
+<input type='submit' value='' style='background:url({$site_config['pic_base_url']}down.png) no-repeat; width:124px;height:25px;border:none;' />
 <input type='hidden' name='action' value='download' />
 </form><br>
 <a href='#' onclick=\"window.open('subtitles.php?mode=preview&amp;id=" . (int)$arr['id'] . "','','height=500,width=400,resizable=yes,scrollbars=yes')\" ><img src='{$site_config['pic_base_url']}preview.png' width='124' height='25' border='0' alt='Preview' title='Preview'  /></a>
@@ -399,19 +399,19 @@ elseif ($mode == 'details') {
             }
             $HTMLOUT .= "<td class='colhead'>Upper</td></tr>";
             if ($arr['lang'] == 'eng') {
-                $langs = '<img src="./images/flag/england.gif" border="0" alt="English" title="English" />';
+                $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/england.gif" border="0" alt="English" title="English" />';
             } elseif ($arr['lang'] == 'swe') {
-                $langs = '<img src="./images/flag/sweden.gif" border="0" alt="Swedish" title="Swedish" />';
+                $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/sweden.gif" border="0" alt="Swedish" title="Swedish" />';
             } elseif ($arr['lang'] == 'dan') {
-                $langs = '<img src="./images/flag/denmark.gif" border="0" alt="Danish" title="Danish" />';
+                $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/denmark.gif" border="0" alt="Danish" title="Danish" />';
             } elseif ($arr['lang'] == 'nor') {
-                $langs = '<img src="./images/flag/norway.gih" border="0" alt="Norwegian" title="Norwegian" />';
+                $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/norway.gih" border="0" alt="Norwegian" title="Norwegian" />';
             } elseif ($arr['lang'] == 'fin') {
-                $langs = '<img src="./images/flag/finland.gif" border="0" alt="Finnish" title="Finnish" />';
+                $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/finland.gif" border="0" alt="Finnish" title="Finnish" />';
             } elseif ($arr['lang'] == 'spa') {
-                $langs = '<img src="./images/flag/spain.gif" border="0" alt="Spanish" title="Spanish" />';
+                $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/spain.gif" border="0" alt="Spanish" title="Spanish" />';
             } elseif ($arr['lang'] == 'fre') {
-                $langs = '<img src="./images/flag/france.gif" border="0" alt="French" title="French" />';
+                $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/france.gif" border="0" alt="French" title="French" />';
             } else {
                 $langs = '<b>Unknown</b>';
             }

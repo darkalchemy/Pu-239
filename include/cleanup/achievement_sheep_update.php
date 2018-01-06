@@ -16,7 +16,7 @@ function achievement_sheep_update($data)
     $msgs_buffer = $usersachiev_buffer = $achievements_buffer = [];
     if (mysqli_num_rows($res) > 0) {
         $subject = sqlesc($lang['doc_achiev_earned']);
-        $msg = sqlesc('Congratulations, you have just earned the [b]Sheep Fondler[/b] achievement. :) [img]' . $site_config['baseurl'] . '/images/achievements/sheepfondler.png[/img]');
+        $msg = sqlesc('Congratulations, you have just earned the [b]Sheep Fondler[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/sheepfondler.png[/img]');
         while ($arr = mysqli_fetch_assoc($res)) {
             $dt = TIME_NOW;
             $points = random_int(1, 3);

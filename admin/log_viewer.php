@@ -322,7 +322,7 @@ $title = substr($log, (strrpos($log, '/') + 1));
         }
 
         ol li:last-child {
-            border-bottom: 0px solid #DDD;
+            border-bottom: 0 solid #DDD;
         }
 
         ol li pre {

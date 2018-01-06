@@ -76,7 +76,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 .ajax-chat .popup, #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer,
 #content #inputFieldContainer, #loginContent input[type=text], #loginContent input[type=password] {
-    box-shadow: 0px 0px 8px 1px #495a49;
+    box-shadow: 0 0 8px 1px #495a49;
     -webkit-box-shadow: 0px 0px 8px 1px #495a49;
 }
 
@@ -138,15 +138,15 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 /* Status Icon */
 #content #statusIconContainer {
-    background: url('../../images/loading-sprite.png') no-repeat 0px 0px;
+    background: url('../../images/loading-sprite.png') no-repeat 0 0;
 }
 
 #content #statusIconContainer.waiting {
-    background-position: 0px -22px;
+    background-position: 0 -22px;
 }
 
 #content #statusIconContainer.retrying {
-    background-position: 0px -44px;
+    background-position: 0 -44px;
 }
 
 #content #bbCodeContainer input {
@@ -167,7 +167,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #content #bbCodeContainer input:active, #content #logoutButton:active, #content #submitButton:active, #loginContent #loginButton:active {
-    box-shadow: 0px 0px 8px 1px #38ff56;
+    box-shadow: 0 0 8px 1px #38ff56;
 }
 
 #content #logoutButton, #content #submitButton, #loginContent #loginButton {
@@ -178,7 +178,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
     background-image: linear-gradient(to bottom, #4fff58, #194221);
     font-weight: bold;
     color: #fff;
-    text-shadow: 0px 0px 5px #000;
+    text-shadow: 0 0 5px #000;
 }
 
 #content #logoutButton:hover, #content #submitButton:hover, #loginContent #loginButton:hover {
@@ -197,7 +197,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #content #colorCodesContainer a {
     border-radius: 10px;
-    box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 3px 1px rgba(255, 255, 255, 0.3);
     margin: 5px;
     border: 0;
 }

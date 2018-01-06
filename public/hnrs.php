@@ -244,16 +244,16 @@ if (mysqli_num_rows($r) > 0) {
 		<tr>
 			<td style='padding: 5px'><img height='42px' class='tnyrad' src='{$site_config['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
 			<td align='left'><a class='altlink' href='details.php?id=" . (int)$a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
-				<br><font color='.$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $userid == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00') ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['seeder'] == 'yes' ? "&#160;<font color='limegreen'> [<b>{$lang['userdetails_c_seeding']}</b>]</font>" : $hit_n_run . '&#160;' . $mark_of_cain . $needs_seed) : '') . "
+				<br><span style='color: .$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $userid == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00') ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['seeder'] == 'yes' ? "&#160;<font color='limegreen;'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . '&#160;' . $mark_of_cain . $needs_seed) : '') . "
 			</td>
 			<td class='has-text-center'>" . (int)$a['seeders'] . "</td>
 			<td class='has-text-center'>" . (int)$a['leechers'] . "</td>
 			<td class='has-text-center'>" . mksize($a['uploaded']) . '</td>
 			' . ($site_config['ratio_free'] ? "<td class='has-text-center'>" . mksize($a['size']) . '</td>' : "<td class='has-text-center'>" . mksize($a['downloaded']) . '</td>') . "
-			<td class='has-text-center'>" . ($a['downloaded'] > 0 ? "<font color='" . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . "'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</font>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . "<br></td>
+			<td class='has-text-center'>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . "<br></td>
 			<td class='has-text-center'>" . get_date($a['complete_date'], 'DATE') . "</td>
 			<td class='has-text-center'>" . get_date($a['last_action'], 'DATE') . "</td>
-			<td class='has-text-center'><font color='$dlc'>{$lang['userdetails_c_dled']}<br>{$dl_speed}ps</font></td>
+			<td class='has-text-center'><span style='color: $dlc;'>{$lang['userdetails_c_dled']}<br>{$dl_speed}ps</span></td>
 			<td class='has-text-center'>$buyout $sucks</td>
 		</tr>";
         } else {
@@ -261,16 +261,16 @@ if (mysqli_num_rows($r) > 0) {
 		<tr>
 			<td style='padding: 5px'><img  height='42px' class='tnyrad' src='{$site_config['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
 			<td align='left'><a class='altlink' href='details.php?id=" . (int)$a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
-				<br><font color='.$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $userid == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00' && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['active'] == 1 && $a['left'] = 0 ? "&#160;<font color='limegreen'> [<b>{$lang['userdetails_c_seeding']}</b>]</font>" : $hit_n_run . $needs_seed) : '') . "
+				<br><span style='color: .$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $userid == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00' && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['active'] == 1 && $a['left'] = 0 ? "&#160;<font color='limegreen;'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . $needs_seed) : '') . "
 			</td>
 			<td class='has-text-center'>" . (int)$a['seeders'] . "</td>
 			<td class='has-text-center'>" . (int)$a['leechers'] . "</td>
 			<td class='has-text-center'>" . mksize($a['uploaded']) . '</td>
 			' . ($site_config['ratio_free'] ? "<td class='has-text-center'>" . mksize($a['size']) . '</td>' : "<td class='has-text-center'>" . mksize($a['downloaded']) . '</td>') . "
-			<td class='has-text-center'>" . ($a['downloaded'] > 0 ? "<font color='" . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . "'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</font>' : ($a['uploaded'] > 0 ? $lang['userdetails_c_inf'] : '---')) . "<br></td>
+			<td class='has-text-center'>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? $lang['userdetails_c_inf'] : '---')) . "<br></td>
 			<td class='has-text-center'>" . get_date($a['completedtime'], 'DATE') . "</td>
 			<td class='has-text-center'>" . get_date($a['mtime'], 'DATE') . "</td>
-			<td class='has-text-center'><font color='$dlc'>[{$lang['userdetails_c_dled']}$dl_speed ]</font></td>
+			<td class='has-text-center'><span style='color: $dlc;'>[{$lang['userdetails_c_dled']}$dl_speed ]</span></td>
 			<td class='has-text-center'>$buyout $sucks</td>
 		</tr>";
         }

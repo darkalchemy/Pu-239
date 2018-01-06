@@ -32,7 +32,7 @@ if ($action == '') {
                 sql_query('DELETE FROM peers WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                 $number_of_torrents_flushed = mysqli_affected_rows();
                 //=== add it to the log
-                sql_query('INSERT INTO `sitelog` (`id`, `added`, `txt`) VALUES (NULL , ' . TIME_NOW . ', ' . sqlesc('<a class="altlink" href="userdetails.php?id=' . $CURUSER['id'] . '">' . $CURUSER['username'] . '</a> flushed <b>' . $number_of_torrents_flushed . '</b> torrents.') . ')') or sqlerr(__FILE__, __LINE__);
+                sql_query('INSERT INTO `sitelog` (`id`, `added`, `txt`) VALUES (NULL , ' . TIME_NOW . ', ' . sqlesc('<a class="altlink" href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $CURUSER['id'] . '">' . $CURUSER['username'] . '</a> flushed <b>' . $number_of_torrents_flushed . '</b> torrents.') . ')') or sqlerr(__FILE__, __LINE__);
             } //=== if it's staff flushing for a member
             elseif ($id !== $CURUSER['id'] && $CURUSER['class'] >= UC_STAFF) {
                 //=== it's a staff...
@@ -44,7 +44,7 @@ if ($action == '') {
                 sql_query('DELETE FROM peers WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
                 $number_of_torrents_flushed = mysqli_affected_rows();
                 //=== add it to the log
-                sql_query('INSERT INTO `sitelog` (`id`, `added`, `txt`) VALUES (NULL , ' . TIME_NOW . ', ' . sqlesc('<b>Staff Flush</b> <a class="altlink" href="userdetails.php?id=' . $CURUSER['id'] . '">' . $CURUSER['username'] . '</a> flushed <b>' . $number_of_torrents_flushed . '</b> torrents for <a class="altlink" href="userdetails.php?id=' . $id . '">' . $user_get_info['username'] . '</a>.') . ')') or sqlerr(__FILE__, __LINE__);
+                sql_query('INSERT INTO `sitelog` (`id`, `added`, `txt`) VALUES (NULL , ' . TIME_NOW . ', ' . sqlesc('<b>Staff Flush</b> <a class="altlink" href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $CURUSER['id'] . '">' . $CURUSER['username'] . '</a> flushed <b>' . $number_of_torrents_flushed . '</b> torrents for <a class="altlink" href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $id . '">' . $user_get_info['username'] . '</a>.') . ')') or sqlerr(__FILE__, __LINE__);
             }
             break;
 
@@ -64,7 +64,7 @@ if ($action == '') {
                     'staff_notes' => $posted_notes,
                 ], $site_config['expires']['user_cache']);
                 //=== add it to the log
-                write_log('<b>' . $CURUSER['username'] . '</b> edited member <a href="userdetails.php?id=' . $id . '" title="go to ' . htmlsafechars($staff_notes_arr['username']) . (substr($staff_notes_arr['username'], -1) == 's' ? '\'' : '\'s') . ' staff notes"><b>' . htmlsafechars($staff_notes_arr['username']) . (substr($staff_notes_arr['username'], -1) == 's' ? '\'' : '\'s') . '</b></a> staff notes. Changes made:<br>Was:<br>' . htmlsafechars($staff_notes_arr['staff_notes']) . '<br>is now:<br>' . htmlsafechars($_POST['new_staff_note']) . '');
+                write_log('<b>' . $CURUSER['username'] . '</b> edited member <a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $id . '" title="go to ' . htmlsafechars($staff_notes_arr['username']) . (substr($staff_notes_arr['username'], -1) == 's' ? '\'' : '\'s') . ' staff notes"><b>' . htmlsafechars($staff_notes_arr['username']) . (substr($staff_notes_arr['username'], -1) == 's' ? '\'' : '\'s') . '</b></a> staff notes. Changes made:<br>Was:<br>' . htmlsafechars($staff_notes_arr['staff_notes']) . '<br>is now:<br>' . htmlsafechars($_POST['new_staff_note']) . '');
             }
             header('Location: userdetails.php?id=' . $id . '&sn=1');
             break;
@@ -87,7 +87,7 @@ if ($action == '') {
                         'watched_user' => TIME_NOW,
                     ], $site_config['expires']['user_cache']);
                     //=== add it to the log
-                    write_log('<b>' . $CURUSER['username'] . '</b> added member <a href="userdetails.php?id=' . $id . '" title="go to ' . htmlsafechars($watched_arr['username']) . (substr($watched_arr['username'], -1) == 's' ? '\'' : '\'s') . ' page">' . htmlsafechars($watched_arr['username']) . '</a> to watched users.');
+                    write_log('<b>' . $CURUSER['username'] . '</b> added member <a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $id . '" title="go to ' . htmlsafechars($watched_arr['username']) . (substr($watched_arr['username'], -1) == 's' ? '\'' : '\'s') . ' page">' . htmlsafechars($watched_arr['username']) . '</a> to watched users.');
                 }
                 if (isset($_POST['add_to_watched_users']) && $_POST['add_to_watched_users'] == 'no' && $watched_arr['watched_user'] > 0) {
                     //=== remove them from watched users
@@ -96,7 +96,7 @@ if ($action == '') {
                         'watched_user' => 0,
                     ], $site_config['expires']['user_cache']);
                     //=== add it to the log
-                    write_log('<b>' . $CURUSER['username'] . '</b> removed member <a href="userdetails.php?id=' . $id . '" title="go to ' . htmlsafechars($watched_arr['username']) . (substr($watched_arr['username'], -1) == 's' ? '\'' : '\'s') . ' page">' . htmlsafechars($watched_arr['username']) . '</a> from watched users. <br>' . htmlsafechars($watched_arr['username']) . ' had been on the list since ' . get_date($watched_arr['watched_user'], '') . '.', $CURUSER['id']);
+                    write_log('<b>' . $CURUSER['username'] . '</b> removed member <a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $id . '" title="go to ' . htmlsafechars($watched_arr['username']) . (substr($watched_arr['username'], -1) == 's' ? '\'' : '\'s') . ' page">' . htmlsafechars($watched_arr['username']) . '</a> from watched users. <br>' . htmlsafechars($watched_arr['username']) . ' had been on the list since ' . get_date($watched_arr['watched_user'], '') . '.');
                 }
                 //=== only change if different
                 if ($_POST['watched_reason'] !== $watched_arr['watched_user_reason']) {
@@ -106,7 +106,7 @@ if ($action == '') {
                         'watched_user_reason' => $posted,
                     ], $site_config['expires']['user_cache']);
                     //=== add it to the log
-                    write_log('<b>' . $CURUSER['username'] . '</b> changed watched user text for: <a href="userdetails.php?id=' . $id . '" title="go to ' . htmlsafechars($watched_arr['username']) . (substr($watched_arr['username'], -1) == 's' ? '\'' : '\'s') . ' page">' . htmlsafechars($watched_arr['username']) . '</a>  Changes made:<br>Text was:<br>' . htmlsafechars($watched_arr['watched_user_reason']) . '<br>Is now:<br>' . htmlsafechars($_POST['watched_reason']) . '');
+                    write_log('<b>' . $CURUSER['username'] . '</b> changed watched user text for: <a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $id . '" title="go to ' . htmlsafechars($watched_arr['username']) . (substr($watched_arr['username'], -1) == 's' ? '\'' : '\'s') . ' page">' . htmlsafechars($watched_arr['username']) . '</a>  Changes made:<br>Text was:<br>' . htmlsafechars($watched_arr['watched_user_reason']) . '<br>Is now:<br>' . htmlsafechars($_POST['watched_reason']));
                 }
             }
             header('Location: userdetails.php?id=' . $id . '&wu=1');

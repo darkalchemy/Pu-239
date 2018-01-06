@@ -1511,7 +1511,6 @@ var ajaxChat = {
               case "/clear":
                 this.clearChatList();
                 return false;
-                break;
 
               default:
                 text = this.parseCustomInputCommand(text, textParts);
@@ -2935,7 +2934,7 @@ FABridge.prototype = {
             throw new Error("You are trying to call recursively into the Flash Player which is not allowed. In most cases the JavaScript setTimeout function, can be used as a workaround.");
         } else {
             FABridge.refCount++;
-            retVal = this.target.getPropFromAS(objRef, propName);
+            var retVal = this.target.getPropFromAS(objRef, propName);
             retVal = this.handleError(retVal);
             FABridge.refCount--;
             return retVal;
@@ -2946,7 +2945,7 @@ FABridge.prototype = {
             throw new Error("You are trying to call recursively into the Flash Player which is not allowed. In most cases the JavaScript setTimeout function, can be used as a workaround.");
         } else {
             FABridge.refCount++;
-            retVal = this.target.setPropInAS(objRef, propName, this.serialize(value));
+            var retVal = this.target.setPropInAS(objRef, propName, this.serialize(value));
             retVal = this.handleError(retVal);
             FABridge.refCount--;
             return retVal;
@@ -2957,7 +2956,7 @@ FABridge.prototype = {
             throw new Error("You are trying to call recursively into the Flash Player which is not allowed. In most cases the JavaScript setTimeout function, can be used as a workaround.");
         } else {
             FABridge.refCount++;
-            retVal = this.target.invokeASFunction(funcID, this.serialize(args));
+            var retVal = this.target.invokeASFunction(funcID, this.serialize(args));
             retVal = this.handleError(retVal);
             FABridge.refCount--;
             return retVal;
@@ -2969,7 +2968,7 @@ FABridge.prototype = {
         } else {
             FABridge.refCount++;
             args = this.serialize(args);
-            retVal = this.target.invokeASMethod(objID, funcName, args);
+            var retVal = this.target.invokeASMethod(objID, funcName, args);
             retVal = this.handleError(retVal);
             FABridge.refCount--;
             return retVal;
@@ -2996,7 +2995,7 @@ FABridge.prototype = {
         return this.remoteInstanceCache[objID];
     },
     addTypeDataToCache: function(typeData) {
-        newType = new ASProxy(this, typeData.name);
+        var newType = new ASProxy(this, typeData.name);
         var accessors = typeData.accessors;
         for (var i = 0; i < accessors.length; i++) {
             this.addPropertyToType(newType, accessors[i]);

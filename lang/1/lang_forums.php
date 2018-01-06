@@ -76,7 +76,7 @@ $lang = [
     'forum_reply_reply'                   => 'Post reply',
     //FORUM SEARCH
     'forum_search_access'                 => '<h1>Incorrect access</h1>You cannot access this file directly.',
-    'forum_search_search'                 => "<h1>Forum Search (<font color='red'>BETA</font>)</h1>\n",
+    'forum_search_search'                 => "<h1>Forum Search (<span class='has-text-danger'>BETA</span>)</h1>\n",
     'forum_search_searched'               => "<p><b>Searched for &quot;%s&quot;</b></p>\n",
     'forum_search_not_found'              => '<p><b>Sorry, nothing found!</b></p>',
     'forum_search_prev'                   => '<b>&lt;&lt; Prev</b>',

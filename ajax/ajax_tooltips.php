@@ -101,7 +101,7 @@ if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
     if ($user['override_class'] != 255) {
         $usrclass = ' <b>(' . get_user_class_name($user['class']) . ')</b> ';
     } elseif ($user['class'] >= UC_STAFF) {
-        $usrclass = " <a href='./setclass.php'><b>(" . get_user_class_name($user['class']) . ')</b></a>';
+        $usrclass = " <a href='{$site_config['baseurl']}/setclass.php'><b>(" . get_user_class_name($user['class']) . ')</b></a>';
     }
     $member_reputation = get_reputation($user);
 
@@ -118,15 +118,15 @@ if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
 
     <div class='flex-user-stats'>
         <div class='left'>{$lang['gl_invites']}</div>
-        <div><a href='./invite.php'>{$user['invites']}</a></div>
+        <div><a href='{$site_config['baseurl']}/invite.php'>{$user['invites']}</a></div>
     </div>
     <div class='flex-user-stats'>
         <div class='left'>{$lang['gl_karma']}</div>
-        <div><a href='./mybonus.php'>{$user['seedbonus']}</a></div>
+        <div><a href='{$site_config['baseurl']}/mybonus.php'>{$user['seedbonus']}</a></div>
     </div>
     <div class='flex-user-stats'>
         <div class='left'>{$lang['gl_achpoints']}</div>
-        <div><a href='./achievementhistory.php?id={$user['id']}'>" . (int)$Achievement_Points['achpoints'] . "</a></div>
+        <div><a href='{$site_config['baseurl']}/achievementhistory.php?id={$user['id']}'>" . (int)$Achievement_Points['achpoints'] . "</a></div>
     </div>
     <br>
     <div class='left'>{$lang['gl_tstats']}</div>
@@ -171,12 +171,12 @@ if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
     <div class='left'>{$lang['gl_userblocks']}</div>
     <div class='flex-user-stats'>
         <div class='left'>{$lang['gl_myblocks']}</div>
-        <div><a href='./user_blocks.php'>{$lang['gl_click']}</a></div>" : '') . "
+        <div><a href='{$site_config['baseurl']}/user_blocks.php'>{$lang['gl_click']}</a></div>" : '') . "
     </div>
     " . ($user['class'] >= UC_STAFF || $user['got_moods'] == 'yes' ? "
     <div class='flex-user-stats'>
         <div class='left'>{$lang['gl_myunlocks']}</div>
-        <div><a href='./user_unlocks.php'>{$lang['gl_click']}</a></div>" : '') . "
+        <div><a href='{$site_config['baseurl']}/user_unlocks.php'>{$lang['gl_click']}</a></div>" : '') . "
     </div>";
 
     echo json_encode($StatusBar);

@@ -1,5 +1,5 @@
 <?php
-global $lang;
+global $lang, $site_config;
 $author_error = $content = $count = $count2 = $edited_by = $row_count = $over_forum_id = $selected_forums = $author_id = $content = '';
 //=== get all the search stuff
 $search = (isset($_GET['search']) ? strip_tags(trim($_GET['search'])) : '');
@@ -89,8 +89,8 @@ if ($search) {
 	<a name="results"></a>
 	<table class="table table-bordered table-striped">
 	<tr>
-	<td class="forum_head_dark" width="10"><img src="./images/forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
-	<td class="forum_head_dark" width="10"><img src="./images/forums/topic_normal.gif" alt="' . $lang['fe_thread_icon'] . '" title="' . $lang['fe_thread_icon'] . '" /></td>
+	<td class="forum_head_dark" width="10"><img src="' . $site_config['pic_base_url'] . 'forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
+	<td class="forum_head_dark" width="10"><img src="' . $site_config['pic_base_url'] . 'forums/topic_normal.gif" alt="' . $lang['fe_thread_icon'] . '" title="' . $lang['fe_thread_icon'] . '" /></td>
 	<td class="forum_head_dark">' . $lang['sea_topic_post'] . '</td>
 	<td class="forum_head_dark">' . $lang['sea_in_forum'] . '</td>
 	<td class="forum_head_dark">' . $lang['sea_relevance'] . '</td>
@@ -113,17 +113,17 @@ if ($search) {
                 $search_post = str_replace(' ', '+', $search);
                 $post_id = (int)$arr['post_id'];
                 $posts = (int)$arr['post_count'];
-                $post_text = tool_tip('<img src="./images/forums/mg.gif" class="icon" alt="' . $lang['fe_preview'] . '" title="' . $lang['fe_preview'] . '" />', $body, '' . $lang['fe_post_preview'] . '');
+                $post_text = tool_tip('<img src="' . $site_config['pic_base_url'] . 'forums/mg.gif" class="icon" alt="' . $lang['fe_preview'] . '" title="' . $lang['fe_preview'] . '" />', $body, '' . $lang['fe_post_preview'] . '');
                 $rpic = ($arr['num_ratings'] != 0 ? ratingpic_forums(round($arr['rating_sum'] / $arr['num_ratings'], 1)) : '');
                 $content .= '<tr>
-		<td><img src="./images/forums/' . ($posts < 30 ? ($arr['locked'] == 'yes' ? 'locked' : 'topic') : 'hot_topic') . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
-		<td>' . ($arr['icon'] == '' ? '<img src="./images/forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="./images/smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="' . htmlsafechars($arr['icon']) . '" title="' . htmlsafechars($arr['icon']) . '" />') . '</td>
+		<td><img src="' . $site_config['pic_base_url'] . 'forums/' . ($posts < 30 ? ($arr['locked'] == 'yes' ? 'locked' : 'topic') : 'hot_topic') . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" /></td>
+		<td>' . ($arr['icon'] == '' ? '<img src="' . $site_config['pic_base_url'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" />' : '<img src="' . $site_config['pic_base_url'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="' . htmlsafechars($arr['icon']) . '" title="' . htmlsafechars($arr['icon']) . '" />') . '</td>
 		<td>
 		<table class="table table-bordered table-striped">
 		<tr>
 		<td><span>' . $lang['fe_post'] . ': </span></td>
 		<td>
-		<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=15&amp;page=p' . (int)$arr['post_id'] . '&amp;search=' . $search_post . '#' . (int)$arr['post_id'] . '" title="' . $lang['sea_go_to_the_post'] . '">' . ($post_title == '' ? '' . $lang['fe_link_to_post'] . '' : $post_title) . '</a></td>
+		<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=15&amp;page=p' . (int)$arr['post_id'] . '&amp;search=' . $search_post . '#' . (int)$arr['post_id'] . '" title="' . $lang['sea_go_to_the_post'] . '">' . ($post_title == '' ? '' . $lang['fe_link_to_post'] . '' : $post_title) . '</a></td>
 		<td></td>
 		</tr>
 		<tr>
@@ -133,8 +133,8 @@ if ($search) {
 		</tr>
 		<tr>
 		<td><span>' . $lang['ep_in_topic'] . ': </span></td>
-		<td> ' . ($arr['sticky'] == 'yes' ? '<img src="./images/forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" />' : '') . ($arr['poll_id'] > 0 ? '<img src="./images/forums/poll.gif" alt="Poll" title="Poll" />' : '') . '
-		<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . (int)$arr['topic_id'] . '" title="' . $lang['sea_go_to_topic'] . '">' . $topic_title . '</a>' . $post_text . '</td>
+		<td> ' . ($arr['sticky'] == 'yes' ? '<img src="' . $site_config['pic_base_url'] . 'forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" />' : '') . ($arr['poll_id'] > 0 ? '<img src="' . $site_config['pic_base_url'] . 'forums/poll.gif" alt="Poll" title="Poll" />' : '') . '
+		<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$arr['topic_id'] . '" title="' . $lang['sea_go_to_topic'] . '">' . $topic_title . '</a>' . $post_text . '</td>
 		<td> ' . $rpic . '</td>
 		</tr>
 		<tr>
@@ -145,7 +145,7 @@ if ($search) {
 		</table>
 		</td>
 		<td>
-		<a class="altlink" href="forums.php?action=view_forum&amp;forum_id=' . (int)$arr['forum_id'] . '" title="' . $lang['sea_go_to_forum'] . '">' . htmlsafechars($arr['forum_name'], ENT_QUOTES) . '</a>
+		<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int)$arr['forum_id'] . '" title="' . $lang['sea_go_to_forum'] . '">' . htmlsafechars($arr['forum_name'], ENT_QUOTES) . '</a>
 		' . ($arr['forum_desc'] != '' ? '&#9658; <span>' . htmlsafechars($arr['forum_desc'], ENT_QUOTES) . '</span>' : '') . '</td>
 		<td>' . round($arr['relevance'], 3) . '</td>
 		<td>' . number_format($posts - 1) . '</td>
@@ -185,7 +185,7 @@ if ($show_as === 'posts') {
         }
         $post_id = (int)$arr['post_id'];
         $posts = (int)$arr['post_count'];
-        $post_icon = ($arr['icon'] != '' ? '<img src="./images/smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" /> ' : '<img src="./images/forums/topic_normal.gif" alt="Normal Topic" /> ');
+        $post_icon = ($arr['icon'] != '' ? '<img src="' . $site_config['pic_base_url'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" /> ' : '<img src="' . $site_config['pic_base_url'] . 'forums/topic_normal.gif" alt="Normal Topic" /> ');
         $edited_by = '';
         if ($arr['edit_date'] > 0) {
             $res_edited = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr['edited_by']));
@@ -195,17 +195,17 @@ if ($show_as === 'posts') {
         $body = ($arr['bbcode'] == 'yes' ? highlightWords(format_comment($arr['body']), $search) : highlightWords(format_comment_no_bbcode($arr['body']), $search));
         $search_post = str_replace(' ', '+', $search);
         $content .= '<tr><td class="forum_head_dark" colspan="3">in: 
-	<a class="altlink" href="forums.php?action=view_forum&amp;forum_id=' . (int)$arr['forum_id'] . '" title="' . sprintf($lang['sea_link_to_x'], 'Forum') . '">
+	<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int)$arr['forum_id'] . '" title="' . sprintf($lang['sea_link_to_x'], 'Forum') . '">
 	<span>' . htmlsafechars($arr['forum_name'], ENT_QUOTES) . '</span></a> in: 
-	<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . (int)$arr['topic_id'] . '" title="' . sprintf($lang['sea_link_to_x'], 'topic') . '"><span>
+	<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$arr['topic_id'] . '" title="' . sprintf($lang['sea_link_to_x'], 'topic') . '"><span>
 	' . $topic_title . '</span></a></td></tr>
 	<tr><td class="forum_head" width="100"><a name="' . $post_id . '"></a>
 	<span>' . $lang['sea_relevance'] . ': ' . round($arr['relevance'], 3) . '</span></td>
 	<td class="forum_head">
-	<span>' . $post_icon . '<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '&amp;page=' . $page . '#' . (int)$arr['post_id'] . '" title="Link to Post">' . $post_title . '</a>&#160;&#160;&#160;&#160; ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span></td>
+	<span>' . $post_icon . '<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '&amp;page=' . $page . '#' . (int)$arr['post_id'] . '" title="Link to Post">' . $post_title . '</a>&#160;&#160;&#160;&#160; ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span></td>
 	<td class="forum_head"><span>
-	<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#top"><img src="./images/forums/up.gif" alt="' . $lang['fe_top'] . '" title="' . $lang['fe_top'] . '"/></a> 
-	<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#bottom"><img src="./images/forums/down.gif" alt="' . $lang['fe_bottom'] . '" title="' . $lang['fe_bottom'] . '" /></a> 
+	<a href="' . $site_config['baseurl'] . '/forums.php?action=view_my_posts&amp;page=' . $page . '#top"><img src="' . $site_config['pic_base_url'] . 'forums/up.gif" alt="' . $lang['fe_top'] . '" title="' . $lang['fe_top'] . '"/></a> 
+	<a href="' . $site_config['baseurl'] . '/forums.php?action=view_my_posts&amp;page=' . $page . '#bottom"><img src="' . $site_config['pic_base_url'] . 'forums/down.gif" alt="' . $lang['fe_bottom'] . '" title="' . $lang['fe_bottom'] . '" /></a> 
 	</span></td>
 	</tr>		
 	<tr><td>' . ($arr['tan'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($arr)) . '' . ($arr['tan'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : format_username($arr)) . ($arr['anonymous'] == 'yes' || $arr['title'] == '' ? '' : '<span>[' . htmlsafechars($arr['title']) . ']</span>') . '<span>' . ($arr['tan'] == 'yes' ? '' : get_user_class_name($arr['class'])) . '</span>
@@ -250,7 +250,7 @@ while ($arr_forums = mysqli_fetch_assoc($res_forums)) {
         $row_count = ($row_count == 3 ? 0 : $row_count);
         $search_in_forums .= ($row_count == 0 ? '' : '');
         ++$row_count;
-        $search_in_forums .= '<tr><td class="one"><input name="f' . $arr_forums['real_forum_id'] . '" type="checkbox" ' . ($selected_forums ? 'checked' : '') . ' value="1" /><a href="forums.php?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '" class="altlink" title="' . htmlsafechars($arr_forums['description'], ENT_QUOTES) . '">' . htmlsafechars($arr_forums['name'], ENT_QUOTES) . '</a></td></tr> ' . ($row_count == 3 ? '</td></tr>' : '');
+        $search_in_forums .= '<tr><td class="one"><input name="f' . $arr_forums['real_forum_id'] . '" type="checkbox" ' . ($selected_forums ? 'checked' : '') . ' value="1" /><a href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '" class="altlink" title="' . htmlsafechars($arr_forums['description'], ENT_QUOTES) . '">' . htmlsafechars($arr_forums['name'], ENT_QUOTES) . '</a></td></tr> ' . ($row_count == 3 ? '</td></tr>' : '');
     }
     $over_forum_id = $arr_forums['over_forum_id'];
 }
@@ -280,7 +280,7 @@ $search_in_forums .= '<tr><td class="two" colspan="3"><span>' . $lang['sea_if_no
     $search_in_forums .= ($row_count == 0 ? '<tr>' : '');
     ++$row_count;
     $search_in_forums .= '<td class="one"><input name="f'.$arr_forums['real_forum_id'].'" type="checkbox" '.(in_array($arr_forums['real_forum_id'], $selected_forums) ? 'checked' : '').' value="1" />
-    <a href="forums.php?action=view_forum&amp;forum_id='.$arr_forums['real_forum_id'].'" class="altlink" title="'.htmlsafechars($arr_forums['description'], ENT_QUOTES).'">'.htmlsafechars($arr_forums['name'], ENT_QUOTES).'</a> '.($row_count == 3 ? '</tr>' : '');
+    <a href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id='.$arr_forums['real_forum_id'].'" class="altlink" title="'.htmlsafechars($arr_forums['description'], ENT_QUOTES).'">'.htmlsafechars($arr_forums['name'], ENT_QUOTES).'</a> '.($row_count == 3 ? '</tr>' : '');
     }
     $over_forum_id = $arr_forums['over_forum_id'];
     }
@@ -340,8 +340,8 @@ $HTMLOUT .= $mini_menu . '
 	<td class="three">
 	<input type="text" class="search" name="search" value="' . htmlsafechars($search) . '" /> 	
 	<span>
-	<a class="altlink"  title="' . $lang['sea_open_boolean_search_help'] . '"  id="help_open"><img src="./images/forums/more.gif" alt="+" title="+" width="18" /> ' . $lang['sea_open_boolean_search_help'] . '</a> 
-	<a class="altlink"  title="' . $lang['sea_close_boolean_search_help'] . '"  id="help_close"><img src="./images/forums/less.gif" alt="-" title="-" width="18" /> ' . $lang['sea_close_boolean_search_help'] . '</a> 
+	<a class="altlink"  title="' . $lang['sea_open_boolean_search_help'] . '"  id="help_open"><img src="' . $site_config['pic_base_url'] . 'forums/more.gif" alt="+" title="+" width="18" /> ' . $lang['sea_open_boolean_search_help'] . '</a> 
+	<a class="altlink"  title="' . $lang['sea_close_boolean_search_help'] . '"  id="help_close"><img src="' . $site_config['pic_base_url'] . 'forums/less.gif" alt="-" title="-" width="18" /> ' . $lang['sea_close_boolean_search_help'] . '</a> 
 	</span>' . $search__help_boolean . '</td>
 	</tr>
 	<tr>

@@ -227,7 +227,7 @@ FABridge.prototype =
         }
         else {
             FABridge.refCount++;
-            retVal = this.target.getPropFromAS(objRef, propName);
+            var retVal = this.target.getPropFromAS(objRef, propName);
             retVal = this.handleError(retVal);
             FABridge.refCount--;
             return retVal;
@@ -240,7 +240,7 @@ FABridge.prototype =
         }
         else {
             FABridge.refCount++;
-            retVal = this.target.setPropInAS(objRef, propName, this.serialize(value));
+            var retVal = this.target.setPropInAS(objRef, propName, this.serialize(value));
             retVal = this.handleError(retVal);
             FABridge.refCount--;
             return retVal;
@@ -254,7 +254,7 @@ FABridge.prototype =
         }
         else {
             FABridge.refCount++;
-            retVal = this.target.invokeASFunction(funcID, this.serialize(args));
+            var retVal = this.target.invokeASFunction(funcID, this.serialize(args));
             retVal = this.handleError(retVal);
             FABridge.refCount--;
             return retVal;
@@ -268,7 +268,7 @@ FABridge.prototype =
         else {
             FABridge.refCount++;
             args = this.serialize(args);
-            retVal = this.target.invokeASMethod(objID, funcName, args);
+            var retVal = this.target.invokeASMethod(objID, funcName, args);
             retVal = this.handleError(retVal);
             FABridge.refCount--;
             return retVal;
@@ -310,7 +310,7 @@ FABridge.prototype =
 
     // accepts a type structure, returns a constructed type
     addTypeDataToCache: function (typeData) {
-        newType = new ASProxy(this, typeData.name);
+        var newType = new ASProxy(this, typeData.name);
         var accessors = typeData.accessors;
         for (var i = 0; i < accessors.length; i++) {
             this.addPropertyToType(newType, accessors[i]);
@@ -396,7 +396,7 @@ FABridge.prototype =
             }
         }
         else if (t == "function") {
-            //js functions are assigned an ID and stored in the local cache 
+            //js functions are assigned an ID and stored in the local cache
             result.type = FABridge.TYPE_JSFUNCTION;
             result.value = this.getFunctionID(value);
         }
@@ -413,7 +413,7 @@ FABridge.prototype =
     },
 
     //on deserialization we always check the return for the specific error code that is used to marshall NPE's into JS errors
-    // the unpacking is done by returning the value on each pachet for objects/arrays 
+    // the unpacking is done by returning the value on each pachet for objects/arrays
     deserialize: function (packedValue) {
 
         var result;

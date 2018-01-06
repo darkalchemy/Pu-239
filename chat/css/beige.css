@@ -11,10 +11,9 @@
 
 /* Buttons */
 #content #bbCodeContainer input, #content #logoutButton, #content #submitButton, #loginForm #loginButton {
-    background-color: #d9ce72;
     color: #333333;
     border: 1px solid #c8b360;
-    background-image: linear-gradient(to bottom, #d9ce72, #e1d995);
+    background: #d9ce72 linear-gradient(to bottom, #d9ce72, #e1d995);
 }
 
 #content #bbCodeContainer input:hover, #content #logoutButton:hover, #content #submitButton:hover, #loginForm #loginButton:hover {
@@ -28,15 +27,15 @@
 
 /* Status Icon */
 #content #statusIconContainer {
-    background: url('../../images/loading-sprite.png') no-repeat 0px 0px;
+    background: url('../../images/loading-sprite.png') no-repeat 0 0;
 }
 
 #content #statusIconContainer.waiting {
-    background-position: 0px -22px;
+    background-position: 0 -22px;
 }
 
 #content #statusIconContainer.retrying {
-    background-position: 0px -44px;
+    background-position: 0 -44px;
 }
 
 /* Other Theme Elements */

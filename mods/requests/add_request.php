@@ -96,7 +96,7 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
 }
 $rescount = sql_query('SELECT id FROM requests LIMIT 1') or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($rescount) > 0) {
-    $res = sql_query('SELECT users.username, requests.id, requests.userid, requests.cat, requests.request, requests.added, categories.name, categories.image, uploaded, downloaded FROM users INNER JOIN requests ON requests.userid = users.id LEFT JOIN categories ON requests.cat = categories.id ORDER BY requests.id DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT users.username, requests.id, requests.requested_by_user_id, requests.category, requests.request, requests.added, categories.name, categories.image, uploaded, downloaded FROM users INNER JOIN requests ON requests.requested_by_user_id = users.id LEFT JOIN categories ON requests.category = categories.id ORDER BY requests.id DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
     $num = mysqli_num_rows($res);
     $HTMLOUT .= "<table border='1' cellspacing='0' width='750px' cellpadding='5'>
     <tr><td width='50px' class='colhead'>{$lang['add_cat']}</td>
@@ -110,9 +110,9 @@ if (mysqli_num_rows($rescount) > 0) {
         ];
     }
     while ($arr = mysqli_fetch_assoc($res)) {
-        $addedby = "<td style='padding: 0px'><b><a href='userdetails.php?id=$arr[userid]'>$arr[username]</a></b></td>";
-        $catname = htmlspecialchars($change[ $arr['cat'] ]['name']);
-        $catpic = htmlspecialchars($change[ $arr['cat'] ]['image']);
+        $addedby = "<td style='padding: 0;'><b><a href='userdetails.php?id=$arr[requested_by_user_id]'>$arr[username]</a></b></td>";
+        $catname = htmlspecialchars($change[ $arr['category'] ]['name']);
+        $catpic = htmlspecialchars($change[ $arr['category'] ]['image']);
         $catimage = "<img src='{$site_config['pic_base_url']}caticons/" . $catpic . "' title='$catname' alt='$catname' />";
         $HTMLOUT .= "<tr>
     <td>" . $catimage . "</td>

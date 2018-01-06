@@ -75,7 +75,7 @@ if ($action == 'viewposts') {
           &#160;--&#160;<b>{$lang['posts_topic']}:&#160;</b>
           <a href='forums.php?action=view_topic&amp;topic_id=$topicid'>$topicname</a>
           &#160;--&#160;<b>{$lang['posts_post']}:&#160;</b>
-          #<a href='forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=p$postid#$postid'>$postid</a>" . ($newposts ? " &#160;<b>(<font color='red'>{$lang['posts_new']}</font>)</b>" : '') . "</td></tr></table></div>\n";
+          #<a href='forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=p$postid#$postid'>$postid</a>" . ($newposts ? " &#160;<b>(<span class='has-text-danger'>{$lang['posts_new']}</span>)</b>" : '') . "</td></tr></table></div>\n";
         $HTMLOUT .= begin_table(true);
         $body = format_comment($arr['body']);
         if (is_valid_id($arr['edited_by'])) {

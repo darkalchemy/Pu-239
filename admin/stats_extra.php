@@ -114,8 +114,8 @@ function show_views()
         'sortby'    => $inbound['sortby'],
     ];
     $q = sql_query("SELECT SUM(t.views) as result_count, t.forumid, f.name as result_name
-					FROM topics t
-					LEFT JOIN forums f ON (f.id=t.forumid)
+					FROM topics AS t
+					LEFT JOIN forums AS f ON (f.id=t.forumid)
 					WHERE t.start_date > '{$sql['from_time']}'
 					AND t.start_date < '{$sql['to_time']}'
 					GROUP BY t.forumid
@@ -159,7 +159,7 @@ function show_views()
             $img_width .= '%';
             $htmlout .= "<tr>
     			<td>$date</td>
-    			<td><img src='{$site_config['pic_base_url']}/bar_left.gif' border='0' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}/bar.gif' border='0' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}/bar_right.gif' border='0' width='4' height='11' align='middle' alt='' /></td>
+    			<td><img src='{$site_config['pic_base_url']}bar_left.gif' border='0' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}bar.gif' border='0' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}bar_right.gif' border='0' width='4' height='11' align='middle' alt='' /></td>
 					<td><center>{$data['result_count']}</center></td>
 					</tr>";
         }
@@ -308,7 +308,7 @@ function result_screen($mode = 'reg')
             }
             $htmlout .= "<tr>
     			<td>$date</td>
-    			<td><img src='{$site_config['pic_base_url']}/bar_left.gif' border='0' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}/bar.gif' border='0' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}/bar_right.gif' border='0' width='4' height='11' align='middle' alt='' /></td>
+    			<td><img src='{$site_config['pic_base_url']}bar_left.gif' border='0' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}bar.gif' border='0' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}bar_right.gif' border='0' width='4' height='11' align='middle' alt='' /></td>
 					<td><center>{$data['result_count']}</center></td>
 					</tr>";
         }

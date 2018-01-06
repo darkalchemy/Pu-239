@@ -2,7 +2,7 @@
  * @package AJAX_Chat
  * @author Sebastian Tschan
  * @author Philip Nicolcev
- * 
+ *
  * Color palette inspired by PunBB style "Oxygen":
  * http://punbb.org/
  */
@@ -14,8 +14,7 @@
 
 /* Buttons */
 #content #bbCodeContainer input, #content #logoutButton, #content #submitButton, #loginForm #loginButton {
-    background-color: #0066B9;
-    background-image: linear-gradient(to bottom, #4795CC 0px, #2A6AB8 100%);
+    background: #0066B9 linear-gradient(to bottom, #4795CC 0px, #2A6AB8 100%);
     color: #fff;
     border: 1px solid #0066B9;
 }
@@ -31,15 +30,15 @@
 
 /* Status Icon */
 #content #statusIconContainer {
-    background: url('../../images/loading-sprite.png') no-repeat 0px 0px;
+    background: url('../../images/loading-sprite.png') no-repeat 0 0;
 }
 
 #content #statusIconContainer.waiting {
-    background-position: 0px -22px;
+    background-position: 0 -22px;
 }
 
 #content #statusIconContainer.retrying {
-    background-position: 0px -44px;
+    background-position: 0 -44px;
 }
 
 /* Other Theme Elements */
@@ -112,7 +111,6 @@
 }
 
 #content #onlineListContainer h3, #content #helpContainer h3, #content #settingsContainer h3 {
-    background-color: #0066B9;
-    background-image: linear-gradient(to bottom, #2A6AB8 0px, #4795CC 100%);
+    background: #0066B9 linear-gradient(to bottom, #2A6AB8 0px, #4795CC 100%);
     color: #FFF;
 }

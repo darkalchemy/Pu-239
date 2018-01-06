@@ -28,7 +28,7 @@ function snatchtable($res)
         $XBT_or_PHP = (XBT_TRACKER == true ? $arr['fid'] : $arr['torrentid']);
         $XBT_or_PHP_TIME = (XBT_TRACKER == true ? $arr['completedtime'] : $arr['complete_date']);
         $htmlout .= "<tr>
- <td style='padding: 0px'><img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($arr['catimg']) . "' alt='" . htmlsafechars($arr['catname']) . "' width='42' height='42' /></td>
+ <td style='padding: 0;'><img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($arr['catimg']) . "' alt='" . htmlsafechars($arr['catname']) . "' width='42' height='42' /></td>
  <td><a href='details.php?id=" . (int)$XBT_or_PHP . "'><b>" . (strlen($arr['name']) > 50 ? substr($arr['name'], 0, 50 - 3) . '...' : htmlsafechars($arr['name'])) . '</b></a></td>
  <td>' . mksize($arr['uploaded']) . "</td>
  <td>$upspeed/s</td>
@@ -36,7 +36,7 @@ function snatchtable($res)
  ' . ($site_config['ratio_free'] ? '' : "<td>$downspeed/s</td>") . "
  <td>$ratio</td>
  <td>" . mkprettytime($arr['seedtime'] + $arr['leechtime']) . '</td>
- <td>' . ($XBT_or_PHP_TIME != 0 ? "<font color='green'><b>{$lang['userdetails_yes']}</b></font>" : "<font color='red'><b>{$lang['userdetails_no']}</b></font>") . "</td>
+ <td>' . ($XBT_or_PHP_TIME != 0 ? "<span style='color: green;'><b>{$lang['userdetails_yes']}</b></span>" : "<span class='has-text-danger'><b>{$lang['userdetails_no']}</b></span>") . "</td>
  </tr>\n";
     }
     $htmlout .= "</table>\n";
@@ -63,7 +63,7 @@ function maketable($res)
     foreach ($res as $arr) {
         if ($arr['downloaded'] > 0) {
             $ratio = number_format($arr['uploaded'] / $arr['downloaded'], 3);
-            $ratio = "<font color='" . get_ratio_color($ratio) . "'>$ratio</font>";
+            $ratio = "<span style='color: " . get_ratio_color($ratio) . ";'>$ratio</span>";
         } elseif ($arr['uploaded'] > 0) {
             $ratio = "{$lang['userdetails_inf']}";
         } else {
@@ -78,7 +78,7 @@ function maketable($res)
         $seeders = number_format($arr['seeders']);
         $leechers = number_format($arr['leechers']);
         $XBT_or_PHP = (XBT_TRACKER == true ? $arr['fid'] : $arr['torrent']);
-        $htmlout .= "<tr><td style='padding: 0px'>$catimage</td>\n" . "<td><a href='details.php?id=" . (int)$XBT_or_PHP . "&amp;hit=1'><b>" . htmlsafechars($arr['torrentname']) . "</b></a></td><td>$size</td><td>$seeders</td><td>$leechers</td><td>$uploaded</td>\n" . '' . ($site_config['ratio_free'] ? '' : "<td>$downloaded</td>") . "<td>$ratio</td></tr>\n";
+        $htmlout .= "<tr><td style='padding: 0;'>$catimage</td>\n" . "<td><a href='details.php?id=" . (int)$XBT_or_PHP . "&amp;hit=1'><b>" . htmlsafechars($arr['torrentname']) . "</b></a></td><td>$size</td><td>$seeders</td><td>$leechers</td><td>$uploaded</td>\n" . '' . ($site_config['ratio_free'] ? '' : "<td>$downloaded</td>") . "<td>$ratio</td></tr>\n";
     }
     $htmlout .= "</table>\n";
 

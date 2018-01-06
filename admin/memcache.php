@@ -482,7 +482,7 @@ ol.menu a {
 	border:solid rgb(102,102,153) 2px;
 	color:white;
 	font-weight:bold;
-	margin-right:0em;
+	margin-right:0;
 	padding:0.1em 0.5em 0.1em 0.5em;
 	text-decoration:none;
 	margin-left: 5px;
@@ -492,18 +492,18 @@ ol.menu a.child_active {
 	border:solid rgb(102,102,153) 2px;
 	color:white;
 	font-weight:bold;
-	margin-right:0em;
+	margin-right:0;
 	padding:0.1em 0.5em 0.1em 0.5em;
 	text-decoration:none;
 	border-left: solid black 5px;
-	margin-left: 0px;
+	margin-left: 0;
 	}
 ol.menu span.active {
 	background:rgb(153,153,204);
 	border:solid rgb(102,102,153) 2px;
 	color:black;
 	font-weight:bold;
-	margin-right:0em;
+	margin-right:0;
 	padding:0.1em 0.5em 0.1em 0.5em;
 	text-decoration:none;
 	border-left: solid black 5px;
@@ -513,7 +513,7 @@ ol.menu span.inactive {
 	border:solid rgb(182,182,233) 2px;
 	color:white;
 	font-weight:bold;
-	margin-right:0em;
+	margin-right:0;
 	padding:0.1em 0.5em 0.1em 0.5em;
 	text-decoration:none;
 	margin-left: 5px;
@@ -571,7 +571,7 @@ div.div1,div.div2 { margin-bottom:1em; width:35em; }
 div.div3 { position:absolute; left:40em; top:1em; width:580px; }
 //div.div3 { position:absolute; left:37em; top:1em; right:1em; }
 
-div.sorting { margin:1.5em 0em 1.5em 2em }
+div.sorting { margin:1.5em 0 1.5em 2em }
 .center { text-align:center }
 .aright { position:absolute;right:1em }
 .right { text-align:right }

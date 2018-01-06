@@ -55,17 +55,17 @@ $HTMLOUT .= "
                             Mailbox
                         </th>
                         <th>
-                            <a href='./pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
+                            <a href='{$site_config['baseurl']}/pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
     ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . "&amp;order_by=subject{$desc_asc}#pm' class='tooltipper' title='{$lang['pm_mailbox_sorder']}{$desc_asc_2}'>{$lang['pm_mailbox_subject']}
                             </a>
                         </th>
                         <th class='has-text-centered'>
-                            <a href='./pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
+                            <a href='{$site_config['baseurl']}/pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
     ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . "&amp;order_by=username{$desc_asc}#pm' class='tooltipper' title='{$lang['pm_mailbox_morder']}{$desc_asc_2}'>" . ($mailbox === PM_SENTBOX ? $lang['pm_search_sent_to'] : $lang['pm_search_sender']) . "
                             </a>
                         </th>
                         <th class='has-text-centered'>
-                            <a href='./pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
+                            <a href='{$site_config['baseurl']}/pm_system.php?action=view_mailbox&amp;box={$mailbox}" .
     ($perpage == 20 ? '' : '&amp;perpage=' . $perpage) . ($perpage < $messages ? '&amp;page=' . $page : '') . "&amp;order_by=added{$desc_asc}#pm' class='tooltipper' title='{$lang['pm_mailbox_dorder']} {$desc_asc_2}'>{$lang['pm_mailbox_date']}
                             </a>
                         </th>
@@ -96,14 +96,14 @@ if (mysqli_num_rows($res) === 0) {
         }
         $subject = (!empty($row['subject']) ? htmlsafechars($row['subject']) : $lang['pm_search_nosubject']);
         $who_sent_it = ($row['id'] == 0 ? '<span style="font-weight: bold;">' . $lang['pm_forward_system'] . '</span>' : format_username($row) . $friends);
-        $read_unread = ($row['unread'] === 'yes' ? '<img src="./images/pn_inboxnew.gif" title="' . $lang['pm_mailbox_unreadmsg'] . '" alt="' . $lang['pm_mailbox_unread'] . '" />' : '<img src="./images/pn_inbox.gif" title="' . $lang['pm_mailbox_readmsg'] . '" alt="' . $lang['pm_mailbox_read'] . '" />');
+        $read_unread = ($row['unread'] === 'yes' ? '<img src="' .$site_config['pic_base_url'] . 'pn_inboxnew.gif" title="' . $lang['pm_mailbox_unreadmsg'] . '" alt="' . $lang['pm_mailbox_unread'] . '" />' : '<img src="' .$site_config['pic_base_url'] . 'pn_inbox.gif" title="' . $lang['pm_mailbox_readmsg'] . '" alt="' . $lang['pm_mailbox_read'] . '" />');
         $extra = ($row['unread'] === 'yes' ? $lang['pm_mailbox_char1'] . '<span style="color: red;">' . $lang['pm_mailbox_unread'] . '</span>' . $lang['pm_mailbox_char2'] . '' : '') . ($row['urgent'] === 'yes' ? '<span style="color: red;">' . $lang['pm_mailbox_urgent'] . '</span>' : '');
         $avatar = ((!$CURUSER['opt1'] & user_options::AVATARS || !$CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR || $row['id'] == 0) ? '' : (empty($row['avatar']) ? '
-                <img width="40" src="./images/forumicons/default_avatar.gif" alt="no avatar" />' : (($row['opt1'] & user_options::OFFENSIVE_AVATAR && !$CURUSER['opt1'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img width="40" src="./images/fuzzybunny.gif" alt="fuzzy!" />' : '<img width="40" src="' . htmlsafechars($row['avatar']) . '" alt="avatar" />')));
+                <img width="40" src="' .$site_config['pic_base_url'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (($row['opt1'] & user_options::OFFENSIVE_AVATAR && !$CURUSER['opt1'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img width="40" src="' .$site_config['pic_base_url'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<img width="40" src="' . htmlsafechars($row['avatar']) . '" alt="avatar" />')));
         $HTMLOUT .= '
                 <tr>
                     <td class="has-text-centered">' . $read_unread . '</td>
-                    <td><a class="altlink"  href="./pm_system.php?action=view_message&amp;id=' . (int)$row['message_id'] . '">' . $subject . '</a> ' . $extra . '</td>
+                    <td><a class="altlink"  href="' . $site_config['baseurl'] . '/pm_system.php?action=view_message&amp;id=' . (int)$row['message_id'] . '">' . $subject . '</a> ' . $extra . '</td>
                     <td class="has-text-centered">' . $avatar . $who_sent_it . '</td>
                     <td class="has-text-centered">' . get_date($row['added'], '') . '</td>
                     <td class="has-text-centered"><input type="checkbox" name="pm[]" value="' . (int)$row['message_id'] . '" /></td>

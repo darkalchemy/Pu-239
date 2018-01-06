@@ -7,7 +7,7 @@ if ($site_config['msg_alert'] && $CURUSER) {
     if (!empty($unread)) {
         $htmlout .= "
         <li>
-            <a href='./pm_system.php'>
+            <a href='{$site_config['baseurl']}/pm_system.php'>
                 <span class='button tag is-info dt-tooltipper-small' data-tooltip-content='#message_tooltip'>" .
             ($unread > 1 ? "{$lang['gl_newprivs']}{$lang['gl_newmesss']}" : "{$lang['gl_newpriv']}{$lang['gl_newmess']}") . "
                 </span>

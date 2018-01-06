@@ -11,8 +11,8 @@ $lang = [
     'themes_e_d'            => 'Edit/Delete',
     'themes_edit'           => 'Edit',
     'themes_delete'         => 'Delete',
-    'themes_file_exists'    => "<font color='green'>Yes</font>",
-    'themes_not_exists'     => "<font color='red'>No</font>",
+    'themes_file_exists'    => "<span style='color: green;'>Yes</span>",
+    'themes_not_exists'     => "<span class='has-text-danger'>No</span>",
     //Other Stuff
     'themes_use_temp'       => 'Use this template',
     'themes_addnew'         => 'Add a template',

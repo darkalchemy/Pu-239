@@ -91,13 +91,10 @@ if (!$_fromCache) {
         ],
     ];
     imagecopy($im, $smile, $smile_pos[ $var['pack'] ]['y'], $smile_pos[ $var['pack'] ]['x'], 0, 0, 128, 128);
-    //country
     if ($var['use_country']) {
         $country = imagecreatefrompng('flags/' . $_flag . '.png');
-        //$country = imagecreatefrompng("../images/flags/" . $_flag . ".gif");
         imagecopy($im, $country, $_flag_xy[0], $_flag_xy[1], 0, 0, 16, 11);
     }
-    //add username if the option is true
     if ($var['showuser']) {
         imagestring($im, $font, 5, 2, $user, $fontColor);
     }

@@ -403,7 +403,7 @@ function torrenttable($res, $variant = 'index')
                     $ratio = 1;
                 }
                 $What_Script_P = (XBT_TRACKER == true ? "'{$site_config['baseurl']}/peerlist_xbt.php?id=" : "'{$site_config['baseurl']}/peerlist.php?id=");
-                $htmlout .= "<td class='has-text-centered'><b><a href='$What_Script_P" . "$id#seeders'><font color='" . get_slr_color($ratio) . "'>" . (int)$row['seeders'] . "</font></a></b></td>";
+                $htmlout .= "<td class='has-text-centered'><b><a href='$What_Script_P" . "$id#seeders'><span style='color: " . get_slr_color($ratio) . ";'>" . (int)$row['seeders'] . "</span></a></b></td>";
             } else {
                 $What_Script_P = (XBT_TRACKER == true ? "{$site_config['baseurl']}/peerlist_xbt.php?id=" : "{$site_config['baseurl']}/peerlist.php?id=");
                 $htmlout .= "<td class='has-text-centered'><b><a class='" . linkcolor($row['seeders']) . "' href='$What_Script_P" . "$id#seeders'>" . (int)$row['seeders'] . "</a></b></td>";

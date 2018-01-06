@@ -26,6 +26,7 @@ class AJAXChat
     protected $_sessionNew;
     protected $_onlineUsersData;
     protected $_bannedUsersData;
+    private $postDirection;
 
     /**
      * AJAXChat constructor.
@@ -71,6 +72,10 @@ class AJAXChat
     public function initCustomConfig()
     {
         check_user_status();
+    }
+
+    public function initCustomRequestVars()
+    {
     }
 
     public function initDataBaseConnection()
@@ -1322,7 +1327,7 @@ class AJAXChat
         if ($this->_allChannels === null) {
             $this->_allChannels = [];
 
-            $this->_allChannels[ $this->trimChannelName($this->getConfig('defaultChannelName')) ] = $this->getConfig('defaultChannelID');
+            $this->_allChannels[ $this->trimChannelName($this->getConfig('defaultChannelName'), $this->getConfig('contentEncoding')) ] = $this->getConfig('defaultChannelID');
         }
 
         return $this->_allChannels;
@@ -1330,12 +1335,13 @@ class AJAXChat
 
     /**
      * @param $channelName
+     * @param $encoding
      *
      * @return bool|mixed|string
      */
-    public function trimChannelName($channelName)
+    public function trimChannelName($channelName, $encoding)
     {
-        return $this->trimString($channelName, null, null, true, true);
+        return $this->trimString($channelName, $encoding, null, true, true);
     }
 
     /**

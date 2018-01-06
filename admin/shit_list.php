@@ -98,7 +98,7 @@ switch ($action2) {
         $arr_name = mysqli_fetch_assoc($res_name);
         if (!$sure) {
             stderr($lang['shitlist_delete1'] . htmlsafechars($arr_name['username']) . $lang['shitlist_delete2'], '' . $lang['shitlist_delete3'] . '<b>' . htmlsafechars($arr_name['username']) . '</b>' . $lang['shitlist_delete4'] . '  
-         <a class="altlink" href="staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=delete&amp;shit_list_id=' . $shit_list_id . '&amp;sure=1"><span class="button is-small" style="padding:1px;">' . $lang['shitlist_delete5'] . '</span></a>' . $lang['shitlist_delete6'] . '');
+         <a class="altlink" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=delete&amp;shit_list_id=' . $shit_list_id . '&amp;sure=1"><span class="button is-small" style="padding:1px;">' . $lang['shitlist_delete5'] . '</span></a>' . $lang['shitlist_delete6'] . '');
         }
         sql_query('DELETE FROM shit_list WHERE userid=' . sqlesc($CURUSER['id']) . ' AND suspect=' . sqlesc($shit_list_id));
         if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) == 0) {
@@ -143,8 +143,8 @@ if (mysqli_num_rows($res) == 0) {
 
       <b> [ ' . get_user_class_name($shit_list['class']) . ' ]</b><br>
 
-      <a class="altlink" href="staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=delete&amp;shit_list_id=' . (int)$shit_list['suspect_id'] . '" title="' . $lang['shitlist_remove1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['pic_base_url'] . '/polls/p_delete.gif">' . $lang['shitlist_remove2'] . '</span></a>
-      <a class="altlink" href="pm_system.php?action=send_message&receiver=' . (int)$shit_list['suspect_id'] . '" title="' . $lang['shitlist_send1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['pic_base_url'] . '/message.gif">' . $lang['shitlist_send2'] . '</span></a></td>
+      <a class="altlink" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=delete&amp;shit_list_id=' . (int)$shit_list['suspect_id'] . '" title="' . $lang['shitlist_remove1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['pic_base_url'] . 'polls/p_delete.gif">' . $lang['shitlist_remove2'] . '</span></a>
+      <a class="altlink" href="pm_system.php?action=send_message&receiver=' . (int)$shit_list['suspect_id'] . '" title="' . $lang['shitlist_send1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['pic_base_url'] . 'message.gif">' . $lang['shitlist_send2'] . '</span></a></td>
       <td class="' . (($i % 2 == 0) ? 'one' : 'two') . '">' . $shit . '
       <b>' . $lang['shitlist_joined'] . '</b> ' . get_date($shit_list['added'], '') . '
       [ ' . get_date($shit_list['added'], '', 0, 1) . ' ]
@@ -157,5 +157,5 @@ if (mysqli_num_rows($res) == 0) {
     }
 } //=== end while
 $HTMLOUT .= (($i % 2 == 0) ? '<td class="one" colspan="2"></td></tr>' : '');
-$HTMLOUT .= '</table><p><span class="button is-small" style="padding:3px;"><img style="vertical-align:middle;" src="' . $site_config['pic_base_url'] . '/btn_search.gif" /><a class="altlink" href="users.php">' . $lang['shitlist_find'] . '</span></a></p>';
+$HTMLOUT .= '</table><p><span class="button is-small" style="padding:3px;"><img style="vertical-align:middle;" src="' . $site_config['pic_base_url'] . 'btn_search.gif" /><a class="altlink" href="' . $site_config['baseurl'] . '/users.php">' . $lang['shitlist_find'] . '</span></a></p>';
 echo stdhead($lang['shitlist_stdhead'] . htmlsafechars($CURUSER['username'])) . $HTMLOUT . stdfoot();

@@ -80,11 +80,11 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
             $user_reputation = $reputations[ $max_rep ];
         } else {
             foreach ($reputations as $y => $x) {
+                $old = $x;
                 if ($y > $user['reputation']) {
                     $user_reputation = $old;
                     break;
                 }
-                $old = $x;
             }
         }
         //$rep_is_on = TRUE;
@@ -477,7 +477,7 @@ function format_username($user_id, $icons = true, $tooltipper = true)
         return 'unknown[' . $users_data['id'] . ']';
     }
 
-    $avatar = !empty($users_data['avatar']) ? "<img src='{$users_data['avatar']}' class='avatar' />" : "<img src='{$site_config['baseurl']}/images/forumicons/default_avatar.gif' class='avatar' />";
+    $avatar = !empty($users_data['avatar']) ? "<img src='{$users_data['avatar']}' class='avatar' />" : "<img src='{$site_config['pic_base_url']}forumicons/default_avatar.gif' class='avatar' />";
     $tip = $tooltip = '';
     if ($tooltipper) {
         $tip = "<div class='tooltip_templates'><div id='userid_{$users_data['id']}_tooltip' class='is-flex tooltip'><div class='right20'>{$avatar}</div><div style='min-width: 150px; align: left;'><span class='" . get_user_class_name($users_data['class'], true) . "'>" . htmlsafechars($users_data['username']) . "</span></div></div></div>";

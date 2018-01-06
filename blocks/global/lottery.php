@@ -13,7 +13,7 @@ if ($CURUSER) {
     if ($lottery_info['enable']) {
         $htmlout .= "
     <li>
-        <a href='./lottery.php'>
+        <a href='{$site_config['baseurl']}/lottery.php'>
             <b class='button tag is-success is-small dt-tooltipper-small' data-tooltip-content='#lottery_tooltip'>
                 Lottery in Progress
             </b>

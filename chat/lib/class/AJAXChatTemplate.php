@@ -37,6 +37,9 @@ class AJAXChatTemplate
         $this->_contentType = $contentType;
     }
 
+    /**
+     * @return mixed
+     */
     public function getParsedContent()
     {
         if (!$this->_parsedContent) {
@@ -46,20 +49,20 @@ class AJAXChatTemplate
         return $this->_parsedContent;
     }
 
+    /**
+     *
+     */
     public function parseContent()
     {
         $this->_parsedContent = $this->getContent();
 
-        // Remove the XML declaration if the content-type is not xml:
         if ($this->_contentType && (strpos($this->_contentType, 'xml') === false)) {
             $doctypeStart = strpos($this->_parsedContent, '<!doctype ');
             if ($doctypeStart !== false) {
-                // Removing the XML declaration (in front of the document type) prevents IE<7 to go into "Quirks mode":
                 $this->_parsedContent = substr($this->_parsedContent, $doctypeStart);
             }
         }
 
-        // Replace template tags ([TAG/] and [TAG]content[/TAG]) and return parsed template content:
         $this->_parsedContent = preg_replace_callback($this->_regExpTemplateTags, [$this, 'replaceTemplateTags'], $this->_parsedContent);
     }
 
@@ -82,7 +85,6 @@ class AJAXChatTemplate
      */
     public function replaceTemplateTags($tagData)
     {
-        global $site_config;
         switch ($tagData[1]) {
             case 'AJAX_CHAT_URL':
                 return $this->ajaxChat->htmlEncode($this->ajaxChat->getChatURL());
@@ -146,7 +148,6 @@ class AJAXChatTemplate
                     return 0;
                 }
 
-            // no break
             case 'INACTIVE_TIMEOUT':
                 return $this->ajaxChat->getConfig('inactiveTimeout');
 
@@ -162,7 +163,6 @@ class AJAXChatTemplate
                     return 0;
                 }
 
-            // no break
             case 'SOCKET_SERVER_ENABLED':
                 if ($this->ajaxChat->getConfig('socketServerEnabled')) {
                     return 1;
@@ -170,7 +170,6 @@ class AJAXChatTemplate
                     return 0;
                 }
 
-            // no break
             case 'SOCKET_SERVER_HOST':
                 if ($this->ajaxChat->getConfig('socketServerHost')) {
                     $socketServerHost = $this->ajaxChat->getConfig('socketServerHost');
@@ -211,7 +210,6 @@ class AJAXChatTemplate
                 return $this->getLogsHourOptionTags();
             case 'CLASS_WRITEABLE':
                 return 'write_allowed';
-            // no break
             case 'TOKEN':
                 return session_id();
 
@@ -222,8 +220,6 @@ class AJAXChatTemplate
                 return $this->ajaxChat->replaceCustomTemplateTags($tagData[1], (isset($tagData[2]) ? $tagData[2] : null));
         }
     }
-
-    // Function to display alternating table row colors:
 
     /**
      * @return string
@@ -246,19 +242,10 @@ class AJAXChatTemplate
      */
     public function getStyleSheetLinkTags()
     {
-        global $site_config;
-        $styleSheets = '';
-//        foreach ($this->ajaxChat->getConfig('styleAvailable') as $style) {
-//            $alternate = ($style == $this->ajaxChat->getConfig('styleDefault')) ? '' : 'alternate ';
-//            $styleSheets .= '
-//        <link rel="' . $alternate . 'stylesheet" href="./css/' . rawurlencode($style) . '.bundle.min.css" title="' . $this->ajaxChat->htmlEncode($style) . '" />';
-//        }
-        $styleSheets .= '
+        return '
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Acme|Baloo+Bhaijaan|Encode+Sans+Condensed|Lobster|Nova+Square|Open+Sans|Oswald|PT+Sans+Narrow" />
         <link rel="stylesheet" href="' . get_file('chat_css_trans') . '" title="transparent" />
         <link rel="alternate stylesheet" href="' . get_file('chat_css_uranium') . '" title="Uranium" />';
-
-        return $styleSheets;
     }
 
     /**
@@ -280,7 +267,6 @@ class AJAXChatTemplate
             $channelOptions .= '<option value="' . $this->ajaxChat->htmlEncode($name) . '"' . $selected . '>' . $this->ajaxChat->htmlEncode($name) . '</option>';
         }
         if ($this->ajaxChat->isLoggedIn() && $this->ajaxChat->isAllowedToCreatePrivateChannel()) {
-            // Add the private channel of the user to the options list:
             if (!$channelSelected && $this->ajaxChat->getPrivateChannelID() == $this->ajaxChat->getChannel()) {
                 $selected = ' selected="selected"';
                 $channelSelected = true;
@@ -290,13 +276,11 @@ class AJAXChatTemplate
             $privateChannelName = $this->ajaxChat->getPrivateChannelName();
             $channelOptions .= '<option value="' . $this->ajaxChat->htmlEncode($privateChannelName) . '"' . $selected . '>' . $this->ajaxChat->htmlEncode($privateChannelName) . '</option>';
         }
-        // If current channel is not in the list, try to retrieve the channelName:
         if (!$channelSelected) {
             $channelName = $this->ajaxChat->getChannelName();
             if ($channelName !== null) {
                 $channelOptions .= '<option value="' . $this->ajaxChat->htmlEncode($channelName) . '" selected="selected">' . $this->ajaxChat->htmlEncode($channelName) . '</option>';
             } else {
-                // Show an empty selection:
                 $channelOptions .= '<option value="" selected="selected">---</option>';
             }
         }

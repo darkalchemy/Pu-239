@@ -186,7 +186,7 @@ c.id AS cat_id, c.name AS cat_name, c.image AS cat_image FROM requests AS r LEFT
   <tr>
   <td>requested by:</td>
   <td>' . format_username($arr) . ' [ ' . get_user_class_name($arr['class']) . ' ]
-  ratio: ' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . get_user_ratio_image($arr['uploaded'], ($site_config['ratio_free'] ? '1' : $arr['downloaded'])) . '</td>
+  ratio: ' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . get_user_ratio_image(($site_config['ratio_free'] ? 1 : $arr['uploaded'] / $arr['downloaded'])) . '</td>
   </tr>' . ($arr['filled_torrent_id'] > 0 ? '<tr>
   <td>filled:</td>
   <td><a class="altlink" href="details.php?id=' . $arr['filled_torrent_id'] . '">yes, click to view torrent!</a></td>
@@ -542,7 +542,7 @@ function comment_table($rows)
         if ($row['editedby']) {
             $res_user = sql_query('SELECT username FROM users WHERE id=' . sqlesc($row['editedby'])) or sqlerr(__FILE__, __LINE__);
             $arr_user = mysqli_fetch_assoc($res_user);
-            $text .= '<p>Last edited by <a href="userdetails.php?id=' . (int)$row['editedby'] . '"><b>' . htmlsafechars($arr_user['username']) . '</b></a> at ' . get_date($row['editedat'], 'DATE') . '</p>';
+            $text .= '<p>Last edited by <a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . (int)$row['editedby'] . '"><b>' . htmlsafechars($arr_user['username']) . '</b></a> at ' . get_date($row['editedat'], 'DATE') . '</p>';
         }
         $top_comment_stuff = $row['comment_id'] . ' by ' . (isset($row['username']) ? format_username($row) . ($row['title'] !== '' ? ' [ ' . htmlsafechars($row['title']) . ' ] ' : ' [ ' . get_user_class_name($row['class']) . ' ]  ') : ' M.I.A. ') . get_date($row['added'], '') . ($row['id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? '
      - [<a href="requests.php?action=edit_comment&amp;id=' . (int)$row['request'] . '&amp;comment_id=' . (int)$row['comment_id'] . '">Edit</a>]' : '') . ($CURUSER['class'] >= UC_STAFF ? '

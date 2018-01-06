@@ -19,9 +19,9 @@ $over_forums = (isset($_POST['over_forums']) ? intval($_POST['over_forums']) : 0
 $min_class_read = (isset($_POST['min_class_read']) ? intval($_POST['min_class_read']) : 0);
 $min_class_write = (isset($_POST['min_class_write']) ? intval($_POST['min_class_write']) : 0);
 $min_class_create = (isset($_POST['min_class_create']) ? intval($_POST['min_class_create']) : 0);
-$main_links = '<p><a class="altlink" href="./staffpanel.php?tool=over_forums&amp;action=over_forums">' . $lang['fm_overforum'] . '</a> :: 
+$main_links = '<p><a class="altlink" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=over_forums&amp;action=over_forums">' . $lang['fm_overforum'] . '</a> :: 
 						<span style="font-weight: bold;">' . $lang['fm_forummanager'] . '</span> :: 
-						<a class="altlink" href="staffpanel.php?tool=forum_config&amp;action=forum_config">' . $lang['fm_configure'] . '</a><br></p>';
+						<a class="altlink" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=forum_config&amp;action=forum_config">' . $lang['fm_configure'] . '</a><br></p>';
 //=== post / get action posted so we know what to do :P
 $posted_action = (isset($_GET['action2']) ? htmlsafechars($_GET['action2']) : (isset($_POST['action2']) ? htmlsafechars($_POST['action2']) : ''));
 //=== add all possible actions here and check them to be sure they are ok
@@ -177,7 +177,7 @@ if (mysqli_num_rows($res) > 0) {
         } else {
             $subforum_name = '';
         }
-        $HTMLOUT .= '<tr><td><a class="altlink" href="forums.php?action=view_forum&amp;forum_id=' . (int)$row['id'] . '">
+        $HTMLOUT .= '<tr><td><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int)$row['id'] . '">
 			<span style="font-weight: bold;">' . htmlsafechars($row['name'], ENT_QUOTES) . '</span></a><br>
 			' . htmlsafechars($row['description'], ENT_QUOTES) . '</td>
 			<td><span style="font-weight: bold;">' . $subforum_name . '</span></td>
@@ -185,7 +185,7 @@ if (mysqli_num_rows($res) > 0) {
 			<td>' . get_user_class_name($row['min_class_read']) . '</td>
 			<td>' . get_user_class_name($row['min_class_write']) . '</td>
 			<td>' . get_user_class_name($row['min_class_create']) . '</td>
-			<td><a href="staffpanel.php?tool=forum_manage&amp;action=forum_manage&amp;action2=edit_forum_page&amp;id=' . (int)$row['id'] . '">
+			<td><a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=forum_manage&amp;action=forum_manage&amp;action2=edit_forum_page&amp;id=' . (int)$row['id'] . '">
 			<span style="font-weight: bold;">' . $lang['fm_mp_edit'] . '</span></a>&#160;
 			<a href="javascript:confirm_delete(\'' . (int)$row['id'] . '\');"><span style="font-weight: bold;">' . $lang['fm_mp_delete'] . '</span></a>
 			</td></tr>';

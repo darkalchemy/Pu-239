@@ -155,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 $avatar = (($CURUSER['avatars'] === 'no') ? '' : (empty($CURUSER['avatar']) ? '
-        <img width="80" src="./images/forumicons/default_avatar.gif" alt="no avatar" />' : (($CURUSER['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ? '<img width="80" src="./images/fuzzybunny.gif" alt="fuzzy!" />' : '<img width="80" src="' . htmlsafechars($CURUSER['avatar']) . '" alt="avatar" />')));
+        <img width="80" src="' .$site_config['pic_base_url'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (($CURUSER['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ? '<img width="80" src="' .$site_config['pic_base_url'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<img width="80" src="' . htmlsafechars($CURUSER['avatar']) . '" alt="avatar" />')));
 
 $HTMLOUT .= $top_links . '
     <form name="compose" method="post" action="pm_system.php">
@@ -165,7 +165,7 @@ if ($receiver) {
         <input type="hidden" name="returnto" value="' . $returnto . '" />
         <input type="hidden" name="replyto" value="' . $replyto . '" />
         <input type="hidden" name="receiver" value="' . $receiver . '" />
-        <h1>' . $lang['pm_send_msgto'] . '<a class="altlink" href="userdetails.php?id=' . $receiver . '">' . $arr_member[0] . '</a></h1>';
+        <h1>' . $lang['pm_send_msgto'] . '<a class="altlink" href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $receiver . '">' . $arr_member[0] . '</a></h1>';
 } else {
     $HTMLOUT .= "
         <input type='hidden' name='returnto' value='$returnto' />

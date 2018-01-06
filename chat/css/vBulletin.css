@@ -2,7 +2,7 @@
  * @package AJAX_Chat
  * @author Sebastian Tschan
  * @author Philip Nicolcev
- * 
+ *
  * Color palette inspired by vBulletin style "Standard-Style":
  * http://www.vbulletin.com/
  */
@@ -27,15 +27,15 @@
 
 /* Status Icon */
 #content #statusIconContainer {
-    background: url('../../images/loading-sprite.png') no-repeat 0px 0px;
+    background: url('../../images/loading-sprite.png') no-repeat 0 0;
 }
 
 #content #statusIconContainer.waiting {
-    background-position: 0px -22px;
+    background-position: 0 -22px;
 }
 
 #content #statusIconContainer.retrying {
-    background-position: 0px -44px;
+    background-position: 0 -44px;
 }
 
 /* Other Theme Elements */
@@ -63,7 +63,7 @@
     left: 10px;
     right: 10px;
     background: #2F4456;
-    border-radius: 0px 0px 5px 5px;
+    border-radius: 0 0 5px 5px;
 }
 
 #content #copyright, #content #copyright a {

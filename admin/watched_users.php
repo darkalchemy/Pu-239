@@ -38,7 +38,7 @@ if (isset($_GET['remove'])) {
                 'modcomment' => $modcomment,
             ], $site_config['expires']['user_stats']);
             $count = 1;
-            $removed_log = '<a href="userdetails.php?id=' . $remove_me_Ive_been_good . '" class="altlink">' . htmlsafechars($user['username']) . '</a>';
+            $removed_log = '<a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $remove_me_Ive_been_good . '" class="altlink">' . htmlsafechars($user['username']) . '</a>';
         }
     } else {
         foreach ($remove_me_Ive_been_good as $id) {
@@ -55,7 +55,7 @@ if (isset($_GET['remove'])) {
                     'modcomment' => $modcomment,
                 ], $site_config['expires']['user_stats']);
                 $count = (++$count);
-                $removed_log .= '<a href="userdetails.php?id=' . $id . '" class="altlink">' . htmlsafechars($user['username']) . '</a> ';
+                $removed_log .= '<a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $id . '" class="altlink">' . htmlsafechars($user['username']) . '</a> ';
             }
         }
     }
@@ -75,7 +75,7 @@ if (isset($_GET['add'])) {
         $res = sql_query('SELECT modcomment, watched_user, watched_user_reason, username FROM users WHERE id = ' . sqlesc($member_whos_been_bad)) or sqlerr(__FILE__, __LINE__);
         $user = mysqli_fetch_assoc($res);
         if ($user['watched_user'] > 0) {
-            stderr($lang['watched_stderr'], htmlsafechars($user['username']) . ' ' . $lang['watched_already'] . '<a href="userdetails.php?id=' . $member_whos_been_bad . '" >' . $lang['watched_backto'] . ' ' . htmlsafechars($user['username']) . '\'s ' . $lang['watched_profile'] . '</a>');
+            stderr($lang['watched_stderr'], htmlsafechars($user['username']) . ' ' . $lang['watched_already'] . '<a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $member_whos_been_bad . '" >' . $lang['watched_backto'] . ' ' . htmlsafechars($user['username']) . '\'s ' . $lang['watched_profile'] . '</a>');
         }
         //== ok they are not watched yet let's add the info part 1
         if ($_GET['add'] && $_GET['add'] == 1) {
@@ -107,7 +107,7 @@ if (isset($_GET['add'])) {
     //=== Check if member was added
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) > 0) {
         $H1_thingie = '<h1>' . $lang['watched_success'] . '!' . htmlsafechars($user['username']) . ' ' . $lang['watched_isadded'] . '!</h1>';
-        write_log('[b]' . $CURUSER['username'] . '[/b] ' . $lang['watched_isadded'] . ' <a href="userdetails.php?id=' . $member_whos_been_bad . '" class="altlink">' . htmlsafechars($user['username']) . '</a> ' . $lang['watched_tothe'] . ' <a href="staffpanel.php?tool=watched_users&amp;action=watched_users" class="altlink">' . $lang['watched_users_list'] . '</a>.');
+        write_log('[b]' . $CURUSER['username'] . '[/b] ' . $lang['watched_isadded'] . ' <a href="' . $site_config['baseurl'] . '/userdetails.php?id=' . $member_whos_been_bad . '" class="altlink">' . htmlsafechars($user['username']) . '</a> ' . $lang['watched_tothe'] . ' <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users" class="altlink">' . $lang['watched_users_list'] . '</a>.');
     }
 }
 //=== get number of watched members
@@ -132,11 +132,11 @@ if ($how_many > 0) {
     $div_link_number = 1;
     $HTMLOUT .= '
     <tr>
-        <td class="colhead"><a href="staffpanel.php?tool=watched_users&amp;action=watched_users&amp;sort=watched_user&amp;ASC=' . $ASC . '">' . $lang['watched_isadded'] . '</a></td>
-        <td class="colhead"><a href="staffpanel.php?tool=watched_users&amp;action=watched_users&amp;sort=username&amp;ASC=' . $ASC . '">' . $lang['watched_username'] . '</a></td>
+        <td class="colhead"><a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;sort=watched_user&amp;ASC=' . $ASC . '">' . $lang['watched_isadded'] . '</a></td>
+        <td class="colhead"><a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;sort=username&amp;ASC=' . $ASC . '">' . $lang['watched_username'] . '</a></td>
         <td class="colhead has-text-left" width="400">' . $lang['watched_suspicion'] . '</td>
         <td class="colhead has-text-centered">' . $lang['watched_stats'] . '</td>
-        <td class="colhead has-text-centered"><a href="staffpanel.php?tool=watched_users&amp;action=watched_users&amp;sort=invited_by&amp;ASC=' . $ASC . '">' . $lang['watched_invitedby'] . '</a></td>
+        <td class="colhead has-text-centered"><a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;sort=invited_by&amp;ASC=' . $ASC . '">' . $lang['watched_invitedby'] . '</a></td>
         ' . ($CURUSER['class'] >= UC_STAFF ? '<td class="colhead has-text-centered">&#160;</td>' : '') . '
     </tr>';
     while ($arr = @mysqli_fetch_assoc($res)) {

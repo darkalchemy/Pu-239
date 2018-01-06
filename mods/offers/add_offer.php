@@ -97,7 +97,7 @@ Offers are for Users with a good ratio who have uploaded at least " . $site_conf
 }
 $rescount = sql_query('SELECT id FROM offers LIMIT 1') or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($rescount) > 0) {
-    $res = sql_query('SELECT users.username, offers.id, offers.userid, offers.cat, offers.offer, offers.added, categories.name, categories.image, uploaded, downloaded FROM users INNER JOIN offers ON offers.userid = users.id LEFT JOIN categories ON offers.cat = categories.id ORDER BY offers.id DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT users.username, offers.id, offers.offered_by_user_id, offers.category, offers.offer_name, offers.added, categories.name, categories.image, uploaded, downloaded FROM users INNER JOIN offers ON offers.offered_by_user_id = users.id LEFT JOIN categories ON offers.category = categories.id ORDER BY offers.id DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
     $num = mysqli_num_rows($res);
     $HTMLOUT .= "<table border='1' cellspacing='0' width='750px' cellpadding='5'>
     <tr><td width='50px' class='colhead'>Category</td>
@@ -111,14 +111,14 @@ if (mysqli_num_rows($rescount) > 0) {
         ];
     }
     while ($arr = mysqli_fetch_assoc($res)) {
-        $addedby = "<td style='padding: 0px'><b><a href='userdetails.php?id=$arr[userid]'>$arr[username]</a></b></td>";
+        $addedby = "<td style='padding: 0;'><b><a href='userdetails.php?id=$arr[offered_by_user_id]'>$arr[username]</a></b></td>";
         $catname = htmlspecialchars($change[ $arr['cat'] ]['name']);
         $catpic = htmlspecialchars($change[ $arr['cat'] ]['image']);
         $catimage = "<img src='{$site_config['pic_base_url']}caticons/" . $catpic . "' title='$catname' alt='$catname' />";
         $HTMLOUT .= "<tr>
     <td>" . $catimage . "</td>
     <td><a href='viewoffers.php?id=$arr[id]&amp;offer_details'>
-    <b>" . htmlspecialchars($arr['offer']) . "</b></a></td>
+    <b>" . htmlspecialchars($arr['offer_name']) . "</b></a></td>
     <td>" . get_date($arr['added'], '') . "</td>
     $addedby
     </tr>\n";

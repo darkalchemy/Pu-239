@@ -41,8 +41,8 @@ function stdhead($title = '', $stdhead = null)
     <link rel='apple-touch-icon' sizes='180x180' href='{$site_config['baseurl']}/apple-touch-icon.png' />
     <link rel='icon' type='image/png' sizes='32x32' href='{$site_config['baseurl']}/favicon-32x32.png' />
     <link rel='icon' type='image/png' sizes='16x16' href='{$site_config['baseurl']}/favicon-16x16.png' />
-    <link rel='manifest' href='/manifest.json' />
-    <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#5bbad5' />
+    <link rel='manifest' href='{$site_config['baseurl']}/manifest.json' />
+    <link rel='mask-icon' href='{$site_config['baseurl']}/safari-pinned-tab.svg' color='#5bbad5' />
     <meta name='theme-color' content='#ffffff'>
     <link rel='stylesheet' href='" . get_file('css') . "' />
     <link rel='stylesheet' href='//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' integrity='sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN' crossorigin='anonymous' />
@@ -239,7 +239,7 @@ function stdfoot($stdfoot = false)
                     <div class='size_4 top10 bottom10'>
                         <p class='is-marginless'>{$lang['gl_stdfoot_powered']}" . $site_config['variant'] . "</p>
                         <p class='is-marginless'>{$lang['gl_stdfoot_using']}<b>{$lang['gl_stdfoot_using1']}</b></p>
-                        " . ($debug ? "<p class='is-marginless'><a title='{$lang['gl_stdfoot_logview']}' class='tooltipper' rel='external' href='{$site_config['baseurl']}/staffpanel.php?tool=log_viewer'>{$lang['gl_stdfoot_logview']}</a> | <a title='{$lang['gl_stdfoot_sview']}' class='tooltipper' rel='external' href='/staffpanel.php?tool=system_view'>{$lang['gl_stdfoot_sview']}</a> | <a rel='external' title='OPCache' href='/staffpanel.php?tool=op' class='tooltipper'>{$lang['gl_stdfoot_opc']}</a> | <a rel='external' title='Memcache' href='/staffpanel.php?tool=memcache' class='tooltipper'>{$lang['gl_stdfoot_memcache']}</a></p>" : '');
+                        " . ($debug ? "<p class='is-marginless'><a title='{$lang['gl_stdfoot_logview']}' class='tooltipper' rel='external' href='{$site_config['baseurl']}/staffpanel.php?tool=log_viewer'>{$lang['gl_stdfoot_logview']}</a> | <a title='{$lang['gl_stdfoot_sview']}' class='tooltipper' rel='external' href='{$site_config['baseurl']}/staffpanel.php?tool=system_view'>{$lang['gl_stdfoot_sview']}</a> | <a rel='external' title='OPCache' href='{$site_config['baseurl']}/staffpanel.php?tool=op' class='tooltipper'>{$lang['gl_stdfoot_opc']}</a> | <a rel='external' title='Memcache' href='{$site_config['baseurl']}/staffpanel.php?tool=memcache' class='tooltipper'>{$lang['gl_stdfoot_memcache']}</a></p>" : '');
         $htmlfoot .= "
                     </div>
                 </div>
@@ -288,8 +288,10 @@ function stdfoot($stdfoot = false)
                 child.classList.remove('fa-angle-down');
             }
         }
-    </script>
-    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>";
+    </script>";
+
+    $htmlfoot .= "
+    <script src='" . get_file('js') . "'></script>";
 
     if (!empty($stdfoot['js'])) {
         foreach ($stdfoot['js'] as $JS) {
@@ -299,7 +301,6 @@ function stdfoot($stdfoot = false)
     }
 
     $htmlfoot .= "
-    <script src='" . get_file('js') . "'></script>
 </body>
 </html>";
 

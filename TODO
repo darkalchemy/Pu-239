@@ -1,5 +1,12 @@
 In no particular order
 
+fix admin uploadapp.php
+remove begin_table and end_table functions
+remove begin_frame and end_frame functions
+remove begin_main_frame and end_main_frame functions
+remove/replace function textbbcode calls, doesn't exist
+replace manual scripts with webpack
+fix blackjack bugs
 replace mysqli commands with pdo/fluentpdo
 format tables using main_table function
 format divs using main_div function

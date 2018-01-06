@@ -13,7 +13,7 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) == 'list') {
     $HTMLOUT .= "<h3><a href='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=sendpm'>{$lang['non_con_sendall']}</a></h3>
 	<h3><a href='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable'>{$lang['non_con_view']}</a></h3>
 	<h1>{$lang['non_con_peers']}</h1>
-	{$lang['non_con_this']}<br><p><font color='red'>*</font> {$lang['non_con_means']}<br>";
+	{$lang['non_con_this']}<br><p><span class='has-text-danger'>*</span> {$lang['non_con_means']}<br>";
     $result = sql_query("SELECT DISTINCT userid FROM peers WHERE connectable = 'no'");
     $count = mysqli_num_rows($result);
     $HTMLOUT .= "$count {$lang['non_con_unique']}</p>";
@@ -28,7 +28,7 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) == 'list') {
             $a2 = mysqli_fetch_assoc($r2);
             $HTMLOUT .= "<tr><td><a href='userdetails.php?id=" . (int)$arr2['userid'] . "'>" . htmlsafechars($a2['username']) . "</a></td><td><a href='details.php?id=" . (int)$arr2['torrent'] . "&amp;dllist=1#seeders'>" . (int)$arr2['torrent'] . '</a>';
             if ($arr2['seeder'] == 'yes') {
-                $HTMLOUT .= "<font color='red'>*</font>";
+                $HTMLOUT .= "<span class='has-text-danger'>*</span>";
             }
             $HTMLOUT .= "</td><td>" . htmlsafechars($arr2['agent']) . "</td></tr>\n";
         }

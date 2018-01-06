@@ -359,7 +359,7 @@ function ratios($up, $down, $color = true)
     if ($down > 0) {
         $r = number_format($up / $down, 2);
         if ($color) {
-            $r = "<font color='" . get_ratio_color($r) . "'>$r</font>";
+            $r = "<span style='color: " . get_ratio_color($r) . ";'>$r</span>";
         }
     } elseif ($up > 0) {
         $r = 'Inf.';
@@ -808,7 +808,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
     $where_is = !empty($where_is) ? $where_is : '';
     $queryc = 'SELECT COUNT(' . $distinct . 'u.id) FROM ' . $from_is . (($where_is == '') ? '' : " WHERE $where_is ");
     $querypm = 'FROM ' . $from_is . (($where_is == '') ? ' ' : " WHERE $where_is ");
-    $announcement_query = 'SELECT u.id FROM ' . $from_is . (($where_is == '') ? ' WHERE 1=1' : " WHERE $where_is");
+    $announcement_query = 'SELECT u.id FROM ' . $from_is . (($where_is == '') ? ' WHERE 1 = 1' : " WHERE $where_is");
     $select_is = 'u.id, u.username, u.email, u.status, u.added, u.last_access, u.ip,
   	u.class, u.uploaded, u.downloaded, u.donor, u.modcomment, u.enabled, u.warned';
     $query1 = 'SELECT ' . $distinct . ' ' . $select_is . ' ' . $querypm;
@@ -859,7 +859,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
                 if ($array[0] == 0) {
                     $ipstr = $user['ip'];
                 } else {
-                    $ipstr = "<a href='staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($user['ip']) . "'><font color='#FF0000'><b>" . htmlsafechars($user['ip']) . '</b></font></a>';
+                    $ipstr = "<a href='staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($user['ip']) . "'><span style='color: #FF0000;'><b>" . htmlsafechars($user['ip']) . '</b></span></a>';
                 }
             } else {
                 $ipstr = '---';

@@ -116,7 +116,7 @@ if ($ip) {
             if ($array[0] == 0) {
                 $ipstr = $user['last_ip'];
             } else {
-                $ipstr = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($user['last_ip']) . "'><font color='#FF0000'><b>" . htmlsafechars($user['last_ip']) . '</b></font></a>';
+                $ipstr = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=testip&amp;action=testip&amp;ip=" . htmlsafechars($user['last_ip']) . "'><span style='color: #FF0000;'><b>" . htmlsafechars($user['last_ip']) . '</b></span></a>';
             }
         } else {
             $ipstr = '---';

@@ -75,7 +75,7 @@ $HTMLOUT .= '
         </a>
     </div>
     <noscript>
-        <a href="./index.php">' . $lang['user_mood_back'] . '</a>
+        <a href="' . $site_config['baseurl'] . '/index.php">' . $lang['user_mood_back'] . '</a>
     </noscript>
 </body>
 </html>';

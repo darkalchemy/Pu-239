@@ -85,8 +85,8 @@ if ($user_status === false || is_null($user_status)) {
 }
 
 if ($user['paranoia'] == 3 && $CURUSER['class'] < UC_STAFF && $CURUSER['id'] != $id) {
-    stderr($lang['userdetails_error'], '<span><img src=".images/smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '" />
-       ' . $lang['userdetails_tinfoil2'] . ' <img src="./images/smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '" /></span>');
+    stderr($lang['userdetails_error'], '<span><img src="' . $site_config['pic_base_url'] . 'smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '" />
+       ' . $lang['userdetails_tinfoil2'] . ' <img src="' . $site_config['pic_base_url'] . 'smilies/tinfoilhat.gif" alt="' . $lang['userdetails_tinfoil'] . '" class="tooltipper" title="' . $lang['userdetails_tinfoil'] . '" /></span>');
     die();
 }
 
@@ -256,7 +256,7 @@ if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
     $suspended .= ($user['suspended'] == 'yes' ? '  <img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '" /> <b>' . $lang['userdetails_usersuspended'] . '</b> <img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_suspended'] . '" class="tooltipper" title="' . $lang['userdetails_suspended'] . '" />' : '');
 }
 if ($CURUSER['id'] != $user['id'] && $CURUSER['class'] >= UC_STAFF) {
-    $watched_user .= ($user['watched_user'] == 0 ? '' : '  <img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '" /> <b>' . $lang['userdetails_watchlist1'] . ' <a href="staffpanel.php?tool=watched_users" >' . $lang['userdetails_watchlist2'] . '</a></b> <img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '" />');
+    $watched_user .= ($user['watched_user'] == 0 ? '' : '  <img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '" /> <b>' . $lang['userdetails_watchlist1'] . ' <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users" >' . $lang['userdetails_watchlist2'] . '</a></b> <img src="' . $site_config['pic_base_url'] . 'smilies/excl.gif" alt="' . $lang['userdetails_watched'] . '" class="tooltipper" title="' . $lang['userdetails_watched'] . '" />');
 }
 $perms .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_NO_IP) ? '  <img src="' . $site_config['pic_base_url'] . 'smilies/super.gif" alt="' . $lang['userdetails_invincible'] . '"  class="tooltipper" title="' . $lang['userdetails_invincible'] . '" />' : '') : '');
 $stealth .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERMS_STEALTH) ? '  <img src="' . $site_config['pic_base_url'] . 'smilies/ninja.gif" alt="' . $lang['userdetails_stelth'] . '"  class="tooltipper" title="' . $lang['userdetails_stelth'] . '" />' : '') : '');
@@ -431,9 +431,9 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
                             </td>
                         </tr>";
 
-    $the_flip_box_4 = '[ <a name="staff_notes"></a><a class="altlink tooltipper" href="#staff_notes" onclick="javascript:flipBox(\'4\')" name="b_4" title="' . $lang['userdetails_open_staff'] . '">view <img onclick="javascript:flipBox(\'4\')" src="./images/panel_on.gif" name="b_4" width="8" height="8" alt="' . $lang['userdetails_open_staff'] . '" class="tooltipper" title="' . $lang['userdetails_open_staff'] . '" /></a> ]';
+    $the_flip_box_4 = '[ <a name="staff_notes"></a><a class="altlink tooltipper" href="#staff_notes" onclick="javascript:flipBox(\'4\')" name="b_4" title="' . $lang['userdetails_open_staff'] . '">view <img onclick="javascript:flipBox(\'4\')" src="' . $site_config['pic_base_url'] . 's/panel_on.gif" name="b_4" width="8" height="8" alt="' . $lang['userdetails_open_staff'] . '" class="tooltipper" title="' . $lang['userdetails_open_staff'] . '" /></a> ]';
     $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_staffnotes'] . '</td><td class="has-text-left">
-                            <a class="altlink tooltipper" href="#staff_notes" onclick="javascript:flipBox(\'6\')" name="b_6" title="' . $lang['userdetails_aev_staffnote'] . '">' . ($user['staff_notes'] !== '' ? '' . $lang['userdetails_vae'] . ' ' : '' . $lang['userdetails_add'] . ' ') . '<img onclick="javascript:flipBox(\'6\')" src="./images/panel_on.gif" name="b_6" width="8" height="8" alt="' . $lang['userdetails_aev_staffnote'] . '" class="tooltipper" title="' . $lang['userdetails_aev_staffnote'] . '" /></a>
+                            <a class="altlink tooltipper" href="#staff_notes" onclick="javascript:flipBox(\'6\')" name="b_6" title="' . $lang['userdetails_aev_staffnote'] . '">' . ($user['staff_notes'] !== '' ? '' . $lang['userdetails_vae'] . ' ' : '' . $lang['userdetails_add'] . ' ') . '<img onclick="javascript:flipBox(\'6\')" src="' . $site_config['pic_base_url'] . 'panel_on.gif" name="b_6" width="8" height="8" alt="' . $lang['userdetails_aev_staffnote'] . '" class="tooltipper" title="' . $lang['userdetails_aev_staffnote'] . '" /></a>
                             <div class="has-text-left" id="box_6">
                             <form method="post" action="ajax/member_input.php" name="notes_for_staff">
                             <input name="id" type="hidden" value="' . (int)$user['id'] . '" />
@@ -443,7 +443,7 @@ if (($CURUSER['id'] !== $user['id']) && ($CURUSER['class'] >= UC_STAFF)) {
                             </form>
                             </div> </td></tr>';
     //=== system comments
-    $the_flip_box_7 = '[ <a name="system_comments"></a><a class="altlink tooltipper" href="#system_comments" onclick="javascript:flipBox(\'7\')"  name="b_7" title="' . $lang['userdetails_open_system'] . '">view <img onclick="javascript:flipBox(\'7\')" src="./images/panel_on.gif" name="b_7" width="8" height="8" alt="' . $lang['userdetails_open_system'] . '" class="tooltipper" title="' . $lang['userdetails_open_system'] . '" /></a> ]';
+    $the_flip_box_7 = '[ <a name="system_comments"></a><a class="altlink tooltipper" href="#system_comments" onclick="javascript:flipBox(\'7\')"  name="b_7" title="' . $lang['userdetails_open_system'] . '">view <img onclick="javascript:flipBox(\'7\')" src="' . $site_config['pic_base_url'] . 'panel_on.gif" name="b_7" width="8" height="8" alt="' . $lang['userdetails_open_system'] . '" class="tooltipper" title="' . $lang['userdetails_open_system'] . '" /></a> ]';
     if (!empty($user_stats['modcomment'])) {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_system']}</td><td class='has-text-left'>" . ($user_stats['modcomment'] != '' ? $the_flip_box_7 . '<div class="has-text-left" id="box_7"><hr>' . format_comment($user_stats['modcomment']) . '</div>' : '') . "</td></tr>";
     }

@@ -2,7 +2,7 @@
  * @package AJAX_Chat
  * @author Sebastian Tschan
  * @author Philip Nicolcev
- * 
+ *
  * Color palette inspired by PunBB style "Cobalt":
  * http://punbb.org/
  */
@@ -14,15 +14,13 @@
 
 /* Buttons */
 #content #bbCodeContainer input, #content #logoutButton, #content #submitButton, #loginForm #loginButton {
-    background-color: #000;
     color: #f0f0f0;
     border: 1px solid #808080;
-    background-image: linear-gradient(to bottom, #222, #000);
+    background: #000 linear-gradient(to bottom, #222, #000);
 }
 
 #content #bbCodeContainer input:hover, #content #logoutButton:hover, #content #submitButton:hover, #loginForm #loginButton:hover {
-    background-color: #222;
-    background-image: linear-gradient(to top, #222, #000);
+    background: #222 linear-gradient(to top, #222, #000);
 }
 
 #content select, #loginForm select, #loginForm input, #content textarea {
@@ -33,15 +31,15 @@
 
 /* Status Icon */
 #content #statusIconContainer {
-    background: url('../../images/loading-sprite.png') no-repeat 0px 0px;
+    background: url('../../images/loading-sprite.png') no-repeat 0 0;
 }
 
 #content #statusIconContainer.waiting {
-    background-position: 0px -22px;
+    background-position: 0 -22px;
 }
 
 #content #statusIconContainer.retrying {
-    background-position: 0px -44px;
+    background-position: 0 -44px;
 }
 
 /* Other Theme Elements */

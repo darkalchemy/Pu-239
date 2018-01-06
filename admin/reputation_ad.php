@@ -54,12 +54,13 @@ switch ($input['mode']) {
         view_list();
         break;
 
-    case 'dolist':
-        do_list();
-        break;
+//    case 'dolist':
+//        do_list();
+//        break;
 
     case 'editrep':
-        show_form_rep('edit');
+        //show_form_rep('edit');
+        show_form_rep();
         break;
 
     case 'doeditrep':
@@ -184,7 +185,7 @@ function do_update($type = '')
         }
         // check it's a valid rep id
         $query = sql_query("SELECT reputationlevelid FROM reputationlevel WHERE 
-									reputationlevelid={$levelid}");
+									reputationlevelid = $levelid");
         if (!mysqli_num_rows($query)) {
             stderr('', $lang['rep_ad_update_err4']);
         }

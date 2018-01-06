@@ -2,7 +2,7 @@
  * @package AJAX_Chat
  * @author Sebastian Tschan
  * @author Philip Nicolcev
- * 
+ *
  * Color palette inspired by Simple Machines Forum style "SMF Default Theme - Core":
  * http://www.simplemachines.org/
  */
@@ -26,15 +26,15 @@
 
 /* Status Icon */
 #content #statusIconContainer {
-    background: url('../../images/loading-sprite.png') no-repeat 0px 0px;
+    background: url('../../images/loading-sprite.png') no-repeat 0 0;
 }
 
 #content #statusIconContainer.waiting {
-    background-position: 0px -22px;
+    background-position: 0 -22px;
 }
 
 #content #statusIconContainer.retrying {
-    background-position: 0px -44px;
+    background-position: 0 -44px;
 }
 
 /* Other Theme Elements */

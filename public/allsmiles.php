@@ -23,7 +23,7 @@ $htmlout = "<!doctype html>
             document.body.className = theme;
         }
         function pops(smile){
-            textcontent=window.opener.document.getElementById('inputField').value;
+            var textcontent = window.opener.document.getElementById('inputField').value;
             window.opener.document.getElementById('inputField').value = textcontent + ' ' + smile;
             window.opener.document.getElementById('inputField').focus();
             window.close();

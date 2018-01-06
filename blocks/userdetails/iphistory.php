@@ -15,7 +15,7 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
             $enbl = $ipuse['yes'] ? $ipuse['yes'] . ' enabled ' : '';
             $dbl = $ipuse['no'] ? $ipuse['no'] . ' disabled ' : '';
             $mid = $enbl && $dbl ? 'and' : '';
-            $iphistory['use'] = "<b>(<font color='red'>{$lang['userdetails_ip_warn']}</font> <a href='staffpanel.php?tool=usersearch&amp;action=usersearch&amp;ip=$ipcheck'>{$lang['userdetails_ip_used']}$enbl $mid $dbl{$lang['userdetails_ip_users']}']}</a>)</b>";
+            $iphistory['use'] = "<b>(<span class='has-text-danger'>{$lang['userdetails_ip_warn']}</span> <a href='staffpanel.php?tool=usersearch&amp;action=usersearch&amp;ip=$ipcheck'>{$lang['userdetails_ip_used']}$enbl $mid $dbl{$lang['userdetails_ip_users']}']}</a>)</b>";
         }
         $resip = sql_query('SELECT ip FROM ips WHERE userid = ' . sqlesc($id) . ' GROUP BY ip') or sqlerr(__FILE__, __LINE__);
         $iphistory['ips'] = mysqli_num_rows($resip);

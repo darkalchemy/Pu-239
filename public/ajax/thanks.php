@@ -26,7 +26,7 @@ function print_list()
 {
     global $uid, $tid, $ajax;
     $target = $ajax ? '_self' : '_parent';
-    $qt = sql_query('SELECT th.userid, u.username, u.seedbonus FROM thanks AS th INNER JOIN users AS u ON u.id=th.userid WHERE th.torrentid=' . sqlesc($tid) . ' ORDER BY u.class DESC') or sqlerr(__FILE__, __LINE__);
+    $qt = sql_query('SELECT th.userid, u.username, u.seedbonus FROM thanks AS th INNER JOIN users AS u ON u.id=th.userid WHERE th.torrentid = ' . sqlesc($tid) . ' ORDER BY u.class DESC') or sqlerr(__FILE__, __LINE__);
     $list = [];
     $hadTh = false;
     if (mysqli_num_rows($qt) > 0) {

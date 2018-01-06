@@ -657,20 +657,19 @@ function highlightWords($text, $words)
 /**
  * @param $num
  *
- * @return string|void
+ * @return bool|string
  */
 function ratingpic_forums($num)
 {
     global $site_config;
     $r = round($num * 2) / 2;
     if ($r < 1 || $r > 5) {
-        return;
+        return false;
     }
 
     return '<img src="' . $site_config['pic_base_url'] . 'forums/rating/' . $r . '.gif" class="icon" alt="rating: ' . $num . ' / 5" />';
 }
 
-//=== Inserts a quick jump menu ......UPDATED!  now used for staff stuff too \o/ - cached
 /**
  * @param int  $current_forum
  * @param bool $staff

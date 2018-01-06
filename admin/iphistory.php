@@ -20,7 +20,7 @@ if (isset($_GET['remove'])) {
     $remove = htmlsafechars($_GET['remove']);
     $username2 = htmlsafechars($_GET['username2']);
     $deleteip = htmlsafechars($_GET['deleteip']);
-    //write_logs("<font color='#FA5858'><b>{$lang['stderr_wipe']}</b></font> (<a href='{$site_config['baseurl']}/userdetails.php?id=$CURUSER[id]'><b>$CURUSER[username]</b></a>){$lang['stderr_justwipe']}(<b>$deleteip</b>) {$lang['stderr_from']}(<a href='{$site_config['baseurl']}/userdetails.php?id=$id'><b>$username2</b></a>)'s Ip History.", 'log');
+    //write_logs("<span style='color: #FA5858;'><b>{$lang['stderr_wipe']}</b></span> (<a href='{$site_config['baseurl']}/userdetails.php?id=$CURUSER[id]'><b>$CURUSER[username]</b></a>){$lang['stderr_justwipe']}(<b>$deleteip</b>) {$lang['stderr_from']}(<a href='{$site_config['baseurl']}/userdetails.php?id=$id'><b>$username2</b></a>)'s Ip History.", 'log');
     sql_query('DELETE FROM ips WHERE id = ' . sqlesc($remove)) or sqlerr(__FILE__, __LINE__);
 }
 if (isset($_GET['setseedbox'])) {
@@ -46,7 +46,7 @@ $HTMLOUT .= "<table >
                 <tr>
                 <td class='heading2'>{$lang['iphistory_total_unique']} <b>$username</b> {$lang['iphistory_total_logged']} <b><u>$ipcount</u></b>.</td></tr>
                 <tr>
-                <td class='heading2'><b><font color='blue'>{$lang['iphistory_single']}</font> - <font color='red'>{$lang['iphistory_banned']}</font> - <font color='black'>{$lang['iphistory_dupe']}</font></b></td>
+                <td class='heading2'><b><span style='color: blue'>{$lang['iphistory_single']}</font> - <span class='has-text-danger;'>{$lang['iphistory_banned']}</span> - <font color='black'>{$lang['iphistory_dupe']}</span></b></td>
                 </tr>
                 </table><br>
 
@@ -69,7 +69,7 @@ while ($iphistory = mysqli_fetch_array($resip)) {
     $userip = htmlsafechars($iphistory['ip']); //Users Ip
     $ipid = (int)$iphistory['id']; // IP ID
     if ($host == $userip) {
-        $host = "<font color='red'><b>{$lang['iphistory_notfound']}</b></font>";
+        $host = "<span class='has-text-danger'><b>{$lang['iphistory_notfound']}</b></span>";
     }
     $seedboxdetected = ''; //Clear the field
     if (strpos($host, 'kimsufi.com')) {
@@ -131,7 +131,7 @@ while ($iphistory = mysqli_fetch_array($resip)) {
     //Is this a seedbox check
     $seedbox = htmlsafechars($iphistory['seedbox']);
     if ($seedbox == '0') {
-        $seedbox = "<a href='{$site_config['baseurl']}/staffpanel . php ? tool = iphistory & amp;action = iphistory & amp;id = $id & amp;setseedbox = " . (int)$iphistory['id'] . "'><font color='red'><b>{$lang['iphistory_no']}</b></font></a>";
+        $seedbox = "<a href='{$site_config['baseurl']}/staffpanel . php ? tool = iphistory & amp;action = iphistory & amp;id = $id & amp;setseedbox = " . (int)$iphistory['id'] . "'><span class='has-text-danger'><b>{$lang['iphistory_no']}</b></span></a>";
         $HTMLOUT .= "<tr>
                 <td class='heading2'>{$lang['iphistory_browse']}" . get_date($lastbrowse, '') . "<br>{$lang['iphistory_login']}" . get_date($lastlogin, '') . "<br>{$lang['iphistory_ann']}" . get_date($lastannounce, '') . "</td>
                 <td class='heading2'>$ipshow</td>
@@ -143,7 +143,7 @@ while ($iphistory = mysqli_fetch_array($resip)) {
                 <td class='heading2'><a href='{$site_config['baseurl']}/staffpanel . php ? tool = iphistory & amp;action = bans & amp;banthisuser = $username & amp;banthisip = $userip'><b>{$lang['iphistory_ban']}</b></a></td>
                 </tr>";
     } else {
-        $seedbox = "<a class='altlink' href='{$site_config['baseurl']}/staffpanel . php ? tool = iphistory & amp;action = iphistory & amp;id = $id & amp;setseedbox2 = " . (int)$iphistory['id'] . "'><font color='Green'><b>{$lang['iphistory_yes']}</b></font></a>";
+        $seedbox = "<a class='altlink' href='{$site_config['baseurl']}/staffpanel . php ? tool = iphistory & amp;action = iphistory & amp;id = $id & amp;setseedbox2 = " . (int)$iphistory['id'] . "'><span style='color: Green;'><b>{$lang['iphistory_yes']}</b></span></a>";
         $color = '#CCFFFF';
         $HTMLOUT .= "<tr>
                 <td class='heading2' style='background-color:$color'>{$lang['iphistory_browse']}" . get_date($lastbrowse, '') . "<br>{$lang['iphistory_login']}" . get_date($lastlogin, '') . "<br>{$lang['iphistory_announce']}" . get_date($lastannounce, '') . "</td>

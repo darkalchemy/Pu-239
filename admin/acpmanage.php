@@ -85,14 +85,14 @@ if (mysqli_num_rows($res) != 0) {
         $ratio = number_format($ratio, 2);
         $color = get_ratio_color($ratio);
         if ($color) {
-            $ratio = "<font color='$color'>$ratio</font>";
+            $ratio = "<span style='color: $color;'>$ratio</span>";
         }
         $added = get_date($arr['added'], 'LONG', 0, 1);
         $last_access = get_date($arr['last_access'], 'LONG', 0, 1);
         $class = get_user_class_name($arr['class']);
         $status = htmlsafechars($arr['status']);
         $enabled = htmlsafechars($arr['enabled']);
-        $HTMLOUT .= "<tr><td><input type=\"checkbox\" name=\"ids[]\" value=\"" . (int)$arr['id'] . "\" /></td><td><a href='/userdetails.php?id=" . (int)$arr['id'] . "'><b>" . htmlsafechars($arr['username']) . '</b></a>' . ($arr['donor'] == 'yes' ? "<img src='{$site_config['pic_base_url']}star.gif' border='0' alt='" . $lang['text_donor'] . "' />" : '') . ($arr['warned'] >= 1 ? "<img src='{$site_config['pic_base_url']}warned.gif' border='0' alt='" . $lang['text_warned'] . "' />" : '') . "</td>
+        $HTMLOUT .= "<tr><td><input type=\"checkbox\" name=\"ids[]\" value=\"" . (int)$arr['id'] . "\" /></td><td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$arr['id'] . "'><b>" . htmlsafechars($arr['username']) . '</b></a>' . ($arr['donor'] == 'yes' ? "<img src='{$site_config['pic_base_url']}star.gif' border='0' alt='" . $lang['text_donor'] . "' />" : '') . ($arr['warned'] >= 1 ? "<img src='{$site_config['pic_base_url']}warned.gif' border='0' alt='" . $lang['text_warned'] . "' />" : '') . "</td>
         <td style='white-space: nowrap;'>{$added}</td>
         <td style='white-space: nowrap;'>{$last_access}</td>
         <td>{$class}</td>

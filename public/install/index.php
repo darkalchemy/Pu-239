@@ -9,7 +9,6 @@ if ($public[strlen($public) - 1] != DIRECTORY_SEPARATOR) {
     $public = $public . DIRECTORY_SEPARATOR;
 }
 
-
 if (file_exists($public . 'include/install.lock')) {
     die('This was already installed, huh ? how this happened');
 }
@@ -132,11 +131,12 @@ function get_scheme()
                 <fieldset>
                     <legend>All done</legend>
                     <div class="info">Installation complete</div>
-                    <div class="info">goto <a href="./../signup.php">Signup</a> to create your first user.</div>
+                    <div class="info">goto <a href="' . $site_config['baseurl'] . '/../signup.php">Signup</a> to create your first user.</div>
                     <script>
                         var processing = 6;
                     </script>
                 </fieldset>';
+                unset($root, $public);
                 echo $out;
                 break;
         }

@@ -4,7 +4,7 @@ require_once INCL_DIR . 'pager_functions.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $CURUSER, $site_config, $cache, $lang;
+global $CURUSER, $site_config, $cache, $lang, $fluent;
 
 $lang = array_merge($lang, load_language('uploadapps'));
 $possible_actions = [
@@ -20,144 +20,226 @@ if (!in_array($action, $possible_actions)) {
     stderr($lang['uploadapps_error'], $lang['uploadapps_ruffian']);
 }
 $HTMLOUT = $where = $where1 = '';
-//== View applications
+
 if ($action == 'app' || $action == 'show') {
     if ($action == 'show') {
-        $hide = "[<a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'>{$lang['uploadapps_hide']}</a>]";
-        $where = "WHERE status = 'accepted' OR status = 'rejected'";
-        $where1 = "WHERE uploadapp.status = 'accepted' OR uploadapp.status = 'rejected'";
+        $hide = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'>{$lang['uploadapps_hide']}</a>";
+        $res = $fluent->from('uploadapp')
+            ->select('users.uploaded')
+            ->select('users.downloaded')
+            ->select('users.added')
+            ->select('users.class')
+            ->leftJoin('users ON uploadapp.userid = users.id')
+            ->where('status = "pending"')
+            ->fetchAll();
     } else {
-        $hide = "[<a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=show'>{$lang['uploadapps_show']}</a>]";
-        $where = "WHERE status = 'pending'";
-        $where1 = "WHERE uploadapp.status = 'pending'";
+        $hide = "<a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=show'>{$lang['uploadapps_show']}</a>";
+        $res = $fluent->from('uploadapp')
+            ->select('users.uploaded')
+            ->select('users.downloaded')
+            ->select('users.added')
+            ->select('users.class')
+            ->leftJoin('users ON uploadapp.userid = users.id')
+            ->where('uploadapp.status = "pending"')
+            ->fetchAll();
     }
-    $res = sql_query("SELECT COUNT(id) FROM uploadapp $where") or sqlerr(__FILE__, __LINE__);
-    $row = mysqli_fetch_row($res);
-    $count = $row[0];
+
+    $count = count($res);
     $perpage = 15;
-    $pager = pager($perpage, $count, '.staffpanel.php?tool=uploadapps&amp;.');
-    $HTMLOUT .= "<h1>{$lang['uploadapps_applications']}</h1>";
+    $pager = pager($perpage, $count, $site_config['baseurl'] . '/staffpanel.php?tool=uploadapps&amp;');
+    $HTMLOUT .= "
+        <div class='bottom20'>
+            <ul class='level-center bg-06'>
+                <li class='altlink margin20'>$hide</li>
+            </ul>
+        </div>
+        <h1 class='has-text-centered'>{$lang['uploadapps_applications']}</h1>";
     if ($count == 0) {
-        $HTMLOUT .= "<table class='main' width='850' ><tr><td class='embedded'>
-        <div><font class='small'>{$hide}</font></div></td></tr></table>
-        <table width='100%' ><tr><td>
-        <div>{$lang['uploadapps_noapps']}</div>
-        </td></tr></table>";
+        $HTMLOUT .= main_div($lang['uploadapps_noapps']);
     } else {
-        $HTMLOUT .= "<form method='post' action='staffpanel.php?tool=uploadapps&amp;action=takeappdelete'>";
+        $HTMLOUT .= "
+        <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=takeappdelete'>";
         if ($count > $perpage) {
             $HTMLOUT .= $pager['pagertop'];
         }
-        $HTMLOUT .= "<table class='main' width='850' ><tr><td class='embedded'>
-        <div><font class='small'>{$hide}</font></div>
-        <table width='100%' >
-        <tr>
-        <td class='colhead'>{$lang['uploadapps_applied']}</td>
-        <td class='colhead'>{$lang['uploadapps_application']}</td>
-        <td class='colhead'>{$lang['uploadapps_username']}</td>
-        <td class='colhead'>{$lang['uploadapps_joined']}</td>
-        <td class='colhead'>{$lang['uploadapps_class']}</td>
-        <td class='colhead'>{$lang['uploadapps_upped']}</td>
-        <td class='colhead'>{$lang['uploadapps_ratio']}</td>
-        <td class='colhead'>{$lang['uploadapps_status']}</td>
-        <td class='colhead'>{$lang['uploadapps_delete']}</td>
-        </tr>\n";
-        $res = sql_query("SELECT uploadapp.*, users.id AS uid, users.username, users.class, users.added, users.uploaded, users.downloaded FROM uploadapp INNER JOIN users on uploadapp.userid = users.id $where1 " . $pager['limit']) or sqlerr(__FILE__, __LINE__);
-        while ($arr = mysqli_fetch_assoc($res)) {
+        $heading = "
+            <tr>
+                <th>{$lang['uploadapps_applied']}</th>
+                <th>{$lang['uploadapps_application']}</th>
+                <th>{$lang['uploadapps_username']}</th>
+                <th>{$lang['uploadapps_joined']}</th>
+                <th>{$lang['uploadapps_class']}</th>
+                <th>{$lang['uploadapps_upped']}</th>
+                <th>{$lang['uploadapps_ratio']}</th>
+                <th>{$lang['uploadapps_status']}</th>
+                <th>{$lang['uploadapps_delete']}</th>
+            </tr>";
+        $body = '';
+        foreach ($res as $arr) {
             if ($arr['status'] == 'accepted') {
-                $status = "<font color='green'>{$lang['uploadapps_accepted']}</font>";
+                $status = "<span style='color: green;'>{$lang['uploadapps_accepted']}</span>";
             } elseif ($arr['status'] == 'rejected') {
-                $status = "<font color='red'>{$lang['uploadapps_rejected']}</font>";
+                $status = "<span class='has-text-danger'>{$lang['uploadapps_rejected']}</span>";
             } else {
-                $status = "<font color='blue'>{$lang['uploadapps_pending']}</font>";
+                $status = "<span style='color: blue;'>{$lang['uploadapps_pending']}</span>";
             }
             $membertime = get_date($arr['added'], '', 0, 1);
             $elapsed = get_date($arr['applied'], '', 0, 1);
-            $HTMLOUT .= "<tr>
-            <td>{$elapsed}</td>
-            <td><a href='staffpanel.php?tool=uploadapps&amp;action=viewapp&amp;id=" . (int)$arr['id'] . "'>{$lang['uploadapps_viewapp']}</a></td>
-            <td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$arr['uid'] . "'>" . htmlsafechars($arr['username']) . "</a></td>
-            <td>{$membertime}</td>
-            <td>" . get_user_class_name($arr['class']) . '</td>
-            <td>' . mksize($arr['uploaded']) . '</td>
-            <td>' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . "</td>
-            <td>{$status}</td>
-            <td><input type=\"checkbox\" name=\"deleteapp[]\" value=\"" . (int)$arr['id'] . "\" /></td>
-            </tr>\n";
+            $body .= "
+            <tr>
+                <td>{$elapsed}</td>
+                <td><a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=viewapp&amp;id=" . (int)$arr['id'] . "'>{$lang['uploadapps_viewapp']}</a></td>
+                <td>" . format_username($arr['userid']) . "</td>
+                <td>{$membertime}</td>
+                <td>" . get_user_class_name($arr['class']) . '</td>
+                <td>' . mksize($arr['uploaded']) . '</td>
+                <td>' . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . "</td>
+                <td>{$status}</td>
+                <td><input type=\"checkbox\" name=\"deleteapp[]\" value=\"" . (int)$arr['id'] . "\" /></td>
+            </tr>";
         }
-        $HTMLOUT .= "</table>
-        <div><input type='submit' value='Delete' /></div>
-        </td></tr></table></form>\n";
+        $HTMLOUT .= main_table($body, $heading) . "
+            <div class='has-text-centered margin20'>
+                <input type='submit' value='Delete' class='button is-small' />
+            </div>
+        </form>";
         if ($count > $perpage) {
             $HTMLOUT .= $pager['pagerbottom'];
         }
     }
 }
-//== View application
+
 if ($action == 'viewapp') {
     $id = (int)$_GET['id'];
-    $res = sql_query('SELECT uploadapp.*, users.id AS uid, users.username, users.class, users.added, users.uploaded, users.downloaded FROM uploadapp INNER JOIN users ON uploadapp.userid = users.id WHERE uploadapp.id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $arr = mysqli_fetch_assoc($res);
+    $arr = $fluent->from('uploadapp')
+        ->select('users.uploaded')
+        ->select('users.downloaded')
+        ->select('users.added')
+        ->select('users.class')
+        ->leftJoin('users ON uploadapp.userid = users.id')
+        ->where('uploadapp.id = ?', $id)
+        ->fetch();
+
     $membertime = get_date($arr['added'], '', 0, 1);
     $elapsed = get_date($arr['applied'], '', 0, 1);
-    $HTMLOUT .= "<h1>Uploader application</h1>
-    <table width='750' >
-    <tr>
-    <td class='rowhead' width='25%'>{$lang['uploadapps_username1']} </td><td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$arr['uid'] . "'>" . htmlsafechars($arr['username']) . "</a></td>
-    </tr>
-    <tr>
-    <td class='rowhead'>{$lang['uploadapps_joined']} </td><td>" . htmlsafechars($membertime) . "</td>
-    </tr>
-    <tr>
-    <td class='rowhead'>{$lang['uploadapps_upped1']} </td><td>" . htmlsafechars(mksize($arr['uploaded'])) . '</td>
-    </tr>
-    ' . ($site_config['ratio_free'] ? '' : "<tr>
-    <td class='rowhead'>{$lang['uploadapps_downed']} </td><td>" . htmlsafechars(mksize($arr['downloaded'])) . '</td>
-    </tr>') . "
-    <tr>
-    <td class='rowhead'>{$lang['uploadapps_ratio1']} </td><td>" . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? '0' : $arr['downloaded']) . "</td>
-    </tr>
-    <tr>
-    <td class='rowhead'>{$lang['uploadapps_connectable']} </td><td>" . htmlsafechars($arr['connectable']) . "</td>
-    </tr>
-    <tr>
-    <td class='rowhead'>{$lang['uploadapps_class1']} </td><td>" . get_user_class_name($arr['class']) . "</td>
-    </tr>
-    <tr>
-    <td class='rowhead'>{$lang['uploadapps_applied1']} </td><td>" . htmlsafechars($elapsed) . "</td>
-    </tr>
-    <tr>
-    <td class='rowhead'>{$lang['uploadapps_upspeed']} </td><td>" . htmlsafechars($arr['speed']) . "</td>
-    </tr>
-    <tr>
-    <td class='rowhead'>{$lang['uploadapps_offer']} </td><td>" . htmlsafechars($arr['offer']) . "</td>
-    </tr>
-    <tr>
-    <td class='rowhead'>{$lang['uploadapps_why']} </td><td>" . htmlsafechars($arr['reason']) . "</td>
-    </tr>
-    <tr>
-    <td class='rowhead'>{$lang['uploadapps_uploader']} </td><td>" . htmlsafechars($arr['sites']) . '</td>
-    </tr>';
+    $HTMLOUT .= "
+    <h1>Uploader application</h1>";
+    $table = "
+        <tr>
+            <td class='w-25'>{$lang['uploadapps_username1']}</td>
+            <td>" . format_username($arr['userid']) . "</a></td>
+        </tr>
+        <tr>
+            <td>{$lang['uploadapps_joined']}</td>
+            <td>" . htmlsafechars($membertime) . "</td>
+        </tr>
+        <tr>
+            <td>{$lang['uploadapps_upped1']}</td>
+            <td>" . htmlsafechars(mksize($arr['uploaded'])) . "</td>
+        </tr>" . ($site_config['ratio_free'] ? "" : "
+        <tr>
+            <td>{$lang['uploadapps_downed']}</td>
+            <td>" . htmlsafechars(mksize($arr['downloaded'])) . "</td>
+        </tr>") . "
+        <tr>
+            <td>{$lang['uploadapps_ratio1']}</td>
+            <td>" . member_ratio($arr['uploaded'], $site_config['ratio_free'] ? 0 : $arr['downloaded']) . "</td>
+        </tr>
+        <tr>
+            <td>{$lang['uploadapps_connectable']}</td>
+            <td>" . htmlsafechars($arr['connectable']) . "</td>
+        </tr>
+        <tr>
+            <td>{$lang['uploadapps_class1']}</td>
+            <td>" . get_user_class_name($arr['class']) . "</td>
+        </tr>
+        <tr>
+            <td>{$lang['uploadapps_applied1']}</td>
+            <td>" . htmlsafechars($elapsed) . "</td>
+        </tr>
+        <tr>
+            <td>{$lang['uploadapps_upspeed']}</td>
+            <td>" . htmlsafechars($arr['speed']) . "</td>
+        </tr>
+        <tr>
+            <td>{$lang['uploadapps_offer']}</td>
+            <td>" . htmlsafechars($arr['offer']) . "</td>
+        </tr>
+        <tr>
+            <td>{$lang['uploadapps_why']}</td>
+            <td>" . htmlsafechars($arr['reason']) . "</td>
+        </tr>
+        <tr>
+            <td>{$lang['uploadapps_uploader']}</td>
+            <td>" . htmlsafechars($arr['sites']) . "</td>
+        </tr>";
     if ($arr['sitenames'] != '') {
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['uploadapps_sites']} </td><td>" . htmlsafechars($arr['sitenames']) . "</td></tr>
-    <tr><td class='rowhead'>{$lang['uploadapps_axx']} </td><td>" . htmlsafechars($arr['scene']) . "</td></tr>
-    <tr><td colspan='2'>{$lang['uploadapps_create']} <b>" . htmlsafechars($arr['creating']) . "</b><br>{$lang['uploadapps_seeding']} <b>" . htmlsafechars($arr['seeding']) . '</b></td></tr>';
+        $table .= "
+        <tr>
+            <td>{$lang['uploadapps_sites']}</td>
+            <td>" . htmlsafechars($arr['sitenames']) . "</td>
+        </tr>
+        <tr>
+            <td>{$lang['uploadapps_axx']}</td>
+            <td>" . htmlsafechars($arr['scene']) . "</td>
+        </tr>
+        <tr>
+            <td>
+                {$lang['uploadapps_create']}
+            </td>
+            <td>" . htmlsafechars($arr['creating']) . "</td>
+        <tr>
+            <td>{$lang['uploadapps_seeding']}</td>
+            <td>" . htmlsafechars($arr['seeding']) . "</td>
+        </tr>";
     }
     if ($arr['status'] == 'pending') {
-        $HTMLOUT .= "<tr><td colspan='2'><form method='post' action='staffpanel.php?tool=uploadapps&amp;action=acceptapp'><input name='id' type='hidden' value='" . (int)$arr['id'] . "' /><b>{$lang['uploadapps_note']}</b><br><input type='text' name='note' size='40' /> <input type='submit' value='{$lang['uploadapps_accept']}' style='height: 20px' /></form><br><form method='post' action='staffpanel.php?tool=uploadapps&amp;action=rejectapp'><input name='id' type='hidden' value='" . (int)$arr['id'] . "' /><b>{$lang['uploadapps_reason']}</b><br><input type='text' name='reason' size='40' /> <input type='submit' value='{$lang['uploadapps_reject']}' style='height: 20px' /></form></td></tr></table>";
+        $div1 = "
+            <h2>{$lang['uploadapps_note']}</h2>
+            <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=acceptapp'>
+                <input name='id' type='hidden' value='{$arr['id']}' />
+                <input type='text' name='note' class='w-100' />
+                <div class='has-text-centered'>
+                    <input type='submit' value='{$lang['uploadapps_accept']}' class='button is-small margin20' />
+                </div>
+            </form>";
+        $div2 = "
+            <h2>{$lang['uploadapps_reason']}</h2>
+            <form method='post' action='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=rejectapp'>
+                <input name='id' type='hidden' value='{$arr['id']}' />
+                <input type='text' name='reason' class='w-100' />
+                <div class='has-text-centered'>
+                    <input type='submit' value='{$lang['uploadapps_reject']}' class='button is-small margin20' />
+                </div>
+            </form>";
+        $HTMLOUT .= main_table($table) . main_div($div1, 'top20') . main_div($div2, 'top20');
     } else {
-        $HTMLOUT .= "<tr><td colspan='2'>{$lang['uploadapps_application']} " . ($arr['status'] == 'accepted' ? 'accepted' : 'rejected') . ' by <b>' . htmlsafechars($arr['moderator']) . "</b><br>{$lang['uploadapps_comm']}" . htmlsafechars($arr['comment']) . "</td></tr></table>
-    <div><a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'>{$lang['uploadapps_return']}</a></div>";
+        $table = "
+        <tr>
+            <td colspan='2'>
+                {$lang['uploadapps_application']} " . ($arr['status'] == 'accepted' ? 'accepted' : 'rejected') . ' by <b>' . htmlsafechars($arr['moderator']) . "</b><br>{$lang['uploadapps_comm']}" . htmlsafechars($arr['comment']) . "
+            </td>
+        </tr>
+        <div>
+            <a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'>{$lang['uploadapps_return']}</a>
+        </div>";
+        $HTMLOUT .= main_table($table);
     }
+
 }
-//== Accept application
 if ($action == 'acceptapp') {
     $id = (int)$_POST['id'];
     if (!is_valid_id($id)) {
         stderr($lang['uploadapps_error'], $lang['uploadapps_noid']);
     }
-    $res = sql_query("SELECT uploadapp.id, users.username, users.modcomment, users.id AS uid FROM uploadapp INNER JOIN users on uploadapp.userid = users.id WHERE uploadapp.id = $id") or sqlerr(__FILE__, __LINE__);
-    $arr = mysqli_fetch_assoc($res);
+    $arr = $fluent->from('uploadapp')
+        ->select(null)
+        ->select('uploadapp.id')
+        ->select('users.modcomment')
+        ->leftJoin('users ON uploadapp.userid = users.id')
+        ->where('uploadapp.id = ?', $id)
+        ->fetch();
+
     $note = htmlsafechars($_POST['note']);
     $subject = sqlesc($lang['uploadapps_subject']);
     $msg = sqlesc("{$lang['uploadapps_msg']}\n\n{$lang['uploadapps_msg_note']} $note");
@@ -182,7 +264,6 @@ if ($action == 'acceptapp') {
     $cache->delete('new_uploadapp_');
     stderr($lang['uploadapps_app_accepted'], "{$lang['uploadapps_app_msg']} {$lang['uploadapps_app_click']} <a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'><b>{$lang['uploadapps_app_here']}</b></a> {$lang['uploadapps_app_return']}");
 }
-//== Reject application
 if ($action == 'rejectapp') {
     $id = (int)$_POST['id'];
     if (!is_valid_id($id)) {
@@ -209,4 +290,4 @@ if ($action == 'takeappdelete') {
         stderr($lang['uploadapps_deleted'], "{$lang['uploadapps_deletedsuc']} {$lang['uploadapps_app_click']} <a href='{$site_config['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'><b>{$lang['uploadapps_app_here']}</b></a>{$lang['uploadapps_app_return']}");
     }
 }
-echo stdhead($lang['uploadapps_stdhead']) . $HTMLOUT . stdfoot();
+echo stdhead($lang['uploadapps_stdhead']) . wrapper($HTMLOUT) . stdfoot();

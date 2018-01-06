@@ -60,7 +60,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
         if (!strcmp($L, $letter)) {
             $next .= ' <span>' . strtoupper($L) . '</span>';
         } else {
-            $next .= ' <a class="altlink" href="forums.php?action=member_post_history&amp;letter=' . $L . '">' . strtoupper($L) . '</a>';
+            $next .= ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=member_post_history&amp;letter=' . $L . '">' . strtoupper($L) . '</a>';
         }
         ++$count;
     }
@@ -83,14 +83,14 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 			<td class="forum_head_dark">' . $lang['fmp_country'] . '</td>
 			<td class="forum_head_dark">' . $lang['fe_view'] . '</td></tr>';
         while ($row = mysqli_fetch_assoc($res)) {
-            $country = ($row['name'] != null) ? '<td><img src="./images/flag/' . $row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" /></td>' : '<td>---</td>';
+            $country = ($row['name'] != null) ? '<td><img src="' . $site_config['pic_base_url'] . 'flag/' . $row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" /></td>' : '<td>---</td>';
             $HTMLOUT .= '<tr>
    <td>' . format_username($row) . '</td>
 	<td>' . get_date($row['added'], '') . '</td>
 	<td>' . ($row['perms'] < bt_options::PERMS_STEALTH ? get_date($row['last_access'], '') : 'Never') . '</td>
 	<td>' . get_user_class_name($row['class']) . '</td>
 	' . $country . '
-   <td><a href="forums.php?action=member_post_history&amp;id=' . (int)$row['id'] . '" title="see this members post history" class="altlink">' . $lang['fe_post_history'] . '</a></td>
+   <td><a href="' . $site_config['baseurl'] . '/forums.php?action=member_post_history&amp;id=' . (int)$row['id'] . '" title="see this members post history" class="altlink">' . $lang['fe_post_history'] . '</a></td>
 	</tr>';
         }
         $HTMLOUT .= '</table>';
@@ -107,7 +107,7 @@ $count = $arr_count[0];
 //=== get stuff for the pager
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 0;
 $perpage = isset($_GET['perpage']) ? (int)$_GET['perpage'] : 20;
-$subscription_on_off = (isset($_GET['s']) ? ($_GET['s'] == 1 ? '<br><div>' . $lang['fe_sub_to_topic'] . ' <img src="./images/forums/subscribe.gif" alt=" " width="25"></div>' : '<br><div>' . $lang['fe_unsub_to_topic'] . ' <img src="./images/forums/unsubscribe.gif" alt=" " width="25"></div>') : '');
+$subscription_on_off = (isset($_GET['s']) ? ($_GET['s'] == 1 ? '<br><div>' . $lang['fe_sub_to_topic'] . ' <img src="' . $site_config['pic_base_url'] . 'forums/subscribe.gif" alt=" " width="25"></div>' : '<br><div>' . $lang['fe_unsub_to_topic'] . ' <img src="' . $site_config['pic_base_url'] . 'forums/unsubscribe.gif" alt=" " width="25"></div>') : '');
 list($menu, $LIMIT) = pager_new($count, $perpage, $page, 'forums.php?action=member_post_history&amp;id=' . $member_id . (isset($_GET['perpage']) ? '&amp;perpage=' . $perpage : ''));
 $res = sql_query('SELECT p.id AS post_id, p.topic_id, p.user_id, p.added, p.body, p.edited_by, p.edit_date, p.icon, p.post_title, p.bbcode, p.post_history, p.edit_reason, p.ip, p.status AS post_status, p.anonymous, t.id AS topic_id, t.topic_name, t.forum_id, t.sticky, t.locked, t.poll_id, t.status AS topic_status, f.name AS forum_name, f.description FROM posts AS p LEFT JOIN topics AS t ON p.topic_id = t.id LEFT JOIN forums AS f ON f.id = t.forum_id WHERE  ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $min_delete_view_class ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' p.user_id = ' . sqlesc($member_id) . ' AND f.min_class_read <= ' . $CURUSER['class'] . ' ORDER BY p.id ' . $ASC_DESC . $LIMIT);
 //== get user info
@@ -116,11 +116,11 @@ $user_arr = mysqli_fetch_assoc($user_res);
 if ($count == 0) {
     stderr($lang['gl_sorry'], ($user_arr['username'] != '' ? format_username($user_arr) . ' ' . $lang['vmp_has_no_posts_look'] . '!' : $lang['fe_no_mem_with_id']));
 }
-$links = '<span><a class="altlink" href="forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';
+$links = '<span><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php">' . $lang['fe_forums_main'] . '</a> |  ' . $mini_menu . '<br><br></span>';
 $the_top_and_bottom = '<tr><td colspan="3">' . (($count > $perpage) ? $menu : '') . '</td></tr>';
 $HTMLOUT .= '<h1>' . $count . ' ' . $lang['fe_posts_by'] . ' ' . format_username($user_arr) . '</h1>' . $links . '
-	<div><a class="altlink" href="forums.php?action=member_post_history&amp;id=' . $member_id . '" title="' . $lang['vmp_view_posts_new_to_old'] . '">' . $lang['vmp_sort_by_newest_posts_1st'] . '</a> || 
-	<a class="altlink" href="forums.php?action=member_post_history&amp;id=' . $member_id . '&amp;ASC_DESC=ASC" title="' . $lang['vmp_view_posts_old_to_new'] . '">' . $lang['vmp_sort_by_oldest_posts_1st'] . '</a></div><br>';
+	<div><a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=member_post_history&amp;id=' . $member_id . '" title="' . $lang['vmp_view_posts_new_to_old'] . '">' . $lang['vmp_sort_by_newest_posts_1st'] . '</a> || 
+	<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=member_post_history&amp;id=' . $member_id . '&amp;ASC_DESC=ASC" title="' . $lang['vmp_view_posts_old_to_new'] . '">' . $lang['vmp_sort_by_oldest_posts_1st'] . '</a></div><br>';
 $HTMLOUT .= '<a name="top"></a><table class="table table-bordered table-striped">' . $the_top_and_bottom;
 //=== lets start the loop \o/
 while ($arr = mysqli_fetch_assoc($res)) {
@@ -132,11 +132,11 @@ while ($arr = mysqli_fetch_assoc($res)) {
             break;
 
         case 'recycled':
-            $topic_status_image = '<img src="./images/forums/recycle_bin.gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" />';
+            $topic_status_image = '<img src="' . $site_config['pic_base_url'] . 'forums/recycle_bin.gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" />';
             break;
 
         case 'deleted':
-            $topic_status_image = '<img src="./images/forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_deleted'] . '" />';
+            $topic_status_image = '<img src="' . $site_config['pic_base_url'] . 'forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_thread_is_currently'] . ' ' . $lang['fe_deleted'] . '" />';
             break;
     }
     //=== post status
@@ -149,20 +149,20 @@ while ($arr = mysqli_fetch_assoc($res)) {
 
         case 'recycled':
             $post_status = 'recycled';
-            $post_status_image = ' <img src="./images/forums/recycle_bin.gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" width="24px" />';
+            $post_status_image = ' <img src="' . $site_config['pic_base_url'] . 'forums/recycle_bin.gif" alt="' . $lang['fe_recycled'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_in_the_recycle_bin'] . '" width="24px" />';
             break;
 
         case 'deleted':
             $post_status = 'deleted';
-            $post_status_image = ' <img src="./images/forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_deleted'] . '" width="24px" />';
+            $post_status_image = ' <img src="' . $site_config['pic_base_url'] . 'forums/delete_icon.gif" alt="' . $lang['fe_deleted'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_deleted'] . '" width="24px" />';
             break;
 
         case 'postlocked':
             $post_status = 'postlocked';
-            $post_status_image = ' <img src="./images/forums/thread_locked.gif" alt="' . $lang['fe_locked'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_locked'] . '" width="24px" />';
+            $post_status_image = ' <img src="' . $site_config['pic_base_url'] . 'forums/thread_locked.gif" alt="' . $lang['fe_locked'] . '" title="' . $lang['fe_this_post_is_currently'] . ' ' . $lang['fe_locked'] . '" width="24px" />';
             break;
     }
-    $post_icon = ($arr['icon'] !== '' ? '<img src="./images/smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" /> ' : '<img src="./images/forums/topic_normal.gif" alt="icon" /> ');
+    $post_icon = ($arr['icon'] !== '' ? '<img src="' . $site_config['pic_base_url'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" /> ' : '<img src="' . $site_config['pic_base_url'] . 'forums/topic_normal.gif" alt="icon" /> ');
     $post_title = ($arr['post_title'] !== '' ? ' <span>' . htmlsafechars($arr['post_title'], ENT_QUOTES) . '</span>' : '' . $lang['fe_link_to_post'] . '');
     $edited_by = '';
     if ($arr['edit_date'] > 0) {
@@ -175,12 +175,12 @@ while ($arr = mysqli_fetch_assoc($res)) {
 				 at ' . get_date($arr['edit_date'], '') . ' UTC ' . ($arr['edit_reason'] !== '' ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
 				 ' . (($CURUSER['class'] >= UC_STAFF && $arr['post_history'] !== '') ? ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int)$arr['post_id'] . '&amp;forum_id=' . (int)$arr['forum_id'] . '&amp;topic_id=' . (int)$arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
             } else {
-                $edited_by = '<br><br><br><span>' . $lang['vmp_last_edit_by_anony'] . ' [<a class="altlink" href="userdetails.php?id=' . (int)$arr['edited_by'] . '">' . htmlsafechars($arr_edited['username']) . '</a>]
+                $edited_by = '<br><br><br><span>' . $lang['vmp_last_edit_by_anony'] . ' [<a class="altlink" href="' . $site_config['baseurl'] . '/userdetails.php?id=' . (int)$arr['edited_by'] . '">' . htmlsafechars($arr_edited['username']) . '</a>]
 				 at ' . get_date($arr['edit_date'], '') . ' UTC ' . ($arr['edit_reason'] !== '' ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
 				 ' . (($CURUSER['class'] >= UC_STAFF && $arr['post_history'] !== '') ? ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int)$arr['post_id'] . '&amp;forum_id=' . (int)$arr['forum_id'] . '&amp;topic_id=' . (int)$arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
             }
         } else {
-            $edited_by = '<br><br><br><span>' . $lang['fe_last_edited_by'] . ' <a class="altlink" href="userdetails.php?id=' . (int)$arr['edited_by'] . '">' . htmlsafechars($arr_edited['username']) . '</a>
+            $edited_by = '<br><br><br><span>' . $lang['fe_last_edited_by'] . ' <a class="altlink" href="' . $site_config['baseurl'] . '/userdetails.php?id=' . (int)$arr['edited_by'] . '">' . htmlsafechars($arr_edited['username']) . '</a>
 				 at ' . get_date($arr['edit_date'], '') . ' UTC ' . ($arr['edit_reason'] !== '' ? ' </span>[ ' . $lang['fe_reason'] . ': ' . htmlsafechars($arr['edit_reason']) . ' ] <span>' : '') . '
 				 ' . (($CURUSER['class'] >= UC_STAFF && $arr['post_history'] !== '') ? ' <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_post_history&amp;post_id=' . (int)$arr['post_id'] . '&amp;forum_id=' . (int)$arr['forum_id'] . '&amp;topic_id=' . (int)$arr['topic_id'] . '">' . $lang['fe_read_post_history'] . '</a></span><br>' : '</span>');
         }
@@ -191,19 +191,19 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $width = 100;
     $HTMLOUT .= '<tr>
 		<td class="forum_head_dark" colspan="3">' . $lang['fe_forum'] . ':  
-		<a class="altlink" href="forums.php?action=view_forum&amp;forum_id=' . (int)$arr['forum_id'] . '" title="' . $lang['fe_link_to_forum'] . '">
+		<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int)$arr['forum_id'] . '" title="' . $lang['fe_link_to_forum'] . '">
 		<span>' . htmlsafechars($arr['forum_name'], ENT_QUOTES) . '</span></a>&#160;&#160;&#160;&#160;
-		' . $lang['fe_topic'] . ': <a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . (int)$arr['topic_id'] . '" title="' . $lang['fe_link_to_forum'] . '">
+		' . $lang['fe_topic'] . ': <a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$arr['topic_id'] . '" title="' . $lang['fe_link_to_forum'] . '">
 		<span>' . htmlsafechars($arr['topic_name'], ENT_QUOTES) . '</span></a>' . $topic_status_image . '</td>
 		</tr>
 		<tr>
 		<td class="forum_head"><a name="' . $post_id . '"></a></td>
 		<td class="forum_head"> <span>' . $post_icon . '
-		<a class="altlink" href="forums.php?action=view_topic&amp;topic_id=' . (int)$arr['topic_id'] . '&amp;page=' . $page . '#' . (int)$arr['post_id'] . '" title="' . $lang['fe_link_to_post'] . '">
+		<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int)$arr['topic_id'] . '&amp;page=' . $page . '#' . (int)$arr['post_id'] . '" title="' . $lang['fe_link_to_post'] . '">
 		' . $post_title . '</a>&#160;&#160;' . $post_status_image . ' &#160;&#160; ' . $lang['fe_posted_on'] . ': ' . get_date($arr['added'], '') . ' [' . get_date($arr['added'], '', 0, 1) . ']</span></td>
 		<td class="forum_head"><span> 
-		<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#top"><img src="./images/forums/up.gif" alt="' . $lang['fe_top'] . '" /></a> 
-		<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#bottom"><img src="./images/forums/down.gif" alt="' . $lang['fe_bottom'] . '" /></a></span></td>
+		<a href="' . $site_config['baseurl'] . '/forums.php?action=view_my_posts&amp;page=' . $page . '#top"><img src="' . $site_config['pic_base_url'] . 'forums/up.gif" alt="' . $lang['fe_top'] . '" /></a> 
+		<a href="' . $site_config['baseurl'] . '/forums.php?action=view_my_posts&amp;page=' . $page . '#bottom"><img src="' . $site_config['pic_base_url'] . 'forums/down.gif" alt="' . $lang['fe_bottom'] . '" /></a></span></td>
 		</tr>	
 		<tr>
 		<td>' . ($arr['anonymous'] == 'yes' ? '<img style="max-width:' . $width . 'px;" src="' . $site_config['pic_base_url'] . 'anonymous_1.jpg" alt="avatar" />' : avatar_stuff($user_arr)) . '<br>' . ($arr['anonymous'] == 'yes' ? '<i>' . $lang['fe_anonymous'] . '</i>' : format_username($user_arr)) . ($arr['anonymous'] == 'yes' || $user_arr['title'] == '' ? '' : '<br><span>[' . htmlsafechars($user_arr['title']) . ']</span>') . '<br><span>' . ($arr['anonymous'] == 'yes' ? '' : get_user_class_name($user_arr['class'])) . '</span><br></td>
@@ -212,5 +212,5 @@ while ($arr = mysqli_fetch_assoc($res)) {
 		<tr>
 		<td colspan="3"></td>
 		</tr>';
-} //=== end while loop
+}
 $HTMLOUT .= $the_top_and_bottom . '</table><a name="bottom"></a><br>' . $links . '<br>';

@@ -35,7 +35,7 @@ function usercommenttable($rows)
         }
         $htmlout .= "<table width='100%' >";
         $htmlout .= "<tr>\n";
-        $htmlout .= "<td width='150' style='padding:0px'><img width='150' src=\"{$avatar}\" alt=\"Avatar\" /></td>\n";
+        $htmlout .= "<td width='150' style='padding:0;'><img width='150' src=\"{$avatar}\" alt=\"Avatar\" /></td>\n";
         $htmlout .= "<td class='text'>$text</td>\n";
         $htmlout .= "</tr>\n";
         $htmlout .= '</table>';
@@ -51,7 +51,7 @@ $text .= "
     <div class='has-text-centered'>
         <h1>{$lang['userdetails_comm_left']}" . format_username($id) . "</a></h1>";
 $commentbar = "
-        <a href='./usercomment.php?action=add&amp;userid={$id}'>Add a comment</a>";
+        <a href='{$site_config['baseurl']}/usercomment.php?action=add&amp;userid={$id}'>Add a comment</a>";
 $subres = sql_query('SELECT COUNT(id) FROM usercomments WHERE userid = ' . sqlesc($id));
 $subrow = mysqli_fetch_array($subres, MYSQLI_NUM);
 $count = $subrow[0];

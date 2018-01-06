@@ -105,7 +105,7 @@ function crazyhour_announce()
                 $msg = 'w00t! It\'s [color=orange][b]Crazyhour[/b][/color] :w00t:';
                 autoshout($msg);
 
-                $text = 'w00t! It\'s <span style="font-weight:bold;color:orange;">Crazyhour</span> <img src="./images/smilies/w00t.gif" alt=":w00t:" />';
+                $text = 'w00t! It\'s <span style="font-weight:bold;color:orange;">Crazyhour</span> <img src="' .$site_config['pic_base_url'] . 'smilies/w00t.gif" alt=":w00t:" />';
                 ann_sql_query('INSERT INTO sitelog (added, txt) VALUES(' . TIME_NOW . ', ' . ann_sqlesc($text) . ')') or ann_sqlerr(__FILE__, __LINE__);
             }
         }
@@ -170,9 +170,9 @@ function get_user_from_torrent_pass($torrent_pass)
  */
 function get_torrent_from_hash($info_hash)
 {
-    global $cache, $site_config;
+    global $cache;
     $key = 'torrent::hash:::' . md5($info_hash);
-    $ttll = 21600; // 21600;
+    $ttll = 21600;
     $torrent = $cache->get($key);
     if ($torrent === false || is_null($torrent)) {
         $res = ann_sql_query('SELECT id, category, banned, free, silver, vip, seeders, leechers, times_completed, seeders + leechers AS numpeers, added AS ts, visible FROM torrents WHERE info_hash = ' . ann_sqlesc($info_hash)) or ann_sqlerr(__FILE__, __LINE__);

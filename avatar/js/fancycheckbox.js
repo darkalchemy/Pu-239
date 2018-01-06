@@ -6,7 +6,7 @@
 	Updated July 27, 2006.
 	Jesse Gavin added the AddEvent function to initialize
 	the script. He also converted the script to JSON format.
-	
+
 	Updated July 30, 2006.
 	Added the ability to tab to elements and use the spacebar
 	to check the input element. This bit of functionality was
@@ -76,7 +76,6 @@ crir = {
             for (var i = 0; i < arrLabels.length; i++) {
                 if (arrLabels[i].getAttributeNode('for') && arrLabels[i].getAttributeNode('for').value == inputElementID) {
                     return arrLabels[i];
-                    break searchLoop;
                 }
             }
     },

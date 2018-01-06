@@ -21,12 +21,10 @@ function validate($id)
     global $lang;
     if (!is_valid_id($id)) {
         stderr($lang['failed_sorry'], "{$lang['failed_bad_id']}");
-    } else {
-        return true;
     }
+    return true;
 }
 
-//==Actions
 if ($mode == 'ban') {
     validate($id);
     sql_query("UPDATE failedlogins SET banned = 'yes' WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
@@ -94,10 +92,10 @@ if (mysqli_num_rows($res) == 0) {
   <td><b>" . get_date($arr['added'], '', 1, 0) . "</b></td>
   <td><b>" . (int)$arr['attempts'] . "</b></td>
   <td>
-  " . ($arr['banned'] == 'yes' ? "<font color='red'><b>{$lang['failed_main_banned']}</b></font> 
+  " . ($arr['banned'] == 'yes' ? "<span class='has-text-danger'><b>{$lang['failed_main_banned']}</b></span> 
   <a href='staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=removeban&amp;id=" . (int)$arr['id'] . "'> 
-  <font color='green'>[<b>{$lang['failed_main_remban']}</b>]</font></a>" : "<font color='green'><b>{$lang['failed_main_noban']}</b></font> 
-  <a href='staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=ban&amp;id=" . (int)$arr['id'] . "'><font color='red'>[<b>{$lang['failed_main_ban']}</b>]</font></a>") . "  
+  <span style='color: green'>[<b>{$lang['failed_main_remban']}</b>]</font></a>" : "<font color='green;'><b>{$lang['failed_main_noban']}</b></span> 
+  <a href='staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=ban&amp;id=" . (int)$arr['id'] . "'><span class='has-text-danger'>[<b>{$lang['failed_main_ban']}</b>]</span></a>") . "  
   
   <a onclick=\"return confirm('{$lang['failed_main_delmessage']}');\" href='staffpanel.php?tool=failedlogins&amp;action=failedlogins&amp;mode=delete&amp;id=" . (int)$arr['id'] . "'>[<b>{$lang['failed_main_delete']}</b>]</a></td></tr>\n";
     }

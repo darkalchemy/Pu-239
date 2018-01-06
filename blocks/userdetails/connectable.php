@@ -19,12 +19,12 @@ if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_ST
         $Ident_Client = (XBT_TRACKER == true ? $port_data['1'] : $port_data[2]);
         $XBT_or_PHP = (XBT_TRACKER == true ? '1' : 'yes');
         if ($connect == $XBT_or_PHP) {
-            $connectable = "<img src='{$site_config['pic_base_url']}tick.png' alt='{$lang['userdetails_yes']}' title='{$lang['userdetails_conn_sort']}' style='border:none;padding:2px;' /><font color='green'><b>{$lang['userdetails_yes']}</b></font>";
+            $connectable = "<img src='{$site_config['pic_base_url']}tick.png' alt='{$lang['userdetails_yes']}' title='{$lang['userdetails_conn_sort']}' style='border:none;padding:2px;' /><span style='color: green;'><b>{$lang['userdetails_yes']}</b></span>";
         } else {
-            $connectable = "<img src='{$site_config['pic_base_url']}cross.png' alt='{$lang['userdetails_no']}' title='{$lang['userdetails_conn_staff']}' style='border:none;padding:2px;' /><font color='red'><b>{$lang['userdetails_no']}</b></font>";
+            $connectable = "<img src='{$site_config['pic_base_url']}cross.png' alt='{$lang['userdetails_no']}' title='{$lang['userdetails_conn_staff']}' style='border:none;padding:2px;' /><span class='has-text-danger'><b>{$lang['userdetails_no']}</b></span>";
         }
     } else {
-        $connectable = "<font color='orange'><b>{$lang['userdetails_unknown']}</b></font>";
+        $connectable = "<span style='color: orange;'><b>{$lang['userdetails_unknown']}</b></span>";
     }
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_connectable']}</td><td>" . $connectable . '</td></tr>';
     if (!empty($port)) {

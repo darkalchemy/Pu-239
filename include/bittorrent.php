@@ -1343,6 +1343,7 @@ function sql_query($query, $log = true)
  */
 function get_percent_completed_image($p)
 {
+    global $site_config;
     $img = 'progress-';
     switch (true) {
         case $p >= 100:
@@ -1370,7 +1371,7 @@ function get_percent_completed_image($p)
             break;
     }
 
-    return '<img src="./images/' . $img . '.gif" alt="percent" />';
+    return "<img src='{$site_config['pic_base_url']}{$img}.gif' alt='percent' />";
 }
 
 /**
@@ -2060,7 +2061,7 @@ function valid_username($username, $ajax = false)
     $namelength = strlen($username);
     if ($namelength < 3 || $namelength > 64) {
         if ($ajax) {
-            return "<font color='#cc0000'>{$lang['takesignup_username_length']}</font> - $namelength characters";
+            return "<span style='color: #cc0000;'>{$lang['takesignup_username_length']}</span> - $namelength characters";
         } else {
             stderr($lang['takesignup_user_error'], $lang['takesignup_username_length']);
         }
@@ -2068,7 +2069,7 @@ function valid_username($username, $ajax = false)
 
     if (!ctype_alnum($username)) {
         if ($ajax) {
-            echo "<font color='#cc0000'>{$lang['takesignup_allowed_chars']}</font>";
+            echo "<span style='color: #cc0000;'>{$lang['takesignup_allowed_chars']}</span>";
             die();
         }
         return false;

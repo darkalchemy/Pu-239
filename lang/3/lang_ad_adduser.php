@@ -13,7 +13,7 @@ $lang = [
     'err_mysql_err'      => 'A fost o eroare mysql : %s, raporteaz-o staff-ului',
     'err_already_exists' => 'Acest utilizator deja exist&#259;...a&#351;teapt&#259; pentru redirec&#355;ionare!',
     //Texts
-    'text_user_added'    => 'Utilizatorul a fost ad&#259;ugat, viziteaz&#259; detaliile utilizatorului <a href="userdetails.php?id=%d">aici</a>',
+    'text_user_added'    => 'Utilizatorul a fost ad&#259;ugat, viziteaz&#259; detaliile utilizatorului <a href="' . $site_config['baseurl'] . '/userdetails.php?id=%d">aici</a>',
     'text_username'      => 'Nume utilizator',
     'text_password'      => 'Parol&#259;',
     'text_password2'     => 'Rescrie parola',

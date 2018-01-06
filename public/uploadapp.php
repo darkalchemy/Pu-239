@@ -1,13 +1,14 @@
 <?php
 require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'pager_functions.php';
 check_user_status();
 $lang = array_merge(load_language('global'), load_language('uploadapp'));
-global $CURUSER, $site_config, $cache;
-
+global $CURUSER, $site_config, $cache, $fluent;
+$CURUSER['class'] = 1;
 $HTMLOUT = '';
-// Fill in application
+
 if (isset($_POST['form']) != 1) {
     $res = sql_query('SELECT status FROM uploadapp WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
@@ -18,19 +19,26 @@ if (isset($_POST['form']) != 1) {
     } elseif ($arr['status'] == 'rejected') {
         stderr($lang['uploadapp_user_error'], $lang['uploadapp_rejected']);
     } else {
-        $HTMLOUT .= "<h1>{$lang['uploadapp_application']}</h1>
-        <table class='table table-bordered table-striped'><tr><td>
+        $HTMLOUT .= "
+        <h1>{$lang['uploadapp_application']}</h1>
         <form action='./uploadapp.php' method='post' enctype='multipart/form-data'>
-        <table class='table table-bordered table-striped'>";
+            <table class='table table-bordered table-striped'>";
         $ratio = member_ratio($CURUSER['uploaded'], $CURUSER['downloaded']);
         if (XBT_TRACKER === false) {
-            $res = sql_query('SELECT connectable FROM peers WHERE userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+            $connect = $fluent->from('peers')
+                ->select(null)
+                ->select('connectable')
+                ->where('userid = ?', $CURUSER['id'])
+                ->fetch();
         } else {
-            $res = sql_query('SELECT connectable FROM xbt_files_users WHERE uid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+            $connect = $fluent->from('xbt_files_users')
+                ->select(null)
+                ->select('connectable')
+                ->where('uid = ?', $CURUSER['id'])
+                ->fetch();
         }
-        if ($row = mysqli_fetch_row($res)) {
+        if (!empty($connect)) {
             $Conn_Y = (XBT_TRACKER === true ? 1 : 'yes');
-            $connect = $row[0];
             if ($connect == $Conn_Y) {
                 $connectable = 'Yes';
             } else {
@@ -39,114 +47,168 @@ if (isset($_POST['form']) != 1) {
         } else {
             $connectable = 'Pending';
         }
-        $HTMLOUT .= "<tr>
-        <td class='rowhead'>{$lang['uploadapp_username']}</td>
-        <td><input name='userid' type='hidden' value='" . (int)$CURUSER['id'] . "' />" . $CURUSER['username'] . "</td>
-        </tr>
-        <tr>
-        <td class='rowhead'>{$lang['uploadapp_joined']}</td><td>" . get_date($CURUSER['added'], '', 0, 1) . "</td>
-        </tr>
-        <tr>
-        <td class='rowhead'>{$lang['uploadapp_ratio']}</td><td>" . ($ratio >= 1 ? 'No' : 'Yes') . "</td>
-        </tr>
-        <tr>
-        <td class='rowhead'>{$lang['uploadapp_connectable']}</td><td><input name='connectable' type='hidden' value='$connectable' />$connectable</td>
-        </tr>
-        <tr>
-        <td class='rowhead'>{$lang['uploadapp_upspeed']}</td><td><input type='text' name='speed' size='19' /></td>
-        </tr>
-        <tr>
-        <td class='rowhead'>{$lang['uploadapp_offer']}</td><td><textarea name='offer' cols='80' rows='1'></textarea></td>
-        </tr>
-        <tr>
-        <td class='rowhead'>{$lang['uploadapp_why']}</td><td><textarea name='reason' cols='80' rows='2'></textarea></td>
-        </tr>
-        <tr>
-        <td class='rowhead'>{$lang['uploadapp_uploader']}</td><td><input type='radio' name='sites' value='yes' />{$lang['uploadapp_yes']}
-        <input name='sites' type='radio' value='no' checked />{$lang['uploadapp_no']}</td>
-        </tr>
-        <tr>
-        <td class='rowhead'>{$lang['uploadapp_sites']}</td><td><textarea name='sitenames' cols='80' rows='1'></textarea></td>
-        </tr>
-        <tr>
-        <td class='rowhead'>{$lang['uploadapp_scene']}</td><td><input type='radio' name='scene' value='yes' />{$lang['uploadapp_yes']}
-	     <input name='scene' type='radio' value='no' checked />{$lang['uploadapp_no']}</td>
-        </tr>
-        <tr>
-        <td colspan='2'>
-        <br>
-        &#160;&#160;{$lang['uploadapp_create']}
-        <br>
-        <input type='radio' name='creating' value='yes' />{$lang['uploadapp_yes']}
-    	  <input name='creating' type='radio' value='no' checked />{$lang['uploadapp_no']}
-        <br><br>
-        &#160;&#160;{$lang['uploadapp_seeding']}
-        <br>
-        <input type='radio' name='seeding' value='yes' />{$lang['uploadapp_yes']}
-     	  <input name='seeding' type='radio' value='no' checked />{$lang['uploadapp_no']}
-        <br><br>
-        <input name='form' type='hidden' value='1' />
-        <div><input type='submit' name='Submit' value='{$lang['uploadapp_send']}' /></div></td>
-        </tr>
-        </table></form>
-        </td></tr></table>";
+        $HTMLOUT .= "
+                <tr>
+                    <td class='rowhead'>{$lang['uploadapp_username']}</td>
+                    <td>
+                        <input name='userid' type='hidden' value='" . (int)$CURUSER['id'] . "' />
+                        {$CURUSER['username']}
+                     </td>
+                </tr>
+                <tr>
+                    <td class='rowhead'>{$lang['uploadapp_joined']}</td>
+                    <td>" . get_date($CURUSER['added'], '', 0, 1) . "</td>
+                </tr>
+                <tr>
+                    <td class='rowhead'>{$lang['uploadapp_ratio']}</td>
+                    <td>" . ($ratio >= 1 ? 'No' : 'Yes') . "</td>
+                </tr>
+                <tr>
+                    <td class='rowhead'>
+                        {$lang['uploadapp_connectable']}
+                    </td>
+                    <td>
+                        <input name='connectable' type='hidden' value='$connectable' />$connectable
+                    </td>
+                </tr>
+                <tr>
+                    <td class='rowhead'>
+                        {$lang['uploadapp_upspeed']}
+                    </td>
+                    <td>
+                        <input type='text' name='speed' class='w-100' />
+                    </td>
+                </tr>
+                <tr>
+                    <td class='rowhead'>
+                        {$lang['uploadapp_offer']}
+                    </td>
+                    <td>
+                        <textarea class='w-100' name='offer' rows='1'></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class='rowhead'>
+                        {$lang['uploadapp_why']}
+                    </td>
+                    <td>
+                        <textarea class='w-100' name='reason' rows='2'></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class='rowhead'>
+                        {$lang['uploadapp_uploader']}</td><td><input type='radio' name='sites' value='yes' />{$lang['uploadapp_yes']}
+                        <input name='sites' type='radio' value='no' checked />{$lang['uploadapp_no']}
+                    </td>
+                </tr>
+                <tr>
+                    <td class='rowhead'>
+                        {$lang['uploadapp_sites']}</td>
+                    <td>
+                        <textarea class='w-100' name='sitenames' rows='1'></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class='rowhead'>
+                        {$lang['uploadapp_scene']}
+                    </td>
+                    <td>
+                        <input type='radio' name='scene' value='yes' />{$lang['uploadapp_yes']}
+                        <input name='scene' type='radio' value='no' checked />{$lang['uploadapp_no']}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2'>
+                        <p>
+                            <span class='right10'>
+                                {$lang['uploadapp_create']}
+                            </span>
+                            <input type='radio' name='creating' value='yes' />{$lang['uploadapp_yes']}
+                            <input type='radio' name='creating' value='no' checked />{$lang['uploadapp_no']}
+                        </p>
+                        <p>
+                            <span class='right10'>
+                                {$lang['uploadapp_seeding']}
+                            </span>
+                            <input type='radio' name='seeding' value='yes' />{$lang['uploadapp_yes']}
+                            <input name='seeding' type='radio' value='no' checked />{$lang['uploadapp_no']}
+                        </p>
+                        <input name='form' type='hidden' value='1' />
+                    </td>
+                </tr>
+            </table>
+            <div class='has-text-centered margin20'>
+                <input type='submit' name='Submit' value='{$lang['uploadapp_send']}' class='button is-small' />
+            </div>
+        </form>";
     }
-    // Process application
 } else {
-    $app['userid'] = (int)sqlesc($_POST['userid']);
-    $app['connectable'] = htmlsafechars($_POST['connectable']);
-    $app['speed'] = htmlsafechars($_POST['speed']);
-    $app['offer'] = htmlsafechars($_POST['offer']);
-    $app['reason'] = htmlsafechars($_POST['reason']);
-    $app['sites'] = htmlsafechars($_POST['sites']);
-    $app['sitenames'] = htmlsafechars($_POST['sitenames']);
-    $app['scene'] = htmlsafechars($_POST['scene']);
-    $app['creating'] = htmlsafechars($_POST['creating']);
-    $app['seeding'] = htmlsafechars($_POST['seeding']);
-    if (!is_valid_id($app['userid'])) {
+    if (!is_valid_id($_POST['userid'])) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_tryagain']);
     }
-    if (!$app['speed']) {
+    if (!$_POST['speed']) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_speedblank']);
     }
-    if (!$app['offer']) {
+    if (!$_POST['offer']) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_offerblank']);
     }
-    if (!$app['reason']) {
+    if (!$_POST['reason']) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_reasonblank']);
     }
-    if ($app['sites'] == 'yes' && !$app['sitenames']) {
+    if ($_POST['sites'] == 'yes' && !$_POST['sitenames']) {
         stderr($lang['uploadapp_error'], $lang['uploadapp_sitesblank']);
     }
-    $res = sql_query("INSERT INTO uploadapp(userid,applied,connectable,speed,offer,reason,sites,sitenames,scene,creating,seeding) VALUES({$app['userid']}, " . implode(',', array_map('sqlesc', [
-            TIME_NOW,
-            $app['connectable'],
-            $app['speed'],
-            $app['offer'],
-            $app['reason'],
-            $app['sites'],
-            $app['sitenames'],
-            $app['scene'],
-            $app['creating'],
-            $app['seeding'],
-        ])) . ')');
+    $dupe = $fluent->from('uploadapp')
+        ->where('userid = ?', $_POST['userid'])
+        ->fetch();
+    if (!empty($dupe)) {
+        stderr($lang['uploadapp_error'], $lang['uploadapp_twice']);
+    }
+
+    $values = [
+        'userid' => (int)$_POST['userid'],
+        'applied' => TIME_NOW,
+        'connectable' => htmlsafechars($_POST['connectable']),
+        'speed' => htmlsafechars($_POST['spped']),
+        'offer' => htmlsafechars($_POST['offer']),
+        'reason' => htmlsafechars($_POST['reason']),
+        'sites' => htmlsafechars($_POST['sites']),
+        'sitenames' => htmlsafechars($_POST['sitenames']),
+        'scene' => htmlsafechars($_POST['scene']),
+        'creating' => htmlsafechars($_POST['creating']),
+        'seeding' => htmlsafechars($_POST['seeding'])
+    ];
+    $res = $fluent->insertInto('uploadapp')
+        ->values($values)
+        ->execute();
     $cache->delete('new_uploadapp_');
     if (!$res) {
-        if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
-            stderr($lang['uploadapp_error'], $lang['uploadapp_twice']);
-        } else {
-            stderr($lang['uploadapp_error'], $lang['uploadapp_tryagain']);
-        }
+        stderr($lang['uploadapp_error'], $lang['uploadapp_tryagain']);
     } else {
-        $subject = sqlesc('Uploader application');
-        $msg = sqlesc("An uploader application has just been filled in by [url={$site_config['baseurl']}/userdetails.php?id=" . (int)$CURUSER['id'] . "][b]{$CURUSER['username']}[/b][/url]. Click [url={$site_config['baseurl']}/staffpanel.php?tool=uploadapps&action=show][b]Here[/b][/url] to go to the uploader applications page.");
+        $subject = 'Uploader application';
+        $msg = "An uploader application has just been filled in by [url={$site_config['baseurl']}/userdetails.php?id=" . (int)$CURUSER['id'] . "][b]{$CURUSER['username']}[/b][/url]. Click [url={$site_config['baseurl']}/staffpanel.php?tool=uploadapps&action=app][b]Here[/b][/url] to go to the uploader applications page.";
         $dt = TIME_NOW;
-        $subres = sql_query('SELECT id FROM users WHERE class = ' . UC_STAFF) or sqlerr(__FILE__, __LINE__);
-        while ($arr = mysqli_fetch_assoc($subres)) {
-            sql_query('INSERT INTO messages(sender, receiver, added, msg, subject, poster) VALUES(0, ' . sqlesc($arr['id']) . ", $dt, $msg, $subject, 0)") or sqlerr(__FILE__, __LINE__);
+        $subres = $fluent->from('users')
+            ->select(null)
+            ->select('id')
+            ->where('class >= ?', UC_STAFF)
+            ->fetchAll();
+
+        foreach ($subres as $arr) {
+            $values = [
+                'sender' => 0,
+                'receiver' => $arr['id'],
+                'added' => TIME_NOW,
+                'msg' => $msg,
+                'subject' => $subject,
+                'poster' => 0
+            ];
+            $fluent->insertInto('messages')
+                ->values($values)
+                ->execute();
+            $cache->increment('inbox_' . $arr['id']);
         }
-        $cache->increment('inbox_' . $arr['id']);
         stderr($lang['uploadapp_appsent'], $lang['uploadapp_success']);
     }
 }
-echo stdhead('Uploader application page') . $HTMLOUT . stdfoot();
+echo stdhead('Uploader application page') . wrapper($HTMLOUT) . stdfoot();

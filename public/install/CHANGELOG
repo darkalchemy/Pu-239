@@ -1,3 +1,9 @@
+6 Jan 2018
+fix: global block uploadapp.php
+fix: uploadapp.php
+move: jquery to local file
+replace: many relative urls with full url
+
 5 Jan 2108
 fix: login bug
 

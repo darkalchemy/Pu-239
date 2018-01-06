@@ -76,6 +76,7 @@ function do_sort($arr, $empty = false)
             $ret_html,
         ];
     }
+    return false;
 }
 
 if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {

@@ -12,7 +12,7 @@ $HTMLOUT = "
         <div class='bottom10'>
             <div>Top Scores Earn {$site_config['top_score_points']} Karma Points</div>
             <div class='level-center top10'>
-                <a class='altlink' href='./arcade.php'>Back to the Arcade</a>
+                <a class='altlink' href='{$site_config['baseurl']}/arcade.php'>Back to the Arcade</a>
             </div>
         </div>";
 
@@ -28,7 +28,7 @@ foreach ($list as $gname) {
         $HTMLOUT .= "
         <div class='bg-02 has-text-centered padtop10 round5'>
             <a name='{$game}'></a>
-            <a href='./flash.php?gameURI={$game}.swf&amp;gamename={$game}&amp;game_id={$game_id}'>
+            <a href='{$site_config['baseurl']}/flash.php?gameURI={$game}.swf&amp;gamename={$game}&amp;game_id={$game_id}'>
                 <img src='{$site_config['pic_base_url']}games/{$game}.png' alt='{$gname}' class='round5' />
             </a>";
         $HTMLOUT .= '

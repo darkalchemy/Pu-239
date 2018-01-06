@@ -122,9 +122,9 @@ if (ANN_IP_LOGGING == 1) {
         }
     }
 }
-// End Ip logger
+
 $realip = $_SERVER['REMOTE_ADDR'];
-$torrent = get_torrent_from_hash($info_hash, $userid);
+$torrent = get_torrent_from_hash($info_hash);
 if (!$torrent) {
     err('torrent query error - contact site admin');
 }
@@ -526,6 +526,7 @@ if ($seeder == 'yes') {
     $cache->update_row('torrent_details_' . $torrentid, [
         'visible' => 'yes',
     ], $site_config['expires']['torrent_details']);
+
     $cache->update_row('last_action_' . $torrentid, [
         'lastseed' => TIME_NOW,
     ], 1800);

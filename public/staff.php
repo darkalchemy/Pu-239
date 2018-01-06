@@ -56,7 +56,7 @@ function DoStaff($staff, $staffclass, $cols = 2)
             if (isset($staff[ $r ])) {
                 $htmlout .= "
                         <td class='staff_username'>" . format_username($staff[ $r ]['id']) . "</td>
-                        <td class='staff_online'><img src='{$site_config['pic_base_url']}/staff" . ($staff[ $r ]['last_access'] > $dt && $staff[ $r ]['perms'] < bt_options::PERMS_STEALTH ? '/online.png' : '/offline.png') . "' border='0' height='16' alt='' /></td>" . "
+                        <td class='staff_online'><img src='{$site_config['pic_base_url']}staff" . ($staff[ $r ]['last_access'] > $dt && $staff[ $r ]['perms'] < bt_options::PERMS_STEALTH ? '/online.png' : '/offline.png') . "' border='0' height='16' alt='' /></td>" . "
                         <td class='staff_online'><a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . (int)$staff[ $r ]['id'] . '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) . "'><img src='{$site_config['pic_base_url']}mailicon.png' border='0' class='tooltipper' title='Personal Message' alt='' /></a></td>" . "
                         <td class='staff_online'><img height='16' src='{$site_config['pic_base_url']}flag/" . htmlsafechars($staff[ $r ]['flagpic']) . "' border='0' alt='" . htmlsafechars($staff[ $r ]['name']) . "' /></td>";
                 ++$r;

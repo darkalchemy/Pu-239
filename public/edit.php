@@ -150,7 +150,7 @@ if ($CURUSER['class'] >= UC_STAFF && $CURUSER['class'] == UC_MAX) {
         $messc = '&#160;Only staff members are able to comment on this torrent!';
     }
     $HTMLOUT .= "<tr>
-    <td><font color='red'>&#160;*&#160;</font><b>&#160;{$lang['edit_comment']}</b></td>
+    <td><span class='has-text-danger'>&#160;*&#160;</span><b>&#160;{$lang['edit_comment']}</b></td>
     <td>
     <select name='allow_comments'>
     <option value='" . htmlsafechars($row['allow_comments']) . "'>" . htmlsafechars($row['allow_comments']) . "</option>

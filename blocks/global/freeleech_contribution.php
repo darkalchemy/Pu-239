@@ -190,7 +190,7 @@ if (XBT_TRACKER == true) {
     }
     $htmlout .= "
                 <li>
-                    <a href='./mybonus.php'>
+                    <a href='{$site_config['baseurl']}/mybonus.php'>
                         <span class='button tag is-success dt-tooltipper-large' data-tooltip-content='#karma_tooltip'>Karma Contribution's</span>
                         <div class='tooltip_templates'>
                             <span id='karma_tooltip'>

@@ -11,8 +11,7 @@ body.ajax-chat {
 }
 #loginContent {
   margin: 0 auto;
-  padding-top: 20px;
-  font-size: 1em
+  padding-top: 20px
 }
 #loginContent #loginHeadline {
   margin: 0;
@@ -484,8 +483,8 @@ body.ajax-chat {
 #content,
 #content #copyright,
 #content h3,
-#loginContent #copyright,
-#loginContent #loginRegisteredUsers {
+#loginContent,
+#loginContent #copyright {
   font-size: 1em
 }
 #content #chatList .action,

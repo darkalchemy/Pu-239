@@ -8,8 +8,8 @@ global $CURUSER, $lang;
 $lang = array_merge($lang, load_language('ad_over_forums'));
 $HTMLOUT = $over_forums = $count = $min_class_viewer = $sorted = '';
 $main_links = '<p><span style="font-weight: bold;">' . $lang['ad_over_forum'] . '</span> :: 
-						<a class="altlink" href="staffpanel.php?tool=forum_manage&amp;action=forum_manage">' . $lang['ad_over_manager'] . '</a> :: 
-						<a class="altlink" href="staffpanel.php?tool=forum_config&amp;action=forum_config">' . $lang['ad_over_configure'] . '</a><br></p>';
+						<a class="altlink" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=forum_manage&amp;action=forum_manage">' . $lang['ad_over_manager'] . '</a> :: 
+						<a class="altlink" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=forum_config&amp;action=forum_config">' . $lang['ad_over_configure'] . '</a><br></p>';
 $id = (isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0));
 $maxclass = $CURUSER['class'];
 $name = strip_tags(isset($_POST['name']) ? htmlsafechars($_POST['name']) : '');
@@ -127,11 +127,11 @@ switch ($action) {
                 $over_forums .= '<tr>
 			<td>' . (int)$row['sort'] . '</td>
 			<td>
-			<a class="altlink" href="forums.php?action=forum_view&amp;fourm_id=' . (int)$row['id'] . '">' . htmlsafechars($row['name'], ENT_QUOTES) . '</a><br>
+			<a class="altlink" href="' . $site_config['baseurl'] . '/forums.php?action=forum_view&amp;fourm_id=' . (int)$row['id'] . '">' . htmlsafechars($row['name'], ENT_QUOTES) . '</a><br>
 			' . htmlsafechars($row['description'], ENT_QUOTES) . '</td>
 			<td>' . get_user_class_name($row['min_class_view']) . '</td>
 			<td>
-			<a class="altlink" href="staffpanel.php?tool=over_forums&amp;action=over_forums&amp;action2=edit_forum_page&amp;id=' . (int)$row['id'] . '">' . $lang['ad_over_edit'] . '</a>&#160;|&#160;
+			<a class="altlink" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=over_forums&amp;action=over_forums&amp;action2=edit_forum_page&amp;id=' . (int)$row['id'] . '">' . $lang['ad_over_edit'] . '</a>&#160;|&#160;
 			<a href="javascript:confirm_delete(\'' . (int)$row['id'] . '\');"><span style="font-weight: bold;">' . $lang['ad_over_delete'] . '</span></a></td>
 			</tr>';
             } //=== end while

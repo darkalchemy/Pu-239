@@ -27,8 +27,8 @@ if (isset($_POST['do_it'])) {
     header('Location: staffpanel.php?tool=forum_config&action=forum_config');
     die();
 }
-$main_links = '<p><a class="altlink" href="staffpanel.php?tool=over_forums&amp;action=over_forums">' . $lang['forum_config_over'] . '</a> ::
-                        <a class="altlink" href="staffpanel.php?tool=forum_manage&amp;action=forum_manage">' . $lang['forum_config_manager'] . '</a> ::
+$main_links = '<p><a class="altlink" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=over_forums&amp;action=over_forums">' . $lang['forum_config_over'] . '</a> ::
+                        <a class="altlink" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=forum_manage&amp;action=forum_manage">' . $lang['forum_config_manager'] . '</a> ::
                         <span style="font-weight: bold;">' . $lang['forum_config_config'] . '</span><br></p>';
 $res = sql_query('SELECT delete_for_real, min_delete_view_class, readpost_expiry, min_upload_class, accepted_file_extension,
                                 accepted_file_types, max_file_size, upload_folder FROM forum_config WHERE id = ' . sqlesc($config_id));
