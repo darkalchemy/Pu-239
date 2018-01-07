@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.20-18, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.20-19, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: dev
 -- ------------------------------------------------------
--- Server version	5.7.20-18
+-- Server version	5.7.20-19
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -1185,7 +1185,7 @@ CREATE TABLE `messages` (
   `sender` int(10) unsigned NOT NULL DEFAULT '0',
   `receiver` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(10) unsigned NOT NULL DEFAULT '0',
-  `subject` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subject` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `msg` mediumtext COLLATE utf8mb4_unicode_ci,
   `unread` enum('yes','no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'yes',
   `poster` int(10) unsigned NOT NULL DEFAULT '0',
@@ -2651,4 +2651,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-02 18:55:37
+-- Dump completed on 2018-01-07 15:19:13

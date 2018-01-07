@@ -64,7 +64,9 @@ function foxnews_shout($links = [])
                 }
             }
         }
+        return true;
     }
+    return false;
 }
 
 /**

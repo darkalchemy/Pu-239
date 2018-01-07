@@ -1,5 +1,5 @@
 <?php
-require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'ann_config.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'ann_config.php';
 require_once INCL_DIR . 'ann_functions.php';
 require_once CLASS_DIR . 'class_bt_options.php';
 
@@ -18,24 +18,7 @@ function error($err)
  */
 function getip()
 {
-    foreach ([
-                 'HTTP_CLIENT_IP',
-                 'HTTP_X_FORWARDED_FOR',
-                 'HTTP_X_FORWARDED',
-                 'HTTP_X_CLUSTER_CLIENT_IP',
-                 'HTTP_FORWARDED_FOR',
-                 'HTTP_FORWARDED',
-                 'REMOTE_ADDR',
-             ] as $key) {
-        if (array_key_exists($key, $_SERVER) === true) {
-            foreach (array_map('trim', explode(',', $_SERVER[ $key ])) as $ip) {
-                if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false) {
-                    return $ip;
-                }
-            }
-        }
-    }
-    return '';
+    return $_SERVER['REMOTE_ADDR'];
 }
 
 /**
@@ -47,11 +30,14 @@ function getip()
 function check_bans($ip, &$reason = '')
 {
     global $cache;
-    $key = 'bans_' . $ip;
+    if (empty($ip)) {
+        return false;
+    }
+    $key = 'bans:::' . $ip;
     $ban = $cache->get($key);
     if ($ban === false || is_null($ban)) {
-        $nip = ip2long($ip);
-        $ban_sql = sql_query('SELECT comment FROM bans WHERE (first <= ' . $nip . ' AND last >= ' . $nip . ') LIMIT 1');
+        $nip = sqlesc($ip);
+        $ban_sql = sql_query('SELECT comment FROM bans WHERE (INET6_NTOA(first) <= ' . $nip . ' AND INET6_NTOA(last) >= ' . $nip . ') LIMIT 1') or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($ban_sql)) {
             $comment = mysqli_fetch_row($ban_sql);
             $reason = 'Manual Ban (' . $comment[0] . ')';
@@ -60,7 +46,7 @@ function check_bans($ip, &$reason = '')
             return true;
         }
         ((mysqli_free_result($ban_sql) || (is_object($ban_sql) && (get_class($ban_sql) == 'mysqli_result'))) ? true : false);
-        $cache->set($key, 0, 86400); // 86400 // not banned
+        $cache->set($key, 0, 86400);
 
         return false;
     } elseif (!$ban) {
@@ -119,7 +105,6 @@ if (isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) != 32) {
 }
 
 $torrent_pass = isset($_GET['torrent_pass']) && ($_GET['torrent_pass']) ? $_GET['torrent_pass'] : '';
-//$torrent_pass = $_GET['torrent_pass'];
 if (!$torrent_pass) {
     die('scrape error');
 }
@@ -171,4 +156,4 @@ header('Content-Type: text/plain; charset=UTF-8');
 header('Pragma: no-cache');
 echo $r;
 die();
-//die($r);
+

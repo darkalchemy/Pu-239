@@ -3,11 +3,11 @@
 $start = microtime(true);
 
 if (!file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php')) {
-    header('Location: /install');
+    header('Location: /install/index.php');
     die();
 }
 
-if (!file_exists(realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . '.env')) {
+if (!file_exists(dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . '.env')) {
     echo 'missing .env file, please copy .env.example to .env and then edit .env';
     die();
 }

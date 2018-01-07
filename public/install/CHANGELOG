@@ -1,4 +1,7 @@
 7 Jan 2018
+update: use of dirname
+update: announce.php
+revert: changes to imdb class
 fix: typo in lang files
 
 6 Jan 2018

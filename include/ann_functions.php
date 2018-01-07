@@ -1,97 +1,59 @@
 <?php
-//== Announce mysql error
-/**
- * @param string $file
- * @param string $line
- */
-function ann_sqlerr($file = '', $line = '')
-{
-    global $site_config, $CURUSER;
-    $error = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
-    $error_no = ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false));
-    if ($site_config['ann_sql_error_log'] and ANN_SQL_DEBUG == 1) {
-        $_ann_sql_err = "\n===================================================";
-        $_ann_sql_err .= "\n Date: " . date('r');
-        $_ann_sql_err .= "\n Error Number: " . $error_no;
-        $_ann_sql_err .= "\n Error: " . $error;
-        $_ann_sql_err .= "\n IP Address: " . $_SERVER['REMOTE_ADDR'];
-        $_ann_sql_err .= "\n in file " . $file . ' on line ' . $line;
-        $_ann_sql_err .= "\n URL:" . $_SERVER['REQUEST_URI'];
-        if ($FH = @fopen($site_config['ann_sql_error_log'], 'a')) {
-            @fwrite($FH, $_ann_sql_err);
-            @fclose($FH);
-        }
-    }
-}
-
-//==Announce Sql query logging
-/**
- * @param $a_query
- *
- * @return bool|mysqli_result
- */
-function ann_sql_query($a_query)
-{
-    global $a_query_stat, $site_config;
-    $a_query_start_time = microtime(true); // Start time
-    $result = mysqli_query($GLOBALS['___mysqli_ston'], $a_query);
-    $a_query_end_time = microtime(true); // End time
-    $a_querytime = ($a_query_end_time - $a_query_start_time);
-    $a_query_stat[] = [
-        'seconds' => number_format($a_query_end_time - $a_query_start_time, 6),
-        'query'   => $a_query,
-    ];
-    if ((count($a_query_stat) > 0) && (ANN_SQL_LOGGING == 1)) {
-        foreach ($a_query_stat as $key => $value) {
-            $_ann_sql = "\n=============Announce query logging=========";
-            $_ann_sql .= "\n Query no : " . $key . '+1';
-            $_ann_sql .= "\n Executed in  : " . $value['seconds'];
-            $_ann_sql .= "\n query ran : " . $value['query'];
-        }
-        if ($FH = @fopen($site_config['ann_sql_log'], 'a')) {
-            @fwrite($FH, $_ann_sql);
-            @fclose($FH);
-        }
-    }
-
-    return $result;
-}
 
 /**
  * @return bool
  */
 function crazyhour_announce()
 {
-    global $cache, $site_config;
+    global $cache, $fluent;
+
     $crazy_hour = (TIME_NOW + 3600);
     $cz['crazyhour'] = $cache->get('crazyhour');
     if ($cz['crazyhour'] === false || is_null($cz['crazyhour'])) {
-        $cz['sql'] = ann_sql_query('SELECT var, amount FROM freeleech WHERE type = "crazyhour"') or ann_sqlerr(__FILE__, __LINE__);
-        $cz['crazyhour'] = [];
-        if (mysqli_num_rows($cz['sql']) !== 0) {
-            $cz['crazyhour'] = mysqli_fetch_assoc($cz['sql']);
-        } else {
+        $cz['crazyhour'] = $fluent->from('freeleech')
+            ->select(null)
+            ->select('var')
+            ->select('amount')
+            ->where('type = ?', 'crazyhour')
+            ->fetch();
+
+        if ($cz['crazyhour'] === false) {
             $cz['crazyhour']['var'] = random_int(TIME_NOW, (TIME_NOW + 86400));
             $cz['crazyhour']['amount'] = 0;
-            ann_sql_query('UPDATE freeleech SET var = ' . $cz['crazyhour']['var'] . ', amount = ' . $cz['crazyhour']['amount'] . ' 
-         WHERE type = "crazyhour"') or ann_sqlerr(__FILE__, __LINE__);
+            $fluent->update('freeleech')
+                ->set([
+                    'var' => $cz['crazyhour']['var'],
+                    'amount' => $cz['crazyhour']['amount']
+                ])
+                ->where('type = ?', 'crazyhour')
+                ->execute();
         }
         $cache->set('crazyhour', $cz['crazyhour'], 0);
     }
-    if ($cz['crazyhour']['var'] < TIME_NOW) { // if crazyhour over
+
+    if ($cz['crazyhour']['var'] < TIME_NOW) {
         if (($cz_lock = $cache->add('crazyhour_lock', 1, 10)) !== false) {
             $cz['crazyhour_new'] = mktime(23, 59, 59, date('m'), date('d'), date('y'));
             $cz['crazyhour']['var'] = random_int($cz['crazyhour_new'], ($cz['crazyhour_new'] + 86400));
             $cz['crazyhour']['amount'] = 0;
             $cz['remaining'] = ($cz['crazyhour']['var'] - TIME_NOW);
-            ann_sql_query('UPDATE freeleech SET var = ' . $cz['crazyhour']['var'] . ', amount = ' . $cz['crazyhour']['amount'] . ' ' . 'WHERE type = "crazyhour"') or ann_sqlerr(__FILE__, __LINE__);
+
+            $set = ['var' => $cz['crazyhour']['var'], 'amount' => $cz['crazyhour']['amount']];
+            $fluent->update('freeleech')
+                ->set($set)
+                ->where('type = ?', 'crazyhour')
+                ->execute();
+
             $cache->set('crazyhour', $cz['crazyhour'], 0);
 
             $msg = 'Next [color=orange][b]Crazyhour[/b][/color] is at ' . date('F j, g:i a', $cz['crazyhour']['var']);
             autoshout($msg);
 
             $text = 'Next <span style="font-weight:bold;color:orange;">Crazyhour</span> is at ' . date('F j, g:i a', $cz['crazyhour']['var']);
-            ann_sql_query('INSERT INTO sitelog (added, txt) ' . 'VALUES(' . TIME_NOW . ', ' . ann_sqlesc($text) . ')') or ann_sqlerr(__FILE__, __LINE__);
+            $values = ['added' => TIME_NOW, 'txt' => $text];
+            $fluent->insertInto('sitelog')
+                ->values($values)
+                ->execute();
         }
 
         return false;
@@ -99,14 +61,23 @@ function crazyhour_announce()
         if ($cz['crazyhour']['amount'] !== 1) {
             $cz['crazyhour']['amount'] = 1;
             if (($cz_lock = $cache->add('crazyhour_lock', 1, 10)) !== false) {
-                ann_sql_query('UPDATE freeleech SET amount = ' . $cz['crazyhour']['amount'] . ' WHERE type = "crazyhour"') or ann_sqlerr(__FILE__, __LINE__);
+
+                $set = ['amount' => $cz['crazyhour']['amount']];
+                $fluent->update('freeleech')
+                    ->set($set)
+                    ->where('type = ?', 'crazyhour')
+                    ->execute();
+
                 $cache->set('crazyhour', $cz['crazyhour'], 0);
 
                 $msg = 'w00t! It\'s [color=orange][b]Crazyhour[/b][/color] :w00t:';
                 autoshout($msg);
 
-                $text = 'w00t! It\'s <span style="font-weight:bold;color:orange;">Crazyhour</span> <img src="' .$site_config['pic_base_url'] . 'smilies/w00t.gif" alt=":w00t:" />';
-                ann_sql_query('INSERT INTO sitelog (added, txt) VALUES(' . TIME_NOW . ', ' . ann_sqlesc($text) . ')') or ann_sqlerr(__FILE__, __LINE__);
+                $text = 'w00t! It\'s <span style="font-weight:bold;color:orange;">Crazyhour</span> <img src="./images/smilies/w00t.gif" alt=":w00t:" />';
+                $values = ['added' => TIME_NOW, 'txt' => $text];
+                $fluent->insertInto('sitelog')
+                    ->values($values)
+                    ->execute();
             }
         }
 
@@ -123,40 +94,39 @@ function crazyhour_announce()
  */
 function get_user_from_torrent_pass($torrent_pass)
 {
-    global $cache, $site_config;
-    if (strlen($torrent_pass) != 32 || !bin2hex($torrent_pass)) {
+    global $cache, $site_config, $fluent;
+    if (strlen($torrent_pass) != 32) {
         return false;
     }
-    $key = 'user::torrent_pass:::' . $torrent_pass;
-    $user = $cache->get($key);
+    $userid = $cache->get('torrent_pass_' . $torrent_pass);
+    if ($userid === false || is_null($userid)) {
+        $userid = $fluent->from('users')
+            ->select(null)
+            ->select('id')
+            ->where('torrent_pass = ?', $torrent_pass)
+            ->where("enabled = 'yes'")
+            ->fetch();
+        $userid = $userid['id'];
+        $cache->set('torrent_pass_' . $torrent_pass, $userid, 3600);
+    }
+    if (empty($userid)) {
+        return false;
+    }
+    $user = $cache->get('user' . $userid);
     if ($user === false || is_null($user)) {
-        $user_fields_ar_int = [
-            'id',
-            'uploaded',
-            'downloaded',
-            'class',
-            'free_switch',
-            'downloadpos',
-            'perms',
-        ];
-        $user_fields_ar_str = [
-            'ip',
-            'enabled',
-            'highspeed',
-            'hnrwarn',
-            'parked',
-        ];
-        $user_fields = implode(', ', array_merge($user_fields_ar_int, $user_fields_ar_str));
-        $user_query = ann_sql_query('SELECT ' . $user_fields . ' FROM users WHERE torrent_pass=' . ann_sqlesc($torrent_pass) . " AND enabled = 'yes'") or ann_sqlerr(__FILE__, __LINE__);
-        $user = mysqli_fetch_assoc($user_query);
-        foreach ($user_fields_ar_int as $i) {
-            $user[ $i ] = (int)$user[ $i ];
+        $user = $fluent->from('users')
+            ->select('INET6_NTOA(ip) AS ip')
+            ->where('id = ?', $userid)
+            ->fetch();
+        unset($user['hintanswer']);
+        unset($user['passhash']);
+
+        $cache->set('user' . $userid, $user, $site_config['expires']['user_cache']);
+        if ($user['enabled'] != 'yes') {
+            return false;
         }
-        foreach ($user_fields_ar_str as $i) {
-            $user[ $i ] = $user[ $i ];
-        }
-        $cache->set($key, $user, $site_config['expires']['user_passkey']);
-    } elseif (!$user) {
+    }
+    if (!$user) {
         return false;
     }
 
@@ -170,37 +140,40 @@ function get_user_from_torrent_pass($torrent_pass)
  */
 function get_torrent_from_hash($info_hash)
 {
-    global $cache;
-    $key = 'torrent::hash:::' . md5($info_hash);
-    $ttll = 21600;
+    global $cache, $fluent;
+    $key = 'torrent::hash:::' . bin2hex($info_hash);
+    $ttl = 21600;
     $torrent = $cache->get($key);
     if ($torrent === false || is_null($torrent)) {
-        $res = ann_sql_query('SELECT id, category, banned, free, silver, vip, seeders, leechers, times_completed, seeders + leechers AS numpeers, added AS ts, visible FROM torrents WHERE info_hash = ' . ann_sqlesc($info_hash)) or ann_sqlerr(__FILE__, __LINE__);
-        if (mysqli_num_rows($res)) {
-            $torrent = mysqli_fetch_assoc($res);
-            $torrent['id'] = (int)$torrent['id'];
-            $torrent['free'] = (int)$torrent['free'];
-            $torrent['silver'] = (int)$torrent['silver'];
-            $torrent['category'] = (int)$torrent['category'];
-            $torrent['numpeers'] = (int)$torrent['numpeers'];
-            $torrent['seeders'] = (int)$torrent['seeders'];
-            $torrent['leechers'] = (int)$torrent['leechers'];
-            $torrent['times_completed'] = (int)$torrent['times_completed'];
-            $torrent['ts'] = (int)$torrent['ts'];
-            $cache->set($key, $torrent, $ttll);
+        $torrent = $fluent->from('torrents')
+            ->select(null)
+            ->select('id')
+            ->select('category')
+            ->select('banned')
+            ->select('free')
+            ->select('silver')
+            ->select('vip')
+            ->select('seeders')
+            ->select('leechers')
+            ->select('times_completed')
+            ->select('seeders + leechers AS numpeers')
+            ->select('added AS ts')
+            ->select('visible')
+            ->where('info_hash = ?', $info_hash)
+            ->fetch();
+        if ($torrent !== false) {
+            $cache->set($key, $torrent, $ttl);
             $seed_key = 'torrents::seeds:::' . $torrent['id'];
             $leech_key = 'torrents::leechs:::' . $torrent['id'];
             $comp_key = 'torrents::comps:::' . $torrent['id'];
-            $cache->add($seed_key, $torrent['seeders'], $ttll);
-            $cache->add($leech_key, $torrent['leechers'], $ttll);
-            $cache->add($comp_key, $torrent['times_completed'], $ttll);
+            $cache->add($seed_key, $torrent['seeders'], $ttl);
+            $cache->add($leech_key, $torrent['leechers'], $ttl);
+            $cache->add($comp_key, $torrent['times_completed'], $ttl);
         } else {
-            $cache->set($key, 0, 86400);
-
-            return false;
+            $cache->set($key, 0, 900);
+ 
+           return false;
         }
-    } elseif (!$torrent) {
-        return false;
     } else {
         $seed_key = 'torrents::seeds:::' . $torrent['id'];
         $leech_key = 'torrents::leechs:::' . $torrent['id'];
@@ -208,16 +181,28 @@ function get_torrent_from_hash($info_hash)
         $torrent['seeders'] = $cache->get($seed_key);
         $torrent['leechers'] = $cache->get($leech_key);
         $torrent['times_completed'] = $cache->get($comp_key);
-        if ($torrent['seeders'] === false || $torrent['leechers'] === false || $torrent['times_completed'] === false || is_null($torrent['seeders'] === false || $torrent['leechers'] === false || $torrent['times_completed'])) {
-            $res = ann_sql_query('SELECT seeders, leechers, times_completed FROM torrents WHERE id = ' . ann_sqlesc($torrent['id'])) or ann_sqlerr(__FILE__, __LINE__);
-            if (mysqli_num_rows($res)) {
-                $torrentq = mysqli_fetch_assoc($res);
-                $torrent['seeders'] = (int)$torrentq['seeders'];
-                $torrent['leechers'] = (int)$torrentq['leechers'];
-                $torrent['times_completed'] = (int)$torrentq['times_completed'];
-                $cache->add($seed_key, $torrent['seeders'], $ttll);
-                $cache->add($leech_key, $torrent['leechers'], $ttll);
-                $cache->add($comp_key, $torrent['times_completed'], $ttll);
+        if (
+                $torrent['seeders'] === false ||
+                $torrent['leechers'] === false ||
+                $torrent['times_completed'] === false ||
+                is_null($torrent['seeders']) ||
+                is_null($torrent['leechers']) ||
+                is_null($torrent['times_completed'])
+            ) {
+            $res = $fluent->from('torrents')
+                ->select(null)
+                ->select('seeders')
+                ->select('leechers')
+                ->select('times_completed')
+                ->where('id = ?', $torrent['id'])
+                ->fetch();
+
+            if ($res !== false) {
+                $cache->add($seed_key, $res['seeders'], $ttl);
+                $cache->add($leech_key, $res['leechers'], $ttl);
+                $cache->add($comp_key, $res['times_completed'], $ttl);
+                $torrent = array_merge($torrent, $res);
+                $cache->set($key, $torrent, $ttl);
             } else {
                 $cache->delete($key);
 
@@ -275,16 +260,17 @@ function adjust_torrent_peers($id, $seeds = 0, $leechers = 0, $completed = 0)
  */
 function get_happy($torrentid, $userid)
 {
-    global $cache;
+    global $cache, $fluent;
     $keys['happyhour'] = $userid . '_happy';
-    $happy = $cache->get($keys['happyhour']);
+    //$happy = $cache->get($keys['happyhour']);
     if ($happy === false || is_null($happy)) {
-        $res_happy = ann_sql_query('SELECT id, userid, torrentid, multiplier FROM happyhour WHERE userid=' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
+        $res = $fluent->from('happyhour')
+            ->where('userid = ?', $userid)
+            ->fetchAll();
+
         $happy = [];
-        if (mysqli_num_rows($res_happy)) {
-            while ($rowhappy = mysqli_fetch_assoc($res_happy)) {
-                $happy[ $rowhappy['torrentid'] ] = $rowhappy['multiplier'];
-            }
+        foreach ($res as $row) {
+            $happy[ $row['torrentid'] ] = $row['multiplier'];
         }
         $cache->add($userid . '_happy', $happy, 0);
     }
@@ -303,18 +289,15 @@ function get_happy($torrentid, $userid)
  */
 function get_slots($torrentid, $userid)
 {
-    global $cache;
+    global $cache, $fluent;
+
     $ttl_slot = 86400;
     $torrent['freeslot'] = $torrent['doubleslot'] = 0;
     $slot = $cache->get('fllslot_' . $userid);
     if ($slot === false || is_null($slot)) {
-        $res_slots = ann_sql_query('SELECT * FROM freeslots WHERE userid = ' . ann_sqlesc($userid)) or ann_sqlerr(__FILE__, __LINE__);
-        $slot = [];
-        if (mysqli_num_rows($res_slots)) {
-            while ($rowslot = mysqli_fetch_assoc($res_slots)) {
-                $slot[] = $rowslot;
-            }
-        }
+        $slot = $fluent->from('freeslots')
+                ->where('userid = ?', $userid)
+                ->fetchAll();
         $cache->add('fllslot_' . $userid, $slot, $ttl_slot);
     }
     if (!empty($slot)) {
@@ -343,7 +326,17 @@ function get_slots($torrentid, $userid)
  */
 function auto_enter_abnormal_upload($userid, $rate, $upthis, $diff, $torrentid, $client, $realip, $last_up)
 {
-    ann_sql_query('INSERT INTO cheaters (added, userid, client, rate, beforeup, upthis, timediff, userip, torrentid) VALUES(' . ann_sqlesc(TIME_NOW) . ', ' . ann_sqlesc($userid) . ', ' . ann_sqlesc($client) . ', ' . ann_sqlesc($rate) . ', ' . ann_sqlesc($last_up) . ', ' . ann_sqlesc($upthis) . ', ' . ann_sqlesc($diff) . ', ' . ann_sqlesc($realip) . ', ' . ann_sqlesc($torrentid) . ')') or ann_sqlerr(__FILE__, __LINE__);
+    global $fluent;
+
+    $values = [
+            'added' => TIME_NOW, 'userid' => $userid, 'client' => $client, 'rate' => $rate,
+            'beforeup' => $last_up, 'upthis' => $upthis, 'timediff' => $diff,
+            'userip' => ipToStorageFormat($realip), 'torrentid' => $torrentid
+    ];
+    $fluent->insertInto('cheaters')
+                ->values($values)
+                ->execute();
+
 }
 
 /**
@@ -357,7 +350,7 @@ function err($msg)
             'value' => $msg,
         ],
     ]);
-    die();
+    exit();
 }
 
 /**
@@ -369,13 +362,6 @@ function benc_resp($d)
         'type'  => 'dictionary',
         'value' => $d,
     ]));
-}
-
-function gzip()
-{
-    if (@extension_loaded('zlib') && @ini_get('zlib.output_compression') != '1' && @ini_get('output_handler') != 'ob_gzhandler') {
-        @ob_start('ob_gzhandler');
-    }
 }
 
 /**
@@ -470,19 +456,6 @@ function benc_dict($d)
 }
 
 /**
- * @param $name
- * @param $hash
- *
- * @return string
- */
-function hash_where($name, $hash)
-{
-    $shhash = preg_replace('/ *$/s', '', $hash);
-
-    return "($name = " . ann_sqlesc($hash) . " OR $name = " . ann_sqlesc($shhash) . ')';
-}
-
-/**
  * @param $port
  *
  * @return bool
@@ -515,29 +488,3 @@ function portblacklisted($port)
 
     return false;
 }
-
-/**
- * @param $x
- *
- * @return int|string
- */
-function ann_sqlesc($x)
-{
-    if (is_integer($x)) {
-        return (int)$x;
-    }
-
-    return sprintf('\'%s\'', mysqli_real_escape_string($GLOBALS['___mysqli_ston'], $x));
-}
-
-/**
- * @param $ip
- *
- * @return string
- */
-function ipToStorageFormat($ip)
-{
-    $ip = empty($ip) ? '254.254.254.254' : $ip;
-    return '0x' . bin2hex(inet_pton($ip));
-}
-

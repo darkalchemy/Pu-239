@@ -1,5 +1,5 @@
 <?php
-require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 check_user_status();
@@ -30,16 +30,16 @@ $blackjack['required_ratio'] = 1; // min ratio that will required to play any ga
 
 // determine min upload credit required to play this game
 if ($blackjack['gm'] < $blackjack['max'] && $blackjack['gm'] > $blackjack['min']) {
-    $blackjack['quan'] = $blackjack['gm'];
+    $blackjack['quantity'] = $blackjack['gm'];
 } elseif ($blackjack['gm'] > $blackjack['max']) {
-    $blackjack['quan'] = $blackjack['max'];
+    $blackjack['quantity'] = $blackjack['max'];
 } else {
-    $blackjack['quan'] = $blackjack['min'];
+    $blackjack['quantity'] = $blackjack['min'];
 }
-$blackjack['min_text'] = mksize($blackjack['quan'] * 1073741824, 1);
+$blackjack['min_text'] = mksize($blackjack['quantity'] * 1073741824, 1);
 $id = $blackjack['id'];
 
-if ($CURUSER['uploaded'] < 1073741824 * $blackjack['quan']) {
+if ($CURUSER['uploaded'] < 1073741824 * $blackjack['quantity']) {
     stderr($lang['bj_sorry'], "You must have at least {$blackjack['min_text']} upload credit to play.");
 }
 

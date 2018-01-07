@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'define.php';
 require_once VENDOR_DIR . 'autoload.php';
-$dotenv = new Dotenv\Dotenv(realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..'));
+$dotenv = new Dotenv\Dotenv(dirname(__FILE__, 2) . DIRECTORY_SEPARATOR);
 $dotenv->load();
 require_once INCL_DIR . 'database.php';
 $cache = new CACHE();
@@ -26,14 +26,15 @@ $site_config['connectable_check'] = true;
 $site_config['ann_sql_error_log'] = SQLERROR_LOGS_DIR . 'ann_sql_err_' . date('M_D_Y') . '.log';
 $site_config['ann_sql_log'] = SQLERROR_LOGS_DIR . 'ann_sql_query_' . date('M_D_Y') . '.log';
 
-$site_config['crazy_hour'] = false; //== false for XBT
-$site_config['happy_hour'] = false; //== false for XBT
+$site_config['crazy_hour'] = false;
+$site_config['happy_hour'] = false;
 $site_config['ratio_free'] = false;
 
 $site_config['baseurl'] = '#baseurl';
-$site_config['expires']['user_passkey'] = 3600 * 8; // 8 hours
-$site_config['expires']['contribution'] = 3 * 86400; // 3 * 86400 3 days
-$site_config['expires']['happyhour'] = 43200; // 43200 1/2 day
-$site_config['expires']['sitepot'] = 86400; // 86400 1 day
-$site_config['expires']['torrent_announce'] = 86400; // 86400 1 day
-$site_config['expires']['torrent_details'] = 30 * 86400; // = 30 days
+$site_config['expires']['user_passkey'] = 3600 * 8;
+$site_config['expires']['contribution'] = 3 * 86400;
+$site_config['expires']['happyhour'] = 43200;
+$site_config['expires']['sitepot'] = 86400;
+$site_config['expires']['torrent_announce'] = 86400;
+$site_config['expires']['torrent_details'] = 2591999;
+$site_config['expires']['user_cache'] = 2591999;

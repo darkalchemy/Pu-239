@@ -1,5 +1,5 @@
 <?php
-require_once realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
+require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'bbcode_functions.php';
@@ -55,7 +55,7 @@ $HTMLOUT .= "
     <form id='upload_form' name='upload_form' enctype='multipart/form-data' action='./takeupload.php' method='post'>
     <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['max_torrent_size']}' />
     <h1 class='has-text-centered'>Upload a Torrent</h1>
-    <p class='top10 has-text-centered'>{$lang['upload_announce_url']}:<br><input type='text' class='has-text-centered w-100 top10' readonly='readonly' value='{$site_config['announce_urls'][0]}?torrent_pass={$CURUSER['torrent_pass']}' onclick='select()' /></p>";
+    <p class='top10 has-text-centered'>{$lang['upload_announce_url']}:<br><input type='text' class='has-text-centered w-100 top10' readonly='readonly' value='{$site_config['announce_urls'][0]}' onclick='select()' /></p>";
 $HTMLOUT .= "<table class='table table-bordered table-striped top20 bottom20'>
     <tr>
     <td class='rowhead'>{$lang['upload_imdb_url']}</td>

@@ -1,5 +1,5 @@
 <?php
-const REQUIRED_PHP = 70100, REQUIRED_PHP_VERSION = '7.1.0';
+const REQUIRED_PHP = 70000, REQUIRED_PHP_VERSION = '7.0.0';
 if (PHP_VERSION_ID < REQUIRED_PHP) {
     die('PHP ' . REQUIRED_PHP_VERSION . ' or higher is required.');
 }

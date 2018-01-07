@@ -2,15 +2,11 @@
 
 $step = isset($_GET['step']) ? (int)$_GET['step'] : 0;
 
-$root = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR;
-$public = $root . DIRECTORY_SEPARATOR . 'public';
+$root = dirname(__FILE__, 3) . DIRECTORY_SEPARATOR;
+$public = $root . 'public';
 
 if ($public[strlen($public) - 1] != DIRECTORY_SEPARATOR) {
     $public = $public . DIRECTORY_SEPARATOR;
-}
-
-if (file_exists($public . 'include/install.lock')) {
-    die('This was already installed, huh ? how this happened');
 }
 
 function return_bytes($val)

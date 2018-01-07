@@ -3,11 +3,10 @@
 define('TIME_NOW', time());
 
 define('INCL_DIR', dirname(__FILE__) . DIRECTORY_SEPARATOR);
-define('ROOT_DIR', realpath(INCL_DIR . '..' . DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR);
+define('ROOT_DIR', dirname(INCL_DIR, 1) . DIRECTORY_SEPARATOR);
 define('ADMIN_DIR', ROOT_DIR . 'admin' . DIRECTORY_SEPARATOR);
 define('FORUM_DIR', ROOT_DIR . 'forums' . DIRECTORY_SEPARATOR);
 define('PM_DIR', ROOT_DIR . 'pm_system' . DIRECTORY_SEPARATOR);
-define('PIMP_DIR', ROOT_DIR . 'PimpMyLog' . DIRECTORY_SEPARATOR);
 define('CACHE_DIR', ROOT_DIR . 'cache' . DIRECTORY_SEPARATOR);
 define('MODS_DIR', ROOT_DIR . 'mods' . DIRECTORY_SEPARATOR);
 define('LANG_DIR', ROOT_DIR . 'lang' . DIRECTORY_SEPARATOR);

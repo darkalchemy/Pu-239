@@ -8,7 +8,7 @@ global $CURUSER, $cache, $lang, $fluent;
 
 $lang = array_merge($lang);
 if (!defined('DATABASE_DIR')) {
-    stderr('Error', "add \"define('DATABASE_DIR', ROOT_DIR . 'database' . DIRECTORY_SEPARATOR);\" to config.php");
+    stderr('Error', "add \"define('DATABASE_DIR', ROOT_DIR . 'database' . DIRECTORY_SEPARATOR);\" to define.php");
     die();
 } else {
     require_once DATABASE_DIR . 'sql_updates.php';
