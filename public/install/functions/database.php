@@ -94,7 +94,7 @@ function db_insert()
                     <input type="button" value="Finish" onclick="onClick(6)" />
                 </div>';
     } else {
-        $out .= '<div class="notreadable">There was an error while importing the database<br>' . $o . '</div></fieldset>';
+        $out .= '<div class="notreadable">There was an error while importing the database<br>' . print_r($o) . '</div></fieldset>';
     }
     $out .= '
     <script>
