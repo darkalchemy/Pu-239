@@ -46,13 +46,12 @@ if ($CURUSER['uploaded'] < 1073741824 * $blackjack['quan']) {
 $debugout .= '
             <tr class="no_hover">
                 <td>_POST</td>
-                <td>blackjack.php:' . __LINE__ . '</td>
+                <td>blackjack.php: ' . __LINE__ . '</td>
                 <td>' . json_encode($_POST, JSON_PRETTY_PRINT) . '</td>
-            </tr>';
-$debugout .= '
+            </tr>
             <tr class="no_hover">
                 <td>blackjack</td>
-                <td>blackjack.php:' . __LINE__ . '</td>
+                <td>blackjack.php: ' . __LINE__ . '</td>
                 <td>' . json_encode($blackjack, JSON_PRETTY_PRINT) . '</td>
             </tr>';
 
@@ -1145,7 +1144,7 @@ function getCard($cardcount, $gameid, $deal = false)
     $debugout .= '
             <tr class="no_hover">
                 <td>cards - ready</td>
-                <td>blackjack.php:' . __LINE__ . '</td>
+                <td>blackjack.php: ' . __LINE__ . '</td>
                 <td>' . json_encode($cards, JSON_PRETTY_PRINT) . '</td>
             </tr>';
     $cardid = $cards[0];
@@ -1153,26 +1152,26 @@ function getCard($cardcount, $gameid, $deal = false)
     $debugout .= '
             <tr class="no_hover">
                 <td>cards - given</td>
-                <td>blackjack.php:' . __LINE__ . '</td>
+                <td>blackjack.php: ' . __LINE__ . '</td>
                 <td>' . $cardid . '</td>
             </tr>
             <tr class="no_hover">
                 <td>cards - card removed</td>
-                <td>blackjack.php:' . __LINE__ . '</td>
+                <td>blackjack.php: ' . __LINE__ . '</td>
                 <td>' . json_encode($cards, JSON_PRETTY_PRINT) . '</td>
             </tr>';
     $card_str = implode(', ', $cards);
     $debugout .= '
             <tr class="no_hover">
                 <td>cards string</td>
-                <td>blackjack.php:' . __LINE__ . '</td>
+                <td>blackjack.php: ' . __LINE__ . '</td>
                 <td>' . $card_str . '</td>
             </tr>';
     $sql = 'INSERT INTO decks (gameid, cards) VALUES (' . sqlesc($gameid) . ', ' . sqlesc($card_str) . ') ON DUPLICATE KEY UPDATE cards = VALUES(cards)';
     $debugout .= '
             <tr class="no_hover">
                 <td>sql</td>
-                <td>blackjack.php:' . __LINE__ . '</td>
+                <td>blackjack.php: ' . __LINE__ . '</td>
                 <td>' . $sql . '</td>
             </tr>';
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -1232,7 +1231,7 @@ function shuffle_decks()
     $debugout .= "
             <tr class='no_hover'>
                 <td>sql</td>
-                <td>blackjack.php:' . __LINE__ . '</td>
+                <td>blackjack.php: ' . __LINE__ . '</td>
                 <td>$sql</td>
             </tr>";
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -1244,7 +1243,7 @@ function shuffle_decks()
     $debugout .= '
             <tr class="no_hover">
                 <td>deck - created</td>
-                <td>blackjack.php:' . __LINE__ . '</td>
+                <td>blackjack.php: ' . __LINE__ . '</td>
                 <td>' . json_encode($cards, JSON_PRETTY_PRINT) . '</td>
             </tr>';
     // shuffle the decks x number of times
@@ -1275,7 +1274,7 @@ function shuffle_decks()
     $debugout .= '
             <tr class="no_hover">
                 <td>deck - cut</td>
-                <td>blackjack.php:' . __LINE__ . '</td>
+                <td>blackjack.php: ' . __LINE__ . '</td>
                 <td>' . json_encode($cards, JSON_PRETTY_PRINT) . '</td>
             </tr>';
     // burn the first card
@@ -1283,7 +1282,7 @@ function shuffle_decks()
     $debugout .= '
             <tr class="no_hover">
                 <td>deck - first card burned</td>
-                <td>blackjack.php:' . __LINE__ . '</td>
+                <td>blackjack.php: ' . __LINE__ . '</td>
                 <td>' . json_encode($cards, JSON_PRETTY_PRINT) . '</td>
             </tr>';
 
