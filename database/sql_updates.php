@@ -169,5 +169,11 @@ $sql_updates = [
         'date'  => '31 Dec, 2017',
         'query' => 'ALTER TABLE `messages` MODIFY `subject` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL',
     ],
-];
+    [
+        'id'    => 29,
+        'info'  => 'Update default value',
+        'date'  => '7 Jan, 2018',
+        'query' => "ALTER TABLE `users` MODIFY `birthday` date DEFAULT '1970-01-01'",
+    ],
 
+];
