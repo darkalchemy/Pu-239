@@ -74,7 +74,7 @@ if (empty($mode)) {
                     </tbody>
                 </table>
                 <div class='has-text-centered top20 bottom20 level-center flex-center'>
-                    <a class='button right20' href='{$site_config['baseurl']}/staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
+                    <a class='button is-small' href='{$site_config['baseurl']}/staffpanel.php?tool=backup&amp;mode=backup'>{$lang['backup_dbbackup']}</a>
                     <input type='submit' class='button is-small' value='{$lang['backup_delselected']}' onclick=\"return confirm('{$lang['backup_confirm']}');\" />
                 </div>
             </form>

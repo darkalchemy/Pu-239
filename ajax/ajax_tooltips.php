@@ -2,23 +2,12 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-//dbconn();
-
-//file_put_contents('/var/log/nginx/ajax.log', json_encode($_SESSION) . PHP_EOL, FILE_APPEND);
-//file_put_contents('/var/log/nginx/ajax.log', json_encode($_POST) . PHP_EOL, FILE_APPEND);
-//file_put_contents('/var/log/nginx/ajax.log', json_encode($user) . PHP_EOL, FILE_APPEND);
 return;
 
 header('Content-Type: application/json');
 global $site_config, $cache;
 $lang = array_merge(load_language('global'), load_language('index'));
 
-//file_put_contents('/var/log/nginx/ajax.log', json_encode($_SESSION) . PHP_EOL, FILE_APPEND);
-//file_put_contents('/var/log/nginx/ajax.log', json_encode($_POST) . PHP_EOL, FILE_APPEND);
-//file_put_contents('/var/log/nginx/ajax.log', json_encode($user) . PHP_EOL, FILE_APPEND);
-
-//echo json_encode($_POST['csrf_token']);
-//die();
 if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
     $user = $cache->get('user' . $id);
     if ($user === false || is_null($user)) {

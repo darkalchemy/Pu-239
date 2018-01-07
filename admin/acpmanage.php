@@ -64,7 +64,7 @@ if (mysqli_num_rows($res) != 0) {
     if ($count > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
     }
-    $HTMLOUT .= "<form action='staffpanel.php?tool=acpmanage&amp;action=acpmanage' method='post'>";
+    $HTMLOUT .= "<form action='{$site_config['baseurl']}/staffpanel.php?tool=acpmanage&amp;action=acpmanage' method='post'>";
     $HTMLOUT .= begin_table();
     $HTMLOUT .= "<tr><td class='colhead'>
       <input style='margin:0' type='checkbox' title='" . $lang['text_markall'] . "' value='" . $lang['text_markall'] . "' onclick=\"this.value=check(form);\" /></td>

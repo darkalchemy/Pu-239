@@ -13,9 +13,6 @@ if (get_magic_quotes_gpc() || get_magic_quotes_runtime() || ini_get('magic_quote
 if (ini_get('register_long_arrays') || ini_get('register_globals') || ini_get('safe_mode')) {
     die('PHP is configured incorrectly. Turn off safe_mode, register_globals and register_long_arrays.');
 }
-define('EMAIL_CONFIRM', true);
-define('SQL_DEBUG', 1);
-define('XBT_TRACKER', true);
 //==charset
 $site_config['char_set'] = 'UTF-8'; //also to be used site wide in meta tags
 if (ini_get('default_charset') != $site_config['char_set']) {
@@ -32,7 +29,6 @@ if (!function_exists('sys_getloadavg')) {
 if (version_compare(PHP_VERSION, '5.1.0RC1', '>=')) {
     date_default_timezone_set('Europe/London');
 }
-define('TIME_NOW', time());
 $site_config['time_adjust'] = 0;
 $site_config['time_offset'] = '0';
 $site_config['time_use_relative'] = 1;
@@ -168,21 +164,7 @@ $site_config['BBcode'] = 1; // 1/0 on/off
 $site_config['inviteusers'] = 10000;
 $site_config['flood_time'] = 900; //comment/forum/pm flood limit
 $site_config['readpost_expiry'] = 14 * 86400; // 14 days
-/* define dirs **/
-define('INCL_DIR', dirname(__FILE__).DIRECTORY_SEPARATOR);
-define('ROOT_DIR', realpath(INCL_DIR.'..'.DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR);
-define('ADMIN_DIR', ROOT_DIR.'admin'.DIRECTORY_SEPARATOR);
-define('FORUM_DIR', ROOT_DIR.'forums'.DIRECTORY_SEPARATOR);
-define('PM_DIR', ROOT_DIR.'pm_system'.DIRECTORY_SEPARATOR);
-define('PIMP_DIR', ROOT_DIR.'PimpMyLog'.DIRECTORY_SEPARATOR);
-define('CACHE_DIR', ROOT_DIR.'cache'.DIRECTORY_SEPARATOR);
-define('MODS_DIR', ROOT_DIR.'mods'.DIRECTORY_SEPARATOR);
-define('LANG_DIR', ROOT_DIR.'lang'.DIRECTORY_SEPARATOR);
-define('TEMPLATE_DIR', ROOT_DIR.'templates'.DIRECTORY_SEPARATOR);
-define('BLOCK_DIR', ROOT_DIR.'blocks'.DIRECTORY_SEPARATOR);
-define('IMDB_DIR', ROOT_DIR.'imdb'.DIRECTORY_SEPARATOR);
-define('CLASS_DIR', INCL_DIR.'class'.DIRECTORY_SEPARATOR);
-define('CLEAN_DIR', INCL_DIR.'cleanup'.DIRECTORY_SEPARATOR);
+
 $site_config['cache'] = ROOT_DIR.'cache';
 $site_config['backup_dir'] = INCL_DIR.'backup';
 $site_config['dictbreaker'] = ROOT_DIR.'dictbreaker';
@@ -259,4 +241,3 @@ $site_config['staff_forums'] = array(
     2,
 ); // these forum ID's' should exist and be a staff forum's to stop autoshouts
 $site_config['variant'] = 'Pu-239';
-define('TBVERSION', $site_config['variant']);

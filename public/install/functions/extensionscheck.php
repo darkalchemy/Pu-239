@@ -20,6 +20,7 @@ function extensionscheck()
         'curl',
         'exif',
         'mbstring',
+        'gd',
     ];
 
     $missing = [];
