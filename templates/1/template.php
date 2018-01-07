@@ -513,12 +513,14 @@ function navbar()
                                     <li><a href='{$site_config['baseurl']}/users.php'>Search Users</a></li>
                                 </ul>
                             </li>
+<!--
                             <li>
                                 <a href='#'>{$lang['gl_forums']}</a>
                                 <ul class='ddFade ddFadeSlow'>
-                                    <li><a href='http://pu-239.pw:8080'>{$lang['gl_tforums']}</a></li>
+                                    <li><a href='http://pu-239.pw'>{$lang['gl_tforums']}</a></li>
                                     <li><a href='{$site_config['baseurl']}/forums.php'>{$lang['gl_forums']}</a></li>
                                 </ul>
+-->
                             </li>
                             <li>" . ($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/bugs.php?action=add'>{$lang['gl_breport']}</a>" : "<a href='{$site_config['baseurl']}/bugs.php?action=bugs'>[Bugs]</a>") . "</li>
                             <li>" . ($CURUSER['class'] < UC_STAFF ? "<a href='{$site_config['baseurl']}/contactstaff.php'>{$lang['gl_cstaff']}</a>" : "<a href='{$site_config['baseurl']}/staffbox.php'>[Messages]</a>") . "</li>
