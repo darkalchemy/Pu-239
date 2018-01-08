@@ -401,7 +401,7 @@ elseif ($action == 'security') {
                                         </select>
                                         <div class='mw-100'>
                                             <span class='flipper has-text-primary'>
-                                                <a id='paranoia_open'>Paranoia Levels explained! <i class='fa fa-angle-down fa-2x' aria-hidden='true'></i></a>
+                                                <a id='paranoia_open'>Paranoia Levels explained! <i class='fa icon-down-open size_3' aria-hidden='true'></i></a>
                                             </span>
                                             <div id='paranoia_info' class='is_hidden wrap'>
                                                 <p>

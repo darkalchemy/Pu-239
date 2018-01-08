@@ -15,7 +15,7 @@ if ($stats_cache === false || is_null($stats_cache)) {
 $HTMLOUT .= "
     <a id='stats-hash'></a>
     <fieldset id='stats' class='header'>
-        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_stats_title']}</legend>
+        <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>{$lang['index_stats_title']}</legend>
         <div class='w-100'>
             <div class='columns'>
                 <div class='column'>

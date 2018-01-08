@@ -111,7 +111,7 @@ $HTMLOUT = "
         <h1 class='has-text-centered'>{$lang['block_global']}</h1>
         <div class='bg-02'>
         <fieldset id='user_blocks_home' class='header'>
-            <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-is_hidden='true'></i>{$lang['block_index']}</legend>
+            <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-is_hidden='true'></i>{$lang['block_index']}</legend>
             <div>
                 <div class='level-center is-inline-flex'>";
 
@@ -301,7 +301,7 @@ $HTMLOUT .= "
     </div>
     <div class='bg-02 top20'>
         <fieldset id='user_blocks_home' class='header'>
-            <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-is_hidden='true'></i>{$lang['block_stdhead_settings']}</legend>
+            <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-is_hidden='true'></i>{$lang['block_stdhead_settings']}</legend>
             <div>
                 <div class='level-center is-inline-flex'>";
 
@@ -400,7 +400,7 @@ $HTMLOUT .= "
         </div>
         <div class='bg-02 top20'>
         <fieldset id='user_blocks_home' class='header'>
-            <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-is_hidden='true'></i>{$lang['block_userdetails']}</legend>
+            <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-is_hidden='true'></i>{$lang['block_userdetails']}</legend>
             <div>
                 <div class='level-center is-inline-flex'>";
 

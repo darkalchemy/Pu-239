@@ -102,7 +102,7 @@ $(function () {
                     $(this).parent().removeClass('no-margin no-padding');
                 }
             });
-            $(this).parent().find('.fa').toggleClass('fa-angle-up fa-angle-down');
+            $(this).parent().find('.fa').toggleClass('icon-up-open icon-down-open');
         });
     }
 

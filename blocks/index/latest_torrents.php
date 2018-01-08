@@ -54,7 +54,7 @@ if ($last5torrents === false || is_null($last5torrents)) {
 $HTMLOUT .= "
     <a id='latesttorrents-hash'></a>
     <fieldset id='latesttorrents' class='header'>
-        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_latest']}</legend>
+        <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>{$lang['index_latest']}</legend>
         <div class='has-text-centered'>";
 
 $HTMLOUT .= "

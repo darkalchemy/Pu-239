@@ -80,7 +80,7 @@ if (empty($mode)) {
             </form>
             <div class='has-text-centered top20 bottom20'>
                 <span class='flipper has-text-primary pointer'>
-                    <i class='fa fa-angle-down fa-2x has-text-primary' aria-hidden='true'></i>
+                    <i class='fa icon-down-open size_3 has-text-primary' aria-hidden='true'></i>
                     <span class='has-text-primary size_4 left10'>{$lang['backup_settingschk']}</span>
                 </span>
                 <div class='container is-fluid portlet is_hidden top20 bottom20'>

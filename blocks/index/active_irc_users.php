@@ -27,7 +27,7 @@ if ($irc === false || is_null($irc)) {
 $HTMLOUT .= "
     <a id='irc-hash'></a>
     <fieldset id='irc' class='header'>
-        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_active_irc']} ({$irc['count']})</legend>
+        <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>{$lang['index_active_irc']} ({$irc['count']})</legend>
         <div class='bordered'>
             <div class='alt_bordered bg-00 level-item is-wrapped'>
                 {$irc['ircusers']}

@@ -1,3 +1,107 @@
+@font-face {
+  font-family: 'PT Sans Narrow';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../../fonts/pt-sans-narrow-v8-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('PT Sans Narrow'), local('PTSans-Narrow'),
+       url('../../fonts/pt-sans-narrow-v8-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../../fonts/pt-sans-narrow-v8-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../../fonts/pt-sans-narrow-v8-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../../fonts/pt-sans-narrow-v8-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../../fonts/pt-sans-narrow-v8-latin-regular.svg#PTSansNarrow') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../../fonts/oswald-v16-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Oswald Regular'), local('Oswald-Regular'),
+       url('../../fonts/oswald-v16-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../../fonts/oswald-v16-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../../fonts/oswald-v16-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../../fonts/oswald-v16-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../../fonts/oswald-v16-latin-regular.svg#Oswald') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../../fonts/open-sans-v15-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Open Sans Regular'), local('OpenSans-Regular'),
+       url('../../fonts/open-sans-v15-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../../fonts/open-sans-v15-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../../fonts/open-sans-v15-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../../fonts/open-sans-v15-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../../fonts/open-sans-v15-latin-regular.svg#OpenSans') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+  font-family: 'Nova Square';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../../fonts/nova-square-v9-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Nova Square'), local('NovaSquare'),
+       url('../../fonts/nova-square-v9-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../../fonts/nova-square-v9-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../../fonts/nova-square-v9-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../../fonts/nova-square-v9-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../../fonts/nova-square-v9-latin-regular.svg#NovaSquare') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+  font-family: 'Lobster';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../../fonts/lobster-v20-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Lobster Regular'), local('Lobster-Regular'),
+       url('../../fonts/lobster-v20-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../../fonts/lobster-v20-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../../fonts/lobster-v20-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../../fonts/lobster-v20-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../../fonts/lobster-v20-latin-regular.svg#Lobster') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+  font-family: 'Encode Sans Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../../fonts/encode-sans-condensed-v2-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Encode Sans Condensed Regular'), local('EncodeSansCondensed-Regular'),
+       url('../../fonts/encode-sans-condensed-v2-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../../fonts/encode-sans-condensed-v2-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../../fonts/encode-sans-condensed-v2-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../../fonts/encode-sans-condensed-v2-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../../fonts/encode-sans-condensed-v2-latin-regular.svg#EncodeSansCondensed') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+  font-family: 'Baloo Bhaijaan';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../../fonts/baloo-bhaijaan-v2-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Baloo Bhaijaan Regular'), local('BalooBhaijaan-Regular'),
+       url('../../fonts/baloo-bhaijaan-v2-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../../fonts/baloo-bhaijaan-v2-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../../fonts/baloo-bhaijaan-v2-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../../fonts/baloo-bhaijaan-v2-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../../fonts/baloo-bhaijaan-v2-latin-regular.svg#BalooBhaijaan') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+  font-family: 'Acme';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../../fonts/acme-v7-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Acme Regular'), local('Acme-Regular'),
+       url('../../fonts/acme-v7-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../../fonts/acme-v7-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../../fonts/acme-v7-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../../fonts/acme-v7-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../../fonts/acme-v7-latin-regular.svg#Acme') format('svg'); /* Legacy iOS */
+}
+
 .h-style-1 #logo h1,
 .h-style-1 h1,
 .h-style-1 h2,

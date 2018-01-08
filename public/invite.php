@@ -104,7 +104,7 @@ if ($do == 'view_page') {
             $fetch_assoc = mysqli_fetch_assoc($select);
             $can_send_it = empty($fetch_assoc['email']) ? "
                             <a href='{$site_config['baseurl']}/invite.php?do=send_email&amp;id=" . (int)$fetch_assoc['id'] . "' class='tooltipper' title='Send Email'>
-                                <i class='fa fa-envelope right10 fa-2x' aria-hidden='true'></i>" . htmlsafechars($fetch_assoc['code']) . "
+                                <i class='icon-mail' aria-hidden='true'></i>" . htmlsafechars($fetch_assoc['code']) . "
                             </a>" : "
                             <span class='tooltipper' title='Email Sent'>
                                 " .  htmlsafechars($fetch_assoc['code']) . "
@@ -119,7 +119,7 @@ if ($do == 'view_page') {
                         <td class='has-text-centered'>" . get_date($fetch_assoc['added'], '', 0, 1) . "</td>
                         <td class='has-text-centered'>
                             <a href='{$site_config['baseurl']}/invite.php?do=delete_invite&amp;id=" . (int)$fetch_assoc['id'] . '&amp;sender=' . (int)$CURUSER['id'] . "' class='tooltipper' title='Delete'>
-                                <i class='fa fa-remove fa-2x'></i>
+                                <i class='icon-cancel'></i>
                             </a>
                         </td>
                         <td class='has-text-centered'>" . htmlsafechars($fetch_assoc['status']) . '</td>

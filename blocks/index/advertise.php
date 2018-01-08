@@ -4,7 +4,7 @@ global $site_config, $lang;
 $HTMLOUT .= "
     <a id='advertise-hash'></a>
     <fieldset id='advertise' class='header'>
-        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_pu-239_git']}</legend>
+        <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>{$lang['index_pu-239_git']}</legend>
         <div class='bordered'>
             <div class='alt_bordered bg-00 has-text-centered'>
                 <a href='https://github.com/darkalchemy/Pu-239'>

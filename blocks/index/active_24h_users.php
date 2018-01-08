@@ -47,7 +47,7 @@ if ($active24 === false || is_null($active24)) {
 $HTMLOUT .= "
         <a id='active24-hash'></a>
         <fieldset id='active24' class='header'>
-            <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_active24']} <small>{$lang['index_last24_list']}</small></legend>
+            <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>{$lang['index_active24']} <small>{$lang['index_last24_list']}</small></legend>
             <div class='bordered'>
                 <div class='alt_bordered bg-00 has-text-centered'>
                     <div><b>{$active24['totalonline24']}{$active24['ss24']}{$lang['index_last24_during']}</b></div>

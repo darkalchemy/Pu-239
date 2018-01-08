@@ -29,7 +29,7 @@ if ($motw === false || is_null($motw)) {
 $HTMLOUT .= "
     <a id='mow-hash'></a>
     <fieldset id='mow' class='header'>
-        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_mow_title']}</legend>
+        <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>{$lang['index_mow_title']}</legend>
         <div class='has-text-centered'>
             <div class='table-wrapper module'><div class='badge badge-hot'></div>
                 <table class='table table-bordered table-striped'>

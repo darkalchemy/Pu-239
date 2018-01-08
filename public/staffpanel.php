@@ -346,10 +346,10 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[ $too
                         <td>
                             <div class='level-center'>
                                 <a href='{$site_config['baseurl']}/staffpanel.php?action=edit&amp;id=" . (int)$arr['id'] . "' class='tooltipper' title='{$lang['spanel_edit']}'>
-                                    <i class='fa fa-edit icon'></i>
+                                    <i class='icon-edit icon'></i>
                                 </a>
                                 <a href='{$site_config['baseurl']}/staffpanel.php?action=delete&amp;id=" . (int)$arr['id'] . "' class='tooltipper' title='{$lang['spanel_delete']}'>
-                                    <i class='fa fa-remove icon'></i>
+                                    <i class='icon-cancel icon'></i>
                                 </a>
                             </div>
                         </td>";

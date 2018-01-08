@@ -45,8 +45,6 @@ function stdhead($title = '', $stdhead = null)
     <link rel='mask-icon' href='{$site_config['baseurl']}/safari-pinned-tab.svg' color='#5bbad5' />
     <meta name='theme-color' content='#ffffff'>
     <link rel='stylesheet' href='" . get_file('css') . "' />
-    <link rel='stylesheet' href='//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' integrity='sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN' crossorigin='anonymous' />
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Acme|Baloo+Bhaijaan|Encode+Sans+Condensed|Lobster|Nova+Square|Open+Sans|Oswald|PT+Sans+Narrow' />
     {$css_incl}
     <style>#mlike{cursor:pointer;}</style>
     <script>
@@ -197,7 +195,7 @@ function stdfoot($stdfoot = false)
                 <div class='container is-fluid portlet'>
                     <a id='queries-hash'></a>
                     <fieldset id='queries' class='header'>
-                        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['gl_stdfoot_querys']}</legend>
+                        <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>{$lang['gl_stdfoot_querys']}</legend>
                         <div class='has-text-centered'>
                             <table class='table table-bordered table-striped bottom10'>
                                 <thead>
@@ -252,7 +250,7 @@ function stdfoot($stdfoot = false)
     $htmlfoot .= "
     </div>
     <a href='#' class='back-to-top'>
-        <i class='fa fa-arrow-circle-up' style='font-size:48px'></i>
+        <i class='icon-angle-circled-up' style='font-size:48px'></i>
     </a>
     <script>
         var cookie_prefix   = '{$site_config['cookie_prefix']}';
@@ -275,8 +273,8 @@ function stdfoot($stdfoot = false)
                 }
                 nextSibling.style.display = 'none';
                 child = x[i].children[0];
-                child.classList.add('fa-angle-down');
-                child.classList.remove('fa-angle-up');
+                child.classList.add('icon-down-open');
+                child.classList.remove('icon-up-open');
             } else if (id && localStorage[id] === 'open') {
                 var nextSibling = x[i].nextSibling;
                 while (nextSibling && nextSibling.nodeType != 1) {
@@ -284,8 +282,8 @@ function stdfoot($stdfoot = false)
                 }
                 nextSibling.style.display = 'block';
                 child = x[i].children[0];
-                child.classList.add('fa-angle-up');
-                child.classList.remove('fa-angle-down');
+                child.classList.add('icon-up-open');
+                child.classList.remove('icon-down-open');
             }
         }
     </script>";
@@ -451,13 +449,13 @@ function navbar()
         <header id='navbar' class='container'>
             <div class='contained'>
                 <div class='nav_container'>
-                    <div id='hamburger'><i class='fa fa-bars has-text-white fa-2x' aria-hidden='true'></i></div>
-                    <div id='close'><i class='fa fa-times has-text-white fa-2x' aria-hidden='true'></i></div>
+                    <div id='hamburger'><i class='icon-menu has-text-white' aria-hidden='true'></i></div>
+                    <div id='close'><i class='icon-cancel has-text-white' aria-hidden='true'></i></div>
                     <div id='menuWrapper'>
                         <ul class='level'>
                             <li>
                                 <a href='{$site_config['baseurl']}' class='is-flex'>
-                                    <i class='fa fa-home fa-2x'></i>
+                                    <i class='icon-home size_6'></i>
                                     <span class='home'>Pu-239</span>
                                 </a>
                             </li>
@@ -527,7 +525,7 @@ function navbar()
                             $panel
                             <li>
                                 <a href='{$site_config['baseurl']}/logout.php?hash_please={$salty}' class='is-flex'>
-                                    <i class='fa fa-sign-out fa-2x' aria-hidden='true'></i>
+                                    <i class='icon-logout size_6' aria-hidden='true'></i>
                                 </a>
                             </li>
                         </ul>

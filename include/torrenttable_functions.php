@@ -116,7 +116,7 @@ function torrenttable($res, $variant = 'index')
     $htmlout .= ($variant == 'index' ? "
                     <th class='has-text-centered tooltipper' title='Go To My Bookmarks'>
                         <a href='{$site_config['baseurl']}/bookmarks.php'>
-                            <i class='fa fa-check icon'></i>
+                            <i class='icon-ok icon'></i>
                         </a>
                     </th>" : '');
     if ($variant == 'mytorrents') {
@@ -301,7 +301,7 @@ function torrenttable($res, $variant = 'index')
                     <div class='level-center'>
                         <div class='flex-inrow'>
                             <a href='{$site_config['baseurl']}/download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "' class='flex-item'>
-                                <i class='fa fa-floppy-o icon tooltipper' title='Download This Torrent!'></i>
+                                <i class='icon-download icon tooltipper' title='Download This Torrent!'></i>
                             </a>
                         </div>
                     </div>
@@ -321,7 +321,7 @@ function torrenttable($res, $variant = 'index')
                     <div class='level-center'>
                         <div class='flex-inrow'>
                             <a href='{$site_config['baseurl']}/download.php?torrent={$id}" . ($CURUSER['ssluse'] == 3 ? '&amp;ssl=1' : '') . "'  class='flex-item'>
-                                <i class='fa fa-floppy-o icon tooltipper' title='Download This Torrent!'></i>
+                                <i class='icon-download icon tooltipper' title='Download This Torrent!'></i>
                             </a>
                         </div>
                     </div>
@@ -351,7 +351,7 @@ function torrenttable($res, $variant = 'index')
                         <div class='level-center'>
                             <div class='flex-inrow'>
                                 <a href='{$site_config['baseurl']}/bookmark.php?torrent={$id}&amp;action=add' class='flex-item bookmark' name='{$id}'>
-                                    <i class='fa fa-check icon has-text-success tooltipper' title='Bookmark it!'></i>
+                                    <i class='icon-ok icon has-text-success tooltipper' title='Bookmark it!'></i>
                                 </a>
                             </div>
                         </div>
@@ -360,7 +360,7 @@ function torrenttable($res, $variant = 'index')
                         <div class='level-center'>
                             <div class='flex-inrow'>
                                 <a href='{$site_config['baseurl']}/bookmark.php?torrent={$id}&amp;action=delete' class='flex-item remove' name='{$id}'>
-                                    <i class='fa fa-check icon text-red tooltipper' title='Delete Bookmark!'></i>
+                                    <i class='icon-ok icon text-red tooltipper' title='Delete Bookmark!'></i>
                                 </a>
                             </div>
                         </div>
@@ -430,13 +430,13 @@ function torrenttable($res, $variant = 'index')
             $edit_link = "
                 <span>
                     <a href='{$site_config['baseurl']}/edit.php?id=" . (int)$row['id'] . "{$returnto}' class='tooltipper' title='Fast Edit'>
-                        <i class='fa fa-edit icon'></i>
+                        <i class='icon-edit icon'></i>
                     </a>
                 </span>";
             $del_link = ($CURUSER['class'] === UC_MAX ? "
                 <span>
                     <a href='{$site_config['baseurl']}/fastdelete.php?id=" . (int)$row['id'] . "{$returnto}' class='tooltipper' title='Fast Delete'>
-                        <i class='fa fa-remove icon'></i>
+                        <i class='icon-cancel icon'></i>
                     </a>
                 </span>" : '');
             $htmlout .= "

@@ -27,7 +27,7 @@ if ($birthday === false || is_null($birthday)) {
 $HTMLOUT .= "
     <a id='birthday-hash'></a>
     <fieldset id='birthday' class='header'>
-        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>{$lang['index_birthday']} ({$birthday['count']})</legend>
+        <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>{$lang['index_birthday']} ({$birthday['count']})</legend>
         <div class='bordered'>
             <div class='alt_bordered bg-00 level-item is-wrapped'>
                 {$birthday['birthdayusers']}

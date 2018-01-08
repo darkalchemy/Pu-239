@@ -537,7 +537,7 @@ if (count($sim_torrents) > 0) {
                 <tr class='no_hover'>
                     <td class='rowhead'>
                         <span class='flipper has-text-primary'>
-                            <i class='fa fa-angle-down right10' aria-hidden='true'></i>{$lang['details_similiar']}
+                            <i class='fa icon-down-open size_3' aria-hidden='true'></i>{$lang['details_similiar']}
                         </span>
                         <div class='is_hidden'>$sim_torrent</div>
                     </td>
@@ -931,7 +931,7 @@ if (!$count) {
                 <div class='container is-fluid portlet'>
                     <a id='comments-hash'></a>
                     <fieldset id='comments' class='header'>
-                        <legend class='flipper has-text-primary'><i class='fa fa-angle-up right10' aria-hidden='true'></i>Comments</legend>
+                        <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-hidden='true'></i>Comments</legend>
                         <div>";
 
     if (count($allrows) > $perpage) {
