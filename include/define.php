@@ -22,6 +22,7 @@ define('DATABASE_DIR', ROOT_DIR . 'database' . DIRECTORY_SEPARATOR);
 define('BITBUCKET_DIR', ROOT_DIR . 'bucket' . DIRECTORY_SEPARATOR);
 define('AVATAR_DIR', BITBUCKET_DIR . 'avatar' . DIRECTORY_SEPARATOR);
 define('SQLERROR_LOGS_DIR', ROOT_DIR . 'sql_error' . DIRECTORY_SEPARATOR);
+define('PLUGINS_DIR', ROOT_DIR . 'plugins' . DIRECTORY_SEPARATOR);
 
 define('SQL_DEBUG', true);
 define('SQL_LOGGING', false);

@@ -95,10 +95,9 @@ $title = substr($log, (strrpos($log, '/') + 1));
         The content `<div>` is where all your content goes.
         */
         .content {
-            margin: 0 auto;
             padding: 0 2em;
             max-width: 800px;
-            margin-bottom: 50px;
+            margin: 0 auto 50px;
             line-height: 1.6em;
         }
 
@@ -310,8 +309,7 @@ $title = substr($log, (strrpos($log, '/') + 1));
         }
 
         ol {
-            list-style: decimal-leading-zero;
-            list-style-position: outside;
+            list-style: decimal-leading-zero outside;
         }
 
         ol li {

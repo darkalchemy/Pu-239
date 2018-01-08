@@ -14,7 +14,7 @@ $htmlout = "<!doctype html>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <title>All Smilies</title>
-    <link rel='stylesheet' href='" . get_file('css') . "' />
+    <link rel='stylesheet' href='" . get_file_name('css') . "' />
 </head>
 <body class='$body_class'>
     <script>

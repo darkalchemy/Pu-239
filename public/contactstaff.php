@@ -10,12 +10,12 @@ global $CURUSER, $cache;
 $lang = array_merge(load_language('global'), load_language('contactstaff'));
 $stdhead = [
     'css' => [
-        get_file('contactstaff_css'),
+        get_file_name('contactstaff_css'),
     ],
 ];
 $stdfoot = [
     'js' => [
-        get_file('upload_js'),
+        get_file_name('upload_js'),
     ],
 ];
 

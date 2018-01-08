@@ -10,12 +10,12 @@ global $CURUSER, $cache, $lang;
 $HTMLOUT = '';
 $stdhead = [
     'css' => [
-        get_file('upload_css'),
+        get_file_name('upload_css'),
     ],
 ];
 $stdfoot = [
     'js' => [
-        get_file('upload_js'),
+        get_file_name('upload_js'),
     ],
 ];
 $lang = array_merge($lang, load_language('ad_news'));

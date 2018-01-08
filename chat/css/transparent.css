@@ -282,8 +282,7 @@ input[type=button]:active {
     -webkit-border-radius: .3125em;
     -moz-border-radius: .3125em;
     border-radius: .3125em;
-    background-color: rgba(0, 0, 0, .1);
-    background-image: -webkit-linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent)
+    background: rgba(0, 0, 0, .1) -webkit-linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent);
 }
 
 ::-webkit-scrollbar-thumb:vertical {
@@ -292,7 +291,6 @@ input[type=button]:active {
     -webkit-border-radius: .625em;
     -moz-border-radius: .625em;
     border-radius: .625em;
-    background-color: rgba(0, 0, 0, .1);
-    background-image: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent)
+    background: rgba(0, 0, 0, .1) -webkit-linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent);
 }
 

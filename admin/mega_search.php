@@ -9,7 +9,7 @@ global $site_config, $lang, $pdo, $fluent;
 $lang = array_merge($lang, load_language('ad_mega_search'));
 $stdhead = [
     'css' => [
-        get_file('upload_css'),
+        get_file_name('upload_css'),
     ],
 ];
 

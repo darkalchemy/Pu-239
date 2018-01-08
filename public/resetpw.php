@@ -11,7 +11,7 @@ if (!$CURUSER) {
 $lang = array_merge(load_language('global'), load_language('passhint'));
 $stdfoot = [
     'js' => [
-        get_file('captcha1_js'),
+        get_file_name('captcha1_js'),
     ],
 ];
 $HTMLOUT = '';

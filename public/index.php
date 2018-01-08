@@ -11,13 +11,13 @@ global $CURUSER, $site_config, $cache, $BLOCKS;
 
 $stdhead = [
     'css' => [
-        get_file('index_css'),
+        get_file_name('index_css'),
     ],
 ];
 
 $stdfoot = [
     'js' => [
-        get_file('index_js'),
+        get_file_name('index_js'),
     ],
 ];
 $lang = array_merge(

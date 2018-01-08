@@ -20,8 +20,8 @@ define('AJAX_CHAT_CHATBOT', $site_config['chatBotRole']);
 $config = [];
 
 // javascript file
-$config['js'] = get_file('chatjs');
-$config['jslog'] = get_file('chat_log_js');
+$config['js'] = get_file_name('chatjs');
+$config['jslog'] = get_file_name('chat_log_js');
 
 // Database connection values:
 $config['dbConnection'] = [];

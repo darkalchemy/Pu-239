@@ -1189,7 +1189,7 @@ function output($blackjack, $HTMLOUT, $debugout)
     global $CURUSER;
     $stdhead = [
         'css' => [
-            get_file('bj_css'),
+            get_file_name('bj_css'),
         ],
     ];
 

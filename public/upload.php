@@ -9,7 +9,7 @@ global $CURUSER, $site_config;
 $lang = array_merge(load_language('global'), load_language('upload'));
 $stdfoot = [
     'js' => [
-        get_file('upload_js'),
+        get_file_name('upload_js'),
     ],
 ];
 $HTMLOUT = $offers = $subs_list = $request = $descr = '';

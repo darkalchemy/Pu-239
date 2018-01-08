@@ -217,8 +217,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #content #chatList .rowOdd.private, #content #chatList .rowEven.private {
-    background-color: #0C3A00;
-    background-image: linear-gradient(to bottom, #1C5417, #05410E);
+    background: #0C3A00 linear-gradient(to bottom, #1C5417, #05410E);
 }
 
 #content #chatList .chatBotErrorMessage {

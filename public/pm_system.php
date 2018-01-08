@@ -28,7 +28,7 @@ define('PM_DRAFTS', -2); //  new drafts folder
 $lang = array_merge(load_language('global'), load_language('takesignup'), load_language('pm'));
 $stdhead = [
     'css' => [
-        get_file('pm_css'),
+        get_file_name('pm_css'),
     ],
 ];
 $HTMLOUT = $count2 = $other_box_info = $maxpic = $maxbox = '';

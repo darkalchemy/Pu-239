@@ -14,12 +14,12 @@ global $CURUSER, $site_config, $cache;
 $lang = array_merge(load_language('global'), load_language('details'));
 $stdhead = [
     'css' => [
-        get_file('details_css'),
+        get_file_name('details_css'),
     ],
 ];
 $stdfoot = [
     'js' => [
-        get_file('details_js'),
+        get_file_name('details_js'),
     ],
 ];
 $HTMLOUT = $torrent_cache = '';

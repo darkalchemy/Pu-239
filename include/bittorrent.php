@@ -456,7 +456,7 @@ function userlogin()
 /**
  * @return string
  */
-function charset()
+function get_charset()
 {
     global $CURUSER, $site_config;
     $lang_charset = $CURUSER['language'];

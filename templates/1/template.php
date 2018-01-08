@@ -43,7 +43,7 @@ function stdhead($title = '', $stdhead = null)
     <link rel='manifest' href='{$site_config['baseurl']}/manifest.json' />
     <link rel='mask-icon' href='{$site_config['baseurl']}/safari-pinned-tab.svg' color='#5bbad5' />
     <meta name='theme-color' content='#ffffff'>
-    <link rel='stylesheet' href='" . get_file('css') . "' />
+    <link rel='stylesheet' href='" . get_file_name('css') . "' />
     {$css_incl}
     <style>#mlike{cursor:pointer;}</style>
     <script>
@@ -288,7 +288,7 @@ function stdfoot($stdfoot = false)
     </script>";
 
     $htmlfoot .= "
-    <script src='" . get_file('js') . "'></script>";
+    <script src='" . get_file_name('js') . "'></script>";
 
     if (!empty($stdfoot['js'])) {
         foreach ($stdfoot['js'] as $JS) {
@@ -433,7 +433,14 @@ function navbar()
                         <ul class='ddFade ddFadeSlow'>
                             <li>
                                 <a href='{$site_config['baseurl']}/staffpanel.php'>Staff Panel</a>
-                            </li>
+                            </li>";
+                if ($CURUSER['class'] === UC_MAX) {
+                    $panel .= "
+                            <li>
+                                <a href='{$site_config['baseurl']}/view_sql.php?username={$CURUSER['username']}&db={$_ENV['DB_DATABASE']}'>Adminer</a>
+                            </li>";
+                }
+                $panel .= "
                             $other_panel
                         </ul>
                    </li>";
@@ -448,14 +455,14 @@ function navbar()
         <header id='navbar' class='container'>
             <div class='contained'>
                 <div class='nav_container'>
-                    <div id='hamburger'><i class='icon-menu has-text-white' aria-hidden='true'></i></div>
+                    <div id='hamburger'><i class='icon-menu size_7 has-text-white' aria-hidden='true'></i></div>
                     <div id='close'><i class='icon-cancel has-text-white' aria-hidden='true'></i></div>
                     <div id='menuWrapper'>
                         <ul class='level'>
                             <li>
                                 <a href='{$site_config['baseurl']}' class='is-flex'>
                                     <i class='icon-home size_6'></i>
-                                    <span class='home'>Pu-239</span>
+                                    <span class='home'>{$site_config['site_name']}</span>
                                 </a>
                             </li>
                             <li>

@@ -10,7 +10,7 @@ global $CURUSER, $site_config, $cache, $lang;
 $lang = array_merge($lang, load_language('ad_acp'));
 $stdfoot = [
     'js' => [
-        get_file('acp_js'),
+        get_file_name('acp_js'),
     ],
 ];
 $HTMLOUT = '';

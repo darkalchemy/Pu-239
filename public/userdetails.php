@@ -14,12 +14,12 @@ $edit_profile = $friend_links = $shitty_link = $sharemark_link = '';
 
 $stdhead = [
     'css' => [
-        get_file('userdetails_css'),
+        get_file_name('userdetails_css'),
     ],
 ];
 $stdfoot = [
     'js' => [
-        get_file('userdetails_js'),
+        get_file_name('userdetails_js'),
     ],
 ];
 $id = (int)$_GET['id'];

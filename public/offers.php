@@ -8,7 +8,7 @@ global $CURUSER, $site_config;
 $lang = load_language('global');
 $stdhead = [
     'css' => [
-        get_file('upload_css'),
+        get_file_name('upload_css'),
     ],
 ];
 $stdfoot = [

@@ -8,7 +8,7 @@ global $site_config, $CURUSER, $lang;
 $lang = array_merge(load_language('global'), load_language('userdetails'));
 $stdfoot = [
     'js' => [
-        get_file('checkport_js'),
+        get_file_name('checkport_js'),
     ],
 ];
 

@@ -26,7 +26,7 @@ $HTMLOUT .= "<!doctype html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'htt
 <head>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
     <title>Choose Language</title>
-    <link rel='stylesheet' href='" . get_file('css') . "' />
+    <link rel='stylesheet' href='" . get_file_name('css') . "' />
 </head>
 <body class='$body_class'>
     <script>

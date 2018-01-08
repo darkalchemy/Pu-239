@@ -466,8 +466,6 @@ h1.memcache span.nameinfo { color:white; display:inline; font-size:0.4em; margin
 h1.memcache div.copy { color:black; font-size:0.4em; position:absolute; right:1em; }
 hr.memcache {
 	background:white;
-	border-bottom:solid rgb(102,102,153) 1px;
-	border-style:none;
 	border-top:solid rgb(102,102,153) 10px;
 	height:12px;
 	margin:0;

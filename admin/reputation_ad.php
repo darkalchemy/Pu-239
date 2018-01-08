@@ -516,7 +516,7 @@ function redirect($url, $text, $time = 2)
 		<head>
 		<meta http-equiv='refresh' content=\"{$time}; url={$site_config['baseurl']}/{$url}\" />
 		<title>{$lang['rep_ad_redirect_block']}</title>
-    <link rel='stylesheet' href='" . get_file('css') . "' />
+    <link rel='stylesheet' href='" . get_file_name('css') . "' />
     </head>
     <body>
 						  <div>

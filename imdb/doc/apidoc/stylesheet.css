@@ -103,9 +103,8 @@ SPAN.tiny {
 }
 
 UL {
-	margin:			0px;
-	padding:		0px;
-	padding-left:		5px;
+	margin:			0;
+	padding: 0 0 0 5px;
 }
 
 LI {

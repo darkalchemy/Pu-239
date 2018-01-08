@@ -257,7 +257,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     // fix messed up links
     $s = str_replace('&amp;', '&', $s);
     if ($strip_html) {
-        $s = htmlsafechars($s, ENT_QUOTES, charset());
+        $s = htmlsafechars($s, ENT_QUOTES, get_charset());
     }
 
     // BBCode to find...
@@ -536,7 +536,7 @@ function format_comment_no_bbcode($text, $strip_html = true)
     $s = $text;
     if ($strip_html) {
         //$s = htmlsafechars($s);
-        $s = htmlsafechars($s, ENT_QUOTES, charset());
+        $s = htmlsafechars($s, ENT_QUOTES, get_charset());
     }
     // BBCode to find...
     //=== basically will change this into a sort of strip tags but of bbcode shor of the code tag

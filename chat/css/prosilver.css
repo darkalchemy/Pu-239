@@ -81,8 +81,7 @@
 }
 
 #content #chatList .deleteSelected {
-    border-width: 1px;
-    border-style: dotted;
+    border: 1px dotted;
 }
 
 #content #helpContainer #helpList table, #content #settingsContainer #settingsList table {

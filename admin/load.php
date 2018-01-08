@@ -144,7 +144,7 @@ $HTMLOUT .= "
     <table width='100%' >
 			<tr><td>
 		    <table class='main' border='0' width='402'>
-    			<tr><td style='padding: 0; background-image: url({$site_config['pic_base_url']}loadbarbg.gif); background-repeat: repeat-x'>";
+    			<tr><td style='padding: 0; background: url({$site_config['pic_base_url']}loadbarbg.gif) repeat-x;'>";
 $percent = min(100, round(exec('ps ax | grep -c apache') / 256 * 100));
 if ($percent <= 70) {
     $pic = 'loadbargreen.gif';

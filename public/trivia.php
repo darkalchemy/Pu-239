@@ -101,7 +101,7 @@ $HTMLOUT = "<!doctype html>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     $refresh
     <title>Trivia</title>
-    <link rel='stylesheet' href='" . get_file('css') . "' />
+    <link rel='stylesheet' href='" . get_file_name('css') . "' />
     <link href='https://fonts.googleapis.com/css?family=Acme|Baloo+Bhaijaan|Encode+Sans+Condensed|Lobster|Nova+Square|Open+Sans|Oswald|PT+Sans+Narrow' rel='stylesheet' />
 </head>
 <body class='ajax-chat text-9'>

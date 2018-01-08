@@ -17,7 +17,7 @@ $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
 $fluent = new Envms\FluentPDO\Query($pdo);
-
+/*
 $page = $_SERVER['PHP_SELF'];
 if (SQL_DEBUG && $page != '/announce.php') {
     $fluent->debug = function ($BaseQuery) {
@@ -40,3 +40,4 @@ if (SQL_DEBUG && $page != '/announce.php') {
         }
     };
 }
+*/

@@ -19,7 +19,7 @@ if (isset($_GET['clear_new']) && $_GET['clear_new'] == 1) {
 }
 $stdhead = [
     'css' => [
-        get_file('browse_css'),
+        get_file_name('browse_css'),
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('browse'), load_language('torrenttable_functions'));

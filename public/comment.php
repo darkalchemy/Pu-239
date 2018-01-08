@@ -13,7 +13,7 @@ $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : 0);
 //$action = (isset($_POST['action']) && in_array($_POST['action'],$vaction) ? htmlsafechars($_POST['action']) : (isset($_GET['action']) && in_array($_GET['action'],$vaction) ? htmlsafechars($_GET['action']) : ''));
 $stdfoot = [
     'js' => [
-        get_file('upload_js'),
+        get_file_name('upload_js'),
     ],
 ];
 $locale = 'torrent';
