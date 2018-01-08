@@ -502,7 +502,6 @@ function format_username($user_id, $icons = true, $tooltipper = true)
         if (Christmas()) {
             $str .= (isset($users_data['gotgift']) && $users_data['gotgift'] == 'yes' ? '<img class="tooltipper icon left5" src="' . $site_config['pic_base_url'] . 'gift.png" alt="Christmas Gift" title="Has Claimed a Christmas Gift" />' : '');
         }
-        $str .= '<img class="tooltipper icon left5" src="' . $site_config['pic_base_url'] . 'king.png" alt="King" title="King" />';
     }
 
     $str .= '
