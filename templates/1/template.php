@@ -1,9 +1,8 @@
 <?php
+
 /**
  * @param string $title
- * @param bool   $msgalert
- * @param bool   $stdhead
- *
+ * @param null $stdhead
  * @return string
  */
 function stdhead($title = '', $stdhead = null)

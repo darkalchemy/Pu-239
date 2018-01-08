@@ -15,9 +15,9 @@ function get_file($file)
         if ($site_config['in_production']) {
             switch ($file) {
                 case 'css':
-                    return "{$site_config['baseurl']}/css/{$style}/c72ed3d0afa4149f48dca001b15b0e3c.min.css";
+                    return "{$site_config['baseurl']}/css/{$style}/9187a8a6cd4466f6827c5582d9fc1811.min.css";
                 case 'js':
-                    return "{$site_config['baseurl']}/js/{$style}/13e9b3d076469f50237711269bd48dd6.min.js";
+                    return "{$site_config['baseurl']}/js/{$style}/3f8a6d919f6309c4e3db732a5db1c5a7.min.js";
                 case 'checkport_js':
                     return "{$site_config['baseurl']}/js/{$style}/4ba42503ffca4c65167590b15a03b842.min.js";
                 case 'chatjs':
