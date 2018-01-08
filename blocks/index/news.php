@@ -37,10 +37,10 @@ if ($news) {
             $button = "
                 <div class='is-pulled-right'>
                     <a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=edit&amp;newsid=" . (int)$array['id'] . "'>
-                        <i class='icon-edit tooltipper' aria-hidden='true' title='{$lang['index_news_ed']}'></i>
+                        <i class='icon-edit size_6 tooltipper' aria-hidden='true' title='{$lang['index_news_ed']}'></i>
                     </a>
                     <a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;newsid=" . (int)$array['id'] . "&amp;h={$hash}'>
-                        <i class='icon-cancel tooltipper' aria-hidden='true' title='{$lang['index_news_del']}'></i>
+                        <i class='icon-cancel size_6 tooltipper' aria-hidden='true' title='{$lang['index_news_del']}'></i>
                     </a>
                 </div>";
         }
