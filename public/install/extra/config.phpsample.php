@@ -12,6 +12,7 @@ if (get_magic_quotes_gpc() || get_magic_quotes_runtime() || ini_get('magic_quote
 if (ini_get('register_long_arrays') || ini_get('register_globals') || ini_get('safe_mode')) {
     die('PHP is configured incorrectly. Turn off safe_mode, register_globals and register_long_arrays.');
 }
+$site_config['variant'] = 'Pu-239';
 
 //==charset
 $site_config['char_set'] = 'UTF-8'; //also to be used site wide in meta tags
@@ -232,6 +233,9 @@ $upload_max_filesize = ini_get('upload_max_filesize') !== null ? return_bytes(in
 $post_max_filesize = ini_get('post_max_filesize') !== null ? return_bytes(ini_get('post_max_filesize')) : 0;
 $site_config['bucket_maxsize'] = $upload_max_filesize >= $post_max_filesize ? $upload_max_filesize : $post_max_filesize;
 $site_config['site']['owner'] = 1;
+$site_config['adminer_allowed_ids'] = [
+    1
+];
 $site_config['site']['salt'] = '#pass1';
 $site_config['staff']['staff_pin'] = '#pass2';
 $site_config['staff']['owner_pin'] = '#pass3';
@@ -241,8 +245,6 @@ $site_config['staff_forums'] = [
     1,
     2,
 ];
-
-$site_config['variant'] = 'Pu-239';
 
 // Arcade Games
 $site_config['arcade_games'] = ['asteroids', 'breakout', 'frogger', 'galaga', 'hexxagon', 'invaders', 'moonlander', 'pacman', 'psol', 'simon', 'snake', 'tetris', 'autobahn', 'ghosts-and-goblins', 'joust', 'ms-pac-man'];
