@@ -57,22 +57,22 @@ function print_list()
 body { margin:0;padding:0; 
 	   font-size:12px;
 	   font-family:arial,sans-serif;
-	   color: #FFFFFF;
+	   color: #fff;
 }
 a, a:link, a:visited {
   text-decoration: none;
-  color: #FFFFFF;
+  color: #fff;
   font-size:12px;
 }
 a:hover {
-  color: #FFFFFF
+  color: #fff
   text-decoration:underline;
   
 }
 .btn {
 background-color:#890537;
 border:1px solid #000000;
-color:#FFFFFF;
+color:#fff;
 font-family:arial,sans-serif;
 font-size:12px;
 padding:1px 3px;

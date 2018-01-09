@@ -42,7 +42,7 @@ function stdhead($title = '', $stdhead = null)
     <link rel='icon' type='image/png' sizes='16x16' href='{$site_config['baseurl']}/favicon-16x16.png' />
     <link rel='manifest' href='{$site_config['baseurl']}/manifest.json' />
     <link rel='mask-icon' href='{$site_config['baseurl']}/safari-pinned-tab.svg' color='#5bbad5' />
-    <meta name='theme-color' content='#ffffff'>
+    <meta name='theme-color' content='#fff'>
     <link rel='stylesheet' href='" . get_file_name('css') . "' />
     {$css_incl}
     <style>#mlike{cursor:pointer;}</style>
@@ -236,8 +236,6 @@ function stdfoot($stdfoot = false)
                     <div class='size_4 top10 bottom10'>
                         <p class='is-marginless'>{$lang['gl_stdfoot_powered']}" . $site_config['variant'] . "</p>
                         <p class='is-marginless'>{$lang['gl_stdfoot_using']}<b>{$lang['gl_stdfoot_using1']}</b></p>
-                        " . ($debug ? "<p class='is-marginless'><a title='{$lang['gl_stdfoot_logview']}' class='tooltipper' rel='external' href='{$site_config['baseurl']}/staffpanel.php?tool=log_viewer'>{$lang['gl_stdfoot_logview']}</a> | <a title='{$lang['gl_stdfoot_sview']}' class='tooltipper' rel='external' href='{$site_config['baseurl']}/staffpanel.php?tool=system_view'>{$lang['gl_stdfoot_sview']}</a> | <a rel='external' title='OPCache' href='{$site_config['baseurl']}/staffpanel.php?tool=op' class='tooltipper'>{$lang['gl_stdfoot_opc']}</a> | <a rel='external' title='Memcache' href='{$site_config['baseurl']}/staffpanel.php?tool=memcache' class='tooltipper'>{$lang['gl_stdfoot_memcache']}</a></p>" : '');
-        $htmlfoot .= "
                     </div>
                 </div>
             </div>
@@ -437,7 +435,7 @@ function navbar()
                 if ($CURUSER['class'] === UC_MAX) {
                     $panel .= "
                             <li>
-                                <a href='{$site_config['baseurl']}/view_sql.php?username={$CURUSER['username']}&db={$_ENV['DB_DATABASE']}'>Adminer</a>
+                                <a href='{$site_config['baseurl']}/view_sql.php'>Adminer</a>
                             </li>";
                 }
                 $panel .= "

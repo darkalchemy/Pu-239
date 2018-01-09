@@ -3,8 +3,8 @@
 // By Jay Salvat - http://markitup.jaysalvat.com/
 // ------------------------------------------------------------------*/
 .markItUp * {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     outline: none;
 }
 
@@ -41,7 +41,7 @@
 
 .markItUpPreviewFrame {
     overflow: auto;
-    background-color: #FFFFFF;
+    background-color: #fff;
     border: 1px solid #3C769D;
     width: 99.9%;
     height: 300px;
@@ -85,7 +85,7 @@
 }
 
 .markItUpHeader ul .markItUpDropMenu li {
-    margin-right: 0px;
+    margin-right: 0;
 }
 
 .markItUpHeader ul .markItUpSeparator {
@@ -99,7 +99,7 @@
 .markItUpHeader ul ul .markItUpSeparator {
     width: auto;
     height: 1px;
-    margin: 0px;
+    margin: 0;
 }
 
 /* next rows of buttons */
@@ -107,7 +107,7 @@
     display: none;
     position: absolute;
     top: 18px;
-    left: 0px;
+    left: 0;
     background: #F5F5F5;
     border: 1px solid #3C769D;
     height: inherit;
@@ -140,12 +140,11 @@
     text-indent: -10000px;
     background-repeat: no-repeat;
     padding: 3px;
-    margin: 0px;
+    margin: 0;
 }
 
 .markItUpHeader ul ul a {
     display: block;
-    padding-left: 0px;
     text-indent: 0;
     width: 120px;
     padding: 5px 5px 5px 25px;

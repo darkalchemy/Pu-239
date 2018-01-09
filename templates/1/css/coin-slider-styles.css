@@ -16,7 +16,7 @@
 }
 
 .cs-buttons {
-    font-size: 0px;
+    font-size: 0;
     padding: 10px;
     float: left;
 }
@@ -33,19 +33,19 @@
 
 .cs-active {
     background-color: #B8C4CF;
-    color: #FFFFFF;
+    color: #fff;
 }
 
 .cs-title {
     width: 545px;
     padding: 10px;
     background-color: #000000;
-    color: #FFFFFF;
+    color: #fff;
 }
 
 .cs-prev,
 .cs-next {
     background-color: #000000;
-    color: #FFFFFF;
-    padding: 0px 10px;
+    color: #fff;
+    padding: 0 10px;
 }

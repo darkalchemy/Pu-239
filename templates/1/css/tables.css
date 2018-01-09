@@ -14,7 +14,7 @@ table {
 .table {
     width: calc(100% - 2px);
     background-color: transparent;
-    color: white;
+    color: #fff;
     margin-bottom: 0;
     border-collapse: collapse;
     border-spacing: 0;
@@ -38,7 +38,7 @@ table {
 
 .table tr th {
     font-weight: 700;
-    color: white;
+    color: #fff;
 }
 
 .table td,

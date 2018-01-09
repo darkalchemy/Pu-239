@@ -93,7 +93,7 @@ if (isset($tids) && count($tids)) {
 }
 $htmlout .= "<div style='width:90%'>
         <fieldset style='border:2px solid #333333;'>
-            <legend style='padding:5xp 0px 0px 5px;'>{$lang['catol_search']}</legend>
+            <legend style='padding:5xp 0 0 5px;'>{$lang['catol_search']}</legend>
                 <form  action='" . $_SERVER['PHP_SELF'] . "' method='get' style='margin:10px;'>
                     <input type='text' size='50' name='search' value='" . ($search ? $search : "{$lang['catol_search_for_tor']}") . "' onblur=\"if (this.value == '') this.value='{$lang['catol_search_for_tor']}';\" onfocus=\"if (this.value == '{$lang['catol_search_for_tor']}') this.value='';\" />&#160;<input type='submit' value='search!' />
                 </form>";

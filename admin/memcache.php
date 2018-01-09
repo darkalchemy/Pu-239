@@ -70,7 +70,7 @@ function sendMemcacheCommands($command)
         $strs = explode(':', $server);
         $host = $strs[0];
         $port = $strs[1];
-        $result[ $server ] = sendMemcacheCommand($host, $port, $command);
+        $result[$server] = sendMemcacheCommand($host, $port, $command);
     }
 
     return $result;
@@ -119,18 +119,18 @@ function parseMemcacheResults($str)
     $lines = explode("\r\n", $str);
     $cnt = count($lines);
     for ($i = 0; $i < $cnt; ++$i) {
-        $line = $lines[ $i ];
+        $line = $lines[$i];
         $l = explode(' ', $line, 3);
         if (count($l) == 3) {
-            $res[ $l[0] ][ $l[1] ] = $l[2];
+            $res[$l[0]][$l[1]] = $l[2];
             if ($l[0] == 'VALUE') { // next line is the value
-                $res[ $l[0] ][ $l[1] ] = [];
+                $res[$l[0]][$l[1]] = [];
                 list($flag, $size) = explode(' ', $l[2]);
-                $res[ $l[0] ][ $l[1] ]['stat'] = [
+                $res[$l[0]][$l[1]]['stat'] = [
                     'flag' => $flag,
                     'size' => $size,
                 ];
-                $res[ $l[0] ][ $l[1] ]['value'] = $lines[ ++$i ];
+                $res[$l[0]][$l[1]]['value'] = $lines[++$i];
             }
         } elseif ($line == 'DELETED' || $line == 'NOT_FOUND' || $line == 'OK') {
             return $line;
@@ -177,24 +177,24 @@ function getCacheItems()
     $serverItems = [];
     $totalItems = [];
     foreach ($items as $server => $itemlist) {
-        $serverItems[ $server ] = [];
-        $totalItems[ $server ] = 0;
+        $serverItems[$server] = [];
+        $totalItems[$server] = 0;
         if (!isset($itemlist['STAT'])) {
             continue;
         }
         $iteminfo = $itemlist['STAT'];
         foreach ($iteminfo as $keyinfo => $value) {
             if (preg_match('/items\:(\d+?)\:(.+?)$/', $keyinfo, $matches)) {
-                $serverItems[ $server ][ $matches[1] ][ $matches[2] ] = $value;
+                $serverItems[$server][$matches[1]][$matches[2]] = $value;
                 if ($matches[2] == 'number') {
-                    $totalItems[ $server ] += $value;
+                    $totalItems[$server] += $value;
                 }
             }
         }
     }
 
     return [
-        'items'  => $serverItems,
+        'items' => $serverItems,
         'counts' => $totalItems,
     ];
 }
@@ -211,36 +211,36 @@ function getMemcacheStats($total = true)
         $res = [];
         foreach ($resp as $server => $r) {
             foreach ($r['STAT'] as $key => $row) {
-                if (!isset($res[ $key ])) {
-                    $res[ $key ] = null;
+                if (!isset($res[$key])) {
+                    $res[$key] = null;
                 }
                 switch ($key) {
                     case 'pid':
-                        $res['pid'][ $server ] = $row;
+                        $res['pid'][$server] = $row;
                         break;
 
                     case 'uptime':
-                        $res['uptime'][ $server ] = $row;
+                        $res['uptime'][$server] = $row;
                         break;
 
                     case 'time':
-                        $res['time'][ $server ] = $row;
+                        $res['time'][$server] = $row;
                         break;
 
                     case 'version':
-                        $res['version'][ $server ] = $row;
+                        $res['version'][$server] = $row;
                         break;
 
                     case 'pointer_size':
-                        $res['pointer_size'][ $server ] = $row;
+                        $res['pointer_size'][$server] = $row;
                         break;
 
                     case 'rusage_user':
-                        $res['rusage_user'][ $server ] = $row;
+                        $res['rusage_user'][$server] = $row;
                         break;
 
                     case 'rusage_system':
-                        $res['rusage_system'][ $server ] = $row;
+                        $res['rusage_system'][$server] = $row;
                         break;
 
                     case 'curr_items':
@@ -300,7 +300,7 @@ function getMemcacheStats($total = true)
                         break;
 
                     case 'threads':
-                        $res['rusage_system'][ $server ] = $row;
+                        $res['rusage_system'][$server] = $row;
                         break;
                 }
             }
@@ -432,14 +432,14 @@ function getHeader()
     <meta name='viewport' content='width=device-width, initial-scale=1'>
 <title>MEMCACHE INFO</title>
 <style><!--
-body { background:white; font-size:100.01%; margin:0; padding:0; }
+body { background:#fff; font-size:100.01%; margin:0; padding:0; }
 body,p,td,th,input,submit { font-size:0.8em;font-family:arial,helvetica,sans-serif; }
-* html body   {font-size:0.8em}
-* html p      {font-size:0.8em}
-* html td     {font-size:0.8em}
-* html th     {font-size:0.8em}
-* html input  {font-size:0.8em}
-* html submit {font-size:0.8em}
+* html body   {font-size: 0.8em;}
+* html p      {font-size: 0.8em;}
+* html td     {font-size: 0.8em;}
+* html th     {font-size: 0.8em;}
+* html input  {font-size: 0.8em;}
+* html submit {font-size: 0.8em;}
 td { vertical-align:top }
 a { color:black; font-weight:none; text-decoration:none; }
 a:hover { text-decoration:underline; }
@@ -461,11 +461,11 @@ h1.memcache span.logo {
 	display:block;
 	width:130px;
 	}
-h1.memcache span.logo span.name { color:white; font-size:0.7em; padding:0 0.8em 0 2em; }
-h1.memcache span.nameinfo { color:white; display:inline; font-size:0.4em; margin-left: 3em; }
+h1.memcache span.logo span.name { color:#fff; font-size:0.7em; padding:0 0.8em 0 2em; }
+h1.memcache span.nameinfo { color:#fff; display:inline; font-size:0.4em; margin-left: 3em; }
 h1.memcache div.copy { color:black; font-size:0.4em; position:absolute; right:1em; }
 hr.memcache {
-	background:white;
+	background:#fff;
 	border-top:solid rgb(102,102,153) 10px;
 	height:12px;
 	margin:0;
@@ -474,11 +474,11 @@ hr.memcache {
 }
 
 ol,menu { margin:1em 0 0 0; padding:0.2em; margin-left:1em;}
-ol.menu li { display:inline; margin-right:0.7em; list-style:none; font-size:85%}
+ol.menu li { display:inline; margin-right:0.7em; list-style: none; font-size: 85%;}
 ol.menu a {
 	background:rgb(153,153,204);
 	border:solid rgb(102,102,153) 2px;
-	color:white;
+	color:#fff;
 	font-weight:bold;
 	margin-right:0;
 	padding:0.1em 0.5em 0.1em 0.5em;
@@ -488,7 +488,7 @@ ol.menu a {
 ol.menu a.child_active {
 	background:rgb(153,153,204);
 	border:solid rgb(102,102,153) 2px;
-	color:white;
+	color:#fff;
 	font-weight:bold;
 	margin-right:0;
 	padding:0.1em 0.5em 0.1em 0.5em;
@@ -509,7 +509,7 @@ ol.menu span.active {
 ol.menu span.inactive {
 	background:rgb(193,193,244);
 	border:solid rgb(182,182,233) 2px;
-	color:white;
+	color:#fff;
 	font-weight:bold;
 	margin-right:0;
 	padding:0.1em 0.5em 0.1em 0.5em;
@@ -540,7 +540,7 @@ div.info table {
 	}
 div.info table th {
 	background:rgb(204,204,204);
-	color:white;
+	color:#fff;
 	margin:0;
 	padding:0.1em 1em 0.1em 1em;
 	}
@@ -558,48 +558,47 @@ div.info table td h3 {
 .td-0 a , .td-n a, .tr-0 a , tr-1 a {
     text-decoration:underline;
 }
-div.graph { margin-bottom:1em }
-div.graph h2 { background:rgb(204,204,204);; color:black; font-size:1em; margin:0; padding:0.1em 1em 0.1em 1em; }
-div.graph table { border:solid rgb(204,204,204) 1px; color:black; font-weight:normal; width:100%; }
-div.graph table td.td-0 { background:rgb(238,238,238); }
-div.graph table td.td-1 { background:rgb(221,221,221); }
-div.graph table td { padding:0.2em 1em 0.4em 1em; }
+div.graph { margin-bottom: 1em; }
+div.graph h2 { background: rgb(204,204,204); color: black; font-size: 1em; margin: 0; padding: 0.1em 1em 0.1em 1em; }
+div.graph table { border: solid rgb(204,204,204) 1px; color:black; font-weight:normal; width:100%; }
+div.graph table td.td-0 { background: rgb(238,238,238); }
+div.graph table td.td-1 { background: rgb(221,221,221); }
+div.graph table td { padding: 0.2em 1em 0.4em 1em; }
 
-div.div1,div.div2 { margin-bottom:1em; width:35em; }
+div.div1,div.div2 { margin-bottom: 1em; width:35em; }
 div.div3 { position:absolute; left:40em; top:1em; width:580px; }
-//div.div3 { position:absolute; left:37em; top:1em; right:1em; }
 
-div.sorting { margin:1.5em 0 1.5em 2em }
-.center { text-align:center }
-.aright { position:absolute;right:1em }
-.right { text-align:right }
-.ok { color:rgb(0,200,0); font-weight:bold}
-.failed { color:rgb(200,0,0); font-weight:bold}
+div.sorting { margin: 1.5em 0 1.5em 2em; }
+.center { text-align: center; }
+.aright { position: absolute; right:1em; }
+.right { text-align:right; }
+.ok { color:rgb(0,200,0); font-weight:bold; }
+.failed { color:rgb(200,0,0); font-weight:bold; }
 
 span.box {
 	border: black solid 1px;
-	border-right:solid black 2px;
-	border-bottom:solid black 2px;
-	padding:0 0.5em 0 0.5em;
-	margin-right:1em;
+	border-right: solid black 2px;
+	border-bottom: solid black 2px;
+	padding: 0 0.5em 0 0.5em;
+	margin-right: 1em;
 }
-span.green { background:#60F060; padding:0 0.5em 0 0.5em}
-span.red { background:#D06030; padding:0 0.5em 0 0.5em }
+span.green { background: #60F060; padding: 0 0.5em 0 0.5em; }
+span.red { background: #D06030; padding: 0 0.5em 0 0.5em; }
 
 div.authneeded {
-	background:rgb(238,238,238);
-	border:solid rgb(204,204,204) 1px;
-	color:rgb(200,0,0);
-	font-size:1.2em;
-	font-weight:bold;
-	padding:2em;
-	text-align:center;
+	background: rgb(238,238,238);
+	border: solid rgb(204,204,204) 1px;
+	color: rgb(200,0,0);
+	font-size: 1.2em;
+	font-weight: bold;
+	padding: 2em;
+	text-align: center;
 	}
 
 input {
 	background:rgb(153,153,204);
 	border:solid rgb(102,102,153) 2px;
-	color:white;
+	color:#fff;
 	font-weight:bold;
 	margin-right:1em;
 	padding:0.1em 0.5em 0.1em 0.5em;
@@ -661,13 +660,13 @@ $PHP_SELF = $PHP_SELF . '?';
 $time = time();
 // sanitize _GET
 foreach ($_GET as $key => $g) {
-    $_GET[ $key ] = htmlentities($g);
+    $_GET[$key] = htmlentities($g);
 }
 // singleout
 // when singleout is set, it only gives details for that server.
 if (isset($_GET['singleout']) && $_GET['singleout'] >= 0 && $_GET['singleout'] < count($MEMCACHE_SERVERS)) {
     $MEMCACHE_SERVERS = [
-        $MEMCACHE_SERVERS[ $_GET['singleout'] ],
+        $MEMCACHE_SERVERS[$_GET['singleout']],
     ];
 }
 // display images
@@ -859,11 +858,11 @@ EOB;
         foreach ($MEMCACHE_SERVERS as $server) {
             echo '<table cellspacing="0"><tbody>';
             echo '<tr class="tr-1"><td class="td-1">' . $server . '</td><td><a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=memcache&amp;server=' . array_search($server, $MEMCACHE_SERVERS) . '&amp;op=6">[<b>Flush this server</b>]</a></td></tr>';
-            echo '<tr class="tr-0"><td class="td-0">Start Time</td><td>', date(DATE_FORMAT, $memcacheStatsSingle[ $server ]['STAT']['time'] - $memcacheStatsSingle[ $server ]['STAT']['uptime']), '</td></tr>';
-            echo '<tr class="tr-1"><td class="td-0">Uptime</td><td>', duration($memcacheStatsSingle[ $server ]['STAT']['time'] - $memcacheStatsSingle[ $server ]['STAT']['uptime']), '</td></tr>';
-            echo '<tr class="tr-0"><td class="td-0">Memcached Server Version</td><td>' . $memcacheStatsSingle[ $server ]['STAT']['version'] . '</td></tr>';
-            echo '<tr class="tr-1"><td class="td-0">Used Cache Size</td><td>', bsize($memcacheStatsSingle[ $server ]['STAT']['bytes']), '</td></tr>';
-            echo '<tr class="tr-0"><td class="td-0">Total Cache Size</td><td>', bsize($memcacheStatsSingle[ $server ]['STAT']['limit_maxbytes']), '</td></tr>';
+            echo '<tr class="tr-0"><td class="td-0">Start Time</td><td>', date(DATE_FORMAT, $memcacheStatsSingle[$server]['STAT']['time'] - $memcacheStatsSingle[$server]['STAT']['uptime']), '</td></tr>';
+            echo '<tr class="tr-1"><td class="td-0">Uptime</td><td>', duration($memcacheStatsSingle[$server]['STAT']['time'] - $memcacheStatsSingle[$server]['STAT']['uptime']), '</td></tr>';
+            echo '<tr class="tr-0"><td class="td-0">Memcached Server Version</td><td>' . $memcacheStatsSingle[$server]['STAT']['version'] . '</td></tr>';
+            echo '<tr class="tr-1"><td class="td-0">Used Cache Size</td><td>', bsize($memcacheStatsSingle[$server]['STAT']['bytes']), '</td></tr>';
+            echo '<tr class="tr-0"><td class="td-0">Total Cache Size</td><td>', bsize($memcacheStatsSingle[$server]['STAT']['limit_maxbytes']), '</td></tr>';
             echo '</tbody></table>';
         }
         echo <<<EOB
@@ -951,14 +950,14 @@ EOB;
         // probably an exploit can be written to delete all the files in key=base64_encode("\n\r delete all").
         // somebody has to do a fix to this.
         $theKey = htmlentities(base64_decode($_GET['key']));
-        $theserver = $MEMCACHE_SERVERS[ (int)$_GET['server'] ];
+        $theserver = $MEMCACHE_SERVERS[(int)$_GET['server']];
         list($h, $p) = explode(':', $theserver);
         $r = sendMemcacheCommand($h, $p, 'get ' . $theKey);
         echo <<<EOB
         <div class="info"><table cellspacing="0"><tbody>
 			<tr><th>Server<th>Key</th><th>Value</th><th>Delete</th></tr>
 EOB;
-        echo "<tr><td class='td-0'>", $theserver, "</td><td class='td-0'>", $theKey, ' <br>flag:', $r['VALUE'][ $theKey ]['stat']['flag'], ' <br>Size:', bsize($r['VALUE'][ $theKey ]['stat']['size']), '</td><td>', chunk_split($r['VALUE'][ $theKey ]['value'], 40), '</td>', '<td><a href="', $site_config['baseurl'], '/staffpanel.php?tool=memcache&op=5&server=', (int)$_GET['server'], '&key=', base64_encode($theKey), '">Delete</a></td>', '</tr>';
+        echo "<tr><td class='td-0'>", $theserver, "</td><td class='td-0'>", $theKey, ' <br>flag:', $r['VALUE'][$theKey]['stat']['flag'], ' <br>Size:', bsize($r['VALUE'][$theKey]['stat']['size']), '</td><td>', chunk_split($r['VALUE'][$theKey]['value'], 40), '</td>', '<td><a href="', $site_config['baseurl'], '/staffpanel.php?tool=memcache&op=5&server=', (int)$_GET['server'], '&key=', base64_encode($theKey), '">Delete</a></td>', '</tr>';
         echo <<<EOB
 			</tbody></table>
 			</div><hr>
@@ -971,14 +970,14 @@ EOB;
             break;
         }
         $theKey = htmlentities(base64_decode($_GET['key']));
-        $theserver = $MEMCACHE_SERVERS[ (int)$_GET['server'] ];
+        $theserver = $MEMCACHE_SERVERS[(int)$_GET['server']];
         list($h, $p) = explode(':', $theserver);
         $r = sendMemcacheCommand($h, $p, 'delete ' . $theKey);
         echo 'Deleting ' . $theKey . ':' . $r;
         break;
 
     case 6: // flush server
-        $theserver = $MEMCACHE_SERVERS[ (int)$_GET['server'] ];
+        $theserver = $MEMCACHE_SERVERS[(int)$_GET['server']];
         $r = flushServer($theserver);
         echo 'Flush  ' . $theserver . ':' . $r;
         break;

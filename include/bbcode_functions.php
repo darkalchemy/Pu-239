@@ -66,7 +66,7 @@ function BBcode($body = '')
                             <div class="scroll" id="box_1" style="display: none;">
                                 ' . $emoticons_normal . '
                             </div>
-                            ' . ($CURUSER['smile_until'] > 0 ? '<div class="scroll" id="box_2" style="display:none">
+                            ' . ($CURUSER['smile_until'] > 0 ? '<div class="scroll" id="box_2" style="display: none;">
                                 ' . $emoticons_custom . '
                             </div>' : '') . ($CURUSER['class'] < UC_STAFF ? '' : '<div class="scroll" id="box_3" style="display: none;">
                                 ' . $emoticons_staff . '
@@ -102,10 +102,10 @@ function validate_imgs($s)
     preg_match_all('!' . $start . '(.*)' . $end . '!Ui', $s, $result);
     $array = $result[0];
     for ($i = 0; $i < count($array); ++$i) {
-        $headers = @get_headers($array[ $i ]);
+        $headers = @get_headers($array[$i]);
         if (strpos($headers[0], '200') === false) {
-            $s = str_replace('[img]' . $array[ $i ] . '[/img]', '', $s);
-            $s = str_replace('[img=' . $array[ $i ] . ']', '', $s);
+            $s = str_replace('[img]' . $array[$i] . '[/img]', '', $s);
+            $s = str_replace('[img=' . $array[$i] . ']', '', $s);
         }
     }
 
@@ -129,10 +129,10 @@ function check_BBcode($html)
     }
     $openedtags = array_reverse($openedtags);
     for ($i = 0; $i < $len_opened; ++$i) {
-        if (!in_array($openedtags[ $i ], $closedtags)) {
-            $html .= '</' . $openedtags[ $i ] . '>';
+        if (!in_array($openedtags[$i], $closedtags)) {
+            $html .= '</' . $openedtags[$i] . '>';
         } else {
-            unset($closedtags[ array_search($openedtags[ $i ], $closedtags) ]);
+            unset($closedtags[array_search($openedtags[$i], $closedtags)]);
         }
     }
 
@@ -166,7 +166,7 @@ function format_quotes($s)
         $closeval[] = $pos = strpos($s, $val, $pos + 1);
     }
     for ($i = 0; $i < count($openval); ++$i) {
-        if ($openval[ $i ] > $closeval[ $i ]) {
+        if ($openval[$i] > $closeval[$i]) {
             return $s;
         }
     } // Cannot close before opening. Return raw string...
@@ -343,7 +343,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<span style="text-decoration: line-through;">\1</span>',
         '<span style="tab-size: 4; -moz-tab-size: 4;-o-tab-size: 4; white-space: pre-wrap; font-family: \'Courier New\', Courier, monospace;">\1</span>',
         '<marquee class="style">\1</marquee>',
-        '<div style="padding-top: 2px; white-space: nowrap"><span style="cursor: hand; cursor: pointer; border-bottom: 1px dotted" onclick="if (document.getElementById(\'collapseobj\1\').style.display==\'block\') {document.getElementById(\'collapseobj\1\').style.display=\'none\' } else { document.getElementById(\'collapseobj\1\').style.display=\'block\' }">\1</span></div><div id="collapseobj\1" style="display:none; padding-top: 2px; padding-left: 14px; margin-bottom:10px; padding-bottom: 2px; background-color: #FEFEF4;">\2</div>',
+        '<div style="padding-top: 2px; white-space: nowrap;"><span style="cursor: pointer; border-bottom: 1px dotted;" onclick="if (document.getElementById(\'collapseobj\1\').style.display==\'block\') {document.getElementById(\'collapseobj\1\').style.display=\'none\' } else { document.getElementById(\'collapseobj\1\').style.display=\'block\' }">\1</span></div><div id="collapseobj\1" style="display:none; padding-top: 2px; padding-left: 14px; margin-bottom:10px; padding-bottom: 2px; background-color: #FEFEF4;">\2</div>',
         '<span class="size\1">\2</span>',
         '<span style="color: \1;">\2</span>',
         '<span style="color: \1;">\2</span>',
@@ -360,7 +360,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         "<div style='margin-bottom: 5px;'><span class='flip button'>Show Hide!</span><div class='panel spoiler' style='display:none;'>\\1</div></div><br>",
         "<div style='width: 500px; height: 281px;' class='has-text-centered'><div class='youtube-embed rndcorners has-text-centered' style='height: 100%; width: 100%;'><iframe width='1920px' height='1080px' src='//www.youtube.com/embed/\\1?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen ></iframe></div></div>",
         "<div style='width: 500px; height: 281px;' class='has-text-centered'><div class='youtube-embed rndcorners has-text-centered' style='height: 100%; width: 100%;'><iframe width='1920px' height='1080px' src='//www.youtube.com/embed/\\1?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen ></iframe></div></div>",
-        '<embed style="width:500px; height:410px;" id="VideoPlayback" align="middle" type="application/x-shockwave-flash" src="//video.google.com/googleplayer.swf?docId=\\1" allowScriptAccess="sameDomain" quality="best" bgcolor="#ffffff" scale="noScale" wmode="window" salign="TL"  FlashVars="playerMode=embedded"> </embed>',
+        '<embed style="width:500px; height:410px;" id="VideoPlayback" align="middle" type="application/x-shockwave-flash" src="//video.google.com/googleplayer.swf?docId=\\1" allowScriptAccess="sameDomain" quality="best" bgcolor="#fff" scale="noScale" wmode="window" salign="TL"  FlashVars="playerMode=embedded"> </embed>',
         '<span><video width="500" loop muted autoplay><source src="//i.imgur.com/\1.webm" type="video/webm" /><source src="//i.imgur.com/\1.mp4" type="video/mp4" />Your browser does not support the video tag.</video></span>',
         '<span><video width="500" controls><source src="\1" /><source src="\1" type="video/mp4" />Your browser does not support the video tag.</video></span>',
         '<span><video width="500" controls><source src="\1" /><source src="\1" type="video/ogg" />Your browser does not support the video tag.</video></span>',
@@ -368,7 +368,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<span><video width="500" loop muted autoplay><source src="\1" /><source src="\1" type="video/mp4" />Your browser does not support the video tag.</video></span>',
         '<span><video width="500" loop muted autoplay><source src="\1" /><source src="\1" type="video/webm" />Your browser does not support the video tag.</video></span>',
         '<span><video width="500" loop muted autoplay><source src="\1" /><source src="\1" type="video/ogv" />Your browser does not support the video tag.</video></span>',
-        '<span class="has-text-centered"><p>Audio From: \1</p><embed type="application/x-shockwave-flash" src="http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=\\1" width="400" height="27" allowscriptaccess="never" quality="best" bgcolor="#ffffff" wmode="window" flashvars="playerMode=embedded" /></span>',
+        '<span class="has-text-centered"><p>Audio From: \1</p><embed type="application/x-shockwave-flash" src="http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=\\1" width="400" height="27" allowscriptaccess="never" quality="best" bgcolor="#fff" wmode="window" flashvars="playerMode=embedded" /></span>',
         '<ol class="style" start="\1">\2</ol>',
         '<ul class="style">\1</ul>',
         '<li>\1</li>',
@@ -418,7 +418,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     }
     // [nfo]NFO-preformatted[/nfo]
     if (stripos($s, '[nfo]') !== false) {
-        $s = preg_replace("/\[nfo\]((\s|.)+?)\[\/nfo\]/i", "<tt><span style=\"white-space: nowrap;\"><font face='MS Linedraw' size='2' style='font-size: 10pt; line-height:" . "10pt'>\\1</font></span></tt>", $s);
+        $s = preg_replace("/\[nfo\]((\s|.)+?)\[\/nfo\]/i", "<tt><span style=\"white-space: nowrap;\"><font face='MS Linedraw' size='2' style='font-size: 10pt; line-height: 10pt;'>\\1</font></span></tt>", $s);
     }
     //==Media tag
     if (stripos($s, '[media=') !== false) {
@@ -437,7 +437,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     // [mcom]Text[/mcom]
     if (stripos($s, '[mcom]') !== false) {
         $s = preg_replace("/\[mcom\](.+?)\[\/mcom\]/is", '<div style="font-size: 18pt; line-height: 50%;">
-   <div style="border-color: red; background-color: red; color: white; text-align: center; font-weight: bold; font-size: large;"><b>\\1</b></div></div>', $s);
+   <div style="border-color: red; background-color: red; color: #fff; text-align: center; font-weight: bold; font-size: large;"><b>\\1</b></div></div>', $s);
     }
     // the [you] tag
     if (stripos($s, '[you]') !== false) {
@@ -504,7 +504,7 @@ function format_code($s)
             $closeval[] = $pos = strpos($s, $val, $pos + 1);
         }
         for ($i = 0; $i < count($openval); ++$i) {
-            if ($openval[ $i ] > $closeval[ $i ]) {
+            if ($openval[$i] > $closeval[$i]) {
                 return $s;
             }
         } // Cannot close before opening. Return raw string...
@@ -648,11 +648,11 @@ function _MediaTag($content, $type)
     $return = '';
     switch ($type) {
         case 'youtube':
-            $return = preg_replace("#^http://(?:|www\.)youtube\.com/watch\?v=([a-zA-Z0-9\-]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='http://www.youtube.com/v/\\1'><param name='movie' value='http://www.youtube.com/v/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#FFFFFF' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
+            $return = preg_replace("#^http://(?:|www\.)youtube\.com/watch\?v=([a-zA-Z0-9\-]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='http://www.youtube.com/v/\\1'><param name='movie' value='http://www.youtube.com/v/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#fff' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
             break;
 
         case 'liveleak':
-            $return = preg_replace("#^http://(?:|www\.)liveleak\.com/view\?i=([_a-zA-Z0-9\-]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='http://www.liveleak.com/e/\\1'><param name='movie' value='http://www.liveleak.com/e/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#FFFFFF' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
+            $return = preg_replace("#^http://(?:|www\.)liveleak\.com/view\?i=([_a-zA-Z0-9\-]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='http://www.liveleak.com/e/\\1'><param name='movie' value='http://www.liveleak.com/e/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#fff' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
             break;
 
         case 'GameTrailers':

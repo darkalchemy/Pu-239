@@ -34,7 +34,7 @@ input#submit {
 /* rounded corners */
 .ajax-fc-rtop, .ajax-fc-rbottom {
     display: block;
-    background: white;
+    background: #fff;
 }
 
 .ajax-fc-rtop *, .ajax-fc-rbottom * {
@@ -85,7 +85,7 @@ ul#ajax-fc-task {
     width: 190px;
     height: 18px;
     list-style-type: none;
-    background: url(imgs/bg-items.png) -4px 0px;
+    background: url(imgs/bg-items.png) -4px 0;
     background-repeat: no-repeat;
     margin: 6px 0 0 0;
     padding: 5px 0 0 2px;
@@ -111,7 +111,7 @@ img#ajax-fc-backlink {
     position: absolute;
     margin-top: 1px;
     margin-left: 6px;
-    border: 0px;
+    border: 0;
     z-index: 101;
 }
 

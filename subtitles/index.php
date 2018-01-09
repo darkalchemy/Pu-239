@@ -50,7 +50,7 @@ if ($searchby == 'name') {
             font-family: "tahoma", "arial", "helvetica", "sans-serif";
             font-size: 9pt;
             background-color: #333333;
-            color: #ffffff;
+            color: #fff;
             font-weight: bold;
             padding-top: 15px;
             padding-bottom: 20px;
@@ -83,7 +83,7 @@ if ($searchby == 'name') {
         }
 
         a:link, a:hover, a:visited {
-            color: #FFFFFF;
+            color: #fff;
         }
 
         .releasename {
@@ -98,7 +98,7 @@ if ($searchby == 'name') {
             color: #333333;
             margin: 4px
             font-weight: bold;
-            padding: 0px 5px;
+            padding: 0 5px;
             width: 15px;
             height: 15px;
         }
@@ -113,7 +113,7 @@ if ($searchby == 'name') {
             background-color: #999999;
             margin: 4px
             font-weight: bold;
-            padding: 0px 5px;
+            padding: 0 5px;
         }
     </style>
 </head>

@@ -186,7 +186,7 @@ if (sizeof($err) > 0) {
 $HTMLOUT .= "<fieldset style='border:1px solid #333333; padding:5px;'>
     <legend style='padding:3px 5px 3px 5px; border:solid 1px #333333; font-size:12px;font-weight:bold;'>{$lang['grouppm_head']}</legend>
     <form action='staffpanel.php?tool=grouppm&amp;action=grouppm' method='post'>
-      <table width='500' border='1' style='border-collapse:collapse' cellpadding='5' cellspacing='0'>
+      <table width='500' border='1' style='border-collapse: collapse;' cellpadding='5' cellspacing='0'>
         <tr>
           <td nowrap='nowrap' colspan='2'><b>{$lang['grouppm_sub']}</b> &#160;&#160;
             <input type='text' name='subject' size='30' style='width:300px;'/></td>

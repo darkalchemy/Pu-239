@@ -20,7 +20,7 @@ class Chmod
      * @param array $GroupModes
      * @param array $PublicModes
      */
-    public function Chmod($dir, $OwnerModes = [], $GroupModes = [], $PublicModes = [])
+    public function __construct($dir, $OwnerModes = [], $GroupModes = [], $PublicModes = [])
     {
         $this->_dir = $dir;
         $this->setOwnerModes($OwnerModes[0], $OwnerModes[1], $OwnerModes[2]);

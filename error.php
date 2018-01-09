@@ -34,13 +34,13 @@ $htmlout = "<!doctype html>
     <style>
     <!--
     body     {
-    margin: 4;
-    background-color: white;
+    margin: 4px;
+    background-color: rgb(255,255,255);
     }
     p
     {
     margin: 0;
-    font-family: Arial, Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     color: #000000;
     font-size: 14px;
     }

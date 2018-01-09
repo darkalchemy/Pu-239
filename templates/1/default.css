@@ -8,7 +8,7 @@ html {
 
 body {
     background: transparent;
-    color: white;
+    color: #fff;
     font-size: 75%;
     line-height: 125%;
     margin: auto;
@@ -74,7 +74,7 @@ select,
 }
 
 a {
-    color: white;
+    color: #fff;
     text-decoration: none;
 }
 
@@ -103,7 +103,7 @@ fieldset {
 legend {
     font-size: 1.625em;
     display: block;
-    color: white;
+    color: #fff;
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
     padding: 10px 0;
     border: 0;
@@ -156,7 +156,7 @@ h3,
 h4,
 h5,
 h6 {
-    color: white;
+    color: #fff;
     font-weight: 400;
     text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
 }
@@ -293,7 +293,7 @@ span {
 }
 
 .accordion-toggle {
-    background: white;
+    background: #fff;
     font-weight: 700;
     padding-left: 1em;
     line-height: 2em;
@@ -451,8 +451,8 @@ input,
 select,
 textarea {
     color: black;
-    background-color: white;
-    border: 1px solid white;
+    background-color: #fff;
+    border: 1px solid #fff;
     padding: 5px;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.75);
@@ -771,7 +771,7 @@ textarea {
 }
 
 .tooltip {
-    border: 1px solid white;
+    border: 1px solid #fff;
     padding: 5px;
     margin: 5px;
     -webkit-border-radius: .625em;
@@ -802,7 +802,7 @@ textarea {
 
 .back-to-top {
     text-decoration: none;
-    color: white;
+    color: #fff;
     background-color: rgba(255, 255, 255, 0.3);
     position: fixed;
     bottom: .625em;
@@ -813,13 +813,13 @@ textarea {
     -webkit-border-radius: .3125em;
     -moz-border-radius: .3125em;
     border-radius: .3125em;
-    border: 1px solid white;
+    border: 1px solid #fff;
     z-index: 2;
 }
 
 .back-to-top:hover {
     background-color: rgba(0, 0, 0, .8);
-    color: white;
+    color: #fff;
     border: 1px solid red;
 }
 
@@ -943,7 +943,7 @@ textarea {
 }
 
 .tabs a {
-    color: white;
+    color: #fff;
     -webkit-border-radius: .3125em;
     -moz-border-radius: .3125em;
     border-radius: .3125em;

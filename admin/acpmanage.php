@@ -67,7 +67,7 @@ if (mysqli_num_rows($res) != 0) {
     $HTMLOUT .= "<form action='{$site_config['baseurl']}/staffpanel.php?tool=acpmanage&amp;action=acpmanage' method='post'>";
     $HTMLOUT .= begin_table();
     $HTMLOUT .= "<tr><td class='colhead'>
-      <input style='margin:0' type='checkbox' title='" . $lang['text_markall'] . "' value='" . $lang['text_markall'] . "' onclick=\"this.value=check(form);\" /></td>
+      <input style='margin: 0;' type='checkbox' title='" . $lang['text_markall'] . "' value='" . $lang['text_markall'] . "' onclick=\"this.value=check(form);\" /></td>
       <td class='colhead'>{$lang['text_username']}</td>
       <td class='colhead' style='white-space: nowrap;'>{$lang['text_reg']}</td>
       <td class='colhead' style='white-space: nowrap;'>{$lang['text_la']}</td>

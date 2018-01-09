@@ -97,7 +97,7 @@ if (isset($_GET['add'])) {
         $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $lang['watched_addedwu'] . " $CURUSER[username].\n" . $user['modcomment'];
         sql_query('UPDATE users SET watched_user = ' . TIME_NOW . ', modcomment=' . sqlesc($modcomment) . ', watched_user_reason = ' . sqlesc($watched_user_reason) . ' WHERE id=' . sqlesc($member_whos_been_bad)) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('user' . $member_whos_been_bad, [
-            'watched_user'        => TIME_NOW,
+            'watched_user' => TIME_NOW,
             'watched_user_reason' => $watched_user_reason,
         ], $site_config['expires']['user_cache']);
         $cache->update_row('user_stats_' . $member_whos_been_bad, [
@@ -122,10 +122,10 @@ $ORDER_BY = ((isset($_GET['sort']) && in_array($_GET['sort'], $good_stuff, true)
 $ASC = (isset($_GET['ASC']) ? ($_GET['ASC'] == 'ASC' ? 'DESC' : 'ASC') : 'DESC');
 $i = 1;
 $HTMLOUT .= $H1_thingie . '<br>
-        <form action="staffpanel.php?tool=watched_users&amp;action=watched_users&amp;remove=1" method="post"  name="checkme" onsubmit="return ValidateForm(this,\'wu\')">
+        <form action="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;remove=1" method="post"  name="checkme" onsubmit="return ValidateForm(this,\'wu\')">
         <h1>' . $lang['watched_users'] . '[ ' . $watched_users . ' ]</h1>
-    <table border="0" cellspacing="5" cellpadding="5" class="has-text-centered" style="max-width:800px">';
-//=== get the member info...
+    <table border="0" cellspacing="5" cellpadding="5" class="has-text-centered" style="max-width: 800px;">';
+
 $res = sql_query('SELECT id, username, added, watched_user_reason, watched_user, uploaded, downloaded, warned, suspended, enabled, donor, class, leechwarn, chatpost, pirate, king, invitedby FROM users WHERE watched_user != \'0\' ORDER BY ' . $ORDER_BY . $ASC) or sqlerr(__FILE__, __LINE__);
 $how_many = mysqli_num_rows($res);
 if ($how_many > 0) {
@@ -147,7 +147,7 @@ if ($how_many > 0) {
         }
         $the_flip_box = '
         [ <a id="d' . $div_link_number . '_open" class="show_warned" style="font-weight:bold;cursor:pointer;">' . $lang['watched_viewreason'] . '</a> ]
-        <div class="has-text-left" id="d' . $div_link_number . '" style="display:none"><p class="top10">' . format_comment($arr['watched_user_reason']) . '</p></div>';
+        <div class="has-text-left" id="d' . $div_link_number . '" style="display: none;"><p class="top10">' . format_comment($arr['watched_user_reason']) . '</p></div>';
         $HTMLOUT .= '
     <tr>
         <td class="has-text-centered">' . get_date($arr['watched_user'], '') . '</td>

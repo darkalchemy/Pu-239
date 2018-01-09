@@ -1,3 +1,7 @@
+9 Jan 2018
+move: adminer into iframe
+remove: unnecessary css
+
 8 Jan 2018
 add: adminer database manager
 remove: king icon showing for all

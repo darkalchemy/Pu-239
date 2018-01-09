@@ -295,8 +295,8 @@ empty($_SERVER['SERVER_NAME'])
             font-size: 110%;
             color: #292929;
             padding: 10px 26px;
-            background: -moz-linear-gradient(top, #ffffff 0%, #b4b7b8);
-            background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#b4b7b8));
+            background: -moz-linear-gradient(top, #fff 0%, #b4b7b8);
+            background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#b4b7b8));
             -moz-border-radius: 6px;
             -webkit-border-radius: 6px;
             border-radius: 6px;

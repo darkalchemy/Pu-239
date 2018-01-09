@@ -129,7 +129,7 @@ if ($count == '0') {
         if ($arr_info['delt_with']) {
             $res_who = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr_info['who_delt_with_it']));
             $arr_who = mysqli_fetch_assoc($res_who);
-            $dealtwith = "<span style='color: {$solved_color}'><b>{$lang['reports_yes']}</b> </font> {$lang['reports_by']} <a class='altlink' href='userdetails.php?id=" . (int)$arr_info['who_delt_with_it'] . "'><b>" . htmlsafechars($arr_who['username']) . "</b></a><br> {$lang['reports_in']} <font color='{$solved_color};'>{$solved_in}</span>";
+            $dealtwith = "<span style='color: {$solved_color};'><b>{$lang['reports_yes']}</b> </font> {$lang['reports_by']} <a class='altlink' href='userdetails.php?id=" . (int)$arr_info['who_delt_with_it'] . "'><b>" . htmlsafechars($arr_who['username']) . "</b></a><br> {$lang['reports_in']} <font color='{$solved_color};'>{$solved_in}</span>";
             $checkbox = "<input type='radio' name='id' value='" . (int)$arr_info['id'] . "' disabled />";
         } else {
             $dealtwith = "<span class='has-text-danger'><b>{$lang['reports_no']}</b></span>";

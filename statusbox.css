@@ -5,7 +5,7 @@
 
 #status_box {
     width: 400px;
-    background: #ffffff;
+    background: #fff;
     height: auto;
     border: 1px solid #5C8DFF;
     -moz-border-radius: 4px;
@@ -25,7 +25,7 @@
 
 #status_content {
     padding: 1px;
-    background: #ffffff;
+    background: #fff;
     border: 1px solid #99B8FF;
     -moz-border-radius-bottomleft: 2px;
     -moz-border-radius-bottomright: 2px;

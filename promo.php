@@ -251,7 +251,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
             }
 
             $HTMLOUT .= "<form action='" . ($_SERVER['PHP_SELF']) . "' method='post'>
-						  <table cellpadding='10' width='50%' class='has-text-centered' cellspacing='0'  border='1' style='border-collapse:collapse'>
+						  <table cellpadding='10' width='50%' class='has-text-centered' cellspacing='0'  border='1' style='border-collapse: collapse;'>
 						  <tr><td class='colhead' class='has-text-centered' colspan='2'>Promo : " . htmlsafechars($ar['name']) . " </td></tr>
 						  <tr><td nowrap='nowrap' class='has-text-right'>Bonuses</td>
 							  <td class='has-text-left' width='100%'>
@@ -301,14 +301,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
     font-size:12px;
     font-weight:bold;}
     a:link, a:hover , a:visited {
-    color:#FFFFFF;
+    color:#fff;
     }
     .heading { background-color:#0033FF;
     color:#CCCCCC;}
     </style>
     </head>
     <body>
-    <table width='200' cellpadding='10' border='1' class='has-text-centered' style='border-collapse:collapse'>
+    <table width='200' cellpadding='10' border='1' class='has-text-centered' style='border-collapse: collapse;'>
     <tr><td class='rowhead' class='has-text-left' width='100'> User</td><td class='rowhead' class='has-text-left' nowrap='nowrap'>Added</td></tr>";
                 while ($ap = mysqli_fetch_assoc($q2)) {
                     $HTMLOUT .= "<tr><td class='has-text-left' width='100'>" . format_username($ap['id']) . "</td><td  class='has-text-left' nowrap='nowrap' >" . get_date($ap['added'], 'LONG', 0, 1) . '</td></tr>';
@@ -344,7 +344,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
 		 }
 		 /*]]>*/
 		</script>";
-        $HTMLOUT .= "<table class='has-text-centered' width='100%' cellpadding='5' cellspacing='0' border='1' style='border-collapse:collapse'>
+        $HTMLOUT .= "<table class='has-text-centered' width='100%' cellpadding='5' cellspacing='0' border='1' style='border-collapse: collapse;'>
 			<tr>
 				<td class='has-text-left' width='100%' rowspan='2'>Promo</td>
 				<td class='has-text-centered' nowrap='nowrap' rowspan='2'>Added</td>

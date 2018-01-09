@@ -65,15 +65,15 @@ if (mysqli_num_rows($res) == 0) {
             $colors[] = $color;
         }
         $key = array_search($txt, $log_events);
-        $color = $colors[ $key ];
+        $color = $colors[$key];
 
         $date = explode(',', get_date($arr['added'], 'LONG'));
         $HTMLOUT .= "
                 <tr class='table'>
-                    <td style='background-color:$color'>
-                        <span class='tex-black'>{$date[0]}{$date[1]}</span>
+                    <td style='background-color: {$color};'>
+                        <span class='text-black'>{$date[0]}{$date[1]}</span>
                     </td>
-                    <td style='background-color:$color'>
+                    <td style='background-color: {$color};'>
                         <span class='text-black'>" . format_comment($arr['txt']) . "</span>
                     </td>
                 </tr>";

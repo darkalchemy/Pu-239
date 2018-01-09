@@ -64,9 +64,9 @@ if (is_array($scheduled_events)) {
                     $hdownEnabled = true;
                 }
                 if ($displayDates) {
-                    $overlay_text = "<span style='font-size: 90%'>$overlayText</span><br><span style='font-size: 60%'>" . get_date($startTime, 'DATE') . ' - ' . get_date($endTime, 'DATE') . "</span>\n";
+                    $overlay_text = "<span style='font-size: 90%;'>$overlayText</span><br><span style='font-size: 60%;'>" . get_date($startTime, 'DATE') . ' - ' . get_date($endTime, 'DATE') . "</span>\n";
                 } else {
-                    $overlay_text = "<span style='font-size: 90%'>$overlayText</span>\n";
+                    $overlay_text = "<span style='font-size: 90%;'>$overlayText</span>\n";
                 }
             }
         }

@@ -18,7 +18,6 @@
     position: relative;
     z-index: 99;
     cursor: hand;
-    cursor: grab;
     cursor: -moz-grab;
     cursor: -webkit-grab;
 }

@@ -33,7 +33,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 						<style>
 						.t {display: table; }
 						.tr {display: table-row;}
-						.tdclear{height:5px;content:''}
+						.tdclear{height:5px; content: '';}
 						.td {display:table-cell; vertical-align:top;padding-right:5px;}
 						</style>
 						<div class='t'>$att</div>";

@@ -86,7 +86,7 @@ function show_level()
 
         return;
     }
-    $css = "style='font-weight: bold;color: #ffffff;background-color: #1E1E1E; padding: 5px;'";
+    $css = "style='font-weight: bold;color: #fff;background-color: #1E1E1E; padding: 5px;'";
     $html .= "<h2>{$lang['rep_ad_show_head']}</h2>";
     $html .= "<p><span class='button is-small'><a href='staffpanel.php?tool=reputation_ad&amp;mode=list'>{$lang['rep_ad_show_comments']}</a></span></p><br>";
     $html .= "<form action='staffpanel.php?tool=reputation_ad' name='show_rep_form' method='post'>
@@ -132,7 +132,7 @@ function show_form($type = 'edit')
         $mode = 'doadd';
         $extra = "<input type='button' value='{$lang['rep_ad_form_back']}' accesskey='b' class='button is-small' onclick='javascript:history.back(1)' />";
     }
-    $css = "style='font-weight: bold;color: #ffffff;background-color: #0055A4;padding: 5px;'";
+    $css = "style='font-weight: bold;color: #fff;background-color: #0055A4;padding: 5px;'";
     $replevid = isset($res['reputationlevelid']) ? $res['reputationlevelid'] : '';
     $replevel = isset($res['level']) ? $res['level'] : '';
     $minrep = isset($res['minimumreputation']) ? $res['minimumreputation'] : '';
@@ -357,7 +357,7 @@ function view_list()
                 $order = 'r.dateadd';
                 $orderby = 'dateadd';
         }
-        $css = "style='font-weight: bold;color: #ffffff;background-color: #0055A4;padding: 5px;'";
+        $css = "style='font-weight: bold;color: #fff;background-color: #0055A4;padding: 5px;'";
         $html = "<h2>{$lang['rep_ad_view_cmts']}</h2>";
         $table_header = "<table width='80%' cellpadding='5' border='1'><tr $css>";
         $table_header .= "<td width='5%'>{$lang['rep_ad_view_id']}</td>";
@@ -521,8 +521,8 @@ function redirect($url, $text, $time = 2)
     <body>
 						  <div>
 							<div>{$lang['rep_ad_redirect_redirect']}</div>
-							<div style='padding:8px'>
-							 <div style='font-size:12px'>$text
+							<div style='padding: 8px;'>
+							 <div style='font-size: 12px;'>$text
 							 <br>
 							 <br>
 							 <center><a href='{$site_config['baseurl']}/{$url}'>{$lang['rep_ad_redirect_not']}</a></center>

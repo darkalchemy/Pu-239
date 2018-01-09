@@ -239,8 +239,8 @@ function redirect($url, $text, $time = 2)
 <body>
     <div>
         <div>{$lang['repset_redirecting']}</div>
-            <div style='padding:8px'>
-                <div style='font-size:12px'>$text
+            <div style='padding: 8px;'>
+                <div style='font-size: 12px;'>$text
                 <br>
                 <br>
                 <a href='{$site_config['baseurl']}/{$url}'>{$lang['repset_clickredirect']}</a>

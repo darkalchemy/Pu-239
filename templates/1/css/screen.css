@@ -128,8 +128,7 @@ input {
     font-size: 12px;
     border-color: #29447E #29447E #1A356E;
     text-align: center;
-    font-weight: bold;
-    color: #FFFFFF;
+    color: #fff;
     cursor: pointer;
     width: 33px;
 }
@@ -144,7 +143,7 @@ input {
 
     margin-right: 4px;
     font-weight: bold;
-    color: #FFFFFF;
+    color: #fff;
     cursor: pointer;
     width: 60px;
 }
@@ -153,7 +152,7 @@ input {
     background-color: #F2F2F2;
     border-color: #919191 #B5B5B5 #CBCBCB;
     border-top: 2px solid #919191;
-    padding: 7px 0 0px;
+    padding: 7px 0 0;
     width: 530px;
 }
 
@@ -214,7 +213,7 @@ a.c_delete {
 .top_area {
     background: #627AAD;
     font-size: 14px;
-    color: #FFFFFF;
+    color: #fff;
     font-weight: bold;
     padding: 6px 6px 6px 12px;
 }
@@ -235,12 +234,9 @@ a.c_delete {
 
 a.delete {
     float: left;
-    color: #666666;
-    display: block;
     padding: 5px;
     text-decoration: none;
     -moz-background-clip: border;
-    -moz-background-inline-policy: continuous;
     -moz-background-origin: padding;
     background: transparent none repeat scroll 0 0;
     border: 0 none;
@@ -269,7 +265,7 @@ a.delete:hover {
 .name a, .commentPanel a {
     color: #3B5998;
     font-size: 11px;
-    margin: 3px 3px 3px 0px;
+    margin: 3px 3px 3px 0;
 }
 
 .name em {
