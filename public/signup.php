@@ -40,7 +40,7 @@ foreach ($TZ as $off => $words) {
 $time_select .= '</select>';
 
 $countries = countries();
-$country .= "<option value='999999'" . ($CURUSER['country'] == $cntry['id'] ? " selected" : '') . ">Atlantis</option>\n";
+$country .= "<option value='999999'" . (empty($CURUSER['country']) ? " selected" : '') . ">Atlantis</option>\n";
 
 foreach ($countries as $cntry) {
     $country .= "<option value='" . (int)$cntry['id'] . "'" . ($CURUSER['country'] == $cntry['id'] ? " selected" : '') . '>' . htmlsafechars($cntry['name']) . "</option>\n";

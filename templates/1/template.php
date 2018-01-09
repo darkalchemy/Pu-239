@@ -176,14 +176,6 @@ function stdfoot($stdfoot = false)
                 $cache->set('mc_hits', $MemStats, 10);
             }
         }
-        if ($debug) {
-            $uptime = $cache->get('uptime');
-            if ($uptime === false || is_null($uptime)) {
-                $uptime = `uptime`;
-                $cache->set('uptime', $uptime, 25);
-            }
-            preg_match('/load average: (.*)$/i', $uptime, $load);
-        }
         if (!empty($MemStats['Hits']) && !empty($MemStats['curr_items']) && !empty($phptime) && !empty($percentmc) && !empty($cachetime)) {
             $header = '<b>' . $lang['gl_stdfoot_querys_mstat'] . '</b> ' . mksize(memory_get_peak_usage()) . ' ' . $lang['gl_stdfoot_querys_mstat1'] . ' ' . round($phptime, 2) . 's | ' . round($percentmc, 2) . '' . $lang['gl_stdfoot_querys_mstat2'] . '' . number_format($cachetime, 4) . 's ' . $lang['gl_stdfoot_querys_mstat3'] . '' . $MemStats['Hits'] . '' . $lang['gl_stdfoot_querys_mstat4'] . '' . number_format((100 - $MemStats['Hits']), 3) . '' . $lang['gl_stdfoot_querys_mstat5'] . '' . number_format($MemStats['curr_items']);
         }
@@ -210,7 +202,7 @@ function stdfoot($stdfoot = false)
             $htmlfoot .= '
                                     <tr>
                                         <td>' . ($key + 1) . "</td>
-                                        <td><b>" . ($value['seconds'] > 0.01 ? "<span class='is-danger' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='is-success' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</b></td>
+                                        <td>" . ($value['seconds'] > 0.01 ? "<span class='is-danger' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='is-success' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</td>
                                         <td><div class='text-justify'>" . format_comment($value['query']) . '</div></td>
                                     </tr>';
         }
@@ -224,18 +216,27 @@ function stdfoot($stdfoot = false)
     $htmlfoot .= "
                 </div>
             </div>";
+
+    if ($CURUSER && $debug) {
+        $uptime = $cache->get('uptime');
+        if ($uptime === false || is_null($uptime)) {
+            $uptime = `uptime`;
+            $cache->set('uptime', $uptime, 25);
+        }
+    }
+
     if ($CURUSER) {
         $htmlfoot .= "
             <div class='container site-debug bg-05 round10 top20 bottom20'>
                 <div class='level bordered bg-04'>
                     <div class='size_4 top10 bottom10'>
-                        <p class='is-marginless'>" . $site_config['site_name'] . " {$lang['gl_stdfoot_querys_page']}" . $r_seconds . " {$lang['gl_stdfoot_querys_seconds']}</p>
-                        <p class='is-marginless'>{$lang['gl_stdfoot_querys_server']}" . $queries . " {$lang['gl_stdfoot_querys_time']}" . plural($queries) . '</p>
-                        ' . ($debug ? '<p class="is-marginless"><b>' . $header . "</b></p><p class='is-marginless'><b>{$lang['gl_stdfoot_uptime']}</b> " . $uptime . '</p>' : '') . "
+                        <p class='is-marginless'>{$lang['gl_stdfoot_querys_page']} $r_seconds {$lang['gl_stdfoot_querys_seconds']}</p>
+                        <p class='is-marginless'>{$lang['gl_stdfoot_querys_server']} $queries {$lang['gl_stdfoot_querys_time']}" . plural($queries) . "</p>
+                        " . ($debug ? "<p class='is-marginless'>$header</p><p class='is-marginless'>{$lang['gl_stdfoot_uptime']} $uptime</p>" : '') . "
                     </div>
                     <div class='size_4 top10 bottom10'>
-                        <p class='is-marginless'>{$lang['gl_stdfoot_powered']}" . $site_config['variant'] . "</p>
-                        <p class='is-marginless'>{$lang['gl_stdfoot_using']}<b>{$lang['gl_stdfoot_using1']}</b></p>
+                        <p class='is-marginless'>{$lang['gl_stdfoot_powered']}{$site_config['variant']}</p>
+                        <p class='is-marginless'>{$lang['gl_stdfoot_using']}{$lang['gl_stdfoot_using1']}</p>
                     </div>
                 </div>
             </div>

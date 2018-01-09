@@ -14,6 +14,7 @@ if (!file_exists(dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . '.env')) {
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'define.php';
 require_once INCL_DIR . 'config.php';
+require_once INCL_DIR . 'site_config.php';
 require_once VENDOR_DIR . 'autoload.php';
 
 $dotenv = new Dotenv\Dotenv(ROOT_DIR);
@@ -22,12 +23,12 @@ $dotenv->load();
 require_once INCL_DIR . 'database.php';
 require_once INCL_DIR . 'files.php';
 
-// start session on every page request
-sessionStart();
-
 require_once CACHE_DIR . 'free_cache.php';
 require_once CACHE_DIR . 'class_config.php';
 $cache = new CACHE();
+
+// start session on every page request
+sessionStart();
 
 /**
  * Class curuser
@@ -44,7 +45,7 @@ require_once CLASS_DIR . 'class_blocks_userdetails.php';
 require_once CLASS_DIR . 'class_bt_options.php';
 require_once CACHE_DIR . 'block_settings_cache.php';
 require_once INCL_DIR . 'password_functions.php';
-require_once INCL_DIR . 'site_config.php';
+require_once INCL_DIR . 'site_settings.php';
 
 $load = sys_getloadavg();
 if ($load[0] > 20) {

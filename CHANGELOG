@@ -1,4 +1,6 @@
 9 Jan 2018
+fix: trivia_update when 0 questions in db
+fix: uptime not showing when 0 queries
 update: lastest_user cache
 move: adminer into iframe
 remove: unnecessary css

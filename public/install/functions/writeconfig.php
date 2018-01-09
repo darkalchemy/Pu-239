@@ -194,7 +194,7 @@ function saveconfig()
     $config = preg_replace('/#pass1/', bin2hex(random_bytes(16)), $config);
     $config = preg_replace('/#pass2/', bin2hex(random_bytes(16)), $config);
     $config = preg_replace('/#pass3/', bin2hex(random_bytes(16)), $config);
-
+    $config = preg_replace('/#pass4/', bin2hex(random_bytes(16)), $config);
 
     if (file_put_contents($root . 'include/config.php', $config)) {
         $out .= '
