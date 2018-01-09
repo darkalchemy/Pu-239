@@ -9,12 +9,12 @@ function trivia_update($data)
     ignore_user_abort(true);
 
     $count = $cache->get('trivia_questions_count_');
-    if ($qids === false || is_null($qids)) {
+    if ($count === false || is_null($count)) {
         $count = $fluent->from('triviaq')
             ->select(null)
             ->select('COUNT(id) AS count')
             ->fetch('count');
-        $cache->set('trivia_questions_count_', $qids, 900);
+        $cache->set('trivia_questions_count_', $count, 900);
     }
 
     if ($count > 0) {
