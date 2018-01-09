@@ -50,11 +50,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $user_id = get_one_row('users', 'id', 'WHERE username = ' . sqlesc($insert['username']));
         }
 
-        sql_query(
-            'INSERT INTO usersachiev (userid) 
-                  VALUES (' . sqlesc($user_id) . ')'
-        ) or sqlerr(__FILE__, __LINE__);
+        sql_query('INSERT INTO usersachiev (userid) VALUES (' . sqlesc($user_id) . ')') or sqlerr(__FILE__, __LINE__);
         $cache->delete('all_users_');
+        $cache->set('latestuser', (int)$user_id, $site_config['expires']['latestuser']);
+
         $message = "Welcome New {$site_config['site_name']} Member: [user]" . htmlsafechars($insert['username']) . '[/user]';
         if ($user_id > 2 && $site_config['autoshout_on'] == 1) {
             autoshout($message);
