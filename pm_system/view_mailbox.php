@@ -1,4 +1,6 @@
 <?php
+global $h1_thingie, $lang;
+
 //=== get mailbox name
 if ($mailbox > 1) {
     //== get name of PM box if not in or out

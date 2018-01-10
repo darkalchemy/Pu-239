@@ -1,3 +1,7 @@
+9 Jan 2018
+update: begin update queries for sql_mode=only_full_group_by(stoc​k mysql default), i have been using stock Percona without issue
+add: explicit globals
+
 8 Jan 2018
 add: adminer database manager
 remove: king icon showing for all
