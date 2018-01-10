@@ -16,7 +16,7 @@ function failedloginscheck()
     global $site_config;
     $total = 0;
     $ip = getip();
-    $res = sql_query('SELECT SUM(attempts), ip FROM failedlogins WHERE ip = ' . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT SUM(attempts) FROM failedlogins WHERE ip = ' . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
     list($total) = mysqli_fetch_row($res);
     if ($total >= $site_config['failedlogins']) {
         sql_query("UPDATE failedlogins SET banned = 'yes' WHERE ip = " . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
@@ -65,7 +65,7 @@ $ip_escaped = ipToStorageFormat(getip());
 $ip = getip();
 $added = TIME_NOW;
 if (!$row) {
-    $fail = (@mysqli_fetch_row(sql_query("SELECT COUNT(id), ip from failedlogins where ip = $ip_escaped"))) or sqlerr(__FILE__, __LINE__);
+    $fail = (@mysqli_fetch_row(sql_query("SELECT COUNT(id) from failedlogins where ip = $ip_escaped"))) or sqlerr(__FILE__, __LINE__);
     if ($fail[0] == 0) {
         sql_query("INSERT INTO failedlogins (ip, added, attempts) VALUES ($ip_escaped, $added, 1)") or sqlerr(__FILE__, __LINE__);
     } else {
@@ -74,7 +74,7 @@ if (!$row) {
     bark();
 }
 if (!password_verify($password, $row['passhash'])) {
-    $fail = (@mysqli_fetch_row(sql_query("SELECT COUNT(id), ip from failedlogins where ip = $ip_escaped"))) or sqlerr(__FILE__, __LINE__);
+    $fail = (@mysqli_fetch_row(sql_query("SELECT COUNT(id) from failedlogins where ip=$ip_escaped"))) or sqlerr(__FILE__, __LINE__);
     if ($fail[0] == 0) {
         sql_query("INSERT INTO failedlogins (ip, added, attempts) VALUES ($ip_escaped, $added, 1)") or sqlerr(__FILE__, __LINE__);
     } else {

@@ -23,7 +23,7 @@ $stdhead = [
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('browse'), load_language('torrenttable_functions'));
-$HTMLOUT = $searchin = $select_searchin = $where = $addparam = $new_button = $vip_box = $only_free = $searchstr = $join = $today = '';
+$HTMLOUT = $searchin = $select_searchin = $where = $addparam = $new_button = $vip_box = $only_free = $searchstr = '';
 $searchincrt = [];
 
 $catids = genrelist();
@@ -184,6 +184,7 @@ if (isset($cleansearchstr)) {
 
         $searcha = explode(' ', $cleansearchstr);
         searchcloud_insert($cleansearchstr);
+        $join = '';
         foreach ($searcha as $foo) {
             foreach ($searchin as $boo) {
                 if ($boo === 'owner') {
@@ -408,4 +409,4 @@ if (!$no_log_ip) {
         $cache->delete('ip_history_' . $userid);
     }
 }
-echo stdhead($title, true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($title, true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);

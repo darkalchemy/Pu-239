@@ -1,6 +1,4 @@
 <?php
-global $h1_thingie;
-
 $subject = $friends = '';
 //=== Get the message
 $res = sql_query('SELECT m.*, f.id AS friend, b.id AS blocked
