@@ -1,4 +1,8 @@
 10 Jan 2018
+fix: missing lang vars
+fix: queries affected by 'only_full_group_by'
+update: README.md add utf8 to mysqld.cnf
+add: searchcloud to initial database data
 update: begin update queries for sql_mode=only_full_group_by(stoc​k mysql default), i have been using stock Percona without issue
 add: explicit globals
 

@@ -1825,7 +1825,6 @@ class AJAXChat
     public function deleteMessage($messageID)
     {
         global $fluent;
-
         $channel = $fluent->from($this->getDataBaseTable('messages'))
             ->select(null)
             ->select('channel')
@@ -1855,11 +1854,9 @@ class AJAXChat
 
             if ($result) {
                 $this->insertChatBotMessage($channel, '/delete ' . $messageID, 0, 240);
-
                 return true;
             }
         }
-
         return false;
     }
 

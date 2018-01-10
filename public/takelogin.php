@@ -59,7 +59,7 @@ function bark($text = 'Username or password incorrect')
 }
 
 failedloginscheck();
-$res = sql_query('SELECT id, ip, passhash, perms, ssluse, enabled FROM users WHERE username = ' . sqlesc($username) . " AND status = 'confirmed'");
+$res = sql_query('SELECT id, ip, passhash, perms, ssluse, enabled, status FROM users WHERE username = ' . sqlesc($username));
 $row = mysqli_fetch_assoc($res);
 $ip_escaped = ipToStorageFormat(getip());
 $ip = getip();

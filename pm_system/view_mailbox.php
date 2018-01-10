@@ -46,7 +46,7 @@ $HTMLOUT .= "
             <span class='size_1'>{$lang['pm_mailbox_full']}{$num_messages}{$lang['pm_mailbox_full1']}</span>
             <br>
             <div class='bottom20'>$mailbox_pic</div>
-            " . insertJumpTo($mailbox) . $other_box_info . ($perpage < $messages ? $menu . '' : '') . "
+            " . insertJumpTo($mailbox) . $other_box_info . ($perpage < $messages ? $menu : '') . "
         </h3>
         <form action='pm_system.php' method='post' name='checkme' onsubmit='return ValidateForm(this,\"pm\")'>
             <table class='table table-bordered table-striped top20 bottom20'>
@@ -88,18 +88,18 @@ if (mysqli_num_rows($res) === 0) {
             $friends = '';
         } else {
             if ($row['friend'] > 0) {
-                $friends = '' . $lang['pm_mailbox_char1'] . '<span class="size_1"><a href="friends.php?action=delete&amp;type=friend&amp;targetid=' . (int)$row['id'] . '">' . $lang['pm_mailbox_removef'] . '</a></span>' . $lang['pm_mailbox_char2'] . '';
+                $friends = $lang['pm_mailbox_char1'] . '<span class="size_1"><a href="' . $site_config['baseurl'] . '/friends.php?action=delete&amp;type=friend&amp;targetid=' . (int)$row['id'] . '">' . $lang['pm_mailbox_removef'] . '</a></span>' . $lang['pm_mailbox_char2'];
             } elseif ($row['blocked'] > 0) {
-                $friends = '' . $lang['pm_mailbox_char1'] . '<span class="size_1"><a href="friends.php?action=delete&amp;type=block&amp;targetid=' . (int)$row['id'] . '">' . $lang['pm_mailbox_removeb'] . '</a></span>' . $lang['pm_mailbox_char2'] . '';
+                $friends = $lang['pm_mailbox_char1'] . '<span class="size_1"><a href="' . $site_config['baseurl'] . '/friends.php?action=delete&amp;type=block&amp;targetid=' . (int)$row['id'] . '">' . $lang['pm_mailbox_removeb'] . '</a></span>' . $lang['pm_mailbox_char2'];
             } else {
-                $friends = '' . $lang['pm_mailbox_char1'] . '<span class="size_1"><a href="friends.php?action=add&amp;type=friend&amp;targetid=' . (int)$row['id'] . '">' . $lang['pm_mailbox_addf'] . '</a></span>' . $lang['pm_mailbox_char2'] . '
-                                          ' . $lang['pm_mailbox_char1'] . '<span class="size_1"><a href="friends.php?action=add&amp;type=block&amp;targetid=' . (int)$row['id'] . '">' . $lang['pm_mailbox_addb'] . '</a></span>' . $lang['pm_mailbox_char2'] . '';
+                $friends = $lang['pm_mailbox_char1'] . '<span class="size_1"><a href="' . $site_config['baseurl'] . '/friends.php?action=add&amp;type=friend&amp;targetid=' . (int)$row['id'] . '">' . $lang['pm_mailbox_addf'] . '</a></span>' . $lang['pm_mailbox_char2'] . '
+                                          ' . $lang['pm_mailbox_char1'] . '<span class="size_1"><a href="' . $site_config['baseurl'] . '/friends.php?action=add&amp;type=block&amp;targetid=' . (int)$row['id'] . '">' . $lang['pm_mailbox_addb'] . '</a></span>' . $lang['pm_mailbox_char2'];
             }
         }
         $subject = (!empty($row['subject']) ? htmlsafechars($row['subject']) : $lang['pm_search_nosubject']);
         $who_sent_it = ($row['id'] == 0 ? '<span style="font-weight: bold;">' . $lang['pm_forward_system'] . '</span>' : format_username($row) . $friends);
         $read_unread = ($row['unread'] === 'yes' ? '<img src="' .$site_config['pic_base_url'] . 'pn_inboxnew.gif" title="' . $lang['pm_mailbox_unreadmsg'] . '" alt="' . $lang['pm_mailbox_unread'] . '" />' : '<img src="' .$site_config['pic_base_url'] . 'pn_inbox.gif" title="' . $lang['pm_mailbox_readmsg'] . '" alt="' . $lang['pm_mailbox_read'] . '" />');
-        $extra = ($row['unread'] === 'yes' ? $lang['pm_mailbox_char1'] . '<span style="color: red;">' . $lang['pm_mailbox_unread'] . '</span>' . $lang['pm_mailbox_char2'] . '' : '') . ($row['urgent'] === 'yes' ? '<span style="color: red;">' . $lang['pm_mailbox_urgent'] . '</span>' : '');
+        $extra = ($row['unread'] === 'yes' ? $lang['pm_mailbox_char1'] . '<span style="color: red;">' . $lang['pm_mailbox_unread'] . '</span>' . $lang['pm_mailbox_char2'] : '') . ($row['urgent'] === 'yes' ? '<span style="color: red;">' . $lang['pm_mailbox_urgent'] . '</span>' : '');
         $avatar = ((!$CURUSER['opt1'] & user_options::AVATARS || !$CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR || $row['id'] == 0) ? '' : (empty($row['avatar']) ? '
                 <img width="40" src="' .$site_config['pic_base_url'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (($row['opt1'] & user_options::OFFENSIVE_AVATAR && !$CURUSER['opt1'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img width="40" src="' .$site_config['pic_base_url'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<img width="40" src="' . htmlsafechars($row['avatar']) . '" alt="avatar" />')));
         $HTMLOUT .= '
@@ -116,7 +116,7 @@ if (mysqli_num_rows($res) === 0) {
 $per_page_drop_down = '<form action="pm_system.php" method="post"><select name="amount_per_page" onchange="location = this.options[this.selectedIndex].value;">';
 $i = 20;
 while ($i <= ($maxbox > 200 ? 200 : $maxbox)) {
-    $per_page_drop_down .= '<option class="body" value="' . $link . '&amp;change_pm_number=' . $i . '"  ' . ($CURUSER['pms_per_page'] == $i ? ' selected' : '') . '>' . $i . '' . $lang['pm_edmail_perpage'] . '</option>';
+    $per_page_drop_down .= '<option class="body" value="' . $link . '&amp;change_pm_number=' . $i . '"  ' . ($CURUSER['pms_per_page'] == $i ? ' selected' : '') . '>' . $i . $lang['pm_edmail_perpage'] . '</option>';
     $i = ($i < 100 ? $i = $i + 10 : $i = $i + 25);
 }
 $per_page_drop_down .= '</select><input type="hidden" name="box" value="' . $mailbox . '" /></form>';
@@ -151,5 +151,5 @@ $HTMLOUT .= (mysqli_num_rows($res) > 0 ? "
         </td>
     </tr>" : '') . '
     </table>
-        ' . ($perpage < $messages ? '' . $menu . '<br>' : '') . "
+        ' . ($perpage < $messages ? $menu . '<br>' : '') . "
     </form>";

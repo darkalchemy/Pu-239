@@ -18,7 +18,7 @@ $HTMLOUT = "<!doctype html>
 	<title>{$site_config['site_name']} Radio</title>
     <link rel='stylesheet' href='" . get_file_name('css') . "' />
 </head>
-<body class='$body_class'>
+<body class='$body_class has-text-centered'>
     <script>
         var theme = localStorage.getItem('theme');
         if (theme) {
@@ -36,8 +36,8 @@ $HTMLOUT = "<!doctype html>
         <a href='http://{$radio['host']}:{$radio['port']}/listen.asx' onmouseover=\"roll_over('wmp', '{$site_config['pic_base_url']}wmp_over.png')\" onmouseout=\"roll_over('wmp', '{$site_config['pic_base_url']}wmp.png')\">
             <img src='{$site_config['pic_base_url']}wmp.png' name='wmp' alt='Click here to listen with Windows Media Player' title='Click here to listen with Windows Media Player' />
         </a>
-    </div>
-    {radioinfo($radio)}
+    </div>" .
+    radioinfo($radio) . "
     <div class='has-text-centered'>
         <a class='altlink' href='javascript: window.close()'><b>[ Close window ]</b></a>
     </div>

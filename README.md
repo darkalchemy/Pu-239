@@ -39,7 +39,9 @@ npm install bulma
 
 # set webroot to path Pu-239/public
 
-# create database
+# create database, add charset to mysqld.cnf
+character-set-server=utf8mb4
+collation-server=utf8mb4_unicode_ci
 
 # goto website and complete install
 

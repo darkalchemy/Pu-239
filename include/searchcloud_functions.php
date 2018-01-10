@@ -53,6 +53,8 @@ function searchcloud_insert($word)
  */
 function cloud()
 {
+    global $site_config;
+
     $small = 14;
     $big = 40;
     $tags = searchcloud();

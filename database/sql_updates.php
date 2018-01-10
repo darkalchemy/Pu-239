@@ -175,5 +175,10 @@ $sql_updates = [
         'date'  => '7 Jan, 2018',
         'query' => "ALTER TABLE `users` MODIFY `birthday` date DEFAULT '1970-01-01'",
     ],
-
+    [
+        'id'    => 30,
+        'info'  => 'Update name',
+        'date'  => '10 Jan, 2018',
+        'query' => "UPDATE `site_config` SET `name` = 'bonus_max_torrents' WHERE `name` = 'bonux_max_torrents'",
+    ],
 ];

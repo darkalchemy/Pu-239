@@ -280,4 +280,4 @@ $HTMLOUT .= "
         </table>
         </form>";
 
-echo stdhead($lang['upload_stdhead'], true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($lang['upload_stdhead'], true) . wrapper($HTMLOUT) . stdfoot($stdfoot);

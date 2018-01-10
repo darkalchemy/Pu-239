@@ -1,5 +1,4 @@
 <?php
-
 $start = microtime(true);
 
 if (!file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php')) {
@@ -1277,11 +1276,14 @@ function load_language($file = '')
     $lang = [];
     if (!isset($GLOBALS['CURUSER']) || empty($GLOBALS['CURUSER']['language'])) {
         if (!file_exists(LANG_DIR . "{$site_config['language']}/lang_{$file}.php")) {
-            stderr('System Error', "Can't find language files");
+            stderr('System Error', "Can't find language files({$site_config['language']})");
         }
         include_once LANG_DIR . "{$site_config['language']}/lang_{$file}.php";
     } elseif (!file_exists(LANG_DIR . "{$CURUSER['language']}/lang_{$file}.php")) {
-        stderr('System Error', "Can't find language files");
+        if (!file_exists(LANG_DIR . "1/lang_{$file}.php")) {
+            stderr('System Error', "Can't find language files({$CURUSER['language']} and 1)");
+        }
+        include_once LANG_DIR . "1/lang_{$file}.php";
     } else {
         include_once LANG_DIR . "{$CURUSER['language']}/lang_{$file}.php";
     }

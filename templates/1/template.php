@@ -454,8 +454,8 @@ function navbar()
         <header id='navbar' class='container'>
             <div class='contained'>
                 <div class='nav_container'>
-                    <div id='hamburger'><i class='icon-menu size_7 has-text-white' aria-hidden='true'></i></div>
-                    <div id='close'><i class='icon-cancel has-text-white' aria-hidden='true'></i></div>
+                    <div id='hamburger'><i class='icon-menu size_6 has-text-white' aria-hidden='true'></i></div>
+                    <div id='close' class='top10 right10'><i class='icon-cancel size_7 has-text-white' aria-hidden='true'></i></div>
                     <div id='menuWrapper'>
                         <ul class='level'>
                             <li>
@@ -478,7 +478,8 @@ function navbar()
                             </li>
                             <li>
                                 <a href='#'>{$lang['gl_general']}</a>
-                                <ul class='ddFade ddFadeSlow'>";
+                                <ul class='ddFade ddFadeSlow'>
+                                    <li><a href='{$site_config['baseurl']}/mybonus.php'>Karma Store</a></li>";
         if ($site_config['bucket_allowed'] === 1) {
             $navbar .= "
                                     <li><a href='{$site_config['baseurl']}/bitbucket.php'>{$lang['gl_bitbucket']}</a></li>";
