@@ -86,6 +86,7 @@ if (file_exists(DATABASE_DIR)) {
     $last = isset($match[2]) ? $match[1] + $per_page : end($sql_updates)['id'];
     $page = !empty($_GET['page']) ? "&page={$_GET['page']}" : '';
 
+    $body = '';
     foreach ($sql_updates as $update) {
         if ($update['id'] > $first && $update['id'] <= $last) {
             $button = "
