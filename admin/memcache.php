@@ -409,7 +409,7 @@ function bsize($s)
  */
 function menu_entry($ob, $title)
 {
-    global $PHP_SELF, $site_config;
+    global $site_config;
     if ($ob == $_GET['op']) {
         return "<li><a class=\"child_active\" href=\"{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;op=$ob\">$title</a></li>";
     }
@@ -422,7 +422,6 @@ function menu_entry($ob, $title)
  */
 function getHeader()
 {
-    global $site_config;
     $header = <<<EOB
 <!doctype html>
 <html>
@@ -635,7 +634,7 @@ function getFooter()
 
 function getMenu()
 {
-    global $PHP_SELF, $site_config;
+    global $site_config;
     echo '<ol class=menu>';
     if ($_GET['op'] != 4) {
         echo <<<EOB

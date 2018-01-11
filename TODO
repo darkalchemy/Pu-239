@@ -1,5 +1,6 @@
 In no particular order
 
+fix binary columns in announce.php, all tables
 fix admin uploadapp.php
 remove begin_table and end_table functions
 remove begin_frame and end_frame functions

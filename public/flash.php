@@ -38,16 +38,18 @@ $game_width = $game_height;
 
 $HTMLOUT = '';
 $HTMLOUT .= "
+        <div class='bottom20'>
+            <ul class='level-center bg-06'>
+                <li class='altlink margin20'>
+                    <a href='{$site_config['baseurl']}/arcade.php'>Arcade</a>
+                </li>
+                <li class='altlink margin20>
+                    <a href='{$site_config['baseurl']}/arcade_top_scores.php'>Top Scores</a>
+                </li>
+            </ul>
+        </div>
         <h1>{$site_config['site_name']} Old School Arcade!</h1>
-        <span>Top Scores Earn {$site_config['top_score_points']} Karma Points</span>
-        <div class='level-center top10'>
-            <span class='right10'>
-                <a class='altlink' href='{$site_config['baseurl']}/arcade.php'>Arcade</a>
-            </span>
-            <span>
-                <a class='altlink' href='{$site_config['baseurl']}/arcade_top_scores.php'>Top Scores</a>
-            </span>
-        </div>";
+        <span>Top Scores Earn {$site_config['top_score_points']} Karma Points</span>";
 
 $HTMLOUT .= "
         <div class='bordered top20'>
@@ -160,4 +162,4 @@ else {
         </table>";
 }
 
-echo stdhead('Old School Arcade') . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead('Old School Arcade', true) . wrapper($HTMLOUT, 'has-text-centered') . stdfoot();

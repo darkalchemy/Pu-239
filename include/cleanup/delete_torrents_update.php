@@ -29,6 +29,7 @@ function delete_torrents_update($data)
         sql_query("INSERT INTO messages (sender, receiver, added, msg, subject, saved, location) VALUES (0, " . (int)$arr['owner'] . ", " .
             TIME_NOW . ", " . sqlesc($msg) . ", 'Torrent Deleted', 'yes', 1)") or sqlerr(__FILE__, __LINE__);
         $cache->increment('inbox_' . (int)$arr['owner']);
+        $cache->delete('torrent_poster_count_');
         if ($data['clean_log']) {
             write_log($msg);
         }

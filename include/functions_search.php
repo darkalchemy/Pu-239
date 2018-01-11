@@ -78,7 +78,7 @@ function searchfield($entry)
         ' ',
         ' ',
     ];
-    $entry = strip_tags(utf_strtolower($entry));
+    $entry = strip_tags(strtolower($entry));
     $entry = str_replace(' +', ' and ', $entry);
     $entry = str_replace(' -', ' not ', $entry);
     $entry = str_replace(' |', ' or ', $entry);
@@ -124,7 +124,7 @@ function search_text_in_db($searchstr, $base_sql, $where_search, $add_where = []
     ];
     $add_where = (sizeof($add_where) ? ' AND ' . implode(' AND ', $add_where) : '');
     $cleansearchstr = searchfield($searchstr);
-    $lower_searchstr = utf_strtolower($searchstr);
+    $lower_searchstr = strtolower($searchstr);
     if ($strict) {
         $split_search = [
             $lower_searchstr,
@@ -148,7 +148,7 @@ function search_text_in_db($searchstr, $base_sql, $where_search, $add_where = []
     $word_match = [];
     $result_list = [];
     for ($i = 0; $i < sizeof($split_search); ++$i) {
-        if (utf_strlen(str_replace([
+        if (strlen(str_replace([
                 '*',
                 '%',
             ], '', trim($split_search[ $i ]))) < $config['search_min_chars'] && !in_array($split_search[ $i ], $match_types)) {

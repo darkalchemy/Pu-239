@@ -355,6 +355,7 @@ $cache->delete('MyPeers_' . $CURUSER['id']);
 $cache->delete('lastest_tor_');
 $cache->delete('last5_tor_');
 $cache->delete('scroll_tor_');
+$cache->delete('torrent_poster_count_');
 if (isset($_POST['uplver']) && $_POST['uplver'] == 'yes') {
     $message = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] " . htmlsafechars($torrent) . '[/url] Uploaded - Anonymous User';
 } else {

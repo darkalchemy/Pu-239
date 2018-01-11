@@ -23,13 +23,13 @@ function failedloginscheck()
         stderr('Login Locked!', 'You have <b>Exceeded</b> the allowed maximum login attempts without successful login, therefore your ip address <b>(' . htmlsafechars($ip) . ')</b> has been locked for 24 hours.');
     }
 }
-
 if (!mkglobal('username:password' . ($site_config['captcha_on'] ? ':captchaSelection:' : ':') . 'submitme')) {
     die('Something went wrong');
 }
 if ($submitme != 'X') {
     stderr('Ha Ha', 'You Missed, You plonker !');
 }
+
 if ($site_config['captcha_on']) {
     if (empty($captchaSelection) || getSessionVar('simpleCaptchaAnswer') != $captchaSelection) {
         $url = 'login.php';
@@ -134,7 +134,6 @@ $cache->update_row('user' . $row['id'], [
 ], $site_config['expires']['user_cache']);
 
 unsetSessionVar('simpleCaptchaAnswer');
-unsetSessionVar('simpleCaptchaTimestamp');
 setSessionVar('userID', $row['id']);
 logincookie($row['id']);
 

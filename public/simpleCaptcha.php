@@ -20,12 +20,10 @@ $images = [
 ];
 // ------------------- STOP EDITING ---------------- //
 setSessionVar('simpleCaptchaAnswer', null);
-setSessionVar('simpleCaptchaTimestamp', TIME_NOW);
-$salty = salty(getSessionVar('simpleCaptchaTimestamp'));
 $resp = [];
 header('Content-Type: application/json');
 if (!isset($images) || !is_array($images) || sizeof($images) < 3) {
-    $resp['error'] = "There aren\'t enough images!";
+    $resp['error'] = "There aren't enough images!";
     echo json_encode($resp);
     exit;
 }
@@ -50,13 +48,13 @@ for ($i = 0; $i < $num; ++$i) {
     array_push($used, $keys[ $r ]);
 }
 $selectText = $used[ random_int(0, $num - 1) ];
-setSessionVar('simpleCaptchaAnswer', hash('sha512', $selectText . $salty));
-$resp['text'] = '' . $selectText;
+setSessionVar('simpleCaptchaAnswer', hash('sha512', $selectText . $site_config['site']['salt']));
+$resp['text'] = $selectText;
 $resp['images'] = [];
 shuffle($used);
 for ($i = 0; $i < sizeof($used); ++$i) {
     array_push($resp['images'], [
-        'hash' => hash('sha512', $used[ $i ] . $salty),
+        'hash' => hash('sha512', $used[ $i ] . $site_config['site']['salt']),
         'file' => $images[ $used[ $i ] ],
     ]);
 }

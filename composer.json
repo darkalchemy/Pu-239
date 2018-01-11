@@ -3,7 +3,8 @@
     "vlucas/phpdotenv": "^2.4",
     "matthiasmullie/scrapbook": "^1.4",
     "league/flysystem": "^1.0",
-    "envms/fluentpdo": "dev-master"
+    "envms/fluentpdo": "dev-master",
+    "sebastian/version": "^2.0"
   },
   "autoload": {
     "psr-4": {

@@ -159,7 +159,7 @@ function get_torrent_from_hash($info_hash)
             ->select('seeders + leechers AS numpeers')
             ->select('added AS ts')
             ->select('visible')
-            ->where('info_hash = ?', $info_hash)
+            ->where('HEX(info_hash) = ?', bin2hex($info_hash))
             ->fetch();
         if ($torrent !== false) {
             $cache->set($key, $torrent, $ttl);

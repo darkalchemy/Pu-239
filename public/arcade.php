@@ -22,8 +22,9 @@ $HTMLOUT = "
 
 $list = $site_config['arcade_games_names'];
 sort($list);
+$i = 0;
 foreach ($list as $gamename) {
-    $id = $i + 1;
+    $id = $i++;
     $game_id = array_search($gamename, $site_config['arcade_games_names']);
     $game = $site_config['arcade_games'][ $game_id ];
     $fullgamename = $site_config['arcade_games_names'][ $game_id ];

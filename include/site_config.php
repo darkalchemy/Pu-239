@@ -18,6 +18,7 @@ if (ini_get('register_long_arrays') || ini_get('register_globals') || ini_get('s
 }
 $site_config['variant'] = 'Pu-239';
 
+
 // charset
 $site_config['char_set'] = 'UTF-8'; //also to be used site wide in meta tags
 

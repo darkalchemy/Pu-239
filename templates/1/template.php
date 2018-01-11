@@ -448,7 +448,7 @@ function navbar()
     }
 
     if ($CURUSER) {
-        $salty = salty($CURUSER['username']);
+        $salty = salty();
         $navbar .= "
     <div class='spacer'>
         <header id='navbar' class='container'>
@@ -549,10 +549,13 @@ function navbar()
  */
 function platform_menu()
 {
+    global $site_config;
+
     $menu = "
         <div id='platform-menu' class='container platform-menu'>
             <div class='platform-wrapper level'>
-                <ul class='level-left'>
+                <ul class='level-left'>" . (!$site_config['in_production'] ? "
+                    <li class='left10 has-text-primary'>Pu-239 v{$site_config['version']}</li>" : '') . "
                 </ul>
                 <ul class='level-right'>" .
         StatusBar() . "

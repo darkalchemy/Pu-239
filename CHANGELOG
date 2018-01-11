@@ -1,3 +1,10 @@
+11 Jan 2018
+update: hide latest forum posts
+update: hide torrent scroller when less than 10 torrent posters
+add: version number when site not in production
+fix: logout using the salt
+update: use of salts
+
 10 Jan 2018
 fix: missing lang vars
 fix: queries affected by 'only_full_group_by'
