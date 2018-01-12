@@ -1,9 +1,8 @@
 <?php
 
-/**
- * Class CACHE
- */
-class CACHE extends \MatthiasMullie\Scrapbook\Buffered\TransactionalStore
+use MatthiasMullie\Scrapbook\Buffered\TransactionalStore;
+
+class CACHE extends TransactionalStore
 {
     /**
      * CACHE constructor.
@@ -55,7 +54,7 @@ class CACHE extends \MatthiasMullie\Scrapbook\Buffered\TransactionalStore
         }
         $cache = new \MatthiasMullie\Scrapbook\Adapters\Collections\Utils\PrefixKeys($cache, $site_config['cookie_prefix']);
         $cache = new \MatthiasMullie\Scrapbook\Buffered\BufferedStore($cache);
-        $cache = new \MatthiasMullie\Scrapbook\Buffered\TransactionalStore($cache);
+        $cache = new TransactionalStore($cache);
 
         parent::__construct($cache);
     }

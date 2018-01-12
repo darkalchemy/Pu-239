@@ -1,4 +1,6 @@
 11 Jan 2018
+fix: delete torrent xbt cleanup name 
+fix: admin+ delete bot messages in AJAX Chat
 update: hide latest forum posts
 update: hide torrent scroller when less than 10 torrent posters
 add: version number when site not in production

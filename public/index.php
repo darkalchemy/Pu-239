@@ -35,7 +35,7 @@ if ($unread >= 1) {
         'is-link',
         [
             'message' => "You have $unread unread message" . plural($unread) . " in your Inbox",
-            'link'    => "{$site_config['baseurl']}/pm_system.php",
+            'link' => "{$site_config['baseurl']}/pm_system.php",
         ]
     );
 }
