@@ -43,6 +43,7 @@ if ($CURUSER['uploaded'] < 1073741824 * $blackjack['quantity']) {
     stderr($lang['bj_sorry'], "You must have at least {$blackjack['min_text']} upload credit to play.");
 }
 
+$cardids2 = $dealer_cardids2 = $cards = $update = [];
 $debugout .= '
             <tr class="no_hover">
                 <td>_POST</td>

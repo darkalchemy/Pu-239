@@ -544,8 +544,7 @@ class AJAXChat
         $channelID,
         $text,
         $mode
-    )
-    {
+    ) {
         // The $mode parameter:
         // 0 = normal messages
         // 1 = channel messages (e.g. login/logout, channel enter/leave, kick)
@@ -629,8 +628,7 @@ class AJAXChat
         $userRole,
         $channelID,
         $text
-    )
-    {
+    ) {
         $message = '<message';
         $message .= ' id="' . $messageID . '"';
         $message .= ' dateTime="' . date('r', $timeStamp) . '"';
@@ -1826,40 +1824,30 @@ class AJAXChat
     {
         global $fluent;
 
-        $channel = $fluent->from($this->getDataBaseTable('messages'))
-            ->select(null)
-            ->select('channel')
-            ->where('id = ?', $messageID)
-            ->fetch('channel');
-
-        if ($channel !== null) {
-            if ($this->getUserRole() >= UC_ADMINISTRATOR) {
-                $result = $fluent->deleteFrom($this->getDataBaseTable('messages'))
+        if ($this->getUserRole() >= UC_ADMINISTRATOR) {
+            $result = $fluent->deleteFrom($this->getDataBaseTable('messages'))
                     ->where('id = ?', $messageID)
-                    ->where('(userRole < ? OR userID = ?)', $this->getUserRole(), $this->getUserID())
+                    ->where('(userRole = 100 OR userRole < ? OR userID = ?)', $this->getUserRole(), $this->getUserID())
                     ->execute();
-            } elseif ($this->getUserRole() >= UC_STAFF) {
-                $result = $fluent->deleteFrom($this->getDataBaseTable('messages'))
+        } elseif ($this->getUserRole() >= UC_STAFF) {
+            $result = $fluent->deleteFrom($this->getDataBaseTable('messages'))
                     ->where('id = ?', $messageID)
                     ->where('(userRole < ? OR userID = ?)', UC_STAFF, $this->getUserID())
                     ->where('userRole != ?', AJAX_CHAT_CHATBOT)
                     ->execute();
-            } elseif ($this->getUserRole() < UC_STAFF && $this->getConfig('allowUserMessageDelete')) {
-                $result = $fluent->deleteFrom($this->getDataBaseTable('messages'))
+        } elseif ($this->getUserRole() < UC_STAFF && $this->getConfig('allowUserMessageDelete')) {
+            $result = $fluent->deleteFrom($this->getDataBaseTable('messages'))
                     ->where('id = ?', $messageID)
                     ->where('userID = ?', $this->getUserID())
                     ->execute();
-            } else {
-                return false;
-            }
-
-            if ($result) {
-                $this->insertChatBotMessage($channel, '/delete ' . $messageID, 0, 240);
-
-                return true;
-            }
+        } else {
+            return false;
         }
 
+        if ($result) {
+            $this->insertChatBotMessage($channel, '/delete ' . $messageID, 0, 240);
+            return true;
+        }
         return false;
     }
 
@@ -2142,7 +2130,7 @@ class AJAXChat
     /**
      * @param $textParts
      */
-    function insertParsedMessageJoin($textParts)
+    public function insertParsedMessageJoin($textParts)
     {
         if (count($textParts) == 1) {
             if ($this->isAllowedToCreatePrivateChannel()) {

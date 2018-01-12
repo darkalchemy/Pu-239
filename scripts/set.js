@@ -285,7 +285,7 @@ var myBbcodeSettings = {
                 {name: '#FF66FF', openWith: '[color=#FF66FF]', closeWith: '[/color]', className: "col6-15"},
                 {name: '#FF99FF', openWith: '[color=#FF99FF]', closeWith: '[/color]', className: "col6-16"},
                 {name: '#FFCCFF', openWith: '[color=#FFCCFF]', closeWith: '[/color]', className: "col6-17"},
-                {name: '#FFFFFF', openWith: '[color=#FFFFFF]', closeWith: '[/color]', className: "col6-18"},
+                {name: '#fff', openWith: '[color=#fff]', closeWith: '[/color]', className: "col6-18"},
 
                 {name: '#0000FF', openWith: '[color=#0000FF]', closeWith: '[/color]', className: "col7-1"},
                 {name: '#0033FF', openWith: '[color=#0033FF]', closeWith: '[/color]', className: "col7-2"},
@@ -418,7 +418,7 @@ var myBbcodeSettings = {
                 {name: '#CCCCCC', openWith: '[color=#CCCCCC]', closeWith: '[/color]', className: "col13-13"},
                 {name: '#DDDDDD', openWith: '[color=#DDDDDD]', closeWith: '[/color]', className: "col13-14"},
                 {name: '#EEEEEE', openWith: '[color=#EEEEEE]', closeWith: '[/color]', className: "col13-15"},
-                {name: '#FFFFFF', openWith: '[color=#FFFFFF]', closeWith: '[/color]', className: "col13-16"}
+                {name: '#fff', openWith: '[color=#fff]', closeWith: '[/color]', className: "col13-16"}
             ]
         },
         {

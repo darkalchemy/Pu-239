@@ -42,7 +42,7 @@ function stdhead($title = '', $stdhead = null)
     <link rel='icon' type='image/png' sizes='16x16' href='{$site_config['baseurl']}/favicon-16x16.png' />
     <link rel='manifest' href='{$site_config['baseurl']}/manifest.json' />
     <link rel='mask-icon' href='{$site_config['baseurl']}/safari-pinned-tab.svg' color='#5bbad5' />
-    <meta name='theme-color' content='#ffffff'>
+    <meta name='theme-color' content='#fff'>
     <link rel='stylesheet' href='" . get_file_name('css') . "' />
     {$css_incl}
     <style>#mlike{cursor:pointer;}</style>
@@ -176,14 +176,6 @@ function stdfoot($stdfoot = false)
                 $cache->set('mc_hits', $MemStats, 10);
             }
         }
-        if ($debug) {
-            $uptime = $cache->get('uptime');
-            if ($uptime === false || is_null($uptime)) {
-                $uptime = `uptime`;
-                $cache->set('uptime', $uptime, 25);
-            }
-            preg_match('/load average: (.*)$/i', $uptime, $load);
-        }
         if (!empty($MemStats['Hits']) && !empty($MemStats['curr_items']) && !empty($phptime) && !empty($percentmc) && !empty($cachetime)) {
             $header = '<b>' . $lang['gl_stdfoot_querys_mstat'] . '</b> ' . mksize(memory_get_peak_usage()) . ' ' . $lang['gl_stdfoot_querys_mstat1'] . ' ' . round($phptime, 2) . 's | ' . round($percentmc, 2) . '' . $lang['gl_stdfoot_querys_mstat2'] . '' . number_format($cachetime, 4) . 's ' . $lang['gl_stdfoot_querys_mstat3'] . '' . $MemStats['Hits'] . '' . $lang['gl_stdfoot_querys_mstat4'] . '' . number_format((100 - $MemStats['Hits']), 3) . '' . $lang['gl_stdfoot_querys_mstat5'] . '' . number_format($MemStats['curr_items']);
         }
@@ -210,7 +202,7 @@ function stdfoot($stdfoot = false)
             $htmlfoot .= '
                                     <tr>
                                         <td>' . ($key + 1) . "</td>
-                                        <td><b>" . ($value['seconds'] > 0.01 ? "<span class='is-danger' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='is-success' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</b></td>
+                                        <td>" . ($value['seconds'] > 0.01 ? "<span class='is-danger' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='is-success' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</td>
                                         <td><div class='text-justify'>" . format_comment($value['query']) . '</div></td>
                                     </tr>';
         }
@@ -224,20 +216,27 @@ function stdfoot($stdfoot = false)
     $htmlfoot .= "
                 </div>
             </div>";
+
+    if ($CURUSER && $debug) {
+        $uptime = $cache->get('uptime');
+        if ($uptime === false || is_null($uptime)) {
+            $uptime = `uptime`;
+            $cache->set('uptime', $uptime, 25);
+        }
+    }
+
     if ($CURUSER) {
         $htmlfoot .= "
             <div class='container site-debug bg-05 round10 top20 bottom20'>
                 <div class='level bordered bg-04'>
                     <div class='size_4 top10 bottom10'>
-                        <p class='is-marginless'>" . $site_config['site_name'] . " {$lang['gl_stdfoot_querys_page']}" . $r_seconds . " {$lang['gl_stdfoot_querys_seconds']}</p>
-                        <p class='is-marginless'>{$lang['gl_stdfoot_querys_server']}" . $queries . " {$lang['gl_stdfoot_querys_time']}" . plural($queries) . '</p>
-                        ' . ($debug ? '<p class="is-marginless"><b>' . $header . "</b></p><p class='is-marginless'><b>{$lang['gl_stdfoot_uptime']}</b> " . $uptime . '</p>' : '') . "
+                        <p class='is-marginless'>{$lang['gl_stdfoot_querys_page']} $r_seconds {$lang['gl_stdfoot_querys_seconds']}</p>
+                        <p class='is-marginless'>{$lang['gl_stdfoot_querys_server']} $queries {$lang['gl_stdfoot_querys_time']}" . plural($queries) . "</p>
+                        " . ($debug ? "<p class='is-marginless'>$header</p><p class='is-marginless'>{$lang['gl_stdfoot_uptime']} $uptime</p>" : '') . "
                     </div>
                     <div class='size_4 top10 bottom10'>
-                        <p class='is-marginless'>{$lang['gl_stdfoot_powered']}" . $site_config['variant'] . "</p>
-                        <p class='is-marginless'>{$lang['gl_stdfoot_using']}<b>{$lang['gl_stdfoot_using1']}</b></p>
-                        " . ($debug ? "<p class='is-marginless'><a title='{$lang['gl_stdfoot_logview']}' class='tooltipper' rel='external' href='{$site_config['baseurl']}/staffpanel.php?tool=log_viewer'>{$lang['gl_stdfoot_logview']}</a> | <a title='{$lang['gl_stdfoot_sview']}' class='tooltipper' rel='external' href='{$site_config['baseurl']}/staffpanel.php?tool=system_view'>{$lang['gl_stdfoot_sview']}</a> | <a rel='external' title='OPCache' href='{$site_config['baseurl']}/staffpanel.php?tool=op' class='tooltipper'>{$lang['gl_stdfoot_opc']}</a> | <a rel='external' title='Memcache' href='{$site_config['baseurl']}/staffpanel.php?tool=memcache' class='tooltipper'>{$lang['gl_stdfoot_memcache']}</a></p>" : '');
-        $htmlfoot .= "
+                        <p class='is-marginless'>{$lang['gl_stdfoot_powered']}{$site_config['variant']}</p>
+                        <p class='is-marginless'>{$lang['gl_stdfoot_using']}{$lang['gl_stdfoot_using1']}</p>
                     </div>
                 </div>
             </div>
@@ -437,7 +436,7 @@ function navbar()
                 if ($CURUSER['class'] === UC_MAX) {
                     $panel .= "
                             <li>
-                                <a href='{$site_config['baseurl']}/view_sql.php?username={$CURUSER['username']}&db={$_ENV['DB_DATABASE']}'>Adminer</a>
+                                <a href='{$site_config['baseurl']}/view_sql.php'>Adminer</a>
                             </li>";
                 }
                 $panel .= "
@@ -449,14 +448,14 @@ function navbar()
     }
 
     if ($CURUSER) {
-        $salty = salty($CURUSER['username']);
+        $salty = salty();
         $navbar .= "
     <div class='spacer'>
         <header id='navbar' class='container'>
             <div class='contained'>
                 <div class='nav_container'>
-                    <div id='hamburger'><i class='icon-menu size_7 has-text-white' aria-hidden='true'></i></div>
-                    <div id='close'><i class='icon-cancel has-text-white' aria-hidden='true'></i></div>
+                    <div id='hamburger'><i class='icon-menu size_6 has-text-white' aria-hidden='true'></i></div>
+                    <div id='close' class='top10 right10'><i class='icon-cancel size_7 has-text-white' aria-hidden='true'></i></div>
                     <div id='menuWrapper'>
                         <ul class='level'>
                             <li>
@@ -479,7 +478,8 @@ function navbar()
                             </li>
                             <li>
                                 <a href='#'>{$lang['gl_general']}</a>
-                                <ul class='ddFade ddFadeSlow'>";
+                                <ul class='ddFade ddFadeSlow'>
+                                    <li><a href='{$site_config['baseurl']}/mybonus.php'>Karma Store</a></li>";
         if ($site_config['bucket_allowed'] === 1) {
             $navbar .= "
                                     <li><a href='{$site_config['baseurl']}/bitbucket.php'>{$lang['gl_bitbucket']}</a></li>";
@@ -549,10 +549,13 @@ function navbar()
  */
 function platform_menu()
 {
+    global $site_config;
+
     $menu = "
         <div id='platform-menu' class='container platform-menu'>
             <div class='platform-wrapper level'>
-                <ul class='level-left'>
+                <ul class='level-left'>" . (!$site_config['in_production'] ? "
+                    <li class='left10 has-text-primary'>Pu-239 v{$site_config['version']}</li>" : '') . "
                 </ul>
                 <ul class='level-right'>" .
         StatusBar() . "

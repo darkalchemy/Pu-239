@@ -49,47 +49,47 @@
     background-position: left bottom;
     float: none;
     cursor: pointer;
-    padding: 0px;
+    padding: 0;
 }
 
 .star-rating a.one-star {
     width: 20%;
     float: none;
-    padding: 0px;
+    padding: 0;
     z-index: 6;
 }
 
 .star-rating a.two-stars {
     width: 40%;
     float: none;
-    padding: 0px;
+    padding: 0;
     z-index: 5;
 }
 
 .star-rating a.three-stars {
     width: 60%;
     float: none;
-    padding: 0px;
+    padding: 0;
     z-index: 4;
 }
 
 .star-rating a.four-stars {
     width: 80%;
     float: none;
-    padding: 0px;
+    padding: 0;
     z-index: 3;
 }
 
 .star-rating a.five-stars {
     width: 100%;
     float: none;
-    padding: 0px;
+    padding: 0;
     z-index: 2;
 }
 
 .star-rating .current-rating {
     z-index: 1;
     float: none;
-    padding: 0px;
+    padding: 0;
     background-position: left center;
-}	
+}

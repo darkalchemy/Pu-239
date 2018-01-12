@@ -49,12 +49,10 @@ div.scrollableArea {
     width: 80%;
     position: relative;
     height: 210px;
-    margin: 0 auto;
     text-align: center;
     margin: 5px auto 40px auto;
     border-radius: 6px;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
-    background-color: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.1) linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
     font-family: "Monaco", Courier New, monospace;
     padding: 20px;
     color: #fff;
@@ -66,7 +64,7 @@ div.scrollableArea {
     float: left;
     width: 60%;
     text-align: right;
-    text-shadow: 0px 5px 11px #000;
+    text-shadow: 0 5px 11px #000;
     color: #fff;
     font: 28px 'LeagueGothicRegular';
     opacity: 0.9;
@@ -106,4 +104,3 @@ div.scrollableArea {
 .scrollableArea > a {
     margin-left: 5px;
 }
-	

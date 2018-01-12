@@ -56,7 +56,7 @@
     overflow: hidden;
     background: url(../1/themeChanger/images/colorpicker_indic.gif) left top;
     margin: -4px 0 0 0;
-    left: 0px;
+    left: 0;
 }
 
 .colorpicker_new_color {

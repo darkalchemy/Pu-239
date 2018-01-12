@@ -55,7 +55,7 @@
     left: 0;
     right: 0;
     background: #0c95d9;
-    color: white;
+    color: #fff;
 }
 
 #content #onlineListContainer h3, #content #helpContainer h3, #content #settingsContainer h3 {
@@ -107,7 +107,7 @@
 }
 
 #content #copyright, #content #copyright a {
-    color: white;
+    color: #fff;
 }
 
 #content a {

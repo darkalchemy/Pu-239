@@ -221,15 +221,16 @@ function get_all_boxes($box = 1)
         }
         $cache->set('get_all_boxes_' . $CURUSER['id'], $get_all_boxes, $site_config['expires']['get_all_boxes']);
     }
-
     $boxes = "
         <select name='box' class='right10'>
             <option value='1'" . ($box === 1 ? 'selected' : '') . ">{$lang['pm_inbox']}</option>
             <option value='-1'" . ($box === -1 ? 'selected' : '') . ">{$lang['pm_sentbox']}</option>
             <option value='-2'" . ($box === -2 ? 'selected' : '') . ">{$lang['pm_drafts']}</option>";
-    foreach ($get_all_boxes as $box) {
-        $boxes .= "
+    if (!empty($get_all_boxes)) {
+        foreach ($get_all_boxes as $box) {
+            $boxes .= "
             <option value='{$box['boxnumber']}'" . ($box === (int)$box['boxnumber'] ? 'selected' : '') . ">" . htmlsafechars($box['name']) . "</option>";
+        }
     }
     $boxes .= "
         </select>";

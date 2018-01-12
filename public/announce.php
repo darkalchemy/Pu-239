@@ -27,7 +27,6 @@ foreach (['info_hash', 'peer_id'] as $x) {
         err("Invalid $x (" . strlen($$x) . ' - ' . urlencode($$x) . ')');
     }
 }
-
 unset($x);
 $realip = $ip = $_SERVER['REMOTE_ADDR'];
 $port = (int)$port;

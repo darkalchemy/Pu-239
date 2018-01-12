@@ -26,7 +26,7 @@ $HTMLOUT .= '
 $HTMLOUT .= main_div('
         <div class="has-text-centered size_4 has-text-white top10 bottom10">' . $lang['mega_analyze'] . '</div>
         <div class="bg-00 round10 padding20">
-            <form method="post" action="staffpanel.php?tool=mega_search&amp;action=mega_search">
+            <form method="post" action="' . $site_config['baseurl'] . 'staffpanel.php?tool=mega_search&amp;action=mega_search">
                 ' . bubble($lang['mega_text'], $lang['mega_text_1']) . '
                 <textarea name="msg_to_analyze" rows="20" class="w-100">' . $msg_to_analyze . '</textarea>
                 <div class="has-text-centered top20">
@@ -36,7 +36,7 @@ $HTMLOUT .= main_div('
         </div>', 'bottom20');
 $HTMLOUT .= main_div('
         <div class="bg-00 round10 padding20 ">
-            <form method="post" action="staffpanel.php?tool=mega_search&amp;action=mega_search">
+            <form method="post" action="' . $site_config['baseurl'] . 'staffpanel.php?tool=mega_search&amp;action=mega_search">
                 ' . bubble('<b>' . $lang['mega_invite'] . '</b>', $lang['mega_invite_1']) . '
                 <input type="text" name="invite_code" class="w-100" value="' . $invite_code . '" />
                 <div class="has-text-centered top20">
@@ -46,7 +46,7 @@ $HTMLOUT .= main_div('
         </div>', 'bottom20');
 $HTMLOUT .= main_div('
         <div class="bg-00 round10 padding20">
-            <form method="post" action="staffpanel.php?tool=mega_search&amp;action=mega_search">
+            <form method="post" action="' . $site_config['baseurl'] . 'staffpanel.php?tool=mega_search&amp;action=mega_search">
                 ' . bubble('<b>' . $lang['mega_names'] . '</b>', $lang['mega_names_1']) . '
                 <textarea name="user_names" rows="4" class="w-100">' . $user_names . '</textarea>
                 <div class="has-text-centered top20">

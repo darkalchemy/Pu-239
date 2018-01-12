@@ -16,20 +16,20 @@ function failedloginscheck()
     global $site_config;
     $total = 0;
     $ip = getip();
-    $res = sql_query('SELECT SUM(attempts) FROM failedlogins WHERE ip = ' . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT SUM(attempts), ip FROM failedlogins WHERE ip = ' . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
     list($total) = mysqli_fetch_row($res);
     if ($total >= $site_config['failedlogins']) {
         sql_query("UPDATE failedlogins SET banned = 'yes' WHERE ip = " . ipToStorageFormat($ip)) or sqlerr(__FILE__, __LINE__);
         stderr('Login Locked!', 'You have <b>Exceeded</b> the allowed maximum login attempts without successful login, therefore your ip address <b>(' . htmlsafechars($ip) . ')</b> has been locked for 24 hours.');
     }
 }
-
 if (!mkglobal('username:password' . ($site_config['captcha_on'] ? ':captchaSelection:' : ':') . 'submitme')) {
     die('Something went wrong');
 }
 if ($submitme != 'X') {
     stderr('Ha Ha', 'You Missed, You plonker !');
 }
+
 if ($site_config['captcha_on']) {
     if (empty($captchaSelection) || getSessionVar('simpleCaptchaAnswer') != $captchaSelection) {
         $url = 'login.php';
@@ -59,7 +59,7 @@ function bark($text = 'Username or password incorrect')
 }
 
 failedloginscheck();
-$res = sql_query('SELECT id, ip, passhash, perms, ssluse, enabled FROM users WHERE username = ' . sqlesc($username) . " AND status = 'confirmed'");
+$res = sql_query('SELECT id, ip, passhash, perms, ssluse, enabled, status FROM users WHERE username = ' . sqlesc($username));
 $row = mysqli_fetch_assoc($res);
 $ip_escaped = ipToStorageFormat(getip());
 $ip = getip();
@@ -74,7 +74,7 @@ if (!$row) {
     bark();
 }
 if (!password_verify($password, $row['passhash'])) {
-    $fail = (@mysqli_fetch_row(sql_query("SELECT COUNT(id) from failedlogins where ip=$ip_escaped"))) or sqlerr(__FILE__, __LINE__);
+    $fail = (@mysqli_fetch_row(sql_query("SELECT COUNT(id), ip from failedlogins where ip = $ip_escaped"))) or sqlerr(__FILE__, __LINE__);
     if ($fail[0] == 0) {
         sql_query("INSERT INTO failedlogins (ip, added, attempts) VALUES ($ip_escaped, $added, 1)") or sqlerr(__FILE__, __LINE__);
     } else {
@@ -134,7 +134,6 @@ $cache->update_row('user' . $row['id'], [
 ], $site_config['expires']['user_cache']);
 
 unsetSessionVar('simpleCaptchaAnswer');
-unsetSessionVar('simpleCaptchaTimestamp');
 setSessionVar('userID', $row['id']);
 logincookie($row['id']);
 

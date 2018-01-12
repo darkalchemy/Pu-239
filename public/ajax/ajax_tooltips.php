@@ -41,10 +41,10 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
         if ($MyPeersCache === false || is_null($MyPeersCache)) {
             $seed['yes'] = $seed['no'] = 0;
             $seed['conn'] = 3;
-            $r = sql_query('SELECT COUNT(id) AS count, seeder, connectable
+            $r = sql_query('SELECT COUNT(id) AS count, seeder, ANY_VALUE(connectable)
                                 FROM peers
                                 WHERE userid = ' . sqlesc($CURUSER['id']) . '
-                                GROUP BY seeder');
+                                GROUP BY seeder') or sqlerr(__LINE__, __FILE__);
             while ($a = mysqli_fetch_assoc($r)) {
                 $key = $a['seeder'] == 'yes' ? 'yes' : 'no';
                 $seed[ $key ] = number_format((int)$a['count']);

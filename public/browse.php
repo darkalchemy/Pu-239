@@ -23,7 +23,7 @@ $stdhead = [
     ],
 ];
 $lang = array_merge(load_language('global'), load_language('browse'), load_language('torrenttable_functions'));
-$HTMLOUT = $searchin = $select_searchin = $where = $addparam = $new_button = $vip_box = $only_free = $searchstr = '';
+$HTMLOUT = $searchin = $select_searchin = $where = $addparam = $new_button = $vip_box = $only_free = $searchstr = $join = '';
 $searchincrt = [];
 
 $catids = genrelist();
@@ -98,6 +98,7 @@ if (isset($_GET['sort']) && isset($_GET['type'])) {
 }
 
 $wherea = $wherecatina = [];
+$today = 0;
 if (!empty($_GET['today']) && $_GET['today']) {
     $wherea[] = 't.added >= ' . strtotime('today midnight');
     $addparam .= 'today=1&amp;';
@@ -409,4 +410,4 @@ if (!$no_log_ip) {
         $cache->delete('ip_history_' . $userid);
     }
 }
-echo stdhead($title, true, $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($title, true, $stdhead) . wrapper($HTMLOUT) . stdfoot();

@@ -14,10 +14,10 @@ $reputationid = 0;
 $time_offset = 0;
 $a = explode(',', gmdate('Y,n,j,G,i,s', TIME_NOW + $time_offset));
 $now_date = [
-    'year'    => $a[0],
-    'mon'     => $a[1],
-    'mday'    => $a[2],
-    'hours'   => $a[3],
+    'year' => $a[0],
+    'mon' => $a[1],
+    'mday' => $a[2],
+    'hours' => $a[3],
     'minutes' => $a[4],
     'seconds' => $a[5],
 ];
@@ -86,7 +86,7 @@ function show_level()
 
         return;
     }
-    $css = "style='font-weight: bold;color: #ffffff;background-color: #1E1E1E; padding: 5px;'";
+    $css = "style='font-weight: bold;color: #fff;background-color: #1E1E1E; padding: 5px;'";
     $html .= "<h2>{$lang['rep_ad_show_head']}</h2>";
     $html .= "<p><span class='button is-small'><a href='staffpanel.php?tool=reputation_ad&amp;mode=list'>{$lang['rep_ad_show_comments']}</a></span></p><br>";
     $html .= "<form action='staffpanel.php?tool=reputation_ad' name='show_rep_form' method='post'>
@@ -132,7 +132,7 @@ function show_form($type = 'edit')
         $mode = 'doadd';
         $extra = "<input type='button' value='{$lang['rep_ad_form_back']}' accesskey='b' class='button is-small' onclick='javascript:history.back(1)' />";
     }
-    $css = "style='font-weight: bold;color: #ffffff;background-color: #0055A4;padding: 5px;'";
+    $css = "style='font-weight: bold;color: #fff;background-color: #0055A4;padding: 5px;'";
     $replevid = isset($res['reputationlevelid']) ? $res['reputationlevelid'] : '';
     $replevel = isset($res['level']) ? $res['level'] : '';
     $minrep = isset($res['minimumreputation']) ? $res['minimumreputation'] : '';
@@ -300,9 +300,7 @@ function view_list()
     //echo $html; exit;
     // I hate work, but someone has to do it!
     if (isset($input['dolist'])) {
-        $links = '';
         $input['orderby'] = isset($input['orderby']) ? $input['orderby'] : '';
-        //$cond = ''; //experiment
         $who = isset($input['who']) ? (int)$input['who'] : 0;
         $user = isset($input['user']) ? $input['user'] : 0;
         $first = isset($input['page']) ? intval($input['page']) : 0;
@@ -357,7 +355,7 @@ function view_list()
                 $order = 'r.dateadd';
                 $orderby = 'dateadd';
         }
-        $css = "style='font-weight: bold;color: #ffffff;background-color: #0055A4;padding: 5px;'";
+        $css = "style='font-weight: bold;color: #fff;background-color: #0055A4;padding: 5px;'";
         $html = "<h2>{$lang['rep_ad_view_cmts']}</h2>";
         $table_header = "<table width='80%' cellpadding='5' border='1'><tr $css>";
         $table_header .= "<td width='5%'>{$lang['rep_ad_view_id']}</td>";
@@ -381,10 +379,10 @@ function view_list()
         if ($total['cnt'] > $deflimit) {
             require_once INCL_DIR . 'pager_functions.php';
             $links = pager_rep([
-                'count'       => $total['cnt'],
-                'perpage'     => $deflimit,
+                'count' => $total['cnt'],
+                'perpage' => $deflimit,
                 'start_value' => $first,
-                'url'         => 'staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=' . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=$orderby&amp;startstamp=$start&amp;endstamp=$end",
+                'url' => 'staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=' . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=$orderby&amp;startstamp=$start&amp;endstamp=$end",
             ]);
         }
         // mofo query!
@@ -508,27 +506,30 @@ function html_out($html = '', $title = '')
 function redirect($url, $text, $time = 2)
 {
     global $site_config, $lang;
-    $page_title = $lang['rep_ad_redirect_title'];
-    $page_detail = "<em>{$lang['rep_ad_redirect_redirect']}</em>";
-    $html = "<!doctype html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
-		\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
-		<html xmlns='http://www.w3.org/1999/xhtml'>
-		<head>
-		<meta http-equiv='refresh' content=\"{$time}; url={$site_config['baseurl']}/{$url}\" />
-		<title>{$lang['rep_ad_redirect_block']}</title>
-    <link rel='stylesheet' href='" . get_file_name('css') . "' />
-    </head>
-    <body>
-						  <div>
-							<div>{$lang['rep_ad_redirect_redirect']}</div>
-							<div style='padding:8px'>
-							 <div style='font-size:12px'>$text
-							 <br>
-							 <br>
-							 <center><a href='{$site_config['baseurl']}/{$url}'>{$lang['rep_ad_redirect_not']}</a></center>
-							 </div>
-							</div>
-						   </div></body></html>";
+
+    $html = "<!doctype html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta http-equiv='refresh' content='{$time}; url={$site_config['baseurl']}/{$url}' />
+<title>{$lang['rep_ad_redirect_title']}</title>
+<link rel='stylesheet' href='" . get_file_name('css') . "' />
+</head>
+<body>
+    <div>
+        <div>{$lang['rep_ad_redirect_redirect']}</div>
+            <div style='padding: 8px;'>
+                <div style='font-size: 12px;'>$text
+                <br>
+                <br>
+                <a href='{$site_config['baseurl']}/{$url}'>{$lang['rep_ad_redirect_not']}</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>";
     echo $html;
     exit;
 }

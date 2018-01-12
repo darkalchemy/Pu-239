@@ -1,5 +1,4 @@
 <?php
-
 $start = microtime(true);
 
 if (!file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php')) {
@@ -14,6 +13,7 @@ if (!file_exists(dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . '.env')) {
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'define.php';
 require_once INCL_DIR . 'config.php';
+require_once INCL_DIR . 'site_config.php';
 require_once VENDOR_DIR . 'autoload.php';
 
 $dotenv = new Dotenv\Dotenv(ROOT_DIR);
@@ -22,12 +22,18 @@ $dotenv->load();
 require_once INCL_DIR . 'database.php';
 require_once INCL_DIR . 'files.php';
 
-// start session on every page request
-sessionStart();
-
 require_once CACHE_DIR . 'free_cache.php';
 require_once CACHE_DIR . 'class_config.php';
 $cache = new CACHE();
+
+// start session on every page request
+sessionStart();
+
+$pu239_version = new SebastianBergmann\Version(
+    '0.1', ROOT_DIR
+);
+
+$site_config['version'] = $pu239_version->getVersion();
 
 /**
  * Class curuser
@@ -44,7 +50,7 @@ require_once CLASS_DIR . 'class_blocks_userdetails.php';
 require_once CLASS_DIR . 'class_bt_options.php';
 require_once CACHE_DIR . 'block_settings_cache.php';
 require_once INCL_DIR . 'password_functions.php';
-require_once INCL_DIR . 'site_config.php';
+require_once INCL_DIR . 'site_settings.php';
 
 $load = sys_getloadavg();
 if ($load[0] > 20) {
@@ -170,8 +176,6 @@ function getip()
  */
 function dbconn($autoclean = true)
 {
-    global $site_config;
-
     if (!@($GLOBALS['___mysqli_ston'] = mysqli_connect($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $_ENV['DB_PORT']))) {
         switch (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))) {
             case 1040:
@@ -260,7 +264,7 @@ function logincookie($id, $updatedb = true)
 
 function userlogin()
 {
-    global $site_config, $cache, $CURBLOCK, $mood, $whereis, $CURUSER, $fluent;
+    global $site_config, $cache, $CURBLOCK, $mood, $whereis, $CURUSER;
     unset($GLOBALS['CURUSER']);
 
     if (isset($CURUSER)) {
@@ -313,7 +317,7 @@ function userlogin()
                 'class'   => 0,
             ], $site_config['expires']['user_cache']);
             write_log($msg);
-            $salty = salty('i think you might be lost');
+            $salty = salty();
             header("Location: {$site_config['baseurl']}/logout.php?hash_please={$salty}");
             die;
         }
@@ -458,7 +462,7 @@ function userlogin()
  */
 function get_charset()
 {
-    global $CURUSER, $site_config;
+    global $CURUSER;
     $lang_charset = $CURUSER['language'];
     switch ($lang_charset) {
         case $lang_charset == 2:
@@ -551,6 +555,10 @@ function get_language()
     return isset($CURUSER['language']) ? $CURUSER['language'] : $site_config['language'];
 }
 
+
+/**
+ *
+ */
 function get_template()
 {
     global $CURUSER, $site_config;
@@ -579,44 +587,75 @@ function get_template()
             echo 'Sorry, Templates do not seem to be working properly and missing some code. Please report this to the programmers/owners.';
         }
     }
+
     if (!function_exists('stdhead')) {
-        echo 'stdhead function missing';
         /**
          * @param string $title
-         * @param bool   $message
+         * @param null   $stdhead
          *
          * @return string
          */
-        function stdhead($title = '', $message = true)
+        function stdhead($title = '', $stdhead = null)
         {
-            return "<html><head><title>$title</title></head><body>";
+            $css_incl = '';
+            if (!empty($stdhead['css'])) {
+                foreach ($stdhead['css'] as $CSS) {
+                    $css_incl .= "
+                <link rel='stylesheet' href='{$CSS}' />";
+                }
+            }
+            $html = "
+            <html>
+            <head>
+            <title>$title</title>$css_incl
+            </head>
+            <body>";
+
+            return $html;
         }
     }
     if (!function_exists('stdfoot')) {
-        echo 'stdfoot function missing';
-        /**
-         * @return string
-         */
-        function stdfoot()
+        function stdfoot($stdfoot = false)
         {
-            return '</body></html>';
+            $htmlfoot = '';
+            if (!empty($stdfoot['js'])) {
+                foreach ($stdfoot['js'] as $JS) {
+                    $htmlfoot .= "
+                <script src='{$JS}'></script>";
+                }
+            }
+
+            $htmlfoot .= "
+            </body>
+            </html>";
+
+            return $htmlfoot;
         }
     }
     if (!function_exists('stdmsg')) {
-        echo 'stdmgs function missing';
         /**
-         * @param $title
-         * @param $message
+         * @param      $heading
+         * @param      $text
+         * @param null $class
          *
-         * @return string
+         * @return string|void
          */
-        function stdmsg($title, $message)
+        function stdmsg($heading, $text, $class = null)
         {
-            return '<b>' . $title . "</b><br>$message";
+            require_once INCL_DIR . 'html_functions.php';
+
+            $htmlout = '';
+            if ($heading) {
+                $htmlout .= "
+                <h2>$heading</h2>";
+            }
+            $htmlout .= "
+                <p>$text</p>";
+
+            return main_div($htmlout, "$class bottom20");
         }
     }
     if (!function_exists('StatusBar')) {
-        echo 'StatusBar function missing';
         /**
          * @return string
          */
@@ -637,7 +676,7 @@ function get_template()
  */
 function make_freeslots($userid, $key)
 {
-    global $cache, $site_config;
+    global $cache;
     $slot = $cache->get($key . $userid);
     if ($slot === false || is_null($slot)) {
         $res_slots = sql_query('SELECT * FROM freeslots WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
@@ -661,7 +700,7 @@ function make_freeslots($userid, $key)
  */
 function make_bookmarks($userid, $key)
 {
-    global $cache, $site_config;
+    global $cache;
     $book = $cache->get($key . $userid);
     if ($book === false || is_null($book)) {
         $res_books = sql_query('SELECT * FROM bookmarks WHERE userid = ' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
@@ -702,7 +741,7 @@ function genrelist()
  */
 function create_moods($force = false)
 {
-    global $cache, $site_config;
+    global $cache;
     $key = 'moods';
     if (($mood = $cache->get($key)) === false || $force) {
         $res_moods = sql_query('SELECT * FROM moods ORDER BY id ASC') or sqlerr(__FILE__, __LINE__);
@@ -904,7 +943,7 @@ function sqlwildcardesc($x)
 function httperr($code = 404)
 {
     header('HTTP/1.0 404 Not found');
-    echo '<h1>Not Found</h1>';
+    echo '<h1>$code - Not Found</h1>';
     echo '<p>Sorry pal :(</p>';
     die();
 }
@@ -1092,7 +1131,7 @@ function unixstamp_to_human($unix = 0)
 function get_time_offset()
 {
     global $CURUSER, $site_config;
-    $r = 0;
+
     $r = (($CURUSER['time_offset'] != '') ? $CURUSER['time_offset'] : $site_config['time_offset']) * 3600;
     if ($site_config['time_adjust']) {
         $r += ($site_config['time_adjust'] * 60);
@@ -1194,7 +1233,7 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
         $hours = intval($date / 3600);
         $date -= $hours * 3600;
         $mins = intval($date / 60);
-        $secs = $date - ($mins * 60);
+        //$secs = $date - ($mins * 60);
         $text = [];
         if ($years > 0) {
             $text[] = number_format($years) . " years";
@@ -1276,11 +1315,14 @@ function load_language($file = '')
     $lang = [];
     if (!isset($GLOBALS['CURUSER']) || empty($GLOBALS['CURUSER']['language'])) {
         if (!file_exists(LANG_DIR . "{$site_config['language']}/lang_{$file}.php")) {
-            stderr('System Error', "Can't find language files");
+            stderr('System Error', "Can't find language files({$site_config['language']})");
         }
         include_once LANG_DIR . "{$site_config['language']}/lang_{$file}.php";
     } elseif (!file_exists(LANG_DIR . "{$CURUSER['language']}/lang_{$file}.php")) {
-        stderr('System Error', "Can't find language files");
+        if (!file_exists(LANG_DIR . "1/lang_{$file}.php")) {
+            stderr('System Error', "Can't find language files({$CURUSER['language']} and 1)");
+        }
+        include_once LANG_DIR . "1/lang_{$file}.php";
     } else {
         include_once LANG_DIR . "{$CURUSER['language']}/lang_{$file}.php";
     }
@@ -1627,10 +1669,11 @@ function unsetSessionVar($key, $prefix = null)
  *
  * @return string
  */
-function salty($username)
+function salty()
 {
-    global $site_config;
-    return bin2hex(random_bytes(64));
+    $salt = make_password(32);
+    setSessionVar('salt', make_passhash($salt));
+    return $salt;
 }
 
 /**

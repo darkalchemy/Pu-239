@@ -50,7 +50,7 @@ input, select {
 
 #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer {
     box-shadow: inset 1px 1px 10px rgba(0, 0, 0, 0.6);
-    border: 0
+    border: 0;
 }
 
 #content #colorCodesContainer a:first-child {
@@ -69,7 +69,7 @@ input, select {
 }
 
 #content #onlineListContainer, #content #helpContainer, #content #settingsContainer {
-    background: rgba(0, 0, 0, 0.3)
+    background: rgba(0, 0, 0, 0.3);
 }
 
 #content #onlineListContainer #onlineList ul {
@@ -101,7 +101,7 @@ input, select {
 #content #bbCodeContainer input, #content #logoutButton, #content #submitButton, #loginButton {
     background-color: #4C9C1F;
     color: #fff;
-    padding: 6px 12px
+    padding: 6px 12px;
 }
 
 #content #bbCodeContainer input:hover, #content #logoutButton:hover, #content #submitButton:hover, #loginButton:hover {
@@ -123,12 +123,12 @@ input, select {
 
 #content .rowEven, #helpList dl:nth-child(even), #settingsList dl:nth-child(even) {
     background: #2C4E3D;
-    background: rgba(44, 78, 61, 0.6)
+    background: rgba(44, 78, 61, 0.6);
 }
 
 #content .rowOdd, #helpList dl:nth-child(odd), #settingsList dl:nth-child(odd) {
     background: #416453;
-    background: rgba(65, 100, 83, 0.6)
+    background: rgba(65, 100, 83, 0.6);
 }
 
 #content #chatList .rowOdd.private {

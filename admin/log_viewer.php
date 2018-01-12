@@ -195,7 +195,7 @@ $title = substr($log, (strrpos($log, '/') + 1));
         This styles a link within a selected menu item `<li>`.
         */
         #menu .pure-menu-selected a {
-            color: #ffffff;
+            color: #fff;
         }
 
         /*
@@ -216,7 +216,7 @@ $title = substr($log, (strrpos($log, '/') + 1));
             color: #CCC;
             font-size: .8rem;
             text-align: center;
-            margin-top: 50px
+            margin-top: 50px;
         }
 
         .credits a {

@@ -77,12 +77,12 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 .ajax-chat .popup, #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer,
 #content #inputFieldContainer, #loginContent input[type=text], #loginContent input[type=password] {
     box-shadow: 0 0 8px 1px #495a49;
-    -webkit-box-shadow: 0px 0px 8px 1px #495a49;
+    -webkit-box-shadow: 0 0 8px 1px #495a49;
 }
 
 .logoutChannelInner .popup {
-    box-shadow: 0;
-    -webkit-box-shadow: 0;
+    box-shadow: none;
+    -webkit-box-shadow: none;
 }
 
 #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer {
@@ -99,18 +99,18 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #content #chatList:before {
     top: 17px;
-    left: 0px;
-    width: 0px;
+    left: 0;
+    width: 0;
     height: 98%;
-    box-shadow: 1px 0px 8px 1px #000;
+    box-shadow: 1px 0 8px 1px #000;
 }
 
 #content #chatList:after {
-    top: 0px;
+    top: 0;
     left: 17px;
     width: 98%;
-    height: 0px;
-    box-shadow: 0px 1px 8px 1px #000;
+    height: 0;
+    box-shadow: 0 1px 8px 1px #000;
 }
 
 #content #onlineListContainer #onlineList div {
@@ -159,11 +159,11 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #content #bbCodeContainer input:hover {
-    background-color: #ffffff;
-    background-image: -webkit-linear-gradient(top, #ffffff, #08ff35);
-    background-image: -moz-linear-gradient(top, #ffffff, #08ff35);
-    background-image: -o-linear-gradient(top, #ffffff, #08ff35);
-    background-image: linear-gradient(to bottom, #ffffff, #08ff35);
+    background-color: #fff;
+    background-image: -webkit-linear-gradient(top, #fff, #08ff35);
+    background-image: -moz-linear-gradient(top, #fff, #08ff35);
+    background-image: -o-linear-gradient(top, #fff, #08ff35);
+    background-image: linear-gradient(to bottom, #fff, #08ff35);
 }
 
 #content #bbCodeContainer input:active, #content #logoutButton:active, #content #submitButton:active, #loginContent #loginButton:active {

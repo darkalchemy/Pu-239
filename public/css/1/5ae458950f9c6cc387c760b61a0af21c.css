@@ -144,7 +144,8 @@ body.ajax-chat {
   position: absolute;
   left: 5px;
   right: 5px;
-  bottom: 65px
+  bottom: 65px;
+  padding: 0
 }
 #content #inputFieldContainer #inputField {
   width: 100%;
@@ -160,6 +161,12 @@ body.ajax-chat {
   left: 5px;
   bottom: 5px;
   padding: 3px
+}
+#content #bbCodeContainer input {
+  display: block;
+  float: left;
+  margin-right: 2px;
+  color: #1d1d1d
 }
 #content #bbCodeContainer #bbCodeEmoticon {
   display: none
@@ -676,25 +683,23 @@ html {
 input,
 select,
 textarea {
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
+  -webkit-border-radius: .3125em;
+  -moz-border-radius: .3125em;
+  border-radius: .3125em;
   border: 0
 }
-#content #inputFieldContainer {
-  background: #0e0e0e;
-  padding: 0
-}
 #content #inputFieldContainer #inputField {
-  box-shadow: inset 1px 1px 5px 1px #000;
   border: 0;
-  padding: 3px 12px;
-  width: calc(100% - 27px)
+  padding: 8px 12px;
+  width: calc(100% - 24px)
 }
 #content #inputFieldContainer #inputField:focus {
   outline: 0
 }
 #loginContent #loginButton {
-  border-radius: 3px
+  -webkit-border-radius: .1875em;
+  -moz-border-radius: .1875em;
+  border-radius: .18755em
 }
 #loginContent #errorContainer {
   color: red
@@ -705,12 +710,7 @@ textarea {
 }
 .ajax-chat {
   height: 100%;
-  background-color: #464646;
-  background-image: -webkit-linear-gradient(top,#464646,#181818);
-  background-image: -moz-linear-gradient(top,#464646,#181818);
-  background-image: -o-linear-gradient(top,#464646,#181818);
-  background-image: linear-gradient(to bottom,#464646,#181818);
-  color: #b0b8a8
+  color: #fff
 }
 .ajax-chat h1,
 .ajax-chat h3 {
@@ -723,35 +723,15 @@ textarea {
 }
 #loginContent input,
 #loginContent select {
-  background: #171717;
-  color: #b0b8a8
+  background: #171717
 }
-#content input,
-#content select,
 #content textarea {
-  background-color: #0e0e0e;
   color: #b0b8a8
-}
-#content #chatList,
-#content #helpContainer,
-#content #inputFieldContainer,
-#content #onlineListContainer,
-#content #settingsContainer,
-#loginContent input[type=password],
-#loginContent input[type=text],
-.ajax-chat .popup {
-  box-shadow: 0 0 8px 1px #495a49;
-  -webkit-box-shadow: 0 0 8px 1px #495a49
-}
-.logoutChannelInner .popup {
-  box-shadow: 0;
-  -webkit-box-shadow: 0
 }
 #content #chatList,
 #content #helpContainer,
 #content #onlineListContainer,
 #content #settingsContainer {
-  background-color: #171717;
   border: 0
 }
 #content #chatList:after,
@@ -759,28 +739,30 @@ textarea {
   content: '';
   display: block;
   position: absolute;
-  border-radius: 5px
+  -webkit-border-radius: .3125em;
+  -moz-border-radius: .3125em;
+  border-radius: .3125em
 }
 #content #chatList:before {
   top: 17px;
   left: 0;
   width: 0;
-  height: 98%;
-  box-shadow: 1px 0 8px 1px #000
+  height: 98%
 }
 #content #chatList:after {
   top: 0;
   left: 17px;
   width: 98%;
-  height: 0;
-  box-shadow: 0 1px 8px 1px #000
+  height: 0
 }
 #content #helplist table,
 #content #settingsList table {
   border-spacing: 0
 }
 #content #emoticonsContainer {
-  border-radius: 3px
+  -webkit-border-radius: .3125em;
+  -moz-border-radius: .3125em;
+  border-radius: .3125em
 }
 #content #bbCodeContainer {
   border: 0;
@@ -795,60 +777,15 @@ textarea {
 #content #statusIconContainer.retrying {
   background-position: 0 -44px
 }
-#content #bbCodeContainer input {
-  display: block;
-  float: left;
-  margin-right: 2px;
-  background-color: #d8ffd6;
-  background-image: -webkit-linear-gradient(top,#d8ffd6,#467a44);
-  background-image: -moz-linear-gradient(top,#d8ffd6,#467a44);
-  background-image: -o-linear-gradient(top,#d8ffd6,#467a44);
-  background-image: linear-gradient(to bottom,#d8ffd6,#467a44);
-  color: #1d1d1d
-}
-#content #bbCodeContainer input:hover {
-  background-color: #fff;
-  background-image: -webkit-linear-gradient(top,#fff,#08ff35);
-  background-image: -moz-linear-gradient(top,#fff,#08ff35);
-  background-image: -o-linear-gradient(top,#fff,#08ff35);
-  background-image: linear-gradient(to bottom,#fff,#08ff35)
-}
-#content #bbCodeContainer input:active,
-#content #logoutButton:active,
-#content #submitButton:active,
-#loginContent #loginButton:active {
-  box-shadow: 0 0 8px 1px #38ff56
-}
-#content #logoutButton,
-#content #submitButton,
-#loginContent #loginButton {
-  background-color: #4fff58;
-  background-image: -webkit-linear-gradient(top,#4fff58,#194221);
-  background-image: -moz-linear-gradient(top,#4fff58,#194221);
-  background-image: -o-linear-gradient(top,#4fff58,#194221);
-  background-image: linear-gradient(to bottom,#4fff58,#194221);
-  font-weight: 700;
-  color: #fff;
-  text-shadow: 0 0 5px #000
-}
-#content #logoutButton:hover,
-#content #submitButton:hover,
-#loginContent #loginButton:hover {
-  background-color: #99ffa8;
-  background-image: -webkit-linear-gradient(top,#99ffa8,#002405);
-  background-image: -moz-linear-gradient(top,#99ffa8,#002405);
-  background-image: -o-linear-gradient(top,#99ffa8,#002405);
-  background-image: linear-gradient(to bottom,#99ffa8,#002405)
-}
 .ajax-chat #content .popup#colorCodesContainer,
 .ajax-chat .popup {
   border: 0;
-  background: rgba(0,0,0,.7);
   padding: 5px
 }
 #content #colorCodesContainer a {
-  border-radius: 10px;
-  box-shadow: 0 0 3px 1px rgba(255,255,255,.3);
+  -webkit-border-radius: .625em;
+  -moz-border-radius: .625em;
+  border-radius: .625em;
   margin: 5px;
   border: 0
 }
@@ -863,7 +800,25 @@ textarea {
 #content .rowEven,
 #helpList dl:nth-child(even),
 #settingsList dl:nth-child(even) {
-  background-color: #131413
+  background-color: rgba(0,0,0,.3);
+  border: 1px solid rgba(255,255,255,.1)
+}
+#content .rowOdd,
+#helpList dl:nth-child(odd),
+#settingsList dl:nth-child(odd) {
+  border: 1px solid transparent
+}
+#content .rowEven:hover,
+#content .rowOdd:hover,
+#helpList dl:nth-child(even):hover,
+#helpList dl:nth-child(odd):hover,
+#settingsList dl:nth-child(even):hover,
+#settingsList dl:nth-child(odd):hover {
+  border: 1px solid rgba(255,255,255,.1);
+  -webkit-transition: all .35s ease-in-out;
+  -moz-transition: all .35s ease-in-out;
+  -o-transition: all .35s ease-in-out;
+  transition: all .35s ease-in-out
 }
 #content #chatList .rowEven.private,
 #content #chatList .rowOdd.private {
@@ -872,21 +827,89 @@ textarea {
 #content #chatList .chatBotErrorMessage {
   color: red
 }
-#content #helpContainer h3,
-#content #onlineListContainer h3,
-#content #settingsContainer h3 {
-  background-color: #171717;
-  background-image: -webkit-linear-gradient(top,#3b6c37,#223220,#171717);
-  background-image: -moz-linear-gradient(top,#3b6c37,#223220,#171717);
-  background-image: -o-linear-gradient(top,#3b6c37,#223220,#171717);
-  background-image: linear-gradient(to bottom,#3b6c37,#223220,#171717)
-}
 #content #chatList span.dateTime {
   font-family: "Lucida Console",Monaco,monospace;
   font-size: .7em
+}
+#content #chatList div.monospace {
+  font-family: "Lucida Console",Monaco,monospace;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+  -moz-osx-font-smoothing: auto;
+  -webkit-font-smoothing: antialiased;
+  white-space: pre-wrap
+}
+input[type=button] {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: 1px solid #fff;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  height: 2.25em;
+  line-height: 1.5;
+  padding: calc(.375em - 1px) calc(.625em - 1px);
+  position: relative;
+  vertical-align: top;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #363636;
+  cursor: pointer;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
+  -webkit-border-radius: .125em;
+  -moz-border-radius: .125em;
+  border-radius: .125em;
+  font-size: .75rem
+}
+input[type=button]:hover {
+  border-color: #b5b5b5
+}
+input[type=button]:active {
+  outline: 0;
+  border-color: #4a4a4a
 }
 .text-center {
   text-align: center;
   margin-left: auto;
   margin-right: auto
+}
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 .5em rgba(0,0,0,.1);
+  -webkit-border-radius: .3125em;
+  -moz-border-radius: .3125em;
+  border-radius: .3125em;
+  background-color: rgba(0,0,0,.1)
+}
+::-webkit-scrollbar {
+  width: 1em;
+  background-color: rgba(255,255,255,.1)
+}
+::-webkit-scrollbar-thumb:horizontal {
+  border-top: 1px solid red;
+  border-bottom: 1px solid red;
+  -webkit-border-radius: .3125em;
+  -moz-border-radius: .3125em;
+  border-radius: .3125em;
+  background: -webkit-linear-gradient(180deg,rgba(0,0,0,1) 0,rgba(0,0,0,1) 25%,transparent 100%,rgba(0,0,0,1) 75%,transparent) rgba(0,0,0,.1)
+}
+::-webkit-scrollbar-thumb:vertical {
+  border-left: 1px solid red;
+  border-right: 1px solid red;
+  -webkit-border-radius: .625em;
+  -moz-border-radius: .625em;
+  border-radius: .625em;
+  background: -webkit-linear-gradient(90deg,rgba(0,0,0,1) 0,rgba(0,0,0,1) 25%,transparent 100%,rgba(0,0,0,1) 75%,transparent) rgba(0,0,0,.1)
 }

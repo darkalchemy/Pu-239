@@ -209,7 +209,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
     -o-tab-size: 4;
     tab-size: 4;
     -moz-osx-font-smoothing: auto;
-    -webkit-font-smoothing: auto;
+    -webkit-font-smoothing: antialiased;
     white-space: pre-wrap;
 }
 
@@ -219,7 +219,7 @@ input[type=button] {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    border: 1px solid white;
+    border: 1px solid rgb(255, 255, 255);
     -webkit-box-shadow: none;
     box-shadow: none;
     display: -webkit-inline-box;

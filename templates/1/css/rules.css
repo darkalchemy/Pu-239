@@ -8,7 +8,7 @@
     position: relative;
     margin: 1px;
     font-weight: bold;
-    background: #ffffff url(images/left.png) center right no-repeat;
+    background: #fff url(images/left.png) center right no-repeat;
 }
 
 .menu_body {
@@ -23,7 +23,6 @@
     text-decoration: none;
     margin-top: 10px;
     margin-bottom: 10px;
-    color: var(--main-color);
 }
 
 .menu_body a:hover {
@@ -72,9 +71,9 @@
     margin-bottom: 20px;
     padding: 15px;
     -moz-border-radius-bottomright: 8px;
-    -webkit-border-radius-bottomright: 8px;
+    -webkit-border-bottom-right-radius: 8px;
     border-bottom-right-radius: 8px;
     -moz-border-radius-bottomleft: 8px;
-    -webkit-border-radius-bottomleft: 8px;
+    -webkit-border-bottom-left-radius: 8px;
     border-bottom-left-radius: 8px;
 }

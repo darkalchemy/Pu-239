@@ -41,10 +41,10 @@ div.global_text {
     margin-bottom: 20px;
     padding: 15px;
     -moz-border-radius-bottomright: 8px;
-    -webkit-border-radius-bottomright: 8px;
+    -webkit-border-bottom-right-radius: 8px;
     border-bottom-right-radius: 8px;
     -moz-border-radius-bottomleft: 8px;
-    -webkit-border-radius-bottomleft: 8px;
+    -webkit-border-bottom-left-radius: 8px;
     border-bottom-left-radius: 8px;
 }
 
@@ -62,13 +62,13 @@ td.t-col {
     width: 189px;
     height: 455px;
     margin: 1em;
-    color: #ffffff;
+    color: #fff;
     background-color: #0055A4;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
-    -webkit-box-shadow: 0px 0px 10px #E8E8E8;
-    box-shadow: 0px 0px 10px #00284E;
+    -webkit-box-shadow: 0 0 10px #E8E8E8;
+    box-shadow: 0 0 10px #00284E;
 
 }
 

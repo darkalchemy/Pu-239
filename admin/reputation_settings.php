@@ -14,12 +14,9 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
     rep_cache();
     exit;
 }
-/////////////////////////////
-//  cache rep function
-/////////////////////////////
+
 function rep_cache()
 {
-    global $rep_set_cache, $site_config, $lang;
     $rep_out = '<' . "?php\n\n\$GVARS = array(\n";
     foreach ($_POST as $k => $v) {
         $rep_out .= ($k == 'rep_undefined') ? "\t'{$k}' => '" . htmlsafechars($v, ENT_QUOTES) . "',\n" : "\t'{$k}' => " . intval($v) . ",\n";
@@ -209,7 +206,7 @@ echo stdhead($lang['repset_stdhead']) . $HTMLOUT . stdfoot();
  */
 function template_out($matches)
 {
-    global $GVARS, $site_config, $lang;
+    global $GVARS, $lang;
     if ($matches[1] == 'rep_is_online') {
         return '' . $lang['repset_yes'] . '<input name="rep_is_online" value="1" ' . ($GVARS['rep_is_online'] == 1 ? 'checked' : '') . ' type="radio">&#160;&#160;&#160;<input name="rep_is_online" value="0" ' . ($GVARS['rep_is_online'] == 1 ? '' : 'checked') . ' type="radio">' . $lang['repset_no'] . '';
     } else {
@@ -225,22 +222,21 @@ function template_out($matches)
 function redirect($url, $text, $time = 2)
 {
     global $site_config, $lang;
-    $page_title = $lang['repset_adminredir'];
-    $page_detail = "<em>{$lang['repset_redirecting']}</em>";
+
     $html = "<!doctype html>
 <html>
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>{$lang['repset_block']}</title>
+<title>{$lang['repset_adminredir']}</title>
 <link rel='stylesheet' href='" . get_file_name('css') . "' />
 </head>
 <body>
     <div>
         <div>{$lang['repset_redirecting']}</div>
-            <div style='padding:8px'>
-                <div style='font-size:12px'>$text
+            <div style='padding: 8px;'>
+                <div style='font-size: 12px;'>$text
                 <br>
                 <br>
                 <a href='{$site_config['baseurl']}/{$url}'>{$lang['repset_clickredirect']}</a>

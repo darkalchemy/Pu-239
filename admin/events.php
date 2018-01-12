@@ -64,9 +64,9 @@ if (is_array($scheduled_events)) {
                     $hdownEnabled = true;
                 }
                 if ($displayDates) {
-                    $overlay_text = "<span style='font-size: 90%'>$overlayText</span><br><span style='font-size: 60%'>" . get_date($startTime, 'DATE') . ' - ' . get_date($endTime, 'DATE') . "</span>\n";
+                    $overlay_text = "<span style='font-size: 90%;'>$overlayText</span><br><span style='font-size: 60%;'>" . get_date($startTime, 'DATE') . ' - ' . get_date($endTime, 'DATE') . "</span>\n";
                 } else {
-                    $overlay_text = "<span style='font-size: 90%'>$overlayText</span>\n";
+                    $overlay_text = "<span style='font-size: 90%;'>$overlayText</span>\n";
                 }
             }
         }
@@ -76,7 +76,7 @@ $HTMLOUT .= "
 <script>
 /*<![CDATA[*/
 function checkAllGood(event){
-var result = confirm('Are you sure you want to remove '' + event + ';' Event ?')
+var result = confirm('Are you sure you want to remove ';' + event + ';' Event ?')
 if(result)
 return true;
 else

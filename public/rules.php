@@ -11,7 +11,7 @@ if (!getSessionVar('LoggedIn')) {
 }
 $lang = array_merge(load_language('global'), load_language('rules'));
 
-$HTMLOUT .= "
+$HTMLOUT = "
         <fieldset id='rules'>
             <legend>
                 <img src='{$site_config['pic_base_url']}info.png' alt='' class='tooltipper right5' title='Guidelines' width='25' />Guidelines
@@ -170,4 +170,4 @@ $HTMLOUT .= "
         </div>
     </fieldset>";
 
-echo stdhead('Rules', true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead('Rules', true) . wrapper($HTMLOUT) . stdfoot();

@@ -211,4 +211,4 @@ $HTMLOUT .= main_div("
 
 $HTMLOUT = wrapper($HTMLOUT, 'has-text-left');
 
-echo stdhead('FAQ') . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead('FAQ', true) . $HTMLOUT . stdfoot();

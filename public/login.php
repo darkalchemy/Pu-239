@@ -27,12 +27,13 @@ function left()
     global $site_config, $fluent;
 
     $ip = getip();
-    $fail = $fluent->from('failedlogins')
+    $count = $fluent->from('failedlogins')
+        ->select(null)
         ->select('COUNT(*) AS count')
         ->where('INET6_NTOA(ip) = ?', $ip)
-        ->fetch();
+        ->fetch('count');
 
-    $left = $site_config['failedlogins'] - $fail['count'];
+    $left = $site_config['failedlogins'] - $count;
     if ($left <= 2) {
         $left = "
         <span>{$left}</span>";

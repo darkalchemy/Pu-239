@@ -11367,10 +11367,8 @@ header#navbar .nav_container ul > li > ul a:hover {
   -o-transform: scale(1,1);
   -ms-transform: scale(1,1);
   transform: scale(1,1);
-  -webkit-transition-timing-function: cubic-bezier(.175,.885,.32,1);
   -webkit-transition-timing-function: cubic-bezier(.175,.885,.32,1.15);
   -moz-transition-timing-function: cubic-bezier(.175,.885,.32,1.15);
-  -ms-transition-timing-function: cubic-bezier(.175,.885,.32,1.15);
   -o-transition-timing-function: cubic-bezier(.175,.885,.32,1.15);
   transition-timing-function: cubic-bezier(.175,.885,.32,1.15)
 }
@@ -11394,10 +11392,8 @@ header#navbar .nav_container ul > li > ul a:hover {
   -o-transform: rotateZ(0);
   -ms-transform: rotateZ(0);
   transform: rotateZ(0);
-  -webkit-transition-timing-function: cubic-bezier(.23,.635,.495,1);
   -webkit-transition-timing-function: cubic-bezier(.23,.635,.495,2.4);
   -moz-transition-timing-function: cubic-bezier(.23,.635,.495,2.4);
-  -ms-transition-timing-function: cubic-bezier(.23,.635,.495,2.4);
   -o-transition-timing-function: cubic-bezier(.23,.635,.495,2.4);
   transition-timing-function: cubic-bezier(.23,.635,.495,2.4)
 }
@@ -11405,12 +11401,9 @@ header#navbar .nav_container ul > li > ul a:hover {
   -webkit-transition-property: top;
   -moz-transition-property: top;
   -o-transition-property: top;
-  -ms-transition-property: top;
   transition-property: top;
-  -webkit-transition-timing-function: cubic-bezier(.175,.885,.32,1);
   -webkit-transition-timing-function: cubic-bezier(.175,.885,.32,1.15);
   -moz-transition-timing-function: cubic-bezier(.175,.885,.32,1.15);
-  -ms-transition-timing-function: cubic-bezier(.175,.885,.32,1.15);
   -o-transition-timing-function: cubic-bezier(.175,.885,.32,1.15);
   transition-timing-function: cubic-bezier(.175,.885,.32,1.15)
 }
@@ -11430,12 +11423,9 @@ header#navbar .nav_container ul > li > ul a:hover {
   -webkit-transition-property: left;
   -moz-transition-property: left;
   -o-transition-property: left;
-  -ms-transition-property: left;
   transition-property: left;
-  -webkit-transition-timing-function: cubic-bezier(.175,.885,.32,1);
   -webkit-transition-timing-function: cubic-bezier(.175,.885,.32,1.15);
   -moz-transition-timing-function: cubic-bezier(.175,.885,.32,1.15);
-  -ms-transition-timing-function: cubic-bezier(.175,.885,.32,1.15);
   -o-transition-timing-function: cubic-bezier(.175,.885,.32,1.15);
   transition-timing-function: cubic-bezier(.175,.885,.32,1.15)
 }
@@ -11788,9 +11778,7 @@ header#navbar .nav_container ul > li > ul a:hover {
   background-position: -120px -60px
 }
 .limited.background-16 {
-  background-image: '';
-  background: radial-gradient(black 15%,transparent 16%),radial-gradient(black 15%,transparent 16%) 8px 8px,radial-gradient(rgba(255,255,255,.1) 15%,transparent 20%) 0 1px,radial-gradient(rgba(255,255,255,.1) 15%,transparent 20%) 8px 9px;
-  background-color: #282828;
+  background: radial-gradient(black 15%,transparent 16%) 8px 8px 0 1px 8px 9px #282828;
   background-size: 16px 16px
 }
 .style_block {

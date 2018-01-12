@@ -42,7 +42,7 @@ if ($action == 'do') {
     $HTMLOUT .= '</pre>';
     $HTMLOUT .= '' . $lang['trace_done'] . '</div>';
 } else {
-    $HTMLOUT .= '<body bgcolor="#FFFFFF" text="#000000"></body>
+    $HTMLOUT .= '<body bgcolor="#fff" text="#000000"></body>
     <p><font size="2">' . $lang['trace_ip'] . '' . $ip . '</font></p>
     <form method="post" action="' . $_this_script_ . '">' . $lang['trace_host'] . '<input type="text" id=specialboxn name="host" value="' . $ip . '" />
     <input type="hidden" name="action" value="do"><input type="submit" value="' . $lang['trace_submit'] . '" class="button is-small" />

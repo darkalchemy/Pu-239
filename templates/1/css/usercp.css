@@ -40,8 +40,8 @@ div.global_text {
     background: #333;
     margin-bottom: 20px;
     padding: 15px;
-    /*-moz-border-radius-bottomright: 8px; -webkit-border-radius-bottomright: 8px; border-bottom-right-radius: 8px;
-    -moz-border-radius-bottomleft: 8px; -webkit-border-radius-bottomleft: 8px; border-bottom-left-radius: 8px;*/
+    /*-moz-border-radius-bottomright: 8px; -webkit-border-bottom-right-radius: 8px; border-bottom-right-radius: 8px;
+    -moz-border-radius-bottomleft: 8px; -webkit-border-bottom-left-radius: 8px; border-bottom-left-radius: 8px;*/
     -moz-border-radius: 10px;
 }
 
@@ -59,7 +59,7 @@ div.global_text {
     text-align: left;
     padding: 2px 5px 2px 4px;
     background-color: inherit;
-    border: 0px none;
+    border: 0 none;
 }
 
 #keyboardInputMaster thead tr th select,
@@ -72,7 +72,7 @@ div.global_text {
     text-align: right;
     padding: 2px 4px 2px 5px;
     background-color: inherit;
-    border: 0px none;
+    border: 0 none;
 }
 
 #keyboardInputMaster thead tr td span {
@@ -90,14 +90,14 @@ div.global_text {
 
 #keyboardInputMaster tbody tr td {
     text-align: left;
-    margin: 0px;
-    padding: 0px 4px 3px 4px;
+    margin: 0;
+    padding: 0 4px 3px 4px;
 }
 
 #keyboardInputMaster tbody tr td div {
     text-align: center;
     position: relative;
-    height: 0px;
+    height: 0;
 }
 
 #keyboardInputMaster tbody tr td div#keyboardInputLayout {
@@ -113,12 +113,12 @@ div.global_text {
 
 #keyboardInputMaster tbody tr td div#keyboardInputLayout table.keyboardInputCenter {
     width: auto;
-    margin: 0px auto;
+    margin: 0 auto;
 }
 
 #keyboardInputMaster tbody tr td div#keyboardInputLayout table tbody tr td {
     vertical-align: middle;
-    padding: 0px 5px 0px 5px;
+    padding: 0 5px 0 5px;
     white-space: pre;
     font: normal 11px 'Lucida Console', monospace;
     border-top: 1px solid #e5e5e5;
@@ -160,8 +160,8 @@ div.global_text {
 
 #keyboardInputMaster tbody tr td div var {
     position: absolute;
-    bottom: 0px;
-    right: 0px;
+    bottom: 0;
+    right: 0;
     font: bold italic 11px Arial, sans-serif;
     color: #777777;
 }

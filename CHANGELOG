@@ -1,3 +1,27 @@
+11 Jan 2018
+fix: delete torrent xbt cleanup name 
+fix: admin+ delete bot messages in AJAX Chat
+update: hide latest forum posts
+update: hide torrent scroller when less than 10 torrent posters
+add: version number when site not in production
+fix: logout using the salt
+update: use of salts
+
+10 Jan 2018
+fix: missing lang vars
+fix: queries affected by 'only_full_group_by'
+update: README.md add utf8 to mysqld.cnf
+add: searchcloud to initial database data
+update: begin update queries for sql_mode=only_full_group_by(stoc​k mysql default), i have been using stock Percona without issue
+add: explicit globals
+
+9 Jan 2018
+fix: trivia_update when 0 questions in db
+fix: uptime not showing when 0 queries
+update: lastest_user cache
+move: adminer into iframe
+remove: unnecessary css
+
 8 Jan 2018
 add: adminer database manager
 remove: king icon showing for all

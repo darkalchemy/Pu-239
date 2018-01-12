@@ -200,18 +200,8 @@ $fluent->insertInto('messages')
     ->values($values)
     ->execute();
 
-$latestuser_cache['id'] = (int)$user_id;
-$latestuser_cache['username'] = $wantusername;
-$latestuser_cache['class'] = ($users_count === 0 ? UC_SYSOP : UC_USER);
-$latestuser_cache['donor'] = 'no';
-$latestuser_cache['warned'] = '0';
-$latestuser_cache['enabled'] = 'yes';
-$latestuser_cache['chatpost'] = '1';
-$latestuser_cache['leechwarn'] = '0';
-$latestuser_cache['pirate'] = '0';
-$latestuser_cache['king'] = '0';
 $cache->delete('all_users_');
-$cache->set('latestuser', $latestuser_cache, $site_config['expires']['latestuser']);
+$cache->set('latestuser', (int)$user_id, $site_config['expires']['latestuser']);
 write_log('User account ' . (int)$user_id . ' (' . htmlsafechars($wantusername) . ') was created');
 
 if ($user_id > 2 && $site_config['autoshout_on'] == 1) {

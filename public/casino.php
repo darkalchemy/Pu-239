@@ -405,7 +405,7 @@ if (isset($color_options[ $post_color ]) && isset($number_options[ $post_number 
     }
     $loca = sql_query("SELECT * FROM casino_bets WHERE challenged ='empty'") or sqlerr(__FILE__, __LINE__);
     $totbets = mysqli_num_rows($loca);
-    $HTMLOUT .= $dummy;
+    $HTMLOUT = $dummy;
     //== Place bet table
     if ($openbet < $maxusrbet) {
         if ($totbets >= $maxtotbet) {

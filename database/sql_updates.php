@@ -175,5 +175,16 @@ $sql_updates = [
         'date'  => '7 Jan, 2018',
         'query' => "ALTER TABLE `users` MODIFY `birthday` date DEFAULT '1970-01-01'",
     ],
-
+    [
+        'id'    => 30,
+        'info'  => 'Update name',
+        'date'  => '10 Jan, 2018',
+        'query' => "UPDATE `site_config` SET `name` = 'bonus_max_torrents' WHERE `name` = 'bonux_max_torrents'",
+    ],
+    [
+        'id'    => 31,
+        'info'  => 'Update name',
+        'date'  => '11 Jan, 2018',
+        'query' => "UPDATE cleanup SET `clean_on` = 0, `clean_title` = 'Delete Torrents XBT' WHERE `clean_file` = 'delete_torrents_xbt_update.php'",
+    ],
 ];

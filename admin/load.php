@@ -126,7 +126,7 @@ function loadavg($return_all = false)
     <table width='100%' >
         <tr><td>
         <table class='main' border='0' width='402'>
-    <tr><td style='padding: 0px; background-image: url({$site_config['pic_base_url']}loadbarbg.gif); background-repeat: repeat-x'>";
+    <tr><td style='padding: 0; background-image: url({$site_config['pic_base_url']}loadbarbg.gif); background-repeat: repeat-x'>";
     $perc = get_server_load();
     $percent = min(100, $perc);
     if ($percent <= 70) $pic = "loadbargreen.gif";

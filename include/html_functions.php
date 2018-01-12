@@ -50,7 +50,7 @@ function begin_frame($caption = '', $center = false, $padding = 10)
  */
 function attach_frame($padding = 10)
 {
-    echo "</td></tr><tr><td style='border-top: 0px'>\n";
+    echo "</td></tr><tr><td style='border-top: 0'>\n";
 }
 
 /**

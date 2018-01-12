@@ -65,15 +65,15 @@ if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
     while ($mod = mysqli_fetch_assoc($res)) {
         $HTMLOUT .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . '?action=update&amp;id=' . $id . "'>
   <table width='50%' cellpadding='10' cellspacing='1' border='1'>
-	<tr><td class='rowhead'>{$lang['credits_mod']}</td>" .
-            "<td style='padding: 0px'><input type='text' size='60' maxlength='120' name='name' " . "value='" . htmlsafechars($mod['name']) . "' /></td></tr>\n" .
+    <tr><td class='rowhead'>{$lang['credits_mod']}</td>" .
+            "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='name' " . "value='" . htmlsafechars($mod['name']) . "' /></td></tr>\n" .
             "<tr>
-	<td class='rowhead'>{$lang['credits_description']}</td>" .
-            "<td style='padding: 0px'>
-	<input type='text' size='60' maxlength='120' name='description' value='" . htmlsafechars($mod['description']) . "' /></td></tr>\n" .
+    <td class='rowhead'>{$lang['credits_description']}</td>" .
+            "<td style='padding: 0'>
+    <input type='text' size='60' maxlength='120' name='description' value='" . htmlsafechars($mod['description']) . "' /></td></tr>\n" .
             "<tr>
-	<td class='rowhead'>{$lang['credits_category']}</td>
-  <td style='padding: 0px'>
+    <td class='rowhead'>{$lang['credits_category']}</td>
+  <td style='padding: 0'>
   <select name='category'>";
 
         $result = sql_query('SHOW COLUMNS FROM modscredits WHERE field=\'category\'');
@@ -86,10 +86,10 @@ if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
         $HTMLOUT .= '</select></td></tr>';
 
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['credits_link']}</td>" .
-            "<td style='padding: 0px'><input type='text' size='60' maxlength='120' name='link' " . "value='" . htmlsafechars($mod['pu239lnk']) . "' /></td></tr>\n" .
+            "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='link' " . "value='" . htmlsafechars($mod['pu239lnk']) . "' /></td></tr>\n" .
             "<tr>
   <td class='rowhead'>{$lang['credits_status']}</td>
-  <td style='padding: 0px'>
+  <td style='padding: 0'>
   <select name='modstatus'>";
 
         $result = sql_query('SHOW COLUMNS FROM modscredits WHERE field=\'status\'');
@@ -101,7 +101,7 @@ if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
 
         $HTMLOUT .= '</select></td></tr>';
 
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['credits_credits']}</td><td style='padding: 0px'>
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['credits_credits']}</td><td style='padding: 0'>
   <input type='text' size='60' maxlength='120' name='credits' value='" . htmlsafechars($mod['credit']) . "' /></td></tr>\n";
         $HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='Submit' /></td></tr>\n";
         $HTMLOUT .= '</table></form>';
@@ -150,10 +150,10 @@ $HTMLOUT .= "<script>
   <!--
   function confirm_delete(id)
   {
-	if(confirm('Are you sure you want to delete this mod credit?'))
-	{
-	self.location.href='" . $_SERVER['PHP_SELF'] . "?action=delete&id='+id;
-	}
+    if(confirm('Are you sure you want to delete this mod credit?'))
+    {
+    self.location.href='" . $_SERVER['PHP_SELF'] . "?action=delete&id='+id;
+    }
   }
   //-->
   </script>";
@@ -204,25 +204,25 @@ $HTMLOUT .= '</table>';
 
 if ($CURUSER['class'] >= UC_SYSOP) { //I recommend a higher class like UC_CODER
     $HTMLOUT .= "<br>
-	  <form method='post' action='" . $_SERVER['PHP_SELF'] . "'>
-	  <table width='80%' cellpadding='8' border='1' cellspacing='0'>
+      <form method='post' action='" . $_SERVER['PHP_SELF'] . "'>
+      <table width='80%' cellpadding='8' border='1' cellspacing='0'>
     <tr>
-		<td colspan='2' class='colhead'>
+        <td colspan='2' class='colhead'>
     {$lang['credits_add']}
-		<input type='hidden' name='action' value='add' /></td>
-	  </tr>
-  	
-  	<tr>
-		<td>{$lang['credits_name1']}</td>
-		<td><input name='name' type='text' size='120' /></td>
-		</tr>
-		<tr>
-		<td>{$lang['credits_description1']}</td><td><input name='description' type='text' size='120' maxlength='120' /></td>
-		</tr>
-				
-		<tr>
-		<td>{$lang['credits_category1']}</td><td>
-		
+        <input type='hidden' name='action' value='add' /></td>
+      </tr>
+    
+    <tr>
+        <td>{$lang['credits_name1']}</td>
+        <td><input name='name' type='text' size='120' /></td>
+        </tr>
+        <tr>
+        <td>{$lang['credits_description1']}</td><td><input name='description' type='text' size='120' maxlength='120' /></td>
+        </tr>
+                
+        <tr>
+        <td>{$lang['credits_category1']}</td><td>
+        
     <select name='category'>
     <option value='Addon'>{$lang['credits_addon']}</option>
     <option value='Forum'>{$lang['credits_forum']}</option>
@@ -233,28 +233,28 @@ if ($CURUSER['class'] >= UC_SYSOP) { //I recommend a higher class like UC_CODER
     <option value='Misc'>{$lang['credits_misc']}</option>
     </select>
         
-	  </td>
-		</tr>
-		<tr>
-		<td>{$lang['credits_link1']}</td><td><input name='link' type='text' size='50' /></td>
-		</tr>
-		<tr>
-		<td>{$lang['credits_status1']}</td><td>
-		<select name='status'>
+      </td>
+        </tr>
+        <tr>
+        <td>{$lang['credits_link1']}</td><td><input name='link' type='text' size='50' /></td>
+        </tr>
+        <tr>
+        <td>{$lang['credits_status1']}</td><td>
+        <select name='status'>
     <option value='In-Progress'>{$lang['credits_progress']}</option>
     <option value='Complete'>{$lang['credits_complete']}</option>
     </select>
-		
-		</td>
-		</tr>
-	  <tr>
-	  <td>{$lang['credits_credits1']}</td><td><input name='credit' type='text' size='120' maxlength='120' /><br  /><font class='small'>{$lang['credits_val']}</font></td>
-	  </tr>
-	  <tr>
-		<td colspan='2'>
-		<input type='submit' value='{$lang['credits_addc']}' />
-		</td>
-	  </tr>
-	  </table></form>";
+        
+        </td>
+        </tr>
+      <tr>
+      <td>{$lang['credits_credits1']}</td><td><input name='credit' type='text' size='120' maxlength='120' /><br  /><font class='small'>{$lang['credits_val']}</font></td>
+      </tr>
+      <tr>
+        <td colspan='2'>
+        <input type='submit' value='{$lang['credits_addc']}' />
+        </td>
+      </tr>
+      </table></form>";
 }
 echo stdhead($lang['credits_headers']) . $HTMLOUT . stdfoot();

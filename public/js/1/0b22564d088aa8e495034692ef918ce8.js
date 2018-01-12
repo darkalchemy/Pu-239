@@ -7908,8 +7908,8 @@ var myBbcodeSettings = {
             closeWith: "[/color]",
             className: "col6-17"
         }, {
-            name: "#FFFFFF",
-            openWith: "[color=#FFFFFF]",
+            name: "#fff",
+            openWith: "[color=#fff]",
             closeWith: "[/color]",
             className: "col6-18"
         }, {
@@ -8538,8 +8538,8 @@ var myBbcodeSettings = {
             closeWith: "[/color]",
             className: "col13-15"
         }, {
-            name: "#FFFFFF",
-            openWith: "[color=#FFFFFF]",
+            name: "#fff",
+            openWith: "[color=#fff]",
             closeWith: "[/color]",
             className: "col13-16"
         } ]

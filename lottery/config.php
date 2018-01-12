@@ -4,6 +4,7 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'html_functions.php';
 class_check(UC_STAFF);
 global $cache, $site_config;
+
 $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($lconf)) {
     $lottery_config[ $ac['name'] ] = $ac['value'];
@@ -27,6 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (sql_query('INSERT INTO lottery_config(name,value) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value)')) {
         $cache->delete('lottery_info_');
         setSessionVar('is-success', 'Lottery configuration was saved!');
+        header("Location: {$site_config['baseurl']}/lottery.php");
+        die();
     } else {
         setSessionVar('is-warning', 'There was an error while executing the update query. Mysql error: ' . ((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_error($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
     }

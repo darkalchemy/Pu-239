@@ -5,7 +5,6 @@ require_once INCL_DIR . 'html_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache, $fluent;
 
-
 $lang = array_merge(load_language('global'), load_language('mybonus'));
 if ($site_config['seedbonus_on'] == 0) {
     stderr('Information', 'The Karma bonus system is currently offline for maintainance work');
@@ -55,8 +54,10 @@ if ($User === false || is_null($User)) {
     $cache->set('user' . $CURUSER['id'], $User, $site_config['expires']['user_cache']);
 }
 
-$ratio = $User['uploaded'] / $User['downloaded'];
-
+$ratio = 1;
+if ($User['uploaded'] !== 0 && $User['downloaded'] !== 0) {
+    $ratio = $User['uploaded'] / $User['downloaded'];
+}
 
 if (isset($_GET['freeleech_success']) && $_GET['freeleech_success']) {
     $freeleech_success = (int)$_GET['freeleech_success'];
@@ -1695,7 +1696,7 @@ $at = $fluent->from('peers')
     ->select('COUNT(*) AS count')
     ->where('seeder = ?', 'yes')
     ->where('connectable = ?', 'yes')
-    ->where('users_id = ?', $CURUSER['id'])
+    ->where('userid = ?', $CURUSER['id'])
     ->fetch();
 $at = $at['count'];
 $at = $at >= $bmt ? $bmt : $at;
