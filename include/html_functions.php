@@ -1,5 +1,4 @@
 <?php
-//-------- Begins a main frame
 /**
  * @return string
  */
@@ -11,7 +10,6 @@ function begin_main_frame()
                     <td class='embedded'>";
 }
 
-//-------- Ends a main frame
 /**
  * @return string
  */
@@ -110,7 +108,6 @@ function tr($x, $y, $noesc = 0)
         </tr>";
 }
 
-//-------- Inserts a smilies frame
 /**
  * @return string
  */
@@ -134,8 +131,8 @@ function insert_smilies_frame()
  * @param      $body
  * @param null $header
  * @param null $class
- *
  * @param null $wrapper_class
+ *
  * @return string
  */
 function main_table($body, $header = null, $class = null, $wrapper_class= null)
@@ -172,7 +169,6 @@ function main_div($text, $class = null)
                     </div>
                 </div>";
     }
-
 }
 
 /**

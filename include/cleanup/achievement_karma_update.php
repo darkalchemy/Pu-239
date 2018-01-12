@@ -2,6 +2,7 @@
 
 /**
  * @param $data
+ *
  * @throws Exception
  */
 function achievement_karma_update($data)

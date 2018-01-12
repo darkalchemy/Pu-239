@@ -59,7 +59,6 @@ if (mysqli_num_rows($res) == 0) {
             $color = random_color(100, 200);
             while (in_array($color, $colors)) {
                 $color = random_color(100, 200);
-
             }
             $log_events[] = $txt;
             $colors[] = $color;

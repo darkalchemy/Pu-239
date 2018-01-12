@@ -181,7 +181,7 @@ function saveconfig()
 
     if (isset($_POST['config']['xbt_tracker'])) {
         $file = 'extra/config.xbtsample.php';
-        //$xbt = 1;
+    //$xbt = 1;
     } else {
         $file = 'extra/config.phpsample.php';
         //$xbt = 0;

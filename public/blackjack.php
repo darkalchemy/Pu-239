@@ -112,7 +112,8 @@ if (count($list) > 0) {
         } else {
             $player_showcards .= "<img src='{$site_config['pic_base_url']}back.png' width='71' height='97' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
         }
-        $player_showcards_end .= "<div class='card {$arr['pic']}'></div>";;
+        $player_showcards_end .= "<div class='card {$arr['pic']}'></div>";
+        ;
     }
     $dealer = true;
     $user_warning = 'You are the dealer, you must take a card below 17.';
@@ -781,7 +782,7 @@ if ($game) {
                     $update['winnerid'] = $playerarr['userid'];
                     $update['loserid'] = $a['userid'];
                     $outcome = "{$dbl_text}and won";
-                    // loser $CURUSER
+                // loser $CURUSER
                 } elseif (($a['points'] > $playerarr['points'] && $a['points'] < 21) || $a['points'] == 21 || ($a['points'] < $playerarr['points'] && $a['points'] > 21)) {
                     $subject = sqlesc($lang['bj_blackjack_results']);
                     $won_str = str_replace('10GB', mksize($blackjack['mb'], 0), $lang['bj_you_beat_10']);
@@ -1221,6 +1222,7 @@ function output($blackjack, $HTMLOUT, $debugout)
 
 /**
  * @return array
+ *
  * @throws Exception
  */
 function shuffle_decks()

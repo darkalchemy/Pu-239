@@ -451,7 +451,6 @@ $title = substr($log, (strrpos($log, '/') + 1));
  */
 function get_log_files($dir, &$results = [])
 {
-
     $files = scandir($dir);
     if ($files) {
         foreach ($files as $key => $value) {
@@ -502,7 +501,9 @@ function tail($filename, $lines = 50, $buffer = 4096)
 
     // Read it and adjust line number if necessary
     // (Otherwise the result would be wrong if file doesn't end with a blank line)
-    if (fread($f, 1) != "\n") $lines -= 1;
+    if (fread($f, 1) != "\n") {
+        $lines -= 1;
+    }
 
     // Start reading
     $output = '';

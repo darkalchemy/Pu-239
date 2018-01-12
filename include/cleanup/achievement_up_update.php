@@ -1,6 +1,7 @@
 <?php
 /**
  * @param $data
+ *
  * @throws Exception
  */
 function achievement_up_update($data)

@@ -114,7 +114,6 @@ if (file_exists(DATABASE_DIR)) {
         </tr>";
         }
     }
-
 } else {
     $body = "
         <tr>
@@ -127,4 +126,3 @@ if (file_exists(DATABASE_DIR)) {
 $HTMLOUT = wrapper(($count > $per_page ? $pager['pagertop'] : '') . main_table($body, $heading) . ($count > $per_page ? $pager['pagerbottom'] : ''));
 
 echo stdhead('Update Database') . $HTMLOUT . stdfoot();
-

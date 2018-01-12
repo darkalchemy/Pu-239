@@ -81,4 +81,3 @@ if ($scroll_torrents) {
         </div>
     </fieldset>";
 }
-

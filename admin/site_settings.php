@@ -41,7 +41,7 @@ $HTMLOUT .= "
 foreach ($site_settings as $site_setting) {
     extract($site_setting);
     if (is_numeric($value)) {
-        $value = (double)$value;
+        $value = (float)$value;
     }
     $var = $name . '[value]';
     $input = "

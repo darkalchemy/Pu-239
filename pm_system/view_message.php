@@ -107,4 +107,3 @@ $HTMLOUT .= "
             " . insertJumpTo(0) . "
         </div>
     </div>";
-

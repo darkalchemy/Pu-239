@@ -10,4 +10,3 @@ $invitedcount = $arr['0'];
 sql_query('UPDATE usersachiev SET invited = ' . sqlesc($invitedcount) . ' WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
 setSessionVar('is-success', "Your invited count has been updated! [{$invitedcount}]");
 header("Location: {$site_config['baseurl']}/achievementhistory.php?id={$CURUSER['id']}");
-

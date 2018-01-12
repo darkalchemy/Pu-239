@@ -217,7 +217,8 @@ $lang = [
     <div class='top20 bg-02 padding20 round10'>
         <a id='usera'></a>
         <p>How does this promotion thing work anyway?</p>",
-    'faq_promotion_body'   => main_table("
+    'faq_promotion_body'   => main_table(
+        "
             <tr>
                 <td class='rowhead'><span class='power_user'>Power User</span></td>
                 <td class='rowhead'>
@@ -435,7 +436,8 @@ $lang = [
         <p>Why do I get a 'Not authorized (xx h) - READ THE FAQ!' error?</p>
         <p>From the time that each new torrent is uploaded to the tracker, there is a period of time that some users must wait before they can download it.</p>
         <p>This delay in downloading will only affect users with a low ratio, and users with low upload amounts.</p>
-        <p>" . main_table("
+        <p>" . main_table(
+        "
             <tr>
                 <td class='rowhead'>Ratio below</td>
                 <td class='rowhead'><span style='color:#BB0000;'>0.50</span></td>
@@ -493,7 +495,8 @@ $lang = [
         <p>Why do I get a 'rejected by tracker - Port xxxx is blacklisted' error?</p>
         <p>Your client is reporting to the tracker that it uses one of the default bittorrent ports (6881-6889) or any other common p2p port for incoming connections.</p>
         <p>{$site_config['site_name']} does not allow clients to use ports commonly associated with p2p protocols. The reason for this is that it is a common practice for ISPs to throttle those ports (that is, limit the bandwidth, hence the speed).</p>
-        <p>The blocked ports list include, but is not neccessarily limited to, the following:</p>" . main_table("
+        <p>The blocked ports list include, but is not neccessarily limited to, the following:</p>" . main_table(
+        "
             <tr>
                 <td class='rowhead'>Direct Connect</td>
                 <td class='rowhead'><div>411 - 413</div></td>
@@ -594,7 +597,8 @@ $lang = [
         <p>What is a proxy?</p>
         <p>Basically a middleman. When you are browsing a site through a proxy your requests are sent to the proxy and the proxy forwards them to the site instead of you connecting directly to the site. There are several classifications (the terminology is far from standard):</p>
         <p>",
-    'faq_proxy_body2'         => main_table("
+    'faq_proxy_body2'         => main_table(
+        "
         <tr>
             <td class='rowhead'>Transparent</td>
             <td class='rowhead'><p>A transparent proxy is one that needs no configuration on the clients. It works by automatically redirecting all port 80 traffic to the proxy. (Sometimes used as synonymous for non-anonymous.)</p></td>

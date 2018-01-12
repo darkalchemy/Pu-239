@@ -30,23 +30,24 @@ function adminer_object()
 
     class AdminerCustomization extends AdminerPlugin
     {
-        function __construct($plugins) {
+        public function __construct($plugins)
+        {
             $this->plugins = $plugins;
         }
 
-        function name()
+        public function name()
         {
             global $site_config;
 
             return $site_config['site_name'];
         }
 
-        function database()
+        public function database()
         {
             return "{$_ENV['DB_DATABASE']}";
         }
 
-        function credentials()
+        public function credentials()
         {
             global $CURUSER, $site_config;
 

@@ -39,4 +39,3 @@ $subs = [
     ['id' => '36', 'name' => 'Thai', 'pic' => "{$site_config['pic_base_url']}flag/thailand.gif"],
     ['id' => '37', 'name' => 'Turkish', 'pic' => "{$site_config['pic_base_url']}flag/turkey.gif"],
 ];
-

@@ -180,7 +180,6 @@ if ($receiver) {
 
     $HTMLOUT .= '
         </select></h1>';
-
 }
 $HTMLOUT .= '
         <table class="table table-bordered">

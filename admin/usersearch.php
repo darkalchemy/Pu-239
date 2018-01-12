@@ -29,7 +29,7 @@ echo "<h1>{$lang['usersearch_title']}</h1>\n";
 $HTMLOUT = $where_is = $join_is = $q1 = $comment_is = $comments_exc = $email_is = '';
 if (isset($_GET['h'])) {
     echo $lang['usersearch_instructions'];
-    //$HTMLOUT .= $lang['usersearch_instructions'];
+//$HTMLOUT .= $lang['usersearch_instructions'];
 } else {
     $HTMLOUT .= "<p>(<a href='staffpanel.php?tool=usersearch&amp;action=usersearch&amp;h=1'>{$lang['usersearch_inlink']}</a>)";
     $HTMLOUT .= "&#160;-&#160;(<a href='staffpanel.php?tool=usersearch'>{$lang['usersearch_reset']}</a>)</p>\n";

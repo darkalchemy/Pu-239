@@ -143,7 +143,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     AGAINST(" . sqlesc($search) . " IN NATURAL LANGUAGE MODE) AS relevance
                     FROM messages WHERE MATCH(subject) AGAINST (" . sqlesc($search) . " IN NATURAL LANGUAGE MODE)
                     $and_member $location $what_in_out
-                    ORDER BY " . sqlesc($sort) . " $desc_asc LIMIT $limit") or sqlerr(__FILE__, __LINE__);
+                    ORDER BY " . sqlesc($sort) . " $desc_asc LIMIT $limit"
+            ) or sqlerr(__FILE__, __LINE__);
             break;
 
         case !$subject && $text:
@@ -152,7 +153,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     AGAINST(" . sqlesc($search) . " IN NATURAL LANGUAGE MODE) AS relevance
                     FROM messages WHERE MATCH(msg) AGAINST (" . sqlesc($search) . " IN NATURAL LANGUAGE MODE)
                     $and_member $location $what_in_out
-                    ORDER BY " . sqlesc($sort) . " $desc_asc LIMIT $limit") or sqlerr(__FILE__, __LINE__);
+                    ORDER BY " . sqlesc($sort) . " $desc_asc LIMIT $limit"
+            ) or sqlerr(__FILE__, __LINE__);
             break;
 
         case $subject && $text || !$subject && !$text:
@@ -161,7 +163,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     AGAINST (" . sqlesc($search) . " IN NATURAL LANGUAGE MODE) AS relevance
                     FROM messages WHERE MATCH(subject,msg) AGAINST (" . sqlesc($search) . " IN NATURAL LANGUAGE MODE)
                     $and_member $location $what_in_out
-                    ORDER BY " . sqlesc($sort) . " $desc_asc LIMIT $limit") or sqlerr(__FILE__, __LINE__);
+                    ORDER BY " . sqlesc($sort) . " $desc_asc LIMIT $limit"
+            ) or sqlerr(__FILE__, __LINE__);
             break;
     }
     $num_result = mysqli_num_rows($res_search);
@@ -191,7 +194,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </tr>";
         }
         $table = main_table($table_body, $table_header);
-
     } else {
         while ($row = mysqli_fetch_assoc($res_search)) {
             $sender = $row['sender'] > 0 ? format_username($row['sender']) : 'System';

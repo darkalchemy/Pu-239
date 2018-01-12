@@ -9,4 +9,3 @@ $cache->delete('staff_settings_');
 
 setSessionVar('is-success', 'Staff List Updated');
 header("Location: {$site_config['baseurl']}/staffpanel.php");
-

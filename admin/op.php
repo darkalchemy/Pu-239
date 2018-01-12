@@ -134,7 +134,7 @@ function_exists('gethostname')
     ? gethostname()
     : (
 php_uname('n')
-    ? : (
+    ?: (
 empty($_SERVER['SERVER_NAME'])
     ? $_SERVER['HOST_NAME']
     : $_SERVER['SERVER_NAME']

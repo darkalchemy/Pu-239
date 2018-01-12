@@ -34,7 +34,6 @@ foreach ($list as $gamename) {
                         <img src='{$site_config['pic_base_url']}games/{$game}.png' alt='{$game}' class='round10' />
                     </a>
                 </div>";
-
 }
 $HTMLOUT .= '
             </div>';

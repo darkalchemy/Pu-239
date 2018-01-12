@@ -236,7 +236,7 @@ if (mysqli_num_rows($r) > 0) {
         }
 
         $or = $buyout != '' && $buybytes != '' ? 'or' : '';
-//			$sucks = $buyout == '' && $buybytes == '' ? "Seed for $minus_ratio" : "or Seed for $minus_ratio";
+        //			$sucks = $buyout == '' && $buybytes == '' ? "Seed for $minus_ratio" : "or Seed for $minus_ratio";
         $sucks = $buyout == '' ? "Seed for $minus_ratio" : "or Seed for $minus_ratio";
 
         if (XBT_TRACKER === false) {

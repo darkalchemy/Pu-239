@@ -13,7 +13,8 @@ $query1 = sprintf(
     'SELECT m.main_id, m.subject, m.body
             FROM announcement_main AS m 
             LEFT JOIN announcement_process AS p ON m.main_id = p.main_id AND p.user_id = %s 
-            WHERE p.status = 2', sqlesc($CURUSER['id'])
+            WHERE p.status = 2',
+    sqlesc($CURUSER['id'])
 );
 $result = sql_query($query1);
 $ann_list = [];
@@ -77,7 +78,6 @@ if (!empty(($ann_list))) {
                 Nothing to see here!
             </td>
         </tr>";
-
 }
 
 $HTMLOUT .= main_table($body, $header);

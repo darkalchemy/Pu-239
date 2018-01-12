@@ -28,7 +28,6 @@ function clean_data($data)
 
 if (!empty($_POST) && (int)$_POST['qid'] === $qid) {
     if (!empty($_POST['qid']) && !empty($_POST['user_id']) && !empty($_POST['ans']) && !empty($_POST['gamenum'])) {
-
         $qid = (int)$_POST['qid'];
         $user_id = (int)$_POST['user_id'];
         $answer = $_POST['ans'];
@@ -102,7 +101,6 @@ $HTMLOUT = "<!doctype html>
     $refresh
     <title>Trivia</title>
     <link rel='stylesheet' href='" . get_file_name('css') . "' />
-    <link href='https://fonts.googleapis.com/css?family=Acme|Baloo+Bhaijaan|Encode+Sans+Condensed|Lobster|Nova+Square|Open+Sans|Oswald|PT+Sans+Narrow' rel='stylesheet' />
 </head>
 <body class='ajax-chat text-9'>
 <script>

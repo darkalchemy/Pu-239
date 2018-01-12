@@ -2,6 +2,7 @@
 
 /**
  * @param $data
+ *
  * @throws Exception
  */
 function achievement_avatar_update($data)

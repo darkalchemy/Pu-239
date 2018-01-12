@@ -2,7 +2,8 @@
 
 /**
  * @param string $title
- * @param null $stdhead
+ * @param null   $stdhead
+ *
  * @return string
  */
 function stdhead($title = '', $stdhead = null)
@@ -306,7 +307,6 @@ function stdfoot($stdfoot = false)
 /**
  * @param      $heading
  * @param      $text
- *
  * @param null $class
  *
  * @return string

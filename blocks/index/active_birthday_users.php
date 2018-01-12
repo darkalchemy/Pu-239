@@ -10,7 +10,7 @@ if ($birthday === false || is_null($birthday)) {
         ->select('id')
         ->where('MONTH(birthday) = ?', $current_date['mon'])
         ->where('DAYOFMONTH(birthday) = ?', $current_date['mday'])
-        ->where('perms < ?',  bt_options::PERMS_STEALTH)
+        ->where('perms < ?', bt_options::PERMS_STEALTH)
         ->orderBy('username');
 
     foreach ($query as $row) {

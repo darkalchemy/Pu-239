@@ -191,4 +191,3 @@ if ($step == '1') {
     </div>";
     echo stdhead('Reset Lost Password', true) . $HTMLOUT . stdfoot($stdfoot);
 }
-

@@ -1,3 +1,7 @@
+12 Jan 2018
+add: default .php_cs - rules used
+update: run php-cs-fixer --rules=@PSR2
+
 11 Jan 2018
 fix: delete torrent xbt cleanup name 
 fix: admin+ delete bot messages in AJAX Chat

@@ -30,7 +30,8 @@ $cache = new CACHE();
 sessionStart();
 
 $pu239_version = new SebastianBergmann\Version(
-    '0.1', ROOT_DIR
+    '0.1',
+    ROOT_DIR
 );
 
 $site_config['version'] = $pu239_version->getVersion();
@@ -1148,7 +1149,6 @@ function get_time_offset()
  * @param      $method
  * @param int  $norelative
  * @param int  $full_relative
- *
  * @param bool $calc
  *
  * @return false|mixed|string

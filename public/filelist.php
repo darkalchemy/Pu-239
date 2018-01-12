@@ -63,4 +63,3 @@ if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
 echo stdhead($lang['filelist_header']) . wrapper($HTMLOUT) . stdfoot();
-

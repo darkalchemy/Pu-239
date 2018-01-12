@@ -225,7 +225,6 @@ if ($action == 'viewapp') {
         </div>";
         $HTMLOUT .= main_table($table);
     }
-
 }
 if ($action == 'acceptapp') {
     $id = (int)$_POST['id'];

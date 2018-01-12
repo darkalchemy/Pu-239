@@ -430,10 +430,10 @@ class AJAXChat
     }
 
     /**
-     * @param      $channelID
-     * @param      $messageText
-     * @param int  $mode
-     * @param int  $ttl
+     * @param     $channelID
+     * @param     $messageText
+     * @param int $mode
+     * @param int $ttl
      *
      * @throws Exception
      */

@@ -156,4 +156,3 @@ header('Content-Type: text/plain; charset=UTF-8');
 header('Pragma: no-cache');
 echo $r;
 die();
-

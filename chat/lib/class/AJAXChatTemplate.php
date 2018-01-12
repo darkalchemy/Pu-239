@@ -119,7 +119,7 @@ class AJAXChatTemplate
             case 'LOGIN_CHANNEL_ID':
                 return $this->ajaxChat->getValidRequestChannelID();
 
-            case 'SITE_NAME';
+            case 'SITE_NAME':
                 return $this->ajaxChat->getConfig('siteName');
             case 'SESSION_NAME':
                 return $this->ajaxChat->getConfig('sessionName');
@@ -148,6 +148,7 @@ class AJAXChatTemplate
                     return 0;
                 }
 
+                // no break
             case 'INACTIVE_TIMEOUT':
                 return $this->ajaxChat->getConfig('inactiveTimeout');
 
@@ -163,6 +164,7 @@ class AJAXChatTemplate
                     return 0;
                 }
 
+                // no break
             case 'SOCKET_SERVER_ENABLED':
                 if ($this->ajaxChat->getConfig('socketServerEnabled')) {
                     return 1;
@@ -170,6 +172,7 @@ class AJAXChatTemplate
                     return 0;
                 }
 
+                // no break
             case 'SOCKET_SERVER_HOST':
                 if ($this->ajaxChat->getConfig('socketServerHost')) {
                     $socketServerHost = $this->ajaxChat->getConfig('socketServerHost');

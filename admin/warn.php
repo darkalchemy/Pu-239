@@ -87,7 +87,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 stderr($lang['warn_stderr'], $lang['warn_stderr_msgq1'] . $q_err . $lang['warn_stderr_msgq2'] . $q2_err);
             }
         }
-
     }
     exit;
 }

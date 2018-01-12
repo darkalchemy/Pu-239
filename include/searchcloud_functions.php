@@ -82,4 +82,3 @@ function cloud()
         return $cloud_html;
     }
 }
-

@@ -71,4 +71,3 @@ if ($news) {
 $HTMLOUT .= "
         </div>
     </fieldset>";
-

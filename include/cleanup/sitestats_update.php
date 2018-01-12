@@ -13,7 +13,8 @@ function sitestats_update($data)
     $registered = get_row_count('users');
     $unverified = get_row_count('users', "WHERE status='pending'");
     $torrents = get_row_count('torrents');
-    $torrentstoday = get_row_count('torrents', "WHERE added between unix_timestamp(DATE_FORMAT(NOW() ,'%Y-%m-%d')) AND unix_timestamp(NOW())");    $donors = get_row_count('users', "WHERE donor ='yes'");
+    $torrentstoday = get_row_count('torrents', "WHERE added between unix_timestamp(DATE_FORMAT(NOW() ,'%Y-%m-%d')) AND unix_timestamp(NOW())");
+    $donors = get_row_count('users', "WHERE donor ='yes'");
     $unconnectables = (XBT_TRACKER == true ? '0' : get_row_count('peers', " WHERE connectable='no'"));
     $forumposts = get_row_count('posts');
     $forumtopics = get_row_count('topics');

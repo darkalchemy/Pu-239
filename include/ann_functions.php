@@ -61,7 +61,6 @@ function crazyhour_announce()
         if ($cz['crazyhour']['amount'] !== 1) {
             $cz['crazyhour']['amount'] = 1;
             if (($cz_lock = $cache->add('crazyhour_lock', 1, 10)) !== false) {
-
                 $set = ['amount' => $cz['crazyhour']['amount']];
                 $fluent->update('freeleech')
                     ->set($set)
@@ -171,8 +170,8 @@ function get_torrent_from_hash($info_hash)
             $cache->add($comp_key, $torrent['times_completed'], $ttl);
         } else {
             $cache->set($key, 0, 900);
- 
-           return false;
+
+            return false;
         }
     } else {
         $seed_key = 'torrents::seeds:::' . $torrent['id'];
@@ -336,7 +335,6 @@ function auto_enter_abnormal_upload($userid, $rate, $upthis, $diff, $torrentid, 
     $fluent->insertInto('cheaters')
                 ->values($values)
                 ->execute();
-
 }
 
 /**

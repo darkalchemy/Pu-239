@@ -222,4 +222,3 @@ $config['socketServerChatID'] = 0;
 
 // This is used to anonymize the external urls
 $config['anonymous_link'] = $site_config['anonymizer_url'];
-
