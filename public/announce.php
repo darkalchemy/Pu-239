@@ -82,6 +82,7 @@ if (portblacklisted($port)) {
             $connectable = 'no';
             $conn_ttl = 15;
         } else {
+            $connectable = 'yes';
             @fclose($sockres);
         }
         $cache->set($connkey, $connectable, $conn_ttl);
