@@ -187,4 +187,10 @@ $sql_updates = [
         'date'  => '11 Jan, 2018',
         'query' => "UPDATE cleanup SET `clean_on` = 0, `clean_title` = 'Delete Torrents XBT' WHERE `clean_file` = 'delete_torrents_xbt_update.php'",
     ],
+    [
+        'id'    => 32,
+        'info'  => 'Add unique index t snatched',
+        'date'  => '13 Jan, 2018',
+        'query' => 'ALTER TABLE `snatched` ADD UNIQUE INDEX `userid_torrentid`(`userid`, `torrentid`)',
+    ],
 ];

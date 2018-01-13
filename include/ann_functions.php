@@ -2,6 +2,8 @@
 
 /**
  * @return bool
+ *
+ * @throws Exception
  */
 function crazyhour_announce()
 {
@@ -140,10 +142,10 @@ function get_user_from_torrent_pass($torrent_pass)
 function get_torrent_from_hash($info_hash)
 {
     global $cache, $fluent;
-    $key = 'torrent::hash:::' . bin2hex($info_hash);
+    $key = 'torrent_hash_' . bin2hex($info_hash);
     $ttl = 21600;
     $torrent = $cache->get($key);
-    if ($torrent === false || is_null($torrent)) {
+    if ($torrent === false || is_null($torrent) || !is_array($torrent)) {
         $torrent = $fluent->from('torrents')
             ->select(null)
             ->select('id')
@@ -162,9 +164,9 @@ function get_torrent_from_hash($info_hash)
             ->fetch();
         if ($torrent !== false) {
             $cache->set($key, $torrent, $ttl);
-            $seed_key = 'torrents::seeds:::' . $torrent['id'];
-            $leech_key = 'torrents::leechs:::' . $torrent['id'];
-            $comp_key = 'torrents::comps:::' . $torrent['id'];
+            $seed_key = 'torrents_seeds_' . $torrent['id'];
+            $leech_key = 'torrents_leechs_' . $torrent['id'];
+            $comp_key = 'torrents_comps_' . $torrent['id'];
             $cache->add($seed_key, $torrent['seeders'], $ttl);
             $cache->add($leech_key, $torrent['leechers'], $ttl);
             $cache->add($comp_key, $torrent['times_completed'], $ttl);
@@ -174,20 +176,20 @@ function get_torrent_from_hash($info_hash)
             return false;
         }
     } else {
-        $seed_key = 'torrents::seeds:::' . $torrent['id'];
-        $leech_key = 'torrents::leechs:::' . $torrent['id'];
-        $comp_key = 'torrents::comps:::' . $torrent['id'];
+        $seed_key = 'torrents_seeds_' . $torrent['id'];
+        $leech_key = 'torrents_leechs_' . $torrent['id'];
+        $comp_key = 'torrents_comps_' . $torrent['id'];
         $torrent['seeders'] = $cache->get($seed_key);
         $torrent['leechers'] = $cache->get($leech_key);
         $torrent['times_completed'] = $cache->get($comp_key);
         if (
-                $torrent['seeders'] === false ||
-                $torrent['leechers'] === false ||
-                $torrent['times_completed'] === false ||
-                is_null($torrent['seeders']) ||
-                is_null($torrent['leechers']) ||
-                is_null($torrent['times_completed'])
-            ) {
+            $torrent['seeders'] === false ||
+            $torrent['leechers'] === false ||
+            $torrent['times_completed'] === false ||
+            is_null($torrent['seeders']) ||
+            is_null($torrent['leechers']) ||
+            is_null($torrent['times_completed'])
+        ) {
             $res = $fluent->from('torrents')
                 ->select(null)
                 ->select('seeders')
@@ -231,9 +233,9 @@ function adjust_torrent_peers($id, $seeds = 0, $leechers = 0, $completed = 0)
         return false;
     }
     $adjust = 0;
-    $seed_key = 'torrents::seeds:::' . $id;
-    $leech_key = 'torrents::leechs:::' . $id;
-    $comp_key = 'torrents::comps:::' . $id;
+    $seed_key = 'torrents_seeds_' . $id;
+    $leech_key = 'torrents_leechs_' . $id;
+    $comp_key = 'torrents_comps_' . $id;
     if ($seeds > 0) {
         $adjust += (bool)$cache->increment($seed_key, $seeds);
     } elseif ($seeds < 0) {
@@ -269,12 +271,12 @@ function get_happy($torrentid, $userid)
 
         $happy = [];
         foreach ($res as $row) {
-            $happy[ $row['torrentid'] ] = $row['multiplier'];
+            $happy[$row['torrentid']] = $row['multiplier'];
         }
         $cache->add($userid . '_happy', $happy, 0);
     }
-    if (!empty($happy) && isset($happy[ $torrentid ])) {
-        return $happy[ $torrentid ];
+    if (!empty($happy) && isset($happy[$torrentid])) {
+        return $happy[$torrentid];
     }
 
     return 0;
@@ -295,8 +297,8 @@ function get_slots($torrentid, $userid)
     $slot = $cache->get('fllslot_' . $userid);
     if ($slot === false || is_null($slot)) {
         $slot = $fluent->from('freeslots')
-                ->where('userid = ?', $userid)
-                ->fetchAll();
+            ->where('userid = ?', $userid)
+            ->fetchAll();
         $cache->add('fllslot_' . $userid, $slot, $ttl_slot);
     }
     if (!empty($slot)) {
@@ -322,19 +324,21 @@ function get_slots($torrentid, $userid)
  * @param $client
  * @param $realip
  * @param $last_up
+ *
+ * @throws Exception
  */
 function auto_enter_abnormal_upload($userid, $rate, $upthis, $diff, $torrentid, $client, $realip, $last_up)
 {
     global $fluent;
 
     $values = [
-            'added' => TIME_NOW, 'userid' => $userid, 'client' => $client, 'rate' => $rate,
-            'beforeup' => $last_up, 'upthis' => $upthis, 'timediff' => $diff,
-            'userip' => ipToStorageFormat($realip), 'torrentid' => $torrentid
+        'added' => TIME_NOW, 'userid' => $userid, 'client' => $client, 'rate' => $rate,
+        'beforeup' => $last_up, 'upthis' => $upthis, 'timediff' => $diff,
+        'userip' => ipToStorageFormat($realip), 'torrentid' => $torrentid
     ];
     $fluent->insertInto('cheaters')
-                ->values($values)
-                ->execute();
+        ->values($values)
+        ->execute();
 }
 
 /**
@@ -344,7 +348,7 @@ function err($msg)
 {
     benc_resp([
         'failure reason' => [
-            'type'  => 'string',
+            'type' => 'string',
             'value' => $msg,
         ],
     ]);
@@ -357,7 +361,7 @@ function err($msg)
 function benc_resp($d)
 {
     benc_resp_raw(benc([
-        'type'  => 'dictionary',
+        'type' => 'dictionary',
         'value' => $d,
     ]));
 }
@@ -444,7 +448,7 @@ function benc_dict($d)
     $keys = array_keys($d);
     sort($keys);
     foreach ($keys as $k) {
-        $v = $d[ $k ];
+        $v = $d[$k];
         $s .= benc_str($k);
         $s .= benc($v);
     }

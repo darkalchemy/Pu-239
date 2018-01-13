@@ -315,7 +315,7 @@ function userlogin()
             sql_query("UPDATE users SET enabled = 'no', class = 0 WHERE id =" . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user' . $users_data['id'], [
                 'enabled' => 'no',
-                'class'   => 0,
+                'class' => 0,
             ], $site_config['expires']['user_cache']);
             write_log($msg);
             $salty = salty();
@@ -343,13 +343,13 @@ function userlogin()
         $s = sql_query('SELECT ' . $stats_fields . ' FROM users WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $stats = mysqli_fetch_assoc($s);
         foreach ($stats_fields_ar_int as $i) {
-            $stats[ $i ] = (int)$stats[ $i ];
+            $stats[$i] = (int)$stats[$i];
         }
         foreach ($stats_fields_ar_float as $i) {
-            $stats[ $i ] = (float)$stats[ $i ];
+            $stats[$i] = (float)$stats[$i];
         }
         foreach ($stats_fields_ar_str as $i) {
-            $stats[ $i ] = $stats[ $i ];
+            $stats[$i] = $stats[$i];
         }
         $cache->set($What_Cache . $id, $stats, $What_Expire);
     }
@@ -365,7 +365,7 @@ function userlogin()
             $ustatus = [
                 'last_status' => '',
                 'last_update' => 0,
-                'archive'     => '',
+                'archive' => '',
             ];
         }
         $cache->add('userstatus_' . $id, $ustatus, $site_config['expires']['u_status']); // 30 days
@@ -395,35 +395,35 @@ function userlogin()
     }
     $where_is['username'] = htmlsafechars($users_data['username']);
     $whereis_array = [
-        'index'            => '%s is viewing the <a href="%s">home page</a>',
-        'browse'           => '%s is viewing the <a href="%s">torrents page</a>',
-        'requests'         => '%s is viewing the <a href="%s">requests page</a>',
-        'upload'           => '%s is viewing the <a href="%s">upload page</a>',
-        'casino'           => '%s is viewing the <a href="%s">casino page</a>',
-        'blackjack'        => '%s is viewing the <a href="%s">blackjack page</a>',
-        'bet'              => '%s is viewing the <a href="%s">bet page</a>',
-        'forums'           => '%s is viewing the <a href="%s">forums page</a>',
-        'chat'             => '%s is viewing the <a href="%s">irc page</a>',
-        'topten'           => '%s is viewing the <a href="%s">statistics page</a>',
-        'faq'              => '%s is viewing the <a href="%s">faq page</a>',
-        'rules'            => '%s is viewing the <a href="%s">rules page</a>',
-        'staff'            => '%s is viewing the <a href="%s">staff page</a>',
-        'announcement'     => '%s is viewing the <a href="%s">announcements page</a>',
-        'usercp'           => '%s is viewing the <a href="%s">usercp page</a>',
-        'offers'           => '%s is viewing the <a href="%s">offers page</a>',
-        'pm_system'        => '%s is viewing the <a href="%s">mailbox page</a>',
-        'userdetails'      => '%s is viewing the <a href="%s">personal profile page</a>',
-        'details'          => '%s is viewing the <a href="%s">torrents details page</a>',
-        'games'            => '%s is viewing the <a href="%s">games page</a>',
-        'arcade'           => '%s is viewing the <a href="%s">arcade page</a>',
-        'flash'            => '%s is playing a <a href="%s">flash game</a>',
+        'index' => '%s is viewing the <a href="%s">home page</a>',
+        'browse' => '%s is viewing the <a href="%s">torrents page</a>',
+        'requests' => '%s is viewing the <a href="%s">requests page</a>',
+        'upload' => '%s is viewing the <a href="%s">upload page</a>',
+        'casino' => '%s is viewing the <a href="%s">casino page</a>',
+        'blackjack' => '%s is viewing the <a href="%s">blackjack page</a>',
+        'bet' => '%s is viewing the <a href="%s">bet page</a>',
+        'forums' => '%s is viewing the <a href="%s">forums page</a>',
+        'chat' => '%s is viewing the <a href="%s">irc page</a>',
+        'topten' => '%s is viewing the <a href="%s">statistics page</a>',
+        'faq' => '%s is viewing the <a href="%s">faq page</a>',
+        'rules' => '%s is viewing the <a href="%s">rules page</a>',
+        'staff' => '%s is viewing the <a href="%s">staff page</a>',
+        'announcement' => '%s is viewing the <a href="%s">announcements page</a>',
+        'usercp' => '%s is viewing the <a href="%s">usercp page</a>',
+        'offers' => '%s is viewing the <a href="%s">offers page</a>',
+        'pm_system' => '%s is viewing the <a href="%s">mailbox page</a>',
+        'userdetails' => '%s is viewing the <a href="%s">personal profile page</a>',
+        'details' => '%s is viewing the <a href="%s">torrents details page</a>',
+        'games' => '%s is viewing the <a href="%s">games page</a>',
+        'arcade' => '%s is viewing the <a href="%s">arcade page</a>',
+        'flash' => '%s is playing a <a href="%s">flash game</a>',
         'arcade_top_score' => '%s is viewing the <a href="%s">arcade top scores page</a>',
-        'staffpanel'       => '%s is viewing the <a href="%s">Staff Panel</a>',
-        'unknown'          => '%s location is unknown',
+        'staffpanel' => '%s is viewing the <a href="%s">Staff Panel</a>',
+        'unknown' => '%s location is unknown',
     ];
     if (preg_match('/\/(.*?)\.php/is', $_SERVER['REQUEST_URI'], $whereis_temp)) {
-        if (isset($whereis_array[ $whereis_temp[1] ])) {
-            $whereis = sprintf($whereis_array[ $whereis_temp[1] ], $where_is['username'], htmlsafechars($_SERVER['REQUEST_URI']));
+        if (isset($whereis_array[$whereis_temp[1]])) {
+            $whereis = sprintf($whereis_array[$whereis_temp[1]], $where_is['username'], htmlsafechars($_SERVER['REQUEST_URI']));
         } else {
             $whereis = sprintf($whereis_array['unknown'], $where_is['username']);
         }
@@ -444,10 +444,10 @@ function userlogin()
                     SET where_is =' . sqlesc($whereis) . ', last_access=' . TIME_NOW . ", $userupdate0, $userupdate1
                     WHERE id = " . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('user' . $users_data['id'], [
-            'last_access'      => TIME_NOW,
-            'onlinetime'       => $update_time,
+            'last_access' => TIME_NOW,
+            'onlinetime' => $update_time,
             'last_access_numb' => TIME_NOW,
-            'where_is'         => $whereis,
+            'where_is' => $whereis,
         ], $site_config['expires']['user_cache']);
     }
     if ($users_data['override_class'] < $users_data['class']) {
@@ -749,8 +749,8 @@ function create_moods($force = false)
         $mood = [];
         if (mysqli_num_rows($res_moods)) {
             while ($rmood = mysqli_fetch_assoc($res_moods)) {
-                $mood['image'][ $rmood['id'] ] = $rmood['image'];
-                $mood['name'][ $rmood['id'] ] = $rmood['name'];
+                $mood['image'][$rmood['id']] = $rmood['image'];
+                $mood['name'][$rmood['id']] = $rmood['name'];
             }
         }
         $cache->set($key, $mood, 86400);
@@ -859,7 +859,7 @@ function mkprettytime($s)
         } else {
             $v = $s;
         }
-        $t[ $y[1] ] = $v;
+        $t[$y[1]] = $v;
     }
     if ($t['day']) {
         return $t['day'] . 'd ' . sprintf('%02d:%02d:%02d', $t['hour'], $t['min'], $t['sec']);
@@ -882,10 +882,10 @@ function mkglobal($vars)
         $vars = explode(':', $vars);
     }
     foreach ($vars as $v) {
-        if (isset($_GET[ $v ])) {
-            $GLOBALS[ $v ] = unesc($_GET[ $v ]);
-        } elseif (isset($_POST[ $v ])) {
-            $GLOBALS[ $v ] = unesc($_POST[ $v ]);
+        if (isset($_GET[$v])) {
+            $GLOBALS[$v] = unesc($_GET[$v]);
+        } elseif (isset($_POST[$v])) {
+            $GLOBALS[$v] = unesc($_POST[$v]);
         } else {
             return 0;
         }
@@ -1117,12 +1117,12 @@ function unixstamp_to_human($unix = 0)
     list($day, $month, $year, $hour, $min, $ampm) = explode(',', $tmp);
 
     return [
-        'day'    => $day,
-        'month'  => $month,
-        'year'   => $year,
-        'hour'   => $hour,
+        'day' => $day,
+        'month' => $month,
+        'year' => $year,
+        'hour' => $hour,
         'minute' => $min,
-        'ampm'   => $ampm,
+        'ampm' => $ampm,
     ];
 }
 
@@ -1161,10 +1161,10 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
     static $yesterday_time = 0;
     $time_options = [
         'JOINED' => $site_config['time_joined'],
-        'SHORT'  => $site_config['time_short'],
-        'LONG'   => $site_config['time_long'],
-        'TINY'   => $site_config['time_tiny'] ? $site_config['time_tiny'] : 'j M Y - G:i',
-        'DATE'   => $site_config['time_date'] ? $site_config['time_date'] : 'j M Y',
+        'SHORT' => $site_config['time_short'],
+        'LONG' => $site_config['time_long'],
+        'TINY' => $site_config['time_tiny'] ? $site_config['time_tiny'] : 'j M Y - G:i',
+        'DATE' => $site_config['time_date'] ? $site_config['time_date'] : 'j M Y',
     ];
     if (!$date) {
         return '--';
@@ -1204,7 +1204,7 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
         } elseif ($diff < 3024000) {
             return sprintf('%s weeks ago', intval($diff / 604900));
         } else {
-            return gmdate($time_options[ $method ], ($date + $GLOBALS['offset']));
+            return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
         }
     } elseif ($site_config['time_use_relative'] && ($norelative != 1) && !$calc) {
         $this_time = gmdate('d,m,Y', ($date + $GLOBALS['offset']));
@@ -1223,7 +1223,7 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
         } elseif ($this_time == $yesterday_time) {
             return str_replace('{--}', 'Yesterday', gmdate($site_config['time_use_relative_format'], ($date + $GLOBALS['offset'])));
         } else {
-            return gmdate($time_options[ $method ], ($date + $GLOBALS['offset']));
+            return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
         }
     } elseif ($calc) {
         $years = intval($date / 31536000);
@@ -1251,7 +1251,7 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
             return implode(', ', $text);
         }
     } else {
-        return gmdate($time_options[ $method ], ($date + $GLOBALS['offset']));
+        return gmdate($time_options[$method], ($date + $GLOBALS['offset']));
     }
 }
 
@@ -1338,17 +1338,17 @@ function flood_limit($table)
     if (!file_exists($site_config['flood_file']) || !is_array($max = unserialize(file_get_contents($site_config['flood_file'])))) {
         return;
     }
-    if (!isset($max[ $CURUSER['class'] ])) {
+    if (!isset($max[$CURUSER['class']])) {
         return;
     }
     $tb = [
-        'posts'    => 'posts.userid',
+        'posts' => 'posts.userid',
         'comments' => 'comments.user',
         'messages' => 'messages.sender',
     ];
-    $q = sql_query('SELECT min(' . $table . '.added) as first_post, count(' . $table . '.id) as how_many FROM ' . $table . ' WHERE ' . $tb[ $table ] . ' = ' . $CURUSER['id'] . ' AND ' . TIME_NOW . ' - ' . $table . '.added < ' . $site_config['flood_time']) or sqlerr(__FILE__, __LINE__);
+    $q = sql_query('SELECT min(' . $table . '.added) as first_post, count(' . $table . '.id) as how_many FROM ' . $table . ' WHERE ' . $tb[$table] . ' = ' . $CURUSER['id'] . ' AND ' . TIME_NOW . ' - ' . $table . '.added < ' . $site_config['flood_time']) or sqlerr(__FILE__, __LINE__);
     $a = mysqli_fetch_assoc($q);
-    if ($a['how_many'] > $max[ $CURUSER['class'] ]) {
+    if ($a['how_many'] > $max[$CURUSER['class']]) {
         stderr($lang['gl_sorry'], $lang['gl_flood_msg'] . '' . mkprettytime($site_config['flood_time'] - (TIME_NOW - $a['first_post'])));
     }
 }
@@ -1371,7 +1371,7 @@ function sql_query($query, $log = true)
     $query_end_time = microtime(true); // End time
     $query_stat[] = [
         'seconds' => number_format($query_end_time - $query_start_time, 6),
-        'query'   => $query,
+        'query' => $query,
     ];
     $queries = count($query_stat);
 
@@ -1425,7 +1425,7 @@ function strip_tags_array($ar)
 {
     if (is_array($ar)) {
         foreach ($ar as $k => $v) {
-            $ar[ strip_tags($k) ] = strip_tags($v);
+            $ar[strip_tags($k)] = strip_tags($v);
         }
     } else {
         $ar = strip_tags($ar);
@@ -1498,7 +1498,7 @@ function human_filesize($bytes, $dec = 2)
     $size = ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     $factor = floor((strlen($bytes) - 1) / 3);
 
-    return sprintf("%.{$dec}f", $bytes / pow(1024, $factor)) . @$size[ $factor ];
+    return sprintf("%.{$dec}f", $bytes / pow(1024, $factor)) . @$size[$factor];
 }
 
 function sessionStart()
@@ -1613,14 +1613,14 @@ function setSessionVar($key, $value, $prefix = null)
         $current = getSessionVar($key);
         if ($current) {
             if (!in_array($value, $current)) {
-                $_SESSION[ $prefix . $key ] = array_merge($current, [$value]);
+                $_SESSION[$prefix . $key] = array_merge($current, [$value]);
             }
         } else {
-            $_SESSION[ $prefix . $key ] = [$value];
+            $_SESSION[$prefix . $key] = [$value];
         }
     } else {
         unsetSessionVar($key);
-        $_SESSION[ $prefix . $key ] = $value;
+        $_SESSION[$prefix . $key] = $value;
     }
 }
 
@@ -1642,8 +1642,8 @@ function getSessionVar($key, $prefix = null)
     }
 
     // Return the session value if existing:
-    if (isset($_SESSION[ $prefix . $key ])) {
-        return $_SESSION[ $prefix . $key ];
+    if (isset($_SESSION[$prefix . $key])) {
+        return $_SESSION[$prefix . $key];
     } else {
         return null;
     }
@@ -1661,7 +1661,7 @@ function unsetSessionVar($key, $prefix = null)
     }
 
     // Set the session value:
-    unset($_SESSION[ $prefix . $key ]);
+    unset($_SESSION[$prefix . $key]);
 }
 
 /**
@@ -1825,7 +1825,7 @@ function shuffle_assoc($list, $times = 1)
     }
     $random = [];
     foreach ($keys as $key) {
-        $random[ $key ] = $list[ $key ];
+        $random[$key] = $list[$key];
     }
     return $random;
 }
@@ -1859,9 +1859,9 @@ function array_msort($array, $cols)
 {
     $colarr = [];
     foreach ($cols as $col => $order) {
-        $colarr[ $col ] = [];
+        $colarr[$col] = [];
         foreach ($array as $k => $row) {
-            $colarr[ $col ][ '_' . $k ] = strtolower($row[ $col ]);
+            $colarr[$col]['_' . $k] = strtolower($row[$col]);
         }
     }
     $eval = 'array_multisort(';
@@ -1874,10 +1874,10 @@ function array_msort($array, $cols)
     foreach ($colarr as $col => $arr) {
         foreach ($arr as $k => $v) {
             $k = substr($k, 1);
-            if (!isset($ret[ $k ])) {
-                $ret[ $k ] = $array[ $k ];
+            if (!isset($ret[$k])) {
+                $ret[$k] = $array[$k];
             }
-            $ret[ $k ][ $col ] = $array[ $k ][ $col ];
+            $ret[$k][$col] = $array[$k][$col];
         }
     }
     return $ret;
@@ -2044,7 +2044,7 @@ function return_bytes($val)
         return 0;
     }
     $val = strtolower(trim($val));
-    $last = $val[ strlen($val) - 1 ];
+    $last = $val[strlen($val) - 1];
     $val = rtrim($val, $last);
 
     switch ($last) {
