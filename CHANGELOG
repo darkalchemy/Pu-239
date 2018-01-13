@@ -1,4 +1,6 @@
 13 Jan 2018
+update: template to show current PHP version
+update: PHP7.2
 update: install not continue if fields are blank
 fix: install back button and bad write config
 update: README.md

@@ -18,7 +18,7 @@ There is a temporary site at http://dev.pu-239.pw where you can view the code [d
 
 This is a fork of U-232 V4.
 
-PHP 7.0+ is required, PHP 7.1 recommended.
+PHP 7.0+ is required, PHP 7.2 recommended.
 
 This code explicitly sets the php default timezone to 'UTC', it is recommended that you set the servers timezone to 'UTC' or change it in the code. The timezones must match. After changing the servers timezone, you must restart mysql.
 

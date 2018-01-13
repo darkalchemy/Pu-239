@@ -1,11 +1,7 @@
 <?php
 
-$finder = PhpCsFixer\Finder::create()
-    ->exclude(['vendor', 'node_modules', 'imdb', '.github'])
-    ->in(__DIR__)
-;
-
-return PhpCsFixer\Config::create()
+$config = PhpCsFixer\Config::create()
+    ->setUsingCache(false)
     ->setRules([
         '@PSR2'                              => true,
         'no_whitespace_in_blank_line'        => true,
@@ -19,5 +15,10 @@ return PhpCsFixer\Config::create()
         'ternary_operator_spaces'            => true,
         'whitespace_after_comma_in_array'    => true
     ])
-    ->setFinder($finder)
+    ->setFinder(
+        PhpCsFixer\Finder::create()
+            ->in(__DIR__)
+    )
 ;
+
+return $config;

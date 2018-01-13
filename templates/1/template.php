@@ -237,7 +237,7 @@ function stdfoot($stdfoot = false)
                     </div>
                     <div class='size_4 top10 bottom10'>
                         <p class='is-marginless'>{$lang['gl_stdfoot_powered']}{$site_config['variant']}</p>
-                        <p class='is-marginless'>{$lang['gl_stdfoot_using']}{$lang['gl_stdfoot_using1']}</p>
+                        <p class='is-marginless'>{$lang['gl_stdfoot_using']}{$lang['gl_stdfoot_using1']} " . show_php_version() . "</p>
                     </div>
                 </div>
             </div>

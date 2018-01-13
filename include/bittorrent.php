@@ -2159,6 +2159,15 @@ function get_user_data(int $id)
     return $users_data;
 }
 
+function show_php_version()
+{
+    preg_match('/^(\d+\.\d+\.\d+).*$/', phpversion(), $match);
+    if (!empty($match[1])) {
+        return $match[1];
+    }
+    return phpversion();
+}
+
 if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {
     setSessionVar('is-danger', "[h1]This site is vulnerable until you delete the install directory[/h1][p]rm -r " . ROOT_DIR . "public" . DIRECTORY_SEPARATOR . "install" . DIRECTORY_SEPARATOR . "[/p]");
 }
