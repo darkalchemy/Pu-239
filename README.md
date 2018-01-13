@@ -20,6 +20,8 @@ This is a fork of U-232 V4.
 
 PHP 7.0+ is required, PHP 7.1 recommended.
 
+This code explicitly sets the php default timezone to 'UTC', it is recommended that you set the servers timezone to 'UTC' or change it in the code. The timezones must match. After changing the servers timezone, you must restart mysql.
+
 This is still a WIP and a few pages may not be functional in there current location.
 
 Do not use the xbt install, as it's update has not been started and is, therefore broken.
@@ -35,7 +37,7 @@ chown -R www-data:www-data Pu-239
 # install dependancies
 cd Pu-239
 composer install
-npm install bulma
+npm install
 
 # set webroot to path Pu-239/public
 
@@ -43,7 +45,7 @@ npm install bulma
 character-set-server=utf8mb4
 collation-server=utf8mb4_unicode_ci
 
-# goto website and complete install
+# goto website and complete install, all fields must be completed and each fields includes an example and tooltip explanation when hovered
 
 # delete public/install folder once directed to
 rm -r Pu-239/public/install/

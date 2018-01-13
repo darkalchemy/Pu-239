@@ -1,3 +1,8 @@
+13 Jan 2018
+update: install not continue if fields are blank
+fix: install back button and bad write config
+update: README.md
+
 12 Jan 2018
 add: default .php_cs - rules used
 update: run php-cs-fixer --rules=@PSR2

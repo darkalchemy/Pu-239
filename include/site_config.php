@@ -30,9 +30,7 @@ if (!function_exists('sys_getloadavg')) {
     }
 }
 
-if (version_compare(PHP_VERSION, REQUIRED_PHP_VERSION, '>=')) {
-    date_default_timezone_set('UTC');
-}
+date_default_timezone_set('UTC');
 
 $site_config['time_adjust'] = 0;
 $site_config['time_offset'] = '0';

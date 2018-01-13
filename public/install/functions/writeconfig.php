@@ -163,6 +163,21 @@ function saveconfig()
     <fieldset>
         <legend>Write config</legend>';
 
+    foreach ($_POST['config'] as $key => $value) {
+        if (!isset($value) || $value === '') {
+            $out .= "
+        <div class='notreadable'>$key must not be empty</div>";
+            $continue = false;
+        }
+    }
+    foreach ($_POST['announce'] as $key => $value) {
+        if (!isset($value) || $value === '') {
+            $out .= "
+        <div class='notreadable'>$key must not be empty</div>";
+            $continue = false;
+        }
+    }
+
     $file = '../../.env.example';
     if (file_exists($file)) {
         $env = file_get_contents($file);
@@ -238,7 +253,7 @@ function saveconfig()
         $out .= '
         </fieldset>
         <div style="text-align:center" class="info">
-            <input type="button" value="Go back" onclick="window.go(-1)"/>
+            <input type="button" value="Go back" onclick="goBack()"/>
         </div>';
     }
 
@@ -246,6 +261,12 @@ function saveconfig()
     <script>
         localStorage.setItem("step", 5);
         var processing = 5;
+
+        function goBack() {
+            localStorage.setItem("step", 4);
+            var processing = 4;
+            window.history.back();
+        }
     </script>';
 
     echo $out;
