@@ -113,11 +113,17 @@ if (!@($GLOBALS['___mysqli_ston'] = mysqli_connect($_ENV['DB_HOST'], $_ENV['DB_U
     die();
 }
 @((bool)mysqli_query($GLOBALS['___mysqli_ston'], "USE {$_ENV['DB_DATABASE']}")) or die();
-$numhash = count($_GET['info_hash']);
+
+$numhash = 1;
+if (!empty($_GET['info_hash']) && is_array($_GET['info_hash'])) {
+    $numhash = count($_GET['info_hash']);
+} elseif (empty($_GET['info_hash'])) {
+    $numhash = 0;
+}
 $torrents = [];
 if ($numhash < 1) {
     die('Scrape Error d5:filesdee');
-} elseif ($numhash == 1) {
+} elseif ($numhash === 1) {
     $torrent = get_torrent_from_hash($_GET['info_hash']);
     if ($torrent) {
         $torrents[$_GET['info_hash']] = $torrent;
@@ -135,18 +141,6 @@ $user = get_user_from_torrent_pass($torrent_pass);
 if (!$user || !count($torrents)) {
     die('scrape user error');
 }
-/*
-if (!$user['perms'] & bt_options::PERMS_BYPASS_BAN) {
-    $rip = $_SERVER['REMOTE_ADDR'];
-    $ip = getip();
-    if (check_bans($rip, false))
-        error('IP Banned');
-    elseif ($ip != $rip) {
-        if (check_bans($ip, false))
-            error('IP Banned');
-    }
-}
-*/
 $r = 'd5:filesd';
 foreach ($torrents as $info_hash => $torrent) {
     $r .= '20:' . $info_hash . 'd8:completei' . $torrent['seeders'] . 'e10:downloadedi' . $torrent['times_completed'] . 'e10:incompletei' . $torrent['leechers'] . 'ee';
