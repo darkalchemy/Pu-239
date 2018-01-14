@@ -178,67 +178,68 @@ function saveconfig()
         }
     }
 
-    $file = '../../.env.example';
-    if (file_exists($file)) {
-        $env = file_get_contents($file);
+    if ($continue) {
+        $file = '../../.env.example';
+        if (file_exists($file)) {
+            $env = file_get_contents($file);
+            $keys = array_map('foo', array_keys($_POST['config']));
+            $values = array_values($_POST['config']);
+            $env = preg_replace($keys, $values, $env);
+            if (file_put_contents('../../.env', $env)) {
+                $out .= '
+        <div class="readable">.env file was created</div>';
+            } else {
+                $out .= '
+        <div class="notreadable">.env file could not be saved</div>';
+                $continue = false;
+            }
+        }
+
+        if (isset($_POST['config']['xbt_tracker'])) {
+            $file = 'extra/config.xbtsample.php';
+            //$xbt = 1;
+        } else {
+            $file = 'extra/config.phpsample.php';
+            //$xbt = 0;
+        }
+
+        $config = file_get_contents($file);
         $keys = array_map('foo', array_keys($_POST['config']));
         $values = array_values($_POST['config']);
-        $env = preg_replace($keys, $values, $env);
-        if (file_put_contents('../../.env', $env)) {
+        $config = preg_replace($keys, $values, $config);
+        $config = preg_replace('/#pass1/', bin2hex(random_bytes(16)), $config);
+        $config = preg_replace('/#pass2/', bin2hex(random_bytes(16)), $config);
+        $config = preg_replace('/#pass3/', bin2hex(random_bytes(16)), $config);
+        $config = preg_replace('/#pass4/', bin2hex(random_bytes(16)), $config);
+
+        if (file_put_contents($root . 'include/config.php', $config)) {
             $out .= '
-        <div class="readable">.env file was created</div>';
+        <div class="readable">config.php file was created</div>';
         } else {
             $out .= '
-        <div class="notreadable">.env file could not be saved</div>';
+        <div class="notreadable">config.php file could not be saved</div>';
+            $continue = false;
+        }
+
+        $file = 'extra/ann_config.phpsample.php';
+        //$xbt = 0;
+        if (isset($_POST['config']['xbt_tracker'])) {
+            $file = 'extra/ann_config.xbtsample.php';
+            //$xbt = 1;
+        }
+        $announce = file_get_contents($file);
+        $keys = array_map('foo', array_keys($_POST['announce']));
+        $values = array_values($_POST['announce']);
+        $announce = preg_replace($keys, $values, $announce);
+        if (file_put_contents($root . 'include/ann_config.php', $announce)) {
+            $out .= '
+        <div class="readable">ann_config.php file was created</div>';
+        } else {
+            $out .= '
+        <div class="notreadable">ann_config.php file could not be saved</div>';
             $continue = false;
         }
     }
-
-    if (isset($_POST['config']['xbt_tracker'])) {
-        $file = 'extra/config.xbtsample.php';
-    //$xbt = 1;
-    } else {
-        $file = 'extra/config.phpsample.php';
-        //$xbt = 0;
-    }
-
-    $config = file_get_contents($file);
-    $keys = array_map('foo', array_keys($_POST['config']));
-    $values = array_values($_POST['config']);
-    $config = preg_replace($keys, $values, $config);
-    $config = preg_replace('/#pass1/', bin2hex(random_bytes(16)), $config);
-    $config = preg_replace('/#pass2/', bin2hex(random_bytes(16)), $config);
-    $config = preg_replace('/#pass3/', bin2hex(random_bytes(16)), $config);
-    $config = preg_replace('/#pass4/', bin2hex(random_bytes(16)), $config);
-
-    if (file_put_contents($root . 'include/config.php', $config)) {
-        $out .= '
-        <div class="readable">config.php file was created</div>';
-    } else {
-        $out .= '
-        <div class="notreadable">config.php file could not be saved</div>';
-        $continue = false;
-    }
-
-    $file = 'extra/ann_config.phpsample.php';
-    //$xbt = 0;
-    if (isset($_POST['config']['xbt_tracker'])) {
-        $file = 'extra/ann_config.xbtsample.php';
-        //$xbt = 1;
-    }
-    $announce = file_get_contents($file);
-    $keys = array_map('foo', array_keys($_POST['announce']));
-    $values = array_values($_POST['announce']);
-    $announce = preg_replace($keys, $values, $announce);
-    if (file_put_contents($root . 'include/ann_config.php', $announce)) {
-        $out .= '
-        <div class="readable">ann_config.php file was created</div>';
-    } else {
-        $out .= '
-        <div class="notreadable">ann_config.php file could not be saved</div>';
-        $continue = false;
-    }
-
     if ($continue) {
         //$xbt = 0;
         if (isset($_POST['config']['xbt_tracker'])) {

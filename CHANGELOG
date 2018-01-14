@@ -1,4 +1,5 @@
 13 Jan 2018
+update: installer not write config files if empty values
 update: explicitly set variable
 update: announce.php
 update: template to show current PHP version
