@@ -122,8 +122,8 @@ class AJAXChat
         $this->_requestVars['delete'] = isset($_REQUEST['delete']) ? (int)$_REQUEST['delete'] : null;
         $this->_requestVars['token'] = isset($_REQUEST['token']) ? $_REQUEST['token'] : null;
 
-        if (isset($_COOKIE[ $this->getConfig('sessionKeyPrefix') . 'settings' ])) {
-            $cookies = explode('&', $_COOKIE[ $this->getConfig('sessionKeyPrefix') . 'settings' ]);
+        if (isset($_COOKIE[$this->getConfig('sessionKeyPrefix') . 'settings'])) {
+            $cookies = explode('&', $_COOKIE[$this->getConfig('sessionKeyPrefix') . 'settings']);
             foreach ($cookies as $cookie) {
                 $split = explode('=', $cookie);
                 if ($split[0] === 'postDirection') {
@@ -191,9 +191,9 @@ class AJAXChat
     public function getConfig($key, $subkey = null)
     {
         if ($subkey) {
-            return $this->_config[ $key ][ $subkey ];
+            return $this->_config[$key][$subkey];
         } else {
-            return $this->_config[ $key ];
+            return $this->_config[$key];
         }
     }
 
@@ -205,12 +205,12 @@ class AJAXChat
     public function setConfig($key, $subkey, $value)
     {
         if ($subkey) {
-            if (!isset($this->_config[ $key ])) {
-                $this->_config[ $key ] = [];
+            if (!isset($this->_config[$key])) {
+                $this->_config[$key] = [];
             }
-            $this->_config[ $key ][ $subkey ] = $value;
+            $this->_config[$key][$subkey] = $value;
         } else {
-            $this->_config[ $key ] = $value;
+            $this->_config[$key] = $value;
         }
     }
 
@@ -342,17 +342,17 @@ class AJAXChat
                     continue;
                 }
                 if ($key) {
-                    if (!isset($userData[ $key ])) {
+                    if (!isset($userData[$key])) {
                         return $onlineUsersData;
                     }
                     if ($value !== null) {
-                        if ($userData[ $key ] == $value) {
+                        if ($userData[$key] == $value) {
                             array_push($onlineUsersData, $userData);
                         } else {
                             continue;
                         }
                     } else {
-                        array_push($onlineUsersData, $userData[ $key ]);
+                        array_push($onlineUsersData, $userData[$key]);
                     }
                 } else {
                     array_push($onlineUsersData, $userData);
@@ -414,7 +414,7 @@ class AJAXChat
         }
         $userID = ($userID === null) ? $this->getUserID() : $userID;
         for ($i = 0; $i < count($this->_onlineUsersData); ++$i) {
-            if ($this->_onlineUsersData[ $i ]['userID'] == $userID) {
+            if ($this->_onlineUsersData[$i]['userID'] == $userID) {
                 array_splice($this->_onlineUsersData, $i, 1);
                 break;
             }
@@ -476,14 +476,14 @@ class AJAXChat
         }
 
         $values = [
-            'userID'   => $userID,
+            'userID' => $userID,
             'userName' => $userName,
             'userRole' => $userRole,
-            'channel'  => $channelID,
+            'channel' => $channelID,
             'dateTime' => gmdate("Y-m-d H:i:s", TIME_NOW),
-            'ip'       => getip(),
-            'text'     => $text,
-            'ttl'      => $ttl,
+            'ip' => getip(),
+            'text' => $text,
+            'ttl' => $ttl,
         ];
 
         $stmt = $pdo->prepare(
@@ -496,10 +496,10 @@ class AJAXChat
         $lastInsertId = $pdo->lastInsertId();
 
         $set = [
-            'dailyshouts'   => new Envms\FluentPDO\Literal('dailyshouts + 1'),
-            'weeklyshouts'  => new Envms\FluentPDO\Literal('weeklyshouts + 1'),
+            'dailyshouts' => new Envms\FluentPDO\Literal('dailyshouts + 1'),
+            'weeklyshouts' => new Envms\FluentPDO\Literal('weeklyshouts + 1'),
             'monthlyshouts' => new Envms\FluentPDO\Literal('monthlyshouts + 1'),
-            'totalshouts'   => new Envms\FluentPDO\Literal('totalshouts + 1'),
+            'totalshouts' => new Envms\FluentPDO\Literal('totalshouts + 1'),
         ];
 
         $fluent->update('usersachiev')
@@ -544,7 +544,8 @@ class AJAXChat
         $channelID,
         $text,
         $mode
-    ) {
+    )
+    {
         // The $mode parameter:
         // 0 = normal messages
         // 1 = channel messages (e.g. login/logout, channel enter/leave, kick)
@@ -628,7 +629,8 @@ class AJAXChat
         $userRole,
         $channelID,
         $text
-    ) {
+    )
+    {
         $message = '<message';
         $message .= ' id="' . $messageID . '"';
         $message .= ' dateTime="' . date('r', $timeStamp) . '"';
@@ -676,8 +678,8 @@ class AJAXChat
      */
     public function getRequestVar($key)
     {
-        if ($this->_requestVars && isset($this->_requestVars[ $key ])) {
-            return $this->_requestVars[ $key ];
+        if ($this->_requestVars && isset($this->_requestVars[$key])) {
+            return $this->_requestVars[$key];
         }
 
         return null;
@@ -962,11 +964,11 @@ class AJAXChat
         if (!isset($this->_infoMessages)) {
             $this->_infoMessages = [];
         }
-        if (!isset($this->_infoMessages[ $type ])) {
-            $this->_infoMessages[ $type ] = [];
+        if (!isset($this->_infoMessages[$type])) {
+            $this->_infoMessages[$type] = [];
         }
-        if (!in_array($info, $this->_infoMessages[ $type ])) {
-            array_push($this->_infoMessages[ $type ], $info);
+        if (!in_array($info, $this->_infoMessages[$type])) {
+            array_push($this->_infoMessages[$type], $info);
         }
     }
 
@@ -1113,17 +1115,17 @@ class AJAXChat
         if ($key) {
             $bannedUsersData = [];
             foreach ($this->_bannedUsersData as $bannedUserData) {
-                if (!isset($bannedUserData[ $key ])) {
+                if (!isset($bannedUserData[$key])) {
                     return $bannedUsersData;
                 }
                 if ($value) {
-                    if ($bannedUserData[ $key ] == $value) {
+                    if ($bannedUserData[$key] == $value) {
                         array_push($bannedUsersData, $bannedUserData);
                     } else {
                         continue;
                     }
                 } else {
-                    array_push($bannedUsersData, $bannedUserData[ $key ]);
+                    array_push($bannedUsersData, $bannedUserData[$key]);
                 }
             }
 
@@ -1292,7 +1294,7 @@ class AJAXChat
         }
         $channels = $this->getAllChannels();
         if (array_key_exists($channelName, $channels)) {
-            return $channels[ $channelName ];
+            return $channels[$channelName];
         }
         $channelID = null;
         if ($channelName == $this->getPrivateChannelName()) {
@@ -1325,7 +1327,7 @@ class AJAXChat
         if ($this->_allChannels === null) {
             $this->_allChannels = [];
 
-            $this->_allChannels[ $this->trimChannelName($this->getConfig('defaultChannelName'), $this->getConfig('contentEncoding')) ] = $this->getConfig('defaultChannelID');
+            $this->_allChannels[$this->trimChannelName($this->getConfig('defaultChannelName'), $this->getConfig('contentEncoding'))] = $this->getConfig('defaultChannelID');
         }
 
         return $this->_allChannels;
@@ -1649,12 +1651,12 @@ class AJAXChat
     {
         global $pdo;
         $values = [
-            'userID'   => $this->getUserID(),
+            'userID' => $this->getUserID(),
             'userName' => $this->getUserName(),
             'userRole' => $this->getUserRole(),
-            'channel'  => $this->getChannel(),
+            'channel' => $this->getChannel(),
             'dateTime' => gmdate("Y-m-d H:i:s", TIME_NOW),
-            'ip'       => getip(),
+            'ip' => getip(),
         ];
 
         $sql = 'INSERT INTO ' . $this->getDataBaseTable('online') . '
@@ -1732,7 +1734,7 @@ class AJAXChat
      */
     public function getLangCode()
     {
-        $langCodeCookie = isset($_COOKIE[ $this->getConfig('sessionKeyPrefix') . 'lang' ]) ? $_COOKIE[ $this->getConfig('sessionKeyPrefix') . 'lang' ] : null;
+        $langCodeCookie = isset($_COOKIE[$this->getConfig('sessionKeyPrefix') . 'lang']) ? $_COOKIE[$this->getConfig('sessionKeyPrefix') . 'lang'] : null;
         $langCode = $this->getRequestVar('lang') ? $this->getRequestVar('lang') : $langCodeCookie;
         if (!in_array($langCode, $this->getConfig('langAvailable'))) {
             $language = new AJAXChatLanguage($this->getConfig('langAvailable'), $this->getConfig('langDefault'));
@@ -1808,6 +1810,9 @@ class AJAXChat
     {
     }
 
+    /**
+     *
+     */
     public function parseCommandRequests()
     {
         if ($this->getRequestVar('delete') !== null) {
@@ -1819,34 +1824,44 @@ class AJAXChat
      * @param $messageID
      *
      * @return bool
+     *
+     * @throws Exception
      */
     public function deleteMessage($messageID)
     {
         global $fluent;
 
-        if ($this->getUserRole() >= UC_ADMINISTRATOR) {
-            $result = $fluent->deleteFrom($this->getDataBaseTable('messages'))
+        $channel = $fluent->from($this->getDataBaseTable('messages'))
+            ->select(null)
+            ->select('channel')
+            ->where('id = ?', $messageID)
+            ->fetch('channel');
+
+        if ($channel) {
+            if ($this->getUserRole() >= UC_ADMINISTRATOR) {
+                $result = $fluent->deleteFrom($this->getDataBaseTable('messages'))
                     ->where('id = ?', $messageID)
                     ->where('(userRole = 100 OR userRole < ? OR userID = ?)', $this->getUserRole(), $this->getUserID())
                     ->execute();
-        } elseif ($this->getUserRole() >= UC_STAFF) {
-            $result = $fluent->deleteFrom($this->getDataBaseTable('messages'))
+            } elseif ($this->getUserRole() >= UC_STAFF) {
+                $result = $fluent->deleteFrom($this->getDataBaseTable('messages'))
                     ->where('id = ?', $messageID)
                     ->where('(userRole < ? OR userID = ?)', UC_STAFF, $this->getUserID())
                     ->where('userRole != ?', AJAX_CHAT_CHATBOT)
                     ->execute();
-        } elseif ($this->getUserRole() < UC_STAFF && $this->getConfig('allowUserMessageDelete')) {
-            $result = $fluent->deleteFrom($this->getDataBaseTable('messages'))
+            } elseif ($this->getUserRole() < UC_STAFF && $this->getConfig('allowUserMessageDelete')) {
+                $result = $fluent->deleteFrom($this->getDataBaseTable('messages'))
                     ->where('id = ?', $messageID)
                     ->where('userID = ?', $this->getUserID())
                     ->execute();
-        } else {
-            return false;
-        }
+            } else {
+                return false;
+            }
 
-        if ($result) {
-            $this->insertChatBotMessage($channel, '/delete ' . $messageID, 0, 240);
-            return true;
+            if ($result) {
+                $this->insertChatBotMessage($channel, '/delete ' . $messageID, 0, 240);
+                return true;
+            }
         }
         return false;
     }
@@ -3246,12 +3261,12 @@ class AJAXChat
             $cache->delete('user_rep_' . $whereisUserID);
             $save = [
                 'reputation' => sqlesc($gift),
-                'whoadded'   => sqlesc($CURUSER['id']),
-                'reason'     => sqlesc('AJAX Chat'),
-                'dateadd'    => time(),
-                'locale'     => sqlesc('torrents'),
-                'postid'     => 0,
-                'userid'     => sqlesc($whereisUserID),
+                'whoadded' => sqlesc($CURUSER['id']),
+                'reason' => sqlesc('AJAX Chat'),
+                'dateadd' => time(),
+                'locale' => sqlesc('torrents'),
+                'postid' => 0,
+                'userid' => sqlesc($whereisUserID),
             ];
             $sql = 'INSERT INTO reputation (' . implode(', ', array_keys($save)) . ') VALUES (' . implode(', ', $save) . ')';
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
@@ -3421,11 +3436,11 @@ class AJAXChat
             $this->_infoMessages = [];
         }
         if ($type) {
-            if (!isset($this->_infoMessages[ $type ])) {
-                $this->_infoMessages[ $type ] = [];
+            if (!isset($this->_infoMessages[$type])) {
+                $this->_infoMessages[$type] = [];
             }
 
-            return $this->_infoMessages[ $type ];
+            return $this->_infoMessages[$type];
         } else {
             return $this->_infoMessages;
         }
@@ -3836,7 +3851,7 @@ class AJAXChat
         if (!$this->_requestVars) {
             $this->_requestVars = [];
         }
-        $this->_requestVars[ $key ] = $value;
+        $this->_requestVars[$key] = $value;
     }
 
     /**
@@ -3930,8 +3945,8 @@ class AJAXChat
         if ($key === null) {
             return $this->_lang;
         }
-        if (isset($this->_lang[ $key ])) {
-            return $this->_lang[ $key ];
+        if (isset($this->_lang[$key])) {
+            return $this->_lang[$key];
         }
 
         return null;
@@ -3964,11 +3979,11 @@ class AJAXChat
         if (!isset($this->_customVars)) {
             $this->_customVars = [];
         }
-        if (!isset($this->_customVars[ $key ])) {
+        if (!isset($this->_customVars[$key])) {
             return null;
         }
 
-        return $this->_customVars[ $key ];
+        return $this->_customVars[$key];
     }
 
     /**
@@ -3980,7 +3995,7 @@ class AJAXChat
         if (!isset($this->_customVars)) {
             $this->_customVars = [];
         }
-        $this->_customVars[ $key ] = $value;
+        $this->_customVars[$key] = $value;
     }
 
     /**

@@ -22,7 +22,8 @@ $stdfoot = [
         get_file_name('details_js'),
     ],
 ];
-$HTMLOUT = $torrent_cache = '';
+$torrent_cache = [];
+$HTMLOUT = '';
 $dt = TIME_NOW;
 
 if (!isset($_GET['id']) || !is_valid_id($_GET['id'])) {

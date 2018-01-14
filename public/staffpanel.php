@@ -278,7 +278,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[ $too
         if ($CURUSER['class'] == UC_MAX) {
             $add_button = "
                 <div class='has-text-centered bottom20'>
-                    <a href='{$site_config['baseurl']}/staffpanel.php?action=add' class='tooltipper button' title='{$lang['spanel_add_a_new_pg']}'>{$lang['spanel_add_a_new_pg']}</a>
+                    <a href='{$site_config['baseurl']}/staffpanel.php?action=add' class='tooltipper button is-small' title='{$lang['spanel_add_a_new_pg']}'>{$lang['spanel_add_a_new_pg']}</a>
                 </div>";
         }
         $res = sql_query('SELECT s.*, u.username 

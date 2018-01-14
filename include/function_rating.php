@@ -1,20 +1,18 @@
 <?php
+
 /**
  * @param $id
  * @param $what
  *
- * @return string|void
+ * @return bool|string
  */
 function getRate($id, $what)
 {
-    global $CURUSER, $cache;
-    if ($id == 0 || !in_array($what, [
-            'topic',
-            'torrent',
-        ])) {
-        return;
+    global $CURUSER, $cache, $site_config;
+    $return = false;
+    if ($id == 0 || !in_array($what, ['topic', 'torrent'])) {
+        return $return;
     }
-    //== lets memcache $what
     $keys['rating'] = 'rating_' . $what . '_' . $id . '_' . $CURUSER['id'];
     $rating_cache = $cache->get($keys['rating']);
     if ($rating_cache === false || is_null($rating_cache)) {
@@ -24,7 +22,6 @@ function getRate($id, $what)
     }
     $completeres = sql_query('SELECT * FROM ' . (XBT_TRACKER == true ? 'xbt_files_users' : 'snatched') . ' WHERE ' . (XBT_TRACKER == true ? 'completedtime !=0' : 'complete_date !=0') . ' AND ' . (XBT_TRACKER == true ? 'uid' : 'userid') . ' = ' . $CURUSER['id'] . ' AND ' . (XBT_TRACKER == true ? 'fid' : 'torrentid') . ' = ' . $id);
     $completecount = mysqli_num_rows($completeres);
-    // outputs
     if ($rating_cache['rated']) {
         $rate = '<ul class="star-rating tooltipper" title="You rated this ' . $what . ' ' . htmlsafechars($rating_cache['rating']) . ' star' . (htmlsafechars($rating_cache['rating']) > 1 ? 's' : '') . '"><li class="current-rating">.</li></ul>';
     } elseif ($what == 'torrent' && $completecount == 0) {

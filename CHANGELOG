@@ -1,3 +1,7 @@
+14 Jan 2018
+fix: missing variable in AJAX Chat
+update: missing global
+
 13 Jan 2018
 update: installer not write config files if empty values
 update: explicitly set variable
