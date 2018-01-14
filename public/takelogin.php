@@ -23,6 +23,7 @@ function failedloginscheck()
         stderr('Login Locked!', 'You have <b>Exceeded</b> the allowed maximum login attempts without successful login, therefore your ip address <b>(' . htmlsafechars($ip) . ')</b> has been locked for 24 hours.');
     }
 }
+
 if (!mkglobal('username:password' . ($site_config['captcha_on'] ? ':captchaSelection:' : ':') . 'submitme')) {
     die('Something went wrong');
 }

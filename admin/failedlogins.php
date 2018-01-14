@@ -69,14 +69,14 @@ if (!$where) {
 $HTMLOUT = '';
 $HTMLOUT .= "<table border='1' cellspacing='0' width='115' cellpadding='5'>\n
              <tr>
-			 <td class='tabletitle'>{$lang['failed_main_search']}</td>\n
-			 </tr>
+             <td class='tabletitle'>{$lang['failed_main_search']}</td>\n
+             </tr>
              <tr>
-			 <td class='table'>\n
-			 <form method='post' action='staffpanel.php?tool=failedlogins&amp;action=failedlogins'>\n
-			 <input type='text' name='search' size='40' value='' />\n
-			 <input type='submit' value='{$lang['failed_main_search_btn']}' style='height: 20px;' />\n
-			 </form></td></tr></table>";
+             <td class='table'>\n
+             <form method='post' action='staffpanel.php?tool=failedlogins&amp;action=failedlogins'>\n
+             <input type='text' name='search' size='40' value='' />\n
+             <input type='submit' value='{$lang['failed_main_search_btn']}' style='height: 20px;' />\n
+             </form></td></tr></table>";
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }

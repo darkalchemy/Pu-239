@@ -35,27 +35,27 @@ if (isset($_POST['numImages']) && strlen($_POST['numImages']) > 0) {
 $numImages = ($numImages > 0) ? $numImages : 5;
 $size = sizeof($images);
 $num = min([
-    $size,
-    $numImages,
-]);
+               $size,
+               $numImages,
+           ]);
 $keys = array_keys($images);
 $used = [];
 for ($i = 0; $i < $num; ++$i) {
     $r = random_int(0, $size - 1);
-    while (array_search($keys[ $r ], $used) !== false) {
+    while (array_search($keys[$r], $used) !== false) {
         $r = random_int(0, $size - 1);
     }
-    array_push($used, $keys[ $r ]);
+    array_push($used, $keys[$r]);
 }
-$selectText = $used[ random_int(0, $num - 1) ];
+$selectText = $used[random_int(0, $num - 1)];
 setSessionVar('simpleCaptchaAnswer', hash('sha512', $selectText . $site_config['site']['salt']));
 $resp['text'] = $selectText;
 $resp['images'] = [];
 shuffle($used);
 for ($i = 0; $i < sizeof($used); ++$i) {
     array_push($resp['images'], [
-        'hash' => hash('sha512', $used[ $i ] . $site_config['site']['salt']),
-        'file' => $images[ $used[ $i ] ],
+        'hash' => hash('sha512', $used[$i] . $site_config['site']['salt']),
+        'file' => $images[$used[$i]],
     ]);
 }
 echo json_encode($resp);

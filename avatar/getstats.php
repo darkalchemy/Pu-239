@@ -115,42 +115,42 @@ function getStats($user, $forced = false)
     foreach ($ops as $op) {
         switch ($op) {
             case 1:
-                $var[ 'line' . $i ]['value_p'] = $a['posts'] . ' post' . ($a['posts'] > 1 ? 's' : '');
+                $var['line' . $i]['value_p'] = $a['posts'] . ' post' . ($a['posts'] > 1 ? 's' : '');
                 break;
 
             case 2:
                 //$var['line'.$i]['value_p'] = mksize($a['downloaded']) . " - " . mksize($a['uploaded']);
-                $var[ 'line' . $i ]['value_p'] = mksize($a['downloaded']) . ' - ' . mksize($a['uploaded']);
+                $var['line' . $i]['value_p'] = mksize($a['downloaded']) . ' - ' . mksize($a['uploaded']);
                 break;
 
             case 3:
                 list($days, $hours, $mins) = explode(',', calctime($a['irctotal']));
-                $var[ 'line' . $i ]['value_p'] = "$days - $hours";
+                $var['line' . $i]['value_p'] = "$days - $hours";
                 //$var['line'.$i]['value_p'] = "not yet";
                 break;
 
             case 4:
-                $var[ 'line' . $i ]['value_p'] = $a['reputation'] . ' point' . ($a['reputation'] > 1 ? 's' : '');
+                $var['line' . $i]['value_p'] = $a['reputation'] . ' point' . ($a['reputation'] > 1 ? 's' : '');
                 break;
 
             case 5:
                 foreach ($countries as $c) {
                     if ($c['id'] == $a['country']) {
-                        $var[ 'line' . $i ]['value_p'] = $c;
+                        $var['line' . $i]['value_p'] = $c;
                     }
                 }
                 break;
 
             case 6:
-                $var[ 'line' . $i ]['value_p'] = $a['comments'] . ' comment' . ($a['comments'] > 1 ? 's' : '');
+                $var['line' . $i]['value_p'] = $a['comments'] . ' comment' . ($a['comments'] > 1 ? 's' : '');
                 break;
 
             case 7:
-                $var[ 'line' . $i ]['value_p'] = $a['browser'];
+                $var['line' . $i]['value_p'] = $a['browser'];
                 break;
 
             case 8:
-                $var[ 'line' . $i ]['value_p'] = $a['hits'] . ' hit' . ($a['hits'] > 1 ? 's' : '');
+                $var['line' . $i]['value_p'] = $a['hits'] . ' hit' . ($a['hits'] > 1 ? 's' : '');
                 break;
             /*
                   case 9:
@@ -159,7 +159,7 @@ function getStats($user, $forced = false)
                       break;
             */
             case 9:
-                $var[ 'line' . $i ]['value_p'] = time_return($a['onlinetime']);
+                $var['line' . $i]['value_p'] = time_return($a['onlinetime']);
                 break;
         }
         ++$i;

@@ -25,11 +25,11 @@ if (mysqli_num_rows($res) == 0) {
     $HTMLOUT .= "<p><b>{$lang['achlst_there_no_ach_msg']}!<br>{$lang['achlst_staff_been_lazy']}!</b></p>\n";
 } else {
     $heading = "
-    		<tr>
-	        	<th>{$lang['achlst_achievname']}</th>
-        		<th>{$lang['achlst_description']}</th>
-		        <th>{$lang['achlst_earned']}</th>
-    		</tr>";
+            <tr>
+                <th>{$lang['achlst_achievname']}</th>
+                <th>{$lang['achlst_description']}</th>
+                <th>{$lang['achlst_earned']}</th>
+            </tr>";
     $body = '';
     while ($arr = mysqli_fetch_assoc($res)) {
         $notes = htmlsafechars($arr['notes']);
@@ -39,10 +39,10 @@ if (mysqli_num_rows($res) == 0) {
         }
         $body .= "
             <tr>
-			    <td>$clienticon</td>
-    			<td>$notes</td>
-	    		<td>" . htmlsafechars($arr['count']) . " time" . plural($arr['count']) . "</td>
-			</tr>";
+                <td>$clienticon</td>
+                <td>$notes</td>
+                <td>" . htmlsafechars($arr['count']) . " time" . plural($arr['count']) . "</td>
+            </tr>";
     }
 }
 $HTMLOUT .= main_table($body, $heading);
@@ -50,24 +50,24 @@ $HTMLOUT .= main_table($body, $heading);
 if ($CURUSER['class'] === UC_MAX) {
     $HTMLOUT .= "
     <h2>{$lang['achlst_add_an_ach_lst']}</h2>
-	<form method='post' action='achievementlist.php'>" . main_table("
-    		<tr>
-	        	<td class='w-15'>{$lang['achlst_achievname']}</td>
+    <form method='post' action='achievementlist.php'>" . main_table("
+            <tr>
+                <td class='w-15'>{$lang['achlst_achievname']}</td>
                 <td><input class='w-100' type='text' name='achievname' /></td>
-    		</tr>
+            </tr>
             <tr>
                 <td>{$lang['achlst_achievicon']}</td>
                 <td><textarea class='w-100' rows='3' name='clienticon'></textarea></td>
             </tr>
-    		<tr>
-	        	<td>{$lang['achlst_description']}</td>
+            <tr>
+                <td>{$lang['achlst_description']}</td>
                 <td><textarea class='w-100' rows='6' name='notes'></textarea></td>
-    		</tr>
-	    	<tr>
-		        <td colspan='2' class='has-text-centered'>
+            </tr>
+            <tr>
+                <td colspan='2' class='has-text-centered'>
                     <input type='submit' name='okay' value='{$lang['achlst_add_me']}!' class='button is-small' />
                 </td>
-    		</tr>") . "
+            </tr>") . "
     </form>";
 }
 echo stdhead($lang['achlst_std_head']) . wrapper($HTMLOUT, 'has-text-centered') . stdfoot();

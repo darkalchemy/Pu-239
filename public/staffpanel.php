@@ -43,11 +43,11 @@ $staff_tools['shit_list'] = 'shit_list';
 $sql = sql_query('SELECT file_name FROM staffpanel') or sqlerr(__FILE__, __LINE__);
 while ($list = mysqli_fetch_assoc($sql)) {
     $item = str_replace(['staffpanel.php?tool=', '.php', '&mode=news', '&action=app'], '', $list['file_name']);
-    $staff_tools[ $item ] = $item;
+    $staff_tools[$item] = $item;
 }
 
-if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[ $tool ] . '.php')) {
-    require_once ADMIN_DIR . $staff_tools[ $tool ] . '.php';
+if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[$tool] . '.php')) {
+    require_once ADMIN_DIR . $staff_tools[$tool] . '.php';
 } else {
     if ($action == 'delete' && is_valid_id($id) && $CURUSER['class'] == UC_MAX) {
         $sure = ((isset($_GET['sure']) ? $_GET['sure'] : '') == 'yes');
@@ -90,7 +90,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[ $too
             $arr = mysqli_fetch_assoc($res);
         }
         foreach ($names as $name) {
-            $$name = (isset($_POST[ $name ]) ? $_POST[ $name ] : ($action == 'edit' ? $arr[ $name ] : ''));
+            $$name = (isset($_POST[$name]) ? $_POST[$name] : ($action == 'edit' ? $arr[$name] : ''));
         }
         if ($action == 'edit' && $CURUSER['class'] < $av_class) {
             stderr($lang['spanel_error'], $lang['spanel_cant_edit_this_pg']);
@@ -131,15 +131,15 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[ $too
                 if ($action == 'add') {
                     $res = sql_query('INSERT INTO staffpanel (page_name, file_name, description, type, av_class, added_by, added, navbar)
                                       VALUES (' . implode(', ', array_map('sqlesc', [
-                            $page_name,
-                            $file_name,
-                            $description,
-                            $type,
-                            (int)$av_class,
-                            (int)$CURUSER['id'],
-                            TIME_NOW,
-                            $navbar,
-                        ])) . ')');
+                                         $page_name,
+                                         $file_name,
+                                         $description,
+                                         $type,
+                                         (int)$av_class,
+                                         (int)$CURUSER['id'],
+                                         TIME_NOW,
+                                         $navbar,
+                                     ])) . ')');
                     $cache->delete('is_staffs_');
                     $cache->delete('av_class_');
                     $cache->delete('staff_panels_6');
@@ -292,7 +292,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[ $too
                 $mysql_data[] = $arr;
             }
             foreach ($mysql_data as $key => $value) {
-                $db_classes[ $value['av_class'] ][] = $value['av_class'];
+                $db_classes[$value['av_class']][] = $value['av_class'];
             }
             $i = 1;
             $HTMLOUT .= "
@@ -312,7 +312,7 @@ if (in_array($tool, $staff_tools) and file_exists(ADMIN_DIR . $staff_tools[ $too
                     </tr>';
             $body = '';
             foreach ($mysql_data as $key => $arr) {
-                $end_table = (count($db_classes[ $arr['av_class'] ]) == $i ? true : false);
+                $end_table = (count($db_classes[$arr['av_class']]) == $i ? true : false);
 
                 if (!in_array($arr['av_class'], $unique_classes)) {
                     $unique_classes[] = $arr['av_class'];

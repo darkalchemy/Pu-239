@@ -75,7 +75,7 @@ function memsize($size, $precision = 3, $space = false)
         "%.{$precision}f%s%s",
         $size,
         (($space && $i) ? ' ' : ''),
-        $val[ $i ]
+        $val[$i]
     );
 }
 
@@ -98,9 +98,9 @@ $data = array_merge(
     [
         'total_memory_size'      => memsize($opcache_config['directives']['opcache.memory_consumption']),
         'used_memory_percentage' => round(100 * (
-                ($opcache_status['memory_usage']['used_memory'] + $opcache_status['memory_usage']['wasted_memory'])
-                / $opcache_config['directives']['opcache.memory_consumption']
-            )),
+                                              ($opcache_status['memory_usage']['used_memory'] + $opcache_status['memory_usage']['wasted_memory'])
+                                              / $opcache_config['directives']['opcache.memory_consumption']
+                                          )),
         'hit_rate_percentage'    => round($opcache_status['opcache_statistics']['opcache_hit_rate']),
         'wasted_percentage'      => round($opcache_status['memory_usage']['current_wasted_percentage'], 2),
         'used_memory_size'       => memsize($opcache_status['memory_usage']['used_memory']),
@@ -340,8 +340,10 @@ empty($_SERVER['SERVER_NAME'])
 
 <div style="text-align:center;margin-bottom:2em;">
     <p>
-        <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=op&page=overview" class="button is-small">Overview</a>
-        <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=op&page=files" class="button is-small">File usage</a>
+        <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=op&page=overview"
+           class="button is-small">Overview</a>
+        <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=op&page=files" class="button is-small">File
+            usage</a>
         <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=op&page=reset" class="button is-small"
            onclick="return confirm('Are you sure you want to reset the cache?');">Reset cache</a>
     </p>

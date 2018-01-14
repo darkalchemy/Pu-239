@@ -58,7 +58,7 @@ $res = sql_query('
             INNER JOIN torrents AS t ON s.torrentid = t.id 
             WHERE s.complete_date !=0 AND s.torrentid = ' . sqlesc($id) . '
             ORDER BY complete_date DESC ' .
-    $pager['limit']) or sqlerr(__FILE__, __LINE__);
+                 $pager['limit']) or sqlerr(__FILE__, __LINE__);
 $body = '';
 while ($arr = mysqli_fetch_assoc($res)) {
     $upspeed = ($arr['upspeed'] > 0 ? mksize($arr['upspeed']) : ($arr['seedtime'] > 0 ? mksize($arr['uploaded'] / ($arr['seedtime'] + $arr['leechtime'])) : mksize(0)));

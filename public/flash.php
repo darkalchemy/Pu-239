@@ -66,7 +66,7 @@ $res = sql_query('SELECT * FROM flashscores WHERE game = ' . sqlesc($gamename) .
 
 if (mysqli_num_rows($res) > 0) {
     $id = array_search($gamename, $site_config['arcade_games']);
-    $fullgamename = $site_config['arcade_games_names'][ $id ];
+    $fullgamename = $site_config['arcade_games_names'][$id];
     $HTMLOUT .= "
         <table class='table table-bordered table-striped top20 bottom20'>
             <thead>
@@ -138,7 +138,7 @@ if (mysqli_num_rows($res) > 0) {
 } //}
 else {
     $id = array_search($gamename, $site_config['arcade_games']);
-    $fullgamename = $site_config['arcade_games_names'][ $id ];
+    $fullgamename = $site_config['arcade_games_names'][$id];
     $HTMLOUT .= "
         <table class='table table-bordered table-striped top20 bottom20'>
             <thead>

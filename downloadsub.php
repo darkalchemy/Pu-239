@@ -16,10 +16,10 @@ if ($action == 'download') {
         $arr = mysqli_fetch_assoc($res);
         $ext = (substr($arr['filename'], -3));
         $fileName = str_replace([
-                ' ',
-                '.',
-                '-',
-            ], '_', $arr['name']) . '.' . $ext;
+                                    ' ',
+                                    '.',
+                                    '-',
+                                ], '_', $arr['name']) . '.' . $ext;
         $file = $site_config['sub_up_dir'] . '/' . $arr['filename'];
         $fileContent = file_get_contents($file);
         $newFile = fopen("{$site_config['sub_up_dir']}/$fileName", 'w');
@@ -29,10 +29,10 @@ if ($action == 'download') {
         $zip = new PHPZip();
         $file[] = "{$site_config['sub_up_dir']}/$fileName";
         $fName = "{$site_config['sub_up_dir']}/" . str_replace([
-                ' ',
-                '.',
-                '-',
-            ], '_', $arr['name']) . '.zip';
+                                                                   ' ',
+                                                                   '.',
+                                                                   '-',
+                                                               ], '_', $arr['name']) . '.zip';
         $zip->Zip($file, $fName);
         $zip->forceDownload($fName);
         @unlink($fName);

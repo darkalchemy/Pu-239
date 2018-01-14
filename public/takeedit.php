@@ -43,7 +43,7 @@ function valid_torrent_name($torrent_name)
 {
     $allowedchars = 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-_[]*()';
     for ($i = 0; $i < strlen($torrent_name); ++$i) {
-        if (strpos($allowedchars, $torrent_name[ $i ]) === false) {
+        if (strpos($allowedchars, $torrent_name[$i]) === false) {
             return false;
         }
     }
@@ -289,7 +289,7 @@ $release_group_choices = [
 ];
 {
     $release_group = (isset($_POST['release_group']) ? $_POST['release_group'] : 'none');
-    if (isset($release_group_choices[ $release_group ])) {
+    if (isset($release_group_choices[$release_group])) {
         $updateset[] = 'release_group = ' . sqlesc($release_group);
     }
     $torrent_cache['release_group'] = $release_group;

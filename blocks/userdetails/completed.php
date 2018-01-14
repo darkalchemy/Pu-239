@@ -1,13 +1,13 @@
 <?php
-//==09 Hnr mod - sir_snugglebunny
-if ($site_config['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_POWER_USER) {
+global $CURUSER, $site_config;
+
+if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_POWER_USER) {
     $completed = $count2 = $dlc = '';
     if (XBT_TRACKER === false) {
         $r = sql_query("SELECT torrents.name, torrents.added AS torrent_added, snatched.complete_date AS c, snatched.downspeed, snatched.seedtime, snatched.seeder, snatched.torrentid AS tid, snatched.id, categories.id AS category, categories.image, categories.name AS catname, snatched.uploaded, snatched.downloaded, snatched.hit_and_run, snatched.mark_of_cain, snatched.complete_date, snatched.last_action, torrents.seeders, torrents.leechers, torrents.owner, snatched.start_date AS st, snatched.start_date FROM snatched JOIN torrents ON torrents.id = snatched.torrentid JOIN categories ON categories.id = torrents.category WHERE snatched.finished='yes' AND userid=" . sqlesc($id) . ' AND torrents.owner != ' . sqlesc($id) . ' ORDER BY snatched.id DESC') or sqlerr(__FILE__, __LINE__);
     } else {
         $r = sql_query("SELECT torrents.name, torrents.added AS torrent_added, xbt_files_users.started AS st, xbt_files_users.completedtime AS c, xbt_files_users.downspeed, xbt_files_users.seedtime, xbt_files_users.active, xbt_files_users.left, xbt_files_users.fid AS tid, categories.id AS category, categories.image, categories.name AS catname, xbt_files_users.uploaded, xbt_files_users.downloaded, xbt_files_users.hit_and_run, xbt_files_users.mark_of_cain, xbt_files_users.completedtime, xbt_files_users.mtime, xbt_files_users.uid, torrents.seeders, torrents.leechers, torrents.owner FROM xbt_files_users JOIN torrents ON torrents.id = xbt_files_users.fid JOIN categories ON categories.id = torrents.category WHERE xbt_files_users.completed>='1' AND uid=" . sqlesc($id) . ' AND torrents.owner != ' . sqlesc($id) . ' ORDER BY xbt_files_users.fid DESC') or sqlerr(__FILE__, __LINE__);
     }
-    //=== completed
     if (mysqli_num_rows($r) > 0) {
         $completed .= "<table class='main' >
     <tr>
@@ -23,51 +23,47 @@ if ($site_config['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] =
     <td class='colhead'>{$lang['userdetails_speed']}</td></tr>";
         while ($a = mysqli_fetch_assoc($r)) {
             $What_Id = (XBT_TRACKER == true ? $a['tid'] : $a['id']);
-            //=======change colors
             $torrent_needed_seed_time = ($a['st'] - $a['torrent_added']);
-            //=== get times per class
             switch (true) {
-                case $user['class'] <= $site_config['firstclass']:
-                    $days_3 = $site_config['_3day_first'] * 3600; //== 1 days
-                    $days_14 = $site_config['_14day_first'] * 3600; //== 1 days
-                    $days_over_14 = $site_config['_14day_over_first'] * 3600; //== 1 day
+                case $user['class'] <= $site_config['hnr_config']['firstclass']:
+                    $days_3 = $site_config['hnr_config']['_3day_first'] * 3600;
+                    $days_14 = $site_config['hnr_config']['_14day_first'] * 3600;
+                    $days_over_14 = $site_config['hnr_config']['_14day_over_first'] * 3600;
                     break;
-                case $user['class'] < $site_config['secondclass']:
-                    $days_3 = $site_config['_3day_second'] * 3600; //== 12 hours
-                    $days_14 = $site_config['_14day_second'] * 3600; //== 12 hours
-                    $days_over_14 = $site_config['_14day_over_second'] * 3600; //== 12 hours
+                case $user['class'] < $site_config['hnr_config']['secondclass']:
+                    $days_3 = $site_config['hnr_config']['(_3day_second'] * 3600;
+                    $days_14 = $site_config['hnr_config']['(_14day_second'] * 3600;
+                    $days_over_14 = $site_config['hnr_config']['(_14day_over_second'] * 3600;
                     break;
-                case $user['class'] >= $site_config['secondclass'] && $user['class'] < $site_config['thirdclass']:
-                    $days_3 = $site_config['_3day_second'] * 3600; //== 12 hours
-                    $days_14 = $site_config['_14day_second'] * 3600; //== 12 hours
-                    $days_over_14 = $site_config['_14day_over_second'] * 3600; //== 12 hours
+                case $user['class'] >= $site_config['hnr_config']['secondclass'] && $user['class'] < $site_config['hnr_config']['thirdclass']:
+                    $days_3 = $site_config['hnr_config']['(_3day_second'] * 3600;
+                    $days_14 = $site_config['hnr_config']['(_14day_second'] * 3600;
+                    $days_over_14 = $site_config['hnr_config']['(_14day_over_second'] * 3600;
                     break;
-                case $user['class'] >= $site_config['thirdclass']:
-                    $days_3 = $site_config['_3day_third'] * 3600; //== 12 hours
-                    $days_14 = $site_config['_14day_third'] * 3600; //== 12 hours
-                    $days_over_14 = $site_config['_14day_over_third'] * 3600; //== 12 hours
+                case $user['class'] >= $site_config['hnr_config']['thirdclass']:
+                    $days_3 = $site_config['hnr_config']['(_3day_third'] * 3600;
+                    $days_14 = $site_config['hnr_config']['(_14day_third'] * 3600;
+                    $days_over_14 = $site_config['hnr_config']['(_14day_over_third'] * 3600;
                     break;
                 default:
-                    $days_3 = 0; //== 12 hours
-                    $days_14 = 0; //== 12 hours
-                    $days_over_14 = 0; //== 12 hours
+                    $days_3 = 0;
+                    $days_14 = 0;
+                    $days_over_14 = 0;
             }
-            //=== times per torrent based on age
             $foo = $a['downloaded'] > 0 ? $a['uploaded'] / $a['downloaded'] : 0;
             switch (true) {
-                case ($a['st'] - $a['torrent_added']) < $site_config['torrentage1'] * 86400:
+                case ($a['st'] - $a['torrent_added']) < $site_config['hnr_config']['(torrentage1'] * 86400:
                     $minus_ratio = ($days_3 - $a['seedtime']) - ($foo * 3 * 86400);
                     break;
 
-                case ($a['st'] - $a['torrent_added']) < $site_config['torrentage2'] * 86400:
+                case ($a['st'] - $a['torrent_added']) < $site_config['hnr_config']['(torrentage2'] * 86400:
                     $minus_ratio = ($days_14 - $a['seedtime']) - ($foo * 2 * 86400);
                     break;
 
-                case ($a['st'] - $a['torrent_added']) >= $site_config['torrentage3'] * 86400:
+                case ($a['st'] - $a['torrent_added']) >= $site_config['hnr_config']['(torrentage3'] * 86400:
                     $minus_ratio = ($days_over_14 - $a['seedtime']) - ($foo * 86400);
                     break;
             }
-            //=== times per torrent based on age
             $foo = $a['downloaded'] > 0 ? $a['uploaded'] / $a['downloaded'] : 0;
             switch (true) {
                 case ($a['st'] - $a['torrent_added']) < 7 * 86400:
@@ -84,7 +80,6 @@ if ($site_config['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] =
             }
             $color = (($minus_ratio > 0 && $a['uploaded'] < $a['downloaded']) ? get_ratio_color($minus_ratio) : 'limegreen');
             $minus_ratio = mkprettytime($minus_ratio);
-            //=== speed color red fast green slow ;)
             if ($a['downspeed'] > 0) {
                 $dl_speed = ($a['downspeed'] > 0 ? mksize($a['downspeed']) : ($a['leechtime'] > 0 ? mksize($a['downloaded'] / $a['leechtime']) : mksize(0)));
             } else {
@@ -107,7 +102,6 @@ if ($site_config['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] =
                     $dlc = 'Chartreuse';
                     break;
             }
-            //=== mark of cain / hit and run
             $checkbox_for_delete = ($CURUSER['class'] >= UC_STAFF ? " [<a href='" . $site_config['baseurl'] . '/userdetails.php?id=' . $id . '&amp;delete_hit_and_run=' . (int)$What_Id . "'>{$lang['userdetails_c_remove']}</a>]" : '');
             $mark_of_cain = ($a['mark_of_cain'] == 'yes' ? "<img src='{$site_config['pic_base_url']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' title='{$lang['userdetails_c_tmofcain']}' />" . $checkbox_for_delete : '');
             $hit_n_run = ($a['hit_and_run'] > 0 ? "<img src='{$site_config['pic_base_url']}hnr.gif' width='40px' alt='{$lang['userdetails_c_hitrun']}' title='{$lang['userdetails_c_hitrun1']}' />" : '');
@@ -149,6 +143,4 @@ if ($site_config['hnr_online'] == 1 && $user['paranoia'] < 2 || $CURUSER['id'] =
         }
     }
 }
-//==End hnr
-// End Class
-// End File
+

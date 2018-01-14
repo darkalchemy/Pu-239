@@ -50,7 +50,7 @@ if (!empty($slot)) {
 }
 $categorie = genrelist();
 foreach ($categorie as $key => $value) {
-    $change[ $value['id'] ] = [
+    $change[$value['id']] = [
         'id'    => $value['id'],
         'name'  => $value['name'],
         'image' => $value['image'],
@@ -111,10 +111,10 @@ if ($torrents === false || is_null($torrents)) {
     $result = sql_query('SELECT ' . $tor_fields . ", LENGTH(nfo) AS nfosz, IF(num_ratings < {$site_config['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating FROM torrents WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $torrents = mysqli_fetch_assoc($result);
     foreach ($tor_fields_ar_int as $i) {
-        $torrents[ $i ] = (int)$torrents[ $i ];
+        $torrents[$i] = (int)$torrents[$i];
     }
     foreach ($tor_fields_ar_str as $i) {
-        $torrents[ $i ] = $torrents[ $i ];
+        $torrents[$i] = $torrents[$i];
     }
     $cache->set('torrent_details_' . $id, $torrents, $site_config['expires']['torrent_details']);
 }
@@ -377,12 +377,12 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
         $torrent['torrent_points_'] = [];
         if (mysqli_num_rows($sql_points) !== 0) {
             while ($points_cache = mysqli_fetch_assoc($sql_points)) {
-                $torrent['torrent_points_'][ $points_cache['userid'] ] = $points_cache['points'];
+                $torrent['torrent_points_'][$points_cache['userid']] = $points_cache['points'];
             }
         }
         $cache->add('coin_points_' . $id, $torrent['torrent_points_'], 0);
     }
-    $my_points = (isset($torrent['torrent_points_'][ $CURUSER['id'] ]) ? (int)$torrent['torrent_points_'][ $CURUSER['id'] ] : 0);
+    $my_points = (isset($torrent['torrent_points_'][$CURUSER['id']]) ? (int)$torrent['torrent_points_'][$CURUSER['id']] : 0);
     $HTMLOUT .= '
                 <tr>
                     <td class="rowhead">Karma Points</td>
@@ -510,8 +510,8 @@ if (count($sim_torrents) > 0) {
                 <tbody>";
     if ($sim_torrents) {
         foreach ($sim_torrents as $a) {
-            $sim_tor['cat_name'] = htmlsafechars($change[ $a['category'] ]['name']);
-            $sim_tor['cat_pic'] = htmlsafechars($change[ $a['category'] ]['image']);
+            $sim_tor['cat_name'] = htmlsafechars($change[$a['category']]['name']);
+            $sim_tor['cat_pic'] = htmlsafechars($change[$a['category']]['image']);
             $cat = "<img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/{$sim_tor['cat_pic']}' alt='{$sim_tor['cat_name']}' class='tooltipper' title='{$sim_tor['cat_name']}' />";
             $name = htmlsafechars(CutName($a['name']));
             $seeders = (int)$a['seeders'];
@@ -606,7 +606,7 @@ if (!empty($torrents['nukereason'])) {
                 <td class='rowhead'><b>Nuke-Reason</b></td><td>" . htmlsafechars($torrents['nukereason']) . "</td>
             </tr>";
 }
-$torrents['cat_name'] = htmlsafechars($change[ $torrents['category'] ]['name']);
+$torrents['cat_name'] = htmlsafechars($change[$torrents['category']]['name']);
 if (isset($torrents['cat_name'])) {
     $HTMLOUT .= tr("{$lang['details_type']}", htmlsafechars($torrents['cat_name']));
 } else {
@@ -656,7 +656,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 <td class='rowhead'>Checked by</td>
                 <td>
                     <div class='bottom10'>" .
-                        format_username($torrents['checked_by']) . (isset($torrents['checked_when']) && $torrents['checked_when'] > 0 ? ' checked: ' . get_date($torrents['checked_when'], 'DATE', 0, 1) : '') . "
+            format_username($torrents['checked_by']) . (isset($torrents['checked_when']) && $torrents['checked_when'] > 0 ? ' checked: ' . get_date($torrents['checked_when'], 'DATE', 0, 1) : '') . "
                     </div>
                     <div class='bottom10'>
                         <form method='post' action='./details.php?id={$torrents['id']}'>
@@ -803,10 +803,10 @@ if (preg_match('/^http\:\/\/(.*?)imdb\.com\/title\/tt([\d]{7})/i', $torrents['ur
             'votes'       => 'Votes',
         ];
         foreach ($imdb as $foo => $boo) {
-            if (isset($imdb_data[ $foo ]) && !empty($imdb_data[ $foo ])) {
-                if (!is_array($imdb_data[ $foo ])) {
-                    $imdb_html .= "<span>" . $boo . ':</span>' . $imdb_data[ $foo ] . "<br>\n";
-                } elseif (is_array($imdb_data[ $foo ]) && in_array($foo, [
+            if (isset($imdb_data[$foo]) && !empty($imdb_data[$foo])) {
+                if (!is_array($imdb_data[$foo])) {
+                    $imdb_html .= "<span>" . $boo . ':</span>' . $imdb_data[$foo] . "<br>\n";
+                } elseif (is_array($imdb_data[$foo]) && in_array($foo, [
                         'director',
                         'writing',
                         'producer',
@@ -814,7 +814,7 @@ if (preg_match('/^http\:\/\/(.*?)imdb\.com\/title\/tt([\d]{7})/i', $torrents['ur
                         'cast',
                         'trailers',
                     ])) {
-                    foreach ($imdb_data[ $foo ] as $pp) {
+                    foreach ($imdb_data[$foo] as $pp) {
                         if ($foo == 'cast') {
                             $imdb_tmp[] = "<a href='http://www.imdb.com/name/nm" . $pp['imdb'] . "' target='_blank' class='tooltipper' title='" . (!empty($pp['name']) ? $pp['name'] : 'unknown') . "'>" . (isset($pp['thumb']) ? "<img src='" . $pp['thumb'] . "' alt='" . $pp['name'] . "' width='20' height='30' />" : $pp['name']) . "</a> as <span>" . (!empty($pp['role']) ? $pp['role'] : 'unknown') . '</span>';
                         } elseif ($foo == 'trailers') {
@@ -826,7 +826,7 @@ if (preg_match('/^http\:\/\/(.*?)imdb\.com\/title\/tt([\d]{7})/i', $torrents['ur
                     $imdb_html .= "<span>" . $boo . ':</span>' . join(', ', $imdb_tmp) . "<br>\n";
                     unset($imdb_tmp);
                 } else {
-                    $imdb_html .= "<span>" . $boo . ':</span>' . join(', ', $imdb_data[ $foo ]) . "<br>\n";
+                    $imdb_html .= "<span>" . $boo . ':</span>' . join(', ', $imdb_data[$foo]) . "<br>\n";
                 }
             }
         }

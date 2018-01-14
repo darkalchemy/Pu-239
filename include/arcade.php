@@ -26,7 +26,7 @@ $highScore = get_one_row('flashscores', 'score', 'WHERE game = ' . sqlesc($gname
 
 sql_query('INSERT INTO flashscores (game, user_id, level, score) VALUES (' . sqlesc($gname) . ', ' . sqlesc($CURUSER['id']) . ', ' . sqlesc($level) . ', ' . sqlesc($score) . ')') or sqlerr(__FILE__, __LINE__);
 $game_id = array_search($gname, $site_config['arcade_games']);
-$game = $site_config['arcade_games_names'][ $game_id ];
+$game = $site_config['arcade_games_names'][$game_id];
 $link = '[url=' . $site_config['baseurl'] . '/flash.php?gameURI=' . $gname . '.swf&gamename=' . $gname . '&game_id=' . $game_id . ']' . $game . '[/url]';
 //$link = '[url=' . $site_config['baseurl'] . '/arcade.php]' . $game . '[/url]';
 $classColor = get_user_class_color($CURUSER['class']);

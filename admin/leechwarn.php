@@ -106,40 +106,40 @@ if ($count == 0) {
     $HTMLOUT .= stdmsg($lang['leechwarn_hey'], $lang['leechwarn_none'] . strtolower($title));
 } else {
     $HTMLOUT .= "<form action='staffpanel.php?tool=leechwarn&amp;action=leechwarn' method='post'>
-		<table width='600' cellpadding='3' cellspacing='2' style='border-collapse:separate;'>
-		<tr>    	
-			<td class='colhead' width='100%' >{$lang['leechwarn_user2']}</td>
-			<td class='colhead' nowrap='nowrap'>{$lang['leechwarn_ratio']}</td>
-			<td class='colhead' nowrap='nowrap'>{$lang['leechwarn_class']}</td>
-			<td class='colhead' nowrap='nowrap'>{$lang['leechwarn_access']}</td>
-			<td class='colhead' nowrap='nowrap'>{$lang['leechwarn_joined']}</td>
-			<td class='colhead' nowrap='nowrap'><input type='checkbox' name='checkall' /></td>
-		</tr>";
+        <table width='600' cellpadding='3' cellspacing='2' style='border-collapse:separate;'>
+        <tr>        
+            <td class='colhead' width='100%' >{$lang['leechwarn_user2']}</td>
+            <td class='colhead' nowrap='nowrap'>{$lang['leechwarn_ratio']}</td>
+            <td class='colhead' nowrap='nowrap'>{$lang['leechwarn_class']}</td>
+            <td class='colhead' nowrap='nowrap'>{$lang['leechwarn_access']}</td>
+            <td class='colhead' nowrap='nowrap'>{$lang['leechwarn_joined']}</td>
+            <td class='colhead' nowrap='nowrap'><input type='checkbox' name='checkall' /></td>
+        </tr>";
     while ($a = mysqli_fetch_assoc($g)) {
         $tip = ($do == 'leechwarn' ? $lang['leechwarn_warned_for'] . htmlsafechars($a['warn_reason']) . '<br>' . $lang['leechwarn_warned_till'] . get_date($a['leechwarn'], 'DATE', 1) . ' - ' . mkprettytime($a['leechwarn'] - TIME_NOW) : $lang['leechwarn_disabled_for'] . htmlsafechars($a['disable_reason']));
         $HTMLOUT .= "<tr>
-				  <td width='100%'><a href='userdetails.php?id=" . (int)$a['id'] . "' onmouseover=\"Tip('($tip)')\" onmouseout=\"UnTip()\">" . htmlsafechars($a['username']) . "</a></td>
-				  <td nowrap='nowrap'>" . (float)$a['ratio'] . "<br><font class='small'><b>{$lang['leechwarn_d']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['leechwarn_u']}</b> " . mksize($a['uploaded']) . "</font></td>
-				  <td nowrap='nowrap'>" . get_user_class_name($a['class']) . "</td>
-				  <td nowrap='nowrap'>" . get_date($a['last_access'], 'LONG', 0, 1) . "</td>
-				  <td nowrap='nowrap'>" . get_date($a['added'], 'DATE', 1) . "</td>
-				  <td nowrap='nowrap'><input type='checkbox' name='users[]' value='" . (int)$a['id'] . "' /></td>
-				</tr>";
+                  <td width='100%'><a href='userdetails.php?id=" . (int)$a['id'] . "' onmouseover=\"Tip('($tip)')\" onmouseout=\"UnTip()\">" . htmlsafechars($a['username']) . "</a></td>
+                  <td nowrap='nowrap'>" . (float)$a['ratio'] . "<br><font class='small'><b>{$lang['leechwarn_d']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['leechwarn_u']}</b> " . mksize($a['uploaded']) . "</font></td>
+                  <td nowrap='nowrap'>" . get_user_class_name($a['class']) . "</td>
+                  <td nowrap='nowrap'>" . get_date($a['last_access'], 'LONG', 0, 1) . "</td>
+                  <td nowrap='nowrap'>" . get_date($a['added'], 'DATE', 1) . "</td>
+                  <td nowrap='nowrap'><input type='checkbox' name='users[]' value='" . (int)$a['id'] . "' /></td>
+                </tr>";
     }
     $HTMLOUT .= "<tr>
-			<td colspan='6' class='colhead'>
-				<select name='action'>
-					<option value='unwarn'>{$lang['leechwarn_unwarn']}</option>
-					<option value='disable'>{$lang['leechwarn_disable']}</option>
-					<option value='delete' " . ($CURUSER['class'] < UC_SYSOP ? 'disabled' : '') . ">{$lang['leechwarn_delete']}</option>
-				</select>
-				&raquo;
-				<input type='submit' value='{$lang['leechwarn_apply']}' />
-				<input type='hidden' value='" . htmlsafechars($_SERVER['REQUEST_URI']) . "' name='ref' />
-			</td>
-			</tr>
-			</table>
-			</form>";
+            <td colspan='6' class='colhead'>
+                <select name='action'>
+                    <option value='unwarn'>{$lang['leechwarn_unwarn']}</option>
+                    <option value='disable'>{$lang['leechwarn_disable']}</option>
+                    <option value='delete' " . ($CURUSER['class'] < UC_SYSOP ? 'disabled' : '') . ">{$lang['leechwarn_delete']}</option>
+                </select>
+                &raquo;
+                <input type='submit' value='{$lang['leechwarn_apply']}' />
+                <input type='hidden' value='" . htmlsafechars($_SERVER['REQUEST_URI']) . "' name='ref' />
+            </td>
+            </tr>
+            </table>
+            </form>";
 }
 $HTMLOUT .= end_frame();
 $HTMLOUT .= end_main_frame();

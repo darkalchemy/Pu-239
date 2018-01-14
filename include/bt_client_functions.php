@@ -9,7 +9,7 @@ function StdDecodePeerId($id_data, $id_name)
 {
     $version_str = '';
     for ($i = 0; $i <= strlen($id_data); ++$i) {
-        $c = $id_data[ $i ];
+        $c = $id_data[$i];
         if ($id_name == 'BitTornado' || $id_name == 'ABC') {
             if ($c != '-' && ctype_digit($c)) {
                 $version_str .= "$c.";
@@ -51,7 +51,7 @@ function MainlineDecodePeerId($id_data, $id_name)
 {
     $version_str = '';
     for ($i = 0; $i <= strlen($id_data); ++$i) {
-        $c = isset($id_data[ $i ]) ? $id_data[ $i ] : '-';
+        $c = isset($id_data[$i]) ? $id_data[$i] : '-';
         if ($c != '-' && ctype_alnum($c)) {
             $version_str .= "$c.";
         }
@@ -348,7 +348,7 @@ function getagent($httpagent, $peer_id = '')
     // Rufus
     if (substr($peer_id, 2, 2) == 'RS') {
         for ($i = 0; $i <= strlen(substr($peer_id, 4, 9)); ++$i) {
-            $c = $peer_id[ $i + 4 ];
+            $c = $peer_id[$i + 4];
             if (ctype_alnum($c) || $c == chr(0)) {
                 $rufus_chk = true;
             } else {

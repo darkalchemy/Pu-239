@@ -17,30 +17,30 @@ if (!function_exists('htmlsafechars')) {
     function htmlsafechars($var)
     {
         return str_replace([
-            '&',
-            '>',
-            '<',
-            '"',
-            '\'',
-        ], [
-            '&amp;',
-            '&gt;',
-            '&lt;',
-            '&quot;',
-            '&#039;',
-        ], str_replace([
-            '&gt;',
-            '&lt;',
-            '&quot;',
-            '&#039;',
-            '&amp;',
-        ], [
-            '>',
-            '<',
-            '"',
-            '\'',
-            '&',
-        ], $var));
+                               '&',
+                               '>',
+                               '<',
+                               '"',
+                               '\'',
+                           ], [
+                               '&amp;',
+                               '&gt;',
+                               '&lt;',
+                               '&quot;',
+                               '&#039;',
+                           ], str_replace([
+                                              '&gt;',
+                                              '&lt;',
+                                              '&quot;',
+                                              '&#039;',
+                                              '&amp;',
+                                          ], [
+                                              '>',
+                                              '<',
+                                              '"',
+                                              '\'',
+                                              '&',
+                                          ], $var));
     }
 }
 
@@ -88,17 +88,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $date = TIME_NOW;
             $owner = $CURUSER['id'];
             sql_query('INSERT INTO subtitles (name , filename,imdb,comment, lang, fps, poster, cds, added, owner ) VALUES (' . implode(',', array_map('sqlesc', [
-                    $releasename,
-                    $filename,
-                    $imdb,
-                    $comment,
-                    $langs,
-                    $fps,
-                    $poster,
-                    $cd,
-                    $date,
-                    $owner,
-                ])) . ')') or sqlerr(__FILE__, __LINE__);
+                          $releasename,
+                          $filename,
+                          $imdb,
+                          $comment,
+                          $langs,
+                          $fps,
+                          $poster,
+                          $cd,
+                          $date,
+                          $owner,
+                      ])) . ')') or sqlerr(__FILE__, __LINE__);
             move_uploaded_file($temp_name, "{$site_config['sub_up_dir']}/$filename");
             $id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
             header("Refresh: 0; url=subtitles.php?mode=details&id=$id");
@@ -182,14 +182,14 @@ function checkext(upload_field)
         $HTMLOUT .= "<tr><td colspan='2' class='colhead'><span class='has-text-danger'><b>Only .srt, .sub , .txt  file are accepted<br>Max file size " . mksize($site_config['sub_max_size']) . '</b></span></td></tr>';
     }
     $HTMLOUT .= "<tr><td class='rowhead' style='border:none'>Language&#160;<span class='has-text-danger'>*</span></td><td style='border:none'><select name='language' title='Select the subtitle language'>
-	<option value=''>- Select -</option>
-	<option value='eng' " . ($mode == 'edit' && $arr['lang'] == 'eng' ? 'selected' : '') . ">English</option>
-	<option value='swe' " . ($mode == 'edit' && $arr['lang'] == 'swe' ? 'selected' : '') . ">Swedish</option>
-	<option value='dan' " . ($mode == 'edit' && $arr['lang'] == 'dan' ? 'selected' : '') . ">Danish</option>
-	<option value='nor' " . ($mode == 'edit' && $arr['lang'] == 'nor' ? 'selected' : '') . ">Norwegian</option>
-	<option value='fin' " . ($mode == 'edit' && $arr['lang'] == 'fin' ? 'selected' : '') . ">Finnish</option>
-	<option value='spa' " . ($mode == 'edit' && $arr['lang'] == 'spa' ? 'selected' : '') . ">Spanish</option>
-	<option value='fre' " . ($mode == 'edit' && $arr['lang'] == 'fre' ? 'selected' : '') . ">French</option>
+    <option value=''>- Select -</option>
+    <option value='eng' " . ($mode == 'edit' && $arr['lang'] == 'eng' ? 'selected' : '') . ">English</option>
+    <option value='swe' " . ($mode == 'edit' && $arr['lang'] == 'swe' ? 'selected' : '') . ">Swedish</option>
+    <option value='dan' " . ($mode == 'edit' && $arr['lang'] == 'dan' ? 'selected' : '') . ">Danish</option>
+    <option value='nor' " . ($mode == 'edit' && $arr['lang'] == 'nor' ? 'selected' : '') . ">Norwegian</option>
+    <option value='fin' " . ($mode == 'edit' && $arr['lang'] == 'fin' ? 'selected' : '') . ">Finnish</option>
+    <option value='spa' " . ($mode == 'edit' && $arr['lang'] == 'spa' ? 'selected' : '') . ">Spanish</option>
+    <option value='fre' " . ($mode == 'edit' && $arr['lang'] == 'fre' ? 'selected' : '') . ">French</option>
 </select>
 </td></tr>
 <tr><td class='rowhead' style='border:none'>Release Name&#160;<span class='has-text-danger'>*</span></td><td style='border:none'><input type='text' name='releasename' size='50' value='" . ($mode == 'edit' ? $arr['name'] : '') . "'  title='The releasename of the movie (Example:Disturbia.2007.DVDRip.XViD-aAF)'/></td></tr>

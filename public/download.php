@@ -130,17 +130,17 @@ $dict = bencdec::decode_file($fn, $site_config['max_torrent_size']);
 if (XBT_TRACKER == true) {
     $dict['announce'] = $site_config['xbt_prefix'] . $CURUSER['torrent_pass'] . $site_config['xbt_suffix'];
 } else {
-    $dict['announce'] = $site_config['announce_urls'][ $ssluse ] . '?torrent_pass=' . $CURUSER['torrent_pass'];
+    $dict['announce'] = $site_config['announce_urls'][$ssluse] . '?torrent_pass=' . $CURUSER['torrent_pass'];
 }
 $dict['uid'] = (int)$CURUSER['id'];
 $tor = bencdec::encode($dict);
 if ($zipuse) {
     require_once INCL_DIR . 'phpzip.php';
     $row['name'] = str_replace([
-        ' ',
-        '.',
-        '-',
-    ], '_', $row['name']);
+                                   ' ',
+                                   '.',
+                                   '-',
+                               ], '_', $row['name']);
     $file_name = $site_config['torrent_dir'] . '/' . $row['name'] . '.torrent';
     if (file_put_contents($file_name, $tor)) {
         $zip = new PHPZip();

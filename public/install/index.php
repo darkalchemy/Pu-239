@@ -41,6 +41,7 @@ function get_scheme()
     }
     return $scheme;
 }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -57,7 +58,7 @@ function get_scheme()
     <?php
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $valid_do = [
-            'write' => 1,
+            'write'     => 1,
             'db_insert' => 1,
         ];
         $do = isset($_POST['do']) && isset($valid_do[$_POST['do']]) ? $_POST['do'] : false;

@@ -23,8 +23,8 @@ class_check($class);
 global $site_config;
 
 $VERSION = '$Id: memcache.php,v 1.1.2.3 2008/08/28 18:07:54 mikl Exp $';
-//define('ADMIN_USERNAME','memcache_stats'); 	// Admin Username
-//define('ADMIN_PASSWORD','richmond1');  	// Admin Password
+//define('ADMIN_USERNAME','memcache_stats');     // Admin Username
+//define('ADMIN_PASSWORD','richmond1');      // Admin Password
 /**
  *
  */
@@ -194,7 +194,7 @@ function getCacheItems()
     }
 
     return [
-        'items' => $serverItems,
+        'items'  => $serverItems,
         'counts' => $totalItems,
     ];
 }
@@ -448,101 +448,101 @@ h1.memcache { background:rgb(153,153,204); margin:0; padding:0.5em 1em 0.5em 1em
 * html h1.memcache { margin-bottom:-7px; }
 h1.memcache a:hover { text-decoration:none; color:rgb(90,90,90); }
 h1.memcache span.logo {
-	background:rgb(119,123,180);
-	color:black;
-	border-right: solid black 1px;
-	border-bottom: solid black 1px;
-	font-style:italic;
-	font-size:1em;
-	padding-left:1.2em;
-	padding-right:1.2em;
-	text-align:right;
-	display:block;
-	width:130px;
-	}
+    background:rgb(119,123,180);
+    color:black;
+    border-right: solid black 1px;
+    border-bottom: solid black 1px;
+    font-style:italic;
+    font-size:1em;
+    padding-left:1.2em;
+    padding-right:1.2em;
+    text-align:right;
+    display:block;
+    width:130px;
+    }
 h1.memcache span.logo span.name { color:#fff; font-size:0.7em; padding:0 0.8em 0 2em; }
 h1.memcache span.nameinfo { color:#fff; display:inline; font-size:0.4em; margin-left: 3em; }
 h1.memcache div.copy { color:black; font-size:0.4em; position:absolute; right:1em; }
 hr.memcache {
-	background:#fff;
-	border-top:solid rgb(102,102,153) 10px;
-	height:12px;
-	margin:0;
-	margin-top:1px;
-	padding:0;
+    background:#fff;
+    border-top:solid rgb(102,102,153) 10px;
+    height:12px;
+    margin:0;
+    margin-top:1px;
+    padding:0;
 }
 
 ol,menu { margin:1em 0 0 0; padding:0.2em; margin-left:1em;}
 ol.menu li { display:inline; margin-right:0.7em; list-style: none; font-size: 85%;}
 ol.menu a {
-	background:rgb(153,153,204);
-	border:solid rgb(102,102,153) 2px;
-	color:#fff;
-	font-weight:bold;
-	margin-right:0;
-	padding:0.1em 0.5em 0.1em 0.5em;
-	text-decoration:none;
-	margin-left: 5px;
-	}
+    background:rgb(153,153,204);
+    border:solid rgb(102,102,153) 2px;
+    color:#fff;
+    font-weight:bold;
+    margin-right:0;
+    padding:0.1em 0.5em 0.1em 0.5em;
+    text-decoration:none;
+    margin-left: 5px;
+    }
 ol.menu a.child_active {
-	background:rgb(153,153,204);
-	border:solid rgb(102,102,153) 2px;
-	color:#fff;
-	font-weight:bold;
-	margin-right:0;
-	padding:0.1em 0.5em 0.1em 0.5em;
-	text-decoration:none;
-	border-left: solid black 5px;
-	margin-left: 0;
-	}
+    background:rgb(153,153,204);
+    border:solid rgb(102,102,153) 2px;
+    color:#fff;
+    font-weight:bold;
+    margin-right:0;
+    padding:0.1em 0.5em 0.1em 0.5em;
+    text-decoration:none;
+    border-left: solid black 5px;
+    margin-left: 0;
+    }
 ol.menu span.active {
-	background:rgb(153,153,204);
-	border:solid rgb(102,102,153) 2px;
-	color:black;
-	font-weight:bold;
-	margin-right:0;
-	padding:0.1em 0.5em 0.1em 0.5em;
-	text-decoration:none;
-	border-left: solid black 5px;
-	}
+    background:rgb(153,153,204);
+    border:solid rgb(102,102,153) 2px;
+    color:black;
+    font-weight:bold;
+    margin-right:0;
+    padding:0.1em 0.5em 0.1em 0.5em;
+    text-decoration:none;
+    border-left: solid black 5px;
+    }
 ol.menu span.inactive {
-	background:rgb(193,193,244);
-	border:solid rgb(182,182,233) 2px;
-	color:#fff;
-	font-weight:bold;
-	margin-right:0;
-	padding:0.1em 0.5em 0.1em 0.5em;
-	text-decoration:none;
-	margin-left: 5px;
-	}
+    background:rgb(193,193,244);
+    border:solid rgb(182,182,233) 2px;
+    color:#fff;
+    font-weight:bold;
+    margin-right:0;
+    padding:0.1em 0.5em 0.1em 0.5em;
+    text-decoration:none;
+    margin-left: 5px;
+    }
 ol.menu a:hover {
-	background:rgb(193,193,244);
-	text-decoration:none;
-	}
+    background:rgb(193,193,244);
+    text-decoration:none;
+    }
 
 div.info {
-	background:rgb(204,204,204);
-	border:solid rgb(204,204,204) 1px;
-	margin-bottom:1em;
-	}
+    background:rgb(204,204,204);
+    border:solid rgb(204,204,204) 1px;
+    margin-bottom:1em;
+    }
 div.info h2 {
-	background:rgb(204,204,204);
-	color:black;
-	font-size:1em;
-	margin:0;
-	padding:0.1em 1em 0.1em 1em;
-	}
+    background:rgb(204,204,204);
+    color:black;
+    font-size:1em;
+    margin:0;
+    padding:0.1em 1em 0.1em 1em;
+    }
 div.info table {
-	border:solid rgb(204,204,204) 1px;
-	border-spacing:0;
-	width:100%;
-	}
+    border:solid rgb(204,204,204) 1px;
+    border-spacing:0;
+    width:100%;
+    }
 div.info table th {
-	background:rgb(204,204,204);
-	color:#fff;
-	margin:0;
-	padding:0.1em 1em 0.1em 1em;
-	}
+    background:rgb(204,204,204);
+    color:#fff;
+    margin:0;
+    padding:0.1em 1em 0.1em 1em;
+    }
 div.info table th a.sortable { color:black; }
 div.info table tr.tr-0 { background:rgb(238,238,238); }
 div.info table tr.tr-1 { background:rgb(221,221,221); }
@@ -550,10 +550,10 @@ div.info table td { padding:0.3em 1em 0.3em 1em; }
 div.info table td.td-0 { border-right:solid rgb(102,102,153) 1px; white-space:nowrap; }
 div.info table td.td-n { border-right:solid rgb(102,102,153) 1px; }
 div.info table td h3 {
-	color:black;
-	font-size:1.1em;
-	margin-left:-0.3em;
-	}
+    color:black;
+    font-size:1.1em;
+    margin-left:-0.3em;
+    }
 .td-0 a , .td-n a, .tr-0 a , tr-1 a {
     text-decoration:underline;
 }
@@ -575,43 +575,43 @@ div.sorting { margin: 1.5em 0 1.5em 2em; }
 .failed { color:rgb(200,0,0); font-weight:bold; }
 
 span.box {
-	border: black solid 1px;
-	border-right: solid black 2px;
-	border-bottom: solid black 2px;
-	padding: 0 0.5em 0 0.5em;
-	margin-right: 1em;
+    border: black solid 1px;
+    border-right: solid black 2px;
+    border-bottom: solid black 2px;
+    padding: 0 0.5em 0 0.5em;
+    margin-right: 1em;
 }
 span.green { background: #60F060; padding: 0 0.5em 0 0.5em; }
 span.red { background: #D06030; padding: 0 0.5em 0 0.5em; }
 
 div.authneeded {
-	background: rgb(238,238,238);
-	border: solid rgb(204,204,204) 1px;
-	color: rgb(200,0,0);
-	font-size: 1.2em;
-	font-weight: bold;
-	padding: 2em;
-	text-align: center;
-	}
+    background: rgb(238,238,238);
+    border: solid rgb(204,204,204) 1px;
+    color: rgb(200,0,0);
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 2em;
+    text-align: center;
+    }
 
 input {
-	background:rgb(153,153,204);
-	border:solid rgb(102,102,153) 2px;
-	color:#fff;
-	font-weight:bold;
-	margin-right:1em;
-	padding:0.1em 0.5em 0.1em 0.5em;
-	}
+    background:rgb(153,153,204);
+    border:solid rgb(102,102,153) 2px;
+    color:#fff;
+    font-weight:bold;
+    margin-right:1em;
+    padding:0.1em 0.5em 0.1em 0.5em;
+    }
 //-->
 </style>
 </head>
 <body>
 <div class="head">
-	<h1 class="memcache">
-		<span class="logo"><a href="http://pecl.php.net/package/memcache">memcache</a></span>
-		<span class="nameinfo">memcache.php by <a href="http://livebookmark.net">Harun Yayli</a></span>
-	</h1>
-	<hr class="memcache">
+    <h1 class="memcache">
+        <span class="logo"><a href="http://pecl.php.net/package/memcache">memcache</a></span>
+        <span class="nameinfo">memcache.php by <a href="http://livebookmark.net">Harun Yayli</a></span>
+    </h1>
+    <hr class="memcache">
 </div>
 <div class=content>
 EOB;
@@ -647,8 +647,8 @@ EOB;
     }
     echo menu_entry(1, 'View Host Stats'), menu_entry(2, 'Variables');
     echo <<<EOB
-	</ol>
-	<br>
+    </ol>
+    <br>
 EOB;
 }
 
@@ -830,15 +830,15 @@ switch ($_GET['op']) {
         $miss_rate = sprintf('%.2f', ($misses) / ($time - $startTime));
         $set_rate = sprintf('%.2f', ($sets) / ($time - $startTime));
         echo <<< EOB
-		<div class="info div1"><h2>General Cache Information</h2>
-		<table cellspacing="0"><tbody>
-		<tr class="tr-1"><td class="td-0">PHP Version</td><td>$phpversion</td></tr>
+        <div class="info div1"><h2>General Cache Information</h2>
+        <table cellspacing="0"><tbody>
+        <tr class="tr-1"><td class="td-0">PHP Version</td><td>$phpversion</td></tr>
 EOB;
         echo "<tr class='tr-0'><td class='td-0'>Memcached Host" . ((count($MEMCACHE_SERVERS) > 1) ? 's' : '') . '</td><td>';
         $i = 0;
         if (!isset($_GET['singleout']) && count($MEMCACHE_SERVERS) > 1) {
             foreach ($MEMCACHE_SERVERS as $server) {
-                echo($i + 1) . '. <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=memcache&amp;singleout=' . $i++ . '">' . $server . '</a><br>';
+                echo ($i + 1) . '. <a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=memcache&amp;singleout=' . $i++ . '">' . $server . '</a><br>';
             }
         } else {
             echo '1.' . $MEMCACHE_SERVERS[0];
@@ -849,10 +849,10 @@ EOB;
         echo "</td></tr>\n";
         echo "<tr class='tr-1'><td class='td-0'>Total Memcache Cache</td><td>" . bsize($memcacheStats['limit_maxbytes']) . "</td></tr>\n";
         echo <<<EOB
-		</tbody></table>
-		</div>
+        </tbody></table>
+        </div>
 
-		<div class="info div1"><h2>Memcache Server Information</h2>
+        <div class="info div1"><h2>Memcache Server Information</h2>
 EOB;
         foreach ($MEMCACHE_SERVERS as $server) {
             echo '<table cellspacing="0"><tbody>';
@@ -866,33 +866,33 @@ EOB;
         }
         echo <<<EOB
 
-		</div>
-		<div class="graph div3"><h2>Host Status Diagrams</h2>
-		<table cellspacing="0"><tbody>
+        </div>
+        <div class="graph div3"><h2>Host Status Diagrams</h2>
+        <table cellspacing="0"><tbody>
 EOB;
         $size = 'width=' . (GRAPH_SIZE + 50) . ' height=' . (GRAPH_SIZE + 10);
         echo <<<EOB
-		<tr>
-		<td class="td-0">Cache Usage</td>
-		<td class="td-1">Hits &amp; Misses</td>
-		</tr>
+        <tr>
+        <td class="td-0">Cache Usage</td>
+        <td class="td-1">Hits &amp; Misses</td>
+        </tr>
 EOB;
         echo graphics_avail() ? '<tr>' . "<td class='td-0'><img alt=\"\" $size src=\"{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;IMG=1&amp;" . (isset($_GET['singleout']) ? 'singleout=' . $_GET['singleout'] . '&amp;' : '') . "$time\"></td>" . "<td class='td-1'><img alt=\"\" $size src=\"{$site_config['baseurl']}/staffpanel.php?tool=memcache&amp;IMG=2&amp;" . (isset($_GET['singleout']) ? 'singleout=' . $_GET['singleout'] . '&amp;' : '') . "$time\"></td></tr>\n" : '', '<tr>', '<td class="td-0"><span class="green box">&#160;</span>Free: ', bsize($mem_avail) . sprintf(' (%.1f%%)', $mem_avail * 100 / $mem_size), "</td>\n", '<td class="td-1"><span class="green box">&#160;</span>Hits: ', $hits . sprintf(' (%.1f%%)', $hits * 100 / ($hits + $misses)), "</td>\n", '</tr>', '<tr>', '<td class="td-0"><span class="red box">&#160;</span>Used: ', bsize($mem_used) . sprintf(' (%.1f%%)', $mem_used * 100 / $mem_size), "</td>\n", '<td class="td-1"><span class="red box">&#160;</span>Misses: ', $misses . sprintf(' (%.1f%%)', $misses * 100 / ($hits + $misses)), "</td>\n";
         echo <<< EOB
-	</tr>
-	</tbody></table>
+    </tr>
+    </tbody></table>
 <br>
-	<div class="info"><h2>Cache Information</h2>
-		<table cellspacing="0"><tbody>
-		<tr class="tr-0"><td class="td-0">Current Items(total)</td><td>$curr_items ($total_items)</td></tr>
-		<tr class="tr-1"><td class="td-0">Hits</td><td>{$hits}</td></tr>
-		<tr class="tr-0"><td class="td-0">Misses</td><td>{$misses}</td></tr>
-		<tr class="tr-1"><td class="td-0">Request Rate (hits, misses)</td><td>$req_rate cache requests/second</td></tr>
-		<tr class="tr-0"><td class="td-0">Hit Rate</td><td>$hit_rate cache requests/second</td></tr>
-		<tr class="tr-1"><td class="td-0">Miss Rate</td><td>$miss_rate cache requests/second</td></tr>
-		<tr class="tr-0"><td class="td-0">Set Rate</td><td>$set_rate cache requests/second</td></tr>
-		</tbody></table>
-		</div>
+    <div class="info"><h2>Cache Information</h2>
+        <table cellspacing="0"><tbody>
+        <tr class="tr-0"><td class="td-0">Current Items(total)</td><td>$curr_items ($total_items)</td></tr>
+        <tr class="tr-1"><td class="td-0">Hits</td><td>{$hits}</td></tr>
+        <tr class="tr-0"><td class="td-0">Misses</td><td>{$misses}</td></tr>
+        <tr class="tr-1"><td class="td-0">Request Rate (hits, misses)</td><td>$req_rate cache requests/second</td></tr>
+        <tr class="tr-0"><td class="td-0">Hit Rate</td><td>$hit_rate cache requests/second</td></tr>
+        <tr class="tr-1"><td class="td-0">Miss Rate</td><td>$miss_rate cache requests/second</td></tr>
+        <tr class="tr-0"><td class="td-0">Set Rate</td><td>$set_rate cache requests/second</td></tr>
+        </tbody></table>
+        </div>
 
 EOB;
         break;
@@ -906,9 +906,9 @@ EOB;
         foreach ($items as $server => $entries) {
             echo <<< EOB
 
-			<div class="info"><table cellspacing="0"><tbody>
-			<tr><th colspan="2">$server</th></tr>
-			<tr><th>Slab Id</th><th>Info</th></tr>
+            <div class="info"><table cellspacing="0"><tbody>
+            <tr><th colspan="2">$server</th></tr>
+            <tr><th>Slab Id</th><th>Info</th></tr>
 EOB;
             foreach ($entries as $slabId => $slab) {
                 $dumpUrl = $site_config['baseurl'] . '/staffpanel.php?tool=memcache&amp;op=2&amp;server=' . (array_search($server, $MEMCACHE_SERVERS)) . '&amp;dumpslab=' . $slabId;
@@ -932,8 +932,8 @@ EOB;
                 $m = 1 - $m;
             }
             echo <<<EOB
-			</tbody></table>
-			</div><hr>
+            </tbody></table>
+            </div><hr>
 EOB;
         }
         break;
@@ -954,12 +954,12 @@ EOB;
         $r = sendMemcacheCommand($h, $p, 'get ' . $theKey);
         echo <<<EOB
         <div class="info"><table cellspacing="0"><tbody>
-			<tr><th>Server<th>Key</th><th>Value</th><th>Delete</th></tr>
+            <tr><th>Server<th>Key</th><th>Value</th><th>Delete</th></tr>
 EOB;
         echo "<tr><td class='td-0'>", $theserver, "</td><td class='td-0'>", $theKey, ' <br>flag:', $r['VALUE'][$theKey]['stat']['flag'], ' <br>Size:', bsize($r['VALUE'][$theKey]['stat']['size']), '</td><td>', chunk_split($r['VALUE'][$theKey]['value'], 40), '</td>', '<td><a href="', $site_config['baseurl'], '/staffpanel.php?tool=memcache&op=5&server=', (int)$_GET['server'], '&key=', base64_encode($theKey), '">Delete</a></td>', '</tr>';
         echo <<<EOB
-			</tbody></table>
-			</div><hr>
+            </tbody></table>
+            </div><hr>
 EOB;
         break;
 

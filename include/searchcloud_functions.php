@@ -14,7 +14,7 @@ function searchcloud($limit = 50)
         if (mysqli_num_rows($search_q)) {
             $return = [];
             while ($search_a = mysqli_fetch_assoc($search_q)) {
-                $return[ $search_a['searchedfor'] ] = $search_a['howmuch'];
+                $return[$search_a['searchedfor']] = $search_a['howmuch'];
             }
             ksort($return);
             $cache->set('searchcloud', $return, 0);
@@ -36,9 +36,9 @@ function searchcloud_insert($word)
     global $cache;
     $searchcloud = searchcloud();
     $ip = getip();
-    $howmuch = isset($searchcloud[ $word ]) ? $searchcloud[ $word ] + 1 : 1;
-    if (!count($searchcloud) || !isset($searchcloud[ $word ])) {
-        $searchcloud[ $word ] = $howmuch;
+    $howmuch = isset($searchcloud[$word]) ? $searchcloud[$word] + 1 : 1;
+    if (!count($searchcloud) || !isset($searchcloud[$word])) {
+        $searchcloud[$word] = $howmuch;
         $cache->set('searchcloud', $searchcloud, 0);
     } else {
         $cache->update_row('searchcloud', [

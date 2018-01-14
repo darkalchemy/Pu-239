@@ -1,9 +1,10 @@
 <?php
 
 /** Adminer customization allowing usage of plugins
- * @link https://www.adminer.org/plugins/#use
  *
- * @author Jakub Vrana, https://www.vrana.cz/
+ * @link    https://www.adminer.org/plugins/#use
+ *
+ * @author  Jakub Vrana, https://www.vrana.cz/
  * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2 (one or other)
  */
@@ -21,12 +22,13 @@ class AdminerPlugin extends Adminer
     }
 
     /** Register plugins
+     *
      * @param array object instances or null to register all classes starting by 'Adminer'
      */
     public function __construct($plugins)
     {
         if ($plugins === null) {
-            $plugins = array();
+            $plugins = [];
             foreach (get_declared_classes() as $class) {
                 if (preg_match('~^Adminer.~i', $class) && strcasecmp($this->_findRootClass($class), 'Adminer')) { //! can use interface
                     $plugins[$class] = new $class;
@@ -39,7 +41,7 @@ class AdminerPlugin extends Adminer
 
     public function _callParent($function, $args)
     {
-        return call_user_func_array(array('parent', $function), $args);
+        return call_user_func_array(['parent', $function], $args);
     }
 
     public function _applyPlugin($function, $args)
@@ -47,14 +49,29 @@ class AdminerPlugin extends Adminer
         foreach ($this->plugins as $plugin) {
             if (method_exists($plugin, $function)) {
                 switch (count($args)) { // call_user_func_array() doesn't work well with references
-                    case 0: $return = $plugin->$function(); break;
-                    case 1: $return = $plugin->$function($args[0]); break;
-                    case 2: $return = $plugin->$function($args[0], $args[1]); break;
-                    case 3: $return = $plugin->$function($args[0], $args[1], $args[2]); break;
-                    case 4: $return = $plugin->$function($args[0], $args[1], $args[2], $args[3]); break;
-                    case 5: $return = $plugin->$function($args[0], $args[1], $args[2], $args[3], $args[4]); break;
-                    case 6: $return = $plugin->$function($args[0], $args[1], $args[2], $args[3], $args[4], $args[5]); break;
-                    default: trigger_error('Too many parameters.', E_USER_WARNING);
+                    case 0:
+                        $return = $plugin->$function();
+                        break;
+                    case 1:
+                        $return = $plugin->$function($args[0]);
+                        break;
+                    case 2:
+                        $return = $plugin->$function($args[0], $args[1]);
+                        break;
+                    case 3:
+                        $return = $plugin->$function($args[0], $args[1], $args[2]);
+                        break;
+                    case 4:
+                        $return = $plugin->$function($args[0], $args[1], $args[2], $args[3]);
+                        break;
+                    case 5:
+                        $return = $plugin->$function($args[0], $args[1], $args[2], $args[3], $args[4]);
+                        break;
+                    case 6:
+                        $return = $plugin->$function($args[0], $args[1], $args[2], $args[3], $args[4], $args[5]);
+                        break;
+                    default:
+                        trigger_error('Too many parameters.', E_USER_WARNING);
                 }
                 if ($return !== null) {
                     return $return;
@@ -69,7 +86,7 @@ class AdminerPlugin extends Adminer
         $return = $this->_callParent($function, $args);
         foreach ($this->plugins as $plugin) {
             if (method_exists($plugin, $function)) {
-                $return += call_user_func_array(array($plugin, $function), $args);
+                $return += call_user_func_array([$plugin, $function], $args);
             }
         }
         return $return;

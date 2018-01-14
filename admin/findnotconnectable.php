@@ -11,9 +11,9 @@ $HTMLOUT = '';
 if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) == 'list') {
     $res2 = sql_query("SELECT userid, seeder, torrent, agent FROM peers WHERE connectable='no' ORDER BY userid DESC") or sqlerr(__FILE__, __LINE__);
     $HTMLOUT .= "<h3><a href='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=sendpm'>{$lang['non_con_sendall']}</a></h3>
-	<h3><a href='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable'>{$lang['non_con_view']}</a></h3>
-	<h1>{$lang['non_con_peers']}</h1>
-	{$lang['non_con_this']}<br><p><span class='has-text-danger'>*</span> {$lang['non_con_means']}<br>";
+    <h3><a href='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable'>{$lang['non_con_view']}</a></h3>
+    <h1>{$lang['non_con_peers']}</h1>
+    {$lang['non_con_this']}<br><p><span class='has-text-danger'>*</span> {$lang['non_con_means']}<br>";
     $result = sql_query("SELECT DISTINCT userid FROM peers WHERE connectable = 'no'");
     $count = mysqli_num_rows($result);
     $HTMLOUT .= "$count {$lang['non_con_unique']}</p>";
@@ -85,12 +85,12 @@ NOTE: No HTML Code Allowed. (NO HTML)
 if (isset($_GET['action1']) == '') {
     $getlog = sql_query('SELECT * FROM `notconnectablepmlog` ORDER BY date DESC LIMIT 20') or sqlerr(__FILE__, __LINE__);
     $HTMLOUT .= "<h1>{$lang['non_con_uncon']}</h1>
-	<h3><a href='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=sendpm'>{$lang['non_con_sendall']}</a></h3>
-	<h3><a href='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=list'>{$lang['non_con_list']}</a></h3><p>
-	<br>{$lang['non_con_please1']}<br></p>
-	<table >\n
-	<tr><td class='colhead'>{$lang['non_con_by']}</td>
-	<td class='colhead'>{$lang['non_con_date']}</td><td class='colhead'>{$lang['non_con_elapsed']}</td></tr>";
+    <h3><a href='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=sendpm'>{$lang['non_con_sendall']}</a></h3>
+    <h3><a href='staffpanel.php?tool=findnotconnectable&amp;action=findnotconnectable&amp;action1=list'>{$lang['non_con_list']}</a></h3><p>
+    <br>{$lang['non_con_please1']}<br></p>
+    <table >\n
+    <tr><td class='colhead'>{$lang['non_con_by']}</td>
+    <td class='colhead'>{$lang['non_con_date']}</td><td class='colhead'>{$lang['non_con_elapsed']}</td></tr>";
     while ($arr2 = mysqli_fetch_assoc($getlog)) {
         $r2 = sql_query('SELECT username FROM users WHERE id=' . sqlesc($arr2['user'])) or sqlerr(__FILE__, __LINE__);
         $a2 = mysqli_fetch_assoc($r2);

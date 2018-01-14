@@ -44,11 +44,11 @@ if (isset($free) && (count($free) < 1)) {
 } else {
     $HTMLOUT .= "<br><table >
         <tr><td class='colhead'>{$lang['freelech_free_all']}</td>
-		<td class='colhead'>{$lang['freelech_expires']}</td>
+        <td class='colhead'>{$lang['freelech_expires']}</td>
         <td class='colhead'>{$lang['freelech_setby']}</td>
-		<td class='colhead'>{$lang['freelech_title']}</td>
-		<td class='colhead'>{$lang['freelech_message']}</td>
-		<td class='colhead'>{$lang['freelech_remove']}</td></tr>";
+        <td class='colhead'>{$lang['freelech_title']}</td>
+        <td class='colhead'>{$lang['freelech_message']}</td>
+        <td class='colhead'>{$lang['freelech_remove']}</td></tr>";
     $checked1 = $checked2 = $checked3 = $checked4 = '';
     foreach ($free as $fl) {
         switch ($fl['modifier']) {
@@ -76,21 +76,21 @@ if (isset($free) && (count($free) < 1)) {
                 $mode = $lang['freelech_not_enable'];
         }
         $HTMLOUT .= "<tr><td>$mode
-		     </td><td>" . ($fl['expires'] != 'Inf.' && $fl['expires'] != 1 ? "{$lang['freelech_until']}" . get_date($fl['expires'], 'DATE') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . "{$lang['freelech_togo']})" : '' . $lang['freelech_unlimited'] . '') . " </td>
-			 <td>{$fl['setby']}</td>
-			 <td>{$fl['title']}</td>
-			 <td>{$fl['message']}</td>
-		     <td><a href='staffpanel.php?tool=freeleech&amp;action=freeleech&amp;remove'>{$lang['freelech_remove']}</a>
-			 </td></tr>";
+             </td><td>" . ($fl['expires'] != 'Inf.' && $fl['expires'] != 1 ? "{$lang['freelech_until']}" . get_date($fl['expires'], 'DATE') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . "{$lang['freelech_togo']})" : '' . $lang['freelech_unlimited'] . '') . " </td>
+             <td>{$fl['setby']}</td>
+             <td>{$fl['title']}</td>
+             <td>{$fl['message']}</td>
+             <td><a href='staffpanel.php?tool=freeleech&amp;action=freeleech&amp;remove'>{$lang['freelech_remove']}</a>
+             </td></tr>";
     }
     $HTMLOUT .= '</table>';
 }
 $checked = 'checked=\'checked\'';
 $HTMLOUT .= "<h2>{$lang['freelech_set_free']}</h2>
-	<form method='post' action='staffpanel.php?tool=freeleech&amp;action=freeleech'>
-	<table >
-	<tr><td class='rowhead'>{$lang['freelech_mode']}</td>
-	<td> <table width='100%'>
+    <form method='post' action='staffpanel.php?tool=freeleech&amp;action=freeleech'>
+    <table >
+    <tr><td class='rowhead'>{$lang['freelech_mode']}</td>
+    <td> <table width='100%'>
  <tr>
  <td>{$lang['freelech_torr_free']}</td>
  <td><input name=\"modifier\" type=\"radio\" $checked1 value=\"1\" /></td>
@@ -107,30 +107,30 @@ $HTMLOUT .= "<h2>{$lang['freelech_set_free']}</h2>
  <td><input name=\"modifier\" type=\"radio\" $checked4 value=\"4\" /></td></tr>
  </table>
     </td></tr>
-	<tr><td class='rowhead'>{$lang['freelech_expire']}
-	</td><td>
-	<select name='expires'>
+    <tr><td class='rowhead'>{$lang['freelech_expire']}
+    </td><td>
+    <select name='expires'>
     <option value='1'>{$lang['freelech_1day']}</option>
     <option value='2'>{$lang['freelech_2days']}</option>
     <option value='5'>{$lang['freelech_5days']}</option>
     <option value='7'>{$lang['freelech_7days']}</option>
     <option value='255'>{$lang['freelech_unlimited']}</option>
     </select></td></tr>
-	<tr><td class='rowhead'>{$lang['freelech_title']}</td>
-	<td><input type='text' size='40' name='title' value='{$fl['title']}' />
-	</td></tr>
-		<tr><td class='rowhead'>{$lang['freelech_message']}</td>
-	<td><input type='text' size='40' name='message' value='{$fl['message']}' />
-	</td></tr>
-			<tr><td class='rowhead'>{$lang['freelech_setby']}</td>
-	<td><input type='text' size='40' value ='" . $CURUSER['username'] . "' name='setby' />
-	</td></tr>
-	<tr><td colspan='2'>
-	<input type='submit' name='okay' value='{$lang['freelech_doit']}' class='button is-small' />
-	</td></tr>
-	<tr><td colspan='2'>
-	<input type='hidden' name='cacheit' value='{$lang['freelech_cache']}' class='button is-small' />
-	</td></tr>
-	</table></form>";
+    <tr><td class='rowhead'>{$lang['freelech_title']}</td>
+    <td><input type='text' size='40' name='title' value='{$fl['title']}' />
+    </td></tr>
+        <tr><td class='rowhead'>{$lang['freelech_message']}</td>
+    <td><input type='text' size='40' name='message' value='{$fl['message']}' />
+    </td></tr>
+            <tr><td class='rowhead'>{$lang['freelech_setby']}</td>
+    <td><input type='text' size='40' value ='" . $CURUSER['username'] . "' name='setby' />
+    </td></tr>
+    <tr><td colspan='2'>
+    <input type='submit' name='okay' value='{$lang['freelech_doit']}' class='button is-small' />
+    </td></tr>
+    <tr><td colspan='2'>
+    <input type='hidden' name='cacheit' value='{$lang['freelech_cache']}' class='button is-small' />
+    </td></tr>
+    </table></form>";
 echo stdhead($lang['freelech_stdhead']) . $HTMLOUT . stdfoot();
 die;

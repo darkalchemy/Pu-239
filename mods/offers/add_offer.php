@@ -104,7 +104,7 @@ if (mysqli_num_rows($rescount) > 0) {
     <td class='colhead'>Offer</td><td class='colhead'>Added</td>
     <td class='colhead'>Offered By</td></tr>\n";
     foreach ($cats as $key => $value) {
-        $change[ $value['id'] ] = [
+        $change[$value['id']] = [
             'id'    => $value['id'],
             'name'  => $value['name'],
             'image' => $value['image'],
@@ -112,8 +112,8 @@ if (mysqli_num_rows($rescount) > 0) {
     }
     while ($arr = mysqli_fetch_assoc($res)) {
         $addedby = "<td style='padding: 0;'><b><a href='userdetails.php?id=$arr[offered_by_user_id]'>$arr[username]</a></b></td>";
-        $catname = htmlspecialchars($change[ $arr['cat'] ]['name']);
-        $catpic = htmlspecialchars($change[ $arr['cat'] ]['image']);
+        $catname = htmlspecialchars($change[$arr['cat']]['name']);
+        $catpic = htmlspecialchars($change[$arr['cat']]['image']);
         $catimage = "<img src='{$site_config['pic_base_url']}caticons/" . $catpic . "' title='$catname' alt='$catname' />";
         $HTMLOUT .= "<tr>
     <td>" . $catimage . "</td>

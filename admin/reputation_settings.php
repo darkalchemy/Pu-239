@@ -210,7 +210,7 @@ function template_out($matches)
     if ($matches[1] == 'rep_is_online') {
         return '' . $lang['repset_yes'] . '<input name="rep_is_online" value="1" ' . ($GVARS['rep_is_online'] == 1 ? 'checked' : '') . ' type="radio">&#160;&#160;&#160;<input name="rep_is_online" value="0" ' . ($GVARS['rep_is_online'] == 1 ? '' : 'checked') . ' type="radio">' . $lang['repset_no'] . '';
     } else {
-        return $GVARS[ $matches[1] ];
+        return $GVARS[$matches[1]];
     }
 }
 

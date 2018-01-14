@@ -10,7 +10,7 @@ function ajax_chat_cleanup($data)
     ignore_user_abort(true);
 
     $res = sql_query("SELECT id, channel, ttl, text FROM ajax_chat_messages
-        				WHERE ttl > 0 AND UNIX_TIMESTAMP(dateTime) + ttl <= UNIX_TIMESTAMP(NOW())") or sqlerr(__FILE__, __LINE__);
+                        WHERE ttl > 0 AND UNIX_TIMESTAMP(dateTime) + ttl <= UNIX_TIMESTAMP(NOW())") or sqlerr(__FILE__, __LINE__);
 
     while ($row = mysqli_fetch_assoc($res)) {
         if (strpos($row['text'], '/delete') === false) {

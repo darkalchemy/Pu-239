@@ -28,7 +28,7 @@ if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
                                 GROUP BY `left`') or sqlerr(__LINE__, __FILE__);
             while ($a = mysqli_fetch_assoc($r)) {
                 $key = $a['left'] == 0 ? 'yes' : 'no';
-                $seed[ $key ] = number_format((int)$a['count']);
+                $seed[$key] = number_format((int)$a['count']);
                 $seed['conn'] = $a['connectable'] == 0 ? 1 : 2;
             }
             $cache->set('MyPeers_XBT_' . $user['id'], $seed, $site_config['expires']['MyPeers_xbt_']);
@@ -47,7 +47,7 @@ if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
                                 GROUP BY seeder');
             while ($a = mysqli_fetch_assoc($r)) {
                 $key = $a['seeder'] == 'yes' ? 'yes' : 'no';
-                $seed[ $key ] = number_format((int)$a['count']);
+                $seed[$key] = number_format((int)$a['count']);
                 $seed['conn'] = $a['connectable'] == 'no' ? 1 : 2;
             }
             $cache->set('MyPeers_' . $user['id'], $seed, $site_config['expires']['MyPeers_']);

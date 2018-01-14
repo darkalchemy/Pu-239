@@ -12,10 +12,10 @@ if (!in_array($CURUSER['id'], $site_config['is_staff']['allowed'])) {
 //get the config from db - stoner/pdq
 $pconf = sql_query('SELECT * FROM class_config ORDER BY value ASC') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($pconf)) {
-    $class_config[ $ac['name'] ]['value'] = $ac['value'];
-    $class_config[ $ac['name'] ]['classname'] = $ac['classname'];
-    $class_config[ $ac['name'] ]['classcolor'] = $ac['classcolor'];
-    $class_config[ $ac['name'] ]['classpic'] = $ac['classpic'];
+    $class_config[$ac['name']]['value'] = $ac['value'];
+    $class_config[$ac['name']]['classname'] = $ac['classname'];
+    $class_config[$ac['name']]['classcolor'] = $ac['classcolor'];
+    $class_config[$ac['name']]['classpic'] = $ac['classpic'];
 }
 $possible_modes = [
     'add',
@@ -91,15 +91,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $c_classcolor = str_replace('#', '', "$c_classcolor");
             $c_classpic = $value['classpic'];
             // handling from posting of contents
-            $post_data = $_POST[ $c_name ]; //    0=> value,1=>classname,2=>classcolor,3=>classpic
+            $post_data = $_POST[$c_name]; //    0=> value,1=>classname,2=>classcolor,3=>classpic
             $value = $post_data[0];
             $classname = !empty($post_data[1]) ? strtoupper($post_data[1]) : '';
             $classcolor = !empty($post_data[2]) ? $post_data[2] : '';
             $data[] = ['className' => $classname, 'classColor' => $classcolor];
             $classcolor = str_replace('#', '', "$classcolor");
             $classpic = !empty($post_data[3]) ? $post_data[3] : '';
-            if (isset($_POST[ $c_name ][0]) && (($value != $c_value) || ($classname != $c_classname) || ($classcolor != $c_classcolor) || ($classpic != $c_classpic))) {
-                $update[ $c_name ] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($value) ? join('|', $value) : $value) . ',' . sqlesc(is_array($classname) ? join('|', $classname) : $classname) . ',' . sqlesc(is_array($classcolor) ? join('|', $classcolor) : $classcolor) . ',' . sqlesc(is_array($classpic) ? join('|', $classpic) : $classpic) . ')';
+            if (isset($_POST[$c_name][0]) && (($value != $c_value) || ($classname != $c_classname) || ($classcolor != $c_classcolor) || ($classpic != $c_classpic))) {
+                $update[$c_name] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($value) ? join('|', $value) : $value) . ',' . sqlesc(is_array($classname) ? join('|', $classname) : $classname) . ',' . sqlesc(is_array($classcolor) ? join('|', $classcolor) : $classcolor) . ',' . sqlesc(is_array($classpic) ? join('|', $classpic) : $classpic) . ')';
             }
         }
         write_css($data);

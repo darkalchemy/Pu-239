@@ -18,15 +18,15 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
         'runtime'        => 'Runtime %s min',
         'genres2'        => 'Genres: %s',
     ];
-    foreach ($tvmaze_display[ $tvmaze_type ] as $key => $value) {
-        if (isset($tvmaze_data[ $key ])) {
-            $tvmaze_display[ $tvmaze_type ][ $key ] = sprintf($value, $tvmaze_data[ $key ]);
+    foreach ($tvmaze_display[$tvmaze_type] as $key => $value) {
+        if (isset($tvmaze_data[$key])) {
+            $tvmaze_display[$tvmaze_type][$key] = sprintf($value, $tvmaze_data[$key]);
         } else {
-            $tvmaze_display[ $tvmaze_type ][ $key ] = sprintf($value, 'None Found');
+            $tvmaze_display[$tvmaze_type][$key] = sprintf($value, 'None Found');
         }
     }
 
-    return join('<br><br>', $tvmaze_display[ $tvmaze_type ]);
+    return join('<br><br>', $tvmaze_display[$tvmaze_type]);
 }
 
 /**

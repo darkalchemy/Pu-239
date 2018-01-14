@@ -106,42 +106,42 @@ if ($count == 0) {
     $HTMLOUT .= stdmsg($lang['hnrwarn_hey'], $lang['hnrwarn_none'] . strtolower($title));
 } else {
     $HTMLOUT .= "<form action='staffpanel.php?tool=hnrwarn&amp;action=hnrwarn' method='post'>
-		<table width='600' cellpadding='3' cellspacing='2' style='border-collapse:separate;'>
-		<tr>    	
-			<td class='colhead' width='100%' >{$lang['hnrwarn_form_user']}</td>
-			<td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_ratio']}</td>
-			<td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_class']}</td>
-			<td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_access']}</td>
-			<td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_join']}</td>
-			<td class='colhead' nowrap='nowrap'><input type='checkbox' name='checkall' /></td>
-		</tr>";
+        <table width='600' cellpadding='3' cellspacing='2' style='border-collapse:separate;'>
+        <tr>        
+            <td class='colhead' width='100%' >{$lang['hnrwarn_form_user']}</td>
+            <td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_ratio']}</td>
+            <td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_class']}</td>
+            <td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_access']}</td>
+            <td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_join']}</td>
+            <td class='colhead' nowrap='nowrap'><input type='checkbox' name='checkall' /></td>
+        </tr>";
     while ($a = mysqli_fetch_assoc($g)) {
         $tip = ($do == 'hnrwarn' ? $lang['hnrwarn_tip1'] . htmlsafechars($a['warn_reason']) . '<br>' : $lang['hnrwarn_tip2'] . htmlsafechars($a['disable_reason']));
         $HTMLOUT .= "<tr>
-				  <td width='100%'><a href='userdetails.php?id=" . (int)$a['id'] . "' onmouseover=\"Tip('($tip)')\" onmouseout=\"UnTip()\">" . htmlsafechars($a['username']) . "</a></td>
-				  <td nowrap='nowrap'>" . (float)$a['ratio'] . "<br><font class='small'><b>{$lang['hnrwarn_d']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['hnrwarn_u']}</b> " . mksize($a['uploaded']) . "</font></td>
-				  <td nowrap='nowrap'>" . get_user_class_name($a['class']) . "</td>
-				  <td nowrap='nowrap'>" . get_date($a['last_access'], 'LONG', 0, 1) . "</td>
-				  <td nowrap='nowrap'>" . get_date($a['added'], 'DATE', 1) . "</td>
-				  <td nowrap='nowrap'><input type='checkbox' name='users[]' value='" . (int)$a['id'] . "' /></td>
-				</tr>";
+                  <td width='100%'><a href='userdetails.php?id=" . (int)$a['id'] . "' onmouseover=\"Tip('($tip)')\" onmouseout=\"UnTip()\">" . htmlsafechars($a['username']) . "</a></td>
+                  <td nowrap='nowrap'>" . (float)$a['ratio'] . "<br><font class='small'><b>{$lang['hnrwarn_d']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['hnrwarn_u']}</b> " . mksize($a['uploaded']) . "</font></td>
+                  <td nowrap='nowrap'>" . get_user_class_name($a['class']) . "</td>
+                  <td nowrap='nowrap'>" . get_date($a['last_access'], 'LONG', 0, 1) . "</td>
+                  <td nowrap='nowrap'>" . get_date($a['added'], 'DATE', 1) . "</td>
+                  <td nowrap='nowrap'><input type='checkbox' name='users[]' value='" . (int)$a['id'] . "' /></td>
+                </tr>";
     }
     $HTMLOUT .= "<tr>
-			<td colspan='6' class='colhead'>
-				<select name='action'>
-					<option value='unwarn'>{$lang['hnrwarn_unwarn']}</option>
-					<option value='disable'>{$lang['hnrwarn_disable2']}</option>
-					";
+            <td colspan='6' class='colhead'>
+                <select name='action'>
+                    <option value='unwarn'>{$lang['hnrwarn_unwarn']}</option>
+                    <option value='disable'>{$lang['hnrwarn_disable2']}</option>
+                    ";
     $HTMLOUT .= "<option value='delete' " . ($CURUSER['class'] < UC_ADMINISTRATOR ? 'disabled' : '') . ">{$lang['hnrwarn_delete']}</option>";
     $HTMLOUT .= "
-    				</select>
-				&raquo;
-				<input type='submit' value='{$lang['hnrwarn_apply']}' />
-				<input type='hidden' value='" . htmlsafechars($_SERVER['REQUEST_URI']) . "' name='ref' />
-			</td>
-			</tr>
-			</table>
-			</form>";
+                    </select>
+                &raquo;
+                <input type='submit' value='{$lang['hnrwarn_apply']}' />
+                <input type='hidden' value='" . htmlsafechars($_SERVER['REQUEST_URI']) . "' name='ref' />
+            </td>
+            </tr>
+            </table>
+            </form>";
 }
 $HTMLOUT .= end_frame();
 $HTMLOUT .= end_main_frame();

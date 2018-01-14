@@ -61,10 +61,10 @@ if ($user_stats === false || is_null($user_stats)) {
     $sql_1 = sql_query('SELECT ' . $stats_fields . ' FROM users WHERE id= ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $user_stats = mysqli_fetch_assoc($sql_1);
     foreach ($stats_fields_ar_int as $i) {
-        $user_stats[ $i ] = (int)$user_stats[ $i ];
+        $user_stats[$i] = (int)$user_stats[$i];
     }
     foreach ($stats_fields_ar_float as $i) {
-        $user_stats[ $i ] = (float)$user_stats[ $i ];
+        $user_stats[$i] = (float)$user_stats[$i];
     }
 
     $cache->set($What_Cache . $id, $user_stats, $What_Expire);
@@ -498,8 +498,8 @@ if (!empty($user['where_is'])) {
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_location']}</td><td class='has-text-left' width='99%'>" . format_urls($user['where_is']) . "</td></tr>";
 }
 //==
-$moodname = (isset($mood['name'][ $user['mood'] ]) ? htmlsafechars($mood['name'][ $user['mood'] ]) : $lang['userdetails_neutral']);
-$moodpic = (isset($mood['image'][ $user['mood'] ]) ? htmlsafechars($mood['image'][ $user['mood'] ]) : 'noexpression.gif');
+$moodname = (isset($mood['name'][$user['mood']]) ? htmlsafechars($mood['name'][$user['mood']]) : $lang['userdetails_neutral']);
+$moodpic = (isset($mood['image'][$user['mood']]) ? htmlsafechars($mood['image'][$user['mood']]) : 'noexpression.gif');
 $HTMLOUT .= '<tr><td class="rowhead">' . $lang['userdetails_currentmood'] . '</td><td class="has-text-left"><span class="tool">
        <a href="javascript:;" onclick="PopUp(\'usermood.php\',\'' . $lang['userdetails_mood'] . '\',530,500,1,1);">
        <img src="' . $site_config['pic_base_url'] . 'smilies/' . $moodpic . '" alt="' . $moodname . '" border="0" />
@@ -542,9 +542,9 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
     require_once CLASS_DIR . 'validator.php';
     $HTMLOUT .= validatorForm('ModTask_' . $user['id']);
     $postkey = PostKey([
-        $user['id'],
-        $CURUSER['id'],
-    ]);
+                           $user['id'],
+                           $CURUSER['id'],
+                       ]);
     $HTMLOUT .= "<input type='hidden' name='action' value='edituser' />";
     $HTMLOUT .= "<input type='hidden' name='userid' value='$id' />";
     $HTMLOUT .= "<input type='hidden' name='postkey' value='$postkey' />";

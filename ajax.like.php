@@ -31,7 +31,7 @@ function comment_like_unlike()
 {
     global $CURUSER, $type, $tb_fields, $the_id, $banned_users, $disabled_time, $lang;
     $userip = $_SERVER['REMOTE_ADDR'];
-    $res = sql_query('SELECT user_likes,disabled_time FROM ' . $tb_fields[ $type[0] ] . ' LEFT OUTER JOIN manage_likes ON manage_likes.user_id = ' . sqlesc($CURUSER['id']) . ' WHERE ' . $tb_fields[ $type[0] ] . '.id = ' . sqlesc($the_id) . '') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT user_likes,disabled_time FROM ' . $tb_fields[$type[0]] . ' LEFT OUTER JOIN manage_likes ON manage_likes.user_id = ' . sqlesc($CURUSER['id']) . ' WHERE ' . $tb_fields[$type[0]] . '.id = ' . sqlesc($the_id) . '') or sqlerr(__FILE__, __LINE__);
     $data = mysqli_fetch_row($res);
     if ($data[1] + $disabled_time > time()) {
         die($lang['ajlike_you_been_disabled']);
@@ -41,16 +41,16 @@ function comment_like_unlike()
     $exp = explode(',', $data[0]);
     if ($res && $type[1] == 'like' && array_key_exists($type[0], $tb_fields)) {
         if (!(in_array($CURUSER['id'], $exp))) {
-            $res2 = sql_query('UPDATE ' . $tb_fields[ $type[0] ] . " SET user_likes = IF(LENGTH(user_likes),CONCAT(user_likes,','," . sqlesc((string)$CURUSER['id']) . '),' . sqlesc((string)$CURUSER['id']) . ') WHERE id = ' . sqlesc($the_id) . '') or sqlerr(__FILE__, __LINE__);
+            $res2 = sql_query('UPDATE ' . $tb_fields[$type[0]] . " SET user_likes = IF(LENGTH(user_likes),CONCAT(user_likes,','," . sqlesc((string)$CURUSER['id']) . '),' . sqlesc((string)$CURUSER['id']) . ') WHERE id = ' . sqlesc($the_id) . '') or sqlerr(__FILE__, __LINE__);
         } else {
             die($lang['ajlike_you_already_liked']);
         }
     } elseif ($res && $type[1] == 'unlike' && array_key_exists($type[0], $tb_fields)) {
         if (in_array($CURUSER['id'], $exp)) {
             $key = array_search($CURUSER['id'], $exp);
-            unset($exp[ $key ]);
+            unset($exp[$key]);
             $exp = implode(',', $exp);
-            $res2 = sql_query('UPDATE ' . $tb_fields[ $type[0] ] . ' SET user_likes = ' . sqlesc($exp) . 'WHERE id = ' . sqlesc($the_id) . '') or sqlerr(__FILE__, __LINE__);
+            $res2 = sql_query('UPDATE ' . $tb_fields[$type[0]] . ' SET user_likes = ' . sqlesc($exp) . 'WHERE id = ' . sqlesc($the_id) . '') or sqlerr(__FILE__, __LINE__);
         } else {
             die($lang['ajlike_you_already_unliked']);
         }

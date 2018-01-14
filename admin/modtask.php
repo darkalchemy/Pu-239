@@ -11,9 +11,9 @@ $lang = array_merge($lang, load_language('modtask'));
 
 $curuser_cache = $user_cache = $stats_cache = $user_stats_cache = '';
 $postkey = PostKey([
-    $_POST['userid'],
-    $CURUSER['id'],
-]);
+                       $_POST['userid'],
+                       $CURUSER['id'],
+                   ]);
 /**
  * @param $torrent_pass
  *
@@ -86,9 +86,9 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
         die($lang['modtask_invalid']);
     }
     if (CheckPostKey([
-            $userid,
-            $CURUSER['id'],
-        ], $postkey) == false) {
+                         $userid,
+                         $CURUSER['id'],
+                     ], $postkey) == false) {
         stderr($lang['modtask_pmsl'], $lang['modtask_die_bit']);
     }
     //== Fetch current user data...
@@ -562,11 +562,11 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
             }
             if (($img_size[0] > $site_config['av_img_width']) or ($img_size[1] > $site_config['av_img_height'])) {
                 $image = resize_image([
-                    'max_width'  => $site_config['av_img_width'],
-                    'max_height' => $site_config['av_img_height'],
-                    'cur_width'  => $img_size[0],
-                    'cur_height' => $img_size[1],
-                ]);
+                                          'max_width'  => $site_config['av_img_width'],
+                                          'max_height' => $site_config['av_img_height'],
+                                          'cur_width'  => $img_size[0],
+                                          'cur_height' => $img_size[1],
+                                      ]);
             } else {
                 $image['img_width'] = $img_size[0];
                 $image['img_height'] = $img_size[1];
@@ -596,11 +596,11 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
             }
             if (($img_size[0] > $site_config['sig_img_width']) or ($img_size[1] > $site_config['sig_img_height'])) {
                 $image = resize_image([
-                    'max_width'  => $site_config['sig_img_width'],
-                    'max_height' => $site_config['sig_img_height'],
-                    'cur_width'  => $img_size[0],
-                    'cur_height' => $img_size[1],
-                ]);
+                                          'max_width'  => $site_config['sig_img_width'],
+                                          'max_height' => $site_config['sig_img_height'],
+                                          'cur_width'  => $img_size[0],
+                                          'cur_height' => $img_size[1],
+                                      ]);
             } else {
                 $image['img_width'] = $img_size[0];
                 $image['img_height'] = $img_size[1];

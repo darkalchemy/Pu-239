@@ -16,19 +16,19 @@ if (mysqli_num_rows($rez_invited) < 1) {
     $inviteted_by_this_member .= 'No invitees yet.';
 } else {
     $inviteted_by_this_member .= '<table width="100%" border="1" cellspacing="0" cellpadding="5">
-		<tr><td class="colhead"><b>' . $lang['userdetails_u_ip'] . '</b></td>
-		<td class="colhead"><b>' . $lang['userdetails_email'] . 'l</b></td>
-		<td class="colhead"><b>' . $lang['userdetails_uploaded'] . '</b></td>
-		' . ($site_config['ratio_free'] ? '' : '<td class="colhead"><b>' . $lang['userdetails_downloaded'] . '</b></td>') . '
-		<td class="colhead"><b>' . $lang['userdetails_ratio'] . '</b></td>
-		<td class="colhead"><b>' . $lang['userdetails_status'] . '</b></td></tr>';
+        <tr><td class="colhead"><b>' . $lang['userdetails_u_ip'] . '</b></td>
+        <td class="colhead"><b>' . $lang['userdetails_email'] . 'l</b></td>
+        <td class="colhead"><b>' . $lang['userdetails_uploaded'] . '</b></td>
+        ' . ($site_config['ratio_free'] ? '' : '<td class="colhead"><b>' . $lang['userdetails_downloaded'] . '</b></td>') . '
+        <td class="colhead"><b>' . $lang['userdetails_ratio'] . '</b></td>
+        <td class="colhead"><b>' . $lang['userdetails_status'] . '</b></td></tr>';
     while ($arr_invited = mysqli_fetch_assoc($rez_invited)) {
         $inviteted_by_this_member .= '<tr><td>' . ($arr_invited['status'] == 'pending' ? htmlsafechars($arr_invited['username']) : format_username($arr_invited) . '<br> ' . ($CURUSER['class'] < UC_STAFF ? '' : $arr_invited['ip'])) . '</td>
-		<td>' . htmlsafechars($arr_invited['email']) . '</td>
-		<td>' . mksize($arr_invited['uploaded']) . '</td>
-		' . ($site_config['ratio_free'] ? '' : '<td>' . mksize($arr_invited['downloaded']) . '</td>') . '
-		<td>' . member_ratio($arr_invited['uploaded'], $site_config['ratio_free'] ? '0' : $arr_invited['downloaded']) . '</td>
-		<td>' . ($arr_invited['status'] == 'confirmed' ? '<span style="color: green;">' . $lang['userdetails_confirmed'] . '</span></td></tr>' : '<span style="color: red;">' . $lang['userdetails_pending'] . '</span></td></tr>');
+        <td>' . htmlsafechars($arr_invited['email']) . '</td>
+        <td>' . mksize($arr_invited['uploaded']) . '</td>
+        ' . ($site_config['ratio_free'] ? '' : '<td>' . mksize($arr_invited['downloaded']) . '</td>') . '
+        <td>' . member_ratio($arr_invited['uploaded'], $site_config['ratio_free'] ? '0' : $arr_invited['downloaded']) . '</td>
+        <td>' . ($arr_invited['status'] == 'confirmed' ? '<span style="color: green;">' . $lang['userdetails_confirmed'] . '</span></td></tr>' : '<span style="color: red;">' . $lang['userdetails_pending'] . '</span></td></tr>');
     }
     $inviteted_by_this_member .= '</table>';
 }

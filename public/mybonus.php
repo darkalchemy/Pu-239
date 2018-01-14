@@ -191,9 +191,10 @@ switch (true) {
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
         die;
 
-    case isset($_GET['parked_success']): {
-        I_smell_a_rat($_GET['parked_success']);
-    }
+    case isset($_GET['parked_success']):
+        {
+            I_smell_a_rat($_GET['parked_success']);
+        }
         $HTMLOUT .= "<table class='table table-bordered bottom20'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>
 <td><div class='has-text-centered'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' class='tooltipper' /></div></td>
 <td><b>Congratulations! </b>" . $CURUSER['username'] . " you have just purchased parked option for your profile !
@@ -202,9 +203,10 @@ switch (true) {
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
         die;
 
-    case isset($_GET['freeyear_success']): {
-        I_smell_a_rat($_GET['freeyear_success']);
-    }
+    case isset($_GET['freeyear_success']):
+        {
+            I_smell_a_rat($_GET['freeyear_success']);
+        }
         $HTMLOUT .= "<table class='table table-bordered bottom20'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>
 <td><div class='has-text-centered'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' class='tooltipper' /></div></td>
 <td><b>Congratulations! </b>" . $CURUSER['username'] . " you have just purchased freeleech for one year!
@@ -213,9 +215,10 @@ switch (true) {
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
         die;
 
-    case isset($_GET['freeslots_success']): {
-        I_smell_a_rat($_GET['freeslots_success']);
-    }
+    case isset($_GET['freeslots_success']):
+        {
+            I_smell_a_rat($_GET['freeslots_success']);
+        }
 
         $HTMLOUT .= "<table class='table table-bordered bottom20'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>
 <td><div class='has-text-centered'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' class='tooltipper' /></div></td>
@@ -225,9 +228,10 @@ switch (true) {
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
         die;
 
-    case isset($_GET['itrade_success']): {
-        I_smell_a_rat($_GET['itrade_success']);
-    }
+    case isset($_GET['itrade_success']):
+        {
+            I_smell_a_rat($_GET['itrade_success']);
+        }
 
         $HTMLOUT .= "<table class='table table-bordered bottom20'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>
 <td><div class='has-text-centered'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' class='tooltipper' /></div></td>
@@ -237,9 +241,10 @@ switch (true) {
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
         die;
 
-    case isset($_GET['itrade2_success']): {
-        I_smell_a_rat($_GET['itrade2_success']);
-    }
+    case isset($_GET['itrade2_success']):
+        {
+            I_smell_a_rat($_GET['itrade2_success']);
+        }
 
         $HTMLOUT .= "<table class='table table-bordered bottom20'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr><tr>
 <td><div class='has-text-centered'><img src='{$site_config['pic_base_url']}smilies/karma.gif' alt='good_karma' title='Good karma' class='tooltipper' /></div></td>
@@ -249,9 +254,10 @@ switch (true) {
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
         die;
 
-    case isset($_GET['pirate_success']): {
-        I_smell_a_rat($_GET['pirate_success']);
-    }
+    case isset($_GET['pirate_success']):
+        {
+            I_smell_a_rat($_GET['pirate_success']);
+        }
         $HTMLOUT .= "<table class='table table-bordered bottom20'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr>
 <tr><td><img src='{$site_config['pic_base_url']}smilies/pirate2.gif' alt='good_karma' title='Good karma' /></td><td>
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself Pirate Status and Freeleech for two weeks! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br>
@@ -259,9 +265,10 @@ switch (true) {
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
         die;
 
-    case isset($_GET['king_success']): {
-        I_smell_a_rat($_GET['king_success']);
-    }
+    case isset($_GET['king_success']):
+        {
+            I_smell_a_rat($_GET['king_success']);
+        }
         $HTMLOUT .= "<table class='table table-bordered bottom20'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr>
 <tr><td><img src='{$site_config['pic_base_url']}smilies/king.gif' alt='good_karma' title='Good karma' /></td><td>
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself King Status and Freeleech for one month! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br>
@@ -269,9 +276,10 @@ switch (true) {
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
         die;
 
-    case isset($_GET['dload_success']): {
-        I_smell_a_rat($_GET['dload_success']);
-    }
+    case isset($_GET['dload_success']):
+        {
+            I_smell_a_rat($_GET['dload_success']);
+        }
 
         $amt = (float)$_GET['amt'];
 
@@ -416,9 +424,10 @@ You may also <a class='altlink' href='{$site_config['baseurl']}/pm_system.php?ac
         echo stdhead($CURUSER['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
         die;
 
-    case isset($_GET['bounty_success']): {
-        I_smell_a_rat($_GET['bounty_success']);
-    }
+    case isset($_GET['bounty_success']):
+        {
+            I_smell_a_rat($_GET['bounty_success']);
+        }
         $HTMLOUT .= "<table class='table table-bordered bottom20'><tr><td class='colhead' colspan='2'><h1>Success!</h1></td></tr>
 <tr><td><img src='{$site_config['pic_base_url']}smilies/pirate2.gif' alt='good_karma' title='Good karma' /></td><td>
 <b>Congratulations! </b>" . $CURUSER['username'] . " you have got yourself bounty and robbed many users of there reputation points! <img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='w00t' title='W00t' class='left10 tooltipper' /><br>
@@ -728,7 +737,7 @@ if (isset($_GET['exchange'])) {
             $pm['message'] = "Hey\nWe are sorry to announce that you have been robbed by [url=" . $site_config['baseurl'] . "/userdetails.php?id=%d]%s[/url]\nNow your total reputation is [b]%d[/b]\n[color=#ff0000]This is normal and you should not worry, if you have enough bonus points you can rob other people[/color]";
             $pm['message_thief'] = "Hey %s:\nYou robbed:\n%s\nYour total reputation is now [b]%d[/b] but you lost [b]%d[/b] karma points ";
             $foo = [50 => 3, 75 => 3, 100 => 3, 150 => 4, 200 => 5, 250 => 5, 300 => 6];
-            $user_limit = isset($foo[ $rep_to_steal ]) ? $foo[ $rep_to_steal ] : 3;
+            $user_limit = isset($foo[$rep_to_steal]) ? $foo[$rep_to_steal] : 3;
 
             $query = $fluent->from('users')
                 ->select(null)

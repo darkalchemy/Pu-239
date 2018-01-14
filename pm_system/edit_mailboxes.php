@@ -54,14 +54,14 @@ if (isset($_POST['action2'])) {
                 stderr($lang['pm_error'], $lang['pm_edmail_err1']);
             }
             while ($row = mysqli_fetch_assoc($res)) {
-                if (valid_username($_POST[ 'edit' . $row['id'] ]) && $_POST[ 'edit' . $row['id'] ] !== '' && $_POST[ 'edit' . $row['id'] ] !== $row['name']) {
-                    $name = htmlsafechars($_POST[ 'edit' . $row['id'] ]);
+                if (valid_username($_POST['edit' . $row['id']]) && $_POST['edit' . $row['id']] !== '' && $_POST['edit' . $row['id']] !== $row['name']) {
+                    $name = htmlsafechars($_POST['edit' . $row['id']]);
                     sql_query('UPDATE pmboxes SET name=' . sqlesc($name) . ' WHERE id=' . sqlesc($row['id']) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
                     $cache->delete('get_all_boxes_' . $CURUSER['id']);
                     $cache->delete('insertJumpTo' . $CURUSER['id']);
                     $worked = '&name=1';
                 }
-                if ($_POST[ 'edit' . $row['id'] ] == '') {
+                if ($_POST['edit' . $row['id']] == '') {
                     $remove_messages_res = sql_query('SELECT id FROM messages WHERE location=' . sqlesc($row['boxnumber']) . '  AND receiver=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                     while ($remove_messages_arr = mysqli_fetch_assoc($remove_messages_res)) {
                         sql_query('UPDATE messages SET location=1 WHERE id=' . sqlesc($remove_messages_arr['id'])) or sqlerr(__FILE__, __LINE__);
@@ -189,7 +189,7 @@ if (mysqli_num_rows($r) > 0) {
 $HTMLOUT .= '
 <script>
 /*<![CDATA[*/
-$(document).ready(function()	{
+$(document).ready(function()    {
 //=== cats
 $("#cat_open").click(function() {
   $("#cat").slideToggle("slow", function() {
@@ -225,7 +225,7 @@ $HTMLOUT .= '
     <tr>
         <td class="one"></td>
         <td class="one">' . $lang['pm_edmail_only_fill'] . '<br>
-		' . $lang['pm_edmail_blank'] . '</td>
+        ' . $lang['pm_edmail_blank'] . '</td>
         <td class="one"><input type="submit" class="button is-small" name="move" value="' . $lang['pm_edmail_add'] . '" /></form></td>
     </tr>
     <tr>

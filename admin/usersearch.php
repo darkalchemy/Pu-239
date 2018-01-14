@@ -16,7 +16,7 @@ $lang = array_merge($lang, load_language('ad_usersearch'));
  */
 function is_set_not_empty($param)
 {
-    if (isset($_POST[ $param ]) && !empty($_POST[ $param ])) {
+    if (isset($_POST[$param]) && !empty($_POST[$param])) {
         return true;
     } else {
         return false;
@@ -63,7 +63,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_between'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['rt']) ? $_POST['rt'] : '3') == "$i") ? "selected" : '') . '>' . $options[ $i ] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['rt']) ? $_POST['rt'] : '3') == "$i") ? "selected" : '') . '>' . $options[$i] . "</option>\n";
                         }
                         ?>
                     </select>
@@ -84,7 +84,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_pending'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['st']) ? $_POST['st'] : '0') == "$i") ? "selected" : '') . '>' . $options[ $i ] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['st']) ? $_POST['st'] : '0') == "$i") ? "selected" : '') . '>' . $options[$i] . "</option>\n";
                         }
                         ?>
                     </select></td>
@@ -116,7 +116,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_disabled'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['as']) ? $_POST['as'] : '0') == "$i") ? "selected" : '') . '>' . $options[ $i ] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['as']) ? $_POST['as'] : '0') == "$i") ? "selected" : '') . '>' . $options[$i] . "</option>\n";
                         }
                         ?>
                     </select></td>
@@ -171,7 +171,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_between'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['dt']) ? $_POST['dt'] : '0') == "$i") ? "selected" : '') . '>' . $options[ $i ] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['dt']) ? $_POST['dt'] : '0') == "$i") ? "selected" : '') . '>' . $options[$i] . "</option>\n";
                         }
                         ?>
                     </select>
@@ -196,7 +196,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_between'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['ult']) ? $_POST['ult'] : '0') == "$i") ? "selected" : '') . '>' . $options[ $i ] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['ult']) ? $_POST['ult'] : '0') == "$i") ? "selected" : '') . '>' . $options[$i] . "</option>\n";
                         }
                         ?>
                     </select>
@@ -219,7 +219,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_no'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['do']) ? $_POST['do'] : '0') == "$i") ? "selected" : '') . '>' . $options[ $i ] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['do']) ? $_POST['do'] : '0') == "$i") ? "selected" : '') . '>' . $options[$i] . "</option>\n";
                         }
                         ?>
                     </select></td>
@@ -239,7 +239,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_between'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['lst']) ? $_POST['lst'] : '0') == "$i") ? "selected" : '') . '>' . $options[ $i ] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['lst']) ? $_POST['lst'] : '0') == "$i") ? "selected" : '') . '>' . $options[$i] . "</option>\n";
                         }
                         ?>
                     </select>
@@ -263,7 +263,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_between'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['dlt']) ? $_POST['dlt'] : '0') == "$i") ? "selected" : '') . '>' . $options[ $i ] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['dlt']) ? $_POST['dlt'] : '0') == "$i") ? "selected" : '') . '>' . $options[$i] . "</option>\n";
                         }
                         ?>
                     </select>
@@ -287,7 +287,7 @@ $highlight = " bgcolor='lightgrey'";
                             $lang['usersearch_no'],
                         ];
                         for ($i = 0; $i < count($options); ++$i) {
-                            echo "<option value='$i' " . (((isset($_POST['w']) ? $_POST['w'] : '0') == "$i") ? "selected" : '') . '>' . $options[ $i ] . "</option>\n";
+                            echo "<option value='$i' " . (((isset($_POST['w']) ? $_POST['w'] : '0') == "$i") ? "selected" : '') . '>' . $options[$i] . "</option>\n";
                         }
                         ?>
                     </select></td>
@@ -335,7 +335,7 @@ function mkdate($date)
         return 0;
     }
     for ($i = 0; $i < 3; ++$i) {
-        if (!is_numeric($a[ $i ])) {
+        if (!is_numeric($a[$i])) {
             return 0;
         }
     }
@@ -448,12 +448,12 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
                     $email_is .= (!empty($email_is) ? ' OR ' : '') . 'u.email =' . sqlesc($email);
                 } else {
                     $sql_email = str_replace([
-                        '?',
-                        '*',
-                    ], [
-                        '_',
-                        '%',
-                    ], $email);
+                                                 '?',
+                                                 '*',
+                                             ], [
+                                                 '_',
+                                                 '%',
+                                             ], $email);
                     $email_is .= (!empty($email_is) ? ' OR ' : '') . 'u.email LIKE ' . sqlesc($sql_email);
                 }
             }
@@ -566,12 +566,12 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
                         $comment_is .= (!empty($comment_is) ? ' OR ' : '') . 'u.modcomment LIKE ' . sqlesc('%' . $comment . '%');
                     } else {
                         $comment = str_replace([
-                            '?',
-                            '*',
-                        ], [
-                            '_',
-                            '%',
-                        ], $comment);
+                                                   '?',
+                                                   '*',
+                                               ], [
+                                                   '_',
+                                                   '%',
+                                               ], $comment);
                         $comment_is .= (!empty($comment_is) ? ' OR ' : '') . 'u.modcomment LIKE ' . sqlesc($comment);
                     }
                 }
@@ -585,12 +585,12 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
                         $comment_is .= (isset($comment_is) ? ' OR ' : '') . 'u.modcomment LIKE ' . sqlesc('%' . $comment . '%');
                     } else {
                         $comment = str_replace([
-                            '?',
-                            '*',
-                        ], [
-                            '_',
-                            '%',
-                        ], $comment);
+                                                   '?',
+                                                   '*',
+                                               ], [
+                                                   '_',
+                                                   '%',
+                                               ], $comment);
                         $comment_is .= (isset($comment_is) ? ' OR ' : '') . 'u.modcomment LIKE ' . sqlesc($comment);
                     }
                 }
@@ -810,7 +810,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
     $querypm = 'FROM ' . $from_is . (($where_is == '') ? ' ' : " WHERE $where_is ");
     $announcement_query = 'SELECT u.id FROM ' . $from_is . (($where_is == '') ? ' WHERE 1 = 1' : " WHERE $where_is");
     $select_is = 'u.id, u.username, u.email, u.status, u.added, u.last_access, u.ip,
-  	u.class, u.uploaded, u.downloaded, u.donor, u.modcomment, u.enabled, u.warned';
+      u.class, u.uploaded, u.downloaded, u.donor, u.modcomment, u.enabled, u.warned';
     $query1 = 'SELECT ' . $distinct . ' ' . $select_is . ' ' . $querypm;
     //    <temporary>    /////////////////////////////////////////////////////
     if ($DEBUG_MODE > 0) {
@@ -847,7 +847,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
         }
         $HTMLOUT .= "<table >\n
         <tr><td class='colhead'>{$lang['usersearch_name']}</td>
-    	  <td class='colhead'>{$lang['usersearch_ratio']}</td>
+          <td class='colhead'>{$lang['usersearch_ratio']}</td>
         <td class='colhead'>{$lang['usersearch_ip']}</td>
         <td class='colhead'>{$lang['usersearch_email']}</td>" . "<td class='colhead'>{$lang['usersearch_joined']}</td>" . "<td class='colhead'>{$lang['usersearch_lastseen']}</td>" . "<td class='colhead'>{$lang['usersearch_asts']}</td>" . "<td class='colhead'>{$lang['usersearch_enabled']}</td>" . "<td class='colhead'>{$lang['usersearch_pR']}</td>" . "<td class='colhead'>{$lang['usersearch_pUL']}</td>" . "<td class='colhead'>{$lang['usersearch_pDL']}</td>" . "<td class='colhead'>{$lang['usersearch_history']}</td></tr>";
         $ids = '';

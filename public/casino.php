@@ -163,7 +163,7 @@ $betmb_options = [
 $post_color = (isset($_POST['color']) ? $_POST['color'] : '');
 $post_number = (isset($_POST['number']) ? $_POST['number'] : '');
 $post_betmb = (isset($_POST['betmb']) ? $_POST['betmb'] : '');
-if (isset($color_options[ $post_color ]) && isset($number_options[ $post_number ]) || isset($betmb_options[ $post_betmb ])) {
+if (isset($color_options[$post_color]) && isset($number_options[$post_number]) || isset($betmb_options[$post_betmb])) {
     $betmb = $_POST['betmb'];
     if (isset($_POST['number'])) {
         $win_amount = $win_amount_on_number;

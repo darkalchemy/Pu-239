@@ -5,7 +5,7 @@ check_user_status();
 $lang = array_merge(load_language('global'), load_language('formats'));
 echo stdhead("{$lang['formats_download_title']}");
 ?>
-<table class='main' width='750' >
+<table class='main' width='750'>
     <tr>
         <td class='embedded'>
             <h2><?php
@@ -22,7 +22,7 @@ echo stdhead("{$lang['formats_download_title']}");
     </tr>
 </table>
 <br>
-<table class='main' width='750' >
+<table class='main' width='750'>
     <tr>
         <td class='embedded'>
             <h2><?php
@@ -39,7 +39,7 @@ echo stdhead("{$lang['formats_download_title']}");
     </tr>
 </table>
 <br>
-<table class='main' width='750' >
+<table class='main' width='750'>
     <tr>
         <td class='embedded'>
             <h2><?php
@@ -56,7 +56,7 @@ echo stdhead("{$lang['formats_download_title']}");
     </tr>
 </table>
 <br>
-<table class='main' width='750' >
+<table class='main' width='750'>
     <tr>
         <td class='embedded'>
             <h2><?php
@@ -73,7 +73,7 @@ echo stdhead("{$lang['formats_download_title']}");
     </tr>
 </table>
 <br>
-<table class='main' width='750' >
+<table class='main' width='750'>
     <tr>
         <td class='embedded'>
             <h2><?php
@@ -90,7 +90,7 @@ echo stdhead("{$lang['formats_download_title']}");
     </tr>
 </table>
 <br>
-<table class='main' width='750' >
+<table class='main' width='750'>
     <tr>
         <td class='embedded'>
             <table width='100%' border='1' cellspacing='0' cellpadding='10'>

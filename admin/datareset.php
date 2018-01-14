@@ -17,15 +17,15 @@ function deletetorrent($tid)
 {
     global $site_config, $cache, $CURUSER;
     sql_query('DELETE peers.*, files.*, comments.*, snatched.*, thanks.*, bookmarks.*, coins.*, rating.*, torrents.* FROM torrents 
-				 LEFT JOIN peers ON peers.torrent = torrents.id
-				 LEFT JOIN files ON files.torrent = torrents.id
-				 LEFT JOIN comments ON comments.torrent = torrents.id
-				 LEFT JOIN thanks ON thanks.torrentid = torrents.id
-				 LEFT JOIN bookmarks ON bookmarks.torrentid = torrents.id
-				 LEFT JOIN coins ON coins.torrentid = torrents.id
-				 LEFT JOIN rating ON rating.torrent = torrents.id
-				 LEFT JOIN snatched ON snatched.torrentid = torrents.id
-				 WHERE torrents.id =' . sqlesc($tid)) or sqlerr(__FILE__, __LINE__);
+                 LEFT JOIN peers ON peers.torrent = torrents.id
+                 LEFT JOIN files ON files.torrent = torrents.id
+                 LEFT JOIN comments ON comments.torrent = torrents.id
+                 LEFT JOIN thanks ON thanks.torrentid = torrents.id
+                 LEFT JOIN bookmarks ON bookmarks.torrentid = torrents.id
+                 LEFT JOIN coins ON coins.torrentid = torrents.id
+                 LEFT JOIN rating ON rating.torrent = torrents.id
+                 LEFT JOIN snatched ON snatched.torrentid = torrents.id
+                 WHERE torrents.id =' . sqlesc($tid)) or sqlerr(__FILE__, __LINE__);
     unlink("{$site_config['torrent_dir']}/$tid.torrent");
     $cache->delete('MyPeers_' . $CURUSER['id']);
 }
@@ -38,14 +38,14 @@ function deletetorrent_xbt($tid)
     global $site_config, $cache, $CURUSER;
     sql_query('UPDATE torrents SET flags = 1 WHERE id = ' . sqlesc($tid)) or sqlerr(__FILE__, __LINE__);
     sql_query('DELETE files.*, comments.*, xbt_files_users.*, thanks.*, bookmarks.*, coins.*, rating.*, torrents.* FROM torrents 
-				 LEFT JOIN files ON files.torrent = torrents.id
-				 LEFT JOIN comments ON comments.torrent = torrents.id
-				 LEFT JOIN thanks ON thanks.torrentid = torrents.id
-				 LEFT JOIN bookmarks ON bookmarks.torrentid = torrents.id
-				 LEFT JOIN coins ON coins.torrentid = torrents.id
-				 LEFT JOIN rating ON rating.torrent = torrents.id
-				 LEFT JOIN xbt_files_users ON xbt_files_users.fid = torrents.id
-				 WHERE torrents.id =' . sqlesc($tid) . ' AND flags=1') or sqlerr(__FILE__, __LINE__);
+                 LEFT JOIN files ON files.torrent = torrents.id
+                 LEFT JOIN comments ON comments.torrent = torrents.id
+                 LEFT JOIN thanks ON thanks.torrentid = torrents.id
+                 LEFT JOIN bookmarks ON bookmarks.torrentid = torrents.id
+                 LEFT JOIN coins ON coins.torrentid = torrents.id
+                 LEFT JOIN rating ON rating.torrent = torrents.id
+                 LEFT JOIN xbt_files_users ON xbt_files_users.fid = torrents.id
+                 WHERE torrents.id =' . sqlesc($tid) . ' AND flags=1') or sqlerr(__FILE__, __LINE__);
     unlink("{$site_config['torrent_dir']}/$tid.torrent");
     $cache->delete('MyPeers_XBT_' . $CURUSER['id']);
 }
@@ -90,21 +90,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 } else {
     $HTMLOUT .= begin_frame();
     $HTMLOUT .= "<form action='staffpanel.php?tool=datareset&amp;action=datareset' method='post'>
-	<fieldset>
-	<legend>{$lang['datareset_reset']}</legend>
+    <fieldset>
+    <legend>{$lang['datareset_reset']}</legend>
  <table width='500' border='1' cellpadding='10' cellspacing='0' style='border-collapse:collapse'>
-    	<tr><td nowrap='nowrap'>{$lang['datareset_tid']}</td><td width='100%'><input type='text' name='tid' size='20' /></td></tr>
+        <tr><td nowrap='nowrap'>{$lang['datareset_tid']}</td><td width='100%'><input type='text' name='tid' size='20' /></td></tr>
         <tr><td style='background:#990033; color:#CCCCCC;' colspan='2'>
-        	<ul>
-					<li>{$lang['datareset_tid_info']}</li>
-					<li>{$lang['datareset_info']}</li>
-					<li>{$lang['datareset_info1']}</b></li>
-				</ul>
-			</td></tr>
-			<tr><td colspan='2'><input type='submit' value='{$lang['datareset_repay']}' /></td></tr>
-		</table>
-	</fieldset>
-	</form>";
+            <ul>
+                    <li>{$lang['datareset_tid_info']}</li>
+                    <li>{$lang['datareset_info']}</li>
+                    <li>{$lang['datareset_info1']}</b></li>
+                </ul>
+            </td></tr>
+            <tr><td colspan='2'><input type='submit' value='{$lang['datareset_repay']}' /></td></tr>
+        </table>
+    </fieldset>
+    </form>";
     $HTMLOUT .= end_frame();
     echo stdhead($lang['datareset_stdhead']) . $HTMLOUT . stdfoot();
 }

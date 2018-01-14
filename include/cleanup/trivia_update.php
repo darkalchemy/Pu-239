@@ -46,11 +46,11 @@ function trivia_update($data)
             // cache for current question
             $cache->set('trivia_current_qid_', (int)$qid, 360);
             $cache->deleteMulti([
-                'trivia_gamenum_',
-                'trivia_remaining_',
-                'trivia_current_question_',
-                'trivia_correct_answer_',
-            ]);
+                                    'trivia_gamenum_',
+                                    'trivia_remaining_',
+                                    'trivia_current_question_',
+                                    'trivia_correct_answer_',
+                                ]);
 
             // clear previous question
             sql_query('UPDATE triviaq SET current = 0 WHERE current = 1') or sqlerr(__FILE__, __LINE__);

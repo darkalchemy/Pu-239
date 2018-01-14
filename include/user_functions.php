@@ -76,7 +76,7 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
         // Hmmm...bit of jiggery-pokery here, couldn't think of a better way.
         $max_rep = max(array_keys($reputations));
         if ($user['reputation'] >= $max_rep) {
-            $user_reputation = $reputations[ $max_rep ];
+            $user_reputation = $reputations[$max_rep];
         } else {
             foreach ($reputations as $y => $x) {
                 $old = $x;
@@ -372,10 +372,10 @@ function get_user_class_name($class, $to_lower = false)
     if (!valid_class($class)) {
         return '';
     }
-    if (isset($class_names[ $class ]) && $to_lower) {
-        return strtolower(str_replace(' ', '_', $class_names[ $class ]));
-    } elseif (isset($class_names[ $class ])) {
-        return $class_names[ $class ];
+    if (isset($class_names[$class]) && $to_lower) {
+        return strtolower(str_replace(' ', '_', $class_names[$class]));
+    } elseif (isset($class_names[$class])) {
+        return $class_names[$class];
     } else {
         return '';
     }
@@ -393,8 +393,8 @@ function get_user_class_color($class)
     if (!valid_class($class)) {
         return '';
     }
-    if (isset($class_colors[ $class ])) {
-        return $class_colors[ $class ];
+    if (isset($class_colors[$class])) {
+        return $class_colors[$class];
     } else {
         return '';
     }
@@ -412,8 +412,8 @@ function get_user_class_image($class)
     if (!valid_class($class)) {
         return '';
     }
-    if (isset($class_images[ $class ])) {
-        return $class_images[ $class ];
+    if (isset($class_images[$class])) {
+        return $class_images[$class];
     } else {
         return '';
     }
@@ -620,7 +620,7 @@ function blacklist($fo)
 {
     global $site_config;
     $blacklist = file_exists($site_config['nameblacklist']) && is_array(unserialize(file_get_contents($site_config['nameblacklist']))) ? unserialize(file_get_contents($site_config['nameblacklist'])) : [];
-    if (isset($blacklist[ $fo ]) && $blacklist[ $fo ] == 1) {
+    if (isset($blacklist[$fo]) && $blacklist[$fo] == 1) {
         return false;
     }
 

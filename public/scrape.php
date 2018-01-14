@@ -68,16 +68,16 @@ foreach ($q as $p) {
     $p1 = rawurldecode(trim($ps[0]));
     $p2 = rawurldecode(trim($ps[1]));
     if (strlen($p1) > 0) {
-        if (!isset($_GET[ $p1 ])) {
-            $_GET[ $p1 ] = $p2;
-        } elseif (!is_array($_GET[ $p1 ])) {
-            $temp = $_GET[ $p1 ];
-            unset($_GET[ $p1 ]);
-            $_GET[ $p1 ] = [];
-            $_GET[ $p1 ][] = $temp;
-            $_GET[ $p1 ][] = $p2;
+        if (!isset($_GET[$p1])) {
+            $_GET[$p1] = $p2;
+        } elseif (!is_array($_GET[$p1])) {
+            $temp = $_GET[$p1];
+            unset($_GET[$p1]);
+            $_GET[$p1] = [];
+            $_GET[$p1][] = $temp;
+            $_GET[$p1][] = $p2;
         } else {
-            $_GET[ $p1 ][] = $p2;
+            $_GET[$p1][] = $p2;
         }
     }
 }
@@ -87,15 +87,15 @@ if (isset($_GET['torrent_pass']) && strlen($_GET['torrent_pass']) != 32) {
     if ($lentorrent_pass > 32 && preg_match('/^([0-9a-f]{32})\?(([0-9a-zA-Z]|_)+)\=/', $_GET['torrent_pass'], $matches)) {
         $lenget = strlen($matches[0]);
         $valget = substr($_GET['torrent_pass'], $lenget);
-        if (!isset($_GET[ $matches[2] ])) {
-            $_GET[ $matches[2] ] = $valget;
-        } elseif (!is_array($_GET[ $matches[2] ])) {
-            $temp = $_GET[ $matches[2] ];
-            $_GET[ $matches[2] ] = [];
-            $_GET[ $matches[2] ][] = $temp;
-            $_GET[ $matches[2] ][] = $valget;
+        if (!isset($_GET[$matches[2]])) {
+            $_GET[$matches[2]] = $valget;
+        } elseif (!is_array($_GET[$matches[2]])) {
+            $temp = $_GET[$matches[2]];
+            $_GET[$matches[2]] = [];
+            $_GET[$matches[2]][] = $temp;
+            $_GET[$matches[2]][] = $valget;
         } else {
-            $_GET[ $matches[2] ][] = $valget;
+            $_GET[$matches[2]][] = $valget;
         }
 
         $_GET['torrent_pass'] = $matches[1];
@@ -120,13 +120,13 @@ if ($numhash < 1) {
 } elseif ($numhash == 1) {
     $torrent = get_torrent_from_hash($_GET['info_hash']);
     if ($torrent) {
-        $torrents[ $_GET['info_hash'] ] = $torrent;
+        $torrents[$_GET['info_hash']] = $torrent;
     }
 } else {
     foreach ($_GET['info_hash'] as $hash) {
         $torrent = get_torrent_from_hash($hash);
         if ($torrent) {
-            $torrents[ $hash ] = $torrent;
+            $torrents[$hash] = $torrent;
         }
     }
 }

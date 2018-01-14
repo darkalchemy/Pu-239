@@ -16,7 +16,7 @@ if ($CURUSER['class'] < UC_UPLOADER or $CURUSER['uploadpos'] == 0 || $CURUSER['u
     die();
 }
 foreach (explode(':', 'body:type:name') as $v) {
-    if (!isset($_POST[ $v ])) {
+    if (!isset($_POST[$v])) {
         setSessionVar('is-warning', $lang['takeupload_no_formdata']);
         header("Location: {$site_config['baseurl']}/upload.php");
         die();
@@ -146,7 +146,7 @@ $release_group_array = [
     'p2p'   => 1,
     'none'  => 1,
 ];
-$release_group = isset($_POST['release_group']) && isset($release_group_array[ $_POST['release_group'] ]) ? $_POST['release_group'] : 'none';
+$release_group = isset($_POST['release_group']) && isset($release_group_array[$_POST['release_group']]) ? $_POST['release_group'] : 'none';
 $youtube = '';
 if (isset($_POST['youtube']) && preg_match($youtube_pattern, $_POST['youtube'], $temp_youtube)) {
     $youtube = $temp_youtube[0];

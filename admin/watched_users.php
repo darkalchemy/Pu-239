@@ -97,7 +97,7 @@ if (isset($_GET['add'])) {
         $modcomment = get_date(TIME_NOW, 'DATE', 1) . ' - ' . $lang['watched_addedwu'] . " $CURUSER[username].\n" . $user['modcomment'];
         sql_query('UPDATE users SET watched_user = ' . TIME_NOW . ', modcomment=' . sqlesc($modcomment) . ', watched_user_reason = ' . sqlesc($watched_user_reason) . ' WHERE id=' . sqlesc($member_whos_been_bad)) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('user' . $member_whos_been_bad, [
-            'watched_user' => TIME_NOW,
+            'watched_user'        => TIME_NOW,
             'watched_user_reason' => $watched_user_reason,
         ], $site_config['expires']['user_cache']);
         $cache->update_row('user_stats_' . $member_whos_been_bad, [

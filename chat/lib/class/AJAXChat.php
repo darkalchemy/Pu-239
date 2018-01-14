@@ -476,14 +476,14 @@ class AJAXChat
         }
 
         $values = [
-            'userID' => $userID,
+            'userID'   => $userID,
             'userName' => $userName,
             'userRole' => $userRole,
-            'channel' => $channelID,
+            'channel'  => $channelID,
             'dateTime' => gmdate("Y-m-d H:i:s", TIME_NOW),
-            'ip' => getip(),
-            'text' => $text,
-            'ttl' => $ttl,
+            'ip'       => getip(),
+            'text'     => $text,
+            'ttl'      => $ttl,
         ];
 
         $stmt = $pdo->prepare(
@@ -496,10 +496,10 @@ class AJAXChat
         $lastInsertId = $pdo->lastInsertId();
 
         $set = [
-            'dailyshouts' => new Envms\FluentPDO\Literal('dailyshouts + 1'),
-            'weeklyshouts' => new Envms\FluentPDO\Literal('weeklyshouts + 1'),
+            'dailyshouts'   => new Envms\FluentPDO\Literal('dailyshouts + 1'),
+            'weeklyshouts'  => new Envms\FluentPDO\Literal('weeklyshouts + 1'),
             'monthlyshouts' => new Envms\FluentPDO\Literal('monthlyshouts + 1'),
-            'totalshouts' => new Envms\FluentPDO\Literal('totalshouts + 1'),
+            'totalshouts'   => new Envms\FluentPDO\Literal('totalshouts + 1'),
         ];
 
         $fluent->update('usersachiev')
@@ -1651,12 +1651,12 @@ class AJAXChat
     {
         global $pdo;
         $values = [
-            'userID' => $this->getUserID(),
+            'userID'   => $this->getUserID(),
             'userName' => $this->getUserName(),
             'userRole' => $this->getUserRole(),
-            'channel' => $this->getChannel(),
+            'channel'  => $this->getChannel(),
             'dateTime' => gmdate("Y-m-d H:i:s", TIME_NOW),
-            'ip' => getip(),
+            'ip'       => getip(),
         ];
 
         $sql = 'INSERT INTO ' . $this->getDataBaseTable('online') . '
@@ -3030,9 +3030,9 @@ class AJAXChat
                             u.downloadpos, u.last_access, u.username, u.reputation, u.class, u.bjwins - u.bjlosses AS bj,
                             u.uploaded, u.downloaded, u.seedbonus, u.freeslots, u.free_switch, u.added, u.invite_rights,
                             u.invites, c.win - c.lost AS casino
-						FROM users AS u 
-						LEFT JOIN casino AS c ON c.userid = u.id
-						WHERE id = ' . $whereisUserID;
+                        FROM users AS u 
+                        LEFT JOIN casino AS c ON c.userid = u.id
+                        WHERE id = ' . $whereisUserID;
 
                 $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
                 $stats = mysqli_fetch_assoc($result);
@@ -3179,12 +3179,12 @@ class AJAXChat
         $user = '[' . $whereisRoleClass . ']' . $userName . '[/' . $whereisRoleClass . ']';
 
         $sql = "SELECT dateTime, userName, userID, text
-					FROM ajax_chat_messages
-					WHERE MATCH(text) AGAINST ('\"/privmsgto $userName\"  $userName' IN BOOLEAN MODE)
-						AND NOT MATCH(text) AGAINST ('/privmsg /announce /login /logout /roll /takeover /channelEnter /channelLeave /kick /me /nick' IN NATURAL LANGUAGE MODE)
-						AND userName != " . sqlesc($userName) . "
-						AND userID != " . $this->getConfig('chatBotID') . "
-					ORDER BY id DESC LIMIT 25";
+                    FROM ajax_chat_messages
+                    WHERE MATCH(text) AGAINST ('\"/privmsgto $userName\"  $userName' IN BOOLEAN MODE)
+                        AND NOT MATCH(text) AGAINST ('/privmsg /announce /login /logout /roll /takeover /channelEnter /channelLeave /kick /me /nick' IN NATURAL LANGUAGE MODE)
+                        AND userName != " . sqlesc($userName) . "
+                        AND userID != " . $this->getConfig('chatBotID') . "
+                    ORDER BY id DESC LIMIT 25";
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $messages = [];
         while ($mentions = mysqli_fetch_array($res)) {
@@ -3261,12 +3261,12 @@ class AJAXChat
             $cache->delete('user_rep_' . $whereisUserID);
             $save = [
                 'reputation' => sqlesc($gift),
-                'whoadded' => sqlesc($CURUSER['id']),
-                'reason' => sqlesc('AJAX Chat'),
-                'dateadd' => time(),
-                'locale' => sqlesc('torrents'),
-                'postid' => 0,
-                'userid' => sqlesc($whereisUserID),
+                'whoadded'   => sqlesc($CURUSER['id']),
+                'reason'     => sqlesc('AJAX Chat'),
+                'dateadd'    => time(),
+                'locale'     => sqlesc('torrents'),
+                'postid'     => 0,
+                'userid'     => sqlesc($whereisUserID),
             ];
             $sql = 'INSERT INTO reputation (' . implode(', ', array_keys($save)) . ') VALUES (' . implode(', ', $save) . ')';
             sql_query($sql) or sqlerr(__FILE__, __LINE__);

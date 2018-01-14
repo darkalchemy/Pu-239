@@ -1434,7 +1434,7 @@ function _setup_segments($gi)
                     $gi->databaseSegments = 0;
                     $buf = shmop_read($gi->shmid, $offset, SEGMENT_RECORD_LENGTH);
                     for ($j = 0; $j < SEGMENT_RECORD_LENGTH; $j++) {
-                        $gi->databaseSegments += (ord($buf[ $j ]) << ($j * 8));
+                        $gi->databaseSegments += (ord($buf[$j]) << ($j * 8));
                     }
                     if (($gi->databaseType == GEOIP_ORG_EDITION)
                         || ($gi->databaseType == GEOIP_ORG_EDITION_V6)
@@ -1497,7 +1497,7 @@ function _setup_segments($gi)
 
                     $buf = fread($gi->filehandle, SEGMENT_RECORD_LENGTH);
                     for ($j = 0; $j < SEGMENT_RECORD_LENGTH; $j++) {
-                        $gi->databaseSegments += (ord($buf[ $j ]) << ($j * 8));
+                        $gi->databaseSegments += (ord($buf[$j]) << ($j * 8));
                     }
                     if (($gi->databaseType == GEOIP_ORG_EDITION)
                         || ($gi->databaseType == GEOIP_DOMAIN_EDITION)
@@ -1587,7 +1587,7 @@ function geoip_country_code_by_name_v6($gi, $name)
 {
     $country_id = geoip_country_id_by_name_v6($gi, $name);
     if ($country_id !== false) {
-        return $gi->GEOIP_COUNTRY_CODES[ $country_id ];
+        return $gi->GEOIP_COUNTRY_CODES[$country_id];
     }
     return false;
 }
@@ -1596,7 +1596,7 @@ function geoip_country_code_by_name($gi, $name)
 {
     $country_id = geoip_country_id_by_name($gi, $name);
     if ($country_id !== false) {
-        return $gi->GEOIP_COUNTRY_CODES[ $country_id ];
+        return $gi->GEOIP_COUNTRY_CODES[$country_id];
     }
     return false;
 }
@@ -1605,7 +1605,7 @@ function geoip_country_name_by_name_v6($gi, $name)
 {
     $country_id = geoip_country_id_by_name_v6($gi, $name);
     if ($country_id !== false) {
-        return $gi->GEOIP_COUNTRY_NAMES[ $country_id ];
+        return $gi->GEOIP_COUNTRY_NAMES[$country_id];
     }
     return false;
 }
@@ -1614,7 +1614,7 @@ function geoip_country_name_by_name($gi, $name)
 {
     $country_id = geoip_country_id_by_name($gi, $name);
     if ($country_id !== false) {
-        return $gi->GEOIP_COUNTRY_NAMES[ $country_id ];
+        return $gi->GEOIP_COUNTRY_NAMES[$country_id];
     }
     return false;
 }
@@ -1635,7 +1635,7 @@ function geoip_country_code_by_addr_v6($gi, $addr)
 {
     $country_id = geoip_country_id_by_addr_v6($gi, $addr);
     if ($country_id !== false) {
-        return $gi->GEOIP_COUNTRY_CODES[ $country_id ];
+        return $gi->GEOIP_COUNTRY_CODES[$country_id];
     }
     return false;
 }
@@ -1650,7 +1650,7 @@ function geoip_country_code_by_addr($gi, $addr)
     } else {
         $country_id = geoip_country_id_by_addr($gi, $addr);
         if ($country_id !== false) {
-            return $gi->GEOIP_COUNTRY_CODES[ $country_id ];
+            return $gi->GEOIP_COUNTRY_CODES[$country_id];
         }
     }
     return false;
@@ -1660,7 +1660,7 @@ function geoip_country_name_by_addr_v6($gi, $addr)
 {
     $country_id = geoip_country_id_by_addr_v6($gi, $addr);
     if ($country_id !== false) {
-        return $gi->GEOIP_COUNTRY_NAMES[ $country_id ];
+        return $gi->GEOIP_COUNTRY_NAMES[$country_id];
     }
     return false;
 }
@@ -1673,7 +1673,7 @@ function geoip_country_name_by_addr($gi, $addr)
     } else {
         $country_id = geoip_country_id_by_addr($gi, $addr);
         if ($country_id !== false) {
-            return $gi->GEOIP_COUNTRY_NAMES[ $country_id ];
+            return $gi->GEOIP_COUNTRY_NAMES[$country_id];
         }
     }
     return false;
@@ -1696,8 +1696,8 @@ function _geoip_seek_country_v6($gi, $ipnum)
             );
         } elseif ($gi->flags & GEOIP_SHARED_MEMORY) {
             $buf = _sharedMemRead($gi,
-                2 * $gi->record_length * $offset,
-                2 * $gi->record_length
+                                  2 * $gi->record_length * $offset,
+                                  2 * $gi->record_length
             );
         } else {
             fseek($gi->filehandle, 2 * $gi->record_length * $offset, SEEK_SET) == 0
@@ -1707,14 +1707,14 @@ function _geoip_seek_country_v6($gi, $ipnum)
         $x = [0, 0];
         for ($i = 0; $i < 2; ++$i) {
             for ($j = 0; $j < $gi->record_length; ++$j) {
-                $x[ $i ] += ord($buf[ $gi->record_length * $i + $j ]) << ($j * 8);
+                $x[$i] += ord($buf[$gi->record_length * $i + $j]) << ($j * 8);
             }
         }
 
         $bnum = 127 - $depth;
         $idx = $bnum >> 3;
         $b_mask = 1 << ($bnum & 7 ^ 7);
-        if (($v6vec[ $idx ] & $b_mask) > 0) {
+        if (($v6vec[$idx] & $b_mask) > 0) {
             if ($x[1] >= $gi->databaseSegments) {
                 return $x[1];
             }
@@ -1754,7 +1754,7 @@ function _geoip_seek_country($gi, $ipnum)
         $x = [0, 0];
         for ($i = 0; $i < 2; ++$i) {
             for ($j = 0; $j < $gi->record_length; ++$j) {
-                $x[ $i ] += ord($buf[ $gi->record_length * $i + $j ]) << ($j * 8);
+                $x[$i] += ord($buf[$gi->record_length * $i + $j]) << ($j * 8);
             }
         }
         if ($ipnum & (1 << $depth)) {
@@ -1836,7 +1836,7 @@ function _get_region($gi, $ipnum)
             $country_code = "US";
             $region = chr(($seek_region - 1000) / 26 + 65) . chr(($seek_region - 1000) % 26 + 65);
         } else {
-            $country_code = $gi->GEOIP_COUNTRY_CODES[ $seek_region ];
+            $country_code = $gi->GEOIP_COUNTRY_CODES[$seek_region];
             $region = "";
         }
         return [$country_code, $region];
@@ -1852,7 +1852,7 @@ function _get_region($gi, $ipnum)
             $country_code = "CA";
             $region = chr(($seek_region - CANADA_OFFSET) / 26 + 65) . chr(($seek_region - CANADA_OFFSET) % 26 + 65);
         } else {
-            $country_code = $gi->GEOIP_COUNTRY_CODES[ (int)(($seek_region - WORLD_OFFSET) / FIPS_RANGE) ];
+            $country_code = $gi->GEOIP_COUNTRY_CODES[(int)(($seek_region - WORLD_OFFSET) / FIPS_RANGE)];
             $region = "";
         }
         return [$country_code, $region];

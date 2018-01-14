@@ -13,16 +13,16 @@ $res = sql_query('SELECT * FROM referrers') or sqlerr(__FILE__, __LINE__);
 $count = mysqli_num_rows($res);
 if ($count > 0) {
     $HTMLOUT .= "<h1>{$lang['ref_last']}</h1>
-	<table border='1' cellspacing='0' cellpadding='10'>
-		<tr>
-			<td class='colhead'>{$lang['ref_nr']}</td>
-			<td class='colhead'>{$lang['ref_date']}</td>
-			<td class='colhead'>{$lang['ref_browser']}</td>
-			<td class='colhead'>{$lang['ref_ip']}</td>
-			<td class='colhead'>{$lang['ref_user']}</td>
-			<td class='colhead'>{$lang['ref_url']}</td>
-			<!--<td class='colhead'>{$lang['ref_result']}</td>-->
-		</tr>";
+    <table border='1' cellspacing='0' cellpadding='10'>
+        <tr>
+            <td class='colhead'>{$lang['ref_nr']}</td>
+            <td class='colhead'>{$lang['ref_date']}</td>
+            <td class='colhead'>{$lang['ref_browser']}</td>
+            <td class='colhead'>{$lang['ref_ip']}</td>
+            <td class='colhead'>{$lang['ref_user']}</td>
+            <td class='colhead'>{$lang['ref_url']}</td>
+            <!--<td class='colhead'>{$lang['ref_result']}</td>-->
+        </tr>";
     $perpage = 10;
     $i = (int)$_GET['page'] * $perpage;
     $pager = pager($perpage, $count, 'staffpanel.php?tool=referrers&amp;');
@@ -45,12 +45,12 @@ if ($count > 0) {
                 $browser = $lang['ref_unknow'];
             }
             $HTMLOUT .= '
-		<tr>
-			<td>' . $i . '</td>
-			<td>' . get_date($data['date'], '') . '</td>
-			<td>' . $browser . '</td>
-			<td>' . htmlsafechars($data['ip']) . '</td>
-			<td>' . htmlsafechars($data['ip']) . ' ' . ((int)$data['uid'] ? "<a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$data['uid'] . "'>" : '') . '' . (htmlsafechars($data['username']) ? '&#160;[' . htmlsafechars($data['username']) . ']</a>' : "{$lang['ref_guest']}") . "
+        <tr>
+            <td>' . $i . '</td>
+            <td>' . get_date($data['date'], '') . '</td>
+            <td>' . $browser . '</td>
+            <td>' . htmlsafechars($data['ip']) . '</td>
+            <td>' . htmlsafechars($data['ip']) . ' ' . ((int)$data['uid'] ? "<a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$data['uid'] . "'>" : '') . '' . (htmlsafechars($data['username']) ? '&#160;[' . htmlsafechars($data['username']) . ']</a>' : "{$lang['ref_guest']}") . "
 </td><td><a href='" . htmlsafechars($data['referer']) . "'>" . htmlsafechars(CutName($data['referer'], '50')) . "</a></td><!--<td><a href='" . htmlsafechars($data['page']) . "'>{$lang['ref_view']}</a></td>--></tr>";
             $browser = '';
         }

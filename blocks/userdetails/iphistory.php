@@ -6,8 +6,8 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
         $ipto = sql_query("SELECT COUNT(id),enabled FROM `users` AS iplist WHERE `ip` = '" . $user['ip'] . "' GROUP BY enabled") or sqlerr(__FILE__, __LINE__);
         $row12 = mysqli_fetch_row($ipto);
         $row13 = mysqli_fetch_row($ipto);
-        $ipuse[ $row12[1] ] = $row12[0];
-        $ipuse[ $row13[1] ] = $row13[0];
+        $ipuse[$row12[1]] = $row12[0];
+        $ipuse[$row13[1]] = $row13[0];
         if (($ipuse['yes'] == 1 && $ipuse['no'] == 0) || ($ipuse['no'] == 1 && $ipuse['yes'] == 0)) {
             $use = '';
         } else {

@@ -146,7 +146,7 @@ function torrenttable($res, $variant = 'index')
         <tbody>";
     $categories = genrelist();
     foreach ($categories as $key => $value) {
-        $change[ $value['id'] ] = [
+        $change[$value['id']] = [
             'id'    => $value['id'],
             'name'  => $value['name'],
             'image' => $value['image'],
@@ -164,8 +164,8 @@ function torrenttable($res, $variant = 'index')
             }
             $prevdate = get_date($row['added'], 'DATE');
         }
-        $row['cat_name'] = htmlsafechars($change[ $row['category'] ]['name']);
-        $row['cat_pic'] = htmlsafechars($change[ $row['category'] ]['image']);
+        $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);
+        $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
         /** Freeslot/doubleslot in Use **/
         $id = (int)$row['id'];
         foreach ($slot as $sl) {

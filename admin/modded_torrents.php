@@ -44,7 +44,7 @@ function do_sort($arr, $empty = false)
     }
     if ($count == 1) {
         $res = mysqli_fetch_assoc($arr);
-        $users[ $res['checked_by'] ] = ((isset($users[ $res['checked_by'] ]) && $users[ $res['checked_by'] ] > 0) ? $users[ $res['checked_by'] ] + 1 : 1);
+        $users[$res['checked_by']] = ((isset($users[$res['checked_by']]) && $users[$res['checked_by']] > 0) ? $users[$res['checked_by']] + 1 : 1);
         $ret_html .= "
                 <tr>
                     <td>
@@ -60,7 +60,7 @@ function do_sort($arr, $empty = false)
         ];
     } elseif ($count > 1) {
         while ($res = mysqli_fetch_assoc($arr)) {
-            $users[ $res['checked_by'] ] = ((isset($users[ $res['checked_by'] ]) && $users[ $res['checked_by'] ] > 0) ? $users[ $res['checked_by'] ] + 1 : 1);
+            $users[$res['checked_by']] = ((isset($users[$res['checked_by']]) && $users[$res['checked_by']] > 0) ? $users[$res['checked_by']] + 1 : 1);
             $ret_html .= "
                 <tr>
                     <td>
@@ -123,7 +123,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
             $HTMLOUT .= '<h3>' . $lang['mtor_no_torrents_have_been_modded'] . ' ' . $mode . '.</h3>';
             //echo stdhead("".$lang['mtor_no_torrents_modded']."") . $HTMLOUT . stdfoot();
             $title = '' . $lang['mtor_no_torrents_modded'] . " $mode";
-        //die();
+            //die();
         } else {
             $perpage = 15;
             $pager = pager($perpage, $count, "{$_SERVER['PHP_SELF']}?tool=modded_torrents&type={$mode}&");

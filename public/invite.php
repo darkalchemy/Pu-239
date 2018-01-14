@@ -107,7 +107,7 @@ if ($do == 'view_page') {
                                 <i class='icon-mail' aria-hidden='true'></i>" . htmlsafechars($fetch_assoc['code']) . "
                             </a>" : "
                             <span class='tooltipper' title='Email Sent'>
-                                " .  htmlsafechars($fetch_assoc['code']) . "
+                                " . htmlsafechars($fetch_assoc['code']) . "
                             </span>";
 
             $body .= "

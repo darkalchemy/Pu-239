@@ -20,7 +20,7 @@ $list = $site_config['arcade_games_names'];
 sort($list);
 foreach ($list as $gname) {
     $game_id = array_search($gname, $site_config['arcade_games_names']);
-    $game = $site_config['arcade_games'][ $game_id ];
+    $game = $site_config['arcade_games'][$game_id];
     //=== get high score (5)
     $sql = 'SELECT * FROM flashscores WHERE game = ' . sqlesc($game) . ' ORDER BY score DESC LIMIT 25';
     $score_res = sql_query($sql) or sqlerr(__FILE__, __LINE__);

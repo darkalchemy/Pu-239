@@ -40,14 +40,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         stderr($lang['std_err'], $lang['err_email']);
     }
     if (sql_query(sprintf(
-        'INSERT INTO users 
+                      'INSERT INTO users 
                 (username, email, passhash, status, added, last_access, torrent_pass, ip) 
                 VALUES (%s)',
-        join(', ', array_map(
-            'sqlesc',
-            $insert
-    ))
-    ))) {
+                      join(', ', array_map(
+                          'sqlesc',
+                          $insert
+                      ))
+                  ))) {
         $user_id = 0;
         while ($user_id == 0) {
             usleep(500);

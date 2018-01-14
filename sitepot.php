@@ -34,7 +34,7 @@ $pot_options = [
     10000 => 10000,
     50000 => 50000,
 ];
-if ($want_pot && (isset($pot_options[ $want_pot ]))) {
+if ($want_pot && (isset($pot_options[$want_pot]))) {
     if ($CURUSER['seedbonus'] < $want_pot) {
         stderr('Error', 'Not enough karma.');
     }

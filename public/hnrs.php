@@ -119,70 +119,70 @@ if (XBT_TRACKER === false) {
     ) or sqlerr(__FILE__, __LINE__);
 } else {
     $r = sql_query("SELECT torrents.name, torrents.added AS torrent_added, xbt_files_users.started AS st, xbt_files_users.completedtime AS c, xbt_files_users.downspeed, xbt_files_users.seedtime, xbt_files_users.active,
-							xbt_files_users.left, xbt_files_users.fid AS tid, categories.id AS category, categories.image, categories.name AS catname, xbt_files_users.uploaded, xbt_files_users.downloaded, xbt_files_users.hit_and_run,
-							xbt_files_users.mark_of_cain, xbt_files_users.completedtime, xbt_files_users.mtime, xbt_files_users.uid, torrents.seeders, torrents.leechers, torrents.owner, torrents.size
-						FROM xbt_files_users JOIN torrents ON torrents.id = xbt_files_users.fid
-						JOIN categories ON categories.id = torrents.category
-						WHERE xbt_files_users.completed>='1' AND uid=" . sqlesc($userid) . ' AND torrents.owner != ' . sqlesc($userid) . ' ORDER BY xbt_files_users.fid DESC') or sqlerr(__FILE__, __LINE__);
+                            xbt_files_users.left, xbt_files_users.fid AS tid, categories.id AS category, categories.image, categories.name AS catname, xbt_files_users.uploaded, xbt_files_users.downloaded, xbt_files_users.hit_and_run,
+                            xbt_files_users.mark_of_cain, xbt_files_users.completedtime, xbt_files_users.mtime, xbt_files_users.uid, torrents.seeders, torrents.leechers, torrents.owner, torrents.size
+                        FROM xbt_files_users JOIN torrents ON torrents.id = xbt_files_users.fid
+                        JOIN categories ON categories.id = torrents.category
+                        WHERE xbt_files_users.completed>='1' AND uid=" . sqlesc($userid) . ' AND torrents.owner != ' . sqlesc($userid) . ' ORDER BY xbt_files_users.fid DESC') or sqlerr(__FILE__, __LINE__);
 }
 
 //=== completed
 $completed .= '<h1>Hit and Runs for: ' . format_username($userid) . "</h1>";
 if (mysqli_num_rows($r) > 0) {
     $header = "
-		<tr>
-			<th>{$lang['userdetails_type']}</th>
-			<th>{$lang['userdetails_name']}</th>
-			<th class='has-text-center'>{$lang['userdetails_s']}</th>
-			<th class='has-text-center'>{$lang['userdetails_l']}</th>
-			<th class='has-text-center'>{$lang['userdetails_ul']}</th>
-			" . ($site_config['ratio_free'] ? "
+        <tr>
+            <th>{$lang['userdetails_type']}</th>
+            <th>{$lang['userdetails_name']}</th>
+            <th class='has-text-center'>{$lang['userdetails_s']}</th>
+            <th class='has-text-center'>{$lang['userdetails_l']}</th>
+            <th class='has-text-center'>{$lang['userdetails_ul']}</th>
+            " . ($site_config['ratio_free'] ? "
             <th class='has-text-center'>{$lang['userdetails_size']}</th>" : "
             <th class='has-text-center'>{$lang['userdetails_dl']}</th>") . "
-			<th class='has-text-center'>{$lang['userdetails_ratio']}</th>
-			<th class='has-text-center'>{$lang['userdetails_wcompleted']}</th>
-			<th class='has-text-center'>{$lang['userdetails_laction']}</th>
-			<th class='has-text-center'>{$lang['userdetails_speed']}</th>
-			<th class='has-text-center'>Buyout</th>
-	    </tr>";
+            <th class='has-text-center'>{$lang['userdetails_ratio']}</th>
+            <th class='has-text-center'>{$lang['userdetails_wcompleted']}</th>
+            <th class='has-text-center'>{$lang['userdetails_laction']}</th>
+            <th class='has-text-center'>{$lang['userdetails_speed']}</th>
+            <th class='has-text-center'>Buyout</th>
+        </tr>";
     $body = '';
     while ($a = mysqli_fetch_assoc($r)) {
         $What_Id = (XBT_TRACKER == true ? $a['tid'] : $a['id']);
         $torrent_needed_seed_time = ($a['st'] - $a['torrent_added']);
         switch (true) {
-            case $CURUSER['class'] <= $site_config['firstclass']:
-                $days_3 = $site_config['_3day_first'] * 3600;
-                $days_14 = $site_config['_14day_first'] * 3600;
-                $days_over_14 = $site_config['_14day_over_first'] * 3600;
+            case $CURUSER['class'] <= $site_config['hnr_config']['firstclass']:
+                $days_3 = $site_config['hnr_config']['_3day_first'] * 3600;
+                $days_14 = $site_config['hnr_config']['_14day_first'] * 3600;
+                $days_over_14 = $site_config['hnr_config']['_14day_over_first'] * 3600;
                 break;
 
-            case $CURUSER['class'] < $site_config['secondclass']:
-                $days_3 = $site_config['_3day_second'] * 3600;
-                $days_14 = $site_config['_14day_second'] * 3600;
-                $days_over_14 = $site_config['_14day_over_second'] * 3600;
+            case $CURUSER['class'] < $site_config['hnr_config']['secondclass']:
+                $days_3 = $site_config['hnr_config']['(_3day_second'] * 3600;
+                $days_14 = $site_config['hnr_config']['(_14day_second'] * 3600;
+                $days_over_14 = $site_config['hnr_config']['(_14day_over_second'] * 3600;
                 break;
 
-            case $CURUSER['class'] >= $site_config['thirdclass']:
-                $days_3 = $site_config['_3day_third'] * 3600;
-                $days_14 = $site_config['_14day_third'] * 3600;
-                $days_over_14 = $site_config['_14day_over_third'] * 3600;
+            case $CURUSER['class'] >= $site_config['hnr_config']['thirdclass']:
+                $days_3 = $site_config['hnr_config']['(_3day_third'] * 3600;
+                $days_14 = $site_config['hnr_config']['(_14day_third'] * 3600;
+                $days_over_14 = $site_config['hnr_config']['(_14day_over_third'] * 3600;
                 break;
 
             default:
-                $days_3 = $site_config['_3day_first'] * 3600; //== 1 days
-                $days_14 = $site_config['_14day_first'] * 3600; //== 1 days
-                $days_over_14 = $site_config['_14day_over_first'] * 3600; //== 1 day
+                $days_3 = $site_config['hnr_config']['_3day_first'] * 3600; //== 1 days
+                $days_14 = $site_config['hnr_config']['_14day_first'] * 3600; //== 1 days
+                $days_over_14 = $site_config['hnr_config']['_14day_over_first'] * 3600; //== 1 day
         }
         switch (true) {
-            case ($a['st'] - $a['torrent_added']) < $site_config['torrentage1'] * 86400:
+            case ($a['st'] - $a['torrent_added']) < $site_config['hnr_config']['(torrentage1'] * 86400:
                 $minus_ratio = ($days_3 - $a['seedtime']);
                 break;
 
-            case ($a['st'] - $a['torrent_added']) < $site_config['torrentage2'] * 86400:
+            case ($a['st'] - $a['torrent_added']) < $site_config['hnr_config']['(torrentage2'] * 86400:
                 $minus_ratio = ($days_14 - $a['seedtime']);
                 break;
 
-            case ($a['st'] - $a['torrent_added']) >= $site_config['torrentage3'] * 86400:
+            case ($a['st'] - $a['torrent_added']) >= $site_config['hnr_config']['(torrentage3'] * 86400:
                 $minus_ratio = ($days_over_14 - $a['seedtime']);
                 break;
 
@@ -236,43 +236,43 @@ if (mysqli_num_rows($r) > 0) {
         }
 
         $or = $buyout != '' && $buybytes != '' ? 'or' : '';
-        //			$sucks = $buyout == '' && $buybytes == '' ? "Seed for $minus_ratio" : "or Seed for $minus_ratio";
+        //            $sucks = $buyout == '' && $buybytes == '' ? "Seed for $minus_ratio" : "or Seed for $minus_ratio";
         $sucks = $buyout == '' ? "Seed for $minus_ratio" : "or Seed for $minus_ratio";
 
         if (XBT_TRACKER === false) {
             $body .= "
-		<tr>
-			<td style='padding: 5px'><img height='42px' class='tnyrad' src='{$site_config['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
-			<td align='left'><a class='altlink' href='details.php?id=" . (int)$a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
-				<br><span style='color: .$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $userid == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00') ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['seeder'] == 'yes' ? "&#160;<font color='limegreen;'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . '&#160;' . $mark_of_cain . $needs_seed) : '') . "
-			</td>
-			<td class='has-text-center'>" . (int)$a['seeders'] . "</td>
-			<td class='has-text-center'>" . (int)$a['leechers'] . "</td>
-			<td class='has-text-center'>" . mksize($a['uploaded']) . '</td>
-			' . ($site_config['ratio_free'] ? "<td class='has-text-center'>" . mksize($a['size']) . '</td>' : "<td class='has-text-center'>" . mksize($a['downloaded']) . '</td>') . "
-			<td class='has-text-center'>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . "<br></td>
-			<td class='has-text-center'>" . get_date($a['complete_date'], 'DATE') . "</td>
-			<td class='has-text-center'>" . get_date($a['last_action'], 'DATE') . "</td>
-			<td class='has-text-center'><span style='color: $dlc;'>{$lang['userdetails_c_dled']}<br>{$dl_speed}ps</span></td>
-			<td class='has-text-center'>$buyout $sucks</td>
-		</tr>";
+        <tr>
+            <td style='padding: 5px'><img height='42px' class='tnyrad' src='{$site_config['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
+            <td align='left'><a class='altlink' href='details.php?id=" . (int)$a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
+                <br><span style='color: .$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $userid == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00') ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['seeder'] == 'yes' ? "&#160;<font color='limegreen;'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . '&#160;' . $mark_of_cain . $needs_seed) : '') . "
+            </td>
+            <td class='has-text-center'>" . (int)$a['seeders'] . "</td>
+            <td class='has-text-center'>" . (int)$a['leechers'] . "</td>
+            <td class='has-text-center'>" . mksize($a['uploaded']) . '</td>
+            ' . ($site_config['ratio_free'] ? "<td class='has-text-center'>" . mksize($a['size']) . '</td>' : "<td class='has-text-center'>" . mksize($a['downloaded']) . '</td>') . "
+            <td class='has-text-center'>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . "<br></td>
+            <td class='has-text-center'>" . get_date($a['complete_date'], 'DATE') . "</td>
+            <td class='has-text-center'>" . get_date($a['last_action'], 'DATE') . "</td>
+            <td class='has-text-center'><span style='color: $dlc;'>{$lang['userdetails_c_dled']}<br>{$dl_speed}ps</span></td>
+            <td class='has-text-center'>$buyout $sucks</td>
+        </tr>";
         } else {
             $body .= "
-		<tr>
-			<td style='padding: 5px'><img  height='42px' class='tnyrad' src='{$site_config['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
-			<td align='left'><a class='altlink' href='details.php?id=" . (int)$a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
-				<br><span style='color: .$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $userid == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00' && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['active'] == 1 && $a['left'] = 0 ? "&#160;<font color='limegreen;'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . $needs_seed) : '') . "
-			</td>
-			<td class='has-text-center'>" . (int)$a['seeders'] . "</td>
-			<td class='has-text-center'>" . (int)$a['leechers'] . "</td>
-			<td class='has-text-center'>" . mksize($a['uploaded']) . '</td>
-			' . ($site_config['ratio_free'] ? "<td class='has-text-center'>" . mksize($a['size']) . '</td>' : "<td class='has-text-center'>" . mksize($a['downloaded']) . '</td>') . "
-			<td class='has-text-center'>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? $lang['userdetails_c_inf'] : '---')) . "<br></td>
-			<td class='has-text-center'>" . get_date($a['completedtime'], 'DATE') . "</td>
-			<td class='has-text-center'>" . get_date($a['mtime'], 'DATE') . "</td>
-			<td class='has-text-center'><span style='color: $dlc;'>[{$lang['userdetails_c_dled']}$dl_speed ]</span></td>
-			<td class='has-text-center'>$buyout $sucks</td>
-		</tr>";
+        <tr>
+            <td style='padding: 5px'><img  height='42px' class='tnyrad' src='{$site_config['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>
+            <td align='left'><a class='altlink' href='details.php?id=" . (int)$a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
+                <br><span style='color: .$color.'>  " . (($CURUSER['class'] >= UC_STAFF || $userid == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($minus_ratio != '0:00' && $a['uploaded'] < $a['downloaded']) ? "<br>{$lang['userdetails_c_should']}" . $minus_ratio . '&#160;&#160;' : '') . ($a['active'] == 1 && $a['left'] = 0 ? "&#160;<font color='limegreen;'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . $needs_seed) : '') . "
+            </td>
+            <td class='has-text-center'>" . (int)$a['seeders'] . "</td>
+            <td class='has-text-center'>" . (int)$a['leechers'] . "</td>
+            <td class='has-text-center'>" . mksize($a['uploaded']) . '</td>
+            ' . ($site_config['ratio_free'] ? "<td class='has-text-center'>" . mksize($a['size']) . '</td>' : "<td class='has-text-center'>" . mksize($a['downloaded']) . '</td>') . "
+            <td class='has-text-center'>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color(number_format($a['uploaded'] / $a['downloaded'], 3)) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? $lang['userdetails_c_inf'] : '---')) . "<br></td>
+            <td class='has-text-center'>" . get_date($a['completedtime'], 'DATE') . "</td>
+            <td class='has-text-center'>" . get_date($a['mtime'], 'DATE') . "</td>
+            <td class='has-text-center'><span style='color: $dlc;'>[{$lang['userdetails_c_dled']}$dl_speed ]</span></td>
+            <td class='has-text-center'>$buyout $sucks</td>
+        </tr>";
         }
     }
     $completed .= main_table($body, $header);

@@ -361,7 +361,7 @@ class bencdec
             return false;
         }
 
-        return self::$bdata[ self::$bdata_position ];
+        return self::$bdata[self::$bdata_position];
     }
 
     /**
@@ -420,7 +420,7 @@ class bencdec
                 return false;
             }
             if (self::$ext_valid) {
-                if (isset($dict[ $name ])) {
+                if (isset($dict[$name])) {
                     return self::decode_error('Duplicate key "' . $name . '" in dictionary');
                 }
                 if (strcmp($name, $last_name) < 1) {
@@ -431,7 +431,7 @@ class bencdec
             if ($data === false) {
                 return false;
             }
-            $dict[ $name ] = $data;
+            $dict[$name] = $data;
             $last_key = $name;
             unset($name, $data);
         }

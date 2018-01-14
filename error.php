@@ -30,7 +30,7 @@ $htmlout = "<!doctype html>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-		<title>{$page}</title>
+        <title>{$page}</title>
     <style>
     <!--
     body     {
@@ -44,9 +44,9 @@ $htmlout = "<!doctype html>
     color: #000000;
     font-size: 14px;
     }
-    .style1 {	color: #666666;
-	  font-family: Arial, Helvetica, sans-serif;
-	  font-size: 12px;
+    .style1 {    color: #666666;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
     }
     -->
     </style>

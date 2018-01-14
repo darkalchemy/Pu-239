@@ -71,23 +71,23 @@ $lang = [
     'usersearch_create_ann'   => 'Create New Announcement',
     //instructions
     'usersearch_instructions' => "<table class='has-text-centered'><tr><td class='embedded'><div>\n
-	    Fields left blank will be ignored;\n
-	    Wildcards * and ? may be used in Name, Email and Comments, as well as multiple values\n
-	    separated by spaces (e.g. 'wyz Max*' in Name will list both users named\n
-	    'wyz' and those whose names start by 'Max'. Similarly  '~' can be used for\n
-	    negation, e.g. '~alfiest' in comments will restrict the search to users\n
-	    that do not have 'alfiest' in their comments).<br><br>\n
+        Fields left blank will be ignored;\n
+        Wildcards * and ? may be used in Name, Email and Comments, as well as multiple values\n
+        separated by spaces (e.g. 'wyz Max*' in Name will list both users named\n
+        'wyz' and those whose names start by 'Max'. Similarly  '~' can be used for\n
+        negation, e.g. '~alfiest' in comments will restrict the search to users\n
+        that do not have 'alfiest' in their comments).<br><br>\n
        The Ratio field accepts 'Inf' and '---' besides the usual numeric values.<br><br>\n
-	    The subnet mask may be entered either in dotted decimal or CIDR notation\n
-	    (e.g. 255.255.255.0 is the same as /24).<br><br>\n
+        The subnet mask may be entered either in dotted decimal or CIDR notation\n
+        (e.g. 255.255.255.0 is the same as /24).<br><br>\n
        Uploaded and Downloaded should be entered in GB.<br><br>\n
-	    For search parameters with multiple text fields the second will be\n
-	    ignored unless relevant for the type of search chosen. <br><br>\n
-	    'Active only' restricts the search to users currently leeching or seeding,\n
-	    'Disabled IPs' to those whose IPs also show up in disabled accounts.<br><br>\n
-	    The 'p' columns in the results show partial stats, that is, those\n
-	    of the torrents in progress. <br><br>\n
-	    The History column lists the number of forum posts and torrent comments,\n
-	    respectively, as well as linking to the history page.\n
-	    </div></td></tr></table><br><br>\n",
+        For search parameters with multiple text fields the second will be\n
+        ignored unless relevant for the type of search chosen. <br><br>\n
+        'Active only' restricts the search to users currently leeching or seeding,\n
+        'Disabled IPs' to those whose IPs also show up in disabled accounts.<br><br>\n
+        The 'p' columns in the results show partial stats, that is, those\n
+        of the torrents in progress. <br><br>\n
+        The History column lists the number of forum posts and torrent comments,\n
+        respectively, as well as linking to the history page.\n
+        </div></td></tr></table><br><br>\n",
 ];

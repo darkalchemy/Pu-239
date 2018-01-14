@@ -29,14 +29,14 @@ $res = sql_query("SELECT added, txt FROM infolog $where ORDER BY added DESC {$pa
 $HTMLOUT .= "<h1>{$lang['sysoplog_staff']}</h1>";
 $HTMLOUT .= "<table border='1' cellspacing='0' width='115' cellpadding='5'>\n
              <tr>
-			 <td class='tabletitle'>{$lang['sysoplog_search']}</td>\n
-			 </tr>
+             <td class='tabletitle'>{$lang['sysoplog_search']}</td>\n
+             </tr>
              <tr>
-			 <td class='table'>\n
-			 <form method='post' action='staffpanel.php?tool=sysoplog&amp;action=sysoplog'>\n
-			 <input type='text' name='search' size='40' value='' />\n
-			 <input type='submit' value='{$lang['sysoplog_search']}' class='button is-small' />\n
-			 </form></td></tr></table>";
+             <td class='table'>\n
+             <form method='post' action='staffpanel.php?tool=sysoplog&amp;action=sysoplog'>\n
+             <input type='text' name='search' size='40' value='' />\n
+             <input type='submit' value='{$lang['sysoplog_search']}' class='button is-small' />\n
+             </form></td></tr></table>";
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }

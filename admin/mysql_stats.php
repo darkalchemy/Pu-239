@@ -56,9 +56,9 @@ function byteformat($value, $limes = 2, $comma = 0)
     $return_value = $value;
     $unit = $GLOBALS['byteUnits'][0];
     for ($d = 6, $ex = 15; $d >= 1; $d--, $ex -= 3) {
-        if (isset($GLOBALS['byteUnits'][ $d ]) && $value >= $li * pow(10, $ex)) {
+        if (isset($GLOBALS['byteUnits'][$d]) && $value >= $li * pow(10, $ex)) {
             $value = round($value / (pow(1024, $d) / $dh)) / $dh;
-            $unit = $GLOBALS['byteUnits'][ $d ];
+            $unit = $GLOBALS['byteUnits'][$d];
             break 1;
         } // end if
     } // end for
@@ -113,8 +113,8 @@ function localisedDate($timestamp = -1, $format = '')
     if ($timestamp == -1) {
         $timestamp = time();
     }
-    $date = preg_replace('@%[aA]@', $day_of_week[ (int)strftime('%w', $timestamp) ], $format);
-    $date = preg_replace('@%[bB]@', $month[ (int)strftime('%m', $timestamp) - 1 ], $date);
+    $date = preg_replace('@%[aA]@', $day_of_week[(int)strftime('%w', $timestamp)], $format);
+    $date = preg_replace('@%[bB]@', $month[(int)strftime('%m', $timestamp) - 1], $date);
 
     return strftime($date, $timestamp);
 } // end of the 'localisedDate()' function
@@ -124,7 +124,7 @@ $HTMLOUT .= "<h2>{$lang['mysql_stats_status']}</h2>";
 //$res = @mysql_query('SHOW STATUS') or sqlerr(__FILE__,__LINE__);
 $res = @sql_query('SHOW GLOBAL STATUS') or sqlerr(__FILE__, __LINE__);
 while ($row = mysqli_fetch_row($res)) {
-    $serverStatus[ $row[0] ] = $row[1];
+    $serverStatus[$row[0]] = $row[1];
 }
 @((mysqli_free_result($res) || (is_object($res) && (get_class($res) == 'mysqli_result'))) ? true : false);
 unset($res);
@@ -146,8 +146,8 @@ $queryStats = [];
 $tmp_array = $serverStatus;
 foreach ($tmp_array as $name => $value) {
     if (substr($name, 0, 4) == 'Com_') {
-        $queryStats[ str_replace('_', ' ', substr($name, 4)) ] = $value;
-        unset($serverStatus[ $name ]);
+        $queryStats[str_replace('_', ' ', substr($name, 4))] = $value;
+        unset($serverStatus[$name]);
     }
 }
 unset($tmp_array);

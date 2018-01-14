@@ -48,22 +48,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $HTMLOUT = "
             <form method='post' name='message' action='" . $_SERVER['PHP_SELF'] . "'>";
     $header = "
-				    <tr>
-				        <th colspan='2'>
-				            <div class='has-text-centered'>
-					            <h1>{$lang['contactstaff_title']}</h1>
-					            <p class='small'>{$lang['contactstaff_info']}</p>
-					        </div>
-				        </th>
-				    </tr>
-				    <tr>
-				        <th class='w-10'>
-					        {$lang['contactstaff_subject']}
-				        </th>
-				        <th>
-				    	    <input type='text' name='subject' class='w-100'/>
-				    	</th>
-		            </tr>";
+                    <tr>
+                        <th colspan='2'>
+                            <div class='has-text-centered'>
+                                <h1>{$lang['contactstaff_title']}</h1>
+                                <p class='small'>{$lang['contactstaff_info']}</p>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class='w-10'>
+                            {$lang['contactstaff_subject']}
+                        </th>
+                        <th>
+                            <input type='text' name='subject' class='w-100'/>
+                        </th>
+                    </tr>";
 
     $body = "
                     <tr>

@@ -3,7 +3,7 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'html_functions.php';
 $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($lconf)) {
-    $lottery_config[ $ac['name'] ] = $ac['value'];
+    $lottery_config[$ac['name']] = $ac['value'];
 }
 if (!$lottery_config['enable']) {
     stderr('Sorry', 'Lottery is closed');

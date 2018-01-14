@@ -148,7 +148,7 @@ class AJAXChatTemplate
                     return 0;
                 }
 
-                // no break
+            // no break
             case 'INACTIVE_TIMEOUT':
                 return $this->ajaxChat->getConfig('inactiveTimeout');
 
@@ -164,7 +164,7 @@ class AJAXChatTemplate
                     return 0;
                 }
 
-                // no break
+            // no break
             case 'SOCKET_SERVER_ENABLED':
                 if ($this->ajaxChat->getConfig('socketServerEnabled')) {
                     return 1;
@@ -172,7 +172,7 @@ class AJAXChatTemplate
                     return 0;
                 }
 
-                // no break
+            // no break
             case 'SOCKET_SERVER_HOST':
                 if ($this->ajaxChat->getConfig('socketServerHost')) {
                     $socketServerHost = $this->ajaxChat->getConfig('socketServerHost');
@@ -262,7 +262,7 @@ class AJAXChatTemplate
             if ($this->ajaxChat->isLoggedIn() && $this->ajaxChat->getChannel()) {
                 $selected = ($id == $this->ajaxChat->getChannel()) ? ' selected="selected"' : '';
             } else {
-                $selected= ($id == $this->ajaxChat->getConfig('defaultChannelID')) ? ' selected="selected"' : '';
+                $selected = ($id == $this->ajaxChat->getConfig('defaultChannelID')) ? ' selected="selected"' : '';
             }
             if ($selected) {
                 $channelSelected = true;
@@ -314,7 +314,7 @@ class AJAXChatTemplate
         $languageNames = $this->ajaxChat->getConfig('langNames');
         foreach ($this->ajaxChat->getConfig('langAvailable') as $langCode) {
             $selected = ($langCode == $this->ajaxChat->getLangCode()) ? ' selected="selected"' : '';
-            $languageOptions .= '<option value="' . $this->ajaxChat->htmlEncode($langCode) . '"' . $selected . '>' . $languageNames[ $langCode ] . '</option>';
+            $languageOptions .= '<option value="' . $this->ajaxChat->htmlEncode($langCode) . '"' . $selected . '>' . $languageNames[$langCode] . '</option>';
         }
 
         return $languageOptions;

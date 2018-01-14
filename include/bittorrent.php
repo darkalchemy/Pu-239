@@ -103,16 +103,16 @@ function htmlsafechars($txt = '')
 {
     $txt = preg_replace('/&(?!#[0-9]+;)(?:amp;)?/s', '&amp;', $txt);
     $txt = str_replace([
-        '<',
-        '>',
-        '"',
-        "'",
-    ], [
-        '&lt;',
-        '&gt;',
-        '&quot;',
-        '&#039;',
-    ], $txt);
+                           '<',
+                           '>',
+                           '"',
+                           "'",
+                       ], [
+                           '&lt;',
+                           '&gt;',
+                           '&quot;',
+                           '&#039;',
+                       ], $txt);
 
     return $txt;
 }
@@ -315,7 +315,7 @@ function userlogin()
             sql_query("UPDATE users SET enabled = 'no', class = 0 WHERE id =" . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
             $cache->update_row('user' . $users_data['id'], [
                 'enabled' => 'no',
-                'class' => 0,
+                'class'   => 0,
             ], $site_config['expires']['user_cache']);
             write_log($msg);
             $salty = salty();
@@ -365,7 +365,7 @@ function userlogin()
             $ustatus = [
                 'last_status' => '',
                 'last_update' => 0,
-                'archive' => '',
+                'archive'     => '',
             ];
         }
         $cache->add('userstatus_' . $id, $ustatus, $site_config['expires']['u_status']); // 30 days
@@ -395,31 +395,31 @@ function userlogin()
     }
     $where_is['username'] = htmlsafechars($users_data['username']);
     $whereis_array = [
-        'index' => '%s is viewing the <a href="%s">home page</a>',
-        'browse' => '%s is viewing the <a href="%s">torrents page</a>',
-        'requests' => '%s is viewing the <a href="%s">requests page</a>',
-        'upload' => '%s is viewing the <a href="%s">upload page</a>',
-        'casino' => '%s is viewing the <a href="%s">casino page</a>',
-        'blackjack' => '%s is viewing the <a href="%s">blackjack page</a>',
-        'bet' => '%s is viewing the <a href="%s">bet page</a>',
-        'forums' => '%s is viewing the <a href="%s">forums page</a>',
-        'chat' => '%s is viewing the <a href="%s">irc page</a>',
-        'topten' => '%s is viewing the <a href="%s">statistics page</a>',
-        'faq' => '%s is viewing the <a href="%s">faq page</a>',
-        'rules' => '%s is viewing the <a href="%s">rules page</a>',
-        'staff' => '%s is viewing the <a href="%s">staff page</a>',
-        'announcement' => '%s is viewing the <a href="%s">announcements page</a>',
-        'usercp' => '%s is viewing the <a href="%s">usercp page</a>',
-        'offers' => '%s is viewing the <a href="%s">offers page</a>',
-        'pm_system' => '%s is viewing the <a href="%s">mailbox page</a>',
-        'userdetails' => '%s is viewing the <a href="%s">personal profile page</a>',
-        'details' => '%s is viewing the <a href="%s">torrents details page</a>',
-        'games' => '%s is viewing the <a href="%s">games page</a>',
-        'arcade' => '%s is viewing the <a href="%s">arcade page</a>',
-        'flash' => '%s is playing a <a href="%s">flash game</a>',
+        'index'            => '%s is viewing the <a href="%s">home page</a>',
+        'browse'           => '%s is viewing the <a href="%s">torrents page</a>',
+        'requests'         => '%s is viewing the <a href="%s">requests page</a>',
+        'upload'           => '%s is viewing the <a href="%s">upload page</a>',
+        'casino'           => '%s is viewing the <a href="%s">casino page</a>',
+        'blackjack'        => '%s is viewing the <a href="%s">blackjack page</a>',
+        'bet'              => '%s is viewing the <a href="%s">bet page</a>',
+        'forums'           => '%s is viewing the <a href="%s">forums page</a>',
+        'chat'             => '%s is viewing the <a href="%s">irc page</a>',
+        'topten'           => '%s is viewing the <a href="%s">statistics page</a>',
+        'faq'              => '%s is viewing the <a href="%s">faq page</a>',
+        'rules'            => '%s is viewing the <a href="%s">rules page</a>',
+        'staff'            => '%s is viewing the <a href="%s">staff page</a>',
+        'announcement'     => '%s is viewing the <a href="%s">announcements page</a>',
+        'usercp'           => '%s is viewing the <a href="%s">usercp page</a>',
+        'offers'           => '%s is viewing the <a href="%s">offers page</a>',
+        'pm_system'        => '%s is viewing the <a href="%s">mailbox page</a>',
+        'userdetails'      => '%s is viewing the <a href="%s">personal profile page</a>',
+        'details'          => '%s is viewing the <a href="%s">torrents details page</a>',
+        'games'            => '%s is viewing the <a href="%s">games page</a>',
+        'arcade'           => '%s is viewing the <a href="%s">arcade page</a>',
+        'flash'            => '%s is playing a <a href="%s">flash game</a>',
         'arcade_top_score' => '%s is viewing the <a href="%s">arcade top scores page</a>',
-        'staffpanel' => '%s is viewing the <a href="%s">Staff Panel</a>',
-        'unknown' => '%s location is unknown',
+        'staffpanel'       => '%s is viewing the <a href="%s">Staff Panel</a>',
+        'unknown'          => '%s location is unknown',
     ];
     if (preg_match('/\/(.*?)\.php/is', $_SERVER['REQUEST_URI'], $whereis_temp)) {
         if (isset($whereis_array[$whereis_temp[1]])) {
@@ -444,10 +444,10 @@ function userlogin()
                     SET where_is =' . sqlesc($whereis) . ', last_access=' . TIME_NOW . ", $userupdate0, $userupdate1
                     WHERE id = " . sqlesc($users_data['id'])) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('user' . $users_data['id'], [
-            'last_access' => TIME_NOW,
-            'onlinetime' => $update_time,
+            'last_access'      => TIME_NOW,
+            'onlinetime'       => $update_time,
             'last_access_numb' => TIME_NOW,
-            'where_is' => $whereis,
+            'where_is'         => $whereis,
         ], $site_config['expires']['user_cache']);
     }
     if ($users_data['override_class'] < $users_data['class']) {
@@ -970,16 +970,16 @@ function loggedinorreturn()
 function searchfield($s)
 {
     return preg_replace([
-        '/[^a-z0-9]/si',
-        '/^\s*/s',
-        '/\s*$/s',
-        '/\s+/s',
-    ], [
-        ' ',
-        '',
-        '',
-        ' ',
-    ], $s);
+                            '/[^a-z0-9]/si',
+                            '/^\s*/s',
+                            '/\s*$/s',
+                            '/\s+/s',
+                        ], [
+                            ' ',
+                            '',
+                            '',
+                            ' ',
+                        ], $s);
 }
 
 /**
@@ -1117,12 +1117,12 @@ function unixstamp_to_human($unix = 0)
     list($day, $month, $year, $hour, $min, $ampm) = explode(',', $tmp);
 
     return [
-        'day' => $day,
-        'month' => $month,
-        'year' => $year,
-        'hour' => $hour,
+        'day'    => $day,
+        'month'  => $month,
+        'year'   => $year,
+        'hour'   => $hour,
         'minute' => $min,
-        'ampm' => $ampm,
+        'ampm'   => $ampm,
     ];
 }
 
@@ -1161,10 +1161,10 @@ function get_date($date, $method, $norelative = 0, $full_relative = 0, $calc = f
     static $yesterday_time = 0;
     $time_options = [
         'JOINED' => $site_config['time_joined'],
-        'SHORT' => $site_config['time_short'],
-        'LONG' => $site_config['time_long'],
-        'TINY' => $site_config['time_tiny'] ? $site_config['time_tiny'] : 'j M Y - G:i',
-        'DATE' => $site_config['time_date'] ? $site_config['time_date'] : 'j M Y',
+        'SHORT'  => $site_config['time_short'],
+        'LONG'   => $site_config['time_long'],
+        'TINY'   => $site_config['time_tiny'] ? $site_config['time_tiny'] : 'j M Y - G:i',
+        'DATE'   => $site_config['time_date'] ? $site_config['time_date'] : 'j M Y',
     ];
     if (!$date) {
         return '--';
@@ -1342,7 +1342,7 @@ function flood_limit($table)
         return;
     }
     $tb = [
-        'posts' => 'posts.userid',
+        'posts'    => 'posts.userid',
         'comments' => 'comments.user',
         'messages' => 'messages.sender',
     ];
@@ -1371,7 +1371,7 @@ function sql_query($query, $log = true)
     $query_end_time = microtime(true); // End time
     $query_stat[] = [
         'seconds' => number_format($query_end_time - $query_start_time, 6),
-        'query' => $query,
+        'query'   => $query,
     ];
     $queries = count($query_stat);
 

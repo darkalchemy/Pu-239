@@ -36,17 +36,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div >Contact Staff</div><br>-->
         <div ><br>
     <form method='post' name='message' action='" . $_SERVER['PHP_SELF'] . "'>
-				 <table class='main' width='450' >
-				  <tr><td colspan='2'>
-					<h1>{$lang['contactstaff_title']}</h1>
-					<p class='small'>{$lang['contactstaff_info']}</p>
-				  </td></tr>
-				  <tr><td>
-					{$lang['contactstaff_subject']}
-				  </td><td>
-					<input type='text' size='50' name='subject' style='margin-left: 5px;' />
-				  </td></tr>
-		<tr><td colspan='2'>";
+                 <table class='main' width='450' >
+                  <tr><td colspan='2'>
+                    <h1>{$lang['contactstaff_title']}</h1>
+                    <p class='small'>{$lang['contactstaff_info']}</p>
+                  </td></tr>
+                  <tr><td>
+                    {$lang['contactstaff_subject']}
+                  </td><td>
+                    <input type='text' size='50' name='subject' style='margin-left: 5px;' />
+                  </td></tr>
+        <tr><td colspan='2'>";
     if (isset($_GET['returnto'])) {
         $HTMLOUT .= "<input type='hidden' name='returnto' value='" . urlencode($_GET['returnto']) . "' />";
     }

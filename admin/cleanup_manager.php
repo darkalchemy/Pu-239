@@ -236,8 +236,8 @@ function cleanup_take_edit()
                 ],
             ];
         }
-        $params[ $x ] = filter_var($params[ $x ], FILTER_VALIDATE_INT, $opts);
-        if (!is_numeric($params[ $x ])) {
+        $params[$x] = filter_var($params[$x], FILTER_VALIDATE_INT, $opts);
+        if (!is_numeric($params[$x])) {
             stderr($lang['cleanup_take_error'], "{$lang['cleanup_take_error1']} $x");
         }
     }
@@ -253,8 +253,8 @@ function cleanup_take_edit()
             'flags' => FILTER_FLAG_STRIP_LOW,
             FILTER_FLAG_STRIP_HIGH,
         ];
-        $params[ $x ] = filter_var($params[ $x ], FILTER_SANITIZE_STRING, $opts);
-        if (empty($params[ $x ])) {
+        $params[$x] = filter_var($params[$x], FILTER_SANITIZE_STRING, $opts);
+        if (empty($params[$x])) {
             stderr($lang['cleanup_take_error'], "{$lang['cleanup_take_error2']}");
         }
     }
@@ -266,7 +266,7 @@ function cleanup_take_edit()
     $params['clean_time'] = intval(TIME_NOW + $params['clean_increment']);
     //one more time around! LoL
     foreach ($params as $k => $v) {
-        $params[ $k ] = sqlesc($v);
+        $params[$k] = sqlesc($v);
     }
     sql_query("UPDATE cleanup SET function_name = {$params['function_name']}, clean_title = {$params['clean_title']}, clean_desc = {$params['clean_desc']}, clean_file = {$params['clean_file']}, clean_time = {$params['clean_time']}, clean_increment = {$params['clean_increment']}, clean_log = {$params['clean_log']}, clean_on = {$params['clean_on']} WHERE clean_id = {$params['cid']}");
     cleanup_show_main();
@@ -346,8 +346,8 @@ function cleanup_take_new()
                 ],
             ];
         }
-        $params[ $x ] = filter_var($params[ $x ], FILTER_VALIDATE_INT, $opts);
-        if (!is_numeric($params[ $x ])) {
+        $params[$x] = filter_var($params[$x], FILTER_VALIDATE_INT, $opts);
+        if (!is_numeric($params[$x])) {
             stderr($lang['cleanup_take_error'], "{$lang['cleanup_take_error1']} $x");
         }
     }
@@ -363,8 +363,8 @@ function cleanup_take_new()
             'flags' => FILTER_FLAG_STRIP_LOW,
             FILTER_FLAG_STRIP_HIGH,
         ];
-        $params[ $x ] = filter_var($params[ $x ], FILTER_SANITIZE_STRING, $opts);
-        if (empty($params[ $x ])) {
+        $params[$x] = filter_var($params[$x], FILTER_SANITIZE_STRING, $opts);
+        if (empty($params[$x])) {
             stderr($lang['cleanup_take_error'], "{$lang['cleanup_take_error2']}");
         }
     }
@@ -377,7 +377,7 @@ function cleanup_take_new()
     $params['clean_cron_key'] = md5(uniqid()); // just for now.
     //one more time around! LoL
     foreach ($params as $k => $v) {
-        $params[ $k ] = sqlesc($v);
+        $params[$k] = sqlesc($v);
     }
     sql_query("INSERT INTO cleanup (function_name, clean_title, clean_desc, clean_file, clean_time, clean_increment, clean_cron_key, clean_log, clean_on) VALUES ({$params['function_name']}, {$params['clean_title']}, {$params['clean_desc']}, {$params['clean_file']}, {$params['clean_time']}, {$params['clean_increment']}, {$params['clean_cron_key']}, {$params['clean_log']}, {$params['clean_on']})");
     if (((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res)) {
@@ -432,8 +432,8 @@ function cleanup_take_unlock()
                 ],
             ];
         }
-        $params[ $x ] = filter_var($params[ $x ], FILTER_VALIDATE_INT, $opts);
-        if (!is_numeric($params[ $x ])) {
+        $params[$x] = filter_var($params[$x], FILTER_VALIDATE_INT, $opts);
+        if (!is_numeric($params[$x])) {
             stderr($lang['cleanup_unlock_error'], "{$lang['cleanup_unlock_error1']} $x");
         }
     }

@@ -73,10 +73,10 @@ function _common_get_record($gi, $seek_country)
     $record = new geoiprecord;
     $record_buf_pos = 0;
     $char = ord(substr($record_buf, $record_buf_pos, 1));
-    $record->country_code = $gi->GEOIP_COUNTRY_CODES[ $char ];
-    $record->country_code3 = $gi->GEOIP_COUNTRY_CODES3[ $char ];
-    $record->country_name = $gi->GEOIP_COUNTRY_NAMES[ $char ];
-    $record->continent_code = $gi->GEOIP_CONTINENT_CODES[ $char ];
+    $record->country_code = $gi->GEOIP_COUNTRY_CODES[$char];
+    $record->country_code3 = $gi->GEOIP_COUNTRY_CODES3[$char];
+    $record->country_name = $gi->GEOIP_COUNTRY_NAMES[$char];
+    $record->continent_code = $gi->GEOIP_CONTINENT_CODES[$char];
     $record_buf_pos++;
     $str_length = 0;
 

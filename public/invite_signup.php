@@ -64,7 +64,7 @@ $value = [
     '...',
     '...',
 ];
-$value[ random_int(1, count($value) - 1) ] = 'X';
+$value[random_int(1, count($value) - 1)] = 'X';
 
 $HTMLOUT .= "
     <div class='half-container has-text-centered portlet'>
@@ -207,7 +207,7 @@ $HTMLOUT .= "
                     <span class='tabs is-marginless'>";
 for ($i = 0; $i < count($value); ++$i) {
     $HTMLOUT .= '
-                        <input name="submitme" type="submit" value="' . $value[ $i ] . '" class="button is-small" />';
+                        <input name="submitme" type="submit" value="' . $value[$i] . '" class="button is-small" />';
 }
 $HTMLOUT .= '
                     </span>

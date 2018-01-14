@@ -62,13 +62,13 @@ class CustomAJAXChat extends AJAXChat
 
             if (!empty($this->getUserID())) {
                 // Get the channels, the user has access to:
-                $validChannels = $customUsers[ $this->getUserID() ]['channels'];
+                $validChannels = $customUsers[$this->getUserID()]['channels'];
             }
 
             // Add the valid channels to the channel list (the defaultChannelID is always valid):
             foreach ($this->getAllChannels() as $key => $value) {
                 if ($value == $this->getConfig('defaultChannelID')) {
-                    $this->_channels[ $key ] = $value;
+                    $this->_channels[$key] = $value;
                     continue;
                 }
                 // Check if we have to limit the available channels:
@@ -76,7 +76,7 @@ class CustomAJAXChat extends AJAXChat
                     continue;
                 }
                 if (in_array($value, $validChannels)) {
-                    $this->_channels[ $key ] = $value;
+                    $this->_channels[$key] = $value;
                 }
             }
         }
@@ -107,7 +107,7 @@ class CustomAJAXChat extends AJAXChat
             $defaultChannelFound = false;
 
             foreach ($customChannels as $name => $id) {
-                $this->_allChannels[ $this->trimChannelName($name, $this->getConfig('contentEncoding')) ] = $id;
+                $this->_allChannels[$this->trimChannelName($name, $this->getConfig('contentEncoding'))] = $id;
                 if ($id == $this->getConfig('defaultChannelID')) {
                     $defaultChannelFound = true;
                 }
@@ -116,7 +116,7 @@ class CustomAJAXChat extends AJAXChat
             if (!$defaultChannelFound) {
                 // Add the default channel as first array element to the channel list
                 // First remove it in case it appeard under a different ID
-                unset($this->_allChannels[ $this->getConfig('defaultChannelName') ]);
+                unset($this->_allChannels[$this->getConfig('defaultChannelName')]);
                 $this->_allChannels = array_merge(
                     [
                         $this->trimChannelName($this->getConfig('defaultChannelName')) => $this->getConfig('defaultChannelID'),

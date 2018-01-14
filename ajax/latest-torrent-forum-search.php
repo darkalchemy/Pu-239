@@ -18,10 +18,10 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
             }
             while ($res = mysqli_fetch_assoc($query)) {
                 $att .= "<div class='tr'>
-								<div class='td'>$i</div>
-								<div class='td'><a href='details.php?id=" . (int)$res['id'] . "'>" . htmlsafechars($res['name']) . "</a></div>
-								<div class='tdclear'></div>
-							</div>";
+                                <div class='td'>$i</div>
+                                <div class='td'><a href='details.php?id=" . (int)$res['id'] . "'>" . htmlsafechars($res['name']) . "</a></div>
+                                <div class='tdclear'></div>
+                            </div>";
                 ++$i;
             }
         } elseif ($_POST['qsearch'] == 'forum') {
@@ -32,23 +32,23 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
             }
             while ($res = mysqli_fetch_assoc($query)) {
                 $att .= "<div class='tr'>
-								<div class='td'>$i</div>
-								<div class='td'><a href='details.php?id=" . (int)$res['id'] . "' class='colhead'>" . htmlsafechars($res['name']) . "</a></div>
-								<div class='tdclear'></div>
-							</div>";
+                                <div class='td'>$i</div>
+                                <div class='td'><a href='details.php?id=" . (int)$res['id'] . "' class='colhead'>" . htmlsafechars($res['name']) . "</a></div>
+                                <div class='tdclear'></div>
+                            </div>";
                 ++$i;
             }
         }
         $htmlout .= "
-						<style>
-						.t {display: table; }
-						.tr {display: table-row;}
-						.tdclear{height:5px;content:''}
-						.td {display:table-cell; vertical-align:top;padding-right:5px;}
-						</style>
-						<div class='t'>						
-							$att
-						</div>";
+                        <style>
+                        .t {display: table; }
+                        .tr {display: table-row;}
+                        .tdclear{height:5px;content:''}
+                        .td {display:table-cell; vertical-align:top;padding-right:5px;}
+                        </style>
+                        <div class='t'>                        
+                            $att
+                        </div>";
         echo $htmlout;
     } else {
         echo 'Please Enter something to search';

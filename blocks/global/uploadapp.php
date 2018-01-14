@@ -10,7 +10,7 @@ if ($site_config['uploadapp_alert'] && $CURUSER['class'] >= UC_STAFF) {
             ->where('status = ?', 'pending')
             ->fetch();
 
-        $newapp= $res['count'];
+        $newapp = $res['count'];
         $cache->set('new_uploadapp_', $newapp, $site_config['expires']['alerts']);
     }
     if ($newapp > 0) {

@@ -25,16 +25,16 @@ function tvrage_format($tvrage_data, $tvrage_type)
         'nextepisode' => 'Next episode: %s "%s" on %s %s %s',
     ];
     foreach ($tvrage_data as $key => $data) {
-        if (!isset($tvrage_display[ $tvrage_type ][ $key ])) {
+        if (!isset($tvrage_display[$tvrage_type][$key])) {
             continue;
         }
-        $tvrage_display[ $tvrage_type ][ $key ] = is_string($data) ? sprintf($tvrage_display[ $tvrage_type ][ $key ], $data) : sprintf($tvrage_display[ $tvrage_type ][ $key ], $data['number'], $data['title'], date('M/d/Y - l', strtotime($data['airdate'])), (isset($data['url']) ? $data['url'] : ''), (isset($data['summary']) ? $data['summary'] : ''));
+        $tvrage_display[$tvrage_type][$key] = is_string($data) ? sprintf($tvrage_display[$tvrage_type][$key], $data) : sprintf($tvrage_display[$tvrage_type][$key], $data['number'], $data['title'], date('M/d/Y - l', strtotime($data['airdate'])), (isset($data['url']) ? $data['url'] : ''), (isset($data['summary']) ? $data['summary'] : ''));
     }
     if (!isset($tvrage_data['ended'])) {
-        unset($tvrage_display[ $tvrage_type ]['ended']);
+        unset($tvrage_display[$tvrage_type]['ended']);
     }
 
-    return join('<br><br>', $tvrage_display[ $tvrage_type ]);
+    return join('<br><br>', $tvrage_display[$tvrage_type]);
 }
 
 /**
@@ -88,7 +88,7 @@ function tvrage(&$torrents)
             if (!$data[2]) {
                 continue;
             }
-            $tvrage_showinfo[ $data[1] ] = $data[2];
+            $tvrage_showinfo[$data[1]] = $data[2];
         }
         preg_match_all('/\<genre\>(.*?)\<\/genre>/', $tvrage_xml, $tmp);
         if (count($tmp[1])) {
@@ -131,7 +131,7 @@ function tvrage(&$torrents)
             foreach ($tmp as $data) {
                 preg_match_all('/\<(number|title|airdate|url|summary)\>(.*?)\<\/\\1\>/s', $data[2], $tmp_1, PREG_SET_ORDER);
                 foreach ($tmp_1 as $data_1) {
-                    $tvrage_epinfo[ $data[1] ][ $data_1[1] ] = $data_1[2];
+                    $tvrage_epinfo[$data[1]][$data_1[1]] = $data_1[2];
                 }
             }
             $tvrage_epinfo = tvrage_format($tvrage_epinfo, 'episode') . '<br>';

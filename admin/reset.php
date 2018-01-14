@@ -13,17 +13,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $newpassword = make_password();
     $passhash = make_passhash($newpassword);
     $postkey = PostKey([
-        $uid,
-        $CURUSER['id'],
-    ]);
+                           $uid,
+                           $CURUSER['id'],
+                       ]);
     $res = sql_query('UPDATE users SET passhash = ' . sqlesc($passhash) . ' WHERE username = ' . sqlesc($username) . ' AND id = ' . sqlesc($uid) . ' AND class < ' . $CURUSER['class']) or sqlerr(__FILE__, __LINE__);
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) != 1) {
         stderr($lang['reset_stderr'], $lang['reset_stderr1']);
     }
     if (CheckPostKey([
-            $uid,
-            $CURUSER['id'],
-        ], $postkey) == false) {
+                         $uid,
+                         $CURUSER['id'],
+                     ], $postkey) == false) {
         stderr($lang['reset_stderr2'], $lang['reset_stderr3']);
     }
     write_log($lang['reset_pw_log1'] . htmlsafechars($username) . $lang['reset_pw_log2'] . htmlsafechars($CURUSER['username']));

@@ -135,12 +135,12 @@ function wikisearch($input)
     global $lang;
 
     return str_replace([
-        '%',
-        '_',
-    ], [
-        '\\%',
-        '\\_',
-    ], ((isset($GLOBALS['___mysqli_ston']) && is_object($GLOBALS['___mysqli_ston'])) ? mysqli_real_escape_string($GLOBALS['___mysqli_ston'], $input) : ((trigger_error($lang['wiki_error'], E_USER_ERROR)) ? '' : '')));
+                           '%',
+                           '_',
+                       ], [
+                           '\\%',
+                           '\\_',
+                       ], ((isset($GLOBALS['___mysqli_ston']) && is_object($GLOBALS['___mysqli_ston'])) ? mysqli_real_escape_string($GLOBALS['___mysqli_ston'], $input) : ((trigger_error($lang['wiki_error'], E_USER_ERROR)) ? '' : '')));
 }
 
 /**
@@ -152,12 +152,12 @@ function wikireplace($input)
 {
     global $site_config;
     return preg_replace([
-        '/\[\[(.+?)\]\]/i',
-        '/\=\=\ (.+?)\ \=\=/i',
-    ], [
-        '<a href="' . $site_config['baseurl'] . '/wiki.php?action=article&name=$1">$1</a>',
-        '<div id="$1">$1</div>',
-    ], $input);
+                            '/\[\[(.+?)\]\]/i',
+                            '/\=\=\ (.+?)\ \=\=/i',
+                        ], [
+                            '<a href="' . $site_config['baseurl'] . '/wiki.php?action=article&name=$1">$1</a>',
+                            '<div id="$1">$1</div>',
+                        ], $input);
 }
 
 /**
@@ -248,7 +248,7 @@ if ($action == 'article') {
                         <a href="' . $site_config['baseurl'] . '/wiki.php?action=article&amp;name=' . htmlsafechars($wiki['name']) . '">' . htmlsafechars($wiki['name']) . '</a></b>
                     </h2>
                     <div id="bg-02 padding10 round10">' . ($wiki['userid'] > 0 ? "<span class='right10'>{$lang['wiki_added_by_art']}:</span>" . format_username($wiki['userid']) : '') . wikireplace(format_comment($wiki['body'])) . '</div>' .
-                    $edit);
+                                 $edit);
             $HTMLOUT .= ($CURUSER['class'] >= UC_STAFF || $CURUSER['id'] == $wiki['userid'] ? '
                     <div class="has-text-centered">
                         <a href="' . $site_config['baseurl'] . '/wiki.php?action=edit&amp;id=' . (int)$wiki['id'] . '" class="button is-small margin20">' . $lang['wiki_edit'] . '</a>
@@ -266,8 +266,8 @@ if ($action == 'article') {
                     $wikiname = mysqli_fetch_assoc(sql_query('SELECT username FROM users WHERE id = ' . sqlesc($wiki['userid'])));
                 }
                 $HTMLOUT .= '
-				<div class="wiki-search">
-					<b><a href="' . $site_config['baseurl'] . '/wiki.php?action=article&amp;name=' . articlereplace(htmlsafechars($wiki['name'])) . '">' . htmlsafechars($wiki['name']) . "</a></b>{$lang['wiki_added_by']} " . format_username($wiki['userid']) . '</div>';
+                <div class="wiki-search">
+                    <b><a href="' . $site_config['baseurl'] . '/wiki.php?action=article&amp;name=' . articlereplace(htmlsafechars($wiki['name'])) . '">' . htmlsafechars($wiki['name']) . "</a></b>{$lang['wiki_added_by']} " . format_username($wiki['userid']) . '</div>';
             }
         } else {
             $HTMLOUT .= newerr($lang['wiki_error'], $lang['wiki_no_art_found']);
@@ -311,9 +311,9 @@ if ($action == 'sort') {
                 $wikiname = mysqli_fetch_assoc(sql_query('SELECT username FROM users WHERE id = ' . sqlesc($wiki['userid'])));
             }
             $HTMLOUT .= '
-				<div class="wiki-search">
-					<b><a href="' . $site_config['baseurl'] . '/wiki.php?action=article&amp;name=' . articlereplace(htmlsafechars($wiki['name'])) . '">' . htmlsafechars($wiki['name']) . "</a></b>{$lang['wiki_added_by1']} " . format_username($wiki['userid']) . '
-    			</div>';
+                <div class="wiki-search">
+                    <b><a href="' . $site_config['baseurl'] . '/wiki.php?action=article&amp;name=' . articlereplace(htmlsafechars($wiki['name'])) . '">' . htmlsafechars($wiki['name']) . "</a></b>{$lang['wiki_added_by1']} " . format_username($wiki['userid']) . '
+                </div>';
         }
     } else {
         $HTMLOUT .= navmenu();

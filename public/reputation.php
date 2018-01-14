@@ -102,9 +102,9 @@ if (!$is_mod) {
     }
 
     $flood = sql_query("SELECT dateadd, userid FROM reputation 
-									WHERE whoadded = {$CURUSER['id']} 
-									ORDER BY dateadd DESC
-									LIMIT 0 , $klimit");
+                                    WHERE whoadded = {$CURUSER['id']} 
+                                    ORDER BY dateadd DESC
+                                    LIMIT 0 , $klimit");
     if (mysqli_num_rows($flood)) {
         $i = 0;
         while ($check = mysqli_fetch_assoc($flood)) {
@@ -182,8 +182,8 @@ if (isset($input['do']) && $input['do'] == 'addrep') {
                     $postrep['reason'] = $postrep['reason'] . " <span class='desc'>{$lang['rep_left_by']} <a href=\"{$site_config['baseurl']}/userdetails.php?id={$postrep['leftby_id']}\" target='_blank'>{$postrep['leftby_name']}</a></span>";
                 }
                 $reasonbits .= "<tr>
-	<td class='row2' width='1%'><img src='{$site_config['pic_base_url']}rep/reputation_$posneg.gif' border='0' alt='' /></td>
-	<td class='row2'>{$postrep['reason']}</td>
+    <td class='row2' width='1%'><img src='{$site_config['pic_base_url']}rep/reputation_$posneg.gif' border='0' alt='' /></td>
+    <td class='row2'>{$postrep['reason']}</td>
 </tr>";
             }
 
@@ -230,23 +230,23 @@ if (isset($input['do']) && $input['do'] == 'addrep') {
                         <tr>
                             <td class='has-text-centered'>{$rep_info}</td>
                         </tr>
-						<tr>
-							<td class='row2'>
-					    		<div class='tablepad'>";
+                        <tr>
+                            <td class='row2'>
+                                <div class='tablepad'>";
         if ($reasonbits) {
             $html .= "
                                     <fieldset class='fieldset'>
-								        <legend>{$lang['rep_comments']}</legend>
-								        <table class='table table-bordered table-striped'>
-								            $reasonbits
-								        </table>
-							        </fieldset><br>";
+                                        <legend>{$lang['rep_comments']}</legend>
+                                        <table class='table table-bordered table-striped'>
+                                            $reasonbits
+                                        </table>
+                                    </fieldset><br>";
         }
         $html .= "
                                     <div class='formsubtitle'><strong>{$rep_points}</strong></div>
-						        </div>
-						    </td>
-					    </tr>";
+                                </div>
+                            </td>
+                        </tr>";
     } else {
         $res['anon'] = (isset($res['anon']) ? $res['anon'] : 'no');
         $rep_text = sprintf("What do you think of %s's " . $this_rep . '?', ($res['anon'] == 'yes' ? 'Anonymous' : htmlsafechars($res['username'])));
@@ -256,18 +256,18 @@ if (isset($input['do']) && $input['do'] == 'addrep') {
                         <tr>
                             <td class='has-text-centered'>{$lang['info_add_rep']} <b>" . htmlsafechars($res['username']) . "</b></td>
                         </tr>
-						<tr>
-							<td class='row2'>
-						    	<form action='reputation.php' method='post'>
-    							    <div class='tablepad'>
-	        							<fieldset>
-			        						<legend>$rep_text</legend>
-					        				<table class='table table-bordered table-striped'>
-							            		<tr>
-										            <td>
-            											<div>
+                        <tr>
+                            <td class='row2'>
+                                <form action='reputation.php' method='post'>
+                                    <div class='tablepad'>
+                                        <fieldset>
+                                            <legend>$rep_text</legend>
+                                            <table class='table table-bordered table-striped'>
+                                                <tr>
+                                                    <td>
+                                                        <div>
                                                             <label for='rb_reputation_pos'>
-                											    <input type='radio' name='reputation' value='pos' id='rb_reputation_pos' checked class='radiobutton' /> &#160;{$lang['rep_i_approve']}
+                                                                <input type='radio' name='reputation' value='pos' id='rb_reputation_pos' checked class='radiobutton' /> &#160;{$lang['rep_i_approve']}
                                                             </label>
                                                         </div>";
         if ($negativerep) {
@@ -279,27 +279,27 @@ if (isset($input['do']) && $input['do'] == 'addrep') {
                                                         </div>";
         }
         $html .= "                                  </td>
-							                    </tr>
-							                    <tr>
-                    								<td>
-					                    				{$lang['rep_your_comm_on_this_post']} " . $this_rep . "<br>
-                    									<input type='text' size='40' maxlength='250' name='reason' />
-					                    			</td>
-                    							</tr>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        {$lang['rep_your_comm_on_this_post']} " . $this_rep . "<br>
+                                                        <input type='text' size='40' maxlength='250' name='reason' />
+                                                    </td>
+                                                </tr>
                                             </table>
-                						</fieldset>
-                					</div>
-				                	<div>
-                						<input type='hidden' name='act' value='reputation' />
-				                		<input type='hidden' name='do' value='addrep' />
-                						<input type='hidden' name='pid' value='{$input['pid']}' />
-				                		<input type='hidden' name='locale' value='{$input['locale']}' />
-                						<input type='submit' value='" . $lang['info_add_rep'] . "' class='button is-small' accesskey='s' />
-				                		<input type='button' value='Close Window' class='button is-small' accesskey='c' onclick='self.close()' />
-                					</div>
-				            	</form>
-        					</td>
-		        		</tr>";
+                                        </fieldset>
+                                    </div>
+                                    <div>
+                                        <input type='hidden' name='act' value='reputation' />
+                                        <input type='hidden' name='do' value='addrep' />
+                                        <input type='hidden' name='pid' value='{$input['pid']}' />
+                                        <input type='hidden' name='locale' value='{$input['locale']}' />
+                                        <input type='submit' value='" . $lang['info_add_rep'] . "' class='button is-small' accesskey='s' />
+                                        <input type='button' value='Close Window' class='button is-small' accesskey='c' onclick='self.close()' />
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>";
     }
     rep_output('', $html);
 }

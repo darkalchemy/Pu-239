@@ -25,11 +25,11 @@ foreach ($directories as $path) {
     foreach ($objects as $name => $object) {
         $ext = pathinfo($name, PATHINFO_EXTENSION);
         if (in_array($ext, $included_extentions)) {
-            $fetch_set[ $i ]['modify'] = filemtime($name);
-            $fetch_set[ $i ]['size'] = filesize($name);
-            $fetch_set[ $i ]['hash'] = hash_file('sha256', $name);
-            $fetch_set[ $i ]['name'] = $name;
-            $fetch_set[ $i ]['key'] = $i;
+            $fetch_set[$i]['modify'] = filemtime($name);
+            $fetch_set[$i]['size'] = filesize($name);
+            $fetch_set[$i]['hash'] = hash_file('sha256', $name);
+            $fetch_set[$i]['name'] = $name;
+            $fetch_set[$i]['key'] = $i;
             $i++;
         }
     }
@@ -49,18 +49,18 @@ foreach ($current as $x) {
     foreach ($last as $y) {
         if ($x['name'] == $y['name']) {
             if (($x['hash'] === $y['hash'])) {
-                unset($current[ $x['key'] ]);
-                unset($last[ $y['key'] ]);
+                unset($current[$x['key']]);
+                unset($last[$y['key']]);
             } else {
-                $current[ $x['key'] ]['status'] = 'modified';
+                $current[$x['key']]['status'] = 'modified';
             }
         }
-        if (isset($last[ $y['key'] ])) {
-            $last[ $y['key'] ]['status'] = 'deleted';
+        if (isset($last[$y['key']])) {
+            $last[$y['key']]['status'] = 'deleted';
         }
     }
-    if (isset($current[ $x['key'] ]['name']) and !isset($current[ $x['key'] ]['status'])) {
-        $current[ $x['key'] ]['status'] = 'new';
+    if (isset($current[$x['key']]['name']) and !isset($current[$x['key']]['status'])) {
+        $current[$x['key']]['status'] = 'new';
     }
 }
 $current += $last;

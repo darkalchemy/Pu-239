@@ -67,7 +67,7 @@ function XBT_IP_CONVERT($a)
     for ($i = 0; $i < 4; ++$i) {
         $k = (int)($a / $c);
         $a -= $c * $k;
-        $b[ $i ] = $k;
+        $b[$i] = $k;
         $c /= 256.0;
     }
     $d = join('.', $b);

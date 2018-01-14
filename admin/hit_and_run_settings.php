@@ -7,8 +7,8 @@ global $site_config, $lang, $cache;
 $lang = array_merge($lang, load_language('ad_hit_and_run_settings'));
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ($site_config['hnr_config'] as $c_name => $c_value) {
-        if (isset($_POST[ $c_name ]) && $_POST[ $c_name ] != $c_value) {
-            $update[] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($_POST[ $c_name ]) ? join('|', $_POST[ $c_name ]) : $_POST[ $c_name ]) . ')';
+        if (isset($_POST[$c_name]) && $_POST[$c_name] != $c_value) {
+            $update[] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($_POST[$c_name]) ? join('|', $_POST[$c_name]) : $_POST[$c_name]) . ')';
         }
     }
     if (sql_query('INSERT INTO hit_and_run_settings(name,value) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value)')) {
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $pconf = sql_query('SELECT * FROM hit_and_run_settings') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($pconf)) {
-    $site_config['hnr_config'][ $ac['name'] ] = $ac['value'];
+    $site_config['hnr_config'][$ac['name']] = $ac['value'];
 }
 
 $HTMLOUT .= "<h3>{$lang['hnr_settings_title']}</h3>

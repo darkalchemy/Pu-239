@@ -15,10 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (strpos($badnames, ',')) {
         foreach (explode(',', $badnames) as $badname) {
-            $blacklist[ $badname ] = (int)1;
+            $blacklist[$badname] = (int)1;
         }
     } else {
-        $blacklist[ $badnames ] = (int)1;
+        $blacklist[$badnames] = (int)1;
     }
     if (file_put_contents($site_config['nameblacklist'], serialize($blacklist))) {
         header('Refresh:2; url=staffpanel.php?tool=nameblacklist');
@@ -30,10 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $out = begin_main_frame();
     $out .= stdmsg($lang['name_curr'], count($blacklist) ? join(', ', array_keys($blacklist)) : $lang['name_no']);
     $out .= stdmsg($lang['name_add'], '<form action="staffpanel.php?tool=nameblacklist&amp;action=nameblacklist" method="post"><table width="90%" cellspacing="2" cellpadding="5" style="border-collapse:separate">
-	<tr><td><textarea rows="3" cols="100" name="badnames"></textarea></td></tr>
+    <tr><td><textarea rows="3" cols="100" name="badnames"></textarea></td></tr>
     <tr><td>' . $lang['name_note'] . '</td></tr>
-	<tr> <td><input type="submit" value="' . $lang['name_update'] . '"/></td></tr>
-	</table></form>');
+    <tr> <td><input type="submit" value="' . $lang['name_update'] . '"/></td></tr>
+    </table></form>');
     $out .= end_main_frame();
     echo stdhead($lang['name_stdhead']) . $out . stdfoot();
 }

@@ -43,18 +43,18 @@ if ($action == 'read_announce') {
         die();
     }
     $header = "
- 	    <tr>
- 	        <th>{$lang['annhistory_subject']}<b>" . htmlsafechars($subject) . "</b></th>
- 	    </tr>";
+         <tr>
+             <th>{$lang['annhistory_subject']}<b>" . htmlsafechars($subject) . "</b></th>
+         </tr>";
     $body = "
- 	    <tr>
- 	        <td>" . format_comment($body) . "</td>
- 	    </tr>
- 	    <tr>
- 	        <td>
- 	            <a href='" . $_SERVER['PHP_SELF'] . "'>{$lang['annhistory_back']}</a>
- 	        </td>
-     	</tr>";
+         <tr>
+             <td>" . format_comment($body) . "</td>
+         </tr>
+         <tr>
+             <td>
+                 <a href='" . $_SERVER['PHP_SELF'] . "'>{$lang['annhistory_back']}</a>
+             </td>
+         </tr>";
     $HTMLOUT .= main_table($body, $header);
 }
 $header = "

@@ -128,7 +128,7 @@ function add_cat()
                  'new_cat_desc',
                  'new_cat_image',
              ] as $x) {
-        if (!isset($params[ $x ]) or empty($params[ $x ])) {
+        if (!isset($params[$x]) or empty($params[$x])) {
             stderr($lang['categories_error'], $lang['categories_add_error1']);
         }
     }
@@ -253,7 +253,7 @@ function edit_cat()
                  'cat_desc',
                  'cat_image',
              ] as $x) {
-        if (!isset($params[ $x ]) or empty($params[ $x ])) {
+        if (!isset($params[$x]) or empty($params[$x])) {
             stderr($lang['categories_error'], $lang['categories_edit_error1'] . $x . '');
         }
     }
@@ -417,7 +417,7 @@ function show_categories()
         while ($row = mysqli_fetch_assoc($query)) {
             $cat_image = file_exists($site_config['pic_base_url'] . 'caticons/1/' . $row['image']) ? "<img border='0' src='{$site_config['pic_base_url']}caticons/1/" . htmlsafechars($row['image']) . "' alt='" . (int)$row['id'] . "' />" : "{$lang['categories_show_no_image']}";
             $htmlout .= "<tr>
-          <td height='48' width='60'><b>{$lang['categories_show_id2']} (" . (int)$row['id'] . ")</b></td>	
+          <td height='48' width='60'><b>{$lang['categories_show_id2']} (" . (int)$row['id'] . ")</b></td>    
           <td width='120'>" . htmlsafechars($row['name']) . "</td>
           <td width='250'>" . htmlsafechars($row['cat_desc']) . "</td>
           <td width='45'>$cat_image</td>

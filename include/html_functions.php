@@ -135,7 +135,7 @@ function insert_smilies_frame()
  *
  * @return string
  */
-function main_table($body, $header = null, $class = null, $wrapper_class= null)
+function main_table($body, $header = null, $class = null, $wrapper_class = null)
 {
     $thead = $header != null ? "
                         <thead>

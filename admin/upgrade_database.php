@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($id >= 1 && $submit === 'Run Query') {
         $sql = $sql_updates[$id - 1]['query'];
         if (sql_query($sql)) {
-            $sql = "INSERT INTO database_updates (id, query) VALUES (" . sqlesc($id). ", " . sqlesc($sql) . ")";
+            $sql = "INSERT INTO database_updates (id, query) VALUES (" . sqlesc($id) . ", " . sqlesc($sql) . ")";
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
             setSessionVar('is-success', "Query #$id ran without error");
         } else {
@@ -38,10 +38,10 @@ if ($table_exists === false || is_null($table_exists)) {
     if (mysqli_num_rows($result) != 1) {
         sql_query(
             "CREATE TABLE `database_updates` (
-              `id` int(10) unsigned NOT NULL DEFAULT '0',
-              `info` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-              `query` text COLLATE utf8mb4_unicode_ci NOT NULL,
-              `added` datetime DEFAULT CURRENT_TIMESTAMP,
+              `id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+              `info` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+              `query` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+              `added` DATETIME DEFAULT CURRENT_TIMESTAMP,
               PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;"
         ) or sqlerr(__FILE__, __LINE__);

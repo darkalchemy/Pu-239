@@ -59,11 +59,11 @@ if ($action == 'avatar') {
         sql_query('UPDATE usersachiev SET avatarset = avatarset+1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND avatarset = '0'") or sqlerr(__FILE__, __LINE__);
         if (($img_size[0] > $site_config['av_img_width']) or ($img_size[1] > $site_config['av_img_height'])) {
             $image = resize_image([
-                'max_width'  => $site_config['av_img_width'],
-                'max_height' => $site_config['av_img_height'],
-                'cur_width'  => $img_size[0],
-                'cur_height' => $img_size[1],
-            ]);
+                                      'max_width'  => $site_config['av_img_width'],
+                                      'max_height' => $site_config['av_img_height'],
+                                      'cur_width'  => $img_size[0],
+                                      'cur_height' => $img_size[1],
+                                  ]);
         } else {
             $image['img_width'] = $img_size[0];
             $image['img_height'] = $img_size[1];
@@ -119,11 +119,11 @@ elseif ($action == 'signature') {
         sql_query('UPDATE usersachiev SET sigset = sigset+1 WHERE userid = ' . sqlesc($CURUSER['id']) . " AND sigset = '0'") or sqlerr(__FILE__, __LINE__);
         if (($img_size[0] > $site_config['sig_img_width']) or ($img_size[1] > $site_config['sig_img_height'])) {
             $image = resize_image([
-                'max_width'  => $site_config['sig_img_width'],
-                'max_height' => $site_config['sig_img_height'],
-                'cur_width'  => $img_size[0],
-                'cur_height' => $img_size[1],
-            ]);
+                                      'max_width'  => $site_config['sig_img_width'],
+                                      'max_height' => $site_config['sig_img_height'],
+                                      'cur_width'  => $img_size[0],
+                                      'cur_height' => $img_size[1],
+                                  ]);
         } else {
             $image['img_width'] = $img_size[0];
             $image['img_height'] = $img_size[1];
@@ -234,18 +234,18 @@ elseif ($action == 'security') {
         $thishost = $_SERVER['HTTP_HOST'];
         $thisdomain = preg_replace('/^www\./is', '', $thishost);
         $body = str_replace([
-            '<#USERNAME#>',
-            '<#SITENAME#>',
-            '<#USEREMAIL#>',
-            '<#IP_ADDRESS#>',
-            '<#CHANGE_LINK#>',
-        ], [
-            $CURUSER['username'],
-            $site_config['site_name'],
-            $email,
-            $_SERVER['REMOTE_ADDR'],
-            "{$site_config['baseurl']}/confirmemail.php?uid={$CURUSER['id']}&key=$hash&email=$obemail",
-        ], $lang['takeeditcp_email_body']);
+                                '<#USERNAME#>',
+                                '<#SITENAME#>',
+                                '<#USEREMAIL#>',
+                                '<#IP_ADDRESS#>',
+                                '<#CHANGE_LINK#>',
+                            ], [
+                                $CURUSER['username'],
+                                $site_config['site_name'],
+                                $email,
+                                $_SERVER['REMOTE_ADDR'],
+                                "{$site_config['baseurl']}/confirmemail.php?uid={$CURUSER['id']}&key=$hash&email=$obemail",
+                            ], $lang['takeeditcp_email_body']);
         mail($email, "$thisdomain {$lang['takeeditcp_confirm']}", $body, "{$lang['takeeditcp_email_from']}{$site_config['site_email']}");
         $emailquery = sql_query('SELECT id, username, email FROM users WHERE id=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
         $spm = mysqli_fetch_assoc($emailquery);
@@ -491,7 +491,7 @@ elseif ($action == 'default') {
         'no'      => 3,
     ];
     $acceptpms = (isset($_POST['acceptpms']) ? $_POST['acceptpms'] : 'all');
-    if (isset($acceptpms_choices[ $acceptpms ])) {
+    if (isset($acceptpms_choices[$acceptpms])) {
         $updateset[] = 'acceptpms = ' . sqlesc($acceptpms);
     }
     $curuser_cache['acceptpms'] = $acceptpms;

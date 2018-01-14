@@ -54,8 +54,8 @@ $valid_searchin = [
         'owner',
     ],
 ];
-if (isset($_GET['searchin']) && isset($valid_searchin[ $_GET['searchin'] ])) {
-    $searchin = $valid_searchin[ $_GET['searchin'] ];
+if (isset($_GET['searchin']) && isset($valid_searchin[$_GET['searchin']])) {
+    $searchin = $valid_searchin[$_GET['searchin']];
     $select_searchin = $_GET['searchin'];
     $addparam .= sprintf('search=%s&amp;searchin=%s&amp;', $searchstr, $select_searchin);
 }
@@ -73,7 +73,7 @@ if (isset($_GET['sort']) && isset($_GET['type'])) {
         'leechers',
         'owner',
     ];
-    $column = isset($_GET['sort']) && isset($_valid_sort[ (int)$_GET['sort'] ]) ? $_valid_sort[ (int)$_GET['sort'] ] : $_valid_sort[0];
+    $column = isset($_GET['sort']) && isset($_valid_sort[(int)$_GET['sort']]) ? $_valid_sort[(int)$_GET['sort']] : $_valid_sort[0];
     switch (htmlsafechars($_GET['type'])) {
         case 'asc':
             $ascdesc = 'ASC';
@@ -164,10 +164,10 @@ if (isset($cleansearchstr)) {
     if ($searchstr != '') {
         $addparam .= 'search=' . rawurlencode($searchstr) . '&amp;searchin=' . htmlsafechars($_GET['searchin']) . '&amp;incldead=' . intval($_GET['incldead']) . '&amp;';
         $searchstring = str_replace([
-            '_',
-            '.',
-            '-',
-        ], ' ', $searchstr);
+                                        '_',
+                                        '.',
+                                        '-',
+                                    ], ' ', $searchstr);
         $s = [
             '*',
             '?',
@@ -226,7 +226,7 @@ if (!$torrentsperpage) {
 if ($count) {
     if ($addparam != '') {
         if ($pagerlink != '') {
-            if ($addparam[ strlen($addparam) - 1 ] != ';') { // & = &amp;
+            if ($addparam[strlen($addparam) - 1] != ';') { // & = &amp;
                 $addparam = $addparam . '&' . $pagerlink;
             } else {
                 $addparam = $addparam . $pagerlink;

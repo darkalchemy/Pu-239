@@ -10,7 +10,7 @@ if ($site_config['bug_alert'] && $CURUSER['class'] >= UC_STAFF) {
             ->where('status = ?', 'na')
             ->fetch();
 
-        $bugs= $res['count'];
+        $bugs = $res['count'];
         $cache->set('bug_mess_', $bugs, $site_config['expires']['alerts']);
     }
     if ($bugs > 0) {

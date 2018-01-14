@@ -23,12 +23,12 @@ while ($curip = mysqli_fetch_assoc($res)) {
         $msg = "<span class='text-red'> CLOSED => $errstr </span>";
     }
     $out .= "
-								<section>
-									<input class='text-center' type='text' size='12' value='{$uip}' readonly />
-									<input class='text-center' type='text' size='5' value='{$uport}' readonly />
-									<input class='text-center' type='text' size='20' value='{$uagent}' readonly />
-									<span>$msg</span>
-								</section>";
+                                <section>
+                                    <input class='text-center' type='text' size='12' value='{$uip}' readonly />
+                                    <input class='text-center' type='text' size='5' value='{$uport}' readonly />
+                                    <input class='text-center' type='text' size='20' value='{$uagent}' readonly />
+                                    <span>$msg</span>
+                                </section>";
 }
 $status = ['data' => $out];
 header('content-type: application/json');

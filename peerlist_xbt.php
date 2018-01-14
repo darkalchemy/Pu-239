@@ -30,7 +30,7 @@ function XBT_IP_CONVERT($a)
     for ($i = 0; $i < 4; ++$i) {
         $k = (int)($a / $c);
         $a -= $c * $k;
-        $b[ $i ] = $k;
+        $b[$i] = $k;
         $c /= 256.0;
     }
     $d = join('.', $b);
@@ -95,7 +95,7 @@ $seeders = [];
 $subres = sql_query("SELECT u.username, u.anonymous, u.paranoia, t.owner, t.anonymous AS tanonymous, t.seeders, t.leechers, x.fid, x.uploaded, x.downloaded, x.left, x.active, x.mtime AS la, x.uid, x.leechtime, x.seedtime, x.peer_id, x.upspeed, x.downspeed, x.ipa
     FROM xbt_files_users x
     LEFT JOIN users u ON x.uid = u.id
-	LEFT JOIN torrents AS t ON t.id = x.fid
+    LEFT JOIN torrents AS t ON t.id = x.fid
     WHERE active='1' AND x.fid = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($subres) == 0) {
     stderr("{$lang['peerslist_warning']}", "{$lang['peerslist_no_data']}");

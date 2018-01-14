@@ -14,10 +14,10 @@ $reputationid = 0;
 $time_offset = 0;
 $a = explode(',', gmdate('Y,n,j,G,i,s', TIME_NOW + $time_offset));
 $now_date = [
-    'year' => $a[0],
-    'mon' => $a[1],
-    'mday' => $a[2],
-    'hours' => $a[3],
+    'year'    => $a[0],
+    'mon'     => $a[1],
+    'mday'    => $a[2],
+    'hours'   => $a[3],
     'minutes' => $a[4],
     'seconds' => $a[5],
 ];
@@ -90,20 +90,20 @@ function show_level()
     $html .= "<h2>{$lang['rep_ad_show_head']}</h2>";
     $html .= "<p><span class='button is-small'><a href='staffpanel.php?tool=reputation_ad&amp;mode=list'>{$lang['rep_ad_show_comments']}</a></span></p><br>";
     $html .= "<form action='staffpanel.php?tool=reputation_ad' name='show_rep_form' method='post'>
-				<input name='mode' value='doupdate' type='hidden' />";
+                <input name='mode' value='doupdate' type='hidden' />";
     $html .= "<table cellpadding='3px'><tr>
-		<td width='5%' $css>{$lang['rep_ad_show_id']}</td>
-		<td width='60%'$css>{$lang['rep_ad_show_level']}</td>
-		<td width='20%' $css>{$lang['rep_ad_show_min']}</td>
-		<td width='15%' $css>{$lang['rep_ad_show_controls']}</td></tr>";
+        <td width='5%' $css>{$lang['rep_ad_show_id']}</td>
+        <td width='60%'$css>{$lang['rep_ad_show_level']}</td>
+        <td width='20%' $css>{$lang['rep_ad_show_min']}</td>
+        <td width='15%' $css>{$lang['rep_ad_show_controls']}</td></tr>";
     while ($res = mysqli_fetch_assoc($query)) {
-        $html .= "<tr>\n" . '	<td>#' . $res['reputationlevelid'] . "</td>\n" . "	<td>{$lang['rep_ad_show_user']} <b>" . htmlsafechars($res['level']) . "</b></td>\n" . "	<td><input type='text' name='reputation[" . $res['reputationlevelid'] . "]' value='" . $res['minimumreputation'] . "' size='12' /></td>\n" . "	<td><span class='button is-small'><a href='staffpanel.php?tool=reputation_ad&amp;mode=edit&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>{$lang['rep_ad_show_edit']}</a></span>&#160;<span class='button is-small'><a href='staffpanel.php?tool=reputation_ad&amp;mode=dodelete&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>{$lang['rep_ad_show_del']}</a></span></td>\n" . "</tr>\n";
+        $html .= "<tr>\n" . '    <td>#' . $res['reputationlevelid'] . "</td>\n" . "    <td>{$lang['rep_ad_show_user']} <b>" . htmlsafechars($res['level']) . "</b></td>\n" . "    <td><input type='text' name='reputation[" . $res['reputationlevelid'] . "]' value='" . $res['minimumreputation'] . "' size='12' /></td>\n" . "    <td><span class='button is-small'><a href='staffpanel.php?tool=reputation_ad&amp;mode=edit&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>{$lang['rep_ad_show_edit']}</a></span>&#160;<span class='button is-small'><a href='staffpanel.php?tool=reputation_ad&amp;mode=dodelete&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>{$lang['rep_ad_show_del']}</a></span></td>\n" . "</tr>\n";
     }
     $html .= "<tr><td colspan='3'>
-					<input type='submit' value='{$lang['rep_ad_show_update']}' accesskey='s' class='button is-small' /> 
-					<input type='reset' value='{$lang['rep_ad_show_reset']}' accesskey='r' class='button is-small' /></td>
-					<td><span class='button is-small'><a href='staffpanel.php?tool=reputation_ad&amp;mode=add'>{$lang['rep_ad_show_add']}</a></span>
-					</td></tr>";
+                    <input type='submit' value='{$lang['rep_ad_show_update']}' accesskey='s' class='button is-small' /> 
+                    <input type='reset' value='{$lang['rep_ad_show_reset']}' accesskey='r' class='button is-small' /></td>
+                    <td><span class='button is-small'><a href='staffpanel.php?tool=reputation_ad&amp;mode=add'>{$lang['rep_ad_show_add']}</a></span>
+                    </td></tr>";
     $html .= '</table>';
     $html .= '</form>';
     html_out($html, $title);
@@ -137,11 +137,11 @@ function show_form($type = 'edit')
     $replevel = isset($res['level']) ? $res['level'] : '';
     $minrep = isset($res['minimumreputation']) ? $res['minimumreputation'] : '';
     $html .= "<form action='staffpanel.php?tool=reputation_ad' name='show_rep_form' method='post'>
-				<input name='reputationlevelid' value='{$replevid}' type='hidden' />
-				<input name='mode' value='{$mode}' type='hidden' />";
+                <input name='reputationlevelid' value='{$replevid}' type='hidden' />
+                <input name='mode' value='{$mode}' type='hidden' />";
     $html .= "<h2>$title</h2><table width='500px' cellpadding='5px'><tr>
-		<td width='67%' $css>&#160;</td>
-		<td width='33%' $css>&#160;</td></tr>";
+        <td width='67%' $css>&#160;</td>
+        <td width='33%' $css>&#160;</td></tr>";
     $html .= "<tr><td>{$lang['rep_ad_form_desc']}<div class='desctext'>{$lang['rep_ad_form_descr']}</div></td>";
     $html .= "<td><input type='text' name='level' value=\"{$replevel}\" size='35' maxlength='250' /></td></tr>";
     $html .= "<tr><td>{$lang['rep_ad_form_min']}<div>{$lang['rep_ad_form_option']}</div></td>";
@@ -153,7 +153,7 @@ function show_form($type = 'edit')
 }
 
 /////////////////////////////////////
-//	Update rep function
+//    Update rep function
 /////////////////////////////////////
 /**
  * @param string $type
@@ -177,7 +177,7 @@ function do_update($type = '')
     // what we gonna do?
     if ($type == 'new') {
         @sql_query("INSERT INTO reputationlevel ( minimumreputation, level ) 
-							VALUES  ($minrep, $level )");
+                            VALUES  ($minrep, $level )");
     } elseif ($type == 'edit') {
         $levelid = intval($input['reputationlevelid']);
         if (!is_valid_id($levelid)) {
@@ -185,12 +185,12 @@ function do_update($type = '')
         }
         // check it's a valid rep id
         $query = sql_query("SELECT reputationlevelid FROM reputationlevel WHERE 
-									reputationlevelid = $levelid");
+                                    reputationlevelid = $levelid");
         if (!mysqli_num_rows($query)) {
             stderr('', $lang['rep_ad_update_err4']);
         }
         @sql_query("UPDATE reputationlevel SET minimumreputation = $minrep, level = $level 
-							WHERE reputationlevelid = $levelid");
+                            WHERE reputationlevelid = $levelid");
     } else {
         $ids = $input['reputation'];
         if (is_array($ids) && count($ids)) {
@@ -207,7 +207,7 @@ function do_update($type = '')
 }
 
 //////////////////////////////////////
-//	Reputaion delete
+//    Reputaion delete
 //////////////////////////////////////
 function do_delete()
 {
@@ -228,7 +228,7 @@ function do_delete()
 }
 
 //////////////////////////////////////
-//	Reputaion edit
+//    Reputaion edit
 //////////////////////////////////////
 function show_form_rep()
 {
@@ -238,20 +238,20 @@ function show_form_rep()
     }
     $title = $lang['rep_ad_rep_form_title'];
     $query = sql_query('SELECT r.*, p.topic_id, t.topic_name, leftfor.username AS leftfor_name, 
-					leftby.username AS leftby_name
-					FROM reputation r
-					LEFT JOIN posts p ON p.id=r.postid
-					LEFT JOIN topics t ON p.topic_id=t.id
-					LEFT JOIN users leftfor ON leftfor.id=r.userid
-					LEFT JOIN users leftby ON leftby.id=r.whoadded
-					WHERE reputationid = ' . intval($input['reputationid']));
+                    leftby.username AS leftby_name
+                    FROM reputation r
+                    LEFT JOIN posts p ON p.id=r.postid
+                    LEFT JOIN topics t ON p.topic_id=t.id
+                    LEFT JOIN users leftfor ON leftfor.id=r.userid
+                    LEFT JOIN users leftby ON leftby.id=r.whoadded
+                    WHERE reputationid = ' . intval($input['reputationid']));
     if (!$res = mysqli_fetch_assoc($query)) {
         stderr('', $lang['rep_ad_rep_form_erm']);
     }
     $html = "<form action='staffpanel.php?tool=reputation_ad' name='show_rep_form' method='post'>
-				<input name='reputationid' value='{$res['reputationid']}' type='hidden' />
-				<input name='oldreputation' value='{$res['reputation']}' type='hidden' />
-				<input name='mode' value='doeditrep' type='hidden' />";
+                <input name='reputationid' value='{$res['reputationid']}' type='hidden' />
+                <input name='oldreputation' value='{$res['reputation']}' type='hidden' />
+                <input name='mode' value='doeditrep' type='hidden' />";
     $html .= "<h2>{$lang['rep_ad_rep_form_head']}</h2>";
     $html .= "<table cellpadding='5px'>";
     $html .= "<tr><td width='37%'>{$lang['rep_ad_rep_form_topic']}</td><td width='63%'><a href='forums.php?action=viewtopic&amp;topicid={$res['topic_id']}&amp;page=p{$res['postid']}#{$res['postid']}' target='_blank'>" . htmlsafechars($res['topic_name']) . '</a></td></tr>';
@@ -265,7 +265,7 @@ function show_form_rep()
 }
 
 /////////////////////////////////////
-//	View reputation comments function
+//    View reputation comments function
 /////////////////////////////////////
 function view_list()
 {
@@ -274,26 +274,26 @@ function view_list()
     $html = "<h2>{$lang['rep_ad_view_view']}</h2>";
     $html .= "<p>{$lang['rep_ad_view_page']}</p>";
     $html .= "<form action='staffpanel.php?tool=reputation_ad' name='list_form' method='post'>
-				<input name='mode' value='list' type='hidden' />
-				<input name='dolist' value='1' type='hidden' />";
+                <input name='mode' value='list' type='hidden' />
+                <input name='dolist' value='1' type='hidden' />";
     $html .= "<table width='500px' cellpadding='5px'>";
     $html .= "<tr><td width='20%'>{$lang['rep_ad_view_for']}</td><td width='80%'><input type='text' name='leftfor' value='' size='35' maxlength='250' tabindex='1' /></td></tr>";
     $html .= "<tr><td colspan='2'><div>{$lang['rep_ad_view_for_txt']}</div></td></tr>";
     $html .= "<tr><td>{$lang['rep_ad_view_by']}</td><td><input type='text' name='leftby' value='' size='35' maxlength='250' tabindex='2' /></td></tr>";
     $html .= "<tr><td colspan='2'><div>{$lang['rep_ad_view_by_txt']}</div></td></tr>";
     $html .= "<tr><td>{$lang['rep_ad_view_start']}</td><td>
-		<div>
-				<span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_month']}<br><select name='start[month]' tabindex='3'>" . get_month_dropdown(1) . "</select></span>
-				<span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_day']}<br><input type='text' name='start[day]' value='" . ($now_date['mday'] + 1) . "' size='4' maxlength='2' tabindex='3' /></span>
-				<span>{{$lang['rep_ad_view_year']}}<br><input type='text' name='start[year]' value='" . $now_date['year'] . "' size='4' maxlength='4' tabindex='3' /></span>
-			</div></td></tr>";
+        <div>
+                <span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_month']}<br><select name='start[month]' tabindex='3'>" . get_month_dropdown(1) . "</select></span>
+                <span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_day']}<br><input type='text' name='start[day]' value='" . ($now_date['mday'] + 1) . "' size='4' maxlength='2' tabindex='3' /></span>
+                <span>{{$lang['rep_ad_view_year']}}<br><input type='text' name='start[year]' value='" . $now_date['year'] . "' size='4' maxlength='4' tabindex='3' /></span>
+            </div></td></tr>";
     $html .= "<tr><td class='tdrow2' colspan='2'><div class='desctext'>{{$lang['rep_ad_view_start_select']}}</div></td></tr>";
     $html .= "<tr><td>{$lang['rep_ad_view_end']}</td><td>
-			<div>
-				<span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_month']}<br><select name='end[month]' class='textinput' tabindex='4'>" . get_month_dropdown() . "</select></span>
-				<span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_day']}<br><input type='text' class='textinput' name='end[day]' value='" . $now_date['mday'] . "' size='4' maxlength='2' tabindex='4' /></span>
-				<span>{$lang['rep_ad_view_year']}<br><input type='text' class='textinput' name='end[year]' value='" . $now_date['year'] . "' size='4' maxlength='4' tabindex='4' /></span>
-			</div></td></tr>";
+            <div>
+                <span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_month']}<br><select name='end[month]' class='textinput' tabindex='4'>" . get_month_dropdown() . "</select></span>
+                <span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_day']}<br><input type='text' class='textinput' name='end[day]' value='" . $now_date['mday'] . "' size='4' maxlength='2' tabindex='4' /></span>
+                <span>{$lang['rep_ad_view_year']}<br><input type='text' class='textinput' name='end[year]' value='" . $now_date['year'] . "' size='4' maxlength='4' tabindex='4' /></span>
+            </div></td></tr>";
     $html .= "<tr><td class='tdrow2' colspan='2'><div class='desctext'>{$lang['rep_ad_view_end_select']}</div></td></tr>";
     $html .= "<tr><td colspan='2'><input type='submit' value='{$lang['rep_ad_view_search']}' accesskey='s' class='button is-small' tabindex='5' /> <input type='reset' value='{$lang['rep_ad_view_reset']}' accesskey='r' class='button is-small' tabindex='6' /></td></tr>";
     $html .= '</table></form>';
@@ -379,21 +379,21 @@ function view_list()
         if ($total['cnt'] > $deflimit) {
             require_once INCL_DIR . 'pager_functions.php';
             $links = pager_rep([
-                'count' => $total['cnt'],
-                'perpage' => $deflimit,
-                'start_value' => $first,
-                'url' => 'staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=' . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=$orderby&amp;startstamp=$start&amp;endstamp=$end",
-            ]);
+                                   'count'       => $total['cnt'],
+                                   'perpage'     => $deflimit,
+                                   'start_value' => $first,
+                                   'url'         => 'staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=' . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=$orderby&amp;startstamp=$start&amp;endstamp=$end",
+                               ]);
         }
         // mofo query!
         $query = sql_query("SELECT r.*, p.topic_id, leftfor.id as leftfor_id, 
-									leftfor.username as leftfor_name, leftby.id as leftby_id, 
-									leftby.username as leftby_name 
-									FROM reputation r 
-									left join posts p on p.id=r.postid 
-									left join users leftfor on leftfor.id=r.userid 
-									left join users leftby on leftby.id=r.whoadded 
-									WHERE $cond ORDER BY $order LIMIT $first,$deflimit");
+                                    leftfor.username as leftfor_name, leftby.id as leftby_id, 
+                                    leftby.username as leftby_name 
+                                    FROM reputation r 
+                                    left join posts p on p.id=r.postid 
+                                    left join users leftfor on leftfor.id=r.userid 
+                                    left join users leftby on leftby.id=r.whoadded 
+                                    WHERE $cond ORDER BY $order LIMIT $first,$deflimit");
         if (!mysqli_num_rows($query)) {
             stderr($lang['rep_ad_view_err3'], $lang['rep_ad_view_err5']);
         }
@@ -414,7 +414,7 @@ function view_list()
 }
 
 ///////////////////////////////////////////////
-//	Reputation do_delete_rep function
+//    Reputation do_delete_rep function
 ///////////////////////////////////////////////
 function do_delete_rep()
 {
@@ -440,7 +440,7 @@ function do_delete_rep()
 }
 
 ///////////////////////////////////////////////
-//	Reputation do_edit_rep function
+//    Reputation do_edit_rep function
 ///////////////////////////////////////////////
 function do_edit_rep()
 {
@@ -480,9 +480,9 @@ function do_edit_rep()
 }
 
 ///////////////////////////////////////////////
-//	Reputation output function
-//	$msg -> string
-//	$html -> string
+//    Reputation output function
+//    $msg -> string
+//    $html -> string
 ///////////////////////////////////////////////
 /**
  * @param string $html
@@ -535,7 +535,7 @@ function redirect($url, $text, $time = 2)
 }
 
 /////////////////////////////
-//	get_month worker function
+//    get_month worker function
 /////////////////////////////
 /**
  * @param int $i
@@ -571,7 +571,7 @@ function get_month_dropdown($i = 0)
 }
 
 /////////////////////////////
-//	cache rep function
+//    cache rep function
 /////////////////////////////
 function rep_cache()
 {

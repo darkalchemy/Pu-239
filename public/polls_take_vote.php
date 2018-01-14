@@ -31,13 +31,13 @@ if (!$_POST['nullvote']) {
             if (!$question_id or !isset($choice_id)) {
                 continue;
             }
-            $vote_cast[ $question_id ][] = $choice_id;
+            $vote_cast[$question_id][] = $choice_id;
         }
     }
     foreach ($_POST as $k => $v) {
         if (preg_match("#^choice_(\d+)_(\d+)$#", $k, $matches)) {
-            if ($_POST[ $k ] == 1) {
-                $vote_cast[ $matches[1] ][] = $matches[2];
+            if ($_POST[$k] == 1) {
+                $vote_cast[$matches[1]][] = $matches[2];
             }
         }
     }
@@ -57,9 +57,9 @@ if (!$_POST['nullvote']) {
     }
     foreach ($vote_cast as $question_id => $choice_array) {
         foreach ($choice_array as $choice_id) {
-            ++$poll_answers[ $question_id ]['votes'][ $choice_id ];
-            if ($poll_answers[ $question_id ]['votes'][ $choice_id ] < 1) {
-                $poll_answers[ $question_id ]['votes'][ $choice_id ] = 1;
+            ++$poll_answers[$question_id]['votes'][$choice_id];
+            if ($poll_answers[$question_id]['votes'][$choice_id] < 1) {
+                $poll_answers[$question_id]['votes'][$choice_id] = 1;
             }
         }
     }

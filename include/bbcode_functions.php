@@ -188,12 +188,12 @@ function islocal($link)
     $flag = false;
     $limit = 600;
     $site_config['url'] = str_replace([
-        'http://',
-        'www',
-        'http://www',
-        'https://',
-        'https://www',
-    ], '', $site_config['baseurl']);
+                                          'http://',
+                                          'www',
+                                          'http://www',
+                                          'https://',
+                                          'https://www',
+                                      ], '', $site_config['baseurl']);
     if (false !== stristr($link[0], '[url=')) {
         $url = trim($link[1]);
         $title = trim($link[2]);

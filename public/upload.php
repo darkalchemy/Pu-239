@@ -186,7 +186,7 @@ $HTMLOUT .= "
 for ($x = 0; $x < count($genres); ++$x) {
     $HTMLOUT .= "
                 <div class='flex_cell_5'>
-                    <input type='radio' value='" . strtolower($genres[ $x ]) . "' name='genre' />
+                    <input type='radio' value='" . strtolower($genres[$x]) . "' name='genre' />
                     <span>{$genres[$x]}</span>
                 </div>";
 }

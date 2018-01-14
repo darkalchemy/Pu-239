@@ -12,7 +12,7 @@ function lotteryclean($data)
     $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
     $lottery_config = $_pms = $_userq = $uids = [];
     while ($aconf = mysqli_fetch_assoc($lconf)) {
-        $lottery_config[ $aconf['name'] ] = $aconf['value'];
+        $lottery_config[$aconf['name']] = $aconf['value'];
     }
     if ($lottery_config['enable'] && $dt > $lottery_config['end_date']) {
         $tickets = [];
@@ -29,8 +29,8 @@ function lotteryclean($data)
         $lottery['winners'] = [];
         $lottery['total_tickets'] = count($tickets);
         for ($i = 0; $i < $lottery['total_tickets']; ++$i) {
-            if (!isset($lottery['winners'][ $tickets[ $i ]['uid'] ])) {
-                $lottery['winners'][ $tickets[ $i ]['uid'] ] = $tickets[ $i ];
+            if (!isset($lottery['winners'][$tickets[$i]['uid']])) {
+                $lottery['winners'][$tickets[$i]['uid']] = $tickets[$i];
             }
             if ($lottery_config['total_winners'] == count($lottery['winners'])) {
                 break;
@@ -68,10 +68,10 @@ function lotteryclean($data)
             $cache->increment('inbox_' . $user_id);
             $cache->increment('inbox_sb_' . $user_id);
             $cache->deleteMulti([
-                'userstats_' . $user_id,
-                'user_stats_' . $user_id,
-                'user' . $user_id
-            ]);
+                                    'userstats_' . $user_id,
+                                    'user_stats_' . $user_id,
+                                    'user' . $user_id
+                                ]);
         }
         sql_query('INSERT INTO lottery_config(name,value)
                     VALUES ' . join(',', $lconfig_update) . '

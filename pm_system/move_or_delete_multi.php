@@ -20,7 +20,7 @@ if (isset($_POST['delete'])) {
         $res = sql_query('SELECT * FROM messages WHERE id = ' . sqlesc($id));
         $message = mysqli_fetch_assoc($res);
         if ($message['receiver'] == $CURUSER['id'] && $message['urgent'] == 'yes' && $message['unread'] == 'yes') {
-            stderr($lang['pm_error'], '' . $lang['pm_delete_err'] . '<a class="altlink" href="' . $site_config['baseurl']. '/pm_system.php?action=view_message&id=' . $pm_id . '">' . $lang['pm_delete_back'] . '</a>' . $lang['pm_delete_msg'] . '');
+            stderr($lang['pm_error'], '' . $lang['pm_delete_err'] . '<a class="altlink" href="' . $site_config['baseurl'] . '/pm_system.php?action=view_message&id=' . $pm_id . '">' . $lang['pm_delete_back'] . '</a>' . $lang['pm_delete_msg'] . '');
         }
         if ($message['receiver'] == $CURUSER['id'] || $message['sender'] == $CURUSER['id'] && $message['location'] == PM_DELETED) {
             sql_query('DELETE FROM messages WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);

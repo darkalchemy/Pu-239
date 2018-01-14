@@ -46,7 +46,7 @@ switch (true) {
 
         $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
         while ($ac = mysqli_fetch_assoc($lconf)) {
-            $lottery_config[ $ac['name'] ] = $ac['value'];
+            $lottery_config[$ac['name']] = $ac['value'];
         }
         if (!$lottery_config['enable']) {
             $html .= stdmsg('Sorry', 'Lottery is closed at the moment');
@@ -63,7 +63,7 @@ switch (true) {
             while ($aus = mysqli_fetch_assoc($qus)) {
                 $last_winners[] = format_username($aus['id']);
             }
-            $html .= stdmsg('Lottery Winners Info', "<ul><li>Last winners: " . join(', ', $last_winners) . '</li><li>Amount won	(each): ' . $lottery_config['lottery_winners_amount'] . "</li></ul><br>
+            $html .= stdmsg('Lottery Winners Info', "<ul><li>Last winners: " . join(', ', $last_winners) . '</li><li>Amount won    (each): ' . $lottery_config['lottery_winners_amount'] . "</li></ul><br>
         <p>" . ($CURUSER['class'] >= $valid['config']['minclass'] ? "<a href='{$site_config['baseurl']}/lottery.php?action=config' class='button is-small margin10'>Lottery configuration</a>" : 'Nothing Configured Atm Sorry') . '</p>');
         } else {
             $html .= "

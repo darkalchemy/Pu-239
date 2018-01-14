@@ -14,25 +14,25 @@ function pu_update($data)
 
     $pconf = sql_query('SELECT * FROM class_promo ORDER BY id ASC ') or sqlerr(__FILE__, __LINE__);
     while ($ac = mysqli_fetch_assoc($pconf)) {
-        $class_config[ $ac['name'] ]['id'] = $ac['id'];
-        $class_config[ $ac['name'] ]['name'] = $ac['name'];
-        $class_config[ $ac['name'] ]['min_ratio'] = $ac['min_ratio'];
-        $class_config[ $ac['name'] ]['uploaded'] = $ac['uploaded'];
-        $class_config[ $ac['name'] ]['time'] = $ac['time'];
-        $class_config[ $ac['name'] ]['low_ratio'] = $ac['low_ratio'];
+        $class_config[$ac['name']]['id'] = $ac['id'];
+        $class_config[$ac['name']]['name'] = $ac['name'];
+        $class_config[$ac['name']]['min_ratio'] = $ac['min_ratio'];
+        $class_config[$ac['name']]['uploaded'] = $ac['uploaded'];
+        $class_config[$ac['name']]['time'] = $ac['time'];
+        $class_config[$ac['name']]['low_ratio'] = $ac['low_ratio'];
 
-        $limit = $class_config[ $ac['name'] ]['uploaded'] * 1024 * 1024 * 1024;
-        $minratio = $class_config[ $ac['name'] ]['min_ratio'];
-        $maxdt = ($dt - 86400 * $class_config[ $ac['name'] ]['time']);
+        $limit = $class_config[$ac['name']]['uploaded'] * 1024 * 1024 * 1024;
+        $minratio = $class_config[$ac['name']]['min_ratio'];
+        $maxdt = ($dt - 86400 * $class_config[$ac['name']]['time']);
 
-        $class_value = $class_config[ $ac['name'] ]['name'];
-        $res1 = sql_query("SELECT * from class_config WHERE value = " . sqlesc($class_value));
+        $class_value = $class_config[$ac['name']]['name'];
+        $res1 = sql_query("SELECT * FROM class_config WHERE value = " . sqlesc($class_value));
         while ($arr1 = mysqli_fetch_assoc($res1)) {
             $class_name = $arr1['classname'];
             $prev_class = $class_value - 1;
         }
 
-        $res2 = sql_query("SELECT * from class_config WHERE value = " . sqlesc($prev_class));
+        $res2 = sql_query("SELECT * FROM class_config WHERE value = " . sqlesc($prev_class));
         while ($arr2 = mysqli_fetch_assoc($res2)) {
             $prev_class_name = $arr2['classname'];
         }

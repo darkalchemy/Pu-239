@@ -30,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $HTMLOUT = "
         <div class='container is-fluid portlet has-text-centered'>
             <h2>{$lang['getrss_result']}</h2>
-		    <input type='text' class='w-100' readonly='readonly' value='{$rsslink}' onclick='select()' />
-	    </div>";
+            <input type='text' class='w-100' readonly='readonly' value='{$rsslink}' onclick='select()' />
+        </div>";
         echo stdhead($lang['getrss_head2']) . $HTMLOUT . stdfoot();
         die();
     }

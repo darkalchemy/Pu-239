@@ -18,12 +18,12 @@ if ($users === false || is_null($users)) {
     while ($user = mysqli_fetch_assoc($res)) {
         $id = $class = '';
         extract($user);
-        $users[ $id ]['userRole'] = $class;
-        $users[ $id ]['channels'] = [0, 1, 2, 3, 4];
+        $users[$id]['userRole'] = $class;
+        $users[$id]['channels'] = [0, 1, 2, 3, 4];
         if ($class >= UC_ADMINISTRATOR) {
-            $users[ $id ]['channels'] = [0, 1, 2, 3, 4, 5, 6];
+            $users[$id]['channels'] = [0, 1, 2, 3, 4, 5, 6];
         } elseif ($class >= UC_MODERATOR) {
-            $users[ $id ]['channels'] = [0, 1, 2, 3, 4, 5];
+            $users[$id]['channels'] = [0, 1, 2, 3, 4, 5];
         }
     }
     $cache->set('chat_users_list', $users, 86400);

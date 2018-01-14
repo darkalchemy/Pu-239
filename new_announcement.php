@@ -80,16 +80,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo stdhead('Create Announcement', false);
     $HTMLOUT = '';
     $HTMLOUT .= "<table class='main' width='750' >
- 	<tr>
- 	<td class='embedded'><div class='has-text-centered'>
- 	<h1>Create Announcement for " . ($n_pms) . ' user' . ($n_pms > 1 ? 's' : '') . '&#160;!</h1>';
+     <tr>
+     <td class='embedded'><div class='has-text-centered'>
+     <h1>Create Announcement for " . ($n_pms) . ' user' . ($n_pms > 1 ? 's' : '') . '&#160;!</h1>';
     $HTMLOUT .= "<form name='compose' method='post' action='{$site_config['baseurl']}/new_announcement.php'>
- 	<table >
- 	<tr>
- 	<td colspan='2'><b>Subject: </b>
- 	<input name='subject' type='text' size='76' value='" . htmlsafechars($subject) . "' /></td>
- 	</tr>
- 	<tr><td colspan='2'><div class='has-text-centered'>
+     <table >
+     <tr>
+     <td colspan='2'><b>Subject: </b>
+     <input name='subject' type='text' size='76' value='" . htmlsafechars($subject) . "' /></td>
+     </tr>
+     <tr><td colspan='2'><div class='has-text-centered'>
                        " . BBcode() . '
   </div></td></tr>';
     $HTMLOUT .= "<tr><td colspan='2' class='has-text-centered'>";
@@ -100,21 +100,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     $HTMLOUT .= "</select>
 
- 	<input type='submit' name='buttonval' value='Preview' class='button is-small' />
- 	<input type='submit' name='buttonval' value='Submit' class='button is-small' />
- 	</td></tr></table>
- 	<input type='hidden' name='n_pms' value='" . $n_pms . "' />
+     <input type='submit' name='buttonval' value='Preview' class='button is-small' />
+     <input type='submit' name='buttonval' value='Submit' class='button is-small' />
+     </td></tr></table>
+     <input type='hidden' name='n_pms' value='" . $n_pms . "' />
     <input type='hidden' name='ann_query' value='" . rawurlencode($ann_query) . "' />
- 	<input type='hidden' name='ann_hash' value='" . $ann_hash . "' />
- 	</form><br><br>
- 	</div></td></tr></table>";
+     <input type='hidden' name='ann_hash' value='" . $ann_hash . "' />
+     </form><br><br>
+     </div></td></tr></table>";
     if ($body) {
         $newtime = TIME_NOW + (86400 * $expiry);
         $HTMLOUT .= "<table width='700' class='main' >
- 	<tr><td class='has-text-centered'><h2><font class='has-text-white'>Announcement: 
- 	" . htmlsafechars($subject) . "</font></h2></td></tr>
- 	<tr><td class='text'>
- 	" . format_comment($body) . '<br><hr>Expires: ' . get_date($newtime, 'DATE') . '';
+     <tr><td class='has-text-centered'><h2><font class='has-text-white'>Announcement: 
+     " . htmlsafechars($subject) . "</font></h2></td></tr>
+     <tr><td class='text'>
+     " . format_comment($body) . '<br><hr>Expires: ' . get_date($newtime, 'DATE') . '';
         $HTMLOUT .= '</td></tr></table>';
     }
 } else { // Shouldn't be here

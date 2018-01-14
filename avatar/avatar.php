@@ -40,11 +40,11 @@ function hex2rgb($color)
 if (!$_fromCache) {
     $var['use_country'] = false;
     for ($i = 1; $i <= 3; ++$i) {
-        if (isset($var[ 'line' . $i ]['value_p']) && is_array($var[ 'line' . $i ]['value_p'])) {
+        if (isset($var['line' . $i]['value_p']) && is_array($var['line' . $i]['value_p'])) {
             $var['use_country'] = true;
-            $_flag_xy = $flag_xy[ $i ];
-            $_flag = $var[ 'line' . $i ]['value_p']['iso'];
-            $var[ 'line' . $i ]['value_p'] = $var[ 'line' . $i ]['value_p']['name'];
+            $_flag_xy = $flag_xy[$i];
+            $_flag = $var['line' . $i]['value_p']['iso'];
+            $var['line' . $i]['value_p'] = $var['line' . $i]['value_p']['name'];
         }
     }
     //create image
@@ -55,7 +55,7 @@ if (!$_fromCache) {
         2 => 'smallfont.gdf',
         3 => 'visitort2.gdf',
     ];
-    $font = imageloadfont('fonts/' . $fonts[ $var['font'] ]);
+    $font = imageloadfont('fonts/' . $fonts[$var['font']]);
     //define colors
     //border color
     list($br, $bg, $bb) = hex2rgb($var['bColor']);
@@ -90,7 +90,7 @@ if (!$_fromCache) {
             'y' => '12',
         ],
     ];
-    imagecopy($im, $smile, $smile_pos[ $var['pack'] ]['y'], $smile_pos[ $var['pack'] ]['x'], 0, 0, 128, 128);
+    imagecopy($im, $smile, $smile_pos[$var['pack']]['y'], $smile_pos[$var['pack']]['x'], 0, 0, 128, 128);
     if ($var['use_country']) {
         $country = imagecreatefrompng('flags/' . $_flag . '.png');
         imagecopy($im, $country, $_flag_xy[0], $_flag_xy[1], 0, 0, 16, 11);

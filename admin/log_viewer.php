@@ -466,7 +466,7 @@ function get_log_files($dir, &$results = [])
         foreach ($files_list as $path) {
             preg_match("/^.*\/(\S+)$/", $path, $matches);
             $name = $matches[1];
-            $results[ $dir ][ $name ] = ['name' => $name, 'path' => $path];
+            $results[$dir][$name] = ['name' => $name, 'path' => $path];
         }
         if (count($dirs_list) > 0) {
             foreach ($dirs_list as $path) {
@@ -558,7 +558,7 @@ function show_list_of_files($files, $lines = 50)
         foreach ($files_array as $k => $f) {
             if (!is_file($f['path'])) {
                 // File does not exist, remove it from the array, so it does not appear in the menu.
-                unset($files_array[ $k ]);
+                unset($files_array[$k]);
                 continue;
             }
             $active = ($f['path'] == $log) ? 'class="pure-menu-selected"' : '';

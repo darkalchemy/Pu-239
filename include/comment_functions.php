@@ -16,8 +16,8 @@ function commenttable($rows, $variant = 'torrent')
         'torrent' => 'details',
         'request' => 'viewrequests',
     ];
-    if (isset($variant_options[ $variant ])) {
-        $locale_link = $variant_options[ $variant ];
+    if (isset($variant_options[$variant])) {
+        $locale_link = $variant_options[$variant];
     } else {
         return;
     }
@@ -26,8 +26,8 @@ function commenttable($rows, $variant = 'torrent')
     $i = 0;
     foreach ($rows as $row) {
         $this_text = '';
-        $moodname = (isset($mood['name'][ $row['mood'] ]) ? htmlsafechars($mood['name'][ $row['mood'] ]) : 'is feeling neutral');
-        $moodpic = (isset($mood['image'][ $row['mood'] ]) ? htmlsafechars($mood['image'][ $row['mood'] ]) : 'noexpression.gif');
+        $moodname = (isset($mood['name'][$row['mood']]) ? htmlsafechars($mood['name'][$row['mood']]) : 'is feeling neutral');
+        $moodpic = (isset($mood['image'][$row['mood']]) ? htmlsafechars($mood['image'][$row['mood']]) : 'noexpression.gif');
         $this_text .= "
             <div class='bottom20'>
                 <span>#{$row['id']} {$lang['commenttable_by']} ";

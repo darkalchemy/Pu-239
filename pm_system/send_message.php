@@ -60,15 +60,15 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $lang['pm_send_btn']) {
     }
     sql_query('INSERT INTO messages (poster, sender, receiver, added, msg, subject, saved, location, urgent) VALUES 
                             (' .
-        sqlesc($CURUSER['id']) . ', ' .
-        sqlesc($CURUSER['id']) . ', ' .
-        sqlesc($receiver) . ', ' .
-        TIME_NOW . ', ' .
-        $body . ', ' .
-        $subject . ', ' .
-        sqlesc($save) . ', 
+              sqlesc($CURUSER['id']) . ', ' .
+              sqlesc($CURUSER['id']) . ', ' .
+              sqlesc($receiver) . ', ' .
+              TIME_NOW . ', ' .
+              $body . ', ' .
+              $subject . ', ' .
+              sqlesc($save) . ', 
         1,' .
-        $urgent . ')') or sqlerr(__FILE__, __LINE__);
+              $urgent . ')') or sqlerr(__FILE__, __LINE__);
     $cache->increment('inbox_' . $receiver);
     if (mysqli_affected_rows($GLOBALS['___mysqli_ston']) === 0) {
         stderr($lang['pm_error'], $lang['pm_send_wasnt']);
@@ -155,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 $avatar = (($CURUSER['avatars'] === 'no') ? '' : (empty($CURUSER['avatar']) ? '
-        <img width="80" src="' .$site_config['pic_base_url'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (($CURUSER['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ? '<img width="80" src="' .$site_config['pic_base_url'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<img width="80" src="' . htmlsafechars($CURUSER['avatar']) . '" alt="avatar" />')));
+        <img width="80" src="' . $site_config['pic_base_url'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (($CURUSER['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ? '<img width="80" src="' . $site_config['pic_base_url'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<img width="80" src="' . htmlsafechars($CURUSER['avatar']) . '" alt="avatar" />')));
 
 $HTMLOUT .= $top_links . '
     <form name="compose" method="post" action="pm_system.php">
@@ -200,10 +200,10 @@ $HTMLOUT .= '
                         ' . ($CURUSER['class'] >= UC_STAFF ? '
                         <input type="checkbox" name="urgent" value="yes" ' . ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? ' checked' : '') . ' /> 
                         <span class="right10">' . $lang['pm_send_mark'] . '</span>' : '');
-    if ($replyto) {
-        $HTMLOUT .= '
+if ($replyto) {
+    $HTMLOUT .= '
                         <input type="checkbox" name="delete" value="' . $replyto . '"' . ($CURUSER['deletepms'] == 'yes' ? ' checked' : '') . ' />' . $lang['pm_send_delete'];
-    }
+}
 $HTMLOUT .= '
                         <input type="checkbox" name="save" value="1" checked />' . $lang['pm_send_savepm'] . '
                     </div>

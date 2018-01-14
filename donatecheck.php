@@ -166,10 +166,10 @@ function mk_update_query($amount, $user_id)
 {
     global $donate_goods;
     $query = [];
-    foreach ($donate_goods[ $amount ]['to_add'] as $field => $value) {
+    foreach ($donate_goods[$amount]['to_add'] as $field => $value) {
         $query[] = sprintf('%s = %s + %d', $field, $field, $value);
     }
-    foreach ($donate_goods[ $amount ]['to_update'] as $field => $value) {
+    foreach ($donate_goods[$amount]['to_update'] as $field => $value) {
         $query[] = sprintf('%s = %s', $field, $value);
     }
 

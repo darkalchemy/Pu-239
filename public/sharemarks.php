@@ -52,15 +52,15 @@ function sharetable($res, $variant = 'index')
     $htmlout .= "</tr>\n";
     $categories = genrelist();
     foreach ($categories as $key => $value) {
-        $change[ $value['id'] ] = [
+        $change[$value['id']] = [
             'id'    => $value['id'],
             'name'  => $value['name'],
             'image' => $value['image'],
         ];
     }
     while ($row = mysqli_fetch_assoc($res)) {
-        $row['cat_name'] = htmlsafechars($change[ $row['category'] ]['name']);
-        $row['cat_pic'] = htmlsafechars($change[ $row['category'] ]['image']);
+        $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);
+        $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
         $id = (int)$row['id'];
         $htmlout .= "<tr>\n";
         $htmlout .= "<td>";
@@ -176,7 +176,7 @@ $htmlout .= '
         <h1>Sharemarks for ' . format_username($arr['id']) . '</h1>
         <div class="tabs is-centered">
             <ul>
-                <li><a href="' . $site_config['baseurl']. '/bookmarks.php" class="altlink">My Bookmarks</a></li>
+                <li><a href="' . $site_config['baseurl'] . '/bookmarks.php" class="altlink">My Bookmarks</a></li>
             </ul>
         </div>
     </div>';

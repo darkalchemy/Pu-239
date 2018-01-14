@@ -88,7 +88,7 @@ while ($ta = mysqli_fetch_assoc($t)) {
 if (isset($tids) && count($tids)) {
     $p = sql_query('SELECT p.id,p.torrent AS tid,p.seeder, p.finishedat, p.downloadoffset, p.uploadoffset, p.ip, p.port, p.uploaded, p.downloaded, p.started AS started, p.last_action AS last_action, u.id AS p_uid , u.username AS p_user FROM peers AS p LEFT JOIN users AS u ON u.id=p.userid WHERE p.torrent IN (' . join(',', $tid) . ") AND p.seeder = 'yes' AND to_go=0 LIMIT 5") or sqlerr(__FILE__, __LINE__);
     while ($pa = mysqli_fetch_assoc($p)) {
-        $peers[ $pa['tid'] ][] = $pa;
+        $peers[$pa['tid']][] = $pa;
     }
 }
 $htmlout .= "<div style='width:90%'>
@@ -142,7 +142,7 @@ if (count($rows) > 0) {
             <tr><td width='100%' colspan='6' class='colhead' >{$lang['catol_info']}.</td></tr>
             <tr><td width='100%' colspan='6' style='font-weight:normal;' >" . readMore($row['descr'], 500, 'details.php?id=' . (int)$row['id'] . '&amp;hit=1') . "</td></tr>
             <tr><td width='100%' colspan='6' class='colhead'>{$lang['catol_seeder_info']}</td></tr>
-            <tr><td width='100%' colspan='6' style='font-weight:normal;' >" . (isset($peers[ $row['id'] ]) ? peer_list($peers[ $row['id'] ]) : "{$lang['catol_no_info_show']}") . '</td></tr>
+            <tr><td width='100%' colspan='6' style='font-weight:normal;' >" . (isset($peers[$row['id']]) ? peer_list($peers[$row['id']]) : "{$lang['catol_no_info_show']}") . '</td></tr>
             </table></td></tr>';
     }
     $htmlout .= "<tr><td colspan='2' >{$bottom}</td></tr>

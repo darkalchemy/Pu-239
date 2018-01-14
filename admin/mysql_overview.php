@@ -47,9 +47,9 @@ function byteformat($value, $limes = 2, $comma = 0)
     $return_value = $value;
     $unit = $GLOBALS['byteUnits'][0];
     for ($d = 6, $ex = 15; $d >= 1; $d--, $ex -= 3) {
-        if (isset($GLOBALS['byteUnits'][ $d ]) && $value >= $li * pow(10, $ex)) {
+        if (isset($GLOBALS['byteUnits'][$d]) && $value >= $li * pow(10, $ex)) {
             $value = round($value / (pow(1024, $d) / $dh)) / $dh;
-            $unit = $GLOBALS['byteUnits'][ $d ];
+            $unit = $GLOBALS['byteUnits'][$d];
             break 1;
         } // end if
     } // end for

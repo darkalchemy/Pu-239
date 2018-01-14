@@ -51,11 +51,11 @@ if ($ip) {
         $addr = "{$lang['ipsearch_mask']} $mask";
     }
     $queryc = "SELECT COUNT(id) FROM
-		   (
-			 SELECT u.id FROM users AS u WHERE $where1
-			 UNION SELECT u.id FROM users AS u RIGHT JOIN ips ON u.id = ips.userid WHERE $where2
-			 GROUP BY u.id
-		   ) AS ipsearch";
+           (
+             SELECT u.id FROM users AS u WHERE $where1
+             UNION SELECT u.id FROM users AS u RIGHT JOIN ips ON u.id = ips.userid WHERE $where2
+             GROUP BY u.id
+           ) AS ipsearch";
     $res = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_array($res);
     $count = $row[0];
@@ -83,17 +83,17 @@ if ($ip) {
         $orderby = 'access DESC';
     }
     $query1 = "SELECT * FROM (
-		  SELECT u.id, u.username, u.ip AS ip, u.ip AS last_ip, u.last_access, u.last_access AS access, u.email, u.invitedby, u.added, u.class, u.uploaded, u.downloaded, u.donor, u.enabled, u.warned, u.leechwarn, u.chatpost, u.pirate, u.king
-		  FROM users AS u
-		  WHERE $where1
-		  UNION SELECT u.id, u.username, ips.ip AS ip, u.ip as last_ip, u.last_access, max(ips.lastlogin) AS access, u.email, u.invitedby, u.added, u.class, u.uploaded, u.downloaded, u.donor, u.enabled, u.warned, u.leechwarn, u.chatpost, u.pirate, u.king
-		  FROM users AS u
-		  RIGHT JOIN ips ON u.id = ips.userid
-		  WHERE $where2
-		  GROUP BY u.id ) as ipsearch
-		  GROUP BY id
-		  ORDER BY $orderby
-		  " . $pager['limit'] . '';
+          SELECT u.id, u.username, u.ip AS ip, u.ip AS last_ip, u.last_access, u.last_access AS access, u.email, u.invitedby, u.added, u.class, u.uploaded, u.downloaded, u.donor, u.enabled, u.warned, u.leechwarn, u.chatpost, u.pirate, u.king
+          FROM users AS u
+          WHERE $where1
+          UNION SELECT u.id, u.username, ips.ip AS ip, u.ip as last_ip, u.last_access, max(ips.lastlogin) AS access, u.email, u.invitedby, u.added, u.class, u.uploaded, u.downloaded, u.donor, u.enabled, u.warned, u.leechwarn, u.chatpost, u.pirate, u.king
+          FROM users AS u
+          RIGHT JOIN ips ON u.id = ips.userid
+          WHERE $where2
+          GROUP BY u.id ) as ipsearch
+          GROUP BY id
+          ORDER BY $orderby
+          " . $pager['limit'] . '';
     $res = sql_query($query1) or sqlerr(__FILE__, __LINE__);
     $HTMLOUT .= begin_frame('' . htmlsafechars($count) . " {$lang['ipsearch_have_used']}" . htmlsafechars($ip) . ' (' . htmlsafechars($addr) . ')', true);
     if ($count > $perpage) {
@@ -101,7 +101,7 @@ if ($ip) {
     }
     $HTMLOUT .= "<table >\n";
     $HTMLOUT .= "<tr>
-	  <td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=username'>{$lang['ipsearch_username']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_ratio']}</td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=email'>{$lang['ipsearch_email']}</a></td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_ip'>{$lang['ipsearch_ip']}</a></td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_access'>{$lang['ipsearch_access']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_num']}</td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask'>{$lang['ipsearch_access']} on <br>" . htmlsafechars($ip) . '</a></td>' . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=added'>{$lang['ipsearch_added']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_invited']}</td></tr>";
+      <td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=username'>{$lang['ipsearch_username']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_ratio']}</td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=email'>{$lang['ipsearch_email']}</a></td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_ip'>{$lang['ipsearch_ip']}</a></td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=last_access'>{$lang['ipsearch_access']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_num']}</td>" . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask'>{$lang['ipsearch_access']} on <br>" . htmlsafechars($ip) . '</a></td>' . "<td class='colhead'><a href='{$site_config['baseurl']}/staffpanel.php?tool=ipsearch&amp;action=ipsearch&amp;ip=$ip&amp;mask=$mask&amp;order=added'>{$lang['ipsearch_added']}</a></td>" . "<td class='colhead'>{$lang['ipsearch_invited']}</td></tr>";
     while ($user = mysqli_fetch_assoc($res)) {
         if ($user['added'] == '0') {
             $user['added'] = '---';
@@ -136,14 +136,14 @@ if ($ip) {
             $invitedby = '--';
         }
         $HTMLOUT .= "<tr>
-	   	<td><b><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$user['id'] . "'></a></b>" . format_username($user) . '</td>' . '<td>' . member_ratio($user['uploaded'], $user['downloaded']) . '</td>
-		  <td>' . $user['email'] . '</td><td>' . $ipstr . "</td>
-		  <td><div>" . get_date($user['last_access'], 'DATE', 1, 0) . "</div></td>
-		  <td><div><b><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=" . (int)$user['id'] . "'>" . htmlsafechars($iphistory) . "</a></b></div></td>
-		  <td><div>" . get_date($user['access'], 'DATE', 1, 0) . "</div></td>
-		  <td><div>" . get_date($user['added'], 'DATE', 1, 0) . "</div></td>
-		  <td><div>" . $invitedby . "</div></td>
-		  </tr>\n";
+           <td><b><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$user['id'] . "'></a></b>" . format_username($user) . '</td>' . '<td>' . member_ratio($user['uploaded'], $user['downloaded']) . '</td>
+          <td>' . $user['email'] . '</td><td>' . $ipstr . "</td>
+          <td><div>" . get_date($user['last_access'], 'DATE', 1, 0) . "</div></td>
+          <td><div><b><a href='{$site_config['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=" . (int)$user['id'] . "'>" . htmlsafechars($iphistory) . "</a></b></div></td>
+          <td><div>" . get_date($user['access'], 'DATE', 1, 0) . "</div></td>
+          <td><div>" . get_date($user['added'], 'DATE', 1, 0) . "</div></td>
+          <td><div>" . $invitedby . "</div></td>
+          </tr>\n";
     }
     $HTMLOUT .= '</table>';
     if ($count > $perpage) {

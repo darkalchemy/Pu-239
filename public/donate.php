@@ -102,13 +102,13 @@ if ($site_config['paypal_config']['enable'] == 0) {
         $out .= '
             <div class="w-15">';
         $header = '
-			    <tr>
-			        <th class="has-text-centered">Donate $' . $amount . ' ' . $site_config['paypal_config']['currency'] . '</th>
-			    </tr>';
+                <tr>
+                    <th class="has-text-centered">Donate $' . $amount . ' ' . $site_config['paypal_config']['currency'] . '</th>
+                </tr>';
         $body = '
-			    <tr>
-			        <td>
-			            <ul>';
+                <tr>
+                    <td>
+                        <ul>';
         foreach ($ops as $op) {
             $body .= '
                             <li>' . $op . '</li>';
@@ -119,16 +119,16 @@ if ($site_config['paypal_config']['enable'] == 0) {
                 </tr>
                 <tr>
                     <td class="has-text-centered">' . str_replace([
-                '#amount',
-                '#item_name',
-                '#item_number',
-                '#id',
-            ], [
-                $amount,
-                $nick,
-                $amount,
-                $CURUSER['id'],
-            ], $form_template);
+                                                                                       '#amount',
+                                                                                       '#item_name',
+                                                                                       '#item_number',
+                                                                                       '#id',
+                                                                                   ], [
+                                                                                       $amount,
+                                                                                       $nick,
+                                                                                       $amount,
+                                                                                       $CURUSER['id'],
+                                                                                   ], $form_template);
         $body .= '
                     </td>
                 </tr>';

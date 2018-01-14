@@ -21,7 +21,7 @@ $csrf = $site_config['session_csrf'];
 function clean_data($data)
 {
     foreach ($data as $key => $value) {
-        $data[ $key ] = html_entity_decode(replace_unicode_strings(trim($value)));
+        $data[$key] = html_entity_decode(replace_unicode_strings(trim($value)));
     }
     return $data;
 }

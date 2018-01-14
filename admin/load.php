@@ -102,15 +102,15 @@ function loadavg($return_all = false)
         fclose($fd);
         $loadavg = explode(' ', $loadavg);
         if ($return_all) {
-            $res['last1'] = $loadavg[ INTERVAL_1_MIN ];
-            $res['last5'] = $loadavg[ INTERVAL_5_MIN ];
-            $res['last15'] = $loadavg[ INTERVAL_15_MIN ];
+            $res['last1'] = $loadavg[INTERVAL_1_MIN];
+            $res['last5'] = $loadavg[INTERVAL_5_MIN];
+            $res['last15'] = $loadavg[INTERVAL_15_MIN];
             $active = explode('/', $loadavg[3]);
             $res['tasks'] = $active[0];
             $res['processes'] = $active[1];
             $res['lastpid'] = $loadavg[4];
         } else {
-            $res = $loadavg[ DEFAULT_AVG ];
+            $res = $loadavg[DEFAULT_AVG];
         }
     }
 
@@ -142,9 +142,9 @@ $HTMLOUT .= "
     <div style='background:transparent;height:25px;'><span style='font-weight:bold;font-size:12pt;'>{$lang['index_serverload']}</span></div>
     <br>
     <table width='100%' >
-			<tr><td>
-		    <table class='main' border='0' width='402'>
-    			<tr><td style='padding: 0; background: url({$site_config['pic_base_url']}loadbarbg.gif) repeat-x;'>";
+            <tr><td>
+            <table class='main' border='0' width='402'>
+                <tr><td style='padding: 0; background: url({$site_config['pic_base_url']}loadbarbg.gif) repeat-x;'>";
 $percent = min(100, round(exec('ps ax | grep -c apache') / 256 * 100));
 if ($percent <= 70) {
     $pic = 'loadbargreen.gif';

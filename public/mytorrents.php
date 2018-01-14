@@ -24,7 +24,7 @@ if (isset($_GET['sort']) && isset($_GET['type'])) {
         'leechers',
         'owner',
     ];
-    $column = isset($_GET['sort']) && isset($_valid_sort[ (int)$_GET['sort'] ]) ? $_valid_sort[ (int)$_GET['sort'] ] : $_valid_sort[0];
+    $column = isset($_GET['sort']) && isset($_valid_sort[(int)$_GET['sort']]) ? $_valid_sort[(int)$_GET['sort']] : $_valid_sort[0];
     switch (htmlsafechars($_GET['type'])) {
         case 'asc':
             $ascdesc = 'ASC';

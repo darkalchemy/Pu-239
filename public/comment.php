@@ -28,8 +28,8 @@ if (isset($_GET['type'])) {
         'torrent' => 'details',
         'request' => 'viewrequests',
     ];
-    if (isset($type_options[ $_GET['type'] ])) {
-        $locale_link = $type_options[ $_GET['type'] ];
+    if (isset($type_options[$_GET['type']])) {
+        $locale_link = $type_options[$_GET['type']];
         $locale = $_GET['type'];
     }
     switch ($_GET['type']) {
@@ -120,7 +120,7 @@ if ($action == 'add') {
     }
     $HTMLOUT = '';
     $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
-    $HTMLOUT .= "<h1>{$lang['comment_add']}'" . htmlsafechars($arr[ $name ]) . "'</h1>
+    $HTMLOUT .= "<h1>{$lang['comment_add']}'" . htmlsafechars($arr[$name]) . "'</h1>
       <br><form name='compose' method='post' action='comment.php?action=add'>
       <input type='hidden' name='tid' value='{$id}'/>
       <input type='hidden' name='locale' value='$name' />";
@@ -151,7 +151,7 @@ if ($action == 'add') {
         $HTMLOUT .= "<h2>{$lang['comment_recent']}</h2>\n";
         $HTMLOUT .= commenttable($allrows, $locale);
     }
-    echo stdhead("{$lang['comment_add']}'" . $arr[ $name ] . "'", true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+    echo stdhead("{$lang['comment_add']}'" . $arr[$name] . "'", true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
     die;
 } elseif ($action == 'edit') {
     $commentid = (isset($_GET['cid']) ? (int)$_GET['cid'] : 0);
@@ -185,7 +185,7 @@ if ($action == 'add') {
         die;
     }
     $HTMLOUT = '';
-    $HTMLOUT .= "<h1>{$lang['comment_edit']}'" . htmlsafechars($arr[ $name ]) . "'</h1>
+    $HTMLOUT .= "<h1>{$lang['comment_edit']}'" . htmlsafechars($arr[$name]) . "'</h1>
       <form method='post' action='comment.php?action=edit&amp;cid=$commentid'>
       <input type='hidden' name='locale' value='$name' />
        <input type='hidden' name='tid' value='" . (int)$arr['tid'] . "' />
@@ -197,7 +197,7 @@ if ($action == 'add') {
     }
     $HTMLOUT .= '
       <br>' . ($CURUSER['class'] >= UC_STAFF ? '<input type="checkbox" value="lasteditedby" checked name="lasteditedby" id="lasteditedby" /> Show Last Edited By<br><br>' : '') . ' <input type="submit" class="button is-small is-primary" value="' . $lang['comment_doit'] . '" /></form>';
-    echo stdhead("{$lang['comment_edit']}'" . $arr[ $name ] . "'", true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+    echo stdhead("{$lang['comment_edit']}'" . $arr[$name] . "'", true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
     die;
 } elseif ($action == 'delete') {
     if ($CURUSER['class'] < UC_STAFF) {
@@ -217,7 +217,7 @@ if ($action == 'add') {
     $arr = mysqli_fetch_assoc($res);
     $id = 0;
     if ($arr) {
-        $id = $arr[ $locale ];
+        $id = $arr[$locale];
     }
     sql_query('DELETE FROM comments WHERE id = ' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
     $cache->delete('latest_comments_');

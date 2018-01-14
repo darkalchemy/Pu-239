@@ -30,7 +30,7 @@ $pager = pager($perpage, $count, "?id=$id&amp;");
 if ($id == $CURUSER['id']) {
     $HTMLOUT .= "
     <div class='w-100'>
-    	<ul class='level-center padding20 bg-06'>
+        <ul class='level-center padding20 bg-06'>
             <li>
                 <a href='{$site_config['baseurl']}/achievementlist.php'>{$lang['achievement_history_al']}</a>
             </li>
@@ -43,7 +43,7 @@ if ($id == $CURUSER['id']) {
             <li>
                 <a href='{$site_config['baseurl']}/invitecounter.php'>{$lang['achievement_history_ic']}</a>
             </li>
-	    </ul>
+        </ul>
     </div>";
 }
 $HTMLOUT .= "
@@ -59,24 +59,24 @@ if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
 $HTMLOUT .= "
-    	<div class='row-fluid'>";
+        <div class='row-fluid'>";
 $heading = "
-				<thead>
-					<tr>
-						<th>{$lang['achievement_history_award']}</th>
-						<th>{$lang['achievement_history_descr']}</th>
-						<th>{$lang['achievement_history_date']}</th>
-					</tr>
-				</thead>";
+                <thead>
+                    <tr>
+                        <th>{$lang['achievement_history_award']}</th>
+                        <th>{$lang['achievement_history_descr']}</th>
+                        <th>{$lang['achievement_history_date']}</th>
+                    </tr>
+                </thead>";
 $res = sql_query('SELECT * FROM achievements WHERE userid=' . sqlesc($id) . " ORDER BY date DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
 $body = '';
 while ($arr = mysqli_fetch_assoc($res)) {
     $body .= "
-					<tr>
-						<td><img src='{$site_config['pic_base_url']}achievements/" . htmlsafechars($arr['icon']) . "' alt='" . htmlsafechars($arr['achievement']) . "' class='tooltipper' title='" . htmlsafechars($arr['achievement']) . "' /></td>
-						<td>" . htmlsafechars($arr['description']) . '</td>
-						<td>' . get_date($arr['date'], '') . '</td>
-					</tr>';
+                    <tr>
+                        <td><img src='{$site_config['pic_base_url']}achievements/" . htmlsafechars($arr['icon']) . "' alt='" . htmlsafechars($arr['achievement']) . "' class='tooltipper' title='" . htmlsafechars($arr['achievement']) . "' /></td>
+                        <td>" . htmlsafechars($arr['description']) . '</td>
+                        <td>' . get_date($arr['date'], '') . '</td>
+                    </tr>';
 }
 $HTMLOUT .= main_table($body, $header) . '
         </div>';

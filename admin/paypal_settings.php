@@ -9,8 +9,8 @@ $lang = array_merge($lang, load_language('ad_paypal_settings'));
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $update = [];
     foreach ($site_config['paypal_config'] as $c_name => $c_value) {
-        if (isset($_POST[ $c_name ]) && $_POST[ $c_name ] != $c_value) {
-            $update[] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($_POST[ $c_name ]) ? join('|', $_POST[ $c_name ]) : $_POST[ $c_name ]) . ')';
+        if (isset($_POST[$c_name]) && $_POST[$c_name] != $c_value) {
+            $update[] = '(' . sqlesc($c_name) . ',' . sqlesc(is_array($_POST[$c_name]) ? join('|', $_POST[$c_name]) : $_POST[$c_name]) . ')';
         }
     }
     if (sql_query('INSERT INTO paypal_config(name,value) VALUES ' . join(',', $update) . ' ON DUPLICATE KEY UPDATE value = VALUES(value)')) {
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $pconf = sql_query('SELECT * FROM paypal_config') or sqlerr(__FILE__, __LINE__);
 while ($ac = mysqli_fetch_assoc($pconf)) {
-    $site_config['paypal_config'][ $ac['name'] ] = $ac['value'];
+    $site_config['paypal_config'][$ac['name']] = $ac['value'];
 }
 
 $HTMLOUT .= "<h2><b><i>{$lang['paypal_global_title']}</i></b></h2>

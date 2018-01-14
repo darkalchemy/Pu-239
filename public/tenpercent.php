@@ -54,10 +54,10 @@ if ($CURUSER['tenpercent'] == 'no') {
   <script>
   /*<![CDATA[*/
   function enablesubmit() {
-	document.tenpercent.submit.disabled = document.tenpercent.submit.checked;
+    document.tenpercent.submit.disabled = document.tenpercent.submit.checked;
   }
   function disablesubmit() {
-	document.tenpercent.submit.disabled = !document.tenpercent.submit.checked;
+    document.tenpercent.submit.disabled = !document.tenpercent.submit.checked;
   }
   /*]]>*/
   </script>";

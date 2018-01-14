@@ -24,13 +24,13 @@ $HTMLOUT .= "<br>
 <font size='4'><b>{$lang['set_class_allow']}</b></font>
 <br><br>
 <form method='get' action='{$site_config['baseurl']}/setclass.php'>
-	<input type='hidden' name='action' value='editclass' />
-	<input type='hidden' name='returnto' value='userdetails.php?id=" . (int)$CURUSER['id'] . "' />
-	<table class='table table-bordered table-striped'>
-	<tr>
-	<td>Class</td>
-	<td>
-	<select name='class'>";
+    <input type='hidden' name='action' value='editclass' />
+    <input type='hidden' name='returnto' value='userdetails.php?id=" . (int)$CURUSER['id'] . "' />
+    <table class='table table-bordered table-striped'>
+    <tr>
+    <td>Class</td>
+    <td>
+    <select name='class'>";
 $maxclass = $CURUSER['class'] - 1;
 for ($i = 0; $i <= $maxclass; ++$i) {
     if (trim(get_user_class_name($i)) != '') {
@@ -38,8 +38,8 @@ for ($i = 0; $i <= $maxclass; ++$i) {
     }
 }
 $HTMLOUT .= "</select></td></tr>
-		<tr><td colspan='3'><input type='submit' class='button is-small' value='{$lang['set_class_ok']}' /></td></tr>
-	</table>
+        <tr><td colspan='3'><input type='submit' class='button is-small' value='{$lang['set_class_ok']}' /></td></tr>
+    </table>
 </form>
 <br>";
 echo stdhead("{$lang['set_class_temp']}") . $HTMLOUT . stdfoot();

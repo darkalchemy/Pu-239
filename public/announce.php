@@ -102,14 +102,14 @@ if (IP_LOGGING) {
     }
     if (!$no_log_ip) {
         $values = [
-            'userid' => $userid,
-            'ip' => inet_pton($ip),
+            'userid'       => $userid,
+            'ip'           => inet_pton($ip),
             'lastannounce' => TIME_NOW,
-            'type' => 'announce'
+            'type'         => 'announce'
         ];
         $update_values = [
             'lastannounce' => TIME_NOW,
-            'type' => 'announce'
+            'type'         => 'announce'
         ];
         $fluent->insertInto('ips', $values)
             ->onDuplicateKeyUpdate($update_values)
@@ -375,19 +375,19 @@ $a = $fluent->from('snatched')
 
 if (empty($a)) {
     $values = [
-        'torrentid' => $torrentid,
-        'userid' => $userid,
-        'peer_id' => $peer_id,
-        'ip' => inet_pton($realip),
-        'port' => $port,
+        'torrentid'   => $torrentid,
+        'userid'      => $userid,
+        'peer_id'     => $peer_id,
+        'ip'          => inet_pton($realip),
+        'port'        => $port,
         'connectable' => $connectable,
-        'uploaded' => $uploaded,
-        'downloaded' => $site_config['ratio_free'] ? 0 : $downloaded,
-        'to_go' => $left,
-        'start_date' => TIME_NOW,
+        'uploaded'    => $uploaded,
+        'downloaded'  => $site_config['ratio_free'] ? 0 : $downloaded,
+        'to_go'       => $left,
+        'start_date'  => TIME_NOW,
         'last_action' => TIME_NOW,
-        'seeder' => $seeder,
-        'agent' => $agent,
+        'seeder'      => $seeder,
+        'agent'       => $agent,
     ];
 
     if ($seeder == 'no') {
@@ -395,9 +395,9 @@ if (empty($a)) {
             ->execute();
     } else {
         $values1 = [
-            'seeder' => 'yes',
+            'seeder'        => 'yes',
             'complete_date' => TIME_NOW,
-            'finished' => 'yes',
+            'finished'      => 'yes',
         ];
         $values = array_merge($values, $values1);
         $fluent->insertInto('snatched', $values)
@@ -414,22 +414,22 @@ if (isset($self) && $event == 'stopped') {
     if (($a['uploaded'] + $upthis) < ($a['downloaded'] + $downthis) && $a['finished'] == 'yes') {
         $HnR_time_seeded = ($a['seedtime'] + $self['announcetime']);
         switch (true) {
-            case $user['class'] <= $site_config['firstclass']:
-                $days_3 = $site_config['_3day_first'] * 3600;
-                $days_14 = $site_config['_14day_first'] * 3600;
-                $days_over_14 = $site_config['_14day_over_first'] * 3600;
+            case $user['class'] <= $site_config['hnr_config']['firstclass']:
+                $days_3 = $site_config['hnr_config']['_3day_first'] * 3600;
+                $days_14 = $site_config['hnr_config']['_14day_first'] * 3600;
+                $days_over_14 = $site_config['hnr_config']['_14day_over_first'] * 3600;
                 break;
 
-            case $user['class'] < $site_config['secondclass']:
-                $days_3 = $site_config['_3day_second'] * 3600;
-                $days_14 = $site_config['_14day_second'] * 3600;
-                $days_over_14 = $site_config['_14day_over_second'] * 3600;
+            case $user['class'] < $site_config['hnr_config']['secondclass']:
+                $days_3 = $site_config['hnr_config']['(_3day_second'] * 3600;
+                $days_14 = $site_config['hnr_config']['(_14day_second'] * 3600;
+                $days_over_14 = $site_config['hnr_config']['(_14day_over_second'] * 3600;
                 break;
 
-            case $user['class'] >= $site_config['thirdclass']:
-                $days_3 = $site_config['_3day_third'] * 3600;
-                $days_14 = $site_config['_14day_third'] * 3600;
-                $days_over_14 = $site_config['_14day_over_third'] * 3600;
+            case $user['class'] >= $site_config['hnr_config']['thirdclass']:
+                $days_3 = $site_config['hnr_config']['(_3day_third'] * 3600;
+                $days_14 = $site_config['hnr_config']['(_14day_third'] * 3600;
+                $days_over_14 = $site_config['hnr_config']['(_14day_over_third'] * 3600;
                 break;
 
             default:
@@ -438,22 +438,22 @@ if (isset($self) && $event == 'stopped') {
                 $days_over_14 = 0;
         }
         switch (true) {
-            case ($a['start_snatch'] - $torrent['ts']) < $site_config['torrentage1'] * 86400:
+            case ($a['start_snatch'] - $torrent['ts']) < $site_config['hnr_config']['(torrentage1'] * 86400:
                 $minus_ratio = ($days_3 - $HnR_time_seeded);
                 break;
 
-            case ($a['start_snatch'] - $torrent['ts']) < $site_config['torrentage2'] * 86400:
+            case ($a['start_snatch'] - $torrent['ts']) < $site_config['hnr_config']['(torrentage2'] * 86400:
                 $minus_ratio = ($days_14 - $HnR_time_seeded);
                 break;
 
-            case ($a['start_snatch'] - $torrent['ts']) >= $site_config['torrentage3'] * 86400:
+            case ($a['start_snatch'] - $torrent['ts']) >= $site_config['hnr_config']['(torrentage3'] * 86400:
                 $minus_ratio = ($days_over_14 - $HnR_time_seeded);
                 break;
 
             default:
                 $minus_ratio = 0;
         }
-        if ($site_config['hnr_online'] == 1 && $minus_ratio > 0 && ($a['uploaded'] + $upthis) < ($a['downloaded'] + $downthis)) {
+        if ($site_config['hnr_config']['hnr_online'] == 1 && $minus_ratio > 0 && ($a['uploaded'] + $upthis) < ($a['downloaded'] + $downthis)) {
             $hit_and_run = TIME_NOW;
             $seeder = 'no';
         } else {
@@ -509,13 +509,13 @@ if (isset($self) && $event == 'stopped') {
     $prev_action = $self['ts'];
     $set = array_merge($set, [
         'connectable' => $connectable,
-        'uploaded' => $uploaded,
-        'to_go' => $left,
+        'uploaded'    => $uploaded,
+        'to_go'       => $left,
         'last_action' => TIME_NOW,
         'prev_action' => $prev_action,
-        'seeder' => $seeder,
-        'agent' => $agent,
-        'downloaded' => $site_config['ratio_free'] ? 0 : $downloaded,
+        'seeder'      => $seeder,
+        'agent'       => $agent,
+        'downloaded'  => $site_config['ratio_free'] ? 0 : $downloaded,
     ]);
 
     $updated = $fluent->update('peers')
@@ -566,34 +566,34 @@ if (isset($self) && $event == 'stopped') {
         err('Your downloading privileges have been disabled! (Read the rules)');
     }
     $values = [
-        'torrent' => $torrentid,
-        'userid' => $userid,
-        'peer_id' => $peer_id,
-        'ip' => inet_pton($realip),
-        'port' => $port,
-        'connectable' => $connectable,
-        'uploaded' => $uploaded,
-        'downloaded' => ($site_config['ratio_free'] ? 0 : $downloaded),
-        'to_go' => $left,
-        'started' => TIME_NOW,
-        'last_action' => TIME_NOW,
-        'seeder' => $seeder,
-        'agent' => $agent,
+        'torrent'        => $torrentid,
+        'userid'         => $userid,
+        'peer_id'        => $peer_id,
+        'ip'             => inet_pton($realip),
+        'port'           => $port,
+        'connectable'    => $connectable,
+        'uploaded'       => $uploaded,
+        'downloaded'     => ($site_config['ratio_free'] ? 0 : $downloaded),
+        'to_go'          => $left,
+        'started'        => TIME_NOW,
+        'last_action'    => TIME_NOW,
+        'seeder'         => $seeder,
+        'agent'          => $agent,
         'downloadoffset' => ($site_config['ratio_free'] ? 0 : $downloaded),
-        'uploadoffset' => $uploaded,
-        'torrent_pass' => $torrent_pass,
+        'uploadoffset'   => $uploaded,
+        'torrent_pass'   => $torrent_pass,
     ];
 
     $update_values = [
-        'userid' => $userid,
-        'port' => $port,
+        'userid'      => $userid,
+        'port'        => $port,
         'connectable' => $connectable,
-        'uploaded' => $uploaded,
-        'downloaded' => ($site_config['ratio_free'] ? 0 : $downloaded),
-        'to_go' => $left,
+        'uploaded'    => $uploaded,
+        'downloaded'  => ($site_config['ratio_free'] ? 0 : $downloaded),
+        'to_go'       => $left,
         'last_action' => TIME_NOW,
-        'seeder' => $seeder,
-        'agent' => $agent,
+        'seeder'      => $seeder,
+        'agent'       => $agent,
     ];
 
     $insert_peers = $fluent->insertInto('peers', $values)

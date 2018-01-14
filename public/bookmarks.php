@@ -60,15 +60,15 @@ function bookmarktable($res, $variant = 'index')
                 <tbody>";
     $categories = genrelist();
     foreach ($categories as $key => $value) {
-        $change[ $value['id'] ] = [
+        $change[$value['id']] = [
             'id'    => $value['id'],
             'name'  => $value['name'],
             'image' => $value['image'],
         ];
     }
     while ($row = mysqli_fetch_assoc($res)) {
-        $row['cat_name'] = htmlsafechars($change[ $row['category'] ]['name']);
-        $row['cat_pic'] = htmlsafechars($change[ $row['category'] ]['image']);
+        $row['cat_name'] = htmlsafechars($change[$row['category']]['name']);
+        $row['cat_pic'] = htmlsafechars($change[$row['category']]['image']);
         $id = (int)$row['id'];
         $htmlout .= "
                     <tr>
@@ -236,7 +236,7 @@ $htmlout .= '
         <h1>' . $lang['bookmarks_my'] . '</h1>
         <div class="tabs is-centered">
             <ul>
-                <li><a href="' . $site_config['baseurl']. '/sharemarks.php?id=' . $CURUSER['id'] . '" class="altlink">' . $lang['bookmarks_my_share'] . '</a></li>
+                <li><a href="' . $site_config['baseurl'] . '/sharemarks.php?id=' . $CURUSER['id'] . '" class="altlink">' . $lang['bookmarks_my_share'] . '</a></li>
             </ul>
         </div>
     </div>';

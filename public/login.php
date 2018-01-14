@@ -70,7 +70,7 @@ $value = [
     '...',
     '...',
 ];
-$value[ random_int(1, count($value) - 1) ] = 'X';
+$value[random_int(1, count($value) - 1)] = 'X';
 $HTMLOUT .= "
             <form class='form-inline table-wrapper' method='post' action='takelogin.php'>
                 <table class='table table-bordered'>

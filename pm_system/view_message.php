@@ -31,7 +31,7 @@ if ($message['friend'] > 0) {
     '<img width="80" src="' .$site_config['pic_base_url'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<a href="'.htmlsafechars($arr_user_stuff['avatar']).'"><img width="80" src="'.htmlsafechars($arr_user_stuff['avatar']).'" alt="avatar" /></a>')));
 */
 $avatar = (!$CURUSER['opt1'] & user_options::AVATARS ? '' : (empty($arr_user_stuff['avatar']) ? '
-    <img width="80" src="' .$site_config['pic_base_url'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (($arr_user_stuff['opt1'] & user_options::OFFENSIVE_AVATAR && !$CURUSER['opt1'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img width="80" src="' .$site_config['pic_base_url'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<a href="' . htmlsafechars($arr_user_stuff['avatar']) . '"><img width="80" src="' . htmlsafechars($arr_user_stuff['avatar']) . '" alt="avatar" /></a>')));
+    <img width="80" src="' . $site_config['pic_base_url'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (($arr_user_stuff['opt1'] & user_options::OFFENSIVE_AVATAR && !$CURUSER['opt1'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img width="80" src="' . $site_config['pic_base_url'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<a href="' . htmlsafechars($arr_user_stuff['avatar']) . '"><img width="80" src="' . htmlsafechars($arr_user_stuff['avatar']) . '" alt="avatar" /></a>')));
 
 if ($message['location'] > 1) {
     //== get name of PM box if not in or out

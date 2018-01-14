@@ -20,7 +20,7 @@ if ($CURUSER >= UC_STAFF && !empty($_GET['id']) && is_valid_id($_GET['id'])) {
 $user = format_username($id);
 
 $completed = "
-	<h1 class='text-center'>$user Port Status</h1>";
+    <h1 class='text-center'>$user Port Status</h1>";
 $completed .= main_div(
     "
     <section id='ipports'></section>
@@ -32,9 +32,9 @@ $completed .= main_div(
             <input id='portcheck' type='submit' value='Test Connectivity' class='button margin20' />
         </div>
     </section>
-	<script>
-		var uid = '{$id}';
-	</script>"
+    <script>
+        var uid = '{$id}';
+    </script>"
 );
 
 echo stdhead('Check My Ports', true) . wrapper($completed) . stdfoot($stdfoot);

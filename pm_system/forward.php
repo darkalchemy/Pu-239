@@ -22,7 +22,7 @@ $HTMLOUT .= '<h1>' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subj
     <table class="table table-bordered">
     <tr>
         <td colspan="2" class="colhead"><h1>' . $lang['pm_forward_fwd_msg'] . '
-        <img src="' .$site_config['pic_base_url'] . 'forums/arrow_next.gif" alt=":" />' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subject']) . '</h1></td>
+        <img src="' . $site_config['pic_base_url'] . 'forums/arrow_next.gif" alt=":" />' . $lang['pm_forward_fwd'] . '' . htmlsafechars($message['subject']) . '</h1></td>
     </tr>
     <tr>
         <td><span style="font-weight: bold;">' . $lang['pm_forward_to'] . '</span></td>

@@ -10,7 +10,7 @@ if ($site_config['staffmsg_alert'] && $CURUSER['class'] >= UC_STAFF) {
             ->where('answeredby = 0')
             ->fetch();
 
-        $answeredby= $res['count'];
+        $answeredby = $res['count'];
         $cache->set('staff_mess_', $answeredby, $site_config['expires']['alerts']);
     }
     if ($answeredby > 0) {

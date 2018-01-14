@@ -86,14 +86,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $sent2classes[] = '' . $lang['grouppm_donor'] . '';
                         break;
 
-                    case 'all_friends': {
-                        $fq = sql_query('SELECT friendid FROM friends WHERE userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-                        if (mysqli_num_rows($fq)) {
-                            while ($fa = mysqli_fetch_row($fq)) {
-                                $ids[] = $fa[0];
+                    case 'all_friends':
+                        {
+                            $fq = sql_query('SELECT friendid FROM friends WHERE userid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+                            if (mysqli_num_rows($fq)) {
+                                while ($fa = mysqli_fetch_row($fq)) {
+                                    $ids[] = $fa[0];
+                                }
                             }
                         }
-                    }
                         break;
                 }
             }
@@ -135,23 +136,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $groups = [];
 $groups['staff'] = ['opname'   => $lang['grouppm_staff'],
-                    'minclass' => UC_USER, ];
+                    'minclass' => UC_USER,];
 for ($i = $FSCLASS; $i <= $LSCLASS; ++$i) {
-    $groups['staff']['ops'][ $i ] = get_user_class_name($i);
+    $groups['staff']['ops'][$i] = get_user_class_name($i);
 }
 $groups['staff']['ops']['fls'] = $lang['grouppm_fls'];
 $groups['staff']['ops']['all_staff'] = $lang['grouppm_allstaff'];
 $groups['members'] = [];
 $groups['members'] = ['opname'   => $lang['grouppm_mem'],
-                      'minclass' => UC_STAFF, ];
+                      'minclass' => UC_STAFF,];
 for ($i = $FUCLASS; $i <= $LUCLASS; ++$i) {
-    $groups['members']['ops'][ $i ] = get_user_class_name($i);
+    $groups['members']['ops'][$i] = get_user_class_name($i);
 }
 $groups['members']['ops']['donor'] = $lang['grouppm_donor'];
 $groups['members']['ops']['all_users'] = $lang['grouppm_allusers'];
 $groups['friends'] = ['opname'   => $lang['grouppm_related'],
                       'minclass' => UC_USER,
-                      'ops'      => ['all_friends' => $lang['grouppm_friends']], ];
+                      'ops'      => ['all_friends' => $lang['grouppm_friends']],];
 
 /**
  * @return string

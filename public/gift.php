@@ -14,7 +14,7 @@ $gifts = [
     'bonus2',
 ];
 $randgift = array_rand($gifts);
-$gift = $gifts[ $randgift ];
+$gift = $gifts[$randgift];
 $userid = (int)$CURUSER['id'];
 if (!is_valid_id($userid)) {
     stderr('Error', 'Invalid ID');

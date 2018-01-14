@@ -125,7 +125,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     $query = 'SELECT t.id AS tid, t.name, t.owner, (t.seeders + t.leechers) AS peers, t.last_action, u.username, u.id AS uid FROM torrents AS t INNER JOIN users AS u ON t.owner = u.id LEFT JOIN peers AS p ON t.id = p.torrent WHERE t.last_action < ' . $dx_time . ' HAVING peers = 0';
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
     while ($arr = mysqli_fetch_assoc($res)) {
-        $uploaders[ $arr['uid'] . '|' . $arr['username'] ][] = [
+        $uploaders[$arr['uid'] . '|' . $arr['username']][] = [
             'tid'          => $arr['tid'],
             'torrent_name' => $arr['name'],
             'reason'       => 1,
@@ -144,7 +144,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
     $query = 'SELECT t.id, t.name, t.owner, t.added, t.last_action, u.id AS uid, u.username FROM torrents AS t INNER JOIN users AS u ON t.owner = u.id LEFT JOIN peers AS p ON t.id = p.torrent WHERE t.last_action < ' . (TIME_NOW - 1 * 86400) . ' AND t.added < ' . $dz_time . ' GROUP BY t.id HAVING(SUM(p.seeder) = 0)';
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
     while ($arr = mysqli_fetch_assoc($res)) {
-        $uploaders[ $arr['uid'] . '|' . $arr['username'] ][] = [
+        $uploaders[$arr['uid'] . '|' . $arr['username']][] = [
             'tid'          => $arr['id'],
             'torrent_name' => $arr['name'],
             'reason'       => 3,
@@ -165,22 +165,22 @@ if ($count) {
     $perpage = 25;
     $orderby = 'ORDER BY username ASC';
     $HTMLOUT .= '<script>
-	//<![CDATA[
-	var checkflag = "false";
-	function check(field) {
-	if (checkflag == "false") {
-	for (i = 0; i < field.length; i++) {
-	field[i].checked = true;}
-	checkflag = "true";
-	return "Uncheck All Remove"; }
-	else {
-	for (i = 0; i < field.length; i++) {
-	field[i].checked = false; }
-	checkflag = "false";
-	return "Check All Remove"; }
-	}
-	//]]>
-	</script>';
+    //<![CDATA[
+    var checkflag = "false";
+    function check(field) {
+    if (checkflag == "false") {
+    for (i = 0; i < field.length; i++) {
+    field[i].checked = true;}
+    checkflag = "true";
+    return "Uncheck All Remove"; }
+    else {
+    for (i = 0; i < field.length; i++) {
+    field[i].checked = false; }
+    checkflag = "false";
+    return "Check All Remove"; }
+    }
+    //]]>
+    </script>';
     $pager = pager($perpage, $count, 'staffpanel.php?tool=deathrow&amp;', [
         'lastpagedefault' => 1,
     ]);

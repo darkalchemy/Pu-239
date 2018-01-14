@@ -7,7 +7,7 @@ $vars = [
     'do'       => '',
 ];
 foreach ($vars as $k => $v) {
-    $vars[ $k ] = isset($_GET[ $k ]) ? $_GET[ $k ] : '';
+    $vars[$k] = isset($_GET[$k]) ? $_GET[$k] : '';
 }
 if ($key !== $vars['key'] || empty($vars['username'])) {
     die('hmm something looks odd');

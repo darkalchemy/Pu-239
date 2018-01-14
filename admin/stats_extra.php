@@ -114,12 +114,12 @@ function show_views()
         'sortby'    => $inbound['sortby'],
     ];
     $q = sql_query("SELECT SUM(t.views) as result_count, t.forumid, f.name as result_name
-					FROM topics AS t
-					LEFT JOIN forums AS f ON (f.id=t.forumid)
-					WHERE t.start_date > '{$sql['from_time']}'
-					AND t.start_date < '{$sql['to_time']}'
-					GROUP BY t.forumid
-					ORDER BY result_count {$sql['sortby']}") or sqlerr(__FILE__, __LINE__);
+                    FROM topics AS t
+                    LEFT JOIN forums AS f ON (f.id=t.forumid)
+                    WHERE t.start_date > '{$sql['from_time']}'
+                    AND t.start_date < '{$sql['to_time']}'
+                    GROUP BY t.forumid
+                    ORDER BY result_count {$sql['sortby']}") or sqlerr(__FILE__, __LINE__);
     $running_total = 0;
     $max_result = 0;
     $results = [];
@@ -130,12 +130,12 @@ function show_views()
       <span style='font-weight: bold; font-size: 12pt;'>{$lang['stats_ex_center']}</span>
       </div><br>
     {$menu}
-		
-		<div><table border='0' cellpadding='5' cellspacing='0' width='70%'>
-		<tr>
+        
+        <div><table border='0' cellpadding='5' cellspacing='0' width='70%'>
+        <tr>
     <td colspan='3'>{$heading}</td>
     </tr>
-		<tr>
+        <tr>
     <td width='20%'>{$lang['stats_ex_date']}</td>
     <td width='70%'>{$lang['stats_ex_result']}</td>
     <td width='10%'>{$lang['stats_ex_count']}</td>
@@ -158,10 +158,10 @@ function show_views()
             }
             $img_width .= '%';
             $htmlout .= "<tr>
-    			<td>$date</td>
-    			<td><img src='{$site_config['pic_base_url']}bar_left.gif' border='0' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}bar.gif' border='0' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}bar_right.gif' border='0' width='4' height='11' align='middle' alt='' /></td>
-					<td><center>{$data['result_count']}</center></td>
-					</tr>";
+                <td>$date</td>
+                <td><img src='{$site_config['pic_base_url']}bar_left.gif' border='0' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}bar.gif' border='0' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}bar_right.gif' border='0' width='4' height='11' align='middle' alt='' /></td>
+                    <td><center>{$data['result_count']}</center></td>
+                    </tr>";
         }
         $htmlout .= "<tr>
 <td width='20%'>&#160;</td>
@@ -256,13 +256,13 @@ function result_screen($mode = 'reg')
         'sql_date'  => $sql_date,
     ];
     $q1 = sql_query("SELECT MAX({$sql['sql_field']}) as result_maxdate,
-				 COUNT(*) as result_count,
-				 DATE_FORMAT(from_unixtime({$sql['sql_field']}),'{$sql['sql_date']}') AS result_time
-				 FROM {$sql['sql_table']}
-				 WHERE {$sql['sql_field']} > '{$sql['from_time']}'
-				 AND {$sql['sql_field']} < '{$sql['to_time']}'
-				 GROUP BY result_time
-				 ORDER BY {$sql['sql_field']} {$sql['sortby']}");
+                 COUNT(*) as result_count,
+                 DATE_FORMAT(from_unixtime({$sql['sql_field']}),'{$sql['sql_date']}') AS result_time
+                 FROM {$sql['sql_table']}
+                 WHERE {$sql['sql_field']} > '{$sql['from_time']}'
+                 AND {$sql['sql_field']} < '{$sql['to_time']}'
+                 GROUP BY result_time
+                 ORDER BY {$sql['sql_field']} {$sql['sortby']}");
     $running_total = 0;
     $max_result = 0;
     $results = [];
@@ -273,12 +273,12 @@ function result_screen($mode = 'reg')
       <span style='font-weight: bold; font-size: 12pt;'>{$lang['stats_ex_center']}</span>
       </div><br>
     {$menu}
-		
-		<div><table border='0' cellpadding='5' cellspacing='0' width='70%'>
-		<tr>
+        
+        <div><table border='0' cellpadding='5' cellspacing='0' width='70%'>
+        <tr>
     <td colspan='3'>{$heading}<br>{$page_detail}</td>
     </tr>
-		<tr>
+        <tr>
     <td width='20%'>{$lang['stats_ex_date']}</td>
     <td width='70%'>{$lang['stats_ex_result']}</td>
     <td width='10%'>{$lang['stats_ex_count']}</td>
@@ -307,10 +307,10 @@ function result_screen($mode = 'reg')
                 $date = date($php_date, $data['result_maxdate']);
             }
             $htmlout .= "<tr>
-    			<td>$date</td>
-    			<td><img src='{$site_config['pic_base_url']}bar_left.gif' border='0' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}bar.gif' border='0' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}bar_right.gif' border='0' width='4' height='11' align='middle' alt='' /></td>
-					<td><center>{$data['result_count']}</center></td>
-					</tr>";
+                <td>$date</td>
+                <td><img src='{$site_config['pic_base_url']}bar_left.gif' border='0' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}bar.gif' border='0' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_base_url']}bar_right.gif' border='0' width='4' height='11' align='middle' alt='' /></td>
+                    <td><center>{$data['result_count']}</center></td>
+                    </tr>";
         }
         $htmlout .= "<tr>
 <td width='20%'>&#160;</td>
@@ -368,14 +368,14 @@ function main_screen($mode = 'reg')
     <form action='{$site_config['baseurl']}/staffpanel.php?tool=stats_extra&amp;action=stats_extra' method='post' name='StatsForm'>
     <input name='mode' value='{$form_code}' type='hidden' />
 
-	
+    
     <div style='text-align: left; width: 50%; border: 1px solid blue; padding: 5px;'>
-		<div style='background: grey; height: 25px; margin-bottom:20px;'>
+        <div style='background: grey; height: 25px; margin-bottom:20px;'>
       <span style='font-weight: bold; font-size: 12pt;'>{$table}</span>
     </div>
     <fieldset><legend><strong>{$lang['stats_ex_infor']}</strong></legend>
     {$page_detail}</fieldset>
-		<fieldset><legend><strong>{$lang['stats_ex_datefrom']}</strong></legend>";
+        <fieldset><legend><strong>{$lang['stats_ex_datefrom']}</strong></legend>";
     $htmlout .= make_select('from_month', make_month(), $old_date['mon']) . '&#160;&#160;';
     $htmlout .= make_select('from_day', make_day(), $old_date['mday']) . '&#160;&#160;';
     $htmlout .= make_select('from_year', make_year(), $old_date['year']) . '</fieldset>';
@@ -412,11 +412,11 @@ function main_screen($mode = 'reg')
             ],
         ], 'desc') . '</fieldset>';
     $htmlout .= "<fieldset><legend><strong>{$lang['stats_ex_submit']}</strong></legend>
-				<input value='{$lang['stats_ex_show']}' class='button is-small' accesskey='s' type='submit' />
-			</fieldset>
+                <input value='{$lang['stats_ex_show']}' class='button is-small' accesskey='s' type='submit' />
+            </fieldset>
 
-		</div>
-	
+        </div>
+    
     </form></div>";
     echo stdhead($page_title) . $htmlout . stdfoot();
 }
@@ -453,7 +453,7 @@ function make_month()
     for ($m = 1; $m <= 12; ++$m) {
         $return[] = [
             $m,
-            $month_names[ $m ],
+            $month_names[$m],
         ];
     }
 

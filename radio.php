@@ -33,7 +33,7 @@ function radioinfo($radio)
         }
         preg_match_all('/\<(SERVERTITLE|SERVERURL|SONGTITLE|STREAMSTATUS|BITRATE|CURRENTLISTENERS|PEAKLISTENERS)\>(.*?)<\/\\1\>/iU', $xml, $tempdata, PREG_SET_ORDER);
         foreach ($tempdata as $t2) {
-            $data[ $t2[1] ] = isset($langs[ $t2[1] ]) ? sprintf($langs[ $t2[1] ], $t2[2]) : $t2[2];
+            $data[$t2[1]] = isset($langs[$t2[1]]) ? sprintf($langs[$t2[1]], $t2[2]) : $t2[2];
         }
         unset($tempdata);
         preg_match_all('/\<SONG>(.*?)<\/SONG\>/', $xml, $temph);
