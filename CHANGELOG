@@ -1,4 +1,5 @@
 15 Jan 2018
+update: peerlist.php
 remove: unneeded ann_config var
 update: ann_config vars
 fix: AJAX Chat admin/sysop delete own posts

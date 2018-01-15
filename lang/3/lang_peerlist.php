@@ -26,8 +26,8 @@ $lang = [
     'peerslist_warning'        => 'Warning',
     'peerslist_no_data'        => 'No downloader/uploader data available!',
     'peerslist_for'            => 'Peerlist for',
-    'peerslist_seeders'        => 'Seeder(s)',
-    'peerslist_leechers'       => 'Leecher(s)',
+    'peerslist_seeders'        => 'Seeder',
+    'peerslist_leechers'       => 'Leecher',
     'peerslist_for'            => 'Peerlist for',
     //stdhead
     'peerslist_stdhead'        => 'Details',
