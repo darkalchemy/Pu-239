@@ -70,10 +70,10 @@ if (mysqli_num_rows($res) == 0) {
         $HTMLOUT .= "
                 <tr class='table'>
                     <td style='background-color: {$color};'>
-                        <span class='text-black'>{$date[0]}{$date[1]}</span>
+                        <span class='has-text-black'>{$date[0]}{$date[1]}</span>
                     </td>
                     <td style='background-color: {$color};'>
-                        <span class='text-black'>" . format_comment($arr['txt']) . "</span>
+                        <span class='has-text-black'>" . format_comment($arr['txt']) . "</span>
                     </td>
                 </tr>";
     }

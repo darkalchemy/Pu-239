@@ -1,4 +1,8 @@
 15 Jan 2018
+update: karma cleanup
+move: cleanup
+update: site log
+update: coders log
 add: gzipped adminer.css
 update: browse.php not building links for seeders, leechers, snatches
 update: peerlist.php

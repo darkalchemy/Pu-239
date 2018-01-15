@@ -36,8 +36,11 @@ foreach ($directories as $path) {
 }
 if (!$exist or (isset($_POST['update']) and ($_POST['update'] == 'Update'))) {
     $data = serialize($fetch_set);
-    file_put_contents($file_data, $data);
-    setSessionVar('is-success', "Coder's Log updated for {$CURUSER['username']}");
+    if (file_put_contents($file_data, $data)) {
+        setSessionVar('is-success', "Coder's Log was updated for {$CURUSER['username']}");
+    } else {
+        setSessionVar('is-warning', "[h3]Could not save data to:[/h3][p]{$file_data}[/p]");
+    }
     $data = $fetch_set;
     unset($_POST);
 }
