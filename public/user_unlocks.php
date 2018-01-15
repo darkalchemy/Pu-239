@@ -97,7 +97,7 @@ $HTMLOUT .= '
         </div>
         </fieldset>
         <div class="span7 offset1">
-            <input class="button is-primary" type="submit" name="submit" value="Submit" tabindex="2" accesskey="s" />
+            <input class="button" type="submit" name="submit" value="Submit" tabindex="2" accesskey="s" />
         </div>
     </form>
 </div>';

@@ -278,7 +278,7 @@ if (isset($_GET['returnto'])) {
     $url .= $addthis;
     $keepget = $addthis;
 }
-$editlink = "a href='$url' class='button is-primary is-small bottom10'";
+$editlink = "a href='$url' class='button is-small bottom10'";
 if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $CURUSER['downloadpos'] > 1)) {
     if ($free_slot && !$double_slot) {
         $HTMLOUT .= '
@@ -626,7 +626,7 @@ $HTMLOUT .= "
     <div class='table-wrapper bottom20'>
         <table class='table table-bordered'>";
 
-$HTMLOUT .= tr('Report Torrent', "<form action='report.php?type=Torrent&amp;id=$id' method='post'><input class='button is-primary is-small bottom10' type='submit' name='submit' value='Report This Torrent' /><strong><em class='label label-primary'>For breaking the <a href='rules.php'>rules</a></em></strong></form>", 1);
+$HTMLOUT .= tr('Report Torrent', "<form action='report.php?type=Torrent&amp;id=$id' method='post'><input class='button is-small bottom10' type='submit' name='submit' value='Report This Torrent' /><strong><em class='label label-primary'>For breaking the <a href='rules.php'>rules</a></em></strong></form>", 1);
 
 if ($torrent_cache['rep']) {
     $torrents = array_merge($torrents, $torrent_cache['rep']);
@@ -661,11 +661,11 @@ if ($CURUSER['class'] >= UC_STAFF) {
                     <div class='bottom10'>
                         <form method='post' action='./details.php?id={$torrents['id']}'>
                             <input type='hidden' name='rechecked' value={$torrents['id']}>
-                            <input type='submit' class='button is-small is-primary bottom10' value='Re-Check this torrent' />
+                            <input type='submit' class='button is-small bottom10' value='Re-Check this torrent' />
                         </form>
                         <form method='post' action='./details.php?id={$torrents['id']}'>
                             <input type='hidden' name='clearchecked' value={$torrents['id']}>
-                            <input type='submit' class='button is-small is-primary' value='Un-Check this torrent' />
+                            <input type='submit' class='button is-small' value='Un-Check this torrent' />
                         </form>
                     </div>
                 </td>
@@ -677,7 +677,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
                 <td>
                     <form method='post' action='./details.php?id={$torrents['id']}'>
                         <input type='hidden' name='checked' value={$torrents['id']}>
-                        <input type='submit' class='button is-small is-primary' value='Check this torrent' />
+                        <input type='submit' class='button is-small' value='Check this torrent' />
                     </form>
                 </td>
             </tr>";
@@ -694,9 +694,9 @@ if ($torrents['type'] == 'multi') {
 }
 
 if (XBT_TRACKER) {
-    $HTMLOUT .= tr("{$lang['details_peers']}", (int)$torrents_xbt['seeders'] . ' seeder(s), ' . (int)$torrents_xbt['leechers'] . ' leecher(s) = ' . ((int)$torrents_xbt['seeders'] + (int)$torrents_xbt['leechers']) . "{$lang['details_peer_total']}<br><a href='{$site_config['baseurl']}/peerlist.php?id=$id#seeders' class='button is-small is-primary'>{$lang['details_list']}</a>", 1);
+    $HTMLOUT .= tr("{$lang['details_peers']}", (int)$torrents_xbt['seeders'] . ' seeder(s), ' . (int)$torrents_xbt['leechers'] . ' leecher(s) = ' . ((int)$torrents_xbt['seeders'] + (int)$torrents_xbt['leechers']) . "{$lang['details_peer_total']}<br><a href='{$site_config['baseurl']}/peerlist.php?id=$id#seeders' class='button is-small'>{$lang['details_list']}</a>", 1);
 } else {
-    $HTMLOUT .= tr("{$lang['details_peers']}", (int)$torrents['seeders'] . ' seeder(s), ' . (int)$torrents['leechers'] . ' leecher(s) = ' . ((int)$torrents['seeders'] + (int)$torrents['leechers']) . "{$lang['details_peer_total']}<br><a href='{$site_config['baseurl']}/peerlist.php?id=$id#seeders' class='button is-small is-primary'>{$lang['details_list']}</a>", 1);
+    $HTMLOUT .= tr("{$lang['details_peers']}", (int)$torrents['seeders'] . ' seeder(s), ' . (int)$torrents['leechers'] . ' leecher(s) = ' . ((int)$torrents['seeders'] + (int)$torrents['leechers']) . "{$lang['details_peer_total']}<br><a href='{$site_config['baseurl']}/peerlist.php?id=$id#seeders' class='button is-small'>{$lang['details_list']}</a>", 1);
 }
 
 $HTMLOUT .= tr($lang['details_thanks'], '
@@ -722,7 +722,7 @@ $reseed = "
             </select>
             <input type='hidden' name='uploader' value='" . (int)$torrents['owner'] . "' />
             <input type='hidden' name='reseedid' value='$id' />
-            <input type='submit' class='button is-small is-primary left10'" . (($next_reseed > $dt) ? ' disabled' : '') . " value='SendPM' />
+            <input type='submit' class='button is-small left10'" . (($next_reseed > $dt) ? ' disabled' : '') . " value='SendPM' />
         </form>";
 $HTMLOUT .= tr('Request reseed', $reseed, 1);
 
@@ -889,7 +889,7 @@ $HTMLOUT .= "
                         <a href=\"javascript:SmileIT(':baby:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/baby.gif' alt='Baby' class='tooltipper' title='Baby' /></a>
                     </div>
                     <div class='has-text-centered'>
-                        <input class='button is-small is-primary margin20' type='submit' value='Submit' />
+                        <input class='button is-small margin20' type='submit' value='Submit' />
                     </div>
                 </div>
             </div>

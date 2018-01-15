@@ -653,7 +653,7 @@ $level1 .= "
 $form .= main_div($level1);
 $form .= "
                     <div class='has-text-centered margin20'>
-                        <input class='button is-primary' type='submit' name='submit' value='Submit' />
+                        <input class='button' type='submit' name='submit' value='Submit' />
                     </div>
         </fieldset>
         </div>
@@ -759,7 +759,7 @@ $level2 .= "
 $form .= main_div($level2);
 $form .= "
                     <div class='has-text-centered margin20'>
-                        <input class='button is-primary' type='submit' name='submit' value='Submit' />
+                        <input class='button' type='submit' name='submit' value='Submit' />
                     </div>
         </fieldset>
         </div>
@@ -979,7 +979,7 @@ $level3 .= "
 $form .= main_div($level3);
 $form .= "
                     <div class='has-text-centered margin20'>
-                        <input class='button is-primary' type='submit' name='submit' value='Submit' />
+                        <input class='button' type='submit' name='submit' value='Submit' />
                     </div>
         </fieldset>
         </div>";
