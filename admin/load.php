@@ -126,14 +126,14 @@ function loadavg($return_all = false)
     <table width='100%' >
         <tr><td>
         <table class='main' border='0' width='402'>
-    <tr><td style='padding: 0; background-image: url({$site_config['pic_base_url']}loadbarbg.gif); background-repeat: repeat-x'>";
+    <tr><td style='padding: 0; background-image: url({$site_config['pic_baseurl']}loadbarbg.gif); background-repeat: repeat-x'>";
     $perc = get_server_load();
     $percent = min(100, $perc);
     if ($percent <= 70) $pic = "loadbargreen.gif";
     elseif ($percent <= 90) $pic = "loadbaryellow.gif";
     else $pic = "loadbarred.gif";
     $width = $percent * 4;
-    $HTMLOUT .="<img height='15' width='$width' src=\"{$site_config['pic_base_url']}{$pic}\" alt='$percent&#37;' /><br>{$lang['index_load_curr']}{$percent}{$lang['index_load_cpu']}<br></td></tr></table></td></tr></table></div><br>";
+    $HTMLOUT .="<img height='15' width='$width' src=\"{$site_config['pic_baseurl']}{$pic}\" alt='$percent&#37;' /><br>{$lang['index_load_curr']}{$percent}{$lang['index_load_cpu']}<br></td></tr></table></td></tr></table></div><br>";
     //==End
 */
 //==Server Load linux
@@ -144,7 +144,7 @@ $HTMLOUT .= "
     <table width='100%' >
             <tr><td>
             <table class='main' border='0' width='402'>
-                <tr><td style='padding: 0; background: url({$site_config['pic_base_url']}loadbarbg.gif) repeat-x;'>";
+                <tr><td style='padding: 0; background: url({$site_config['pic_baseurl']}loadbarbg.gif) repeat-x;'>";
 $percent = min(100, round(exec('ps ax | grep -c apache') / 256 * 100));
 if ($percent <= 70) {
     $pic = 'loadbargreen.gif';
@@ -154,7 +154,7 @@ if ($percent <= 70) {
     $pic = 'loadbarred.gif';
 }
 $width = $percent * 4;
-$HTMLOUT .= "<img height='15' width='$width' src=\"{$site_config['pic_base_url']}{$pic}\" alt='$percent&#37;' /><br>{$lang['index_load_curr']}{$percent}{$lang['index_load_cpu']}<br>";
+$HTMLOUT .= "<img height='15' width='$width' src=\"{$site_config['pic_baseurl']}{$pic}\" alt='$percent&#37;' /><br>{$lang['index_load_curr']}{$percent}{$lang['index_load_cpu']}<br>";
 //==End graphic
 $HTMLOUT .= "{$lang['index_load_uptime1']}" . uptime() . '';
 $loadinfo = loadavg(true);

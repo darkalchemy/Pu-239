@@ -198,7 +198,7 @@ function poll_show_rendered_choice($choice_id = '', $votes = '', $id = '', $answ
             <b>Total Votes: $votes</b>
         </div>
         <div>
-            <img src='{$site_config['pic_base_url']}polls/bar.gif' style='width: {$width}px; height: 11px;' align='middle' alt='' />
+            <img src='{$site_config['pic_baseurl']}polls/bar.gif' style='width: {$width}px; height: 11px;' align='middle' alt='' />
             [$percentage%]
         </div>";
 }

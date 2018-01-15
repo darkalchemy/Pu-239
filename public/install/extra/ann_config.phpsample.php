@@ -3,8 +3,6 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'define.php';
 require_once VENDOR_DIR . 'autoload.php';
 $dotenv = new Dotenv\Dotenv(dirname(__FILE__, 2) . DIRECTORY_SEPARATOR);
 $dotenv->load();
-require_once INCL_DIR . 'database.php';
-$cache = new CACHE();
 
 error_reporting(E_ALL);
 $finished = $plist = $corupptthis = '';
@@ -12,7 +10,8 @@ $agent = $_SERVER['HTTP_USER_AGENT'];
 $detectedclient = $_SERVER['HTTP_USER_AGENT'];
 $site_config['cache'] = ROOT_DIR . 'cache';
 require_once CLASS_DIR . 'class_bt_options.php';
-$site_config['pic_base_url'] = './pic/';
+$site_config['baseurl'] = '#baseurl';
+$site_config['pic_baseurl'] = $site_config['baseurl'] . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
 require_once CACHE_DIR . 'class_config.php';
 
 const REQUIRED_PHP = 70100, REQUIRED_PHP_VERSION = '7.1.0';
@@ -38,3 +37,9 @@ $site_config['expires']['sitepot'] = 86400;
 $site_config['expires']['torrent_announce'] = 86400;
 $site_config['expires']['torrent_details'] = 2591999;
 $site_config['expires']['user_cache'] = 2591999;
+
+$site_config['cookie_prefix'] = '#cookie_prefix_'; // This is used for cache prefix and should be exactly the same as config.php
+
+require_once INCL_DIR . 'database.php';
+$cache = new CACHE();
+

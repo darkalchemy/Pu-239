@@ -113,7 +113,7 @@ if (mysqli_num_rows($rescount) > 0) {
         $addedby = "<td style='padding: 0;'><b><a href='userdetails.php?id=$arr[requested_by_user_id]'>$arr[username]</a></b></td>";
         $catname = htmlspecialchars($change[$arr['category']]['name']);
         $catpic = htmlspecialchars($change[$arr['category']]['image']);
-        $catimage = "<img src='{$site_config['pic_base_url']}caticons/" . $catpic . "' title='$catname' alt='$catname' />";
+        $catimage = "<img src='{$site_config['pic_baseurl']}caticons/" . $catpic . "' title='$catname' alt='$catname' />";
         $HTMLOUT .= "<tr>
     <td>" . $catimage . "</td>
     <td><a href='viewrequests.php?id=$arr[id]&amp;req_details'>

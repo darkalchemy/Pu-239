@@ -202,7 +202,7 @@ $HTMLOUT .= "
         <div class='level-center'>
             <h1>
             <span class='level-left'>
-                <img src='{$site_config['pic_base_url']}wiki.png' alt='' title='{$lang['wiki_title']}' class='tooltipper' width='25'/>
+                <img src='{$site_config['pic_baseurl']}wiki.png' alt='' title='{$lang['wiki_title']}' class='tooltipper' width='25'/>
                 <span class='left10'>{$lang['wiki_title']}</span>
             </span>
             </h1>

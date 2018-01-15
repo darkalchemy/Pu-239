@@ -120,15 +120,15 @@ function cleanup_show_main()
             <td class='has-text-centered'>{$row['_clean_time']}</td>
             <td class='has-text-centered'>
                 <a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=edit&amp;cid={$row['clean_id']}'>
-                <img src='{$site_config['pic_base_url']}aff_tick.gif' alt='{$lang['cleanup_edit2']}' class='tooltipper' title='{$lang['cleanup_edit']}' height='12' width='12' /></a>
+                <img src='{$site_config['pic_baseurl']}aff_tick.gif' alt='{$lang['cleanup_edit2']}' class='tooltipper' title='{$lang['cleanup_edit']}' height='12' width='12' /></a>
             </td>
             <td class='has-text-centered'>
                 <a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=delete&amp;cid={$row['clean_id']}'>
-                <img src='{$site_config['pic_base_url']}aff_cross.gif' alt='{$lang['cleanup_delete2']}' class='tooltipper' title='{$lang['cleanup_delete1']}' height='12' width='12' /></a>
+                <img src='{$site_config['pic_baseurl']}aff_cross.gif' alt='{$lang['cleanup_delete2']}' class='tooltipper' title='{$lang['cleanup_delete1']}' height='12' width='12' /></a>
             </td>
             <td class='has-text-centered'>
                 <a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=unlock&amp;cid={$row['clean_id']}&amp;clean_on={$row['clean_on']}'>
-                <img src='{$site_config['pic_base_url']}warned.png' alt='{$lang['cleanup_off_on2']}' class='tooltipper' title='{$lang['cleanup_off_on']}' height='12' width='12' /></a>
+                <img src='{$site_config['pic_baseurl']}warned.png' alt='{$lang['cleanup_off_on2']}' class='tooltipper' title='{$lang['cleanup_off_on']}' height='12' width='12' /></a>
             </td>
             <td class='has-text-centered'>
                 <a href='{$site_config['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=run&amp;cid={$row['clean_id']}'>{$lang['cleanup_run_now2']}</a>

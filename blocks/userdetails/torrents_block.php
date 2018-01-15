@@ -28,7 +28,7 @@ function snatchtable($res)
         $XBT_or_PHP = (XBT_TRACKER == true ? $arr['fid'] : $arr['torrentid']);
         $XBT_or_PHP_TIME = (XBT_TRACKER == true ? $arr['completedtime'] : $arr['complete_date']);
         $htmlout .= "<tr>
- <td style='padding: 0;'><img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($arr['catimg']) . "' alt='" . htmlsafechars($arr['catname']) . "' width='42' height='42' /></td>
+ <td style='padding: 0;'><img src='{$site_config['pic_baseurl']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($arr['catimg']) . "' alt='" . htmlsafechars($arr['catname']) . "' width='42' height='42' /></td>
  <td><a href='details.php?id=" . (int)$XBT_or_PHP . "'><b>" . (strlen($arr['name']) > 50 ? substr($arr['name'], 0, 50 - 3) . '...' : htmlsafechars($arr['name'])) . '</b></a></td>
  <td>' . mksize($arr['uploaded']) . "</td>
  <td>$upspeed/s</td>
@@ -69,7 +69,7 @@ function maketable($res)
         } else {
             $ratio = '---';
         }
-        $catimage = "{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/{$arr['image']}";
+        $catimage = "{$site_config['pic_baseurl']}caticons/" . get_categorie_icons() . "/{$arr['image']}";
         $catname = htmlsafechars($arr['catname']);
         $catimage = '<img src="' . htmlsafechars($catimage) . "' title='$catname' alt='$catname' width='42' height='42' />";
         $size = str_replace(' ', '<br>', mksize($arr['size']));
@@ -87,7 +87,7 @@ function maketable($res)
 
 if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_STAFF) {
     if (isset($torrents)) {
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_uploaded_t']}</td><td align='left' width='90%'><a href=\"javascript: klappe_news('a')\"><img src='{$site_config['pic_base_url']}plus.png' id='pica' alt='Show/Hide' /></a><div id='ka' style='display: none;'>$torrents</div></td></tr>\n";
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_uploaded_t']}</td><td align='left' width='90%'><a href=\"javascript: klappe_news('a')\"><img src='{$site_config['pic_baseurl']}plus.png' id='pica' alt='Show/Hide' /></a><div id='ka' style='display: none;'>$torrents</div></td></tr>\n";
     }
     /*
     if (isset($torrents)) {
@@ -116,7 +116,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
     }
     */
     if (isset($seeding)) {
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_cur_seed']}</td><td align='left' width='90%'><a href=\"javascript: klappe_news('a1')\"><img src='{$site_config['pic_base_url']}plus.png' id='pica1' alt='Show/Hide' /></a><div id='ka1' style='display: none;'>" . maketable($seeding) . "</div></td></tr>\n";
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_cur_seed']}</td><td align='left' width='90%'><a href=\"javascript: klappe_news('a1')\"><img src='{$site_config['pic_baseurl']}plus.png' id='pica1' alt='Show/Hide' /></a><div id='ka1' style='display: none;'>" . maketable($seeding) . "</div></td></tr>\n";
     }
     /*
     if (isset($leeching)) {
@@ -132,7 +132,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
     }
     */
     if (isset($leeching)) {
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_cur_leech']}</td><td align='left' width='90%'><a href=\"javascript: klappe_news('a2')\"><img src='{$site_config['pic_base_url']}plus.png' id='pica2' alt='Show/Hide' /></a><div id='ka2' style='display: none;'>" . maketable($leeching) . "</div></td></tr>\n";
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_cur_leech']}</td><td align='left' width='90%'><a href=\"javascript: klappe_news('a2')\"><img src='{$site_config['pic_baseurl']}plus.png' id='pica2' alt='Show/Hide' /></a><div id='ka2' style='display: none;'>" . maketable($leeching) . "</div></td></tr>\n";
     }
     //==Snatched
 
@@ -160,7 +160,7 @@ if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $CURUSER['
     //}
     */
     if (isset($user_snatches_data)) {
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_cur_snatched']}</td><td align='left' width='90%'><a href=\"javascript: klappe_news('a3')\"><img src='{$site_config['pic_base_url']}plus.png' id='pica3' alt='Show/Hide' /></a><div id='ka3' style='display: none;'>$user_snatches_data</div></td></tr>\n";
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_cur_snatched']}</td><td align='left' width='90%'><a href=\"javascript: klappe_news('a3')\"><img src='{$site_config['pic_baseurl']}plus.png' id='pica3' alt='Show/Hide' /></a><div id='ka3' style='display: none;'>$user_snatches_data</div></td></tr>\n";
     }
 }
 //==End

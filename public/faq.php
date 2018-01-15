@@ -19,7 +19,7 @@ $HTMLOUT = "
             </div>
             <fieldset id='rules'>
                 <legend class='is-flex'>
-                    <img src='{$site_config['pic_base_url']}info.png' alt='' class='tooltipper right10 icon' title='Guidelines' />{$lang['faq_contents_header']}
+                    <img src='{$site_config['pic_baseurl']}info.png' alt='' class='tooltipper right10 icon' title='Guidelines' />{$lang['faq_contents_header']}
                 </legend>
                 <div class='bordered bottom20'>
                     <div class='alt_bordered bg-00 has-text-left'>

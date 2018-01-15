@@ -25,7 +25,7 @@ function remove_torrent_pass($torrent_pass)
     if (strlen($torrent_pass) != 32 || !bin2hex($torrent_pass)) {
         return false;
     }
-    $key = 'user::torrent_pass:::' . $torrent_pass;
+    $key = 'user_torrent_pass_' . $torrent_pass;
     $cache->delete($key);
     return true;
 }

@@ -69,7 +69,7 @@ if ($do == 'view_page') {
                 $body .= "
                         <td>
                             <a {$site_config['baseurl']}/invite.php?do=confirm_account&amp;userid=" . (int)$row['id'] . '&amp;sender=' . (int)$CURUSER['id'] . "'>
-                                <img src='{$site_config['pic_base_url']}confirm.png' alt='confirm' class='tooltipper' title='Confirm' />
+                                <img src='{$site_config['pic_baseurl']}confirm.png' alt='confirm' class='tooltipper' title='Confirm' />
                             </a>
                         </td>
                     </tr>";

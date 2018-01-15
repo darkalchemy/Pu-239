@@ -16,7 +16,7 @@ function smilies_frame($smilies_set)
             <span class='margin10 mw-50 is-flex tooltipper' title='{$code}'>
                 <span class='bordered bg-03'>
                     <a href='#' alt='{$code}'>
-                        <img border='0' src='{$site_config['pic_base_url']}smilies/" . $url . "' alt='{$code}' />
+                        <img border='0' src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt='{$code}' />
                     </a>
                 </span>
             </span>";
@@ -60,7 +60,7 @@ function BBcode($body = '')
                         <div class="scroll_wrapper">
                             <div class="scroll" id="box_0" style="display: none;">
                                 <div class="smilies_frame">
-                                    <img src="' . $site_config['pic_base_url'] . 'forums/updating.gif" alt="Loading..." />
+                                    <img src="' . $site_config['pic_baseurl'] . 'forums/updating.gif" alt="Loading..." />
                                 </div>
                             </div>
                             <div class="scroll" id="box_1" style="display: none;">
@@ -455,17 +455,17 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     $s = str_replace('  ', '&#160;&#160;', $s);
     if (isset($smilies)) {
         foreach ($smilies as $code => $url) {
-            $s = str_replace($code, "<img src='{$site_config['pic_base_url']}smilies/{$url}' alt='' />", $s);
+            $s = str_replace($code, "<img src='{$site_config['pic_baseurl']}smilies/{$url}' alt='' />", $s);
         }
     }
     if (isset($staff_smilies)) {
         foreach ($staff_smilies as $code => $url) {
-            $s = str_replace($code, "<img src='{$site_config['pic_base_url']}smilies/{$url}' alt='' />", $s);
+            $s = str_replace($code, "<img src='{$site_config['pic_baseurl']}smilies/{$url}' alt='' />", $s);
         }
     }
     if (isset($customsmilies)) {
         foreach ($customsmilies as $code => $url) {
-            $s = str_replace($code, "<img src='{$site_config['pic_base_url']}smilies/{$url}' alt='' />", $s);
+            $s = str_replace($code, "<img src='{$site_config['pic_baseurl']}smilies/{$url}' alt='' />", $s);
         }
     }
 

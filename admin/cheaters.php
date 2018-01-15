@@ -34,8 +34,8 @@ function klappe(id)
 {var klappText=document.getElementById('k'+id);var klappBild=document.getElementById('pic'+id);if(klappText.style.display=='none'){klappText.style.display='block';}
 else{klappText.style.display='none';}}
 function klappe_news(id)
-{var klappText=document.getElementById('k'+id);var klappBild=document.getElementById('pic'+id);if(klappText.style.display=='none'){klappText.style.display='block';klappBild.src='{$site_config['pic_base_url']}minus.gif';}
-else{klappText.style.display='none';klappBild.src='{$site_config['pic_base_url']}plus.gif';}}    
+{var klappText=document.getElementById('k'+id);var klappBild=document.getElementById('pic'+id);if(klappText.style.display=='none'){klappText.style.display='block';klappBild.src='{$site_config['pic_baseurl']}minus.gif';}
+else{klappText.style.display='none';klappBild.src='{$site_config['pic_baseurl']}plus.gif';}}    
 </script>
 <script>
 var checkflag = 'false';

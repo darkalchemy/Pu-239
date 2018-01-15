@@ -33,7 +33,7 @@ function check_bans($ip, &$reason = '')
     if (empty($ip)) {
         return false;
     }
-    $key = 'bans:::' . $ip;
+    $key = 'bans_' . $ip;
     $ban = $cache->get($key);
     if ($ban === false || is_null($ban)) {
         $nip = sqlesc($ip);

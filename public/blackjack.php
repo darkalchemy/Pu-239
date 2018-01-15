@@ -110,7 +110,7 @@ if (count($list) > 0) {
         if ($card != $player_cards[0]) {
             $player_showcards .= "<div class='card {$arr['pic']}'></div>";
         } else {
-            $player_showcards .= "<img src='{$site_config['pic_base_url']}back.png' width='71' height='97' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
+            $player_showcards .= "<img src='{$site_config['pic_baseurl']}back.png' width='71' height='97' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
         }
         $player_showcards_end .= "<div class='card {$arr['pic']}'></div>";;
     }
@@ -127,7 +127,7 @@ if (count($list) > 0) {
             if ($card != $dealer_cards[0]) {
                 $player_showcards .= "<div class='card {$arr['pic']}'></div>";
             } else {
-                $player_showcards .= "<img src='{$site_config['pic_base_url']}back.png' width='71' height='97' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
+                $player_showcards .= "<img src='{$site_config['pic_baseurl']}back.png' width='71' height='97' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
             }
         }
         $player_showcards_end = $player_showcards;
@@ -229,7 +229,7 @@ if ($game) {
                 $dealer_card = getCard($cardcount, $blackjack['gameid'], false);
                 $dealer_cardids[] = $dealer_card;
                 $player_showcards .= "
-                    <img src='{$site_config['pic_base_url']}back.png' width='71' height='97' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
+                    <img src='{$site_config['pic_baseurl']}back.png' width='71' height='97' alt='' alt='{$lang['bj_cards']}' title='{$lang['bj_cards']}' class='tooltipper tooltipper_img' />";
                 // player card 2
                 $card = getCard($cardcount, $blackjack['gameid'], false);
                 $cardids[] = $card;

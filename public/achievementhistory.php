@@ -73,7 +73,7 @@ $body = '';
 while ($arr = mysqli_fetch_assoc($res)) {
     $body .= "
                     <tr>
-                        <td><img src='{$site_config['pic_base_url']}achievements/" . htmlsafechars($arr['icon']) . "' alt='" . htmlsafechars($arr['achievement']) . "' class='tooltipper' title='" . htmlsafechars($arr['achievement']) . "' /></td>
+                        <td><img src='{$site_config['pic_baseurl']}achievements/" . htmlsafechars($arr['icon']) . "' alt='" . htmlsafechars($arr['achievement']) . "' class='tooltipper' title='" . htmlsafechars($arr['achievement']) . "' /></td>
                         <td>" . htmlsafechars($arr['description']) . '</td>
                         <td>' . get_date($arr['date'], '') . '</td>
                     </tr>';

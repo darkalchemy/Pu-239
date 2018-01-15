@@ -23,7 +23,7 @@ function achievement_up_update($data)
             $uploads = (int)$arr['numuploads'];
             $ul = (int)$arr['ul'];
             if ($uploads >= 1 && $ul == 0) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL1[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/ul1.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL1[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/ul1.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Uploader LVL1\', \'ul1.png\' , \'Uploaded at least 1 torrent to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['id'] . ',1, ' . $points . ')';
@@ -31,7 +31,7 @@ function achievement_up_update($data)
                 $cache->delete('user_achievement_points_' . $arr['id']);
             }
             if ($uploads >= 50 && $ul == 1) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL2[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/ul2.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL2[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/ul2.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Uploader LVL2\', \'ul2.png\' , \'Uploaded at least 50 torrents to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['id'] . ',2, ' . $points . ')';
@@ -39,7 +39,7 @@ function achievement_up_update($data)
                 $cache->delete('user_achievement_points_' . $arr['id']);
             }
             if ($uploads >= 100 && $ul == 2) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL3[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/ul3.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL3[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/ul3.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Uploader LVL3\', \'ul3.png\' , \'Uploaded at least 100 torrents to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['id'] . ',3, ' . $points . ')';
@@ -47,7 +47,7 @@ function achievement_up_update($data)
                 $cache->delete('user_achievement_points_' . $arr['id']);
             }
             if ($uploads >= 200 && $ul == 3) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL4[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/ul4.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL4[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/ul4.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Uploader LVL4\', \'ul4.png\' , \'Uploaded at least 200 torrents to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['id'] . ',4, ' . $points . ')';
@@ -55,7 +55,7 @@ function achievement_up_update($data)
                 $cache->delete('user_achievement_points_' . $arr['id']);
             }
             if ($uploads >= 300 && $ul == 4) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL5[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/ul5.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL5[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/ul5.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Uploader LVL5\', \'ul5.png\' , \'Uploaded at least 300 torrents to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['id'] . ',5, ' . $points . ')';
@@ -63,7 +63,7 @@ function achievement_up_update($data)
                 $cache->delete('user_achievement_points_' . $arr['id']);
             }
             if ($uploads >= 500 && $ul == 5) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL6[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/ul6.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL6[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/ul6.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Uploader LVL6\', \'ul6.png\' , \'Uploaded at least 500 torrents to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['id'] . ',6, ' . $points . ')';
@@ -71,7 +71,7 @@ function achievement_up_update($data)
                 $cache->delete('user_achievement_points_' . $arr['id']);
             }
             if ($uploads >= 800 && $ul == 6) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL7[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/ul7.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL7[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/ul7.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Uploader LVL7\', \'ul7.png\' , \'Uploaded at least 800 torrents to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['id'] . ',7, ' . $points . ')';
@@ -79,7 +79,7 @@ function achievement_up_update($data)
                 $cache->delete('user_achievement_points_' . $arr['id']);
             }
             if ($uploads >= 1000 && $ul == 7) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL8[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/ul8.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL8[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/ul8.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Uploader LVL8\', \'ul8.png\' , \'Uploaded at least 1000 torrents to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['id'] . ',8, ' . $points . ')';
@@ -87,7 +87,7 @@ function achievement_up_update($data)
                 $cache->delete('user_achievement_points_' . $arr['id']);
             }
             if ($uploads >= 1500 && $ul == 8) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL9[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/ul9.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL9[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/ul9.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Uploader LVL9\', \'ul9.png\' , \'Uploaded at least 1500 torrents to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['id'] . ',9, ' . $points . ')';
@@ -95,7 +95,7 @@ function achievement_up_update($data)
                 $cache->delete('user_achievement_points_' . $arr['id']);
             }
             if ($uploads >= 2000 && $ul == 9) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL10[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/ul10.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]Uploader LVL10[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/ul10.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['id']}, $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['id'] . ', ' . $dt . ', \'Uploader LVL10\', \'ul10.png\' , \'Uploaded at least 2000 torrents to the site.\')';
                 $usersachiev_buffer[] = '(' . $arr['id'] . ',10, ' . $points . ')';

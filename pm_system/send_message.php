@@ -155,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 $avatar = (($CURUSER['avatars'] === 'no') ? '' : (empty($CURUSER['avatar']) ? '
-        <img width="80" src="' . $site_config['pic_base_url'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (($CURUSER['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ? '<img width="80" src="' . $site_config['pic_base_url'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<img width="80" src="' . htmlsafechars($CURUSER['avatar']) . '" alt="avatar" />')));
+        <img width="80" src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (($CURUSER['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') ? '<img width="80" src="' . $site_config['pic_baseurl'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<img width="80" src="' . htmlsafechars($CURUSER['avatar']) . '" alt="avatar" />')));
 
 $HTMLOUT .= $top_links . '
     <form name="compose" method="post" action="pm_system.php">

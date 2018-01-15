@@ -94,7 +94,7 @@ if (!empty($CURUSER['avatar']) && $CURUSER['av_w'] > 5 && $CURUSER['av_h'] > 5) 
                         </span>";
 } else {
     $HTMLOUT .= "
-                            <img class='img-polaroid' src='{$site_config['pic_base_url']}forumicons/default_avatar.gif' alt='' /></td>
+                            <img class='img-polaroid' src='{$site_config['pic_baseurl']}forumicons/default_avatar.gif' alt='' /></td>
                         </span>";
 }
 //== Avatar
@@ -203,17 +203,17 @@ elseif ($action == 'social') {
                                 </thead>
                                 <tbody>";
     //=== social stuff
-    $HTMLOUT .= tr('<img src="' . $site_config['pic_base_url'] . 'forums/google_talk.gif" alt="Google Talk" class="tooltipper right10" title="Google Talk" />Google Talk', '
+    $HTMLOUT .= tr('<img src="' . $site_config['pic_baseurl'] . 'forums/google_talk.gif" alt="Google Talk" class="tooltipper right10" title="Google Talk" />Google Talk', '
                                             <input type="text" class="w-100" name="google_talk"  value="' . htmlsafechars($CURUSER['google_talk']) . '" />', 1);
-    $HTMLOUT .= tr('<img src="' . $site_config['pic_base_url'] . 'forums/msn.gif" alt="Msn" class="tooltipper right10" title="Msn" />MSN ', '
+    $HTMLOUT .= tr('<img src="' . $site_config['pic_baseurl'] . 'forums/msn.gif" alt="Msn" class="tooltipper right10" title="Msn" />MSN ', '
                                             <input type="text" class="w-100" name="msn"  value="' . htmlsafechars($CURUSER['msn']) . '" />', 1);
-    $HTMLOUT .= tr('<img src="' . $site_config['pic_base_url'] . 'forums/aim.gif" alt="Aim" class="tooltipper right10" title="Aim" />AIM', '
+    $HTMLOUT .= tr('<img src="' . $site_config['pic_baseurl'] . 'forums/aim.gif" alt="Aim" class="tooltipper right10" title="Aim" />AIM', '
                                             <input type="text" class="w-100" name="aim"  value="' . htmlsafechars($CURUSER['aim']) . '" />', 1);
-    $HTMLOUT .= tr('<img src="' . $site_config['pic_base_url'] . 'forums/yahoo.gif" alt="Yahoo" class="tooltipper right10" title="Yahoo" />Yahoo ', '
+    $HTMLOUT .= tr('<img src="' . $site_config['pic_baseurl'] . 'forums/yahoo.gif" alt="Yahoo" class="tooltipper right10" title="Yahoo" />Yahoo ', '
                                             <input type="text" class="w-100" name="yahoo"  value="' . htmlsafechars($CURUSER['yahoo']) . '" />', 1);
-    $HTMLOUT .= tr('<img src="' . $site_config['pic_base_url'] . 'forums/icq.gif" alt="Icq" class="tooltipper right10" title="Icq" />icq ', '
+    $HTMLOUT .= tr('<img src="' . $site_config['pic_baseurl'] . 'forums/icq.gif" alt="Icq" class="tooltipper right10" title="Icq" />icq ', '
                                             <input type="text" class="w-100" name="icq"  value="' . htmlsafechars($CURUSER['icq']) . '" />', 1);
-    $HTMLOUT .= tr('<img src="' . $site_config['pic_base_url'] . 'forums/www.gif" alt="www" class="tooltipper right10" title="www" width="16px" height="16px" />Website ', '
+    $HTMLOUT .= tr('<img src="' . $site_config['pic_baseurl'] . 'forums/www.gif" alt="www" class="tooltipper right10" title="www" width="16px" height="16px" />Website ', '
                                             <input type="text" class="w-100" name="website"  value="' . htmlsafechars($CURUSER['website']) . '" />', 1);
     $HTMLOUT .= "
                                     <tr>
@@ -516,7 +516,7 @@ elseif ($action == 'torrents') {
                                                     <input name='cat{$a['id']}' type='checkbox' " . (strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? " checked" : '') . " value='yes' />
                                                     <span class='cat-image left10'>
                                                         <a href='{$site_config['baseurl']}/browse.php?c" . (int)$a['id'] . "'>
-                                                            <img class='radius-sm' src='{$site_config['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($a['image']) . "'alt='" . htmlsafechars($a['name']) . "' />
+                                                            <img class='radius-sm' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($a['image']) . "'alt='" . htmlsafechars($a['name']) . "' />
                                                         </a>
                                                     </span>
                                                 </span>";

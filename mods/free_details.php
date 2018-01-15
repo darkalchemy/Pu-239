@@ -3,8 +3,8 @@ global $CURUSER, $site_config;
 
 $is = $fl = '';
 $isfree['yep'] = $isfree['expires'] = 0;
-$freeimg = '<img src="' . $site_config['pic_base_url'] . 'freedownload.gif" alt="Free download" class="tooltipper" title="Free download" />';
-$silverimg = '<img src="' . $site_config['pic_base_url'] . 'silverdownload.gif" alt="Silver Torrent" class="tooltipper" title="Silver Torrent" />';
+$freeimg = '<img src="' . $site_config['pic_baseurl'] . 'freedownload.gif" alt="Free download" class="tooltipper" title="Free download" />';
+$silverimg = '<img src="' . $site_config['pic_baseurl'] . 'silverdownload.gif" alt="Silver Torrent" class="tooltipper" title="Silver Torrent" />';
 if (isset($free)) {
     foreach ($free as $fl) {
         switch ($fl['modifier']) {

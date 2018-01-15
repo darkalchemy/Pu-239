@@ -373,7 +373,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
                 <td nowrap='nowrap' class='has-text-centered'>" . ((int)$ar['bonus_invites']) . "</td>
                 <td nowrap='nowrap' class='has-text-centered'>" . ((int)$ar['bonus_karma']) . "</td>
                 <td nowrap='nowrap' class='has-text-centered'>" . format_username($ar['creator']) . "</a></td>
-                <td nowrap='nowrap' class='has-text-centered'><a href='" . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . (int)$ar['id'] . "'><img src='{$site_config['pic_base_url']}del.png' border='0' alt='Drop' /></a></td>
+                <td nowrap='nowrap' class='has-text-centered'><a href='" . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . (int)$ar['id'] . "'><img src='{$site_config['pic_baseurl']}del.png' border='0' alt='Drop' /></a></td>
             </tr>";
         }
         $HTMLOUT .= '</table>';

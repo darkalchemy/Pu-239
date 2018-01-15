@@ -231,6 +231,9 @@ function saveconfig()
         $keys = array_map('foo', array_keys($_POST['announce']));
         $values = array_values($_POST['announce']);
         $announce = preg_replace($keys, $values, $announce);
+        $keys = array_map('foo', array_keys($_POST['config']));
+        $values = array_values($_POST['config']);
+        $announce = preg_replace($keys, $values, $announce);
         if (file_put_contents($root . 'include/ann_config.php', $announce)) {
             $out .= '
         <div class="readable">ann_config.php file was created</div>';

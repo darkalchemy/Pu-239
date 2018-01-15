@@ -369,7 +369,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (count($updateset)) {
         sql_query('UPDATE user_blocks SET ' . implode(',', $updateset) . ' WHERE userid = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $cache->delete('blocks::' . $id);
+        $cache->delete('blocks_' . $id);
         setSessionVar('is-success', 'User Blocks Successfully Updated');
         unset($_POST);
         header('Location: ' . $site_config['baseurl'] . '/user_blocks.php');

@@ -52,8 +52,8 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $ratio = ($arr['downloaded'] > 0 ? number_format($arr['uploaded'] / $arr['downloaded'], 3) : ($arr['uploaded'] > 0 ? 'Inf.' : '---'));
     $upspeed = ($arr['upspeed'] > 0 ? mksize($arr['upspeed']) : ($arr['seedtime'] > 0 ? mksize($arr['uploaded'] / ($arr['seedtime'] + $arr['leechtime'])) : mksize(0)));
     $downspeed = ($arr['downspeed'] > 0 ? mksize($arr['downspeed']) : ($arr['leechtime'] > 0 ? mksize($arr['downloaded'] / $arr['leechtime']) : mksize(0)));
-    $active = ($arr['active'] == 1 ? $active = "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='Yes' title='Yes' />" : $active = "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='No' title='No' />");
-    $completed = ($arr['completed'] >= 1 ? $completed = "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='Yes' title='Yes' />" : $completed = "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='No' title='No' />");
+    $active = ($arr['active'] == 1 ? $active = "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='Yes' title='Yes' />" : $active = "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='No' title='No' />");
+    $completed = ($arr['completed'] >= 1 ? $completed = "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='Yes' title='Yes' />" : $completed = "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='No' title='No' />");
     $snatchuser = (isset($arr['username2']) ? ("<a href='userdetails.php?id=" . (int)$arr['uid'] . "'><b>" . htmlsafechars($arr['username2']) . '</b></a>') : "{$lang['snatches_unknown']}");
     $username = (($arr['anonymous2'] == 'yes' or $arr['paranoia'] >= 2) ? ($CURUSER['class'] < UC_STAFF && $arr['uid'] != $CURUSER['id'] ? '' : $snatchuser . ' - ') . "<i>{$lang['snatches_anon']}</i>" : $snatchuser);
     $HTMLOUT .= "<tr>

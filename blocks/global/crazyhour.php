@@ -23,7 +23,7 @@ if (XBT_TRACKER == false and $site_config['crazy_hour'] == true) {
             }
             $cache->set('crazyhour', $crazyhour['crazyhour'], 0);
         }
-        $cimg = '<img src="' . $site_config['pic_base_url'] . 'cat_free.gif" alt="FREE!" />';
+        $cimg = '<img src="' . $site_config['pic_baseurl'] . 'cat_free.gif" alt="FREE!" />';
         if ($crazyhour['crazyhour']['var'] < TIME_NOW) { // if crazyhour over
             $cz_lock = $cache->add('crazyhour_lock', 1, 10);
             if ($cz_lock !== false) {

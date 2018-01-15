@@ -286,7 +286,7 @@ function edit_cat_form()
         stderr($lang['categories_error'], $lang['categories_exist_error']);
     }
     $r = mysqli_fetch_assoc($q);
-    $dh = opendir($site_config['pic_base_url'] . 'caticons/1');
+    $dh = opendir($site_config['pic_baseurl'] . 'caticons/1');
     $files = [];
     while (false !== ($file = readdir($dh))) {
         if (($file != '.') && ($file != '..')) {
@@ -340,7 +340,7 @@ function show_categories()
 {
     global $site_config, $lang;
     $htmlout = '';
-    $dh = opendir($site_config['pic_base_url'] . 'caticons/1');
+    $dh = opendir($site_config['pic_baseurl'] . 'caticons/1');
     $files = [];
     while (false !== ($file = readdir($dh))) {
         if (($file != '.') && ($file != '..')) {
@@ -415,18 +415,18 @@ function show_categories()
         $htmlout = '<h1>' . $lang['categories_show_oops'] . '</h1>';
     } else {
         while ($row = mysqli_fetch_assoc($query)) {
-            $cat_image = file_exists($site_config['pic_base_url'] . 'caticons/1/' . $row['image']) ? "<img border='0' src='{$site_config['pic_base_url']}caticons/1/" . htmlsafechars($row['image']) . "' alt='" . (int)$row['id'] . "' />" : "{$lang['categories_show_no_image']}";
+            $cat_image = file_exists($site_config['pic_baseurl'] . 'caticons/1/' . $row['image']) ? "<img border='0' src='{$site_config['pic_baseurl']}caticons/1/" . htmlsafechars($row['image']) . "' alt='" . (int)$row['id'] . "' />" : "{$lang['categories_show_no_image']}";
             $htmlout .= "<tr>
           <td height='48' width='60'><b>{$lang['categories_show_id2']} (" . (int)$row['id'] . ")</b></td>    
           <td width='120'>" . htmlsafechars($row['name']) . "</td>
           <td width='250'>" . htmlsafechars($row['cat_desc']) . "</td>
           <td width='45'>$cat_image</td>
           <td width='18'><a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=edit_cat&amp;id=" . (int)$row['id'] . "'>
-            <img src='{$site_config['pic_base_url']}aff_tick.gif' alt='{$lang['categories_show_edit2']}' title='{$lang['categories_show_edit']}' width='12' height='12' border='0' /></a></td>
+            <img src='{$site_config['pic_baseurl']}aff_tick.gif' alt='{$lang['categories_show_edit2']}' title='{$lang['categories_show_edit']}' width='12' height='12' border='0' /></a></td>
           <td width='18'><a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=del_cat&amp;id=" . (int)$row['id'] . "'>
-            <img src='{$site_config['pic_base_url']}aff_cross.gif' alt='{$lang['categories_show_delete2']}' title='{$lang['categories_show_delete']}' width='12' height='12' border='0' /></a></td>
+            <img src='{$site_config['pic_baseurl']}aff_cross.gif' alt='{$lang['categories_show_delete2']}' title='{$lang['categories_show_delete']}' width='12' height='12' border='0' /></a></td>
           <td width='18'><a href='staffpanel.php?tool=categories&amp;action=categories&amp;mode=move_cat&amp;id=" . (int)$row['id'] . "'>
-            <img src='{$site_config['pic_base_url']}plus.gif' alt='{$lang['categories_show_move2']}' title='{$lang['categories_show_move']}' width='12' height='12' border='0' /></a></td>
+            <img src='{$site_config['pic_baseurl']}plus.gif' alt='{$lang['categories_show_move2']}' title='{$lang['categories_show_move']}' width='12' height='12' border='0' /></a></td>
         </tr>";
         }
     } //endif

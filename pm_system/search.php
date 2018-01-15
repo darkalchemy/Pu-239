@@ -180,7 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </tr>";
 
         while ($row = mysqli_fetch_assoc($res_search)) {
-            $read = $row['unread'] === 'yes' ? "<img src='{$site_config['pic_base_url']}pn_inboxnew.gif' title='{$lang['pm_mailbox_unreadmsg']}' alt='{$lang['pm_mailbox_unread']}' class='tooltipper' />" : "<img src='{$site_config['pic_base_url']}pn_inbox.gif title='{$lang['pm_mailbox_readmsg']}' alt='{$lang['pm_mailbox_read']}' class='tooltipper' />";
+            $read = $row['unread'] === 'yes' ? "<img src='{$site_config['pic_baseurl']}pn_inboxnew.gif' title='{$lang['pm_mailbox_unreadmsg']}' alt='{$lang['pm_mailbox_unread']}' class='tooltipper' />" : "<img src='{$site_config['pic_baseurl']}pn_inbox.gif title='{$lang['pm_mailbox_readmsg']}' alt='{$lang['pm_mailbox_read']}' class='tooltipper' />";
             $sender = $row['sender'] > 0 ? format_username($row['sender']) : 'System';
             $date = str_replace(', ', '<br>', get_date($row['added'], 'LONG'));
             $subject = str_ireplace($keywords, "<span style='background-color:yellow;font-weight:bold;color:black;'>{$keywords}</span>", htmlsafechars($row['subject']));

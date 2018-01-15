@@ -39,7 +39,7 @@ while ((list($code, $url) = each($customsmilies))) {
     $htmlout .= "
             <td class='has-text-centered'>
                 <a href=\"javascript: SmileIT('" . str_replace("'", "\'", $code) . "','" . htmlsafechars($_GET['form']) . "','" . htmlsafechars($_GET['text']) . "')\">
-                    <img border='0' src='{$site_config['pic_base_url']}smilies/" . $url . "' alt='' />
+                    <img border='0' src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt='' />
                 </a>
             </td>";
     ++$count;

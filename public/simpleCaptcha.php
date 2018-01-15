@@ -7,16 +7,16 @@ dbconn();
 $numImages = '';
 // -------------------- EDIT THESE ----------------- //
 $images = [
-    'house'        => "{$site_config['pic_base_url']}captchaImages/01.png",
-    'key'          => "{$site_config['pic_base_url']}captchaImages/02.png",
-    'flag'         => "{$site_config['pic_base_url']}captchaImages/03.png",
-    'clock'        => "{$site_config['pic_base_url']}captchaImages/04.png",
-    'bug'          => "{$site_config['pic_base_url']}captchaImages/05.png",
-    'pen'          => "{$site_config['pic_base_url']}captchaImages/06.png",
-    'light bulb'   => "{$site_config['pic_base_url']}captchaImages/07.png",
-    'musical note' => "{$site_config['pic_base_url']}captchaImages/08.png",
-    'heart'        => "{$site_config['pic_base_url']}captchaImages/09.png",
-    'world'        => "{$site_config['pic_base_url']}captchaImages/10.png",
+    'house'        => "{$site_config['pic_baseurl']}captchaImages/01.png",
+    'key'          => "{$site_config['pic_baseurl']}captchaImages/02.png",
+    'flag'         => "{$site_config['pic_baseurl']}captchaImages/03.png",
+    'clock'        => "{$site_config['pic_baseurl']}captchaImages/04.png",
+    'bug'          => "{$site_config['pic_baseurl']}captchaImages/05.png",
+    'pen'          => "{$site_config['pic_baseurl']}captchaImages/06.png",
+    'light bulb'   => "{$site_config['pic_baseurl']}captchaImages/07.png",
+    'musical note' => "{$site_config['pic_baseurl']}captchaImages/08.png",
+    'heart'        => "{$site_config['pic_baseurl']}captchaImages/09.png",
+    'world'        => "{$site_config['pic_baseurl']}captchaImages/10.png",
 ];
 // ------------------- STOP EDITING ---------------- //
 setSessionVar('simpleCaptchaAnswer', null);

@@ -31,7 +31,7 @@ foreach ($list as $gamename) {
     $HTMLOUT .= "
                 <div class='margin10 w-20'>
                     <a href='{$site_config['baseurl']}/flash.php?gameURI={$game}.swf&amp;gamename={$game}&amp;game_id={$id}' class='tooltipper' title='{$fullgamename}'>
-                        <img src='{$site_config['pic_base_url']}games/{$game}.png' alt='{$game}' class='round10' />
+                        <img src='{$site_config['pic_baseurl']}games/{$game}.png' alt='{$game}' class='round10' />
                     </a>
                 </div>";
 }

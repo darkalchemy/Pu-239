@@ -65,11 +65,11 @@ $class_colors = [
 ];
 
 $class_images = [
-    UC_USER          => $site_config['pic_base_url'] . 'class/user.gif',
-    UC_POWER_USER    => $site_config['pic_base_url'] . 'class/power.gif',
-    UC_VIP           => $site_config['pic_base_url'] . 'class/vip.gif',
-    UC_UPLOADER      => $site_config['pic_base_url'] . 'class/uploader.gif',
-    UC_MODERATOR     => $site_config['pic_base_url'] . 'class/moderator.gif',
-    UC_ADMINISTRATOR => $site_config['pic_base_url'] . 'class/administrator.gif',
-    UC_SYSOP         => $site_config['pic_base_url'] . 'class/sysop.gif',
+    UC_USER          => $site_config['pic_baseurl'] . 'class/user.gif',
+    UC_POWER_USER    => $site_config['pic_baseurl'] . 'class/power.gif',
+    UC_VIP           => $site_config['pic_baseurl'] . 'class/vip.gif',
+    UC_UPLOADER      => $site_config['pic_baseurl'] . 'class/uploader.gif',
+    UC_MODERATOR     => $site_config['pic_baseurl'] . 'class/moderator.gif',
+    UC_ADMINISTRATOR => $site_config['pic_baseurl'] . 'class/administrator.gif',
+    UC_SYSOP         => $site_config['pic_baseurl'] . 'class/sysop.gif',
 ];

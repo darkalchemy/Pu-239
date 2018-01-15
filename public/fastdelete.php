@@ -1,6 +1,7 @@
 <?php
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
+require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'function_memcache.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
@@ -22,9 +23,12 @@ $id = (int)$_GET['id'];
 function deletetorrent($id)
 {
     global $site_config, $cache, $CURUSER;
-    sql_query('DELETE torrents.* FROM torrents WHERE torrents.id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    sql_query('DELETE FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     unlink("{$site_config['torrent_dir']}/$id.torrent");
     $cache->delete('MyPeers_' . $CURUSER['id']);
+    $cache->delete('torrents_leechs_ ' . $id);
+    $cache->delete('torrents_seeds_ ' . $id);
+    $cache->delete('torrents_comps_ ' . $id);
 }
 
 /**
@@ -48,9 +52,10 @@ function deletetorrent_xbt($id)
     $cache->delete('MyPeers_XBT_' . $CURUSER['id']);
 }
 
-$q = mysqli_fetch_assoc(sql_query('SELECT name, owner FROM torrents WHERE id = ' . sqlesc($id))) or sqlerr(__FILE__, __LINE__);
+$sql = sql_query('SELECT name, owner, info_hash FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+$q = mysqli_fetch_assoc($sql);
 if (!$q) {
-    stderr('Oopps', 'Something went wrong - Contact admin!!');
+    stderr('Oops', 'Something went wrong - Contact admin!!');
 }
 
 $sure = (isset($_GET['sure']) && (int)$_GET['sure']);
@@ -59,24 +64,20 @@ if (!$sure) {
     stderr("{$lang['fastdelete_sure']}", sprintf($lang['fastdelete_sure_msg'], $returnto));
 }
 
-if (XBT_TRACKER == true) {
+if (XBT_TRACKER) {
     deletetorrent_xbt($id);
 } else {
     deletetorrent($id);
-    remove_torrent_peers($id);
 }
-$cache->delete('top5_tor_');
-$cache->delete('last5_tor_');
-$cache->delete('scroll_tor_');
-$cache->delete('torrent_details_' . $id);
-$cache->delete('torrent_details_text' . $id);
+remove_torrent_peers($id);
+remove_torrent($q['info_hash']);
+
 if ($CURUSER['id'] != $q['owner']) {
     $msg = sqlesc("{$lang['fastdelete_msg_first']} [b]{$q['name']}[/b] {$lang['fastdelete_msg_last']} {$CURUSER['username']}");
     sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES (0, ' . sqlesc($q['owner']) . ', ' . TIME_NOW . ", {$msg})") or sqlerr(__FILE__, __LINE__);
 }
 write_log("{$lang['fastdelete_log_first']} {$q['name']} {$lang['fastdelete_log_last']} {$CURUSER['username']}");
 if ($site_config['seedbonus_on'] == 1) {
-    //===remove karma
     sql_query('UPDATE users SET seedbonus = seedbonus-' . sqlesc($site_config['bonus_per_delete']) . ' WHERE id = ' . sqlesc($q['owner'])) or sqlerr(__FILE__, __LINE__);
     $update['seedbonus'] = ($CURUSER['seedbonus'] - $site_config['bonus_per_delete']);
     $cache->update_row('userstats_' . $q['owner'], [
@@ -85,17 +86,12 @@ if ($site_config['seedbonus_on'] == 1) {
     $cache->update_row('user_stats_' . $q['owner'], [
         'seedbonus' => $update['seedbonus'],
     ], $site_config['expires']['user_stats']);
-    //===end
 }
 
+setSessionVar('is-success', "[h2]Torrent deleted[/h2][p]" . htmlsafechars($q['name']) . "[/p]");
 if (isset($_GET['returnto'])) {
-    $ret = "<a href='" . htmlsafechars($_GET['returnto']) . "'>{$lang['fastdelete_returnto']}</a>";
+    header("Location: {$site_config['baseurl']}{$_GET['returnto']}");
 } else {
-    $ret = "<a href='{$site_config['baseurl']}/index.php'>{$lang['fastdelete_index']}</a>";
+    header("Location: {$site_config['baseurl']}");
 }
-
-$HTMLOUT = '';
-$HTMLOUT .= "<h2>{$lang['fastdelete_deleted']}</h2>
-    <p>{$ret}</p>";
-
-echo stdhead("{$lang['fastdelete_head']}") . $HTMLOUT . stdfoot();
+die();

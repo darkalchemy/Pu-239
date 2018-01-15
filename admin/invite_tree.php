@@ -177,7 +177,7 @@ if ($id !== 0) {
             <td class="colhead">' . $lang['invite_search_country'] . '</td>
             <td class="colhead">' . $lang['invite_search_edit'] . '</td></tr>';
         while ($row = mysqli_fetch_assoc($res)) {
-            $country = ($row['name'] != null) ? '<td style="padding: 0;"><img src="' . $site_config['pic_base_url'] . 'flag/' . (int)$row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" /></td>' : '<td>---</td>';
+            $country = ($row['name'] != null) ? '<td style="padding: 0;"><img src="' . $site_config['pic_baseurl'] . 'flag/' . (int)$row['flagpic'] . '" alt="' . htmlsafechars($row['name']) . '" /></td>' : '<td>---</td>';
             $HTMLOUT .= '<tr><td>' . format_username($row) . '</td>
         <td>' . get_date($row['added'], '') . '</td><td>' . get_date($row['last_access'], '') . '</td>
         <td>' . get_user_class_name($row['class']) . '</td>

@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             while ($arr = mysqli_fetch_assoc($res)) {
                 $the_names .= "$arr[name] => '$arr[classname]',";
                 $the_colors .= "$arr[name] => '$arr[classcolor]',";
-                $the_images .= "$arr[name] => " . '$site_config[' . "'pic_base_url'" . ']' . ".'class/$arr[classpic]',";
+                $the_images .= "$arr[name] => " . '$site_config[' . "'pic_baseurl'" . ']' . ".'class/$arr[classpic]',";
             }
             $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
             file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
@@ -213,7 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 while ($arr = mysqli_fetch_assoc($res)) {
                     $the_names .= "$arr[name] => '$arr[classname]',";
                     $the_colors .= "$arr[name] => '$arr[classcolor]',";
-                    $the_images .= "$arr[name] => " . '$site_config[' . "'pic_base_url'" . ']' . ".'class/$arr[classpic]',";
+                    $the_images .= "$arr[name] => " . '$site_config[' . "'pic_baseurl'" . ']' . ".'class/$arr[classpic]',";
                 }
                 $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
                 file_put_contents(CACHE_DIR . 'class_config.php', $configfile);
@@ -283,7 +283,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             while ($arr = mysqli_fetch_assoc($res)) {
                 $the_names .= "$arr[name] => '$arr[classname]',";
                 $the_colors .= "$arr[name] => '$arr[classcolor]',";
-                $the_images .= "$arr[name] => " . '$site_config[' . "'pic_base_url'" . ']' . ".'class/$arr[classpic]',";
+                $the_images .= "$arr[name] => " . '$site_config[' . "'pic_baseurl'" . ']' . ".'class/$arr[classpic]',";
             }
             $configfile .= get_cache_config_data($the_names, $the_colors, $the_images);
             file_put_contents(CACHE_DIR . 'class_config.php', $configfile);

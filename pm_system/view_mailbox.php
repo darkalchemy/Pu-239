@@ -98,10 +98,10 @@ if (mysqli_num_rows($res) === 0) {
         }
         $subject = (!empty($row['subject']) ? htmlsafechars($row['subject']) : $lang['pm_search_nosubject']);
         $who_sent_it = ($row['id'] == 0 ? '<span style="font-weight: bold;">' . $lang['pm_forward_system'] . '</span>' : format_username($row) . $friends);
-        $read_unread = ($row['unread'] === 'yes' ? '<img src="' . $site_config['pic_base_url'] . 'pn_inboxnew.gif" title="' . $lang['pm_mailbox_unreadmsg'] . '" alt="' . $lang['pm_mailbox_unread'] . '" />' : '<img src="' . $site_config['pic_base_url'] . 'pn_inbox.gif" title="' . $lang['pm_mailbox_readmsg'] . '" alt="' . $lang['pm_mailbox_read'] . '" />');
+        $read_unread = ($row['unread'] === 'yes' ? '<img src="' . $site_config['pic_baseurl'] . 'pn_inboxnew.gif" title="' . $lang['pm_mailbox_unreadmsg'] . '" alt="' . $lang['pm_mailbox_unread'] . '" />' : '<img src="' . $site_config['pic_baseurl'] . 'pn_inbox.gif" title="' . $lang['pm_mailbox_readmsg'] . '" alt="' . $lang['pm_mailbox_read'] . '" />');
         $extra = ($row['unread'] === 'yes' ? $lang['pm_mailbox_char1'] . '<span style="color: red;">' . $lang['pm_mailbox_unread'] . '</span>' . $lang['pm_mailbox_char2'] : '') . ($row['urgent'] === 'yes' ? '<span style="color: red;">' . $lang['pm_mailbox_urgent'] . '</span>' : '');
         $avatar = ((!$CURUSER['opt1'] & user_options::AVATARS || !$CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR || $row['id'] == 0) ? '' : (empty($row['avatar']) ? '
-                <img width="40" src="' . $site_config['pic_base_url'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (($row['opt1'] & user_options::OFFENSIVE_AVATAR && !$CURUSER['opt1'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img width="40" src="' . $site_config['pic_base_url'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<img width="40" src="' . htmlsafechars($row['avatar']) . '" alt="avatar" />')));
+                <img width="40" src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif" alt="no avatar" />' : (($row['opt1'] & user_options::OFFENSIVE_AVATAR && !$CURUSER['opt1'] & user_options::VIEW_OFFENSIVE_AVATAR) ? '<img width="40" src="' . $site_config['pic_baseurl'] . 'fuzzybunny.gif" alt="fuzzy!" />' : '<img width="40" src="' . htmlsafechars($row['avatar']) . '" alt="avatar" />')));
         $HTMLOUT .= '
                 <tr>
                     <td class="has-text-centered">' . $read_unread . '</td>
@@ -143,8 +143,8 @@ $HTMLOUT .= (mysqli_num_rows($res) > 0 ? "
     <tr>
         <td colspan='5'>
             <div class='level-center'>
-                <span><img src='{$site_config['pic_base_url']}pn_inboxnew.gif' title='{$lang['pm_mailbox_unreadmsg']}' alt='{$lang['pm_mailbox_unread']}' />{$lang['pm_mailbox_unreadmsgs']}</span>
-                <span><img src='{$site_config['pic_base_url']}pn_inbox.gif' title='{$lang['pm_mailbox_readmsg']}' alt='{$lang['pm_mailbox_read']}' />'{$lang['pm_mailbox_readmsgs']}</span>
+                <span><img src='{$site_config['pic_baseurl']}pn_inboxnew.gif' title='{$lang['pm_mailbox_unreadmsg']}' alt='{$lang['pm_mailbox_unread']}' />{$lang['pm_mailbox_unreadmsgs']}</span>
+                <span><img src='{$site_config['pic_baseurl']}pn_inbox.gif' title='{$lang['pm_mailbox_readmsg']}' alt='{$lang['pm_mailbox_read']}' />'{$lang['pm_mailbox_readmsgs']}</span>
                 {$per_page_drop_down}
                 {$show_pm_avatar_drop_down}
             </div>

@@ -148,9 +148,9 @@ if ($l_a === false || is_null($l_a)) {
     $cache->add('last_action_' . $id, $l_a, 1800);
 }
 
-$torrent_cache['seeders'] = $cache->get('torrents::seeds:::' . $id);
-$torrent_cache['leechers'] = $cache->get('torrents::leechs:::' . $id);
-$torrent_cache['times_completed'] = $cache->get('torrents::comps:::' . $id);
+$torrent_cache['seeders'] = $cache->get('torrents::seeds_' . $id);
+$torrent_cache['leechers'] = $cache->get('torrents::leechs_' . $id);
+$torrent_cache['times_completed'] = $cache->get('torrents::comps_' . $id);
 $torrents['seeders'] = ((XBT_TRACKER === false || $torrent_cache['seeders'] === false || $torrent_cache['seeders'] === 0 || $torrent_cache['seeders'] === false) ? $torrents['seeders'] : $torrent_cache['seeders']);
 $torrents['leechers'] = ((XBT_TRACKER === false || $torrent_cache['leechers'] === false || $torrent_cache['leechers'] === 0 || $torrent_cache['leechers'] === false) ? $torrents['leechers'] : $torrent_cache['leechers']);
 $torrents['times_completed'] = ((XBT_TRACKER === false || $torrent_cache['times_completed'] === false || $torrent_cache['times_completed'] === 0 || $torrent_cache['times_completed'] === false) ? $torrents['times_completed'] : $torrent_cache['times_completed']);
@@ -158,8 +158,8 @@ $torrents['times_completed'] = ((XBT_TRACKER === false || $torrent_cache['times_
 $torrent['addup'] = get_date($torrent['addedup'], 'DATE');
 $torrent['addfree'] = get_date($torrent['addedfree'], 'DATE');
 $torrent['idk'] = ($dt + 14 * 86400);
-$torrent['freeimg'] = '<img src="' . $site_config['pic_base_url'] . 'freedownload.gif" alt="" />';
-$torrent['doubleimg'] = '<img src="' . $site_config['pic_base_url'] . 'doubleseed.gif" alt="" />';
+$torrent['freeimg'] = '<img src="' . $site_config['pic_baseurl'] . 'freedownload.gif" alt="" />';
+$torrent['doubleimg'] = '<img src="' . $site_config['pic_baseurl'] . 'doubleseed.gif" alt="" />';
 $torrent['free_color'] = '#FF0000';
 $torrent['silver_color'] = 'silver';
 $torrent_cache['rep'] = $cache->get('user_rep_' . $torrents['owner']);
@@ -252,7 +252,7 @@ $HTMLOUT .= "
                 <div class='top20'>{$lang['details_thumbs']}</div>
                 <div id='thumbsup'>
                     <a href=\"javascript:ThumbsUp('" . (int)$torrents['id'] . "')\">
-                        <img src='{$site_config['pic_base_url']}thumb_up.png' alt='Thumbs Up' class='tooltipper' title='Thumbs Up' width='12' height='12' class='right10' />
+                        <img src='{$site_config['pic_baseurl']}thumb_up.png' alt='Thumbs Up' class='tooltipper' title='Thumbs Up' width='12' height='12' class='right10' />
                     </a>(" . $thumbs . ")
                 </div>
            </div>
@@ -269,7 +269,7 @@ $HTMLOUT .= "
     </div>
     <div class='tooltip_templates'>
         <span id='balloon3'>
-            Remember to show your gratitude and Thank the Uploader. <img src='{$site_config['pic_base_url']}smilies/smile1.gif' alt='' />
+            Remember to show your gratitude and Thank the Uploader. <img src='{$site_config['pic_baseurl']}smilies/smile1.gif' alt='' />
         </span>
     </div>";
 $url = 'edit.php?id=' . (int)$torrents['id'];
@@ -333,7 +333,7 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
         $HTMLOUT .= "<img src='" . htmlsafechars($torrents['poster']) . "' class='round10' alt='Poster' />";
     }
     if (empty($torrents['poster'])) {
-        $HTMLOUT .= 'No Poster Found.';
+        $HTMLOUT .= "<img src='{$site_config['pic_baseurl']}noposter.png' class='round10' alt='Poster' />";
     }
     $Free_Slot = (XBT_TRACKER == true ? '' : $freeslot);
     $Free_Slot_Zip = (XBT_TRACKER == true ? '' : $freeslot_zip);
@@ -387,13 +387,13 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
                 <tr>
                     <td class="rowhead">Karma Points</td>
                     <td><b>In total ' . (int)$torrents['points'] . ' Karma Points given to this torrent of which ' . $my_points . ' from you.<br><br>
-                        <a href="coins.php?id=' . $id . '&amp;points=10"><img src="' . $site_config['pic_base_url'] . '10coin.png" alt="10" class="tooltipper" title="10 Points" /></a>
-                        <a href="coins.php?id=' . $id . '&amp;points=20"><img src="' . $site_config['pic_base_url'] . '20coin.png" alt="20" class="tooltipper" title="20 Points" /></a>
-                        <a href="coins.php?id=' . $id . '&amp;points=50"><img src="' . $site_config['pic_base_url'] . '50coin.png" alt="50" class="tooltipper" title="50 Points" /></a>
-                        <a href="coins.php?id=' . $id . '&amp;points=100"><img src="' . $site_config['pic_base_url'] . '100coin.png" alt="100" class="tooltipper" title="100 Points" /></a>
-                        <a href="coins.php?id=' . $id . '&amp;points=200"><img src="' . $site_config['pic_base_url'] . '200coin.png" alt="200" class="tooltipper" title="200 Points" /></a>
-                        <a href="coins.php?id=' . $id . '&amp;points=500"><img src="' . $site_config['pic_base_url'] . '500coin.png" alt="500" class="tooltipper" title="500 Points" /></a>
-                        <a href="coins.php?id=' . $id . '&amp;points=1000"><img src="' . $site_config['pic_base_url'] . '1000coin.png" alt="1000" class="tooltipper" title="1000 Points" /></a></b>
+                        <a href="coins.php?id=' . $id . '&amp;points=10"><img src="' . $site_config['pic_baseurl'] . '10coin.png" alt="10" class="tooltipper" title="10 Points" /></a>
+                        <a href="coins.php?id=' . $id . '&amp;points=20"><img src="' . $site_config['pic_baseurl'] . '20coin.png" alt="20" class="tooltipper" title="20 Points" /></a>
+                        <a href="coins.php?id=' . $id . '&amp;points=50"><img src="' . $site_config['pic_baseurl'] . '50coin.png" alt="50" class="tooltipper" title="50 Points" /></a>
+                        <a href="coins.php?id=' . $id . '&amp;points=100"><img src="' . $site_config['pic_baseurl'] . '100coin.png" alt="100" class="tooltipper" title="100 Points" /></a>
+                        <a href="coins.php?id=' . $id . '&amp;points=200"><img src="' . $site_config['pic_baseurl'] . '200coin.png" alt="200" class="tooltipper" title="200 Points" /></a>
+                        <a href="coins.php?id=' . $id . '&amp;points=500"><img src="' . $site_config['pic_baseurl'] . '500coin.png" alt="500" class="tooltipper" title="500 Points" /></a>
+                        <a href="coins.php?id=' . $id . '&amp;points=1000"><img src="' . $site_config['pic_baseurl'] . '1000coin.png" alt="1000" class="tooltipper" title="1000 Points" /></a></b>
                         <br>By clicking on the coins you can give Karma Points to the uploader of this torrent.
                     </td>
                 </tr>';
@@ -430,7 +430,7 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
             break;
     }
     $sr = floor($sr * 1000) / 1000;
-    $sr = "<img src='{$site_config['pic_base_url']}smilies/{$s}.gif' alt='' class='right10' /><span style='color: " . get_ratio_color($sr) . ";'>" . number_format($sr, 3) . "</span>";
+    $sr = "<img src='{$site_config['pic_baseurl']}smilies/{$s}.gif' alt='' class='right10' /><span style='color: " . get_ratio_color($sr) . ";'>" . number_format($sr, 3) . "</span>";
     if ($torrents['free'] >= 1 || $torrents['freetorrent'] >= 1 || $isfree['yep'] || $free_slot or $double_slot != 0 || $CURUSER['free_switch'] != 0) {
         $HTMLOUT .= "
                 <tr>
@@ -512,7 +512,7 @@ if (count($sim_torrents) > 0) {
         foreach ($sim_torrents as $a) {
             $sim_tor['cat_name'] = htmlsafechars($change[$a['category']]['name']);
             $sim_tor['cat_pic'] = htmlsafechars($change[$a['category']]['image']);
-            $cat = "<img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/{$sim_tor['cat_pic']}' alt='{$sim_tor['cat_name']}' class='tooltipper' title='{$sim_tor['cat_name']}' />";
+            $cat = "<img src='{$site_config['pic_baseurl']}caticons/" . get_categorie_icons() . "/{$sim_tor['cat_pic']}' alt='{$sim_tor['cat_name']}' class='tooltipper' title='{$sim_tor['cat_name']}' />";
             $name = htmlsafechars(CutName($a['name']));
             $seeders = (int)$a['seeders'];
             $leechers = (int)$a['leechers'];
@@ -597,7 +597,7 @@ if ($moderator) {
 if ($torrents['nuked'] == 'yes') {
     $HTMLOUT .= "
             <tr>
-                <td class='rowhead'><b>Nuked</b></td><td><img src='{$site_config['pic_base_url']}nuked.gif' alt='Nuked' class='tooltipper' title='Nuked' /></td>
+                <td class='rowhead'><b>Nuked</b></td><td><img src='{$site_config['pic_baseurl']}nuked.gif' alt='Nuked' class='tooltipper' title='Nuked' /></td>
             </tr>";
 }
 if (!empty($torrents['nukereason'])) {
@@ -858,35 +858,35 @@ $HTMLOUT .= "
                     <div class='level-center'>
                         <a class='index' href='{$site_config['baseurl']}/comment.php?action=add&amp;tid=$id'><span class='has-text-primary size_6'>Use the BBcode Editor</span></a>
                         <a class='index' href='{$site_config['baseurl']}/takethankyou.php?id=" . $id . "'>
-                            <img src='{$site_config['pic_base_url']}smilies/thankyou.gif' class='tooltipper' alt='Thank You' title='Give a quick \"Thank You\"' />
+                            <img src='{$site_config['pic_baseurl']}smilies/thankyou.gif' class='tooltipper' alt='Thank You' title='Give a quick \"Thank You\"' />
                         </a>
                     </div>
                     <textarea name='body' class='w-100' rows='6'></textarea>
                     <input type='hidden' name='tid' value='" . htmlsafechars($id) . "' />
                     <div class='has-text-centered'>
-                        <a href=\"javascript:SmileIT(':-)','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/smile1.gif' alt='Smile' class='tooltipper' title='Smile' /></a>
-                        <a href=\"javascript:SmileIT(':smile:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/smile2.gif' alt='Smiling' class='tooltipper' title='Smiling' /></a>
-                        <a href=\"javascript:SmileIT(':-D','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/grin.gif' alt='Grin' class='tooltipper' title='Grin' /></a>
-                        <a href=\"javascript:SmileIT(':lol:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/laugh.gif' alt='Laughing' class='tooltipper' title='Laughing' /></a>
-                        <a href=\"javascript:SmileIT(':w00t:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/w00t.gif' alt='W00t' class='tooltipper' title='W00t' /></a>
-                        <a href=\"javascript:SmileIT(':blum:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/blum.gif' alt='Rasp' class='tooltipper' title='Rasp' /></a>
-                        <a href=\"javascript:SmileIT(';-)','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/wink.gif' alt='Wink' class='tooltipper' title='Wink' /></a>
-                        <a href=\"javascript:SmileIT(':devil:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/devil.gif' alt='Devil' class='tooltipper' title='Devil' /></a>
-                        <a href=\"javascript:SmileIT(':yawn:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/yawn.gif' alt='Yawn' class='tooltipper' title='Yawn' /></a>
-                        <a href=\"javascript:SmileIT(':-/','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/confused.gif' alt='Confused' class='tooltipper' title='Confused' /></a>
-                        <a href=\"javascript:SmileIT(':o)','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/clown.gif' alt='Clown' class='tooltipper' title='Clown' /></a>
-                        <a href=\"javascript:SmileIT(':innocent:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/innocent.gif' alt='Innocent' class='tooltipper' title='innocent' /></a>
-                        <a href=\"javascript:SmileIT(':whistle:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/whistle.gif' alt='Whistle' class='tooltipper' title='Whistle' /></a>
-                        <a href=\"javascript:SmileIT(':unsure:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/unsure.gif' alt='Unsure' class='tooltipper' title='Unsure' /></a>
-                        <a href=\"javascript:SmileIT(':blush:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/blush.gif' alt='Blush' class='tooltipper' title='Blush' /></a>
-                        <a href=\"javascript:SmileIT(':hmm:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/hmm.gif' alt='Hmm' class='tooltipper' title='Hmm' /></a>
-                        <a href=\"javascript:SmileIT(':hmmm:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/hmmm.gif' alt='Hmmm' class='tooltipper' title='Hmmm' /></a>
-                        <a href=\"javascript:SmileIT(':huh:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/huh.gif' alt='Huh' class='tooltipper' title='Huh' /></a>
-                        <a href=\"javascript:SmileIT(':look:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/look.gif' alt='Look' class='tooltipper' title='Look' /></a>
-                        <a href=\"javascript:SmileIT(':rolleyes:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/rolleyes.gif' alt='Roll Eyes' class='tooltipper' title='Roll Eyes' /></a>
-                        <a href=\"javascript:SmileIT(':kiss:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/kiss.gif' alt='Kiss' class='tooltipper' title='Kiss' /></a>
-                        <a href=\"javascript:SmileIT(':blink:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/blink.gif' alt='Blink' class='tooltipper' title='Blink' /></a>
-                        <a href=\"javascript:SmileIT(':baby:','comment','body')\"><img src='{$site_config['pic_base_url']}smilies/baby.gif' alt='Baby' class='tooltipper' title='Baby' /></a>
+                        <a href=\"javascript:SmileIT(':-)','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/smile1.gif' alt='Smile' class='tooltipper' title='Smile' /></a>
+                        <a href=\"javascript:SmileIT(':smile:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/smile2.gif' alt='Smiling' class='tooltipper' title='Smiling' /></a>
+                        <a href=\"javascript:SmileIT(':-D','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/grin.gif' alt='Grin' class='tooltipper' title='Grin' /></a>
+                        <a href=\"javascript:SmileIT(':lol:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/laugh.gif' alt='Laughing' class='tooltipper' title='Laughing' /></a>
+                        <a href=\"javascript:SmileIT(':w00t:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/w00t.gif' alt='W00t' class='tooltipper' title='W00t' /></a>
+                        <a href=\"javascript:SmileIT(':blum:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/blum.gif' alt='Rasp' class='tooltipper' title='Rasp' /></a>
+                        <a href=\"javascript:SmileIT(';-)','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/wink.gif' alt='Wink' class='tooltipper' title='Wink' /></a>
+                        <a href=\"javascript:SmileIT(':devil:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/devil.gif' alt='Devil' class='tooltipper' title='Devil' /></a>
+                        <a href=\"javascript:SmileIT(':yawn:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/yawn.gif' alt='Yawn' class='tooltipper' title='Yawn' /></a>
+                        <a href=\"javascript:SmileIT(':-/','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/confused.gif' alt='Confused' class='tooltipper' title='Confused' /></a>
+                        <a href=\"javascript:SmileIT(':o)','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/clown.gif' alt='Clown' class='tooltipper' title='Clown' /></a>
+                        <a href=\"javascript:SmileIT(':innocent:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/innocent.gif' alt='Innocent' class='tooltipper' title='innocent' /></a>
+                        <a href=\"javascript:SmileIT(':whistle:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/whistle.gif' alt='Whistle' class='tooltipper' title='Whistle' /></a>
+                        <a href=\"javascript:SmileIT(':unsure:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/unsure.gif' alt='Unsure' class='tooltipper' title='Unsure' /></a>
+                        <a href=\"javascript:SmileIT(':blush:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/blush.gif' alt='Blush' class='tooltipper' title='Blush' /></a>
+                        <a href=\"javascript:SmileIT(':hmm:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/hmm.gif' alt='Hmm' class='tooltipper' title='Hmm' /></a>
+                        <a href=\"javascript:SmileIT(':hmmm:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/hmmm.gif' alt='Hmmm' class='tooltipper' title='Hmmm' /></a>
+                        <a href=\"javascript:SmileIT(':huh:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/huh.gif' alt='Huh' class='tooltipper' title='Huh' /></a>
+                        <a href=\"javascript:SmileIT(':look:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/look.gif' alt='Look' class='tooltipper' title='Look' /></a>
+                        <a href=\"javascript:SmileIT(':rolleyes:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/rolleyes.gif' alt='Roll Eyes' class='tooltipper' title='Roll Eyes' /></a>
+                        <a href=\"javascript:SmileIT(':kiss:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/kiss.gif' alt='Kiss' class='tooltipper' title='Kiss' /></a>
+                        <a href=\"javascript:SmileIT(':blink:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/blink.gif' alt='Blink' class='tooltipper' title='Blink' /></a>
+                        <a href=\"javascript:SmileIT(':baby:','comment','body')\"><img src='{$site_config['pic_baseurl']}smilies/baby.gif' alt='Baby' class='tooltipper' title='Baby' /></a>
                     </div>
                     <div class='has-text-centered'>
                         <input class='button is-small is-primary margin20' type='submit' value='Submit' />

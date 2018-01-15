@@ -80,12 +80,12 @@ foreach ($top5torrents as $top5torrentarr) {
     if (strlen($torrname) > 50) {
         $torrname = substr($torrname, 0, 50) . '...';
     }
-    $poster = empty($poster) ? "<img src='{$site_config['pic_base_url']}noposter.png' class='tooltip-poster' />" : "<img src='" . htmlsafechars($poster) . "' class='tooltip-poster' />";
+    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . htmlsafechars($poster) . "' class='tooltip-poster' />";
 
     $HTMLOUT .= "
                     <tr>
                         <td class='has-text-centered'>
-                            <img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' />
+                            <img src='{$site_config['pic_baseurl']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' />
                         </td>
                         <td>
                             <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>
@@ -149,12 +149,12 @@ foreach ($last5torrents as $last5torrent) {
     if (strlen($torrname) > 50) {
         $torrname = substr($torrname, 0, 50) . '...';
     }
-    $poster = empty($poster) ? "<img src='{$site_config['pic_base_url']}noposter.png' class='tooltip-poster' />" : "<img src='" . htmlsafechars($poster) . "' class='tooltip-poster' />";
+    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . htmlsafechars($poster) . "' class='tooltip-poster' />";
 
     $HTMLOUT .= "
                         <tr id='id_{$id}_tooltip'>
                             <td class='has-text-centered'>
-                                <img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' />
+                                <img src='{$site_config['pic_baseurl']}caticons/" . get_categorie_icons() . "/" . htmlsafechars($image) . "' class='tooltipper' alt='" . htmlsafechars($cat) . "' title='" . htmlsafechars($cat) . "' />
                             </td>
                             <td>
                                 <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>

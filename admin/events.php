@@ -180,25 +180,25 @@ if (!is_array($scheduled_events)) {
         $doubleUpload = (bool)(int)$scheduled_event['duploadEnabled'];
         $halfdownload = (bool)(int)$scheduled_event['hdownEnabled'];
         if ($freeleech) {
-            $freeleech = "<img src='{$site_config['pic_base_url']}on.gif' alt='{$lang['events_fenable']}' title='{$lang['events_enable']}' />";
+            $freeleech = "<img src='{$site_config['pic_baseurl']}on.gif' alt='{$lang['events_fenable']}' title='{$lang['events_enable']}' />";
         } else {
-            $freeleech = "<img src='{$site_config['pic_base_url']}off.gif' alt='{$lang['events_fdisable']}' title='{$lang['events_disable']}' />";
+            $freeleech = "<img src='{$site_config['pic_baseurl']}off.gif' alt='{$lang['events_fdisable']}' title='{$lang['events_disable']}' />";
         }
         if ($doubleUpload) {
-            $doubleUpload = "<img src='{$site_config['pic_base_url']}on.gif' alt='{$lang['events_duenable']}' title='{$lang['events_enable']}' />";
+            $doubleUpload = "<img src='{$site_config['pic_baseurl']}on.gif' alt='{$lang['events_duenable']}' title='{$lang['events_enable']}' />";
         } else {
-            $doubleUpload = "<img src='{$site_config['pic_base_url']}off.gif' alt='{$lang['events_dudisable']}' title='{$lang['events_disable']}' />";
+            $doubleUpload = "<img src='{$site_config['pic_baseurl']}off.gif' alt='{$lang['events_dudisable']}' title='{$lang['events_disable']}' />";
         }
         if ($halfdownload) {
-            $halfdownload = "<img src='{$site_config['pic_base_url']}on.gif' alt='{$lang['events_henable']}' title='{$lang['events_enable']}' />";
+            $halfdownload = "<img src='{$site_config['pic_baseurl']}on.gif' alt='{$lang['events_henable']}' title='{$lang['events_enable']}' />";
         } else {
-            $halfdownload = "<img src='{$site_config['pic_base_url']}off.gif' alt='{$lang['events_hdisable']}' title='{$lang['events_disable']}' />";
+            $halfdownload = "<img src='{$site_config['pic_baseurl']}off.gif' alt='{$lang['events_hdisable']}' title='{$lang['events_disable']}' />";
         }
         $showdates = (bool)(int)$scheduled_event['displayDates'];
         if ($showdates) {
-            $showdates = "<img src='{$site_config['pic_base_url']}on.gif' alt='{$lang['events_daenable']}' title='{$lang['events_enable']}' />";
+            $showdates = "<img src='{$site_config['pic_baseurl']}on.gif' alt='{$lang['events_daenable']}' title='{$lang['events_enable']}' />";
         } else {
-            $showdates = "<img src='{$site_config['pic_base_url']}off.gif' alt='{$lang['events_dadisable']}' title='{$lang['events_disable']}' />";
+            $showdates = "<img src='{$site_config['pic_baseurl']}off.gif' alt='{$lang['events_dadisable']}' title='{$lang['events_disable']}' />";
         }
         $HTMLOUT .= "<tr><td align='center'>{$username}</td><td align='center'>{$text}</td><td align='center'>{$start}</td><td align='center'>{$end}</td><td align='center'>{$freeleech}</td><td align='center'>{$doubleUpload}</td><td align='center'>{$halfdownload}</td><td align='center'>{$showdates}</td><td align='center'><input type='submit' class='button is-small' name='editEvent_$id' value='{$lang['events_edit']}' /> <input type='submit' class='button is-small' onclick='return checkAllGood('$text')' name='removeEvent_$id' value='{$lang['events_remove']}' /></td></tr>";
     }

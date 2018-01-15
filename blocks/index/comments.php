@@ -52,12 +52,12 @@ foreach ($comments as $comment) {
     $user = $torrent = $id = $cat = $image = $poster = $name = $toradd = $seeders = $leechers = $class = $username = $user_likes = '';
     extract($comment);
     $user = $anonymous === 'yes' ? 'Anonymous' : format_username($user);
-    $poster = empty($poster) ? "<img src='{$site_config['pic_base_url']}noposter.png' class='tooltip-poster' />" : "<img src='" . htmlsafechars($poster) . "' class='tooltip-poster' />";
+    $poster = empty($poster) ? "<img src='{$site_config['pic_baseurl']}noposter.png' class='tooltip-poster' />" : "<img src='" . htmlsafechars($poster) . "' class='tooltip-poster' />";
 
     $body .= "
                         <tr>
                             <td class='has-text-centered'>
-                                <img src='{$site_config['pic_base_url']}caticons/" . get_categorie_icons() . "/$image' class='tooltipper' alt='$cat' title='$cat' />
+                                <img src='{$site_config['pic_baseurl']}caticons/" . get_categorie_icons() . "/$image' class='tooltipper' alt='$cat' title='$cat' />
                             </td>
                             <td>
                                 <a href='{$site_config['baseurl']}/details.php?id=$torrent&amp;hit=1'>

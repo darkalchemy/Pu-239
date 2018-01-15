@@ -23,7 +23,7 @@ function achievement_shouts_update($data)
             $shouts = (int)$arr['dailyshouts'];
             $lvl = (int)$arr['dailyshoutlvl'];
             if ($shouts >= 1 && $lvl == 0) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]AJAX Chat Spammer Level 1[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/spam1.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]AJAX Chat Spammer Level 1[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/spam1.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'AJAX Chat Spammer LVL1\', \'spam1.png\' , \'Made at least 10 posts to AJAX Chat today.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',1, ' . $points . ')';
@@ -31,7 +31,7 @@ function achievement_shouts_update($data)
                 $cache->delete('user_achievement_points_' . $arr['userid']);
             }
             if ($shouts >= 25 && $lvl == 1) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]AJAX Chat Spammer Level 2[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/spam2.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]AJAX Chat Spammer Level 2[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/spam2.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'AJAX Chat Spammer LVL2\', \'spam2.png\' , \'Made at least 25 posts to AJAX Chat today.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',2, ' . $points . ')';
@@ -39,7 +39,7 @@ function achievement_shouts_update($data)
                 $cache->delete('user_achievement_points_' . $arr['userid']);
             }
             if ($shouts >= 50 && $lvl == 2) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]AJAX Chat Spammer Level 3[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/spam3.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]AJAX Chat Spammer Level 3[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/spam3.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'AJAX Chat Spammer LVL3\', \'spam3.png\' , \'Made at least 50 posts to AJAX Chat today.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',3, ' . $points . ')';
@@ -47,7 +47,7 @@ function achievement_shouts_update($data)
                 $cache->delete('user_achievement_points_' . $arr['userid']);
             }
             if ($shouts >= 75 && $lvl == 3) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]AJAX Chat Spammer Level 4[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/spam4.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]AJAX Chat Spammer Level 4[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/spam4.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'AJAX Chat Spammer LVL4\', \'spam4.png\' , \'Made at least 75 posts to AJAX Chat today.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',4, ' . $points . ')';
@@ -55,7 +55,7 @@ function achievement_shouts_update($data)
                 $cache->delete('user_achievement_points_' . $arr['userid']);
             }
             if ($shouts >= 100 && $lvl == 4) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]AJAX Chat Spammer Level 5[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/spam5.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]AJAX Chat Spammer Level 5[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/spam5.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'AJAX Chat Spammer LVL5\', \'spam5.png\' , \'Made at least 100 posts to AJAX Chat today.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',5, ' . $points . ')';

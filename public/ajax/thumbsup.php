@@ -19,8 +19,8 @@ $thumbsup = mysqli_num_rows($res);
 if ($thumbsup == 0) {
     sql_query('INSERT INTO thumbsup (userid, torrentid) VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ')') or sqlerr(__FILE__, __LINE__);
     $cache->delete('thumbs_up_' . $id);
-    $HTML .= "<img src='{$site_config['pic_base_url']}thumb_up.png' alt='{$lang['ajaxthumbs_up']}' class='tooltipper' title='{$lang['ajaxthumbs_up']}' width='12' height='12' /> (" . ($wtf + 1) . ')';
+    $HTML .= "<img src='{$site_config['pic_baseurl']}thumb_up.png' alt='{$lang['ajaxthumbs_up']}' class='tooltipper' title='{$lang['ajaxthumbs_up']}' width='12' height='12' /> (" . ($wtf + 1) . ')';
 } else {
-    $HTML .= "<img src='{$site_config['pic_base_url']}thumb_up.png' alt='{$lang['ajaxthumbs_up']}' class='tooltipper' title='{$lang['ajaxthumbs_up']}' width='12' height='12' /> ({$wtf})";
+    $HTML .= "<img src='{$site_config['pic_baseurl']}thumb_up.png' alt='{$lang['ajaxthumbs_up']}' class='tooltipper' title='{$lang['ajaxthumbs_up']}' width='12' height='12' /> ({$wtf})";
 }
 echo $HTML;

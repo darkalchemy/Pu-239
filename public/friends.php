@@ -169,7 +169,7 @@ if (mysqli_num_rows($res) == 0) {
 } else {
     while ($friendp = mysqli_fetch_assoc($res)) {
         $dt = TIME_NOW - 180;
-        $online = ($friendp['last_access'] >= $dt && $friendp['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_base_url'] . 'staff/online.png" alt="Online" class="tooltipper" title="Online" />' : '<img src="' . $site_config['pic_base_url'] . 'staff/offline.png" alt="Offline" class="tooltipper" title="Offline" />');
+        $online = ($friendp['last_access'] >= $dt && $friendp['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_baseurl'] . 'staff/online.png" alt="Online" class="tooltipper" title="Online" />' : '<img src="' . $site_config['pic_baseurl'] . 'staff/offline.png" alt="Offline" class="tooltipper" title="Offline" />');
         $title = htmlsafechars($friendp['title']);
         if (!$title) {
             $title = get_user_class_name($friendp['class']);
@@ -179,7 +179,7 @@ if (mysqli_num_rows($res) == 0) {
         $block = " <span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?action=add&amp;type=block&amp;targetid=" . (int)$friendp['id'] . "'>Block</a></span>";
         $avatar = ($CURUSER['avatars'] == 'yes' ? htmlsafechars($friendp['avatar']) : '');
         if (!$avatar) {
-            $avatar = "{$site_config['pic_base_url']}forumicons/default_avatar.gif";
+            $avatar = "{$site_config['pic_baseurl']}forumicons/default_avatar.gif";
         }
         $reject = " <span class='button is-small'><a href='{$site_config['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=friend&amp;targetid=" . (int)$friendp['id'] . "'>{$lang['friends_reject']}</a></span>";
         $friendsp .= "<div>" . ($avatar ? "<img width='50px' src='$avatar' alt='Avatar' />" : '') . "<p >{$linktouser}<br><br>{$confirm}{$block}{$reject}</p></div><br>";
@@ -212,7 +212,7 @@ if (mysqli_num_rows($res) == 0) {
 } else {
     while ($friend = mysqli_fetch_assoc($res)) {
         $dt = TIME_NOW - 180;
-        $online = ($friend['last_access'] >= $dt && $friend['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_base_url'] . 'staff/online.png" alt="Online" class="tooltipper" title="Online" />' : '<img src="' . $site_config['pic_base_url'] . 'staff/offline.png" alt="Offline" class="tooltipper" title="Offline" />');
+        $online = ($friend['last_access'] >= $dt && $friend['perms'] < bt_options::PERMS_STEALTH ? ' <img src="' . $site_config['pic_baseurl'] . 'staff/online.png" alt="Online" class="tooltipper" title="Online" />' : '<img src="' . $site_config['pic_baseurl'] . 'staff/offline.png" alt="Offline" class="tooltipper" title="Offline" />');
         $title = htmlsafechars($friend['title']);
         if (!$title) {
             $title = get_user_class_name($friend['class']);
@@ -223,7 +223,7 @@ if (mysqli_num_rows($res) == 0) {
         $pm_link = " <span class='button is-small'><a href='{$site_config['baseurl']}/pm_system.php?action=send_message&amp;receiver=" . (int)$friend['id'] . "'>{$lang['friends_pm']}</a></span>";
         $avatar = ($CURUSER['avatars'] == 'yes' ? htmlsafechars($friend['avatar']) : '');
         if (!$avatar) {
-            $avatar = "{$site_config['pic_base_url']}forumicons/default_avatar.gif";
+            $avatar = "{$site_config['pic_baseurl']}forumicons/default_avatar.gif";
         }
         $friends .= "<div>" . ($avatar ? "<img width='50px' src='$avatar' alt='' />" : '') . "<p >{$linktouser} {$online}<br><br>{$delete}{$pm_link}</p></div><br>";
     }
@@ -245,7 +245,7 @@ $country = '';
 $countries = countries();
 foreach ($countries as $cntry) {
     if ($cntry['id'] == $user['country']) {
-        $country = "<img src='{$site_config['pic_base_url']}flag/{$cntry['flagpic']}' alt='" . htmlsafechars($cntry['name']) . "' />";
+        $country = "<img src='{$site_config['pic_baseurl']}flag/{$cntry['flagpic']}' alt='" . htmlsafechars($cntry['name']) . "' />";
         break;
     }
 }

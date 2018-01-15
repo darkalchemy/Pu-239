@@ -119,7 +119,7 @@ function insert_smilies_frame()
     $htmlout .= begin_table(false);
     $htmlout .= "<tr><td class='colhead'>Type...</td><td class='colhead'>To make a...</td></tr>\n";
     foreach ($smilies as $code => $url) {
-        $htmlout .= "<tr><td>$code</td><td><img src=\"{$site_config['pic_base_url']}smilies/{$url}\" alt='' /></td></tr>\n";
+        $htmlout .= "<tr><td>$code</td><td><img src=\"{$site_config['pic_baseurl']}smilies/{$url}\" alt='' /></td></tr>\n";
     }
     $htmlout .= end_table();
     $htmlout .= end_frame();

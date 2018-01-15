@@ -51,7 +51,7 @@ if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
                         <span class='bordered level-center'>
                             <input type='checkbox' name='cats[]' id='cat_" . (int)$cat['id'] . "' value='" . (int)$cat['id'] . "' />
                             <span class='cat-image left10'>
-                                <img class='radius-sm' src='{$site_config['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' />
+                                <img class='radius-sm' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' />
                             </span>
                         </span>
                     </span>";

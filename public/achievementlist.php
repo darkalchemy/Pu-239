@@ -35,7 +35,7 @@ if (mysqli_num_rows($res) == 0) {
         $notes = htmlsafechars($arr['notes']);
         $clienticon = '';
         if ($arr['clienticon'] != '') {
-            $clienticon = "<img src='" . $site_config['pic_base_url'] . 'achievements/' . htmlsafechars($arr['clienticon']) . "' title='" . htmlsafechars($arr['achievname']) . "' alt='" . htmlsafechars($arr['achievname']) . "' />";
+            $clienticon = "<img src='" . $site_config['pic_baseurl'] . 'achievements/' . htmlsafechars($arr['clienticon']) . "' title='" . htmlsafechars($arr['achievname']) . "' alt='" . htmlsafechars($arr['achievname']) . "' />";
         }
         $body .= "
             <tr>

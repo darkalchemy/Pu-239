@@ -146,7 +146,7 @@ if (mysqli_num_rows($result) != 0) {
 <td>' . htmlsafechars(mksize($row['uploaded'])) . '</td>
 ' . ($site_config['ratio_free'] == true ? '' : '<td>' . htmlsafechars(mksize($row['downloaded'])) . '</td>') . '
 <td>' . htmlsafechars($row['torrent_pass']) . '</td>
-<td>' . ($row['seeders'] >= 1 ? "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
+<td>' . ($row['seeders'] >= 1 ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
 <td>' . get_date($row['mtime'], 'DATE', 0, 1) . '</td>
 <td>' . htmlsafechars(mksize($row['upspeed'])) . '/s</td>
 ' . ($site_config['ratio_free'] == true ? '' : '<td>' . htmlsafechars(mksize($row['downspeed'])) . '/s</td>') . '
@@ -161,8 +161,8 @@ if (mysqli_num_rows($result) != 0) {
 <td>' . htmlsafechars(mksize($row['uploaded'])) . '</td>
 ' . ($site_config['ratio_free'] == true ? '' : '<td>' . htmlsafechars(mksize($row['downloaded'])) . '</td>') . '
 <td>' . htmlsafechars($row['torrent_pass']) . '</td>
-<td>' . ($row['connectable'] == 'yes' ? "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
-<td>' . ($row['seeder'] == 'yes' ? "<img src='" . $site_config['pic_base_url'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_base_url'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
+<td>' . ($row['connectable'] == 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
+<td>' . ($row['seeder'] == 'yes' ? "<img src='" . $site_config['pic_baseurl'] . "aff_tick.gif' alt='{$lang['wpeers_yes']}' title='{$lang['wpeers_yes']}' />" : "<img src='" . $site_config['pic_baseurl'] . "aff_cross.gif' alt='{$lang['wpeers_no']}' title='{$lang['wpeers_no']}' />") . '</td>
 <td>' . get_date($row['started'], 'DATE') . '</td>
 <td>' . get_date($row['last_action'], 'DATE', 0, 1) . '</td>
 <td>' . htmlsafechars(mksize($row['uploadoffset'])) . '</td>

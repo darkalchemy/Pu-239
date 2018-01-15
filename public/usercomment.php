@@ -45,7 +45,7 @@ function usercommenttable($rows)
         $htmlout .= ' ' . get_date($row['added'], 'DATE', 0, 1) . '' . ($userid == $CURUSER['id'] || $row['user'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=edit&amp;cid=" . (int)$row['id'] . "'>Edit</a>]" : '') . ($userid == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=delete&amp;cid=" . (int)$row['id'] . "'>Delete</a>]" : '') . ($row['editedby'] && $CURUSER['class'] >= UC_STAFF ? " - [<a href='usercomment.php?action=vieworiginal&amp;cid=" . (int)$row['id'] . "'>View original</a>]" : '') . "</p>\n";
         $avatar = ($CURUSER['avatars'] == 'yes' ? htmlsafechars($row['avatar']) : '');
         if (!$avatar) {
-            $avatar = "{$site_config['pic_base_url']}forumicons/default_avatar.gif";
+            $avatar = "{$site_config['pic_baseurl']}forumicons/default_avatar.gif";
         }
         $text = format_comment($row['text']);
         if ($row['editedby']) {

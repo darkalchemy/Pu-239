@@ -34,7 +34,7 @@ function achievement_seedtime_update($data)
             $dayseed = (int)$arr['dayseed'];
             $arr['userid'] = (int)$arr['userid'];
             if ($dayseed == 0 && $timeseeded >= $seedtime) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]7 Day Seeder[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/7dayseed.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]7 Day Seeder[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/7dayseed.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'7 Day Seeder\', \'7dayseed.png\' , \'Seeded a snatched torrent for a total of at least 7 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',7, ' . $points . ')';
@@ -42,7 +42,7 @@ function achievement_seedtime_update($data)
                 $cache->delete('user_achievement_points_' . $arr['userid']);
             }
             if ($dayseed == 7 && $timeseeded >= $seedtime2) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]14 Day Seeder[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/14dayseed.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]14 Day Seeder[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/14dayseed.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'14 Day Seeder\', \'14dayseed.png\' , \'Seeded a snatched torrent for a total of at least 14 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',14, ' . $points . ')';
@@ -50,7 +50,7 @@ function achievement_seedtime_update($data)
                 $cache->delete('user_achievement_points_' . $arr['userid']);
             }
             if ($dayseed == 14 && $timeseeded >= $seedtime3) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]21 Day Seeder[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/21dayseed.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]21 Day Seeder[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/21dayseed.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'21 Day Seeder\', \'21dayseed.png\' , \'Seeded a snatched torrent for a total of at least 21 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',21, ' . $points . ')';
@@ -58,7 +58,7 @@ function achievement_seedtime_update($data)
                 $cache->delete('user_achievement_points_' . $arr['userid']);
             }
             if ($dayseed == 21 && $timeseeded >= $seedtime4) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]28 Day Seeder[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/28dayseed.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]28 Day Seeder[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/28dayseed.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'28 Day Seeder\', \'28dayseed.png\' , \'Seeded a snatched torrent for a total of at least 28 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',28, ' . $points . ')';
@@ -66,7 +66,7 @@ function achievement_seedtime_update($data)
                 $cache->delete('user_achievement_points_' . $arr['userid']);
             }
             if ($dayseed == 28 && $timeseeded >= $seedtime5) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]45 Day Seeder[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/45dayseed.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]45 Day Seeder[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/45dayseed.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'45 Day Seeder\', \'45dayseed.png\' , \'Seeded a snatched torrent for a total of at least 45 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',45, ' . $points . ')';
@@ -74,7 +74,7 @@ function achievement_seedtime_update($data)
                 $cache->delete('user_achievement_points_' . $arr['userid']);
             }
             if ($dayseed == 45 && $timeseeded >= $seedtime6) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]60 Day Seeder[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/60dayseed.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]60 Day Seeder[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/60dayseed.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'60 Day Seeder\', \'60dayseed.png\' , \'Seeded a snatched torrent for a total of at least 60 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',60, ' . $points . ')';
@@ -82,7 +82,7 @@ function achievement_seedtime_update($data)
                 $cache->delete('user_achievement_points_' . $arr['userid']);
             }
             if ($dayseed == 60 && $timeseeded >= $seedtime7) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]90 Day Seeder[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/90dayseed.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]90 Day Seeder[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/90dayseed.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'90 Day Seeder\', \'90dayseed.png\' , \'Seeded a snatched torrent for a total of at least 90 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',90, ' . $points . ')';
@@ -90,7 +90,7 @@ function achievement_seedtime_update($data)
                 $cache->delete('user_achievement_points_' . $arr['userid']);
             }
             if ($dayseed == 90 && $timeseeded >= $seedtime8) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]120 Day Seeder[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/120dayseed.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]120 Day Seeder[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/120dayseed.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'120 Day Seeder\', \'120dayseed.png\' , \'Seeded a snatched torrent for a total of at least 120 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',120, ' . $points . ')';
@@ -98,7 +98,7 @@ function achievement_seedtime_update($data)
                 $cache->delete('user_achievement_points_' . $arr['userid']);
             }
             if ($dayseed == 120 && $timeseeded >= $seedtime9) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]200 Day Seeder[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/200dayseed.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]200 Day Seeder[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/200dayseed.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'200 Day Seeder\', \'200dayseed.png\' , \'Seeded a snatched torrent for a total of at least 200 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',200, ' . $points . ')';
@@ -106,7 +106,7 @@ function achievement_seedtime_update($data)
                 $cache->delete('user_achievement_points_' . $arr['userid']);
             }
             if ($dayseed == 200 && $timeseeded >= $seedtime10) {
-                $msg = sqlesc('Congratulations, you have just earned the [b]1 Year Seeder[/b] achievement. :) [img]' . $site_config['pic_base_url'] . 'achievements/365dayseed.png[/img]');
+                $msg = sqlesc('Congratulations, you have just earned the [b]1 Year Seeder[/b] achievement. :) [img]' . $site_config['pic_baseurl'] . 'achievements/365dayseed.png[/img]');
                 $msgs_buffer[] = "(0, {$arr['userid']} , $dt, $msg, $subject)";
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'365 Day Seeder\', \'365dayseed.png\' , \'Seeded a snatched torrent for a total of at least 1 Year.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',365, ' . $points . ')';

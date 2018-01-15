@@ -28,14 +28,14 @@ check_user_status();
                 color: "#" + $('#fColor').val() + "",
                 onChange: function (hsb, hex, rgb) {
                     $('#fColor').val(hex);
-                    //update(); 
+                    //update();
                 }
             });
             $('#colorSelector2').ColorPicker({
                 color: "#" + $('#bColor').val() + "",
                 onChange: function (hsb, hex, rgb) {
                     $('#bColor').val(hex);
-                    //update(); 
+                    //update();
                 }
             });
             $('div.colorpicker_color').mouseup(function () {
@@ -72,21 +72,21 @@ check_user_status();
                         <td nowrap="nowrap" class="info">Background color</td>
                         <td width="100%"><input type="text" id="bgColor" readonly="readonly" size="25"/>
                             <img id="colorSelector" title="Select color"
-                                 src="{$site_config['pic_base_url']}color_wheel.png" width="16"
+                                 src="{$site_config['pic_baseurl']}color_wheel.png" width="16"
                                  height="16" alt="Color Wheel"/></td>
                     </tr>
                     <tr>
                         <td nowrap="nowrap" class="info">Font color</td>
                         <td width="100%"><input type="text" id="fColor" readonly="readonly" size="25"/>
                             <img id="colorSelector1" title="Select color"
-                                 src="{$site_config['pic_base_url']}color_wheel.png" width="16"
+                                 src="{$site_config['pic_baseurl']}color_wheel.png" width="16"
                                  height="16" alt="Color Wheel"/></td>
                     </tr>
                     <tr>
                         <td nowrap="nowrap" class="info">Border color</td>
                         <td width="100%"><input type="text" id="bColor" readonly="readonly" size="25"/>
                             <img id="colorSelector2" title="Select color"
-                                 src="{$site_config['pic_base_url']}color_wheel.png" width="16"
+                                 src="{$site_config['pic_baseurl']}color_wheel.png" width="16"
                                  height="16" alt="Color Wheel"/></td>
                     </tr>
                     <tr>

@@ -267,19 +267,19 @@ elseif ($mode == 'details') {
             stderr('Sorry', 'There is no subtitle with that id');
         }
         if ($arr['lang'] == 'eng') {
-            $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/england.gif" border="0" alt="English" title="English" />';
+            $langs = '<img src="' . $site_config['pic_baseurl'] . 'flag/england.gif" border="0" alt="English" title="English" />';
         } elseif ($arr['lang'] == 'swe') {
-            $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/sweden.gif" border="0" alt="Swedish" title="Swedish" />';
+            $langs = '<img src="' . $site_config['pic_baseurl'] . 'flag/sweden.gif" border="0" alt="Swedish" title="Swedish" />';
         } elseif ($arr['lang'] == 'dan') {
-            $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/denmark.gif" border="0" alt="Danish" title="Danish" />';
+            $langs = '<img src="' . $site_config['pic_baseurl'] . 'flag/denmark.gif" border="0" alt="Danish" title="Danish" />';
         } elseif ($arr['lang'] == 'nor') {
-            $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/norway.gih" border="0" alt="Norwegian" title="Norwegian" />';
+            $langs = '<img src="' . $site_config['pic_baseurl'] . 'flag/norway.gih" border="0" alt="Norwegian" title="Norwegian" />';
         } elseif ($arr['lang'] == 'fin') {
-            $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/finland.gif" border="0" alt="Finnish" title="Finnish" />';
+            $langs = '<img src="' . $site_config['pic_baseurl'] . 'flag/finland.gif" border="0" alt="Finnish" title="Finnish" />';
         } elseif ($arr['lang'] == 'spa') {
-            $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/spain.gif" border="0" alt="Spanish" title="Spanish" />';
+            $langs = '<img src="' . $site_config['pic_baseurl'] . 'flag/spain.gif" border="0" alt="Spanish" title="Spanish" />';
         } elseif ($arr['lang'] == 'fre') {
-            $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/france.gif" border="0" alt="French" title="French" />';
+            $langs = '<img src="' . $site_config['pic_baseurl'] . 'flag/france.gif" border="0" alt="French" title="French" />';
         } else {
             $langs = '<b>Unknown</b>';
         }
@@ -290,10 +290,10 @@ elseif ($mode == 'details') {
 <br><br>
 <form action='downloadsub.php' method='post'>
 <input type='hidden' name='sid' value='" . (int)$arr['id'] . "' />
-<input type='submit' value='' style='background:url({$site_config['pic_base_url']}down.png) no-repeat; width:124px;height:25px;border:none;' />
+<input type='submit' value='' style='background:url({$site_config['pic_baseurl']}down.png) no-repeat; width:124px;height:25px;border:none;' />
 <input type='hidden' name='action' value='download' />
 </form><br>
-<a href='#' onclick=\"window.open('subtitles.php?mode=preview&amp;id=" . (int)$arr['id'] . "','','height=500,width=400,resizable=yes,scrollbars=yes')\" ><img src='{$site_config['pic_base_url']}preview.png' width='124' height='25' border='0' alt='Preview' title='Preview'  /></a>
+<a href='#' onclick=\"window.open('subtitles.php?mode=preview&amp;id=" . (int)$arr['id'] . "','','height=500,width=400,resizable=yes,scrollbars=yes')\" ><img src='{$site_config['pic_baseurl']}preview.png' width='124' height='25' border='0' alt='Preview' title='Preview'  /></a>
 </td></tr>
 <tr><td>Name :&#160;<b>" . htmlsafechars($arr['name']) . "</b></td></tr>
 <tr><td>IMDb :&#160;<a href='" . htmlsafechars($arr['imdb']) . "' target='_blank'>" . htmlsafechars($arr['imdb']) . "</a></td></tr>
@@ -306,8 +306,8 @@ elseif ($mode == 'details') {
 <tr><td>Hits :&#160;<b>" . (int)$arr['hits'] . "</b></td></tr>
 <tr><td>Uploader :&#160;<b><a href='userdetails.php?id=" . (int)$arr['owner'] . "' target='_blank'>" . htmlsafechars($arr['username']) . '</a></b>&#160;&#160;';
         if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_MODERATOR) {
-            $HTMLOUT .= "<a href='subtitles.php?mode=edit&amp;id=" . (int)$arr['id'] . "'><img src='{$site_config['pic_base_url']}edit.png' alt='Edit Sub' title='Edit Sub' style='border:none;padding:2px;' /></a>
-<a href='subtitles.php?mode=delete&amp;id=" . (int)$arr['id'] . "'><img src='{$site_config['pic_base_url']}drop.png' alt='Delete Sub' title='Delete Sub' style='border:none;padding:2px;' /></a>";
+            $HTMLOUT .= "<a href='subtitles.php?mode=edit&amp;id=" . (int)$arr['id'] . "'><img src='{$site_config['pic_baseurl']}edit.png' alt='Edit Sub' title='Edit Sub' style='border:none;padding:2px;' /></a>
+<a href='subtitles.php?mode=delete&amp;id=" . (int)$arr['id'] . "'><img src='{$site_config['pic_baseurl']}drop.png' alt='Delete Sub' title='Delete Sub' style='border:none;padding:2px;' /></a>";
         }
         $HTMLOUT .= "</td></tr>
 <tr><td>Added :&#160;<b>" . get_date($arr['added'], 'LONG', 0, 1) . '</b></td></tr>
@@ -399,34 +399,34 @@ elseif ($mode == 'details') {
             }
             $HTMLOUT .= "<td class='colhead'>Upper</td></tr>";
             if ($arr['lang'] == 'eng') {
-                $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/england.gif" border="0" alt="English" title="English" />';
+                $langs = '<img src="' . $site_config['pic_baseurl'] . 'flag/england.gif" border="0" alt="English" title="English" />';
             } elseif ($arr['lang'] == 'swe') {
-                $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/sweden.gif" border="0" alt="Swedish" title="Swedish" />';
+                $langs = '<img src="' . $site_config['pic_baseurl'] . 'flag/sweden.gif" border="0" alt="Swedish" title="Swedish" />';
             } elseif ($arr['lang'] == 'dan') {
-                $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/denmark.gif" border="0" alt="Danish" title="Danish" />';
+                $langs = '<img src="' . $site_config['pic_baseurl'] . 'flag/denmark.gif" border="0" alt="Danish" title="Danish" />';
             } elseif ($arr['lang'] == 'nor') {
-                $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/norway.gih" border="0" alt="Norwegian" title="Norwegian" />';
+                $langs = '<img src="' . $site_config['pic_baseurl'] . 'flag/norway.gih" border="0" alt="Norwegian" title="Norwegian" />';
             } elseif ($arr['lang'] == 'fin') {
-                $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/finland.gif" border="0" alt="Finnish" title="Finnish" />';
+                $langs = '<img src="' . $site_config['pic_baseurl'] . 'flag/finland.gif" border="0" alt="Finnish" title="Finnish" />';
             } elseif ($arr['lang'] == 'spa') {
-                $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/spain.gif" border="0" alt="Spanish" title="Spanish" />';
+                $langs = '<img src="' . $site_config['pic_baseurl'] . 'flag/spain.gif" border="0" alt="Spanish" title="Spanish" />';
             } elseif ($arr['lang'] == 'fre') {
-                $langs = '<img src="' . $site_config['pic_base_url'] . 'flag/france.gif" border="0" alt="French" title="French" />';
+                $langs = '<img src="' . $site_config['pic_baseurl'] . 'flag/france.gif" border="0" alt="French" title="French" />';
             } else {
                 $langs = '<b>Unknown</b>';
             }
             $HTMLOUT .= "<tr>
 <td>{$langs}</td>
 <td><a href='subtitles.php?mode=details&amp;id=" . (int)$arr['id'] . "' onmouseover=\"tip('<img src=\'" . htmlsafechars($arr['poster']) . "\' width=\'100\'>')\" onmouseout=\"untip()\">" . htmlsafechars($arr['name']) . "</a></td>
-<td><a href='" . htmlsafechars($arr['imdb']) . "'  target='_blank'><img src='{$site_config['pic_base_url']}imdb.gif' border='0' alt='Imdb' title='Imdb' /></a></td>
+<td><a href='" . htmlsafechars($arr['imdb']) . "'  target='_blank'><img src='{$site_config['pic_baseurl']}imdb.gif' border='0' alt='Imdb' title='Imdb' /></a></td>
 <td>" . get_date($arr['added'], 'LONG', 0, 1) . "</td>
 <td>" . htmlsafechars($arr['hits']) . "</td>
 <td>" . ($arr['fps'] == 0 ? 'Unknow' : htmlsafechars($arr['fps'])) . "</td>
 <td>" . ($arr['cds'] == 0 ? 'Unknow' : ($arr['cds'] == 255 ? 'More than 5 ' : htmlsafechars($arr['cds']))) . '</td>';
             if ($arr['owner'] == $CURUSER['id'] || $CURUSER['class'] > UC_STAFF) {
                 $HTMLOUT .= "<td nowrap='nowrap'>
-<a href='subtitles.php?mode=edit&amp;id=" . (int)$arr['id'] . "'><img src='{$site_config['pic_base_url']}edit.png' alt='Edit Sub' title='Edit Sub' style='border:none;padding:2px;' /></a>
-<a href='subtitles.php?mode=delete&amp;id=" . (int)$arr['id'] . "'><img src='{$site_config['pic_base_url']}drop.png' alt='Delete Sub' title='Delete Sub' style='border:none;padding:2px;' /></a>
+<a href='subtitles.php?mode=edit&amp;id=" . (int)$arr['id'] . "'><img src='{$site_config['pic_baseurl']}edit.png' alt='Edit Sub' title='Edit Sub' style='border:none;padding:2px;' /></a>
+<a href='subtitles.php?mode=delete&amp;id=" . (int)$arr['id'] . "'><img src='{$site_config['pic_baseurl']}drop.png' alt='Delete Sub' title='Delete Sub' style='border:none;padding:2px;' /></a>
 </td>";
             }
             $HTMLOUT .= "<td><a href='userdetails.php?id=" . (int)$arr['owner'] . "'>" . htmlsafechars($arr['username']) . '</a></td></tr>';

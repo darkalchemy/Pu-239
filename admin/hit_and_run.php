@@ -49,7 +49,7 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
         if ($Uid_ID !== $hit_and_run_arr['owner']) {
             $ratio_site = member_ratio($hit_and_run_arr['up'], $site_config['ratio_free'] ? '0' : $hit_and_run_arr['down']);
             $ratio_torrent = member_ratio($hit_and_run_arr['uload'], $site_config['ratio_free'] ? '0' : $hit_and_run_arr['dload']);
-            $avatar = ($CURUSER['avatars'] == 'yes' ? ($hit_and_run_arr['avatar'] == '' ? '<img src="' . $site_config['pic_base_url'] . 'forumicons/default_avatar.gif"  width="40" alt="default avatar" />' : '<img src="' . htmlsafechars($hit_and_run_arr['avatar']) . '" alt="avatar"  width="40" />') : '');
+            $avatar = ($CURUSER['avatars'] == 'yes' ? ($hit_and_run_arr['avatar'] == '' ? '<img src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif"  width="40" alt="default avatar" />' : '<img src="' . htmlsafechars($hit_and_run_arr['avatar']) . '" alt="avatar"  width="40" />') : '');
             $torrent_needed_seed_time = $hit_and_run_arr['seedtime'];
             //=== get times per class
             switch (true) {
@@ -111,8 +111,8 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
             ' . ($site_config['ratio_free'] ? '' : '' . $lang['hitnrun_downloaded'] . '' . mksize($hit_and_run_arr['dload']) . '<br>') . '
             ' . $lang['hitnrun_ratio'] . '<font color="' . get_ratio_color($ratio_torrent) . '">' . $ratio_torrent . '</font><br>
             ' . $lang['hitnrun_site_ratio'] . '<font color="' . get_ratio_color($ratio_site) . '" title="' . $lang['hitnrun_includes'] . '">' . $ratio_site . '</font></td>
-            <td><a href="pm_system.php?action=send_message&amp;receiver=' . (int)$Uid_ID . '"><img src="' . $site_config['pic_base_url'] . 'pm.gif" border="0" alt="PM" title="' . $lang['hitnrun_send'] . '" /></a><br>
-            <a class="altlink" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action2=new&amp;shit_list_id=' . (int)$Uid_ID . '&amp;return_to=staffpanel.php?tool=hit_and_run" ><img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" border="0" alt="Shit" title="' . $lang['hitnrun_shit'] . '" /></a></td></tr>';
+            <td><a href="pm_system.php?action=send_message&amp;receiver=' . (int)$Uid_ID . '"><img src="' . $site_config['pic_baseurl'] . 'pm.gif" border="0" alt="PM" title="' . $lang['hitnrun_send'] . '" /></a><br>
+            <a class="altlink" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action2=new&amp;shit_list_id=' . (int)$Uid_ID . '&amp;return_to=staffpanel.php?tool=hit_and_run" ><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" border="0" alt="Shit" title="' . $lang['hitnrun_shit'] . '" /></a></td></tr>';
         } //=== end if not owner
     } //=== if not seeding list them
 } //=== end of while loop

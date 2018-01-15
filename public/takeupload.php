@@ -2,33 +2,57 @@
 require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class.bencdec.php';
-//require_once INCL_DIR . 'function_ircbot.php';
 require_once INCL_DIR . 'function_memcache.php';
-check_user_status();
-global $CURUSER, $site_config, $cache;
+
+$owner_id = '';
+file_put_contents('/var/log/nginx/autobot.log', json_encode($_GET) . PHP_EOL, FILE_APPEND);
+file_put_contents('/var/log/nginx/autobot.log', json_encode($_POST) . PHP_EOL, FILE_APPEND);
+file_put_contents('/var/log/nginx/autobot.log', json_encode($_FILES) . PHP_EOL, FILE_APPEND);
+extract($_GET);
+unset($_GET);
+extract($_POST);
+unset($_POST);
+
+if (!empty($bot) && !empty($torrent_pass)) {
+    $owner_id = $fluent->from('users')
+        ->select(null)
+        ->select('id')
+        ->where('class > ? AND username = ? AND torrent_pass = ? AND uploadpos = 1 AND suspended = "no"', UC_UPLOADER, $bot, $torrent_pass)
+        ->fetch('id');
+} else {
+    check_user_status();
+    global $CURUSER;
+    $owner_id = $CURUSER['id'];
+}
+
+$user = get_user_data($owner_id);
+file_put_contents('/var/log/nginx/autobot.log', $owner_id . PHP_EOL, FILE_APPEND);
+
+global $site_config, $cache;
 
 ini_set('upload_max_filesize', $site_config['max_torrent_size']);
 ini_set('memory_limit', '64M');
 $lang = array_merge(load_language('global'), load_language('takeupload'));
 
-if ($CURUSER['class'] < UC_UPLOADER or $CURUSER['uploadpos'] == 0 || $CURUSER['uploadpos'] > 1 || $CURUSER['suspended'] == 'yes') {
+if ($user['class'] < UC_UPLOADER || $user['uploadpos'] == 0 || $user['uploadpos'] > 1 || $user['suspended'] == 'yes') {
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
-foreach (explode(':', 'body:type:name') as $v) {
-    if (!isset($_POST[$v])) {
-        setSessionVar('is-warning', $lang['takeupload_no_formdata']);
-        header("Location: {$site_config['baseurl']}/upload.php");
-        die();
-    }
+file_put_contents('/var/log/nginx/autobot.log', 'pass 000' . PHP_EOL, FILE_APPEND);
+if (empty($body) || empty($type) || empty($name)) {
+    setSessionVar('is-warning', $lang['takeupload_no_formdata']);
+    header("Location: {$site_config['baseurl']}/upload.php");
+    die();
 }
+file_put_contents('/var/log/nginx/autobot.log', 'pass 001' . PHP_EOL, FILE_APPEND);
 if (!isset($_FILES['file'])) {
     setSessionVar('is-warning', $lang['takeupload_no_formdata']);
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
-$url = strip_tags(isset($_POST['url']) ? trim($_POST['url']) : '');
-$poster = strip_tags(isset($_POST['poster']) ? trim($_POST['poster']) : '');
+file_put_contents('/var/log/nginx/autobot.log', 'pass 002' . PHP_EOL, FILE_APPEND);
+$url = strip_tags(isset($url) ? trim($url) : '');
+$poster = strip_tags(isset($poster) ? trim($poster) : '');
 $f = $_FILES['file'];
 $fname = unesc($f['name']);
 if (empty($fname)) {
@@ -36,33 +60,35 @@ if (empty($fname)) {
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
-if (isset($_POST['uplver']) && $_POST['uplver'] == 'yes') {
+if (isset($uplver) && $uplver == 'yes') {
     $anonymous = 'yes';
     $anon = 'Anonymous';
 } else {
     $anonymous = 'no';
-    $anon = $CURUSER['username'];
+    $anon = $user['username'];
 }
-if (isset($_POST['allow_comments']) && $_POST['allow_comments'] == 'yes') {
+if (isset($allow_comments) && $allow_comments == 'yes') {
     $allow_comments = 'no';
     $disallow = 'Yes';
 } else {
     $allow_comments = 'yes';
     $disallow = 'No';
 }
-if (isset($_POST['music'])) {
-    $genre = implode(',', $_POST['music']);
-} elseif (isset($_POST['movie'])) {
-    $genre = implode(',', $_POST['movie']);
-} elseif (isset($_POST['game'])) {
-    $genre = implode(',', $_POST['game']);
-} elseif (isset($_POST['apps'])) {
-    $genre = implode(',', $_POST['apps']);
+if (isset($music)) {
+    $genre = implode(',', $music);
+} elseif (isset($movie)) {
+    $genre = implode(',', $movie);
+} elseif (isset($game)) {
+    $genre = implode(',', $game);
+} elseif (isset($apps)) {
+    $genre = implode(',', $apps);
 } else {
     $genre = '';
 }
+file_put_contents('/var/log/nginx/autobot.log', 'pass 1' . PHP_EOL, FILE_APPEND);
+
 $nfo = sqlesc('');
-/////////////////////// NFO FILE ////////////////////////
+
 if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
     $nfofile = $_FILES['nfo'];
     if ($nfofile['name'] == '') {
@@ -88,10 +114,11 @@ if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
     }
     $nfo = sqlesc(str_replace("\x0d\x0d\x0a", "\x0d\x0a", @file_get_contents($nfofilename)));
 }
-/////////////////////// NFO FILE END /////////////////////
-/// Set Freeleech on Torrent Time Based
+
+file_put_contents('/var/log/nginx/autobot.log', 'pass 2' . PHP_EOL, FILE_APPEND);
+
 $free2 = 0;
-if (isset($_POST['free_length']) && ($free_length = (int)$_POST['free_length'])) {
+if (isset($free_length) && ($free_length = (int)$free_length)) {
     if ($free_length == 255) {
         $free2 = 1;
     } elseif ($free_length == 42) {
@@ -100,10 +127,9 @@ if (isset($_POST['free_length']) && ($free_length = (int)$_POST['free_length']))
         $free2 = (TIME_NOW + $free_length * 604800);
     }
 }
-/// end
-/// Set Silver Torrent Time Based
+
 $silver = 0;
-if (isset($_POST['half_length']) && ($half_length = (int)$_POST['half_length'])) {
+if (isset($half_length) && ($half_length = (int)$half_length)) {
     if ($half_length == 255) {
         $silver = 1;
     } elseif ($half_length == 42) {
@@ -112,10 +138,11 @@ if (isset($_POST['half_length']) && ($half_length = (int)$_POST['half_length']))
         $silver = (TIME_NOW + $half_length * 604800);
     }
 }
-/// end
-//==Xbt freetorrent
-$freetorrent = (((isset($_POST['freetorrent']) && is_valid_id($_POST['freetorrent'])) ? intval($_POST['freetorrent']) : 0));
-$descr = strip_tags(isset($_POST['body']) ? trim($_POST['body']) : '');
+
+$freetorrent = (((isset($freetorrent) && is_valid_id($freetorrent)) ? intval($freetorrent) : 0));
+$descr = strip_tags(isset($body) ? trim($body) : '');
+file_put_contents('/var/log/nginx/autobot.log', 'pass 3' . PHP_EOL, FILE_APPEND);
+
 if (!$descr) {
     if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
         $descr = preg_replace('/[^\\x20-\\x7e\\x0a\\x0d]/', ' ', $nfo);
@@ -125,33 +152,32 @@ if (!$descr) {
         die();
     }
 }
-$description = strip_tags(isset($_POST['description']) ? trim($_POST['description']) : '');
-if (isset($_POST['strip']) && $_POST['strip']) {
+$description = strip_tags(isset($description) ? trim($description) : '');
+if (isset($strip) && $strip) {
     require_once INCL_DIR . 'strip.php';
     $descr = preg_replace('/[^\\x20-\\x7e\\x0a\\x0d]/', ' ', $descr);
     strip($descr);
-    //$descr = preg_replace("/\n+/","\n",$descr);
 }
-$catid = ((int)$_POST['type']);
+$catid = (int)$type;
 if (!is_valid_id($catid)) {
     setSessionVar('is-warning', $lang['takeupload_no_cat']);
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
-$request = (((isset($_POST['request']) && is_valid_id($_POST['request'])) ? intval($_POST['request']) : 0));
-$offer = (((isset($_POST['offer']) && is_valid_id($_POST['offer'])) ? intval($_POST['offer']) : 0));
-$subs = isset($_POST['subs']) ? implode(',', $_POST['subs']) : '';
+$request = (((isset($request) && is_valid_id($request)) ? intval($request) : 0));
+$offer = (((isset($offer) && is_valid_id($offer)) ? intval($offer) : 0));
+$subs = isset($subs) ? implode(',', $subs) : '';
 $release_group_array = [
     'scene' => 1,
     'p2p'   => 1,
     'none'  => 1,
 ];
-$release_group = isset($_POST['release_group']) && isset($release_group_array[$_POST['release_group']]) ? $_POST['release_group'] : 'none';
+$release_group = isset($release_group) && isset($release_group_array[$release_group]) ? $release_group : 'none';
 $youtube = '';
-if (isset($_POST['youtube']) && preg_match($youtube_pattern, $_POST['youtube'], $temp_youtube)) {
+if (isset($youtube) && preg_match($youtube_pattern, $youtube, $temp_youtube)) {
     $youtube = $temp_youtube[0];
 }
-$tags = strip_tags(isset($_POST['tags']) ? trim($_POST['tags']) : '');
+$tags = strip_tags(isset($tags) ? trim($tags) : '');
 if (!validfilename($fname)) {
     setSessionVar('is-warning', $lang['takeupload_invalid']);
     header("Location: {$site_config['baseurl']}/upload.php");
@@ -163,8 +189,8 @@ if (!preg_match('/^(.+)\.torrent$/si', $fname, $matches)) {
     die();
 }
 $shortfname = $torrent = $matches[1];
-if (!empty($_POST['name'])) {
-    $torrent = unesc($_POST['name']);
+if (!empty($name)) {
+    $torrent = unesc($name);
 }
 $tmpname = $f['tmp_name'];
 if (!is_uploaded_file($tmpname)) {
@@ -177,7 +203,6 @@ if (!filesize($tmpname)) {
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
-// bencdec by djGrrr <3
 $dict = bencdec::decode_file($tmpname, $site_config['max_torrent_size'], bencdec::OPTION_EXTENDED_VALIDATION);
 if ($dict === false) {
     setSessionVar('is-warning', 'What did you upload? This is not a bencoded file!');
@@ -195,6 +220,8 @@ if (!isset($dict['info'])) {
 }
 $info = &$dict['info'];
 $infohash = pack('H*', sha1(bencdec::encode($info)));
+file_put_contents('/var/log/nginx/autobot.log', 'pass 4' . PHP_EOL, FILE_APPEND);
+
 if (get_row_count('torrents', "WHERE info_hash = " . sqlesc($infohash)) > 0) {
     setSessionVar('is-warning', 'This torrent has already been uploaded! Please use the search function before uploading.');
     header("Location: {$site_config['baseurl']}/upload.php");
@@ -293,6 +320,8 @@ if (isset($info['length'])) {
         ];
     }
 }
+file_put_contents('/var/log/nginx/autobot.log', 'pass 5' . PHP_EOL, FILE_APPEND);
+
 $num_pieces = $pieces_len / 20;
 $expected_pieces = (int)ceil($totallen / $plen);
 if ($num_pieces != $expected_pieces) {
@@ -300,17 +329,19 @@ if ($num_pieces != $expected_pieces) {
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
-//==
+
 $tmaker = (isset($dict['created by']) && !empty($dict['created by'])) ? sqlesc($dict['created by']) : sqlesc($lang['takeupload_unkown']);
 $dict['comment'] = ("In using this torrent you are bound by the {$site_config['site_name']} Confidentiality Agreement By Law"); // change torrent comment
-// Replace punctuation characters with spaces
+
 $visible = (XBT_TRACKER == true ? 'yes' : 'no');
 $torrent = str_replace('_', ' ', $torrent);
-$vip = (isset($_POST['vip']) ? '1' : '0');
+$vip = (isset($vip) ? '1' : '0');
+file_put_contents('/var/log/nginx/autobot.log', 'pass 6' . PHP_EOL, FILE_APPEND);
+
 $sql = 'INSERT INTO torrents (search_text, filename, owner, visible, vip, release_group, newgenre, poster, anonymous, allow_comments, info_hash, name, size, numfiles, offer, request, url, subs, descr, ori_descr, description, category, free, silver, save_as, youtube, tags, added, last_action, mtime, ctime, freetorrent, nfo, client_created_by) VALUES (' . implode(',', array_map('sqlesc', [
         searchfield("$shortfname $dname $torrent"),
         $fname,
-        $CURUSER['id'],
+        $owner_id,
         $visible,
         $vip,
         $release_group,
@@ -329,14 +360,17 @@ $sql = 'INSERT INTO torrents (search_text, filename, owner, visible, vip, releas
         $descr,
         $descr,
         $description,
-        (int)$_POST['type'],
+        (int)$type,
         $free2,
         $silver,
         $dname,
         $youtube,
         $tags,
     ])) . ', ' . TIME_NOW . ', ' . TIME_NOW . ', ' . TIME_NOW . ', ' . TIME_NOW . ", $freetorrent, $nfo, $tmaker)";
+file_put_contents('/var/log/nginx/autobot.log', $sql . PHP_EOL, FILE_APPEND);
+
 $ret = sql_query($sql) or sqlerr(__FILE__, __LINE__);
+
 if (!$ret) {
     if (((is_object($GLOBALS['___mysqli_ston'])) ? mysqli_errno($GLOBALS['___mysqli_ston']) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
         setSessionVar('is-warning', $lang['takeupload_already']);
@@ -347,22 +381,23 @@ if (!$ret) {
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
-if (XBT_TRACKER == false) {
+if (!XBT_TRACKER) {
     remove_torrent($infohash);
 }
 $id = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['___mysqli_ston']))) ? false : $___mysqli_res);
-$cache->delete('MyPeers_' . $CURUSER['id']);
+$cache->delete('MyPeers_' . $owner_id);
 $cache->delete('lastest_tor_');
 $cache->delete('last5_tor_');
 $cache->delete('scroll_tor_');
 $cache->delete('torrent_poster_count_');
-if (isset($_POST['uplver']) && $_POST['uplver'] == 'yes') {
-    $message = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] " . htmlsafechars($torrent) . '[/url] Uploaded - Anonymous User';
+if (isset($uplver) && $uplver == 'yes') {
+    $message = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] [b]" . htmlsafechars($torrent) . '[/b][/url] Uploaded by an anonymous user';
 } else {
-    $message = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] " . htmlsafechars($torrent) . '[/url] Uploaded by ' . htmlsafechars($CURUSER['username']) . '';
+    $message = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] [b]" . htmlsafechars($torrent) . '[/b][/url] Uploaded by ' . htmlsafechars($user['username']);
 }
 $messages = "{$site_config['site_name']} New Torrent: $torrent Uploaded By: $anon " . mksize($totallen) . " {$site_config['baseurl']}/details.php?id=$id";
 sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+
 /**
  * @param $arr
  * @param $id
@@ -371,6 +406,7 @@ sql_query('DELETE FROM files WHERE torrent = ' . sqlesc($id)) or sqlerr(__FILE__
  */
 function file_list($arr, $id)
 {
+    $new = [];
     foreach ($arr as $v) {
         $new[] = "($id," . sqlesc($v[0]) . ',' . $v[1] . ')';
     }
@@ -379,7 +415,7 @@ function file_list($arr, $id)
 }
 
 sql_query('INSERT INTO files (torrent, filename, size) VALUES ' . file_list($filelist, $id)) or sqlerr(__FILE__, __LINE__);
-//==
+
 $dir = $site_config['torrent_dir'] . '/' . $id . '.torrent';
 if (!bencdec::encode_file($dir, $dict)) {
     setSessionVar('is-warning', 'Could not properly encode file');
@@ -388,27 +424,23 @@ if (!bencdec::encode_file($dir, $dict)) {
 }
 @unlink($tmpname);
 chmod($dir, 0664);
-//==
+
 if ($site_config['seedbonus_on'] == 1) {
-    //===add karma
-    sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus_per_upload']) . ', numuploads = numuploads+ 1  WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    //===end
-    $update['seedbonus'] = ($CURUSER['seedbonus'] + $site_config['bonus_per_upload']);
-    $cache->update_row('userstats_' . $CURUSER['id'], [
+    sql_query('UPDATE users SET seedbonus = seedbonus + ' . sqlesc($site_config['bonus_per_upload']) . ', numuploads = numuploads+ 1  WHERE id = ' . sqlesc($owner_id)) or sqlerr(__FILE__, __LINE__);
+    $update['seedbonus'] = ($seedbonus + $site_config['bonus_per_upload']);
+    $cache->update_row('userstats_' . $owner_id, [
         'seedbonus' => $update['seedbonus'],
     ], $site_config['expires']['u_stats']);
-    $cache->update_row('user_stats_' . $CURUSER['id'], [
+    $cache->update_row('user_stats_' . $owner_id, [
         'seedbonus' => $update['seedbonus'],
     ], $site_config['expires']['user_stats']);
 }
 if ($site_config['autoshout_on'] == 1) {
     autoshout($message);
     autoshout($message, 2, 0);
-    //ircbot($messages);
 }
-//=== if it was an offer notify the folks who liked it :D
 if ($offer > 0) {
-    $res_offer = sql_query("SELECT user_id FROM offer_votes WHERE vote = 'yes' AND user_id != " . sqlesc($CURUSER['id']) . " AND offer_id = " . sqlesc($offer)) or sqlerr(__FILE__, __LINE__);
+    $res_offer = sql_query("SELECT user_id FROM offer_votes WHERE vote = 'yes' AND user_id != " . sqlesc($owner_id) . " AND offer_id = " . sqlesc($offer)) or sqlerr(__FILE__, __LINE__);
     $subject = sqlesc('An offer you voted for has been uploaded!');
     $message = sqlesc("Hi, \n An offer you were interested in has been uploaded!!! \n\n Click  [url=" . $site_config['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($torrent, ENT_QUOTES) . '[/url] to see the torrent page!');
     while ($arr_offer = mysqli_fetch_assoc($res_offer)) {
@@ -416,11 +448,10 @@ if ($offer > 0) {
     VALUES(0, ' . sqlesc($arr_offer['user_id']) . ', ' . TIME_NOW . ', ' . $message . ', ' . $subject . ', "yes", 1)') or sqlerr(__FILE__, __LINE__);
         $cache->increment('inbox_' . $arr_offer['user_id']);
     }
-    write_log('Offered torrent ' . $id . ' (' . htmlsafechars($torrent) . ') was uploaded by ' . $CURUSER['username']);
+    write_log('Offered torrent ' . $id . ' (' . htmlsafechars($torrent) . ') was uploaded by ' . $user['username']);
     $filled = 1;
 }
 $filled = 0;
-//=== if it was a request notify the folks who voted :D
 if ($request > 0) {
     $res_req = sql_query('SELECT user_id FROM request_votes WHERE vote = "yes" AND request_id = ' . sqlesc($request)) or sqlerr(__FILE__, __LINE__);
     $subject = sqlesc('A  request you were interested in has been uploaded!');
@@ -430,103 +461,14 @@ if ($request > 0) {
     VALUES(0, ' . sqlesc($arr_req['user_id']) . ', ' . TIME_NOW . ', ' . $message . ', ' . $subject . ', "yes", 1)') or sqlerr(__FILE__, __LINE__);
         $cache->increment('inbox_' . $arr_req['user_id']);
     }
-    sql_query('UPDATE requests SET filled_by_user_id = ' . sqlesc($CURUSER['id']) . ', filled_torrent_id = ' . sqlesc($id) . ' WHERE id = ' . sqlesc($request)) or sqlerr(__FILE__, __LINE__);
-    sql_query('UPDATE usersachiev SET reqfilled = reqfilled + 1 WHERE userid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
-    write_log('Request for torrent ' . $id . ' (' . htmlsafechars($torrent) . ') was filled by ' . $CURUSER['username']);
+    sql_query('UPDATE requests SET filled_by_user_id = ' . sqlesc($owner_id) . ', filled_torrent_id = ' . sqlesc($id) . ' WHERE id = ' . sqlesc($request)) or sqlerr(__FILE__, __LINE__);
+    sql_query('UPDATE usersachiev SET reqfilled = reqfilled + 1 WHERE userid = ' . sqlesc($owner_id)) or sqlerr(__FILE__, __LINE__);
+    write_log('Request for torrent ' . $id . ' (' . htmlsafechars($torrent) . ') was filled by ' . $user['username']);
     $filled = 1;
 }
 if ($filled == 0) {
-    write_log(sprintf($lang['takeupload_log'], $id, $torrent, $CURUSER['username']));
+    write_log(sprintf($lang['takeupload_log'], $id, $torrent, $user['username']));
 }
-/* RSS feeds */
-/*
-if (($fd1 = @fopen('rss.xml', 'w')) && ($fd2 = fopen('rssdd.xml', 'w'))) {
-    $cats = '';
-    $res = sql_query('SELECT id, name FROM categories') or sqlerr(__FILE__, __LINE__);
-    while ($arr = mysqli_fetch_assoc($res)) {
-        $cats[$arr['id']] = $arr['name'];
-    }
-    $s = "<?xml version=\"1.0\" encoding=\"iso-8859-1\" ?>\n<rss version=\"0.91\">\n<channel>\n" . "<title>{$site_config['site_name']}</title>\n<description>Installer09 is the best!</description>\n<link>{$site_config['baseurl']}/</link>\n";
-    @fwrite($fd1, $s);
-    @fwrite($fd2, $s);
-    $r = sql_query('SELECT id, name, descr, filename, category
-                    FROM torrents
-                    ORDER BY added DESC
-                    LIMIT 15') or sqlerr(__FILE__, __LINE__);
-    while ($a = mysqli_fetch_assoc($r)) {
-        $cat = $cats[$a['category']];
-        $s = "<item>\n<title>" . htmlsafechars($a['name'] . " ($cat)") . "</title>\n" . '<description>' . htmlsafechars($a['descr']) . "</description>\n";
-        @fwrite($fd1, $s);
-        @fwrite($fd2, $s);
-        @fwrite($fd1, "<link>{$site_config['baseurl']}/details.php?id=" . (int)$a['id'] . "&amp;hit=1</link>\n</item>\n");
-        $filename = htmlsafechars($a['filename']);
-        @fwrite($fd2, "<link>{$site_config['baseurl']}/download.php?torrent=" . (int)$a['id'] . "/$filename</link>\n</item>\n");
-    }
-    $s = "</channel>\n</rss>\n";
-    @fwrite($fd1, $s);
-    @fwrite($fd2, $s);
-    @fclose($fd1);
-    @fclose($fd2);
-}
-*/
-/* Email notifs */
-/*******************
- *
- * $res = sql_query("SELECT name FROM categories WHERE id=".sqlesc($catid)) or sqlerr(__FILE__, __LINE__);
- * $arr = mysqli_fetch_assoc($res);
- * $cat = htmlsafechars($arr["name"]);
- * $res = sql_query("SELECT email FROM users WHERE enabled='yes' AND notifs LIKE '%[cat$catid]%'") or sqlerr(__FILE__,
- * __LINE__);
- * $uploader = $CURUSER['username'];
- *
- * $size = mksize($totallen);
- * $description = ($html ? strip_tags($descr) : $descr);
- *
- * $body = <<<EOD
- * A new torrent has been uploaded.
- *
- * Name: $torrent
- * Size: $size
- * Category: $cat
- * Uploaded by: $uploader
- *
- * Description
- * -------------------------------------------------------------------------------
- * $description
- * -------------------------------------------------------------------------------
- *
- * You can use the URL below to download the torrent (you may have to login).
- *
- * {$site_config['baseurl']}/details.php?id=$id&hit=1
- *
- * --
- * {$site_config['site_name']}
- * EOD;
- *
- * $to = "";
- * $nmax = 100; // Max recipients per message
- * $nthis = 0;
- * $ntotal = 0;
- * $total = mysqli_num_rows($res);
- * while ($arr = mysqli_fetch_row($res))
- * {
- * if ($nthis == 0)
- * $to = $arr[0];
- * else
- * $to .= "," . $arr[0];
- * ++$nthis;
- * ++$ntotal;
- * if ($nthis == $nmax || $ntotal == $total)
- * {
- * if (!mail("Multiple recipients <{$site_config['site_email']}>", "New torrent - $torrent", $body,
- * "From: {$site_config['site_email']}\r\nBcc: $to"))
- * stderr("is-warning", "Your torrent has been been uploaded. DO NOT RELOAD THE PAGE!\n" .
- * "There was however a problem delivering the e-mail notifcations.\n" .
- * "Please let an administrator know about this error!\n");
- * $nthis = 0;
- * }
- * }
- *******************/
 
 setSessionVar('is-success', $lang['details_success']);
 header("Location: {$site_config['baseurl']}/details.php?id=$id");

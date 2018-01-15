@@ -7,7 +7,7 @@ $lang = [
     'rules_general_header_sub'     => ' Breaking these rules can and will get you banned!',
     'rules_general_body'           => 'Do not defy the moderators expressed wishes!',
     'rules_general_body1'          => "Do not upload our torrents to other trackers! (See the <a href='{$site_config['baseurl']}/faq.php#up3' class='altlink'><b>FAQ</b></a> for details.)",
-    'rules_general_body2'          => "Disruptive behaviour in the forums or on the site will result in a warning (<img src='{$site_config['pic_base_url']}warned.gif' alt='' /> ).<br>You will only get <b>one</b> warning! After that it's bye bye Kansas!",
+    'rules_general_body2'          => "Disruptive behaviour in the forums or on the site will result in a warning (<img src='{$site_config['pic_baseurl']}warned.gif' alt='' /> ).<br>You will only get <b>one</b> warning! After that it's bye bye Kansas!",
     'rules_downloading_header'     => 'Downloading rules -',
     'rules_downloading_header_sub' => ' By not following these rules you will lose download privileges!',
     'rules_downloading_body'       => "Access to the newest torrents is conditional on a good ratio! (See the <a href='{$site_config['baseurl']}/faq.php#dl8' class='altlink'><b>FAQ</b></a> for details.)",

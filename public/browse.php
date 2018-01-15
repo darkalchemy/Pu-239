@@ -211,7 +211,7 @@ if (isset($cleansearchstr)) {
 }
 
 $where = count($wherea) ? 'WHERE ' . join(' OR ', $wherea) : '';
-$where_key = 'where::' . sha1($where);
+$where_key = 'where_' . hash('sha256', $where);
 $count = $cache->get($where_key);
 if ($count === false || is_null($count)) {
     $res = sql_query("SELECT COUNT(*) FROM torrents AS t $join $where") or sqlerr(__FILE__, __LINE__);
@@ -275,7 +275,7 @@ if ($CURUSER['opt2'] & user_options_2::BROWSE_ICONS) {
                                                     <input name='c" . (int)$cat['id'] . "' class='styled' type='checkbox' " . (in_array($cat['id'], $wherecatina) ? " checked" : '') . " value='1' />
                                                     <span class='cat-image left10'>
                                                         <a href='{$site_config['baseurl']}/browse.php?c" . (int)$cat['id'] . "'>
-                                                            <img class='radius-sm' src='{$site_config['pic_base_url']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' />
+                                                            <img class='radius-sm' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($cat['image']) . "'alt='" . htmlsafechars($cat['name']) . "' />
                                                         </a>
                                                     </span>
                                                 </span>

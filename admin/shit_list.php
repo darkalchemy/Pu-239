@@ -44,13 +44,13 @@ switch ($action2) {
             ++$i;
         }
         $level_of_shittyness .= '</select>';
-        $HTMLOUT .= '<h1><img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" />' . $lang['shitlist_add1'] . '' . htmlsafechars($arr_name['username']) . '' . $lang['shitlist_add2'] . '<img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /></h1>
+        $HTMLOUT .= '<h1><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" />' . $lang['shitlist_add1'] . '' . htmlsafechars($arr_name['username']) . '' . $lang['shitlist_add2'] . '<img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" /></h1>
       <form method="post" action="staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=add">
    <table border="0" cellspacing="0" cellpadding="5">
    <tr>
-      <td class="colhead" colspan="2">new <img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" />
-      <img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" />
-      <img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" />' . $lang['shitlist_outof2'] . '</td>
+      <td class="colhead" colspan="2">new <img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" />
+      <img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" />
+      <img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" />' . $lang['shitlist_outof2'] . '</td>
    </tr>
    <tr>
       <td><b>' . $lang['shitlist_shittyness'] . '</b></td>
@@ -121,20 +121,20 @@ $HTMLOUT .= $message . '
    <table width="950" class="table table-bordered" cellpadding="5">
    <tr>
      <td class="colhead" colspan="4">
-     <img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" />' . $lang['shitlist_message2'] . '<img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /></td>
+     <img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" />' . $lang['shitlist_message2'] . '<img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" /></td>
    </tr>';
 $i = 1;
 if (mysqli_num_rows($res) == 0) {
     $HTMLOUT .= '
    <tr>
       <td class="one" colspan="4">
-      <img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" />' . $lang['shitlist_empty'] . '<img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" alt="*" /></td>
+      <img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" />' . $lang['shitlist_empty'] . '<img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" /></td>
    </tr>';
 } else {
     while ($shit_list = mysqli_fetch_array($res)) {
         $shit = '';
         for ($poop = 1; $poop <= $shit_list['shittyness']; ++$poop) {
-            $shit .= ' <img src="' . $site_config['pic_base_url'] . 'smilies/shit.gif" title="' . (int)$shit_list['shittyness'] . '' . $lang['shitlist_scale'] . '" alt="*" />';
+            $shit .= ' <img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" title="' . (int)$shit_list['shittyness'] . '' . $lang['shitlist_scale'] . '" alt="*" />';
         }
         $HTMLOUT .= (($i % 2 == 1) ? '<tr>' : '') . '
       <td class="' . (($i % 2 == 0) ? 'one' : 'two') . '" width="80">' . avatar_stuff($shit_list) . '<br>
@@ -143,8 +143,8 @@ if (mysqli_num_rows($res) == 0) {
 
       <b> [ ' . get_user_class_name($shit_list['class']) . ' ]</b><br>
 
-      <a class="altlink" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=delete&amp;shit_list_id=' . (int)$shit_list['suspect_id'] . '" title="' . $lang['shitlist_remove1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['pic_base_url'] . 'polls/p_delete.gif">' . $lang['shitlist_remove2'] . '</span></a>
-      <a class="altlink" href="pm_system.php?action=send_message&receiver=' . (int)$shit_list['suspect_id'] . '" title="' . $lang['shitlist_send1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['pic_base_url'] . 'message.gif">' . $lang['shitlist_send2'] . '</span></a></td>
+      <a class="altlink" href="' . $site_config['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=delete&amp;shit_list_id=' . (int)$shit_list['suspect_id'] . '" title="' . $lang['shitlist_remove1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['pic_baseurl'] . 'polls/p_delete.gif">' . $lang['shitlist_remove2'] . '</span></a>
+      <a class="altlink" href="pm_system.php?action=send_message&receiver=' . (int)$shit_list['suspect_id'] . '" title="' . $lang['shitlist_send1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['pic_baseurl'] . 'message.gif">' . $lang['shitlist_send2'] . '</span></a></td>
       <td class="' . (($i % 2 == 0) ? 'one' : 'two') . '">' . $shit . '
       <b>' . $lang['shitlist_joined'] . '</b> ' . get_date($shit_list['added'], '') . '
       [ ' . get_date($shit_list['added'], '', 0, 1) . ' ]
@@ -157,5 +157,5 @@ if (mysqli_num_rows($res) == 0) {
     }
 } //=== end while
 $HTMLOUT .= (($i % 2 == 0) ? '<td class="one" colspan="2"></td></tr>' : '');
-$HTMLOUT .= '</table><p><span class="button is-small" style="padding:3px;"><img style="vertical-align:middle;" src="' . $site_config['pic_base_url'] . 'btn_search.gif" /><a class="altlink" href="' . $site_config['baseurl'] . '/users.php">' . $lang['shitlist_find'] . '</span></a></p>';
+$HTMLOUT .= '</table><p><span class="button is-small" style="padding:3px;"><img style="vertical-align:middle;" src="' . $site_config['pic_baseurl'] . 'btn_search.gif" /><a class="altlink" href="' . $site_config['baseurl'] . '/users.php">' . $lang['shitlist_find'] . '</span></a></p>';
 echo stdhead($lang['shitlist_stdhead'] . htmlsafechars($CURUSER['username'])) . $HTMLOUT . stdfoot();

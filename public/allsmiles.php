@@ -37,7 +37,7 @@ foreach ($smilies as $code => $url) {
         <span class='margin10 mw-50 is-flex'>
             <span class='bordered bg-04'>
                 <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
-                    <img src='{$site_config['pic_base_url']}smilies/" . $url . "' alt='' />
+                    <img src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt='' />
                 </a>
             </span>
         </span>";
@@ -47,7 +47,7 @@ foreach ($customsmilies as $code => $url) {
         <span class='margin10 mw-50 is-flex'>
             <span class='bordered bg-04'>
                 <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
-                    <img src='{$site_config['pic_base_url']}smilies/" . $url . "' alt='' />
+                    <img src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt='' />
                 </a>
             </span>
         </span>";
@@ -58,7 +58,7 @@ if ($CURUSER['class'] >= UC_STAFF) {
         <span class='margin10 mw-50 is-flex'>
             <span class='bordered bg-04'>
                 <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
-                    <img src='{$site_config['pic_base_url']}smilies/" . $url . "' alt='' />
+                    <img src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt='' />
                 </a>
             </span>
         </span>";

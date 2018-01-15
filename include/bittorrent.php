@@ -378,7 +378,7 @@ function userlogin()
         header('Location: ' . $site_config['baseurl'] . $_SERVER['REQUEST_URI']);
         die();
     }
-    $blocks_key = 'blocks::' . $users_data['id'];
+    $blocks_key = 'blocks_' . $users_data['id'];
 
     $CURBLOCK = $cache->get($blocks_key);
     if ($CURBLOCK === false || is_null($CURBLOCK)) {
@@ -1268,7 +1268,7 @@ function ratingpic($num)
         return;
     }
 
-    return "<img src=\"{$site_config['pic_base_url']}ratings/{$r}.gif\" border=\"0\" alt=\"Rating: $num / 5\" title=\"Rating: $num / 5\" />";
+    return "<img src=\"{$site_config['pic_baseurl']}ratings/{$r}.gif\" border=\"0\" alt=\"Rating: $num / 5\" title=\"Rating: $num / 5\" />";
 }
 
 /**
@@ -1413,7 +1413,7 @@ function get_percent_completed_image($p)
             break;
     }
 
-    return "<img src='{$site_config['pic_base_url']}{$img}.gif' alt='percent' />";
+    return "<img src='{$site_config['pic_baseurl']}{$img}.gif' alt='percent' />";
 }
 
 /**
@@ -1889,13 +1889,13 @@ function array_msort($array, $cols)
 function countries()
 {
     global $cache, $site_config;
-    $ret = $cache->get('countries::arr');
+    $ret = $cache->get('countries_arr');
     if ($ret === false || is_null($ret)) {
         $res = sql_query('SELECT id, name, flagpic FROM countries ORDER BY name ASC') or sqlerr(__FILE__, __LINE__);
         while ($row = mysqli_fetch_assoc($res)) {
             $ret[] = $row;
         }
-        $cache->set('countries::arr', $ret, $site_config['expires']['user_flag']);
+        $cache->set('countries_arr', $ret, $site_config['expires']['user_flag']);
     }
 
     return $ret;

@@ -60,11 +60,11 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
     if (!empty($seed['conn'])) {
         switch ($seed['conn']) {
             case 1:
-                $connectable = "<img src='{$site_config['pic_base_url']}notcon.png' alt='{$lang['gl_not_connectable']}' class='tooltipper' title='{$lang['gl_not_connectable']}' />";
+                $connectable = "<img src='{$site_config['pic_baseurl']}notcon.png' alt='{$lang['gl_not_connectable']}' class='tooltipper' title='{$lang['gl_not_connectable']}' />";
                 break;
 
             case 2:
-                $connectable = "<img src='{$site_config['pic_base_url']}yescon.png' alt='{$lang['gl_connectable']}' class='tooltipper' title='{$lang['gl_connectable']}' />";
+                $connectable = "<img src='{$site_config['pic_baseurl']}yescon.png' alt='{$lang['gl_connectable']}' class='tooltipper' title='{$lang['gl_connectable']}' />";
                 break;
 
             default:

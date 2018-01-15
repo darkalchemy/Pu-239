@@ -38,7 +38,7 @@ if ($scroll_torrents) {
         $name = $poster = $seeders = $leechers = $size = $added = $class = $username = $id = $cat = $image = '';
         extract($scroll_torrent);
         $i = $site_config['latest_torrents_limit_scroll'];
-        $poster = ($poster == '' ? '' . $site_config['pic_base_url'] . 'noposter.png' : htmlsafechars($poster));
+        $poster = ($poster == '' ? '' . $site_config['pic_baseurl'] . 'noposter.png' : htmlsafechars($poster));
         $HTMLOUT .= "
                     <div class='slide'>
                         <a href='{$site_config['baseurl']}/details.php?id={$id}&amp;hit=1'>

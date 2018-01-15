@@ -34,7 +34,7 @@ if ($ip) {
             $HTMLOUT .= "<tr><td>$first</td><td>$last</td><td>$comment</td></tr>\n";
         }
         $HTMLOUT .= "</table>\n";
-        stderr($lang['testip_result'], "<table ><tr><td class='embedded' style='padding-right: 5px'><img src='{$site_config['pic_base_url']}smilies/excl.gif' alt='' /></td><td class='embedded'>" . sprintf($lang['testip_notice2'], $ip) . "</td></tr></table><p>$HTMLOUT</p>");
+        stderr($lang['testip_result'], "<table ><tr><td class='embedded' style='padding-right: 5px'><img src='{$site_config['pic_baseurl']}smilies/excl.gif' alt='' /></td><td class='embedded'>" . sprintf($lang['testip_notice2'], $ip) . "</td></tr></table><p>$HTMLOUT</p>");
     }
 }
 $HTMLOUT .= "

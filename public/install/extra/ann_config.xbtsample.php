@@ -7,7 +7,7 @@ $detectedclient = $_SERVER['HTTP_USER_AGENT'];
 $site_config['cache'] = ROOT_DIR.'cache';
 require_once CLASS_DIR.'class_cache.php';
 require_once CLASS_DIR.'class_bt_options.php';
-$site_config['pic_base_url'] = './pic/';
+$site_config['pic_baseurl'] = './pic/';
 require_once CACHE_DIR.'class_config.php';
 require_once CACHE_DIR.'hit_and_run_settings.php';
 if (version_compare(PHP_VERSION, '5.1.0RC1', '>=')) {
