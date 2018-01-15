@@ -17,7 +17,7 @@ if ($id = getSessionVar('userID') && validateToken($_POST['csrf_token'])) {
     $upped = mksize($user['uploaded']);
     $downed = mksize($user['downloaded']);
 
-    if (XBT_TRACKER == true) {
+    if (XBT_TRACKER) {
         $MyPeersXbtCache = $cache->get('MyPeers_XBT_' . $user['id']);
         if ($MyPeersXbtCache === false || is_null($MyPeersXbtCache)) {
             $seed['yes'] = $seed['no'] = 0;

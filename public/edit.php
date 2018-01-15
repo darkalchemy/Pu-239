@@ -112,7 +112,7 @@ if ($CURUSER['class'] >= UC_UPLOADER) {
     $HTMLOUT .= tr('Nuked', "<input type='radio' name='nuked'" . ($row['nuked'] == 'yes' ? " checked" : '') . " value='yes' />Yes <input type='radio' name='nuked'" . ($row['nuked'] == 'no' ? " checked" : '') . " value='no' />No", 1);
     $HTMLOUT .= tr('Nuke Reason', "<input type='text' name='nukereason' value='" . htmlsafechars($row['nukereason']) . "' size='80' />", 1);
 }
-if ($CURUSER['class'] >= UC_STAFF && XBT_TRACKER == false) {
+if ($CURUSER['class'] >= UC_STAFF && !XBT_TRACKER) {
     $HTMLOUT .= tr('Free Leech', ($row['free'] != 0 ? "<input type='checkbox' name='fl' value='1' /> Remove Freeleech" : "
     <select name='free_length'>
     <option value='0'>------</option>
@@ -160,10 +160,10 @@ if ($CURUSER['class'] >= UC_STAFF && $CURUSER['class'] == UC_MAX) {
 if ($CURUSER['class'] >= UC_STAFF) {
     $HTMLOUT .= tr('Sticky', "<input type='checkbox' name='sticky'" . (($row['sticky'] == 'yes') ? " checked" : '') . " value='yes' />Sticky this torrent !", 1);
     $HTMLOUT .= tr($lang['edit_anonymous'], "<input type='checkbox' name='anonymous'" . (($row['anonymous'] == 'yes') ? " checked" : '') . " value='1' />{$lang['edit_anonymous1']}", 1);
-    if (XBT_TRACKER == false) {
+    if (!XBT_TRACKER) {
         $HTMLOUT .= tr('VIP Torrent?', "<input type='checkbox' name='vip'" . (($row['vip'] == 1) ? " checked" : '') . " value='1' /> If this one is checked, only VIPs can download this torrent", 1);
     }
-    if (XBT_TRACKER == true) {
+    if (XBT_TRACKER) {
         $HTMLOUT .= tr('Freeleech', "<input type='checkbox' name='freetorrent'" . (($row['freetorrent'] == 1) ? " checked" : '') . " value='1' /> Check this to make this torrent freeleech", 1);
     }
 }

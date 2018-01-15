@@ -333,7 +333,7 @@ if ($num_pieces != $expected_pieces) {
 $tmaker = (isset($dict['created by']) && !empty($dict['created by'])) ? sqlesc($dict['created by']) : sqlesc($lang['takeupload_unkown']);
 $dict['comment'] = ("In using this torrent you are bound by the {$site_config['site_name']} Confidentiality Agreement By Law"); // change torrent comment
 
-$visible = (XBT_TRACKER == true ? 'yes' : 'no');
+$visible = (XBT_TRACKER ? 'yes' : 'no');
 $torrent = str_replace('_', ' ', $torrent);
 $vip = (isset($vip) ? '1' : '0');
 file_put_contents('/var/log/nginx/autobot.log', 'pass 6' . PHP_EOL, FILE_APPEND);

@@ -17,7 +17,7 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
     $upped = mksize($CURUSER['uploaded']);
     $downed = mksize($CURUSER['downloaded']);
 
-    if (XBT_TRACKER == true) {
+    if (XBT_TRACKER) {
         $MyPeersXbtCache = $cache->get('MyPeers_XBT_' . $CURUSER['id']);
         if ($MyPeersXbtCache === false || is_null($MyPeersXbtCache)) {
             $seed['yes'] = $seed['no'] = 0;

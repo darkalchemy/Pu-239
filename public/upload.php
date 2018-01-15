@@ -138,7 +138,7 @@ if ($CURUSER['class'] == UC_MAX) {
     $HTMLOUT .= tr("{$lang['upload_comment']}", "<div class='flex'><input type='checkbox' name='allow_commentd' value='yes' /><span>{$lang['upload_discom1']}</span></div>", 1);
 }
 $HTMLOUT .= tr('Strip ASCII', "<div class='flex'><input type='checkbox' name='strip' value='strip' checked /><span><a href='http://en.wikipedia.org/wiki/ASCII_art' target='_blank'>What is this ?</a></span></div>", 1);
-if ($CURUSER['class'] >= UC_UPLOADER and XBT_TRACKER == false) {
+if ($CURUSER['class'] >= UC_UPLOADER and !XBT_TRACKER) {
     $HTMLOUT .= "<tr>
     <td class='rowhead'>Free Leech</td>
     <td>
@@ -166,7 +166,7 @@ if ($CURUSER['class'] >= UC_UPLOADER and XBT_TRACKER == false) {
     </select></td>
     </tr>";
 }
-if (XBT_TRACKER == true) {
+if (XBT_TRACKER) {
     $HTMLOUT .= tr('Freeleech', "<div class='flex'><input type='checkbox' name='freetorrent' value='1' /><span>Check this to make this torrent freeleech</span></div>", 1);
 }
 
@@ -266,7 +266,7 @@ $HTMLOUT .= "
             </td>
         </tr>";
 
-if ($CURUSER['class'] >= UC_UPLOADER and XBT_TRACKER == false) {
+if ($CURUSER['class'] >= UC_UPLOADER and !XBT_TRACKER) {
     $HTMLOUT .= tr('Vip Torrent', "<div class='flex'><input type='checkbox' name='vip' value='1' /><span>If this one is checked, only Vip's can download this torrent</span></div>", 1);
 }
 $HTMLOUT .= "

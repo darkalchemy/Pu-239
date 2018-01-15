@@ -1,7 +1,7 @@
 <?php
 global $cache, $fluent, $site_config;
 
-if (XBT_TRACKER == true) {
+if (XBT_TRACKER) {
     $htmlout .= "
         <li>
         <a class='tooltip' href='index.php#'><span class='button is-success is-small'>XBT TRACKER</span>

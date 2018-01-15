@@ -26,10 +26,10 @@ $count = $row[0];
 $perpage = 15;
 $pager = pager($perpage, $count, "snatches.php?id=$id&amp;");
 if (!$count) {
-    stderr('No snatches', "It appears that there are currently no snatches for the torrent <a href='details.php?id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['name']) . '</a>.');
+    stderr('No snatches', "It appears that there are currently no snatches for the torrent <a href='{$site_config['baseurl']}/details.php?id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['name']) . '</a>.');
 }
-$HTMLOUT .= "<h1>Snatches for torrent <a href='{$site_config['baseurl']}/details.php?id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></h1>\n";
-$HTMLOUT .= "<h2>Currently {$row['0']} snatch" . ($row[0] == 1 ? '' : 'es') . "</h2>\n";
+$HTMLOUT .= "<h1 class='has-text-centered'>Snatches for torrent <a href='{$site_config['baseurl']}/details.php?id=" . (int)$arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></h1>\n";
+$HTMLOUT .= "<h3 class='has-text-centered'>Currently {$row['0']} snatch" . ($row[0] == 1 ? '' : 'es') . "</h3>\n";
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }

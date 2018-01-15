@@ -42,7 +42,7 @@ if ($row['vip'] == 1 && $CURUSER['class'] < UC_VIP) {
     stderr('VIP Access Required', 'You must be a VIP In order to view details or download this torrent! You may become a Vip By Donating to our site. Donating ensures we stay online to provide you more Vip-Only Torrents!');
 }
 
-if (happyHour('check') && happyCheck('checkid', $row['category']) && XBT_TRACKER == false && $site_config['happy_hour'] == true) {
+if (happyHour('check') && happyCheck('checkid', $row['category']) && !XBT_TRACKER && $site_config['happy_hour'] == true) {
     $multiplier = happyHour('multiplier');
     happyLog($CURUSER['id'], $id, $multiplier);
     sql_query('INSERT INTO happyhour (userid, torrentid, multiplier ) VALUES (' . sqlesc($CURUSER['id']) . ',' . sqlesc($id) . ',' . sqlesc($multiplier) . ')') or sqlerr(__FILE__, __LINE__);
@@ -127,7 +127,7 @@ if (!isset($CURUSER['torrent_pass']) || strlen($CURUSER['torrent_pass']) != 32) 
     ], $site_config['expires']['user_cache']);
 }
 $dict = bencdec::decode_file($fn, $site_config['max_torrent_size']);
-if (XBT_TRACKER == true) {
+if (XBT_TRACKER) {
     $dict['announce'] = $site_config['xbt_prefix'] . $CURUSER['torrent_pass'] . $site_config['xbt_suffix'];
 } else {
     $dict['announce'] = $site_config['announce_urls'][$ssluse] . '?torrent_pass=' . $CURUSER['torrent_pass'];

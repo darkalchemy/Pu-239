@@ -1314,7 +1314,7 @@ $HTMLOUT .= "
         <div class='has-text-centered size_6 top20 bottom20'>Karma Bonus Point's System</div>";
 $fpoints = $dpoints = $hpoints = $freeleech_enabled = $double_upload_enabled = $half_down_enabled = $top_donators = $top_donators2 = $top_donators3 = $count1 = '';
 
-if (XBT_TRACKER == false) {
+if (!XBT_TRACKER) {
     $scheduled_events = $cache->get('freecontribution_datas_');
     if ($scheduled_events === false || is_null($scheduled_events)) {
         $scheduled_events = mysql_fetch_all('SELECT * FROM `events` ORDER BY `startTime` DESC LIMIT 3;', []);
@@ -1574,7 +1574,7 @@ if (count($top_donators3) > 0) {
 }
 //$cache->delete('top_donators3_');
 //==End
-if (XBT_TRACKER == false) {
+if (!XBT_TRACKER) {
     //== Show the percentages
     $HTMLOUT .= "<div class='has-text-centered size_5'> FreeLeech [ ";
     if ($freeleech_enabled) {

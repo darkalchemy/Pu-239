@@ -85,7 +85,7 @@ if (isset($_GET['torrentid'])) {
 }
 
 $completed = $count2 = $dlc = '';
-if (XBT_TRACKER === false) {
+if (!XBT_TRACKER) {
     $r = sql_query(
         "SELECT
                 t.name,
@@ -147,7 +147,7 @@ if (mysqli_num_rows($r) > 0) {
         </tr>";
     $body = '';
     while ($a = mysqli_fetch_assoc($r)) {
-        $What_Id = (XBT_TRACKER == true ? $a['tid'] : $a['id']);
+        $What_Id = (XBT_TRACKER ? $a['tid'] : $a['id']);
         $torrent_needed_seed_time = ($a['st'] - $a['torrent_added']);
         switch (true) {
             case $CURUSER['class'] <= $site_config['hnr_config']['firstclass']:
@@ -239,7 +239,7 @@ if (mysqli_num_rows($r) > 0) {
         //            $sucks = $buyout == '' && $buybytes == '' ? "Seed for $minus_ratio" : "or Seed for $minus_ratio";
         $sucks = $buyout == '' ? "Seed for $minus_ratio" : "or Seed for $minus_ratio";
 
-        if (XBT_TRACKER === false) {
+        if (!XBT_TRACKER) {
             $body .= "
         <tr>
             <td style='padding: 5px'><img height='42px' class='tnyrad' src='{$site_config['pic_baseurl']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['name']}' title='{$a['name']}' /></td>

@@ -175,7 +175,7 @@ $site_config['nameblacklist'] = ROOT_DIR.'cache'.DIRECTORY_SEPARATOR.'nameblackl
 $site_config['happyhour'] = CACHE_DIR.'happyhour'.DIRECTORY_SEPARATOR.'happyhour.txt';
 $site_config['sql_error_log'] = ROOT_DIR.'sqlerr_logs'.DIRECTORY_SEPARATOR.'sql_err_'.date('M_D_Y').'.log';
 //== XBT or PHP announce
-if (XBT_TRACKER == true) {
+if (XBT_TRACKER) {
     $site_config['xbt_prefix'] = '#announce_urls:2710/';
     $site_config['xbt_suffix'] = '/announce';
     $site_config['announce_urls'][] = '#announce_urls:2710/announce';

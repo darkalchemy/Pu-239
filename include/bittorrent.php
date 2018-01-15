@@ -324,10 +324,10 @@ function userlogin()
         }
     }
 
-    $What_Cache = (XBT_TRACKER == true ? 'userstats_xbt_' : 'userstats_');
+    $What_Cache = (XBT_TRACKER ? 'userstats_xbt_' : 'userstats_');
     $stats = $cache->get($What_Cache . $id);
     if ($stats === false || is_null($stats)) {
-        $What_Expire = (XBT_TRACKER == true ? $site_config['expires']['u_stats_xbt'] : $site_config['expires']['u_stats']);
+        $What_Expire = (XBT_TRACKER ? $site_config['expires']['u_stats_xbt'] : $site_config['expires']['u_stats']);
         $stats_fields_ar_int = [
             'uploaded',
             'downloaded',

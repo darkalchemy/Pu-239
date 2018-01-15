@@ -17,7 +17,7 @@ $uid = $CURUSER['id'];
 $ajax = isset($_GET['ajax']) && $_GET['ajax'] == 1 ? true : false;
 $what = isset($_GET['what']) && $_GET['what'] == 'torrent' ? 'torrent' : 'topic';
 $ref = isset($_GET['ref']) ? $_GET['ref'] : ($what == 'torrent' ? 'details.php' : 'forums/view_topic.php');
-$completeres = sql_query('SELECT * FROM ' . (XBT_TRACKER == true ? 'xbt_files_users' : 'snatched') . ' WHERE ' . (XBT_TRACKER == true ? 'completedtime !=0' : 'complete_date !=0') . ' AND ' . (XBT_TRACKER == true ? 'uid' : 'userid') . ' = ' . $CURUSER['id'] . ' AND ' . (XBT_TRACKER == true ? 'fid' : 'torrentid') . ' = ' . $id) or sqlerr(__FILE__, __LINE__);
+$completeres = sql_query('SELECT * FROM ' . (XBT_TRACKER ? 'xbt_files_users' : 'snatched') . ' WHERE ' . (XBT_TRACKER ? 'completedtime !=0' : 'complete_date !=0') . ' AND ' . (XBT_TRACKER ? 'uid' : 'userid') . ' = ' . $CURUSER['id'] . ' AND ' . (XBT_TRACKER ? 'fid' : 'torrentid') . ' = ' . $id) or sqlerr(__FILE__, __LINE__);
 $completecount = mysqli_num_rows($completeres);
 if ($what == 'torrent' && $completecount == 0) {
     setSessionVar('is-warning', 'You must have downloaded this torrent in order to rate it.');

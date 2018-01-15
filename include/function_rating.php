@@ -20,7 +20,7 @@ function getRate($id, $what)
         $rating_cache = mysqli_fetch_assoc($qy);
         $cache->set($keys['rating'], $rating_cache, 0);
     }
-    $completeres = sql_query('SELECT * FROM ' . (XBT_TRACKER == true ? 'xbt_files_users' : 'snatched') . ' WHERE ' . (XBT_TRACKER == true ? 'completedtime !=0' : 'complete_date !=0') . ' AND ' . (XBT_TRACKER == true ? 'uid' : 'userid') . ' = ' . $CURUSER['id'] . ' AND ' . (XBT_TRACKER == true ? 'fid' : 'torrentid') . ' = ' . $id);
+    $completeres = sql_query('SELECT * FROM ' . (XBT_TRACKER ? 'xbt_files_users' : 'snatched') . ' WHERE ' . (XBT_TRACKER ? 'completedtime !=0' : 'complete_date !=0') . ' AND ' . (XBT_TRACKER ? 'uid' : 'userid') . ' = ' . $CURUSER['id'] . ' AND ' . (XBT_TRACKER ? 'fid' : 'torrentid') . ' = ' . $id);
     $completecount = mysqli_num_rows($completeres);
     if ($rating_cache['rated']) {
         $rate = '<ul class="star-rating tooltipper" title="You rated this ' . $what . ' ' . htmlsafechars($rating_cache['rating']) . ' star' . (htmlsafechars($rating_cache['rating']) > 1 ? 's' : '') . '"><li class="current-rating">.</li></ul>';

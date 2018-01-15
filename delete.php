@@ -86,7 +86,7 @@ if ($rt == 1) {
     }
     $reasonstr = trim($reason[3]);
 }
-if (XBT_TRACKER == true) {
+if (XBT_TRACKER) {
     deletetorrent_xbt($id);
 } else {
     deletetorrent($id);

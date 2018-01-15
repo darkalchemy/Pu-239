@@ -42,10 +42,10 @@ if ($user['status'] == 'pending') {
     stderr($lang['userdetails_error'], $lang['userdetails_pending']);
 }
 // user stats
-$What_Cache = (XBT_TRACKER == true ? 'user_stats_xbt_' : 'user_stats_');
+$What_Cache = (XBT_TRACKER ? 'user_stats_xbt_' : 'user_stats_');
 $user_stats = $cache->get($What_Cache . $id);
 if ($user_stats === false || is_null($user_stats)) {
-    $What_Expire = (XBT_TRACKER == true ? $site_config['expires']['user_stats_xbt'] : $site_config['expires']['user_stats']);
+    $What_Expire = (XBT_TRACKER ? $site_config['expires']['user_stats_xbt'] : $site_config['expires']['user_stats']);
     $stats_fields_ar_int = [
         'uploaded',
         'downloaded',
@@ -95,7 +95,7 @@ if (isset($_GET['delete_hit_and_run']) && $CURUSER['class'] >= UC_STAFF) {
     if (!is_valid_id($delete_me)) {
         stderr($lang['userdetails_error'], $lang['userdetails_bad_id']);
     }
-    if (XBT_TRACKER === false) {
+    if (!XBT_TRACKER) {
         sql_query('UPDATE snatched SET hit_and_run = \'0\', mark_of_cain = \'no\' WHERE id = ' . sqlesc($delete_me)) or sqlerr(__FILE__, __LINE__);
     } else {
         sql_query('UPDATE xbt_files_users SET hit_and_run = \'0\', mark_of_cain = \'no\' WHERE fid = ' . sqlesc($delete_me)) or sqlerr(__FILE__, __LINE__);
@@ -178,7 +178,7 @@ foreach ($countries as $cntry) {
         break;
     }
 }
-if (XBT_TRACKER == true) {
+if (XBT_TRACKER) {
     $res = sql_query('SELECT x.fid, x.uploaded, x.downloaded, x.active, x.left, t.added, t.name AS torrentname, t.size, t.category, t.seeders, t.leechers, c.name AS catname, c.image FROM xbt_files_users x LEFT JOIN torrents t ON x.fid = t.id LEFT JOIN categories c ON t.category = c.id WHERE x.uid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     while ($arr = mysqli_fetch_assoc($res)) {
         if ($arr['left'] == '0') {
@@ -385,10 +385,10 @@ if (curuser::$blocks['userdetails_page'] & block_userdetails::SEEDTIME_RATIO && 
 if (curuser::$blocks['userdetails_page'] & block_userdetails::TORRENTS_BLOCK && $BLOCKS['userdetails_torrents_block_on']) {
     require_once BLOCK_DIR . 'userdetails/torrents_block.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::COMPLETED && $BLOCKS['userdetails_completed_on']/* && XBT_TRACKER == false*/) {
+if (curuser::$blocks['userdetails_page'] & block_userdetails::COMPLETED && $BLOCKS['userdetails_completed_on']/* && !XBT_TRACKER*/) {
     require_once BLOCK_DIR . 'userdetails/completed.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::SNATCHED_STAFF && $BLOCKS['userdetails_snatched_staff_on']/* && XBT_TRACKER == false*/) {
+if (curuser::$blocks['userdetails_page'] & block_userdetails::SNATCHED_STAFF && $BLOCKS['userdetails_snatched_staff_on']/* && !XBT_TRACKER*/) {
     require_once BLOCK_DIR . 'userdetails/snatched_staff.php';
 }
 if (curuser::$blocks['userdetails_page'] & block_userdetails::CONNECTABLE_PORT && $BLOCKS['userdetails_connectable_port_on']) {
@@ -516,7 +516,7 @@ if (curuser::$blocks['userdetails_page'] & block_userdetails::REPUTATION && $BLO
 if (curuser::$blocks['userdetails_page'] & block_userdetails::PROFILE_HITS && $BLOCKS['userdetails_profile_hits_on']) {
     require_once BLOCK_DIR . 'userdetails/userhits.php';
 }
-if (curuser::$blocks['userdetails_page'] & block_userdetails::FREESTUFFS && $BLOCKS['userdetails_freestuffs_on'] && XBT_TRACKER == false) {
+if (curuser::$blocks['userdetails_page'] & block_userdetails::FREESTUFFS && $BLOCKS['userdetails_freestuffs_on'] && !XBT_TRACKER) {
     require_once BLOCK_DIR . 'userdetails/freestuffs.php';
 }
 if (curuser::$blocks['userdetails_page'] & block_userdetails::COMMENTS && $BLOCKS['userdetails_comments_on']) {
@@ -679,7 +679,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_bonus_comment']}</td><td colspan='3' class='has-text-left'><textarea class='w-100' rows='6' name='bonuscomment' readonly='readonly'>$bonuscomment</textarea></td></tr>";
     //==end
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_enabled']}</td><td colspan='3' class='has-text-left'><input name='enabled' value='yes' type='radio'" . ($enabled ? " checked" : '') . " />{$lang['userdetails_yes']} <input name='enabled' value='no' type='radio'" . (!$enabled ? " checked" : '') . " />{$lang['userdetails_no']}</td></tr>";
-    if ($CURUSER['class'] >= UC_STAFF && XBT_TRACKER == false) {
+    if ($CURUSER['class'] >= UC_STAFF && !XBT_TRACKER) {
         $HTMLOUT .= "
                 <tr>
                     <td class='rowhead'>{$lang['userdetails_freeleech_slots']}</td>
@@ -688,7 +688,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
                     </td>
                 </tr>";
     }
-    if ($CURUSER['class'] >= UC_ADMINISTRATOR && XBT_TRACKER == false) {
+    if ($CURUSER['class'] >= UC_ADMINISTRATOR && !XBT_TRACKER) {
         $free_switch = $user['free_switch'] != 0;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$free_switch ? ' rowspan="2"' : '') . ">{$lang['userdetails_freeleech_status']}</td>
                 <td class='has-text-left' width='20%'>" . ($free_switch ? "<input name='free_switch' value='42' type='radio' />{$lang['userdetails_remove_freeleech']}" : $lang['userdetails_no_freeleech']) . "</td>";
@@ -711,11 +711,11 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
         }
     }
     //==XBT - Can Leech
-    if (XBT_TRACKER == true) {
+    if (XBT_TRACKER) {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_canleech']}</td><td class='row' colspan='3' class='has-text-left'><input type='radio' name='can_leech' value='1' " . ($user['can_leech'] == 1 ? " checked" : '') . " />{$lang['userdetails_yes']} <input type='radio' name='can_leech' value='0' " . ($user['can_leech'] == 0 ? " checked" : '') . " />{$lang['userdetails_no']}</td></tr>";
     }
     //==Download disable
-    if ($CURUSER['class'] >= UC_STAFF && XBT_TRACKER == false) {
+    if ($CURUSER['class'] >= UC_STAFF && !XBT_TRACKER) {
         $downloadpos = $user['downloadpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$downloadpos ? ' rowspan="2"' : '') . ">{$lang['userdetails_dpos']}</td>
                <td class='has-text-left' width='20%'>" . ($downloadpos ? "<input name='downloadpos' value='42' type='radio' />{$lang['userdetails_remove_download_d']}" : $lang['userdetails_no_disablement']) . "</td>";
@@ -925,7 +925,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
         <tr><td colspan="3" class="has-text-left">' . $lang['userdetails_pm_comment'] . ':<input type="text" class="w-100" name="game_disable_pm" /></td></tr>';
         }
     }
-    if (XBT_TRACKER == true) {
+    if (XBT_TRACKER) {
         // == Wait time
         if ($CURUSER['class'] >= UC_STAFF) {
             $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_waittime']}</td><td colspan='3' class='has-text-left'><input type='text' class='w-100' name='wait_time' value='" . (int)$user['wait_time'] . "' /></td></tr>";
@@ -943,7 +943,7 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
         // ==end
     }
     //==High speed
-    if ($CURUSER['class'] == UC_MAX && XBT_TRACKER == false) {
+    if ($CURUSER['class'] == UC_MAX && !XBT_TRACKER) {
         //$HTMLOUT.= "<tr><td class='rowhead'>{$lang['userdetails_highspeed']}</td><td class='row' colspan='3' class='has-text-left'><input type='checkbox' name='highspeed' value='yes'" . (($user['opt1'] & user_options::HIGHSPEED) ? " checked" : "") . " />Yes</td></tr>";
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_highspeed']}</td><td class='row' colspan='3' class='has-text-left'><input type='radio' name='highspeed' value='yes' " . ($user['highspeed'] == 'yes' ? " checked" : '') . " />{$lang['userdetails_yes']} <input type='radio' name='highspeed' value='no' " . ($user['highspeed'] == 'no' ? " checked" : '') . " />{$lang['userdetails_no']}</td></tr>";
     }

@@ -24,7 +24,7 @@ if (isset($_POST['form']) != 1) {
         <form action='./uploadapp.php' method='post' enctype='multipart/form-data'>
             <table class='table table-bordered table-striped'>";
         $ratio = member_ratio($CURUSER['uploaded'], $CURUSER['downloaded']);
-        if (XBT_TRACKER === false) {
+        if (!XBT_TRACKER) {
             $connect = $fluent->from('peers')
                 ->select(null)
                 ->select('connectable')

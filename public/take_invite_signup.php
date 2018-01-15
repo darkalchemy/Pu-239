@@ -125,7 +125,7 @@ if ($email_count != 0) {
 }
 $wantpasshash = make_passhash($wantpassword);
 $wanthintanswer = make_passhash($hintanswer);
-$user_frees = (XBT_TRACKER == true ? '0' : TIME_NOW + 14 * 86400);
+$user_frees = (XBT_TRACKER ? '0' : TIME_NOW + 14 * 86400);
 $torrent_pass = make_torrentpass();
 check_banned_emails($email);
 

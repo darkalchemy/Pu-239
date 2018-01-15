@@ -20,7 +20,7 @@ $site_config['tracker_post_key'] = '#pass4';
 $site_config['chatBotName'] = '#bot_username';
 
 // XBT or PHP announce
-if (XBT_TRACKER == true) {
+if (XBT_TRACKER) {
     $site_config['xbt_prefix'] = '#announce_urls:2710/';
     $site_config['xbt_suffix'] = '/announce';
     $site_config['announce_urls'][] = '#announce_urls:2710/announce';

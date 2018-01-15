@@ -119,7 +119,7 @@ if ($torrents === false || is_null($torrents)) {
     $cache->set('torrent_details_' . $id, $torrents, $site_config['expires']['torrent_details']);
 }
 //==
-if (($torrents_xbt = $cache->get('torrent_xbt_data_' . $id)) === false && XBT_TRACKER == true) {
+if (($torrents_xbt = $cache->get('torrent_xbt_data_' . $id)) === false && XBT_TRACKER) {
     $torrents_xbt = mysqli_fetch_assoc(sql_query('SELECT seeders, leechers, times_completed FROM torrents WHERE id =' . sqlesc($id))) or sqlerr(__FILE__, __LINE__);
     $cache->set('torrent_xbt_data_' . $id, $torrents_xbt, $site_config['expires']['torrent_xbt_data']);
 }
@@ -139,8 +139,8 @@ if (isset($_GET['hit'])) {
     header("Location: details.php?id=$id");
     die();
 }
-$What_String = (XBT_TRACKER == true ? 'mtime' : 'last_action');
-$What_String_Key = (XBT_TRACKER == true ? 'last_action_xbt_' : 'last_action_');
+$What_String = (XBT_TRACKER ? 'mtime' : 'last_action');
+$What_String_Key = (XBT_TRACKER ? 'last_action_xbt_' : 'last_action_');
 $l_a = $cache->get($What_String_Key . $id);
 if ($l_a === false || is_null($l_a)) {
     $l_a = mysqli_fetch_assoc(sql_query('SELECT ' . $What_String . ' AS lastseed ' . 'FROM torrents ' . 'WHERE id = ' . sqlesc($id))) or sqlerr(__FILE__, __LINE__);
@@ -151,9 +151,9 @@ if ($l_a === false || is_null($l_a)) {
 $torrent_cache['seeders'] = $cache->get('torrents::seeds_' . $id);
 $torrent_cache['leechers'] = $cache->get('torrents::leechs_' . $id);
 $torrent_cache['times_completed'] = $cache->get('torrents::comps_' . $id);
-$torrents['seeders'] = ((XBT_TRACKER === false || $torrent_cache['seeders'] === false || $torrent_cache['seeders'] === 0 || $torrent_cache['seeders'] === false) ? $torrents['seeders'] : $torrent_cache['seeders']);
-$torrents['leechers'] = ((XBT_TRACKER === false || $torrent_cache['leechers'] === false || $torrent_cache['leechers'] === 0 || $torrent_cache['leechers'] === false) ? $torrents['leechers'] : $torrent_cache['leechers']);
-$torrents['times_completed'] = ((XBT_TRACKER === false || $torrent_cache['times_completed'] === false || $torrent_cache['times_completed'] === 0 || $torrent_cache['times_completed'] === false) ? $torrents['times_completed'] : $torrent_cache['times_completed']);
+$torrents['seeders'] = ((!XBT_TRACKER || $torrent_cache['seeders'] === false || $torrent_cache['seeders'] === 0 || $torrent_cache['seeders'] === false) ? $torrents['seeders'] : $torrent_cache['seeders']);
+$torrents['leechers'] = ((!XBT_TRACKER || $torrent_cache['leechers'] === false || $torrent_cache['leechers'] === 0 || $torrent_cache['leechers'] === false) ? $torrents['leechers'] : $torrent_cache['leechers']);
+$torrents['times_completed'] = ((!XBT_TRACKER || $torrent_cache['times_completed'] === false || $torrent_cache['times_completed'] === 0 || $torrent_cache['times_completed'] === false) ? $torrents['times_completed'] : $torrent_cache['times_completed']);
 
 $torrent['addup'] = get_date($torrent['addedup'], 'DATE');
 $torrent['addfree'] = get_date($torrent['addedfree'], 'DATE');
@@ -335,9 +335,9 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
     if (empty($torrents['poster'])) {
         $HTMLOUT .= "<img src='{$site_config['pic_baseurl']}noposter.png' class='round10' alt='Poster' />";
     }
-    $Free_Slot = (XBT_TRACKER == true ? '' : $freeslot);
-    $Free_Slot_Zip = (XBT_TRACKER == true ? '' : $freeslot_zip);
-    $Free_Slot_Text = (XBT_TRACKER == true ? '' : $freeslot_text);
+    $Free_Slot = (XBT_TRACKER ? '' : $freeslot);
+    $Free_Slot_Zip = (XBT_TRACKER ? '' : $freeslot_zip);
+    $Free_Slot_Text = (XBT_TRACKER ? '' : $freeslot_text);
     $HTMLOUT .= "
             </div>
             <div class='w-100 table-wrapper'>
@@ -618,7 +618,7 @@ $HTMLOUT .= tr("{$lang['details_size']}", mksize($torrents['size']) . ' (' . num
 $HTMLOUT .= tr("{$lang['details_added']}", get_date($torrents['added'], "{$lang['details_long']}"));
 $HTMLOUT .= tr("{$lang['details_views']}", (int)$torrents['views']);
 $HTMLOUT .= tr("{$lang['details_hits']}", (int)$torrents['hits']);
-$XBT_Or_Default = (XBT_TRACKER == true ? 'snatches_xbt.php?id=' : 'snatches.php?id=');
+$XBT_Or_Default = (XBT_TRACKER ? 'snatches_xbt.php?id=' : 'snatches.php?id=');
 $HTMLOUT .= tr("{$lang['details_snatched']}", ($torrents['times_completed'] > 0 ? "<a href='{$XBT_Or_Default}{$id}'>{$torrents['times_completed']} {$lang['details_times']}</a>" : "0 {$lang['details_times']}"), 1);
 $HTMLOUT .= "
         </table>
@@ -693,7 +693,7 @@ if ($torrents['type'] == 'multi') {
     }
 }
 
-if (XBT_TRACKER == true) {
+if (XBT_TRACKER) {
     $HTMLOUT .= tr("{$lang['details_peers']}", (int)$torrents_xbt['seeders'] . ' seeder(s), ' . (int)$torrents_xbt['leechers'] . ' leecher(s) = ' . ((int)$torrents_xbt['seeders'] + (int)$torrents_xbt['leechers']) . "{$lang['details_peer_total']}<br><a href='{$site_config['baseurl']}/peerlist.php?id=$id#seeders' class='button is-small is-primary'>{$lang['details_list']}</a>", 1);
 } else {
     $HTMLOUT .= tr("{$lang['details_peers']}", (int)$torrents['seeders'] . ' seeder(s), ' . (int)$torrents['leechers'] . ' leecher(s) = ' . ((int)$torrents['seeders'] + (int)$torrents['leechers']) . "{$lang['details_peer_total']}<br><a href='{$site_config['baseurl']}/peerlist.php?id=$id#seeders' class='button is-small is-primary'>{$lang['details_list']}</a>", 1);

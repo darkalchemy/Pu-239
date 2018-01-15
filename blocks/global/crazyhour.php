@@ -1,7 +1,7 @@
 <?php
 global $site_config;
 
-if (XBT_TRACKER == false and $site_config['crazy_hour'] == true) {
+if (!XBT_TRACKER and $site_config['crazy_hour'] == true) {
     /**
      * @return string
      */

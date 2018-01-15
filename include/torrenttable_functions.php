@@ -368,14 +368,10 @@ function torrenttable($res, $variant = 'index')
         if ($variant == 'index') {
             $htmlout .= "<td class='has-text-centered'>{$bookmark}</td>";
         }
-        if ($row['numfiles'] <= 1) {
-            $htmlout .= "<td class='has-text-centered'>" . (int)$row['numfiles'] . "</td>";
+        if ($variant == 'index') {
+            $htmlout .= "<td class='has-text-centered'><b><a href='{$site_config['baseurl']}/filelist.php?id=$id'>" . (int)$row['numfiles'] . "</a></b></td>";
         } else {
-            if ($variant == 'index') {
-                $htmlout .= "<td class='has-text-centered'><b><a href='{$site_config['baseurl']}/filelist.php?id=$id'>" . (int)$row['numfiles'] . "</a></b></td>";
-            } else {
-                $htmlout .= "<td class='has-text-centered'><b><a href='{$site_config['baseurl']}/filelist.php?id=$id'>" . (int)$row['numfiles'] . "</a></b></td>";
-            }
+            $htmlout .= "<td class='has-text-centered'><b><a href='{$site_config['baseurl']}/filelist.php?id=$id'>" . (int)$row['numfiles'] . "</a></b></td>";
         }
         if (!$row['comments']) {
             $htmlout .= "<td class='has-text-centered'>" . (int)$row['comments'] . "</td>";
@@ -393,7 +389,7 @@ function torrenttable($res, $variant = 'index')
         } else {
             $_s = '' . $lang['torrenttable_time_singular'] . '';
         }
-        $What_Script_S = (XBT_TRACKER == true ? "{$site_config['baseurl']}/snatches_xbt.php?id=" : "'{$site_config['baseurl']}/snatches.php?id=");
+        $What_Script_S = (XBT_TRACKER ? "{$site_config['baseurl']}/snatches_xbt.php?id=" : "{$site_config['baseurl']}/snatches.php?id=");
         $htmlout .= "<td class='has-text-centered'><a href='$What_Script_S" . "$id'>" . number_format($row['times_completed']) . "<br>$_s</a></td>";
         if ($row['seeders']) {
             if ($variant == 'index') {
@@ -402,17 +398,17 @@ function torrenttable($res, $variant = 'index')
                 } else {
                     $ratio = 1;
                 }
-                $What_Script_P = (XBT_TRACKER == true ? "'{$site_config['baseurl']}/peerlist_xbt.php?id=" : "'{$site_config['baseurl']}/peerlist.php?id=");
+                $What_Script_P = (XBT_TRACKER ? "{$site_config['baseurl']}/peerlist_xbt.php?id=" : "{$site_config['baseurl']}/peerlist.php?id=");
                 $htmlout .= "<td class='has-text-centered'><b><a href='$What_Script_P" . "$id#seeders'><span style='color: " . get_slr_color($ratio) . ";'>" . (int)$row['seeders'] . "</span></a></b></td>";
             } else {
-                $What_Script_P = (XBT_TRACKER == true ? "{$site_config['baseurl']}/peerlist_xbt.php?id=" : "{$site_config['baseurl']}/peerlist.php?id=");
+                $What_Script_P = (XBT_TRACKER ? "{$site_config['baseurl']}/peerlist_xbt.php?id=" : "{$site_config['baseurl']}/peerlist.php?id=");
                 $htmlout .= "<td class='has-text-centered'><b><a class='" . linkcolor($row['seeders']) . "' href='$What_Script_P" . "$id#seeders'>" . (int)$row['seeders'] . "</a></b></td>";
             }
         } else {
             $htmlout .= "<td class='has-text-centered'><span class='" . linkcolor($row['seeders']) . "'>" . (int)$row['seeders'] . "</span></td>";
         }
         if ($row['leechers']) {
-            $What_Script_P = (XBT_TRACKER == true ? "{$site_config['baseurl']}/peerlist_xbt.php?id=" : "{$site_config['baseurl']}/peerlist.php?id=");
+            $What_Script_P = (XBT_TRACKER ? "{$site_config['baseurl']}/peerlist_xbt.php?id=" : "{$site_config['baseurl']}/peerlist.php?id=");
             if ($variant == 'index') {
                 $htmlout .= "<td class='has-text-centered'><b><a href='$What_Script_P" . "$id#leechers'>" . number_format($row['leechers']) . "</a></b></td>";
             } else {
