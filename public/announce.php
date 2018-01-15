@@ -4,8 +4,8 @@ require_once INCL_DIR . 'ann_functions.php';
 global $site_config, $cache, $fluent;
 
 if (isset($_SERVER['HTTP_COOKIE']) || isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {
-    //die("It takes 46 muscles to frown but only 4 to flip 'em the bird.");
-    $agent = 'rtorrent/0.9.6/0.13.6';
+    die("It takes 46 muscles to frown but only 4 to flip 'em the bird.");
+    //$agent = 'rtorrent/0.9.6/0.13.6';
 }
 if (XBT_TRACKER) {
     err('Please redownload this torrent from the tracker');

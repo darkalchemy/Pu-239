@@ -107,7 +107,7 @@ function get_scheme()
                     $out .= createblock($fo, $fooo);
                 }
                 $out .= '
-                    <div style="text-align:center">
+                    <div style="text-align:center;">
                         <input type="submit" value="Submit data" />
                         <input type="hidden" value="write" name="do" />
                     </div>

@@ -7,12 +7,12 @@ function checkdir(&$dirs)
             $fn = $dir . uniqid(time()) . '.tmp';
             if (@file_put_contents($fn, '1')) {
                 unlink($fn);
-                $dirs[ $dir ] = 1;
+                $dirs[$dir] = 1;
             } else {
-                $dirs[ $dir ] = 0;
+                $dirs[$dir] = 0;
             }
         } else {
-            $dirs[ $dir ] = 0;
+            $dirs[$dir] = 0;
         }
     }
 }
@@ -42,12 +42,12 @@ function permissioncheck()
         $out .= '<div class="' . ($state ? 'readable' : 'notreadable') . '">' . $dir . '</div>';
     }
     if (!$continue) {
-        $out .= '<div class="info" style="text-align:center">It looks like you need to chmod some directories!<br>all directories marked in red should be chmoded 0777<br><br><input type="button" value="Reload" onclick="window.location.reload()" /></div>';
+        $out .= '<div class="info" style="text-align:center;">It looks like you need to chmod some directories!<br>all directories marked in red should be chmoded 0777<br><br><input type="button" value="Reload" onclick="window.location.reload()" /></div>';
     }
     $out .= '</fieldset>';
     if ($continue) {
         $out .= '
-                <div style="text-align:center">
+                <div style="text-align:center;">
                     <input type="button" onclick="onClick(2)" value="Next step" />
                 </div>';
     }

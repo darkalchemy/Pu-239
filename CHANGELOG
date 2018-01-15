@@ -1,3 +1,8 @@
+15 Jan 2018
+update: ann_config vars
+fix: AJAX Chat admin/sysop delete own posts
+update: install
+
 14 Jan 2018
 update: add bot login/upload
 update: scrape.php

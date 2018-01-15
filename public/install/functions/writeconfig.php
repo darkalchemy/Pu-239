@@ -1,60 +1,54 @@
 <?php
 $foo = [
-    'Database' => [
+    'Database'          => [
         [
-            'text' => 'Host',
-            'input' => 'config[mysql_host]',
-            'info' => 'Usually this will be localhost unless your on a cluster server.',
+            'text'        => 'Host',
+            'input'       => 'config[mysql_host]',
+            'info'        => 'Usually this will be localhost unless your on a cluster server.',
             'placeholder' => 'localhost',
         ],
         [
-            'text' => 'Username',
-            'input' => 'config[mysql_user]',
-            'info' => 'Your mysql username.',
+            'text'        => 'Username',
+            'input'       => 'config[mysql_user]',
+            'info'        => 'Your mysql username.',
             'placeholder' => 'mydbuser',
         ],
         [
-            'text' => 'Password',
-            'input' => 'config[mysql_pass]',
-            'info' => 'Your mysql password.',
+            'text'        => 'Password',
+            'input'       => 'config[mysql_pass]',
+            'info'        => 'Your mysql password.',
             'placeholder' => 'secret',
         ],
         [
-            'text' => 'Database',
-            'input' => 'config[mysql_db]',
-            'info' => 'Your mysql database name.',
+            'text'        => 'Database',
+            'input'       => 'config[mysql_db]',
+            'info'        => 'Your mysql database name.',
             'placeholder' => 'pu239',
         ],
-        [
-            'text' => 'Domain',
-            'input' => 'announce[baseurl]',
-            'info' => 'Your domain name - note include http and www.',
-            'placeholder' => 'http://Pu-239.pw',
-        ],
     ],
-    'Tracker' => [
+    'Tracker'           => [
         [
-            'text' => 'Announce Url',
-            'input' => 'config[announce_urls]',
-            'info' => 'Your announce url. ie. http://pu-239.pw/announce.php',
+            'text'        => 'Announce Url',
+            'input'       => 'config[announce_urls]',
+            'info'        => 'Your announce url. ie. http://pu-239.pw/announce.php',
             'placeholder' => 'http://Pu-239.pw/announce.pw',
         ],
         [
-            'text' => 'HTTPS Announce Url',
-            'input' => 'config[announce_https]',
-            'info' => 'Your HTTPS announce url. ie. https://pu-239.pw/announce.php',
+            'text'        => 'HTTPS Announce Url',
+            'input'       => 'config[announce_https]',
+            'info'        => 'Your HTTPS announce url. ie. https://pu-239.pw/announce.php',
             'placeholder' => 'https://Pu-239.pw/announce.pw',
         ],
         [
-            'text' => 'Site Email',
-            'input' => 'config[site_email]',
-            'info' => 'Your site email address.',
+            'text'        => 'Site Email',
+            'input'       => 'config[site_email]',
+            'info'        => 'Your site email address.',
             'placeholder' => 'myuser@mymail.com',
         ],
         [
-            'text' => 'Site Name',
-            'input' => 'config[site_name]',
-            'info' => 'Your site name.',
+            'text'        => 'Site Name',
+            'input'       => 'config[site_name]',
+            'info'        => 'Your site name.',
             'placeholder' => 'Crafty',
         ],
         /*
@@ -66,55 +60,55 @@ $foo = [
                 ],
         */
     ],
-    'Cookies' => [
+    'Cookies'           => [
         [
-            'text' => 'Session Name',
-            'input' => 'config[sessionName]',
-            'info' => 'A single word that uniquely identifies this install.',
+            'text'        => 'Session Name',
+            'input'       => 'config[sessionName]',
+            'info'        => 'A single word that uniquely identifies this install.',
             'placeholder' => 'pu239',
         ],
         [
-            'text' => 'Prefix',
-            'input' => 'config[cookie_prefix]',
-            'info' => 'A single word that uniquely identifies this install. Can be the same as Session Name, but not required.',
+            'text'        => 'Prefix',
+            'input'       => 'config[cookie_prefix]',
+            'info'        => 'A single word that uniquely identifies this install. Can be the same as Session Name, but not required.',
             'placeholder' => 'pu239',
         ],
         [
-            'text' => 'Path',
-            'input' => 'config[cookie_path]',
-            'info' => 'Required \'/\' or any other path.',
+            'text'        => 'Path',
+            'input'       => 'config[cookie_path]',
+            'info'        => 'Required \'/\' or any other path.',
             'placeholder' => '/',
         ],
         [
-            'text' => 'Cookie Lifetime',
-            'input' => 'config[cookie_lifetime]',
-            'info' => 'The number of days that the cookie is alive.',
+            'text'        => 'Cookie Lifetime',
+            'input'       => 'config[cookie_lifetime]',
+            'info'        => 'The number of days that the cookie is alive.',
             'placeholder' => '365',
         ],
         [
-            'text' => 'Cookie Domain',
-            'input' => 'config[cookie_domain]',
-            'info' => 'Your domain name - note exclude http and www.',
+            'text'        => 'Cookie Domain',
+            'input'       => 'config[cookie_domain]',
+            'info'        => 'Your domain name - note exclude http and www.',
             'placeholder' => 'Pu-239.pw',
         ],
         [
-            'text' => 'Domain',
-            'input' => 'config[domain]',
-            'info' => 'Your site domain name - note exclude http or www.',
+            'text'        => 'Domain',
+            'input'       => 'config[domain]',
+            'info'        => 'Your site domain name - note exclude http or www.',
             'placeholder' => 'Pu-239.pw',
         ],
         [
-            'text' => 'Secure Session Cookies',
-            'input' => 'config[sessionCookieSecure]',
-            'info' => 'true/false/null. Enabled, this requires that session cookies can only be passed using SSL/HTTPS protocals.',
+            'text'        => 'Secure Session Cookies',
+            'input'       => 'config[sessionCookieSecure]',
+            'info'        => 'true/false/null. Enabled, this requires that session cookies can only be passed using SSL/HTTPS protocals.',
             'placeholder' => 'null',
         ],
     ],
     'System - Site BOT' => [
         [
-            'text' => 'Username',
-            'input' => 'config[bot_username]',
-            'info' => "The name for your 'System' user/Site BOT.",
+            'text'        => 'Username',
+            'input'       => 'config[bot_username]',
+            'info'        => "The name for your 'System' user/Site BOT.",
             'placeholder' => 'CraftyBOT',
         ],
     ],
@@ -228,9 +222,6 @@ function saveconfig()
             //$xbt = 1;
         }
         $announce = file_get_contents($file);
-        $keys = array_map('foo', array_keys($_POST['announce']));
-        $values = array_values($_POST['announce']);
-        $announce = preg_replace($keys, $values, $announce);
         $keys = array_map('foo', array_keys($_POST['config']));
         $values = array_values($_POST['config']);
         $announce = preg_replace($keys, $values, $announce);
@@ -250,13 +241,13 @@ function saveconfig()
         }
         $out .= '
         </fieldset>
-        <div style="text-align:center">
+        <div style="text-align:center;">
             <input type="button" value="Next step" onclick="onClick(5)" />
         </div>';
     } else {
         $out .= '
         </fieldset>
-        <div style="text-align:center" class="info">
+        <div style="text-align:center;" class="info">
             <input type="button" value="Go back" onclick="goBack()"/>
         </div>';
     }

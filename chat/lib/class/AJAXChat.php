@@ -544,8 +544,7 @@ class AJAXChat
         $channelID,
         $text,
         $mode
-    )
-    {
+    ) {
         // The $mode parameter:
         // 0 = normal messages
         // 1 = channel messages (e.g. login/logout, channel enter/leave, kick)
@@ -629,8 +628,7 @@ class AJAXChat
         $userRole,
         $channelID,
         $text
-    )
-    {
+    ) {
         $message = '<message';
         $message .= ' id="' . $messageID . '"';
         $message .= ' dateTime="' . date('r', $timeStamp) . '"';
@@ -1837,17 +1835,17 @@ class AJAXChat
             ->where('id = ?', $messageID)
             ->fetch('channel');
 
-        if ($channel) {
+        if (is_int($channel) && $channel >= 0) {
             if ($this->getUserRole() >= UC_ADMINISTRATOR) {
                 $result = $fluent->deleteFrom($this->getDataBaseTable('messages'))
                     ->where('id = ?', $messageID)
-                    ->where('(userRole = 100 OR userRole < ? OR userID = ?)', $this->getUserRole(), $this->getUserID())
+                    ->where('(userRole = ? OR userRole < ? OR userID = ?)', AJAX_CHAT_CHATBOT, $this->getUserRole(), $this->getUserID())
                     ->execute();
             } elseif ($this->getUserRole() >= UC_STAFF) {
                 $result = $fluent->deleteFrom($this->getDataBaseTable('messages'))
                     ->where('id = ?', $messageID)
-                    ->where('(userRole < ? OR userID = ?)', UC_STAFF, $this->getUserID())
                     ->where('userRole != ?', AJAX_CHAT_CHATBOT)
+                    ->where('(userRole < ? OR userID = ?)', UC_STAFF, $this->getUserID())
                     ->execute();
             } elseif ($this->getUserRole() < UC_STAFF && $this->getConfig('allowUserMessageDelete')) {
                 $result = $fluent->deleteFrom($this->getDataBaseTable('messages'))

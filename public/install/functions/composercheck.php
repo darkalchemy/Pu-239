@@ -13,12 +13,12 @@ function checkdir(&$dirs)
             $fn = $dir . uniqid(time()) . '.tmp';
             if (@file_put_contents($fn, '1')) {
                 unlink($fn);
-                $dirs[ $dir ] = 1;
+                $dirs[$dir] = 1;
             } else {
-                $dirs[ $dir ] = 0;
+                $dirs[$dir] = 0;
             }
         } else {
-            $dirs[ $dir ] = 0;
+            $dirs[$dir] = 0;
         }
     }
 }
@@ -27,7 +27,7 @@ function composercheck()
 {
     global $root;
     $dirs = [
-        $root . 'vendor/'       => 0,
+        $root . 'vendor/' => 0,
     ];
     checkdir($dirs);
     $continue = true;
@@ -39,12 +39,12 @@ function composercheck()
         $out .= '<div class="' . ($state ? 'readable' : 'notreadable') . '">' . $dir . '</div>';
     }
     if (!$continue) {
-        $out .= '<div class="info" style="text-align:center">Please run "composer install" from ' . $root . '<br>and then "chown -R www-data:www-data vendor"<br><br><input type="button" value="Reload" onclick="window.location.reload()" /></div>';
+        $out .= '<div class="info" style="text-align:center;">Please run "composer install" from ' . $root . '<br>and then "chown -R www-data:www-data vendor"<br><br><input type="button" value="Reload" onclick="window.location.reload()" /></div>';
     }
     $out .= '</fieldset>';
     if ($continue) {
         $out .= '
-                <div style="text-align:center">
+                <div style="text-align:center;">
                     <input type="button" onclick="onClick(3)" value="Next step" />
                 </div>';
     }

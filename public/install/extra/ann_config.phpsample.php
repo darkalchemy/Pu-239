@@ -10,7 +10,7 @@ $agent = $_SERVER['HTTP_USER_AGENT'];
 $detectedclient = $_SERVER['HTTP_USER_AGENT'];
 $site_config['cache'] = ROOT_DIR . 'cache';
 require_once CLASS_DIR . 'class_bt_options.php';
-$site_config['baseurl'] = '#baseurl';
+$site_config['baseurl'] = get_scheme() . '://' . $_SERVER['HTTP_HOST'];
 $site_config['pic_baseurl'] = $site_config['baseurl'] . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
 require_once CACHE_DIR . 'class_config.php';
 
@@ -43,3 +43,13 @@ $site_config['cookie_prefix'] = '#cookie_prefix_'; // This is used for cache pre
 require_once INCL_DIR . 'database.php';
 $cache = new CACHE();
 
+/**
+ * @return mixed
+ */
+function get_scheme()
+{
+    if (isset($_SERVER['REQUEST_SCHEME'])) {
+        return $_SERVER['REQUEST_SCHEME'];
+    }
+    return null;
+}
