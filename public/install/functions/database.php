@@ -70,40 +70,35 @@ function db_insert()
 
     $out = '<fieldset><legend>Database</legend>';
 
-    $o1 = $o2 = $o3 = [];
-    $q = sprintf('/usr/bin/mysql -h %s -u%s -p"%s" %s < %sinstall/extra/schema.php.sql', $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $public);
-    set_time_limit(1200);
-    ini_set('max_execution_time', 1200);
-    ini_set('request_terminate_timeout', 1200);
-    ignore_user_abort(true);
-    exec($q, $o1);
-
-    $q = sprintf('/usr/bin/mysql -h %s -u%s -p"%s" %s < %sinstall/extra/data.php.sql', $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $public);
-    set_time_limit(1200);
-    ini_set('max_execution_time', 1200);
-    ini_set('request_terminate_timeout', 1200);
-    ignore_user_abort(true);
-    exec($q, $o2);
-
     $timestamp = strtotime('today midnight');
-    $sql = "UPDATE cleanup SET clean_time = $timestamp";
-    $q = sprintf('/usr/bin/mysql -h %s -u%s -p"%s" %s -e "%s"', $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $sql);
-    exec($q, $o3);
+    $sources = [
+        'schema'     => "source {$public}install/extra/schema.php.sql",
+        'data'       => "source {$public}install/extra/data.php.sql",
+        'timestamps' => "UPDATE cleanup SET clean_time = $timestamp"
+    ];
+    $fail = '';
+    foreach ($sources as $name => $source) {
+        $sql = sprintf("/usr/bin/mysql -h %s -u%s -p'%s' %s -e '%s'", $_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $source);
+        set_time_limit(1200);
+        ini_set('max_execution_time', 1200);
+        ini_set('request_terminate_timeout', 1200);
+        ignore_user_abort(true);
+        exec($sql, $output, $retval);
+        if ($retval != 0) {
+            $fail .= "<div class='notreadable'>There was an error while creating the database $name</div>";
+        }
+    }
 
-    if (count($o1) <= 2 && !count($o2) <= 2) {
+    if (empty($fail)) {
         $out .= '<div class="readable">Database was imported</div>
                 </fieldset>
                 <div style="text-align:center;">
                     <input type="button" value="Finish" onclick="onClick(6)" />
                 </div>';
     } else {
-        if (count($o1) >= 3) {
-            $out .= '<div class="notreadable">There was an error while creating the database schema</div>';
-        }
-        if (count($o2) >= 3) {
-            $out .= '<div class="notreadable">There was an error while importing the database data</div>';
-        }
-        $out .= '</fieldset>';
+            $out .= "
+                    $fail
+                </fieldset>";
     }
     $out .= '
     <script>
