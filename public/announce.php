@@ -119,7 +119,7 @@ if (IP_LOGGING) {
 }
 $torrent = get_torrent_from_hash($info_hash, $userid);
 if (!$torrent) {
-    err('Torrent not found - contact site staff');
+    err('torrent not registered with this tracker');
 }
 
 $torrentid = (int)$torrent['id'];

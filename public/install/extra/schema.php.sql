@@ -2537,6 +2537,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `torrent_pass` (`torrent_pass`),
+  UNIQUE KEY `auth` (`auth`),
   KEY `ip` (`ip`),
   KEY `uploaded` (`uploaded`),
   KEY `downloaded` (`downloaded`),
@@ -2653,4 +2654,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-17 13:31:55
+-- Dump completed on 2018-01-17 13:54:29

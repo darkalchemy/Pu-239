@@ -205,4 +205,10 @@ $sql_updates = [
         'date'  => '17 Jan, 2018',
         'query' => 'ALTER TABLE `users` ADD UNIQUE INDEX `auth`(`auth`)',
     ],
+    [
+        'id'    => 35,
+        'info'  => 'Add site_config anonymouse names',
+        'date'  => '17 Jan, 2018',
+        'query' => 'INSERT INTO `site_config` (`name`, `value`, `description`) VALUES ("anonymous_names", "Tom Sawyer, Keyser Söze, Capt. Kirk", "A list of names, separated by a comma, used in place of \'Anonymous\'. Quotes are not necessary.")',
+    ],
 ];
