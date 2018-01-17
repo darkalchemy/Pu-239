@@ -1,4 +1,6 @@
 17 Jan 2018
+add: list of anonymous names
+replace: 'Anonymous' with anonymous name
 add: auth key
 update: BOT upload to use auth key
 

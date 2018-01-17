@@ -26,7 +26,11 @@ $site_config['char_set'] = 'UTF-8'; //also to be used site wide in meta tags
 if (!function_exists('sys_getloadavg')) {
     function sys_getloadavg()
     {
-        return [0, 0, 0];
+        return [
+            0,
+            0,
+            0
+        ];
     }
 }
 
@@ -226,9 +230,66 @@ $site_config['staff_forums'] = [
 ];
 
 // Arcade Games
-$site_config['arcade_games'] = ['asteroids', 'breakout', 'frogger', 'galaga', 'hexxagon', 'invaders', 'moonlander', 'pacman', 'psol', 'simon', 'snake', 'tetris', 'autobahn', 'ghosts-and-goblins', 'joust', 'ms-pac-man'];
-$site_config['arcade_games_names'] = ['Asteroids', 'Breakout', 'Frogger', 'Galaga', 'Hexxagon', 'Space Invaders', 'Moonlander', 'Pacman', 'Pyramid Solitaire', 'Simon', 'Snake', 'Tetris', 'Autobahn', 'Ghosts\'n Goblins', 'Joust', 'Ms. Pac-Man'];
+$site_config['arcade_games'] = [
+    'asteroids',
+    'breakout',
+    'frogger',
+    'galaga',
+    'hexxagon',
+    'invaders',
+    'moonlander',
+    'pacman',
+    'psol',
+    'simon',
+    'snake',
+    'tetris',
+    'autobahn',
+    'ghosts-and-goblins',
+    'joust',
+    'ms-pac-man'
+];
+$site_config['arcade_games_names'] = [
+    'Asteroids',
+    'Breakout',
+    'Frogger',
+    'Galaga',
+    'Hexxagon',
+    'Space Invaders',
+    'Moonlander',
+    'Pacman',
+    'Pyramid Solitaire',
+    'Simon',
+    'Snake',
+    'Tetris',
+    'Autobahn',
+    'Ghosts\'n Goblins',
+    'Joust',
+    'Ms. Pac-Man'
+];
 $site_config['top_score_points'] = 1000;
 
-$site_config['bad_words'] = ['fuck', 'shit', 'Moderator', 'Administrator', 'Admin', 'pussy', 'Sysop', 'cunt', 'nigger', 'VIP', 'Super User', 'Power User', 'ADMIN', 'SYSOP', 'MODERATOR', 'ADMINISTRATOR'];
-$site_config['notifications'] = ['is-danger', 'is-warning', 'is-success', 'is-info', 'is-link'];
+$site_config['bad_words'] = [
+    'fuck',
+    'shit',
+    'Moderator',
+    'Administrator',
+    'Admin',
+    'pussy',
+    'Sysop',
+    'cunt',
+    'nigger',
+    'VIP',
+    'Super User',
+    'Power User',
+    'ADMIN',
+    'SYSOP',
+    'MODERATOR',
+    'ADMINISTRATOR'
+];
+$site_config['notifications'] = [
+    'is-danger',
+    'is-warning',
+    'is-success',
+    'is-info',
+    'is-link'
+];

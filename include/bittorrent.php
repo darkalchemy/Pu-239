@@ -2160,6 +2160,17 @@ function show_php_version()
     return phpversion();
 }
 
+function get_anonymous_name()
+{
+    global $site_config;
+
+    $names = str_replace(', ', ',', $site_config['anonymous_names']);
+    $array = explode(',', $names);
+    $index = array_rand($array);
+    $anon = $array[$index];
+    return $anon;
+}
+
 if (file_exists(ROOT_DIR . 'public' . DIRECTORY_SEPARATOR . 'install')) {
     setSessionVar('is-danger', "[h1]This site is vulnerable until you delete the install directory[/h1][p]rm -r " . ROOT_DIR . "public" . DIRECTORY_SEPARATOR . "install" . DIRECTORY_SEPARATOR . "[/p]");
 }

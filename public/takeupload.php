@@ -55,9 +55,10 @@ if (empty($fname)) {
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
+
 if (isset($uplver) && $uplver == 'yes') {
     $anonymous = 'yes';
-    $anon = 'Anonymous';
+    $anon = get_anonymous_name();
 } else {
     $anonymous = 'no';
     $anon = $user['username'];
@@ -378,7 +379,7 @@ $cache->delete('last5_tor_');
 $cache->delete('scroll_tor_');
 $cache->delete('torrent_poster_count_');
 if (isset($uplver) && $uplver == 'yes') {
-    $message = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] [b]" . htmlsafechars($torrent) . '[/b][/url] Uploaded by an anonymous user';
+    $message = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] [b]" . htmlsafechars($torrent) . '[/b][/url] Uploaded by ' . get_anonymous_name();
 } else {
     $message = "New Torrent : [url={$site_config['baseurl']}/details.php?id=$id] [b]" . htmlsafechars($torrent) . '[/b][/url] Uploaded by ' . htmlsafechars($user['username']);
 }

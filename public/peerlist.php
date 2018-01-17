@@ -47,8 +47,9 @@ function dltable($name, $arr, $torrent)
         <tr>";
         if ($e['username']) {
             if ((($e['tanonymous'] == 'yes' && $e['owner'] == $e['userid'] || $e['anonymous'] == 'yes' or $e['paranoia'] >= 2) && $CURUSER['id'] != $e['userid']) && $CURUSER['class'] < UC_STAFF) {
+                $username = get_anonymous_name();
                 $body .= "
-            <td><b>Keyser Söze</b></td>";
+            <td><b>$username</b></td>";
             } else {
                 $body .= "
             <td>" . format_username($e['userid']) . "</td>";

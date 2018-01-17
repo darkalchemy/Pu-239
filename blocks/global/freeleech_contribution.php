@@ -194,7 +194,7 @@ if (XBT_TRACKER) {
                         <span class='button tag is-success dt-tooltipper-large' data-tooltip-content='#karma_tooltip'>Karma Contribution's</span>
                         <div class='tooltip_templates'>
                             <span id='karma_tooltip'>
-                                <div class='size_4 has-text-centered has-text-success .has-text-weight-bold bottom10'>Karma Contribution's</div>
+                                <div class='size_4 has-text-centered has-text-success has-text-weight-bold bottom10'>Karma Contribution's</div>
                                 <div class='level is-marginless'>
                                     <span>Freeleech</span><span> [ ";
     if ($freeleech_enabled) {

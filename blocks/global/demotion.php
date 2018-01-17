@@ -1,16 +1,16 @@
 <?php
 global $CURUSER, $lang;
 
-if ($CURUSER['override_class'] != 255 && $CURUSER) {
+if ($CURUSER && $CURUSER['override_class'] != 255) {
     $htmlout .= "
     <li>
         <a href='{$site_config['baseurl']}/restoreclass.php'>
-            <b class='button btn-warning is-small dt-tooltipper-small' data-tooltip-content='#demotion_tooltip'>
+            <span class='button tag is-warning dt-tooltipper-large' data-tooltip-content='#demotion_tooltip'>
                 {$lang['gl_temp_demotion']}
-            </b>
+            </span>
             <div class='tooltip_templates'>
                 <span id='demotion_tooltip'>
-                    <em>{$lang['gl_temp_demotion1']}</em><br>
+                    <div class='size_4 has-text-centered has-text-warning has-text-weight-bold bottom10'>{$lang['gl_temp_demotion1']}</div>
                     {$lang['gl_temp_demotion2']}
                 </span>
             </div>

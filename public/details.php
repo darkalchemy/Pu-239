@@ -639,7 +639,7 @@ if ($torrent_cache['rep']) {
 }
 
 $rowuser = isset($torrents['owner']) ? format_username($torrents['owner']) : $lang['details_unknown'];
-$uprow = (($torrents['anonymous'] == 'yes') ? ($CURUSER['class'] < UC_STAFF && $torrents['owner'] != $CURUSER['id'] ? '' : $rowuser . ' - ') . "<i>{$lang['details_anon']}</i>" : $rowuser);
+$uprow = (($torrents['anonymous'] == 'yes') ? ($CURUSER['class'] < UC_STAFF && $torrents['owner'] != $CURUSER['id'] ? '' : $rowuser . ' - ') . "<i>" . get_anonymous_name() . "</i>" : $rowuser);
 if ($owned) {
     $uprow .= "<br><$editlink>{$lang['details_edit']}</a>";
 }

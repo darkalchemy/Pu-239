@@ -418,7 +418,7 @@ function torrenttable($res, $variant = 'index')
             $htmlout .= "<td class='has-text-centered'>0</td>";
         }
         if ($variant == 'index') {
-            $htmlout .= "<td class='has-text-centered'>" . (isset($row['owner']) ? (($row['anonymous'] == 'yes' && $CURUSER['class'] < UC_STAFF && $row['owner'] != $CURUSER['id']) ? '<i>' . $lang['torrenttable_anon'] . '</i>' : format_username($row['owner'])) : '<i>(' . $lang['torrenttable_unknown_uploader'] . ')</i>') . "</td>";
+            $htmlout .= "<td class='has-text-centered'>" . (isset($row['owner']) ? (($row['anonymous'] == 'yes' && $CURUSER['class'] < UC_STAFF && $row['owner'] != $CURUSER['id']) ? '<i>' . get_anonymous_name() . '</i>' : format_username($row['owner'])) : '<i>(' . $lang['torrenttable_unknown_uploader'] . ')</i>') . "</td>";
         }
         if ($CURUSER['class'] >= UC_STAFF) {
             $returnto = !empty($_SERVER['REQUEST_URI']) ? '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) : '';

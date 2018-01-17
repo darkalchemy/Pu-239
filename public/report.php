@@ -11,7 +11,7 @@ $stdhead = [
     ],
 ];
 $HTMLOUT = $id_2 = $id_2b = '';
-// === now all reports just use a single var $id and a type thanks dokty... again :P
+
 $id = ($_GET['id'] ? (int)$_GET['id'] : (int)$_POST['id']);
 if (!is_valid_id($id)) {
     stderr("{$lang['report_error']}", "{$lang['report_error1']}");
@@ -31,7 +31,7 @@ $typesallowed = [
 if (!in_array($type, $typesallowed)) {
     stderr("{$lang['report_error']}", "{$lang['report_error2']}");
 }
-// === still need a second value passed for stuff like hit and run where you need two id's :P
+
 if ((isset($_GET['id_2'])) || (isset($_POST['id_2']))) {
     $id_2 = ($_GET['id_2'] ? (int)$_GET['id_2'] : (int)$_POST['id_2']);
     if (!is_valid_id($id_2)) {
@@ -45,25 +45,26 @@ if ((isset($_GET['do_it'])) || (isset($_POST['do_it']))) {
     if (!is_valid_id($do_it)) {
         stderr("{$lang['report_error']}", "{$lang['report_error3']}");
     }
-    // == make sure the reason is filled out and is set
+
     $reason = htmlsafechars($_POST['reason']);
     if (!$reason) {
         stderr("{$lang['report_error']}", "{$lang['report_error4']}");
     }
 
-    // === check if it's been reported already
     $res = sql_query('SELECT id FROM reports WHERE reported_by =' . sqlesc($CURUSER['id']) . ' AND reporting_what =' . sqlesc($id) . ' AND reporting_type = ' . sqlesc($type)) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) != 0) {
         stderr("{$lang['report_error5']}", "{$lang['report_error6']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>$id</b>!");
     }
-    // === ok it's not been reported yet let's go on
+
     $dt = TIME_NOW;
     sql_query(
         'INSERT into reports (reported_by, reporting_what, reporting_type, reason, added, 2nd_value) 
         VALUES (' . sqlesc($CURUSER['id']) . ', ' . sqlesc($id) . ', ' . sqlesc($type) . ', ' . sqlesc($reason) . ", $dt, " . sqlesc($id_2) . ')'
     ) or sqlerr(__FILE__, __LINE__);
     $cache->delete('new_report_');
-    setSessionVar('is-success', str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>{$id}</b>!<br><b>{$lang['report_reason']}</b> {$reason}");
+    setSessionVar('is-success', '[h3]' . str_replace('_', ' ', $type) . " {$lang['report_id']} {$id} report sent.[/h3][p]{$lang['report_reason']} {$reason}[/p]");
+    header("Location: {$site_config['baseurl']}");
+    die();
 }
 
 $HTMLOUT .= main_div("
@@ -73,7 +74,7 @@ $HTMLOUT .= main_div("
         <img src='{$site_config['pic_baseurl']}warned.png' alt='warned' title='Warned' /><br>{$lang['report_report1']} <a class='altlink' href='{$site_config['baseurl']}/rules.php' target='_blank'>{$lang['report_rules']}</a>?</td></tr>
         <b>{$lang['report_reason']}</b>
         <textarea name='reason' class='w-100' rows='5'></textarea> [ {$lang['report_req']} ]<br>
-        <input type='submit' class='button margin20' value='{$lang['report_confirm']}' />
+        <input type='submit' class='button is-small margin20' value='{$lang['report_confirm']}' />
     </form>");
 echo stdhead('Report', true, $stdhead) . wrapper($HTMLOUT) . stdfoot();
 die;

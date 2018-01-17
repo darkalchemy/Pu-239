@@ -3,25 +3,25 @@ require_once dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
+
 $lang = array_merge(load_language('global'), load_language('setclass'));
 $HTMLOUT = '';
-if ($CURUSER['class'] < UC_STAFF or $CURUSER['override_class'] != 255) {
-    stderr('Error', 'wots the story ?');
+if ($CURUSER['class'] < UC_STAFF || $CURUSER['override_class'] != 255) {
+    stderr('Error', 'whats the story?');
 }
-if (isset($_GET['action']) && htmlsafechars($_GET['action']) == 'editclass') { //Process the querystring - No security checks are done as a temporary class higher
-    //then the actual class mean absoluetly nothing.
+if (isset($_GET['action']) && htmlsafechars($_GET['action']) == 'editclass') {
     $newclass = (int)$_GET['class'];
     $returnto = htmlsafechars($_GET['returnto']);
-    sql_query('UPDATE users SET override_class = ' . sqlesc($newclass) . ' WHERE id = ' . sqlesc($CURUSER['id'])); // Set temporary class
+    sql_query('UPDATE users SET override_class = ' . sqlesc($newclass) . ' WHERE id = ' . sqlesc($CURUSER['id']));
     $cache->update_row('user' . $CURUSER['id'], [
         'override_class' => $newclass,
     ], $site_config['expires']['user_cache']);
     header("Location: {$site_config['baseurl']}/" . $returnto);
     die();
 }
-// HTML Code to allow changes to current class
+
 $HTMLOUT .= "<br>
-<font size='4'><b>{$lang['set_class_allow']}</b></font>
+<span class='size_4'><b>{$lang['set_class_allow']}</b></span>
 <br><br>
 <form method='get' action='{$site_config['baseurl']}/setclass.php'>
     <input type='hidden' name='action' value='editclass' />

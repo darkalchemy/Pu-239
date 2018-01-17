@@ -2,9 +2,8 @@
 require_once dirname(__FILE__, 3) . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'bittorrent.php';
 require_once INCL_DIR . 'user_functions.php';
 check_user_status();
-
-header('Content-Type: application/json');
 global $site_config, $cache;
+
 $lang = array_merge(load_language('global'), load_language('index'));
 
 if (empty($_POST)) {
@@ -13,6 +12,7 @@ if (empty($_POST)) {
     die();
 }
 
+header('Content-Type: application/json');
 if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
     $upped = mksize($CURUSER['uploaded']);
     $downed = mksize($CURUSER['downloaded']);
@@ -56,7 +56,7 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
             $seed = $MyPeersCache;
         }
     }
-    // for display connectable  1 / 2 / 3
+
     if (!empty($seed['conn'])) {
         switch ($seed['conn']) {
             case 1:
@@ -86,11 +86,12 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
         $Achievement_Points['spentpoints'] = (int)$Achievement_Points['spentpoints'];
         $cache->set('user_achievement_points_' . $CURUSER['id'], $Achievement_Points, 0);
     }
-    $usrclass = '';
     if ($CURUSER['override_class'] != 255) {
-        $usrclass = ' <b>(' . get_user_class_name($CURUSER['class']) . ')</b> ';
+        $usrclass = " <a href='{$site_config['baseurl']}/restoreclass.php' class='tooltipper' title='Restore to Your User Class'><b>" . get_user_class_name($CURUSER['override_class']) . '</b></a>';
     } elseif ($CURUSER['class'] >= UC_STAFF) {
-        $usrclass = " <a href='{$site_config['baseurl']}/setclass.php' class='tooltipper' title='Temporarily Change User Class'><b>(" . get_user_class_name($CURUSER['class']) . ')</b></a>';
+        $usrclass = " <a href='{$site_config['baseurl']}/setclass.php' class='tooltipper' title='Temporarily Change User Class'><b>" . get_user_class_name($CURUSER['class']) . '</b></a>';
+    } else {
+        $usrclass = get_user_class_name($CURUSER['class']);
     }
     $member_reputation = get_reputation($CURUSER);
 
@@ -98,7 +99,7 @@ if (!empty($CURUSER) && validateToken($_POST['csrf_token'])) {
     <div class='navbar-start'>{$lang['gl_pstats']}</div>
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_uclass']}</div>
-        " . ($CURUSER['class'] < UC_STAFF ? "<div>" . get_user_class_name($CURUSER['class']) . "</div>" : "<div>{$usrclass}</div>") . "
+        <div>{$usrclass}</div>
     </div>
     <div class='level is-marginless'>
         <div class='navbar-start'>{$lang['gl_rep']}</div>
