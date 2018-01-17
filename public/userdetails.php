@@ -949,7 +949,8 @@ if (($CURUSER['class'] >= UC_STAFF && $user['class'] < $CURUSER['class']) || $CU
     }
 
     $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_park']}</td><td colspan='3' class='has-text-left'><input name='parked' value='yes' type='radio'" . ($user['parked'] == 'yes' ? " checked" : '') . " />{$lang['userdetails_yes']} <input name='parked' value='no' type='radio'" . ($user['parked'] == 'no' ? " checked" : '') . " />{$lang['userdetails_no']}</td></tr>";
-    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset']}</td><td colspan='3'><input type='checkbox' name='reset_torrent_pass' value='1' /><font class='small'>{$lang['userdetails_pass_msg']}</font></td></tr>";
+    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset']}</td><td colspan='3'><input type='checkbox' name='reset_torrent_pass' value='1' /><span class='small left10'>{$lang['userdetails_pass_msg']}</span></td></tr>";
+    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_reset_auth']}</td><td colspan='3'><input type='checkbox' name='reset_auth' value='1' /><span class='small left10'>{$lang['userdetails_auth_msg']}</span></td></tr>";
 
     if ($CURUSER['class'] >= UC_STAFF) {
         $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_bonus_points']}</td><td colspan='3' class='has-text-left'><input type='text' class='w-100' name='seedbonus' value='" . (int)$user_stats['seedbonus'] . "' /></td></tr>";

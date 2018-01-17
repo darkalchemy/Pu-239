@@ -85,7 +85,7 @@ $gamenum = (int)$result['gamenum'];
 
 $refresh = '';
 if (!empty($gamenum) && !empty($qid)) {
-    $time_refresh = 5;
+    $time_refresh = 10;
     if ($round_remaining >= 1) {
         $time_refresh = $round_remaining;
     }

@@ -1,5 +1,6 @@
 In no particular order
 
+replace anonymous user with array of names, like Tom Sawyer
 fix admin uploadapp.php
 remove begin_table and end_table functions
 remove begin_frame and end_frame functions

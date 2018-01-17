@@ -25,8 +25,7 @@ function remove_torrent_pass($torrent_pass)
     if (strlen($torrent_pass) != 32 || !bin2hex($torrent_pass)) {
         return false;
     }
-    $key = 'user_torrent_pass_' . $torrent_pass;
-    $cache->delete($key);
+    $cache->delete('user_torrent_pass_' . $torrent_pass);
     return true;
 }
 
@@ -519,13 +518,23 @@ if ((isset($_POST['action'])) && ($_POST['action'] == 'edituser')) {
     }
     //== Reset Torrent pass
     if ((isset($_POST['reset_torrent_pass'])) && ($_POST['reset_torrent_pass'])) {
-        $newpasskey = make_torrentpass();
-        $modcomment = get_date(TIME_NOW, 'DATE', 1) . "{$lang['modtask_passkey']}" . sqlesc($user['torrent_pass']) . "{$lang['modtask_reset']}" . sqlesc($newpasskey) . "{$lang['modtask_by']}" . $CURUSER['username'] . ".\n" . $modcomment;
-        $curuser_cache['torrent_pass'] = $newpasskey;
-        $user_cache['torrent_pass'] = $newpasskey;
-        $updateset[] = 'torrent_pass=' . sqlesc($newpasskey);
-        $useredit['update'][] = $lang['modtask_torrent_pass'] . sqlesc($user['torrent_pass']) . $lang['modtask_torrent_pass_reset'] . $newpasskey . '';
+        $newtorrentpass = make_password(16);
+        $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - {$lang['modtask_torrent_pass']} " . sqlesc($user['torrent_pass']) . " {$lang['modtask_reset']} " . sqlesc($newtorrentpass) . " {$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
+        $curuser_cache['torrent_pass'] = $newtorrentpass;
+        $user_cache['torrent_pass'] = $newtorrentpass;
+        $updateset[] = 'torrent_pass = ' . sqlesc($newtorrentpass);
+        $useredit['update'][] = "{$lang['modtask_torrent_pass']} " . sqlesc($user['torrent_pass']) . " {$lang['modtask_reset']} $newtorrentpass}";
     }
+    //== Reset Auth
+    if ((isset($_POST['reset_auth'])) && ($_POST['reset_auth'])) {
+        $newauthkey = make_password(16);
+        $modcomment = get_date(TIME_NOW, 'DATE', 1) . " - {$lang['modtask_authkey']} " . sqlesc($user['auth']) . " {$lang['modtask_reset']} " . sqlesc($newauthkey) . " {$lang['modtask_by']} " . $CURUSER['username'] . ".\n" . $modcomment;
+        $curuser_cache['auth'] = $newauthkey;
+        $user_cache['auth'] = $newauthkey;
+        $updateset[] = 'auth = ' . sqlesc($newauthkey);
+        $useredit['update'][] = "{$lang['modtask_authkey']} " . sqlesc($user['auth']) . " {$lang['modtask_reset']} $newauthkey";
+    }
+
     //== seedbonus
     if ((isset($_POST['seedbonus'])) && (($seedbonus = $_POST['seedbonus']) != ($curseedbonus = $user['seedbonus']))) {
         $modcomment = get_date(TIME_NOW, 'DATE', 1) . $lang['modtask_seedbonus'] . $seedbonus . $lang['modtask_gl_from'] . $curseedbonus . $lang['modtask_gl_by'] . $CURUSER['username'] . ".\n" . $modcomment;

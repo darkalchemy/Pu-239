@@ -161,10 +161,10 @@ $lang = [
     'modtask_custom_title'             => ' - Custom Title changed to ',
     'modtask_custom_title_altered'     => 'Custom title altered',
     //reset torrent pass
-    'modtask_passkey'                  => ' - Passkey ',
-    'modtask_reset'                    => ' Reset to ',
-    'modtask_torrent_pass'             => 'Passkey ',
-    'modtask_torrent_pass_reset'       => ' reset to ',
+    'modtask_reset'                    => 'reset to',
+    'modtask_torrent_pass'             => 'Torrent Pass',
+    //reset auth pass
+    'modtask_authkey'                   => ' - Auth Key ',
     //seedbonus
     'modtask_seedbonus'                => ' - Seedbonus amount changed to ',
     'modtask_seedbonus_total'          => 'Seedbonus points total adjusted',

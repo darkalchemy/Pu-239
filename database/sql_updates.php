@@ -189,8 +189,20 @@ $sql_updates = [
     ],
     [
         'id'    => 32,
-        'info'  => 'Add unique index t snatched',
+        'info'  => 'Add unique index to snatched',
         'date'  => '13 Jan, 2018',
         'query' => 'ALTER TABLE `snatched` ADD UNIQUE INDEX `userid_torrentid`(`userid`, `torrentid`)',
+    ],
+    [
+        'id'    => 33,
+        'info'  => 'Add auth column',
+        'date'  => '17 Jan, 2018',
+        'query' => 'ALTER TABLE `users` ADD COLUMN `auth` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `torrent_pass`',
+    ],
+    [
+        'id'    => 34,
+        'info'  => 'Add unique index auth column',
+        'date'  => '17 Jan, 2018',
+        'query' => 'ALTER TABLE `users` ADD UNIQUE INDEX `auth`(`auth`)',
     ],
 ];

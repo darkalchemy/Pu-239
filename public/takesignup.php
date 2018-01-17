@@ -117,29 +117,26 @@ if (isset($_POST['user_timezone']) && preg_match('#^\-?\d{1,2}(?:\.\d{1,2})?$#',
 
 $dst_in_use = localtime(TIME_NOW + ($time_offset * 3600), true);
 
-$wantpasshash = make_passhash($wantpassword);
-$wanthintanswer = make_passhash($hintanswer);
-$user_frees = (XBT_TRACKER ? '0' : TIME_NOW + 14 * 86400);
-$torrent_pass = make_torrentpass();
 check_banned_emails($email);
 
 $values = [
     'username'     => $wantusername,
-    'torrent_pass' => $torrent_pass,
-    'passhash'     => $wantpasshash,
+    'torrent_pass' => make_password(16),
+    'auth'         => make_password(16),
+    'passhash'     => make_passhash($wantpassword),
     'birthday'     => $birthday,
     'country'      => $country,
     'gender'       => $gender,
     'stylesheet'   => $site_config['stylesheet'],
     'passhint'     => $passhint,
-    'hintanswer'   => $wanthintanswer,
+    'hintanswer'   => make_passhash($hintanswer),
     'email'        => $email,
     'ip'           => $ip,
     'added'        => TIME_NOW,
     'last_access'  => TIME_NOW,
     'time_offset'  => $time_offset,
     'dst_in_use'   => $dst_in_use['tm_isdst'],
-    'free_switch'  => $user_frees,
+    'free_switch'  => (XBT_TRACKER ? '0' : TIME_NOW + 14 * 86400),
     'ip'           => inet_pton($ip),
     'status'       => ($users_count === 0 || (!$site_config['email_confirm'] && $site_config['auto_confirm']) ? 'confirmed' : 'pending'),
     'class'        => ($users_count === 0 ? UC_SYSOP : UC_USER),
@@ -222,7 +219,9 @@ if ($users_count > 0 && $site_config['email_confirm']) {
                             "{$site_config['baseurl']}/confirm.php?id=$alt_id$psecret",
                         ], $lang['takesignup_email_body']);
     mail($email, "{$site_config['site_name']} {$lang['takesignup_confirm']}", $body, "{$lang['takesignup_from']} {$site_config['site_email']}");
-} else {
+}
+
+if ($site_config['auto_confirm']) {
     clearUserCache($user_id);
     setSessionVar('userID', $user_id);
 }

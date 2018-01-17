@@ -1,3 +1,7 @@
+17 Jan 2018
+add: auth key
+update: BOT upload to use auth key
+
 16 Jan 2018
 update: site config: auto confirm = yes, confirm email = no
 add: missing trivia questions

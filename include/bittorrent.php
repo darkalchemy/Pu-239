@@ -1831,14 +1831,6 @@ function shuffle_assoc($list, $times = 1)
 }
 
 /**
- * @return string
- */
-function make_torrentpass()
-{
-    return make_password(16);
-}
-
-/**
  * @return mixed
  */
 function get_scheme()

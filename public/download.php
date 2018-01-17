@@ -118,7 +118,7 @@ $cache->delete('top5_tor_');
 $cache->delete('last5_tor_');
 $cache->delete('scroll_tor_');
 if (!isset($CURUSER['torrent_pass']) || strlen($CURUSER['torrent_pass']) != 32) {
-    $passkey = make_torrentpass();
+    $passkey = make_password(16);
     $uid = $CURUSER['id'];
     $CURUSER['torrent_pass'] = $passkey;
     sql_query('UPDATE users SET torrent_pass = ' . sqlesc($CURUSER['torrent_pass']) . ' WHERE id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);

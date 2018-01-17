@@ -2388,6 +2388,7 @@ CREATE TABLE `users` (
   `username` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
   `passhash` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `torrent_pass` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `auth` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` enum('pending','confirmed') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
   `added` int(11) NOT NULL DEFAULT '0',

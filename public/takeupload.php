@@ -4,20 +4,19 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class.bencdec.php';
 require_once INCL_DIR . 'function_memcache.php';
 
+file_put_contents('/var/log/nginx/auth.log', json_encode($_GET) . PHP_EOL, FILE_APPEND);
+file_put_contents('/var/log/nginx/auth.log', json_encode($_POST) . PHP_EOL, FILE_APPEND);
+
 $owner_id = '';
-file_put_contents('/var/log/nginx/autobot.log', json_encode($_GET) . PHP_EOL, FILE_APPEND);
-file_put_contents('/var/log/nginx/autobot.log', json_encode($_POST) . PHP_EOL, FILE_APPEND);
-file_put_contents('/var/log/nginx/autobot.log', json_encode($_FILES) . PHP_EOL, FILE_APPEND);
 extract($_GET);
 unset($_GET);
 extract($_POST);
 unset($_POST);
-
-if (!empty($bot) && !empty($torrent_pass)) {
+if (!empty($bot) && !empty($auth)) {
     $owner_id = $fluent->from('users')
         ->select(null)
         ->select('id')
-        ->where('class > ? AND username = ? AND torrent_pass = ? AND uploadpos = 1 AND suspended = "no"', UC_UPLOADER, $bot, $torrent_pass)
+        ->where('class > ? AND username = ? AND auth = ? AND torrent_pass = ? AND uploadpos = 1 AND suspended = "no"', UC_UPLOADER, $bot, $auth, $torrent_pass)
         ->fetch('id');
 } else {
     check_user_status();
@@ -26,7 +25,6 @@ if (!empty($bot) && !empty($torrent_pass)) {
 }
 
 $user = get_user_data($owner_id);
-file_put_contents('/var/log/nginx/autobot.log', $owner_id . PHP_EOL, FILE_APPEND);
 
 global $site_config, $cache;
 
@@ -38,19 +36,16 @@ if ($user['class'] < UC_UPLOADER || $user['uploadpos'] == 0 || $user['uploadpos'
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
-file_put_contents('/var/log/nginx/autobot.log', 'pass 000' . PHP_EOL, FILE_APPEND);
 if (empty($body) || empty($type) || empty($name)) {
     setSessionVar('is-warning', $lang['takeupload_no_formdata']);
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
-file_put_contents('/var/log/nginx/autobot.log', 'pass 001' . PHP_EOL, FILE_APPEND);
 if (!isset($_FILES['file'])) {
     setSessionVar('is-warning', $lang['takeupload_no_formdata']);
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
-file_put_contents('/var/log/nginx/autobot.log', 'pass 002' . PHP_EOL, FILE_APPEND);
 $url = strip_tags(isset($url) ? trim($url) : '');
 $poster = strip_tags(isset($poster) ? trim($poster) : '');
 $f = $_FILES['file'];
@@ -85,7 +80,6 @@ if (isset($music)) {
 } else {
     $genre = '';
 }
-file_put_contents('/var/log/nginx/autobot.log', 'pass 1' . PHP_EOL, FILE_APPEND);
 
 $nfo = sqlesc('');
 
@@ -115,8 +109,6 @@ if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
     $nfo = sqlesc(str_replace("\x0d\x0d\x0a", "\x0d\x0a", @file_get_contents($nfofilename)));
 }
 
-file_put_contents('/var/log/nginx/autobot.log', 'pass 2' . PHP_EOL, FILE_APPEND);
-
 $free2 = 0;
 if (isset($free_length) && ($free_length = (int)$free_length)) {
     if ($free_length == 255) {
@@ -141,7 +133,6 @@ if (isset($half_length) && ($half_length = (int)$half_length)) {
 
 $freetorrent = (((isset($freetorrent) && is_valid_id($freetorrent)) ? intval($freetorrent) : 0));
 $descr = strip_tags(isset($body) ? trim($body) : '');
-file_put_contents('/var/log/nginx/autobot.log', 'pass 3' . PHP_EOL, FILE_APPEND);
 
 if (!$descr) {
     if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
@@ -220,7 +211,6 @@ if (!isset($dict['info'])) {
 }
 $info = &$dict['info'];
 $infohash = pack('H*', sha1(bencdec::encode($info)));
-file_put_contents('/var/log/nginx/autobot.log', 'pass 4' . PHP_EOL, FILE_APPEND);
 
 if (get_row_count('torrents', "WHERE info_hash = " . sqlesc($infohash)) > 0) {
     setSessionVar('is-warning', 'This torrent has already been uploaded! Please use the search function before uploading.');
@@ -320,7 +310,6 @@ if (isset($info['length'])) {
         ];
     }
 }
-file_put_contents('/var/log/nginx/autobot.log', 'pass 5' . PHP_EOL, FILE_APPEND);
 
 $num_pieces = $pieces_len / 20;
 $expected_pieces = (int)ceil($totallen / $plen);
@@ -336,7 +325,6 @@ $dict['comment'] = ("In using this torrent you are bound by the {$site_config['s
 $visible = (XBT_TRACKER ? 'yes' : 'no');
 $torrent = str_replace('_', ' ', $torrent);
 $vip = (isset($vip) ? '1' : '0');
-file_put_contents('/var/log/nginx/autobot.log', 'pass 6' . PHP_EOL, FILE_APPEND);
 
 $sql = 'INSERT INTO torrents (search_text, filename, owner, visible, vip, release_group, newgenre, poster, anonymous, allow_comments, info_hash, name, size, numfiles, offer, request, url, subs, descr, ori_descr, description, category, free, silver, save_as, youtube, tags, added, last_action, mtime, ctime, freetorrent, nfo, client_created_by) VALUES (' . implode(',', array_map('sqlesc', [
         searchfield("$shortfname $dname $torrent"),
@@ -367,7 +355,6 @@ $sql = 'INSERT INTO torrents (search_text, filename, owner, visible, vip, releas
         $youtube,
         $tags,
     ])) . ', ' . TIME_NOW . ', ' . TIME_NOW . ', ' . TIME_NOW . ', ' . TIME_NOW . ", $freetorrent, $nfo, $tmaker)";
-file_put_contents('/var/log/nginx/autobot.log', $sql . PHP_EOL, FILE_APPEND);
 
 $ret = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
