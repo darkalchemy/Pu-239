@@ -69,7 +69,7 @@ if ($edit_mood['action'] == 'edit' && $edit_mood['id']) {
          </table></form>";
 }
 $HTMLOUT .= '<h1>' . $lang['moods_current'] . '</h1>';
-$HTMLOUT .= "<table border='1' width='85%' cellspacing='0' cellpadding='5'>
+$HTMLOUT .= "<table width='85%'>
       <tr><td class='colhead'>{$lang['moods_added1']}</td>
       <td class='colhead'>{$lang['moods_name']}</td>
       <td class='colhead'>{$lang['moods_image']}</td>

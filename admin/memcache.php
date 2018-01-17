@@ -831,7 +831,7 @@ switch ($_GET['op']) {
         $set_rate = sprintf('%.2f', ($sets) / ($time - $startTime));
         echo <<< EOB
         <div class="info div1"><h2>General Cache Information</h2>
-        <table cellspacing="0"><tbody>
+        <table><tbody>
         <tr class="tr-1"><td class="td-0">PHP Version</td><td>$phpversion</td></tr>
 EOB;
         echo "<tr class='tr-0'><td class='td-0'>Memcached Host" . ((count($MEMCACHE_SERVERS) > 1) ? 's' : '') . '</td><td>';
@@ -855,7 +855,7 @@ EOB;
         <div class="info div1"><h2>Memcache Server Information</h2>
 EOB;
         foreach ($MEMCACHE_SERVERS as $server) {
-            echo '<table cellspacing="0"><tbody>';
+            echo '<table><tbody>';
             echo '<tr class="tr-1"><td class="td-1">' . $server . '</td><td><a href="' . $site_config['baseurl'] . '/staffpanel.php?tool=memcache&amp;server=' . array_search($server, $MEMCACHE_SERVERS) . '&amp;op=6">[<b>Flush this server</b>]</a></td></tr>';
             echo '<tr class="tr-0"><td class="td-0">Start Time</td><td>', date(DATE_FORMAT, $memcacheStatsSingle[$server]['STAT']['time'] - $memcacheStatsSingle[$server]['STAT']['uptime']), '</td></tr>';
             echo '<tr class="tr-1"><td class="td-0">Uptime</td><td>', duration($memcacheStatsSingle[$server]['STAT']['time'] - $memcacheStatsSingle[$server]['STAT']['uptime']), '</td></tr>';
@@ -868,7 +868,7 @@ EOB;
 
         </div>
         <div class="graph div3"><h2>Host Status Diagrams</h2>
-        <table cellspacing="0"><tbody>
+        <table><tbody>
 EOB;
         $size = 'width=' . (GRAPH_SIZE + 50) . ' height=' . (GRAPH_SIZE + 10);
         echo <<<EOB
@@ -883,7 +883,7 @@ EOB;
     </tbody></table>
 <br>
     <div class="info"><h2>Cache Information</h2>
-        <table cellspacing="0"><tbody>
+        <table><tbody>
         <tr class="tr-0"><td class="td-0">Current Items(total)</td><td>$curr_items ($total_items)</td></tr>
         <tr class="tr-1"><td class="td-0">Hits</td><td>{$hits}</td></tr>
         <tr class="tr-0"><td class="td-0">Misses</td><td>{$misses}</td></tr>
@@ -906,7 +906,7 @@ EOB;
         foreach ($items as $server => $entries) {
             echo <<< EOB
 
-            <div class="info"><table cellspacing="0"><tbody>
+            <div class="info"><table><tbody>
             <tr><th colspan="2">$server</th></tr>
             <tr><th>Slab Id</th><th>Info</th></tr>
 EOB;
@@ -953,7 +953,7 @@ EOB;
         list($h, $p) = explode(':', $theserver);
         $r = sendMemcacheCommand($h, $p, 'get ' . $theKey);
         echo <<<EOB
-        <div class="info"><table cellspacing="0"><tbody>
+        <div class="info"><table><tbody>
             <tr><th>Server<th>Key</th><th>Value</th><th>Delete</th></tr>
 EOB;
         echo "<tr><td class='td-0'>", $theserver, "</td><td class='td-0'>", $theKey, ' <br>flag:', $r['VALUE'][$theKey]['stat']['flag'], ' <br>Size:', bsize($r['VALUE'][$theKey]['stat']['size']), '</td><td>', chunk_split($r['VALUE'][$theKey]['value'], 40), '</td>', '<td><a href="', $site_config['baseurl'], '/staffpanel.php?tool=memcache&op=5&server=', (int)$_GET['server'], '&key=', base64_encode($theKey), '">Delete</a></td>', '</tr>';

@@ -70,28 +70,28 @@ if (XBT_TRACKER) {
 
     switch ($percent_fl) {
         case $percent_fl >= 90:
-            $font_color_fl = "<span class='text-green'> {$percent_fl}%</span>";
+            $font_color_fl = "<span class='has-text-green'> {$percent_fl}%</span>";
             break;
         case $percent_fl >= 80:
-            $font_color_fl = "<span class='text-lightgreen'> {$percent_fl}%</span>";
+            $font_color_fl = "<span class='has-text-lightgreen'> {$percent_fl}%</span>";
             break;
         case $percent_fl >= 70:
-            $font_color_fl = "<span class='text-jade'> {$percent_fl}%</span>";
+            $font_color_fl = "<span class='has-text-jade'> {$percent_fl}%</span>";
             break;
         case $percent_fl >= 50:
-            $font_color_fl = "<span class='text-turquoise'> {$percent_fl}%</span>";
+            $font_color_fl = "<span class='has-text-turquoise'> {$percent_fl}%</span>";
             break;
         case $percent_fl >= 40:
-            $font_color_fl = "<span class='text-lightblue'> {$percent_fl}%</span>";
+            $font_color_fl = "<span class='has-text-lghtblue'> {$percent_fl}%</span>";
             break;
         case $percent_fl >= 30:
-            $font_color_fl = "<span class='text-gold'> {$percent_fl}%</span>";
+            $font_color_fl = "<span class='has-text-gold'> {$percent_fl}%</span>";
             break;
         case $percent_fl >= 20:
-            $font_color_fl = "<span class='text-orange'> {$percent_fl}%</span>";
+            $font_color_fl = "<span class='has-text-oragne'> {$percent_fl}%</span>";
             break;
         case $percent_fl < 20:
-            $font_color_fl = "<span class='text-red'> {$percent_fl}%</span>";
+            $font_color_fl = "<span class='has-text-red'> {$percent_fl}%</span>";
             break;
     }
 
@@ -109,28 +109,28 @@ if (XBT_TRACKER) {
 
     switch ($percent_du) {
         case $percent_du >= 90:
-            $font_color_du = "<span class='text-green'> {$percent_du}%</span>";
+            $font_color_du = "<span class='has-text-green'> {$percent_du}%</span>";
             break;
         case $percent_du >= 80:
-            $font_color_du = "<span class='text-lightgreen'> {$percent_du}%</span>";
+            $font_color_du = "<span class='has-text-lightgreen'> {$percent_du}%</span>";
             break;
         case $percent_du >= 70:
-            $font_color_du = "<span class='text-jade'> {$percent_du}%</span>";
+            $font_color_du = "<span class='has-text-jade'> {$percent_du}%</span>";
             break;
         case $percent_du >= 50:
-            $font_color_du = "<span class='text-turquoise'> {$percent_du}%</span>";
+            $font_color_du = "<span class='has-text-turquoise'> {$percent_du}%</span>";
             break;
         case $percent_du >= 40:
-            $font_color_du = "<span class='text-lightblue'> {$percent_du}%</span>";
+            $font_color_du = "<span class='has-text-lghtblue'> {$percent_du}%</span>";
             break;
         case $percent_du >= 30:
-            $font_color_du = "<span class='text-gold'> {$percent_du}%</span>";
+            $font_color_du = "<span class='has-text-gold'> {$percent_du}%</span>";
             break;
         case $percent_du >= 20:
-            $font_color_du = "<span class='text-orange'> {$percent_du}%</span>";
+            $font_color_du = "<span class='has-text-oragne'> {$percent_du}%</span>";
             break;
         case $percent_du < 20:
-            $font_color_du = "<span class='text-red'> {$percent_du}%</span>";
+            $font_color_du = "<span class='has-text-red'> {$percent_du}%</span>";
             break;
     }
 
@@ -148,43 +148,43 @@ if (XBT_TRACKER) {
 
     switch ($percent_hd) {
         case $percent_hd >= 90:
-            $font_color_hd = "<span class='text-green'> {$percent_hd}%</span>";
+            $font_color_hd = "<span class='has-text-green'> {$percent_hd}%</span>";
             break;
         case $percent_hd >= 80:
-            $font_color_hd = "<span class='text-lightgreen'> {$percent_hd}%</span>";
+            $font_color_hd = "<span class='has-text-lightgreen'> {$percent_hd}%</span>";
             break;
         case $percent_hd >= 70:
-            $font_color_hd = "<span class='text-jade'> {$percent_hd}%</span>";
+            $font_color_hd = "<span class='has-text-jade'> {$percent_hd}%</span>";
             break;
         case $percent_hd >= 50:
-            $font_color_hd = "<span class='text-turquoise'> {$percent_hd}%</span>";
+            $font_color_hd = "<span class='has-text-turquoise'> {$percent_hd}%</span>";
             break;
         case $percent_hd >= 40:
-            $font_color_hd = "<span class='text-lightblue'> {$percent_hd}%</span>";
+            $font_color_hd = "<span class='has-text-lghtblue'> {$percent_hd}%</span>";
             break;
         case $percent_hd >= 30:
-            $font_color_hd = "<span class='text-gold'> {$percent_hd}%</span>";
+            $font_color_hd = "<span class='has-text-gold'> {$percent_hd}%</span>";
             break;
         case $percent_hd >= 20:
-            $font_color_hd = "<span class='text-orange'> {$percent_hd}%</span>";
+            $font_color_hd = "<span class='has-text-oragne'> {$percent_hd}%</span>";
             break;
         case $percent_hd < 20:
-            $font_color_hd = "<span class='text-red'> {$percent_hd}%</span>";
+            $font_color_hd = "<span class='has-text-red'> {$percent_hd}%</span>";
             break;
     }
 
     if ($freeleech_enabled) {
-        $fstatus = "<span class='text-green'> ON </span>";
+        $fstatus = "<span class='has-text-green'> ON </span>";
     } else {
         $fstatus = $font_color_fl . '';
     }
     if ($double_upload_enabled) {
-        $dstatus = "<span class='text-green'> ON </span>";
+        $dstatus = "<span class='has-text-green'> ON </span>";
     } else {
         $dstatus = $font_color_du . '';
     }
     if ($half_down_enabled) {
-        $hstatus = "<span class='text-green'> ON </span>";
+        $hstatus = "<span class='has-text-green'> ON </span>";
     } else {
         $hstatus = $font_color_hd . '';
     }

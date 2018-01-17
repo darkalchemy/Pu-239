@@ -173,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
     }
     $HTMLOUT .= begin_frame('Add Promo Link');
     $HTMLOUT .= "<form action='" . ($_SERVER['PHP_SELF']) . "' method='post' >
-                    <table width='50%' class='has-text-centered' style='border-collapse:collapse;' cellpadding='10' cellspacing='0'>
+                    <table width='50%' class='has-text-centered' style='border-collapse:collapse;'>
                       <tr>
                         <td nowrap='nowrap' class='has-text-right' colspan='1'>Promo Name</td>
                         <td class='has-text-left' width='100%' colspan='3'><input type='text' name='promoname' size='60' /></td>
@@ -251,7 +251,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
             }
 
             $HTMLOUT .= "<form action='" . ($_SERVER['PHP_SELF']) . "' method='post'>
-                          <table cellpadding='10' width='50%' class='has-text-centered' cellspacing='0'  border='1' style='border-collapse: collapse;'>
+                          <table width='50%' class='has-text-centered'  style='border-collapse: collapse;'>
                           <tr><td class='colhead' class='has-text-centered' colspan='2'>Promo : " . htmlsafechars($ar['name']) . " </td></tr>
                           <tr><td nowrap='nowrap' class='has-text-right'>Bonuses</td>
                               <td class='has-text-left' width='100%'>
@@ -308,7 +308,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
     </style>
     </head>
     <body>
-    <table width='200' cellpadding='10' border='1' class='has-text-centered' style='border-collapse: collapse;'>
+    <table width='200' class='has-text-centered' style='border-collapse: collapse;'>
     <tr><td class='rowhead' class='has-text-left' width='100'> User</td><td class='rowhead' class='has-text-left' nowrap='nowrap'>Added</td></tr>";
                 while ($ap = mysqli_fetch_assoc($q2)) {
                     $HTMLOUT .= "<tr><td class='has-text-left' width='100'>" . format_username($ap['id']) . "</td><td  class='has-text-left' nowrap='nowrap' >" . get_date($ap['added'], 'LONG', 0, 1) . '</td></tr>';
@@ -344,7 +344,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
          }
          /*]]>*/
         </script>";
-        $HTMLOUT .= "<table class='has-text-centered' width='100%' cellpadding='5' cellspacing='0' border='1' style='border-collapse: collapse;'>
+        $HTMLOUT .= "<table class='has-text-centered' width='100%' style='border-collapse: collapse;'>
             <tr>
                 <td class='has-text-left' width='100%' rowspan='2'>Promo</td>
                 <td class='has-text-centered' nowrap='nowrap' rowspan='2'>Added</td>
@@ -373,7 +373,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $do == 'addpromo') {
                 <td nowrap='nowrap' class='has-text-centered'>" . ((int)$ar['bonus_invites']) . "</td>
                 <td nowrap='nowrap' class='has-text-centered'>" . ((int)$ar['bonus_karma']) . "</td>
                 <td nowrap='nowrap' class='has-text-centered'>" . format_username($ar['creator']) . "</a></td>
-                <td nowrap='nowrap' class='has-text-centered'><a href='" . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . (int)$ar['id'] . "'><img src='{$site_config['pic_baseurl']}del.png' border='0' alt='Drop' /></a></td>
+                <td nowrap='nowrap' class='has-text-centered'><a href='" . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . (int)$ar['id'] . "'><img src='{$site_config['pic_baseurl']}del.png' alt='Drop' /></a></td>
             </tr>";
         }
         $HTMLOUT .= '</table>';

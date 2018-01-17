@@ -82,7 +82,7 @@ function radioinfo($radio)
     } else {
         $html .= '
                 <h2>' . $site_config['site_name'] . ' Radio</h2>
-                <span class="size_3 text-red">
+                <span class="size_3 has-text-red">
                     <img src="' . $site_config['pic_baseurl'] . 'off1.gif" alt="Off-Line" class="tooltipper" title="Off-Line" border="0" /><br>
                     <b>Sorry ' . $CURUSER['username'] . ', the radio is currently offline</b>
                 </h2>';

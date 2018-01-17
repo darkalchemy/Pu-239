@@ -130,7 +130,7 @@ if ($arr[0] > 0) {
     $HTMLOUT .= "<tr><td class='colhead'>{$lang['users_username']}</td><td class='colhead'>{$lang['users_regd']}</td><td class='colhead'>{$lang['users_la']}</td><td class='colhead'>{$lang['users_class']}</td><td class='colhead'>{$lang['users_country']}</td></tr>\n";
     while ($row = mysqli_fetch_assoc($res)) {
         $country = ($row['name'] != null) ? "<td><img src='{$site_config['pic_baseurl']}flag/" . htmlsafechars($row['flagpic']) . "' alt='" . htmlsafechars($row['name']) . "' /></td>" : "<td>---</td>";
-        $HTMLOUT .= "<tr><td><a href='userdetails.php?id=" . (int)$row['id'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>' . ($row['donor'] > 0 ? "<img src='{$site_config['pic_baseurl']}star.gif' border='0' alt='{$lang['users_donor']}' />" : '') . '</td>' . '<td>' . get_date($row['added'], '') . '</td><td>' . get_date($row['last_access'], '') . '</td>' . "<td>" . get_user_class_name($row['class']) . "</td>$country</tr>\n";
+        $HTMLOUT .= "<tr><td><a href='userdetails.php?id=" . (int)$row['id'] . "'><b>" . htmlsafechars($row['username']) . '</b></a>' . ($row['donor'] > 0 ? "<img src='{$site_config['pic_baseurl']}star.gif' alt='{$lang['users_donor']}' />" : '') . '</td>' . '<td>' . get_date($row['added'], '') . '</td><td>' . get_date($row['last_access'], '') . '</td>' . "<td>" . get_user_class_name($row['class']) . "</td>$country</tr>\n";
     }
     $HTMLOUT .= "</table></div>\n";
 }

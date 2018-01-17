@@ -67,7 +67,7 @@ $cards_history = $dealer_cards_history = $deadcards = [];
 $sql = "SELECT b.*, u.id, u.gender FROM blackjack AS b INNER JOIN users AS u ON u.id = b.userid WHERE game_id = " . sqlesc($blackjack['gameid']) . " ORDER BY b.date ASC LIMIT 1";
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $nick = mysqli_fetch_assoc($res);
-$userName = empty($nick['username']) || $nick['username'] === $CURUSER['username'] ? "<span class='text-red'><b>Dealer</b></span>" : format_username($nick['id']);
+$userName = empty($nick['username']) || $nick['username'] === $CURUSER['username'] ? "<span class='has-text-red'><b>Dealer</b></span>" : format_username($nick['id']);
 if ($nick['gender'] == 'Male') {
     $gender = 'he';
 } elseif ($nick['gender'] == 'Female') {

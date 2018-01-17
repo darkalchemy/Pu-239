@@ -104,7 +104,7 @@ function parse_poll()
                     $choice_html .= poll_show_form_choice($choice_id, $votes, $id, $choice);
                 }
             }
-            $choice_html = "<table cellpadding='4' cellspacing='0'>{$choice_html}</table>";
+            $choice_html = "<table>{$choice_html}</table>";
             $htmlout .= poll_show_form_question($id, $question, $choice_html);
         }
         $htmlout .= show_total_votes($total_votes);

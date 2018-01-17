@@ -16,7 +16,7 @@ function smilies_frame($smilies_set)
             <span class='margin10 mw-50 is-flex tooltipper' title='{$code}'>
                 <span class='bordered bg-03'>
                     <a href='#' alt='{$code}'>
-                        <img border='0' src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt='{$code}' />
+                        <img src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt='{$code}' />
                     </a>
                 </span>
             </span>";
@@ -358,8 +358,8 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
         '<span class="text-8">\1</span>',
         "<div style='margin-bottom: 5px;'><span class='flip button'>Show Spoiler!</span><div class='panel spoiler' style='display:none;'>\\1</div></div><br>",
         "<div style='margin-bottom: 5px;'><span class='flip button'>Show Hide!</span><div class='panel spoiler' style='display:none;'>\\1</div></div><br>",
-        "<div style='width: 500px; height: 281px;' class='has-text-centered'><div class='youtube-embed rndcorners has-text-centered' style='height: 100%; width: 100%;'><iframe width='1920px' height='1080px' src='//www.youtube.com/embed/\\1?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen ></iframe></div></div>",
-        "<div style='width: 500px; height: 281px;' class='has-text-centered'><div class='youtube-embed rndcorners has-text-centered' style='height: 100%; width: 100%;'><iframe width='1920px' height='1080px' src='//www.youtube.com/embed/\\1?vq=hd1080' autoplay='false' frameborder='0' allowfullscreen ></iframe></div></div>",
+        "<div style='width: 500px; height: 281px;' class='has-text-centered'><div class='youtube-embed rndcorners has-text-centered' style='height: 100%; width: 100%;'><iframe width='1920px' height='1080px' src='//www.youtube.com/embed/\\1?vq=hd1080' autoplay='false' frameallowfullscreen ></iframe></div></div>",
+        "<div style='width: 500px; height: 281px;' class='has-text-centered'><div class='youtube-embed rndcorners has-text-centered' style='height: 100%; width: 100%;'><iframe width='1920px' height='1080px' src='//www.youtube.com/embed/\\1?vq=hd1080' autoplay='false' frameallowfullscreen ></iframe></div></div>",
         '<embed style="width:500px; height:410px;" id="VideoPlayback" align="middle" type="application/x-shockwave-flash" src="//video.google.com/googleplayer.swf?docId=\\1" allowScriptAccess="sameDomain" quality="best" bgcolor="#fff" scale="noScale" wmode="window" salign="TL"  FlashVars="playerMode=embedded"> </embed>',
         '<span><video width="500" loop muted autoplay><source src="//i.imgur.com/\1.webm" type="video/webm" /><source src="//i.imgur.com/\1.mp4" type="video/mp4" />Your browser does not support the video tag.</video></span>',
         '<span><video width="500" controls><source src="\1" /><source src="\1" type="video/mp4" />Your browser does not support the video tag.</video></span>',

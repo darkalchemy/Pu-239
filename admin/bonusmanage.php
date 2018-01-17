@@ -42,7 +42,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
     $HTMLOUT .= "<form name='bonusmanage' method='post' action='staffpanel.php?tool=bonusmanage&amp;action=bonusmanage'>
       <div class='roundedCorners' style='text-align:left;width:80%;border:1px solid black;padding:5px;'>
     <div class='colhead'><span style='font-weight:bold;font-size:12pt;'>{$lang['bonusmanager_bm']}</span></div>
-      <table width='100%' border='2' cellpadding='8'>
+      <table width='100%'>
       <tr>
         <td class='colhead'>{$lang['bonusmanager_id']}</td>
         <td class='colhead'>{$lang['bonusmanager_order_id']}</td>

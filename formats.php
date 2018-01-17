@@ -10,7 +10,7 @@ echo stdhead("{$lang['formats_download_title']}");
         <td class='embedded'>
             <h2><?php
                 echo $lang['formats_guide_heading']; ?></h2>
-            <table width='100%' border='1' cellspacing='0' cellpadding='10'>
+            <table width='100%'>
                 <tr>
                     <td class='text'>
                         <?php
@@ -27,7 +27,7 @@ echo stdhead("{$lang['formats_download_title']}");
         <td class='embedded'>
             <h2><?php
                 echo $lang['formats_compression_title']; ?></h2>
-            <table width='100%' border='1' cellspacing='0' cellpadding='10'>
+            <table width='100%'>
                 <tr>
                     <td class='text'>
                         <?php
@@ -44,7 +44,7 @@ echo stdhead("{$lang['formats_download_title']}");
         <td class='embedded'>
             <h2><?php
                 echo $lang['formats_multimedia_title']; ?></h2>
-            <table width='100%' border='1' cellspacing='0' cellpadding='10'>
+            <table width='100%'>
                 <tr>
                     <td class='text'>
                         <?php
@@ -61,7 +61,7 @@ echo stdhead("{$lang['formats_download_title']}");
         <td class='embedded'>
             <h2><?php
                 echo $lang['formats_image_title']; ?></h2>
-            <table width='100%' border='1' cellspacing='0' cellpadding='10'>
+            <table width='100%'>
                 <tr>
                     <td class='text'>
                         <?php
@@ -78,7 +78,7 @@ echo stdhead("{$lang['formats_download_title']}");
         <td class='embedded'>
             <h2><?php
                 echo $lang['formats_other_title']; ?></h2>
-            <table width='100%' border='1' cellspacing='0' cellpadding='10'>
+            <table width='100%'>
                 <tr>
                     <td class='text'>
                         <?php
@@ -93,7 +93,7 @@ echo stdhead("{$lang['formats_download_title']}");
 <table class='main' width='750'>
     <tr>
         <td class='embedded'>
-            <table width='100%' border='1' cellspacing='0' cellpadding='10'>
+            <table width='100%'>
                 <tr>
                     <td class='text'>
                         <?php

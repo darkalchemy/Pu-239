@@ -67,7 +67,7 @@ if (!$where) {
     stderr($lang['failed_main_nofail'], $lang['failed_main_nofail_msg']);
 }
 $HTMLOUT = '';
-$HTMLOUT .= "<table border='1' cellspacing='0' width='115' cellpadding='5'>\n
+$HTMLOUT .= "<table width='115'>\n
              <tr>
              <td class='tabletitle'>{$lang['failed_main_search']}</td>\n
              </tr>

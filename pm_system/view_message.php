@@ -62,7 +62,7 @@ $HTMLOUT .= "
                 <td colspan='2'>
                     <span>" . ($message['sender'] === $CURUSER['id'] ? $lang['pm_viewmsg_to'] : $lang['pm_viewmsg_from']) . ": </span>" .
     ($arr_user_stuff['id'] == 0 ? $lang['pm_viewmsg_sys'] : format_username($arr_user_stuff['id'])) . "{$friends}
-                    <br><span>{$lang['pm_viewmsg_sent']}: </span>" . get_date($message['added'], '') . (($message['sender'] === $CURUSER['id'] && $message['unread'] == 'yes') ? $lang['pm_mailbox_char1'] . "<span class='text-red'>{$lang['pm_mailbox_unread']}</span>{$lang['pm_mailbox_char2']}" : '') . ($message['urgent'] === 'yes' ? "<span class='text-red'>{$lang['pm_mailbox_urgent']}</span>" : '') . "
+                    <br><span>{$lang['pm_viewmsg_sent']}: </span>" . get_date($message['added'], '') . (($message['sender'] === $CURUSER['id'] && $message['unread'] == 'yes') ? $lang['pm_mailbox_char1'] . "<span class='has-text-red'>{$lang['pm_mailbox_unread']}</span>{$lang['pm_mailbox_char2']}" : '') . ($message['urgent'] === 'yes' ? "<span class='has-text-red'>{$lang['pm_mailbox_urgent']}</span>" : '') . "
                 </td>
             </tr>
             <tr class='no_hover'>

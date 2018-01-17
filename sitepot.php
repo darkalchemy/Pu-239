@@ -94,7 +94,7 @@ if ($want_pot && (isset($pot_options[$want_pot]))) {
     }
 }
 $HTMLOUT = '';
-$HTMLOUT .= "<table cellpadding='10' width='70%'>
+$HTMLOUT .= "<table width='70%'>
       <tr><td colspan='3'>Once the Site Pot has <b>" . $potsize . "</b> karma points, 
       Freeleech will be turned on for everybody for 24 hours. 
       <p><font size='+1'>

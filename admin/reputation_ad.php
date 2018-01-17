@@ -91,7 +91,7 @@ function show_level()
     $html .= "<p><span class='button is-small'><a href='staffpanel.php?tool=reputation_ad&amp;mode=list'>{$lang['rep_ad_show_comments']}</a></span></p><br>";
     $html .= "<form action='staffpanel.php?tool=reputation_ad' name='show_rep_form' method='post'>
                 <input name='mode' value='doupdate' type='hidden' />";
-    $html .= "<table cellpadding='3px'><tr>
+    $html .= "<table><tr>
         <td width='5%' $css>{$lang['rep_ad_show_id']}</td>
         <td width='60%'$css>{$lang['rep_ad_show_level']}</td>
         <td width='20%' $css>{$lang['rep_ad_show_min']}</td>
@@ -139,7 +139,7 @@ function show_form($type = 'edit')
     $html .= "<form action='staffpanel.php?tool=reputation_ad' name='show_rep_form' method='post'>
                 <input name='reputationlevelid' value='{$replevid}' type='hidden' />
                 <input name='mode' value='{$mode}' type='hidden' />";
-    $html .= "<h2>$title</h2><table width='500px' cellpadding='5px'><tr>
+    $html .= "<h2>$title</h2><table width='500px'><tr>
         <td width='67%' $css>&#160;</td>
         <td width='33%' $css>&#160;</td></tr>";
     $html .= "<tr><td>{$lang['rep_ad_form_desc']}<div class='desctext'>{$lang['rep_ad_form_descr']}</div></td>";
@@ -253,7 +253,7 @@ function show_form_rep()
                 <input name='oldreputation' value='{$res['reputation']}' type='hidden' />
                 <input name='mode' value='doeditrep' type='hidden' />";
     $html .= "<h2>{$lang['rep_ad_rep_form_head']}</h2>";
-    $html .= "<table cellpadding='5px'>";
+    $html .= "<table>";
     $html .= "<tr><td width='37%'>{$lang['rep_ad_rep_form_topic']}</td><td width='63%'><a href='forums.php?action=viewtopic&amp;topicid={$res['topic_id']}&amp;page=p{$res['postid']}#{$res['postid']}' target='_blank'>" . htmlsafechars($res['topic_name']) . '</a></td></tr>';
     $html .= "<tr><td>{$lang['rep_ad_rep_form_left_by']}</td><td>{$res['leftby_name']}</td></tr>";
     $html .= "<tr><td>{$lang['rep_ad_rep_form_left_for']}</td><td width='63%'>{$res['leftfor_name']}</td></tr>";
@@ -276,7 +276,7 @@ function view_list()
     $html .= "<form action='staffpanel.php?tool=reputation_ad' name='list_form' method='post'>
                 <input name='mode' value='list' type='hidden' />
                 <input name='dolist' value='1' type='hidden' />";
-    $html .= "<table width='500px' cellpadding='5px'>";
+    $html .= "<table width='500px'>";
     $html .= "<tr><td width='20%'>{$lang['rep_ad_view_for']}</td><td width='80%'><input type='text' name='leftfor' value='' size='35' maxlength='250' tabindex='1' /></td></tr>";
     $html .= "<tr><td colspan='2'><div>{$lang['rep_ad_view_for_txt']}</div></td></tr>";
     $html .= "<tr><td>{$lang['rep_ad_view_by']}</td><td><input type='text' name='leftby' value='' size='35' maxlength='250' tabindex='2' /></td></tr>";
@@ -357,7 +357,7 @@ function view_list()
         }
         $css = "style='font-weight: bold;color: #fff;background-color: #0055A4;padding: 5px;'";
         $html = "<h2>{$lang['rep_ad_view_cmts']}</h2>";
-        $table_header = "<table width='80%' cellpadding='5' border='1'><tr $css>";
+        $table_header = "<table width='80%' border='1'><tr $css>";
         $table_header .= "<td width='5%'>{$lang['rep_ad_view_id']}</td>";
         $table_header .= "<td width='20%'><a href='staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=leftbyuser&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_by']}</a></td>";
         $table_header .= "<td width='20%'><a href='staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . intval($who) . '&amp;user=' . intval($user) . "&amp;orderby=leftforuser&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_for']}</a></td>";

@@ -27,7 +27,7 @@ $htmlout = "<!doctype html>
             window.close();
         }
     </script>
-    <table class='list' width='100%' cellpadding='1' cellspacing='1'>";
+    <table class='list' width='100%'>";
 $count = 0;
 $ctr = 0;
 global $customsmilies;
@@ -39,7 +39,7 @@ while ((list($code, $url) = each($customsmilies))) {
     $htmlout .= "
             <td class='has-text-centered'>
                 <a href=\"javascript: SmileIT('" . str_replace("'", "\'", $code) . "','" . htmlsafechars($_GET['form']) . "','" . htmlsafechars($_GET['text']) . "')\">
-                    <img border='0' src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt='' />
+                    <img src='{$site_config['pic_baseurl']}smilies/" . $url . "' alt='' />
                 </a>
             </td>";
     ++$count;

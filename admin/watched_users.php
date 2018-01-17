@@ -124,7 +124,7 @@ $i = 1;
 $HTMLOUT .= $H1_thingie . '<br>
         <form action="' . $site_config['baseurl'] . '/staffpanel.php?tool=watched_users&amp;action=watched_users&amp;remove=1" method="post"  name="checkme" onsubmit="return ValidateForm(this,\'wu\')">
         <h1>' . $lang['watched_users'] . '[ ' . $watched_users . ' ]</h1>
-    <table border="0" cellspacing="5" cellpadding="5" class="has-text-centered" style="max-width: 800px;">';
+    <table border="0" class="has-text-centered" style="max-width: 800px;">';
 
 $res = sql_query('SELECT id, username, added, watched_user_reason, watched_user, uploaded, downloaded, warned, suspended, enabled, donor, class, leechwarn, chatpost, pirate, king, invitedby FROM users WHERE watched_user != \'0\' ORDER BY ' . $ORDER_BY . $ASC) or sqlerr(__FILE__, __LINE__);
 $how_many = mysqli_num_rows($res);

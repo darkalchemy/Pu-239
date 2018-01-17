@@ -177,7 +177,7 @@ function checkext(upload_field)
 }
 </script>
 <form enctype='multipart/form-data' method='post' action='subtitles.php'>
-<table style='width:400px; border:solid 1px #000000;' cellpadding='5' cellspacing='0'>";
+<table style='width:400px; border:solid 1px #000000;'>";
     if ($mode == 'upload') {
         $HTMLOUT .= "<tr><td colspan='2' class='colhead'><span class='has-text-danger'><b>Only .srt, .sub , .txt  file are accepted<br>Max file size " . mksize($site_config['sub_max_size']) . '</b></span></td></tr>';
     }
@@ -284,7 +284,7 @@ elseif ($mode == 'details') {
             $langs = '<b>Unknown</b>';
         }
         $HTMLOUT .= begin_main_frame();
-        $HTMLOUT .= "<table width='600' cellpadding='5' cellspacing='0' border='1' style='border-collapse:collapse;'>
+        $HTMLOUT .= "<table width='600' style='border-collapse:collapse;'>
 <tr><td width='150' rowspan='10'>
 <img src='" . htmlsafechars($arr['poster']) . "' width='150' height='195' alt='" . htmlsafechars($arr['name']) . "' />
 <br><br>
@@ -293,7 +293,7 @@ elseif ($mode == 'details') {
 <input type='submit' value='' style='background:url({$site_config['pic_baseurl']}down.png) no-repeat; width:124px;height:25px;border:none;' />
 <input type='hidden' name='action' value='download' />
 </form><br>
-<a href='#' onclick=\"window.open('subtitles.php?mode=preview&amp;id=" . (int)$arr['id'] . "','','height=500,width=400,resizable=yes,scrollbars=yes')\" ><img src='{$site_config['pic_baseurl']}preview.png' width='124' height='25' border='0' alt='Preview' title='Preview'  /></a>
+<a href='#' onclick=\"window.open('subtitles.php?mode=preview&amp;id=" . (int)$arr['id'] . "','','height=500,width=400,resizable=yes,scrollbars=yes')\" ><img src='{$site_config['pic_baseurl']}preview.png' width='124' height='25' alt='Preview' title='Preview'  /></a>
 </td></tr>
 <tr><td>Name :&#160;<b>" . htmlsafechars($arr['name']) . "</b></td></tr>
 <tr><td>IMDb :&#160;<a href='" . htmlsafechars($arr['imdb']) . "' target='_blank'>" . htmlsafechars($arr['imdb']) . "</a></td></tr>
@@ -362,7 +362,7 @@ elseif ($mode == 'details') {
     $perpage = 5;
     $pager = pager($perpage, $count, 'subtitles.php?' . $link);
     $res = sql_query("SELECT s.id, s.name,s.lang, s.imdb,s.fps,s.poster,s.cds,s.hits,s.added,s.owner,s.comment, u.username FROM subtitles AS s LEFT JOIN users AS u ON s.owner=u.id $where ORDER BY s.added DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
-    $HTMLOUT .= "<table width='700' cellpadding='5' cellspacing='0' border='0' style='font-weight:bold'>
+    $HTMLOUT .= "<table width='700' style='font-weight:bold'>
 <tr><td style='border:none'>
 <fieldset style='text-align:center; border:#0066CC solid 1px; background-color:#999999'>
 <legend style='text-align:center; border:#0066CC solid 1px ; background-color:#999999;font-size:13px;'><b>Search</b></legend>
@@ -385,7 +385,7 @@ elseif ($mode == 'details') {
         if ($count > $perpage) {
             $HTMLOUT .= "<div align=\"left\" style=\"padding:5px\">{$pager['pagertop']}</div>";
         }
-        $HTMLOUT .= "<table width='700' cellpadding='5' cellspacing='0' border='1' style='font-weight:bold'>
+        $HTMLOUT .= "<table width='700' style='font-weight:bold'>
 <tr><td class='colhead'>Lang</td>
 <td class='colhead' style='width:80%'>Name</td>
 <td class='colhead'>IMDb</td>
@@ -418,7 +418,7 @@ elseif ($mode == 'details') {
             $HTMLOUT .= "<tr>
 <td>{$langs}</td>
 <td><a href='subtitles.php?mode=details&amp;id=" . (int)$arr['id'] . "' onmouseover=\"tip('<img src=\'" . htmlsafechars($arr['poster']) . "\' width=\'100\'>')\" onmouseout=\"untip()\">" . htmlsafechars($arr['name']) . "</a></td>
-<td><a href='" . htmlsafechars($arr['imdb']) . "'  target='_blank'><img src='{$site_config['pic_baseurl']}imdb.gif' border='0' alt='Imdb' title='Imdb' /></a></td>
+<td><a href='" . htmlsafechars($arr['imdb']) . "'  target='_blank'><img src='{$site_config['pic_baseurl']}imdb.gif' alt='Imdb' title='Imdb' /></a></td>
 <td>" . get_date($arr['added'], 'LONG', 0, 1) . "</td>
 <td>" . htmlsafechars($arr['hits']) . "</td>
 <td>" . ($arr['fps'] == 0 ? 'Unknow' : htmlsafechars($arr['fps'])) . "</td>

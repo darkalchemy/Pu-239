@@ -15,7 +15,7 @@ $inviteted_by_this_member = '';
 if (mysqli_num_rows($rez_invited) < 1) {
     $inviteted_by_this_member .= 'No invitees yet.';
 } else {
-    $inviteted_by_this_member .= '<table width="100%" border="1" cellspacing="0" cellpadding="5">
+    $inviteted_by_this_member .= '<table width="100%" border="1">
         <tr><td class="colhead"><b>' . $lang['userdetails_u_ip'] . '</b></td>
         <td class="colhead"><b>' . $lang['userdetails_email'] . 'l</b></td>
         <td class="colhead"><b>' . $lang['userdetails_uploaded'] . '</b></td>

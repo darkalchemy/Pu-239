@@ -53,13 +53,13 @@ $htmlout = "<!doctype html>
     </head>
     <body>
     <div>
-    <table width='300' border='0' cellpadding='0' cellspacing='0'>
+    <table width='300'>
     <!--Error pic layout-->
     <tr>
     <td width='300' height='50'><!--Error 404 EmptyCell-->&#160;</td>
     </tr>
     <tr>
-    <td height='520'><img src='{$site_config['pic_baseurl']}error404.png' alt='Error Not Found' width='300' height='520' border='0' usemap='#Map' /></td>
+    <td height='520'><img src='{$site_config['pic_baseurl']}error404.png' alt='Error Not Found' width='300' height='520' usemap='#Map' /></td>
     </tr>
     <tr>
     <td height='14'><div><span class='style1'></span></div></td>

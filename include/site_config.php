@@ -128,6 +128,7 @@ $site_config['expires']['movieofweek'] = 300; // 604800 = 1 week
 $site_config['expires']['browse_where'] = 60; // 60 = 60 seconds
 $site_config['expires']['torrent_xbt_data'] = 300; // 300 = 5 min
 $site_config['expires']['ismoddin'] = 0; // 0 = infinite
+$site_config['expires']['book_info'] =
 // Tracker configs
 $site_config['tracker_post_key'] = 'lsdflksfda4545frwe35@kk';
 $site_config['max_torrent_size'] = 3 * 1024 * 1024;
@@ -191,15 +192,24 @@ $site_config['comment_min_class'] = 4; //minim class to be checked when posting 
 $site_config['comment_check'] = 1; //set it to 0 if you wanna allow commenting with out staff checking
 //for subs & youtube mode
 $site_config['movie_cats'] = [
+    2,
     3,
     10,
     11,
 ];
 $site_config['slider_cats'] = [
+    2,
     3,
     10,
     11,
 ];
+$site_config['tv_cats'] = [
+    5,
+];
+$site_config['ebook_cats'] = [
+    15,
+];
+
 $youtube_pattern = "/^http(s)?\:\/\/www\.youtube\.com\/watch\?v\=[\w-]{11}/i";
 // set this to size of user avatars
 $site_config['av_img_height'] = 100;

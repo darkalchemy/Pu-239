@@ -4,7 +4,8 @@
     "matthiasmullie/scrapbook": "^1.4",
     "league/flysystem": "^1.0",
     "envms/fluentpdo": "dev-master",
-    "sebastian/version": "^2.0"
+    "sebastian/version": "^2.0",
+    "scriptotek/google-books": "^0.2.3"
   },
   "autoload": {
     "psr-4": {

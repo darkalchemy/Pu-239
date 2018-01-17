@@ -16,13 +16,13 @@ if (count($users_friends) > 0) {
     if ($users_friends) {
         foreach ($users_friends as $a) {
             $avatar = (($user['opt1'] & user_options::AVATARS) ? ($a['avatar'] == '' ? '<img src="' . $site_config['pic_baseurl'] . 'forumicons/default_avatar.gif"  width="40" alt="default avatar" />' : '<img src="' . htmlsafechars($a['avatar']) . '" alt="avatar"  width="40" />') : '');
-            $status = "<img style='vertical-align: middle;' src='{$site_config['pic_baseurl']}" . ($a['last_access'] > $dt && $a['perms'] < bt_options::PERMS_STEALTH ? 'online.png' : 'offline.png') . "' border='0' alt='' />";
+            $status = "<img style='vertical-align: middle;' src='{$site_config['pic_baseurl']}" . ($a['last_access'] > $dt && $a['perms'] < bt_options::PERMS_STEALTH ? 'online.png' : 'offline.png') . "' alt='' />";
             $user_stuff = $a;
             $user_stuff['id'] = (int)$a['id'];
             $user_friends .= "<tr><td class='one' style='padding: 0; border: none' width='40px'>" . $avatar . "</td><td class='one'>" . format_username($user_stuff['id']) . '<br>' . ($CURUSER['class'] >= UC_STAFF ? '' . htmlsafechars($a['ip']) . '' : '') . "</td><td class='one' style='padding: 1px'>" . mksize($a['uploaded']) . '</td>' . ($site_config['ratio_free'] ? '' : "<td class='one' style='padding: 1px'>" . mksize($a['downloaded']) . '</td>') . "<td class='one' style='padding: 1px'>" . member_ratio($a['uploaded'], $site_config['ratio_free'] ? '0' : $a['downloaded']) . "</td><td class='one' style='padding: 1px'>" . $status . "</td></tr>\n";
         }
         $user_friends .= '</table>';
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_friends']}</td><td width='99%'><a href=\"javascript: klappe_news('a6')\"><img border='0' src='{$site_config['pic_baseurl']}plus.png' id='pica6" . (int)$a['uid'] . "' alt='{$lang['userdetails_hide_show']}' title='{$lang['userdetails_hide_show']}' /></a><div id='ka6' style='display: none;'><br>$user_friends</div></td></tr>";
+        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_friends']}</td><td width='99%'><a href=\"javascript: klappe_news('a6')\"><img src='{$site_config['pic_baseurl']}plus.png' id='pica6" . (int)$a['uid'] . "' alt='{$lang['userdetails_hide_show']}' title='{$lang['userdetails_hide_show']}' /></a><div id='ka6' style='display: none;'><br>$user_friends</div></td></tr>";
     } else {
         if (empty($users_friends)) {
             $HTMLOUT .= "<tr><td colspan='2'>{$lang['userdetails_no_friends']}</td></tr>";

@@ -28,7 +28,7 @@ switch ($view) {
             '</h3>' .
             "<hr class='separator' />" .
             '<br>' .
-            "<table cellpadding='5' cellspacing='0' width='950px'>" .
+            "<table width='950px'>" .
             "<tr><td colspan='9'><strong><em>{$lang['text_all_comm']}</em></strong></td></tr>" .
             '<tr>' .
             "<td class='colhead'>{$lang['text_comm_id']}</td>" .
@@ -92,7 +92,7 @@ switch ($view) {
 //==== Page: Search
     case 'search':
         $HTMLOUT = "<form method='post' action='staffpanel.php?tool=comments&amp;view=results'>" .
-            "<table cellpadding='5' cellspacing='0'>" .
+            "<table>" .
             '<tr>' .
             "<td class='colhead' colspan='2'>{$lang['text_search']}</td>" .
             '</tr>' .
@@ -121,7 +121,7 @@ switch ($view) {
         $Row_Count = 0;
 
         //==== HTML Output
-        $HTMLOUT = "<table cellpadding='5' cellspacing='0'>" .
+        $HTMLOUT = "<table>" .
             "<tr><td colspan='8'><strong><em>{$lang['text_results']} " . htmlsafechars($_POST['keywords']) . '</em>' .
             '</strong></td></tr>' .
             "<tr><td class='colhead'>{$lang['text_comm_id']}</td>" .
@@ -191,7 +191,7 @@ $HTMLOUT = "<h3><a href='staffpanel.php?tool=comments'>{$lang['text_overview']}<
     '</h3>' .
     "<hr class='separator' />" .
     '<br>' .
-    "<table cellpadding='5' cellspacing='0' width='950px'>" .
+    "<table width='950px'>" .
     "<tr><td colspan='9'><strong><em>{$lang['text_recent']}</em></strong></td></tr>" .
     '<tr>' .
     "<td class='colhead'>{$lang['text_comm_id']}</td>" .

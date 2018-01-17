@@ -131,7 +131,7 @@ function show_views()
       </div><br>
     {$menu}
         
-        <div><table border='0' cellpadding='5' cellspacing='0' width='70%'>
+        <div><table width='70%'>
         <tr>
     <td colspan='3'>{$heading}</td>
     </tr>
@@ -159,7 +159,7 @@ function show_views()
             $img_width .= '%';
             $htmlout .= "<tr>
                 <td>$date</td>
-                <td><img src='{$site_config['pic_baseurl']}bar_left.gif' border='0' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_baseurl']}bar.gif' border='0' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_baseurl']}bar_right.gif' border='0' width='4' height='11' align='middle' alt='' /></td>
+                <td><img src='{$site_config['pic_baseurl']}bar_left.gif' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_baseurl']}bar.gif' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_baseurl']}bar_right.gif' width='4' height='11' align='middle' alt='' /></td>
                     <td><center>{$data['result_count']}</center></td>
                     </tr>";
         }
@@ -274,7 +274,7 @@ function result_screen($mode = 'reg')
       </div><br>
     {$menu}
         
-        <div><table border='0' cellpadding='5' cellspacing='0' width='70%'>
+        <div><table width='70%'>
         <tr>
     <td colspan='3'>{$heading}<br>{$page_detail}</td>
     </tr>
@@ -308,7 +308,7 @@ function result_screen($mode = 'reg')
             }
             $htmlout .= "<tr>
                 <td>$date</td>
-                <td><img src='{$site_config['pic_baseurl']}bar_left.gif' border='0' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_baseurl']}bar.gif' border='0' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_baseurl']}bar_right.gif' border='0' width='4' height='11' align='middle' alt='' /></td>
+                <td><img src='{$site_config['pic_baseurl']}bar_left.gif' width='4' height='11' align='middle' alt='' /><img src='{$site_config['pic_baseurl']}bar.gif' width='$img_width' height='11' align='middle' alt='' /><img src='{$site_config['pic_baseurl']}bar_right.gif' width='4' height='11' align='middle' alt='' /></td>
                     <td><center>{$data['result_count']}</center></td>
                     </tr>";
         }

@@ -102,13 +102,13 @@ function bookmarktable($res, $variant = 'index')
         $htmlout .= ($variant == 'index' ? "
                         <td class='has-text-centered'>
                             <a href='{$site_config['baseurl']}/bookmark.php?torrent={$id}&amp;action=delete'>
-                                <img src='{$site_config['pic_baseurl']}aff_cross.gif' border='0' alt='{$lang['bookmarks_del3']}' class='tooltipper' title='{$lang['bookmarks_del3']}' />
+                                <img src='{$site_config['pic_baseurl']}aff_cross.gif' alt='{$lang['bookmarks_del3']}' class='tooltipper' title='{$lang['bookmarks_del3']}' />
                             </a>
                         </td>" : '');
         $htmlout .= ($variant == 'index' ? "
                         <td class='has-text-centered'>
                             <a href='{$site_config['baseurl']}/download.php?torrent={$id}'>
-                                <img src='{$site_config['pic_baseurl']}zip.gif' border='0' alt='{$lang['bookmarks_down3']}' class='tooltipper' title='{$lang['bookmarks_down3']}' />
+                                <img src='{$site_config['pic_baseurl']}zip.gif' alt='{$lang['bookmarks_down3']}' class='tooltipper' title='{$lang['bookmarks_down3']}' />
                             </a>
                         </td>" : '');
         $bm = sql_query('SELECT * FROM bookmarks WHERE torrentid=' . sqlesc($id) . ' && userid=' . sqlesc($CURUSER['id']));
@@ -123,7 +123,7 @@ function bookmarktable($res, $variant = 'index')
                         </td>" : '');
         } elseif ($bms['private'] == 'no' && $bms['userid'] == $CURUSER['id']) {
             $makepriv = "<a href='{$site_config['baseurl']}/bookmark.php?torrent=" . $id . "&amp;action=private'>
-                                <img src='{$site_config['pic_baseurl']}public.gif' border='0' alt='{$lang['bookmarks_private2']}' class='tooltipper' title='{$lang['bookmarks_private2']}' />
+                                <img src='{$site_config['pic_baseurl']}public.gif' alt='{$lang['bookmarks_private2']}' class='tooltipper' title='{$lang['bookmarks_private2']}' />
                             </a>";
             $htmlout .= '' . ($variant == 'index' ? "
                         <td class='has-text-centered'>

@@ -511,8 +511,7 @@ CREATE TABLE `categories` (
   `name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `cat_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `parent_id` mediumint(5) NOT NULL DEFAULT '-1',
-  `tabletype` tinyint(2) unsigned NOT NULL DEFAULT '1',
+  `ordered` smallint(6) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2654,4 +2653,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-17 13:54:29
+-- Dump completed on 2018-01-17 21:10:36

@@ -399,7 +399,7 @@ switch ($action) {
 } //=== end switch
 //=== make the class based selection thingie bit here :D
 $count = 1;
-$all_classes_check_boxes = '<table border="0" cellspacing="5" cellpadding="5"><tr>';
+$all_classes_check_boxes = '<table border="0"><tr>';
 for ($i = UC_MIN; $i <= UC_MAX; ++$i) {
     $all_classes_check_boxes .= '<td class="one">
         <input type="checkbox" name="free_for_classes[]" value="' . $i . '" checked /> <span style="font-weight: bold;color:#' . get_user_class_color($i) . ';">' . get_user_class_name($i) . '</span></td>';
@@ -460,7 +460,7 @@ $subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : $lang['
 $body = isset($_POST['body']) ? htmlsafechars($_POST['body']) : $lang['bonusmanager_pm_texthere'];
 $pm_drop_down = '<form name="compose" method="post" action="mass_bonus_for_members.php">
                  <input type="hidden" name="pm" value="pm" />
-                 <table border="0" cellspacing="0" cellpadding="5" style="max-width: 800px;">
+                 <table border="0" style="max-width: 800px;">
                  <tr>
                  <td colspan="2" class="colhead">' . $lang['bonusmanager_pm_send'] . '</td>
                  </tr>
@@ -492,7 +492,7 @@ $h1_thingie .= (isset($_GET['pm']) ? ($_GET['pm'] === 1 ? '<h2>' . $lang['bonusm
 $HTMLOUT .= '<h1>' . $site_config['site_name'] . ' ' . $lang['bonusmanager_mass_bonus'] . '</h1>' . $h1_thingie;
 $HTMLOUT .= '<form name="inputform" method="post" action="' . $site_config['baseurl'] . '/staffpanel.php?tool=mass_bonus_for_members&amp;action=mass_bonus_for_members" enctype="multipart/form-data">
         <input type="hidden" id="action_2" name="action_2" value="" />
-    <table width="80%" border="0" cellspacing="5" cellpadding="5">
+    <table width="80%" border="0">
     <tr>
         <td class="colhead" colspan="2">' . $lang['bonusmanager_mass_bonus_selected'] . '</td>
     </tr>

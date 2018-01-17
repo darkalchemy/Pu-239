@@ -99,7 +99,7 @@ if (!empty($user_names)) {
                     </span>
                     ' . ($site_config['ratio_free'] ? '
                 </td>' : '<br>
-                    <span class="text-red tooltipper" title="' . $lang['mega_downloaded'] . '">
+                    <span class="has-text-red tooltipper" title="' . $lang['mega_downloaded'] . '">
                         <img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" />  
                         ' . mksize($arr['downloaded']) . '
                     </span>
@@ -116,13 +116,13 @@ if (!empty($user_names)) {
     if (!empty($failed)) {
         $body .= "
             <tr>
-                <td colspan='8'><span class='size_4 text-red text-shadow'>Not Found: </span><span class='has-text-blue'>" . implode(', ', $failed) . "</span></td>
+                <td colspan='8'><span class='size_4 has-text-red text-shadow'>Not Found: </span><span class='has-text-blue'>" . implode(', ', $failed) . "</span></td>
             </tr>";
     }
     if (empty($body)) {
         $body = "
             <tr>
-                <td colspan='8'><span class='size_4 text-red text-shadow'>Not Found: </span><span class='has-text-blue'>" . implode(', ', $searched_users) . "</span></td>
+                <td colspan='8'><span class='size_4 has-text-red text-shadow'>Not Found: </span><span class='has-text-blue'>" . implode(', ', $searched_users) . "</span></td>
             </tr>";
     }
     $heading = " 
@@ -190,7 +190,7 @@ if (isset($_POST['msg_to_analyze'])) {
                     </span>
                     ' . ($site_config['ratio_free'] ? '
                 </td>' : '<br>
-                    <span class="tooltipper text-red" title="' . $lang['mega_downloaded'] . '">
+                    <span class="tooltipper has-text-red" title="' . $lang['mega_downloaded'] . '">
                         <img src="' . $site_config['pic_baseurl'] . 'dl.png" alt="' . $lang['mega_down'] . '" />  
                         ' . mksize($arr['downloaded']) . '
                     </span>
@@ -207,7 +207,7 @@ if (isset($_POST['msg_to_analyze'])) {
         $body .= "
             <tr>
                 <td colspan='7'>
-                    <span class='size_4 text-red text-shadow'>Email" . plural($failed) . " Not Found: </span>
+                    <span class='size_4 has-text-red text-shadow'>Email" . plural($failed) . " Not Found: </span>
                     <span class='has-text-blue'>" . implode(', ', $failed) . "</span>
                 </td>
             </tr>";

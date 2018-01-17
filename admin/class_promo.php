@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 //USER OUTPUT
 $HTMLOUT .= "<h3>{$lang['classpromo_user_sett']}</h3>
 <form name='edit' action='staffpanel.php?tool=class_promo&amp;mode=edit' method='post'>
-<table width='100%' border='0' cellpadding='5' cellspacing='0' ><tr>
+<table width='100%' ><tr>
 <td>{$lang['classpromo_clsname']}</td>
 <td>&#160;</td>
 <td>{$lang['classpromo_minratio']}</td>
@@ -136,7 +136,7 @@ $HTMLOUT .= "<div class='usage'>
 
 $HTMLOUT .= "<h3>{$lang['classpromo_add_new_rule']}</h3>
 <form name='add' action='staffpanel.php?tool=class_promo&amp;mode=add' method='post'>
-<table width='100%' border='1' cellpadding='5' cellspacing='0' ><tr>
+<table width='100%' ><tr>
 <th>{$lang['classpromo_clsname']}</th>
 <th>{$lang['classpromo_minratio']}</th>
 <th>{$lang['classpromo_minupl']}</th>

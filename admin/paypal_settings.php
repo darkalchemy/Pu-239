@@ -28,7 +28,7 @@ while ($ac = mysqli_fetch_assoc($pconf)) {
 
 $HTMLOUT .= "<h2><b><i>{$lang['paypal_global_title']}</i></b></h2>
 <form action='staffpanel.php?tool=paypal_settings' method='post'>
-<table width='100%' border='1' cellpadding='5' cellspacing='0' >
+<table width='100%' >
 <tr><td width='50%' class='table'>{$lang['paypal_donate']}</td><td class='table'>{$lang['paypal_yes']}<input class='table' type='radio' name='enable' value='1' " . ($site_config['paypal_config']['enable'] ? 'checked=\'checked\'' : '') . " />{$lang['paypal_no']}<input class='table' type='radio' name='enable' value='0' " . (!$site_config['paypal_config']['enable'] ? 'checked=\'checked\'' : '') . " /></td></tr>
 <tr><td width='50%' class='table'>{$lang['paypal_email']}</td><td class='table'><input type='text' name='email' size='25' value='" . htmlsafechars($site_config['paypal_config']['email']) . "' /></td></tr>
 <tr><td width='50%' class='table'>{$lang['paypal_currency']}</td><td class='table'><input type='text' name='currency' size='4' value='" . htmlsafechars($site_config['paypal_config']['currency']) . "' /></td></tr>
@@ -37,7 +37,7 @@ $HTMLOUT .= "<h2><b><i>{$lang['paypal_global_title']}</i></b></h2>
 <tr><td colspan='2' class='table'><input type='submit' value='{$lang['paypal_apply']}' /></td></tr>
 </table><br><br>
 <h2><b><i>{$lang['paypal_array_one']}</i></b>{$lang['paypal_title']}</h2>
-<table width='100%' border='1' cellpadding='5' cellspacing='0' >
+<table width='100%' >
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_one']}</i></b>{$lang['paypal_amount']}" . $site_config['paypal_config']['currency'] . "{$lang['paypal_donated']}</td><td class='table'><input type='text' name='gb_donated_1' size='3' value='" . htmlsafechars($site_config['paypal_config']['gb_donated_1']) . "' /></td></tr>
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_one']}</i></b>{$lang['paypal_vip']}</td><td class='table'><input type='text' name='vip_dur_1' size='2' value='" . htmlsafechars($site_config['paypal_config']['vip_dur_1']) . "' /></td></tr>
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_one']}</i></b>{$lang['paypal_donor_status']}</td><td class='table'><input type='text' name='donor_dur_1' size='2' value='" . htmlsafechars($site_config['paypal_config']['donor_dur_1']) . "' /></td></tr>
@@ -49,7 +49,7 @@ $HTMLOUT .= "<h2><b><i>{$lang['paypal_global_title']}</i></b></h2>
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_one']}</i></b>{$lang['paypal_immunity']}</td><td class='table'><input type='text' name='imm_dur_1' size='2' value='" . htmlsafechars($site_config['paypal_config']['imm_dur_1']) . "' /></td></tr>
 </table><br>
 <h2><b><i>{$lang['paypal_array_two']}</i></b>{$lang['paypal_title']}</h2>
-<table width='100%' border='1' cellpadding='5' cellspacing='0' >
+<table width='100%' >
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_two']}</i></b>{$lang['paypal_amount']}" . $site_config['paypal_config']['currency'] . "{$lang['paypal_donated']}</td><td class='table'><input type='text' name='gb_donated_2' size='3' value='" . htmlsafechars($site_config['paypal_config']['gb_donated_2']) . "' /></td></tr>
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_two']}</i></b>{$lang['paypal_vip']}</td><td class='table'><input type='text' name='vip_dur_2' size='2' value='" . htmlsafechars($site_config['paypal_config']['vip_dur_2']) . "' /></td></tr>
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_two']}</i></b>{$lang['paypal_donor_status']}</td><td class='table'><input type='text' name='donor_dur_2' size='2' value='" . htmlsafechars($site_config['paypal_config']['donor_dur_2']) . "' /></td></tr>
@@ -60,7 +60,7 @@ $HTMLOUT .= "<h2><b><i>{$lang['paypal_global_title']}</i></b></h2>
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_two']}</i></b>{$lang['paypal_donor_until']}</td><td class='table'><input type='text' name='duntil_dur_2' size='2' value='" . htmlsafechars($site_config['paypal_config']['duntil_dur_2']) . "' /></td></tr>
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_two']}</i></b>{$lang['paypal_immunity']}</td><td class='table'><input type='text' name='imm_dur_2' size='2' value='" . htmlsafechars($site_config['paypal_config']['imm_dur_2']) . "' /></td></tr></table><br>
 <h2><b><i>{$lang['paypal_array_three']}</i></b>{$lang['paypal_title']}</h2>
-<table width='100%' border='1' cellpadding='5' cellspacing='0' >
+<table width='100%' >
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_three']}</i></b>{$lang['paypal_amount']}" . $site_config['paypal_config']['currency'] . "{$lang['paypal_donated']}</td><td class='table'><input type='text' name='gb_donated_3' size='3' value='" . htmlsafechars($site_config['paypal_config']['gb_donated_3']) . "' /></td></tr>
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_three']}</i></b>{$lang['paypal_vip']}</td><td class='table'><input type='text' name='vip_dur_3' size='2' value='" . htmlsafechars($site_config['paypal_config']['vip_dur_3']) . "' /></td></tr>
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_three']}</i></b>{$lang['paypal_donor_status']}</td><td class='table'><input type='text' name='donor_dur_3' size='2' value='" . htmlsafechars($site_config['paypal_config']['donor_dur_3']) . "' /></td></tr>
@@ -72,7 +72,7 @@ $HTMLOUT .= "<h2><b><i>{$lang['paypal_global_title']}</i></b></h2>
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_three']}</i></b>{$lang['paypal_immunity']}</td><td class='table'><input type='text' name='imm_dur_3' size='2' value='" . htmlsafechars($site_config['paypal_config']['imm_dur_3']) . "' /></td></tr>
 </table><br>
 <h2><b><i>{$lang['paypal_array_four']}</i></b>{$lang['paypal_title']}</h2>
-<table width='100%' border='1' cellpadding='5' cellspacing='0' >
+<table width='100%' >
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_four']}</i></b>{$lang['paypal_amount']}" . $site_config['paypal_config']['currency'] . "{$lang['paypal_donated']}</td><td class='table'><input type='text' name='gb_donated_4' size='3' value='" . htmlsafechars($site_config['paypal_config']['gb_donated_4']) . "' /></td></tr>
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_four']}</i></b>{$lang['paypal_vip']}</td><td class='table'><input type='text' name='vip_dur_4' size='2' value='" . htmlsafechars($site_config['paypal_config']['vip_dur_4']) . "' /></td></tr>
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_four']}</i></b>{$lang['paypal_donor_status']}</td><td class='table'><input type='text' name='donor_dur_4' size='2' value='" . htmlsafechars($site_config['paypal_config']['donor_dur_4']) . "' /></td></tr>
@@ -84,7 +84,7 @@ $HTMLOUT .= "<h2><b><i>{$lang['paypal_global_title']}</i></b></h2>
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_four']}</i></b>{$lang['paypal_immunity']}</td><td class='table'><input type='text' name='imm_dur_4' size='2' value='" . htmlsafechars($site_config['paypal_config']['imm_dur_4']) . "' /></td></tr>
 </table><br>
 <h2><b><i>{$lang['paypal_array_five']}</i></b>{$lang['paypal_title']}</h2>
-<table width='100%' border='1' cellpadding='5' cellspacing='0' >
+<table width='100%' >
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_five']}</i></b>{$lang['paypal_amount']}" . $site_config['paypal_config']['currency'] . "{$lang['paypal_donated']}</td><td class='table'><input type='text' name='gb_donated_5' size='3' value='" . htmlsafechars($site_config['paypal_config']['gb_donated_5']) . "' /></td></tr>
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_five']}</i></b>{$lang['paypal_vip']}</td><td class='table'><input type='text' name='vip_dur_5' size='2' value='" . htmlsafechars($site_config['paypal_config']['vip_dur_5']) . "' /></td></tr>
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_five']}</i></b>{$lang['paypal_donor_status']}</td><td class='table'><input type='text' name='donor_dur_5' size='2' value='" . htmlsafechars($site_config['paypal_config']['donor_dur_5']) . "' /></td></tr>
@@ -96,7 +96,7 @@ $HTMLOUT .= "<h2><b><i>{$lang['paypal_global_title']}</i></b></h2>
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_five']}</i></b>{$lang['paypal_immunity']}</td><td class='table'><input type='text' name='imm_dur_5' size='2' value='" . htmlsafechars($site_config['paypal_config']['imm_dur_5']) . "' /></td></tr>
 </table><br>
 <h2><b><i>{$lang['paypal_array_six']}</i></b>{$lang['paypal_title']}</h2>
-<table width='100%' border='1' cellpadding='5' cellspacing='0' >
+<table width='100%' >
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_six']}</i></b>{$lang['paypal_amount']}" . $site_config['paypal_config']['currency'] . "{$lang['paypal_donated']}</td><td class='table'><input type='text' name='gb_donated_6' size='3' value='" . htmlsafechars($site_config['paypal_config']['gb_donated_6']) . "' /></td></tr>
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_six']}</i></b>{$lang['paypal_vip']}</td><td class='table'><input type='text' name='vip_dur_6' size='2' value='" . htmlsafechars($site_config['paypal_config']['vip_dur_6']) . "' /></td></tr>
 <tr><td width='50%' class='table'><b><i>{$lang['paypal_array_six']}</i></b>{$lang['paypal_donor_status']}</td><td class='table'><input type='text' name='donor_dur_6' size='2' value='" . htmlsafechars($site_config['paypal_config']['donor_dur_6']) . "' /></td></tr>

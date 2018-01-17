@@ -146,7 +146,7 @@ function get_reputation($user, $mode = '', $rep_is_on = true, $post_id = 0)
         }
 
         if ($mode != '') {
-            return 'Rep: ' . $posneg . "<br><br><a href='javascript:;' onclick=\"PopUp('{$site_config['baseurl']}/reputation.php?pid=" . ($post_id != 0 ? (int)$post_id : (int)$user['id']) . '&amp;locale=' . $mode . "','Reputation',400,300,1,1);\"><img src='{$site_config['pic_baseurl']}forumicons/giverep.jpg' border='0' alt='Add reputation:: " . htmlsafechars($user['username']) . "' title='Add reputation:: " . htmlsafechars($user['username']) . "' /></a>";
+            return 'Rep: ' . $posneg . "<br><br><a href='javascript:;' onclick=\"PopUp('{$site_config['baseurl']}/reputation.php?pid=" . ($post_id != 0 ? (int)$post_id : (int)$user['id']) . '&amp;locale=' . $mode . "','Reputation',400,300,1,1);\"><img src='{$site_config['pic_baseurl']}forumicons/giverep.jpg' alt='Add reputation:: " . htmlsafechars($user['username']) . "' title='Add reputation:: " . htmlsafechars($user['username']) . "' /></a>";
         } else {
             return ' ' . $posneg;
         }

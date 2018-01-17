@@ -38,7 +38,7 @@ function begin_frame($caption = '', $center = false, $padding = 10)
     if ($center) {
         $tdextra .= "";
     }
-    $htmlout .= "<table class='shit table table-bordered table-striped' cellpadding='$padding'><tr><td$tdextra>\n";
+    $htmlout .= "<table class='shit table table-bordered table-striped'><tr><td$tdextra>\n";
 
     return $htmlout;
 }

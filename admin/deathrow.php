@@ -187,7 +187,7 @@ if ($count) {
 
     $query = "SELECT * FROM deathrow {$orderby} {$pager['limit']}";
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
-    $b = "<p><b>$count {$lang['deathrow_title']}</b>" . "</p><form action='' method='post'><table width='95%' border='1' id='deathtable' cellspacing='0' cellpadding='5'>" . "<thead><tr><th class='colhead'>{$lang['deathrow_uname']}</th><th class='colhead'>{$lang['deathrow_tname']}</th><th class='colhead'>{$lang['deathrow_del_resn']}</th><th class='colhead'>{$lang['deathrow_del_torr']}</th></tr></thead>\n";
+    $b = "<p><b>$count {$lang['deathrow_title']}</b>" . "</p><form action='' method='post'><table width='95%' id='deathtable'>" . "<thead><tr><th class='colhead'>{$lang['deathrow_uname']}</th><th class='colhead'>{$lang['deathrow_tname']}</th><th class='colhead'>{$lang['deathrow_del_resn']}</th><th class='colhead'>{$lang['deathrow_del_torr']}</th></tr></thead>\n";
     while ($queued = mysqli_fetch_assoc($res)) {
         if ($queued['reason'] == 1) {
             $reason = $lang['deathrow_nopeer'] . calctime($x_time);

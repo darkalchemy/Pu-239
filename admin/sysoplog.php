@@ -27,7 +27,7 @@ $pager = pager($perpage, $count, 'staffpanel.php?tool=sysoplog&amp;action=sysopl
 $HTMLOUT = '';
 $res = sql_query("SELECT added, txt FROM infolog $where ORDER BY added DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= "<h1>{$lang['sysoplog_staff']}</h1>";
-$HTMLOUT .= "<table border='1' cellspacing='0' width='115' cellpadding='5'>\n
+$HTMLOUT .= "<table width='115'>\n
              <tr>
              <td class='tabletitle'>{$lang['sysoplog_search']}</td>\n
              </tr>

@@ -16,7 +16,7 @@ $num = mysqli_fetch_assoc($res);
 $added = get_date($num['utadded'], '');
 $s = htmlspecialchars($num['offer']);
 $HTMLOUT .= '<h3>Details Of Offer: ' . $s . '</h3>';
-$HTMLOUT .= "<table border='1' width='750px' cellspacing='0' cellpadding='5'><tr><td colspan='2'><h1>$s</h1></td></tr>";
+$HTMLOUT .= "<table width='750px'><tr><td colspan='2'><h1>$s</h1></td></tr>";
 if ($num['descr']) {
     require_once 'include/bbcode_functions.php';
     $HTMLOUT .= "<tr><td><b>Description</b></td>

@@ -67,7 +67,7 @@ function sharetable($res, $variant = 'index')
         if (isset($row['cat_name'])) {
             $htmlout .= "<a href='browse.php?cat=" . (int)$row['category'] . "'>";
             if (isset($row['cat_pic']) && $row['cat_pic'] != '') {
-                $htmlout .= "<img border='0' src='{$site_config['pic_baseurl']}caticons/" . get_categorie_icons() . "/{$row['cat_pic']}' alt='{$row['cat_name']}' />";
+                $htmlout .= "<img src='{$site_config['pic_baseurl']}caticons/" . get_categorie_icons() . "/{$row['cat_pic']}' alt='{$row['cat_name']}' />";
             } else {
                 $htmlout .= $row['cat_name'];
             }
@@ -86,7 +86,7 @@ function sharetable($res, $variant = 'index')
             $htmlout .= '&amp;hit=1';
         }
         $htmlout .= "'><b>$dispname</b></a>&#160;</td>";
-        $htmlout .= ($variant == 'index' ? "<td><a href=\"download.php?torrent={$id}\"><img src='{$site_config['pic_baseurl']}zip.gif' border='0' alt='Download Bookmark!' title='Download Bookmark!' /></a></td>" : '');
+        $htmlout .= ($variant == 'index' ? "<td><a href=\"download.php?torrent={$id}\"><img src='{$site_config['pic_baseurl']}zip.gif' alt='Download Bookmark!' title='Download Bookmark!' /></a></td>" : '');
         $bm = sql_query('SELECT * FROM bookmarks WHERE torrentid=' . sqlesc($id) . ' AND userid=' . sqlesc($CURUSER['id']));
         $bms = mysqli_fetch_assoc($bm);
         $bookmarked = (empty($bms) ? '<a href=\'bookmark.php?torrent=' . $id . '&amp;action=add\'><img src=\'' . $site_config['pic_baseurl'] . 'bookmark.gif\' border=\'0\' alt=\'Bookmark it!\' title=\'Bookmark it!\'></a>' : '<a href="bookmark.php?torrent=' . $id . '&amp;action=delete"><img src=\'' . $site_config['pic_baseurl'] . 'aff_cross.gif\' border=\'0\' alt=\'Delete Bookmark!\' title=\'Delete Bookmark!\' /></a>');

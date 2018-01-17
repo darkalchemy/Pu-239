@@ -31,7 +31,7 @@ function peer_list($array)
 {
     global $CURUSER, $lang;
     $htmlout = '';
-    $htmlout .= "<table width='100%' border='1' cellpadding='5' style='border-collapse:collapse'>
+    $htmlout .= "<table width='100%' style='border-collapse:collapse'>
                 <tr>
             <td class='colhead'>{$lang['catol_user']}</td>
             <td class='colhead'>{$lang['catol_port']}&amp;{$lang['catol_ip']}</td>
@@ -109,21 +109,21 @@ for ($i = 97; $i < 123; ++$i) {
 $htmlout .= '</fieldset></div><br>';
 $htmlout .= begin_frame();
 if (count($rows) > 0) {
-    $htmlout .= "<table width='95%' border='1' cellpadding='5' style='border-collapse:collapse'>
+    $htmlout .= "<table width='95%' style='border-collapse:collapse'>
         <tr><td colspan='2' class='colhead'>{$lang['catol_std_head']}</td></tr>
         <tr><td colspan='2' >{$top}</td></tr>";
     foreach ($rows as $row) {
         $htmlout .= "<tr>
          <td nowrap='nowrap'>
-            <table width='160' border='1' cellpadding='2'>
+            <table width='160'>
                 <tr><td class='colhead'>{$lang['catol_upper']} : <a href='userdetails.php?id=" . (int)$row['owner'] . "'>" . ($row['user'] ? htmlsafechars($row['user']) : "{$lang['catol_unknown']}[" . (int)$row['owner'] . ']') . "</a></td></tr>
-                <tr><td>" . ($row['poster'] ? '<a href="' . htmlsafechars($row['poster']) . '"><img src="' . htmlsafechars($row['poster']) . "\" border=\"0\" width=\"150\" height=\"195\" alt=\"{$lang['catol_no_poster']}\" title=\"{$lang['catol_no_poster']}\" /></a>" : "<img src='{$site_config['pic_baseurl']}noposter.png' border='0' width='150' alt='{$lang['catol_no_poster']}' title='{$lang['catol_no_poster']}' />") . "</td></tr>
+                <tr><td>" . ($row['poster'] ? '<a href="' . htmlsafechars($row['poster']) . '"><img src="' . htmlsafechars($row['poster']) . "\" border=\"0\" width=\"150\" height=\"195\" alt=\"{$lang['catol_no_poster']}\" title=\"{$lang['catol_no_poster']}\" /></a>" : "<img src='{$site_config['pic_baseurl']}noposter.png' width='150' alt='{$lang['catol_no_poster']}' title='{$lang['catol_no_poster']}' />") . "</td></tr>
             </table>
 
         </td>
 
             <td width='100%'>
-            <table width='100%' cellpadding='3' cellspacing='0' border='1' style='border-collapse:collapse;font-weight:bold;'>
+            <table width='100%' style='border-collapse:collapse;font-weight:bold;'>
             <tr>
                 <td width='100%' rowspan='2' ><a href='details.php?id=" . (int)$row['id'] . "&amp;hit=1'><b>" . substr(htmlsafechars($row['name']), 0, 60) . "</b></a></td>
                 <td class='colhead'>{$lang['catol_added']}</td>

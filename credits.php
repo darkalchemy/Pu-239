@@ -64,7 +64,7 @@ if ($action == 'edit' && $CURUSER['class'] >= UC_SYSOP) {
     }
     while ($mod = mysqli_fetch_assoc($res)) {
         $HTMLOUT .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . '?action=update&amp;id=' . $id . "'>
-  <table width='50%' cellpadding='10' cellspacing='1' border='1'>
+  <table width='50%' border='1'>
     <tr><td class='rowhead'>{$lang['credits_mod']}</td>" .
             "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='name' " . "value='" . htmlsafechars($mod['name']) . "' /></td></tr>\n" .
             "<tr>
@@ -164,7 +164,7 @@ Begin displaying the mods
 $res = sql_query('SELECT * FROM modscredits') or sqlerr(__FILE__, __LINE__);
 //Begin displaying the table
 
-$HTMLOUT .= "<table width='80%' cellpadding='10' cellspacing='1' border='1'>
+$HTMLOUT .= "<table width='80%' border='1'>
     <tr>
     <td class='colhead'>{$lang['credits_name']}</td>
     <td class='colhead'>{$lang['credits_category']}</td>
@@ -205,7 +205,7 @@ $HTMLOUT .= '</table>';
 if ($CURUSER['class'] >= UC_SYSOP) { //I recommend a higher class like UC_CODER
     $HTMLOUT .= "<br>
       <form method='post' action='" . $_SERVER['PHP_SELF'] . "'>
-      <table width='80%' cellpadding='8' border='1' cellspacing='0'>
+      <table width='80%'>
     <tr>
         <td colspan='2' class='colhead'>
     {$lang['credits_add']}

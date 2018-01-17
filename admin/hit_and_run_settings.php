@@ -26,7 +26,7 @@ while ($ac = mysqli_fetch_assoc($pconf)) {
 
 $HTMLOUT .= "<h3>{$lang['hnr_settings_title']}</h3>
 <form action='staffpanel.php?tool=hit_and_run_settings' method='post'>
-<table width='100%' border='1' cellpadding='5' cellspacing='0' >";
+<table width='100%' >";
 $HTMLOUT .= "
 
 <tr><td width='50%' class='table'>{$lang['hnr_settings_online']}</td><td class='table'>{$lang['hnr_settings_yes']}<input class='table' type='radio' name='hnr_online' value='1' " . ($site_config['hnr_config']['hnr_online'] ? 'checked=\'checked\'' : '') . " />{$lang['hnr_settings_no']}<input class='table' type='radio' name='hnr_online' value='0' " . (!$site_config['hnr_config']['hnr_online'] ? 'checked=\'checked\'' : '') . " /></td></tr>

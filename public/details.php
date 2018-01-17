@@ -8,6 +8,7 @@ require_once INCL_DIR . 'html_functions.php';
 require_once INCL_DIR . 'function_rating.php';
 require_once INCL_DIR . 'tvmaze_functions.php';
 require_once IMDB_DIR . 'imdb.class.php';
+require_once INCL_DIR . 'function_books.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
 
@@ -750,95 +751,103 @@ $HTMLOUT .= "
 $HTMLOUT .= "
         <div class='table-wrapper bottom20'>
             <table class='table table-bordered'>";
-$torrents['tvcats'] = [
-    5,
-]; // change these to match your TV categories
-if (in_array($torrents['category'], $torrents['tvcats'])) {
+
+$tvmaze_info = $imdb_info = $ebook_info = '';
+if (in_array($torrents['category'], $site_config['tv_cats'])) {
     $tvmaze_info = tvmaze($torrents);
     if ($tvmaze_info) {
         $HTMLOUT .= tr($lang['details_tvrage'], $tvmaze_info, 1);
     }
 }
 
-$imdb_html = '';
-if (preg_match('/^http\:\/\/(.*?)imdb\.com\/title\/tt([\d]{7})/i', $torrents['url'], $imdb_tmp)) {
-    $imdb_id = $imdb_tmp[2];
-    unset($imdb_tmp);
-    if (!($imdb_html = $cache->get('imdb::' . $imdb_id))) {
-        $movie = new imdb($imdb_id);
-        $movie->setid($imdb_id);
-        $imdb_data['director'] = $movie->director();
-        $imdb_data['writing'] = $movie->writing();
-        $imdb_data['producer'] = $movie->producer();
-        $imdb_data['composer'] = $movie->composer();
-        $imdb_data['cast'] = $movie->cast();
-        $imdb_data['cast'] = array_slice($imdb_data['cast'], 0, 10);
-        $imdb_data['genres'] = $movie->genres();
-        $imdb_data['plot'] = $movie->plot();
-        $imdb_data['plotoutline'] = $movie->plotoutline();
-        $imdb_data['trailers'] = $movie->trailers();
-        $imdb_data['language'] = $movie->language();
-        $imdb_data['rating'] = $movie->rating();
-        $imdb_data['title'] = $movie->title();
-        $imdb_data['year'] = $movie->year();
-        $imdb_data['runtime'] = $movie->runtime();
-        $imdb_data['votes'] = $movie->votes();
-        $imdb_data['country'] = $movie->country();
-        $imdb = [
-            'country'     => 'Country',
-            'director'    => 'Directed by',
-            'writing'     => 'Writing by',
-            'producer'    => 'Produced by',
-            'cast'        => 'Cast',
-            'plot'        => 'Description',
-            'composer'    => 'Music',
-            'genres'      => 'All genres',
-            'plotoutline' => 'Plot outline',
-            'trailers'    => 'Trailers',
-            'language'    => 'Language',
-            'rating'      => 'Rating',
-            'title'       => 'Title',
-            'year'        => 'Year',
-            'runtime'     => 'Runtime',
-            'votes'       => 'Votes',
-        ];
-        foreach ($imdb as $foo => $boo) {
-            if (isset($imdb_data[$foo]) && !empty($imdb_data[$foo])) {
-                if (!is_array($imdb_data[$foo])) {
-                    $imdb_html .= "<span>" . $boo . ':</span>' . $imdb_data[$foo] . "<br>\n";
-                } elseif (is_array($imdb_data[$foo]) && in_array($foo, [
-                        'director',
-                        'writing',
-                        'producer',
-                        'composer',
-                        'cast',
-                        'trailers',
-                    ])) {
-                    foreach ($imdb_data[$foo] as $pp) {
-                        if ($foo == 'cast') {
-                            $imdb_tmp[] = "<a href='http://www.imdb.com/name/nm" . $pp['imdb'] . "' target='_blank' class='tooltipper' title='" . (!empty($pp['name']) ? $pp['name'] : 'unknown') . "'>" . (isset($pp['thumb']) ? "<img src='" . $pp['thumb'] . "' alt='" . $pp['name'] . "' width='20' height='30' />" : $pp['name']) . "</a> as <span>" . (!empty($pp['role']) ? $pp['role'] : 'unknown') . '</span>';
-                        } elseif ($foo == 'trailers') {
-                            $imdb_tmp[] = "<a href='" . $pp . "' target='_blank'>" . $pp . '</a>';
-                        } else {
-                            $imdb_tmp[] = "<a href='http://www.imdb.com/name/nm" . $pp['imdb'] . "' target='_blank' class='tooltipper' title='" . (!empty($pp['role']) ? $pp['role'] : 'unknown') . "'>" . $pp['name'] . "</a>\n";
+if (in_array($torrents['category'], $site_config['movie_cats'])) {
+    if (preg_match('/^http\:\/\/(.*?)imdb\.com\/title\/tt([\d]{7})/i', $torrents['url'], $imdb_tmp)) {
+        $imdb_id = $imdb_tmp[2];
+        unset($imdb_tmp);
+        if (!($imdb_info = $cache->get('imdb::' . $imdb_id))) {
+            $movie = new imdb($imdb_id);
+            $movie->setid($imdb_id);
+            $imdb_data['director'] = $movie->director();
+            $imdb_data['writing'] = $movie->writing();
+            $imdb_data['producer'] = $movie->producer();
+            $imdb_data['composer'] = $movie->composer();
+            $imdb_data['cast'] = $movie->cast();
+            $imdb_data['cast'] = array_slice($imdb_data['cast'], 0, 10);
+            $imdb_data['genres'] = $movie->genres();
+            $imdb_data['plot'] = $movie->plot();
+            $imdb_data['plotoutline'] = $movie->plotoutline();
+            $imdb_data['trailers'] = $movie->trailers();
+            $imdb_data['language'] = $movie->language();
+            $imdb_data['rating'] = $movie->rating();
+            $imdb_data['title'] = $movie->title();
+            $imdb_data['year'] = $movie->year();
+            $imdb_data['runtime'] = $movie->runtime();
+            $imdb_data['votes'] = $movie->votes();
+            $imdb_data['country'] = $movie->country();
+            $imdb = [
+                'country'     => 'Country',
+                'director'    => 'Directed by',
+                'writing'     => 'Writing by',
+                'producer'    => 'Produced by',
+                'cast'        => 'Cast',
+                'plot'        => 'Description',
+                'composer'    => 'Music',
+                'genres'      => 'All genres',
+                'plotoutline' => 'Plot outline',
+                'trailers'    => 'Trailers',
+                'language'    => 'Language',
+                'rating'      => 'Rating',
+                'title'       => 'Title',
+                'year'        => 'Year',
+                'runtime'     => 'Runtime',
+                'votes'       => 'Votes',
+            ];
+            foreach ($imdb as $foo => $boo) {
+                if (isset($imdb_data[$foo]) && !empty($imdb_data[$foo])) {
+                    if (!is_array($imdb_data[$foo])) {
+                        $imdb_info .= "<span>" . $boo . ':</span>' . $imdb_data[$foo] . "<br>\n";
+                    } elseif (is_array($imdb_data[$foo]) && in_array($foo, [
+                            'director',
+                            'writing',
+                            'producer',
+                            'composer',
+                            'cast',
+                            'trailers',
+                        ])) {
+                        foreach ($imdb_data[$foo] as $pp) {
+                            if ($foo == 'cast') {
+                                $imdb_tmp[] = "<a href='http://www.imdb.com/name/nm" . $pp['imdb'] . "' target='_blank' class='tooltipper' title='" . (!empty($pp['name']) ? $pp['name'] : 'unknown') . "'>" . (isset($pp['thumb']) ? "<img src='" . $pp['thumb'] . "' alt='" . $pp['name'] . "' width='20' height='30' />" : $pp['name']) . "</a> as <span>" . (!empty($pp['role']) ? $pp['role'] : 'unknown') . '</span>';
+                            } elseif ($foo == 'trailers') {
+                                $imdb_tmp[] = "<a href='" . $pp . "' target='_blank'>" . $pp . '</a>';
+                            } else {
+                                $imdb_tmp[] = "<a href='http://www.imdb.com/name/nm" . $pp['imdb'] . "' target='_blank' class='tooltipper' title='" . (!empty($pp['role']) ? $pp['role'] : 'unknown') . "'>" . $pp['name'] . "</a>\n";
+                            }
                         }
+                        $imdb_info .= "<span>" . $boo . ':</span>' . join(', ', $imdb_tmp) . "<br>\n";
+                        unset($imdb_tmp);
+                    } else {
+                        $imdb_info .= "<span>" . $boo . ':</span>' . join(', ', $imdb_data[$foo]) . "<br>\n";
                     }
-                    $imdb_html .= "<span>" . $boo . ':</span>' . join(', ', $imdb_tmp) . "<br>\n";
-                    unset($imdb_tmp);
-                } else {
-                    $imdb_html .= "<span>" . $boo . ':</span>' . join(', ', $imdb_data[$foo]) . "<br>\n";
                 }
             }
+            $imdb_info = preg_replace('/&(?![A-Za-z0-9#]{1,7};)/', '&amp;', $imdb_info);
+            $cache->add('imdb::' . $imdb_id, $imdb_info, 0);
         }
-        $imdb_html = preg_replace('/&(?![A-Za-z0-9#]{1,7};)/', '&amp;', $imdb_html);
-        $cache->add('imdb::' . $imdb_id, $imdb_html, 0);
+        $HTMLOUT .= tr('Auto imdb', $imdb_info, 1);
     }
-    $HTMLOUT .= tr('Auto imdb', $imdb_html, 1);
 }
-if (empty($tvmaze_info) && empty($imdb_html)) {
+
+if (in_array($torrents['category'], $site_config['ebook_cats'])) {
+    $ebook_info = get_book_info($torrents['name']);
+    if (!empty($ebook_info)) {
+        $HTMLOUT .= tr('Google Books', main_table($ebook_info), 1);
+    }
+}
+
+if (empty($tvmaze_info) && empty($imdb_info) && empty($ebook_info)) {
     $HTMLOUT .= "
                 <tr>
-                    <td colspan='2'>No Imdb or TVMaze info.</td>
+                    <td colspan='2'>No Imdb, TVMaze or Ebook info.</td>
                 </tr>";
 }
 $HTMLOUT .= "

@@ -10345,43 +10345,40 @@ textarea {
   -moz-border-radius: .625em;
   border-radius: .625em
 }
-.text-white {
-  color: #fff
-}
-.text-lime {
+.has-text-lime {
   color: #0f0
 }
-.is-danger,
-.text-red {
+.has-text-red,
+.is-danger {
   color: #ff3860
 }
-.text-yellow {
+.has-text-yellow {
   color: #ff0
 }
-.is-success,
-.text-green {
+.has-text-green,
+.is-success {
   color: #23d160
 }
-.text-lightgreen {
+.has-text-lightgreen {
   color: #90ee90
 }
-.text-jade {
+.has-text-jade {
   color: #2cc48a
 }
-.text-turquoise {
+.has-text-turquoise {
   color: #40e0d0
 }
 .has-text-blue {
   color: #00f
 }
-.is-info,
-.text-lightblue {
+.has-text-lightblue,
+.is-info {
   color: #209cee
 }
-.text-gold {
+.has-text-gold {
   color: gold
 }
-.text-orange {
+.has-text-orange {
   color: orange
 }
 .text-justify {

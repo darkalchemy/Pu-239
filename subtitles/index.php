@@ -122,7 +122,7 @@ if ($searchby == 'name') {
     <fieldset>
         <legend>Search for subtitle</legend>
         <form action=" " method="get">
-            <table width="40%" cellpadding="10" border="1" cellspacing="0" style="border-collapse:collapse"
+            <table width="40%" border="1" style="border-collapse:collapse"
             >
                 <tr>
                     <td nowrap="nowrap">Search</td>

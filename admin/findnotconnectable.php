@@ -60,10 +60,10 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) == 'sendpm') {
     $receiver = '';
     // default message
     $body = "{$lang['non_con_body']}";
-    $HTMLOUT .= "<table cellspacing='0' cellpadding='5'>
+    $HTMLOUT .= "<table>
 <tr>
 <td>{$lang['non_con_sendall']}<br>
-<table style='border: 0;' width='100%' cellpadding='0' cellspacing='0'>
+<table style='border: 0;' width='100%'>
 <tr>
 <td style='border: 0;'>&#160;</td>
 <td style='border: 0;'>&#160;</td>

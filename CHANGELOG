@@ -1,4 +1,7 @@
 17 Jan 2018
+update: admin categories
+add: book info from google books api, with or without api key
+remove: unused columns from categories table
 update: database files
 add: list of anonymous names
 replace: 'Anonymous' with anonymous name

@@ -44,7 +44,7 @@ $HTMLOUT .= "<h1>{$lang['freeusers_head']} ($count)</h1>";
 if ($count == 0) {
     $HTMLOUT .= '<p><b>' . $lang['freeusers_nothing'] . '</b></p>';
 } else {
-    $HTMLOUT .= "<table border='1' width='50%' cellspacing='0' cellpadding='3'>
+    $HTMLOUT .= "<table width='50%'>
           <tr><td class='colhead'>{$lang['freeusers_username']}</td><td class='colhead'>{$lang['freeusers_class']}</td>
           <td class='colhead'>{$lang['freeusers_expires']}</td><td class='colhead'>{$lang['freeusers_remove']}</td></tr>";
     while ($arr2 = mysqli_fetch_assoc($res2)) {

@@ -360,7 +360,7 @@ function torrenttable($res, $variant = 'index')
                         <div class='level-center'>
                             <div class='flex-inrow'>
                                 <a href='{$site_config['baseurl']}/bookmark.php?torrent={$id}&amp;action=delete' class='flex-item remove' name='{$id}'>
-                                    <i class='icon-ok icon text-red tooltipper' title='Delete Bookmark!'></i>
+                                    <i class='icon-ok icon has-text-red tooltipper' title='Delete Bookmark!'></i>
                                 </a>
                             </div>
                         </div>

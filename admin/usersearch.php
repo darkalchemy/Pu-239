@@ -40,7 +40,7 @@ $highlight = " bgcolor='lightgrey'";
 ?>
 
     <form method='post' action='staffpanel.php?tool=usersearch&amp;action=usersearch'>
-        <table border="1" cellspacing="0" cellpadding="5">
+        <table border="1">
             <tr>
 
                 <td class='rowhead'><?php
@@ -904,7 +904,7 @@ if (count($_POST) > 0) ; //&& isset($_POST['n']))
         $HTMLOUT .= "
 <br>
 <form method='post' action='./new_announcement.php'>
-<table border='1' cellpadding='5' cellspacing='0'>
+<table>
 <tr>
 <td>
 <div>

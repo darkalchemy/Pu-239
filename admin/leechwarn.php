@@ -106,7 +106,7 @@ if ($count == 0) {
     $HTMLOUT .= stdmsg($lang['leechwarn_hey'], $lang['leechwarn_none'] . strtolower($title));
 } else {
     $HTMLOUT .= "<form action='staffpanel.php?tool=leechwarn&amp;action=leechwarn' method='post'>
-        <table width='600' cellpadding='3' cellspacing='2' style='border-collapse:separate;'>
+        <table width='600' style='border-collapse:separate;'>
         <tr>        
             <td class='colhead' width='100%' >{$lang['leechwarn_user2']}</td>
             <td class='colhead' nowrap='nowrap'>{$lang['leechwarn_ratio']}</td>

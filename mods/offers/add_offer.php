@@ -60,7 +60,7 @@ Please search torrents before adding an offer!</td></tr><tr><td>
 <input type='submit' value='Search!' class='button is-small' /></td></tr></table></form>
 <br>\n";
     $HTMLOUT .= "<form method='post' name='compose' action='viewoffers.php?new_offer'><a name='add' id='add'></a>
-<table border='1' cellspacing='0' width='750px' cellpadding='5'><tr><td class='colhead' colspan='2'>
+<table width='750px'><tr><td class='colhead' colspan='2'>
 Offers are for Users with a good ratio who have uploaded at least " . $site_config['offer_gigs_upped'] . " gigs Only... Share and you shall recieve!</td></tr>
 <tr><td><b>Title</b></td><td><input type='text' size='40' name='offertitle' />
 <select name='category'><option value='0'>(Select a Category)</option>\n";
@@ -99,7 +99,7 @@ $rescount = sql_query('SELECT id FROM offers LIMIT 1') or sqlerr(__FILE__, __LIN
 if (mysqli_num_rows($rescount) > 0) {
     $res = sql_query('SELECT users.username, offers.id, offers.offered_by_user_id, offers.category, offers.offer_name, offers.added, categories.name, categories.image, uploaded, downloaded FROM users INNER JOIN offers ON offers.offered_by_user_id = users.id LEFT JOIN categories ON offers.category = categories.id ORDER BY offers.id DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
     $num = mysqli_num_rows($res);
-    $HTMLOUT .= "<table border='1' cellspacing='0' width='750px' cellpadding='5'>
+    $HTMLOUT .= "<table width='750px'>
     <tr><td width='50px' class='colhead'>Category</td>
     <td class='colhead'>Offer</td><td class='colhead'>Added</td>
     <td class='colhead'>Offered By</td></tr>\n";

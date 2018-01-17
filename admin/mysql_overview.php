@@ -70,7 +70,7 @@ $HTMLOUT .= "<h2>{$lang['mysql_over_title']}</h2>
 
     <!-- Start table -->
 
-    <table class='torrenttable' border='1' cellpadding='4px'>
+    <table class='torrenttable'>
 
     <!-- Start table headers -->
     <tr>

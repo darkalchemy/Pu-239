@@ -16,7 +16,7 @@ $num = mysqli_fetch_assoc($res);
 $added = get_date($num['utadded'], '');
 $s = htmlspecialchars($num['request']);
 $HTMLOUT .= "<h3>{$lang['details_details']}" . $s . '</h3>';
-$HTMLOUT .= "<table border='1' width='750px' cellspacing='0' cellpadding='5'><tr><td colspan='2'><h1>$s</h1></td></tr>";
+$HTMLOUT .= "<table width='750px'><tr><td colspan='2'><h1>$s</h1></td></tr>";
 if ($num['descr']) {
     require_once INCL_DIR . 'bbcode_functions.php';
     $HTMLOUT .= "<tr><td><b>{$lang['add_description']}</b></td>

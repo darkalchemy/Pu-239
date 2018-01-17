@@ -27,7 +27,7 @@ $HTMLOUT .= "
                 <div class='alt_bordered bg-00 has-text-centered'>
                     <div>
                         <a href='{$site_config['baseurl']}/donate.php'>
-                            <img border='0' style='width: 92px; height: 42px;' src='{$site_config['pic_baseurl']}makedonation.gif' alt='{$lang['index_donations']}' title='{$lang['index_donations']}' class='tooltipper' />
+                            <img style='width: 92px; height: 42px;' src='{$site_config['pic_baseurl']}makedonation.gif' alt='{$lang['index_donations']}' title='{$lang['index_donations']}' class='tooltipper' />
                         </a>
                     </div>
                     <div class='container top20 w-25'>

@@ -182,7 +182,7 @@ function dbconn($autoclean = true)
             case 1040:
             case 2002:
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    die("<html><head><meta http-equiv='refresh' content=\"5 $_SERVER[REQUEST_URI]\"></head><body><table border='0' width='100%' height='100%'><tr><td><h3>The server load is very high at the moment. Retrying, please wait...</h3></td></tr></table></body></html>");
+                    die("<html><head><meta http-equiv='refresh' content=\"5 $_SERVER[REQUEST_URI]\"></head><body><table width='100%' height='100%'><tr><td><h3>The server load is very high at the moment. Retrying, please wait...</h3></td></tr></table></body></html>");
                 } else {
                     die('Too many users. Please press the Refresh button in your browser to retry.');
                 }
@@ -723,14 +723,14 @@ function make_bookmarks($userid, $key)
 function genrelist()
 {
     global $cache, $site_config;
-    if (($ret = $cache->get('genrelist')) == false) {
-        $ret = [];
-        $res = sql_query('SELECT id, image, name FROM categories ORDER BY name') or sqlerr(__FILE__, __LINE__);
-        while ($row = mysqli_fetch_assoc($res)) {
-            $ret[] = $row;
-        }
-        $cache->set('genrelist', $ret, $site_config['expires']['genrelist']);
+    //if (($ret = $cache->get('genrelist')) == false) {
+    $ret = [];
+    $res = sql_query('SELECT id, image, name, ordered FROM categories ORDER BY ordered') or sqlerr(__FILE__, __LINE__);
+    while ($row = mysqli_fetch_assoc($res)) {
+        $ret[] = $row;
     }
+    $cache->set('genrelist', $ret, $site_config['expires']['genrelist']);
+    //}
 
     return $ret;
 }
@@ -935,7 +935,13 @@ function sqlesc($x)
  */
 function sqlwildcardesc($x)
 {
-    return str_replace(['%', '_'], ['\\%', '\\_'], mysqli_real_escape_string($GLOBALS['___mysqli_ston'], $x));
+    return str_replace([
+                           '%',
+                           '_'
+                       ], [
+                           '\\%',
+                           '\\_'
+                       ], mysqli_real_escape_string($GLOBALS['___mysqli_ston'], $x));
 }
 
 /**
@@ -1495,7 +1501,17 @@ function write_bonus_log($userid, $amount, $type)
  */
 function human_filesize($bytes, $dec = 2)
 {
-    $size = ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    $size = [
+        'B',
+        'kB',
+        'MB',
+        'GB',
+        'TB',
+        'PB',
+        'EB',
+        'ZB',
+        'YB'
+    ];
     $factor = floor((strlen($bytes) - 1) / 3);
 
     return sprintf("%.{$dec}f", $bytes / pow(1024, $factor)) . @$size[$factor];
@@ -1683,10 +1699,27 @@ function salty()
  */
 function replace_unicode_strings($text)
 {
-    $text = str_replace(['“', '”'], '"', $text);
-    $text = str_replace(['&quot;', '&lsquo;', '‘', '&rsquo;', '’'], "'", $text);
-    $text = str_replace(['&ldquo;', '“', '&rdquo;', '”'], '"', $text);
-    $text = str_replace(['&#8212;', '–'], '-', $text);
+    $text = str_replace([
+                            '“',
+                            '”'
+                        ], '"', $text);
+    $text = str_replace([
+                            '&quot;',
+                            '&lsquo;',
+                            '‘',
+                            '&rsquo;',
+                            '’'
+                        ], "'", $text);
+    $text = str_replace([
+                            '&ldquo;',
+                            '“',
+                            '&rdquo;',
+                            '”'
+                        ], '"', $text);
+    $text = str_replace([
+                            '&#8212;',
+                            '–'
+                        ], '-', $text);
     $text = str_replace('&amp;', '&#38;', $text);
     return html_entity_decode(htmlentities($text, ENT_QUOTES));
 }
@@ -1918,7 +1951,13 @@ function breadcrumbs($separator = '', $home = 'Home')
     }
 
     foreach ($path as $x => $crumb) {
-        $title = ucwords(str_replace(['.php', '_'], ['', ' '], $crumb));
+        $title = ucwords(str_replace([
+                                         '.php',
+                                         '_'
+                                     ], [
+                                         '',
+                                         ' '
+                                     ], $crumb));
         if ($x != $last) {
             $breadcrumbs[] = "<li><a href='$base$crumb'>$title</a></li>";
         } else {
@@ -1927,7 +1966,10 @@ function breadcrumbs($separator = '', $home = 'Home')
     }
 
     if (!empty($action[0]) && $action[0] === 'action') {
-        $type = explode('&', str_replace(['-', '_'], ' ', $action[1]));
+        $type = explode('&', str_replace([
+                                             '-',
+                                             '_'
+                                         ], ' ', $action[1]));
         $breadcrumbs[] = ucwords($type[0]);
     }
 
@@ -2148,18 +2190,26 @@ function get_user_data(int $id)
 
         $cache->set('user' . $id, $users_data, $site_config['expires']['user_cache']);
     }
+
     return $users_data;
 }
 
+/**
+ * @return string
+ */
 function show_php_version()
 {
     preg_match('/^(\d+\.\d+\.\d+).*$/', phpversion(), $match);
     if (!empty($match[1])) {
         return $match[1];
     }
+
     return phpversion();
 }
 
+/**
+ * @return mixed
+ */
 function get_anonymous_name()
 {
     global $site_config;
@@ -2168,6 +2218,7 @@ function get_anonymous_name()
     $array = explode(',', $names);
     $index = array_rand($array);
     $anon = $array[$index];
+
     return $anon;
 }
 

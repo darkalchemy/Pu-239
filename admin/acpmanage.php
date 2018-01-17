@@ -92,7 +92,7 @@ if (mysqli_num_rows($res) != 0) {
         $class = get_user_class_name($arr['class']);
         $status = htmlsafechars($arr['status']);
         $enabled = htmlsafechars($arr['enabled']);
-        $HTMLOUT .= "<tr><td><input type=\"checkbox\" name=\"ids[]\" value=\"" . (int)$arr['id'] . "\" /></td><td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$arr['id'] . "'><b>" . htmlsafechars($arr['username']) . '</b></a>' . ($arr['donor'] == 'yes' ? "<img src='{$site_config['pic_baseurl']}star.gif' border='0' alt='" . $lang['text_donor'] . "' />" : '') . ($arr['warned'] >= 1 ? "<img src='{$site_config['pic_baseurl']}warned.gif' border='0' alt='" . $lang['text_warned'] . "' />" : '') . "</td>
+        $HTMLOUT .= "<tr><td><input type=\"checkbox\" name=\"ids[]\" value=\"" . (int)$arr['id'] . "\" /></td><td><a href='{$site_config['baseurl']}/userdetails.php?id=" . (int)$arr['id'] . "'><b>" . htmlsafechars($arr['username']) . '</b></a>' . ($arr['donor'] == 'yes' ? "<img src='{$site_config['pic_baseurl']}star.gif' alt='" . $lang['text_donor'] . "' />" : '') . ($arr['warned'] >= 1 ? "<img src='{$site_config['pic_baseurl']}warned.gif' alt='" . $lang['text_warned'] . "' />" : '') . "</td>
         <td style='white-space: nowrap;'>{$added}</td>
         <td style='white-space: nowrap;'>{$last_access}</td>
         <td>{$class}</td>

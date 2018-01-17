@@ -65,7 +65,7 @@ if (!isset($_FILES['file'])) {
     if (isset($_GET['updated']) && $_GET['updated'] == 'avatar') {
         $HTMLOUT .= "
         <h3>{$lang['bitbucket_updated']}
-            <img src='" . htmlsafechars($CURUSER['avatar']) . "' border='0' alt='' />
+            <img src='" . htmlsafechars($CURUSER['avatar']) . "' alt='' />
         </h3>";
     }
     $HTMLOUT .= "
@@ -244,7 +244,7 @@ $HTMLOUT .= "
             </div>
             <div>{$lang['bitbucket_thefile']}</div>
             <div>
-                <img src='{$site_config['baseurl']}/img.php?{$pathlink}' border='0' width='200' alt='' />
+                <img src='{$site_config['baseurl']}/img.php?{$pathlink}' width='200' alt='' />
             </div>
             <div>{$lang['bitbucket_directlink']}</div>
             <div>

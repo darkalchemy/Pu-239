@@ -65,7 +65,7 @@ if (!file_exists($rep_set_cache)) {
     }
 }
 $HTMLOUT = '<div>
-                <table width="100%" border="0" cellpadding="5" cellspacing="0">
+                <table width="100%" border="0">
                    <tr>
                     <td style="font-size: 12px; vertical-align: middle; font-weight: bold; color: rgb(0, 0, 0);">' . $lang['repset_settings'] . '</td></tr>
 
@@ -82,7 +82,7 @@ $HTMLOUT = '<div>
                     <div style="padding: 5px; background-color: rgb(30,30, 30);">
                             <div style="border: 1px solid rgb(0, 0, 0);">
 
-                            <table width="100%" border="0" cellpadding="5" cellspacing="0">
+                            <table width="100%" border="0">
                              <tr>
                              <td width="70%"><b>' . $lang['repset_enable'] . '</b><div><hr style="color:#A83838;" size="1" /></div><div style="color: lightgray;">' . $lang['repset_setop'] . '</div></td>
 
@@ -94,21 +94,21 @@ $HTMLOUT = '<div>
                   <div>' . $lang['repset_defaultlvl'] . '</div>
                  <div style="padding: 5px; background-color: rgb(30, 30, 30);">
                         <div>
-                            <table width="100%" border="0" cellpadding="5" cellspacing="0">
+                            <table width="100%" border="0">
                              <tr>
                              <td width="70%"><b>' . $lang['repset_defaultrep'] . '</b><div><hr style="color:#A83838;" size="1" /></div><div style="color: lightgrey;">' . $lang['repset_msg'] . '</div></td>
                              <td width="20%"><div style="width: auto;"><input name="rep_default" value="<#rep_default#>" size="30" type="text"></div></td>
                              </tr>
                   </table>
 
-                  <table width="100%" border="0" cellpadding="5" cellspacing="0">
+                  <table width="100%" border="0">
                              <tr>
                              <td width="70%"><b>' . $lang['repset_defaultphrase'] . '</b><div><hr style="color:#A83838;" size="1" /></div><div style="color: lightgrey;">' . $lang['repset_msg1'] . '</div></td>
                              <td width="20%"><div style="width: auto;"><input name="rep_undefined" value="<#rep_undefined#>" size="30" type="text"></div></td>
                              </tr>
                   </table>
 
-                    <table width="100%" border="0" cellpadding="5" cellspacing="0">
+                    <table width="100%" border="0">
                              <tr>
                              <td width="70%"><b>' . $lang['repset_display'] . '</b><div><hr style="color:#A83838;" size="1" /></div><div style="color: lightgrey;">' . $lang['repset_cont'] . '</div></td>
                              <td width="20%"><div style="width: auto;"><input name="rep_userrates" value="<#rep_userrates#>" size="30" type="text"></div></td>
@@ -121,7 +121,7 @@ $HTMLOUT = '<div>
                  <div style="padding: 5px; background-color: rgb(30, 30, 30);">
                             <div style="border: 1px solid rgb(0, 0, 0);">
 
-                            <table width="100%" border="0" cellpadding="5" cellspacing="0">
+                            <table width="100%" border="0">
                              <tr>
                              <td width="70%"><b>' . $lang['repset_admin'] . '</b><div><hr style="color:#A83838;" size="1" /></div><div style="color: lightgrey;">' . $lang['repset_adminmsg'] . '<br>' . $lang['repset_adminmsg1'] . '</div></td>
                              <td class="tablerow2" width="20%"><div style="width: auto;"><input name="rep_adminpower" value="<#rep_adminpower#>" size="30" type="text"></div></td>
@@ -129,7 +129,7 @@ $HTMLOUT = '<div>
                              </tr>
                   </table>
 
-                  <table width="100%" border="0" cellpadding="5" cellspacing="0">
+                  <table width="100%" border="0">
                              <tr>
                              <td width="70%"><b>' . $lang['repset_regdate'] . '</b><div><hr style="color:#A83838;" size="1" /></div><div style="color: lightgrey;">' . $lang['repset_regdatemsg'] . '</div></td>
 
@@ -140,7 +140,7 @@ $HTMLOUT = '<div>
 
                   </table>
 
-                  <table width="100%" border="0" cellpadding="5" cellspacing="0">
+                  <table width="100%" border="0">
                              <tr>
                              <td width="70%"><b>' . $lang['repset_post'] . '</b><div><hr style="color:#A83838;" size="1" /></div><div style="color: lightgrey;">' . $lang['repset_postmsg'] . '</div></td>
 
@@ -148,7 +148,7 @@ $HTMLOUT = '<div>
                              </tr>
                   </table>
 
-                  <table width="100%" border="0" cellpadding="5" cellspacing="0">
+                  <table width="100%" border="0">
                              <tr>
                              <td width="70%"><b>' . $lang['repset_point'] . '</b><div><hr style="color:#A83838;" size="1" /></div><div style="color: lightgrey;">' . $lang['repset_pointmsg'] . '</div></td>
 
@@ -161,7 +161,7 @@ $HTMLOUT = '<div>
                   <div style="padding: 5px; background-color: rgb(30, 30, 30);">
                         <div>
 
-                            <table width="100%" border="0" cellpadding="5" cellspacing="0">
+                            <table width="100%" border="0">
                              <tr>
                              <td width="70%"><b>' . $lang['repset_minpost'] . '</b><div><hr style="color:#A83838;" size="1" /></div><div style="color: lightgrey;">' . $lang['repset_minpostmsg'] . '</div></td>
 
@@ -169,7 +169,7 @@ $HTMLOUT = '<div>
                              </tr>
                   </table>
 
-                  <table width="100%" border="0" cellpadding="5" cellspacing="0">
+                  <table width="100%" border="0">
                              <tr>
                              <td width="70%"><b>' . $lang['repset_minrep'] . '</b><div><hr style="color:#A83838;" size="1" /></div><div style="color: lightgrey;">' . $lang['repset_minrepmsg'] . '</div></td>
 
@@ -177,7 +177,7 @@ $HTMLOUT = '<div>
                              </tr>
                   </table>
 
-                  <table width="100%" border="0" cellpadding="5" cellspacing="0">
+                  <table width="100%" border="0">
                              <tr>
                              <td width="70%"><b>' . $lang['repset_daily'] . '</b><div><hr style="color:#A83838;" size="1" /></div><div style="color: lightgrey;">' . $lang['repset_dailymsg'] . '</div></td>
 
@@ -185,7 +185,7 @@ $HTMLOUT = '<div>
                              </tr>
                   </table>
 
-                  <table width="100%" border="0" cellpadding="5" cellspacing="0">
+                  <table width="100%" border="0">
                              <tr>
                              <td width="70%"><b>' . $lang['repset_userspread'] . '</b><div><hr style="color:#A83838;" size="1" /></div><div style="color: lightgrey;">' . $lang['repset_userspreadmsg'] . '</div></td>
 

@@ -173,7 +173,7 @@ function show_poll_archive()
       <br><br>
       <a href='staffpanel.php?tool=polls_manager&amp;action=polls_manager&amp;mode=new'><span class='button is-small' style='padding:3px;' title='{$lang['poll_spa_add']}'><img style='vertical-align:top;' src='{$site_config['pic_baseurl']}polls/p_add.gif' alt='{$lang['poll_spa_add_alt']}' />&#160;{$lang['poll_spa_add']}</span></a>
       <br><br>
-      <table cellpadding='5'>
+      <table>
       <tr>
         <td>{$lang['poll_spa_id']}</td>
         <td>{$lang['poll_spa_question']}</td>

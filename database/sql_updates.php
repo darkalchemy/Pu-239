@@ -211,4 +211,28 @@ $sql_updates = [
         'date'  => '17 Jan, 2018',
         'query' => 'INSERT INTO `site_config` (`name`, `value`, `description`) VALUES ("anonymous_names", "Tom Sawyer, Keyser Söze, Capt. Kirk", "A list of names, separated by a comma, used in place of \'Anonymous\'. Quotes are not necessary.")',
     ],
+    [
+        'id'    => 36,
+        'info'  => 'Add Ebooks Category',
+        'date'  => '17 Jan, 2018',
+        'query' => 'INSERT INTO `categories` (`name`, `image`, `cat_desc`, `parent_id`, `tabletype`) VALUES ("Ebooks", "cat_ebooks.png", "No Description", -1, 1)',
+    ],
+    [
+        'id'    => 37,
+        'info'  => 'Add Column to Categories',
+        'date'  => '17 Jan, 2018',
+        'query' => 'ALTER TABLE `categories` ADD COLUMN `ordered` smallint(6) NOT NULL DEFAULT "0"',
+    ],
+    [
+        'id'    => 38,
+        'info'  => 'Drop unused Column from Categories',
+        'date'  => '17 Jan, 2018',
+        'query' => 'ALTER TABLE `categories` DROP COLUMN `parent_id`',
+    ],
+    [
+        'id'    => 39,
+        'info'  => 'Drop unused Column from Categories',
+        'date'  => '17 Jan, 2018',
+        'query' => 'ALTER TABLE `categories` DROP COLUMN `tabletype`',
+    ],
 ];

@@ -111,7 +111,7 @@ if ($count == 0) {
     $HTMLOUT .= stdmsg($lang['warn_hey'], $lang['warn_hey_msg'] . strtolower($title));
 } else {
     $HTMLOUT .= "<form action='staffpanel.php?tool=warn&amp;action=warn' method='post'>
-                <table width='600' cellpadding='3' cellspacing='2' style='border-collapse:separate;'>
+                <table width='600' style='border-collapse:separate;'>
                 <tr>
                         <td class='colhead' width='100%' >{$lang['warn_user']}</td>
                         <td class='colhead' nowrap='nowrap'>{$lang['warn_ratio']}</td>

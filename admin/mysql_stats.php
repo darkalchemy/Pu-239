@@ -250,7 +250,7 @@ if (!empty($serverStatus)) {
     $STATUS_TABLE .= "<!-- Other status variables -->
           <b>{$lang['mysql_stats_more']}</b><br>
           
-      <table class='torrenttable' border='0' width='100%'>
+      <table class='torrenttable' width='100%'>
           <tr>
               <td bgcolor='grey'>{$lang['mysql_stats_variable']}</td>
               <td bgcolor='grey'>{$lang['mysql_stats_value']}</td>
@@ -266,7 +266,7 @@ if (!empty($serverStatus)) {
     unset($useBgcolorOne);
     $STATUS_TABLE .= '</table>';
 }
-$HTMLOUT .= "<table class='torrenttable' width='80%' cellpadding='4px'>
+$HTMLOUT .= "<table class='torrenttable' width='80%'>
     <tr>
       <td colspan='2' class='colhead'>$TRAFFIC_STATS_HEAD</td>
     </tr>

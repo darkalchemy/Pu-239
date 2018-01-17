@@ -43,7 +43,7 @@ if (mysqli_num_rows($res) > 0) {
 ((mysqli_free_result($res) || (is_object($res) && (get_class($res) == 'mysqli_result'))) ? true : false);
 $HTMLOUT .= "<table class='main' width='750px' >" . "<tr><td class='embedded'>\n";
 $HTMLOUT .= "<h1>Success!</h1>
-<table cellspacing='10' cellpadding='10'>
+<table>
 <tr><td>Offer $id (" . htmlspecialchars($arr['offer']) . ") successfully accepted with <a class='altlink' href='details.php?id=" . $torrentid . "'>" . $site_config['baseurl'] . '/details.php?id=' . $torrentid . "</a>.  
 <br><br>User <a class='altlink' href='userdetails.php?id=$arr[userid]'><b>$arr[username]</b></a> automatically PMd.  <br><br>
 If you have made a mistake in filling in the URL or have realised that your torrent does not actually satisfy this offer

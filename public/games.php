@@ -12,7 +12,7 @@ if ($CURUSER['game_access'] == 0 || $CURUSER['game_access'] > 1 || $CURUSER['sus
 }
 
 $width = 100 / 3;
-$color1 = $color2 = $color3 = $color4 = $color5 = $color6 = $color7 = $color8 = $color9 = 'text-red';
+$color1 = $color2 = $color3 = $color4 = $color5 = $color6 = $color7 = $color8 = $color9 = 'has-text-red';
 
 $sql = "SELECT game_id FROM blackjack WHERE status = 'waiting' ORDER BY game_id";
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);

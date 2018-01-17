@@ -46,7 +46,7 @@ switch ($action2) {
         $level_of_shittyness .= '</select>';
         $HTMLOUT .= '<h1><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" />' . $lang['shitlist_add1'] . '' . htmlsafechars($arr_name['username']) . '' . $lang['shitlist_add2'] . '<img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" /></h1>
       <form method="post" action="staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=add">
-   <table border="0" cellspacing="0" cellpadding="5">
+   <table border="0">
    <tr>
       <td class="colhead" colspan="2">new <img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" />
       <img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" /><img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" />
@@ -118,7 +118,7 @@ $res = sql_query('SELECT s.suspect AS suspect_id, s.text, s.shittyness, s.added 
 //=== default page
 $HTMLOUT .= $message . '
    <legend>' . $lang['shitlist_message1'] . '' . htmlsafechars($CURUSER['username']) . '</legend>
-   <table width="950" class="table table-bordered" cellpadding="5">
+   <table width="950" class="table table-bordered">
    <tr>
      <td class="colhead" colspan="4">
      <img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" />' . $lang['shitlist_message2'] . '<img src="' . $site_config['pic_baseurl'] . 'smilies/shit.gif" alt="*" /></td>

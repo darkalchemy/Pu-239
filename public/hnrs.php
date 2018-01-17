@@ -222,7 +222,7 @@ if (mysqli_num_rows($r) > 0) {
         $needs_seed = $a['hit_and_run'] + 86400 > time() ? ' in ' . mkprettytime($a['hit_and_run'] + 86400 - time()) : '';
 
         if ($bp >= $cost && $a['size'] <= 6442450944) {
-            $buyout = "<a href='hnrs.php?userid=" . $userid . '&amp;torrentid=' . (int)$a['tid'] . "'><span class='text-lime' title='Buyout with Bonus Points'>" . number_format($cost, 0) . ' bp</span></a>';
+            $buyout = "<a href='hnrs.php?userid=" . $userid . '&amp;torrentid=' . (int)$a['tid'] . "'><span class='has-text-lime' title='Buyout with Bonus Points'>" . number_format($cost, 0) . ' bp</span></a>';
         } else {
             $buyout = '';
         }
@@ -230,7 +230,7 @@ if (mysqli_num_rows($r) > 0) {
         $a_downloaded = $site_config['ratio_free'] ? (int)$a['size'] : (int)$a['downloaded'];
         $bytes = $a_downloaded - (int)$a['uploaded'];
         if ($diff >= $bytes) {
-            $buybytes = "<a href='hnrs.php?userid=" . $userid . '&amp;torrentid=' . (int)$a['tid'] . "&amp;bytes=$bytes'><span class='text-lime' title='Buyout with Upload Credit'>" . mksize($bytes) . '</span></a>';
+            $buybytes = "<a href='hnrs.php?userid=" . $userid . '&amp;torrentid=' . (int)$a['tid'] . "&amp;bytes=$bytes'><span class='has-text-lime' title='Buyout with Upload Credit'>" . mksize($bytes) . '</span></a>';
         } else {
             $buybytes = '';
         }

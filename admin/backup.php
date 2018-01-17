@@ -89,42 +89,42 @@ if (empty($mode)) {
                             <tr>
                                 <td>{$lang['backup_qzip']}</td>
                                 <td>{$lang['backup_optional']}</td>
-                                <td class='rowhead'>" . ($site_config['db_use_gzip'] ? "<div class='has-text-centered has-text-centered text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td class='rowhead'>" . ($site_config['db_use_gzip'] ? "<div class='has-text-centered has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td>{$lang['backup_qzippath']}</td>
                                 <td>{$site_config['db_backup_gzip_path']}</td>
-                                <td>" . (is_file($site_config['db_backup_gzip_path']) ? "<div class='has-text-centered text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . (is_file($site_config['db_backup_gzip_path']) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td>{$lang['backup_pathfolder']}</td>
                                 <td>{$site_config['backup_dir']}</td>
-                                <td>" . (is_dir($site_config['backup_dir']) ? "<div class='has-text-centered text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . (is_dir($site_config['backup_dir']) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td colspan='2'>{$lang['backup_readfolder']}</td>
-                                <td>" . (is_readable($site_config['backup_dir']) ? "<div class='has-text-centered text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . (is_readable($site_config['backup_dir']) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td colspan='2'>{$lang['backup_writable']}</td>
-                                <td>" . (is_writable($site_config['backup_dir']) ? "<div class='has-text-centered text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . (is_writable($site_config['backup_dir']) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td>{$lang['backup_mysqldump']}</td>
                                 <td>{$site_config['db_backup_mysqldump_path']}</td>
-                                <td>" . (preg_match('/mysqldump/i', exec($site_config['db_backup_mysqldump_path'])) ? "<div class='has-text-centered text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . (preg_match('/mysqldump/i', exec($site_config['db_backup_mysqldump_path'])) ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td colspan='2'>{$lang['backup_downafter']}</td>
-                                <td>" . ($site_config['db_backup_auto_download'] ? "<div class='has-text-centered text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . ($site_config['db_backup_auto_download'] ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td colspan='2'>{$lang['backup_delafter']}</td>
-                                <td>" . ($site_config['db_backup_auto_delete'] ? "<div class='has-text-centered text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . ($site_config['db_backup_auto_delete'] ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                             <tr>
                                 <td colspan='2'>{$lang['backup_writeact']}</td>
-                                <td>" . ($site_config['db_backup_write_to_log'] ? "<div class='has-text-centered text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered text-red'>{$lang['backup_no']}</div>") . "</td>
+                                <td>" . ($site_config['db_backup_write_to_log'] ? "<div class='has-text-centered has-text-green'>{$lang['backup_yes']}</div>" : "<div class='has-text-centered has-text-red'>{$lang['backup_no']}</div>") . "</td>
                             </tr>
                         </tbody>
                     </table>

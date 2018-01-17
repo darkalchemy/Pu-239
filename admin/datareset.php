@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $HTMLOUT .= "<form action='staffpanel.php?tool=datareset&amp;action=datareset' method='post'>
     <fieldset>
     <legend>{$lang['datareset_reset']}</legend>
- <table width='500' border='1' cellpadding='10' cellspacing='0' style='border-collapse:collapse'>
+ <table width='500' style='border-collapse:collapse'>
         <tr><td nowrap='nowrap'>{$lang['datareset_tid']}</td><td width='100%'><input type='text' name='tid' size='20' /></td></tr>
         <tr><td style='background:#990033; color:#CCCCCC;' colspan='2'>
             <ul>

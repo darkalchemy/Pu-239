@@ -56,7 +56,7 @@ if ($do == 'view_page') {
             if ($row['status'] == 'confirmed') {
                 $status = "<span class='has-text-success'>{$lang['invites_confirm1']}</span>";
             } else {
-                $status = "<span class='text-red'>{$lang['invites_pend']}</span>";
+                $status = "<span class='has-text-red'>{$lang['invites_pend']}</span>";
             }
             $body .= "
                     <tr>

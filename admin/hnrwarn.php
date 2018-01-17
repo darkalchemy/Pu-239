@@ -106,7 +106,7 @@ if ($count == 0) {
     $HTMLOUT .= stdmsg($lang['hnrwarn_hey'], $lang['hnrwarn_none'] . strtolower($title));
 } else {
     $HTMLOUT .= "<form action='staffpanel.php?tool=hnrwarn&amp;action=hnrwarn' method='post'>
-        <table width='600' cellpadding='3' cellspacing='2' style='border-collapse:separate;'>
+        <table width='600' style='border-collapse:separate;'>
         <tr>        
             <td class='colhead' width='100%' >{$lang['hnrwarn_form_user']}</td>
             <td class='colhead' nowrap='nowrap'>{$lang['hnrwarn_form_ratio']}</td>

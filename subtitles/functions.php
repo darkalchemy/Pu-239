@@ -148,7 +148,7 @@ function build_result($array, $pager)
         echo '<div><h2>No result found</h2></div>';
     } else {
         ?>
-        <table width="55%" style="border-collapse:collapse;" border="1" cellspacing="0" cellpadding="5">
+        <table width="55%" style="border-collapse:collapse;" border="1">
             <tr>
                 <td colspan="9">Search took&#160;<font class="releasename">
                         <?php echo $time['searchtime'] ?>
@@ -200,4 +200,4 @@ function build_result($array, $pager)
     }
 }
 
-?> 
+?>

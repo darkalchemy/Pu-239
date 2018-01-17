@@ -125,7 +125,7 @@ function loadavg($return_all = false)
     <br>
     <table width='100%' >
         <tr><td>
-        <table class='main' border='0' width='402'>
+        <table class='main' width='402'>
     <tr><td style='padding: 0; background-image: url({$site_config['pic_baseurl']}loadbarbg.gif); background-repeat: repeat-x'>";
     $perc = get_server_load();
     $percent = min(100, $perc);
@@ -143,7 +143,7 @@ $HTMLOUT .= "
     <br>
     <table width='100%' >
             <tr><td>
-            <table class='main' border='0' width='402'>
+            <table class='main' width='402'>
                 <tr><td style='padding: 0; background: url({$site_config['pic_baseurl']}loadbarbg.gif) repeat-x;'>";
 $percent = min(100, round(exec('ps ax | grep -c apache') / 256 * 100));
 if ($percent <= 70) {

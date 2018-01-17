@@ -59,7 +59,7 @@ if ($site_config['karma'] && isset($CURUSER['seedbonus']) && $CURUSER['seedbonus
 <input type='submit' value='{$lang['req_search']}' class='button is-small' /></td></tr></table></form>
 <br>\n";
     $HTMLOUT .= "<form method='post' name='compose' action='viewrequests.php?new_request'><a name='add' id='add'></a>
-<table border='1' cellspacing='0' width='750px' cellpadding='5'><tr><td class='colhead' colspan='2'>
+<table width='750px'><tr><td class='colhead' colspan='2'>
 {$lang['add_good_ratio']}" . $site_config['req_gigs_upped'] . "{$lang['add_share']}</td></tr>
 <tr><td><b>{$lang['add_title']}</b></td><td><input type='text' size='40' name='requesttitle' />
 <select name='category'><option value='0'>{$lang['add_select_cat']}</option>\n";
@@ -98,7 +98,7 @@ $rescount = sql_query('SELECT id FROM requests LIMIT 1') or sqlerr(__FILE__, __L
 if (mysqli_num_rows($rescount) > 0) {
     $res = sql_query('SELECT users.username, requests.id, requests.requested_by_user_id, requests.category, requests.request, requests.added, categories.name, categories.image, uploaded, downloaded FROM users INNER JOIN requests ON requests.requested_by_user_id = users.id LEFT JOIN categories ON requests.category = categories.id ORDER BY requests.id DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
     $num = mysqli_num_rows($res);
-    $HTMLOUT .= "<table border='1' cellspacing='0' width='750px' cellpadding='5'>
+    $HTMLOUT .= "<table width='750px'>
     <tr><td width='50px' class='colhead'>{$lang['add_cat']}</td>
     <td class='colhead'>{$lang['add_request']}</td><td class='colhead'>{$lang['req_added']}</td>
     <td class='colhead'>{$lang['req_req_by']}</td></tr>\n";

@@ -17,7 +17,7 @@ $res = sql_query('SELECT COUNT(t.id) AS how_many_torrents, t.owner, t.added, u.u
 if ($count1 > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
-$HTMLOUT .= '<table border="0" cellspacing="0" cellpadding="5">
+$HTMLOUT .= '<table border="0">
    <tr><td class="colhead">' . $lang['upinfo_rank'] . '</td><td class="colhead">' . $lang['upinfo_torrent'] . '</td><td class="colhead">' . $lang['upinfo_member'] . '</td><td class="colhead">' . $lang['upinfo_class'] . '</td><td class="colhead">' . $lang['upinfo_ratio'] . '</td><td class="colhead">' . $lang['upinfo_ltupload'] . '</td><td class="colhead">' . $lang['upinfo_sendpm'] . '</td></tr>';
 $i = 0;
 while ($arr = mysqli_fetch_assoc($res)) {

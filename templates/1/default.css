@@ -692,37 +692,33 @@ textarea {
     border-radius: .625em;
 }
 
-.text-white {
-    color: #fff;
-}
-
-.text-lime {
+.has-text-lime {
     color: #0f0;
 }
 
 .is-danger,
-.text-red {
+.has-text-red {
     color: #ff3860;
 }
 
-.text-yellow {
+.has-text-yellow {
     color: #ff0;
 }
 
 .is-success,
-.text-green {
+.has-text-green {
     color: #23d160;
 }
 
-.text-lightgreen {
+.has-text-lightgreen {
     color: #90ee90;
 }
 
-.text-jade {
+.has-text-jade {
     color: #2cc48a;
 }
 
-.text-turquoise {
+.has-text-turquoise {
     color: #40e0d0;
 }
 
@@ -731,15 +727,15 @@ textarea {
 }
 
 .is-info,
-.text-lightblue {
+.has-text-lightblue {
     color: #209cee;
 }
 
-.text-gold {
+.has-text-gold {
     color: #ffd700;
 }
 
-.text-orange {
+.has-text-orange {
     color: #ffa500;
 }
 
