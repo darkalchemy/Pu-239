@@ -35,7 +35,7 @@ if ($mode == 'delete') {
     if (!is_valid_id($newsid)) {
         stderr($lang['news_error'], $lang['news_del_invalid']);
     }
-    $hash = md5('the@@saltto66??' . $newsid . 'add' . '@##mu55y==');
+    $hash = hash('sha256', $site_config['site']['salt'] . $newsid . 'add');
     $sure = '';
     $sure = (isset($_GET['sure']) ? intval($_GET['sure']) : '');
     if (!$sure) {
@@ -227,7 +227,7 @@ if ($mode == 'news') {
         $title = $arr['title'];
         $added = get_date($arr['added'], 'LONG', 0, 1);
         $by = '<b>' . format_username($arr) . '</b>';
-        $hash = md5('the@@saltto66??' . $newsid . 'add' . '@##mu55y==');
+        $hash = hash('sha256', $site_config['site']['salt'] . $newsid . 'add');
         $HTMLOUT .= "<table ><tr><td class='embedded'>
         $added{$lang['news_created_by']}
         - [<a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=edit&amp;newsid=$newsid'><b>{$lang['news_edit']}</b></a>]

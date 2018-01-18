@@ -33,7 +33,7 @@ if ($news) {
         $padding = ++$i >= count($news) ? '' : ' bottom20';
         $button = '';
         if ($CURUSER['class'] >= UC_STAFF) {
-            $hash = md5('the@@saltto66??' . $array['id'] . 'add' . '@##mu55y==');
+            $hash = hash('sha256', $site_config['site']['salt'] . $array['id'] . 'add');
             $button = "
                 <div class='is-pulled-right'>
                     <a href='{$site_config['baseurl']}/staffpanel.php?tool=news&amp;mode=edit&amp;newsid=" . (int)$array['id'] . "'>
@@ -44,6 +44,13 @@ if ($news) {
                     </a>
                 </div>";
         }
+        if ($array['anonymous'] === 'yes') {
+            if ($CURUSER['class'] < UC_STAFF || $array['userid'] === $CURUSER['id']) {
+                $username = get_anonymous_name();
+            } else {
+                $username =  get_anonymous_name() . ' - ' . format_username($array['userid']);
+            }
+        }
         $HTMLOUT .= "
             <div class='bordered{$padding}'>
                 <div id='{$array['id']}' class='header alt_bordered bg-00 has-text-left'>
@@ -51,7 +58,7 @@ if ($news) {
                         <i class='fa icon-up-open size_3' aria-hidden='true'></i><small>" . htmlsafechars($array['title']) . "</small>
                     </legend>
                     <div class='bg-02 round5 padding10'>
-                        <div class='bottom20 size_3'>" . get_date($array['added'], 'DATE') . "{$lang['index_news_added']}" . (($array['anonymous'] === 'yes' && $CURUSER['class'] < UC_STAFF && $array['users_id'] != $CURUSER['id']) ? "<i>{$lang['index_news_anon']}</i>" : format_username($array['users_id'])) . "{$button}</div>
+                        <div class='bottom20 size_3'>" . get_date($array['added'], 'DATE') . "{$lang['index_news_added']} {$username}{$button}</div>
                         <div class='has-text-white'>
                             " . format_comment($array['body'], 0) . "
                         </div>

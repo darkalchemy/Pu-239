@@ -2632,7 +2632,7 @@ CREATE TABLE `wiki` (
   `name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `body` longtext COLLATE utf8mb4_unicode_ci,
   `userid` int(10) unsigned DEFAULT '0',
-  `time` int(10) unsigned NOT NULL DEFAULT '0',
+  `time` int(10) unsigned DEFAULT '0',
   `lastedit` int(10) unsigned DEFAULT '0',
   `lastedituser` int(10) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -2654,4 +2654,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-18  0:06:48
+-- Dump completed on 2018-01-18  8:36:54
