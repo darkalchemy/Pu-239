@@ -25,8 +25,10 @@ $lang = [
     'upload_type'              => 'Category',
     'upload_submit'            => 'Do it!',
     'upload_imdb_url'          => 'Imdb Url',
+    'upload_isbn'              => 'ISBN',
     'upload_imdb_tfi'          => '(Taken from Imdb - ',
     'upload_imdb_rfmo'         => 'Add the Imdb url to display Imdb data on details.)',
+    'upload_isbn_details'      => '(Used for Books, ISBN 13 or ISBN 10, no spaces or dashes)',
     'upload_youtube'           => "<a href='{$site_config['anonymizer_url']}http://youtube.com' target='_blank'>Youtube</a>",
     'upload_youtube_info'      => "Direct link to youtube, will be shown on torrent's details page.<br>Link should look like <b>http://www.youtube.com/watch?v=camI8yuoy8U</b>",
     //upload stdhead

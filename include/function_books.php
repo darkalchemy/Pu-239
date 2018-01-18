@@ -3,15 +3,19 @@
 use Scriptotek\GoogleBooks\GoogleBooks;
 
 /**
- * @param $title
+ * @param $torrent
  *
  * @return bool|mixed|string
  */
-function get_book_info($title)
+function get_book_info($torrent)
 {
     global $cache, $site_config;
 
-    $hash = hash('sha256', $title);
+    $search = $torrent['name'];
+    if (!empty($torrent['isbn'])) {
+        $search = $torrent['isbn'];
+    }
+    $hash = hash('sha256', $search);
     $ebook_info = $cache->get('book_info_' . $hash);
     if ($ebook_info === false || is_null($ebook_info)) {
         if (!empty($_ENV['GOOGLE_API_KEY'])) {
@@ -20,7 +24,12 @@ function get_book_info($title)
             $books = new GoogleBooks();
         }
 
-        $book = $books->volumes->firstOrNull($title);
+        if (!empty($torrent['isbn'])) {
+            $book = $books->volumes->byIsbn($torrent['isbn']);
+        } else {
+            $book = $books->volumes->firstOrNull($torrent['name']);
+        }
+
         if (empty($book)) {
             return false;
         }

@@ -62,6 +62,10 @@ $HTMLOUT .= "<table class='table table-bordered table-striped top20 bottom20'>
     <td><input type='text' name='url' class='w-100' /><br>{$lang['upload_imdb_tfi']}{$lang['upload_imdb_rfmo']}</td>
     </tr>
     <tr>
+    <td class='rowhead'>{$lang['upload_isbn']}</td>
+    <td><input type='text' name='isbn' class='w-100' /><br>{$lang['upload_isbn_details']}</td>
+    </tr>
+    <tr>
     <td class='rowhead'>{$lang['upload_poster']}</td>
     <td><input type='text' name='poster' class='w-100' /><br>{$lang['upload_poster1']}</td>
     </tr>

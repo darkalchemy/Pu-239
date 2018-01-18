@@ -838,7 +838,7 @@ if (in_array($torrents['category'], $site_config['movie_cats'])) {
 }
 
 if (in_array($torrents['category'], $site_config['ebook_cats'])) {
-    $ebook_info = get_book_info($torrents['name']);
+    $ebook_info = get_book_info($torrents);
     if (!empty($ebook_info)) {
         $HTMLOUT .= tr('Google Books', main_table($ebook_info), 1);
     }

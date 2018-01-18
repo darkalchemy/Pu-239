@@ -2208,6 +2208,7 @@ CREATE TABLE `torrents` (
   `mtime` int(10) unsigned NOT NULL DEFAULT '0',
   `ctime` int(10) unsigned NOT NULL DEFAULT '0',
   `freetorrent` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `isbn` varchar(13) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `info_hash` (`info_hash`),
   KEY `owner` (`owner`),
@@ -2653,4 +2654,4 @@ CREATE TABLE `wiki` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-17 21:10:36
+-- Dump completed on 2018-01-18  0:06:48

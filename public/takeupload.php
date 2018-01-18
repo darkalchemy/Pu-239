@@ -4,9 +4,6 @@ require_once INCL_DIR . 'user_functions.php';
 require_once CLASS_DIR . 'class.bencdec.php';
 require_once INCL_DIR . 'function_memcache.php';
 
-file_put_contents('/var/log/nginx/auth.log', json_encode($_GET) . PHP_EOL, FILE_APPEND);
-file_put_contents('/var/log/nginx/auth.log', json_encode($_POST) . PHP_EOL, FILE_APPEND);
-
 $owner_id = '';
 extract($_GET);
 unset($_GET);
@@ -46,6 +43,7 @@ if (!isset($_FILES['file'])) {
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
+
 $url = strip_tags(isset($url) ? trim($url) : '');
 $poster = strip_tags(isset($poster) ? trim($poster) : '');
 $f = $_FILES['file'];
@@ -170,11 +168,19 @@ if (isset($youtube) && preg_match($youtube_pattern, $youtube, $temp_youtube)) {
     $youtube = $temp_youtube[0];
 }
 $tags = strip_tags(isset($tags) ? trim($tags) : '');
+
 if (!validfilename($fname)) {
     setSessionVar('is-warning', $lang['takeupload_invalid']);
     header("Location: {$site_config['baseurl']}/upload.php");
     die();
 }
+
+if (empty($isbn)) {
+    $isbn = '';
+} else {
+    $isbn = str_replace(['-', ' '], '', $isbn);
+}
+
 if (!preg_match('/^(.+)\.torrent$/si', $fname, $matches)) {
     setSessionVar('is-warning', $lang['takeupload_not_torrent']);
     header("Location: {$site_config['baseurl']}/upload.php");
@@ -327,7 +333,8 @@ $visible = (XBT_TRACKER ? 'yes' : 'no');
 $torrent = str_replace('_', ' ', $torrent);
 $vip = (isset($vip) ? '1' : '0');
 
-$sql = 'INSERT INTO torrents (search_text, filename, owner, visible, vip, release_group, newgenre, poster, anonymous, allow_comments, info_hash, name, size, numfiles, offer, request, url, subs, descr, ori_descr, description, category, free, silver, save_as, youtube, tags, added, last_action, mtime, ctime, freetorrent, nfo, client_created_by) VALUES (' . implode(',', array_map('sqlesc', [
+$sql = 'INSERT INTO torrents (isbn, search_text, filename, owner, visible, vip, release_group, newgenre, poster, anonymous, allow_comments, info_hash, name, size, numfiles, offer, request, url, subs, descr, ori_descr, description, category, free, silver, save_as, youtube, tags, added, last_action, mtime, ctime, freetorrent, nfo, client_created_by) VALUES (' . implode(',', array_map('sqlesc', [
+        $isbn,
         searchfield("$shortfname $dname $torrent"),
         $fname,
         $owner_id,

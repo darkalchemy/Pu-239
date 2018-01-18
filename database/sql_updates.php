@@ -235,4 +235,10 @@ $sql_updates = [
         'date'  => '17 Jan, 2018',
         'query' => 'ALTER TABLE `categories` DROP COLUMN `tabletype`',
     ],
+    [
+        'id'    => 40,
+        'info'  => 'Add ISBN column to torrents table',
+        'date'  => '17 Jan, 2018',
+        'query' => 'ALTER TABLE `torrents` ADD COLUMN `isbn` varchar(13) COLLATE utf8mb4_unicode_ci DEFAULT NULL',
+    ],
 ];
