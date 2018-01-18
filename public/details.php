@@ -10,7 +10,7 @@ require_once INCL_DIR . 'tvmaze_functions.php';
 require_once IMDB_DIR . 'imdb.class.php';
 require_once INCL_DIR . 'function_books.php';
 check_user_status();
-global $CURUSER, $site_config, $cache;
+global $CURUSER, $site_config, $cache, $fluent;
 
 $lang = array_merge(load_language('global'), load_language('details'));
 $stdhead = [
@@ -124,7 +124,14 @@ if (in_array($torrents['category'], $site_config['ebook_cats'])) {
     $ebooks_info = get_book_info($torrents);
     $ebook_info = $ebooks_info[0];
     if (empty($torrents['poster']) && !empty($ebooks_info[1])) {
-        $cache->update_row('torrent_details_' . $id, ['poster' => $ebooks_info[1]], $site_config['expires']['torrent_details']);
+        $set = [
+            'poster' => $ebooks_info[1]
+        ];
+        $cache->update_row('torrent_details_' . $id, $set, $site_config['expires']['torrent_details']);
+        $fluent->update('torrents')
+            ->set($set)
+            ->where('id = ?', $id)
+            ->execute();
         $torrents['poster'] = $ebooks_info[1];
     }
 }

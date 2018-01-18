@@ -10172,11 +10172,15 @@ textarea {
   -moz-box-shadow: 2px 2px 5px rgba(0,0,0,.5);
   box-shadow: 2px 2px 5px rgba(0,0,0,.5);
   display: inline-block;
-  max-width: 100%;
+  width: 158px;
   height: auto;
   -webkit-border-radius: .625em;
   -moz-border-radius: .625em;
   border-radius: .625em
+}
+.img-polaroid img {
+  width: 100%;
+  height: auto
 }
 .img-responsive {
   max-width: 100%;
@@ -10394,8 +10398,8 @@ textarea {
   border-radius: .625em
 }
 .tooltip-poster {
-  height: 225px;
   width: 150px;
+  height: auto;
   -webkit-border-radius: .625em;
   -moz-border-radius: .625em;
   border-radius: .625em
