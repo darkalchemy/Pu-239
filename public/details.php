@@ -153,8 +153,6 @@ if (isset($_GET['hit'])) {
     $cache->update_row('torrent_details_' . $id, [
         'views' => $update['views'],
     ], $site_config['expires']['torrent_details']);
-    header("Location: details.php?id=$id");
-    die();
 }
 $What_String = (XBT_TRACKER ? 'mtime' : 'last_action');
 $What_String_Key = (XBT_TRACKER ? 'last_action_xbt_' : 'last_action_');

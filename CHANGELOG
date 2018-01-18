@@ -1,4 +1,5 @@
 17 Jan 2018
+remove: double page load details.php just to increment hits
 update: set poster in db from book cache
 add: set ebook poster(in cache) to google book poster, if poster not set
 add: isbn column to torrents for better search results from google
