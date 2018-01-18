@@ -931,6 +931,20 @@ function sqlesc($x)
 /**
  * @param $x
  *
+ * @return int|string
+ */
+function sqlesc_noquote($x)
+{
+    if (is_integer($x)) {
+        return (int)$x;
+    }
+
+    return mysqli_real_escape_string($GLOBALS['___mysqli_ston'], $x);
+}
+
+/**
+ * @param $x
+ *
  * @return mixed
  */
 function sqlwildcardesc($x)

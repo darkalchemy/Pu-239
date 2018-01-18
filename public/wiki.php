@@ -73,23 +73,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['article-add'])) {
         $name = htmlsafechars(urldecode($_POST['article-name']));
         $body = htmlsafechars($_POST['body']);
-        sql_query('INSERT INTO `wiki` ( `name` , `body` , `userid`, `time` )
-          VALUES (' . sqlesc($name) . ', ' . sqlesc($body) . ', ' . sqlesc($CURUSER['id']) . ", '" . TIME_NOW . "')") or sqlerr(__FILE__, __LINE__);
-        $HTMLOUT .= '<meta http-equiv="refresh" content="0; url=wiki.php?action=article&name=' . htmlsafechars($_POST['article-name']) . '">';
-    }
-    if (isset($_POST['article-edit'])) {
+        $sql = 'INSERT INTO `wiki` ( `name` , `body` , `userid`, `time` ) VALUES (' . sqlesc($name) . ', ' . sqlesc($body) . ', ' . sqlesc($CURUSER['id']) . ", '" . TIME_NOW . "')";
+        sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        setSessionVar('is-success', 'Wiki article added');
+    } elseif (isset($_POST['article-edit'])) {
         $id = (int)$_POST['article-id'];
-        $name = htmlsafechars(urldecode($_POST['article-name']));
-        $body = htmlsafechars($_POST['body']);
-        sql_query('UPDATE wiki SET name = ' . sqlesc($name) . ', body =' . sqlesc($body) . ", lastedit = '" . TIME_NOW . "', lastedituser =" . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($id));
-        $HTMLOUT .= '<meta http-equiv="refresh" content="0; url=wiki.php?action=article&name=' . htmlsafechars($_POST['article-name']) . '">';
-    }
-    if (isset($_POST['wiki'])) {
+        $name = htmlspecialchars(urldecode($_POST['article-name']));
+        $body = htmlspecialchars($_POST['body']);
+        $sql = 'UPDATE wiki SET name = ' . sqlesc($name) . ', body =' . sqlesc($body) . ", lastedit = '" . TIME_NOW . "', lastedituser =" . sqlesc($CURUSER['id']) . ' WHERE id = ' . sqlesc($id);
+        sql_query($sql) or sqlerr(__FILE__, __LINE__);
+        setSessionVar('is-success', 'Wiki article edited');
+    } elseif (isset($_POST['wiki'])) {
         $name = htmlsafechars(urldecode($_POST['article']));
         $mode = 'name';
     }
 }
-
 $HTMLOUT .= "
         <div class='level-center'>
             <h1>
@@ -154,7 +152,7 @@ if ($action == 'article') {
         </div>';
     } else {
         if (!empty($name)) {
-            $res = sql_query("SELECT * FROM wiki WHERE name LIKE '%" . sqlesc($name) . "%' ORDER BY GREATEST(time, lastedit) DESC LIMIT 25");
+            $res = sql_query("SELECT * FROM wiki WHERE name LIKE '%" . sqlesc_noquote($name) . "%' ORDER BY GREATEST(time, lastedit) DESC LIMIT 25");
         }
         if (mysqli_num_rows($res) > 0) {
             $HTMLOUT .= navmenu() . "
@@ -197,7 +195,8 @@ if ($action == 'edit') {
     if (($CURUSER['class'] >= UC_STAFF) || ($CURUSER['id'] == $result['userid'])) {
         $HTMLOUT .= navmenu() . "
             <form method='post' action='wiki.php'>
-                <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' value='" . htmlsafechars($result['name']) . "' />" .
+                <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' value='" . htmlsafechars($result['name']) . "' />
+                <input type='hidden' name='article-id' value='$id' />" .
             BBcode(htmlsafechars($result['body'])) . "
                 <div class='has-text-centered margin20'>
                     <input type='submit' class='button is-small' name='article-edit' value='{$lang['wiki_ok']}' />

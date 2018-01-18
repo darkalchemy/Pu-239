@@ -472,7 +472,7 @@ function format_comment($text, $strip_html = true, $urls = true, $images = true)
     $s = format_quotes($s);
     $s = format_code($s);
     $s = check_BBcode($s);
-    //$s = str_replace(["\r\n", "\r", "\n", '&lt;br&gt;'], "<br>", $s);
+    $s = str_replace(["\r\n", "\r", "\n", '&lt;br&gt;'], "<br>", $s);
     return $s;
 }
 
