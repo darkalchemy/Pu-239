@@ -2632,7 +2632,7 @@ CREATE TABLE `wiki` (
   `name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `body` longtext COLLATE utf8mb4_unicode_ci,
   `userid` int(10) unsigned DEFAULT '0',
-  `time` int(11) NOT NULL DEFAULT '0',
+  `time` int(10) unsigned NOT NULL DEFAULT '0',
   `lastedit` int(10) unsigned DEFAULT '0',
   `lastedituser` int(10) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),

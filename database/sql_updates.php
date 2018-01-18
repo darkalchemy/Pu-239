@@ -241,4 +241,10 @@ $sql_updates = [
         'date'  => '17 Jan, 2018',
         'query' => 'ALTER TABLE `torrents` ADD COLUMN `isbn` varchar(13) COLLATE utf8mb4_unicode_ci DEFAULT NULL',
     ],
+    [
+        'id'    => 41,
+        'info'  => 'Alter time value',
+        'date'  => '18 Jan, 2018',
+        'query' => 'ALTER TABLE `wiki` MODIFY COLUMN `time` int(10) unsigned DEFAULT 0',
+    ],
 ];
