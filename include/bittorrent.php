@@ -24,6 +24,7 @@ require_once INCL_DIR . 'files.php';
 
 require_once CACHE_DIR . 'free_cache.php';
 require_once CACHE_DIR . 'class_config.php';
+require_once INCL_DIR . 'password_functions.php';
 $cache = new CACHE();
 
 // start session on every page request
@@ -50,7 +51,6 @@ require_once CLASS_DIR . 'class_blocks_stdhead.php';
 require_once CLASS_DIR . 'class_blocks_userdetails.php';
 require_once CLASS_DIR . 'class_bt_options.php';
 require_once CACHE_DIR . 'block_settings_cache.php';
-require_once INCL_DIR . 'password_functions.php';
 require_once INCL_DIR . 'site_settings.php';
 
 $load = sys_getloadavg();
@@ -1544,12 +1544,12 @@ function sessionStart()
 
     // Create a new AUTH token.
     if (!getSessionVar('auth')) {
-        setSessionVar('auth', bin2hex(random_bytes(32)));
+        setSessionVar('auth', make_password(32));
     }
 
     // Create a new CSRF token.
     if (!getSessionVar($site_config['session_csrf'])) {
-        setSessionVar($site_config['session_csrf'], bin2hex(random_bytes(32)));
+        setSessionVar($site_config['session_csrf'], make_password(32));
     }
 
     // Make sure we have a canary set and Regenerate session ID every five minutes:
@@ -1607,7 +1607,7 @@ function validateToken($token, $key = null, $regen = false)
     if (hash_equals(getSessionVar($key), $token)) {
         if ($regen) {
             unsetSessionVar($key);
-            setSessionVar($key, bin2hex(random_bytes(32)));
+            setSessionVar($key, make_password(32));
         }
         return true;
     }
@@ -1681,15 +1681,18 @@ function unsetSessionVar($key, $prefix = null)
 }
 
 /**
- * @param $username
- *
- * @return string
+ * @return null|string
+ * @throws Exception
  */
 function salty()
 {
-    $salt = make_password(32);
-    setSessionVar('salt', make_passhash($salt));
-    return $salt;
+    $auth = getSessionVar('auth');
+    if (empty($auth)) {
+        $auth = make_password(32);
+    }
+    setSessionVar('salt', make_passhash($auth));
+
+    return $auth;
 }
 
 /**

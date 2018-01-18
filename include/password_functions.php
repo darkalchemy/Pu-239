@@ -16,6 +16,7 @@ function make_passhash($pass)
  * @param int $bytes
  *
  * @return string
+ * @throws Exception
  */
 function make_password($bytes = 12)
 {

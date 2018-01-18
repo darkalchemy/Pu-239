@@ -7,7 +7,7 @@ if (empty($_GET['hash_please'])) {
     die('No Hash your up to no good MOFO');
 }
 if (!password_verify($_GET['hash_please'], getSessionVar('salt'))) {
-    die('Unsecure Logout - Hash mis-match please contact site admin');
+    die("Hash mis-match(stale hash), press the browser's back button and try again.");
 }
 destroySession();
 header("Location: {$site_config['baseurl']}/login.php");
