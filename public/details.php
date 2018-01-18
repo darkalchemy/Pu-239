@@ -87,8 +87,9 @@ if ($torrents === false || is_null($torrents)) {
         'checked_by',
     ];
     $tor_fields_ar_str = [
+        'isbn',
         'banned',
-        'info_hash',
+        'HEX(info_hash) AS info_hash',
         'filename',
         'search_text',
         'name',
@@ -109,28 +110,36 @@ if ($torrents === false || is_null($torrents)) {
         'tags',
     ];
     $tor_fields = implode(', ', array_merge($tor_fields_ar_int, $tor_fields_ar_str));
-    $result = sql_query('SELECT ' . $tor_fields . ", LENGTH(nfo) AS nfosz, IF(num_ratings < {$site_config['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating FROM torrents WHERE id = " . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    $sql = 'SELECT ' . $tor_fields . ", LENGTH(nfo) AS nfosz, IF(num_ratings < {$site_config['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating FROM torrents WHERE id = " . sqlesc($id);
+    $result = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     $torrents = mysqli_fetch_assoc($result);
     foreach ($tor_fields_ar_int as $i) {
         $torrents[$i] = (int)$torrents[$i];
     }
-    foreach ($tor_fields_ar_str as $i) {
-        $torrents[$i] = $torrents[$i];
-    }
     $cache->set('torrent_details_' . $id, $torrents, $site_config['expires']['torrent_details']);
 }
-//==
+
+$tvmaze_info = $imdb_info = $ebook_info = '';
+if (in_array($torrents['category'], $site_config['ebook_cats'])) {
+    $ebooks_info = get_book_info($torrents);
+    $ebook_info = $ebooks_info[0];
+    if (empty($torrents['poster']) && !empty($ebooks_info[1])) {
+        $cache->update_row('torrent_details_' . $id, ['poster' => $ebooks_info[1]], $site_config['expires']['torrent_details']);
+        $torrents['poster'] = $ebooks_info[1];
+    }
+}
+
 if (($torrents_xbt = $cache->get('torrent_xbt_data_' . $id)) === false && XBT_TRACKER) {
     $torrents_xbt = mysqli_fetch_assoc(sql_query('SELECT seeders, leechers, times_completed FROM torrents WHERE id =' . sqlesc($id))) or sqlerr(__FILE__, __LINE__);
     $cache->set('torrent_xbt_data_' . $id, $torrents_xbt, $site_config['expires']['torrent_xbt_data']);
 }
-//==
+
 $torrents_txt = $cache->get('torrent_details_txt' . $id);
 if ($torrents_txt === false || is_null($torrents_txt)) {
     $torrents_txt = mysqli_fetch_assoc(sql_query('SELECT descr FROM torrents WHERE id =' . sqlesc($id))) or sqlerr(__FILE__, __LINE__);
     $cache->set('torrent_details_txt' . $id, $torrents_txt, $site_config['expires']['torrent_details_text']);
 }
-//==
+
 if (isset($_GET['hit'])) {
     sql_query('UPDATE torrents SET views = views + 1 WHERE id =' . sqlesc($id));
     $update['views'] = ($torrents['views'] + 1);
@@ -328,7 +337,7 @@ if (!($CURUSER['downloadpos'] == 0 && $CURUSER['id'] != $torrents['owner'] or $C
     $HTMLOUT .= "
         </div>
         <div class='level has-text-centered bottom20'>
-            <div class='img-polaroid round10'>";
+            <div class='img-polaroid round10 right10'>";
 
     if (!empty($torrents['poster'])) {
         $HTMLOUT .= "<img src='" . htmlsafechars($torrents['poster']) . "' class='round10' alt='Poster' />";
@@ -752,7 +761,6 @@ $HTMLOUT .= "
         <div class='table-wrapper bottom20'>
             <table class='table table-bordered'>";
 
-$tvmaze_info = $imdb_info = $ebook_info = '';
 if (in_array($torrents['category'], $site_config['tv_cats'])) {
     $tvmaze_info = tvmaze($torrents);
     if ($tvmaze_info) {
@@ -837,11 +845,8 @@ if (in_array($torrents['category'], $site_config['movie_cats'])) {
     }
 }
 
-if (in_array($torrents['category'], $site_config['ebook_cats'])) {
-    $ebook_info = get_book_info($torrents);
-    if (!empty($ebook_info)) {
-        $HTMLOUT .= tr('Google Books', main_table($ebook_info), 1);
-    }
+if (!empty($ebook_info)) {
+    $HTMLOUT .= tr('Google Books', main_table($ebook_info), 1);
 }
 
 if (empty($tvmaze_info) && empty($imdb_info) && empty($ebook_info)) {

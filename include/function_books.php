@@ -11,6 +11,7 @@ function get_book_info($torrent)
 {
     global $cache, $site_config;
 
+    $poster = '';
     $search = $torrent['name'];
     if (!empty($torrent['isbn'])) {
         $search = $torrent['isbn'];
@@ -73,11 +74,19 @@ function get_book_info($torrent)
         foreach ($book->categories as $category) {
             $categories[] = $category;
         }
-        $ebook_info .= "
+        if (!empty($categories)) {
+            $ebook_info .= "
         <tr>
             <td class='rowhead'>Genre</td><td>" . implode(', ', $categories) . "</td>
         </tr>";
+        }
+        if (empty($torrent['poster']) && !empty($book->imageLinks->thumbnail)) {
+            $poster = $book->imageLinks->thumbnail;
+        }
         $cache->set('book_info_' . $hash, $ebook_info, $site_config['expires']['book_info']);
     }
-    return $ebook_info;
+    return [
+        $ebook_info,
+        $poster
+    ];
 }

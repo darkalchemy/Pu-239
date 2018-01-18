@@ -1,4 +1,5 @@
 17 Jan 2018
+add: set ebook poster(in cache) to google book poster, if poster not set
 add: isbn column to torrents for better search results from google
 update: admin categories
 add: book info from google books api, with or without api key
