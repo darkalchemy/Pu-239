@@ -1,4 +1,6 @@
 19 Jan 2018
+update: set file permissions of .env, config.php and ann_config.php during install
+update: installer check writeable root
 update: user_unlocks.php to same style as the other block pages
 add: option to disable/enable newsrss feeds
 add: missing admin 'Show Friends' block

@@ -173,13 +173,14 @@ function saveconfig()
     }
 
     if ($continue) {
-        $file = '../../.env.example';
+        $file = $root . '.env.example';
         if (file_exists($file)) {
             $env = file_get_contents($file);
             $keys = array_map('foo', array_keys($_POST['config']));
             $values = array_values($_POST['config']);
             $env = preg_replace($keys, $values, $env);
-            if (file_put_contents('../../.env', $env)) {
+            if (file_put_contents($root . '.env', $env)) {
+                chmod($root . '.env', 0644);
                 $out .= '
         <div class="readable">.env file was created</div>';
             } else {
@@ -207,6 +208,7 @@ function saveconfig()
         $config = preg_replace('/#pass4/', bin2hex(random_bytes(16)), $config);
 
         if (file_put_contents($root . 'include/config.php', $config)) {
+            chmod($root . 'include/config.php', 0644);
             $out .= '
         <div class="readable">config.php file was created</div>';
         } else {
@@ -226,6 +228,7 @@ function saveconfig()
         $values = array_values($_POST['config']);
         $announce = preg_replace($keys, $values, $announce);
         if (file_put_contents($root . 'include/ann_config.php', $announce)) {
+            chmod($root . 'include/ann_config.php', 0644);
             $out .= '
         <div class="readable">ann_config.php file was created</div>';
         } else {

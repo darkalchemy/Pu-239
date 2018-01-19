@@ -21,6 +21,7 @@ function permissioncheck()
 {
     global $root, $public;
     $dirs = [
+        $root                      => 0,
         $root . 'dir_list/'        => 0,
         $root . 'imdb/'            => 0,
         $root . 'cache/'           => 0,
