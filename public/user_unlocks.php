@@ -5,19 +5,6 @@ require_once INCL_DIR . 'user_functions.php';
 check_user_status();
 global $CURUSER, $site_config, $cache;
 
-$stdfoot = [
-    'js' => [
-//        'custom-form-elements',
-    ],
-];
-$stdhead = [
-    'css' => [
-//        'user_blocks',
-//        'checkbox',
-//        'hide',
-    ],
-];
-
 $lang = load_language('global');
 $id = (isset($_GET['id']) ? $_GET['id'] : $CURUSER['id']);
 if (!is_valid_id($id) || $CURUSER['class'] < UC_STAFF) {
@@ -48,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                  WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     }
     // grab current data
-    $res = sql_query('SELECT perms FROM users 
-                     WHERE id = ' . sqlesc($id) . ' LIMIT 1') or sqlerr(__FILE__, __LINE__);
+    $res = sql_query('SELECT perms FROM users
+                     WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $row = mysqli_fetch_assoc($res);
     $row['perms'] = (int)$row['perms'];
     $cache->update_row('user' . $id, [
@@ -60,46 +47,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 $checkbox_unlock_moods = (($CURUSER['perms'] & bt_options::UNLOCK_MORE_MOODS) ? ' checked' : '');
 $checkbox_unlock_stealth = (($CURUSER['perms'] & bt_options::PERMS_STEALTH) ? ' checked' : '');
-$HTMLOUT = '';
-$HTMLOUT .= '
-<div class="container">
-    <form action="" method="post">
-        <fieldset><legend>User Unlock Settings</legend>
-        <div class="row-fluid">
-            <div class="span3 offset1">
-                <table class="table table-bordered table-striped">
-                    <tr>
-                        <td>
-                            <b>Enable Bonus Moods?</b>
-                            <div class="slideThree"> <input type="checkbox" id="unlock_user_moods" name="unlock_user_moods" value="yes"' . $checkbox_unlock_moods . ' />
-                                <label for="unlock_user_moods"></label>
-                            </div>
-                            <div><hr></div>
-                            <span>Check this option to unlock bonus mood smilies.</span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="span3 offset0">
-                <table class="table table-bordered table-striped">
-                    <tr>
-                        <td>
-                            <b>User Stealth Mode<?</b>
-                            <div class="slideThree"> <input type="checkbox" id="perms_stealth" name="perms_stealth" value="yes"' . $checkbox_unlock_stealth . ' />
-                                <label for="perms_stealth"></label>
-                            </div>
-                            <div><hr></div>
-                            <span>Check this option to unlock Stealth Mode.</span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        </fieldset>
-        <div class="span7 offset1">
-            <input class="button" type="submit" name="submit" value="Submit" tabindex="2" accesskey="s" />
-        </div>
-    </form>
-</div>';
 
-echo stdhead('User unlocks', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+$HTMLOUT = '
+            <div class="bg-02 top20">
+                <h1 class="has-text-centered">User Unlock Settings</h1>
+                <form action="" method="post">
+                    <div class="level-center">
+                        <div class="w-20">
+                            <span class="bordered level-center bg-02">
+                                <div class="w-100">Enable Bonus Moods?</div>
+                                <div class="slideThree">
+                                    <input type="checkbox" id="unlock_user_moods" name="unlock_user_moods" value="yes"' . $checkbox_unlock_moods . ' />
+                                    <label for="unlock_user_moods"></label>
+                                </div>
+                                <div class="w-100">Check this option to unlock bonus mood smilies.</div>
+                            </span>
+                        </div>
+                        <div class="w-20">
+                            <span class="bordered level-center bg-02">
+                                <div class="w-100">User Stealth Mode?</div>
+                                <div class="slideThree">
+                                    <input type="checkbox" id="perms_stealth" name="perms_stealth" value="yes"' . $checkbox_unlock_stealth . ' />
+                                    <label for="perms_stealth"></label>
+                                </div>
+                                <div class="w-100">Check this option to unlock Stealth Mode.</div>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="has-text-centered margin20">
+                        <input class="button" type="submit" name="submit" value="Submit" tabindex="2" accesskey="s" />
+                    </div>
+                </form>
+            </div>';
+
+echo stdhead('User unlocks', true) . wrapper($HTMLOUT) . stdfoot();
