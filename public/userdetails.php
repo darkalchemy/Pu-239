@@ -32,8 +32,8 @@ if ($user === false || is_null($user)) {
         ->select('INET6_NTOA(ip) AS ip')
         ->where('id = ?', $id)
         ->fetch();
-    unset($users_data['hintanswer']);
-    unset($users_data['passhash']);
+    unset($user['hintanswer']);
+    unset($user['passhash']);
 
     $cache->set('user' . $id, $user, $site_config['expires']['user_cache']);
 }
@@ -263,7 +263,7 @@ $stealth .= ($CURUSER['class'] >= UC_STAFF ? (($user['perms'] & bt_options::PERM
 $enabled = $user['enabled'] == 'yes';
 $parked = $user['opt1'] & user_options::PARKED ? $lang['userdetails_parked'] : '';
 
-$h1 .= "
+$h1 = "
                 <h1 class='has-text-centered'>" . format_username($user['id']) . "$country$stealth$watched_user$suspended$h1_thingie$perms$parked</h1>";
 if (!$enabled) {
     $h1 .= $lang['userdetails_disabled'];

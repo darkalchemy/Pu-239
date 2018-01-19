@@ -501,28 +501,30 @@ function autoclean()
             }
         }
 
-        $tfreak_cron = $cache->get('tfreak_cron_');
-        if ($tfreak_cron === false || is_null($tfreak_cron)) {
-            $tfreak_news = $cache->get('tfreak_news_links_');
-            if ($tfreak_news === false || is_null($tfreak_news)) {
-                $sql = sql_query("SELECT link FROM newsrss") or sqlerr(__FILE__, __LINE__);
-                while ($tfreak_new = mysqli_fetch_assoc($sql)) {
-                    $tfreak_news[] = $tfreak_new['link'];
+        if ($site_config['trivia_on']) {
+            $tfreak_cron = $cache->get('tfreak_cron_');
+            if ($tfreak_cron === false || is_null($tfreak_cron)) {
+                $tfreak_news = $cache->get('tfreak_news_links_');
+                if ($tfreak_news === false || is_null($tfreak_news)) {
+                    $sql = sql_query("SELECT link FROM newsrss") or sqlerr(__FILE__, __LINE__);
+                    while ($tfreak_new = mysqli_fetch_assoc($sql)) {
+                        $tfreak_news[] = $tfreak_new['link'];
+                    }
+                    $cache->set('tfreak_news_links_', $tfreak_news, 86400);
                 }
-                $cache->set('tfreak_news_links_', $tfreak_news, 86400);
-            }
 
-            if (user_exists($site_config['chatBotID'])) {
-                $cache->set('tfreak_cron_', TIME_NOW, 30);
-                require_once INCL_DIR . 'newsrss.php';
-                if (empty($tfreak_news)) {
-                    github_shout();
-                    foxnews_shout();
-                    tfreak_shout();
-                } else {
-                    github_shout($tfreak_news);
-                    foxnews_shout($tfreak_news);
-                    tfreak_shout($tfreak_news);
+                if (user_exists($site_config['chatBotID'])) {
+                    $cache->set('tfreak_cron_', TIME_NOW, 30);
+                    require_once INCL_DIR . 'newsrss.php';
+                    if (empty($tfreak_news)) {
+                        github_shout();
+                        foxnews_shout();
+                        tfreak_shout();
+                    } else {
+                        github_shout($tfreak_news);
+                        foxnews_shout($tfreak_news);
+                        tfreak_shout($tfreak_news);
+                    }
                 }
             }
         }

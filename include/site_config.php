@@ -303,3 +303,5 @@ $site_config['notifications'] = [
     'is-info',
     'is-link'
 ];
+
+$site_config['trivia_on'] = false;

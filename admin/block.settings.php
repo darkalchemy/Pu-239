@@ -70,6 +70,7 @@ $list = [
     'userdetails_report_user_on',
     'userdetails_user_status_on',
     'userdetails_user_comments_on',
+    'userdetails_showfriends_on',
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -407,6 +408,13 @@ $HTMLOUT .= "
 $contents = [];
 
 $contents[] = "
+                            <div class='w-100'>{$lang['block_showfriends']}</div>
+                            <div class='slideThree'>
+                                <#userdetails_showfriends_on#>
+                            </div>
+                            <div class='w-100'>{$lang['block_showfriends_set']}</div>";
+
+$contents[] = "
                             <div class='w-100'>{$lang['block_flush']}</div>
                             <div class='slideThree'>
                                 <#userdetails_flush_on#>
@@ -608,6 +616,13 @@ $contents[] = "
                                 <#userdetails_user_status_on#>
                             </div>
                             <div class='w-100'>{$lang['block_user_status_set']}</div>";
+
+$contents[] = "
+                            <div class='w-100'>{$lang['block_user_comments']}</div>
+                            <div class='slideThree'>
+                                <#userdetails_user_comments_on#>
+                            </div>
+                            <div class='w-100'>{$lang['block_user_comments_set']}</div>";
 
 $contents[] = "
                             <div class='w-100'>{$lang['block_user_comments']}</div>

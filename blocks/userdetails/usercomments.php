@@ -46,7 +46,7 @@ function usercommenttable($rows)
     return $htmlout;
 }
 
-$text .= "
+$text = "
     <a name='startcomments'></a>
     <div class='has-text-centered'>
         <h1>{$lang['userdetails_comm_left']}" . format_username($id) . "</a></h1>";

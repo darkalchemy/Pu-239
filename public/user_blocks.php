@@ -768,7 +768,7 @@ $form .= "
             <legend class='flipper has-text-primary'><i class='fa icon-up-open size_3' aria-is_hidden='true'></i>Userdetails Page Settings</legend>
             <div>";
 
-$level3 .= "
+$level3 = "
                 <div class='level-center is-inline-flex'>";
 
 $contents = [];
@@ -988,4 +988,4 @@ $form .= "
     </form>";
 
 $HTMLOUT = wrapper($form);
-echo stdhead('User Blocks Config', true, $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+echo stdhead('User Blocks Config', true) . $HTMLOUT . stdfoot();
