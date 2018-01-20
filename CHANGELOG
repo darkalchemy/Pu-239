@@ -1,3 +1,6 @@
+20 Jan 2018
+update: install tooltips
+
 19 Jan 2018
 update: set file permissions of .env, config.php and ann_config.php during install
 update: installer check writeable root

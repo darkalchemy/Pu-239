@@ -88,19 +88,19 @@ $foo = [
         [
             'text'        => 'Cookie Domain',
             'input'       => 'config[cookie_domain]',
-            'info'        => 'Your domain name - note exclude http and www.',
+            'info'        => 'Your site domain name - note exclude http and www. This must match the domain used to access the site',
             'placeholder' => 'Pu-239.pw',
         ],
         [
             'text'        => 'Domain',
             'input'       => 'config[domain]',
-            'info'        => 'Your site domain name - note exclude http or www.',
+            'info'        => 'Your site domain name - note exclude http or www. This must match the domain used to access the site.',
             'placeholder' => 'Pu-239.pw',
         ],
         [
             'text'        => 'Secure Session Cookies',
             'input'       => 'config[sessionCookieSecure]',
-            'info'        => 'true/false/null. Enabled, this requires that session cookies can only be passed using SSL/HTTPS protocals.',
+            'info'        => 'true/false/null. Enabled, this requires that session cookies can only be passed using SSL/HTTPS protocals. Null is the default. True only if you do now allow http access, only https. False will only send cookies over http, even when using https.',
             'placeholder' => 'null',
         ],
     ],
